@@ -1,0 +1,15 @@
+> Integrated into the source-delivery diary on 8 November 2026 UTC from the retained checkpoint488 working record. Status statements below describe that checkpoint. Local raw logs, user documents, reference sessions and app bundles are excluded from the public repository. The canonical historical-evidence audit is still pending; see the [delivery record](../SOURCE_PUBLICATION_500.md).
+
+# Step488: image styles and canvas size
+
+The existing Image Playground integration offered illustration, animation and sketch. On macOS27, the candidate also offers the system’s Any style and starts there. macOS26 retains its three styles and Illustration default. The request now captures the source canvas width and height, and macOS27 passes that size to the system’s closest-supported-size API. Exact output dimensions are not promised.
+
+The optional API reports the captured sourceCanvasSize in pending and completed job state, validates its schema, and describes the style and size policy in discovery. Existing prepare/cancel paths still require native approval. Original-image records and native/Actions formats are unchanged. External-provider styles are not enabled.
+
+All59selected Debug tests and the same59optimized tests pass on Apple Silicon and translated Intel, including seven new tests. Apple Silicon tests construct the actual native controllers and check styles, defaults, personalization and landscape/portrait/square size hints. Intel tests check unavailable-device behavior. Source replacement and cancellation retain the original dimensions. Existing result storage, provenance, Undo/Redo, schemas, menus and cursor checks pass. The universal package passes minimum-macOS14 metadata, unchanged entitlements, signatures, executable payload and extracted-ZIP checks.
+
+The actual isolated app shows the revised prompt wording and the current model-unavailable messages. Generate and Refine remain disabled with a valid owned prompt. The prompt is cleared and the app quits normally. Real system-sheet style selection, image generation, returned image dimensions and broader physical-platform/output qualification remain unverified. FullAI02 remains open.
+
+An initial preparation helper failed before compilation because it tried to recreate an existing protected snapshot. The snapshot and failure are retained; the helper was corrected before the successful run. No old numerical fixtures, assertions, factory shortcuts or cursor policies changed. The existing synchronized Xcode source group includes the new AI file automatically; no separate Xcode build is claimed.
+
+The main project remains at485while its evidence check runs. Separate qualified486/487/488sources and packages remain ready for their documented source/diary handoff. No current builds, GitHub items, production installation or AppStore release were changed. Next is AI03: Remove, distractions and prompted replacement. Source inspection confirms traditional content-aware fill exists; it does not supply a learned generative replacement model or Remove-tool workflow.

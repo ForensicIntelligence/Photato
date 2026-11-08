@@ -140,7 +140,7 @@ final class PatternLibraryWorkflowTests:XCTestCase {
       XCTAssertNoThrow(try BrushAPI.merge(raw,schema:PatternLibraryAPI.stateSchema))
       let result=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:removed.1))
       XCTAssertNoThrow(try BrushAPI.merge(result,schema:PatternLibraryAPI.resultSchema))
-      XCTAssertEqual(AutomationCommand.definitions.count,258)
+      XCTAssertEqual(AutomationCommand.definitions.count,267)
       XCTAssertEqual(doc.store.document,d);XCTAssertEqual(try NativeArchive.encode(doc.store.document),bytes);XCTAssertTrue(doc.store.session.undoStack.isEmpty);XCTAssertFalse(doc.isDocumentEdited)
       _=PatternLibraryDrag.provider(store:other.store,nodeID:group)
       controller.removeDocument(other);otherAttached=false

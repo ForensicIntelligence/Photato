@@ -77,9 +77,11 @@ final class WorkflowTests: XCTestCase {
 }
 extension WorkflowTests {
   @MainActor func testPrivateCloudImagePlaygroundCanBePresentedWhenAvailable() throws {
+    let inboxDirectory=try DocumentPersistenceTests().directory();defer{try? FileManager.default.removeItem(at:inboxDirectory)}
     let store = EditorStore(document: try CraftDocument(width: 8, height: 8))
     store.renderTask?.cancel()
     let before = store.document
+    store.generatedResultInbox=GeneratedResultInbox(directory:inboxDirectory)
     store.prompt = "  test scene  "
     store.beginImageCreation(
       capability: LocalAI.imagePlatformCapability(majorVersion: 27, isAppleSilicon: true))
@@ -110,14 +112,19 @@ extension WorkflowTests {
     XCTAssertEqual(store.document, before)
   }
   @MainActor func testGeneratedImageBecomesUndoableLayer() async throws {
+    let inboxDirectory=try DocumentPersistenceTests().directory();defer{try? FileManager.default.removeItem(at:inboxDirectory)}
     let url = FileManager.default.temporaryDirectory.appendingPathComponent(
       UUID().uuidString + ".png")
     defer { try? FileManager.default.removeItem(at: url) }
     try RasterIO.write(Surface(width: 4, height: 4, fill: Pixel(0.2, 0.7, 0.9)), to: url)
     let store = EditorStore(document: try CraftDocument(width: 8, height: 8))
     store.renderTask?.cancel()
+    store.generatedResultInbox=GeneratedResultInbox(directory:inboxDirectory)
     store.prompt = "test scene"
-    store.acceptGeneratedImage(url)
+    store.beginImageCreation(capability:AICapability(available:true,message:"Owned test capability"))
+    let requestID=try XCTUnwrap(store.imageGenerationJob?.id)
+    store.acceptGeneratedImage(url,requestID:requestID)
+    let task=try XCTUnwrap(store.aiTask);await task.value
     store.renderTask?.cancel()
     XCTAssertNil(store.aiError)
     XCTAssertEqual(store.status, "Created with Image Playground")

@@ -1,0 +1,593 @@
+{
+  "step": 460,
+  "date": "2026-11-06",
+  "recorded_utc": "2026-11-07T02:54:26.660130+00:00",
+  "package": {
+    "step": 460,
+    "app": "/private/tmp/photato-validation-460-stage01-aa37bfc8/Photato Validation 460.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T021201Z-460-targeted-clipboard/universal/Photato-Validation-460.zip",
+    "archive_sha256": "f251a7043269e58dce37ef6fa7b2550d4bfbee567e5fadbf294bbc7b13c1973e",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-source.json",
+    "source_inputs": 7459,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation460optimized",
+    "version": "0.3.0",
+    "build": 460,
+    "signed_universal_binary_sha256": "7343ae6fefb7e05de1469e6ae8757ea4003ed8468e821e211fded1f40acdcebe",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10842,
+    "selected_pass_each": [
+      45,
+      45
+    ],
+    "new_methods_pass_each": [
+      20,
+      20
+    ],
+    "strict_planes": {
+      "words": 246,
+      "bytes_each": 984,
+      "all_exact": true,
+      "comparisons": [
+        {
+          "pair": "Debug_ARM",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Debug_Intel",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "ARM_Intel",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Debug_independent_literal",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "ARM_independent_literal",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Intel_independent_literal",
+          "exact": true,
+          "different_words": []
+        }
+      ],
+      "hashes": [
+        {
+          "path": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/source03-captures/clipboard-plane-numerics.f32",
+          "sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b"
+        },
+        {
+          "path": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-arm-captures/clipboard-plane-numerics.f32",
+          "sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b"
+        },
+        {
+          "path": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-intel-captures/clipboard-plane-numerics.f32",
+          "sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b"
+        }
+      ],
+      "independent_literal_reference": "independent-plane-capture01.json",
+      "meaning": "Selected deterministic own fixtures only, not independent Photoshop pixel/default/profile proof. No tolerance or normalization."
+    },
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "launched_or_installed": false,
+    "isolated_session_launch_environment_configured": true,
+    "runtime_launch_environment_verified": false
+  },
+  "status": "Target-aware alpha/Quick Mask/layer/filter-mask clipboard implemented; selected Debug and optimized tests pass. Live native acceptance pending.",
+  "goal_complete": false,
+  "changes": {
+    "modified": [
+      "Sources/PhotoCraft/AutomationClipboard.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/Benchmark.swift",
+      "Sources/PhotoCraft/ClipboardEditing.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraftCore/Engine.swift",
+      "Tests/PhotoCraftAppTests/ClipboardWorkflowTests.swift",
+      "scripts/Info.plist"
+    ],
+    "added": [
+      "Sources/PhotoCraft/AutomationClipboardPlane.swift",
+      "Sources/PhotoCraft/ClipboardPlaneEditing.swift",
+      "Sources/PhotoCraftCore/ClipboardPlane.swift",
+      "Sources/PhotoCraftImaging/ClipboardPlaneIO.swift",
+      "Tests/PhotoCraftAppTests/ClipboardPlaneWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ClipboardPlaneTests.swift",
+      "Tests/PhotoCraftImagingTests/ClipboardPlaneImagingTests.swift"
+    ],
+    "removed": []
+  },
+  "source": {
+    "manifest": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/source03-source.json",
+    "normal_manifest": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-source.json",
+    "inputs": 7459,
+    "unchanged": true,
+    "Debug_and_normal_sources_identical": true,
+    "compiled_Debug_sha256": "71afa46c878f11752f6e1ad3f20dd9136c5ac1d9321a8537634caf7bcbb8fb59",
+    "source02_source03_application_identical": true,
+    "old_test_changes": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/old-test-change01.json",
+    "old_test_policy": "One old ClipboardWorkflowTests file deliberately enables new mask Copy/Paste, retains unsupported Into/CopyMerged checks and requires small PNG. All other old assertions/fixtures/tolerances unchanged.",
+    "benchmark_repair": "Benchmark.swift requires both optional TIFF/PNG fallbacks for its unchanged24MP three-format benchmark contract. No missing-format zero-byte success.",
+    "project_resources_and_entitlements": "unchanged; synchronized .xcodeproj discovers seven new Swift files"
+  },
+  "implementation": {
+    "targets": [
+      "alpha",
+      "quickMask",
+      "layerMask",
+      "smartFilterMask"
+    ],
+    "commands": [
+      "clipboard.copy",
+      "clipboard.cut",
+      "clipboard.paste",
+      "clipboard.newDocument"
+    ],
+    "native": "Existing Copy/Cut/Paste/Paste In Place menu and factory shortcuts use selected auxiliary plane. Composite/Place Embedded/Linked admission stays separate; text responder routing and unrelated target availability preserved.",
+    "transport": "Existing clipboard1-2/native88; grayscale numerical components plus independent opacity carry origin, depth and selection. No new format. Above dense fallback budget native payload retains full extent, omitting full TIFF/PNG without downsampling.",
+    "conversion": "Numeric grayscale payloads bypass RGB display caches/ICC. Other colors use existing NativeModeRaster grayscale conversion with captured working Gray profile. Encoded Float32 preview is converted to linearRGB exactly once. Background gray currently uses bounded Rec709 luminance candidate; Photoshop numerical equivalence open.",
+    "geometry": "Existing scalar projection and expandable mask storage retain transforms/outside/density/feather/image content; selection clips arithmetic. Paste selects the covered destination area. Full-canvas implicit values retain sparse300000geometry.",
+    "history": "Copy read-only except explicit unsupported Action recording; Cut publishes system clipboard before one prepared transaction. Paste one prepared transaction. No-op retains history. Shared existing preparedAction source/result storage with lightweight typed target marker.",
+    "guards": "Native source/session/target/path/component/clipboard-count/cancellation, masks locked and QuickMask hidden checks. API explicit target plus source/revision/token/epoch/share/context/cancellation rechecks, existing preflight and operation ownership. API never reads/writes Mac clipboard.",
+    "recording": "Targeted clipboard explicitly records unsupported steps; Actions55 unchanged.",
+    "API": "Copy/Cut/Paste accept explicit target kind/UUID. Cut accepts optional backgroundValue0...1; Paste accepts centered/inPlace and center. New Document accepts grayscale transfer while an auxiliary target is active. Formal target/state/result discovery and error handling;261typed commands unchanged.",
+    "Adobe_interface": "No new dedicated Fireflyv2route or actionJSON/UXP execution support. Documented desktop mask workflow is not a cloud API endpoint.",
+    "cursor": "No new tool/modifier/cursor or shortcut. All nine existing cursor methods pass all selected configurations."
+  },
+  "validation": {
+    "Debug": {
+      "unexpected_signals": [],
+      "expected_count": 45,
+      "missing_cases": [],
+      "exit_code": 0,
+      "inputs": 7459,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testEncodedFloat32ColorInputIsConvertedFromLinearRGBOnce",
+        "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testLayerClipboardFlatteningThenTargetedPastePreservesDestinationImage",
+        "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testNumericGrayBypassesProfilesAndPreservesEveryDepthAndAlpha",
+        "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testRGBBlackWhiteAndOpacityUseNativeGrayConversion",
+        "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testStrictClipboardPlaneRawCaptures",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testCopyIrregularSelectionKeepsNumericGraySeparateFromOpacity",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testCutPasteEachTargetPreserveUnrelatedContentAndUndoRedo",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testInvalidLockedMissingAndCancelledOperationsAreAtomic",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testMaximumSparsePlaneCopyCutPasteAndNativeTransport",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testNumericCopyEveryDepthTargetAndTransportKeepSamplesCoverageOrigin",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testSpotGrayRetentionAndSelectedAreaIndicationUseEditingValues",
+        "PhotoCraftCoreTests.ClipboardPlaneTests/testTranslatedMaskPasteExpandsStorageAndPreservesEffectsAndImage",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHiddenQuickMaskAndLockedMaskAvailabilityAndUnsupportedRecording",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPInvalidTargetsOptionsStaleBusyAndLocksAreAtomic",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPNativeCopyCutPasteEquivalenceEveryDepthAndTargetWithoutSystemClipboardAccess",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testMaximumSparseNativePayloadOmitsFallbacksAndNamedPasteboardRetainsFullExtent",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeEveryDepthTargetCopyCutPasteAndUndoUseSelectedPlane",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeFailedCancelledAndStaleCopyNeverCutsOrPublishesClipboard",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeStaleAndCancelledPastePreserveTargetAndSource",
+        "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testStateSchemaFactoryShortcutsAndNewFromGrayscaleClipboard",
+        "PhotoCraftImagingTests.ClipboardRenderTests/testCopyMergedIncludesVisibleMasksOpacityAndBlendButIgnoresHiddenLayers",
+        "PhotoCraftImagingTests.ClipboardRenderTests/testExternalTIFFAndPNGKeepOrientationAndAlphaWithExplicitPrecision",
+        "PhotoCraftImagingTests.ClipboardRenderTests/testLayerCopyKeepsWholeNestedSubtreeOffCanvasPixelsAndUnlinkedMasks",
+        "PhotoCraftImagingTests.ClipboardRenderTests/testNativeLayerCopyFreezesTextLayoutAndAffineSelectedPixelsUseDocumentCoordinates",
+        "PhotoCraftImagingTests.ClipboardRenderTests/testSelectedPixelCopyTrimsTransparencyAndMultipliesCoverageLikeSource",
+        "PhotoCraftCoreTests.ClipboardTests/testCutAndPasteRejectLockedTargetsAndInvalidPlacementWithoutHistoryChanges",
+        "PhotoCraftCoreTests.ClipboardTests/testCutFractionalSelectionPreservesHiddenRGBAndIsUndoableAtEveryDepth",
+        "PhotoCraftCoreTests.ClipboardTests/testNativeTransferPreservesDepthHiddenColorsCoordinatesAndRejectsDamagedArchives",
+        "PhotoCraftCoreTests.ClipboardTests/testPasteGroupRemapsIDsAndRetainsPropertiesMasksClippingAndDepthConversion",
+        "PhotoCraftCoreTests.ClipboardTests/testPasteIntoAndOutsideHaveIndependentDocumentMasksAndOneUndoStep",
+        "PhotoCraftAppTests.ClipboardWorkflowTests/testCopyIsReadOnlyAndCrossDocumentPasteRetainsLayersWithUndo",
+        "PhotoCraftAppTests.ClipboardWorkflowTests/testCutWritesClipboardBeforeEditingAndUndoDoesNotRevertClipboard",
+        "PhotoCraftAppTests.ClipboardWorkflowTests/testFailedOrCancelledCutNeverDeletesPixelsAndStaleClipboardIsNotOverwritten",
+        "PhotoCraftAppTests.ClipboardWorkflowTests/testMenusKeepTextResponderActionsAndPhotoshopClipboardShortcuts",
+        "PhotoCraftAppTests.ClipboardWorkflowTests/testNamedSystemPasteboardUsesNativeTIFFAndPNGWithoutTouchingGeneralClipboard",
+        "PhotoCraftAppTests.ClipboardWorkflowTests/testPasteCancellationAndTargetValidationDoNotChangeDocument",
+        "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+        "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+        "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+        "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+        "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+        "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+        "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+        "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+        "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+      ],
+      "passed": 45,
+      "failed_cases": [],
+      "totals": [
+        [
+          "45",
+          "0",
+          "0",
+          "3.624"
+        ]
+      ],
+      "build_seconds": [
+        "8.83"
+      ],
+      "finished_utc": "2026-11-07T02:40:44.941932+00:00"
+    },
+    "optimized": {
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "results": [
+        {
+          "command": [
+            "./scripts/test.sh",
+            "-c",
+            "release",
+            "--disable-build-manifest-caching",
+            "--jobs",
+            "4",
+            "--filter",
+            "^(?:PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testHTTPInvalidTargetsOptionsStaleBusyAndLocksAreAtomic|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testHTTPNativeCopyCutPasteEquivalenceEveryDepthAndTargetWithoutSystemClipboardAccess|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testHiddenQuickMaskAndLockedMaskAvailabilityAndUnsupportedRecording|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testMaximumSparseNativePayloadOmitsFallbacksAndNamedPasteboardRetainsFullExtent|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testNativeEveryDepthTargetCopyCutPasteAndUndoUseSelectedPlane|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testNativeFailedCancelledAndStaleCopyNeverCutsOrPublishesClipboard|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testNativeStaleAndCancelledPastePreserveTargetAndSource|PhotoCraftAppTests\\.ClipboardPlaneWorkflowTests/testStateSchemaFactoryShortcutsAndNewFromGrayscaleClipboard|PhotoCraftAppTests\\.ClipboardWorkflowTests/testCopyIsReadOnlyAndCrossDocumentPasteRetainsLayersWithUndo|PhotoCraftAppTests\\.ClipboardWorkflowTests/testCutWritesClipboardBeforeEditingAndUndoDoesNotRevertClipboard|PhotoCraftAppTests\\.ClipboardWorkflowTests/testFailedOrCancelledCutNeverDeletesPixelsAndStaleClipboardIsNotOverwritten|PhotoCraftAppTests\\.ClipboardWorkflowTests/testMenusKeepTextResponderActionsAndPhotoshopClipboardShortcuts|PhotoCraftAppTests\\.ClipboardWorkflowTests/testNamedSystemPasteboardUsesNativeTIFFAndPNGWithoutTouchingGeneralClipboard|PhotoCraftAppTests\\.ClipboardWorkflowTests/testPasteCancellationAndTargetValidationDoNotChangeDocument|PhotoCraftAppTests\\.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors|PhotoCraftAppTests\\.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts|PhotoCraftAppTests\\.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor|PhotoCraftAppTests\\.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke|PhotoCraftAppTests\\.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas|PhotoCraftAppTests\\.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration|PhotoCraftAppTests\\.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry|PhotoCraftAppTests\\.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach|PhotoCraftAppTests\\.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion|PhotoCraftCoreTests\\.ClipboardPlaneTests/testCopyIrregularSelectionKeepsNumericGraySeparateFromOpacity|PhotoCraftCoreTests\\.ClipboardPlaneTests/testCutPasteEachTargetPreserveUnrelatedContentAndUndoRedo|PhotoCraftCoreTests\\.ClipboardPlaneTests/testInvalidLockedMissingAndCancelledOperationsAreAtomic|PhotoCraftCoreTests\\.ClipboardPlaneTests/testMaximumSparsePlaneCopyCutPasteAndNativeTransport|PhotoCraftCoreTests\\.ClipboardPlaneTests/testNumericCopyEveryDepthTargetAndTransportKeepSamplesCoverageOrigin|PhotoCraftCoreTests\\.ClipboardPlaneTests/testSpotGrayRetentionAndSelectedAreaIndicationUseEditingValues|PhotoCraftCoreTests\\.ClipboardPlaneTests/testTranslatedMaskPasteExpandsStorageAndPreservesEffectsAndImage|PhotoCraftCoreTests\\.ClipboardTests/testCutAndPasteRejectLockedTargetsAndInvalidPlacementWithoutHistoryChanges|PhotoCraftCoreTests\\.ClipboardTests/testCutFractionalSelectionPreservesHiddenRGBAndIsUndoableAtEveryDepth|PhotoCraftCoreTests\\.ClipboardTests/testNativeTransferPreservesDepthHiddenColorsCoordinatesAndRejectsDamagedArchives|PhotoCraftCoreTests\\.ClipboardTests/testPasteGroupRemapsIDsAndRetainsPropertiesMasksClippingAndDepthConversion|PhotoCraftCoreTests\\.ClipboardTests/testPasteIntoAndOutsideHaveIndependentDocumentMasksAndOneUndoStep|PhotoCraftImagingTests\\.ClipboardPlaneImagingTests/testEncodedFloat32ColorInputIsConvertedFromLinearRGBOnce|PhotoCraftImagingTests\\.ClipboardPlaneImagingTests/testLayerClipboardFlatteningThenTargetedPastePreservesDestinationImage|PhotoCraftImagingTests\\.ClipboardPlaneImagingTests/testNumericGrayBypassesProfilesAndPreservesEveryDepthAndAlpha|PhotoCraftImagingTests\\.ClipboardPlaneImagingTests/testRGBBlackWhiteAndOpacityUseNativeGrayConversion|PhotoCraftImagingTests\\.ClipboardPlaneImagingTests/testStrictClipboardPlaneRawCaptures|PhotoCraftImagingTests\\.ClipboardRenderTests/testCopyMergedIncludesVisibleMasksOpacityAndBlendButIgnoresHiddenLayers|PhotoCraftImagingTests\\.ClipboardRenderTests/testExternalTIFFAndPNGKeepOrientationAndAlphaWithExplicitPrecision|PhotoCraftImagingTests\\.ClipboardRenderTests/testLayerCopyKeepsWholeNestedSubtreeOffCanvasPixelsAndUnlinkedMasks|PhotoCraftImagingTests\\.ClipboardRenderTests/testNativeLayerCopyFreezesTextLayoutAndAffineSelectedPixelsUseDocumentCoordinates|PhotoCraftImagingTests\\.ClipboardRenderTests/testSelectedPixelCopyTrimsTransparencyAndMultipliesCoverageLikeSource)$"
+          ],
+          "source_manifest": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-source.json",
+          "inputs": 7459,
+          "started_at_utc": "2026-11-07T02:41:50.701178+00:00",
+          "exit_code": 0,
+          "finished_at_utc": "2026-11-07T02:52:14.339862+00:00",
+          "cases": 45,
+          "case_ids": [
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testEncodedFloat32ColorInputIsConvertedFromLinearRGBOnce",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testLayerClipboardFlatteningThenTargetedPastePreservesDestinationImage",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testNumericGrayBypassesProfilesAndPreservesEveryDepthAndAlpha",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testRGBBlackWhiteAndOpacityUseNativeGrayConversion",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testStrictClipboardPlaneRawCaptures",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testCopyIrregularSelectionKeepsNumericGraySeparateFromOpacity",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testCutPasteEachTargetPreserveUnrelatedContentAndUndoRedo",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testInvalidLockedMissingAndCancelledOperationsAreAtomic",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testMaximumSparsePlaneCopyCutPasteAndNativeTransport",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testNumericCopyEveryDepthTargetAndTransportKeepSamplesCoverageOrigin",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testSpotGrayRetentionAndSelectedAreaIndicationUseEditingValues",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testTranslatedMaskPasteExpandsStorageAndPreservesEffectsAndImage",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHiddenQuickMaskAndLockedMaskAvailabilityAndUnsupportedRecording",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPInvalidTargetsOptionsStaleBusyAndLocksAreAtomic",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPNativeCopyCutPasteEquivalenceEveryDepthAndTargetWithoutSystemClipboardAccess",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testMaximumSparseNativePayloadOmitsFallbacksAndNamedPasteboardRetainsFullExtent",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeEveryDepthTargetCopyCutPasteAndUndoUseSelectedPlane",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeFailedCancelledAndStaleCopyNeverCutsOrPublishesClipboard",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeStaleAndCancelledPastePreserveTargetAndSource",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testStateSchemaFactoryShortcutsAndNewFromGrayscaleClipboard",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testCopyMergedIncludesVisibleMasksOpacityAndBlendButIgnoresHiddenLayers",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testExternalTIFFAndPNGKeepOrientationAndAlphaWithExplicitPrecision",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testLayerCopyKeepsWholeNestedSubtreeOffCanvasPixelsAndUnlinkedMasks",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testNativeLayerCopyFreezesTextLayoutAndAffineSelectedPixelsUseDocumentCoordinates",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testSelectedPixelCopyTrimsTransparencyAndMultipliesCoverageLikeSource",
+            "PhotoCraftCoreTests.ClipboardTests/testCutAndPasteRejectLockedTargetsAndInvalidPlacementWithoutHistoryChanges",
+            "PhotoCraftCoreTests.ClipboardTests/testCutFractionalSelectionPreservesHiddenRGBAndIsUndoableAtEveryDepth",
+            "PhotoCraftCoreTests.ClipboardTests/testNativeTransferPreservesDepthHiddenColorsCoordinatesAndRejectsDamagedArchives",
+            "PhotoCraftCoreTests.ClipboardTests/testPasteGroupRemapsIDsAndRetainsPropertiesMasksClippingAndDepthConversion",
+            "PhotoCraftCoreTests.ClipboardTests/testPasteIntoAndOutsideHaveIndependentDocumentMasksAndOneUndoStep",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testCopyIsReadOnlyAndCrossDocumentPasteRetainsLayersWithUndo",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testCutWritesClipboardBeforeEditingAndUndoDoesNotRevertClipboard",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testFailedOrCancelledCutNeverDeletesPixelsAndStaleClipboardIsNotOverwritten",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testMenusKeepTextResponderActionsAndPhotoshopClipboardShortcuts",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testNamedSystemPasteboardUsesNativeTIFFAndPNGWithoutTouchingGeneralClipboard",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testPasteCancellationAndTargetValidationDoNotChangeDocument",
+            "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+            "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+            "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+            "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+            "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+            "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+            "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+            "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+            "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+          ],
+          "passed": 45,
+          "failed": 0,
+          "failed_cases": [],
+          "total_xctest_failures": 0,
+          "unexpected": 0,
+          "test_seconds": 2.231,
+          "build_seconds": [
+            "619.20"
+          ],
+          "crashes": 0,
+          "binary_sha256": "6914b3f7c2e31067a90db67ffafd4329e9306a27dc6fed2438adcfb4c0f294c1",
+          "binary": "/private/tmp/photocraft-swift-build/release/Photato",
+          "expected_cases": 45,
+          "missing_cases": [],
+          "extra_cases": []
+        },
+        {
+          "command": [
+            "swift",
+            "build",
+            "--build-tests",
+            "--build-system",
+            "native",
+            "--scratch-path",
+            "/private/tmp/photocraft-swift-intel",
+            "--disable-sandbox",
+            "--cache-path",
+            ".build/pm-cache",
+            "--triple",
+            "x86_64-apple-macosx14.0",
+            "-c",
+            "release",
+            "--disable-build-manifest-caching",
+            "--jobs",
+            "4",
+            "-Xswiftc",
+            "-enable-testing"
+          ],
+          "source_manifest": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-source.json",
+          "inputs": 7459,
+          "started_at_utc": "2026-11-07T02:41:50.701574+00:00",
+          "exit_code": 0,
+          "finished_at_utc": "2026-11-07T02:52:04.481683+00:00",
+          "cases": 0,
+          "case_ids": [],
+          "passed": 0,
+          "failed": 0,
+          "failed_cases": [],
+          "total_xctest_failures": null,
+          "unexpected": null,
+          "test_seconds": null,
+          "build_seconds": [
+            "612.94"
+          ],
+          "crashes": 0,
+          "binary_sha256": "c9821e08758b22c4a45351add8adf5da4ba377caefbaf8e0ea9e0d4e31465670",
+          "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+          "expected_cases": 45,
+          "missing_cases": [],
+          "extra_cases": []
+        },
+        {
+          "command": [
+            "arch",
+            "-x86_64",
+            "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+            "-XCTest",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testEncodedFloat32ColorInputIsConvertedFromLinearRGBOnce,PhotoCraftImagingTests.ClipboardPlaneImagingTests/testLayerClipboardFlatteningThenTargetedPastePreservesDestinationImage,PhotoCraftImagingTests.ClipboardPlaneImagingTests/testNumericGrayBypassesProfilesAndPreservesEveryDepthAndAlpha,PhotoCraftImagingTests.ClipboardPlaneImagingTests/testRGBBlackWhiteAndOpacityUseNativeGrayConversion,PhotoCraftImagingTests.ClipboardPlaneImagingTests/testStrictClipboardPlaneRawCaptures,PhotoCraftCoreTests.ClipboardPlaneTests/testCopyIrregularSelectionKeepsNumericGraySeparateFromOpacity,PhotoCraftCoreTests.ClipboardPlaneTests/testCutPasteEachTargetPreserveUnrelatedContentAndUndoRedo,PhotoCraftCoreTests.ClipboardPlaneTests/testInvalidLockedMissingAndCancelledOperationsAreAtomic,PhotoCraftCoreTests.ClipboardPlaneTests/testMaximumSparsePlaneCopyCutPasteAndNativeTransport,PhotoCraftCoreTests.ClipboardPlaneTests/testNumericCopyEveryDepthTargetAndTransportKeepSamplesCoverageOrigin,PhotoCraftCoreTests.ClipboardPlaneTests/testSpotGrayRetentionAndSelectedAreaIndicationUseEditingValues,PhotoCraftCoreTests.ClipboardPlaneTests/testTranslatedMaskPasteExpandsStorageAndPreservesEffectsAndImage,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHiddenQuickMaskAndLockedMaskAvailabilityAndUnsupportedRecording,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPInvalidTargetsOptionsStaleBusyAndLocksAreAtomic,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPNativeCopyCutPasteEquivalenceEveryDepthAndTargetWithoutSystemClipboardAccess,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testMaximumSparseNativePayloadOmitsFallbacksAndNamedPasteboardRetainsFullExtent,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeEveryDepthTargetCopyCutPasteAndUndoUseSelectedPlane,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeFailedCancelledAndStaleCopyNeverCutsOrPublishesClipboard,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeStaleAndCancelledPastePreserveTargetAndSource,PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testStateSchemaFactoryShortcutsAndNewFromGrayscaleClipboard,PhotoCraftImagingTests.ClipboardRenderTests/testCopyMergedIncludesVisibleMasksOpacityAndBlendButIgnoresHiddenLayers,PhotoCraftImagingTests.ClipboardRenderTests/testExternalTIFFAndPNGKeepOrientationAndAlphaWithExplicitPrecision,PhotoCraftImagingTests.ClipboardRenderTests/testLayerCopyKeepsWholeNestedSubtreeOffCanvasPixelsAndUnlinkedMasks,PhotoCraftImagingTests.ClipboardRenderTests/testNativeLayerCopyFreezesTextLayoutAndAffineSelectedPixelsUseDocumentCoordinates,PhotoCraftImagingTests.ClipboardRenderTests/testSelectedPixelCopyTrimsTransparencyAndMultipliesCoverageLikeSource,PhotoCraftCoreTests.ClipboardTests/testCutAndPasteRejectLockedTargetsAndInvalidPlacementWithoutHistoryChanges,PhotoCraftCoreTests.ClipboardTests/testCutFractionalSelectionPreservesHiddenRGBAndIsUndoableAtEveryDepth,PhotoCraftCoreTests.ClipboardTests/testNativeTransferPreservesDepthHiddenColorsCoordinatesAndRejectsDamagedArchives,PhotoCraftCoreTests.ClipboardTests/testPasteGroupRemapsIDsAndRetainsPropertiesMasksClippingAndDepthConversion,PhotoCraftCoreTests.ClipboardTests/testPasteIntoAndOutsideHaveIndependentDocumentMasksAndOneUndoStep,PhotoCraftAppTests.ClipboardWorkflowTests/testCopyIsReadOnlyAndCrossDocumentPasteRetainsLayersWithUndo,PhotoCraftAppTests.ClipboardWorkflowTests/testCutWritesClipboardBeforeEditingAndUndoDoesNotRevertClipboard,PhotoCraftAppTests.ClipboardWorkflowTests/testFailedOrCancelledCutNeverDeletesPixelsAndStaleClipboardIsNotOverwritten,PhotoCraftAppTests.ClipboardWorkflowTests/testMenusKeepTextResponderActionsAndPhotoshopClipboardShortcuts,PhotoCraftAppTests.ClipboardWorkflowTests/testNamedSystemPasteboardUsesNativeTIFFAndPNGWithoutTouchingGeneralClipboard,PhotoCraftAppTests.ClipboardWorkflowTests/testPasteCancellationAndTargetValidationDoNotChangeDocument,PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors,PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts,PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor,PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke,PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas,PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration,PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry,PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach,PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion",
+            "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/PhotatoPackageTests.xctest"
+          ],
+          "source_manifest": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-source.json",
+          "inputs": 7459,
+          "started_at_utc": "2026-11-07T02:52:14.398949+00:00",
+          "exit_code": 0,
+          "finished_at_utc": "2026-11-07T02:52:26.015982+00:00",
+          "cases": 45,
+          "case_ids": [
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testEncodedFloat32ColorInputIsConvertedFromLinearRGBOnce",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testLayerClipboardFlatteningThenTargetedPastePreservesDestinationImage",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testNumericGrayBypassesProfilesAndPreservesEveryDepthAndAlpha",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testRGBBlackWhiteAndOpacityUseNativeGrayConversion",
+            "PhotoCraftImagingTests.ClipboardPlaneImagingTests/testStrictClipboardPlaneRawCaptures",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testCopyIrregularSelectionKeepsNumericGraySeparateFromOpacity",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testCutPasteEachTargetPreserveUnrelatedContentAndUndoRedo",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testInvalidLockedMissingAndCancelledOperationsAreAtomic",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testMaximumSparsePlaneCopyCutPasteAndNativeTransport",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testNumericCopyEveryDepthTargetAndTransportKeepSamplesCoverageOrigin",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testSpotGrayRetentionAndSelectedAreaIndicationUseEditingValues",
+            "PhotoCraftCoreTests.ClipboardPlaneTests/testTranslatedMaskPasteExpandsStorageAndPreservesEffectsAndImage",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHiddenQuickMaskAndLockedMaskAvailabilityAndUnsupportedRecording",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPInvalidTargetsOptionsStaleBusyAndLocksAreAtomic",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testHTTPNativeCopyCutPasteEquivalenceEveryDepthAndTargetWithoutSystemClipboardAccess",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testMaximumSparseNativePayloadOmitsFallbacksAndNamedPasteboardRetainsFullExtent",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeEveryDepthTargetCopyCutPasteAndUndoUseSelectedPlane",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeFailedCancelledAndStaleCopyNeverCutsOrPublishesClipboard",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testNativeStaleAndCancelledPastePreserveTargetAndSource",
+            "PhotoCraftAppTests.ClipboardPlaneWorkflowTests/testStateSchemaFactoryShortcutsAndNewFromGrayscaleClipboard",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testCopyMergedIncludesVisibleMasksOpacityAndBlendButIgnoresHiddenLayers",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testExternalTIFFAndPNGKeepOrientationAndAlphaWithExplicitPrecision",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testLayerCopyKeepsWholeNestedSubtreeOffCanvasPixelsAndUnlinkedMasks",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testNativeLayerCopyFreezesTextLayoutAndAffineSelectedPixelsUseDocumentCoordinates",
+            "PhotoCraftImagingTests.ClipboardRenderTests/testSelectedPixelCopyTrimsTransparencyAndMultipliesCoverageLikeSource",
+            "PhotoCraftCoreTests.ClipboardTests/testCutAndPasteRejectLockedTargetsAndInvalidPlacementWithoutHistoryChanges",
+            "PhotoCraftCoreTests.ClipboardTests/testCutFractionalSelectionPreservesHiddenRGBAndIsUndoableAtEveryDepth",
+            "PhotoCraftCoreTests.ClipboardTests/testNativeTransferPreservesDepthHiddenColorsCoordinatesAndRejectsDamagedArchives",
+            "PhotoCraftCoreTests.ClipboardTests/testPasteGroupRemapsIDsAndRetainsPropertiesMasksClippingAndDepthConversion",
+            "PhotoCraftCoreTests.ClipboardTests/testPasteIntoAndOutsideHaveIndependentDocumentMasksAndOneUndoStep",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testCopyIsReadOnlyAndCrossDocumentPasteRetainsLayersWithUndo",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testCutWritesClipboardBeforeEditingAndUndoDoesNotRevertClipboard",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testFailedOrCancelledCutNeverDeletesPixelsAndStaleClipboardIsNotOverwritten",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testMenusKeepTextResponderActionsAndPhotoshopClipboardShortcuts",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testNamedSystemPasteboardUsesNativeTIFFAndPNGWithoutTouchingGeneralClipboard",
+            "PhotoCraftAppTests.ClipboardWorkflowTests/testPasteCancellationAndTargetValidationDoNotChangeDocument",
+            "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+            "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+            "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+            "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+            "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+            "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+            "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+            "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+            "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+          ],
+          "passed": 45,
+          "failed": 0,
+          "failed_cases": [],
+          "total_xctest_failures": 0,
+          "unexpected": 0,
+          "test_seconds": 4.092,
+          "build_seconds": null,
+          "crashes": 0,
+          "binary_sha256": "c9821e08758b22c4a45351add8adf5da4ba377caefbaf8e0ea9e0d4e31465670",
+          "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+          "expected_cases": 45,
+          "missing_cases": [],
+          "extra_cases": []
+        }
+      ]
+    },
+    "strict_planes": {
+      "words": 246,
+      "bytes_each": 984,
+      "all_exact": true,
+      "comparisons": [
+        {
+          "pair": "Debug_ARM",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Debug_Intel",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "ARM_Intel",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Debug_independent_literal",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "ARM_independent_literal",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Intel_independent_literal",
+          "exact": true,
+          "different_words": []
+        }
+      ],
+      "hashes": [
+        {
+          "path": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/source03-captures/clipboard-plane-numerics.f32",
+          "sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b"
+        },
+        {
+          "path": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-arm-captures/clipboard-plane-numerics.f32",
+          "sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b"
+        },
+        {
+          "path": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/release01-intel-captures/clipboard-plane-numerics.f32",
+          "sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b"
+        }
+      ],
+      "independent_literal_reference": "independent-plane-capture01.json",
+      "meaning": "Selected deterministic own fixtures only, not independent Photoshop pixel/default/profile proof. No tolerance or normalization."
+    },
+    "independent_literal": {
+      "checkpoint": 460,
+      "created_utc": "2026-11-07T02:42:36.605570+00:00",
+      "basis": "Independent literal rational fixture: source gray=((37*x+19*y)mod256)/255; Copy rectangle1,1,4,3; Cut replaces selected gray with77/255 at8bit,19661/65535 at16bit,Float32(0.3)at32bit; Paste In Place restores original gray. No production Swift helpers invoked.",
+      "bytes": 984,
+      "words": 246,
+      "exact": true,
+      "differences": [],
+      "actual_sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b",
+      "expected_sha256": "73ded2a6e8f961a8d66f45fb90e08b61c13cea2758a9cfbd67c087e58524f09b",
+      "Photoshop_oracle": false,
+      "scope": "Own deterministic fixture only; not profile/rounding/alpha/selection equivalence with Photoshop."
+    },
+    "new_methods": 20,
+    "selected_methods_per_configuration": 45,
+    "native_depth_target_combinations": 12,
+    "HTTP_native_depth_target_combinations": 12,
+    "maximum_sparse_dimension": 300000,
+    "system_clipboard": "Tests use a unique named pasteboard, not the general/user clipboard.",
+    "retained_Debug_files_per_attempt": 5421,
+    "retained_normal_products": 10842,
+    "native_UI_qualified": false,
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "colour_transfer_regression": "New encodedFloat32 neutral conversion test uses1e-6 accuracy to detect transfer-domain errors; this is not a byte-identity Photoshop oracle. Exact984byte own scalar captures remain separately strict."
+  },
+  "failed_attempts": [
+    {
+      "attempt": "source01",
+      "outcome": "Compile failure in Benchmark optionalTIFF/PNG consumer; no tests run. All7459inputs unchanged;5421cached459 products explicitly stale."
+    },
+    {
+      "attempt": "source02",
+      "outcome": "45executed41passed/four new Smart Object fixture media-type failures;5421products retained before test-only repair."
+    },
+    {
+      "attempt": "source03",
+      "outcome": "Same45/all20new pass; fixture media type fixed, application byte-identical toSource02."
+    }
+  ],
+  "primary_references": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/reference-audit01.json",
+  "remaining": [
+    "Original D04 functional scope remains open: RGB component-set and path clipboard, external layered/vector/PDF interchange, Background Cut and full depth/profile/placement behavior; Into/Outside for scalar targets and portable targeted clipboard Actions are not implemented.",
+    "Exact installed Photoshop2026 mask-thumbnail versus mask-only display admission, foreground/background gray conversion, alpha/selection/floating-selection semantics, centering/rounding, transformed boundaries, numerical/profile/depth defaults and output remain unqualified. Current public layer-copy guide disagrees with existing whole-layer Cut; resolve through installed2026 context before changing that behavior.",
+    "Native512MiB clipboard envelope, API2MiB encoded/4MP decoded admission and standard TIFF/PNG materialization budgets remain capacity gaps, not Photoshop limits. Selected300000x300000 implicit-uniform plane tests do not qualify all large/dense/affine/multilayer workloads.",
+    "Live460 Copy/Cut/Paste target/menu/focus/visual/history/Close/Quit checks and earlier458/459native checks remain pending the existing UI connection issue. No460candidate is launched or installed and no normal Quit is claimed. Controlled native methods and a named test pasteboard are not physical UI acceptance.",
+    "API invalid/busy/revision and native stale/cancelled/failed-publication checks pass. Post-await API revocation/cancellation guards are implemented but are not independently synchronized by a new460 mid-worker test; retain that qualification gap.",
+    "All previous strict numerical, architecture, full-suite, capacity, crash and physical macOS14/Intel/AppleSilicon/tablet/60fps/HIG/VoiceOver requirements remain. In particular457Intel234assertions and sixFloat32buffers are not repaired or retested here.",
+    "All104 original scopes/acceptance,652reference-command identities/status mapping,81major memberships and seven passes remain. No full D04 or master-goal completion."
+  ],
+  "next": {
+    "current": "L03",
+    "next": "L04",
+    "track": "major stillneeded pass2"
+  },
+  "GitHub_operations_or_deletions": false,
+  "source_uploaded": false,
+  "production_install_Store_archive_release": false,
+  "Debug_staging": {
+    "step": 460,
+    "app": "/private/tmp/photato-validation-460-debug-stage01-85ac584f/Photato Validation 460.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation460",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "460Source03",
+    "source_inputs": 7459,
+    "compiled_binary_sha256": "71afa46c878f11752f6e1ad3f20dd9136c5ac1d9321a8537634caf7bcbb8fb59",
+    "signed_binary_sha256": "d034b2814d4e0d958f495ea3b02cd35c42977d9a4e7e3dd757b10832fc838011",
+    "unsigned_payload_exact": false,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": {
+      "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+      "offset": 3472,
+      "before_after": [
+        65437696,
+        65454080
+      ],
+      "signed_lengths": [
+        172801968,
+        172802480
+      ],
+      "changed_offsets": [
+        3473
+      ],
+      "signed_size_rounded_allocation_verified": true
+    },
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_448": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 460,
+    "status": "Prepared isolated mask/channel clipboard Debug app; native qualification pending; optimized results recorded separately.",
+    "prepared_utc": "2026-11-07T02:53:06.745194+00:00"
+  },
+  "native_probe": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/native-probe01.json",
+  "next_read_only_source_audit": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/next-L03-source-audit01.json",
+  "diary_verification": "artifacts/runs/20261107T021201Z-460-targeted-clipboard/diary-verification02.json"
+}

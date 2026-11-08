@@ -24,6 +24,33 @@ public enum VectorPathGeometry {
   }
   /// Joined contours share a fill rule; boolean components are resolved before antialiasing.
   public static func filledPath(_ path: VectorPath) throws -> CGPath {
+    let region = try resolve(path)
+    guard !region.inverted else {
+      throw CraftError.unsupported("This path has an unbounded filled exterior; use vector coverage instead of a finite shape outline.")
+    }
+    return region.path
+  }
+  /// A complemented region remains unbounded without adding a synthetic canvas
+  /// rectangle or rewriting the user's editable knots and component order.
+  public struct FilledRegion {
+    public let path: CGPath
+    public let inverted: Bool
+  }
+  public static func filledRegion(_ path: VectorPath) throws -> FilledRegion {
+    let region = try resolve(path)
+    return FilledRegion(path: region.path, inverted: region.inverted != path.inverted)
+  }
+  /// PSD stores even/odd contours, without an editable winding-rule field.
+  /// Keep equivalent native rules unchanged and detect real transport loss.
+  public static func fillRulesDiffer(_ path: VectorPath) throws -> Bool {
+    var winding = path
+    winding.fillRule = .nonZero
+    var evenOdd = path
+    evenOdd.fillRule = .evenOdd
+    let a = try resolve(winding), b = try resolve(evenOdd)
+    return a.inverted != b.inverted || !a.path.symmetricDifference(b.path).isEmpty
+  }
+  private static func resolve(_ path: VectorPath) throws -> FilledRegion {
     try path.validate()
     let rule: CGPathFillRule = path.fillRule == .evenOdd ? .evenOdd : .winding
     var groups: [(PathOperation, CGMutablePath)] = []
@@ -34,18 +61,32 @@ public enum VectorPathGeometry {
       }
       append(component, to: groups[groups.count - 1].1)
     }
-    guard let first = groups.first else { return CGMutablePath() }
+    guard let first = groups.first else {
+      return FilledRegion(path: CGMutablePath(), inverted: false)
+    }
     var result = first.1.normalized(using: rule)
+    var inverted = first.0 == .subtract
     for (operation, raw) in groups.dropFirst() {
       try Task.checkCancellation()
       let next = raw.normalized(using: rule)
-      switch operation {
-      case .combine, .join: result = result.union(next)
-      case .subtract: result = result.subtracting(next)
-      case .intersect: result = result.intersection(next)
-      case .exclude: result = result.symmetricDifference(next)
+      if inverted {
+        switch operation {
+        case .combine, .join: result = result.subtracting(next)
+        case .subtract: result = result.union(next)
+        case .intersect:
+          result = next.subtracting(result)
+          inverted = false
+        case .exclude: result = result.symmetricDifference(next)
+        }
+      } else {
+        switch operation {
+        case .combine, .join: result = result.union(next)
+        case .subtract: result = result.subtracting(next)
+        case .intersect: result = result.intersection(next)
+        case .exclude: result = result.symmetricDifference(next)
+        }
       }
     }
-    return result
+    return FilledRegion(path: result, inverted: inverted)
   }
 }

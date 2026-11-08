@@ -1,0 +1,14 @@
+{
+  "step": 480,
+  "status": "Selected Color Lookup reference increment qualified; final history audit outcome recorded separately",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "REL01",
+  "next": "AUD01",
+  "run": "artifacts/runs/20261107T191608Z-480-independent-lookup-reference",
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261107T191608Z-480-independent-lookup-reference/release01-source.json",
+  "source_inputs": 7604,
+  "production_swift_files": 1159,
+  "reference": "docs/INDEPENDENT_COLOR_LOOKUP_480.json"
+}

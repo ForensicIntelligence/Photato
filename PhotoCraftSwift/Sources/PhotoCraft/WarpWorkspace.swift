@@ -6,6 +6,7 @@ import PhotoCraftImaging
 
 @MainActor @Observable final class WarpWorkspace: Identifiable {
   let id=UUID(),source:CraftDocument,layer:Layer,width:Int,height:Int
+  let sourceSession:UUID?,sourceLifecycle:UUID?
   var settings:WarpDefinition
   var image:CGImage?
   var originalImage:CGImage?
@@ -22,13 +23,14 @@ import PhotoCraftImaging
   private var generation=0
   private var closed=false
   private var gestureStart:WarpDefinition?
-  init(source:CraftDocument,layer:Layer) {
-    self.source=source;self.layer=layer;settings=layer.warp ?? WarpDefinition()
+  init(source:CraftDocument,layer:Layer,session:UUID?=nil,lifecycle:UUID?=nil) {
+    self.source=source;self.layer=layer;sourceSession=session;sourceLifecycle=lifecycle;settings=layer.warp ?? WarpDefinition()
     if case .raster(let p)=layer.content { width=p.width;height=p.height } else { width=1;height=1 }
   }
-  var ready:Bool { edit != nil && !rendering && error == nil }
+  var ready:Bool { edit != nil && !rendering && !closed && error == nil }
   var controls:WarpMesh? { settings.mesh ?? (try? settings.custom(width:width,height:height).mesh) }
   func change(_ value:WarpDefinition,remember:Bool=true) {
+    guard !closed else{return}
     do { try value.validate() } catch { self.error=error.localizedDescription;return }
     guard value != settings else { return }
     if remember { rememberUndo(settings) };settings=value;refresh()
@@ -68,6 +70,7 @@ import PhotoCraftImaging
     } catch { self.error=error.localizedDescription }
   }
   func refresh() {
+    guard !closed else{return}
     task?.cancel();edit=nil;error=nil;rendering=true;generation += 1
     let token=generation,source=source,layerID=layer.id,value=settings,needOriginal=originalImage == nil
     task=Task { [weak self] in
@@ -75,7 +78,8 @@ import PhotoCraftImaging
         try await Task.sleep(for:.milliseconds(80))
         let worker=Task.detached(priority:.userInitiated) { () throws -> (WarpEdit,CGImage,CGImage?) in
           let edit=try WarpEdit.prepare(source,layerID:layerID,warp:value)
-          return (edit,try ColorManagement.displayImage(Renderer.composite(edit.result),in:source),needOriginal ? try ColorManagement.displayImage(Renderer.composite(source),in:source):nil)
+          let bounds=try RasterPreviewRequest.overview(width:source.width,height:source.height)
+          return (edit,try ColorManagement.displayImage(bounds.reducing(Renderer.composite(edit.result)),in:source),needOriginal ? try ColorManagement.displayImage(bounds.reducing(Renderer.composite(source)),in:source):nil)
         }
         let result=try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()}
         try Task.checkCancellation();guard let self,!self.closed,self.generation == token else { return }
@@ -159,8 +163,11 @@ struct WarpPreview:View {
 }
 extension EditorStore {
   var canBeginWarp:Bool { !geometryBusy && !aiBusy && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingMask && !editingComponent && document.activeLayerID.map{(try? WarpEdit.target(document,layerID:$0)) != nil} == true }
-  func beginWarp() { guard canBeginWarp,let id=document.activeLayerID,let layer=try? WarpEdit.target(document,layerID:id) else { return };warpDraft=WarpWorkspace(source:document,layer:layer) }
+  func beginWarp() { guard canBeginWarp,let id=document.activeLayerID,let layer=try? WarpEdit.target(document,layerID:id) else { return };warpDraft=WarpWorkspace(source:document,layer:layer,session:sessionGeneration,lifecycle:layerPanelGeneration) }
   func cancelWarp() { warpDraft?.close();warpDraft=nil }
-  func commitWarp() { guard let draft=warpDraft,draft.ready,let edit=draft.edit else { return };cancelWarp();performGeometry(.warp(edit)) }
+  func commitWarp() { guard let draft=warpDraft,draft.ready,let edit=draft.edit else { return }
+    guard draft.sourceSession==sessionGeneration,draft.sourceLifecycle==layerPanelGeneration,draft.source==document else{draft.error="The Warp source changed. Cancel and preview again.";return}
+    cancelWarp();performGeometry(.warp(edit))
+  }
 }
 extension AppDelegate { @objc func warpLayer() { store?.beginWarp() } }

@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-465",
+  "run": "artifacts/runs/20261107T063457Z-465-wand-sampling",
+  "status": "Selected averaged sampling Debug-qualified; fullS02/normal/live/Photoshop qualification open",
+  "current_major_workflow": "S03",
+  "next": "S04",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7485,
+  "latest_software": 465,
+  "latest_optimized_universal": 464,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:464 normal ARM/translatedIntel qualification, fresh universal package, retained Photoshop fixture, updated diary and consecutive history proof.",
+  "native_reference": "Selected native465Wand popup/canvas/Edit-menu UndoRedo verified; Adobe popup sizes observed, no numerical comparison. Full context/platform matrix open.",
+  "source_manifest": "artifacts/runs/20261107T063457Z-465-wand-sampling/source04-source.json",
+  "selected_native_workflow_verified": true,
+  "production_swift_files": 1133,
+  "evidence": "docs/MAGIC_WAND_SAMPLING_465.json"
+}

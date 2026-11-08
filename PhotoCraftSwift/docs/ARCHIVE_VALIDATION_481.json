@@ -1,0 +1,333 @@
+{
+  "step": 481,
+  "application_build": 480,
+  "source": "pipeline01",
+  "reference": "docs/ARCHIVE_VALIDATION_481.json",
+  "software_changes": false,
+  "development_tooling_changes": true,
+  "status": "Repeatable source-bound archive validation passes locally: 16 new tool tests, 104 editing checks on ARM and translated Intel, 34 archive checks, exact binary/dSYM UUIDs and extracted ZIP. Application build remains 480. Hosted CI, signed distribution, sandbox runtime and full REL01 remain open.",
+  "normal_optimized_qualified": true,
+  "normal_selected_tests_each_architecture": 104,
+  "new_tool_tests": 16,
+  "new_native_tests": 0,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "recorded_utc": "2026-11-07T21:53:23.867364+00:00",
+  "run": "artifacts/runs/20261107T210010Z-481-archive-validation",
+  "source_inputs": 7590,
+  "source_manifest": "artifacts/runs/20261107T210010Z-481-archive-validation/pipeline01-source.json",
+  "source_manifest_definition": "Relative CI inputs v1; excludes27derivedPythonbytecodes previously frozen at480, includes13additional source-controlled inputs. Original appcode/resources/project/entitlements/fixtures unchanged; one old menu test routes reports to existing capture directory.",
+  "qualification": {
+    "step": 481,
+    "application_build": 480,
+    "attempt": "pipeline01",
+    "scope": "Full local pipeline, not hosted CI or Apple validation. Native editing code/fixtures/project/assets/entitlements/API/menus/keys/cursors unchanged; one menu test routes its report to existing capture directory.",
+    "source_manifest": "artifacts/runs/20261107T210010Z-481-archive-validation/pipeline01-source.json",
+    "source_inputs": 7590,
+    "source_unchanged": true,
+    "tool_tests": 16,
+    "editing_tests_each_architecture": 104,
+    "editing_tests": [
+      {
+        "duplicate_cases": false,
+        "executed": 104,
+        "expected": 104,
+        "extra": [],
+        "failed": [],
+        "missing": [],
+        "passed": 104,
+        "passed_all": true,
+        "signals": [],
+        "skipped": false
+      },
+      {
+        "duplicate_cases": false,
+        "executed": 104,
+        "expected": 104,
+        "extra": [],
+        "failed": [],
+        "missing": [],
+        "passed": 104,
+        "passed_all": true,
+        "signals": [],
+        "skipped": false
+      }
+    ],
+    "archive": "/private/tmp/photato-ci481-pipeline01-8cc2891c/Photato.xcarchive",
+    "archive_zip": "/private/tmp/photato-ci481-pipeline01-8cc2891c/Photato-CI-Archive.zip",
+    "archive_zip_sha256": "ba0d37a5f380b087798ff9eb02fd5414800d338218e63a21acc6685a17dc30dd",
+    "archive_verification": "artifacts/runs/20261107T210010Z-481-archive-validation/pipeline01-evidence/archive-verification.json",
+    "binary_UUIDs": {
+      "arm64": "22464848-0910-336B-A0DD-5A86755C8B85",
+      "x86_64": "B9D08827-6228-3FE1-B045-CB8174E0AFE6"
+    },
+    "symbol_UUIDs": {
+      "arm64": "22464848-0910-336B-A0DD-5A86755C8B85",
+      "x86_64": "B9D08827-6228-3FE1-B045-CB8174E0AFE6"
+    },
+    "archive_checks": 34,
+    "archive_mode": "ci-unsigned",
+    "archive_payload_files": 23,
+    "ZIP_extracted_payload_exact": true,
+    "independent_lookup_references": [
+      {
+        "case": "photoshop-rgb16-product2",
+        "bytes": 196608,
+        "sha256": "e7cfe010c3e4c1e60944a2ea7beb3fc96e9cf8c723f9aba56c6164e82f4db492",
+        "ARM_Intel_match_original_Photoshop": true
+      },
+      {
+        "case": "photoshop-rgb16-product3",
+        "bytes": 196608,
+        "sha256": "8957ee2d8522106921cc37ee4e5188490f2092de0e4262ca371d74288994bf16",
+        "ARM_Intel_match_original_Photoshop": true
+      },
+      {
+        "case": "photoshop-rgb32-product2",
+        "bytes": 393216,
+        "sha256": "f253e0e35656872e8d8c05c04f3ea26d94484d2b4cf9a9e5c923717416ab5107",
+        "ARM_Intel_match_original_Photoshop": true
+      },
+      {
+        "case": "photoshop-rgb32-product3",
+        "bytes": 393216,
+        "sha256": "f772edb22e95f753103694bb96e862cc232d6c1f694a2c9cf2464b853d7636f9",
+        "ARM_Intel_match_original_Photoshop": true
+      },
+      {
+        "case": "photoshop-rgb8-odd-product3",
+        "bytes": 98304,
+        "sha256": "5dea9bfc8f1ebbef2ff6aecb5eebc95c17f1f033ba3c41934aba5edd4d570722",
+        "ARM_Intel_match_original_Photoshop": true
+      },
+      {
+        "case": "photoshop-rgb8-product2",
+        "bytes": 98304,
+        "sha256": "6bdddbd88454a447282baf000335c2ec9462acd1b3c05389e922f93441482ca5",
+        "ARM_Intel_match_original_Photoshop": true
+      },
+      {
+        "case": "photoshop-rgb8-product3",
+        "bytes": 98304,
+        "sha256": "35e106d239b8632ad23eb6d096ffb339a5a9ec6a5bc4f19a259b23abb43864f4",
+        "ARM_Intel_match_original_Photoshop": true
+      }
+    ],
+    "original_lookup_RGB_bytes_each_architecture": 1474560,
+    "retained_logs_and_reports": {
+      "archive-extract-command.json": {
+        "bytes": 321,
+        "sha256": "590ce74c670d1f763d653ceb18af616a575ea7b18e1a5206ad604b2deec89777"
+      },
+      "archive-extract-process.json": {
+        "bytes": 49,
+        "sha256": "7055d60003a4c4c4fc8e0db975b9bd0e87dca2a4385fc4d32b52862e4d61f51f"
+      },
+      "archive-extract-stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive-extract.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive-tool-tests-command.json": {
+        "bytes": 287,
+        "sha256": "61e28819d6df9b3e4a557a9e853253b6bd2e103ebb50544448f09c19c95f579d"
+      },
+      "archive-tool-tests-process.json": {
+        "bytes": 52,
+        "sha256": "5c90fab38267965aa8bb3bd74408ec612e7f6fafad1d4bbc8abf49022ce6cd6c"
+      },
+      "archive-tool-tests-stderr.log": {
+        "bytes": 2747,
+        "sha256": "aa4cd4df389435a78578e7e7e147a13c49e2fd79dfab7e1bc88212944b8abe0a"
+      },
+      "archive-tool-tests.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive-verification.json": {
+        "bytes": 8830,
+        "sha256": "32df1b07f5c4c00db1969a529f7d9bab9995a905456f0d7dece3cbdc12186a17"
+      },
+      "archive-zip-command.json": {
+        "bytes": 338,
+        "sha256": "97fdaa5e2552ec84fdc7bd4df75bf1512a78fab7095a6255d2fea52684f272b2"
+      },
+      "archive-zip-process.json": {
+        "bytes": 45,
+        "sha256": "cc329598ac454e898d7172e2a30d7b8482e06087d42fe3be88d04fb9f4d2f179"
+      },
+      "archive-zip-stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "archive-zip.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "editing-build-intel-command.json": {
+        "bytes": 414,
+        "sha256": "c1bafb12f95ef24b4d6137724603ff5d795ec167c6a19c5683d5bfd5163ce5dc"
+      },
+      "editing-build-intel-process.json": {
+        "bytes": 53,
+        "sha256": "41a2980b1b43f68256a9c0c51206b6904cbd0313ae2eb7ca3240449e6ba1f904"
+      },
+      "editing-build-intel-stderr.log": {
+        "bytes": 231,
+        "sha256": "8d13865527b64b7506e0c65bc7df4ac68841c6d2c6329546be9de001355584bb"
+      },
+      "editing-build-intel.log": {
+        "bytes": 68517,
+        "sha256": "692e0dd3f601757196988770d4348e3b771b021dbbbb1d5fc33c6579226877fb"
+      },
+      "editing-tests-arm-command.json": {
+        "bytes": 11519,
+        "sha256": "654d526babb5848bd42a396e214794feb25b7b96a0287a9d6bf707bcd0cd39dd"
+      },
+      "editing-tests-arm-process.json": {
+        "bytes": 51,
+        "sha256": "3c2b0e9a9124b6edcd519b5f2cfd814ab7d4b02e2f69dbfb32b5ba6ce214ad59"
+      },
+      "editing-tests-arm-stderr.log": {
+        "bytes": 68745,
+        "sha256": "0a55ed6b20023ad8e3cfba3e5f31168858c9610e5414887b425f49ce175b6422"
+      },
+      "editing-tests-arm.log": {
+        "bytes": 36677,
+        "sha256": "8501dfe0f58393bbed1dcfcf572c0d24a713d4f5c21e09276bde6b11b6eca944"
+      },
+      "editing-tests-intel-command.json": {
+        "bytes": 11284,
+        "sha256": "c05b89dd8dd5659cd46f036f2694b8bfdaeec96a359f93f17901db6094cb932a"
+      },
+      "editing-tests-intel-process.json": {
+        "bytes": 53,
+        "sha256": "7a51b20d48b9f58fdecf79fd87005d24d13ed45d4092939b1642ab90748f223a"
+      },
+      "editing-tests-intel-stderr.log": {
+        "bytes": 33298,
+        "sha256": "50f050c6dbaf60636821f0aa3f2a89c1ea74b374896cab238ba06dafc4d719b3"
+      },
+      "editing-tests-intel.log": {
+        "bytes": 3379,
+        "sha256": "54deb5c6c0e3c4343a9e28dcf59553096b63ec5d7ce80698c15ea08716357f5f"
+      },
+      "result.json": {
+        "bytes": 27111,
+        "sha256": "4c6ec28cfb03bad6f9d65701f57944a82123dbcad28af58331556c45c44a4fe9"
+      },
+      "rosetta-preflight-command.json": {
+        "bytes": 155,
+        "sha256": "02b2855f69796c421658b0a8619bae1dc259651dc73b2d1e5e5076f6b6a3cb59"
+      },
+      "rosetta-preflight-process.json": {
+        "bytes": 51,
+        "sha256": "1a7262a289ea0413e2a4d967276e0eaa7541c61920ddea4ee5b71dcf0f4de157"
+      },
+      "rosetta-preflight-stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "rosetta-preflight.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "source-inputs.json": {
+        "bytes": 1107714,
+        "sha256": "3c2c9ef4f8d630e231c069fadd2984aa2232650ad8611216e62e27b63f4b6edc"
+      },
+      "xcode-archive-command.json": {
+        "bytes": 690,
+        "sha256": "b80c28ede3fe760f6d3a32cb42ffad70a9b6b32fa49acb3dfce99e6cbc7edb4b"
+      },
+      "xcode-archive-process.json": {
+        "bytes": 47,
+        "sha256": "992b6a81637fb43a30ee707119acfefeacf35bdeeec9e8f0e1b48c7b0dc0957b"
+      },
+      "xcode-archive-stderr.log": {
+        "bytes": 1355,
+        "sha256": "5f43617f07c1a2d081ba7aadd8d7a8900ea73cf60ed2f2e2fdbb1f82cf516c43"
+      },
+      "xcode-archive.log": {
+        "bytes": 983995,
+        "sha256": "70a21a21dd05eec681f8de7a46715eb929ea367d12b50fce63cee0ddd1c82278"
+      }
+    },
+    "hosted_workflow_installed_or_dispatched": false,
+    "signed_export_or_Apple_validation": false,
+    "sandbox_runtime_qualified": false,
+    "production_install": false,
+    "GitHub_mutations": false,
+    "software_release": false,
+    "full_REL01_complete": false,
+    "goal_complete": false
+  },
+  "tool_test_attempts": [
+    {
+      "step": 481,
+      "attempt": "tools01",
+      "exit_code": 0,
+      "source_inputs": 7590,
+      "changed_inputs": [],
+      "summaries": [
+        [
+          "16",
+          "2.668"
+        ]
+      ],
+      "passed_methods": 16,
+      "failed_methods": [],
+      "source_unchanged": true,
+      "fixture_directory": "artifacts/runs/20261107T210010Z-481-archive-validation/tools01-fixtures"
+    },
+    {
+      "step": 481,
+      "attempt": "tools02",
+      "exit_code": 0,
+      "source_inputs": 7590,
+      "changed_inputs": [],
+      "summaries": [
+        [
+          "16",
+          "1.801"
+        ]
+      ],
+      "passed_methods": 16,
+      "failed_methods": [],
+      "source_unchanged": true,
+      "fixture_directory": "artifacts/runs/20261107T210010Z-481-archive-validation/tools02-fixtures"
+    }
+  ],
+  "private_driver_failure": "artifacts/runs/20261107T210010Z-481-archive-validation/tool-test-driver01-syntax-error.json",
+  "source_changes": [
+    "Add scripts/archive_validation.py, verify-xcode-archive.py and ci-archive.py; explicit new outputs/source hashes, manual/free policy, arch/minOS/identity/resources/symbols/optional models, unsigned CI and separate signed mode. No install/export/upload/release.",
+    "Add scripts/tests/test_archive_validation.py with16realSwiftMachO/dSYM/negative/CLI-preservation/parser/template methods; allfixtures retained.",
+    "Add ci/archive-validation-tests.json with104existing editing selectors and ci/github-archive-validation.yml, manual-only JSON-compatibleYAML template with pinned official actions, read-only contents and no signing credentials.",
+    "Change only report output routing in PhotoshopMenuTests: use PHOTATO_TEST_CAPTURE_DIR and create directory; same rows/assertions/defaults and legacyfallback. Originalsource retained.",
+    "Add local disk floors and ZIP reserve; no oldbuild/report deletion or overwrites. New commands/logs/inputs, actual archive/dSYM payload and failedtool-driver syntax evidence retained."
+  ],
+  "native_app_code_changed": false,
+  "application_build_incremented": false,
+  "versions": {
+    "native": 90,
+    "Actions": 59,
+    "typed_commands": 266
+  },
+  "API_review": "Developer archive tooling is outside the running application and shared editing engine. No native/Photato/Adobe operation, schema, endpoint, semantic Actions, history, menu, shortcut or cursor change. No invented Firefly archive/release route.",
+  "full_suite_passed": false,
+  "full_Photoshop_parity": false,
+  "remaining": [
+    "Full original REL01 archive/signing/provisioning/export/Apple-validation, sandbox file grants/bookmarks/recovery/printing/network/AI runtime, privacy/accessibility declarations, crash symbolication and release metadata remain open.",
+    "The GitHub workflow is a prepared template. It has not been installed in the public fork or dispatched; runner environment and hosted execution remain unqualified.",
+    "The current Xcode archive is explicitly unsigned and non-distributable. It does not supersede the development-signed historical archive332 or the selected signed universal480 validation package.",
+    "Default signed-mode refusal is tested; fresh positive FI-team distribution export and Apple server validation remain unqualified. No credentials, keychain grants or Apple declarations were changed.",
+    "Local policy checks prove source policy only; App Store Connect MANUAL/free state was not reverified here. Every future version needs manual-release verification and actual release needs maintainer approval.",
+    "Tests are a selected 104-method inventory plus16new tooling methods, not a full-suite pass or Photoshop parity. Previous numerical, Debug, physical-platform and60fps failures remain open.",
+    "Next: AUD01 inventory reconciliation, thenAUT02; all original104scopes/statuses/acceptance,652mappings/statuses,81major memberships and sevenpasses remain."
+  ],
+  "current": "AUD01",
+  "next": "AUT02"
+}

@@ -14,6 +14,7 @@ public struct ColorProfileRequest: Equatable, Sendable {
 }
 
 public enum ColorProfileInput {
+  public static let maximumDocumentPixels = Surface.maxPixels
   public static func effectiveProfile(_ document: CraftDocument) throws -> Data {
     try document.modeDescriptor?.profile ?? document.workingICC ?? NativeModeProfile.standard(document.colorMode, depth: document.depth)
   }
@@ -39,9 +40,8 @@ public enum ColorProfileInput {
   }
   public static func command(_ request: ColorProfileRequest, in document: CraftDocument) throws -> Command {
     try document.validate(); try Task.checkCancellation()
-    guard DocumentColorMode.componentModes.contains(document.colorMode), !document.layers.isEmpty,
-      document.width <= NativeModeRaster.maximumPixels / document.height else {
-      throw CraftError.unsupported("Profile operations require RGB, CMYK, Grayscale or Lab, up to 8,388,608 canvas pixels.")
+    guard DocumentColorMode.componentModes.contains(document.colorMode), !document.layers.isEmpty else {
+      throw CraftError.unsupported("Profile operations require RGB, CMYK, Grayscale or Lab.")
     }
     let destination = try ProofSettings.mode(of: request.profile)
     try NativeModeProfile.validate(request.profile, mode: destination, depth: document.depth)
@@ -80,47 +80,17 @@ public enum ColorProfileInput {
     let transform = try ProofTransform(sourceProfile, request.profile, intent: request.intent, bpc: request.blackPointCompensation)
     // Ordinary RGB keeps editable text/solid vector/fill layers and its working-coordinate buffer.
     let nativeOutput = document.modeDescriptor != nil || destination != .rgb
+    let rasterConversion = ColorProfileRasterConversion(request: request, depth: document.depth,
+      sourceProfile: sourceProfile, sourceMode: sourceMode, destination: destination,
+      nativeOutput: nativeOutput, transform: transform)
     for i in result.layers.indices {
       try Task.checkCancellation()
       switch result.layers[i].content {
       case .raster(let pixels):
         let sourceNative = request.mergeVisible ? nil : result.layers[i].nativeMode
-        var output = try NativeModeRaster(width: pixels.width, height: pixels.height, mode: destination,
-          depth: document.depth, profile: request.profile, intent: request.intent)
-        for y in 0..<pixels.height {
-          try Task.checkCancellation()
-          var row: [Float] = []; row.reserveCapacity(pixels.width * sourceMode.componentCount)
-          for x in 0..<pixels.width {
-            if let sourceNative {
-              var values = Array(sourceNative.components(index: y * pixels.width + x).prefix(sourceMode.componentCount))
-              if sourceMode == .lab { values[1] *= 255 / 256; values[2] *= 255 / 256 }
-              row += values
-            } else {
-              let p = document.depth == .f32 ? pixels.linearPixel(x: x, y: y) : pixels.pixel(x: x, y: y)
-              row += [p.r, p.g, p.b]
-            }
-          }
-          let converted = sourceProfile == request.profile && sourceMode == destination ? row : try transform.apply(row)
-          for x in 0..<pixels.width {
-            let at = y * pixels.width + x
-            for c in 0..<destination.componentCount {
-              let value = converted[x * destination.componentCount + c] * (destination == .lab && c > 0 ? 256 / 255 : 1)
-              try output.set(value, component: c, index: at)
-            }
-            let alpha = sourceNative?.value(component: sourceMode.componentCount, index: at) ?? pixels.pixel(x: x, y: y).a
-            try output.set(alpha, component: destination.componentCount, index: at)
-          }
-        }
-        if nativeOutput { result.layers[i].nativeMode = output; result.layers[i].content = .raster(try output.surface()) }
-        else {
-          var surface = try Surface(width: pixels.width, height: pixels.height, depth: document.depth,
-            colorEncoding: document.depth == .f32 ? .linearRGB : .sRGB)
-          for y in 0..<surface.height { try Task.checkCancellation(); for x in 0..<surface.width {
-            let values = output.components(index: y * surface.width + x), p = Pixel(values[0], values[1], values[2], values[3])
-            if document.depth == .f32 { surface.setLinearPixel(x: x, y: y, p) } else { surface.setPixel(x: x, y: y, p) }
-          } }
-          result.layers[i].content = .raster(surface)
-        }
+        let output = try rasterConversion.apply(pixels, native: sourceNative)
+        result.layers[i].nativeMode = output.native
+        result.layers[i].content = .raster(output.pixels)
       case .fill(let p): result.layers[i].content = .fill(try convertColor(p, transform, depth: document.depth))
       case .text(var text): text.color = try convertColor(text.color, transform, depth: document.depth); result.layers[i].content = .text(text)
       case .shape(var shape):

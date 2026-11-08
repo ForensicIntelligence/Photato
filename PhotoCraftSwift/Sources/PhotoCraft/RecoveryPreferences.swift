@@ -186,6 +186,8 @@ enum RecoveryPreferencesFailure: Error, LocalizedError, Equatable {
         try persist(value, entries: entries)
         recentDocuments = entries; recentRevision = UUID()
       }
+    } catch is AtomicFileWriter.PublicationFailure {
+      recentWriteError = "Recent-file history could not be confirmed. The file may already contain the new history. Restart Photato before updating it again."
     } catch { recentWriteError = "Recent-file history could not be saved. Existing history is preserved." }
   }
   func clearRecent(revision expected: UUID) throws {

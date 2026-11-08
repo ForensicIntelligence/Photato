@@ -88,7 +88,7 @@ final class SubjectOptionsTests: XCTestCase {
       }
       let mapping = SelectionToolAPI.subjectSelectionCapability
       XCTAssertEqual(mapping["command"] as? String, "selection.subject")
-      XCTAssertEqual(mapping["tools"] as? [String], ["objectSelection", "quickSelection"])
+      XCTAssertEqual(mapping["tools"] as? [String], ["objectSelection", "quickSelection", "magicWand"])
       XCTAssertEqual(mapping["sampleAllLayersField"] as? String, "selectionTools.sampleAllLayers")
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: SelectionToolAPI.capabilities))
     }

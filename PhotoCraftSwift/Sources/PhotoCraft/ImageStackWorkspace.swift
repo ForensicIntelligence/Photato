@@ -43,7 +43,7 @@ import PhotoCraftImaging
     guard !loading,let controller else { return };invalidate()
     let candidates = controller.documents.compactMap{$0 as? CraftNSDocument}.filter { doc in !sources.contains(where:{$0.document === doc}) }
     guard candidates.allSatisfy(Self.readable) else { error = "Finish editing the open documents before adding them.";return }
-    guard sources.count+candidates.count <= PhotoAlign.maximumLayers else { error = "Choose at most sixteen source images.";return }
+    guard sources.count+candidates.count <= ImageStack.maximumSources else { error = "Choose at most \(ImageStack.maximumSources) source images within the document layer limit.";return }
     sources += candidates.map{ImageStackSource(model:$0.store.document,document:$0)}
   }
   func browse(folder: Bool = false) {
@@ -60,7 +60,7 @@ import PhotoCraftImaging
   }
   func load(_ urls: [URL],folder: Bool = false) {
     guard !loading,!closed else { return };invalidate();loading = true
-    let existing = Set(sources.compactMap{ $0.url?.standardizedFileURL.resolvingSymlinksInPath() }),remaining = PhotoAlign.maximumLayers-sources.count
+    let existing = Set(sources.compactMap{ $0.url?.standardizedFileURL.resolvingSymlinksInPath() }),remaining = ImageStack.maximumSources-sources.count
     loadingTask = Task { [weak self] in
       let scoped = urls.filter{$0.startAccessingSecurityScopedResource()};defer { for url in scoped { url.stopAccessingSecurityScopedResource() } }
       let worker = Task.detached(priority:.userInitiated) { () throws -> [(URL,CraftDocument)] in
@@ -73,7 +73,7 @@ import PhotoCraftImaging
         }
         var seen = existing;paths = paths.filter{seen.insert($0.standardizedFileURL.resolvingSymlinksInPath()).inserted}
         guard !paths.isEmpty else { throw CraftError.invalid("No new readable images were selected.") }
-        guard paths.count <= remaining else { throw CraftError.invalid("Choose at most sixteen source images.") }
+        guard paths.count <= remaining else { throw CraftError.invalid("The selected files exceed the image-stack layer limit.") }
         return try paths.map { url in try Task.checkCancellation();return (url,try PreparedLocalDocument.read(url,format:.automatic).model) }
       }
       do {
@@ -95,7 +95,7 @@ import PhotoCraftImaging
     task = Task { [weak self] in
       let worker = Task.detached(priority:.userInitiated) { () throws -> (ImageStack.Result,CGImage) in
         let result = try ImageStack.prepare(snapshots,settings:settings,name:name)
-        return (result,try ColorManagement.displayImage(Renderer.composite(result.document),in:result.document))
+        return (result,try ImageStack.preview(result.document))
       }
       do {
         let value = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }

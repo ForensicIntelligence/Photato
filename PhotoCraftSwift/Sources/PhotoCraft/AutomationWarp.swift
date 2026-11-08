@@ -17,13 +17,16 @@ extension WarpDefinition {
   }
   var apiState:Any { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode(self))) ?? NSNull() }
   static var apiCapabilities:[String:Any] {
-    ["command":"layer.warp","settingsSchema":apiSchema,"maximumPixels":WarpRaster.maximumPixels,
+    ["command":"layer.warp","settingsSchema":apiSchema,"maximumPixels":Surface.maxPixels,"maximumDimension":Surface.maxDimension,
+     "legacyDenseMappingMaximumPixels":WarpRaster.maximumPixels,"maximumUVPatchPixels":PagedWarpRaster.maximumPatchPixels,
+     "maximumVertices":PagedWarpRaster.maximumVertices,"maximumTriangles":PagedWarpRaster.maximumTriangles,
+     "largeDocuments":"Large Warp outputs use bounded UV/color/mask patches, immutable input/output triangle indexes and paged tile storage. Sparse transparent source support conservatively selects affected triangles. Triangle order, pixel centers, scalar sampling and existing small dense paths are retained. Native overview buffers are at most2048pixels per side. Full prepared output remains authoritative for commitment; displayed reduction is never committed.",
      "coordinates":"Optional sourceBounds retains the source frame x/y/width/height; null uses ordinary layer extents. Mesh points use unwarped layer pixels; us/vs ascend from0 to1. 3*(us.count−1)+1 control columns, analogous rows, row-major points. Warp precedes affine placement and Smart Filters. Presets take percentages.",
      "behavior":"Fifteen presets and custom bicubic meshes. Pixel layers bake once; Smart Objects retain per-instance Warp and unchanged source/cache. Linked pixel masks follow; unlinked masks stay in document space. One prepared Undo/Redo transaction, matching native preview output.",
-     "availability":"Unlocked RGB raster layers and Smart Objects without a selection or vector mask; groups/type/shapes can first be converted to a Smart Object.",
+     "availability":"Unlocked RGB raster layers and Smart Objects without native component planes, a selection or vector mask; groups/type/shapes can first be converted to a Smart Object.",
      "persistence":"Editable Smart Object Warp requires native archive24. Rasterized outputs use existing formats. Editable PSD/PSB Warp export rejects explicitly.",
      "adobe":"No dedicated published v2 Warp endpoint. No authenticated actionJSON descriptor is implemented; such actions remain explicit unsupported errors.",
-     "limits":"16 mesh patches per axis,256 tessellation cells per axis,134217728 triangle/pixel visits. Exact Photoshop output, live UI, richer contexts and PSD interchange remain unqualified."]
+     "limits":"16 mesh patches per axis,256 tessellation cells per axis. Legacy dense mappings retain their complete-work budget; paged output allows at most134217728 triangle/pixel visits per bounded UV patch. Large dense jobs may need substantial disk and time. Puppet mesh, Perspective Warp and other filters retain independent limits. Exact Photoshop output, full native component/mask contexts, maximum dense physical capacity,60fps, live UI and PSD interchange remain unqualified."]
   }
 }
 extension AutomationCommand {

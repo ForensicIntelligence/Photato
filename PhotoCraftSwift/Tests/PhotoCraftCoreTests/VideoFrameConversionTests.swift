@@ -118,7 +118,7 @@ final class VideoFrameConversionTests:XCTestCase {
     XCTAssertThrowsError(try d.convertingVideoToFrameAnimation()) {error in
       XCTAssertTrue(error.localizedDescription.contains("1 GiB"))
     }
-    XCTAssertNil(d.animation);XCTAssertEqual(d.layers[0].video?.frames,pixels)
+    XCTAssertNil(d.animation);XCTAssertEqual(d.layers[0].video?.frames,VideoFrames(pixels))
   }
 
 }

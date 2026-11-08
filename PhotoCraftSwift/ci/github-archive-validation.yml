@@ -1,0 +1,52 @@
+{
+  "name": "Photato archive validation",
+  "on": {
+    "workflow_dispatch": {}
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "archive": {
+      "runs-on": "xcode-27",
+      "timeout-minutes": 90,
+      "env": {
+        "DEVELOPER_DIR": "/Applications/Xcode_27.2.app/Contents/Developer"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Locate native project",
+          "id": "project",
+          "shell": "bash",
+          "run": "project=\"$GITHUB_WORKSPACE/PhotoCraftSwift\"\nif [ -f \"$GITHUB_WORKSPACE/Package.swift\" ]; then project=\"$GITHUB_WORKSPACE\"; fi\necho \"path=$project\" >> \"$GITHUB_OUTPUT\"\necho \"output=$RUNNER_TEMP/photato-validation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT\" >> \"$GITHUB_OUTPUT\""
+        },
+        {
+          "name": "Test and archive without signing or distribution",
+          "shell": "bash",
+          "env": {
+            "PHOTATO_PROJECT": "${{ steps.project.outputs.path }}",
+            "PHOTATO_OUTPUT": "${{ steps.project.outputs.output }}"
+          },
+          "run": "python3 \"$PHOTATO_PROJECT/scripts/ci-archive.py\" --source-root \"$PHOTATO_PROJECT\" --output \"$PHOTATO_OUTPUT\""
+        },
+        {
+          "name": "Retain validation evidence",
+          "if": "always()",
+          "uses": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "with": {
+            "name": "Photato-archive-validation",
+            "retention-days": 7,
+            "if-no-files-found": "error",
+            "path": "${{ steps.project.outputs.output }}/*.json\n${{ steps.project.outputs.output }}/*.log\n${{ steps.project.outputs.output }}/*.zip\n${{ steps.project.outputs.output }}/tool-tests/\n${{ steps.project.outputs.output }}/inventory-tool-tests/"
+          }
+        }
+      ]
+    }
+  }
+}

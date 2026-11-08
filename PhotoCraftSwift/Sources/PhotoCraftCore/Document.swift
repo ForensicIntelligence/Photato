@@ -332,8 +332,8 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         + (layer.sourceTags?.values.reduce(0) { $0 + $1.count } ?? 0)
     } + (paths?.reduce(0) { $0 + $1.path.knotCount * 64 } ?? 0) + (selectionMask?.allocatedBytes ?? 0)
       + (patterns?.reduce(0) { $0 + $1.surface.allocatedBytes } ?? 0)
-      + (alphaChannels?.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) + $1.name.utf8.count + 128 } ?? 0)
-      + (quickMask?.pixels.allocatedBytes ?? 0) + (quickMask?.psdSpotGray?.allocatedBytes ?? 0)
+      + (alphaChannels?.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) + ($1.psdSelectedGray?.allocatedBytes ?? 0) + $1.name.utf8.count + 128 } ?? 0)
+      + (quickMask?.pixels.allocatedBytes ?? 0) + (quickMask?.psdSpotGray?.allocatedBytes ?? 0) + (quickMask?.psdSelectedGray?.allocatedBytes ?? 0)
       + (vanishingPoint?.estimatedBytes ?? 0) + (animation?.estimatedBytes ?? 0) + timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes
       + (sourceICC?.count ?? 0) + (workingICC?.count ?? 0) + (modeDescriptor?.profile.count ?? 0) + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
       + (sourceMetadata?.values.reduce(0) { $0 + $1.count } ?? 0)
@@ -350,14 +350,14 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     }
     for layer in layers {
       if case .raster(let pixels) = layer.content { account(pixels) }
-      for frame in layer.video?.frames ?? [] { account(frame) }
+      for frame in layer.video?.frames.storedSurfaces ?? [] { account(frame) }
       if let mask = layer.mask { account(mask) }
       if let mask = layer.smartFilters?.mask { account(mask) }
     }
     for image in variables?.images ?? [] { account(image.pixels) }
     for pattern in patterns ?? [] { account(pattern.surface) }
-    for channel in alphaChannels ?? [] { account(channel.pixels);if let gray=channel.psdSpotGray {account(gray)} }
-    if let quickMask { account(quickMask.pixels);if let gray=quickMask.psdSpotGray {account(gray)} }
+    for channel in alphaChannels ?? [] { account(channel.pixels);if let gray=channel.psdSpotGray {account(gray)};if let gray=channel.psdSelectedGray {account(gray)} }
+    if let quickMask { account(quickMask.pixels);if let gray=quickMask.psdSpotGray {account(gray)};if let gray=quickMask.psdSelectedGray {account(gray)} }
     return unique + (includeMetadata ? max(0, estimatedBytes - logical) + 1024 : 0)
   }
   public var activeIndex: Int? { layers.firstIndex { $0.id == activeLayerID } }
@@ -411,7 +411,7 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     guard (alphaChannels?.count ?? 0) <= Self.maximumAlphaChannels, Set(channels.map(\.id)).count == channels.count else { throw CraftError.invalid("Channel limit or duplicate identifier.") }
     let identifiers=channels.compactMap(\.psdIdentifier);guard Set(identifiers).count==identifiers.count else{throw CraftError.invalid("Duplicate PSD channel identifier.")}
     for channel in channels { try channel.validate(width:width,height:height,depth:depth) }
-    var bytes = timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes + (animation?.estimatedBytes ?? 0) + channels.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) } + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
+    var bytes = timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes + (animation?.estimatedBytes ?? 0) + channels.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) + ($1.psdSelectedGray?.allocatedBytes ?? 0) } + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)
       + (selectionMask?.allocatedBytes ?? 0) + knots * 64
       + (patterns?.reduce(0) { $0 + $1.surface.allocatedBytes } ?? 0)
     guard bytes <= 1_073_741_824 else {

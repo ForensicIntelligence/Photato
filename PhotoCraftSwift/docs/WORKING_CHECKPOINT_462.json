@@ -1,0 +1,18 @@
+{
+  "step": 462,
+  "run": "artifacts/runs/20261107T035445Z-462-style-presets",
+  "status": "Selected saved-style workflow Debug tested; live/normal462 acceptance pending",
+  "current_major_workflow": "L05",
+  "next": "L06",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "latest_software": 462,
+  "latest_optimized_universal": 461,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:461 RGB channel blending/native/API/history/native89/Actions56/PSDbrst,58 selected Debug and same58normal each/17new pass,384byte strict captures exact,7465inputs unchanged; fullL03/mastergoal remain open. Final history461/84032evidence/31762logs/missing0.",
+  "source_integrity_before_new_work": "All7465 hashes and finalhistoryreceipt verified. Unrelated RecoveryFoundation compiler belongs to Aegis project; not an own worker, untouched. Native458-461 acceptance remains pending connection issue.",
+  "source_manifest": "artifacts/runs/20261107T035445Z-462-style-presets/source06-source.json",
+  "source_inputs": 7473,
+  "evidence": "docs/LAYER_STYLE_PRESETS_462.json",
+  "native_462_app_launched": false
+}

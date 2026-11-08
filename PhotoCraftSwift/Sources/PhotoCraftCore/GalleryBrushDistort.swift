@@ -30,6 +30,7 @@ extension GalleryMath {
       let grain=g("graininess")/10,glow=g("glowAmount")/20,threshold=0.2+g("clearAmount")/20*0.7
       for i in c.indices{try poll(i);var m=smooth(threshold-0.3,threshold+0.1,lum(c[i]))*glow*1.4;if hash(i%w,i/w,0,101)<grain*0.3*(m+0.15){m += 0.5};c[i]=mix(c[i],bg,clamp(m))}
     case .glass:
+      if let texture=e.texture {return try customGlass(input,w,h,e,texture)}
       let distortion=g("distortion"),step=0.5+g("smoothness")*0.5,kind=e.choice("texture"),scale=clamp(g("scaling")/100,0.5,2),sign:Float=e.flag("invert") ? -1:1,limit=distortion*2
       for i in c.indices{try poll(i);let x=Float(i%w),y=Float(i/w),gx=texture(kind,x+step,y,scale)-texture(kind,x-step,y,scale),gy=texture(kind,x,y+step,scale)-texture(kind,x,y-step,scale),dx=clamp(gx*sign*distortion*3,-limit,limit),dy=clamp(gy*sign*distortion*3,-limit,limit);c[i]=sample(input,w,h,x+0.5+dx,y+0.5+dy)}
     case .oceanRipple:

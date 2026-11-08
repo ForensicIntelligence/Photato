@@ -1,0 +1,15 @@
+{
+  "provenance": "Owned deterministic samples and104programs captured from unchanged470production engine via two new tests. Not Photoshop output.",
+  "source_manifest": "artifacts/runs/20261107T103210Z-471-large-soft-proof/source01-source.json",
+  "source470_application_sha256": "571aba1c1605297f8dfb6ad05f80079eea7a4e2ed931108a7409ea0c1875d9e2",
+  "programs": 104,
+  "sample_bytes": 159744,
+  "reduced_bytes": 240,
+  "sha256": {
+    "soft-proof-cases.json": "52ebe0d89f2bb10db2ee4fcc189bd2c8dfda2185c3e9cde6fb0f50dd75c86590",
+    "soft-proof-small.f32le": "7f965b7c61afd49ac8e8f0bc9af1ae3e36ad9e73f93d526ae0eb4a7dd0d7d2f6",
+    "soft-proof-reduced.f32le": "32855d363d97cdab54eb700cefc8f9deddb9a7ed7969316f9c618cce5753f30e"
+  },
+  "baseline_selected_passed": 17,
+  "recorded_utc": "2026-11-07T10:36:20.764282+00:00"
+}

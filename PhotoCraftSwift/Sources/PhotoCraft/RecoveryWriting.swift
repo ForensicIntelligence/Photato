@@ -23,11 +23,13 @@ final class RecoveryWriteState: @unchecked Sendable {
   }
   private let lock = NSLock()
   private var snapshot: Snapshot?
+  private var publicationFailure: (UUID, AtomicFileWriter.PublicationFailure)?
 
   func begin(_ document: CraftDocument, context: Data?, encoder: @escaping RecoveryEncoder) -> UUID {
     lock.lock()
     defer { lock.unlock() }
     precondition(snapshot == nil)
+    publicationFailure = nil
     let id = UUID()
     snapshot = Snapshot(id: id, document: document, encode: encoder, context: context)
     return id
@@ -41,5 +43,20 @@ final class RecoveryWriteState: @unchecked Sendable {
     lock.lock()
     defer { lock.unlock() }
     if snapshot?.id == id { snapshot = nil }
+  }
+  /// AppKit may replace the writer's localized error. Retain only this known
+  /// post-publication failure until the matching coordinated save completes.
+  func recordPublicationFailure(_ error: AtomicFileWriter.PublicationFailure, for id: UUID) {
+    lock.withLock {
+      guard snapshot?.id == id else { return }
+      publicationFailure = (id, error)
+    }
+  }
+  func takePublicationFailure(for id: UUID) -> AtomicFileWriter.PublicationFailure? {
+    lock.withLock {
+      guard let failure = publicationFailure, failure.0 == id else { return nil }
+      publicationFailure = nil
+      return failure.1
+    }
   }
 }

@@ -81,5 +81,20 @@
   },
   "source_manifest": "artifacts/runs/20261026T222626Z-165-liquify/source03.json",
   "source_delta": "artifacts/runs/20261026T222626Z-165-liquify/source-delta03.json",
-  "checkpoint": "docs/ACTIVE_CHECKPOINT_165.json"
+  "checkpoint": "docs/ACTIVE_CHECKPOINT_165.json",
+  "last_mesh_reuse_450": {
+    "evidence": "docs/LIQUIFY_LAST_MESH_450.json",
+    "status": "33focusedDebug/all11new pass; native/normal/currentPS still pending.",
+    "shortcut": "Canvas-only plainM; no global shortcut or new tool/cursor/modifier action.",
+    "modifier_combinations": 16,
+    "scope_preserved": true
+  },
+  "lens_defaults_452": {
+    "evidence": "docs/LENS_DEFAULTS_452.json",
+    "selected_workflow_passed": true,
+    "actual_startup_factory_repair": true,
+    "normal_each": 33,
+    "full_scope_and_Photoshop_policy_open": true,
+    "historical_native_unlock": "Current owned Photoshop and Photato UI accessible; earlier blocked notes remain historical, not a current request."
+  }
 }

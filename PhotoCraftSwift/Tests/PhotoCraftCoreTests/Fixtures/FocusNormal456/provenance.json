@@ -1,0 +1,27 @@
+{
+  "creator": "Photato project",
+  "license": "MIT OR Apache-2.0",
+  "source": "Unmodified passed456Release01Coremodule/objects linked before457sourcechanges; baseline7420inputsha verified",
+  "format": "48x32storedRGBAFloat32littleEndianbits for3toolsx3depthsx2targets; exact Normal regression, notPhotoshoporacle",
+  "program_sha256": "75c4fc931c2786e00c63d8ed8709970dd385fe7f9e4810326407f71706278afc",
+  "files": {
+    "normal-Blur-16 bit-mask.rgba32": "3a564faad00df259e86c59cb290094d76dbce977592bf71b1587536759a6b32e",
+    "normal-Blur-16 bit-pixels.rgba32": "11695fb6b4b8c816349c7989afe851f72b9bba5aaad8d5b0698172c3632598a8",
+    "normal-Blur-32 bit-mask.rgba32": "93a89cab770fe84e1c13b1d6efa58a629c4ef1de849908cbfb6c8cf3d36e5010",
+    "normal-Blur-32 bit-pixels.rgba32": "91bf8148543ea1385f6e9cf6a71f0ae3d861a6bb16651e7673c6fa1d79049e62",
+    "normal-Blur-8 bit-mask.rgba32": "8711d6ef19811045acc66ca9f83374742fc45a3c6d5862d9d9a8c52f2e59062b",
+    "normal-Blur-8 bit-pixels.rgba32": "252f3910b41df7e5f8439c339598cfffbc08cd34e409481556cc5ad4be27996d",
+    "normal-Sharpen-16 bit-mask.rgba32": "a75b63a68c93862f7f9927fc18a37b347ba124a96001e664727955feaa169488",
+    "normal-Sharpen-16 bit-pixels.rgba32": "ce1c174a68c87e4e0fca72671607c8fa7390a898317fd6aecf4e29f006ec7293",
+    "normal-Sharpen-32 bit-mask.rgba32": "3c886927c77e1014c55de8bbe2cb958ac2d3daf642ece8db660fd5d9e0fe33f8",
+    "normal-Sharpen-32 bit-pixels.rgba32": "8d7b754d2ad497dc5b935eda9c81507fee3a839d10686e94975063ca600f7f54",
+    "normal-Sharpen-8 bit-mask.rgba32": "ee011596c8d8503cd8ff50cfb0971b70cabfe3db8616e39cdc5f12100682c73f",
+    "normal-Sharpen-8 bit-pixels.rgba32": "8761aec1fd68a8361357a8aac302acd164e5e7927a278194deeec4755b0765e8",
+    "normal-Smudge-16 bit-mask.rgba32": "56fe852999c7246270a10e6a85a539580ee0405ef452b67866ad1dd6f2a50e30",
+    "normal-Smudge-16 bit-pixels.rgba32": "9c8c70fb867f57039ec3083ee17a47dd327c04d2417e16fdd990cba9eef8dd69",
+    "normal-Smudge-32 bit-mask.rgba32": "5127a334d7018beb682fa03c33e09089ada42ad5d5238d278dee093da6c57701",
+    "normal-Smudge-32 bit-pixels.rgba32": "9e0cb0cef5b492cdbb27b428236983e7da9a66e0be154084a4582acc1b9c8146",
+    "normal-Smudge-8 bit-mask.rgba32": "489d1e9739a2e71d944d021a5fdb9add7b216c1343c877d7c05928038dfe1542",
+    "normal-Smudge-8 bit-pixels.rgba32": "6036474bbca04d318e63fcc528ee31b7949ebd4421eeddbf071cefdbd2db2225"
+  }
+}

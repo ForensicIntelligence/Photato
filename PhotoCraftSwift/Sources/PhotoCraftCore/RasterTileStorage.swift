@@ -168,7 +168,7 @@ extension CraftDocument {
       if case .raster(let s) = layer.content { account(s) }
       if let s = layer.mask { account(s) }
       if let s = layer.smartFilters?.mask { account(s) }
-      for s in layer.video?.frames ?? [] { account(s) }
+      for s in layer.video?.frames.storedSurfaces ?? [] { account(s) }
     }
     for channel in alphaChannels ?? [] { account(channel.pixels) }
     if let quickMask { account(quickMask.pixels) }
@@ -188,7 +188,7 @@ extension CraftDocument {
       bytes += layer.nativeMode?.mappedComponentIndexBytes ?? 0
       if case .raster(let s)=layer.content {account(s)}
       if let s=layer.mask {account(s)};if let s=layer.smartFilters?.mask {account(s)}
-      for s in layer.video?.frames ?? [] {account(s)}
+      for s in layer.video?.frames.storedSurfaces ?? [] {account(s)}
     }
     for c in alphaChannels ?? [] {account(c.pixels)}
     if let quickMask {account(quickMask.pixels)}

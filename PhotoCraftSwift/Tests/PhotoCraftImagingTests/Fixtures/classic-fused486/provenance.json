@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "name": "holdout486-random65-linear",
+      "reference": {
+        "path": "photoshop-holdout486-random65-linear.psd",
+        "sha256": "73c118d905b33ec2d883b7318d419f07ffdf60c16a5d2a82a375272bf889c8a7"
+      }
+    },
+    {
+      "name": "holdout486-random65-partial",
+      "reference": {
+        "path": "photoshop-holdout486-random65-partial.psd",
+        "sha256": "3560dc83049e4efaf6ac7ce0587917cdab181c509fa70a5007efc44bb0f295d7"
+      }
+    },
+    {
+      "name": "holdout486-uneven9-smooth",
+      "reference": {
+        "path": "photoshop-holdout486-uneven9-smooth.psd",
+        "sha256": "43aaccde8fd82af90fed87dd5abaa5c1d6dd4ec2d8e1797488d023768dbb9221"
+      }
+    }
+  ],
+  "inputs_manifest": "independent-research01/holdouts01/inputs01.json",
+  "license": "MIT OR Apache-2.0",
+  "scope": "Opaque first3rows RGB16Classic GradientMap; partialalpha fourthrow retained butnotqualified byopaque comparison. FullSmoo/HDR/default/platform remainopen.",
+  "source": "Owned procedural controls/grayscale input, independently recalculated in Photoshop27.2 by native Properties Reverseon/off and SaveAs. Saved controls equal generated controls. No Adobe sourcecode or preset library.",
+  "step": 486
+}

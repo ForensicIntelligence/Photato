@@ -44,7 +44,10 @@ final class ContentAwareScaleTests: XCTestCase {
   }
   func testSavedProtectionMaskGeometryAndLocks() throws {
     var d = try CraftDocument(width:12,height:8);d.layers[0].mask = try Surface(width:12,height:8,fill:.white)
+    // Saving a channel requires explicit coverage; scale below still targets the whole layer.
+    d.selection = .init(x:0,y:0,width:12,height:8)
     var session = EditorSession(document:d);try session.execute(.channel(.saveSelection(nil,"Protected",.replace)));d = session.document
+    d.selection = nil;d.selectionMask = nil
     var request = ContentAwareScaleRequest(width:9,height:8);request.protectChannelID = d.alphaChannels!.first!.id
     let result = try ContentAwareScaleEdit.prepare(d,layerID:d.layers[0].id,request:request).applied(to:d);XCTAssertNotNil(result.layers[0].maskProperties);XCTAssertEqual(result.alphaChannels,d.alphaChannels)
     for protection: LayerProtection in [.image,.position,.transparency] { var locked = d;locked.layers[0].protection = protection;XCTAssertThrowsError(try ContentAwareScaleEdit.prepare(locked,layerID:locked.layers[0].id,request:request)) }

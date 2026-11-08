@@ -2,11 +2,25 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class ColorLookupTests: XCTestCase {
+  func testTetrahedralByteCodesAndRawLinearSamplesRetainTheirStorageMeaning()throws {
+    let identity=try ColorLUT.identity(),byteTransfer=try ColorLookupTransfer(.init(lut:identity,interpolation:.tetrahedral,dither:false),depth:.u8)
+    for code in 0...255 {
+      let p=Pixel(Float(code)/255,Float(255-code)/255,Float(code)/255,0.3)
+      XCTAssertEqual(byteTransfer.apply(p).quantized(.u8),p.quantized(.u8))
+    }
+    let table=try ColorLUT.generated(title:"Owned product",size:2){SIMD3($0.x*$0.y,$0.y*$0.z,$0.z*$0.x)}
+    let transfer=try ColorLookupTransfer(.init(lut:table,interpolation:.tetrahedral,dither:false),depth:.f32)
+    for red:Float in [0.014442575,0.051266126,0.125,0.5,1] {
+      let p=Pixel(red,0.375,0.625,0.75),result=transfer.applyLinear(p)
+      XCTAssertEqual(result,Pixel(min(red,0.375),0.375,min(red,0.625),0.75))
+    }
+    let hidden=Pixel(-0.0,3,0.25,0);XCTAssertTrue(transfer.applyLinear(hidden).hasSameBits(as:hidden))
+  }
   func testCubeDomainsOneDimensionalAndInterpolation() throws {
     let table = try ColorLUT.generated(title:"Channels",size:3) { SIMD3($0.z,$0.x,$0.y) }
     let bytes = try ColorLUTFile.writeCube(table), loaded = try ColorLUTFile.read(bytes,name:"channels.cube")
     for mode in ColorLUT.Interpolation.allCases {
-      let transfer = try ColorLookupTransfer(.init(lut:loaded,interpolation:mode,dither:false),depth:.u8)
+      let transfer = try ColorLookupTransfer(.init(lut:loaded,interpolation:mode,dither:false),depth:.u16)
       for p in [Pixel(0.2,0.4,0.7,0.3),Pixel(1,0,0),Pixel(0,1,0),Pixel(0,0,1)] {
         let q = transfer.apply(p); XCTAssertEqual(q.r,p.b,accuracy:1e-6); XCTAssertEqual(q.g,p.r,accuracy:1e-6); XCTAssertEqual(q.b,p.g,accuracy:1e-6); XCTAssertEqual(q.a,p.a)
       }

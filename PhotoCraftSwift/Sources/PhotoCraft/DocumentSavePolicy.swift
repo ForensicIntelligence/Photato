@@ -16,6 +16,8 @@ extension DocumentIO.Format {
     case .psd, .psb:
       return
         "Keeps supported editable layers, masks, alpha/spot channels, Quick Mask and the working profile. Full Photoshop metadata, rendering and 32-bit output equivalence are still in development."
+    case .exr:
+      return "Keeps one flat 32-bit scene-linear RGB layer and optional transparency. Use Save a Copy for Half precision, profile conversion or flattened content."
     case .png:
       return
         "Saves a single pixel layer at its current 8- or 16-bit depth, using its RGB working profile. Use Save a Copy for a flattened version of a layered document."
@@ -35,8 +37,11 @@ extension DocumentIO {
   static func persistenceIssue(_ document: CraftDocument, format: Format,
     options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
-    if document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) {
-      return "Save this large component document as Photato. Streamed PSD/PSB/TIFF component output is still being implemented."
+    if document.layers.contains(where:{$0.sourceTags?[GeneratedImageStorage.recordKey] != nil || $0.sourceTags?[GeneratedImageStorage.originalKey] != nil}) {
+      return "Save as Photato to retain generated-image records and original results. Use Save a Copy for other formats."
+    }
+    if format != .psd,format != .psb,document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) {
+      return "Save this large component document as Photato, PSD or PSB. Other component-format encoders retain separate limits."
     }
     if document.isChannelOnly {
       if format == .psd || format == .psb {
@@ -45,7 +50,13 @@ extension DocumentIO {
       return "Save this channel-only document as Photato, PSD or PSB. Load the mask into an image for ordinary image export."
     }
     if (format == .psd || format == .psb),let issue=DocumentGuideInput.photoshopPersistenceIssue(document){return issue}
-    if document.width * document.height > Surface.maximumDensePixels, format != .psd, format != .psb {
+    if format == .exr {
+      guard document.depth == .f32,document.colorMode == .rgb,document.inkMode == nil,document.restrictedMode == nil else{return "OpenEXR requires a 32-bit RGB document."}
+      if options.exrSample == .half {return "Use Save a Copy for reduced-precision Half samples."}
+      if (try? ColorManagement.space(for:document)) != CGColorSpace(name:CGColorSpace.linearSRGB) {return "Use Save a Copy to convert the working profile to scene-linear sRGB."}
+      if document.layers.contains(where:{$0.smartObject != nil || $0.smartFilters != nil || $0.style != nil || $0.warp != nil || $0.sourceProjection != nil}) {return "Use Save a Copy to flatten editable layer content."}
+    }
+    if document.width * document.height > Surface.maximumDensePixels, format != .psd, format != .psb, format != .exr {
       return "Save this large canvas as Photato. Streamed full-size raster and PSD/PSB output is not yet available."
     }
     if document.variables != nil { return "Save as Photato to retain variables, data sets and replacement images. Export a data-set variation for other formats." }
@@ -143,10 +154,12 @@ extension DocumentIO {
       return
         "Save as Photato or PSD to keep editable layers, masks and paths. Use Save a Copy for a flattened image."
     }
-    guard document.depth != .f32 || format == .tiff else {
+    guard document.depth != .f32 || format == .tiff || format == .exr else {
       return
         "This format's current encoder cannot retain 32-bit pixels. Save as Photato or PSD, or use Save a Copy to convert to 16-bit."
     }
+    if format == .exr,options.exrTransparency == false,
+      (try? pixels.allStoredSamplesSatisfy({$0.a == 1})) != true {return "Use Save a Copy to omit transparency."}
     if format == .jpeg {
       guard document.depth == .u8 else {
         return "JPEG needs an 8-bit document. Use Save a Copy to convert."

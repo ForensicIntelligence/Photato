@@ -39,6 +39,7 @@ extension ShapeDefinition {
   public static func regularPathComponent(_ path:VectorPath)throws->ShapeComponent {
     try path.validate()
     var source=path;source.inverted=false
+    if source.components.first?.operation == .subtract { _ = try VectorPathGeometry.filledPath(source) }
     let points=source.components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
     var geometry=ShapeGeometry(width:1,height:1)
     if !points.isEmpty {

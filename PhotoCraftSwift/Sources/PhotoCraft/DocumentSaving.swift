@@ -89,7 +89,7 @@ import PhotoCraftImaging
     }
   }
 
-  private static func destinationHiddenFlag(_ url: URL) throws -> Bool {
+  static func destinationHiddenFlag(_ url: URL) throws -> Bool {
     var value = stat()
     let result = url.withUnsafeFileSystemRepresentation { path in
       path.map { fstatat(AT_FDCWD, $0, &value, 0) } ?? -1

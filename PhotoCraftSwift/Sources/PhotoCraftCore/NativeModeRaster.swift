@@ -399,17 +399,17 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   private func defaultComponents() -> [Float] {
     componentStorage.map { depth == .f32 ? Float(bitPattern: $0.defaultWord) : Float($0.defaultWord) / (depth == .u8 ? 255 : 65535) }
   }
-  public func surface()throws->Surface {
+  public func surface(backing:RasterTileStore? = nil)throws->Surface {
     try validate()
     let transform=try NativeModeTransform(mode:mode,depth:depth,profile:profile,intent:intent)
     let fill=try transform.pixel(defaultComponents())
-    return try projectedSurface(fill:fill,encoding:depth == .f32 ? .linearRGB:.sRGB,components:Array(componentStorage.indices)) {i in
+    return try projectedSurface(fill:fill,encoding:depth == .f32 ? .linearRGB:.sRGB,components:Array(componentStorage.indices),backing:backing) {i in
       try transform.pixel(self.components(index:i))
     }
   }
   /// Small local edits keep their direct path. Larger projections scan bounded
   /// component stripes and publish ordered RGB tile patches to immutable scratch.
-  private func projectedSurface(fill:Pixel,encoding:SurfaceColorEncoding,components:[Int],
+  private func projectedSurface(fill:Pixel,encoding:SurfaceColorEncoding,components:[Int],backing:RasterTileStore? = nil,
     pixel:(Int)throws->Pixel)throws->Surface {
     var template=try Surface(width:width,height:height,depth:depth,fill:fill)
     template=try template.interpretingSamples(as:encoding)
@@ -429,7 +429,7 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
       }
       return out
     }
-    let builder=try Surface.PagedBuilder(template:template)
+    let builder=try Surface.PagedBuilder(template:template,backing:backing)
     let columns=(width+63)/64
     var iterators=components.map {componentStorage[$0].storedSampleRanges.makeIterator()}
     var ranges=iterators.indices.map {iterators[$0].next()}
@@ -701,5 +701,93 @@ public extension NativeModeRaster {
     if defaultKept {include(previous,width*height)}
     guard x1>x0,y1>y0 else{throw CraftError.invalid("No image content would remain after trimming.")}
     return options.bounds(content:.init(x:x0,y:y0,width:x1-x0,height:y1-y0),width:width,height:height)
+  }
+}
+
+extension NativeModeRaster {
+  /// Channel-major and interleaved codecs share bounded immutable component
+  /// publication. Each plane owns at most two mutable 4Ki-sample blocks.
+  public final class RowBuilder {
+    private var candidate: NativeModeRaster
+    private let backing: RasterTileStore
+    private var builders: [ComponentPlaneBuilder?]
+    private var planes: [ComponentPlane?]
+    private var rows: [Int]
+    private var failed = false
+    private var finished = false
+    public init(width: Int, height: Int, mode: DocumentColorMode, depth: PixelDepth,
+      profile: Data? = nil, intent: ModeRenderingIntent = .relativeColorimetric,
+      backing: RasterTileStore? = nil) throws {
+      candidate = try NativeModeRaster(width:width,height:height,mode:mode,depth:depth,profile:profile,intent:intent)
+      self.backing = try backing ?? RasterTileStore()
+      builders = Array(repeating:nil,count:mode.componentCount+1)
+      planes = Array(repeating:nil,count:mode.componentCount+1)
+      rows = Array(repeating:0,count:mode.componentCount+1)
+    }
+    private func check(_ word: UInt32, component: Int) throws {
+      try ComponentPlane.validate(word:word,depth:candidate.depth)
+      if component == candidate.mode.componentCount, candidate.depth == .f32 {
+        guard (0...1).contains(Float(bitPattern:word)) else {throw CraftError.invalid("Invalid floating component opacity.")}
+      }
+    }
+    public func appendRow(_ words: [UInt32], component: Int) throws {
+      do {
+        guard !failed,!finished,rows.indices.contains(component),rows[component]<candidate.height,
+          words.count == candidate.width else {throw CraftError.invalid("Invalid or repeated component row.")}
+        try Task.checkCancellation()
+        if builders[component] == nil {
+          let word=words[words.count/2];try check(word,component:component)
+          let plane=try ComponentPlane(width:candidate.width,height:candidate.height,depth:candidate.depth,defaultWord:word)
+          planes[component]=plane
+          builders[component]=try ComponentPlaneBuilder(plane:plane,cacheBlocks:2,reserve:backing.reserveComponentScratch)
+        }
+        let defaultWord=planes[component]!.defaultWord,offset=rows[component]*candidate.width
+        for x in words.indices {
+          if x%4096 == 0 {try Task.checkCancellation()}
+          if words[x] == defaultWord {continue}
+          try check(words[x],component:component)
+          try builders[component]!.setWord(words[x],at:offset+x)
+        }
+        rows[component]+=1
+      } catch {failed=true;throw error}
+    }
+    public func fill(component: Int, word: UInt32) throws {
+      do {
+        guard !failed,!finished,rows.indices.contains(component),rows[component] == 0 else {throw CraftError.invalid("Cannot replace an accepted component plane.")}
+        try Task.checkCancellation();try check(word,component:component)
+        planes[component]=try ComponentPlane(width:candidate.width,height:candidate.height,depth:candidate.depth,defaultWord:word)
+        rows[component]=candidate.height
+      } catch {failed=true;throw error}
+    }
+    public func finish() throws -> NativeModeRaster {
+      do {
+        guard !failed,!finished,rows.allSatisfy({$0 == candidate.height}) else {throw CraftError.invalid("Incomplete component rows cannot publish.")}
+        try Task.checkCancellation()
+        candidate.componentStorage=try rows.indices.map { c in
+          if let builder=builders[c] {return try builder.finish()}
+          guard let plane=planes[c] else {throw CraftError.invalid("Missing component plane.")};return plane
+        }
+        try candidate.validate();finished=true;builders=[];planes=[];return candidate
+      } catch {failed=true;throw error}
+    }
+  }
+  /// Transform one color component against its retained opacity. The implicit
+  /// value and union of stored ranges cover every sample without dense storage.
+  public func mappingColorComponent(_ component: Int, backing: RasterTileStore? = nil,
+    _ transform: (Float,Float) throws -> Float) throws -> Self {
+    guard (0..<mode.componentCount).contains(component) else {throw CraftError.invalid("Color component not found.")}
+    try Task.checkCancellation()
+    let defaults=defaultComponents(),fill=try transform(defaults[component],defaults[mode.componentCount])
+    guard fill.isFinite else {throw CraftError.invalid("Non-finite mapped component.")}
+    let plane=try ComponentPlane(width:width,height:height,depth:depth,defaultWord:Self.word(fill,depth:depth))
+    let store=try backing ?? RasterTileStore()
+    let builder=try ComponentPlaneBuilder(plane:plane,cacheBlocks:2,reserve:store.reserveComponentScratch)
+    try forEachStoredIndex(components:[component,mode.componentCount]) { i in
+      let value=try transform(self.value(component:component,index:i),self.value(component:mode.componentCount,index:i))
+      guard value.isFinite else {throw CraftError.invalid("Non-finite mapped component.")}
+      let word=Self.word(value,depth:depth)
+      if word != plane.defaultWord {try builder.setWord(word,at:i)}
+    }
+    var result=self;result.componentStorage[component]=try builder.finish();return result
   }
 }

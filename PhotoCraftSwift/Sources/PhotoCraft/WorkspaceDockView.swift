@@ -292,7 +292,9 @@ extension WorkspaceView {
   }
 
   @ViewBuilder private func nonTypographyDockContent(_ panel: WorkspacePanel) -> some View {
-    if panel == .history {
+    if panel == .styles {
+      StylesPanel(store:store)
+    } else if panel == .history {
       HistoryPanel(store: store)
     } else if panel == .cloneSource {
       ScrollView {

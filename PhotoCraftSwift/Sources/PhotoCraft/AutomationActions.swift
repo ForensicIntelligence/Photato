@@ -39,6 +39,14 @@ extension AutomationService {
     }
     let keys = Set(command.parameters.keys).subtracting(["operation"])
     guard required.isSubset(of: keys), keys.isSubset(of: required.union(optional)) else { throw AutomationFailure(status: 400, message: "Missing or irrelevant action parameters.") }
+    if ["rename", "delete", "step.enable", "step.delete", "step.move"].contains(operation),
+      store.actions === controller.scriptEvents.actions {
+      let id = try command.actionUUID("actionID")
+      if controller.scriptEvents.configuration.bindings.contains(where: { $0.actionID == id }), !scriptEventChangesEnabled {
+        throw AutomationFailure(status: 403,
+          message: "Allow app-wide event configuration before changing an Action registered for automatic events.")
+      }
+    }
     if store.session.actionRecording != nil && !["list", "stop", "cancel"].contains(operation) {
       throw AutomationFailure(status: 409, message: "Stop recording before changing the action library.")
     }

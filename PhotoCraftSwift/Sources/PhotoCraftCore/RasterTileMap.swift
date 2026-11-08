@@ -288,6 +288,16 @@ struct RasterTileMap: Sendable, Equatable, Sequence, ExpressibleByDictionaryLite
     }
     mutating func next() -> Int? {if difference != nil {return difference!.next()};return union!.next()}
   }
+  /// A positive storage-identity proof only; distinct storage still needs logical comparison.
+  /// Every mutation preserves dictionary/array or persistent-node copy-on-write.
+  func sharesRasterStorage(with other:Self) -> Bool {
+    guard direct == other.direct, count == other.count else { return false }
+    if !direct { return base === other.base && root === other.root }
+    for (key,tile) in small {
+      guard let peer=other.small[key],tile.count==peer.count,tile.identity==peer.identity else { return false }
+    }
+    return true
+  }
   func unionKeys(with other:Self) -> KeyUnion {KeyUnion(self,other)}
   func candidateKeys(comparedTo other:Self) -> CandidateKeys {CandidateKeys(self,other)}
   static func == (a:Self,b:Self) -> Bool {

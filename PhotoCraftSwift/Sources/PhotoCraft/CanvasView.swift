@@ -16,6 +16,8 @@ struct CanvasHost: NSViewRepresentable {
   var activateDocument: () -> Bool = { true }
   func makeNSView(context: Context) -> CraftCanvas { CraftCanvas(store: store) }
   func updateNSView(_ view: CraftCanvas, context: Context) {
+    _ = store.eraserMode; _ = store.brushGesture?.eraserMode
+    _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
     _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
@@ -36,6 +38,7 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.gradientGesture
     _ = store.gradientSelectedStop
     _ = store.gradientOptions.mode
+    _ = store.removeDraft; _ = store.removeStroke; _ = store.removeApplying; _ = store.removeSettings
     _ = store.cloneState.slot
     _ = store.cloneState.showOverlay
     _ = store.cloneState.overlayOpacity
@@ -51,6 +54,8 @@ struct CanvasHost: NSViewRepresentable {
 @MainActor final class CraftCanvas: ModifierCursorView {
   override func clearCursorInput() {
     if store.tool.singlePixelMarquee != nil { start = nil; end = nil; needsDisplay = true }
+    store.cancelEyedropper()
+    store.cancelRemoveGesture()
     pathTypePress=nil
     cancelTransformReference()
     store.artboardNeighborPress = nil; needsDisplay = true
@@ -81,7 +86,7 @@ struct CanvasHost: NSViewRepresentable {
       let draft=store.magneticDraft
       return ToolCursor.magnetic(modifiers:cursorModifiers,mode:draft?.mode ?? store.selectionMode(modifiers:cursorModifiers),active:draft != nil,alternateReady:draft?.alternateReady ?? true,nearStart:magneticNearStart,precision:magneticPrecision)
     }
-    let captured = store.brushGesture != nil || store.cloneDraft != nil
+    let captured = store.brushGesture != nil || store.cloneDraft != nil || store.removeStroke != nil
     let flags = captured ? cursorGestureModifiers ?? cursorModifiers : cursorModifiers
     if store.tool == .frame, flags.contains(.option), let point = cursorDocumentPoint {
       let cornerHit = store.selectedFrame?.frameBounds.map { rect in
@@ -134,6 +139,10 @@ struct CanvasHost: NSViewRepresentable {
       }
       if store.nearestSegment(in:path,to:p,tolerance:tolerance) != nil { return .symbol("pencil.tip",.add) }
     }
+    if store.tool == .remove {
+      if store.geometryBusy || !store.canUseRemove { return .unavailable }
+      if let stroke = store.removeStroke { return .symbol(store.tool.symbol,stroke.subtract ? .subtract:.add) }
+    }
     if let adjustment = store.brushGesture?.adjustment {
       return .symbol("paintbrush.pointed",adjustment.subtract ? .subtract:.add)
     }
@@ -141,8 +150,12 @@ struct CanvasHost: NSViewRepresentable {
       if let toning = draft.toning, toning != .sponge { return .symbol(toning == .burn ? "flame":"sun.max") }
       if draft.focus == .smudge { return .symbol(draft.focusOptions.fingerPainting ? "hand.draw.fill":"hand.draw") }
     }
+    if store.tool == .eyedropper {
+      if cursorPointerDown,let g=store.eyedropperGesture{return .colorSample(target:g.target,available:true)}
+      return .colorSample(target:cursorModifiers.contains(.option) ? .background:.foreground,available:store.canUseEyedropper && !cursorModifiers.contains(.shift))
+    }
     return store.tool.cursor(modifiers:flags,selection:selection,
-      adjustmentSubtract:store.adjustmentBrushSubtract,fingerPainting:store.retouchSettings.focus.fingerPainting)
+      adjustmentSubtract:store.adjustmentBrushSubtract,fingerPainting:store.retouchSettings.focus.fingerPainting,eraserMode:store.brushGesture?.eraserMode ?? store.eraserMode,removeSubtract:store.removeSettings.subtract)
   }
 
   var store: EditorStore
@@ -476,6 +489,7 @@ struct CanvasHost: NSViewRepresentable {
       c.draw(overlay,in:CGRect(origin:.zero,size:r.size));c.restoreGState()
     }
     c.restoreGState()
+    drawEyedropperRing(in:c)
     drawCloneOverlay(in: c)
     drawGradientOverlay(in: c)
     drawVectorPath(in: c)
@@ -500,6 +514,7 @@ struct CanvasHost: NSViewRepresentable {
     drawFrames(in: c)
     drawCrop(in:c)
     drawRegionRetouch(in:c)
+    drawRemoveOverlay(in:c)
     if let draft = store.transformDraft {
       if !draft.movingPixels && !draft.movingLayers{drawTransform(draft, in: c)}
     } else if store.showLayerBounds, store.tool == .move,
@@ -703,6 +718,7 @@ struct CanvasHost: NSViewRepresentable {
       needsDisplay = true
       return
     }
+    if beginRemoveGesture(event,at:p) { return }
     if store.tool.usesRetouchStroke && !spaceHeld {
       cloneHover = p
       if store.tool.samplesRetouchSource && event.modifierFlags.contains(.option) {
@@ -771,11 +787,7 @@ struct CanvasHost: NSViewRepresentable {
       if store.brushGesture != nil { drawingEvents.begin(); synchronizeFrameProbe() }
       synchronizeBrushClock()
     }
-    if store.tool == .eyedropper, let s = store.surface {
-      let x = Int(p.x)
-      let y = Int(p.y)
-      if x >= 0, y >= 0, x < s.width, y < s.height { store.brush.color = s.pixel(x: x, y: y) }
-    }
+    if store.tool == .eyedropper {store.beginEyedropper(at:p,modifiers:event.modifierFlags)}
     needsDisplay = true
   }
   func brushSample(_ e:NSEvent)->StrokePoint {
@@ -813,6 +825,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   override func mouseDragged(with event: NSEvent) {
     cursorLocationInView = convert(event.locationInWindow,from:nil); updateCursorModifiers(event.modifierFlags)
+    if store.eyedropperGesture != nil {store.requestEyedropper(at:docPoint(event));needsDisplay=true;return}
     if dragTransformReference(event) { return }
     if store.artboardNeighborPress != nil { needsDisplay = true; return }
     if magneticMotion(event,dragging:true) {return}
@@ -822,6 +835,7 @@ struct CanvasHost: NSViewRepresentable {
     if dragArtboardGesture(event) { return }
     if dragCropGesture(event) { return }
     if dragRegionRetouchGesture(event) { return }
+    if dragRemoveGesture(event) { return }
     if store.gradientGesture != nil {
       let p = docPoint(event)
       store.dragGradient(to: PathPoint(p.x, p.y), shift: event.modifierFlags.contains(.shift))
@@ -890,6 +904,7 @@ struct CanvasHost: NSViewRepresentable {
     needsDisplay = true
   }
   override func mouseUp(with event: NSEvent) {
+    if store.eyedropperGesture != nil {store.requestEyedropper(at:docPoint(event),finishing:true)}
     defer { endCursorGesture(event) }
     defer { synchronizeFrameProbe() }
     drawingEvents.end()
@@ -916,6 +931,7 @@ struct CanvasHost: NSViewRepresentable {
     if endArtboardGesture(event) { return }
     if endCropGesture(event) { return }
     if endRegionRetouchGesture(event) { return }
+    if endRemoveGesture(event) { return }
     if store.gradientGesture != nil {
       let p = docPoint(event)
       store.dragGradient(to: PathPoint(p.x, p.y), shift: event.modifierFlags.contains(.shift))
@@ -1046,6 +1062,7 @@ struct CanvasHost: NSViewRepresentable {
   override func keyDown(with event: NSEvent) {
     updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
+    if event.keyCode == 53, store.eyedropperGesture != nil {store.cancelEyedropper(restore:true);needsDisplay=true;return}
     if event.keyCode == 53, transformReferenceGesture != nil { cancelTransformReference(); return }
     if store.transformDraft?.movingPixels == true || store.transformDraft?.movingLayers == true {if event.keyCode==53{store.cancelTransform()}else if [36,76].contains(event.keyCode){store.commitTransform()};return}
     if event.keyCode == 53, store.artboardNeighborPress != nil { store.artboardNeighborPress = nil; needsDisplay = true; return }
@@ -1076,6 +1093,7 @@ struct CanvasHost: NSViewRepresentable {
     synchronizeTool()
     if cropKey(event) { needsDisplay = true; return }
     if regionRetouchKey(event) { needsDisplay = true; return }
+    if removeKey(event) { needsDisplay = true; return }
     if event.keyCode == 53 && store.shapeGesture != nil { store.shapeGesture=nil;needsDisplay=true;return }
     if event.keyCode == 53 && store.frameGesture != nil { store.frameGesture = nil; needsDisplay = true; return }
     if event.keyCode == 53 && store.artboardGesture != nil { store.artboardGesture = nil; needsDisplay = true; return }

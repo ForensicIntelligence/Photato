@@ -1,0 +1,47 @@
+{
+  "step": 484,
+  "producer": "Adobe Photoshop2026 27.2 via native UI",
+  "method": "Owned8x8whiteRGB8 image; actual Q/options/SelectAll/Deselect/FillBlack; public-format header/resource/raw-plane parser only; no Adobe implementation inspection.",
+  "initial_input_sha256": "7fc942ab8fe553485f48d80840515992ec07b4a4fdf9c37b8b7aae4162034861",
+  "original_partial_selection": "five left columns, notfour; reference401",
+  "samples": "Black/white cases only; no generaldepth/profile/HDR/platform claim",
+  "records": [
+    {
+      "file": "ps-masked-no-selection-entry.psd",
+      "sha256": "fc730b092a009f158b2361626a97e51392033ea2d4e54279746f5969011beb55",
+      "source": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/independent-reference/ps-masked-no-selection-entry.psd"
+    },
+    {
+      "file": "ps-masked-explicit-full-entry.psd",
+      "sha256": "a43bb8cd6fb19aa6330ee95192388584d4e84fb9f46fd15afae0c4b565b3485d",
+      "source": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/independent-reference/ps-masked-explicit-full-entry.psd"
+    },
+    {
+      "file": "ps-no-selection-switched-selected.psd",
+      "sha256": "bc6b5458839df243a9424f0260074d71449e5d94f09823076f8946827d84856a",
+      "source": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/independent-reference/ps-no-selection-switched-selected.psd"
+    },
+    {
+      "file": "ps-selected-no-selection-entry.psd",
+      "sha256": "56e460270a5002859a48e05f0edb4822b3ab4fc48d370d92944898156838e181",
+      "source": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/independent-reference/ps-selected-no-selection-entry.psd"
+    },
+    {
+      "file": "ps-selected-no-selection-black-dialog.psd",
+      "sha256": "f99a9d23bf790f2922589bc6880591190db2d11fd4e67fc596436397e27ba637",
+      "source": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/independent-reference/ps-selected-no-selection-black-dialog.psd"
+    },
+    {
+      "file": "ps-selected-entry.psd",
+      "sha256": "72bcc543bb488d082101709f3bdb2f640b9d13e28a41f7ef2ade030ec6a289b9",
+      "source": "artifacts/runs/20261104T191355Z-401-quick-mask-gray-convention/reference/ps-selected-entry.psd"
+    },
+    {
+      "file": "ps-selected-exit.psd",
+      "sha256": "8c1d6c4c7809e80669188e3a5503e1d301151e53df8563af2ffff7d8c701d56d",
+      "source": "artifacts/runs/20261104T191355Z-401-quick-mask-gray-convention/reference/ps-selected-exit.psd"
+    }
+  ],
+  "diagnostic_excluded": "ps-selected-no-selection-black-fill.psd was a shortcut attempt which saved white, not the explicit black-dialog result; retained separately as diagnostic.",
+  "cleanup": "OriginalMaskedAreas/red/50% verified, FillForegroundColor/Normal100 restored, Layersdock restored; owned documentclosedwithoutoverwritingreferences; FileClose/CloseAlldisabledverified."
+}

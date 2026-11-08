@@ -33,6 +33,9 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     case rle, zip
     public var codec: PSDCompression { self == .rle ? .rle : .zip }
   }
+  public var exrCompression: OpenEXR.Compression?
+  public var exrSample: OpenEXR.Sample?
+  public var exrTransparency: Bool?
   public var pngCompression: Int?
   public var pngInterlaced: Bool?
   public var tiffCompression: TIFFCompression?
@@ -50,8 +53,10 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     tiffPredictor: Bool? = nil, tiffLayers: Bool? = nil,
     tiffLayerCompression: TIFFLayerCompression? = nil,
     jpegQuality: Int? = nil, jpegFormat: JPEGFormat? = nil,
-    jpegMatte: [Double]? = nil, jpegEmbedProfile: Bool? = nil)
+    jpegMatte: [Double]? = nil, jpegEmbedProfile: Bool? = nil,
+    exrCompression: OpenEXR.Compression? = nil, exrSample: OpenEXR.Sample? = nil, exrTransparency: Bool? = nil)
   {
+    self.exrCompression = exrCompression; self.exrSample = exrSample; self.exrTransparency = exrTransparency
     self.jpegQuality = jpegQuality
     self.jpegFormat = jpegFormat
     self.jpegMatte = jpegMatte
@@ -71,7 +76,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     pngCompression == nil && pngInterlaced == nil && tiffCompression == nil
       && psdLayerCompression == nil && psdCompositeCompression == nil && !hasTIFFStorageOptions
       && tiffLayers == nil && tiffLayerCompression == nil
-      && !hasJPEGOptions
+      && !hasJPEGOptions && exrCompression == nil && exrSample == nil && exrTransparency == nil
   }
   public var hasJPEGOptions: Bool {
     jpegQuality != nil || jpegFormat != nil || jpegMatte != nil || jpegEmbedProfile != nil
@@ -92,6 +97,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     }
     guard (type == .png || (pngCompression == nil && pngInterlaced == nil)),
       (type == .jpeg || !hasJPEGOptions),
+      (type == OpenEXR.contentType || (exrCompression == nil && exrSample == nil && exrTransparency == nil)),
       (type == .tiff || (tiffCompression == nil && !hasTIFFStorageOptions
         && tiffLayers == nil && tiffLayerCompression == nil)),
       (["com.adobe.photoshop-image", "com.adobe.photoshop-large-image"].contains(type.identifier)

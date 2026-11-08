@@ -19,6 +19,16 @@ extension EditorStore {
       && activeLayer.map { !document.isImageLocked($0.id) } == true
   }
   var canEditSmartObjectContents: Bool {canEditSmartObject}
+  func canConvertSmartObjectToLayers(context: UUID? = nil) -> Bool {
+    clipboardTargetAvailable && SmartObjectUnpack.available(in: document, selected: layerPanelSelection(context))
+  }
+  func convertSmartObjectToLayers(context: UUID? = nil) {
+    guard canConvertSmartObjectToLayers(context: context) else { return }
+    let ids = layerPanelSelection(context)
+    performGeometry(label: "Convert to Layers", prepare: { original in
+      try SmartObjectUnpack.command(in: original, selected: ids)
+    }, onSuccess: { [weak self] in self?.selectedLayerIDs = ids })
+  }
   var canConvertSmartObject: Bool {
     clipboardTargetAvailable && !groupSelectionIDs.isEmpty
       && groupSelectionIDs.allSatisfy { !document.isLocked($0) }
@@ -125,6 +135,7 @@ extension CraftNSDocument {
 extension AppDelegate {
   @objc func placeEmbedded() { store?.placeEmbedded() }
   @objc func convertSmartObject() { store?.convertSmartObject() }
+  @objc func convertSmartObjectToLayers() { store?.convertSmartObjectToLayers() }
   @objc func editSmartObjectContents() { store?.editSmartObjectContents() }
   @objc func replaceSmartObjectContents() { store?.placeEmbedded(replacing: true) }
   @objc func exportSmartObjectContents() { store?.exportSmartObjectContents() }

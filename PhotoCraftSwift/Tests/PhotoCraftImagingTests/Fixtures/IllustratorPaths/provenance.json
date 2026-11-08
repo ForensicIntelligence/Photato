@@ -1,0 +1,29 @@
+{
+  "created_utc": "2026-11-08T19:39:50.125638+00:00",
+  "source": "Owned synthetic PSD path fixtures, and files exported from those fixtures by the local Photoshop2026 native File > Export > Paths to Illustrator workflow. No Adobe application source/procset implementation or third-party artwork is included.",
+  "observations": [
+    "Two namedpaths:defaultAllPaths; choicesDocumentBounds/AllPaths/Rectangle/Curve",
+    "Oneactive shape:defaultRectangle1ShapePath; choicesDocumentBounds/shape; inactiveotherlayer masks absent",
+    "Backgroundactive withno savedpaths:DocumentBoundsonly",
+    "240x120px at144dpi exports120x60points",
+    "Bounds-only writesno rectanglecontour",
+    "All7operation/WorkPaths retain booleanannotations, joining, inversion andsmoothcubic"
+  ],
+  "reference_specification": {
+    "author": "Adobe Developer Support",
+    "title": "Adobe Illustrator File Format Specification",
+    "date": "23 February1998",
+    "source": "https://13thmonkey.org/documentation/fonts/AI7FileFormat.pdf",
+    "read_scope": "Path construction/painting operators andcompoundpath sections via search text. Primary Adobe-authored document hosted by a mirror; noimplementation/procsets copied orspec redistributed."
+  },
+  "workflow_documentation": "https://helpx.adobe.com/illustrator/desktop/add-and-import-files/import-from-other-apps/move-paths-from-photoshop-to-illustrator.html",
+  "files": {
+    "Owned Operations.psd": "53ed79bcc22897476ab8dce890908d5cf8d515e1c1436b0c3aa17490621cd097",
+    "Owned Paths 144dpi.psd": "10e40238cb866519aad7735924e2d7f2ed252be0608d906350be646059797155",
+    "photoshop-all-operations.ai": "e03fb862fcff3c6daed0bd2bf899a734078ad896a98a7c8f0c26fe677ec8fe2d",
+    "photoshop-all-paths144.ai": "453a8e49972356ffd085ab8e43c9a14facfad9ea992bfaae00d66e7b3d45ffdd",
+    "photoshop-document-bounds144.ai": "0f49b357db23c3389a12a1f265e1562fa41e4c85efdff87a468f524795aecd8a"
+  },
+  "Photoshop_reference_documents_closed_without_source_changes": true,
+  "all_parity_claimed": false
+}

@@ -1,0 +1,127 @@
+{
+  "step": 483,
+  "application_build": 483,
+  "source": "source06/release02",
+  "reference": "docs/SCRIPT_EVENT_ACTIONS_483.json",
+  "software_changes": true,
+  "status": "Script Events Manager runs native Actions on New Document and Open Document, with persistent disabled-by-default registrations and separately permissioned API configuration. All58focused Debug and optimized checks perarchitecture pass,20new. Broader optimized checks pass128of129on each architecture; the old400vs422API failure also reproduces on480. Native NewDocument/automaticInvert/Undo/manager checks pass. Build483is a validation candidate; latest fully qualified selected universal remains480. FullAUT02andPhotoshopparity stay open.",
+  "normal_optimized_qualified": false,
+  "selected_event_workflow_qualified": true,
+  "focused_tests_each_architecture": 58,
+  "normal_selected_tests_each_architecture": 129,
+  "normal_passed_each_architecture": 128,
+  "new_correctness_methods": 20,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "recorded_utc": "2026-11-07T23:27:47.023681+00:00",
+  "run": "artifacts/runs/20261107T222459Z-483-script-events",
+  "source_inputs": 7596,
+  "source_manifest": "artifacts/runs/20261107T222459Z-483-script-events/release02-source.json",
+  "Debug_source_manifest": "artifacts/runs/20261107T222459Z-483-script-events/source06-source.json",
+  "qualification": "artifacts/runs/20261107T222459Z-483-script-events/qualification-selected01.json",
+  "optimized_qualification": "artifacts/runs/20261107T222459Z-483-script-events/release02-qualification.json",
+  "legacy_baseline": "artifacts/runs/20261107T222459Z-483-script-events/baseline480-action-protection01/qualification.json",
+  "byte_equivalence": "artifacts/runs/20261107T222459Z-483-script-events/byte-equivalence01.json",
+  "universal": "artifacts/runs/20261107T222459Z-483-script-events/universal01/staging01.json",
+  "native_UI": "artifacts/runs/20261107T222459Z-483-script-events/native-ui01.json",
+  "source_delta": "artifacts/runs/20261107T222459Z-483-script-events/source-final-delta01.json",
+  "versions": {
+    "native": 90,
+    "Actions": 59,
+    "typed_commands": 266
+  },
+  "new_API": "GET/POST /v1/automation/events; globalconfigurationendpoint outside typed document command count",
+  "API_permission": "scriptEventChangesEnabled; defaults off and resets onAPIstop. Protects reads/config plus actions.manage edits of registeredActionIDs, even disabled bindings. Native stored events persist independently.",
+  "transaction": "Serial asynchronous queue64;128registrations; source/config/library/lifecycle/interaction fences; eachActiononeUndo; earlier committedActionsremainundoable iflaterfails.",
+  "source_changes": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "before": "d3cc1a9adb02195420781af7736fbd11cd5519968d79dbdd7e450212c1037b4e",
+      "after": "f577da2b38aaaf4e6540aa4729eae2caae216cb543f17f58c480b0304c79ee4e"
+    },
+    {
+      "path": "Sources/PhotoCraft/ActionPlayback.swift",
+      "before": "d60b535b9fbc7a5f39b9eb8e139a5c28996be0fdc8535c92606bb5be4c810864",
+      "after": "5e004515d98408f5c8e3fd566e197dc08b01d5135afbd665bf8d7ae7174c56f0"
+    },
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "before": "bf8c6728863e7838268981938b8659cf3dbb004133941f3878f96948c7c5b89b",
+      "after": "8f99215a08ba7e2ee48fb64c47141c3440b2d2e3b1d517543495e1028d8393fd"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationActions.swift",
+      "before": "b1bf44ca3121f3cae5b16cfdc5d241fe21c0e0d6d034120ff5cff8f670872966",
+      "after": "db9d3883050ee69b726ca5fcf51cb3ba44edf6888292b8390ad8453ea1389d6a"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationScriptEvents.swift",
+      "before": null,
+      "after": "517ebd736c05647f0d4b8a08021487d15c48abd68b59e2cabf5d54163f54e135"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "before": "0b2e6613ad9720eac98e409901f87111d9a67809c78192b12688fa366ef49cef",
+      "after": "4328c40a6ce9d016042e2dad5e81cfbf8c976cabe282815c05d1fe63c7e1dfa1"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationView.swift",
+      "before": "28fd8d81d4b5fe13268edac8f22a0c35649e26070d1f7c59bb62df3350fef154",
+      "after": "0f6c43239c6bacdb480dbc33d3745da4fb84db9187e656e61e12ca24c1fc094b"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentOpening.swift",
+      "before": "4ca2e086d1c0eb82721236cf9ffdf2dccef663eb8c7213f4434dbe02ca7c1533",
+      "after": "e58c75700041ee763fb695e03897da0b7bd959631090db015ab5cd053d785001"
+    },
+    {
+      "path": "Sources/PhotoCraft/NativeDocument.swift",
+      "before": "4bbcb83a7719f5519b9e340ad8efdcf2018870e052fd7ca413a9fd33d64ed035",
+      "after": "1835147a8a39234ddc36b85a43553761450bb83ca2ef067a4ecac2556d78e910"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "before": "8dfb92db634cdc64efd337233fbfd1d9ca8180d501337d6563aa5b699eb59b69",
+      "after": "00dedeb0f0426791ecbdea5fd2df2a2eb0d19c64cfb18cdcf0dc2722d4b3186b"
+    },
+    {
+      "path": "Sources/PhotoCraft/ScriptEvents.swift",
+      "before": null,
+      "after": "85c0278227f4785a43e1fba5f73da0bc35f0fe2a066e23bddb11e6ce0da345d9"
+    },
+    {
+      "path": "Sources/PhotoCraft/ScriptEventsWindow.swift",
+      "before": null,
+      "after": "cd7c92886850fa0a133e0a9e06882ed7e86f218b8b04ac6d92a64e9477c97926"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ScriptEventsTests.swift",
+      "before": null,
+      "after": "611b68d434403b2dec9e22a40389c75007babac45dd07a193038664160af966c"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "before": "726b29ad7e9fc6195e297dd027fa487a2188b7a6b3e8508ca657208f7a043651",
+      "after": "e85e561330590a6db7627c62ffa960351f859d33692a89dc7f6ff37fe9e4ef4b"
+    }
+  ],
+  "source_files_removed": [],
+  "unchanged": "Existing testassertions/numericalfixtures,golden menus/keys,cursorpolicy,Core/Imagingkernels,project,assets,entitlements,formatversions remain unchanged.",
+  "reference_urls": [
+    "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/automate-photoshop-with-scripts.html",
+    "https://developer.adobe.com/photoshop/"
+  ],
+  "remaining": [
+    "Full AUT02 original scripts/variables/data-driven output/extension contracts and acceptance remain open. Only NewDocument/OpenDocument Actions are implemented here; startup/save/close/export/print/custom events and scripts remain unavailable.",
+    "No UXP,CEP,ExtendScript,native C++ plugin or Photoshop notifier hosting. Published Firefly HTTP compatibility is separate from desktop plugin compatibility; AUT03 remains open.",
+    "All prior full-suite, numerical/default/output, broader API, dense-capacity, physical supported-platform, sandbox/distribution, AI/provider and60fps gates remain. The unchanged old400vs422assertion fails on both480and483; it was not weakened.",
+    "Nine native/PSD/PNG x8/16/32bit event/manual file pairs match across Debug/optimizedARM/translatedIntel,14470bytes eachvariant. This proves shared native playback equivalence for those owned fixtures, not independent Photoshop output.",
+    "Current native NewDocument recording/playback/Undo/manager/cleanup passed. Live OpenDocument and exact Photoshop timing/order, fullLight/VoiceOver/localization and physicalIntel/macOS14 qualification remain open.",
+    "Universal483candidate has minimum14metadata, bothslices, fullproductionentitlements, signature and exactextractedZIP verified; no productioninstallation, Xcodearchive, distribution-signing, Appleupload, AppStorechange, GitHubmutation, deletion or software release.",
+    "All104original package scopes/acceptance/status,652commandidentities/memberships,81major memberships/sevenpasses preserved. Only file.scripts.scriptEventsManager status changes pending to partial. CurrentS05thenA02; AUT02rotatedtoend, fullpackageopen."
+  ],
+  "full_suite_passed": false,
+  "Photoshop_parity": false,
+  "current": "S05",
+  "next": "A02"
+}

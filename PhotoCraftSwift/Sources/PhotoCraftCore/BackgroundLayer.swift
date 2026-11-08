@@ -42,7 +42,7 @@ public enum BackgroundLayer {
       layer.sourceTags=layer.sourceTags ?? [:];layer.sourceTags?["lyid"]=Data(repeating:0,count:4)
       document.layers.insert(layer,at:0)
     case .clear(_,let color):
-      guard document.colorMode == .rgb,document.layers[i].isBackground,!document.isImageLocked(edit.layerID),case .raster(let source)=document.layers[i].content else{throw CraftError.invalid("Choose an editable Background pixel layer.")};try validate(color)
+      guard (document.colorMode == .rgb || (document.colorMode == .grayscale && document.layers[i].nativeMode != nil)),document.layers[i].isBackground,!document.isImageLocked(edit.layerID),case .raster(let source)=document.layers[i].content else{throw CraftError.invalid("Choose an editable Background pixel layer.")};try validate(color)
       let area=document.selection ?? .init(x:0,y:0,width:document.width,height:document.height),mask=try document.coverageSelection(),linear=source.colorEncoding == .linearRGB,fill=linear ? SRGBTransfer.linear(color):color
       if mask==nil {document.layers[i].content = .raster(try Surface(width:source.width,height:source.height,depth:source.depth,fill:color,colorEncoding:source.colorEncoding));return}
       var result=source

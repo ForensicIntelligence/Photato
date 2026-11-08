@@ -23,6 +23,7 @@ public struct ShapeGeometry: Codable, Equatable, Sendable {
     if kind == .custom {
       guard let customPath,!customPath.inverted,customPath.components.flatMap(\.knots).allSatisfy({[$0.anchor,$0.incoming,$0.outgoing].allSatisfy{abs($0.x)<=10 && abs($0.y)<=10}}) else {throw CraftError.invalid("Custom shapes require a bounded normalized path; inversion belongs to the shape.")}
       try customPath.validate()
+      if customPath.components.first?.operation == .subtract { _ = try VectorPathGeometry.filledPath(customPath) }
     } else if customPath != nil {throw CraftError.invalid("Custom geometry requires the Custom shape kind.")}
   }
   public func path() throws -> VectorPath {

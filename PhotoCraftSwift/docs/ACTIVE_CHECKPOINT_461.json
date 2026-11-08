@@ -1,0 +1,22 @@
+{
+  "step": "dev-step-461",
+  "run": "artifacts/runs/20261107T030341Z-461-channel-blending",
+  "status": "Selected RGB channel-blending development tested; live native acceptance pending",
+  "current_major_workflow": "L04",
+  "next": "L05",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7465,
+  "latest_software": 461,
+  "latest_optimized_universal": 461,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "progress:460native/API scalar clipboard implemented;45Debug/same45normal each/all20newpass,984byte strict own literal comparison exact,7459inputs unchanged; history460/82775evidence/31737logs/missing0. FullD04/mastergoal open.",
+  "source_manifest": "artifacts/runs/20261107T030341Z-461-channel-blending/release01-source.json",
+  "production_swift_files": 1122,
+  "native_461_app_launched": false,
+  "evidence": "docs/CHANNEL_BLENDING_461.json",
+  "strict_channels_all_exact": true,
+  "native_probe": "artifacts/runs/20261107T030341Z-461-channel-blending/native-probe01.json",
+  "last_record_update_utc": "2026-11-07T03:47:17.671007+00:00",
+  "current_goal_turn_classification": "Progress: RGB channel exclusion with native/API/history/native89/Actions56/PSDbrst; 58 selected Debug and identical normal methods per architecture pass. Full goal remains open."
+}

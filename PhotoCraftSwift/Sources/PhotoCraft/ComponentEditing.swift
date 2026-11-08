@@ -135,7 +135,7 @@ extension EditorStore {
 
   var canUseComponentCanvasTool: Bool {
     (editingChannel != nil && tool == .move && transformDraft?.channelTarget != nil) || (!effectiveComponentTargets.isEmpty && [.brush, .eraser].contains(tool)) || (editingChannel != nil && [.brush, .eraser, .pencil, .mixerBrush, .patternStamp, .marquee, .ellipticalMarquee, .rowMarquee, .columnMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)) || !editingComponent
-      || [.marquee, .ellipticalMarquee, .rowMarquee, .columnMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)
+      || [.eyedropper, .marquee, .ellipticalMarquee, .rowMarquee, .columnMarquee, .lasso, .polygonLasso, .hand, .zoom].contains(tool)
   }
 
   @discardableResult func handleComponentShortcut(_ event: NSEvent) -> Bool {

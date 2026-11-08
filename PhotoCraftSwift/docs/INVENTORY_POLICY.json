@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-11-07T22:07:57.689803+00:00",
+  "reference_application": {
+    "installed_version": "27.2.0",
+    "evidence": "Local application Info.plist inspected; no live interaction in this increment.",
+    "documented_release_sections": "27.11, September2026",
+    "version_conflict": "The release-notes page also retains a27.0 current-version banner. Do not substitute that banner or later documentation for the installed27.2 executable reference."
+  },
+  "golden_reference_entries": 801,
+  "alternative_shortcuts": 8,
+  "menu_additions": [
+    "Photato > Generated Results\u2026",
+    "Edit > Customize Save Dialog File Formats",
+    "Layer > New Adjustment Layer > Light\u2026",
+    "Layer > New Adjustment Layer > Clarity and dehaze\u2026",
+    "Layer > New Adjustment Layer > Grain\u2026",
+    "Filter > Photato",
+    "Filter > Photato > Relight\u2026",
+    "Filter > Photato > Lighting Effects\u2026"
+  ],
+  "external_boundaries": [
+    {
+      "id": "ai-assisted-editor",
+      "classification": "documented-beta",
+      "work_packages": [
+        "AI08",
+        "AI07"
+      ],
+      "reference": "https://helpx.adobe.com/photoshop/desktop/generative-ai/use-ai-assisted-mode.html",
+      "remaining": "Optional prompt-oriented editor remains an unqualified gap; existing generation controls do not prove this separate mode or its layer transitions.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "enhance-edge",
+      "classification": "later-documented-desktop-feature",
+      "work_packages": [
+        "S04",
+        "AI01"
+      ],
+      "reference": "https://helpx.adobe.com/photoshop/desktop/whats-new/whats-new-in-adobe-photoshop-on-desktop.html",
+      "remaining": "27.11 reference capability needs suitable executable/output evidence; existing refinement does not establish diffusion-based edge equivalence.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "gpt-image2",
+      "classification": "external-model-service",
+      "work_packages": [
+        "AI01",
+        "AI05",
+        "AI07"
+      ],
+      "reference": "https://helpx.adobe.com/photoshop/desktop/whats-new/whats-new-in-adobe-photoshop-on-desktop.html",
+      "remaining": "Documented27.11 model; no claim of proprietary model equivalence or byte-identical stochastic generations.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "windows-pgo",
+      "classification": "Windows-specific-implementation",
+      "work_packages": [
+        "Q03"
+      ],
+      "reference": "https://helpx.adobe.com/photoshop/desktop/whats-new/photoshop-on-desktop-release-notes.html",
+      "remaining": "The documented Windows build optimization is not a macOS UI command. Equivalent macOS editing responsiveness and all Q03 acceptance remain open.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "substance-viewer",
+      "classification": "retired-external-beta",
+      "work_packages": [
+        "SP03"
+      ],
+      "reference": "https://helpx.adobe.com/substance-3d-viewer/desktop/tutorials/photoshop-3d-intro.html",
+      "remaining": "The tutorial states support/installation ended16October2025. Preserve interoperability requirements and historical evidence; do not present this removed external service as a current native capability.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "adobe-generative-services",
+      "classification": "service-dependent-output",
+      "work_packages": [
+        "AI01",
+        "AI03",
+        "AI04",
+        "AI05",
+        "AI06",
+        "AI07"
+      ],
+      "reference": "https://helpx.adobe.com/photoshop/desktop/generative-ai/generative-ai-features-overview.html",
+      "remaining": "Provider availability, identity, credits and model quality remain separate from native editing and Firefly HTTP conformance. No service/output parity is inferred.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "photoshop-plugins",
+      "classification": "third-party-runtime-dependency",
+      "work_packages": [
+        "AUT03"
+      ],
+      "reference": "https://developer.adobe.com/photoshop/",
+      "remaining": "Native C++, UXP and CEP/ExtendScript hosts remain unimplemented; UI or Firefly API compatibility does not run third-party plug-ins.",
+      "original_scope_retained": true
+    },
+    {
+      "id": "optional-apple-ai",
+      "classification": "platform-gated-optional-capability",
+      "work_packages": [
+        "AI01",
+        "AI02"
+      ],
+      "reference": "https://developer.apple.com/documentation/foundationmodels",
+      "remaining": "macOS14+ universal editing remains the requirement. Apple Silicon/macOS26+ AI and Private Cloud Compute need supported-device/runtime/privacy validation; no new hardware restriction is imposed on editing.",
+      "original_scope_retained": true
+    }
+  ],
+  "catalogue_reference": "https://www.adobe.com/products/photoshop/features/all.html",
+  "catalogue_limits": "Discovery page includes deferred content blocks; this audit is not an exhaustive feature-catalogue acceptance pass. Original104package scopes,652command mappings and40workflow scenarios are retained."
+}

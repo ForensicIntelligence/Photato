@@ -75,6 +75,7 @@ enum GalleryMath {
     }};return out
   }
   static func texturize(_ input:[V],_ w:Int,_ e:GalleryEffect,_ relief:Float?=nil)throws->[V]{
+    if let texture=e.texture {return try customTexturize(input,w,e,texture,relief)}
     let r=relief ?? e.get("relief");guard r>0 else{return input};let scale=clamp(e.get("scaling")/100,0.5,2),l=light(e.choice("light")),k=r/50*3,sign:Float=e.flag("invert") ? -1:1,kind=e.choice("texture");var out=input
     for i in input.indices{try poll(i);let x=Float(i%w),y=Float(i/w),gx=(texture(kind,x+1,y,scale)-texture(kind,x-1,y,scale))*0.5*sign,gy=(texture(kind,x,y+1,scale)-texture(kind,x,y-1,scale))*0.5*sign;out[i]=input[i]*clamp(shade(gx,gy,l,k),0,2)};return out
   }

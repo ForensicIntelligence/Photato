@@ -15,12 +15,14 @@ enum ColorProfileAPI {
       "committing": BrushAPI.flag], required: ["name", "untagged", "available", "workspaceOpen", "previewBusy", "committing"])
   }
   static var capabilities: [String: Any] {
-    ["commands": commands, "engine": "Apple ColorSync", "maximumPixels": NativeModeRaster.maximumPixels,
+    ["unmanagedPSDTransport":["formats":["PSD","PSB"],"mode":"RGB8/16/32","admission":"Explicit untagged resource1041, no embeddedICC1039, kindnone and a fully represented empty display/view descriptor. Active OCIO, conflicting profiles and unknown layouts remain unsupported.","save":"Retains the neutral source descriptor while untagged. Assigning a profile omits the stale unmanaged descriptor and writes the current ICC policy.","interfaces":"Native Open/Save, optional document upload/download and both isolated resource-job APIs share the same Swift codec. No new command or Adobe route."],"commands": commands, "engine": "Apple ColorSync", "maximumPixels": ColorProfileInput.maximumDocumentPixels,
+      "maximumDimension": Surface.maxDimension, "legacyKernelMaximumPixels": NativeModeRaster.maximumPixels,
+      "pagedProfileOperations": true, "previewMaximumSide": 2048,
       "maximumProfileBytes": ICCProfile.maximumBytes, "untaggedArchiveVersion": 49,
       "readResultSchema": BrushAPI.object(["profileBase64": schema("profileBase64"), "name": ["type": "string"],
         "untagged": BrushAPI.flag, "revision": ["type": "string"]], required: ["profileBase64", "name", "untagged", "revision"]),
       "behavior": "Assignment preserves numeric artwork samples; profile must match the mode. removeProfile uses captured working-space interpretation, omits output ICC and requires native49. Conversion preserves alpha and hidden RGB; intent and blackPointCompensation use ColorSync. Same depth is retained, including linear RGB/Gray32. Raster/group layers and ordinary RGB text/solid fills/shapes stay editable. mergeVisible explicitly replaces the stack and discards hidden layers. Embedded variable replacement images are converted to the new RGB working profile for future placement; their IDs and row references are retained and Undo restores original assets. All edits share native preview/commit history, stale and busy checks. profile.read returns the effective interpretation even for an untagged document.",
-      "limits": "No Adobe ACE or byte-identical Photoshop conversion claim. Dither, DeviceLink/abstract profiles, semantic Actions, full rich-layer conversion and import/paste color policies remain open. Missing Photoshop API endpoints are not invented."]
+      "limits": "Profile operations have no canvas-megapixel admission cap within the native300000-per-side geometry. Large rasters stream stored64-row patches up to2048wide and transform implicit samples once; previews reduce the converted composite to2048per side. Actual dense maximum-capacity, platform and60fps qualification remain open. Existing transfer/codec/resource-job budgets remain independent. No Adobe ACE or byte-identical Photoshop conversion claim. Dither, DeviceLink/abstract profiles, semantic Actions, full rich-layer conversion and import/paste color policies remain open. Missing Photoshop API endpoints are not invented."]
   }
 }
 extension AutomationCommand {

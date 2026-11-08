@@ -145,7 +145,10 @@ extension WorkspaceView {
     @Bindable var state = store.retouchSettings
     return HStack(spacing: 12) {
       retouchBrushControl
-      Text("Mode: Normal").foregroundStyle(.secondary)
+      Picker("Mode", selection: $state.brush.mode) {
+        ForEach(FocusBlendModes.supported, id: \.self) { Text($0.rawValue).tag($0) }
+      }.frame(width: 150).controlSize(.small)
+        .accessibilityIdentifier("retouch.focusMode")
       percentField("Strength:", value: $state.focus.strength)
       Toggle("Sample All Layers", isOn: $state.focus.sampleAllLayers)
         .disabled(store.editingMask).controlSize(.small)

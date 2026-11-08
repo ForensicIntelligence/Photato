@@ -61,7 +61,7 @@ final class SaveDialogFormatsTests: XCTestCase {
       let model = try CraftNSDocument.blankModel(width: 4, height: 3, depth: depth)
       let document = CraftNSDocument(model: model); controller.addDocument(document); defer { document.close() }
       let writable = document.saveFormats, before = try NativeArchive.encodeChunked(model), revision = document.store.revision
-      for bits in 0..<64 {
+      for bits in 0..<(1 << DocumentIO.Format.allCases.count) {
         let selected = Set(DocumentIO.Format.allCases.enumerated().compactMap { bits & (1 << $0.offset) == 0 ? nil : $0.element })
         var value = settings.value; value.saveDialogFormats = selected
         try controller.setRecoveryPreferences(value, revision: settings.revision)

@@ -88,6 +88,7 @@ public struct Surface: Codable, Equatable, Sendable {
       return true
     }
     if lhs.storedDefaultPixel.hasSameBits(as: rhs.storedDefaultPixel) {
+      if lhs.tiles.sharesRasterStorage(with:rhs.tiles) { return true }
       for key in lhs.tiles.candidateKeys(comparedTo: rhs.tiles) where !matches(key) { return false }
       return true
     }
@@ -1300,8 +1301,8 @@ extension Surface {
     return output
   }
   /// Retag already quantized grayscale coverage without another sample round trip.
-  func retaggedCoverageStorage(depth:PixelDepth = .u8)throws->Surface {
-    var out=try Surface(width:width,height:height,depth:depth,fill:.black)
+  func retaggedCoverageStorage(depth:PixelDepth = .u8,encoding:SurfaceColorEncoding = .sRGB)throws->Surface {
+    var out=try Surface(width:width,height:height,depth:depth,fill:.black,colorEncoding:encoding)
     out.storedDefaultPixel=storedDefaultPixel;out.tiles=tiles;out.tilesAreKnownFinite=tilesAreKnownFinite
     return out
   }

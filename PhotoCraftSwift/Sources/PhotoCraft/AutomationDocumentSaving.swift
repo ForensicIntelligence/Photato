@@ -12,6 +12,8 @@ extension AutomationService {
         "document.save writes only the shared document's associated local file. No path parameters. Rejects unsaved documents and externally modified files.",
       "saveAs":
         "document.saveAs accepts name, format and replace. The name is a filename inside the native-selected folder, never a path. replace must be true to overwrite an existing file; symbolic-link targets are refused.",
+      "copy":
+        "Native Save a Copy uses AppKit coordinated Save To with the same prepared encoders as API downloads. It preserves the document's file association, modified flag and history. API download bytes and transfer permissions are unchanged; no arbitrary local-copy route is added.",
       "formats": DocumentIO.Format.allCases.map {
         ["format": $0.rawValue, "notice": $0.saveNotice]
       },

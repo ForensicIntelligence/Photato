@@ -40,6 +40,30 @@ public enum ContentAwareSynthesis {
     }
     let mw = extra.isEmpty ? w:w+gap+columnWidth, mh = max(h,columnHeight)
     guard mw <= maximumPixels/mh else { throw CraftError.invalid("Content-Aware Fill sampling region exceeds 4 megapixels.") }
+    // With a uniform known field there is no texture or lighting variation to
+    // synthesize. Its exact constant is the solution for every hole shape.
+    // Preserve its words rather than resampling it through a patch pyramid.
+    // Keep the adaptation/storage admission checks above this identity path.
+    if let first = usable.firstIndex(of:true) {
+      let field = Array(image[first*4..<first*4+4])
+      var constant = true
+      for i in hole.indices where !hole[i] {
+        if i % 8192 == 0 { try Task.checkCancellation() }
+        if (0..<4).contains(where: { image[i*4+$0].bitPattern != field[$0].bitPattern }) {
+          constant = false; break
+        }
+      }
+      if constant {
+        var result = image
+        for i in hole.indices where hole[i] {
+          if i % 8192 == 0 { try Task.checkCancellation() }
+          for c in 0..<4 {
+            result[i*4+c] = settings.colorAdaptation.amount == 0 || (hdr && c < 3) ? field[c]:unit(field[c])
+          }
+        }
+        return result
+      }
+    }
     var mosaic = [Float](repeating:0,count:mw*mh*4), unknown = [Bool](repeating:true,count:mw*mh)
     func copy(_ values: [Float],_ known: [Bool],_ width: Int,_ height: Int,_ ox: Int,_ oy: Int) throws {
       for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {

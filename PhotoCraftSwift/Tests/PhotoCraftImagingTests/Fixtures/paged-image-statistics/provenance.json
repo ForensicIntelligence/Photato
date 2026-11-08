@@ -1,0 +1,14 @@
+{
+  "step": 472,
+  "baseline_step": 471,
+  "baseline_attempt": "source01",
+  "capture_programs": 99,
+  "sample_bytes": 152064,
+  "source_manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source01-source.json",
+  "application_sha256": "6443d73ae071f05268332baea4397f203ae3f05a9c1cbee490cee6abfca1c00f",
+  "provenance": "Owned synthetic sources, captured with unchanged471production; three depths/eleven modes/plain, masked-hidden and outer-group variants. Regression evidence only; not independent Photoshop pixels.",
+  "files": {
+    "image-stack-small.f32le": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a",
+    "image-stack-cases.json": "eb3d629b7c7d379d8746af319afcd8fb0b030ded2c890da0aaf324167d6bc17b"
+  }
+}

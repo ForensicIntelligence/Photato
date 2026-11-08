@@ -83,7 +83,7 @@ final class FlattenImageWorkflowTests: XCTestCase {
     func all(_ nodes:[EditorMenuNode])->[EditorMenuNode] {nodes.flatMap{[$0]+all($0.children ?? [])}}
     let menus=all(PhotoshopMenuCatalog.menus);let flatten=try XCTUnwrap(menus.first{$0.title=="Flatten Image"})
     XCTAssertEqual(flatten.key,"");XCTAssertEqual(NSStringFromSelector(#selector(AppDelegate.flattenImage)),"flattenImage")
-    XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,53)
+    XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
   }
   @MainActor func testOfficialFlattenEventRunsThroughBothHTTPJobInterfaces() async throws {
     let transport=AutomationActionJobsTests.Transport(),jobs=AutomationActionJobsTests()

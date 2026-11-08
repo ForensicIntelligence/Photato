@@ -129,13 +129,14 @@ enum PSDPaths {
     }
     guard expected == 0 else { throw CraftError.invalid("Truncated PSD path knots.") }
     try path.validate()
+    if try VectorPathGeometry.fillRulesDiffer(path) { path.fillRule = .evenOdd }
     return path
   }
   static func write(_ path: VectorPath, width: Int, height: Int) throws -> Data {
     try path.validate()
-    guard path.fillRule == .nonZero else {
+    if path.fillRule == .nonZero, try VectorPathGeometry.fillRulesDiffer(path) {
       throw CraftError.unsupported(
-        "Save the editable native file: PSD export of Even-Odd paths is not available yet.")
+        "PSD uses Even-Odd contour filling. Save the editable native file or merge path components to retain this Nonzero winding region.")
     }
     var w = PSDWriter()
     func record(_ selector: Int, _ data: Data) {
@@ -151,7 +152,7 @@ enum PSDPaths {
       var length = PSDWriter()
       length.n(component.knots.count, 2)
       let operation: Int
-      switch i == 0 ? .combine : component.operation {
+      switch i == 0 && component.operation != .subtract ? .combine : component.operation {
       case .combine: operation = 1
       case .subtract: operation = 2
       case .intersect: operation = 3
@@ -194,21 +195,10 @@ enum PSDPaths {
     }
     var path = try read(records, width: width, height: height)
     if !path.isEmpty {
-      path.inverted = path.components.first?.operation == .subtract
-      if path.inverted {
-        guard !path.components.dropFirst().contains(where: { $0.operation == .intersect }) else {
-          throw CraftError.unsupported(
-            "PSD leading-subtract/intersect paths are not supported yet.")
-        }
-        for i in path.components.indices.dropFirst() {
-          if path.components[i].operation == .combine {
-            path.components[i].operation = .subtract
-          } else if path.components[i].operation == .subtract {
-            path.components[i].operation = .combine
-          }
-        }
-        path.components[0].operation = .combine
-      }
+      // Preserve component operations and order. Geometry evaluates a leading
+      // subtraction as the complement of the first contour, including later
+      // intersections; the vector-mask flag remains a separate final inversion.
+      path.inverted = false
     } else {
       path.inverted.toggle()
     }

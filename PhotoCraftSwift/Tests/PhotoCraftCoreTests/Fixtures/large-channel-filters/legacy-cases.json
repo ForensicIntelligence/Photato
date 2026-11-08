@@ -1,0 +1,2594 @@
+[
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 0,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 1536,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 3072,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 4608,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 6144,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 7680,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 9216,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 10752,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 12288,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 13824,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 15360,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 16896,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 18432,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 19968,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 21504,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 23040,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 24576,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 26112,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 27648,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 29184,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 30720,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 32256,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 33792,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 35328,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 36864,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 38400,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 39936,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 41472,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 43008,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 44544,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 46080,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 47616,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 49152,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 50688,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 52224,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 53760,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 55296,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 56832,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 58368,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 59904,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 61440,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 62976,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 64512,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 66048,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 67584,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 69120,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 70656,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 72192,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 73728,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 75264,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 76800,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 78336,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 79872,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 81408,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 82944,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 84480,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 86016,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 87552,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 89088,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 90624,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 92160,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 93696,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 95232,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 96768,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 98304,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 99840,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 101376,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 102912,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 104448,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 105984,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 107520,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 109056,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 110592,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 112128,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 113664,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 115200,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 116736,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 118272,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 119808,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 121344,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 122880,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 124416,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 125952,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 127488,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 129024,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 130560,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 132096,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 133632,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 135168,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 136704,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 138240,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 139776,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 141312,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 142848,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 144384,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u8",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 145920,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 147456,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 148992,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 150528,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 152064,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 153600,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 155136,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 156672,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 158208,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 159744,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 161280,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 162816,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 164352,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 165888,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 167424,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 168960,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 170496,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 172032,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 173568,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 175104,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 176640,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 178176,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 179712,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 181248,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 182784,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 184320,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 185856,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 187392,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 188928,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 190464,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 192000,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 193536,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 195072,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 196608,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 198144,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 199680,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 201216,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 202752,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 204288,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 205824,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 207360,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 208896,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 210432,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 211968,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 213504,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 215040,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 216576,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 218112,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 219648,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 221184,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 222720,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 224256,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 225792,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 227328,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 228864,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 230400,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 231936,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 233472,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 235008,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 236544,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 238080,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 239616,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 241152,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 242688,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 244224,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 245760,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 247296,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 248832,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 250368,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 251904,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 253440,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 254976,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 256512,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 258048,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 259584,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 261120,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 262656,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 264192,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 265728,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 267264,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 268800,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 270336,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 271872,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 273408,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 274944,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 276480,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 278016,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 279552,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 281088,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 282624,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 284160,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 285696,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 287232,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 288768,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 290304,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 291840,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "u16",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 293376,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 294912,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 296448,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 297984,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 299520,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 301056,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 302592,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 304128,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 305664,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 307200,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 308736,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 310272,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 311808,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 313344,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 314880,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 316416,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 317952,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 319488,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 321024,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 322560,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 324096,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 325632,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 327168,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 328704,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 330240,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 331776,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 333312,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 334848,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 336384,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 337920,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 339456,
+    "selected" : false,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 340992,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 342528,
+    "selected" : true,
+    "target" : "alpha"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 344064,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 345600,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 347136,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 348672,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 350208,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 351744,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 353280,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 354816,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 356352,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 357888,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 359424,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 360960,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 362496,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 364032,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 365568,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 367104,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 368640,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 370176,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 371712,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 373248,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 374784,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 376320,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 377856,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 379392,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 380928,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 382464,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 384000,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 385536,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 387072,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 388608,
+    "selected" : false,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 390144,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 391680,
+    "selected" : true,
+    "target" : "quickMask"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 393216,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 394752,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 396288,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "gaussianBlur",
+    "offset" : 397824,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 399360,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 400896,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "boxBlur",
+    "offset" : 402432,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "boxBlur",
+    "offset" : 403968,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 405504,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 407040,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "motionBlur",
+    "offset" : 408576,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "motionBlur",
+    "offset" : 410112,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 411648,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 413184,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "highPass",
+    "offset" : 414720,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "highPass",
+    "offset" : 416256,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 417792,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 419328,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 420864,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "unsharpMask",
+    "offset" : 422400,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 423936,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 425472,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "addNoise",
+    "offset" : 427008,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "addNoise",
+    "offset" : 428544,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 430080,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 431616,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "average",
+    "offset" : 433152,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "average",
+    "offset" : 434688,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 436224,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 437760,
+    "selected" : false,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "maskedAreas",
+    "kind" : "mosaic",
+    "offset" : 439296,
+    "selected" : true,
+    "target" : "spot"
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "f32",
+    "indicates" : "selectedAreas",
+    "kind" : "mosaic",
+    "offset" : 440832,
+    "selected" : true,
+    "target" : "spot"
+  }
+]

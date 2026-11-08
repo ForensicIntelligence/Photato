@@ -1,0 +1,20 @@
+{
+  "step": 458,
+  "run": "artifacts/runs/20261107T004443Z-458-content-aware-apply",
+  "status": "Apply workflow development tested; native acceptance pending CUA restoration",
+  "current_major_workflow": "B07",
+  "next": "D04",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7445,
+  "latest_software": 458,
+  "latest_optimized_universal": 457,
+  "goal_complete": false,
+  "prior_turn_classification": "progress:457delivered7focusmodes/native/API/history and evidence;57Debug/57ARM56Intel/all10newpass; legacy234Intelassertions reproduced456,6f32buffers16colorwords1\u20134ULP retained; history457/79203evidence/31672logs/missing0.",
+  "unrelated_workers": "Observed RecoveryFoundation swift-test in Desktop/Aegis-MyEngene; not owned, untouched.",
+  "source_manifest": "artifacts/runs/20261107T004443Z-458-content-aware-apply/source02-source.json",
+  "native_validation_app_running": true,
+  "native_validation_pid": 6678,
+  "native_check": "pending; native pipe disconnected",
+  "evidence": "docs/CONTENT_AWARE_APPLY_458.json"
+}

@@ -13,6 +13,11 @@ extension AutomationService {
     let selectedFilterMaskEdit:Bool
     if case .smartFilterMask(let owner,_)=command {
       selectedFilterMaskEdit=maskTarget == MaskPaintTarget(layerID:owner,smartFilter:true)
+    } else if case .applyFilter=command,maskTarget != nil {
+      selectedFilterMaskEdit=true
+    } else if case .maskFilter=command {
+      guard !store.editingComponent else {throw AutomationFailure(status:422,message:"Leave component editing before filtering a mask.")}
+      selectedFilterMaskEdit=true
     } else {selectedFilterMaskEdit=false}
     try await executePreparedOperation(document: document, shareID: shareID, revision: expected,
       allowAuxiliary:selectedFilterMaskEdit,validateCommit:{
@@ -25,22 +30,25 @@ extension AutomationService {
     }
   }
   func executePreparedOperation(document: CraftNSDocument, shareID: UUID, revision expected: String,
-    allowFitImage:Bool = false,allowPixelMaskTransform:Bool = false,allowSelection:Bool = false,allowPixelPaint:Bool = false, allowAuxiliary: Bool = false, allowPathTarget: Bool = false, allowModeComponents: Bool = false, allowLinkedSmartObject: Bool = false,
+    allowFitImage:Bool = false,allowPixelMaskTransform:Bool = false,allowSelection:Bool = false,allowPixelPaint:Bool = false, allowAuxiliary: Bool = false, allowPathTarget: Bool = false, allowModeComponents: Bool = false, allowColorProfile: Bool = false, allowLinkedSmartObject: Bool = false,
     validateCommit: @escaping @MainActor () throws -> Void = {},
     prepare: @escaping @Sendable (CraftDocument) async throws -> Command) async throws {
     _ = try await executePreparedResult(document: document, shareID: shareID, revision: expected,
-      allowFitImage:allowFitImage,allowPixelMaskTransform:allowPixelMaskTransform,allowSelection:allowSelection,allowPixelPaint:allowPixelPaint,allowAuxiliary: allowAuxiliary, allowPathTarget: allowPathTarget, allowModeComponents: allowModeComponents, allowLinkedSmartObject: allowLinkedSmartObject,
+      allowFitImage:allowFitImage,allowPixelMaskTransform:allowPixelMaskTransform,allowSelection:allowSelection,allowPixelPaint:allowPixelPaint,allowAuxiliary: allowAuxiliary, allowPathTarget: allowPathTarget, allowModeComponents: allowModeComponents, allowColorProfile: allowColorProfile, allowLinkedSmartObject: allowLinkedSmartObject,
       validateCommit: validateCommit) { source in (try await prepare(source), true) }
   }
   /// Return bounded worker output only after the matching document transaction commits.
   func executePreparedResult<Output: Sendable>(document: CraftNSDocument, shareID: UUID, revision expected: String,
-    allowFitImage:Bool = false,allowPixelMaskTransform:Bool = false,allowSelection:Bool = false,allowPixelPaint:Bool = false, allowAuxiliary: Bool = false, allowPathTarget: Bool = false, allowModeComponents: Bool = false, allowLinkedSmartObject: Bool = false,
+    allowFitImage:Bool = false,allowPixelMaskTransform:Bool = false,allowSelection:Bool = false,allowPixelPaint:Bool = false, allowAuxiliary: Bool = false, allowPathTarget: Bool = false, allowModeComponents: Bool = false, allowColorProfile: Bool = false, allowLinkedSmartObject: Bool = false,
     validatePreparedOutput: @escaping @Sendable (Output) throws -> Void = {_ in},
     validateCommit: @escaping @MainActor () throws -> Void = {},
     prepare: @escaping @Sendable (CraftDocument) async throws -> (Command, Output)) async throws -> Output {
     let store = document.store
+    if allowColorProfile, !store.canBeginColorProfile {
+      throw AutomationFailure(status: 422, message: "This operation requires the composite color-profile target.")
+    }
     let pathContext = allowPathTarget && !store.editingComponent && !store.editingMask && !store.smartFilterMaskEditing && !store.geometryBusy && !store.hasToneDraft && store.transformDraft == nil
-    guard (allowFitImage && store.canBeginFitImage) || (allowPixelPaint && store.canUsePixelPaint) || (allowPixelMaskTransform && store.canBeginPixelMaskTransform) || allowSelection || (allowLinkedSmartObject && store.canManageLinkedArtwork) || (allowModeComponents && store.canEditModeComponents) || pathContext || store.clipboardTargetAvailable || (allowAuxiliary && store.canEditChannels) else {
+    guard (allowFitImage && store.canBeginFitImage) || (allowPixelPaint && store.canUsePixelPaint) || (allowPixelMaskTransform && store.canBeginPixelMaskTransform) || allowSelection || (allowLinkedSmartObject && store.canManageLinkedArtwork) || (allowModeComponents && store.canEditModeComponents) || (allowColorProfile && store.canBeginColorProfile) || pathContext || store.clipboardTargetAvailable || (allowAuxiliary && store.canEditChannels) else {
       throw AutomationFailure(status: 422, message: "This operation requires the RGB layer target.")
     }
     let paintMaskTarget=allowAuxiliary ? store.selectedMaskPaintTarget:nil
@@ -60,6 +68,7 @@ extension AutomationService {
     }
     let worker = Task.detached(priority: .userInitiated) {
       let (command, output) = try await prepare(original)
+      if allowColorProfile { guard case .preparedColorProfile = command else { throw CraftError.invalid("Expected a prepared profile assignment or conversion.") } }
       if allowPixelMaskTransform{guard case .transformPixelMask(let request)=command,request.layerID==maskTarget else{throw CraftError.invalid("Expected a pixel-mask transform command.")}}
       if allowPixelPaint{guard case .pixelPaint(let request)=command,request.target==paintTarget else{throw CraftError.invalid("Expected the captured pixel-paint target.")}}
       let prepared=try PreparedEdit(command: command, document: original)

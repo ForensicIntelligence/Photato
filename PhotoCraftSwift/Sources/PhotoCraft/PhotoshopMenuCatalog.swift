@@ -39,6 +39,7 @@ enum PhotoshopMenuCatalog {
       "Photato",
       [
         .item("About Photato…"),
+        .item("Generated Results…"),
         .menu(
           "About Plugins",
           [

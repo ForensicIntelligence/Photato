@@ -98,14 +98,22 @@ extension Layer {
           ceil(corners.map(\.x).max()!), ceil(corners.map(\.y).max()!))
       }
     }
-    if let mask = vectorMask, mask.enabled, !mask.path.inverted {
-      let points = mask.path.components.flatMap(\.knots).flatMap {
-        [$0.anchor, $0.incoming, $0.outgoing]
+    if let mask = vectorMask, mask.enabled {
+      let exteriorFilled: Bool
+      if mask.path.components.first?.operation == .subtract {
+        exteriorFilled = try VectorPathGeometry.filledRegion(mask.path).inverted
+      } else {
+        exteriorFilled = mask.path.inverted
       }
-      if !points.isEmpty {
-        intersect(
-          floor(points.map(\.x).min()!), floor(points.map(\.y).min()!),
-          ceil(points.map(\.x).max()!), ceil(points.map(\.y).max()!))
+      if !exteriorFilled {
+        let points = mask.path.components.flatMap(\.knots).flatMap {
+          [$0.anchor, $0.incoming, $0.outgoing]
+        }
+        if !points.isEmpty {
+          intersect(
+            floor(points.map(\.x).min()!), floor(points.map(\.y).min()!),
+            ceil(points.map(\.x).max()!), ceil(points.map(\.y).max()!))
+        }
       }
     }
     return IntRect(

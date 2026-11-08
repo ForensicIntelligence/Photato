@@ -41,7 +41,8 @@ final class AlphaChannelTests: XCTestCase {
     try session.execute(.channel(.options(.quickMask,options))); XCTAssertEqual(session.document.quickMask?.pixels,old)
     try session.execute(.channel(.fill(.quickMask,0,1))); XCTAssertEqual(session.document.quickMask?.pixels.pixel(x:0,y:0).r,1)
     let beforeExit = session.document
-    try session.execute(.channel(.quickMask(false,options))); XCTAssertNil(session.document.selection); XCTAssertNil(session.document.quickMask)
+    // Photoshop selected-area black Fill preserves an explicit full selection; see the independent Quick Mask fixtures.
+    try session.execute(.channel(.quickMask(false,options))); XCTAssertEqual(session.document.selection,IntRect(x:0,y:0,width:12,height:8)); XCTAssertTrue(try XCTUnwrap(session.document.coverageSelection()).isFullCoverage); XCTAssertNil(session.document.quickMask)
     try session.undo(); XCTAssertEqual(session.document,beforeExit)
     XCTAssertEqual(session.document.layers,original.layers)
   }

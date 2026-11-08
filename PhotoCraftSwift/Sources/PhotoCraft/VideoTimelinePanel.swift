@@ -11,12 +11,12 @@ extension EditorStore {
   func editVideo(_ command: VideoCommand) { guard canUseTimeline else { return }; stopTimelinePlayback(render:false); perform(.video(command)) }
   func startVideoPlayback() throws { try startNativeVideoPlayback() }
   var videoState: [String:Any] {
-    ["pixelsPerSecond":videoTimelinePixelsPerSecond,"selectedTransitionID":videoSelectedTransitionID?.uuidString as Any? ?? NSNull(),"transitionEditorVisible":videoTransitionEditorVisible,"arrangement":VideoArrangementAPI.state(document),"placementOperationID":moviePlacementID?.uuidString as Any? ?? NSNull(),"timeline":document.videoTimeline.map { TemporalContentAPI.timeline($0) } as Any? ?? NSNull(),
+    ["canCreateBlankLayer":canCreateBlankVideoLayer,"pixelsPerSecond":videoTimelinePixelsPerSecond,"selectedTransitionID":videoSelectedTransitionID?.uuidString as Any? ?? NSNull(),"transitionEditorVisible":videoTransitionEditorVisible,"arrangement":VideoArrangementAPI.state(document),"placementOperationID":moviePlacementID?.uuidString as Any? ?? NSNull(),"timeline":document.videoTimeline.map { TemporalContentAPI.timeline($0) } as Any? ?? NSNull(),
      "previewFrame":timelinePreviewVideoFrame as Any? ?? NSNull(),
      "keyframes":document.layers.filter{$0.videoKeyframes != nil}.map{["layerID":$0.id.uuidString,"keys":$0.videoKeyframes!.map{TemporalContentAPI.key($0)}] as [String:Any]},
      "clips":document.layers.compactMap { layer -> [String:Any]? in
        guard let clip = layer.video else { return nil }
-       return ["layerID":layer.id.uuidString,"sourceFrames":clip.frames.count,"sourceFrameRate":clip.frameRate,"sourceIn":clip.sourceStart,"sourceOut":clip.sourceEnd,"startTime":clip.startTime,"inFrame":clip.inFrame,"outFrame":clip.outFrame,"duration":clip.duration,"movie":MovieAPI.state(clip.movie)]
+       return ["layerID":layer.id.uuidString,"sourceFrames":clip.frames.count,"sparseFrames":clip.frames.isSparse,"storedFrames":clip.frames.storedFrameCount,"sourceFrameRate":clip.frameRate,"sourceIn":clip.sourceStart,"sourceOut":clip.sourceEnd,"startTime":clip.startTime,"inFrame":clip.inFrame,"outFrame":clip.outFrame,"duration":clip.duration,"movie":MovieAPI.state(clip.movie)]
      }]
   }
 }
@@ -34,6 +34,7 @@ struct VideoTimelinePanel: View {
             if timeline.retainedFrameSources?.isEmpty == false {Button("Restore Original Video Timeline…") {store.presentVideoSourceRecovery()}}
             Divider()
             TimelineWorkspaceMenu(store:store)
+            Button("New Blank Video Layer"){store.createBlankVideoLayer()}.disabled(!store.canCreateBlankVideoLayer)
             Button("Render Video…"){store.presentRenderVideo()}
             Divider()
             Button("New Video Group") {store.editVideo(.arrange(.group("Video Group",[])))}

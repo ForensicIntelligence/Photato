@@ -1,0 +1,172 @@
+{
+  "step": 455,
+  "date": "2026-11-06",
+  "type": "Independent Photoshop behavior reference and integration design; no software changes",
+  "prior_turn": "progress:454 implemented brush-pattern texture workflow,40Debug/native/history checks passed",
+  "source_inputs_unchanged": 7409,
+  "source_manifest": "artifacts/runs/20261106T224610Z-455-eraser-modes/baseline-source.json",
+  "source_modified": false,
+  "tests_or_build_run": false,
+  "latest_software": 454,
+  "latest_optimized_universal": 453,
+  "Photoshop_UI": {
+    "actual_native_UI": true,
+    "owned_document": "96x72 uniform encodedRGB128 PSD, generated publicformatheaders/planes",
+    "menu_modes": [
+      "Brush",
+      "Pencil",
+      "Block"
+    ],
+    "Block_UI": "Brush diameter selector unavailable, Opacity/Flow unavailable; Smoothing0visible; EraseToHistory present.",
+    "owned_original_unchanged": true,
+    "cleanup": "EachnewreferenceSaveAs separately; originalunchanged. FinalEraserModeBrush/zoom100/BrushTool restored, saved owned reference closednormally;PhotoshopHome,no own document/dialog left.",
+    "screenshots": "CUAconversation only; savedPSD/decodedRGB evidence retained.",
+    "Pencil_controls_not_yet_qualified": true
+  },
+  "independent_merged_plane_reports": [
+    {
+      "file": "owned-block-100.psd",
+      "sha256": "32e0da4b94c42ad43c156fa00a341597f0deace974ff47db87ab1736479d7c3a",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 256,
+      "bbox_exclusive": [
+        40,
+        28,
+        56,
+        44
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-125.psd",
+      "sha256": "ad6462b1866c157c4ff43d4e655d29bab3b8e5e23700bfd627cdb1d48d80b8bf",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 144,
+      "bbox_exclusive": [
+        42,
+        30,
+        54,
+        42
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-1600.psd",
+      "sha256": "16a433433bc6360be103303dd0a67fac17c1c78151564dc5c47c122f8cf5003b",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 1,
+      "bbox_exclusive": [
+        48,
+        36,
+        49,
+        37
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-200.psd",
+      "sha256": "fad30135e5058b956bf6ada7255d0a1c6313330e9a99a462bec9185ec37cdf84",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 64,
+      "bbox_exclusive": [
+        44,
+        32,
+        52,
+        40
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-6400.psd",
+      "sha256": "42c2204cbc8feb9d158ceebac5b6d2214487f49108ce6e6774c2716a858a5fb4",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 0,
+      "bbox_exclusive": null,
+      "changed_RGB_colors": [],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-6400-center.psd",
+      "sha256": "0af08404a43b807117344026e0059f19a9ab87717357d56f68b992c150d53d2a",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 0,
+      "bbox_exclusive": null,
+      "changed_RGB_colors": [],
+      "independent_public_PSD_merged_plane_parser": true
+    }
+  ],
+  "inference": "Selected integerfootprints agree with floor(16/zoom) and no forcedminimum at highzoom; this is an inference from six ownedRGB8single-click probes, not proof of allpositions/depths/profiles/strokes.",
+  "important_design_rejection": "Do not reuse one-pixel bilinear bitmap as a square or force Blocksize>=1 at6400; both can produce different output. Preserve existing brush-mode fastpath and document/mask/component semantics.",
+  "other_discovery": "PhotoshopEraserBrush displayed valid5000pxsize; Photato2048brushcap cannotrepresentthat state. Track underfullB01scope; this observation doesnot establishAdobe absolute maximum.",
+  "API_impact": "None yet. Planned native/APIsharedmodes through existingpaint.configure/paint.tool, preservebrush.configure/paint.stroke clients; no invented Adobe endpoint.",
+  "pending": [
+    "Implement3modes with core/native/API/history/persistence/capturedcursors/all16modifiers and focusedtests",
+    "Pencildefault/control policy, continuousBlockstroke/selection/transformedtargets/otherdepths/profile/tablet/defaults",
+    "EraseToHistory/Optionalternate needs actualhistory-source architecture; keepB06/fullscopeopen, do notadvertiseunavailableactions",
+    "All priorstrictFloat32/fullsuite/capacity/physical/60fps requirements"
+  ],
+  "current": "B02 Eraser modes implementation",
+  "next": "B04 after selecteddeliverytested; noqueue rotation now",
+  "counts": {
+    "packages": 104,
+    "tracked_command_IDs": 652,
+    "typed_commands": 260,
+    "major_queue_members": 81,
+    "passes": 7
+  },
+  "distribution": "NoGitHuboperation/deletion/newbuild/install/Store/archive/software release. Currentbuildsprotected.",
+  "goal_complete": false,
+  "recorded_utc": "2026-11-06T22:55:45.790993+00:00"
+}

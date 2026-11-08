@@ -106,11 +106,16 @@ extension EditorStore {
           guard response == .OK, let destination = panel.url, let self else { return }
           guard self.document == draft.original else { self.error = "The source changed. Open Export As again."; return }
           Task { @MainActor in
+            let scoped = destination.startAccessingSecurityScopedResource()
+            defer { if scoped { destination.stopAccessingSecurityScopedResource() } }
             do {
-              try await Task.detached(priority: .userInitiated) { try ImageExportPublication.write(files, to: destination, directory: files.count != 1) }.value
+              let worker = Task.detached(priority: .userInitiated) { try ImageExportPublication.write(files, to: destination, directory: files.count != 1) }
+              try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
               try ImageExportPreferences.saveLast(settings)
               self.status = "Exported \(files.count) asset\(files.count == 1 ? "" : "s")"
-            } catch { self.error = "Export stopped: \(error.localizedDescription) Files already exported are retained." }
+            } catch {
+              self.error = "Export stopped: \(error.localizedDescription)" + (files.count > 1 ? " Files already exported are retained." : "")
+            }
           }
         }
       } catch { if imageExportDraft === draft { draft.error = error.localizedDescription } }
@@ -130,7 +135,8 @@ enum ImageExportPublication {
       guard paths.allSatisfy({ !FileManager.default.fileExists(atPath: $0.path) }) else { throw CraftError.invalid("An export file already exists; choose another folder or suffix.") }
       for (file, path) in zip(files, paths) { try Task.checkCancellation(); try ArtboardExport.writeNew(file.data, to: path) }
     } else {
-      let writer = try AtomicFileWriter(to: destination, maximumBytes: ImageAssetExport.maximumBytes); try writer.append(files[0].data); try Task.checkCancellation(); try writer.commit()
+      guard files[0].data.count <= ImageAssetExport.maximumBytes else { throw CraftError.invalid("Export exceeds its encoded byte budget.") }
+      try PreparedDocumentOutput.data(files[0].data).write(to: destination)
     }
   }
 }

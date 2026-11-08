@@ -1,0 +1,23 @@
+{
+  "step": 483,
+  "application_build": 483,
+  "status": "Selected event workflow passes focused tests and native validation; broader old API failure retained; final history audit separate",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "S05",
+  "next": "A02",
+  "run": "artifacts/runs/20261107T222459Z-483-script-events",
+  "source_manifest": "artifacts/runs/20261107T222459Z-483-script-events/release02-source.json",
+  "source_inputs": 7596,
+  "reference": "docs/SCRIPT_EVENT_ACTIONS_483.json",
+  "latest_fully_qualified_selected_universal": 480,
+  "goal_complete": false,
+  "next_task": {
+    "package": "S05",
+    "title": "Quick Mask and saved selections",
+    "scope": "Quick Mask and saved selections: repair confirmed Selected Areas / initially empty / explicit full and persisted gray semantics using retained Photoshop401matrix",
+    "reference": "docs/QUICK_MASK_GRAY_401.json",
+    "reference_matrix": "artifacts/runs/20261104T191355Z-401-quick-mask-gray-convention/reference-matrix01.json",
+    "action": "Inspect retained independent PSD/selection sample matrix and current model/codecs; preserve full original scope; implement shared native/core/API repair and exact tests, then A02."
+  }
+}

@@ -6,21 +6,27 @@ import PhotoCraftCore
 enum PcraftSmartObjects {
   struct Decoded {let source:SmartObject;let pixels:Surface}
   @inline(never) static func layer(_ node:PcraftNode,name:String,project:PcraftProject,namespace:Data,parent:CraftDocument,
-    budget:inout Int,sources:inout [String:Decoded])throws->Layer {
-    let decoded = try original(node, project:project, namespace:namespace, parent:parent, budget:budget, sources:&sources)
+    budget:inout Int,sources:inout [String:Decoded],linkedFiles:inout [String:PSDSmartObjects.File]?)throws->Layer {
+    let decoded = try original(node, project:project, namespace:namespace, parent:parent, budget:budget, sources:&sources,linkedFiles:&linkedFiles)
     return try assemble(node, name:name, project:project, namespace:namespace, parent:parent, decoded:decoded, budget:&budget)
   }
   // Opening a child must not retain the much larger layer/filter/cache assembly
   // frame for every admitted nesting level on a cooperative worker stack.
   @inline(never) private static func original(_ node:PcraftNode,project:PcraftProject,namespace:Data,parent:CraftDocument,
-    budget:Int,sources:inout [String:Decoded])throws->Decoded {
+    budget:Int,sources:inout [String:Decoded],linkedFiles:inout [String:PSDSmartObjects.File]?)throws->Decoded {
     try node.keys("kind source transform smart_filters cache psd_raw filters_enabled filter_mask warp stack_mode perspective")
     let origin=try node.field("source");try origin.keys("kind file_name blob path")
-    guard try origin.field("kind").string()=="embedded" else {
-      throw origin.unsupported("Linked Smart Objects need explicit unknown-source geometry and authorized resolution before migration; no file was opened.")
+    let fileName:String,blob:String,bytes:Data
+    switch try origin.field("kind").string() {
+    case "embedded":
+      fileName=try origin.field("file_name").string();blob=try origin.field("blob").string()
+      guard let value=project.blobs[blob]else{throw origin.invalid};bytes=value
+    case "linked":
+      let identifier=try origin.field("path").string(),file=try PcraftLinkedSources.embedded(identifier,in:parent,cache:&linkedFiles)
+      fileName=file.name;blob="psd-linked:"+identifier;bytes=file.data
+    default:throw origin.unsupported("Unknown Smart Object source kind.")
     }
-    let fileName=try origin.field("file_name").string(),blob=try origin.field("blob").string()
-    guard let bytes=project.blobs[blob],!bytes.isEmpty,bytes.count<=SmartObject.maximumSourceBytes else{throw origin.invalid}
+    guard !bytes.isEmpty,bytes.count<=SmartObject.maximumSourceBytes else{throw origin.invalid}
     let mode:ImageStackMode?
     if let stack=node.optional("stack_mode") {
       let name=try stack.string(),key=name.prefix(1).lowercased()+name.dropFirst()

@@ -1,0 +1,13 @@
+> Integrated into the source-delivery diary on 8 November 2026 UTC from the retained checkpoint487 working record. Status statements below describe that checkpoint. Local raw logs, user documents, reference sessions and app bundles are excluded from the public repository. The canonical historical-evidence audit is still pending; see the [delivery record](../SOURCE_PUBLICATION_500.md).
+
+# Step487: shared person-selection model
+
+Each document previously created its own person-feature detector. With four owners, the actual compiled runtime loaded four providers. The candidate now shares one live provider through a locked weak reference. Prediction stays inside the actor, while each document retains its own source identity, selection cache and cancellation/history guards. The pool does not keep the model alive after its last owner releases it. Core ML may retain system caches.
+
+All47selected Debug tests and the same47optimized tests on Apple Silicon and translated Intel pass, including four new tests. A native host using the complete optimized production modules compares four sequential results, four concurrent results and four results alongside a cancelled request with build486. All18,874,368checked probability bytes match. Cancellation does not change the other results, and the provider releases after the last owner.
+
+The universal candidate passes macOS14minimum metadata, unchanged entitlements, signatures, executable payload and extracted-ZIP checks. In the actual isolated app, the AI sheet reports Image Playground unavailable and the local text model not ready. Generate and Refine remain disabled with a valid owned prompt. The prompt is cleared, the sheet closes, and the app quits normally. A follow-up accessibility read unexpectedly relaunched the app once; that observation is retained, and a second normal Quit is verified using process state. No generation or settings change occurred.
+
+Failures from the investigation remain in the record: one private helper supplied a string to a Path-only hash function; a per-file optimized replacement failed linking because the module shares generated symbols. Rebuilding the complete module fixed the link. Neither attempt changed the model or weakened assertions.
+
+The main project remains frozen at485while its full evidence check runs. The qualified486and487sources, packages, tests, API metadata and working notes are retained separately for promotion and the public diary refresh. The final source guard is also still reading the main tree. FullAI01, real Apple generation, supported physical platforms, broad regression and Photoshop equivalence remain open. Earlier gradient/API/Fill-modal failures remain unresolved. No GitHub mutation, production installation or release occurred.

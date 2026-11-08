@@ -183,7 +183,7 @@ final class LayerStackOrderWorkflowTests: XCTestCase {
     s.playAction(file.actions[0]); await s.geometryTask?.value
     XCTAssertNil(s.error); XCTAssertEqual(s.document.layers.map(\.name), self.expected[.reverse])
     XCTAssertEqual(s.session.undoStack.count, 1)
-    XCTAssertEqual(ActionLibraryFile.maximumVersion, 53)
+    XCTAssertEqual(ActionLibraryFile.maximumVersion, 60)
   }
 
   @MainActor func testDiscoverySchemaStateAndPublishedContractMetadata() async throws {

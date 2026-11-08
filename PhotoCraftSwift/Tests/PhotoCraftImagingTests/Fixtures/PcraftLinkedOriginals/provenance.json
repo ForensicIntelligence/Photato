@@ -1,0 +1,29 @@
+{
+  "step": 473,
+  "origin": "Owned deterministic derivatives of existing licensed Rust-generator PcraftSmart fixtures. Only source references and an added PSD linked-file data block are changed; original compressed tiles/blobs/cache/placement/filter data retained. No Adobe/user image data.",
+  "serializer": "Python standard zipfile stored ZIP, zstd CLI, unchanged native BLAKE3 fixture CLI; referenced-child payloads are original owned .pcraft bytes.",
+  "primary_reference": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "independent_rendering_claim": false,
+  "goldens": "Existing original PcraftSmart cached/render buffers are unchanged; these derivatives did not run in the Rust application.",
+  "files": {
+    "cases.json": "84c950c33cced1680767fd59622f1177f262ac8343b35e0c3541b95de7d87015",
+    "referenced-affine-cached-f32.pcraft": "da59ac5ea595fb7f19db0c4a53e85f08ae7873bc7b0741e7b26e3f655736282b",
+    "referenced-affine-cached-u16.pcraft": "2ade9089a1bf6e9e895cd1a2cf69d0a747e84529344feb9cef0f6efbd6da409b",
+    "referenced-affine-cached-u8.pcraft": "53e5a833ba7249f79a793ac5af393e5dc4594d055c0ba574be850b41d646de5e",
+    "referenced-shared-f32.pcraft": "be161ea69328c17c3039865f46f376712d990c72191ff00cffe7222f69ecdcd3",
+    "referenced-shared-u16.pcraft": "841ea8b9a15f02bdd8e5ade13aa6e52fde492ae0156c23ad55b47bd54ad5a015",
+    "referenced-shared-u8.pcraft": "8f8bf05c7b0b27d294f4a2f833757a8d97f4541a0b516245bda95a4d45926d4e",
+    "referenced-stack-mean-f32.pcraft": "561b421b712307729a80deb68fca8bd02ddf86f0ef53522e63c697fe1445f5b7",
+    "referenced-stack-mean-u16.pcraft": "070bcc3605558cff389f653ca626d6dab94744661c642eecfbfdfea722598e9f",
+    "referenced-stack-mean-u8.pcraft": "349680eb8147cf75e2deb9f7e8251f4a5e9e200243699d433729fad96bf7e0c6",
+    "pcraft-linked-original-caches.f32le": "58d31de5e15bdc2a66682fa01b7af9f64b23692839e7852fc71fdf844e0f793c",
+    "pcraft-linked-original-cases.json": "9d04dd47369a89f04c5bbebc38f9f1ddce7424784561f6c45b56d8e71e43be6e"
+  },
+  "baseline": {
+    "attempt": "source01",
+    "application_unchanged_from": 472,
+    "cache_sample_bytes": 737280,
+    "baseline_decoder_rejection_capture_passed": true,
+    "baseline_batch": "14of15pass; existing uncachedSmart original-Rust9word assertions retained"
+  }
+}

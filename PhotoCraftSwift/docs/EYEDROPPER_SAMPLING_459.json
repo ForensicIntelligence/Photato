@@ -1,0 +1,262 @@
+{
+  "step": 459,
+  "date": "2026-11-06",
+  "recorded_utc": "2026-11-07T02:01:11.291087+00:00",
+  "package": "B07",
+  "status": "Native averaged Eyedropper/five layer sources/captured foreground-background drag/ring/shared persisted settings/API implemented;45Debug and45same optimized methods each architecture pass,19new. Live native acceptance pending CUA.",
+  "goal_complete": false,
+  "changes": {
+    "modified": [
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/ComponentEditing.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "Sources/PhotoCraft/ToolCursor.swift",
+      "Sources/PhotoCraft/ToolCursorAPI.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "Tests/PhotoCraftAppTests/AnimationFrameDragTests.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/BlurGalleryMaskWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/BrushPatternTextureTests.swift",
+      "Tests/PhotoCraftAppTests/ChannelFooterWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ChannelThumbnailOptionsTests.swift",
+      "Tests/PhotoCraftAppTests/ColorLookupMultiExportTests.swift",
+      "Tests/PhotoCraftAppTests/CustomKernelPresetWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/EraserModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterRecallWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FocusBlendModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GalleryEffectDragTests.swift",
+      "Tests/PhotoCraftAppTests/GalleryTextureWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GradientCreationWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LargeEqualizeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LensDefaultWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LightEditingPreviewWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LiquifyMeshRecallTests.swift",
+      "Tests/PhotoCraftAppTests/PagedHistogramWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PatternLibraryWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PatternPatchWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PointTextWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/RasterizeResponsivenessTests.swift",
+      "Tests/PhotoCraftAppTests/SelectionAntsTests.swift",
+      "Tests/PhotoCraftAppTests/ShapeBlurKernelWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/SkyRenameTests.swift",
+      "Tests/PhotoCraftAppTests/SmartFilterDragTests.swift",
+      "Tests/PhotoCraftAppTests/TransformReferenceTests.swift",
+      "scripts/Info.plist"
+    ],
+    "added": [
+      "Sources/PhotoCraft/AutomationColorSampling.swift",
+      "Sources/PhotoCraft/Eyedropper.swift",
+      "Sources/PhotoCraftCore/ColorSampling.swift",
+      "Sources/PhotoCraftImaging/ColorSampling.swift",
+      "Tests/PhotoCraftAppTests/EyedropperWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ColorAveragingTests.swift",
+      "Tests/PhotoCraftImagingTests/ColorSamplingTests.swift"
+    ],
+    "removed": []
+  },
+  "source": {
+    "manifest": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/source07-source.json",
+    "normal_manifest": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/release03-source.json",
+    "inputs": 7452,
+    "unchanged": true,
+    "Debug_and_normal_sources_identical": true,
+    "compiled_Debug_sha256": "1a897bada5ab38ea7ac97edd656a1889020da831fee35f41c164089646030433",
+    "source06_source07_application_identical": true,
+    "source02_source03_application_identical": true,
+    "old_test_changes": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/catalogue-counter-changes01.json",
+    "old_test_math_and_fixtures": "Unchanged;28old files exact command count260\u2192261 only. New test repairs retain result equality and supplied semantic document depth; no tolerance added to old tests.",
+    "project_resources_and_entitlements": "unchanged; existing synchronized .xcodeproj includes new files"
+  },
+  "implementation": {
+    "sizes": [
+      1,
+      3,
+      5,
+      11,
+      31,
+      51,
+      101
+    ],
+    "sources": [
+      "Current Layer",
+      "Current & Below",
+      "All Layers",
+      "All Layers no Adjustments",
+      "Current & Below no Adjustments"
+    ],
+    "native": "Seven-size/source/ring controls; continuous document-space picking. Option captures background instead of foreground. Upper ring new/lower captured/gray surround; tool/focus cancels pending work, Escape restores initial pair only if no intervening palette change. Shift Color Sampler stays unavailable.",
+    "persistence": "Shared controller settings, production UserDefaults loading through convenience and actual PhotatoApp.makeDelegate factories. Detached documents get copies. Isolated sessions memory-only; actual live relaunch not qualified. Corrupt record preserved with factory fallback.",
+    "sampling": "Bounded up to101x101 document region; regional renderer for composite/filtering; exact transformed pixel centers preserve raw current-layer samples. No whole-canvas composite for multilayer picks; existing content-dependent renderer limits remain.",
+    "candidate_numerics": "Alpha-weighted visible finite samples. Integer encoded RGB, Float32 linear RGB. Opaque paint color and separate average coverage; clipped image edge region. Display buffer storage is Float32 even for integer docs, so semantic document depth is explicitly captured. Exact Photoshop behavior unqualified.",
+    "formats": {
+      "typed_commands": 261,
+      "native_archive": 88,
+      "Actions_maximum": 55,
+      "new_Adobe_route": false,
+      "new_global_shortcut": false,
+      "new_main_tool": false
+    }
+  },
+  "API": {
+    "command": "color.sample",
+    "operations": [
+      "configure",
+      "sample"
+    ],
+    "state": "eyedropper.settings/available/displayedChannel/gestureActive/persistentSamplersSupported(false)",
+    "pure": "sample defaults target none, returns RGBA/coverage/region/counts/current revision; no palette/history/document mutation. Explicit size/source/layer overrides leave settings unchanged.",
+    "targets": "foreground/background use the same active shared paint context as native, invalidating peer revisions without image history.",
+    "configure": "Nonempty size/source/showRing patch; requires existing native preference-change permission. Noop revision stable, invalid atomic, production persisted.",
+    "guards": "Idle shared current revision, worker cancellation, service epoch/token/share/source/session/palette/preferences/display epoch. Explicit layer sources unavailable for displayed mask/component/nonRGB contexts.",
+    "schema": "Formal parameter branches/settings/result discovery plus typed command/state/capabilities. Unsupported shapes/size/source/target/outside points reject.",
+    "Adobe": "No dedicated published Photoshopv2HTTP operation; no invented route, UXP runtime or actionJSON support."
+  },
+  "qualification": {
+    "Debug": {
+      "unexpected_signals": [],
+      "expected_count": 45,
+      "missing_cases": [],
+      "exit_code": 0,
+      "inputs": 7452,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftImagingTests.CloneSamplingTests/testCurrentAndBelowPreservesAncestorGroupsAndMasks",
+        "PhotoCraftImagingTests.CloneSamplingTests/testLayerModesVisibilityAndIgnoreAdjustments",
+        "PhotoCraftImagingTests.CloneSamplingTests/testRawLayerTransformMaskAndEditablePSDOutput",
+        "PhotoCraftCoreTests.ColorAveragingTests/testAlphaWeightedSamplingIgnoresTransparentHiddenColor",
+        "PhotoCraftCoreTests.ColorAveragingTests/testFloat32AveragesLinearLightAndRetainsHDR",
+        "PhotoCraftCoreTests.ColorAveragingTests/testLiteralEncodedAverageAndOpaquePointPreserveFloatBits",
+        "PhotoCraftCoreTests.ColorAveragingTests/testMaximumRegionCallsOnlyBoundedPixelsAndChecksCancellation",
+        "PhotoCraftCoreTests.ColorAveragingTests/testSevenSizesClipAtEdgesAndFloorDocumentCoordinates",
+        "PhotoCraftImagingTests.ColorSamplingTests/test300000CanvasSamplesBoundedRegionWithoutFullCanvasAllocation",
+        "PhotoCraftImagingTests.ColorSamplingTests/testCurrentBelowRetainsParentGroupAndCurrentGroupSubtree",
+        "PhotoCraftImagingTests.ColorSamplingTests/testFiveLayerSourcesAgainstLiteralStackAndAdjustments",
+        "PhotoCraftImagingTests.ColorSamplingTests/testTransformedCurrentLayerAndAllDepthNativeRegionMatch",
+        "PhotoCraftImagingTests.ColorSamplingTests/testWriteStrictArchitectureSamples",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testAPIRejectsCancelledRevokedAndStaleWorkerResults",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testDisplayedTargetUsesDocumentDepthAndRejectsExplicitLayerSources",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testHTTPConfigurationPermissionAtomicValidationBusyAndStale",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testHTTPPureSamplingOverridesAndNativeColorEquivalenceEveryDepth",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testNativeDragOptionCaptureEscapeAndNoDocumentHistory",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testPreferencesSharedPersistedNoopDetachedAndProductionStartup",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testSamplingRingNativeOptionsAndSchemas",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testSixteenModifiersCaptureTargetAndDisableMissingColorSampler",
+        "PhotoCraftAppTests.EyedropperWorkflowTests/testStaleToolFocusPalettePreferencesAndSessionRejectPendingSamples",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testAdoptionAndDetachKeepRevisionsMonotonicAndStandaloneEditorsIndependent",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testClosedEditorDetachesAndNewDocumentInheritsControllerPalette",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testControllerDocumentsShareImagePairButBrushSettingsPixelsAndHistoryStayLocal",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testHTTPPaintUsesSharedImageAndMaskColorsWithNativeResultsAndOneUndo",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testIncludedColorPresetAndXDUpdateOnlyActiveSharedPairAtomically",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testObservationAndBrushRevisionFollowPeerColorChangesWithoutHistory",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testPersistenceRestoresPairsAndRejectsInvalidVersionsValuesAndOversizedRecords",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testQuickMaskAndSavedAlphaShareAuxiliaryColorsAcrossAllNativeDepths",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testRealHTTPColorsShareAndPeerOldRevisionsInvalidBusyPatchesStayAtomic",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testSessionReopenRetainsSharedColorsWithoutSerializingPaletteOrTargetHistory",
+        "PhotoCraftAppTests.SharedPaintPaletteWorkflowTests/testStartedNativeStrokeRetainsItsCapturedColorsWhenPeerChangesPalette",
+        "PhotoCraftCoreTests.SurfaceRegionTests/testCancelledMappingIsAtomic",
+        "PhotoCraftCoreTests.SurfaceRegionTests/testRegionMappingClipsExtremeBoundsAndPreservesOutsideBits",
+        "PhotoCraftCoreTests.SurfaceRegionTests/testTileDifferenceSharedCopiesSparseDefaultsAndSignedZero",
+        "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+        "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+        "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+        "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+        "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+        "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+        "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+        "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+        "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+      ],
+      "passed": 45,
+      "failed_cases": [],
+      "totals": [
+        [
+          "45",
+          "0",
+          "0",
+          "1.333"
+        ]
+      ],
+      "build_seconds": [
+        "9.26"
+      ],
+      "finished_utc": "2026-11-07T01:52:31.764758+00:00"
+    },
+    "normal": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/release03-qualification.json",
+    "same_ordered_methods_each": 45,
+    "new_methods_each": 19,
+    "strict_samples": {
+      "samples": 21,
+      "bytes_each": 420,
+      "all_exact": true,
+      "comparisons": [
+        {
+          "pair": "Debug_ARM",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "Debug_Intel",
+          "exact": true,
+          "different_words": []
+        },
+        {
+          "pair": "ARM_Intel",
+          "exact": true,
+          "different_words": []
+        }
+      ],
+      "hashes": [
+        {
+          "path": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/source07-captures/eyedropper-numerics.rgba32",
+          "sha256": "45bc2585cd9a2e5160f173d442444dda37273e3ef19b3fa3347ef41171eed2c7"
+        },
+        {
+          "path": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/release03-arm-captures/eyedropper-numerics.rgba32",
+          "sha256": "45bc2585cd9a2e5160f173d442444dda37273e3ef19b3fa3347ef41171eed2c7"
+        },
+        {
+          "path": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/release03-intel-captures/eyedropper-numerics.rgba32",
+          "sha256": "45bc2585cd9a2e5160f173d442444dda37273e3ef19b3fa3347ef41171eed2c7"
+        }
+      ],
+      "meaning": "Selected deterministic own fixtures only, not independent Photoshop pixel/default/profile proof. No tolerance or normalization."
+    },
+    "universal": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/universal/staging01.json",
+    "Debug_staging": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/validation03.json",
+    "failed_attempts": [
+      "Source01 misplaced validation hook compilation failure; retained5421cached458products explicitly stale.",
+      "Source02 new test isolation/private-setter compilation errors;459app linked, test bundle cached458; retained5421products.",
+      "Source03 all44executed42pass, semantic-depth expected-buffer confusion and unsupported sizeHTTP422 failures preserved. Same app as Source02; retained5421products.",
+      "Source04 exact new test expectation explicitly uses original document depth; displayed-channel implementation corrected likewise. Invalid-size errors now400. Added every-depth displayed-source/override test; all45pass.",
+      "Source06 admits Eyedropper through the real component-canvas guard, corrects the maximum-coordinate parser gap, and adds actual AppKit mouse/last-pixel HTTP regressions; all45Debug pass. Source07 strengthens native event result/palette assertions, with identical application binary. Final source06/07 also admits the real channel pointer path and covers the maximum-coordinate HTTP boundary; numerical kernels are unchanged.",
+      "Source05 adds full state and operation-appropriate result schemas; actual configure/sample HTTP replies validate through the advertised schemas. Source04/Release01 numerical and full selected outcomes are preserved before this schema-only production repair."
+    ],
+    "native_UI_qualified": false,
+    "native_CUA": "After Debug workers ended, documentation refreshed and existing458bundle getApp still nativepipeclosed; no459app launched, noClose/Quit claim.",
+    "physical_performance_or_full_suite": false,
+    "preceding_normal_attempt_before_schema_repair": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/release01-qualification.json"
+  },
+  "reference": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/references01.json",
+  "remaining": [
+    "Persistent Color Sampler points/Info readouts/CRUD/Shift alternate are still missing major functionality; keep disabled until implemented.",
+    "Real tablet pressure/tilt/eraser/buttons, captured replay, cursor bounds/latency and external-desktop sampling remain original B07 functional/platform scope.",
+    "Exact Photoshop2026 zoom-dependent sample footprint, shared size with Magic Wand/Erasers, layer/group visibility/opacity/mask/adjustment semantics, alpha/profile/CMM/HDR/rounding/defaults, shortcut/context combinations and independent output oracles remain unqualified. The 2018 Adobe-employee article describes screen/zoom behavior; document-pixel sampling is a candidate, not verified equivalence.",
+    "Actual native459 control/pointer/ring/drag/Escape/focus/close/Quit and live458Apply checks remain pending restored CUA. PID6678 remains open with post-disconnect UI unknown; no forcekill/bypass or duplicate unlock request.",
+    "All current full-suite and supported physicalIntel/macOS14/macOS26/tablet/60fps/HIG/VoiceOver gates and earlier strict/crash/capacity failures remain open. Earlier457Intel234assertions/6Float32buffer residuals are not retested or repaired by this selection.",
+    "All104 original package scopes/acceptance,652reference command identities/status mapping,81major memberships and seven-pass order remain. No full B07 or master-goal closure."
+  ],
+  "next": "D04 clipboard interoperability, thenL03; resume saved native checks when backend returns.",
+  "distribution": {
+    "GitHub_operations_or_deletion": false,
+    "current_builds_deleted": false,
+    "installed": false,
+    "AppStore_changes": false,
+    "Xcode_archive": false,
+    "software_release": false
+  }
+}

@@ -28,7 +28,10 @@ extension AlphaChannel {
 }
 extension CraftDocument {
   public var hasPSDChannelRetention: Bool {
-    ((alphaChannels ?? [])+(quickMask.map{[$0]} ?? [])).contains{$0.psdDisplay != nil || $0.psdIdentifier != nil || $0.psdSpotGray != nil || $0.psdQuickMaskInitiallyEmpty != nil}
+    ((alphaChannels ?? [])+(quickMask.map{[$0]} ?? [])).contains{$0.psdDisplay != nil || $0.psdIdentifier != nil || $0.psdSpotGray != nil || $0.psdSelectedGray != nil || $0.psdQuickMaskInitiallyEmpty != nil}
+  }
+  public var requiresSelectedGrayArchive: Bool {
+    (alphaChannels ?? []).contains { $0.psdSelectedGray != nil } || quickMask?.psdSelectedGray != nil
   }
   public var hasSpotChannels: Bool { alphaChannels?.contains(where:{$0.spot != nil}) == true }
   public func newSpotChannel(name: String, ink: SpotInk, density: Float? = nil) throws -> AlphaChannel {

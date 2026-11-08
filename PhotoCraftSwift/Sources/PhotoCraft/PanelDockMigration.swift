@@ -12,18 +12,28 @@ extension PanelDock {
     columns = try values.decodeIfPresent([PanelDockColumn].self, forKey: .columns)
     if catalogVersion == 1 {
       // Validate before migration: a missing old panel is corruption, not an upgrade.
-      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.history, .cloneSource, .character, .paragraph]))
+      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.history, .cloneSource, .character, .paragraph, .styles]))
       addUtilityPanels()
       catalogVersion = 2
     }
     if catalogVersion == 2 {
-      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.character, .paragraph]))
+      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.character, .paragraph, .styles]))
       addTypographyPanels()
       catalogVersion = 3
+    }
+    if catalogVersion == 3 {
+      try validatePanels(Set(WorkspacePanel.allCases).subtracting([.styles]))
+      addStylesPanel();catalogVersion=4
     }
     try validate()
   }
 
+  mutating func addStylesPanel() {
+    let column=groups.first{$0.panels.contains(.history)}?.dockColumnID ?? PanelDockColumn.primaryID
+    let id=groups.contains{$0.id=="styles"} ? UUID().uuidString:"styles"
+    groups.append(.init(id:id,panels:[.styles],selected:.styles,preferredHeight:300,columnID:column==PanelDockColumn.primaryID ? nil:column))
+    hidden.insert(.styles)
+  }
   mutating func addUtilityPanels() {
     var values = orderedColumns
     let columnID = values.contains { $0.id == "utility" } ? UUID().uuidString : "utility"

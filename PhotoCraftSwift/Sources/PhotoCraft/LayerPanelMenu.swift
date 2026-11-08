@@ -129,7 +129,10 @@ struct LayerEditingMenu: View {
       layerPanelButton(.groupFromLayers, context: nil)
       Divider()
     } else {
-      Button("Blending Options…") {}.disabled(true)
+      Button("Blending Options…") {
+        guard let id=contextLayer,store.canBeginBlendingOptions(for:id)else{return}
+        store.select(id);guard store.document.activeLayerID==id else{return};store.beginBlendingOptions()
+      }.disabled(!store.canBeginBlendingOptions(for:contextLayer))
       Divider()
     }
     layerPanelButton(.duplicate, context: contextLayer)
@@ -147,6 +150,8 @@ struct LayerEditingMenu: View {
     Button("Export As…") {}.disabled(true)
     Divider()
     Button("Convert to Smart Object") {}.disabled(true)
+    Button("Convert to Layers") { store.convertSmartObjectToLayers(context: contextLayer) }
+      .disabled(!store.canConvertSmartObjectToLayers(context: contextLayer))
     layerPanelButton(.rasterize, context: contextLayer)
     Divider()
     if store.layerPanelSingle(contextLayer)?.mask != nil {

@@ -91,5 +91,16 @@
     "qualified_scope": "116main+2distinct metadata normal cases per architecture; all16new411\u2013412.53Debug. Physical native interaction pending.",
     "full_F06_closed": false,
     "current_Photoshop2026_live_observation": false
+  },
+  "custom_textures_453": {
+    "evidence": "docs/GALLERY_TEXTURES_453.json",
+    "five_effects_supported": true,
+    "native_PSD_PSB_load_save_reopen_passed": true,
+    "same34normal_each": true,
+    "selected_raw_buffers_exact": 10,
+    "total_selected_raw_buffers": 15,
+    "strict_cross_architecture_bytes_passed": false,
+    "Photoshop_texture_numeric_oracle": false,
+    "full_F06_open": true
   }
 }

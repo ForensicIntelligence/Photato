@@ -108,7 +108,7 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
     defer { doc.close() }
     try set(true, controller)
     let model = doc.store.document
-    for format in DocumentIO.Format.allCases where format != .jpeg {
+    for format in DocumentIO.Format.allCases where format != .jpeg && format != .exr { // This fixture is16-bit; EXR requires32-bit RGB.
       let target = folder.appendingPathComponent("copy." + format.rawValue)
       let options: RasterEncodingOptions = format == .psd || format == .psb
         ? .init(psdLayerCompression: .zip) : .init()

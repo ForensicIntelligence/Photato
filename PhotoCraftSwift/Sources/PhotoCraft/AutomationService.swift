@@ -32,6 +32,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var layerFileExportShares = Set<UUID>()
   @ObservationIgnored var imageExportShares = Set<UUID>()
   @ObservationIgnored var colorLookupExportShares = Set<UUID>()
+  @ObservationIgnored var illustratorExportShares = Set<UUID>()
   @ObservationIgnored var layerCompExportShares = Set<UUID>()
   @ObservationIgnored var layerCompEditShares = Set<UUID>()
   @ObservationIgnored var layerCompFileShares = Set<UUID>()
@@ -60,6 +61,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var printingGeneration = UUID()
   @ObservationIgnored var ownedPrints: [UUID: UUID] = [:]
   private(set) var preferenceChangesEnabled = false
+  private(set) var scriptEventChangesEnabled = false
   private(set) var workspacePanelChangesEnabled = false
   private(set) var photoshopPreferenceChangesEnabled = false
   private(set) var colorSettingsChangesEnabled = false
@@ -203,6 +205,7 @@ import UniformTypeIdentifiers
     setDocumentSavesEnabled(false)
     setPrintingEnabled(false)
     setPreferenceChangesEnabled(false)
+    setScriptEventChangesEnabled(false)
     setWorkspacePanelChangesEnabled(false)
     setPhotoshopPreferenceChangesEnabled(false)
     setColorSettingsChangesEnabled(false)
@@ -235,7 +238,7 @@ import UniformTypeIdentifiers
   func setDocumentTransfersEnabled(_ enabled: Bool) {
     documentTransferGeneration = UUID()
     documentTransfersEnabled = enabled && isRunning
-    if !documentTransfersEnabled { pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
+    if !documentTransfersEnabled { pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
   }
   func setDocumentSavesEnabled(_ enabled: Bool) {
     documentSaveGeneration = UUID()
@@ -248,6 +251,7 @@ import UniformTypeIdentifiers
   func setPreferenceChangesEnabled(_ enabled: Bool) {
     preferenceChangesEnabled = enabled && isRunning
   }
+  func setScriptEventChangesEnabled(_ enabled: Bool) { scriptEventChangesEnabled = enabled && isRunning }
   func setPhotoshopPreferenceChangesEnabled(_ enabled: Bool) {
     photoshopPreferenceChangesEnabled = enabled && isRunning
   }
@@ -311,7 +315,7 @@ import UniformTypeIdentifiers
     if imageProcessorSourceIDs.contains(id) {imageProcessorTask?.cancel()}
     if scanCropSourceID == id {scanCropTask?.cancel()}
     if contactSheetSourceIDs.contains(id) {contactSheetTask?.cancel()}
-    for share in shares where share.id == id { cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
+    for share in shares where share.id == id { cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
     shares.removeAll { $0.id == id }
   }
   func prune() {
@@ -320,7 +324,7 @@ import UniformTypeIdentifiers
       let expired =
         !controller.documents.contains(where: { $0 === document })
         || document.store.layerPanelGeneration != share.generation
-      if expired { linkedSourceWriteTasks[share.id]?.cancel();cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
+      if expired { linkedSourceWriteTasks[share.id]?.cancel();cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
       return expired
     }
   }
@@ -336,11 +340,14 @@ import UniformTypeIdentifiers
       )
     }
   }
-  func revision(_ store: EditorStore, includeBrush:Bool=true, includeFilterEvaluation:Bool=true) -> String {
+  var prepareColorSample:@Sendable (ColorSamplingInput,Double,Double,ColorSampleSettings,UUID?)throws->ColorSampleResult = {try $0.sample(x:$1,y:$2,settings:$3,layerID:$4)}
+  func revision(_ store: EditorStore, includeBrush:Bool=true, includeFilterEvaluation:Bool=true, includeEditPlan:Bool=true) -> String {
     let document="\(store.printRevision):\(store.layerPanelGeneration.uuidString):\(store.revision - store.timelinePlaybackRenderCount):\(store.timelinePlaybackRevision):\(store.timelineVisible):\(store.document.activeLayerID?.uuidString ?? "none"):\(store.actionRevision):\(store.actions.revision)"
-    let view=document+":\(store.filterRecall.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"+":\(store.layerFilterRevisionToken)"
-    let evaluated = view + (includeFilterEvaluation ? ":\(store.layerContentFilter.revision)" : "")
-    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision):\(store.gradientOptionsRevision):\(store.patterns.revision)":evaluated
+    let view=document+":\(store.filterRecall.revision):\(store.filterRecall.liquifyMeshes.revision):\(store.filterRecall.lensDefaults.revision)"+":\(store.videoTimelinePixelsPerSecond):\(store.videoSelectedTransitionID?.uuidString ?? "none"):\(store.videoTransitionEditorVisible):\(store.timelineAudioViewRevision)"+":\(store.layerFilterRevisionToken)"
+    let aiView = view + ":\(store.aiBusy):\(store.showAI):\(store.showImagePlayground):\(store.promptRefinementID?.uuidString ?? "none"):\(store.imageGenerationJob?.id.uuidString ?? "none"):\(store.imageGenerationJob?.phase.rawValue ?? "none"):\(store.imageGenerationIntent.rawValue):\(store.imageReference?.id.uuidString ?? "none"):\(store.imageReferenceImportID?.uuidString ?? "none")"
+    let planView = aiView + ":\(store.aiWorkspaceSection.rawValue)" + (includeEditPlan ? ":\(store.editPlanReview?.id.uuidString ?? "none"):\(store.editPlanReview?.phase ?? "idle")" : "")
+    let evaluated = planView + (includeFilterEvaluation ? ":\(store.layerContentFilter.revision)" : "")
+    let opaque = includeBrush ? evaluated+":\(store.brushRevision):\(store.brushes.revision):\(store.skies.revision):\(store.shapes.revision):\(store.shapeRevision):\(store.pathSettingsRevision):\(store.gradientOptionsRevision):\(store.patterns.revision):\(store.focusBlendModeRevisionToken):\(store.eyedropperPreferences.revision):\(store.removeRevision)":evaluated
     // Multi-document source contracts accept at most256characters. Keep revision
     // components private and bounded as view-state tracking grows.
     return SHA256.hash(data: Data(opaque.utf8)).map { String(format: "%02x", $0) }.joined()
@@ -355,6 +362,7 @@ import UniformTypeIdentifiers
       "rasterStorage": RasterStorageAPI.state(store.document),
       "canvasEdges":store.canvasEdgesState,
       "documentDuplicate":store.documentDuplicateState,
+      "channelSeparation":store.channelSeparationState,
       "flattenImage":store.flattenImageState,
       "layerMerge":store.layerMergeState,
       "video": store.videoState,
@@ -373,8 +381,10 @@ import UniformTypeIdentifiers
       "printing": store.printState,
       "revision": revision(store),
       "brush":store.brushState,
+      "eyedropper":ColorSamplingAPI.state(store),
       "retouchPreview":store.retouchPreviewState,
       "retouchTools":store.retouchToolState,
+      "removeTool":RemoveToolAPI.state(store),
       "sky":store.skyState,
       "peopleSelection":store.peopleState,
       "objectFinder":store.objectFinderState,
@@ -382,6 +392,7 @@ import UniformTypeIdentifiers
       "channelArithmetic":store.channelArithmeticState,
       "selectionTransform":store.selectionTransformState,
       "pixelPaint":store.pixelPaintState,
+      "styleLibrary":StyleLibraryAPI.state(store.styles),
       "patternLibrary":PatternLibraryAPI.state(store.patterns),
       "layerLinks":store.layerLinkState,
       "layerSelection":store.layerSelectionState,
@@ -402,6 +413,7 @@ import UniformTypeIdentifiers
       "transformReference":store.transformReferenceState,
       "magneticLasso":store.magneticLassoState,
       "colorRange":store.colorRangeState,
+      "magicWand":MagicWandAPI.state(store),
       "focusArea":store.focusAreaState,
       "actions": store.actionState, "batch": actionBatchState,
       "width": store.document.width, "height": store.document.height,
@@ -456,6 +468,8 @@ import UniformTypeIdentifiers
       "canRevert": documentTransfersEnabled && document.canRevertDocument && document.closeWorkflowID == nil,
       "selection": store.document.selection.map { ["x": $0.x, "y": $0.y, "width": $0.width, "height": $0.height] } as Any? ?? NSNull(),
       "selectionHasSoftCoverage": store.document.selectionMask != nil,
+      "aiImageLifecycle": AIImageAPI.state(store),
+      "editPlan": EditPlanAPI.state(store),
       "filterRecall": FilterRecallAPI.state(store),
       "gradientFills":store.gradientFillState,
       "gradientTool":GradientToolAPI.state(store),
@@ -476,7 +490,7 @@ import UniformTypeIdentifiers
       "hdrMerge": ["operationID":hdrMergeOperationID?.uuidString as Any? ?? NSNull(),"source":hdrMergeSourceIDs.contains(share.id)],
       "vanishingPoint": ["available":store.canBeginVanishingPoint,"settings":store.document.vanishingPoint?.apiValue ?? NSNull(),"scene":(try? VanishingScene(store.document.vanishingPoint ?? .init(),width:store.document.width,height:store.document.height).apiValue) as Any? ?? NSNull(),"workspaceOpen":store.vanishingWorkspace != nil,"workspace":store.vanishingWorkspace?.apiState as Any? ?? NSNull()],
       "adaptiveWideAngle": ["available":store.canBeginFilterKind(.adaptiveWideAngle),"workspaceOpen":store.filterDraft?.filter.kind == .adaptiveWideAngle,"previewBusy":store.wideAngleWorkspace?.rendering ?? false,"workspace":store.wideAngleWorkspace?.apiState as Any? ?? NSNull()],
-      "lensCorrection": ["available":store.canBeginFilterKind(.lensCorrection),"workspaceOpen":store.filterDraft?.filter.kind == .lensCorrection,"previewBusy":store.lensCorrectionWorkspace?.rendering ?? false,"workspace":store.lensCorrectionWorkspace?.apiState as Any? ?? NSNull()],
+      "lensCorrection": ["available":store.canBeginFilterKind(.lensCorrection),"workspaceOpen":store.filterDraft?.filter.kind == .lensCorrection,"previewBusy":store.lensCorrectionWorkspace?.rendering ?? false,"workspace":store.lensCorrectionWorkspace?.apiState as Any? ?? NSNull(),"defaults":LensDefaultsAPI.state(store)],
       "clipboard": store.clipboardAPIState,
       "documentMode": store.documentModeState,
       "inkMode": store.inkModeState,
@@ -511,7 +525,7 @@ import UniformTypeIdentifiers
       "embeddedPlacement":store.embeddedPlacementState,
       "pdfSourceEditing":store.pdfSourceEditingState,
       "contentAwareScale": ["available":store.canBeginContentAwareScale,"transformOpen":store.transformDraft?.contentAware == true,"previewBusy":store.contentAwareScaleBusy,"previewError":store.contentAwareScaleError as Any? ?? NSNull()],
-      "contentAwareFill": ["available":store.canBeginContentAwareFill,"workspaceOpen":store.contentAwareDraft != nil],
+      "contentAwareFill": store.contentAwareFillState,
       "selectionRefinement": ["available": store.canBeginSelectMask, "workspaceOpen": store.selectMaskDraft != nil && store.selectMaskDraft?.isFocus != true],
       "subjectDetection": ["canSelectSubject": store.canDetectSubject(),
         "canRemoveBackground": store.canDetectSubject(removeBackground: true),
@@ -579,7 +593,7 @@ import UniformTypeIdentifiers
       },
     ]
   }
-  func preflight(_ document: CraftNSDocument, allowTransformReference: Bool = false, allowTypeEditing: Bool = false) throws {
+  func preflight(_ document: CraftNSDocument, allowTransformReference: Bool = false, allowTypeEditing: Bool = false, allowRemove: Bool = false) throws {
     let store = document.store
     // NSEvent reports buttons across the whole Mac. A click in another app or document
     // cannot be an in-progress pointer edit of this shared document. Gesture/draft guards
@@ -589,9 +603,9 @@ import UniformTypeIdentifiers
       && document.windowForSheet?.isKeyWindow == true
     guard document.closeWorkflowID == nil, document.recoverySourceStatus != .checking,
       !document.fileOperationBusy, !document.recoveryWriteBusy, document.copyPanel == nil,
-      !store.geometryBusy, !store.aiBusy, !(allowTypeEditing ? store.hasToneDraftExceptTypeEditing : store.hasToneDraft), store.channelVisibilitySweep == nil, store.transformDraft == nil || allowTransformReference,
+      !store.geometryBusy, !store.aiBusy, !(allowRemove ? store.hasToneDraftExceptRemove : allowTypeEditing ? store.hasToneDraftExceptTypeEditing : store.hasToneDraft), store.channelVisibilitySweep == nil, store.transformDraft == nil || allowTransformReference,
       store.numericEditor == nil, store.layerNameDraft == nil, store.layerProtectionDraft == nil, !store.coalescingChanges,
-      store.pathGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
+      store.pathGesture == nil, store.eyedropperGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
       store.patternNameDraft == nil, store.gradientNameDraft == nil, !store.showAI,
       !store.showImagePlayground, store.error == nil, document.windowForSheet?.attachedSheet == nil,
       NSApp?.modalWindow == nil, !documentPointerActive
@@ -617,6 +631,7 @@ import UniformTypeIdentifiers
         throw AutomationFailure(status: 503, message: "Request cancelled.")
       }
       prune()
+      if let response = try handleScriptEvents(request) { return response }
       if let response = try await handleLinkedArtwork(request) {return response}
       if let response = try await handleLinkedSourceFile(request) {return response}
       if let response = try handleRecoveryPreferences(request) { return response }
@@ -657,6 +672,7 @@ import UniformTypeIdentifiers
         result["documentSavesEnabled"] = documentSavesEnabled
         result["saveAsFolderSelected"] = saveDirectoryURL != nil
         result["preferenceChangesEnabled"] = preferenceChangesEnabled
+        result["scriptEventChangesEnabled"] = scriptEventChangesEnabled
         result["photoshopPreferenceChangesEnabled"] = photoshopPreferenceChangesEnabled
         result["colorSettingsChangesEnabled"] = colorSettingsChangesEnabled
         result["recentFilesEnabled"] = recentFilesEnabled
@@ -679,6 +695,25 @@ import UniformTypeIdentifiers
         let document = share.document
       else { throw AutomationFailure(status: 404, message: "Shared document or route not found.") }
       let store = document.store
+      if parts.count == 5, parts[4] == "edit-plan" {
+        if request.method == "GET" { var value = EditPlanAPI.state(store); value["revision"] = revision(store); return .json(value) }
+        if request.method == "POST" { return try await controlEditPlan(request, share: share, document: document) }
+      }
+      if request.method == "GET", parts.count == 7, parts[4] == "edit-plan", parts[5] == "previews" {
+        return try await editPlanPreview(String(parts[6]), request: request, share: share, document: document)
+      }
+      if parts.count==5,parts[4]=="ai" {
+        if request.method=="GET" {var value=AIImageAPI.state(store);value["revision"]=revision(store);return .json(value)}
+        if request.method=="POST" {return try await controlAIImage(request,share:share,document:document)}
+      }
+      if request.method=="GET",parts.count==7,parts[4]=="ai",let layerID=UUID(uuidString:String(parts[6])) {
+        if parts[5]=="saved-results" || parts[5]=="saved-records" {return try await savedAIResult(layerID,request:request,share:share,document:document,metadata:parts[5]=="saved-records")}
+        if parts[5]=="results" {return try await originalAIImage(layerID,share:share,document:document,requestedRevision:request.headers["x-photato-revision"])}
+        if parts[5]=="records" {
+          guard let layer=store.document.layers.first(where:{$0.id==layerID}),let record=try GeneratedImageStorage.record(layer)else{throw AutomationFailure(status:404,message:"Generated record not found.")}
+          return .json(AIImageAPI.record(record,layerID:layerID))
+        }
+      }
       if request.method == "POST", parts.count == 5, parts[4] == "audio" { return try await importTimelineAudio(request,share:share,document:document) }
       if request.method == "GET", parts.count == 5, parts[4] == "audio.wav" { return try await timelineAudioPreview(share,document:document) }
       if request.method == "GET", parts.count == 4 {
@@ -692,6 +727,7 @@ import UniformTypeIdentifiers
         guard !source.data.isEmpty else{throw AutomationFailure(status:422,message:"The original linked source is unavailable. Authorize and update or relink it first.")}
         return .init(status: 200, contentType: source.mediaType, body: source.data)
       }
+      if request.method == "GET", parts.count == 5, parts[4] == "paths.ai" { return try await exportIllustratorPaths(request, share: share, document: document) }
       if request.method == "GET", parts.count == 5, parts[4] == "print.pdf" { return try await printPDF(share, document: document) }
       if request.method == "GET", parts.count == 7, parts[4] == "layers",
         parts[6] == "mask-gray.png" || parts[6] == "mask-overlay.png" {
@@ -835,7 +871,8 @@ import UniformTypeIdentifiers
       }
       if command.name == "image.export.cancel" {
         let operation = try command.actionUUID("operationID")
-        if store.colorLookupExportID == operation { store.colorLookupExportWorker?.cancel(); store.colorLookupFilesWorker?.cancel() }
+        if store.illustratorExportID == operation { store.illustratorExportWorker?.cancel() }
+        else if store.colorLookupExportID == operation { store.colorLookupExportWorker?.cancel(); store.colorLookupFilesWorker?.cancel() }
         else {
           guard store.imageExportID == operation else { throw AutomationFailure(status: 409, message: "No matching image or color lookup export is active.") }
           store.imageExportWorker?.cancel()
@@ -860,7 +897,17 @@ import UniformTypeIdentifiers
         try command.applyTransformReference(store)
         return .json(state(share, document: document))
       }
+      if command.name == RemoveToolAPI.name { return try await executeRemove(command,document:document,shareID:id) }
       try preflight(document)
+      if command.name == MagicWandAPI.name { return try await executeMagicWand(command,document:document,shareID:id) }
+      if command.name == ColorSamplingAPI.name {return try await executeColorSample(command,document:document,shareID:id)}
+      if command.name == LensDefaultsAPI.name {
+        guard preferenceChangesEnabled else { throw AutomationFailure(status: 403, message: "Enable preference changes in the native API window before updating lens defaults.") }
+        try Task.checkCancellation()
+        try LensDefaultsAPI.apply(command, store: store)
+        return .json(state(share, document: document))
+      }
+      if command.name == GalleryTextureAPI.name {return try await decodeGalleryTexture(command,document:document,shareID:id)}
       if command.name == CustomKernelPresetAPI.name {return .json(try CustomKernelPresetAPI.convert(command,revision:revision(store)))}
       if command.name == SmartObjectLayerCompAPI.name {
         try await executeSmartObjectComp(command, document: document, shareID: id)
@@ -908,8 +955,12 @@ import UniformTypeIdentifiers
       }
       if command.name == "video.edit" {
         let native = try command.videoCommand()
+        if case .video(.blankLayer)=native {
+          guard store.canCreateBlankVideoLayer else{throw AutomationFailure(status:409,message:"Create an idle RGB video Timeline and select its composite target before adding blank footage.")}
+        }
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { _ in native }
         if case .video(.create)=native {store.timelineVisible=true}
+        if case .video(.blankLayer)=native {store.timelineVisible=true}
         return .json(state(share,document:document))
       }
       if command.name == VideoKeyframeAPI.name {
@@ -1011,7 +1062,7 @@ import UniformTypeIdentifiers
       }
       if ["document.assignProfile", "document.convertProfile"].contains(command.name) || command.name == "indexed.indices.write" || command.name == "document.convertMode" || command.name == "mode.channel.write" || command.name == "mode.channel.edit" {
         let settings = controller.colorSettings.value
-        try await executePreparedOperation(document: document, shareID: id, revision: command.revision, allowModeComponents: command.name == "mode.channel.edit") { original in
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision, allowModeComponents: command.name == "mode.channel.edit", allowColorProfile: ["document.assignProfile", "document.convertProfile"].contains(command.name)) { original in
           guard let native = try command.nativeCommand(document: original, colorSettings: settings) else { throw AutomationFailure(status: 422, message: "Unsupported color mode operation.") }; return native
         }
         return .json(state(share, document: document))
@@ -1087,6 +1138,13 @@ import UniformTypeIdentifiers
         try await executeSmartObject(command, document: document, shareID: id)
         return .json(state(share, document: document))
       }
+      if command.name == SmartFilterTransferAPI.name {
+        let request = try command.smartFilterTransferRequest()
+        try await executePreparedOperation(document:document, shareID:id, revision:command.revision, allowAuxiliary:true) { original in
+          try request.command(in:original)
+        }
+        return .json(state(share, document:document))
+      }
       if command.name == "frame.edit" {
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in try command.frameCommand(original) }
         return .json(state(share, document: document))
@@ -1118,6 +1176,7 @@ import UniformTypeIdentifiers
       }
       if command.name == "actions.batch" { return try await executeActionBatch(command, anchorID:id) }
       if command.name.hasPrefix("brush.") { return .json(try await manageBrushes(command,store:store,shareID:id)) }
+      if command.name == StyleLibraryAPI.command {return .json(try await manageStyles(command,store:store,document:document,shareID:id))}
       if command.name == PatternLibraryAPI.command {return .json(try await managePatterns(command,store:store,shareID:id))}
       if command.name == "sky.library" {return .json(try await manageSkies(command,store:store,shareID:id))}
       if command.name == "selection.sky" {
@@ -1155,7 +1214,7 @@ import UniformTypeIdentifiers
         try configureAdjustmentBrush(command,store:store);return .json(state(share,document:document))
       }
       if command.name == "adjustmentBrush.stroke" || command.name == "adjustmentBrush.object" {
-        let object=command.name == "adjustmentBrush.object",request=try command.adjustmentBrushRequest(store:store,object:object),detector=store.objectDetector
+        let object=command.name == "adjustmentBrush.object",request=try command.adjustmentBrushRequest(store:store,object:object,decodeSettings:decodeAdjustmentBrushSettings),detector=store.objectDetector
         let point=object ? try PathPoint(command.number("x",range:0...1_000_000),command.number("y",range:0...1_000_000)):PathPoint(0,0)
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in
           if object{return try await AdjustmentBrushPreparation.object(request,at:point,in:original,detector:detector)}
@@ -1184,8 +1243,8 @@ import UniformTypeIdentifiers
         } else {
           guard extra.isSubset(of:["kind","settings"]) else{throw AutomationFailure(status:400,message:"Replace takes only adjustment values.")}
           let kind=try command.adjustmentBrushKind(AdjustmentBrushKind(adjustment:old) ?? .brightnessContrast)
-          let base=AdjustmentBrushKind(adjustment:old)==kind ? old:(kind == .exposure ? .exposure(1):kind.initial)
-          edit = .replaceContent(target,.adjustment(try AdjustmentBrushAPI.decode(command.parameters["settings"],kind:kind,base:base)))
+          let base=AdjustmentBrushKind(adjustment:old)==kind ? old:(kind == .exposure ? .exposure(1):kind == .colorLookup ? .colorLookup(.init()):kind.initial)
+          edit = .replaceContent(target,.adjustment(try decodeAdjustmentBrushSettings(command.parameters["settings"],kind,base)))
         }
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision){_ in edit}
         return .json(state(share,document:document))
@@ -1378,6 +1437,7 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .contentAwareFill(try options.edit(original)) }
         return .json(state(share,document:document))
       }
+      if command.name == ChannelSeparationAPI.name {return try await splitChannels(command,document:document,share:share)}
       if command.name == "channel.edit" {
         if try command.pathFlag("newDocument",false) {return try await newSelectionDocument(command,document:document,share:share)}
         try await executeSelectionChannel(command,document:document,share:share)
@@ -1524,7 +1584,7 @@ import UniformTypeIdentifiers
         guard store.canRepeatFilter else { throw AutomationFailure(status: 422, message: "No previous filter is available for this editing target.") }
         let request = try store.filterRepeatRequest(), prepare = store.repeatFilterPreparation
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
-          allowAuxiliary: request.draft.channelTarget != nil,
+          allowAuxiliary: request.draft.channelTarget != nil || request.draft.maskTarget != nil,
           allowModeComponents: !request.draft.modeComponents.isEmpty,
           validateCommit: {
             guard store.filterRepeatTarget == request.target else {
@@ -1588,14 +1648,14 @@ import UniformTypeIdentifiers
     let composite = try onionSkin ? OnionSkinRenderer.render(document):Renderer.composite(document)
     try Task.checkCancellation()
     let large = document.width * document.height > Surface.maximumDensePixels
-    if large && (onionSkin || proof?.active == true) {
-      throw AutomationFailure(status: 413, message: "This large-document presentation mode is not yet tiled. Ordinary preview.png is bounded to2048 pixels per side.")
+    if large && onionSkin {
+      throw AutomationFailure(status: 413, message: "Large-document onion-skin presentation is not yet tiled. Ordinary and proof previews are bounded to2048 pixels per side.")
     }
     let request = try large ? RasterPreviewRequest.overview(width: document.width, height: document.height) : nil
     let source = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: composite)
     let preview = try auxiliary == nil && auxiliaryView?.needsPresentation != true ? request.map { try $0.reducing(source) } ?? source : source
     let image =
-      try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!) : auxiliaryView?.needsPresentation == true ? AuxiliaryChannelPresentation.image(source,document:document,view:auxiliaryView!,colorManaged:!(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),request:request) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay,request:request) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+      try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!,request:request) : auxiliaryView?.needsPresentation == true ? AuxiliaryChannelPresentation.image(source,document:document,view:auxiliaryView!,colorManaged:!(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),request:request) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay,request:request) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
       ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: document)
     return try png(image)
   }
@@ -1626,6 +1686,8 @@ import UniformTypeIdentifiers
     }
     return [
       "toolCursorFeedback": ToolCursorAPI.capabilities,
+      "scriptEvents": ScriptEventsAPI.capabilities,
+      "eyedropper":ColorSamplingAPI.capabilities,
       "apiVersion": 1, "transport": "loopback HTTP; bearer token; same origin",
       "recoveryPreferences": recoveryPreferencesCapabilities,
       "photoshopFilePreferences": photoshopFilePreferencesCapabilities,
@@ -1743,6 +1805,8 @@ import UniformTypeIdentifiers
       "contactSheet": ContactSheetSettings.apiCapabilities,
       "imageStack": ImageStackSettings.apiCapabilities,
       "hdrMerge": HDRMergeSettings.apiCapabilities,
+      "aiImageLifecycle": AIImageAPI.capabilities,
+      "editPlan": EditPlanAPI.capabilities,
       "filterRecall": FilterRecallAPI.capabilities,
       "gradientFills":GradientFillAPI.capabilities,
       "gradientTool":GradientToolAPI.capabilities,
@@ -1754,6 +1818,8 @@ import UniformTypeIdentifiers
       "classicTone":ClassicToneAPI.capabilities,
       "histogram": HistogramAPI.capabilities,
       "customKernelPreset":CustomKernelPresetAPI.capabilities,
+      "lensDefaults":LensDefaultsAPI.capabilities,
+      "galleryTexture":GalleryTextureAPI.capabilities,
       "proceduralRender":ProceduralAPI.capabilities,
       "paths":PathAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,
@@ -1770,6 +1836,7 @@ import UniformTypeIdentifiers
       "channelArithmetic":ChannelArithmeticAPI.capabilities,
       "selectionTransform":SelectionTransformAPI.capabilities,
       "pixelPaint":PixelPaintAPI.capabilities,
+      "styleLibrary":StyleLibraryAPI.capabilities,
       "patternLibrary":PatternLibraryAPI.capabilities,
       "canvasEdges":CanvasEdgesAPI.capabilities,
       "documentDuplicate":DocumentDuplicateAPI.capabilities,
@@ -1793,12 +1860,14 @@ import UniformTypeIdentifiers
       "transformReference":TransformReferenceAPI.capabilities,
       "magneticLasso":MagneticLassoAPI.capabilities,
       "colorRange":ColorRangeAPI.capabilities,
+      "magicWand":MagicWandAPI.capabilities,
       "focusArea":FocusAreaAPI.capabilities,
       "selectionTools":SelectionToolAPI.capabilities,
       "adjustmentBrush":AdjustmentBrushAPI.capabilities,
       "paintingTools":PaintingAPI.capabilities,
       "retouchStrokes": RetouchStrokeAPI.capabilities,
       "regionRetouch": RegionRetouchAPI.capabilities,
+      "removeTool": RemoveToolAPI.capabilities,
       "contentAwareScale": ContentAwareScaleRequest.apiCapabilities,
       "clipboard": ClipboardAPI.capabilities,
       "geometry": GeometryAPI.capabilities,
@@ -1808,10 +1877,15 @@ import UniformTypeIdentifiers
       "atomicPersistence": atomicPersistenceCapabilities,
       "documentSaving": documentSavingCapabilities,
       "stateSchemas": [
+        "contentAwareFill":ContentAwareSettings.workspaceStateSchema,
         "lightPreview": LightPreviewAPI.stateSchema,
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,
+        "aiImageLifecycle": AIImageAPI.stateSchema,
+        "editPlan": EditPlanAPI.stateSchema,
         "filterRecall": FilterRecallAPI.stateSchema,
+        "lensDefaults": LensDefaultsAPI.stateSchema,
+        "galleryTextureWorkspace": GalleryTextureAPI.workspaceStateSchema,
         "gradientFills":GradientFillAPI.stateSchema,
         "gradientTool":GradientToolAPI.stateSchema,
         "shapes":ShapeAPI.stateSchema,
@@ -1842,10 +1916,12 @@ import UniformTypeIdentifiers
         "channelArithmetic":ChannelArithmeticAPI.stateSchema,
         "selectionTransform":SelectionTransformAPI.stateSchema,
         "pixelPaint":PixelPaintAPI.stateSchema,
+        "styleLibrary":StyleLibraryAPI.stateSchema,
         "patternLibrary":PatternLibraryAPI.stateSchema,
         "crop":CropRequest.stateSchema,
         "canvasEdges":CanvasEdgesAPI.stateSchema,
         "documentDuplicate":DocumentDuplicateAPI.stateSchema,
+        "channelSeparation":ChannelSeparationAPI.stateSchema,
         "flattenImage":FlattenImageAPI.stateSchema,
         "layerMerge":LayerMergeAPI.stateSchema,
         "layerLinks":LayerLinksAPI.stateSchema,
@@ -1867,6 +1943,7 @@ import UniformTypeIdentifiers
         "transformReference":TransformReferenceAPI.stateSchema,
         "magneticLasso":MagneticLassoAPI.stateSchema,
         "colorRange":ColorRangeAPI.stateSchema,
+        "magicWand":MagicWandAPI.stateSchema,
         "focusArea":FocusAreaAPI.stateSchema,
         "selectionTools":SelectionToolAPI.stateSchema,
         "layerProtection": protectionStateSchema,
@@ -2016,5 +2093,21 @@ import UniformTypeIdentifiers
           "Active-document paging, total-memory qualification and complete Photoshop history/preferences parity remain open.",
       ],
     ]
+  }
+}
+
+
+extension AutomationService {
+  /// Replace a consumed source lease as one main-actor mutation; output limits
+  /// have already been checked before document publication begins.
+  func replaceSplitChannelShares(_ source:Share,with documents:[CraftNSDocument])throws {
+    guard isRunning,shares.contains(where:{$0.id==source.id}),
+      shares.count-1+documents.count<=8,documents.allSatisfy({$0.ownerController === controller})else{throw AutomationFailure(status:409,message:"Channel sharing changed during publication.")}
+    let replacements=documents.map{Share(document:$0,generation:$0.store.layerPanelGeneration)}
+    let previous=shares
+    shares=previous.filter{$0.id != source.id}+replacements
+    // Close semantics revoke work authorized only by the retired source lease.
+    linkedSourceWriteTasks[source.id]?.cancel()
+    cancelSharedHistory(source);cancelSharedPrint(source);cancelSharedVideoRender(source);cancelSharedSequenceExport(source);cancelSharedVariableExport(source);cancelSharedLayerCompExport(source);cancelSharedImageExport(source);cancelSharedIllustratorPaths(source);cancelSharedLayerFiles(source);cancelSharedSmartObjectComp(source);cancelSharedLayerCompEdit(source);cancelSharedAudio(source)
   }
 }

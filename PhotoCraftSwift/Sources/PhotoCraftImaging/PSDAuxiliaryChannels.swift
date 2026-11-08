@@ -72,7 +72,8 @@ enum PSDAuxiliaryChannels {
       try context.admitRaster(bytes:tiles*65536)
       var sourceGray:Surface?
       let pixels:Surface
-      if info.kind==2,depth==32 {
+      let inverted=info.kind==2 || info.kind==0
+      if inverted,depth==32 {
         let gray=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
           fill:.black,mask:true,clampMask:false,context:context) {_ in [try reader.nextRow()]}
         sourceGray=gray;try context.admitRaster(bytes:tiles*65536)
@@ -86,7 +87,7 @@ enum PSDAuxiliaryChannels {
         pixels=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
           fill:.black,mask:true,clampMask:false,context:context) {_ in
             var row=try reader.nextRow()
-            if info.kind==2 {
+            if inverted {
               if depth==8 {row=row.map{255-$0}}
               else {for x in 0..<document.width {let at=x*2,n=65535-(Int(row[at])<<8|Int(row[at+1]));row[at]=UInt8(n>>8);row[at+1]=UInt8(n&255)}}
             };return [row]
@@ -96,7 +97,8 @@ enum PSDAuxiliaryChannels {
       var channel=AlphaChannel(name:names[index],pixels:pixels,options:options,spot:info.kind==2 ? SpotInk(color:info.color,solidity:info.opacity):nil)
       channel.psdDisplay=info.raw.isEmpty ? nil:info.raw
       if !identifiers.isEmpty{channel.psdIdentifier=identifiers[index]}
-      channel.psdSpotGray=sourceGray
+      channel.psdSpotGray=info.kind==2 ? sourceGray:nil
+      channel.psdSelectedGray=info.kind==0 ? sourceGray:nil
       if index==quickIndex {channel.psdQuickMaskInitiallyEmpty=initiallyEmpty;document.quickMask=channel}
       else{channels.append(channel)}
     }
@@ -129,10 +131,10 @@ enum PSDAuxiliaryChannels {
     for x in 0..<channel.pixels.width {
       let value=channel.pixels.pixel(x:x,y:y).r
       let gray:Float
-      if channel.spot==nil{gray=value}
+      if channel.spot==nil,channel.options.indicates != .selectedAreas{gray=value}
       else if depth==8{gray=Float(255-Int((unit(value)*255).rounded()))/255}
       else if depth==16{gray=Float(65535-Int((unit(value)*65535).rounded()))/65535}
-      else if let original=channel.psdSpotGray?.pixel(x:x,y:y).r,(1-original).bitPattern==value.bitPattern{gray=original}
+      else if let original=(channel.spot == nil ? channel.psdSelectedGray:channel.psdSpotGray)?.pixel(x:x,y:y).r,(1-original).bitPattern==value.bitPattern{gray=original}
       else{gray=1-value}
       try PSDChannelCodec.append(gray,depth:depth,to:&row)
     };return row
@@ -141,6 +143,7 @@ enum PSDAuxiliaryChannels {
   /// Only the boundary case needs this bounded row preflight.
   static func mergedTransparency(_ document:CraftDocument)throws->Bool {
     let count=all(document).count,components=document.colorMode.componentCount
+    if document.colorMode == .rgb,let background=document.layers.first,background.isBackground,background.visible{return false}
     if components+1+count<=56{return true}
     guard components+count==56 else{throw CraftError.invalid("Photoshop files support at most56 total channels.")}
     let rows=PSDCompositeRows(document)

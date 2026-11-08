@@ -4,7 +4,7 @@ import Foundation
 /// clip, not a stack of frame layers. Source surfaces share tiles with history.
 public struct VideoClip: Codable, Equatable, Sendable {
   public static let maximumFrames = 512
-  public var frames: [Surface]
+  public var frames: VideoFrames
   public var frameRate: Double
   public var movie: MovieSource?
   public var audio: TimelineAudioSettings?
@@ -17,9 +17,12 @@ public struct VideoClip: Codable, Equatable, Sendable {
   public var startTime: Double = 0
   public var inFrame: Int = 0
   public var outFrame: Int
-  public init(frames: [Surface], frameRate: Double) { self.frames = frames; self.frameRate = frameRate; outFrame = frames.count }
+  public init(frames: [Surface], frameRate: Double) { self.frames = VideoFrames(frames); self.frameRate = frameRate; outFrame = frames.count }
+  public init(blank prototype:Surface,frameCount:Int,frameRate:Double)throws {
+    frames=try VideoFrames(repeating:prototype,count:frameCount);self.frameRate=frameRate;outFrame=frameCount
+  }
   public var duration: Double { (sourceEnd - sourceStart) / frameRate }
-  public var estimatedBytes: Int { frames.reduce(256 + (movie?.data.count ?? 0)) { $0 + $1.allocatedBytes + 128 } }
+  public var estimatedBytes: Int { 256 + (movie?.data.count ?? 0) + frames.estimatedBytes }
   public func sourceIndex(at seconds: Double) -> Int? {
     let local = seconds - startTime
     guard local >= -1e-9, local < duration - 1e-9 else { return nil }
@@ -37,12 +40,13 @@ public struct VideoClip: Codable, Equatable, Sendable {
     return try Surface(width:first.width,height:first.height,depth:first.depth,colorEncoding:first.colorEncoding)
   }
   public func validate(depth: PixelDepth) throws {
-    guard !frames.isEmpty, frames.count <= Self.maximumFrames, frameRate.isFinite, (1...240).contains(frameRate),
+    try frames.validate()
+    guard !frames.isEmpty, (!frames.isSparse || movie==nil), frameRate.isFinite, (1...240).contains(frameRate),
       startTime.isFinite, (-86_400...86_400).contains(startTime), inFrame >= 0, outFrame <= frames.count, inFrame < outFrame else { throw CraftError.invalid("Invalid video clip timing.") }
     try movie?.validate(frameCount:frames.count)
     guard sourceStart.isFinite, sourceEnd.isFinite, sourceStart >= sourceUnit(inFrame) - 1e-9, sourceEnd <= sourceUnit(outFrame) + 1e-9, sourceEnd > sourceStart + 1e-9, duration <= 86_400, startTime + duration <= 86_400 else { throw CraftError.invalid("Invalid exact clip boundaries.") }
     let first = frames[0]
-    guard frames.allSatisfy({ $0.width == first.width && $0.height == first.height && $0.depth == depth && $0.colorEncoding == first.colorEncoding }) else { throw CraftError.invalid("Video frames must share dimensions, depth and color encoding.") }
+    guard frames.storedSurfaces.allSatisfy({ $0.width == first.width && $0.height == first.height && $0.depth == depth && $0.colorEncoding == first.colorEncoding }) else { throw CraftError.invalid("Video frames must share dimensions, depth and color encoding.") }
   }
 }
 public struct VideoTimeline: Codable, Equatable, Sendable {
@@ -76,7 +80,7 @@ public struct VideoTimeline: Codable, Equatable, Sendable {
   }
 }
 public enum VideoCommand: Sendable {
-  case create(frameRate:Double,durationFrames:Int),duration(Int),remove
+  case create(frameRate:Double,durationFrames:Int),duration(Int),remove,blankLayer
   case keyframe(VideoKeyframeCommand)
   case arrange(VideoArrangementCommand)
   case transition(VideoTransitionCommand)
@@ -86,13 +90,25 @@ public enum VideoCommand: Sendable {
   case timing(UUID, startTime: Double, inFrame: Int, outFrame: Int, frameRate: Double)
   case frameRate(Double)
   case loop(Bool)
-  public var label: String { switch self {case .create: "Create Video Timeline";case .duration: "Timeline Duration";case .remove: "Remove Video Timeline";case .keyframe: "Edit Video Keyframe"; case .arrange(let edit): edit.label; case .transition: "Edit Video Transition"; case .audio(let edit): edit.label; case .workspace(let edit): edit.label; case .insert: "New Video Layer"; case .timing: "Video Clip Timing"; case .frameRate: "Timeline Frame Rate"; case .loop: "Loop Playback" } }
+  public var label: String { switch self {case .blankLayer: "New Blank Video Layer";case .create: "Create Video Timeline";case .duration: "Timeline Duration";case .remove: "Remove Video Timeline";case .keyframe: "Edit Video Keyframe"; case .arrange(let edit): edit.label; case .transition: "Edit Video Transition"; case .audio(let edit): edit.label; case .workspace(let edit): edit.label; case .insert: "New Video Layer"; case .timing: "Video Clip Timing"; case .frameRate: "Timeline Frame Rate"; case .loop: "Loop Playback" } }
   public func apply(to document: inout CraftDocument) throws {
     if case .workspace(let edit)=self {try edit.apply(to:&document);return}
     if case .audio(let edit)=self {try edit.apply(to:&document);return}
     if case .transition(let edit)=self {try edit.apply(to:&document);return}
     if case .arrange(let edit)=self {try edit.apply(to:&document);return}
     if case .keyframe(let edit)=self {try edit.apply(to:&document);return}
+    if case .blankLayer=self {
+      guard let timeline=document.videoTimeline,document.animation==nil,!document.hasArtboards,!document.hasAuthoritativeModeStorage,
+        document.layers.count<LayerLimits.maximumLayers else{throw CraftError.invalid("Create a video Timeline in an editable RGB document first.")}
+      let blank=try Surface(width:document.width,height:document.height,depth:document.depth)
+      let clip=try VideoClip(blank:blank,frameCount:timeline.durationFrames,frameRate:timeline.frameRate)
+      try clip.validate(depth:document.depth)
+      var ordinal=1
+      while document.layers.contains(where:{$0.name=="Video Layer \(ordinal)"}){ordinal+=1}
+      var layer=Layer(name:"Video Layer \(ordinal)",content:.raster(blank));layer.video=clip
+      try document.insertNewLayer(layer)
+      try document.reflowVideoGroups();try document.refreshVideoDuration();return
+    }
     if case .create(let rate,let frames)=self {
       guard document.videoTimeline==nil,document.animation==nil,!document.hasArtboards,!document.hasAuthoritativeModeStorage else{throw CraftError.invalid("Create a video Timeline in an RGB document without animation or artboards.")}
       let timeline=VideoTimeline(frameRate:rate,durationFrames:frames);try timeline.validate();document.videoTimeline=timeline;return
@@ -119,7 +135,7 @@ public enum VideoCommand: Sendable {
     guard var timeline = document.videoTimeline else { throw CraftError.invalid("Create a video Timeline first.") }
     let previousDuration=Double(timeline.durationFrames)/timeline.frameRate
     switch self {
-    case .create,.duration,.remove,.keyframe,.arrange,.transition,.audio,.workspace,.insert: break
+    case .create,.duration,.remove,.blankLayer,.keyframe,.arrange,.transition,.audio,.workspace,.insert: break
     case .timing(let id,let start,let first,let end,let rate):
       guard let i = document.layers.firstIndex(where:{$0.id == id}), var clip = document.layers[i].video else { throw CraftError.invalid("Select a video layer.") }
       guard !document.isPositionLocked(id) else { throw CraftError.invalid("Unlock video timing before trimming.") }

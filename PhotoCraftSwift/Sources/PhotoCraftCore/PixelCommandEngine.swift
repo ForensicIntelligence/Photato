@@ -37,6 +37,10 @@ enum PixelCommandEngine {
       } else {evaluate=try a.spatialEvaluator(depth:d.depth)}
       let matrix = d.layers[i].coordinateTransform
       let before = d
+      let linearLookup:ColorLookupTransfer?
+      if before.depth == .f32,case .colorLookup(let settings)=a,settings.interpolation == .tetrahedral {
+        linearLookup=try ColorLookupTransfer(settings,depth:.f32)
+      }else{linearLookup=nil}
       for y in 0..<s.height {
         try Task.checkCancellation()
         for x in 0..<s.width {
@@ -44,6 +48,14 @@ enum PixelCommandEngine {
           let q = matrix.point(Double(x) + 0.5, Double(y) + 0.5)
           let coverage = before.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y)))
           if coverage == 0 { continue }
+          if let transfer=linearLookup {
+            let original=s.linearPixel(x:x,y:y),edited=transfer.applyLinear(original,x:Int(floor(q.x)),y:Int(floor(q.y)))
+            let rgb=coverage==1 ? edited.rgb:original.rgb+(edited.rgb-original.rgb)*coverage
+            let result=Pixel(rgb.x,rgb.y,rgb.z,original.a)
+            guard result.isFinite else{throw CraftError.invalid("Adjustment result exceeds the floating-point range.")}
+            s.setLinearPixel(x:x,y:y,result)
+            continue
+          }
           let edited:Pixel
           if case .modern(let value)=a,value.needsNeighborhood {edited=evaluate(p,x,y)}
           else {edited=evaluate(p, Int(floor(q.x)), Int(floor(q.y)))}

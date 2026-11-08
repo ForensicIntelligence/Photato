@@ -1,0 +1,9 @@
+{
+  "origin": "Owned64x48RGB8 synthetic color patches; Adobe Photoshop2026 native SelectAndMask, neutral full-canvas selection.",
+  "observed": "LayerMask keeps originalSmartObject; NewLayerWithLayerMask creates rastercopy and retains source.",
+  "scope": "Source/output identity and full-white mask only, not refined-edge/model/default/byte-identical Photoshop file proof.",
+  "sha256": {
+    "observed-smart-object-layer-mask.psd": "bbedaf4fc128796a0948e4b504248db0559a99815d594097ec611bf2fbaca9a3",
+    "observed-new-layer-with-mask.psd": "c80594960253533d64bdbdbf374cf2d90df846ad6c024b31b6faf40dcad033c3"
+  }
+}

@@ -96,6 +96,12 @@ struct AutomationView: View {
         )
         .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
+        Toggle("Allow app-wide event configuration", isOn: Binding(
+          get: { service.scriptEventChangesEnabled }, set: { service.setScriptEventChangesEnabled($0) }
+        )).disabled(!service.isRunning)
+        Text("Allows clients to configure automatic Actions and edit Actions registered for events. This can affect new and newly opened documents, including unshared documents. Saved event settings persist after the API stops; this access permission turns off with the API.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
         Toggle("Allow workspace panel changes", isOn: Binding(
           get: { service.workspacePanelChangesEnabled }, set: { service.setWorkspacePanelChangesEnabled($0) }
         )).disabled(!service.isRunning)

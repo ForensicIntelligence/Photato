@@ -30,6 +30,7 @@ import PhotoCraftImaging
   var undoStates: [LiquifySettings] = []
   var redoStates: [LiquifySettings] = []
   var input: LiquifyInput?
+  var meshLibrary: LiquifyMeshLibrary?
   var document: CraftDocument?
   var stroke: LiquifyStroke?
   var onChange: ((LiquifySettings) -> Void)?
@@ -39,6 +40,13 @@ import PhotoCraftImaging
   private var closed = false
   private var sliderStart: LiquifySettings?
   var ready: Bool { input != nil && !loading && !detecting }
+  var canLoadLastMesh: Bool { ready && meshLibrary?.settings != nil }
+  func loadLastMesh() {
+    guard ready, let saved = meshLibrary?.settings else { return }
+    end()
+    change(saved)
+    selectedFace = 0
+  }
   var currentSettings: LiquifySettings {
     var value = settings
     if let stroke { value.strokes.append(stroke) }

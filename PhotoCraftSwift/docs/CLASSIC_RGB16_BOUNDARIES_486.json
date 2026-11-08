@@ -1,0 +1,123 @@
+{
+  "step": 486,
+  "application_build": 486,
+  "reference": "docs/CLASSIC_RGB16_BOUNDARIES_486.json",
+  "status": "Classic RGB16 Gradient Map now uses fused interpolation at linear boundaries. All 61 selected Debug checks pass. Optimized Apple Silicon passes 61/61 and translated Intel 60/61, including all three new methods on both. The remaining Intel Legacy vector170 failure also occurs on retained build485. All 2,359,872 independently read merged-reference bytes match across Debug, ARM and Intel. Native Reverse, Undo/Redo, 100% viewport, cleanup and universal package checks pass. Build486 is a validation candidate; build480 remains the latest fully qualified selected universal. Full A06, Smooth, the curved residual, RGB32 fills and earlier gaps remain open.",
+  "software_changes": true,
+  "selected_RGB16_fused_workflow_qualified_both_architectures": true,
+  "all_selected_optimized_passed": false,
+  "selected_native_UI_qualified": true,
+  "focused_Debug_tests": 61,
+  "normal_selected_tests_each_architecture": 61,
+  "normal_passed_each_architecture": [
+    61,
+    60
+  ],
+  "new_correctness_methods": 3,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "recorded_utc": "2026-11-08T06:17:53.566152+00:00",
+  "run": "artifacts/runs/20261108T053250Z-486-classic-fused",
+  "source_inputs": 7628,
+  "source_manifest": "artifacts/runs/20261108T053250Z-486-classic-fused/release01-source.json",
+  "Debug_source_manifest": "artifacts/runs/20261108T053250Z-486-classic-fused/source01-source.json",
+  "promotion": "artifacts/runs/20261108T053250Z-486-classic-fused/promotion01.json",
+  "qualification": "artifacts/runs/20261108T053250Z-486-classic-fused/qualification-selected02.json",
+  "optimized_qualification": "artifacts/runs/20261108T053250Z-486-classic-fused/release01-qualification.json",
+  "byte_equivalence": "artifacts/runs/20261108T053250Z-486-classic-fused/byte-equivalence01.json",
+  "universal": "artifacts/runs/20261108T053250Z-486-classic-fused/universal01/staging01.json",
+  "native_UI": "artifacts/runs/20261108T053250Z-486-classic-fused/native-ui01.json",
+  "prior_failure": "artifacts/runs/20261108T053250Z-486-classic-fused/prior485-intel-tone01/result.json",
+  "source_delta": "artifacts/runs/20261108T053250Z-486-classic-fused/source-final-delta01.json",
+  "versions": {
+    "native": 92,
+    "Actions": 60,
+    "typed_commands": 266
+  },
+  "source_changes": [
+    {
+      "path": "Sources/PhotoCraft/AutomationAdjustmentBrush.swift",
+      "before": "37cbc1c6ea8c6ac2806aeacaa606b0d7c3ed6cd1a23a5341880329f2a6c34dd9",
+      "after": "2b7781ceaecae6a8bf5ad992ef227cbb4123b3c35940c6de6c80fe3d2b67d27d"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ClassicRGB16Gradient.swift",
+      "before": "4e1184b9e8f5370ac5e54d378186cc1608084584f18495d62b51033a6c9f0dd7",
+      "after": "98d791389763caad2915733bb7df207e5925ee62f34f6dd5b29bda653cfdd35c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ClassicFusedGradientWorkflowTests.swift",
+      "before": null,
+      "after": "f2a8dd77243ad4d3e97f5dccf436694b513b59e7d08e1ea47aa39d85c2702ad2"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/ClassicFusedGradientTests.swift",
+      "before": null,
+      "after": "6ac9dbc32e9b4afc1f06f94d5bf806939e80192ae1f331f76e33727724e95a30"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/ClassicGradientMapTests.swift",
+      "before": "04a56a39bfcea38b26237802865992b5eeeb5e10d8094e16228800700644c43f",
+      "after": "61e658308b38818cd0c36de0b51d4e436e87c487265eb6bf3ea2234aa62c7153"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/Fixtures/classic-fused486.json",
+      "before": null,
+      "after": "d9b06708541c981c8bc3520649d4ebb3d6fddc52e5dc3a0280b3e6737e8ea3c1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/ClassicFusedGradientIOTests.swift",
+      "before": null,
+      "after": "71f3c6257feae83b522b96f6858a4b5eb1da7086f9c2b3cbaba2503261fe8646"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/classic-fused486/README.md",
+      "before": null,
+      "after": "77394a619dfb5cdbbca14ab41e7e57848825576f56d70aada87dd7098624cea5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/classic-fused486/photoshop-holdout486-random65-linear.psd",
+      "before": null,
+      "after": "73c118d905b33ec2d883b7318d419f07ffdf60c16a5d2a82a375272bf889c8a7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/classic-fused486/photoshop-holdout486-random65-partial.psd",
+      "before": null,
+      "after": "3560dc83049e4efaf6ac7ce0587917cdab181c509fa70a5007efc44bb0f295d7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/classic-fused486/photoshop-holdout486-uneven9-smooth.psd",
+      "before": null,
+      "after": "43aaccde8fd82af90fed87dd5abaa5c1d6dd4ec2d8e1797488d023768dbb9221"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/classic-fused486/provenance.json",
+      "before": null,
+      "after": "f5a6ddc1fc7b3b6ce8eb049d67b7e4338e7cb6935a5ca47f86685c98eef1fc46"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "before": "5d6c90e352fac97104027ecfc54c1a3680bfd6331496b6173cabd09c3001da2b",
+      "after": "cccc61bef0ebcf024360492cd71b00cc18c68eed1056ad765768116fad579035"
+    }
+  ],
+  "source_files_removed": [],
+  "API": "Existing adjustmentBrush.edit/settings uses the same native/history kernel. Capabilities disclose ClassicRGB16 arithmetic, bounded qualification and remaining parity; no route/command/schema/desktopdescriptor added.",
+  "fixtures": "Tests/PhotoCraftImagingTests/Fixtures/classic-fused486/provenance.json",
+  "rejected_approach": "Exact rational interpolation increased old corpus differences from2to6. Uniform fused operation reduces2to1, chosen before3freshPhotoshopholdouts; no name/position empirical exceptions.",
+  "remaining": [
+    "FullA06originalscope/acceptance remains: Smooth, one retained curvedRGB16sample at2089, RGB32fill bit differences, dither/profiles/defaults/all-input/cross-platform fidelity.",
+    "Current repair is Classic RGB16GradientMaplinear interpolation only. No GradientFill/paint/RGB8/floattransfer change or wholePSDfile equality claim.",
+    "Intel Legacyvector170 green1046997904vs1046997906 remains. Exactfailure reproduces in qualified retained485Intel; no fixture/tolerance/assertion removal, cause or repair claimed.",
+    "Native UI qualifies one ownedRGB16PSD import/Reverse/factoryUndoRedo/100percent viewport/cleanclose/normalquit. Physicalplatforms/60fps/accessibility/localization remain open.",
+    "Earlier483API400vs422 and484pendingFillmodal remain unresolved; fullcurrent suite not run. Latest fully qualified selected universal remains480.",
+    "Original104scope/acceptance/status,652IDs/memberships/status,81major/sevenpasses unchanged. Rotate boundedA06workflow toend;currentAI01thenAI02.",
+    "No GitHub mutation/productioninstall/Store/Xcodearchive/upload/release. User-authorized cleanup removed only20verifiedduplicateoldsecondaryapp extractions, retaining everyprimary/current/running/failedapp andallZIPs/source/evidence."
+  ],
+  "full_suite_passed": false,
+  "Photoshop_parity": false,
+  "current": "AI01",
+  "next": "AI02",
+  "latest_fully_qualified_selected_universal": 480,
+  "older_duplicate_cleanup": "artifacts/runs/20261108T053250Z-486-classic-fused/older-duplicate-cleanup01/cleanup01.json"
+}

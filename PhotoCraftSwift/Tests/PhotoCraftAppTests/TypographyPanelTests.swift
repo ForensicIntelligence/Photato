@@ -28,10 +28,10 @@ final class TypographyPanelTests: XCTestCase {
     let data = Data(catalog2.utf8), raw = try JSONSerialization.jsonObject(with:data)as! [String:Any]
     let old = try JSONDecoder().decode([PanelDockGroup].self,from:JSONSerialization.data(withJSONObject:raw["groups"]!))
     let dock = try JSONDecoder().decode(PanelDock.self,from:data)
-    XCTAssertEqual(dock.catalogVersion,3);XCTAssertEqual(Array(dock.groups.prefix(4)),old)
+    XCTAssertEqual(dock.catalogVersion,4);XCTAssertEqual(Array(dock.groups.prefix(4)),old)
     XCTAssertEqual(dock.orderedColumns.map(\.id),["left","main"])
-    XCTAssertEqual(dock.hidden,[.swatches,.history,.character,.paragraph])
-    let added = try XCTUnwrap(dock.groups.last)
+    XCTAssertEqual(dock.hidden,[.swatches,.history,.character,.paragraph,.styles])
+    let added = try XCTUnwrap(dock.groups.first{$0.panels==[.character,.paragraph]})
     XCTAssertEqual(added.panels,[.character,.paragraph]);XCTAssertEqual(added.selected,.character)
     XCTAssertEqual(added.dockColumnID,"left");XCTAssertNotEqual(added.id,"typography")
     XCTAssertEqual(Set(dock.groups.flatMap(\.panels)),Set(WorkspacePanel.allCases))

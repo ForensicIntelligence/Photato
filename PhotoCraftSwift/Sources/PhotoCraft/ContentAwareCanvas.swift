@@ -7,7 +7,7 @@ struct ContentAwareCanvas: NSViewRepresentable {
   func makeNSView(context: Context) -> ContentAwareCanvasView { let v = ContentAwareCanvasView(); v.model = model; v.preview = preview; return v }
   func updateNSView(_ view: ContentAwareCanvasView,context: Context) {
     _ = model.samplingImage; _ = model.previewImage; _ = model.showOriginal; _ = model.zoom; _ = model.pan; _ = model.size; _ = model.stroke
-    _ = model.tool; _ = model.panTool; _ = model.kind; _ = model.add
+    _ = model.tool; _ = model.panTool; _ = model.kind; _ = model.add; _ = model.selectionMode
     view.model = model; view.preview = preview; view.needsDisplay = true; view.refreshToolCursor()
   }
 }
@@ -16,6 +16,10 @@ struct ContentAwareCanvas: NSViewRepresentable {
     guard let model else { return .unavailable }
     if (panning && cursorPointerDown) || (!cursorPointerDown && (spaceHeld || model.panTool)) { return cursorPointerDown ? .closedHand : .openHand }
     if preview { return .arrow }
+    if (model.stroke?.target ?? model.tool) == .selection {
+      let mode = model.stroke?.selectionMode ?? model.effectiveSelectionMode(cursorModifiers)
+      return .selection((model.stroke?.kind ?? model.kind) == .lasso ? "lasso":"paintbrush.pointed",mode)
+    }
     let add = model.stroke?.add ?? (model.add != cursorModifiers.contains(.option))
     return .symbol((model.stroke?.kind ?? model.kind) == .lasso ? "lasso":"paintbrush.pointed",add ? .add:.subtract)
   }
@@ -66,7 +70,7 @@ struct ContentAwareCanvas: NSViewRepresentable {
     beginCursorGesture(event); defer { refreshToolCursor() }
     guard let m = model, m.ready else { return }; window?.makeFirstResponder(self)
     let p = convert(event.locationInWindow,from:nil); previous = p; cursor = p; panning = spaceHeld || m.panTool
-    if !preview && !panning && imageRect.contains(p) { let q = coordinates(p); m.begin(x:q.x,y:q.y,alternate:event.modifierFlags.contains(.option)) }
+    if !preview && !panning && imageRect.contains(p) { let q = coordinates(p); m.begin(x:q.x,y:q.y,alternate:event.modifierFlags.contains(.option),selectionMode:m.effectiveSelectionMode(event.modifierFlags)) }
   }
   override func mouseDragged(with event: NSEvent) {
     updateCursorModifiers(event.modifierFlags)

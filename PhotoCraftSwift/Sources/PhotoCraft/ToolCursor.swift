@@ -4,8 +4,8 @@ import SwiftUI
 
 /// Cursor semantics follow the operation actually dispatched, including the mode captured at stroke start.
 enum ToolCursor: Hashable {
-  enum Badge: String { case add, subtract, intersect, constrain, center, constrainCenter, copy, constrainCopy }
-  case arrow, text, pathText, crosshair, openHand, closedHand, unavailable
+  enum Badge: String { case add, subtract, intersect, constrain, center, constrainCenter, copy, constrainCopy, background }
+  case arrow, text, pathText, crosshair, openHand, closedHand, unavailable, blockEraser
   case symbol(String, Badge? = nil)
   case selectedPixels(copy:Bool,constrained:Bool,unsnapped:Bool)
 
@@ -29,6 +29,13 @@ enum ToolCursor: Hashable {
         NSColor.black.setStroke();path.lineWidth=3;path.stroke();NSColor.white.setStroke();path.lineWidth=1;path.stroke();return true
       }
       let value=NSCursor(image:image,hotSpot:.init(x:15,y:12));Self.cache[self]=value;return value
+    case .blockEraser:
+      if let cached=Self.cache[self] { return cached }
+      let image=NSImage(size:NSSize(width:20,height:20),flipped:false){_ in
+        let p=NSBezierPath(rect:NSRect(x:2,y:2,width:16,height:16))
+        NSColor.black.setStroke();p.lineWidth=3;p.stroke();NSColor.white.setStroke();p.lineWidth=1;p.stroke();return true
+      }
+      let value=NSCursor(image:image,hotSpot:NSPoint(x:10,y:10));Self.cache[self]=value;return value
     case .crosshair: return .crosshair
     case .openHand: return .openHand
     case .closedHand: return .closedHand
@@ -65,6 +72,8 @@ enum ToolCursor: Hashable {
           case .add, .subtract:
             path.move(to: .init(x:20,y:7.5)); path.line(to: .init(x:29,y:7.5))
             if badge == .add { path.move(to: .init(x:24.5,y:3)); path.line(to: .init(x:24.5,y:12)) }
+          case .background:
+            path.appendRect(.init(x:20,y:6,width:6,height:6));path.appendRect(.init(x:23,y:3,width:6,height:6));NSColor.white.setFill();NSRect(x:25,y:3,width:4,height:4).fill()
           case .copy,.constrainCopy:
             path.appendRect(.init(x:20,y:6,width:6,height:6));path.appendRect(.init(x:23,y:3,width:6,height:6))
             if badge == .constrainCopy{path.move(to:.init(x:20,y:2));path.line(to:.init(x:29,y:2))}
@@ -93,7 +102,7 @@ enum ToolCursor: Hashable {
 extension EditorTool {
   /// Exhaustive by design: adding a tool must include its effective cursor policy.
   func cursor(modifiers flags: NSEvent.ModifierFlags, selection: SelectionMode = .replace,
-              adjustmentSubtract: Bool = false, fingerPainting: Bool = false) -> ToolCursor {
+              adjustmentSubtract: Bool = false, fingerPainting: Bool = false, eraserMode: EraserMode = .brush, removeSubtract: Bool = false) -> ToolCursor {
     let option = flags.contains(.option)
     switch self {
     case .zoom: return .symbol(option ? "minus.magnifyingglass" : "plus.magnifyingglass")
@@ -127,14 +136,18 @@ extension EditorTool {
     case .patch, .contentAwareMove: return .selection("lasso", selection)
     case .redEye: return .symbol("eye")
     case .spotHealing: return .symbol("bandage")
+    case .remove: return .symbol(self.symbol,removeSubtract != option ? .subtract:.add)
     case .pencil: return .symbol("pencil.tip")
     case .colorReplacement: return .symbol("paintbrush.pointed.fill")
     case .patternStamp: return .symbol("square.grid.2x2")
-    case .backgroundEraser, .magicEraser, .eraser: return .symbol("eraser")
+    case .eraser:
+      if option { return .unavailable }
+      switch eraserMode {case .brush:return .symbol("eraser");case .pencil:return .symbol("pencil.tip");case .block:return .blockEraser}
+    case .backgroundEraser, .magicEraser: return .symbol("eraser")
     case .brush: return .crosshair
     case .paintBucket: return .symbol("drop.fill")
     case .gradient: return .symbol("rectangle.lefthalf.filled", flags.contains(.shift) ? .constrain : nil)
-    case .eyedropper: return .symbol("eyedropper")
+    case .eyedropper: return .colorSample(target:flags.contains(.option) ? .background:.foreground,available:!flags.contains(.shift))
     case .pen, .freeformPen, .curvaturePen: return .symbol("pencil.tip")
     }
   }
@@ -250,4 +263,8 @@ extension View {
   func toolCursor(_ descriptor: @escaping (NSEvent.ModifierFlags) -> ToolCursor) -> some View {
     background(ToolCursorRegion(descriptor: descriptor))
   }
+}
+
+extension ToolCursor {
+  static func colorSample(target:ColorSampleTarget,available:Bool)->Self {available ? .symbol("eyedropper",target == .background ? .background:nil):.unavailable}
 }

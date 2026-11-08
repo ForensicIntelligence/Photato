@@ -28,6 +28,7 @@ public enum ActionLayerTarget: Codable, Equatable, Sendable {
 /// Native action format. Unsupported recording entries remain visible and block playback.
 /// This is deliberately not an Adobe .atn file or a Photoshop JavaScript program.
 public enum ActionOperation: Codable, Sendable {
+  case smartFilterTransfer(RecordedSmartFilterTransfer)
   case canvasEdges(CanvasEdgeOperation, Pixel)
   case flattenImage
   case layerStyles(RecordedStyleEdit)
@@ -211,6 +212,7 @@ public enum ActionOperation: Codable, Sendable {
     case .layerStyle(let ids, let v): self = .style(targets(ids), v)
     case .smartFilters(let id, let v): self = .filters(target(id), v)
     case .applyFilter(let id, let v): self = .filter(target(id), v)
+    case .maskFilter: self = .unsupported("Mask filtering is not yet recordable. Remove or disable this step before playback.")
     case .blurGalleryMask(let edit):
       let index=edit.filterID.flatMap{id in d.layers.first{$0.id==edit.layerID}?.smartFilters?.filters.firstIndex{$0.id==id}}
       self = .blurGalleryMask(target(edit.layerID),edit.settings,index,edit.opacity,edit.blendMode)
@@ -246,6 +248,7 @@ public enum ActionOperation: Codable, Sendable {
     func id(_ target: ActionLayerTarget) throws -> UUID { try target.resolve(in: d) }
     func ids(_ targets: [ActionLayerTarget]) throws -> Set<UUID> { try Set(targets.map(id)) }
     switch self {
+    case .smartFilterTransfer(let request): return try request.command(in: d)
     case .layerStyles(let edit):return .layerStyles(try edit.resolved(in:d))
     case .globalLight(let value):return .globalLight(value)
     case .replaceText:throw CraftError.unsupported("Text replacement Actions require native shaping playback.")
@@ -417,6 +420,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .paintGradient(let recipe)=step.operation{try recipe.validate()}
       if case .adjustment(_,let value)=step.operation {try value.validate()}
       if case .editType(_,let text,let origin,_)=step.operation {try text.validate();guard origin.x.isFinite,origin.y.isFinite,abs(origin.x)<=1_000_000,abs(origin.y)<=1_000_000 else{throw CraftError.invalid("Invalid recorded type origin.")}}
+      if case .addContent(_, .adjustment(.hueSaturation(let value)))=step.operation {try value.validate()}
       if case .addContent(_, .adjustment(.source(let value)))=step.operation {try value.validate()}
       if case .addContent(_, .adjustment(.modern(let value)))=step.operation {try value.validate()}
     }

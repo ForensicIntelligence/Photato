@@ -190,6 +190,8 @@ extension WorkspaceView {
         toningOptions
       case .patch, .contentAwareMove, .redEye:
         regionRetouchOptions
+      case .remove:
+        RemoveToolOptions(store:store)
       case .spotHealing:
         spotHealingOptions
       case .cloneStamp, .healingBrush:
@@ -198,7 +200,9 @@ extension WorkspaceView {
         PaintingToolOptionsView(store:store)
       case .adjustmentBrush:
         AdjustmentBrushOptionsView(store:store)
-      case .brush, .eraser:
+      case .eraser:
+        EraserOptionsView(store:store)
+      case .brush:
         if store.editingMask {
           Text("Layer Mask").foregroundStyle(.white).padding(4).background(StudioTheme.field)
         }
@@ -271,8 +275,7 @@ extension WorkspaceView {
       case .rectangle, .ellipse, .triangle, .polygon, .star, .line, .customShape:
         ShapeToolOptions(store:store)
       case .eyedropper:
-        labeledValue("Sample Size:", value: "Point Sample", width: 100)
-        labeledValue("Sample:", value: "All Layers", width: 90)
+        EyedropperOptions(store:store)
       case .hand, .zoom:
         Button("100%") { store.setZoom(1) }.controlSize(.small)
         Button("Fit Screen") { store.fit() }.controlSize(.small)

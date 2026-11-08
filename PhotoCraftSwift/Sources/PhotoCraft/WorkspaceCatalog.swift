@@ -30,6 +30,7 @@ public enum EditorTool: String, CaseIterable, Identifiable, Sendable {
   case contentAwareMove = "Content-Aware Move"
   case redEye = "Red Eye"
   case spotHealing = "Spot Healing Brush"
+  case remove = "Remove"
   case pencil = "Pencil"
   case colorReplacement = "Color Replacement"
   case mixerBrush = "Mixer Brush"
@@ -137,7 +138,7 @@ enum WorkspaceCatalog {
     ],
     [
       .init("spotHealing", "Spot Healing Brush", "bandage", "J", .spotHealing),
-      .init("remove", "Remove", "eraser.badge.sparkles", "J"),
+      .init("remove", "Remove", "eraser.fill", "J", .remove),
       .init("healing", "Healing Brush", "bandage", "J", .healingBrush),
       .init("patch", "Patch", "rectangle.dashed", "J", .patch),
       .init(
@@ -236,7 +237,7 @@ struct WorkspaceGap: Identifiable, Sendable {
     .init(
       id: "selections", title: "Selections & masks",
       detail:
-        "Object/quick selection, magnetic lasso, Select and Mask, Quick Mask and mask Free Transform. Magic Wand has point sampling, tolerance, contiguous/global matching, antialiasing, layer sampling and selection modes; averaged samples and exact Photoshop output remain open. Density/feather, enable/link controls and unlinked mask Move are available."
+        "Object/quick selection, magnetic lasso, Select and Mask, Quick Mask and mask Free Transform. Magic Wand has point/averaged sampling, tolerance, contiguous/global matching, antialiasing, layer sampling and selection modes; exact Photoshop output remains open. Density/feather, enable/link controls and unlinked mask Move are available."
     ),
     .init(
       id: "retouch", title: "Retouch & brush tools",

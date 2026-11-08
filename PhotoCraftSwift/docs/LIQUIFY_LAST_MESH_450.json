@@ -1,0 +1,155 @@
+{
+  "step": 450,
+  "date": "2026-11-06",
+  "status": "Selected last-mesh reuse/persistence/native/API workflow passes focused Debug qualification. Full F04 and live/current-reference/optimized qualification remain open.",
+  "source_manifest": "artifacts/runs/20261106T192422Z-450-liquify-last-mesh/source03-source.json",
+  "source_inputs": 7385,
+  "source_unchanged": true,
+  "source_delta": {
+    "added": [
+      "Sources/PhotoCraft/LiquifyMeshLibrary.swift",
+      "Tests/PhotoCraftAppTests/LiquifyMeshRecallTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/Application.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/FilterRecall.swift",
+      "Sources/PhotoCraft/LiquifyCanvas.swift",
+      "Sources/PhotoCraft/LiquifySheet.swift",
+      "Sources/PhotoCraft/LiquifyWorkspace.swift",
+      "Sources/PhotoCraft/NativeDocument.swift",
+      "scripts/Info.plist"
+    ],
+    "old_tests_changed": false,
+    "Core_Imaging_and_old_fixtures_unchanged": true
+  },
+  "implementation": {
+    "cache": "One immutable committed Liquify program, independent of the most recent other filter; normal application persists existing version1mesh up to4MiB.",
+    "writes": "Ordered background atomic writes; normal applicationWillTerminate drains them. Unreadable files stay preserved, new memory mesh remains usable; generic error exposed in native/API state.",
+    "native": "Load Last Mesh, local history, Cancel and existing single document transaction; canvas-only plainM with all16modifier combinations tested.",
+    "publication": "Existing native/direct/prepared successful-filter hooks. Failed/cancelled/stale/revoked edits do not update cache. Closing source retains controller cache and detaches a memory-only snapshot.",
+    "coordinates": "Exact existing program retained: explicit original dimensions or zero/current-target API semantics, including freeze/face settings. Exact Photoshop policy remains unqualified."
+  },
+  "API": {
+    "commands": 258,
+    "native_archive": 87,
+    "Actions_maximum": 53,
+    "new_command_IDs": [],
+    "state_fields": [
+      "filterRecall.lastLiquifyMesh",
+      "filterRecall.lastLiquifyMeshError"
+    ],
+    "apply": "Existing filter.apply Liquify payload/shared engine/history/portable Actions",
+    "discovery_schema_revisions": true,
+    "Adobe": "No new route or unsupported mesh/action descriptor claimed; existing isolated/nested Actions recall gaps remain."
+  },
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/work-with-meshes.html",
+      "role": "Current official saved-mesh reuse documentation, dated23February2026; read6November2026."
+    },
+    {
+      "url": "https://helpx.adobe.com/id_en/photoshop/using/new-shortcuts-cs6.html",
+      "role": "Official historical M/LoadLastMesh shortcut; not fresh2026factory qualification."
+    }
+  ],
+  "tests": {
+    "selected": 33,
+    "passed": 33,
+    "new": 11,
+    "unexpected": 0,
+    "missing": 0,
+    "build_seconds": 7.85,
+    "test_seconds": 2.553,
+    "exact_cases": [
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testAuxiliaryComponentAndSmartFilterEditsRetainResolvedPayloads",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testControllerSharesRecallAcrossTargetsAndClosingSourceDetachesIt",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testDiscoveryStateAndSharedRevisionDescribeTheCurrentRecall",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testHTTPInvalidBusyStaleUnavailableAndRevokedRequestsAreAtomic",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testHTTPRecallMatchesDesktopAndPortableRecordedFilterIsIndependent",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testImmediatePreviewCancelInvalidAndCancelledWorkRetainRecall",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testNativeMenuDefaultShortcutDynamicTitleAvailabilityAndAllModifierCursors",
+      "PhotoCraftAppTests.FilterRecallWorkflowTests/testNativeRecallUsesCurrentSelectionDepthAndOneUndo",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testCancelledAndRevokedPreparationDoNotReplaceLastMesh",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testCanvasPlainMShortcutAllModifierCombinationsAndOffscreenControls",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testCommittedMeshSurvivesOtherFiltersUndoAndRestart",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testControllerSharingAndClosingSourceKeepIndependentSnapshots",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testHTTPStateReplayUndoAndRejectedRequestsMatchNative",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testImplicitCoordinatesFreezeFacesAndStoredValueRemainIndependent",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testNativeLoadUsesLocalHistoryCancelAndOneDocumentTransaction",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testQueuedWritesKeepNewestMeshAndNormalTerminationDrainsThem",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testSmartFilterAppendAndReeditUpdateRecallWithoutReplacingOriginalPixels",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testUnreadableAndOversizedSavedFilesArePreserved",
+      "PhotoCraftAppTests.LiquifyMeshRecallTests/testWriteFailureKeepsUsableMeshAndInvalidInputKeepsPreviousValue",
+      "PhotoCraftCoreTests.LiquifyTests/testFaceControlsAndFreezeShareTheField",
+      "PhotoCraftCoreTests.LiquifyTests/testFreezeThawLassoAndGlobalProtection",
+      "PhotoCraftCoreTests.LiquifyTests/testIdentityFilterPreservesHiddenRGBAndHasNoHistoryAtEveryDepth",
+      "PhotoCraftCoreTests.LiquifyTests/testMalformedProgramsAndPublicSegmentsReject",
+      "PhotoCraftCoreTests.LiquifyTests/testResamplingIdentityAndOpaqueMarkerMotion",
+      "PhotoCraftCoreTests.LiquifyTests/testToolsHaveCorrectSenseAndSmoothRelaxes",
+      "PhotoCraftCoreTests.LiquifyTests/testWarpDirectionReconstructionAndDeterministicReplay",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testCommandPayloadLimitsAndSchema",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testDepthsSelectionNative19AndExplicitPSDMeshRejection",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testHTTPWarpSmartFilterStateArchiveAndErrors",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testMaskFaceSliderHistoryAndMeshRoundtrip",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testReadOnlyFaceDetectionAndStaleCompletion",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testWorkspaceLayoutAndFactoryShortcut",
+      "PhotoCraftAppTests.LiquifyWorkflowTests/testWorkspaceStrokeLocalUndoCancelCommitAndDocumentUndo"
+    ],
+    "same_selection_after_repairs": true,
+    "summary": "artifacts/runs/20261106T192422Z-450-liquify-last-mesh/source03-summary.json",
+    "normal_optimized_current": false,
+    "latest_optimized_universal": 448,
+    "full_suite_passed": false
+  },
+  "retained": {
+    "Debug_files": 5386,
+    "app_sha256": "195537137030a7368d070280ff3f3261c8b3dde64c36d25268556dba438eceef",
+    "source02_and03_app_identical": true,
+    "source01": "Compile failure: implicit catch error shadowed observable property; cached products retained, not a450build pass.",
+    "source02": "32of33methods pass,3assertions in one new Smart fixture using pre-conversion ID; retained before repair. New fixture uses correct converted ID; actual HTTPGET state assertion strengthened. No old numeric assertion weakened."
+  },
+  "validation_app": {
+    "step": 450,
+    "app": "/private/tmp/photato-validation-450-b03d7aca/Photato Validation 450.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation450",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "450Source03",
+    "source_inputs": 7385,
+    "compiled_binary_sha256": "195537137030a7368d070280ff3f3261c8b3dde64c36d25268556dba438eceef",
+    "signed_binary_sha256": "e9b968d7b3589bfd25eddcf6ddca8396478d53369d2042845a235f9c3ecb0ba0",
+    "unsigned_payload_exact": true,
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_448": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 448,
+    "status": "Prepared isolated Debug validation app; native interaction awaits Mac unlock. No universal450 or production-runtime claim.",
+    "prepared_utc": "2026-11-06T19:43:39.316456+00:00"
+  },
+  "visual": {
+    "captures": [
+      "artifacts/runs/20261106T192422Z-450-liquify-last-mesh/source03-captures/last-mesh-light.png",
+      "artifacts/runs/20261106T192422Z-450-liquify-last-mesh/source03-captures/last-mesh-dark.png"
+    ],
+    "scope": "Inspected offscreen loading-state Light/Dark captures. SwiftUI task re-prepares injected workspace during capture, so controls are disabled/spinner visible. These are not ready-state/live/VoiceOver/full-HIG qualification."
+  },
+  "pending": [
+    "Normal Photoshop2026UI/output/default/lastmesh lifetime/size/freeze/face comparison",
+    "Actual ready native controls, load/edit/local Undo/Cancel/commit/document Undo/normal Quit/relaunch after Mac unlock",
+    "Normal optimized both architectures and universal450qualification at a breadth milestone",
+    "Photoshop.msh/PSD/ATNdescriptors, direct face handles/advanced backdrop and all originalF04scope",
+    "Earlier full-suite/numerical/capacity/physical/60fps failures and requirements"
+  ],
+  "distribution": "Local Debug validation bundle only, no launch/install/newsourcepush/archive/AppStore/software release. Public code remains448/docs449.",
+  "next": "F05,thenF06; retain F04pending native/reference/full-scope work.",
+  "goal_complete": false,
+  "recorded_utc": "2026-11-06T19:46:52.102210+00:00"
+}

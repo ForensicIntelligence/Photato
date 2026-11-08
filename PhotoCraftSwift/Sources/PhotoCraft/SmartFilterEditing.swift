@@ -74,8 +74,11 @@ struct SmartFilterRows: View {
               .padding(3).border(store.smartFilterMaskEditing && store.document.activeLayerID == layer.id ? Color.white : .clear)
           }.accessibilityLabel("Edit Smart Filter mask of \(layer.name)")
             .help("Paint black to hide the filters; white to reveal them")
+            .onDrag { SmartFilterGroupDrag.provider(store:store, layerID:layer.id, part:.mask) }
         }
         Text("Smart Filters").fontWeight(.medium)
+          .onDrag { SmartFilterGroupDrag.provider(store:store, layerID:layer.id, part:.stack) }
+          .help("Drag the complete stack to another Smart Object; hold Option to copy")
         Spacer()
       }.modifier(SmartFilterDropTarget(store: store, layerID: layer.id)).contextMenu {
         Button(stack.enabled ? "Disable Smart Filters" : "Enable Smart Filters") { store.editSmartFilters(layer.id) { $0.enabled.toggle() } }

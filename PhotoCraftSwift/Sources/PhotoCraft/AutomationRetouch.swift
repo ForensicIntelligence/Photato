@@ -40,8 +40,21 @@ enum RetouchStrokeAPI {
     default: return [:]
     }
   }
+  static var focusModeCondition: [[String: Any]] {
+    [["if": ["properties": ["tool": ["enum": ["blur", "sharpen", "smudge"]]],
+              "required": ["tool"]],
+      "then": ["properties": ["brush": ["properties": [
+        "mode": BrushAPI.enumeration(FocusBlendModes.supported.map(\.rawValue))]]]]]]
+  }
   static var capabilities: [String: Any] {
     ["commands": [name], "tools": RecordedRetouchTool.allCases.map(\.rawValue), "actionVersion": 21,
+     "focusBlendModes": ["tools": ["blur", "sharpen", "smudge"],
+       "modes": FocusBlendModes.supported.map(\.rawValue), "parameter": "brush.mode",
+       "state": "retouchTools.<tool>.brush.mode", "actionVersion": 55,
+       "revision": "Native focus Mode changes invalidate the API revision without document history; repeated unchanged choices do not.",
+       "normalActionVersion": 21, "nativeArchiveVersionUnchanged": 88,
+       "composition": "Blend the processed sample with the original target before captured stroke opacity/selection. Keep the existing effect alpha, or the protected target alpha. Scalar mask Hue/Saturation/Color preserve the target; Luminosity uses processed gray.",
+       "limits": "Shared Photato kernels/blend math; only Photoshop Blur's seven-item RGB8 menu is independently observed at457. Sharpen/Smudge desktop lists, per-dab/continuous numerics, defaults/profiles/platform/physical60fps and byte equivalence remain unqualified."],
      "targets": ["pixels", "layerMask"], "maximumSamples": 4096,
      "settings": "Partial settings override the selected retouch tool's native defaults. Values use native units: opacity/flow/exposure/strength0–1, size in document pixels, source scaling in percent.",
      "sources": "Clone/Healing accept an explicit shared source id/revision and sourceLayerID. Other tools sample the target document. No source file paths or unshared documents are admitted. Sources are rechecked before atomic commit.",
@@ -67,6 +80,10 @@ enum RetouchStrokeAPI {
 }
 
 extension EditorStore {
+  var focusBlendModeRevisionToken: String {
+    [cloneState.blur.brush.mode, cloneState.sharpen.brush.mode, cloneState.smudge.brush.mode]
+      .map(\.rawValue).joined(separator: "|")
+  }
   var retouchToolState: [String: Any] {
     Dictionary(uniqueKeysWithValues: RecordedRetouchTool.allCases.map { tool in
       let value = RetouchStrokeAPI.settings(tool, store: self)

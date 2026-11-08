@@ -29,12 +29,20 @@ extension SmartObject {
         "maximumEncodedSourceBytes":maximumSourceBytes,
         "limits":"Paged native/RGB input and editable conversion retain independent format, source-byte, owned-heap and physical scratch limits. maximumSourcePixels remains the common non-RGB/PDF preparation limit; dense maximum capacity and full Photoshop/platform parity remain open."],
       "layerCompSelection": SmartObjectLayerCompAPI.capabilities,
+      "convertToLayers": ["command":"smartObject.convertToLayers", "parameterSchema":AutomationCommand.definitions.first(where:{$0.name=="smartObject.convertToLayers"})!.schema,
+        "native":"Layer > Smart Objects > Convert to Layers and the Layers context menu use SmartObjectUnpack through the same detached, source-bound prepared transaction as the API. One Undo/Redo for all selected instances.",
+        "state":"Existing document layers/group hierarchy, Smart Object, type/shape/style/pattern metadata and busy/history/error/revision state; no new document representation or archive version.",
+        "behavior":"Restore source layer coordinates and selected source Layer Comp. Discard the outer source transform, warp, projection, stack mode and Smart Filters. Multiple source layers become an isolated group. General outer blending/masks/styles are retained on a folder when they cannot be folded into a single layer. Nested sources and conflicting pattern identities are remapped without overwriting existing assets.",
+        "availability":"Selected unlocked RGB Smart Objects with retained original bytes; static RGB sources with matching working profiles. Source decoding and validation occur during preparation. Linked source paths are never read. Missing/corrupt sources, unsupported mode/profile/temporal/PDF/RAW/artboard/variable transfers and capacity violations reject atomically.",
+        "recording":"Portable Actions replay is not implemented for this source-decoding operation; recording reports unsupported rather than recording Rasterize.",
+        "adobe":"No dedicated endpoint in the pinned Firefly v2 contract. UXP/actionJSON runtime or descriptor conformance is not claimed.",
+        "qualification":"Adobe documents component restoration/grouping and transform/Smart Filter removal. Exact placement, outer attachments/defaults, numerical output and live/platform/capacity qualification remain open."],
       "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,"linkedSourceEditing":LinkedSourceFileAPI.capabilities,
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
         "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",
         "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",
         "limits":"PDF render/source budgets; no linked files, PDF Warp or full Photoshop output/default/platform equivalence claim."],
-      "commands": [SmartObjectLayerCompAPI.name, "smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
+      "commands": [SmartObjectLayerCompAPI.name, "smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.convertToLayers", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
       "sourceDownload": "/v1/documents/{documentID}/smart-objects/{layerID}/source",
       "sourceInput": "smartObject.place/replace take sourceDocumentID/sourceRevision from an explicitly shared document and embed an editable Photato snapshot. sourcePlacement uploads original file bytes without converting their format; pdfPlacement offers PDF page/image selection.",
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
@@ -67,7 +75,7 @@ extension AutomationCommand {
         tx: number("tx", range: -1_000_000...1_000_000), ty: number("ty", range: -1_000_000...1_000_000))
       try t.validated()
       return .transform(try id(), t, .bicubic)
-    case "smartObject.convert":
+    case "smartObject.convert", "smartObject.convertToLayers":
       guard case .array(let values) = parameters["layerIDs"], (1...LayerLimits.maximumLayers).contains(values.count) else {
         throw AutomationFailure(status: 400, message: "Select one to 8,000 layer UUIDs.")
       }
@@ -78,6 +86,7 @@ extension AutomationCommand {
         return id
       }
       guard Set(ids).count == ids.count else { throw AutomationFailure(status: 400, message: "Duplicate layer UUID.") }
+      if name == "smartObject.convertToLayers" { return try SmartObjectUnpack.command(in: document, selected: Set(ids)) }
       return try SmartObjectIO.convert(in: document, selected: Set(ids))
     case "frame.place":
       guard let source else { throw AutomationFailure(status:404,message:"Source document is not shared.") }

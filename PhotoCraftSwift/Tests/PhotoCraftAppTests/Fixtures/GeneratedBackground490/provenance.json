@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-11-08T07:22:05.582720+00:00",
+  "fixture": "photoshop-exported-rgb32-planar.bin",
+  "sha256": "fe481059b4dc0e09ccc5c76f8545dac48b97eca0614a815e540e490241641d1a",
+  "width": 8,
+  "height": 6,
+  "channels": 3,
+  "depth": 32,
+  "encoding": "Planar big-endian Float32 linear RGB merged samples, no alpha plane because Photoshop omits opaque composite alpha.",
+  "reference_application": "Adobe Photoshop2026 27.2.0",
+  "reference_PSD_sha256": "30d9f56d7e1f0f9b54462df99864f534df40c2dc59b31a43e804a5daa3ecd66a",
+  "provenance": "Owned procedural masked8x6subject over opaque bluebackground. Native derivedPSD opened in Photoshop, subject visibility toggledoff/on, SaveAsa new file, closedclean. Publicformat rawmerged reader extracts only576 samplebytes. No proprietary source/binaries, userphoto, accountmetadata or actualAI output in this fixture.",
+  "source_definition": "Original new GeneratedBackgroundTests.document(.f32), image() and native result are retained under490debug01. DerivedPSD uses existing writer working-profile conversion.",
+  "scope": "Strict encoded PSD output for this ownedsample only. In-memory legacyRGB32/profile conversion differs in20 working words from the saved reference and remains unqualified; no full Photoshop/generative output equivalence inferred.",
+  "license": "Original fixture data under project MIT/Apache licensing. Public PSD specification used: https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+}

@@ -14,10 +14,14 @@ struct ContentAwareSheet: View {
         Text("Content-Aware Fill").font(.headline)
         Picker("Tool",selection:$model.tool) { Text("Sampling Brush").tag(ContentAwareStroke.Target.sampling); Text("Selection").tag(ContentAwareStroke.Target.selection) }.frame(width:190)
         if model.tool == .selection { Picker("Shape",selection:$model.kind) { Text("Brush").tag(ContentAwareStroke.Kind.brush); Text("Lasso").tag(ContentAwareStroke.Kind.lasso) }.frame(width:115) }
-        Picker("Mode",selection:$model.add) { Text("Add").tag(true); Text("Subtract").tag(false) }.frame(width:140)
+        if model.tool == .selection {
+          Picker("Mode",selection:$model.selectionMode) { ForEach(SelectionMode.allCases,id:\.self) { Text($0.rawValue).tag($0) } }.frame(width:140)
+        } else {
+          Picker("Mode",selection:$model.add) { Text("Add").tag(true); Text("Subtract").tag(false) }.frame(width:140)
+        }
         TextField("Size",value:$model.size,format:.number).frame(width:50).textFieldStyle(.roundedBorder).help("Brush diameter in pixels; Option temporarily reverses Add/Subtract")
         Toggle("Hand",isOn:$model.panTool).toggleStyle(.button)
-        Spacer(); if model.loading || model.rendering || model.committing { ProgressView().controlSize(.small) }
+        Spacer(); if model.loading || model.rendering || model.committing { ProgressView().controlSize(.small).accessibilityLabel(model.committing ? "Applying Content-Aware Fill":"Preparing fill preview") }
       }.padding(12).disabled(model.committing)
       Divider()
       HStack(spacing:0) {
@@ -78,6 +82,7 @@ struct ContentAwareSheet: View {
         Text("\(Int(model.zoom*100))%").monospacedDigit()
         Spacer()
         Button("Cancel") { store.cancelContentAwareFill() }.keyboardShortcut(.cancelAction)
+        Button("Apply") { store.applyContentAwareFill() }.disabled(!model.canApply).accessibilityIdentifier("contentAware.apply")
         Button("OK") { store.commitContentAwareFill() }.keyboardShortcut(.defaultAction).disabled(!model.canCommit)
       }.padding(12)
     }.frame(minWidth:1000,idealWidth:1180,minHeight:620,idealHeight:740)

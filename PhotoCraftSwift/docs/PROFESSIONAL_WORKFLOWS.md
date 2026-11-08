@@ -1,5 +1,7 @@
 # Professional workflow roadmap
 
+Current direction, clarified at checkpoint482: **Photoshop2026 is the behavior and acceptance standard; Rust is inspiration and supporting regression evidence.** The dated original GateA/GateB roadmap below is retained as history and does not require Rust parity before missing Photoshop workflows. Follow [the current work order](CURRENT_WORK_ORDER.md) and [inventory reconciliation](INVENTORY_RECONCILIATION.md). All40workflow scenarios remain planned; implementation progress does not mark their acceptance passed.
+
 Recorded 2026-10-07. User direction: first achieve native Swift parity with PhotoCraft, then fill the professional Photoshop gaps. **Both acceptance gates remain open.** This is a requirements and integration plan, not an implementation claim. See [STATUS.md](STATUS.md) for the actual app and [PORTING_PLAN.md](PORTING_PLAN.md) for Gate A.
 
 ## Evidence and baseline

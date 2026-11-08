@@ -285,7 +285,7 @@ final class DocumentIOWorkflowTests: XCTestCase {
       defer { desktop.store.renderTask?.cancel() }
       try desktop.store.executeEditorCommand(.renameLayer(layerID, "API edit"))
       XCTAssertEqual(edited, desktop.store.document)
-      for format in DocumentIO.Format.allCases {
+      for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
         let result = try await self.request(
           service, path: "/v1/documents/\(id)/file.\(format.rawValue)",
           headers: ["X-Photato-Revision": service.revision(doc.store)]
@@ -546,7 +546,7 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...87))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...89))
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),
         type: "application/vnd.photato.document")

@@ -9,6 +9,7 @@ public struct GalleryParameter:Sendable {
 public struct GalleryEffect:Codable,Equatable,Sendable {
   public var filter:GalleryFilter
   public var visible=true
+  public var texture:GalleryTextureSource?
   public var values:[String:Double]=[:]
   public var foreground=Pixel.black,background=Pixel.white,glowColor=Pixel(0,0.62,1)
   public init(_ filter:GalleryFilter){self.filter=filter;values=Dictionary(uniqueKeysWithValues:filter.parameters.map{($0.key,$0.defaultValue)})}
@@ -16,6 +17,7 @@ public struct GalleryEffect:Codable,Equatable,Sendable {
   public func choice(_ key:String)->String{guard let p=filter.parameters.first(where:{$0.key==key}),!p.choices.isEmpty else{return ""};return p.choices[min(p.choices.count-1,max(0,Int(get(key))))]}
   public func flag(_ key:String)->Bool{get(key) != 0}
   public func validate()throws{
+    if let texture {guard GalleryTextureSource.supports(filter) else {throw CraftError.invalid("This Gallery effect does not support custom textures.")};try texture.validate()}
     guard values.count<=32,Set(values.keys).isSubset(of:Set(filter.parameters.map(\.key))) else{throw CraftError.invalid("Unknown Filter Gallery parameter.")}
     for p in filter.parameters{let value=values[p.key] ?? p.defaultValue;guard value.isFinite,value.rounded()==value,(p.minimum...p.maximum).contains(value) else{throw CraftError.invalid("Invalid \(p.title) for \(filter.title).")}}
     for color in [foreground,background,glowColor]{guard color.isFinite,[color.r,color.g,color.b,color.a].allSatisfy({(0...1).contains($0)}) else{throw CraftError.invalid("Gallery colors must be finite sRGB values in0...1.")}}
@@ -31,8 +33,9 @@ public struct ArtisticGallerySettings:Codable,Equatable,Sendable {
     guard let raw=root["effects"] else{return Self()}
     guard let entries=raw as? [[String:Any]],entries.count<=32 else{throw CraftError.invalid("Invalid Filter Gallery stack.")}
     var result=Self();result.effects=try entries.map{entry in
-      guard Set(entry.keys).isSubset(of:["filter","visible","values","foreground","background","glowColor"]),let name=entry["filter"] as? String,let kind=GalleryFilter(rawValue:name) else{throw CraftError.invalid("Unknown Filter Gallery effect.")}
+      guard Set(entry.keys).isSubset(of:["filter","visible","values","foreground","background","glowColor","texture"]),let name=entry["filter"] as? String,let kind=GalleryFilter(rawValue:name) else{throw CraftError.invalid("Unknown Filter Gallery effect.")}
       var e=GalleryEffect(kind)
+      if let raw=entry["texture"],!(raw is NSNull) {e.texture=try JSONDecoder().decode(GalleryTextureSource.self,from:JSONSerialization.data(withJSONObject:raw))}
       if let v=entry["visible"]{guard let n=v as? NSNumber,CFGetTypeID(n)==CFBooleanGetTypeID() else{throw CraftError.invalid("Effect visibility must be Boolean.")};e.visible=n.boolValue}
       if let v=entry["values"]{guard let fields=v as? [String:Any] else{throw CraftError.invalid("Invalid gallery controls.")};for(k,v)in fields{guard let n=v as? NSNumber,CFGetTypeID(n) != CFBooleanGetTypeID() else{throw CraftError.invalid("Gallery values use numeric controls/choice indices.")};e.values[k]=n.doubleValue}}
       for key in ["foreground","background","glowColor"]{if let v=entry[key]{guard let color=v as? [String:Any],Set(color.keys)==["r","g","b","a"],color.values.allSatisfy({v in guard let n=v as? NSNumber else{return false};return CFGetTypeID(n) != CFBooleanGetTypeID()}) else{throw CraftError.invalid("Invalid gallery color.")};let decoded=try JSONDecoder().decode(Pixel.self,from:JSONSerialization.data(withJSONObject:color));if key=="foreground"{e.foreground=decoded}else if key=="background"{e.background=decoded}else{e.glowColor=decoded}}}
@@ -41,8 +44,12 @@ public struct ArtisticGallerySettings:Codable,Equatable,Sendable {
   }
   public static var apiSchema:[String:Any]{
     let color:[String:Any]=["type":"object","additionalProperties":false,"required":["r","g","b","a"],"properties":Dictionary(uniqueKeysWithValues:["r","g","b","a"].map{($0,["type":"number","minimum":0,"maximum":1] as [String:Any])})]
-    let options=GalleryFilter.allCases.map{kind->[String:Any] in ["type":"object","additionalProperties":false,"required":["filter"],"properties":["filter":["const":kind.rawValue],"visible":["type":"boolean","default":true],"values":["type":"object","additionalProperties":false,"properties":Dictionary(uniqueKeysWithValues:kind.parameters.map{($0.key,$0.schema)})],"foreground":color,"background":color,"glowColor":color]]}
+    let options=GalleryFilter.allCases.map{kind->[String:Any] in
+      var fields:[String:Any]=["filter":["const":kind.rawValue],"visible":["type":"boolean","default":true],"values":["type":"object","additionalProperties":false,"properties":Dictionary(uniqueKeysWithValues:kind.parameters.map{($0.key,$0.schema)})],"foreground":color,"background":color,"glowColor":color]
+      if GalleryTextureSource.supports(kind) {fields["texture"]=["anyOf":[["type":"null"],GalleryTextureSource.apiSchema]]}
+      return ["type":"object","additionalProperties":false,"required":["filter"],"properties":fields]
+    }
     return ["type":"object","additionalProperties":false,"properties":["effects":["type":"array","maxItems":32,"items":["oneOf":options]]]]
   }
-  public static var apiCapabilities:[String:Any]{["schema":apiSchema,"categories":GalleryFilter.categories,"filters":GalleryFilter.allCases.map{f in ["key":f.rawValue,"name":f.title,"category":f.category,"controls":f.parameters.map{p in ["key":p.key,"title":p.title,"minimum":p.minimum,"maximum":p.maximum,"default":p.defaultValue,"choices":p.choices,"boolean":p.boolean] as [String:Any]}] as [String:Any]},"stackOrder":"First array effect runs first (bottom to top in the native stack list). Hidden effects remain editable but do not render.","parameters":"Numeric integer controls; choice values are zero-based indices exposed in controls. Boolean controls use0/1. Colors are captured straight sRGB. Defaults come from the original PhotoCraft catalogue.","persistence":"Native36 retains Gallery Smart Filters; Actions8 records them. Editable PSD is unsupported until independently qualified.","limits":["effects":32,"pixels":8388608,"effectPixels":67108864],"qualification":"47 native Swift effects ported from original clean-room Rust approximations. Full Photoshop pixels, loaded texture files, advanced defaults and live/platform qualification remain open. RGB32 is processed in encoded sRGB then stored linearly; Gallery output is bounded0...1."]}
+  public static var apiCapabilities:[String:Any]{["schema":apiSchema,"categories":GalleryFilter.categories,"filters":GalleryFilter.allCases.map{f in ["key":f.rawValue,"name":f.title,"category":f.category,"controls":f.parameters.map{p in ["key":p.key,"title":p.title,"minimum":p.minimum,"maximum":p.maximum,"default":p.defaultValue,"choices":p.choices,"boolean":p.boolean] as [String:Any]}] as [String:Any]},"stackOrder":"First array effect runs first (bottom to top in the native stack list). Hidden effects remain editable but do not render.","parameters":"Numeric integer controls; choice values are zero-based indices exposed in controls. Boolean controls use0/1. Colors are captured straight sRGB. Defaults come from the original PhotoCraft catalogue.","persistence":"Native36/Actions8 retain ordinary Gallery settings; custom texture snapshots require Native88/Actions54. Editable PSD is unsupported until independently qualified.","limits":["effects":32,"pixels":8388608,"effectPixels":67108864],"qualification":"47 native Swift effects ported from original clean-room Rust approximations. Custom Photoshop textures are supported as embedded height samples for five effects. Full Photoshop pixels, texture conversion/sampling fidelity, advanced defaults and live/platform qualification remain open. RGB32 is processed in encoded sRGB then stored linearly; Gallery output is bounded0...1."]}
 }

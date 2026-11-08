@@ -26,7 +26,9 @@ enum PSDMergedSample {
     let white = 1 - p.a
     return Pixel(p.r * p.a + white, p.g * p.a + white, p.b * p.a + white, p.a)
   }
-  static func encodeLinear(_ p: Pixel) -> Pixel {
+  static func encodeLinear(_ p: Pixel,transparency:Bool=true) -> Pixel {
+    // A three-channel Background composite has no white-matted transparency plane.
+    if !transparency{return p}
     // Original Photoshop RGB32 references round each distance-from-white operation
     // separately, including opaque samples. Do not fuse these operations or apply
     // them to the straight layer planes, which retain their original sample bits.

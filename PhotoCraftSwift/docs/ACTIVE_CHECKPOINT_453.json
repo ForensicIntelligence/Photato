@@ -1,0 +1,14 @@
+{
+  "step": "dev-step-453",
+  "run": "artifacts/runs/20261106T212500Z-453-gallery-textures",
+  "status": "Selected F06customtexture workflow qualified; fullscopeopen; currentB01thenB02",
+  "current_major_workflow": "B01",
+  "next": "B02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7405,
+  "latest_optimized_universal": 453,
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T212500Z-453-gallery-textures/release01-source.json",
+  "production_swift_files": 1106
+}

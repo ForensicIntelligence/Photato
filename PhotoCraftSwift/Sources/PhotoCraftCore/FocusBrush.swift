@@ -107,7 +107,10 @@ public enum FocusPainter {
         let raw = original.pixel(x: x, y: y)
         if preserve && raw.a <= 0 { continue }
         let before = focus.mask ? Pixel(unit(raw.r), unit(raw.r), unit(raw.r)) : raw
-        let after = workspace.sample(q.x, q.y)
+        let sampled = workspace.sample(q.x, q.y)
+        let after = focus.brush.mode == .normal ? sampled : FocusBlendModes.processed(
+          sampled, over: before, mode: focus.brush.mode, depth: pixels.depth,
+          mask: focus.mask, preserveTransparency: preserve)
         if !focus.mask && before.a == 0 && after.a == 0 {
           if !raw.hasSameBits(as: result.pixel(x: x, y: y)) {
             result.setPixel(x: x, y: y, raw)
@@ -166,7 +169,8 @@ public enum FocusPainter {
       brush: focus.brush, points: focus.points, mask: focus.mask)
     let mapping = try ClonePainter.prepare(stroke)
     guard focus.options.strength.isFinite, (0...1).contains(focus.options.strength),
-      focus.foreground.isFinite, (0...1).contains(focus.foreground.a), focus.brush.mode == .normal
+      focus.foreground.isFinite, (0...1).contains(focus.foreground.a),
+      FocusBlendModes.supported.contains(focus.brush.mode)
     else { throw CraftError.invalid("Invalid focus tool settings.") }
     return (original, targetTransform, source, stroke, mapping)
   }

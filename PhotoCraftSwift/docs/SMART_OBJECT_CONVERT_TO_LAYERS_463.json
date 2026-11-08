@@ -1,0 +1,284 @@
+{
+  "step": 463,
+  "date": "2026-11-06",
+  "recorded_utc": "2026-11-07T05:15:56.531113+00:00",
+  "package": {
+    "step": 463,
+    "app": "/private/tmp/photato-validation-463-debug-stage01-88701076/Photato Validation 463.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation463",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "463Source04",
+    "source_inputs": 7476,
+    "compiled_binary_sha256": "0a4e9e1ea5997dd55464f5b5d307df55475332cc0706dfd065fa63c57a6cffdf",
+    "signed_binary_sha256": "302f28d961da934348e9d3fc19708d11ba6fae86b1e382b9bca89fda40640710",
+    "unsigned_payload_exact": true,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": null,
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_448": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 461,
+    "qualification": {
+      "selected_count": 55,
+      "completed_count": 54,
+      "passed_count": 53,
+      "passed_cases": [
+        "PhotoCraftAppTests.SmartObjectUnpackWorkflowTests/testCancellationAndRevokedShareDoNotPublishRestoredLayers",
+        "PhotoCraftAppTests.SmartObjectUnpackWorkflowTests/testContextTargetsAndFactoryMenuBindingAndSchemas",
+        "PhotoCraftAppTests.SmartObjectUnpackWorkflowTests/testHTTPInvalidStaleBusyAndLockedRequestsAreAtomic",
+        "PhotoCraftAppTests.SmartObjectUnpackWorkflowTests/testNativeAndHTTPRestoreSameLayerDataAndHistory",
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testDesktopConversionChildSaveHistoryAndStaleParent",
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testFactorySmartObjectMenuBindings",
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testPhotatoPlaceReplaceSnapshotValidationAndHistory",
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testPreparedSmartObjectCancellationAndCommitValidationAreAtomic",
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testPublishedContractRejectsUnsupportedLinkedAndTransforms",
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testPublishedCreateCompositeAddsAndReplacesEmbeddedResources",
+        "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+        "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+        "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+        "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+        "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+        "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+        "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+        "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+        "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion",
+        "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testLinkedRefreshSharedInstancesGeometryMasksUndoAndLockAtomicity",
+        "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testNativeLinkAndEmbedRetagRetainsPixelsAndRejectsMismatchedFile",
+        "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testResolvingUnscaledCacheRestoresTrueTransformWithoutResamplingOriginal",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+        "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testChoiceAcrossDepthsChangesOnlyPresentationAndPreservesEveryParentProperty",
+        "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testConvertingSelectedLayersDoesNotInheritParentDocumentCompLibrary",
+        "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testDeletedSelectedCompAndImageLocksRejectWholeSourceUpdateAtomically",
+        "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testLinkedNativeArchiveReopensWithCachedChoiceAndHydratesOnlyMatchingOriginalBytes",
+        "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testSharedInstancesKeepIndependentChoicesAndSourceUpdatesRerenderEachChoice",
+        "PhotoCraftImagingTests.SmartObjectLayerCompIOTests/testStackModeRecalculationUsesSelectedCompAndNativeSelectionPersists",
+        "PhotoCraftImagingTests.SmartObjectTests/testConversionPixelsArchivesSourceEditingAndHistoryAtAllDepths",
+        "PhotoCraftImagingTests.SmartObjectTests/testConvertRetainsOuterBlendOpacityAndMultiLayerEditability",
+        "PhotoCraftImagingTests.SmartObjectTests/testOriginalPNGBytesAndInvalidSourcesArePreservedOrRejected",
+        "PhotoCraftImagingTests.SmartObjectTests/testPSDPSBSourceAndAffineRoundTripsAtAllDepths",
+        "PhotoCraftImagingTests.SmartObjectTests/testResizingRetainsOriginalSamplesAndRasterizationIsUndoable",
+        "PhotoCraftImagingTests.SmartObjectTests/testSharedReplacementIndependentCopyMasksAndLockedAtomicity",
+        "PhotoCraftImagingTests.SmartObjectTests/testSourceBlobsSurviveScratchHistoryAndImageProtection",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testAllDepthTransfersUseExistingColorConversionAndKeepMaskCoverage",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testConflictingPatternsRemapFillShapeAndAllStyleDependenciesWithoutOverwriting",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testCorruptLaterSourceAndLocksRejectWholeBatchAndStalePreparedCommit",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testDifferentWorkingProfileAndInvalidTargetsRejectWithoutChanges",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testEditableHierarchyTypeShapesMasksAndExactOwnCompositeSurvive",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testLinkedOriginalUsesRetainedBytesWithoutOpeningItsPath",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testMultipleTargetsKeepParentClippingUnselectedSourceAndOneUndo",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testNestedSharedSourcesAndPristineOrStaleCachesKeepTheirMeaning",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testOuterAttachmentsRetainFolderIdentityAndMaskWorldPlacement",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testSelectedSourceCompAndUnselectedInstancesRemainIndependent",
+        "PhotoCraftImagingTests.SmartObjectUnpackTests/testSingleLayerRestoresIntrinsicCoordinatesBitsAndOneUndoAcrossAllDepths"
+      ],
+      "failed_cases": [
+        "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+      ],
+      "crashed_cases": [
+        "PhotoCraftAppTests.SmartObjectWorkflowTests/testPhotatoConvertCopyResetRasterizeSourceAndNative14"
+      ],
+      "unaccounted": [],
+      "all_new_count": 15,
+      "all_new_passed": true,
+      "all_new_missing_or_failed": [],
+      "full_selected_run_passed": false,
+      "known_baseline_failures_reproduced": true,
+      "source_inputs": 7476,
+      "source_unchanged": true
+    },
+    "status": "Isolated Convert to Layers Debug app:15new methods pass;53of55selected pass, one old exact-byte failure and one old signal10 reproduced on retained462. Live and normal463 unqualified; latest optimized461.",
+    "prepared_utc": "2026-11-07T05:13:00.807067+00:00"
+  },
+  "track": "major stillneeded/pass2",
+  "status": "Native/API Convert to Layers selected workflow Debug tested; fullL05/live/normal/Photoshop acceptance open.",
+  "goal_complete": false,
+  "source": {
+    "manifest": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source04-source.json",
+    "inputs": 7476,
+    "unchanged": true,
+    "changes": {
+      "added": [
+        "Sources/PhotoCraftImaging/SmartObjectUnpack.swift",
+        "Tests/PhotoCraftAppTests/SmartObjectUnpackWorkflowTests.swift",
+        "Tests/PhotoCraftImagingTests/SmartObjectUnpackTests.swift"
+      ],
+      "modified": [
+        "Sources/PhotoCraft/Application.swift",
+        "Sources/PhotoCraft/AutomationCommands.swift",
+        "Sources/PhotoCraft/AutomationSmartObjects.swift",
+        "Sources/PhotoCraft/LayerPanelMenu.swift",
+        "Sources/PhotoCraft/PhotoshopMenus.swift",
+        "Sources/PhotoCraft/SmartObjectEditing.swift",
+        "Sources/PhotoCraftCore/StylePreset.swift",
+        "Tests/PhotoCraftAppTests/AnimationFrameDragTests.swift",
+        "Tests/PhotoCraftAppTests/AutomationTests.swift",
+        "Tests/PhotoCraftAppTests/BlurGalleryMaskWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/BrushPatternTextureTests.swift",
+        "Tests/PhotoCraftAppTests/ChannelBlendingWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/ChannelFooterWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/ChannelThumbnailOptionsTests.swift",
+        "Tests/PhotoCraftAppTests/ClipboardPlaneWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/ColorLookupMultiExportTests.swift",
+        "Tests/PhotoCraftAppTests/CustomKernelPresetWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/EraserModeWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/EyedropperWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/FilterRecallWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/FocusBlendModeWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/GalleryEffectDragTests.swift",
+        "Tests/PhotoCraftAppTests/GalleryTextureWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/GradientCreationWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/LargeEqualizeWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/LensDefaultWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/LightEditingPreviewWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/LiquifyMeshRecallTests.swift",
+        "Tests/PhotoCraftAppTests/PagedHistogramWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/PatternLibraryWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/PatternPatchWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/PointTextWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/RasterizeResponsivenessTests.swift",
+        "Tests/PhotoCraftAppTests/SelectionAntsTests.swift",
+        "Tests/PhotoCraftAppTests/ShapeBlurKernelWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/SkyRenameTests.swift",
+        "Tests/PhotoCraftAppTests/SmartFilterDragTests.swift",
+        "Tests/PhotoCraftAppTests/StylePresetWorkflowTests.swift",
+        "Tests/PhotoCraftAppTests/TransformReferenceTests.swift",
+        "scripts/Info.plist"
+      ],
+      "removed": []
+    },
+    "all_existing_Imaging_sources_and_tests_unchanged": true,
+    "old_test_edits": "artifacts/runs/20261107T044012Z-463-smart-object-layers/counter-metadata-edits01.json",
+    "compiled_Debug_sha256": "0a4e9e1ea5997dd55464f5b5d307df55475332cc0706dfd065fa63c57a6cffdf",
+    "project_assets_entitlements_unchanged": true,
+    "native_format": 89,
+    "Actions_maximum": 57,
+    "typed_commands": 263
+  },
+  "implementation": {
+    "shared_engine": "SmartObjectUnpack restores original editable source layers and the chosen source Layer Comp, preserving source coordinates, nested groups/type/shapes/masks/styles and resources. Original outer transforms/warp/projection/SmartFilters/stack mode are discarded.",
+    "identity_resources": "Wrapper ID retained; multi-layer sources use an isolated folder. Conflicting fill/shape/style pattern dependencies are remapped; existing assets are not replaced. Nested source classes preserve internal sharing while remaining independent of unrelated destination classes. Pristine caches are rebound from their own captured references, without reviving stale caches.",
+    "parent_state": "Selection/channels/paths/parent comps/metadata retained. One prepared transaction for all selected instances. Masks retained in document space on a folder; complex outer attachments use a folder rather than silently dropping them. These attachment/placement semantics are candidates awaiting live Photoshop qualification.",
+    "depth": "Existing ColorManagement converts source/cache pixels; masks preserve numerical coverage. All nine 8/16/32-bit transfer pairs tested. No old rendering kernel or numerical fixture changed.",
+    "native": "Factory Layer > Smart Objects > Convert to Layers and Layers context menu; existing background preparation, session/source/cancel fences and Undo/Redo. No new canvas tool/modifier/global shortcut.",
+    "API": "smartObject.convertToLayers with unique layerIDs through existing shared prepared-operation authorization/revision/session/lifecycle pipeline. Schema, capabilities, result/document-state contract and unavailable/error behavior included. No source path reads. Existing file/document lifecycle is shared.",
+    "recording": "Portable Actions replay is explicitly unsupported; no mislabeled Rasterize operation or archive-version bump."
+  },
+  "validation": {
+    "aggregate": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source04-aggregate01.json",
+    "selected": 55,
+    "completed": 54,
+    "passed": 53,
+    "new": 15,
+    "all_new_passed": true,
+    "full_selected_run_passed": false,
+    "failed": [
+      "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+    ],
+    "crashed": [
+      "PhotoCraftAppTests.SmartObjectWorkflowTests/testPhotatoConvertCopyResetRasterizeSourceAndNative14"
+    ],
+    "baseline_reproduction": [
+      "artifacts/runs/20261107T044012Z-463-smart-object-layers/baseline462-legacy01-derived-summary02.json",
+      "artifacts/runs/20261107T044012Z-463-smart-object-layers/baseline462-linkedPSD01-derived-summary02.json"
+    ],
+    "split_continuation": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source04-continuation01-summary.json",
+    "independent_old_RGB32_regressions_passed": 7,
+    "cursor_regressions_passed": 9,
+    "new_Photoshop_pixel_or_default_proof": false,
+    "attempts": [
+      {
+        "attempt": "source01",
+        "summary": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source01-summary.json",
+        "source_unchanged": true,
+        "executed": 0,
+        "passed": 0,
+        "failed_cases": [],
+        "signals": [],
+        "application_sha256": "682f5c21dc18371daa830f3152bdfb6224839b3b7ee750a58ec519653caa05a2",
+        "executable_origin": "Cached462 application; consult failed qualification",
+        "retained_products": 5421
+      },
+      {
+        "attempt": "source02",
+        "summary": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source02-summary.json",
+        "source_unchanged": true,
+        "executed": 39,
+        "passed": 37,
+        "failed_cases": [
+          "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+          "PhotoCraftImagingTests.SmartObjectUnpackTests/testEditableHierarchyTypeShapesMasksAndExactOwnCompositeSurvive"
+        ],
+        "signals": [
+          "10"
+        ],
+        "application_sha256": "0a4e9e1ea5997dd55464f5b5d307df55475332cc0706dfd065fa63c57a6cffdf",
+        "executable_origin": "New463 product; consult qualification",
+        "retained_products": 5421
+      },
+      {
+        "attempt": "source03",
+        "summary": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source03-summary.json",
+        "source_unchanged": true,
+        "executed": 41,
+        "passed": 39,
+        "failed_cases": [
+          "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths",
+          "PhotoCraftImagingTests.SmartObjectUnpackTests/testDifferentWorkingProfileAndInvalidTargetsRejectWithoutChanges"
+        ],
+        "signals": [
+          "10"
+        ],
+        "application_sha256": "0a4e9e1ea5997dd55464f5b5d307df55475332cc0706dfd065fa63c57a6cffdf",
+        "executable_origin": "New463 product; consult qualification",
+        "retained_products": 5421
+      },
+      {
+        "attempt": "source04",
+        "summary": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source04-summary.json",
+        "source_unchanged": true,
+        "executed": 41,
+        "passed": 40,
+        "failed_cases": [
+          "PhotoCraftImagingTests.LinkedSmartObjectIOTests/testPSDAndPSBExternalRecordsRetainCachedPixelsAndNeverReadPaths"
+        ],
+        "signals": [
+          "10"
+        ],
+        "application_sha256": "0a4e9e1ea5997dd55464f5b5d307df55475332cc0706dfd065fa63c57a6cffdf",
+        "executable_origin": "New463 product; consult qualification",
+        "retained_products": 5421
+      }
+    ]
+  },
+  "reference": {
+    "guide": "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/smart-objects/convert-smart-objects-to-layers.html",
+    "basis": "Public documented restoration/grouping and transform/SmartFilter removal; no proprietary code copied.",
+    "native": "artifacts/runs/20261107T044012Z-463-smart-object-layers/native-probe01.json",
+    "fixture_provenance": "artifacts/runs/20261107T044012Z-463-smart-object-layers/reference-provenance01.json",
+    "new_PS_document_opened": false
+  },
+  "remaining": [
+    "Exact Photoshop placement, grouping for single layers with outer attachments, mask/effect/blend/global-light/default/stack semantics and independent numerical output are unqualified. The new fixture copy was not opened; native input remains unreliable.",
+    "Mode/profile transfer, PDF/RAW, temporal sources/destinations, source artboards and variables remain unavailable for Convert to Layers. Existing source-byte, owned-heap, layer/depth and rendering budgets apply. Dense maximum capacity remains unqualified.",
+    "Portable Actions replay and independent Adobe actionJSON descriptors for conversion remain unimplemented. The pinned Firefly v2 contract has no dedicated Convert to Layers endpoint. No route or runtime is invented.",
+    "The old linked PSD/PSB exact-byte failure (two assertions) and old archive/API Debug signal10 reproduce on retained462. They remain open. Earlier strict/normal/full-suite/physical/60fps failures and all original requirements remain.",
+    "Native live acceptance, normal optimized/universal463, actual macOS14/Intel/AppleSilicon qualification, accessibility/tablet/performance and complete editable interchange remain open. Latest optimized universal is461; no production install/GitHub/Store/archive/release operation.",
+    "Full L05 and the master goal remain open. Preserve104original scopes and acceptance,652reference mappings/statuses,81major memberships and sevenpasses. Current L06 Smart Filters; S02 follows in the authoritative queue."
+  ],
+  "next": "L06 then S02",
+  "no_GitHub_deletion_install_Store_archive_release": true
+}

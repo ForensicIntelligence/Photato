@@ -111,6 +111,7 @@ public enum RasterIO {
     if data.starts(with: Data("8BPS".utf8)) {
       return try PSDCodec.read(data, name: name)
     }
+    if OpenEXR.recognizes(data) { return try OpenEXR.read(data,name:name) }
     if AnimationGIF.recognizes(data) { return try AnimationGIF.read(data, name: name) }
     if let native = try PNGRestrictedStorage.read(data, name: name) { return native }
     if let native = try TIFFRestrictedStorage.read(data, name: name) { return native }

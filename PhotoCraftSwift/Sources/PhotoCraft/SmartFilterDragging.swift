@@ -102,7 +102,8 @@ import PhotoCraftCore
      "native": "Drag a Smart Filter onto a row to reorder within its stack. Hold Option at drop to copy to a row or another Smart Object in the same document. A layer/header target appends at the visual top. Target mask/properties and stack enable state are retained; a new stack uses the existing selection-mask policy. One native Undo and resolved portable filter-stack Action.",
      "modifiers": "The drop proposal and dispatched operation share live Option copy versus plain move resolution. Capture that operation at drop before loading private data; other modifiers add no action.",
      "guards": "Private process-local token with weak store, document/session/layer generation and attachment checks; superseded, stale, foreign, closed, malformed, multi-provider, busy, locked, over-budget and no-op transfers reject. Renderer validates the existing prepared transaction before commit.",
-     "limits": "Same-document single-filter copy and within-stack reorder. Cross-document, cross-layer destructive move, whole-stack/mask transfer and Lens Blur drag are unavailable. Existing file/source/renderer budgets apply.",
+     "groupTransfer": SmartFilterTransferAPI.capabilities,
+     "limits": "This single-filter path supports same-document copy and within-stack reorder. Whole-stack/mask move/copy uses smartFilter.transfer and the group/mask drag source. Cross-document, cross-layer single-filter destructive move and Lens Blur drag remain unavailable. Existing file/source/renderer budgets apply.",
      "qualification": "Physical hit testing/system feedback/modifier timing and full Photoshop output/default/platform behavior remain unqualified. No new API operation, Adobe descriptor, document or Actions version."]
   }
 }
@@ -113,10 +114,14 @@ import PhotoCraftCore
   let filterID: UUID?
   @Binding var highlighted: Bool
   private var copying: Bool { SmartFilterDrag.operation(NSEvent.modifierFlags) == .copy }
+  static var identifiers: [String] { [SmartFilterDrag.identifier, SmartFilterGroupDrag.identifier] }
   func validateDrop(info: DropInfo) -> Bool {
-    info.hasItemsConforming(to: [SmartFilterDrag.identifier])
-      && info.itemProviders(for: [SmartFilterDrag.identifier]).count == 1
-      && SmartFilterDrag.canReceive(store: store, layerID: layerID, filterID: filterID, copying: copying)
+    guard info.hasItemsConforming(to: Self.identifiers),
+      info.itemProviders(for: Self.identifiers).count == 1 else { return false }
+    if info.hasItemsConforming(to: [SmartFilterGroupDrag.identifier]) {
+      return filterID == nil && SmartFilterGroupDrag.canReceive(store:store, layerID:layerID, copying:copying)
+    }
+    return SmartFilterDrag.canReceive(store:store, layerID:layerID, filterID:filterID, copying:copying)
   }
   func dropEntered(info: DropInfo) { highlighted = validateDrop(info: info) }
   func dropExited(info: DropInfo) { highlighted = false }
@@ -125,10 +130,12 @@ import PhotoCraftCore
     return DropProposal(operation: highlighted ? (copying ? .copy : .move) : .cancel)
   }
   func performDrop(info: DropInfo) -> Bool {
-    guard validateDrop(info: info), let provider = info.itemProviders(for: [SmartFilterDrag.identifier]).first else { return false }
+    guard validateDrop(info: info), let provider = info.itemProviders(for: Self.identifiers).first else { return false }
     let copying = self.copying; highlighted = false
+    let group = provider.hasItemConformingToTypeIdentifier(SmartFilterGroupDrag.identifier)
     Task { @MainActor in
-      _ = await SmartFilterDrag.receive(provider, store: store, layerID: layerID, filterID: filterID, copying: copying)
+      if group { _ = await SmartFilterGroupDrag.receive(provider, store:store, layerID:layerID, copying:copying) }
+      else { _ = await SmartFilterDrag.receive(provider, store: store, layerID: layerID, filterID: filterID, copying: copying) }
     }
     return true
   }
@@ -140,7 +147,7 @@ import PhotoCraftCore
   var filterID: UUID? = nil
   @State private var highlighted = false
   func body(content: Content) -> some View {
-    content.onDrop(of: [SmartFilterDrag.identifier], delegate: SmartFilterDropDelegate(
+    content.onDrop(of: SmartFilterDropDelegate.identifiers, delegate: SmartFilterDropDelegate(
       store: store, layerID: layerID, filterID: filterID, highlighted: $highlighted))
       .overlay { Rectangle().stroke(highlighted ? Color.accentColor : .clear, lineWidth: 1).allowsHitTesting(false) }
       .onChange(of: store.sessionGeneration) { _, _ in highlighted = false }

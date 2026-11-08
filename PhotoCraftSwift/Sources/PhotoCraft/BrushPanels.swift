@@ -89,9 +89,17 @@ struct BrushSettingsPanel:View {
           }
         }.frame(width:180)
         ScrollView { controls.padding(14) }.frame(minWidth:300,maxWidth:.infinity)
+      }.disabled(store.brushGesture != nil || store.geometryBusy)
+      if store.brushTextureLoading {
+        HStack {
+          ProgressView().controlSize(.small).accessibilityLabel("Preparing brush texture")
+          Text("Preparing brush texture…")
+          Spacer()
+          Button("Cancel") { store.geometryTask?.cancel() }.accessibilityIdentifier("brush.texture.cancel")
+        }.padding(8)
       }
       Divider();BrushStrokePreview(brush:store.brush).frame(height:90).padding(8)
-    }.disabled(store.brushGesture != nil || store.geometryBusy).frame(minWidth:510,minHeight:440)
+    }.frame(minWidth:510,minHeight:440)
   }
   @ViewBuilder var controls:some View {
     VStack(alignment:.leading,spacing:10) {
@@ -122,8 +130,9 @@ struct BrushSettingsPanel:View {
         BrushDynamicControl(title:"Count Jitter",value:$store.brushOptions.scattering.countJitter)
       case "texture":
         Toggle("Texture",isOn:$store.brushOptions.texture.enabled)
-        Picker("Pattern",selection:$store.brushOptions.texture.pattern) { ForEach(BrushTexture.Pattern.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)} }.onChange(of:store.brushOptions.texture.pattern){_,_ in store.brushOptions.texture.bitmap=nil}
-        if store.brushOptions.texture.bitmap != nil { Text("Embedded pattern");Button("Use Generated Pattern"){store.brushOptions.texture.bitmap=nil} }
+        BrushPatternTexturePicker(store:store)
+        Picker("Generated Pattern",selection:$store.brushOptions.texture.pattern) { ForEach(BrushTexture.Pattern.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)} }.onChange(of:store.brushOptions.texture.pattern){_,_ in store.brushOptions.texture.bitmap=nil}
+        if store.brushOptions.texture.bitmap != nil { Button("Use Generated Pattern"){store.brushOptions.texture.bitmap=nil} }
         scalar("Scale",$store.brushOptions.texture.scale,0.01...10,percent:true)
         scalar("Brightness",$store.brushOptions.texture.brightness,-1...1,percent:true);scalar("Contrast",$store.brushOptions.texture.contrast,-1...1,percent:true)
         Toggle("Invert",isOn:$store.brushOptions.texture.invert);Toggle("Texture Each Tip",isOn:$store.brushOptions.texture.eachTip)

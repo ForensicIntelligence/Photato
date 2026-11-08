@@ -86,7 +86,7 @@ final class BlurGalleryMaskWorkflowTests:XCTestCase {
       var full=d;let plane=try Surface(width:d.width,height:d.height,fill:.black);full.alphaChannels=(0..<CraftDocument.maximumAlphaChannels).map{AlphaChannel(name:"A \($0)",pixels:plane)};document.store.session=EditorSession(document:full)
       let code=try await helper.edit(service,document,BlurGalleryOutputAPI.name,good);XCTAssertEqual(code,422);XCTAssertEqual(document.store.document,full)
       let definition=try XCTUnwrap(AutomationCommand.definitions.first{$0.name==BlurGalleryOutputAPI.name});XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:definition.schema));XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:BlurGallerySettings.apiCapabilities))
-      XCTAssertEqual(AutomationCommand.definitions.count,258);XCTAssertEqual(ActionLibraryFile.maximumVersion,53)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
       XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON:"[{\"_obj\":\"blurGallery\"}]"))
     }
   }

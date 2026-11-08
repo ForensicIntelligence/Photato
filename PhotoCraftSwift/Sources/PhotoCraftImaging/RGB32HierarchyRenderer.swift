@@ -14,7 +14,7 @@ enum RGB32HierarchyRenderer {
   }
 
   static func composite(_ document: CraftDocument, region: IntRect, facts:CompositionFacts? = nil) throws -> Surface? {
-    guard !document.hasArtboards && !document.hasFrames, !document.layers.contains(where: { $0.style != nil }), document.depth == .f32,
+    guard !document.hasArtboards && !document.hasFrames, !document.layers.contains(where: { $0.style != nil && $0.style?.isChannelBlendingOnly != true }), document.depth == .f32,
       let nodes = try nodes(document.children(of: nil), document: document, region: region,facts:facts)
     else { return nil }
     var result = try Renderer.emptyCanvas(document)
@@ -43,7 +43,7 @@ enum RGB32HierarchyRenderer {
       if layer.isClipped { continue }
       let firstClip = index
       while index < layers.count && layers[index].isClipped { index += 1 }
-      guard layer.visible && layer.opacity > 0 else { continue }
+      guard layer.visible && layer.opacity > 0 && layer.style?.restrictedChannels?.count != 3 else { continue }
       guard var built = try node(layer, document: document, region: region,facts:facts) else { return nil }
       if built.pixels == nil && built.children.isEmpty { continue }
       let clips = layers[firstClip..<index].filter { $0.visible && $0.opacity > 0 }
@@ -141,7 +141,8 @@ enum RGB32HierarchyRenderer {
             var clipped = sample(clip, x: x, y: y)
             clipped.a = unit(clipped.a * clip.layer.opacity)
             let alpha = source.a
-            source = try RGB32NormalRenderer.blend(source, clipped, opaque: true)
+            let prior=source
+            source = BlendChannelRestrictions.applying(clip.layer.style?.restrictedChannels,after:try RGB32NormalRenderer.blend(source,clipped,opaque:true),before:prior)
             source.a = alpha
           }
         }
@@ -149,6 +150,7 @@ enum RGB32HierarchyRenderer {
           source.a * RGB32NormalRenderer.expandedOpacity(node.layer.opacity, opaque: opaque))
         output = seeded ? try RGB32NormalRenderer.blend(output, source, opaque: opaque) : source
       }
+      output=BlendChannelRestrictions.applying(node.layer.style?.restrictedChannels,after:output,before:before)
       seeded = true
     }
     return output

@@ -27,7 +27,7 @@ final class TimelineTrimTests:XCTestCase {
     try session.execute(.video(.frameRate(8)));XCTAssertEqual(session.document.videoTimeline?.durationFrames,16)
   }
   func testRepeatedTrimAndVariablePresentationTimesKeepSourceIndex()throws {
-    var d=try fixture();d.layers[0].video!.frames=Array(d.layers[0].video!.frames.prefix(4));d.layers[0].video!.outFrame=4
+    var d=try fixture();d.layers[0].video!.frames=VideoFrames(Array(d.layers[0].video!.frames.prefix(4)));d.layers[0].video!.outFrame=4
     d.layers[0].video!.movie = .init(data:Data("owned metadata fixture".utf8),presentationTimes:[0,1,3,6].map{.init(value:$0,timescale:4)},endTime:.init(value:16,timescale:4),originalFrameRate:4,audioTracks:0)
     let original=d
     try Command.video(.workspace(.trimToWorkArea)).apply(to:&d)

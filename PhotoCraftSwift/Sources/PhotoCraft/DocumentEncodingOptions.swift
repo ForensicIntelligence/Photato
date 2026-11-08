@@ -10,6 +10,9 @@ enum DocumentEncodingOptions {
   static var schema: [String: Any] {
     ["type": "object", "additionalProperties": false, "required": [String](),
      "properties": [
+       "exrCompression": ["type":"string","enum":OpenEXR.Compression.allCases.map(\.rawValue)],
+       "exrSample": ["type":"string","enum":OpenEXR.Sample.allCases.map(\.rawValue)],
+       "exrTransparency": ["type":"boolean"],
        "jpegQuality": ["type": "integer", "minimum": 0, "maximum": 12],
        "jpegFormat": ["type": "string", "enum": RasterEncodingOptions.JPEGFormat.allCases.map(\.rawValue)],
        "jpegMatte": ["type": "array", "minItems": 3, "maxItems": 3,
@@ -29,11 +32,16 @@ enum DocumentEncodingOptions {
   }
   static var capabilities: [String: Any] {
     ["schema": schema,
-     "formats": ["jpeg": ["jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile"], "png": ["pngCompression", "pngInterlaced"],
+     "formats": ["exr":["exrCompression","exrSample","exrTransparency"], "jpeg": ["jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile"], "png": ["pngCompression", "pngInterlaced"],
        "tiff": ["tiffCompression", "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffLayerCompression"],
        "psd": ["psdLayerCompression", "psdCompositeCompression"],
        "psb": ["psdLayerCompression", "psdCompositeCompression"]],
      "jpeg": "Quality0...12 maps to ImageIO quality/12; omitted quality retains0.95. Baseline uses platform coding; optimized recodes only Huffman entropy in native Swift; progressive uses the platform scan schedule. Matte is three sRGB values0...1, default white. jpegEmbedProfile=false removes ICC APP2 records without converting samples; True explicitly embeds the working ICC; omitted preserves platform profile signaling, which may use EXIF sRGB without an ICC segment. JPEG always flattens to opaque8-bit (HDR uses SDR sRGB). Photoshop quantization,3–5 progressive scan choice, dialog/default and byte parity remain unqualified.",
+     "openEXR":["routes":["GET /v1/documents/{id}/file.exr","POST /v1/documents/import","document.saveAs","document.save","Native Open/Save/Copy"],
+       "jobSupport":"OpenEXR is not an advertised Adobe v2 or Photato action-job output media type. Existing published output contracts are unchanged.",
+       "encoding":"32-bit RGB documents; scene-linear sRGB; flattened single-part scanline; ZIP16/Float/transparency by default. None/ZIPS/ZIP and Half/Float are explicit choices. File RGB is premultiplied; zero-alpha RGB is retained. Half can reduce precision and rejects overflow. HDR is not tone-mapped.",
+       "reading":"Full-resolution RGB or luminance Y with optional alpha, HALF/FLOAT, None/ZIPS/ZIP; 32-bit native working samples and file-backed tiles; data/display windows and xDensity retained.",
+       "limits":"512MiB encoded input/output, 128MiB scan-line block, up to1GiB import workspace; API transfer budgets remain separate. Other compression, tiled/deep/multipart/AOV/UINT/subsampled data, non-square pixels, non-sRGB chromaticities and non-finite or out-of-range alpha reject. Full Photoshop format/default/output parity remains unqualified."],
      "downloadHeader": "X-Photato-Export-Options",
      "downloadHeaderEncoding": "JSON object, at most 2048 UTF-8 bytes; same schema as command parameters.options.",
      "defaults": "Omitted choices retain existing encoder behavior. PNG levels 0...9 recompress IDAT; interlacing uses Adam7. TIFF tags1/5/8 mean None/LZW/ZIP. PSD/PSB defaults remain ZIP prediction for layer/mask channels and raw merged image. Explicit raw/rle/zip/zipPrediction choices are lossless; a complete merged image is always included.",
@@ -49,6 +57,9 @@ enum DocumentEncodingOptions {
   }
   static func json(_ options: RasterEncodingOptions) -> [String: Any] {
     var result: [String: Any] = [:]
+    if let value = options.exrCompression {result["exrCompression"] = value.rawValue}
+    if let value = options.exrSample {result["exrSample"] = value.rawValue}
+    if let value = options.exrTransparency {result["exrTransparency"] = value}
     if let value = options.jpegQuality { result["jpegQuality"] = value }
     if let value = options.jpegFormat { result["jpegFormat"] = value.rawValue }
     if let value = options.jpegMatte { result["jpegMatte"] = value }
@@ -68,12 +79,24 @@ enum DocumentEncodingOptions {
   static func parse(_ value: AutomationValue?, format: DocumentIO.Format) throws -> RasterEncodingOptions? {
     guard let value else { return nil }
     guard case .object(let fields) = value,
-      Set(fields.keys).isSubset(of: ["jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile", "pngCompression", "pngInterlaced", "tiffCompression",
+      Set(fields.keys).isSubset(of: ["exrCompression","exrSample","exrTransparency","jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile", "pngCompression", "pngInterlaced", "tiffCompression",
         "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffLayerCompression",
         "psdLayerCompression", "psdCompositeCompression"]) else {
       throw AutomationFailure(status: 400, message: "Expected supported encoding options.")
     }
     var result = RasterEncodingOptions()
+    if let raw=fields["exrCompression"] {
+      guard case .string(let v)=raw,let value=OpenEXR.Compression(rawValue:v) else{throw AutomationFailure(status:400,message:"exrCompression must be none, zips or zip.")}
+      result.exrCompression=value
+    }
+    if let raw=fields["exrSample"] {
+      guard case .string(let v)=raw,let value=OpenEXR.Sample(rawValue:v) else{throw AutomationFailure(status:400,message:"exrSample must be half or float.")}
+      result.exrSample=value
+    }
+    if let raw=fields["exrTransparency"] {
+      guard case .bool(let value)=raw else{throw AutomationFailure(status:400,message:"exrTransparency must be boolean.")}
+      result.exrTransparency=value
+    }
     if let raw = fields["jpegQuality"] {
       guard case .number(let value) = raw, value.isFinite, value.rounded() == value,
         (0...12).contains(value) else {

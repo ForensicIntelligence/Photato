@@ -4,10 +4,11 @@ import PhotoCraftImaging
 
 struct ClipboardRepresentations: Sendable {
   var native: Data
-  var tiff: Data
-  var png: Data
+  var tiff: Data?
+  var png: Data?
   init(_ content: ClipboardContent) throws {
     native = try content.encoded()
+    if content.bounds.width > Surface.maximumDensePixels/content.bounds.height {tiff=nil;png=nil;return}
     let preview = try ClipboardRenderer.preview(content)
     try Task.checkCancellation()
     tiff = try ClipboardRenderer.imageData(preview, type: .tiff, document: content.document)
@@ -49,11 +50,9 @@ enum ClipboardInput: Sendable {
   }
   func write(_ value: ClipboardRepresentations) throws {
     let item = NSPasteboardItem()
-    guard item.setData(value.native, forType: Self.nativeType),
-      item.setData(value.tiff, forType: .tiff), item.setData(value.png, forType: .png)
-    else {
-      throw CraftError.invalid("Could not prepare clipboard formats.")
-    }
+    guard item.setData(value.native, forType:Self.nativeType) else{throw CraftError.invalid("Could not prepare native clipboard data.")}
+    if let tiff=value.tiff,!item.setData(tiff,forType:.tiff){throw CraftError.invalid("Could not prepare clipboard TIFF.")}
+    if let png=value.png,!item.setData(png,forType:.png){throw CraftError.invalid("Could not prepare clipboard PNG.")}
     pasteboard.clearContents()
     guard pasteboard.writeObjects([item]) else {
       throw CraftError.unavailable(
@@ -71,6 +70,7 @@ extension EditorStore {
       && pathTarget == nil
   }
   func canCopy(merged: Bool = false, cut: Bool = false) -> Bool {
+    if let target=clipboardPlaneTarget{return !merged && canUseClipboardPlane(target,writing:cut)}
     guard clipboardTargetAvailable else { return false }
     if merged { return !document.layers.isEmpty }
     let ids = clipboardLayerIDs
@@ -90,6 +90,7 @@ extension EditorStore {
     return true
   }
   func canPaste(_ placement: PastePlacement) -> Bool {
+    if let target=clipboardPlaneTarget{return (placement == .centered || placement == .inPlace) && canUseClipboardPlane(target,writing:true) && clipboard.hasImage}
     guard clipboardTargetAvailable, clipboard.hasImage else { return false }
     if document.restrictedMode != nil, let id = document.activeLayerID, document.isImageLocked(id) { return false }
     if let active = activeLayer, let parent = active.isGroup ? active.id : active.parentID,
@@ -102,6 +103,7 @@ extension EditorStore {
   }
   func copyImage(merged: Bool = false, cut: Bool = false) {
     guard canCopy(merged: merged, cut: cut) else { return }
+    if let target=clipboardPlaneTarget{copyClipboardPlane(target,cut:cut);return}
     let original = document
     let ids = clipboardLayerIDs
     let background = Pixel(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1)
@@ -139,6 +141,7 @@ extension EditorStore {
   }
   func pasteImage(_ placement: PastePlacement = .centered) {
     guard canPaste(placement) else { return }
+    if let target=clipboardPlaneTarget{pasteClipboardPlane(target,placement:placement);return}
     do {
       let input = try clipboard.read()
       let original = document

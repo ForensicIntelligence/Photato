@@ -28,6 +28,7 @@ extension ChannelCommand {
       guard spot == nil || (!d.colorMode.isRestricted && d.inkMode == nil)else{throw CraftError.unsupported("Use the ink-plate workflow for this document mode.")}
       channel.name=name;channel.options=options;channel.spot=spot
       if spot == nil {channel.psdSpotGray=nil}
+      if spot != nil {channel.psdSelectedGray=nil}
       // Preserve the displayed gray during alpha/spot conversion. The retained
       // source model stores ink density, opposite to the spot's editing gray.
       if (old.spot == nil) != (spot == nil) {
@@ -75,11 +76,23 @@ extension ChannelCommand {
     case .quickMask(let on,let options):
       try options.validate(); guard on != (d.quickMask != nil) else { return }
       if on {
-        d.quickMask = try AlphaChannel(name:"Quick Mask",pixels:AlphaChannel.coverage(d.coverageSelection(),width:d.width,height:d.height,depth:d.depth),options:options)
+        let selection=try d.coverageSelection()
+        let pixels:Surface
+        if selection == nil,options.indicates == .selectedAreas {
+          pixels=try Surface(width:d.width,height:d.height,depth:d.depth,fill:.black)
+        }else{pixels=try AlphaChannel.coverage(selection,width:d.width,height:d.height,depth:d.depth)}
+        var channel=AlphaChannel(name:"Quick Mask",pixels:pixels,options:options)
+        channel.psdQuickMaskInitiallyEmpty=selection == nil
+        d.quickMask=channel
         d.setCoverageSelection(nil)
       } else if let channel = d.quickMask {
         let mask = try channel.selection(); d.quickMask = nil
-        d.setCoverageSelection((try mask.isFullCoverage) ? nil:mask)
+        // Missing origin belongs to older native files; preserve their previous
+        // all-full exit policy rather than inventing a lost explicit selection.
+        let absentFull = channel.psdQuickMaskInitiallyEmpty == nil
+          || (channel.psdQuickMaskInitiallyEmpty == true && channel.options.indicates == .maskedAreas)
+        let full=try mask.isFullCoverage
+        d.setCoverageSelection(absentFull && full ? nil:mask)
       }
     case .stroke(let target,let points,let brush):
       var value = try d.channel(target), brush = brush
@@ -104,24 +117,7 @@ extension ChannelCommand {
       }
       try d.setChannel(value,at:target)
     case .filter(let target,let filter):
-      guard d.width<=RasterFilterEngine.maximumPixels/d.height else {throw CraftError.unsupported("Channel filter preparation retains its 8,388,608-pixel limit.")}
-      guard filter.kind != .lightingEffects && filter.kind != .relight && filter.kind != .shadowsHighlights && !filter.kind.isClassicDetail && !filter.kind.isOtherVideo && !filter.kind.isRender && !filter.kind.isStylize && !filter.kind.isPixelate && !filter.kind.isDistortion && filter.kind != .lensBlur && filter.kind != .smartSharpen && filter.kind != .reduceNoise && filter.kind != .filterGallery && filter.kind != .adaptiveWideAngle && filter.kind != .lensCorrection && filter.kind != .blurGallery && filter.kind != .cameraRaw && filter.kind != .puppetWarp && filter.kind != .perspectiveWarp else { throw CraftError.unsupported("This filter requires an RGB image target.") }
-      var value = try d.channel(target)
-      var proxy = try CraftDocument(width:d.width,height:d.height,depth:d.depth)
-      var numeric = try Surface(width:d.width,height:d.height,depth:d.depth,fill:.black,colorEncoding:d.depth == .f32 ? .linearRGB:.sRGB)
-      for y in 0..<d.height { try Task.checkCancellation(); for x in 0..<d.width {
-        let v = unit(value.pixels.pixel(x:x,y:y).r), p = Pixel(v,v,v)
-        if d.depth == .f32 { numeric.setLinearPixel(x:x,y:y,p) } else { numeric.setPixel(x:x,y:y,p) }
-      } }
-      proxy.layers[0].content = .raster(numeric); proxy.selection = d.selection; proxy.selectionMask = d.selectionMask
-      try RasterFilterEngine.apply(filter,to:proxy.layers[0].id,in:&proxy)
-      guard case .raster(let rendered) = proxy.layers[0].content else { throw CraftError.invalid("Invalid filtered channel.") }
-      var output = value.pixels
-      for y in 0..<d.height { try Task.checkCancellation(); for x in 0..<d.width {
-        let v = unit(d.depth == .f32 ? rendered.linearPixel(x:x,y:y).r:rendered.pixel(x:x,y:y).r)
-        output.setPixel(x:x,y:y,Pixel(v,v,v))
-      } }
-      value.pixels = output; try d.setChannel(value,at:target)
+      try AuxiliaryChannelFiltering.apply(filter,to:target,in:&d)
     }
   }
 }

@@ -5,9 +5,34 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 53
+  static let maximumVersion = 60
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where: { $0.steps.contains { step in
+      switch step.operation {
+      case .adjustment(_,let value),.replaceAdjustment(_,let value),.addContent(_, .adjustment(let value)):
+        return value.hasHueRangeDisplayColors
+      case .adjustmentBrush(let value): return value.request.adjustment.hasHueRangeDisplayColors
+      default: return false
+      }
+    } }) { return 60 }
+    if actions.contains(where:{$0.steps.contains{if case .adjustmentBrush(let value)=$0.operation,case .colorLookup=value.request.adjustment{return true};return false}}){return 59}
+    if actions.contains(where: { $0.steps.contains { if case .smartFilterTransfer = $0.operation { return true }; return false } }) { return 58 }
+    if actions.contains(where:{$0.steps.contains{if case .layerStyles(let edit)=$0.operation{return edit.patterns != nil || edit.blending != nil};return false}}){return 57}
+
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation {case .style(_,let style):return style?.restrictedChannels != nil;case .layerStyles(let edit):return edit.styles.contains{$0?.restrictedChannels != nil};default:return false}
+    }}){return 56}
+
+    if actions.contains(where: { $0.steps.contains {
+      if case .retouch(let request) = $0.operation {
+        return request.tool.focus != nil && request.brush.mode != .normal
+      }
+      return false
+    } }) { return 55 }
+    if actions.contains(where:{$0.steps.contains{step in
+      switch step.operation {case .filter(_,let f):return f.artistic?.effects.contains{$0.texture != nil} == true;case .filters(_,let stack):return stack?.filters.contains{$0.filter.artistic?.effects.contains{$0.texture != nil} == true} == true;default:return false}
+    }}){return 54}
     if actions.contains(where:{$0.steps.contains{if case .blurGalleryMask=$0.operation{return true};return false}}){return 53}
     if actions.contains(where:{$0.steps.contains{step in
       switch step.operation {case .filter(_,let f):return f.classicDetail?.kernel != nil;case .filters(_,let stack):return stack?.filters.contains{$0.filter.classicDetail?.kernel != nil} == true;default:return false}
@@ -117,7 +142,12 @@ struct ActionLibraryFile: Codable {
 }
 
 @MainActor @Observable final class ActionLibrary {
-  static let shared = ActionLibrary(persistenceURL: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.appendingPathComponent("Photato/Actions.photatoactions"))
+  static let shared: ActionLibrary = {
+    let isolated = ProcessInfo.processInfo.environment["PHOTATO_ISOLATED_UI_SESSION"] == "1"
+      || CommandLine.arguments.contains { $0.hasPrefix("--snapshot") }
+    return ActionLibrary(persistenceURL: isolated ? nil : FileManager.default.urls(for: .applicationSupportDirectory,
+      in: .userDomainMask).first?.appendingPathComponent("Photato/Actions.photatoactions"))
+  }()
   private(set) var file = ActionLibraryFile()
   private(set) var revision = 0
   private(set) var loadError: String?

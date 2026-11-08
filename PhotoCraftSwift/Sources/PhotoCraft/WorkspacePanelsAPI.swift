@@ -16,13 +16,13 @@ enum WorkspacePanelsAPI {
     "x":BrushAPI.number(-100000,100000),"y":BrushAPI.number(-100000,100000),
     "width":BrushAPI.number(275,4000),"height":BrushAPI.number(120,4000)],required:["x","y","width","height"]) }
   static var dockSchema:[String:Any] {
-    let group = BrushAPI.object(["id":identifier,"panels":ShapeAPI.array(panelSchema,14),"selected":panelSchema,
+    let group = BrushAPI.object(["id":identifier,"panels":ShapeAPI.array(panelSchema,15),"selected":panelSchema,
       "collapsed":BrushAPI.flag,"preferredHeight":BrushAPI.number(29,4000),"floatingFrame":frameSchema,
       "columnID":identifier,"floatingStack":identifier],required:["id","panels","selected","collapsed"])
     let column = BrushAPI.object(["id":identifier,"side":BrushAPI.enumeration(["left","right"]),
       "width":BrushAPI.number(275,600),"collapsed":BrushAPI.flag,"iconWidth":BrushAPI.number(34,240)],required:["id","side"])
-    return BrushAPI.object(["catalogVersion":["type":"integer","enum":[3]],"groups":ShapeAPI.array(group,14),
-      "hidden":ShapeAPI.array(panelSchema,14),"columns":ShapeAPI.array(column,15)],required:["catalogVersion","groups","hidden"])
+    return BrushAPI.object(["catalogVersion":["type":"integer","enum":[4]],"groups":ShapeAPI.array(group,15),
+      "hidden":ShapeAPI.array(panelSchema,15),"columns":ShapeAPI.array(column,16)],required:["catalogVersion","groups","hidden"])
   }
   static var layoutSchema:[String:Any] {
     let visibility = BrushAPI.object(Dictionary(uniqueKeysWithValues:
@@ -46,9 +46,9 @@ enum WorkspacePanelsAPI {
     "workspaceRevision":schema("workspaceRevision"),"activeWorkspace":["type":"string"],"locked":BrushAPI.flag,
     "available":BrushAPI.flag,"writePermission":BrushAPI.flag,"layout":layoutSchema],
     required:["workspaceRevision","activeWorkspace","locked","available","writePermission","layout"]) }
-  static var capabilities:[String:Any] { ["command":name,"stateSchema":stateSchema,"presentationOnly":true,"panelCatalogVersion":3,
+  static var capabilities:[String:Any] { ["command":name,"stateSchema":stateSchema,"presentationOnly":true,"panelCatalogVersion":4,
     "native":"Character and Paragraph are real tabs in the existing dock, columns, floating stacks, close/reveal and saved-workspace system. Window and Type > Panels commands reveal the same panels. Their controls share existing selected-range/whole-layer text formatting, native text drafts and Undo; Properties remains available.",
-    "operations":"show/hide requires panel only; layout requires a complete returned layout snapshot only. Layout includes panel order/group/selected/collapse/hidden, columns, floating frames/stacks, dimensions and visibility. Every supported panel occurs exactly once. Current-catalog3 only; legacy1/2 files migrate after strict validation. No proprietary Adobe endpoint invented.",
+    "operations":"show/hide requires panel only; layout requires a complete returned layout snapshot only. Layout includes panel order/group/selected/collapse/hidden, columns, floating frames/stacks, dimensions and visibility. Every supported panel occurs exactly once. Current catalog 4 only; legacy 1/2/3 files migrate after strict validation. Styles is a real native dock/floating panel with shared presets. No proprietary Adobe endpoint invented.",
     "permission":"Separate native Allow workspace panel changes switch, off on API start/stop. Layout is shared by all open documents and persists in Workspaces.json. No image document transaction, Undo or recorded Action is added. Text edits retain existing text APIs and supported Adobe job contracts.",
     "revision":"workspaceRevision UUID is required in addition to the document revision. Native layout, saved-workspace switch and settings changes invalidate it; no-op state edits retain it. Busy/modal/gesture/stale/unshared/revoked and failed storage requests change nothing. Workspace Lock allows show/hide but rejects layout replacement.",
     "qualification":"Shared native text engine, not Photoshop pixel/default/composer/shortcut equivalence. Missing text defaults before creating a layer, mixed-value controls, dynamic panel formatting menus/shortcuts, exact layout/composition/PSD/physical-platform fidelity and fullT01remain major stillneeded where functional. No new canvas tool or modifier action."] }

@@ -76,7 +76,11 @@ struct AutomationRequest: Sendable {
   static func maximumBodyBytes(method: String, path: String) -> Int {
     guard method == "POST" else { return 65_536 }
     let parts = path.split(separator: "/")
-    if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString: String(parts[2])) != nil, parts[3] == "commands" { return max(LiquifyMeshFile.maximumBytes, (ICCProfile.maximumBytes + 2) / 3 * 4 + 16_384) }
+    if parts.count == 4, parts[0] == "v1", parts[1] == "documents",
+      UUID(uuidString: String(parts[2])) != nil, parts[3] == "ai" {
+      return ImageGenerationReference.maximumAPIRequestBytes
+    }
+    if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString: String(parts[2])) != nil, parts[3] == "commands" { return max(GalleryTextureAPI.maximumBase64 + 65_536, max(LiquifyMeshFile.maximumBytes, (ICCProfile.maximumBytes + 2) / 3 * 4 + 16_384)) }
     if parts.count == 4, parts[0] == "v1", parts[1] == "documents", UUID(uuidString:String(parts[2])) != nil, parts[3] == "audio" { return TimelineAudioSource.maximumBytes }
     if parts.count == 5, parts[0] == "v1", parts[1] == "documents", UUID(uuidString:String(parts[2])) != nil,
       parts[3] == "smart-objects", ["pdf","source"].contains(parts[4]) { return PDFImport.maximumSourceBytes }

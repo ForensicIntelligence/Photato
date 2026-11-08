@@ -78,7 +78,12 @@ enum PSDMultichannelStorage {
         try context.admitRaster(bytes: tiles * 65536)
         let pixels = try PSDRasterPaging.layer(width: width, height: height, depth: pixelDepth,
           components: 1, fill: .black, mask: true, clampMask: false, skipImplicitDefault: true, context: context) { _ in
-            [try reader.nextRow()]
+            var row=try reader.nextRow()
+            if info.kind==0 {
+              if depth==8 {row=row.map {255-$0}}
+              else {for x in 0..<width {let at=x*2,value=65535-(Int(row[at])<<8|Int(row[at+1]));row[at]=UInt8(value>>8);row[at+1]=UInt8(value&255)}}
+            }
+            return [row]
           }
         var options = ChannelDisplayOptions(); options.color = info.color; options.opacity = info.opacity
         options.indicates = info.kind == 0 ? .selectedAreas : .maskedAreas

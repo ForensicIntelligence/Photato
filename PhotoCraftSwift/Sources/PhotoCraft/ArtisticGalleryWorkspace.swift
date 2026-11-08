@@ -3,6 +3,7 @@ import Observation
 import PhotoCraftCore
 import PhotoCraftImaging
 import SwiftUI
+import UniformTypeIdentifiers
 
 @MainActor @Observable final class ArtisticGalleryWorkspace {
   var settings=ArtisticGallerySettings()
@@ -15,6 +16,10 @@ import SwiftUI
   var rendering=false
   var zoom=1.0
   var error:String?
+  var textureError:String?
+  var textureLoading=false
+  @ObservationIgnored var textureTask:Task<Void,Never>?
+  private var textureLoadID=UUID()
   var undoStates=[ArtisticGallerySettings]()
   var redoStates=[ArtisticGallerySettings]()
   @ObservationIgnored var task:Task<Void,Never>?
@@ -29,8 +34,8 @@ import SwiftUI
   private var effectDragGeneration = UUID()
   @ObservationIgnored private var effectDrag: String?
   var effect:GalleryEffect? { settings.effects.indices.contains(selected) ? settings.effects[selected]:nil }
-  var ready:Bool { image != nil && !rendering && error == nil }
-  var apiState:[String:Any] { ["settings":(try? JSONSerialization.jsonObject(with:JSONEncoder().encode(settings))) ?? NSNull(),"selectedEffect":selected,"category":category,"preview":preview,"zoom":zoom,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull()] }
+  var ready:Bool { image != nil && !rendering && !textureLoading && error == nil }
+  var apiState:[String:Any] { ["settings":(try? JSONSerialization.jsonObject(with:JSONEncoder().encode(settings))) ?? NSNull(),"selectedEffect":selected,"category":category,"preview":preview,"zoom":zoom,"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull(),"textureLoading":textureLoading,"textureError":textureError as Any? ?? NSNull()] }
   func prepare(document:CraftDocument,draft:FilterDraft) async {
     effectDragRevision = UUID(); effectDrag = nil
     self.document=document;self.draft=draft;settings=draft.filter.artistic ?? .init();selected=0;category=effect?.filter.category ?? "Artistic";closed=false
@@ -39,7 +44,7 @@ import SwiftUI
   func remember(_ value:ArtisticGallerySettings) { undoStates.append(value);if undoStates.count>100 { undoStates.removeFirst() };redoStates=[] }
   func change(_ value:ArtisticGallerySettings,remember:Bool=true) {
     do { try value.validate() } catch { self.error=error.localizedDescription;return }
-    guard value != settings else { return };if remember && gestureStart==nil { self.remember(settings) };effectDragRevision=UUID();effectDrag=nil;settings=value;selected=max(0,min(selected,value.effects.count-1));refresh()
+    guard value != settings else { return };cancelTextureLoad();textureError=nil;if remember && gestureStart==nil { self.remember(settings) };effectDragRevision=UUID();effectDrag=nil;settings=value;selected=max(0,min(selected,value.effects.count-1));refresh()
   }
   func beginGesture() { if gestureStart==nil { gestureStart=settings } }
   func endGesture() { if let before=gestureStart,before != settings { remember(before) };gestureStart=nil }
@@ -90,6 +95,34 @@ import SwiftUI
     guard let source=effectDragSource(value) else { return false }
     return moveEffect(from: source, to: target)
   }
+  func cancelTextureLoad() {textureLoadID=UUID();textureTask?.cancel();textureTask=nil;textureLoading=false}
+  func chooseTexture() {
+    guard let effect,GalleryTextureSource.supports(effect.filter),!textureLoading else{return}
+    let panel=NSOpenPanel();panel.title="Load Texture";panel.allowedContentTypes=["psd","psb"].compactMap{UTType(filenameExtension:$0)};panel.allowsMultipleSelection=false;panel.canChooseDirectories=false
+    guard panel.runModal() == .OK,let url=panel.url else{return}
+    loadTexture(url)
+  }
+  @discardableResult func loadTexture(_ url:URL)->Task<Void,Never>? {
+    guard !closed,document != nil,let effect,GalleryTextureSource.supports(effect.filter) else{return nil}
+    cancelTextureLoad();textureError=nil;textureLoading=true
+    let token=textureLoadID,index=selected,before=settings,accessing=url.startAccessingSecurityScopedResource()
+    let task=Task { [weak self] in
+      defer {if accessing{url.stopAccessingSecurityScopedResource()}}
+      let worker=Task.detached(priority:.userInitiated){try GalleryTextureLoader.read(url)}
+      do {
+        let texture=try await withTaskCancellationHandler{try await worker.value}onCancel:{worker.cancel()}
+        try Task.checkCancellation()
+        guard let self,!self.closed,self.textureLoadID==token else{return}
+        guard self.selected==index,self.settings==before else{self.textureTask=nil;self.textureLoading=false;self.textureError="The selected effect changed. Load the texture again.";return}
+        self.textureTask=nil;self.textureLoading=false
+        self.update{$0.texture=texture}
+      } catch {
+        guard let self,self.textureLoadID==token,!self.closed else{return}
+        self.textureTask=nil;self.textureLoading=false
+        if !(error is CancellationError) {self.textureError=error.localizedDescription}
+      }
+    };textureTask=task;return task
+  }
   func reset() { if let kind=effect?.filter { choose(kind) } }
   func refresh() {
     guard !closed,let document,var draft else{return};task?.cancel();generation+=1;let token=generation,needOriginal=originalImage==nil
@@ -119,7 +152,7 @@ import SwiftUI
       do { let images=try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()};try Task.checkCancellation();guard let self,!self.closed else{return};self.thumbnails=images } catch { /* Main preview reports actionable render failures. */ }
     }
   }
-  func close() { closed=true;effectDrag=nil;effectDragRevision=UUID();generation+=1;task?.cancel();thumbnailTask?.cancel();task=nil;thumbnailTask=nil;rendering=false }
+  func close() { cancelTextureLoad();closed=true;effectDrag=nil;effectDragRevision=UUID();generation+=1;task?.cancel();thumbnailTask?.cancel();task=nil;thumbnailTask=nil;rendering=false }
 }
 
 struct ArtisticGallerySheet:View {
@@ -187,7 +220,15 @@ struct ArtisticGallerySheet:View {
     }.padding(.trailing,4) }.frame(maxHeight:.infinity)
   }
   @ViewBuilder func parameter(_ p:GalleryParameter)->some View {
-    if !p.choices.isEmpty {
+    if p.key=="texture",let effect=model.effect,GalleryTextureSource.supports(effect.filter) {
+      Picker("Texture",selection:Binding<Double>(get:{model.effect?.texture != nil ? -1:(model.effect?.values[p.key] ?? p.defaultValue)},set:{value in guard value>=0 else{return};model.update{$0.texture=nil;$0.values[p.key]=value}})) {
+        ForEach(Array(p.choices.enumerated()),id:\.offset) { i,label in Text(label.capitalized).tag(Double(i)) }
+        if let texture=model.effect?.texture {Text(texture.name).tag(-1.0)}
+      }
+      HStack {Button("Load Texture…"){model.chooseTexture()}.disabled(model.textureLoading);if model.textureLoading{ProgressView().controlSize(.small);Button("Cancel"){model.cancelTextureLoad()}}}
+      if let texture=model.effect?.texture {Text("\(texture.width) × \(texture.height) px").font(.caption).foregroundStyle(.secondary)}
+      if let error=model.textureError {Text(error).font(.caption).foregroundStyle(.secondary)}
+    } else if !p.choices.isEmpty {
       Picker(p.title,selection:value(p)) { ForEach(Array(p.choices.enumerated()),id:\.offset) { i,label in Text(label).tag(Double(i)) } }
     } else if p.boolean {
       Toggle(p.title,isOn:Binding(get:{value(p).wrappedValue != 0},set:{value(p).wrappedValue=$0 ? 1:0}))

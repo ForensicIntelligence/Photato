@@ -1,0 +1,171 @@
+{
+  "step": 475,
+  "date": "2026-11-07",
+  "recorded_utc": "2026-11-07T15:44:43.457480+00:00",
+  "workflow": "AI07",
+  "track": "major stillneeded",
+  "title": "AI image lifecycle and saved originals",
+  "status": "Selected source-bound generation, durable original recovery and native/API workflow optimized-qualified; fullAI07 remains open",
+  "source_manifest": "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/release02-source.json",
+  "source_inputs": 7566,
+  "normal_selected_tests_each_architecture": 67,
+  "new_methods_each_architecture": 30,
+  "normal_qualification": "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/release02-qualification.json",
+  "debug_pass": "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/source11-summary.json",
+  "debug_failures": [
+    "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/source07-summary.json",
+    "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/source08-summary.json",
+    "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/source10-summary.json",
+    "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/release01-qualification.json"
+  ],
+  "universal": {
+    "step": 475,
+    "app": "/private/tmp/photato-validation-475-stage01-3f2b5f42/Photato Validation 475.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/universal/Photato-Validation-475.zip",
+    "archive_sha256": "6c51e7bfeccbb792f8181f3f2001aaff1b5c77b053fca2464dc99028fbd828c6",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261107T135530Z-475-ai-generation-lifecycle/release02-source.json",
+    "source_inputs": 7566,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "all_current_selected_optimized_methods_passed": true,
+    "historical_Debug_batch_crashes_unresolved": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation475optimized",
+    "version": "0.3.0",
+    "build": 475,
+    "signed_universal_binary_sha256": "2142103191ffa129d423d02c56eac438f34352e5ca728d8f7b6ab9bbc120ec1d",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10916,
+    "selected_pass_each": [
+      67,
+      67
+    ],
+    "new_methods_pass_each": [
+      30,
+      30
+    ],
+    "payload_comparison": [
+      {
+        "architecture": "arm64",
+        "compiled_sha256": "53a7914fa887ee28798bf08639b33d40aaf28e75001c0fac435cd18fdf4d0d86",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3552,
+          "changed_offsets": [
+            3553,
+            3554
+          ],
+          "values": [
+            60227584,
+            59555840
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 114505352
+      },
+      {
+        "architecture": "x86_64",
+        "compiled_sha256": "5553b9aeb01cb48ff90b9081dec1fa59b1b606df662bf5241f5a98d438f3f9a5",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3392,
+          "changed_offsets": [
+            3393,
+            3394
+          ],
+          "values": [
+            59310080,
+            60260352
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 121107168
+      }
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "launched_or_installed": false,
+    "isolated_session_launch_environment_configured": true,
+    "runtime_launch_environment_verified": false,
+    "prepared_utc": "2026-11-07T15:43:45.824982+00:00"
+  },
+  "native_observation": {
+    "step": 475,
+    "recorded_utc": "2026-11-07T15:44:42.855315+00:00",
+    "own_compiler_test_workers_live": false,
+    "native_tool": "mcp__cua_repl",
+    "operation": "cua.getApp(existing validation467 app path)",
+    "result": "Sky Computer Use native pipe closed before response",
+    "native_live_qualified": false,
+    "current475_launched": false,
+    "current475_installed": false,
+    "prior_running_validation_processes": [
+      {
+        "pid": 6678,
+        "build": 458
+      },
+      {
+        "pid": 68050,
+        "build": 467
+      }
+    ],
+    "prior_builds_preserved": true,
+    "force_quit_or_tool_reset": false,
+    "pending": [
+      "Generated Results menu and list/detail controls, empty/populated/error states, keyboard selection, Open Original/Move to Trash",
+      "Minimum/typical sizes and Light/Dark/accessibility",
+      "Actual system-sheet callback/storage-retry/provider output; no model invoked"
+    ],
+    "qualification_note": "67selected Debug and67normal per architecture are engine/offscreen/API test evidence, not live native UI or physical platform proof."
+  },
+  "formats": {
+    "native": 89,
+    "actions": 58
+  },
+  "typed_commands": 266,
+  "original_command_mappings": 652,
+  "new_Photoshop_plugin_host": false,
+  "no_model_invoked": true,
+  "remaining": [
+    "Full AI07 acceptance remains open: editable variations/results management, provider metadata when exposed, model/seed/final-prompt control and broader generation workflows.",
+    "No real image model, provider generation request or actual system generator interface was invoked in these tests. Public SDK fields do not expose a typed model identifier, seed or final edited prompt; original file metadata is retained but not interpreted or qualified. Processing route is descriptive, not provider attestation.",
+    "Generated originals are bounded to32MiB each; published inbox entries are limited to512MiB/256 items with capacity preflight and no automatic purge. Abrupt process/power-loss recovery and orphaned private staging-file accounting are unqualified; injected write failure is not a crash test. Current placement supports still RGB8/16/32; other modes and generative fill/expand remain open.",
+    "Native browser live interaction, actual system sheet storage-failure retry behavior, supported physical Intel/Apple Silicon/macOS14 and60fps/performance remain unqualified. Validation-only staging does not prove sandboxed production behavior.",
+    "Debug source07/08 batch crashes by signal11 remain unresolved; source11 passes67focused methods. This is not a full-suite pass or proof of Photoshop output/default/shortcut equivalence. All earlier failures and104original package acceptance remain.",
+    "Current and prior builds, GitHub, user documents and older458/467 validation sessions remain protected. No production install, source push, App Store/Xcode archive or software release occurs."
+  ],
+  "references": [
+    {
+      "url": "https://developer.apple.com/news/?id=dz9wvq0r",
+      "purpose": "ImageCreator discontinued; system Image Playground interface"
+    },
+    {
+      "url": "https://developer.apple.com/videos/play/wwdc2026/375/",
+      "purpose": "Documented macOS27 Private Cloud Compute route"
+    },
+    {
+      "url": "https://developer.apple.com/documentation/imageplayground/imageplaygroundviewcontroller",
+      "purpose": "Public controller and delegate contract"
+    },
+    {
+      "url": "https://developer.adobe.com/photoshop/",
+      "purpose": "Plugin systems differ from Firefly HTTP API; AUT03 remains open"
+    }
+  ],
+  "Photoshop_parity": false,
+  "goal_complete": false
+}

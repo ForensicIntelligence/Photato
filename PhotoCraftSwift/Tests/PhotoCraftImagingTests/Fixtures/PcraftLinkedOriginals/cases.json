@@ -1,0 +1,182 @@
+[
+  {
+    "file": "referenced-affine-cached-u8.pcraft",
+    "original": "affine-cached-u8.pcraft",
+    "depth": "u8",
+    "tag": "lnk2",
+    "signature": "8BIM",
+    "block_blob": "e5d5b9a3db25411d74adefee9517faaefe50c144e79324b2373d09557ec19a89",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "d2096aa1bcd80722234faf1118b0f74fa7c48b18a99ef5bd010841999ea1dc47",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "e6f6b9e2cc3ff94e5e2eddfa30a79bd19cab2d36504c5c460fe09799e6781aa4",
+        "bytes": 7018
+      }
+    ],
+    "layers": 1,
+    "input_sha256": "38b62db4df4fb2a26d3df80cea0dfe847110b5f67189eb5cc0a57ec3e313587f",
+    "fixture_sha256": "53e5a833ba7249f79a793ac5af393e5dc4594d055c0ba574be850b41d646de5e"
+  },
+  {
+    "file": "referenced-shared-u8.pcraft",
+    "original": "shared-u8.pcraft",
+    "depth": "u8",
+    "tag": "lnk2",
+    "signature": "8B64",
+    "block_blob": "e5d5b9a3db25411d74adefee9517faaefe50c144e79324b2373d09557ec19a89",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "d2096aa1bcd80722234faf1118b0f74fa7c48b18a99ef5bd010841999ea1dc47",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "e6f6b9e2cc3ff94e5e2eddfa30a79bd19cab2d36504c5c460fe09799e6781aa4",
+        "bytes": 7018
+      }
+    ],
+    "layers": 2,
+    "input_sha256": "f83ad99674ab3372301295909eee2f45bfa9fb7475ef867cffa518b21ffccf94",
+    "fixture_sha256": "8f8bf05c7b0b27d294f4a2f833757a8d97f4541a0b516245bda95a4d45926d4e"
+  },
+  {
+    "file": "referenced-stack-mean-u8.pcraft",
+    "original": "stack-mean-u8.pcraft",
+    "depth": "u8",
+    "tag": "lnk2",
+    "signature": "8BIM",
+    "block_blob": "e5d5b9a3db25411d74adefee9517faaefe50c144e79324b2373d09557ec19a89",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "d2096aa1bcd80722234faf1118b0f74fa7c48b18a99ef5bd010841999ea1dc47",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "e6f6b9e2cc3ff94e5e2eddfa30a79bd19cab2d36504c5c460fe09799e6781aa4",
+        "bytes": 7018
+      }
+    ],
+    "layers": 1,
+    "input_sha256": "aa94f1b4bbb8ffb807c91120c3926ba64a674a86593f85cb4f4f30c7dd0e630d",
+    "fixture_sha256": "349680eb8147cf75e2deb9f7e8251f4a5e9e200243699d433729fad96bf7e0c6"
+  },
+  {
+    "file": "referenced-affine-cached-u16.pcraft",
+    "original": "affine-cached-u16.pcraft",
+    "depth": "u16",
+    "tag": "lnk3",
+    "signature": "8BIM",
+    "block_blob": "dcad9cbb1e8b92428e768a75a2f61ac094f1c0b691f465822d0ff0950c9186d8",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "5ee172148678ac835b8553ac6a6d0950c61a99bf8faf628c449b4d954f484708",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "caab47a261cf566504d90e11f991a8074b52ecba5993106d851ae64ba2dd91b3",
+        "bytes": 68607
+      }
+    ],
+    "layers": 1,
+    "input_sha256": "85ad202a3793d4c39755d1da01dbfb4fa0c39497b0ddfb767bd88be66dd8cdab",
+    "fixture_sha256": "2ade9089a1bf6e9e895cd1a2cf69d0a747e84529344feb9cef0f6efbd6da409b"
+  },
+  {
+    "file": "referenced-shared-u16.pcraft",
+    "original": "shared-u16.pcraft",
+    "depth": "u16",
+    "tag": "lnk3",
+    "signature": "8B64",
+    "block_blob": "dcad9cbb1e8b92428e768a75a2f61ac094f1c0b691f465822d0ff0950c9186d8",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "5ee172148678ac835b8553ac6a6d0950c61a99bf8faf628c449b4d954f484708",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "caab47a261cf566504d90e11f991a8074b52ecba5993106d851ae64ba2dd91b3",
+        "bytes": 68607
+      }
+    ],
+    "layers": 2,
+    "input_sha256": "dd59a1313341786014028ed95e61333f32e91f08876d0a212c11d496d98c12e5",
+    "fixture_sha256": "841ea8b9a15f02bdd8e5ade13aa6e52fde492ae0156c23ad55b47bd54ad5a015"
+  },
+  {
+    "file": "referenced-stack-mean-u16.pcraft",
+    "original": "stack-mean-u16.pcraft",
+    "depth": "u16",
+    "tag": "lnk3",
+    "signature": "8BIM",
+    "block_blob": "dcad9cbb1e8b92428e768a75a2f61ac094f1c0b691f465822d0ff0950c9186d8",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "5ee172148678ac835b8553ac6a6d0950c61a99bf8faf628c449b4d954f484708",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "caab47a261cf566504d90e11f991a8074b52ecba5993106d851ae64ba2dd91b3",
+        "bytes": 68607
+      }
+    ],
+    "layers": 1,
+    "input_sha256": "eb63506c6569630c7d34396217c2051d13cc6fd5ea0ba0e700ffa1deaba80857",
+    "fixture_sha256": "070bcc3605558cff389f653ca626d6dab94744661c642eecfbfdfea722598e9f"
+  },
+  {
+    "file": "referenced-affine-cached-f32.pcraft",
+    "original": "affine-cached-f32.pcraft",
+    "depth": "f32",
+    "tag": "lnkD",
+    "signature": "8BIM",
+    "block_blob": "9d8cf63e8d3f152cc792fcfd67206b46f8b8bc1dc0e288e2cea5053874446595",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "a608ffe5fb2353a8e33a9b9074b601afc3e140f8341ab9337f3b0ff3b8c02662",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "e543c1e57961d392124cf9830267c09c0f7111c32533b2e9473dce5252eb3173",
+        "bytes": 37381
+      }
+    ],
+    "layers": 1,
+    "input_sha256": "2f56a35e4f47cabbe217de023f64f2d130f4f63610477fd50dda3646dc06cae3",
+    "fixture_sha256": "da59ac5ea595fb7f19db0c4a53e85f08ae7873bc7b0741e7b26e3f655736282b"
+  },
+  {
+    "file": "referenced-shared-f32.pcraft",
+    "original": "shared-f32.pcraft",
+    "depth": "f32",
+    "tag": "lnkD",
+    "signature": "8B64",
+    "block_blob": "9d8cf63e8d3f152cc792fcfd67206b46f8b8bc1dc0e288e2cea5053874446595",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "a608ffe5fb2353a8e33a9b9074b601afc3e140f8341ab9337f3b0ff3b8c02662",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "e543c1e57961d392124cf9830267c09c0f7111c32533b2e9473dce5252eb3173",
+        "bytes": 37381
+      }
+    ],
+    "layers": 2,
+    "input_sha256": "c2ed5dc0493a4ed9cbab965e104f69b3322661b3495a4e862975e44217a14c9a",
+    "fixture_sha256": "be161ea69328c17c3039865f46f376712d990c72191ff00cffe7222f69ecdcd3"
+  },
+  {
+    "file": "referenced-stack-mean-f32.pcraft",
+    "original": "stack-mean-f32.pcraft",
+    "depth": "f32",
+    "tag": "lnkD",
+    "signature": "8BIM",
+    "block_blob": "9d8cf63e8d3f152cc792fcfd67206b46f8b8bc1dc0e288e2cea5053874446595",
+    "sources": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "original_blob": "a608ffe5fb2353a8e33a9b9074b601afc3e140f8341ab9337f3b0ff3b8c02662",
+        "file_name": "Owned source.pcraft",
+        "source_sha256": "e543c1e57961d392124cf9830267c09c0f7111c32533b2e9473dce5252eb3173",
+        "bytes": 37381
+      }
+    ],
+    "layers": 1,
+    "input_sha256": "22fcbcbc451f4bd94b4cbf86be96af197b9c2e3fdb6de4cba4e77cc0410fb288",
+    "fixture_sha256": "561b421b712307729a80deb68fca8bd02ddf86f0ef53522e63c697fe1445f5b7"
+  }
+]

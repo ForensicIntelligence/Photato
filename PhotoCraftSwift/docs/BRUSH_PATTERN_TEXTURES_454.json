@@ -1,0 +1,229 @@
+{
+  "step": 454,
+  "date": "2026-11-06",
+  "status": "Selected saved-pattern brush texture workflow implemented and passes40focusedDebug tests and actualnative selection/preview/paint/UndoRedo. FullB01 and normal454qualification remain open.",
+  "source_manifest": "artifacts/runs/20261106T222014Z-454-brush-pattern-texture/source04-source.json",
+  "source_inputs": 7409,
+  "source_unchanged": true,
+  "source_delta": {
+    "added": [
+      "Sources/PhotoCraft/BrushPatternTexture.swift",
+      "Sources/PhotoCraftImaging/BrushTexturePreparation.swift",
+      "Tests/PhotoCraftAppTests/BrushPatternTextureTests.swift",
+      "Tests/PhotoCraftImagingTests/BrushTexturePreparationTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationBrushes.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/BrushPanels.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraftImaging/ABRCodec.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": [],
+    "old_Core_tests_fixtures_assets_project_unchanged": true,
+    "ABR": "Existing encodedRGB/alpha weighted conversion body extracted into shared cancellablehelper; alloldABR tests retained and pass.",
+    "production_application_SHA_identical_Source02_03_04": true
+  },
+  "implementation": {
+    "native": "Texturesection groupedChoosePatternmenu follows globalPatternlibrary; embedsdimensions/enablesTexture/retainsotheroptions; generatedchoicesretained. ProgressandCancel remainenabledwhileothercontrolsdisable.",
+    "processing": "Existing ABR encodedRGB .2126R+.7152G+.0722B multipliedbyalpha/clamped/rounded8bit, rowcancellation; no resizing. CurrentPhotatosemantics, not Photoshopnumericproof.",
+    "lifecycle": "Capture PatternDialogSource, brushrevision/session/generation; cancellableworker; validatecompletecandidate and authorizebeforeatomic tool/color publication; failure retainsoldbrush/history.",
+    "persistence": "Existing capturedstroke/nativepresetv1/supportedABR/Actions snapshots retainbitmaps independently of laterpatternlibrarychanges.",
+    "limits": "2500px peraxis, existing16MiB aggregatebrushbitmap/64MiB nativepresetfile limits; no new capacityclaim.",
+    "cursor": "No newtool/modifier/globalshortcut/cursor; allnine existingCursor methodsinclalltools16combinations pass."
+  },
+  "API": {
+    "command": "brush.configure",
+    "required": "brush remainsrequired, may beemptyobject",
+    "new_optional": "texturePatternID",
+    "precedence": "Resolve afterpartialbrushpatch; settexture.bitmapandenabledtrue atomically",
+    "state": "brush.textureLoading boolean",
+    "discovery": "Existingcommandparamschema pluslibraryTextureSelection capabilities/loadingboolean schema/limits/semantics",
+    "count": 260,
+    "native_reader_maximum": 88,
+    "Actions_maximum": 54,
+    "guards": "Authentication/unknown/malformed/busy/stale/source/library/cancellation/permissionrevocation, no partialcolor/sizepublication",
+    "Adobe": "No dedicatedbrushpatternoperation in pinnedv2; unsupportedbrushdescriptors explicit, no newAdoberoute."
+  },
+  "primary_references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/create-a-textured-brush-in-photoshop.html",
+      "role": "Official workflow identifies sharedpatternlibrary/Texture/presets; not an algorithmoracle."
+    },
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/textured-and-dual-brush-settings.html",
+      "role": "Texture controls/EachTip workflow."
+    }
+  ],
+  "tests": {
+    "focused_Debug": {
+      "unexpected_signals": [],
+      "expected_count": 40,
+      "missing_cases": [],
+      "exit_code": 0,
+      "inputs": 7409,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas",
+        "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testFlowAccumulationOpacityCeilingAndAllDepths",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testLegacyDecodingInvalidAtomicityAndSettingsRoundtrip",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testSampledTipRotationTextureDualAndSymmetry",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testSelectionAffineLocksMaskAndHistory",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testSettingsStaySmallAndSnapshotsKeepValueSemantics",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testSmoothingPressureAndLockedPresetSections",
+        "PhotoCraftCoreTests.BrushDynamicsTests/testSpacingDirectionAndInputChunking",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testHostedTextureControlsKeepNativeAppearanceAndCancelledChoiceUsable",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testHTTPConfigurationAndPaintingMatchNativeForAllDepths",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testHTTPDeferredRevocationAndLibraryChangesRejectCompletePatch",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testHTTPInvalidBusyStaleAuthenticationAndSchemasPreserveState",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testNativeCancellationStaleBrushLibraryAndRejectedAuthorizationAreAtomic",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testNativeReadyStrokeCancelCommitUndoActionsAndCapturedTexture",
+        "PhotoCraftAppTests.BrushPatternTextureTests/testNativeSelectionPresetPersistenceLocksAndLibraryIndependence",
+        "PhotoCraftImagingTests.BrushPresetCodecTests/testIndependentLegacyComputedFixtureAndMalformedData",
+        "PhotoCraftImagingTests.BrushPresetCodecTests/testModernABRTipsDynamicsAndEmbeddedTexture",
+        "PhotoCraftImagingTests.BrushPresetCodecTests/testNativePresetsAndCaptureOptions",
+        "PhotoCraftAppTests.BrushSectionToggleTests/testSidebarAndHTTPShareSettingsGuardsAndSubsequentStroke",
+        "PhotoCraftImagingTests.BrushTexturePreparationTests/testDimensionBoundaryExplicitRejectionAndCancellation",
+        "PhotoCraftImagingTests.BrushTexturePreparationTests/testLiteralColorAlphaOrientationAndAllDepthHeights",
+        "PhotoCraftImagingTests.BrushTexturePreparationTests/testMatchesFrozenABRFormulaWithoutResamplingAndKeepsSamplesIndependent",
+        "PhotoCraftAppTests.BrushWorkflowTests/testAPIAllMaskTargetsAndDefinitionRevocation",
+        "PhotoCraftAppTests.BrushWorkflowTests/testCanvasPointerStrokeEscapeAndFrozenToolSettings",
+        "PhotoCraftAppTests.BrushWorkflowTests/testExpandedMaskSymmetryAndTypedTargets",
+        "PhotoCraftAppTests.BrushWorkflowTests/testFactoryBindingsAndOffscreenPanels",
+        "PhotoCraftAppTests.BrushWorkflowTests/testHTTPBrushSettingsPresetsStrokeEqualityAndGuards",
+        "PhotoCraftAppTests.BrushWorkflowTests/testLibraryAtomicPersistenceDefineAndPresetLocks",
+        "PhotoCraftAppTests.BrushWorkflowTests/testNativeGesturePreviewCancelCommitAndRecordedPlayback",
+        "PhotoCraftAppTests.BrushWorkflowTests/testToolRevisionIgnoresNoopsAndDoesNotInvalidateDocumentClose",
+        "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+        "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+        "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+        "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+        "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+        "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+        "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+        "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+        "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+      ],
+      "passed": 40,
+      "failed_cases": [],
+      "totals": [
+        [
+          "40",
+          "0",
+          "0",
+          "2.690"
+        ]
+      ],
+      "build_seconds": [
+        "8.50"
+      ],
+      "finished_utc": "2026-11-06T22:33:47.374945+00:00"
+    },
+    "new_methods": 10,
+    "old_methods": 30,
+    "normal_optimized454_run": false,
+    "full_current_suite_passed": false,
+    "physical_Intel_macOS14_26_tablet_VoiceOver_60fps": false
+  },
+  "retained": {
+    "Debug_products_each_attempt": 5394,
+    "source01": "Compilation fails on implicittrailingclosurebinding,0testsexecuted; retainedapp equalscached453, not454qualification.",
+    "source02": "Appcompiles, newtestprivatehelper/initializerlabelorderfail;0testsexecuted.",
+    "source03": "40executed38pass,6assertions in2newAPItests; initialbrushcenters differ, repeatedconfigureisno-op, schemareadwrongnesting. No productbehaviorrepair.",
+    "source04": "Test-onlysameinitialtoolstate/schemafix plus explicitno-oprevisionassertion;40pass/0unexpected/signals/missing, sameAppSHAas02/03.",
+    "initial_checkpoint_script": "Missing whitespace producedPythonSyntaxErrorbeforeanystatementran; failedoutsideinitializer retained."
+  },
+  "validation": {
+    "step": 454,
+    "app": "/private/tmp/photato-validation-454-debug-stage01-1a88a614/Photato Validation 454.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation454",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "454Source04",
+    "source_inputs": 7409,
+    "compiled_binary_sha256": "baa2018769412f46671df6090789107ca4593e8498254efce88e0195aa10dd7f",
+    "signed_binary_sha256": "1e7973daa8031c0d0aaa6414fc24459dc15eda3bdca0269e6a4150cf4655997a",
+    "unsigned_payload_exact": true,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": null,
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_448": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 453,
+    "status": "Prepared isolated brush-library texture Debug app; native picker/preset/stroke qualification pending; latest optimized universal453.",
+    "prepared_utc": "2026-11-06T22:34:21.298684+00:00"
+  },
+  "native": {
+    "step": 454,
+    "source": "454Source04",
+    "validation": {
+      "step": 454,
+      "app": "/private/tmp/photato-validation-454-debug-stage01-1a88a614/Photato Validation 454.app",
+      "bundle_id": "ca.forensicintelligence.photato.validation454",
+      "architectures": [
+        "arm64"
+      ],
+      "debug_only": true,
+      "normal_optimized": false,
+      "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+      "compiled_source": "454Source04",
+      "source_inputs": 7409,
+      "compiled_binary_sha256": "baa2018769412f46671df6090789107ca4593e8498254efce88e0195aa10dd7f",
+      "signed_binary_sha256": "1e7973daa8031c0d0aaa6414fc24459dc15eda3bdca0269e6a4150cf4655997a",
+      "unsigned_payload_exact": true,
+      "all_other_unsigned_bytes_exact": true,
+      "signing_metadata_exception": null,
+      "minimum_macos_metadata": "14.0",
+      "signature_verified": true,
+      "production_entitlements_exact": true,
+      "resources_unchanged_from_448": 15,
+      "live_UI_qualified": false,
+      "launched_or_installed": false,
+      "latest_optimized_universal": 453,
+      "status": "Prepared isolated brush-library texture Debug app; native picker/preset/stroke qualification pending; latest optimized universal453.",
+      "prepared_utc": "2026-11-06T22:34:21.298684+00:00"
+    },
+    "actual_native_UI": true,
+    "selected_native_pass": true,
+    "observations": [
+      "Fresh isolated app starts Photato - Untitled-1,1200x800 whiteRGB8 document.",
+      "Brush tool, Window > Brush Settings, Texture section opens with ChoosePattern native menu.",
+      "Menu lists allseven existing CC0savedpatterns and dimensions. ChooseDiagonalLines8x8.",
+      "Observation aftermenu selection switches to mainwindow; bringingBrushSettingsforward confirmsTextureenabled, embedded8x8 and ready striped preview. No error or product repair.",
+      "Closepanel; paint400pointnativehorizontalstroke:visible diagonal texture and documentdirty.",
+      "CommandZ removesstroke/cleandoc; CommandShiftZrestoresstroke/dirty. CommandZagainrestoresoriginalcleanwhite document.",
+      "NormalCommandQ. FollowingAXobservationreturnsprocNotFound; independentprocesssnapshotconfirms ownappabsent."
+    ],
+    "native_presets_saved_or_relaunch_tested": false,
+    "automated_preset_ABR_disk_and_captured_Action_checks_pass": true,
+    "offscreen_Light_Dark": "Captures inspected:missing/whitecontrols and black/transparentrightpane; not a fullvisual/appearance/HIGpass. ActualnativeDarkpanelreadyandlegible.",
+    "screenshots": "LiveCUAconversationimagesonly; no savedlivePNGclaimed.",
+    "own_app_running_after": false,
+    "normal_optimized454": false,
+    "latest_optimized_universal": 453,
+    "physical_tablet_or_60fps_qualified": false,
+    "Photoshop_numeric_oracle": false,
+    "recorded_utc": "2026-11-06T22:36:34.618232+00:00"
+  },
+  "Photoshop_UI": "Openedunchangedowned453grayPSD; B/F5/WindowBrushSettings/collapseddock didnotvisiblyexpandpanel. Normalcloseunchangedownedfile. No pattern/numericreferenceobtained; normalUIprobe unqualified, no proprietarycode/artworkused.",
+  "pending": [
+    "FulloriginalB01functional scope: physicalbristle/input/ABR/remainingtexture/brushcontexts",
+    "ExactPhotoshopconversion/profile/alpha/defaults/position/pixelkernels and input/shortcut/preferences parity",
+    "Normaloptimized454/universalbatch, supportedphysicalplatforms/tablet/VoiceOver/fullHIG, capacity and sustained60fps",
+    "Allprevious strictfailures including453fiveFloat32buffers55oneULPcolorworddifferences and earlier broaderfullsuiteissues"
+  ],
+  "distribution": "No productioninstall/sourcepush/GitHuboperation/Store/Xcodearchive/software release. Publiccode448/docs449 unchanged, currentbuildsprotected.",
+  "next": "B02 Painting tools, thenB04; originalfullscope preserved.",
+  "goal_complete": false,
+  "recorded_utc": "2026-11-06T22:38:48.154681+00:00"
+}

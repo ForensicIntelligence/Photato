@@ -1,0 +1,377 @@
+{
+  "step": 482,
+  "application_build": 480,
+  "source": "tools03; unchanged native product inputs from481 captures",
+  "reference": "docs/INVENTORY_RECONCILIATION_482.json",
+  "software_changes": false,
+  "development_tooling_changes": true,
+  "status": "Menu inventory corrected from802to809 entries using unchanged-source481 ARM/Intel captures. Seven missing paths and88stale selector bindings reconciled; original801factory entries/102primary/8alternate keys retained. All37developer-tool tests pass,21new. Application build480; fullAUD01/Photoshop/workflow qualification remains open.",
+  "new_tool_tests": 21,
+  "combined_tool_tests": 37,
+  "new_native_tests": 0,
+  "new_native_tests_executed": false,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "recorded_utc": "2026-11-07T22:13:15.301410+00:00",
+  "run": "artifacts/runs/20261107T220422Z-482-inventory-reconciliation",
+  "source_inputs": 7592,
+  "source_manifest": "artifacts/runs/20261107T220422Z-482-inventory-reconciliation/tools03-source.json",
+  "capture_product_inputs": 7499,
+  "capture_input_snapshot": "artifacts/runs/20261107T220422Z-482-inventory-reconciliation/capture-inputs01.json",
+  "menu_before": {
+    "entries": 802,
+    "missing_paths": [
+      "Edit > Customize Save Dialog File Formats",
+      "Layer > New Adjustment Layer > Light\u2026",
+      "Layer > New Adjustment Layer > Clarity and dehaze\u2026",
+      "Layer > New Adjustment Layer > Grain\u2026",
+      "Filter > Photato",
+      "Filter > Photato > Relight\u2026",
+      "Filter > Photato > Lighting Effects\u2026"
+    ],
+    "stale_selectors": 88,
+    "changed_claim_fields": 573,
+    "claim_change_reason": "Normalize to structure only / partial native operation / disabled placeholder from actual captured selector presence. These are inventory labels, not new implementation or passed acceptance."
+  },
+  "current_inventory": {
+    "commands": {
+      "identities": 652,
+      "statuses": {
+        "partial": 459,
+        "pending": 193
+      }
+    },
+    "external_boundaries": [
+      {
+        "classification": "documented-beta",
+        "id": "ai-assisted-editor",
+        "original_scope_retained": true,
+        "reference": "https://helpx.adobe.com/photoshop/desktop/generative-ai/use-ai-assisted-mode.html",
+        "remaining": "Optional prompt-oriented editor remains an unqualified gap; existing generation controls do not prove this separate mode or its layer transitions.",
+        "work_packages": [
+          "AI08",
+          "AI07"
+        ]
+      },
+      {
+        "classification": "later-documented-desktop-feature",
+        "id": "enhance-edge",
+        "original_scope_retained": true,
+        "reference": "https://helpx.adobe.com/photoshop/desktop/whats-new/whats-new-in-adobe-photoshop-on-desktop.html",
+        "remaining": "27.11 reference capability needs suitable executable/output evidence; existing refinement does not establish diffusion-based edge equivalence.",
+        "work_packages": [
+          "S04",
+          "AI01"
+        ]
+      },
+      {
+        "classification": "external-model-service",
+        "id": "gpt-image2",
+        "original_scope_retained": true,
+        "reference": "https://helpx.adobe.com/photoshop/desktop/whats-new/whats-new-in-adobe-photoshop-on-desktop.html",
+        "remaining": "Documented27.11 model; no claim of proprietary model equivalence or byte-identical stochastic generations.",
+        "work_packages": [
+          "AI01",
+          "AI05",
+          "AI07"
+        ]
+      },
+      {
+        "classification": "Windows-specific-implementation",
+        "id": "windows-pgo",
+        "original_scope_retained": true,
+        "reference": "https://helpx.adobe.com/photoshop/desktop/whats-new/photoshop-on-desktop-release-notes.html",
+        "remaining": "The documented Windows build optimization is not a macOS UI command. Equivalent macOS editing responsiveness and all Q03 acceptance remain open.",
+        "work_packages": [
+          "Q03"
+        ]
+      },
+      {
+        "classification": "retired-external-beta",
+        "id": "substance-viewer",
+        "original_scope_retained": true,
+        "reference": "https://helpx.adobe.com/substance-3d-viewer/desktop/tutorials/photoshop-3d-intro.html",
+        "remaining": "The tutorial states support/installation ended16October2025. Preserve interoperability requirements and historical evidence; do not present this removed external service as a current native capability.",
+        "work_packages": [
+          "SP03"
+        ]
+      },
+      {
+        "classification": "service-dependent-output",
+        "id": "adobe-generative-services",
+        "original_scope_retained": true,
+        "reference": "https://helpx.adobe.com/photoshop/desktop/generative-ai/generative-ai-features-overview.html",
+        "remaining": "Provider availability, identity, credits and model quality remain separate from native editing and Firefly HTTP conformance. No service/output parity is inferred.",
+        "work_packages": [
+          "AI01",
+          "AI03",
+          "AI04",
+          "AI05",
+          "AI06",
+          "AI07"
+        ]
+      },
+      {
+        "classification": "third-party-runtime-dependency",
+        "id": "photoshop-plugins",
+        "original_scope_retained": true,
+        "reference": "https://developer.adobe.com/photoshop/",
+        "remaining": "Native C++, UXP and CEP/ExtendScript hosts remain unimplemented; UI or Firefly API compatibility does not run third-party plug-ins.",
+        "work_packages": [
+          "AUT03"
+        ]
+      },
+      {
+        "classification": "platform-gated-optional-capability",
+        "id": "optional-apple-ai",
+        "original_scope_retained": true,
+        "reference": "https://developer.apple.com/documentation/foundationmodels",
+        "remaining": "macOS14+ universal editing remains the requirement. Apple Silicon/macOS26+ AI and Private Cloud Compute need supported-device/runtime/privacy validation; no new hardware restriction is imposed on editing.",
+        "work_packages": [
+          "AI01",
+          "AI02"
+        ]
+      }
+    ],
+    "full_Photoshop_parity": false,
+    "limits": "Reconciliation of supplied captures and current inventories. A selector binding is not enabled-context, output, preference, API or full workflow qualification. No percentage or full-package closure is inferred.",
+    "menu": {
+      "alternative_shortcuts": 8,
+      "bound_leaf_commands": 461,
+      "default_preset": "Photoshop Defaults",
+      "entries": 809,
+      "entries_with_actions": 539,
+      "full_photoshop_parity": false,
+      "menus": [
+        "Photato",
+        "File",
+        "Edit",
+        "Image",
+        "Layer",
+        "Type",
+        "Select",
+        "Filter",
+        "View",
+        "Plugins",
+        "Window",
+        "Help"
+      ],
+      "primary_shortcuts": 102,
+      "unavailable_leaf_commands": 270
+    },
+    "menu_csv_drift": {
+      "changed": [],
+      "missing": [],
+      "order_matches": true,
+      "removed": []
+    },
+    "native_capture_source_matches": true,
+    "packages": 104,
+    "passed": true,
+    "phase_ledger_sha256": "6a2fe0e7bdf98266b60aafdd75e7a87e4cb48fc8d8842e9f4b6af624c52f708d",
+    "policy_sha256": "160ff0bf85b66791f1588382cfc664317a84bd2ddfc55e105fc260dab99e9949",
+    "product_inputs": 7499,
+    "schema": 1,
+    "snapshot_sha256": "30189323489e9b0f8904c66b6a0f3608366481595eb8aba7a37e4a7461ffa2e5",
+    "tools": {
+      "scope": "Main-tool captured cursor matrix; not complete tool functionality, physical key delivery or Photoshop cursor fidelity.",
+      "tool_modifier_contexts": 880,
+      "tool_names": [
+        "Adjustment Brush",
+        "Artboard",
+        "Background Eraser",
+        "Blur",
+        "Brush",
+        "Burn",
+        "Clone Stamp",
+        "Color Replacement",
+        "Content-Aware Move",
+        "Crop",
+        "Curvature Pen",
+        "Custom Shape",
+        "Direct Selection",
+        "Dodge",
+        "Ellipse",
+        "Elliptical Marquee",
+        "Eraser",
+        "Eyedropper",
+        "Frame",
+        "Freeform Pen",
+        "Gradient",
+        "Hand",
+        "Healing Brush",
+        "Horizontal Type",
+        "Lasso",
+        "Line",
+        "Magic Eraser",
+        "Magic Wand",
+        "Magnetic Lasso",
+        "Mixer Brush",
+        "Move",
+        "Object Selection",
+        "Paint Bucket",
+        "Patch",
+        "Path Selection",
+        "Pattern Stamp",
+        "Pen",
+        "Pencil",
+        "Polygon",
+        "Polygonal Lasso",
+        "Quick Selection",
+        "Rectangle",
+        "Rectangular Marquee",
+        "Red Eye",
+        "Selection Brush",
+        "Sharpen",
+        "Single Column Marquee",
+        "Single Row Marquee",
+        "Smudge",
+        "Sponge",
+        "Spot Healing Brush",
+        "Star",
+        "Triangle",
+        "Vertical Type",
+        "Zoom"
+      ],
+      "tools": 55
+    },
+    "upstream_is_Photoshop_acceptance": false,
+    "upstream_scorecards": [
+      {
+        "file": "automation.toml",
+        "items": 11,
+        "sha256": "2bab89b8915f49d07b556eb658b5ffde56986246ce5eb54a8d8802c0e56bd77e",
+        "statuses": {
+          "done": 2,
+          "missing": 7,
+          "partial": 2
+        }
+      },
+      {
+        "file": "bugs.toml",
+        "items": 32,
+        "sha256": "af72587b89af1f8968b064a619b1b068e6af6e88c89cd777abc58fa19841b8c8",
+        "statuses": {
+          "done": 12,
+          "missing": 17,
+          "partial": 3
+        }
+      },
+      {
+        "file": "distribution.toml",
+        "items": 11,
+        "sha256": "e6a522a7063301832b206026b4fc9cf0c3ff7c253b2a716dc0f8a537c0644ff9",
+        "statuses": {
+          "done": 4,
+          "missing": 3,
+          "partial": 4
+        }
+      },
+      {
+        "file": "file_compat.toml",
+        "items": 27,
+        "sha256": "11eebaa417a7e253a3a7961d897a7ddf605a1ca7665933c8ef4bdab067e89a76",
+        "statuses": {
+          "done": 1,
+          "missing": 18,
+          "partial": 8
+        }
+      },
+      {
+        "file": "reliability.toml",
+        "items": 7,
+        "sha256": "a92f7fb952dbd81e85f9d43bb734f97606ab721964816ae8790f7b91765d15e5",
+        "statuses": {
+          "done": 4,
+          "missing": 2,
+          "partial": 1
+        }
+      },
+      {
+        "file": "tools.toml",
+        "items": 30,
+        "sha256": "52130d9aa6de65aad9f8180f0f01c0272f8a7d4fb785581aaf0d9171d2a84128",
+        "statuses": {
+          "done": 6,
+          "missing": 11,
+          "partial": 13
+        }
+      },
+      {
+        "file": "type.toml",
+        "items": 9,
+        "sha256": "b0838d0ea517866e4d369fb368e091831470a89413e5ec24216c237e6bcdad10",
+        "statuses": {
+          "missing": 6,
+          "partial": 3
+        }
+      },
+      {
+        "file": "ui.toml",
+        "items": 23,
+        "sha256": "0837718183c8ff43ff304a6d143d6af68066b6719386fd12a13850113a36eb19",
+        "statuses": {
+          "missing": 18,
+          "partial": 5
+        }
+      }
+    ],
+    "workflows": {
+      "scenarios": 40,
+      "statuses": {
+        "planned": 40
+      }
+    }
+  },
+  "tests": {
+    "elapsed_seconds": 3.124949958990328,
+    "exit_code": 0,
+    "new_inventory_methods": 21,
+    "source_inputs": 7592,
+    "source_unchanged": true,
+    "test_methods": 37
+  },
+  "earlier_tests": [
+    {
+      "elapsed_seconds": 1.3057829159952234,
+      "exit_code": 0,
+      "source_inputs": 7592,
+      "source_unchanged": true
+    },
+    {
+      "elapsed_seconds": 3.840332167019369,
+      "exit_code": 0,
+      "expected_test_methods": 36,
+      "source_inputs": 7592,
+      "source_unchanged": true
+    }
+  ],
+  "source_changes": [
+    "Add scripts/reconcile-inventories.py and21focused tests: capture hashes/current product source/architecture identity/factory golden keys/unique IDs/command statuses/16modifier coverage/explicit external boundaries, drift reports and new-output refusal.",
+    "Replace docs/MENU_PARITY.csv only after preserving the old802row file and exact proposed CSV. Current809rows contain461partially bound leaves,270disabled leaves and78submenus. Seven new paths and88stale selectors corrected; no native selector, key or modifier changed.",
+    "Update the local archive pipeline test discovery to test_*.py with separate preserved fixture folders; extend manual workflow artifact paths. This prepares37tooltest coverage, not a fresh current archive/hosted execution claim.",
+    "Add INVENTORY_POLICY.json, reconciliation guide and explicit current/historical menu/tool snapshots. Retain the independent801entry golden fixture, all numerical fixtures, command/scenario matrices and upstream scorecards unchanged.",
+    "Clarify the current Photoshop reference priority in PROFESSIONAL_WORKFLOWS.md while preserving its dated original roadmap. Update diary, status, workorder, API impact, records and handoff."
+  ],
+  "native_application_code_tests_project_assets_entitlements_changed": false,
+  "native_build_incremented": false,
+  "versions": {
+    "native": 90,
+    "Actions": 59,
+    "typed_commands": 266
+  },
+  "API_review": "Developer-only inventory/tooling changes. No new native editing capability, Photato/Adobe operation, schema, route, Actions command, history behavior or menu/shortcut/cursor behavior. Native90/Actions59/typed266 retained. Selector inventory is not executable API coverage.",
+  "full_suite_passed": false,
+  "full_Photoshop_parity": false,
+  "remaining": [
+    "Full original AUD01 current2026 catalogue/tools/commands/preferences/scenarios/API/context/default/output reconciliation remains open. The marketing page contains deferred content; it is not treated as exhaustive coverage.",
+    "All40professional workflow acceptance scenarios remain planned. Binding461menu leaves,459partial command rows or55main-tool cursor records does not prove complete workflows, enabled contexts or exact output. No percentage or package closure is inferred.",
+    "The original801entry Photoshop27.2 fixture is unchanged. Later documented Adobe commands and Photato-specific extensions remain8explicit supplements. Exact separators, layout, context enablement, preferences, physical-key delivery and output remain unqualified.",
+    "Installed Photoshop27.2 is distinguished from documentation describing27.11. AI Assisted Editor is documented as beta; model/service/plugin and retired/external-platform boundaries remain explicit gaps. No unsupported target scope is removed.",
+    "The37tool tests pass on the local host. Nativeediting104checks perarchitecture and the actual archive belong to481, on identical7499product inputs. The full currentCI pipeline and hosted template have not been rerun or dispatched at482.",
+    "All prior full-suite, Debug, numerical, physical macOS14/Intel/AppleSilicon, dense capacity, sandbox/runtime, AI/provider and60fps gates remain open. No current software build, install, deletion, GitHub mutation, Store change, upload or release.",
+    "CurrentAUT02automation stillneeded, thenS05; all104original scopes/acceptance/status,652command mapping/status,81major memberships andsevenpasses retained."
+  ],
+  "current": "AUT02",
+  "next": "S05"
+}

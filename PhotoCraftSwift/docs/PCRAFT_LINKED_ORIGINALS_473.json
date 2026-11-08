@@ -1,0 +1,462 @@
+{
+  "step": 473,
+  "date": "2026-11-07",
+  "recorded_utc": "2026-11-07T12:39:18.482943+00:00",
+  "workflow": "I03",
+  "title": "Original PhotoCraft .pcraft migration",
+  "track": "major stillneeded",
+  "status": "Selected embedded-original recovery implemented; fullI03 remains in progress",
+  "changes": [
+    "New PcraftLinkedSources decodes known linked-data blocks lazily through existing PSDSmartObjects.files; no path I/O or global activation.",
+    "PcraftLayerMapper caches original-file records; PcraftSmartObjects reuses existing embedded-original assembly with an ID-specific source identity. Original bytes/cache/placement/filters/lineage retained.",
+    "Existing native Open/EditContents/SaveAs and HTTP import/source/native download/rasterize/Undo use the shared importer. Discovery states selected support and limitations; proprietary input stays outside Adobe v2 contract.",
+    "No Core/numerical/render/filter/ColorManagement/PSD-reader/model/old-test/old-fixture/project/assets/entitlement/menu/shortcut change. Native89/Actions58/typed266 unchanged."
+  ],
+  "source": {
+    "manifest": "artifacts/runs/20261107T115546Z-473-pcraft-linked-originals/source03-source.json",
+    "inputs": 7542,
+    "production_swift_files": 1142,
+    "source02_and03_identical": true,
+    "old_tests_Core_project_assets_entitlements_unchanged": true
+  },
+  "attempts": [
+    {
+      "summary": "artifacts/runs/20261107T115546Z-473-pcraft-linked-originals/source01-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 15,
+        "missing_cases": [],
+        "exit_code": 1,
+        "inputs": 7537,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftImagingTests.PcraftContainerTests/testOfficialBLAKE3VectorsAcrossChunkAndTreeBoundaries",
+          "PhotoCraftImagingTests.PcraftContainerTests/testRawRLEAndHuffmanReuseFrames",
+          "PhotoCraftImagingTests.PcraftLinkedCaptureTests/testBaselineRejectsReferencesButNativeDecoderRecoversExactOriginalsAndCaches",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testCachedRasterizationResetAndProjectedReplacementAreUndoable",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testOriginalCachedSmartSamplesMatchExactlyAtAllDepths",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testOriginalSourceSharedIdentityNestedStackControlsAndNative70",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testUnsupportedLinkedUnknownProgramBudgetAndCancellationRemainAtomic",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification"
+        ],
+        "passed": 14,
+        "failed_cases": [
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords"
+        ],
+        "totals": [
+          [
+            "15",
+            "9",
+            "0",
+            "196.089"
+          ]
+        ],
+        "build_seconds": [
+          "8.88"
+        ],
+        "finished_utc": "2026-11-07T12:04:53.742057+00:00"
+      },
+      "retained_products": 5447,
+      "binary_sha256": "7504b0293443f3d34fb2fd69b988134d0534b3a38668609d5d2fed88357c9ae0",
+      "executable_origin": "Cached472 application; consult failed qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T115546Z-473-pcraft-linked-originals/source02-summary.json",
+      "qualification": {
+        "unexpected_signals": [
+          "10"
+        ],
+        "expected_count": 41,
+        "missing_cases": [
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testCooperativeHTTPNestedSourceBoundaryRejectsAtomically",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testHTTPImportSourceStateNoOpRasterizeHistoryNative70AndOriginalPlacement",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testImportedProjectivePropertiesAndHitTestingMatchVisibleArtwork",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testImportedSourceWarpFrameUsesNativeAPITransactionAndValidatesBounds",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testNativeOriginalOpenEditContentsUndoSaveAndSourcePreservation",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testOriginalSourceResourceJobsUseSharedOutputAndKeepAdobeInputBoundary",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testPublishedAdobeSmartResourceRejectsPhotoCraftWithoutChangingDocument",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification"
+        ],
+        "exit_code": 1,
+        "inputs": 7542,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftImagingTests.PcraftContainerTests/testOfficialBLAKE3VectorsAcrossChunkAndTreeBoundaries",
+          "PhotoCraftImagingTests.PcraftContainerTests/testRawRLEAndHuffmanReuseFrames",
+          "PhotoCraftImagingTests.PcraftLinkedCaptureTests/testNativeDecoderRecoversExactOriginalsAndInheritedCacheWords",
+          "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testHTTPUploadSourceDownloadRasterizeUndoAndNativePersistenceShareImporter",
+          "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testNativeOpenEditContentsUndoSaveAsRetainsExactOriginalArchive",
+          "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testSharedChildEditsUpdateEveryReferenceAndUndoRetainsSourceIdentity",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testDuplicateAcrossBlocksMissingReferenceWrongSignatureAndMalformedBlockRejectAtomically",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testKnownButUnreferencedOpaqueBlocksStayInactiveForOrdinaryEmbeddedSources",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testNineReferencesPreserveAll737280InheritedCacheBytesAndExactOriginals",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testRasterizationAndStackModeKeepHistoryOriginalBytesAndOpaqueMetadata",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testSharedSourceIdentityPlacementAndNativeRoundTripRemainEditableAtEveryDepth",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testSourceBudgetAndCancellationRejectWithoutChangingInput",
+          "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testValidExternalAndAliasRecordsNeverUsePlacedPreviewAsOriginal",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testCachedRasterizationResetAndProjectedReplacementAreUndoable",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testOriginalCachedSmartSamplesMatchExactlyAtAllDepths",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testOriginalSourceSharedIdentityNestedStackControlsAndNative70",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords",
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testUnsupportedLinkedUnknownProgramBudgetAndCancellationRemainAtomic"
+        ],
+        "passed": 17,
+        "failed_cases": [
+          "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords"
+        ],
+        "totals": [
+          [
+            "5",
+            "9",
+            "0",
+            "163.402"
+          ]
+        ],
+        "build_seconds": [
+          "95.99"
+        ],
+        "finished_utc": "2026-11-07T12:21:12.544242+00:00"
+      },
+      "retained_products": 5449,
+      "binary_sha256": "ec5f7c899b0e8c15c113cdb9f7a97b5347fa76cf1e7d42a34914137e373317a1",
+      "executable_origin": "New473 product; consult qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T115546Z-473-pcraft-linked-originals/source03-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 22,
+        "missing_cases": [],
+        "exit_code": 0,
+        "inputs": 7542,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testHTTPImportSourceStateNoOpRasterizeHistoryNative70AndOriginalPlacement",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testImportedProjectivePropertiesAndHitTestingMatchVisibleArtwork",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testImportedSourceWarpFrameUsesNativeAPITransactionAndValidatesBounds",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testNativeOriginalOpenEditContentsUndoSaveAndSourcePreservation",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testOriginalSourceResourceJobsUseSharedOutputAndKeepAdobeInputBoundary",
+          "PhotoCraftAppTests.PcraftSmartWorkflowTests/testPublishedAdobeSmartResourceRejectsPhotoCraftWithoutChangingDocument",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 22,
+        "failed_cases": [],
+        "totals": [
+          [
+            "22",
+            "0",
+            "0",
+            "25.888"
+          ]
+        ],
+        "build_seconds": [
+          "2.03"
+        ],
+        "finished_utc": "2026-11-07T12:32:57.865826+00:00"
+      },
+      "retained_products": 5449,
+      "binary_sha256": "ec5f7c899b0e8c15c113cdb9f7a97b5347fa76cf1e7d42a34914137e373317a1",
+      "executable_origin": "New473 product; consult qualification"
+    }
+  ],
+  "qualification": {
+    "step": 473,
+    "planned": 41,
+    "completed": 40,
+    "passed": 39,
+    "assertion_failure_methods": [
+      "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords"
+    ],
+    "assertion_failures": 9,
+    "crashed_methods": [
+      "PhotoCraftAppTests.PcraftSmartWorkflowTests/testCooperativeHTTPNestedSourceBoundaryRejectsAtomically"
+    ],
+    "crash_matches_retained472": true,
+    "all_new_methods_passed": 11,
+    "new_method_ids": [
+      "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testHTTPUploadSourceDownloadRasterizeUndoAndNativePersistenceShareImporter",
+      "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testNativeOpenEditContentsUndoSaveAsRetainsExactOriginalArchive",
+      "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testSharedChildEditsUpdateEveryReferenceAndUndoRetainsSourceIdentity",
+      "PhotoCraftImagingTests.PcraftLinkedCaptureTests/testNativeDecoderRecoversExactOriginalsAndInheritedCacheWords",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testDuplicateAcrossBlocksMissingReferenceWrongSignatureAndMalformedBlockRejectAtomically",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testKnownButUnreferencedOpaqueBlocksStayInactiveForOrdinaryEmbeddedSources",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testNineReferencesPreserveAll737280InheritedCacheBytesAndExactOriginals",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testRasterizationAndStackModeKeepHistoryOriginalBytesAndOpaqueMetadata",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testSharedSourceIdentityPlacementAndNativeRoundTripRemainEditableAtEveryDepth",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testSourceBudgetAndCancellationRejectWithoutChangingInput",
+      "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testValidExternalAndAliasRecordsNeverUsePlacedPreviewAsOriginal"
+    ],
+    "source_inputs": 7542,
+    "source02_and03_identical_inputs_and_application": true,
+    "normal473_qualified": false,
+    "full_selected_batch_passed": false,
+    "remaining_regression_cases_passed": 22,
+    "independent_Photoshop_RGB32_passed": 7,
+    "cursor_methods_passed": 9
+  },
+  "strict": {
+    "step": 473,
+    "all_exact": true,
+    "checks": [
+      {
+        "name": "pcraft-linked-original-caches.f32le",
+        "bytes": 737280,
+        "exact": true,
+        "different_bytes": 0
+      },
+      {
+        "name": "pcraft-linked-migrated-caches.f32le",
+        "bytes": 737280,
+        "exact": true,
+        "different_bytes": 0
+      }
+    ],
+    "old_uncached_report_unchanged": true,
+    "old_uncached_report": [
+      {
+        "cached": false,
+        "changedWords": 0,
+        "depth": "u8",
+        "name": "affine-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 241,
+        "depth": "u8",
+        "name": "projective-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 225,
+        "depth": "u8",
+        "name": "warp-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 680,
+        "depth": "u8",
+        "name": "filter-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 0,
+        "depth": "u16",
+        "name": "affine-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 272,
+        "depth": "u16",
+        "name": "projective-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 275,
+        "depth": "u16",
+        "name": "warp-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 1512,
+        "depth": "u16",
+        "name": "filter-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 0,
+        "depth": "f32",
+        "name": "affine-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 686,
+        "depth": "f32",
+        "name": "projective-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 516,
+        "depth": "f32",
+        "name": "warp-uncached",
+        "words": 20480
+      },
+      {
+        "cached": false,
+        "changedWords": 1881,
+        "depth": "f32",
+        "name": "filter-uncached",
+        "words": 20480
+      }
+    ]
+  },
+  "baseline472_nested_replay": {
+    "step": 473,
+    "baseline_build": 472,
+    "baseline_source": "source06",
+    "binary": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T110529Z-472-paged-image-statistics/source06-binaries/PhotatoPackageTests.xctest/Contents/MacOS/PhotatoPackageTests",
+    "binary_sha256": "a3383b9331daeb465bb999d2cf3ac4bcfdc6e4a1fa5723f7b211859fc9761bf2",
+    "command": [
+      "xcrun",
+      "xctest",
+      "-XCTest",
+      "PhotoCraftAppTests.PcraftSmartWorkflowTests/testCooperativeHTTPNestedSourceBoundaryRejectsAtomically",
+      "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T110529Z-472-paged-image-statistics/source06-binaries/PhotatoPackageTests.xctest"
+    ],
+    "started_utc": "2026-11-07T12:26:39.472598+00:00",
+    "exit_code": -10,
+    "passed": false,
+    "signal": 10,
+    "current473_inputs_unchanged": true,
+    "finished_utc": "2026-11-07T12:26:43.113974+00:00"
+  },
+  "debug_package": {
+    "step": 473,
+    "app": "/private/tmp/photato-validation-473-debug-stage01-578c513e/Photato Validation 473.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation473",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "473Source03",
+    "source_inputs": 7542,
+    "compiled_binary_sha256": "ec5f7c899b0e8c15c113cdb9f7a97b5347fa76cf1e7d42a34914137e373317a1",
+    "signed_binary_sha256": "9ced638c10fe099956d914cecd5a6a97ff8bdbe88b545433c8fae4ad484a5933",
+    "unsigned_payload_exact": true,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": null,
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_470": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 470,
+    "qualification": {
+      "step": 473,
+      "planned": 41,
+      "completed": 40,
+      "passed": 39,
+      "assertion_failure_methods": [
+        "PhotoCraftImagingTests.PcraftSmartImportTests/testUncachedSmartRenderingMatchesExactOriginalEngineWords"
+      ],
+      "assertion_failures": 9,
+      "crashed_methods": [
+        "PhotoCraftAppTests.PcraftSmartWorkflowTests/testCooperativeHTTPNestedSourceBoundaryRejectsAtomically"
+      ],
+      "crash_matches_retained472": true,
+      "all_new_methods_passed": 11,
+      "new_method_ids": [
+        "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testHTTPUploadSourceDownloadRasterizeUndoAndNativePersistenceShareImporter",
+        "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testNativeOpenEditContentsUndoSaveAsRetainsExactOriginalArchive",
+        "PhotoCraftAppTests.PcraftLinkedOriginalWorkflowTests/testSharedChildEditsUpdateEveryReferenceAndUndoRetainsSourceIdentity",
+        "PhotoCraftImagingTests.PcraftLinkedCaptureTests/testNativeDecoderRecoversExactOriginalsAndInheritedCacheWords",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testDuplicateAcrossBlocksMissingReferenceWrongSignatureAndMalformedBlockRejectAtomically",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testKnownButUnreferencedOpaqueBlocksStayInactiveForOrdinaryEmbeddedSources",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testNineReferencesPreserveAll737280InheritedCacheBytesAndExactOriginals",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testRasterizationAndStackModeKeepHistoryOriginalBytesAndOpaqueMetadata",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testSharedSourceIdentityPlacementAndNativeRoundTripRemainEditableAtEveryDepth",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testSourceBudgetAndCancellationRejectWithoutChangingInput",
+        "PhotoCraftImagingTests.PcraftLinkedSourceImportTests/testValidExternalAndAliasRecordsNeverUsePlacedPreviewAsOriginal"
+      ],
+      "source_inputs": 7542,
+      "source02_and03_identical_inputs_and_application": true,
+      "normal473_qualified": false,
+      "full_selected_batch_passed": false,
+      "remaining_regression_cases_passed": 22,
+      "independent_Photoshop_RGB32_passed": 7,
+      "cursor_methods_passed": 9
+    },
+    "status": "Isolated embedded-original migration Debug candidate:39of41planned pass/all11new pass; nine old uncached-Rust assertions and matched472nested-source signal10 remain. Native473/normal473/fullI03/Photoshop fidelity open. Latest fully qualified universal470; universalcandidate472.",
+    "prepared_utc": "2026-11-07T12:36:21.415326+00:00"
+  },
+  "native_observation": {
+    "step": 473,
+    "recorded_utc": "2026-11-07T12:37:32.466371+00:00",
+    "attempt": "After all current/source03 and baseline472 test workers terminal, bound existing467validationapp.",
+    "result": "Sky Computer Use native pipe closed before response",
+    "live_workflow_qualified": false,
+    "new473_launched": false,
+    "existing458_and467_retained": true,
+    "forcequit_or_reset": false
+  },
+  "references": {
+    "primary": [
+      "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+    ],
+    "licensed_source": [
+      "../photocraft-main/crates/format/src/manifest.rs:309",
+      "../photocraft-main/crates/doc/src/lib.rs:384",
+      "../photocraft-main/crates/io/src/linked.rs"
+    ],
+    "reference_use": "Adobe public Linked Layer specification distinguishes embedded liFD from external liFE/alias liFA. Rust linked.rs resolves PSD IDs from metadata, not always filesystem paths. Reuse existing native linked-block parser only for referenced embedded originals; no arbitrary global activation or filesystem access.",
+    "scope": "Selected I03 editable recovery; fullI03/PDF/authorizedexternal/PSDinterchange/output/platform acceptance remains."
+  },
+  "new_test_methods": 11,
+  "fixture_cases": 9,
+  "frozen_cache_sample_bytes": 737280,
+  "normal473_qualified": false,
+  "latest_optimized_universal": 470,
+  "latest_universal_validation_candidate": 472,
+  "remaining": [
+    "Full I03 remains open. Actual external/alias references need authorized originals and original geometry. PDF original context, additional source features/non-RGB/style libraries/comps/timeline, decoder budgets and unsupported controls remain under original acceptance.",
+    "Existing uncached original-Rust comparisons retain nine assertions in projective/warp/filter programs at all three depths. Source01 unchanged472 reproduces them; final changed-word report is identical. Rust is supporting regression evidence, not the Photoshop gold standard; no independent Photoshop failure/cause or waived requirement is inferred.",
+    "An existing cooperative nested-source HTTP method crashes by signal10 in current473 and retained472source06. The remaining22methods pass in a separate unchanged-source attempt. The full41casebatch is not passed.",
+    "Normal473/platform/dense capacity/live controls/60fps/fullsuite and all earlier failures remain open. Latest fully qualified optimized universal470 and unreleased universalcandidate472 remain protected; two Intel proof-reference methods from472 stay unresolved.",
+    "Native automation still reports pipeclosed. Debug473 is isolated, verified and unlaunched; older458/467validation documents remain protected. No reset/forcequit, GitHub change, deletion, production install, Store/archive or release."
+  ],
+  "original_package_closed": false,
+  "Photoshop_parity": false,
+  "goal_complete": false
+}

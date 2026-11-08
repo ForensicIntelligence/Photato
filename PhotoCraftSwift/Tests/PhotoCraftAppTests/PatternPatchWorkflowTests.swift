@@ -73,7 +73,7 @@ final class PatternPatchWorkflowTests:XCTestCase {
         let stale=try await helper.edit(service,shared,"retouch.patch",["layerID":id.uuidString,"patternID":pattern.id],revision:"stale");XCTAssertEqual(stale,409)
       }
       let definition=try XCTUnwrap(AutomationCommand.definitions.first{$0.name=="retouch.patch"}),properties=try XCTUnwrap(definition.schema["properties"] as? [String:Any]),parameters=try XCTUnwrap(properties["parameters"] as? [String:Any])
-      XCTAssertEqual((parameters["oneOf"] as? [[String:Any]])?.count,2);XCTAssertEqual(AutomationCommand.definitions.count,258)
+      XCTAssertEqual((parameters["oneOf"] as? [[String:Any]])?.count,2);XCTAssertEqual(AutomationCommand.definitions.count,267)
       let capability=try XCTUnwrap(RegionRetouchAPI.capabilities["patternPatch"] as? [String:Any]);XCTAssertEqual(capability["maximumCanvasDimension"] as? Int,300_000)
       let share=try XCTUnwrap(service.shares.first);let response=try await helper.request(service,path:"/v1/documents/\(share.id)")
       let json=try XCTUnwrap(JSONSerialization.jsonObject(with:response.1)as? [String:Any]);XCTAssertNotNil(json["regionRetouch"])

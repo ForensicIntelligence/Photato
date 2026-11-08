@@ -8,6 +8,8 @@ enum ClipboardAPI {
   static let maximumBase64 = ((maximumBytes + 2) / 3) * 4
   static func schema(_ key: String) -> [String: Any] {
     switch key {
+    case "target":return ClipboardPlaneAPI.targetSchema
+    case "backgroundValue":return BrushAPI.number()
     case "colorDecision": return BrushAPI.enumeration(["convertAppearance", "preserveNumbers"])
     case "payloadBase64": return ["type": "string", "contentEncoding": "base64", "maxLength": maximumBase64]
     case "layerIDs": return ["type": "array", "minItems": 1, "maxItems": LayerLimits.maximumLayers, "uniqueItems": true, "items": ["type": "string", "format": "uuid"]]
@@ -31,6 +33,9 @@ enum ClipboardAPI {
     }
   }
   static var capabilities: [String: Any] { [
+    "nativeImageFallbackPixelBudget":Surface.maximumDensePixels,
+    "largeNativeClipboard":"Native payloads retain full extent/precision. Full TIFF/PNG fallbacks are omitted above the existing dense-image budget, never replaced by a reduced-size image. External applications need a standard representation; native512MiB and API2MiB/decoded4MP limits remain.",
+    "targetedPlanes":ClipboardPlaneAPI.capabilities,
     "commands": commands, "envelopeVersions": [1, 2], "maximumPayloadBytes": maximumBytes,
     "transport": "Explicit native clipboard payloads only; these commands never read or write the Mac system clipboard. Copy returns payloadBase64, sourceMode, kind, width, height and revision. Cut also returns updated document state; Undo restores the document, not the returned payload. New Document requires document transfers and returns a new shared state with201.",
     "resultSchema": BrushAPI.object(["payloadBase64": schema("payloadBase64"), "sourceMode": ["type": "string"], "kind": ["type": "string", "enum": ["pixels", "layers"]], "width": ["type": "integer"], "height": ["type": "integer"], "revision": ["type": "string"], "document": ["type": "object"]], required: ["payloadBase64", "sourceMode", "kind", "width", "height", "revision"]),
@@ -86,6 +91,9 @@ extension AutomationCommand {
 extension AutomationService {
   func executeClipboard(_ command: AutomationCommand, document: CraftNSDocument, share: Share) async throws -> AutomationResponse {
     let store = document.store
+    if command.parameters["target"] != nil{return try await executeClipboardPlane(command,document:document,share:share)}
+    guard command.parameters["backgroundValue"]==nil else{throw AutomationFailure(status:400,message:"backgroundValue requires an explicit scalar target.")}
+    if command.name == "clipboard.newDocument" { return try await clipboardNewDocument(command, document: document, share: share) }
     guard store.clipboardTargetAvailable else { throw AutomationFailure(status: 422, message: "Choose an available composite image target.") }
     if command.name == "clipboard.paste" {
       let bytes = try command.clipboardBytes(), (placement, center) = try command.clipboardPasteOptions()
@@ -174,7 +182,8 @@ extension AutomationService {
 extension EditorStore {
   var clipboardAPIState: [String: Any] {
     ["copyAvailable": canCopy(), "copyMergedAvailable": canCopy(merged: true), "cutAvailable": canCopy(cut: true),
-     "pasteTargetAvailable": clipboardTargetAvailable && (document.restrictedMode == nil || document.activeLayerID.map { !document.isImageLocked($0) } == true),
+     "pasteTargetAvailable": (clipboardPlaneTarget.map{canUseClipboardPlane($0,writing:true)} ?? false) || (clipboardTargetAvailable && (document.restrictedMode == nil || document.activeLayerID.map { !document.isImageLocked($0) } == true)),
+     "targetedPlane":ClipboardPlaneAPI.state(self),
      "backgroundColor": [backgroundColor.r, backgroundColor.g, backgroundColor.b], "systemClipboardAccess": false]
   }
 }

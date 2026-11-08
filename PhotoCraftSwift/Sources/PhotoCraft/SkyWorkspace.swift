@@ -41,6 +41,8 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   var undoStates:[SkyState]=[]
   var redoStates:[SkyState]=[]
   var renameDraft:SkyRenameDraft?
+  var groupDraft:SkyGroupDraft?
+  var groupFilter=SkyGroupFilter.all
   var stroke:SkyMaskStroke?
   private var generation=0
   private var closed=false
@@ -48,8 +50,9 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   private var dragStart:SkyState?
   var hasRasterSource:Bool{if let layer=original.layers.first(where:{$0.id==original.activeLayerID}),case .raster=layer.content{return true};return false}
   var ready:Bool{input != nil && !loading && !committing && !closed}
-  var canRenameSky:Bool{ready && renameDraft==nil && stroke==nil && dragStart==nil && library.loadError==nil && state.sourceLayerID==nil && library.skies.contains{$0.id==state.skyID}}
-  var canCommit:Bool{ready && renameDraft==nil && !rendering && edit != nil && error==nil && stroke==nil && dragStart==nil}
+  var canManageSkyGroups:Bool{ready && renameDraft==nil && groupDraft==nil && stroke==nil && dragStart==nil && library.loadError==nil}
+  var canRenameSky:Bool{canManageSkyGroups && state.sourceLayerID==nil && library.skies.contains{$0.id==state.skyID}}
+  var canCommit:Bool{ready && renameDraft==nil && groupDraft==nil && !rendering && edit != nil && error==nil && stroke==nil && dragStart==nil}
   init(document:CraftDocument,library:SkyLibrary){original=document;self.library=library;state.skyID=library.skies.first?.id}
   func prepare()async {
     loading=true
@@ -59,7 +62,7 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
       input=result.0;originalImage=result.1;loading=false;refresh()
     }catch{if !closed && !Task.isCancelled{self.error=error.localizedDescription};loading=false}
   }
-  func change(_ next:SkyState,remember:Bool=true){guard !closed,!committing else{return};do{try next.settings.validate()}catch{self.error=error.localizedDescription;return};if next != state && remember{undoStates.append(state);if undoStates.count>24{undoStates.removeFirst()};redoStates=[]};state=next;refresh()}
+  func change(_ next:SkyState,remember:Bool=true){guard !closed,!committing else{return};do{try next.settings.validate()}catch{self.error=error.localizedDescription;return};if next != state && remember{undoStates.append(state);if undoStates.count>24{undoStates.removeFirst()};redoStates=[]};state=next;if let id=next.skyID,let preset=try? library.preset(id),!groupFilter.contains(preset){groupFilter = .all};refresh()}
   func undo(){guard ready else{return};stroke=nil;dragStart=nil;guard let old=undoStates.popLast() else{return};redoStates.append(state);change(old,remember:false)}
   func redo(){guard ready,let next=redoStates.popLast() else{return};undoStates.append(state);change(next,remember:false)}
   func reset(){var next=SkyState();next.skyID=state.skyID;next.sourceLayerID=state.sourceLayerID;change(next)}
@@ -101,22 +104,27 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   func move(_ delta:CGSize){guard let start=dragStart else{return};var next=start;next.settings.offsetX+=delta.width;next.settings.offsetY+=delta.height;change(next,remember:false)}
   func endMove(){guard let start=dragStart else{return};dragStart=nil;if start != state{undoStates.append(start);if undoStates.count>24{undoStates.removeFirst()};redoStates=[]}}
   func importSky(){
-    guard ready else{return};let panel=NSOpenPanel();panel.allowedContentTypes=[.image];panel.allowsMultipleSelection=false;panel.message="Choose a sky image to add to your library."
-    panel.begin{[weak self] response in guard response == .OK,let url=panel.url,let self,!self.closed else{return};self.loadSky(url)}
+    guard canManageSkyGroups else{return};let panel=NSOpenPanel();panel.allowedContentTypes=[.image];panel.allowsMultipleSelection=true;panel.message="Choose sky images to add to your library. All images must be valid before any are imported."
+    let revision=library.revision,state=state,filter=groupFilter
+    panel.begin{[weak self] response in guard response == .OK,let self,self.canManageSkyGroups,self.library.revision==revision,self.state==state,self.groupFilter==filter else{return};self.loadSkies(panel.urls)}
   }
-  func loadSky(_ url:URL){
-    importTask?.cancel();loading=true
+  func loadSky(_ url:URL){loadSkies([url])}
+  func loadSkies(_ urls:[URL]){
+    guard canManageSkyGroups else{return}
+    let revision=library.revision,sourceState=state,filter=groupFilter,target=groupFilter.groupID
+    guard !urls.isEmpty,urls.count<=64-library.skies.count else{error="The sky library supports64 images.";return}
+    importTask?.cancel();loading=true;error=nil
     importTask=Task{[weak self] in
-      do{let worker=Task.detached(priority:.userInitiated){
-        let scoped=url.startAccessingSecurityScopedResource();defer{if scoped{url.stopAccessingSecurityScopedResource()}}
-        guard (try url.resourceValues(forKeys:[.fileSizeKey]).fileSize ?? 0)<=16*1024*1024 else{throw CraftError.invalid("Sky image exceeds16MiB.")}
-        let preset=SkyPreset(name:url.deletingPathExtension().lastPathComponent,data:try Data(contentsOf:url));_=try preset.document();return preset
-      };let preset=try await withTaskCancellationHandler{try await worker.value}onCancel:{worker.cancel()};try Task.checkCancellation();guard let self,!self.closed else{return};try self.library.add(preset);self.loading=false;self.chooseSky(preset.id)
+      do{let worker=Task.detached(priority:.userInitiated){try SkyImportPreparation.load(urls)}
+        let presets=try await withTaskCancellationHandler{try await worker.value}onCancel:{worker.cancel()};try Task.checkCancellation()
+        guard let self,!self.closed else{return}
+        guard self.state==sourceState,self.groupFilter==filter,self.library.revision==revision else{throw CraftError.invalid("The sky library or selection changed. Import again.")}
+        try self.library.append(presets,to:target,expectedRevision:revision);self.loading=false;self.chooseSky(presets[0].id)
       }catch{if let self,!self.closed,!Task.isCancelled{self.error=error.localizedDescription};self?.loading=false}
     }
   }
-  func removeSky(){guard ready,let id=state.skyID else{return};do{try library.remove(id);chooseSky(library.skies.first?.id)}catch{self.error=error.localizedDescription}}
-  func close(){renameDraft=nil;closed=true;generation+=1;task?.cancel();commitTask?.cancel();importTask?.cancel()}
+  func removeSky(){guard ready,let id=state.skyID else{return};do{try library.remove(id);chooseSky(visibleSkies.first?.id)}catch{self.error=error.localizedDescription}}
+  func close(){renameDraft=nil;groupDraft=nil;closed=true;generation+=1;task?.cancel();commitTask?.cancel();importTask?.cancel()}
 }
 @MainActor extension EditorStore {
   var canSelectSky:Bool{canUseSelectionTools && !editingMask}

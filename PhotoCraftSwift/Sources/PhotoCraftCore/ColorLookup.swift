@@ -90,7 +90,10 @@ public struct ColorLUT: Codable, Equatable, Sendable {
       let order = [0,1,2].sorted { f[$0] > f[$1] }
       var one = SIMD3<Int>.zero; one[order[0]] = 1
       var two = one; two[order[1]] = 1
-      return at(0,0,0)*(1-f[order[0]]) + at(one.x,one.y,one.z)*(f[order[0]]-f[order[1]]) + at(two.x,two.y,two.z)*(f[order[1]]-f[order[2]]) + at(1,1,1)*f[order[2]]
+      let a=at(0,0,0),b=at(one.x,one.y,one.z),c=at(two.x,two.y,two.z),d=at(1,1,1)
+      // Difference form preserves identical vertex spans and the original Float32
+      // coordinate bits. Weighted vertex sums can lose low bits through cancellation.
+      return a+(b-a)*f[order[0]]+(c-b)*f[order[1]]+(d-c)*f[order[2]]
     }
     func mix(_ a: SIMD3<Float>, _ b: SIMD3<Float>, _ t: Float) -> SIMD3<Float> { a+(b-a)*t }
     return mix(mix(mix(at(0,0,0),at(1,0,0),f.x),mix(at(0,1,0),at(1,1,0),f.x),f.y),mix(mix(at(0,0,1),at(1,0,1),f.x),mix(at(0,1,1),at(1,1,1),f.x),f.y),f.z)
@@ -101,6 +104,8 @@ public struct ColorLookupAdjustment: Codable, Equatable, Sendable {
   public var interpolation: ColorLUT.Interpolation
   public var dither: Bool
   public init(lut: ColorLUT? = nil, interpolation: ColorLUT.Interpolation = .trilinear, dither: Bool = true) { self.lut = lut; self.interpolation = interpolation; self.dither = dither }
+  /// Native Photoshop-compatible creation; the legacy initializer/API default remains explicit.
+  public static var photoshopDefault:Self { .init(interpolation:.tetrahedral) }
   public func validate() throws { try lut?.validate() }
   public func layer(in document: CraftDocument, name: String = "Color Lookup") throws -> Layer {
     try validate(); var layer = Layer(name:name,content:.adjustment(.colorLookup(self)))
@@ -116,15 +121,35 @@ public struct ColorLookupTransfer: Sendable {
   public func apply(_ pixel: Pixel, x: Int = 0, y: Int = 0) -> Pixel {
     guard let lut = value.lut, pixel.a > 0, pixel.isFinite else { return pixel }
     let input = depth == .f32 ? SRGBTransfer.linear(pixel) : pixel
-    guard input.isFinite else { return Pixel(.nan,.nan,.nan,pixel.a) }
-    var rgb = lut.sample(input.rgb,interpolation:value.interpolation)
+    let result = sample(input, lut:lut, x:x, y:y)
+    return depth == .f32 ? SRGBTransfer.encoded(result) : result
+  }
+  /// RGB32 storage is already linear. Avoid an encoded display round trip.
+  public func applyLinear(_ pixel:Pixel,x:Int=0,y:Int=0)->Pixel {
+    precondition(depth == .f32)
+    guard let lut=value.lut,pixel.a>0,pixel.isFinite else{return pixel}
+    return sample(pixel,lut:lut,x:x,y:y)
+  }
+  private func sample(_ input:Pixel,lut:ColorLUT,x:Int,y:Int)->Pixel {
+    guard input.isFinite else { return Pixel(.nan,.nan,.nan,input.a) }
+    let working8 = depth == .u8 && value.interpolation == .tetrahedral
+    var coordinates=input.rgb
+    if working8 {
+      // Photoshop's 8-bit lookup path enters/leaves the same 0...32768 working grid.
+      // Recover exact byte codes before the integer expansion; keep legacy Trilinear unchanged.
+      for c in 0..<3 {
+        let code=Int((unit(coordinates[c])*255).rounded())
+        coordinates[c]=Float((code*32768+127)/255)/32768
+      }
+    }
+    var rgb = lut.sample(coordinates,interpolation:value.interpolation)
+    if working8 {for c in 0..<3 {rgb[c]=(rgb[c]*32768).rounded()/32768}}
     if value.dither {
       let bayer: [Float] = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5]
       // Source ordered dither; Photoshop stochastic noise is independently unqualified.
       let n = ((bayer[(y&3)*4+(x&3)]+0.5)/16-0.5)/255
       for c in 0..<3 { rgb[c] = min(1,max(0,rgb[c]+n)) }
     }
-    let result = Pixel(rgb.x,rgb.y,rgb.z,pixel.a)
-    return depth == .f32 ? SRGBTransfer.encoded(result) : result
+    return Pixel(rgb.x,rgb.y,rgb.z,input.a)
   }
 }

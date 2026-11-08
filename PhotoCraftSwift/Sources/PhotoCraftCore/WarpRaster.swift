@@ -86,7 +86,11 @@ public enum WarpRaster {
     }
     if layer.sourceProjection != nil,layer.mask != nil,layer.effectiveMaskProperties.linked {throw CraftError.unsupported("Combined Warp/projective linked masks require their mesh mapping before rerendering.")}
     guard let warp=layer.warp else{return layer}
-    let mapping=try mapping(warp,width:source.width,height:source.height,transform:layer.coordinateTransform,projection:layer.sourceProjection)
+    let paged=try PagedWarpRaster.mapping(warp,width:source.width,height:source.height,transform:layer.coordinateTransform,projection:layer.sourceProjection)
+    if source.width>maximumPixels/source.height || paged.bounds.width>maximumPixels/paged.bounds.height || paged.bounds.width>60000 || paged.bounds.height>60000 {
+      return try PagedWarpRaster.baked(layer,in:document,using:paged,method:warp.interpolation)
+    }
+    let mapping=try paged.denseMapping()
     return try baked(layer,in:document,using:mapping,method:warp.interpolation)
   }
   public static func baked(_ layer:Layer,in document:CraftDocument,using mapping:Mapping,method:Resampling,clampEdges:Bool=true) throws -> Layer {
@@ -119,7 +123,7 @@ public struct WarpEdit: Sendable {
   public static func target(_ document:CraftDocument,layerID:UUID) throws -> Layer {
     guard let layer=document.layers.first(where:{$0.id == layerID}),case .raster(let s)=layer.content,
       !document.isImageLocked(layerID),!document.isPositionLocked(layerID),!document.isTransparencyLocked(layerID),document.selection == nil,
-      layer.vectorMask == nil,s.width<=WarpRaster.maximumPixels/s.height else {
+      layer.vectorMask == nil,document.colorMode == .rgb,document.inkMode == nil,document.restrictedMode == nil,layer.nativeMode == nil else {
       throw CraftError.unsupported("Warp currently needs an unlocked RGB pixel layer or Smart Object, without a selection or vector mask. Convert groups/type/shapes to a Smart Object first.")
     };return layer
   }

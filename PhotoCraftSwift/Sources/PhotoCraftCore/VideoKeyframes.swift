@@ -84,12 +84,13 @@ public struct VideoKeyframe:Codable,Equatable,Identifiable,Sendable {
   }
   private static func interpolateStyle(_ start:LayerStyle?,_ end:LayerStyle?,_ t:Double)->LayerStyle? {
     guard start != nil || end != nil else{return nil}
+    guard start?.restrictedChannels == end?.restrictedChannels else{return start}
     func faded(_ style:LayerStyle)->LayerStyle{var s=style;for i in s.effects.indices{s.effects[i].opacity=0};s.fillOpacity=1;return s}
     var a=start ?? faded(end!),b=end ?? faded(start!)
     if !a.enabled{a=faded(a);a.enabled=true};if !b.enabled{b=faded(b);b.enabled=true}
     // Different effect topology and categorical/gradient/pattern choices hold
     // until the next key. Numeric controls/colors of matching effects interpolate.
-    guard a.effects.map(\.kind)==b.effects.map(\.kind),a.effects.map(\.advanced)==b.effects.map(\.advanced),a.referenceOffset==b.referenceOffset,a.sourcePSDData==b.sourcePSDData else{return start}
+    guard a.effects.map(\.kind)==b.effects.map(\.kind),a.effects.map(\.advanced)==b.effects.map(\.advanced),a.referenceOffset==b.referenceOffset,a.sourcePSDData==b.sourcePSDData,a.restrictedChannels==b.restrictedChannels else{return start}
     func mix(_ x:Double,_ y:Double)->Double{x+(y-x)*t}
     func f(_ x:Float,_ y:Float)->Float{x+(y-x)*Float(t)}
     func color(_ x:Pixel,_ y:Pixel)->Pixel{Pixel(f(x.r,y.r),f(x.g,y.g),f(x.b,y.b),f(x.a,y.a))}

@@ -1,0 +1,24 @@
+{
+  "recorded_utc": "2026-11-08T15:36:52.699372+00:00",
+  "step": 496,
+  "width": 128,
+  "height": 96,
+  "depth": 8,
+  "input_sha256": "9a8601b226da484add154c0036692af16c08969225b4b628f5de62030e70cd65",
+  "Photoshop_saved_sha256": "d65e4efb08bedd0a075e5e988e81d60309365bc45fc5ffe91dc2772532691b80",
+  "reference_rgb_sha256": "03b9ccc3eb5d4289b326b26e6247ac2ae76b83f3541765816615c651b63499b3",
+  "reference_rgb_bytes": 36864,
+  "reference_compression": 1,
+  "source": "Original independent Python PSD writer and synthetic geometry; Photoshop2026 opened it, moved the ordinary black Background layer to the back via Layer/Arrange/Send to Back, and saved a separately named PSD. Clean title verified; owned saved document closed. No user documents or settings changed.",
+  "decoder": "Independent Python PSD merged RGB8 reader; raw/PackBits only; no Photato code used.",
+  "assertion_scope": "All R/G words isolate the integer rectangle boolean and joined-winding cases. Blue bow-tie AA is retained for separate sampling qualification and must not be claimed covered by R/G assertions.",
+  "references": [
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/manage-path-components.html"
+  ],
+  "Photoshop_source_or_binary_internals_inspected": false,
+  "fixtures": {
+    "photoshop-path-semantics.psd": "d65e4efb08bedd0a075e5e988e81d60309365bc45fc5ffe91dc2772532691b80",
+    "photoshop-path-semantics.rgb": "03b9ccc3eb5d4289b326b26e6247ac2ae76b83f3541765816615c651b63499b3"
+  }
+}

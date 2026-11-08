@@ -50,6 +50,7 @@ struct LiquifySheet: View {
     }.background(Color(nsColor:.windowBackgroundColor)).frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
     .task {
       guard let draft = store.filterDraft else { return }
+      model.meshLibrary = store.filterRecall.liquifyMeshes
       model.onChange = { store.filterDraft?.filter.liquify = $0 }
       await model.prepare(document:store.document,draft:draft)
     }
@@ -117,6 +118,12 @@ struct LiquifySheet: View {
         do { model.end(); exportFile = LUTDocument(data:try LiquifyMeshFile.encode(model.settings)); exporting = true }
         catch { model.error = error.localizedDescription }
       } }
+      Button("Load Last Mesh") { model.loadLastMesh() }
+        .disabled(!model.canLoadLastMesh)
+        .help("Reuse the last committed Liquify mesh. Press M when the canvas has focus.")
+      if let error = model.meshLibrary?.error {
+        Text(error).font(.caption).foregroundStyle(.secondary)
+      }
       Divider()
       Text("Reconstruct Options").font(.headline)
       slider("Amount",$reconstructAmount,0...100)

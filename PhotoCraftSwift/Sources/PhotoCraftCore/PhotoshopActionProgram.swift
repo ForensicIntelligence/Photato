@@ -358,7 +358,7 @@ public struct PhotoshopActionProgram: Sendable {
         fields["dither"] == nil || fields["dither"]?.boolean != nil else { throw CraftError.unsupported("Color Lookup requires inline base64 LUT data, RGB data order and BGR table order.") }
       let format = ["cube":"LUTFormatCUBE","3dl":"LUTFormat3DL","look":"LUTFormatLOOK"][URL(fileURLWithPath:filename).pathExtension.lowercased()]
       guard let format, try enumerated(fields["LUTFormat"],types:["LUTFormatType"]) == format else { throw CraftError.unsupported("Unsupported LUT format.") }
-      return .colorLookup(.init(lut:try ColorLUTFile.read(bytes,name:filename),dither:fields["dither"]?.boolean ?? true))
+      return .colorLookup(.init(lut:try ColorLUTFile.read(bytes,name:filename),interpolation:.tetrahedral,dither:fields["dither"]?.boolean ?? true))
     }
     if let adjustment = try classicAdjustment(event, fields: fields, metadata: metadata) { return .adjustment(adjustment) }
     let filterAliases: [String: RasterFilter.Kind] = ["$Avrg": .average, "boxblur": .boxBlur]

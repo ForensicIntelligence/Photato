@@ -1,0 +1,19 @@
+{
+  "step": 463,
+  "run": "artifacts/runs/20261107T044012Z-463-smart-object-layers",
+  "status": "Selected Convert to Layers workflow Debug tested; old baseline failures/live/normal acceptance open",
+  "current_major_workflow": "L06",
+  "next": "S02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7476,
+  "latest_software": 463,
+  "latest_optimized_universal": 461,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress: plugin source/documentation audit established unsupported runtimes and corrected partial native access evidence; current turn implements/tests shared Convert to Layers.",
+  "native_reference": "Read access partially recovered; screenshot showed Home with GridView errors. Open/File input timed out; owned463 reference copy unopened and behavior unqualified. Prior AX URL did not prove an active document. No repeat unlock question.",
+  "plugin_compatibility_audit": "artifacts/runs/20261107T044012Z-463-smart-object-layers/plugin-compatibility-audit01.json",
+  "source_manifest": "artifacts/runs/20261107T044012Z-463-smart-object-layers/source04-source.json",
+  "evidence": "docs/SMART_OBJECT_CONVERT_TO_LAYERS_463.json",
+  "native_463_app_launched": false
+}

@@ -19,7 +19,9 @@ final class PSDAuxiliaryChannelTests:XCTestCase {
     let cases=try rows();XCTAssertEqual(cases.count,81)
     for row in cases {
       let input=try data(row["file"]as!String),d=try PSDCodec.read(input)
-      try compare(d,row:row);XCTAssertEqual(d.minimumArchiveVersion,77)
+      // These synthetic Float32 fixtures include selected-area gray; native91 retains its exact source words.
+      let expectedArchive = (row["depth"]as!Int)==32 && row["independentCorpus"]as?Bool != true ? 91:77
+      try compare(d,row:row);XCTAssertEqual(d.minimumArchiveVersion,expectedArchive)
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(d)),d)
       if row["independentCorpus"]as?Bool != true {
         XCTAssertEqual(d.alphaChannels?.map(\.psdIdentifier),[41,73]);XCTAssertEqual(d.quickMask?.psdIdentifier,99)

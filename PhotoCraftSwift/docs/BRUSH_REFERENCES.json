@@ -115,5 +115,13 @@
     "Painting on nonraster content currently rejects; current Adobe documentation describes automatic creation of a transparent paint layer. Carry this major workflow dependency into B02."
   ],
   "next": "B02 missing major painting tools: Pencil, Mixer Brush, Color Replacement, Pattern Stamp, Background Eraser and Magic Eraser, each with shared APIs/history and focused tests. Exact numerical/cosmetic refinements stay deferred.",
-  "qualification": "All 103 focused Debug and 1834 full optimized tests pass. The universal macOS 14+ package verifies."
+  "qualification": "All 103 focused Debug and 1834 full optimized tests pass. The universal macOS 14+ package verifies.",
+  "library_texture_selection_454": {
+    "evidence": "docs/BRUSH_PATTERN_TEXTURES_454.json",
+    "selected_Debug_methods_passed": 40,
+    "new_methods": 10,
+    "native_picker_paint_UndoRedo": true,
+    "normal_latest": 453,
+    "exact_Photoshop_and_fullB01_open": true
+  }
 }

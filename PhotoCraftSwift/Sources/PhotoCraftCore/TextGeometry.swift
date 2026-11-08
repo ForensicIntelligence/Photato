@@ -32,7 +32,7 @@ public struct TextGeometry:Codable,Equatable,Sendable {
     if mode == .path || mode == .inside {
       guard let path,!path.isEmpty,!path.inverted else{throw CraftError.invalid("Shaped text requires a nonempty path.")};try path.validate()
       if mode == .path {guard path.components.count==1,path.components[0].knots.count>=2 else{throw CraftError.invalid("Text on a path requires one connected contour.")}}
-      else{guard path.components.allSatisfy({$0.closed && $0.knots.count>=3}) else{throw CraftError.invalid("Text inside a path requires closed contours.")}}
+      else{guard path.components.allSatisfy({$0.closed && $0.knots.count>=3}) else{throw CraftError.invalid("Text inside a path requires closed contours.")}; if path.components.first?.operation == .subtract, try VectorPathGeometry.filledRegion(path).inverted {throw CraftError.invalid("Text inside a path requires a finite filled region.")}}
     }else if path != nil{throw CraftError.invalid("Only path layouts store a custom path.")}
   }
   public func baselinePath()throws->PathComponent {

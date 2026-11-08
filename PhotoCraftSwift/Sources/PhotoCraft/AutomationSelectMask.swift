@@ -23,7 +23,8 @@ extension SelectionRefinement {
      "input":"Current selection; an absent selection starts empty. fromLayerMask=true uses the active pixel mask's stored coverage. Brush coordinates are canvas pixels, y down. sampleAllLayers controls the color guide.",
      "history":"Selection, layerMask and newLayer outputs are one native Undo transaction. New documents leave the source unchanged and return201 with the new shared document state; document-transfer permission and sharing capacity are required.",
      "decontamination":"selection/layerMask output changes to newLayerWithMask when decontaminate=true. Original RGB8/16/32 pixels are retained in the hidden source layer.",
-     "limits":"Ordinary raster layers only. New layers retain layer geometry and effects; their pixel mask is replaced. Native guided matting is not Adobe Color/Object Aware or Refine Hair model equivalence. Photoshop refinement action descriptors remain unsupported; no invented Adobe endpoint."]
+     "smartObjects":"Selection and Layer Mask retain the editable source. Copy outputs use the existing Smart Object/PDF/Smart Filter renderer to create raster results, retaining the original source. Decontamination affects only rendered output pixels. Filter masks are not refinement inputs.",
+     "limits":"Raster layers and Smart Objects within current refinement/rendering limits. New layers retain rendered geometry and effects; their pixel mask is replaced. Focus Area retains its ordinary-raster restriction. Native guided matting is not Adobe Color/Object Aware or Refine Hair model equivalence. Photoshop refinement action descriptors remain unsupported; no invented Adobe endpoint."]
   }
 }
 struct SelectMaskAPIOptions: Sendable {

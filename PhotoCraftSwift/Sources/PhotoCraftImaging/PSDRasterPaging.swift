@@ -31,6 +31,18 @@ enum PSDRasterPaging {
         remaining=limit-estimate
       }
     }
+    func admitComponents(width:Int,height:Int,count:Int,bytesPerSample:Int) throws {
+      guard width>0,height>0,width<=Surface.maxDimension,height<=Surface.maxDimension,
+        width<=Surface.maxPixels/height,(2...5).contains(count),[1,2,4].contains(bytesPerSample) else {
+        throw CraftError.invalid("Invalid Photoshop component workspace.")
+      }
+      if let limit=remaining {
+        let blocks=(width*height+4095)/4096
+        let estimate=count*((blocks+7)/8+2*4096*bytesPerSample+1024)
+        guard estimate<=limit else {throw CraftError.invalid("Photoshop component workspace exceeds its heap budget.")}
+        remaining=limit-estimate
+      }
+    }
   }
   /// Interleaved layer readers allow a64-row staging window. No full raster or
   /// whole strip of Float32 pixels is retained in heap memory, even at300000 px.

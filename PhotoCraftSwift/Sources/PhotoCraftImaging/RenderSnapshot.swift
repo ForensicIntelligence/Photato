@@ -64,7 +64,7 @@ extension Renderer {
       old.workingICC == d.workingICC,
       old.layers.count == d.layers.count
     else { return .full }
-    if old != d, (old.layers + d.layers).contains(where: { $0.style != nil || $0.smartFilters != nil }) { return .full }
+    if old != d, (old.layers + d.layers).contains(where: { ($0.style != nil && $0.style?.isChannelBlendingOnly != true) || $0.smartFilters != nil }) { return .full }
     let oldPatterns = old.patterns ?? []
     let newPatterns = d.patterns ?? []
     guard oldPatterns.count == newPatterns.count else { return .full }

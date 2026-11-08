@@ -12,6 +12,8 @@ import UniformTypeIdentifiers
   @ObservationIgnored weak var numericEditor: (any NumericFieldEditing)?
   let cloneState: CloneSources
   let patterns: PatternLibrary
+  let styles: StyleLibrary
+  var styleLibraryTask:Task<Void,Never>?
   let gradients: GradientLibrary
   var gradientNameDraft: GradientNameDraft?
   var backgroundLayerDraft:BackgroundLayerDraft?
@@ -46,6 +48,9 @@ import UniformTypeIdentifiers
   var imageExportDraft: ImageExportDraft?
   var colorLookupExportDraft: ColorLookupExportDraft?
   var colorLookupExportID: UUID?
+  var illustratorExportID: UUID?
+  @ObservationIgnored var illustratorExportWorker: Task<Data, Error>?
+  @ObservationIgnored var illustratorPathPreparation: @Sendable (CraftDocument, IllustratorPathExport.Selection?, String) throws -> Data = { try IllustratorPathExport.encoded($0, selection: $1, title: $2) }
   @ObservationIgnored var colorLookupExportWorker: Task<Data, Error>?
   @ObservationIgnored var colorLookupFilesWorker: Task<[ColorLookupEncodedFile], Error>?
   var colorLookupExportActiveFormats: [ColorLookupFileFormat] = []
@@ -81,6 +86,7 @@ import UniformTypeIdentifiers
   var trimDraft: TrimDraft?
   @ObservationIgnored var canvasEdgePreparation: @Sendable (CraftDocument,CanvasEdgeOperation,Pixel) throws -> Command = {try CanvasEdgePreparation.command($0,operation:$1,background:$2)}
   var documentDuplicateDraft: DocumentDuplicateDraft?
+  @ObservationIgnored var splitChannelsPreparation:@Sendable (CraftDocument,Data?) throws->PreparedChannelSeparation = {try ChannelSeparation.prepare($0,grayProfile:$1)}
   @ObservationIgnored var documentDuplicatePreparation: @Sendable (CraftDocument,String,Bool) throws -> CraftDocument = { try DocumentDuplicatePreparation.copy($0,name:$1,merged:$2) }
   var duplicateLayerDraft: DuplicateLayerDraft?
   var layerNameDraft: LayerNameDraft?
@@ -119,6 +125,7 @@ import UniformTypeIdentifiers
   var cloneOverlayTask: Task<Void, Never>?
   var cloneOverlayKey: CloneOverlayKey?
   var cloneOverlay: CloneOverlayImage?
+  @ObservationIgnored var clipboardPlaneOperationID:UUID?
   let clipboard: any ClipboardAccess
   let prepareHistory: HistoryPreparation
   let brushes: BrushLibrary
@@ -137,6 +144,14 @@ import UniformTypeIdentifiers
   let peopleWorkspace = PeopleWorkspace()
   @ObservationIgnored var allObjectsDetector:any AllObjectsDetecting = VisionForegroundDetector()
   @ObservationIgnored var objectDetector:any ObjectDetecting = VisionForegroundDetector()
+  @ObservationIgnored var brushTexturePreparation: @Sendable (RasterPattern) throws -> BrushBitmap = BrushTexturePreparation.bitmap
+  var eyedropperPreferences=EyedropperPreferences()
+  var eyedropperGesture:EyedropperGesture?
+  var eyedropperResult:ColorSampleResult?
+  @ObservationIgnored var eyedropperTask:Task<Void,Never>?
+  @ObservationIgnored var eyedropperGeneration=UUID()
+  var eraserMode: EraserMode = .brush { didSet { if oldValue != eraserMode { brushRevision += 1 } } }
+  var brushTextureLoading = false
   var brushGesture: BrushGesture?
   @ObservationIgnored var brushPreviewTask: Task<Void,Never>?
   @ObservationIgnored var brushPreviewGeneration = UUID()
@@ -163,11 +178,13 @@ import UniformTypeIdentifiers
     didSet {
       unavailableToolID = nil
       if oldValue != tool {
+        cancelEyedropper()
         cancelMagneticLasso()
         objectFinder.cancel(); peopleWorkspace.close()
         artboardGesture = nil; artboardNeighborPress = nil; frameGesture = nil; shapeGesture = nil; cancelShapeCreation(); cancelPathFill(); _ = finishType()
         if oldValue == .crop { cancelCrop() }
         if oldValue.regionRetouchKind != nil { cancelRegionRetouch() }
+        if oldValue == .remove { cancelRemove() }
         if oldValue.usesSelectionStroke {cancelBrush()}
         if oldValue == .selectionBrush || tool == .selectionBrush {render()}
       }
@@ -302,6 +319,13 @@ import UniformTypeIdentifiers
   var warpDraft: WarpWorkspace?
   var photoAlignDraft: PhotoAlignWorkspace?
   var photoBlendDraft: PhotoBlendWorkspace?
+  var removeSettings = RemoveToolSettings()
+  var removeDraft: RemoveDraft?
+  var removeStroke: RemoveStroke?
+  var removeApplying: RemoveDraft?
+  var removeRevision = UUID()
+  @ObservationIgnored var removeCompletionTask: Task<Void,Never>?
+  @ObservationIgnored var removePreparation: @Sendable (RemoveRequest,CraftDocument) throws -> RegionRetouchEdit = { try RemovePreparation.prepare($0,document:$1) }
   var regionRetouchSettings = RegionRetouchRequest(kind:.patch)
   @ObservationIgnored var channelFooterPreparation: @Sendable (ChannelFooterRequest,CraftDocument,ColorSettings) throws -> Command = {
     try ChannelFooterPreparation.prepare($0,document:$1,colorSettings:$2)
@@ -369,6 +393,7 @@ import UniformTypeIdentifiers
   var gradientMapDraft: GradientMapDraft?
   var filterDraft: FilterDraft?
   var filterRecall = FilterRecall()
+  @ObservationIgnored var cameraLensMetadataCache = CameraLensMetadataCache()
   @ObservationIgnored var repeatFilterPreparation: @Sendable (CraftDocument, FilterRepeatRequest) throws -> Command = { try $1.command(in: $0) }
   var contentAwareDraft: ContentAwareWorkspace?
   var selectMaskDraft: SelectMaskWorkspace?
@@ -481,9 +506,38 @@ import UniformTypeIdentifiers
   var textDraft = "Your words here"
   var fontSize: Double = 72
   var prompt = ""
+  var imageGenerationIntent: ImageGenerationIntent = .image
+  var imageReference: ImageGenerationReference?
+  var imageReferenceImportID: UUID?
+  @ObservationIgnored var imageReferencePreparation: @Sendable (Data) async throws -> ImageGenerationReference = {
+    try ImageGenerationReference.prepare($0)
+  }
+  @ObservationIgnored var backgroundReferencePreparation: @Sendable (CraftDocument) async throws -> CGImage = {
+    try GeneratedBackground.reference($0)
+  }
+  @ObservationIgnored var backgroundGenerationPreparation: @Sendable (Data,CraftDocument,UUID,UUID,String,Date,Date,GenerationRecord.Processing,String?) async throws -> Layer = {
+    try GeneratedBackground.prepareLayer($0,source:$1,requestID:$2,sourceRevision:$3,
+      initialPrompt:$4,startedAt:$5,acceptedAt:$6,processing:$7,resultStyle:$8)
+  }
+  @ObservationIgnored var imageGenerationSourceAvailable:@MainActor ()->Bool = {true}
+  @ObservationIgnored var generatedResultInbox:GeneratedResultInbox = .shared
+  @ObservationIgnored var authorizedGeneratedResults:[UUID:(documentID:UUID,lifecycle:UUID)] = [:]
+  var imageGenerationJob:ImageGenerationJob?
+  var promptRefinementID:UUID?
+  @ObservationIgnored var promptRefinement:@Sendable (String) async throws->String = {try await LocalAI.refinePrompt($0)}
+  @ObservationIgnored var imageGenerationPreparation:@Sendable (Data,CraftDocument,UUID,UUID,String,Date,Date,GenerationRecord.Processing,String?) async throws->Layer = {data,source,id,revision,prompt,start,accepted,processing,style in
+    try GeneratedImageStorage.preparedLayer(data,source:source,requestID:id,sourceRevision:revision,initialPrompt:prompt,startedAt:start,acceptedAt:accepted,processing:processing,resultStyle:style)
+  }
   var aiBusy = false
   var aiError: String?
   var showAI = false
+  var aiWorkspaceSection = AIWorkspaceSection.image
+  var editPlanPrompt = ""
+  var editPlanProvider = EditPlanProvider.onDevice
+  var editPlanJSON = ""
+  var editPlanReview: EditPlanReview?
+  @ObservationIgnored var editPlanPreparation: @Sendable (NativeEditPlan, CraftDocument) async throws -> PreparedEditPlan = { try PreparedEditPlan.prepare($0, source: $1) }
+  @ObservationIgnored var editPlanProposal: @Sendable (String, EditPlanProvider) async throws -> NativeEditPlan = { try await NativeEditPlanner.propose($0, provider: $1) }
   var showImagePlayground = false
   var coalescingChanges = false
   var layerOpacityDraft: LayerOpacityDraft?
@@ -521,7 +575,7 @@ import UniformTypeIdentifiers
   init(
     document: CraftDocument, clipboard: (any ClipboardAccess)? = nil,
     cloneState: CloneSources? = nil, patterns: PatternLibrary? = nil,
-    gradients: GradientLibrary? = nil, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
+    gradients: GradientLibrary? = nil, styles:StyleLibrary? = nil, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil,
     quickMaskPreferences:QuickMaskPreferences? = nil, paintPalette: PaintPalette? = nil,
     prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare
   ) {
@@ -535,6 +589,7 @@ import UniformTypeIdentifiers
     self.cloneState = cloneState ?? .shared
     self.patterns = patterns ?? .shared
     self.gradients = gradients ?? .shared
+    self.styles = styles ?? .shared
     self.clipboard = clipboard ?? SystemClipboard.shared
     session = EditorSession(document: document)
     if document.isChannelOnly,document.quickMask == nil {alphaEditingID=document.alphaChannels?.first?.id}
@@ -830,7 +885,10 @@ import UniformTypeIdentifiers
         }
         var proofFailure: String?
         if proof.active && proofComposite {
-          do { image = try SoftProof.image(doc, composite: displayComposite, settings: proof) }
+          do {
+            image = try SoftProof.image(doc, composite: displayComposite, settings: proof,request:presentation)
+            if let largeCanvas {canvasPreview=CanvasRasterPreview(base:image,documentRegion:largeCanvas.region)}
+          }
           catch is CancellationError { throw CancellationError() }
           catch { proofFailure = error.localizedDescription }
         }
@@ -1126,57 +1184,12 @@ import UniformTypeIdentifiers
     filter.radius = radius
     performGeometry(.applyFilter(id, filter))
   }
-  func refinePrompt() {
-    guard !aiBusy else { return }
-    aiBusy = true
-    aiError = nil
-    let input = prompt
-    aiTask = Task { [weak self] in
-      defer { self?.aiBusy = false }
-      do {
-        let p = try await LocalAI.refinePrompt(input)
-        guard !Task.isCancelled else { return }
-        self?.prompt = p
-      } catch is CancellationError { self?.status = "Prompt refinement cancelled" } catch {
-        self?.aiError = error.localizedDescription
-      }
-    }
-  }
-  func beginImageCreation(capability: AICapability = LocalAI.imageCapability) {
-    do {
-      prompt = try LocalAI.validatePrompt(prompt)
-      guard capability.available else {
-        throw LocalAIError.unavailable(capability.message)
-      }
-      aiError = nil
-      showImagePlayground = true
-    } catch { aiError = error.localizedDescription }
-  }
-  func acceptGeneratedImage(_ url: URL) {
-    showImagePlayground = false
-    do {
-      let imported = try RasterIO.read(url)
-      guard case .raster(var raster) = imported.layers.first?.content else {
-        throw CraftError.invalid("The image model returned an unreadable image.")
-      }
-      raster = try ColorManagement.converted(raster, from: imported, to: document)
-      if raster.width > document.width || raster.height > document.height {
-        let factor = min(
-          Double(document.width) / Double(raster.width),
-          Double(document.height) / Double(raster.height))
-        raster = try Renderer.resize(
-          raster, width: max(1, Int(Double(raster.width) * factor)),
-          height: max(1, Int(Double(raster.height) * factor)))
-      }
-      var layer = Layer(name: "Generated · \(prompt.prefix(32))", content: .raster(raster))
-      layer.x = (document.width - raster.width) / 2
-      layer.y = (document.height - raster.height) / 2
-      perform(.addLayer(layer))
-      status = "Created with Image Playground"
-    } catch { aiError = error.localizedDescription }
+  func beginImageCreation(capability:AICapability = LocalAI.imageCapability) {
+    do {try startImageGeneration(capability:capability)}catch{aiError=error.localizedDescription}
   }
   func fit() { setZoom(viewport.fitZoom, center: true) }
   func chooseTool(_ item: WorkspaceTool) {
+    if tool == .remove, item.native != .remove { cancelRemove() }
     if regionRetouchDraft != nil,item.native != tool,!commitRegionRetouch() { status = "Wait for the retouch preview, or cancel the edit."; return }
     if cropDraft != nil,item.native != .crop,!commitCrop() { status = "Wait for the crop preview, or cancel the crop."; return }
     if item.id != selectedTool.id { cancelClone() }

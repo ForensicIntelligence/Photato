@@ -151,6 +151,9 @@ struct LiquifyCanvas: NSViewRepresentable {
     guard let m = model, let key = event.charactersIgnoringModifiers?.lowercased() else { return }
     let map: [String:LiquifyTool] = ["w":.forwardWarp,"r":.reconstruct,"e":.smooth,"c":.twirlCw,"s":.pucker,"b":.bloat,"o":.pushLeft,"f":.freeze,"d":.thaw,"l":.lassoMask]
     if key == " " { spaceHeld = true }
+    else if key == "m", event.modifierFlags.intersection([.control, .command, .option, .shift]).isEmpty {
+      stopDabs(); m.loadLastMesh()
+    }
     else if key == "h" { m.panTool = true }
     else if key == "[" { m.size = max(1,m.size/1.1) }
     else if key == "]" { m.size = min(15000,m.size*1.1) }

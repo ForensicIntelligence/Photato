@@ -259,6 +259,10 @@ extension WorkspaceView {
           Button("Remove Background") { store.detectSubject(removeBackground: true) }
             .disabled(!store.canDetectSubject(removeBackground: true))
         }.controlSize(.small)
+        if GeneratedBackground.foreground(in:store.document) != nil {
+          Button("Generate Background…") { store.prepareBackgroundGeneration() }
+            .controlSize(.small).disabled(!store.canStartBackgroundGeneration)
+        }
         Toggle("Sample All Layers", isOn: $store.subjectSampleAllLayers)
           .controlSize(.small).disabled(!store.clipboardTargetAvailable)
         HStack(spacing: 6) {

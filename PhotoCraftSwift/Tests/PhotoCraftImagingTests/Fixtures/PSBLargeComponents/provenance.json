@@ -1,0 +1,601 @@
+{
+  "prepared_utc": "2026-11-08T18:24:07.783035+00:00",
+  "source": "Independent Python public PSD/PSB layout and analytical component words; not Photoshop-authored and not a Photato serialization. Standard library zlib generates a single planar ZIP stream.",
+  "specification": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "scope": "Flat nonRGB modes at8,394,753pixels,6,145above the current8,388,608native-mode codec admission. Covers8/16/32gray,8/16CMYK/Lab, alpha and selected binary-exact HDR gray tuples. The native expected hashes express transport/reference math, not proven Photoshop colour rendering/default equivalence.",
+  "native_tests_run": false,
+  "native_input_files_changed": false,
+  "expected_zero_alpha_gray_policy": "Retained PSDMergedSample.decode returns white when alpha is zero. This expected value is a regression policy, not a Photoshop oracle; baseline small-depth tests must qualify it. Original independent01 assumptions are retained unchanged.",
+  "cases": [
+    {
+      "file": "independent-large-gray8.psb",
+      "sha256": "d3079825800a6bef1c5e645f7e3e7d4921683cf10d0242cd5f0f27338bae5678",
+      "bytes": 16423,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 1,
+      "mode_name": "gray",
+      "depth": 8,
+      "channels": 2,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mtrn",
+      "raw_wire_bytes": 16789506,
+      "wire_plane_SHA256_big_endian": [
+        "8478e655fba65932891954d587912754616624c38cb05d8853f68b3556770452",
+        "02f98976b748183bc8ace931d0bf3dcfd38e06e597a25e293a227031678c67ea"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "c195a03daf94c309c42bbe5ff1a47bfea75522a534fa8d0a11c985d1a8989171",
+        "02f98976b748183bc8ace931d0bf3dcfd38e06e597a25e293a227031678c67ea"
+      ],
+      "default_wire_samples": [
+        63,
+        255
+      ],
+      "expected_default_native_samples": [
+        63,
+        255
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            170,
+            85
+          ],
+          "expected_native": [
+            0,
+            85
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            63,
+            255
+          ],
+          "expected_native": [
+            63,
+            255
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            255,
+            0
+          ],
+          "expected_native": [
+            255,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "independent-large-gray16.psb",
+      "sha256": "9cc3c57b5c569a3d6da24a184f3ebd78984f7b7610558247c262ca43b17a2a58",
+      "bytes": 32747,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 1,
+      "mode_name": "gray",
+      "depth": 16,
+      "channels": 2,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mt16",
+      "raw_wire_bytes": 33579012,
+      "wire_plane_SHA256_big_endian": [
+        "533618b7bf6223d7db88a1b4977ddf50c52cbd446c680c3e8a8db01ccb9946ab",
+        "f687d95acd7556e8fb1fe5fff588bfe4725c05fd26f1bd0cfa4eb4023d655137"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "6733429ce266a09a101e49dc5c15bdf4b71709f307f80efd2d833310e72eacb1",
+        "f687d95acd7556e8fb1fe5fff588bfe4725c05fd26f1bd0cfa4eb4023d655137"
+      ],
+      "default_wire_samples": [
+        16383,
+        65535
+      ],
+      "expected_default_native_samples": [
+        16383,
+        65535
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            43690,
+            21845
+          ],
+          "expected_native": [
+            0,
+            21845
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            16383,
+            65535
+          ],
+          "expected_native": [
+            16383,
+            65535
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            65535,
+            0
+          ],
+          "expected_native": [
+            65535,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "independent-large-gray32.psb",
+      "sha256": "f9bf2d830a812203d5cb1c6b71494f69b2d0994bc04d32c4d94eecb8f7facd56",
+      "bytes": 65414,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 1,
+      "mode_name": "gray",
+      "depth": 32,
+      "channels": 2,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mt32",
+      "raw_wire_bytes": 67158024,
+      "wire_plane_SHA256_big_endian": [
+        "641de2d5015ca583aa8abbdc4eb8279ba6be5521283adae0fd0b4463ac6599af",
+        "bdd13b59a3af27bc889381754236e3b1ab981d841727cc89b5f95a5a2a1a5c33"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "457dd48d93276cc4d51b667200a8e1e33434a0f1af81c516007499660c7d08a4",
+        "bdd13b59a3af27bc889381754236e3b1ab981d841727cc89b5f95a5a2a1a5c33"
+      ],
+      "default_wire_samples": [
+        0.25,
+        1.0
+      ],
+      "expected_default_native_samples": [
+        0.25,
+        1.0
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            0.375,
+            0.5
+          ],
+          "expected_native": [
+            -0.25,
+            0.5
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            1.5,
+            0.5
+          ],
+          "expected_native": [
+            2.0,
+            0.5
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            1.0,
+            0.0
+          ],
+          "expected_native": [
+            1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "independent-large-cmyk8.psb",
+      "sha256": "73f74421c931fce2a2501c57fd19cdbf62dd3fc7e7b5cd1e740a7e15f7fa1535",
+      "bytes": 40954,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 4,
+      "mode_name": "cmyk",
+      "depth": 8,
+      "channels": 5,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mtrn",
+      "raw_wire_bytes": 41973765,
+      "wire_plane_SHA256_big_endian": [
+        "a9b1393475e4d151b106fe51d3affe5264e62c0f3a4caeac14cd57468506a9a2",
+        "79d2247bf498b1713da2153a2d6a6cc349af239b9ff8ca36d775df711d1b63c0",
+        "eb3c9ea8d02fe6feb8ab26b31907c2af661c780ee6f3ee4bf303b29279f3aeaa",
+        "4857162df61afa5aa0af807952984aac2de286cc20a050c983c2979073940b24",
+        "f51dd94229720efc2c9890e8ba5c57f1d995094980f08ce8c100e0ea6284fc60"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "e759da741d4872962ffe0fcb863f37b42f362349a065fd667a9f07bc44d8baaf",
+        "52c4fd6ef7fcf6e493577235ce68ca28b25b51ae933c0861c53fc476126cb7ae",
+        "70bec785aa0e52acaf7b649a2963d2c3ec0e50ec96f7ff6ca45751e89a69cdb9",
+        "e76dea5b8bc7ff8dcb72b3bab080405d992c9b4d87a3b2889d0736ca78fe7cc3",
+        "f51dd94229720efc2c9890e8ba5c57f1d995094980f08ce8c100e0ea6284fc60"
+      ],
+      "default_wire_samples": [
+        0,
+        255,
+        127,
+        31,
+        255
+      ],
+      "expected_default_native_samples": [
+        255,
+        0,
+        128,
+        224,
+        255
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            255,
+            0,
+            128,
+            224,
+            255
+          ],
+          "expected_native": [
+            0,
+            255,
+            127,
+            31,
+            255
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            85,
+            85,
+            85,
+            85,
+            127
+          ],
+          "expected_native": [
+            170,
+            170,
+            170,
+            170,
+            127
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            255,
+            255,
+            255,
+            255,
+            0
+          ],
+          "expected_native": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "independent-large-cmyk16.psb",
+      "sha256": "75e98ed0a381fea1776407e6d4d86099080e358242b3f39811667f1a5024dfd1",
+      "bytes": 81759,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 4,
+      "mode_name": "cmyk",
+      "depth": 16,
+      "channels": 5,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mt16",
+      "raw_wire_bytes": 83947530,
+      "wire_plane_SHA256_big_endian": [
+        "e88021e29cbcb33fa21a2a55c9c49e8321c3064a9344e07466c5d6c7c497e03a",
+        "f7878c452a831cdf08e7c957c530c22434e5005456ce0f7e5a82992d03fa6ac8",
+        "234f8ebbfcf9242aeff3e0160afdab2dce3a31b30b5e8602504267d9c4536568",
+        "27544a3b98c6737367790b09001f44fb1086eade74dd8df5ea112ad763da079a",
+        "b564bbb530303bd37331a14271cded440f481be63e4c78a80921a8b6e90a2c25"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "67e8c58e4b46178e496c6c68668599d921693ef24a397acfa0fe330f8ba01137",
+        "6de7735701f84ba78971c14b9e25b30726dbaade48b7e22f7852663ea436407a",
+        "a9f127230ed62824244f9db28808e8f4218424b02f77c6afd83ef6bb04265b1b",
+        "d10e5ffd0bc6e7ad990ea26e098bffd36a6ac456b468f88e40aa0f274dd1f2b3",
+        "b564bbb530303bd37331a14271cded440f481be63e4c78a80921a8b6e90a2c25"
+      ],
+      "default_wire_samples": [
+        0,
+        65535,
+        32767,
+        8191,
+        65535
+      ],
+      "expected_default_native_samples": [
+        65535,
+        0,
+        32768,
+        57344,
+        65535
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            65535,
+            0,
+            32768,
+            57344,
+            65535
+          ],
+          "expected_native": [
+            0,
+            65535,
+            32767,
+            8191,
+            65535
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            21845,
+            21845,
+            21845,
+            21845,
+            32767
+          ],
+          "expected_native": [
+            43690,
+            43690,
+            43690,
+            43690,
+            32767
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            65535,
+            65535,
+            65535,
+            65535,
+            0
+          ],
+          "expected_native": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "independent-large-lab8.psb",
+      "sha256": "cc0646c577d8d06a354728622c66ce00c0dbb40d779f8bc329e1812c092f9c91",
+      "bytes": 32779,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 9,
+      "mode_name": "lab",
+      "depth": 8,
+      "channels": 4,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mtrn",
+      "raw_wire_bytes": 33579012,
+      "wire_plane_SHA256_big_endian": [
+        "a9b1393475e4d151b106fe51d3affe5264e62c0f3a4caeac14cd57468506a9a2",
+        "79d2247bf498b1713da2153a2d6a6cc349af239b9ff8ca36d775df711d1b63c0",
+        "eb3c9ea8d02fe6feb8ab26b31907c2af661c780ee6f3ee4bf303b29279f3aeaa",
+        "f51dd94229720efc2c9890e8ba5c57f1d995094980f08ce8c100e0ea6284fc60"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "a9b1393475e4d151b106fe51d3affe5264e62c0f3a4caeac14cd57468506a9a2",
+        "79d2247bf498b1713da2153a2d6a6cc349af239b9ff8ca36d775df711d1b63c0",
+        "eb3c9ea8d02fe6feb8ab26b31907c2af661c780ee6f3ee4bf303b29279f3aeaa",
+        "f51dd94229720efc2c9890e8ba5c57f1d995094980f08ce8c100e0ea6284fc60"
+      ],
+      "default_wire_samples": [
+        0,
+        255,
+        127,
+        255
+      ],
+      "expected_default_native_samples": [
+        0,
+        255,
+        127,
+        255
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            255,
+            0,
+            128,
+            255
+          ],
+          "expected_native": [
+            255,
+            0,
+            128,
+            255
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            85,
+            85,
+            85,
+            127
+          ],
+          "expected_native": [
+            85,
+            85,
+            85,
+            127
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "expected_native": [
+            255,
+            255,
+            255,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "file": "independent-large-lab16.psb",
+      "sha256": "ca388156c7000b26a85e0c10b9187e71319733d333e1a897caf411b16d8d8ad5",
+      "bytes": 65421,
+      "width": 4097,
+      "height": 2049,
+      "pixels": 8394753,
+      "mode": 9,
+      "mode_name": "lab",
+      "depth": 16,
+      "channels": 4,
+      "layered": false,
+      "compression": 2,
+      "merged_transparency_marker": "Mt16",
+      "raw_wire_bytes": 67158024,
+      "wire_plane_SHA256_big_endian": [
+        "e88021e29cbcb33fa21a2a55c9c49e8321c3064a9344e07466c5d6c7c497e03a",
+        "f7878c452a831cdf08e7c957c530c22434e5005456ce0f7e5a82992d03fa6ac8",
+        "234f8ebbfcf9242aeff3e0160afdab2dce3a31b30b5e8602504267d9c4536568",
+        "b564bbb530303bd37331a14271cded440f481be63e4c78a80921a8b6e90a2c25"
+      ],
+      "expected_native_plane_SHA256_big_endian": [
+        "e88021e29cbcb33fa21a2a55c9c49e8321c3064a9344e07466c5d6c7c497e03a",
+        "f7878c452a831cdf08e7c957c530c22434e5005456ce0f7e5a82992d03fa6ac8",
+        "234f8ebbfcf9242aeff3e0160afdab2dce3a31b30b5e8602504267d9c4536568",
+        "b564bbb530303bd37331a14271cded440f481be63e4c78a80921a8b6e90a2c25"
+      ],
+      "default_wire_samples": [
+        0,
+        65535,
+        32767,
+        65535
+      ],
+      "expected_default_native_samples": [
+        0,
+        65535,
+        32767,
+        65535
+      ],
+      "probes": [
+        {
+          "x": 0,
+          "y": 0,
+          "wire": [
+            65535,
+            0,
+            32768,
+            65535
+          ],
+          "expected_native": [
+            65535,
+            0,
+            32768,
+            65535
+          ]
+        },
+        {
+          "x": 2048,
+          "y": 64,
+          "wire": [
+            21845,
+            21845,
+            21845,
+            32767
+          ],
+          "expected_native": [
+            21845,
+            21845,
+            21845,
+            32767
+          ]
+        },
+        {
+          "x": 4096,
+          "y": 2048,
+          "wire": [
+            65535,
+            65535,
+            65535,
+            0
+          ],
+          "expected_native": [
+            65535,
+            65535,
+            65535,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

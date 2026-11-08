@@ -33,6 +33,7 @@ public enum ChannelTransform{
     }
     value.pixels=try mapped(value.pixels,fill:storedBackground)
     if let gray=value.psdSpotGray{value.psdSpotGray=try mapped(gray,fill:1-storedBackground)}
+    if let gray=value.psdSelectedGray{value.psdSelectedGray=try mapped(gray,fill:1-storedBackground)}
     var candidate=document;try candidate.setChannel(value,at:request.target);if selection != nil{candidate.setCoverageSelection(movedSelection)};try candidate.validate();try Task.checkCancellation();document=candidate
   }
 }

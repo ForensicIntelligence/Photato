@@ -1,0 +1,1 @@
+Original RGB16 Classic Gradient Map reference files, recalculated and saved in Photoshop27.2. See provenance.json. Original procedural data: MIT OR Apache-2.0. Full Photoshop equivalence remains unproven.

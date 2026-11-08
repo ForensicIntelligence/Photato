@@ -1,0 +1,129 @@
+{
+  "creator": "Photato test project",
+  "license": "MIT OR Apache-2.0",
+  "source": "Owned literalRGB128PSDs opened/edited/saved through Photoshop2026 normal UI; publicformat mergedplanes independentlydecoded incheckpoint455. No proprietary code/artwork.",
+  "records": [
+    {
+      "file": "owned-block-100.psd",
+      "sha256": "32e0da4b94c42ad43c156fa00a341597f0deace974ff47db87ab1736479d7c3a",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 256,
+      "bbox_exclusive": [
+        40,
+        28,
+        56,
+        44
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-125.psd",
+      "sha256": "ad6462b1866c157c4ff43d4e655d29bab3b8e5e23700bfd627cdb1d48d80b8bf",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 144,
+      "bbox_exclusive": [
+        42,
+        30,
+        54,
+        42
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-1600.psd",
+      "sha256": "16a433433bc6360be103303dd0a67fac17c1c78151564dc5c47c122f8cf5003b",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 1,
+      "bbox_exclusive": [
+        48,
+        36,
+        49,
+        37
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-200.psd",
+      "sha256": "fad30135e5058b956bf6ada7255d0a1c6313330e9a99a462bec9185ec37cdf84",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 64,
+      "bbox_exclusive": [
+        44,
+        32,
+        52,
+        40
+      ],
+      "changed_RGB_colors": [
+        [
+          255,
+          255,
+          255
+        ]
+      ],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-6400-center.psd",
+      "sha256": "0af08404a43b807117344026e0059f19a9ab87717357d56f68b992c150d53d2a",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 0,
+      "bbox_exclusive": null,
+      "changed_RGB_colors": [],
+      "independent_public_PSD_merged_plane_parser": true
+    },
+    {
+      "file": "owned-block-6400.psd",
+      "sha256": "42c2204cbc8feb9d158ceebac5b6d2214487f49108ce6e6774c2716a858a5fb4",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "depth": 8,
+      "compression": 1,
+      "different_pixels_from_gray128": 0,
+      "bbox_exclusive": null,
+      "changed_RGB_colors": [],
+      "independent_public_PSD_merged_plane_parser": true
+    }
+  ]
+}

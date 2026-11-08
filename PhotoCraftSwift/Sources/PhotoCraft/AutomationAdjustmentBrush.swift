@@ -21,7 +21,8 @@ enum AdjustmentBrushAPI {
       return obj(Dictionary(uniqueKeysWithValues:["rgb","red","green","blue"].map{($0,obj(["points":array(point,2,19)]))}))
     case .hueSaturation:
       let values=obj(["hue":integer(-180,360),"saturation":integer(-100,100),"lightness":integer(-100,100)])
-      return obj(["master":values,"colorization":values,"colorize":flag,"ranges":array(obj(["values":values,"bounds":array(integer(-360,720),4,4)],["values","bounds"]),6,6)])
+      let color=obj(["hue":integer(0,360),"saturation":integer(0,100),"lightness":integer(0,100)],["hue","saturation","lightness"])
+      return obj(["master":values,"colorization":values,"colorize":flag,"ranges":array(obj(["values":values,"bounds":array(integer(-360,720),4,4),"displayColor":["anyOf":[color,["type":"null"]]]],["values","bounds"]),6,6)])
     case .colorBalance:
       let values=obj(["cyanRed":integer(-100,100),"magentaGreen":integer(-100,100),"yellowBlue":integer(-100,100)])
       return obj(["shadows":values,"midtones":values,"highlights":values,"preserveLuminosity":flag])
@@ -32,6 +33,7 @@ enum AdjustmentBrushAPI {
       var fields=variant["properties"] as! [String:Any];fields.removeValue(forKey:"kind");return obj(fields)
     case .threshold,.posterize:return obj(["level":integer(kind == .threshold ? 1:2,255)])
     case .invert:return obj([:])
+    case .colorLookup:return AdjustmentBrushLookupAPI.settingsSchema
     case .gradientMap:
       let color:[String:Any]=["oneOf":[obj(["rgb":obj(["_0":BrushAPI.color],["_0"])],["rgb"]),obj(["hsb":obj(["hue":n(-360000,360000,false),"saturation":u,"brightness":u],["hue","saturation","brightness"])],["hsb"]),obj(["gray":obj(["ink":u],["ink"])],["gray"])]]
       let stop=obj(["position":u,"midpoint":u,"color":color],["position","midpoint","color"])
@@ -44,6 +46,7 @@ enum AdjustmentBrushAPI {
     switch value {
     case .brightnessContrast(let b,let c):return ["brightness":b,"contrast":c]
     case .exposure(let e):return ["exposure":e]
+    case .colorLookup(let v):return ["interpolation":v.interpolation.rawValue,"dither":v.dither]
     case .levels(let v):return BrushAPI.json(v);case .curves(let v):return BrushAPI.json(v)
     case .hueSaturation(let v):return BrushAPI.json(v);case .colorBalance(let v):return BrushAPI.json(v)
     case .classic(let v):return v.apiObject.filter{$0.key != "kind"}
@@ -72,6 +75,13 @@ enum AdjustmentBrushAPI {
         var fields=raw as! [String:Any];guard case .classic(let v)=kind.initial else{fatalError()};fields["kind"]=v.kind.rawValue;value = .classic(try ClassicAdjustment.decodeAPI(fields))
       case .threshold,.posterize:let v=try decode([String:Int].self);value = .tonalSteps(.init(kind:kind == .threshold ? .threshold:.posterize,level:v["level"]!))
       case .gradientMap:value = .gradientMap(try decode(GradientMapAdjustment.self));case .invert:value = .invert
+      case .colorLookup:
+        guard case .colorLookup(var lookup)=base else{throw AutomationFailure(status:400,message:"Invalid Color Lookup base.")}
+        let fields=raw as! [String:Any]
+        guard fields["lutID"]==nil,fields["preset"]==nil else{throw AutomationFailure(status:400,message:"LUT references require the shared API resolver.")}
+        if fields["clearLUT"] as? Bool == true{lookup.lut=nil}
+        lookup.interpolation=ColorLUT.Interpolation(rawValue:fields["interpolation"] as! String)!
+        lookup.dither=fields["dither"] as! Bool;value = .colorLookup(lookup)
       }
       try value.validate();return value
     } catch let e as AutomationFailure {throw e} catch {throw AutomationFailure(status:400,message:error.localizedDescription)}
@@ -90,7 +100,7 @@ enum AdjustmentBrushAPI {
     }
   }
   static var capabilities:[String:Any] {
-    ["commands":commands,"types":AdjustmentBrushKind.allCases.map{["kind":$0.rawValue,"title":$0.title,"settings":settings($0.initial),"schema":settingsSchema($0)]},"behavior":"Editable adjustment layer and mask; first paint/object and subsequent strokes each use one Undo. RGB editing target required. Existing masks retain transform, density and feather. New/subtract and disabled/locked masks reject.","objectProvider":"Apple Vision on-device instance mask, macOS14+, at most8388608 pixels and6000 per side; no foreground at point rejects, no cloud fallback.","limits":"4MiB body,4096 stroke samples; native brush limits apply. Object-mask stored raster at most16MP.","adobe":"No dedicated published Adjustment Brush route; unqualified tool/actionJSON descriptors remain unsupported. Existing classic adjustment and edit routes retain their documented subset.","legacyExposureCreationDefault":["exposure":1],"exposureCompatibility":"New API strokes or retyped layers without offset/gammaCorrection use the original gain-only Exposure. Include either new field for full controls. Existing full-control layers retain their model for partial edits. Native brush creation starts with full controls.","defaults":"Native starting values; complete Photoshop presets/defaults and exact output remain unqualified."]
+    ["classicRGB16GradientMap":["workingMaximum":32768,"rampPositions":4097,"arithmetic":"Integer-scaled retained stop colors; Double interpolation uses a fused second product and addition for linear ramp values. Shared native/API/history paths.","scope":"RGB16 Classic Gradient Map only; Gradient Fill, paint, RGB8 and other interpolation methods retain their implementations.","fullPhotoshopParity":false,"remaining":"A retained curved-ramp rounding residual, Smooth interpolation, dither, profile/default/corpus and physical-platform qualification remain open.","adobe":"No new route or desktop descriptor compatibility is claimed."],"hueRangeDisplayColors":["field":"settings.ranges[].displayColor","schema":"Optional H/S/L integer object; hue0...360,saturation/lightness0...100. null removes the override; missing ranges retain settings under ordinary partial edits. Replaced range arrays retain their existing complete-array contract.","behavior":"Display-only sampled swatch; pixel transfer is unchanged. Manual native range-bound edits update swatch hue while preserving sampled saturation/lightness.","versions":["native":92,"Actions":60],"adobe":"No dedicated route in the pinned Firefly v2 contract. PSD/PSB and AHU preserve represented sampled hue2 colors; full sampling and transfer fidelity remain open."],"colorLookup":AdjustmentBrushLookupAPI.capabilities,"commands":commands,"types":AdjustmentBrushKind.allCases.map{["kind":$0.rawValue,"title":$0.title,"settings":settings($0.initial),"schema":settingsSchema($0)]},"behavior":"Editable adjustment layer and mask; first paint/object and subsequent strokes each use one Undo. RGB editing target required. Existing masks retain transform, density and feather. New/subtract and disabled/locked masks reject.","objectProvider":"Apple Vision on-device instance mask, macOS14+, at most8388608 pixels and6000 per side; no foreground at point rejects, no cloud fallback.","limits":"4MiB body,4096 stroke samples; native brush limits apply. Object-mask stored raster at most16MP.","adobe":"No dedicated published Adjustment Brush route; unqualified tool/actionJSON descriptors remain unsupported. Existing classic adjustment and edit routes retain their documented subset.","legacyExposureCreationDefault":["exposure":1],"exposureCompatibility":"New API strokes or retyped layers without offset/gammaCorrection use the original gain-only Exposure. Include either new field for full controls. Existing full-control layers retain their model for partial edits. Native brush creation starts with full controls.","defaults":"Native starting values; complete Photoshop presets/defaults and exact output remain unqualified."]
   }
 }
 extension AutomationCommand {
@@ -100,14 +110,14 @@ extension AutomationCommand {
   func adjustmentBrushKind(_ fallback:AdjustmentBrushKind)throws->AdjustmentBrushKind {
     guard parameters["kind"] != nil else{return fallback};guard let kind=AdjustmentBrushKind(rawValue:try string("kind")) else{throw AutomationFailure(status:400,message:"Unknown adjustment kind.")};return kind
   }
-  @MainActor func adjustmentBrushRequest(store:EditorStore,object:Bool=false)throws->AdjustmentBrushRequest {
+  @MainActor func adjustmentBrushRequest(store:EditorStore,object:Bool=false,decodeSettings:(@MainActor (AutomationValue?,AdjustmentBrushKind,Adjustment)throws->Adjustment)?=nil)throws->AdjustmentBrushRequest {
     let new=try adjustmentBrushFlag("newLayer",store.adjustmentBrushNewLayer)
     if new && parameters["layerID"] != nil {throw AutomationFailure(status:400,message:"newLayer and layerID cannot be combined.")}
     let id=try parameters["layerID"].map{_ in try actionUUID("layerID")} ?? (new ? nil:store.adjustmentBrushLayer?.id)
     let old:Adjustment?=id.flatMap{id in guard let layer=store.document.layers.first(where:{$0.id==id}),case .adjustment(let v)=layer.content else{return nil};return v}
     let kind=try adjustmentBrushKind(old.flatMap(AdjustmentBrushKind.init(adjustment:)) ?? store.adjustmentBrushKind)
-    let base=old.flatMap{AdjustmentBrushKind(adjustment:$0)==kind ? $0:nil} ?? (kind == .exposure ? .exposure(1):kind.initial)
-    let value=try AdjustmentBrushAPI.decode(parameters["settings"],kind:kind,base:base)
+    let base=old.flatMap{AdjustmentBrushKind(adjustment:$0)==kind ? $0:nil} ?? (kind == .exposure ? .exposure(1):kind == .colorLookup ? .colorLookup(.init()):kind.initial)
+    let value=try decodeSettings?(parameters["settings"],kind,base) ?? AdjustmentBrushAPI.decode(parameters["settings"],kind:kind,base:base)
     let brush=try BrushAPI.decode(parameters["brush"],base:store.brush)
     var points:[StrokePoint]=[]
     if !object {
@@ -127,7 +137,7 @@ extension AutomationCommand {
     let value:Adjustment;if let layer=adjustmentBrushLayer,case .adjustment(let v)=layer.content {value=v}else{value=kind.initial}
     let mask:Any
     if let layer=adjustmentBrushLayer {let p=layer.effectiveMaskProperties;mask=["density":p.density,"feather":p.feather,"enabled":p.enabled,"inverted":p.inverted] as [String:Any]} else {mask=NSNull()}
-    return ["kind":kind.rawValue,"settings":AdjustmentBrushAPI.settings(value),"layerID":adjustmentBrushLayer?.id.uuidString as Any? ?? NSNull(),"mask":mask,"newLayer":adjustmentBrushNewLayer,"subtract":adjustmentBrushSubtract,"applyToObject":adjustmentBrushObject,"overlay":adjustmentBrushOverlay,"available":canUseAdjustmentBrush]
+    return ["kind":kind.rawValue,"settings":AdjustmentBrushAPI.settings(value),"lookup":AdjustmentBrushLookupAPI.state(value),"layerID":adjustmentBrushLayer?.id.uuidString as Any? ?? NSNull(),"mask":mask,"newLayer":adjustmentBrushNewLayer,"subtract":adjustmentBrushSubtract,"applyToObject":adjustmentBrushObject,"overlay":adjustmentBrushOverlay,"available":canUseAdjustmentBrush]
   }
 }
 extension AutomationService {

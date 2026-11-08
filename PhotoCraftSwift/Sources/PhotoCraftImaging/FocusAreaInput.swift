@@ -5,6 +5,9 @@ public struct FocusAreaInput:Sendable {
   public let refinement:SelectionRefinementInput
   public let analysis:FocusAreaAnalysis
   public static func prepare(_ original:CraftDocument,layerID:UUID,sampleAllLayers:Bool=false)throws->Self {
+    guard original.layers.first(where:{$0.id==layerID})?.smartObject == nil else {
+      throw CraftError.invalid("Focus Area currently requires an ordinary pixel layer.")
+    }
     let input=try SelectionRefinementInput.prepare(original,layerID:layerID,sampleAllLayers:sampleAllLayers)
     let proxy=try ColorManagement.converted(input.guide,from:original,to:CraftDocument(width:1,height:1))
     return try Self(refinement:input,analysis:FocusAreaAnalysis.prepare(proxy))

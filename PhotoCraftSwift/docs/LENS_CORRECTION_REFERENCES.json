@@ -102,5 +102,13 @@
     "release_log": "artifacts/runs/20261027T112757Z-188-vanishing-point/release-full01.log",
     "verification": "artifacts/runs/20261027T112757Z-188-vanishing-point/verification01.json",
     "note": "Later family batch includes Lens Correction, Adaptive Wide Angle and Vanishing Point. Earlier milestone records remain historical. Exact/live/platform parity remains open."
+  },
+  "lens_defaults_452": {
+    "evidence": "docs/LENS_DEFAULTS_452.json",
+    "selected_workflow_passed": true,
+    "actual_startup_factory_repair": true,
+    "normal_each": 33,
+    "full_scope_and_Photoshop_policy_open": true,
+    "historical_native_unlock": "Current owned Photoshop and Photato UI accessible; earlier blocked notes remain historical, not a current request."
   }
 }

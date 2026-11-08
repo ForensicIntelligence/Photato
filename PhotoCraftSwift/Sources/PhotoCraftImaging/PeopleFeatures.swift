@@ -61,11 +61,31 @@ public struct PeopleFeatureMap: Sendable {
   }
 }
 
+/// All weak-reference and resource-identity access is protected by the lock. The pool does not
+/// own a model: documents and pending inference jobs retain their actor only while needed.
+final class BundledPeopleFeaturePool: @unchecked Sendable {
+  private let lock = NSLock()
+  private weak var cached: CoreMLPeopleFeaturesDetector?
+  private var cachedURL: URL?
+
+  func provider(for modelURL: URL) -> CoreMLPeopleFeaturesDetector {
+    lock.lock()
+    defer { lock.unlock() }
+    if cachedURL == modelURL, let cached { return cached }
+    // Construction does no model loading or inference while the pool lock is held.
+    let value = CoreMLPeopleFeaturesDetector(modelURL: modelURL)
+    cachedURL = modelURL
+    cached = value
+    return value
+  }
+}
+
 /// The app runs only Apple's Core ML framework. Python/TensorFlow are build-time conversion tools.
 public actor CoreMLPeopleFeaturesDetector: PeopleFeaturesDetecting {
   public static let sourceSHA256="c6748b1253a99067ef71f7e26ca71096cd449baefa8f101900ea23016507e0e0"
+  private static let bundledProviders = BundledPeopleFeaturePool()
   public static var bundled: CoreMLPeopleFeaturesDetector? {
-    Bundle.main.url(forResource:"PeopleParts",withExtension:"mlmodelc").map{.init(modelURL:$0)}
+    Bundle.main.url(forResource:"PeopleParts",withExtension:"mlmodelc").map { bundledProviders.provider(for: $0) }
   }
   private let modelURL: URL
   private var model: MLModel?

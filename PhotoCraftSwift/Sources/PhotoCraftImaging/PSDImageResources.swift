@@ -15,6 +15,26 @@ enum PSDImageResources {
   static let staleIDs: Set<Int> = [
     1000, 1022, 1024, 1026, 1033, 1036, 1044, 1057, 1069, 1072, 1086, 1087, 1088,
   ]
+  /// Only a complete known Version Info record can declare an absent composite.
+  /// Unknown/malformed metadata never relaxes image-channel validation.
+  static func hasRealMergedData(_ blocks: [Block]) -> Bool? {
+    let values = blocks.filter { $0.id == 1057 }
+    guard values.count == 1 else { return nil }
+    do {
+      var r = PSDReader(data: values[0].data)
+      guard try r.u32() == 1 else { return nil }
+      let flag = try r.u8()
+      guard flag <= 1 else { return nil }
+      for _ in 0..<2 {
+        let count = try r.u32()
+        guard count <= r.remaining / 2 else { return nil }
+        _ = try r.bytes(count * 2)
+      }
+      _ = try r.u32()
+      guard r.remaining == 0 else { return nil }
+      return flag == 1
+    } catch { return nil }
+  }
   static func blocks(_ data: Data) throws -> [Block] {
     guard data.count <= maximumBytes else {
       throw CraftError.invalid("PSD image metadata exceeds the 16 MiB limit.")

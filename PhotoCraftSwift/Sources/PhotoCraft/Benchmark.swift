@@ -164,6 +164,9 @@ enum Benchmark {
     let content = try ClipboardRenderer.copy(source, layerIDs: [source.layers[0].id])
     let copied = ProcessInfo.processInfo.systemUptime
     let representations = try ClipboardRepresentations(content)
+    guard let tiff = representations.tiff, let png = representations.png else {
+      throw CraftError.unavailable("This clipboard benchmark requires TIFF and PNG representations.")
+    }
     let encoded = ProcessInfo.processInfo.systemUptime
     let decoded = try ClipboardContent.decode(representations.native)
     var target = try CraftDocument(width: 6000, height: 4000, depth: .u16)
@@ -177,8 +180,8 @@ enum Benchmark {
       "layerCopyMS": (copied - start) * 1000,
       "nativeTIFFPNGEncodingMS": (encoded - copied) * 1000,
       "nativeDecodeAndPasteMS": (pasted - encoded) * 1000,
-      "nativeBytes": representations.native.count, "tiffBytes": representations.tiff.count,
-      "pngBytes": representations.png.count, "nativePixelsExact": true,
+      "nativeBytes": representations.native.count, "tiffBytes": tiff.count,
+      "pngBytes": png.count, "nativePixelsExact": true,
       "os": ProcessInfo.processInfo.operatingSystemVersionString,
       "note":
         "Single release sample of a constant-color sparse layer. Includes all three transfer encodings, excludes system pasteboard IPC. Dense/selection/merged copies and p95/peak-memory budgets remain unqualified.",

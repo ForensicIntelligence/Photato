@@ -108,6 +108,11 @@ extension EditorStore {
       }
       id = layer; operation = .fill(color.r, color.a)
     case .clear(let layer): id = layer; operation = .fill(1, 1)
+    case .backgroundLayer(.clear(let layer,let color)):
+      guard color.r == color.g,color.g == color.b,color.a == 1 else {
+        throw CraftError.unsupported("Component Background Clear currently supports neutral colors.")
+      }
+      id = layer; operation = .fill(color.r,1)
     case .applyAdjustment(let layer, .invert): id = layer; operation = .invert
     case .applyFilter(let layer, let filter): id = layer; operation = .filter(filter)
     default: return command

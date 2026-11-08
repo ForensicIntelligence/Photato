@@ -35,7 +35,7 @@ final class RecoverySourceTests: XCTestCase {
     return doc
   }
   @MainActor func testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave() async throws {
-    for format in DocumentIO.Format.allCases {
+    for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
       let (controller, source, backup, expected, _) = try fixture(format: format)
       let doc = try await restore(controller, source: source, backup: backup)
       defer { doc.close() }

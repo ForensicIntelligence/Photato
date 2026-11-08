@@ -7,6 +7,7 @@ extension Command {
     case .applyFilter(_, let filter), .channel(.filter(_, let filter)),
       .inkChannel(.edit(_, .filter(let filter))):
       return filter
+    case .maskFilter(let request): return request.filter
     case .modeComponents(let edit):
       if case .filter(let filter) = edit.operation { return filter }
     case .blurGalleryMask(let edit):return edit.filter

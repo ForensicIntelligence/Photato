@@ -1,0 +1,153 @@
+{
+  "step": 476,
+  "date": "2026-11-07",
+  "recorded_utc": "2026-11-07T16:48:10.858732+00:00",
+  "workflow": "SP01",
+  "track": "major stillneeded",
+  "title": "Blank video layers and sparse frame storage",
+  "status": "Selected native/API blank drawing-layer workflow implemented and focused-qualified; fullSP01 remains open",
+  "source_manifest": "artifacts/runs/20261107T155820Z-476-blank-video-layers/release01-source.json",
+  "source_inputs": 7570,
+  "selected_Debug_tests": 111,
+  "selected_optimized_tests_each_architecture": 111,
+  "new_methods_each_architecture": 13,
+  "debug_qualification": "artifacts/runs/20261107T155820Z-476-blank-video-layers/source04-summary.json",
+  "normal_qualification": "artifacts/runs/20261107T155820Z-476-blank-video-layers/release01-qualification.json",
+  "failed_compile": "artifacts/runs/20261107T155820Z-476-blank-video-layers/source01-summary.json",
+  "universal": {
+    "step": 476,
+    "app": "/private/tmp/photato-validation-476-stage01-d8b44a8b/Photato Validation 476.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T155820Z-476-blank-video-layers/universal/Photato-Validation-476.zip",
+    "archive_sha256": "06075f69d96ac60ea2ade8d8240fbc72dafeb1f1dde3ad1f87e58b48cc0a1132",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261107T155820Z-476-blank-video-layers/release01-source.json",
+    "source_inputs": 7570,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "all_current_selected_optimized_methods_passed": true,
+    "historical_Debug_batch_crashes_unresolved": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation476optimized",
+    "version": "0.3.0",
+    "build": 476,
+    "signed_universal_binary_sha256": "b358720dc70fcb762e995f6e2a1d76bfcd16181d5f146b1fd64b6aa6e4f0e2f2",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10916,
+    "selected_pass_each": [
+      111,
+      111
+    ],
+    "new_methods_pass_each": [
+      13,
+      13
+    ],
+    "payload_comparison": [
+      {
+        "architecture": "arm64",
+        "compiled_sha256": "0b9d2f1ae85c1d1fe15f77d9f11134e23814e55f74ff2db01b61abac4b2ec88c",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3552,
+          "changed_offsets": [
+            3553,
+            3554
+          ],
+          "values": [
+            60293120,
+            59621376
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 114762768
+      },
+      {
+        "architecture": "x86_64",
+        "compiled_sha256": "75b48ff1ebcdd55dadfb41c89d346fa8867e61fcae1895d0199277124e245920",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3392,
+          "changed_offsets": [
+            3393,
+            3394
+          ],
+          "values": [
+            59371520,
+            60325888
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 121393272
+      }
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "launched_or_installed": false,
+    "isolated_session_launch_environment_configured": true,
+    "runtime_launch_environment_verified": false,
+    "prepared_utc": "2026-11-07T16:47:16.342837+00:00"
+  },
+  "native_observation": {
+    "step": 476,
+    "recorded_utc": "2026-11-07T16:47:38.726691+00:00",
+    "own_compiler_test_workers_live": false,
+    "tool": "mcp__cua_repl",
+    "operation": "cua.getApp(existing running validation467 path)",
+    "result": "Sky Computer Use native pipe closed before response",
+    "native_live_qualified": false,
+    "current476_launched": false,
+    "current476_installed": false,
+    "prior_validation_processes_preserved": [
+      6678,
+      68050
+    ],
+    "force_quit_or_tool_reset": false,
+    "pending": [
+      "Native Layer and Timeline menu dispatch, empty/new/populated frame presentation, keyboard and utility-window focus",
+      "Physical brush interaction, Photoshop default name/span/insertion/group behavior",
+      "Minimum/typical geometry, Light/Dark, accessibility, supported physical platforms and60fps"
+    ],
+    "qualification_note": "111selected Debug and111normal each architecture are Core/shared native-engine/offscreen/API tests, not actual UI/Photoshop/physical-platform proof."
+  },
+  "native_archive_version": 90,
+  "actions_version": 58,
+  "typed_commands": 266,
+  "command_status_change": {
+    "id": "layer.videoLayers.newBlankVideoLayer",
+    "before": "pending",
+    "after": "partial"
+  },
+  "new_tools_or_modifier_actions": false,
+  "remaining": [
+    "Full SP01 remains open: imported long/HDR footage, blank-source extension/frame insertion/deletion/restoration, Replace/Interpret Footage, altered-frame controls, additional timeline/keyframe/transition/audio/interchange/render/codec and other original acceptance.",
+    "Photoshop factory naming, initial span/insertion/group placement, non-RGB eligibility, exact defaults/output and physical UI/platform/60fps remain unqualified. Creation uses the current document Timeline span and existing layer insertion/reflow rules; this is not an independently verified Photoshop default.",
+    "Existing one-day clip bound, up to20,736,001logical frame indexing,512decoded-source-frame limit, sparse override/normal memory/scratch/archive/transfer/render budgets remain distinct. Maximum implicit geometry/storage tests do not establish dense capacity or every tool/export at that size.",
+    "New blank-layer creation has no qualified portable Actions or Adobe animation ActionJSON binding. Shared brush/history/video APIs remain; no invented Adobe route is added.",
+    "Current selected111Debug and111optimized per architecture pass. This is not a full-suite pass. All earlier unrelated failures and original104package acceptance remain; no global Photoshop percentage or byte parity is inferred.",
+    "Native automation remains unavailable; current validation candidate is unlaunched/uninstalled. Existing builds/user documents/GitHub remain protected; no source push, Store/Xcodearchive or software release."
+  ],
+  "references": [
+    {
+      "url": "https://helpx.adobe.com/photoshop/desktop/add-video-and-animation/create-animation-frames/paint-and-clone-frames-in-video-layers.html",
+      "purpose": "Separate blank video layers and frame-local drawing/rotoscoping"
+    },
+    {
+      "url": "https://helpx.adobe.com/uk/photoshop/using/editing-video-animation-layers-photoshop.html",
+      "purpose": "Observed menu workflow; no default-span/name oracle"
+    }
+  ],
+  "Photoshop_parity": false,
+  "goal_complete": false
+}

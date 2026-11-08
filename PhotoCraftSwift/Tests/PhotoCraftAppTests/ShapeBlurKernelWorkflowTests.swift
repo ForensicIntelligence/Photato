@@ -85,7 +85,7 @@ final class ShapeBlurKernelWorkflowTests:XCTestCase {
       let bad=try await h.edit(service,document,"filter.apply",["layerID":id.uuidString,"filter":raw]);XCTAssertEqual(bad,400);XCTAssertEqual(document.store.document,expected)
       let undo=try await h.edit(service,document,"history.undo");XCTAssertEqual(undo,200);XCTAssertEqual(document.store.document,source)
       let caps=ClassicDetailSettings.apiCapabilities;XCTAssertEqual(caps["customShapeNativeVersion"] as? Int,87);XCTAssertEqual(caps["customShapeActionsVersion"] as? Int,52)
-      XCTAssertEqual(AutomationCommand.definitions.count,258)
+      XCTAssertEqual(AutomationCommand.definitions.count,267)
     }
   }
   @MainActor func testHostedNativeChooserAndAPIExposeSameEmbeddedGeometry()async throws {

@@ -35,15 +35,23 @@ public struct ContentAwareStroke: Codable, Equatable, Sendable {
   public var target: Target = .sampling
   public var kind: Kind = .brush
   public var add = false
+  /// Optional explicit selection combination; nil preserves legacy Add/Subtract.
+  public var selectionMode: SelectionMode?
   public var size: Double = 30
   public var points: [[Double]] = []
   public init() {}
   public func validate() throws {
+    guard selectionMode == nil || target == .selection else { throw CraftError.invalid("Selection mode requires a selection stroke.") }
     guard size.isFinite, (1...5000).contains(size), !points.isEmpty, points.count <= 4096,
       points.allSatisfy({ $0.count == 2 && $0.allSatisfy { $0.isFinite && abs($0) <= 1_000_000 } }) else { throw CraftError.invalid("Invalid sampling/selection stroke.") }
   }
   public func applying(to mask: SelectionMask) throws -> SelectionMask {
     try validate(); let w = mask.width, h = mask.height
+    if let selectionMode {
+      var shape = self; shape.selectionMode = nil; shape.add = true
+      let empty = try SelectionMask(width:w,height:h,bytes:Array(repeating:0,count:w*h))
+      return try shape.applying(to:empty).combined(with:mask,mode:selectionMode)
+    }
     var bytes = (try mask.bytes)
     if kind == .lasso {
       let shape = try SelectionMask.make(.polygon(points.map { SelectionPoint($0[0],$0[1]) }),width:w,height:h,antiAlias:true)

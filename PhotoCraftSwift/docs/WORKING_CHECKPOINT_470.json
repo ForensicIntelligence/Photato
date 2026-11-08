@@ -1,0 +1,18 @@
+{
+  "step": "dev-step-470",
+  "run": "artifacts/runs/20261107T094657Z-470-split-channels",
+  "status": "Split Channels Debug/normal-qualified; live/fullCOL02/independent Photoshop output open",
+  "current_major_workflow": "COL03",
+  "next": "RAW02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7508,
+  "latest_software": 470,
+  "latest_optimized_universal": 470,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Read-only plug-in audit answered current support question; no implementation progress in that question turn. Revalidated and resumed470, producing tested Split Channels implementation.",
+  "source_manifest": "artifacts/runs/20261107T094657Z-470-split-channels/release01-source.json",
+  "production_swift_files": 1139,
+  "selected_native_workflow_verified": false,
+  "evidence": "docs/CHANNEL_SEPARATION_470.json"
+}

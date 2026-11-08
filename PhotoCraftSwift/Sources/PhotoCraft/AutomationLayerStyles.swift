@@ -14,14 +14,15 @@ extension LayerStyle {
       "useGlobalLight": ["type": "boolean"], "position": ["type": "string", "enum": ["inside", "outside", "center"]],
       "depth": number(1,1000), "soften": number(0,16), "highlightColor": pixel, "shadowColor": pixel,
       "highlightOpacity": number(0,1), "shadowOpacity": number(0,1),
-      "gradient": ["type": "object", "description": "Native GradientFill Codable object; required for gradientOverlay. Preserve the object read from layer state when editing complex stops."],
-      "pattern": ["type": "object", "description": "Native PatternFill Codable object, including patternID, placement and linked; required for patternOverlay. The patternID must exist in the document."],
+      "gradient": ShapeAPI.gradient,
+      "pattern": ShapeAPI.pattern,
     ]]
     var effectProperties=effect["properties"] as! [String:Any]
     effectProperties["advanced"]=AdvancedStyleAPI.nullable(AdvancedStyleAPI.advanced)
     effectProperties["distance"]=number(-30000,30000);effectProperties["depth"]=number(0,1000)
     effect["properties"]=effectProperties
     return ["type": ["object", "null"], "additionalProperties": false, "properties": [
+      "restrictedChannels":["type":["array","null"],"maxItems":3,"uniqueItems":true,"items":["type":"integer","minimum":0,"maximum":2]],
       "enabled": ["type": "boolean"], "fillOpacity": number(0,1), "scale": number(1,1000),
       "lightAngle": number(-360,360), "lightAltitude": number(0,90),
       "effects": ["type": "array", "maxItems": 32, "items": effect],
@@ -29,9 +30,9 @@ extension LayerStyle {
     ]]
   }
   static var apiCapabilities: [String: Any] {
-    ["command": "layer.style", "schema": apiSchema, "maximumCanvasPixels": 8_388_608,
+    ["channelBlending":["field":"restrictedChannels","components":["0":"Red","1":"Green","2":"Blue"],"commands":["layer.style","layer.style.patch"],"nativeArchiveVersion":89,"ActionsVersion":56,"behavior":"Existing native Blending Options and style transactions; omitted/nil retains legacy rendering,[] explicitly enables all channels. Numeric RGB exclusions preserve backdrop components after layer/group/clipping composition; all excluded has no contribution. Alpha/transparent/effect/group/default Photoshop details remain unqualified.","capacity":"Channel-only settings do not require effect maps; sparse maximum geometry retained. Existing effect limits remain independent.","scope":"RGB8/16/32 only. Non-RGB component exclusion,BlendIf,knockout and other advanced flags remain functional gaps; no full L03 closure. No new Firefly route/descriptor support claimed."],"command": "layer.style", "schema": apiSchema, "maximumCanvasPixels": 8_388_608,"maximumCanvasPixelsScope":"Effect preparation; channel-only RGB settings retain document dimensions.","maximumChannelCanvasDimension":Surface.maxDimension,
       "nativeArchiveVersion": 13,"advancedArchiveVersion":75,"advancedActionsVersion":30,"advancedDefaults":AdvancedStyleAPI.defaults,"globalLight":AdvancedStyleAPI.light,"patchCommand":"layer.style.patch","retainedInactiveFields":["noise","jitter","antiAlias","gradient.aligned","gradient.dither","gradient.stopColorAlpha","bevel.highlightEnabled","bevel.shadowEnabled","advancedBevel.genericBlendMode","advancedBevel.genericOpacity","effectColorAlpha"], "kinds": LayerEffect.Kind.allCases.map(\.rawValue),
-      "targets": "Editable raster, text, shape, fill and isolated group layers; no adjustment layers. Replaces the entire style, null clears. Full locks reject. Selection does not restrict effects.",
+      "targets": "Effect styles target editable raster, text, shape, fill and isolated group layers. Pure RGB channel settings also support adjustment layers and sparse maximum geometry. Replaces the entire style, null clears. Full locks reject. Selection does not restrict effects.",
       "temporalEditing": "Replace, patch and clear capture the current value on an enabled Style keyframe track before validation; replacement at the same time preserves key identity and interpolation. Frame Animation edits affect the selected frame. Preview is private, Cancel preserves the document and a committed edit uses one native Undo transaction.",
       "copyPaste": "Read layers[].style and submit it to layer.style for one or more layerIDs. Pattern references must already exist in the destination document.",
       "globalLightInterchange": "PSD/PSB integer shared angle/altitude, per-shadow Use Global Light and inactive local angles are retained through native/API/Adobe output. Fractional document lights and conflicting legacy fallback settings require Photato or an explicit shared-light choice. Global directions wrap consistently; local bevel altitude stays independent. Advanced PSD effects remain guarded.",

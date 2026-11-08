@@ -4,10 +4,12 @@ import SwiftUI
 
 struct LayerStyleDraft: Identifiable, Sendable {
   let id: UUID
+  let sessionID=UUID()
   let original: CraftDocument
   var style: LayerStyle
   var globalLight:GlobalLight?
   var globalLightOnly=false
+  var blendingOnly=false
   var selected: Int = 0
   var preview = true
 }
@@ -20,9 +22,35 @@ extension EditorStore {
     if case .adjustment = layer.content { return false }
     return true
   }
-  var canCopyLayerStyle: Bool { canBeginLayerStyle && activeLayer?.style != nil }
-  var canPasteLayerStyle: Bool { canBeginLayerStyle && Self.copiedLayerStyle != nil }
-  var canClearLayerStyle: Bool { canBeginLayerStyle && document.layers.contains { groupSelectionIDs.contains($0.id) && $0.style != nil } }
+  var canBeginBlendingOptions:Bool {canBeginBlendingOptions(for:document.activeLayerID)}
+  func canBeginBlendingOptions(for id:UUID?)->Bool {
+    guard canBeginLayerCreation,!editingComponent,!editingMask,let id,let layer=document.layers.first(where:{$0.id==id}),!document.isLocked(id)else{return false}
+    let ordinary:Bool;if case .adjustment=layer.content{ordinary=false}else{ordinary=document.width<=8_388_608/document.height}
+    return ordinary || (document.colorMode == .rgb && (layer.style==nil || layer.style?.isChannelBlendingOnly==true))
+  }
+  func beginBlendingOptions() {
+    guard canBeginBlendingOptions,let layer=activeLayer else{return}
+    var style=layer.style ?? LayerStyle()
+    let only:Bool;if case .adjustment=layer.content{only=true}else{only=document.width>8_388_608/document.height}
+    if only,style.restrictedChannels==nil{style.restrictedChannels=[]}
+    layerStyleDraft = .init(id:layer.id,original:document,style:style,globalLight:document.globalLight,blendingOnly:only)
+    render()
+  }
+  func setBlendingChannel(_ channel:Int,enabled:Bool) {
+    guard (0...2).contains(channel),document.colorMode == .rgb,var draft=layerStyleDraft,!draft.globalLightOnly else{return}
+    var excluded=Set(draft.style.restrictedChannels ?? [])
+    if enabled{excluded.remove(channel)}else{excluded.insert(channel)}
+    draft.style.restrictedChannels=excluded.sorted();layerStyleDraft=draft;render()
+  }
+  var canCopyLayerStyle: Bool {(canBeginLayerStyle || (canBeginBlendingOptions && activeLayer?.style?.isChannelBlendingOnly==true)) && activeLayer?.style != nil }
+  var canPasteLayerStyle: Bool {
+    guard let style=Self.copiedLayerStyle,style.restrictedChannels==nil || document.colorMode == .rgb else{return false}
+    return canBeginLayerStyle || (style.isChannelBlendingOnly && canBeginBlendingOptions)
+  }
+  var canClearLayerStyle: Bool {
+    let targets=document.layers.filter{groupSelectionIDs.contains($0.id) && $0.style != nil}
+    return !targets.isEmpty && (canBeginLayerStyle || (canBeginBlendingOptions && targets.allSatisfy{$0.style?.isChannelBlendingOnly==true}))
+  }
   func beginLayerStyle(_ kind: LayerEffect.Kind? = nil) {
     guard canBeginLayerStyle, let layer = activeLayer else { return }
     layerStyleDraft = .init(id: layer.id, original: document, style: layer.style ?? LayerStyle(),globalLight:document.globalLight)
@@ -92,6 +120,7 @@ extension EditorStore {
   }
   func clearLayerStyle() { if canClearLayerStyle { perform(.layerStyle(groupSelectionIDs, nil)) } }
   func validateLayerStyleMenu(_ path: String) -> Bool {
+    if path.hasSuffix("Blending Options…"){return canBeginBlendingOptions}
     if path.hasSuffix("Global Light…"){return canBeginLayerCreation}
     if path.hasSuffix("Copy Layer Style") { return canCopyLayerStyle }
     if path.hasSuffix("Paste Layer Style") { return canPasteLayerStyle }
@@ -160,7 +189,7 @@ struct LayerStyleSheet: View {
       }else{
       HStack(alignment: .top, spacing: 20) {
         VStack(alignment: .leading) {
-          Toggle("Enable Effects", isOn: style(\.enabled, true))
+          Toggle("Enable Effects", isOn: style(\.enabled, true)).disabled(draft?.blendingOnly==true)
           List(selection: Binding(get: { Optional(selected) }, set: { if let i = $0 { store.layerStyleDraft?.selected = i } })) {
             ForEach(Array((draft?.style.effects ?? []).enumerated()), id: \.offset) { index, item in
               HStack {
@@ -170,14 +199,14 @@ struct LayerStyleSheet: View {
                 Text(item.kind.title)
               }.tag(index)
             }
-          }.frame(width: 185, height: 270)
+          }.frame(width: 185, height: 270).disabled(draft?.blendingOnly==true)
           HStack {
             Menu("Add Effect") {
               ForEach(LayerEffect.Kind.allCases, id: \.self) { kind in
                 Button(kind.title) { store.addLayerEffect(kind) }
                   .disabled(kind == .patternOverlay && store.document.patterns?.isEmpty != false)
               }
-            }.disabled((draft?.style.effects.count ?? 0) >= 32)
+            }.disabled(draft?.blendingOnly==true || (draft?.style.effects.count ?? 0) >= 32)
             Button("Remove") {
               guard effect != nil else { return }
               store.removeLayerEffect()
@@ -186,6 +215,20 @@ struct LayerStyleSheet: View {
         }
         ScrollView {
           VStack(alignment: .leading, spacing: 10) {
+            GroupBox("Advanced Blending") {
+              if store.document.colorMode == .rgb {
+                HStack {
+                  Text("Channels:")
+                  ForEach(0..<3,id:\.self){channel in
+                    Toggle(["R","G","B"][channel],isOn:Binding(get:{!(draft?.style.restrictedChannels ?? []).contains(channel)},set:{store.setBlendingChannel(channel,enabled:$0)}))
+                      .toggleStyle(.checkbox).accessibilityLabel("Blend "+["Red","Green","Blue"][channel]+" channel")
+                  }
+                }.padding(4)
+              }else{Text("Channel-specific blending is not available for this color mode.").font(.caption).foregroundStyle(.secondary)}
+            }
+            if draft?.blendingOnly==true {
+              Text("Effect editing is not available for this document. Channel blending remains editable.").font(.caption).foregroundStyle(.secondary)
+            }else{
             numeric("Fill Opacity (%)", scalar(style(\.fillOpacity, 1)), 0...100)
             numeric("Effects Scale (%)", style(\.scale, 100), 1...1000)
             numeric("Shared Light Angle", sharedLight(\.angle), -360...360)
@@ -205,6 +248,7 @@ struct LayerStyleSheet: View {
                 AdvancedLayerEffectControls(effect:Binding(get:{self.effect ?? effect},set:{value in store.updateLayerEffect(selected){$0=value}}),document:store.document)
               }else{Button("Expanded Effect Controls…"){store.expandLayerEffect(selected)};Text("Expanded controls can change the existing appearance. Review Preview before applying.").font(.caption).foregroundStyle(.secondary)}
             } else { Text("Choose Add Effect to style this layer.").foregroundStyle(.secondary) }
+            }
           }.padding(.trailing, 8)
         }.frame(width: 400, height: 330)
       }
@@ -214,6 +258,7 @@ struct LayerStyleSheet: View {
       HStack {
         Toggle("Preview", isOn: Binding(get: { draft?.preview ?? false }, set: { store.layerStyleDraft?.preview = $0; store.render() }))
         if store.rendering { ProgressView().controlSize(.small) }
+        Button("New Style…") {store.beginNewStylePreset()}.disabled(store.styles.busy || draft?.globalLightOnly==true)
         Spacer()
         Button("Cancel") { store.cancelLayerStyle() }.keyboardShortcut(.cancelAction)
         Button("OK") { store.commitLayerStyle() }.keyboardShortcut(.defaultAction).disabled(validationError != nil)
@@ -279,6 +324,7 @@ struct LayerStyleSheet: View {
   }
   @objc func layerStyleMenu(_ sender: NSMenuItem) {
     switch sender.identifier?.rawValue.components(separatedBy: " > ").last {
+    case "Blending Options…":store?.beginBlendingOptions()
     case "Global Light…": store?.beginGlobalLight()
     case "Copy Layer Style": store?.copyLayerStyle()
     case "Paste Layer Style": store?.pasteLayerStyle()

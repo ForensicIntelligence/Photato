@@ -1,0 +1,695 @@
+[
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "entropy",
+    "offset" : 0,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "kurtosis",
+    "offset" : 1536,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "maximum",
+    "offset" : 3072,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "mean",
+    "offset" : 4608,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "median",
+    "offset" : 6144,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "minimum",
+    "offset" : 7680,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "range",
+    "offset" : 9216,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "skewness",
+    "offset" : 10752,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "standardDeviation",
+    "offset" : 12288,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "summation",
+    "offset" : 13824,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "variance",
+    "offset" : 15360,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "entropy",
+    "offset" : 16896,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "kurtosis",
+    "offset" : 18432,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "maximum",
+    "offset" : 19968,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "mean",
+    "offset" : 21504,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "median",
+    "offset" : 23040,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "minimum",
+    "offset" : 24576,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "range",
+    "offset" : 26112,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "skewness",
+    "offset" : 27648,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "standardDeviation",
+    "offset" : 29184,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "summation",
+    "offset" : 30720,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "variance",
+    "offset" : 32256,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "entropy",
+    "offset" : 33792,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "kurtosis",
+    "offset" : 35328,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "maximum",
+    "offset" : 36864,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "mean",
+    "offset" : 38400,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "median",
+    "offset" : 39936,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "minimum",
+    "offset" : 41472,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "range",
+    "offset" : 43008,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "skewness",
+    "offset" : 44544,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "standardDeviation",
+    "offset" : 46080,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "summation",
+    "offset" : 47616,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "mode" : "variance",
+    "offset" : 49152,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "entropy",
+    "offset" : 50688,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "kurtosis",
+    "offset" : 52224,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "maximum",
+    "offset" : 53760,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "mean",
+    "offset" : 55296,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "median",
+    "offset" : 56832,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "minimum",
+    "offset" : 58368,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "range",
+    "offset" : 59904,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "skewness",
+    "offset" : 61440,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "standardDeviation",
+    "offset" : 62976,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "summation",
+    "offset" : 64512,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "variance",
+    "offset" : 66048,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "entropy",
+    "offset" : 67584,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "kurtosis",
+    "offset" : 69120,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "maximum",
+    "offset" : 70656,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "mean",
+    "offset" : 72192,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "median",
+    "offset" : 73728,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "minimum",
+    "offset" : 75264,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "range",
+    "offset" : 76800,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "skewness",
+    "offset" : 78336,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "standardDeviation",
+    "offset" : 79872,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "summation",
+    "offset" : 81408,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "variance",
+    "offset" : 82944,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "entropy",
+    "offset" : 84480,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "kurtosis",
+    "offset" : 86016,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "maximum",
+    "offset" : 87552,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "mean",
+    "offset" : 89088,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "median",
+    "offset" : 90624,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "minimum",
+    "offset" : 92160,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "range",
+    "offset" : 93696,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "skewness",
+    "offset" : 95232,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "standardDeviation",
+    "offset" : 96768,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "summation",
+    "offset" : 98304,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "mode" : "variance",
+    "offset" : 99840,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "entropy",
+    "offset" : 101376,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "kurtosis",
+    "offset" : 102912,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "maximum",
+    "offset" : 104448,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "mean",
+    "offset" : 105984,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "median",
+    "offset" : 107520,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "minimum",
+    "offset" : 109056,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "range",
+    "offset" : 110592,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "skewness",
+    "offset" : 112128,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "standardDeviation",
+    "offset" : 113664,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "summation",
+    "offset" : 115200,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "variance",
+    "offset" : 116736,
+    "variant" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "entropy",
+    "offset" : 118272,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "kurtosis",
+    "offset" : 119808,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "maximum",
+    "offset" : 121344,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "mean",
+    "offset" : 122880,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "median",
+    "offset" : 124416,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "minimum",
+    "offset" : 125952,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "range",
+    "offset" : 127488,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "skewness",
+    "offset" : 129024,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "standardDeviation",
+    "offset" : 130560,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "summation",
+    "offset" : 132096,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "variance",
+    "offset" : 133632,
+    "variant" : 1
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "entropy",
+    "offset" : 135168,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "kurtosis",
+    "offset" : 136704,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "maximum",
+    "offset" : 138240,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "mean",
+    "offset" : 139776,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "median",
+    "offset" : 141312,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "minimum",
+    "offset" : 142848,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "range",
+    "offset" : 144384,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "skewness",
+    "offset" : 145920,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "standardDeviation",
+    "offset" : 147456,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "summation",
+    "offset" : 148992,
+    "variant" : 2
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "mode" : "variance",
+    "offset" : 150528,
+    "variant" : 2
+  }
+]

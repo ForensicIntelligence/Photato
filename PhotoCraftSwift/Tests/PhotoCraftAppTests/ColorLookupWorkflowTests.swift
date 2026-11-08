@@ -36,9 +36,9 @@ final class ColorLookupWorkflowTests: XCTestCase {
     store.perform(.selection(IntRect(x:2,y:0,width:3,height:4))); store.addColorLookup()
     let layer = try XCTUnwrap(store.activeLayer)
     XCTAssertEqual(layer.mask?.pixel(x:0,y:0),.black); XCTAssertEqual(layer.mask?.pixel(x:2,y:0),.white)
-    store.setColorLookup(layer.id,value); XCTAssertEqual(store.activeLayer?.content,.adjustment(.colorLookup(value)))
+    store.setColorLookup(layer.id,value); await store.geometryTask?.value; XCTAssertEqual(store.activeLayer?.content,.adjustment(.colorLookup(value)))
     store.perform(.lock(layer.id,true)); let locked = store.document
-    store.setColorLookup(layer.id,.init()); XCTAssertEqual(store.document,locked)
+    store.setColorLookup(layer.id,.init()); await store.geometryTask?.value; XCTAssertEqual(store.document,locked)
     let old = NSApp.mainMenu, windows = NSApp.windowsMenu, help = NSApp.helpMenu
     defer { NSApp.mainMenu = old; NSApp.windowsMenu = windows; NSApp.helpMenu = help }
     AppDelegate().buildMenus()

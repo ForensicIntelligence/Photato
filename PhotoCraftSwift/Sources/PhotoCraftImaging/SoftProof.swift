@@ -98,7 +98,9 @@ struct ProofTransform {
 }
 
 public enum SoftProof {
+  /// Legacy kernel/print budget. Printing retains its separate preparation limit.
   public static let maximumPixels = 8_388_608
+  public static let maximumDocumentPixels = Surface.maxPixels
   public static func retainedComponents(_ document: CraftDocument) -> NativeModeRaster? {
     guard !document.hasArtboards, document.artboardOrigin == nil,
       !InkModeInput.needsMerge(document), let layer = document.layers.first,
@@ -111,8 +113,8 @@ public enum SoftProof {
   }
   public static func validate(_ settings: ProofSettings, in document: CraftDocument) throws {
     try settings.validate()
-    guard document.width > 0, document.height > 0, document.width <= maximumPixels / document.height else {
-      throw CraftError.unsupported("Soft proofing currently supports canvases up to8,388,608 pixels.")
+    guard document.width > 0, document.height > 0,document.width<=Surface.maxDimension,document.height<=Surface.maxDimension,document.width<=maximumDocumentPixels/document.height else {
+      throw CraftError.unsupported("Soft proofing supports up to300,000 pixels per dimension; composition and scratch resource limits still apply.")
     }
     guard !settings.preserveNumbers || canPreserveNumbers(document, settings: settings) else {
       throw CraftError.unsupported("Preserve Numbers requires matching modes and retained flat component samples. Flatten the component document first.")
@@ -120,6 +122,7 @@ public enum SoftProof {
   }
   public static func surface(_ document: CraftDocument, composite: Surface? = nil, settings: ProofSettings) throws -> Surface {
     try Task.checkCancellation(); try validate(settings, in: document)
+    if document.width>maximumPixels/document.height{return try PagedSoftProof.surface(document,composite:composite,settings:settings)}
     let original = try composite ?? Renderer.composite(document)
     guard original.width == document.width, original.height == document.height else { throw CraftError.invalid("Proof preview dimensions differ from the document.") }
     let native = retainedComponents(document)
@@ -177,7 +180,9 @@ public enum SoftProof {
     }
     return output
   }
-  public static func image(_ document: CraftDocument, composite: Surface? = nil, settings: ProofSettings) throws -> CGImage {
-    try RasterIO.displayImage(surface(document, composite: composite, settings: settings))
+  public static func image(_ document: CraftDocument, composite: Surface? = nil, settings: ProofSettings,request:RasterPreviewRequest?=nil) throws -> CGImage {
+    let pixels=try surface(document,composite:composite,settings:settings)
+    let request=try request ?? (document.width>Surface.maximumDensePixels/document.height ? RasterPreviewRequest.overview(width:document.width,height:document.height):nil)
+    return try RasterIO.displayImage(request?.reducing(pixels) ?? pixels)
   }
 }

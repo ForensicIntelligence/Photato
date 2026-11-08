@@ -59,7 +59,10 @@ struct ClassicRGB16Gradient: Sendable {
           // Uniform-parameter slopes do not rescale with neighboring stop spacing.
           let ta = (stops[b].value[c] - stops[max(0, a - 1)].value[c]) * 0.5
           let tb = (stops[min(stops.count - 1, b + 1)].value[c] - stops[a].value[c]) * 0.5
-          let linear = x * (1 - u) + y * u
+          // A single rounding for the second product and addition matches the
+          // independently saved RGB16 linear ramp boundaries. Keep the first
+          // product separate; fusing the opposite product changes other samples.
+          let linear = (x * (1 - u)).addingProduct(y, u)
           let cubic =
             (2 * u3 - 3 * u2 + 1) * x + (u3 - 2 * u2 + u) * ta
             + (-2 * u3 + 3 * u2) * y + (u3 - u2) * tb

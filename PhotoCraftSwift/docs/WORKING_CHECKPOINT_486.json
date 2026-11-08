@@ -1,0 +1,15 @@
+{
+  "step": 486,
+  "application_build": 486,
+  "status": "BoundedClassicRGB16repair qualified; Debug61,optimized61/60/all3newpass,old485Intelfailurereproduced,nativeUIpass;finalhistoryseparate",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "AI01",
+  "next": "AI02",
+  "run": "artifacts/runs/20261108T053250Z-486-classic-fused",
+  "source_manifest": "artifacts/runs/20261108T053250Z-486-classic-fused/release01-source.json",
+  "source_inputs": 7628,
+  "reference": "docs/CLASSIC_RGB16_BOUNDARIES_486.json",
+  "latest_fully_qualified_selected_universal": 480,
+  "goal_complete": false
+}

@@ -56,14 +56,16 @@ final class ClassicGradientMapTests: XCTestCase {
           }
           if changed { differences.append(t) }
         }
-        // Two unresolved one-level positions are tracked, never labeled exact parity.
+        // Linear ramps now require exact equality. The independently retained
+        // curved-ramp residual remains explicit; original fixture bytes stay intact.
+        let remaining = reference.smoothness == 0 ? [] : reference.knownDifferencePositions
         XCTAssertEqual(
-          differences.count, reference.knownDifferencePositions.count,
+          differences.count, remaining.count,
           "\(reference.name), stored \(stored); first \(Array(differences.prefix(12)))")
         XCTAssertEqual(
-          Array(differences.prefix(12)), reference.knownDifferencePositions, reference.name)
+          Array(differences.prefix(12)), remaining, reference.name)
         XCTAssertLessThanOrEqual(
-          maximum, reference.knownDifferencePositions.isEmpty ? 0 : 1, reference.name)
+          maximum, remaining.isEmpty ? 0 : 1, reference.name)
       }
     }
   }

@@ -2,13 +2,13 @@ import Foundation
 
 public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
   case brightnessContrast, levels, curves, exposure, vibrance, hueSaturation, colorBalance
-  case blackWhite, photoFilter, channelMixer, selectiveColor, invert, posterize, threshold, gradientMap
+  case blackWhite, photoFilter, channelMixer, colorLookup, selectiveColor, invert, posterize, threshold, gradientMap
   public var title: String {
     switch self {
     case .brightnessContrast: "Brightness/Contrast"; case .levels: "Levels"; case .curves: "Curves"
     case .exposure: "Exposure"; case .vibrance: "Vibrance"; case .hueSaturation: "Hue/Saturation"
     case .colorBalance: "Color Balance"; case .blackWhite: "Black & White"; case .photoFilter: "Photo Filter"
-    case .channelMixer: "Channel Mixer"; case .selectiveColor: "Selective Color"; case .invert: "Invert"
+    case .channelMixer: "Channel Mixer"; case .colorLookup: "Color Lookup"; case .selectiveColor: "Selective Color"; case .invert: "Invert"
     case .posterize: "Posterize"; case .threshold: "Threshold"; case .gradientMap: "Gradient Map"
     }
   }
@@ -23,6 +23,7 @@ public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
     case .selectiveColor: .classic(.init(.selectiveColor)); case .invert: .invert
     case .posterize: .tonalSteps(.init(kind:.posterize)); case .threshold: .tonalSteps(.init(kind:.threshold))
     case .gradientMap: .gradientMap(.init())
+    case .colorLookup: .colorLookup(.photoshopDefault)
     }
   }
   public init?(adjustment: Adjustment) {
@@ -33,6 +34,7 @@ public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
       switch v.kind {case .exposure:self = .exposure;case .vibrance:self = .vibrance;case .blackWhite:self = .blackWhite;case .photoFilter:self = .photoFilter;case .channelMixer:self = .channelMixer;case .selectiveColor:self = .selectiveColor}
     case .invert:self = .invert;case .tonalSteps(let v):self = v.kind == .threshold ? .threshold:.posterize
     case .gradientMap:self = .gradientMap
+    case .colorLookup:self = .colorLookup
     default:return nil
     }
   }

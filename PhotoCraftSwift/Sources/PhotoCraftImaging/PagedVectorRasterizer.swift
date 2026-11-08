@@ -58,14 +58,15 @@ extension VectorRasterizer {
     maximumScratchPreparedBytes:Int = Surface.maxPixels+Surface.maxDimension) throws -> Surface {
     try Task.checkCancellation();try path.validate()
     guard origin.x.isFinite,origin.y.isFinite else {throw CraftError.invalid("Invalid path raster origin.")}
-    let outside:Float = path.isEmpty ? (emptyRevealsAll != path.inverted ? 1:0):(path.inverted ? 1:0)
+    let region = try VectorPathGeometry.filledRegion(path)
+    let outside:Float = path.isEmpty ? (emptyRevealsAll != path.inverted ? 1:0):(region.inverted ? 1:0)
     let empty=try Surface(width:width,height:height,fill:Pixel(outside,outside,outside))
     if path.isEmpty {return empty}
-    if coversCanvasRectangle(path,width:width,height:height,origin:origin) {
-      let value:Float=path.inverted ? 0:1
+    if path.components.first?.operation != .subtract && coversCanvasRectangle(path,width:width,height:height,origin:origin) {
+      let value:Float=region.inverted ? 0:1
       return try Surface(width:width,height:height,fill:Pixel(value,value,value))
     }
-    let outline=try filledPath(path),bounds=outline.boundingBoxOfPath
+    let outline=region.path,bounds=outline.boundingBoxOfPath
     if bounds.isNull || bounds.isEmpty {return empty}
     let x0=Int(max(0,min(Double(width),floor(bounds.minX-origin.x-1))))
     let y0=Int(max(0,min(Double(height),floor(bounds.minY-origin.y-1))))
@@ -100,7 +101,7 @@ extension VectorRasterizer {
       let w=min(2048,right-x),h=min(64,bottom-y)
       var patch=try Surface(width:w,height:h,fill:Pixel(outside,outside,outside))
       for py in 0..<h {try Task.checkCancellation();for px in 0..<w {
-        let raw=bytes[(y+py)*width+x+px],value=Float(path.inverted ? 255-raw:raw)/255
+        let raw=bytes[(y+py)*width+x+px],value=Float(region.inverted ? 255-raw:raw)/255
         if value != outside {patch.setPixel(x:px,y:py,Pixel(value,value,value))}
       }}
       try builder.append(patch,atX:x,atY:y)

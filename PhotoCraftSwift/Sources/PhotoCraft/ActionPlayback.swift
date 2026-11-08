@@ -9,10 +9,13 @@ extension EditorStore {
     session.recordActionOperation(.clipboardCopy(targets, merged: merged), name: merged ? "Copy Merged" : "Copy")
     actionRevision += 1
   }
-  func playPreparedAction(_ action: RecordedAction) {
+  func playPreparedAction(_ action: RecordedAction,
+    validate: (@MainActor () throws -> Void)? = nil,
+    completion: (@MainActor (Result<Void, Error>) -> Void)? = nil) {
     do {
+      try validate?()
       try action.validate()
-      if try applyLayerSelectionAction(action) { status = "Play \(action.name)"; return }
+      if try applyLayerSelectionAction(action) { status = "Play \(action.name)"; completion?(.success(())); return }
       let original = document, generation = layerPanelGeneration
       let clipboardRevision = clipboard.changeCount
       let input = try action.requiresInitialClipboard ? clipboard.read() : nil
@@ -21,6 +24,7 @@ extension EditorStore {
       let masters = masterDocuments.map { $0.store.document }
       geometryBusy = true; renderTask?.cancel(); status = "Play \(action.name)"
       geometryTask = Task { [weak self] in
+        var outcome: Result<Void, Error> = .success(())
         let worker = Task.detached(priority: .userInitiated) {
           let result = try RecordedActionRenderer.prepare(action, in: original, clipboard: input?.decoded(), masters: masters)
           return (try PreparedEdit(command: result.command, document: original), try result.clipboard.map(ClipboardRepresentations.init), result.lastIndexedPalette)
@@ -28,7 +32,8 @@ extension EditorStore {
         do {
           let (prepared, output, lastPalette) = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
           try Task.checkCancellation()
-          guard let self, self.layerPanelGeneration == generation else { return }
+          guard let self, self.layerPanelGeneration == generation else { completion?(.failure(CancellationError())); return }
+          try validate?()
           guard self.document == original else { throw CraftError.invalid("The document changed during Actions playback.") }
           if action.requiresInitialClipboard || action.writesClipboard {
             guard self.clipboard.changeCount == clipboardRevision else { throw CraftError.invalid("The clipboard changed during Actions playback.") }
@@ -47,13 +52,16 @@ extension EditorStore {
           if self.document != original { self.onChange?(.changeDone) }
           self.status = prepared.label
         } catch is CancellationError {
+          outcome = .failure(CancellationError())
           if self?.layerPanelGeneration == generation { self?.status = "Operation cancelled" }
         } catch {
+          outcome = .failure(error)
           if self?.layerPanelGeneration == generation { self?.error = error.localizedDescription }
         }
-        guard let self, self.layerPanelGeneration == generation else { return }
+        guard let self, self.layerPanelGeneration == generation else { completion?(.failure(CancellationError())); return }
         self.geometryBusy = false; self.render()
+        completion?(outcome)
       }
-    } catch { self.error = error.localizedDescription }
+    } catch { self.error = error.localizedDescription; completion?(.failure(error)) }
   }
 }

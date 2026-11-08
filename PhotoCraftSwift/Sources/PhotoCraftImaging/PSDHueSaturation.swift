@@ -26,15 +26,18 @@ enum PSDHueSaturation {
       let bounds = try (0..<4).map { _ in try r.u16() }
       ranges.append(try .init(values: values(&r), bounds: HueRange.fromWrapped(bounds)))
     }
-    let result = HueSaturationAdjustment(
+    var result = HueSaturationAdjustment(
       master: master, colorization: colorization,
       colorize: colorize != 0, ranges: ranges)
-    try result.validate()
     if data.count == 136 {
-      guard try r.bytes(36) == rangeColors(result) else {
-        throw CraftError.unsupported("Unrepresented Hue/Saturation range-color data.")
+      for index in 0..<6 {
+        let color = try HueRangeColor(hue: r.u16(), saturation: r.u16(), lightness: r.u16())
+        try color.validate()
+        // Canonical factory colors need no extra native feature or settings field.
+        if color != result.ranges[index].swatchColor { result.ranges[index].displayColor = color }
       }
     }
+    try result.validate()
     return result
   }
   static func write(
@@ -56,7 +59,7 @@ enum PSDHueSaturation {
       for bound in range.bounds { w.n((bound % 360 + 360) % 360, 2) }
       values(range.values, &w)
     }
-    if includeRangeColors || original?.count == 136 {
+    if includeRangeColors || original?.count == 136 || adjustment.hasRangeDisplayColors {
       w.data.append(rangeColors(adjustment))
     }
     return w.data
@@ -66,9 +69,10 @@ enum PSDHueSaturation {
   static func rangeColors(_ adjustment: HueSaturationAdjustment) -> Data {
     var w = PSDWriter()
     for range in adjustment.ranges {
-      w.n(range.representativeHue, 2)
-      w.n(100, 2)
-      w.n(50, 2)
+      let color = range.swatchColor
+      w.n(color.hue, 2)
+      w.n(color.saturation, 2)
+      w.n(color.lightness, 2)
     }
     return w.data
   }

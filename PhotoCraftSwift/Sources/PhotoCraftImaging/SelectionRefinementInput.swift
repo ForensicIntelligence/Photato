@@ -6,12 +6,24 @@ public struct SelectionRefinementInput: Sendable {
   public let layerID: UUID
   public let guide: Surface
   public let mask: SelectionMask
+  /// Read-only rendered source for raster copy outputs; the original stays editable.
+  public let materializedLayer: Layer?
   public static func prepare(_ document: CraftDocument,layerID: UUID,fromLayerMask: Bool = false,sampleAllLayers: Bool = false) throws -> Self {
+    try Task.checkCancellation()
     try SelectionMatting.checkSize(document.width,document.height)
-    guard let layer = document.layers.first(where: { $0.id == layerID }), case .raster(let pixels) = layer.content,
-      layer.smartObject == nil else { throw CraftError.invalid("Select and Mask requires an ordinary pixel layer. Rasterize a copy of the Smart Object first.") }
+    guard let layer = document.layers.first(where: { $0.id == layerID }), case .raster(let pixels) = layer.content
+      else { throw CraftError.invalid("Select and Mask requires a pixel layer or Smart Object.") }
     try SelectionMatting.checkSize(pixels.width,pixels.height)
-    var source = layer; source.mask = nil; source.maskProperties = nil; source.vectorMask = nil; source.visible = true; source.style = nil
+    let materialized: Layer?
+    if layer.smartObject != nil {
+      var rendered = try SmartFilterEngine.renderedLayer(PDFSmartObjectIO.renderedLayer(layer,in:document),in:document)
+      guard rendered.smartObject == nil, rendered.smartFilters == nil, case .raster(let raster) = rendered.content
+        else { throw CraftError.invalid("The Smart Object could not be prepared for refinement.") }
+      try SelectionMatting.checkSize(raster.width,raster.height)
+      for key in ["SoLd","SoLE","PlLd"] { rendered.sourceTags?.removeValue(forKey:key) }
+      materialized = rendered
+    } else { materialized = nil }
+    var source = materialized ?? layer; source.mask = nil; source.maskProperties = nil; source.vectorMask = nil; source.visible = true; source.style = nil
     let guide = try sampleAllLayers ? Renderer.composite(document) : Renderer.clippingCoverage(source,in:document)
     let mask: SelectionMask
     if fromLayerMask {
@@ -27,7 +39,7 @@ public struct SelectionRefinementInput: Sendable {
     } else {
       mask = try document.coverageSelection() ?? SelectionMask(width:document.width,height:document.height,bytes:Array(repeating:0,count:document.width*document.height))
     }
-    return Self(original:document,layerID:layerID,guide:guide,mask:mask)
+    return Self(original:document,layerID:layerID,guide:guide,mask:mask,materializedLayer:materialized)
   }
   public func refined(settings: SelectionRefinement,strokes: [SelectionRefinementStroke] = [], initial: SelectionMask? = nil) throws -> SelectionMask {
     let input = initial ?? mask, w = guide.width, h = guide.height
@@ -75,13 +87,15 @@ public struct SelectionRefinementInput: Sendable {
   public func edit(settings: SelectionRefinement,output: SelectionRefinementOutput,strokes: [SelectionRefinementStroke] = [],initial: SelectionMask? = nil) throws -> SelectionRefinementEdit {
     let mask = try refined(settings:settings,strokes:strokes,initial:initial)
     let corrected = try correctedPixels(mask:mask,settings:settings)
-    return SelectionRefinementEdit(layerID:layerID,output:output.allowingDecontamination(settings.decontaminate),mask:mask,corrected:corrected)
+    let effective = output.allowingDecontamination(settings.decontaminate)
+    return SelectionRefinementEdit(layerID:layerID,output:effective,mask:mask,corrected:corrected,
+      materialized:effective == .selection || effective == .layerMask ? nil : materializedLayer)
   }
   public func correctedPixels(mask: SelectionMask,settings: SelectionRefinement) throws -> Surface? {
     try settings.validate()
     guard mask.width == original.width, mask.height == original.height else { throw CraftError.invalid("Refinement canvas sizes differ.") }
     var corrected: Surface?
-    if settings.decontaminate, let layer = original.layers.first(where: { $0.id == layerID }), case .raster(let source) = layer.content {
+    if settings.decontaminate, let layer = materializedLayer ?? original.layers.first(where: { $0.id == layerID }), case .raster(let source) = layer.content {
       try SelectionMatting.checkSize(source.width,source.height)
       var bytes = [UInt8](repeating:0,count:source.width*source.height)
       for y in 0..<source.height { try Task.checkCancellation(); for x in 0..<source.width {
@@ -93,7 +107,7 @@ public struct SelectionRefinementInput: Sendable {
     return corrected
   }
   public func previewGuide(mask: SelectionMask,settings: SelectionRefinement) throws -> Surface {
-    guard let corrected = try correctedPixels(mask:mask,settings:settings), var layer = original.layers.first(where: { $0.id == layerID }) else { return guide }
+    guard let corrected = try correctedPixels(mask:mask,settings:settings), var layer = materializedLayer ?? original.layers.first(where: { $0.id == layerID }) else { return guide }
     layer.content = .raster(corrected); layer.mask = nil; layer.maskProperties = nil; layer.vectorMask = nil; layer.style = nil; layer.visible = true
     return try Renderer.clippingCoverage(layer,in:original)
   }

@@ -22,9 +22,10 @@ extension LensCorrectionSettings {
   static var apiCapabilities:[String:Any] {
     ["schema":apiSchema,"default":try! JSONSerialization.jsonObject(with:JSONEncoder().encode(Self())),
      "engine":"Native Brown–Conrady inverse map, radial red/blue fringe compensation, profile/custom vignette, perspective/rotation/scale, premultiplied Catmull–Rom resampling and transparent/extended/black/white/custom edges. Identity preserves source bytes.",
-     "workspace":"Custom/profile controls, distortion drag, straighten line, pan/zoom/grid, preview, settings import/export, local Undo/Redo and document Cancel/OK. Settings files use this same JSON value.",
+     "workspace":"Custom/profile controls, distortion drag, straighten line, pan/zoom/grid, preview, Settings menu with Previous Conversion and camera-linked Lens Default, settings import/export, local Undo/Redo and document Cancel/OK. Settings files use this same JSON value.",
      "autoScale":"Samples all four image borders and three chromatic coordinates, searches up to800%, rejects if coverage cannot be achieved. Grid/preview settings are presentation-only.",
-     "profiles":"Explicit coefficients and labelled generic estimates; no Adobe/manufacturer database or EXIF profile matching. Clients may provide their own coefficients. Vignette midpoint follows Adobe documented direction.",
+     "profiles":"Explicit coefficients and labelled generic estimates; no Adobe/manufacturer database. Saved user defaults match exact document EXIF camera/lens/focal length/aperture; this does not imply calibrated manufacturer profile lookup. Clients may provide their own coefficients. Vignette midpoint follows Adobe documented direction.",
+     "lensDefaults":LensDefaultsAPI.capabilities,
      "persistence":"Editable Smart Filters require native30. Existing actions.manage/actions.play/actions.batch can store/play the same typed filter. Rasterized exports work; editable PSD/PSB descriptors are unsupported.",
      "limits":"8,388,608 source pixels, RGB composite, current filter selection/lock rules. RGB32 is a Photato extension. Exact Adobe pixels and live/physical platform checks remain open.",
      "adobe":"No dedicated pinned Photoshop v2 operation; unqualified lensCorrection actionJSON rejects explicitly. No Adobe route is invented."]
@@ -33,6 +34,6 @@ extension LensCorrectionSettings {
 
 @MainActor extension LensCorrectionWorkspace {
   var apiState:[String:Any] {
-    ["settings":try! JSONSerialization.jsonObject(with:JSONEncoder().encode(settings)),"preview":preview,"rendering":rendering,"tool":tool.rawValue,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"effectiveScale":effectiveScale,"error":error as Any? ?? NSNull(),"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty]
+    ["settings":try! JSONSerialization.jsonObject(with:JSONEncoder().encode(settings)),"preview":preview,"rendering":rendering,"tool":tool.rawValue,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"effectiveScale":effectiveScale,"error":error as Any? ?? NSNull(),"preferenceError":preferenceError as Any? ?? NSNull(),"canUndo":!undoStates.isEmpty,"canRedo":!redoStates.isEmpty]
   }
 }

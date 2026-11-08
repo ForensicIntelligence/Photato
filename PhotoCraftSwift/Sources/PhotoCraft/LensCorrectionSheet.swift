@@ -20,7 +20,7 @@ struct LensCorrectionSheet:View {
   }
   var body:some View {
     VStack(spacing:12) {
-      HStack { Text("Lens Correction").font(.headline);Spacer();if model.rendering { ProgressView().controlSize(.small) };Button("Load Settings…") { importing=true };Button("Save Settings…") { do { exportFile=LUTDocument(data:try JSONEncoder().encode(model.settings));exporting=true } catch { model.error=error.localizedDescription } } }
+      HStack { Text("Lens Correction").font(.headline);Spacer();if model.rendering { ProgressView().controlSize(.small) };settingsMenu }
       HStack(alignment:.top,spacing:16) {
         VStack { Picker("Tool",selection:$model.tool) { ForEach(LensCorrectionWorkspace.Tool.allCases,id:\.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented).labelsHidden()
           LensCorrectionPreview(model:model,gridColor:gridColor)
@@ -36,6 +36,9 @@ struct LensCorrectionSheet:View {
           }
           if model.settings.edge == .color { ColorPicker("Edge Color",selection:Binding(get:{ let c=model.settings.edgeColor;return Color(.sRGB,red:c[0],green:c[1],blue:c[2],opacity:c[3]) },set:{color in guard let c=NSColor(color).usingColorSpace(.sRGB) else { return };var s=model.settings;s.edgeColor=[c.redComponent,c.greenComponent,c.blueComponent,c.alphaComponent];model.change(s)})) }
           if let error=model.error { Text(error).font(.caption).foregroundStyle(.red) }
+          if let error=model.preferenceError ?? store.cameraLensMetadataCache.error ?? store.filterRecall.lensDefaults.previousError {
+            Text(error).font(.caption).foregroundStyle(.secondary).accessibilityLabel("Lens settings warning: " + error)
+          }
         }.frame(width:280).padding(.trailing,5) }.frame(width:295)
       }
       HStack {
@@ -55,6 +58,26 @@ struct LensCorrectionSheet:View {
     }
     .fileExporter(isPresented:$exporting,document:exportFile,contentType:.json,defaultFilename:"Lens Correction.photatolens") { if case .failure(let error)=$0 { model.error=error.localizedDescription } }
   }
+  var settingsMenu: some View {
+    let identity = store.cameraLensIdentity
+    let saved = identity.map { store.filterRecall.lensDefaults.lookup($0) }
+    return Menu("Settings") {
+      Button("Default Correction") { model.endGesture(); model.change(.init()) }
+      Button("Previous Conversion") { model.loadPreviousConversion(from: store) }
+        .disabled(store.filterRecall.lensDefaults.previous == nil)
+      Button("Lens Default") { model.loadLensDefault(from: store) }.disabled(saved?.settings == nil)
+      Divider()
+      Button("Set Lens Default") { model.saveLensDefault(in: store) }
+        .disabled(identity == nil || saved?.error != nil || (try? model.settings.validate()) == nil)
+      Button("Remove Saved Lens Default") { model.removeLensDefault(in: store) }.disabled(saved?.exists != true)
+      Divider()
+      Button("Load Settings…") { importing = true }
+      Button("Save Settings…") {
+        do { exportFile = LUTDocument(data: try JSONEncoder().encode(model.settings)); exporting = true }
+        catch { model.error = error.localizedDescription }
+      }
+    }.help("Reuse correction settings or save a default for this image's camera, lens, focal length and aperture.")
+  }
   var customControls:some View {
     Group {
       Text("Geometric Distortion").font(.subheadline.bold());field("Remove Distortion",number(\.distortion),-100...100)
@@ -68,6 +91,13 @@ struct LensCorrectionSheet:View {
   }
   var profileControls:some View {
     Group {
+      if let camera = store.cameraLensIdentity {
+        LabeledContent("Camera", value: camera.cameraMake + " " + camera.cameraModel)
+        LabeledContent("Lens", value: camera.lensModel)
+        Text("\(camera.focalLength, format: .number) mm · f/\(camera.fNumber, format: .number)").font(.caption).foregroundStyle(.secondary)
+        if let error = store.filterRecall.lensDefaults.lookup(camera).error { Text(error).font(.caption).foregroundStyle(.secondary) }
+      } else { Text("Camera and lens metadata unavailable. Saved lens defaults require camera, lens, focal length and aperture.").font(.caption).foregroundStyle(.secondary) }
+      Divider()
       Toggle("Geometric Distortion",isOn:flag(\.correctDistortion));Toggle("Chromatic Aberration",isOn:flag(\.correctCA));Toggle("Vignette",isOn:flag(\.correctVignette))
       Divider();Text("Lens Profile").font(.subheadline.bold())
       Text(model.settings.profile == nil && model.settings.genericFocalLength == nil ? "None":model.settings.resolvedProfile.name).font(.caption)

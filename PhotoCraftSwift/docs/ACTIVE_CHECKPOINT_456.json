@@ -1,0 +1,27 @@
+{
+  "step": "dev-step-456",
+  "run": "artifacts/runs/20261106T230203Z-456-eraser-modes",
+  "status": "Selected Eraser modes delivered; B04 focusblendmodes next. DebugOpen/Quitfailure retained; optimizednativepasses.",
+  "current_major_workflow": "B04",
+  "next": "B06",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7420,
+  "latest_software": 456,
+  "latest_optimized_universal": 456,
+  "goal_complete": false,
+  "prior_turn_classification": "progress:455 acquired6independentPSPSD/mergedRGBreferences that changeBlocksize/zerofootprintdesign",
+  "source_manifest": "artifacts/runs/20261106T230203Z-456-eraser-modes/release01-source.json",
+  "production_swift_files": 1110,
+  "selected_qualification": {
+    "Debug": 44,
+    "optimized_each": [
+      44,
+      44
+    ],
+    "all_new": 10,
+    "owned_Block_bytes_exact": true,
+    "native_optimized_pass": true,
+    "native_Debug_Open_Quit_unresolved": true
+  }
+}

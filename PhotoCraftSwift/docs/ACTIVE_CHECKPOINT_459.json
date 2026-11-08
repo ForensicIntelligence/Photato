@@ -1,0 +1,23 @@
+{
+  "step": "dev-step-459",
+  "run": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling",
+  "status": "Eyedropper selected workflow development-tested; live native acceptance pending CUA",
+  "current_major_workflow": "D04",
+  "next": "L03",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7452,
+  "latest_software": 459,
+  "latest_optimized_universal": 459,
+  "goal_complete": false,
+  "prior_turn_classification": "progress:458Apply/continue/newselections/nativeAPI/history implemented,38Debug/7newpass,7445inputs unchanged/5421products retained. Native pipe failed, PID6678stillrunning, oneunlockquestionpending; history458/79568evidence/31679logs/missing0.",
+  "native_458_check": "Currentgoalturn freshgetApp retry stillnativepipeclosed. No bypass/repeatedunlockquestion. Nativeapp remainsopen; pendingresume.",
+  "unrelated_workers": "A transient swift-test PID8977 was absent by command/cwd inspection; no own workers started.",
+  "source_manifest": "artifacts/runs/20261107T011230Z-459-eyedropper-sampling/release03-source.json",
+  "production_swift_files": 1115,
+  "native_validation_app_running": true,
+  "native_validation_pid": 6678,
+  "native_459_app_launched": false,
+  "evidence": "docs/EYEDROPPER_SAMPLING_459.json",
+  "strict_sampling_all_exact": true
+}

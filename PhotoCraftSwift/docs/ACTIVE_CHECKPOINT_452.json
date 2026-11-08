@@ -1,0 +1,17 @@
+{
+  "step": "dev-step-452",
+  "run": "artifacts/runs/20261106T203700Z-452-lens-defaults",
+  "status": "Selected F05camera defaults qualified; currentF06thenB01, fullscope/Photoshop/earlier failures remain open.",
+  "current_major_workflow": "F06",
+  "next": "B01",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T203700Z-452-lens-defaults/source03-source.json",
+  "source_inputs": 7392,
+  "production_swift_files": 1102,
+  "source_unchanged": true,
+  "evidence": "docs/LENS_DEFAULTS_452.json",
+  "validation_app": "/private/tmp/photato-validation-452-stage03-1939fc78/Photato Validation 452.app",
+  "latest_optimized_universal": 452
+}

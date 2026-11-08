@@ -16,8 +16,16 @@ extension EditorStore {
     draft.task = Task { await draft.prepare(original,layerID:id) }
   }
   func cancelContentAwareFill() { contentAwareDraft?.close(); contentAwareDraft = nil; render() }
-  func commitContentAwareFill() {
-    guard let draft = contentAwareDraft,draft.canCommit,let edit = draft.edit,let input = draft.input else { return }
+  func commitContentAwareFill() { finishContentAwareFill(keepingWorkspaceOpen:false) }
+  func applyContentAwareFill() { finishContentAwareFill(keepingWorkspaceOpen:true) }
+  private func finishContentAwareFill(keepingWorkspaceOpen: Bool) {
+    guard let draft = contentAwareDraft,draft.canCommit else { return }
+    // OK after an unchanged Apply closes the workspace without filling twice.
+    if draft.canFinishWithoutApply {
+      if !keepingWorkspaceOpen { cancelContentAwareFill() }
+      return
+    }
+    guard draft.canApply,let edit = draft.edit,let input = draft.input else { return }
     draft.committing = true
     draft.commitTask = Task { [weak self,weak draft] in
       do {
@@ -28,7 +36,16 @@ extension EditorStore {
         try self.executeCompositePreparedEdit(prepared)
         self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
         if self.document != input.original { self.onChange?(.changeDone) }
-        self.contentAwareDraft = nil; self.status = "Content-Aware Fill"; draft.close(); self.render()
+        self.status = "Content-Aware Fill"; self.render()
+        if keepingWorkspaceOpen {
+          draft.acceptAppliedFill()
+          // New patches keep the original source layer; duplicates become the
+          // next full source. Rebuild against the newly committed document.
+          let sourceID = edit.output == .duplicate ? self.document.activeLayerID ?? input.layerID:input.layerID
+          await draft.prepare(self.document,layerID:sourceID)
+        } else {
+          self.contentAwareDraft = nil; draft.close()
+        }
       } catch { if !Task.isCancelled { draft?.error = error.localizedDescription } }
       draft?.committing = false
     }

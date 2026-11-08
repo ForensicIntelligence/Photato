@@ -22,6 +22,7 @@ public enum VectorRasterizer {
         width: width, height: height,
         bytes: [UInt8](repeating: value, count: width * height))
     }
+    let region = try VectorPathGeometry.filledRegion(path)
     guard
       let context = CGContext(
         data: nil, width: width, height: height,
@@ -36,13 +37,13 @@ public enum VectorRasterizer {
     context.scaleBy(x: 1, y: -1)
     context.translateBy(x: -origin.x, y: -origin.y)
     context.setFillColor(gray: 1, alpha: 1)
-    context.addPath(try filledPath(path))
+    context.addPath(region.path)
     context.fillPath()
     var bytes = Array(
       UnsafeBufferPointer(
         start: data.assumingMemoryBound(to: UInt8.self),
         count: width * height))
-    if path.inverted { for i in bytes.indices { bytes[i] = 255 - bytes[i] } }
+    if region.inverted { for i in bytes.indices { bytes[i] = 255 - bytes[i] } }
     return try SelectionMask(width: width, height: height, bytes: bytes)
   }
 }
@@ -74,13 +75,16 @@ public struct LayerMaskSampler: Sendable {
     }
     guard let mask = layer.vectorMask, mask.enabled else { return }
     try mask.validate()
+    let outside: Float = mask.path.isEmpty
+      ? (mask.path.inverted ? 0 : 1)
+      : (try VectorPathGeometry.filledRegion(mask.path).inverted ? 1 : 0)
     if document.width > Surface.maximumDensePixels/document.height {
       guard mask.feather==0 else {throw CraftError.unsupported("Large feathered vector masks still require bounded kernel preparation.")}
       let surface=try VectorRasterizer.pagedCoverage(mask.path,width:document.width,
         height:document.height,emptyRevealsAll:true)
       var prepared=Layer(name:"Paged vector coverage",content:.fill(.clear));prepared.mask=surface
       var properties=MaskProperties();properties.density=mask.density
-      properties.outside=mask.path.isEmpty ? (mask.path.inverted ? 0:1):(mask.path.inverted ? 1:0)
+      properties.outside=outside
       prepared.maskProperties=properties;vectorTileSource=surface
       vector=try MaskSampler(layer:prepared);return
     }
@@ -90,8 +94,6 @@ public struct LayerMaskSampler: Sendable {
     let coverage = try VectorRasterizer.coverage(
       mask.path, width: width, height: height,
       origin: PathPoint(-Double(pad), -Double(pad)), emptyRevealsAll: true)
-    let outside: Float =
-      mask.path.isEmpty ? (mask.path.inverted ? 0 : 1) : (mask.path.inverted ? 1 : 0)
     var surface = try Surface(
       width: width, height: height, depth: .u8,
       fill: Pixel(outside, outside, outside))

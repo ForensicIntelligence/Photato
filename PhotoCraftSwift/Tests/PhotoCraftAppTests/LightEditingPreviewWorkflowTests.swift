@@ -80,7 +80,7 @@ final class LightEditingPreviewWorkflowTests:XCTestCase {
       let busy=try await h.edit(service,document,"adjustment.set",["layerID":d.layers[1].id.uuidString,"adjustment":ModernAdjustment(.light).apiObject]);XCTAssertEqual(busy,409)
       XCTAssertEqual(service.revision(store),revision);XCTAssertEqual(store.document,d);store.cancelBrush();await store.renderTask?.value
       XCTAssertEqual(LightPreviewAPI.state(store)["paused"]as?Bool,false);XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:LightPreviewAPI.stateSchema));XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:ModernAdjustment.apiCapabilities))
-      XCTAssertEqual(AutomationCommand.definitions.count,258);XCTAssertEqual(ActionLibraryFile.maximumVersion,53)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
     }
   }
   @MainActor func testNativePauseNoticeFitsTheDocumentTabWithoutHitTesting()throws {

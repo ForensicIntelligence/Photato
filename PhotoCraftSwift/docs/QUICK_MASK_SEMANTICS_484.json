@@ -1,0 +1,201 @@
+{
+  "step": 484,
+  "application_build": 484,
+  "source": "source04/release01",
+  "reference": "docs/QUICK_MASK_SEMANTICS_484.json",
+  "software_changes": true,
+  "status": "Quick Mask now preserves explicit full selections, starts Selected Areas without an overlay when no selection exists, and uses Photoshop editing-gray conventions in PSD/PSB. All64focused Debug tests and82selected optimized tests perarchitecture pass,17new. Seven owned Photoshop fixtures and81earlier auxiliary fixtures are checked. Native UI checks are partial: Fill remains in a modal loop inaccessible to the current automation binding. Build484is a validation candidate;480remains latest fully qualified selected universal. FullS05andPhotoshopparity remain open.",
+  "normal_selected_tests_each_architecture": 82,
+  "normal_passed_each_architecture": 82,
+  "focused_Debug_tests": 64,
+  "new_correctness_methods": 17,
+  "selected_optimized_gate_passed": true,
+  "selected_native_UI_qualified": false,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "recorded_utc": "2026-11-08T00:35:59.392695+00:00",
+  "run": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics",
+  "source_inputs": 7608,
+  "source_manifest": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/release01-source.json",
+  "Debug_source_manifest": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/source04-source.json",
+  "qualification": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/qualification-selected01.json",
+  "optimized_qualification": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/release01-qualification.json",
+  "byte_equivalence": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/byte-equivalence01.json",
+  "universal": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/universal01/staging01.json",
+  "native_UI": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/native-ui01.json",
+  "source_delta": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/source-final-delta01.json",
+  "versions": {
+    "native": 91,
+    "Actions": 59,
+    "typed_commands": 266
+  },
+  "source_changes": [
+    {
+      "path": "Sources/PhotoCraft/AutomationChannels.swift",
+      "before": "7a070330f807201d4b8f76c98d59d53b9ba84112644c7e795408a755fc8dc8eb",
+      "after": "9829022516a90dcff92bc00986991af6b513ca75f87f477987271368a6b15afc"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "before": "7b738b509963e1cf73d3d6d933e6576ff079bc89f3c96c0c7834bf0df6d1caf8",
+      "after": "16c9b8146aeedc314fd6e65dcc1dddfdf055b689f1d027e8b9f07cafcd63038d"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AlphaChannel.swift",
+      "before": "28471fdfffc84dbaf1182f4520d2eba99cbf9681521c09ac2e371cb4c9770d86",
+      "after": "249d8fad453ded7d9de72e57214262d3183cd777b78037ba28959ebc45b8046c"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "before": "2a321f053c80f447ef6ec89472aa8daff20f05152c454e6fd7a94dabd4d149ec",
+      "after": "c6b15b6458e21ec674086a1f2364fda5daa0b3c06f5a939d53bef3eeb6f4c64c"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ChannelTransform.swift",
+      "before": "58574b37c96447a6f9ab3f6e23c4bae2672021b4b2a94db2f51df8eb2d18cb99",
+      "after": "f2008de5244575b6e728e0510830799de6d189f56d3de6400c80ccd6b4520b5c"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Document.swift",
+      "before": "14b3dde2e61d994c23e1de6cb5c3901b15f5cddc4ef6eae3a1bd36bf7647873f",
+      "after": "cbfc325fa2312f238b8ca182c1dfcf1a457bae472a54997ccc3b1f9da8613fcf"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "before": "2a7143ed55ce7acdb77999dd200edf40cbf3b20c67d7a5eff2a095ba5372510d",
+      "after": "3058998ef3bf49a4ceb6fc24eddf253fb811ff4d4f097c59d4dd5810fe92e9f6"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "before": "db32012ee492e745910ce4e4306e8fb87d1daaec7e5b2cec3cdd4275ae4abbec",
+      "after": "12f421b5ad6bb5b45c0b856e905d305e4299cc05e05fddbfb87a49813fccf08e"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+      "before": "a08bff9b96f17e68d89d4f946f838e0d7468b163edbbd79d0babdb6173f2924c",
+      "after": "31d4ccdb23f245146b5b5cdb6511f92d86d80077de8fc8e3da7c015bc139ba6e"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SpotInk.swift",
+      "before": "1ec648d11df8108f71e6d9e049741e53c57f47d51093419ad2b82e4c4cb82652",
+      "after": "62ece829ec0a5d0bc6c524ca8d12f47a6f9bc2b98d088939e70290be7ae938a0"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDAuxiliaryChannels.swift",
+      "before": "bc89fc241edb4c8075b1ddfb73dd66ca0825a7cac510d6c405b005cf5ebf3f1a",
+      "after": "959f8ffddb725182a6a08356d73df625ec9a64def40a61aa3adf5f671485629c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDMultichannelStorage.swift",
+      "before": "774791613e5e7554e19c1361333c050d10e7be29f1422b33282121b655149933",
+      "after": "bdd5faff4f448ad5cbec77c4789ecd9c7769e20e054653829d2cdaebbdfd63a9"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/QuickMaskOriginWorkflowTests.swift",
+      "before": null,
+      "after": "dce97df00d3b5405d4baa1ba96289c380b2c347df771a303466c9242eb36b73e"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/AlphaChannelTests.swift",
+      "before": "2e69727bbd371280a16b62feccc6e66c5c32a048c29726c8b0c94e20142e6138",
+      "after": "91a4b72f9fd835fd57bb40cfa624c45dcb79cad3a34d1e76ce0cfc387b20c254"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/QuickMaskSemanticsTests.swift",
+      "before": null,
+      "after": "d947c69adb8520b912d953d1effdac4f35830277c8e30dae851e29624ebd7a86"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/README.md",
+      "before": null,
+      "after": "ace05abfd809274b871d06d3ad65295e88705c9a1e37c521c5695aa8d09651be"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/provenance.json",
+      "before": null,
+      "after": "e800c3a9ffb78076989aded5b219f9c52c18ea10098bb544fd8b18baa4e4df10"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-masked-explicit-full-entry.psd",
+      "before": null,
+      "after": "a43bb8cd6fb19aa6330ee95192388584d4e84fb9f46fd15afae0c4b565b3485d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-masked-no-selection-entry.psd",
+      "before": null,
+      "after": "fc730b092a009f158b2361626a97e51392033ea2d4e54279746f5969011beb55"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-no-selection-switched-selected.psd",
+      "before": null,
+      "after": "bc6b5458839df243a9424f0260074d71449e5d94f09823076f8946827d84856a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-selected-entry.psd",
+      "before": null,
+      "after": "72bcc543bb488d082101709f3bdb2f640b9d13e28a41f7ef2ade030ec6a289b9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-selected-exit.psd",
+      "before": null,
+      "after": "8c1d6c4c7809e80669188e3a5503e1d301151e53df8563af2ffff7d8c701d56d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-selected-no-selection-black-dialog.psd",
+      "before": null,
+      "after": "f99a9d23bf790f2922589bc6880591190db2d11fd4e67fc596436397e27ba637"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/ps-selected-no-selection-entry.psd",
+      "before": null,
+      "after": "56e460270a5002859a48e05f0edb4822b3ab4fc48d370d92944898156838e181"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDAuxiliaryChannelTests.swift",
+      "before": "c40402c10848b39a1e15407ffc75343bb5edf35dc2d14732eb93d5ee8a1aadae",
+      "after": "47219757b1e4e8f55f30810d1f24dcc8de2b33ba0d983dfa36a3b42a0173faee"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/QuickMaskGraySemanticsTests.swift",
+      "before": null,
+      "after": "12fca98dbd0aea4479b806837e3a38c75ff480496793a87d32a60186bea86cb4"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "before": "e85e561330590a6db7627c62ffa960351f859d33692a89dc7f6ff37fe9e4ef4b",
+      "after": "6b5b9f42d1460fad0d9af7405fa8c4bf1a6b5146a0353c983c0dab3247670aae"
+    }
+  ],
+  "source_files_removed": [],
+  "new_API": "No new command or endpoint. Existing channel.edit/state/discovery and native download negotiation updated.",
+  "API_state": [
+    "psd.quickMaskInitiallyEmpty:Boolean/null",
+    "psd.retainedFloat32SelectedGray:Boolean",
+    "selectedGrayRetentionVersion:91"
+  ],
+  "old_tests_changed": [
+    "AlphaChannelTests full-selection exit expectation corrected against actual Photoshop reference; exact full rectangle asserted.",
+    "PSDAuxiliaryChannelTests retains all81exact raw-word comparisons;16synthetic Float32 selected-gray cases now require native91instead of77."
+  ],
+  "unchanged": "Original numerical vectors/tolerances, filter kernels, factory menus/keys, cursor policy, project/assets/entitlements; command statuses and memberships unchanged.",
+  "reference_urls": [
+    "https://helpx.adobe.com/photoshop/using/create-temporary-quick-mask.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/alpha-channels-and-masks-in-photoshop.html"
+  ],
+  "Photoshop_fixtures": "Tests/PhotoCraftImagingTests/Fixtures/quick-mask-semantics484/provenance.json",
+  "earlier_reference": "docs/QUICK_MASK_GRAY_401.json",
+  "remaining": [
+    "Full S05 original scope and acceptance remain open, including all-input/default/output/shortcut fidelity and legacy-origin ambiguity.",
+    "Native Fill modal completion/Undo/keyboard input remains unqualified. Preserve PID63159 and sample, then investigate modal/window targeting before claiming native acceptance.",
+    "Prior483400vs422API failure remains open; not rerun or weakened in484. All earlier numerical, full-suite, capacity, platform, AI/provider, distribution and performance gaps remain.",
+    "Float32 source retention is exact for8finite literal words/32bytes per variant, not independent Photoshop HDR or edited-sample kernel equivalence.",
+    "Maximum300000square tests use sparse implicit planes and bounded metadata; dense90billionpixel capacity and60fps remain unproved.",
+    "No plugin host: native C++,UXP,CEP/ExtendScript require separate work underAUT03; Firefly HTTP API does not host desktop plug-ins.",
+    "No deletion, GitHub mutation, production installation, Xcodearchive, Apple upload, AppStore change or software release. Existing and failed builds preserved."
+  ],
+  "full_suite_passed": false,
+  "Photoshop_parity": false,
+  "current": "A02",
+  "next": "A06",
+  "latest_fully_qualified_selected_universal": 480
+}

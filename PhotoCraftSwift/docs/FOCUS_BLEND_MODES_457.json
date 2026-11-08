@@ -1,0 +1,277 @@
+{
+  "step": 457,
+  "date": "2026-11-06",
+  "recorded_utc": "2026-11-07T00:39:43.593900+00:00",
+  "package": "B04",
+  "status": "Selected native/API focus blend modes delivered; full B04 and exact Photoshop output remain open.",
+  "goal_complete": false,
+  "changes": {
+    "modified": [
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationRetouch.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/CloneControls.swift",
+      "Sources/PhotoCraftCore/FocusBrush.swift",
+      "Sources/PhotoCraftCore/RecordedRetouch.swift",
+      "Tests/PhotoCraftAppTests/BlurGalleryMaskWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/CanvasEdgeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/CustomKernelPresetWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/EraserModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterRecallWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FitImageWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FlattenImageWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GalleryEffectDragTests.swift",
+      "Tests/PhotoCraftAppTests/GalleryTextureWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GradientCreationWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GradientFillAPITests.swift",
+      "Tests/PhotoCraftAppTests/LargeCropWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LargeEqualizeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LayerCapacityWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LayerFilterAPITests.swift",
+      "Tests/PhotoCraftAppTests/LayerStackOrderWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LensDefaultWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LightEditingPreviewWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LinkedPreviewAPIWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LiquifyMeshRecallTests.swift",
+      "Tests/PhotoCraftAppTests/MaskRemovalWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PagedHistogramWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PathFillWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PatternPixelFillWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PixelFillStrokeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PointTextWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/RichMergeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ShapeStrokePresetTests.swift",
+      "Tests/PhotoCraftAppTests/TextFindWorkflowTests.swift",
+      "scripts/Info.plist"
+    ],
+    "added": [
+      "Sources/PhotoCraftCore/FocusBlendModes.swift",
+      "Tests/PhotoCraftAppTests/FocusBlendModeWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/generator.swift.txt",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Blur-16 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Blur-16 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Blur-32 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Blur-32 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Blur-8 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Blur-8 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Sharpen-16 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Sharpen-16 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Sharpen-32 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Sharpen-32 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Sharpen-8 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Sharpen-8 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Smudge-16 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Smudge-16 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Smudge-32 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Smudge-32 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Smudge-8 bit-mask.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/normal-Smudge-8 bit-pixels.rgba32",
+      "Tests/PhotoCraftCoreTests/Fixtures/FocusNormal456/provenance.json",
+      "Tests/PhotoCraftCoreTests/FocusBlendModeTests.swift"
+    ],
+    "removed": [],
+    "existing_test_counter_only_changes": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/existing-test-counter-updates01.json",
+    "source_manifest": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/source04-source.json",
+    "inputs": 7443,
+    "original_neighborhood_and_Smudge_pickup_kernels": "unchanged",
+    "project": "Existing .xcodeproj synchronized source groups unchanged."
+  },
+  "implementation": {
+    "modes": [
+      "Normal",
+      "Darken",
+      "Lighten",
+      "Hue",
+      "Saturation",
+      "Color",
+      "Luminosity"
+    ],
+    "native": "Native per-tool session Mode picker; existing busy/gesture guard and captured brush settings. No new global shortcut or modifier action.",
+    "pixel_policy": "Existing normal processed sample blended over original target before existing stroke opacity/selection. Effect alpha retained, transparency lock honored, hidden RGB excluded for transparent original target. Mask Hue/Saturation/Color retain gray. Float32 uses existing native linear blending convention. Normal retains original arithmetic path.",
+    "limits": "This processed-output policy is not independently qualified against Photoshop per-dab/continuous numeric output.",
+    "Actions": 55,
+    "ordinary_retouch_minimum_Actions": 21,
+    "native_archive": 88,
+    "typed_commands": 260
+  },
+  "API": {
+    "command": "retouch.stroke brush.mode",
+    "state": "retouchTools.<tool>.brush.mode",
+    "revision": "Native focus Mode changes alter includeBrush revision; same-value assignment stable. Explicit stroke overrides do not modify native defaults.",
+    "validation": "Conditional schema/discovery and shared engine accept only seven focus modes. Toning remains Normal-only. Invalid/stale/busy requests reject atomically.",
+    "Adobe": "No invented freehand route/descriptor; plugin hosting is a separate unimplemented AUT03 workflow."
+  },
+  "qualification": {
+    "Debug": {
+      "expected": 57,
+      "passed": 57,
+      "all_new": 10,
+      "source_inputs": 7443,
+      "source_unchanged": true,
+      "retained_products": 5421,
+      "compiled_binary_sha256": "798db8c4002666ad8584ba9fb8bc925221c828c7095f795f8fb713639b65e648",
+      "record": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/source04-summary.json"
+    },
+    "normal": {
+      "same_ordered_cases": 57,
+      "passed_each": [
+        57,
+        56
+      ],
+      "failed_each": [
+        0,
+        1
+      ],
+      "Intel_failed_assertions": 234,
+      "legacy_failure_reproduced_on_456": true,
+      "all_new_each": [
+        10,
+        10
+      ],
+      "source_unchanged": true,
+      "Intel_execution": "Rosetta on current Apple Silicon host",
+      "retained_products": 10842,
+      "record": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/release01-qualification.json"
+    },
+    "raw_bytes": {
+      "Normal_legacy_456_cases": 18,
+      "mode_cases": 126,
+      "bytes_per_buffer": 24576,
+      "strict_all_equal": false,
+      "record": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/focus-bytes01.json",
+      "kind": "Photato regression/architecture consistency, not Photoshop numeric oracles"
+    },
+    "native": {
+      "Debug": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/validation01-native.json",
+      "optimized": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/native-optimized01.json",
+      "selected_paths": "Native Mode selections, Sharpen Lighten and Smudge Color painting/Undo/Redo/clean close, Blur Darken retained; optimized selected workflow in linked record.",
+      "limitations": "Initial rapid single-click/history sequence and Open-panel timing/clipboard error retained; no cause claim. No broad HIG/VoiceOver/held physical cursor/tablet/60fps qualification."
+    },
+    "universal": {
+      "app": "/private/tmp/photato-validation-457-stage03-1fcd7dc1/Photato Validation 457.app",
+      "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T234733Z-457-focus-blend-modes/universal/Photato-Validation-457.zip",
+      "archive_sha256": "805cba5f5c0fecd9fa2e6ad16473ea425e78f5ac010f49328f0476670df01bab",
+      "same_extracted_content": true,
+      "extracted_signature_verified": true,
+      "source_manifest": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/release01-source.json",
+      "source_inputs": 7443,
+      "source_unchanged": true,
+      "source_matches_passed_Debug": true,
+      "architectures": "x86_64 arm64",
+      "minimum_system_metadata": "14.0",
+      "bundle_id": "ca.forensicintelligence.photato.validation457optimized",
+      "version": "0.3.0",
+      "build": 457,
+      "signed_universal_binary_sha256": "cd6630fc8775fbd2026d89a90f9bc9789b1c944c329ffb950504b35f5a948415",
+      "signature_verified": true,
+      "full_production_AppStore_entitlements": true,
+      "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+      "production_entitlements_unchanged": true,
+      "retained_optimized_products": 10842,
+      "selected_pass_each": [
+        57,
+        56
+      ],
+      "strict_normal_suite_passed": false,
+      "legacy_Intel_failed_assertions": 234,
+      "new_methods_pass_each": [
+        10,
+        10
+      ],
+      "full_suite_passed": false,
+      "Photoshop_parity": false,
+      "validation_only": true,
+      "live_UI_qualified": false,
+      "source_uploaded": false,
+      "software_release": false,
+      "strict_focus_capture_record": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/focus-bytes01.json"
+    },
+    "full_suite": false,
+    "physical_60fps": false,
+    "full_Photoshop_parity": false,
+    "strict_diagnostic": {
+      "step": 457,
+      "legacy_fixture_failure": "PhotoCraftCoreTests.FocusStrokeSessionTests/testCompleteAndIncrementalPrefixesMatchPreOptimizationPixels",
+      "baseline456_ARM_pass": true,
+      "baseline456_Intel_failed_assertions": 234,
+      "current457_Intel_failed_assertions": 234,
+      "all_234_failure_messages_and_actual_expected_hashes_identical": true,
+      "test_source_and_fixture_unchanged": true,
+      "strict_new_modes": {
+        "buffers": 126,
+        "exact_all_three_builds": 120,
+        "nonexact_buffers": 6,
+        "different_Intel_color_words": 16,
+        "different_alpha_words": 0,
+        "ULP_deltas": {
+          "1": 11,
+          "2": 3,
+          "3": 1,
+          "4": 1
+        },
+        "Debug_ARM_all_126_exact": true
+      },
+      "legacy_Normal_18_all_exact": true,
+      "no_assertions_or_tolerances_changed": true,
+      "cause_claim": "No compiler/libm/general cause isolated. Exact prior baseline reproduction does not resolve the strict requirement.",
+      "gate_status": "Retain strict failure under B04/Q04 numerical cleanup; selected functional/API/new tests pass. Full package and master goal remain open.",
+      "recorded_utc": "2026-11-07T00:37:05.621208+00:00"
+    }
+  },
+  "preserved_attempts": [
+    {
+      "source": "Source01",
+      "outcome": "New test assigned get-only property; compile failure before tests,56missing. Retained cache app is stale456 and explicitly labeled.",
+      "retained": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/source01-binaries/manifest.json"
+    },
+    {
+      "source": "Source02",
+      "outcome": "New test BlendMode ambiguous with SwiftUI;0tests/56missing. App linked; preserved before test-only qualification repair.",
+      "retained": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/source02-binaries/manifest.json"
+    },
+    {
+      "source": "Source03",
+      "outcome": "All56/9new pass; Source02/03 app SHA identical. Later Source04 adds native focus-mode API revision guard and tenth test.",
+      "retained": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/source03-binaries/manifest.json"
+    },
+    {
+      "source": "Source04",
+      "outcome": "All57/10new pass;18legacyNormalexact/126modebufferscaptured; source unchanged.",
+      "retained": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/source04-binaries/manifest.json"
+    },
+    {
+      "source": "Release01",
+      "outcome": "57ARM/56of57Intel, all10newpass; onelegacyIntelcase234assertions exactlyreproduces456; sixnewmodef32buffers16colorwords1\u20134ULP,alphaexact. No strictgate waiver.",
+      "record": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/strict-comparison-diagnostic01.json"
+    }
+  ],
+  "reference": {
+    "Photoshop": "Owned RGB8 image through normal installed Photoshop2026 UI; only Blur seven-item ordered Mode list independently observed. Sharpen/Smudge desktop lists and all pixel outputs unqualified.",
+    "provenance": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/photoshop/provenance.json",
+    "observation": "artifacts/runs/20261106T234733Z-457-focus-blend-modes/photoshop/mode-observation01.json",
+    "public_sources": [
+      "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/smudge-image-areas.html",
+      "https://helpx.adobe.com/photoshop/desktop/effects-filters/blur-sharpen-filters/increase-sharpness-in-selected-image-areas.html",
+      "https://helpx.adobe.com/my_ms/photoshop/ipad/draw-and-paint/smudge-tool-ipad.html",
+      "https://www.w3.org/TR/compositing-1/#blending"
+    ],
+    "shortcut_conflict": "Current Adobe desktop Smudge page says R; actual installed R selects Rotate View. Factory behavior retained.",
+    "no_proprietary_implementation": "No Adobe decompilation/disassembly/algorithm code/artwork incorporated."
+  },
+  "remaining": [
+    "All original B04 clone/heal/sample/dynamics/overlays/toning/focus scope and acceptance.",
+    "Independent Photoshop per-dab/continuous output, desktop Sharpen/Smudge lists, exact defaults/profiles/depth/component/gray/selection/transform contexts.",
+    "Full current suite, physical Intel/macOS14, tablet/60fps/capacity, earlier ShapeBlur/Float32/linked-alpha and native456 Open/Quit failures.",
+    "All104 original scopes/acceptance,652command identity/status mappings,81major memberships and seven-pass order."
+  ],
+  "next": "B06 Content-Aware Fill and Scale source audit, then B07. Selected B04 delivery rotates to queue end; no full package closure.",
+  "distribution": {
+    "source_uploaded": false,
+    "GitHub_deleted": false,
+    "installed": false,
+    "AppStore_changed": false,
+    "Xcode_archive_or_software_release": false,
+    "current_builds_preserved": true
+  }
+}

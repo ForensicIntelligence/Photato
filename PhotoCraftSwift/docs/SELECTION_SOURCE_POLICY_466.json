@@ -1,0 +1,501 @@
+{
+  "step": 466,
+  "date": "2026-11-07",
+  "recorded_utc": "2026-11-07T07:35:17.471633+00:00",
+  "workflow": "S03",
+  "track": "major stillneeded/pass2",
+  "goal_complete": false,
+  "source": {
+    "manifest": "artifacts/runs/20261107T070947Z-466-selection-sources/source01-source.json",
+    "normal_manifest": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-source.json",
+    "inputs": 7487,
+    "unchanged": true,
+    "added": [
+      "Tests/PhotoCraftAppTests/SelectionSourceWorkflowTests.swift",
+      "Tests/PhotoCraftImagingTests/SelectionSourcePolicyTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/AutomationMagicWand.swift",
+      "Sources/PhotoCraft/AutomationObjectFinder.swift",
+      "Sources/PhotoCraft/AutomationPeople.swift",
+      "Sources/PhotoCraft/AutomationSelectionTools.swift",
+      "Sources/PhotoCraft/ColorRegionEditing.swift",
+      "Sources/PhotoCraft/ObjectFinder.swift",
+      "Sources/PhotoCraft/SelectionTools.swift",
+      "Sources/PhotoCraftImaging/SelectionToolPreparation.swift",
+      "Tests/PhotoCraftAppTests/SubjectOptionsTests.swift",
+      "scripts/Info.plist"
+    ],
+    "Core_sources_tests_old_Imaging_tests_math_fixtures_unchanged": true,
+    "only_existing_Imaging_source_changed": "SelectionToolPreparation.swift",
+    "project_assets_entitlements_unchanged": true,
+    "native": 89,
+    "Actions_maximum": 58,
+    "typed_commands": 265
+  },
+  "implementation": {
+    "source_policy": "Explicit current source uses existing raster or clippingCoverage render for type/shape/fill. Sample All Layers alone selects the visible composite. Invalid/missing sources reject; groups/adjustments require explicit composite. Cancellation is checked before rendering.",
+    "correction": "Smart Objects already retain raster previews and already used the current-layer path. Initial audit wording was corrected; no new Smart Object sampling feature is counted.",
+    "native": "Magic Wand Options now has Select Subject. It captures wandSampleAllLayers; Object/Quick and Properties/Menu sampling preferences remain independent. Existing ForegroundSelection model/transaction/raster eligibility are unchanged.",
+    "API": "Existing selection.subject and object/people selection routes use the shared engine. Capabilities identify per-tool sampling fields; no new command, Adobe endpoint or runtime descriptor is invented.",
+    "models": "No model download/replacement, Core math or renderer kernel change. New input detectors in unit tests are deterministic test doubles; real Vision was separately exercised in the native app."
+  },
+  "validation": {
+    "selected_Debug": 82,
+    "passed_Debug": 82,
+    "new_466_methods": 12,
+    "prior_465_methods": 11,
+    "normal_same_methods_each": 83,
+    "normal_passed_each": [
+      83,
+      83
+    ],
+    "new_465_466_passed_each": 23,
+    "normal_source_matches_Debug": true,
+    "normal_qualification": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-qualification.json",
+    "retained_Debug_products": 5421,
+    "retained_normal_products": 10842,
+    "output_manifest": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-output-manifest.json",
+    "strict_captures": [
+      {
+        "name": "rich-selection-inputs.f32",
+        "reference": "artifacts/runs/20261107T070947Z-466-selection-sources/analytical-selection-inputs.f32",
+        "reference_sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+        "bytes_each": 4608,
+        "unit_bytes": 4,
+        "captures": [
+          {
+            "label": "source01",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/source01-captures/rich-selection-inputs.f32",
+            "sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-arm",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-arm-captures/rich-selection-inputs.f32",
+            "sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-intel",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-intel-captures/rich-selection-inputs.f32",
+            "sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          }
+        ],
+        "all_exact": true,
+        "meaning": "Own literal source samples or deterministic averaged-selection masks. No normalization/tolerance; not an independent Photoshop or ML output oracle."
+      },
+      {
+        "name": "wand-seven-sizes.mask",
+        "reference": "artifacts/runs/20261107T063457Z-465-wand-sampling/analytical-seven-sizes.mask",
+        "reference_sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+        "bytes_each": 74263,
+        "unit_bytes": 1,
+        "captures": [
+          {
+            "label": "source01",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/source01-captures/wand-seven-sizes.mask",
+            "sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-arm",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-arm-captures/wand-seven-sizes.mask",
+            "sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-intel",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-intel-captures/wand-seven-sizes.mask",
+            "sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          }
+        ],
+        "all_exact": true,
+        "meaning": "Own literal source samples or deterministic averaged-selection masks. No normalization/tolerance; not an independent Photoshop or ML output oracle."
+      }
+    ],
+    "old_point_oracle": "240 licensed Rust point-sample regression cases /66,096bytes; no Photoshop proof.",
+    "old_independent_Photoshop_methods": 7,
+    "old_cursor_methods": 9,
+    "full_suite_passed": false,
+    "normal_Debug_compiler_workaround_used": false
+  },
+  "reference": {
+    "Adobe_Object_Selection": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/select-objects-with-object-selection-tool.html",
+    "public_observation": "Sample All Layers includes all visible layers. It does not prove every source-kind eligibility or pixel kernel.",
+    "native_Photoshop_reference": "465 observed Select Subject in Magic Wand Options; current466 system Vision result is not an Adobe oracle.",
+    "source_audit_correction": "Smart Objects already use raster previews plus metadata and were not composite fallback cases. Type/shape/fill were the actual fallback cases.",
+    "full_S03_open": true
+  },
+  "native": {
+    "recorded_utc": "2026-11-07T07:22:22.208637+00:00",
+    "source": "source01",
+    "app": "/private/tmp/photato-validation-466-debug-stage01-8e1009e2/Photato Validation 466.app",
+    "compiled_binary_sha256": "797379c22c09e26d24ec871d4fbf9927b5228063199f077224967cfe47fe2b00",
+    "signed_binary_sha256": "1360b736ef898a87490573198d88bbba53d0c8c06af4af6c825aef5d5e276d22",
+    "initial_failure": "First getApp returned native pipe closed; ps showed no466process. Reset CUA kernel once; rebind recovered and launched exact stage.",
+    "actions": [
+      "Open owned-subject.png copy through native file panel.",
+      "W/Shift-W twice selects Magic Wand. Native Options Select Subject ID selection.options.subject is enabled; Sample All Layers false.",
+      "Click new Options button. Actual Apple Vision on-device detector creates visible subject mask around mascot and paintbrush; dirty marker and selection controls appear.",
+      "Edit > Undo Select Subject clears dirty state and Deselect; Redo Select Subject restores them; Undo again restores clean document.",
+      "Close only the owned image tab, observe Untitled1 remains without save dialog.",
+      "Application menu Quit Photato; ps verifies466terminal and old458 process preserved."
+    ],
+    "source_image_original_and_copy_unchanged": true,
+    "selected_native_workflow_verified": true,
+    "full_gesture_context_platform_matrix_verified": false,
+    "new_independent_Photoshop_output_proof": false,
+    "screenshots": "Inline CUA screenshot in current chat; no local image file claimed.",
+    "software_release_or_production_install": false
+  },
+  "Debug_package": {
+    "step": 466,
+    "app": "/private/tmp/photato-validation-466-debug-stage01-8e1009e2/Photato Validation 466.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation466",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "466Source01",
+    "source_inputs": 7487,
+    "compiled_binary_sha256": "797379c22c09e26d24ec871d4fbf9927b5228063199f077224967cfe47fe2b00",
+    "signed_binary_sha256": "1360b736ef898a87490573198d88bbba53d0c8c06af4af6c825aef5d5e276d22",
+    "unsigned_payload_exact": true,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": null,
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_464": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": true,
+    "latest_optimized_universal": 464,
+    "qualification": {
+      "unexpected_signals": [],
+      "expected_count": 82,
+      "missing_cases": [],
+      "exit_code": 0,
+      "inputs": 7487,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testAdobeActualHTTPJobResultAndHostedMask",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testAdobeCutoutMaskPSDTrimBackgroundAndPixelEquivalence",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testBackgroundRouteFramingAndSchemas",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testCoreMaskCoordinatesPixelsSelectionPersistenceAndHistoryAtAllDepths",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testDesktopSelectRemoveUndoRedoAndCancel",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testFactorySubjectMenuBinding",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testLocalDecontaminationDoesNotChangeOpaquePixelsOrAlpha",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testPhotatoHTTPMatchesDesktopAndValidatesBusyStaleAndParameters",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testPhotatoNativeCancelPreventsLateCommit",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testPublishedEnvelopeStrictDefaultsAndInvalidOptions",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testRevokingShareDiscardsPreparedSubjectResult",
+        "PhotoCraftAppTests.ForegroundWorkflowTests/testSubjectModesNoSubjectDimensionsAndLockGuards",
+        "PhotoCraftCoreTests.MagicWandSamplingTests/testAllSevenSizesSelectKnownAverageTargetsExactly",
+        "PhotoCraftCoreTests.MagicWandSamplingTests/testAverageRetainsExistingHiddenRGBAndAlphaComparisonPolicy",
+        "PhotoCraftCoreTests.MagicWandSamplingTests/testAverageUsesDocumentCoordinatesAtEveryDepthAndPreservesHistory",
+        "PhotoCraftCoreTests.MagicWandSamplingTests/testClippedAverageCanDifferFromTheClickedPixel",
+        "PhotoCraftCoreTests.MagicWandSamplingTests/testContiguousAverageDoesNotCrossAnUnmatchedBarrier",
+        "PhotoCraftCoreTests.MagicWandSamplingTests/testInvalidSizesAndCancellationDoNotPublishSelections",
+        "PhotoCraftAppTests.MagicWandSamplingWorkflowTests/testCancelledAndRevokedPreparationCannotPublish",
+        "PhotoCraftAppTests.MagicWandSamplingWorkflowTests/testConfigurationSchemasAndMalformedStaleBusyRequests",
+        "PhotoCraftAppTests.MagicWandSamplingWorkflowTests/testLockedReadOnlySourceAndEveryModifierKeepExistingSelectionPolicy",
+        "PhotoCraftAppTests.MagicWandSamplingWorkflowTests/testNativeAndHTTPMatchAllSizesDepthsAndOrdinaryMaskTargets",
+        "PhotoCraftAppTests.MagicWandSamplingWorkflowTests/testNativeAverageCapturesOptionsAndHasOneUndo",
+        "PhotoCraftImagingTests.ObjectFinderSceneTests/testHitCoverageThresholdTieBreakingAndHardEdge",
+        "PhotoCraftImagingTests.ObjectFinderSceneTests/testInvalidInstancesAndResourceBounds",
+        "PhotoCraftImagingTests.ObjectFinderSceneTests/testSourceIgnoresSelectionButInvalidatesPixelsAndSampling",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testAPIDetectionMasksHoverSelectionConfigurationAndHistory",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testCanvasHoverClickExitAndOptionsOffscreen",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testHoverUsesOneInferenceAndSameMaskForClickUndoActions",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testInvalidStaleBusyRefreshAndRevokedDetectionAPI",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testModelFailureIsVisibleAndDoesNotRetryEveryHover",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testPendingClickAndReloadCloseCancellation",
+        "PhotoCraftAppTests.ObjectFinderWorkflowTests/testSourceChangesRefreshCancellationAndToolSwitchDiscardStaleResults",
+        "PhotoCraftImagingTests.PeopleFeatureTests/testNativeRGBNormalizationOrientationAndTransparency",
+        "PhotoCraftImagingTests.PeopleFeatureTests/testProbabilitiesSoftmaxProjectionAndFeatureUnion",
+        "PhotoCraftImagingTests.PeopleFeatureTests/testSemanticMasksKeepPersonIdentityHistoryAndUnavailableFeaturesHonest",
+        "PhotoCraftImagingTests.PeopleSelectionTests/testEmptyDetectionInvalidMasksAndInvalidSelection",
+        "PhotoCraftImagingTests.PeopleSelectionTests/testWholePersonUnionSoftEdgesModesHistoryAndNativeSaving",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testAPIInvalidStaleBusyEmptyRefreshCancellationAndRevocation",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testAPIMasksThumbnailsHoverMultiPersonSelectionAndHistory",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testEmptyFailureRefreshAndOffscreenPicker",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testFeatureAPIExportHoverSelectionAndStrictParameters",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testFeatureFailureRetainsWholePeopleAndCancellationDiscardsBothModels",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testNativeFeatureControlsHoverSelectionActionsAndRefinement",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testPeoplePickerHoverMultipleSelectionUndoActionsAndRefinement",
+        "PhotoCraftAppTests.PeopleWorkflowTests/testSourceSamplingToolEscapeReloadAndCloseInvalidateDetection",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+        "PhotoCraftImagingTests.SelectionSourcePolicyTests/testCancelledRichSamplingDoesNotChangeSourceState",
+        "PhotoCraftImagingTests.SelectionSourcePolicyTests/testGroupsAdjustmentsAndMissingCurrentSourcesNeverFallBackSilently",
+        "PhotoCraftImagingTests.SelectionSourcePolicyTests/testHiddenLockedTransformedMaskedShapeDoesNotReadTheCover",
+        "PhotoCraftImagingTests.SelectionSourcePolicyTests/testObjectAndPeopleDetectionShareTheExplicitInputChoice",
+        "PhotoCraftImagingTests.SelectionSourcePolicyTests/testSolidCurrentAndExplicitCompositeHaveExactLiteralInputsAtEveryDepth",
+        "PhotoCraftImagingTests.SelectionSourcePolicyTests/testTypeShapePatternAndGradientUseTheirOwnRenderedContent",
+        "PhotoCraftAppTests.SelectionSourceWorkflowTests/testHTTPFinderAndPeopleRespectExplicitSourceAndRejectUnavailableContexts",
+        "PhotoCraftAppTests.SelectionSourceWorkflowTests/testMagicWandSubjectCapturesItsOwnSamplingAndMatchesHTTPAtEveryDepth",
+        "PhotoCraftAppTests.SelectionSourceWorkflowTests/testMagicWandSubjectReadsExistingSmartObjectsWithoutRasterizing",
+        "PhotoCraftAppTests.SelectionSourceWorkflowTests/testNativeAndHTTPObjectPointUseTheSameRichLayerSource",
+        "PhotoCraftAppTests.SelectionSourceWorkflowTests/testObjectFinderRichSourceCachesSamplingSeparatelyAndKeepsOneUndo",
+        "PhotoCraftAppTests.SelectionSourceWorkflowTests/testWandSubjectAvailabilityAndCapabilityMappingPreserveOtherPolicies",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testAPIConfigInvalidBusyStaleAndRevocation",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testAPIEquivalentToNativeBrushQuickAndObject",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testBrushPreviewCancelOpacityHistoryAndArchive",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testObjectRectangleLassoAndPointThroughCanvas",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testQuickPreviewCommitAndToolSwitchCancellation",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testRecordedCoverageAndFactoryToolControls",
+        "PhotoCraftAppTests.SelectionToolWorkflowTests/testSamplingRespectsTransformsLockedSourcesAndCompositeChoice",
+        "PhotoCraftAppTests.SubjectOptionsTests/testOptionsCaptureSamplingAndMatchHTTPSelectionHistoryAndGuards",
+        "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+        "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+        "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+        "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+        "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+        "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+        "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+        "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+        "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+      ],
+      "passed": 82,
+      "failed_cases": [],
+      "totals": [
+        [
+          "82",
+          "0",
+          "0",
+          "13.279"
+        ]
+      ],
+      "build_seconds": [
+        "31.54"
+      ],
+      "finished_utc": "2026-11-07T07:17:22.387421+00:00"
+    },
+    "status": "82Debug/12new pass. Actual isolatedWand SelectSubject on owned1024image uses systemVision and yields visible mask; menu UndoRedoUndo, clean tabClose and Quit verified. Full contexts/platforms/Photoshop/normal466 open.",
+    "prepared_utc": "2026-11-07T07:18:51.051624+00:00",
+    "production_install": false,
+    "selected_native_workflow_verified": true
+  },
+  "optimized_package": {
+    "step": 466,
+    "app": "/private/tmp/photato-validation-466-stage01-b4d8b81c/Photato Validation 466.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T070947Z-466-selection-sources/universal/Photato-Validation-466.zip",
+    "archive_sha256": "0df9fa4d64e995f5bebabfef861a5d030f10495c366311b3887ac023bc6fb870",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-source.json",
+    "source_inputs": 7487,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation466optimized",
+    "version": "0.3.0",
+    "build": 466,
+    "signed_universal_binary_sha256": "31ebf0fb2616499ad576b1d4486bb70e869bfc192d684e92b97b5c94035f1800",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10842,
+    "selected_pass_each": [
+      83,
+      83
+    ],
+    "new_methods_pass_each": [
+      23,
+      23
+    ],
+    "strict_selection_output": [
+      {
+        "name": "rich-selection-inputs.f32",
+        "reference": "artifacts/runs/20261107T070947Z-466-selection-sources/analytical-selection-inputs.f32",
+        "reference_sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+        "bytes_each": 4608,
+        "unit_bytes": 4,
+        "captures": [
+          {
+            "label": "source01",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/source01-captures/rich-selection-inputs.f32",
+            "sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-arm",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-arm-captures/rich-selection-inputs.f32",
+            "sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-intel",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-intel-captures/rich-selection-inputs.f32",
+            "sha256": "a186591f8c52ae399ef8008ce9975a33ed3f78e03c6b50e6d301f96175419858",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          }
+        ],
+        "all_exact": true,
+        "meaning": "Own literal source samples or deterministic averaged-selection masks. No normalization/tolerance; not an independent Photoshop or ML output oracle."
+      },
+      {
+        "name": "wand-seven-sizes.mask",
+        "reference": "artifacts/runs/20261107T063457Z-465-wand-sampling/analytical-seven-sizes.mask",
+        "reference_sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+        "bytes_each": 74263,
+        "unit_bytes": 1,
+        "captures": [
+          {
+            "label": "source01",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/source01-captures/wand-seven-sizes.mask",
+            "sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-arm",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-arm-captures/wand-seven-sizes.mask",
+            "sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          },
+          {
+            "label": "release01-intel",
+            "path": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-intel-captures/wand-seven-sizes.mask",
+            "sha256": "51954c124d2c1c7a9f7b2f95d33c541583755aaed732d8b8c99e8ab91a381aae",
+            "exact": true,
+            "different_units": 0,
+            "first_differing_offsets": []
+          }
+        ],
+        "all_exact": true,
+        "meaning": "Own literal source samples or deterministic averaged-selection masks. No normalization/tolerance; not an independent Photoshop or ML output oracle."
+      }
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "launched_or_installed": false,
+    "isolated_session_launch_environment_configured": true,
+    "runtime_launch_environment_verified": false,
+    "payload_comparison": {
+      "step": 466,
+      "source": "release01-source.json",
+      "all_slices_unsigned_exact": false,
+      "all_other_unsigned_bytes_exact": true,
+      "slices": [
+        {
+          "architecture": "arm64",
+          "compiled_sha256": "c9d1b231accb27e460f0ffe12f0d84ef289c993394d7d9f74d6bca3330092aee",
+          "unsigned_exact": false,
+          "all_other_unsigned_bytes_exact": true,
+          "signing_metadata_exception": {
+            "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+            "offset": 3552,
+            "changed_offsets": [
+              3554
+            ],
+            "before_after": [
+              59686912,
+              59031552
+            ],
+            "signed_lengths": [
+              113518776,
+              112859920
+            ],
+            "page_size": 16384,
+            "signed_allocation_rounding_verified": true,
+            "independent_signing_replay": "universal/signing-replay01/verification01.json",
+            "rounding_basis": "Measured host PAGESIZE, independently reproduced with Apple codesign on each untouched compiled slice."
+          },
+          "unsigned_bytes": 112638656
+        },
+        {
+          "architecture": "x86_64",
+          "compiled_sha256": "4b647b42dc665601bd8e8bc3e57acb53304a1723be953b43a794c3e24682e5f1",
+          "unsigned_exact": false,
+          "all_other_unsigned_bytes_exact": true,
+          "signing_metadata_exception": {
+            "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+            "offset": 3392,
+            "changed_offsets": [
+              3393,
+              3394
+            ],
+            "before_after": [
+              58785792,
+              59719680
+            ],
+            "signed_lengths": [
+              118900024,
+              119830224
+            ],
+            "page_size": 16384,
+            "signed_allocation_rounding_verified": true,
+            "independent_signing_replay": "universal/signing-replay01/verification01.json",
+            "rounding_basis": "Measured host PAGESIZE, independently reproduced with Apple codesign on each untouched compiled slice."
+          },
+          "unsigned_bytes": 118900024
+        }
+      ]
+    }
+  },
+  "plugin_capability_audit": {
+    "step": 466,
+    "recorded_utc": "2026-11-07T07:28:13.584038+00:00",
+    "capability": "AUT03 remains open; no native Photoshop plugin host, UXP runtime, CEP or ExtendScript support",
+    "source_evidence": [
+      "docs/FUNCTION_PHASES_465.json#AUT03",
+      "Sources/PhotoCraft/AdobeActionsRequest.swift",
+      "Sources/PhotoCraft/AutomationMagicWand.swift"
+    ],
+    "references": [
+      "https://developer.adobe.com/photoshop/",
+      "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/",
+      "https://developer.adobe.com/uxp/migration-center/cross-host-differences/"
+    ],
+    "API_scope": "Firefly HTTP contract is separate from desktop extension contracts",
+    "software_changed": false,
+    "third_party_compatibility_promised": false
+  },
+  "remaining": [
+    "Full S03 includes detailed face features, broader selection/model functionality and the original acceptance criteria; six existing People classes are not newly implemented here.",
+    "Photoshop source-kind eligibility, groups/adjustments, exact sample/profile/alpha/default/output behavior and independent model/selection numerical equivalence remain unqualified. Groups/adjustments currently require explicit Sample All Layers.",
+    "Select Subject retains raster/Smart Object eligibility. Type/shape/fill input support applies to existing object/people selection preparation; it does not expand unobserved Subject or Remove Background contexts.",
+    "Current renderer/model/analysis capacity and non-RGB/target restrictions, full native gesture/context matrix, physical Intel/macOS14/Apple Silicon platform coverage, 60fps and all earlier numerical/full-suite failures remain open.",
+    "Current optimized universal is staged and unlaunched. The selected native workflow was checked in Source01 Debug; it does not establish optimized GUI, full-suite or whole-Photoshop parity."
+  ],
+  "next": "S04 then S06"
+}

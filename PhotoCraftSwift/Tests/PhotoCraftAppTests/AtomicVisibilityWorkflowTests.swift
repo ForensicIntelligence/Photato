@@ -19,7 +19,7 @@ final class AtomicVisibilityWorkflowTests: XCTestCase {
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     let model = try DocumentSaveWorkflowTests().fixture()
-    for format in DocumentIO.Format.allCases {
+    for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
       let expected = try DocumentIO.encodeForPersistence(model, format: format)
       for initial in [false, true] {
         let target = folder.appendingPathComponent("\(initial).\(format.rawValue)")
@@ -39,7 +39,7 @@ final class AtomicVisibilityWorkflowTests: XCTestCase {
     _ = NSApplication.shared
     let helper = DocumentSaveWorkflowTests(), folder = try helper.directory()
     defer { try? FileManager.default.removeItem(at: folder) }
-    for format in DocumentIO.Format.allCases {
+    for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
       for initial in [nil, false, true] as [Bool?] {
         let target = folder.appendingPathComponent("\(String(describing: initial)).\(format.rawValue)")
         if let initial {
@@ -76,7 +76,7 @@ final class AtomicVisibilityWorkflowTests: XCTestCase {
     defer { try? FileManager.default.removeItem(at: folder) }
     let model = try helper.fixture(), document = CraftNSDocument(model: model)
     defer { document.close() }
-    for format in DocumentIO.Format.allCases {
+    for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
       let target = folder.appendingPathComponent("hidden-copy.\(format.rawValue)")
       try Data([9]).write(to: target)
       XCTAssertEqual(chflags(target.path, UInt32(UF_HIDDEN)), 0)
@@ -99,7 +99,7 @@ final class AtomicVisibilityWorkflowTests: XCTestCase {
       service.setSaveDirectory(folder)
       try service.share(document)
       let model = document.store.document, history = document.store.session.undoStack.count
-      for format in DocumentIO.Format.allCases {
+      for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
         for initial in [nil, false, true] as [Bool?] {
           let name = initial.map { $0 ? "hidden" : "visible" } ?? "new"
           let target = folder.appendingPathComponent("\(name).\(format.rawValue)")

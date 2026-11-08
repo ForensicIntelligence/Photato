@@ -11,12 +11,13 @@ extension EditorTool {
 @MainActor extension EditorStore {
   var canUseSelectionTools:Bool {canUseBrush && !editingComponent && !aiBusy && document.width<=SelectionSegmentation.maximumPixels/max(1,document.height)}
   var canSelectSubjectFromToolOptions:Bool {
-    [.objectSelection,.quickSelection].contains(tool) && canUseSelectionTools
-      && canDetectSubject() && brushGesture == nil
+    let sourceTool = [.objectSelection,.quickSelection].contains(tool) ? canUseSelectionTools
+      : (tool == .magicWand && canUseMagicWand)
+    return sourceTool && canDetectSubject() && brushGesture == nil
   }
   func selectSubjectFromToolOptions() {
     guard canSelectSubjectFromToolOptions else{return}
-    detectSubject(sampleAllLayers:selectionSampleAllLayers)
+    detectSubject(sampleAllLayers:tool == .magicWand ? wandSampleAllLayers:selectionSampleAllLayers)
   }
   func selectionToolMode(modifiers:NSEvent.ModifierFlags)->SelectionMode {
     if modifiers.contains([.shift,.option]) {return .intersect}

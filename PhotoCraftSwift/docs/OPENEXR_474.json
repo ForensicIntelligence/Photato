@@ -1,0 +1,1439 @@
+{
+  "step": 474,
+  "date": "2026-11-07",
+  "recorded_utc": "2026-11-07T13:45:37.759971+00:00",
+  "workflow": "I04",
+  "title": "OpenEXR HDR interchange",
+  "track": "major stillneeded",
+  "status": "Selected native/API OpenEXR workflow implemented and optimized-qualified; full originalI04 remains open",
+  "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release02-source.json",
+  "source_inputs": 7557,
+  "source_changes": "artifacts/runs/20261107T125434Z-474-openexr/source-changes-final01.json",
+  "new_test_methods": 14,
+  "optimized_tests_each_architecture": 97,
+  "normal_qualification": {
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "results": [
+      {
+        "command": [
+          "./scripts/test.sh",
+          "-c",
+          "release",
+          "--disable-build-manifest-caching",
+          "--jobs",
+          "4",
+          "--filter",
+          "^(?:PhotoCraftImagingTests\\.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions|PhotoCraftImagingTests\\.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable|PhotoCraftImagingTests\\.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation|PhotoCraftImagingTests\\.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels|PhotoCraftImagingTests\\.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject|PhotoCraftImagingTests\\.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments|PhotoCraftImagingTests\\.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe|PhotoCraftImagingTests\\.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack|PhotoCraftImagingTests\\.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue|PhotoCraftImagingTests\\.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testNativeSavePanelOptionsReachAppKitAndSubsequentSave|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testCopyPreservesOwnershipHistoryAndRememberedSaveOptions|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testFailedSaveAndInvalidOptionsDoNotAdoptSettingsOrReplaceFile|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testStrictOptionsAndBackwardCompatibleCommandSchemas|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testOpenEditSaveBackEveryWritableFormatAndSaveAsChangesOwnership|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testRepresentabilityRejectsFlatteningDepthLossAndUnsupportedPSDWithoutWriting|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testSourceFormatUsesImageContentAndCommonFilenameAliases|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testRecoveryFromPSDUsesNativeArchiveAndDoesNotReplacePSD|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testSaveAsRefusesAnotherOpenDocument|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testHTTPRevocationOrConcurrentEditDuringEncodingNeverWrites|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testImportedRGB32SourceCannotBeSilentlyOverwrittenBeforeFormatReview|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testSaveAsFormatControlPreservesEligibleTypesAndSelectedFileType|PhotoCraftAppTests\\.DocumentPersistenceTests/testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory|PhotoCraftAppTests\\.DocumentPersistenceTests/testCopyRefusesOriginalAliasesAndFailedEncoderPreservesDestination|PhotoCraftAppTests\\.DocumentPersistenceTests/testCopyCancellationAndStaleResultNeverWrite|PhotoCraftAppTests\\.DocumentPersistenceTests/testRecoveryAutosaveDoesNotReplaceExplicitSaveAndConfirmedCopyCanReplace|PhotoCraftAppTests\\.DocumentPersistenceTests/testExplicitSaveRefreshesWorkspaceDirtyPresentation|PhotoCraftAppTests\\.DocumentPersistenceTests/testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState|PhotoCraftAppTests\\.DocumentPersistenceTests/testRevertImportedPNGAndFailuresDoNotDestroyEdits|PhotoCraftAppTests\\.DocumentPersistenceTests/testRevertRejectsConcurrentEditAndCancellation|PhotoCraftAppTests\\.DocumentPersistenceTests/testHTTPRevertRequiresPermissionSourceRevisionAndSharesDesktopHistory|PhotoCraftAppTests\\.DocumentPersistenceTests/testHTTPRevertRevocationWhileReadingLeavesEditsIntact|PhotoCraftAppTests\\.DocumentPersistenceTests/testHTTPRevertBusyAndConcurrentDesktopEditAreConflicts|PhotoCraftAppTests\\.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testEveryPreparedFormatPreservesDestinationVisibilityAndExactBytes|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testNativeSaveAsPreservesExistingVisibilityAndPublishesNewVisibleFiles|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testNativeSaveCopyRetainsVisibilityWithoutChangingOwnership|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testHTTPFileSavesMatchNativeVisibilityBytesStateAndCapabilities|PhotoCraftAppTests\\.SaveDialogFormatsTests/testLegacyVersionsAndStrictV4PreserveSettingsAndRecentFiles|PhotoCraftAppTests\\.SaveDialogFormatsTests/testAll64ListsPreserveContentHistoryAndEncoderAvailabilityAtEveryRGBDepth|PhotoCraftAppTests\\.SaveDialogFormatsTests/testNativePanelsNeverRestoreHiddenFormatsAndExplicitSavesKeepExactBytes|PhotoCraftAppTests\\.SaveDialogFormatsTests/testDraftCancelRestoreStaleBusyExternalAndFailedWritesAreAtomic|PhotoCraftAppTests\\.SaveDialogFormatsTests/testHTTPNativeEquivalenceSchemasAndExistingRecoveryIsolation|PhotoCraftAppTests\\.SaveDialogFormatsTests/testHTTPInvalidBusyStaleNoopPermissionAndFailedWriteDoNotPublish|PhotoCraftAppTests\\.SaveDialogFormatsTests/testSupplementalMenuAndOwnedWindowLayoutRetainHistoricalMenus|PhotoCraftAppTests\\.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors|PhotoCraftAppTests\\.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion|PhotoCraftAppTests\\.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry|PhotoCraftAppTests\\.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration|PhotoCraftAppTests\\.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach|PhotoCraftAppTests\\.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke|PhotoCraftAppTests\\.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor|PhotoCraftAppTests\\.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas|PhotoCraftAppTests\\.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts|PhotoCraftAppTests\\.RecoverySourceTests/testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave|PhotoCraftAppTests\\.RecoverySourceTests/testChangedSameSizeAndMtimeIsDetectedByContentHash|PhotoCraftAppTests\\.RecoverySourceTests/testIdenticalReplacementAndMissingOriginalRequireReview|PhotoCraftAppTests\\.RecoverySourceTests/testBookmarkFindsMovedOriginal|PhotoCraftAppTests\\.RecoverySourceTests/testOccupiedOldPathNeverAuthorizesReplacingAnUnrelatedFile|PhotoCraftAppTests\\.RecoverySourceTests/testChangedSourceAfterVerificationRejectsLateSaveAndSaveAsCanProceed|PhotoCraftAppTests\\.RecoverySourceTests/testForeignMalformedAndFutureRecordsCannotAuthorizeWriteBack|PhotoCraftAppTests\\.RecoverySourceTests/testCloseCancelsVerificationAndPreservesFormatSpecificReview|PhotoCraftAppTests\\.RecoverySourceTests/testRevertRefreshesRecordAndUndoRetainsTheLastSavedSource|PhotoCraftAppTests\\.RecoverySourceTests/testHTTPRecoveryContextStateAndSaveConflictMatchNative|PhotoCraftAppTests\\.RecoverySourceTests/testDeletedOriginalUnderAliasedTemporaryDirectoryKeepsSourceAssociation|PhotoCraftAppTests\\.RecoverySourceTests/testReaderRejectsMutationNonregularAndOutOfBoundsRecords|PhotoCraftAppTests\\.RecoverySourceTests/testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget|PhotoCraftAppTests\\.RecoveryLifecycleTests/testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory|PhotoCraftAppTests\\.RecoveryLifecycleTests/testDefaultTimerAndNativeUntitledRecoveryFactory|PhotoCraftAppTests\\.RecoveryLifecycleTests/testRecoveryFactoryKeepsOriginalAssociationAndModifiedState|PhotoCraftAppTests\\.RecoveryLifecycleTests/testMissingOrChangedOriginalCannotAuthorizeRecoverySaveBack|PhotoCraftAppTests\\.RecoveryLifecycleTests/testCorruptRecoveryRejectsWithoutOpeningOrChangingSource|PhotoCraftAppTests\\.RecoveryLifecycleTests/testRestorationReturnsTheNativeSharedWorkspaceWindow|PhotoCraftAppTests\\.RecoveryLifecycleTests/testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits|PhotoCraftAppTests\\.RecoveryLifecycleTests/testAPIAndNativeSnapshotsPreserveExactContentDirtyHistoryAndSource|PhotoCraftAppTests\\.RecoveryLifecycleTests/testFailedRecoveryWriteKeepsLastSnapshotAndCanRetry|PhotoCraftAppTests\\.RecoveryLifecycleTests/testRecoveredSourceRequiresSaveAsBeforeOverwriting|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference|PhotoCraftImagingTests\\.OpenEXRTests/testFloatMantissaAndZeroAlphaHDRBitsSurviveWithoutHalfQuantization|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory|PhotoCraftImagingTests\\.OpenEXRTests/testUniversalHalfConversionMatchesEveryIndependentFiniteWordAndBoundaryTies)$"
+        ],
+        "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release02-source.json",
+        "inputs": 7557,
+        "started_at_utc": "2026-11-07T13:36:04.027491+00:00",
+        "exit_code": 0,
+        "finished_at_utc": "2026-11-07T13:43:41.658623+00:00",
+        "cases": 97,
+        "case_ids": [
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testEveryPreparedFormatPreservesDestinationVisibilityAndExactBytes",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testHTTPFileSavesMatchNativeVisibilityBytesStateAndCapabilities",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveAsPreservesExistingVisibilityAndPublishesNewVisibleFiles",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveCopyRetainsVisibilityWithoutChangingOwnership",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testCopyPreservesOwnershipHistoryAndRememberedSaveOptions",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testFailedSaveAndInvalidOptionsDoNotAdoptSettingsOrReplaceFile",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testNativeSavePanelOptionsReachAppKitAndSubsequentSave",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testStrictOptionsAndBackwardCompatibleCommandSchemas",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyCancellationAndStaleResultNeverWrite",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyRefusesOriginalAliasesAndFailedEncoderPreservesDestination",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testExplicitSaveRefreshesWorkspaceDirtyPresentation",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertBusyAndConcurrentDesktopEditAreConflicts",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRequiresPermissionSourceRevisionAndSharesDesktopHistory",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRevocationWhileReadingLeavesEditsIntact",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRecoveryAutosaveDoesNotReplaceExplicitSaveAndConfirmedCopyCanReplace",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertImportedPNGAndFailuresDoNotDestroyEdits",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertRejectsConcurrentEditAndCancellation",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPRevocationOrConcurrentEditDuringEncodingNeverWrites",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testImportedRGB32SourceCannotBeSilentlyOverwrittenBeforeFormatReview",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testOpenEditSaveBackEveryWritableFormatAndSaveAsChangesOwnership",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testRecoveryFromPSDUsesNativeArchiveAndDoesNotReplacePSD",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testRepresentabilityRejectsFlatteningDepthLossAndUnsupportedPSDWithoutWriting",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsFormatControlPreservesEligibleTypesAndSelectedFileType",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsRefusesAnotherOpenDocument",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSourceFormatUsesImageContentAndCommonFilenameAliases",
+          "PhotoCraftImagingTests.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments",
+          "PhotoCraftImagingTests.OpenEXRTests/testFloatMantissaAndZeroAlphaHDRBitsSurviveWithoutHalfQuantization",
+          "PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions",
+          "PhotoCraftImagingTests.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels",
+          "PhotoCraftImagingTests.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject",
+          "PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable",
+          "PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation",
+          "PhotoCraftImagingTests.OpenEXRTests/testUniversalHalfConversionMatchesEveryIndependentFiniteWordAndBoundaryTies",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testAPIAndNativeSnapshotsPreserveExactContentDirtyHistoryAndSource",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testCorruptRecoveryRejectsWithoutOpeningOrChangingSource",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testDefaultTimerAndNativeUntitledRecoveryFactory",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testFailedRecoveryWriteKeepsLastSnapshotAndCanRetry",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testMissingOrChangedOriginalCannotAuthorizeRecoverySaveBack",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveredSourceRequiresSaveAsBeforeOverwriting",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveryFactoryKeepsOriginalAssociationAndModifiedState",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRestorationReturnsTheNativeSharedWorkspaceWindow",
+          "PhotoCraftAppTests.RecoverySourceTests/testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave",
+          "PhotoCraftAppTests.RecoverySourceTests/testBookmarkFindsMovedOriginal",
+          "PhotoCraftAppTests.RecoverySourceTests/testChangedSameSizeAndMtimeIsDetectedByContentHash",
+          "PhotoCraftAppTests.RecoverySourceTests/testChangedSourceAfterVerificationRejectsLateSaveAndSaveAsCanProceed",
+          "PhotoCraftAppTests.RecoverySourceTests/testCloseCancelsVerificationAndPreservesFormatSpecificReview",
+          "PhotoCraftAppTests.RecoverySourceTests/testDeletedOriginalUnderAliasedTemporaryDirectoryKeepsSourceAssociation",
+          "PhotoCraftAppTests.RecoverySourceTests/testForeignMalformedAndFutureRecordsCannotAuthorizeWriteBack",
+          "PhotoCraftAppTests.RecoverySourceTests/testHTTPRecoveryContextStateAndSaveConflictMatchNative",
+          "PhotoCraftAppTests.RecoverySourceTests/testIdenticalReplacementAndMissingOriginalRequireReview",
+          "PhotoCraftAppTests.RecoverySourceTests/testOccupiedOldPathNeverAuthorizesReplacingAnUnrelatedFile",
+          "PhotoCraftAppTests.RecoverySourceTests/testReaderRejectsMutationNonregularAndOutOfBoundsRecords",
+          "PhotoCraftAppTests.RecoverySourceTests/testRevertRefreshesRecordAndUndoRetainsTheLastSavedSource",
+          "PhotoCraftAppTests.RecoverySourceTests/testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testAll64ListsPreserveContentHistoryAndEncoderAvailabilityAtEveryRGBDepth",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testDraftCancelRestoreStaleBusyExternalAndFailedWritesAreAtomic",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPInvalidBusyStaleNoopPermissionAndFailedWriteDoNotPublish",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPNativeEquivalenceSchemasAndExistingRecoveryIsolation",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testLegacyVersionsAndStrictV4PreserveSettingsAndRecentFiles",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testNativePanelsNeverRestoreHiddenFormatsAndExplicitSavesKeepExactBytes",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testSupplementalMenuAndOwnedWindowLayoutRetainHistoricalMenus",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 97,
+        "failed": 0,
+        "failed_cases": [],
+        "total_xctest_failures": 0,
+        "unexpected": 0,
+        "test_seconds": 14.432,
+        "build_seconds": [
+          "440.55"
+        ],
+        "crashes": 0,
+        "binary_sha256": "cb18f8525751f306c5a48acf662bd7f5748f03df7328c373bc3b89367e997215",
+        "binary": "/private/tmp/photocraft-swift-build/release/Photato",
+        "expected_cases": 97,
+        "missing_cases": [],
+        "extra_cases": []
+      },
+      {
+        "command": [
+          "swift",
+          "build",
+          "--build-tests",
+          "--build-system",
+          "native",
+          "--scratch-path",
+          "/private/tmp/photocraft-swift-intel",
+          "--disable-sandbox",
+          "--cache-path",
+          ".build/pm-cache",
+          "--triple",
+          "x86_64-apple-macosx14.0",
+          "-c",
+          "release",
+          "--disable-build-manifest-caching",
+          "--jobs",
+          "4",
+          "-Xswiftc",
+          "-enable-testing"
+        ],
+        "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release02-source.json",
+        "inputs": 7557,
+        "started_at_utc": "2026-11-07T13:36:04.027854+00:00",
+        "exit_code": 0,
+        "finished_at_utc": "2026-11-07T13:44:07.652915+00:00",
+        "cases": 0,
+        "case_ids": [],
+        "passed": 0,
+        "failed": 0,
+        "failed_cases": [],
+        "total_xctest_failures": null,
+        "unexpected": null,
+        "test_seconds": null,
+        "build_seconds": [
+          "482.50"
+        ],
+        "crashes": 0,
+        "binary_sha256": "c93224fff9d6815e6b77da0e4031ef8c15d5f5cdd1209f099e1a469c00b0185d",
+        "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+        "expected_cases": 97,
+        "missing_cases": [],
+        "extra_cases": []
+      },
+      {
+        "command": [
+          "arch",
+          "-x86_64",
+          "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+          "-XCTest",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testEveryPreparedFormatPreservesDestinationVisibilityAndExactBytes,PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testHTTPFileSavesMatchNativeVisibilityBytesStateAndCapabilities,PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveAsPreservesExistingVisibilityAndPublishesNewVisibleFiles,PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveCopyRetainsVisibilityWithoutChangingOwnership,PhotoCraftAppTests.DocumentEncodingOptionsTests/testCopyPreservesOwnershipHistoryAndRememberedSaveOptions,PhotoCraftAppTests.DocumentEncodingOptionsTests/testFailedSaveAndInvalidOptionsDoNotAdoptSettingsOrReplaceFile,PhotoCraftAppTests.DocumentEncodingOptionsTests/testNativeSavePanelOptionsReachAppKitAndSubsequentSave,PhotoCraftAppTests.DocumentEncodingOptionsTests/testStrictOptionsAndBackwardCompatibleCommandSchemas,PhotoCraftAppTests.DocumentPersistenceTests/testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory,PhotoCraftAppTests.DocumentPersistenceTests/testCopyCancellationAndStaleResultNeverWrite,PhotoCraftAppTests.DocumentPersistenceTests/testCopyRefusesOriginalAliasesAndFailedEncoderPreservesDestination,PhotoCraftAppTests.DocumentPersistenceTests/testExplicitSaveRefreshesWorkspaceDirtyPresentation,PhotoCraftAppTests.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion,PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertBusyAndConcurrentDesktopEditAreConflicts,PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRequiresPermissionSourceRevisionAndSharesDesktopHistory,PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRevocationWhileReadingLeavesEditsIntact,PhotoCraftAppTests.DocumentPersistenceTests/testRecoveryAutosaveDoesNotReplaceExplicitSaveAndConfirmedCopyCanReplace,PhotoCraftAppTests.DocumentPersistenceTests/testRevertImportedPNGAndFailuresDoNotDestroyEdits,PhotoCraftAppTests.DocumentPersistenceTests/testRevertRejectsConcurrentEditAndCancellation,PhotoCraftAppTests.DocumentPersistenceTests/testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState,PhotoCraftAppTests.DocumentSaveWorkflowTests/testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory,PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards,PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory,PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPRevocationOrConcurrentEditDuringEncodingNeverWrites,PhotoCraftAppTests.DocumentSaveWorkflowTests/testImportedRGB32SourceCannotBeSilentlyOverwrittenBeforeFormatReview,PhotoCraftAppTests.DocumentSaveWorkflowTests/testOpenEditSaveBackEveryWritableFormatAndSaveAsChangesOwnership,PhotoCraftAppTests.DocumentSaveWorkflowTests/testRecoveryFromPSDUsesNativeArchiveAndDoesNotReplacePSD,PhotoCraftAppTests.DocumentSaveWorkflowTests/testRepresentabilityRejectsFlatteningDepthLossAndUnsupportedPSDWithoutWriting,PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsFormatControlPreservesEligibleTypesAndSelectedFileType,PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsRefusesAnotherOpenDocument,PhotoCraftAppTests.DocumentSaveWorkflowTests/testSourceFormatUsesImageContentAndCommonFilenameAliases,PhotoCraftImagingTests.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments,PhotoCraftImagingTests.OpenEXRTests/testFloatMantissaAndZeroAlphaHDRBitsSurviveWithoutHalfQuantization,PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions,PhotoCraftImagingTests.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels,PhotoCraftImagingTests.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject,PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable,PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation,PhotoCraftImagingTests.OpenEXRTests/testUniversalHalfConversionMatchesEveryIndependentFiniteWordAndBoundaryTies,PhotoCraftAppTests.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement,PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes,PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory,PhotoCraftAppTests.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory,PhotoCraftAppTests.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha,PhotoCraftAppTests.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths,PhotoCraftAppTests.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative,PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels,PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe,PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue,PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack,PhotoCraftAppTests.RecoveryLifecycleTests/testAPIAndNativeSnapshotsPreserveExactContentDirtyHistoryAndSource,PhotoCraftAppTests.RecoveryLifecycleTests/testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits,PhotoCraftAppTests.RecoveryLifecycleTests/testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory,PhotoCraftAppTests.RecoveryLifecycleTests/testCorruptRecoveryRejectsWithoutOpeningOrChangingSource,PhotoCraftAppTests.RecoveryLifecycleTests/testDefaultTimerAndNativeUntitledRecoveryFactory,PhotoCraftAppTests.RecoveryLifecycleTests/testFailedRecoveryWriteKeepsLastSnapshotAndCanRetry,PhotoCraftAppTests.RecoveryLifecycleTests/testMissingOrChangedOriginalCannotAuthorizeRecoverySaveBack,PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveredSourceRequiresSaveAsBeforeOverwriting,PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveryFactoryKeepsOriginalAssociationAndModifiedState,PhotoCraftAppTests.RecoveryLifecycleTests/testRestorationReturnsTheNativeSharedWorkspaceWindow,PhotoCraftAppTests.RecoverySourceTests/testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave,PhotoCraftAppTests.RecoverySourceTests/testBookmarkFindsMovedOriginal,PhotoCraftAppTests.RecoverySourceTests/testChangedSameSizeAndMtimeIsDetectedByContentHash,PhotoCraftAppTests.RecoverySourceTests/testChangedSourceAfterVerificationRejectsLateSaveAndSaveAsCanProceed,PhotoCraftAppTests.RecoverySourceTests/testCloseCancelsVerificationAndPreservesFormatSpecificReview,PhotoCraftAppTests.RecoverySourceTests/testDeletedOriginalUnderAliasedTemporaryDirectoryKeepsSourceAssociation,PhotoCraftAppTests.RecoverySourceTests/testForeignMalformedAndFutureRecordsCannotAuthorizeWriteBack,PhotoCraftAppTests.RecoverySourceTests/testHTTPRecoveryContextStateAndSaveConflictMatchNative,PhotoCraftAppTests.RecoverySourceTests/testIdenticalReplacementAndMissingOriginalRequireReview,PhotoCraftAppTests.RecoverySourceTests/testOccupiedOldPathNeverAuthorizesReplacingAnUnrelatedFile,PhotoCraftAppTests.RecoverySourceTests/testReaderRejectsMutationNonregularAndOutOfBoundsRecords,PhotoCraftAppTests.RecoverySourceTests/testRevertRefreshesRecordAndUndoRetainsTheLastSavedSource,PhotoCraftAppTests.RecoverySourceTests/testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget,PhotoCraftAppTests.SaveDialogFormatsTests/testAll64ListsPreserveContentHistoryAndEncoderAvailabilityAtEveryRGBDepth,PhotoCraftAppTests.SaveDialogFormatsTests/testDraftCancelRestoreStaleBusyExternalAndFailedWritesAreAtomic,PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPInvalidBusyStaleNoopPermissionAndFailedWriteDoNotPublish,PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPNativeEquivalenceSchemasAndExistingRecoveryIsolation,PhotoCraftAppTests.SaveDialogFormatsTests/testLegacyVersionsAndStrictV4PreserveSettingsAndRecentFiles,PhotoCraftAppTests.SaveDialogFormatsTests/testNativePanelsNeverRestoreHiddenFormatsAndExplicitSavesKeepExactBytes,PhotoCraftAppTests.SaveDialogFormatsTests/testSupplementalMenuAndOwnedWindowLayoutRetainHistoricalMenus,PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors,PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts,PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor,PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke,PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas,PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration,PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry,PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach,PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion",
+          "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/PhotatoPackageTests.xctest"
+        ],
+        "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release02-source.json",
+        "inputs": 7557,
+        "started_at_utc": "2026-11-07T13:44:07.709865+00:00",
+        "exit_code": 0,
+        "finished_at_utc": "2026-11-07T13:44:38.377278+00:00",
+        "cases": 97,
+        "case_ids": [
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testEveryPreparedFormatPreservesDestinationVisibilityAndExactBytes",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testHTTPFileSavesMatchNativeVisibilityBytesStateAndCapabilities",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveAsPreservesExistingVisibilityAndPublishesNewVisibleFiles",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveCopyRetainsVisibilityWithoutChangingOwnership",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testCopyPreservesOwnershipHistoryAndRememberedSaveOptions",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testFailedSaveAndInvalidOptionsDoNotAdoptSettingsOrReplaceFile",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testNativeSavePanelOptionsReachAppKitAndSubsequentSave",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testStrictOptionsAndBackwardCompatibleCommandSchemas",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyCancellationAndStaleResultNeverWrite",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyRefusesOriginalAliasesAndFailedEncoderPreservesDestination",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testExplicitSaveRefreshesWorkspaceDirtyPresentation",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertBusyAndConcurrentDesktopEditAreConflicts",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRequiresPermissionSourceRevisionAndSharesDesktopHistory",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRevocationWhileReadingLeavesEditsIntact",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRecoveryAutosaveDoesNotReplaceExplicitSaveAndConfirmedCopyCanReplace",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertImportedPNGAndFailuresDoNotDestroyEdits",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertRejectsConcurrentEditAndCancellation",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPRevocationOrConcurrentEditDuringEncodingNeverWrites",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testImportedRGB32SourceCannotBeSilentlyOverwrittenBeforeFormatReview",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testOpenEditSaveBackEveryWritableFormatAndSaveAsChangesOwnership",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testRecoveryFromPSDUsesNativeArchiveAndDoesNotReplacePSD",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testRepresentabilityRejectsFlatteningDepthLossAndUnsupportedPSDWithoutWriting",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsFormatControlPreservesEligibleTypesAndSelectedFileType",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsRefusesAnotherOpenDocument",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSourceFormatUsesImageContentAndCommonFilenameAliases",
+          "PhotoCraftImagingTests.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments",
+          "PhotoCraftImagingTests.OpenEXRTests/testFloatMantissaAndZeroAlphaHDRBitsSurviveWithoutHalfQuantization",
+          "PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions",
+          "PhotoCraftImagingTests.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels",
+          "PhotoCraftImagingTests.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject",
+          "PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable",
+          "PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation",
+          "PhotoCraftImagingTests.OpenEXRTests/testUniversalHalfConversionMatchesEveryIndependentFiniteWordAndBoundaryTies",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testAPIAndNativeSnapshotsPreserveExactContentDirtyHistoryAndSource",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testCorruptRecoveryRejectsWithoutOpeningOrChangingSource",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testDefaultTimerAndNativeUntitledRecoveryFactory",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testFailedRecoveryWriteKeepsLastSnapshotAndCanRetry",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testMissingOrChangedOriginalCannotAuthorizeRecoverySaveBack",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveredSourceRequiresSaveAsBeforeOverwriting",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveryFactoryKeepsOriginalAssociationAndModifiedState",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRestorationReturnsTheNativeSharedWorkspaceWindow",
+          "PhotoCraftAppTests.RecoverySourceTests/testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave",
+          "PhotoCraftAppTests.RecoverySourceTests/testBookmarkFindsMovedOriginal",
+          "PhotoCraftAppTests.RecoverySourceTests/testChangedSameSizeAndMtimeIsDetectedByContentHash",
+          "PhotoCraftAppTests.RecoverySourceTests/testChangedSourceAfterVerificationRejectsLateSaveAndSaveAsCanProceed",
+          "PhotoCraftAppTests.RecoverySourceTests/testCloseCancelsVerificationAndPreservesFormatSpecificReview",
+          "PhotoCraftAppTests.RecoverySourceTests/testDeletedOriginalUnderAliasedTemporaryDirectoryKeepsSourceAssociation",
+          "PhotoCraftAppTests.RecoverySourceTests/testForeignMalformedAndFutureRecordsCannotAuthorizeWriteBack",
+          "PhotoCraftAppTests.RecoverySourceTests/testHTTPRecoveryContextStateAndSaveConflictMatchNative",
+          "PhotoCraftAppTests.RecoverySourceTests/testIdenticalReplacementAndMissingOriginalRequireReview",
+          "PhotoCraftAppTests.RecoverySourceTests/testOccupiedOldPathNeverAuthorizesReplacingAnUnrelatedFile",
+          "PhotoCraftAppTests.RecoverySourceTests/testReaderRejectsMutationNonregularAndOutOfBoundsRecords",
+          "PhotoCraftAppTests.RecoverySourceTests/testRevertRefreshesRecordAndUndoRetainsTheLastSavedSource",
+          "PhotoCraftAppTests.RecoverySourceTests/testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testAll64ListsPreserveContentHistoryAndEncoderAvailabilityAtEveryRGBDepth",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testDraftCancelRestoreStaleBusyExternalAndFailedWritesAreAtomic",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPInvalidBusyStaleNoopPermissionAndFailedWriteDoNotPublish",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPNativeEquivalenceSchemasAndExistingRecoveryIsolation",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testLegacyVersionsAndStrictV4PreserveSettingsAndRecentFiles",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testNativePanelsNeverRestoreHiddenFormatsAndExplicitSavesKeepExactBytes",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testSupplementalMenuAndOwnedWindowLayoutRetainHistoricalMenus",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 97,
+        "failed": 0,
+        "failed_cases": [],
+        "total_xctest_failures": 0,
+        "unexpected": 0,
+        "test_seconds": 22.021,
+        "build_seconds": null,
+        "crashes": 0,
+        "binary_sha256": "c93224fff9d6815e6b77da0e4031ef8c15d5f5cdd1209f099e1a469c00b0185d",
+        "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+        "expected_cases": 97,
+        "missing_cases": [],
+        "extra_cases": []
+      }
+    ]
+  },
+  "strict": {
+    "all_exact": true,
+    "cross_architecture_exact": true,
+    "selected_methods_each_architecture": 97,
+    "new_methods_each_architecture": 14,
+    "file_sample_bytes_exact_each_architecture": 6168,
+    "captured_EXR_files_each_architecture": 7,
+    "all_six_pre_portable_writer_files_unchanged": true,
+    "finite_half_reference_values": 63488,
+    "half_reference_bytes": 262144,
+    "half_rounding_and_overflow_cases_passed": true,
+    "files": {
+      "native-zips-half.exr": "68ce9d6feae73d8dd07e3b8f5f227d0ec402e5cfe7c8c77dce69ec1ca21b2328",
+      "native-zip-float.exr": "cf8fa16d2f9a27feab40d030ed344b33d0c77c0af654b469a1b5b1a049a80fff",
+      "float-precision.exr": "08c143812e8bb2d7d3db73974f2aea921eba7c01e00c56e46d36c0d377068434",
+      "native-zips-float.exr": "41c857b55d8d52e2dfba96cd2895daa63a6725dbbcd011c5d41e4ce6afe8c779",
+      "native-none-half.exr": "6e822341553a2f18885768d951c0c11bb723e7be7bfa986ae280f6c9c483936d",
+      "native-none-float.exr": "8e265e0919f23a7134d72241945bd88a259a40d034e109258c8a8a37c5de7138",
+      "native-zip-half.exr": "6a1e0c9edc7712232330576b8a3064851c5673fa17748cf26437830271980bbd"
+    },
+    "independent_readers": [
+      {
+        "validator": "Independent Python struct/zlib; direct file sample words, not native roundtrip",
+        "Photoshop_reference": false,
+        "all_exact": true,
+        "files": [
+          {
+            "file": "native-none-float.exr",
+            "sha256": "8e265e0919f23a7134d72241945bd88a259a40d034e109258c8a8a37c5de7138",
+            "exact_sample_bytes": 1360,
+            "channels": [
+              [
+                "A",
+                2
+              ],
+              [
+                "B",
+                2
+              ],
+              [
+                "G",
+                2
+              ],
+              [
+                "R",
+                2
+              ]
+            ],
+            "compression": 0
+          },
+          {
+            "file": "native-none-half.exr",
+            "sha256": "6e822341553a2f18885768d951c0c11bb723e7be7bfa986ae280f6c9c483936d",
+            "exact_sample_bytes": 680,
+            "channels": [
+              [
+                "A",
+                1
+              ],
+              [
+                "B",
+                1
+              ],
+              [
+                "G",
+                1
+              ],
+              [
+                "R",
+                1
+              ]
+            ],
+            "compression": 0
+          },
+          {
+            "file": "native-zip-float.exr",
+            "sha256": "cf8fa16d2f9a27feab40d030ed344b33d0c77c0af654b469a1b5b1a049a80fff",
+            "exact_sample_bytes": 1360,
+            "channels": [
+              [
+                "A",
+                2
+              ],
+              [
+                "B",
+                2
+              ],
+              [
+                "G",
+                2
+              ],
+              [
+                "R",
+                2
+              ]
+            ],
+            "compression": 3
+          },
+          {
+            "file": "native-zip-half.exr",
+            "sha256": "6a1e0c9edc7712232330576b8a3064851c5673fa17748cf26437830271980bbd",
+            "exact_sample_bytes": 680,
+            "channels": [
+              [
+                "A",
+                1
+              ],
+              [
+                "B",
+                1
+              ],
+              [
+                "G",
+                1
+              ],
+              [
+                "R",
+                1
+              ]
+            ],
+            "compression": 3
+          },
+          {
+            "file": "native-zips-float.exr",
+            "sha256": "41c857b55d8d52e2dfba96cd2895daa63a6725dbbcd011c5d41e4ce6afe8c779",
+            "exact_sample_bytes": 1360,
+            "channels": [
+              [
+                "A",
+                2
+              ],
+              [
+                "B",
+                2
+              ],
+              [
+                "G",
+                2
+              ],
+              [
+                "R",
+                2
+              ]
+            ],
+            "compression": 2
+          },
+          {
+            "file": "native-zips-half.exr",
+            "sha256": "68ce9d6feae73d8dd07e3b8f5f227d0ec402e5cfe7c8c77dce69ec1ca21b2328",
+            "exact_sample_bytes": 680,
+            "channels": [
+              [
+                "A",
+                1
+              ],
+              [
+                "B",
+                1
+              ],
+              [
+                "G",
+                1
+              ],
+              [
+                "R",
+                1
+              ]
+            ],
+            "compression": 2
+          },
+          {
+            "file": "float-precision.exr",
+            "sha256": "08c143812e8bb2d7d3db73974f2aea921eba7c01e00c56e46d36c0d377068434",
+            "exact_sample_bytes": 48,
+            "channel_order": "ABGR",
+            "compression": 0,
+            "non_HALF_representable_words": true
+          }
+        ],
+        "exact_sample_bytes": 6168
+      },
+      {
+        "validator": "Independent Python struct/zlib; direct file sample words, not native roundtrip",
+        "Photoshop_reference": false,
+        "all_exact": true,
+        "files": [
+          {
+            "file": "native-none-float.exr",
+            "sha256": "8e265e0919f23a7134d72241945bd88a259a40d034e109258c8a8a37c5de7138",
+            "exact_sample_bytes": 1360,
+            "channels": [
+              [
+                "A",
+                2
+              ],
+              [
+                "B",
+                2
+              ],
+              [
+                "G",
+                2
+              ],
+              [
+                "R",
+                2
+              ]
+            ],
+            "compression": 0
+          },
+          {
+            "file": "native-none-half.exr",
+            "sha256": "6e822341553a2f18885768d951c0c11bb723e7be7bfa986ae280f6c9c483936d",
+            "exact_sample_bytes": 680,
+            "channels": [
+              [
+                "A",
+                1
+              ],
+              [
+                "B",
+                1
+              ],
+              [
+                "G",
+                1
+              ],
+              [
+                "R",
+                1
+              ]
+            ],
+            "compression": 0
+          },
+          {
+            "file": "native-zip-float.exr",
+            "sha256": "cf8fa16d2f9a27feab40d030ed344b33d0c77c0af654b469a1b5b1a049a80fff",
+            "exact_sample_bytes": 1360,
+            "channels": [
+              [
+                "A",
+                2
+              ],
+              [
+                "B",
+                2
+              ],
+              [
+                "G",
+                2
+              ],
+              [
+                "R",
+                2
+              ]
+            ],
+            "compression": 3
+          },
+          {
+            "file": "native-zip-half.exr",
+            "sha256": "6a1e0c9edc7712232330576b8a3064851c5673fa17748cf26437830271980bbd",
+            "exact_sample_bytes": 680,
+            "channels": [
+              [
+                "A",
+                1
+              ],
+              [
+                "B",
+                1
+              ],
+              [
+                "G",
+                1
+              ],
+              [
+                "R",
+                1
+              ]
+            ],
+            "compression": 3
+          },
+          {
+            "file": "native-zips-float.exr",
+            "sha256": "41c857b55d8d52e2dfba96cd2895daa63a6725dbbcd011c5d41e4ce6afe8c779",
+            "exact_sample_bytes": 1360,
+            "channels": [
+              [
+                "A",
+                2
+              ],
+              [
+                "B",
+                2
+              ],
+              [
+                "G",
+                2
+              ],
+              [
+                "R",
+                2
+              ]
+            ],
+            "compression": 2
+          },
+          {
+            "file": "native-zips-half.exr",
+            "sha256": "68ce9d6feae73d8dd07e3b8f5f227d0ec402e5cfe7c8c77dce69ec1ca21b2328",
+            "exact_sample_bytes": 680,
+            "channels": [
+              [
+                "A",
+                1
+              ],
+              [
+                "B",
+                1
+              ],
+              [
+                "G",
+                1
+              ],
+              [
+                "R",
+                1
+              ]
+            ],
+            "compression": 2
+          },
+          {
+            "file": "float-precision.exr",
+            "sha256": "08c143812e8bb2d7d3db73974f2aea921eba7c01e00c56e46d36c0d377068434",
+            "exact_sample_bytes": 48,
+            "channel_order": "ABGR",
+            "compression": 0,
+            "non_HALF_representable_words": true
+          }
+        ],
+        "exact_sample_bytes": 6168
+      }
+    ],
+    "Photoshop_EXR_output_reference": false,
+    "full_Photoshop_parity": false
+  },
+  "package": {
+    "step": 474,
+    "app": "/private/tmp/photato-validation-474-stage01-6b1afd74/Photato Validation 474.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T125434Z-474-openexr/universal/Photato-Validation-474.zip",
+    "archive_sha256": "a242820809f10c4e8ff724fb313cff8cd5e1460e4faef1f5b67538d16ddde114",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release02-source.json",
+    "source_inputs": 7557,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": false,
+    "all_current_selected_optimized_methods_passed": true,
+    "historical_Debug_batch_crashes_unresolved": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation474optimized",
+    "version": "0.3.0",
+    "build": 474,
+    "signed_universal_binary_sha256": "0169669c16af3ee0f20bfdf332b4a1bc7aa5ba91f7ac7d00096edcf5a0a45233",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10916,
+    "selected_pass_each": [
+      97,
+      97
+    ],
+    "new_methods_pass_each": [
+      14,
+      14
+    ],
+    "strict_OpenEXR": {
+      "all_exact": true,
+      "cross_architecture_exact": true,
+      "selected_methods_each_architecture": 97,
+      "new_methods_each_architecture": 14,
+      "file_sample_bytes_exact_each_architecture": 6168,
+      "captured_EXR_files_each_architecture": 7,
+      "all_six_pre_portable_writer_files_unchanged": true,
+      "finite_half_reference_values": 63488,
+      "half_reference_bytes": 262144,
+      "half_rounding_and_overflow_cases_passed": true,
+      "files": {
+        "native-zips-half.exr": "68ce9d6feae73d8dd07e3b8f5f227d0ec402e5cfe7c8c77dce69ec1ca21b2328",
+        "native-zip-float.exr": "cf8fa16d2f9a27feab40d030ed344b33d0c77c0af654b469a1b5b1a049a80fff",
+        "float-precision.exr": "08c143812e8bb2d7d3db73974f2aea921eba7c01e00c56e46d36c0d377068434",
+        "native-zips-float.exr": "41c857b55d8d52e2dfba96cd2895daa63a6725dbbcd011c5d41e4ce6afe8c779",
+        "native-none-half.exr": "6e822341553a2f18885768d951c0c11bb723e7be7bfa986ae280f6c9c483936d",
+        "native-none-float.exr": "8e265e0919f23a7134d72241945bd88a259a40d034e109258c8a8a37c5de7138",
+        "native-zip-half.exr": "6a1e0c9edc7712232330576b8a3064851c5673fa17748cf26437830271980bbd"
+      },
+      "independent_readers": [
+        {
+          "validator": "Independent Python struct/zlib; direct file sample words, not native roundtrip",
+          "Photoshop_reference": false,
+          "all_exact": true,
+          "files": [
+            {
+              "file": "native-none-float.exr",
+              "sha256": "8e265e0919f23a7134d72241945bd88a259a40d034e109258c8a8a37c5de7138",
+              "exact_sample_bytes": 1360,
+              "channels": [
+                [
+                  "A",
+                  2
+                ],
+                [
+                  "B",
+                  2
+                ],
+                [
+                  "G",
+                  2
+                ],
+                [
+                  "R",
+                  2
+                ]
+              ],
+              "compression": 0
+            },
+            {
+              "file": "native-none-half.exr",
+              "sha256": "6e822341553a2f18885768d951c0c11bb723e7be7bfa986ae280f6c9c483936d",
+              "exact_sample_bytes": 680,
+              "channels": [
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "B",
+                  1
+                ],
+                [
+                  "G",
+                  1
+                ],
+                [
+                  "R",
+                  1
+                ]
+              ],
+              "compression": 0
+            },
+            {
+              "file": "native-zip-float.exr",
+              "sha256": "cf8fa16d2f9a27feab40d030ed344b33d0c77c0af654b469a1b5b1a049a80fff",
+              "exact_sample_bytes": 1360,
+              "channels": [
+                [
+                  "A",
+                  2
+                ],
+                [
+                  "B",
+                  2
+                ],
+                [
+                  "G",
+                  2
+                ],
+                [
+                  "R",
+                  2
+                ]
+              ],
+              "compression": 3
+            },
+            {
+              "file": "native-zip-half.exr",
+              "sha256": "6a1e0c9edc7712232330576b8a3064851c5673fa17748cf26437830271980bbd",
+              "exact_sample_bytes": 680,
+              "channels": [
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "B",
+                  1
+                ],
+                [
+                  "G",
+                  1
+                ],
+                [
+                  "R",
+                  1
+                ]
+              ],
+              "compression": 3
+            },
+            {
+              "file": "native-zips-float.exr",
+              "sha256": "41c857b55d8d52e2dfba96cd2895daa63a6725dbbcd011c5d41e4ce6afe8c779",
+              "exact_sample_bytes": 1360,
+              "channels": [
+                [
+                  "A",
+                  2
+                ],
+                [
+                  "B",
+                  2
+                ],
+                [
+                  "G",
+                  2
+                ],
+                [
+                  "R",
+                  2
+                ]
+              ],
+              "compression": 2
+            },
+            {
+              "file": "native-zips-half.exr",
+              "sha256": "68ce9d6feae73d8dd07e3b8f5f227d0ec402e5cfe7c8c77dce69ec1ca21b2328",
+              "exact_sample_bytes": 680,
+              "channels": [
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "B",
+                  1
+                ],
+                [
+                  "G",
+                  1
+                ],
+                [
+                  "R",
+                  1
+                ]
+              ],
+              "compression": 2
+            },
+            {
+              "file": "float-precision.exr",
+              "sha256": "08c143812e8bb2d7d3db73974f2aea921eba7c01e00c56e46d36c0d377068434",
+              "exact_sample_bytes": 48,
+              "channel_order": "ABGR",
+              "compression": 0,
+              "non_HALF_representable_words": true
+            }
+          ],
+          "exact_sample_bytes": 6168
+        },
+        {
+          "validator": "Independent Python struct/zlib; direct file sample words, not native roundtrip",
+          "Photoshop_reference": false,
+          "all_exact": true,
+          "files": [
+            {
+              "file": "native-none-float.exr",
+              "sha256": "8e265e0919f23a7134d72241945bd88a259a40d034e109258c8a8a37c5de7138",
+              "exact_sample_bytes": 1360,
+              "channels": [
+                [
+                  "A",
+                  2
+                ],
+                [
+                  "B",
+                  2
+                ],
+                [
+                  "G",
+                  2
+                ],
+                [
+                  "R",
+                  2
+                ]
+              ],
+              "compression": 0
+            },
+            {
+              "file": "native-none-half.exr",
+              "sha256": "6e822341553a2f18885768d951c0c11bb723e7be7bfa986ae280f6c9c483936d",
+              "exact_sample_bytes": 680,
+              "channels": [
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "B",
+                  1
+                ],
+                [
+                  "G",
+                  1
+                ],
+                [
+                  "R",
+                  1
+                ]
+              ],
+              "compression": 0
+            },
+            {
+              "file": "native-zip-float.exr",
+              "sha256": "cf8fa16d2f9a27feab40d030ed344b33d0c77c0af654b469a1b5b1a049a80fff",
+              "exact_sample_bytes": 1360,
+              "channels": [
+                [
+                  "A",
+                  2
+                ],
+                [
+                  "B",
+                  2
+                ],
+                [
+                  "G",
+                  2
+                ],
+                [
+                  "R",
+                  2
+                ]
+              ],
+              "compression": 3
+            },
+            {
+              "file": "native-zip-half.exr",
+              "sha256": "6a1e0c9edc7712232330576b8a3064851c5673fa17748cf26437830271980bbd",
+              "exact_sample_bytes": 680,
+              "channels": [
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "B",
+                  1
+                ],
+                [
+                  "G",
+                  1
+                ],
+                [
+                  "R",
+                  1
+                ]
+              ],
+              "compression": 3
+            },
+            {
+              "file": "native-zips-float.exr",
+              "sha256": "41c857b55d8d52e2dfba96cd2895daa63a6725dbbcd011c5d41e4ce6afe8c779",
+              "exact_sample_bytes": 1360,
+              "channels": [
+                [
+                  "A",
+                  2
+                ],
+                [
+                  "B",
+                  2
+                ],
+                [
+                  "G",
+                  2
+                ],
+                [
+                  "R",
+                  2
+                ]
+              ],
+              "compression": 2
+            },
+            {
+              "file": "native-zips-half.exr",
+              "sha256": "68ce9d6feae73d8dd07e3b8f5f227d0ec402e5cfe7c8c77dce69ec1ca21b2328",
+              "exact_sample_bytes": 680,
+              "channels": [
+                [
+                  "A",
+                  1
+                ],
+                [
+                  "B",
+                  1
+                ],
+                [
+                  "G",
+                  1
+                ],
+                [
+                  "R",
+                  1
+                ]
+              ],
+              "compression": 2
+            },
+            {
+              "file": "float-precision.exr",
+              "sha256": "08c143812e8bb2d7d3db73974f2aea921eba7c01e00c56e46d36c0d377068434",
+              "exact_sample_bytes": 48,
+              "channel_order": "ABGR",
+              "compression": 0,
+              "non_HALF_representable_words": true
+            }
+          ],
+          "exact_sample_bytes": 6168
+        }
+      ],
+      "Photoshop_EXR_output_reference": false,
+      "full_Photoshop_parity": false
+    },
+    "payload_comparison": [
+      {
+        "architecture": "arm64",
+        "compiled_sha256": "cb18f8525751f306c5a48acf662bd7f5748f03df7328c373bc3b89367e997215",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3552,
+          "changed_offsets": [
+            3554
+          ],
+          "values": [
+            59850752,
+            59195392
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 113778952
+      },
+      {
+        "architecture": "x86_64",
+        "compiled_sha256": "c93224fff9d6815e6b77da0e4031ef8c15d5f5cdd1209f099e1a469c00b0185d",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3392,
+          "changed_offsets": [
+            3393,
+            3394
+          ],
+          "values": [
+            58941440,
+            59883520
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 120314976
+      }
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "launched_or_installed": false,
+    "isolated_session_launch_environment_configured": true,
+    "runtime_launch_environment_verified": false,
+    "prepared_utc": "2026-11-07T13:45:11.211090+00:00"
+  },
+  "native_observation": {
+    "step": 474,
+    "recorded_utc": "2026-11-07T13:45:37.080431+00:00",
+    "attempt": "After release02 compiler/test workers terminal and universal staging, reloaded CUA documentation and bound existing467 app.",
+    "result": "Sky Computer Use native pipe closed before response",
+    "live_workflow_qualified": false,
+    "new474_launched": false,
+    "existing458_and467_retained": true,
+    "protected_PIDs": [
+      6678,
+      68050
+    ],
+    "forcequit_or_reset": false
+  },
+  "references": {
+    "primary": [
+      "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html",
+      "https://openexr.com/en/latest/TechnicalIntroduction.html",
+      "https://openexr.com/en/latest/OpenEXRFileLayout.html",
+      "https://openexr.com/en/latest/StandardAttributes.html",
+      "https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/save-in-tiff-format.html"
+    ],
+    "local_API": "Xcode macOS SDK CIContext.h declares OpenEXRRepresentationOfImage/writeOpenEXRRepresentationOfImage since macOS14.0; no options keys supported.",
+    "use": "Adobe lists OpenEXR as32-bit HDR/transparency; ASWF defines channel layout/alpha conventions. Existing layeredTIFF/PDF-artboard/printing source already works; streamed components/EPS/PDFSaveAs/raw/JPEG2000 and remaining broadscope remain. Test platform encoder output precision/alpha before selecting implementation."
+  },
+  "debug_attempts": [
+    {
+      "unexpected_signals": [],
+      "expected_count": 3,
+      "missing_cases": [
+        "PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions",
+        "PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable",
+        "PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation"
+      ],
+      "exit_code": 1,
+      "inputs": 7554,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [],
+      "passed": 0,
+      "failed_cases": [],
+      "totals": null,
+      "build_seconds": null,
+      "finished_utc": "2026-11-07T13:17:26.163631+00:00"
+    },
+    {
+      "unexpected_signals": [
+        "11"
+      ],
+      "expected_count": 8,
+      "missing_cases": [
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults"
+      ],
+      "exit_code": 1,
+      "inputs": 7555,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions",
+        "PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable",
+        "PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement"
+      ],
+      "passed": 4,
+      "failed_cases": [],
+      "totals": [
+        [
+          "3",
+          "0",
+          "0",
+          "0.059"
+        ]
+      ],
+      "build_seconds": [
+        "101.26"
+      ],
+      "finished_utc": "2026-11-07T13:21:35.943195+00:00"
+    },
+    {
+      "unexpected_signals": [
+        "11"
+      ],
+      "expected_count": 10,
+      "missing_cases": [
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults"
+      ],
+      "exit_code": 1,
+      "inputs": 7555,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftImagingTests.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments",
+        "PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions",
+        "PhotoCraftImagingTests.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels",
+        "PhotoCraftImagingTests.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject",
+        "PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable",
+        "PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation",
+        "PhotoCraftAppTests.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement"
+      ],
+      "passed": 7,
+      "failed_cases": [],
+      "totals": [
+        [
+          "6",
+          "0",
+          "0",
+          "0.989"
+        ]
+      ],
+      "build_seconds": [
+        "26.85"
+      ],
+      "finished_utc": "2026-11-07T13:23:43.856803+00:00"
+    }
+  ],
+  "retained_debug_replays": [
+    {
+      "all_selected_started": true,
+      "exit_code": 0,
+      "source03_unchanged": true,
+      "terminal_utc": "2026-11-07T13:25:30.141558+00:00"
+    },
+    {
+      "exit_code": 0,
+      "source03_unchanged": true,
+      "terminal_utc": "2026-11-07T13:24:58.790802+00:00"
+    }
+  ],
+  "failed_normal_release01": {
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "results": [
+      {
+        "command": [
+          "./scripts/test.sh",
+          "-c",
+          "release",
+          "--disable-build-manifest-caching",
+          "--jobs",
+          "4",
+          "--filter",
+          "^(?:PhotoCraftImagingTests\\.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions|PhotoCraftImagingTests\\.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable|PhotoCraftImagingTests\\.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation|PhotoCraftImagingTests\\.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels|PhotoCraftImagingTests\\.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject|PhotoCraftImagingTests\\.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments|PhotoCraftImagingTests\\.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe|PhotoCraftImagingTests\\.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack|PhotoCraftImagingTests\\.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue|PhotoCraftImagingTests\\.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testNativeSavePanelOptionsReachAppKitAndSubsequentSave|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testCopyPreservesOwnershipHistoryAndRememberedSaveOptions|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testFailedSaveAndInvalidOptionsDoNotAdoptSettingsOrReplaceFile|PhotoCraftAppTests\\.DocumentEncodingOptionsTests/testStrictOptionsAndBackwardCompatibleCommandSchemas|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testOpenEditSaveBackEveryWritableFormatAndSaveAsChangesOwnership|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testRepresentabilityRejectsFlatteningDepthLossAndUnsupportedPSDWithoutWriting|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testSourceFormatUsesImageContentAndCommonFilenameAliases|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testRecoveryFromPSDUsesNativeArchiveAndDoesNotReplacePSD|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testSaveAsRefusesAnotherOpenDocument|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testHTTPRevocationOrConcurrentEditDuringEncodingNeverWrites|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testImportedRGB32SourceCannotBeSilentlyOverwrittenBeforeFormatReview|PhotoCraftAppTests\\.DocumentSaveWorkflowTests/testSaveAsFormatControlPreservesEligibleTypesAndSelectedFileType|PhotoCraftAppTests\\.DocumentPersistenceTests/testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory|PhotoCraftAppTests\\.DocumentPersistenceTests/testCopyRefusesOriginalAliasesAndFailedEncoderPreservesDestination|PhotoCraftAppTests\\.DocumentPersistenceTests/testCopyCancellationAndStaleResultNeverWrite|PhotoCraftAppTests\\.DocumentPersistenceTests/testRecoveryAutosaveDoesNotReplaceExplicitSaveAndConfirmedCopyCanReplace|PhotoCraftAppTests\\.DocumentPersistenceTests/testExplicitSaveRefreshesWorkspaceDirtyPresentation|PhotoCraftAppTests\\.DocumentPersistenceTests/testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState|PhotoCraftAppTests\\.DocumentPersistenceTests/testRevertImportedPNGAndFailuresDoNotDestroyEdits|PhotoCraftAppTests\\.DocumentPersistenceTests/testRevertRejectsConcurrentEditAndCancellation|PhotoCraftAppTests\\.DocumentPersistenceTests/testHTTPRevertRequiresPermissionSourceRevisionAndSharesDesktopHistory|PhotoCraftAppTests\\.DocumentPersistenceTests/testHTTPRevertRevocationWhileReadingLeavesEditsIntact|PhotoCraftAppTests\\.DocumentPersistenceTests/testHTTPRevertBusyAndConcurrentDesktopEditAreConflicts|PhotoCraftAppTests\\.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testEveryPreparedFormatPreservesDestinationVisibilityAndExactBytes|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testNativeSaveAsPreservesExistingVisibilityAndPublishesNewVisibleFiles|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testNativeSaveCopyRetainsVisibilityWithoutChangingOwnership|PhotoCraftAppTests\\.AtomicVisibilityWorkflowTests/testHTTPFileSavesMatchNativeVisibilityBytesStateAndCapabilities|PhotoCraftAppTests\\.SaveDialogFormatsTests/testLegacyVersionsAndStrictV4PreserveSettingsAndRecentFiles|PhotoCraftAppTests\\.SaveDialogFormatsTests/testAll64ListsPreserveContentHistoryAndEncoderAvailabilityAtEveryRGBDepth|PhotoCraftAppTests\\.SaveDialogFormatsTests/testNativePanelsNeverRestoreHiddenFormatsAndExplicitSavesKeepExactBytes|PhotoCraftAppTests\\.SaveDialogFormatsTests/testDraftCancelRestoreStaleBusyExternalAndFailedWritesAreAtomic|PhotoCraftAppTests\\.SaveDialogFormatsTests/testHTTPNativeEquivalenceSchemasAndExistingRecoveryIsolation|PhotoCraftAppTests\\.SaveDialogFormatsTests/testHTTPInvalidBusyStaleNoopPermissionAndFailedWriteDoNotPublish|PhotoCraftAppTests\\.SaveDialogFormatsTests/testSupplementalMenuAndOwnedWindowLayoutRetainHistoricalMenus|PhotoCraftAppTests\\.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors|PhotoCraftAppTests\\.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion|PhotoCraftAppTests\\.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry|PhotoCraftAppTests\\.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration|PhotoCraftAppTests\\.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach|PhotoCraftAppTests\\.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke|PhotoCraftAppTests\\.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor|PhotoCraftAppTests\\.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas|PhotoCraftAppTests\\.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts|PhotoCraftAppTests\\.RecoverySourceTests/testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave|PhotoCraftAppTests\\.RecoverySourceTests/testChangedSameSizeAndMtimeIsDetectedByContentHash|PhotoCraftAppTests\\.RecoverySourceTests/testIdenticalReplacementAndMissingOriginalRequireReview|PhotoCraftAppTests\\.RecoverySourceTests/testBookmarkFindsMovedOriginal|PhotoCraftAppTests\\.RecoverySourceTests/testOccupiedOldPathNeverAuthorizesReplacingAnUnrelatedFile|PhotoCraftAppTests\\.RecoverySourceTests/testChangedSourceAfterVerificationRejectsLateSaveAndSaveAsCanProceed|PhotoCraftAppTests\\.RecoverySourceTests/testForeignMalformedAndFutureRecordsCannotAuthorizeWriteBack|PhotoCraftAppTests\\.RecoverySourceTests/testCloseCancelsVerificationAndPreservesFormatSpecificReview|PhotoCraftAppTests\\.RecoverySourceTests/testRevertRefreshesRecordAndUndoRetainsTheLastSavedSource|PhotoCraftAppTests\\.RecoverySourceTests/testHTTPRecoveryContextStateAndSaveConflictMatchNative|PhotoCraftAppTests\\.RecoverySourceTests/testDeletedOriginalUnderAliasedTemporaryDirectoryKeepsSourceAssociation|PhotoCraftAppTests\\.RecoverySourceTests/testReaderRejectsMutationNonregularAndOutOfBoundsRecords|PhotoCraftAppTests\\.RecoverySourceTests/testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget|PhotoCraftAppTests\\.RecoveryLifecycleTests/testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory|PhotoCraftAppTests\\.RecoveryLifecycleTests/testDefaultTimerAndNativeUntitledRecoveryFactory|PhotoCraftAppTests\\.RecoveryLifecycleTests/testRecoveryFactoryKeepsOriginalAssociationAndModifiedState|PhotoCraftAppTests\\.RecoveryLifecycleTests/testMissingOrChangedOriginalCannotAuthorizeRecoverySaveBack|PhotoCraftAppTests\\.RecoveryLifecycleTests/testCorruptRecoveryRejectsWithoutOpeningOrChangingSource|PhotoCraftAppTests\\.RecoveryLifecycleTests/testRestorationReturnsTheNativeSharedWorkspaceWindow|PhotoCraftAppTests\\.RecoveryLifecycleTests/testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits|PhotoCraftAppTests\\.RecoveryLifecycleTests/testAPIAndNativeSnapshotsPreserveExactContentDirtyHistoryAndSource|PhotoCraftAppTests\\.RecoveryLifecycleTests/testFailedRecoveryWriteKeepsLastSnapshotAndCanRetry|PhotoCraftAppTests\\.RecoveryLifecycleTests/testRecoveredSourceRequiresSaveAsBeforeOverwriting|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled|PhotoCraftAppTests\\.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference|PhotoCraftImagingTests\\.OpenEXRTests/testFloatMantissaAndZeroAlphaHDRBitsSurviveWithoutHalfQuantization|PhotoCraftAppTests\\.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory)$"
+        ],
+        "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release01-source.json",
+        "inputs": 7555,
+        "started_at_utc": "2026-11-07T13:27:07.340427+00:00",
+        "exit_code": 1,
+        "finished_at_utc": "2026-11-07T13:34:56.027150+00:00",
+        "cases": 96,
+        "case_ids": [
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testEveryPreparedFormatPreservesDestinationVisibilityAndExactBytes",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testHTTPFileSavesMatchNativeVisibilityBytesStateAndCapabilities",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveAsPreservesExistingVisibilityAndPublishesNewVisibleFiles",
+          "PhotoCraftAppTests.AtomicVisibilityWorkflowTests/testNativeSaveCopyRetainsVisibilityWithoutChangingOwnership",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testCopyPreservesOwnershipHistoryAndRememberedSaveOptions",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testFailedSaveAndInvalidOptionsDoNotAdoptSettingsOrReplaceFile",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testNativeSavePanelOptionsReachAppKitAndSubsequentSave",
+          "PhotoCraftAppTests.DocumentEncodingOptionsTests/testStrictOptionsAndBackwardCompatibleCommandSchemas",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyAllFormatsMatchesHTTPDownloadAndKeepsDocumentOwnershipAndHistory",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyCancellationAndStaleResultNeverWrite",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testCopyRefusesOriginalAliasesAndFailedEncoderPreservesDestination",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testExplicitSaveRefreshesWorkspaceDirtyPresentation",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertBusyAndConcurrentDesktopEditAreConflicts",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRequiresPermissionSourceRevisionAndSharesDesktopHistory",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testHTTPRevertRevocationWhileReadingLeavesEditsIntact",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRecoveryAutosaveDoesNotReplaceExplicitSaveAndConfirmedCopyCanReplace",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertImportedPNGAndFailuresDoNotDestroyEdits",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertRejectsConcurrentEditAndCancellation",
+          "PhotoCraftAppTests.DocumentPersistenceTests/testRevertReloadsDiskPreservesIdentityAndSupportsUndoRedoAndCleanState",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testFailedCancelledAndStaleEncodeKeepFileIdentityDirtyStateAndHistory",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPFilenameOverwriteSymlinkExternalChangeAndStaleGuards",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPPermissionSaveAsAndSaveMatchNativeOutputAndHistory",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testHTTPRevocationOrConcurrentEditDuringEncodingNeverWrites",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testImportedRGB32SourceCannotBeSilentlyOverwrittenBeforeFormatReview",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testOpenEditSaveBackEveryWritableFormatAndSaveAsChangesOwnership",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testRecoveryFromPSDUsesNativeArchiveAndDoesNotReplacePSD",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testRepresentabilityRejectsFlatteningDepthLossAndUnsupportedPSDWithoutWriting",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsFormatControlPreservesEligibleTypesAndSelectedFileType",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSaveAsRefusesAnotherOpenDocument",
+          "PhotoCraftAppTests.DocumentSaveWorkflowTests/testSourceFormatUsesImageContentAndCommonFilenameAliases",
+          "PhotoCraftImagingTests.OpenEXRTests/testCancelledCodecTasksNeverPublishBytesOrDocuments",
+          "PhotoCraftImagingTests.OpenEXRTests/testFloatMantissaAndZeroAlphaHDRBitsSurviveWithoutHalfQuantization",
+          "PhotoCraftImagingTests.OpenEXRTests/testIndependentHalfAndFloatAllThreeCompressions",
+          "PhotoCraftImagingTests.OpenEXRTests/testLargeImplicitExportHasNoDensePixelLimitAndUsesDeclaredFloatChannels",
+          "PhotoCraftImagingTests.OpenEXRTests/testMissingOrInvalidAttributesAndOverlappingChunksReject",
+          "PhotoCraftImagingTests.OpenEXRTests/testNativeExportRetainsEveryWordAndIsIndependentlyDecodable",
+          "PhotoCraftImagingTests.OpenEXRTests/testOverflowMalformedBudgetAndDepthRejectWithoutMutation",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testAtomicEXRSavePreservesExistingHiddenFlagAndNoFailedReplacement",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPDownloadImportOptionsRevisionAndPermissionShareNativeBytes",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testNativeControlsSaveCopyOpenAndSubsequentSaveKeepSamplesAndHistory",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testSaveGuardsDepthStructureProfileHalfAndAlpha",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testStrictOptionsSchemasAndOlderCodableDefaults",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths",
+          "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testAPIAndNativeSnapshotsPreserveExactContentDirtyHistoryAndSource",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testAutomaticRecoveryWriteDoesNotCommitUnfinishedFieldEdits",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testBackgroundRecoveryPreservesIdentityPixelsAndSupportedPaintHistory",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testCorruptRecoveryRejectsWithoutOpeningOrChangingSource",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testDefaultTimerAndNativeUntitledRecoveryFactory",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testFailedRecoveryWriteKeepsLastSnapshotAndCanRetry",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testMissingOrChangedOriginalCannotAuthorizeRecoverySaveBack",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveredSourceRequiresSaveAsBeforeOverwriting",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRecoveryFactoryKeepsOriginalAssociationAndModifiedState",
+          "PhotoCraftAppTests.RecoveryLifecycleTests/testRestorationReturnsTheNativeSharedWorkspaceWindow",
+          "PhotoCraftAppTests.RecoverySourceTests/testAllFormatsRestoreRecordedTypeAndUnchangedSourceCanSave",
+          "PhotoCraftAppTests.RecoverySourceTests/testBookmarkFindsMovedOriginal",
+          "PhotoCraftAppTests.RecoverySourceTests/testChangedSameSizeAndMtimeIsDetectedByContentHash",
+          "PhotoCraftAppTests.RecoverySourceTests/testChangedSourceAfterVerificationRejectsLateSaveAndSaveAsCanProceed",
+          "PhotoCraftAppTests.RecoverySourceTests/testCloseCancelsVerificationAndPreservesFormatSpecificReview",
+          "PhotoCraftAppTests.RecoverySourceTests/testDeletedOriginalUnderAliasedTemporaryDirectoryKeepsSourceAssociation",
+          "PhotoCraftAppTests.RecoverySourceTests/testForeignMalformedAndFutureRecordsCannotAuthorizeWriteBack",
+          "PhotoCraftAppTests.RecoverySourceTests/testHTTPRecoveryContextStateAndSaveConflictMatchNative",
+          "PhotoCraftAppTests.RecoverySourceTests/testIdenticalReplacementAndMissingOriginalRequireReview",
+          "PhotoCraftAppTests.RecoverySourceTests/testOccupiedOldPathNeverAuthorizesReplacingAnUnrelatedFile",
+          "PhotoCraftAppTests.RecoverySourceTests/testReaderRejectsMutationNonregularAndOutOfBoundsRecords",
+          "PhotoCraftAppTests.RecoverySourceTests/testRevertRefreshesRecordAndUndoRetainsTheLastSavedSource",
+          "PhotoCraftAppTests.RecoverySourceTests/testSourceFingerprintAllowsLargeNativeFileWithoutChangingBackupBudget",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testAll64ListsPreserveContentHistoryAndEncoderAvailabilityAtEveryRGBDepth",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testDraftCancelRestoreStaleBusyExternalAndFailedWritesAreAtomic",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPInvalidBusyStaleNoopPermissionAndFailedWriteDoNotPublish",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testHTTPNativeEquivalenceSchemasAndExistingRecoveryIsolation",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testLegacyVersionsAndStrictV4PreserveSettingsAndRecentFiles",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testNativePanelsNeverRestoreHiddenFormatsAndExplicitSavesKeepExactBytes",
+          "PhotoCraftAppTests.SaveDialogFormatsTests/testSupplementalMenuAndOwnedWindowLayoutRetainHistoricalMenus",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 94,
+        "failed": 2,
+        "failed_cases": [
+          "PhotoCraftAppTests.DocumentPersistenceTests/testFileMenusUseFactoryBindingsAndCopyAccessoryDeclaresConversion",
+          "PhotoCraftAppTests.OpenEXRWorkflowTests/testHTTPFileSaveAdoptsOptionsAndPreservesHistory"
+        ],
+        "total_xctest_failures": 6,
+        "unexpected": 2,
+        "test_seconds": 16.327,
+        "build_seconds": [
+          "450.01"
+        ],
+        "crashes": 0,
+        "binary_sha256": "81bb892a689081a25e00223047f6ee53ba7bd9dd7f386d33fcbae761f6d379f0",
+        "binary": "/private/tmp/photocraft-swift-build/release/Photato",
+        "expected_cases": 96,
+        "missing_cases": [],
+        "extra_cases": []
+      },
+      {
+        "command": [
+          "swift",
+          "build",
+          "--build-tests",
+          "--build-system",
+          "native",
+          "--scratch-path",
+          "/private/tmp/photocraft-swift-intel",
+          "--disable-sandbox",
+          "--cache-path",
+          ".build/pm-cache",
+          "--triple",
+          "x86_64-apple-macosx14.0",
+          "-c",
+          "release",
+          "--disable-build-manifest-caching",
+          "--jobs",
+          "4",
+          "-Xswiftc",
+          "-enable-testing"
+        ],
+        "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release01-source.json",
+        "inputs": 7555,
+        "started_at_utc": "2026-11-07T13:27:07.340792+00:00",
+        "exit_code": 1,
+        "finished_at_utc": "2026-11-07T13:27:15.636746+00:00",
+        "cases": 0,
+        "case_ids": [],
+        "passed": 0,
+        "failed": 0,
+        "failed_cases": [],
+        "total_xctest_failures": null,
+        "unexpected": null,
+        "test_seconds": null,
+        "build_seconds": null,
+        "crashes": 0,
+        "binary_sha256": "b3d0c3fd2d2b5a43997fcb9e1490e5e7c21507a1890d8675ff812c2a4fd8c82d",
+        "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+        "expected_cases": 96,
+        "missing_cases": [],
+        "extra_cases": []
+      }
+    ]
+  },
+  "half_reference": {
+    "generator": "b''.join(struct.pack('<f',struct.unpack('<e',struct.pack('<H',h))[0])for h in range(65536))",
+    "sha256": "f4fdd084f85448d28c84f20fabf4022ba938e40b7f382d2727dec6f41ac6267a",
+    "words": 65536,
+    "finite_words": 63488,
+    "bytes": 262144,
+    "source": "Python struct independent of native conversion"
+  },
+  "unchanged_versions": {
+    "nativeArchive": 89,
+    "Actions": 58,
+    "typedCommands": 266
+  },
+  "original_package_closed": false,
+  "Photoshop_parity": false,
+  "goal_complete": false,
+  "remaining": [
+    "Full I04 original scope remains open: EPS/DCS/PDF/SVG/HDR/other formats, wider TIFF/PSD layouts, profiles/depths/metadata and all original acceptance. Existing layered TIFF is not counted as newly added.",
+    "EXR currently rejects tiled/deep/multipart/AOV/UINT/subsampled data, other compression, non-square pixels, non-sRGB chromaticities, non-finite colors and alpha outside0...1. Export writes a new flattened header, not all original metadata/windows.",
+    "512MiB encoded and128MiB scanline limits, import/API workspace/transfer budgets remain. Actual40.01MP implicit export and maximum logical geometry/budget checks do not prove dense maximum Photoshop capacity or every tool/format at300000x300000.",
+    "Exact Photoshop EXR samples/defaults/file-byte behavior, live native control interaction, physical Intel/Apple Silicon and macOS14/platform/60fps/fullsuite remain unqualified.",
+    "Current Debug batches encountered signal11; isolated same-binary replays passed. No cause or repair is claimed. Earlier473uncached9assertions/matched472nestedHTTPsignal10,472Intelproof reference differences and all previous failures remain open.",
+    "Native automation limitations/older458and467validation documents/builds/GitHub remain protected. This is a validation-only package, without production install, source push, Store upload/archive or software release."
+  ]
+}

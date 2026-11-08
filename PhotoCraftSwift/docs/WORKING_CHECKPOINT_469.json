@@ -1,0 +1,18 @@
+{
+  "step": "dev-step-469",
+  "run": "artifacts/runs/20261107T091104Z-469-channel-filter-capacity",
+  "status": "Large auxiliary filters Debug-qualified; native469/normal469/fullC02/independent Photoshop output open",
+  "current_major_workflow": "COL02",
+  "next": "COL03",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7503,
+  "latest_software": 469,
+  "latest_optimized_universal": 468,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:468mask filters/native API admission fix,97Debug/98normal each architecture,verified universal and offline diary/final history pair; native UI and full parity remain open.",
+  "source_manifest": "artifacts/runs/20261107T091104Z-469-channel-filter-capacity/source03-source.json",
+  "production_swift_files": 1136,
+  "selected_native_workflow_verified": false,
+  "evidence": "docs/CHANNEL_FILTER_CAPACITY_469.json"
+}

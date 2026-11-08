@@ -7,6 +7,8 @@ import PhotoCraftImaging
   let id = UUID()
   let source: CraftDocument
   let workingSettings: ColorSettings
+  let sourceSession: UUID?
+  let sourceLifecycle: UUID?
   var request: ColorProfileRequest
   var image: CGImage?
   var originalImage: CGImage?
@@ -20,8 +22,10 @@ import PhotoCraftImaging
   @ObservationIgnored var commitTask: Task<Void, Never>?
   private var generation = 0
   private var closed = false
-  init(document: CraftDocument, operation: ColorProfileRequest.Operation, settings: ColorSettings = .init()) throws {
+  init(document: CraftDocument, operation: ColorProfileRequest.Operation, settings: ColorSettings = .init(),
+    session: UUID? = nil, lifecycle: UUID? = nil) throws {
     source = document; workingSettings = settings
+    sourceSession = session; sourceLifecycle = lifecycle
     let profile = try operation == .convert ? settings.profile(document.colorMode, depth: document.depth)
       : ColorProfileInput.effectiveProfile(document)
     request = .init(operation, profile: profile)
@@ -47,8 +51,9 @@ import PhotoCraftImaging
         let worker = Task.detached(priority: .userInitiated) { () throws -> (CGImage, CGImage?) in
           var result = source
           try ColorProfileInput.command(request, in: source).apply(to: &result)
-          return (try ColorManagement.displayImage(Renderer.composite(result), in: result),
-            needOriginal ? try ColorManagement.displayImage(Renderer.composite(source), in: source) : nil)
+          let bounds = try RasterPreviewRequest.overview(width: source.width, height: source.height)
+          return (try ColorManagement.displayImage(bounds.reducing(Renderer.composite(result)), in: result),
+            needOriginal ? try ColorManagement.displayImage(bounds.reducing(Renderer.composite(source)), in: source) : nil)
         }
         let images = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation()
@@ -73,18 +78,21 @@ extension EditorStore {
   var canBeginColorProfile: Bool {
     !geometryBusy && !aiBusy && !hasToneDraft && !coalescingChanges && historyOperation == nil
       && transformDraft == nil && !editingComponent && !editingMask && !smartFilterMaskEditing
-      && DocumentColorMode.componentModes.contains(document.colorMode) && !document.layers.isEmpty && document.width <= NativeModeRaster.maximumPixels / document.height
+      && DocumentColorMode.componentModes.contains(document.colorMode) && !document.layers.isEmpty
   }
   func beginColorProfile(_ operation: ColorProfileRequest.Operation) {
     guard canBeginColorProfile else { return }
     do {
-      let draft = try ColorProfileWorkspace(document: document, operation: operation, settings: workingColorSettings)
+      let draft = try ColorProfileWorkspace(document: document, operation: operation, settings: workingColorSettings,
+        session: sessionGeneration, lifecycle: layerPanelGeneration)
       colorProfileWorkspace = draft; draft.refresh()
     } catch { status = error.localizedDescription }
   }
   func cancelColorProfile() { colorProfileWorkspace?.close(); colorProfileWorkspace = nil; render() }
   func commitColorProfile() {
     guard let draft = colorProfileWorkspace, draft.ready else { return }
+    guard draft.sourceSession == sessionGeneration, draft.sourceLifecycle == layerPanelGeneration,
+      draft.source == document else { draft.error = "The source changed during color conversion."; return }
     let original = draft.source, request = draft.request; draft.committing = true
     draft.commitTask = Task { [weak self, weak draft] in
       do {
@@ -93,7 +101,8 @@ extension EditorStore {
         }
         let prepared = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation()
-        guard let self, let draft, self.colorProfileWorkspace === draft, self.document == original else {
+        guard let self, let draft, self.colorProfileWorkspace === draft, self.document == original,
+          self.sessionGeneration == draft.sourceSession, self.layerPanelGeneration == draft.sourceLifecycle else {
           throw CraftError.invalid("The source changed during color conversion.")
         }
         try self.executeCompositePreparedEdit(prepared)

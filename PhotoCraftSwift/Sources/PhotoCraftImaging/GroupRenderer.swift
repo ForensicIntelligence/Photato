@@ -65,6 +65,12 @@ extension Renderer {
       let transitionBackdrop=output
       if base.id == cache.inputTarget { throw AdjustmentInputReached(surface: output) }
       let clips = Array(layers[start..<index].filter { $0.visible && $0.opacity > 0 })
+      if let channels=base.style?.restrictedChannels {
+        let chain=[ChannelBlending.unrestricted(base)]+Array(layers[start..<index])
+        let rendered=try compositeStack(chain,in:d,over:output,cache:cache)
+        output=try ChannelBlending.restore(rendered,over:output,channels:channels)
+        continue
+      }
       if base.style != nil {
         output = try LayerStyleRenderer.composite(base, clips: clips, in: d, over: output, region: region, cache:cache.fullCanvas())
       } else if let group = base.group, group.passThrough, group.artboard == nil, group.frame == nil {
@@ -185,6 +191,11 @@ extension Renderer {
     let region = cache.bounds(d)
     var result = base
     for clip in clips {
+      if let channels=clip.style?.restrictedChannels {
+        let rendered=try compositeClips([ChannelBlending.unrestricted(clip)],onto:result,in:d,cache:cache)
+        result=try ChannelBlending.restore(rendered,over:result,channels:channels)
+        continue
+      }
       try Task.checkCancellation()
       if case .adjustment = clip.content {
         result = try compositeFlat(

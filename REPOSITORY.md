@@ -106,3 +106,7 @@ The universal development ZIP is ad-hoc signed, not notarized or an App Store re
 
 
 Build448 source is verified at [77b14d5eedf8](https://github.com/ForensicIntelligence/Photato/commit/77b14d5eedf88f5b70dab96b9d8140d1fbc121c3). The four unpublished draft build assets were downloaded and hash-verified, including the extracted app signature and contents. No software release was published. See [delivery verification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_449.json).
+
+## 2026-11-08 — Native build500 source snapshot
+
+This source delivery includes all qualified distributable build500inputs and the developer working records through500. All originalRustsource and existing Git history are retained. The current selected export workflow passes42focused tests in Debug and each optimized architecture; the repository remains an unfinished alpha with earlier failed acceptance targets explicitly retained. Generated models, caches, signing material, restricted external image fixtures and raw local evidence are excluded. Canonical historical-evidence processing is still pending. Source availability does not publish an app or authorize an automatic release. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_500.md.

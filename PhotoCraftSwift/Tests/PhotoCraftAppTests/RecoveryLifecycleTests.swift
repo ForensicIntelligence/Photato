@@ -78,7 +78,7 @@ final class RecoveryLifecycleTests: XCTestCase {
     let controller = controller()
     let folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }
-    for format in DocumentIO.Format.allCases {
+    for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
       let original = try EditableLifecycleModel.make(width: 4, height: 2)
       let source = folder.appendingPathComponent("original." + format.rawValue)
       let sourceBytes = try DocumentIO.encodeForPersistence(original, format: format)

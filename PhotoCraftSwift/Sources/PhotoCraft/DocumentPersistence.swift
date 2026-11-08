@@ -12,6 +12,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   let formats = NSPopUpButton(frame: .zero, pullsDown: false)
   let explanation = NSTextField(wrappingLabelWithString: "")
   let jpegControls = JPEGSaveControls()
+  let exrControls = OpenEXRSaveControls()
   weak var panel: NSSavePanel?
   let availableFormats: [DocumentIO.Format]
   let saving: Bool
@@ -45,6 +46,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   var encodingOptions: RasterEncodingOptions {
     switch format {
     case .jpeg: return jpegControls.options
+    case .exr: return exrControls.options
     case .png:
       return .init(pngCompression: pngCompression.indexOfSelectedItem == 0 ? nil : pngCompression.indexOfSelectedItem - 1,
         pngInterlaced: pngInterlaced.state == .on)
@@ -90,6 +92,8 @@ enum DocumentPersistenceConflict: LocalizedError {
     view.addArrangedSubview(NSStackView(views: [NSTextField(labelWithString: "Format:"), formats]))
     jpegControls.configure(initialOptions[.jpeg] ?? .init())
     view.addArrangedSubview(jpegControls.view)
+    exrControls.configure(initialOptions[.exr] ?? .init())
+    view.addArrangedSubview(exrControls.view)
     pngCompression.addItems(withTitles: ["Default", "None (0)", "Fastest (1)", "2", "3", "4", "5", "6", "7", "8", "Smallest (9)"])
     pngCompression.setAccessibilityLabel("PNG compression")
     if let level = initialOptions[.png]?.pngCompression, (0...9).contains(level) {
@@ -187,6 +191,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     explanation.stringValue = saving ? format.saveNotice : format.copyDescription
     pngRow.isHidden = format != .png; tiffRow.isHidden = format != .tiff
     jpegControls.view.isHidden = format != .jpeg
+    exrControls.view.isHidden = format != .exr
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
     tiffLayersRow.isHidden = format != .tiff
     psdLayerRow.isHidden = photoshopFormat == nil || mode.isRestricted || mode == .multichannel; psdCompositeRow.isHidden = photoshopFormat == nil
@@ -251,7 +256,10 @@ enum DocumentPersistenceConflict: LocalizedError {
     let source = revertSourceURL
     let generation = store.layerPanelGeneration
     fileOperationBusy = true
-    defer { fileOperationBusy = false }
+    defer {
+      fileOperationBusy = false
+      preparedSaveOutput = nil
+    }
     let worker = Task.detached(priority: .userInitiated) {
       try DocumentIO.prepareOutput(snapshot, format: format, persistence: false, options: effectiveOptions, encoder: encoder)
     }
@@ -264,12 +272,12 @@ enum DocumentPersistenceConflict: LocalizedError {
       throw CraftError.invalid(
         "The document changed while preparing the copy. Save the copy again.")
     }
-    let writer = Task.detached(priority: .utility) {
-      try Task.checkCancellation()
-      try output.write(to: url)
-    }
-    try await withTaskCancellationHandler(
-      operation: { try await writer.value }, onCancel: { writer.cancel() })
+    // A Save panel grants access to its destination, not arbitrary siblings.
+    // Let AppKit provide the coordinated safe-write location, as for Save As.
+    // Save To preserves this document's association, dirty state and history.
+    let hidden = try Self.destinationHiddenFlag(url)
+    preparedSaveOutput = (format.typeIdentifier, output, hidden)
+    try await writePreparedDocument(to: url, type: format.typeIdentifier, operation: .saveToOperation)
   }
 
   /// Reload only this document's associated file, keeping the previous edit in history.

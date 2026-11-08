@@ -4,6 +4,11 @@ import PhotoCraftImaging
 import SwiftUI
 
 extension EditorStore {
+  var canUseMagicWand: Bool {
+    document.colorMode == .rgb && isCompositeColorTarget && editingChannel == nil
+      && !smartFilterMaskEditing && pathTarget == nil && activeLayer != nil
+      && canSelectComponentTarget && brushGesture == nil
+  }
   func colorRegionClick(at point: PathPoint, modifiers: NSEvent.ModifierFlags = []) {
     guard !geometryBusy, !hasToneDraft, transformDraft == nil,
       let layer = activeLayer, point.x >= 0, point.y >= 0,
@@ -12,6 +17,13 @@ extension EditorStore {
     let isWand = tool == .magicWand
     guard isWand || tool == .paintBucket else { return }
     guard !smartFilterMaskEditing else { error = "Use Brush or Fill to edit the Smart Filter mask."; return }
+    if isWand {
+      guard canUseMagicWand else { return }
+      let request = MagicWandRequest(layerID: layer.id, point: point, options: wandOptions,
+        mode: selectionMode(modifiers: modifiers), sampleAllLayers: wandSampleAllLayers, mask: editingMask)
+      performGeometry(label: "Magic Wand", allowAuxiliary: true) { try request.command(in: $0) }
+      return
+    }
     if !isWand && modifiers.contains(.option) {
       if let surface { brush.color = surface.pixel(x: Int(floor(point.x)), y: Int(floor(point.y))) }
       return
@@ -21,7 +33,6 @@ extension EditorStore {
       error = "Unlock this layer and its parent groups before editing it."
       return
     }
-    let wand = wandOptions
     let bucket = bucketOptions
     let color = brush.color
     let pattern = !isWand && bucketUsesPattern ? patterns.selected : nil
@@ -31,14 +42,12 @@ extension EditorStore {
       return
     }
     let placement = bucketPatternPlacement
-    let mode = selectionMode(modifiers: modifiers)
     let all = !mask && (isWand ? wandSampleAllLayers : bucket.sampleAllLayers)
     let id = layer.id
     performGeometry(label: isWand ? "Magic Wand" : "Paint Bucket") { document in
       let sample = try Renderer.cloneSample(
         in: document, layerID: id,
         sampling: all ? .all : .current, mask: mask)
-      if isWand { return .magicWand(sample, point, wand, mode, mask) }
       return .paintBucket(
         id,
         BucketFill(
@@ -54,10 +63,18 @@ extension WorkspaceView {
       Picker("Selection mode", selection: $store.selectionMode) {
         ForEach(SelectionMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
       }.labelsHidden().frame(width: 100).controlSize(.small)
-      labeledValue("Sample Size:", value: "Point Sample", width: 90)
-        .help("Point sampling is available. Averaged sampling is not available yet.")
+      Picker("Sample Size:", selection: $store.wandOptions.sampleSize) {
+        ForEach(ColorSampleSettings.sizes, id: \.self) { size in
+          Text(size == 1 ? "Point Sample" : "\(size) by \(size) Average").tag(size)
+        }
+      }.frame(width: 245).controlSize(.small).accessibilityLabel("Sample Size")
+        .help("Average the sampled area around the click, clipped to the image bounds.")
       matchOptions($store.wandOptions)
       Toggle("Sample All Layers", isOn: $store.wandSampleAllLayers).disabled(store.editingMask)
+      Button("Select Subject") { store.selectSubjectFromToolOptions() }
+        .disabled(!store.canSelectSubjectFromToolOptions)
+        .accessibilityIdentifier("selection.options.subject")
+        .help("Select the main subjects using on-device processing.")
       Button("Select and Mask…") { store.beginSelectMask() }.disabled(!store.canBeginSelectMask).controlSize(.small)
     } else {
       Picker("Fill", selection: $store.bucketUsesPattern) {

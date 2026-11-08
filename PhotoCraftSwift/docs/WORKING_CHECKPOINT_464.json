@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-464",
+  "run": "artifacts/runs/20261107T052411Z-464-smart-filter-transfer",
+  "status": "Selected stack/mask transfer qualified; live/fullL06/Photoshop and old Debug crash remain open",
+  "current_major_workflow": "S02",
+  "next": "S03",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7481,
+  "latest_software": 464,
+  "latest_optimized_universal": 464,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress: completed normal ARM/translatedIntel qualification and universal packaging of464; native Photoshop fixture created/saved/closed, coordinate drag remains unqualified.",
+  "native_reference": "Owned synthetic two-Smart-Object Gaussian-filter fixture created, saved and closed; coordinate drag fails noWindowsAvailable; no transfer or output parity proof.",
+  "source_manifest": "artifacts/runs/20261107T052411Z-464-smart-filter-transfer/release03-source.json",
+  "production_swift_files": 1131,
+  "evidence": "docs/SMART_FILTER_TRANSFER_464.json",
+  "native_464_app_launched": false
+}

@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-466",
+  "run": "artifacts/runs/20261107T070947Z-466-selection-sources",
+  "status": "Selected source-policy/Wand Subject workflow qualified; fullS03/Photoshop/platform/optimizedGUI remain open",
+  "current_major_workflow": "S04",
+  "next": "S06",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7487,
+  "latest_software": 466,
+  "latest_optimized_universal": 466,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Verified wait: exact session46329 confirmed live; read-only plugin audit confirmed AUT03 open. Current turn finishes normal/packaging/documentation evidence.",
+  "native_reference": "Source01 Debug actual Vision owned image/UndoRedo/Close/Quit verified. Prior465 Photoshop Wand Subject control observed; source-kind/numerical fidelity remains unqualified.",
+  "source_manifest": "artifacts/runs/20261107T070947Z-466-selection-sources/release01-source.json",
+  "production_swift_files": 1133,
+  "selected_native_workflow_verified": true,
+  "evidence": "docs/SELECTION_SOURCE_POLICY_466.json"
+}

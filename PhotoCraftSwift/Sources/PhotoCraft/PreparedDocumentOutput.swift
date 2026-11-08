@@ -15,17 +15,30 @@ enum PreparedDocumentOutput: Sendable {
   }
   func write(to url: URL, destinationHidden: Bool? = nil) throws {
     try Task.checkCancellation()
+    // Save-panel access covers the selected file. Foundation supplies a private
+    // replacement directory on the same volume for an atomic staged write.
+    let staging = try FileManager.default.url(for: .itemReplacementDirectory,
+      in: .userDomainMask, appropriateFor: url.standardizedFileURL.resolvingSymlinksInPath(), create: true)
+    let identity = (try? staging.resourceValues(forKeys: [.fileResourceIdentifierKey]))?.fileResourceIdentifier as? NSObject
+    defer {
+      let current = (try? staging.resourceValues(forKeys: [.fileResourceIdentifierKey]))?.fileResourceIdentifier as? NSObject
+      if let identity, let current, identity.isEqual(current),
+        (try? FileManager.default.contentsOfDirectory(atPath: staging.path).isEmpty) == true {
+        try? FileManager.default.removeItem(at: staging)
+      }
+    }
     switch self {
     case .data(let bytes):
       let output = try AtomicFileWriter(to: url, maximumBytes: bytes.count,
-        destinationHidden: destinationHidden)
+        destinationHidden: destinationHidden, stagingDirectory: staging)
       defer { output.discard() }
       try output.append(bytes)
       try output.commit()
     case .file(let file):
       let source = try FileHandle(forReadingFrom: file.url)
       defer { try? source.close() }
-      let output = try AtomicFileWriter(to: url, maximumBytes: file.count, destinationHidden: destinationHidden)
+      let output = try AtomicFileWriter(to: url, maximumBytes: file.count,
+        destinationHidden: destinationHidden, stagingDirectory: staging)
       defer { output.discard() }
       while let bytes = try source.read(upToCount: AtomicFileWriter.chunkBytes), !bytes.isEmpty {
         try output.append(bytes)

@@ -123,8 +123,7 @@ public enum ABRCodec {
     if let mode=enumeration(d,"textureBlendMode") { guard let mapped=mask(mode) else { throw CraftError.unsupported("Unsupported brush texture mode.") };b.texture.mode=mapped };b.protectTexture=bool(d,"protectTexture")
     if b.texture.enabled {
       guard let ref=object(d,"Txtr"),let pattern=patterns.first(where:{$0.id==text(ref,"Idnt") || $0.name==text(ref,"Nm  ")}) else { throw CraftError.unsupported("Brush texture pattern is not embedded.") }
-      let s=pattern.surface;guard s.width<=2500,s.height<=2500 else { throw CraftError.invalid("Brush texture is too large.") };var bytes=Data(count:s.width*s.height)
-      for y in 0..<s.height { for x in 0..<s.width { let p=s.pixel(x:x,y:y);bytes[y*s.width+x]=UInt8((unit((p.r*0.2126+p.g*0.7152+p.b*0.0722)*p.a)*255).rounded()) } };b.texture.bitmap = .init(width:s.width,height:s.height,bytes:bytes)
+      b.texture.bitmap = try BrushTexturePreparation.bitmap(pattern)
     }
     if let dual=object(d,"dualBrush"),bool(dual,"useDualBrush") {
       guard let t=object(dual,"Brsh") else { throw CraftError.invalid("Missing dual tip.") };let q=try tip(t,samples:samples);b.dual.enabled=true;b.dual.tip=q.settings!.tip;b.dual.size=q.size;b.dual.hardness=Double(q.hardness);b.dual.roundness=q.settings!.roundness;b.dual.angle=q.settings!.angle;b.dual.spacing=number(dual,"Spcn",q.settings!.spacing*100)/100;b.dual.scatter=dynamic(object(dual,"scatterDynamics")).jitter;b.dual.count=Int(number(dual,"Cnt ",1));b.dual.bothAxes=bool(dual,"bothAxes");b.dual.flip=bool(dual,"Flip");if let mode=enumeration(dual,"BlnM") { guard let mapped=mask(mode) else { throw CraftError.unsupported("Unsupported dual brush mode.") };b.dual.mode=mapped }

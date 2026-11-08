@@ -1,0 +1,28 @@
+{
+  "step": "dev-step-472",
+  "run": "artifacts/runs/20261107T110529Z-472-paged-image-statistics",
+  "status": "Large image-stack selected workflow qualified; fullRAW02/live/Photoshop fidelity open",
+  "current_major_workflow": "I03",
+  "next": "I04",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7523,
+  "latest_software": 472,
+  "latest_optimized_universal": 470,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:471largeproofimplementation/64Debug14new/exactrawreferences/package/diary/finalhistorypair; originalscopeunmet.",
+  "source_manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/release01-source.json",
+  "production_swift_files": 1141,
+  "selected_native_workflow_verified": false,
+  "evidence": "docs/PAGED_IMAGE_STATISTICS_472.json",
+  "latest_universal_validation_candidate": 472,
+  "normal_reference_batch_passed": false,
+  "selected_workflow_normal_pass_each": [
+    44,
+    44
+  ],
+  "combined_normal_pass_each": [
+    92,
+    90
+  ]
+}

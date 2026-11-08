@@ -1,0 +1,15 @@
+{
+  "step": "dev-step-481",
+  "status": "Local archive pipeline qualified; final history audit recorded separately",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "AUD01",
+  "next": "AUT02",
+  "application_build": 480,
+  "run": "artifacts/runs/20261107T210010Z-481-archive-validation",
+  "output": "/private/tmp/photato-ci481-pipeline01-8cc2891c",
+  "source_manifest": "artifacts/runs/20261107T210010Z-481-archive-validation/pipeline01-source.json",
+  "source_inputs": 7590,
+  "goal_complete": false,
+  "reference": "docs/ARCHIVE_VALIDATION_481.json"
+}

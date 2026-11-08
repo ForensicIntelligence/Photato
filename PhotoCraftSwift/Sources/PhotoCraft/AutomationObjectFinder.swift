@@ -30,6 +30,7 @@ enum ObjectFinderAPI {
   }
   static var capabilities: [String: Any] {
     ["commands":commands,"stateSchema":stateSchema,"resultSchema":resultSchema,"onDevice":true,"minimumMacOS":"14.0",
+      "sourceSampling":"Sample All Layers explicitly chooses the visible composite. Otherwise raster/Smart Object, text, shape and fill content is rendered from the selected layer in document coordinates with masks and without layer styles. Groups/adjustments require explicit composite sampling; no implicit fallback to unrelated layers. Source-kind Photoshop eligibility/output remains unqualified.",
       "configuration":"selection.configure: objectFinderEnabled, hardEdge and finderOverlayColor; sampleAllLayers chooses the source. Native Object Selection uses cached hover/click masks. Rectangle/lasso and legacy point detection remain available when Finder is disabled.",
       "lifecycle":"Cache is tied to source document/layer/sample mode; source edits, layer switches, tool switches, refresh, cancel and document reload/close invalidate it. Selection-only edits reuse masks. Detection/hover do not dirty the document or create history. Selection commits one native Undo and can record frozen coverage in Actions4.",
       "maskEncoding":"findObjects includeMasks=true returns each full-canvas row-major UInt8 mask as base64. No pixels are sent to a cloud provider. At most16,777,216 raw aggregate mask bytes (about22.4MB base64), with the existing64-instance/canvas/tile limits. Responses use the current cacheID; selection/hover require it and reject expired caches.",

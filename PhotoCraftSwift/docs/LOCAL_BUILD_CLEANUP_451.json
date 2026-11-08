@@ -1,0 +1,53 @@
+{
+  "step": 451,
+  "completed_local_cleanup": true,
+  "targets_deleted": 1252,
+  "protected_files_verified": 16311,
+  "current_source_inputs_unchanged": 7385,
+  "current_builds": {
+    "latest_Debug": 450,
+    "latest_optimized_universal": 448,
+    "latest_Xcode_archive": 332,
+    "installed_default_Verified_latest_preview284_preserved": true,
+    "working_ARM_and_Intel_caches_preserved": true
+  },
+  "current_signatures": [
+    {
+      "app": "/private/tmp/photato-validation-450-b03d7aca/Photato Validation 450.app",
+      "verified": true
+    },
+    {
+      "app": "/private/tmp/photato-validation-448-stage01-e9e02987/Photato Validation 448.app",
+      "verified": true
+    },
+    {
+      "app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-public-backup449-ir1ssmy9/build/Photato.app",
+      "verified": true
+    }
+  ],
+  "working_executable_and_production_ZIP_hashes_verified": {
+    "/private/tmp/photocraft-swift-build/arm64-apple-macosx/debug/Photato": "195537137030a7368d070280ff3f3261c8b3dde64c36d25268556dba438eceef",
+    "/private/tmp/photocraft-swift-build/arm64-apple-macosx/release/Photato": "bdaf79147533e8fba3128a7b993e62c5ab981b2cb811081fd61bd4050d34be58",
+    "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-public-backup449-ir1ssmy9/assets/Photato-0.3.0-build448-macOS.zip": "3a8442737da3025d6fff78f5d6c5ed30287bf0ba49fbcd27eb23ef429ada9591",
+    "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato": "a5dd477b35b286dbbd22712af37d3a111008d050b366789fef56c4ef1d694120"
+  },
+  "free_before_bytes": 35399733248,
+  "free_after_verification_bytes": 312492494848,
+  "net_free_increase_bytes": 277092761600,
+  "net_free_increase_GB": 277.0927616,
+  "source_test_fixtures_logs_manifests_reference_artwork_preserved": true,
+  "old_copied_test_resource_bundles_pruned": true,
+  "no_GitHub_commands_or_mutations": true,
+  "new_application_tests_or_builds": false,
+  "camera_lens_defaults": "Source/reference audit only; implementation remains next under F05.",
+  "goal_complete": false,
+  "verified_utc": "2026-11-06T20:33:14.767991+00:00",
+  "retirement_manifest": "artifacts/development-history-audit/local-build-cleanup-20261106/retirement-plan.json",
+  "deletion_journal": "artifacts/development-history-audit/local-build-cleanup-20261106/deleted.jsonl",
+  "original_manifests": "Kept at original paths; historical retained-product statements precede this deliberate local cleanup.",
+  "source_snapshots": "Kept, including original Rust and all native source snapshots.",
+  "preserved_logs": "Original build/test/crash results remain. Copied fixture resources inside retired test bundles were removed; original test fixtures remain unchanged.",
+  "API_effect": "None. This removes local superseded development products; source, UI, menus, API schemas and editing behavior are unchanged.",
+  "next": "Resume F05 camera-linked Lens Correction defaults after its recorded audit; then F06. No package closure or scope change.",
+  "remaining": "Full Photoshop parity and all earlier failed/unqualified gates remain open."
+}

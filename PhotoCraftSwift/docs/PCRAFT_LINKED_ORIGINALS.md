@@ -1,0 +1,13 @@
+# Embedded originals referenced by source projects
+
+Some original PhotoCraft projects describe an embedded Smart Object using a linked identifier. The original bytes live in retained PSD linked-data metadata inside the project. Photato now recovers currently decodable originals from these records instead of rejecting every linked source.
+
+Open the `.pcraft` archive normally. Edit Contents, shared-source edits, mode changes, rasterization, Undo and Save As use the existing native workflows. Save As creates a `.photato` document; the original source project is unchanged. Cached appearance remains separate from the editable original. Missing originals are never replaced with placed previews.
+
+The importer reads known `lnk2`, `lnk3`, `lnkD` and `lnkE` metadata from 8BIM/8B64 records only when linked-source lookup is needed. It reuses the existing native decoder and accepts embedded `liFD` data. External `liFE`, alias `liFA`, missing originals, duplicate usable IDs and malformed referenced blocks reject atomically. Original globals remain under their source-provenance keys and are not activated as rendering programs. No archive-supplied path is opened. Existing source-size, nesting, processing-kind and import budgets still apply.
+
+The Photato API uses the existing `/v1/documents/import` path with `application/vnd.photocraft.project` and the optional `X-Photato-Open-Format: pcraft` header. Source download, native download and editing share the same importer/model. `/v1/document-opening` exposes the added `linkedEmbeddedOriginals` capability. No new command/schema/version or Adobe endpoint is introduced. PhotoCraft input remains a Photato extension; Adobe v2 input restrictions are unchanged.
+
+All 11 new checks pass. Nine owned fixture derivatives cover three depths, shared originals and statistical modes; all 737,280 inherited cache bytes and the original payloads are retained. The derivatives preserve existing Rust-generated reference data; they were not newly rendered in Rust or Photoshop. Of 41 planned checks, 39 pass. One older uncached-render method retains nine original-Rust assertions, and a nested-source HTTP method crashes identically in retained build472. These failures remain open. Optimized473, live controls, supported platforms, full I03 and Photoshop output/default equivalence remain unqualified.
+
+References: [Adobe's public file-format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/), original licensed `crates/io/src/linked.rs`, [checkpoint evidence](PCRAFT_LINKED_ORIGINALS_473.json) and [development record](DEVLOG.md#dev-step-473).

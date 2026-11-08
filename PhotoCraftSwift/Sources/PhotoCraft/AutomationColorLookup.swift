@@ -35,7 +35,12 @@ extension AutomationService {
       "formats": (store.colorLookupExportID != nil ? store.colorLookupExportActiveFormats : store.colorLookupExportDraft?.formats ?? []).map(\.rawValue), "busy": store.colorLookupExportID != nil]
   }
   static var colorLookupCapabilities: [String:Any] {
-    ["commands":["adjustment.create","adjustment.set","adjustment.apply"],"schema":ColorLookupAdjustment.apiSchema,
+    ["interpolationReference":["nativeDefault":"tetrahedral", "legacyPhotatoOmittedDefault":"trilinear", "explicitPhotato":"Set interpolation:tetrahedral for Photoshop-matching Cube evaluation; explicit trilinear remains available and native archives retain their encoded choice.", "adobe":"Color Lookup actions use tetrahedral interpolation.", "PSD":"Editable Color Lookup uses tetrahedral interpolation. Editable export builds a deterministic ICC v4 float-CLUT cache from the original uniform unit-domain table, with native descriptor framing. Imported caches are accepted only when every sample matches that table; standalone ICC, shapers, nonuniform domains and extra transforms remain unsupported for this editable interchange.", "qualification":"Controlled Photoshop2026 Cube references cover edges2/3 at RGB8/16/32 with Dither off. Other formats, profiles, domains, shapers and stochastic dither remain unqualified."],
+     "propertyPreparation":["native":"Color Lookup layer Properties prepares and validates replacement content on the existing detached transaction worker. Publication, history and dirty notifications remain on the main actor. Native callers await geometryTask before reading committed content.",
+       "state":"Existing geometryBusy/status/error state applies. Properties disables competing controls and offers Cancel during preparation; source-session/lifecycle fences discard stale results.",
+       "api":"Existing adjustment.set and adjustmentBrush.edit replace use prepared transactions and retain their request, response, revision, busy and history contracts. Adobe action execution retains its documented lookup subset; no new endpoint or descriptor.",
+       "limits":"No rendering kernel, file format, Actions version or command change. Commit/history spilling/rendering can still occupy the main actor. Faster submission does not qualify physical input/display latency,60fps or all tools."],
+     "commands":["adjustment.create","adjustment.set","adjustment.apply"],"schema":ColorLookupAdjustment.apiSchema,
      "upload":["method":"POST","path":"/v1/luts","contentType":"application/octet-stream",
        "nameHeader":"X-Photato-LUT-Name: percent-encoded basename ending in cube, 3dl or look",
        "bodySchema":["type":"string","format":"binary","maxLength":ColorLUT.maximumFileBytes],
@@ -60,13 +65,16 @@ extension AutomationService {
      "limits":["maximumCachedTables":16,"maximumCacheBytes":64*1024*1024,"maximumTableEdge":ColorLUT.maximumSize],
      "presets":ColorLUTPreset.allCases.map { ["id":$0.rawValue,"title":$0.title] },
      "persistence":"Native18; upload then use lutID, or use preset. Omit both for identity. Set replaces all settings; upload the layer download to reuse its LUT.",
-     "limitations":"RGB composite; bounded Cube/3DL/LOOK tables only. ICC/CSP and Photoshop exact interpolation/dither remain unqualified."]
+     "limitations":"RGB composite; bounded Cube/3DL/LOOK tables only. ICC/CSP import remains unsupported. Exact output is qualified only for the captured unit-domain Cube edges2/3, RGB8/16/32 and Dither off; other interpolation/dither/profile/domain cases remain open."]
   }
   func resolveColorLookup(_ command: AutomationCommand) throws -> ColorLookupAdjustment? {
     guard command.name.hasPrefix("adjustment."), let value = command.parameters["adjustment"]?.jsonValue as? [String:Any], value["kind"] as? String == "colorLookup" else { return nil }
+    return try resolveColorLookupParameters(value)
+  }
+  func resolveColorLookupParameters(_ value:[String:Any])throws->ColorLookupAdjustment {
     struct Parameters: Decodable { let kind: String; var lutID: UUID?; var preset: ColorLUTPresetValue?; var interpolation: ColorLUT.Interpolation?; var dither: Bool? }
     // Decode the strict public shape first; null settings are not defaults.
-    guard Set(value.keys).isSubset(of:["kind","lutID","preset","interpolation","dither"]),
+    guard value["kind"] as? String == "colorLookup",Set(value.keys).isSubset(of:["kind","lutID","preset","interpolation","dither"]),
       value["lutID"] == nil || value["preset"] == nil, !value.values.contains(where:{ $0 is NSNull }) else {
       throw AutomationFailure(status:400,message:"Invalid Color Lookup parameters.")
     }

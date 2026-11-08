@@ -85,7 +85,7 @@ final class ChannelFooterWorkflowTests:XCTestCase {
       let stale=try await helper.edit(service,shared,"channel.edit",["action":"loadSelection","source":["kind":"smartFilterMask","id":id.uuidString]],revision:"stale");XCTAssertEqual(stale,409)
       for source:[String:Any] in [["kind":"smartFilterMask"],["kind":"smartFilterMask","id":false],["kind":"smartFilterMask","id":id.uuidString,"component":0]] {let status=try await helper.edit(service,shared,"channel.edit",["action":"loadSelection","source":source]);XCTAssertEqual(status,400)}
       let share=try XCTUnwrap(service.shares.first),state=service.state(share,document:shared),selection=try XCTUnwrap(state["selectionChannels"]as? [String:Any]);XCTAssertNotNil(selection["footer"])
-      XCTAssertNotNil(ChannelAPI.capabilities["nativeFooter"]);XCTAssertTrue(SelectionChannelSourceAPI.kinds.contains("smartFilterMask"));XCTAssertEqual(AutomationCommand.definitions.count,258)
+      XCTAssertNotNil(ChannelAPI.capabilities["nativeFooter"]);XCTAssertTrue(SelectionChannelSourceAPI.kinds.contains("smartFilterMask"));XCTAssertEqual(AutomationCommand.definitions.count,267)
     }
   }
   @MainActor func testCancelledNativeSourceReplacementAndRevokedAPIWorkNeverCommit()async throws {

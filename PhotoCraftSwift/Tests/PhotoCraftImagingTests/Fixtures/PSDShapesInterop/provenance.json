@@ -1,0 +1,80 @@
+{
+  "step": 497,
+  "recorded_utc": "2026-11-08T16:17:17.420900+00:00",
+  "files": {
+    "photoshop-rectangle-stroke0.psd": {
+      "bytes": 24920,
+      "sha256": "2d78f88111fa27320037b02ea3006f6b5815d36428076f169ddcd9a3d024ec3d"
+    },
+    "photoshop-rectangle-stroke1.psd": {
+      "bytes": 25782,
+      "sha256": "57fe6b4d7ce8f5dfab10051459b61e33d3409b0f6639238d8fb87b133e190ee7"
+    }
+  },
+  "source": "Original Photoshop2026 UI-created128x96RGB8untaggedtransparentdocument, Shape-mode rectangle64x40at16,16; grayfill/blackstroke. Savedstroke1PSD, thenchangedwidthto0andsavedseparatePSD. Bothsavedcleantitlesverified. Widthrestored1inownedworkingdoc, closedwithoutoverwriting0reference. BrushshortcutafterclosewasnotobservableinHome; no restoredtoolclaim.",
+  "failed_attempt": "StrokeNonepopupcoordinateclickdidnotproducevisiblechange/dirtymarker; notcountedasstroke-disabledsuccess. Zero-widthwasthenexplicitlysetwithAXPropertiesfieldandverified.",
+  "no_user_document_modified": true,
+  "no_application_preferences_modified": true,
+  "Photoshop_internals_inspected": false,
+  "native_workers_during_UI": false,
+  "inspection": "artifacts/497-editable-shape-psd/reference01/descriptor-inspection01.json",
+  "qualification": "Owned Photoshop output only; no native Photato support or pixel-equivalence claim. Rectangle64x40 at16,16; strokeStyleVersion2, grayfill, centeredblackstroke0/1, liveoriginType1 retained.",
+  "raster_reference": {
+    "recorded_utc": "2026-11-08T17:01:06.746956+00:00",
+    "provenance": "Photoshop2026 UI: fresh128x96RGB8transparent document, profile Don\u2019t Color Manage; Option-Backspace initially produced no observed fill. Existing Brush drag produced a21x21 nonempty layer at8,9; this is an observed dab, not a claimed continuous stroke. SaveAs separate PSD, Embed Color Profile unchecked; clean title/Pixel Layer verified. Closed saved doc; Home empty. Brush active verified. Original shape fixtures unchanged. Public PSD structure and PackBits/ZIP decoder only; no Adobe code/binary inspected.",
+    "file": "photoshop-neutral-none-raster.psd",
+    "bytes": 22796,
+    "sha256": "a2b2f0be6b09131d5ab6e25e6aed73429fb01ca8c2787374baf66f4dcbddd135",
+    "reference_bytes": 1764,
+    "reference_sha256": "dd0cd050c7814b126f37540f28ce78f5d68c156a3f306ea0a4cd960ef1f42261",
+    "width": 128,
+    "height": 96,
+    "depth": 8,
+    "mode": 3,
+    "layer": {
+      "bounds": [
+        9,
+        8,
+        30,
+        29
+      ],
+      "channels": [
+        [
+          -1,
+          443
+        ],
+        [
+          0,
+          150
+        ],
+        [
+          1,
+          150
+        ],
+        [
+          2,
+          150
+        ]
+      ],
+      "name": "Layer 1",
+      "tags": [
+        "luni",
+        "lnsr",
+        "lyid",
+        "clbl",
+        "infx",
+        "knko",
+        "lspf",
+        "lclr",
+        "shmd",
+        "fxrp"
+      ],
+      "blend": "norm",
+      "flags": "ff000800"
+    },
+    "untagged_resource": "01",
+    "embedded_ICC": false,
+    "OCIO_sha256": "8ec976a88c27fce7901bbe368b8033c93b2dd918cf8597b74c1352e3e9d7cc84"
+  },
+  "raster_qualification": "Independent public-format plane decoder extracted1764 RGBA layer bytes; native comparison not yet executed at capture time. Reopened/rasterized alternative uses kindicc and is retained privately as a distinct result."
+}

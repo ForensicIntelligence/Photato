@@ -1,0 +1,47 @@
+[
+  {
+    "bytes" : 81920,
+    "file" : "referenced-affine-cached-u8.pcraft",
+    "offset" : 0
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-shared-u8.pcraft",
+    "offset" : 81920
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-stack-mean-u8.pcraft",
+    "offset" : 163840
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-affine-cached-u16.pcraft",
+    "offset" : 245760
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-shared-u16.pcraft",
+    "offset" : 327680
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-stack-mean-u16.pcraft",
+    "offset" : 409600
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-affine-cached-f32.pcraft",
+    "offset" : 491520
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-shared-f32.pcraft",
+    "offset" : 573440
+  },
+  {
+    "bytes" : 81920,
+    "file" : "referenced-stack-mean-f32.pcraft",
+    "offset" : 655360
+  }
+]

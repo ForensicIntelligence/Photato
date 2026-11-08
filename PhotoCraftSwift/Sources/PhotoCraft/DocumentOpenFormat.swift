@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 /// Reader selection is independent of the filename. Selection verifies the
 /// container before invoking the existing decoder; it never converts the input.
 enum DocumentOpenFormat: String, CaseIterable, Sendable {
-  case automatic, native = "photato", pcraft, psd, psb, png, jpeg, tiff, heic, bmp, gif, raw, movie, pdf
+  case automatic, native = "photato", pcraft, psd, psb, png, jpeg, tiff, exr, heic, bmp, gif, raw, movie, pdf
   var title: String {
     switch self {
     case .pdf: "PDF"
@@ -21,6 +21,7 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     case .png: "PNG"
     case .jpeg: "JPEG"
     case .tiff: "TIFF"
+    case .exr: "OpenEXR"
     case .heic: "HEIC"
     case .bmp: "BMP"
     case .gif: "GIF"
@@ -39,6 +40,7 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     case .png: .png
     case .jpeg: .jpeg
     case .tiff: .tiff
+    case .exr: OpenEXR.contentType
     case .heic: .heic
     case .bmp: .bmp
     case .gif: .gif
@@ -54,6 +56,7 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     if data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist00".utf8)) { return .native }
     if let text = String(data: data.prefix(64), encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
       text.hasPrefix("<?xml") || text.hasPrefix("<plist") { return .native }
+    if OpenEXR.recognizes(data) {return .exr}
     if MovieIO.recognizes(data) { return .movie }
     if data.count >= 6, data.starts(with: Data("8BPS".utf8)) {
       let bytes = Array(data.prefix(6))
@@ -69,6 +72,7 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     case "public.png": return .png
     case "public.jpeg": return .jpeg
     case "public.tiff": return .tiff
+    case "com.ilm.openexr-image": return .exr
     case "public.heic", "public.heif": return .heic
     case "com.microsoft.bmp", "public.bmp": return .bmp
     case "com.compuserve.gif": return .gif

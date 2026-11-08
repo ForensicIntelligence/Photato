@@ -65,7 +65,7 @@ final class PagedHistogramWorkflowTests:XCTestCase {
       document.store.cancelCurves();document.store.renderTask?.cancel()
       let def=try XCTUnwrap(AutomationCommand.definitions.first{$0.name==HistogramAPI.name}),schema=def.schema
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:schema));XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:HistogramAPI.capabilities))
-      XCTAssertEqual(AutomationCommand.definitions.count,258);XCTAssertEqual(ActionLibraryFile.maximumVersion,53)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
       let share=try XCTUnwrap(service.shares.first?.id);service.revoke(share)
       let revoked=try await h.request(service,path:"/v1/documents/\(share)/commands",body:["command":HistogramAPI.name,"revision":service.revision(document.store),"parameters":["layerID":id.uuidString]])
       XCTAssertEqual(revoked.0.statusCode,404);XCTAssertEqual(document.store.document,d);XCTAssertTrue(document.store.session.undoStack.isEmpty)

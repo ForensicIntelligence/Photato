@@ -1,0 +1,169 @@
+{
+  "step": 456,
+  "date": "2026-11-06",
+  "status": "Selected Eraser modes delivered:44Debug and same44optimized each/all10new pass;6ownedBlockRGBbytecomparisons exact; optimizednativeworkflow passes. DebugOpen/Quit failure retained, not repaired.",
+  "package": "B02",
+  "goal_complete": false,
+  "changes": {
+    "modified": [
+      "Sources/PhotoCraft/AutomationBrushes.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/BrushEditing.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/ToolCursor.swift",
+      "Sources/PhotoCraft/ToolCursorAPI.swift",
+      "Sources/PhotoCraft/WorkspaceTools.swift",
+      "scripts/Info.plist"
+    ],
+    "added": [
+      "Sources/PhotoCraft/EraserControls.swift",
+      "Sources/PhotoCraftCore/EraserModes.swift",
+      "Tests/PhotoCraftAppTests/EraserModeWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/EraserModeTests.swift",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/owned-block-100.rgb",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/owned-block-125.rgb",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/owned-block-1600.rgb",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/owned-block-200.rgb",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/owned-block-6400-center.rgb",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/owned-block-6400.rgb",
+      "Tests/PhotoCraftCoreTests/Fixtures/OwnedEraser455/provenance.json"
+    ],
+    "removed": [],
+    "source_manifest": "artifacts/runs/20261106T230203Z-456-eraser-modes/source02-source.json",
+    "inputs": 7420,
+    "immutable_previous_attempt": "artifacts/runs/20261106T230203Z-456-eraser-modes/source01-binaries/manifest.json"
+  },
+  "implementation": {
+    "native": "Brush/Pencil/Block ordinary Eraser Mode picker, captured gesture mode and effective cursors; original stroke engine/target/history paths",
+    "Block": "Solid16x16 bitmap, integer floor16/zoom document diameter including nooperation at zero; fullopacity/flow; existing smoothing retained",
+    "Pencil": "Hard aliased existing Pencil flags with flow1/buildUpfalse, opacity retained; independent Photoshop pixels/defaults unqualified",
+    "Brush": "Original brush settings retained",
+    "history_alternate": "Unavailable explicitly; no fake history restoration",
+    "no_new_formats_or_commands": {
+      "typed": 260,
+      "native": 88,
+      "Actions": 54
+    }
+  },
+  "API": {
+    "brush.configure": "Optional eraserMode; brush patch remains required; atomic settings/pattern preparation and sharing guards",
+    "paint.stroke": "Explicit eraserMode and optional zoom use shared resolver. Omitted eraserMode preserves brush.erase semantics independent of editor mode",
+    "discovery": "brush.eraserMode schema, state and capabilities/cursor contracts",
+    "Adobe": "No invented freehand endpoint or descriptor; desktop UXP/plugin interfaces remain separate"
+  },
+  "qualification": {
+    "Debug": {
+      "source": "456Source02",
+      "expected": 44,
+      "passed": 44,
+      "all_new": 10,
+      "source_inputs": 7420,
+      "source_unchanged": true,
+      "retained_products": 5401,
+      "app_sha256": "eb34362ca3e55325ab70d5e3d3755c89c23bb0f1c13a4d24d6169450f4136e08",
+      "native_record": "artifacts/runs/20261106T230203Z-456-eraser-modes/validation01-native.json"
+    },
+    "normal": {
+      "source": "456Release01",
+      "same_ordered_cases": 44,
+      "passed_each": [
+        44,
+        44
+      ],
+      "all_new_each": [
+        10,
+        10
+      ],
+      "retained_products": 10802,
+      "source_unchanged": true,
+      "Intel_execution": "Rosetta oncurrentAppleSiliconhost",
+      "record": "artifacts/runs/20261106T230203Z-456-eraser-modes/release01-qualification.json"
+    },
+    "strict_independent_Block": {
+      "cases": 6,
+      "bytes_each": 20736,
+      "fixture_Debug_ARM_Intel_all_exact": true,
+      "record": "artifacts/runs/20261106T230203Z-456-eraser-modes/eraser-block-bytes01.json",
+      "scope": "SelectedsingleclickRGB8Background/whiteBG only; no all-input/depth/default/continuousclaim"
+    },
+    "native": {
+      "Debug": "3Modespainting/BlockUndoRedo/cleanEditUndo pass;Open/Quitdisabled,forcequitcleanup, no causeisolated",
+      "optimized": "FreshdistinctidentityactualOpen/Blockerase/UndoRedo/Close/normalQuitpass",
+      "records": [
+        "artifacts/runs/20261106T230203Z-456-eraser-modes/validation01-native.json",
+        "artifacts/runs/20261106T230203Z-456-eraser-modes/native-optimized01.json",
+        "artifacts/runs/20261106T230203Z-456-eraser-modes/debug-native-followup01.json"
+      ]
+    },
+    "full_suite": false,
+    "physical_60fps": false,
+    "full_Photoshop_parity": false,
+    "universal": {
+      "app": "/private/tmp/photato-validation-456-stage03-a52e6465/Photato Validation 456.app",
+      "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T230203Z-456-eraser-modes/universal/Photato-Validation-456.zip",
+      "archive_sha256": "b102e4ef1be2dcdc77707006bc322c7b6e8669e8b54b9184e614455bd04cbf1c",
+      "same_extracted_content": true,
+      "extracted_signature_verified": true,
+      "source_manifest": "artifacts/runs/20261106T230203Z-456-eraser-modes/release01-source.json",
+      "source_inputs": 7420,
+      "source_unchanged": true,
+      "source_matches_passed_Debug": true,
+      "architectures": "x86_64 arm64",
+      "minimum_system_metadata": "14.0",
+      "bundle_id": "ca.forensicintelligence.photato.validation456",
+      "version": "0.3.0",
+      "build": 456,
+      "signed_universal_binary_sha256": "faf51645912a751c5498019f53c101b84eaf53f1050a34eaf403b1bce0c1a223",
+      "signature_verified": true,
+      "full_production_AppStore_entitlements": true,
+      "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+      "production_entitlements_unchanged": true,
+      "retained_optimized_products": 10802,
+      "selected_pass_each": [
+        44,
+        44
+      ],
+      "new_methods_pass_each": [
+        10,
+        10
+      ],
+      "full_suite_passed": false,
+      "Photoshop_parity": false,
+      "validation_only": true,
+      "live_UI_qualified": false,
+      "source_uploaded": false,
+      "software_release": false
+    }
+  },
+  "preserved_failures": [
+    "Source01newtesteditingMasksettercompile failure,0tests/44missing;5401products retained before repair",
+    "Release00preflightsequence failure before any compiler worker; no source or test change",
+    "DebugnativeOpen/Quitdisabled; settings/windowchecksdo not isolate cause. OnlyownedcleanPID42553forcequitviaActivityMonitor; optimizednativeOpen/Close/Quitpass.",
+    "Earlier f32/ShapeBlur/linkedalpha/fullsuite/platform failures remain open"
+  ],
+  "reference_provenance": {
+    "pixel_oracles": "docs/ERASER_MODES_455.json; owned artwork saved through normal Photoshop UI and decoded with independent publicPSD mergedplane parser",
+    "Pencil_controls": "Normal Photoshop2026 Mode menu on owned Block100output, Opacityavailable/Flowdisabled/Smoothing0; Brush/Brestored/unchangedreferenceclosed",
+    "no_Adobe_implementation": "No Photoshop decompilation/disassembly/proprietary algorithm code or artwork copied"
+  },
+  "remaining": [
+    "ContinuousBlockpaths/positions/zoomrounding/selections/transforms/profiles/depths independentoutput/defaults",
+    "Pencilpixel/defaults, preset/workspace/session policy",
+    "ObservedPS5000px versus Photato2048 brush capacity under B01",
+    "Historysource selection D03,History/ArtHistoryBrush B03,ordinaryEraseToHistory B02. Prior B06 assignment corrected; B06remainsContentAwareFill/Scale",
+    "All original B02 scope and104scope/652commands/sevenpasses/81major membership",
+    "Physical/tablet/platform/minimumOS/performance60fps and all older failures"
+  ],
+  "next": "B04Focusblendmodesaudit, thenB06ContentAwareFill/Scale. RotateB02selecteddeliverytoend; full original104scope/652commands/81major/sevenpasses retained.",
+  "distribution": {
+    "source_uploaded": false,
+    "GitHub_deleted": false,
+    "installed": false,
+    "AppStore_changed": false,
+    "archive_or_release": false,
+    "current_builds_preserved": true
+  },
+  "recorded_utc": "2026-11-06T23:40:05.257911+00:00",
+  "debug_startup_followup": "Open/Quitavailabilityneedsreproduction and actualguarddiagnosis; normaloptimizedcontrasts successfully. Keep underD01/D03 andQ05regression, no claimedrepair."
+}

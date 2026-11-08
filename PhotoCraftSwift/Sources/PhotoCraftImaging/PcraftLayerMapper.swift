@@ -4,6 +4,7 @@ import PhotoCraftCore
 final class PcraftLayerMapper {
   let document:CraftDocument
   var smartSources:[String:PcraftSmartObjects.Decoded]=[:]
+  var linkedSmartSources:[String:PSDSmartObjects.File]?
   let project: PcraftProject
   let namespace: Data
   let depth: PixelDepth
@@ -40,7 +41,7 @@ final class PcraftLayerMapper {
       var layer: Layer
       switch try content.field("kind").string() {
       case "smart":
-        layer=try PcraftSmartObjects.layer(content,name:item.field("name").string(),project:project,namespace:namespace,parent:document,budget:&remainingBytes,sources:&smartSources)
+        layer=try PcraftSmartObjects.layer(content,name:item.field("name").string(),project:project,namespace:namespace,parent:document,budget:&remainingBytes,sources:&smartSources,linkedFiles:&linkedSmartSources)
       case "text":
         layer=try PcraftText.layer(content,name:item.field("name").string(),project:project,depth:depth,dpi:dpi,budget:&remainingBytes)
       case "shape":

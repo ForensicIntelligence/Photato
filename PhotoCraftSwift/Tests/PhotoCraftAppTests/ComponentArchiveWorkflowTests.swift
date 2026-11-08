@@ -22,7 +22,7 @@ final class ComponentArchiveWorkflowTests: XCTestCase {
       defer { reopened.store.renderTask?.cancel(); reopened.updateChangeCount(.changeCleared); reopened.close() }
       XCTAssertEqual(reopened.store.document, original)
       let archives = try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
-      XCTAssertEqual(archives["readVersions"] as? [Int], Array(1...87)); XCTAssertEqual(archives["componentPageVersion"] as? Int, 86)
+      XCTAssertEqual(archives["readVersions"] as? [Int], Array(1...89)); XCTAssertEqual(archives["componentPageVersion"] as? Int, 86)
       let input = try XCTUnwrap(RasterStorageAPI.capabilities["nativePagedInput"] as? [String: Any])
       XCTAssertEqual(input["componentApplicationMaximumPixels"] as? Int, 90_000_000_000)
       XCTAssertEqual(input["componentPageLeafEntries"] as? Int, 1024)

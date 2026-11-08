@@ -1,0 +1,16 @@
+{
+  "step": 450,
+  "run": "artifacts/runs/20261106T192422Z-450-liquify-last-mesh",
+  "status": "Selected F04last-mesh workflow passes33focusedDebug/all11new; currentF05thenF06, fullscope/native/normal still open.",
+  "current_major_workflow": "F05",
+  "next": "F06",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "goal_complete": false,
+  "source_manifest": "artifacts/runs/20261106T192422Z-450-liquify-last-mesh/source03-source.json",
+  "source_inputs": 7385,
+  "source_unchanged": true,
+  "evidence": "docs/LIQUIFY_LAST_MESH_450.json",
+  "pending_native_app": "/private/tmp/photato-validation-450-b03d7aca/Photato Validation 450.app",
+  "latest_optimized_universal": 448
+}

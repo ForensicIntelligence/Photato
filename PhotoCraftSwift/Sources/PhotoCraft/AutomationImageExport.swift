@@ -6,7 +6,7 @@ enum ImageExportAPI {
   static let commands: Set<String> = ["image.export", "image.export.cancel", "export.preferences"]
   static let definitions: [AutomationCommand.Definition] = [
     .init(name: "image.export", parameters: ["settings": "Export target, assets, format, dimensions, scales, color and metadata options"], description: "Download PNG/JPEG/GIF assets plus a manifest as ZIP using native Export As. Requires transfers; source/history unchanged.", optionalParameters: ["settings"]),
-    .init(name: "image.export.cancel", parameters: ["operationID": "Active image or color lookup export UUID"], description: "Cancel the matching asset or global color lookup export without revoking document access."),
+    .init(name: "image.export.cancel", parameters: ["operationID": "Active image, color lookup or Illustrator path export UUID"], description: "Cancel the matching image, color lookup or Illustrator path export without revoking document access."),
     .init(name: "export.preferences", parameters: ["settings": "Quick Export format, quality, transparency, color and metadata preferences"], description: "Read or update native Quick Export preferences without changing document history.", optionalParameters: ["settings"])
   ]
   static let preferenceKeys: Set<String> = ["format", "quality", "transparency", "convertToSRGB", "embedProfile", "metadata"]
@@ -35,6 +35,7 @@ enum ImageExportAPI {
      "history": "Immutable source snapshot; exports and preference changes do not add Undo entries.",
      "ancestorContext": "Selected layer assets retain ancestor group appearance through the same isolation as Layers to Files and published Adobe outputs.",
      "preview": "Native asynchronous cancelable preview uses the same asset encoder; API returns files and dimensions in ZIP manifest.",
+     "nativePublication": "Single-file Export As and Quick Export hold the save-panel URL scope and use the shared same-volume Foundation replacement directory for bounded atomic publication. Existing output is retained before commit; synchronization errors retain their published/unconfirmed distinction. Multi-file exports retain their no-overwrite policy. API ZIP output bytes and existing transfer/revision/cancellation rules are unchanged.",
      "limits": "Shared options across selected assets, 16 scales/256 selected roots. GIF has one-bit alpha and native palette quantization. JPEG quality uses the existing 0..12 native mapping. Custom RGB32 web exports require sRGB conversion. Complete Photoshop encoder/resampling/defaults/metadata/physical/platform equivalence is unqualified.",
      "adobe": "Published create-composite output.layers and cropMode use shared source isolation. Adobe raster/PSD contracts remain separate; no image.export Adobe route is invented."]
   }

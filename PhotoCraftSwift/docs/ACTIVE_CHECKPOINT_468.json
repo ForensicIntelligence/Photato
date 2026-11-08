@@ -1,0 +1,18 @@
+{
+  "step": "dev-step-468",
+  "run": "artifacts/runs/20261107T082956Z-468-mask-filter-targets",
+  "status": "Mask filter native/API engine Debug/normal qualified; live 468/full S06/independent Photoshop filter output open",
+  "current_major_workflow": "C02",
+  "next": "COL02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7496,
+  "latest_software": 468,
+  "latest_optimized_universal": 468,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "No progress toward implementation: answered the plug-in question from current AUT03 source and primary Adobe docs. Revalidated no live compiler/test workers and resumed the existing468mask-filter implementation.",
+  "source_manifest": "artifacts/runs/20261107T082956Z-468-mask-filter-targets/release01-source.json",
+  "production_swift_files": 1135,
+  "selected_native_workflow_verified": false,
+  "evidence": "docs/MASK_FILTER_TARGETS_468.json"
+}

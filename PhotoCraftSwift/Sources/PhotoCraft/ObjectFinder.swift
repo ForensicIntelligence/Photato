@@ -25,7 +25,9 @@ import PhotoCraftImaging
 
 extension EditorStore {
   var canFindObjects: Bool {
-    clipboardTargetAvailable && canUseSelectionTools && (try? ForegroundSelection.checkSize(document.width, document.height)) != nil
+    clipboardTargetAvailable && canUseSelectionTools
+      && SelectionToolPreparation.canSample(document,layerID:activeLayer?.id,allLayers:selectionSampleAllLayers)
+      && (try? ForegroundSelection.checkSize(document.width, document.height)) != nil
   }
   var objectFinderSource: ObjectFinderSource {
     .init(document, layerID: activeLayer?.id, sampleAllLayers: selectionSampleAllLayers)

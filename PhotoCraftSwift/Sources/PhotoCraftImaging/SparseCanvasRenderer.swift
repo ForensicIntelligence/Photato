@@ -7,11 +7,11 @@ enum SparseCanvasRenderer {
   static func composite(_ d: CraftDocument) throws -> Surface? {
     guard d.inkMode == nil, d.restrictedMode == nil, d.videoTimeline == nil,
       d.layers.allSatisfy({ !$0.isGroup && $0.parentID == nil && !$0.isClipped }) else { return nil }
-    let layers = d.layers.filter { $0.visible && $0.opacity > 0 }
+    let layers = d.layers.filter { $0.visible && $0.opacity > 0 && $0.style?.restrictedChannels?.count != 3 }
     guard layers.allSatisfy({ layer in
       let t=layer.coordinateTransform
       guard t.a==1,t.b==0,t.c==0,t.d==1,t.tx==t.tx.rounded(),t.ty==t.ty.rounded(),layer.vectorMask == nil,
-        layer.style == nil, layer.smartObject?.pdfSource == nil, layer.smartFilters == nil,
+        (layer.style == nil || layer.style?.isChannelBlendingOnly==true), layer.smartObject?.pdfSource == nil, layer.smartFilters == nil,
         layer.warp == nil, layer.blendMode != .dissolve else { return false }
       if let mask=layer.mask,layer.effectiveMaskProperties.enabled {
         guard mask.width==d.width,mask.height==d.height,
@@ -48,7 +48,7 @@ enum SparseCanvasRenderer {
       case .raster = layer.content,
       let source=sources.first,source.colorEncoding == (d.depth == .f32 ? .linearRGB : .sRGB) {
       let share = try source.allStoredSamplesSatisfy { $0.a == 1 }
-      if share { return try source.floatingStorageView() }
+      if share,layer.style?.restrictedChannels?.isEmpty != false { return try source.floatingStorageView() }
     }
     let linearNormal = d.depth == .f32 && layers.allSatisfy {
       if case .raster = $0.content { return $0.blendMode == .normal }; return false
@@ -71,15 +71,16 @@ enum SparseCanvasRenderer {
         let opacity = RGB32NormalRenderer.expandedOpacity(layer.opacity, opaque: opaque)
         output = try output.combiningStoredSamples(with: source) { backdrop, source in
           var pixel = source; pixel.a = unit(pixel.a * opacity)
-          if index == 0 { return pixel }
-          return try RGB32NormalRenderer.blend(backdrop, pixel, opaque: opaque)
+          let mixed = try index == 0 ? pixel:RGB32NormalRenderer.blend(backdrop,pixel,opaque:opaque)
+          return BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:mixed,before:backdrop)
         }
       } else {
         output = try output.combiningStoredSamples(with: source) { backdrop, pixel in
           guard pixel.a > 0 else { return backdrop }
-          return d.depth == .f32
+          let mixed = d.depth == .f32
             ? Renderer.compositeLinearPixel(layer.blendMode, backdrop: backdrop, source: pixel, opacity: layer.opacity, x: 0, y: 0)
             : Renderer.compositePixel(layer.blendMode, backdrop: backdrop, source: pixel, opacity: layer.opacity, depth: d.depth, x: 0, y: 0)
+          return BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:mixed,before:backdrop)
         }
       }
     }

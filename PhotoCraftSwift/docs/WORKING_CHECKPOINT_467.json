@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-467",
+  "run": "artifacts/runs/20261107T073856Z-467-select-mask-workflow",
+  "status": "SmartObject refinement Debug-qualified; native import verified; refinement GUI/Close/Quit/fullS04/normal/Photoshop/platform acceptance open",
+  "current_major_workflow": "S06",
+  "next": "C02",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7492,
+  "latest_software": 467,
+  "latest_optimized_universal": 466,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:466 explicit current-source analysis/Wand Subject,82Debug/same83normal eacharchitecture,selected actualVision native workflow,universal package,diary/finalhistorypair verified.",
+  "source_manifest": "artifacts/runs/20261107T073856Z-467-select-mask-workflow/source04-source.json",
+  "production_swift_files": 1133,
+  "selected_native_workflow_verified": false,
+  "native_import_verified": true,
+  "evidence": "docs/SMART_OBJECT_REFINEMENT_467.json"
+}

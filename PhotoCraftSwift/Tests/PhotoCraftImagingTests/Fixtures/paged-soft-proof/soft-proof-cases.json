@@ -1,0 +1,834 @@
+[
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 0,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 0
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 1,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 1536
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 2,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 3072
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 3,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 4608
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 4,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 6144
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 5,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 7680
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 6,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 9216
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 7,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 10752
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 8,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 12288
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 9,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 13824
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 10,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 15360
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 11,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 16896
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 12,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 18432
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 13,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 19968
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 14,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 21504
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 15,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 23040
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 16,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 24576
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 17,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 26112
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 18,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 27648
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 19,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 29184
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 20,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 30720
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 21,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 32256
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 22,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 33792
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 23,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 35328
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 24,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 36864
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 25,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 38400
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 26,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 39936
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 27,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 41472
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 28,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 43008
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 29,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 44544
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 30,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 46080
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 31,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 47616
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 32,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 49152
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 33,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 50688
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 34,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 52224
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 35,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 53760
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 36,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 55296
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 37,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 56832
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 38,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 58368
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "8 bit",
+    "index" : 39,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 59904
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 40,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 61440
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 41,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 62976
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 42,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 64512
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 43,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 66048
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 44,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 67584
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 45,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 69120
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 46,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 70656
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 47,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 72192
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 48,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 73728
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 49,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 75264
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 50,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 76800
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 51,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 78336
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 52,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 79872
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 53,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 81408
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 54,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 82944
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 55,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 84480
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 56,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 86016
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 57,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 87552
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 58,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 89088
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 59,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 90624
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 60,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 92160
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 61,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 93696
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 62,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 95232
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 63,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 96768
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 64,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 98304
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 65,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 99840
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 66,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 101376
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 67,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 102912
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 68,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 104448
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 69,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 105984
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 70,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 107520
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 71,
+    "mode" : "cmyk",
+    "native" : true,
+    "offset" : 109056
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 72,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 110592
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 73,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 112128
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 74,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 113664
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 75,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 115200
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 76,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 116736
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 77,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 118272
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 78,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 119808
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "16 bit",
+    "index" : 79,
+    "mode" : "lab",
+    "native" : true,
+    "offset" : 121344
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 80,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 122880
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 81,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 124416
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 82,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 125952
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 83,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 127488
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 84,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 129024
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 85,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 130560
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 86,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 132096
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 87,
+    "mode" : "rgb",
+    "native" : false,
+    "offset" : 133632
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 88,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 135168
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 89,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 136704
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 90,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 138240
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 91,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 139776
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 92,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 141312
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 93,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 142848
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 94,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 144384
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 95,
+    "mode" : "rgb",
+    "native" : true,
+    "offset" : 145920
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 96,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 147456
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 97,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 148992
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 98,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 150528
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 99,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 152064
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 100,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 153600
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 101,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 155136
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 102,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 156672
+  },
+  {
+    "bytes" : 1536,
+    "depth" : "32 bit",
+    "index" : 103,
+    "mode" : "grayscale",
+    "native" : true,
+    "offset" : 158208
+  }
+]

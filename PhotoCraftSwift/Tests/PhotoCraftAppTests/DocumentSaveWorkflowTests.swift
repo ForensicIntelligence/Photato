@@ -32,7 +32,7 @@ final class DocumentSaveWorkflowTests: XCTestCase {
     let folder = try directory()
     defer { try? FileManager.default.removeItem(at: folder) }
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
-    for format in DocumentIO.Format.allCases {
+    for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
       let source = folder.appendingPathComponent("source." + format.rawValue)
       try DocumentIO.encode(fixture(), format: format).write(to: source)
       let doc = try XCTUnwrap(

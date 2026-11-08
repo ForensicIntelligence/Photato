@@ -27,6 +27,9 @@ public struct AlphaChannel: Codable, Equatable, Identifiable, Sendable {
   /// Original numeric Photoshop gray for exact unchanged Float32 spot round trips.
   /// Density inversion is not bijective over Float32; retain its source plane.
   public var psdSpotGray: Surface?
+  /// Original selected-area PSD editing gray. Coverage inversion can lose
+  /// Float32 bits; reuse a source word only while it still maps to that coverage.
+  public var psdSelectedGray: Surface?
   public init(id: UUID = UUID(),name: String,pixels: Surface,options: ChannelDisplayOptions = .init(),spot: SpotInk? = nil) {
     self.id = id; self.name = name; self.pixels = pixels; self.options = options; self.spot = spot
   }
@@ -39,12 +42,16 @@ public struct AlphaChannel: Codable, Equatable, Identifiable, Sendable {
       guard spot != nil,depth == .f32,gray.width==width,gray.height==height,gray.depth==depth,gray.colorEncoding == .sRGB else {throw CraftError.invalid("Invalid retained spot gray plane.")}
       try gray.validated()
     }
+    if let gray=psdSelectedGray {
+      guard spot == nil,depth == .f32,gray.width==width,gray.height==height,gray.depth==depth,gray.colorEncoding == .sRGB else {throw CraftError.invalid("Invalid retained selected-area gray plane.")}
+      try gray.validated()
+    }
   }
   /// A depth change quantizes numeric coverage and invalidates the old Float32
   /// source-gray domain. Same-depth edits retain the exact original plane.
   public func convertedCoverage(to depth:PixelDepth)throws->Self {
     guard depth != pixels.depth else{return self}
-    var result=self;result.pixels=try pixels.converted(to:depth);result.psdSpotGray=nil;return result
+    var result=self;result.pixels=try pixels.converted(to:depth);result.psdSpotGray=nil;result.psdSelectedGray=nil;return result
   }
   public func selection(invert: Bool = false) throws -> SelectionMask {
     if pixels.width>Surface.maximumDensePixels/pixels.height {
@@ -135,6 +142,7 @@ extension CraftDocument {
       result.pixels = try RasterGeometry.renderChannel(value.pixels,transform:transform,
         bounds:IntRect(x:0,y:0,width:width,height:height),method:method)
       if let gray=value.psdSpotGray {result.psdSpotGray=try RasterGeometry.renderChannel(gray,transform:transform,bounds:IntRect(x:0,y:0,width:width,height:height),method:method)}
+      if let gray=value.psdSelectedGray {result.psdSelectedGray=try RasterGeometry.renderChannel(gray,transform:transform,bounds:IntRect(x:0,y:0,width:width,height:height),method:method)}
       return result
     }
     alphaChannels = try old.alphaChannels?.map(mapped); quickMask = try old.quickMask.map(mapped)

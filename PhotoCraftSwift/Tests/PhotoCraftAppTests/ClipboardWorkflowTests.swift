@@ -128,8 +128,10 @@ final class ClipboardWorkflowTests: XCTestCase {
     XCTAssertTrue(store.session.undoStack.isEmpty)
     store.createMask(.revealAll)
     store.renderTask?.cancel()
-    XCTAssertFalse(store.canPaste(.centered))
-    XCTAssertFalse(store.canCopy())
+    XCTAssertTrue(store.canPaste(.centered))
+    XCTAssertTrue(store.canCopy())
+    XCTAssertFalse(store.canPaste(.into))
+    XCTAssertFalse(store.canCopy(merged:true))
   }
   @MainActor func testNamedSystemPasteboardUsesNativeTIFFAndPNGWithoutTouchingGeneralClipboard()
     throws
@@ -146,7 +148,7 @@ final class ClipboardWorkflowTests: XCTestCase {
     XCTAssertEqual(pasteboard.data(forType: .tiff), representations.tiff)
     XCTAssertEqual(pasteboard.data(forType: .png), representations.png)
     pasteboard.clearContents()
-    XCTAssertTrue(pasteboard.setData(representations.png, forType: .png))
+    XCTAssertTrue(pasteboard.setData(try XCTUnwrap(representations.png), forType: .png))
     XCTAssertEqual(try access.read().decoded().bounds.width, 2)
     pasteboard.clearContents()
     XCTAssertTrue(pasteboard.setString("Text", forType: .string))

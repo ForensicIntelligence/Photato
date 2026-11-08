@@ -6,19 +6,28 @@ public struct SelectionRefinementEdit: Sendable {
   public let output: SelectionRefinementOutput
   public let mask: SelectionMask
   public let corrected: Surface?
-  public init(layerID: UUID, output: SelectionRefinementOutput, mask: SelectionMask, corrected: Surface? = nil) {
-    self.layerID = layerID; self.output = output; self.mask = mask; self.corrected = corrected
+  public let materialized: Layer?
+  public init(layerID: UUID, output: SelectionRefinementOutput, mask: SelectionMask, corrected: Surface? = nil, materialized: Layer? = nil) {
+    self.layerID = layerID; self.output = output; self.mask = mask; self.corrected = corrected; self.materialized = materialized
   }
   public func applied(to original: CraftDocument) throws -> CraftDocument {
     guard mask.width == original.width, mask.height == original.height,
       let index = original.layers.firstIndex(where: { $0.id == layerID }),
-      case .raster(let pixels) = original.layers[index].content else { throw CraftError.invalid("Select and Mask requires a raster layer.") }
+      case .raster = original.layers[index].content else { throw CraftError.invalid("Select and Mask requires a raster layer.") }
     try SelectionMatting.checkSize(mask.width,mask.height)
     var result = original
     if output == .selection { result.setCoverageSelection(mask); return result }
     guard output.createsDocument || !original.isLocked(layerID) else { throw CraftError.invalid("Unlock the layer before changing its mask or creating a cutout.") }
+    if let materialized {
+      guard output != .layerMask, original.layers[index].smartObject != nil,
+        materialized.id == layerID, materialized.smartObject == nil, materialized.smartFilters == nil
+        else { throw CraftError.invalid("The rendered refinement source does not match its Smart Object output.") }
+    }
+    guard original.layers[index].smartObject == nil || output == .layerMask || materialized != nil
+      else { throw CraftError.invalid("A Smart Object copy requires prepared rendered pixels.") }
+    var layer = materialized ?? original.layers[index]
+    guard case .raster(let pixels) = layer.content else { throw CraftError.invalid("Missing refinement output pixels.") }
     if let corrected { guard corrected.width == pixels.width, corrected.height == pixels.height, corrected.depth == pixels.depth else { throw CraftError.invalid("Corrected pixels do not match the layer.") } }
-    var layer = original.layers[index]
     if output != .layerMask {
       layer.id = UUID(); layer.name += " copy"; layer.visible = true; layer.locked = false; layer.protection = []
       if let corrected { layer.content = .raster(corrected); layer.smartObject = nil; layer.smartFilters = nil }

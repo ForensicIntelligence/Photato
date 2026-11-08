@@ -19,11 +19,24 @@ public struct HueSaturationValues: Codable, Equatable, Sendable {
 
 public struct HueRange: Codable, Equatable, Sendable {
   public var values: HueSaturationValues
+  /// Optional sampled H/S/L swatch from Photoshop hue2; never used by the pixel transfer.
+  public var displayColor: HueRangeColor?
   /// Unwrapped, ordered degrees: fade-in edge, full strength start/end, fade-out edge.
-  public var bounds: [Int]
-  public init(values: HueSaturationValues = .init(), bounds: [Int]) {
+  public var bounds: [Int] {
+    didSet {
+      if bounds != oldValue, var color = displayColor {
+        color.hue = representativeHue
+        displayColor = color
+      }
+    }
+  }
+  public init(values: HueSaturationValues = .init(), bounds: [Int], displayColor: HueRangeColor? = nil) {
     self.values = values
+    self.displayColor = displayColor
     self.bounds = bounds
+  }
+  public var swatchColor: HueRangeColor {
+    displayColor ?? HueRangeColor(hue: representativeHue, saturation: 100, lightness: 50)
   }
   public static func neutral(_ index: Int) -> Self {
     let center = min(5, max(0, index)) * 60
@@ -39,6 +52,7 @@ public struct HueRange: Codable, Equatable, Sendable {
   }
   public func validate() throws {
     try values.validate()
+    try displayColor?.validate()
     guard bounds.count == 4, bounds.allSatisfy({ (-360...720).contains($0) }),
       zip(bounds, bounds.dropFirst()).allSatisfy({ $0 <= $1 }), bounds[3] - bounds[0] < 360
     else {

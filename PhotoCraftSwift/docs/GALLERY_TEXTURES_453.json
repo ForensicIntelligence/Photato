@@ -1,0 +1,995 @@
+{
+  "step": 453,
+  "date": "2026-11-06",
+  "status": "Selected custom Filter Gallery texture workflow passes focused Debug, normal optimized ARM/translated Intel, universal packaging and native save/reopen. Full F06 and Photoshop numerical equivalence remain open.",
+  "source_manifest": "artifacts/runs/20261106T212500Z-453-gallery-textures/source04-source.json",
+  "normal_source_manifest": "artifacts/runs/20261106T212500Z-453-gallery-textures/release01-source.json",
+  "source_inputs": 7405,
+  "source_unchanged": true,
+  "source_delta": {
+    "added": [
+      "Sources/PhotoCraft/AutomationGalleryTexture.swift",
+      "Sources/PhotoCraftCore/GalleryCustomTexture.swift",
+      "Sources/PhotoCraftCore/GalleryTextureSource.swift",
+      "Sources/PhotoCraftImaging/GalleryTextureLoader.swift",
+      "Tests/PhotoCraftAppTests/GalleryTextureWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/GalleryTextureTests.swift",
+      "Tests/PhotoCraftImagingTests/Fixtures/OwnedGallery453/owned-color-texture.psd",
+      "Tests/PhotoCraftImagingTests/Fixtures/OwnedGallery453/owned-flat-gray.psd",
+      "Tests/PhotoCraftImagingTests/Fixtures/OwnedGallery453/owned-provenance.json",
+      "Tests/PhotoCraftImagingTests/Fixtures/OwnedGallery453/owned-step-texture.psb",
+      "Tests/PhotoCraftImagingTests/Fixtures/OwnedGallery453/owned-step-texture.psd",
+      "Tests/PhotoCraftImagingTests/Fixtures/OwnedGallery453/owned-xy-texture.psd",
+      "Tests/PhotoCraftImagingTests/GalleryTextureLoaderTests.swift"
+    ],
+    "modified": [
+      "Sources/PhotoCraft/ActionLibrary.swift",
+      "Sources/PhotoCraft/ArtisticGalleryWorkspace.swift",
+      "Sources/PhotoCraft/AutomationCommands.swift",
+      "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "Sources/PhotoCraft/AutomationHTTP.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraftCore/ArtisticGallery.swift",
+      "Sources/PhotoCraftCore/GalleryBrushDistort.swift",
+      "Sources/PhotoCraftCore/GalleryMath.swift",
+      "Sources/PhotoCraftCore/LayerStyle.swift",
+      "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+      "Tests/PhotoCraftAppTests/AnimationFrameDragTests.swift",
+      "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "Tests/PhotoCraftAppTests/BlurGalleryMaskWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/CanvasEdgeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ChannelFooterWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ChannelThumbnailOptionsTests.swift",
+      "Tests/PhotoCraftAppTests/ColorLookupMultiExportTests.swift",
+      "Tests/PhotoCraftAppTests/ComponentArchiveWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/CustomKernelPresetWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FilterRecallWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FitImageWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/FlattenImageWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GalleryEffectDragTests.swift",
+      "Tests/PhotoCraftAppTests/GradientCreationWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/GradientFillAPITests.swift",
+      "Tests/PhotoCraftAppTests/IndexedNativeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/InkModeArchiveWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LargeCropWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LargeEqualizeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LayerCapacityWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LayerFilterAPITests.swift",
+      "Tests/PhotoCraftAppTests/LayerStackOrderWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LensDefaultWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LightEditingPreviewWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LinkedPreviewAPIWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/LiquifyMeshRecallTests.swift",
+      "Tests/PhotoCraftAppTests/MaskRemovalWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PagedHistogramWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PathFillWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PatternLibraryWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PatternPatchWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PatternPixelFillWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PixelFillStrokeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/PointTextWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/RasterizeResponsivenessTests.swift",
+      "Tests/PhotoCraftAppTests/RestrictedFormatWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/RichMergeWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/SelectionAntsTests.swift",
+      "Tests/PhotoCraftAppTests/ShapeBlurKernelWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/ShapeStrokePresetTests.swift",
+      "Tests/PhotoCraftAppTests/SkyRenameTests.swift",
+      "Tests/PhotoCraftAppTests/SmartFilterDragTests.swift",
+      "Tests/PhotoCraftAppTests/TextFindWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/TransformReferenceTests.swift",
+      "scripts/Info.plist"
+    ],
+    "removed": [],
+    "old_tests": "46 existing files change only current command catalogue260/native reader88/Actions maximum54 counters. Original minimum-version and numeric assertions retained.",
+    "old_builtin_pixel_paths": "Optional custom-texture branches; existing built-in texture/Glass bodies preserved.",
+    "project": "Synced source groups discover new Swift files; project/spec unchanged."
+  },
+  "implementation": {
+    "effects": [
+      "Rough Pastels",
+      "Underpainting",
+      "Glass",
+      "Cont\u00e9 Crayon",
+      "Texturizer"
+    ],
+    "snapshot": "Immutable embedded row-major unsigned8-bit height plane with strict fields/canonical base64; no external texture URL or bookmark.",
+    "limits": {
+      "file_bytes": 67108864,
+      "height_pixels": 8388608,
+      "dimension_maximum": 300000,
+      "name_UTF8_bytes": 256
+    },
+    "loader": "Bounded FileHandle local PSD/PSB merged-image decode using ImageIO; header dimensions validated before decode, encoded sRGB8 rounded .299R+.587G+.114B. No silent resizing.",
+    "sampling": "Periodic bilinear integer-center sampling, existing light/invert/relief/scaling or Glass distortion/smoothness. These are current Photato semantics, not asserted Adobe algorithms.",
+    "native": "Asynchronous PSD/PSB Open panel, security scope, selected-settings/close/cancel guards, separate recoverable texture warning, local Undo/Redo and ready preview. Choosing a built-in clears override.",
+    "editing": "Existing filter.apply/Smart Filter/history/Actions paths; native88 and Actions54 preserve embedded samples and protect older negotiated readers. Ordinary Gallery minima36/8 retained."
+  },
+  "API": {
+    "typed_commands": 260,
+    "new_commands": [
+      "filter.gallery.texture"
+    ],
+    "kind": "Read-only PSD/PSB canonical-base64 conversion utility, unchanged document revision/history.",
+    "apply": "Existing filter.apply with artistic.effects[].texture, or explicit Smart Filter stack; native shared engine.",
+    "request_body_maximum_bytes": 89544024,
+    "guards": "Authentication, sharing/revocation, idle/native interaction/busy, revision/source generation and cancellation fences. Decode and result encoding off main.",
+    "schemas": "Command params/results, texture, per-effect support, state/capabilities and archive negotiation.",
+    "native_reader_maximum": 88,
+    "Actions_maximum": 54,
+    "Adobe": "No corresponding published dedicated texture-conversion endpoint; Gallery actionJSON remains explicitly unsupported, no invented Adobe route."
+  },
+  "references": [
+    {
+      "source": "docs/DEVLOG.md#dev-step-453",
+      "existing_reference_manifest": "docs/FILTER_GALLERY_REFERENCES.json",
+      "official_reference_URLs_found": [
+        "https://helpx.adobe.com/photoshop/desktop/effects-filters/get-started-with-filters/filter-gallery.html"
+      ],
+      "role": "Official guide identifies five supported texture effects. Current normal Photoshop UI attempt was cancelled without a texture loaded; no numeric oracle obtained.",
+      "Photoshop_numeric_oracle": false
+    }
+  ],
+  "tests": {
+    "focused_Debug": {
+      "unexpected_signals": [],
+      "expected_count": 34,
+      "missing_cases": [],
+      "exit_code": 0,
+      "inputs": 7405,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testEveryGalleryEffectProducesFiniteDistinctOutputAndRetainsAlpha",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testIndependentOriginalRustDefaultEffectOracles",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testStackOrderVisibilityIdentityAndHighDepth",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testStrictParametersColorsChoiceDefaultsAndStackBounds",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testGallerySelectionDepthHistorySmartFilterPersistenceAndActions",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testHTTPAllEffectsDesktopEquivalenceSmartReeditNative36AndGuards",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testWorkspacePreviewStackUndoCancelCommitAndReedit",
+        "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas",
+        "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testAllSourceDestinationOrdersPreserveIndependentDuplicateAndHiddenEffects",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testDelayedProviderCannotReorderAfterSettingsChangeOrCancellation",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testHostedStackAndAllModifierCursorsKeepModalAndRestoreBehavior",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testHTTPOrderedArrayMatchesNativeRasterAndExistingSmartFilterAtEveryDepth",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testMalformedForeignStaleClosedAndNoOpDropsDoNotChangeSettingsOrHistory",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testMaximumStackNoOpAndCapabilityContractRetainExistingVersions",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testNativePreviewCancelCommitUndoAndPortableRecordingKeepTheOrder",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testPrivateItemProviderRoundtripMovesOnceAndArrowUsesSameOperation",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testColorHeightConversionAndOwnedPSDReadableAsOrdinaryDocument",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testMalformedBoundedHeaderAndUnsupportedImagesRejectBeforeAllocation",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testMergedPSDGrayValuesRowOrientationAndFileByteAgreement",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testPSBMergedTextureRetainsTheSameHeightSamples",
+        "PhotoCraftCoreTests.GalleryTextureTests/testAllFiveEffectsDepthsVisibilityAndOriginalTextureChoicesStayIndependent",
+        "PhotoCraftCoreTests.GalleryTextureTests/testAnalyticRampLightInvertAndConstantHeightHaveLiteralByteResults",
+        "PhotoCraftCoreTests.GalleryTextureTests/testCanonicalBoundedValueCodableSlicesAndRepeatingBilinearSamples",
+        "PhotoCraftCoreTests.GalleryTextureTests/testStrictFilterJSONRejectsUnsupportedHiddenTexturesAndRetainsOrdinaryPayloads",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testCancelledClosedStaleAndFailedLoadsKeepPreviousSettingsAndUsablePreview",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHostedTextureControlsLightDarkAndPreferenceErrorsDoNotDisableEditing",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPArchiveNegotiationPreventsTextureLossAndSmartSetRetainsSnapshots",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPInvalidAuthenticationBusyStaleRevocationAndMachineSchemas",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeAllFiveTextureLoadsLocalHistoryAndCancelPreserveDocument",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeCommitUndoSmartReeditArchive88AndPortableActions54RetainSamples",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPConversionAndApplyMatchNativeAtEveryDepthWithoutConversionHistory",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPLargeEmbeddedTextureExceedsFormerCommandLimitAndRemainsUndoable",
+        "PhotoCraftAppTests.LensDefaultWorkflowTests/testActualStartupFactoryUsesPersistentLibrariesAndKeepsOwnedSessionsIsolated"
+      ],
+      "passed": 34,
+      "failed_cases": [],
+      "totals": [
+        [
+          "34",
+          "0",
+          "0",
+          "10.475"
+        ]
+      ],
+      "build_seconds": [
+        "6.10"
+      ],
+      "finished_utc": "2026-11-06T21:50:27.823518+00:00"
+    },
+    "new_methods": 16,
+    "normal_ARM": {
+      "command": [
+        "./scripts/test.sh",
+        "-c",
+        "release",
+        "--disable-build-manifest-caching",
+        "--jobs",
+        "4",
+        "--filter",
+        "^(?:PhotoCraftCoreTests\\.GalleryTextureTests/testCanonicalBoundedValueCodableSlicesAndRepeatingBilinearSamples|PhotoCraftCoreTests\\.GalleryTextureTests/testAnalyticRampLightInvertAndConstantHeightHaveLiteralByteResults|PhotoCraftCoreTests\\.GalleryTextureTests/testAllFiveEffectsDepthsVisibilityAndOriginalTextureChoicesStayIndependent|PhotoCraftCoreTests\\.GalleryTextureTests/testStrictFilterJSONRejectsUnsupportedHiddenTexturesAndRetainsOrdinaryPayloads|PhotoCraftCoreTests\\.ArtisticGalleryTests/testEveryGalleryEffectProducesFiniteDistinctOutputAndRetainsAlpha|PhotoCraftCoreTests\\.ArtisticGalleryTests/testStackOrderVisibilityIdentityAndHighDepth|PhotoCraftCoreTests\\.ArtisticGalleryTests/testStrictParametersColorsChoiceDefaultsAndStackBounds|PhotoCraftCoreTests\\.ArtisticGalleryTests/testIndependentOriginalRustDefaultEffectOracles|PhotoCraftImagingTests\\.GalleryTextureLoaderTests/testMergedPSDGrayValuesRowOrientationAndFileByteAgreement|PhotoCraftImagingTests\\.GalleryTextureLoaderTests/testColorHeightConversionAndOwnedPSDReadableAsOrdinaryDocument|PhotoCraftImagingTests\\.GalleryTextureLoaderTests/testMalformedBoundedHeaderAndUnsupportedImagesRejectBeforeAllocation|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testNativeAllFiveTextureLoadsLocalHistoryAndCancelPreserveDocument|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testCancelledClosedStaleAndFailedLoadsKeepPreviousSettingsAndUsablePreview|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testNativeCommitUndoSmartReeditArchive88AndPortableActions54RetainSamples|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testRealHTTPConversionAndApplyMatchNativeAtEveryDepthWithoutConversionHistory|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testHTTPInvalidAuthenticationBusyStaleRevocationAndMachineSchemas|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testHTTPArchiveNegotiationPreventsTextureLossAndSmartSetRetainsSnapshots|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testRealHTTPLargeEmbeddedTextureExceedsFormerCommandLimitAndRemainsUndoable|PhotoCraftAppTests\\.GalleryTextureWorkflowTests/testHostedTextureControlsLightDarkAndPreferenceErrorsDoNotDisableEditing|PhotoCraftAppTests\\.ArtisticGalleryWorkflowTests/testGallerySelectionDepthHistorySmartFilterPersistenceAndActions|PhotoCraftAppTests\\.ArtisticGalleryWorkflowTests/testWorkspacePreviewStackUndoCancelCommitAndReedit|PhotoCraftAppTests\\.ArtisticGalleryWorkflowTests/testHTTPAllEffectsDesktopEquivalenceSmartReeditNative36AndGuards|PhotoCraftAppTests\\.GalleryEffectDragTests/testAllSourceDestinationOrdersPreserveIndependentDuplicateAndHiddenEffects|PhotoCraftAppTests\\.GalleryEffectDragTests/testPrivateItemProviderRoundtripMovesOnceAndArrowUsesSameOperation|PhotoCraftAppTests\\.GalleryEffectDragTests/testMalformedForeignStaleClosedAndNoOpDropsDoNotChangeSettingsOrHistory|PhotoCraftAppTests\\.GalleryEffectDragTests/testDelayedProviderCannotReorderAfterSettingsChangeOrCancellation|PhotoCraftAppTests\\.GalleryEffectDragTests/testNativePreviewCancelCommitUndoAndPortableRecordingKeepTheOrder|PhotoCraftAppTests\\.GalleryEffectDragTests/testHTTPOrderedArrayMatchesNativeRasterAndExistingSmartFilterAtEveryDepth|PhotoCraftAppTests\\.GalleryEffectDragTests/testMaximumStackNoOpAndCapabilityContractRetainExistingVersions|PhotoCraftAppTests\\.GalleryEffectDragTests/testHostedStackAndAllModifierCursorsKeepModalAndRestoreBehavior|PhotoCraftAppTests\\.AutomationTests/testParameterValidationAndMachineSchemas|PhotoCraftAppTests\\.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue|PhotoCraftAppTests\\.LensDefaultWorkflowTests/testActualStartupFactoryUsesPersistentLibrariesAndKeepsOwnedSessionsIsolated|PhotoCraftImagingTests\\.GalleryTextureLoaderTests/testPSBMergedTextureRetainsTheSameHeightSamples)$"
+      ],
+      "source_manifest": "artifacts/runs/20261106T212500Z-453-gallery-textures/release01-source.json",
+      "inputs": 7405,
+      "started_at_utc": "2026-11-06T22:01:44.436868+00:00",
+      "exit_code": 0,
+      "finished_at_utc": "2026-11-06T22:11:37.673418+00:00",
+      "cases": 34,
+      "case_ids": [
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testEveryGalleryEffectProducesFiniteDistinctOutputAndRetainsAlpha",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testIndependentOriginalRustDefaultEffectOracles",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testStackOrderVisibilityIdentityAndHighDepth",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testStrictParametersColorsChoiceDefaultsAndStackBounds",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testGallerySelectionDepthHistorySmartFilterPersistenceAndActions",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testHTTPAllEffectsDesktopEquivalenceSmartReeditNative36AndGuards",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testWorkspacePreviewStackUndoCancelCommitAndReedit",
+        "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas",
+        "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testAllSourceDestinationOrdersPreserveIndependentDuplicateAndHiddenEffects",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testDelayedProviderCannotReorderAfterSettingsChangeOrCancellation",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testHostedStackAndAllModifierCursorsKeepModalAndRestoreBehavior",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testHTTPOrderedArrayMatchesNativeRasterAndExistingSmartFilterAtEveryDepth",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testMalformedForeignStaleClosedAndNoOpDropsDoNotChangeSettingsOrHistory",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testMaximumStackNoOpAndCapabilityContractRetainExistingVersions",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testNativePreviewCancelCommitUndoAndPortableRecordingKeepTheOrder",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testPrivateItemProviderRoundtripMovesOnceAndArrowUsesSameOperation",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testColorHeightConversionAndOwnedPSDReadableAsOrdinaryDocument",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testMalformedBoundedHeaderAndUnsupportedImagesRejectBeforeAllocation",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testMergedPSDGrayValuesRowOrientationAndFileByteAgreement",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testPSBMergedTextureRetainsTheSameHeightSamples",
+        "PhotoCraftCoreTests.GalleryTextureTests/testAllFiveEffectsDepthsVisibilityAndOriginalTextureChoicesStayIndependent",
+        "PhotoCraftCoreTests.GalleryTextureTests/testAnalyticRampLightInvertAndConstantHeightHaveLiteralByteResults",
+        "PhotoCraftCoreTests.GalleryTextureTests/testCanonicalBoundedValueCodableSlicesAndRepeatingBilinearSamples",
+        "PhotoCraftCoreTests.GalleryTextureTests/testStrictFilterJSONRejectsUnsupportedHiddenTexturesAndRetainsOrdinaryPayloads",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testCancelledClosedStaleAndFailedLoadsKeepPreviousSettingsAndUsablePreview",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHostedTextureControlsLightDarkAndPreferenceErrorsDoNotDisableEditing",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPArchiveNegotiationPreventsTextureLossAndSmartSetRetainsSnapshots",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPInvalidAuthenticationBusyStaleRevocationAndMachineSchemas",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeAllFiveTextureLoadsLocalHistoryAndCancelPreserveDocument",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeCommitUndoSmartReeditArchive88AndPortableActions54RetainSamples",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPConversionAndApplyMatchNativeAtEveryDepthWithoutConversionHistory",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPLargeEmbeddedTextureExceedsFormerCommandLimitAndRemainsUndoable",
+        "PhotoCraftAppTests.LensDefaultWorkflowTests/testActualStartupFactoryUsesPersistentLibrariesAndKeepsOwnedSessionsIsolated"
+      ],
+      "passed": 34,
+      "failed": 0,
+      "failed_cases": [],
+      "total_xctest_failures": 0,
+      "unexpected": 0,
+      "test_seconds": 6.679,
+      "build_seconds": [
+        "584.26"
+      ],
+      "crashes": 0,
+      "binary_sha256": "990f6a8926f77b31bbdfebfe9a5030d5bc1fe47a7eb1111ad2b01bf2fac2e5a3",
+      "binary": "/private/tmp/photocraft-swift-build/release/Photato",
+      "expected_cases": 34,
+      "missing_cases": [],
+      "extra_cases": []
+    },
+    "normal_Intel_Rosetta": {
+      "command": [
+        "arch",
+        "-x86_64",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+        "-XCTest",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testEveryGalleryEffectProducesFiniteDistinctOutputAndRetainsAlpha,PhotoCraftCoreTests.ArtisticGalleryTests/testIndependentOriginalRustDefaultEffectOracles,PhotoCraftCoreTests.ArtisticGalleryTests/testStackOrderVisibilityIdentityAndHighDepth,PhotoCraftCoreTests.ArtisticGalleryTests/testStrictParametersColorsChoiceDefaultsAndStackBounds,PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testGallerySelectionDepthHistorySmartFilterPersistenceAndActions,PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testHTTPAllEffectsDesktopEquivalenceSmartReeditNative36AndGuards,PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testWorkspacePreviewStackUndoCancelCommitAndReedit,PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas,PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue,PhotoCraftAppTests.GalleryEffectDragTests/testAllSourceDestinationOrdersPreserveIndependentDuplicateAndHiddenEffects,PhotoCraftAppTests.GalleryEffectDragTests/testDelayedProviderCannotReorderAfterSettingsChangeOrCancellation,PhotoCraftAppTests.GalleryEffectDragTests/testHostedStackAndAllModifierCursorsKeepModalAndRestoreBehavior,PhotoCraftAppTests.GalleryEffectDragTests/testHTTPOrderedArrayMatchesNativeRasterAndExistingSmartFilterAtEveryDepth,PhotoCraftAppTests.GalleryEffectDragTests/testMalformedForeignStaleClosedAndNoOpDropsDoNotChangeSettingsOrHistory,PhotoCraftAppTests.GalleryEffectDragTests/testMaximumStackNoOpAndCapabilityContractRetainExistingVersions,PhotoCraftAppTests.GalleryEffectDragTests/testNativePreviewCancelCommitUndoAndPortableRecordingKeepTheOrder,PhotoCraftAppTests.GalleryEffectDragTests/testPrivateItemProviderRoundtripMovesOnceAndArrowUsesSameOperation,PhotoCraftImagingTests.GalleryTextureLoaderTests/testColorHeightConversionAndOwnedPSDReadableAsOrdinaryDocument,PhotoCraftImagingTests.GalleryTextureLoaderTests/testMalformedBoundedHeaderAndUnsupportedImagesRejectBeforeAllocation,PhotoCraftImagingTests.GalleryTextureLoaderTests/testMergedPSDGrayValuesRowOrientationAndFileByteAgreement,PhotoCraftImagingTests.GalleryTextureLoaderTests/testPSBMergedTextureRetainsTheSameHeightSamples,PhotoCraftCoreTests.GalleryTextureTests/testAllFiveEffectsDepthsVisibilityAndOriginalTextureChoicesStayIndependent,PhotoCraftCoreTests.GalleryTextureTests/testAnalyticRampLightInvertAndConstantHeightHaveLiteralByteResults,PhotoCraftCoreTests.GalleryTextureTests/testCanonicalBoundedValueCodableSlicesAndRepeatingBilinearSamples,PhotoCraftCoreTests.GalleryTextureTests/testStrictFilterJSONRejectsUnsupportedHiddenTexturesAndRetainsOrdinaryPayloads,PhotoCraftAppTests.GalleryTextureWorkflowTests/testCancelledClosedStaleAndFailedLoadsKeepPreviousSettingsAndUsablePreview,PhotoCraftAppTests.GalleryTextureWorkflowTests/testHostedTextureControlsLightDarkAndPreferenceErrorsDoNotDisableEditing,PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPArchiveNegotiationPreventsTextureLossAndSmartSetRetainsSnapshots,PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPInvalidAuthenticationBusyStaleRevocationAndMachineSchemas,PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeAllFiveTextureLoadsLocalHistoryAndCancelPreserveDocument,PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeCommitUndoSmartReeditArchive88AndPortableActions54RetainSamples,PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPConversionAndApplyMatchNativeAtEveryDepthWithoutConversionHistory,PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPLargeEmbeddedTextureExceedsFormerCommandLimitAndRemainsUndoable,PhotoCraftAppTests.LensDefaultWorkflowTests/testActualStartupFactoryUsesPersistentLibrariesAndKeepsOwnedSessionsIsolated",
+        "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/PhotatoPackageTests.xctest"
+      ],
+      "source_manifest": "artifacts/runs/20261106T212500Z-453-gallery-textures/release01-source.json",
+      "inputs": 7405,
+      "started_at_utc": "2026-11-06T22:11:37.735563+00:00",
+      "exit_code": 0,
+      "finished_at_utc": "2026-11-06T22:11:54.797899+00:00",
+      "cases": 34,
+      "case_ids": [
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testEveryGalleryEffectProducesFiniteDistinctOutputAndRetainsAlpha",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testIndependentOriginalRustDefaultEffectOracles",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testStackOrderVisibilityIdentityAndHighDepth",
+        "PhotoCraftCoreTests.ArtisticGalleryTests/testStrictParametersColorsChoiceDefaultsAndStackBounds",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testGallerySelectionDepthHistorySmartFilterPersistenceAndActions",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testHTTPAllEffectsDesktopEquivalenceSmartReeditNative36AndGuards",
+        "PhotoCraftAppTests.ArtisticGalleryWorkflowTests/testWorkspacePreviewStackUndoCancelCommitAndReedit",
+        "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas",
+        "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testAllSourceDestinationOrdersPreserveIndependentDuplicateAndHiddenEffects",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testDelayedProviderCannotReorderAfterSettingsChangeOrCancellation",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testHostedStackAndAllModifierCursorsKeepModalAndRestoreBehavior",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testHTTPOrderedArrayMatchesNativeRasterAndExistingSmartFilterAtEveryDepth",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testMalformedForeignStaleClosedAndNoOpDropsDoNotChangeSettingsOrHistory",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testMaximumStackNoOpAndCapabilityContractRetainExistingVersions",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testNativePreviewCancelCommitUndoAndPortableRecordingKeepTheOrder",
+        "PhotoCraftAppTests.GalleryEffectDragTests/testPrivateItemProviderRoundtripMovesOnceAndArrowUsesSameOperation",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testColorHeightConversionAndOwnedPSDReadableAsOrdinaryDocument",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testMalformedBoundedHeaderAndUnsupportedImagesRejectBeforeAllocation",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testMergedPSDGrayValuesRowOrientationAndFileByteAgreement",
+        "PhotoCraftImagingTests.GalleryTextureLoaderTests/testPSBMergedTextureRetainsTheSameHeightSamples",
+        "PhotoCraftCoreTests.GalleryTextureTests/testAllFiveEffectsDepthsVisibilityAndOriginalTextureChoicesStayIndependent",
+        "PhotoCraftCoreTests.GalleryTextureTests/testAnalyticRampLightInvertAndConstantHeightHaveLiteralByteResults",
+        "PhotoCraftCoreTests.GalleryTextureTests/testCanonicalBoundedValueCodableSlicesAndRepeatingBilinearSamples",
+        "PhotoCraftCoreTests.GalleryTextureTests/testStrictFilterJSONRejectsUnsupportedHiddenTexturesAndRetainsOrdinaryPayloads",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testCancelledClosedStaleAndFailedLoadsKeepPreviousSettingsAndUsablePreview",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHostedTextureControlsLightDarkAndPreferenceErrorsDoNotDisableEditing",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPArchiveNegotiationPreventsTextureLossAndSmartSetRetainsSnapshots",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testHTTPInvalidAuthenticationBusyStaleRevocationAndMachineSchemas",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeAllFiveTextureLoadsLocalHistoryAndCancelPreserveDocument",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testNativeCommitUndoSmartReeditArchive88AndPortableActions54RetainSamples",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPConversionAndApplyMatchNativeAtEveryDepthWithoutConversionHistory",
+        "PhotoCraftAppTests.GalleryTextureWorkflowTests/testRealHTTPLargeEmbeddedTextureExceedsFormerCommandLimitAndRemainsUndoable",
+        "PhotoCraftAppTests.LensDefaultWorkflowTests/testActualStartupFactoryUsesPersistentLibrariesAndKeepsOwnedSessionsIsolated"
+      ],
+      "passed": 34,
+      "failed": 0,
+      "failed_cases": [],
+      "total_xctest_failures": 0,
+      "unexpected": 0,
+      "test_seconds": 8.26,
+      "build_seconds": null,
+      "crashes": 0,
+      "binary_sha256": "ea54c3e942fe0e32feef86d7f4f17264852d3a13959ee4c4ac58b5169c7173df",
+      "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+      "expected_cases": 34,
+      "missing_cases": [],
+      "extra_cases": []
+    },
+    "same_order": true,
+    "raw_buffer_comparison": {
+      "step": 453,
+      "same_names": true,
+      "ARM_count": 15,
+      "Intel_count": 15,
+      "rows": [
+        {
+          "name": "conteCrayon-16 bit.rgba",
+          "ARM_bytes": 6144,
+          "Intel_bytes": 6144,
+          "ARM_sha256": "5da39375a138359e251b717b6346c51497f1f94fba36efa34022a3eced9b613a",
+          "Intel_sha256": "5da39375a138359e251b717b6346c51497f1f94fba36efa34022a3eced9b613a",
+          "exact": true
+        },
+        {
+          "name": "conteCrayon-32 bit.rgba",
+          "ARM_bytes": 12288,
+          "Intel_bytes": 12288,
+          "ARM_sha256": "19c1524db6d0230721235f5949651a14289e8f4fe5ee6c4d119f6ba099c86e67",
+          "Intel_sha256": "7cb3d53699348eb6e9053b9674cb9eeb0d3f0af92e723bf2dd09c577b84ba16b",
+          "exact": false
+        },
+        {
+          "name": "conteCrayon-8 bit.rgba",
+          "ARM_bytes": 3072,
+          "Intel_bytes": 3072,
+          "ARM_sha256": "aa56f7a6509faa93b035d27bc5209496441adb2523af0f8d825e9ae038fab9bb",
+          "Intel_sha256": "aa56f7a6509faa93b035d27bc5209496441adb2523af0f8d825e9ae038fab9bb",
+          "exact": true
+        },
+        {
+          "name": "glass-16 bit.rgba",
+          "ARM_bytes": 6144,
+          "Intel_bytes": 6144,
+          "ARM_sha256": "8202e11aa03877cf767f0b344be66866cf599fbd353eb6ebf1c78f7f5bcd966c",
+          "Intel_sha256": "8202e11aa03877cf767f0b344be66866cf599fbd353eb6ebf1c78f7f5bcd966c",
+          "exact": true
+        },
+        {
+          "name": "glass-32 bit.rgba",
+          "ARM_bytes": 12288,
+          "Intel_bytes": 12288,
+          "ARM_sha256": "345ac0f2c0eeed1bc82a89e4682e92a995a96f474bf1c5808b81eb53d849c0ac",
+          "Intel_sha256": "5f3d3bf52918bc8a42dd6128d3f648ab240ec2334f4c815ce6ba1aa07855a0db",
+          "exact": false
+        },
+        {
+          "name": "glass-8 bit.rgba",
+          "ARM_bytes": 3072,
+          "Intel_bytes": 3072,
+          "ARM_sha256": "fefa4b6ca942342abe8229458844e6fb95f571158254f5ddbea50e8b775b0fd3",
+          "Intel_sha256": "fefa4b6ca942342abe8229458844e6fb95f571158254f5ddbea50e8b775b0fd3",
+          "exact": true
+        },
+        {
+          "name": "roughPastels-16 bit.rgba",
+          "ARM_bytes": 6144,
+          "Intel_bytes": 6144,
+          "ARM_sha256": "81805796380080e346ef499ab7532ea17f3b0d68046f7601f1f0fc715ea3087d",
+          "Intel_sha256": "81805796380080e346ef499ab7532ea17f3b0d68046f7601f1f0fc715ea3087d",
+          "exact": true
+        },
+        {
+          "name": "roughPastels-32 bit.rgba",
+          "ARM_bytes": 12288,
+          "Intel_bytes": 12288,
+          "ARM_sha256": "8b3230a31fafbbc5037e4dd033fd4e9254d7893cb9f8bd709739ed1758094511",
+          "Intel_sha256": "1c6c2a9aea4504ca8aaec807c8213958e5341aea3933b28674cd600d0f3387d8",
+          "exact": false
+        },
+        {
+          "name": "roughPastels-8 bit.rgba",
+          "ARM_bytes": 3072,
+          "Intel_bytes": 3072,
+          "ARM_sha256": "13b45c7c6f8b19d7c8e41ef07430b2623e645dd9df3cd8f6dd8221716cf41c23",
+          "Intel_sha256": "13b45c7c6f8b19d7c8e41ef07430b2623e645dd9df3cd8f6dd8221716cf41c23",
+          "exact": true
+        },
+        {
+          "name": "texturizer-16 bit.rgba",
+          "ARM_bytes": 6144,
+          "Intel_bytes": 6144,
+          "ARM_sha256": "390756f8e5275f25fc60cfe1024fbf4ea357d28ab001a235b859826a9a137fd2",
+          "Intel_sha256": "390756f8e5275f25fc60cfe1024fbf4ea357d28ab001a235b859826a9a137fd2",
+          "exact": true
+        },
+        {
+          "name": "texturizer-32 bit.rgba",
+          "ARM_bytes": 12288,
+          "Intel_bytes": 12288,
+          "ARM_sha256": "784313b7109142e68a63c4fc9d7b18890bb9e519221a7f36100b76596a7f124d",
+          "Intel_sha256": "461018d49b60b8707f6ef3aedc03a848944de3cc1d62f27ffa41e5e21c878e1c",
+          "exact": false
+        },
+        {
+          "name": "texturizer-8 bit.rgba",
+          "ARM_bytes": 3072,
+          "Intel_bytes": 3072,
+          "ARM_sha256": "5f0b6e479ccd39e4e8dd9dc9c233353e739ae5661a16ba99742a25cd77db3dfa",
+          "Intel_sha256": "5f0b6e479ccd39e4e8dd9dc9c233353e739ae5661a16ba99742a25cd77db3dfa",
+          "exact": true
+        },
+        {
+          "name": "underpainting-16 bit.rgba",
+          "ARM_bytes": 6144,
+          "Intel_bytes": 6144,
+          "ARM_sha256": "54f0af7346ed7ea1dcf10c07c418cd75d42ec06227d4f642bfb99e233509cde5",
+          "Intel_sha256": "54f0af7346ed7ea1dcf10c07c418cd75d42ec06227d4f642bfb99e233509cde5",
+          "exact": true
+        },
+        {
+          "name": "underpainting-32 bit.rgba",
+          "ARM_bytes": 12288,
+          "Intel_bytes": 12288,
+          "ARM_sha256": "fd6393f8184c8c2027e430ac34b3f80b428c7f10406dbd35670a015ea740d56b",
+          "Intel_sha256": "2e1b56131ce7db0574b5e5f459f1e3a4aac4fdc6af823231254c28e1ee2f0866",
+          "exact": false
+        },
+        {
+          "name": "underpainting-8 bit.rgba",
+          "ARM_bytes": 3072,
+          "Intel_bytes": 3072,
+          "ARM_sha256": "efb869aa59c5bb90c90f05ab8052779271f257bcb1986d12cd283e2f0666b99e",
+          "Intel_sha256": "efb869aa59c5bb90c90f05ab8052779271f257bcb1986d12cd283e2f0666b99e",
+          "exact": true
+        }
+      ],
+      "total_bytes_each": 107520,
+      "exact_all": false,
+      "Photoshop_oracle": false,
+      "scope": "Selected five effects and three depth fixtures, normal optimized ARM versus Intel under Rosetta; not all-input or Photoshop equivalence."
+    },
+    "raw_diagnostic": {
+      "step": 453,
+      "strict_gate_passed": false,
+      "exact_buffers": 10,
+      "total_buffers": 15,
+      "rows": [
+        {
+          "name": "conteCrayon-16 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "conteCrayon-32 bit.rgba",
+          "changed_bytes": 12,
+          "exact": false,
+          "changed_Float32_words": 12,
+          "changed_by_channel": [
+            4,
+            4,
+            4,
+            0
+          ],
+          "maximum_unsigned_word_distance": 1,
+          "maximum_absolute_float_difference": 2.9802322387695312e-08,
+          "all_finite": true,
+          "first_changes": [
+            {
+              "word": 1164,
+              "ARM_hex": "0x3eeb9dfd",
+              "Intel_hex": "0x3eeb9dfe",
+              "ARM": 0.46018972992897034,
+              "Intel": 0.4601897597312927
+            },
+            {
+              "word": 1165,
+              "ARM_hex": "0x3eeb9dfd",
+              "Intel_hex": "0x3eeb9dfe",
+              "ARM": 0.46018972992897034,
+              "Intel": 0.4601897597312927
+            },
+            {
+              "word": 1166,
+              "ARM_hex": "0x3eeb9dfd",
+              "Intel_hex": "0x3eeb9dfe",
+              "ARM": 0.46018972992897034,
+              "Intel": 0.4601897597312927
+            },
+            {
+              "word": 1416,
+              "ARM_hex": "0x3c553840",
+              "Intel_hex": "0x3c55383f",
+              "ARM": 0.013013899326324463,
+              "Intel": 0.013013898395001888
+            },
+            {
+              "word": 1417,
+              "ARM_hex": "0x3c553840",
+              "Intel_hex": "0x3c55383f",
+              "ARM": 0.013013899326324463,
+              "Intel": 0.013013898395001888
+            }
+          ]
+        },
+        {
+          "name": "conteCrayon-8 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "glass-16 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "glass-32 bit.rgba",
+          "changed_bytes": 7,
+          "exact": false,
+          "changed_Float32_words": 7,
+          "changed_by_channel": [
+            4,
+            0,
+            3,
+            0
+          ],
+          "maximum_unsigned_word_distance": 1,
+          "maximum_absolute_float_difference": 2.9802322387695312e-08,
+          "all_finite": true,
+          "first_changes": [
+            {
+              "word": 948,
+              "ARM_hex": "0x3d810b68",
+              "Intel_hex": "0x3d810b67",
+              "ARM": 0.06301003694534302,
+              "Intel": 0.06301002949476242
+            },
+            {
+              "word": 988,
+              "ARM_hex": "0x3d810b68",
+              "Intel_hex": "0x3d810b67",
+              "ARM": 0.06301003694534302,
+              "Intel": 0.06301002949476242
+            },
+            {
+              "word": 1302,
+              "ARM_hex": "0x3ee9aeb7",
+              "Intel_hex": "0x3ee9aeb6",
+              "ARM": 0.45641109347343445,
+              "Intel": 0.45641106367111206
+            },
+            {
+              "word": 1342,
+              "ARM_hex": "0x3ee9aeb7",
+              "Intel_hex": "0x3ee9aeb6",
+              "ARM": 0.45641109347343445,
+              "Intel": 0.45641106367111206
+            },
+            {
+              "word": 1992,
+              "ARM_hex": "0x3ee9aeb7",
+              "Intel_hex": "0x3ee9aeb6",
+              "ARM": 0.45641109347343445,
+              "Intel": 0.45641106367111206
+            }
+          ]
+        },
+        {
+          "name": "glass-8 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "roughPastels-16 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "roughPastels-32 bit.rgba",
+          "changed_bytes": 12,
+          "exact": false,
+          "changed_Float32_words": 12,
+          "changed_by_channel": [
+            5,
+            3,
+            4,
+            0
+          ],
+          "maximum_unsigned_word_distance": 1,
+          "maximum_absolute_float_difference": 2.9802322387695312e-08,
+          "all_finite": true,
+          "first_changes": [
+            {
+              "word": 140,
+              "ARM_hex": "0x3c37bbf9",
+              "Intel_hex": "0x3c37bbfa",
+              "ARM": 0.011214249767363071,
+              "Intel": 0.011214250698685646
+            },
+            {
+              "word": 1098,
+              "ARM_hex": "0x3e8553de",
+              "Intel_hex": "0x3e8553dd",
+              "ARM": 0.2604054808616638,
+              "Intel": 0.26040545105934143
+            },
+            {
+              "word": 1136,
+              "ARM_hex": "0x3ebb3896",
+              "Intel_hex": "0x3ebb3895",
+              "ARM": 0.36566609144210815,
+              "Intel": 0.36566606163978577
+            },
+            {
+              "word": 1480,
+              "ARM_hex": "0x3d40cd5c",
+              "Intel_hex": "0x3d40cd5d",
+              "ARM": 0.04707084596157074,
+              "Intel": 0.04707084968686104
+            },
+            {
+              "word": 1634,
+              "ARM_hex": "0x3e18a55c",
+              "Intel_hex": "0x3e18a55b",
+              "ARM": 0.14906829595565796,
+              "Intel": 0.14906828105449677
+            }
+          ]
+        },
+        {
+          "name": "roughPastels-8 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "texturizer-16 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "texturizer-32 bit.rgba",
+          "changed_bytes": 12,
+          "exact": false,
+          "changed_Float32_words": 12,
+          "changed_by_channel": [
+            4,
+            4,
+            4,
+            0
+          ],
+          "maximum_unsigned_word_distance": 1,
+          "maximum_absolute_float_difference": 1.4901161193847656e-08,
+          "all_finite": true,
+          "first_changes": [
+            {
+              "word": 28,
+              "ARM_hex": "0x3e3b9d05",
+              "Intel_hex": "0x3e3b9d06",
+              "ARM": 0.1832161694765091,
+              "Intel": 0.1832161843776703
+            },
+            {
+              "word": 425,
+              "ARM_hex": "0x3e3b9d05",
+              "Intel_hex": "0x3e3b9d06",
+              "ARM": 0.1832161694765091,
+              "Intel": 0.1832161843776703
+            },
+            {
+              "word": 798,
+              "ARM_hex": "0x3e3b9d05",
+              "Intel_hex": "0x3e3b9d06",
+              "ARM": 0.1832161694765091,
+              "Intel": 0.1832161843776703
+            },
+            {
+              "word": 852,
+              "ARM_hex": "0x3e3b9d05",
+              "Intel_hex": "0x3e3b9d06",
+              "ARM": 0.1832161694765091,
+              "Intel": 0.1832161843776703
+            },
+            {
+              "word": 1142,
+              "ARM_hex": "0x3e3b9d05",
+              "Intel_hex": "0x3e3b9d06",
+              "ARM": 0.1832161694765091,
+              "Intel": 0.1832161843776703
+            }
+          ]
+        },
+        {
+          "name": "texturizer-8 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "underpainting-16 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        },
+        {
+          "name": "underpainting-32 bit.rgba",
+          "changed_bytes": 12,
+          "exact": false,
+          "changed_Float32_words": 12,
+          "changed_by_channel": [
+            6,
+            3,
+            3,
+            0
+          ],
+          "maximum_unsigned_word_distance": 1,
+          "maximum_absolute_float_difference": 2.9802322387695312e-08,
+          "all_finite": true,
+          "first_changes": [
+            {
+              "word": 120,
+              "ARM_hex": "0x3eb22b32",
+              "Intel_hex": "0x3eb22b31",
+              "ARM": 0.34798580408096313,
+              "Intel": 0.34798577427864075
+            },
+            {
+              "word": 248,
+              "ARM_hex": "0x3e06475f",
+              "Intel_hex": "0x3e064760",
+              "ARM": 0.1311316341161728,
+              "Intel": 0.13113164901733398
+            },
+            {
+              "word": 960,
+              "ARM_hex": "0x3d931498",
+              "Intel_hex": "0x3d931499",
+              "ARM": 0.07181662321090698,
+              "Intel": 0.07181663066148758
+            },
+            {
+              "word": 1098,
+              "ARM_hex": "0x3ebac9cb",
+              "Intel_hex": "0x3ebac9cc",
+              "ARM": 0.36482080817222595,
+              "Intel": 0.36482083797454834
+            },
+            {
+              "word": 1309,
+              "ARM_hex": "0x3dfa5d2e",
+              "Intel_hex": "0x3dfa5d2f",
+              "ARM": 0.12224803864955902,
+              "Intel": 0.12224804610013962
+            }
+          ]
+        },
+        {
+          "name": "underpainting-8 bit.rgba",
+          "changed_bytes": 0,
+          "exact": true
+        }
+      ],
+      "cause": "Not established; existing fixture generation, prior engine and new custom path have not been independently isolated.",
+      "policy": "Preserve original strict comparison and report unresolved numerical fidelity under cleanup; do not relax tolerance or claim Photoshop/all-input equality."
+    },
+    "physical_Intel": false,
+    "full_current_suite_passed": false
+  },
+  "retained": {
+    "Debug_products": 5394,
+    "optimized_products": 10788,
+    "source01": "Application compiled; new test used nonexistent stopSharing helper. No tests executed. Preserved before test-only service.revoke repair.",
+    "source02": "33 executed,31 pass; missed native88 output whitelist and new HTTP fixture disabled document transfers. Five failed assertions/two unexpected decode errors preserved before targeted repair.",
+    "source03": "34/34 pass, adds valid raw PSB fixture/test and repairs output-version/HTTP setup.",
+    "source04": "Capture-only15rawbuffers added;34/34 pass. App SHA identical Source03, old inputs/assertions unchanged.",
+    "validation01": "Strict unsigned whole-binary comparison failed after signing; stage01/diagnostic preserved. Stage02 records explicit LINKEDIT allocation-only metadata exception, never wholeunsigned equality.",
+    "native_diagnostics": "Obsolete footer-size and wrong-endian independent-parser attempts preserved; corrected to actual56-byte footer/little-endian/SHA256 without modifying saved file."
+  },
+  "Debug_validation": {
+    "step": 453,
+    "app": "/private/tmp/photato-validation-453-debug-stage02-9b20218b/Photato Validation 453.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation453",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "453Source04",
+    "source_inputs": 7405,
+    "compiled_binary_sha256": "efd28d0b326fe8d558f46c61a452ee8540df44935f1bc9910b67a9c424630e7b",
+    "signed_binary_sha256": "c36ca39bfb0f4cab46a9feaddec6767461b2e901df5272fdfb107039f117b181",
+    "unsigned_payload_exact": false,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": {
+      "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+      "offset": 3472,
+      "before_after": [
+        64962560,
+        64978944
+      ],
+      "signed_lengths": [
+        171425392,
+        171425904
+      ],
+      "changed_offsets": [
+        3473
+      ],
+      "signed_size_rounded_allocation_verified": true
+    },
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_448": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 452,
+    "status": "Prepared isolated custom-texture Debug app; native file-load/history qualification pending; latest optimized universal452.",
+    "prepared_utc": "2026-11-06T21:53:29.863009+00:00"
+  },
+  "native_Debug": {
+    "step": 453,
+    "source": "453Source04",
+    "app": {
+      "step": 453,
+      "app": "/private/tmp/photato-validation-453-debug-stage02-9b20218b/Photato Validation 453.app",
+      "bundle_id": "ca.forensicintelligence.photato.validation453",
+      "architectures": [
+        "arm64"
+      ],
+      "debug_only": true,
+      "normal_optimized": false,
+      "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+      "compiled_source": "453Source04",
+      "source_inputs": 7405,
+      "compiled_binary_sha256": "efd28d0b326fe8d558f46c61a452ee8540df44935f1bc9910b67a9c424630e7b",
+      "signed_binary_sha256": "c36ca39bfb0f4cab46a9feaddec6767461b2e901df5272fdfb107039f117b181",
+      "unsigned_payload_exact": false,
+      "all_other_unsigned_bytes_exact": true,
+      "signing_metadata_exception": {
+        "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+        "offset": 3472,
+        "before_after": [
+          64962560,
+          64978944
+        ],
+        "signed_lengths": [
+          171425392,
+          171425904
+        ],
+        "changed_offsets": [
+          3473
+        ],
+        "signed_size_rounded_allocation_verified": true
+      },
+      "minimum_macos_metadata": "14.0",
+      "signature_verified": true,
+      "production_entitlements_exact": true,
+      "resources_unchanged_from_448": 15,
+      "live_UI_qualified": false,
+      "launched_or_installed": false,
+      "latest_optimized_universal": 452,
+      "status": "Prepared isolated custom-texture Debug app; native file-load/history qualification pending; latest optimized universal452.",
+      "prepared_utc": "2026-11-06T21:53:29.863009+00:00"
+    },
+    "actual_native_UI": true,
+    "observed_utc": "2026-11-06T22:02:54.468271+00:00",
+    "checks": [
+      "Open owned96x72PSD; Convert for Smart Filters.",
+      "FilterGalleryCategorypopupguard/repeatedslowobservation did notselectTexture; fresh bundleIDbinding resolvedinputguard. Selected visibleRoughPastels normally.",
+      "LoadTexture realNSOpenPanel acceptsownedPSD; readyimage/name8x8 andOKenabled.",
+      "LocalUndo restoresCanvas; Redo restorescustomPSD.",
+      "LoadTexture realNSOpenPanel acceptsownedPSB; readyname8x8.",
+      "Relief30 commits; OK produceseditableGallerySmartFilter.",
+      "DocumentUndo removesfilter; Redo restores.",
+      "NativeSaveAs Photato succeeds toowned-gallery453.photato; clean tab.",
+      "ReopenSmartFilter showsPSBname/8x8/Relief30; Cancelleavescleandocument; normalQuit."
+    ],
+    "native_archive": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T212500Z-453-gallery-textures/photoshop/owned-gallery453.photato",
+      "bytes": 7959,
+      "sha256": "c51bb1bc75d215c137e8cef9b8a74c5d679de24a1ec69df7a2dd15125f096685",
+      "version": 88,
+      "metadata_hash_verified": true,
+      "embedded_texture": {
+        "name": "owned-step-texture.psb",
+        "width": 8,
+        "height": 8,
+        "samples": "ACBAYICgwP8AIEBggKDA/wAgQGCAoMD/ACBAYICgwP8AIEBggKDA/wAgQGCAoMD/ACBAYICgwP8AIEBggKDA/w=="
+      }
+    },
+    "original_owned_files_unchanged": true,
+    "own_app_running_after": false,
+    "actual_fresh_launch_reopen_pending": true,
+    "PS_exact_output_qualified": false,
+    "screenshots": "Live CUA screenshots displayed in conversation only; offscreen test images not counted as live."
+  },
+  "native_optimized": {
+    "step": 453,
+    "source": "453Source04/Release01",
+    "app": "/private/tmp/photato-validation-453-stage03-c4a97d27/Photato Validation 453.app",
+    "binary_sha256": "55c9375546e6dc3e9128a7312139d861ea7ed3f70aa0b92dc337b769d908a5fd",
+    "bundle_id": "ca.forensicintelligence.photato.validation453",
+    "native_UI": true,
+    "fresh_optimized_reopen": true,
+    "selected_native_pass": true,
+    "observations": [
+      "Fresh optimized launch starts Untitled-1. Native Open panel lists saved owned-gallery453.photato.",
+      "Initial AX text/row clicks did not select the file; keyboard Home/Down selected it and enabled Open. No application change.",
+      "Open displays clean96x72native doc and editable Gallery SmartFilter.",
+      "Reedit shows owned-step-texture.psb,8x8,Relief30,Scaling100,Lightbottom,ready preview and enabledOK; localUndo/Redo disabled.",
+      "Cancel returns clean document. NormalCommandQ; immediate CUA inventory still reported running, later independent process snapshot confirms own app absent."
+    ],
+    "archive": {
+      "path": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T212500Z-453-gallery-textures/photoshop/owned-gallery453.photato",
+      "sha256_before_after": "c51bb1bc75d215c137e8cef9b8a74c5d679de24a1ec69df7a2dd15125f096685",
+      "unchanged": true,
+      "version": 88
+    },
+    "own_app_running_after": false,
+    "physical_Intel_qualified": false,
+    "strict_cross_architecture_bytes_passed": false,
+    "Photoshop_numeric_equivalence": false,
+    "screenshot": "CUA conversation image only; no saved live screenshot claimed.",
+    "observed_utc": "2026-11-06T22:14:57.104706+00:00"
+  },
+  "universal": {
+    "app": "/private/tmp/photato-validation-453-stage03-c4a97d27/Photato Validation 453.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261106T212500Z-453-gallery-textures/universal/Photato-Validation-453.zip",
+    "archive_sha256": "af09597ff76d97c302669807edc3c4c6f8ffd16648095072c76238570fe9e378",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261106T212500Z-453-gallery-textures/release01-source.json",
+    "source_inputs": 7405,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation453",
+    "version": "0.3.0",
+    "build": 453,
+    "signed_universal_binary_sha256": "55c9375546e6dc3e9128a7312139d861ea7ed3f70aa0b92dc337b769d908a5fd",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10788,
+    "selected_pass_each": [
+      34,
+      34
+    ],
+    "new_methods_pass_each": [
+      16,
+      16
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "selected_texture_raw_buffers_exact": 10,
+    "strict_cross_architecture_texture_bytes_passed": false,
+    "remaining_texture_Float32_differing_words": 55
+  },
+  "pending": [
+    "Full original F06 scope including remaining reusable presets and effect/context workflows",
+    "Independent Photoshop texture conversion/alpha/profile/orientation/sampling/light/tiling/default/output references; no numeric Photoshop oracle obtained",
+    "Full current test inventory, earlier strict failures/crashes and all original package requirements",
+    "Physical Intel/macOS14/macOS26/VoiceOver/full HIG, dense capacity and sustained60fps"
+  ],
+  "scope": "No new tool/modifier/cursor/global shortcut/menu-bar hierarchy; existing Gallery all16modifier regression selected.",
+  "distribution": "Isolated local validation app/ZIP, no installation/GitHub operation/source upload/Store change/Xcode archive/software release. Public code448/docs449 unchanged, current builds protected.",
+  "next": "B01 Brush engine/settings source audit, then B02. Selected F06 delivery is not full package closure.",
+  "goal_complete": false,
+  "recorded_utc": "2026-11-06T22:15:22.940761+00:00"
+}

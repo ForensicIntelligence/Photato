@@ -1,0 +1,364 @@
+{
+  "step": 485,
+  "application_build": 485,
+  "source": "privateSource03/canonicalrelease01",
+  "reference": "docs/SAMPLED_HUE_RANGES_485.json",
+  "software_changes": true,
+  "status": "Photoshop sampled Hue/Saturation swatches now survive PSD/PSB/AHU and native92, appear in native Properties and share API settings/history. All68selected Debug and optimized checks perarchitecture pass,14new. All6528hue2recordbytes across threevariants match fourownedPhotoshopreferences. Nativeimport/orange+grayswatches/boundedit/UndoRedo/cleanup pass. Build485is a validation candidate;480remains latest fully qualified selected universal. FullA02/on-canvassampling and allpriorgaps remain open.",
+  "selected_optimized_gate_passed": true,
+  "selected_native_UI_qualified": true,
+  "focused_Debug_tests": 68,
+  "normal_selected_tests_each_architecture": 68,
+  "normal_passed_each_architecture": 68,
+  "new_correctness_methods": 14,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "recorded_utc": "2026-11-08T01:53:07.556596+00:00",
+  "run": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges",
+  "source_inputs": 7619,
+  "source_manifest": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/release01-source.json",
+  "Debug_source_manifest": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/source03-source.json",
+  "promotion": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/promotion01.json",
+  "qualification": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/qualification-selected01.json",
+  "optimized_qualification": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/release01-qualification.json",
+  "byte_equivalence": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/byte-equivalence01.json",
+  "universal": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/universal01/staging01.json",
+  "native_UI": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/native-ui01.json",
+  "source_delta": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/source-final-delta01.json",
+  "versions": {
+    "native": 92,
+    "Actions": 60,
+    "typed_commands": 266
+  },
+  "source_changes": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "before": "f577da2b38aaaf4e6540aa4729eae2caae216cb543f17f58c480b0304c79ee4e",
+      "after": "b62380b28762e42906c4604082c422e98f00ee41859760644246d4e70ce19656"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationAdjustmentBrush.swift",
+      "before": "b32bd14da396430c27cb2457825501f4efa3541b0e4774a313e507a92c6423f2",
+      "after": "37cbc1c6ea8c6ac2806aeacaa606b0d7c3ed6cd1a23a5341880329f2a6c34dd9"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "before": "16c9b8146aeedc314fd6e65dcc1dddfdf055b689f1d027e8b9f07cafcd63038d",
+      "after": "46e451f7c260d6da63cfe5030ee0e772b895fd087a3a507baf8c70a9cabb7402"
+    },
+    {
+      "path": "Sources/PhotoCraft/HueSaturationControls.swift",
+      "before": "4bf13d204429ca59e7da66ff56a448b6cc41d661e7be404675c9951f24c55eff",
+      "after": "baf4dd54a64f82ee13de8a4e735f30f888129963cd8f262e5f17f2441c9019d6"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/HueRangeColor.swift",
+      "before": null,
+      "after": "99d9645ce742f396c4e7ba9b2ba3131e98d156eaaa39d6dc9b723c39a61841d6"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/HueSaturation.swift",
+      "before": "663da13ee48741c8570c74b976372256fd352bf0e25c5f0816792ca58256b5ee",
+      "after": "5ae6bc2d53e5561d6de7341ebdd621bb96b61682f55a9010c4176fb7b8c2bafa"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "before": "3058998ef3bf49a4ceb6fc24eddf253fb811ff4d4f097c59d4dd5810fe92e9f6",
+      "after": "5416b257f8cd18819077334b88089f0b99aa60f036a2ab9e165adde523578434"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "before": "12f421b5ad6bb5b45c0b856e905d305e4299cc05e05fddbfb87a49813fccf08e",
+      "after": "90110321585b43b8f69ddb1aa191f57c4c2eee79c059ed9fa775e539adadc361"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+      "before": "31d4ccdb23f245146b5b5cdb6511f92d86d80077de8fc8e3da7c015bc139ba6e",
+      "after": "1369a042c9b98da7f825f462f50f1f6b4a88bce0e89126649770e02a6025c29e"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RecordedActions.swift",
+      "before": "7e47aece5f329b5d61d924ace3030bd94713579923a486aa02122585add716d3",
+      "after": "e75631a61dcd37751683d0a9ab5cbd4cdc04215412b1992cab248978dcd86a29"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDHueSaturation.swift",
+      "before": "de939c457dacc2df9862091436f665ae64dbb719cf304f7921981bd1a5fd149a",
+      "after": "a2ab7b943ca72131ac00c42384865c0c270068f599068b88ea3402516badf178"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/BlurGalleryMaskWorkflowTests.swift",
+      "before": "37affb4f37f787c2524798439777c9499ec20a1d040f65e78d39477bdf08d87d",
+      "after": "45ad6e5f6641a700283583bbdd38bc31e8476348ac0fe1ce996f0b647125bb22"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/CanvasEdgeWorkflowTests.swift",
+      "before": "daba28e5b268360f8acd0289b4243c94600f743cc64d844518d21de153ea838e",
+      "after": "9884209ac52f5264daecedf43d93ba2524a06b732ce36eadd6bb10994e877ad1"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ChannelBlendingWorkflowTests.swift",
+      "before": "1a9af99a74ac23538b6db8faeec635a5d1c5c3bd3aed262787591cf0b95e1ff8",
+      "after": "b84397944d813960d2d4a4a579710e783bdb47870e2973217e74bac2d4af1c4e"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ClipboardPlaneWorkflowTests.swift",
+      "before": "74b0846d70eca66a067da6d8a3f32d7712e72e4f18a4c37b2a851a42a01cb914",
+      "after": "500f3cc17c1cb73153751b8ad292b97c804fdc06e76db70e38d04aaef52173ed"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/CustomKernelPresetWorkflowTests.swift",
+      "before": "50aaa34d535db988ace0a26b1ff5106a6f38c6e30d813c97a92ba1af56089744",
+      "after": "777f3ea6bb680b5fb20761d42e20eca8ecb9ce62432a1c907193e9e00c680be7"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/EraserModeWorkflowTests.swift",
+      "before": "0e4d7c0601dd0014343e6371f86d8e5a9312e210de561566fbbee4d424b1e0e5",
+      "after": "5437729798bb67aae1956d784648e3ac4df7fe365a9c1757b68959cd6f836ff1"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/EyedropperWorkflowTests.swift",
+      "before": "a323590ad88623036d32207acc35952acb2432f54ac94cdbf07c7631606600ac",
+      "after": "93b71c07ef0bbdb7c96e3015bbf4ab2eee33818fcc0ab450647e56a32656580c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/FilterRecallWorkflowTests.swift",
+      "before": "f2b9e0cd216ab07d932ee090de04f89a58fa7187c90d7948f5f6928901b0c2b2",
+      "after": "b789096fd63df8e69812fc44772396d441c00342c352cf18fd8f303faf7be42c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/FitImageWorkflowTests.swift",
+      "before": "c961fb0eb01b041a13e4c60b30151f643628f55e4d245441c0d146e80e9b83a0",
+      "after": "438512680c88b60a71383a1518dcf78d31ba021df4ac2428c90c7b662b5fa83e"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/FlattenImageWorkflowTests.swift",
+      "before": "26165fca5831504ff073fc1d36977799c8d1437816d872f615ee7ed8b5326b4c",
+      "after": "9ed4f91a93fff5d8ee800c0f3f5ebf16b2beb0e9d60d7bc09821be2e7d7b7664"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/FocusBlendModeWorkflowTests.swift",
+      "before": "a16c1aa3beb32c866f96a16ef3d7bd256724610e7fdcbbdfaf7d70b0c603b418",
+      "after": "1255a763176e71cdcdb80e97bbb89913a784c883cc1359d23085c0524788d3aa"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GalleryEffectDragTests.swift",
+      "before": "e2a8685b6c07b7b8ff94a05d5232a01d8aaa48038b42c299773c37ae57860de4",
+      "after": "6a4e5cfd41d88e9f0325e0f9d36f82e6fd43069e48aa78924a452276f3f775a2"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GalleryTextureWorkflowTests.swift",
+      "before": "5d9de127dd84e3c1f094100c8252522a88d786e3d5dc4540ce9327b4c6a1bfc0",
+      "after": "57b92baceeacb654c77ca195eece019d4085c86660c5345962dba3afdf10b59f"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GradientCreationWorkflowTests.swift",
+      "before": "4f33805f30d32cbbbefc62731b7dfa5453e56eef58298ff09ba6a7bd6e0761a6",
+      "after": "765491dcf0e954f229426f9f1d442559179876a5a7c11e8b67db98b38727295a"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GradientFillAPITests.swift",
+      "before": "19ec58bebee304421df966914ea09e00d086ca99fd6bb69c6e69637c76d94a8a",
+      "after": "d3518d3c24ee552ee4579f2dc4bdeb67a9b5df2ddc668cce5f898c60aec47a4b"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/HueRangeColorWorkflowTests.swift",
+      "before": null,
+      "after": "e600d69c0ccfba66799ec0859b6538dcb7c913cb3b8f13840c45147f5a3782b9"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LargeCropWorkflowTests.swift",
+      "before": "b50f1c5b7801a2092b3e0485df194025cbc77bedc3fed8e05c1ab3607331b21d",
+      "after": "59197d471a5193cef6414e078c664fb2dd7b61ce437e22cffc58e1f3632ceac6"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LargeEqualizeWorkflowTests.swift",
+      "before": "74ebbd2f30a0af5aad44bc597dcca5ea8ee20a4b4a709ab9b10eda59abbc86ca",
+      "after": "19f2cd2e0f4c420842d8bca90a217c08d95464b5237fc5a368d4767707a0895a"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerCapacityWorkflowTests.swift",
+      "before": "ad9925aaaa6107a015e1f4f5045ca9172a906b6d80c4d2ebbad1800b447642f6",
+      "after": "63870f0769b82e689e99e64860882215ce75f60028933b7762421b93bbd6acad"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerFilterAPITests.swift",
+      "before": "e3de9b8ddcd6d0fcdba83b527b8377aac21fe72f7f694fd62a55c5e7f7773d18",
+      "after": "5d8fef7f312e03bf5f03d5c69abe067444db96f048a6c400f9a0011ec796626a"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerStackOrderWorkflowTests.swift",
+      "before": "1f3fe35e3706405076ffe4077e0b3f92c9b4b6b24af10d465b22280d89e443e1",
+      "after": "4df441eeb94ac725b166a5b668e28b9f8f9826f6cdb982bf203751249e2c1564"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LensDefaultWorkflowTests.swift",
+      "before": "47bff84d3f44fb83619e9d361fafb6744479685bd19afe4c0ce69ee130b6aa57",
+      "after": "0a00a68908733efc99bc7f34bf716800b68428b6892024288151cd979d6ab5d0"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LightEditingPreviewWorkflowTests.swift",
+      "before": "67472c901e0f9e4845023a99a789845e27b8691d4d7a0c98847be0f354e6b5c4",
+      "after": "f6d09a819c0fd697eb7f564c94efa8992f2fd3e30bee8c6d97ab10764e3f2d45"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LinkedPreviewAPIWorkflowTests.swift",
+      "before": "584cfb8cbd6c1179c3c5ab7fc3d81354a16c8aa83c097b5ca34e1b3eee9bbc31",
+      "after": "e759a0f2e2a639e63d56a301d0ef5cb0127eaa2b56f2878a9c373c75e0aa08d5"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LiquifyMeshRecallTests.swift",
+      "before": "e84c4af4061ff4640093d0e93f40ae66e4057d5a7aac67ccaecbc812141ac346",
+      "after": "a6b7a3116043cf6e45ae80849e22eebc2bb1a83ecbf644811d48fd27fcbafb62"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LookupPropertyTransactionTests.swift",
+      "before": "d79faecbfda55f83a253a3791cbf46221a0c565b02a52873b7210f6ca7b6be96",
+      "after": "d481cbaef272928e67b6aac7b3b84d35ea9e9253a7857e5cc20729570a2fb8fe"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/MagicWandSamplingWorkflowTests.swift",
+      "before": "03785eca0d1f530844d3091ddc339bb943c049c5eecbf8262ac7ccfbb339d399",
+      "after": "4c1490f730cd6620bd895d7e6561014b41144b0629446f715a9d5787578c5997"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/MaskRemovalWorkflowTests.swift",
+      "before": "090abde9fdb3c5cc53ec092a8282fc8da71edee0cad40cabd57a69d3f71142fc",
+      "after": "1ca4a35732104dd02dfaf68e4826bf8f222cf73c628bbdf8e91fe8d9985958b4"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PagedHistogramWorkflowTests.swift",
+      "before": "f1967e702f30421f9ee8c1fa732d528f7883b4e9a3897a7ac2805b6f0fd21074",
+      "after": "784ee94e3a9faa4d8ebe14e9b9a3c00873510142fa64f65140794864d942f0cb"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathFillWorkflowTests.swift",
+      "before": "f0ac4390799daa2bc9fa104780106bd8de490aa2d373c3526e3cdecd91959c17",
+      "after": "1caceb7aeb8350c28402cc5483363854d5743fc2abed3a634c578d170d31c9ec"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PatternPixelFillWorkflowTests.swift",
+      "before": "d2defd9277be2c95e3b4bd06339fdb846ea795e3d3a18c12cd4a1b02a2a25e81",
+      "after": "29cdbdf670db9fc8100821a7e84f7d0f56853384bf1eaba70903edb252e20e79"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PixelFillStrokeWorkflowTests.swift",
+      "before": "0b18978dc5a37116e494e54311362908a4976dcb7d609788f6ff41fcf3901c63",
+      "after": "2c4fc707ad7d15bbf964bc9919d486ab3b350390c57cf84cba9ba205ca9aae4d"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PointTextWorkflowTests.swift",
+      "before": "f2acadc88be99619e7a48d2f543eb4273ca52611f72886a4d3148d6241c6e165",
+      "after": "e5d1bd20a88b8dc4bff036fb348b2ccf1975ebc2faa8aa4d02bab6bd68155f85"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/RichMergeWorkflowTests.swift",
+      "before": "7da4b9a199859e67d376b040fdd9a8752dd45e7e166cdcf02a9af7f2e99c8287",
+      "after": "3b3ec9d358f250e40e8d76edd7eb235063e79ed9c84be4d0c9fbb091cad3c360"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SelectionSourceWorkflowTests.swift",
+      "before": "25a94325c530c4c4973397030e51abc8822154a364672dfe4842980ad361e252",
+      "after": "8b39b4f9b4e89890e2ecbe219a41da9ba0aee970e8c89e3527f8fb589c9e6351"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ShapeStrokePresetTests.swift",
+      "before": "8a8e755d70b30aab1a5cff25a9f3199d9d13a0d709b30e616b765db229afb57a",
+      "after": "2aaea51a9244a48ce6e5476015d801eaf0ea0fe2df8be9e40261fdd126e3f3a1"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartFilterTransferWorkflowTests.swift",
+      "before": "cb3df3a4e711037c247cc12e659252f99cd831f3009eef05718cccecdeed394c",
+      "after": "1c4dde9d952bb84f0df545247fbeb1b9f096461f9ad9a168c59891fe7312e3c8"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartObjectUnpackWorkflowTests.swift",
+      "before": "66d3c2386be50f6d6a71a4634c388b205b6b5f678adc7e9f77a4ee2c6221f035",
+      "after": "f585d8358e084554db7dea08f618e6f01c1e1ed689dd29c359b61d055f2a01de"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/StylePresetWorkflowTests.swift",
+      "before": "5c1cddb4e1881768dc8e31292b8c6bf056f56fac1ec68453bb5cdea7ec729a60",
+      "after": "fbf041141fdff9a99bf266cbd54d599e2d909206217ffdcd1b1c3806655ee53e"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/TextFindWorkflowTests.swift",
+      "before": "a1a1b3ac3ea7219d8e4b813025afe24e91cb6289852f20b0f6e31f5d6a5243d5",
+      "after": "c9b7940a8d61c020c3056ee61fe6d5cc5de0e9761bb8cdf4b28bf454480eb54d"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/HueRangeColorTests.swift",
+      "before": null,
+      "after": "9c284a0494786a1341e53bf80f5c6c7925aac04fe55bf2c4aa158d4f59040b3c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/README.md",
+      "before": null,
+      "after": "63d2e606e9f8ff91cf6d803e1d9dfbcff4c9e008ca22dd128431ecab01acc81c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/owned-color-sampling.png",
+      "before": null,
+      "after": "cbd3dbcbc62ed19ca5d26efe182ca8a576235c9ad674ff8400f9e3e964b4b398"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/provenance.json",
+      "before": null,
+      "after": "00b4f658a2d9d63cf16342d0b24eecf905710f73af0c815ef6812a0ed691dac9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/ps-red-range-add-green.psd",
+      "before": null,
+      "after": "5bd138d4ccc4e1a3994afb386c216b1f946199f5bf0f44985efa1110b0358ca9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/ps-red-range-gray-sample.psd",
+      "before": null,
+      "after": "fef9a92dd5fc1ca6a823417634e26018f9582131187a556252c96674466e84de"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/ps-red-range-orange-sample.psd",
+      "before": null,
+      "after": "592e1234ce5da6e4088199fd26786a39b421ce5d3857e6df57f8e7082bc6f2ed"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/ps-red-range-subtract-orange.psd",
+      "before": null,
+      "after": "58c9a20fd1e03ebdde168ee11f04d1f762300383774528be84fbd266fb2e4b85"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/SampledHueRangeTests.swift",
+      "before": null,
+      "after": "590ad267c6860702a908e435e8c7f113e2bd0f91a371c34095cdc4027104b1b8"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "before": "6b5b9f42d1460fad0d9af7405fa8c4bf1a6b5146a0353c983c0dab3247670aae",
+      "after": "5d6c90e352fac97104027ecfc54c1a3680bfd6331496b6173cabd09c3001da2b"
+    }
+  ],
+  "source_files_removed": [],
+  "API": "Existing adjustmentBrush.edit/settings/state: optional/null ranges[].displayColor; shared strictinteger validation andnative/history paths. Native92downloadnegotiation; existing91gray/90videodownloads retained. No endpoint orAdobe descriptoradded.",
+  "fixtures": "Tests/PhotoCraftImagingTests/Fixtures/sampled-hue-ranges485/provenance.json",
+  "initial_defects": "Privatebaseline03:2tests/2actualUnrepresentedHueSaturationfailures; priorrelocatedPCM anddriverexclusivefilename failuresretained.",
+  "repairs": "Source01newtestenumcompilefailure;Source0266/68withtwoincorrectnewsetups;Source0368/68afterclamp/inactive-frame corrections andstrongerindependentoutputcaptures. Productsourceidentical01/02/03.",
+  "unchanged": "HueSaturationTransfer sourceexact, oldnumericalvectors/tolerances, factorymenus/keys,cursorpolicy,project/assets/entitlements. Newdisplaymetadataisnotusedbythepixelkernel.",
+  "references": [
+    "https://helpx.adobe.com/uk/photoshop/desktop/adjust-color/color-corrections/apply-a-hue-or-saturation-adjustment.html",
+    "https://helpx.adobe.com/ie/photoshop/using/tool-techniques/adjust-colors.html"
+  ],
+  "remaining": [
+    "FullA02originalscope/acceptance remain open: on-canvassampling/prominentcolors/targeteddrag, range/overlap/endpoints, ColorBalance luminosity transfer, profiles/depths/defaults andall-input bytefidelity.",
+    "CapturedPSDsareRGB8withneutraladjustmentvalues;6528exactbytes provehue2recordfidelity, notwholePSDlayout or independent image-transfer/HDR kernels.",
+    "CurrentnativeUIqualifies orange/gray, boundediting, retainedS/L, HistoryUndo/canvasUndoRedo andownedcleanup. Fullnumericfocus/VoiceOver/Light/localization/physicalmacOS14/Intel/60fps remainopen.",
+    "Earlier483broader400vs422API failure remainsopen,notretested485. Earlier484FillmodalPID63159remainsunqualified/preserved. Allotherrecordedfailures andfullsuitegates remain.",
+    "Universal485isvalidation-only,min14/fullunchangedentitlements/signature/payload/ZIPverified. NoGitHubmutation,deletion,productioninstall,Xcodearchive,Appleupload,Storechange orrelease.",
+    "Native92onlyforretaineddisplaycolors;olderfeaturesretainminima. Actions60onlyfornewrecordedmetadata;39globalmaximumVersion testexpectationsadvance59to60without changingoperationminimums oroldnumericfixtures.",
+    "Original104scope/acceptance/status,652commandIDs/memberships/status and81majormembers/sevenpasses preserved. A02boundedmetadataworkflowrotatesend;currentA06nextAI01."
+  ],
+  "full_suite_passed": false,
+  "Photoshop_parity": false,
+  "current": "A06",
+  "next": "AI01",
+  "latest_fully_qualified_selected_universal": 480
+}

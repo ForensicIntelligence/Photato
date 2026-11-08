@@ -1,0 +1,43 @@
+{
+  "creator": "Photato test project",
+  "license": "MIT OR Apache-2.0",
+  "method": "Generated raw uncompressed PSD headers/merged planes from literal arithmetic values, no Adobe artwork or proprietary code.",
+  "files": [
+    {
+      "name": "owned-flat-gray.psd",
+      "width": 96,
+      "height": 72,
+      "channels": 3,
+      "bytes": 20776,
+      "sha256": "7f994ece4b6c7ac4ae0ad19e0bdbfad513762e2027e3e460d99173b8c903cb71"
+    },
+    {
+      "name": "owned-step-texture.psd",
+      "width": 8,
+      "height": 8,
+      "channels": 3,
+      "bytes": 232,
+      "sha256": "e335635c54f06cce39eadce0d7136bc2d59d80dda1f0d239cc3e5d4719f6727d"
+    },
+    {
+      "name": "owned-color-texture.psd",
+      "width": 8,
+      "height": 8,
+      "channels": 3,
+      "bytes": 232,
+      "sha256": "6363226f9da96ed67371c50287a198866725a1861ca64b06de34effbc7801a1c"
+    }
+  ],
+  "additional_generated_files": [
+    {
+      "name": "owned-xy-texture.psd",
+      "sha256": "248229ff0e53dd85cb989ea43180ac060d854833885e97410a8a07609de89017",
+      "method": "Owned arithmetic merged-plane PSD/PSB, public container specification; no Adobe pixels or code."
+    },
+    {
+      "name": "owned-step-texture.psb",
+      "sha256": "e33ccaeb3735cced947015174774c9c009d600cb1ab2091bd36887d06acbad4e",
+      "method": "Owned arithmetic merged-plane PSD/PSB, public container specification; no Adobe pixels or code."
+    }
+  ]
+}

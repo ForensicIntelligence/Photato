@@ -1,0 +1,171 @@
+{
+  "step": 458,
+  "date": "2026-11-06",
+  "recorded_utc": "2026-11-07T01:05:23.544533+00:00",
+  "package": "B06",
+  "status": "Apply/continue and new fill selections implemented;38focusedDebug/all7newpass. Native acceptance interrupted by CUA native-pipe failure; no live Apply or Quit claim.",
+  "goal_complete": false,
+  "changes": {
+    "modified": [
+      "Sources/PhotoCraft/AutomationContentAware.swift",
+      "Sources/PhotoCraft/AutomationService.swift",
+      "Sources/PhotoCraft/ContentAwareCanvas.swift",
+      "Sources/PhotoCraft/ContentAwareEditing.swift",
+      "Sources/PhotoCraft/ContentAwareSheet.swift",
+      "Sources/PhotoCraft/ContentAwareWorkspace.swift",
+      "Sources/PhotoCraft/ToolCursorAPI.swift",
+      "Sources/PhotoCraftCore/ContentAwareFill.swift",
+      "Tests/PhotoCraftCoreTests/ContentAwareScaleTests.swift",
+      "scripts/Info.plist"
+    ],
+    "added": [
+      "Tests/PhotoCraftAppTests/ContentAwareApplyWorkflowTests.swift",
+      "Tests/PhotoCraftCoreTests/ContentAwareSelectionModeTests.swift"
+    ],
+    "removed": []
+  },
+  "source": {
+    "manifest": "artifacts/runs/20261107T004443Z-458-content-aware-apply/source02-source.json",
+    "inputs": 7445,
+    "unchanged": true,
+    "compiled_binary_sha256": "d64ec3cafd00b3847c4d88b1524186e5a92bacf4efe070eaffa0f4e41f0f2c31",
+    "source01_source02_application_identical": true,
+    "original_synthesis_and_output_math": "unchanged",
+    "old_test_change": "ContentAwareScaleTests test fixture now explicitly selects full coverage before saving protection channel, then clears selection for intendedwhole-layer scale. Every original assertion retained.",
+    "old_fixtures_and_project": "unchanged; synchronized .xcodeproj source groups discover two new test files."
+  },
+  "implementation": {
+    "native": "Apply publishes one prepared fill and keeps workspace. Reprepare against committed document; New output retains originalsource, Duplicate follows duplicate. Settings/samplingstrokes retained; applied selection becomes base, local selectionstrokes/history cleared.",
+    "finish": "Unchanged OK after Apply closes without duplicate layer/history. Cancel discards pending preview and retains already published Applies. Stale/closed/cancelled work does not publish.",
+    "selection": "Optional selectionMode New/Add/Subtract/Intersect on selection strokes; nil retains legacy add/subtract. New/Shift/Option/ShiftOption native modes captured through gesture with matching cursors; invalid sampling-target mode rejects.",
+    "formats": {
+      "typed_commands": 260,
+      "native_archive": 88,
+      "Actions_maximum": 55,
+      "new_Adobe_route": false,
+      "new_global_shortcut": false,
+      "new_main_tool": false
+    },
+    "Actions": "Existing Content-Aware Fill recording limitations unchanged; no portable replay support invented."
+  },
+  "API": {
+    "command": "Existing contentAware.fill; repeated requests with selectionMode New replace fill area using same editing/history engine. Busy native modal remains protected from remote editing.",
+    "state": "contentAwareFill available/workspaceOpen/canApply/canFinish/appliedFillCount/sourceLayerID/previewBusy/committing with formal discovery state schema.",
+    "schema": "strokes selectionMode optional enum; legacy JSON and add retained.",
+    "adobe": "No dedicated published Content-Aware Fill route or unsupported actionJSON descriptor claimed."
+  },
+  "qualification": {
+    "Debug": {
+      "expected": 38,
+      "passed": 38,
+      "all_new": 7,
+      "failed_assertions": 0,
+      "unexpected": 0,
+      "missing": 0,
+      "signals": 0,
+      "seconds": 39.16,
+      "source_unchanged": true,
+      "retained_products": 5421,
+      "record": "artifacts/runs/20261107T004443Z-458-content-aware-apply/source02-summary.json"
+    },
+    "Source01": {
+      "executed": 29,
+      "passed": 27,
+      "failed_cases": 2,
+      "assertions": 4,
+      "unexpected": 1,
+      "missing_cursor_IDs": 9,
+      "record": "artifacts/runs/20261107T004443Z-458-content-aware-apply/source01-summary.json",
+      "retained_products": 5421,
+      "repair": "Correct helperclass selector, close modal before documentUndo in newHTTP test, correct oldSaveSelection fixture after baseline reproduction, strengthen literalbyte oracle and realHTTP state coverage. Application unchanged."
+    },
+    "baseline": {
+      "build": 457,
+      "record": "artifacts/runs/20261107T004443Z-458-content-aware-apply/baseline457-scale01-summary.json",
+      "result": "Unchanged oldScale case reproduces ChannelCommands41 save-without-selection rejection. No kernel/Scale/channel implementation change."
+    },
+    "native": {
+      "step": 458,
+      "app": "/private/tmp/photato-validation-458-debug-stage01-e6887a2e/Photato Validation 458.app",
+      "compiled_binary_sha256": "d64ec3cafd00b3847c4d88b1524186e5a92bacf4efe070eaffa0f4e41f0f2c31",
+      "native_UI_qualified": false,
+      "status": "Partial native check; computer-use native pipe disconnected before workspace could be observed",
+      "observed": [
+        "Fresh isolated Debug application launched; Open enabled; owned256x192PSD loaded through system Open/GoTo.",
+        "Rectangular Marquee selected. First drag produced dirty selection history but no visible marquee/CAF disabled. A repeated drag showed visible selection around the first object, contextual Fill/Deselect, and CAF enabled. No cause isolated for the first gesture.",
+        "A stale menu index opened File unintentionally; Escape did not dismiss observed menu. Exposed native Cancel action dismissed it, then fresh Edit index was used. No file operation selected.",
+        "Content-Aware Fill enabled action clicked; tool returned Sky Computer Use native pipe closed before response. App process remains alive.",
+        "Read-only AX retry, REPL reset and fresh getApp all returned native pipe closed. No alternate UI automation or forced process control used."
+      ],
+      "not_verified": [
+        "Workspace actually opened; Apply/continue/Cancel/Undo/Redo/Close/Quit through liveUI.",
+        "Photoshop workspace input comparison, exact outputs/defaults/layer/source identity.",
+        "FullHIG/VoiceOver/physicalheldcursor/tablet/macOS14/Intel/60fps."
+      ],
+      "app_still_running": true,
+      "owned_process": [
+        " 6678 S    /private/tmp/photato-validation-458-debug-stage01-e6887a2e/Photato Validation 458.app/Contents/MacOS/Photato"
+      ],
+      "normal_Quit_verified": false,
+      "disposable_document_changes": "Only selection edit observed; no image commit or file save observed. Exact post-disconnect UI state unknown.",
+      "fixture_sha256_unchanged": true,
+      "pending_user_question": "Asked once whether Mac currently unlocked; continue independent source/tests while native check pending.",
+      "recorded_utc": "2026-11-07T01:02:58.392278+00:00"
+    },
+    "staging": {
+      "step": 458,
+      "app": "/private/tmp/photato-validation-458-debug-stage01-e6887a2e/Photato Validation 458.app",
+      "bundle_id": "ca.forensicintelligence.photato.validation458",
+      "architectures": [
+        "arm64"
+      ],
+      "debug_only": true,
+      "normal_optimized": false,
+      "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+      "compiled_source": "458Source02",
+      "source_inputs": 7445,
+      "compiled_binary_sha256": "d64ec3cafd00b3847c4d88b1524186e5a92bacf4efe070eaffa0f4e41f0f2c31",
+      "signed_binary_sha256": "5425ebad8342b99d686a7e1ffd48339538d0553a81fd6dda12dad3bb1199efff",
+      "unsigned_payload_exact": true,
+      "all_other_unsigned_bytes_exact": true,
+      "signing_metadata_exception": null,
+      "minimum_macos_metadata": "14.0",
+      "signature_verified": true,
+      "production_entitlements_exact": true,
+      "resources_unchanged_from_448": 15,
+      "live_UI_qualified": false,
+      "launched_or_installed": false,
+      "latest_optimized_universal": 457,
+      "status": "Prepared isolated Content-Aware Apply Debug app; native Apply/continue qualification pending; latest optimized universal457.",
+      "prepared_utc": "2026-11-07T00:58:29.856594+00:00"
+    },
+    "normal_458": "Deferred under breadth policy; new selection composition delegates existing byte-mask operations and no numerical synthesis/output change. Latest optimized universal457, strict gates retained.",
+    "full_suite": false,
+    "full_Photoshop_parity": false,
+    "physical_60fps": false
+  },
+  "reference": {
+    "primary": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/apply-or-cancel-fill-changes.html",
+    "supporting": "https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/fill-selections-with-multi-image-content-aware-fill.html",
+    "installed_Photoshop": "Home observed; Open/menu inputs time out or noWindowsAvailable. No own fixture opened or pixel/layer/Apply semantics qualified.",
+    "fixture": "artifacts/runs/20261107T004443Z-458-content-aware-apply/photoshop/provenance.json",
+    "provenance": "Owned literal publicPSD two-red-rectangles onblue; no Adobe artwork/code/decompilation/disassembly."
+  },
+  "remaining": [
+    "Multi-image/cross-document source, alignment and associated adjustments remain missing functional B06 scope.",
+    "Current16MP workspace/4MP synthesis/60000 scaling dimension and existing work budgets remain capacity gaps, not Photoshop limits or waived requirements.",
+    "Exact Photoshop iterative source/layer identity, all output/default/pixel/profile/tool combinations and independent numeric oracles unqualified.",
+    "Live native Apply/Cancel/OK/Undo/Redo/Close/Quit pending restored CUA; current validation PID6678 remains open, post-disconnect UI state unknown.",
+    "Normal optimized458 and physicalIntel/macOS14/tablet/60fps/fullHIG/VoiceOver/full-current suite remain unqualified. Latest universal457 retains its234legacyIntelassertions and6Float32buffers/16colorword residual.",
+    "All104 original scopes/acceptance,652 command mappings/statuses,81major memberships and seven-pass order remain; full B06 and master goal open."
+  ],
+  "next": "B07 stylus/eyedropper/sampler source audit, thenD04; resume pending native458 check when CUA restored. No full package closure.",
+  "distribution": {
+    "source_uploaded": false,
+    "GitHub_operations_or_deletions": false,
+    "installed": false,
+    "AppStore_changed": false,
+    "Xcode_archive_or_software_release": false,
+    "current_builds_preserved": true
+  }
+}

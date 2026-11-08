@@ -31,8 +31,9 @@ struct PreparedLocalDocument: Sendable {
         fingerprint: fingerprint, modificationDate: date)
     }
   }
-  @MainActor func makeDocument(url: URL) -> CraftNSDocument {
-    let doc = CraftNSDocument(model: model)
+  @MainActor func makeDocument(url: URL, actions: ActionLibrary? = nil) -> CraftNSDocument {
+    let doc = CraftNSDocument(model: model, actions: actions)
+    doc.scriptEventOrigin = .openDocument
     doc.openRawDevelopmentOnDisplay = format == nil && model.layers.first?.smartObject?.rawDevelopment != nil
     doc.fileType = (format ?? .native).typeIdentifier
     if let format {
@@ -145,8 +146,8 @@ struct PreparedLocalDocument: Sendable {
               !models.isEmpty else {throw CraftError.invalid("Document lifecycle changed during PDF import.")}
             // A PDF can produce several documents. None is associated with the
             // source for Save/Revert; opening it again offers the chooser again.
-            let documents = models.map {CraftNSDocument(model:$0)}
-            for document in documents {controller.addDocument(document);document.updateChangeCount(.changeDone)}
+            let documents = models.map {CraftNSDocument(model:$0,actions:controller.scriptEvents.actions)}
+            for document in documents {document.scriptEventOrigin = .openDocument;controller.addDocument(document);document.updateChangeCount(.changeDone)}
             if display {for document in documents {document.makeWindowControllers();document.showWindows()}}
             state?.opened += 1
             controller.recoveryPreferences.remember(url,replacing:request.recentID)
@@ -186,7 +187,7 @@ struct PreparedLocalDocument: Sendable {
             controller.recoveryPreferences.remember(url, replacing: request.recentID)
             completion(doc, true, nil)
           } else {
-            let doc = prepared.makeDocument(url: url)
+            let doc = prepared.makeDocument(url: url, actions: controller.scriptEvents.actions)
             controller.addDocument(doc)
             if display { doc.makeWindowControllers(); doc.showWindows() }
             state?.opened += 1

@@ -131,7 +131,7 @@ struct ChannelsMenu: View {
     Button("Merge Spot Channel") {}.disabled(true)
     Divider()
     Button("Channel Options…") { store.beginChannelDialog(.options) }.disabled(!store.canEditChannels || store.editingChannel == nil)
-    Button("Split Channels") {}.disabled(true)
+    Button("Split Channels") {store.splitChannels()}.disabled(!store.canSplitChannels)
     Button("Merge Channels…") {}.disabled(true)
     Divider()
     Button("Panel Options…") { store.beginChannelPanelOptions() }

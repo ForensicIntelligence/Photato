@@ -36,7 +36,8 @@ extension SmartFilterStack {
           "properties": Dictionary(uniqueKeysWithValues: ["a", "b", "c", "d", "tx", "ty"].map { ($0, ["type": "number"]) })]]]]]
   }
   static var apiCapabilities: [String: Any] {
-    ["commands": ["filter.apply", "smartFilter.set", "smartFilter.maskStroke", "smartFilter.maskFill"],
+    ["commands": ["filter.apply", "smartFilter.set", "smartFilter.maskStroke", "smartFilter.maskFill", SmartFilterTransferAPI.name],
+      "transfer": SmartFilterTransferAPI.capabilities,
       "nativeDrag": SmartFilterDrag.apiCapabilities,
       "stackSchema": apiSchema, "layerStateSchema": apiStateSchema, "maximumFilters": maximumFilters,
       "largeRGBStacks":["kinds":RasterFilterEngine.pagedFilterKinds.map(\.rawValue),

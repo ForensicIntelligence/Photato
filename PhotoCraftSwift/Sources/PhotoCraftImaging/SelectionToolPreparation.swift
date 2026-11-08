@@ -3,13 +3,32 @@ import CoreGraphics
 import PhotoCraftCore
 
 public enum SelectionToolPreparation {
+  public static func canSample(_ document:CraftDocument,layerID:UUID?,allLayers:Bool)->Bool {
+    if let layerID, !document.layers.contains(where:{$0.id==layerID}) {return false}
+    if allLayers {return true}
+    guard let id=layerID ?? document.activeLayerID,let layer=document.layers.first(where:{$0.id==id}) else{return false}
+    switch layer.content {case .adjustment,.group:return false;default:return true}
+  }
   public static func input(_ document:CraftDocument,layerID:UUID?,allLayers:Bool)throws->Surface {
+    try Task.checkCancellation()
     guard document.width<=SelectionSegmentation.maximumPixels/max(1,document.height) else{throw CraftError.unsupported("Selection analysis supports at most16MP canvas pixels.")}
     let input:Surface
     if let layerID,document.layers.first(where:{$0.id==layerID})==nil {throw CraftError.invalid("Selection source layer no longer exists.")}
-    if !allLayers,let id=layerID ?? document.activeLayerID,var layer=document.layers.first(where:{$0.id==id}),case .raster=layer.content {
+    if allLayers {input=try Renderer.composite(document)}
+    else {
+      guard let id=layerID ?? document.activeLayerID,var layer=document.layers.first(where:{$0.id==id}) else {
+        throw CraftError.invalid("Choose a source layer or enable Sample All Layers.")
+      }
+      switch layer.content {
+      case .adjustment,.group:
+        throw CraftError.unsupported("Enable Sample All Layers to analyze a group or adjustment layer.")
+      default:break
+      }
+      // Analysis reads the selected layer's rendered content, never unrelated
+      // visible layers as an implicit fallback. Raster/Smart Object behavior is
+      // unchanged; type, shapes and fills now respect the same source choice.
       layer.visible=true;layer.style=nil;input=try Renderer.clippingCoverage(layer,in:document)
-    }else{input=try Renderer.composite(document)}
+    }
     return try ColorManagement.converted(input,from:document,to:CraftDocument(width:1,height:1))
   }
   public static func command(_ request:SelectionToolRequest,in document:CraftDocument,detector:any ObjectDetecting = VisionForegroundDetector())async throws->Command {

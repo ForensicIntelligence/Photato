@@ -99,8 +99,11 @@ public struct RecordedRetouchStroke: Codable, Sendable {
       focus.strength.isFinite, (0...1).contains(focus.strength) else {
       throw CraftError.invalid("Invalid recorded retouch settings.")
     }
-    if tool.toning != nil || tool.focus != nil {
+    if tool.toning != nil {
       guard brush.mode == .normal else { throw CraftError.invalid("This retouch tool requires Normal brush mode.") }
+    }
+    if tool.focus != nil && !FocusBlendModes.supported.contains(brush.mode) {
+      throw CraftError.invalid("Choose Normal, Darken, Lighten, Hue, Saturation, Color or Luminosity for this focus tool.")
     }
     if tool.toning == nil {
       guard let source, source.mask == mask else { throw CraftError.invalid("Retouch sampling must match the target kind.") }

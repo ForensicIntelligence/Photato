@@ -219,7 +219,7 @@ final class WorkspaceTests: XCTestCase {
     let store = EditorStore(document: try CraftNSDocument.blankModel(width: 12, height: 12))
     store.renderTask?.cancel()
     store.chooseTool(WorkspaceCatalog.tool("brush"))
-    store.chooseTool(WorkspaceCatalog.tool("remove"))
+    store.chooseTool(WorkspaceCatalog.tool("historyBrush"))
     let before = store.document
     let canvas = CraftCanvas(store: store)
     canvas.frame = NSRect(x: 0, y: 0, width: 300, height: 300)
@@ -229,7 +229,7 @@ final class WorkspaceTests: XCTestCase {
         windowNumber: 0, context: nil, eventNumber: 0, clickCount: 1, pressure: 1))
     canvas.mouseDown(with: down)
     canvas.mouseUp(with: down)
-    XCTAssertEqual(store.selectedTool.id, "remove")
+    XCTAssertEqual(store.selectedTool.id, "historyBrush")
     XCTAssertEqual(store.document, before)
     XCTAssertTrue(store.session.undoStack.isEmpty)
     store.chooseTool(WorkspaceCatalog.tool("brush"))

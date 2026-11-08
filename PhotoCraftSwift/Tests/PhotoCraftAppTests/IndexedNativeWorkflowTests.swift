@@ -28,7 +28,7 @@ final class IndexedNativeWorkflowTests:XCTestCase {
       let stale=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"paint.stroke","revision":"stale","parameters":parameters]);XCTAssertEqual(stale.0.statusCode,409)
       let edit=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"paint.stroke","revision":service.revision(shared.store),"parameters":parameters]);XCTAssertEqual(edit.0.statusCode,200);XCTAssertNotEqual(shared.store.document,baseline)
       let undo=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"history.undo","revision":service.revision(shared.store),"parameters":[:]]);XCTAssertEqual(undo.0.statusCode,200);XCTAssertEqual(shared.store.document,baseline)
-      let capabilities=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"]as?[String:Any]);XCTAssertEqual(capabilities["hierarchicalIndexVersion"]as?Int,63);XCTAssertEqual(capabilities["readVersions"]as?[Int],Array(1...87))
+      let capabilities=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"]as?[String:Any]);XCTAssertEqual(capabilities["hierarchicalIndexVersion"]as?Int,63);XCTAssertEqual(capabilities["readVersions"]as?[Int],Array(1...89))
       for version in 64...86 {
         download.setValue(String(version),forHTTPHeaderField:"X-Photato-Archive-Version")
         let(data,response)=try await URLSession.shared.data(for:download)

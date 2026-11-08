@@ -6,19 +6,24 @@ import SwiftUI
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
   let controller: CraftDocumentController
-  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard)) }
+  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard), eyedropperPreferences:EyedropperPreferences(defaults:.standard), liquifyMeshes: .shared, lensDefaults: .shared, scriptEvents: .shared) }
   init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
-    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil) {
+    recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
+    liquifyMeshes: LiquifyMeshLibrary? = nil, lensDefaults: LensDefaultLibrary? = nil, scriptEvents: ScriptEventsStore? = nil) {
     controller = CraftDocumentController(
-      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette)
+      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences:eyedropperPreferences, scriptEvents: scriptEvents)
     super.init()
+    controller.filterRecall.liquifyMeshes = liquifyMeshes ?? LiquifyMeshLibrary()
+    controller.filterRecall.lensDefaults = lensDefaults ?? LensDefaultLibrary()
   }
   let projectLinks = ProjectLinks.bundled()
   private var projectInfoWindow: NSWindowController?
   private var automationWindow: NSWindowController?
+  var generatedResultsWindow:GeneratedResultsWindowController?
   var imageProcessorWindow: ImageProcessorWindow?
   var batchWindow: BatchWindow?
   var actionsWindow: NSWindowController?
+  var scriptEventsWindow: ScriptEventsWindow?
   var layerCompsWindow: NSWindowController?
   var brushSettingsWindow: NSWindowController?
   var brushesWindow: NSWindowController?
@@ -93,6 +98,7 @@ import SwiftUI
   func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool { true }
   func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
   func applicationWillTerminate(_ notification: Notification) {
+    controller.filterRecall.liquifyMeshes.flush()
     controller.cancelPhotomerge();controller.cancelHDRMerge()
     controller.recoveryDiscoveryGeneration = UUID()
     controller.initialRecoveryTask?.cancel()
@@ -123,6 +129,8 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if item.action == #selector(showScriptEvents) { return canShowScriptEvents }
+    if let result = validateStylesPanel(item) {return result}
     if let result = validateTypographyPanel(item) { return result }
     if item.action == #selector(repeatLastFilter(_:)) {
       item.title = controller.filterRecall.filter?.kind.title ?? "Last Filter"
@@ -137,6 +145,7 @@ import SwiftUI
     if item.action == #selector(arrangeLayerStack(_:)) { return LayerStackOperation.allCases.first(where: { $0.title == item.title }).map { store?.canArrangeLayerStack($0) == true } ?? false }
     if item.action == #selector(deleteEmptyLayers) { return store?.canDeleteEmptyLayers == true }
     if item.action == #selector(exportLayersToFiles) { return store?.canExportLayerFiles == true }
+    if item.action == #selector(exportPathsToIllustrator) { return canPresentIllustratorPathExport }
     if [#selector(export), #selector(exportLayerAssets), #selector(quickExportAssets), #selector(quickExportLayerAssets), #selector(exportPreferences)].contains(item.action) {
       if [#selector(quickExportAssets), #selector(quickExportLayerAssets)].contains(item.action) {
         let format = ImageExportPreferences.load().format; item.title = "Quick Export as " + (format == .jpeg ? "JPG" : format.rawValue.uppercased())
@@ -173,6 +182,7 @@ import SwiftUI
     if item.action == #selector(revertFile) {
       return (controller.currentDocument as? CraftNSDocument)?.canRevertDocument == true
     }
+    if item.action == #selector(generatedResults) {return true}
     if let result = validateHistoryMenu(item, in: NSApp.keyWindow) { return result }
     if item.action == #selector(toggleLayerVisibility) {
       item.title = store?.layerVisibilityMenuTitle() ?? "Hide Layers"
@@ -197,6 +207,7 @@ import SwiftUI
     if item.action == #selector(videoFramesToLayers) {return controller.movieFramesWorkspace != nil || controller.canFinishMovieFrames}
     if item.action == #selector(imageProcessor) {return true}
     if item.action == #selector(showBatch) { return true }
+    if item.action == #selector(newBlankVideoLayer) { return store?.canCreateBlankVideoLayer == true }
     if item.action == #selector(newVideoLayer) { return store?.canImportMovieLayer == true }
     if item.action == #selector(showTimeline) { item.state = store?.timelineVisible == true ? .on : .off; return store != nil }
     if item.action == #selector(showLayerComps) { return true }
@@ -218,7 +229,7 @@ import SwiftUI
     if item.action == #selector(autoBlendLayers) { return store?.canBeginPhotoBlend == true }
     if item.action == #selector(contentAwareFill) { return store?.canBeginContentAwareFill == true }
     if item.action == #selector(colorRange){return store?.canBeginColorRange == true}
-    if item.action == #selector(focusArea){return store?.canBeginSelectMask == true}
+    if item.action == #selector(focusArea){return store?.canBeginFocusArea == true}
     if item.action == #selector(selectAndMask) { return store?.canBeginSelectMask == true }
     if item.action == #selector(selectSky) { return store?.canSelectSky == true }
     if item.action == #selector(skyReplacement) { return store?.canReplaceSky == true }
@@ -266,6 +277,7 @@ import SwiftUI
 
     if item.action == #selector(placeEmbedded) { return store?.clipboardTargetAvailable == true }
     if item.action == #selector(convertSmartObject) { return store?.canConvertSmartObject == true }
+    if item.action == #selector(convertSmartObjectToLayers) { return store?.canConvertSmartObjectToLayers() == true }
     if item.action == #selector(editSmartObjectContents) {return store?.canEditSmartObjectContents == true}
     if [#selector(replaceSmartObjectContents),
       #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy),
@@ -1354,7 +1366,16 @@ import SwiftUI
     // writing the user's workspace, recovery index or color preferences.
     let isolatedSession = CommandLine.arguments.contains(where: { $0.hasPrefix("--snapshot") })
       || ProcessInfo.processInfo.environment["PHOTATO_ISOLATED_UI_SESSION"] == "1"
-    let delegate = AppDelegate(
+    let delegate = makeDelegate(isolatedSession: isolatedSession)
+    let app = NSApplication.shared
+    app.setActivationPolicy(.regular)
+    app.delegate = delegate
+    withExtendedLifetime(delegate) { app.run() }
+  }
+
+  /// The normal app and owned UI sessions use the same tested startup factory.
+  @MainActor static func makeDelegate(isolatedSession: Bool) -> AppDelegate {
+    AppDelegate(
       workspaces: isolatedSession
         ? WorkspaceLibrary() : .shared,
       recoveryPreferences: isolatedSession
@@ -1363,10 +1384,10 @@ import SwiftUI
         ? RecoveryIndexStore() : .shared,
       colorSettings: isolatedSession
         ? ColorSettingsStore() : .shared,
-      paintPalette: PaintPalette(defaults: isolatedSession ? nil : .standard))
-    let app = NSApplication.shared
-    app.setActivationPolicy(.regular)
-    app.delegate = delegate
-    withExtendedLifetime(delegate) { app.run() }
+      paintPalette: PaintPalette(defaults: isolatedSession ? nil : .standard),
+      eyedropperPreferences:EyedropperPreferences(defaults:isolatedSession ? nil:.standard),
+      liquifyMeshes: isolatedSession ? LiquifyMeshLibrary() : .shared,
+      lensDefaults: isolatedSession ? LensDefaultLibrary() : .shared,
+      scriptEvents: isolatedSession ? ScriptEventsStore() : .shared)
   }
 }

@@ -1,0 +1,16 @@
+{
+  "step": 484,
+  "application_build": 484,
+  "status": "64focused Debug/82optimized each pass; native UI partial/pending Fill modal; history audit separate",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "A02",
+  "next": "A06",
+  "run": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics",
+  "source_manifest": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/release01-source.json",
+  "source_inputs": 7608,
+  "reference": "docs/QUICK_MASK_SEMANTICS_484.json",
+  "pending_native_process": 63159,
+  "latest_fully_qualified_selected_universal": 480,
+  "goal_complete": false
+}

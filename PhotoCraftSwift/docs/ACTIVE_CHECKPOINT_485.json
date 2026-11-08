@@ -1,0 +1,16 @@
+{
+  "step": 485,
+  "application_build": 485,
+  "status": "Selectedsampled-colorworkflowpasses68each/14new andnativeUI; finalhistoryauditseparate",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "current_major_workflow": "A06",
+  "next": "AI01",
+  "run": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges",
+  "source_manifest": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/release01-source.json",
+  "source_inputs": 7619,
+  "reference": "docs/SAMPLED_HUE_RANGES_485.json",
+  "pending_older_native_process": 63159,
+  "latest_fully_qualified_selected_universal": 480,
+  "goal_complete": false
+}

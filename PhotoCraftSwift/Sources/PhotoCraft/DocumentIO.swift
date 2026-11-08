@@ -8,7 +8,7 @@ import UniformTypeIdentifiers
 /// Shared decoding/encoding for native document workflows and local API transfers.
 enum DocumentIO {
   enum Format: String, CaseIterable, Sendable {
-    case native = "photato", psd, psb, png, jpeg, tiff
+    case native = "photato", psd, psb, png, jpeg, tiff, exr
 
     init?(fileExtension: String) {
       switch fileExtension.lowercased() {
@@ -27,6 +27,7 @@ enum DocumentIO {
       case .png: return .png
       case .jpeg: return .jpeg
       case .tiff: return .tiff
+      case .exr: return OpenEXR.contentType
       }
     }
     var title: String {
@@ -37,6 +38,7 @@ enum DocumentIO {
       case .png: return "PNG"
       case .jpeg: return "JPEG"
       case .tiff: return "TIFF"
+      case .exr: return "OpenEXR"
       }
     }
     var copyDescription: String {
@@ -44,6 +46,8 @@ enum DocumentIO {
       case .native: return "Keeps all editable Photato content. The open document stays unchanged."
       case .psd, .psb:
         return "Keeps supported layers and masks. Unsupported content must be saved as Photato."
+      case .exr:
+        return "Saves flattened scene-linear RGB with HDR values and optional transparency. Requires a 32-bit RGB document. Float retains 32-bit samples; Half reduces precision."
       case .png:
         return "Saves a flattened image with transparency. 32-bit content is converted to 16-bit."
       case .jpeg:
@@ -60,6 +64,7 @@ enum DocumentIO {
       case .png: return "image/png"
       case .jpeg: return "image/jpeg"
       case .tiff: return "image/tiff"
+      case .exr: return OpenEXR.mediaType
       }
     }
   }
@@ -78,7 +83,7 @@ enum DocumentIO {
   static let maximumDownloadBytes = 128 * 1_024 * 1_024
   static let readableTypes = [
     "local.photocraft.swift.document", PcraftImport.contentTypeIdentifier, "com.adobe.photoshop-image",
-    "com.adobe.photoshop-large-image", "com.adobe.pdf", "public.png",
+    "com.adobe.photoshop-large-image", OpenEXR.contentType.identifier, "com.adobe.pdf", "public.png",
     "com.apple.quicktime-movie", "public.mpeg-4", "com.apple.m4v-video", "public.camera-raw-image", "com.adobe.raw-image", "public.jpeg", "public.tiff", "public.heic", "com.microsoft.bmp", "com.compuserve.gif",
   ]
   static let uploadTypes =
@@ -100,6 +105,7 @@ enum DocumentIO {
     let document: CraftDocument
     if native { document = try GlobalLightInput.adoptingLegacyLight(DocumentGuideInput.adoptingLegacyGuides(NativeArchive.decodePaged(data, heapByteLimit: rasterByteLimit))) }
     else if data.starts(with:Data("8BPS".utf8)) {document = try PSDCodec.readPaged(data,name:name,heapByteLimit:rasterByteLimit)}
+    else if OpenEXR.recognizes(data) {document = try OpenEXR.read(data,name:name,rasterByteLimit:rasterByteLimit)}
     else if MovieIO.recognizes(data) { document = try MovieIO.decode(data,name:name,maximumBytes:rasterByteLimit) }
     else if PcraftImport.recognizes(data) {
       document = try PcraftImport.read(data, rasterByteLimit: rasterByteLimit)
@@ -147,6 +153,8 @@ enum DocumentIO {
     case .png: return try RasterIO.encoded(document, type: .png, options: options)
     case .jpeg: return try RasterIO.encoded(document, type: .jpeg, options: options)
     case .tiff: return try RasterIO.encoded(document, type: .tiff, options: options)
+    case .exr: return try OpenEXR.encoded(document,compression:options.exrCompression ?? .zip,
+      sample:options.exrSample ?? .float,transparency:options.exrTransparency ?? true)
     }
   }
 

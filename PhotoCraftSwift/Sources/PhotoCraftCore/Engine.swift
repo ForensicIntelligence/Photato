@@ -1,9 +1,13 @@
 import Foundation
 
-public enum Command: Sendable {
+// Keep command payloads indirect. Nested Actions and prepared operations run
+// on cooperative worker stacks; embedding the largest payload in every command
+// multiplied stack use even for small operations such as Desaturate.
+public indirect enum Command: Sendable {
+  case maskFilter(MaskFilterRequest)
   case layerStyles(LayerStyleEdit)
   case globalLight(GlobalLight)
-  indirect case variables(VariableCommand)
+  case variables(VariableCommand)
   case video(VideoCommand)
   case animation(AnimationCommand)
   case documentMode(DocumentModeConversion)
@@ -13,19 +17,19 @@ public enum Command: Sendable {
   case linkedSmartObject(LinkedSmartObjectEdit)
   case modeChannel(ModeChannelEdit)
   case modeComponents(ModeComponentEdit)
-  indirect case toneAdjustment(ClassicToneRequest)
+  case toneAdjustment(ClassicToneRequest)
   case hdrToning(HDRToningEdit)
-  indirect case proceduralRender(ProceduralRenderRequest)
+  case proceduralRender(ProceduralRenderRequest)
   case maskAllObjects(MaskAllObjectsEdit)
   case skyReplacement(SkyReplacementEdit)
-  indirect case adjustmentBrush(AdjustmentBrushRequest)
-  indirect case painting(PaintingEdit)
+  case adjustmentBrush(AdjustmentBrushRequest)
+  case painting(PaintingEdit)
   case documentMetadata([String: Data]?)
   case layerComp(LayerCompCommand)
   case guides(GuideCommand)
   case artboard(ArtboardCommand)
   case frame(FrameCommand)
-  indirect case shape(ShapeCommand)
+  case shape(ShapeCommand)
   case action(RecordedAction, limits: ActionPlaybackLimits? = nil)
   case canvasEdges(CanvasEdgesEdit)
   case flattenImage(FlattenImageEdit)
@@ -131,9 +135,9 @@ public enum Command: Sendable {
   case fillComponents(UUID, RGBComponentFill)
   case layerStyle(Set<UUID>, LayerStyle?)
   case smartFilters(UUID, SmartFilterStack?)
-  indirect case smartFilterMask(UUID, Command)
+  case smartFilterMask(UUID, Command)
   case applyFilter(UUID, RasterFilter)
-  indirect case blurGalleryMask(BlurGalleryMaskEdit)
+  case blurGalleryMask(BlurGalleryMaskEdit)
   case applyAdjustment(UUID, Adjustment)
   case desaturate(UUID)
   case autoCorrection(UUID, AutoCorrection)
@@ -223,6 +227,7 @@ public enum Command: Sendable {
     case .replaceContent(_, .adjustment(.colorBalance)): "Color Balance"
     case .replaceContent: "Edit Layer"
     case .editType,.importedType: "Edit Type"
+    case .maskFilter(let request): request.filter.kind.title
     case .rasterize: "Rasterize Layer"
     case .embedSmartObject: "Convert to Smart Object"
     case .smartObjectStack(_, let mode, _): "Stack Mode: " + (mode?.title ?? "None")
@@ -407,6 +412,7 @@ public enum Command: Sendable {
       }
       d.sourceMetadata = value
     case .linkedSmartObject,.channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters,.blurGalleryMask: throw CraftError.invalid("Unexpected nested command routing.")
+    case .maskFilter(let request):try MaskFiltering.apply(request,to:&d)
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
@@ -466,6 +472,10 @@ public struct HistoryEntry: Sendable {
   }
 }
 public struct PreparedEdit: Sendable {
+  var clipboardPlaneTarget:ClipboardPlaneTarget? = nil
+  public var clipboardPlaneEdit:ClipboardPlaneEdit? {
+    clipboardPlaneTarget.map{ClipboardPlaneEdit(source:original,result:result,target:$0,title:label)}
+  }
   public var isFitImageEdit: Bool { if case .fitImage = recordingCommand { return true }; return false }
   public var channelCommand: ChannelCommand? { if case .channel(let command) = recordingCommand { return command }; return nil }
   public var pixelPaintRequest: PixelPaintRequest? { if case .pixelPaint(let request) = recordingCommand { return request }; return nil }

@@ -16,8 +16,9 @@ enum WorkspacePanel: String, Codable, CaseIterable, Hashable {
   case cloneSource = "Clone Source"
   case character = "Character"
   case paragraph = "Paragraph"
+  case styles = "Styles"
 
-  var isUtility: Bool { [.history, .cloneSource, .character, .paragraph].contains(self) }
+  var isUtility: Bool { [.history, .cloneSource, .character, .paragraph, .styles].contains(self) }
 
   func isVisible(in visibility: WorkspaceVisibility) -> Bool {
     if isUtility { return visibility.rail }
@@ -54,7 +55,7 @@ enum PanelDockDestination: Equatable {
 /// Presentation topology only. Every supported panel has exactly one retained location,
 /// including closed panels, so Window commands restore a panel without duplicating it.
 struct PanelDock: Codable, Equatable {
-  var catalogVersion = 3
+  var catalogVersion = 4
   var groups: [PanelDockGroup]
   var hidden: Set<WorkspacePanel> = []
   var columns: [PanelDockColumn]?
@@ -73,10 +74,11 @@ struct PanelDock: Codable, Equatable {
     ]
     addUtilityPanels()
     addTypographyPanels()
+    addStylesPanel()
   }
 
   func validate() throws {
-    guard catalogVersion == 3 else { throw CraftError.invalid("Unsupported panel catalog.") }
+    guard catalogVersion == 4 else { throw CraftError.invalid("Unsupported panel catalog.") }
     try validatePanels(Set(WorkspacePanel.allCases))
   }
 

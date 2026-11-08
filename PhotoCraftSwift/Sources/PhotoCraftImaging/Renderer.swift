@@ -170,6 +170,13 @@ public enum Renderer {
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     let (d,videoTransitions) = try preparedSources(d,videoTime:videoTime)
     if preferPaged || requested.width * requested.height > Surface.maximumDensePixels {
+      // Checked source preparation can turn a retained Warp/Smart Filter into
+      // an ordinary sparse raster. Reuse the exact pointwise compositor rather
+      // than visiting every patch of a mostly implicit maximum-size canvas.
+      if requested == IntRect(x:0,y:0,width:d.width,height:d.height),
+        requested.width*requested.height>Surface.maximumDensePixels,
+        inputTarget==nil,videoTransitions==nil,
+        let sparse=try SparseCanvasRenderer.composite(d){return sparse}
       return try PagedCanvasRenderer.composite(d, region: requested, inputTarget: inputTarget,
         video: videoTransitions)
     }
@@ -244,6 +251,11 @@ public enum Renderer {
     for layer in layers where layer.visible && (layer.opacity > 0 || {if case .adjustment(.source)=layer.content{return true};return false}()) {
       try Task.checkCancellation()
       if layer.id == inputTarget { throw AdjustmentInputReached(surface: output) }
+      if let channels=layer.style?.restrictedChannels {
+        let rendered=try compositeFlat([ChannelBlending.unrestricted(layer)],in:d,over:output,inputTarget:inputTarget,region:region,facts:facts)
+        output=try ChannelBlending.restore(rendered,over:output,channels:channels)
+        continue
+      }
       if layer.style != nil {
         output = try LayerStyleRenderer.composite(layer, in: d, over: output, region: region)
         continue
@@ -254,6 +266,23 @@ public enum Renderer {
         continue
       }
       if case .adjustment(let adjustment) = layer.content {
+        if d.depth == .f32,case .colorLookup(let settings)=adjustment,settings.interpolation == .tetrahedral {
+          let transfer=try ColorLookupTransfer(settings,depth:.f32)
+          for y in region.y..<region.y+region.height {
+            try Task.checkCancellation()
+            for x in region.x..<region.x+region.width {
+              let amount=unit(layer.opacity*(mask?.coverage(x:Double(x)+0.5,y:Double(y)+0.5) ?? 1))
+              if amount==0{continue}
+              let before=output.linearPixel(x:x,y:y),after=transfer.applyLinear(before,x:x,y:y)
+              let target=layer.blendMode == .normal ? after.rgb:layer.blendMode.rgb(before.rgb,after.rgb)
+              let rgb=amount==1 ? target:before.rgb+(target-before.rgb)*amount
+              let result=Pixel(rgb.x,rgb.y,rgb.z,before.a)
+              guard result.isFinite else{throw CraftError.invalid("Adjustment result exceeds the floating-point range.")}
+              output.setLinearPixel(x:x,y:y,result)
+            }
+          }
+          continue
+        }
         let evaluate: @Sendable (Pixel,Int,Int)->Pixel
         if case .modern(let settings)=adjustment,settings.needsNeighborhood {
           let developed=try settings.neighborhood(output)

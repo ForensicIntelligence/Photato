@@ -8,6 +8,7 @@ struct FilterDraft: Identifiable, Sendable {
   var filter: RasterFilter
   var preview = true
   var channelTarget: ChannelPlaneTarget?
+  var maskTarget: MaskFilterTarget?
   var modeComponents: Set<Int> = []
   var inkTargets: [InkChannelTarget] = []
   var filterID: UUID?
@@ -17,6 +18,7 @@ struct FilterDraft: Identifiable, Sendable {
   var saveMaskToChannels = false
   /// Geometry seen by a new filter, or the prefix before an edited Smart Filter.
   func inputLayer(in document:CraftDocument) throws -> Layer {
+    if let maskTarget {return try MaskFiltering.inputLayer(document,layerID:id,target:maskTarget)}
     guard var layer=document.layers.first(where:{$0.id==id}) else { throw CraftError.invalid("Missing filter target.") }
     if layer.smartObject != nil {
       if let filterID,var stack=layer.smartFilters,let index=stack.filters.firstIndex(where:{$0.id==filterID}) { stack.filters=Array(stack.filters.prefix(index));layer.smartFilters=stack }
@@ -25,6 +27,10 @@ struct FilterDraft: Identifiable, Sendable {
     return layer
   }
   func command(in document: CraftDocument) throws -> Command {
+    if let maskTarget {
+      guard !saveMaskToChannels,rawDevelopment==nil,channelTarget==nil,modeComponents.isEmpty,inkTargets.isEmpty,filterID==nil else {throw CraftError.invalid("The filter draft has conflicting mask targets.")}
+      return .maskFilter(.init(layerID:id,target:maskTarget,filter:filter))
+    }
     if saveMaskToChannels {
       guard filter.kind == .blurGallery,let settings=filter.gallery,channelTarget==nil,modeComponents.isEmpty,inkTargets.isEmpty,rawDevelopment==nil else {throw CraftError.invalid("Save Mask to Channels requires Blur Gallery on an RGB layer.")}
       return .blurGalleryMask(.init(layerID:id,settings:settings,filterID:filterID,opacity:opacity,blendMode:blendMode))
@@ -133,15 +139,18 @@ struct FilterSheet: View {
 
 extension EditorStore {
   var canBeginFilter: Bool {
+    if let target=currentMaskFilterTarget {return canFilterMask(target)}
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels }
     if !effectiveComponentTargets.isEmpty { return canEditModeComponents }
-    if editingChannel != nil { return canEditChannels && document.width <= RasterFilterEngine.maximumPixels/document.height }
+    if let channel=editingChannel {return canEditChannels && AuxiliaryChannelFiltering.available(document,target:channel)}
     guard !editingComponent, !geometryBusy, transformDraft == nil, !hasToneDraft, !editingMask,
       let layer = activeLayer, !document.isImageLocked(layer.id),
       selectedLayerIDs.isEmpty || selectedLayerIDs == [layer.id], case .raster(let pixels) = layer.content else { return false }
     return pixels.width <= RasterFilterEngine.maximumPixels / pixels.height
   }
   func canBeginFilterKind(_ kind: RasterFilter.Kind) -> Bool {
+    if let target=currentMaskFilterTarget {return canFilterMask(target,kind:kind)}
+    if let channel=editingChannel {return canEditChannels && AuxiliaryChannelFiltering.available(document,target:channel,kind:kind)}
     if kind == .lightingEffects || kind == .relight{return document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil && editingChannel==nil && effectiveComponentTargets.isEmpty && canBeginFilter}
     if document.inkMode != nil, editingChannel == nil { return canEditInkChannels && InkChannelCommand.filters.contains(kind) }
     if !effectiveComponentTargets.isEmpty { return canEditModeComponents && ModeComponentEdit.filters.contains(kind) }
@@ -170,6 +179,10 @@ extension EditorStore {
   }
   func beginFilter(_ kind: RasterFilter.Kind) {
     guard canBeginFilterKind(kind) else { return }
+    if let target=currentMaskFilterTarget,let layer=activeLayer {
+      var filter=RasterFilter(kind);if kind == .addNoise {filter.seed=UInt32.random(in:.min ... .max)}
+      filterDraft=FilterDraft(id:layer.id,filter:filter,maskTarget:target);render();return
+    }
     if document.inkMode != nil, editingChannel == nil {
       var filter = RasterFilter(kind)
       if kind == .addNoise { filter.seed = UInt32.random(in: .min ... .max) }
@@ -184,6 +197,7 @@ extension EditorStore {
     guard let layer=activeLayer else{return}
     if editingChannel != nil && (kind == .liquify || kind == .cameraRaw) { error = "Select RGB for this filter workspace."; return }
     var filter = RasterFilter(kind)
+    if kind == .lensCorrection, let identity = cameraLensIdentity, let settings = filterRecall.lensDefaults.lookup(identity).settings { filter.lens = settings }
     if kind.isRender && kind != .lensFlare {filter.renderSettings?.foreground=brush.color;filter.renderSettings?.background=backgroundColor;filter.renderSettings?.seed=UInt32.random(in:.min ... .max)}
     if kind.isImmediateClassicDetail {let request=filter;performGeometry(label:kind.title){_ in .applyFilter(layer.id,request)};return}
     if kind == .ntscColors {let request=filter;performGeometry(label:kind.title){_ in .applyFilter(layer.id,request)};return}
@@ -203,6 +217,7 @@ extension EditorStore {
   func cancelFilter() {lightingWorkspace?.close();lightingWorkspace=nil;relightWorkspace?.close();relightWorkspace=nil;shadowWorkspace?.close();shadowWorkspace=nil;classicDetailWorkspace?.close();classicDetailWorkspace=nil;otherVideoWorkspace?.close();otherVideoWorkspace=nil;renderWorkspace?.close();renderWorkspace=nil;stylizeWorkspace?.close();stylizeWorkspace=nil; pixelateWorkspace?.close();pixelateWorkspace=nil; distortionWorkspace?.close();distortionWorkspace=nil; lensBlurWorkspace?.close();lensBlurWorkspace=nil; photoDetailWorkspace?.close();photoDetailWorkspace=nil; artisticGalleryWorkspace?.close();artisticGalleryWorkspace=nil; wideAngleWorkspace?.close();wideAngleWorkspace=nil; lensCorrectionWorkspace?.close();lensCorrectionWorkspace=nil; blurGalleryWorkspace?.close();blurGalleryWorkspace=nil; perspectiveWorkspace?.close();perspectiveWorkspace=nil;puppetWorkspace?.close();puppetWorkspace=nil;filterDraft = nil; render() }
   func commitFilter() {
     guard let draft = filterDraft else { return }
+    if let mask=draft.maskTarget, currentMaskFilterTarget != mask || activeLayer?.id != draft.id {error="The filter editing target changed. Try again.";return}
     do { try draft.filter.validate(); try draft.rawDevelopment?.validate() } catch { self.error = error.localizedDescription; return }
     lightingWorkspace?.close();lightingWorkspace=nil;relightWorkspace?.close();relightWorkspace=nil
     shadowWorkspace?.close();shadowWorkspace=nil
@@ -219,8 +234,15 @@ extension EditorStore {
     lensCorrectionWorkspace?.close();lensCorrectionWorkspace=nil
     blurGalleryWorkspace?.close();blurGalleryWorkspace=nil
     perspectiveWorkspace?.close();perspectiveWorkspace=nil;puppetWorkspace?.close();puppetWorkspace=nil
+    let target=filterRepeatTarget
     filterDraft = nil
-    performGeometry(label: draft.rawDevelopment == nil ? draft.filter.kind.title : "Develop RAW Source", allowAuxiliary:draft.channelTarget != nil, allowModeComponents:!draft.modeComponents.isEmpty) { try draft.command(in: $0) }
+    if draft.maskTarget != nil {
+      performPreparedGeometry(label:draft.filter.kind.title,
+        prepare:{try PreparedEdit(command:draft.command(in:$0),document:$0)},
+        validateCommit:{[weak self] in guard self?.filterRepeatTarget==target else {throw CraftError.invalid("The filter editing target changed. Try again.")}})
+    } else {
+      performGeometry(label: draft.rawDevelopment == nil ? draft.filter.kind.title : "Develop RAW Source", allowAuxiliary:draft.channelTarget != nil, allowModeComponents:!draft.modeComponents.isEmpty) { try draft.command(in: $0) }
+    }
   }
 }
 

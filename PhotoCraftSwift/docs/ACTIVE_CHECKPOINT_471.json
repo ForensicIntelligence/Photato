@@ -1,0 +1,18 @@
+{
+  "step": "dev-step-471",
+  "run": "artifacts/runs/20261107T103210Z-471-large-soft-proof",
+  "status": "Large soft proofs Debug-qualified; native471/normal471/fullCOL03/independentPhotoshopoutput open",
+  "current_major_workflow": "RAW02",
+  "next": "I03",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7516,
+  "latest_software": 471,
+  "latest_optimized_universal": 470,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:470implemented/testedSplitChannels,74Debug and74normal eacharchitecture/all15new/416strictbytes/package/diary/finalhistorypair; sourceaudit found nextCOL03limits.",
+  "source_manifest": "artifacts/runs/20261107T103210Z-471-large-soft-proof/source03-source.json",
+  "production_swift_files": 1140,
+  "selected_native_workflow_verified": false,
+  "evidence": "docs/LARGE_SOFT_PROOF_471.json"
+}

@@ -1,0 +1,1712 @@
+{
+  "step": 472,
+  "date": "2026-11-07",
+  "recorded_utc": "2026-11-07T11:46:55.823268+00:00",
+  "workflow": "RAW02",
+  "workflow_title": "Photo alignment and merging",
+  "track": "major stillneeded",
+  "status": "Selected large image-stack workflow implemented; fullRAW02 remains open",
+  "changes": [
+    "New PagedImageStatistics uses existing eleven scalar operators on implicit samples and sorted allocated support; file-backed output and reusable RGB sample arrays.",
+    "ImageStack admits native source/frame counts within the document layer target, separates alignment limits, and spills composite/converted frames with the existing exact-word Core operation before retaining/embedding.",
+    "Native Statistics/OpenDocuments/Files capacity updated; ImageStack.preview reduces finished large output for the existing native dialog.",
+    "Existing Photato stack creation/mode/None and published execute-actions stack descriptors share the same implementation; expanded capability discovery states actual geometry/source/resource limits.",
+    "No old test/fixture/Core kernel/project/asset/entitlement/menu/shortcut edit. Native89/Actions58/typed266 unchanged."
+  ],
+  "source": {
+    "manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source06-source.json",
+    "inputs": 7523,
+    "production_swift_files": 1141,
+    "old_tests_Core_project_assets_entitlements_unchanged": true,
+    "small_scalar_loop_unchanged": true
+  },
+  "attempts": [
+    {
+      "summary": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source01-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 10,
+        "missing_cases": [],
+        "exit_code": 0,
+        "inputs": 7517,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification"
+        ],
+        "passed": 10,
+        "failed_cases": [],
+        "totals": [
+          [
+            "10",
+            "0",
+            "0",
+            "7.990"
+          ]
+        ],
+        "build_seconds": [
+          "8.51"
+        ],
+        "finished_utc": "2026-11-07T11:06:20.976931+00:00"
+      },
+      "binary_sha256": "6443d73ae071f05268332baea4397f203ae3f05a9c1cbee490cee6abfca1c00f",
+      "retained_products": 5431,
+      "executable_origin": "Cached471 application; consult failed qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source02-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 35,
+        "missing_cases": [
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification"
+        ],
+        "exit_code": 1,
+        "inputs": 7523,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [],
+        "passed": 0,
+        "failed_cases": [],
+        "totals": null,
+        "build_seconds": null,
+        "finished_utc": "2026-11-07T11:17:40.742075+00:00"
+      },
+      "binary_sha256": "6443d73ae071f05268332baea4397f203ae3f05a9c1cbee490cee6abfca1c00f",
+      "retained_products": 5434,
+      "executable_origin": "Cached471 application; consult failed qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source03-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 44,
+        "missing_cases": [
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification"
+        ],
+        "exit_code": 1,
+        "inputs": 7523,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [],
+        "passed": 0,
+        "failed_cases": [],
+        "totals": null,
+        "build_seconds": null,
+        "finished_utc": "2026-11-07T11:19:11.558576+00:00"
+      },
+      "binary_sha256": "6443d73ae071f05268332baea4397f203ae3f05a9c1cbee490cee6abfca1c00f",
+      "retained_products": 5434,
+      "executable_origin": "Cached471 application; consult failed qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source04-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 44,
+        "missing_cases": [],
+        "exit_code": 1,
+        "inputs": 7523,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 43,
+        "failed_cases": [
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload"
+        ],
+        "totals": [
+          [
+            "44",
+            "14",
+            "0",
+            "152.536"
+          ]
+        ],
+        "build_seconds": [
+          "96.75"
+        ],
+        "finished_utc": "2026-11-07T11:24:35.614322+00:00"
+      },
+      "binary_sha256": "7504b0293443f3d34fb2fd69b988134d0534b3a38668609d5d2fed88357c9ae0",
+      "retained_products": 5434,
+      "executable_origin": "New472 product; consult qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source05-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 44,
+        "missing_cases": [],
+        "exit_code": 1,
+        "inputs": 7523,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 43,
+        "failed_cases": [
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload"
+        ],
+        "totals": [
+          [
+            "44",
+            "2",
+            "0",
+            "151.735"
+          ]
+        ],
+        "build_seconds": [
+          "8.67"
+        ],
+        "finished_utc": "2026-11-07T11:28:25.962026+00:00"
+      },
+      "binary_sha256": "7504b0293443f3d34fb2fd69b988134d0534b3a38668609d5d2fed88357c9ae0",
+      "retained_products": 5434,
+      "executable_origin": "New472 product; consult qualification"
+    },
+    {
+      "summary": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/source06-summary.json",
+      "qualification": {
+        "unexpected_signals": [],
+        "expected_count": 44,
+        "missing_cases": [],
+        "exit_code": 0,
+        "inputs": 7523,
+        "source_unchanged": true,
+        "changed_inputs": [],
+        "cases": [
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 44,
+        "failed_cases": [],
+        "totals": [
+          [
+            "44",
+            "0",
+            "0",
+            "155.461"
+          ]
+        ],
+        "build_seconds": [
+          "8.54"
+        ],
+        "finished_utc": "2026-11-07T11:32:16.537003+00:00"
+      },
+      "binary_sha256": "7504b0293443f3d34fb2fd69b988134d0534b3a38668609d5d2fed88357c9ae0",
+      "retained_products": 5434,
+      "executable_origin": "New472 product; consult qualification"
+    }
+  ],
+  "new_test_methods": 13,
+  "focused_Debug": {
+    "unexpected_signals": [],
+    "expected_count": 44,
+    "missing_cases": [],
+    "exit_code": 0,
+    "inputs": 7523,
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "cases": [
+      "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+      "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+      "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+      "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+      "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+      "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+      "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+      "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+      "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+      "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+      "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+      "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+      "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+      "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+      "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+      "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+      "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+      "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+      "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+      "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+      "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+      "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+      "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+      "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+    ],
+    "passed": 44,
+    "failed_cases": [],
+    "totals": [
+      [
+        "44",
+        "0",
+        "0",
+        "155.461"
+      ]
+    ],
+    "build_seconds": [
+      "8.54"
+    ],
+    "finished_utc": "2026-11-07T11:32:16.537003+00:00"
+  },
+  "strict": {
+    "step": 472,
+    "attempt": "source06",
+    "all_exact": true,
+    "checks": [
+      {
+        "name": "image-stack-small.f32le",
+        "bytes": 152064,
+        "exact": true,
+        "different_bytes": 0,
+        "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+      },
+      {
+        "name": "image-stack-current.f32le",
+        "bytes": 152064,
+        "exact": true,
+        "different_bytes": 0,
+        "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+      },
+      {
+        "name": "image-stack-paged.f32le",
+        "bytes": 152064,
+        "exact": true,
+        "different_bytes": 0,
+        "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+      }
+    ],
+    "programs": 99,
+    "independent_Photoshop_statistics_output": false,
+    "unchanged_small_scalar_loop": true,
+    "unchanged_small_scalar_sha256": "eb60a6d7b0bb9a62e2f889fea6f336f08065c27e85a272b79f9bac627d615049"
+  },
+  "normal": {
+    "source_unchanged": true,
+    "changed_inputs": [],
+    "results": [
+      {
+        "command": [
+          "./scripts/test.sh",
+          "-c",
+          "release",
+          "--disable-build-manifest-caching",
+          "--jobs",
+          "4",
+          "--filter",
+          "^(?:PhotoCraftAppTests\\.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings|PhotoCraftAppTests\\.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown|PhotoCraftAppTests\\.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration|PhotoCraftAppTests\\.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer|PhotoCraftAppTests\\.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention|PhotoCraftAppTests\\.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel|PhotoCraftAppTests\\.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames|PhotoCraftAppTests\\.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards|PhotoCraftAppTests\\.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness|PhotoCraftAppTests\\.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks|PhotoCraftAppTests\\.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions|PhotoCraftAppTests\\.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo|PhotoCraftAppTests\\.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues|PhotoCraftAppTests\\.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine|PhotoCraftAppTests\\.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh|PhotoCraftAppTests\\.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit|PhotoCraftAppTests\\.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload|PhotoCraftAppTests\\.LargeProofWorkflowTests/testHTTPBusyInvalidRevokeAndCapabilitiesKeepSourceAndExistingContracts|PhotoCraftAppTests\\.LargeProofWorkflowTests/testHTTPMaximumProofPreviewReadStateAndNormalExportRemainSeparate|PhotoCraftAppTests\\.LargeProofWorkflowTests/testMaximumNativeDraftCancelCommitUsesProofCanvasBaseWithoutHistory|PhotoCraftAppTests\\.LargeProofWorkflowTests/testMaximumNativeGrayAndCMYKPreserveNumbersThroughDesktopAndHTTP|PhotoCraftAppTests\\.LargeProofWorkflowTests/testNativeAboveOldLimitBelowViewportThresholdKeepsFullImageAndSource|PhotoCraftAppTests\\.PrintWorkflowTests/testCancelledStaleAndUnauthorizedPreparationNeverSubmit|PhotoCraftAppTests\\.PrintWorkflowTests/testFactoryPrintMenusAndShortcuts|PhotoCraftAppTests\\.PrintWorkflowTests/testInvalidSettingsAtomicAndPDFUsesCommittedSettingsDuringDraft|PhotoCraftAppTests\\.PrintWorkflowTests/testNativePrintViewPDFPaginationUsesSharedRenderer|PhotoCraftAppTests\\.PrintWorkflowTests/testPrintSheetDoneCommitsOnlyOutputSettings|PhotoCraftAppTests\\.PrintWorkflowTests/testPrintSheetFitsOffscreen|PhotoCraftAppTests\\.PrintWorkflowTests/testPrintWorkspaceWithUnavailablePrinterStillPreviewsAndCancelsDriverEdits|PhotoCraftAppTests\\.PrintWorkflowTests/testPrinterPermissionAndInjectedSubmission|PhotoCraftAppTests\\.PrintWorkflowTests/testRevokingShareOrPrintPermissionCancelsOwnedPreparation|PhotoCraftAppTests\\.PrintWorkflowTests/testSettingsPDFAndAPILeavePixelsHistoryAndDirtyStateUntouched|PhotoCraftAppTests\\.ProofWorkflowTests/testConfigurePreviewAndReadShareNativeStateWithoutHistoryOrExports|PhotoCraftAppTests\\.ProofWorkflowTests/testDraftPreviewCancelCommitAndAPIBusyLeavePixelsUntouched|PhotoCraftAppTests\\.ProofWorkflowTests/testEditingInvalidatesPreservedProofWithoutFreezingCanvas|PhotoCraftAppTests\\.ProofWorkflowTests/testFactoryProofMenusAndShortcutsAreBound|PhotoCraftAppTests\\.ProofWorkflowTests/testInvalidConfigurationIsAtomicAndCustomProfileRoundTrips|PhotoCraftAppTests\\.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors|PhotoCraftAppTests\\.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts|PhotoCraftAppTests\\.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor|PhotoCraftAppTests\\.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke|PhotoCraftAppTests\\.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas|PhotoCraftAppTests\\.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration|PhotoCraftAppTests\\.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry|PhotoCraftAppTests\\.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach|PhotoCraftAppTests\\.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion|PhotoCraftCoreTests\\.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords|PhotoCraftCoreTests\\.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy|PhotoCraftImagingTests\\.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups|PhotoCraftImagingTests\\.LegacySoftProofCaptureTests/testCaptureUnchangedSmallProofProgramsAcrossModesDepthsAndConditions|PhotoCraftImagingTests\\.LegacySoftProofCaptureTests/testCapturedProofRemainsDisplayOnlyAndAreaReductionUsesProofedColors|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents|PhotoCraftImagingTests\\.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap|PhotoCraftImagingTests\\.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges|PhotoCraftImagingTests\\.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit|PhotoCraftImagingTests\\.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget|PhotoCraftImagingTests\\.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths|PhotoCraftImagingTests\\.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish|PhotoCraftImagingTests\\.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource|PhotoCraftImagingTests\\.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries|PhotoCraftImagingTests\\.PrintOutputTests/testAsymmetricPrintableAreaCenterAndIndependentInkPages|PhotoCraftImagingTests\\.PrintOutputTests/testCancellationBeforePreparation|PhotoCraftImagingTests\\.PrintOutputTests/testFitMediaSelectionAndMarksReserveSpace|PhotoCraftImagingTests\\.PrintOutputTests/testHardProofDiffersFromDocumentAndIgnoresScreenWarnings|PhotoCraftImagingTests\\.PrintOutputTests/testInvalidGeometryAndProfileRejectWithoutChangingSource|PhotoCraftImagingTests\\.PrintOutputTests/testLabNeutralPrintingAndGrayProfile|PhotoCraftImagingTests\\.PrintOutputTests/testPDFMediaBoxAndMarksRenderWithoutMutatingDocument|PhotoCraftImagingTests\\.PrintOutputTests/testPhysicalSizeOrientationTopLeftAndClipping|PhotoCraftImagingTests\\.PrintOutputTests/testRGBPrinterProfileConversionMatchesIndependentColorReference|PhotoCraftImagingTests\\.PrintOutputTests/testRetainedCMYKNumbersAndSeparationDensities|PhotoCraftImagingTests\\.PrintOutputTests/testTransparentPixelsFlattenToPaperAndPreserveDocument|PhotoCraftImagingTests\\.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels|PhotoCraftImagingTests\\.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue|PhotoCraftImagingTests\\.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe|PhotoCraftImagingTests\\.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack|PhotoCraftImagingTests\\.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack|PhotoCraftImagingTests\\.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation|PhotoCraftImagingTests\\.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification|PhotoCraftImagingTests\\.SoftProofTests/testCancellationStopsProofBeforeRendering|PhotoCraftImagingTests\\.SoftProofTests/testGamutWarningDetectsSaturatedCMYKLossAndIgnoresTransparency|PhotoCraftImagingTests\\.SoftProofTests/testIdentityProofPreservesAlphaAndDocumentAtAllDepths|PhotoCraftImagingTests\\.SoftProofTests/testIndependentCoreGraphicsReferenceForPreservedRGBNumbers|PhotoCraftImagingTests\\.SoftProofTests/testInvalidProfilesAndIncompatiblePreserveNumbersReject|PhotoCraftImagingTests\\.SoftProofTests/testLiteralLabNeutralDoesNotAcquireColorCast|PhotoCraftImagingTests\\.SoftProofTests/testNativeCMYKPlatesPreserveOriginalNumbersAndLabEncoding|PhotoCraftImagingTests\\.SoftProofTests/testPaperBlackAndIntentChangeOnlyProofAndRemainFinite)$"
+        ],
+        "source_manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/release01-source.json",
+        "inputs": 7523,
+        "started_at_utc": "2026-11-07T11:33:08.037708+00:00",
+        "exit_code": 0,
+        "finished_at_utc": "2026-11-07T11:41:26.156784+00:00",
+        "cases": 92,
+        "case_ids": [
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testHTTPBusyInvalidRevokeAndCapabilitiesKeepSourceAndExistingContracts",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testHTTPMaximumProofPreviewReadStateAndNormalExportRemainSeparate",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testMaximumNativeDraftCancelCommitUsesProofCanvasBaseWithoutHistory",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testMaximumNativeGrayAndCMYKPreserveNumbersThroughDesktopAndHTTP",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testNativeAboveOldLimitBelowViewportThresholdKeepsFullImageAndSource",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.LegacySoftProofCaptureTests/testCapturedProofRemainsDisplayOnlyAndAreaReductionUsesProofedColors",
+          "PhotoCraftImagingTests.LegacySoftProofCaptureTests/testCaptureUnchangedSmallProofProgramsAcrossModesDepthsAndConditions",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries",
+          "PhotoCraftImagingTests.PrintOutputTests/testAsymmetricPrintableAreaCenterAndIndependentInkPages",
+          "PhotoCraftImagingTests.PrintOutputTests/testCancellationBeforePreparation",
+          "PhotoCraftImagingTests.PrintOutputTests/testFitMediaSelectionAndMarksReserveSpace",
+          "PhotoCraftImagingTests.PrintOutputTests/testHardProofDiffersFromDocumentAndIgnoresScreenWarnings",
+          "PhotoCraftImagingTests.PrintOutputTests/testInvalidGeometryAndProfileRejectWithoutChangingSource",
+          "PhotoCraftImagingTests.PrintOutputTests/testLabNeutralPrintingAndGrayProfile",
+          "PhotoCraftImagingTests.PrintOutputTests/testPDFMediaBoxAndMarksRenderWithoutMutatingDocument",
+          "PhotoCraftImagingTests.PrintOutputTests/testPhysicalSizeOrientationTopLeftAndClipping",
+          "PhotoCraftImagingTests.PrintOutputTests/testRetainedCMYKNumbersAndSeparationDensities",
+          "PhotoCraftImagingTests.PrintOutputTests/testRGBPrinterProfileConversionMatchesIndependentColorReference",
+          "PhotoCraftImagingTests.PrintOutputTests/testTransparentPixelsFlattenToPaperAndPreserveDocument",
+          "PhotoCraftAppTests.PrintWorkflowTests/testCancelledStaleAndUnauthorizedPreparationNeverSubmit",
+          "PhotoCraftAppTests.PrintWorkflowTests/testFactoryPrintMenusAndShortcuts",
+          "PhotoCraftAppTests.PrintWorkflowTests/testInvalidSettingsAtomicAndPDFUsesCommittedSettingsDuringDraft",
+          "PhotoCraftAppTests.PrintWorkflowTests/testNativePrintViewPDFPaginationUsesSharedRenderer",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrinterPermissionAndInjectedSubmission",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrintSheetDoneCommitsOnlyOutputSettings",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrintSheetFitsOffscreen",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrintWorkspaceWithUnavailablePrinterStillPreviewsAndCancelsDriverEdits",
+          "PhotoCraftAppTests.PrintWorkflowTests/testRevokingShareOrPrintPermissionCancelsOwnedPreparation",
+          "PhotoCraftAppTests.PrintWorkflowTests/testSettingsPDFAndAPILeavePixelsHistoryAndDirtyStateUntouched",
+          "PhotoCraftAppTests.ProofWorkflowTests/testConfigurePreviewAndReadShareNativeStateWithoutHistoryOrExports",
+          "PhotoCraftAppTests.ProofWorkflowTests/testDraftPreviewCancelCommitAndAPIBusyLeavePixelsUntouched",
+          "PhotoCraftAppTests.ProofWorkflowTests/testEditingInvalidatesPreservedProofWithoutFreezingCanvas",
+          "PhotoCraftAppTests.ProofWorkflowTests/testFactoryProofMenusAndShortcutsAreBound",
+          "PhotoCraftAppTests.ProofWorkflowTests/testInvalidConfigurationIsAtomicAndCustomProfileRoundTrips",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+          "PhotoCraftImagingTests.SoftProofTests/testCancellationStopsProofBeforeRendering",
+          "PhotoCraftImagingTests.SoftProofTests/testGamutWarningDetectsSaturatedCMYKLossAndIgnoresTransparency",
+          "PhotoCraftImagingTests.SoftProofTests/testIdentityProofPreservesAlphaAndDocumentAtAllDepths",
+          "PhotoCraftImagingTests.SoftProofTests/testIndependentCoreGraphicsReferenceForPreservedRGBNumbers",
+          "PhotoCraftImagingTests.SoftProofTests/testInvalidProfilesAndIncompatiblePreserveNumbersReject",
+          "PhotoCraftImagingTests.SoftProofTests/testLiteralLabNeutralDoesNotAcquireColorCast",
+          "PhotoCraftImagingTests.SoftProofTests/testNativeCMYKPlatesPreserveOriginalNumbersAndLabEncoding",
+          "PhotoCraftImagingTests.SoftProofTests/testPaperBlackAndIntentChangeOnlyProofAndRemainFinite",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 92,
+        "failed": 0,
+        "failed_cases": [],
+        "total_xctest_failures": 0,
+        "unexpected": 0,
+        "test_seconds": 24.641,
+        "build_seconds": [
+          "471.09"
+        ],
+        "crashes": 0,
+        "binary_sha256": "288bee89159ce204e8a873acfaa7d7dd191a55cd1377112b85f3f92ab5657738",
+        "binary": "/private/tmp/photocraft-swift-build/release/Photato",
+        "expected_cases": 92,
+        "missing_cases": [],
+        "extra_cases": []
+      },
+      {
+        "command": [
+          "swift",
+          "build",
+          "--build-tests",
+          "--build-system",
+          "native",
+          "--scratch-path",
+          "/private/tmp/photocraft-swift-intel",
+          "--disable-sandbox",
+          "--cache-path",
+          ".build/pm-cache",
+          "--triple",
+          "x86_64-apple-macosx14.0",
+          "-c",
+          "release",
+          "--disable-build-manifest-caching",
+          "--jobs",
+          "4",
+          "-Xswiftc",
+          "-enable-testing"
+        ],
+        "source_manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/release01-source.json",
+        "inputs": 7523,
+        "started_at_utc": "2026-11-07T11:33:08.038154+00:00",
+        "exit_code": 0,
+        "finished_at_utc": "2026-11-07T11:40:56.764926+00:00",
+        "cases": 0,
+        "case_ids": [],
+        "passed": 0,
+        "failed": 0,
+        "failed_cases": [],
+        "total_xctest_failures": null,
+        "unexpected": null,
+        "test_seconds": null,
+        "build_seconds": [
+          "467.84"
+        ],
+        "crashes": 0,
+        "binary_sha256": "b3d0c3fd2d2b5a43997fcb9e1490e5e7c21507a1890d8675ff812c2a4fd8c82d",
+        "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+        "expected_cases": 92,
+        "missing_cases": [],
+        "extra_cases": []
+      },
+      {
+        "command": [
+          "arch",
+          "-x86_64",
+          "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+          "-XCTest",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords,PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy,PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown,PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration,PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings,PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer,PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention,PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel,PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames,PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards,PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness,PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks,PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions,PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo,PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues,PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine,PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh,PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit,PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload,PhotoCraftAppTests.LargeProofWorkflowTests/testHTTPBusyInvalidRevokeAndCapabilitiesKeepSourceAndExistingContracts,PhotoCraftAppTests.LargeProofWorkflowTests/testHTTPMaximumProofPreviewReadStateAndNormalExportRemainSeparate,PhotoCraftAppTests.LargeProofWorkflowTests/testMaximumNativeDraftCancelCommitUsesProofCanvasBaseWithoutHistory,PhotoCraftAppTests.LargeProofWorkflowTests/testMaximumNativeGrayAndCMYKPreserveNumbersThroughDesktopAndHTTP,PhotoCraftAppTests.LargeProofWorkflowTests/testNativeAboveOldLimitBelowViewportThresholdKeepsFullImageAndSource,PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups,PhotoCraftImagingTests.LegacySoftProofCaptureTests/testCapturedProofRemainsDisplayOnlyAndAreaReductionUsesProofedColors,PhotoCraftImagingTests.LegacySoftProofCaptureTests/testCaptureUnchangedSmallProofProgramsAcrossModesDepthsAndConditions,PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges,PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths,PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords,PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources,PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo,PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes,PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents,PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap,PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges,PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit,PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget,PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths,PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish,PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource,PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries,PhotoCraftImagingTests.PrintOutputTests/testAsymmetricPrintableAreaCenterAndIndependentInkPages,PhotoCraftImagingTests.PrintOutputTests/testCancellationBeforePreparation,PhotoCraftImagingTests.PrintOutputTests/testFitMediaSelectionAndMarksReserveSpace,PhotoCraftImagingTests.PrintOutputTests/testHardProofDiffersFromDocumentAndIgnoresScreenWarnings,PhotoCraftImagingTests.PrintOutputTests/testInvalidGeometryAndProfileRejectWithoutChangingSource,PhotoCraftImagingTests.PrintOutputTests/testLabNeutralPrintingAndGrayProfile,PhotoCraftImagingTests.PrintOutputTests/testPDFMediaBoxAndMarksRenderWithoutMutatingDocument,PhotoCraftImagingTests.PrintOutputTests/testPhysicalSizeOrientationTopLeftAndClipping,PhotoCraftImagingTests.PrintOutputTests/testRetainedCMYKNumbersAndSeparationDensities,PhotoCraftImagingTests.PrintOutputTests/testRGBPrinterProfileConversionMatchesIndependentColorReference,PhotoCraftImagingTests.PrintOutputTests/testTransparentPixelsFlattenToPaperAndPreserveDocument,PhotoCraftAppTests.PrintWorkflowTests/testCancelledStaleAndUnauthorizedPreparationNeverSubmit,PhotoCraftAppTests.PrintWorkflowTests/testFactoryPrintMenusAndShortcuts,PhotoCraftAppTests.PrintWorkflowTests/testInvalidSettingsAtomicAndPDFUsesCommittedSettingsDuringDraft,PhotoCraftAppTests.PrintWorkflowTests/testNativePrintViewPDFPaginationUsesSharedRenderer,PhotoCraftAppTests.PrintWorkflowTests/testPrinterPermissionAndInjectedSubmission,PhotoCraftAppTests.PrintWorkflowTests/testPrintSheetDoneCommitsOnlyOutputSettings,PhotoCraftAppTests.PrintWorkflowTests/testPrintSheetFitsOffscreen,PhotoCraftAppTests.PrintWorkflowTests/testPrintWorkspaceWithUnavailablePrinterStillPreviewsAndCancelsDriverEdits,PhotoCraftAppTests.PrintWorkflowTests/testRevokingShareOrPrintPermissionCancelsOwnedPreparation,PhotoCraftAppTests.PrintWorkflowTests/testSettingsPDFAndAPILeavePixelsHistoryAndDirtyStateUntouched,PhotoCraftAppTests.ProofWorkflowTests/testConfigurePreviewAndReadShareNativeStateWithoutHistoryOrExports,PhotoCraftAppTests.ProofWorkflowTests/testDraftPreviewCancelCommitAndAPIBusyLeavePixelsUntouched,PhotoCraftAppTests.ProofWorkflowTests/testEditingInvalidatesPreservedProofWithoutFreezingCanvas,PhotoCraftAppTests.ProofWorkflowTests/testFactoryProofMenusAndShortcutsAreBound,PhotoCraftAppTests.ProofWorkflowTests/testInvalidConfigurationIsAtomicAndCustomProfileRoundTrips,PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels,PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe,PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue,PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack,PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack,PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation,PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification,PhotoCraftImagingTests.SoftProofTests/testCancellationStopsProofBeforeRendering,PhotoCraftImagingTests.SoftProofTests/testGamutWarningDetectsSaturatedCMYKLossAndIgnoresTransparency,PhotoCraftImagingTests.SoftProofTests/testIdentityProofPreservesAlphaAndDocumentAtAllDepths,PhotoCraftImagingTests.SoftProofTests/testIndependentCoreGraphicsReferenceForPreservedRGBNumbers,PhotoCraftImagingTests.SoftProofTests/testInvalidProfilesAndIncompatiblePreserveNumbersReject,PhotoCraftImagingTests.SoftProofTests/testLiteralLabNeutralDoesNotAcquireColorCast,PhotoCraftImagingTests.SoftProofTests/testNativeCMYKPlatesPreserveOriginalNumbersAndLabEncoding,PhotoCraftImagingTests.SoftProofTests/testPaperBlackAndIntentChangeOnlyProofAndRemainFinite,PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors,PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts,PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor,PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke,PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas,PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration,PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry,PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach,PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion",
+          "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/PhotatoPackageTests.xctest"
+        ],
+        "source_manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/release01-source.json",
+        "inputs": 7523,
+        "started_at_utc": "2026-11-07T11:41:26.219589+00:00",
+        "exit_code": 1,
+        "finished_at_utc": "2026-11-07T11:42:14.832371+00:00",
+        "cases": 92,
+        "case_ids": [
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+          "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+          "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+          "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testHTTPBusyInvalidRevokeAndCapabilitiesKeepSourceAndExistingContracts",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testHTTPMaximumProofPreviewReadStateAndNormalExportRemainSeparate",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testMaximumNativeDraftCancelCommitUsesProofCanvasBaseWithoutHistory",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testMaximumNativeGrayAndCMYKPreserveNumbersThroughDesktopAndHTTP",
+          "PhotoCraftAppTests.LargeProofWorkflowTests/testNativeAboveOldLimitBelowViewportThresholdKeepsFullImageAndSource",
+          "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+          "PhotoCraftImagingTests.LegacySoftProofCaptureTests/testCapturedProofRemainsDisplayOnlyAndAreaReductionUsesProofedColors",
+          "PhotoCraftImagingTests.LegacySoftProofCaptureTests/testCaptureUnchangedSmallProofProgramsAcrossModesDepthsAndConditions",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries",
+          "PhotoCraftImagingTests.PrintOutputTests/testAsymmetricPrintableAreaCenterAndIndependentInkPages",
+          "PhotoCraftImagingTests.PrintOutputTests/testCancellationBeforePreparation",
+          "PhotoCraftImagingTests.PrintOutputTests/testFitMediaSelectionAndMarksReserveSpace",
+          "PhotoCraftImagingTests.PrintOutputTests/testHardProofDiffersFromDocumentAndIgnoresScreenWarnings",
+          "PhotoCraftImagingTests.PrintOutputTests/testInvalidGeometryAndProfileRejectWithoutChangingSource",
+          "PhotoCraftImagingTests.PrintOutputTests/testLabNeutralPrintingAndGrayProfile",
+          "PhotoCraftImagingTests.PrintOutputTests/testPDFMediaBoxAndMarksRenderWithoutMutatingDocument",
+          "PhotoCraftImagingTests.PrintOutputTests/testPhysicalSizeOrientationTopLeftAndClipping",
+          "PhotoCraftImagingTests.PrintOutputTests/testRetainedCMYKNumbersAndSeparationDensities",
+          "PhotoCraftImagingTests.PrintOutputTests/testRGBPrinterProfileConversionMatchesIndependentColorReference",
+          "PhotoCraftImagingTests.PrintOutputTests/testTransparentPixelsFlattenToPaperAndPreserveDocument",
+          "PhotoCraftAppTests.PrintWorkflowTests/testCancelledStaleAndUnauthorizedPreparationNeverSubmit",
+          "PhotoCraftAppTests.PrintWorkflowTests/testFactoryPrintMenusAndShortcuts",
+          "PhotoCraftAppTests.PrintWorkflowTests/testInvalidSettingsAtomicAndPDFUsesCommittedSettingsDuringDraft",
+          "PhotoCraftAppTests.PrintWorkflowTests/testNativePrintViewPDFPaginationUsesSharedRenderer",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrinterPermissionAndInjectedSubmission",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrintSheetDoneCommitsOnlyOutputSettings",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrintSheetFitsOffscreen",
+          "PhotoCraftAppTests.PrintWorkflowTests/testPrintWorkspaceWithUnavailablePrinterStillPreviewsAndCancelsDriverEdits",
+          "PhotoCraftAppTests.PrintWorkflowTests/testRevokingShareOrPrintPermissionCancelsOwnedPreparation",
+          "PhotoCraftAppTests.PrintWorkflowTests/testSettingsPDFAndAPILeavePixelsHistoryAndDirtyStateUntouched",
+          "PhotoCraftAppTests.ProofWorkflowTests/testConfigurePreviewAndReadShareNativeStateWithoutHistoryOrExports",
+          "PhotoCraftAppTests.ProofWorkflowTests/testDraftPreviewCancelCommitAndAPIBusyLeavePixelsUntouched",
+          "PhotoCraftAppTests.ProofWorkflowTests/testEditingInvalidatesPreservedProofWithoutFreezingCanvas",
+          "PhotoCraftAppTests.ProofWorkflowTests/testFactoryProofMenusAndShortcutsAreBound",
+          "PhotoCraftAppTests.ProofWorkflowTests/testInvalidConfigurationIsAtomicAndCustomProfileRoundTrips",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+          "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+          "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+          "PhotoCraftImagingTests.SoftProofTests/testCancellationStopsProofBeforeRendering",
+          "PhotoCraftImagingTests.SoftProofTests/testGamutWarningDetectsSaturatedCMYKLossAndIgnoresTransparency",
+          "PhotoCraftImagingTests.SoftProofTests/testIdentityProofPreservesAlphaAndDocumentAtAllDepths",
+          "PhotoCraftImagingTests.SoftProofTests/testIndependentCoreGraphicsReferenceForPreservedRGBNumbers",
+          "PhotoCraftImagingTests.SoftProofTests/testInvalidProfilesAndIncompatiblePreserveNumbersReject",
+          "PhotoCraftImagingTests.SoftProofTests/testLiteralLabNeutralDoesNotAcquireColorCast",
+          "PhotoCraftImagingTests.SoftProofTests/testNativeCMYKPlatesPreserveOriginalNumbersAndLabEncoding",
+          "PhotoCraftImagingTests.SoftProofTests/testPaperBlackAndIntentChangeOnlyProofAndRemainFinite",
+          "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+          "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+          "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+          "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+          "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+          "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+          "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+          "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+          "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+        ],
+        "passed": 90,
+        "failed": 2,
+        "failed_cases": [
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries"
+        ],
+        "total_xctest_failures": 3,
+        "unexpected": 0,
+        "test_seconds": 40.142,
+        "build_seconds": null,
+        "crashes": 0,
+        "binary_sha256": "b3d0c3fd2d2b5a43997fcb9e1490e5e7c21507a1890d8675ff812c2a4fd8c82d",
+        "binary": "/private/tmp/photocraft-swift-intel/x86_64-apple-macosx/release/Photato",
+        "expected_cases": 92,
+        "missing_cases": [],
+        "extra_cases": []
+      }
+    ]
+  },
+  "normal_optimized_qualified": false,
+  "selected_workflow_normal_qualified": true,
+  "normal_reference_batch_passed": false,
+  "normal_reference_analysis": {
+    "step": 472,
+    "cross_architecture": [
+      {
+        "file": "image-stack-small.f32le",
+        "bytes": 152064,
+        "exact": true,
+        "different_bytes": 0,
+        "different_words": 0,
+        "first_differences": []
+      },
+      {
+        "file": "image-stack-current.f32le",
+        "bytes": 152064,
+        "exact": true,
+        "different_bytes": 0,
+        "different_words": 0,
+        "first_differences": []
+      },
+      {
+        "file": "image-stack-paged.f32le",
+        "bytes": 152064,
+        "exact": true,
+        "different_bytes": 0,
+        "different_words": 0,
+        "first_differences": []
+      },
+      {
+        "file": "soft-proof-small.f32le",
+        "bytes": 159744,
+        "exact": false,
+        "different_bytes": 10485,
+        "different_words": 10156,
+        "first_differences": [
+          {
+            "word": 384,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 385,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 396,
+            "ARM": 0.4437018632888794,
+            "Intel": 0.44370177388191223,
+            "ULP": 3
+          },
+          {
+            "word": 397,
+            "ARM": 0.21641787886619568,
+            "Intel": 0.21641790866851807,
+            "ULP": 2
+          },
+          {
+            "word": 400,
+            "ARM": 0.5925800204277039,
+            "Intel": 0.5925801396369934,
+            "ULP": 2
+          },
+          {
+            "word": 401,
+            "ARM": 0.282255619764328,
+            "Intel": 0.28225550055503845,
+            "ULP": 4
+          },
+          {
+            "word": 402,
+            "ARM": 0.1743752360343933,
+            "Intel": 0.1743752658367157,
+            "ULP": 2
+          },
+          {
+            "word": 404,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 405,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 412,
+            "ARM": 0.16208308935165405,
+            "Intel": 0.16208314895629883,
+            "ULP": 4
+          },
+          {
+            "word": 416,
+            "ARM": 0.2406141757965088,
+            "Intel": 0.24061420559883118,
+            "ULP": 2
+          },
+          {
+            "word": 420,
+            "ARM": 0.3578816056251526,
+            "Intel": 0.35788166522979736,
+            "ULP": 2
+          },
+          {
+            "word": 424,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 425,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 428,
+            "ARM": 0.6171422600746155,
+            "Intel": 0.6171420812606812,
+            "ULP": 3
+          },
+          {
+            "word": 429,
+            "ARM": 0.7261486649513245,
+            "Intel": 0.726148784160614,
+            "ULP": 2
+          }
+        ]
+      },
+      {
+        "file": "soft-proof-current-small.f32le",
+        "bytes": 159744,
+        "exact": false,
+        "different_bytes": 10485,
+        "different_words": 10156,
+        "first_differences": [
+          {
+            "word": 384,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 385,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 396,
+            "ARM": 0.4437018632888794,
+            "Intel": 0.44370177388191223,
+            "ULP": 3
+          },
+          {
+            "word": 397,
+            "ARM": 0.21641787886619568,
+            "Intel": 0.21641790866851807,
+            "ULP": 2
+          },
+          {
+            "word": 400,
+            "ARM": 0.5925800204277039,
+            "Intel": 0.5925801396369934,
+            "ULP": 2
+          },
+          {
+            "word": 401,
+            "ARM": 0.282255619764328,
+            "Intel": 0.28225550055503845,
+            "ULP": 4
+          },
+          {
+            "word": 402,
+            "ARM": 0.1743752360343933,
+            "Intel": 0.1743752658367157,
+            "ULP": 2
+          },
+          {
+            "word": 404,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 405,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 412,
+            "ARM": 0.16208308935165405,
+            "Intel": 0.16208314895629883,
+            "ULP": 4
+          },
+          {
+            "word": 416,
+            "ARM": 0.2406141757965088,
+            "Intel": 0.24061420559883118,
+            "ULP": 2
+          },
+          {
+            "word": 420,
+            "ARM": 0.3578816056251526,
+            "Intel": 0.35788166522979736,
+            "ULP": 2
+          },
+          {
+            "word": 424,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 425,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 428,
+            "ARM": 0.6171422600746155,
+            "Intel": 0.6171420812606812,
+            "ULP": 3
+          },
+          {
+            "word": 429,
+            "ARM": 0.7261486649513245,
+            "Intel": 0.726148784160614,
+            "ULP": 2
+          }
+        ]
+      },
+      {
+        "file": "soft-proof-paged-small.f32le",
+        "bytes": 159744,
+        "exact": false,
+        "different_bytes": 10485,
+        "different_words": 10156,
+        "first_differences": [
+          {
+            "word": 384,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 385,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 396,
+            "ARM": 0.4437018632888794,
+            "Intel": 0.44370177388191223,
+            "ULP": 3
+          },
+          {
+            "word": 397,
+            "ARM": 0.21641787886619568,
+            "Intel": 0.21641790866851807,
+            "ULP": 2
+          },
+          {
+            "word": 400,
+            "ARM": 0.5925800204277039,
+            "Intel": 0.5925801396369934,
+            "ULP": 2
+          },
+          {
+            "word": 401,
+            "ARM": 0.282255619764328,
+            "Intel": 0.28225550055503845,
+            "ULP": 4
+          },
+          {
+            "word": 402,
+            "ARM": 0.1743752360343933,
+            "Intel": 0.1743752658367157,
+            "ULP": 2
+          },
+          {
+            "word": 404,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 405,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 412,
+            "ARM": 0.16208308935165405,
+            "Intel": 0.16208314895629883,
+            "ULP": 4
+          },
+          {
+            "word": 416,
+            "ARM": 0.2406141757965088,
+            "Intel": 0.24061420559883118,
+            "ULP": 2
+          },
+          {
+            "word": 420,
+            "ARM": 0.3578816056251526,
+            "Intel": 0.35788166522979736,
+            "ULP": 2
+          },
+          {
+            "word": 424,
+            "ARM": 0.07429464906454086,
+            "Intel": 0.07429466396570206,
+            "ULP": 2
+          },
+          {
+            "word": 425,
+            "ARM": 0.07280059903860092,
+            "Intel": 0.07280058413743973,
+            "ULP": 2
+          },
+          {
+            "word": 428,
+            "ARM": 0.6171422600746155,
+            "Intel": 0.6171420812606812,
+            "ULP": 3
+          },
+          {
+            "word": 429,
+            "ARM": 0.7261486649513245,
+            "Intel": 0.726148784160614,
+            "ULP": 2
+          }
+        ]
+      },
+      {
+        "file": "soft-proof-reduced.f32le",
+        "bytes": 240,
+        "exact": false,
+        "different_bytes": 10,
+        "different_words": 10,
+        "first_differences": [
+          {
+            "word": 0,
+            "ARM": 0.289443701505661,
+            "Intel": 0.2894437909126282,
+            "ULP": 3
+          },
+          {
+            "word": 1,
+            "ARM": 0.2389853596687317,
+            "Intel": 0.2389853447675705,
+            "ULP": 1
+          },
+          {
+            "word": 2,
+            "ARM": 0.3672451078891754,
+            "Intel": 0.3672451376914978,
+            "ULP": 1
+          },
+          {
+            "word": 5,
+            "ARM": 0.30470940470695496,
+            "Intel": 0.30470943450927734,
+            "ULP": 1
+          },
+          {
+            "word": 6,
+            "ARM": 0.3408767282962799,
+            "Intel": 0.3408767580986023,
+            "ULP": 1
+          },
+          {
+            "word": 9,
+            "ARM": 0.1709752380847931,
+            "Intel": 0.17097526788711548,
+            "ULP": 2
+          },
+          {
+            "word": 10,
+            "ARM": 0.8065453171730042,
+            "Intel": 0.8065453767776489,
+            "ULP": 1
+          },
+          {
+            "word": 12,
+            "ARM": 0.1503220796585083,
+            "Intel": 0.15032218396663666,
+            "ULP": 7
+          },
+          {
+            "word": 13,
+            "ARM": 0.6031593084335327,
+            "Intel": 0.6031593680381775,
+            "ULP": 1
+          },
+          {
+            "word": 57,
+            "ARM": 0.03388982638716698,
+            "Intel": 0.033889833837747574,
+            "ULP": 2
+          }
+        ]
+      },
+      {
+        "file": "soft-proof-paged-reduced.f32le",
+        "bytes": 240,
+        "exact": false,
+        "different_bytes": 10,
+        "different_words": 10,
+        "first_differences": [
+          {
+            "word": 0,
+            "ARM": 0.289443701505661,
+            "Intel": 0.2894437909126282,
+            "ULP": 3
+          },
+          {
+            "word": 1,
+            "ARM": 0.2389853596687317,
+            "Intel": 0.2389853447675705,
+            "ULP": 1
+          },
+          {
+            "word": 2,
+            "ARM": 0.3672451078891754,
+            "Intel": 0.3672451376914978,
+            "ULP": 1
+          },
+          {
+            "word": 5,
+            "ARM": 0.30470940470695496,
+            "Intel": 0.30470943450927734,
+            "ULP": 1
+          },
+          {
+            "word": 6,
+            "ARM": 0.3408767282962799,
+            "Intel": 0.3408767580986023,
+            "ULP": 1
+          },
+          {
+            "word": 9,
+            "ARM": 0.1709752380847931,
+            "Intel": 0.17097526788711548,
+            "ULP": 2
+          },
+          {
+            "word": 10,
+            "ARM": 0.8065453171730042,
+            "Intel": 0.8065453767776489,
+            "ULP": 1
+          },
+          {
+            "word": 12,
+            "ARM": 0.1503220796585083,
+            "Intel": 0.15032218396663666,
+            "ULP": 7
+          },
+          {
+            "word": 13,
+            "ARM": 0.6031593084335327,
+            "Intel": 0.6031593680381775,
+            "ULP": 1
+          },
+          {
+            "word": 57,
+            "ARM": 0.03388982638716698,
+            "Intel": 0.033889833837747574,
+            "ULP": 2
+          }
+        ]
+      }
+    ],
+    "Intel_paged_matches_current_small": true,
+    "Intel_reduced_matches_legacy": true,
+    "interpretation": "Observed: unchanged small and paged proof paths have identical Intel outputs, including reduction; ARM and Intel differ. Root cause and exact Photoshop comparison remain unqualified. No tolerance or fixture replacement.",
+    "max_proof_absolute_difference": 0.00018492341041564941,
+    "max_reduced_absolute_difference": 1.043081283569336e-07,
+    "proof_alpha_words_unchanged": true
+  },
+  "latest_universal_validation_candidate": 472,
+  "latest_optimized_universal": 470,
+  "debug_package": {
+    "step": 472,
+    "app": "/private/tmp/photato-validation-472-debug-stage01-5100ff65/Photato Validation 472.app",
+    "bundle_id": "ca.forensicintelligence.photato.validation472",
+    "architectures": [
+      "arm64"
+    ],
+    "debug_only": true,
+    "normal_optimized": false,
+    "debug_compiler_workaround": "sil-disable-pass=predictable-deadalloc-elim",
+    "compiled_source": "472Source06",
+    "source_inputs": 7523,
+    "compiled_binary_sha256": "7504b0293443f3d34fb2fd69b988134d0534b3a38668609d5d2fed88357c9ae0",
+    "signed_binary_sha256": "6193183f3a570af5935d62873c8f6ba290da8e2ab1f4d8994c3918889eff4df2",
+    "unsigned_payload_exact": true,
+    "all_other_unsigned_bytes_exact": true,
+    "signing_metadata_exception": null,
+    "minimum_macos_metadata": "14.0",
+    "signature_verified": true,
+    "production_entitlements_exact": true,
+    "resources_unchanged_from_470": 15,
+    "live_UI_qualified": false,
+    "launched_or_installed": false,
+    "latest_optimized_universal": 470,
+    "qualification": {
+      "unexpected_signals": [],
+      "expected_count": 44,
+      "missing_cases": [],
+      "exit_code": 0,
+      "inputs": 7523,
+      "source_unchanged": true,
+      "changed_inputs": [],
+      "cases": [
+        "PhotoCraftCoreTests.ImageStackStatisticsTests/testDocumentedMomentsAndEntropyMatchIndependentFloatWords",
+        "PhotoCraftCoreTests.ImageStackStatisticsTests/testUnchangedOrderStatisticsAndFiniteDegeneratePolicy",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testAdobeInstalledRendererDescriptorSharesNativeHistoryAndRejectsUnknown",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testAlignmentUsesSharedRegistration",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testAPICancelRevocationBusyStaleAndInvalidSettings",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testBothAdobeJobRoutesUseStackRenderer",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testDepthsNative23HistoryNoneAndSourceRetention",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testFolderLoadingInvalidBatchAndCancel",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testHDRSummationAndTransparentFrames",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testHTTPModeCreationHistoryVersionAndGuards",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testNativeWorkspacePreviewCancelCommitAndSourceStaleness",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testPerInstanceModesRecomputeOnReplacementAndPreserveGeometryFiltersMasks",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testSampleMasksVisibilityGroupsAndDimensions",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testStackedChildSaveRetainsModesAndParentUndo",
+        "PhotoCraftAppTests.ImageStackWorkflowTests/testUnchangedStatisticsAgainstLicensedRustAndAnalyticalValues",
+        "PhotoCraftAppTests.LargeImageStackWorkflowTests/testLargeAPIGuardsCapabilityAndPublishedDescriptorShareSameEngine",
+        "PhotoCraftAppTests.LargeImageStackWorkflowTests/testMaximumNativePreviewIsBoundedAndStaleSourceRequiresRefresh",
+        "PhotoCraftAppTests.LargeImageStackWorkflowTests/testNativeAcceptsSeventeenOpenSourcesWithPreviewCancelAndCommit",
+        "PhotoCraftAppTests.LargeImageStackWorkflowTests/testSevenMaximumSharedSourcesModesNoneUndoAndNativeDownload",
+        "PhotoCraftImagingTests.LegacyImageStackCaptureTests/testCaptureAllStackModesDepthsVisibilityMasksAndOuterGroups",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+        "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+        "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+        "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+        "PhotoCraftAppTests.ToolCursorTests/testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors",
+        "PhotoCraftAppTests.ToolCursorTests/testCapabilityDiscoveryNamesAllToolsAndBothInterfaceImpacts",
+        "PhotoCraftAppTests.ToolCursorTests/testContentAwareAndSkyCapturedModesAndPreviewCursor",
+        "PhotoCraftAppTests.ToolCursorTests/testEveryMaskAndLiquifyAlternateUsesSameResolverAsItsCursorAndStroke",
+        "PhotoCraftAppTests.ToolCursorTests/testFocusLossCannotLeaveHandFeedbackOnAnyNativeCanvas",
+        "PhotoCraftAppTests.ToolCursorTests/testRetouchCapturedAlternateAndHandRestoration",
+        "PhotoCraftAppTests.ToolCursorTests/testSelectionOperationStaysCapturedWhileModifiersConstrainGeometry",
+        "PhotoCraftAppTests.ToolCursorTests/testWindowModifierObservationWorksWithControlFocusAndCleansUpOnDetach",
+        "PhotoCraftAppTests.ToolCursorTests/testZoomModifierCursorAndActualZoomDirectionAgreeWithoutMouseMotion"
+      ],
+      "passed": 44,
+      "failed_cases": [],
+      "totals": [
+        [
+          "44",
+          "0",
+          "0",
+          "155.461"
+        ]
+      ],
+      "build_seconds": [
+        "8.54"
+      ],
+      "finished_utc": "2026-11-07T11:32:16.537003+00:00"
+    },
+    "status": "Isolated Large image-stack Debug app:44 selected methods/13 new pass; native472, normal472 and fullRAW02/Photoshop fidelity remain open. Latest optimized universal470.",
+    "prepared_utc": "2026-11-07T11:32:42.133309+00:00"
+  },
+  "universal_package": {
+    "step": 472,
+    "app": "/private/tmp/photato-validation-472-stage01-2674c517/Photato Validation 472.app",
+    "archive": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261107T110529Z-472-paged-image-statistics/universal/Photato-Validation-472.zip",
+    "archive_sha256": "3edd8117f27c7c8a79cc18e3072cf9037490a060b805e2df505611ee861698db",
+    "same_extracted_content": true,
+    "extracted_signature_verified": true,
+    "source_manifest": "artifacts/runs/20261107T110529Z-472-paged-image-statistics/release01-source.json",
+    "source_inputs": 7523,
+    "source_unchanged": true,
+    "source_matches_passed_Debug": true,
+    "architectures": "x86_64 arm64",
+    "minimum_system_metadata": "14.0",
+    "bundle_id": "ca.forensicintelligence.photato.validation472optimized",
+    "version": "0.3.0",
+    "build": 472,
+    "signed_universal_binary_sha256": "341c14c15c3e0e54dd53986887760784c42a942fd626fa83c41853583d68c159",
+    "signature_verified": true,
+    "full_production_AppStore_entitlements": true,
+    "entitlements_sha256": "0d8261c1ab691550154c9091f81f57bd39b77566c17e5c3417eda62e91a904b4",
+    "production_entitlements_unchanged": true,
+    "retained_optimized_products": 10868,
+    "selected_pass_each": [
+      92,
+      90
+    ],
+    "selected_workflow_pass_each": [
+      44,
+      44
+    ],
+    "normal_reference_batch_passed": false,
+    "outstanding_reference_failures": [
+      "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries"
+    ],
+    "latest_fully_qualified_optimized_universal": 470,
+    "new_methods_pass_each": [
+      27,
+      25
+    ],
+    "new472_methods_pass_each": [
+      13,
+      13
+    ],
+    "strict_statistics_and_proof": {
+      "step": 472,
+      "all_exact": false,
+      "checks": [
+        {
+          "attempt": "source06",
+          "group": "statistics",
+          "file": "image-stack-small.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "source06",
+          "group": "statistics",
+          "file": "image-stack-current.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "source06",
+          "group": "statistics",
+          "file": "image-stack-paged.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "statistics",
+          "file": "image-stack-small.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "statistics",
+          "file": "image-stack-current.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "statistics",
+          "file": "image-stack-paged.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "proof",
+          "file": "soft-proof-small.f32le",
+          "bytes": 159744,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "7f965b7c61afd49ac8e8f0bc9af1ae3e36ad9e73f93d526ae0eb4a7dd0d7d2f6"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "proof",
+          "file": "soft-proof-current-small.f32le",
+          "bytes": 159744,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "7f965b7c61afd49ac8e8f0bc9af1ae3e36ad9e73f93d526ae0eb4a7dd0d7d2f6"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "proof",
+          "file": "soft-proof-paged-small.f32le",
+          "bytes": 159744,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "7f965b7c61afd49ac8e8f0bc9af1ae3e36ad9e73f93d526ae0eb4a7dd0d7d2f6"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "proof",
+          "file": "soft-proof-reduced.f32le",
+          "bytes": 240,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "32855d363d97cdab54eb700cefc8f9deddb9a7ed7969316f9c618cce5753f30e"
+        },
+        {
+          "attempt": "release01-arm",
+          "group": "proof",
+          "file": "soft-proof-paged-reduced.f32le",
+          "bytes": 240,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "32855d363d97cdab54eb700cefc8f9deddb9a7ed7969316f9c618cce5753f30e"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "statistics",
+          "file": "image-stack-small.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "statistics",
+          "file": "image-stack-current.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "statistics",
+          "file": "image-stack-paged.f32le",
+          "bytes": 152064,
+          "exact": true,
+          "different_bytes": 0,
+          "sha256": "a5d5e4c013974c4789333ba492d823a0f5df1bdb61fd10d81a61784f2240383a"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "proof",
+          "file": "soft-proof-small.f32le",
+          "bytes": 159744,
+          "exact": false,
+          "different_bytes": 10485,
+          "sha256": "9423efb5348f78f55ebb1cb362df7999ad369bf7b605137024aa55d1ed41c343"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "proof",
+          "file": "soft-proof-current-small.f32le",
+          "bytes": 159744,
+          "exact": false,
+          "different_bytes": 10485,
+          "sha256": "9423efb5348f78f55ebb1cb362df7999ad369bf7b605137024aa55d1ed41c343"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "proof",
+          "file": "soft-proof-paged-small.f32le",
+          "bytes": 159744,
+          "exact": false,
+          "different_bytes": 10485,
+          "sha256": "9423efb5348f78f55ebb1cb362df7999ad369bf7b605137024aa55d1ed41c343"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "proof",
+          "file": "soft-proof-reduced.f32le",
+          "bytes": 240,
+          "exact": false,
+          "different_bytes": 10,
+          "sha256": "836edd0cd50832387c67218b47e69847b1e85097de2492f5b64db8cd0c552020"
+        },
+        {
+          "attempt": "release01-intel",
+          "group": "proof",
+          "file": "soft-proof-paged-reduced.f32le",
+          "bytes": 240,
+          "exact": false,
+          "different_bytes": 10,
+          "sha256": "836edd0cd50832387c67218b47e69847b1e85097de2492f5b64db8cd0c552020"
+        }
+      ],
+      "component_exact": false,
+      "reference": "Owned regression buffers; independent Photoshop statistics/proof output not claimed."
+    },
+    "payload_comparison": [
+      {
+        "architecture": "arm64",
+        "compiled_sha256": "288bee89159ce204e8a873acfaa7d7dd191a55cd1377112b85f3f92ab5657738",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3552,
+          "changed_offsets": [
+            3554
+          ],
+          "values": [
+            59785216,
+            59129856
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 113630968
+      },
+      {
+        "architecture": "x86_64",
+        "compiled_sha256": "b3d0c3fd2d2b5a43997fcb9e1490e5e7c21507a1890d8675ff812c2a4fd8c82d",
+        "unsigned_exact": false,
+        "all_other_unsigned_bytes_exact": true,
+        "signing_metadata_exception": {
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3392,
+          "changed_offsets": [
+            3393,
+            3394
+          ],
+          "values": [
+            58875904,
+            59817984
+          ],
+          "entire_staged_unsigned_slice_matches_independent_codesign_replay": true
+        },
+        "unsigned_bytes": 120150472
+      }
+    ],
+    "full_suite_passed": false,
+    "Photoshop_parity": false,
+    "validation_only": true,
+    "candidate_only": true,
+    "qualification_note": "New image-stack workflow passes44methods each architecture; combined proof batch92ARM/90Intel. Both inherited small/paged Intel proof outputs differ from ARM references. All failures retained, no tolerance/fixture change; not a fully qualified release.",
+    "live_UI_qualified": false,
+    "source_uploaded": false,
+    "software_release": false,
+    "launched_or_installed": false,
+    "isolated_session_launch_environment_configured": true,
+    "runtime_launch_environment_verified": false,
+    "prepared_utc": "2026-11-07T11:44:53.419391+00:00"
+  },
+  "native_observation": {
+    "step": 472,
+    "recorded_utc": "2026-11-07T11:33:04.297074+00:00",
+    "attempt": "After final44Debug methods terminal, documentation reload then bound existing467validationapp.",
+    "result": "Sky Computer Use native pipe closed before response",
+    "live_workflow_qualified": false,
+    "new472_launched": false,
+    "existing458_and467_retained": true,
+    "forcequit_or_reset": false
+  },
+  "remaining": [
+    "Full RAW02 remains open: richer alignment and blend targets, lens-correction calibration/flags, panorama, focus-stack, HDR/deghosting/crop and remaining combinations, plus independent Photoshop defaults/output and supported-platform acceptance.",
+    "All eleven scalar formulas and the legacy small loop are unchanged. The 99 owned-source programs/152064 bytes are regression evidence, not independent Photoshop statistics samples or a complete Photoshop match.",
+    "Logical 300000 per side/90GP and the native document-layer target are distinct from physical capacity. Smart Object encoded64MiB/owned256MiB/nesting8, non-RGB8MP admission and composition/scratch resources remain. Alignment retains16sources and its pixel budgets; HTTP orchestration retains7shared sources and an eighth output share.",
+    "Large inputs are not downsampled for statistics. Only the finished preview is reduced. Cross-profile conversion keeps existing ColorManagement behavior and its physical costs; no new numerical approximation or resampling kernel.",
+    "An allocated8.39MP source and owned raster above256MiB are bounded tests, not dense90GP/many-thousand-source performance, all supported Macs or60fps evidence.",
+    "Live controls/focus/Close/Quit remain pending the native automation connection; older458/467validation documents and current builds remain protected. Fullsuite and every previously recorded failure remain open.",
+    "All 44 selected checks pass on Apple Silicon and translated Intel. The broader batch passes 92 tests on Apple Silicon and 90 on Intel. Two Intel soft-proof reference tests still fail; the old and paged proof paths agree on Intel. Universal build 472 is an unreleased validation candidate. The latest fully qualified universal build remains 470."
+  ],
+  "original_package_closed": false,
+  "goal_complete": false,
+  "no_GitHub_delete_production_install_Store_archive_release": true
+}

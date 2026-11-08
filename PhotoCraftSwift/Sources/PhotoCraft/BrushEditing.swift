@@ -14,6 +14,7 @@ final class BrushGesture {
   let layerID:UUID
   let mask:Bool
   let brush:Brush
+  var eraserMode: EraserMode?
   var points:[StrokePoint]
   private var smoothingCursor: BrushSmoothingCursor
   var supportsHeldSmoothing: Bool {
@@ -49,6 +50,13 @@ final class BrushGesture {
     var value=brush;value.settings=value.settings ?? .init();value.settings!.seed=UInt64.random(in:1...9_007_199_254_740_991);value.settings!.zoom=min(64,max(0.01,zoom))
     value.erase=tool == .eraser;value.backgroundColor=backgroundColor
     if editingMask && value.erase { value.color=backgroundColor;value.erase=false }
+    if tool == .eraser {
+      if alternate { status = "Erase to History requires a history source and is not available yet."; return }
+      do {
+        guard let resolved = try EraserBrush.resolve(value, mode: eraserMode, zoom: value.settings!.zoom) else { return }
+        value = resolved
+      } catch { self.error = error.localizedDescription; return }
+    }
     let selection=tool.usesSelectionStroke && canUseSelectionTools ? selectionToolRequest(tool.selectionToolKind!,points:[point],brush:value,mode:selectionMode ?? (alternate ? .subtract:selectionPaintMode)):nil
     if tool.usesSelectionStroke && selection==nil{return}
     var painting:PaintToolRequest?
@@ -63,6 +71,7 @@ final class BrushGesture {
     canvasFrameTrace?.begin(tool: tool.rawValue, eventTimestamp: eventTimestamp)
     brushPreviewLastStart = 0; brushPreviewFrameCount = 0; brushPreviewSampleCount = 0; brushPreviewRenderMS = 0
     brushGesture = .init(original:document,generation:layerPanelGeneration,sessionGeneration:sessionGeneration,layerID:layerID,mask:editingMask,brush:value,points:[point],selection:selection,adjustment:adjustment,painting:painting)
+    brushGesture?.eraserMode = tool == .eraser ? eraserMode : nil
     if let command = brushCommand(preview: false) { interactiveBrushPreview = InteractiveBrushPreview(document: document, command: command) }
     scheduleBrushPreview()
   }

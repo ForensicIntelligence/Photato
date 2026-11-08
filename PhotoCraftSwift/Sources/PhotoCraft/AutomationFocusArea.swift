@@ -47,6 +47,6 @@ extension AutomationCommand {
 @MainActor extension EditorStore {
   var focusAreaState:[String:Any]{
     let draft=selectMaskDraft?.isFocus == true ? selectMaskDraft:nil
-    return ["available":canBeginSelectMask,"workspaceOpen":draft != nil,"previewBusy":draft?.rendering ?? false,"settings":draft?.state.focus.map{BrushAPI.json($0)} ?? NSNull(),"effectiveSettings":draft?.effectiveFocus.map{BrushAPI.json($0)} ?? NSNull(),"strokeCount":draft?.state.strokes.count ?? 0,"output":draft?.state.output.rawValue ?? "selection","previewError":draft?.error as Any? ?? NSNull()]
+    return ["available":canBeginFocusArea,"workspaceOpen":draft != nil,"previewBusy":draft?.rendering ?? false,"settings":draft?.state.focus.map{BrushAPI.json($0)} ?? NSNull(),"effectiveSettings":draft?.effectiveFocus.map{BrushAPI.json($0)} ?? NSNull(),"strokeCount":draft?.state.strokes.count ?? 0,"output":draft?.state.output.rawValue ?? "selection","previewError":draft?.error as Any? ?? NSNull()]
   }
 }

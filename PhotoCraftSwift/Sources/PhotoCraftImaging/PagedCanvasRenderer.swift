@@ -11,14 +11,15 @@ enum PagedCanvasRenderer {
       throw CraftError.unsupported("Large non-RGB composition retains its separate mode limits.")
     }
     for layer in d.layers {
-      if layer.style != nil, d.width > LayerStyleRenderer.maximumPixels/d.height {
+      if layer.style != nil,layer.style?.isChannelBlendingOnly != true, d.width > LayerStyleRenderer.maximumPixels/d.height {
         throw CraftError.unsupported("Large layer styles still require bounded effect maps.")
       }
       if d.width > Surface.maximumDensePixels/d.height {
         guard layer.vectorMask?.enabled != true || layer.vectorMask?.feather==0 else {
           throw CraftError.unsupported("Large feathered vector masks still require bounded kernel preparation.")
         }
-        guard layer.warp == nil else {throw CraftError.unsupported("Large Warp preparation retains its separate raster limit.")}
+        // Renderer prepares Warp through its checked dense/paged raster backend
+        // before composition. Canvas area alone is not a Warp source limit.
         if layer.smartFilters != nil {_ = try SmartFilterEngine.renderBounds(layer,in:d)}
       }
       if let mask=layer.mask,layer.effectiveMaskProperties.enabled,layer.effectiveMaskProperties.feather>0 {
@@ -34,6 +35,7 @@ enum PagedCanvasRenderer {
   static func composite(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
     video: VideoTransitionRenderContext? = nil, onPatch: ((Int) -> Void)? = nil
   ) throws -> Surface {
+    guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
     let facts=CompositionFacts(d)
     var reachedInput=false

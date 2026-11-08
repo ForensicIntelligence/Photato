@@ -16,7 +16,8 @@ final class LargeComponentWorkflowTests: XCTestCase {
     try store.setModeComponentVisibility([0]);await store.renderTask?.value
     XCTAssertNil(store.error);XCTAssertNotNil(store.image)
     XCTAssertNil(DocumentIO.persistenceIssue(model,format:.native))
-    for format:DocumentIO.Format in [.psd,.psb,.tiff] {XCTAssertNotNil(DocumentIO.persistenceIssue(model,format:format))}
+    for format:DocumentIO.Format in [.psd,.tiff] {XCTAssertNotNil(DocumentIO.persistenceIssue(model,format:format))}
+    XCTAssertNil(DocumentIO.persistenceIssue(model,format:.psb),"PSB now streams native components; this does not prove physical maximum-size output.")
     XCTAssertLessThan(RecoveryMemoryPolicy.documentCost(model),200*1024*1024)
     let metadata=RasterStorageAPI.state(model)
     XCTAssertEqual(metadata["nativeComponentLogicalBytes"] as? Int,900_000_000_000)

@@ -6,6 +6,7 @@ import SwiftUI
 @MainActor final class CraftNSDocument: NSDocument {
   nonisolated static let nativeType = "local.photocraft.swift.document"
   var smartObjectEditLink: SmartObjectEditLink?
+  var scriptEventOrigin: ScriptEventKind?
   let store: EditorStore
   var rememberedPrintInfo: NSPrintInfo?
   var printJob: NativePrintJob?
@@ -62,15 +63,19 @@ import SwiftUI
     self.init(model: try! CraftDocument(width: 1, height: 1))
   }
   init(
-    model: CraftDocument, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil, patterns:PatternLibrary? = nil,
+    model: CraftDocument, actions: ActionLibrary? = nil, brushes: BrushLibrary? = nil, skies:SkyLibrary? = nil, shapes:ShapeLibrary? = nil, patterns:PatternLibrary? = nil, styles:StyleLibrary? = nil,
     prepareHistory: @escaping HistoryPreparation = NativeHistoryNavigation.prepare
   ) {
-    store = EditorStore(document: model, patterns:patterns, actions: actions, brushes: brushes, skies:skies, shapes:shapes, prepareHistory: prepareHistory)
+    store = EditorStore(document: model, patterns:patterns, styles:styles, actions: actions, brushes: brushes, skies:skies, shapes:shapes, prepareHistory: prepareHistory)
     super.init()
     fileType = Self.nativeType
     hasUndoManager = false
     displayName = model.name
     store.onChange = { [weak self] kind in self?.updateChangeCount(kind); self?.store.synchronizeLinkedArtwork() }
+    store.imageGenerationSourceAvailable = { [weak self] in
+      guard let self else{return false}
+      return self.closeWorkflowID==nil && !self.closeAfterRecovery && !self.fileOperationBusy
+    }
   }
   // Recovery must not replace the last explicit Save used by File > Revert.
   override class var autosavesInPlace: Bool { false }
@@ -185,7 +190,12 @@ import SwiftUI
     unblockUserInteraction()
     guard let snapshot else { throw CocoaError(.userCancelled) }
     defer { recoveryWrites.finish(snapshot.id) }
-    try snapshot.encode(snapshot.document, url, snapshot.context)
+    do {
+      try snapshot.encode(snapshot.document, url, snapshot.context)
+    } catch let failure as AtomicFileWriter.PublicationFailure {
+      recoveryWrites.recordPublicationFailure(failure, for: snapshot.id)
+      throw failure
+    }
   }
   override class var readableTypes: [String] { DocumentIO.readableTypes }
   override class var writableTypes: [String] { DocumentIO.Format.allCases.map(\.typeIdentifier) }
@@ -286,10 +296,10 @@ import SwiftUI
       super.save(
         to: url, ofType: Self.nativeType, for: saveOperation
       ) { [weak self, recoveryID] error in
-        var result = error
+        var result: Error? = self?.recoveryWrites.takePublicationFailure(for: recoveryID) ?? error
         if let self {
           self.recoveryWrites.finish(recoveryID)
-          if error == nil {
+          if result == nil {
             self.savedRecoveryGeneration = self.activeRecoveryGeneration
             self.recoverySnapshotContext = snapshotContext
             do {
@@ -405,7 +415,7 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
+        store.cancelRemove(); store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()
     store.backgroundLayerDraft=nil
     store.proofWorkspace = nil
@@ -413,6 +423,8 @@ import SwiftUI
     store.inkModeWorkspace?.close(); store.inkModeWorkspace = nil
     store.restrictedModeWorkspace?.close(); store.restrictedModeWorkspace = nil
     store.documentModeWorkspace?.close(); store.documentModeWorkspace = nil
+    store.colorProfileWorkspace?.close(); store.colorProfileWorkspace = nil
+    store.cancelWarp()
     store.skyWorkspace?.close(); store.skyWorkspace = nil
     store.contentAwareDraft?.close(); store.contentAwareDraft = nil
     store.cancelSelectionModify();store.selectionRecall=nil
@@ -459,7 +471,7 @@ import SwiftUI
         store.channelView = RGBChannelView()
         store.session = EditorSession(document: model)
         store.timelineVisible = model.animation != nil || model.videoTimeline != nil
-        store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
+        store.cancelRemove(); store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()
     store.backgroundLayerDraft=nil
     store.proofWorkspace = nil
@@ -467,6 +479,8 @@ import SwiftUI
     store.inkModeWorkspace?.close(); store.inkModeWorkspace = nil
     store.restrictedModeWorkspace?.close(); store.restrictedModeWorkspace = nil
     store.documentModeWorkspace?.close(); store.documentModeWorkspace = nil
+    store.colorProfileWorkspace?.close(); store.colorProfileWorkspace = nil
+    store.cancelWarp()
     store.skyWorkspace?.close(); store.skyWorkspace = nil
     store.contentAwareDraft?.close(); store.contentAwareDraft = nil
     store.cancelSelectionModify();store.selectionRecall=nil
@@ -492,17 +506,21 @@ import SwiftUI
     }
   }
   override func close() {
+    store.cancelAIWork()
+    store.cancelReviewedEditPlan()
     store.stopTimelinePlayback(render: false)
     if recoveryWriteBusy {
       closeAfterRecovery = true
       return
     }
+    // A successfully closed document may outlive its windows in pending callbacks.
+    store.imageGenerationSourceAvailable = { false }
     retireRecoveryRegistration()
     resetRecoverySource()
     store.invalidateHistory()
     fileOperationTask?.cancel()
     copyPanel?.cancel(nil)
-    store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
+    store.cancelRemove(); store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()
     store.backgroundLayerDraft=nil
     store.proofWorkspace = nil
@@ -510,6 +528,8 @@ import SwiftUI
     store.inkModeWorkspace?.close(); store.inkModeWorkspace = nil
     store.restrictedModeWorkspace?.close(); store.restrictedModeWorkspace = nil
     store.documentModeWorkspace?.close(); store.documentModeWorkspace = nil
+    store.colorProfileWorkspace?.close(); store.colorProfileWorkspace = nil
+    store.cancelWarp()
     store.skyWorkspace?.close(); store.skyWorkspace = nil
     store.contentAwareDraft?.close(); store.contentAwareDraft = nil
     store.cancelSelectionModify();store.selectionRecall=nil
@@ -540,7 +560,6 @@ import SwiftUI
     store.layerVisibilityDraft = nil
     store.layerVisibilityIsolation = nil
     store.renderTask?.cancel()
-    store.aiTask?.cancel()
     store.geometryTask?.cancel()
     store.duplicateTask?.cancel()
     ownerController?.removeDocument(self)
@@ -550,6 +569,7 @@ import SwiftUI
 @MainActor final class CraftDocumentController: NSDocumentController {
   let documentWindows = DocumentWindows()
   private(set) var paintPalette = PaintPalette()
+  private(set) var eyedropperPreferences=EyedropperPreferences()
   let filterRecall = FilterRecall()
   var movieFramesWorkspace: MovieFramesWorkspace?
   var movieFramesWindow: MovieFramesWindow?
@@ -573,6 +593,8 @@ import SwiftUI
   private(set) var workspaces = WorkspaceLibrary()
   private(set) var recoveryPreferences = RecoveryPreferencesStore()
   private(set) var colorSettings = ColorSettingsStore()
+  private(set) var scriptEvents = ScriptEventsStore()
+  lazy var scriptEventsDispatcher = ScriptEventDispatcher(store: scriptEvents, controller: self)
   private(set) var recoveryIndex = RecoveryIndexStore()
   var initialRecoveryTask: Task<Void, Never>?
   var initialRecoveryFinished = false
@@ -581,15 +603,20 @@ import SwiftUI
   convenience init(
     workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil,
-    paintPalette: PaintPalette? = nil
+    paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
+    scriptEvents: ScriptEventsStore? = nil
   ) {
     self.init()
     // AppKit may return its existing document-controller singleton from init().
     // Configure the returned instance, not storage allocated before super.init().
     self.workspaces = workspaces
     self.paintPalette = paintPalette ?? PaintPalette()
+    self.eyedropperPreferences=eyedropperPreferences ?? EyedropperPreferences()
     self.recoveryPreferences = recoveryPreferences ?? RecoveryPreferencesStore()
     self.colorSettings = colorSettings ?? ColorSettingsStore()
+    self.scriptEventsDispatcher.cancel()
+    self.scriptEvents = scriptEvents ?? ScriptEventsStore()
+    self.scriptEventsDispatcher = ScriptEventDispatcher(store: self.scriptEvents, controller: self)
     self.recoveryIndex = recoveryIndex ?? RecoveryIndexStore()
     self.recoveryMaintenance = RecoveryMaintenance(controller: self)
     self.recoveryDiscovery = RecoveryDiscovery(controller: self)
@@ -598,6 +625,7 @@ import SwiftUI
     for case let document as CraftNSDocument in documents {
       document.store.workspaceLibrary = workspaces
       document.store.adoptPaintPalette(self.paintPalette)
+      document.store.adoptEyedropperPreferences(self.eyedropperPreferences)
       document.store.filterRecall = filterRecall
     }
   }
@@ -629,13 +657,19 @@ import SwiftUI
     return super.document(for: window)
   }
   override func addDocument(_ document: NSDocument) {
+    let alreadyRegistered = documents.contains { $0 === document }
     super.addDocument(document)
     (document as? CraftNSDocument)?.ownerController = self
     (document as? CraftNSDocument)?.store.documentController = self
     (document as? CraftNSDocument)?.store.adoptPaintPalette(paintPalette)
+    (document as? CraftNSDocument)?.store.adoptEyedropperPreferences(eyedropperPreferences)
     (document as? CraftNSDocument)?.store.filterRecall = filterRecall
     (document as? CraftNSDocument)?.store.workspaceLibrary = workspaces
     (document as? CraftNSDocument)?.store.synchronizeLinkedArtwork()
+    if !alreadyRegistered, let document = document as? CraftNSDocument {
+      let event = document.scriptEventOrigin ?? ((document.fileURL != nil || document.importedSourceURL != nil) ? .openDocument : .newDocument)
+      scriptEventsDispatcher.enqueue(event, document: document)
+    }
   }
   override func removeDocument(_ document: NSDocument) {
     if let document = document as? CraftNSDocument {
@@ -644,8 +678,10 @@ import SwiftUI
       document.store.linkedSourceController = nil
       document.ownerController = nil
       document.store.documentController = nil
-      document.store.filterRecall = FilterRecall(document.store.filterRecall.filter)
+      let recall = document.store.filterRecall
+      document.store.filterRecall = FilterRecall(recall.filter, liquifyMeshes: recall.liquifyMeshes.detachedCopy(), lensDefaults: recall.lensDefaults.detachedCopy(including: document.store.cameraLensIdentity))
       document.store.detachPaintPalette()
+      document.store.detachEyedropperPreferences()
     }
     super.removeDocument(document)
   }

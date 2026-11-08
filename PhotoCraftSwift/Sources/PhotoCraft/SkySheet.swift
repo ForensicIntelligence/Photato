@@ -20,9 +20,10 @@ struct SkySheet:View {
         VStack(alignment:.leading,spacing:14){
           GroupBox("Sky"){
             VStack(alignment:.leading,spacing:8){
+              SkyGroupControls(model:model)
               Picker("Image",selection:Binding(get:{model.state.skyID},set:{model.chooseSky($0)})){
                 Text(model.state.sourceLayerID==nil ? "Choose a sky…":"Selected layer").tag(UUID?.none)
-                ForEach(model.library.skies){Text($0.name).tag(Optional($0.id))}
+                ForEach(model.visibleSkies){Text($0.name).tag(Optional($0.id))}
               }
               HStack{Button("Import…"){model.importSky()};Button("Rename…"){model.beginSkyRename()}.disabled(!model.canRenameSky);Button("Remove"){model.removeSky()}.disabled(model.state.skyID==nil)}
               Button("Use Selected Layer"){if let id=model.original.activeLayerID{model.useLayer(id)}}
@@ -49,6 +50,7 @@ struct SkySheet:View {
       }.padding(12)
     }.background(Color(nsColor:.windowBackgroundColor)).frame(minWidth:1000,idealWidth:1150,minHeight:640,idealHeight:740)
       .sheet(item:$model.renameDraft){draft in SkyRenameSheet(model:model,draft:draft)}
+      .sheet(item:$model.groupDraft){draft in SkyGroupSheet(model:model,draft:draft)}
       .onDisappear{model.close();if store.skyWorkspace === model{store.skyWorkspace=nil}}
   }
 }

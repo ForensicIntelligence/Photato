@@ -2,8 +2,9 @@ import Darwin
 import Foundation
 
 /// A single-owner, bounded file transaction. Only commit replaces the destination;
-/// cancellation/errors discard the private sibling file. AppKit callers still use
-/// NSDocument's coordination, attributes and version handling around this writer.
+/// pre-publication cancellation/errors discard the private staged file. A failed
+/// directory synchronization reports already-published, unconfirmed output.
+/// AppKit callers still use NSDocument's coordination and version handling.
 public final class AtomicFileWriter {
   public static let chunkBytes = 64 * 1024
   public private(set) var count = 0
@@ -11,12 +12,15 @@ public final class AtomicFileWriter {
   private let maximumBytes: Int
   private let destination: URL
   private let parent: URL
+  private let stagingParent: URL?
   private let destinationName: String
   private let temporaryName: String
   private let operations: Operations
   private var descriptor: Int32 = -1
   private var directoryDescriptor: Int32 = -1
+  private var stagingDirectoryDescriptor: Int32 = -1
   private var directoryIdentity: Identity?
+  private var stagingDirectoryIdentity: Identity?
   private var stagedIdentity: Identity?
   private var committed = false
   private var ownsTemporary = false
@@ -27,6 +31,27 @@ public final class AtomicFileWriter {
 
   public enum Synchronization: String, Sendable { case full, file }
   public private(set) var synchronization: Synchronization?
+  public var isPublished: Bool { committed }
+  public private(set) var directorySynchronized = false
+
+  /// The writer's rename succeeded, so cleanup must retain its destination even
+  /// though the containing directory's persistence could not be confirmed.
+  public struct PublicationFailure: LocalizedError, CustomNSError, Sendable {
+    public let posixCode: Int32
+    public var filePublished: Bool { true }
+    public static var errorDomain: String { "ca.forensicintelligence.photato.atomic-publication" }
+    public var errorCode: Int { Int(posixCode) }
+    public var errorDescription: String? {
+      "New file contents were published, but the folder could not be synchronized. The save is unconfirmed."
+    }
+    public var errorUserInfo: [String: Any] {
+      [NSLocalizedDescriptionKey: errorDescription!,
+       NSLocalizedFailureReasonErrorKey: NSError(domain: NSPOSIXErrorDomain, code: Int(posixCode)).localizedDescription,
+       NSLocalizedRecoverySuggestionErrorKey: "The destination may already contain the new version. Retry the operation, or choose another destination.",
+       NSUnderlyingErrorKey: NSError(domain: NSPOSIXErrorDomain, code: Int(posixCode)),
+       "PhotatoFilePublished": true, "PhotatoDirectorySynchronized": false]
+    }
+  }
 
   // Per-transaction syscall injection, never a process-wide override.
   struct Operations {
@@ -34,11 +59,17 @@ public final class AtomicFileWriter {
       Darwin.pwrite($0, $1, $2, $3)
     }
     var synchronize: (Int32) -> Int32 = { Darwin.fsync($0) }
+    var synchronizeDirectory: (Int32) -> Int32 = { Darwin.fsync($0) }
     var fullSynchronize: (Int32) -> Int32 = { Darwin.fcntl($0, F_FULLFSYNC) }
     var setFlags: (Int32, UInt32) -> Int32 = { Darwin.fchflags($0, $1) }
     var rename: (Int32, String, String) -> Int32 = { directory, from, to in
       from.withCString { source in
         to.withCString { destination in Darwin.renameat(directory, source, directory, destination) }
+      }
+    }
+    var renameStaged: (Int32, String, Int32, String) -> Int32 = { sourceDirectory, from, destinationDirectory, to in
+      from.withCString { source in
+        to.withCString { destination in Darwin.renameat(sourceDirectory, source, destinationDirectory, destination) }
       }
     }
   }
@@ -61,21 +92,27 @@ public final class AtomicFileWriter {
 
   /// A coordinating outer save may provide its final destination's visibility
   /// when this transaction writes to an intermediate URL owned by that save.
+  /// An optional caller-owned staging directory must use the destination volume;
+  /// the writer removes only its own file, leaving directory ownership to the caller.
   public convenience init(to url: URL, maximumBytes: Int = 512 * 1024 * 1024,
-    destinationHidden: Bool? = nil, followSymbolicLinks: Bool = true) throws {
+    destinationHidden: Bool? = nil, followSymbolicLinks: Bool = true,
+    stagingDirectory: URL? = nil) throws {
     try self.init(to: url, maximumBytes: maximumBytes,
-      destinationHidden: destinationHidden, followSymbolicLinks: followSymbolicLinks, operations: Operations())
+      destinationHidden: destinationHidden, followSymbolicLinks: followSymbolicLinks,
+      stagingDirectory: stagingDirectory, operations: Operations())
   }
 
   init(to url: URL, maximumBytes: Int = 512 * 1024 * 1024,
-    destinationHidden: Bool? = nil, followSymbolicLinks: Bool = true, operations: Operations) throws {
+    destinationHidden: Bool? = nil, followSymbolicLinks: Bool = true,
+    stagingDirectory: URL? = nil, operations: Operations) throws {
     try Task.checkCancellation()
-    guard url.isFileURL, maximumBytes >= 0 else {
+    guard url.isFileURL, maximumBytes >= 0, stagingDirectory?.isFileURL != false else {
       throw CraftError.invalid("Choose a local file and a valid output limit.")
     }
     self.followSymbolicLinks = followSymbolicLinks
     destination = followSymbolicLinks ? url.standardizedFileURL.resolvingSymlinksInPath() : url
     parent = destination.deletingLastPathComponent()
+    stagingParent = stagingDirectory?.standardizedFileURL.resolvingSymlinksInPath()
     destinationName = destination.lastPathComponent
     temporaryName = ".photato-save-" + UUID().uuidString
     self.operations = operations
@@ -91,8 +128,19 @@ public final class AtomicFileWriter {
       directoryIdentity = try Self.identity(descriptor: directoryDescriptor)
       try validateParent()
       original = try Self.identity(directory: directoryDescriptor, name: destinationName)
+      if let stagingParent {
+        stagingDirectoryDescriptor = stagingParent.withUnsafeFileSystemRepresentation {
+          $0.map { Darwin.open($0, O_SEARCH | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC) } ?? -1
+        }
+        guard stagingDirectoryDescriptor >= 0 else { throw Self.posixError() }
+        stagingDirectoryIdentity = try Self.identity(descriptor: stagingDirectoryDescriptor)
+        guard stagingDirectoryIdentity?.device == directoryIdentity?.device else {
+          throw CraftError.invalid("Atomic staging must use the destination's volume.")
+        }
+        try validateStagingParent()
+      }
       descriptor = temporaryName.withCString {
-        Darwin.openat(directoryDescriptor, $0, O_WRONLY | O_CREAT | O_EXCL | O_CLOEXEC, 0o600)
+        Darwin.openat(temporaryDirectoryDescriptor, $0, O_WRONLY | O_CREAT | O_EXCL | O_CLOEXEC, 0o600)
       }
       guard descriptor >= 0 else { throw Self.posixError() }
       ownsTemporary = true
@@ -120,11 +168,11 @@ public final class AtomicFileWriter {
     if ownsTemporary && !committed {
       var value = stat()
       let found = temporaryName.withCString {
-        fstatat(directoryDescriptor, $0, &value, AT_SYMLINK_NOFOLLOW)
+        fstatat(temporaryDirectoryDescriptor, $0, &value, AT_SYMLINK_NOFOLLOW)
       }
       if found == 0, let stagedIdentity {
         if Self.sameFile(stagedIdentity, Self.identity(value)) {
-          let removed = temporaryName.withCString { Darwin.unlinkat(directoryDescriptor, $0, 0) }
+          let removed = temporaryName.withCString { Darwin.unlinkat(temporaryDirectoryDescriptor, $0, 0) }
           if removed == 0 || errno == ENOENT { ownsTemporary = false }
         } else {
           // The private name has been replaced. It no longer belongs to us.
@@ -215,12 +263,13 @@ public final class AtomicFileWriter {
       }
       try Task.checkCancellation()
       try validateParent()
+      try validateStagingParent()
       guard try Self.identity(directory: directoryDescriptor, name: destinationName) == original
       else {
         throw CraftError.invalid("The destination changed while preparing the save. Save again.")
       }
       let opened = try Self.identity(descriptor: descriptor)
-      let named = try Self.identity(directory: directoryDescriptor, name: temporaryName)
+      let named = try Self.identity(directory: temporaryDirectoryDescriptor, name: temporaryName)
       guard let named, Self.sameFile(opened, named), opened.size == count,
         opened.flags & UInt32(UF_HIDDEN) == destinationVisibility
       else {
@@ -228,14 +277,26 @@ public final class AtomicFileWriter {
       }
       // Relative publication stays in the opened directory even if its path moves
       // after validation. NSDocument still owns higher-level file coordination.
-      guard operations.rename(directoryDescriptor, temporaryName, destinationName) == 0 else {
+      let renamed = stagingParent == nil
+        ? operations.rename(directoryDescriptor, temporaryName, destinationName)
+        : operations.renameStaged(stagingDirectoryDescriptor, temporaryName, directoryDescriptor, destinationName)
+      guard renamed == 0 else {
         throw Self.posixError()
       }
       committed = true
       ownsTemporary = false
       Darwin.close(descriptor)
       descriptor = -1
-      closeDirectory()
+      defer { closeDirectory() }
+      // Publication is irreversible here. Finish interrupted synchronization
+      // even if cancellation arrives; never describe this as an unpublished
+      // cancelled transaction or delete/roll back somebody's destination.
+      while operations.synchronizeDirectory(directoryDescriptor) != 0 {
+        let code = errno
+        if code == EINTR { continue }
+        throw PublicationFailure(posixCode: code)
+      }
+      directorySynchronized = true
     } catch {
       failed = true
       throw error
@@ -262,9 +323,29 @@ public final class AtomicFileWriter {
   }
 
   private func closeDirectory() {
+    if stagingDirectoryDescriptor >= 0 {
+      Darwin.close(stagingDirectoryDescriptor)
+      stagingDirectoryDescriptor = -1
+    }
     if directoryDescriptor >= 0 {
       Darwin.close(directoryDescriptor)
       directoryDescriptor = -1
+    }
+  }
+
+  private var temporaryDirectoryDescriptor: Int32 {
+    stagingParent == nil ? directoryDescriptor : stagingDirectoryDescriptor
+  }
+
+  private func validateStagingParent() throws {
+    guard let stagingParent else { return }
+    var value = stat()
+    let result = stagingParent.withUnsafeFileSystemRepresentation {
+      $0.map { fstatat(AT_FDCWD, $0, &value, AT_SYMLINK_NOFOLLOW) } ?? -1
+    }
+    guard result == 0, value.st_mode & S_IFMT == S_IFDIR,
+      let stagingDirectoryIdentity, Self.sameFile(stagingDirectoryIdentity, Self.identity(value)) else {
+      throw CraftError.invalid("The staging folder changed while preparing the save.")
     }
   }
 

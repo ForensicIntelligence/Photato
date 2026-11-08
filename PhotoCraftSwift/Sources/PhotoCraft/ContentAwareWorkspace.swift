@@ -16,6 +16,9 @@ struct ContentAwareState: Equatable, Sendable {
   var tool: ContentAwareStroke.Target = .sampling
   var kind: ContentAwareStroke.Kind = .brush
   var add = false
+  var selectionMode: SelectionMode = .replace
+  private(set) var appliedFillCount = 0
+  private var appliedState: ContentAwareState?
   var size = 30.0
   var panTool = false
   var zoom = 1.0
@@ -44,9 +47,22 @@ struct ContentAwareState: Equatable, Sendable {
   private var generation = 0
   private var closed = false
   var ready: Bool { input != nil && !loading && !committing && !closed }
-  var canCommit: Bool { ready && !rendering && edit != nil && error == nil }
+  var canApply: Bool { ready && stroke == nil && !rendering && edit != nil && error == nil && state != appliedState }
+  var canFinishWithoutApply: Bool { ready && stroke == nil && appliedState == state }
+  var canCommit: Bool { canApply || canFinishWithoutApply }
+  func effectiveSelectionMode(_ flags: NSEvent.ModifierFlags) -> SelectionMode {
+    if flags.contains([.shift,.option]) { return .intersect }
+    if flags.contains(.option) { return .subtract }
+    if flags.contains(.shift) { return .add }
+    return selectionMode
+  }
+  func acceptAppliedFill() {
+    appliedFillCount += 1
+    state.strokes.removeAll { $0.target == .selection }
+    appliedState = state; stroke = nil; undoStates = []; redoStates = []
+  }
   func prepare(_ document: CraftDocument,layerID: UUID) async {
-    loading = true
+    loading = true; input = nil; edit = nil
     do {
       let worker = Task.detached(priority:.userInitiated) {
         let input = try ContentAwareInput.prepare(document,layerID:layerID)
@@ -63,15 +79,15 @@ struct ContentAwareState: Equatable, Sendable {
     if remember && next != state { undoStates.append(state); if undoStates.count > 24 { undoStates.removeFirst() }; redoStates = [] }
     state = next; refresh()
   }
-  func begin(x: Double,y: Double,alternate: Bool) {
+  func begin(x: Double,y: Double,alternate: Bool,selectionMode: SelectionMode? = nil) {
     guard ready, stroke == nil else { return }
-    var s = ContentAwareStroke(); s.target = tool; s.kind = kind; s.add = alternate ? !add:add; s.size = size; s.points = [[x,y]]
+    var s = ContentAwareStroke(); s.target = tool; s.kind = kind; s.add = alternate ? !add:add; s.size = size; s.points = [[x,y]]; s.selectionMode = tool == .selection ? (selectionMode ?? self.selectionMode):nil
     do { try s.validate(); stroke = s } catch { self.error = error.localizedDescription }
   }
   func drag(x: Double,y: Double) { guard ready, let s = stroke, s.points.count < 4096 else { return }; stroke?.points.append([x,y]) }
   func end() { guard let stroke else { return }; self.stroke = nil; var next = state; next.strokes.append(stroke); change(next) }
-  func undo() { stroke = nil; guard let old = undoStates.popLast() else { return }; redoStates.append(state); change(old,remember:false) }
-  func redo() { guard let next = redoStates.popLast() else { return }; undoStates.append(state); change(next,remember:false) }
+  func undo() { guard ready else { return }; stroke = nil; guard let old = undoStates.popLast() else { return }; redoStates.append(state); change(old,remember:false) }
+  func redo() { guard ready else { return }; guard let next = redoStates.popLast() else { return }; undoStates.append(state); change(next,remember:false) }
   func reset() { change(ContentAwareState()) }
   func resetSampling() { var next = state; next.strokes.removeAll { $0.target == .sampling }; next.samplingID = nil; next.settings.sampling = .auto; change(next) }
   func refresh() {

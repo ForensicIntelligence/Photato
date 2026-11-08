@@ -1,0 +1,19 @@
+import Foundation
+import PhotoCraftCore
+@main struct FocusBaseline457 {
+static func main()throws {
+ let dir=URL(fileURLWithPath:CommandLine.arguments[1]);try FileManager.default.createDirectory(at:dir,withIntermediateDirectories:true)
+ for depth in PixelDepth.allCases {for tool in FocusTool.allCases {for mask in [false,true] {
+  var s=try Surface(width:48,height:32,depth:depth)
+  for y in 0..<32 {for x in 0..<48 {s.setPixel(x:x,y:y,Pixel(x<24 ? 0.8:0.2,Float(y+1)/40,x<24 ? 0.3:0.7, x<4 ? 0:1))}}
+  var layer=Layer(name:"Owned",content:.raster(s));if mask {layer.mask=s}
+  var b=CloneBrush();b.size=12;b.hardness=0.6;b.opacity=0.63;b.flow=0.7;b.spacing=0.15;b.pressureSize=false;b.pressureOpacity=true
+  var o=FocusOptions();o.strength=0.65;o.protectDetail=false
+  let points:[StrokePoint]=tool == .smudge ? [.init(x:18.5,y:16.5,pressure:0.8),.init(x:31.5,y:16.5,pressure:0.6)]:[.init(x:23.5,y:16.5,pressure:0.8)]
+  _=try FocusPainter.paint(.init(tool:tool,options:o,brush:b,points:points,mask:mask),on:&layer,canvasWidth:48,canvasHeight:32)
+  let out:Surface;if mask {out=layer.mask!}else {guard case .raster(let p)=layer.content else {fatalError()};out=p}
+  var data=Data();for y in 0..<32 {for x in 0..<48 {let p=out.pixel(x:x,y:y);for v in [p.r,p.g,p.b,p.a] {var bits=v.bitPattern.littleEndian;withUnsafeBytes(of:&bits){data.append(contentsOf:$0)}}}}
+  try data.write(to:dir.appendingPathComponent("normal-\(tool.rawValue)-\(depth.rawValue)-\(mask ? "mask":"pixels").rgba32"))
+ }}}
+}
+}

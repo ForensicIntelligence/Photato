@@ -1,0 +1,563 @@
+{
+  "owner": "Project-authored literal RGB8 bands, edited through Photoshop2026 normal UI",
+  "photoshop_version_observed": "27.2",
+  "reference_acquired_utc": "2026-11-08T00:48:44.693108+00:00",
+  "source_RGB8_bands": [
+    [
+      196,
+      48,
+      70
+    ],
+    [
+      211,
+      148,
+      45
+    ],
+    [
+      78,
+      166,
+      94
+    ],
+    [
+      49,
+      165,
+      188
+    ],
+    [
+      68,
+      89,
+      200
+    ],
+    [
+      168,
+      69,
+      181
+    ],
+    [
+      32,
+      32,
+      32
+    ],
+    [
+      128,
+      128,
+      128
+    ]
+  ],
+  "method": "Created Hue/Saturation layer, selected Reds, plain Orange sample; Add Green; Subtract Orange; plain Gray sample. Each state saved separately. Public hue2 v2 fields decoded independently with Python struct; no Adobe implementation inspected.",
+  "files": {
+    "ps-red-range-add-green.psd": {
+      "sha256": "5bd138d4ccc4e1a3994afb386c216b1f946199f5bf0f44985efa1110b0358ca9",
+      "hue2_bytes": 136,
+      "hue2_sha256": "76d3ca31c5d2018c7ae8e91a4df2fa64ba933cab757ffd2cfba5c6316b75623b",
+      "colorize": 0,
+      "colorization": [
+        -149,
+        25,
+        0
+      ],
+      "master": [
+        0,
+        0,
+        0
+      ],
+      "ranges": [
+        {
+          "bounds": [
+            352,
+            22,
+            131,
+            161
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            15,
+            45,
+            75,
+            105
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            75,
+            105,
+            135,
+            165
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            135,
+            165,
+            195,
+            225
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            195,
+            225,
+            255,
+            285
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            255,
+            285,
+            315,
+            345
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "range_colors": [
+        [
+          76,
+          65,
+          50
+        ],
+        [
+          60,
+          100,
+          50
+        ],
+        [
+          120,
+          100,
+          50
+        ],
+        [
+          180,
+          100,
+          50
+        ],
+        [
+          240,
+          100,
+          50
+        ],
+        [
+          300,
+          100,
+          50
+        ]
+      ]
+    },
+    "ps-red-range-gray-sample.psd": {
+      "sha256": "fef9a92dd5fc1ca6a823417634e26018f9582131187a556252c96674466e84de",
+      "hue2_bytes": 136,
+      "hue2_sha256": "f4ce6a646ab59d248f29f8ef2da3d86c1fd5b98336f9321fb848e360146d0ec2",
+      "colorize": 0,
+      "colorization": [
+        -149,
+        25,
+        0
+      ],
+      "master": [
+        0,
+        0,
+        0
+      ],
+      "ranges": [
+        {
+          "bounds": [
+            291,
+            321,
+            40,
+            70
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            15,
+            45,
+            75,
+            105
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            75,
+            105,
+            135,
+            165
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            135,
+            165,
+            195,
+            225
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            195,
+            225,
+            255,
+            285
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            255,
+            285,
+            315,
+            345
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "range_colors": [
+        [
+          0,
+          0,
+          50
+        ],
+        [
+          60,
+          100,
+          50
+        ],
+        [
+          120,
+          100,
+          50
+        ],
+        [
+          180,
+          100,
+          50
+        ],
+        [
+          240,
+          100,
+          50
+        ],
+        [
+          300,
+          100,
+          50
+        ]
+      ]
+    },
+    "ps-red-range-orange-sample.psd": {
+      "sha256": "592e1234ce5da6e4088199fd26786a39b421ce5d3857e6df57f8e7082bc6f2ed",
+      "hue2_bytes": 136,
+      "hue2_sha256": "cf68f10e843146ac19563bf102077f6771b18a7933d3aebebe39154c3609a165",
+      "colorize": 0,
+      "colorization": [
+        -149,
+        25,
+        0
+      ],
+      "master": [
+        0,
+        0,
+        0
+      ],
+      "ranges": [
+        {
+          "bounds": [
+            352,
+            22,
+            52,
+            82
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            15,
+            45,
+            75,
+            105
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            75,
+            105,
+            135,
+            165
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            135,
+            165,
+            195,
+            225
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            195,
+            225,
+            255,
+            285
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            255,
+            285,
+            315,
+            345
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "range_colors": [
+        [
+          37,
+          65,
+          50
+        ],
+        [
+          60,
+          100,
+          50
+        ],
+        [
+          120,
+          100,
+          50
+        ],
+        [
+          180,
+          100,
+          50
+        ],
+        [
+          240,
+          100,
+          50
+        ],
+        [
+          300,
+          100,
+          50
+        ]
+      ]
+    },
+    "ps-red-range-subtract-orange.psd": {
+      "sha256": "58c9a20fd1e03ebdde168ee11f04d1f762300383774528be84fbd266fb2e4b85",
+      "hue2_bytes": 136,
+      "hue2_sha256": "b7d941e91d28fe6039c37abfed2033012d43a8961e242da388a0a2c11b05023e",
+      "colorize": 0,
+      "colorization": [
+        -149,
+        25,
+        0
+      ],
+      "master": [
+        0,
+        0,
+        0
+      ],
+      "ranges": [
+        {
+          "bounds": [
+            22,
+            52,
+            131,
+            161
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            15,
+            45,
+            75,
+            105
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            75,
+            105,
+            135,
+            165
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            135,
+            165,
+            195,
+            225
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            195,
+            225,
+            255,
+            285
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "bounds": [
+            255,
+            285,
+            315,
+            345
+          ],
+          "values": [
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "range_colors": [
+        [
+          91,
+          65,
+          50
+        ],
+        [
+          60,
+          100,
+          50
+        ],
+        [
+          120,
+          100,
+          50
+        ],
+        [
+          180,
+          100,
+          50
+        ],
+        [
+          240,
+          100,
+          50
+        ],
+        [
+          300,
+          100,
+          50
+        ]
+      ]
+    }
+  },
+  "scope": "Reference range bounds/display swatches only; neutral adjustment samples do not prove adjustment kernel equivalence."
+}

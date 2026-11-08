@@ -1,0 +1,20 @@
+{
+  "step": "dev-step-473",
+  "run": "artifacts/runs/20261107T115546Z-473-pcraft-linked-originals",
+  "status": "Selected embedded-original recovery tested; fullI03/regression/live/normal473 acceptance open",
+  "current_major_workflow": "I04",
+  "next": "AI07",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7542,
+  "latest_software": 473,
+  "latest_optimized_universal": 470,
+  "latest_universal_validation_candidate": 472,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:472large/many-frame stacks,44Debug/13new,44selectedeachnormalarch,92ARM/90Intel combined proof-reference batch, exactstatistics, isolatedcandidate/diary/finalhistorypair. TwoIntelproofreferences and nativepipe remainopen; no broadqualificationwaiver.",
+  "source_manifest": "artifacts/runs/20261107T115546Z-473-pcraft-linked-originals/source03-source.json",
+  "evidence": "docs/PCRAFT_LINKED_ORIGINALS_473.json",
+  "Debug_planned": 41,
+  "Debug_passed": 39,
+  "new_methods_passed": 11
+}

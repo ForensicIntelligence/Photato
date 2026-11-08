@@ -60,7 +60,7 @@ final class DocumentPersistenceTests: XCTestCase {
       service.setDocumentTransfersEnabled(true)
       try service.share(doc)
       let id = try XCTUnwrap(service.shares.first?.id)
-      for format in DocumentIO.Format.allCases {
+      for format in DocumentIO.Format.allCases where format != .exr { // Existing8-bit fixture; EXR has dedicated32-bit workflow coverage.
         let target = folder.appendingPathComponent("copy." + format.rawValue)
         try await doc.copyDocument(to: target, format: format)
         let reply = try await AutomationTests().request(
@@ -430,7 +430,7 @@ final class DocumentPersistenceTests: XCTestCase {
       let accessory = DocumentCopyAccessory(panel: panel, initial: .native)
       XCTAssertEqual(
         accessory.formats.itemTitles,
-        ["Photato", "Photoshop", "Large Document Format", "PNG", "JPEG", "TIFF"])
+        ["Photato", "Photoshop", "Large Document Format", "PNG", "JPEG", "TIFF", "OpenEXR"])
       accessory.formats.selectItem(withTitle: "JPEG")
       accessory.updateFormat()
       XCTAssertEqual(panel.nameFieldStringValue, "Example copy.jpeg")

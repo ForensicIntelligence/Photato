@@ -1,0 +1,15 @@
+{
+  "recorded_utc": "2026-11-07T09:19:52.784333+00:00",
+  "license": "MIT OR Apache-2.0, same as Photato sources",
+  "provenance": "Owned synthetic channel programs executed with unchanged production build468 before auxiliary preparation changes. This is a native regression reference, not Photoshop output.",
+  "programs": 288,
+  "pixels_each": 96,
+  "Float32_words": 110592,
+  "byte_order": "little endian RGBA Float32, no normalization/tolerance",
+  "generator": "Tests/PhotoCraftCoreTests/LegacyChannelFilterCaptureTests.swift",
+  "source_production_ChannelCommands_sha256": "6ee88a617586b0fe282071a2f0cd79a8cd3f0ee688a77358952aee077cc5315c",
+  "sha256": {
+    "legacy-small.f32": "a46e4b062561e960453fd6baf267db305eb328376197bf2e7e09984cd36c2207",
+    "legacy-cases.json": "7e12eaa837aaff67ffb9e50043bbdd527fa3624e799d628af3afebf2a773b5fa"
+  }
+}

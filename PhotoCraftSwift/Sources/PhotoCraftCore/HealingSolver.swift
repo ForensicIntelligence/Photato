@@ -11,6 +11,25 @@ public enum HealingSolver {
     throws -> [Float]
   {
     try validate(width, height, channels: 1, mask: unknown, buffers: [values])
+    // The harmonic extension of a constant boundary is that exact constant.
+    // Summing and dividing Float samples to initialize SOR needlessly perturbs
+    // this solution (including HDR values and signed zero).
+    if let first = unknown.indices.first(where: { !unknown[$0] }) {
+      let value = values[first], word = value.bitPattern
+      var constant = true
+      for i in values.indices where !unknown[i] {
+        if i % 8192 == 0 { try Task.checkCancellation() }
+        if values[i].bitPattern != word { constant = false; break }
+      }
+      if constant {
+        var result = values
+        for i in values.indices where unknown[i] {
+          if i % 8192 == 0 { try Task.checkCancellation() }
+          result[i] = value
+        }
+        return result
+      }
+    }
     var result = values
     try solve(width, height, unknown, &result, depth: 0)
     guard result.allSatisfy(\.isFinite) else {

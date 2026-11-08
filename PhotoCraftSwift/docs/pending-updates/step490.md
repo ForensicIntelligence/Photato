@@ -1,0 +1,15 @@
+> Integrated into the source-delivery diary on 8 November 2026 UTC from the retained checkpoint490 working record. Status statements below describe that checkpoint. Local raw logs, user documents, reference sessions and app bundles are excluded from the public repository. The canonical historical-evidence audit is still pending; see the [delivery record](../SOURCE_PUBLICATION_500.md).
+
+# Photato development record — build490
+
+Generated backgrounds now have a native destination and shared optional API. The selected path uses an existing editable masked pixel layer. It captures a visual reference, keeps the source layers and masks, and places the returned scene below the subject in one undoable edit. Original image bytes and placement metadata survive native save/reopen. It does not resize the canvas or implement masked outpainting.
+
+All134selected Debug tests pass, including11new methods. They cover allRGBdepths, source/mask/selection retention, fitting, history/archive, reference/controller configuration, cancellation, source edits and API validation/approval. All old tests and numerical fixtures remain unchanged. Native92, Actions60,267commands and56tools remain current. Optimized490/universal qualification is deferred under the existing milestone batching policy; the normal489candidate and fullyqualified-selected480 remain distinct.
+
+The native GenerateBackground button opens the intended destination. Both picker choices update their labels and explanation. The real image provider remains unavailable, including with a valid prompt; no real generation was invoked. An owned test-result project shows the background below the retained subject, supports visibilityUndoRedo and closes cleanly. The app quits normally and older running builds remain.
+
+The first test run passed125of127, and the second133of134. The new opaqueRGB32composite identity was the wrong expectation for source-over/profile processing; strict stored-source equality already passed. Two Photoshop recomputation experiments are retained. The serializedPSDcomparison matches all576checkedRGBbytes; an in-memory/profile-domain comparison retains20worddifferences and remains unqualified. No renderer kernel was changed to force the identity, and no old fixture/tolerance was weakened. The HTTP test initially left a sheet open and then reused its oldrevision after closing it; correcting the test kept both interaction and stale-request guards intact. Debug03 passes all134.
+
+Actual model results, contextual lighting/shadows, empty prompts, variants, grouped/SmartObject and large-canvas paths, exact settings/fitting/output, physicalplatforms/60fps and generativeexpand remain open under AI04. The bounded implementation rotates to the end of the major stillneeded pass; next is AI05 reference-guided edits, then AI06. All original package requirements remain. No current/failed build or GitHub item was removed.
+
+Detailed notes (local record: development-notes01.md) · Native/API guide (local record: GENERATED_BACKGROUNDS-guide-qualified02.md) · Qualification (local record: qualification-selected01.json) · Native UI evidence (local record: native-ui01.json)

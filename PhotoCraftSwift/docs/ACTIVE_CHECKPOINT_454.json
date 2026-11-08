@@ -1,0 +1,14 @@
+{
+  "step": "dev-step-454",
+  "run": "artifacts/runs/20261106T222014Z-454-brush-pattern-texture",
+  "status": "SelectedB01patterntextureDebug/nativepassed; fullscopeopen; currentB02thenB04",
+  "current_major_workflow": "B02",
+  "next": "B04",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7409,
+  "latest_optimized_universal": 453,
+  "goal_complete": false,
+  "prior_turn_classification": "progress:453 implemented custom Gallery texture workflow and recorded focused normal/native qualification plus strict Float32 failure",
+  "source_manifest": "artifacts/runs/20261106T222014Z-454-brush-pattern-texture/source04-source.json"
+}

@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 
 struct ColorLookupDraft: Identifiable, Sendable {
   let id: UUID
-  var adjustment = ColorLookupAdjustment()
+  var adjustment = ColorLookupAdjustment.photoshopDefault
   var preview = true
 }
 struct ColorLookupControls: View {
@@ -44,7 +44,7 @@ struct ColorLookupControls: View {
           do { let encoded = try ColorLUTFile.export(lut); exportName = encoded.name; exportFile = .init(data:encoded.data); exporting = true }
           catch { self.error = error.localizedDescription }
         }.disabled(adjustment.lut == nil)
-        Button("Reset") { adjustment = .init() }
+        Button("Reset") { adjustment = .photoshopDefault }
       }
       if loading { ProgressView("Loading LUT…").controlSize(.small) }
     }
@@ -95,15 +95,24 @@ struct ColorLookupEditor: View {
   let layerID: UUID
   var pixelLayer = false
   private var value: ColorLookupAdjustment {
-    if pixelLayer { return store.colorLookupDraft?.adjustment ?? .init() }
+    if pixelLayer { return store.colorLookupDraft?.adjustment ?? .photoshopDefault }
     if case .adjustment(.colorLookup(let value)) = store.document.layers.first(where:{ $0.id == layerID })?.content { return value }
-    return .init()
+    return .photoshopDefault
   }
   var body: some View {
-    ColorLookupControls(adjustment:Binding(get:{ value },set:{ value in
-      if pixelLayer { store.colorLookupDraft?.adjustment = value; store.render() }
-      else { store.setColorLookup(layerID,value) }
-    }))
+    VStack(alignment:.leading,spacing:12) {
+      ColorLookupControls(adjustment:Binding(get:{ value },set:{ value in
+        if pixelLayer { store.colorLookupDraft?.adjustment = value; store.render() }
+        else { store.setColorLookup(layerID,value) }
+      })).disabled(!pixelLayer && store.geometryBusy)
+      if !pixelLayer && store.geometryBusy {
+        HStack {
+          ProgressView("Processing…").controlSize(.small)
+          Spacer()
+          Button("Cancel") { store.geometryTask?.cancel() }
+        }
+      }
+    }
   }
 }
 struct ColorLookupSheet: View {
@@ -134,12 +143,20 @@ extension EditorStore {
   }
   func addColorLookup() {
     guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
-    do { perform(.addLayer(try ColorLookupAdjustment().layer(in:document))); propertiesTab = .properties }
+    do { perform(.addLayer(try ColorLookupAdjustment.photoshopDefault.layer(in:document))); propertiesTab = .properties }
     catch { self.error = error.localizedDescription }
   }
   func setColorLookup(_ id: UUID, _ value: ColorLookupAdjustment) {
     guard case .adjustment(.colorLookup) = document.layers.first(where:{ $0.id == id })?.content else { return }
-    perform(.replaceContent(id,.adjustment(.colorLookup(value))))
+    finishNumericField()
+    finishLayerName()
+    guard !geometryBusy, !hasToneDraft else { return }
+    guard transformDraft == nil else {
+      error = "Apply or cancel Free Transform before another edit."
+      return
+    }
+    stopTimelinePlayback(render:false)
+    performGeometry(.replaceContent(id,.adjustment(.colorLookup(value))))
   }
 }
 extension AppDelegate {

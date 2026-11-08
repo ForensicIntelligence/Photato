@@ -18,6 +18,7 @@ extension WorkspacePanel {
     case .cloneSource: return "seal"
     case .character: return "textformat"
     case .paragraph: return "text.alignleft"
+    case .styles: return "square.stack.3d.up"
     }
   }
 }

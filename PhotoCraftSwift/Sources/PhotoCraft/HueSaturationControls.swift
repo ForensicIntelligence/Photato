@@ -50,9 +50,8 @@ struct HueSaturationControls: View {
       HStack(spacing: 7) {
         ForEach(HueSaturationAdjustment.Channel.allCases.filter { $0 != .master }, id: \.self) {
           target in
-          let hue = Float(adjustment.ranges[target.rangeIndex ?? 0].representativeHue) / 360
-          let rgb = HSLColor.rgb(hue: hue, saturation: 1, lightness: 0.5)
-          let before = Pixel(rgb.x, rgb.y, rgb.z)
+          let swatch = adjustment.ranges[target.rangeIndex ?? 0].swatchColor
+          let before = swatch.pixel
           Button {
             channel = target
           } label: {
@@ -63,6 +62,7 @@ struct HueSaturationControls: View {
               .overlay(Circle().stroke(channel == target ? Color.white : .clear, lineWidth: 2))
           }.buttonStyle(.plain).help("\(target.rawValue): original and adjusted color")
             .accessibilityLabel("Edit \(target.rawValue.lowercased())")
+            .accessibilityValue("Hue \(swatch.hue) degrees, saturation \(swatch.saturation) percent, lightness \(swatch.lightness) percent")
         }
       }.disabled(adjustment.colorize)
       Picker("Color range", selection: $channel) {

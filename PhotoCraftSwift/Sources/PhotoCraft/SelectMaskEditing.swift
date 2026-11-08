@@ -4,13 +4,14 @@ import PhotoCraftImaging
 
 extension EditorStore {
   var canBeginSelectMask: Bool {
-    guard !geometryBusy, !hasToneDraft, transformDraft == nil, !editingComponent,
-      let layer = activeLayer, case .raster = layer.content, layer.smartObject == nil,
+    guard !geometryBusy, !hasToneDraft, transformDraft == nil, !editingComponent, !smartFilterMaskEditing,
+      let layer = activeLayer, case .raster = layer.content,
       selectedLayerIDs.isEmpty || selectedLayerIDs == [layer.id] else { return false }
     return (try? SelectionMatting.checkSize(document.width,document.height)) != nil
   }
+  var canBeginFocusArea: Bool { canBeginSelectMask && activeLayer?.smartObject == nil }
   func beginSelectMask(fromMask: Bool = false,focus:Bool=false) {
-    guard canBeginSelectMask, let id = activeLayer?.id else { return }
+    guard focus ? canBeginFocusArea : canBeginSelectMask, let id = activeLayer?.id else { return }
     let draft = SelectMaskWorkspace(); selectMaskDraft = draft
     let original = document
     draft.task = Task { await draft.prepare(original,layerID:id,fromMask:fromMask,focus:focus) }

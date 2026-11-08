@@ -1,11 +1,15 @@
 import Foundation
 
 public struct ColorMatchOptions: Equatable, Sendable {
+  public var sampleSize = 1
   public var tolerance = 32
   public var contiguous = true
   public var antiAlias = true
   public init() {}
   public func validate() throws {
+    guard ColorSampleSettings.sizes.contains(sampleSize) else {
+      throw CraftError.invalid("Choose Point Sample or a supported average size.")
+    }
     guard (0...255).contains(tolerance) else {
       throw CraftError.invalid("Tolerance must be between 0 and 255.")
     }
@@ -69,7 +73,26 @@ public enum ColorRegion {
     guard seedX >= 0, seedY >= 0, seedX < width, seedY < height else {
       return try SelectionMask(width: width, height: height, bytes: marks)
     }
-    let target = pixels[seedY * width + seedX]
+    let target: SIMD4<UInt8>
+    if options.sampleSize == 1 {
+      // Preserve the original point-sample path, including hidden RGB/alpha.
+      target = pixels[seedY * width + seedX]
+    } else {
+      let area = try ColorAveraging.region(x: Double(seedX), y: Double(seedY),
+        width: width, height: height, size: options.sampleSize)
+      var sum = SIMD4<Int>(repeating: 0)
+      for y in area.y..<(area.y + area.height) {
+        try Task.checkCancellation()
+        for x in area.x..<(area.x + area.width) {
+          let p = pixels[y * width + x]
+          sum.x += Int(p.x); sum.y += Int(p.y)
+          sum.z += Int(p.z); sum.w += Int(p.w)
+        }
+      }
+      let count = area.width * area.height
+      target = SIMD4(UInt8((sum.x + count / 2) / count), UInt8((sum.y + count / 2) / count),
+        UInt8((sum.z + count / 2) / count), UInt8((sum.w + count / 2) / count))
+    }
     let tolerance = options.tolerance
     func similar(_ index: Int) -> Bool {
       let p = pixels[index]
@@ -88,7 +111,7 @@ public enum ColorRegion {
       var stack = [seedY * width + seedX]
       while let index = stack.popLast() {
         try Task.checkCancellation()
-        if marks[index] != 0 { continue }
+        if marks[index] != 0 || !similar(index) { continue }
         let y = index / width
         let x = index % width
         let row = y * width

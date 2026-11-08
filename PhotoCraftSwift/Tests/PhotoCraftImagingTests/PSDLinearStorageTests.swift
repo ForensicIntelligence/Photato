@@ -46,6 +46,19 @@ final class PSDLinearStorageTests: XCTestCase {
       // RGB32CompositeTests compares those bytes to independent Photoshop output.
     }
   }
+  func testOpaqueBackgroundCompositeOmitsAlphaAndPreservesLiteralLinearWords()throws {
+    var d=try PSDCodec.read(source());d.layers[0].background=true
+    var expected=PSDWriter();for _ in 0..<3{for word in words{expected.n(Int(word),4)}}
+    for compression in PSDCompression.allCases {
+      let output=try PSDCodec.writeRasterLayers(d,compression:compression)
+      var reader=PSDReader(data:output);_=try reader.bytes(12);XCTAssertEqual(try reader.u16(),3)
+      _=try reader.bytes(12);for _ in 0..<3{_=try reader.section()}
+      let actual=try PSDChannelCodec.decode(reader.bytes(reader.remaining),width:words.count,height:1,depth:32,channels:3)
+      XCTAssertEqual(Data(actual),expected.data)
+      XCTAssertEqual(try PSDCodec.read(output).layers[0].content,d.layers[0].content)
+    }
+    d.layers[0].visible=false;XCTAssertTrue(try PSDAuxiliaryChannels.mergedTransparency(d))
+  }
   func testOriginalPhotoshopRGB32RepeatedSaveAndMetadataEditsKeepSampleBits() throws {
     let url = try XCTUnwrap(
       Bundle.module.url(

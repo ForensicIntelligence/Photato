@@ -7,10 +7,10 @@ enum RGB32NormalRenderer {
     facts:CompositionFacts? = nil)
     throws -> Surface?
   {
-    guard !document.layers.contains(where: { $0.style != nil }), document.depth == .f32,
+    guard !document.layers.contains(where: { $0.style != nil && $0.style?.isChannelBlendingOnly != true }), document.depth == .f32,
       !document.layers.contains(where: { $0.isGroup || $0.parentID != nil || $0.isClipped })
     else { return nil }
-    let layers = document.layers.filter { $0.visible && $0.opacity > 0 }
+    let layers = document.layers.filter { $0.visible && $0.opacity > 0 && $0.style?.restrictedChannels?.count != 3 }
     guard
       layers.allSatisfy({ layer in
         guard case .raster = layer.content else { return false }
@@ -42,13 +42,13 @@ enum RGB32NormalRenderer {
             // Photoshop seeds the stack with the first layer's straight RGB,
             // including RGB beneath zero alpha. Later interpolation can reveal
             // its rounding contribution even when backdrop alpha is zero.
-            output.setLinearPixel(x: x, y: y, pixel)
+            output.setLinearPixel(x:x,y:y,BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:pixel,before:output.linearPixel(x:x,y:y)))
             continue
           }
           guard pixel.a > 0 else { continue }
           output.setLinearPixel(
             x: x, y: y,
-            try blend(output.linearPixel(x: x, y: y), pixel, opaque: opaqueBase))
+            BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:try blend(output.linearPixel(x:x,y:y),pixel,opaque:opaqueBase),before:output.linearPixel(x:x,y:y)))
         }
       }
     }

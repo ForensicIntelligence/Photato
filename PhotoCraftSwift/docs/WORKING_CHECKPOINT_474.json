@@ -1,0 +1,19 @@
+{
+  "step": "dev-step-474",
+  "run": "artifacts/runs/20261107T125434Z-474-openexr",
+  "status": "Selected OpenEXR workflow optimized-qualified; fullI04/originalgoal remains open",
+  "current_major_workflow": "AI07",
+  "next": "SP01",
+  "compiler_test_workers_live": false,
+  "workers": [],
+  "source_inputs": 7557,
+  "latest_software": 474,
+  "latest_optimized_universal": 474,
+  "latest_universal_validation_candidate": 474,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "Progress:OpenEXR codec/native/API integration, independent6120exact sample bytes, source02/03 qualification/replays; release01 then verified live wait. Intel portable Half fix is now applied; full originalgoal remains unmet.",
+  "source_manifest": "artifacts/runs/20261107T125434Z-474-openexr/release02-source.json",
+  "production_swift_files": 1146,
+  "next_safe_action": "Audit AI07 AI job/document lifecycle and persistence, then SP01. Preserve all prior failures and original scope.",
+  "qualification": "docs/OPENEXR_474.json"
+}

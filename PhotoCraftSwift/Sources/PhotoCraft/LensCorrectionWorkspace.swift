@@ -21,6 +21,7 @@ import PhotoCraftImaging
   var effectiveScale=100.0
   var rendering=false
   var error:String?
+  var preferenceError: String?
   var undoStates=[LensCorrectionSettings]()
   var redoStates=[LensCorrectionSettings]()
   @ObservationIgnored var task:Task<Void,Never>?
@@ -41,6 +42,23 @@ import PhotoCraftImaging
     do { try s.validate() } catch { self.error=error.localizedDescription;return }
     guard s != settings else { error=nil;return }
     if remember && gestureStart == nil { self.remember(settings) };settings=s;refresh()
+  }
+  func loadLensDefault(from store: EditorStore) {
+    guard let identity = store.cameraLensIdentity,
+      let value = store.filterRecall.lensDefaults.lookup(identity).settings else { return }
+    endGesture(); change(value)
+  }
+  func loadPreviousConversion(from store: EditorStore) {
+    guard let value = store.filterRecall.lensDefaults.previous else { return }
+    endGesture(); change(value)
+  }
+  func saveLensDefault(in store: EditorStore) {
+    do { try store.setLensDefault(settings); preferenceError = nil }
+    catch { preferenceError = error.localizedDescription }
+  }
+  func removeLensDefault(in store: EditorStore) {
+    do { try store.removeLensDefault(); preferenceError = nil }
+    catch { preferenceError = error.localizedDescription }
   }
   func beginGesture() { if gestureStart==nil { gestureStart=settings } }
   func endGesture() { if let before=gestureStart,before != settings { remember(before) };gestureStart=nil }
