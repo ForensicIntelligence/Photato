@@ -11,7 +11,7 @@ extension EditorStore {
   func editVideo(_ command: VideoCommand) { guard canUseTimeline else { return }; stopTimelinePlayback(render:false); perform(.video(command)) }
   func startVideoPlayback() throws { try startNativeVideoPlayback() }
   var videoState: [String:Any] {
-    ["canCreateBlankLayer":canCreateBlankVideoLayer,"pixelsPerSecond":videoTimelinePixelsPerSecond,"selectedTransitionID":videoSelectedTransitionID?.uuidString as Any? ?? NSNull(),"transitionEditorVisible":videoTransitionEditorVisible,"arrangement":VideoArrangementAPI.state(document),"placementOperationID":moviePlacementID?.uuidString as Any? ?? NSNull(),"timeline":document.videoTimeline.map { TemporalContentAPI.timeline($0) } as Any? ?? NSNull(),
+    ["keyframeSelection":VideoKeyframeSelectionAPI.selectionState(self),"canCreateBlankLayer":canCreateBlankVideoLayer,"pixelsPerSecond":videoTimelinePixelsPerSecond,"selectedTransitionID":videoSelectedTransitionID?.uuidString as Any? ?? NSNull(),"transitionEditorVisible":videoTransitionEditorVisible,"arrangement":VideoArrangementAPI.state(document),"placementOperationID":moviePlacementID?.uuidString as Any? ?? NSNull(),"timeline":document.videoTimeline.map { TemporalContentAPI.timeline($0) } as Any? ?? NSNull(),
      "previewFrame":timelinePreviewVideoFrame as Any? ?? NSNull(),
      "keyframes":document.layers.filter{$0.videoKeyframes != nil}.map{["layerID":$0.id.uuidString,"keys":$0.videoKeyframes!.map{TemporalContentAPI.key($0)}] as [String:Any]},
      "clips":document.layers.compactMap { layer -> [String:Any]? in
@@ -27,7 +27,7 @@ struct VideoTimelinePanel: View {
     if let timeline = store.document.videoTimeline {
       VStack(alignment:.leading,spacing:8) {
         HStack {
-          Text("Timeline").fontWeight(.semibold);VideoTransitionControls(store:store);TimelineAudioControls(store:store);Spacer()
+          Text("Timeline").fontWeight(.semibold);VideoKeyframeEditingMenu(store:store);VideoTransitionControls(store:store);TimelineAudioControls(store:store);Spacer()
           Button("Export Image Sequence…") { store.presentImageSequenceExport() }
           Menu {
             Button("Convert to Frame Animation…") {store.presentVideoFrameConversion()}

@@ -1,3 +1,9 @@
+## Source update — 9 November 2026 UTC, build 518
+
+Video keyframes now support multi-selection, an immutable clipboard and atomic paste, delete, move, duplicate and interpolation edits through native controls and the optional API. All 46 selected tests and 12 new tests pass in Debug, optimized Apple Silicon and translated Intel. Actual native group editing, save/reopen and universal static checks pass. Photoshop 2026 supplied the observed menu and single-layer timing/value reference; full SP01 and earlier failures remain open. Next: AI09, major stillneeded.
+
+[518 — Development record](DEVLOG.md#dev-step-518) · [Workflow/API](KEYFRAME_GROUP_EDITING.md) · [Qualification](SOURCE_PUBLICATION_518.md).
+
 ## Source update — 9 November 2026 UTC, build 517
 
 Generated-image alternatives now remain in one native layer, with a Properties thumbnail chooser, deletion, Undo/Redo and offline save/reopen. All54 selected tests and9 new tests pass in Debug, optimized Apple Silicon and translated Intel. Actual native UI and universal static checks pass. Test images are owned synthetic fixtures; no actual provider generation or Photoshop-output equality is claimed. Full AI07 and prior failures remain open. Next: SP01 timeline/video, major stillneeded.

@@ -1,3 +1,5 @@
+**Source checkpoint 518:** Native video keyframe group editing and optional API. All 46 selected and 12 new tests pass in Debug and both optimized architectures; actual native save/reopen and universal static checks pass. Full SP01, prior failures and complete Photoshop parity remain open. [Details](docs/SOURCE_PUBLICATION_518.md).
+
 **Source checkpoint 517:** Saved generated-image alternatives, native Properties chooser and optional API.54/54 selected and 9/9 new tests pass in Debug and both optimized architectures; native save/reopen and universal static checks pass. No actual model/provider-output claim. Full AI07 and earlier failures remain open. [Details](docs/SOURCE_PUBLICATION_517.md).
 
 **Source checkpoint 516:** Editable PSD/PSB artboards. All 11 new methods pass in every configuration, including exact owned merged references. Debug/optimized ARM pass 74/74 selected; Intel passes 73/74 with an older paging failure reproduced on retained515. Native/Photoshop reopen and universal static checks pass; full parity and prior failures remain open. [Details](docs/SOURCE_PUBLICATION_516.md).

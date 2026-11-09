@@ -371,7 +371,7 @@ import UniformTypeIdentifiers
       "channelMerge":channelMergeState(document),
       "flattenImage":store.flattenImageState,
       "layerMerge":store.layerMergeState,
-      "video": store.videoState,
+      "video": videoState(shareID:share.id,store:store),
       "audio": TimelineAudioAPI.state(store),
       "videoSequenceCreation": videoSequenceCreationState,
       "videoRender": ["operationID":store.videoRenderID?.uuidString as Any? ?? NSNull()],
@@ -982,6 +982,10 @@ import UniformTypeIdentifiers
       }
       if command.name == VideoKeyframeAPI.name {
         guard store.canUseTimeline else{throw AutomationFailure(status:409,message:"Finish the current Timeline edit.")}
+        if VideoKeyframeSelectionAPI.operations.contains(try command.string("operation")) {
+          try await editVideoKeyframeSelection(command,document:document,shareID:id)
+          return .json(state(share,document:document))
+        }
         let native=try command.videoKeyframeCommand(in:store.document)
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision){_ in native}
         return .json(state(share,document:document))

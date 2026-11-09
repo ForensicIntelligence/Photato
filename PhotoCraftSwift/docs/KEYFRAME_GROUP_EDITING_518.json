@@ -1,0 +1,198 @@
+{
+  "Actions": 60,
+  "Photoshop_parity": false,
+  "all_selected_passed": true,
+  "canonical_history_pair_failed": true,
+  "excluded_generated_or_restricted_inputs": 13,
+  "failures_and_repairs": [
+    "Debug01:0tests; two stored [String:Any] schemas rejected by Swift6 concurrency checks. Source02 makes them computed properties and offsets the new pixel fixture to prevent trivial occlusion.",
+    "Debug02:44/45,10/11new; only the new cross-document harness posts to the wrong share through an older helper. Source03 uses explicit target HTTP path and proper pruned-source404.",
+    "Source03 adds early paste/duplicate allocation admission plus a new4096-key/17destination regression; Debug03 all46/12pass.",
+    "Source04 trailing inspector placement still outside parent-window capture; Debug04all46/12pass but placement gate not passed. Source05 leading anchor verified toward center; Debug05all46/12pass. Engine/API/tests unchanged since03."
+  ],
+  "frozen_inputs": 7837,
+  "full_SP01_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7824,
+  "native_UI": {
+    "actual_pid": 44791,
+    "actual_process_absent": true,
+    "normal_quit": true,
+    "observations": [
+      "Opened retained Source04 saved native document with4keys and100%opacity at2sec",
+      "Leading attachment places keyframe inspector toward window center;controls visible in current4-key capture",
+      "Popover SelectAll4;Duplicate offset4->8keys with4selected at4/5/6/7sec",
+      "Move offset1->selected5/6/7/8sec;Undo returnedTimeline211frames;UndoDuplicate returned4keys/151frames",
+      "Menu SelectAll/Hold changedall4iconsandpickers;Undo/RedoHold toggleddirty history",
+      "SeparateSaveAsSaved-Keyframes-518-ui03.photato;close andactualreopenretained4keys/allHold",
+      "NormalQuitPID44791absent"
+    ],
+    "opened_source_hash_unchanged": true,
+    "reopen_performed": true,
+    "reopened_interpolation": [
+      "hold",
+      "hold",
+      "hold",
+      "hold"
+    ],
+    "reopened_key_count": 4,
+    "screenshots_available": true,
+    "workflow_passed": true
+  },
+  "native_format": 92,
+  "native_regressions": "Owned native RGB8/16/32 curves, exact shifted pixels and archive/history; all property kinds, group mapping, collisions/locks/malformed refs, large budget admission, native controls and actual HTTP state/permissions/revisions/lifecycle. These do not establish Photoshop output-byte equivalence.",
+  "new_methods": [
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testHTTPExplicitCrossDocumentClipboardNeedsSharedSourceRevisionAndGrant",
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testHTTPSelectionClipboardIsolationHistoryGuardsAndSchemas",
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testNativeApplicationClipboardSelectionPasteHistoryAndExactShiftedPixels",
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testNativeBulkSelectionDeletionInterpolationAndControls",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testClipboardSnapshotIsImmutableAndPastesAcrossLayersAndDocuments",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testContentVisibilityAndGeometryTracksKeepPayloadsAndRejectInvalidInterpolation",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testGroupMoveRemovesSelectedTimesBeforeCollisionChecksAndIsAtomic",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testLargeClipboardReplicationAndLayerBudgetsRejectAtomically",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testLockedDestinationsMissingKeysAndInvalidMappingsNeverPartiallyEdit",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testMultipleLayerMappingPreservesGlobalRelativeTimesAndBulkHistory",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testPasteOverwritesOnlyMatchingPropertyTimeAndRetainsDestinationIdentity",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testPhotoshopObservedTwoKeyPasteKeepsSpacingValuesAndInterpolation"
+  ],
+  "next": {
+    "package": "AI09",
+    "pass": "major-stillneeded"
+  },
+  "original_scope": {
+    "all_original_acceptance_retained": true,
+    "commands": 652,
+    "major_memberships": 81,
+    "packages": 104,
+    "passes": 7
+  },
+  "prior_failures_remain_required": true,
+  "public_references": [
+    "https://helpx.adobe.com/pdf/cs6/photoshop_reference.pdf",
+    "https://helpx.adobe.com/uk/photoshop/using/editing-video-animation-layers-photoshop.html",
+    "https://developer.apple.com/documentation/SwiftUI/View/popover(isPresented:attachmentAnchor:arrowEdge:content:)"
+  ],
+  "recorded_utc": "2026-11-09T15:29:05.101732+00:00",
+  "reference": {
+    "PSD_retained_privately_sha256": "5c0a8ce687f5e5471d2ca465546952c54964bf85991e29b1a712b4ff4b17437a",
+    "Photoshop_pixel_equivalence": false,
+    "context_menu": [
+      "Delete",
+      "Copy",
+      "Paste",
+      "Select All",
+      "Deselect All",
+      "Linear Interpolation",
+      "Hold Interpolation"
+    ],
+    "document": "Owned160x120RGB8Timeline",
+    "four_markers_visible": true,
+    "kind": "Owned installed Photoshop2026 UI observation, separate from native regression tests",
+    "observed_at_3_seconds_plus_1_frame_opacity_percent": 25,
+    "observed_at_paste_opacity_percent": 100,
+    "owned_document_saved_closed_to_Home": true,
+    "panel_height_restored": true,
+    "paste_start_seconds": 2,
+    "source_opacity_keys": [
+      [
+        0,
+        100
+      ],
+      [
+        1,
+        25
+      ]
+    ]
+  },
+  "remaining": [
+    "Full original SP01 timeline/video/footage/audio/codec/animation-interchange functionality and acceptance remain open; no missing function is reclassified as cleanup.",
+    "Automatic cross-profile/content keyframe paste, external/system clipboard interchange, graphical marquee/group dragging and retiming remain missing.",
+    "Complete PSD/portable Actions/Adobe animation descriptors and Photoshop multi-layer mapping, collision/default/shortcut behavior remain unqualified.",
+    "Existing per-layer4096/document65536 keys,64MiB key metadata and source/timing/storage limits remain; dense maximum capacity and60fps are not established.",
+    "Earlier numerical/crash/full-suite failures, exact Photoshop output and supported physical-platform qualification remain required."
+  ],
+  "selected_methods": [
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testHTTPExplicitCrossDocumentClipboardNeedsSharedSourceRevisionAndGrant",
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testHTTPSelectionClipboardIsolationHistoryGuardsAndSchemas",
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testNativeApplicationClipboardSelectionPasteHistoryAndExactShiftedPixels",
+    "PhotoCraftAppTests.VideoKeyframeEditingWorkflowTests/testNativeBulkSelectionDeletionInterpolationAndControls",
+    "PhotoCraftAppTests.VideoKeyframeWorkflowTests/testAPIKeyframesMatchDesktopNative53AndGuards",
+    "PhotoCraftAppTests.VideoKeyframeWorkflowTests/testAPISetMoveDisableAndRemoveTimeline",
+    "PhotoCraftAppTests.VideoKeyframeWorkflowTests/testDesktopPlaybackUsesKeysWithoutMutatingHistory",
+    "PhotoCraftAppTests.VideoKeyframeWorkflowTests/testRenderedAnimationMatchesAnalyticSquareAndExports",
+    "PhotoCraftCoreTests.FrameTimelineConversionTests/testConvertedGroupPlacementPreservesTreeAndSharedMasks",
+    "PhotoCraftCoreTests.FrameTimelineConversionTests/testEditableTracksDurationLoopHistoryAndNative59",
+    "PhotoCraftCoreTests.FrameTimelineConversionTests/testFractionalAndZeroDelaySamplingSelectedFrameAndBounds",
+    "PhotoCraftCoreTests.FrameTimelineConversionTests/testVisibilityIsHoldAndConvertedTracksRemainEditable",
+    "PhotoCraftCoreTests.TimelineTrimTests/testClippingBaseDependencyAndEmptyWorkAreaContent",
+    "PhotoCraftCoreTests.TimelineTrimTests/testKeyframeHandlesPreserveInterpolationAndRejectUnversionedPreroll",
+    "PhotoCraftCoreTests.TimelineTrimTests/testLockInvalidAreaAndMissingTimelineAreAtomicAndFullAreaIsNoop",
+    "PhotoCraftCoreTests.TimelineTrimTests/testMovingTrimmedKeysPreservesHandlesAndAddingAudioExtendsOnlyNewMedia",
+    "PhotoCraftCoreTests.TimelineTrimTests/testOutsideClipsRemovedAndSequentialGroupRetainsOriginalBoundary",
+    "PhotoCraftCoreTests.TimelineTrimTests/testRepeatedTrimAndVariablePresentationTimesKeepSourceIndex",
+    "PhotoCraftCoreTests.TimelineTrimTests/testSourceHandlesDurationPlayheadHistoryAndNative58",
+    "PhotoCraftCoreTests.VideoFramesTests/testBlankCreationRejectsInvalidContextsWithoutMutation",
+    "PhotoCraftCoreTests.VideoFramesTests/testBlankLayerAllDepthsPaintingFrameIsolationHistoryAndNative90",
+    "PhotoCraftCoreTests.VideoFramesTests/testDenseLegacyEncodingAndSparseEqualityKeepExactSamples",
+    "PhotoCraftCoreTests.VideoFramesTests/testIndexed89And90RecoveryMetadataRetainsContext",
+    "PhotoCraftCoreTests.VideoFramesTests/testLegacySampledClipsAndRetainedConversionSourcesSelectCorrectArchive",
+    "PhotoCraftCoreTests.VideoFramesTests/testMaximumCanvasAndOneDayTimelineRetainConstantEmptyStorage",
+    "PhotoCraftCoreTests.VideoFramesTests/testSparseDecodeRejectsMalformedCountVersionAndDuplicateIndices",
+    "PhotoCraftCoreTests.VideoFramesTests/testUniformLogicalIndexingCopyOnWriteAndCanonicalReset",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testClipboardSnapshotIsImmutableAndPastesAcrossLayersAndDocuments",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testContentVisibilityAndGeometryTracksKeepPayloadsAndRejectInvalidInterpolation",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testGroupMoveRemovesSelectedTimesBeforeCollisionChecksAndIsAtomic",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testLargeClipboardReplicationAndLayerBudgetsRejectAtomically",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testLockedDestinationsMissingKeysAndInvalidMappingsNeverPartiallyEdit",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testMultipleLayerMappingPreservesGlobalRelativeTimesAndBulkHistory",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testPasteOverwritesOnlyMatchingPropertyTimeAndRetainsDestinationIdentity",
+    "PhotoCraftCoreTests.VideoKeyframeEditingTests/testPhotoshopObservedTwoKeyPasteKeepsSpacingValuesAndInterpolation",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testIndependentTracksAutoCaptureSeekAndHistory",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testLinkedAndUnlinkedMasksRemainInTheirCoordinateSpaces",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testMalformedKeysAndLockedEditsRejectAtomically",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testMoveDeleteDisableAndGeometryTrackReplacement",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testNative53PreservesInterpolatedPlayheadAndRejectsDowngrade",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testStyleAutomaticKeysInterpolateAndNilEndpointIsExact",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testSubpixelPositionAndHoldSwitchAtExactKey",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testTimelineDurationRateAndLoopKeepChosenLength",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testTransformAnimationKeepsSourceAndInterpolatesRotationScale",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testTransformShortestRotationAndReflectionHold",
+    "PhotoCraftCoreTests.VideoKeyframeTests/testVideoTransformRetainsAllFramesAndCurrentFramePainting"
+  ],
+  "software_build": 518,
+  "software_release": false,
+  "source_variant": "Source05",
+  "standalone_website_promotion_pending": true,
+  "status": "Selected native/API multi-key editing and clipboard workflow qualified; full SP01 remains open",
+  "step": 518,
+  "typed_commands": 271,
+  "universal_static": {
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "both_optional_models_and_provenance_verified": true,
+    "launched": false,
+    "minimum_system": "14.0",
+    "production_entitlements_unchanged": true,
+    "signature_payload_replay_and_extracted_content_verified": true
+  },
+  "validation": {
+    "Debug": {
+      "new_passed": 12,
+      "passed": 46,
+      "selected": 46
+    },
+    "optimizedARM": {
+      "new_passed": 12,
+      "passed": 46,
+      "selected": 46
+    },
+    "translatedIntel": {
+      "new_passed": 12,
+      "passed": 46,
+      "selected": 46
+    }
+  },
+  "workflow": "KEYFRAME_GROUP_EDITING.md"
+}

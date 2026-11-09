@@ -619,6 +619,9 @@ import UniformTypeIdentifiers
     }
     render()
   }
+  var videoKeyframeSelection=Set<VideoKeyframeReference>()
+  var videoKeyframePasteboard=VideoKeyframePasteboard.shared
+  var apiVideoKeyframeClipboard:APIKeyframeClipboard?
   var videoTimelinePixelsPerSecond:Double = 60
   var videoSelectedTransitionID:UUID?
   var videoTransitionEditorVisible = false

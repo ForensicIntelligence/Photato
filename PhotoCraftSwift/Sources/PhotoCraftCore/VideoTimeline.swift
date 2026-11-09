@@ -82,6 +82,7 @@ public struct VideoTimeline: Codable, Equatable, Sendable {
 public enum VideoCommand: Sendable {
   case create(frameRate:Double,durationFrames:Int),duration(Int),remove,blankLayer
   case keyframe(VideoKeyframeCommand)
+  case keyframes(VideoKeyframeEdit)
   case arrange(VideoArrangementCommand)
   case transition(VideoTransitionCommand)
   case audio(TimelineAudioCommand)
@@ -90,12 +91,13 @@ public enum VideoCommand: Sendable {
   case timing(UUID, startTime: Double, inFrame: Int, outFrame: Int, frameRate: Double)
   case frameRate(Double)
   case loop(Bool)
-  public var label: String { switch self {case .blankLayer: "New Blank Video Layer";case .create: "Create Video Timeline";case .duration: "Timeline Duration";case .remove: "Remove Video Timeline";case .keyframe: "Edit Video Keyframe"; case .arrange(let edit): edit.label; case .transition: "Edit Video Transition"; case .audio(let edit): edit.label; case .workspace(let edit): edit.label; case .insert: "New Video Layer"; case .timing: "Video Clip Timing"; case .frameRate: "Timeline Frame Rate"; case .loop: "Loop Playback" } }
+  public var label: String { switch self {case .blankLayer: "New Blank Video Layer";case .create: "Create Video Timeline";case .duration: "Timeline Duration";case .remove: "Remove Video Timeline";case .keyframe: "Edit Video Keyframe"; case .keyframes(let edit): edit.label; case .arrange(let edit): edit.label; case .transition: "Edit Video Transition"; case .audio(let edit): edit.label; case .workspace(let edit): edit.label; case .insert: "New Video Layer"; case .timing: "Video Clip Timing"; case .frameRate: "Timeline Frame Rate"; case .loop: "Loop Playback" } }
   public func apply(to document: inout CraftDocument) throws {
     if case .workspace(let edit)=self {try edit.apply(to:&document);return}
     if case .audio(let edit)=self {try edit.apply(to:&document);return}
     if case .transition(let edit)=self {try edit.apply(to:&document);return}
     if case .arrange(let edit)=self {try edit.apply(to:&document);return}
+    if case .keyframes(let edit)=self {try edit.apply(to:&document);return}
     if case .keyframe(let edit)=self {try edit.apply(to:&document);return}
     if case .blankLayer=self {
       guard let timeline=document.videoTimeline,document.animation==nil,!document.hasArtboards,!document.hasAuthoritativeModeStorage,
@@ -135,7 +137,7 @@ public enum VideoCommand: Sendable {
     guard var timeline = document.videoTimeline else { throw CraftError.invalid("Create a video Timeline first.") }
     let previousDuration=Double(timeline.durationFrames)/timeline.frameRate
     switch self {
-    case .create,.duration,.remove,.blankLayer,.keyframe,.arrange,.transition,.audio,.workspace,.insert: break
+    case .create,.duration,.remove,.blankLayer,.keyframe,.keyframes,.arrange,.transition,.audio,.workspace,.insert: break
     case .timing(let id,let start,let first,let end,let rate):
       guard let i = document.layers.firstIndex(where:{$0.id == id}), var clip = document.layers[i].video else { throw CraftError.invalid("Select a video layer.") }
       guard !document.isPositionLocked(id) else { throw CraftError.invalid("Unlock video timing before trimming.") }

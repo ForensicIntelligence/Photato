@@ -622,7 +622,7 @@ window.panel.properties,Window,Properties,,partial,"Native panel content; step06
 window.panel.shapes,Window,Shapes,,pending,
 window.panel.styles,Window,Styles,,pending,
 window.panel.swatches,Window,Swatches,,partial,Native panel content; step060 Window menu reveals hidden/collapsed group; WorkspaceTests and live UI; complete panel content and per-tab closing remain incomplete
-window.panel.timeline,Window,Timeline,,partial,Step246 adds editable video/frame conversion and source/audio recovery through native menus/API/history/native60. Full interchange/exact/live/platform remain open. docs/VIDEO_FRAME_CONVERSION_REFERENCES.json
+window.panel.timeline,Window,Timeline,,partial,"Step246 adds editable video/frame conversion and source/audio recovery through native menus/API/history/native60. Full interchange/exact/live/platform remain open. docs/VIDEO_FRAME_CONVERSION_REFERENCES.json Step518 adds native multi-key selection, clipboard and atomic paste/delete/interpolation/move/duplicate with matching optional API/history and explicit shared-source authorization.46selected/12new pass eachconfiguration; actual native save/reopen and installed2026single-layer copy/paste observation. FullSP01 remains open. docs/KEYFRAME_GROUP_EDITING_518.json"
 window.panel.toolPresets,Window,Tool Presets,,pending,
 window.panel.options,Window,Options,,pending,
 window.panel.tools,Window,Tools,,pending,

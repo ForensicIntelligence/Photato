@@ -39,7 +39,7 @@ private struct VideoPropertyTrack:View {
       Button{seek(previous:false)} label:{Image(systemName:"chevron.right")}.disabled(!keys.contains{$0.time>time+1e-9}).accessibilityLabel("Next \(property.title) keyframe")
       values
       Spacer(minLength:0)
-      Button("\(keys.count) keys…"){showKeys=true}.disabled(keys.isEmpty).popover(isPresented:$showKeys){VideoKeyframeList(store:store,layerID:layer.id,property:property).padding().frame(width:390,height:260)}
+      Button("\(keys.count) keys…"){showKeys=true}.disabled(keys.isEmpty).popover(isPresented:$showKeys,arrowEdge:.leading){VideoKeyframeList(store:store,layerID:layer.id,property:property).padding().frame(width:490,height:300)}
     }.buttonStyle(.borderless).disabled(locked)
   }
   @ViewBuilder var values:some View {
@@ -69,10 +69,12 @@ private struct VideoKeyframeList:View {
   var body:some View {
     VStack(alignment:.leading) {
       Text("\(property.title) Keyframes").font(.headline)
-      Text("Time in seconds; interpolation applies until the next key.").font(.caption).foregroundStyle(.secondary)
+      HStack {Text("Time in seconds; interpolation applies until the next key.").font(.caption).foregroundStyle(.secondary);Spacer();VideoKeyframeEditingMenu(store:store,layerID:layerID,property:property)}
+      VideoKeyframeSelectionControls(store:store)
       ScrollView {
         ForEach(keys){key in
           HStack {
+            Toggle("Select keyframe at \(key.time) seconds",isOn:Binding(get:{store.validVideoKeyframeSelection.contains(.init(layerID:layerID,keyframeID:key.id))},set:{ _ in store.selectVideoKeyframe(.init(layerID:layerID,keyframeID:key.id),additive:true) })).labelsHidden()
             Image(systemName:key.interpolation == .hold ? "square.fill":"diamond.fill")
             TextField("Time",value:Binding(get:{key.time},set:{store.editVideo(.keyframe(.move(layerID,key.id,$0)))}),format:.number).frame(width:80)
             Picker("Interpolation",selection:Binding(get:{key.interpolation},set:{store.editVideo(.keyframe(.interpolation(layerID,key.id,$0)))})){
