@@ -61,9 +61,11 @@ extension Renderer {
   {
     guard old.id == d.id, old.width == d.width, old.height == d.height, old.globalLight==d.globalLight,
       old.depth == d.depth, old.colorSpace == d.colorSpace, old.sourceICC == d.sourceICC,
-      old.workingICC == d.workingICC,
-      old.layers.count == d.layers.count
+      old.workingICC == d.workingICC
     else { return .full }
+    if old.layers.count != d.layers.count {
+      return try addedMaskedAdjustmentDamage(from: old, to: d) ?? .full
+    }
     if old != d, (old.layers + d.layers).contains(where: { ($0.style != nil && $0.style?.isChannelBlendingOnly != true) || $0.smartFilters != nil }) { return .full }
     let oldPatterns = old.patterns ?? []
     let newPatterns = d.patterns ?? []
@@ -144,6 +146,38 @@ extension Renderer {
       }
     }
     return region.map { .region($0) } ?? .unchanged
+  }
+
+  /// A newly painted plain top adjustment cannot affect pixels outside its black mask.
+  /// Other insertions retain full rendering, including any change to the prior stack.
+  private static func addedMaskedAdjustmentDamage(from old: CraftDocument, to d: CraftDocument) throws
+    -> RenderSnapshot.Update? {
+    guard d.layers.count == old.layers.count + 1, let layer = d.layers.last, layer.opacity > 0,
+      d.animation == nil, d.videoTimeline == nil, d.variables == nil,
+      d.modeDescriptor == nil, d.restrictedMode == nil, d.inkMode == nil,
+      case .adjustment(let adjustment) = layer.content, let mask = layer.mask,
+      mask.width == d.width, mask.height == d.height, mask.depth == d.depth,
+      mask.defaultPixel.hasSameBits(as: Pixel.black) else { return nil }
+    var plain = Layer(name: layer.name, content: layer.content)
+    plain.id = layer.id; plain.opacity = layer.opacity; plain.blendMode = layer.blendMode; plain.mask = mask
+    guard plain == layer else { return nil }
+    switch adjustment {
+    case .source: return nil
+    case .modern(let value): if value.needsNeighborhood { return nil }
+    case .levels, .curves, .hueSaturation, .colorBalance, .classic, .colorLookup,
+      .tonalSteps, .gradientMap, .exposure, .brightnessContrast, .saturation, .invert, .grayscale: break
+    }
+    for existing in old.layers {
+      guard existing.style == nil, existing.smartFilters == nil else { return nil }
+      if case .adjustment(.modern(let value)) = existing.content, value.needsNeighborhood { return nil }
+    }
+    var remainder = d; remainder.layers.removeLast(); remainder.activeLayerID = old.activeLayerID
+    guard remainder == old, try renderDamage(from: old, to: remainder) == .unchanged else { return nil }
+    // Preserve semantic admission errors even when an entirely black mask changes no pixels.
+    _ = try adjustment.spatialEvaluator(depth: d.depth)
+    let black = try Surface(width: mask.width, height: mask.height, depth: mask.depth, fill: .black)
+    guard let changed = try mask.changedTileBounds(comparedTo: black) else { return .unchanged }
+    return .region(footprint(changed, transform: .identity, padding: 1, document: d))
   }
 
   private static func footprint(

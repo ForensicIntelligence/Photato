@@ -8192,6 +8192,20 @@
       "link": "DEVLOG.md#dev-step-520",
       "section_sha256": "46f821690b610f2ee1776bd126356bd345ccaa6c94b4a2dc2b635706f3440e4a",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-521",
+      "title": "2026-11-09 \u2014 Sky preview containment and brush measurements",
+      "link": "DEVLOG.md#dev-step-521",
+      "section_sha256": "0a364f61ad683d03e652fa243dfcc233b3a84b5a77f6b1934c8377712c6008b9",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-522",
+      "title": "2026-11-09 \u2014 Masked adjustment preview performance",
+      "link": "DEVLOG.md#dev-step-522",
+      "section_sha256": "bee5ad9a2f80cb247d9d55f6ff472485e1405ac06487381f288e1967251d4fb7",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10723,8 +10737,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "9375f5ab3b866ec3422da3ec4e999b25450be5b13cfa2033168e76659facf488",
-      "bytes": 124408,
+      "sha256": "24182b2a09a5e3bf6e1d00258458a5e75dde5cb9a29474da915497869df26e97",
+      "bytes": 125284,
       "rolling_current_snapshot": false
     },
     {
@@ -10735,8 +10749,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "001c9190dfc2dcefcbe87edc1000e52e271603cd339ebb2deddc81fd0fe157cf",
-      "bytes": 117889,
+      "sha256": "29e7f81d9dd16e64349b7e1e9870d916346feb60ee98001bb7b5963cb2a1523e",
+      "bytes": 118765,
       "rolling_current_snapshot": false
     },
     {
@@ -12943,8 +12957,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "5d987f754c26e9ac1565b6086431d149fe73ab19e6b7ea4ea0b4142d2aa8ca45",
-      "bytes": 83525,
+      "sha256": "aeaba28797fe59b5b5f1a670057f13d304b9975cbba3b5dc3a0f6e6230dd344e",
+      "bytes": 84004,
       "rolling_current_snapshot": false
     },
     {
@@ -12985,14 +12999,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "5296448ca7073d3b8ed62b9d14c23602a569b555239e377b5dfbb55459056900",
-      "bytes": 811251,
+      "sha256": "a76973c80141b64b081ec96d79c138c1cde5b199c49f48f00b6319e605a41399",
+      "bytes": 811823,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "dbd8a525e2b50d8767c12d5d361fd61faf05e497979f33a4411208005775ce5d",
-      "bytes": 4512456,
+      "sha256": "c1da2a121ef3c052f9cf17ab4732959baae14869b89c62d70467ced03c3bfe6c",
+      "bytes": 4520430,
       "rolling_current_snapshot": false
     },
     {
@@ -14748,6 +14762,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/FUNCTION_PHASES_522.json",
+      "sha256": "59ef44e0d45d4cf0b238aaa89a8a712589c2ab4b0e33fe2acdf1bed1b76f5b8a",
+      "bytes": 925296,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/GALLERY_EFFECT_REORDER.md",
       "sha256": "db2d7da24fbf9096a9f5848911004aad213fcc2a79e959556d07e591267bf3f4",
       "bytes": 2370,
@@ -15513,6 +15533,18 @@
       "path": "docs/MAGNETIC_LASSO_REFERENCES.json",
       "sha256": "6a17c3a304d7a0ae27667459c4f18a1ddd98aedf777b0bdc18f1871f8e81fb38",
       "bytes": 4193,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/MASKED_ADJUSTMENT_RESPONSE.md",
+      "sha256": "e31a81f4f34af6cfd326f8f86768485316cc50fb58fdc544c585f0e9bee561f2",
+      "bytes": 2325,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/MASKED_ADJUSTMENT_RESPONSE_522.json",
+      "sha256": "ba8e9b46d1f8b60dc6b5097d6396a0b9d22f37dbf51542bdbc976362af52cf66",
+      "bytes": 18864,
       "rolling_current_snapshot": false
     },
     {
@@ -17502,6 +17534,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_522.md",
+      "sha256": "c6418b12614696112dc89da38359e0c0a3037493d0d3f131f2e13af749e9f349",
+      "bytes": 2602,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17748,6 +17786,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_522.json",
+      "sha256": "b0e3adf535c9af48aca61ded86f99f2eae4aa597ebfb6cd48c84796c5560a709",
+      "bytes": 1163362,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17773,8 +17817,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "5b0abc87c5747cda0248363f15313bb5e9d043501184b9275c139b080a0ee8c2",
-      "bytes": 404284,
+      "sha256": "471be291608c2955637dfbefbbb5a8dc1edf3daf049535b624adc080efd5f824",
+      "bytes": 404763,
       "rolling_current_snapshot": false
     },
     {
@@ -20106,6 +20150,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/WORK_PRIORITIES_522.json",
+      "sha256": "e68ba8651f78e416ae8fd5318e0dad41f2b4385d7e73542d21efc4858773d6d1",
+      "bytes": 151003,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/XCODE_PROJECT_REFERENCES.json",
       "sha256": "0329389781d5905455599e2231e7b3de0d1db2746d59256a64791f7854478bc0",
       "bytes": 8464,
@@ -20125,8 +20175,8 @@
     }
   ],
   "counts": {
-    "milestones": 520,
-    "evidence_files": 1567,
+    "milestones": 522,
+    "evidence_files": 1573,
     "logs": 0,
     "missing_explicit_references": 631
   }

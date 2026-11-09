@@ -1,12 +1,119 @@
 import AppKit
+import SwiftUI
 import PhotoCraftCore
 import PhotoCraftImaging
 import XCTest
 @testable import PhotoCraft
 
 final class SkyCanvasContainmentTests: XCTestCase {
-  @MainActor private func fixture() throws -> SkyWorkspace {
-    let document = try CraftNSDocument.blankModel(width: 3072, height: 3072)
+  @MainActor func testHostedSheetKeepsPannedPreviewBelowToolsAndAboveActions() async throws {
+    _ = NSApplication.shared
+    let model = try fixture(side: 1024), store = EditorStore(document: model.original)
+    model.input = try SkyReplacementInput.prepare(model.original)
+    let host = NSHostingView(rootView: SkySheet(store: store, model: model))
+    let window = NSWindow(contentRect: CGRect(x: -10000, y: -10000, width: 1000, height: 640),
+      styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false
+    window.contentView = host
+    defer { model.close(); store.renderTask?.cancel(); window.contentView = nil; window.close() }
+    func canvas(in view: NSView) -> SkyCanvasView? {
+      if let result = view as? SkyCanvasView { return result }
+      return view.subviews.lazy.compactMap { canvas(in: $0) }.first
+    }
+    for (index, size) in [CGSize(width: 1000, height: 640), .init(width: 1150, height: 740),
+                         .init(width: 1000, height: 640), .init(width: 1280, height: 900)].enumerated() {
+      window.setContentSize(size); host.frame.size = size
+      host.layoutSubtreeIfNeeded()
+      try await Task.sleep(for: .milliseconds(50))
+      host.layoutSubtreeIfNeeded()
+      let view = try XCTUnwrap(canvas(in: host))
+      model.tool = index == 1 ? .brush : .hand
+      model.setZoom(4, center: true)
+      let cg = try XCTUnwrap(CGEvent(scrollWheelEvent2Source: nil, units: .pixel,
+        wheelCount: 2, wheel1: index == 1 ? -400 : 400, wheel2: 400, wheel3: 0))
+      view.scrollWheel(with: try XCTUnwrap(NSEvent(cgEvent: cg)))
+      host.layoutSubtreeIfNeeded()
+      let rect = view.convert(view.bounds, to: host)
+      XCTAssertGreaterThanOrEqual(rect.minY, 40, "Preview overlaps sheet chrome: \(rect)")
+      XCTAssertLessThanOrEqual(rect.maxY, size.height - 40, "Preview overlaps sheet chrome: \(rect)")
+      XCTAssertGreaterThanOrEqual(rect.minX, 0)
+      XCTAssertLessThanOrEqual(rect.maxX, size.width - 300)
+      XCTAssertEqual(model.viewportSize.width, view.bounds.width, accuracy: 0.01)
+      XCTAssertEqual(model.viewportSize.height, view.bounds.height, accuracy: 0.01)
+      XCTAssertTrue(view.clipsToBounds)
+      XCTAssertTrue(view.layer?.masksToBounds == true)
+      for y in [CGFloat(20), size.height - 20] {
+        let hit = host.hitTest(CGPoint(x: 250, y: y))
+        XCTAssertFalse(hit === view || hit?.isDescendant(of: view) == true)
+      }
+      let bitmap = try XCTUnwrap(host.bitmapImageRepForCachingDisplay(in: host.bounds))
+      host.cacheDisplay(in: host.bounds, to: bitmap)
+      let preview = model.previewImage, originalImage = model.originalImage
+      model.previewImage = nil; model.originalImage = nil
+      view.needsDisplay = true; view.displayIfNeeded()
+      let empty = try XCTUnwrap(host.bitmapImageRepForCachingDisplay(in: host.bounds))
+      host.cacheDisplay(in: host.bounds, to: empty)
+      model.previewImage = preview; model.originalImage = originalImage
+      view.needsDisplay = true
+      XCTAssertEqual(bitmap.pixelsWide, empty.pixelsWide)
+      XCTAssertEqual(bitmap.pixelsHigh, empty.pixelsHigh)
+      var imageInside = 0, imageOutside = 0
+      for y in 0..<bitmap.pixelsHigh { for x in 0..<bitmap.pixelsWide {
+        guard bitmap.colorAt(x: x, y: y) != empty.colorAt(x: x, y: y) else { continue }
+        let point = CGPoint(x: (Double(x) + 0.5) * size.width / Double(bitmap.pixelsWide),
+          y: (Double(y) + 0.5) * size.height / Double(bitmap.pixelsHigh))
+        let hostPoint = CGPoint(x: point.x, y: host.isFlipped ? point.y : size.height - point.y)
+        if rect.contains(hostPoint) { imageInside += 1 } else { imageOutside += 1 }
+      } }
+      XCTAssertGreaterThan(imageInside, 100, "Hosted preview must actually draw")
+      XCTAssertEqual(imageOutside, 0, "Preview pixels escaped into sheet controls")
+      if let root = ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {
+        try bitmap.representation(using: .png, properties: [:])?.write(to:
+          URL(fileURLWithPath: root).appendingPathComponent("sky-hosted-\(index).png"))
+      }
+    }
+    XCTAssertEqual(store.document, model.original)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+    XCTAssertTrue(model.undoStates.isEmpty)
+  }
+
+  @MainActor func testImageOrientationColorAndAlphaMatchPreviousDrawingInsideViewport() throws {
+    let model = try fixture(), view = SkyCanvasView(frame: CGRect(x: 0, y: 0, width: 128, height: 96))
+    defer { model.close() }
+    let source = try XCTUnwrap(CGContext(data: nil, width: 64, height: 64, bitsPerComponent: 8,
+      bytesPerRow: 256, space: CGColorSpaceCreateDeviceRGB(),
+      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+    for (rect, color) in [(CGRect(x: 0, y: 0, width: 32, height: 32), CGColor(red: 1, green: 0, blue: 0, alpha: 1)),
+                          (CGRect(x: 32, y: 0, width: 32, height: 32), CGColor(red: 0, green: 1, blue: 0, alpha: 0.5)),
+                          (CGRect(x: 0, y: 32, width: 32, height: 32), CGColor(red: 0, green: 0, blue: 1, alpha: 1)),
+                          (CGRect(x: 32, y: 32, width: 32, height: 32), CGColor(red: 1, green: 1, blue: 0, alpha: 1))] {
+      source.setFillColor(color); source.fill(rect)
+    }
+    let image = try XCTUnwrap(source.makeImage())
+    model.previewImage = image; view.model = model
+    model.zoom = 1; model.pan = CGSize(width: -10, height: 14)
+    func render(_ draw: () -> Void) throws -> Data {
+      let context = try XCTUnwrap(CGContext(data: nil, width: 128, height: 96, bitsPerComponent: 8,
+        bytesPerRow: 512, space: CGColorSpaceCreateDeviceRGB(),
+        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+      NSGraphicsContext.saveGraphicsState()
+      NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: true)
+      defer { NSGraphicsContext.restoreGraphicsState() }
+      draw()
+      return Data(bytes: try XCTUnwrap(context.data), count: 128 * 96 * 4)
+    }
+    let old = try render {
+      NSColor(calibratedWhite: 0.14, alpha: 1).setFill(); view.bounds.fill()
+      NSGraphicsContext.current?.cgContext.clip(to: view.bounds)
+      NSImage(cgImage: image, size: CGSize(width: image.width, height: image.height))
+        .draw(in: view.imageRect, from: .zero, operation: .sourceOver, fraction: 1,
+              respectFlipped: true, hints: [.interpolation: NSImageInterpolation.none])
+    }
+    let current = try render { view.draw(view.bounds) }
+    XCTAssertEqual(current, old, "Changing the drawing boundary must retain orientation, color and alpha")
+  }
+  @MainActor private func fixture(side: Int = 3072) throws -> SkyWorkspace {
+    let document = try CraftNSDocument.blankModel(width: side, height: side)
     let model = SkyWorkspace(document: document, library: SkyLibrary())
     func image(_ color: NSColor) throws -> CGImage {
       let context = try XCTUnwrap(CGContext(data: nil, width: 32, height: 32,

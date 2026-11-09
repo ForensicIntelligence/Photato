@@ -16,7 +16,7 @@ struct SkySheet:View {
         Spacer();if model.loading || model.rendering || model.committing || model.detailBusy{ProgressView().controlSize(.small)}
       }.padding(12).disabled(model.committing)
       Divider()
-      HStack(spacing:0){SkyCanvas(model:model);Divider();ScrollView{
+      HStack(spacing:0){SkyCanvas(model:model).clipped();Divider();ScrollView{
         VStack(alignment:.leading,spacing:14){
           GroupBox("Sky"){
             VStack(alignment:.leading,spacing:8){
@@ -60,6 +60,10 @@ struct SkySheet:View {
 struct SkyCanvas:NSViewRepresentable {
   @Bindable var model:SkyWorkspace
   func makeNSView(context:Context)->SkyCanvasView{let v=SkyCanvasView();v.model=model;return v}
+  func sizeThatFits(_ proposal:ProposedViewSize,nsView:SkyCanvasView,context:Context)->CGSize? {
+    guard let width=proposal.width,let height=proposal.height,width.isFinite,height.isFinite else{return nil}
+    return CGSize(width:max(0,width),height:max(0,height))
+  }
   func updateNSView(_ v:SkyCanvasView,context:Context){_=model.previewImage;_=model.maskImage;_=model.showOriginal;_=model.showMask;_=model.zoom;_=model.pan;_=model.stroke;_=model.tool;_=model.detailTiles;v.model=model;v.synchronizeViewport();v.needsDisplay=true;v.refreshToolCursor()}
 }
 @MainActor final class SkyCanvasView:ModifierCursorView {
@@ -97,7 +101,13 @@ struct SkyCanvas:NSViewRepresentable {
     guard let context=NSGraphicsContext.current?.cgContext else{return}
     context.saveGState();defer{context.restoreGState()};context.clip(to:bounds)
     NSColor(calibratedWhite:0.14,alpha:1).setFill();bounds.fill();guard let m=model,let image=m.showOriginal ? m.originalImage:(m.previewImage ?? m.originalImage) else{return};let r=imageRect
-    func draw(_ image:CGImage,in rect:CGRect){NSImage(cgImage:image,size:.init(width:image.width,height:image.height)).draw(in:rect,from:.zero,operation:.sourceOver,fraction:1,respectFlipped:true,hints:[.interpolation:m.effectiveZoom>=1 ? NSImageInterpolation.none:.high])}
+    func draw(_ image:CGImage,in rect:CGRect){
+      // Keep image drawing in this clipped context, including layer-backed sheet redraws.
+      context.saveGState();defer{context.restoreGState()}
+      context.interpolationQuality=m.effectiveZoom>=1 ? .none:.high
+      context.translateBy(x:rect.minX,y:rect.maxY);context.scaleBy(x:1,y:-1)
+      context.draw(image,in:CGRect(origin:.zero,size:rect.size))
+    }
     draw(image,in:r);if m.showMask,let mask=m.maskImage{draw(mask,in:r)}
     for tile in m.detailTiles {
       let region=tile.request.region,scale=m.viewport.scale

@@ -1,0 +1,420 @@
+{
+  "API_impact": "Shared native/API Renderer performance only; existing editing routes, parameters, state/schema, commands, history and persistence unchanged. Sky.viewport remains read-only geometry. No Adobe route invented.",
+  "Actions": 61,
+  "Photoshop_parity": false,
+  "Sky521": "Pane clipping/proposed-size/directCG drawing candidate; offscreen tests pass, original screenshot not reproduced; native inspection disconnected when Sky opens",
+  "baseline_new_adjustment": {
+    "accepted_previews_per_second": 1.1853089405832926,
+    "maximum_input_to_ready_ms": 1802.46,
+    "median_input_to_ready_ms": 477.0982,
+    "source": "Private optimized build520 controlled native-model workload"
+  },
+  "benchmarks": {
+    "ARM-first": {
+      "existingAdjustment": {
+        "acceptedPreviews": 68,
+        "acceptedPreviewsPerSecond": 27.680629847997448,
+        "actualInputDurationSeconds": 2.456591500027571,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 68,
+          "maximumMS": 90.48191667534411,
+          "medianMS": 34.4867916428484,
+          "p95MS": 77.61520834174007
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 68,
+          "maximumMS": 81.66970836464316,
+          "medianMS": 28.068499988876283,
+          "p95MS": 68.93520831363276
+        },
+        "target": "existingAdjustment"
+      },
+      "layerMask": {
+        "acceptedPreviews": 64,
+        "acceptedPreviewsPerSecond": 26.971668474729707,
+        "actualInputDurationSeconds": 2.372860250005033,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 64,
+          "maximumMS": 90.8227083273232,
+          "medianMS": 35.45283334096894,
+          "p95MS": 80.11741668451577
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 64,
+          "maximumMS": 90.53124999627471,
+          "medianMS": 29.594916675705463,
+          "p95MS": 73.15370830474421
+        },
+        "target": "layerMask"
+      },
+      "newAdjustment": {
+        "acceptedPreviews": 68,
+        "acceptedPreviewsPerSecond": 27.64602202756231,
+        "actualInputDurationSeconds": 2.4596667083678767,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 68,
+          "maximumMS": 97.6283333147876,
+          "medianMS": 35.705249989405274,
+          "p95MS": 79.63766664033756
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 68,
+          "maximumMS": 90.02858336316422,
+          "medianMS": 28.570208349265158,
+          "p95MS": 69.74949996219948
+        },
+        "target": "newAdjustment"
+      },
+      "raster": {
+        "acceptedPreviews": 141,
+        "acceptedPreviewsPerSecond": 59.94620572079079,
+        "actualInputDurationSeconds": 2.352108833321836,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 141,
+          "maximumMS": 16.87979162670672,
+          "medianMS": 10.696000012103468,
+          "p95MS": 15.596666664350778
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 141,
+          "maximumMS": 8.555416716262698,
+          "medianMS": 6.12779165385291,
+          "p95MS": 8.26912501361221
+        },
+        "target": "raster"
+      }
+    },
+    "ARM-repeat": {
+      "existingAdjustment": {
+        "acceptedPreviews": 66,
+        "acceptedPreviewsPerSecond": 26.85432323105585,
+        "actualInputDurationSeconds": 2.45770483330125,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 66,
+          "maximumMS": 100.72487499564886,
+          "medianMS": 34.65683333342895,
+          "p95MS": 80.76974999858066
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 66,
+          "maximumMS": 91.03466669330373,
+          "medianMS": 30.930500011891127,
+          "p95MS": 77.21000001765788
+        },
+        "target": "existingAdjustment"
+      },
+      "layerMask": {
+        "acceptedPreviews": 66,
+        "acceptedPreviewsPerSecond": 27.01626578768391,
+        "actualInputDurationSeconds": 2.442972708318848,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 66,
+          "maximumMS": 97.78233332326636,
+          "medianMS": 34.711250045802444,
+          "p95MS": 78.5161666572094
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 66,
+          "maximumMS": 90.59649996925145,
+          "medianMS": 29.106333327945322,
+          "p95MS": 76.3524166541174
+        },
+        "target": "layerMask"
+      },
+      "newAdjustment": {
+        "acceptedPreviews": 65,
+        "acceptedPreviewsPerSecond": 26.621800060018625,
+        "actualInputDurationSeconds": 2.441607999964617,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 65,
+          "maximumMS": 101.21858329512179,
+          "medianMS": 36.06891667004675,
+          "p95MS": 77.4164583417587
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 65,
+          "maximumMS": 91.75291663268581,
+          "medianMS": 29.302791692316532,
+          "p95MS": 73.38050001999363
+        },
+        "target": "newAdjustment"
+      },
+      "raster": {
+        "acceptedPreviews": 142,
+        "acceptedPreviewsPerSecond": 59.945478109706855,
+        "actualInputDurationSeconds": 2.3688192083500326,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 142,
+          "maximumMS": 17.92395836673677,
+          "medianMS": 10.307208285667002,
+          "p95MS": 15.410666703246534
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 142,
+          "maximumMS": 8.714750001672655,
+          "medianMS": 6.203249969985336,
+          "p95MS": 8.067291637416929
+        },
+        "target": "raster"
+      }
+    },
+    "translated-Intel": {
+      "existingAdjustment": {
+        "acceptedPreviews": 37,
+        "acceptedPreviewsPerSecond": 14.91180598930035,
+        "actualInputDurationSeconds": 2.48125545802759,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 37,
+          "maximumMS": 171.83779197512195,
+          "medianMS": 56.83845799649134,
+          "p95MS": 171.7974169878289
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 37,
+          "maximumMS": 164.3580420059152,
+          "medianMS": 54.728624993003905,
+          "p95MS": 163.01595797995105
+        },
+        "target": "existingAdjustment"
+      },
+      "layerMask": {
+        "acceptedPreviews": 33,
+        "acceptedPreviewsPerSecond": 13.634990277451346,
+        "actualInputDurationSeconds": 2.4202437499770895,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 33,
+          "maximumMS": 189.21470799250528,
+          "medianMS": 57.03008297132328,
+          "p95MS": 180.34675001399592
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 33,
+          "maximumMS": 181.7867910140194,
+          "medianMS": 47.66387498239055,
+          "p95MS": 173.76462504034862
+        },
+        "target": "layerMask"
+      },
+      "newAdjustment": {
+        "acceptedPreviews": 37,
+        "acceptedPreviewsPerSecond": 14.965690148061093,
+        "actualInputDurationSeconds": 2.4723216660204343,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 37,
+          "maximumMS": 170.96962500363588,
+          "medianMS": 54.492708994075656,
+          "p95MS": 169.74258399568498
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 37,
+          "maximumMS": 165.84266698919237,
+          "medianMS": 50.83020904567093,
+          "p95MS": 164.3616670044139
+        },
+        "target": "newAdjustment"
+      },
+      "raster": {
+        "acceptedPreviews": 140,
+        "acceptedPreviewsPerSecond": 59.67584401244384,
+        "actualInputDurationSeconds": 2.3460078749922104,
+        "canonicalCommitExact": true,
+        "historySteps": 1,
+        "inputSource": "Paced native model calls, no OS events or native window drawing",
+        "inputToReady": {
+          "count": 140,
+          "maximumMS": 21.619750012177974,
+          "medianMS": 14.567332982551306,
+          "p95MS": 20.304916019085795
+        },
+        "inputs": 240,
+        "physicalPresentationMeasured": false,
+        "prepareToReady": {
+          "count": 140,
+          "maximumMS": 15.302291023544967,
+          "medianMS": 9.895582974422723,
+          "p95MS": 13.652166991960257
+        },
+        "target": "raster"
+      }
+    }
+  },
+  "canonical_history_pair_failed": true,
+  "excluded_unchanged_inputs": 13,
+  "failed_attempts_preserved": [
+    "521 initial manifest filename collision before Swift launch",
+    "521 literal green pixel oracle failed due color profile; replaced by same-space image-on/off exact outside comparison",
+    "521 staging raw signing allocation mismatch; independent replay retained; Desktop FileProvider metadata broke strict signature; separate temporary candidate qualified",
+    "522Source01 old allocation expectation failed28/29 while all4new passed; actual521 baseline reproduced it",
+    "522 durable handoff writer observed ARM terminal before ps and stopped; no worker restarted"
+  ],
+  "frozen_inputs": 7861,
+  "full_Q03_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7848,
+  "legacy_test_contract_update": "Original RegionalRender public-rejection failure reproduced on actual preserved521 bundle. Bounded public composition now checked at all32768pixels; dense budget rejection and invalid-document checks retained. Production renderer unchanged between Source01/02. Original assertion/failures retained privately.",
+  "live_Sky_scroll_verified": false,
+  "major_memberships": 81,
+  "native_UI": {
+    "Quit_observation": "Post-Quit AX queries were followed by fresh Untitled processes; final Quit verified absent by process check without another AX query",
+    "Vibrance_value_reopened": 60,
+    "live_selected_workflow_passed": true,
+    "normal_Quit": true,
+    "original_PNG_unchanged": true,
+    "paint_Undo_Redo_Properties": true,
+    "saved_file": "Owned-Adjustment-522.photato",
+    "saved_reopened_layer_and_mask": true,
+    "saved_sha256": "7e3d034fec1b12b720137c37e069b6d8dafe4bbdf5e109a925edf5287b991599",
+    "screenshots": "Native CUA images in conversation; no fabricated local screenshots"
+  },
+  "native_format": 92,
+  "new_522_methods": [
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testAddedMaskOverNestedGroupsClippingAndExistingAdjustmentsMatchesCompleteWords",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testBlackMasksAndFullyCoveredPixelsRetainExactBackdropAndUnmaskedResult",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testEveryBrushAdjustmentAddedOverRasterMatchesCompleteRenderAtAllDepthsAndBlends",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testInvalidDocumentsAndSignedZeroStackChangesCannotUseInsertionReuse",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testStructuralNonlocalAndNonblackMaskChangesRetainFullFallbackAndExactPixels"
+  ],
+  "original_command_ids": 652,
+  "original_scope_count": 104,
+  "passes": 7,
+  "physical_FPS_measured": false,
+  "previously_unpublished_521_methods": [
+    "PhotoCraftAppTests.MaskPreviewResponsivenessTests/testPacedRasterMaskAndAdjustmentPreviewsRetainCanonicalCommit",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testHostedSheetKeepsPannedPreviewBelowToolsAndAboveActions",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testImageOrientationColorAndAlphaMatchPreviousDrawingInsideViewport"
+  ],
+  "prior_failures_remain_required": true,
+  "recorded_utc": "2026-11-09T21:10:30.251699+00:00",
+  "remaining": [
+    "Full original Q03/all-tool response/physical60fps; masks and existing adjustments around27model previews/s still replay complete prefixes",
+    "Live Sky scrolling and full AI09, capacity/profile/source/output/hardware acceptance",
+    "All previous Photoshop output/default/keyboard/platform/fullsuite failures, including520ColorVib44797/37102RGBsamples(max36/27) as historical observations; no new522Adobe output comparison"
+  ],
+  "selected_methods": [
+    "PhotoCraftAppTests.MaskPreviewResponsivenessTests/testPacedRasterMaskAndAdjustmentPreviewsRetainCanonicalCommit",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testHostedSheetKeepsPannedPreviewBelowToolsAndAboveActions",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testImageOrientationColorAndAlphaMatchPreviousDrawingInsideViewport",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testScrollZoomAndHandPanPreserveChromeHitRegionsAndDocument",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testZoomPanResizeContainOriginalPreviewMaskAndBrushFeedback",
+    "PhotoCraftAppTests.SkyViewportTests/testActualPixelFitAnchoredZoomResizeAndBackingScalePreserveGeometry",
+    "PhotoCraftAppTests.SkyViewportTests/testCancelledZoomRefreshAndClosedDraftCannotPublishQueuedTiles",
+    "PhotoCraftAppTests.SkyViewportTests/testExistingViewMenusNavigateSkyWithoutChangingUnderlyingDocumentViewport",
+    "PhotoCraftAppTests.SkyViewportTests/testHTTPViewportStateSchemaChangesWithoutDocumentRevisionOrNewEditingRoute",
+    "PhotoCraftAppTests.SkyViewportTests/testOriginalReplacementMaskTilesAndPanReuseRetainExactSourceBytes",
+    "PhotoCraftAppTests.SkyViewportTests/testVisibleTilesCoverRetinaViewportBeyondSingleBufferAndStayOnDocumentGrid",
+    "PhotoCraftAppTests.SkyViewportTests/testZoomToolAllModifiersMatchCursorAndKeepAnchorAndDocument",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testAddedMaskOverNestedGroupsClippingAndExistingAdjustmentsMatchesCompleteWords",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testBlackMasksAndFullyCoveredPixelsRetainExactBackdropAndUnmaskedResult",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testEveryBrushAdjustmentAddedOverRasterMatchesCompleteRenderAtAllDepthsAndBlends",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testInvalidDocumentsAndSignedZeroStackChangesCannotUseInsertionReuse",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testStructuralNonlocalAndNonblackMaskChangesRetainFullFallbackAndExactPixels",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testFourLayerKindsMaskOpacityRegionalPixelsAndSourcePreservation",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testGroupedModernNeighborhoodsAndCoordinateStableGrain",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testMaximumPointwiseLayerKeepsImplicitStorageAndNativeReopen",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testNeighborhoodAdjustmentInvalidatesSnapshotAfterSourceEdit",
+    "PhotoCraftImagingTests.RegionalRenderTests/testAffinePixelsPixelAndVectorFeatherKeepOriginalCanvasBounds",
+    "PhotoCraftImagingTests.RegionalRenderTests/testEveryCurrentAdjustmentPropagatesLocalDamage",
+    "PhotoCraftImagingTests.RegionalRenderTests/testNestedGroupsClippedPassThroughAndAdjustmentBasesMatchFullBits",
+    "PhotoCraftImagingTests.RegionalRenderTests/testRegionalAllocationBoundsAndInvalidDocumentsStillReject",
+    "PhotoCraftImagingTests.RegionalRenderTests/testRegionalFlatRenderEveryBlendAndDepthKeepsDissolveCoordinates",
+    "PhotoCraftImagingTests.RegionalRenderTests/testSignedZeroMetadataInvalidatesEvenThoughSwiftEqualityMatches",
+    "PhotoCraftImagingTests.RegionalRenderTests/testUnchangedSelectionOffCanvasEditsAndFullFallbacks",
+    "PhotoCraftImagingTests.SkyDisplayTests/testLegacyPreviewBeyond2048RetainsAllExistingDisplayBytes",
+    "PhotoCraftImagingTests.SkyDisplayTests/testVisibleTileUsesFullResolutionProfileAndAlphaBytesAndRejectsInvalidRegion"
+  ],
+  "software_build": 522,
+  "software_release": false,
+  "source_variant": "Source02",
+  "standalone_website_promotion_pending": true,
+  "status": "Selected masked adjustment performance path qualified; full Q03 and live Sky scrolling remain open",
+  "step": 522,
+  "total_new_since_public520": 8,
+  "typed_commands": 271,
+  "universal": {
+    "architectures": "x86_64 arm64",
+    "archive_sha256": "9b912547c5e0c2e7d450257ac95525b275a5dc12a92ac9fd41e76f21f459b01a",
+    "both_optional_models_and_provenance_verified": true,
+    "extracted_signature_verified": true,
+    "minimum_system_metadata": "14.0",
+    "production_entitlements_unchanged": true,
+    "same_extracted_content": true,
+    "signature_verified": true,
+    "signed_universal_binary_sha256": "f9bc75408324de09522ec8dfcb373542068d7a7e81bae1abbf877122654cbf0e"
+  },
+  "universal_launched_for_native_ARM_validation": true,
+  "validation": {
+    "arm": {
+      "cases": 30,
+      "elapsed_seconds": 82.76328987500165,
+      "new_passed": 5,
+      "passed": 30
+    },
+    "intel": {
+      "cases": 30,
+      "elapsed_seconds": 44.37494995899033,
+      "new_passed": 5,
+      "passed": 30
+    },
+    "intel-build": {
+      "cases": 0,
+      "elapsed_seconds": 462.9688750000205,
+      "new_passed": 0,
+      "passed": 0
+    }
+  }
+}

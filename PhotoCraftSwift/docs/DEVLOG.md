@@ -539,7 +539,41 @@ For a readable account of the project from the beginning, see [Photato developme
 | 518 | 2026-11-09 | [Editing video keyframes as a group](#dev-step-518) |
 | 519 | 2026-11-09 | [Large Sky documents and full-detail previews](#dev-step-519) |
 | 520 | 2026-11-09 | [Color and vibrance with Adjustment Brush](#dev-step-520) |
+| 521 | 2026-11-09 | [Sky preview containment and brush measurements](#dev-step-521) |
+| 522 | 2026-11-09 | [Masked adjustment preview performance](#dev-step-522) |
 <!-- history-index:end -->
+
+<a id="dev-step-522"></a>
+
+## 2026-11-09 — Masked adjustment preview performance
+
+The renderer evaluated pointwise adjustments before checking whether their pixel mask hid the result. It also invalidated the full canvas whenever a stroke created an adjustment layer. Evaluation now follows the zero-coverage check; evaluator construction and nonzero arithmetic remain unchanged. One plain topmost pointwise adjustment with a black-default full-canvas mask can reuse its unchanged backdrop outside the painted footprint. Mask properties, transforms, nonlocal effects, changed prior inputs and unproven contexts retain full rendering. Exact metadata checks retain signed-zero handling. No mask, document, blend, adjustment, recording or API algorithm is replaced.
+
+The identical paced model workload improves new-adjustment previews from 1.185 to 27.646/s in the first run, and26.622/s in the repeat. Median input-to-ready falls477.1→35.7ms and maximum1802.5→97.6ms in the first comparison. All four cases retain exact canonical complete documents and one Undo. Raster processing stays about 60/s; pixel masks and existing adjustments remain around27/s and need retained coverage rather than full-prefix replay. No physical FPS result or completed Q03 claim follows from this benchmark.
+
+Source 01 passes28/29 selected optimized ARM methods and all four new methods. The failure is an old public-compositor allocation rejection assertion, reproduced on the actual preserved521 test bundle. Existing GroupRender tests already describe bounded public composition supporting that canvas while dense composition rejects its touched-tile budget. Source 02 checks the dense fence and every32,768 public-result pixel, retaining the regional, empty and invalid-document assertions. The original assertion and both failures remain preserved. Source 02 also adds a nested-group/clipping matrix. Production renderer inputs are identical between these variants; no numeric tolerance or memory-budget engine is weakened.
+
+Source 02 passes the same 30 ordered methods on normal optimized ARM and translated Intel, including all five new 522 methods and all three previously unpublished521 methods. All 7,861 input hashes stay frozen with no missing, extra, duplicate, skipped method or signal. Coverage includes17 Adjustment Brush types at 8, 16 and 32 bits and four blend modes with complete Float32 component-word equality against full rendering, black/partial masks, groups, strict fallbacks, invalid input, signed zeros, viewport/API/menu/modifier behavior and the benchmark. ARM takes82.76s including build; Intel build 462.97s and translated tests44.37s. This is selected validation, not a full regression or independent Photoshop pixel proof.
+
+The universal candidate passes both architectures/minimum14 metadata, complete production entitlements, signatures, all executable payload/signing replay checks, optional-model provenance/licenses and extracted ZIP equality. The optimized native ARM slice completes owned3072PNG import, a new Color and vibrance stroke, one Undo removing layer/mask, Redo, Vibrance100→60, a further stroke retaining settings, separate native Save As, clean close/reopen with the two-stroke mask and60 value, then normal Quit. OriginalPNG bytes are unchanged. AXPress did not open the picker; a fresh screenshot and the observed arrow coordinate recovered it. Post-Quit AX queries were followed by fresh Untitled processes; observer relaunch is an inference. Final Quit was checked by actual process absence without another AX query. Screenshots are native conversation evidence only.
+
+Desktop and API use the same Renderer and transaction semantics; no command, route, parameter, state schema, menu or shortcut is added. Native format 92, Actions 61 and271typed operations remain. The source snapshot includes7848 tested distributable inputs and13 unchanged generated/restricted exclusions. All 1,057 upstream files/718 Rust files,104 original scopes,652 IDs,81 major memberships and seven passes remain. Current work stays Q03 major-stillneeded: retain mask/adjustment coverage between frames, then verify actual display feedback. Live Sky scrolling, all original package acceptance and earlier failures stay open. Historical520 Photoshop differences remain required; no new 522Adobe output comparison is asserted. Canonical history remains failed and standalone website promotion pending. This is a free, open-source development checkpoint; all software releases still require manual approval.
+
+[Workflow/API](MASKED_ADJUSTMENT_RESPONSE.md) · [Evidence](MASKED_ADJUSTMENT_RESPONSE_522.json) · [Source qualification](SOURCE_PUBLICATION_522.md)
+
+<a id="dev-step-521"></a>
+
+## 2026-11-09 — Sky preview containment and brush measurements
+
+A reported Sky preview scroll painted over the tool row. Existing drawing tests covered the canvas in isolation. A new hosted-sheet test first passed without reproducing the screenshot; that was not evidence that the live defect was fixed. The candidate clips the SwiftUI pane, accepts its finite proposed size, and draws CGImages directly in the clipped graphics context. Image orientation, color and alpha match the former renderer in the owned quadrant fixture. Document editing, menus, shortcuts, commands and API schemas are unchanged; read-only Sky viewport state remains tested.
+
+The first baseline harness stopped before Swift because its frozen manifest filename already existed. A distinct attempt passed all three selected methods. The first expanded candidate passed 12/13: a new pixel test wrongly assumed literal green RGB values across color profiles. Captures were visibly green but carried different RGB components. Source 02 compares image-on and image-off captures in the same output color space, requiring visible content inside and exactly zero changed pixels outside. Its 1024-square synthetic source avoids unrelated asynchronous detail tiles; existing 3072 and large-tile tests remain. Four window sizes, panning, drawing, control hit regions and unchanged document/history are checked. Source 02 passes 13/13 selected methods and two new Sky methods on optimized ARM; all remain included in checkpoint 522's two-architecture selection.
+
+The first local package check encountered signing allocation differences. Independent signing replay supplies the byte proof. A Desktop copy then acquired FileProvider Finder metadata and failed strict signature validation; it remains preserved and is not a qualified candidate. A separate temporary candidate passes signing, full production entitlements, ARM/minimum14 metadata, resource equality and payload replay checks. Native import/title/dimensions/menu observation passes, but native inspection disconnects when the Sky sheet opens. No live scroll, pan, zoom, commit or full Sky workflow pass is claimed. The candidate and previous builds remain intact. Earlier519 wording about viewport containment described automated evidence and did not establish that this reported live defect was resolved.
+
+A separate controlled model benchmark adds 240 nominal120Hz samples to four 3072-square raster/mask/adjustment cases, with isolated preferences and exact complete-command/history checks. Processing accepts about 60 raster previews/s,27.5 for a pixel mask,27.6 for an existing masked adjustment and1.19 for a new adjustment. These are not WindowServer presentation measurements. The short native automation drags had only four samples within about 0.7ms, so they were insufficient to assess sustained feedback. The benchmark identifies the new adjustment preview as the next Q03 blocker. Full original scope, Sky acceptance and60fps remain required; no software release.
+
+[Current qualification](SOURCE_PUBLICATION_522.md) · [Performance/API](MASKED_ADJUSTMENT_RESPONSE.md)
 
 <a id="dev-step-520"></a>
 

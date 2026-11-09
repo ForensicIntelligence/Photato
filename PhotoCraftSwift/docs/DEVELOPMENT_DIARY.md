@@ -1,3 +1,9 @@
+## Source update — 9 November2026 UTC, build 522
+
+Masked adjustment previews improve about 23× in the controlled workload. All 30 selected tests pass on optimized ARM and translated Intel, including eight methods since public 520. Actual optimized universal paint/history/Properties/save/reopen/Quit and static package checks pass. Processing remains near 27/s for masks; physical 60 fps and live Sky scrolling remain open.
+
+[Development record](DEVLOG.md#dev-step-522) · [Qualification](SOURCE_PUBLICATION_522.md).
+
 ## Source update — 9 November 2026 UTC, build 520
 
 Color and vibrance now works with Adjustment Brush through native painting, editable Properties, masks, history, archive, Actions 61 and the optional API. Debug and each optimized architecture pass 46 selected methods/all 12 new. Actual native save/reopen/normal Quit and universal static checks pass. Independent Photoshop output still differs; full B08/A04 and all earlier failures remain open. Next: Q03, major stillneeded.
@@ -151,14 +157,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:520 -->
+<!-- current-status-step:522 -->
 ## Current tested source
 
-Source 520 / Source03: Debug and each optimized architecture pass 46 selected methods/all 12 new. Actual native paint/history/property/save/reopen/normal Quit and universal static checks pass. Photoshop output equality remains failed on the owned corpus. These counts are not a Photoshop completion percentage.
+Source 522/Source 02 passes30 selected methods on each optimized architecture, five new 522 and three unpublished521 methods. Native optimized universal painting/history/editing/save/reopen/Quit and package checks pass. Masked adjustment processing improves about 23× in the owned workload; it is not physical FPS or Photoshop output proof.
 
-All 104 scopes, 652 command IDs, 81 major memberships and seven passes remain. Current: Q03, major stillneeded; B08/A04 and earlier failures stay open. Canonical history failed and standalone website promotion remains pending.
+All 104 scopes/652IDs/81 major memberships/sevenpasses remain. Current: Q03 major-stillneeded, retained mask stroke coverage; live Sky scrolling and all earlier failures remain open. Canonical history failed; standalone website promotion pending.
 
-[Source qualification](SOURCE_PUBLICATION_520.md)
+[Source qualification](SOURCE_PUBLICATION_522.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

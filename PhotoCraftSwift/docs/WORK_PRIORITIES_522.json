@@ -1,0 +1,2701 @@
+{
+  "adjustment_brush_lookup_478": {
+    "full_package_complete": false,
+    "reference": "docs/ADJUSTMENT_BRUSH_LOOKUP_478.json",
+    "remaining": [
+      "Full original B08 scope and acceptance, independent Photoshop numeric/default/output references and supported physical platforms/performance/live qualification remain open.",
+      "Photoshop2026 Color and vibrance semantics need investigation; do not rename legacy Vibrance and infer equivalence. Full visible initial values/presets and Tool Presets remain open.",
+      "Color Lookup interpolation/dither/profile/output and exact Photoshop defaults remain unqualified. Native creation uses the existing identity lookup; observed Photoshop filmstock_50.3dl is current reference context, not a proven factory default or bundled asset.",
+      "Object targeting retains existing provider/8 MP/6000side and stored-mask16 MP budgets. Native brush/document geometry and API sharing/transfer/Actions budgets remain distinct.",
+      "ICC/CSP import, broader look formats, long/dense/maximum documents, physical macOS14/Intel,60 fps/fullsuite and all earlier failures remain open."
+    ],
+    "selected_workflow_qualified": true
+  },
+  "ai_generation_lifecycle_475": {
+    "full_package_complete": false,
+    "reference": "docs/AI_GENERATION_LIFECYCLE_475.json",
+    "remaining": [
+      "Full AI07 acceptance remains open: editable variations/results management, provider metadata when exposed, model/seed/final-prompt control and broader generation workflows.",
+      "No real image model, provider generation request or actual system generator interface was invoked in these tests. Public SDK fields do not expose a typed model identifier, seed or final edited prompt; original file metadata is retained but not interpreted or qualified. Processing route is descriptive, not provider attestation.",
+      "Generated originals are bounded to32MiB each; published inbox entries are limited to512MiB/256 items with capacity preflight and no automatic purge. Abrupt process/power-loss recovery and orphaned private staging-file accounting are unqualified; injected write failure is not a crash test. Current placement supports still RGB8/16/32; other modes and generative fill/expand remain open.",
+      "Native browser live interaction, actual system sheet storage-failure retry behavior, supported physical Intel/Apple Silicon/macOS14 and60fps/performance remain unqualified. Validation-only staging does not prove sandboxed production behavior.",
+      "Debug source07/08 batch crashes by signal11 remain unresolved; source11 passes67focused methods. This is not a full-suite pass or proof of Photoshop output/default/shortcut equivalence. All earlier failures and104original package acceptance remain.",
+      "Current and prior builds, GitHub, user documents and older458/467 validation sessions remain protected. No production install, source push, App Store/Xcode archive or software release occurs."
+    ],
+    "selected_workflow_qualified": true
+  },
+  "api_responsiveness_followup_426": {
+    "package": "Q03",
+    "reference": "docs/FUNCTION_PHASES_426.json",
+    "scope": "Consolidate/measure duplicate existing save-eligibility queries in API state while retaining byte/availability contracts; no performance pass claimed.",
+    "track": "stillneeded"
+  },
+  "archive_validation_481": {
+    "application_build": 480,
+    "development_tooling_changes": true,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_native_tests": 0,
+    "new_tool_tests": 16,
+    "normal_optimized_qualified": true,
+    "normal_selected_tests_each_architecture": 104,
+    "reference": "docs/ARCHIVE_VALIDATION_481.json",
+    "software_changes": false,
+    "source": "pipeline01",
+    "status": "Repeatable source-bound archive validation passes locally: 16 new tool tests, 104 editing checks on ARM and translated Intel, 34 archive checks, exact binary/dSYM UUIDs and extracted ZIP. Application build remains 480. Hosted CI, signed distribution, sandbox runtime and full REL01 remain open.",
+    "step": 481
+  },
+  "audited_candidates": [
+    {
+      "evidence": "artifacts/runs/20261104T203920Z-404-D01-closing/reproduction01-qualification.json",
+      "package": "D01",
+      "qualification": "25existing cases pass each architecture; old failure not reproduced.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261104T203920Z-404-D01-closing/artboard01-qualification.json",
+      "package": "L07",
+      "qualification": "15existing cases pass each architecture; duplicate/background already implemented.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/COLOR_LOOKUP_EXPORT_405.json",
+      "package": "B05",
+      "qualification": "Pupil Size/Darken native controls and retouch.redEye already implemented; current13-case class passes. Full B05open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/QUICKWIN_AUDIT_409.json",
+      "package": "G04",
+      "qualification": "13 existing normal optimized cases pass each architecture, including fill/stroke/pressure/depth/selection/protection, native history and API. No current live Photoshop or UI observation.",
+      "remaining": "Full pen modifiers/multi-anchor/fitting/clipping export, other stroke tools, advanced Fill Path options and all original G04 acceptance.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/QUICKWIN_AUDIT_409.json",
+      "package": "T01",
+      "qualification": "20 shared typography cases pass each architecture across this and T04, including native editing/history, API and supported Adobe text job paths. No claim that every Photoshop Character/Paragraph control exists.",
+      "remaining": "Window > Character/Paragraph and Type > Panels counterpart menus remain pending; proper separate/docked panels require workspace catalog migration/hosting, sectioning, state/API and lifecycle work. Full on-canvas/rich text/editable PSD/default/output scope stays open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/QUICKWIN_AUDIT_409.json",
+      "package": "T04",
+      "qualification": "Same20-case typography batch includes native shaped preview/Cancel/local history/commit and API/persistence checks. Every existing public TextGeometry control has a native path; exact Photoshop layout is unqualified.",
+      "remaining": "All original text path/warp/Dynamic Text fitting/reflow/parameters and independent output/platform acceptance.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/modern01-qualification.json",
+      "package": "A04",
+      "qualification": "All11existing modern model/render/native/API cases pass each architecture on unchanged408normal binaries. Native editor already enumerates all declared sliders/fields. Full A04/Photoshop/editable PSD and platform scope remains open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261105T010242Z-411-pattern-filter-quickwins/pattern01-qualification.json",
+      "package": "A07",
+      "qualification": "All29selected existing model/native/API/IO cases pass per architecture on preserved410Source02; identical ordered IDs. Native controls already cover declared placement/location options. Full A07 and independent/live/platform acceptance remain open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/baseline01-qualification.json",
+      "package": "F02",
+      "qualification": "35selected ordinary/procedural filter cases pass each architecture; native menus, controls, previews/history, actions, API and existing depth/target behavior already implemented.",
+      "remaining": "Full catalogue/legacy/depth/applicability/kernel/default/output and platform scope stays open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/baseline01-qualification.json",
+      "package": "F03",
+      "qualification": "Seven existing Blur Gallery cases pass each architecture; every declared current-model parameter has a native control, including bokeh/noise and spin strobes. No new seed or unmodeled-control claim.",
+      "remaining": "Full five-tool handles, endpoint/other unmodeled behavior, interpolation/defaults/output/editable interchange and original acceptance stay open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/baseline01-qualification.json",
+      "package": "F04",
+      "qualification": "Seven existing Liquify cases pass each architecture; Freeze/Thaw/global None/All/Invert/Reconstruct/Restore All and shared filter payload already present.",
+      "remaining": "Full tools/face-aware/dynamics/mesh/output/default/platform and all original acceptance stay open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/baseline01-qualification.json",
+      "package": "F05",
+      "qualification": "Seven existing Lens Correction cases pass each architecture; current manual controls already present and consistent with the limited public parameter list.",
+      "remaining": "Calibrated profiles/EXIF defaults, complete perspective/AWA/lens workspace, output/default/platform and all original acceptance stay open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/BRUSH_SECTION_CONTROLS_413.json",
+      "package": "B02",
+      "qualification": "9selected normal cases each architecture on unchanged412; current represented native/API controls already exist.",
+      "remaining": "All original full functional and independent/live/platform requirements remain open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/BRUSH_SECTION_CONTROLS_413.json",
+      "package": "B04",
+      "qualification": "11selected normal cases each architecture on unchanged412; current represented native/API controls already exist.",
+      "remaining": "All original full functional and independent/live/platform requirements remain open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/BRUSH_SECTION_CONTROLS_413.json",
+      "package": "B06",
+      "qualification": "12selected normal cases each architecture on unchanged412; current represented native/API controls already exist.",
+      "remaining": "All original full functional and independent/live/platform requirements remain open.",
+      "status": "already_working_verified"
+    },
+    {
+      "evidence": "docs/SMART_FILTER_DRAG_414.json",
+      "package": "L03",
+      "qualification": "Implemented clipping/fill controls;3normal cases pass. New advanced-blend model stillneeded.",
+      "status": "already_implemented_controls_regression_verified_with_fullscope_open"
+    },
+    {
+      "evidence": "docs/SMART_FILTER_DRAG_414.json",
+      "package": "L04",
+      "qualification": "Copy/Paste/Clear style controls already present;18normal cases pass.",
+      "status": "already_implemented_controls_regression_verified_with_fullscope_open"
+    },
+    {
+      "evidence": "docs/SMART_FILTER_DRAG_414.json",
+      "package": "L05",
+      "qualification": "Relink/update controls already present;7native/API tests pass. Linked group18/19; unchanged exact PSD/PSB alpha residual stays open.",
+      "status": "already_implemented_controls_regression_verified_with_fullscope_open"
+    },
+    {
+      "evidence": "docs/SUBJECT_OPTIONS_415.json",
+      "package": "S02",
+      "qualification": "41existing S02cases pass both preserved414normal architectures; all represented Color Range/Focus Area/Magnetic Lasso controls exposed. Full missing classifier/gamut/preset/default/output work stays open.",
+      "status": "already_implemented_controls_regression_verified_with_fullscope_open"
+    },
+    {
+      "evidence": "docs/MASK_REMOVAL_416.json",
+      "package": "S04",
+      "qualification": "13existing app/core cases pass both preserved414normal architectures and current Debug. Represented controls exist; full scope/acceptance open.",
+      "status": "already_implemented_controls_regression_verified_with_fullscope_open"
+    },
+    {
+      "evidence": "docs/MASK_REMOVAL_416.json",
+      "package": "C02",
+      "qualification": "8existing app/core cases pass both preserved414normal architectures and current Debug. Represented controls exist; full scope/acceptance open.",
+      "status": "already_implemented_controls_regression_verified_with_fullscope_open"
+    },
+    {
+      "evidence": "docs/STACK_STATISTICS_417.json",
+      "package": "COL02",
+      "qualification": "All represented mode/depth/restricted/ink menu routes and workspaces already exist. Full mode/palette/ink/interchange/defaults/output and reproduced master-palette CancellationError remain open. Baseline51/52each includes one pre-existing mode cancellation; no all-green/full-class claim.",
+      "status": "represented_controls_exist_fullscope_open"
+    },
+    {
+      "evidence": "docs/STACK_STATISTICS_417.json",
+      "package": "COL03",
+      "qualification": "Represented CMYK/plates/sRGB/Monitor/custom ICC/proof/intent/BPC/paper/black/gamut/preset controls already exist. Color-blind transforms, legacy RGB, PSF/HDR/EDR/complete print remain substantive stillneeded. Baseline51/52each includes one pre-existing mode cancellation; no all-green/full-class claim.",
+      "status": "represented_controls_exist_fullscope_open"
+    },
+    {
+      "evidence": "docs/ANIMATION_FRAME_DRAG_418.json",
+      "package": "I03",
+      "qualification": "Existing XMP/EXIF/opaque resources/globals/raw manifest preservation already exists. Unrepresented comps/notes/timeline/variables/measurement/styles/links/blend-if/non-RGB need new adapters/fixtures; stillneeded, no Rust prerequisite for Photoshop. Selected existing tests pass both preserved417normal architectures.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/ANIMATION_FRAME_DRAG_418.json",
+      "package": "I04",
+      "qualification": "All14represented encoder options have native Save/Copy controls and shared schemas; no duplicate option added. Missing formats/extended layouts/metadata/default/output fidelity remain open. Selected existing tests pass both preserved417normal architectures.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/SKY_PRESET_RENAME_419.json",
+      "package": "B08",
+      "qualification": "Current adjustment kinds, new/existing target, Add/Subtract, brush size/hardness/opacity/flow, Apply to Object, overlay, mask inversion/feather/density, Properties and Brush Settings controls already exist. Selected12core/app cases pass each preserved417normal architecture. Full adjustment presets/algorithms/default/interop/platform scope remains open.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "package": "Q04",
+      "qualification": "Independent Python-authored PSD/PSB framing/compression/sample fixtures, owned Photoshop-saved mask/selection documents and rational/Decimal statistics already exist, with separate pixel/structure checks and provenance. All13PSB/tagged-block and2statistics cases pass each preserved420normal architecture; independent70Float32words match each. New2026modes/profiles/default/output/malformed/real-document coverage and fresh controlled saves remain open; no new fixture or Photoshop-pixel equality is claimed.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "package": "REL01",
+      "qualification": "Existing project/scheme configure production FI identity, universal macOS14+AppStorearchive, sandbox file bookmarks/readwrite/network/print, privacy resources and manual-releasepolicy. Current420universal and older signed332archive local checks survive. The step058package checker is already explicitly historical/superseded. No new bounded archive/sandbox defect is confirmed. Reproducible productionCI is absent; current signedarchive/Applevalidation/disclosures/live sandbox remain stillneeded.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "package": "AUD01",
+      "qualification": "Current651command identities/445partial206pending, typed246/native86/Actions47 and factory menu/shortcut/cursor metadata are already synchronized incrementally. Current56Debug includes menu/discovery and880tool-modifier combinations; all original scopes retained. Full external2026inventory/tool/scenario/service reconciliation remains open.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "package": "G02",
+      "qualification": "WarpWorkspace already exposes all17represented WarpStyle cases plus orientation, interpolation, grids, splits and control-point operations. Seven existing native/API/history/geometry/retention tests pass each preserved420normal architecture with relevant module hashes unchanged. Additional Photoshop presets/pins/planes/nondestructive geometry, exact formulas/defaults and supported physical platforms remain open.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    },
+    {
+      "evidence": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "package": "T02",
+      "qualification": "AdvancedTypeControls already exposes every installed-font axis and available supported OpenType toggle, language tag, orientation and Glyphs. Four existing native/API/archive/Actions/Adobe-job tests pass each preserved420normal architecture with relevant modules unchanged. Full composers/RTL/Indic/EastAsian/fallback/unsupported features/glyph metrics/antialias/pixel/platform fidelity remain open.",
+      "status": "represented_candidate_already_implemented_fullscope_open"
+    }
+  ],
+  "blank_video_layers_476": {
+    "full_package_complete": false,
+    "reference": "docs/BLANK_VIDEO_LAYERS_476.json",
+    "remaining": [
+      "Full SP01 remains open: imported long/HDR footage, blank-source extension/frame insertion/deletion/restoration, Replace/Interpret Footage, altered-frame controls, additional timeline/keyframe/transition/audio/interchange/render/codec and other original acceptance.",
+      "Photoshop factory naming, initial span/insertion/group placement, non-RGB eligibility, exact defaults/output and physical UI/platform/60fps remain unqualified. Creation uses the current document Timeline span and existing layer insertion/reflow rules; this is not an independently verified Photoshop default.",
+      "Existing one-day clip bound, up to20,736,001logical frame indexing,512decoded-source-frame limit, sparse override/normal memory/scratch/archive/transfer/render budgets remain distinct. Maximum implicit geometry/storage tests do not establish dense capacity or every tool/export at that size.",
+      "New blank-layer creation has no qualified portable Actions or Adobe animation ActionJSON binding. Shared brush/history/video APIs remain; no invented Adobe route is added.",
+      "Current selected111Debug and111optimized per architecture pass. This is not a full-suite pass. All earlier unrelated failures and original104package acceptance remain; no global Photoshop percentage or byte parity is inferred.",
+      "Native automation remains unavailable; current validation candidate is unlaunched/uninstalled. Existing builds/user documents/GitHub remain protected; no source push, Store/Xcodearchive or software release."
+    ],
+    "selected_workflow_qualified": true
+  },
+  "breadth_handoff_425": {
+    "L01_remainder": [
+      "Group filter mode and Advanced Blending attributes need substantive model/predicate work and unambiguous Photoshop references.",
+      "Library-linked artwork source/service integration; do not mislabel local/remote file links as libraries.",
+      "Extended empty-layer deletion, special content, inherited hierarchy, complete Background and selection/channel/path combinations.",
+      "Exact multi-selection target ordering and Background-only All Layers behavior remain unqualified.",
+      "Physical UI, exact Photoshop defaults/output, full suite and supported physical-platform/performance qualification remain open."
+    ],
+    "active": true,
+    "missing_functions_stay_in_pass2": true,
+    "next": "D01",
+    "qualification": "127focused Debugpass;395same ordered normal IDs each/393pass/all66new415\u2013425methods pass; exact424linkedalpha/masterpalette errors retained. Universal min14/signature/ZIPpass. Current physical UI/Photoshop/fullsuite/fullscope remain open.",
+    "rule": "After qualification, continue other major stillneeded packages; return to substantive L01 remainder within pass2. No full package closure and no reclassification of missing functions as cleanup."
+  },
+  "breadth_handoff_426": {
+    "D01_remainder": [
+      "Exact current Photoshop menu position/ellipsis, default checkbox selection and zero-selection/save-panel behavior need live reference validation.",
+      "Full Photoshop file-format/codec coverage remains D01/I04 work; the list never advertises an unavailable Save/Copy encoder.",
+      "Remaining open/save/revert/quit, read-only/imported handling and persistent permission workflows retain original D01 scope.",
+      "Other Photoshop File Handling settings, native dialog/options/defaults, complete interchange and independent output/platform/performance qualification remain open."
+    ],
+    "active": true,
+    "missing_functions_stay_in_pass2": true,
+    "next": "L07",
+    "qualification": "101focused Debug and101sameorderednormalcasespassbotharchitectures/all7newmethods/0crashes. Universalmin14/signature/ZIPpass;currentphysical14/Intelhardware/fullD01/fullsuite/Photoshopremainopen.",
+    "rule": "Retain substantive D01work in pass2; no missing functions reclassified as cleanup and no full package closure."
+  },
+  "breadth_handoff_427": {
+    "L07_remainder": [
+      "Auto-nesting, drag/drop membership and position/nesting lock rules need further implementation and reference checks.",
+      "Public Ungroup Artboards dissolves into elements; current artboard.edit ungroup removes metadata but retains a group. Preserve the old API contract while designing complete native/API dissolve behavior.",
+      "Rich Properties/New Document integration and remaining coordinate/guide/export/Frame workflow coverage need source/reference audit and implementation where absent.",
+      "FrameIntegrationTests/testDrawOverImageEmbedsSourceInOneUndo exits signal10 in427Source02 Debug and retained426Source02 Debug. Cause, repair and current normal qualification remain open; this stays substantive L07/Q04 work.",
+      "Exact Photoshop spacing/naming/background inheritance, occupied-neighbor placement, button/cursor appearance and all physical reference/default comparisons remain unqualified.",
+      "Complete editable interchange, portable Actions coverage, independent output parity, full suite, physical Intel/macOS14 and editing performance remain original acceptance gates. Per-control accessibility/keyboard presentation also needs qualification."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "S01",
+    "rule": "No package closure or minor/cleanup pass.41selected Debug tests, no normal427/full-suite claim."
+  },
+  "breadth_handoff_428": {
+    "S01_remainder": [
+      "Grow/Similar still require the new paged, reference-driven colour-selection engine and full native/API workflow. See SELECTION_GROW_SIMILAR_PLAN_428.json.",
+      "Complete Extras/Selection Edges controls, remaining selection options and contexts need further source/reference audit and implementation where absent.",
+      "Exact Photoshop kernels, coverage/anti-alias/feather/default/shortcut combinations, appearance/dash timing and physical supported-platform/performance qualification remain original S01 acceptance.",
+      "The earlier Frame Debug signal10 and full-suite numerical/lifecycle failures remain open; a passing optimized case is not a Debug cause or crash repair."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "G01",
+    "rule": "No full-package closure or minor/cleanup pass. Grow/Similar remains substantive implementation work."
+  },
+  "breadth_handoff_429": {
+    "G01_remainder": [
+      "Transform Again and repeat/duplicate transforms need retained relative/reference/target state shared by native and API commits. The command stays pending; no guessed repeat operation is bound.",
+      "The original multi-target/mask/snapping/nondestructive crop/straighten/perspective crop and resize scope remains open wherever not yet implemented or qualified.",
+      "Exact Photoshop defaults, pivot visibility/persistence, appearance, modifier behavior, sampling/output bytes, uncommon combinations and supported physical-platform/performance qualification remain open.",
+      "Earlier Debug crashes and full-suite numerical/lifecycle failures remain open. This focused development run is not an optimized universal, full-suite or Photoshop-parity result."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "A03",
+    "normal_batch_policy": "Focused Debug during breadth; optimized/universal/private-source at next meaningful stable milestone. Last qualified428."
+  },
+  "breadth_handoff_430": {
+    "A03_remainder": [
+      "Modern/legacy Brightness/Contrast, ranges, Auto, defaults and independently pinned Photoshop output remain substantive implementation/reference work; menus stay unbound to the licensed approximation.",
+      "Other classic tone families still require their paged preparation: Shadows/Highlights, Match Color/statistics, Replace Color and HDR Toning retain the8,388,608pixel gate.",
+      "Large Equalize dialog previews currently provide a labelled bounded overview. Full-resolution interactive viewport/100% dialog inspection remains functional stillneeded; document viewing after Apply uses the existing canvas.",
+      "Equalize and other classic kernels, Photoshop bins/rounding/depth/mode/default/ICC/alpha/preset/descriptor fidelity and complete native controls remain unqualified where not established by independent reference evidence.",
+      "Adobe Equalize ActionJSON/UXP operation mapping, semantic HDR Actions and remaining interoperability/presets remain open; existing published v2 route coverage is not expanded by this capacity change.",
+      "Earlier Debug crashes/full-suite numerical/lifecycle failures, dense maximum disk/resource/performance, actual macOS14/physical Intel and physical60fps remain open."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "I05",
+    "rule": "No full package closure/minor/cleanup pass. Existing Match Color source pickers and tone presets were audited, not counted as new."
+  },
+  "breadth_handoff_431": {
+    "I05_remainder": [
+      "Full I05 scope remains open: Export As/Quick Export settings, Save for Web, slices, layers/artboards/comps to files/PDF, asset naming/scales, LUT/export presets and image-asset generation wherever not already implemented and qualified.",
+      "Full 256-point grid support and streaming output remain functional stillneeded. This implementation retains 2\u2013129 grid points, 64MiB per file and 256MiB+8192 bytes per ZIP.",
+      "LAB abstract profiles, CMYK device links and corresponding color conversion remain functional stillneeded; this increment exports global RGB only. General CSP/ICC native import and Photoshop interchange descriptors remain unsupported.",
+      "Exact Photoshop quality-preset grid mappings, zero/one-grid behavior, output/default/interpolation/ICC fidelity and all original independent acceptance remain open. No guessed presets or Adobe action descriptors are bound.",
+      "Live native multi-document save-panel filenames, destination/overwrite/partial-error behavior and supported physical-platform/performance qualification remain unverified; controlled FileWrapper output is not an atomic multiple-file transaction claim.",
+      "Some legacy 3DL readers infer output bit depth from the maximum stored value, making dark tables ambiguous. Native Photato scale metadata preserves its own tables, but does not prove compatibility with every external reader.",
+      "Existing global-stack restrictions on spatial masks, groups, pixel overlays, clipping, dither/Dissolve, Grain and neighborhood effects remain. Current full-suite failures and prior Debug crashes remain recorded; no current optimized/universal/full-suite/physical/Photoshop qualification is claimed."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "B05",
+    "normal_batch_policy": "Focused Debug and independent readers during breadth; optimized/universal/private-source at meaningful stable milestones. Last qualified430.",
+    "then": "C01"
+  },
+  "breadth_handoff_432": {
+    "B05_remainder": [
+      "Full B05 remains open: Patch source/destination/adaptation, Content-Aware Move/Extend, Red Eye and full-resolution protected-region behavior wherever missing or unqualified.",
+      "Pattern Patch currently bounds the selected solve window including its two-pixel border and transformed output to4,194,304pixels each. Tiled/unbounded solving/output remains functional stillneeded. Other Patch/Move/RedEye paths retain16,777,216canvas/4,194,304region limits and require paged expansion.",
+      "Ordinary RGB raster image target only; Smart Objects, projected source storage, mask/channel targets and other color modes remain substantive functional work. Saved pattern asset limits remain16MP.",
+      "Exact Photoshop pattern phase/scale, alpha/diffusion/solver/profile/output/defaults, all native contextual variations/persistence and unsupported Adobe action descriptors remain open. Portable semantic retouch Actions remain unimplemented.",
+      "Physical/native appearance and input, full supported-platform/performance/60fps, dense maximum and complete current-suite/Photoshop parity are not established. Mac is still locked; the existing human unlock request remains pending. Earlier numerical/Debug/full-suite residuals remain recorded."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "C01",
+    "next_source_audit": "artifacts/runs/20261106T035012Z-432-pattern-patch/next-C01-read-audit01.json",
+    "normal_batch_policy": "432current optimized/universal batch qualified; private source backup follows. Continue focused development tests during breadth and batch normal at meaningful milestones.",
+    "then": "AUT01"
+  },
+  "breadth_handoff_433": {
+    "C01_remainder": [
+      "Full original C01 component visibility/edit targets, temporary mask/context, eye/thumbnail/factory-shortcut, paint/filter and multi-target functionality remains open wherever missing or unqualified.",
+      "Native partial multi-component/multi-ink footer Load is deliberately unavailable: no guessed combination or arbitrary first channel. Exact Photoshop combined-source and modified Load gestures need reference-driven implementation/qualification.",
+      "Native/API Save Selection retains existing alpha/new-document destination support. Layer-mask destinations, source dragging onto the Load footer and missing component/temporary-mask thumbnail Load gestures remain functional stillneeded. Public older guidance names broader destinations; current contextual behavior still needs qualification.",
+      "Source-specific limits, full profile/default/output fidelity, earlier Gray32one-ULP and full-suite/Debug residuals, dense maximum, supported physical platforms and60fps remain open. The tests establish selected sparse paths, not universal capacity/performance or Photoshop parity.",
+      "No current optimized universal/full-suite/live UI/Photoshop qualification. Last optimized/universal/private-source checkpoint432. Existing human Mac-unlock request remains pending; no CUA/browser workaround or repeated question."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "AUT01",
+    "normal_batch_policy": "Focused Debug during breadth; latest432optimized/universal/private batch. Next at meaningful stable milestone.",
+    "then": "G03"
+  },
+  "breadth_handoff_434": {
+    "AUT01_remainder": [
+      "Full AUT01 stays major stillneeded: conditions, interactive/dialog controls, Open/Save overrides, source/destination modes, recursive folders/import/Bridge, ATN, droplets and Image Processor wherever missing or unqualified.",
+      "Exact Photoshop date interpretation, serial overflow, letters after Z, Unicode/case behavior, sanitization, extension choice, UI/defaults/presets and compatibility semantics remain unqualified. Current names are validated, not silently rewritten. At most six fields, 256 native sources/eight shared API sources, 255 UTF-8 filename bytes and 128-byte literals.",
+      "Native starting fields Document Name+extension are chosen pending live reference. Starting serial1/all three compatibility flags true/six-field bound are supported by the installed public Photoshop2026 Batch dictionary. Native captures date at Run; API may pin ISO8601 date and time zone.",
+      "All outputs retain a safe single-file basename baseline regardless of compatibility checkboxes. Windows additionally rejects its reserved names/characters/trailing dots/spaces; macOS/Windows request canonical case-insensitive collision checks. UNIX flag is retained public metadata; disabling it cannot bypass mandatory safe-basename rules. This is not a general platform/Photoshop filename-equivalence claim.",
+      "Atomic hard-link publication protects the actual destination filename, including symlinks. Compatibility alias enumeration is best effort and not an all-files or cross-platform atomic transaction under an external case-alias race. Previously completed outputs are retained on cancellation/errors.",
+      "Existing action sampling/encoding/document capacity limits, full document bytes/defaults/settings/factory-menu/shortcut parity, earlier failures, physical macOS14/Intel/AppleSilicon checks and 60fps remain original acceptance. Offscreen geometry and HTTP tests are not physical/Photoshop proof.",
+      "Current optimized universal/full-suite/live UI/Photoshop qualification is unclaimed. Latest optimized/universal/private-source batch432; next batch at a meaningful milestone. Existing human Mac-unlock request remains pending; no CUA/browser/server workaround or repeated question."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "G03",
+    "normal_batch_policy": "Focused Debug during breadth; latest432optimized/universal/private batch. Next at meaningful stable milestone.",
+    "then": "G04"
+  },
+  "breadth_handoff_435": {
+    "G03_remainder": [
+      "Full original G03 remains major stillneeded wherever missing or unqualified: on-canvas live corner widgets/controls visibility, other primitive click dialogs, dimensions/options, custom shapes/presets, path/shape/pixel modes, booleans/arrangement/alignment and related workflows.",
+      "Existing geometry32768 and8MP shape rasterization limits remain functional stillneeded. Pixels mode still uses the existing raster renderer and its document/target/capacity limits; this does not qualify all operations on a maximum300000-square document.",
+      "Exact Photoshop corner/stroke/fitting/coverage/default/placement/rounding, modifier and pixel semantics, dialog layout/persistence and supported physical-platform/60fps checks remain open. No current Photoshop byte/default/gesture equivalence is claimed.",
+      "Native click dialogs currently cover rectangle/ellipse; exact no-movement/non-drag click is the chosen detection rule pending physical reference. Option at mouse-down initializes From Center; other modifiers retain the drawing cursor policy and add no precise-dialog setting. Templates remain unchanged by Apply/Cancel; exact repeated-dialog default persistence remains open.",
+      "Precise API point placement requires one parametric component, identity local transform and no path override. Existing transform clients retain full definitions and behavior. combine uses the target shape paint and transforms appended geometry to target-local coordinates. No general proprietary descriptor equivalence is asserted.",
+      "The two Source03/04Debug stack faults on the selected new native/API pixel paths are repaired in the unchanged final focused cases. Earlier unrelated Frame/clipboard/shape Debug crashes, full-suite failures, linked-alpha/gray numerical residuals and all other original acceptance remain open; no common cause or repair is inferred.",
+      "Latest optimized universal/private-source qualification remains432. No current normal/full-suite/physical/live Photoshop qualification, install/launch/archive/Store/release or private push. Existing human Mac-unlock request remains pending; no CUA/browser/server workaround or repeated question."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "G04",
+    "normal_batch_policy": "Focused Debug during breadth; latest432optimized/universal/private batch. Next at meaningful stable milestone.",
+    "then": "T01"
+  },
+  "breadth_handoff_436": {
+    "G04_remainder": [
+      "Full original G04 remains major stillneeded wherever missing or unqualified: magnetic/multi-anchor editing, fitting, clipping-path export, path/selection/mask targeting and remaining Pen/Stroke workflows.",
+      "History Fill has no implemented history source and is explicitly unavailable in native/API. It remains missing functionality in pass2, not cleanup.",
+      "Extended fill currently requires RGB raster/mask targets and a canvas at most16MP; feather is0\u2013100px. Complete target/depth/mode support, large-document capacity and full professional workflow scope remain functional stillneeded.",
+      "Current and older Adobe guides disagree about quick-fill defaults/persistence. Ordinary footer and no-fill API preserve their legacy brush-opacity behavior. Option opens options and the context menu opens Fill Path. Exact current Photoshop defaults/persistence, gestures, pixels, AA/feather/rounding and blending remain unqualified.",
+      "Portable Actions capture coverage/settings/pattern and resolve the replay layer/current selection. Photoshop current-path/history-source recording semantics are not asserted.",
+      "All earlier full-suite, linked-alpha, Gray32 numerical and unrelated Debug crash/performance/physical-platform gaps remain open. Selected optimized passes are not full-suite or Photoshop parity.",
+      "Fresh436CUA binding after all workers terminal again reports Mac locked and automatic unlock failed. Existing human unlock request remains pending; no repeat question or browser/shell workaround, no current live UI/physical/60fps proof."
+    ],
+    "missing_functions_stay_in_pass2": true,
+    "next": "T01",
+    "normal_batch_policy": "Current436selected354each/all89new/universal pass. Focused Debug during breadth; broad normal/private batch at meaningful milestones.",
+    "then": "T04"
+  },
+  "breadth_handoff_437": {
+    "current": "T01",
+    "normal_private_policy": "Latest436stable; no newprivatepush/optimizedqualification on failing selectedscope.",
+    "not_stable": true,
+    "queue_rotation": false,
+    "remaining": [
+      "Current95case focused suite is FAIL:94pass, one desired selected-range/right-point/commit method fails with five assertions. All original94cases and new mixed-floating native-control regression retained. No green qualification or easier input substituted.",
+      "Next within T01: fix point-text anchor/layout/render/editor semantics coherently. Owned ten-character two-line diagnostic uses32768container, usedRect[0,0,32768,40.89599609375], padded width32770/height43; existing32768dimension guard throws the misleading16MPmessage. Whole-plane capacity relaxation alone is not a faithful fix. Preserve ordinary left-point and paragraph output, selection, source frames/transforms, masks/effects/history and both APIs; test owned literal anchors/bounds and independent Photoshop output when available.",
+      "Full original T01 remains open: typing defaults before a text layer exists, mixed-value state, dynamic Character/Paragraph panel formatting menus/shortcuts, detailed paragraph composition/hyphenation/justification, typography/PSD and remaining full scope. Panel placement, no-document behavior and Photoshop exact defaults/pixels remain unqualified.",
+      "No current normal optimized/universal or private-source qualification; latest436remains. No physical Intel/macOS14/live Photoshop/60fps/full-current-suite proof. Fresh437CUAagainlocked; existing human unlock request pending, no repeat question or workaround.",
+      "All prior numerical/linked-alpha/full-suite/Debugcrash and original104scope acceptance remain open. Current selection retention and shared panel workflow evidence do not close package parity. T04follows after this substantive T01path is made usable; minor/cleanup passes remain queued."
+    ],
+    "scope_waived": false,
+    "then": "T04"
+  },
+  "breadth_handoff_438": {
+    "affected_suites_green": false,
+    "current": "T04",
+    "latest_fully_green_selected_normal": 436,
+    "next_candidate": "Type-tool hover/click on saved path using existing shaped engine, native cursor/draft/API/history coverage required.",
+    "queue_rotation": true,
+    "remaining_fidelity": [
+      "Current optimized ARM467/468 and Rosetta466/468; imported source mismatch5937/4243/5773remains in both. The exact frozen ordinary-output method additionally fails five u8cases under Rosetta; all10u16/f32planes match. Keep tests/fixtures unchanged. No cause, oldIntelbaseline reproduction or regression-introduction claim.",
+      "Current five u8cases have565/614/578/751/756different Floatwords and239/244/225/342/344changed pixels, alpha maximum1byte; straight RGB also differs. This is not merely a one-ULP normalization residual. Current cross-architecture byte identity is false."
+    ],
+    "remaining_functional": [
+      "T01 remains open: typing defaults before a layer exists, mixed-value states, dynamic Character/Paragraph formatting menus/shortcuts, full paragraph composition/hyphenation/justification and editable PSD/type coverage.",
+      "Type raster limits remain32768side/16MP and100000UTF16units. Large type, point wrapping/whitespace/composer and arbitrary affine native editing require further implementation and qualification.",
+      "Older centred-point documents without logical source metadata can retain ambiguous placement from the former layout bug. Fifteen ordinary output baselines do not qualify that migration.",
+      "Physical Intel/macOS14/live Photoshop/defaults/output, full current suite and60fps are unqualified; existing human unlock request remains pending.",
+      "All prior failures and original104scope/652command requirements remain. This selected path does not close T01 or the overall goal."
+    ],
+    "scope_waived": false,
+    "selected_T01_native_path_qualified": true,
+    "then": "A01"
+  },
+  "breadth_handoff_439": {
+    "affected_suites_green": false,
+    "current": "A01",
+    "latest_fully_green_selected_normal": 436,
+    "queue_rotation": true,
+    "remaining_fidelity": [
+      "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
+      "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
+    ],
+    "remaining_functional": [
+      "Full originalT04scope remains open: vertical/inside-path/warped inline editing, live start/end delimiters/flip/drag, complete fitting/reflow, font/composer/IME/affinity, editable PSD and maximum capacity. Current path bounds16384UTF16/2000000outlinepoints/16MP remain below complete Photoshop requirements.",
+      "Existing-layer draft preview draws text separately from layer masks/opacity/effects; fully composited editing appearance remains functionalstillneeded. Current affine caret/source preservation does not qualify complete preview appearance.",
+      "Closed full-circle start/end may coincide geometrically; full delimiter and affinity behavior is open. Current16modifier dispatch/cursor matches itself; exact Photoshop alternates/defaults/hotspot/artwork remain unobserved.",
+      "No physical Intel/macOS14, live Photoshop/currentworkspace/VoiceOver or60fpsproof; Maclocked again439, existing humanunlockpending. All prior failures and original104scope acceptance remain."
+    ],
+    "scope_waived": false,
+    "then": "A04"
+  },
+  "breadth_handoff_440": {
+    "A01_original_Auto_candidate_complete": false,
+    "affected_suites_green": true,
+    "current": "A04",
+    "full_suite_green": false,
+    "queue_rotation": true,
+    "remaining_A01_functional": [
+      "Complete Curves Auto and Auto Color Correction Options/algorithms/defaults; existing Levels Auto Color remains an unqualified approximation.",
+      "Native black/gray/white point sampling and editable targets, requiring modeless/captured-source editing.",
+      "Clipping previews, freehand/targeted/multipoint Curves, persistent presets, mask channels and HDR; all original A01 scope and acceptance.",
+      "Generic affine maximum-size statistics, dense performance and rich adjustment composition capacity remain unqualified.",
+      "Independent Photoshop/ICC/output/default fidelity, physical Intel/macOS14 and60fps; all earlier strict/full-suite failures remain recorded."
+    ],
+    "scope_waived": false,
+    "then": "A05"
+  },
+  "breadth_handoff_441": {
+    "affected_suites_green": true,
+    "current": "A05",
+    "full_suite_green": false,
+    "queue_rotation": true,
+    "remaining_A04_functional": [
+      "Editable modern PSD/PSB descriptors and independent Photoshop output/default/ICC references. No invented tags or silent flattening as editable support.",
+      "Actual Light version switching, including legacy versions. Existing Use legacy Brightness/Contrast resets/replaces layer type; it is not the version menu.",
+      "Spatial Light/Clarity/Dehaze remains8,388,608pixels; current Light8/16. General maximum-size spatial processing remains functional work.",
+      "Transform/type/other live-edit contexts, Timeline/auxiliary/adjustment-brush pause behavior, exact Photoshop timing/visuals/occlusion/zero-mask rules.",
+      "All original A04scope/acceptance, physical Intel/macOS14,60fps and broader regression. Prior full-suite, strict text-output, crash and capacity failures remain unresolved."
+    ],
+    "scope_waived": false,
+    "then": "A07"
+  },
+  "breadth_handoff_442": {
+    "affected_suites_green": false,
+    "current": "A07",
+    "full_suite_green": false,
+    "queue_rotation": true,
+    "remaining_A05_functional": [
+      "On-canvas opacity controls and complete modern gradient interaction/preset behavior.",
+      "Complete noise gradients, GRD edge cases/interchange, remaining interpolation/dither/default and Gradient Fill transforms; preserve old bounded references.",
+      "Preset-library automation remains open; creation/configuration/Classic painting do not complete that library interface.",
+      "Large-document performance, physical Intel/macOS14, 60fps and independent Photoshop output/UI/default qualification.",
+      "Intel Rust interpolation fixture remains15580/15633 exact samples on both retained441 and442; no assertion weakening, cause or Photoshop equivalence claim. All earlier wider-suite failures and full A05 acceptance remain open."
+    ],
+    "scope_waived": false,
+    "selected_workflows_green": true,
+    "then": "F01"
+  },
+  "breadth_handoff_443": {
+    "affected_suites_green": true,
+    "current": "F01",
+    "full_suite_green": false,
+    "queue_rotation": true,
+    "remaining_A07_functional": [
+      "History Fill needs shared history-source/snapshot retention and lifecycle; it is still functional work, not a dropdown placeholder.",
+      "Scripted Fill and remaining pattern application to text/shape/pixel layers, canvas/layer modifier drops, picker and keyboard semantics.",
+      "Arbitrary PAT metadata/interchange, exact Photoshop defaults/output, larger-than-current library/transport capacity and independently observed Photoshop workflows.",
+      "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
+      "All original A07 scope and acceptance criteria remain unchanged."
+    ],
+    "scope_waived": false,
+    "selected_workflows_green": true,
+    "then": "F02"
+  },
+  "breadth_handoff_446": {
+    "F01_full_scope_open": true,
+    "affected_suite_green": false,
+    "current": "F02",
+    "queue_rotation": true,
+    "reference": "docs/CUSTOM_SHAPE_BLUR_446.json",
+    "remaining_F01": [
+      "CSH import and in-dialog custom-shape library loading/organization.",
+      "Remaining ordinary filter/framework targets, capacity and workflows in original F01 scope.",
+      "Non-RasterFilter Last Filter/Actions/Batch/plugin/RAW/job/recent-list/dialog policies and independent Adobe descriptors/PSD exchange.",
+      "Exact custom coverage rounding, reference matrices at other shapes/radii/depths/alpha/edges, numerical/default/shortcut/output fidelity.",
+      "Full regression and earlier recorded failures, dense/large-operation performance/60fps, actual supported Intel/macOS14.",
+      "All original104 scopes/652command identities/81majorqueue members remain; no package complete."
+    ],
+    "scope_waived": false,
+    "selected_native_workflow_qualified": true,
+    "strict_PS_byte_gates_retained": true,
+    "then": "F03"
+  },
+  "breadth_handoff_447": {
+    "F02_full_scope_open": true,
+    "current": "F03",
+    "latest_optimized_universal": 446,
+    "normal_447_qualified": false,
+    "queue_rotation": true,
+    "reference": "docs/CUSTOM_KERNEL_PRESETS_447.json",
+    "scope_waived": false,
+    "selected_native_workflow_qualified": true,
+    "then": "F04"
+  },
+  "breadth_handoff_448": {
+    "current": "F04",
+    "full_F03_open": true,
+    "next_housekeeping": "Standing authorized curated source/build backup of448 before further feature work.",
+    "normal_cases_pass_each": [
+      57,
+      57
+    ],
+    "queue_rotation": true,
+    "reference": "docs/BLUR_GALLERY_MASK_448.json",
+    "scope_waived": false,
+    "selected_native_workflow_qualified": true,
+    "then": "F05"
+  },
+  "brush_pattern_texture_454": {
+    "evidence": "docs/BRUSH_PATTERN_TEXTURES_454.json",
+    "focused_Debug_native_passed": true,
+    "full_package_closed": false,
+    "next": "B02,thenB04",
+    "normal_latest": 453
+  },
+  "channel_blending_461": {
+    "reference": "docs/CHANNEL_BLENDING_461.json",
+    "remaining": [
+      "Full L03 remains open: non-RGB component-domain channel exclusion; split This Layer/Underlying Layer BlendIf and Option split gestures; shallow/deep knockout; Blend Interior Effects As Group; Transparency Shapes Layer; raster/vector-mask global blend flags; their native/API/Actions/PSD semantics.",
+      "Installed Photoshop2026 default/numerical/alpha/transparent/all-off/channel/effect/group/clipping/video/selection semantics remain unqualified for new exclusions. The current all-off=no-contribution and preserved straight backdrop component policies are implementation candidates, not independently measured Photoshop facts. Extreme HDR/nonseparable/finite-range behavior remains unqualified.",
+      "Actual native461 checkbox/menu/context/focus/private preview/Cancel/Undo/Redo/Copy/Paste/Close/Quit acceptance and earlier458-460native checks remain pending the existing native automation connection issue. Controlled methods/menu binding tests are not physical UI acceptance; no461app launch/install is claimed.",
+      "Pointwise channel-only settings retain300000sparse geometry and bounded raster damage; effect maps keep their independent8MP limit. Dense/complex maximum workloads, physical macOS14/Intel/AppleSilicon/tablet/60fps/HIG/VoiceOver/full-suite qualification remain open. Bounded invalidation is not an fps measurement.",
+      "All earlier numerical/strict/full-suite/crash/capacity failures remain. Seven existing independent Photoshop RGB32 tests pass retained460andcurrentselectedconfigurations; this does not repair prior457Intel234assertions/sixFloat32buffers or establish new Photoshop channel-exclusion equality.",
+      "All104 original scopes/acceptance,652reference-command identities/status mappings,81major memberships and seven passes remain. No full L03/master-goal closure; continueL04thenL05."
+    ],
+    "scope": "Selected RGB channel-exclusion workflow, not full L03 closure",
+    "strict_capture_all_exact": true
+  },
+  "channel_filter_capacity_469": {
+    "reference": "docs/CHANNEL_FILTER_CAPACITY_469.json",
+    "remaining": [
+      "Full C02 original scope/acceptance remains open, including any missing channel/spot/prepress/Merge Spot/printing/color-library/Actions and workflow combinations.",
+      "The eight existing basic filter families gain sparse/paged preparation. The old API-only Liquify channel path retains its8MP bound and is not newly exposed in native dialogs. Other grayscale families remain work.",
+      "Frozen468 output establishes regression equivalence for288owned small programs, not independent Photoshop filter results. Exact Photoshop kernels/defaults/borders/noise/selection/spot/profile/rounding remain unqualified.",
+      "Sparse300000by300000 channels and one actual8.39MP Noise operation do not establish dense90GP disk/RSS/mapped-residency or physical60fps qualification.",
+      "Normal optimized469 is deferred to a subsequent stable batch; latest verified universal remains468. Current Debug app is ARM64 only. Physical supported platforms/macOS14/Intel/VoiceOver/stylus/fullsuite and all earlier failures remain open.",
+      "One existing467bundle bind retry still returned native pipe closed. New469native UI/Close/Quit and older467refinement/458Apply checks remain pending; no new launch, forcequit, fallback or repeated unlock request."
+    ]
+  },
+  "channel_separation_470": {
+    "reference": "docs/CHANNEL_SEPARATION_470.json",
+    "remaining": [
+      "Full COL02 scope/acceptance is still open: Merge Channels, Merge Spot Channel, restricted/ink conversion capacity, palette/dither/presets/interchange and remaining mode/depth/plate combinations.",
+      "Adobe documentation establishes the intended Split lifecycle; exact current Photoshop mode/spot/single-channel eligibility, suffix/file naming, profile/selection/metadata/Background/focus/default/output behavior still need independent reference checks.",
+      "The416byte reference is an independent Python literal/integer-inversion calculation for owned samples. It is not Photoshop Split output. Native89/Actions58 unchanged; multi-document Actions and unverified Adobe descriptors remain unsupported.",
+      "Maximum sparse300000by300000 component separation is not dense90GP RAM/scratch/mapped-residency/60fps qualification. Existing ink storage/resource/transfer limits remain.",
+      "All74selectedDebug and the same74normal methods per architecture pass; this does not establish a full-suite pass or resolve all earlier failures. TranslatedIntel on this host is not physicalIntel/macOS14/all supported platform qualification.",
+      "CUAexisting467binding still reports native pipe closed. New470Debug/universal apps remain unlaunched; older467refinement/458Apply/Close/Quit and newSplit live control/focus/Close/Quit checks remain pending."
+    ]
+  },
+  "classic_RGB16_boundaries_486": {
+    "all_selected_optimized_passed": false,
+    "application_build": 486,
+    "focused_Debug_tests": 61,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_correctness_methods": 3,
+    "normal_passed_each_architecture": [
+      61,
+      60
+    ],
+    "normal_selected_tests_each_architecture": 61,
+    "reference": "docs/CLASSIC_RGB16_BOUNDARIES_486.json",
+    "selected_RGB16_fused_workflow_qualified_both_architectures": true,
+    "selected_native_UI_qualified": true,
+    "software_changes": true,
+    "status": "Classic RGB16 Gradient Map now uses fused interpolation at linear boundaries. All 61 selected Debug checks pass. Optimized Apple Silicon passes 61/61 and translated Intel 60/61, including all three new methods on both. The remaining Intel Legacy vector170 failure also occurs on retained build485. All 2,359,872 independently read merged-reference bytes match across Debug, ARM and Intel. Native Reverse, Undo/Redo, 100% viewport, cleanup and universal package checks pass. Build486 is a validation candidate; build480 remains the latest fully qualified selected universal. Full A06, Smooth, the curved residual, RGB32 fills and earlier gaps remain open.",
+    "step": 486
+  },
+  "closure_rule": "Track delivery is separate from package closure. Original acceptance criteria, exactness, APIs and supported systems must all be met before a full package or goal is closed.",
+  "completed_deliverables": [
+    {
+      "package": "L01",
+      "reference": "docs/EMPTY_LAYER_DELETION_403.json",
+      "scope": "Ordinary raster/plain groups only; full selector parity remains open",
+      "shared_with": [
+        "AUT02"
+      ],
+      "source": "403Source02",
+      "title": "Delete All Empty Layers native baseline"
+    },
+    {
+      "package": "S01",
+      "reference": "docs/SINGLE_PIXEL_MARQUEE_404.json",
+      "scope": "Bounded native geometry/history/cursor/API baseline; full S01 remains open",
+      "source": "404Source03",
+      "title": "Single Row and Single Column Marquee native/API baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "I05",
+      "reference": "docs/COLOR_LOOKUP_EXPORT_405.json",
+      "source": "405Source03",
+      "title": "Global adjustment-stack CUBE export native/API baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "C01",
+      "qualification": "Eight new tests pass; physical held Shift gesture, full Photoshop/current-suite and normal optimized batch remain open.",
+      "reference": "docs/C01_RGB8_SELECTION_406.json",
+      "source": "406Source01",
+      "title": "RGB8 component-pair native/API selection development baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "AUT01",
+      "reference": "docs/ACTION_DUPLICATION_407.json",
+      "source": "407Source01",
+      "title": "Duplicate saved actions native/API baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "G03",
+      "qualification": "All8new/156affected normal optimized cases pass each architecture. Live native controls/history/Quit pending Mac unlock; tracked separately, not claimed passed.",
+      "reference": "docs/SHAPE_STROKE_PRESETS_408.json",
+      "source": "408Source01",
+      "title": "Solid/Dashed/Dotted stroke preset implementation and normal optimized baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "A05",
+      "qualification": "74focused Debug and82normal optimized cases each architecture pass, including8new. Universal signature/min14/ZIP pass; live UI pending unlock.",
+      "reference": "docs/GRADIENT_FILL_API_410.json",
+      "source": "410Source02",
+      "title": "Editable Gradient Fill patch API and portable Actions47"
+    },
+    {
+      "full_package_closed": false,
+      "normal_followup_412": "All8new Last Filter cases and retained published Adobe-job pass in412normal affected116each architecture; no Debug crash repair or live UI claim.",
+      "package": "F01",
+      "qualification": "All8new/42focused Debug cases pass; normal/live/fullscope open. Existing Debug Adobe-job crash retained and reproduced on410.",
+      "reference": "docs/FILTER_RECALL_411.json",
+      "source": "411Source02",
+      "title": "Native Last Filter/default shortcut/shared filter.repeat and portable resolved Actions"
+    },
+    {
+      "full_package_closed": false,
+      "package": "F06",
+      "qualification": "53focused Debug;116main+2separate metadata normal cases per architecture, all16new411\u2013412pass. Universal signature/min14/ZIP pass. Physical native interaction pending.",
+      "reference": "docs/GALLERY_EFFECT_REORDER_412.json",
+      "source": "412Source01",
+      "title": "Direct Filter Gallery effect-row drag reorder with existing ordered-array APIs"
+    },
+    {
+      "full_package_closed": false,
+      "package": "B01",
+      "qualification": "One new end-to-end regression and62focused Debug cases pass;50old normal baseline cases each architecture. No normal/live413claim.",
+      "reference": "docs/BRUSH_SECTION_CONTROLS_413.json",
+      "source": "413Source02",
+      "title": "Eleven direct sidebar group enable checkboxes over existing brush settings"
+    },
+    {
+      "full_package_closed": false,
+      "package": "L06",
+      "qualification": "53Debugpass;4new413\u2013414methods pass both normal architectures. Normal99/100each retains exact known linked-preview failure; universal/signature/ZIP pass; physical/fullscope open.",
+      "reference": "docs/SMART_FILTER_DRAG_414.json",
+      "source": "414Source02",
+      "title": "Same-document Smart Filter single-row copy and within-stack drag reorder"
+    },
+    {
+      "full_package_closed": false,
+      "normal_followup_417": "All four415-416new methods pass both normal architectures in159case batch. Cumulative full/physical gates remain open.",
+      "package": "S03",
+      "qualification": "81focused Debug pass, one new regression. 60existing normal baseline each architecture. Normal415/live/fullscope open.",
+      "reference": "docs/SUBJECT_OPTIONS_415.json",
+      "source": "415Source01",
+      "title": "Select Subject in Object/Quick Options with captured sampling"
+    },
+    {
+      "full_package_closed": false,
+      "normal_followup_417": "All four415-416new methods pass both normal architectures in159case batch. Cumulative full/physical gates remain open.",
+      "package": "S06",
+      "qualification": "102focused Debugpass/3new methods;59old normal baseline each architecture. Full S06/normal/live open.",
+      "reference": "docs/MASK_REMOVAL_416.json",
+      "source": "416Source03",
+      "title": "Selected-mask footer removal and typed mask.manage API"
+    },
+    {
+      "full_package_closed": false,
+      "package": "RAW02",
+      "qualification": "41focused Debugpass;159normal each/157pass including all8new415-417methods,70independent words each. Two exact baseline failures retained. Full RAW02/Photoshop output/native acceptance remains open.",
+      "reference": "docs/STACK_STATISTICS_417.json",
+      "source": "417Source02",
+      "title": "Correct five documented statistical stack operators across existing native/APIs"
+    },
+    {
+      "full_package_closed": false,
+      "later_normal_qualification": "All six new418\u2013419methods pass current420normalboth architectures; no full or physical closure.",
+      "package": "SP01",
+      "qualification": "50focused Debugpass/3new methods;49existing normal baseline each architecture. Normal418/physical/fullscope open.",
+      "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
+      "source": "418Source02",
+      "title": "Direct frame Timeline thumbnail drag reorder"
+    },
+    {
+      "full_package_closed": false,
+      "later_normal_qualification": "All six new418\u2013419methods pass current420normalboth architectures; no full or physical closure.",
+      "package": "AI09",
+      "qualification": "57focused Debugpass/3new methods;26existing normal baseline each architecture. Normal419/physical/fullscope open.",
+      "reference": "docs/SKY_PRESET_RENAME_419.json",
+      "source": "419Source02",
+      "title": "Native sky-preset Rename with shared API state and persistence"
+    },
+    {
+      "full_package_closed": false,
+      "package": "Q03",
+      "qualification": "193/195same normal cases per architecture; all18new415\u2013420methods pass, including3new420functional methods and real benchmark. Two exact baseline failures retained. Universal min14/signature/ZIP pass; full/physical qualification open.",
+      "reference": "docs/RASTERIZATION_RESPONSIVENESS_420.json",
+      "source": "420Source02",
+      "title": "Move measured ordinary rasterization preparation off the main actor"
+    },
+    {
+      "full_package_closed": false,
+      "package": "S05",
+      "qualification": "All56focused Debugpass/3new methods/9depth-target contexts/64modifier clicks;50existing normal baseline each. Current normal421/physical/fullscope open.",
+      "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "source": "421Source01",
+      "title": "Native channel-thumbnail double-click Options with shared API behavior"
+    },
+    {
+      "full_package_closed": false,
+      "package": "L01",
+      "reference": "docs/LAYER_STACK_ORDER_422.json",
+      "scope": "Native/default menus/Photato API/portable Actions48/Adobe MoveLayer subset; full L01 remains open",
+      "source": "422Source03",
+      "title": "All five selected-layer Arrange commands"
+    },
+    {
+      "full_package_closed": false,
+      "package": "L01",
+      "reference": "docs/LAYER_FILTER_423.json",
+      "remaining": "Async pixel-content/library/selection foundation and full qualification remain",
+      "source": "423Source03",
+      "title": "Document-local metadata filtering/Find/Isolate foundation"
+    },
+    {
+      "full_package_closed": false,
+      "package": "L01",
+      "qualification": "91focusedpass;360normal each/358pass/all57newpass;known422residuals;universal/nativeboundedUIpass;fullL01open",
+      "reference": "docs/LAYER_CONTENT_FILTER_424.json",
+      "source": "424Source05",
+      "title": "Async Empty/NotEmpty native/API development baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "L01",
+      "qualification": "127focused Debugpass;395same ordered normal IDs each/393pass/all66new415\u2013425methods pass; exact424linkedalpha/masterpalette errors retained. Universal min14/signature/ZIPpass. Current physical UI/Photoshop/fullsuite/fullscope remain open.",
+      "reference": "docs/LAYER_SELECTION_425.json",
+      "source": "425Source05",
+      "title": "Native/API layer selection/deselection and portable Actions49 feature-qualified baseline"
+    },
+    {
+      "full_package_closed": false,
+      "package": "D01",
+      "qualification": "101focused Debug and101sameorderednormalcasespassbotharchitectures/all7newmethods/0crashes. Universalmin14/signature/ZIPpass;currentphysical14/Intelhardware/fullD01/fullsuite/Photoshopremainopen.",
+      "reference": "docs/SAVE_DIALOG_FORMATS_426.json",
+      "source": "426Source02",
+      "title": "Native/API save dialog format list feature-qualified baseline"
+    },
+    {
+      "evidence": "docs/ARTBOARD_NEIGHBORS_427.json",
+      "package": "L07",
+      "scope": "Native adjacent-artboard controls/shared API placement",
+      "status": "selected_path_focused_Debug_pass_full_package_open",
+      "step": 427,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/SELECTION_BORDERS_428.json",
+      "package": "S01",
+      "scope": "Native animated selection boundaries and observable API presentation policy",
+      "status": "selected_path_qualified_full_package_open",
+      "step": 428,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/TRANSFORM_REFERENCE_429.json",
+      "package": "G01",
+      "scope": "Movable transform pivot, shared Options controls, native gesture and strict workspace API",
+      "status": "selected_path_development_tested_full_package_open",
+      "step": 429,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/LARGE_EQUALIZE_430.json",
+      "package": "A03",
+      "scope": "Paged Equalize native/API/Actions capacity and bounded overview",
+      "status": "selected_path_qualified_full_package_open",
+      "step": 430,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/COLOR_LOOKUP_FORMATS_431.json",
+      "package": "I05",
+      "scope": "Native multiple-format RGB LUT export, metadata/named files and shared single/ZIP API",
+      "status": "selected_path_development_tested_full_package_open",
+      "step": 431,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/PATTERN_PATCH_432.json",
+      "package": "B05",
+      "scope": "Native Normal Use Pattern and shared strict API/large-canvas selected-region history",
+      "status": "selected_path_qualified_full_package_open",
+      "step": 432,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/CHANNEL_FOOTER_433.json",
+      "package": "C01",
+      "scope": "Native quickSave/directLoad footer and shared SmartFilter-mask selection source",
+      "status": "selected_path_development_tested_full_package_open",
+      "step": 433,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/BATCH_FILE_NAMING_434.json",
+      "package": "AUT01",
+      "scope": "Native/API configurable Batch File Naming",
+      "status": "selected_path_development_tested_full_package_open",
+      "step": 434,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/PRECISE_SHAPE_CREATION_435.json",
+      "package": "G03",
+      "scope": "Native precise rectangle/ellipse click creation and shared point placement API",
+      "status": "selected_path_development_tested_full_package_open",
+      "step": 435,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/PATH_FILL_436.json",
+      "package": "G04",
+      "scope": "Extended native Fill Path/shared API/Actions50",
+      "status": "selected_path_optimized_tested_full_package_open",
+      "step": 436,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/POINT_TEXT_LAYOUT_438.json",
+      "package": "T01",
+      "scope": "Separate native Character/Paragraph panels and shared API from437, usable point-text layout/editor/commit/Undo repaired438",
+      "status": "selected_native_workflow_optimized_tested_output_fidelity_open_full_package_open",
+      "step": 438,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/DIRECT_PATH_TYPE_439.json",
+      "package": "T04",
+      "scope": "Direct horizontal Type-tool path creation and native baseline-curve editor/input/caret/selection/history/API",
+      "status": "selected_native_workflow_optimized_tested_exact_output_and_full_package_open",
+      "step": 439,
+      "track": "stillneeded"
+    },
+    {
+      "package": "A01",
+      "reference": "docs/PAGED_HISTOGRAM_440.json",
+      "scope": "Paged exact-count native Curves/Levels histogram dependency and shared read API",
+      "status": "selected_dependency_only_original_Auto_Options_candidate_not_complete",
+      "step": 440,
+      "track": "stillneeded"
+    },
+    {
+      "package": "A04",
+      "reference": "docs/LIGHT_EDITING_PREVIEW_441.json",
+      "scope": "Native Light pause/resume during paint/retouch, preserving final sampled strokes, clips, Cancel/Undo and sharedAPIstate",
+      "status": "selected_native_workflow_only_full_A04_open",
+      "step": 441,
+      "track": "stillneeded"
+    },
+    {
+      "package": "A05",
+      "reference": "docs/GRADIENT_CREATION_442.json",
+      "scope": "Native creation defaults, guarded fill/Classic paint APIs and portable gradient recording",
+      "status": "selected_native_workflow_only_full_A05_open_old_Intel_oracle_failure_retained",
+      "step": 442,
+      "track": "stillneeded"
+    },
+    {
+      "package": "A07",
+      "reference": "docs/PATTERN_LIBRARY_443.json",
+      "scope": "Native pattern groups/organization, PAT hierarchy transport and same global library API",
+      "status": "selected_native_workflow_only_full_A07_open",
+      "step": 443,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json",
+      "package": "F01",
+      "status": "Selected native workflow qualified; strict Photoshop byte gates fail; full F01 open.",
+      "step": 446,
+      "title": "Custom Shape Blur snapshots and native chooser"
+    },
+    {
+      "evidence": "docs/CUSTOM_KERNEL_PRESETS_447.json",
+      "package": "F02",
+      "scope": "Native ACF/JSON Custom Kernel preset Load/Save and shared conversion API",
+      "status": "selected_ARM64_Debug_native_workflow_only_full_F02_open",
+      "step": 447,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/BLUR_GALLERY_MASK_448.json",
+      "package": "F03",
+      "scope": "Native Save Mask to Channels, shared numeric preview/API and portable output Actions",
+      "status": "selected_native_optimized_workflow_qualified_full_F03_open",
+      "step": 448,
+      "track": "stillneeded"
+    },
+    {
+      "delivery": "OrdinaryEraserBrush/Pencil/Blocknative/API/capturedcursor/history",
+      "evidence": "docs/ERASER_MODES_456.json",
+      "full_package_closed": false,
+      "package": "B02",
+      "qualification": "44Debug/same44normal each/all10new and6ownedRGBreferencespass; optimizednativeOpen/Block/UndoRedo/Close/Quitpass; DebugOpen/Quitfailure retained",
+      "step": 456,
+      "track": "stillneeded"
+    },
+    {
+      "delivery": "Blur/Sharpen/Smudge seven blend modes, native/API/captured history/Actions55",
+      "evidence": "docs/FOCUS_BLEND_MODES_457.json",
+      "full_package_closed": false,
+      "package": "B04",
+      "qualification": "57Debug; same57normal cases with57ARM/56Intel and all10newpass; legacyIntel234assertions exactly reproduced on456; sixf32buffers/16colorwords1\u20134ULP remain; native/universalselectedworkflow passes; fullscope open",
+      "step": 457,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/CONTENT_AWARE_APPLY_458.json",
+      "full_package_closed": false,
+      "package": "B06",
+      "scope": "Native Apply/continue and new fill selections with shared API/history",
+      "status": "selected_workflow_development_tested_native_acceptance_pending",
+      "step": 458,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/EYEDROPPER_SAMPLING_459.json",
+      "full_package_closed": false,
+      "package": "B07",
+      "scope": "Averaged Eyedropper/five sources/captured foreground-background/drag/ring/shared persisted native/API settings",
+      "status": "selected_workflow_development_tested_native_acceptance_pending",
+      "step": 459,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/TARGETED_CLIPBOARD_460.json",
+      "full_package_closed": false,
+      "package": "D04",
+      "scope": "Target-aware alpha/QuickMask/layer/filter-mask Copy/Cut/Paste/InPlace with shared API/history",
+      "status": "selected_workflow_development_tested_native_acceptance_pending",
+      "step": 460,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/CHANNEL_BLENDING_461.json",
+      "full_package_closed": false,
+      "package": "L03",
+      "scope": "RGB channel exclusion/native controls/shared API/portable Actions/native89/PSDbrst and bounded invalidation",
+      "status": "selected_workflow_development_tested_native_acceptance_pending",
+      "step": 461,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/LAYER_STYLE_PRESETS_462.json",
+      "full_package_closed": false,
+      "package": "L04",
+      "scope": "Saved native styles with resources, groups, apply/history/portable Actions57 and shared API",
+      "status": "selected_workflow_Debug_tested_live_and_normal_pending",
+      "step": 462,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/SMART_OBJECT_CONVERT_TO_LAYERS_463.json",
+      "full_package_closed": false,
+      "package": "L05",
+      "scope": "Convert Smart Object originals to editable layers with resources, native/menu/context/API/history",
+      "status": "selected_new_workflow_Debug_tested_legacy_failures_live_normal_open",
+      "step": 463,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/SMART_FILTER_TRANSFER_464.json",
+      "full_package_closed": false,
+      "package": "L06",
+      "scope": "Whole Smart Filter stack/shared mask move and copy with native drag,API,one Undo and Actions58",
+      "status": "selected_workflow_Debug_normal_qualified_residual_Debug_crash_live_fullpackage_open",
+      "step": 464,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/MAGIC_WAND_SAMPLING_465.json",
+      "full_package_closed": false,
+      "package": "S02",
+      "scope": "Magic Wand seven sample sizes with shared native/API/history",
+      "step": 465,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/SELECTION_SOURCE_POLICY_466.json",
+      "full_package_closed": false,
+      "package": "S03",
+      "scope": "Explicit rich current-layer analysis and Magic Wand Subject Options; selected workflow only",
+      "step": 466,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/SMART_OBJECT_REFINEMENT_467.json",
+      "full_package_closed": false,
+      "package": "S04",
+      "scope": "Editable Smart Object selection/mask refinement and rendered raster copy outputs",
+      "step": 467,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/MASK_FILTER_TARGETS_468.json",
+      "full_package_closed": false,
+      "package": "S06",
+      "scope": "Native/API eight common filters on ordinary and SmartFilter masks with preview/Cancel/Repeat/history",
+      "step": 468,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/CHANNEL_FILTER_CAPACITY_469.json",
+      "full_package_closed": false,
+      "package": "C02",
+      "scope": "Sparse/paged preparation for eight common alpha/spot/QuickMask filters; native/API/history and legacy numeric retention",
+      "step": 469,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/CHANNEL_SEPARATION_470.json",
+      "full_package_closed": false,
+      "package": "COL02",
+      "scope": "Native/API Split Channels with numeric grayscale output, source-safe document publication, editable/persistent results and cancellation/lease guards",
+      "step": 470,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/LARGE_SOFT_PROOF_471.json",
+      "full_package_closed": false,
+      "package": "COL03",
+      "scope": "Large-document sparse/paged soft proof preparation and bounded native/API display with unchanged proof kernel and source/history separation",
+      "step": 471,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/PAGED_IMAGE_STATISTICS_472.json",
+      "full_package_closed": false,
+      "package": "RAW02",
+      "scope": "Paged large/many-frame editable image-stack statistics, native bounded preview and shared APIs",
+      "step": 472,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/PCRAFT_LINKED_ORIGINALS_473.json",
+      "full_package_closed": false,
+      "package": "I03",
+      "scope": "Recover editable embedded originals referenced by source PSD metadata, with native/API/history/persistence",
+      "step": 473,
+      "track": "stillneeded"
+    },
+    {
+      "evidence": "docs/OPENEXR_474.json",
+      "full_package_closed": false,
+      "package": "I04",
+      "scope": "Native Swift OpenEXR HDR opening/Save/Copy/API with universal Half conversion",
+      "step": 474,
+      "track": "stillneeded"
+    },
+    {
+      "full_package_closed": false,
+      "package": "AI09",
+      "qualification": "All 51 selected Debug and51 normal per architecture pass,9 new; full AI09/live/default/output/platform remain open.",
+      "reference": "docs/SKY_PRESET_GROUPS_477.json",
+      "source": "477source02/release01",
+      "title": "Sky preset groups and atomic batch import"
+    },
+    {
+      "full_package_closed": false,
+      "package": "B08",
+      "qualification": "All 94 selected Debug/normal perarchitecture pass,8 new; originalfull B08 and output/default/live/platform remain open.",
+      "reference": "docs/ADJUSTMENT_BRUSH_LOOKUP_478.json",
+      "source": "478source02/release02",
+      "title": "Local ColorLookup painting"
+    },
+    {
+      "full_package_closed": false,
+      "package": "Q03",
+      "reference": "docs/LOOKUP_PROPERTY_RESPONSIVENESS_479.json",
+      "source": "479source03/release02",
+      "title": "Background Color Lookup Properties preparation with progress/Cancel"
+    },
+    {
+      "full_package_closed": false,
+      "package": "Q04",
+      "reference": "docs/INDEPENDENT_COLOR_LOOKUP_480.json",
+      "source": "480source08/release01",
+      "title": "Independent Color Lookup references and corrected editable PSD interchange"
+    },
+    {
+      "full_package_closed": false,
+      "package": "REL01",
+      "reference": "docs/ARCHIVE_VALIDATION_481.json",
+      "source": "481pipeline01, application480",
+      "title": "Repeatable archive validation and manual CI template"
+    },
+    {
+      "full_package_closed": false,
+      "package": "AUD01",
+      "reference": "docs/INVENTORY_RECONCILIATION_482.json",
+      "source": "482tools03;481native captures on identical product inputs",
+      "title": "Source-bound menu and inventory reconciliation"
+    },
+    {
+      "broader_gate_passed": false,
+      "full_package_closed": false,
+      "package": "AUT02",
+      "reference": "docs/SCRIPT_EVENT_ACTIONS_483.json",
+      "source": "483source06/release02",
+      "title": "New/Open document event Actions"
+    },
+    {
+      "full_package_closed": false,
+      "native_UI_qualified": false,
+      "package": "S05",
+      "reference": "docs/QUICK_MASK_SEMANTICS_484.json",
+      "source": "484source04/release01",
+      "title": "Quick Mask origin and editing-gray semantics"
+    },
+    {
+      "full_package_closed": false,
+      "native_UI_qualified": true,
+      "package": "A02",
+      "reference": "docs/SAMPLED_HUE_RANGES_485.json",
+      "source": "485Source03/release01",
+      "title": "SampledHueSaturation PSD/AHU/native/API display-color retention"
+    },
+    {
+      "full_package_closed": false,
+      "native_UI_qualified": true,
+      "package": "A06",
+      "reference": "docs/CLASSIC_RGB16_BOUNDARIES_486.json",
+      "source": "486source01/release01",
+      "title": "ClassicRGB16fused interpolation and independentholdouts"
+    },
+    {
+      "evidence": "docs/APPLE_RGB_PROOF_513.json",
+      "full_package_closed": false,
+      "package": "COL03",
+      "scope": "LegacyMacintoshRGBproof/nativeAPI/sharedAppleRGBnamedcreation-output",
+      "step": 513,
+      "track": "stillneeded"
+    }
+  ],
+  "content_aware_apply_458": {
+    "evidence": "docs/CONTENT_AWARE_APPLY_458.json",
+    "full_package_closed": false,
+    "native_pending": true,
+    "next": "B07 then D04",
+    "normal_458_qualified": false,
+    "normal_latest": 457
+  },
+  "count_correction_513": "Historical486metadata said651; actual HEAD512 CSV has652 unique identities. All652 IDs/menus/labels/shortcuts preserved; onlylegacyRGBpending\u2192partial.",
+  "current_command_count": 266,
+  "current_deliverable": {
+    "package": "Q03",
+    "rule": "Keep all original package scope and failures, including liveSky and prior Photoshop output/default/platform gates.",
+    "scope": "Retain pixel-mask and Adjustment Brush stroke coverage between frames, preserving exact canonical pixels/metadata/history; then physical display response and all remaining tools.",
+    "track": "stillneeded"
+  },
+  "current_pass": 2,
+  "current_reference_command_count": 652,
+  "custom_textures_453": {
+    "evidence": "docs/GALLERY_TEXTURES_453.json",
+    "full_package_closed": false,
+    "next": "B01,thenB02",
+    "selected_workflow_passed": true
+  },
+  "dependency_rule": "Only dependencies needed for the selected usable path move forward; required API/menu/history/focused tests are in that same increment. Numerical polish and wider combinations wait unless correctness/safety of that path depends on them.",
+  "eraser_modes_456": {
+    "Debug_native_Open_Quit_unresolved": true,
+    "evidence": "docs/ERASER_MODES_456.json",
+    "full_package_closed": false,
+    "history_scope_correction": "D03+B03+B02; previousB06labelwrong, B06ContentAwareFillunchanged",
+    "next": "B04,thenB06",
+    "normal_latest": 456
+  },
+  "eraser_reference_455": {
+    "evidence": "docs/ERASER_MODES_455.json",
+    "queue_rotated": false,
+    "software_change": false
+  },
+  "execution_update_513": {
+    "broader_all_passed": false,
+    "current": "RAW02",
+    "full_goal_unmet": true,
+    "full_original_scope_retained": true,
+    "native92_Actions60_typed271": true,
+    "selected_checks": {
+      "Debug": {
+        "new_passed": 7,
+        "passed": 54,
+        "selected": 55
+      },
+      "Gray_default_profile": "4unchangedassertions in nativeFileNew vs isolatedAdobecreation atGray8/16; actualpublic512replay identical. Originalequality assertions unchanged.",
+      "native_UI": "Current signedSource03Debug: menu/Customdisabledstates/Cancel/CmdY/OK/SaveAs/reopen/normalQuit verified. Originalownedfile unchanged;576savedcomponentwords exact;noICCinserted.",
+      "new_ICC_profile": "Byte-identical actualgeneratedICC inDebug/optimizedARM/translatedIntel. IndependentColorSync18513RGBpoints\u00d716paths=888624Float32words per architecture exact against installedstandardAppleRGBICC. NoPhotoshopACE/displayparityclaim.",
+      "optimizedARM": {
+        "new_passed": 7,
+        "passed": 54,
+        "selected": 55
+      },
+      "translatedIntel": {
+        "new_passed": 7,
+        "passed": 52,
+        "selected": 55
+      },
+      "translatedIntel_frozen_proof": "2failingmethods/3assertions:10156differentFloat32words per39936word smalloutput and10per60word reduction. Allrawcurrentoutputs and7orderedtotalassertions match actualretainedpublic512 byteforbyte. Frozenrequirementsnotwaived.",
+      "universal": "Botharchitectures,min14,fullproductionentitlements,signatures,completeunsignedpayload/signingreplay,models/provenance/license,extractedZIPpass;unlaunched."
+    },
+    "source": "513Source03",
+    "source_inputs": 7767
+  },
+  "execution_update_514": {
+    "full_RAW02_closed": false,
+    "implemented": "Editable AutoBlend/Photomerge source result structure",
+    "new_methods_each": 9,
+    "next": "I03",
+    "record": "docs/EDITABLE_PHOTO_BLEND_514.json",
+    "selected_tests_each": 37
+  },
+  "execution_update_515": {
+    "full_I03_closed": false,
+    "implemented": "Editable source artboard import and cache-preserving canvas reframe/export",
+    "new_methods_each": 10,
+    "next": "I04",
+    "record": "docs/PCRAFT_ARTBOARDS_515.json",
+    "selected_tests_each": 46
+  },
+  "execution_update_516": {
+    "full_I04_closed": false,
+    "full_L07_closed": false,
+    "implemented": "Editable RGB PSD/PSB artboard interchange",
+    "new_methods_each": 11,
+    "next": "AI07",
+    "record": "docs/PSD_ARTBOARDS_516.json",
+    "selected_tests_each": 74
+  },
+  "execution_update_517": {
+    "full_AI07_closed": false,
+    "implemented": "Persistent generated-image variations with native Properties chooser and shared API/history",
+    "new_methods_each": 9,
+    "next": "SP01",
+    "record": "docs/GENERATED_VARIATIONS_517.json",
+    "remaining": [
+      "Actual Apple model/provider output, full model availability, provider identity, exposed seeds and final prompts remain unqualified; no synthetic fixture is described as actual provider output.",
+      "Native PSD generative-layer exchange, Generate Similar reference conditioning, Enhance Detail, votes and favorites remain missing.",
+      "Broad Edit Contents/Replace Contents invalidates the source-bound variation index; generic Smart Object controls remain available. Rasterize discards editable alternatives. Final-variation deletion retains the existing keep-at-least-one-layer rule.",
+      "Existing Smart Object 64 MiB encoded-source, 256 MiB owned-content and Layer Comp limits remain; no dense maximum-capacity claim.",
+      "Full AI07, all earlier numerical/crash failures, exact Photoshop defaults/output, full-suite acceptance, physical supported platforms and 60 fps remain open."
+    ],
+    "selected_tests_each": 54
+  },
+  "execution_update_518": {
+    "full_SP01_closed": false,
+    "implemented": "Native/API keyframe multi-selection, immutable clipboard and atomic group editing",
+    "new_methods_each": 12,
+    "next": "AI09",
+    "record": "docs/KEYFRAME_GROUP_EDITING_518.json",
+    "remaining": [
+      "Full original SP01 timeline/video/footage/audio/codec/animation-interchange functionality and acceptance remain open; no missing function is reclassified as cleanup.",
+      "Automatic cross-profile/content keyframe paste, external/system clipboard interchange, graphical marquee/group dragging and retiming remain missing.",
+      "Complete PSD/portable Actions/Adobe animation descriptors and Photoshop multi-layer mapping, collision/default/shortcut behavior remain unqualified.",
+      "Existing per-layer4096/document65536 keys,64MiB key metadata and source/timing/storage limits remain; dense maximum capacity and60fps are not established.",
+      "Earlier numerical/crash/full-suite failures, exact Photoshop output and supported physical-platform qualification remain required."
+    ],
+    "selected_tests_each": 46
+  },
+  "execution_update_519": {
+    "current_Debug_focused": 15,
+    "current_Debug_new_focused": 9,
+    "evidence": "docs/LARGE_SKY_WORKSPACE_519.json",
+    "full_AI09_closed": false,
+    "implemented": "Large full-resolution Sky preparation and visible tile preview, viewport clipping/true zoom/native View routing/read-only API state",
+    "native_Sky_workflow_qualified": false,
+    "optimized_new_each": 34,
+    "optimized_selected_each": 63,
+    "original_scope_and_failures_preserved": true,
+    "source": "Source09",
+    "universal_static_passed": true,
+    "universal_unlaunched": true
+  },
+  "execution_update_520": {
+    "full_B08_closed": false,
+    "implemented": "Color and vibrance brush/native/API/Actions61; modern PSD read distinction",
+    "independent_Photoshop_output_qualified": false,
+    "native_selected_workflow_qualified": true,
+    "new_each": 12,
+    "reference": "docs/ADJUSTMENT_BRUSH_COLOR_VIBRANCE_520.json",
+    "selected_each": 46,
+    "source": "Source03",
+    "universal_static_passed": true,
+    "universal_unlaunched": true
+  },
+  "execution_update_522": {
+    "full_Q03_closed": false,
+    "implemented": "Zero-coverage pointwise skip and proved new-top masked adjustment damage reuse;521Sky containment candidate included",
+    "native_selected_workflow_qualified": true,
+    "new522_each": 5,
+    "new_since_public520_each": 8,
+    "physical_FPS_measured": false,
+    "reference": "docs/MASKED_ADJUSTMENT_RESPONSE_522.json",
+    "selected_each": 30,
+    "source": "Source02",
+    "universal_static_passed": true
+  },
+  "eyedropper_sampling_459": {
+    "reference": "docs/EYEDROPPER_SAMPLING_459.json",
+    "remaining": [
+      "Persistent Color Sampler points/Info readouts/CRUD/Shift alternate are still missing major functionality; keep disabled until implemented.",
+      "Real tablet pressure/tilt/eraser/buttons, captured replay, cursor bounds/latency and external-desktop sampling remain original B07 functional/platform scope.",
+      "Exact Photoshop2026 zoom-dependent sample footprint, shared size with Magic Wand/Erasers, layer/group visibility/opacity/mask/adjustment semantics, alpha/profile/CMM/HDR/rounding/defaults, shortcut/context combinations and independent output oracles remain unqualified. The 2018 Adobe-employee article describes screen/zoom behavior; document-pixel sampling is a candidate, not verified equivalence.",
+      "Actual native459 control/pointer/ring/drag/Escape/focus/close/Quit and live458Apply checks remain pending restored CUA. PID6678 remains open with post-disconnect UI unknown; no forcekill/bypass or duplicate unlock request.",
+      "All current full-suite and supported physicalIntel/macOS14/macOS26/tablet/60fps/HIG/VoiceOver gates and earlier strict/crash/capacity failures remain open. Earlier457Intel234assertions/6Float32buffer residuals are not retested or repaired by this selection.",
+      "All104 original package scopes/acceptance,652reference command identities/status mapping,81major memberships and seven-pass order remain. No full B07 or master-goal closure."
+    ],
+    "scope": "Selected19-method native/API workflow only; full B07 remains open",
+    "strict_samples_all_exact": true
+  },
+  "final_phase_rule": "Final settings/detail packages retain quickwins/stillneeded/cleanup subtracks inside pass7; work them in that internal order, then run final release checks. Engine preferences needed for a selected path stay with that path.",
+  "first_deliverable": {
+    "command": "file.scripts.deleteAllEmptyLayers",
+    "next": "Major stillneeded: L01 layer collection workflows, then D01",
+    "package": "L01",
+    "reference": "docs/EMPTY_LAYER_DELETION_403.json",
+    "shared_with": [
+      "AUT02"
+    ],
+    "status": "Selected ordinary raster/plain-group quick win delivered403Source02; full L01/AUT02 remains open",
+    "title": "Delete All Empty Layers"
+  },
+  "focus_blend_modes_457": {
+    "evidence": "docs/FOCUS_BLEND_MODES_457.json",
+    "full_package_closed": false,
+    "next": "B06 then B07",
+    "normal_latest": 457,
+    "strict_buffer_equality": false
+  },
+  "independent_color_lookup_480": {
+    "application_build": 480,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_benchmark_methods": 0,
+    "new_correctness_methods": 16,
+    "normal_optimized_qualified": true,
+    "normal_selected_tests_each_architecture": 95,
+    "reference": "docs/INDEPENDENT_COLOR_LOOKUP_480.json",
+    "software_changes": true,
+    "source": "source08/release01",
+    "status": "Independent Photoshop Color Lookup references and repaired editable PSD interchange. All 95 selected Debug and optimized tests per architecture pass, including 16 new methods; nine auxiliary regressions also pass. All 1,474,560 independent composite bytes match per path. Photoshop reopens and recomputes fresh RGB8/16/32 files, retaining all 688,128 reference bytes. Full Q04, defaults, Dither, corpus and physical-platform qualification remain open.",
+    "step": 480
+  },
+  "inventory_reconciliation_482": {
+    "application_build": 480,
+    "combined_tool_tests": 37,
+    "development_tooling_changes": true,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_native_tests": 0,
+    "new_native_tests_executed": false,
+    "new_tool_tests": 21,
+    "reference": "docs/INVENTORY_RECONCILIATION_482.json",
+    "software_changes": false,
+    "source": "tools03; unchanged native product inputs from481 captures",
+    "status": "Menu inventory corrected from802to809 entries using unchanged-source481 ARM/Intel captures. Seven missing paths and88stale selector bindings reconciled; original801factory entries/102primary/8alternate keys retained. All37developer-tool tests pass,21new. Application build480; fullAUD01/Photoshop/workflow qualification remains open.",
+    "step": 482
+  },
+  "large_soft_proof_471": {
+    "reference": "docs/LARGE_SOFT_PROOF_471.json",
+    "remaining": [
+      "Full COL03 original scope remains open: HDR/EDR proof display, exact Photoshop gamut/default/profile/pixel behavior, legacy/color-blind presets, AdobePSF, per-window proof state, print and broader context combinations.",
+      "The unchanged small proof kernel and frozen104programs/159744bytes plus240reduced bytes establish regression retention, not independently captured Photoshop proof output. Existing gamutDeltaE76 and SDR behavior are unchanged.",
+      "Printing retains its independent8MPpreparation limit; the legacy SoftProof.maximumPixels constant is retained for source compatibility/kernel/print callers. Large onion-skin remains separatelyunsupported. Composition/mode/scratch resource constraints still apply.",
+      "Sparse300000by300000 and one allocated8392704pixel source do not establish dense90GP physical capacity, all supported platforms or60fps.",
+      "Normal optimized471 joins a subsequent stable batch; latest verified universal470. Current isolatedDebug app is ARM64only and unlaunched. Fullsuite and all earlierfailures remain open.",
+      "One existing467native bind retry still reports pipeclosed. New471live menus/control/focus/Close/Quit and older467refinement/458Apply/Close/Quit checks remain pending; no newlaunch/reset/forcequit."
+    ]
+  },
+  "lens_defaults_452": {
+    "evidence": "docs/LENS_DEFAULTS_452.json",
+    "full_package_closed": false,
+    "next": "F06,thenB01",
+    "selected_workflow_passed": true
+  },
+  "liquify_last_mesh_450": {
+    "evidence": "docs/LIQUIFY_LAST_MESH_450.json",
+    "full_package_closed": false,
+    "next": "F05,thenF06",
+    "selected_workflow_passed": true
+  },
+  "lookup_property_responsiveness_479": {
+    "application_build": 479,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_benchmark_methods": 1,
+    "new_correctness_methods": 12,
+    "normal_optimized_qualified": true,
+    "normal_selected_tests_each_architecture": 161,
+    "reference": "docs/LOOKUP_PROPERTY_RESPONSIVENESS_479.json",
+    "software_changes": true,
+    "source": "release02",
+    "status": "Native Color Lookup Properties prepares off-main with progress/Cancel. All161 selected Debug checks and the same161 optimized checks on ARM/translatedIntel pass,12 new correctness methods; benchmark separately measures120edits. FullQ03/physical60fps/capacity remain open.",
+    "step": 479
+  },
+  "magic_wand_sampling_465": {
+    "next": "S03 then S04",
+    "reference": "docs/MAGIC_WAND_SAMPLING_465.json",
+    "remaining": [
+      "Full original S02, Skin Tones/Detect Faces, proof-gamut selection and Adobe preset semantics remain open.",
+      "Exact Photoshop average/alpha/profile/rounding/contiguous seed/antialiasing behavior and independent output are unqualified. Observed popup choices are not factory-default proof.",
+      "Current Magic Wand Actions recording is unsupported. Native window-local settings copy to new workspaces; restart persistence remains open.",
+      "Dense color-region preparation, maximum physical capacity, non-RGB/component/alpha/QuickMask/Smart Filter mask contexts, full native gesture/context matrix, physical-platform/60fps and all earlier failures remain.",
+      "Normal optimized 465 is deferred to the next stable batch. Latest qualified selected optimized universal is464; no full-suite or whole-Photoshop parity claim."
+    ],
+    "status": "Selected averaged sampling Debug-qualified; normal/live/output/fullS02 remain open."
+  },
+  "mask_filters_468": {
+    "reference": "docs/MASK_FILTER_TARGETS_468.json",
+    "remaining": [
+      "Full original S06 scope remains open: wider mask-filter families, vector-mask rasterization, compound masks, matte removal/defringe and any missing transforms/clipboard/context workflows.",
+      "The eight existing kernels use stored mask bounds and current raster borders. Exact Photoshop affine radius, exterior/border, inversion quantization, alpha/profile, noise, defaults and independent mask-filter output remain unqualified.",
+      "Semantic mask-filter Actions are explicitly unsupported. Native89/Actions58/265typed commands are unchanged; no Adobe HTTP route or unverified action descriptor is invented.",
+      "One old Debug published-SmartFilter method still crashes with signal 10 on current 468 and retained 467. It passes in the selected optimized runs; this is not a full Debug-suite pass or a repair of the earlier crash.",
+      "Native468 Preview/Cancel/commit/history/Close/Quit and earlier467 refinement/458 Apply remain pending after the native CUA pipe failed. New468 packages are unlaunched; no forcequit/fallback or production install.",
+      "Sparse300000geometry tests do not establish dense90GP memory/disk support or interactive60fps. Physical macOS14/Intel/AppleSilicon/tablet/accessibility and fullsuite qualification remain open, as do all earlier failures."
+    ]
+  },
+  "no_quickwin_rule": "Packages without an honest small deliverable skip pass1/3 and retain all scope in stillneeded. Candidate wording is not a claim that work is absent, complete or estimated.",
+  "not_a_completion_estimate": "The maintainer 5% remark describes the scheduling problem; it is not a measured Photoshop completion percentage.",
+  "openexr_474": {
+    "reference": "docs/OPENEXR_474.json",
+    "remaining": [
+      "Full I04 original scope remains open: EPS/DCS/PDF/SVG/HDR/other formats, wider TIFF/PSD layouts, profiles/depths/metadata and all original acceptance. Existing layered TIFF is not counted as newly added.",
+      "EXR currently rejects tiled/deep/multipart/AOV/UINT/subsampled data, other compression, non-square pixels, non-sRGB chromaticities, non-finite colors and alpha outside0...1. Export writes a new flattened header, not all original metadata/windows.",
+      "512MiB encoded and128MiB scanline limits, import/API workspace/transfer budgets remain. Actual40.01MP implicit export and maximum logical geometry/budget checks do not prove dense maximum Photoshop capacity or every tool/format at300000x300000.",
+      "Exact Photoshop EXR samples/defaults/file-byte behavior, live native control interaction, physical Intel/Apple Silicon and macOS14/platform/60fps/fullsuite remain unqualified.",
+      "Current Debug batches encountered signal11; isolated same-binary replays passed. No cause or repair is claimed. Earlier473uncached9assertions/matched472nestedHTTPsignal10,472Intelproof reference differences and all previous failures remain open.",
+      "Native automation limitations/older458and467validation documents/builds/GitHub remain protected. This is a validation-only package, without production install, source push, Store upload/archive or software release."
+    ]
+  },
+  "original_active_package_count": 104,
+  "original_command_count": 652,
+  "paged_image_statistics_472": {
+    "reference": "docs/PAGED_IMAGE_STATISTICS_472.json",
+    "remaining": [
+      "Full RAW02 remains open: richer alignment and blend targets, lens-correction calibration/flags, panorama, focus-stack, HDR/deghosting/crop and remaining combinations, plus independent Photoshop defaults/output and supported-platform acceptance.",
+      "All eleven scalar formulas and the legacy small loop are unchanged. The 99 owned-source programs/152064 bytes are regression evidence, not independent Photoshop statistics samples or a complete Photoshop match.",
+      "Logical 300000 per side/90GP and the native document-layer target are distinct from physical capacity. Smart Object encoded64MiB/owned256MiB/nesting8, non-RGB8MP admission and composition/scratch resources remain. Alignment retains16sources and its pixel budgets; HTTP orchestration retains7shared sources and an eighth output share.",
+      "Large inputs are not downsampled for statistics. Only the finished preview is reduced. Cross-profile conversion keeps existing ColorManagement behavior and its physical costs; no new numerical approximation or resampling kernel.",
+      "An allocated8.39MP source and owned raster above256MiB are bounded tests, not dense90GP/many-thousand-source performance, all supported Macs or60fps evidence.",
+      "Live controls/focus/Close/Quit remain pending the native automation connection; older458/467validation documents and current builds remain protected. Fullsuite and every previously recorded failure remain open.",
+      "All 44 selected checks pass on Apple Silicon and translated Intel. The broader batch passes 92 tests on Apple Silicon and 90 on Intel. Two Intel soft-proof reference tests still fail; the old and paged proof paths agree on Intel. Universal build 472 is an unreleased validation candidate. The latest fully qualified universal build remains 470."
+    ]
+  },
+  "parked": [
+    {
+      "package": "S05",
+      "reason": "Reference investigation complete; shared gray/selection/file repair belongs to major stillneeded. S05 remains open.",
+      "reference": "docs/QUICK_MASK_GRAY_401.json"
+    }
+  ],
+  "pass_gate": "Advance after each package has been swept and every candidate is delivered, already present with evidence, or explicitly reclassified to stillneeded. Full package closure is not a prerequisite for changing passes.",
+  "passes": [
+    {
+      "candidate_package_ids": [
+        "D01",
+        "D04",
+        "L01",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "C01",
+        "C02",
+        "B01",
+        "B02",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "T01",
+        "T02",
+        "T04",
+        "A01",
+        "A03",
+        "A04",
+        "A05",
+        "A07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "COL02",
+        "COL03",
+        "RAW02",
+        "I03",
+        "I04",
+        "I05",
+        "AI07",
+        "AUT01",
+        "SP01",
+        "Q03",
+        "Q04",
+        "REL01",
+        "AI09",
+        "B08",
+        "AUD01"
+      ],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Major quick wins",
+      "order": 1,
+      "package_ids": [
+        "D01",
+        "D02",
+        "D04",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "C01",
+        "C02",
+        "B01",
+        "B02",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "T01",
+        "T02",
+        "T04",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "COL01",
+        "COL02",
+        "COL03",
+        "RAW01",
+        "RAW02",
+        "RAW03",
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "AI01",
+        "AI02",
+        "AI03",
+        "AI04",
+        "AI05",
+        "AI06",
+        "AI07",
+        "AI08",
+        "AUT01",
+        "AUT02",
+        "AUT03",
+        "SP01",
+        "SP03",
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "REL01",
+        "AI09",
+        "B08",
+        "AUD01",
+        "AUD02"
+      ],
+      "phase": 1,
+      "queue": [],
+      "status": "swept_full_package_scope_open",
+      "track": "quickwins"
+    },
+    {
+      "candidate_package_ids": [],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Major still needed",
+      "order": 2,
+      "package_ids": [
+        "D01",
+        "D02",
+        "D04",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "C01",
+        "C02",
+        "B01",
+        "B02",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "T01",
+        "T02",
+        "T04",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "COL01",
+        "COL02",
+        "COL03",
+        "RAW01",
+        "RAW02",
+        "RAW03",
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "AI01",
+        "AI02",
+        "AI03",
+        "AI04",
+        "AI05",
+        "AI06",
+        "AI07",
+        "AI08",
+        "AUT01",
+        "AUT02",
+        "AUT03",
+        "SP01",
+        "SP03",
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "REL01",
+        "AI09",
+        "B08",
+        "AUD01",
+        "AUD02"
+      ],
+      "phase": 1,
+      "queue": [
+        "Q03",
+        "Q04",
+        "REL01",
+        "AUD01",
+        "AUT02",
+        "S05",
+        "A02",
+        "A06",
+        "AI01",
+        "AI02",
+        "AI03",
+        "AI04",
+        "AI05",
+        "AI06",
+        "AI08",
+        "AUD02",
+        "AUT03",
+        "COL01",
+        "D02",
+        "G02",
+        "G05",
+        "I01",
+        "I02",
+        "L02",
+        "Q01",
+        "Q02",
+        "Q05",
+        "Q06",
+        "RAW01",
+        "RAW03",
+        "S07",
+        "SP03",
+        "T02",
+        "L01",
+        "D01",
+        "L07",
+        "S01",
+        "G01",
+        "A03",
+        "I05",
+        "B05",
+        "C01",
+        "AUT01",
+        "G03",
+        "G04",
+        "T01",
+        "T04",
+        "A01",
+        "A04",
+        "A05",
+        "A07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "B01",
+        "B02",
+        "B04",
+        "B06",
+        "B07",
+        "D04",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "S02",
+        "S03",
+        "S04",
+        "S06",
+        "C02",
+        "COL02",
+        "COL03",
+        "RAW02",
+        "I03",
+        "I04",
+        "AI07",
+        "SP01",
+        "AI09",
+        "B08"
+      ],
+      "status": "active",
+      "track": "stillneeded"
+    },
+    {
+      "candidate_package_ids": [
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12",
+        "D03",
+        "L08",
+        "C03",
+        "C04",
+        "B03",
+        "T03",
+        "I06",
+        "SP02"
+      ],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Minor quick wins",
+      "order": 3,
+      "package_ids": [
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12",
+        "D03",
+        "L08",
+        "C03",
+        "C04",
+        "B03",
+        "G06",
+        "T03",
+        "I06",
+        "SP02"
+      ],
+      "phase": 2,
+      "queue": [
+        "B03",
+        "C03",
+        "C04",
+        "D03",
+        "I06",
+        "L08",
+        "SP02",
+        "T03",
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12"
+      ],
+      "status": "queued",
+      "track": "quickwins"
+    },
+    {
+      "candidate_package_ids": [],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Minor still needed",
+      "order": 4,
+      "package_ids": [
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12",
+        "D03",
+        "L08",
+        "C03",
+        "C04",
+        "B03",
+        "G06",
+        "T03",
+        "I06",
+        "SP02"
+      ],
+      "phase": 2,
+      "queue": [
+        "B03",
+        "C03",
+        "C04",
+        "D03",
+        "G06",
+        "I06",
+        "L08",
+        "SP02",
+        "T03",
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12"
+      ],
+      "status": "queued",
+      "track": "stillneeded"
+    },
+    {
+      "candidate_package_ids": [],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Major cleanup",
+      "order": 5,
+      "package_ids": [
+        "D01",
+        "D02",
+        "D04",
+        "L01",
+        "L02",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "L07",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "C01",
+        "C02",
+        "B01",
+        "B02",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "T01",
+        "T02",
+        "T04",
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06",
+        "A07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "COL01",
+        "COL02",
+        "COL03",
+        "RAW01",
+        "RAW02",
+        "RAW03",
+        "I01",
+        "I02",
+        "I03",
+        "I04",
+        "I05",
+        "AI01",
+        "AI02",
+        "AI03",
+        "AI04",
+        "AI05",
+        "AI06",
+        "AI07",
+        "AI08",
+        "AUT01",
+        "AUT02",
+        "AUT03",
+        "SP01",
+        "SP03",
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04",
+        "Q05",
+        "Q06",
+        "REL01",
+        "AI09",
+        "B08",
+        "AUD01",
+        "AUD02"
+      ],
+      "phase": 1,
+      "queue": [
+        "L01",
+        "D01",
+        "L07",
+        "S01",
+        "G01",
+        "A03",
+        "I05",
+        "B05",
+        "C01",
+        "AUT01",
+        "G03",
+        "G04",
+        "T01",
+        "T04",
+        "A01",
+        "A04",
+        "A05",
+        "A07",
+        "F01",
+        "F02",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "B01",
+        "B02",
+        "B04",
+        "B06",
+        "B07",
+        "D04",
+        "L03",
+        "L04",
+        "L05",
+        "L06",
+        "S02",
+        "S03",
+        "S04",
+        "S06",
+        "C02",
+        "COL02",
+        "COL03",
+        "RAW02",
+        "I03",
+        "I04",
+        "AI07",
+        "SP01",
+        "AI09",
+        "B08",
+        "Q03",
+        "Q04",
+        "REL01",
+        "AUD01",
+        "AUT02",
+        "S05",
+        "A02",
+        "A06",
+        "AI01",
+        "AI02",
+        "AI03",
+        "AI04",
+        "AI05",
+        "AI06",
+        "AI08",
+        "AUD02",
+        "AUT03",
+        "COL01",
+        "D02",
+        "G02",
+        "G05",
+        "I01",
+        "I02",
+        "L02",
+        "Q01",
+        "Q02",
+        "Q05",
+        "Q06",
+        "RAW01",
+        "RAW03",
+        "S07",
+        "SP03",
+        "T02"
+      ],
+      "status": "queued",
+      "track": "cleanup"
+    },
+    {
+      "candidate_package_ids": [],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Minor cleanup",
+      "order": 6,
+      "package_ids": [
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12",
+        "D03",
+        "L08",
+        "C03",
+        "C04",
+        "B03",
+        "G06",
+        "T03",
+        "I06",
+        "SP02"
+      ],
+      "phase": 2,
+      "queue": [
+        "B03",
+        "C03",
+        "C04",
+        "D03",
+        "G06",
+        "I06",
+        "L08",
+        "SP02",
+        "T03",
+        "U01",
+        "U03",
+        "U04",
+        "U05",
+        "U06",
+        "U07",
+        "U08",
+        "U09",
+        "U10",
+        "U11",
+        "U12"
+      ],
+      "status": "queued",
+      "track": "cleanup"
+    },
+    {
+      "candidate_package_ids": [],
+      "count_note": "Package memberships, not effort estimates or complete-feature counts; shared deliverables counted once when completed.",
+      "label": "Final settings and cleanup checks",
+      "order": 7,
+      "package_ids": [
+        "U02",
+        "REL03",
+        "REL04"
+      ],
+      "phase": 3,
+      "queue": [
+        "REL03",
+        "REL04",
+        "U02"
+      ],
+      "status": "queued",
+      "track": "all"
+    }
+  ],
+  "pcraft_linked_originals_473": {
+    "reference": "docs/PCRAFT_LINKED_ORIGINALS_473.json",
+    "remaining": [
+      "Full I03 remains open. Actual external/alias references need authorized originals and original geometry. PDF original context, additional source features/non-RGB/style libraries/comps/timeline, decoder budgets and unsupported controls remain under original acceptance.",
+      "Existing uncached original-Rust comparisons retain nine assertions in projective/warp/filter programs at all three depths. Source01 unchanged472 reproduces them; final changed-word report is identical. Rust is supporting regression evidence, not the Photoshop gold standard; no independent Photoshop failure/cause or waived requirement is inferred.",
+      "An existing cooperative nested-source HTTP method crashes by signal10 in current473 and retained472source06. The remaining22methods pass in a separate unchanged-source attempt. The full41casebatch is not passed.",
+      "Normal473/platform/dense capacity/live controls/60fps/fullsuite and all earlier failures remain open. Latest fully qualified optimized universal470 and unreleased universalcandidate472 remain protected; two Intel proof-reference methods from472 stay unresolved.",
+      "Native automation still reports pipeclosed. Debug473 is isolated, verified and unlaunched; older458/467validation documents remain protected. No reset/forcequit, GitHub change, deletion, production install, Store/archive or release."
+    ]
+  },
+  "pending_native_checks": [
+    {
+      "candidate": "/private/tmp/photato-validation-408-stage02-7139cefb/Photato Validation 408.app/Contents/MacOS/Photato",
+      "package": "G03",
+      "reason": "Mac locked; human unlock requested",
+      "reference": "artifacts/runs/20261104T232107Z-408-shape-stroke-presets/native-pending01.json",
+      "scope": "Preset menu,draw,preview/Cancel,Undo/Redo and normal Quit; retain all original acceptance.",
+      "step": 408
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-410-stage01-c13eb973/Photato Validation 410.app",
+      "package": "A05",
+      "reason": "Human unlock request from408still pending; no new CUA attempt.",
+      "reference": "artifacts/runs/20261105T001228Z-410-adjustments-quickwins/universal/staging01.json",
+      "scope": "Gradient Properties/on-canvas edit, preview/Cancel/history, portable recorded playback and normal Quit; cumulative stroke preset checks from408also pending.",
+      "step": 410
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-412-stage01-5ac4dcd6/Photato Validation 412.app",
+      "package": "F01",
+      "reason": "Normal qualification now passes on412; human unlock remains pending.",
+      "reference": "docs/FILTER_RECALL_411.json",
+      "scope": "Menu/Control-Command-F, current target/selection, Option reopen, preview/Cancel/history/playback and normal Quit on isolated candidate.",
+      "step": 411
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-412-stage01-5ac4dcd6/Photato Validation 412.app",
+      "package": "F06",
+      "reason": "Human unlock from408still pending; no new CUA attempted.",
+      "reference": "artifacts/runs/20261105T013543Z-412-filter-gallery-drag/universal/staging01.json",
+      "scope": "Physical drag/target feedback/arrow order/preview/Cancel/history/recording and normal Quit; cumulative408/410/411controls.",
+      "step": 412
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-414-stage01-61ef4dea/Photato Validation 414.app",
+      "package": "B01",
+      "reason": "Normal qualification now passes feature scope on414; physical check awaits unlock.",
+      "reference": "docs/BRUSH_SECTION_CONTROLS_413.json",
+      "scope": "Physical sidebar enable/Lock independence, group selection/focus, preset replacement, captured stroke/history and normal Quit; cumulative prior checks retained.",
+      "step": 413
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-414-stage01-61ef4dea/Photato Validation 414.app",
+      "package": "L06",
+      "reason": "Human unlock pending; no CUA/launch this increment.",
+      "reference": "artifacts/runs/20261105T024402Z-414-layer-workflow-quickwins/universal/staging01.json",
+      "scope": "Physical row copy/reorder/target insertion/live modifiers/Undo/recording/Quit and cumulative prior controls; fullscope preserved.",
+      "step": 414
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-417-stage01-25e4d91a/Photato Validation 417.app",
+      "normal_followup_417": "All new selected feature methods pass current normal universal417; physical check still pending unlock.",
+      "package": "S03",
+      "reason": "Normal universal batch and human unlock required; no415staging/launch/live claim.",
+      "reference": "docs/SUBJECT_OPTIONS_415.json",
+      "scope": "Physical Options button, sampling/state/layout/focus/Undo/Redo/Cancel/Quit and cumulative408\u2013414checks; all original full acceptance retained.",
+      "step": 415
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-417-stage01-25e4d91a/Photato Validation 417.app",
+      "normal_followup_417": "All new selected feature methods pass current normal universal417; physical check still pending unlock.",
+      "package": "S06",
+      "reason": "Normal universal batch/human unlock required; offscreen captures do not qualify native button art. No416staging/launch/live claim.",
+      "reference": "docs/MASK_REMOVAL_416.json",
+      "scope": "Physical footer target/Properties trash/choices/Cancel/Option/modifiers/presentation/history/Quit; exact2026dialog/default/suppression and cumulative408\u2013415checks.",
+      "step": 416
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-417-stage01-25e4d91a/Photato Validation 417.app",
+      "package": "RAW02",
+      "reason": "Human unlock pending; no launch or live UI claim.",
+      "reference": "docs/STACK_STATISTICS_417.json",
+      "scope": "Native Statistics/Stack Mode preview/Cancel/commit/history and cumulative408-416controls, Photoshop defaults/outputs and physical-platform qualification.",
+      "step": 417
+    },
+    {
+      "normal_batch420": "Recent native/API methods now pass normal420onboth architectures; physical acceptance stays pending.",
+      "package": "SP01",
+      "reason": "Normal universal batch and pending human unlock required; no418candidate or live claim.",
+      "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
+      "scope": "Physical frame thumbnail dragging/insertion/selection/normal arrows/Cancel/stale/Undo/Redo/Quit, current Photoshop modifiers/defaults/auto-scroll and cumulative408-417checks.",
+      "step": 418
+    },
+    {
+      "normal_batch420": "Recent native/API methods now pass normal420onboth architectures; physical acceptance stays pending.",
+      "package": "AI09",
+      "reason": "Normal universal batch and human unlock pending; no419candidate/live claim.",
+      "reference": "docs/SKY_PRESET_RENAME_419.json",
+      "scope": "Physical preset rename/name focus/Return/Escape/Cancel/error/retry/preview-name refresh/replacement cancellation/Quit and current Photoshop library hierarchy/defaults; cumulative prior checks retained.",
+      "step": 419
+    },
+    {
+      "package": "Q03",
+      "reason": "Human unlock still pending; normal universal candidate retained but not launched.",
+      "reference": "docs/RASTERIZATION_RESPONSIVENESS_420.json",
+      "scope": "Actual progress/cancel/UI feedback during large rasterization, pixels/history/Undo/Redo/Quit; physical60fps/input-to-photon/tablet/Intel/macOS14 and cumulative408\u2013419checks.",
+      "step": 420
+    },
+    {
+      "package": "S05",
+      "reason": "Fresh Mac-locked confirmation; current normal universal batch and existing human unlock pending.",
+      "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+      "scope": "Physical thumbnail single/double/modifier/control-context behavior, alpha/spot/QuickMask dialogs, Cancel/settings/Undo/Redo/Quit, exact currentPhotoshop temporary-channel behavior and cumulative408\u2013420checks.",
+      "step": 421
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-425-stage01-c0f92f66/Photato Validation 425.app",
+      "normal_qualified": true,
+      "package": "L01",
+      "reason": "Mac locked again; one human unlock request pending",
+      "reference": "docs/LAYER_SELECTION_425.json",
+      "scope": "Physical Deselect menu, Command-toggle, blank click, record/stop/play from none, multi-target ordering and actual Photoshop comparison; offscreen checks are not physical proof.",
+      "step": 425
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-426-stage01-2e8fda3a/Photato Validation 426.app",
+      "normal_qualified": true,
+      "package": "D01",
+      "reason": "Fresh426Maclocked; existing425humanunlockrequest pending",
+      "reference": "docs/SAVE_DIALOG_FORMATS_426.json",
+      "scope": "Actual Photoshop menu/defaults/clear-all/SaveAs+SaveCopy reference and Photato dialog controls/Cancel/Done/persistence/native bytes/Quit; offscreen fit is not physical UI proof.",
+      "step": 426
+    },
+    {
+      "app": "/private/tmp/photato-validation-450-b03d7aca/Photato Validation 450.app",
+      "evidence": "docs/LIQUIFY_LAST_MESH_450.json",
+      "package": "F04",
+      "status": "Mac unlock request remains pending; no repeat or live pass. Debugarm64 candidate prepared; normaluniversal448 retained.",
+      "step": 450
+    },
+    {
+      "evidence": "artifacts/runs/20261106T230203Z-456-eraser-modes/debug-native-followup01.json",
+      "scope": "DebugOpen/Quitavailabilityafterstartup",
+      "status": "Unresolved/notwaived; optimizedfreshOpen/Close/normalQuitpass",
+      "step": 456
+    },
+    {
+      "app": "/private/tmp/photato-validation-458-debug-stage01-e6887a2e/Photato Validation 458.app",
+      "package": "B06",
+      "process": 6678,
+      "reference": "docs/CONTENT_AWARE_APPLY_458.json",
+      "status": "Native pipe closed; app stillrunning, post-disconnect UI unknown. Resume Apply/selection/Cancel/Undo/Close/Quit without changing originalfixture.",
+      "step": 458
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-459-stage01-4c75553e/Photato Validation 459.app",
+      "package": "B07",
+      "reason": "Native pipe remains closed;458app stillrunning, existing unlock question pending. No new launch.",
+      "reference": "docs/EYEDROPPER_SAMPLING_459.json",
+      "scope": "Native options and defaults, averaging/source/foreground/background, captured modifiers/ring/drag/Escape/focus, relaunch persistence, normal Close/Quit and independent Photoshop2026 comparison.",
+      "step": 459
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-460-stage01-aa37bfc8/Photato Validation 460.app",
+      "package": "D04",
+      "reason": "Existing458native connection issue unresolved;460app unlaunched.",
+      "reference": "docs/TARGETED_CLIPBOARD_460.json",
+      "scope": "Actual Copy/Cut/Paste mask/channel/context/menu/focus/Cancel/Undo/Redo/Close/Quit and independent Photoshop2026 output.",
+      "step": 460
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-461-stage01-fa375248/Photato Validation 461.app",
+      "package": "L03",
+      "reason": "Existing native connection issue unresolved; candidate unlaunched.",
+      "reference": "docs/CHANNEL_BLENDING_461.json",
+      "scope": "Checkbox/menu/context/focus/preview/Cancel/history/CopyPaste/Close/Quit and new independent Photoshop exclusion output.",
+      "step": 461
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-462-debug-stage01-bcf11833/Photato Validation 462.app",
+      "package": "L04",
+      "reason": "Existing native connection issue unresolved;462unlaunched.",
+      "reference": "docs/LAYER_STYLE_PRESETS_462.json",
+      "scope": "New Style/dialog/source/Styles panel/group/apply/menu/focus/history/Close/Quit and independent Photoshop defaults/output.",
+      "step": 462
+    },
+    {
+      "candidate": "/private/tmp/photato-validation-467-debug-stage01-7362db56/Photato Validation 467.app",
+      "package": "S04",
+      "pid_at_observation": 68050,
+      "reason": "Native import verified, then CUA pipe closed on Command-Option-R; reset/path/ID rebinding did not recover. Inventory/process confirm app live. No new unlock question.",
+      "reference": "artifacts/runs/20261107T073856Z-467-select-mask-workflow/native-observation01.json",
+      "scope": "Read current state before sending more input; verify refinement/cancel/copy output/UndoRedo/clean owned-tab Close/Quit. Action delivery currently unknown; do not force quit.",
+      "selected_native_workflow_verified": false,
+      "step": 467
+    },
+    {
+      "evidence": "docs/MASK_FILTER_TARGETS_468.json",
+      "package": "S06",
+      "scope": "Mask filtering Preview/Cancel/commit/UndoRedo/Close/Quit; package unlaunched because existing467CUA bind still returns native pipe closed.",
+      "step": 468
+    },
+    {
+      "evidence": "docs/CHANNEL_FILTER_CAPACITY_469.json",
+      "package": "C02",
+      "scope": "Large channel filters Preview/Cancel/commit/history/Close/Quit and target/visibility checks, pending native CUA connection. New469app unlaunched.",
+      "step": 469
+    },
+    {
+      "evidence": "docs/CHANNEL_SEPARATION_470.json",
+      "package": "COL02",
+      "scope": "Split Channels availability/action/result focus/editing/Close/Quit. New470stages unlaunched; native CUA pipe closed.",
+      "step": 470
+    },
+    {
+      "evidence": "docs/LARGE_SOFT_PROOF_471.json",
+      "package": "COL03",
+      "scope": "Large proof menus/shortcuts/Preview/Cancel/commit/canvas/focus/Close/Quit. New471app unlaunched; native CUA pipe closed.",
+      "step": 471
+    },
+    {
+      "package": "S05",
+      "process": 63159,
+      "reference": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/native-ui01.json",
+      "scope": "Fill modal completion/exit/Undo and post-modal keyboard",
+      "step": 484
+    }
+  ],
+  "quick_mask_semantics_484": {
+    "application_build": 484,
+    "focused_Debug_tests": 64,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_correctness_methods": 17,
+    "normal_passed_each_architecture": 82,
+    "normal_selected_tests_each_architecture": 82,
+    "reference": "docs/QUICK_MASK_SEMANTICS_484.json",
+    "selected_native_UI_qualified": false,
+    "selected_optimized_gate_passed": true,
+    "software_changes": true,
+    "source": "source04/release01",
+    "status": "Quick Mask now preserves explicit full selections, starts Selected Areas without an overlay when no selection exists, and uses Photoshop editing-gray conventions in PSD/PSB. All64focused Debug tests and82selected optimized tests perarchitecture pass,17new. Seven owned Photoshop fixtures and81earlier auxiliary fixtures are checked. Native UI checks are partial: Fill remains in a modal loop inaccessible to the current automation binding. Build484is a validation candidate;480remains latest fully qualified selected universal. FullS05andPhotoshopparity remain open.",
+    "step": 484
+  },
+  "quickwin_sweep_421": {
+    "audited_existing": [
+      "Q04",
+      "REL01",
+      "AUD01",
+      "G02",
+      "T02"
+    ],
+    "full_package_closures": 0,
+    "newly_implemented_package": "S05",
+    "next": [
+      "L01",
+      "D01"
+    ],
+    "original_scope_preserved": true,
+    "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
+    "remaining_candidate_count": 0,
+    "status": "Pass1swept; pass2major stillneeded active"
+  },
+  "reclassified_candidates": [
+    {
+      "evidence": "docs/COLOR_LOOKUP_EXPORT_405.json",
+      "package": "G01",
+      "reason": "Again needs retained relative/reference/target state across native/API transform commits; no last-transform state exists. Leave command pending; stillneeded.",
+      "status": "moved_to_stillneeded"
+    },
+    {
+      "evidence": "docs/COLOR_LOOKUP_EXPORT_405.json",
+      "package": "A03",
+      "reason": "Brightness/Contrast source controls are an acknowledged licensed approximation. Independent modern/legacy/ranges/Auto/output work remains; do not merely enable Photoshop-named menus.",
+      "status": "moved_to_stillneeded"
+    },
+    {
+      "evidence": "docs/QUICKWIN_AUDIT_409.json",
+      "package": "A01",
+      "reason": "18 existing normal optimized cases pass each architecture for histogram/Auto/presets/ALV/native preview/history. Curves lacks Auto; the existing estimator returns LevelsAdjustment, without a shared Curves Auto/options/default contract.",
+      "status": "moved_to_stillneeded"
+    },
+    {
+      "evidence": "docs/BRUSH_SECTION_CONTROLS_413.json",
+      "package": "B07",
+      "reason": "No existing persistent sampler point model/controller/tool/Info/CRUD/API to expose. New lifecycle/tool/cursor/automation foundation required; averaged/source-mode Eyedropper also remains missing.",
+      "status": "moved_to_stillneeded"
+    },
+    {
+      "evidence": "docs/SMART_FILTER_DRAG_414.json",
+      "package": "D04",
+      "reason": "No target-aware channel/mask/path clipboard envelope/responder/history/profile/API foundation to expose. Current commands intentionally require composite image context.",
+      "status": "moved_to_stillneeded"
+    },
+    {
+      "evidence": "docs/ANIMATION_FRAME_DRAG_418.json",
+      "package": "AI07",
+      "reason": "No durable model/seed/provenance result record currently exists to expose. New source-bound request/lifecycle/provenance/API foundation is stillneeded; no invented Apple model identity or seed, no AI request made.",
+      "status": "moved_to_stillneeded"
+    }
+  ],
+  "recorded_at_utc": "2026-11-09T21:10:30.251699+00:00",
+  "reference_unlock_424": "Mac unlocked; owned Photoshop reference and bounded current Photato filtering workflow observed. Earlier pending native controls are not automatically qualified.",
+  "reference_unlock_446": {
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json",
+    "prior_pending_native_checks": "Remain unqualified unless individually tested; this checkpoint validates only its selected own workflow.",
+    "status": "Photoshop native UI available and used for owned reference generation. Earlier human unlock wait superseded by observation, no repeated request."
+  },
+  "sampled_hue_ranges_485": {
+    "application_build": 485,
+    "focused_Debug_tests": 68,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_correctness_methods": 14,
+    "normal_passed_each_architecture": 68,
+    "normal_selected_tests_each_architecture": 68,
+    "reference": "docs/SAMPLED_HUE_RANGES_485.json",
+    "selected_native_UI_qualified": true,
+    "selected_optimized_gate_passed": true,
+    "software_changes": true,
+    "source": "privateSource03/canonicalrelease01",
+    "status": "Photoshop sampled Hue/Saturation swatches now survive PSD/PSB/AHU and native92, appear in native Properties and share API settings/history. All68selected Debug and optimized checks perarchitecture pass,14new. All6528hue2recordbytes across threevariants match fourownedPhotoshopreferences. Nativeimport/orange+grayswatches/boundedit/UndoRedo/cleanup pass. Build485is a validation candidate;480remains latest fully qualified selected universal. FullA02/on-canvassampling and allpriorgaps remain open.",
+    "step": 485
+  },
+  "script_event_actions_483": {
+    "application_build": 483,
+    "focused_tests_each_architecture": 58,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_correctness_methods": 20,
+    "normal_optimized_qualified": false,
+    "normal_passed_each_architecture": 128,
+    "normal_selected_tests_each_architecture": 129,
+    "reference": "docs/SCRIPT_EVENT_ACTIONS_483.json",
+    "selected_event_workflow_qualified": true,
+    "software_changes": true,
+    "source": "source06/release02",
+    "status": "Script Events Manager runs native Actions on New Document and Open Document, with persistent disabled-by-default registrations and separately permissioned API configuration. All58focused Debug and optimized checks perarchitecture pass,20new. Broader optimized checks pass128of129on each architecture; the old400vs422API failure also reproduces on480. Native NewDocument/automaticInvert/Undo/manager checks pass. Build483is a validation candidate; latest fully qualified selected universal remains480. FullAUT02andPhotoshopparity stay open.",
+    "step": 483
+  },
+  "selection_rule": "Sweep packages once per pass. Finish one bounded quick win, record it, then move to the next package. Do not drain every candidate in a subsystem before moving on.",
+  "selection_sources_466": {
+    "next": "S04 then S06",
+    "reference": "docs/SELECTION_SOURCE_POLICY_466.json",
+    "remaining": [
+      "Full S03 includes detailed face features, broader selection/model functionality and the original acceptance criteria; six existing People classes are not newly implemented here.",
+      "Photoshop source-kind eligibility, groups/adjustments, exact sample/profile/alpha/default/output behavior and independent model/selection numerical equivalence remain unqualified. Groups/adjustments currently require explicit Sample All Layers.",
+      "Select Subject retains raster/Smart Object eligibility. Type/shape/fill input support applies to existing object/people selection preparation; it does not expand unobserved Subject or Remove Background contexts.",
+      "Current renderer/model/analysis capacity and non-RGB/target restrictions, full native gesture/context matrix, physical Intel/macOS14/Apple Silicon platform coverage, 60fps and all earlier numerical/full-suite failures remain open.",
+      "Current optimized universal is staged and unlaunched. The selected native workflow was checked in Source01 Debug; it does not establish optimized GUI, full-suite or whole-Photoshop parity."
+    ],
+    "status": "Current-source preparation and Wand Subject selected workflow qualified; full S03 and Photoshop output remain open."
+  },
+  "sky_preset_groups_477": {
+    "full_package_complete": false,
+    "reference": "docs/SKY_PRESET_GROUPS_477.json",
+    "remaining": [
+      "Observed Photoshop fixture foregroundLighting48/edgeLighting70 versus Photato50/0; input/preferences/factory-default provenance and automatic initialization need qualification. Gallery UI differs.",
+      "Full original AI09 scope and acceptance: independent Photoshop detection/output/default/layer-structure/behavior and supported-platform qualification.",
+      "Sky Replacement/sky images retain8,388,608pixel limit; dense/paged large sky-mask redesign still needed. Select Sky and shared API retain their distinct budgets.",
+      "Native live current workflow, keyboard focus/Return/Escape/delete disposition/import retry, current Photoshop group defaults and physical platforms/performance remain unqualified.",
+      "Adobe .sky preset interchange, default skies, recents, nested groups/reorder and broader library multi-selection remain open.",
+      "Earlier failed attempts, output differences/crashes and full suite/global byte-identical/60fps qualification remain open. No plug-in host is implied."
+    ],
+    "selected_workflow_qualified": true
+  },
+  "smart_filter_transfer_464": {
+    "next": "S02 then S03",
+    "reference": "docs/SMART_FILTER_TRANSFER_464.json",
+    "remaining": [
+      "Full L06 and exact Photoshop transfer ordering, destination merge/mask/enable-state policies, placement/default/output and physical modifier/hit-test/UI behavior remain unqualified. Public guides are behavior references, not a new independent pixel oracle.",
+      "Cross-document transfers, cross-layer single-filter destructive move, unsupported Lens Blur/context/filter families, full non-RGB/deformation/mask/applicability/interchange and maximum/dense physical capacity remain functional/qualification gaps. Existing32-filter/source/owned-heap/renderer limits remain.",
+      "The old published Smart Filter API Debug signal10 reproduces on retained463 and remains open, even if that method passes normal optimization. Earlier463linked-preview byte failure/archive Debug crash,457Intel234 assertions/Float32strict mismatches and all prior full-suite/platform/60fps failures remain.",
+      "The selected normal batch qualifies only its enumerated methods and current frozen source. It does not establish full-suite, all-output, factory-default, physical Intel/macOS14, native live or complete Photoshop parity.",
+      "Native89unchanged; semantic transfer requires Actions58 and earlier feature minima remain. The pinned Firefly v2 contract has no dedicated transfer endpoint; no descriptor/runtime/plugin support is invented.",
+      "Current S02, then S03. All104original scopes/acceptance,652reference mappings/statuses,81major memberships and sevenpasses remain. No GitHub operation/deletion/production install/Store/Xcode archive/release. Goal active/unmet."
+    ],
+    "status": "15new transfer methods pass;87normal methods each/462\u2013464cohort qualified; old Debug crash and fullL06/live/Photoshop qualification open."
+  },
+  "smart_object_layers_463": {
+    "next": "L06 then S02",
+    "reference": "docs/SMART_OBJECT_CONVERT_TO_LAYERS_463.json",
+    "remaining": [
+      "Exact Photoshop placement, grouping for single layers with outer attachments, mask/effect/blend/global-light/default/stack semantics and independent numerical output are unqualified. The new fixture copy was not opened; native input remains unreliable.",
+      "Mode/profile transfer, PDF/RAW, temporal sources/destinations, source artboards and variables remain unavailable for Convert to Layers. Existing source-byte, owned-heap, layer/depth and rendering budgets apply. Dense maximum capacity remains unqualified.",
+      "Portable Actions replay and independent Adobe actionJSON descriptors for conversion remain unimplemented. The pinned Firefly v2 contract has no dedicated Convert to Layers endpoint. No route or runtime is invented.",
+      "The old linked PSD/PSB exact-byte failure (two assertions) and old archive/API Debug signal10 reproduce on retained462. They remain open. Earlier strict/normal/full-suite/physical/60fps failures and all original requirements remain.",
+      "Native live acceptance, normal optimized/universal463, actual macOS14/Intel/AppleSilicon qualification, accessibility/tablet/performance and complete editable interchange remain open. Latest optimized universal is461; no production install/GitHub/Store/archive/release operation.",
+      "Full L05 and the master goal remain open. Preserve104original scopes and acceptance,652reference mappings/statuses,81major memberships and sevenpasses. Current L06 Smart Filters; S02 follows in the authoritative queue."
+    ],
+    "status": "Selected native/API source restoration path Debug tested;15new pass,53of55selected pass; two reproduced legacy failure cases remain open. No fullL05 closure."
+  },
+  "smart_object_refinement_467": {
+    "next": "S06 then C02",
+    "reference": "docs/SMART_OBJECT_REFINEMENT_467.json",
+    "remaining": [
+      "Native import and editable-source controls were verified; Command-Option-R delivery, refinement commit, Close and Quit remain pending after a CUA pipe failure. Owned467app remains running for recovery, with no force quit.",
+      "Full S04 original scope, Adobe Color/Object Aware and Refine Hair algorithms/models, view/default/edge/profile/rounding and independent nonneutral output remain open.",
+      "The installed Photoshop neutral RGB8 observations verify Smart Object eligibility, editable Layer Mask and raster New Layer with Layer Mask. NewDocument/decontamination and wider combinations are not independently qualified.",
+      "Current 8MP/refinement and renderer/source-kind/color/target limits remain; Smart Filter masks are excluded. Focus Area keeps its prior ordinary-raster boundary.",
+      "Anno is retained opaquely and re-exported byte-for-byte, including native/embedded source paths. Annotation interpretation, note editing and geometric updates are not implemented by this change.",
+      "Normal optimized467 is deferred after the stable466 batch; latest optimized universal remains466. Full native context/gesture matrix, physical platforms/macOS14/Intel,60fps,fullsuite and all earlier failures remain."
+    ],
+    "status": "Smart Object refinement and import repairs Debug-qualified; native import verified, interactive refinement/Close/Quit pending after CUA failure; fullS04/Photoshop fidelity remain open."
+  },
+  "source": "docs/FUNCTION_PHASES_486.json",
+  "source_delivery_449": {
+    "draft": "https://github.com/ForensicIntelligence/Photato/releases/tag/untagged-6240e52f419a928915de",
+    "reference": "docs/SOURCE_PUBLICATION_449.json",
+    "software_release_published": false,
+    "source": "https://github.com/ForensicIntelligence/Photato/commit/77b14d5eedf88f5b70dab96b9d8140d1fbc121c3"
+  },
+  "startup_correction_452": {
+    "actual_main_uses_tested_factory": true,
+    "actual_native_LastMesh_relaunch_unperformed": true,
+    "earlier_pending_native_records_preserved": true,
+    "last_mesh_regressions_pass_each": 11,
+    "lens_native_restart_passed": true,
+    "step450_claim_corrected": true
+  },
+  "step": 522,
+  "style_presets_462": {
+    "reference": "docs/LAYER_STYLE_PRESETS_462.json",
+    "remaining": [
+      "Adobe ASL import/export and complete Adobe style/default-preset/thumbnail/hover/drag/display-mode behavior remain functional gaps; native internal library persistence is not an ASL replacement or a closure claim.",
+      "Full L04 effects/options/contours/global light/multiple-effect semantics, convert-to-layers, complete editable PSD/PSB and exact Photoshop defaults/output remain open under the original scope.",
+      "New preset category defaults, group/pass-through/clipping/blending/scale/position/profile/temporal/selection behavior require independent installed Photoshop references. Own round trips and equality tests protect existing native output, not new Photoshop parity.",
+      "Actual New Style/Styles panel/menu/focus/accessibility/Light-Dark/application/Undo/Close/Quit acceptance remains pending the existing native automation connection issue. Controlled native methods and hosted old panel tests are not live acceptance. No462app launch/install is claimed.",
+      "Normal optimized/translated Intel/universal462 qualification is deferred under the existing breadth/batch policy; latest optimized universal461 remains separate. Dense/maximum preset/document capacity, physical macOS14/Intel/AppleSilicon/tablet/60fps/VoiceOver/full-suite qualification and all earlier strict failures remain open.",
+      "All104 original package scopes/acceptance,652reference command mappings/statuses,81major memberships and seven passes remain. No full L04/master-goal closure. CurrentL05thenL06."
+    ],
+    "scope": "Selected saved native style workflow, not full L04 closure"
+  },
+  "targeted_clipboard_460": {
+    "reference": "docs/TARGETED_CLIPBOARD_460.json",
+    "remaining": [
+      "Original D04 functional scope remains open: RGB component-set and path clipboard, external layered/vector/PDF interchange, Background Cut and full depth/profile/placement behavior; Into/Outside for scalar targets and portable targeted clipboard Actions are not implemented.",
+      "Exact installed Photoshop2026 mask-thumbnail versus mask-only display admission, foreground/background gray conversion, alpha/selection/floating-selection semantics, centering/rounding, transformed boundaries, numerical/profile/depth defaults and output remain unqualified. Current public layer-copy guide disagrees with existing whole-layer Cut; resolve through installed2026 context before changing that behavior.",
+      "Native512MiB clipboard envelope, API2MiB encoded/4MP decoded admission and standard TIFF/PNG materialization budgets remain capacity gaps, not Photoshop limits. Selected300000x300000 implicit-uniform plane tests do not qualify all large/dense/affine/multilayer workloads.",
+      "Live460 Copy/Cut/Paste target/menu/focus/visual/history/Close/Quit checks and earlier458/459native checks remain pending the existing UI connection issue. No460candidate is launched or installed and no normal Quit is claimed. Controlled native methods and a named test pasteboard are not physical UI acceptance.",
+      "API invalid/busy/revision and native stale/cancelled/failed-publication checks pass. Post-await API revocation/cancellation guards are implemented but are not independently synchronized by a new460 mid-worker test; retain that qualification gap.",
+      "All previous strict numerical, architecture, full-suite, capacity, crash and physical macOS14/Intel/AppleSilicon/tablet/60fps/HIG/VoiceOver requirements remain. In particular457Intel234assertions and sixFloat32buffers are not repaired or retested here.",
+      "All104 original scopes/acceptance,652reference-command identities/status mapping,81major memberships and seven passes remain. No full D04 or master-goal completion."
+    ],
+    "scope": "Selected20-method native/API workflow only; full D04 remains open",
+    "strict_planes_all_exact": true
+  },
+  "timebox": "At most one normal implementation checkpoint for a quick-win candidate. If investigation shows it needs engine redesign or several increments, preserve findings in stillneeded and move on. Never ship a known data-loss or broken transaction to meet the timebox.",
+  "tracks": {
+    "cleanup": "Residual exactness, uncommon combinations, refinement and broad qualification after working functional breadth.",
+    "quickwins": "A bounded, useful implementation on an existing foundation; confirm it is missing and small before starting.",
+    "stillneeded": "Substantial absent or incomplete functionality, including repairs that cannot safely fit a quick win."
+  },
+  "validation_policy": "During breadth passes use focused development builds and native/API tests. Batch optimized universal packages and broad runtime qualification at stable milestones, except where a change needs immediate architecture/numerical checks. Full original acceptance remains open until qualified.",
+  "work_tracks_source": "docs/FUNCTION_PHASES_462.json"
+}

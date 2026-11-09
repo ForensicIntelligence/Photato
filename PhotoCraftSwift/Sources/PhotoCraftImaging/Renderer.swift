@@ -297,11 +297,11 @@ public enum Renderer {
         for y in region.y..<region.y + region.height {
           try Task.checkCancellation()
           for x in region.x..<region.x + region.width {
-            let b = output.pixel(x: x, y: y)
-            let p = evaluate(b, x, y)
             let m = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
             let amount = unit(layer.opacity * m)
             if amount == 0 { continue }
+            let b = output.pixel(x: x, y: y)
+            let p = evaluate(b, x, y)
             if adjustment.usesDocumentToneSpace, layer.blendMode == .normal {
               let mixed = LevelsTransfer.mix(b, with: p, coverage: amount, depth: d.depth)
               guard mixed.isFinite else {

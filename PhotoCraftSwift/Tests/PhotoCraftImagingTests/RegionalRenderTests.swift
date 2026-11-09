@@ -190,7 +190,11 @@ final class RegionalRenderTests: XCTestCase {
     }
     d.layers.append(child)
     d.activeLayerID = child.id
-    XCTAssertThrowsError(try Renderer.composite(d))
+    let canvas = IntRect(x: 0, y: 0, width: d.width, height: d.height)
+    XCTAssertTrue(Renderer.groupCompositionExceedsBudget(d, region: canvas))
+    XCTAssertThrowsError(try Renderer.compositePrepared(d, region: canvas))
+    let bounded = try Renderer.composite(d)
+    for x in 0..<d.width { XCTAssertTrue(bounded.pixel(x: x, y: 0).hasSameBits(as: .white)) }
     let tiny = try Renderer.composite(d, region: IntRect(x: 63, y: 0, width: 2, height: 1))
     XCTAssertEqual(tiny.tileCount, 2)
     XCTAssertEqual(tiny.pixel(x: 63, y: 0), .white)
