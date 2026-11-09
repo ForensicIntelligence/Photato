@@ -94,7 +94,7 @@ final class SmartObjectUnpackWorkflowTests: XCTestCase {
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: definition.schema))
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: SmartObject.apiCapabilities))
     XCTAssertEqual(AutomationCommand.definitions.count, 267)
-    XCTAssertEqual(ActionLibraryFile.maximumVersion, 60)
+    XCTAssertEqual(ActionLibraryFile.maximumVersion, 61)
     try PhotoshopMenuTests().withMenus { _, menu in
       func find(_ menu: NSMenu) -> NSMenuItem? {
         for item in menu.items {

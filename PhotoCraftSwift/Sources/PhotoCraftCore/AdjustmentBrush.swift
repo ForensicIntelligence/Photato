@@ -1,10 +1,12 @@
 import Foundation
 
 public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
+  case colorVibrance
   case brightnessContrast, levels, curves, exposure, vibrance, hueSaturation, colorBalance
   case blackWhite, photoFilter, channelMixer, colorLookup, selectiveColor, invert, posterize, threshold, gradientMap
   public var title: String {
     switch self {
+    case .colorVibrance: "Color and vibrance"
     case .brightnessContrast: "Brightness/Contrast"; case .levels: "Levels"; case .curves: "Curves"
     case .exposure: "Exposure"; case .vibrance: "Vibrance"; case .hueSaturation: "Hue/Saturation"
     case .colorBalance: "Color Balance"; case .blackWhite: "Black & White"; case .photoFilter: "Photo Filter"
@@ -12,9 +14,18 @@ public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
     case .posterize: "Posterize"; case .threshold: "Threshold"; case .gradientMap: "Gradient Map"
     }
   }
+  /// Installed Photoshop 2026 picker order. Legacy Vibrance remains decodable for old recipes.
+  public static var nativeKinds: [Self] { allCases.filter { $0 != .vibrance } }
+  private static var initialColorVibrance: ModernAdjustment {
+    var value = ModernAdjustment(.colorVibrance)
+    // Observed new Adjustment Brush layer; the ordinary adjustment remains neutral.
+    value.values["vibrance"] = 100
+    return value
+  }
   /// Native starting values; Adobe's complete preset/default catalogue is separately qualified.
   public var initial: Adjustment {
     switch self {
+    case .colorVibrance: .modern(Self.initialColorVibrance)
     case .brightnessContrast: .brightnessContrast(0.15,1)
     case .levels: .levels(.init()); case .curves: .curves(.init()); case .exposure: .classic(.exposure(.init(exposure: 1)))
     case .vibrance: .classic(.init(.vibrance)); case .hueSaturation: .hueSaturation(.init())
@@ -35,6 +46,7 @@ public enum AdjustmentBrushKind: String, Codable, CaseIterable, Sendable {
     case .invert:self = .invert;case .tonalSteps(let v):self = v.kind == .threshold ? .threshold:.posterize
     case .gradientMap:self = .gradientMap
     case .colorLookup:self = .colorLookup
+    case .modern(let value) where value.kind == .colorVibrance:self = .colorVibrance
     default:return nil
     }
   }

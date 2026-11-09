@@ -1,0 +1,209 @@
+{
+  "Actions": 61,
+  "Photoshop_parity": false,
+  "canonical_history_pair_failed": true,
+  "excluded_unchanged_inputs": 13,
+  "failed_attempts_preserved": [
+    "Debug01 compile ENOSPC; zero46selected executed; unchanged7859inputs; no product removal",
+    "Source02 inside/outside diagnostic labels used cropped-mask local coordinates. Source03 corrects labels with MaskSampler; total differences/maxima unchanged"
+  ],
+  "frozen_inputs": 7859,
+  "full_A04_closed": false,
+  "full_B08_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7846,
+  "independent_Photoshop_byte_equality_passed": false,
+  "independent_Photoshop_output": {
+    "Debug": {
+      "brush": {
+        "PhotoshopByteEqualityPassed": false,
+        "differentSamples": 44797,
+        "fixture": "brush",
+        "insideMaskDifferentSamples": 44797,
+        "maximumByteDelta": 36,
+        "outsideMaskDifferentSamples": 0,
+        "samples": 2359296,
+        "workflowTestsDoNotQualifyTransfer": true
+      },
+      "controls": {
+        "PhotoshopByteEqualityPassed": false,
+        "differentSamples": 37102,
+        "fixture": "controls",
+        "insideMaskDifferentSamples": 37102,
+        "maximumByteDelta": 27,
+        "outsideMaskDifferentSamples": 0,
+        "samples": 2359296,
+        "workflowTestsDoNotQualifyTransfer": true
+      }
+    },
+    "optimizedARM": {
+      "brush": {
+        "PhotoshopByteEqualityPassed": false,
+        "differentSamples": 44797,
+        "fixture": "brush",
+        "insideMaskDifferentSamples": 44797,
+        "maximumByteDelta": 36,
+        "outsideMaskDifferentSamples": 0,
+        "samples": 2359296,
+        "workflowTestsDoNotQualifyTransfer": true
+      },
+      "controls": {
+        "PhotoshopByteEqualityPassed": false,
+        "differentSamples": 37102,
+        "fixture": "controls",
+        "insideMaskDifferentSamples": 37102,
+        "maximumByteDelta": 27,
+        "outsideMaskDifferentSamples": 0,
+        "samples": 2359296,
+        "workflowTestsDoNotQualifyTransfer": true
+      }
+    },
+    "translatedIntel": {
+      "brush": {
+        "PhotoshopByteEqualityPassed": false,
+        "differentSamples": 44797,
+        "fixture": "brush",
+        "insideMaskDifferentSamples": 44797,
+        "maximumByteDelta": 36,
+        "outsideMaskDifferentSamples": 0,
+        "samples": 2359296,
+        "workflowTestsDoNotQualifyTransfer": true
+      },
+      "controls": {
+        "PhotoshopByteEqualityPassed": false,
+        "differentSamples": 37102,
+        "fixture": "controls",
+        "insideMaskDifferentSamples": 37102,
+        "maximumByteDelta": 27,
+        "outsideMaskDifferentSamples": 0,
+        "samples": 2359296,
+        "workflowTestsDoNotQualifyTransfer": true
+      }
+    }
+  },
+  "native_UI": {
+    "limitation": "RGB8 selected native workflow, not broad supported-platform/performance proof",
+    "paint_Undo_Redo_Properties": true,
+    "save_reopen_normal_Quit": true,
+    "saved_file": "Owned-Colour-Brush-520.photato",
+    "saved_sha256": "bd09573ce167ee5ce8de653339faae196e41e93182c1212ac2753f0332e207b4",
+    "screenshot_evidence": "Conversation only; no fabricated capture",
+    "selected_workflow_passed": true
+  },
+  "native_format": 92,
+  "new_methods": [
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testHTTPInvalidBusyStaleAndRevokedObjectPreserveDocument",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testHTTPPaintPartialEditObjectAndArchiveMatchNative",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativeObjectRefinementCancelAndRecordedCoverageAreAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativePickerLegacySelectionAndOrdinaryAdjustmentDefaults",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativePreviewCancelPropertiesRefineHistoryAndReopenAcrossDepths",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testRecordedStrokesRequire61RetainControlsAndOldRecipesRemainReadable",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testStrictPartialSettingsRetainAllControlsAndSeed",
+    "PhotoCraftCoreTests.AdjustmentBrushColorVibranceTests/testObjectMasksLocksMalformedControlsAndUnlistedTypesAreAtomic",
+    "PhotoCraftCoreTests.AdjustmentBrushColorVibranceTests/testObservedPickerOrderInitialValuesAndLegacyDecoding",
+    "PhotoCraftCoreTests.AdjustmentBrushColorVibranceTests/testPaintSubtractRetainsFullSettingsSelectionMaskAndOneUndoAcrossDepths",
+    "PhotoCraftImagingTests.PSDColorVibranceTests/testModernAndLegacyRecordsRemainDistinctAndRejectUnknownSemantics",
+    "PhotoCraftImagingTests.PSDColorVibranceTests/testOwnedPhotoshopDescriptorsMasksNativeArchiveAndIndependentPixelAssessment"
+  ],
+  "prior_failures_remain_required": true,
+  "recorded_utc": "2026-11-09T19:23:18.386189+00:00",
+  "reference": {
+    "factory_defaults_proven": false,
+    "fixture_provenance": "../Tests/PhotoCraftImagingTests/Fixtures/ColorVibrance520/provenance.json",
+    "legacy_API_type_retained": true,
+    "native_type_count": 16,
+    "proprietary_implementation_inspected": false,
+    "source": "Installed Photoshop2026 native UI using one owned analytic image and two saved PSD variants"
+  },
+  "remaining": [
+    "Full original B08 and A04 scope/acceptance; observed Use Legacy, white-balance presets and sampling; factory settings/shortcuts and tool presets",
+    "Required exact modern/legacy rendering:44797/37102differentRGBsamples,max36/27,zerooutsideMask; not waived or reclassified as cleanup",
+    "Editable modern PSD/PSB output still rejects; native Photato persistence retained",
+    "All professional combinations, dense/maximum object targeting, physical supported hardware/macOS,60fps,fullsuite and earlier failures"
+  ],
+  "selected_methods": [
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testHTTPInvalidBusyStaleAndRevokedObjectPreserveDocument",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testHTTPPaintPartialEditObjectAndArchiveMatchNative",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativeObjectRefinementCancelAndRecordedCoverageAreAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativePickerLegacySelectionAndOrdinaryAdjustmentDefaults",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativePreviewCancelPropertiesRefineHistoryAndReopenAcrossDepths",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testRecordedStrokesRequire61RetainControlsAndOldRecipesRemainReadable",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testStrictPartialSettingsRetainAllControlsAndSeed",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testCoreLUTPaintingIsLocalAndPreservesSamplesHistoryAndArchiveAcrossDepths",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testExistingLookupMaskSelectionAndInvalidLUTAreAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testHTTPInvalidReferencesStrictSettingsBusyStaleAndRevocationAreAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testHTTPPresetObjectAndReplaceMatchSharedNativePreparation",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testHTTPUploadedLookupStrokeMatchesNativeAndSurvivesCacheClear",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testNativeIdentityCreationPropertiesPreviewCancelAndHistory",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testNativeLookupObjectMaskAndRetypeRetainEditableData",
+    "PhotoCraftAppTests.AdjustmentBrushLookupTests/testPortableColorLookupBrushRequires59AndReplaysEmbeddedSource",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testHTTPMatchesNativeAndInvalidBusyStaleRequests",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testHTTPObjectRevocationIsAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testNativeObjectCanvasAndCancellation",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testNativePreviewCancelCommitRefineReplaceNewAndPersistence",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testRecordedLocalAdjustmentReplaysWithSemanticTargets",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testRecordedObjectCoverageReplaysWithoutDetection",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testTypedSettingsAllKindsAndMalformedTrees",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testVisionLabelLookupUsesPaddedTopLeftCoordinates",
+    "PhotoCraftAppTests.ModernAdjustmentWorkflowTests/testDocumentedMenusSchemaAndModeAvailabilityKeepLegacyEntries",
+    "PhotoCraftAppTests.ModernAdjustmentWorkflowTests/testHTTPCreateSetStateNative65AndBusyStaleInvalidCases",
+    "PhotoCraftAppTests.ModernAdjustmentWorkflowTests/testNativeLivePropertiesHistoryMaskLockAndActions22",
+    "PhotoCraftAppTests.ModernAdjustmentWorkflowTests/testPublishedEditFieldsShareNativeModernTransfersWithoutInventedLayerTypes",
+    "PhotoCraftCoreTests.AdjustmentBrushColorVibranceTests/testObjectMasksLocksMalformedControlsAndUnlistedTypesAreAtomic",
+    "PhotoCraftCoreTests.AdjustmentBrushColorVibranceTests/testObservedPickerOrderInitialValuesAndLegacyDecoding",
+    "PhotoCraftCoreTests.AdjustmentBrushColorVibranceTests/testPaintSubtractRetainsFullSettingsSelectionMaskAndOneUndoAcrossDepths",
+    "PhotoCraftCoreTests.AdjustmentBrushTests/testAddSubtractSelectionAndAdjustmentReplacement",
+    "PhotoCraftCoreTests.AdjustmentBrushTests/testEditableNewLayerAndOneUndoAcrossDepths",
+    "PhotoCraftCoreTests.AdjustmentBrushTests/testInvalidAndEmptyInputNeverMutatesDocument",
+    "PhotoCraftCoreTests.AdjustmentBrushTests/testObjectMaskPreservesSelectionTransformsAndInversion",
+    "PhotoCraftCoreTests.ModernAdjustmentTests/testDefaultsControlsIdentityAndMalformedValues",
+    "PhotoCraftCoreTests.ModernAdjustmentTests/testPointwiseTransfersMatchExistingNativeRawPipelineWithoutRewritingReferences",
+    "PhotoCraftCoreTests.ModernAdjustmentTests/testSelectionMasksNative65HistoryAndSpatialApply",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testFourLayerKindsMaskOpacityRegionalPixelsAndSourcePreservation",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testGroupedModernNeighborhoodsAndCoordinateStableGrain",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testMaximumPointwiseLayerKeepsImplicitStorageAndNativeReopen",
+    "PhotoCraftImagingTests.ModernAdjustmentRenderingTests/testNeighborhoodAdjustmentInvalidatesSnapshotAfterSourceEdit",
+    "PhotoCraftImagingTests.PSDClassicAdjustmentTests/testBakedAndEditableRenderingAgreeForOpaqueSelection",
+    "PhotoCraftImagingTests.PSDClassicAdjustmentTests/testEditablePSDAndPSBRoundTripsAtAllDepths",
+    "PhotoCraftImagingTests.PSDClassicAdjustmentTests/testStrictBinaryValidationAndQuantizedPhotoFilter",
+    "PhotoCraftImagingTests.PSDColorVibranceTests/testModernAndLegacyRecordsRemainDistinctAndRejectUnknownSemantics",
+    "PhotoCraftImagingTests.PSDColorVibranceTests/testOwnedPhotoshopDescriptorsMasksNativeArchiveAndIndependentPixelAssessment"
+  ],
+  "software_build": 520,
+  "software_release": false,
+  "source_variant": "Source03",
+  "standalone_website_promotion_pending": true,
+  "status": "Selected Color and vibrance Adjustment Brush workflow qualified; independent Photoshop rendering gate failed and remains required",
+  "step": 520,
+  "typed_commands": 271,
+  "universal": {
+    "architectures": "x86_64 arm64",
+    "archive_sha256": "cdf053ff6fb2a618c488df03e3f2e828ac218d6d2d3b6fc3d05e9f4eb9f4ab6b",
+    "both_optional_models_and_provenance_verified": true,
+    "extracted_signature_verified": true,
+    "launched_or_installed": false,
+    "minimum_system_metadata": "14.0",
+    "production_entitlements_unchanged": true,
+    "same_extracted_content": true,
+    "signature_verified": true,
+    "signed_universal_binary_sha256": "9edc523fc5b938c772c824ad9e1a7a499e20ba5c86129a54bcdd2fabddc353cf"
+  },
+  "validation": {
+    "Debug": {
+      "new_passed": 12,
+      "passed": 46,
+      "selected": 46
+    },
+    "optimizedARM": {
+      "new_passed": 12,
+      "passed": 46,
+      "selected": 46
+    },
+    "translatedIntel": {
+      "new_passed": 12,
+      "passed": 46,
+      "selected": 46
+    }
+  },
+  "workflow": "ADJUSTMENT_BRUSH_COLOR_VIBRANCE.md"
+}

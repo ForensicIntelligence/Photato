@@ -88,7 +88,7 @@ final class EraserModeWorkflowTests:XCTestCase {
       document.store.geometryBusy=true;let busy=try await helper.edit(service,document,"brush.configure",["brush":[:],"eraserMode":"pencil"]);XCTAssertEqual(busy,409);document.store.geometryBusy=false
       let empty=try await helper.edit(service,document,"paint.stroke",["points":[["x":1,"y":1]],"eraserMode":"block","zoom":64]);XCTAssertEqual(empty,200)
       XCTAssertEqual(document.store.document,doc);XCTAssertTrue(document.store.session.undoStack.isEmpty);XCTAssertEqual(document.store.brushState["eraserMode"]as?String,"block")
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
     }
   }
   @MainActor func testMaskTargetsAndLargeSparseNativeStrokeKeepExistingCommandPaths()async throws {

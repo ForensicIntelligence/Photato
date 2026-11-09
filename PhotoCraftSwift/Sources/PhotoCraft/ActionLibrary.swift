@@ -5,9 +5,10 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 60
+  static let maximumVersion = 61
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where:{$0.steps.contains{if case .adjustmentBrush(let value)=$0.operation,case .modern=value.request.adjustment{return true};return false}}){return 61}
     if actions.contains(where: { $0.steps.contains { step in
       switch step.operation {
       case .adjustment(_,let value),.replaceAdjustment(_,let value),.addContent(_, .adjustment(let value)):

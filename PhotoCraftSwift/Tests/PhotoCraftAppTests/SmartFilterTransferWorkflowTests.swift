@@ -56,7 +56,7 @@ final class SmartFilterTransferWorkflowTests: XCTestCase {
     XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:json)))
     library.actions = [.init(name:"Old",steps:[.init(name:"Filters",operation:.filters(.active,original.layers[0].smartFilters))])]
     XCTAssertLessThan(library.requiredVersion,58)
-    XCTAssertEqual(ActionLibraryFile.maximumVersion,60); XCTAssertEqual(AutomationCommand.definitions.count,267)
+    XCTAssertEqual(ActionLibraryFile.maximumVersion,61); XCTAssertEqual(AutomationCommand.definitions.count,267)
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:SmartFilterTransferAPI.capabilities))
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:SmartFilterStack.apiCapabilities))
   }

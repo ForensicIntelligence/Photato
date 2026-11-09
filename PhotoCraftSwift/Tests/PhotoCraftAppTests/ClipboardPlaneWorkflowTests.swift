@@ -98,7 +98,7 @@ final class ClipboardPlaneWorkflowTests:XCTestCase {
       status=try await h.edit(service,file,"clipboard.copy",["target":["kind":"alpha","channelID":UUID().uuidString]]);XCTAssertEqual(status,422)
       file.store.geometryBusy=true;status=try await h.edit(service,file,"clipboard.copy",["target":ClipboardPlaneAPI.json(target)]);XCTAssertEqual(status,409);file.store.geometryBusy=false
       status=try await h.edit(service,file,"clipboard.copy",["target":ClipboardPlaneAPI.json(target)],revision:"stale");XCTAssertEqual(status,409);XCTAssertTrue(file.store.document==d);XCTAssertTrue(file.store.session.undoStack.isEmpty)
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
     }
   }
   @MainActor func testHiddenQuickMaskAndLockedMaskAvailabilityAndUnsupportedRecording()async throws {

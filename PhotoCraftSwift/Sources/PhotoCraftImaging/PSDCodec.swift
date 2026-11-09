@@ -499,7 +499,7 @@ public enum PSDCodec {
           if tag == "clrL" {
             _ = try PSDColorLookup.read(content)
           } else if PSDClassicAdjustment.keys.contains(tag) {
-            _ = try PSDClassicAdjustment.read(content, key: tag)
+            _ = try PSDColorVibrance.readAdjustment(content, key: tag)
           } else if tag == "grdm" {
             _ = try PSDGradientMap.read(content)
           } else if tag == "GdFl" {
@@ -798,7 +798,7 @@ public enum PSDCodec {
       }
       if let data = record.tags["clrL"] { layer.content = .adjustment(.colorLookup(try PSDColorLookup.read(data))) }
       for key in PSDClassicAdjustment.keys {
-        if let data = record.tags[key] { layer.content = .adjustment(.classic(try PSDClassicAdjustment.read(data, key: key))) }
+        if let data = record.tags[key] { layer.content = .adjustment(try PSDColorVibrance.readAdjustment(data, key: key)) }
       }
       if let settings = record.tags["blnc"] {
         layer.content = .adjustment(.colorBalance(try PSDColorBalance.read(settings)))

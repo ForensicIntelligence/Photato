@@ -138,7 +138,7 @@ final class StylePresetWorkflowTests:XCTestCase {
       func find(_ menu:NSMenu)->NSMenuItem? {for item in menu.items {if item.identifier?.rawValue=="Window > Styles"{return item};if let sub=item.submenu,let match=find(sub){return match}};return nil}
       XCTAssertEqual(try XCTUnwrap(find(menu)).action,#selector(AppDelegate.stylesPanel))
     }
-    XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+    XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
     XCTAssertNotNil(AutomationCommand.definitions.first{$0.name==StyleLibraryAPI.command});XCTAssertEqual(StyleLibraryAPI.fields.count,9)
   }
 }

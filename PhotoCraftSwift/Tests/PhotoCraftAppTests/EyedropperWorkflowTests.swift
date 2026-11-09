@@ -193,6 +193,6 @@ final class EyedropperWorkflowTests:XCTestCase {
       let image=NSImage(size:canvas.bounds.size);image.lockFocus();if let context=NSGraphicsContext.current?.cgContext{canvas.drawEyedropperRing(in:context)};image.unlockFocus();XCTAssertNotNil(image.tiffRepresentation)
     }
     XCTAssertEqual(ColorSampleSettings.sizes,[1,3,5,11,31,51,101]);XCTAssertEqual(ColorSampleSource.allCases.count,5)
-    XCTAssertNotNil(AutomationService.capabilities["eyedropper"]);XCTAssertNotNil(ColorSamplingAPI.parameterSchema["oneOf"]);XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+    XCTAssertNotNil(AutomationService.capabilities["eyedropper"]);XCTAssertNotNil(ColorSamplingAPI.parameterSchema["oneOf"]);XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
   }
 }

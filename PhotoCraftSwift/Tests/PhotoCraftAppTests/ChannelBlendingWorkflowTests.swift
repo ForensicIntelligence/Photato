@@ -51,6 +51,6 @@ final class ChannelBlendingWorkflowTests:XCTestCase {
     try LayerStyleWorkflowTests().testFactoryMenuStyleBindings()
     let d=try CraftDocument(width:8,height:6),s=EditorStore(document:d);defer{s.renderTask?.cancel()}
     XCTAssertTrue(s.validateLayerStyleMenu("Layer > Layer Style > Blending Options…"));s.beginBlendingOptions();XCTAssertFalse(s.validateLayerStyleMenu("Layer > Layer Style > Blending Options…"));s.cancelLayerStyle()
-    XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+    XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
   }
 }

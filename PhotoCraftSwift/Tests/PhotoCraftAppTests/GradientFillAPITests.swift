@@ -190,7 +190,7 @@ final class GradientFillAPITests: XCTestCase {
     XCTAssertEqual(action.steps.count, 1)
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(edited)), edited)
     let saved = try ActionLibraryFile.decode(library.exportFile(action.id))
-    XCTAssertEqual(ActionLibraryFile.maximumVersion, 60)
+    XCTAssertEqual(ActionLibraryFile.maximumVersion, 61)
     XCTAssertEqual(saved.version, 47)
     var wire = try XCTUnwrap(JSONSerialization.jsonObject(with: library.exportFile(action.id)) as? [String: Any])
     wire["version"] = 46

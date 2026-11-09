@@ -35,7 +35,7 @@ final class LargeEqualizeWorkflowTests: XCTestCase {
       }
       let caps=ClassicToneAPI.capabilities
       let limits=try XCTUnwrap(caps["maximumPixelsByKind"]as?[String:Int]);XCTAssertEqual(limits["equalize"],90_000_000_000);XCTAssertEqual(limits["shadowsHighlights"],8_388_608)
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
     }
   }
   @MainActor func testSelectedLargePreviewIsBoundedAndCancelCommitSourceChangeAreAtomic() async throws {

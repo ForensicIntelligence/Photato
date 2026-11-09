@@ -162,7 +162,7 @@ final class LayerFilterAPITests: XCTestCase {
       XCTAssertEqual(AutomationTests.expectedCommandCount, 267)
       let definition = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == LayerFilterAPI.command })
       XCTAssertEqual(definition.optionalParameters, ["filter"])
-      XCTAssertEqual(ActionLibraryFile.maximumVersion, 60)
+      XCTAssertEqual(ActionLibraryFile.maximumVersion, 61)
       XCTAssertTrue(JSONSerialization.isValidJSONObject(LayerFilterAPI.capabilities))
     }
   }

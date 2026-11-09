@@ -125,7 +125,7 @@ final class SelectionSourceWorkflowTests:XCTestCase {
     let mapping=SelectionToolAPI.subjectSelectionCapability
     XCTAssertEqual((mapping["samplingFieldsByTool"] as? [String:String])?["magicWand"],"magicWand.settings.sampleAllLayers")
     XCTAssertNotNil(MagicWandAPI.capabilities["subjectSelection"])
-    XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+    XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:SelectionToolAPI.capabilities))
   }
 }

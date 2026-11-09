@@ -110,7 +110,7 @@ final class AdjustmentBrushLookupTests:XCTestCase {
       let mask=s.activeLayer?.mask
       let status=try await helper.edit(service,document,"adjustmentBrush.edit",["operation":"replace","settings":["preset":"cool"]]);XCTAssertEqual(status,200);XCTAssertEqual(s.activeLayer?.mask,mask)
       XCTAssertEqual(s.activeLayer?.content,.adjustment(.colorLookup(.init(lut:try ColorLUTPreset.cool.makeLUT(),dither:false))))
-      let raw=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:s.adjustmentBrushState));XCTAssertNoThrow(try BrushAPI.merge(raw,schema:AdjustmentBrushLookupAPI.stateSchema));XCTAssertEqual(AutomationCommand.definitions.count,267)
+      let raw=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:s.adjustmentBrushState));XCTAssertNoThrow(try BrushAPI.merge(raw,schema:AdjustmentBrushLookupAPI.stateSchema));XCTAssertEqual(AutomationCommand.definitions.count,271)
     }
   }
   @MainActor func testHTTPInvalidReferencesStrictSettingsBusyStaleAndRevocationAreAtomic()async throws {

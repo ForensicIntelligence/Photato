@@ -10,6 +10,11 @@ import PhotoCraftImaging
   var currentAdjustmentBrushKind:AdjustmentBrushKind {
     if let layer=adjustmentBrushLayer,case .adjustment(let value)=layer.content,let kind=AdjustmentBrushKind(adjustment:value) {return kind};return adjustmentBrushKind
   }
+  var availableAdjustmentBrushKinds:[AdjustmentBrushKind] {
+    // Keep old selected/configured layers editable without restoring legacy Vibrance
+    // to the ordinary Photoshop 2026 picker.
+    currentAdjustmentBrushKind == .vibrance ? AdjustmentBrushKind.nativeKinds + [.vibrance] : AdjustmentBrushKind.nativeKinds
+  }
   var canUseAdjustmentBrush:Bool {canUseBrush && !editingComponent && !aiBusy}
   func adjustmentBrushRequest(points:[StrokePoint],brush:Brush,alternate:Bool=false)->AdjustmentBrushRequest {
     let layer=adjustmentBrushLayer
@@ -45,7 +50,7 @@ struct AdjustmentBrushOptionsView:View {
   }
   var body:some View {
     HStack(spacing:10) {
-      Picker("Adjustment:",selection:Binding(get:{store.currentAdjustmentBrushKind},set:{store.replaceAdjustmentBrush($0)})){ForEach(AdjustmentBrushKind.allCases,id:\.self){Text($0.title).tag($0)}}.frame(width:220)
+      Picker("Adjustment:",selection:Binding(get:{store.currentAdjustmentBrushKind},set:{store.replaceAdjustmentBrush($0)})){ForEach(store.availableAdjustmentBrushKinds,id:\.self){Text($0.title).tag($0)}}.frame(width:220)
       Button("New Adjustment"){store.newAdjustmentBrush()}
       Picker("Brush",selection:$store.adjustmentBrushSubtract){Text("Add").tag(false);Text("Subtract").tag(true)}.pickerStyle(.segmented).frame(width:130)
       number("Size:",$store.brush.size,0.5...2048)

@@ -102,7 +102,7 @@ final class CustomKernelPresetWorkflowTests:XCTestCase {
       let stale=try await h.edit(service,document,CustomKernelPresetAPI.name,valid,revision:"stale");XCTAssertEqual(stale,409)
       document.store.beginFilter(.customFilter);let busy=try await h.edit(service,document,CustomKernelPresetAPI.name,valid);XCTAssertEqual(busy,409);document.store.cancelFilter()
       let definition=try XCTUnwrap(AutomationCommand.definitions.first{$0.name==CustomKernelPresetAPI.name});XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:definition.schema));XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:CustomKernelPresetAPI.capabilities))
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60);XCTAssertTrue(document.store.session.undoStack.isEmpty)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61);XCTAssertTrue(document.store.session.undoStack.isEmpty)
       let id=try XCTUnwrap(service.shares.first?.id);service.revoke(id)
       let revoked=try await h.request(service,path:"/v1/documents/\(id)/commands",body:["command":CustomKernelPresetAPI.name,"revision":service.revision(document.store),"parameters":valid]);XCTAssertEqual(revoked.0.statusCode,404)
     }

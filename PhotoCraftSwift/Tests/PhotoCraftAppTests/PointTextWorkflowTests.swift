@@ -149,7 +149,7 @@ final class PointTextWorkflowTests:XCTestCase {
       try service.share(document)
       let status=try await helper.edit(service,document,"text.set",["layerID":layer.id.uuidString,"text":changed.apiType]);XCTAssertEqual(status,200);XCTAssertEqual(document.store.document,expected)
       let surface=try NativeTextLayout.render(changed,document:expected);XCTAssertLessThan(surface.width*surface.height,10000)
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
       await document.store.undo();XCTAssertEqual(document.store.document,original)
     }
   }

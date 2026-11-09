@@ -1,0 +1,41 @@
+{
+  "origin": "Owned analytic Sunset fixture opened and edited in installed Photoshop2026 through native UI. No Adobe image assets or implementation source. PSD data and independent merged PackBits decoder retained for interoperability/output assessment.",
+  "references": [
+    {
+      "name": "brush",
+      "psd_sha256": "c1e5639adaa3ab401ccb228c7d21560d5f19369b800666170856c18cf0c1fd86",
+      "merged_sha256": "ff0054b94bc7770e5a70e6df6fd6de85c68ddb10606aaf01e528c57890d3d515",
+      "compressed_merged_sha256": "baab8bca9f3835d7db706e8013b293698631e5e7292309ca760fbc9912a4bb3a",
+      "width": 1024,
+      "height": 768,
+      "settings": {
+        "temperature": 0,
+        "tint": 0,
+        "vibrance": 100,
+        "saturation": 0
+      },
+      "useLegacy": false,
+      "owned_source_png_sha256": "f0546a8e24596e042f4527fcdf26d93ec1a9f09c66ced99fde62115101245e0d",
+      "profileEmbedded": false,
+      "workingProfileObserved": "sRGB IEC61966-2.1"
+    },
+    {
+      "name": "controls",
+      "psd_sha256": "9524563ceaa8b177a106562fed86fc4d991c296e6238d10e343b864f2bfb1201",
+      "merged_sha256": "05e3138bb5e5c7bf9b3a58c30b51672556fd3c62e537f5982c2d3b4e89142800",
+      "compressed_merged_sha256": "1326cfb1aacfe5ac8ddcf4c0e2dd040170b33ec75c2735e58c3a8a193f366c88",
+      "width": 1024,
+      "height": 768,
+      "settings": {
+        "temperature": 17,
+        "tint": -23,
+        "vibrance": 31,
+        "saturation": -19
+      },
+      "useLegacy": false,
+      "owned_source_png_sha256": "f0546a8e24596e042f4527fcdf26d93ec1a9f09c66ced99fde62115101245e0d",
+      "profileEmbedded": false,
+      "workingProfileObserved": "sRGB IEC61966-2.1"
+    }
+  ]
+}

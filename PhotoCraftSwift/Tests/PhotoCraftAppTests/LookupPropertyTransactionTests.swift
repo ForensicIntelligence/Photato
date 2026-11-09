@@ -90,7 +90,7 @@ final class LookupPropertyTransactionTests:XCTestCase {
     defer{s.geometryTask?.cancel();s.renderTask?.cancel()};try s.startRecordingAction(name:"Owned lookup properties",set:"Owned")
     s.setColorLookup(id,try value());await s.geometryTask?.value
     XCTAssertNil(s.error);let action=try s.stopRecordingAction(save:false);XCTAssertEqual(action.steps.count,1)
-    var file=ActionLibraryFile();file.actions=[action];XCTAssertEqual(file.requiredVersion,3);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+    var file=ActionLibraryFile();file.actions=[action];XCTAssertEqual(file.requiredVersion,3);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
     XCTAssertEqual(s.session.undoStack.count,1)
   }
   @MainActor func testHTTPSetAndNativeShareExactOutputAndHistoryAcrossDepths()async throws {

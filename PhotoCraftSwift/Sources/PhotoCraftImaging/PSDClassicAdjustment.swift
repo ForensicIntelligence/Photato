@@ -36,6 +36,9 @@ enum PSDClassicAdjustment {
       value.exposureSettings = .init(exposure:values[0],offset:values[1],gammaCorrection:values[2])
     case .vibrance:
       let d = try PSDDescriptor.read(data,padding:true)
+      if let flag=d["useLegacy"] {
+        guard case .boolean(true)=flag else {throw CraftError.unsupported("Modern Color and vibrance requires its own PSD adjustment decoder.")}
+      }
       value.vibrance = try integer(d,"vibrance",0); value.saturation = try integer(d,"Strt",0)
     case .blackWhite:
       let d = try PSDDescriptor.read(data,padding:true)

@@ -77,7 +77,7 @@ final class GalleryTextureWorkflowTests:XCTestCase {
       service.previewBusy=true;let busy=try await h.edit(service,document,GalleryTextureAPI.name,valid);service.previewBusy=false;XCTAssertEqual(busy,429)
       document.store.beginFilter(.filterGallery);let modal=try await h.edit(service,document,GalleryTextureAPI.name,valid);document.store.cancelFilter();XCTAssertEqual(modal,409)
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:GalleryTextureAPI.capabilities));XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:GalleryTextureAPI.commandSchema))
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,60)
+      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,61)
       service.revoke(id);let revoked=try await h.request(service,path:path,body:["command":GalleryTextureAPI.name,"revision":service.revision(document.store),"parameters":valid]);XCTAssertEqual(revoked.0.statusCode,404);XCTAssertEqual(document.store.document,d)
     }
   }
