@@ -164,14 +164,16 @@ public enum Renderer {
       try projection.mapPixels(in:requested) {x,y,_ in full.pixel(x:x,y:y)}
       return projection
     }
-    if preferPaged || requested.width * requested.height > Surface.maximumDensePixels {
+    let needsPaged=preferPaged || requested.width * requested.height > Surface.maximumDensePixels
+      || (d.colorMode == .rgb && groupCompositionExceedsBudget(d,region:requested,video:videoTime != nil))
+    if needsPaged {
       if (!preferPaged || requested.width*requested.height>Surface.maximumDensePixels),inputTarget == nil, videoTime == nil,
         let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
       try PagedCanvasRenderer.validateResources(d)
     }
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     let (d,videoTransitions) = try preparedSources(d,videoTime:videoTime)
-    if preferPaged || requested.width * requested.height > Surface.maximumDensePixels {
+    if needsPaged {
       // Checked source preparation can turn a retained Warp/Smart Filter into
       // an ordinary sparse raster. Reuse the exact pointwise compositor rather
       // than visiting every patch of a mostly implicit maximum-size canvas.
@@ -198,6 +200,18 @@ public enum Renderer {
     }
     return (d,videoTransitions)
   }
+  /// Count whole touched tiles and retained parent backdrops, including boundary
+  /// tiles. A thin canvas can exceed the dense working budget below 36 MP.
+  static func groupCompositionExceedsBudget(_ d:CraftDocument,region:IntRect,video:Bool=false)->Bool {
+    guard region.width>0,region.height>0,
+      video || d.layers.contains(where:{$0.isGroup || $0.isClipped}) else {return false}
+    let hierarchy=LayerHierarchyIndex(d)
+    let nesting=d.layers.map{hierarchy.ancestors(of:$0.id).count}.max() ?? 0
+    let buffers=max(5,nesting*2+5)+(video ? 6:0),side=Surface.tileSide
+    let tiles=((region.x+region.width-1)/side-region.x/side+1)
+      * ((region.y+region.height-1)/side-region.y/side+1)
+    return tiles*side*side*16*buffers>1_610_612_736
+  }
   /// Sources/transitions are prepared once before bounded patch composition.
   static func compositePrepared(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
     video videoTransitions: VideoTransitionRenderContext? = nil, facts: CompositionFacts? = nil
@@ -210,17 +224,7 @@ public enum Renderer {
       return linear
     }
     if videoTransitions != nil || d.layers.contains(where: { $0.isGroup || $0.isClipped }) {
-      // Recursive CPU composition retains parent backdrops, which are not bounded by the
-      // document's storage budget. Count whole touched tiles,
-      // including both boundary tiles for a region that straddles a tile edge.
-      let hierarchy = LayerHierarchyIndex(d)
-      let nesting = d.layers.map { hierarchy.ancestors(of: $0.id).count }.max() ?? 0
-      let buffers = max(5, nesting * 2 + 5) + (videoTransitions == nil ? 0:6)
-      let side = Surface.tileSide
-      let canvasBytes =
-        ((region.x + region.width - 1) / side - region.x / side + 1)
-        * ((region.y + region.height - 1) / side - region.y / side + 1) * side * side * 16
-      guard canvasBytes * buffers <= 1_610_612_736 else {
+      guard !groupCompositionExceedsBudget(d,region:region,video:videoTransitions != nil) else {
         throw CraftError.unsupported(
           "This grouped document exceeds the current CPU compositing memory budget.")
       }

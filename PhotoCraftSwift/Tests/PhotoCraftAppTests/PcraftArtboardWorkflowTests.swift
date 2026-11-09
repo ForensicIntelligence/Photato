@@ -43,9 +43,13 @@ final class PcraftArtboardWorkflowTests:XCTestCase {
       try await DocumentSaveWorkflowTests().save(document,to:target,format:.native)
       XCTAssertEqual(try DocumentIO.read(target),edited)
       XCTAssertEqual(try Data(contentsOf:url),bytes)
-      // The source adapter does not pretend to implement editable Adobe artboard interchange.
-      XCTAssertThrowsError(try DocumentIO.encode(edited,format:.psd))
-      XCTAssertThrowsError(try DocumentIO.encode(edited,format:.psb))
+      for format in [DocumentIO.Format.psd,.psb] {
+        let photoshop=try PSDCodec.read(DocumentIO.encode(edited,format:format))
+        XCTAssertEqual(photoshop.artboards.count,4)
+        XCTAssertEqual(photoshop.artboards[0].artboard?.preset,"Owned 40 × 48")
+        XCTAssertEqual(photoshop.artboards.compactMap{photoshop.logicalArtboardBounds($0)},edited.artboards.compactMap{edited.logicalArtboardBounds($0)})
+        XCTAssertTrue(photoshop.layers.contains{if case .fill=$0.content{return true};return false})
+      }
     }
   }
   @MainActor func testHTTPImportSharesEditableArtboardsHistoryStrictGuardsAndExports() async throws {

@@ -369,7 +369,8 @@ public enum PSDCodec {
               throw CraftError.unsupported("OpenColorIO-managed or unrepresented Photoshop color metadata is not ported yet.")
             }
           }
-          guard ["Patt", "Pat2", "Pat3", "FMsk", "cinf", "CAI ", "OCIO", "GenI", "Anno", "FEid", "FXid", "lnk2", "lnk3", "lnkD", "lnkE"].contains(tag)
+          if PSDArtboards.keys.contains(tag) { _ = try PSDArtboards.global(content) }
+          guard ["Patt", "Pat2", "Pat3", "FMsk", "cinf", "CAI ", "OCIO", "GenI", "Anno", "FEid", "FXid", "lnk2", "lnk3", "lnkD", "lnkE"].contains(tag) || PSDArtboards.keys.contains(tag)
           else {
             throw CraftError.unsupported("Global PSD block '\(tag)' is not ported yet.")
           }
@@ -580,6 +581,7 @@ public enum PSDCodec {
         case "TySh": _ = try PSDText.descriptor(content)
         case "SoLd", "SoLE": _ = try PSDSmartObjects.descriptor(content)
         case "PlLd": break
+        case "artb", "artd", "abdd": _ = try PSDArtboards.layer(content,depth:pixelDepth)
         case "lyid", "lnsr", "lclr", "shmd", "fxrp", "lyvr": break
         case "clbl", "infx", "lmgm", "vmgm":
           guard content.count == 4, content.dropFirst().allSatisfy({ $0 == 0 }), content[0] <= 1
@@ -605,6 +607,10 @@ public enum PSDCodec {
         guard try extra.consumePadding(0) else {
           throw CraftError.invalid("Invalid layer padding.")
         }
+      }
+      let boardTags = PSDArtboards.keys.filter { tags[$0] != nil }
+      guard boardTags.count<=1,boardTags.isEmpty || section==1 || section==2 else {
+        throw CraftError.invalid("Artboard metadata requires one group header.")
       }
       guard
         section != 0
@@ -1011,6 +1017,7 @@ public enum PSDCodec {
     while merged.remainingRows>auxiliaryCount*height {_ = try merged.nextRow()}
     try PSDAuxiliaryChannels.read(merged,first:imageChannels,count:auxiliaryCount,blocks:resourceBlocks,document:&doc,paging:paging)
     try merged.discardRemaining()
+    try PSDArtboards.read(into:&doc)
     try PSDLayerComps.read(into: &doc)
     try doc.validate()
     try source.validateUnchanged()
@@ -1070,7 +1077,8 @@ public enum PSDCodec {
     guard doc.vanishingPoint == nil else { throw CraftError.unsupported("Vanishing Point plane metadata requires Photato format. Export a rendered copy for other formats.") }
     try PSDModeStorage.validateExport(doc)
     guard !doc.hasFrames else { throw CraftError.unsupported("Editable frame PSD/PSB interchange is not implemented. Save as Photato or export a rendered image.") }
-    guard !doc.hasArtboards else { throw CraftError.unsupported("Editable artboard PSD/PSB mapping is not available yet. Save as Photato or export a rendered artboard.") }
+    guard includeComposite || !doc.hasArtboards else { throw CraftError.unsupported("Editable artboard TIFF interchange remains unqualified. Save as Photato, PSD or PSB.") }
+    let artboardOutput = try PSDArtboards.prepare(doc)
     let compOutput = try PSDLayerComps.prepare(doc)
     let auxiliaryChannels=PSDAuxiliaryChannels.all(doc)
     guard includeComposite || auxiliaryChannels.isEmpty else {throw CraftError.unsupported("Auxiliary channel export requires complete PSD/PSB merged planes; TIFF mapping remains separate.")}
@@ -1179,7 +1187,7 @@ public enum PSDCodec {
       if data.count % 2 != 0 { resources.n(0, 1) }
       if !saved.isWorkPath { pathID += 1 }
     }
-    try output.section(PSDGuides.applying(try PSDGlobalLight.applying(try PSDLayerLinks.applying(resources.data,entries:entries), document: doc),document:doc))
+    try output.section(PSDGuides.applying(try PSDGlobalLight.applying(try PSDLayerLinks.applying(resources.data,entries:entries), document: doc),document:artboardOutput.guideDocument))
     guard entries.count <= Int(Int16.max) else {
       throw CraftError.invalid("PSD has too many layer records.")
     }
@@ -1335,6 +1343,11 @@ public enum PSDCodec {
         extra.text("lsct")
         extra.section(divider.data)
       }
+      if let (key,data) = artboardOutput.layers[layer.id] {
+        extra.text(format.tagSignature(key)+key)
+        extra.section(data,lengthBytes:format.tagLengthBytes(key))
+        if data.count%2 != 0 { extra.n(0,1) }
+      }
       extra.text("8BIM")
       extra.text("clbl")
       extra.section(Data([layer.clipsBlendAsGroup ? 1 : 0, 0, 0, 0]))
@@ -1427,7 +1440,7 @@ public enum PSDCodec {
       }
       for (tag, content) in (layer.sourceTags ?? [:]).sorted(by: { $0.key < $1.key })
       where ![
-        "PhLG", "PhLF", "PhFE", "luni", "lspf", "lyid", "lsct", "lsdk", "clbl", "vmsk", "vsms", "SoCo", "levl", "curv",
+        "PhLG", "PhLF", "PhFE", "artb", "artd", "abdd", "luni", "lspf", "lyid", "lsct", "lsdk", "clbl", "vmsk", "vsms", "SoCo", "levl", "curv",
         "hue2", "blnc", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "expA", "thrs", "post", "grdm", "PtFl", "GdFl", "lfx2", "lmfx", "iOpa",
       ]
       .contains(tag) {
@@ -1542,9 +1555,16 @@ public enum PSDCodec {
       let length=layerMask.count-start;try layerMask.finishLength(mark,width:width)
       for _ in 0..<((4 - length % 4) % 4) {try layerMask.n(0,1)}
     }
+    if let (key,data) = artboardOutput.global {
+      try layerMask.text(format.tagSignature(key)+key)
+      try layerMask.section(data,lengthBytes:format.tagLengthBytes(key))
+      for _ in 0..<((4-data.count%4)%4) { try layerMask.n(0,1) }
+    }
     try output.finishLength(maskLength, width: format.sectionLengthBytes)
     if !includeComposite { return }
-    let pagedComposite = doc.colorMode == .rgb && doc.width*doc.height > Surface.maximumDensePixels ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
+    let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
+      || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
+      ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
     let pagedModeComposite = try doc.modeDescriptor != nil && (doc.width>NativeModeRaster.maximumPixels/doc.height || doc.layers.contains(where:{$0.nativeMode?.requiresPagedArchive == true})) ? PSDModeCompositeRows(doc):nil
     let composite = try pagedComposite == nil && pagedModeComposite == nil ? Renderer.composite(doc):nil
     let nativeComposite = try pagedModeComposite == nil ? doc.modeDescriptor.map { descriptor in

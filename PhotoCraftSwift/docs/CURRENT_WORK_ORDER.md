@@ -1,3 +1,5 @@
+**Checkpoint 516:** Editable PSD/PSB artboards pass all 11 new methods in each configuration. Debug/optimized ARM pass 74/74 selected; Intel passes 73/74 with an older paging failure reproduced on retained515. Exact owned merged samples, native/Photoshop reopen and universal static checks pass. Full I04/L07 and prior failures remain open. Next AI07, major stillneeded. [Qualification](SOURCE_PUBLICATION_516.md).
+
 **Checkpoint 515:** Editable source artboards and cache-preserving canvas fitting/export pass all 46 selected checks in Debug and both optimized architectures, including all 10 new methods. Native Save As/reopen and universal static checks pass. Full I03, earlier failures and Photoshop parity remain open. Continue I04, then AI07, major-stillneeded. [Qualification](SOURCE_PUBLICATION_515.md).
 
 **Checkpoint 514:** The selected editable Auto-Blend path is tested. Continue major-stillneeded with I03 after auditing existing workflows. Full RAW02, original scope and failures remain required. [Plan](WORK_PRIORITIES_514.json) · [Qualification](SOURCE_PUBLICATION_514.md).

@@ -1,0 +1,208 @@
+{
+  "Actions": 60,
+  "Photoshop_parity": false,
+  "Photoshop_reopen": {
+    "observations": [
+      "All6generated PSD/PSB filesopenwithoutwarning,eachRGB8/16/32,Second Board \u03a9selected",
+      "All6showeditableArtboard Properties:160\u00d7120,x240,y40,Custom,Otherbackground",
+      "Native-savededitedRGB16PSD showsOwned Board516,144\u00d7120,x240,y40",
+      "EditedRGB16screenshotshows2editableboards+children,black/custombluebackgrounds,brushdabandcyan guide",
+      "Onlyall7ownedreviewdocumentsclosednormally;PhotoshopleftonHome"
+    ],
+    "passed": true,
+    "variants": [
+      "artboard-rgb8.psd",
+      "artboard-rgb8.psb",
+      "artboard-rgb16.psd",
+      "artboard-rgb16.psb",
+      "artboard-rgb32.psd",
+      "artboard-rgb32.psb"
+    ]
+  },
+  "all_selected_passed": false,
+  "baseline_assessment": {
+    "originalFullSelectionGateStillFailed": true,
+    "rawBaselineCurrentOutputsCompared": false,
+    "same9IntelAssertionsReproducedOnRetained515": true
+  },
+  "canonical_history_pair_failed": true,
+  "excluded_generated_or_restricted_inputs": 13,
+  "failures_and_repairs": [
+    "Debug01:38/42,7/11new; padding loss, padding setup, brush blending and wide grouped rendering retained",
+    "Debug02:42/42,11/11new; all independent merged bytes exact",
+    "Source03 only strengthens superseded dense-budget regression; product inputs identical02",
+    "Debug03 expanded group/paged/depth/matte regressions:74/74"
+  ],
+  "frozen_inputs": 7829,
+  "full_I04_closed": false,
+  "full_L07_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7816,
+  "independent_merged_plane_bytes_exact_each_configuration": 4045440,
+  "native_UI": {
+    "actual_process_absent": true,
+    "normal_quit": true,
+    "observations": [
+      "Native RGB16 PSB open:420\u00d7172,2editableboards,4layers",
+      "Artboard Properties:Second Board \u03a9,x240,y40,160\u00d7120,one scopedguide",
+      "Cancel restoresoriginal name/width; commitOwned Board516,width144;Undo/Redo restoresname",
+      "Separate native SaveAs Photoshop PSD andactualreopen:Owned Board516,x240,y40,144\u00d7120,oneguide",
+      "Screenshotavailable:wholecanvasremainswithinworkspace,colors/brushdab/scopedguideand2groupsvisible;titlePhotato - Owned-Artboards-516.psd"
+    ],
+    "original_source_unchanged": true,
+    "screenshot_available": true,
+    "workflow_passed": true
+  },
+  "native_format": 92,
+  "new_methods": [
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testBothResourceJobInterfacesRetainArtboardsAndMatchNativePhotoshopOutput",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testHTTPImportEditHistoryAndBothPhotoshopDownloadsUseSharedEditableModel",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testNativeOpenPropertiesHistorySaveAsPSDAndPSBReopenKeepOriginal",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testSavePolicyAdmitsMappedPhotoshopBoardsAndKeepsOtherLossGuards",
+    "PhotoCraftImagingTests.PSDArtboardTests/testCanvasGuidesAndArtboardGuidesRetainOwnershipAfterDuplicationAndExtraction",
+    "PhotoCraftImagingTests.PSDArtboardTests/testFourBackgroundKindsAndOriginalDescriptorBytesRemainExact",
+    "PhotoCraftImagingTests.PSDArtboardTests/testGeometryAppearancePresetGuideEditsHistoryAndUngroupReplaceActiveMetadata",
+    "PhotoCraftImagingTests.PSDArtboardTests/testMalformedFieldsUnsupportedContextsAndCancellationRejectWithoutChangingSource",
+    "PhotoCraftImagingTests.PSDArtboardTests/testMergedSamplesMatchIndependentPhotoshopPlanesExactly",
+    "PhotoCraftImagingTests.PSDArtboardTests/testOwnedPhotoshopPSDBoardsAndPSBRetainAllDepthsGeometryGuidesAndPixels",
+    "PhotoCraftImagingTests.PSDArtboardTests/testPSBRetainsMaximumWidthAndPSDRejectsWithoutWritingAReplacement"
+  ],
+  "next": {
+    "package": "AI07",
+    "pass": "major-stillneeded"
+  },
+  "original_scope": {
+    "all_original_acceptance_retained": true,
+    "commands": 652,
+    "major_memberships": 81,
+    "packages": 104,
+    "passes": 7
+  },
+  "prior_failures_remain_required": true,
+  "public_references": [
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/use-artboards-to-lay-out-designs.html"
+  ],
+  "recorded_utc": "2026-11-09T13:18:01.732629+00:00",
+  "reference_provenance": "Tests/PhotoCraftImagingTests/Fixtures/PSDArtboards/provenance.json",
+  "remaining": [
+    "Unqualified descriptor fields and variants",
+    "Non-RGB, fractional geometry, partial-alpha/HDR backgrounds and shared-guide contexts",
+    "TIFF artboard interchange",
+    "Ordinary Properties panel still presents a generic group",
+    "Full I04/L07, earlier numerical failures, physical supported platforms, dense maximum capacity and 60 fps"
+  ],
+  "selected_methods": [
+    "PhotoCraftAppTests.AdobeArtboardTests/testContractBoundsNamesHorizontalAssemblyAndManifest",
+    "PhotoCraftAppTests.AdobeArtboardTests/testInvalidAndUnsupportedContractFieldsFailExplicitly",
+    "PhotoCraftAppTests.AdobeArtboardTests/testPublishedRouteJobStatusAndHostedOutputs",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testArtboardGradientExtractionMatchesOriginalComposite",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testExclusiveExportNeverOverwrites",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testExtractionAndImagePDFExportsPreserveSourceAndBounds",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testNativePropertiesGestureCancelAndUndo",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testPhotatoAPIHistoryBusyStaleAndExport",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIAdjacentMatchesNativePixelsAndHistoryAndExposesStrictSchemas",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIBoundsAcceptCurrentSparseMaximumAndRejectOverflow",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIInvalidBusyStaleAndUnsharedDoNotMutate",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAllSidesCreateAndDuplicateAtAllDepthsPreservePixelsHistoryAndArchive",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testLimitsLocksAndNegativeCoordinatesRejectAtomically",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeCancelStaleFocusToolSpaceAndOutsideReleaseDoNotEdit",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeClicksCaptureOptionAndCommitExactlyOnceWithUndo",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeControlsHitRegionsClippingAndOwnedOffscreenCapture",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testImageSizeAndQuarterTurnTransformBoardGeometry",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testNative27RoundTripAndInvalidHierarchyRollback",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testNegativeBoardsRebaseWithoutResamplingAndKeepLogicalCoordinates",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testOriginalRustClipBackgroundAndHalfOpenEdgeExpectationsAllDepths",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testResizeMoveDuplicateAndGuideProperties",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testBothResourceJobInterfacesRetainArtboardsAndMatchNativePhotoshopOutput",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testHTTPImportEditHistoryAndBothPhotoshopDownloadsUseSharedEditableModel",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testNativeOpenPropertiesHistorySaveAsPSDAndPSBReopenKeepOriginal",
+    "PhotoCraftAppTests.PSDArtboardWorkflowTests/testSavePolicyAdmitsMappedPhotoshopBoardsAndKeepsOtherLossGuards",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testHTTPImportSharesEditableArtboardsHistoryStrictGuardsAndExports",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testNativeOpenPropertiesCancelCommitHistorySaveAndReopenAtEveryDepth",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testResourceJobUsesPhotatoExtensionAndRejectsAdobeSourceType",
+    "PhotoCraftImagingTests.PSDArtboardTests/testCanvasGuidesAndArtboardGuidesRetainOwnershipAfterDuplicationAndExtraction",
+    "PhotoCraftImagingTests.PSDArtboardTests/testFourBackgroundKindsAndOriginalDescriptorBytesRemainExact",
+    "PhotoCraftImagingTests.PSDArtboardTests/testGeometryAppearancePresetGuideEditsHistoryAndUngroupReplaceActiveMetadata",
+    "PhotoCraftImagingTests.PSDArtboardTests/testMalformedFieldsUnsupportedContextsAndCancellationRejectWithoutChangingSource",
+    "PhotoCraftImagingTests.PSDArtboardTests/testMergedSamplesMatchIndependentPhotoshopPlanesExactly",
+    "PhotoCraftImagingTests.PSDArtboardTests/testOwnedPhotoshopPSDBoardsAndPSBRetainAllDepthsGeometryGuidesAndPixels",
+    "PhotoCraftImagingTests.PSDArtboardTests/testPSBRetainsMaximumWidthAndPSDRejectsWithoutWritingAReplacement",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testAllSourceSmartCachesAndOriginalsSurviveCanvasRebaseAndExtraction",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testChildrenRemainEditableAndFillCompositesHaveAnalyticalValues",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testFourBackgroundsBoundsPresetsAndClippingAtEveryDepth",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testInvalidFieldsGeometryHierarchyAndCancellationRejectAtomically",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testMaximumSparseCanvasArtboardKeepsAllLogicalExtent",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testNegativeBoardsKeepLogicalCoordinatesAndExtractEditableChildren",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testStaleCachesStayStaleAndSourcePointTypeRemainsPristine",
+    "PhotoCraftImagingTests.GroupRenderTests/testMalformedPSDGroupDividersReject",
+    "PhotoCraftImagingTests.GroupRenderTests/testGroupTemporaryBudgetUsesWholeTilesForThinCanvases",
+    "PhotoCraftImagingTests.GroupRenderTests/testPassThroughAdjustmentReachesBackdropAndNormalGroupIsolates",
+    "PhotoCraftImagingTests.GroupRenderTests/testGroupOpacityInterpolatesPremultipliedAlphaAndAppliesMaskOnce",
+    "PhotoCraftImagingTests.GroupRenderTests/testClippingKeepsBaseAlphaAndOpacityAcrossChainAndHiddenBase",
+    "PhotoCraftImagingTests.GroupRenderTests/testPSDGroupsClippingMasksAndAllDepthsRoundTrip",
+    "PhotoCraftImagingTests.GroupRenderTests/testPhotoshopClippingMatrix2",
+    "PhotoCraftImagingTests.GroupRenderTests/testPhotoshopClippingMatrix",
+    "PhotoCraftImagingTests.GroupRenderTests/testPhotoshopSavedAdvancedClippingMatchesMergedImage",
+    "PhotoCraftImagingTests.GroupRenderTests/testPhotoshopSavedGroupFixtureMatchesMergedImage",
+    "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+    "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+    "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+    "PhotoCraftImagingTests.PagedCanvasRendererTests/testAll24PriorNativeStacksRemainBitExactThroughPagedComposition",
+    "PhotoCraftImagingTests.PagedCanvasRendererTests/testMaximumSparseHierarchyUsesActualGlobalOpacityAndImplicitPixels",
+    "PhotoCraftImagingTests.PagedCanvasRendererTests/testUnalignedRegionalCompositionAndAdjustmentInputRetainLegacyBytes",
+    "PhotoCraftImagingTests.PagedCanvasRendererTests/testActual40MPGroupedLinearRasterPreservesEveryStoredSample",
+    "PhotoCraftImagingTests.PagedCanvasRendererTests/testMaskCacheSeparatesUnmaskedVariantsAndCancellationAfterWrittenPatch",
+    "PhotoCraftImagingTests.PSDMergedSampleTests/testRGB16PhotoshopAlphaMatrixMergedBytesAndStraightLayerPreservation",
+    "PhotoCraftImagingTests.PSDMergedSampleTests/testRGB16MatteHalfTiesRoundTheDistanceFromWhite",
+    "PhotoCraftImagingTests.PSDMergedSampleTests/testWhiteMatteAndHDRSamplesInStoredSpace",
+    "PhotoCraftImagingTests.PSDMergedSampleTests/testLayerExportKeepsStraightPixelsButStoresWhiteMatteInMergedPlanes",
+    "PhotoCraftImagingTests.PSDMergedSampleTests/testFlattenedPSDWhiteMatteIsRemovedBeforeColorConversion",
+    "PhotoCraftImagingTests.PSDDepthTests/testAllDepthsAndCompressionAgainstIndependentPythonVectors",
+    "PhotoCraftImagingTests.PSDDepthTests/testZIPRejectsTruncationChecksumTrailingAndInflatedSizeMismatch",
+    "PhotoCraftImagingTests.PSDDepthTests/testThinLayerMemoryBudgetAccountsForWholeTilesBeforeDecoding",
+    "PhotoCraftImagingTests.PSDDepthTests/testHighDepthLayerMaskPrecisionRoundTrips",
+    "PhotoCraftImagingTests.PSDDepthTests/testFloatHDRAndNegativeSamplesAreNotQuantizedOrClamped",
+    "PhotoCraftImagingTests.PSDDepthTests/testFlattenedPSDAtEveryDepthAndCompression",
+    "PhotoCraftImagingTests.PSDDepthTests/testFloatNormalCompositionUsesLinearLight",
+    "PhotoCraftImagingTests.PSDDepthTests/testHighDepthMergedExportWithAppleDecoder",
+    "PhotoCraftImagingTests.PSDDepthTests/testPhotoshopSavedHighDepthLayersAndComposites"
+  ],
+  "software_build": 516,
+  "software_release": false,
+  "source_fixtures_files": 16,
+  "source_variant": "Source03",
+  "standalone_website_promotion_pending": true,
+  "status": "Selected editable PSD/PSB artboard workflow implemented and tested; full I04/L07 open",
+  "step": 516,
+  "typed_commands": 271,
+  "universal_static": {
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "both_optional_models_and_provenance_verified": true,
+    "launched": false,
+    "minimum_system": "14.0",
+    "production_entitlements_unchanged": true,
+    "signature_payload_replay_and_extracted_content_verified": true
+  },
+  "validation": {
+    "Debug": {
+      "new_passed": 11,
+      "passed": 74,
+      "selected": 74
+    },
+    "optimizedARM": {
+      "new_passed": 11,
+      "passed": 74,
+      "selected": 74
+    },
+    "translatedIntel": {
+      "new_passed": 11,
+      "passed": 73,
+      "selected": 74
+    }
+  },
+  "workflow": "PSD_ARTBOARDS.md"
+}

@@ -154,10 +154,25 @@ extension Renderer {
       let region = IntRect(x: x, y: y, width: max(0, min(requested.x + requested.width, bounds.x + bounds.width) - x), height: max(0, min(requested.y + requested.height, bounds.y + bounds.height) - y))
       var backdrop = try emptyCanvas(d)
       if board.background.a > 0, region.width > 0, region.height > 0 {
-        try backdrop.mapPixels(in: region) { _, _, _ in board.background }
+        let color = ArtboardColors.working(board.background,depth:d.depth)
+        if d.depth == .f32 {
+          guard region.width<=Surface.maximumDensePixels/region.height else {
+            throw CraftError.unsupported("Artboard background rendering requires a bounded composition region.")
+          }
+          for y in region.y..<(region.y+region.height) {
+            try Task.checkCancellation()
+            for x in region.x..<(region.x+region.width) { backdrop.setLinearPixel(x:x,y:y,color) }
+          }
+        } else { try backdrop.mapPixels(in: region) { _, _, _ in color } }
       }
-      pixels = try compositeStack(d.children(of: layer.id), in: d, over: backdrop,
-        cache: GroupRenderCache(inputTarget: cache.inputTarget, region: region,facts:cache.facts))
+      let children=d.children(of:layer.id)
+      if board.background.a==1,cache.inputTarget==nil,
+        let normal=try ArtboardRasterRenderer.composite(children,in:d,over:backdrop,region:region,facts:cache.facts) {
+        pixels=normal
+      } else {
+        pixels = try compositeStack(children, in: d, over: backdrop,
+          cache: GroupRenderCache(inputTarget: cache.inputTarget, region: region,facts:cache.facts))
+      }
     } else {
       pixels = try compositeStack(d.children(of: layer.id), in: d, over: emptyCanvas(d), cache: cache)
     }

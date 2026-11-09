@@ -1,0 +1,299 @@
+{
+  "step": 516,
+  "origin": "Own empty Photoshop2026 artboards, custom2468ac color, one brushdab, cyan guide25px, negative coordinates and nativePSmode/save conversions. No proprietary implementation code or SDK.",
+  "file_format_reference": "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+  "raw_merged_references": "Literal Python struct/zlib/PackBits parsing of owned PSD/PSB; raw planar samples, including white-matted transparent RGB. Both containers agree at eachdepth.",
+  "records": [
+    {
+      "file": "owned-guide-rgb8.psd",
+      "source": "photoshop-artboards-guide-rgb8.psd",
+      "sha256": "81744f0cd2a9dc7ba7c2c46de75541faa21227353ebc662b59aa122272b3b44a",
+      "depth": 8,
+      "format": "psd",
+      "width": 420,
+      "height": 172,
+      "boards": [
+        {
+          "name": "Artboard 1",
+          "logical_bounds": [
+            -20,
+            -12,
+            160,
+            120
+          ],
+          "background_type": 2
+        },
+        {
+          "name": "Second Board Ω",
+          "logical_bounds": [
+            240,
+            40,
+            160,
+            120
+          ],
+          "background_type": 4,
+          "descriptor_RGB": [
+            36,
+            104,
+            172
+          ],
+          "guide": {
+            "axis": "vertical",
+            "local_position": 25,
+            "resource_position": 285
+          }
+        }
+      ],
+      "raw_merged_planar_sha256": "4ad99ff7e627539cbf4643d9d3e29a6b9ec15d6c7af929f3d952e13108ca1cb3",
+      "merged_reference": "owned-merged-rgb8.bin"
+    },
+    {
+      "file": "owned-guide-rgb8.psb",
+      "source": "photoshop-artboards-guide-rgb8.psb",
+      "sha256": "f4242cbd45496ac6eacc879aab667c9e87c682037c46bbd1e70c29f0b2c89503",
+      "depth": 8,
+      "format": "psb",
+      "width": 420,
+      "height": 172,
+      "boards": [
+        {
+          "name": "Artboard 1",
+          "logical_bounds": [
+            -20,
+            -12,
+            160,
+            120
+          ],
+          "background_type": 2
+        },
+        {
+          "name": "Second Board Ω",
+          "logical_bounds": [
+            240,
+            40,
+            160,
+            120
+          ],
+          "background_type": 4,
+          "descriptor_RGB": [
+            36,
+            104,
+            172
+          ],
+          "guide": {
+            "axis": "vertical",
+            "local_position": 25,
+            "resource_position": 285
+          }
+        }
+      ],
+      "raw_merged_planar_sha256": "4ad99ff7e627539cbf4643d9d3e29a6b9ec15d6c7af929f3d952e13108ca1cb3",
+      "merged_reference": "owned-merged-rgb8.bin"
+    },
+    {
+      "file": "owned-guide-rgb16.psd",
+      "source": "photoshop-artboards-guide-rgb16.psd",
+      "sha256": "800a10d108310cf2f6756977d3dbf01d65f23c8e5afbc8c09b5919d7ce7a9231",
+      "depth": 16,
+      "format": "psd",
+      "width": 420,
+      "height": 172,
+      "boards": [
+        {
+          "name": "Artboard 1",
+          "logical_bounds": [
+            -20,
+            -12,
+            160,
+            120
+          ],
+          "background_type": 2
+        },
+        {
+          "name": "Second Board Ω",
+          "logical_bounds": [
+            240,
+            40,
+            160,
+            120
+          ],
+          "background_type": 4,
+          "descriptor_RGB": [
+            36,
+            104,
+            172
+          ],
+          "guide": {
+            "axis": "vertical",
+            "local_position": 25,
+            "resource_position": 285
+          }
+        }
+      ],
+      "raw_merged_planar_sha256": "807f13905fa15a853846e65531191a20066724dbc83c39e70609f0d2032e6128",
+      "merged_reference": "owned-merged-rgb16.bin"
+    },
+    {
+      "file": "owned-guide-rgb16.psb",
+      "source": "photoshop-artboards-guide-rgb16.psb",
+      "sha256": "dc734f42a3136ad8c0cc46d7d8ab8caaa137832f7ea357a458417c36e880c343",
+      "depth": 16,
+      "format": "psb",
+      "width": 420,
+      "height": 172,
+      "boards": [
+        {
+          "name": "Artboard 1",
+          "logical_bounds": [
+            -20,
+            -12,
+            160,
+            120
+          ],
+          "background_type": 2
+        },
+        {
+          "name": "Second Board Ω",
+          "logical_bounds": [
+            240,
+            40,
+            160,
+            120
+          ],
+          "background_type": 4,
+          "descriptor_RGB": [
+            36,
+            104,
+            172
+          ],
+          "guide": {
+            "axis": "vertical",
+            "local_position": 25,
+            "resource_position": 285
+          }
+        }
+      ],
+      "raw_merged_planar_sha256": "807f13905fa15a853846e65531191a20066724dbc83c39e70609f0d2032e6128",
+      "merged_reference": "owned-merged-rgb16.bin"
+    },
+    {
+      "file": "owned-guide-rgb32.psd",
+      "source": "photoshop-artboards-guide-rgb32.psd",
+      "sha256": "0af5394c5d8b6b4c24ac4062ce6669552c7a1fba3c2966fe6ef6e06cdf7f300f",
+      "depth": 32,
+      "format": "psd",
+      "width": 420,
+      "height": 172,
+      "boards": [
+        {
+          "name": "Artboard 1",
+          "logical_bounds": [
+            -20,
+            -12,
+            160,
+            120
+          ],
+          "background_type": 2
+        },
+        {
+          "name": "Second Board Ω",
+          "logical_bounds": [
+            240,
+            40,
+            160,
+            120
+          ],
+          "background_type": 4,
+          "descriptor_RGB": [
+            36,
+            104,
+            172
+          ],
+          "guide": {
+            "axis": "vertical",
+            "local_position": 25,
+            "resource_position": 285
+          }
+        }
+      ],
+      "raw_merged_planar_sha256": "375c606d6b2549fc981ab097dd677a1b16f184da891c60ab8bd0dcafb780167d",
+      "merged_reference": "owned-merged-rgb32.bin"
+    },
+    {
+      "file": "owned-guide-rgb32.psb",
+      "source": "photoshop-artboards-guide-rgb32.psb",
+      "sha256": "a92f63f1348019e9e0ecaf4c2a69d5f7dc5a95aa2c941cd5c80ed09c48c696b6",
+      "depth": 32,
+      "format": "psb",
+      "width": 420,
+      "height": 172,
+      "boards": [
+        {
+          "name": "Artboard 1",
+          "logical_bounds": [
+            -20,
+            -12,
+            160,
+            120
+          ],
+          "background_type": 2
+        },
+        {
+          "name": "Second Board Ω",
+          "logical_bounds": [
+            240,
+            40,
+            160,
+            120
+          ],
+          "background_type": 4,
+          "descriptor_RGB": [
+            36,
+            104,
+            172
+          ],
+          "guide": {
+            "axis": "vertical",
+            "local_position": 25,
+            "resource_position": 285
+          }
+        }
+      ],
+      "raw_merged_planar_sha256": "375c606d6b2549fc981ab097dd677a1b16f184da891c60ab8bd0dcafb780167d",
+      "merged_reference": "owned-merged-rgb32.bin"
+    },
+    {
+      "file": "owned-white-rgb8.psd",
+      "source": "photoshop-artboard-black-rgb8.psd",
+      "sha256": "ddba9dbc753ea41af63b6683cd95c1f0ae76cdd013312b87a288ff0d1ba6fbfb",
+      "depth": 8,
+      "format": "psd",
+      "width": 160,
+      "height": 120,
+      "background_type": 1,
+      "note": "Canonical name follows independently decoded saved background; early SaveAs capture labels were asynchronous and are not used as color evidence."
+    },
+    {
+      "file": "owned-black-rgb8.psd",
+      "source": "photoshop-artboard-black-committed-rgb8.psd",
+      "sha256": "523c89bc35a8643eaaf88212002f3c71024722992dda264fae97ae3bc1019d27",
+      "depth": 8,
+      "format": "psd",
+      "width": 160,
+      "height": 120,
+      "background_type": 2,
+      "note": "Canonical name follows independently decoded saved background; early SaveAs capture labels were asynchronous and are not used as color evidence."
+    },
+    {
+      "file": "owned-transparent-rgb8.psd",
+      "source": "photoshop-artboard-transparent-rgb8.psd",
+      "sha256": "deaab09f612a0aec284220dc0091fc48a40605496dd66f3efd7d39f13d08bdbb",
+      "depth": 8,
+      "format": "psd",
+      "width": 160,
+      "height": 120,
+      "background_type": 3,
+      "note": "Canonical name follows independently decoded saved background; early SaveAs capture labels were asynchronous and are not used as color evidence."
+    }
+  ]
+}

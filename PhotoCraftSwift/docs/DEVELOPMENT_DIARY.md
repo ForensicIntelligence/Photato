@@ -1,3 +1,9 @@
+## Source update — 9 November 2026 UTC, build 516
+
+Editable RGB PSD/PSB artboards now retain geometry, backgrounds, presets, children, origins and scoped guides. Debug and optimized Apple Silicon pass 74/74 selected tests; translated Intel passes 73/74, with the same older nine-assertion paging failure reproduced on retained public515. All 11 new methods and exact owned Photoshop merged references pass in every configuration. Native save/reopen, Photoshop reopen and universal static checks pass. Full I04/L07, prior failures and full parity remain open.
+
+[516 — Development record](DEVLOG.md#dev-step-516) · [Workflow/API](PSD_ARTBOARDS.md) · [Qualification](SOURCE_PUBLICATION_516.md).
+
 ## Source update — 9 November 2026 UTC, build 515
 
 Original artboard projects now open with editable bounds, backgrounds, presets and children. Reframing/export preserves saved source appearances. All 46 selected tests and all 10 new methods pass in Debug, optimized Apple Silicon and translated Intel. Native Properties, Cancel, history, Save As/reopen and normal Quit pass, as do universal static checks. Full I03, editable PSD/PSB artboard interchange and earlier failures remain open.

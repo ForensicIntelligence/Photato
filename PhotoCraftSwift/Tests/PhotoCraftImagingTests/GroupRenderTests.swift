@@ -32,7 +32,14 @@ final class GroupRenderTests: XCTestCase {
       d.layers.append(group)
     }
     d.activeLayerID = d.layers.last!.id
-    XCTAssertThrowsError(try Renderer.composite(d))
+    let region=IntRect(x:0,y:0,width:d.width,height:d.height)
+    // The dense path still rejects the full touched-tile working set. The public
+    // compositor now evaluates the same canvas through bounded patches instead.
+    XCTAssertTrue(Renderer.groupCompositionExceedsBudget(d,region:region))
+    XCTAssertThrowsError(try Renderer.compositePrepared(d,region:region))
+    let preview=try Renderer.composite(d)
+    XCTAssertEqual(preview.pixel(x:0,y:0),.clear)
+    XCTAssertEqual(preview.pixel(x:d.width-1,y:0),.clear)
   }
   func testPassThroughAdjustmentReachesBackdropAndNormalGroupIsolates() throws {
     let background = try raster("Background", Pixel(0.2, 0.4, 0.8))

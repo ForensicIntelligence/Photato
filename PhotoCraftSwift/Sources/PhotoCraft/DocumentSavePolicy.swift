@@ -74,7 +74,10 @@ extension DocumentIO {
     if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .filterGallery }) == true }) { return "Save as Photato to retain editable Filter Gallery effects." }
     if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .blurGallery }) == true }) { return "Save as Photato to retain editable Blur Gallery, or export a rendered copy." }
     if document.hasFrames { return "Save as Photato to retain editable frames, or export a rendered copy." }
-    if document.hasArtboards { return "Save as Photato to retain artboards. Export individual artboards for other formats." }
+    if document.hasArtboards {
+      guard format == .psd || format == .psb else { return "Save as Photato, PSD or PSB to retain artboards. Export individual artboards for other formats." }
+      if let issue=PSDArtboardInterchange.photoshopPersistenceIssue(document) { return issue }
+    }
     if document.inkMode != nil {
       guard document.colorMode == .multichannel, format == .psd || format == .psb else {
         return "Save as Photato to retain ink settings. Multichannel also supports PSD/PSB; use Save a Copy for rendered raster output."

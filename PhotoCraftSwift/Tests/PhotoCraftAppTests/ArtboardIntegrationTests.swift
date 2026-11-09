@@ -26,7 +26,9 @@ final class ArtboardIntegrationTests: XCTestCase {
     XCTAssertEqual(source, original)
     XCTAssertThrowsError(try ArtboardExport.encode(source, ids: ids, format: "png"))
     XCTAssertThrowsError(try ArtboardExport.encode(source, ids: [ids[0], ids[0]], format: "pdf"))
-    XCTAssertThrowsError(try DocumentIO.encode(source, format: .psd))
+    let photoshop = try PSDCodec.read(DocumentIO.encode(source,format:.psd))
+    XCTAssertEqual(photoshop.artboards.count,source.artboards.count)
+    XCTAssertEqual(photoshop.artboards.compactMap{photoshop.logicalArtboardBounds($0)},source.artboards.compactMap{source.logicalArtboardBounds($0)})
   }
   func testArtboardGradientExtractionMatchesOriginalComposite() throws {
     var document = try fixture()
