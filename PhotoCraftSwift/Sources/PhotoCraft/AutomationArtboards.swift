@@ -88,7 +88,7 @@ extension AutomationCommand {
     }
     var move = true
     if let raw = parameters["moveContents"] { guard case .bool(let b) = raw else { throw fail("moveContents must be boolean.") }; move = b }
-    let board = Artboard(width: bounds.width, height: bounds.height, background: background, guides: guides)
+    let board = Artboard(width: bounds.width, height: bounds.height, background: background, preset: layer?.artboard?.preset ?? "", guides: guides)
     return .artboard(.configure(id!, name: try parameters["name"] == nil ? layer!.name : string("name"), bounds: bounds, appearance: board, moveContents: move))
   }
 }

@@ -1,3 +1,9 @@
+## Source update — 9 November 2026 UTC, build 515
+
+Original artboard projects now open with editable bounds, backgrounds, presets and children. Reframing/export preserves saved source appearances. All 46 selected tests and all 10 new methods pass in Debug, optimized Apple Silicon and translated Intel. Native Properties, Cancel, history, Save As/reopen and normal Quit pass, as do universal static checks. Full I03, editable PSD/PSB artboard interchange and earlier failures remain open.
+
+[515 — Development record](DEVLOG.md#dev-step-515) · [Workflow/API](PCRAFT_ARTBOARDS.md) · [Qualification](SOURCE_PUBLICATION_515.md).
+
 ## Source update — 9 November 2026 UTC, build 514
 
 Auto-Blend now keeps visible editable source layers when seamless blending is enabled and transparent-area fill is off. Photomerge also retains the photograph names. Fill adds a merged layer; translucent sources still use the documented isolation fallback.

@@ -43,6 +43,18 @@ public final class ImportedSmartAppearance:Codable,Equatable,Sendable {
     guard abs(Double(x))<=1_000_000,abs(Double(y))<=1_000_000,(placedRecord?.count ?? 0)<=16_777_216 else{throw CraftError.invalid("Invalid imported Smart Object appearance.")}
     if let pixels{try pixels.validated();guard pixels.depth==depth else{throw CraftError.invalid("Imported Smart Object cache depth differs.")}}
   }
+  /// Reframe a document-space cache and its captured program together. Rebuild
+  /// from the captured reference so an already stale cache cannot become fresh.
+  func translatedCanvas(x:Int,y:Int) throws -> ImportedSmartAppearance {
+    let delta = Transform2D.translation(Double(x),Double(y))
+    var captured = Layer(name:"",content:.raster(reference.sourcePixels))
+    captured.smartObject = reference.source;captured.affine = delta * reference.transform
+    captured.sourceProjection = reference.projection;captured.warp = reference.warp
+    captured.smartFilters = reference.filters
+    captured.smartFilters?.transformPuppetPins(delta);captured.smartFilters?.transformPerspectivePlanes(delta)
+    if let filters = reference.filters { captured.smartFilters?.maskProperties.transform = delta * filters.maskProperties.transform }
+    return try .init(layer:captured,pixels:pixels,x:self.x+x,y:self.y+y,placedRecord:placedRecord)
+  }
 }
 extension Layer {
   public var pristineSmartAppearance:ImportedSmartAppearance? {
@@ -73,4 +85,3 @@ extension CraftDocument {
     return false
   }
 }
-

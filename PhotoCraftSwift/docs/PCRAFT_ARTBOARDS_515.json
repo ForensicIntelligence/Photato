@@ -1,0 +1,163 @@
+{
+  "Actions": 60,
+  "Photoshop_parity": false,
+  "all_selected_passed": true,
+  "canonical_history_pair_failed": true,
+  "changes": [
+    "Editable source artboard geometry/background/preset/children",
+    "Native logical canvas fitting, cache-preserving rebase and extraction",
+    "Pristine point-type cache without optional typography",
+    "Native/API configure retain imported preset names"
+  ],
+  "excluded_generated_or_restricted_inputs": 13,
+  "failures_and_repairs": [
+    "Debug01 test compile error before execution, retained",
+    "Debug02 41/46, one real cached-type route defect and incorrect new-test boundaries; failed sources/logs retained",
+    "Private staging baseline and receipt writer repairs; no native source changes",
+    "Documentation index marker corrected; strict history check retains unchanged631 intentional private references. No new missing references or restarted canonical job."
+  ],
+  "frozen_inputs": 7808,
+  "full_I03_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7795,
+  "native_UI": {
+    "Open_Properties_Cancel_commit_Undo_Redo_SaveAs_reopen_normal_Quit": true,
+    "negative_coordinates": [
+      -20,
+      -12
+    ],
+    "original_source_unchanged": true,
+    "preset": "Owned 40 \u00d7 48",
+    "saved_width": 44,
+    "screenshot_available": false
+  },
+  "native_format": 92,
+  "new_methods": [
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testHTTPImportSharesEditableArtboardsHistoryStrictGuardsAndExports",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testNativeOpenPropertiesCancelCommitHistorySaveAndReopenAtEveryDepth",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testResourceJobUsesPhotatoExtensionAndRejectsAdobeSourceType",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testAllSourceSmartCachesAndOriginalsSurviveCanvasRebaseAndExtraction",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testChildrenRemainEditableAndFillCompositesHaveAnalyticalValues",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testFourBackgroundsBoundsPresetsAndClippingAtEveryDepth",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testInvalidFieldsGeometryHierarchyAndCancellationRejectAtomically",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testMaximumSparseCanvasArtboardKeepsAllLogicalExtent",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testNegativeBoardsKeepLogicalCoordinatesAndExtractEditableChildren",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testStaleCachesStayStaleAndSourcePointTypeRemainsPristine"
+  ],
+  "next": {
+    "package": "I04",
+    "pass": "major-stillneeded",
+    "then": "AI07"
+  },
+  "original_scope": {
+    "all_original_acceptance_retained": true,
+    "commands": 652,
+    "major_memberships": 81,
+    "packages": 104,
+    "passes": 7
+  },
+  "prior_failures_remain_required": true,
+  "public_references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/use-artboards-to-lay-out-designs.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/artboards/"
+  ],
+  "recorded_utc": "2026-11-09T11:38:31.607255+00:00",
+  "remaining": [
+    "Other source fields/types and authorized external originals",
+    "Existing uncached-render and nested-source HTTP failures",
+    "Editable PSD/PSB artboard interchange",
+    "Ordinary Properties panel still uses generic group presentation",
+    "Full Photoshop output/defaults/platform/capacity/performance acceptance",
+    "Broader fractional transform/canvas-shift precision contexts remain unqualified."
+  ],
+  "selected_methods": [
+    "PhotoCraftAppTests.AdobeArtboardTests/testContractBoundsNamesHorizontalAssemblyAndManifest",
+    "PhotoCraftAppTests.AdobeArtboardTests/testInvalidAndUnsupportedContractFieldsFailExplicitly",
+    "PhotoCraftAppTests.AdobeArtboardTests/testPublishedRouteJobStatusAndHostedOutputs",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testArtboardGradientExtractionMatchesOriginalComposite",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testExclusiveExportNeverOverwrites",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testExtractionAndImagePDFExportsPreserveSourceAndBounds",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testNativePropertiesGestureCancelAndUndo",
+    "PhotoCraftAppTests.ArtboardIntegrationTests/testPhotatoAPIHistoryBusyStaleAndExport",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIAdjacentMatchesNativePixelsAndHistoryAndExposesStrictSchemas",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIBoundsAcceptCurrentSparseMaximumAndRejectOverflow",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAPIInvalidBusyStaleAndUnsharedDoNotMutate",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testAllSidesCreateAndDuplicateAtAllDepthsPreservePixelsHistoryAndArchive",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testLimitsLocksAndNegativeCoordinatesRejectAtomically",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeCancelStaleFocusToolSpaceAndOutsideReleaseDoNotEdit",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeClicksCaptureOptionAndCommitExactlyOnceWithUndo",
+    "PhotoCraftAppTests.ArtboardNeighborTests/testNativeControlsHitRegionsClippingAndOwnedOffscreenCapture",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testImageSizeAndQuarterTurnTransformBoardGeometry",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testNative27RoundTripAndInvalidHierarchyRollback",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testNegativeBoardsRebaseWithoutResamplingAndKeepLogicalCoordinates",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testOriginalRustClipBackgroundAndHalfOpenEdgeExpectationsAllDepths",
+    "PhotoCraftAppTests.ArtboardWorkflowTests/testResizeMoveDuplicateAndGuideProperties",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testHTTPImportSharesEditableArtboardsHistoryStrictGuardsAndExports",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testNativeOpenPropertiesCancelCommitHistorySaveAndReopenAtEveryDepth",
+    "PhotoCraftAppTests.PcraftArtboardWorkflowTests/testResourceJobUsesPhotatoExtensionAndRejectsAdobeSourceType",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testAllSourceSmartCachesAndOriginalsSurviveCanvasRebaseAndExtraction",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testChildrenRemainEditableAndFillCompositesHaveAnalyticalValues",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testFourBackgroundsBoundsPresetsAndClippingAtEveryDepth",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testInvalidFieldsGeometryHierarchyAndCancellationRejectAtomically",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testMaximumSparseCanvasArtboardKeepsAllLogicalExtent",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testNegativeBoardsKeepLogicalCoordinatesAndExtractEditableChildren",
+    "PhotoCraftImagingTests.PcraftArtboardImportTests/testStaleCachesStayStaleAndSourcePointTypeRemainsPristine",
+    "PhotoCraftImagingTests.PcraftImportTests/testCancellationBeforeConversionPublishesNothing",
+    "PhotoCraftImagingTests.PcraftImportTests/testExplicitEmptySourceSelectionRejectsWithoutBroadeningEdits",
+    "PhotoCraftImagingTests.PcraftImportTests/testLargeSourceIDsStayDistinctAndDeterministic",
+    "PhotoCraftImagingTests.PcraftImportTests/testOriginalRustPathGeometryRemainsEditableWithoutCaches",
+    "PhotoCraftImagingTests.PcraftImportTests/testOriginalRustProjectsRetainEveryAllocatedSampleBitAndEditableProperties",
+    "PhotoCraftImagingTests.PcraftImportTests/testSourceLabelsHighDepthMasksAndPathsRetainEditableProperties",
+    "PhotoCraftImagingTests.PcraftImportTests/testUnboundedDefaultsNonFiniteSamplesAndExtremeCoordinatesReject",
+    "PhotoCraftImagingTests.PcraftImportTests/testUnsupportedFeaturesAndUnknownFieldsRejectInsteadOfFlattening",
+    "PhotoCraftImagingTests.PcraftImportTests/testZIPAndDirectoryImportsMatchAndDoNotWriteTheSource",
+    "PhotoCraftImagingTests.PcraftSmartImportTests/testCachedRasterizationResetAndProjectedReplacementAreUndoable",
+    "PhotoCraftImagingTests.PcraftSmartImportTests/testOriginalCachedSmartSamplesMatchExactlyAtAllDepths",
+    "PhotoCraftImagingTests.PcraftSmartImportTests/testOriginalSourceSharedIdentityNestedStackControlsAndNative70",
+    "PhotoCraftImagingTests.PcraftSmartImportTests/testUnsupportedLinkedUnknownProgramBudgetAndCancellationRemainAtomic",
+    "PhotoCraftImagingTests.PcraftTextImportTests/testAllSourceTextFieldsRunsFramesCachesAndArchiveAtEveryDepth",
+    "PhotoCraftImagingTests.PcraftTextImportTests/testOriginalCachedTextWordsMatchInDeclaredDocumentWindow"
+  ],
+  "software_build": 515,
+  "software_release": false,
+  "source_fixtures": {
+    "bytes_including_manifest_and_readme": 787986,
+    "count": 30,
+    "provenance": "Tests/PhotoCraftImagingTests/Fixtures/PcraftArtboards/manifest.json"
+  },
+  "source_variant": "Source03",
+  "standalone_website_promotion_pending": true,
+  "status": "selected editable source-artboard workflow implemented and tested; full I03 open",
+  "step": 515,
+  "typed_commands": 271,
+  "universal_static": {
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "full_production_entitlements_unchanged": true,
+    "launched": false,
+    "minimum_system": "14.0",
+    "models_provenance_licenses_verified": true,
+    "payload_and_signing_replay_verified": true,
+    "signatures_and_extracted_content_verified": true
+  },
+  "validation": {
+    "Debug": {
+      "new_passed": 10,
+      "passed": 46,
+      "selected": 46
+    },
+    "optimizedARM": {
+      "new_passed": 10,
+      "passed": 46,
+      "selected": 46
+    },
+    "translatedIntel": {
+      "new_passed": 10,
+      "passed": 46,
+      "selected": 46
+    }
+  },
+  "workflow": "PCRAFT_ARTBOARDS.md"
+}

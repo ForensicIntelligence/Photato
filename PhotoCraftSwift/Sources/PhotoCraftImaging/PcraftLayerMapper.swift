@@ -76,9 +76,14 @@ final class PcraftLayerMapper {
         layer = Layer(name: try item.field("name").string(), content: try PcraftFills.content(content.field("fill"), patterns: patterns))
       case "group":
         try content.keys("kind children expanded artboard")
-        try content.defaultValue("artboard", "null")
-        layer = Layer(name: try item.field("name").string(), content: .group(GroupContent(
-          passThrough: blend == "PassThrough", expanded: try content.field("expanded").boolean())))
+        var group = GroupContent(passThrough:blend == "PassThrough",expanded:try content.field("expanded").boolean())
+        var boardBounds:IntRect?
+        if let board = content.optional("artboard") {
+          guard parent == nil else { throw board.unsupported("Artboards must be top-level groups.") }
+          let mapped = try PcraftArtboards.read(board);group.artboard = mapped.0;boardBounds = mapped.1
+        }
+        layer = Layer(name:try item.field("name").string(),content:.group(group))
+        if let boardBounds { layer.x = boardBounds.x;layer.y = boardBounds.y }
         output += try layers(content.field("children"), parent: id)
       default:
         throw content.unsupported("This layer content is not yet supported as editable native data.")

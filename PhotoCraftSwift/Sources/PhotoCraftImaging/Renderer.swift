@@ -46,7 +46,9 @@ public enum Renderer {
         }
       }
       return s
-    case .text(let text): return try text.typography == nil ? renderText(text, document: document) : NativeTextLayout.render(text, document: document)
+    case .text(let text):
+      return try text.typography == nil && text.pristineSourceAppearance?.pixels == nil
+        ? renderText(text, document: document) : NativeTextLayout.render(text, document: document)
     case .group:
       return try compositeStack(
         document.children(of: layer.id), in: document, over: emptyCanvas(document))

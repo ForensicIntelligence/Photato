@@ -28,6 +28,7 @@ import SwiftUI
     name = layer?.name ?? "Artboard \(document.artboards.count + 1)"
     x = bounds.x; y = bounds.y; width = bounds.width; height = bounds.height
     background = layer?.artboard?.background ?? .white; guides = layer?.artboard?.guides ?? []
+    if let value = layer?.artboard?.preset, !value.isEmpty { preset = value }
   }
   var command: Command {
     let bounds = IntRect(x: x, y: y, width: width, height: height)
@@ -82,7 +83,10 @@ struct ArtboardSheet: View {
     VStack(alignment: .leading, spacing: 14) {
       Text(draft.target == nil ? "New Artboard" : "Artboard Properties").font(.headline)
       TextField("Name", text: $draft.name)
-      Picker("Size", selection: $draft.preset) { ForEach(ArtboardDraft.presets, id: \.0) { Text($0.0).tag($0.0) } }
+      Picker("Size", selection: $draft.preset) {
+        ForEach(ArtboardDraft.presets, id: \.0) { Text($0.0).tag($0.0) }
+        if !ArtboardDraft.presets.contains(where: { $0.0 == draft.preset }) { Text(draft.preset).tag(draft.preset) }
+      }
         .onChange(of: draft.preset) { _, value in if let preset = ArtboardDraft.presets.first(where: { $0.0 == value }), preset.1 > 0 { draft.width = preset.1; draft.height = preset.2 } }
       Grid(alignment: .trailing) {
         GridRow { Text("X:"); TextField("X", value: $draft.x, format: .number); Text("Y:"); TextField("Y", value: $draft.y, format: .number) }

@@ -121,6 +121,11 @@ extension CraftDocument {
   public func logicalArtboardBounds(_ layer: Layer) -> IntRect? {
     layer.artboardBounds.map { IntRect(x: $0.x + (artboardOrigin?.x ?? 0), y: $0.y + (artboardOrigin?.y ?? 0), width: $0.width, height: $0.height) }
   }
+  /// Import and other prepared workflows can fit all boards atomically, without
+  /// commands, history, resampling or publishing a partly reframed document.
+  public func fittingArtboardCanvas() throws -> CraftDocument {
+    var result = self;try result.fitArtboardCanvas();return result
+  }
   func validateArtboards() throws {
     if let origin = artboardOrigin {
       guard abs(Double(origin.x)) <= 1_000_000, abs(Double(origin.y)) <= 1_000_000 else { throw CraftError.invalid("Invalid artboard canvas origin.") }
@@ -143,18 +148,23 @@ extension CraftDocument {
     let old = self, delta = Transform2D.translation(Double(dx), Double(dy))
     if dx != 0 || dy != 0 {
       for i in layers.indices {
-        DocumentGeometry.freezeTextLayout(&layers[i], document: old)
+        if old.layers[i].typeContent?.pristineSourceAppearance?.pixels == nil {
+          DocumentGeometry.freezeTextLayout(&layers[i], document: old)
+        }
         layers[i].x += dx; layers[i].y += dy
         layers[i].smartFilters?.transformPuppetPins(delta); layers[i].smartFilters?.transformPerspectivePlanes(delta)
         if let stack = old.layers[i].smartFilters { layers[i].smartFilters?.maskProperties.transform = delta * stack.maskProperties.transform }
         if case .patternFill(var fill) = layers[i].content { try fill.transform(by: delta); layers[i].content = .patternFill(fill) }
         if let mask = old.layers[i].vectorMask { layers[i].vectorMask?.path = mask.path.transformed(delta) }
+        if let appearance = old.layers[i].importedSmartAppearance {
+          layers[i].importedSmartAppearance = try appearance.translatedCanvas(x:dx,y:dy)
+        }
       }
       transformSavedPaths(by: delta)
       try mapGuides( delta)
     }
     width = w; height = h
-    try mapSelection(from: old, by: delta); try transformChannels(from: old, by: delta)
+    try mapSelection(from: old, by: delta); try transformChannels(from: old, by: delta, method:.nearest)
     artboardOrigin = .init(x: (old.artboardOrigin?.x ?? 0) - dx, y: (old.artboardOrigin?.y ?? 0) - dy)
   }
 }
@@ -169,12 +179,17 @@ extension CraftDocument {
     result.layers = layers.filter { ids.contains($0.id) };LayerLinks.prune(in:&result)
     for i in result.layers.indices {
       let old = result.layers[i]
-      DocumentGeometry.freezeTextLayout(&result.layers[i], document: self)
+      if old.typeContent?.pristineSourceAppearance?.pixels == nil {
+        DocumentGeometry.freezeTextLayout(&result.layers[i], document: self)
+      }
       result.layers[i].x -= bounds.x; result.layers[i].y -= bounds.y
       result.layers[i].smartFilters?.transformPuppetPins(delta); result.layers[i].smartFilters?.transformPerspectivePlanes(delta)
       if let filters = old.smartFilters { result.layers[i].smartFilters?.maskProperties.transform = delta * filters.maskProperties.transform }
       if case .patternFill(var fill) = old.content { try fill.transform(by: delta); result.layers[i].content = .patternFill(fill) }
       if let mask = old.vectorMask { result.layers[i].vectorMask?.path = mask.path.transformed(delta) }
+      if let appearance = old.importedSmartAppearance {
+        result.layers[i].importedSmartAppearance = try appearance.translatedCanvas(x:-bounds.x,y:-bounds.y)
+      }
     }
     result.width = bounds.width; result.height = bounds.height; result.artboardOrigin = .init()
     result.activeLayerID = ids.contains(activeLayerID ?? UUID()) ? activeLayerID : id

@@ -8150,6 +8150,13 @@
       "link": "DEVLOG.md#dev-step-514",
       "section_sha256": "ff310dadab9871e72f8367c4642878589b842ff969772fb85f0d5d768e5d8be9",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-515",
+      "title": "2026-11-09 \u2014 Editable artboard project import",
+      "link": "DEVLOG.md#dev-step-515",
+      "section_sha256": "dc2794f7c4500e5428c6f9ca3d1f582111ff54cb2c7d37cbee2681490b66b885",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10681,8 +10688,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "b91ba59b27189f7f8addff4bc6f66b27a7d9593d39834b61338f0f63ced3151a",
-      "bytes": 119172,
+      "sha256": "4c85a383458fc557abf8a9ef4e5b9c75611eda1e497b717c0aacaa4d66ba78a5",
+      "bytes": 120035,
       "rolling_current_snapshot": false
     },
     {
@@ -10693,8 +10700,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "7e76034b2fcf27be1d759b5a7d1a912a49eb35d2bbd80c7e301a2d6432c8f24c",
-      "bytes": 115212,
+      "sha256": "7bd02ef4619a13e203796f9437c8933a552428468d475d0393ebab9be3698dd7",
+      "bytes": 115598,
       "rolling_current_snapshot": false
     },
     {
@@ -12787,8 +12794,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "4ec80ffb4fdb7666293c6bbe7702965333d6a582f7abd3e16670aa5667b0c90b",
-      "bytes": 371505,
+      "sha256": "d49436d1ce1c6e09fac5ff7ca156459d3863189f61376dc7c7063771f5cbd574",
+      "bytes": 371742,
       "rolling_current_snapshot": false
     },
     {
@@ -12889,8 +12896,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "25975c9443bfa294e7c297fdcb79a0b00a7424f84509a84a2c16497bfdbf5736",
-      "bytes": 81026,
+      "sha256": "b5eb5fd91c0440a53e774cb641eedccd0a30e8b0c197db77ff386e5e04972bf9",
+      "bytes": 81422,
       "rolling_current_snapshot": false
     },
     {
@@ -12931,14 +12938,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "81d108ca5969b3b64abd045d907295b3bdbe3edce735b04e86be386ab8f501d1",
-      "bytes": 807180,
+      "sha256": "17c92b23432e3e4d5ca6f16f8d1d471526754bc38b68bede360ec16813469dad",
+      "bytes": 807812,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "3ea52feec2c3d98261b17fde2fc25405897483e4be0ab221ae65648a1b65b836",
-      "bytes": 4473829,
+      "sha256": "b936e1320945f4cbd2aa0398569785d436bbaeff40a0417a022f91405bb6c0eb",
+      "bytes": 4478700,
       "rolling_current_snapshot": false
     },
     {
@@ -15912,6 +15919,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/PCRAFT_ARTBOARDS.md",
+      "sha256": "9ba468d4547709b6b771f78b49b5e79ee267b021302bd66e2c68de62bc668b1d",
+      "bytes": 2297,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/PCRAFT_ARTBOARDS_515.json",
+      "sha256": "6d5c16f1c851472a654e9c08d515ed0d9443e93c8d4a96f738f811699b827ade",
+      "bytes": 9739,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/PCRAFT_CONTAINER_REFERENCES.json",
       "sha256": "e945990a6431f547ef092c2e77e1243182fef65bde66079d125a4e25c4c11068",
       "bytes": 4479,
@@ -17340,6 +17359,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_515.md",
+      "sha256": "499a7722afcbe6a18e508f350b56470dd646ed25ddfb564419c2a1a8f17dc680",
+      "bytes": 2948,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17550,6 +17575,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_515.json",
+      "sha256": "e7e33b7c7ac5e1efedba61a2f20546896b261bf86df65e9248147a17ee92f920",
+      "bytes": 1156410,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17575,8 +17606,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "658ad2bfc79063b71ed33d913471cdb9ef86de1228c6af3b39e01f51df98bd1a",
-      "bytes": 401785,
+      "sha256": "002ecdeafe6949142e0c350ecd4774ba7947f11b7b76266a08dfd9c71d17eff5",
+      "bytes": 402181,
       "rolling_current_snapshot": false
     },
     {
@@ -19872,6 +19903,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/WORK_PRIORITIES_515.json",
+      "sha256": "62c522d5874a227f7e066723b5cdcd2f7de185a3523151ae1fee01c815410cdd",
+      "bytes": 146689,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/XCODE_PROJECT_REFERENCES.json",
       "sha256": "0329389781d5905455599e2231e7b3de0d1db2746d59256a64791f7854478bc0",
       "bytes": 8464,
@@ -19891,8 +19928,8 @@
     }
   ],
   "counts": {
-    "milestones": 514,
-    "evidence_files": 1535,
+    "milestones": 515,
+    "evidence_files": 1540,
     "logs": 0,
     "missing_explicit_references": 631
   }

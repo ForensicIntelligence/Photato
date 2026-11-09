@@ -1,0 +1,308 @@
+{
+  "step": 515,
+  "author": "Photato contributors",
+  "license": "MIT OR Apache-2.0",
+  "reference_scope": "Source-format and analytical native regression fixtures, not independently captured Photoshop pixels. Existing source tile/blob/cache bytes remain unchanged.",
+  "cases": [
+    {
+      "file": "empty-u8.pcraft",
+      "sha256": "52a2bf321e31bb149791d27d125c2b6e83157a90a53f355550289bacc4124d64",
+      "manifest_sha256": "fa4388c951daa698cd8754bf5f8dbfeb4ed0104d9b1ab4e6c79b5de9dde2c6d1",
+      "source": {
+        "parent": "Pcraft/source-u8.pcraft",
+        "parent_sha256": "fc98479c534dff78eb661014ae33d9284f2138a0e5ec6a402135d2115d4e168c",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "filled-u8.pcraft",
+      "sha256": "12686a5df9541a14a00da146e5fbafa72a7dd0fc25799ded9b62dfc2d9958119",
+      "manifest_sha256": "0c4454357b3034e05a0b6f181d7db6e316f01a5eef4e3c545d3f6c4a46a42c22",
+      "source": {
+        "parent": "Pcraft/source-u8.pcraft",
+        "parent_sha256": "fc98479c534dff78eb661014ae33d9284f2138a0e5ec6a402135d2115d4e168c",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "negative-u8.pcraft",
+      "sha256": "8810f4536a2b3b571394cd068596bbb1a3288700527cf3d3218b2a53d47cc620",
+      "manifest_sha256": "24a6984f90b00bbb2c1c60173e956b102a97a3d782af8fd686e0937bfa0bb44d",
+      "source": {
+        "parent": "Pcraft/source-u8.pcraft",
+        "parent_sha256": "fc98479c534dff78eb661014ae33d9284f2138a0e5ec6a402135d2115d4e168c",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "affine-cached-u8.pcraft",
+      "sha256": "bf091e221501487b1dce7ebdf350af949618aad2f3f2d5cf1904c4eaa2cc0dea",
+      "manifest_sha256": "c52132040484b1a8ceb49501c65168a392b17a9d4b1ceaa9d490e3e9ac7bd01c",
+      "source": {
+        "parent": "PcraftSmart/affine-cached-u8.pcraft",
+        "parent_sha256": "38b62db4df4fb2a26d3df80cea0dfe847110b5f67189eb5cc0a57ec3e313587f",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "projective-cached-u8.pcraft",
+      "sha256": "3ade4d0cd221ddb78a790d4db9f1ecd13f344e090924a8e24a2421b22735895d",
+      "manifest_sha256": "57ae87047abc2853a7bb4941b79643e92d647a3112c994c6a093b6ac4afac290",
+      "source": {
+        "parent": "PcraftSmart/projective-cached-u8.pcraft",
+        "parent_sha256": "8ba5ae778cc00bf13cacd680db5962da0d2790c53ac04d8a3c042a209f62dc0b",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "warp-cached-u8.pcraft",
+      "sha256": "527a9638e74f4bbe9d2102d0707b9242eda5664bf30e62acf6b7723b408eb2c0",
+      "manifest_sha256": "f25f1452c60bb86c665d9d2988751399d4a450fe57460ee99aae22beb0ceb4fd",
+      "source": {
+        "parent": "PcraftSmart/warp-cached-u8.pcraft",
+        "parent_sha256": "26e60d8f9f9d2a45f59f815ad74e3e50a7d18f665323e4d5896a705cf23acadf",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "filtermask-cached-u8.pcraft",
+      "sha256": "fb35f631dc74918a7bbf9af96ef78e553a0a9ab6ddea6be01ded6523a93ce03b",
+      "manifest_sha256": "1a0cc2bbbb0a22db93582d4290ddd048456e6c292118164365ba56d42bb7e00b",
+      "source": {
+        "parent": "PcraftSmart/filtermask-cached-u8.pcraft",
+        "parent_sha256": "5a638d5dea6568e2d7077e1a079495620cbfbd621d1934f312a2ccdacb8031b9",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "mask-cached-u8.pcraft",
+      "sha256": "e1a462c32abfdd889c66d08500b0972bc5868c62a61cbe72bd6712c3eefd79d3",
+      "manifest_sha256": "7571957d607f3e750b0f02763731acd6be6a999e4cb506379a0b7b159284a38a",
+      "source": {
+        "parent": "PcraftSmart/mask-cached-u8.pcraft",
+        "parent_sha256": "27f52f93785a98739aca6157db7763e0e2e348982eff1de124093501b2806776",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "nested-cached-u8.pcraft",
+      "sha256": "1a2cdc0eda36cf50a925057ef7e677de894cde4d0ea6fbf19b3adf0309ccc474",
+      "manifest_sha256": "ab3bd12d5af0131ce16999a16fbf703bd813175a15bfe115e368d9607ec53943",
+      "source": {
+        "parent": "PcraftSmart/nested-cached-u8.pcraft",
+        "parent_sha256": "83850e22c053ef363431bd104a1759c4e1dd3d3787b25dfede749f1fea5b6af0",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "shared-u8.pcraft",
+      "sha256": "ca88467dd54d1bdcf17f598fcb7db517f5bd00182c2328416ef4fee2431f36b1",
+      "manifest_sha256": "fb853e76e4a6e7ee5c574fc52f68e156c13b9e67ff5b05eb9ccab6904d44cb5b",
+      "source": {
+        "parent": "PcraftSmart/shared-u8.pcraft",
+        "parent_sha256": "f83ad99674ab3372301295909eee2f45bfa9fb7475ef867cffa518b21ffccf94",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "empty-u16.pcraft",
+      "sha256": "21dae22f55e3e64beab84ee954d9d7df08bc6edfe95db3ff10d5414dcf32da8a",
+      "manifest_sha256": "e7bee95ff0abb9a65a6907ab0c22528dd134db4a7d5c5c113167855a7706f776",
+      "source": {
+        "parent": "Pcraft/source-u16.pcraft",
+        "parent_sha256": "33d99225c878ba859d9d0053529bc223ec86f9fdcfce7f8750930256a7620db6",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "filled-u16.pcraft",
+      "sha256": "19d5b24d3b556abdb8468a8bc4fdf2e0d4362dcbda20850dd1ca9ffc26a0a275",
+      "manifest_sha256": "958fb7ef2978c9ac4953354aeec0975322ef19e3effa382342d8f5ef2ac6c6cc",
+      "source": {
+        "parent": "Pcraft/source-u16.pcraft",
+        "parent_sha256": "33d99225c878ba859d9d0053529bc223ec86f9fdcfce7f8750930256a7620db6",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "negative-u16.pcraft",
+      "sha256": "00ed98587accafe74956e1552b9d8a4a09104b0810c18edd261bb7a268426b20",
+      "manifest_sha256": "6574dac7b80186cd3492c083c41b7584126b20704cacf51650bcfc2f0702ad56",
+      "source": {
+        "parent": "Pcraft/source-u16.pcraft",
+        "parent_sha256": "33d99225c878ba859d9d0053529bc223ec86f9fdcfce7f8750930256a7620db6",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "affine-cached-u16.pcraft",
+      "sha256": "6ef8363d9326cb8d32a08f7956e67f85fe98fcb69aba447627480bb758ab8469",
+      "manifest_sha256": "74f56107c939e95d922c3606b76ae665691a91c404c66c33a7df1a8279cf036c",
+      "source": {
+        "parent": "PcraftSmart/affine-cached-u16.pcraft",
+        "parent_sha256": "85ad202a3793d4c39755d1da01dbfb4fa0c39497b0ddfb767bd88be66dd8cdab",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "projective-cached-u16.pcraft",
+      "sha256": "f60ffa2935f4f28450deb9063a68c0f592f9e2c9eadeff8558cdc0e8c24d8fa6",
+      "manifest_sha256": "360e8e2e56d1327d0ed0cbdacf64aba2e014f34350ec159dd63750f7b7f027c9",
+      "source": {
+        "parent": "PcraftSmart/projective-cached-u16.pcraft",
+        "parent_sha256": "b49768048a470e4e706c43085c05c982c61561e66f4aa402bd964b920058ede1",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "warp-cached-u16.pcraft",
+      "sha256": "f0d9732e0d51b3c972ac7b9a524dda19f6908a469c88f546bb399c8cc39d776a",
+      "manifest_sha256": "b78ac1355635fce57383040664e29facb5cc232170a19b48db3c00792e1ed1c1",
+      "source": {
+        "parent": "PcraftSmart/warp-cached-u16.pcraft",
+        "parent_sha256": "8fc70340c7d442b58573c28f0dfb0a8eb5a841bb75f57f80528d5e114a48c76c",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "filtermask-cached-u16.pcraft",
+      "sha256": "9a88a8d66b49f84b3f6134bd3ff87e7663e95a36c30a9058f667726a7f2b4226",
+      "manifest_sha256": "a8fd3bd0de505ee28b39bbda970ed23e80e13746f612984663ddd5ff74265a3f",
+      "source": {
+        "parent": "PcraftSmart/filtermask-cached-u16.pcraft",
+        "parent_sha256": "d8666260122955953a36d2a13d7512507726fc8b3caaa5d3efbf05605baeda34",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "mask-cached-u16.pcraft",
+      "sha256": "8b137bbf761ece42720e1e33dff7e392eca6fe68dcb306c9029b154b52548f52",
+      "manifest_sha256": "06afff9c190ac54b93699c7ad4526f08be3d7d33abef3217ef39b74073190e86",
+      "source": {
+        "parent": "PcraftSmart/mask-cached-u16.pcraft",
+        "parent_sha256": "86e7a497b7d6a33b590c91794c3aad5782bc6bcedcf1c909649c3bd54f762a97",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "nested-cached-u16.pcraft",
+      "sha256": "003f2af8967426d402b35546d9fd026d43b1ff9ffc4cdd0b9bd2bfa34f323a83",
+      "manifest_sha256": "ea236618d7b142146b89bb495bc48805cbe0ef6c6cd34cdb11e5088e97503afb",
+      "source": {
+        "parent": "PcraftSmart/nested-cached-u16.pcraft",
+        "parent_sha256": "61e93ab4b7a852f579471911a1480940928bd67f690a1fb054c1b067d94406a2",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "shared-u16.pcraft",
+      "sha256": "d75c313fb303041025140f2dec138b438694fafd01ea71506346924094773adf",
+      "manifest_sha256": "7d425b88bd872fbcb9600874f77fd97fb31db3d35ab5ed04e72ea8ab27dc0294",
+      "source": {
+        "parent": "PcraftSmart/shared-u16.pcraft",
+        "parent_sha256": "dd59a1313341786014028ed95e61333f32e91f08876d0a212c11d496d98c12e5",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "empty-f32.pcraft",
+      "sha256": "c1c04845fd1e0398994f4ec0a92103160f5d24a5705c3c66f32c6fc1017804e5",
+      "manifest_sha256": "e9798fc1a8fd7f36dd5b6cae9b7b77609fd76878def5e74c2a7f18f9ea3ddb64",
+      "source": {
+        "parent": "Pcraft/source-f32.pcraft",
+        "parent_sha256": "f84e8ec200f95e1c1fab0720e41c37e25ff1f70038cc6cd03a0554f4096a6523",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "filled-f32.pcraft",
+      "sha256": "317d068889644df477fe50fb4fc0b0b2f5fb824a4244c7148c205bcc76305bf2",
+      "manifest_sha256": "030a4b182f82fd26c32a93839a40a9263efd35fbca1ed35550997052c1ae9f1a",
+      "source": {
+        "parent": "Pcraft/source-f32.pcraft",
+        "parent_sha256": "f84e8ec200f95e1c1fab0720e41c37e25ff1f70038cc6cd03a0554f4096a6523",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "negative-f32.pcraft",
+      "sha256": "c2dbddeb0cca0f177ca1cdc1d90d5fcc80813e4fa8b4e977bd59451741997a79",
+      "manifest_sha256": "77a577ea262632683efa3159037665e94a88fb4da0a85ad4d91b446bcad8171b",
+      "source": {
+        "parent": "Pcraft/source-f32.pcraft",
+        "parent_sha256": "f84e8ec200f95e1c1fab0720e41c37e25ff1f70038cc6cd03a0554f4096a6523",
+        "derivative": "Owned JSON artboard graph; no source pixels or licensed algorithms changed."
+      }
+    },
+    {
+      "file": "affine-cached-f32.pcraft",
+      "sha256": "1d3042cf4304919ac876ab1793c5b7f9349c3bea28ef1a93c98324fed74ee4be",
+      "manifest_sha256": "3f407128ddd1cdce8e71d98973aa28850f3dad28b841ab2dc83a0cf1b5b4181e",
+      "source": {
+        "parent": "PcraftSmart/affine-cached-f32.pcraft",
+        "parent_sha256": "2f56a35e4f47cabbe217de023f64f2d130f4f63610477fd50dda3646dc06cae3",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "projective-cached-f32.pcraft",
+      "sha256": "bba530bbc2c1a80dd3f75ab3e9842ec0275652a65fa46dd9fd51414f75a35d7e",
+      "manifest_sha256": "e27fc968374b7f76fc3c8ee7b0b5dc91373187cfc4ec55d806a270e641559ba7",
+      "source": {
+        "parent": "PcraftSmart/projective-cached-f32.pcraft",
+        "parent_sha256": "31d2c307a55ffd48f8afc2a11b431bb5c557064da3af81028d7f3b457f72ef6b",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "warp-cached-f32.pcraft",
+      "sha256": "f79b02c463ef6e6eb441cda0116a9be355cdac214791628c4e44b3735ce2c5ef",
+      "manifest_sha256": "d783737a2660f41b8f61e00c03bd9e33e6a3716c51f184352eb02055afcea026",
+      "source": {
+        "parent": "PcraftSmart/warp-cached-f32.pcraft",
+        "parent_sha256": "60d7e5ce61cdd86fe0413f66c7756520c45766626b5a216af486b61616bed693",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "filtermask-cached-f32.pcraft",
+      "sha256": "dd989abd3a2defbed690328292fdfa4a114355e4d49b857e326867fdeeb77633",
+      "manifest_sha256": "939fcf8156459bdcf4dccbccfc5bd84286c0e70fa4c5db3f8f0bd2a99185a50a",
+      "source": {
+        "parent": "PcraftSmart/filtermask-cached-f32.pcraft",
+        "parent_sha256": "7be100896a9dabe350e865706d4c7612064f64b9e8ccbbb316903f53e9cc9ee8",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "mask-cached-f32.pcraft",
+      "sha256": "69597ec98a418180d95c0c133749d1c62c0c4471d23fa36124e6234a762dcf5b",
+      "manifest_sha256": "e67dc3aaa365090c28b79b699216e0363b6ae43f802b33b056eb65740f65f83c",
+      "source": {
+        "parent": "PcraftSmart/mask-cached-f32.pcraft",
+        "parent_sha256": "7b6f0911740594ccc77d11839ddefe08bc1d188b23d0204b79a1dcdea6008385",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "nested-cached-f32.pcraft",
+      "sha256": "929c95c4bb054b81c9362ff7f29eedf2af40cbf9169554168955e652fadf1b3e",
+      "manifest_sha256": "2edd313ac6c00c8eac5fe925c1b112485b330fcfdf7b6b163d77a9f3e395fff1",
+      "source": {
+        "parent": "PcraftSmart/nested-cached-f32.pcraft",
+        "parent_sha256": "ffd5c2feb007a88c6ca1306650b3fd6f8f987c87344b2ca55f2a3900f6a0ba55",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    },
+    {
+      "file": "shared-f32.pcraft",
+      "sha256": "45ac59e69feb9f3f7a4484673578faadb4a3130b3f73a6d35f8c144b9b14598d",
+      "manifest_sha256": "8fac3afacc4ca3392f8c5c83fa196b33b6f068defaeb11c4dc1bd7cb4cb30d7e",
+      "source": {
+        "parent": "PcraftSmart/shared-f32.pcraft",
+        "parent_sha256": "c2ed5dc0493a4ed9cbab965e104f69b3322661b3495a4e862975e44217a14c9a",
+        "derivative": "Owned artboard wrapper around unchanged licensed Rust-generated layers/tiles/originals/reference caches. No new Rust or Photoshop render."
+      }
+    }
+  ]
+}

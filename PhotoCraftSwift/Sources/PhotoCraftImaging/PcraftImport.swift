@@ -127,6 +127,7 @@ public enum PcraftImport {
     try PcraftChannels.read(source,project:project,document:&document,namespace:namespace,budget:&mapper.remainingBytes)
     // Import provenance is immutable source evidence, never an editing cache.
     document.sourceMetadata = (document.sourceMetadata ?? [:]).merging(["pcraft.manifest": project.rawManifest]) { _, new in new }
+    if document.hasArtboards { document = try document.fittingArtboardCanvas() }
     try document.validate()
     _ = try ColorManagement.space(for: document)
     try Task.checkCancellation()

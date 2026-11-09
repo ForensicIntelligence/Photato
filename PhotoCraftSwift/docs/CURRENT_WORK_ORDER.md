@@ -1,3 +1,5 @@
+**Checkpoint 515:** Editable source artboards and cache-preserving canvas fitting/export pass all 46 selected checks in Debug and both optimized architectures, including all 10 new methods. Native Save As/reopen and universal static checks pass. Full I03, earlier failures and Photoshop parity remain open. Continue I04, then AI07, major-stillneeded. [Qualification](SOURCE_PUBLICATION_515.md).
+
 **Checkpoint 514:** The selected editable Auto-Blend path is tested. Continue major-stillneeded with I03 after auditing existing workflows. Full RAW02, original scope and failures remain required. [Plan](WORK_PRIORITIES_514.json) · [Qualification](SOURCE_PUBLICATION_514.md).
 
 **Checkpoint 513:** COL03 legacy Macintosh/native/API/Apple RGB workflow implemented. All seven new tests pass in Debug, optimized ARM and translated Intel. The broader runs pass 54/55, 54/55 and 52/55, retaining reproduced public 512 failures; native UI and universal static checks pass. Full scope and all prior failures remain. [Qualification](SOURCE_PUBLICATION_513.md). Next RAW02 in the [major-stillneeded plan](WORK_PRIORITIES_513.json).
