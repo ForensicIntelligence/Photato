@@ -57,6 +57,7 @@ extension AppDelegate {
     switch item.title {
     case "Proof Colors": settings.enabled.toggle()
     case "Gamut Warning": settings.gamutWarning.toggle()
+    case "Legacy Macintosh RGB (Gamma 1.8)": settings = settings.selectingLegacyMacintosh(preserveNumbers: store.document.colorMode == .rgb)
     case "Internet Standard RGB (sRGB)":
       settings.device = .sRGB; settings.profile = nil; settings.profileName = "sRGB"; settings.plate = .composite; settings.preserveNumbers = true; settings.enabled = true
     case "Monitor RGB":
@@ -76,11 +77,13 @@ extension AppDelegate {
     switch item.title {
     case "Proof Colors": checked = settings.enabled
     case "Gamut Warning": checked = settings.gamutWarning
+    case "Legacy Macintosh RGB (Gamma 1.8)": checked = settings.device == .legacyMacintoshRGB
     case "Internet Standard RGB (sRGB)": checked = settings.device == .sRGB
     case "Monitor RGB": checked = settings.device == .custom && settings.profileName == "Monitor RGB"
     default: checked = Self.proofMenus[item.title].map { settings.device == .workingCMYK && settings.plate == $0 } ?? false
     }
     item.state = checked ? .on : .off
+    if item.title == "Gamut Warning", !settings.gamutWarningAvailable { return false }
     if ["Internet Standard RGB (sRGB)", "Monitor RGB"].contains(item.title), store.document.colorMode != .rgb { return false }
     return store.canBeginProof && (item.title != "Monitor RGB" || NSApp.keyWindow?.screen?.colorSpace != nil)
   }
@@ -98,16 +101,20 @@ struct ProofSheet: View {
       GroupBox("Proof Conditions") {
         VStack(alignment: .leading, spacing: 10) {
           Picker("Device to Simulate", selection: Binding(get: { model.settings.device }, set: { device in
+            if device == .legacyMacintoshRGB {
+              model.settings = model.settings.selectingLegacyMacintosh(preserveNumbers: store.document.colorMode == .rgb); store.previewProof(); return
+            }
             model.settings.device = device; model.settings.plate = .composite; model.settings.preserveNumbers = false
             if device != .custom { model.settings.profile = nil; model.settings.profileName = device == .sRGB ? "sRGB" : "Generic CMYK" }
             do { model.settings = try model.workingSettings.resolvingProof(model.settings) }
             catch { model.error = error.localizedDescription }
             store.previewProof()
           })) { Text("Working CMYK").tag(ProofSettings.Device.workingCMYK); Text("sRGB").tag(ProofSettings.Device.sRGB)
+            Text("Apple RGB (Gamma 1.8)").tag(ProofSettings.Device.legacyMacintoshRGB)
             if model.settings.device == .custom, model.settings.profile != nil { Text(model.settings.profileName).tag(ProofSettings.Device.custom) }
           }
           Button("Choose ICC Profile…", action: chooseProfile)
-          Toggle("Preserve Numbers", isOn: setting(\.preserveNumbers))
+          Toggle(model.settings.device == .legacyMacintoshRGB ? "Preserve RGB Numbers" : "Preserve Numbers", isOn: setting(\.preserveNumbers))
             .disabled(!SoftProof.canPreserveNumbers(store.document, settings: model.settings))
           Picker("Rendering Intent", selection: setting(\.intent)) {
             Text("Perceptual").tag(ModeRenderingIntent.perceptual)
@@ -122,9 +129,9 @@ struct ProofSheet: View {
         VStack(alignment: .leading) {
           Toggle("Simulate Paper Color", isOn: Binding(get: { model.settings.simulatePaper }, set: { value in
             model.settings.simulatePaper = value; if value { model.settings.simulateBlack = true }; store.previewProof()
-          }))
-          Toggle("Simulate Black Ink", isOn: setting(\.simulateBlack)).disabled(model.settings.simulatePaper)
-          Toggle("Gamut Warning", isOn: setting(\.gamutWarning))
+          })).disabled(model.settings.device == .legacyMacintoshRGB && model.settings.preserveNumbers)
+          Toggle("Simulate Black Ink", isOn: setting(\.simulateBlack)).disabled(model.settings.simulatePaper || (model.settings.device == .legacyMacintoshRGB && model.settings.preserveNumbers))
+          Toggle("Gamut Warning", isOn: setting(\.gamutWarning)).disabled(!model.settings.gamutWarningAvailable)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(8)
       }
       if let error = model.error ?? store.proofDisplayError { Text(error).foregroundStyle(.red).font(.caption) }

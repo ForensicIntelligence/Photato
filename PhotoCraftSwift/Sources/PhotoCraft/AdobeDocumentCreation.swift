@@ -84,7 +84,7 @@ struct AdobeDocumentCreation: Sendable {
         let names = ["Adobe RGB (1998)", "Apple RGB", "ColorMatch RGB", "sRGB IEC61966-2.1",
           "Dot Gain 10%", "Dot Gain 15%", "Dot Gain 20%", "Dot Gain 25%", "Dot Gain 30%", "Gray Gamma 1.8", "Gray Gamma 2.2"]
         guard names.contains(title) else { throw AdobeAPIError.invalid("Unknown standard ICC profile.") }
-        guard ["Adobe RGB (1998)", "sRGB IEC61966-2.1", "Gray Gamma 2.2"].contains(title) else {
+        guard ["Adobe RGB (1998)", "Apple RGB", "sRGB IEC61966-2.1", "Gray Gamma 2.2"].contains(title) else {
           throw AdobeAPIError.unsupported("This named standard ICC profile is not implemented.")
         }
         guard mode == (title == "Gray Gamma 2.2" ? .grayscale : .rgb) else {
@@ -110,6 +110,7 @@ struct AdobeDocumentCreation: Sendable {
       try NativeModeProfile.validate(supplied, mode: mode, depth: depth)
       bytes = supplied
     case .standard(let name):
+      if name == "Apple RGB" { bytes = try NativeModeProfile.appleRGB(depth: depth); break }
       let colorName = name == "Adobe RGB (1998)" ? CGColorSpace.adobeRGB1998
         : name == "Gray Gamma 2.2" ? CGColorSpace.genericGrayGamma2_2 : CGColorSpace.sRGB
       guard let standard = CGColorSpace(name: colorName),
@@ -133,7 +134,7 @@ struct AdobeDocumentCreation: Sendable {
     "units": ["pixels_unit"], "pixelScaleFactor": 1, "maximumCanvasPixels": AdobeActionAssets.maximumCanvasPixels,
     "resolution": "density_unit, integer 1–100000, default 72 pixels/inch",
     "fills": ["white", "transparent", "background_color"], "backgroundColor": "White in isolated jobs",
-    "standardProfiles": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Gray Gamma 2.2"],
+    "standardProfiles": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Apple RGB", "Gray Gamma 2.2"],
     "customProfile": "URL source, at most 4 MiB, matching mode; 32-bit profiles must be linear",
     "defaults": "RGB8, white, 72 pixels/inch, Untitled-1; platform default profiles for omitted ICC",
     "limitations": "Restricted modes, other units/scales/named profiles, guide-only solidColor fill, exact Photoshop defaults and pixel/color equivalence remain unsupported or unqualified.",
@@ -144,7 +145,7 @@ struct AdobeDocumentCreation: Sendable {
       "properties": ["url": ["type": "string", "format": "uri", "pattern": "^https?://"]]]
     let profiles: [String: Any] = ["oneOf": [
       ["type": "object", "required": ["type", "name"], "additionalProperties": false, "properties": [
-        "type": ["const": "standard"], "name": ["enum": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Gray Gamma 2.2"]],
+        "type": ["const": "standard"], "name": ["enum": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Apple RGB", "Gray Gamma 2.2"]],
         "imageMode": ["enum": ["rgb", "grayscale"]],
       ]],
       ["type": "object", "required": ["type", "name", "source"], "additionalProperties": false, "properties": [

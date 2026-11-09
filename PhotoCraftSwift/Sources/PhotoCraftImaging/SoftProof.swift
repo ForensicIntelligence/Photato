@@ -6,7 +6,7 @@ import PhotoCraftCore
 
 /// View settings only: never serialized into document pixels or edit history.
 public struct ProofSettings: Codable, Equatable, Sendable {
-  public enum Device: String, Codable, CaseIterable, Sendable { case workingCMYK, sRGB, custom }
+  public enum Device: String, Codable, CaseIterable, Sendable { case workingCMYK, sRGB, custom, legacyMacintoshRGB }
   public enum Plate: String, Codable, CaseIterable, Sendable { case composite, cyan, magenta, yellow, black, cmy }
   public var enabled = false
   public var gamutWarning = false
@@ -24,13 +24,24 @@ public struct ProofSettings: Codable, Equatable, Sendable {
   public var gamutThreshold: Float = 4
   public init() {}
   public var active: Bool { enabled || gamutWarning }
-  public var displayName: String { device == .workingCMYK && profile == nil ? "Generic CMYK" : device == .sRGB ? "sRGB" : profileName }
+  public var gamutWarningAvailable: Bool { device != .legacyMacintoshRGB }
+  public var displayName: String { device == .legacyMacintoshRGB ? "Macintosh" : device == .workingCMYK && profile == nil ? "Generic CMYK" : device == .sRGB ? "sRGB" : profileName }
+  /// Factory preset observed in Photoshop 2026; independent of edit history.
+  public func selectingLegacyMacintosh(preserveNumbers: Bool = true) -> Self {
+    var result = self
+    result.device = .legacyMacintoshRGB; result.profile = nil; result.profileName = "Apple RGB"
+    result.enabled = true; result.gamutWarning = false; result.plate = .composite
+    result.intent = .relativeColorimetric; result.blackPointCompensation = false; result.preserveNumbers = preserveNumbers
+    result.simulatePaper = false; result.simulateBlack = false
+    return result
+  }
   public func resolvedProfile() throws -> Data {
     switch device {
     case .workingCMYK:
       if let profile { try NativeModeProfile.validate(profile, mode: .cmyk, depth: .u16); return profile }
       return try NativeModeProfile.standard(.cmyk, depth: .u16)
     case .sRGB: return try NativeModeProfile.standard(.rgb, depth: .u16)
+    case .legacyMacintoshRGB: return try NativeModeProfile.appleRGB()
     case .custom:
       guard let profile else { throw CraftError.invalid("Choose a proof profile.") }; return profile
     }
@@ -45,6 +56,8 @@ public struct ProofSettings: Codable, Equatable, Sendable {
     guard profileName.count <= 1024, warningColor.isFinite, warningColor.a == 1,
       [warningColor.r, warningColor.g, warningColor.b, warningOpacity].allSatisfy({ (0...1).contains($0) }),
       gamutThreshold.isFinite, (0.01...100).contains(gamutThreshold) else { throw CraftError.invalid("Invalid proof or gamut-warning settings.") }
+    guard gamutWarningAvailable || !gamutWarning else { throw CraftError.invalid("Gamut Warning is unavailable for the legacy Macintosh proof preset.") }
+    if device == .legacyMacintoshRGB, profile != nil { throw CraftError.invalid("The built-in Apple RGB profile cannot be replaced. Choose a custom proof profile instead.") }
     if let profile { _ = try Self.mode(of: profile) }
     let mode = try Self.mode(of: resolvedProfile())
     guard plate == .composite || mode == .cmyk else { throw CraftError.invalid("Ink plate proofing requires a CMYK profile.") }

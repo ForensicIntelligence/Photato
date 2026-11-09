@@ -1,3 +1,11 @@
+## Source update — 9 November 2026 UTC, build 513
+
+Legacy Macintosh RGB proofing is now available in the native app and API. Shared Apple RGB profiles also work for document creation and output. Native controls, cancellation, Command-Y and saved/reopened PSD components were checked.
+
+All seven new tests pass in Debug and both optimized architectures. Broader runs pass 54/55 on Apple Silicon and 52/55 on translated Intel. The remaining Gray-profile and frozen-proof failures reproduce on the actual retained build 512 binary; they remain open. The universal package passes static checks and is unlaunched. Full color-proofing and Photoshop parity are unfinished.
+
+[513 — Development record](DEVLOG.md#dev-step-513) · [Workflow/API](APPLE_RGB_PROOF.md) · [Qualification](SOURCE_PUBLICATION_513.md).
+
 ## Source update — 9 November 2026 UTC, build 512
 
 Merge Channels now works through the native Channels panel and the optional API. Assign grayscale images to RGB, CMYK, Lab or Multichannel output. The result opens as a new document; only the chosen sources close.
@@ -818,6 +826,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-08 | 510 | [Editable gradient profiles](DEVLOG.md#dev-step-510) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
+| 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

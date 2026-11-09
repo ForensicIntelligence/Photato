@@ -531,7 +531,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 510 | 2026-11-08 | [Editable gradient profiles](#dev-step-510) |
 | 511 | 2026-11-08 | [Gray32 Photoshop file export](#dev-step-511) |
 | 512 | 2026-11-09 UTC | [Merge Channels](#dev-step-512) |
+| 513 | 2026-11-09 UTC | [Legacy Macintosh proof](#dev-step-513) |
 <!-- history-index:end -->
+
+<a id="dev-step-513"></a>
+
+## 2026-11-09 — Legacy Macintosh proof
+
+9 November 2026 UTC. Current package COL03, major-stillneeded. Swift build 513 / Source03 is prepared as a source checkpoint. All seven new methods pass in Debug, optimized Apple Silicon and translated Intel. COL03 and the Photoshop parity goal remain open.
+
+Photoshop's Legacy Macintosh RGB preset selects Apple RGB with Preserve RGB Numbers enabled, relative colorimetric intent, and BPC/paper/black simulation off. These defaults were checked in Customize Proof Condition on an owned RGB16 file. The file was closed without saving. The native menu and Custom controls now provide that condition, including the observed disabled controls and Gamut Warning availability.
+
+A shared Swift ICC v2 writer supplies Apple RGB from standard colorimetry and observed ICC rounding values. There is no dependency on an Adobe installation and no Adobe profile file, executable code or SDK is distributed. Published sources are the CC0 colord AppleRGB definition, ICC matrix/TRC specification and Adobe's documented profile names. The retained reference fixture contains only standard numeric fields, provenance and a file hash. Generated description/header/copyright metadata is Photato's own.
+
+The existing `proof.configure` operation selects the same preset and reports `gamutWarningAvailable`. Explicit compatible fields can customize the condition. Gray, CMYK and Lab proofs convert into RGB instead of preserving unlike component numbers. The Adobe-compatible creation and output APIs now accept the already-published standard name `Apple RGB`; actual HTTP tests cover both creation interfaces. No Adobe display-proof endpoint was invented. Native format 92, Actions 60 and 271 typed commands are unchanged; the existing Xcode project uses synchronized source groups.
+
+The first test build failed before running cases because a test used a Core Graphics name unavailable in Swift. The test now uses AppKit's public color space; the original failed source was recovered and verified against its frozen manifest. Debug02 passed all seven new tests and 53 of 55 selected methods. An old hard-codedexpectation of 267 commands and a Gray8/16 profile mismatch both reproduced withfive identical ordered assertions on the actual retained public 512 executable. Only the stale catalogue expectation was corrected to the existing shared count of 271. The Gray equality assertions remain unchanged.
+
+Current Source03 passes all seven new methods and 54 of 55 selected Debug methods, with no missing, extra, duplicate or skipped cases and no signals. The remaining four Gray8/16 default-profile assertions exactly match public 512. Tests cover preset defaults, native drafts/Cancel/commit, strict HTTP validation and stale/busy/revoked requests, unchanged pixels/history/exports, RGB8/16/32, non-RGB conversion, maximum sparse geometry and named Adobe profiles. This is focused qualification, not a full-suite pass.
+
+An independent Python ColorSync invocation compares the actual Swift-generated ICC with the installed standard Apple RGB profile:18,513 RGB points, both directions, four intents and BPC off/on. All 888,624 Float32 component values match exactly per architecture, including a separate independent translated-Intel Python/ColorSync run. The generated ICC bytes are identical in Debug and both optimized architectures. This verifies those ICC transforms on this OS. It does not prove Photoshop ACE/display pixel identity, physical Intel/macOS14 behavior or other platform output.
+
+The signed isolated native app passed the menu, Custom defaults, Preserve toggle, edited-draft cancellation, Command-Y off/on, OK, separate PSD Save As/reopen and normal Quit checks. The saved PSD retains all 576 original component values, adds no ICC, and reopens without the proof view. The owned input file is byte-identical. A native control screenshot was captured in the conversation; the Photoshop screenshot API was unavailable, so its reference is AX evidence. No protected application was quit or relaunched.
+
+All 7,767 Source03 inputs remain frozen. A verified private progress archive preserves the13 native delta files, source manifests, verified reconstructions of earlier input versions, logs, owned reference outputs and working diary. Optimized runs pass 54/55 on Apple Silicon and 52/55 on translated Intel, including all seven new methods. The Intel run exposes two older frozen-proof failures: 10,156 words differ in each small output and 10 in the reduced output. All current raw outputs and seven ordered assertions exactly match the retained public 512 Intel binary. No reference or tolerance was changed. The initial optimized qualification refusal remains preserved; the later source-checkpoint assessment records the reproduced baseline separately. Universal signatures, both macOS 14 declarations, unchanged production entitlements, complete payload/signing replay, model/provenance/license and extracted ZIP checks pass. The universal app is unlaunched. Source publication and final evidence-index reconciliation are recorded separately. Every prior failure remains required. The original 104 scopes, 652 command identities, 81 major memberships and seven passes remain unchanged. Color-blind presets, Adobe PSF, HDR/EDR, per-window proof state and the remaining print/default/output/platform/performance scope are open. Next after this increment's qualification: audit RAW02's existing implementation.
+
+The old canonical 486 pipeline is now terminal: promotion, documentation and static diary phases succeeded; its history phase exited with status 1. The waiting 487–491 pipeline recorded that missing success receipt. Neither pipeline was restarted, and no pending canonical/website promotion is represented as completed. Source 513 is a development checkpoint. It does not include a production installation, App Store change, binary upload, review submission or software release; releases still require manual approval.
+
+[Workflow and API](APPLE_RGB_PROOF.md). The detailed working record and raw evidence are retained privately; no credential or user document is published.
 
 <a id="dev-step-512"></a>
 

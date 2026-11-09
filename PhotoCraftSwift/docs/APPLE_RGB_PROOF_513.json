@@ -1,0 +1,71 @@
+{
+  "step": 513,
+  "recorded_utc": "2026-11-09T08:46:11.760765+00:00",
+  "workflow": "COL03",
+  "status": "Legacy Macintosh RGB proof and shared Apple RGB implemented; fullCOL03 and goal remain open",
+  "software_build": 513,
+  "source_variant": "Source03",
+  "frozen_inputs": 7767,
+  "included_distributable_inputs": 7754,
+  "excluded_generated_or_restricted_inputs": 13,
+  "native_format": 92,
+  "Actions": 60,
+  "typed_commands": 271,
+  "selected_validation": {
+    "Debug": {
+      "selected": 55,
+      "passed": 54,
+      "new_passed": 7
+    },
+    "optimizedARM": {
+      "selected": 55,
+      "passed": 54,
+      "new_passed": 7
+    },
+    "translatedIntel": {
+      "selected": 55,
+      "passed": 52,
+      "new_passed": 7
+    },
+    "Gray_default_profile": "4unchangedassertions in nativeFileNew vs isolatedAdobecreation atGray8/16; actualpublic512replay identical. Originalequality assertions unchanged.",
+    "translatedIntel_frozen_proof": "2failingmethods/3assertions:10156differentFloat32words per39936word smalloutput and10per60word reduction. Allrawcurrentoutputs and7orderedtotalassertions match actualretainedpublic512 byteforbyte. Frozenrequirementsnotwaived.",
+    "new_ICC_profile": "Byte-identical actualgeneratedICC inDebug/optimizedARM/translatedIntel. IndependentColorSync18513RGBpoints\u00d716paths=888624Float32words per architecture exact against installedstandardAppleRGBICC. NoPhotoshopACE/displayparityclaim.",
+    "native_UI": "Current signedSource03Debug: menu/Customdisabledstates/Cancel/CmdY/OK/SaveAs/reopen/normalQuit verified. Originalownedfile unchanged;576savedcomponentwords exact;noICCinserted.",
+    "universal": "Botharchitectures,min14,fullproductionentitlements,signatures,completeunsignedpayload/signingreplay,models/provenance/license,extractedZIPpass;unlaunched."
+  },
+  "original_failed_optimized_gate_retained": true,
+  "all_broader_selected_passed": false,
+  "full_suite_passed": false,
+  "prior_failures_remain_required": true,
+  "full_COL03_closed": false,
+  "Photoshop_parity": false,
+  "native_menus_and_shortcuts": "Existing factory menu item now bound. CommandY unchanged; legacy preset has no factory primary shortcut. No new canvas tool/modifier/cursor action.",
+  "api": "Existingproof.configure/read/preview + newdevice/defaults/gamutWarningAvailable state; namedAppleRGB in publishedcreation/outputschema/sharedengine; bothactualHTTPcreationinterfaces tested. NoinventedAdobeproofendpoint.",
+  "public_references": [
+    "https://github.com/hughsie/colord/blob/main/data/profiles/AppleRGB.iccprofile.xml",
+    "https://www.color.org/icc301.pdf",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/llm-migration-reference"
+  ],
+  "reference_scope": "Actual Photoshop2026 UI observed on anownedRGB16fixture; onlyICC-standardnumericfields/filehashretained. NoAdobecode,SDK,executableinspectionorprofilefile redistribution.",
+  "source_inputs_changed": 13,
+  "source_inputs_added": 3,
+  "source_inputs_removed": 0,
+  "original_scope": {
+    "packages": 104,
+    "original_command_identities": 652,
+    "major_memberships": 81,
+    "passes": 7
+  },
+  "next": "RAW02majorstillneeded: audit existingalignment/blend/panorama/HDR/focus/statistics first",
+  "remaining": [
+    "Colorblindpresets",
+    "AdobePSF",
+    "HDR/EDRproofdisplay",
+    "perwindowproofstate",
+    "remainingprintintegration",
+    "exactPhotoshopdefaults/profile/ACE/display/output and alloriginalcontext/platform/performanceacceptance"
+  ],
+  "canonical_486_pipeline": "Terminalhistoryexit1afterOSerror89readingoldfixturelicense; promotion/docs/staticdiaryphaseexit0. Queued487491receiptabsent. No restart, no subsequentpromotionclaimed.",
+  "standalone_website_promotion_pending": true,
+  "software_release": false
+}

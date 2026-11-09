@@ -125,5 +125,9 @@
   "follow_up_227": {
     "reference": "docs/COLOR_POLICY_REFERENCES.json",
     "status": "Subsequent working source adds open/paste policies and actual working-CMYK proof capture; earlier checkpoint results remain historical."
+  },
+  "follow_up_513": {
+    "reference": "docs/APPLE_RGB_PROOF_513.json",
+    "status": "LegacyMacintoshRGBproofandsharednamedAppleRGBnative/APIimplemented;7newpassDebug/optimizedARM/translatedIntel. Broader54/55,54/55,52/55retainsactualpublic512failures;fullCOL03open."
   }
 }

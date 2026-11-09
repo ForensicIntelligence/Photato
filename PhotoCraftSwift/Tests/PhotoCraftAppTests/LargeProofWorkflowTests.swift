@@ -62,7 +62,7 @@ final class LargeProofWorkflowTests:XCTestCase {
       let id=try XCTUnwrap(service.shares.first?.id);service.revoke(id)
       let revoked=try await h.request(service,path:"/v1/documents/\(id)/proof-preview.png");XCTAssertEqual(revoked.0.statusCode,404)
       XCTAssertEqual(ProofAPI.capabilities["maximumPixels"]as?Int,90_000_000_000);XCTAssertEqual(PrintAPI.capabilities["maximumPixels"]as?Int,8_388_608)
-      XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:ProofAPI.capabilities));XCTAssertEqual(AutomationCommand.definitions.count,267)
+      XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:ProofAPI.capabilities));XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount)
       XCTAssertEqual(s.document,d);XCTAssertTrue(s.session.undoStack.isEmpty)
     }
   }

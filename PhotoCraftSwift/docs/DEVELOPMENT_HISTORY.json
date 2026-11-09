@@ -8136,6 +8136,13 @@
       "link": "DEVLOG.md#dev-step-512",
       "section_sha256": "c6ffe2d059498e6675d123c37183dfb91d6dddd199498dd35e453297b9cf7cf7",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-513",
+      "title": "2026-11-09 \u2014 Legacy Macintosh proof",
+      "link": "DEVLOG.md#dev-step-513",
+      "section_sha256": "b0227c0a6032c474a1d71506e1b79b503ef211f91443f44fc91726595d51baa1",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10667,8 +10674,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "75bba07e4bae46c5d2f8b33de05da405dcd2b5a9b229a012a7804a0b6435f541",
-      "bytes": 116593,
+      "sha256": "c6230ee2c23a95b641e486f2f73f624bc01be7dd24de66dd6d792c4e14e6e901",
+      "bytes": 117895,
       "rolling_current_snapshot": false
     },
     {
@@ -10679,8 +10686,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "0f53078d678aed97b766f78b4d40791b06a26dade574f8ed1acffe47be42c5fc",
-      "bytes": 114333,
+      "sha256": "4425271de564e262808de4c60063da9c9f614e870796faa84489c0bfb6beddbb",
+      "bytes": 114807,
       "rolling_current_snapshot": false
     },
     {
@@ -12262,6 +12269,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/APPLE_RGB_PROOF.md",
+      "sha256": "9252deb7662f67a99cdcc21b2fb393ababbcd2e7f5a2c958963e35470766d610",
+      "bytes": 4142,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/APPLE_RGB_PROOF_513.json",
+      "sha256": "aa60cc1f504bf78ea77cfe1b35ebc796c8201c1959f495a9d9970973a6ab1242",
+      "bytes": 3791,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/APPLE_TEXT_RUNTIME.md",
       "sha256": "a838db0e73ad4862880f16bc9e0c66bb4db94ff507108d87332dadae4afedbd0",
       "bytes": 3879,
@@ -12761,8 +12780,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "704be3e2d96a61179a86f7acb4f0b7c0c5d2f6657ba4dccdbcc5e7e1e802b2c6",
-      "bytes": 370969,
+      "sha256": "0e1083225fabb52553ff6c17e96eee202c043ecf111879b25fe821cd9ce32671",
+      "bytes": 371299,
       "rolling_current_snapshot": false
     },
     {
@@ -12863,8 +12882,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "05fcbfa9b917e52f27be23212d032ebd2e9c837b93ccb433b9b68f4d935201ee",
-      "bytes": 80302,
+      "sha256": "92df9062b8538c0c4e5b6e957707607d3b09402471f3c39b3d1d66230f556168",
+      "bytes": 80748,
       "rolling_current_snapshot": false
     },
     {
@@ -12905,14 +12924,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "238032f312b0c101a5def9ad9b7005b462bc6b68d19926c79de0838fc92d51de",
-      "bytes": 805315,
+      "sha256": "e9c57c0c7fe8ae37be2340c65788a9ecacd803405a24c96298a9794eeebddaa4",
+      "bytes": 806199,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "6e03907316821e4807433949776aa942d5e2b4470deb42dea99a4297c4d8fdeb",
-      "bytes": 4462871,
+      "sha256": "6a0311f2d96ad26eb5ad5e7dd9d041db308dfdbd1babfcc618554b4b67549ae9",
+      "bytes": 4469095,
       "rolling_current_snapshot": false
     },
     {
@@ -16133,8 +16152,8 @@
     },
     {
       "path": "docs/PROOFING_REFERENCES.json",
-      "sha256": "eb38a66ec8b3fb09eb66a6823be446527a0d1bbb713cb62ce8d6e3d126abe90b",
-      "bytes": 6904,
+      "sha256": "9e3ae8954384e813acc6560f531cbccbce2a9dcc8c87c5dd9c2684adbf582876",
+      "bytes": 7177,
       "rolling_current_snapshot": false
     },
     {
@@ -17290,6 +17309,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_513.md",
+      "sha256": "5144ed8648bcbe642f50a0c48d5b6aa24c95da450bcfc2cb404b174e4c5875fd",
+      "bytes": 3427,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17488,6 +17513,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_513.json",
+      "sha256": "6eee3bfe24535b4184ac62b0f1b82f50518b577cf9413b6e62f47321507fe505",
+      "bytes": 1153092,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17513,8 +17544,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "e1d0893677737114b4cf1f49e3c639708e8ba682e183e7e62f69232d57570c0a",
-      "bytes": 400900,
+      "sha256": "072146d96752a6c227480e0bd86bed946c5511f73c0fe4ff9dd42768a87da642",
+      "bytes": 401346,
       "rolling_current_snapshot": false
     },
     {
@@ -19798,6 +19829,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/WORK_PRIORITIES_513.json",
+      "sha256": "b9b3adaf192bbb3026ca6cefe9182998048b499f0677edb3512d0246c6dbac97",
+      "bytes": 146218,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/XCODE_PROJECT_REFERENCES.json",
       "sha256": "0329389781d5905455599e2231e7b3de0d1db2746d59256a64791f7854478bc0",
       "bytes": 8464,
@@ -19817,8 +19854,8 @@
     }
   ],
   "counts": {
-    "milestones": 512,
-    "evidence_files": 1525,
+    "milestones": 513,
+    "evidence_files": 1530,
     "logs": 0,
     "missing_explicit_references": 631
   }

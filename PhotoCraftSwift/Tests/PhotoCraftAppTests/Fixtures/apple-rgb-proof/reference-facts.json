@@ -1,0 +1,46 @@
+{
+  "provenance": "Photoshop 2026 Customize Proof Condition on an owned RGB16 fixture; installed standard ICC fields decoded according to public ICC format, no executable/source/SDK inspection. No Adobe ICC bytes are included.",
+  "profile_filename": "AppleRGB.icc",
+  "profile_sha256": "94559b531a2481650e1bcfb8fbf4295e6d315f6ebf3660b9ad6ea96d3c8f8b82",
+  "standard_tags": {
+    "wtpt": [
+      0.9504547119140625,
+      1.0,
+      1.08905029296875
+    ],
+    "rTRC": {
+      "gamma": 1.80078125
+    },
+    "gTRC": {
+      "gamma": 1.80078125
+    },
+    "bTRC": {
+      "gamma": 1.80078125
+    },
+    "rXYZ": [
+      0.4755401611328125,
+      0.255157470703125,
+      0.0184478759765625
+    ],
+    "gXYZ": [
+      0.3397216796875,
+      0.6725921630859375,
+      0.1133270263671875
+    ],
+    "bXYZ": [
+      0.148956298828125,
+      0.0722503662109375,
+      0.693115234375
+    ]
+  },
+  "proof_defaults": {
+    "preserveNumbers": true,
+    "intent": "relativeColorimetric",
+    "blackPointCompensation": false,
+    "simulatePaper": false,
+    "simulateBlack": false
+  },
+  "published_colorimetry": "https://github.com/hughsie/colord/blob/main/data/profiles/AppleRGB.iccprofile.xml",
+  "recorded_utc": "2026-11-09T07:57:09.613360+00:00",
+  "not_Photoshop_rendered_pixel_reference": true
+}

@@ -322,7 +322,7 @@ import PhotoCraftCore
     ]
     for title in ["None"] + ImageStackMode.allCases.map(\.title) { actions["Layer > Smart Objects > Stack Mode > " + title] = #selector(imageStackMode(_:)) }
     for path in Self.layerStyleMenuPaths { actions[path] = #selector(layerStyleMenu(_:)) }
-    for title in Array(Self.proofMenus.keys) + ["Custom…", "Internet Standard RGB (sRGB)", "Monitor RGB"] {
+    for title in Array(Self.proofMenus.keys) + ["Custom…", "Internet Standard RGB (sRGB)", "Monitor RGB", "Legacy Macintosh RGB (Gamma 1.8)"] {
       actions["View > Proof Setup > " + title] = #selector(proofCommand(_:))
     }
     actions["View > Proof Colors"] = #selector(proofCommand(_:))

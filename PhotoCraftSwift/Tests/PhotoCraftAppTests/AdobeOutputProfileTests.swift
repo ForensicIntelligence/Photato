@@ -46,7 +46,7 @@ final class AdobeOutputProfileTests: XCTestCase {
     let defaults = try AdobeOutputProfile([:] as [String: Any])
     XCTAssertEqual(defaults.name,"sRGB IEC61966-2.1")
     XCTAssertEqual(try ProofSettings.mode(of: defaults.data(resources:[:],depth:.u8)),.rgb)
-    let bad:[Any] = [NSNull(),["type":NSNull()],["type":"standard","name":NSNull()],["type":"custom","name":"X"],["type":"standard","name":"Unknown"],["type":"standard","name":"Apple RGB"],["type":"custom","name":"X","imageMode":"lab","source":["url":"https://example.test/p.icc"]]]
+    let bad:[Any] = [NSNull(),["type":NSNull()],["type":"standard","name":NSNull()],["type":"custom","name":"X"],["type":"standard","name":"Unknown"],["type":"standard","name":"ColorMatch RGB"],["type":"custom","name":"X","imageMode":"lab","source":["url":"https://example.test/p.icc"]]]
     for raw in bad { XCTAssertThrowsError(try AdobeOutputProfile(raw)) }
     let mismatch = try AdobeOutputProfile(["type":"standard","name":"Adobe RGB (1998)","imageMode":"grayscale"])
     XCTAssertThrowsError(try mismatch.data(resources:[:],depth:.u8))

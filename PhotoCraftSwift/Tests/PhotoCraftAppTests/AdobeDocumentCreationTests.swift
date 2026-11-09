@@ -88,7 +88,7 @@ final class AdobeDocumentCreationTests: XCTestCase {
       (["pixelScaleFactor": 0], 400), (["pixelScaleFactor": 2], 422),
       (["resolution": ["unit": "density_unit", "value": 0]], 400), (["resolution": ["value": 72]], 400),
       (["fill": "red"], 400), (["fill": ["solidColor": ["rgb": ["red": 1, "green": 2, "blue": 3]]]], 400),
-      (["iccProfile": NSNull()], 400), (["iccProfile": ["type": "standard", "name": "Apple RGB"]], 422),
+      (["iccProfile": NSNull()], 400), (["iccProfile": ["type": "standard", "name": "ColorMatch RGB"]], 422),
       (["iccProfile": ["type": "standard", "name": "Gray Gamma 2.2"]], 400),
       (["iccProfile": ["type": "custom", "name": "x", "source": ["url": "file:///private/profile.icc"]]], 400),
     ]
@@ -153,13 +153,21 @@ final class AdobeDocumentCreationTests: XCTestCase {
       for mode in DocumentColorMode.componentModes {
         service.setResourceJobsEnabled(false); service.setResourceJobsEnabled(true)
         for depth in mode.depths {
-        let raw = image(mode, depth)
-        let expected = try XCTUnwrap(request(raw).creation).document()
-        for route in ["/v2/create-composite", "/v1/action-jobs"] {
-          let output = try await helper.outputs(service, route: route, payload: body(raw, actions: route.hasPrefix("/v1")))
-          let actual = try AdobeActionAssets.decode(XCTUnwrap(output.first))
-          try assertStorage(actual, expected)
-          XCTAssertEqual(actual.colorMode, mode); XCTAssertEqual(actual.depth, depth)
+        let plain = image(mode, depth)
+        var variants = [plain]
+        if mode == .rgb {
+          var apple = plain
+          apple["iccProfile"] = ["type": "standard", "name": "Apple RGB", "imageMode": "rgb"]
+          variants.append(apple)
+        }
+        for raw in variants {
+          let expected = try XCTUnwrap(request(raw).creation).document()
+          for route in ["/v2/create-composite", "/v1/action-jobs"] {
+            let output = try await helper.outputs(service, route: route, payload: body(raw, actions: route.hasPrefix("/v1")))
+            let actual = try AdobeActionAssets.decode(XCTUnwrap(output.first))
+            try assertStorage(actual, expected)
+            XCTAssertEqual(actual.colorMode, mode); XCTAssertEqual(actual.depth, depth)
+          }
         }
       } }
       let rejected = try await AutomationTests().request(service, path: "/v2/execute-actions", body: body(image(.rgb, .u8), actions: true))
@@ -185,7 +193,7 @@ final class AdobeDocumentCreationTests: XCTestCase {
     for mode in DocumentColorMode.componentModes { for depth in mode.depths {
       let raw = image(mode, depth); _ = try request(raw); examples.append(body(raw))
     } }
-    for (mode, name) in [(DocumentColorMode.rgb, "sRGB IEC61966-2.1"), (.rgb, "Adobe RGB (1998)"), (.grayscale, "Gray Gamma 2.2")] {
+    for (mode, name) in [(DocumentColorMode.rgb, "sRGB IEC61966-2.1"), (.rgb, "Adobe RGB (1998)"), (.rgb, "Apple RGB"), (.grayscale, "Gray Gamma 2.2")] {
       var raw = image(mode, .u16); raw["iccProfile"] = ["type": "standard", "name": name, "imageMode": mode.rawValue]
       _ = try request(raw); examples.append(body(raw))
     }

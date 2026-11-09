@@ -26,7 +26,7 @@ struct AdobeOutputProfile: Hashable, Sendable {
       guard value.fields["source"] == nil else { throw AdobeAPIError.invalid("A standard profile cannot have a source.") }
       let names = ["Adobe RGB (1998)", "Apple RGB", "ColorMatch RGB", "sRGB IEC61966-2.1", "Dot Gain 10%", "Dot Gain 15%", "Dot Gain 20%", "Dot Gain 25%", "Dot Gain 30%", "Gray Gamma 1.8", "Gray Gamma 2.2"]
       guard names.contains(name) else { throw AdobeAPIError.invalid("Unknown standard ICC profile.") }
-      guard ["Adobe RGB (1998)", "sRGB IEC61966-2.1", "Gray Gamma 2.2"].contains(name) else { throw AdobeAPIError.unsupported("This named ICC profile is not available in the native adapter yet.") }
+      guard ["Adobe RGB (1998)", "Apple RGB", "sRGB IEC61966-2.1", "Gray Gamma 2.2"].contains(name) else { throw AdobeAPIError.unsupported("This named ICC profile is not available in the native adapter yet.") }
       resource = nil
     }
   }
@@ -35,6 +35,8 @@ struct AdobeOutputProfile: Hashable, Sendable {
     if let resource {
       guard let data = resources[resource], data.count <= ICCProfile.maximumBytes else { throw AdobeAPIError.invalid("Custom output ICC is missing or exceeds 4 MiB.") }
       bytes = data
+    } else if name == "Apple RGB" {
+      bytes = try NativeModeProfile.appleRGB(depth: depth)
     } else {
       let space = name == "Adobe RGB (1998)" ? CGColorSpace.adobeRGB1998 : name == "Gray Gamma 2.2" ? CGColorSpace.genericGrayGamma2_2 : CGColorSpace.sRGB
       guard let data = CGColorSpace(name: space)?.copyICCData() as Data? else { throw AdobeAPIError.unsupported("The standard profile is unavailable.") }
@@ -60,7 +62,7 @@ extension AdobeOutputProfile {
   static var schema: [String: Any] {
     ["oneOf": [
       BrushAPI.object(["type": ["type": "string", "const": "standard", "default": "standard"],
-        "name": ["type": "string", "enum": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Gray Gamma 2.2"], "default": "sRGB IEC61966-2.1"],
+        "name": ["type": "string", "enum": ["sRGB IEC61966-2.1", "Adobe RGB (1998)", "Apple RGB", "Gray Gamma 2.2"], "default": "sRGB IEC61966-2.1"],
         "imageMode": BrushAPI.enumeration(["rgb", "grayscale"])], required: []),
       BrushAPI.object(["type": ["type": "string", "const": "custom"], "name": ["type": "string", "maxLength": 255],
         "imageMode": BrushAPI.enumeration(["rgb", "grayscale", "cmyk"]),
