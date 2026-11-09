@@ -126,7 +126,7 @@ final class SkyGroupTests:XCTestCase {
       status=try await helper.edit(service,document,"sky.library",["operation":"move","skyIDs":ids.map(\.uuidString),"groupID":remove.uuidString]);XCTAssertEqual(status,200)
       status=try await helper.edit(service,document,"sky.library",["operation":"group.delete","groupID":remove.uuidString,"removeSkies":true]);XCTAssertEqual(status,200);XCTAssertTrue(library.skies.isEmpty)
       XCTAssertEqual(document.store.document,original);XCTAssertTrue(document.store.session.undoStack.isEmpty)
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(try JSONSerialization.data(withJSONObject:SkyLibraryAPI.parameterSchema).isEmpty,false)
+      XCTAssertEqual(AutomationCommand.definitions.count,271);XCTAssertEqual(try JSONSerialization.data(withJSONObject:SkyLibraryAPI.parameterSchema).isEmpty,false)
       let raw=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:document.store.skyState));XCTAssertNoThrow(try BrushAPI.merge(raw,schema:SkyAPI.stateSchema))
     }
   }

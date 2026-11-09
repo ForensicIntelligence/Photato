@@ -8178,6 +8178,13 @@
       "link": "DEVLOG.md#dev-step-518",
       "section_sha256": "3c37780f9a8d00589adae24b0cb1af760223be420caa5fdfee2943795cfb6905",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-519",
+      "title": "2026-11-09 \u2014 Large Sky documents, viewport clipping and full-detail previews",
+      "link": "DEVLOG.md#dev-step-519",
+      "section_sha256": "04981d338b1bebe3f16bac5f8aa53844cb0096ea15cf988ab55e57b7ddff7962",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10709,8 +10716,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "61f7fcc58b15a54750f69b55fe15f9ed74f8b2fdaab728a6a9f6766b63bf26f1",
-      "bytes": 122562,
+      "sha256": "381bb1efd812959854bba1462c331c96b7b3f26541800056f0a2921fc10f7dec",
+      "bytes": 123578,
       "rolling_current_snapshot": false
     },
     {
@@ -10721,8 +10728,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "cadb9c7ba57f35bc5c16e08ce224a68b4690e7f440a68f30b63b385b629a89ee",
-      "bytes": 116706,
+      "sha256": "7d6559bf4050a323399d381f2fb58a52e72c5d6ee98dc335c3fd3894ebf8e5d6",
+      "bytes": 117059,
       "rolling_current_snapshot": false
     },
     {
@@ -12815,8 +12822,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "985d4891f73488f6ba4cbe628c79fef76830b248a5340f8f2ee553ca8d3ccb5b",
-      "bytes": 372665,
+      "sha256": "b640a4ea3ec49cf9532bb8c02c6ece76611fec8203d004332c6d8025c272e8bc",
+      "bytes": 372995,
       "rolling_current_snapshot": false
     },
     {
@@ -12917,8 +12924,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "f956775f1978deae48abba887532bed7d5cb04827cd172c41fce3e4afd2888a0",
-      "bytes": 82576,
+      "sha256": "dc897d7ff7c60355183d568a05c8c0f8e4bbd6a3d802d38c590bb68e95669cff",
+      "bytes": 82971,
       "rolling_current_snapshot": false
     },
     {
@@ -12959,14 +12966,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "b868b68e36d3fbb597ffdee9d2bea6ac68e9cee343eeca88218fde0dd71776c9",
-      "bytes": 809914,
+      "sha256": "9c6c3fca69321f379454840832d5044cf5782f888a89754d28bf54cb24b40982",
+      "bytes": 810685,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "da0c433083fa86111408bbcb9dff6ea7629d2c00759ce0b50fd3d8c8086bbe36",
-      "bytes": 4501110,
+      "sha256": "42433ec7967768eb2d218490e8c29a82c08bd0f637cdc6d0b66dd54ef4526d2d",
+      "bytes": 4507350,
       "rolling_current_snapshot": false
     },
     {
@@ -14710,6 +14717,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/FUNCTION_PHASES_519.json",
+      "sha256": "3c8641143dad8fba7debddf20b55718f21328264116c7a33a9126d7f720434ad",
+      "bytes": 885322,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/GALLERY_EFFECT_REORDER.md",
       "sha256": "db2d7da24fbf9096a9f5848911004aad213fcc2a79e959556d07e591267bf3f4",
       "bytes": 2370,
@@ -15103,6 +15116,18 @@
       "path": "docs/LARGE_SELECTION_FILES_374.json",
       "sha256": "9a48927bf2c8c7f69a9c0a381d904867b65fa7770f4788464f19550e4f7872c6",
       "bytes": 37795,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/LARGE_SKY_WORKSPACE.md",
+      "sha256": "dfe2c095171dd01db81416065c556ad84aeeb644887fae732c6064c89e694757",
+      "bytes": 3950,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/LARGE_SKY_WORKSPACE_519.json",
+      "sha256": "af9b94e90049a63e0cd5e74423df86a80b00a4d8c55a69553d83f53eeca8bf96",
+      "bytes": 16300,
       "rolling_current_snapshot": false
     },
     {
@@ -17009,8 +17034,8 @@
     },
     {
       "path": "docs/SKY_REFERENCES.json",
-      "sha256": "3f3f6247f748abc001bf124d57ae5ecae8792acd71fc766a054596ed14248b96",
-      "bytes": 7735,
+      "sha256": "d63c679f249dcc1feb4f5997bfa22b5ec5477e79d9911203956410c3d423ae48",
+      "bytes": 8791,
       "rolling_current_snapshot": false
     },
     {
@@ -17440,6 +17465,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_519.md",
+      "sha256": "dab7bdd8c472ff5638d417723b566165c1d7a983ba3c7187f87ccec426c257cb",
+      "bytes": 2956,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17674,6 +17705,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_519.json",
+      "sha256": "d76f242659308f7fbbb0ffbb65fa2de417238e9b96c6cd8c1fb1b8fe8dfbe969",
+      "bytes": 1162007,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17699,8 +17736,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "1f889228e5008958814d624b36672e2277ac45753f3b82daf4bf5b24459b9d4e",
-      "bytes": 403335,
+      "sha256": "3642b9632e8889051a29a92257cfaafac4cee2a0a18857a7ec25fb74ed71fe7e",
+      "bytes": 403730,
       "rolling_current_snapshot": false
     },
     {
@@ -20020,6 +20057,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/WORK_PRIORITIES_519.json",
+      "sha256": "c9dc29840e25e21ad94ce17eab2a896995d0ecb2e0397111bb1ea4f462434e4a",
+      "bytes": 150000,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/XCODE_PROJECT_REFERENCES.json",
       "sha256": "0329389781d5905455599e2231e7b3de0d1db2746d59256a64791f7854478bc0",
       "bytes": 8464,
@@ -20039,8 +20082,8 @@
     }
   ],
   "counts": {
-    "milestones": 518,
-    "evidence_files": 1555,
+    "milestones": 519,
+    "evidence_files": 1561,
     "logs": 0,
     "missing_explicit_references": 631
   }

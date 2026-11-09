@@ -68,7 +68,9 @@ public enum SkySelection {
     return input.indices.map{a[$0]*guide[$0]+b[$0]}
   }
   public static func mask(_ source:Surface,settings:SkySelectionSettings = .init(),workingPixels:Int=160_000)throws->SelectionMask? {
-    try settings.validate();try SelectionSegmentation.check(source)
+    try settings.validate()
+    if source.width>SelectionSegmentation.maximumPixels/source.height{return try PagedSkySelection.mask(source,settings:settings,workingPixels:workingPixels)}
+    try SelectionSegmentation.check(source)
     guard (16...160_000).contains(workingPixels) else{throw CraftError.invalid("Invalid sky working resolution.")}
     let w=source.width,h=source.height;guard w>=4,h>=4 else{return nil}
     let step=max(1,Int(ceil(sqrt(Double(w*h)/Double(workingPixels)))))

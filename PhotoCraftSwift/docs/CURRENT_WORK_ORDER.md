@@ -1,3 +1,5 @@
+**Checkpoint 519:** Large Sky working-resolution edits, clipped/tiled previews and native/API navigation. Current focused Debug 15/all 9 new and optimized 63/all 34 new each architecture pass. Native Sky workflow remains unverified; universal static checks pass, unlaunched. Full AI09 and all prior failures remain open. Next B08, major stillneeded. [Qualification](SOURCE_PUBLICATION_519.md).
+
 **Checkpoint 518:** Multi-key selection/clipboard/group editing passes all 46 selected and 12 new tests in Debug and both optimized architectures. Native group controls/history/save/reopen and universal static checks pass. Full SP01, earlier failures and Photoshop parity remain open. Next AI09, major stillneeded. [Qualification](SOURCE_PUBLICATION_518.md).
 
 **Checkpoint 517:** Persistent generated-image variations:54/54 selected,9/9 new methods pass in Debug and both optimized configurations. Native selection/delete/history/save/reopen and universal static checks pass. Synthetic fixtures only; full AI07, earlier failures and Photoshop parity remain open. Next SP01, major stillneeded. [Qualification](SOURCE_PUBLICATION_517.md).

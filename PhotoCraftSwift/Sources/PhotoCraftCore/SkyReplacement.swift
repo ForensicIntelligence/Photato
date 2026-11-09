@@ -30,9 +30,12 @@ public struct SkyMaskStroke:Codable,Equatable,Sendable {
   public func validate()throws {var brush=Brush();brush.size=size;brush.hardness=hardness;brush.opacity=opacity;var request=SelectionToolRequest(kind:.brush);request.brush=brush;request.points=points;try request.validate()}
 }
 public enum SkyReplacement {
-  public static let maximumPixels=8_388_608
+  public static let maximumPixels=Surface.maxPixels
+  public static let denseMaximumPixels=8_388_608
   public static func refined(_ mask:SelectionMask,settings:SkyReplacementSettings,strokes:[SkyMaskStroke])throws->SelectionMask {
-    try settings.validate();guard mask.width<=maximumPixels/mask.height,strokes.count<=128,mask.width*mask.height<=134_217_728/max(1,strokes.count) else{throw CraftError.unsupported("Sky Replacement supports8,388,608 canvas pixels and128 refinement strokes.")}
+    try settings.validate();guard strokes.count<=128 else{throw CraftError.unsupported("Sky Replacement supports128 refinement strokes.")}
+    if mask.width>denseMaximumPixels/mask.height{return try PagedSkyMask.refined(mask,settings:settings,strokes:strokes)}
+    guard mask.width*mask.height<=134_217_728/max(1,strokes.count) else{throw CraftError.unsupported("Dense Sky Replacement refinement exceeds134,217,728 mask-pixel visits.")}
     let w=mask.width,h=mask.height;var values=(try mask.bytes).map{Float($0)/255}
     let shift=Int((settings.shiftEdge/100*20).rounded())
     if shift != 0{values=try MattingFilters.morph(values,w,h,abs(shift),grow:shift>0)}
@@ -46,6 +49,7 @@ public enum SkyReplacement {
     return result
   }
   public static func edgeMask(_ mask:SelectionMask)throws->SelectionMask {
+    if mask.width>denseMaximumPixels/mask.height{return try PagedSkyMask.edge(mask)}
     let v=(try mask.bytes).map{Float($0)/255},w=mask.width,h=mask.height
     let hi=try MattingFilters.extreme(v,w,h,5,maximum:true),lo=try MattingFilters.extreme(v,w,h,5,maximum:false)
     return try .init(width:w,height:h,bytes:v.indices.map{UInt8(min(255,max(0,((hi[$0]-lo[$0])*(1-v[$0])*255).rounded())))})

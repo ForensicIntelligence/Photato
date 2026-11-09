@@ -1,3 +1,5 @@
+**Source checkpoint 519:** Large Sky working-resolution edits and clipped/tiled native previews. Debug 15 focused/all 9 new and optimized 63/all 34 new each pass; universal static checks pass, unlaunched. Native Sky inspection disconnected; full AI09, exact Photoshop fidelity and prior failures remain open. [Details](docs/SOURCE_PUBLICATION_519.md).
+
 **Source checkpoint 518:** Native video keyframe group editing and optional API. All 46 selected and 12 new tests pass in Debug and both optimized architectures; actual native save/reopen and universal static checks pass. Full SP01, prior failures and complete Photoshop parity remain open. [Details](docs/SOURCE_PUBLICATION_518.md).
 
 **Source checkpoint 517:** Saved generated-image alternatives, native Properties chooser and optional API.54/54 selected and 9/9 new tests pass in Debug and both optimized architectures; native save/reopen and universal static checks pass. No actual model/provider-output claim. Full AI07 and earlier failures remain open. [Details](docs/SOURCE_PUBLICATION_517.md).

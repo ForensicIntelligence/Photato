@@ -1209,7 +1209,7 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if command.name == "sky.replace" {
-        guard store.canReplaceSky else{throw AutomationFailure(status:422,message:"Sky Replacement requires an RGB document up to8,388,608 pixels.")}
+        guard store.canReplaceSky else{throw AutomationFailure(status:422,message:"Sky Replacement requires an available RGB document target.")}
         guard (command.parameters["skyID"] != nil) != (command.parameters["sourceLayerID"] != nil) else{throw AutomationFailure(status:400,message:"Specify exactly one skyID or sourceLayerID.")}
         let preset=try command.parameters["skyID"].map{_ in try store.skies.preset(command.actionUUID("skyID"))}
         let sourceID=try command.parameters["sourceLayerID"].map{_ in try command.actionUUID("sourceLayerID")}

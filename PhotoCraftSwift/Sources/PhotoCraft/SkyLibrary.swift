@@ -21,9 +21,9 @@ struct SkyPreset:Codable,Equatable,Identifiable,Sendable {
     }else{
       guard let image=CGImageSourceCreateWithData(data as CFData,nil),let properties=CGImageSourceCopyPropertiesAtIndex(image,0,nil) as? [CFString:Any],let width=properties[kCGImagePropertyPixelWidth] as? Int,let height=properties[kCGImagePropertyPixelHeight] as? Int else{throw CraftError.invalid("Choose a supported raster sky image.")};w=width;h=height
     }
-    guard w>0,h>0,w<=SkyReplacement.maximumPixels/h else{throw CraftError.unsupported("Sky images support up to8,388,608 pixels.")}
+    guard w>0,h>0,w<=Surface.maxDimension,h<=Surface.maxDimension,w<=SkyReplacement.maximumPixels/h else{throw CraftError.unsupported("Sky images must fit within300,000pixels per side; file-size and format decoder limits also apply.")}
     let d=try RasterIO.read(data,name:name)
-    guard d.width<=SkyReplacement.maximumPixels/d.height else{throw CraftError.unsupported("Sky images support up to8,388,608 pixels.")};return d
+    guard d.width<=SkyReplacement.maximumPixels/d.height else{throw CraftError.unsupported("Sky images must fit within300,000pixels per side; file-size and format decoder limits also apply.")};return d
   }
 }
 struct SkyPresetGroup:Codable,Equatable,Identifiable,Sendable {

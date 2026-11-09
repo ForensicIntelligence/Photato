@@ -27,10 +27,20 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   var size=40.0
   var hardness=0.5
   var opacity=1.0
-  var zoom=1.0
-  var pan=CGSize.zero
-  var showOriginal=false
-  var showMask=false
+  var zoom=0.0 {didSet{scheduleDetail()}}
+  var pan=CGSize.zero {didSet{scheduleDetail()}}
+  var showOriginal=false {didSet{scheduleDetail()}}
+  var showMask=false {didSet{scheduleDetail()}}
+  var viewportSize=CGSize.zero
+  var viewportBackingScale=1.0
+  var detailTiles:[SkyPreviewTile]=[]
+  var detailTask:Task<Void,Never>?
+  var detailBusy=false
+  var detailError:String?
+  @ObservationIgnored var outputSurface:Surface?
+  @ObservationIgnored var detailPlan:SkyViewportPlan?
+  @ObservationIgnored var detailSequence=0
+  @ObservationIgnored var updatingViewport=false
   var loading=false
   var rendering=false
   var committing=false
@@ -44,8 +54,8 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   var groupDraft:SkyGroupDraft?
   var groupFilter=SkyGroupFilter.all
   var stroke:SkyMaskStroke?
-  private var generation=0
-  private var closed=false
+  private(set) var generation=0
+  private(set) var closed=false
   private var detection:(SkySelectionSettings,SelectionMask)?
   private var dragStart:SkyState?
   var hasRasterSource:Bool{if let layer=original.layers.first(where:{$0.id==original.activeLayerID}),case .raster=layer.content{return true};return false}
@@ -57,7 +67,7 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   func prepare()async {
     loading=true
     do{
-      let original=original,worker=Task.detached(priority:.userInitiated){let input=try SkyReplacementInput.prepare(original);return (input,try ColorManagement.displayImage(input.composite,in:original))}
+      let original=original,worker=Task.detached(priority:.userInitiated){let input=try SkyReplacementInput.prepare(original);return (input,try SkyReplacementInput.display(input.composite,in:original))}
       let result=try await withTaskCancellationHandler{try await worker.value}onCancel:{worker.cancel()};try Task.checkCancellation();guard !closed else{return}
       input=result.0;originalImage=result.1;loading=false;refresh()
     }catch{if !closed && !Task.isCancelled{self.error=error.localizedDescription};loading=false}
@@ -70,29 +80,31 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
   func useLayer(_ id:UUID){var next=state;next.sourceLayerID=id;next.skyID=nil;change(next)}
   nonisolated static func sourceLayer(_ id:UUID,in d:CraftDocument)throws->CraftDocument {
     guard let layer=d.layers.first(where:{$0.id==id}),case .raster(let pixels)=layer.content else{throw CraftError.invalid("Choose a raster layer as the replacement sky.")}
-    var source=try CraftDocument(width:pixels.width,height:pixels.height,depth:d.depth);source.workingICC=d.workingICC;source.layers[0].content = .raster(pixels);source.name=layer.name;return source
+    var source=try CraftDocument(width:pixels.width,height:pixels.height,depth:d.depth);source.workingICC=d.workingICC;source.colorSpace=d.colorSpace;source.profileIsUntagged=d.profileIsUntagged;source.layers[0].content = .raster(pixels);source.name=layer.name;return source
   }
   func refresh(){
     guard let input,!closed else{return};generation+=1;let request=generation,state=state,previous=detection
-    task?.cancel();edit=nil;error=nil;rendering=false
+    task?.cancel();edit=nil;error=nil;rendering=false;outputSurface=nil;mask=nil;maskImage=nil;previewImage=originalImage;invalidateDetail();scheduleDetail()
     guard state.skyID != nil || state.sourceLayerID != nil else{previewImage=originalImage;return}
     let preset:SkyPreset?
     do{preset=try state.skyID.map{try library.preset($0)}}catch{self.error=error.localizedDescription;return}
     rendering=true
     task=Task{[weak self] in
       do{
-        let worker=Task.detached(priority:.userInitiated){()throws->(SkyReplacementEdit,SelectionMask,CGImage,CGImage?,SelectionMask) in
+        let worker=Task.detached(priority:.userInitiated){()throws->(SkyReplacementEdit,SelectionMask,CGImage,CGImage?,SelectionMask,Surface) in
           let sky=try preset?.document() ?? Self.sourceLayer(state.sourceLayerID!,in:input.original)
           let detected:SelectionMask
           if state.useSelection{guard let value=try input.original.coverageSelection() else{throw CraftError.invalid("Create a selection before using it as the sky mask.")};detected=value}
           else if let previous,previous.0==state.settings.selection{detected=previous.1}
           else{guard let value=try SkySelection.mask(input.guide,settings:state.settings.selection) else{throw CraftError.invalid("No sky was detected. Use a manual selection or another photo.")};detected=value}
           let result=try input.edit(sky:sky,name:preset?.name ?? sky.name,settings:state.settings,strokes:state.strokes,detected:detected)
-          return (result.edit,result.mask,try ColorManagement.displayImage(Renderer.composite(result.edit.result),in:result.edit.result),try SelectionToolPreparation.overlay(result.mask,color:Pixel(1,0,0,0.55)),detected)
+          let request=input.original.width>SkyReplacement.denseMaximumPixels/input.original.height ? try RasterPreviewRequest.overview(width:input.original.width,height:input.original.height):nil
+          let composite=try Renderer.composite(result.edit.result)
+          return (result.edit,result.mask,try SkyReplacementInput.display(composite,in:result.edit.result),try SelectionToolPreparation.overlay(result.mask,color:Pixel(1,0,0,0.55),request:request),detected,composite)
         }
         let result=try await withTaskCancellationHandler{try await worker.value}onCancel:{worker.cancel()};try Task.checkCancellation()
         guard let self,!self.closed,self.generation==request else{return}
-        self.edit=result.0;self.mask=result.1;self.previewImage=result.2;self.maskImage=result.3;if !state.useSelection{self.detection=(state.settings.selection,result.4)}
+        self.edit=result.0;self.mask=result.1;self.previewImage=result.2;self.maskImage=result.3;self.outputSurface=result.5;if !state.useSelection{self.detection=(state.settings.selection,result.4)};self.invalidateDetail();self.scheduleDetail()
       }catch{if let self,!self.closed,self.generation==request,!Task.isCancelled{self.error=error.localizedDescription}}
       if let self,self.generation==request{self.rendering=false}
     }
@@ -124,11 +136,11 @@ enum SkyTool:String,CaseIterable {case move="Sky Move",brush="Sky Brush",hand="H
     }
   }
   func removeSky(){guard ready,let id=state.skyID else{return};do{try library.remove(id);chooseSky(visibleSkies.first?.id)}catch{self.error=error.localizedDescription}}
-  func close(){renameDraft=nil;groupDraft=nil;closed=true;generation+=1;task?.cancel();commitTask?.cancel();importTask?.cancel()}
+  func close(){renameDraft=nil;groupDraft=nil;closed=true;generation+=1;task?.cancel();commitTask?.cancel();importTask?.cancel();invalidateDetail();outputSurface=nil}
 }
 @MainActor extension EditorStore {
-  var canSelectSky:Bool{canUseSelectionTools && !editingMask}
-  var canReplaceSky:Bool{canSelectSky && document.width<=SkyReplacement.maximumPixels/document.height}
+  var canSelectSky:Bool{canUseBrush && !editingComponent && !aiBusy && !editingMask}
+  var canReplaceSky:Bool{canSelectSky}
   func selectSky(){guard canSelectSky else{return};let id=activeLayer?.id;performGeometry(label:"Select Sky",prepare:{original in try SkyReplacementInput.selection(original,layerID:id)})}
   func beginSkyReplacement(){guard canReplaceSky else{return};let draft=SkyWorkspace(document:document,library:skies);skyWorkspace=draft;draft.task=Task{await draft.prepare()}}
   func cancelSkyReplacement(){skyWorkspace?.close();skyWorkspace=nil}

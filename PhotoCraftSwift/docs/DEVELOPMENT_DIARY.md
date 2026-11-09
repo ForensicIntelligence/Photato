@@ -1,3 +1,9 @@
+## Source update — 9 November 2026 UTC, build 519
+
+Large Sky selection/replacement now retains working-resolution masks/output and visible full-detail previews. Scrolling/zooming imagery stays inside the viewport. Legacy previews, true 100% zoom, existing View shortcuts and read-only API viewport state are tested. Current Debug passes 15 focused checks/all 9 new viewport-display methods; optimized Apple Silicon and translated Intel each pass 63/all 34 new increment methods. Universal static checks pass; actual Sky sheet verification remains open after native inspection disconnected. Full AI09 and earlier failures remain open. Next: B08, major stillneeded.
+
+[519 — Development record](DEVLOG.md#dev-step-519) · [Workflow/API](LARGE_SKY_WORKSPACE.md) · [Qualification](SOURCE_PUBLICATION_519.md).
+
 ## Source update — 9 November 2026 UTC, build 518
 
 Video keyframes now support multi-selection, an immutable clipboard and atomic paste, delete, move, duplicate and interpolation edits through native controls and the optional API. All 46 selected tests and 12 new tests pass in Debug, optimized Apple Silicon and translated Intel. Actual native group editing, save/reopen and universal static checks pass. Photoshop 2026 supplied the observed menu and single-layer timing/value reference; full SP01 and earlier failures remain open. Next: AI09, major stillneeded.
@@ -139,8 +145,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:486 -->
-**Latest record: 486. Application build: 486, validation candidate.** Classic RGB16 Gradient Map now matches the fresh checked Photoshop references across native files, PSD/PSB and native/API edits. All 61 selected Debug tests pass. Optimized Apple Silicon passes 61/61 and translated Intel 60/61, with all three new methods passing both. The remaining Intel failure reproduces on build485. Native edit/Undo/Redo/cleanup and universal package checks pass. Full A06 and earlier gaps remain open. Build480 remains the latest fully qualified selected universal. Next: AI01, then AI02. [Latest record](#dev-step-486) · [Evidence](CLASSIC_RGB16_BOUNDARIES_486.json).
+<!-- current-status-step:519 -->
+## Current tested source
+
+Source 519/Source09: Debug 15 focused checks pass; optimized Apple Silicon and translated Intel each pass 63 selected checks. The universal candidate is statically verified and unlaunched. Actual Sky sheet verification remains open because native inspection disconnected. These counts are not a Photoshop completion percentage.
+
+All 104 original scopes,652 command IDs,81 major memberships and seven passes remain. Current: B08, major stillneeded; full AI09 remains open. Canonical history failed and standalone website promotion remains pending.
+
+[Source qualification](SOURCE_PUBLICATION_519.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

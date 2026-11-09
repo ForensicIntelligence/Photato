@@ -1,7 +1,7 @@
 {
   "step": "dev-step-193",
   "date": "2026-10-27",
-  "status": "Native Sky Selection and Sky Replacement implemented and tested; full S03/AI09/Photoshop parity remains open.",
+  "status": "Historical step193 record retained; current limits and qualification are in current_519.",
   "scope": "Automatic sky selection, imported or existing-raster sky replacement, manual mask/move/edge controls, editable lighting/color output, preview/history and optional API.",
   "provenance": [
     {
@@ -114,5 +114,35 @@
     "checkpoint": "docs/ACTIVE_CHECKPOINT_194.json",
     "release_log": "artifacts/runs/20261027T161119Z-194-focus/release-full01.log",
     "verification": "artifacts/runs/20261027T161119Z-194-focus/verification01.json"
+  },
+  "current_519": {
+    "step": 519,
+    "evidence": "docs/LARGE_SKY_WORKSPACE_519.json",
+    "workflow": "docs/LARGE_SKY_WORKSPACE.md",
+    "qualification": {
+      "Debug_focused": {
+        "passed": 15,
+        "selected": 15,
+        "new_passed": 9
+      },
+      "optimizedARM": {
+        "passed": 63,
+        "selected": 63,
+        "new_passed": 34
+      },
+      "translatedIntel": {
+        "passed": 63,
+        "selected": 63,
+        "new_passed": 34
+      }
+    },
+    "native_format": 92,
+    "Actions": 60,
+    "typed_commands": 271,
+    "large_canvas": "Original-grid paged masks/output;300000 per-side metadata admission;160000 analysis pixels;2048 overview;1024-display-pixel visible tiles, max256. Legacy<=8388608 full previews. Physical dense capacity remains unqualified.",
+    "API": "Existing three edit/library commands retained; strict read-only native sky.viewport state/capabilities added. No new Adobe route.",
+    "native_Sky_workflow_qualified": false,
+    "full_AI09_closed": false,
+    "original_numerical_gate_and_failures_remain": true
   }
 }

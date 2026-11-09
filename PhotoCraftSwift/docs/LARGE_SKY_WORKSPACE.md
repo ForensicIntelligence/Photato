@@ -1,0 +1,19 @@
+# Large Sky workspace
+
+Build 519 supports full working-resolution sky selection, refinement and replacement on the document's paged raster grid. The previous 8.4MP replacement and 16MP Select Sky admission limits are removed. Document metadata admits 300,000 pixels per side; sparse maximum-size checks do not establish dense 90GP practicality.
+
+Large automatic selection analyses a bounded 160,000-pixel guide, then refines coverage on the original grid. Morphology and brush coverage operate on working pixels. The Gaussian pass retains the existing full-axis kernel lengths and exact quantized results. Color conversion, placement, lighting statistics and editable or duplicate output use the original samples. Legacy small-canvas algorithms remain unchanged.
+
+The native workspace displays a 2048-side overview, followed by visible document-anchored tiles at the current zoom. Each tile has at most 1024×1024 display pixels; multiple tiles cover a Retina viewport. Only the active original or replacement and optional mask are prepared. Pan/resize reuse matching tiles, and source/state/generation/close guards reject stale work. Canvas clipping includes images, masks and brush feedback. Transparent tiles replace the overview and its mask before drawing. Legacy canvases up to 8,388,608 pixels retain their full-detail image/mask previews.
+
+Zoom means backing pixels per document pixel. Fit/100% use the existing View menu commands and Command-0/Command-1. Zoom clicks, Option-scroll and pinch preserve the document point under the pointer. Resize retains zoom; backing-scale changes retain the viewed center. Navigation does not edit the document or its history.
+
+The optional Photato API keeps selection.sky, sky.replace and sky.library. The document state includes read-only sky.viewport geometry, effective zoom, pan, active source, tile/busy/error state and completed tile regions. Capacity metadata distinguishes maximumOverviewSide from the legacy full-preview budget. No new editing command or Adobe route is invented. Replacement records one native edit; replacement Actions recording and Adobe Sky descriptors remain unqualified.
+
+Current Debug qualification passes 15 focused methods/all 9 new viewport-display methods. Both optimized architectures pass 63 selected methods/all 34 new methods in this increment. Tests cover exact existing-kernel/refinement and crop/profile/alpha bytes, full-grid 9.44MP/20MP cases, sparse maximum dimensions, native-model/API equivalence, cancellation/history/archive, cache reuse, menu routing and all 16 Zoom modifier combinations. These are not independent Photoshop output-byte proofs. RGB32 profile tests use the existing linear-working-profile contract and retain nonlinear rejection.
+
+Installed Photoshop 2026 confirmed Command-1 and Command-0 while Sky controls had focus. Its floating control panel and remembered values were observed; factory defaults were not established. Photato's current sheet layout remains different. Native import/title/dimensions/menu observation passed, but the inspection service disconnected after the Sky command, including when screenshot capture was attempted before accessibility inspection. Actual live Sky completion is unverified. The universal candidate passes static signing, macOS 14 minimum metadata, complete payload/signing replay, optional models/licenses and extracted archive checks; it is unlaunched.
+
+Full AI09, model/default/output/layer fidelity, .sky/preset workflows, supported physical platforms, dense capacity, sampling and 60fps remain open. The existing Float 32 duplicate rounding residual and earlier failures remain required. A viewport exceeding 256 visible tiles reports an error and retains its overview. Existing decoder, library, per-stroke, sharing and transfer budgets still apply. This is a development alpha, not a software release.
+
+[Qualification](SOURCE_PUBLICATION_519.md) · [Evidence](LARGE_SKY_WORKSPACE_519.json)

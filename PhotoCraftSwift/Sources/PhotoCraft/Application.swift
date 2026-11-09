@@ -129,6 +129,7 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if [#selector(fit),#selector(actual),#selector(zoomIn),#selector(zoomOut)].contains(item.action),let sky=store?.skyWorkspace{return sky.canNavigate}
     if item.action == #selector(showScriptEvents) { return canShowScriptEvents }
     if let result = validateStylesPanel(item) {return result}
     if let result = validateTypographyPanel(item) { return result }
@@ -647,10 +648,10 @@ import SwiftUI
   @objc func pathsPanel() { store?.reveal(LayersTab.paths) }
   @objc func cloneSourcePanel() { store?.workspaceLibrary.selectPanel(.cloneSource, reveal: true) }
   @objc func historyPanel() { store?.workspaceLibrary.selectPanel(.history, reveal: true) }
-  @objc func fit() { store?.fit() }
-  @objc func actual() { store?.setZoom(1) }
-  @objc func zoomIn() { store?.stepZoom(inward: true) }
-  @objc func zoomOut() { store?.stepZoom(inward: false) }
+  @objc func fit() { if let sky=store?.skyWorkspace{sky.fitViewport()}else{store?.fit()} }
+  @objc func actual() { if let sky=store?.skyWorkspace{sky.setZoom(1)}else{store?.setZoom(1)} }
+  @objc func zoomIn() { if let sky=store?.skyWorkspace{sky.stepZoom(inward:true)}else{store?.stepZoom(inward:true)} }
+  @objc func zoomOut() { if let sky=store?.skyWorkspace{sky.stepZoom(inward:false)}else{store?.stepZoom(inward:false)} }
   @objc func definePattern() { store?.beginDefinePattern() }
   @objc func newGradientFill() { store?.beginGradientFill() }
   @objc func newPatternFill() { store?.beginPatternFill() }
