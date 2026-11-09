@@ -26,6 +26,24 @@ extension NativeEditPlan {
       case .autoColor: edit = .autoCorrection(.active, .color)
       case .desaturate: edit = .desaturate(.active)
       case .invert: edit = .adjustment(.active, .invert)
+      case .adjustment(let value):
+        let p = value.parameters
+        switch value.operation {
+        case .exposure:
+          edit = .adjustment(.active, .classic(.exposure(.init(exposure: Float(p["exposure"]!),
+            offset: Float(p["offset"]!), gammaCorrection: Float(p["gammaCorrection"]!)))))
+        case .brightnessContrast:
+          edit = .adjustment(.active, .source(.init(.brightnessContrast,
+            parameters: ["brightness": Float(p["brightness"]!), "contrast": Float(p["contrast"]!)], options: ["legacy": false])))
+        case .hueSaturation:
+          var settings = HueSaturationAdjustment()
+          settings.master = .init(hue: Int(p["hue"]!), saturation: Int(p["saturation"]!), lightness: Int(p["lightness"]!))
+          edit = .adjustment(.active, .hueSaturation(settings))
+        case .vibrance:
+          var settings = ClassicAdjustment(.vibrance)
+          settings.vibrance = Int(p["vibrance"]!); settings.saturation = Int(p["saturation"]!)
+          edit = .adjustment(.active, .classic(settings))
+        }
       }
       return RecordedActionStep(name: operation.title, operation: edit)
     })

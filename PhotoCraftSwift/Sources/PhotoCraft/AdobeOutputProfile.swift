@@ -49,7 +49,7 @@ struct AdobeOutputProfile: Hashable, Sendable {
     let profile = try data(resources: resources, depth: document.depth)
     var request = ColorProfileRequest(.convert, profile: profile)
     let destination = try ProofSettings.mode(of: profile)
-    request.mergeVisible = rasterOutput && ColorProfileInput.needsMerge(document, destination: destination)
+    request.mergeVisible = rasterOutput && ColorProfileInput.needsRasterMerge(document, destination: destination)
     var result = document
     try ColorProfileInput.command(request, in: document).apply(to: &result)
     return result

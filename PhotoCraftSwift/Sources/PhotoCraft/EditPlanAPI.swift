@@ -4,10 +4,22 @@ import PhotoCraftAI
 import PhotoCraftCore
 
 enum EditPlanAPI {
+  static var operationSchema: [String: Any] {
+    var choices: [[String: Any]] = [["type": "string", "enum": NativeEditOperation.allCases.map(\.rawValue)]]
+    for kind in NativeEditAdjustment.Kind.allCases {
+      var fields: [String: Any] = [:]
+      for parameter in kind.parameters {
+        fields[parameter.name] = ["type": parameter.integer ? "integer" : "number", "minimum": parameter.minimum,
+          "maximum": parameter.maximum, "description": parameter.unit.isEmpty ? parameter.title : parameter.title + " (" + parameter.unit + ")"]
+      }
+      choices.append(BrushAPI.object(["operation": ["const": kind.rawValue],
+        "parameters": BrushAPI.object(fields, required: kind.parameters.map(\.name))], required: ["operation", "parameters"]))
+    }
+    return ["oneOf": choices]
+  }
   static var planSchema: [String: Any] {
     BrushAPI.object(["summary": ["type": "string", "minLength": 1, "maxLength": 512, "description": "Nonblank; additionally limited to512UTF-8bytes."],
-      "operations": ["type": "array", "minItems": 1, "maxItems": 8,
-        "items": ["type": "string", "enum": NativeEditOperation.allCases.map(\.rawValue)]]], required: ["summary", "operations"])
+      "operations": ["type": "array", "minItems": 1, "maxItems": 8, "items": operationSchema]], required: ["summary", "operations"])
   }
   static var controlSchema: [String: Any] {
     let common: [String: Any] = ["revision": ["type": "string"], "requestID": ["type": "string", "format": "uuid"]]
@@ -29,18 +41,23 @@ enum EditPlanAPI {
     ["statePath": "GET /v1/documents/{id}/edit-plan", "controlPath": "POST /v1/documents/{id}/edit-plan",
       "previewPath": "GET /v1/documents/{id}/edit-plan/previews/{before|after}",
       "controlSchema": controlSchema, "stateSchema": stateSchema, "planSchema": planSchema,
-      "operations": NativeEditOperation.allCases.map(\.rawValue),
+      "operations": NativeEditOperation.supportedNames,
+      "fixedOperations": NativeEditOperation.allCases.map(\.rawValue), "operationSchema": operationSchema,
+      "adjustmentValues": "Each adjustment requires exactly its declared numeric parameters. Exposure uses EV, Offset and Gamma Correction; Brightness/Contrast uses integer UI values with Legacy off; Hue/Saturation uses master hue degrees and saturation/lightness percent with Colorize off; Vibrance uses integer vibrance and saturation. Every value is displayed before Apply. Unknown keys, booleans, missing/nonfinite/out-of-range/fractional integer values reject without changing the source.",
       "presentation": "Native segmented Workflow selector in the existing Apple Intelligence sheet. Each presentation starts in Create Image. Section and presentation state are observable and included in the opaque revision; switching is disabled until current AI work finishes or is cancelled. Supplied-plan HTTP operations do not open a modal or run a model.",
       "generation": "Native Edit > Create with Apple Intelligence > Edit Plan explicitly selects on-device26+ or Private Cloud Compute27+ text planning. Only the instruction is sent; no pixels, file paths, document/layer names or arbitrary tools. The running app must carry Apple's managed PCC entitlement for direct cloud text use; runtime availability still applies. Discovery reports stable reason codes. HTTP accepts supplied typed plans; it never starts inference or labels supplied plans as model output.",
       "transaction": "Prepare computes actual before/after previews and a retained native Actions transaction without changing document/history. Apply requires the matching requestID/current revision and exact source session/lifecycle/target. One Undo/Redo transaction; a no-op adds no history. Cancel discards retained work; no clipboard, files, scripts, selection or layer-target code is supplied by the plan.",
       "authorization": "Prepare/apply/cancel require native Allow workspace panel changes, a current bearer token and shared document revision. Preview PNG downloads also require document transfers and X-Photato-Revision. Sharing/token/permissions/source are checked again after detached work.",
       "preview": "SDR color-managed full-canvas overview, maximum2048 per side; native editing values retain their original depth. Existing renderer/operation capacity limits still apply.",
-      "remaining": "Five declared operations on one RGB pixel layer only. Native kernel/output differences remain; general assistant guidance, image understanding, generative editing, arbitrary tools, AI Assisted Editor and actual provider-output/platform qualification remain open.",
+      "remaining": "Five fixed corrections and four bounded parameterized adjustments on one RGB pixel layer only. Native kernel/output differences remain; general assistant guidance, image understanding, generative editing, arbitrary tools, AI Assisted Editor and actual provider-output/platform qualification remain open.",
       "adobe": "No corresponding reviewed desktop-plan lifecycle is defined by the pinned Firefly v2 contract. No Adobe endpoint or proprietary AI runtime/output equivalence is claimed."]
   }
   @MainActor static func state(_ store: EditorStore) -> [String: Any] {
     let review = store.editPlanReview
-    let plan = review?.plan.map { ["summary": $0.summary, "operations": $0.operations.map(\.rawValue)] as [String: Any] }
+    let plan = review?.plan.flatMap { plan -> Any? in
+      guard let bytes = try? JSONEncoder().encode(plan) else { return nil }
+      return try? JSONSerialization.jsonObject(with: bytes)
+    }
     return ["requestID": review?.id.uuidString as Any? ?? NSNull(), "phase": review?.phase ?? "idle",
       "origin": review?.origin.rawValue as Any? ?? NSNull(), "plan": plan as Any? ?? NSNull(),
       "canPrepare": store.canReviewEditPlan, "canApply": store.canApplyEditPlan, "error": review?.error as Any? ?? NSNull(),

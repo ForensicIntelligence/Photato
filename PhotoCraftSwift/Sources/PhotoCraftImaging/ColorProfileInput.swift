@@ -29,12 +29,24 @@ public enum ColorProfileInput {
       if layer.smartObject != nil || layer.smartFilters != nil || layer.style != nil { return true }
       switch layer.content {
       case .raster, .group: return false
-      case .fill, .text: return document.modeDescriptor != nil || destination != .rgb
+      case .fill, .text, .gradientFill: return document.modeDescriptor != nil || destination != .rgb
       case .shape(let shape):
         if document.modeDescriptor != nil || destination != .rgb { return true }
         guard let definition = shape.definition else { return false }
-        return ![.none, .solid].contains(definition.fill.kind) || ![.none, .solid].contains(definition.stroke.paint.kind)
+        return definition.fill.kind == .pattern || definition.stroke.paint.kind == .pattern
       default: return true
+      }
+    }
+  }
+  /// Raster exports preserve the source composite before a nonlinear profile transform.
+  /// Keeping editable stop controls is a separate choice from preserving raster appearance.
+  public static func needsRasterMerge(_ document: CraftDocument, destination: DocumentColorMode) -> Bool {
+    needsMerge(document, destination: destination) || document.layers.contains { layer in
+      switch layer.content {
+      case .gradientFill: return true
+      case .shape(let shape):
+        return shape.definition?.fill.kind == .gradient || shape.definition?.stroke.paint.kind == .gradient
+      default: return false
       }
     }
   }
@@ -93,12 +105,44 @@ public enum ColorProfileInput {
         result.layers[i].content = .raster(output.pixels)
       case .fill(let p): result.layers[i].content = .fill(try convertColor(p, transform, depth: document.depth))
       case .text(var text): text.color = try convertColor(text.color, transform, depth: document.depth); result.layers[i].content = .text(text)
+      case .gradientFill(let fill):
+        result.layers[i].content = .gradientFill(try convertGradient(fill, transform, depth: document.depth,
+          identity: sourceProfile == request.profile))
       case .shape(var shape):
+        let originalDefinition = shape.definition
         shape.color = try convertColor(shape.color, transform, depth: document.depth)
         if var definition = shape.definition {
-          definition.fill.color = try convertColor(definition.fill.color, transform, depth: document.depth)
-          definition.stroke.paint.color = try convertColor(definition.stroke.paint.color, transform, depth: document.depth)
+          definition.fill = try convertPaint(definition.fill, transform, depth: document.depth,
+            identity: sourceProfile == request.profile)
+          definition.stroke.paint = try convertPaint(definition.stroke.paint, transform, depth: document.depth,
+            identity: sourceProfile == request.profile)
           shape.definition = definition
+          if var appearance = shape.importedAppearance,
+            sourceProfile != request.profile || definition != originalDefinition {
+            // Raw source paint records are provenance, not a converted definition.
+            // Preserve the original bytes/profile outside the active appearance cache.
+            if let record = appearance.vectorRecord {
+              let bytes = try JSONSerialization.data(withJSONObject:
+                ["version": 1, "profileBase64": sourceProfile.base64EncodedString(),
+                 "recordBase64": record.base64EncodedString()], options: [.sortedKeys])
+              var tags = result.layers[i].sourceTags ?? [:]
+              guard tags["PtVP"] == nil || tags["PtVP"] == bytes else {
+                throw CraftError.unsupported("Existing vector profile provenance cannot be replaced. Keep a copy or flatten before conversion.")
+              }
+              tags["PtVP"] = bytes; result.layers[i].sourceTags = tags
+              appearance.vectorRecord = nil
+            }
+            if appearance.definition == originalDefinition {
+              appearance.definition = definition
+              if let pixels = appearance.pixels {
+                appearance.pixels = try rasterConversion.apply(pixels, native: nil).pixels
+              }
+              shape.importedAppearance = appearance.pixels == nil ? nil : appearance
+            } else {
+              // A stale cache must not become current accidentally after conversion.
+              shape.importedAppearance = nil
+            }
+          }
         }
         result.layers[i].content = .shape(shape)
       case .group: break
@@ -113,6 +157,32 @@ public enum ColorProfileInput {
     result.variables = try VariableGraphicsInput.imagesForWorkingProfile(in: result)
     try result.validate()
     return .preparedColorProfile(.init(source: document, result: result, title: "Convert to Profile"))
+  }
+  private static func convertGradient(_ original: GradientFill, _ transform: ProofTransform,
+    depth: PixelDepth, identity: Bool) throws -> GradientFill {
+    if identity { return original }
+    var result = original
+    for i in result.gradient.colors.indices {
+      try Task.checkCancellation()
+      let color = original.gradient.colors[i].color.resolved(foreground: .black, background: .white)
+      let converted = try convertColor(color, transform, depth: depth)
+      guard converted.isFinite else { throw CraftError.invalid("Invalid converted gradient color.") }
+      // GradientDefinition represents bounded SDR stops, including in RGB/32 documents.
+      // Clip to that storage domain explicitly; raster RGB/32 keeps extended samples.
+      // This also handles native CMM white values above one without an epsilon rule.
+      result.gradient.colors[i].color = .rgb(Pixel(unit(converted.r), unit(converted.g), unit(converted.b)))
+    }
+    try result.validate(); return result
+  }
+  private static func convertPaint(_ original: ShapePaint, _ transform: ProofTransform,
+    depth: PixelDepth, identity: Bool) throws -> ShapePaint {
+    guard original.kind != .pattern else { throw CraftError.unsupported("Flatten pattern-painted shapes before converting profiles.") }
+    var result = original
+    result.color = try convertColor(original.color, transform, depth: depth)
+    if let gradient = original.gradient {
+      result.gradient = try convertGradient(gradient, transform, depth: depth, identity: identity)
+    }
+    return result
   }
   private static func convertColor(_ pixel: Pixel, _ transform: ProofTransform, depth: PixelDepth) throws -> Pixel {
     let p = depth == .f32 ? SRGBTransfer.linear(pixel) : pixel

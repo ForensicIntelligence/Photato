@@ -1,0 +1,614 @@
+{
+  "step": 508,
+  "recorded_utc": "2026-11-09T03:14:38.786320+00:00",
+  "package": "AUD02",
+  "pass": "major stillneeded",
+  "original_scope_preserved": true,
+  "full_package_closed": false,
+  "goal_complete": false,
+  "native_build": 507,
+  "native_inputs": 7745,
+  "public_source_step": 506,
+  "original_counts": {
+    "scopes": 104,
+    "command_identities": 652,
+    "major_memberships": 81,
+    "passes": 7
+  },
+  "api_impact": "Documentation/research only. No executable capability, route/schema, native control/shortcut/cursor, signing entitlement or format changes.269typedcommands/native92/Actions60 retained.",
+  "references": [
+    {
+      "id": "adobeLanguages",
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/technical-requirements-installation/photoshop-language-availability.html",
+      "published_updated": "2026-02-05",
+      "coverage": "Full relevant article language table and regional-language note read."
+    },
+    {
+      "id": "adobePlugins",
+      "url": "https://helpx.adobe.com/photoshop/desktop/app-integrations/supported-plugins-and-extensions.html",
+      "published_updated": "2026-10-04",
+      "coverage": "Relevant plugin categories, access/distribution locations read; no plugin code installed/executed."
+    },
+    {
+      "id": "adobeUXP",
+      "url": "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/",
+      "coverage": "Public API overview, DOM/modal/action execution distinctions read; no claim of complete UXP API coverage."
+    },
+    {
+      "id": "appleLocales",
+      "url": "https://developer.apple.com/documentation/foundationmodels/supporting-languages-and-locales-with-foundation-models",
+      "coverage": "Search-provided official article excerpt and supportsLocale/supportedLanguages API documentation read. Full Markdown link fetch failed unsupported content-type. Runtime API executed locally without inference."
+    },
+    {
+      "id": "appleReview",
+      "url": "https://developer.apple.com/app-store/review/guidelines/",
+      "coverage": "Relevant2.4.5/2.5.2/4.4/4.7 text read. Host-specific compliance remains unqualified;4.7 explicitly addresses some software/plugins, so no blanket plugin prohibition is inferred."
+    }
+  ],
+  "language_catalogue": [
+    {
+      "reference_label_english": "Danish",
+      "audit_locale_key": "da",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "German",
+      "audit_locale_key": "de",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "English",
+      "audit_locale_key": "en",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Spanish",
+      "audit_locale_key": "es",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "French",
+      "audit_locale_key": "fr",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Hebrew",
+      "audit_locale_key": "he",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Adobe documents this text language in regional English/French interfaces; full RTL shaping/composition and corresponding regional UI are required, not a claim of standalone translated UI."
+    },
+    {
+      "reference_label_english": "Hungarian",
+      "audit_locale_key": "hu",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Indonesian",
+      "audit_locale_key": "id",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Italian",
+      "audit_locale_key": "it",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Dutch",
+      "audit_locale_key": "nl",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Norwegian",
+      "audit_locale_key": "no",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Norwegian reference does not name a precise variant; no is an audit lookup key, and Apple advertises nb. Exact UI/text variants still need reference verification."
+    },
+    {
+      "reference_label_english": "Polish",
+      "audit_locale_key": "pl",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Finnish",
+      "audit_locale_key": "fi",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Swedish",
+      "audit_locale_key": "sv",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Turkish",
+      "audit_locale_key": "tr",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Ukrainian",
+      "audit_locale_key": "uk",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Vietnamese",
+      "audit_locale_key": "vi",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Czech",
+      "audit_locale_key": "cs",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Russian",
+      "audit_locale_key": "ru",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Arabic",
+      "audit_locale_key": "ar",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": false,
+      "qualification_note": "Adobe documents this text language in regional English/French interfaces; full RTL shaping/composition and corresponding regional UI are required, not a claim of standalone translated UI."
+    },
+    {
+      "reference_label_english": "Japanese",
+      "audit_locale_key": "ja",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Simplified Chinese",
+      "audit_locale_key": "zh-Hans",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Korean",
+      "audit_locale_key": "ko",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    },
+    {
+      "reference_label_english": "Brazilian Portuguese",
+      "audit_locale_key": "pt-BR",
+      "reference_entry_recorded": true,
+      "native_UI_translation_qualified": false,
+      "text_layout_qualified": false,
+      "current_Apple_model_metadata_support": true,
+      "qualification_note": "Reference capability target; app translation/layout and actual model response remain unqualified."
+    }
+  ],
+  "language_catalogue_entries": 24,
+  "language_scope_note": "Reference24entries include regional Arabic/Hebrew support. This is not a claim of24standalone translated UI versions or actual AI language execution.",
+  "current_runtime_language_evidence": {
+    "record": "language-runtime01-stdout.log",
+    "runtime": {
+      "cloudServiceInvoked": false,
+      "currentLocale": "en_US",
+      "currentLocaleSupported": true,
+      "inferenceInvoked": false,
+      "onDeviceAvailability": "unavailable(FoundationModels.SystemLanguageModel.Availability.UnavailableReason.modelNotReady)",
+      "onDeviceSupportedLanguages": [
+        "da",
+        "de",
+        "en",
+        "en-AU",
+        "en-GB",
+        "en-IN",
+        "es",
+        "es-419",
+        "es-US",
+        "fr",
+        "fr-CA",
+        "it",
+        "ja",
+        "ko",
+        "nb",
+        "nl",
+        "pt",
+        "pt-PT",
+        "sv",
+        "tr",
+        "vi",
+        "zh",
+        "zh-HK",
+        "zh-TW"
+      ],
+      "OS": "Version 27.2 (Build 26B123)",
+      "referenceLanguageLocaleChecks": [
+        {
+          "locale": "da",
+          "supported": true
+        },
+        {
+          "locale": "de",
+          "supported": true
+        },
+        {
+          "locale": "en",
+          "supported": true
+        },
+        {
+          "locale": "es",
+          "supported": true
+        },
+        {
+          "locale": "fr",
+          "supported": true
+        },
+        {
+          "locale": "he",
+          "supported": false
+        },
+        {
+          "locale": "hu",
+          "supported": false
+        },
+        {
+          "locale": "id",
+          "supported": false
+        },
+        {
+          "locale": "it",
+          "supported": true
+        },
+        {
+          "locale": "nl",
+          "supported": true
+        },
+        {
+          "locale": "no",
+          "supported": true
+        },
+        {
+          "locale": "pl",
+          "supported": false
+        },
+        {
+          "locale": "fi",
+          "supported": false
+        },
+        {
+          "locale": "sv",
+          "supported": true
+        },
+        {
+          "locale": "tr",
+          "supported": true
+        },
+        {
+          "locale": "uk",
+          "supported": false
+        },
+        {
+          "locale": "vi",
+          "supported": true
+        },
+        {
+          "locale": "cs",
+          "supported": false
+        },
+        {
+          "locale": "ru",
+          "supported": false
+        },
+        {
+          "locale": "ar",
+          "supported": false
+        },
+        {
+          "locale": "ja",
+          "supported": true
+        },
+        {
+          "locale": "zh-Hans",
+          "supported": true
+        },
+        {
+          "locale": "ko",
+          "supported": true
+        },
+        {
+          "locale": "pt-BR",
+          "supported": true
+        }
+      ]
+    },
+    "reference_lookup_supported": 15,
+    "reference_lookup_unsupported": [
+      "he",
+      "hu",
+      "id",
+      "pl",
+      "fi",
+      "uk",
+      "cs",
+      "ru",
+      "ar"
+    ],
+    "inference_qualified": false,
+    "physical_platform_matrix_qualified": false
+  },
+  "source_findings": {
+    "localized_resource_files_in_frozen_input_set": [],
+    "CFBundleDevelopmentRegion_declared": false,
+    "CFBundleLocalizations_declared": false,
+    "supportsLocale_implemented_in_app": false,
+    "complete_UI_language_audit": false,
+    "complete_plugin_API_audit": false
+  },
+  "requirements": [
+    {
+      "id": "AIQ01",
+      "area": "AI quality",
+      "status": "open",
+      "criterion": "A result records the actual provider/model/version and available seed/settings, input policy, accepted original and license/provenance. Missing model/seed data is explicit.",
+      "required_evidence": "Actual provider execution record and preserved original/hash; no injected result or capability flag as output proof."
+    },
+    {
+      "id": "AIQ02",
+      "area": "AI quality",
+      "status": "open",
+      "criterion": "Assess each implemented generative/segmentation/upscale task on owned or appropriately licensed unseen photographs, faces/hair/hands, graphics/text, edge/alpha cases and profiles at every supported depth/scale.",
+      "required_evidence": "Pinned corpus manifest with permissions and held-out cases, qualitative intent/identity/detail review plus applicable measurements and retained failures."
+    },
+    {
+      "id": "AIQ03",
+      "area": "AI quality",
+      "status": "open",
+      "criterion": "Unsupported HDR/modes, capacities, architecture/system/model readiness and provider admission reject explicitly instead of silently substituting another operation or ordinary resize.",
+      "required_evidence": "Native and both applicable API boundary cases with untouched source/history and truthful reasons."
+    },
+    {
+      "id": "AIQ04",
+      "area": "AI quality",
+      "status": "open",
+      "criterion": "Masks, alpha, colour/profile/PPI, document geometry, layer placement and source state follow each selected workflow; apply/cancel/undo/redo/reopen and late-work fences all remain correct.",
+      "required_evidence": "Real native/API/provider lifecycle evidence, cold reopen and independent native-file inspection at required scales/platforms."
+    },
+    {
+      "id": "AIQ05",
+      "area": "AI quality",
+      "status": "open",
+      "criterion": "Compare against independent Photoshop outputs/defaults when a corresponding deterministic operation/provider contract is available. Required byte equality is not replaced by epsilon tolerances.",
+      "required_evidence": "Pinned owned reference inputs/settings/results, decoded byte differences and exact source/binary/platform binding; all residuals remain open."
+    },
+    {
+      "id": "AIQ06",
+      "area": "AI quality",
+      "status": "open",
+      "criterion": "Name local/PCC/third-party models accurately. A different provider or quality metric does not establish Firefly/partner model identity, capabilities or Photoshop output equivalence.",
+      "required_evidence": "Provider contract/access and real outputs for any claimed correspondence; explicit unsupported model features and unique-AI differences."
+    },
+    {
+      "id": "LNG01",
+      "area": "Languages",
+      "status": "open",
+      "criterion": "Preserve every published reference language entry, including Arabic/Hebrew regional UI and text behavior, without equating model languages with app localization.",
+      "required_evidence": "This24-entry catalogue plus independent per-locale UI/text/keyboard references and regional variants."
+    },
+    {
+      "id": "LNG02",
+      "area": "Languages",
+      "status": "open",
+      "criterion": "Translate and validate all app-owned menus, dialogs, settings, panels, Help/errors, accessibility text, plurals/numbers/units and keyboard equivalents under the corresponding locale.",
+      "required_evidence": "Localization resources and native runs on supported OS/architectures; no missing/truncated labels, mixed-language workflows or untranslated error paths."
+    },
+    {
+      "id": "LNG03",
+      "area": "Languages",
+      "status": "open",
+      "criterion": "Validate RTL paragraph shaping/composition, bidirectional mixed content, Arabic/Hebrew-specific controls and stable image coordinates independently of translated chrome.",
+      "required_evidence": "Owned editable/native/PSD references and native text editing, save/reopen and visual/output comparison, not merely a reversed interface."
+    },
+    {
+      "id": "LNG04",
+      "area": "Languages",
+      "status": "open",
+      "criterion": "Report actual on-device and PCC locale support with framework fallbacks. Handle unsupported prompt/output languages before inference where possible and handle runtime unsupported-language errors honestly.",
+      "required_evidence": "Separate UI/text/provider capability evidence, metadata and actual request tests on eligible devices/OS with no silent translation or English fallback."
+    },
+    {
+      "id": "SVC01",
+      "area": "Services",
+      "status": "open",
+      "criterion": "Keep native document automation/Firefly-v2 contract compatibility separate from hosted Adobe identity, asset storage, Firefly/partner inference and other proprietary services.",
+      "required_evidence": "Per-endpoint contract tests and provider-specific authorized execution/access, not a matching route/menu as proof of Adobe service use."
+    },
+    {
+      "id": "SVC02",
+      "area": "Services",
+      "status": "open",
+      "criterion": "Optional Apple on-device/PCC services preserve ordinary macOS14+ editing, explicitly disclose processing/input policy and use real device/system/model/managed-entitlement admission.",
+      "required_evidence": "Signed physical-device readiness/inference evidence; missing-entitlement and unavailable-model paths; no fabricated entitlement or automatic proprietary substitution."
+    },
+    {
+      "id": "PLG01",
+      "area": "Plugins",
+      "status": "open",
+      "criterion": "Inventory modern UXP, legacy CEP, native SDK filters/tools and optional format plugins separately; distinguish ExtendScript automation from each host runtime.",
+      "required_evidence": "Public format/API references, licensed SDK access where required, complete host/architecture/supported-operation compatibility matrix."
+    },
+    {
+      "id": "PLG02",
+      "area": "Plugins",
+      "status": "open",
+      "criterion": "Implement and qualify each claimed host API, DOM/action/modal semantics, permissions, lifecycle, event delivery and UI integration through the native engine. Native HTTP automation does not by itself run UXP/CEP/JSX/binary plugins.",
+      "required_evidence": "Owned sample extensions and authorized real plugins execute in Photato with matching results/history and independent Photoshop comparison."
+    },
+    {
+      "id": "PLG03",
+      "area": "Plugins",
+      "status": "open",
+      "criterion": "Qualify plugin architecture/OS/ABI/signature and isolation, fault/crash/memory/time/cancel behavior and user-authorized file/network access. Preserve app and source data on plugin failure.",
+      "required_evidence": "Runtime containment/termination and transaction tests, signed sandbox physical-platform runs; no broad security weakening as an assumed implementation shortcut."
+    },
+    {
+      "id": "PLG04",
+      "area": "Plugins",
+      "status": "open",
+      "criterion": "Prove the chosen distribution/extension mechanism under relevant current Apple rules before claiming Store-compatible arbitrary plugin execution. Preserve completely free/manual-release policies.",
+      "required_evidence": "Concrete host/package design and Apple-supported mechanism/review outcome as applicable.2.4.5/2.5.2 and4.7 requirements remain unresolved; no permission, policy exception or rejection is invented."
+    },
+    {
+      "id": "REST01",
+      "area": "Protected reference",
+      "status": "open",
+      "criterion": "Do not restore or alter the separately protected pre-existing Photoshop document without its required maintainer approval; use separate owned fixtures meanwhile.",
+      "required_evidence": "Original restoration context and explicit approval if that action becomes necessary; no inferred approval or speculative restoration."
+    }
+  ],
+  "plugin_families": [
+    {
+      "family": "UXP",
+      "reference_entry": "Modern packaged panel/command plugins",
+      "required_runtime": "UXP host plus Photoshop DOM/core/action APIs, modal execution and declared permissions",
+      "current_Photato_host": "not implemented",
+      "verification": "Source scan finds only explicit unsupported UXP/capability descriptions; no runtime/loader implementation."
+    },
+    {
+      "family": "CEP",
+      "reference_entry": "Legacy extension panels",
+      "required_runtime": "CEP panel environment and host/ExtendScript bridge, with legacy distribution/access behavior",
+      "current_Photato_host": "not implemented",
+      "verification": "No CEP runtime/bridge found in audited implementation sources."
+    },
+    {
+      "family": "nativeSDK",
+      "reference_entry": "Traditional native filters/effects/tools",
+      "required_runtime": "Compatible licensed public SDK ABI/suites, matching CPU architecture and host lifecycle",
+      "current_Photato_host": "not implemented",
+      "verification": "No native plugin loader/host found in audited sources. Exact vendor formats/ABI and approved isolation require additional work."
+    },
+    {
+      "family": "optionalFormats",
+      "reference_entry": "Optional format plugins",
+      "required_runtime": "Compatible format-plugin host and native import/export pipeline integration",
+      "current_Photato_host": "not implemented",
+      "verification": "Current built-in native file-format support is not plugin-host proof."
+    },
+    {
+      "family": "ExtendScript",
+      "reference_entry": "Legacy automation, tracked separately from four plugin categories",
+      "required_runtime": "Legacy scripting language/DOM and lifecycle",
+      "current_Photato_host": "not implemented",
+      "verification": "Recorded native Actions and Script Events Manager are not an ExtendScript runtime."
+    }
+  ],
+  "service_boundaries": [
+    {
+      "name": "Apple on-device text",
+      "current": "Optional native strict planning/refinement implementation; current modelNotReady; actual507inference unqualified. Current supported-language metadata is24entries/variants, not the24Adobe catalogue targets."
+    },
+    {
+      "name": "Apple PCC text",
+      "current": "Optional native27+ implementation requires real managed signed entitlement and runtime readiness. Currentvalidation build missingEntitlement; no cloud inference or locale service query invoked."
+    },
+    {
+      "name": "Apple image generation/reference edits",
+      "current": "Existing native image job/recovery/placement implementation with eligibility/OS limits; current system reports unavailable. No Firefly equivalence inferred."
+    },
+    {
+      "name": "Local learned upscale",
+      "current": "506real CoreML RealESRGAN2x/4x path verified on Apple Silicon. Different model from Adobe/partner inference; wider image-quality/reference/platform acceptance open."
+    },
+    {
+      "name": "Adobe Firefly Services Photoshop v2",
+      "current": "Native compatibility interface for supported editing jobs is distinct from Adobe-hosted authentication/inference/service access. Unsupported endpoints/provider differences stay explicit."
+    }
+  ],
+  "restoration_approval": {
+    "status": "pending historical approval; no action taken",
+    "pre_existing_document_touched": false,
+    "owned_references_may_continue": true,
+    "context_not_reconstructed_by_guess": true
+  },
+  "next_package": "AUT03",
+  "next_after": "COL01",
+  "remaining": "All actual quality/locale/plugin/service/physical proof and protected restoration approval remain required; this catalogue records criteria and evidence boundaries, not implementations or Photoshop parity."
+}

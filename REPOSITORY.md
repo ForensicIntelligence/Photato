@@ -122,3 +122,7 @@ Adds large-document background references, explicit Apple reference-image editin
 ## 2026-11-08 — Native build 506 source snapshot
 
 Adds local learned super-resolution, optional BSD-3 model preparation, native/API create/cancel and diary506. The same source passes 46 selected app methods in each of three configurations and 19 archive-tool checks. Original Rust files and existing paths/history remain. Generated models stay optional with pinned acquisition instructions. This is an unfinished development alpha; no binary or software release is included. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_506.md.
+
+## 2026-11-08 — Native source checkpoint510
+
+Includes source and diary507–510, reviewed numeric edit plans, language/plugin acceptance audits and editable gradient/vector profile conversion. Original Rust source, all existing paths and Git history are preserved. The broader Intel profile failure reproduces unchanged on506; it is not marked passed. This is a free unfinished development alpha, with no binary or software release. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_510.md.

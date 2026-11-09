@@ -1,0 +1,45 @@
+{
+  "step": 509,
+  "package": "AUT03",
+  "status": "runtime redesign required; full scope open",
+  "native_build": 507,
+  "native_code_changed": false,
+  "interfaces_changed": false,
+  "full_Aut03_closed": false,
+  "goal_complete": false,
+  "candidate": "Independently implemented UXP command host through native Swift engine and isolated worker; not a Photato-only extension substitute.",
+  "required_work": [
+    "Public manifest/module/entrypoint and Photoshop DOM/action/modal semantics",
+    "Source-bound permissioned transactions and current document/layer state mapping",
+    "Isolated bounded worker, termination/cancel/crash recovery and data access",
+    "Native menu/lifecycle and matching Photato plus applicable Adobe APIs",
+    "Universal Xcode/SPM packaging, helper signing/archive checks and physical sandbox runs",
+    "Owned and authorized real plugin execution with independent Photoshop outputs; persistent panels/CEP/ExtendScript/nativeABI remain required"
+  ],
+  "sdk": "Publicly posted license/documentation read; no SDK package/header/sample downloaded or imported, no agreement accepted. SDK is not assumed FOSS or permitted for this host.",
+  "source_references": [
+    "https://developer.adobe.com/uxp/guides/explanation/concepts/panels-and-commands/",
+    "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/media/executeasmodal",
+    "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/media/cpp-pluginsdk",
+    "https://github.com/AdobeDocs/photoshop-cpp-sdk/blob/main/LICENSE.md",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/uxp/"
+  ],
+  "CUA_recovery": {
+    "tool_session_reset": true,
+    "apps_closed_or_relaunched": false,
+    "confirmed_live507_pid": 26746,
+    "fresh507_binding": "native pipe closed",
+    "Photoshop_pid": 9718,
+    "Photoshop_binding": "works",
+    "conclusion": "Failure is specific to the current Photato binding/sheet state, not a complete loss of Photoshop automation. Actual cause and507UI remain unqualified."
+  },
+  "next_package": "COL01",
+  "major_sweep_continues": true,
+  "minor_pass_started": false,
+  "original_counts": [
+    104,
+    652,
+    81,
+    7
+  ]
+}

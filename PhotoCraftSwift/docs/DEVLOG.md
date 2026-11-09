@@ -1,4 +1,4 @@
-> Source delivery 506 includes the current native source and repository diary. The same 7,742 inputs pass 46 selected methods per configuration, plus 19 archive-tool checks. Full-suite qualification, Photoshop parity and canonical evidence/standalone website promotion remain open; see SOURCE_PUBLICATION_506.md.
+> Source delivery 510 includes the native source and repository diary through checkpoint 510. Debug and optimized ARM pass 106/106 selected tests; translated Intel passes 105/106 with a confirmed unchanged baseline failure. All 14 new methods pass. See SOURCE_PUBLICATION_510.md.
 
 # Development log
 
@@ -521,7 +521,37 @@ For a readable account of the project from the beginning, see [Photato developme
 | 504 | 2026-11-08 | [Background generation on large documents](#dev-step-504) |
 | 505 | 2026-11-08 | [Edit a reference image](#dev-step-505) |
 | 506 | 2026-11-08 | [Local learned upscaling](#dev-step-506) |
+| 507 | 2026-11-08 | [Reviewed adjustment values](#dev-step-507) |
+| 508 | 2026-11-08 | [AI, language and plugin acceptance](#dev-step-508) |
+| 509 | 2026-11-08 | [Plugin host requirements](#dev-step-509) |
+| 510 | 2026-11-08 | [Editable gradient profiles](#dev-step-510) |
 <!-- history-index:end -->
+
+<a id="dev-step-510"></a>
+
+## 2026-11-08 — Editable gradient profiles
+
+RGB profile conversion retains editable gradient/vector controls with native/API history and imported-cache provenance. Debug and optimized ARM pass 106/106 selected tests; translated Intel passes 105/106. All 14 new methods pass. The frozen Intel failure reproduces byte for byte on public build 506 and remains required. Full COL01 and Photoshop fidelity remain open.
+
+[Detailed checkpoint record](pending-updates/step510.md). [Workflow and API](EDITABLE_GRADIENT_PROFILES.md). [Source validation](SOURCE_PUBLICATION_510.md).
+
+<a id="dev-step-509"></a>
+
+## 2026-11-08 — Plugin host requirements
+
+[Detailed checkpoint record](pending-updates/step509.md). This checkpoint retains its own implementation or audit findings. Current combined qualification and remaining failures are recorded at510.
+
+<a id="dev-step-508"></a>
+
+## 2026-11-08 — AI, language and plugin acceptance
+
+[Detailed checkpoint record](pending-updates/step508.md). This checkpoint retains its own implementation or audit findings. Current combined qualification and remaining failures are recorded at510.
+
+<a id="dev-step-507"></a>
+
+## 2026-11-08 — Reviewed adjustment values
+
+[Detailed checkpoint record](pending-updates/step507.md). This checkpoint retains its own implementation or audit findings. Current combined qualification and remaining failures are recorded at510.
 
 <a id="dev-step-506"></a>
 

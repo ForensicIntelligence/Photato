@@ -86,6 +86,7 @@ final class ReviewedEditPlanTests: XCTestCase {
       case .autoColor: command = .autoCorrection(id, .color)
       case .desaturate: command = .desaturate(id)
       case .invert: command = .applyAdjustment(id, .invert)
+      case .adjustment: throw CraftError.invalid("Parameterized edits are tested separately with explicit values.")
       }
       var expected = source; try command.apply(to: &expected)
       try await s.prepareReviewedEditPlan(NativeEditPlan(summary: operation.title, operations: [operation]))

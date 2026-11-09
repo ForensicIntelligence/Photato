@@ -1,3 +1,14 @@
+## Source update — 8 November 2026, build 510
+
+The diary now includes reviewed adjustment values, language/plugin audits and editable gradient profile conversion. The current workflow passes all14new tests in Debug and both optimized architectures, plus a native save/reopen check. The broader run has a known Intel failure, independently reproduced on public506; it remains required.
+
+- [507 — Reviewed adjustment values](DEVLOG.md#dev-step-507)
+- [508 — AI, language and plugin acceptance](DEVLOG.md#dev-step-508)
+- [509 — Plugin host requirements](DEVLOG.md#dev-step-509)
+- [510 — Editable gradient profiles](DEVLOG.md#dev-step-510)
+
+[Validation and remaining gaps](SOURCE_PUBLICATION_510.md).
+
 ## Source update — 8 November 2026, build 506
 
 Photato now has a local learned upscaling workflow. Image > Generative Upscale creates a separate 2× or 4× document using an optional BSD-licensed Real-ESRGAN model. The original stays unchanged. Native progress, cancellation and API create/cancel share the same preparation.

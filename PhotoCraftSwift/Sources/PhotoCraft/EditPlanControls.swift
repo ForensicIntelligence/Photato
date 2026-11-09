@@ -24,10 +24,10 @@ struct EditPlanControls: View {
       HStack {
         Button("Suggest and Preview") { inputError = nil; Task { await store.proposeReviewedEditPlan() } }
           .disabled(!store.canReviewEditPlan || !capability.available || store.editPlanPrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        Text("Auto Tone, Auto Contrast, Auto Color, Desaturate and Invert").font(.caption).foregroundStyle(.secondary)
+        Text("Tone, contrast, colour, exposure, hue and saturation").font(.caption).foregroundStyle(.secondary)
       }
       DisclosureGroup("Review a supplied plan", isExpanded: $showJSON) {
-        Text("Paste JSON with a summary and an operations array. This does not run a model.").font(.caption).foregroundStyle(.secondary)
+        Text("Paste a summary and operations array. Fixed edits use names; adjustments use an operation and named parameters. This does not run a model.").font(.caption).foregroundStyle(.secondary)
         TextEditor(text: $store.editPlanJSON).font(.system(.caption, design: .monospaced))
           .frame(height: 65).border(.quaternary).accessibilityLabel("Supplied edit plan JSON").disabled(store.editPlanBusy)
         Button("Preview Supplied Plan") {
@@ -39,8 +39,14 @@ struct EditPlanControls: View {
       if let review = store.editPlanReview {
         if let plan = review.plan {
           Text(plan.summary).font(.subheadline).textSelection(.enabled)
-          Text(plan.operations.enumerated().map { "\($0.offset + 1). \($0.element.title)" }.joined(separator: "  →  "))
-            .font(.caption).textSelection(.enabled)
+          ScrollView {
+            VStack(alignment: .leading, spacing: 4) {
+              ForEach(Array(plan.operations.enumerated()), id: \.offset) { item in
+                Text("\(item.offset + 1). \(item.element.title)").frame(maxWidth: .infinity, alignment: .leading)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+            }.font(.caption).textSelection(.enabled)
+          }.frame(maxHeight: 82).accessibilityLabel("Proposed edits and adjustment values")
         }
         Text(review.origin.title).font(.caption).foregroundStyle(.secondary)
         if let prepared = review.prepared {

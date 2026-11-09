@@ -8094,6 +8094,34 @@
       "link": "DEVLOG.md#dev-step-506",
       "section_sha256": "8d62a1bfec09d56c671364c039f1572992ef97ac27888373b9a20d7092d6e419",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-507",
+      "title": "2026-11-08 \u2014 Reviewed adjustment values",
+      "link": "DEVLOG.md#dev-step-507",
+      "section_sha256": "aab6e3f35125c2db2562b5e5007fc7f87250bbda04324bbb5daa3e68f447110e",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-508",
+      "title": "2026-11-08 \u2014 AI, language and plugin acceptance",
+      "link": "DEVLOG.md#dev-step-508",
+      "section_sha256": "bbd9ce7fb7aaf1bc9a0db2783efed667b364264540dacda43fa05f765a786d72",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-509",
+      "title": "2026-11-08 \u2014 Plugin host requirements",
+      "link": "DEVLOG.md#dev-step-509",
+      "section_sha256": "2808fb682b6cc59ad29ecc9cbd715f0f7837d7f1bfe4a104c8599259fdcc645e",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-510",
+      "title": "2026-11-08 \u2014 Editable gradient profiles",
+      "link": "DEVLOG.md#dev-step-510",
+      "section_sha256": "c206c270df1fd5fc583fd3a188939c546286fcb4709720d32dc7fd5567cda81e",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10625,8 +10653,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "59ad6560c201cfddfcc153014257e973d2933113eeadad96022e0e6e50a71b22",
-      "bytes": 114069,
+      "sha256": "d9c7d628bad46489abb2e6699ff3726b4199def143ac20b4e840fde252598918",
+      "bytes": 114939,
       "rolling_current_snapshot": false
     },
     {
@@ -12821,8 +12849,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "fa1288c3ac992f8b50a9d9bb5a66db60d607276330ef8260146b6167bb54700d",
-      "bytes": 78619,
+      "sha256": "0b8c9f7eba9864905deb6deb280f71d1c9a0e03d60ade493003726793124d961",
+      "bytes": 79381,
       "rolling_current_snapshot": false
     },
     {
@@ -12863,14 +12891,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "ceb098c816d477f029767dfe431cc8c64719dcb8cc8c2dc86af06e4a4f7bde3c",
-      "bytes": 801256,
+      "sha256": "baff6b8a08d75649db223f4dc6b3966929d267d8726764348467be90a2fb95a6",
+      "bytes": 801964,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "ecead83ff1b2dc6ffddb989797f52c804ce2a9906c2346e6ec90c841d9190eee",
-      "bytes": 4459493,
+      "sha256": "acb3cbf95f7ae3a04b9cf5728965b343949c2be63da020bd58a1a2afa989bdac",
+      "bytes": 4461158,
       "rolling_current_snapshot": false
     },
     {
@@ -13021,6 +13049,12 @@
       "path": "docs/DUPLICATE_LAYER_REFERENCES.json",
       "sha256": "e9aa1fdf1e79b2365f37759d83972517b9396ffd7dcdcfab3ce042867cff7c0f",
       "bytes": 3742,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/EDITABLE_GRADIENT_PROFILES.md",
+      "sha256": "37210c53f043a621363e6998e7c8d6a2c47c9447a435340cf036fe672c0d4b9a",
+      "bytes": 3853,
       "rolling_current_snapshot": false
     },
     {
@@ -15406,6 +15440,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/MODEL_LANGUAGE_ECOSYSTEM.md",
+      "sha256": "80a82fa1dbd56f50f32ca6481dd48a9925e95d1ffe35f5b4215c3bbbd171d743",
+      "bytes": 5057,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/MODEL_LANGUAGE_ECOSYSTEM_508.json",
+      "sha256": "3c9274595ff855af22108ab6f0500dc3154965d743a588b22a3d4a995a388711",
+      "bytes": 27135,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/MODERN_ADJUSTMENT_REFERENCES.json",
       "sha256": "4f04b8e644ea2ca827b39ee697dbf7ad4a8a0dbae3806956d22878a54eff1a03",
       "bytes": 17393,
@@ -15985,6 +16031,12 @@
       "path": "docs/PIXEL_MASK_TRANSFORM_REFERENCES.json",
       "sha256": "a9f53640d64b97b34661d7519081a29fd651a59aec0d2d4b50ca448672fba8cd",
       "bytes": 2813,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/PLUGIN_RUNTIME_PLAN_509.json",
+      "sha256": "58f33290e415ef466c4476dad109b06cc5af1c5b933bbc960f3945179765f7d8",
+      "bytes": 2186,
       "rolling_current_snapshot": false
     },
     {
@@ -17200,6 +17252,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_510.md",
+      "sha256": "5e07fffdac458122d500034ddde94ff735a29448f924f4120a278c3da359d96b",
+      "bytes": 5380,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17380,6 +17438,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_510.json",
+      "sha256": "19c82a29d8f7d3171d134defabec661cba8b4c3b18b03cf298794774a8f1c0b4",
+      "bytes": 1149436,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17405,8 +17469,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "e7febf835f644a27f3fef693eac8358d347bfbf8dae22e82675962dd186731e8",
-      "bytes": 399315,
+      "sha256": "c6a21c09ba06fad102291bda2debce168a8daba0e65b76b1df087bf9ced4e77d",
+      "bytes": 399979,
       "rolling_current_snapshot": false
     },
     {
@@ -19709,8 +19773,8 @@
     }
   ],
   "counts": {
-    "milestones": 506,
-    "evidence_files": 1514,
+    "milestones": 510,
+    "evidence_files": 1520,
     "logs": 0,
     "missing_explicit_references": 631
   }

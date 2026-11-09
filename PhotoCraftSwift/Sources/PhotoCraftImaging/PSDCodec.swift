@@ -516,7 +516,17 @@ public enum PSDCodec {
           } else {
             _ = try PSDColorBalance.read(content)
           }
-          if let profile {
+          // RGB gradient-stop components already use the retained document profile.
+          // Admit this bounded 8/16-bit case independently of profile-dependent tone
+          // layers and other gradient color models. RGB/32 descriptors remain separate.
+          let profileCoordinateGradient: Bool
+          if tag == "GdFl", depth != 32 {
+            let fill = try PSDGradientFill.read(content)
+            profileCoordinateGradient = fill.gradient.colors.allSatisfy {
+              if case .rgb = $0.color { return true }; return false
+            }
+          } else { profileCoordinateGradient = false }
+          if let profile, !profileCoordinateGradient {
             let source = CGColorSpace(iccData: profile as CFData)
             let linearLookup:Bool
             if tag == "clrL", depth == 32, source?.model == .rgb {linearLookup=try ICCProfile.isLinear(profile)}
