@@ -541,7 +541,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 520 | 2026-11-09 | [Color and vibrance with Adjustment Brush](#dev-step-520) |
 | 521 | 2026-11-09 | [Sky preview containment and brush measurements](#dev-step-521) |
 | 522 | 2026-11-09 | [Masked adjustment preview performance](#dev-step-522) |
+| 523 | 2026-11-09 | [Retained layer-mask and Adjustment Brush previews](#dev-step-523) |
 <!-- history-index:end -->
+
+<a id="dev-step-523"></a>
+
+## 2026-11-09 — Retained layer-mask and Adjustment Brush previews
+
+Layer-mask and Adjustment Brush previews replayed the complete stroke for each frame. They now retain validated grayscale coverage between samples and use it through the final prepared commit. Mask bounds still come from the original source; an expanding or changing grid rebuilds coverage. Ordinary masks retain their held smoothing policy and dependent Light presentation pause. Adjustment Brush retains its full-tail held preview and full Light evaluation. Final commands, target IDs, seeds, settings, no-op behavior, history and portable recording stay intact. Dual tips, symmetry, object masks, auxiliary targets, document modes and reconciliation keep complete preparation.
+
+In the unchanged owned 3,072 × 3,072 paced workload, layer masks process 59.86 accepted previews/s, existing adjustments 59.85/s and new adjustments 59.80/s, compared with about 27/s in 522. Raster stays at 60.16/s. Every case retains240 inputs, exact complete-command documents and one Undo. Median preparation-to-ready is about 10 ms for the three mask cases. This run has no owned compiler active; one external compiler is observed, and baseline host load is not proved identical. These are native-model calls, with no OS input events or window drawing. Physical60 fps, larger documents and all other tool contexts remain to be qualified.
+
+All 52 focused development methods pass, including 14 new methods. Normal optimized ARM and translated Intel each pass the same 69 ordered methods, including 15 new methods with the presented-Sky regression. There are no missing, extra, duplicate, skipped methods or signals. The immutable 504-reference book was captured from actual optimized 522 before the Core refactor. Tests compare complete mask words and metadata, every sampled prefix, transformed/cropped rendering, immutable prior snapshots, Light policy, held/released tails, stale input, cancellation, native/API equality, Actions 61, archive round trips and Undo/Redo. The Debug configuration retains the documented compiler workaround; the optimized runs do not use it.
+
+The optimized universal app completes native 3072 PNG import, black100 px pixel-mask painting and Undo/Redo, Color and vibrance layer creation and Undo/Redo, Vibrance 100→60, another stroke into its existing mask and Undo/Redo, separate native Save As, clean close/reopen with both masks and 60 retained, then normal Quit. The originalPNG remains unchanged. Process absence is checked without a post-Quit AX query. Universal signatures, both minimum14 declarations, complete unsigned payload/signing replay, optional model/license/provenance and extractedZIP checks pass. This does not qualify physical Intel/macOS14 or independent Photoshop output.
+
+Earlier failed sources and products remain preserved. The first presented-sheet test contaminated a later menu test by presenting SwiftUI UI before creating the custom document controller. Waiting for dismissal alone did not repair it; LLDB reproduced the sequence. The production startup already uses the required order. Using that same isolated startup factory in the test repairs the combined run without changing production Sky or pixel assertions. A cancellation-test compilation error is corrected by capturing local samples instead of its XCTest instance. An initial packaging script referenced the older output-manifest filename; staging did not start, and the corrected script retains the same source/product checks.
+
+The API capabilities describe the native preview behavior and fallbacks. Existing paint.stroke and adjustmentBrush.stroke still accept complete requests; no streaming endpoint or Adobe route is added. Native 92, Actions 61 and 271 typed operations are unchanged. All 104 original scopes,652 identities,81 major memberships and seven passes remain. Full Q03, live Sky scrolling, previous Photoshop differences and all earlier acceptance failures remain open. The Brush Tip popover has a stale availability caption, recorded for minor cleanup. Canonical history remains failed and standalone website diary promotion pending. This source checkpoint is free and open source; no software release or App Store upload is made.
+
+[Workflow and API](RETAINED_MASK_STROKES.md) · [Evidence](RETAINED_MASK_STROKES_523.json) · [Source qualification](SOURCE_PUBLICATION_523.md)
 
 <a id="dev-step-522"></a>
 

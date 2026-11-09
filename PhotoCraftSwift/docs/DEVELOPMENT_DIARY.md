@@ -1,3 +1,9 @@
+## Source update — 2026-11-09 UTC, build 523
+
+Layer-mask and Adjustment Brush previews now retain stroke coverage. The owned model workload processes about 60 accepted previews/s; physical display FPS remains unverified. Debug 52/52 and optimized ARM/translated Intel 69/69 selected methods pass. Native mask/adjustment history, Properties, save/reopen/Quit and universal package checks pass.
+
+[Development record](DEVLOG.md#dev-step-523) · [Qualification](SOURCE_PUBLICATION_523.md).
+
 ## Source update — 9 November2026 UTC, build 522
 
 Masked adjustment previews improve about 23× in the controlled workload. All 30 selected tests pass on optimized ARM and translated Intel, including eight methods since public 520. Actual optimized universal paint/history/Properties/save/reopen/Quit and static package checks pass. Processing remains near 27/s for masks; physical 60 fps and live Sky scrolling remain open.
@@ -157,14 +163,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:522 -->
+<!-- current-status-step:523 -->
 ## Current tested source
 
-Source 522/Source 02 passes30 selected methods on each optimized architecture, five new 522 and three unpublished521 methods. Native optimized universal painting/history/editing/save/reopen/Quit and package checks pass. Masked adjustment processing improves about 23× in the owned workload; it is not physical FPS or Photoshop output proof.
+Source 523 passes 52 focused Debug methods and 69 on each optimized architecture, including 15 new checkpoint methods. The owned mask/adjustment workload processes about 60 accepted previews/s; physical display FPS remains unverified. Native optimized universal painting/history/Properties/save/reopen/Quit and package checks pass.
 
-All 104 scopes/652IDs/81 major memberships/sevenpasses remain. Current: Q03 major-stillneeded, retained mask stroke coverage; live Sky scrolling and all earlier failures remain open. Canonical history failed; standalone website promotion pending.
+All 104 scopes, 652 command identities, 81 major memberships and seven passes remain. Current work is Q03, major stillneeded: actual display response and remaining tool/document contexts. Live Sky scrolling and all prior fidelity/platform/full-suite failures remain open. Canonical history remains failed and standalone website promotion pending.
 
-[Source qualification](SOURCE_PUBLICATION_522.md)
+[Source qualification](SOURCE_PUBLICATION_523.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

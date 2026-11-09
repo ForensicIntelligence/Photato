@@ -811,7 +811,10 @@ import UniformTypeIdentifiers
       && (inkVisibility == nil || inkVisibility?.count == doc.inkChannelTargets.count)
     let previous = renderSnapshot
     let interactiveBrush: InteractiveBrushPreview?
-    if case .stroke? = painting { interactiveBrush = interactiveBrushPreview } else { interactiveBrush = nil }
+    switch painting {
+    case .stroke?, .maskStroke?, .adjustmentBrush?: interactiveBrush = interactiveBrushPreview
+    default: interactiveBrush = nil
+    }
     let brushPoints = brushGesture?.points ?? []
     let ordinaryDisplay = !auxiliaryPresentation && maskView == nil && modeVisibility == nil && inkVisibility == nil
       && channelView.visible.count == 3 && !proof.active && onionSource == nil

@@ -267,3 +267,15 @@ extension Layer {
       toDocumentBounds: IntRect(x: x, y: y, width: max(1, right - x), height: max(1, bottom - y)))
   }
 }
+
+/// Mask paint normalization shared with the retained owner; keep legacy color/erase semantics.
+enum MaskStrokePreparation {
+  static func normalized(_ input: Brush) throws -> Brush {
+    var brush = input
+    let value = brush.erase ? Float(1) : unit(0.2126 * brush.color.r + 0.7152 * brush.color.g + 0.0722 * brush.color.b)
+    guard brush.color.isFinite else { throw CraftError.invalid("Invalid mask brush color.") }
+    brush.color = Pixel(value, value, value, brush.color.a)
+    brush.erase = false
+    return brush
+  }
+}

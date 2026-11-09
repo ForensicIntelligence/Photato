@@ -1,0 +1,13 @@
+{
+  "source_build": 522,
+  "source_commit": "84de39282cd28c42a181f79563c7c1f1deabfc5f",
+  "reference_generator_attempt": "reference522-02",
+  "reference_cases": 504,
+  "reference_sha256": "d27cb4d5472c8292d1c819ca5b085057b86f1a1bb3dc3596ec0d27f4a548859e",
+  "kernel_source_manifest_sha256": "c5a98a350900e528197743fc07e051fb56effbcae1c89fb150e9d271ab07d412",
+  "reference_kind": "Owned synthetic canonical native engine outputs, not independent Photoshop pixels",
+  "CPU": "native arm64 optimized baseline",
+  "production_sources_unchanged_from_public522": true,
+  "metadata_and_complete_mask_Float32_hashes": true,
+  "fixture_refresh": "Retain original references and frozen product; do not refresh from changed engine to hide a mismatch"
+}

@@ -112,6 +112,105 @@ final class SkyCanvasContainmentTests: XCTestCase {
     let current = try render { view.draw(view.bounds) }
     XCTAssertEqual(current, old, "Changing the drawing boundary must retain orientation, color and alpha")
   }
+  @MainActor func testPresentedSheetContainsWheelPanAndSettingsScroll() async throws {
+    // Match application startup: install CraftDocumentController before presenting
+    // SwiftUI UI can ask AppKit to create its default singleton.
+    let app = PhotatoApp.makeDelegate(isolatedSession: true)
+    defer { DocumentWorkspaceTests().cleanup(app.controller) }
+    _ = NSApplication.shared
+    XCTAssertTrue(NSDocumentController.shared === app.controller)
+    let model = try fixture(), store = EditorStore(document: model.original)
+    model.input = try SkyReplacementInput.prepare(model.original)
+    let host = NSHostingView(rootView: Color.clear.frame(width: 1280, height: 900)
+      .sheet(item: Binding(get: { store.skyWorkspace }, set: { store.skyWorkspace = $0 })) {
+        SkySheet(store: store, model: $0)
+      })
+    let window = NSWindow(contentRect: CGRect(x: -10000, y: -10000, width: 1280, height: 900),
+      styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false; window.contentView = host; window.orderFront(nil)
+    var dismissed = false
+    defer {
+      if !dismissed {
+        if let sheet = window.attachedSheet { window.endSheet(sheet) }
+        model.close(); store.skyWorkspace = nil; store.renderTask?.cancel()
+        window.orderOut(nil); window.contentView = nil; window.close()
+      }
+    }
+    store.skyWorkspace = model
+    for _ in 0..<40 {
+      host.layoutSubtreeIfNeeded()
+      if window.attachedSheet?.contentView != nil { break }
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    let sheet = try XCTUnwrap(window.attachedSheet, "Exercise a presented sheet, not only a hosted root")
+    let root = try XCTUnwrap(sheet.contentView)
+    func descendants(_ view: NSView) -> [NSView] { [view] + view.subviews.flatMap(descendants) }
+    for _ in 0..<40 {
+      root.layoutSubtreeIfNeeded()
+      if descendants(root).contains(where: { $0 is SkyCanvasView }) { break }
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    let canvas = try XCTUnwrap(descendants(root).compactMap { $0 as? SkyCanvasView }.first)
+    model.tool = .hand; model.setZoom(1, center: true)
+    for (index, delta) in [(0, 1000), (1, -2000), (2, 1000)] {
+      let cg = try XCTUnwrap(CGEvent(scrollWheelEvent2Source: nil, units: .pixel,
+        wheelCount: 2, wheel1: Int32(delta), wheel2: 250, wheel3: 0))
+      canvas.scrollWheel(with: try XCTUnwrap(NSEvent(cgEvent: cg)))
+      root.layoutSubtreeIfNeeded(); canvas.displayIfNeeded()
+      let viewport = canvas.convert(canvas.bounds, to: root)
+      XCTAssertGreaterThanOrEqual(viewport.minY, 40)
+      XCTAssertLessThanOrEqual(viewport.maxY, root.bounds.maxY - 40)
+      XCTAssertEqual(model.viewportSize.width, canvas.bounds.width, accuracy: 0.01)
+      XCTAssertEqual(model.viewportSize.height, canvas.bounds.height, accuracy: 0.01)
+      // Compare in the same display profile; device RGB literals are not a screen-pixel oracle.
+      let visible = try XCTUnwrap(root.bitmapImageRepForCachingDisplay(in: root.bounds))
+      root.cacheDisplay(in: root.bounds, to: visible)
+      let preview = model.previewImage, original = model.originalImage
+      model.previewImage = nil; model.originalImage = nil
+      canvas.needsDisplay = true; canvas.displayIfNeeded()
+      let empty = try XCTUnwrap(root.bitmapImageRepForCachingDisplay(in: root.bounds))
+      root.cacheDisplay(in: root.bounds, to: empty)
+      model.previewImage = preview; model.originalImage = original; canvas.needsDisplay = true
+      var inside = 0, outside = 0
+      for y in 0..<visible.pixelsHigh { for x in 0..<visible.pixelsWide {
+        guard visible.colorAt(x: x, y: y) != empty.colorAt(x: x, y: y) else { continue }
+        let px = root.bounds.minX + (Double(x) + 0.5) * root.bounds.width / Double(visible.pixelsWide)
+        let py = (Double(y) + 0.5) * root.bounds.height / Double(visible.pixelsHigh)
+        let point = CGPoint(x: px, y: root.isFlipped ? root.bounds.minY + py : root.bounds.maxY - py)
+        if viewport.contains(point) { inside += 1 } else { outside += 1 }
+      } }
+      XCTAssertGreaterThan(inside, 100, "The panned image must remain visible")
+      XCTAssertEqual(outside, 0, "Presented Sky image escaped into sheet controls at step \(index)")
+      if let capture = ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {
+        try visible.representation(using: .png, properties: [:])?.write(to:
+          URL(fileURLWithPath: capture).appendingPathComponent("sky-presented-\(index).png"))
+      }
+    }
+    // Scroll the separate settings pane without moving the image viewport or editing the document.
+    let settings = try XCTUnwrap(descendants(root).compactMap { $0 as? NSScrollView }
+      .first(where: { $0.frame.width >= 280 && $0.frame.width <= 320 && $0.frame.height > 300 }))
+    let pan = model.pan, zoom = model.zoom, viewport = canvas.convert(canvas.bounds, to: root)
+    settings.contentView.scroll(to: CGPoint(x: 0, y: 350))
+    settings.reflectScrolledClipView(settings.contentView); root.layoutSubtreeIfNeeded()
+    XCTAssertGreaterThan(settings.contentView.bounds.origin.y, 0)
+    XCTAssertEqual(canvas.convert(canvas.bounds, to: root), viewport)
+    XCTAssertEqual(model.pan, pan); XCTAssertEqual(model.zoom, zoom)
+    XCTAssertEqual(store.document, model.original)
+    XCTAssertTrue(store.session.undoStack.isEmpty); XCTAssertTrue(model.undoStates.isEmpty)
+    XCTAssertNil(model.stroke); XCTAssertNil(model.edit)
+    // SwiftUI owns the sheet lifecycle. Let dismissal and focus restoration finish
+    // before removing its host, so later menu tests cannot inherit an orphaned sheet.
+    store.skyWorkspace = nil
+    for _ in 0..<80 {
+      if window.attachedSheet == nil { break }
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    XCTAssertNil(window.attachedSheet)
+    model.close(); store.renderTask?.cancel(); window.orderOut(nil)
+    window.contentView = nil; window.close(); dismissed = true
+    try await Task.sleep(for: .milliseconds(100))
+  }
+
   @MainActor private func fixture(side: Int = 3072) throws -> SkyWorkspace {
     let document = try CraftNSDocument.blankModel(width: side, height: side)
     let model = SkyWorkspace(document: document, library: SkyLibrary())

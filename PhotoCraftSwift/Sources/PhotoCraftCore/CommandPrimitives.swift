@@ -543,12 +543,7 @@ extension Command {
       let i = try index(id)
       try d.layers[i].expandMask(for: points, brush: brush, clipping: d.selection)
       guard var mask = d.layers[i].mask else { throw CraftError.invalid("This layer has no mask.") }
-      let value =
-        brush.erase
-        ? Float(1) : unit(0.2126 * brush.color.r + 0.7152 * brush.color.g + 0.0722 * brush.color.b)
-      guard brush.color.isFinite else { throw CraftError.invalid("Invalid mask brush color.") }
-      brush.color = Pixel(value, value, value, brush.color.a)
-      brush.erase = false
+      brush = try MaskStrokePreparation.normalized(brush)
       try Painter.stroke(
         surface: &mask, points: points, brush: brush, selection: d.selection,
         selectionMask: d.selectionMask, transform: d.layers[i].maskCoordinateTransform,

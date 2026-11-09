@@ -129,7 +129,12 @@ final class BrushGesture {
     if let request=gesture.selectionRequest {
       performGeometry(label:request.kind.title,prepare:{original in try await SelectionToolPreparation.command(request,in:original)})
     } else if let request=gesture.adjustmentRequest {
-      performGeometry(label:"Adjustment Brush",prepare:{_ in .adjustmentBrush(request)})
+      if let retained {
+        performPreparedGeometry(label: "Adjustment Brush", cancelPreview: false) { original in
+          if let prepared = try await retained.prepareCommit(base: original, points: points) { return prepared }
+          return try PreparedEdit(command: .adjustmentBrush(request), document: original)
+        }
+      } else { performGeometry(label:"Adjustment Brush",prepare:{_ in .adjustmentBrush(request)}) }
     } else if let request=gesture.paintingRequest {
       performGeometry(label:request.tool.title,allowAuxiliary:true,prepare:{original in .painting(try PaintingPreparation.prepare(request,in:original))})
     } else if let retained, let command {

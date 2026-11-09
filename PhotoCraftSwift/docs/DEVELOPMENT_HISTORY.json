@@ -8206,6 +8206,13 @@
       "link": "DEVLOG.md#dev-step-522",
       "section_sha256": "bee5ad9a2f80cb247d9d55f6ff472485e1405ac06487381f288e1967251d4fb7",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-523",
+      "title": "2026-11-09 \u2014 Retained layer-mask and Adjustment Brush previews",
+      "link": "DEVLOG.md#dev-step-523",
+      "section_sha256": "766ef1cef75e7e0569454ce3a0897dca649d91b19773035cbc5efc4cb95a8b3e",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10737,8 +10744,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "24182b2a09a5e3bf6e1d00258458a5e75dde5cb9a29474da915497869df26e97",
-      "bytes": 125284,
+      "sha256": "0a5d6ee4144012862e226b565fda6dba335fcaaabc0667db8a95f856cc0d74ef",
+      "bytes": 126203,
       "rolling_current_snapshot": false
     },
     {
@@ -10749,8 +10756,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "29e7f81d9dd16e64349b7e1e9870d916346feb60ee98001bb7b5963cb2a1523e",
-      "bytes": 118765,
+      "sha256": "123d9ea80fc9df01759ad763deab4f4e39c93dfe9b1978cd890eff839cf8c7cc",
+      "bytes": 119684,
       "rolling_current_snapshot": false
     },
     {
@@ -12429,8 +12436,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "8b6daee5dc15fe7c8acf847d8402353c3b3904fc3e140b1bdd8cf93e1a222c30",
-      "bytes": 645486,
+      "sha256": "559efd74d363bdd378ea01a3f75e67c730df4e84ba855caccbb2ef333d537e09",
+      "bytes": 645872,
       "rolling_current_snapshot": false
     },
     {
@@ -12957,8 +12964,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "aeaba28797fe59b5b5f1a670057f13d304b9975cbba3b5dc3a0f6e6230dd344e",
-      "bytes": 84004,
+      "sha256": "2fbfbc245e8592ee82e05c4d7371b83565f52a6bcce132903c167495361f68bd",
+      "bytes": 84452,
       "rolling_current_snapshot": false
     },
     {
@@ -12999,14 +13006,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "a76973c80141b64b081ec96d79c138c1cde5b199c49f48f00b6319e605a41399",
-      "bytes": 811823,
+      "sha256": "b5ac817445e288c1a513245e9557909deb822eaa18764e3e93d99ef2ae0bf63b",
+      "bytes": 812402,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "c1da2a121ef3c052f9cf17ab4732959baae14869b89c62d70467ced03c3bfe6c",
-      "bytes": 4520430,
+      "sha256": "33101f0618701155281d734882c2ca5664d916538c64d3fc90d77f32d41da8cd",
+      "bytes": 4524922,
       "rolling_current_snapshot": false
     },
     {
@@ -14765,6 +14772,12 @@
       "path": "docs/FUNCTION_PHASES_522.json",
       "sha256": "59ef44e0d45d4cf0b238aaa89a8a712589c2ab4b0e33fe2acdf1bed1b76f5b8a",
       "bytes": 925296,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/FUNCTION_PHASES_523.json",
+      "sha256": "ba82d9cb27a0759753c9f80660d254262292a79e4a79566dbc7ad6130896827f",
+      "bytes": 942947,
       "rolling_current_snapshot": false
     },
     {
@@ -16598,6 +16611,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/RETAINED_MASK_STROKES.md",
+      "sha256": "17008428e1699b65e31ee39cf00e4d643d9d784a6083f722f9fc1a0c66007a2f",
+      "bytes": 2076,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/RETAINED_MASK_STROKES_523.json",
+      "sha256": "30ec2316817fc91bc6f7202a535e7e4f257f882c4d804c7c83c796b682bf219d",
+      "bytes": 16521,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/RETOUCH_AUTOMATION_REFERENCES.json",
       "sha256": "6e97c7ecbe171cf3e2afeb19678698625986d31ed50ffc6812f977dc5b1d8959",
       "bytes": 7150,
@@ -17540,6 +17565,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_523.md",
+      "sha256": "19c28014546844bbef3d90d097307bb064c1d5b53291956b1a61f6c2650da273",
+      "bytes": 2383,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17792,6 +17823,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_523.json",
+      "sha256": "e688e398cac5ce4e53a5fa36d6a819ab2915ce8153d407a9b74376391f71fd27",
+      "bytes": 1164278,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17817,8 +17854,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "471be291608c2955637dfbefbbb5a8dc1edf3daf049535b624adc080efd5f824",
-      "bytes": 404763,
+      "sha256": "a2b355d8da92fb8485051bc1387b2de9adeb062242b5b3196920aafa66e50f5c",
+      "bytes": 405211,
       "rolling_current_snapshot": false
     },
     {
@@ -20156,6 +20193,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/WORK_PRIORITIES_523.json",
+      "sha256": "adca8995c4dd41d6f6f32e6a1ac6d07c06e41bcfcce71783dc3b12b9d7ef03c3",
+      "bytes": 151464,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/XCODE_PROJECT_REFERENCES.json",
       "sha256": "0329389781d5905455599e2231e7b3de0d1db2746d59256a64791f7854478bc0",
       "bytes": 8464,
@@ -20175,8 +20218,8 @@
     }
   ],
   "counts": {
-    "milestones": 522,
-    "evidence_files": 1573,
+    "milestones": 523,
+    "evidence_files": 1579,
     "logs": 0,
     "missing_explicit_references": 631
   }

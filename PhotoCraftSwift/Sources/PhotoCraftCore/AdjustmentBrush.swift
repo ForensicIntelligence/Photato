@@ -68,9 +68,9 @@ public struct AdjustmentBrushRequest: Codable, Equatable, Sendable {
     guard AdjustmentBrushKind(adjustment:adjustment) != nil else {throw CraftError.unsupported("Choose an available Adjustment Brush type.")}
     guard objectMask == nil || points.isEmpty else {throw CraftError.invalid("Choose brush samples or an object mask, not both.")}
   }
-  public func apply(to document:inout CraftDocument) throws {
-    try validate();try Task.checkCancellation()
-    guard !points.isEmpty || objectMask != nil else {return}
+  // Shared by canonical command application and the sealed retained mask owner.
+  // The caller validates the request and its immutable source before using this target.
+  func preparedMaskTarget(in document:CraftDocument)throws->(CraftDocument,Int,Brush) {
     var d=document
     if let objectMask {guard objectMask.width==d.width,objectMask.height==d.height else {throw CraftError.invalid("Object mask size does not match the document.")}}
     let id:UUID
@@ -82,13 +82,19 @@ public struct AdjustmentBrushRequest: Codable, Equatable, Sendable {
     }
     guard let i=d.layers.firstIndex(where:{$0.id==id}),case .adjustment=d.layers[i].content,d.layers[i].smartObject==nil,d.layers[i].mask != nil else {throw CraftError.invalid("Choose an adjustment layer with a pixel mask.")}
     guard !d.isLocked(id) else {throw CraftError.invalid("Unlock the adjustment layer and its groups.")}
-    var layer=d.layers[i],brush=brush
+    let layer=d.layers[i];var brush=brush
     guard layer.effectiveMaskProperties.enabled else {throw CraftError.invalid("Enable the adjustment mask before painting.")}
-    let before=layer.mask
     let value:Float = subtract != layer.effectiveMaskProperties.inverted ? 0:1
     brush.color=Pixel(value,value,value);brush.backgroundColor=brush.color;brush.erase=false
     // Mask tools paint coverage, independent of foreground color and RGB color dynamics.
     brush.settings=brush.settings ?? .init();brush.settings!.mode = .normal;brush.settings!.colorDynamics.enabled=false
+    return (d,i,brush)
+  }
+  public func apply(to document:inout CraftDocument) throws {
+    try validate();try Task.checkCancellation()
+    guard !points.isEmpty || objectMask != nil else {return}
+    var (d,i,brush)=try preparedMaskTarget(in:document)
+    var layer=d.layers[i];let id=layer.id,before=layer.mask,value=brush.color.r
     if let region=objectMask {
       try layer.expandMask(toDocumentBounds:.init(x:0,y:0,width:d.width,height:d.height))
       var mask=layer.mask!;guard mask.width<=16_777_216/max(1,mask.height) else {throw CraftError.unsupported("Adjustment object masks support at most16MP stored samples.")}

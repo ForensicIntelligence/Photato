@@ -1,0 +1,295 @@
+{
+  "Actions": 61,
+  "Debug": {
+    "cases": 52,
+    "elapsed_seconds": 44.13328800001182,
+    "new_passed": 14,
+    "passed": 52
+  },
+  "Debug_SIL_workaround": true,
+  "Sky": {
+    "live_inspection": "Prior native connection closes at Sky sheet; no forceQuit or relaunch workaround.",
+    "live_user_scroll_report_resolved": false,
+    "presented_sheet_regression_passes_each_architecture": true
+  },
+  "api": "Existing paint.stroke/adjustmentBrush.stroke complete requests and canonical history remain; capabilities describe native retained coverage/fallbacks. No streaming or Adobe route.",
+  "baseline_522_observed_rates": {
+    "existingAdjustment": 27.64,
+    "layerMask": 27.5,
+    "newAdjustment": 26.622
+  },
+  "benchmark": {
+    "existingAdjustment": {
+      "acceptedPreviews": 140,
+      "acceptedPreviewsPerSecond": 59.848487141357424,
+      "actualInputDurationSeconds": 2.3392404167097993,
+      "canonicalCommitExact": true,
+      "historySteps": 1,
+      "inputSource": "Paced native model calls, no OS events or native window drawing",
+      "inputToReady": {
+        "count": 140,
+        "maximumMS": 23.750041669700295,
+        "medianMS": 14.608708384912461,
+        "p95MS": 21.04737499030307
+      },
+      "inputs": 240,
+      "physicalPresentationMeasured": false,
+      "prepareToReady": {
+        "count": 140,
+        "maximumMS": 14.818083320278674,
+        "medianMS": 9.98149998486042,
+        "p95MS": 13.551999989431351
+      },
+      "target": "existingAdjustment"
+    },
+    "layerMask": {
+      "acceptedPreviews": 139,
+      "acceptedPreviewsPerSecond": 59.86125002023866,
+      "actualInputDurationSeconds": 2.3220363750006072,
+      "canonicalCommitExact": true,
+      "historySteps": 1,
+      "inputSource": "Paced native model calls, no OS events or native window drawing",
+      "inputToReady": {
+        "count": 139,
+        "maximumMS": 21.701791672967374,
+        "medianMS": 14.999541686847806,
+        "p95MS": 20.69520828081295
+      },
+      "inputs": 240,
+      "physicalPresentationMeasured": false,
+      "prepareToReady": {
+        "count": 139,
+        "maximumMS": 14.719250029884279,
+        "medianMS": 10.19608334172517,
+        "p95MS": 14.012750005349517
+      },
+      "target": "layerMask"
+    },
+    "newAdjustment": {
+      "acceptedPreviews": 141,
+      "acceptedPreviewsPerSecond": 59.803473487343695,
+      "actualInputDurationSeconds": 2.3577225832850672,
+      "canonicalCommitExact": true,
+      "historySteps": 1,
+      "inputSource": "Paced native model calls, no OS events or native window drawing",
+      "inputToReady": {
+        "count": 141,
+        "maximumMS": 22.509333328343928,
+        "medianMS": 13.723416661377996,
+        "p95MS": 19.715791626367718
+      },
+      "inputs": 240,
+      "physicalPresentationMeasured": false,
+      "prepareToReady": {
+        "count": 141,
+        "maximumMS": 14.353541657328606,
+        "medianMS": 9.893708338495344,
+        "p95MS": 13.35787499556318
+      },
+      "target": "newAdjustment"
+    },
+    "raster": {
+      "acceptedPreviews": 142,
+      "acceptedPreviewsPerSecond": 60.155517899455056,
+      "actualInputDurationSeconds": 2.360548208351247,
+      "canonicalCommitExact": true,
+      "historySteps": 1,
+      "inputSource": "Paced native model calls, no OS events or native window drawing",
+      "inputToReady": {
+        "count": 142,
+        "maximumMS": 18.00974999787286,
+        "medianMS": 10.74770832201466,
+        "p95MS": 16.74029161222279
+      },
+      "inputs": 240,
+      "physicalPresentationMeasured": false,
+      "prepareToReady": {
+        "count": 142,
+        "maximumMS": 9.142000053543597,
+        "medianMS": 6.384458334650844,
+        "p95MS": 8.58245836570859
+      },
+      "target": "raster"
+    }
+  },
+  "benchmark_host": {
+    "architecture": "arm64",
+    "compiler_processes": [
+      {
+        "cpu_percent": 100.0,
+        "owned": false,
+        "pid": 68883,
+        "ppid": 68882
+      }
+    ],
+    "external_load_may_differ_from_baseline": true,
+    "no_owned_compilers_at_start": true,
+    "os": "27.2",
+    "physical_FPS": false
+  },
+  "canonical_reference_book": {
+    "file": "Tests/PhotoCraftCoreTests/Fixtures/RetainedMask523/canonical-522.json",
+    "records": 504,
+    "scope": "Owned fixture pixels and metadata from actual optimized522 before Core refactor; no Photoshop output oracle.",
+    "sha256": "d27cb4d5472c8292d1c819ca5b085057b86f1a1bb3dc3596ec0d27f4a548859e",
+    "source_build": 522,
+    "source_commit": "84de39282cd28c42a181f79563c7c1f1deabfc5f"
+  },
+  "excluded_unchanged_inputs": 13,
+  "frozen_inputs": 7868,
+  "full_Q03_closed": false,
+  "full_suite_passed": false,
+  "goal_complete": false,
+  "included_distributable_inputs": 7855,
+  "minor_cleanup_observation": "Brush tip popover still says preset libraries/flow/advanced dynamics unavailable although the separate native controls exist; defer caption correction to minor cleanup.",
+  "native_format": 92,
+  "native_selected_workflow": {
+    "Vibrance_60_retained": true,
+    "existing_adjustment_stroke_Undo_Redo": true,
+    "mask_stroke_Undo_Redo": true,
+    "new_adjustment_Undo_Redo": true,
+    "normal_Quit_process_absent": true,
+    "optimized_ARM": true,
+    "original_PNG_unchanged": true,
+    "passed": true,
+    "saved_document_sha256": "4c49b9082aec36b83c83d85de7a412050eea0b52769f4d5a85f064c0e342bf56",
+    "screenshots": "Native conversation evidence only",
+    "separate_native_save_clean_close_reopen": true
+  },
+  "new_Photoshop_output_comparison": false,
+  "new_methods": [
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testCanonicalMaskCommandsMatchCheckpoint522",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testRetainedEveryPrefixAndPublishedSnapshotsMatchCanonicalWordsAndMetadata",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testExplicitAdjustmentTailOmissionMatchesCanonicalBrushWithCatchUpDisabled",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testPreparedCommitRetainsCommandMetadataNoOpsAndUndoRedo",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testFailurePoisonsOwnerWithoutMutatingSourceOrPublishedMask",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testFallbackAndDisabledAdjustmentMaskRetainCanonicalAdmission",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testCancelledAppendCannotPublishOrCommit",
+    "PhotoCraftImagingTests.IncrementalMaskBrushRendererTests/testAllDepthsCroppedAndTransformedMasksMatchCompletePrefixAndFinalRenders",
+    "PhotoCraftImagingTests.IncrementalMaskBrushRendererTests/testMaskLightPauseOnlyChangesPresentationAndCommitRestoresFullParameters",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testWorkerPrefixesUseNativeTailPoliciesAndRejectOlderOrChangedInput",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testNativePreviewCancelCommitRecordingArchiveAndHistoryRetainFullCommand",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testNativeRetainedCommitsEqualExistingHTTPRoutesAndAdvertisedCapabilities",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testWorkerPreservesMaskLightPauseAndUnpausedAdjustmentPreview",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testStaleSourcesCancellationAndUnsupportedTargetsKeepCompleteFallback",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testPresentedSheetContainsWheelPanAndSettingsScroll"
+  ],
+  "normal_optimized_runs_use_no_SIL_workaround": true,
+  "physical_FPS_measured": false,
+  "physical_Intel_macOS14_qualified": false,
+  "prior_Photoshop_sample_differences": [
+    44797,
+    37102
+  ],
+  "prior_failures_remain_required": true,
+  "selected_methods": [
+    "PhotoCraftCoreTests.IncrementalBrushTests/testEveryPrefixMatchesCompletePainterAcrossDynamicsDepthAndTransforms",
+    "PhotoCraftCoreTests.IncrementalBrushTests/testInvalidInputDoesNotMutatePublishedSurfaceAndPoisonsSession",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testCanonicalMaskCommandsMatchCheckpoint522",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testRetainedEveryPrefixAndPublishedSnapshotsMatchCanonicalWordsAndMetadata",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testExplicitAdjustmentTailOmissionMatchesCanonicalBrushWithCatchUpDisabled",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testPreparedCommitRetainsCommandMetadataNoOpsAndUndoRedo",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testFailurePoisonsOwnerWithoutMutatingSourceOrPublishedMask",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testFallbackAndDisabledAdjustmentMaskRetainCanonicalAdmission",
+    "PhotoCraftCoreTests.RetainedMaskStrokeTests/testCancelledAppendCannotPublishOrCommit",
+    "PhotoCraftImagingTests.IncrementalMaskBrushRendererTests/testAllDepthsCroppedAndTransformedMasksMatchCompletePrefixAndFinalRenders",
+    "PhotoCraftImagingTests.IncrementalMaskBrushRendererTests/testMaskLightPauseOnlyChangesPresentationAndCommitRestoresFullParameters",
+    "PhotoCraftImagingTests.LightEditingPreviewTests/testProjectionOnlyPausesSpatialLightAboveEditedInputAndRetainsSource",
+    "PhotoCraftImagingTests.LightEditingPreviewTests/testHierarchyIsolationPassThroughClippingHiddenAndMultipleTargets",
+    "PhotoCraftImagingTests.LightEditingPreviewTests/testPausedLightRetainsAttachedClippedLayers",
+    "PhotoCraftImagingTests.LightEditingPreviewTests/testIncrementalBrushPausesOnlyDisplayThenCommitsExactFullAdjustmentBothDepths",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testWorkerPrefixesUseNativeTailPoliciesAndRejectOlderOrChangedInput",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testNativePreviewCancelCommitRecordingArchiveAndHistoryRetainFullCommand",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testNativeRetainedCommitsEqualExistingHTTPRoutesAndAdvertisedCapabilities",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testWorkerPreservesMaskLightPauseAndUnpausedAdjustmentPreview",
+    "PhotoCraftAppTests.RetainedMaskPreviewTests/testStaleSourcesCancellationAndUnsupportedTargetsKeepCompleteFallback",
+    "PhotoCraftAppTests.PreviewOrderingTests/testRetouchOlderPrefixesAndPostCommitPreviewsAreCancelledWithoutLosingCoverage",
+    "PhotoCraftAppTests.PreviewOrderingTests/testBrushOlderPrefixesAndPostCommitPreviewsAreCancelledWithoutLosingCoverage",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testNativePreviewCancelCommitRefineReplaceNewAndPersistence",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testNativeObjectCanvasAndCancellation",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testVisionLabelLookupUsesPaddedTopLeftCoordinates",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testTypedSettingsAllKindsAndMalformedTrees",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testHTTPMatchesNativeAndInvalidBusyStaleRequests",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testHTTPObjectRevocationIsAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testRecordedLocalAdjustmentReplaysWithSemanticTargets",
+    "PhotoCraftAppTests.AdjustmentBrushWorkflowTests/testRecordedObjectCoverageReplaysWithoutDetection",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativePickerLegacySelectionAndOrdinaryAdjustmentDefaults",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativePreviewCancelPropertiesRefineHistoryAndReopenAcrossDepths",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testNativeObjectRefinementCancelAndRecordedCoverageAreAtomic",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testRecordedStrokesRequire61RetainControlsAndOldRecipesRemainReadable",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testStrictPartialSettingsRetainAllControlsAndSeed",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testHTTPPaintPartialEditObjectAndArchiveMatchNative",
+    "PhotoCraftAppTests.AdjustmentBrushColorVibranceTests/testHTTPInvalidBusyStaleAndRevokedObjectPreserveDocument",
+    "PhotoCraftAppTests.BrushCatchUpTests/testHeldPointerContinuesWithoutMouseEvents",
+    "PhotoCraftAppTests.BrushCatchUpTests/testReleaseTailIsAbsentFromLivePreview",
+    "PhotoCraftAppTests.BrushCatchUpTests/testTimedSamplesRetainTabletDataStopAndReplayThroughHTTP",
+    "PhotoCraftAppTests.BrushCatchUpTests/testDisabledModesAndStaleDocumentDoNotGenerateSamples",
+    "PhotoCraftAppTests.BrushCatchUpTests/testFallbackPencilMixerEraserAndMaskPreviewsExcludeReleaseTail",
+    "PhotoCraftAppTests.BrushCatchUpTests/testClockStopsOnToolChangeDetachDeactivationAndEscape",
+    "PhotoCraftAppTests.BrushCatchUpTests/testAirbrushStillBuildsUpAndSettledSmoothingRestartsOnMovement",
+    "PhotoCraftAppTests.BrushWorkflowTests/testNativeGesturePreviewCancelCommitAndRecordedPlayback",
+    "PhotoCraftAppTests.BrushWorkflowTests/testLibraryAtomicPersistenceDefineAndPresetLocks",
+    "PhotoCraftAppTests.BrushWorkflowTests/testHTTPBrushSettingsPresetsStrokeEqualityAndGuards",
+    "PhotoCraftAppTests.BrushWorkflowTests/testAPIAllMaskTargetsAndDefinitionRevocation",
+    "PhotoCraftAppTests.BrushWorkflowTests/testExpandedMaskSymmetryAndTypedTargets",
+    "PhotoCraftAppTests.BrushWorkflowTests/testCanvasPointerStrokeEscapeAndFrozenToolSettings",
+    "PhotoCraftAppTests.BrushWorkflowTests/testToolRevisionIgnoresNoopsAndDoesNotInvalidateDocumentClose",
+    "PhotoCraftAppTests.BrushWorkflowTests/testFactoryBindingsAndOffscreenPanels",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testHostedSheetKeepsPannedPreviewBelowToolsAndAboveActions",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testImageOrientationColorAndAlphaMatchPreviousDrawingInsideViewport",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testPresentedSheetContainsWheelPanAndSettingsScroll",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testZoomPanResizeContainOriginalPreviewMaskAndBrushFeedback",
+    "PhotoCraftAppTests.SkyCanvasContainmentTests/testScrollZoomAndHandPanPreserveChromeHitRegionsAndDocument",
+    "PhotoCraftAppTests.SkyViewportTests/testVisibleTilesCoverRetinaViewportBeyondSingleBufferAndStayOnDocumentGrid",
+    "PhotoCraftAppTests.SkyViewportTests/testActualPixelFitAnchoredZoomResizeAndBackingScalePreserveGeometry",
+    "PhotoCraftAppTests.SkyViewportTests/testOriginalReplacementMaskTilesAndPanReuseRetainExactSourceBytes",
+    "PhotoCraftAppTests.SkyViewportTests/testCancelledZoomRefreshAndClosedDraftCannotPublishQueuedTiles",
+    "PhotoCraftAppTests.SkyViewportTests/testZoomToolAllModifiersMatchCursorAndKeepAnchorAndDocument",
+    "PhotoCraftAppTests.SkyViewportTests/testExistingViewMenusNavigateSkyWithoutChangingUnderlyingDocumentViewport",
+    "PhotoCraftAppTests.SkyViewportTests/testHTTPViewportStateSchemaChangesWithoutDocumentRevisionOrNewEditingRoute",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testEveryBrushAdjustmentAddedOverRasterMatchesCompleteRenderAtAllDepthsAndBlends",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testBlackMasksAndFullyCoveredPixelsRetainExactBackdropAndUnmaskedResult",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testAddedMaskOverNestedGroupsClippingAndExistingAdjustmentsMatchesCompleteWords",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testStructuralNonlocalAndNonblackMaskChangesRetainFullFallbackAndExactPixels",
+    "PhotoCraftImagingTests.MaskedAdjustmentDamageTests/testInvalidDocumentsAndSignedZeroStackChangesCannotUseInsertionReuse"
+  ],
+  "software_build": 523,
+  "software_release": false,
+  "source_variant": "Integration02",
+  "standalone_website_diary_promoted": false,
+  "status": "Retained mask preview path qualified; full Q03 and Photoshop parity remain open",
+  "step": 523,
+  "typed_commands": 271,
+  "universal_static": {
+    "BSD_RealESRGAN_license_verified": true,
+    "architectures": "x86_64 arm64",
+    "archive_sha256": "4f0558312001fedcd3bedf1aa1d7665342d989d3a8c4f1d1e61f6c47a222b0f7",
+    "both_optional_models_and_provenance_verified": true,
+    "extracted_signature_verified": true,
+    "minimum_system_metadata": "14.0",
+    "production_entitlements_unchanged": true,
+    "same_extracted_content": true,
+    "signature_verified": true,
+    "signed_universal_binary_sha256": "ab9a136ab54f4fa1287b0b15e0e96b09720b79c168964729bfe8ed29be6ef9f7"
+  },
+  "validation": {
+    "arm": {
+      "cases": 69,
+      "elapsed_seconds": 546.9888130410109,
+      "new_passed": 15,
+      "passed": 69
+    },
+    "intel": {
+      "cases": 69,
+      "elapsed_seconds": 40.30292466602987,
+      "new_passed": 15,
+      "passed": 69
+    },
+    "intel-build": {
+      "cases": 0,
+      "elapsed_seconds": 660.0628856249969,
+      "new_passed": 0,
+      "passed": 0
+    }
+  }
+}
