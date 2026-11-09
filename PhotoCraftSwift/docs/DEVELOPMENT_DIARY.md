@@ -1,3 +1,11 @@
+## Source update — 9 November 2026 UTC, build 514
+
+Auto-Blend now keeps visible editable source layers when seamless blending is enabled and transparent-area fill is off. Photomerge also retains the photograph names. Fill adds a merged layer; translucent sources still use the documented isolation fallback.
+
+Debug and optimized ARM pass 37/37 focused tests, including all nine new methods. Intel passes 36/37 and eight of nine new methods; its exact linear-RGB comparison remains failed. Native commit, Undo/Redo and saved PSD reopening were checked. The Intel difference is isolated to the same color-transfer behavior in the retained build 513; the stored component comparison is unchanged. The original assertion remains required. Full blending fidelity, large-photo capacity, all prior failures and Photoshop parity remain open.
+
+[514 — Development record](DEVLOG.md#dev-step-514) · [Workflow/API](EDITABLE_PHOTO_BLEND.md) · [Qualification](SOURCE_PUBLICATION_514.md).
+
 ## Source update — 9 November 2026 UTC, build 513
 
 Legacy Macintosh RGB proofing is now available in the native app and API. Shared Apple RGB profiles also work for document creation and output. Native controls, cancellation, Command-Y and saved/reopened PSD components were checked.

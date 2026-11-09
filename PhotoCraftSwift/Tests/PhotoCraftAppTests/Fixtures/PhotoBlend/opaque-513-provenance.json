@@ -1,0 +1,272 @@
+{
+  "purpose": "Photato build513 regression outputs, not Photoshop numerical parity",
+  "source_manifest": "baseline02-source.json",
+  "source_sha256": "3d939521a3c8975cb2d518f472a2a51d89b34bb842e1705b3cbab45d49cce9ed",
+  "fixture_author": "Photato contributors",
+  "license": "MIT OR Apache-2.0",
+  "encoding": "zlib-compressed RGBA Float32 little endian, row-major,64x40 per program",
+  "bytes": 983040,
+  "sha256": "69a0f15a686f7522355ad98e161f7c7b56c08e558baf79099ecc87e94fdad068",
+  "compressed_bytes": 28890,
+  "compressed_sha256": "7556c580838e4bcfa95e7057a1f0e801b3ae98cd6e87f467d15b89f3e7d73222",
+  "cases": [
+    {
+      "bytes": 40960,
+      "layers": 2,
+      "name": "8 bit-panorama-seamlessfalse-fillfalse",
+      "offset": 0,
+      "visible": [
+        true,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "8 bit-panorama-seamlessfalse-filltrue",
+      "offset": 40960,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "8 bit-panorama-seamlesstrue-fillfalse",
+      "offset": 81920,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "8 bit-panorama-seamlesstrue-filltrue",
+      "offset": 122880,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 2,
+      "name": "8 bit-stack-seamlessfalse-fillfalse",
+      "offset": 163840,
+      "visible": [
+        true,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "8 bit-stack-seamlessfalse-filltrue",
+      "offset": 204800,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "8 bit-stack-seamlesstrue-fillfalse",
+      "offset": 245760,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "8 bit-stack-seamlesstrue-filltrue",
+      "offset": 286720,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 2,
+      "name": "16 bit-panorama-seamlessfalse-fillfalse",
+      "offset": 327680,
+      "visible": [
+        true,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "16 bit-panorama-seamlessfalse-filltrue",
+      "offset": 368640,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "16 bit-panorama-seamlesstrue-fillfalse",
+      "offset": 409600,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "16 bit-panorama-seamlesstrue-filltrue",
+      "offset": 450560,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 2,
+      "name": "16 bit-stack-seamlessfalse-fillfalse",
+      "offset": 491520,
+      "visible": [
+        true,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "16 bit-stack-seamlessfalse-filltrue",
+      "offset": 532480,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "16 bit-stack-seamlesstrue-fillfalse",
+      "offset": 573440,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "16 bit-stack-seamlesstrue-filltrue",
+      "offset": 614400,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 2,
+      "name": "32 bit-panorama-seamlessfalse-fillfalse",
+      "offset": 655360,
+      "visible": [
+        true,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "32 bit-panorama-seamlessfalse-filltrue",
+      "offset": 696320,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "32 bit-panorama-seamlesstrue-fillfalse",
+      "offset": 737280,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "32 bit-panorama-seamlesstrue-filltrue",
+      "offset": 778240,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 2,
+      "name": "32 bit-stack-seamlessfalse-fillfalse",
+      "offset": 819200,
+      "visible": [
+        true,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "32 bit-stack-seamlessfalse-filltrue",
+      "offset": 860160,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "32 bit-stack-seamlesstrue-fillfalse",
+      "offset": 901120,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    },
+    {
+      "bytes": 40960,
+      "layers": 3,
+      "name": "32 bit-stack-seamlesstrue-filltrue",
+      "offset": 942080,
+      "visible": [
+        false,
+        false,
+        true
+      ]
+    }
+  ]
+}

@@ -532,7 +532,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 511 | 2026-11-08 | [Gray32 Photoshop file export](#dev-step-511) |
 | 512 | 2026-11-09 UTC | [Merge Channels](#dev-step-512) |
 | 513 | 2026-11-09 UTC | [Legacy Macintosh proof](#dev-step-513) |
+| 514 | 2026-11-09 UTC | [Editable photo blending](#dev-step-514) |
 <!-- history-index:end -->
+
+<a id="dev-step-514"></a>
+
+## 2026-11-09 — Editable photo blending
+
+9 November 2026 UTC. RAW02, major-stillneeded. Auto-Blend's seamless option used to hide both sources and add a merged layer even when transparent-area fill was off. Photoshop's owned RGB8 focus-stack reference instead retains two visible masked source layers with corrected RGB. Enabling fill adds a visible merged layer. The native result assembly now follows that opaque workflow.
+
+Contributing source pixels receive the existing multiband correction. Layer IDs, names, storage dimensions, transforms, alpha, selection and unrelated layers are retained. Source pixels outside the canvas are unchanged. Photomerge no longer renames a source photograph “Panorama”. Partial-alpha fill retains the previous isolation fallback to avoid doubled alpha; that Photoshop context remains open. Pyramid, focus and seam kernels are unchanged.
+
+The native dialog and capability descriptions explain these results. The existing Photato commands and both Adobe-compatible panorama action-job paths use the same engine, with matching validation, history and persistence. No command, shortcut, cursor, descriptor vocabulary or format version was added. Native format 92, Actions 60 and 271 typed commands remain.
+
+Before the change, a new capture test froze24 opaque programs from build 513. The first capture attempt stopped before compilation because its manifest already existed; the successful rerun is preserved separately. Debug01 passed34 of 36 methods: a new group fixture had its header before its children, and a changed panorama assertion overlooked fractional aligned borders. After those setup repairs, Debug02 passed35 of 36. Ten unchanged exact assertions then exposed a genuine half-pixel boundary write outside the canvas. The source-space correction now checks actual document coordinates before interpolation. The failed sources and logs are retained.
+
+Debug03 passed36 of 36. During live UI checks, the fixture's blue checker pattern was mistaken for transparency. Independent raw-plane hashes proved the source pixels intact through both readers, so no codec patch was made. The added regression also covers the actual native opening path and every preview alpha value. The Source03, Source04 and Source05 application binaries are identical; only tests and their owned fixture changed after the boundary repair.
+
+Final Source05 has 7,773 frozen inputs. Debug and optimized Apple Silicon pass 37/37 selected methods, including all nine new ones. Translated Intel passes 36/37 and eight of nine new methods. The exact frozen linear-RGB comparison remains failed. There are no missing, extra, duplicated or skipped cases or signals. Debug and optimized ARM match all 983,040 frozen linear-RGBA bytes. Intel differs by one Float32 ULP in 252 RGB values across four 8/16-bit programs. The actual retained build 513 and current transfer functions match all 65,792 quantized levels on each architecture. Inverting those injective tables recovers the same stored component values across all 24 programs; this is an inference about stored pixels, not an old Auto-Blend replay. The original failed assertion and qualification refusal are preserved. These are native regression outputs, not Photoshop pixel references. Independent input-plane hashes also match; no reference or numerical tolerance was loosened.
+
+The signed isolated native app passed Stack/Seamless/Filloff/preview/commit, two visible editable masks, Undo/Redo, separate PSD Save As/reopen and normal Quit. Cancel was checked in the earlier app-identical candidate. Independent PSD parsing confirms both source names, 96 × 64 bounds, masks and 12,288 unchanged alpha values; the owned input file is unchanged. Universal static signature, macOS14, full entitlement, payload/signing replay, model/provenance/license and extracted ZIP checks pass. The universal candidate is unlaunched.
+
+Full RAW02 and Photoshop parity remain open:4 MP blend capacity, exact masks/colors/fill/defaults, translucent and transformed contexts, calibrated lens options, remaining HDR/deghost workflows, physical platforms and 60 fps. All prior failures,104scopes,652original command identities,81major memberships and seven passes remain required. Next: audit I03 in the major-stillneeded sweep. The earlier canonical history failure and standalone website promotion remain unresolved; neither was restarted or represented as complete.
+
+[Workflow/API](EDITABLE_PHOTO_BLEND.md) · [Qualification](SOURCE_PUBLICATION_514.md). This is a development source checkpoint, with no binary upload, production installation, App Store change or software release.
 
 <a id="dev-step-513"></a>
 

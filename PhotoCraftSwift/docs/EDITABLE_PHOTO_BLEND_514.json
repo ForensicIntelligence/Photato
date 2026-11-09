@@ -1,0 +1,87 @@
+{
+  "Actions": 60,
+  "Photoshop_parity": false,
+  "Photoshop_reference": {
+    "all_half_alpha128_input": "Observed unchanged two visible unmasked sources and no merged layer. Universal translucent behavior is not qualified.",
+    "method": "Visible UI on independently generated owned96x64RGB8two-layer PSD; saved result structures parsed independently. No Adobe code or SDK distributed.",
+    "pixel_equality": false,
+    "seamless_no_fill": "Two visible source layers with editable masks and changed RGB; no merged layer.",
+    "seamless_with_fill": "Adds a third visible raster layer named from the active source with suffix (merged), retaining visible masked sources.",
+    "source_sha256": "1a309d17029ec7a2d5873e40fa6c1b85de03cf0b6274991995bbc4da43a43606"
+  },
+  "all_selected_passed": false,
+  "canonical_history_pair_failed": true,
+  "changes": [
+    "Seamless multiband corrections are written to contributing source RGB with source alpha/IDs/names/storage geometry retained. Off-canvas samples remain unchanged. Fractional transforms interpolate a correction in source space.",
+    "Only transparent-area fill adds a merged result; opaque sources remain visible. Partial coverage retains the previous hidden-source fallback to avoid double alpha.",
+    "Photomerge keeps photograph names instead of renaming a source Panorama.",
+    "Shared native/Photato/Adobe action engine, capabilities, native text, history and persistence are updated in the same increment. No new command, shortcut, cursor, descriptor vocabulary or archive version."
+  ],
+  "excluded_generated_or_restricted_inputs": 13,
+  "failures_and_repairs": [
+    "Baseline01 stopped before compiler launch because its exclusive manifest already existed; baseline02 captured24programs successfully.",
+    "Debug01:34/36pass; invalid group fixture order and incorrect assumption of opaque aligned panorama borders. Both setup expectations corrected against the retained model and declared fallback.",
+    "Debug02:35/36pass; ten exact off-canvas assertions exposed a real fractional-boundary write. Guard now tests actual document-space centers; original assertions retained.",
+    "Debug03:36/36pass. Visual checkerboard was initially mistaken for transparency; independent eight-plane hashes and alpha tests proved opaque checker image content. No codec patch or weakened assertion.",
+    "Import01:1/1pass; final Source05 extends the same regression through native opening and CGImage alpha. Debug04:37/37pass. All failed inputs, outputs and attempts retained privately.",
+    "Optimized ARM37/37/all9new, Intel36/37/8of9new. The original qualification refusal is preserved. Readonly owned-function probes isolate the preexisting transfer projection difference; no source, test, reference or tolerance was changed. First probes lacked an XCTest support dependency; explicit official dependency loading repaired the probe only."
+  ],
+  "frozen_inputs": 7773,
+  "full_RAW02_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7760,
+  "native_format": 92,
+  "next": "I03 major-stillneeded: audit existing workflows before selecting missing usable functionality",
+  "original_failed_optimized_gate_retained": true,
+  "original_scope": {
+    "major_memberships": 81,
+    "original_command_identities": 652,
+    "packages": 104,
+    "passes": 7
+  },
+  "prior_failures_remain_required": true,
+  "public_references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-masks/blend-images/auto-blend-layers-command-overview.html",
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/create-panoramic-images-with-photomerge.html"
+  ],
+  "recorded_utc": "2026-11-09T10:29:53.983751+00:00",
+  "remaining": [
+    "AutoBlend4MPoutput/16MPworkinggrid/16sources; alignment/Photomerge larger capacity",
+    "Exact Photoshop mask/color/blend/fill pixels and defaults across all source contexts",
+    "Translucent Fill workflow and fractional-transform numerical equality",
+    "Calibrated vignette/geometric lens corrections and remaining panorama/HDR/deghost workflows",
+    "Physicalsupportedplatforms/optimizedliveUI/60fps/fullsuite and all prior failures"
+  ],
+  "software_build": 514,
+  "software_release": false,
+  "source_checkpoint_assessment_only": true,
+  "source_variant": "Source05",
+  "standalone_website_promotion_pending": true,
+  "status": "Editable Auto-Blend and Photomerge source layers implemented; full RAW02 remains open",
+  "step": 514,
+  "typed_commands": 271,
+  "validation": {
+    "Debug": {
+      "new_passed": 9,
+      "passed": 37,
+      "selected": 37
+    },
+    "actual_transfer_baseline": "Actual retained public513 and current514 sRGB-to-linear functions match all65,792quantized8/16levels perarchitecture. The old cross-architecture table differs in393values. No shipped transfer function changed.",
+    "independent_source_PSD": "All8 RGB/alpha plane hashes match independent public-format parsing, through memory/file/actual native opening. All preview alpha values255.",
+    "native_UI": "Signed sandboxed final-source Debug: menu/Stack/Filloff/commit/2visiblemasks/Undo/Redo/separatePSDsave/reopen/normalQuit pass. Originalownedinputunchanged;12288savedalpha values255. Cancel was checked in the app-identical earlier candidate.",
+    "native_component_inference": "Inverting the injective actual old transfer tables recovers identical integer levels or direct Float32/alpha bits for all245,760component values in24programs. This is an inference about stored samples, not an actual old Auto-Blend replay or a pass of the failed linear assertion.",
+    "opaque_native_regression": "Debug and optimized ARM match all983040frozen linearRGBAbytes. Intel differs by252Float32RGBwords in4RGB8/16programs; the exact assertion remains failed.",
+    "optimized_ARM": {
+      "new_passed": 9,
+      "passed": 37,
+      "selected": 37
+    },
+    "translated_Intel": {
+      "new_passed": 8,
+      "passed": 36,
+      "selected": 37
+    },
+    "universal": "Signatures/both macOS 14 minimum declarations/fullproductionentitlements/wholeunsignedpayload and signingreplay/models/provenance/license/extractedZIPpass;unlaunched."
+  },
+  "workflow": "RAW02"
+}

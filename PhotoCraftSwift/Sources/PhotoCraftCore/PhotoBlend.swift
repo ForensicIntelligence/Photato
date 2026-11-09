@@ -77,7 +77,10 @@ public enum PhotoBlend {
       for i in 0..<count where holes[i] { rgba[i*4+3] = 1 }
     }
     var result = d
-    let merged = settings.seamlessTones || settings.fillTransparentAreas
+    let merged = settings.fillTransparentAreas
+    // Until transparent fill handles partial coverage independently, retain the
+    // existing isolation there rather than composite translucent edges twice.
+    let isolateMerged = merged && coverage.contains { $0 > 0 && $0 < 1 }
     for (k,l) in layers.enumerated() {
       guard let i = result.layers.firstIndex(where:{$0.id == l.id}) else { continue }
       var mask = try Surface(width:w,height:h,depth:.u8)
@@ -86,7 +89,10 @@ public enum PhotoBlend {
       } }
       var properties = MaskProperties();properties.transform = try l.coordinateTransform.inverted() * .translation(Double(box.x),Double(box.y))
       result.layers[i].mask = mask;result.layers[i].maskProperties = properties
-      if merged { result.layers[i].visible = false }
+      if settings.seamlessTones {
+        result.layers[i].content = .raster(try correctedSource(l,box:box,image:images[k],rgb:rgb,weights:weights[k]))
+      }
+      if isolateMerged { result.layers[i].visible = false }
     }
     if merged {
       guard result.layers.count < LayerLimits.maximumLayers,let top = result.layers.lastIndex(where:{layerIDs.contains($0.id)}) else { throw CraftError.unsupported("Cannot add a blended layer to this document.") }
@@ -96,9 +102,62 @@ public enum PhotoBlend {
         guard p.isFinite else { throw CraftError.invalid("Auto-Blend produced nonfinite pixels.") }
         if d.depth == .f32 { pixels.setLinearPixel(x:x,y:y,p) } else { pixels.setPixel(x:x,y:y,p) }
       } }
-      var layer = Layer(name:"Auto-Blend Layers",content:.raster(pixels));layer.x = box.x;layer.y = box.y;layer.parentID = layers[0].parentID
+      let name = layers.first(where:{$0.id == d.activeLayerID})?.name ?? layers.last!.name
+      var layer = Layer(name:name+" (merged)",content:.raster(pixels));layer.x = box.x;layer.y = box.y;layer.parentID = layers[0].parentID
       result.layers.insert(layer,at:top+1);result.activeLayerID = layer.id
     }
+    try result.reconcileModeStorage(from:d)
     try result.validate();return PhotoBlendEdit(source:d,result:result,selectedLayerIDs:merged ? Set(result.activeLayerID.map { [$0] } ?? []):layerIDs)
+  }
+
+  /// Apply the existing multiband result to contributing source pixels. Keep
+  /// their storage rectangle, alpha, placement and pixels outside the canvas.
+  /// Fractional transforms interpolate a correction, retaining source detail.
+  private static func correctedSource(_ layer:Layer,box:IntRect,image:[Float],rgb:[Float],weights:[Float]) throws -> Surface {
+    guard case .raster(let source) = layer.content else { throw CraftError.invalid("Missing blend source pixels.") }
+    let transform = layer.coordinateTransform
+    let inverse = try transform.inverted() * .translation(Double(box.x),Double(box.y))
+    let corners = [inverse.point(0,0),inverse.point(Double(box.width),0),
+      inverse.point(0,Double(box.height)),inverse.point(Double(box.width),Double(box.height))]
+    let x0 = Int(max(0,min(Double(source.width),floor(corners.map(\.x).min()!))))
+    let y0 = Int(max(0,min(Double(source.height),floor(corners.map(\.y).min()!))))
+    let x1 = Int(max(0,min(Double(source.width),ceil(corners.map(\.x).max()!))))
+    let y1 = Int(max(0,min(Double(source.height),ceil(corners.map(\.y).max()!))))
+    let local = IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0)
+    var result = source
+    guard local.width > 0,local.height > 0 else { return result }
+    let integerGrid = transform.a == 1 && transform.b == 0 && transform.c == 0 && transform.d == 1
+      && transform.tx.rounded() == transform.tx && transform.ty.rounded() == transform.ty
+    for y in local.y..<local.y+local.height { try Task.checkCancellation();for x in local.x..<local.x+local.width {
+      let point = transform.point(Double(x)+0.5,Double(y)+0.5)
+      guard point.x >= Double(box.x),point.y >= Double(box.y),
+        point.x < Double(box.x+box.width),point.y < Double(box.y+box.height) else { continue }
+      let dx = max(0,min(Double(box.width-1),point.x-Double(box.x)-0.5))
+      let dy = max(0,min(Double(box.height-1),point.y-Double(box.y)-0.5))
+      let old = source.depth == .f32 ? source.linearPixel(x:x,y:y):source.pixel(x:x,y:y)
+      guard old.a > 0 else { continue }
+      var value = old
+      if integerGrid {
+        let i = Int(dy)*box.width+Int(dx)
+        guard weights[i] > 0 else { continue }
+        value = Pixel(rgb[i*3],rgb[i*3+1],rgb[i*3+2],old.a)
+      } else {
+        let ix = Int(floor(dx)),iy = Int(floor(dy)),fx = Float(dx-Double(ix)),fy = Float(dy-Double(iy))
+        var delta = SIMD3<Float>.zero,contribution:Float = 0
+        for j in 0...1 { for k in 0...1 {
+          let px = min(box.width-1,ix+k),py = min(box.height-1,iy+j),i = py*box.width+px
+          let factor = (k == 0 ? 1-fx:fx)*(j == 0 ? 1-fy:fy)
+          contribution += weights[i]*factor
+          delta += SIMD3(rgb[i*3]-image[i*3],rgb[i*3+1]-image[i*3+1],rgb[i*3+2]-image[i*3+2])*factor
+        } }
+        guard contribution > 0 else { continue }
+        value = Pixel(old.r+delta.x,old.g+delta.y,old.b+delta.z,old.a)
+      }
+      guard value.isFinite else { throw CraftError.invalid("Auto-Blend produced nonfinite source pixels.") }
+      if !old.hasSameBits(as:value) {
+        if source.depth == .f32 { result.setLinearPixel(x:x,y:y,value) } else { result.setPixel(x:x,y:y,value) }
+      }
+    } }
+    return result
   }
 }

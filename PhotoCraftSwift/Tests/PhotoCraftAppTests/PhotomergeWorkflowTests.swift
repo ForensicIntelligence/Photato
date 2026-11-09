@@ -42,9 +42,14 @@ final class PhotomergeWorkflowTests: XCTestCase {
     let input = try sources()
     for (blend,fill) in [(true,false),(true,true),(false,true)] {
       let result = try Photomerge.prepare(input,settings:settings(blend:blend,fill:fill)).document,composite = try Renderer.composite(result)
-      XCTAssertEqual(result.layers.count,3);XCTAssertEqual(composite.pixel(x:230,y:3).a,fill ? 1:0)
+      XCTAssertEqual(result.layers.count,fill ? 3:2);XCTAssertEqual(composite.pixel(x:230,y:3).a,fill ? 1:0)
       XCTAssertEqual(composite.pixel(x:20,y:50).a,1);XCTAssertEqual(composite.pixel(x:220,y:90).a,1)
-      if blend { XCTAssertNotNil(result.layers[0].mask);XCTAssertFalse(result.layers[0].visible) }
+      if blend {
+        // This alignment has partially covered border pixels. Fill retains
+        // source isolation there; noFill keeps the corrected sources visible.
+        XCTAssertNotNil(result.layers[0].mask);XCTAssertEqual(result.layers[0].visible,!fill)
+        XCTAssertEqual(result.layers.prefix(2).map(\.name),input.map(\.name))
+      }
       else { XCTAssertTrue(result.layers[0].visible);XCTAssertNil(result.layers[0].mask);guard case .raster(let overlay) = result.layers[2].content else { return XCTFail() };XCTAssertEqual(overlay.pixel(x:20,y:50).a,0) }
     }
   }

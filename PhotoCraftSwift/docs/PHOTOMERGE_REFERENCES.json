@@ -97,5 +97,9 @@
     },
     "original_build_project_user_state_and_rust": "All four protected state hashes and754 upstream Rust hashes verified unchanged.",
     "runtime_qualification": "Native Debug/Release tests and universal build metadata; physical Intel, macOS14/26 and live Photato/Photoshop checks remain open."
+  },
+  "follow_up_514": {
+    "reference": "docs/EDITABLE_PHOTO_BLEND_514.json",
+    "status": "Editable corrected/masked source layers and retained photograph names;Debug/ARM37of37/all9new;Intel36of37/8of9new with retained old-transfer linear-projection assertion. Partial-alphaFillisolation/fullRAW02 remain open."
   }
 }

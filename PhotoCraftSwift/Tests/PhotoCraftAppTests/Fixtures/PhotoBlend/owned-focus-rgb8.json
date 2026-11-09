@@ -1,0 +1,146 @@
+{
+  "author": "Photato contributors",
+  "depth": 8,
+  "geometry": [
+    96,
+    64
+  ],
+  "layers": [
+    {
+      "blend": "norm",
+      "bounds": [
+        0,
+        0,
+        96,
+        64
+      ],
+      "channel_sizes": [
+        [
+          -1,
+          6146
+        ],
+        [
+          0,
+          6146
+        ],
+        [
+          1,
+          6146
+        ],
+        [
+          2,
+          6146
+        ]
+      ],
+      "flags": 0,
+      "mask_record": null,
+      "name": "Owned Near",
+      "opacity": 255,
+      "planes": {
+        "-1": {
+          "bytes": 6144,
+          "full": 6144,
+          "maximum": 255,
+          "minimum": 255,
+          "nonzero": 6144,
+          "sha256": "884929e08ec0c709c085488ca1b0c61bb9749b0f38bd253c97c073657116f5be"
+        },
+        "0": {
+          "bytes": 6144,
+          "full": 0,
+          "maximum": 175,
+          "minimum": 17,
+          "nonzero": 6144,
+          "sha256": "7facaae370cd640ec829654207e35d1374100f579966987f9f10e4a93db7534e"
+        },
+        "1": {
+          "bytes": 6144,
+          "full": 0,
+          "maximum": 193,
+          "minimum": 35,
+          "nonzero": 6144,
+          "sha256": "38cee277176d3e797d3123b348cd410e03acb561a75da18875c0860349868997"
+        },
+        "2": {
+          "bytes": 6144,
+          "full": 0,
+          "maximum": 211,
+          "minimum": 53,
+          "nonzero": 6144,
+          "sha256": "502cb23ac9568b0966c87582b6b4ded6d5c11738c608858d1728ea495ea5457d"
+        }
+      },
+      "visible": true
+    },
+    {
+      "blend": "norm",
+      "bounds": [
+        0,
+        0,
+        96,
+        64
+      ],
+      "channel_sizes": [
+        [
+          -1,
+          6146
+        ],
+        [
+          0,
+          6146
+        ],
+        [
+          1,
+          6146
+        ],
+        [
+          2,
+          6146
+        ]
+      ],
+      "flags": 0,
+      "mask_record": null,
+      "name": "Owned Far",
+      "opacity": 255,
+      "planes": {
+        "-1": {
+          "bytes": 6144,
+          "full": 6144,
+          "maximum": 255,
+          "minimum": 255,
+          "nonzero": 6144,
+          "sha256": "884929e08ec0c709c085488ca1b0c61bb9749b0f38bd253c97c073657116f5be"
+        },
+        "0": {
+          "bytes": 6144,
+          "full": 0,
+          "maximum": 204,
+          "minimum": 18,
+          "nonzero": 6144,
+          "sha256": "c004f05f22824d8bdf79cba956294547e71b77b72e528543be73541bdd6542ae"
+        },
+        "1": {
+          "bytes": 6144,
+          "full": 0,
+          "maximum": 222,
+          "minimum": 36,
+          "nonzero": 6144,
+          "sha256": "085c31299f5b48753cf2d505bd0f229a0cd1f2b9feafa8ba0d8164d25c2ec3de"
+        },
+        "2": {
+          "bytes": 6144,
+          "full": 0,
+          "maximum": 240,
+          "minimum": 54,
+          "nonzero": 6144,
+          "sha256": "bd112d713a404e4535d5f10d1c2738bc9a97f0e0720980a79ebb2e74a42388e3"
+        }
+      },
+      "visible": true
+    }
+  ],
+  "license": "MIT OR Apache-2.0",
+  "mode": 3,
+  "provenance": "Independent owned96x64 raw PSD fixture, literal published-format writer; no Adobe code or assets. Same source opened by Photoshop2026. Channel hashes from independent public-format Python reader.",
+  "sha256": "1a309d17029ec7a2d5873e40fa6c1b85de03cf0b6274991995bbc4da43a43606"
+}

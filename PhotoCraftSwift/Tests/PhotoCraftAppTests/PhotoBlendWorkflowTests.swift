@@ -56,11 +56,12 @@ final class PhotoBlendWorkflowTests: XCTestCase {
   func testPanoramaSeamsMultibandAndMasksAvoidBlackEdges() throws {
     let d = try fixture();var settings = PhotoBlendSettings();settings.fillTransparentAreas = false
     let result = try PhotoBlend.prepare(d,layerIDs:ids(d),settings:settings).result
-    XCTAssertEqual(result.layers.count,3);XCTAssertFalse(result.layers[0].visible);XCTAssertFalse(result.layers[1].visible)
-    guard case .raster(let output) = result.layers[2].content else { return XCTFail("Missing output") }
+    XCTAssertEqual(result.layers.count,2);XCTAssertTrue(result.layers.allSatisfy(\.visible))
+    let output = try Renderer.composite(result)
     XCTAssertEqual(output.pixel(x:0,y:20).r,0.2,accuracy:0.015);XCTAssertEqual(output.pixel(x:63,y:20).r,0.8,accuracy:0.015)
     XCTAssertGreaterThan(output.pixel(x:31,y:20).r,0.25);XCTAssertLessThan(output.pixel(x:31,y:20).r,0.75)
-    for i in 0..<2 { XCTAssertTrue(result.layers[i].content == d.layers[i].content) }
+    XCTAssertEqual(result.layers.map(\.id),d.layers.map(\.id));XCTAssertEqual(result.layers.map(\.name),d.layers.map(\.name))
+    XCTAssertNotEqual(result.layers[0].content,d.layers[0].content)
     let left = try MaskSampler(layer:result.layers[0]),right = try MaskSampler(layer:result.layers[1])
     XCTAssertEqual(left.coverage(x:4.5,y:20.5),1);XCTAssertEqual(right.coverage(x:60.5,y:20.5),1)
   }
@@ -76,7 +77,8 @@ final class PhotoBlendWorkflowTests: XCTestCase {
     var settings = PhotoBlendSettings();settings.fillTransparentAreas = false
     let result = try PhotoBlend.prepare(d,layerIDs:ids(d),settings:settings).result
     XCTAssertEqual(result.selection,d.selection)
-    guard case .raster(let out) = result.layers.last!.content else { return XCTFail() }
+    XCTAssertEqual(result.layers.count,2);XCTAssertTrue(result.layers.allSatisfy(\.visible))
+    let out = try Renderer.composite(result)
     let p = out.linearPixel(x:20,y:20);XCTAssertEqual(p.r,1.4,accuracy:0.0001);XCTAssertEqual(p.g,-0.1,accuracy:0.0001);XCTAssertEqual(p.a,0.3,accuracy:0.003)
     XCTAssertEqual(try Renderer.composite(result).linearPixel(x:20,y:20).a,p.a,accuracy:0.0001)
   }
@@ -122,6 +124,9 @@ final class PhotoBlendWorkflowTests: XCTestCase {
       let expected = try PhotoBlend.prepare(d,layerIDs:ids(d),settings:settings).result
       let status = try await helper.edit(service,shared,"photo.autoBlend",params);XCTAssertEqual(status,200)
       XCTAssertEqual(try Renderer.composite(shared.store.document),try Renderer.composite(expected))
+      XCTAssertEqual(shared.store.document.layers.count,2)
+      XCTAssertTrue(shared.store.document.layers.allSatisfy { $0.visible && $0.mask != nil })
+      XCTAssertEqual(shared.store.selectedLayerIDs,ids(d))
       let undo = try await helper.edit(service,shared,"history.undo");XCTAssertEqual(undo,200);XCTAssertTrue(shared.store.document == d)
       let stale = try await helper.edit(service,shared,"photo.autoBlend",params,revision:"stale");XCTAssertEqual(stale,409)
       shared.store.selectedLayerIDs = ids(d);shared.store.beginPhotoBlend()
@@ -144,6 +149,7 @@ final class PhotoBlendWorkflowTests: XCTestCase {
     XCTAssertEqual(maskOnly.selectedLayerIDs,ids(decoded))
     let desktop = try PhotoBlend.prepare(decoded,layerIDs:ids(decoded),settings:settings).result
     XCTAssertEqual(try Renderer.composite(expected),try Renderer.composite(desktop))
+    XCTAssertEqual(expected.layers.count,2);XCTAssertTrue(expected.layers.allSatisfy { $0.visible && $0.mask != nil })
     let body: [String:Any] = ["image":["source":["url":"https://example.test/input.psd"]],"options":["actions":[["source":["content":action,"contentType":"application/json"]]]],"outputs":[["mediaType":"image/png","destination":["validityPeriod":60]]]]
     try await AutomationTests().withService(pressedMouseButtons:{0},resourceTransport:BlendFixtureTransport(input)) { service,shared in
       service.setResourceJobsEnabled(true);let before = shared.store.document

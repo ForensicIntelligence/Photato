@@ -49,7 +49,6 @@ public enum Photomerge {
     if settings.blendImages {
       var blend = PhotoBlendSettings();blend.seamlessTones = true;blend.fillTransparentAreas = settings.fillTransparentAreas
       output = try PhotoBlend.prepare(output,layerIDs:Set(output.layers.map(\.id)),settings:blend).result
-      if let last = output.layers.indices.last { output.layers[last].name = "Panorama" }
     } else if settings.fillTransparentAreas {
       // Preserve the unblended photo layers and add only newly synthesized hole pixels.
       guard w <= PhotoBlend.maximumPixels/h else { throw CraftError.unsupported("Transparent-area fill supports panoramas up to 4 megapixels.") }

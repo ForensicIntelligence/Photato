@@ -65,7 +65,7 @@ struct PhotoBlendSheet: View {
           Toggle("Seamless Tones and Colors",isOn:$model.settings.seamlessTones)
           Toggle("Content Aware Fill Transparent Areas",isOn:$model.settings.fillTransparentAreas)
           Text(model.settings.method == .stack ? "Combine the sharpest regions of aligned photos into one focus stack.":"Blend overlapping, aligned layers into a panorama.").font(.caption).foregroundStyle(.secondary)
-          Text("Source pixels are retained with editable masks. A merged result hides its source layers to preserve transparent edges.").font(.caption).foregroundStyle(.secondary)
+          Text("Sources keep editable masks and color corrections. Transparent-area fill adds a merged layer; translucent sources are hidden to avoid doubling their alpha.").font(.caption).foregroundStyle(.secondary)
           Toggle("Preview",isOn:$model.preview)
         }.frame(width:260)
       }
