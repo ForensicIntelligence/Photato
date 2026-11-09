@@ -36,7 +36,7 @@ enum GeometryAPI {
     default: return [:]
     }
   }
-  static var capabilities: [String: Any] { [
+  static var capabilities: [String: Any] { ["nativeCanvasViewport":"Canvas Size retains current magnification and pan; it does not issue an implicit Fit against pre-resize dimensions. Existing document.canvasSize API geometry/history behavior is unchanged.",
     "fitImage":["command":"document.fitImage", "units":"pixels", "defaultWidth":1024, "defaultHeight":1024,
       "defaultDontEnlarge":false, "actionsVersion":45,
       "behavior":"Resolve the bounding box independently for each input; keep proportions, round the dependent pixel dimension half up with a minimum of1, and optionally leave smaller images unchanged. Retains PPI and uses the native Image Size engine. A no-op may be recorded in Actions without adding Undo. The whole document, including saved channels and masks, is resized regardless of the current editing target.",

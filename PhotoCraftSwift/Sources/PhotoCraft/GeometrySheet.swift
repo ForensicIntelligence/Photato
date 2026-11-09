@@ -251,9 +251,18 @@ struct GeometrySheet: View {
       } else {
         command = .resolution(ppi)
       }
-      store.geometrySheet = nil
-      store.performGeometry(command)
-      store.fit()
+      store.applyGeometrySheetCommand(command)
     } catch { validation = error.localizedDescription }
+  }
+}
+
+@MainActor extension EditorStore {
+  func applyGeometrySheetCommand(_ command: Command) {
+    // Canvas dimensions change the workspace extent, not the user's magnification.
+    if case .canvasSize = command, zoom == 0 { zoom = effectiveZoom }
+    geometrySheet = nil
+    performGeometry(command)
+    if case .canvasSize = command { return }
+    fit()
   }
 }

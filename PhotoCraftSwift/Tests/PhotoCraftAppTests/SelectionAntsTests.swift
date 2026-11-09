@@ -112,7 +112,12 @@ final class SelectionAntsTests: XCTestCase {
       overlay.synchronize(environment: .init())
       XCTAssertTrue(overlay.preview.isAnimating); XCTAssertFalse(overlay.preview.layer.isHidden)
       XCTAssertEqual(overlay.preview.clip.path?.boundingBoxOfPath, canvas.visibleRect.intersection(canvas.imageRect))
-      XCTAssertNotNil(overlay.committed.black.path)
+      XCTAssertTrue(overlay.committed.layer.isHidden, "Replacement feedback hides the old selection")
+      for mode in [SelectionMode.add, .subtract, .intersect] {
+        canvas.selectionDragMode = mode; overlay.synchronize(environment: .init())
+        XCTAssertNotNil(overlay.committed.black.path, "Combined selections retain their original border")
+      }
+      canvas.selectionDragMode = .replace
       canvas.start = nil; canvas.end = nil; overlay.synchronize(environment: .init())
       XCTAssertTrue(overlay.preview.layer.isHidden); XCTAssertFalse(overlay.preview.isAnimating)
     }
@@ -168,7 +173,7 @@ final class SelectionAntsTests: XCTestCase {
       XCTAssertTrue((SelectionAntsAPI.capabilities["adobe"] as? String)?.contains("No published") == true)
       XCTAssertEqual(service.revision(document.store), revision); XCTAssertEqual(document.store.document, source)
       XCTAssertEqual(try NativeArchive.encodeChunked(document.store.document, minimumVersion: 86), bytes)
-      XCTAssertEqual(AutomationCommand.definitions.count, 267)
+      XCTAssertEqual(AutomationCommand.definitions.count, 271)
     }
   }
   @MainActor func testOwnedRasterSnapshotsShowMovingDashesAndKeepInteriorClear() async throws {

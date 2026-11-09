@@ -304,6 +304,25 @@ public struct SelectionMask: Equatable, Sendable, Codable {
     }
     let inverse = try delta.inverted()
     var out = [UInt8](repeating: 0, count: width * height)
+    // Integer translation is a byte copy. Avoid four coverage samples per output
+    // pixel when arrow nudges or border drags only change its grid position.
+    if delta.a == 1, delta.b == 0, delta.c == 0, delta.d == 1,
+      delta.tx.rounded() == delta.tx, delta.ty.rounded() == delta.ty {
+      guard delta.tx > -Double(self.width), delta.tx < Double(width),
+        delta.ty > -Double(self.height), delta.ty < Double(height) else {
+        return try Self(width: width, height: height, bytes: out)
+      }
+      let dx = Int(delta.tx), dy = Int(delta.ty)
+      let sx = max(0, -dx), sy = max(0, -dy), x = max(0, dx), y = max(0, dy)
+      let count = min(self.width-sx, width-x), rows = min(self.height-sy, height-y)
+      let source = dense!
+      for row in 0..<rows {
+        try Task.checkCancellation()
+        let from = (sy+row)*self.width+sx, to = (y+row)*width+x
+        out.replaceSubrange(to..<to+count, with: source[from..<from+count])
+      }
+      return try Self(width: width, height: height, bytes: out)
+    }
     for y in 0..<height {
       try Task.checkCancellation()
       for x in 0..<width {

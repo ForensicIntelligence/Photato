@@ -1,3 +1,9 @@
+## Source update — 2026-11-09, build 524
+
+Selection borders support dragging and arrow keys; replacement feedback starts on press. Canvas Size retains zoom/pan. Debug and normal optimized ARM/translated Intel each pass 65 selected methods, including all 13 new methods. Universal package checks pass; live UI inspection is unavailable this session.
+
+[Development record](DEVLOG.md#dev-step-524) · [Qualification](SOURCE_PUBLICATION_524.md).
+
 ## Source update — 2026-11-09 UTC, build 523
 
 Layer-mask and Adjustment Brush previews now retain stroke coverage. The owned model workload processes about 60 accepted previews/s; physical display FPS remains unverified. Debug 52/52 and optimized ARM/translated Intel 69/69 selected methods pass. Native mask/adjustment history, Properties, save/reopen/Quit and universal package checks pass.
@@ -163,14 +169,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:523 -->
+<!-- current-status-step:524 -->
 ## Current tested source
 
-Source 523 passes 52 focused Debug methods and 69 on each optimized architecture, including 15 new checkpoint methods. The owned mask/adjustment workload processes about 60 accepted previews/s; physical display FPS remains unverified. Native optimized universal painting/history/Properties/save/reopen/Quit and package checks pass.
+Build 524 fixes direct selection-border dragging/nudging, replacement outline feedback and Canvas Size zoom. All 65 selected tests and 13 new methods pass in Debug and each optimized architecture. Universal package checks pass. Live UI verification is unavailable in this session.
 
-All 104 scopes, 652 command identities, 81 major memberships and seven passes remain. Current work is Q03, major stillneeded: actual display response and remaining tool/document contexts. Live Sky scrolling and all prior fidelity/platform/full-suite failures remain open. Canonical history remains failed and standalone website promotion pending.
+All 104 scopes, 652 command identities, 81 major memberships and seven passes remain. Q03 major stillneeded, the reported Sky scrolling, physical frame rate, platform/full-suite/fidelity gates and previous failures remain open. Canonical history remains failed and standalone website promotion is pending.
 
-[Source qualification](SOURCE_PUBLICATION_523.md)
+[Source qualification](SOURCE_PUBLICATION_524.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

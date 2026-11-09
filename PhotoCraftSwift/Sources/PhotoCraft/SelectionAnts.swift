@@ -139,6 +139,19 @@ struct SelectionAntsEnvironment {
 extension CraftCanvas {
   var committedSelectionAnts: SelectionAntsShape? {
     guard store.tool != .selectionBrush else { return nil }
+    if let drag = store.selectionBorderDrag, drag.matches(store) {
+      if let contour = drag.contour {
+        return .contour(contour.path, .init(a: scale, b: 0, c: 0, d: scale,
+          tx: imageRect.minX + Double(drag.dx) * scale, ty: imageRect.minY + Double(drag.dy) * scale))
+      }
+      if let rect = drag.original.selection {
+        return .rectangle(selectionViewRect(.init(x: rect.x + drag.dx, y: rect.y + drag.dy, width: rect.width, height: rect.height)))
+      }
+    }
+    let replacing = selectionDragMode == .replace && !panningGesture && (
+      start != nil && ([.marquee,.ellipticalMarquee,.rowMarquee,.columnMarquee,.lasso].contains(store.tool)
+        || store.tool == .objectSelection) || store.tool == .polygonLasso && !polygonPoints.isEmpty)
+    if replacing { return nil }
     let draft = store.transformDraft
     let path = draft?.collectionLayerIDs != nil || draft?.pixelMask == true || (draft?.channelTarget != nil && store.document.selection == nil)
       ? nil : draft?.selection == true ? (store.selectionTransform?.previewPath ?? store.selectionPath) : store.selectionPath
@@ -153,7 +166,7 @@ extension CraftCanvas {
     return CGRect(x: p.x, y: p.y, width: CGFloat(rect.width) * scale, height: CGFloat(rect.height) * scale)
   }
   var previewSelectionAnts: SelectionAntsShape? {
-    guard let start, let end, !panningGesture else { return nil }
+    guard store.selectionBorderDrag == nil, let start, let end, !panningGesture else { return nil }
     if let axis = store.tool.singlePixelMarquee,
       let rect = axis.rectangle(at: axis == .row ? end.y : end.x, width: store.document.width, height: store.document.height) {
       return .rectangle(selectionViewRect(rect))

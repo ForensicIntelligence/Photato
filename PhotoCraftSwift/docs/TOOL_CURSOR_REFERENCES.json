@@ -1,488 +1,845 @@
 {
-  "step": 283,
-  "status": "Existing implemented-action feedback qualified on arm64/macOS27 host; full Photoshop cursor/tool parity open",
-  "reference_date": "2026-10-30 America/Vancouver",
-  "run": "artifacts/runs/20261031T010106Z-283-tool-cursors",
-  "references": [
-    {
-      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/zoom-images.html",
-      "kind": "public Adobe documentation",
-      "observation": "Option-click switches Zoom Out; independently authored native glyphs, no Adobe assets copied."
+  "PSB_tagged_blocks_375": {
+    "API": "Existing encoding capabilities describe corrected framing; no new command or route.",
+    "impact": "Shared file serializer repair; no menu, shortcut, tool or modifier action changes. Existing all-combination ToolCursor tests retained.",
+    "reference": "docs/PSB_TAGGED_BLOCKS_375.json"
+  },
+  "action_duplication_407": {
+    "existing_modifier_matrix": 880,
+    "existing_tools": 55,
+    "new_canvas_tool_or_modifier": false,
+    "qualification": "Existing55-tool/880modifier matrix passes in current34case Debug run. Native panel menu uses standard pointer; no new canvas gesture or Option-drag behavior advertised.",
+    "reference": "docs/ACTION_DUPLICATION_407.json",
+    "standard_panel_menu_arrow": true,
+    "step": 407
+  },
+  "adjacent_controls_427": {
+    "api": "Existing artboard.edit adjacent plus strict schema/capability metadata; no new Adobe route.",
+    "native": "Four + controls, Option captured copy,16modifier contexts, lifecycle cancel and one prepared Undo.",
+    "qualification": "41focused Debug tests/all8new pass. Old Frame Debug crash retained; fullscope/default/physical/normal427 remain open.",
+    "reference": "docs/ARTBOARD_NEIGHBORS_427.json",
+    "source": "427Source04"
+  },
+  "adjustment_brush_lookup_478": {
+    "cursor_policy_unchanged": true,
+    "native_code_gesture_preview_cancel_commit_alternate_tested": true,
+    "new_pointer_tools_or_modifier_actions": false,
+    "optimized_existing_cursor_methods_each": 9,
+    "reference": "docs/ADJUSTMENT_BRUSH_LOOKUP_478.json"
+  },
+  "ai_results_475": {
+    "cursor_policy_changed": false,
+    "new_tools_or_modifier_actions": false,
+    "optimized_cursor_methods_each_architecture": 9,
+    "reference": "docs/AI_GENERATION_LIFECYCLE_475.json"
+  },
+  "animation_frame_drag_418": {
+    "existing_modifier_combinations": 880,
+    "existing_tools": 55,
+    "new_canvas_tool_or_cursor": false,
+    "operation": "Move for all16combinations; no advertised duplicate. Native DropProposal follows dispatch; physical system feedback unqualified.",
+    "panel_modifier_combinations": 16,
+    "passed": true,
+    "physical_pointer_check": false,
+    "reference": "docs/ANIMATION_FRAME_DRAG_418.json"
+  },
+  "archive_validation_481": {
+    "current_native_live_UI_qualified": false,
+    "native_UI_menu_shortcut_cursor_policy_changed": false,
+    "reference": "docs/ARCHIVE_VALIDATION_481.json",
+    "selected_cursor_methods_each_architecture": 9,
+    "selected_menu_methods_each_architecture": 9,
+    "test_report_routing_only": true
+  },
+  "auxiliary_paint_colors_373": {
+    "API": "brush.colors and paintColorStateSchema; canonical brush background;239 commands/native85/Actions44 unchanged; no Adobe route.",
+    "reference": "docs/AUXILIARY_PAINT_COLORS_373.json",
+    "scope": "Existing Q/channel targets change their paint palette; X/D and existing brush.configure retain their actions. No new tool/modifier/cursor/menu binding. Existing all-combination policy tests are retained. Application-global and remaining channel/mask contexts stay open."
+  },
+  "auxiliary_spot_channels328": {
+    "full_photoshop_parity": false,
+    "main_factory_inventory_changed": false,
+    "reference": "docs/SOURCE_CHANNEL_REFERENCES.json",
+    "scope": "Existing Channels panel New Spot entry enabled; standard native dialog and button controls. No main factory menu/shortcut inventory change or new canvas gesture. Existing painting/channel cursor policy retained; nine menu and nine all-modifier cursor regressions pass. Command-click New Channel uses the standard button pointer. Live Photoshop panel/appearance qualification remains open.",
+    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
+    "step": 328
+  },
+  "background_layers_348": {
+    "API_impact": "layer.background/pixels.clear and backgroundLayer state/capabilities; no injected pointer route.",
+    "evidence": "docs/BACKGROUND_LAYER_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "No new modifier action. Existing Brush/Eraser cursor and captured gesture modifiers remain; Background Eraser/Magic Eraser promote before removing alpha. Normal Eraser uses captured background color. Existing all16 ToolCursor cohort is rerun."
+  },
+  "background_pixel_transform_349": {
+    "API_impact": "pixels.transform adds backgroundColor; selectedPixelTransform state/schema exposes Background/captured color. No pointer injection or Adobe cursor route.",
+    "all16_background_modifier_combinations_tested": true,
+    "evidence": "docs/BACKGROUND_PIXEL_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "new_modifier_actions": false,
+    "policy": "Existing captured SelectionTransform mode/handle/link-state resolver and native refresh. Background color is captured alongside the draft; controls retain text/control cursors."
+  },
+  "batch_file_naming_434": {
+    "behavior": "No canvas tool, gesture modifier or tool cursor added. Native controls retain AppKit cursor behavior; no Photoshop combined-modifier qualification claimed.",
+    "qualification": "No canvas modifier action added; physical/native appearance and Photoshop checks open.",
+    "reference": "docs/BATCH_FILE_NAMING_434.json",
+    "step": 434,
+    "tool_modifier_action_changed": false
+  },
+  "blank_video_layers_476": {
+    "cursor_policy_changed": false,
+    "existing_cursor_methods_each_architecture": 9,
+    "native_brush_gesture_frame_isolation_tested": true,
+    "new_tools_or_modifier_actions": false,
+    "reference": "docs/BLANK_VIDEO_LAYERS_476.json"
+  },
+  "blur_gallery_mask_448": {
+    "maximum_Actions_version": 53,
+    "reference": "docs/BLUR_GALLERY_MASK_448.json",
+    "scope": "Native output/shared API/Actions, no new tool/modifier/cursor/menu/shortcut. Uniform Field5 and duplicate naming PS reference only; original full-scope acceptance remains.",
+    "typed_commands": 258
+  },
+  "canvas_edges_362": {
+    "API_operation_state_schemas_added": true,
+    "cursor_policy_changed": false,
+    "guide": "docs/CANVAS_EDGES.md",
+    "new_tool_or_modifier_action": false,
+    "physical60fps_qualified": false
+  },
+  "channel_blending_461": {
+    "evidence": "docs/CHANNEL_BLENDING_461.json",
+    "impact": "No new tool, modifier, cursor or global shortcut. Existing Blending Options menu/context actions open native channel checkboxes; all nine cursor regressions pass in selected configurations.",
+    "native_live_qualified": false
+  },
+  "channel_footer_433": {
+    "behavior": "Existing native button icons and AppKit arrow/control cursors retained. Option Save is a native button options action; no drawing tool/alternate canvas cursor added. All16Control/Command/Option/Shift Save policies tested; exact physical/Photoshop combined gestures open.",
+    "qualification": "Controlled16Save policies; no live physical/Photoshop or new canvas cursor claim.",
+    "reference": "docs/CHANNEL_FOOTER_433.json",
+    "step": 433,
+    "tool_modifier_action_changed": false
+  },
+  "channel_separation_470": {
+    "impact": "Existing Channels panel Split Channels action; no new tool/modifier/global shortcut. Oldninecursor methods pass Debug/normal botharchitectures. Full physical/context matrix remains.",
+    "reference": "docs/CHANNEL_SEPARATION_470.json"
+  },
+  "channel_thumbnail_options_421": {
+    "existing_modifier_combinations": 880,
+    "existing_tools": 55,
+    "native": "Native thumbnail button uses normal control pointer; unmodified double-click Options, all16modified click combinations retain existing dispatch. No canvas tool/modifier action or shortcut added.",
+    "new_canvas_tool_or_cursor": false,
+    "passed": true,
+    "physical_pointer_check": false,
+    "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json"
+  },
+  "channel_transform_352": {
+    "API_impact": "channel.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
+    "all16_modifier_combinations_tested": true,
+    "evidence": "docs/CHANNEL_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "Whole auxiliary-channel Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context."
+  },
+  "checkpoint369_review": {
+    "change": "Quick Mask overlay eye visibility and hidden-brush guard",
+    "cursor_or_modifier_added": false,
+    "policy": "Overlay hiding preserves the editing target, brush selection/settings and existing modifier cursor policy; attempted hidden painting displays the reference warning.",
+    "reference": "docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json",
+    "validation": "Existing all-tool/16-modifier cursor tests included in454 affected cases per architecture. This does not close full Photoshop cursor parity."
+  },
+  "checkpoint371_review": {
+    "change": "Hidden Quick Mask Fill/Invert guards, retained hidden Gaussian filter, factory pixel Invert menu",
+    "evidence": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
+    "new_tool_or_modifier": false,
+    "policy": "Existing effective canvas cursors remain unchanged. Hidden painting/Fill uses command validation; native sliders/text fields retain their own cursors. All-tool16-modifier regressions are included in planned affected qualification.",
+    "reference": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
+    "status": "Current Source02 native workflow and eight new cases pass on each architecture; broader failures/gates retained"
+  },
+  "classic_RGB16_boundaries_486": {
+    "all_selected_optimized_passed": false,
+    "application_build": 486,
+    "capture_snapshot": "artifacts/runs/20261108T053250Z-486-classic-fused/capture-inputs01.json",
+    "factory_menus_keys_cursor_policy_unchanged": true,
+    "focused_Debug_tests": 61,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "main_tools": 55,
+    "modifier_contexts": 880,
+    "new_correctness_methods": 3,
+    "normal_passed_each_architecture": [
+      61,
+      60
+    ],
+    "normal_selected_tests_each_architecture": 61,
+    "reference": "docs/CLASSIC_RGB16_BOUNDARIES_486.json",
+    "selected_RGB16_fused_workflow_qualified_both_architectures": true,
+    "selected_native_UI_qualified": true,
+    "software_changes": true,
+    "status": "Classic RGB16 Gradient Map now uses fused interpolation at linear boundaries. All 61 selected Debug checks pass. Optimized Apple Silicon passes 61/61 and translated Intel 60/61, including all three new methods on both. The remaining Intel Legacy vector170 failure also occurs on retained build485. All 2,359,872 independently read merged-reference bytes match across Debug, ARM and Intel. Native Reverse, Undo/Redo, 100% viewport, cleanup and universal package checks pass. Build486 is a validation candidate; build480 remains the latest fully qualified selected universal. Full A06, Smooth, the curved residual, RGB32 fills and earlier gaps remain open.",
+    "step": 486
+  },
+  "color_lookup_export_405": {
+    "existing_tools": 55,
+    "matrix_rows_each_architecture": 880,
+    "qualification": "Existing shared matrix passes in80normal Release cases per architecture; native dialog text/control cursors remain AppKit-owned.",
+    "reference": "docs/COLOR_LOOKUP_EXPORT_405.json",
+    "step": 405,
+    "tool_modifier_action_changed": false
+  },
+  "color_lookup_formats_431": {
+    "cursor": "Native dialog text, checkboxes and save controls retain AppKit-owned cursors; no drawing gesture or modifier action added.",
+    "qualification": "No new modifier matrix needed for metadata/export UI. Existing shared tool policy remains required. Offscreen controls only; physical save-panel behavior open.",
+    "reference": "docs/COLOR_LOOKUP_FORMATS_431.json",
+    "step": 431,
+    "tool_modifier_action_changed": false
+  },
+  "color_range_343": {
+    "evidence": "docs/COLOR_RANGE_REFERENCES.json",
+    "live_Photoshop_qualified": false,
+    "modifiers": "Shift add, Option subtract wins together, Control/Command retain sampler. Command preview toggle; captured sampler until release; focus/detach restore.",
+    "policy": "ToolCursor.colorRangeSampler and ToolCursor.colorRange in ToolCursorPolicies.swift; ColorRangeCanvasView uses ModifierCursorView.",
+    "samplers": 3,
+    "tested_combinations": 16
+  },
+  "component_selection_406": {
+    "existing_matrix_combinations": 880,
+    "existing_tools": 55,
+    "new_tool_or_canvas_modifier_action": false,
+    "qualification": "Existing55-tool/880modifier matrix passes in current focused Debug run. No new canvas tool/action. Native row dispatch adds tested Shift selection; physical held-pointer/context behavior remains open.",
+    "reference": "docs/C01_RGB8_SELECTION_406.json",
+    "row_dispatch_modifiers": 64,
+    "row_dispatch_note": "16 combinations across RGB8/16/32 and CMYK; primary-dispatch helper, not physical Control-click context or held Shift pointer qualification.",
+    "step": 406
+  },
+  "content_aware_apply_458": {
+    "evidence": "docs/CONTENT_AWARE_APPLY_458.json",
+    "new_selection_action": "New/Add/Subtract/Intersect follow captured selectionMode; Shift Add/Option Subtract/both Intersect. Sampling Option reversal/previewArrow/temporaryHand unchanged.",
+    "remaining": "Live workspace/heldkey/ready-state/input/VoiceOver/tablet/60fps/fullPhotoshop behavior unqualified.",
+    "tests": "All4modesx16modifier combinations/capture and9existingcursor methods pass Debug."
+  },
+  "continued_regression_290": {
+    "cursor_tests": 9,
+    "failed": 0,
+    "full": {
+      "failed": 0,
+      "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/full01.log",
+      "log_sha256": "7c7e21b10b2ec3a36c13001bc82c5f5a65317b98ec68b608d1cfd92282548965",
+      "seconds": 332.804,
+      "tests": 2919
     },
-    {
-      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/change-tool-pointers.html",
-      "kind": "public Adobe documentation",
-      "observation": "Tool pointer preferences and precision/brush styles exist; complete preference parity is not claimed."
+    "future_tool_rule": "AGENTS/CONTRIBUTING explicitly require all16 Control/Command/Option/Shift combinations in every new tool increment.",
+    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/focused02.log",
+    "physical_held_key_comparison": false,
+    "policy_unchanged": true,
+    "source_manifest": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
+    "tool_modifier_combinations": 832
+  },
+  "continued_regression_298": {
+    "full": {
+      "failed": 0,
+      "groups": [
+        {
+          "failed": 0,
+          "group": 1,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-01.log",
+          "module": "PhotoCraftAITests",
+          "seconds": 0.004,
+          "sha256": "3fca61c2c8ef814fb76ec4a6bec32ba9df322444040c5a8cf0abc1581e4ba9ed",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 4
+        },
+        {
+          "failed": 0,
+          "group": 2,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-02.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 14.689,
+          "sha256": "eb9ba0daafcafbfe7de06318005e3d1d9f8e78c08a3d528dd55bfcc172e9046e",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 149
+        },
+        {
+          "failed": 0,
+          "group": 3,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-03.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 16.374,
+          "sha256": "78c251a09dd4ec1fa54aded7451460695817d9df5b80eca721ed767b8b738cea",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 139
+        },
+        {
+          "failed": 0,
+          "group": 4,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-04.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 18.121,
+          "sha256": "70ac6a870c3af5a56bfe6b5167663cbfb14ef9089fdae3d02e477b6684cde357",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 141
+        },
+        {
+          "failed": 0,
+          "group": 5,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-05.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 12.241,
+          "sha256": "fabeab6579ef205be3538ffe0e7f3eca33076e7f0b32679998b9d696b5f4e95a",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 148
+        },
+        {
+          "failed": 0,
+          "group": 6,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-06.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 105.6,
+          "sha256": "e798888da0dc7566b5db1c1df899cd73dde10f54a8470edc81750af6014c07a6",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 145
+        },
+        {
+          "failed": 0,
+          "group": 7,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-07.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 15.872,
+          "sha256": "9a2b03cbf50344063f70be36cda43404c3b923f9f9cda81b1ab5815687077d58",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 149
+        },
+        {
+          "failed": 0,
+          "group": 8,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-08.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 189.162,
+          "sha256": "b905d1fbb04b9b139bf7a049e1b4bc4b10dfd2f622cfce683e935982883d41ed",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 144
+        },
+        {
+          "failed": 0,
+          "group": 9,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-09.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 39.889,
+          "sha256": "962ee04fd1557c3326f750f98c9d885c0ab9e556a9cb165305d4f6d2d082ece0",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 143
+        },
+        {
+          "failed": 0,
+          "group": 10,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-10.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 17.012,
+          "sha256": "0e8d77d474d53ebea21d3e563c4c3de8dd9af07aa7f71245b0cc2e62754417f1",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 148
+        },
+        {
+          "failed": 0,
+          "group": 11,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-11.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 20.42,
+          "sha256": "d02565d1991e3dc25489c802dd7486310070ecf4ffaf7ff92158337e34163a5c",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 147
+        },
+        {
+          "failed": 0,
+          "group": 12,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-12.log",
+          "module": "PhotoCraftAppTests",
+          "seconds": 7.677,
+          "sha256": "90cfd4240d5639c19593e932ff95ecaa6df1a1c5b449e4c8f9645823323b8746",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 105
+        },
+        {
+          "failed": 0,
+          "group": 13,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-13.log",
+          "module": "PhotoCraftCoreTests",
+          "seconds": 4.949,
+          "sha256": "be89553c32bf8c693ba30ea9f7fca173da009ab7fba84c632349bfd303d7f803",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 398
+        },
+        {
+          "failed": 0,
+          "group": 14,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-14.log",
+          "module": "PhotoCraftCoreTests",
+          "seconds": 58.204,
+          "sha256": "3f1bee933eb886910df661c3b9585547d4e0e046ce1e0fdea7fe0f9ca4b132a3",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 398
+        },
+        {
+          "failed": 0,
+          "group": 15,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-15.log",
+          "module": "PhotoCraftCoreTests",
+          "seconds": 0.129,
+          "sha256": "1c91287b3f0ad58f42cf818e779d5c0f9c3e665d09273bbe52fbef9060d673b7",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 4
+        },
+        {
+          "failed": 0,
+          "group": 16,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-16.log",
+          "module": "PhotoCraftImagingTests",
+          "seconds": 93.199,
+          "sha256": "888651d1e05da9e3f619e0c256c74bc5cae866aed3d9844139a2b0663f13f8a4",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 393
+        },
+        {
+          "failed": 0,
+          "group": 17,
+          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-17.log",
+          "module": "PhotoCraftImagingTests",
+          "seconds": 13.499,
+          "sha256": "84d5cae4d1519f97655516fb283387e54bf2d892965c55138c292eff7bff2910",
+          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+          "tests": 225
+        }
+      ],
+      "inventory": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/inventory05-normalized.log",
+      "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/qualification05.log",
+      "monolithic_pass": false,
+      "plan": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/qualification-plan05.json",
+      "recorded_at_utc": "2026-10-31T18:34:59.160326+00:00",
+      "scope": "Complete inventoried XCTest set, qualified in bounded module/class processes; not a passing monolithic run. Prior297 Source04 interrupted AppKit lifecycle gate remains open.",
+      "seconds": 627.041,
+      "sha256": "ec656dd235e0a8c67e3acf90ddc0929223fc3d450439a805c73c343554367899",
+      "source_binding": "All groups on identical frozen Source05 after channel arithmetic integration; prior long-lived AppKit hang remains open.",
+      "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
+      "tests": 2980
     },
-    {
-      "url": "https://helpx.adobe.com/uk/photoshop/using/tool-techniques/hand-tool.html",
-      "kind": "reference fetch failed",
-      "observation": "2026-10-30 fetch timeout retained; not accepted as successful web verification."
-    }
-  ],
-  "implementation": {
-    "lifecycle": "ModifierCursorView; same key-window flagsChanged monitor, explicit mouse-event reconciliation, cursorUpdate/entry, tool/settings refresh, focus/detach cleanup. Keyboard events returned unchanged. Cursor does not steal AppKit text/control hit regions. Cached native images, no full image redraw solely for flagsChanged.",
-    "tool_policy": "Exhaustive EditorTool switch. All tools receive all16 Control/Command/Option/Shift combinations. Modifiers with no dispatched function change keep the same glyph. Stroke modes follow actual captured state.",
-    "api": "GET /v1/capabilities.toolCursorFeedback describes local presentation semantics and current coverage. Existing typed edits/history remain unchanged; no Adobe pointer endpoint exists in the pinned contract and none is invented."
+    "implemented_tools": 52,
+    "modifier_combinations": 16,
+    "new_tools": false,
+    "policy_unchanged": true,
+    "reference": "docs/CHANNEL_ARITHMETIC_REFERENCES.json",
+    "step": 298,
+    "tests": 9
   },
   "current_tool_audit": [
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "move",
-      "name": "Move",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Move"
     },
     {
-      "id": "frame",
-      "name": "Frame",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift constrains frame geometry. Option new-Frame plus badge when selected-corner hit does not win; actual body bypass remains unchanged.",
-      "covered_by_shared_policy": true
+      "id": "frame",
+      "name": "Frame"
     },
     {
-      "id": "artboard",
-      "name": "Artboard",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift constrains Artboard geometry.",
-      "covered_by_shared_policy": true
+      "id": "artboard",
+      "name": "Artboard"
     },
     {
-      "id": "marquee",
-      "name": "Rectangular Marquee",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift add, Option subtract, both intersect before start. Captured operation remains while later Shift/Option constrain/from-center geometry.",
-      "covered_by_shared_policy": true
+      "id": "marquee",
+      "name": "Rectangular Marquee"
     },
     {
-      "id": "ellipticalMarquee",
-      "name": "Elliptical Marquee",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Same captured selection/geometry behavior as Rectangular Marquee.",
-      "covered_by_shared_policy": true
+      "id": "ellipticalMarquee",
+      "name": "Elliptical Marquee"
     },
     {
-      "id": "lasso",
-      "name": "Lasso",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift add, Option subtract, both intersect; mode captured at start.",
-      "covered_by_shared_policy": true
+      "id": "lasso",
+      "name": "Lasso"
     },
     {
-      "id": "polygonLasso",
-      "name": "Polygonal Lasso",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Selection mode captured at first vertex and retained between clicks until finish/cancel.",
-      "covered_by_shared_policy": true
+      "id": "polygonLasso",
+      "name": "Polygonal Lasso"
     },
     {
-      "id": "objectSelection",
-      "name": "Object Selection",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Configured replace/add/subtract/intersect; Shift/Option override. Captured rectangle/lasso mode and immediate point mode.",
-      "covered_by_shared_policy": true
+      "id": "objectSelection",
+      "name": "Object Selection"
     },
     {
-      "id": "quickSelection",
-      "name": "Quick Selection",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Configured painting selection mode with Shift add, Option subtract and both intersect; captured per stroke.",
-      "covered_by_shared_policy": true
+      "id": "quickSelection",
+      "name": "Quick Selection"
     },
     {
-      "id": "selectionBrush",
-      "name": "Selection Brush",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Same effective painting-selection mode as Quick Selection; captured per stroke.",
-      "covered_by_shared_policy": true
+      "id": "selectionBrush",
+      "name": "Selection Brush"
     },
     {
-      "id": "magicWand",
-      "name": "Magic Wand",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift add, Option subtract, both intersect on click.",
-      "covered_by_shared_policy": true
+      "id": "magicWand",
+      "name": "Magic Wand"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "paintBucket",
-      "name": "Paint Bucket",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Paint Bucket"
     },
     {
-      "id": "gradient",
-      "name": "Gradient",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift constrains gradient direction.",
-      "covered_by_shared_policy": true
+      "id": "gradient",
+      "name": "Gradient"
     },
     {
-      "id": "cloneStamp",
-      "name": "Clone Stamp",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option samples source; otherwise paint from configured source. Space temporary Hand.",
-      "covered_by_shared_policy": true
+      "id": "cloneStamp",
+      "name": "Clone Stamp"
     },
     {
-      "id": "healingBrush",
-      "name": "Healing Brush",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option samples source; otherwise sampled healing. Space temporary Hand.",
-      "covered_by_shared_policy": true
+      "id": "healingBrush",
+      "name": "Healing Brush"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "blur",
-      "name": "Blur",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Blur"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "sharpen",
-      "name": "Sharpen",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Sharpen"
     },
     {
-      "id": "smudge",
-      "name": "Smudge",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option toggles configured finger painting for the captured stroke.",
-      "covered_by_shared_policy": true
+      "id": "smudge",
+      "name": "Smudge"
     },
     {
-      "id": "dodge",
-      "name": "Dodge",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option begins Burn stroke; captured stroke mode remains after Option release.",
-      "covered_by_shared_policy": true
+      "id": "dodge",
+      "name": "Dodge"
     },
     {
-      "id": "burn",
-      "name": "Burn",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option begins Dodge stroke; captured stroke mode remains after Option release.",
-      "covered_by_shared_policy": true
+      "id": "burn",
+      "name": "Burn"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "sponge",
-      "name": "Sponge",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Sponge"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Selection modifier modes while selecting; transform geometry modifiers in existing draft.",
       "id": "patch",
-      "name": "Patch",
-      "existing_modifier_behavior": "Selection modifier modes while selecting; transform geometry modifiers in existing draft.",
-      "covered_by_shared_policy": true
+      "name": "Patch"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Selection modifier modes while selecting; transform geometry modifiers in existing draft.",
       "id": "contentAwareMove",
-      "name": "Content-Aware Move",
-      "existing_modifier_behavior": "Selection modifier modes while selecting; transform geometry modifiers in existing draft.",
-      "covered_by_shared_policy": true
+      "name": "Content-Aware Move"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "redEye",
-      "name": "Red Eye",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Red Eye"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "spotHealing",
-      "name": "Spot Healing Brush",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Spot Healing Brush"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "pencil",
-      "name": "Pencil",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Pencil"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "colorReplacement",
-      "name": "Color Replacement",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Color Replacement"
     },
     {
-      "id": "mixerBrush",
-      "name": "Mixer Brush",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option samples mixer load; otherwise Mixer stroke.",
-      "covered_by_shared_policy": true
+      "id": "mixerBrush",
+      "name": "Mixer Brush"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "patternStamp",
-      "name": "Pattern Stamp",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Pattern Stamp"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "backgroundEraser",
-      "name": "Background Eraser",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Background Eraser"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "magicEraser",
-      "name": "Magic Eraser",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Magic Eraser"
     },
     {
-      "id": "adjustmentBrush",
-      "name": "Adjustment Brush",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option XOR configured subtract flag; captured painting/object mode.",
-      "covered_by_shared_policy": true
+      "id": "adjustmentBrush",
+      "name": "Adjustment Brush"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "brush",
-      "name": "Brush",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Brush"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "eraser",
-      "name": "Eraser",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Eraser"
     },
     {
-      "id": "rectangle",
-      "name": "Rectangle",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift constrain and Option from-center, including combined indicator.",
-      "covered_by_shared_policy": true
+      "id": "rectangle",
+      "name": "Rectangle"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
       "id": "ellipse",
-      "name": "Ellipse",
-      "existing_modifier_behavior": "Shift constrain and Option from-center.",
-      "covered_by_shared_policy": true
+      "name": "Ellipse"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
       "id": "triangle",
-      "name": "Triangle",
-      "existing_modifier_behavior": "Shift constrain and Option from-center.",
-      "covered_by_shared_policy": true
+      "name": "Triangle"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
       "id": "polygon",
-      "name": "Polygon",
-      "existing_modifier_behavior": "Shift constrain and Option from-center.",
-      "covered_by_shared_policy": true
+      "name": "Polygon"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
       "id": "star",
-      "name": "Star",
-      "existing_modifier_behavior": "Shift constrain and Option from-center.",
-      "covered_by_shared_policy": true
+      "name": "Star"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
       "id": "line",
-      "name": "Line",
-      "existing_modifier_behavior": "Shift constrain and Option from-center.",
-      "covered_by_shared_policy": true
+      "name": "Line"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift constrain and Option from-center.",
       "id": "customShape",
-      "name": "Custom Shape",
-      "existing_modifier_behavior": "Shift constrain and Option from-center.",
-      "covered_by_shared_policy": true
+      "name": "Custom Shape"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "text",
-      "name": "Horizontal Type",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Horizontal Type"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "verticalText",
-      "name": "Vertical Type",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Vertical Type"
     },
     {
-      "id": "eyedropper",
-      "name": "Eyedropper",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option captures background; Shift Color Sampler unavailable until implemented. Cursor follows captured target/settings until release; Control/Command add no operation.",
-      "covered_by_shared_policy": true
+      "id": "eyedropper",
+      "name": "Eyedropper"
     },
     {
-      "id": "hand",
-      "name": "Hand",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Open Hand at rest, closed Hand while dragging; Space temporary Hand on canvas.",
-      "covered_by_shared_policy": true
+      "id": "hand",
+      "name": "Hand"
     },
     {
-      "id": "crop",
-      "name": "Crop",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Shift/Option geometric modifiers; straighten/handle pointer details remain separate hover qualification.",
-      "covered_by_shared_policy": true
+      "id": "crop",
+      "name": "Crop"
     },
     {
-      "id": "zoom",
-      "name": "Zoom",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option changes click to Zoom Out; other modifier-only keys have no different dispatched click operation. Command/Option wheel zoom remains.",
-      "covered_by_shared_policy": true
+      "id": "zoom",
+      "name": "Zoom"
     },
     {
-      "id": "pen",
-      "name": "Pen",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Hover-sensitive close path, delete anchor, Option convert hit anchor and add segment anchor glyphs.",
-      "covered_by_shared_policy": true
+      "id": "pen",
+      "name": "Pen"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "freeformPen",
-      "name": "Freeform Pen",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Freeform Pen"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "curvaturePen",
-      "name": "Curvature Pen",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Curvature Pen"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
       "id": "pathSelection",
-      "name": "Path Selection",
-      "existing_modifier_behavior": "No alternate modifier-only click/stroke action is currently dispatched; retain current tool glyph. Standard key shortcuts/context menus remain separate.",
-      "covered_by_shared_policy": true
+      "name": "Path Selection"
     },
     {
-      "id": "directSelection",
-      "name": "Direct Selection",
+      "covered_by_shared_policy": true,
       "existing_modifier_behavior": "Option independently moves selected handles; Control/Command alternate tools are not currently implemented.",
-      "covered_by_shared_policy": true
+      "id": "directSelection",
+      "name": "Direct Selection"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
       "id": "rowMarquee",
-      "name": "Single Row Marquee",
-      "existing_modifier_behavior": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
-      "covered_by_shared_policy": true
+      "name": "Single Row Marquee"
     },
     {
+      "covered_by_shared_policy": true,
+      "existing_modifier_behavior": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
       "id": "columnMarquee",
-      "name": "Single Column Marquee",
-      "existing_modifier_behavior": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
-      "covered_by_shared_policy": true
+      "name": "Single Column Marquee"
     }
   ],
-  "workspaces": [
-    {
-      "name": "Select and Mask / Focus Area",
-      "cursor_behavior": "Option swaps add/subtract, refine/erase or lasso modes using the same resolver as begin stroke."
-    },
-    {
-      "name": "Liquify",
-      "cursor_behavior": "Option freeze/thaw, clockwise/counterclockwise twirl, pucker/bloat, lasso mask add/subtract; captured stroke state."
-    },
-    {
-      "name": "Content-Aware Fill",
-      "cursor_behavior": "Option XOR configured add mode; output preview arrow; Space/Hand panning."
-    },
-    {
-      "name": "Sky Replacement",
-      "cursor_behavior": "Option mask add/subtract or Zoom Out; captured stroke mode; Space/Hand panning."
-    },
-    {
-      "name": "Vanishing Point",
-      "cursor_behavior": "Option Stamp source sampling; gesture-latched sampling flag; native SwiftUI cursor region."
-    },
-    {
-      "name": "Blur Gallery",
-      "cursor_behavior": "Option Path control-point addition; native SwiftUI cursor region."
-    },
-    {
-      "name": "Perspective Warp",
-      "cursor_behavior": "Shift edge lock; native SwiftUI cursor region."
-    },
-    {
-      "name": "Adaptive Wide Angle",
-      "cursor_behavior": "Shift axis constraint for new constraint; native SwiftUI cursor region."
-    },
-    {
-      "name": "Lens Correction",
-      "cursor_behavior": "Tool-specific pointers and open/closed Hand; no alternate modifier edit currently dispatched."
-    },
-    {
-      "name": "Timeline and other panel controls",
-      "cursor_behavior": "Existing Command/Shift selection controls and native AppKit text/resize controls retain their standard pointer; no separate modifier tool action identified."
-    }
-  ],
-  "future_requirement": "AGENTS.md and CONTRIBUTING.md require shared policy/lifecycle, captured-state consistency, modifier matrix regression coverage and API/discovery audit for every new tool/action.",
-  "remaining": [
-    "This audit repairs feedback for existing implemented actions; it does not claim complete Photoshop modifier functionality. Brush Option temporary Eyedropper, Command temporary Move/Direct Selection, Command/Option+Space temporary Zoom and other missing Photoshop actions remain feature gaps.",
-    "Complete Photoshop pointer preferences (normal/precise/full-size, Caps Lock and brush-size HUD), exact glyphs/hotspots, exhaustive hover/resize states and physical held-key comparison remain open.",
-    "Control usually invokes contextual UI; merely holding it does not necessarily require a new tool icon. Command/Control without a dispatched alternate operation are observed without invented behavior.",
-    "Host tests do not qualify physical macOS14/Intel/macOS26 pointer appearance or performance.",
-    "Standalone focused suites that create AppKit windows before the native document-controller singleton can crash in the pre-existing close path; preserve focused03 and its isolated passing check. Key-window admission tests use an explicit controlled NSWindow subclass because xctest cannot become foreground on this host."
-  ],
-  "summary": "All52 current tools have shared live modifier cursor feedback, with832 tool/modifier combinations and captured gesture modes. All9 cursor tests and2849 full optimized tests pass on2505 frozen inputs; separate Preview283 is verified. Existing Photoshop modifier-action gaps, exact pointer preferences/hover and physical/platform qualification remain open.",
-  "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
-  "source_inputs": 2505,
-  "tests": [
-    {
-      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06.log",
-      "sha256": "58cbb741c9c6c3d48ad46e77edbe536b3b66dec36872cc26dbf639bfe9fb09d6",
-      "tests": 9,
-      "failures": 0,
-      "seconds": 0.581,
-      "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json"
-    },
-    {
-      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/full01.log",
-      "sha256": "bf892a9bfeb6c4ae1c227303fb95388ba3de5036550f241b3b07b18e38d62796",
-      "tests": 2849,
-      "failures": 0,
-      "seconds": 239.905,
-      "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json"
-    }
-  ],
-  "matrix": {
-    "rows": 832,
-    "path": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-modifier-matrix.json",
-    "artwork": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-cursors.png",
-    "stock_pointer_raster": "AppKit may provide dynamic stock pointers without TIFF; custom glyph raster images are validated."
+  "custom_kernel_presets_447": {
+    "reference": "docs/CUSTOM_KERNEL_PRESETS_447.json",
+    "status": "Native ACF/JSON preset I/O and shared codec/API; no new tool, modifier action, cursor, factory menu or shortcut. Typed257; native87/Actions52 unchanged. Selected36 Debug/native/Photoshop preset roundtrip pass; full output/platform scope open."
   },
-  "native": {
-    "step": 283,
-    "passed": true,
-    "scope": "Native app launch/Open, tool selection and Zoom navigation; original retained pixels untouched",
-    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
-    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
-    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
-    "observations": [
-      "Open retained native271 artwork; startup blank closes; document remains clean.",
-      "Enter100% releases focus; Z selects Zoom; native click500,400 changes100% to200%.",
-      "H selects Hand. A drag was attempted but AX exposed no pan delta and no before/after screenshot was retained; live Hand pan is not claimed as verified here.",
-      "Command0 returns77.73% Fit; restore100%/opacity100/Zoom tool for handoff."
+  "custom_shape_blur_444": {
+    "Actions": 52,
+    "Adobe_route_added": false,
+    "Debug": "42of43selected; independent triangle convolution mismatch remains.",
+    "cursor_impact": "No new tool/modifier action/factory menu/shortcut; native menu chooser uses system controls.",
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_444.json",
+    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
+    "native_archive": 87,
+    "status": "development_not_qualified",
+    "typed_commands": 256
+  },
+  "custom_shape_blur_446": {
+    "Actions": 52,
+    "Adobe_route_added": false,
+    "cursor_impact": "No new tool/modifier action/menu/shortcut. System-control chooser; original shared cursor matrix remains unchanged and selected FilterRecall modifier tests pass both optimized architectures.",
+    "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json",
+    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
+    "historical_444_count_correction": "Original expected55 methods,43outcomesbeforeSIGBUS; old summary was incomplete. See446 evidence.",
+    "native_archive": 87,
+    "qualification": "54of56Debug;55of57sameordered normal each;9of11newpass;2strictPSgatesfail; universalmin14/signature/ZIP/live selected controls pass.",
+    "reference": "Owned Photoshop2026 triangle and impulse image, normal UI/saved PNG/public PSD, strict raw-byte fixtures.",
+    "status": "Selected native custom-kernel workflow qualified; strict Photoshop RGB8/32 byte gates fail; full F01 remains open.",
+    "typed_commands": 256
+  },
+  "direct_path_type_439": {
+    "affected_suite_passed": false,
+    "commands": [
+      "text.create",
+      "text.set",
+      "text.layout"
     ],
-    "evidence": [
-      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-zoom01.ax.txt",
-      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-zoom02.ax.txt",
-      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-hand01.ax.txt",
-      "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.ax.txt",
-      "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.jpg"
+    "cursor": "Wavy cursor onselected connectedpath; actual16modifier nativecapture/dispatch/unavailablevertical/toolchange behavior tested. ExistingToolCursorTests also run; fullPSalternates/artwork unqualified.",
+    "evidence": "docs/DIRECT_PATH_TYPE_439.json",
+    "guide": "docs/DIRECT_PATH_TYPE.md",
+    "remaining": [
+      "Full originalT04scope remains open: vertical/inside-path/warped inline editing, live start/end delimiters/flip/drag, complete fitting/reflow, font/composer/IME/affinity, editable PSD and maximum capacity. Current path bounds16384UTF16/2000000outlinepoints/16MP remain below complete Photoshop requirements.",
+      "Existing-layer draft preview draws text separately from layer masks/opacity/effects; fully composited editing appearance remains functionalstillneeded. Current affine caret/source preservation does not qualify complete preview appearance.",
+      "Closed full-circle start/end may coincide geometrically; full delimiter and affinity behavior is open. Current16modifier dispatch/cursor matches itself; exact Photoshop alternates/defaults/hotspot/artwork remain unobserved.",
+      "No physical Intel/macOS14, live Photoshop/currentworkspace/VoiceOver or60fpsproof; Maclocked again439, existing humanunlockpending. All prior failures and original104scope acceptance remain.",
+      "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
+      "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
     ],
-    "physical_modifier_hold_comparison": false,
-    "cursor_artwork_qa": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-cursors.png",
-    "modifier_semantics": "Native NSEvent/action/history tests plus controlled key-window admission fixture; physical held-key/Photoshop/default cursor comparison remains open."
+    "selected_native_workflow_qualified": true,
+    "state": "pathTypeEditing",
+    "typed_commands": 251
   },
-  "package": {
-    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
-    "architecture": "arm64",
-    "minimum_os": "14.0",
-    "signature_verified": true,
-    "diagnostic_isolation": false,
-    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
-    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
-    "native_file_backed_sections_match": 38,
-    "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
-    "distribution_qualification": false,
-    "installed_app_replaced": false,
-    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-283.zip",
-    "zip_sha256": "4fd45f13861f4ad630309e123b867c59d62713fe877a20c8ff27b60158c890e0",
-    "zip_bytes": 38689480,
-    "extracted_signature_verified": true,
-    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview283-check-7bb17izy/Photato Editing Preview 283.app"
+  "document_duplicate_361": {
+    "API_operation_state_schemas_added": true,
+    "cursor_policy_changed": false,
+    "guide": "docs/DOCUMENT_DUPLICATE.md",
+    "new_tool_or_modifier_action": false,
+    "physical 60fps_qualified": false
   },
-  "handoff": {
-    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
-    "retained_artwork": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
-    "retained_artwork_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
-    "clean": true,
-    "zoom_percent": 100,
-    "opacity_percent": 100,
-    "selected_tool": "Zoom",
-    "ax": "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.ax.txt",
-    "screenshot": "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.jpg",
-    "previous_preview282_quit": true,
-    "startup_placeholder_closed_cleanly": true,
-    "document_saved_or_modified": false
+  "document_guides330": {
+    "full_photoshop_parity": false,
+    "main_factory_inventory_changed": false,
+    "reference": "docs/DOCUMENT_GUIDE_REFERENCES.json",
+    "scope": "Existing factory Guide/Show/Snap menu paths enabled; primary807-entry/102-primary/8-alternate inventory unchanged. Nine menu and nine cursor regressions pass. New native guide tests cover all16 captured orientation/Shift cursor combinations and all16 layer-snap modifiers, selection add/subtract hover and detach cleanup. Guide actions use live modifiers; other tool policies remain unchanged. Native Photoshop access is locked; full visual/context qualification remains open.",
+    "source_manifest": "artifacts/runs/20261101T165133Z-330-document-guides/source07.json",
+    "step": 330
+  },
+  "eraser_modes_456": {
+    "API": "ToolCursorAPIeraserModesmetadata andbrush.eraserMode/state-schema",
+    "evidence": "docs/ERASER_MODES_456.json",
+    "limits": "Actualphysicalcursorpixel/hardware/focus/60fps/fullPhotoshopcursor/defaultsremainunqualified",
+    "native": "Brush/Pencil/16-pointBlockcursoruseeffectivecapturedmode;Optionunavailableuntilhistorysource; existingSpace/Hand/focusrestoration retained",
+    "tests": "All3modesx16modifierpolicy/cursorimages plus9existinglifecyclemethods passDebug andbothoptimizedarchitectures"
+  },
+  "exposure_step302_recheck": {
+    "cases": 9,
+    "modifier_combinations": 832,
+    "new_cursor_or_modifier_action": false,
+    "passed": 9,
+    "physical_acceptance": false,
+    "source": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source02.json",
+    "source03_equivalence": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source03-equivalence.json",
+    "tools": 52
+  },
+  "eyedropper_sampling_459": {
+    "all16modifier_combinations": true,
+    "captured": "Target/settings captured untilrelease;Optionbackgroundbadge,ShiftunsupportedColorSampler\u2192unavailable;Control/Command no inventedaction.",
+    "lifecycle": "Tool/focus cancels;Escape guarded restore;spaceHand existingpriority.",
+    "qualification": "Selectednativeevent/45Debug+same45normal each;no live459/Photoshop glyph/hotspot/physical-platform/60fps claim.",
+    "reference": "docs/EYEDROPPER_SAMPLING_459.json"
   },
   "failed_attempts": [
     {
@@ -506,849 +863,385 @@
       "result": "9 tests/7 assertions: standalone XCTest cannot become foreground/key. Deterministic event-admission window double replaces ineffective activation."
     }
   ],
-  "key_window_qualification": "Event admission logic is tested with controlled NSWindow isKeyWindow; real views, NSEvents, hit testing, action/history and notifications remain native. This is not physical modifier-key delivery proof.",
-  "continued_regression_290": {
-    "source_manifest": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/source02.json",
-    "cursor_tests": 9,
-    "tool_modifier_combinations": 832,
-    "failed": 0,
-    "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/focused02.log",
-    "physical_held_key_comparison": false,
-    "policy_unchanged": true,
-    "full": {
-      "tests": 2919,
-      "failed": 0,
-      "seconds": 332.804,
-      "log": "artifacts/runs/20261031T095300Z-290-paged-layer-composition/full01.log",
-      "log_sha256": "7c7e21b10b2ec3a36c13001bc82c5f5a65317b98ec68b608d1cfd92282548965"
-    },
-    "future_tool_rule": "AGENTS/CONTRIBUTING explicitly require all16 Control/Command/Option/Shift combinations in every new tool increment."
-  },
-  "continued_regression_298": {
-    "step": 298,
-    "implemented_tools": 52,
-    "modifier_combinations": 16,
-    "tests": 9,
-    "full": {
-      "tests": 2980,
-      "failed": 0,
-      "seconds": 627.041,
-      "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json",
-      "scope": "Complete inventoried XCTest set, qualified in bounded module/class processes; not a passing monolithic run. Prior297 Source04 interrupted AppKit lifecycle gate remains open.",
-      "monolithic_pass": false,
-      "source_binding": "All groups on identical frozen Source05 after channel arithmetic integration; prior long-lived AppKit hang remains open.",
-      "inventory": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/inventory05-normalized.log",
-      "plan": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/qualification-plan05.json",
-      "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/qualification05.log",
-      "groups": [
-        {
-          "group": 1,
-          "module": "PhotoCraftAITests",
-          "tests": 4,
-          "failed": 0,
-          "seconds": 0.004,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-01.log",
-          "sha256": "3fca61c2c8ef814fb76ec4a6bec32ba9df322444040c5a8cf0abc1581e4ba9ed",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 2,
-          "module": "PhotoCraftAppTests",
-          "tests": 149,
-          "failed": 0,
-          "seconds": 14.689,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-02.log",
-          "sha256": "eb9ba0daafcafbfe7de06318005e3d1d9f8e78c08a3d528dd55bfcc172e9046e",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 3,
-          "module": "PhotoCraftAppTests",
-          "tests": 139,
-          "failed": 0,
-          "seconds": 16.374,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-03.log",
-          "sha256": "78c251a09dd4ec1fa54aded7451460695817d9df5b80eca721ed767b8b738cea",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 4,
-          "module": "PhotoCraftAppTests",
-          "tests": 141,
-          "failed": 0,
-          "seconds": 18.121,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-04.log",
-          "sha256": "70ac6a870c3af5a56bfe6b5167663cbfb14ef9089fdae3d02e477b6684cde357",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 5,
-          "module": "PhotoCraftAppTests",
-          "tests": 148,
-          "failed": 0,
-          "seconds": 12.241,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-05.log",
-          "sha256": "fabeab6579ef205be3538ffe0e7f3eca33076e7f0b32679998b9d696b5f4e95a",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 6,
-          "module": "PhotoCraftAppTests",
-          "tests": 145,
-          "failed": 0,
-          "seconds": 105.6,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-06.log",
-          "sha256": "e798888da0dc7566b5db1c1df899cd73dde10f54a8470edc81750af6014c07a6",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 7,
-          "module": "PhotoCraftAppTests",
-          "tests": 149,
-          "failed": 0,
-          "seconds": 15.872,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-07.log",
-          "sha256": "9a2b03cbf50344063f70be36cda43404c3b923f9f9cda81b1ab5815687077d58",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 8,
-          "module": "PhotoCraftAppTests",
-          "tests": 144,
-          "failed": 0,
-          "seconds": 189.162,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-08.log",
-          "sha256": "b905d1fbb04b9b139bf7a049e1b4bc4b10dfd2f622cfce683e935982883d41ed",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 9,
-          "module": "PhotoCraftAppTests",
-          "tests": 143,
-          "failed": 0,
-          "seconds": 39.889,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-09.log",
-          "sha256": "962ee04fd1557c3326f750f98c9d885c0ab9e556a9cb165305d4f6d2d082ece0",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 10,
-          "module": "PhotoCraftAppTests",
-          "tests": 148,
-          "failed": 0,
-          "seconds": 17.012,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-10.log",
-          "sha256": "0e8d77d474d53ebea21d3e563c4c3de8dd9af07aa7f71245b0cc2e62754417f1",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 11,
-          "module": "PhotoCraftAppTests",
-          "tests": 147,
-          "failed": 0,
-          "seconds": 20.42,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-11.log",
-          "sha256": "d02565d1991e3dc25489c802dd7486310070ecf4ffaf7ff92158337e34163a5c",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 12,
-          "module": "PhotoCraftAppTests",
-          "tests": 105,
-          "failed": 0,
-          "seconds": 7.677,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-12.log",
-          "sha256": "90cfd4240d5639c19593e932ff95ecaa6df1a1c5b449e4c8f9645823323b8746",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 13,
-          "module": "PhotoCraftCoreTests",
-          "tests": 398,
-          "failed": 0,
-          "seconds": 4.949,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-13.log",
-          "sha256": "be89553c32bf8c693ba30ea9f7fca173da009ab7fba84c632349bfd303d7f803",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 14,
-          "module": "PhotoCraftCoreTests",
-          "tests": 398,
-          "failed": 0,
-          "seconds": 58.204,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-14.log",
-          "sha256": "3f1bee933eb886910df661c3b9585547d4e0e046ce1e0fdea7fe0f9ca4b132a3",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 15,
-          "module": "PhotoCraftCoreTests",
-          "tests": 4,
-          "failed": 0,
-          "seconds": 0.129,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-15.log",
-          "sha256": "1c91287b3f0ad58f42cf818e779d5c0f9c3e665d09273bbe52fbef9060d673b7",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 16,
-          "module": "PhotoCraftImagingTests",
-          "tests": 393,
-          "failed": 0,
-          "seconds": 93.199,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-16.log",
-          "sha256": "888651d1e05da9e3f619e0c256c74bc5cae866aed3d9844139a2b0663f13f8a4",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        },
-        {
-          "group": 17,
-          "module": "PhotoCraftImagingTests",
-          "tests": 225,
-          "failed": 0,
-          "seconds": 13.499,
-          "log": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/module05-17.log",
-          "sha256": "84d5cae4d1519f97655516fb283387e54bf2d892965c55138c292eff7bff2910",
-          "source_manifest": "artifacts/runs/20261031T172301Z-298-channel-arithmetic/source05.json"
-        }
-      ],
-      "recorded_at_utc": "2026-10-31T18:34:59.160326+00:00",
-      "sha256": "ec656dd235e0a8c67e3acf90ddc0929223fc3d450439a805c73c343554367899"
-    },
-    "new_tools": false,
-    "policy_unchanged": true,
-    "reference": "docs/CHANNEL_ARITHMETIC_REFERENCES.json"
-  },
-  "reverification_299": {
-    "recorded_at_utc": "2026-10-31T21:52:16.000456+00:00",
-    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
-    "tests": 9,
-    "failed": 0,
-    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-ToolCursorTests.log",
-    "sha256": "16b23363219e5a1ec6ace6137d91339064509a7e1b26f59984955c6725ca6817",
-    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor17-captures/tool-modifier-matrix.json",
-    "rows": 832,
-    "tools": 52,
-    "modifiers": 16,
-    "artwork": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor17-captures/tool-cursors.png",
-    "visual_check": "Generated cursor sheet inspected from Source16; identical SHA256 in17. Offscreen artwork, not physical input acceptance.",
-    "production_cursor_changes": false,
-    "future_requirement": "Existing AGENTS.md/CONTRIBUTING.md requirement retained for every new tool/action.",
-    "live_native_acceptance": false,
-    "native_app_preserved": 283
-  },
-  "reverification_299_source20": {
-    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
-    "tests_passed": 9,
-    "matrix_rows": 832,
-    "tools": 52,
-    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor20-captures/tool-modifier-matrix.json",
-    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-ToolCursorTests.log",
-    "sha256": "28cc0ed377fb485c00e45b4c5a361c31c03573a62fe70c1b5afd08f5cb48fd9c",
-    "new_tool_or_modifier_actions": false,
-    "physical_acceptance": false
-  },
-  "reverification_299_source23": {
-    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
-    "tests_passed": 9,
-    "matrix_rows": 832,
-    "tools": 52,
-    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor23-captures/tool-modifier-matrix.json",
-    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-ToolCursorTests.log",
-    "sha256": "70503db8d39a72b7ff2fde0a855d04368d57e2bdccb410bea733fc68ab271069",
-    "new_tool_or_modifier_actions": false,
-    "physical_acceptance": false
-  },
-  "reverification_300": {
-    "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
-    "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
-    "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
-    "tests_passed": 9,
-    "matrix_rows_asserted": 832,
-    "tools": 52,
-    "new_tool_or_modifier_actions": false,
-    "policy_inputs_unchanged_from_299_source23": true,
-    "physical_acceptance": false
-  },
-  "exposure_step302_recheck": {
-    "source": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source02.json",
-    "cases": 9,
-    "passed": 9,
-    "tools": 52,
-    "modifier_combinations": 832,
-    "source03_equivalence": "artifacts/runs/20261101T000927Z-302-exposure-workflow/source03-equivalence.json",
-    "new_cursor_or_modifier_action": false,
-    "physical_acceptance": false
-  },
-  "source_shape_context_step305": {
-    "reference": "docs/PCRAFT_SHAPE_REFERENCES.json",
-    "status": "Source04 functional source-shape/native/API/Actions24 workflows pass;162/166 current focused cases pass with four strict cases/23 assertions. Existing52x16/nine cursor cases pass. New target reuses existing tools; no new shortcuts/cursor actions. Physical/full/Photoshop/source/capacity/platform gates remain open.",
-    "full_parity": false
-  },
-  "rich_source_text_step308": {
-    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json",
-    "reference": "docs/PCRAFT_TEXT_REFERENCES.json",
-    "functional_cases_passed": 16,
-    "new_tool_or_factory_binding": false,
-    "menu_cases_passed": 9,
-    "cursor_cases_passed": 9,
-    "native_visual_acceptance": false,
-    "full_parity": false,
-    "api_impact": "Existing Photato text commands/state/schema/69 negotiation and published Adobe text_layer mappings; no new route. Original pcraft format remains outside Adobe input contract."
-  },
-  "relight_step318": {
-    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json",
-    "reference": "docs/RELIGHT_REFERENCES.json",
-    "functional_cases_passed": 13,
-    "factory_fixture_or_shortcuts_changed": false,
-    "new_tool_or_modifier_action": false,
-    "menu_cases_passed": 9,
-    "cursor_cases_passed": 9,
-    "native_visual_acceptance": false,
-    "full_parity": false,
-    "api_impact": "Typed Relight settings/schema/state through existing shared commands, native71/Actions26, source mapping108; explicit Adobe boundary."
-  },
-  "lighting_step321": {
-    "source_manifest": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source02.json",
-    "reference": "docs/LIGHTING_EFFECTS_REFERENCES.json",
-    "functional_cases_passed": 14,
-    "factory_fixture_or_shortcuts_changed": false,
-    "menu_cases_passed": 9,
-    "cursor_cases_passed": 9,
-    "native_visual_acceptance": false,
-    "full_parity": false,
-    "api_impact": "Shared Lighting controls/schema/state/presets, native72/Actions27 and original mapping109; unqualified Adobe descriptors explicitly reject.",
-    "modifier_combinations": 16,
-    "actual_preview_mouse_events": true,
-    "capture_focus_capacity_test_passed": true,
-    "matrix": "artifacts/runs/20261101T093255Z-321-lighting-qualification/capture01/lighting-modifier-matrix.json",
-    "physical_acceptance": false
-  },
-  "source_displacement_step322": {
-    "step": 322,
-    "reference": "docs/SOURCE_DISPLACEMENT_REFERENCES.json",
-    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
-    "factory_fixture_or_shortcuts_changed": false,
-    "new_menu_shortcut_or_pointer_action": false,
-    "menu_cases_passed": 9,
-    "cursor_cases_passed": 9,
-    "native_visual_acceptance": false,
-    "full_parity": false,
-    "api_impact": "Source Displace settings/state/schema, native73/Actions28 and Photato-only native resource input."
-  },
-  "source_adjustment_step323": {
-    "step": 323,
-    "reference": "docs/SOURCE_ADJUSTMENT_REFERENCES.json",
-    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
-    "new_menu_shortcut_or_pointer_action": false,
-    "factory_fixture_or_shortcuts_changed": false,
-    "menu_cases_passed": 9,
-    "cursor_cases_passed": 9,
-    "native_visual_acceptance": false,
-    "full_parity": false,
-    "api_impact": "Typed source adjustment schema/state/capabilities and existing create/set/apply; native74/Actions29."
-  },
-  "source_effects_step326": {
-    "reference": "docs/SOURCE_LAYER_EFFECT_REFERENCES.json",
-    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json",
-    "existing_factory_global_light_path_registered": true,
-    "factory_entries_or_shortcuts_changed": false,
-    "new_custom_pointer_or_modifier_action": false,
-    "menu_cases_passed": 9,
-    "cursor_cases_passed": 9,
-    "native_visual_acceptance": false,
-    "full_parity": false
-  },
-  "auxiliary_spot_channels328": {
-    "step": 328,
-    "source_manifest": "artifacts/runs/20261101T150700Z-328-source-channels/source03.json",
-    "reference": "docs/SOURCE_CHANNEL_REFERENCES.json",
-    "scope": "Existing Channels panel New Spot entry enabled; standard native dialog and button controls. No main factory menu/shortcut inventory change or new canvas gesture. Existing painting/channel cursor policy retained; nine menu and nine all-modifier cursor regressions pass. Command-click New Channel uses the standard button pointer. Live Photoshop panel/appearance qualification remains open.",
-    "main_factory_inventory_changed": false,
-    "full_photoshop_parity": false
-  },
-  "psd_auxiliary_channels329": {
-    "step": 329,
-    "source_manifest": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/source06.json",
-    "reference": "docs/PSD_AUXILIARY_CHANNEL_REFERENCES.json",
-    "scope": "Existing Open/Save/Save As and channel controls share the PSD/PSB serializer; no new main menu, shortcut or canvas gesture. Nine existing menu and nine modifier-cursor regressions pass. Factory807 entries/102 primary/8 alternate inventory unchanged; live visual acceptance remains open.",
-    "main_factory_inventory_changed": false,
-    "full_photoshop_parity": false
-  },
-  "document_guides330": {
-    "step": 330,
-    "source_manifest": "artifacts/runs/20261101T165133Z-330-document-guides/source07.json",
-    "reference": "docs/DOCUMENT_GUIDE_REFERENCES.json",
-    "scope": "Existing factory Guide/Show/Snap menu paths enabled; primary807-entry/102-primary/8-alternate inventory unchanged. Nine menu and nine cursor regressions pass. New native guide tests cover all16 captured orientation/Shift cursor combinations and all16 layer-snap modifiers, selection add/subtract hover and detach cleanup. Guide actions use live modifiers; other tool policies remain unchanged. Native Photoshop access is locked; full visual/context qualification remains open.",
-    "main_factory_inventory_changed": false,
-    "full_photoshop_parity": false
-  },
-  "color_range_343": {
-    "policy": "ToolCursor.colorRangeSampler and ToolCursor.colorRange in ToolCursorPolicies.swift; ColorRangeCanvasView uses ModifierCursorView.",
-    "modifiers": "Shift add, Option subtract wins together, Control/Command retain sampler. Command preview toggle; captured sampler until release; focus/detach restore.",
-    "tested_combinations": 16,
-    "samplers": 3,
-    "live_Photoshop_qualified": false,
-    "evidence": "docs/COLOR_RANGE_REFERENCES.json"
-  },
-  "magnetic_lasso_344": {
-    "policy": "ToolCursor.magnetic in ToolCursorPolicies.swift; main CraftCanvas ModifierCursorView dispatches captured modes and temporary tracing alternatives.",
-    "modifiers": "Captured initial selection mode; active Command/near-start closes, Option after release gives straight/freehand. No Control action invented. Caps Lock before trace; Space pan.",
-    "tested_combinations": 16,
-    "live_Photoshop_qualified": false,
-    "evidence": "docs/MAGNETIC_LASSO_REFERENCES.json"
-  },
-  "selection_modify_345": {
-    "new_canvas_tool": false,
-    "new_modifier_action": false,
-    "cursor_changes": false,
-    "API_impact": "Two document-selection commands; modal controls retain native text/control cursors.",
-    "evidence": "docs/SELECTION_MODIFY_REFERENCES.json"
-  },
-  "selection_transform_346": {
-    "all16_modifier_combinations_tested": true,
-    "captured_mode_and_restoration_tested": true,
-    "policy": "ToolCursor.selectionTransform; native canvas cursor refresh; native controls retain their own text/control cursors.",
-    "live_UI_qualified": false,
-    "API_impact": "selection.transform and workspace selectionTransform state; no injected pointer API.",
-    "evidence": "docs/SELECTION_TRANSFORM_REFERENCES.json"
-  },
-  "selected_pixel_transform_347": {
-    "all 16_modifier_combinations_tested": true,
-    "shared_captured_mode_and_link_state_policy": true,
-    "policy": "Existing ToolCursor.selectionTransform and shared canvas captured-mode refresh; controls retain their own text/control cursors.",
-    "live_UI_qualified": false,
-    "API_impact": "pixels.transform and selectedPixelTransform/target state; no injected pointer API.",
-    "evidence": "docs/SELECTED_PIXEL_TRANSFORM_REFERENCES.json"
-  },
-  "background_layers_348": {
-    "policy": "No new modifier action. Existing Brush/Eraser cursor and captured gesture modifiers remain; Background Eraser/Magic Eraser promote before removing alpha. Normal Eraser uses captured background color. Existing all16 ToolCursor cohort is rerun.",
-    "live_UI_qualified": false,
-    "API_impact": "layer.background/pixels.clear and backgroundLayer state/capabilities; no injected pointer route.",
-    "evidence": "docs/BACKGROUND_LAYER_REFERENCES.json"
-  },
-  "background_pixel_transform_349": {
-    "all16_background_modifier_combinations_tested": true,
-    "new_modifier_actions": false,
-    "policy": "Existing captured SelectionTransform mode/handle/link-state resolver and native refresh. Background color is captured alongside the draft; controls retain text/control cursors.",
-    "live_UI_qualified": false,
-    "API_impact": "pixels.transform adds backgroundColor; selectedPixelTransform state/schema exposes Background/captured color. No pointer injection or Adobe cursor route.",
-    "evidence": "docs/BACKGROUND_PIXEL_TRANSFORM_REFERENCES.json"
-  },
-  "selected_pixel_move_350": {
-    "all16_modifier_combinations_tested": true,
-    "new_effective_policy": "ToolCursor.selectedPixels captures Option-copy, retains live Shift constraints and indicates effective guide-snap suppression. Stationary flags update geometry/cursor; focus/tool/read/close restore state.",
-    "new_badges": [
-      "copy",
-      "constrainCopy"
-    ],
-    "live_UI_qualified": false,
-    "API_impact": "pixels.move and copy on pixels.transform with state/schema/capabilities; no injected pointer/keyboard or Adobe cursor route.",
-    "evidence": "docs/SELECTED_PIXEL_MOVE_REFERENCES.json"
-  },
-  "pixel_mask_transform_351": {
-    "all16_modifier_combinations_tested": true,
-    "policy": "Whole pixel-mask Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
-    "API_impact": "mask.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
-    "live_UI_qualified": false,
-    "evidence": "docs/PIXEL_MASK_TRANSFORM_REFERENCES.json"
-  },
-  "channel_transform_352": {
-    "all16_modifier_combinations_tested": true,
-    "policy": "Whole auxiliary-channel Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
-    "API_impact": "channel.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
-    "live_UI_qualified": false,
-    "evidence": "docs/CHANNEL_TRANSFORM_REFERENCES.json"
-  },
-  "layer_collection_transform_353": {
-    "all16_modifier_combinations_tested": true,
-    "policy": "Whole layer collection Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
-    "API_impact": "layers.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
-    "live_UI_qualified": false,
-    "evidence": "docs/LAYER_COLLECTION_TRANSFORM_REFERENCES.json",
-    "unsupported_modes_feedback": "Collection Distort/Perspective cursor is unavailable and dispatch is skipped. Idle selected-pixel cursor routing now requires an actual selection and no active draft, preserving active transform handle feedback."
-  },
-  "projective_layer_transform_354": {
-    "all16_modifier_combinations_tested": true,
-    "policy": "Captured shared selectionTransform effective-mode/handle cursor matches native Command/Command-Option-Shift action; changing modifiers mid-drag does not silently change its captured mode. Unsupported targets remain unavailable.",
-    "API_impact": "layers.transform expands to projective matrices; layerCollectionTransform modes/affineOnly/reference/preview/schema/capabilities updated; no pointer injection or invented Adobe cursor route.",
-    "live_UI_qualified": false,
-    "evidence": "docs/PROJECTIVE_LAYER_TRANSFORM_REFERENCES.json"
-  },
-  "layer_links_355": {
-    "all16_modifier_combinations_tested": true,
-    "policy": "Whole Move idle and captured Option-copy cursor follows dispatched action; Shift angle and Command guide-snap suppression refresh dynamically. Per-row/footer link cursors show link/unlink or Shift enable/disable. Unsupported targets unavailable.",
-    "API_impact": "layer.links/layers.move; layerLinks graph/targets/availability/state/schema/capabilities; shared history/Actions39/40; no pointer injection or invented Adobe cursor route.",
-    "live_UI_qualified": false,
-    "evidence": "docs/LAYER_LINK_REFERENCES.json"
-  },
-  "pixel_fill_stroke_356": {
-    "all16_unchanged_modifier_combinations_tested": true,
-    "policy": "Native dialog/slider/text/color controls create no new canvas tool or modifier action. Existing effective cursor policy retained.",
-    "API_impact": "pixels.fill/pixels.stroke, pixelPaint state/schemas/capabilities and shared history/Actions41; no pointer injection or invented Adobe cursor route.",
-    "live_UI_qualified": false,
-    "guide": "docs/PIXEL_FILL_STROKE.md"
-  },
-  "pattern_pixel_fill_357": {
-    "all16_unchanged_modifier_combinations_tested": true,
-    "policy": "New native source/preset controls add no canvas tool or alternate modifier action; existing effective tool cursors remain unchanged.",
-    "API_impact": "pixels.fill patternID/placement, inventory/source/busy/state/schemas, immutable captured asset and shared history/Actions42. No pointer injection or invented Adobe route.",
-    "live_UI_qualified": false,
-    "guide": "docs/PATTERN_PIXEL_FILL.md"
-  },
-  "large_crop_358": {
-    "all16_unchanged_modifier_combinations_tested": true,
-    "policy": "No new canvas tool/modifier action; Crop range/preview implementation retains existing effective cursor dispatch.",
-    "API_impact": "document.crop range/state/schema/capability and shared prepared edit extended. No pointer injection or invented Adobe route.",
-    "live_UI_qualified": false,
-    "guide": "docs/LARGE_CROP.md"
-  },
-  "layer_capacity_359": {
-    "guide": "docs/LAYER_CAPACITY.md",
-    "new_tool_or_modifier_action": false,
-    "cursor_policy_changed": false,
-    "API_limit_and_state_extended": true,
-    "physical60fps_qualified": false
-  },
   "flatten_image_360": {
+    "API_operation_state_schemas_added": true,
+    "cursor_policy_changed": false,
     "guide": "docs/FLATTEN_IMAGE.md",
     "new_tool_or_modifier_action": false,
-    "cursor_policy_changed": false,
-    "API_operation_state_schemas_added": true,
     "physical60fps_qualified": false
   },
-  "document_duplicate_361": {
-    "guide": "docs/DOCUMENT_DUPLICATE.md",
-    "new_tool_or_modifier_action": false,
-    "cursor_policy_changed": false,
-    "API_operation_state_schemas_added": true,
-    "physical 60fps_qualified": false
+  "focus_blend_modes_457": {
+    "evidence": "docs/FOCUS_BLEND_MODES_457.json",
+    "limits": "Physical cursor bounds/held key restoration/tablet/latency/60fps and full Photoshop defaults remain open.",
+    "native": "No new tool/modifier/shortcut/cursor action. Selected mode captured with stroke; original Smudge Option Finger Painting and temporary Hand restoration retained.",
+    "tests": "All9existingToolCursor regressions and sevenModes/threeTools/all16modifier policy combinations pass Debug and both optimized architectures."
   },
-  "canvas_edges_362": {
-    "guide": "docs/CANVAS_EDGES.md",
-    "new_tool_or_modifier_action": false,
-    "cursor_policy_changed": false,
-    "API_operation_state_schemas_added": true,
-    "physical60fps_qualified": false
+  "future_requirement": "AGENTS.md and CONTRIBUTING.md require shared policy/lifecycle, captured-state consistency, modifier matrix regression coverage and API/discovery audit for every new tool/action.",
+  "gradient_creation_442": {
+    "Actions": 51,
+    "Adobe_endpoint_added": false,
+    "commands": [
+      "gradient.tool.configure",
+      "gradient.fill.create",
+      "gradient.paint"
+    ],
+    "correction": "Historical selected-fill edits from Options describe the old implementation. Public Adobe workflow docs drive creation-only defaults; historical bounded pixel oracles are retained unchanged.",
+    "cursor_impact": "No new tool, modifier action, cursor, factory menu or shortcut. Existing G/ShiftG and captured gesture constraints remain.",
+    "evidence": "docs/GRADIENT_CREATION_442.json",
+    "guide": "docs/GRADIENT_CREATION.md",
+    "native_archive": 86,
+    "qualification": "69Debug/99sameordered normal each:99ARM98Intel,all11newboth; previousInteloraclefailure retained.",
+    "remaining": [
+      "On-canvas opacity controls and complete modern gradient interaction/preset behavior.",
+      "Complete noise gradients, GRD edge cases/interchange, remaining interpolation/dither/default and Gradient Fill transforms; preserve old bounded references.",
+      "Preset-library automation remains open; creation/configuration/Classic painting do not complete that library interface.",
+      "Large-document performance, physical Intel/macOS14, 60fps and independent Photoshop output/UI/default qualification.",
+      "Intel Rust interpolation fixture remains15580/15633 exact samples on both retained441 and442; no assertion weakening, cause or Photoshop equivalence claim. All earlier wider-suite failures and full A05 acceptance remain open."
+    ],
+    "state": "gradientTool",
+    "typed_commands": 255
   },
-  "rich_merge_364": {
-    "reference": "docs/RICH_LAYER_MERGE_REFERENCES.json",
-    "scope": "Shared native RGB rich merge preparation, desktop/API/Actions and existing documented Adobe merge events;239commands/native84/Actions44 unchanged",
-    "limits": "Complete L02 merge/rasterization, numerical/palette/ink/temporal composition, cross-parent selections, clipped artwork without its selected base, hidden descendants inside visible merged groups, stamp/merge-clipping variants and exact Photoshop backdrop/effects/geometry/defaults/live UI remain open. Supported-platform, full-current-suite, dense maximum capacity and physical60fps qualification remain open. All 104 work packages remain open against their full acceptance criteria.",
-    "new_tool_or_modifier": false,
-    "inactive_hover_modifier_clear": true,
-    "single_group_default_dispatch": true,
-    "factory_menu_hierarchy_shortcuts_changed": false,
-    "contextual_merge_group_title_added": true,
-    "new_route": false
+  "handoff": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "ax": "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.ax.txt",
+    "clean": true,
+    "document_saved_or_modified": false,
+    "opacity_percent": 100,
+    "previous_preview282_quit": true,
+    "retained_artwork": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/artifacts/runs/20261030T165926Z-271-active-preview/retained-documents/Owned on-device subject workflow - retained 271.photato",
+    "retained_artwork_sha256": "a7be6df80b4ff2ea6a3ff7daba7fab91324af58c47596880a8b767f01f667753",
+    "screenshot": "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.jpg",
+    "selected_tool": "Zoom",
+    "startup_placeholder_closed_cleanly": true,
+    "zoom_percent": 100
   },
-  "linked_preview_365": {
-    "reference": "docs/LINKED_PREVIEW_EXPORT_REFERENCES.json",
-    "scope": "Shared PSD/PSB preview export correction;239commands/native84/Actions44 unchanged",
-    "limits": "Integer preview/mask quantization still needs independent Photoshop qualification: the retained strict RGB8 round-trip comparison is not waived. Other current affected failures are recorded by case below. Full L05/I01 functionality, general Photoshop interpolation/ICC/filters/projective/effect/mask defaults, complete live UI, full current suite, supported Macs, dense capacity and physical 60 fps remain open. All 104 work packages retain their full acceptance criteria.",
-    "new_tool_or_modifier": false,
-    "factory_menus_shortcuts_changed": false,
-    "new_route_or_request_schema": false
+  "image_stack_capacity_472": {
+    "evidence": "docs/PAGED_IMAGE_STATISTICS_472.json",
+    "impact": "Statistics preparation/source admission/bounded preview only; no new canvas tool, gesture, modifier, cursor or shortcut. Existing nine cursor regression methods pass; APIs share engine and explicit limits."
   },
-  "quick_mask_control366": {
-    "reference": "docs/QUICK_MASK_SELECTION_REFERENCES.json",
-    "impact": "Existing editing tools and captured gesture cursors are retained. The new Quick Mask toolbar gesture is an AppKit control action, with the standard control pointer; no alternate canvas tool action is advertised.",
-    "existing_cursor_cases_passed": 9,
-    "existing_tool_modifier_rows": 832
-  },
-  "checkpoint369_review": {
-    "change": "Quick Mask overlay eye visibility and hidden-brush guard",
-    "cursor_or_modifier_added": false,
-    "policy": "Overlay hiding preserves the editing target, brush selection/settings and existing modifier cursor policy; attempted hidden painting displays the reference warning.",
-    "validation": "Existing all-tool/16-modifier cursor tests included in454 affected cases per architecture. This does not close full Photoshop cursor parity.",
-    "reference": "docs/QUICK_MASK_VISIBILITY_REFERENCES_369.json"
-  },
-  "checkpoint371_review": {
-    "change": "Hidden Quick Mask Fill/Invert guards, retained hidden Gaussian filter, factory pixel Invert menu",
-    "new_tool_or_modifier": false,
-    "policy": "Existing effective canvas cursors remain unchanged. Hidden painting/Fill uses command validation; native sliders/text fields retain their own cursors. All-tool16-modifier regressions are included in planned affected qualification.",
-    "status": "Current Source02 native workflow and eight new cases pass on each architecture; broader failures/gates retained",
-    "reference": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json",
-    "evidence": "docs/QUICK_MASK_HIDDEN_COMMANDS_371.json"
-  },
-  "quick_mask_target_transitions_372": {
-    "reference": "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
-    "scope": "Existing target selection and temporary channel-number shortcut; no new tool or modifier action. Existing shared cursor policy and all-combination regression coverage retained. Complete C01 target wording/visibility and full Photoshop gates remain open.",
-    "API": "Actual alphaChannelTarget and independent eye changes use existing239 commands. No Adobe route added."
-  },
-  "auxiliary_paint_colors_373": {
-    "reference": "docs/AUXILIARY_PAINT_COLORS_373.json",
-    "scope": "Existing Q/channel targets change their paint palette; X/D and existing brush.configure retain their actions. No new tool/modifier/cursor/menu binding. Existing all-combination policy tests are retained. Application-global and remaining channel/mask contexts stay open.",
-    "API": "brush.colors and paintColorStateSchema; canonical brush background;239 commands/native85/Actions44 unchanged; no Adobe route."
-  },
-  "large_selection_files_374": {
-    "reference": "docs/LARGE_SELECTION_FILES_374.json",
-    "scope": "Existing file/open/save and channel tools use paged auxiliary imports; no new tool, modifier action, cursor, menu or shortcut. Existing ToolCursor all-combination tests are retained.",
-    "API": "Existing import/export/native85 and published composite executor; standaloneSelections capability geometry/storage/limits expanded.239 commands/native85/Actions44 unchanged; no Adobe route."
-  },
-  "PSB_tagged_blocks_375": {
-    "reference": "docs/PSB_TAGGED_BLOCKS_375.json",
-    "impact": "Shared file serializer repair; no menu, shortcut, tool or modifier action changes. Existing all-combination ToolCursor tests retained.",
-    "API": "Existing encoding capabilities describe corrected framing; no new command or route."
-  },
-  "shared_paint_palettes_376": {
-    "reference": "docs/SHARED_PAINT_PALETTES_376.json",
-    "impact": "Existing X/D, Q/channel and colour controls share palette state. No new menu, shortcut, tool or alternate modifier action; existing all-combination ToolCursor tests retained. Held strokes keep captured colours.",
-    "API": "Existing brush.configure/state plus additive capability metadata; shared revisions, no new Adobe route."
-  },
-  "legacyRGB8Routing394": {
-    "step": 394,
-    "status": "Automated selected-RGB8 Brush/Eraser admission/cursor/dispatch coverage passes all16modifier combinations on both architectures; full live/Photoshop/platform gates open",
-    "scope": "Existing Brush/Eraser cursor policy and captured gesture semantics now apply to ordinary RGB8 selected-channel routing. No new modifier action or artwork. Add all16modifier regression coverage for the selected-channel context.",
-    "remaining": "Live cursor/Photoshop art and all-input/platform/performance qualification remain open.",
-    "evidence": "docs/RGB8_COMPONENT_TOOLS_394.json"
+  "implementation": {
+    "api": "GET /v1/capabilities.toolCursorFeedback describes local presentation semantics and current coverage. Existing typed edits/history remain unchanged; no Adobe pointer endpoint exists in the pinned contract and none is invented.",
+    "lifecycle": "ModifierCursorView; same key-window flagsChanged monitor, explicit mouse-event reconciliation, cursorUpdate/entry, tool/settings refresh, focus/detach cleanup. Keyboard events returned unchanged. Cursor does not steal AppKit text/control hit regions. Cached native images, no full image redraw solely for flagsChanged.",
+    "tool_policy": "Exhaustive EditorTool switch. All tools receive all16 Control/Command/Option/Shift combinations. Modifiers with no dispatched function change keep the same glyph. Stroke modes follow actual captured state."
   },
   "independent_channel_visibility_397": {
-    "source": "397Source04",
-    "reference": "docs/CHANNEL_VISIBILITY_397.json",
-    "guide": "docs/CHANNEL_VISIBILITY.md",
-    "affectedPassedEach": 370,
-    "newPassedEach": 27,
-    "cursor": "Native eye NSButton uses standard arrow cursor; no new canvas tool. All16modifier click tests, sweep/cancel/focus lifecycle and existing shared ToolCursor regressions pass. Photoshop alternative eye gestures not advertised.",
     "API": "Existing242command catalogue, session auxiliaryVisibility schema and channel-preview; no new Adobe route.",
-    "remaining": "Full temporary rows/multi-edit/alternate gestures/hidden-policy/output/defaults/shortcuts/platform/dense/60fps scope remains open."
+    "affectedPassedEach": 370,
+    "cursor": "Native eye NSButton uses standard arrow cursor; no new canvas tool. All16modifier click tests, sweep/cancel/focus lifecycle and existing shared ToolCursor regressions pass. Photoshop alternative eye gestures not advertised.",
+    "guide": "docs/CHANNEL_VISIBILITY.md",
+    "newPassedEach": 27,
+    "reference": "docs/CHANNEL_VISIBILITY_397.json",
+    "remaining": "Full temporary rows/multi-edit/alternate gestures/hidden-policy/output/defaults/shortcuts/platform/dense/60fps scope remains open.",
+    "source": "397Source04"
   },
-  "temporary_mask_channel_increment_398": {
-    "status": "16new temporary-mask cases pass on both architectures within404affected; native focus/shortcut/eye workflow checked",
-    "new_canvas_tool": false,
-    "new_modifier_cursor_action": false,
-    "control": "Existing ChannelEyeControl/ChannelEyeButton; standard arrow, independent mask eyes and native sweep cancellation",
-    "modifier_policy": "Control/Command/Option/Shift combinations retain the ordinary eye action;16-combination native input tests added. No unobserved alternate eye action advertised.",
-    "shortcut": "Unmodified backslash display toggle; native DocumentWorkspace first-responder guard keeps text/control input. Exact other factory mask shortcuts remain open.",
-    "reference": "docs/TEMPORARY_MASK_CHANNELS_398.json"
+  "independent_color_lookup_480": {
+    "all16modifier_combinations_retained": true,
+    "cursor_methods_pass_each": 9,
+    "factory_menu_shortcut_cursor_policy_changed": false,
+    "live_current_Photato_UI_qualified": false,
+    "menu_methods_pass_each": 9,
+    "reference": "docs/INDEPENDENT_COLOR_LOOKUP_480.json",
+    "step": 480
   },
-  "single_pixel_marquee_404": {
-    "step": 404,
-    "status": "Focused arm64 Debug matrix passed; full Photoshop/platform qualification open",
-    "tools": [
-      "rowMarquee",
-      "columnMarquee"
-    ],
-    "tools_total": 55,
-    "tool_modifier_combinations": 880,
-    "reference": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html",
-    "semantics": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
-    "api": "Tool discovery includes both tools; selection.shape row/column shares geometry/history. No new Adobe route.",
-    "open": "Exact Photoshop pointer artwork/preferences, defaults/feather/snapping and physical held-key/platform qualification.",
-    "cases": 87,
-    "source": "404Source03",
-    "evidence": "docs/SINGLE_PIXEL_MARQUEE_404.json"
+  "inventory_reconciliation_482": {
+    "application_build": 480,
+    "combined_tool_tests": 37,
+    "current_modifier_contexts": 880,
+    "current_native_live_UI_qualified": false,
+    "current_tools": 55,
+    "development_tooling_changes": true,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "historical_root_summary": "The root283qualification/52tools is a dated historical result; this482snapshot records the current source-matched55tool inventory without claiming new functionality or physical qualification.",
+    "new_native_tests": 0,
+    "new_native_tests_executed": false,
+    "new_tool_tests": 21,
+    "original16combinations_each_retained": true,
+    "reference": "docs/INVENTORY_RECONCILIATION_482.json",
+    "software_changes": false,
+    "source": "tools03; unchanged native product inputs from481 captures",
+    "source_capture_step": 481,
+    "status": "Menu inventory corrected from802to809 entries using unchanged-source481 ARM/Intel captures. Seven missing paths and88stale selector bindings reconciled; original801factory entries/102primary/8alternate keys retained. All37developer-tool tests pass,21new. Application build480; fullAUD01/Photoshop/workflow qualification remains open.",
+    "step": 482
   },
-  "color_lookup_export_405": {
-    "step": 405,
-    "tool_modifier_action_changed": false,
-    "existing_tools": 55,
-    "matrix_rows_each_architecture": 880,
-    "qualification": "Existing shared matrix passes in80normal Release cases per architecture; native dialog text/control cursors remain AppKit-owned.",
-    "reference": "docs/COLOR_LOOKUP_EXPORT_405.json"
+  "key_window_qualification": "Event admission logic is tested with controlled NSWindow isKeyWindow; real views, NSEvents, hit testing, action/history and notifications remain native. This is not physical modifier-key delivery proof.",
+  "large_channel_filters_469": {
+    "impact": "Existing native filter dialogs/Repeat now admit larger auxiliary targets. No new tool/modifier/global shortcut; old nine cursor methods pass. Full physical/context matrix remains.",
+    "reference": "docs/CHANNEL_FILTER_CAPACITY_469.json"
   },
-  "component_selection_406": {
-    "new_tool_or_canvas_modifier_action": false,
-    "existing_tools": 55,
-    "existing_matrix_combinations": 880,
-    "row_dispatch_modifiers": 64,
-    "row_dispatch_note": "16 combinations across RGB8/16/32 and CMYK; primary-dispatch helper, not physical Control-click context or held Shift pointer qualification.",
-    "step": 406,
-    "qualification": "Existing55-tool/880modifier matrix passes in current focused Debug run. No new canvas tool/action. Native row dispatch adds tested Shift selection; physical held-pointer/context behavior remains open.",
-    "reference": "docs/C01_RGB8_SELECTION_406.json"
-  },
-  "action_duplication_407": {
-    "new_canvas_tool_or_modifier": false,
-    "existing_tools": 55,
-    "existing_modifier_matrix": 880,
-    "standard_panel_menu_arrow": true,
-    "step": 407,
-    "qualification": "Existing55-tool/880modifier matrix passes in current34case Debug run. Native panel menu uses standard pointer; no new canvas gesture or Option-drag behavior advertised.",
-    "reference": "docs/ACTION_DUPLICATION_407.json"
-  },
-  "shape_stroke_presets_408": {
-    "new_tool_or_modifier": false,
-    "tools": 55,
-    "combinations": 880,
-    "existing_picker_pointer": true,
-    "step": 408,
-    "qualification": "Existing55tools/880modifier matrix passes in current normal optimized156case batch each architecture; no new canvas modifier/action. Picker uses standard pointer. Actual408UI awaits unlock.",
-    "reference": "docs/SHAPE_STROKE_PRESETS_408.json"
-  },
-  "smart_filter_drag_414": {
-    "step": 414,
-    "source": "414Source02",
-    "scope": "Panel drag/drop, not a new canvas EditorTool",
-    "resolver": "SmartFilterDrag.operation(modifiers): Option copies; plain drag reorders within one stack. DropProposal copy/move/cancel and dispatched action use the same resolver; action captured before asynchronous data completion.",
-    "modifier_combinations": 16,
-    "focused_test": "SmartFilterDragTests/testReorderNoopMalformedForeignLockedBudgetAndAllModifiers",
-    "focused_passed": true,
-    "existing_canvas_tools": 55,
-    "existing_canvas_combinations": 880,
-    "existing_canvas_policy_passed": true,
-    "API": "SmartFilterStack.apiCapabilities.nativeDrag maps existing smartFilter.set complete target stack.",
-    "physical_feedback_qualified": false,
-    "remaining": "Actual pointer hit testing/target-row positioning/live modifier timing and full cross-layer move/cross-document/group/mask transfer remain open.",
-    "reference": "docs/SMART_FILTER_DRAG.md"
-  },
-  "subject_options_415": {
-    "reference": "docs/SUBJECT_OPTIONS_415.json",
-    "new_canvas_tool_or_modifier": false,
-    "button": "Ordinary native Select Subject button, no alternate modifier action. Captures sampling only.",
-    "existing_tools": 55,
-    "existing_combinations": 880,
-    "focused_Debug_matrix_passed": true,
-    "physical_pointer_check": false
-  },
-  "mask_removal_416": {
-    "reference": "docs/MASK_REMOVAL_416.json",
-    "new_canvas_tool_or_cursor": false,
-    "native_control": "Standard native button arrow. All16modifier combinations preserve selected footer target; Option skips prompt. No canvas mode changes.",
-    "panel_combinations_passed": 16,
-    "existing_tools": 55,
-    "existing_combinations_passed": 880,
-    "physical_pointer_check": false
-  },
-  "stack_statistics_417": {
-    "reference": "docs/STACK_STATISTICS_417.json",
-    "new_canvas_tool_or_cursor": false,
-    "existing_tools": 55,
-    "existing_modifier_combinations": 880,
-    "passed": true,
-    "physical_pointer_check": false
-  },
-  "animation_frame_drag_418": {
-    "reference": "docs/ANIMATION_FRAME_DRAG_418.json",
-    "new_canvas_tool_or_cursor": false,
-    "panel_modifier_combinations": 16,
-    "operation": "Move for all16combinations; no advertised duplicate. Native DropProposal follows dispatch; physical system feedback unqualified.",
-    "existing_tools": 55,
-    "existing_modifier_combinations": 880,
-    "passed": true,
-    "physical_pointer_check": false
-  },
-  "sky_preset_rename_419": {
-    "reference": "docs/SKY_PRESET_RENAME_419.json",
-    "new_canvas_tool_or_cursor": false,
-    "native_control": "Standard native text editing and buttons; Return/Escape in modal dialog. No alternate canvas/modifier action.",
-    "existing_tools": 55,
-    "existing_modifier_combinations": 880,
-    "passed": true,
-    "physical_pointer_check": false
-  },
-  "rasterization_responsiveness_420": {
-    "reference": "docs/RASTERIZATION_RESPONSIVENESS_420.json",
-    "new_canvas_tool_or_cursor": false,
-    "existing_tools": 55,
-    "existing_modifier_combinations": 880,
-    "passed": true,
-    "physical_pointer_check": false,
-    "native_control": "Existing Rasterize/menu/progress/Cancel path; no modifier/shortcut semantics change."
-  },
-  "channel_thumbnail_options_421": {
-    "reference": "docs/CHANNEL_THUMBNAIL_OPTIONS_421.json",
-    "new_canvas_tool_or_cursor": false,
-    "native": "Native thumbnail button uses normal control pointer; unmodified double-click Options, all16modified click combinations retain existing dispatch. No canvas tool/modifier action or shortcut added.",
-    "existing_tools": 55,
-    "existing_modifier_combinations": 880,
-    "passed": true,
-    "physical_pointer_check": false
-  },
-  "adjacent_controls_427": {
-    "source": "427Source04",
-    "reference": "docs/ARTBOARD_NEIGHBORS_427.json",
-    "native": "Four + controls, Option captured copy,16modifier contexts, lifecycle cancel and one prepared Undo.",
-    "api": "Existing artboard.edit adjacent plus strict schema/capability metadata; no new Adobe route.",
-    "qualification": "41focused Debug tests/all8new pass. Old Frame Debug crash retained; fullscope/default/physical/normal427 remain open."
-  },
-  "selection_borders_428": {
-    "reference": "docs/SELECTION_BORDERS_428.json",
-    "impact": "Presentation layers have no NSView input surface; no tool/modifier/cursor action or key-binding change. Existing full16modifier cursor/gesture regressions are in the98-case normal selection."
-  },
-  "transform_reference_429": {
-    "reference": "docs/TRANSFORM_REFERENCE_429.json",
-    "cursor": "Visible pivot scope cursor in all16modifiers. Captured reference drag retains action/cursor; Space before press Hand. Escape/focus/tool/session/owner/source/detach/deinit cleanup.",
-    "tests": [
-      "PhotoCraftAppTests.TransformReferenceTests/testAffineAndProjectiveCustomOriginsRetainTheirGeometryAndAnchorMath",
-      "PhotoCraftAppTests.TransformReferenceTests/testAPIReferenceMatchesNativeAndRejectsInvalidBusyStaleAndRevokedWorkspace",
-      "PhotoCraftAppTests.TransformReferenceTests/testContentAwareReadyPreviewSurvivesReferenceOnlyEditsAndOptionsFit",
-      "PhotoCraftAppTests.TransformReferenceTests/testEscapeFocusToolOwnerAndSourceChangesNeverRestoreOverOtherWork",
-      "PhotoCraftAppTests.TransformReferenceTests/testEveryExistingTargetUsesSharedMetadataWithoutPreviewOrDocumentChanges",
-      "PhotoCraftAppTests.TransformReferenceTests/testNativePivotDragAllSixteenModifiersKeepsCapturedCursorAndNoPixelHistory",
-      "PhotoCraftAppTests.TransformReferenceTests/testOutsidePivotNativeCommitMatchesExistingMatrixEngineWithUndoAtAllDepths"
-    ],
-    "qualification": "Controlled native NSWindow events and owned offscreen capture; physical/live Photoshop visual/modifier equivalence open."
+  "large_crop_358": {
+    "API_impact": "document.crop range/state/schema/capability and shared prepared edit extended. No pointer injection or invented Adobe route.",
+    "all16_unchanged_modifier_combinations_tested": true,
+    "guide": "docs/LARGE_CROP.md",
+    "live_UI_qualified": false,
+    "policy": "No new canvas tool/modifier action; Crop range/preview implementation retains existing effective cursor dispatch."
   },
   "large_equalize_430": {
-    "reference": "docs/LARGE_EQUALIZE_430.json",
-    "impact": "Existing menu/modal processing and preview overview; no new pointer/modifier action. Existing all16cursor/gesture tests remain in the127-case normal batch, including429pivot capture. No physical modifier claim."
+    "impact": "Existing menu/modal processing and preview overview; no new pointer/modifier action. Existing all16cursor/gesture tests remain in the127-case normal batch, including429pivot capture. No physical modifier claim.",
+    "reference": "docs/LARGE_EQUALIZE_430.json"
   },
-  "color_lookup_formats_431": {
-    "step": 431,
-    "tool_modifier_action_changed": false,
-    "cursor": "Native dialog text, checkboxes and save controls retain AppKit-owned cursors; no drawing gesture or modifier action added.",
-    "qualification": "No new modifier matrix needed for metadata/export UI. Existing shared tool policy remains required. Offscreen controls only; physical save-panel behavior open.",
-    "reference": "docs/COLOR_LOOKUP_FORMATS_431.json"
+  "large_selection_files_374": {
+    "API": "Existing import/export/native85 and published composite executor; standaloneSelections capability geometry/storage/limits expanded.239 commands/native85/Actions44 unchanged; no Adobe route.",
+    "reference": "docs/LARGE_SELECTION_FILES_374.json",
+    "scope": "Existing file/open/save and channel tools use paged auxiliary imports; no new tool, modifier action, cursor, menu or shortcut. Existing ToolCursor all-combination tests are retained."
   },
-  "pattern_patch_432": {
-    "step": 432,
-    "reference": "docs/PATTERN_PATCH_432.json",
-    "tool_modifier_action_changed": false,
-    "behavior": "No new canvas tool or alternate modifier action. Pattern is a native button/menu operation. Captured pattern preparation blocks transform drags/arrows and retains Escape/Cancel/Enter; native control cursors stay AppKit-owned.",
-    "qualification": "No new tool/modifier matrix required for native menu/button; previous shared policy remains required. Current native physical appearance/input unqualified."
+  "large_soft_proof_471": {
+    "impact": "Existing proof View menu/shortcuts and native image preparation. No new tool/modifier/globalshortcut; oldninecursor methods pass. Full physical/context matrix remains.",
+    "reference": "docs/LARGE_SOFT_PROOF_471.json"
   },
-  "channel_footer_433": {
-    "step": 433,
-    "reference": "docs/CHANNEL_FOOTER_433.json",
-    "tool_modifier_action_changed": false,
-    "behavior": "Existing native button icons and AppKit arrow/control cursors retained. Option Save is a native button options action; no drawing tool/alternate canvas cursor added. All16Control/Command/Option/Shift Save policies tested; exact physical/Photoshop combined gestures open.",
-    "qualification": "Controlled16Save policies; no live physical/Photoshop or new canvas cursor claim."
+  "last_mesh_reuse_450": {
+    "evidence": "docs/LIQUIFY_LAST_MESH_450.json",
+    "modifier_combinations": 16,
+    "scope_preserved": true,
+    "shortcut": "Canvas-only plainM; no global shortcut or new tool/cursor/modifier action.",
+    "status": "33focusedDebug/all11new pass; native/normal/currentPS still pending."
   },
-  "batch_file_naming_434": {
-    "step": 434,
-    "reference": "docs/BATCH_FILE_NAMING_434.json",
-    "tool_modifier_action_changed": false,
-    "behavior": "No canvas tool, gesture modifier or tool cursor added. Native controls retain AppKit cursor behavior; no Photoshop combined-modifier qualification claimed.",
-    "qualification": "No canvas modifier action added; physical/native appearance and Photoshop checks open."
+  "layer_capacity_359": {
+    "API_limit_and_state_extended": true,
+    "cursor_policy_changed": false,
+    "guide": "docs/LAYER_CAPACITY.md",
+    "new_tool_or_modifier_action": false,
+    "physical60fps_qualified": false
   },
-  "precise_shape_creation_435": {
-    "step": 435,
-    "reference": "docs/PRECISE_SHAPE_CREATION_435.json",
-    "tool_modifier_action_changed": true,
-    "new_tool": false,
-    "shared_policy": "ToolCursor.geometry / existing canvas cursor region",
-    "behavior": "Existing ToolCursor.geometry and canvas cursor region retain Option center/Shift constraint feedback for drawing. New precise-click context captures Option at mouse-down for From Center.32rectangle/ellipse modifier click policies and existing880-row all-tool cursor artwork matrix pass; exact physical/Photoshop gestures remain open.",
-    "qualification": "32precise click policies and880all-tool matrix rows pass; no physical/Photoshop combined gesture/default claim."
+  "layer_collection_transform_353": {
+    "API_impact": "layers.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
+    "all16_modifier_combinations_tested": true,
+    "evidence": "docs/LAYER_COLLECTION_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "Whole layer collection Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context.",
+    "unsupported_modes_feedback": "Collection Distort/Perspective cursor is unavailable and dispatch is skipped. Idle selected-pixel cursor routing now requires an actual selection and no active draft, preserving active transform handle feedback."
+  },
+  "layer_links_355": {
+    "API_impact": "layer.links/layers.move; layerLinks graph/targets/availability/state/schema/capabilities; shared history/Actions39/40; no pointer injection or invented Adobe cursor route.",
+    "all16_modifier_combinations_tested": true,
+    "evidence": "docs/LAYER_LINK_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "Whole Move idle and captured Option-copy cursor follows dispatched action; Shift angle and Command guide-snap suppression refresh dynamically. Per-row/footer link cursors show link/unlink or Shift enable/disable. Unsupported targets unavailable."
+  },
+  "legacyRGB8Routing394": {
+    "evidence": "docs/RGB8_COMPONENT_TOOLS_394.json",
+    "remaining": "Live cursor/Photoshop art and all-input/platform/performance qualification remain open.",
+    "scope": "Existing Brush/Eraser cursor policy and captured gesture semantics now apply to ordinary RGB8 selected-channel routing. No new modifier action or artwork. Add all16modifier regression coverage for the selected-channel context.",
+    "status": "Automated selected-RGB8 Brush/Eraser admission/cursor/dispatch coverage passes all16modifier combinations on both architectures; full live/Photoshop/platform gates open",
+    "step": 394
+  },
+  "light_editing_preview_441": {
+    "Actions": 50,
+    "Adobe_endpoint_added": false,
+    "cursor_impact": "Automatic passive display only. No new gesture/modifier/cursor/menu/shortcut or key interception.",
+    "evidence": "docs/LIGHT_EDITING_PREVIEW_441.json",
+    "guide": "docs/LIGHT_EDITING_PREVIEW.md",
+    "native_archive": 86,
+    "qualified": "43Debug/43normal each/all9new, selected native static RGB paint/retouch only.",
+    "remaining": [
+      "Editable modern PSD/PSB descriptors and independent Photoshop output/default/ICC references. No invented tags or silent flattening as editable support.",
+      "Actual Light version switching, including legacy versions. Existing Use legacy Brightness/Contrast resets/replaces layer type; it is not the version menu.",
+      "Spatial Light/Clarity/Dehaze remains8,388,608pixels; current Light8/16. General maximum-size spatial processing remains functional work.",
+      "Transform/type/other live-edit contexts, Timeline/auxiliary/adjustment-brush pause behavior, exact Photoshop timing/visuals/occlusion/zero-mask rules.",
+      "All original A04scope/acceptance, physical Intel/macOS14,60fps and broader regression. Prior full-suite, strict text-output, crash and capacity failures remain unresolved."
+    ],
+    "state": "lightPreview",
+    "typed_commands": 252
+  },
+  "lighting_step321": {
+    "actual_preview_mouse_events": true,
+    "api_impact": "Shared Lighting controls/schema/state/presets, native72/Actions27 and original mapping109; unqualified Adobe descriptors explicitly reject.",
+    "capture_focus_capacity_test_passed": true,
+    "cursor_cases_passed": 9,
+    "factory_fixture_or_shortcuts_changed": false,
+    "full_parity": false,
+    "functional_cases_passed": 14,
+    "matrix": "artifacts/runs/20261101T093255Z-321-lighting-qualification/capture01/lighting-modifier-matrix.json",
+    "menu_cases_passed": 9,
+    "modifier_combinations": 16,
+    "native_visual_acceptance": false,
+    "physical_acceptance": false,
+    "reference": "docs/LIGHTING_EFFECTS_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T093255Z-321-lighting-qualification/source02.json"
+  },
+  "linked_preview_365": {
+    "factory_menus_shortcuts_changed": false,
+    "limits": "Integer preview/mask quantization still needs independent Photoshop qualification: the retained strict RGB8 round-trip comparison is not waived. Other current affected failures are recorded by case below. Full L05/I01 functionality, general Photoshop interpolation/ICC/filters/projective/effect/mask defaults, complete live UI, full current suite, supported Macs, dense capacity and physical 60 fps remain open. All 104 work packages retain their full acceptance criteria.",
+    "new_route_or_request_schema": false,
+    "new_tool_or_modifier": false,
+    "reference": "docs/LINKED_PREVIEW_EXPORT_REFERENCES.json",
+    "scope": "Shared PSD/PSB preview export correction;239commands/native84/Actions44 unchanged"
+  },
+  "lookup_property_responsiveness_479": {
+    "current_live_qualified": false,
+    "cursor_policy_unchanged": true,
+    "factory_menus_shortcuts_unchanged": true,
+    "new_pointer_or_modifier_actions": false,
+    "reference": "docs/LOOKUP_PROPERTY_RESPONSIVENESS_479.json",
+    "selected_existing_cursor_methods": 9,
+    "selected_existing_menu_methods": 9
+  },
+  "magic_wand_sampling_465": {
+    "impact": "No new tool/global shortcut/alternate action. Existing W/Shift-W/modifier cursors retained; 16-modifier native dispatch and all nine old cursor methods pass. Physical gestures/defaults remain unqualified.",
+    "reference": "docs/MAGIC_WAND_SAMPLING_465.json"
+  },
+  "magnetic_lasso_344": {
+    "evidence": "docs/MAGNETIC_LASSO_REFERENCES.json",
+    "live_Photoshop_qualified": false,
+    "modifiers": "Captured initial selection mode; active Command/near-start closes, Option after release gives straight/freehand. No Control action invented. Caps Lock before trace; Space pan.",
+    "policy": "ToolCursor.magnetic in ToolCursorPolicies.swift; main CraftCanvas ModifierCursorView dispatches captured modes and temporary tracing alternatives.",
+    "tested_combinations": 16
+  },
+  "mask_filters_468": {
+    "impact": "Existing filter menus/dialogs, captured mask target and Repeat. No new tool/modifier/global shortcut; old nine cursor methods pass Debug/normal. Full physical/context matrix remains.",
+    "reference": "docs/MASK_FILTER_TARGETS_468.json"
+  },
+  "mask_removal_416": {
+    "existing_combinations_passed": 880,
+    "existing_tools": 55,
+    "native_control": "Standard native button arrow. All16modifier combinations preserve selected footer target; Option skips prompt. No canvas mode changes.",
+    "new_canvas_tool_or_cursor": false,
+    "panel_combinations_passed": 16,
+    "physical_pointer_check": false,
+    "reference": "docs/MASK_REMOVAL_416.json"
+  },
+  "matrix": {
+    "artwork": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-cursors.png",
+    "path": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-modifier-matrix.json",
+    "rows": 832,
+    "stock_pointer_raster": "AppKit may provide dynamic stock pointers without TIFF; custom glyph raster images are validated."
+  },
+  "native": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
+    "cursor_artwork_qa": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06-captures/tool-cursors.png",
+    "evidence": [
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-zoom01.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-zoom02.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/native-hand01.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.ax.txt",
+      "artifacts/runs/20261031T010106Z-283-tool-cursors/normal-preview-handoff01.jpg"
+    ],
+    "modifier_semantics": "Native NSEvent/action/history tests plus controlled key-window admission fixture; physical held-key/Photoshop/default cursor comparison remains open.",
+    "observations": [
+      "Open retained native271 artwork; startup blank closes; document remains clean.",
+      "Enter100% releases focus; Z selects Zoom; native click500,400 changes100% to200%.",
+      "H selects Hand. A drag was attempted but AX exposed no pan delta and no before/after screenshot was retained; live Hand pan is not claimed as verified here.",
+      "Command0 returns77.73% Fit; restore100%/opacity100/Zoom tool for handoff."
+    ],
+    "passed": true,
+    "physical_modifier_hold_comparison": false,
+    "scope": "Native app launch/Open, tool selection and Zoom navigation; original retained pixels untouched",
+    "step": 283,
+    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22"
+  },
+  "openexr_474": {
+    "cursor_policy_changed": false,
+    "existing_cursor_tests_each_architecture": 9,
+    "native_API_impact": "File format/native Save control and transfer capability; no pointer-dispatched action added. Earlier modifier qualification remains.",
+    "new_tools_or_modifier_actions": false,
+    "reference": "docs/OPENEXR_474.json"
+  },
+  "package": {
+    "app": "/Users/johnczlonka/Applications/Photato Editing Preview 283.app",
+    "architecture": "arm64",
+    "binary_sha256": "d29f6b42144f9860476e8e0c18b319e8c8f32460f2e38ee2be86913564cbcfba",
+    "diagnostic_isolation": false,
+    "distribution_qualification": false,
+    "extracted_app": "/var/folders/bv/1zsd09cd1937tzq57vrttx600000gn/T/photato-preview283-check-7bb17izy/Photato Editing Preview 283.app",
+    "extracted_signature_verified": true,
+    "installed_app_replaced": false,
+    "minimum_os": "14.0",
+    "native_file_backed_sections_match": 38,
+    "signature_verified": true,
+    "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+    "tested_binary_sha256": "719305433c824fd22715c36e10de287fe01043d72ec19bc4062c4e6e05bc4b22",
+    "zip": "/Users/johnczlonka/Desktop/notadobe/notphotoshop/-/build/Photato-Editing-Preview-283.zip",
+    "zip_bytes": 38689480,
+    "zip_sha256": "4fd45f13861f4ad630309e123b867c59d62713fe877a20c8ff27b60158c890e0"
+  },
+  "paged_histogram_440": {
+    "Actions": 50,
+    "Adobe_endpoint_added": false,
+    "command": "tone.histogram",
+    "cursor_impact": "Existing Curves/Levels analysis only; no new gesture, modifier action, menu, shortcut or cursor.",
+    "evidence": "docs/PAGED_HISTOGRAM_440.json",
+    "guide": "docs/PAGED_HISTOGRAM.md",
+    "native_archive": 86,
+    "qualified": "27Debug/61normal each including8new; selected paged/statistics paths only.",
+    "remaining": [
+      "Complete Curves Auto and Auto Color Correction Options/algorithms/defaults; existing Levels Auto Color remains an unqualified approximation.",
+      "Native black/gray/white point sampling and editable targets, requiring modeless/captured-source editing.",
+      "Clipping previews, freehand/targeted/multipoint Curves, persistent presets, mask channels and HDR; all original A01 scope and acceptance.",
+      "Generic affine maximum-size statistics, dense performance and rich adjustment composition capacity remain unqualified.",
+      "Independent Photoshop/ICC/output/default fidelity, physical Intel/macOS14 and60fps; all earlier strict/full-suite failures remain recorded."
+    ],
+    "typed_commands": 252
   },
   "path_fill_436": {
-    "step": 436,
-    "reference": "docs/PATH_FILL_436.json",
-    "new_tool": false,
-    "tool_modifier_action_changed": true,
     "behavior": "No new canvas gesture/tool. Option-footer opens modal options; ordinary footer retains existing action.16modifier entry policies pass; native controls keep their control cursor. Existing all-tool880row artwork matrix passes selected optimized suite, no physical Photoshop gesture claim.",
-    "qualification": "16footer entry policies and existing880row artwork matrix pass; live/Photoshop combined gestures open."
-  },
-  "typography_panels_437": {
-    "step": 437,
-    "reference": "docs/TYPOGRAPHY_PANELS_437.json",
     "new_tool": false,
-    "new_modifier_action": false,
-    "behavior": "No canvas tool or new modifier gesture. Existing panel controls/tab/drag system retained. Formatting preserves selected range; controls use native control/text cursors. Factory menu keys/order unchanged in selected independent menu regressions. Current880matrix notrerun; last436.",
-    "physical_qualified": false
+    "qualification": "16footer entry policies and existing880row artwork matrix pass; live/Photoshop combined gestures open.",
+    "reference": "docs/PATH_FILL_436.json",
+    "step": 436,
+    "tool_modifier_action_changed": true
+  },
+  "pattern_library_443": {
+    "Actions": 51,
+    "Adobe_endpoint_added": false,
+    "command": "pattern.library",
+    "cursor_impact": "Native panel selection and platform drag-move proposal; all16modifier dispatch states tested. No new editing tool/factory menu/shortcut/cursor override.",
+    "evidence": "docs/PATTERN_LIBRARY_443.json",
+    "guide": "docs/PATTERN_LIBRARY.md",
+    "native_archive": 86,
+    "pattern_library_format": 2,
+    "qualification": "54Debug/71sameordered normal each/all17new; ownoffscreenUI only.",
+    "remaining": [
+      "History Fill needs shared history-source/snapshot retention and lifecycle; it is still functional work, not a dropdown placeholder.",
+      "Scripted Fill and remaining pattern application to text/shape/pixel layers, canvas/layer modifier drops, picker and keyboard semantics.",
+      "Arbitrary PAT metadata/interchange, exact Photoshop defaults/output, larger-than-current library/transport capacity and independently observed Photoshop workflows.",
+      "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
+      "All original A07 scope and acceptance criteria remain unchanged."
+    ],
+    "state": "patternLibrary",
+    "typed_commands": 256
+  },
+  "pattern_patch_432": {
+    "behavior": "No new canvas tool or alternate modifier action. Pattern is a native button/menu operation. Captured pattern preparation blocks transform drags/arrows and retains Escape/Cancel/Enter; native control cursors stay AppKit-owned.",
+    "qualification": "No new tool/modifier matrix required for native menu/button; previous shared policy remains required. Current native physical appearance/input unqualified.",
+    "reference": "docs/PATTERN_PATCH_432.json",
+    "step": 432,
+    "tool_modifier_action_changed": false
+  },
+  "pattern_pixel_fill_357": {
+    "API_impact": "pixels.fill patternID/placement, inventory/source/busy/state/schemas, immutable captured asset and shared history/Actions42. No pointer injection or invented Adobe route.",
+    "all16_unchanged_modifier_combinations_tested": true,
+    "guide": "docs/PATTERN_PIXEL_FILL.md",
+    "live_UI_qualified": false,
+    "policy": "New native source/preset controls add no canvas tool or alternate modifier action; existing effective tool cursors remain unchanged."
+  },
+  "pcraft_linked_originals_473": {
+    "evidence": "docs/PCRAFT_LINKED_ORIGINALS_473.json",
+    "impact": "Import/source recovery only; no new tool, gesture, modifier, cursor or shortcut. All nine existing cursor methods pass in source03; native/API source paths share preparation."
+  },
+  "pixel_fill_stroke_356": {
+    "API_impact": "pixels.fill/pixels.stroke, pixelPaint state/schemas/capabilities and shared history/Actions41; no pointer injection or invented Adobe cursor route.",
+    "all16_unchanged_modifier_combinations_tested": true,
+    "guide": "docs/PIXEL_FILL_STROKE.md",
+    "live_UI_qualified": false,
+    "policy": "Native dialog/slider/text/color controls create no new canvas tool or modifier action. Existing effective cursor policy retained."
+  },
+  "pixel_mask_transform_351": {
+    "API_impact": "mask.transform plus target/mode/reference/preview/state/schema/capabilities; no pointer injection or invented Adobe cursor route.",
+    "all16_modifier_combinations_tested": true,
+    "evidence": "docs/PIXEL_MASK_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "Whole pixel-mask Free Transform reuses captured shared selectionTransform effective modes/handle cursor policy; no selected-pixel copy action is advertised. Focus/tool/read/close restore context."
   },
   "point_text_layout_438": {
-    "evidence": "docs/POINT_TEXT_LAYOUT_438.json",
-    "guide": "docs/POINT_TEXT_LAYOUT.md",
-    "source": "438Source04/Release01",
-    "typed_commands": 251,
-    "native_archive": 86,
     "Actions": 50,
-    "settings": 4,
-    "selected_native_workflow_qualified": true,
+    "adobe": "Existing shared supported text jobs; no new endpoint/descriptor. Full compatibility unqualified.",
     "affected_suite_passed": false,
     "api_state": "textGeometry",
-    "adobe": "Existing shared supported text jobs; no new endpoint/descriptor. Full compatibility unqualified.",
     "cursor": "No new tool/modifier gesture in438; native text/control cursors and existing shared tool policy retained. Direct path-hover cursor is a futureT04candidate, not implemented here.",
+    "evidence": "docs/POINT_TEXT_LAYOUT_438.json",
+    "guide": "docs/POINT_TEXT_LAYOUT.md",
+    "native_archive": 86,
     "remaining": [
       "T01 remains open: typing defaults before a layer exists, mixed-value states, dynamic Character/Paragraph formatting menus/shortcuts, full paragraph composition/hyphenation/justification and editable PSD/type coverage.",
       "Type raster limits remain32768side/16MP and100000UTF16units. Large type, point wrapping/whitespace/composer and arbitrary affine native editing require further implementation and qualification.",
@@ -1357,400 +1250,514 @@
       "All prior failures and original104scope/652command requirements remain. This selected path does not close T01 or the overall goal.",
       "Current optimized ARM467/468 and Rosetta466/468; imported source mismatch5937/4243/5773remains in both. The exact frozen ordinary-output method additionally fails five u8cases under Rosetta; all10u16/f32planes match. Keep tests/fixtures unchanged. No cause, oldIntelbaseline reproduction or regression-introduction claim.",
       "Current five u8cases have565/614/578/751/756different Floatwords and239/244/225/342/344changed pixels, alpha maximum1byte; straight RGB also differs. This is not merely a one-ULP normalization residual. Current cross-architecture byte identity is false."
-    ]
-  },
-  "direct_path_type_439": {
-    "evidence": "docs/DIRECT_PATH_TYPE_439.json",
-    "guide": "docs/DIRECT_PATH_TYPE.md",
-    "state": "pathTypeEditing",
-    "commands": [
-      "text.create",
-      "text.set",
-      "text.layout"
     ],
-    "typed_commands": 251,
     "selected_native_workflow_qualified": true,
-    "affected_suite_passed": false,
-    "cursor": "Wavy cursor onselected connectedpath; actual16modifier nativecapture/dispatch/unavailablevertical/toolchange behavior tested. ExistingToolCursorTests also run; fullPSalternates/artwork unqualified.",
-    "remaining": [
-      "Full originalT04scope remains open: vertical/inside-path/warped inline editing, live start/end delimiters/flip/drag, complete fitting/reflow, font/composer/IME/affinity, editable PSD and maximum capacity. Current path bounds16384UTF16/2000000outlinepoints/16MP remain below complete Photoshop requirements.",
-      "Existing-layer draft preview draws text separately from layer masks/opacity/effects; fully composited editing appearance remains functionalstillneeded. Current affine caret/source preservation does not qualify complete preview appearance.",
-      "Closed full-circle start/end may coincide geometrically; full delimiter and affinity behavior is open. Current16modifier dispatch/cursor matches itself; exact Photoshop alternates/defaults/hotspot/artwork remain unobserved.",
-      "No physical Intel/macOS14, live Photoshop/currentworkspace/VoiceOver or60fpsproof; Maclocked again439, existing humanunlockpending. All prior failures and original104scope acceptance remain.",
-      "Affected suites retain failures: ARM484/485, Rosetta482/485; imported-source5937/4243/5773both, fivefrozenPointTextu8assertionsIntel and threef32PathTextassertionsIntel. Exact fixtures/assertions retained; no whole-suite/byteidentity/fullstable claim.",
-      "All36pathplanes exactARM;33exactIntel. Bow0one/Bow1five/Circle2sevenFloat32alpha words differ by1ULP; RGBwords and requantized8bitdiagnostic equal. No oldIntelbaseline rerun/cause/introduction/Photoshop claim. Exactness staysopen, not waived."
-    ]
+    "settings": 4,
+    "source": "438Source04/Release01",
+    "typed_commands": 251
   },
-  "paged_histogram_440": {
-    "evidence": "docs/PAGED_HISTOGRAM_440.json",
-    "guide": "docs/PAGED_HISTOGRAM.md",
-    "command": "tone.histogram",
-    "typed_commands": 252,
-    "native_archive": 86,
-    "Actions": 50,
-    "Adobe_endpoint_added": false,
-    "cursor_impact": "Existing Curves/Levels analysis only; no new gesture, modifier action, menu, shortcut or cursor.",
-    "qualified": "27Debug/61normal each including8new; selected paged/statistics paths only.",
-    "remaining": [
-      "Complete Curves Auto and Auto Color Correction Options/algorithms/defaults; existing Levels Auto Color remains an unqualified approximation.",
-      "Native black/gray/white point sampling and editable targets, requiring modeless/captured-source editing.",
-      "Clipping previews, freehand/targeted/multipoint Curves, persistent presets, mask channels and HDR; all original A01 scope and acceptance.",
-      "Generic affine maximum-size statistics, dense performance and rich adjustment composition capacity remain unqualified.",
-      "Independent Photoshop/ICC/output/default fidelity, physical Intel/macOS14 and60fps; all earlier strict/full-suite failures remain recorded."
-    ]
+  "precise_shape_creation_435": {
+    "behavior": "Existing ToolCursor.geometry and canvas cursor region retain Option center/Shift constraint feedback for drawing. New precise-click context captures Option at mouse-down for From Center.32rectangle/ellipse modifier click policies and existing880-row all-tool cursor artwork matrix pass; exact physical/Photoshop gestures remain open.",
+    "new_tool": false,
+    "qualification": "32precise click policies and880all-tool matrix rows pass; no physical/Photoshop combined gesture/default claim.",
+    "reference": "docs/PRECISE_SHAPE_CREATION_435.json",
+    "shared_policy": "ToolCursor.geometry / existing canvas cursor region",
+    "step": 435,
+    "tool_modifier_action_changed": true
   },
-  "light_editing_preview_441": {
-    "evidence": "docs/LIGHT_EDITING_PREVIEW_441.json",
-    "guide": "docs/LIGHT_EDITING_PREVIEW.md",
-    "state": "lightPreview",
-    "typed_commands": 252,
-    "native_archive": 86,
-    "Actions": 50,
-    "Adobe_endpoint_added": false,
-    "cursor_impact": "Automatic passive display only. No new gesture/modifier/cursor/menu/shortcut or key interception.",
-    "qualified": "43Debug/43normal each/all9new, selected native static RGB paint/retouch only.",
-    "remaining": [
-      "Editable modern PSD/PSB descriptors and independent Photoshop output/default/ICC references. No invented tags or silent flattening as editable support.",
-      "Actual Light version switching, including legacy versions. Existing Use legacy Brightness/Contrast resets/replaces layer type; it is not the version menu.",
-      "Spatial Light/Clarity/Dehaze remains8,388,608pixels; current Light8/16. General maximum-size spatial processing remains functional work.",
-      "Transform/type/other live-edit contexts, Timeline/auxiliary/adjustment-brush pause behavior, exact Photoshop timing/visuals/occlusion/zero-mask rules.",
-      "All original A04scope/acceptance, physical Intel/macOS14,60fps and broader regression. Prior full-suite, strict text-output, crash and capacity failures remain unresolved."
-    ]
+  "projective_layer_transform_354": {
+    "API_impact": "layers.transform expands to projective matrices; layerCollectionTransform modes/affineOnly/reference/preview/schema/capabilities updated; no pointer injection or invented Adobe cursor route.",
+    "all16_modifier_combinations_tested": true,
+    "evidence": "docs/PROJECTIVE_LAYER_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "Captured shared selectionTransform effective-mode/handle cursor matches native Command/Command-Option-Shift action; changing modifiers mid-drag does not silently change its captured mode. Unsupported targets remain unavailable."
   },
-  "gradient_creation_442": {
-    "evidence": "docs/GRADIENT_CREATION_442.json",
-    "guide": "docs/GRADIENT_CREATION.md",
-    "commands": [
-      "gradient.tool.configure",
-      "gradient.fill.create",
-      "gradient.paint"
+  "psd_auxiliary_channels329": {
+    "full_photoshop_parity": false,
+    "main_factory_inventory_changed": false,
+    "reference": "docs/PSD_AUXILIARY_CHANNEL_REFERENCES.json",
+    "scope": "Existing Open/Save/Save As and channel controls share the PSD/PSB serializer; no new main menu, shortcut or canvas gesture. Nine existing menu and nine modifier-cursor regressions pass. Factory807 entries/102 primary/8 alternate inventory unchanged; live visual acceptance remains open.",
+    "source_manifest": "artifacts/runs/20261101T153707Z-329-psd-auxiliary-channels/source06.json",
+    "step": 329
+  },
+  "quick_mask_control366": {
+    "existing_cursor_cases_passed": 9,
+    "existing_tool_modifier_rows": 832,
+    "impact": "Existing editing tools and captured gesture cursors are retained. The new Quick Mask toolbar gesture is an AppKit control action, with the standard control pointer; no alternate canvas tool action is advertised.",
+    "reference": "docs/QUICK_MASK_SELECTION_REFERENCES.json"
+  },
+  "quick_mask_semantics_484": {
+    "application_build": 484,
+    "capture_snapshot": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/capture-inputs01.json",
+    "factory_menus_keys_cursor_policy_unchanged": true,
+    "focused_Debug_tests": 64,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "main_tools": 55,
+    "modifier_contexts": 880,
+    "new_correctness_methods": 17,
+    "normal_passed_each_architecture": 82,
+    "normal_selected_tests_each_architecture": 82,
+    "reference": "docs/QUICK_MASK_SEMANTICS_484.json",
+    "selected_native_UI_qualified": false,
+    "selected_optimized_gate_passed": true,
+    "software_changes": true,
+    "source": "source04/release01",
+    "status": "Quick Mask now preserves explicit full selections, starts Selected Areas without an overlay when no selection exists, and uses Photoshop editing-gray conventions in PSD/PSB. All64focused Debug tests and82selected optimized tests perarchitecture pass,17new. Seven owned Photoshop fixtures and81earlier auxiliary fixtures are checked. Native UI checks are partial: Fill remains in a modal loop inaccessible to the current automation binding. Build484is a validation candidate;480remains latest fully qualified selected universal. FullS05andPhotoshopparity remain open.",
+    "step": 484
+  },
+  "quick_mask_target_transitions_372": {
+    "API": "Actual alphaChannelTarget and independent eye changes use existing239 commands. No Adobe route added.",
+    "reference": "docs/QUICK_MASK_TARGET_TRANSITIONS_372.json",
+    "scope": "Existing target selection and temporary channel-number shortcut; no new tool or modifier action. Existing shared cursor policy and all-combination regression coverage retained. Complete C01 target wording/visibility and full Photoshop gates remain open."
+  },
+  "rasterization_responsiveness_420": {
+    "existing_modifier_combinations": 880,
+    "existing_tools": 55,
+    "native_control": "Existing Rasterize/menu/progress/Cancel path; no modifier/shortcut semantics change.",
+    "new_canvas_tool_or_cursor": false,
+    "passed": true,
+    "physical_pointer_check": false,
+    "reference": "docs/RASTERIZATION_RESPONSIVENESS_420.json"
+  },
+  "reference_date": "2026-10-30 America/Vancouver",
+  "references": [
+    {
+      "kind": "public Adobe documentation",
+      "observation": "Option-click switches Zoom Out; independently authored native glyphs, no Adobe assets copied.",
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/zoom-images.html"
+    },
+    {
+      "kind": "public Adobe documentation",
+      "observation": "Tool pointer preferences and precision/brush styles exist; complete preference parity is not claimed.",
+      "url": "https://helpx.adobe.com/photoshop/desktop/get-started/settings-and-preferences/change-tool-pointers.html"
+    },
+    {
+      "kind": "reference fetch failed",
+      "observation": "2026-10-30 fetch timeout retained; not accepted as successful web verification.",
+      "url": "https://helpx.adobe.com/uk/photoshop/using/tool-techniques/hand-tool.html"
+    }
+  ],
+  "relight_step318": {
+    "api_impact": "Typed Relight settings/schema/state through existing shared commands, native71/Actions26, source mapping108; explicit Adobe boundary.",
+    "cursor_cases_passed": 9,
+    "factory_fixture_or_shortcuts_changed": false,
+    "full_parity": false,
+    "functional_cases_passed": 13,
+    "menu_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "new_tool_or_modifier_action": false,
+    "reference": "docs/RELIGHT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T074443Z-318-relight-qualification/source06.json"
+  },
+  "remaining": [
+    "This audit repairs feedback for existing implemented actions; it does not claim complete Photoshop modifier functionality. Brush Option temporary Eyedropper, Command temporary Move/Direct Selection, Command/Option+Space temporary Zoom and other missing Photoshop actions remain feature gaps.",
+    "Complete Photoshop pointer preferences (normal/precise/full-size, Caps Lock and brush-size HUD), exact glyphs/hotspots, exhaustive hover/resize states and physical held-key comparison remain open.",
+    "Control usually invokes contextual UI; merely holding it does not necessarily require a new tool icon. Command/Control without a dispatched alternate operation are observed without invented behavior.",
+    "Host tests do not qualify physical macOS14/Intel/macOS26 pointer appearance or performance.",
+    "Standalone focused suites that create AppKit windows before the native document-controller singleton can crash in the pre-existing close path; preserve focused03 and its isolated passing check. Key-window admission tests use an explicit controlled NSWindow subclass because xctest cannot become foreground on this host."
+  ],
+  "reverification_299": {
+    "artwork": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor17-captures/tool-cursors.png",
+    "failed": 0,
+    "future_requirement": "Existing AGENTS.md/CONTRIBUTING.md requirement retained for every new tool/action.",
+    "live_native_acceptance": false,
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression17-ToolCursorTests.log",
+    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor17-captures/tool-modifier-matrix.json",
+    "modifiers": 16,
+    "native_app_preserved": 283,
+    "production_cursor_changes": false,
+    "recorded_at_utc": "2026-10-31T21:52:16.000456+00:00",
+    "rows": 832,
+    "sha256": "16b23363219e5a1ec6ace6137d91339064509a7e1b26f59984955c6725ca6817",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source17.json",
+    "tests": 9,
+    "tools": 52,
+    "visual_check": "Generated cursor sheet inspected from Source16; identical SHA256 in17. Offscreen artwork, not physical input acceptance."
+  },
+  "reverification_299_source20": {
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression20-ToolCursorTests.log",
+    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor20-captures/tool-modifier-matrix.json",
+    "matrix_rows": 832,
+    "new_tool_or_modifier_actions": false,
+    "physical_acceptance": false,
+    "sha256": "28cc0ed377fb485c00e45b4c5a361c31c03573a62fe70c1b5afd08f5cb48fd9c",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source20.json",
+    "tests_passed": 9,
+    "tools": 52
+  },
+  "reverification_299_source23": {
+    "log": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/regression23-ToolCursorTests.log",
+    "matrix": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/cursor23-captures/tool-modifier-matrix.json",
+    "matrix_rows": 832,
+    "new_tool_or_modifier_actions": false,
+    "physical_acceptance": false,
+    "sha256": "70503db8d39a72b7ff2fde0a855d04368d57e2bdccb410bea733fc68ab271069",
+    "source_manifest": "artifacts/runs/20261031T184605Z-299-linked-smart-objects/source23.json",
+    "tests_passed": 9,
+    "tools": 52
+  },
+  "reverification_300": {
+    "log": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/focused03.log",
+    "matrix_rows_asserted": 832,
+    "new_tool_or_modifier_actions": false,
+    "physical_acceptance": false,
+    "policy_inputs_unchanged_from_299_source23": true,
+    "sha256": "32cb4aac72965e427aaa2eef56ded960ea916168baa99d6664fdc2547d46f0e2",
+    "source_manifest": "artifacts/runs/20261031T232118Z-300-rich-pcraft-migration/source03.json",
+    "tests_passed": 9,
+    "tools": 52
+  },
+  "rich_merge_364": {
+    "contextual_merge_group_title_added": true,
+    "factory_menu_hierarchy_shortcuts_changed": false,
+    "inactive_hover_modifier_clear": true,
+    "limits": "Complete L02 merge/rasterization, numerical/palette/ink/temporal composition, cross-parent selections, clipped artwork without its selected base, hidden descendants inside visible merged groups, stamp/merge-clipping variants and exact Photoshop backdrop/effects/geometry/defaults/live UI remain open. Supported-platform, full-current-suite, dense maximum capacity and physical60fps qualification remain open. All 104 work packages remain open against their full acceptance criteria.",
+    "new_route": false,
+    "new_tool_or_modifier": false,
+    "reference": "docs/RICH_LAYER_MERGE_REFERENCES.json",
+    "scope": "Shared native RGB rich merge preparation, desktop/API/Actions and existing documented Adobe merge events;239commands/native84/Actions44 unchanged",
+    "single_group_default_dispatch": true
+  },
+  "rich_source_text_step308": {
+    "api_impact": "Existing Photato text commands/state/schema/69 negotiation and published Adobe text_layer mappings; no new route. Original pcraft format remains outside Adobe input contract.",
+    "cursor_cases_passed": 9,
+    "full_parity": false,
+    "functional_cases_passed": 16,
+    "menu_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "new_tool_or_factory_binding": false,
+    "reference": "docs/PCRAFT_TEXT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T020936Z-306-rich-source-text/source06.json"
+  },
+  "run": "artifacts/runs/20261031T010106Z-283-tool-cursors",
+  "sampled_hue_ranges_485": {
+    "application_build": 485,
+    "capture_snapshot": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/capture-inputs01.json",
+    "factory_menus_keys_cursor_policy_unchanged": true,
+    "focused_Debug_tests": 68,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "main_tools": 55,
+    "modifier_contexts": 880,
+    "new_correctness_methods": 14,
+    "normal_passed_each_architecture": 68,
+    "normal_selected_tests_each_architecture": 68,
+    "reference": "docs/SAMPLED_HUE_RANGES_485.json",
+    "selected_native_UI_qualified": true,
+    "selected_optimized_gate_passed": true,
+    "software_changes": true,
+    "source": "privateSource03/canonicalrelease01",
+    "status": "Photoshop sampled Hue/Saturation swatches now survive PSD/PSB/AHU and native92, appear in native Properties and share API settings/history. All68selected Debug and optimized checks perarchitecture pass,14new. All6528hue2recordbytes across threevariants match fourownedPhotoshopreferences. Nativeimport/orange+grayswatches/boundedit/UndoRedo/cleanup pass. Build485is a validation candidate;480remains latest fully qualified selected universal. FullA02/on-canvassampling and allpriorgaps remain open.",
+    "step": 485
+  },
+  "script_event_actions_483": {
+    "application_build": 483,
+    "current_modifier_contexts": 880,
+    "current_tools": 55,
+    "cursor_policy_changed": false,
+    "focused_tests_each_architecture": 58,
+    "full_package_closed": false,
+    "goal_complete": false,
+    "new_correctness_methods": 20,
+    "nine_cursor_methods_pass_each_architecture": true,
+    "normal_optimized_qualified": false,
+    "normal_passed_each_architecture": 128,
+    "normal_selected_tests_each_architecture": 129,
+    "physical_cursor_qualification": false,
+    "reference": "docs/SCRIPT_EVENT_ACTIONS_483.json",
+    "selected_event_workflow_qualified": true,
+    "software_changes": true,
+    "source": "source06/release02",
+    "status": "Script Events Manager runs native Actions on New Document and Open Document, with persistent disabled-by-default registrations and separately permissioned API configuration. All58focused Debug and optimized checks perarchitecture pass,20new. Broader optimized checks pass128of129on each architecture; the old400vs422API failure also reproduces on480. Native NewDocument/automaticInvert/Undo/manager checks pass. Build483is a validation candidate; latest fully qualified selected universal remains480. FullAUT02andPhotoshopparity stay open.",
+    "step": 483
+  },
+  "selected_pixel_move_350": {
+    "API_impact": "pixels.move and copy on pixels.transform with state/schema/capabilities; no injected pointer/keyboard or Adobe cursor route.",
+    "all16_modifier_combinations_tested": true,
+    "evidence": "docs/SELECTED_PIXEL_MOVE_REFERENCES.json",
+    "live_UI_qualified": false,
+    "new_badges": [
+      "copy",
+      "constrainCopy"
     ],
-    "state": "gradientTool",
-    "typed_commands": 255,
-    "native_archive": 86,
-    "Actions": 51,
-    "Adobe_endpoint_added": false,
-    "cursor_impact": "No new tool, modifier action, cursor, factory menu or shortcut. Existing G/ShiftG and captured gesture constraints remain.",
-    "qualification": "69Debug/99sameordered normal each:99ARM98Intel,all11newboth; previousInteloraclefailure retained.",
-    "correction": "Historical selected-fill edits from Options describe the old implementation. Public Adobe workflow docs drive creation-only defaults; historical bounded pixel oracles are retained unchanged.",
-    "remaining": [
-      "On-canvas opacity controls and complete modern gradient interaction/preset behavior.",
-      "Complete noise gradients, GRD edge cases/interchange, remaining interpolation/dither/default and Gradient Fill transforms; preserve old bounded references.",
-      "Preset-library automation remains open; creation/configuration/Classic painting do not complete that library interface.",
-      "Large-document performance, physical Intel/macOS14, 60fps and independent Photoshop output/UI/default qualification.",
-      "Intel Rust interpolation fixture remains15580/15633 exact samples on both retained441 and442; no assertion weakening, cause or Photoshop equivalence claim. All earlier wider-suite failures and full A05 acceptance remain open."
-    ]
+    "new_effective_policy": "ToolCursor.selectedPixels captures Option-copy, retains live Shift constraints and indicates effective guide-snap suppression. Stationary flags update geometry/cursor; focus/tool/read/close restore state."
   },
-  "pattern_library_443": {
-    "evidence": "docs/PATTERN_LIBRARY_443.json",
-    "guide": "docs/PATTERN_LIBRARY.md",
-    "command": "pattern.library",
-    "state": "patternLibrary",
-    "typed_commands": 256,
-    "native_archive": 86,
-    "Actions": 51,
-    "pattern_library_format": 2,
-    "Adobe_endpoint_added": false,
-    "cursor_impact": "Native panel selection and platform drag-move proposal; all16modifier dispatch states tested. No new editing tool/factory menu/shortcut/cursor override.",
-    "qualification": "54Debug/71sameordered normal each/all17new; ownoffscreenUI only.",
-    "remaining": [
-      "History Fill needs shared history-source/snapshot retention and lifecycle; it is still functional work, not a dropdown placeholder.",
-      "Scripted Fill and remaining pattern application to text/shape/pixel layers, canvas/layer modifier drops, picker and keyboard semantics.",
-      "Arbitrary PAT metadata/interchange, exact Photoshop defaults/output, larger-than-current library/transport capacity and independently observed Photoshop workflows.",
-      "Physical Intel/macOS14, live UI/held-modifier behavior,60fps and broader regression. All earlier strict text/gradient oracle/full-suite/crash failures remain open.",
-      "All original A07 scope and acceptance criteria remain unchanged."
-    ]
+  "selected_pixel_transform_347": {
+    "API_impact": "pixels.transform and selectedPixelTransform/target state; no injected pointer API.",
+    "all 16_modifier_combinations_tested": true,
+    "evidence": "docs/SELECTED_PIXEL_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "Existing ToolCursor.selectionTransform and shared canvas captured-mode refresh; controls retain their own text/control cursors.",
+    "shared_captured_mode_and_link_state_policy": true
   },
-  "custom_shape_blur_444": {
-    "evidence": "docs/CUSTOM_SHAPE_BLUR_444.json",
-    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
-    "status": "development_not_qualified",
-    "typed_commands": 256,
-    "native_archive": 87,
-    "Actions": 52,
-    "Adobe_route_added": false,
-    "cursor_impact": "No new tool/modifier action/factory menu/shortcut; native menu chooser uses system controls.",
-    "Debug": "42of43selected; independent triangle convolution mismatch remains."
+  "selection_border_524": {
+    "live_UI_qualified": false,
+    "native_view_tests": "All 16 combinations for seven classic tools, live modifier constraint, cancellation and restored hover.",
+    "policy": "New Selection plain hover inside coverage shows border-move cursor; Shift during a captured drag shows constraint. Initial Add/Subtract/Intersect and Command/Control do not advertise direct border dragging.",
+    "remaining": "Complete Photoshop cursor art, Command temporary pixel actions and other recorded gaps remain.",
+    "source": "docs/SELECTION_INTERACTION_524.json"
   },
-  "custom_shape_blur_446": {
-    "evidence": "docs/CUSTOM_SHAPE_BLUR_446.json",
-    "guide": "docs/CUSTOM_SHAPE_BLUR.md",
-    "status": "Selected native custom-kernel workflow qualified; strict Photoshop RGB8/32 byte gates fail; full F01 remains open.",
-    "typed_commands": 256,
-    "native_archive": 87,
-    "Actions": 52,
-    "Adobe_route_added": false,
-    "cursor_impact": "No new tool/modifier action/menu/shortcut. System-control chooser; original shared cursor matrix remains unchanged and selected FilterRecall modifier tests pass both optimized architectures.",
-    "reference": "Owned Photoshop2026 triangle and impulse image, normal UI/saved PNG/public PSD, strict raw-byte fixtures.",
-    "qualification": "54of56Debug;55of57sameordered normal each;9of11newpass;2strictPSgatesfail; universalmin14/signature/ZIP/live selected controls pass.",
-    "historical_444_count_correction": "Original expected55 methods,43outcomesbeforeSIGBUS; old summary was incomplete. See446 evidence."
+  "selection_borders_428": {
+    "impact": "Presentation layers have no NSView input surface; no tool/modifier/cursor action or key-binding change. Existing full16modifier cursor/gesture regressions are in the98-case normal selection.",
+    "reference": "docs/SELECTION_BORDERS_428.json"
   },
-  "custom_kernel_presets_447": {
-    "reference": "docs/CUSTOM_KERNEL_PRESETS_447.json",
-    "status": "Native ACF/JSON preset I/O and shared codec/API; no new tool, modifier action, cursor, factory menu or shortcut. Typed257; native87/Actions52 unchanged. Selected36 Debug/native/Photoshop preset roundtrip pass; full output/platform scope open."
+  "selection_modify_345": {
+    "API_impact": "Two document-selection commands; modal controls retain native text/control cursors.",
+    "cursor_changes": false,
+    "evidence": "docs/SELECTION_MODIFY_REFERENCES.json",
+    "new_canvas_tool": false,
+    "new_modifier_action": false
   },
-  "blur_gallery_mask_448": {
-    "reference": "docs/BLUR_GALLERY_MASK_448.json",
-    "scope": "Native output/shared API/Actions, no new tool/modifier/cursor/menu/shortcut. Uniform Field5 and duplicate naming PS reference only; original full-scope acceptance remains.",
-    "typed_commands": 258,
-    "maximum_Actions_version": 53
+  "selection_sources_466": {
+    "impact": "No new tool or alternate modifier action/global shortcut. W/Shift-W and existing pointer policy retained. Nine old cursor methods and prior465 modifier dispatch tests pass; physical/context/default matrix remains open.",
+    "reference": "docs/SELECTION_SOURCE_POLICY_466.json"
   },
-  "last_mesh_reuse_450": {
-    "evidence": "docs/LIQUIFY_LAST_MESH_450.json",
-    "status": "33focusedDebug/all11new pass; native/normal/currentPS still pending.",
-    "shortcut": "Canvas-only plainM; no global shortcut or new tool/cursor/modifier action.",
+  "selection_transform_346": {
+    "API_impact": "selection.transform and workspace selectionTransform state; no injected pointer API.",
+    "all16_modifier_combinations_tested": true,
+    "captured_mode_and_restoration_tested": true,
+    "evidence": "docs/SELECTION_TRANSFORM_REFERENCES.json",
+    "live_UI_qualified": false,
+    "policy": "ToolCursor.selectionTransform; native canvas cursor refresh; native controls retain their own text/control cursors."
+  },
+  "shape_stroke_presets_408": {
+    "combinations": 880,
+    "existing_picker_pointer": true,
+    "new_tool_or_modifier": false,
+    "qualification": "Existing55tools/880modifier matrix passes in current normal optimized156case batch each architecture; no new canvas modifier/action. Picker uses standard pointer. Actual408UI awaits unlock.",
+    "reference": "docs/SHAPE_STROKE_PRESETS_408.json",
+    "step": 408,
+    "tools": 55
+  },
+  "shared_paint_palettes_376": {
+    "API": "Existing brush.configure/state plus additive capability metadata; shared revisions, no new Adobe route.",
+    "impact": "Existing X/D, Q/channel and colour controls share palette state. No new menu, shortcut, tool or alternate modifier action; existing all-combination ToolCursor tests retained. Held strokes keep captured colours.",
+    "reference": "docs/SHARED_PAINT_PALETTES_376.json"
+  },
+  "single_pixel_marquee_404": {
+    "api": "Tool discovery includes both tools; selection.shape row/column shares geometry/history. No new Adobe route.",
+    "cases": 87,
+    "evidence": "docs/SINGLE_PIXEL_MARQUEE_404.json",
+    "open": "Exact Photoshop pointer artwork/preferences, defaults/feather/snapping and physical held-key/platform qualification.",
+    "reference": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html",
+    "semantics": "Shift add/Option subtract/both intersect captured at pointer-down; later modifiers do not alter chosen mode. Hover restores effective mode on release. No center/constraint geometry action exists for single-pixel lines. Escape/tool switch discard the draft. Independently drawn native SF Symbol glyphs.",
+    "source": "404Source03",
+    "status": "Focused arm64 Debug matrix passed; full Photoshop/platform qualification open",
+    "step": 404,
+    "tool_modifier_combinations": 880,
+    "tools": [
+      "rowMarquee",
+      "columnMarquee"
+    ],
+    "tools_total": 55
+  },
+  "sky_preset_groups_477": {
+    "cursor_policy_unchanged": true,
+    "new_tools_or_modifiers": false,
+    "optimized_existing_cursor_methods_each": 9,
+    "reference": "docs/SKY_PRESET_GROUPS_477.json"
+  },
+  "sky_preset_rename_419": {
+    "existing_modifier_combinations": 880,
+    "existing_tools": 55,
+    "native_control": "Standard native text editing and buttons; Return/Escape in modal dialog. No alternate canvas/modifier action.",
+    "new_canvas_tool_or_cursor": false,
+    "passed": true,
+    "physical_pointer_check": false,
+    "reference": "docs/SKY_PRESET_RENAME_419.json"
+  },
+  "smart_filter_drag_414": {
+    "API": "SmartFilterStack.apiCapabilities.nativeDrag maps existing smartFilter.set complete target stack.",
+    "existing_canvas_combinations": 880,
+    "existing_canvas_policy_passed": true,
+    "existing_canvas_tools": 55,
+    "focused_passed": true,
+    "focused_test": "SmartFilterDragTests/testReorderNoopMalformedForeignLockedBudgetAndAllModifiers",
     "modifier_combinations": 16,
-    "scope_preserved": true
+    "physical_feedback_qualified": false,
+    "reference": "docs/SMART_FILTER_DRAG.md",
+    "remaining": "Actual pointer hit testing/target-row positioning/live modifier timing and full cross-layer move/cross-document/group/mask transfer remain open.",
+    "resolver": "SmartFilterDrag.operation(modifiers): Option copies; plain drag reorders within one stack. DropProposal copy/move/cancel and dispatched action use the same resolver; action captured before asynchronous data completion.",
+    "scope": "Panel drag/drop, not a new canvas EditorTool",
+    "source": "414Source02",
+    "step": 414
   },
-  "eraser_modes_456": {
-    "evidence": "docs/ERASER_MODES_456.json",
-    "native": "Brush/Pencil/16-pointBlockcursoruseeffectivecapturedmode;Optionunavailableuntilhistorysource; existingSpace/Hand/focusrestoration retained",
-    "tests": "All3modesx16modifierpolicy/cursorimages plus9existinglifecyclemethods passDebug andbothoptimizedarchitectures",
-    "API": "ToolCursorAPIeraserModesmetadata andbrush.eraserMode/state-schema",
-    "limits": "Actualphysicalcursorpixel/hardware/focus/60fps/fullPhotoshopcursor/defaultsremainunqualified"
+  "smart_filter_transfer_464": {
+    "impact": "No new canvas tool/global shortcut. Shared live Option copy/plain move drop proposal and captured dispatch,16modifier policy tests and all nine old cursor regressions. Physical drag feedback/hit-testing/default behavior remains unqualified.",
+    "native_live_qualified": false,
+    "reference": "docs/SMART_FILTER_TRANSFER_464.json"
   },
-  "focus_blend_modes_457": {
-    "evidence": "docs/FOCUS_BLEND_MODES_457.json",
-    "native": "No new tool/modifier/shortcut/cursor action. Selected mode captured with stroke; original Smudge Option Finger Painting and temporary Hand restoration retained.",
-    "tests": "All9existingToolCursor regressions and sevenModes/threeTools/all16modifier policy combinations pass Debug and both optimized architectures.",
-    "limits": "Physical cursor bounds/held key restoration/tablet/latency/60fps and full Photoshop defaults remain open."
+  "smart_object_layers_463": {
+    "impact": "No new tool/modifier/cursor/global shortcut. Existing factory Convert to Layers binding and native context menu; all nine cursor regression methods pass in the recorded continuation.",
+    "native_live_qualified": false,
+    "reference": "docs/SMART_OBJECT_CONVERT_TO_LAYERS_463.json"
   },
-  "content_aware_apply_458": {
-    "evidence": "docs/CONTENT_AWARE_APPLY_458.json",
-    "new_selection_action": "New/Add/Subtract/Intersect follow captured selectionMode; Shift Add/Option Subtract/both Intersect. Sampling Option reversal/previewArrow/temporaryHand unchanged.",
-    "tests": "All4modesx16modifier combinations/capture and9existingcursor methods pass Debug.",
-    "remaining": "Live workspace/heldkey/ready-state/input/VoiceOver/tablet/60fps/fullPhotoshop behavior unqualified."
+  "smart_object_refinement_467": {
+    "impact": "Existing workspace, Command-Option-R, brush/alternate/cursor policy retained. No new tool/global shortcut/alternate action; oldninecursor/priorWandmodifier regressions pass. Full physical/context matrix remains.",
+    "reference": "docs/SMART_OBJECT_REFINEMENT_467.json"
   },
-  "eyedropper_sampling_459": {
-    "reference": "docs/EYEDROPPER_SAMPLING_459.json",
-    "all16modifier_combinations": true,
-    "captured": "Target/settings captured untilrelease;Optionbackgroundbadge,ShiftunsupportedColorSampler\u2192unavailable;Control/Command no inventedaction.",
-    "lifecycle": "Tool/focus cancels;Escape guarded restore;spaceHand existingpriority.",
-    "qualification": "Selectednativeevent/45Debug+same45normal each;no live459/Photoshop glyph/hotspot/physical-platform/60fps claim."
+  "source_adjustment_step323": {
+    "api_impact": "Typed source adjustment schema/state/capabilities and existing create/set/apply; native74/Actions29.",
+    "cursor_cases_passed": 9,
+    "factory_fixture_or_shortcuts_changed": false,
+    "full_parity": false,
+    "menu_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "new_menu_shortcut_or_pointer_action": false,
+    "reference": "docs/SOURCE_ADJUSTMENT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T113014Z-323-source-adjustments/source05.json",
+    "step": 323
   },
+  "source_displacement_step322": {
+    "api_impact": "Source Displace settings/state/schema, native73/Actions28 and Photato-only native resource input.",
+    "cursor_cases_passed": 9,
+    "factory_fixture_or_shortcuts_changed": false,
+    "full_parity": false,
+    "menu_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "new_menu_shortcut_or_pointer_action": false,
+    "reference": "docs/SOURCE_DISPLACEMENT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T101134Z-322-source-displacement/source05.json",
+    "step": 322
+  },
+  "source_effects_step326": {
+    "cursor_cases_passed": 9,
+    "existing_factory_global_light_path_registered": true,
+    "factory_entries_or_shortcuts_changed": false,
+    "full_parity": false,
+    "menu_cases_passed": 9,
+    "native_visual_acceptance": false,
+    "new_custom_pointer_or_modifier_action": false,
+    "reference": "docs/SOURCE_LAYER_EFFECT_REFERENCES.json",
+    "source_manifest": "artifacts/runs/20261101T123053Z-324-source-layer-effects/source07.json"
+  },
+  "source_inputs": 2505,
+  "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+  "source_shape_context_step305": {
+    "full_parity": false,
+    "reference": "docs/PCRAFT_SHAPE_REFERENCES.json",
+    "status": "Source04 functional source-shape/native/API/Actions24 workflows pass;162/166 current focused cases pass with four strict cases/23 assertions. Existing52x16/nine cursor cases pass. New target reuses existing tools; no new shortcuts/cursor actions. Physical/full/Photoshop/source/capacity/platform gates remain open."
+  },
+  "stack_statistics_417": {
+    "existing_modifier_combinations": 880,
+    "existing_tools": 55,
+    "new_canvas_tool_or_cursor": false,
+    "passed": true,
+    "physical_pointer_check": false,
+    "reference": "docs/STACK_STATISTICS_417.json"
+  },
+  "status": "Existing implemented-action feedback qualified on arm64/macOS27 host; full Photoshop cursor/tool parity open",
+  "step": 283,
+  "style_presets_462": {
+    "impact": "No new canvas tool/modifier/cursor/global shortcut; Styles library selection uses native list semantics and Window>Styles factory binding. All nine cursor regressions selected.",
+    "native_live_qualified": false,
+    "reference": "docs/LAYER_STYLE_PRESETS_462.json"
+  },
+  "subject_options_415": {
+    "button": "Ordinary native Select Subject button, no alternate modifier action. Captures sampling only.",
+    "existing_combinations": 880,
+    "existing_tools": 55,
+    "focused_Debug_matrix_passed": true,
+    "new_canvas_tool_or_modifier": false,
+    "physical_pointer_check": false,
+    "reference": "docs/SUBJECT_OPTIONS_415.json"
+  },
+  "summary": "All52 current tools have shared live modifier cursor feedback, with832 tool/modifier combinations and captured gesture modes. All9 cursor tests and2849 full optimized tests pass on2505 frozen inputs; separate Preview283 is verified. Existing Photoshop modifier-action gaps, exact pointer preferences/hover and physical/platform qualification remain open.",
   "targeted_clipboard_460": {
     "evidence": "docs/TARGETED_CLIPBOARD_460.json",
     "impact": "No new tool, cursor, modifier or global shortcut. Existing menu/keyboard responder dispatch follows active auxiliary plane; all nine old cursor regressions pass. No Adobe cursor endpoint invented.",
     "native_live_qualified": false
   },
-  "channel_blending_461": {
-    "evidence": "docs/CHANNEL_BLENDING_461.json",
-    "impact": "No new tool, modifier, cursor or global shortcut. Existing Blending Options menu/context actions open native channel checkboxes; all nine cursor regressions pass in selected configurations.",
-    "native_live_qualified": false
+  "temporary_mask_channel_increment_398": {
+    "control": "Existing ChannelEyeControl/ChannelEyeButton; standard arrow, independent mask eyes and native sweep cancellation",
+    "modifier_policy": "Control/Command/Option/Shift combinations retain the ordinary eye action;16-combination native input tests added. No unobserved alternate eye action advertised.",
+    "new_canvas_tool": false,
+    "new_modifier_cursor_action": false,
+    "reference": "docs/TEMPORARY_MASK_CHANNELS_398.json",
+    "shortcut": "Unmodified backslash display toggle; native DocumentWorkspace first-responder guard keeps text/control input. Exact other factory mask shortcuts remain open.",
+    "status": "16new temporary-mask cases pass on both architectures within404affected; native focus/shortcut/eye workflow checked"
   },
-  "style_presets_462": {
-    "reference": "docs/LAYER_STYLE_PRESETS_462.json",
-    "impact": "No new canvas tool/modifier/cursor/global shortcut; Styles library selection uses native list semantics and Window>Styles factory binding. All nine cursor regressions selected.",
-    "native_live_qualified": false
+  "tests": [
+    {
+      "failures": 0,
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/focused06.log",
+      "seconds": 0.581,
+      "sha256": "58cbb741c9c6c3d48ad46e77edbe536b3b66dec36872cc26dbf639bfe9fb09d6",
+      "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+      "tests": 9
+    },
+    {
+      "failures": 0,
+      "log": "artifacts/runs/20261031T010106Z-283-tool-cursors/full01.log",
+      "seconds": 239.905,
+      "sha256": "bf892a9bfeb6c4ae1c227303fb95388ba3de5036550f241b3b07b18e38d62796",
+      "source_manifest": "artifacts/runs/20261031T010106Z-283-tool-cursors/source06.json",
+      "tests": 2849
+    }
+  ],
+  "transform_reference_429": {
+    "cursor": "Visible pivot scope cursor in all16modifiers. Captured reference drag retains action/cursor; Space before press Hand. Escape/focus/tool/session/owner/source/detach/deinit cleanup.",
+    "qualification": "Controlled native NSWindow events and owned offscreen capture; physical/live Photoshop visual/modifier equivalence open.",
+    "reference": "docs/TRANSFORM_REFERENCE_429.json",
+    "tests": [
+      "PhotoCraftAppTests.TransformReferenceTests/testAffineAndProjectiveCustomOriginsRetainTheirGeometryAndAnchorMath",
+      "PhotoCraftAppTests.TransformReferenceTests/testAPIReferenceMatchesNativeAndRejectsInvalidBusyStaleAndRevokedWorkspace",
+      "PhotoCraftAppTests.TransformReferenceTests/testContentAwareReadyPreviewSurvivesReferenceOnlyEditsAndOptionsFit",
+      "PhotoCraftAppTests.TransformReferenceTests/testEscapeFocusToolOwnerAndSourceChangesNeverRestoreOverOtherWork",
+      "PhotoCraftAppTests.TransformReferenceTests/testEveryExistingTargetUsesSharedMetadataWithoutPreviewOrDocumentChanges",
+      "PhotoCraftAppTests.TransformReferenceTests/testNativePivotDragAllSixteenModifiersKeepsCapturedCursorAndNoPixelHistory",
+      "PhotoCraftAppTests.TransformReferenceTests/testOutsidePivotNativeCommitMatchesExistingMatrixEngineWithUndoAtAllDepths"
+    ]
   },
-  "smart_object_layers_463": {
-    "reference": "docs/SMART_OBJECT_CONVERT_TO_LAYERS_463.json",
-    "impact": "No new tool/modifier/cursor/global shortcut. Existing factory Convert to Layers binding and native context menu; all nine cursor regression methods pass in the recorded continuation.",
-    "native_live_qualified": false
+  "typography_panels_437": {
+    "behavior": "No canvas tool or new modifier gesture. Existing panel controls/tab/drag system retained. Formatting preserves selected range; controls use native control/text cursors. Factory menu keys/order unchanged in selected independent menu regressions. Current880matrix notrerun; last436.",
+    "new_modifier_action": false,
+    "new_tool": false,
+    "physical_qualified": false,
+    "reference": "docs/TYPOGRAPHY_PANELS_437.json",
+    "step": 437
   },
-  "smart_filter_transfer_464": {
-    "reference": "docs/SMART_FILTER_TRANSFER_464.json",
-    "impact": "No new canvas tool/global shortcut. Shared live Option copy/plain move drop proposal and captured dispatch,16modifier policy tests and all nine old cursor regressions. Physical drag feedback/hit-testing/default behavior remains unqualified.",
-    "native_live_qualified": false
-  },
-  "magic_wand_sampling_465": {
-    "reference": "docs/MAGIC_WAND_SAMPLING_465.json",
-    "impact": "No new tool/global shortcut/alternate action. Existing W/Shift-W/modifier cursors retained; 16-modifier native dispatch and all nine old cursor methods pass. Physical gestures/defaults remain unqualified."
-  },
-  "selection_sources_466": {
-    "reference": "docs/SELECTION_SOURCE_POLICY_466.json",
-    "impact": "No new tool or alternate modifier action/global shortcut. W/Shift-W and existing pointer policy retained. Nine old cursor methods and prior465 modifier dispatch tests pass; physical/context/default matrix remains open."
-  },
-  "smart_object_refinement_467": {
-    "reference": "docs/SMART_OBJECT_REFINEMENT_467.json",
-    "impact": "Existing workspace, Command-Option-R, brush/alternate/cursor policy retained. No new tool/global shortcut/alternate action; oldninecursor/priorWandmodifier regressions pass. Full physical/context matrix remains."
-  },
-  "mask_filters_468": {
-    "reference": "docs/MASK_FILTER_TARGETS_468.json",
-    "impact": "Existing filter menus/dialogs, captured mask target and Repeat. No new tool/modifier/global shortcut; old nine cursor methods pass Debug/normal. Full physical/context matrix remains."
-  },
-  "large_channel_filters_469": {
-    "reference": "docs/CHANNEL_FILTER_CAPACITY_469.json",
-    "impact": "Existing native filter dialogs/Repeat now admit larger auxiliary targets. No new tool/modifier/global shortcut; old nine cursor methods pass. Full physical/context matrix remains."
-  },
-  "channel_separation_470": {
-    "reference": "docs/CHANNEL_SEPARATION_470.json",
-    "impact": "Existing Channels panel Split Channels action; no new tool/modifier/global shortcut. Oldninecursor methods pass Debug/normal botharchitectures. Full physical/context matrix remains."
-  },
-  "large_soft_proof_471": {
-    "reference": "docs/LARGE_SOFT_PROOF_471.json",
-    "impact": "Existing proof View menu/shortcuts and native image preparation. No new tool/modifier/globalshortcut; oldninecursor methods pass. Full physical/context matrix remains."
-  },
-  "image_stack_capacity_472": {
-    "evidence": "docs/PAGED_IMAGE_STATISTICS_472.json",
-    "impact": "Statistics preparation/source admission/bounded preview only; no new canvas tool, gesture, modifier, cursor or shortcut. Existing nine cursor regression methods pass; APIs share engine and explicit limits."
-  },
-  "pcraft_linked_originals_473": {
-    "evidence": "docs/PCRAFT_LINKED_ORIGINALS_473.json",
-    "impact": "Import/source recovery only; no new tool, gesture, modifier, cursor or shortcut. All nine existing cursor methods pass in source03; native/API source paths share preparation."
-  },
-  "openexr_474": {
-    "reference": "docs/OPENEXR_474.json",
-    "new_tools_or_modifier_actions": false,
-    "cursor_policy_changed": false,
-    "existing_cursor_tests_each_architecture": 9,
-    "native_API_impact": "File format/native Save control and transfer capability; no pointer-dispatched action added. Earlier modifier qualification remains."
-  },
-  "ai_results_475": {
-    "reference": "docs/AI_GENERATION_LIFECYCLE_475.json",
-    "new_tools_or_modifier_actions": false,
-    "cursor_policy_changed": false,
-    "optimized_cursor_methods_each_architecture": 9
-  },
-  "blank_video_layers_476": {
-    "reference": "docs/BLANK_VIDEO_LAYERS_476.json",
-    "new_tools_or_modifier_actions": false,
-    "cursor_policy_changed": false,
-    "existing_cursor_methods_each_architecture": 9,
-    "native_brush_gesture_frame_isolation_tested": true
-  },
-  "sky_preset_groups_477": {
-    "reference": "docs/SKY_PRESET_GROUPS_477.json",
-    "new_tools_or_modifiers": false,
-    "cursor_policy_unchanged": true,
-    "optimized_existing_cursor_methods_each": 9
-  },
-  "adjustment_brush_lookup_478": {
-    "reference": "docs/ADJUSTMENT_BRUSH_LOOKUP_478.json",
-    "new_pointer_tools_or_modifier_actions": false,
-    "cursor_policy_unchanged": true,
-    "optimized_existing_cursor_methods_each": 9,
-    "native_code_gesture_preview_cancel_commit_alternate_tested": true
-  },
-  "lookup_property_responsiveness_479": {
-    "reference": "docs/LOOKUP_PROPERTY_RESPONSIVENESS_479.json",
-    "factory_menus_shortcuts_unchanged": true,
-    "cursor_policy_unchanged": true,
-    "new_pointer_or_modifier_actions": false,
-    "selected_existing_menu_methods": 9,
-    "selected_existing_cursor_methods": 9,
-    "current_live_qualified": false
-  },
-  "independent_color_lookup_480": {
-    "step": 480,
-    "reference": "docs/INDEPENDENT_COLOR_LOOKUP_480.json",
-    "factory_menu_shortcut_cursor_policy_changed": false,
-    "menu_methods_pass_each": 9,
-    "cursor_methods_pass_each": 9,
-    "all16modifier_combinations_retained": true,
-    "live_current_Photato_UI_qualified": false
-  },
-  "archive_validation_481": {
-    "reference": "docs/ARCHIVE_VALIDATION_481.json",
-    "native_UI_menu_shortcut_cursor_policy_changed": false,
-    "selected_menu_methods_each_architecture": 9,
-    "selected_cursor_methods_each_architecture": 9,
-    "test_report_routing_only": true,
-    "current_native_live_UI_qualified": false
-  },
-  "inventory_reconciliation_482": {
-    "step": 482,
-    "application_build": 480,
-    "source": "tools03; unchanged native product inputs from481 captures",
-    "reference": "docs/INVENTORY_RECONCILIATION_482.json",
-    "software_changes": false,
-    "development_tooling_changes": true,
-    "status": "Menu inventory corrected from802to809 entries using unchanged-source481 ARM/Intel captures. Seven missing paths and88stale selector bindings reconciled; original801factory entries/102primary/8alternate keys retained. All37developer-tool tests pass,21new. Application build480; fullAUD01/Photoshop/workflow qualification remains open.",
-    "new_tool_tests": 21,
-    "combined_tool_tests": 37,
-    "new_native_tests": 0,
-    "new_native_tests_executed": false,
-    "full_package_closed": false,
-    "goal_complete": false,
-    "source_capture_step": 481,
-    "current_tools": 55,
-    "current_modifier_contexts": 880,
-    "original16combinations_each_retained": true,
-    "current_native_live_UI_qualified": false,
-    "historical_root_summary": "The root283qualification/52tools is a dated historical result; this482snapshot records the current source-matched55tool inventory without claiming new functionality or physical qualification."
-  },
-  "script_event_actions_483": {
-    "step": 483,
-    "application_build": 483,
-    "source": "source06/release02",
-    "reference": "docs/SCRIPT_EVENT_ACTIONS_483.json",
-    "software_changes": true,
-    "status": "Script Events Manager runs native Actions on New Document and Open Document, with persistent disabled-by-default registrations and separately permissioned API configuration. All58focused Debug and optimized checks perarchitecture pass,20new. Broader optimized checks pass128of129on each architecture; the old400vs422API failure also reproduces on480. Native NewDocument/automaticInvert/Undo/manager checks pass. Build483is a validation candidate; latest fully qualified selected universal remains480. FullAUT02andPhotoshopparity stay open.",
-    "normal_optimized_qualified": false,
-    "selected_event_workflow_qualified": true,
-    "focused_tests_each_architecture": 58,
-    "normal_selected_tests_each_architecture": 129,
-    "normal_passed_each_architecture": 128,
-    "new_correctness_methods": 20,
-    "full_package_closed": false,
-    "goal_complete": false,
-    "current_tools": 55,
-    "current_modifier_contexts": 880,
-    "cursor_policy_changed": false,
-    "nine_cursor_methods_pass_each_architecture": true,
-    "physical_cursor_qualification": false
-  },
-  "quick_mask_semantics_484": {
-    "step": 484,
-    "application_build": 484,
-    "source": "source04/release01",
-    "reference": "docs/QUICK_MASK_SEMANTICS_484.json",
-    "software_changes": true,
-    "status": "Quick Mask now preserves explicit full selections, starts Selected Areas without an overlay when no selection exists, and uses Photoshop editing-gray conventions in PSD/PSB. All64focused Debug tests and82selected optimized tests perarchitecture pass,17new. Seven owned Photoshop fixtures and81earlier auxiliary fixtures are checked. Native UI checks are partial: Fill remains in a modal loop inaccessible to the current automation binding. Build484is a validation candidate;480remains latest fully qualified selected universal. FullS05andPhotoshopparity remain open.",
-    "normal_selected_tests_each_architecture": 82,
-    "normal_passed_each_architecture": 82,
-    "focused_Debug_tests": 64,
-    "new_correctness_methods": 17,
-    "selected_optimized_gate_passed": true,
-    "selected_native_UI_qualified": false,
-    "full_package_closed": false,
-    "goal_complete": false,
-    "capture_snapshot": "artifacts/runs/20261107T234732Z-484-quick-mask-semantics/capture-inputs01.json",
-    "factory_menus_keys_cursor_policy_unchanged": true,
-    "main_tools": 55,
-    "modifier_contexts": 880
-  },
-  "sampled_hue_ranges_485": {
-    "step": 485,
-    "application_build": 485,
-    "source": "privateSource03/canonicalrelease01",
-    "reference": "docs/SAMPLED_HUE_RANGES_485.json",
-    "software_changes": true,
-    "status": "Photoshop sampled Hue/Saturation swatches now survive PSD/PSB/AHU and native92, appear in native Properties and share API settings/history. All68selected Debug and optimized checks perarchitecture pass,14new. All6528hue2recordbytes across threevariants match fourownedPhotoshopreferences. Nativeimport/orange+grayswatches/boundedit/UndoRedo/cleanup pass. Build485is a validation candidate;480remains latest fully qualified selected universal. FullA02/on-canvassampling and allpriorgaps remain open.",
-    "selected_optimized_gate_passed": true,
-    "selected_native_UI_qualified": true,
-    "focused_Debug_tests": 68,
-    "normal_selected_tests_each_architecture": 68,
-    "normal_passed_each_architecture": 68,
-    "new_correctness_methods": 14,
-    "full_package_closed": false,
-    "goal_complete": false,
-    "capture_snapshot": "artifacts/runs/20261108T012120Z-485-sampled-hue-ranges/capture-inputs01.json",
-    "factory_menus_keys_cursor_policy_unchanged": true,
-    "main_tools": 55,
-    "modifier_contexts": 880
-  },
-  "classic_RGB16_boundaries_486": {
-    "step": 486,
-    "application_build": 486,
-    "reference": "docs/CLASSIC_RGB16_BOUNDARIES_486.json",
-    "status": "Classic RGB16 Gradient Map now uses fused interpolation at linear boundaries. All 61 selected Debug checks pass. Optimized Apple Silicon passes 61/61 and translated Intel 60/61, including all three new methods on both. The remaining Intel Legacy vector170 failure also occurs on retained build485. All 2,359,872 independently read merged-reference bytes match across Debug, ARM and Intel. Native Reverse, Undo/Redo, 100% viewport, cleanup and universal package checks pass. Build486 is a validation candidate; build480 remains the latest fully qualified selected universal. Full A06, Smooth, the curved residual, RGB32 fills and earlier gaps remain open.",
-    "software_changes": true,
-    "selected_RGB16_fused_workflow_qualified_both_architectures": true,
-    "all_selected_optimized_passed": false,
-    "selected_native_UI_qualified": true,
-    "focused_Debug_tests": 61,
-    "normal_selected_tests_each_architecture": 61,
-    "normal_passed_each_architecture": [
-      61,
-      60
-    ],
-    "new_correctness_methods": 3,
-    "full_package_closed": false,
-    "goal_complete": false,
-    "capture_snapshot": "artifacts/runs/20261108T053250Z-486-classic-fused/capture-inputs01.json",
-    "factory_menus_keys_cursor_policy_unchanged": true,
-    "main_tools": 55,
-    "modifier_contexts": 880
-  }
+  "workspaces": [
+    {
+      "cursor_behavior": "Option swaps add/subtract, refine/erase or lasso modes using the same resolver as begin stroke.",
+      "name": "Select and Mask / Focus Area"
+    },
+    {
+      "cursor_behavior": "Option freeze/thaw, clockwise/counterclockwise twirl, pucker/bloat, lasso mask add/subtract; captured stroke state.",
+      "name": "Liquify"
+    },
+    {
+      "cursor_behavior": "Option XOR configured add mode; output preview arrow; Space/Hand panning.",
+      "name": "Content-Aware Fill"
+    },
+    {
+      "cursor_behavior": "Option mask add/subtract or Zoom Out; captured stroke mode; Space/Hand panning.",
+      "name": "Sky Replacement"
+    },
+    {
+      "cursor_behavior": "Option Stamp source sampling; gesture-latched sampling flag; native SwiftUI cursor region.",
+      "name": "Vanishing Point"
+    },
+    {
+      "cursor_behavior": "Option Path control-point addition; native SwiftUI cursor region.",
+      "name": "Blur Gallery"
+    },
+    {
+      "cursor_behavior": "Shift edge lock; native SwiftUI cursor region.",
+      "name": "Perspective Warp"
+    },
+    {
+      "cursor_behavior": "Shift axis constraint for new constraint; native SwiftUI cursor region.",
+      "name": "Adaptive Wide Angle"
+    },
+    {
+      "cursor_behavior": "Tool-specific pointers and open/closed Hand; no alternate modifier edit currently dispatched.",
+      "name": "Lens Correction"
+    },
+    {
+      "cursor_behavior": "Existing Command/Shift selection controls and native AppKit text/resize controls retain their standard pointer; no separate modifier tool action identified.",
+      "name": "Timeline and other panel controls"
+    }
+  ]
 }

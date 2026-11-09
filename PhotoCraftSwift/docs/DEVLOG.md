@@ -542,7 +542,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 521 | 2026-11-09 | [Sky preview containment and brush measurements](#dev-step-521) |
 | 522 | 2026-11-09 | [Masked adjustment preview performance](#dev-step-522) |
 | 523 | 2026-11-09 | [Retained layer-mask and Adjustment Brush previews](#dev-step-523) |
+| 524 | 2026-11-09 | [Selection borders and Canvas Size zoom](#dev-step-524) |
 <!-- history-index:end -->
+
+<a id="dev-step-524"></a>
+
+## 2026-11-09 — Move selection borders and retain Canvas Size zoom
+
+The user reported that completed elliptical selections could not be dragged or nudged, a new selection left the old outline visible until release, and Canvas Size changed zoom unexpectedly. Four regression methods reproduced all four on the previous behavior. Adobe's official help describes dragging inside New Selection, 1-pixel arrows, 10-pixel Shift-arrows and Shift-constrained dragging. Live Photoshop/Photato inspection was unavailable because this session exposes no approved native computer-use API.
+
+`SelectionBorderEditing.swift` adds a cancellable border draft and queued keyboard nudges. `CanvasView.swift` routes the gestures, cursor, Escape and lifecycle cleanup; a gesture token prevents stale releases from creating another selection. `SelectionAnts.swift` previews the translated contour and hides the old contour during replacement. Core `Selection.swift` copies integer-translation intersections byte for byte. `EditorStore.swift` and `CurvesControls.swift` guard pending interactions. `GeometrySheet.swift` preserves Canvas Size magnification/pan rather than fitting old dimensions. Existing API capabilities in `AutomationSelectionTransform.swift` and `AutomationGeometry.swift` document these behaviors; existing selection.transform/document.canvasSize commands, native format 92, Actions 61 and 271 typed operations are unchanged. Build metadata advances to 524.
+
+`SelectionInteractionTests.swift` delivers mouse/key events to test-owned AppKit views, covering movement, Undo/Redo, cursor/modifier changes, queued keys during preparation, cancellation/stale state, replacement/combination modes, Canvas Size anchors/backing scales and native/API/Actions/archive equality. `SelectionTranslationTests.swift` independently checks every grayscale byte across offsets and output dimensions. Existing ants and row/column fixtures now expect the requested replacement/hover behavior. Two stale inventory assertions (267 commands/55 tools) also fail on the retained optimized 523 binary; they now assert the unchanged published inventories of 271/56. Original fixture sources and failures are preserved. A later audit reconstructs some failed snapshots only where every byte matches the original frozen SHA256; no reconstructed source is substituted into the active build.
+
+Candidate01 and Candidate02 stopped at new-test compile errors. Candidate03 ran all 65 methods: 60 passed, including 11 of 13 new methods. Its new fixture mixed a manually set backing scale with the window's actual scale and applied initial selection-mode modifiers a second time to shape geometry; Candidate05 corrects those fixtures. It does not loosen pixel tolerances. Candidate04 then passed 64/65 and all 13 new methods; its one old hover fixture treated absent selection as selected because coverage defaults to one. Candidate05 corrects that predicate and passes all 65 selected methods, including all 13 new methods, in Debug and each normal optimized architecture. Both optimized configurations run identical ordered methods without omissions, extra methods, duplicates, skips or signals. Debug retains the documented compiler workaround; optimized builds do not use it.
+
+The first source-publication preparation stopped at the existing cursor audit because its JSON writer accepts new files only. The audit was updated, the partial stage retained, and the candidate restaged and rechecked as attempt02. No native input changed.
+
+Universal ARM/Intel minimum-macOS-14 metadata, signatures, production entitlements, complete payload/signing replay, model/license/provenance and extracted archive equality pass. This is a validation build. Hands-on UI inspection, physical Intel/macOS 14, physical frame rate and full regression are unverified. Committed off-canvas clipping, Space while creating a marquee and temporary Command pixel movement remain open. All 104 scopes, 652 identities, 81 major memberships, seven passes and previous failures remain; full Q03 and Photoshop parity are not closed. The repository diary is updated; standalone website promotion remains pending. No software release or App Store upload is made.
+
+[Evidence](SELECTION_INTERACTION_524.json) · [Source qualification](SOURCE_PUBLICATION_524.md)
 
 <a id="dev-step-523"></a>
 

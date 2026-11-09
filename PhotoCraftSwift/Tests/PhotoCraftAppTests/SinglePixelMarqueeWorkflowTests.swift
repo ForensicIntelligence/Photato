@@ -87,7 +87,7 @@ final class SinglePixelMarqueeWorkflowTests: XCTestCase {
           : IntRect(x: 2, y: 0, width: 1, height: 6)
         try Command.selectShape(.rectangle(rect), mode, false, 0).apply(to: &expected)
         XCTAssertEqual(store.document, expected, "\(tool) modifiers \(bits)")
-        XCTAssertEqual(canvas.toolCursor, .selection(symbol, .replace))
+        XCTAssertEqual(canvas.toolCursor, expected.selection != nil && expected.selectionCoverage(x:2,y:3) >= 0.5 ? .symbol("arrow.up.and.down.and.arrow.left.and.right") : .selection(symbol, .replace))
       }
     }
   }
@@ -173,6 +173,6 @@ final class SinglePixelMarqueeWorkflowTests: XCTestCase {
     XCTAssertTrue(store.chooseShortcut("m", cycle: true)); XCTAssertEqual(store.tool, .ellipticalMarquee)
     XCTAssertTrue(store.chooseShortcut("m", cycle: true)); XCTAssertEqual(store.tool, .marquee)
     XCTAssertTrue((ToolCursorAPI.capabilities["tools"] as? [String])?.contains(EditorTool.rowMarquee.id) == true)
-    XCTAssertEqual(EditorTool.allCases.count, 55)
+    XCTAssertEqual(EditorTool.allCases.count, 56)
   }
 }

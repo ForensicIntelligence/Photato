@@ -18,6 +18,7 @@ struct CanvasHost: NSViewRepresentable {
   func updateNSView(_ view: CraftCanvas, context: Context) {
     _ = store.eraserMode; _ = store.brushGesture?.eraserMode
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
+    _ = store.selectionBorderDrag
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
     _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
@@ -53,6 +54,8 @@ struct CanvasHost: NSViewRepresentable {
 }
 @MainActor final class CraftCanvas: ModifierCursorView {
   override func clearCursorInput() {
+    if selectionBorderGesture { start = nil; end = nil }; selectionBorderGesture = false
+    store.cancelSelectionBorderInteraction()
     if store.tool.singlePixelMarquee != nil { start = nil; end = nil; needsDisplay = true }
     store.cancelEyedropper()
     store.cancelRemoveGesture()
@@ -68,6 +71,9 @@ struct CanvasHost: NSViewRepresentable {
     if store.magneticDraft == nil {magneticPrecision=flags.contains(.capsLock)}
     if !flags.contains(.option) {store.magneticDraft?.alternateReady=true}
     super.updateCursorModifiers(flags)
+    if store.selectionBorderDrag != nil, let point = cursorDocumentPoint, cursorPointerDown {
+      store.updateSelectionBorderDrag(to: point, modifiers: flags); needsDisplay = true
+    }
     if store.tool == .magneticLasso {needsDisplay=true}
     if let original=transformStart,original.movingLayers,let start,let point=cursorDocumentPoint,cursorPointerDown{store.updateWholeLayerMove(original,from:start,to:point,modifiers:flags,zoom:Double(scale));needsDisplay=true}
     if let original=transformStart,original.movingPixels,let start,let point=cursorDocumentPoint,cursorPointerDown{store.updateSelectedPixelMove(original,from:start,to:point,modifiers:flags,zoom:Double(scale));needsDisplay=true}
@@ -111,6 +117,9 @@ struct CanvasHost: NSViewRepresentable {
       return ToolCursor.selectionTransform(mode,handle:handle,flags:cursorModifiers,proportional:draft.proportional)
     }
     if store.transformDraft != nil { return .symbol("arrow.up.and.down.and.arrow.left.and.right",ToolCursor.geometry(flags)) }
+    if store.selectionBorderDrag != nil || (!cursorPointerDown && start == nil && cursorDocumentPoint.map { store.canDragSelectionBorder(at: $0, modifiers: flags) } == true) {
+      return .symbol("arrow.up.and.down.and.arrow.left.and.right", flags.contains(.shift) ? .constrain : nil)
+    }
     let selection: SelectionMode
     if let capturedSelection = store.brushGesture?.selection?.mode {
       selection = capturedSelection
@@ -195,6 +204,7 @@ struct CanvasHost: NSViewRepresentable {
   var regionRetouchSelecting = false
   var lassoPoints: [SelectionPoint] = []
   var polygonPoints: [SelectionPoint] = []
+  var selectionBorderGesture = false
   var selectionDragMode = SelectionMode.replace
   var selectionStartModifiers: NSEvent.ModifierFlags = []
   var singlePixelMarqueeFeather = 0.0
@@ -215,7 +225,7 @@ struct CanvasHost: NSViewRepresentable {
     super.viewDidMoveToWindow()
     selectionAnts?.observeWindow()
     synchronizeFrameProbe()
-    if window == nil {if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil{store.cancelTransform()}; store.guideGesture=nil; drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
+    if window == nil {selectionBorderGesture = false; start = nil; end = nil; store.cancelSelectionBorderInteraction(); if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil{store.cancelTransform()}; store.guideGesture=nil; drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
     drawingFocusObservation = window.map { target in
       NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)
         .sink { [weak self, weak target] note in
@@ -232,6 +242,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
+    store.cancelSelectionBorderInteraction()
     pathTypePress=nil
     cancelTransformReference()
     gestureToolID = store.selectedTool.id
@@ -649,6 +660,7 @@ struct CanvasHost: NSViewRepresentable {
     if store.typeEditingDraft != nil, !store.finishType() { return }
     synchronizeTypeEditor()
     window?.makeFirstResponder(self)
+    if store.selectionBorderNudgeTask != nil { store.cancelSelectionBorderInteraction() }
     guard !store.geometryBusy else { return }
     if magneticDown(event) {return}
     if beginTransformReference(event) { return }
@@ -698,6 +710,9 @@ struct CanvasHost: NSViewRepresentable {
         transformHandle = inside ? -1 : 8
       }
       return
+    }
+    if !spaceHeld, store.beginSelectionBorderDrag(at: p, modifiers: event.modifierFlags) {
+      selectionBorderGesture = true; start = p; end = p; panningGesture = false; needsDisplay = true; return
     }
     if (store.tool == .magicWand || store.tool == .paintBucket) && !spaceHeld {
       store.colorRegionClick(at: PathPoint(p.x, p.y), modifiers: event.modifierFlags)
@@ -827,6 +842,9 @@ struct CanvasHost: NSViewRepresentable {
   }
   override func mouseDragged(with event: NSEvent) {
     cursorLocationInView = convert(event.locationInWindow,from:nil); updateCursorModifiers(event.modifierFlags)
+    if selectionBorderGesture {
+      store.updateSelectionBorderDrag(to: docPoint(event), modifiers: event.modifierFlags); needsDisplay = true; return
+    }
     if store.eyedropperGesture != nil {store.requestEyedropper(at:docPoint(event));needsDisplay=true;return}
     if dragTransformReference(event) { return }
     if store.artboardNeighborPress != nil { needsDisplay = true; return }
@@ -922,6 +940,11 @@ struct CanvasHost: NSViewRepresentable {
       patternDragStart = nil
       gradientDragStart = nil
       needsDisplay = true
+    }
+    if selectionBorderGesture {
+      selectionBorderGesture = false
+      store.updateSelectionBorderDrag(to: docPoint(event), modifiers: event.modifierFlags)
+      store.finishSelectionBorderDrag(); return
     }
     if store.tool == .magneticLasso,store.magneticDraft != nil,!panningGesture {return}
     if endPathTypePress(event){return}
@@ -1064,6 +1087,9 @@ struct CanvasHost: NSViewRepresentable {
   override func keyDown(with event: NSEvent) {
     updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
+    if event.keyCode == 53, selectionBorderGesture || store.selectionBorderNudgeTask != nil {
+      store.cancelSelectionBorderInteraction(); selectionBorderGesture = false; start = nil; end = nil; needsDisplay = true; return
+    }
     if event.keyCode == 53, store.eyedropperGesture != nil {store.cancelEyedropper(restore:true);needsDisplay=true;return}
     if event.keyCode == 53, transformReferenceGesture != nil { cancelTransformReference(); return }
     if store.transformDraft?.movingPixels == true || store.transformDraft?.movingLayers == true {if event.keyCode==53{store.cancelTransform()}else if [36,76].contains(event.keyCode){store.commitTransform()};return}
@@ -1195,6 +1221,7 @@ struct CanvasHost: NSViewRepresentable {
       default: break
       }
     }
+    if store.nudgeSelectionBorder(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     if store.nudgeSelectedPixels(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     if store.nudgeWholeLayers(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     guard !event.modifierFlags.contains(.command),
