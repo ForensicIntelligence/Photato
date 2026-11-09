@@ -1120,8 +1120,10 @@ public enum PSDCodec {
     try output.n(doc.width, 4)
     try output.n(depth, 2)
     try output.n(PSDModeStorage.code(doc.colorMode), 2)
+    // Photoshop requires HDR toning metadata for both RGB32 and Gray32 files.
+    // Retain the source block on re-export, as with existing RGB32 behavior.
     try output.section(
-      depth == 32 && doc.colorMode == .rgb
+      depth == 32 && (doc.colorMode == .rgb || doc.colorMode == .grayscale)
         ? (doc.sourceMetadata?["psdColorModeData"].flatMap { $0.isEmpty ? nil : $0 }
           ?? PSDColorMetadata.defaultHDRToning()) : Data())
     // Embed the actual working profile, independently of original-source provenance.

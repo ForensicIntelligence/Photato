@@ -1,3 +1,5 @@
+> Source checkpoint 511 repairs Gray32 PSD/PSB interoperability; 32 selected methods pass in each tested configuration. Earlier failures remain open. See SOURCE_PUBLICATION_511.md.
+
 > Source delivery 510 includes the native source and repository diary through checkpoint 510. Debug and optimized ARM pass 106/106 selected tests; translated Intel passes 105/106 with a confirmed unchanged baseline failure. All 14 new methods pass. See SOURCE_PUBLICATION_510.md.
 
 # Development log
@@ -525,7 +527,16 @@ For a readable account of the project from the beginning, see [Photato developme
 | 508 | 2026-11-08 | [AI, language and plugin acceptance](#dev-step-508) |
 | 509 | 2026-11-08 | [Plugin host requirements](#dev-step-509) |
 | 510 | 2026-11-08 | [Editable gradient profiles](#dev-step-510) |
+| 511 | 2026-11-08 | [Gray32 Photoshop file export](#dev-step-511) |
 <!-- history-index:end -->
+
+<a id="dev-step-511"></a>
+
+## 2026-11-08 — Gray32 Photoshop file export
+
+Gray32 PSD/PSB exports now retain or supply HDR toning metadata so Photoshop can open them. All 32 selected tests pass in Debug and each optimized architecture, including five new methods. The eight compression/container variants open in actual Photoshop. A separate 24-word merged-preview numerical gap remains; Merge Channels is still in progress.
+
+[Detailed checkpoint record](pending-updates/step511.md). [Source validation](SOURCE_PUBLICATION_511.md).
 
 <a id="dev-step-510"></a>
 

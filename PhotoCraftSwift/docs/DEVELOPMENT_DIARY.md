@@ -1,3 +1,11 @@
+## Source update — 8 November 2026, build 511
+
+Photoshop rejected our Gray32 PSD exports even though Photato could reopen them. The writer omitted HDR toning metadata for grayscale. That is fixed in the shared native and API export path.
+
+All 32 selected tests pass in Debug and both optimized architectures. Photoshop opens all eight tested PSD/PSB compression variants. A separate Float32 merged-preview difference remains. Merge Channels reference work is recorded, but that command is still in progress.
+
+[511 — Gray32 Photoshop file export](DEVLOG.md#dev-step-511) · [Validation and remaining work](SOURCE_PUBLICATION_511.md).
+
 ## Source update — 8 November 2026, build 510
 
 The diary now includes reviewed adjustment values, language/plugin audits and editable gradient profile conversion. The current workflow passes all14new tests in Debug and both optimized architectures, plus a native save/reopen check. The broader run has a known Intel failure, independently reproduced on public506; it remains required.
@@ -776,6 +784,31 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-07 | 484 | [Quick Mask selection semantics](#dev-step-484) |
 | 2026-11-07 | 485 | [Sampled Hue/Saturation ranges](#dev-step-485) |
 | 2026-11-07 | 486 | [Classic RGB16 gradient boundaries](#dev-step-486) |
+| 2026-11-08 | 487 | [Share the person-selection model](DEVLOG.md#dev-step-487) |
+| 2026-11-08 | 488 | [Image styles and canvas size](DEVLOG.md#dev-step-488) |
+| 2026-11-08 | 489 | [Native Remove tool](DEVLOG.md#dev-step-489) |
+| 2026-11-08 | 490 | [Generated backgrounds](DEVLOG.md#dev-step-490) |
+| 2026-11-08 | 491 | [Reference images for generation](DEVLOG.md#dev-step-491) |
+| 2026-11-08 | 492 | [Reviewed edit plans](DEVLOG.md#dev-step-492) |
+| 2026-11-08 | 493 | [Profile changes on large documents](DEVLOG.md#dev-step-493) |
+| 2026-11-08 | 494 | [Directory durability](DEVLOG.md#dev-step-494) |
+| 2026-11-08 | 495 | [Paged Warp](DEVLOG.md#dev-step-495) |
+| 2026-11-08 | 496 | [PSD vector path semantics](DEVLOG.md#dev-step-496) |
+| 2026-11-08 | 497 | [Untagged files and sandboxed copies](DEVLOG.md#dev-step-497) |
+| 2026-11-08 | 498 | [Large colour-mode files](DEVLOG.md#dev-step-498) |
+| 2026-11-08 | 499 | [Paths to Illustrator](DEVLOG.md#dev-step-499) |
+| 2026-11-08 | 500 | [Repair native asset export](DEVLOG.md#dev-step-500) |
+| 2026-11-08 | 501 | [Select People on large documents](DEVLOG.md#dev-step-501) |
+| 2026-11-08 | 502 | [Report Apple text-service availability](DEVLOG.md#dev-step-502) |
+| 2026-11-08 | 503 | [Review people before removal](DEVLOG.md#dev-step-503) |
+| 2026-11-08 | 504 | [Background generation on large documents](DEVLOG.md#dev-step-504) |
+| 2026-11-08 | 505 | [Edit a reference image](DEVLOG.md#dev-step-505) |
+| 2026-11-08 | 506 | [Local learned upscaling](DEVLOG.md#dev-step-506) |
+| 2026-11-08 | 507 | [Reviewed adjustment values](DEVLOG.md#dev-step-507) |
+| 2026-11-08 | 508 | [AI, language and plugin acceptance](DEVLOG.md#dev-step-508) |
+| 2026-11-08 | 509 | [Plugin host requirements](DEVLOG.md#dev-step-509) |
+| 2026-11-08 | 510 | [Editable gradient profiles](DEVLOG.md#dev-step-510) |
+| 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

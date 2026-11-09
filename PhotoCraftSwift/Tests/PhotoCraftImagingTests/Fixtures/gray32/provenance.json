@@ -1,0 +1,6 @@
+{
+  "reference": "photoshop-owned-gray32.psd",
+  "sha256": "18d62b7fcad63fd6e3e859786544e26f55d1847fe57d6a8471ce9c65335147b6",
+  "provenance": "Owned procedural 16x12 grayscale sample fixture. Opened in Adobe Photoshop 2026, converted from Gray16 to Gray32 using the native Image > Mode command, then saved as PSD. No Adobe implementation code, plug-in SDK, or proprietary input content was used.",
+  "reason": "Independent interoperable Gray32 PSD, including the 110-byte hdrt color-mode block. Before checkpoint511, the native Gray32 exporter emitted an empty color-mode block and Photoshop rejected the file."
+}

@@ -126,3 +126,7 @@ Adds local learned super-resolution, optional BSD-3 model preparation, native/AP
 ## 2026-11-08 — Native source checkpoint510
 
 Includes source and diary507–510, reviewed numeric edit plans, language/plugin acceptance audits and editable gradient/vector profile conversion. Original Rust source, all existing paths and Git history are preserved. The broader Intel profile failure reproduces unchanged on506; it is not marked passed. This is a free unfinished development alpha, with no binary or software release. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_510.md.
+
+## 2026-11-08 — Native source checkpoint 511
+
+Gray32 PSD/PSB HDR metadata interoperability repair, API coverage, owned fixture/provenance and diary. Original Rust files, paths and Git history remain. Focused32methods pass each tested configuration; numerical and broader acceptance gaps remain recorded. No binary upload or software release.
