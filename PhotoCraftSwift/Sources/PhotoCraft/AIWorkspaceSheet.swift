@@ -35,11 +35,17 @@ extension WorkspaceView {
       Text(
         store.imageGenerationIntent == .background
           ? "Create a background with Image Playground. Your selected masked layer stays unchanged above it."
-          : "Create an image with Image Playground and add it as a new image layer."
+          : store.imageGenerationTargetLayerID != nil ? "Create another variation for the selected generated layer." : "Create an image with Image Playground and add it as a new image layer."
       ).font(.callout).foregroundStyle(.secondary)
       Picker("Destination",selection:$store.imageGenerationIntent) {
         ForEach(ImageGenerationIntent.allCases,id:\.self) { Text($0.title).tag($0) }
       }.disabled(store.aiBusy)
+      if store.imageGenerationIntent == .image,let layer=store.activeLayer,GeneratedVariations.canAppend(layer,in:store.document) {
+        Picker("Result",selection:$store.imageGenerationTargetLayerID) {
+          Text("New layer").tag(nil as UUID?)
+          Text("Variation of selected layer").tag(Optional(layer.id))
+        }.disabled(store.aiBusy).accessibilityIdentifier("generatedVariations.destination")
+      }
       if store.imageGenerationIntent == .image {
         GroupBox("Reference image") {
           HStack(spacing: 12) {
@@ -128,6 +134,13 @@ extension WorkspaceView {
           SystemImagePlayground(store: store,job:job).frame(width: 700, height: 650)
         }
       }
+      .onAppear {
+        if let id=store.imageGenerationTargetLayerID,store.activeLayer?.id != id {store.imageGenerationTargetLayerID=nil}
+      }
+      .onChange(of:store.document.activeLayerID) { _,id in
+        if !store.aiBusy,store.imageGenerationTargetLayerID != id {store.imageGenerationTargetLayerID=nil}
+      }
+      .onChange(of:store.imageGenerationIntent) { _,intent in if intent != .image {store.imageGenerationTargetLayerID=nil} }
       .onChange(of:store.showImagePlayground) { _,visible in
         if !visible,let job=store.imageGenerationJob {store.imageSystemInterfaceDismissed(job.id)}
       }

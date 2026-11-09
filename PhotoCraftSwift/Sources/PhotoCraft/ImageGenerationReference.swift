@@ -97,7 +97,7 @@ struct ImageGenerationReference: Sendable {
   }
 
   static func record(in layer: Layer) throws -> ImageGenerationReferenceRecord? {
-    guard let bytes = layer.sourceTags?[recordKey] else { return nil }
+    guard let bytes = try layer.sourceTags?[recordKey] ?? GeneratedVariations.metadata(layer,key:recordKey) else { return nil }
     guard bytes.count <= 4096 else { throw CraftError.invalid("Image-reference metadata exceeds its limit.") }
     let record = try JSONDecoder().decode(ImageGenerationReferenceRecord.self, from: bytes)
     try record.validate(); return record

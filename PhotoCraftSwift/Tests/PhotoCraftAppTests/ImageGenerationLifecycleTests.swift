@@ -149,7 +149,7 @@ final class ImageGenerationLifecycleTests:XCTestCase {
     let json=AIImageAPI.record(r,layerID:layer.id),schema=AIImageAPI.recordSchema
     XCTAssertEqual(Set(json.keys),Set(try XCTUnwrap(schema["required"]as?[String])))
     XCTAssertTrue(json["modelIdentifier"]is NSNull);XCTAssertTrue(json["seed"]is NSNull);XCTAssertTrue(json["finalPrompt"]is NSNull)
-    XCTAssertEqual(json["providerAttested"]as?Bool,false);XCTAssertEqual(AutomationCommand.definitions.count,267)
+    XCTAssertEqual(json["providerAttested"]as?Bool,false);XCTAssertEqual(AutomationCommand.definitions.count,271)
     let state=AIImageAPI.state(s),properties=try XCTUnwrap(AIImageAPI.stateSchema["properties"]as?[String:Any]);XCTAssertTrue(Set(state.keys).isSubset(of:Set(properties.keys)))
   }
   @MainActor func testHTTPStatusRecordsOriginalAndCancelUseSameNativeJob()async throws {

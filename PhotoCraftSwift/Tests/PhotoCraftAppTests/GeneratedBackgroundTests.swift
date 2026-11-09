@@ -299,7 +299,7 @@ final class GeneratedBackgroundTests: XCTestCase {
       service.setDocumentTransfersEnabled(true)
       let original = try await h.request(service,path:"/v1/documents/\(share.id)/ai/results/\(try XCTUnwrap(job.resultLayerID))")
       XCTAssertEqual(original.0.statusCode,200); XCTAssertEqual(original.1,bytes)
-      XCTAssertEqual(AutomationCommand.definitions.count,267)
+      XCTAssertEqual(AutomationCommand.definitions.count,271)
     }
   }
   @MainActor func testNativeControllerReceivesCapturedSubjectAndBackgroundConcept() async throws {

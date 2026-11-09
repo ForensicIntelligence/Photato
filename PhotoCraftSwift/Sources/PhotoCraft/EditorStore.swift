@@ -515,6 +515,7 @@ import UniformTypeIdentifiers
   var textDraft = "Your words here"
   var fontSize: Double = 72
   var prompt = ""
+  var imageGenerationTargetLayerID:UUID?
   var imageGenerationIntent: ImageGenerationIntent = .image
   var imageReference: ImageGenerationReference?
   var imageReferenceUse: ImageReferenceUse = .inspiration

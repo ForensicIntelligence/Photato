@@ -119,7 +119,7 @@ extension WorkspaceView {
     VStack(alignment: .leading, spacing: 13) {
       if let layer = store.activeLayer {
         if (!store.editingMask || store.tool == .adjustmentBrush) && store.pathTarget != .vectorMask(layer.id) {
-          Label(layer.kindLabel.capitalized, systemImage: layerIcon(layer)).padding(.bottom, 2)
+          Label((layer.sourceTags?[GeneratedImageStorage.recordKey] != nil || layer.sourceTags?[GeneratedVariations.key] != nil) ? "Generative Layer":layer.kindLabel.capitalized, systemImage: layerIcon(layer)).padding(.bottom, 2)
           Divider()
           if !isAdjustment(layer) {
             DisclosureGroup("Transform") {
@@ -160,8 +160,11 @@ extension WorkspaceView {
               }.padding(.top, 9).disabled(store.editingComponent || store.document.isPositionLocked(layer.id))
             }.disclosureGroupStyle(ExpandedSectionStyle())
           }
+          if layer.sourceTags?[GeneratedImageStorage.recordKey] != nil || layer.sourceTags?[GeneratedVariations.key] != nil {
+            GeneratedVariationControls(store:store,layer:layer)
+          }
           if let source = layer.smartObject {
-            SmartObjectLayerCompControls(store: store, source: source)
+            if (try? GeneratedVariations.read(layer))==nil {SmartObjectLayerCompControls(store: store, source: source)}
             Text((source.linkedSource == nil ? "Embedded: ":"Linked: ") + source.fileName).font(.caption).lineLimit(2)
             Button("Edit Contents") { store.editSmartObjectContents() }.disabled(!store.canEditSmartObjectContents)
             Button("Replace Contents…") { store.placeEmbedded(replacing: true) }.disabled(!store.canEditSmartObject)

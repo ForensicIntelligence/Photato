@@ -87,7 +87,7 @@ enum GeneratedBackground {
   }
 
   static func record(_ layer: Layer) throws -> GeneratedBackgroundRecord? {
-    guard let data = layer.sourceTags?[contextKey] else { return nil }
+    guard let data = try layer.sourceTags?[contextKey] ?? GeneratedVariations.metadata(layer,key:contextKey) else { return nil }
     guard data.count <= 4096 else { throw CraftError.invalid("Generated-background metadata exceeds its limit.") }
     let record = try JSONDecoder().decode(GeneratedBackgroundRecord.self, from: data)
     try record.validate(); return record

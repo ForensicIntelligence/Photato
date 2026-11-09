@@ -6,7 +6,7 @@ import PhotoCraftCore
 
 /// Interactive system generation, distinct from resource-based Adobe services.
 enum AIImageAPI {
-  static let operations=["prepare","cancel","openSaved","trashSaved"]
+  static let operations=["prepare","cancel","openSaved","trashSaved","deleteVariation"]
   static func hasReference(_ value: AutomationValue?) -> Bool {
     guard let value else { return false }
     if case .null = value { return false }
@@ -50,7 +50,7 @@ enum AIImageAPI {
     let uuid:[String:Any]=["type":"string","format":"uuid"]
     let fields:[String:Any]=["id":uuid,"phase":["type":"string","enum":["preparingReference","awaitingSystem","preparing","completed","cancelled","stale","failed"]],
       "intent":["type":"string","enum":["image","background"]], "referenceUse":referenceUseSchema,
-      "foregroundLayerID":["anyOf":[uuid,["type":"null"]]],
+      "variationTargetLayerID":["anyOf":[uuid,["type":"null"]]],"foregroundLayerID":["anyOf":[uuid,["type":"null"]]],
       "importedReference":["anyOf":[referenceRecordSchema,["type":"null"]]],
       "referenceSize":["anyOf":[BrushAPI.object(["width":BrushAPI.number(1,2048,integer:true),"height":BrushAPI.number(1,2048,integer:true)],required:["width","height"]),["type":"null"]]],
       "initialPrompt":["type":"string","maxLength":1000],"sourceDocumentID":uuid,"sourceRevision":uuid,
@@ -63,15 +63,18 @@ enum AIImageAPI {
     let image = BrushAPI.object(["dataBase64":["type":"string","minLength":1,"maxLength":ImageGenerationReference.maximumBase64Characters]],required:["dataBase64"])
     let base: [String:Any] = ["operation":["const":"prepare"],"revision":["type":"string"],"prompt":["type":"string","minLength":1,"maxLength":1000]]
     var inspiration = base
+    inspiration["targetLayerID"] = VariablesAPI.nullableUUID
     inspiration["intent"] = ["const":"image","default":"image"]
     inspiration["referenceUse"] = ["const":"inspiration","default":"inspiration"]
     inspiration["reference"] = ["anyOf":[image,["type":"null"]]]
     var editing = base
+    editing["targetLayerID"] = VariablesAPI.nullableUUID
     editing["intent"] = ["const":"image","default":"image"]
     editing["referenceUse"] = ["const":"editExisting"]; editing["reference"] = image
     var background = base
     background["intent"] = ["const":"background"]; background["reference"] = ["type":"null"]
     return ["oneOf":[
+      BrushAPI.object(["operation":["const":"deleteVariation"],"revision":["type":"string"],"layerID":VariablesAPI.uuid,"variationID":VariablesAPI.uuid],required:["operation","revision","layerID","variationID"]),
       BrushAPI.object(["operation":["type":"string","enum":["openSaved","trashSaved"]],"revision":["type":"string"],"resultID":["type":"string","format":"uuid"]],required:["operation","revision","resultID"]),
       BrushAPI.object(inspiration,required:["operation","revision","prompt"]),
       BrushAPI.object(editing,required:["operation","revision","prompt","referenceUse","reference"]),
@@ -79,9 +82,9 @@ enum AIImageAPI {
       BrushAPI.object(["operation":["const":"cancel"],"revision":["type":"string"],"requestID":["type":"string","format":"uuid"]],required:["operation","revision","requestID"])]]
   }
   static var stateSchema:[String:Any] {
-    ["type":"object","additionalProperties":false,"required":["available","message","reason","textModel","requiresNativeApproval","canStart","busy","intent","referenceUse","referenceEditingSupported","reference","referenceImportRequestID","selectedReference","background","selectedBackground","promptRefinementRequestID","authorizedSavedResultIDs","resultLayerIDs","selectedResult","job"],
+    ["type":"object","additionalProperties":false,"required":["available","message","reason","textModel","requiresNativeApproval","canStart","busy","intent","variationTargetLayerID","selectedVariations","referenceUse","referenceEditingSupported","reference","referenceImportRequestID","selectedReference","background","selectedBackground","promptRefinementRequestID","authorizedSavedResultIDs","resultLayerIDs","selectedResult","job"],
      "properties":["available":["type":"boolean"],"message":["type":"string"],"reason":AICapabilityAPI.reasonSchema,"textModel":AICapabilityAPI.schema,"requiresNativeApproval":["const":true],"canStart":["type":"boolean"],"busy":["type":"boolean"],"promptRefinementRequestID":["anyOf":[["type":"string","format":"uuid"],["type":"null"]]],
-       "intent":["type":"string","enum":["image","background"]],
+       "intent":["type":"string","enum":["image","background"]],"variationTargetLayerID":VariablesAPI.nullableUUID,"selectedVariations":GeneratedVariationAPI.stateSchema,
        "referenceUse":referenceUseSchema, "referenceEditingSupported":BrushAPI.flag,
        "reference":["anyOf":[referenceRecordSchema,["type":"null"]]],
        "selectedReference":["anyOf":[referenceRecordSchema,["type":"null"]]],
@@ -99,7 +102,7 @@ enum AIImageAPI {
      "savedResults":"Accepted originals are atomically retained before source validation/preparation in a private local inbox, including stale/failed/cancelled placement. Global native Generated Results opens originals as separate unsaved documents and moves items to Trash. HTTP only accesses IDs authorized by this actual document/lifecycle session, never a global library or imported document UUID. openSaved requires transfers and idle document/lifecycle/share capacity; trashSaved requires local-saving permission. No model runs on reopen.",
      "inboxLimits":["maximumBytes":512*1024*1024,"maximumEntries":256,"maximumItemBytes":GeneratedResultInbox.archiveLimit,"automaticPurge":false],
      "controlSchema":controlSchema,"stateSchema":stateSchema,"recordSchema":recordSchema,"savedRecordSchema":savedRecordSchema,
-     "systemPresentation":presentationCapabilities,
+     "systemPresentation":presentationCapabilities,"variations":GeneratedVariationAPI.capabilities,
      "reference":["prepareField":"reference={dataBase64:...}; omitted or null clears the draft reference. Image intent also accepts referenceUse=inspiration(default) or editExisting. Editing requires nonnull reference bytes and eligible macOS27+AppleSilicon; unsupported editing rejects422without fallback. Background intent rejects an explicit referenceUse. No file paths or remote URLs accepted.",
        "referenceUseSchema":referenceUseSchema,"referenceEditingSupported":ImageReferenceUse.editingSupported,
        "nativeControl":"Use image as popup: Inspiration or Image to edit. The edit item is disabled without a reference or supported platform. Native Generate and APIprepare use the same captured request; HTTP still never starts a model.",
@@ -109,7 +112,7 @@ enum AIImageAPI {
        "input":"One still PNG/JPEG/TIFF/HEIC. A detached, orientation-corrected thumbnail is passed as the native system source image. Native Choose/Replace/Remove controls use the same decoder.",
        "authorization":"HTTP reference bytes require document transfers in addition to workspace panel changes and a real document window. Token/session/share/revision/permissions are rechecked after preparation. Native import and API prepare do not run a model.",
        "metadata":"The immutable request and placed layer keep the original input hash/type/size/dimensions, prepared dimensions and optional requestedUse=editExisting. Existing version1 inspiration records retain their original encoding. This is a requested initial strategy, not final-provider attestation. No local path or file name is stored. Reference original bytes are not embedded or returned; the original generated result remains in Generated Results independently. Recovery of that result alone does not restore reference context.",
-       "remaining":"The system UI can replace the supplied reference or edit other settings. Final reference identity and actual model input are not provider-attested. Multiple references, separate Style/Composition strength, identity guarantees, selection-directed editing, markup, variations and real output qualification remain open."],
+       "remaining":"The system UI can replace the supplied reference or edit other settings. Final reference identity and actual model input are not provider-attested. Multiple references, separate Style/Composition strength, identity guarantees, selection-directed editing, markup and real output qualification remain open; native stored variation sets are described separately."],
      "background":["intent":"background","defaultIntent":"image","placement":"Aspect-cover at canvas size, centered crop, below the captured masked foreground; source layers/pixels/mask properties and selection unchanged. One history transaction.",
        "source":"Existing visible root pixel layer with an enabled mask, without Smart Object/projective/clipping context. Use native Remove Background first. The selected masked subject is sent as a visual reference only after the native Generate action.",
        "referencePreparation":"Cancellable detached rendering/color conversion; maximum2048 per side and4194304 reference pixels. Existing admitted small documents retain their previous reference math. Newly admitted large documents use isolated paged composition and area reduction before profile conversion. Immutable job intent, source/foreground IDs and reference dimensions are observable.",
@@ -122,7 +125,7 @@ enum AIImageAPI {
      "originalStorageBytes":GenerationRecord.maximumOriginalBytes,"recordStorageBytes":GenerationRecord.maximumRecordBytes,
      "history":"One accepted result is one transaction with Undo/Redo: a new image layer, or a prepared background below the retained masked subject. Native archives keep original bytes/record, background placement context and edited pixels; reopening/inspection does not need a model. Ordinary non-native Save guards provenance loss; Copy/download emits derived output.",
      "originalDownload":"Requires document transfers. The bounded original is hash-verified off the main actor; source revision, session/token, transfer permission and sharing are rechecked before response.",
-     "limits":"Selected image-placement lifecycle supports still RGB8/16/32 documents; background intent adds the disclosed source-kind/canvas limits. Generative fill/expand/variation editing, general model/seed control, headless generation, actual provider output and full Photoshop/live/platform/performance equivalence remain open.",
+     "limits":"Selected image-placement lifecycle supports still RGB8/16/32 documents; background intent adds the disclosed source-kind/canvas limits. Generative fill/expand, general model/seed control, headless generation, actual provider output and full Photoshop/live/platform/performance equivalence remain open.",
      "adobe":"No corresponding interactive desktop lifecycle route is defined in the pinned Firefly v2 contract. No Adobe route or proprietary model identity/output equivalence is invented."]
   }
   static var backgroundRecordSchema:[String:Any] {
@@ -152,7 +155,7 @@ enum AIImageAPI {
   }
   @MainActor static func state(_ store:EditorStore)->[String:Any] {
     let capability=LocalAI.imageCapability
-    var result:[String:Any]=["available":capability.available,"message":capability.message,"reason":capability.reason.rawValue,"textModel":AICapabilityAPI.state(LocalAI.textCapability),"requiresNativeApproval":true,"canStart":capability.available && store.canStartSelectedImageGeneration,"busy":store.aiBusy,"intent":store.imageGenerationIntent.rawValue,
+    var result:[String:Any]=["available":capability.available,"message":capability.message,"reason":capability.reason.rawValue,"textModel":AICapabilityAPI.state(LocalAI.textCapability),"requiresNativeApproval":true,"canStart":capability.available && store.canStartSelectedImageGeneration,"busy":store.aiBusy,"intent":store.imageGenerationIntent.rawValue,"variationTargetLayerID":store.imageGenerationTargetLayerID?.uuidString as Any? ?? NSNull(),"selectedVariations":GeneratedVariationAPI.state(store.activeLayer),
       "referenceUse":(store.imageGenerationIntent == .image ? store.imageReferenceUse : .inspiration).rawValue,
       "referenceEditingSupported":ImageReferenceUse.editingSupported,
       "reference":store.imageReference.map { referenceRecord($0.record.recording(store.imageGenerationIntent == .image ? store.imageReferenceUse : .inspiration)) } as Any? ?? NSNull(),
@@ -160,13 +163,13 @@ enum AIImageAPI {
       "background":["eligibleForegroundLayerID":GeneratedBackground.foreground(in:store.document)?.id.uuidString as Any? ?? NSNull(),"canStart":capability.available && store.canStartBackgroundGeneration],
       "selectedBackground":NSNull(),"promptRefinementRequestID":store.promptRefinementID?.uuidString as Any? ?? NSNull(),
       "authorizedSavedResultIDs":store.authorizedGeneratedResults.filter{$0.value.documentID==store.document.id && $0.value.lifecycle==store.layerPanelGeneration}.keys.map(\.uuidString).sorted(),
-      "resultLayerIDs":store.document.layers.filter{$0.sourceTags?[GeneratedImageStorage.recordKey] != nil}.map{$0.id.uuidString},"selectedResult":NSNull(),"job":NSNull()]
+      "resultLayerIDs":store.document.layers.filter{$0.sourceTags?[GeneratedImageStorage.recordKey] != nil || $0.sourceTags?[GeneratedVariations.key] != nil}.map{$0.id.uuidString},"selectedResult":NSNull(),"job":NSNull()]
     if let layer=store.activeLayer,let r=try? GeneratedImageStorage.record(layer){result["selectedResult"]=record(r,layerID:layer.id)}
     if let layer=store.activeLayer,let context=try? GeneratedBackground.record(layer){result["selectedBackground"]=backgroundRecord(context)}
     if let layer=store.activeLayer,let reference=try? ImageGenerationReference.record(in:layer){result["selectedReference"]=referenceRecord(reference)}
     if let job=store.imageGenerationJob {
       result["job"]=["id":job.id.uuidString,"phase":job.phase.rawValue,"initialPrompt":job.initialPrompt,"sourceDocumentID":job.sourceDocumentID.uuidString,
-        "intent":job.intent.rawValue,"referenceUse":job.referenceUse.rawValue,"foregroundLayerID":job.foregroundLayerID?.uuidString as Any? ?? NSNull(),
+        "intent":job.intent.rawValue,"variationTargetLayerID":job.variationTargetLayerID?.uuidString as Any? ?? NSNull(),"referenceUse":job.referenceUse.rawValue,"foregroundLayerID":job.foregroundLayerID?.uuidString as Any? ?? NSNull(),
         "importedReference":job.importedReferenceRecord.map { referenceRecord($0) } as Any? ?? NSNull(),
         "referenceSize":job.referenceWidth.flatMap { width in job.referenceHeight.map { ["width":width,"height":$0] } } as Any? ?? NSNull(),
         "sourceCanvasSize":["width":job.sourceWidth,"height":job.sourceHeight],
@@ -184,7 +187,16 @@ extension AutomationService {
       case .string(let expected)=fields["revision"] else{throw AutomationFailure(status:400,message:"Expected strict AI operation, revision and parameters as JSON.")}
     let store=document.store
     guard expected==revision(store)else{throw AutomationFailure(status:409,message:"Stale revision. Refresh the AI document state.")}
-    if operation=="openSaved" || operation=="trashSaved" {
+    if operation=="deleteVariation" {
+      guard Set(fields.keys)==["operation","revision","layerID","variationID"],
+        case .string(let layerText)=fields["layerID"],let layerID=UUID(uuidString:layerText),
+        case .string(let variationText)=fields["variationID"],let variationID=UUID(uuidString:variationText) else{
+        throw AutomationFailure(status:400,message:"Delete requires layerID and variationID UUIDs and the current revision.")
+      }
+      _ = try await executePreparedResult(document:document,shareID:share.id,revision:expected,allowLinkedSmartObject:true) { original in
+        (try GeneratedVariations.deleting(variationID,from:layerID,in:original),true)
+      }
+    }else if operation=="openSaved" || operation=="trashSaved" {
       guard Set(fields.keys)==["operation","revision","resultID"],case .string(let raw)=fields["resultID"],let resultID=UUID(uuidString:raw)else{throw AutomationFailure(status:400,message:"Saved-result operations require a resultID UUID.")}
       let inbox=try authorizedAIInbox(resultID,store:store)
       if operation=="trashSaved" {
@@ -199,12 +211,19 @@ extension AutomationService {
         store.cancelImageGeneration(requestID)
       }
     }else{
-      guard Set(fields.keys).isSubset(of:["operation","revision","prompt","intent","reference","referenceUse"]),case .string(let raw)=fields["prompt"]else{throw AutomationFailure(status:400,message:"Prepare requires a prompt, current revision and optional intent/reference.")}
+      guard Set(fields.keys).isSubset(of:["operation","revision","prompt","intent","reference","referenceUse","targetLayerID"]),case .string(let raw)=fields["prompt"]else{throw AutomationFailure(status:400,message:"Prepare requires a prompt, current revision and optional intent/reference.")}
       let intent:ImageGenerationIntent
       if let value=fields["intent"] {
         guard case .string(let rawIntent)=value,let parsed=ImageGenerationIntent(rawValue:rawIntent)else{throw AutomationFailure(status:400,message:"intent must be image or background.")}
         intent=parsed
       }else{intent = .image}
+      let targetID:UUID?
+      if let value=fields["targetLayerID"] {
+        guard intent == .image else{throw AutomationFailure(status:400,message:"targetLayerID is only valid for image intent.")}
+        if case .null=value {targetID=nil}
+        else if case .string(let raw)=value,let id=UUID(uuidString:raw){targetID=id}
+        else{throw AutomationFailure(status:400,message:"targetLayerID must be a UUID or null.")}
+      }else{targetID=nil}
       let referenceUse: ImageReferenceUse
       if let value=fields["referenceUse"] {
         guard intent == .image, case .string(let rawUse)=value, let parsed=ImageReferenceUse(rawValue:rawUse) else {
@@ -217,6 +236,11 @@ extension AutomationService {
       guard document.windowForSheet != nil else{throw AutomationFailure(status:409,message:"Open this document in a desktop window before preparing interactive AI.")}
       guard intent != .background || store.canStartBackgroundGeneration else {
         throw AutomationFailure(status:409,message:"Select a visible masked pixel layer outside a group before preparing a generated background.")
+      }
+      if let targetID {
+        guard let layer=store.activeLayer,layer.id==targetID,GeneratedVariations.canAppend(layer,in:store.document) else{
+          throw AutomationFailure(status:409,message:"Select the unlocked generated layer before preparing a variation.")
+        }
       }
       let prompt: String
       do {prompt=try LocalAI.validatePrompt(raw)}catch{throw AutomationFailure(status:400,message:error.localizedDescription)}
@@ -248,7 +272,7 @@ extension AutomationService {
         try preflight(document)
       }
       store.prompt=prompt;store.imageReference=reference;store.imageReferenceUse=referenceUse
-      store.imageGenerationIntent=intent
+      store.imageGenerationIntent=intent;store.imageGenerationTargetLayerID=targetID
       store.aiError=nil;store.showAI=true
     }
     var response=AIImageAPI.state(store);response["revision"]=revision(store);return .json(response)

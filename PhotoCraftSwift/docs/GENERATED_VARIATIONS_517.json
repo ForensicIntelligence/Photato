@@ -1,0 +1,166 @@
+{
+  "Actions": 60,
+  "Photoshop_parity": false,
+  "all_selected_passed": true,
+  "canonical_history_pair_failed": true,
+  "excluded_generated_or_restricted_inputs": 13,
+  "failures_and_repairs": [
+    "Debug01: new harness called nonexistent invalidateRender; test compilation failed, zero tests ran. App compilation and retained stale test products do not qualify that source.",
+    "Debug02:50/52, all7new pass; two existing semantic command-count expectations267 disagreed with actual271, unchanged since512.",
+    "Source03: correct the two command counts to271, inherit inner named color space, refine native header/fallback controls, add synthetic live fixture and offline thumbnail test. Debug03:53/53, all8new pass.",
+    "Source04 adds the strict edited/HDR/alpha/transform/mask/opacity bitwise test only; no product input change from03. Debug04 and both optimized configurations54/54, all9new pass."
+  ],
+  "frozen_inputs": 7832,
+  "full_AI07_closed": false,
+  "full_suite_passed": false,
+  "included_distributable_inputs": 7819,
+  "native_UI": {
+    "actual_app_pid_not_recorded": true,
+    "actual_model_invoked": false,
+    "actual_process_absent": true,
+    "live_Photoshop_generative_comparison": false,
+    "normal_quit": true,
+    "observations": [
+      "Owned synthetic RGB16nativearchive openedwith3coloredvariationsinGenerativeLayerProperties",
+      "Selected1redand2blue;nativecanvas/prompt/thumbnailselectionchanged",
+      "Deleteinactive3removedgreenvisually;Undo restored3;Redo removedagain",
+      "SeparateNativeSaveAsSaved-Variations-517.photato;actualreopen2variations,selected2",
+      "Afterreopenchoose1thenUndo restored2;normalQuitprocesspathabsence",
+      "Generatebuttondisabledinactualcontext;chooser/deletion/Undo/save/reopenstillwork"
+    ],
+    "screenshot_available": true,
+    "source_input_pre_UI_hash_not_recorded": true,
+    "source_input_retained_separately": true,
+    "workflow_passed": true
+  },
+  "native_format": 92,
+  "new_methods": [
+    "PhotoCraftAppTests.GeneratedVariationTests/testAllRGBDepthsKeepAlternativesOriginalBytesExactPixelsHistoryAndOfflineArchive",
+    "PhotoCraftAppTests.GeneratedVariationTests/testAppendingIsolatesDuplicatedInstancesAndRetainsParentPresentation",
+    "PhotoCraftAppTests.GeneratedVariationTests/testDeleteSelectedInactiveAndLastVariationIsUndoableAndKeepsOtherOriginals",
+    "PhotoCraftAppTests.GeneratedVariationTests/testMalformedReplacedMissingOrLockedSourcesAndDuplicateResultsRejectAtomically",
+    "PhotoCraftAppTests.GeneratedVariationTests/testNativeImmutableVariationRequestCommitsOnceAndReopensWithoutModels",
+    "PhotoCraftAppTests.GeneratedVariationTests/testCancelledAndStaleVariationRequestsKeepInboxOriginalAndDoNotEditTarget",
+    "PhotoCraftAppTests.GeneratedVariationTests/testHTTPPrepareSelectionDeleteOriginalAndRevisionGuardsUseNativeBank",
+    "PhotoCraftAppTests.GeneratedVariationTests/testNativeOfflineChooserAndActualThumbnailPixelsRequireNoGenerationContext",
+    "PhotoCraftAppTests.GeneratedVariationTests/testRestoringEditedNonprimaryAlphaAndHDRWorkingPixelsKeepsEveryOutputBit"
+  ],
+  "next": {
+    "package": "SP01",
+    "pass": "major-stillneeded"
+  },
+  "original_scope": {
+    "all_original_acceptance_retained": true,
+    "commands": 652,
+    "major_memberships": 81,
+    "packages": 104,
+    "passes": 7
+  },
+  "originals_and_working_pixels": "Owned synthetic fixtures. All RGB depths preserve original bytes; selecting the initial variation restores every working Float32 output bit, including edited negative/HDR32 samples, fractional transform, mask, opacity and nonprimary alpha. This is native regression evidence, not Photoshop/provider pixel equivalence.",
+  "prior_failures_remain_required": true,
+  "public_references": [
+    "https://helpx.adobe.com/photoshop/desktop/generative-ai/generative-ai-features-overview.html",
+    "https://helpx.adobe.com/photoshop/desktop/generative-ai/get-new-variations-of-generated-content-with-generate-similar.html",
+    "https://www.adobe.com/learn/photoshop/web/the-unlock-add-to-a-scene-with-generative-fill"
+  ],
+  "recorded_utc": "2026-11-09T14:31:21.299023+00:00",
+  "remaining": [
+    "Actual Apple model/provider output, full model availability, provider identity, exposed seeds and final prompts remain unqualified; no synthetic fixture is described as actual provider output.",
+    "Native PSD generative-layer exchange, Generate Similar reference conditioning, Enhance Detail, votes and favorites remain missing.",
+    "Broad Edit Contents/Replace Contents invalidates the source-bound variation index; generic Smart Object controls remain available. Rasterize discards editable alternatives. Final-variation deletion retains the existing keep-at-least-one-layer rule.",
+    "Existing Smart Object 64 MiB encoded-source, 256 MiB owned-content and Layer Comp limits remain; no dense maximum-capacity claim.",
+    "Full AI07, all earlier numerical/crash failures, exact Photoshop defaults/output, full-suite acceptance, physical supported platforms and 60 fps remain open."
+  ],
+  "selected_methods": [
+    "PhotoCraftAppTests.GeneratedVariationTests/testAllRGBDepthsKeepAlternativesOriginalBytesExactPixelsHistoryAndOfflineArchive",
+    "PhotoCraftAppTests.GeneratedVariationTests/testAppendingIsolatesDuplicatedInstancesAndRetainsParentPresentation",
+    "PhotoCraftAppTests.GeneratedVariationTests/testDeleteSelectedInactiveAndLastVariationIsUndoableAndKeepsOtherOriginals",
+    "PhotoCraftAppTests.GeneratedVariationTests/testMalformedReplacedMissingOrLockedSourcesAndDuplicateResultsRejectAtomically",
+    "PhotoCraftAppTests.GeneratedVariationTests/testNativeImmutableVariationRequestCommitsOnceAndReopensWithoutModels",
+    "PhotoCraftAppTests.GeneratedVariationTests/testCancelledAndStaleVariationRequestsKeepInboxOriginalAndDoNotEditTarget",
+    "PhotoCraftAppTests.GeneratedVariationTests/testHTTPPrepareSelectionDeleteOriginalAndRevisionGuardsUseNativeBank",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testImmutablePromptAcceptedOriginalAllRGBDepthsUndoAndOfflineReopen",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testSourceEditAndUndoBackToOriginalStillRejectsOldRequest",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testCancelledAndDuplicateCallbacksDoNotReadOrChangeNewJob",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testCancelDuringPreparationAndOldCompletionCannotClearNewJob",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testConcurrentEditWhilePreparingRejectsResultWithoutNewHistory",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testCloseCancelsPendingJobAndLateCallbackIsIgnored",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testInvalidResultAndFileReadFailuresNeverChangeDocument",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testPromptRefinementDoesNotOverwriteEditedPromptOrSurviveCancel",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testMetadataOriginalIntegrityAndSchemasRejectTampering",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testHTTPStatusRecordsOriginalAndCancelUseSameNativeJob",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testHTTPPrepareRequiresPermissionWindowAndExplicitNativeApproval",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testSystemDismissDuringPreparationDoesNotCancelAcceptedResult",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testCallbackCopiesSystemResultBeforeTheTemporaryFileDisappears",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testCloseWaitingForRecoveryCancelsBeforeItCanAcceptAnImage",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testInvalidRefinementResponseReportsErrorAndKeepsTheDraft",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testHTTPCancelPromptRefinementUsesItsNativeRequestIdentity",
+    "PhotoCraftAppTests.ImageGenerationLifecycleTests/testPreparedMetadataSatisfiesCoreLayerAndNativeArchiveContracts",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testAtomicPersistenceSurvivesNewInstanceAndIdempotentQuota",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testConflictingRequestAndFailedAtomicWritePreserveExistingOriginal",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testCorruptVersionHashAndOversizeRemainVisibleWithoutHidingGoodResults",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testSymlinkRootAndItemDoNotReadOutsideInbox",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testExplicitTrashIsReversibleAndDoesNotPurgeOtherItems",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testStorageFailureKeepsSystemRequestAvailableForRetry",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testPreflightRejectsFullInboxBeforePresentingProvider",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testPreparationFailureAndCancelledPlacementRetainOriginalAcrossRestart",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testRecoveredOriginalCreatesSeparateUnsavedNativeDocumentWithoutModel",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testCloseDuringPreparationKeepsOriginalForOfflineRecovery",
+    "PhotoCraftAppTests.GeneratedResultInboxTests/testHTTPRecoveryScopesOriginalOpenTrashAndPermissionsToActualSession",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testAllRGBDepthsKeepSubjectMaskSelectionAndOriginalBytesWithOneUndo",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testExistingLayerHierarchyAndMaskPropertiesAreRetainedAndInvalidTargetsReject",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testReferenceCancellationCannotClearAReplacementJob",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testEditThenUndoDuringReferencePreparationStillRejectsOldSnapshot",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testCancellationDuringBackgroundPreparationKeepsAcceptedOriginalAndSource",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testChangedForegroundWhileBackgroundPreparesNeverPublishesResult",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testHTTPBackgroundPreparationRetainsNativeApprovalAndValidatesContext",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testHTTPStateSchemasAndOwnedResultShareNativeBackgroundHistory",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testNativeControllerReceivesCapturedSubjectAndBackgroundConcept",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testNativePreparationAndUnavailableProviderDoNotReadReferenceOrEdit",
+    "PhotoCraftAppTests.GeneratedBackgroundTests/testBackgroundStartsFromMaskTargetWithoutPaintingIntoIt",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testNativePropertiesSelectionAndHTTPUseIdenticalDocumentsAndHistory",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testSchemaInvalidBusyStaleAndNative80Negotiation",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testReopenedLinkedChoiceRequiresExistingAPIFileAuthorizationAndUnchangedOriginal",
+    "PhotoCraftAppTests.SmartObjectLayerCompWorkflowTests/testCancellationAndShareRevocationRejectAConfirmedLivePreparedEdit",
+    "PhotoCraftAITests.GenerationRecordTests/testBoundedRecordRoundTripDoesNotInventProviderFields",
+    "PhotoCraftAITests.GenerationRecordTests/testMalformedVersionPromptHashTypeAndBudgetsReject",
+    "PhotoCraftAppTests.GeneratedVariationTests/testNativeOfflineChooserAndActualThumbnailPixelsRequireNoGenerationContext",
+    "PhotoCraftAppTests.GeneratedVariationTests/testRestoringEditedNonprimaryAlphaAndHDRWorkingPixelsKeepsEveryOutputBit"
+  ],
+  "software_build": 517,
+  "software_release": false,
+  "source_variant": "Source04",
+  "standalone_website_promotion_pending": true,
+  "status": "Persistent generated-image variation workflow qualified; full AI07 remains open",
+  "step": 517,
+  "typed_commands": 271,
+  "universal_static": {
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "both_optional_models_and_provenance_verified": true,
+    "launched": false,
+    "minimum_system": "14.0",
+    "production_entitlements_unchanged": true,
+    "signature_payload_replay_and_extracted_content_verified": true
+  },
+  "validation": {
+    "Debug": {
+      "new_passed": 9,
+      "passed": 54,
+      "selected": 54
+    },
+    "optimizedARM": {
+      "new_passed": 9,
+      "passed": 54,
+      "selected": 54
+    },
+    "translatedIntel": {
+      "new_passed": 9,
+      "passed": 54,
+      "selected": 54
+    }
+  },
+  "workflow": "GENERATED_VARIATIONS.md"
+}

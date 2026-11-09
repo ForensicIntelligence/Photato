@@ -1,3 +1,9 @@
+## Source update — 9 November 2026 UTC, build 517
+
+Generated-image alternatives now remain in one native layer, with a Properties thumbnail chooser, deletion, Undo/Redo and offline save/reopen. All54 selected tests and9 new tests pass in Debug, optimized Apple Silicon and translated Intel. Actual native UI and universal static checks pass. Test images are owned synthetic fixtures; no actual provider generation or Photoshop-output equality is claimed. Full AI07 and prior failures remain open. Next: SP01 timeline/video, major stillneeded.
+
+[517 — Development record](DEVLOG.md#dev-step-517) · [Workflow/API](GENERATED_VARIATIONS.md) · [Qualification](SOURCE_PUBLICATION_517.md).
+
 ## Source update — 9 November 2026 UTC, build 516
 
 Editable RGB PSD/PSB artboards now retain geometry, backgrounds, presets, children, origins and scoped guides. Debug and optimized Apple Silicon pass 74/74 selected tests; translated Intel passes 73/74, with the same older nine-assertion paging failure reproduced on retained public515. All 11 new methods and exact owned Photoshop merged references pass in every configuration. Native save/reopen, Photoshop reopen and universal static checks pass. Full I04/L07, prior failures and full parity remain open.

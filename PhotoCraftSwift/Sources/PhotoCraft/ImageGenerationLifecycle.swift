@@ -11,6 +11,7 @@ import PhotoCraftImaging
   let id=UUID(),sourceDocumentID:UUID,sourceRevision:UUID,lifecycle:UUID
   let sourceWidth: Int, sourceHeight: Int
   let intent: ImageGenerationIntent
+  let variationTargetLayerID:UUID?
   let referenceUse: ImageReferenceUse
   let foregroundLayerID: UUID?
   var referenceImage: CGImage?
@@ -25,9 +26,10 @@ import PhotoCraftImaging
   var failure:String?
   var pending:Bool {phase == .preparingReference || phase == .awaitingSystem || phase == .preparing}
   init(source:CraftDocument,revision:UUID,lifecycle:UUID,prompt:String,processing:GenerationRecord.Processing,
-    intent: ImageGenerationIntent = .image, reference: ImageGenerationReference? = nil, referenceUse: ImageReferenceUse = .inspiration) {
+    intent: ImageGenerationIntent = .image, reference: ImageGenerationReference? = nil, referenceUse: ImageReferenceUse = .inspiration, variationTargetLayerID:UUID?=nil) {
     original=source;sourceDocumentID=source.id;sourceRevision=revision;self.lifecycle=lifecycle
     sourceWidth = source.width; sourceHeight = source.height
+    self.variationTargetLayerID=variationTargetLayerID
     self.intent = intent; foregroundLayerID = intent == .background ? source.activeLayerID : nil
     let imported = intent == .image ? reference : nil
     let use: ImageReferenceUse = intent == .image ? referenceUse : .inspiration
@@ -43,10 +45,12 @@ import PhotoCraftImaging
 enum GeneratedImageStorage {
   static let recordKey="PtAI",originalKey="PtAO"
   static func record(_ layer:Layer)throws->GenerationRecord? {
+    if layer.sourceTags?[GeneratedVariations.key] != nil {return try GeneratedVariations.selected(layer)?.record}
     guard let data=layer.sourceTags?[recordKey] else{return nil}
     return try GenerationRecord.decode(data)
   }
   static func original(_ layer:Layer)throws->(GenerationRecord,Data) {
+    if layer.sourceTags?[GeneratedVariations.key] != nil {return try GeneratedVariations.original(layer)}
     guard let record=try record(layer),let bytes=layer.sourceTags?[originalKey],
       bytes.count==record.originalByteCount,bytes.count<=GenerationRecord.maximumOriginalBytes,
       SHA256.hash(data:bytes).map({String(format:"%02x",$0)}).joined()==record.originalSHA256
@@ -121,11 +125,14 @@ extension EditorStore {
     imageGenerationContextAvailable && GeneratedBackground.foreground(in: document) != nil
   }
   var canStartSelectedImageGeneration: Bool {
-    imageGenerationIntent == .background ? canStartBackgroundGeneration : canStartImageGeneration
+    if imageGenerationIntent == .background {return imageGenerationTargetLayerID==nil && canStartBackgroundGeneration}
+    guard canStartImageGeneration else{return false}
+    guard let id=imageGenerationTargetLayerID else{return true}
+    return activeLayer.map{$0.id==id && GeneratedVariations.canAppend($0,in:document)} ?? false
   }
   func prepareBackgroundGeneration() {
     guard canStartBackgroundGeneration else { return }
-    imageGenerationIntent = .background; aiError = nil; showAI = true
+    imageGenerationTargetLayerID=nil;imageGenerationIntent = .background; aiError = nil; showAI = true
   }
   var canStartImageGeneration:Bool {
     imageGenerationContextAvailable && !editingMask
@@ -153,7 +160,7 @@ extension EditorStore {
     let major=ProcessInfo.processInfo.operatingSystemVersion.majorVersion
     let job=ImageGenerationJob(source:document,revision:sessionGeneration,lifecycle:layerPanelGeneration,prompt:input,
       processing:major>=27 ? .privateCloudCompute:major==26 ? .onDevice:.unknown,
-      intent: imageGenerationIntent, reference: imageReference, referenceUse: imageReferenceUse)
+      intent: imageGenerationIntent, reference: imageReference, referenceUse: imageReferenceUse,variationTargetLayerID:imageGenerationTargetLayerID)
     // Check record/space limits before invoking the system generation interface.
     let sizing=try GenerationRecord(requestID:job.id,sourceDocumentID:job.sourceDocumentID,sourceRevision:job.sourceRevision,
       initialPrompt:input,startedAt:job.startedAt,acceptedAt:job.startedAt,processing:job.processing,resultStyle:String(repeating:"x",count:256),
@@ -223,7 +230,7 @@ extension EditorStore {
     let initialPrompt=job.initialPrompt,revision=job.sourceRevision,id=job.id,start=job.startedAt,processing=job.processing
     job.phase = .preparing;showImagePlayground=false
     let prepare=imageGenerationPreparation,backgroundPrepare=backgroundGenerationPreparation
-    let intent=job.intent,foregroundID=job.foregroundLayerID,referenceRecord=job.importedReferenceRecord
+    let intent=job.intent,foregroundID=job.foregroundLayerID,referenceRecord=job.importedReferenceRecord,variationTarget=job.variationTargetLayerID
     aiTask=Task { [weak self,weak job] in
       guard !Task.isCancelled else{return}
       let worker=Task.detached(priority:.userInitiated) { () async throws -> (Layer,Command) in
@@ -234,6 +241,7 @@ extension EditorStore {
           return (layer,try GeneratedBackground.command(layer,source:source,foregroundID:foregroundID))
         }
         layer=try ImageGenerationReference.attach(referenceRecord, to: await prepare(bytes,source,id,revision,initialPrompt,start,acceptedAt,processing,resultStyle))
+        if let variationTarget {return try GeneratedVariations.appending(layer,to:variationTarget,in:source)}
         return (layer,.addLayer(layer))
       }
       do {
@@ -243,7 +251,7 @@ extension EditorStore {
         guard self.imageSourceStillMatches(job) else{self.endImageGeneration(job,phase:.stale,message:"The document changed. The original is saved in Generated Results; no image was added.");return}
         try self.executeEditorCommand(command)
         job.resultLayerID=layer.id;self.endImageGeneration(job,phase:.completed)
-        self.status=intent == .background ? "Background created with Image Playground"
+        self.status=variationTarget != nil ? "Generated variation added" : intent == .background ? "Background created with Image Playground"
           : job.referenceUse == .editExisting ? "Reference image edited with Image Playground" : "Created with Image Playground"
       }catch is CancellationError {
         if let self,let job,self.imageGenerationJob === job,job.pending {self.endImageGeneration(job,phase:.cancelled);self.status="Image generation cancelled"}

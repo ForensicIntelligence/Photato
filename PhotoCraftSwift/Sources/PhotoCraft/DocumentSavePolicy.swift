@@ -37,7 +37,7 @@ extension DocumentIO {
   static func persistenceIssue(_ document: CraftDocument, format: Format,
     options: RasterEncodingOptions = .init()) -> String? {
     if format == .native { return nil }
-    if document.layers.contains(where:{$0.sourceTags?[GeneratedImageStorage.recordKey] != nil || $0.sourceTags?[GeneratedImageStorage.originalKey] != nil}) {
+    if document.layers.contains(where:{$0.sourceTags?[GeneratedImageStorage.recordKey] != nil || $0.sourceTags?[GeneratedImageStorage.originalKey] != nil || $0.sourceTags?[GeneratedVariations.key] != nil}) {
       return "Save as Photato to retain generated-image records and original results. Use Save a Copy for other formats."
     }
     if format != .psd,format != .psb,document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) {
