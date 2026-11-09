@@ -8087,6 +8087,13 @@
       "link": "DEVLOG.md#dev-step-505",
       "section_sha256": "bc2f358ffbe30b77fb79f25c742afe1300e31e1a316b3002c896a616e6ed8940",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-506",
+      "title": "2026-11-08 \u2014 Local learned upscaling",
+      "link": "DEVLOG.md#dev-step-506",
+      "section_sha256": "8d62a1bfec09d56c671364c039f1572992ef97ac27888373b9a20d7092d6e419",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10618,8 +10625,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "63e1eb62ee6cf395a1f6b78d2d56edb0db2b20fd505adbb3eeffa1992422102d",
-      "bytes": 112871,
+      "sha256": "59ad6560c201cfddfcc153014257e973d2933113eeadad96022e0e6e50a71b22",
+      "bytes": 114069,
       "rolling_current_snapshot": false
     },
     {
@@ -10630,8 +10637,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "11df93d4374d7d038c98b768ced17082b2f4272e70910df7d3683cd76f7621dd",
-      "bytes": 113301,
+      "sha256": "712e699315006263c4a9642da821b9b059e552f52afc1058d150a19cf65ca34b",
+      "bytes": 113402,
       "rolling_current_snapshot": false
     },
     {
@@ -12814,8 +12821,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "fb30119bbd219e56a55baa72ad36032040bd53e49d992e67e474b2810825e728",
-      "bytes": 77850,
+      "sha256": "fa1288c3ac992f8b50a9d9bb5a66db60d607276330ef8260146b6167bb54700d",
+      "bytes": 78619,
       "rolling_current_snapshot": false
     },
     {
@@ -12856,14 +12863,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "71539fd86e9da426bd6420113d252010c8f46f26bf847a14b509a6b4dc4fe8c9",
-      "bytes": 800484,
+      "sha256": "ceb098c816d477f029767dfe431cc8c64719dcb8cc8c2dc86af06e4a4f7bde3c",
+      "bytes": 801256,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "9960f9b165d1a04373f4b8a06dc1c023da0f4a98e2c36879d5c844f614505e23",
-      "bytes": 4458658,
+      "sha256": "ecead83ff1b2dc6ffddb989797f52c804ce2a9906c2346e6ec90c841d9190eee",
+      "bytes": 4459493,
       "rolling_current_snapshot": false
     },
     {
@@ -15279,6 +15286,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/LOCAL_SUPER_RESOLUTION.md",
+      "sha256": "81d6568a391e28f1f0200b550c2eb1c7a1fa967cd898f91b3941476e40e0064b",
+      "bytes": 5456,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/LOOKUP_PROPERTY_RESPONSIVENESS.md",
       "sha256": "81bbb475d388c4833ebbef609ef33f963f79f3508ab59f09126791342ecb78a0",
       "bytes": 5344,
@@ -17181,6 +17194,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_506.md",
+      "sha256": "093641c462cd3c34188815e63e05ed5e5f83af4ba54bd4ba9d9219d464365719",
+      "bytes": 5553,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17355,6 +17374,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_506.json",
+      "sha256": "4678b9f7808e35c54009081edf9e9f8f15fbec0a9331ad496b8bc94da6775d34",
+      "bytes": 1147562,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17380,8 +17405,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "9e306e3d8e5dc8e6bec8012679fc9f578d028ea3aa68478656394d5797a0382f",
-      "bytes": 399214,
+      "sha256": "e7febf835f644a27f3fef693eac8358d347bfbf8dae22e82675962dd186731e8",
+      "bytes": 399315,
       "rolling_current_snapshot": false
     },
     {
@@ -19684,8 +19709,8 @@
     }
   ],
   "counts": {
-    "milestones": 505,
-    "evidence_files": 1511,
+    "milestones": 506,
+    "evidence_files": 1514,
     "logs": 0,
     "missing_explicit_references": 631
   }

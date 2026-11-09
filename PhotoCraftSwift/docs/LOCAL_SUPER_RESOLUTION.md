@@ -1,0 +1,27 @@
+# Local super-resolution
+
+Build 506 adds a learned upscaling workflow under Image > Generative Upscale. The existing Photoshop factory shortcut is Command-Option-Shift-U. Choose 2× or 4× and press Upscale. Work runs on the Mac through Core ML. Progress reports completed model tiles; Cancel stops at a prediction boundary. A separate unsaved document opens with the enlarged merged image. The original file, layers, selection and history stay unchanged.
+
+The provider is Real-ESRGAN general-x4v3, identified independently of Firefly and Topaz. It can synthesize detail and does not establish Photoshop output equality. The 4× network produces RGB; 2× uses area reduction of the learned 4× result. Transparency is enlarged independently with bilinear sampling. The output retains bit depth, working RGB profile and resolution. It is a derived merged document; source paths, channels, layer structures and temporal data are not copied into it.
+
+The current optional provider requires an Apple Silicon build on macOS 26 or later. Its converted model declares macOS 15 compatibility, but ordinary Photato editing still targets macOS 14+. It accepts still SDR RGB. Unsupported modes, HDR/out-of-gamut input, invalid geometry, model errors and storage limits reject without replacing the source or substituting an ordinary resize. Logical document dimensions, scratch storage and physical runtime are separate limits; no dense maximum-capacity or frame-rate claim is made.
+
+## Optional model in source builds
+
+Run `python3 scripts/prepare-upscale-model.py` before packaging an app. This build-time script obtains the pinned 2.2 MB Core ML model archive and compiles it with Xcode. It verifies existing resources rather than overwriting them. Generated model data can be omitted from ordinary builds; the native sheet explains that the provider is unavailable. Packaging copies the verified model, provenance and BSD-3 license. The shipped app executes native Swift and Apple Core ML: no Python, subprocess, external service, credential or runtime download.
+
+The model weights are from Xintao Wang's Real-ESRGAN project under BSD-3-Clause. The separately identified Core ML conversion comes from hanxiao/real-esrgan-coreml v1.0.0, source revision 15ab3bf80a577cecb93bb2b7ed48711ba7d894d5. Archive SHA-256: 41368af9dcbcc300c0fe0442202acbf98d30dc07c28d49bf656883f7fef3656a. Generated provenance records every compiled input hash. See LICENSE-RealESRGAN and ATTRIBUTION.md.
+
+## Optional Photato API
+
+The typed `document.upscale` command accepts an optional integer `scale` of 2 or 4, defaulting to 2, with the normal document revision. Document transfers must be enabled. It uses the same preparation as the native sheet, then returns 201 with a fresh shared document state. Source/session/token/sharing/transfer/lifecycle/capacity checks run again before the new document is registered. API progress and the current operation identity are exposed in document state under `upscale`.
+
+While the request is running, `document.upscale.cancel` accepts its exact `operationID` and current revision. A mismatched identity rejects. Cancellation and permission revocation cannot publish a late document. The command catalogue includes both operations, parameter schemas, output behavior, limits and model availability. This advances the typed command count to 269 without replacing any original identity. No matching generative upscale route or model exists in the pinned Photoshop v2 contract, so no Adobe endpoint is invented.
+
+## Qualification
+
+On current Source06, all 46 selected Debug methods and 19 archive-tool methods pass. Twelve new app tests include actual acquired-model Core ML CPU inference, all finite half words and SDR rounding boundaries. A separate Python reader matches all 145,600 analytical fixture bytes. Current native sandboxed photo upscaling, Save and normal Quit pass. Independent readers also match the complete photo raster descriptions and all 249 unique decoded image tiles between the earlier and repaired native builds. The earlier Source03 run separately checked offline reopen and cancellation of a running 4× request. These checks are scoped to their actual source variants and do not establish general photo quality or Photoshop output equality.
+
+The first two compile attempts failed before tests. The first optimized Intel build then exposed the Swift Float16 portability issue; its Apple Silicon sibling passed 45 methods. The portable EXR bridge repair passes current Debug tests. An archive-tool run also exposed an inherited path-alias guard failure; the helper now resolves its source root and all 19 tool cases pass. All failed attempts remain recorded. Optimized Source06 Apple Silicon and translated Intel each pass the same 46 methods, including all 12 new cases. Independent analytical captures match in each variant. The actual-model CPU capture matches Debug on optimized Apple Silicon; the optional provider is rejected on Intel. The unlaunched universal package passes macOS 14 slice metadata, signatures, unchanged production entitlements, both models/provenance, BSD license, full unsigned payload/signing replay and extracted ZIP checks.
+
+Exact provider/default/output equality, other Neural Filters, Harmonize, Actions multi-document transport, full physical-platform/performance and full AI06 acceptance remain open. This source snapshot includes build 506. No binary upload or software release is included.

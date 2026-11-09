@@ -85,6 +85,11 @@ import UniformTypeIdentifiers
   var showArtboardGuides = true
   var trimDraft: TrimDraft?
   @ObservationIgnored var canvasEdgePreparation: @Sendable (CraftDocument,CanvasEdgeOperation,Pixel) throws -> Command = {try CanvasEdgePreparation.command($0,operation:$1,background:$2)}
+  var upscaleDraft: UpscaleDraft?
+  var upscaleOperationID: UUID?
+  var upscaleProgress: LearnedUpscale.Progress?
+  @ObservationIgnored var upscaleUnavailableReason: @Sendable () -> String? = {LocalUpscaleProvider.unavailableReason}
+  @ObservationIgnored var upscalePreparation: UpscalePreparation = {source,scale,progress in try await LearnedUpscaleDocument.prepare(source,scale:scale,progress:progress)}
   var documentDuplicateDraft: DocumentDuplicateDraft?
   @ObservationIgnored var splitChannelsPreparation:@Sendable (CraftDocument,Data?) throws->PreparedChannelSeparation = {try ChannelSeparation.prepare($0,grayProfile:$1)}
   @ObservationIgnored var documentDuplicatePreparation: @Sendable (CraftDocument,String,Bool) throws -> CraftDocument = { try DocumentDuplicatePreparation.copy($0,name:$1,merged:$2) }

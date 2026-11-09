@@ -592,6 +592,9 @@
 				"$(SRCROOT)/Assets/GeneratedModels/",
 				"$(SRCROOT)/scripts/copy-people-model.sh",
 				"$(SRCROOT)/scripts/verify-people-model.py",
+				"$(SRCROOT)/scripts/copy-upscale-model.sh",
+				"$(SRCROOT)/scripts/verify-upscale-model.py",
+				"$(SRCROOT)/LICENSE-RealESRGAN",
 			);
 			name = "Copy optional person feature model";
 			outputFileListPaths = (
@@ -599,6 +602,9 @@
 			outputPaths = (
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/PeopleParts.mlmodelc",
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/PeopleParts.provenance.json",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/LocalUpscale.mlmodelc",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/LocalUpscale.provenance.json",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/LICENSE-RealESRGAN",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

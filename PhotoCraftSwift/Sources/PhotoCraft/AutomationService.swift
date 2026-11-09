@@ -362,6 +362,7 @@ import UniformTypeIdentifiers
       "rasterStorage": RasterStorageAPI.state(store.document),
       "canvasEdges":store.canvasEdgesState,
       "documentDuplicate":store.documentDuplicateState,
+      "upscale":UpscaleAPI.state(store),
       "channelSeparation":store.channelSeparationState,
       "flattenImage":store.flattenImageState,
       "layerMerge":store.layerMergeState,
@@ -784,6 +785,12 @@ import UniformTypeIdentifiers
       guard command.revision == revision(store) else {
         throw AutomationFailure(
           status: 409, message: "Stale revision. Refresh the document before retrying.")
+      }
+      if command.name == UpscaleAPI.cancel {
+        guard documentTransfersEnabled else {throw AutomationFailure(status:403,message:"Enable document transfers before cancelling an upscale operation.")}
+        let operation=try command.actionUUID("operationID")
+        guard store.upscaleOperationID == operation else {throw AutomationFailure(status:409,message:"That upscale operation is no longer active.")}
+        store.geometryTask?.cancel();return .json(["operationID":operation.uuidString,"cancellationRequested":true])
       }
       if command.name == "audio.import.cancel" {
         let operation=try command.actionUUID("operationID")
@@ -1352,6 +1359,7 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision,allowPathTarget:true){try prepare($0,operation,background)}
         return .json(state(share,document:document))
       }
+      if command.name == UpscaleAPI.name {return try await upscaleDocument(command,document:document,share:share)}
       if command.name == DocumentDuplicateAPI.name { return try await duplicateDocument(command,document:document,share:share) }
       if command.name == FlattenImageAPI.name {
         guard store.isCompositeColorTarget, !store.editingMask, !store.smartFilterMaskEditing else {throw AutomationFailure(status:422,message:"Choose the composite document target for Flatten Image.")}
@@ -1840,6 +1848,7 @@ import UniformTypeIdentifiers
       "patternLibrary":PatternLibraryAPI.capabilities,
       "canvasEdges":CanvasEdgesAPI.capabilities,
       "documentDuplicate":DocumentDuplicateAPI.capabilities,
+      "upscale":UpscaleAPI.capabilities,
       "flattenImage":FlattenImageAPI.capabilities,
       "layerMerge":LayerMergeAPI.capabilities,
       "emptyLayerDeletion":EmptyLayerDeletionAPI.capabilities,
@@ -1921,6 +1930,7 @@ import UniformTypeIdentifiers
         "crop":CropRequest.stateSchema,
         "canvasEdges":CanvasEdgesAPI.stateSchema,
         "documentDuplicate":DocumentDuplicateAPI.stateSchema,
+        "upscale":UpscaleAPI.stateSchema,
         "channelSeparation":ChannelSeparationAPI.stateSchema,
         "flattenImage":FlattenImageAPI.stateSchema,
         "layerMerge":LayerMergeAPI.stateSchema,

@@ -1,4 +1,4 @@
-> Source delivery 505 includes native source and the working diary through 505. The focused suite passes 81 methods per configuration, including all 20 new 504–505 tests. Full-suite qualification, Photoshop parity and canonical evidence/website promotion remain open; see SOURCE_PUBLICATION_505.md.
+> Source delivery 506 includes the current native source and repository diary. The same 7,742 inputs pass 46 selected methods per configuration, plus 19 archive-tool checks. Full-suite qualification, Photoshop parity and canonical evidence/standalone website promotion remain open; see SOURCE_PUBLICATION_506.md.
 
 # Development log
 
@@ -520,7 +520,16 @@ For a readable account of the project from the beginning, see [Photato developme
 | 503 | 2026-11-08 | [Review people before removal](#dev-step-503) |
 | 504 | 2026-11-08 | [Background generation on large documents](#dev-step-504) |
 | 505 | 2026-11-08 | [Edit a reference image](#dev-step-505) |
+| 506 | 2026-11-08 | [Local learned upscaling](#dev-step-506) |
 <!-- history-index:end -->
+
+<a id="dev-step-506"></a>
+
+## 2026-11-08 — Local learned upscaling
+
+Image > Generative Upscale now offers local Real-ESRGAN 2×/4× enlargement into a separate document, with native progress/cancellation and typed API create/cancel. All 46 selected methods pass in Debug, optimized Apple Silicon and translated Intel, including 12 new methods; 19 archive-tool checks pass, three new. Real native photo generation/save/normal Quit and universal static checks pass. Provider/default/output equality, full AI06, broad model quality, physical platforms and 60 fps remain open.
+
+[Detailed checkpoint record](pending-updates/step506.md). [Native workflow and API](LOCAL_SUPER_RESOLUTION.md). [Source qualification and remaining gaps](SOURCE_PUBLICATION_506.md).
 
 <a id="dev-step-505"></a>
 

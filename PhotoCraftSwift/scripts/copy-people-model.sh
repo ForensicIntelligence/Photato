@@ -12,3 +12,5 @@ else
   # Remove only this optional generated resource from a reused build product.
   rm -rf "$resources/PeopleParts.mlmodelc" "$resources/PeopleParts.provenance.json"
 fi
+
+"$project_root/scripts/copy-upscale-model.sh" "$project_root" "$resources"

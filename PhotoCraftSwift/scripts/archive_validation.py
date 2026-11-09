@@ -36,7 +36,7 @@ def input_manifest(root: Path) -> dict[str, str]:
         if base.is_dir():
             files.update(path for path in base.rglob("*") if path.is_file())
     for name in [".gitignore", "Package.swift", "Package.resolved", "project.yml", "LICENSE-MIT",
-                 "LICENSE-APACHE", "LICENSE-psd-tools", "NOTICE", "ATTRIBUTION.md",
+                 "LICENSE-APACHE", "LICENSE-psd-tools", "LICENSE-RealESRGAN", "NOTICE", "ATTRIBUTION.md",
                  "distribution/app-store/release-policy.json"]:
         path = root / name
         if path.is_file():
@@ -173,7 +173,7 @@ def verify_archive(archive: Path, root: Path, *, mode: str = "signed",
     require("Apple runtime dependencies", bool(dependencies) and all(
         item.startswith(("/System/Library/", "/usr/lib/", "@rpath/libswift")) for item in dependencies))
     resources = inside(archive, app / "Contents/Resources")
-    for name in ["LICENSE-MIT", "LICENSE-APACHE", "LICENSE-psd-tools", "NOTICE", "ATTRIBUTION.md",
+    for name in ["LICENSE-MIT", "LICENSE-APACHE", "LICENSE-psd-tools", "LICENSE-RealESRGAN", "NOTICE", "ATTRIBUTION.md",
                  "scripts/PrivacyInfo.xcprivacy", "scripts/ProjectLinks.json",
                  "Sources/PhotoCraftImaging/Resources/FactoryRGB8Gray20.zlib"]:
         reference, bundled = root / name, inside(archive, resources / Path(name).name)
@@ -193,6 +193,15 @@ def verify_archive(archive: Path, root: Path, *, mode: str = "signed",
         bundled_provenance = resources / original_provenance.name
         require("Optional model provenance retained", original_provenance.is_file() and bundled_provenance.is_file()
                 and digest(original_provenance) == digest(bundled_provenance))
+    upscale_model = root / "Assets/GeneratedModels/LocalUpscale.mlmodelc"
+    bundled_upscale = resources / "LocalUpscale.mlmodelc"
+    require("Optional upscale model presence matches inputs", upscale_model.is_dir() == bundled_upscale.is_dir())
+    if upscale_model.is_dir():
+        require("Optional upscale model bytes match inputs", payload_manifest(upscale_model) == payload_manifest(bundled_upscale))
+        upscale_provenance = upscale_model.parent / "LocalUpscale.provenance.json"
+        bundled_upscale_provenance = resources / upscale_provenance.name
+        require("Optional upscale provenance retained", upscale_provenance.is_file() and bundled_upscale_provenance.is_file()
+                and digest(upscale_provenance) == digest(bundled_upscale_provenance))
     expected_entitlements = plistlib.loads((root / "scripts/Photato-AppStore.entitlements").read_bytes())
     require("Source requests sandbox", expected_entitlements.get("com.apple.security.app-sandbox") is True)
     description = subprocess.run(["codesign", "-dv", "--verbose=4", str(app)], capture_output=True, text=True)

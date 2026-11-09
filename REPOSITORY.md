@@ -118,3 +118,7 @@ Adds the distributable source and developer records through 503 while preserving
 ## 2026-11-08 — Native build 505 source snapshot
 
 Adds large-document background references, explicit Apple reference-image editing and developer records through 505. Current focused checks pass 81 methods in each of three configurations. Original Rust files and Git history are preserved. This remains an unfinished development alpha; no binary or software release is included. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_505.md.
+
+## 2026-11-08 — Native build 506 source snapshot
+
+Adds local learned super-resolution, optional BSD-3 model preparation, native/API create/cancel and diary506. The same source passes 46 selected app methods in each of three configurations and 19 archive-tool checks. Original Rust files and existing paths/history remain. Generated models stay optional with pinned acquisition instructions. This is an unfinished development alpha; no binary or software release is included. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_506.md.

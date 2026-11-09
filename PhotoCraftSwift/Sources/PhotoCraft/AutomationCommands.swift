@@ -94,6 +94,7 @@ struct AutomationCommand: Sendable {
         if PeopleAPI.commands.contains(name) {properties[key]=PeopleAPI.schema(key);continue}
         if ObjectFinderAPI.commands.contains(name) {properties[key]=ObjectFinderAPI.schema(key);continue}
         if CanvasEdgesAPI.commands.contains(name){properties[key]=CanvasEdgesAPI.schema(key);continue}
+        if UpscaleAPI.commands.contains(name) {properties[key]=UpscaleAPI.schema(key);continue}
         if name == DocumentDuplicateAPI.name {properties[key]=DocumentDuplicateAPI.schema(key);continue}
         if name == FlattenImageAPI.name {properties[key]=BrushAPI.flag;continue}
         if BackgroundLayerAPI.commands.contains(name){properties[key]=BackgroundLayerAPI.schema(key);continue}
@@ -307,6 +308,8 @@ struct AutomationCommand: Sendable {
     .init(name: "clipboard.paste", parameters: ["payloadBase64": "Native clipboard bytes", "placement": "Paste placement", "center": "Optional document-pixel center", "colorDecision": "convertAppearance or preserveNumbers", "target":"Explicit scalar channel/mask target"], description: "Paste an explicit payload through the shared native mode/profile/history path.", optionalParameters: ["placement", "center", "colorDecision", "target"]),
     .init(name:"document.trim",parameters:["basis":"transparent,topLeft,bottomRight", "top":"Trim top", "left":"Trim left", "bottom":"Trim bottom", "right":"Trim right"],description:"Trim document edges through shared native compositor/geometry and one Undo.",optionalParameters:["basis","top","left","bottom","right"]),
     .init(name:"document.revealAll",parameters:["backgroundColor":"Optional opaque Background extension RGB"],description:"Expand canvas to retained layer content without resampling the layer pixels.",optionalParameters:["backgroundColor"]),
+    .init(name:UpscaleAPI.name,parameters:["scale":"2 or 4; defaults to 2"],description:"Create a new merged document using the optional local learned super-resolution provider. Requires document transfers.",optionalParameters:["scale"]),
+    .init(name:UpscaleAPI.cancel,parameters:["operationID":"Exact running upscale operation UUID"],description:"Cancel an active native/API upscale operation without changing the source."),
     .init(name:"document.duplicate",parameters:["name":"Optional copy name", "merged":"Duplicate merged visible layers only"],description:"Create an independent new shared document; requires document transfers. Source history is unchanged.",optionalParameters:["name","merged"]),
     .init(name: "clipboard.newDocument", parameters: ["payloadBase64": "Native clipboard bytes", "name": "Optional new document name"], description: "Create a new shared document from a native clipboard payload; requires document transfers.", optionalParameters: ["name"]),
     .init(name: "document.resize", parameters: ["width": "Pixel width", "height": "Pixel height", "resolution": "Pixels per inch", "method": "Resampling method"], description: "Resize the document through native Image Size and history.", optionalParameters: ["resolution", "method"]),

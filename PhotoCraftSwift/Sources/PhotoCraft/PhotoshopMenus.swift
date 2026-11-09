@@ -194,6 +194,7 @@ import PhotoCraftCore
       "Image > Auto Contrast": #selector(autoContrast),
       "Image > Auto Color": #selector(autoColor),
       "Image > Image Size…": #selector(imageSize),
+      "Image > Generative Upscale…": #selector(generativeUpscale),
       "Image > Canvas Size…": #selector(canvasSize),
       "Image > Crop": #selector(crop),
       "Layer > New > Layer…": #selector(newLayer),

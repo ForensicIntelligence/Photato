@@ -174,3 +174,8 @@ The test-only `Tests/PhotoCraftImagingTests/Fixtures/GlobalLight/ag-psd-shadow.l
 ## Standard selection-transfer calibration
 
 Photato's generated standard RGB8-to-gray selection table is numerical calibration data from owned, programmatically generated reference images processed through the ordinary Photoshop2026 UI. Every RGB8 value was measured, and embedded/untagged and repeated-color checks are retained locally. Only scalar coverage data is included, without vendor artwork, ICC binary/text tags or executable code. The independently framed gray working profile uses recorded numerical tone-response metadata from an owned standard-format output. The Swift implementation and generated calibration artifact are distributed under this project's MIT OR Apache-2.0 terms; Photoshop itself is not distributed or required at runtime. See [the provenance and qualification record](docs/SELECTION_LUMINOSITY.md).
+
+
+## Optional local super-resolution
+
+Real-ESRGAN, copyright 2021 Xintao Wang, is BSD-3-Clause; see LICENSE-RealESRGAN. The optional realesr-general-x4v3 weights are obtained as a pinned Core ML conversion from hanxiao/real-esrgan-coreml release v1.0.0, conversion source 15ab3bf80a577cecb93bb2b7ed48711ba7d894d5. Model preparation records the source archive and compiled-file hashes. No upstream Python implementation runs in the shipped app. Ordinary builds can omit generated model files; prepare them with scripts/prepare-upscale-model.py. The local provider is independently identified and does not reproduce Adobe/Topaz models or guarantee their output.

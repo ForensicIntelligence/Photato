@@ -64,6 +64,12 @@ struct WorkspaceView: View {
         }.padding(10).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8)).padding(12)
       }
     }
+    .overlay(alignment:.bottom) {
+      if store.upscaleOperationID != nil && store.upscaleDraft == nil {
+        HStack {UpscaleProgressControl(progress:store.upscaleProgress);Button("Cancel") {store.geometryTask?.cancel()}}
+          .padding(12).background(.regularMaterial).padding(12)
+      }
+    }
     .background(StudioTheme.chrome).tint(StudioTheme.accent).preferredColorScheme(.dark)
     .alert(
       "Photato",
@@ -81,6 +87,7 @@ struct WorkspaceView: View {
       Text(store.error ?? store.workspaceLibrary.error ?? "")
     }
     .sheet(isPresented: $store.showAI) { aiSheet }
+    .sheet(item:$store.upscaleDraft,onDismiss:{if store.upscaleOperationID != nil {store.geometryTask?.cancel()}}) {GenerativeUpscaleSheet(store:store,draft:$0)}
     .sheet(item: $store.layerProtectionDraft) { draft in
       LayerProtectionSheet(store: store, draft: draft)
     }

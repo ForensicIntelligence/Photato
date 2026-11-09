@@ -46,6 +46,7 @@ def xctest_result(text: str, expected: list[str]) -> dict:
 
 
 def output_path(root: Path, destination: Path) -> Path:
+    root = root.resolve()
     destination = destination.absolute()
     if destination.exists() or destination.is_symlink():
         raise ArchiveError("Output already exists; choose a new directory. No files were removed.")

@@ -449,6 +449,7 @@ import SwiftUI
       return store?.canTransformActiveLayer == true
     }
     if item.action == #selector(findReplaceText) { return store?.canBeginTextFind == true }
+    if item.action == #selector(generativeUpscale) {return store?.canBeginUpscale == true}
     if item.action == #selector(fitImage) { return store?.canBeginFitImage == true }
     if item.action == #selector(rulers) { item.state = store?.showRulers == true ? .on : .off }
     if [

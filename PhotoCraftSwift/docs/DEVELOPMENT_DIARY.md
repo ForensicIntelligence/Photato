@@ -1,3 +1,13 @@
+## Source update — 8 November 2026, build 506
+
+Photato now has a local learned upscaling workflow. Image > Generative Upscale creates a separate 2× or 4× document using an optional BSD-licensed Real-ESRGAN model. The original stays unchanged. Native progress, cancellation and API create/cancel share the same preparation.
+
+All 46 selected methods pass in Debug, optimized Apple Silicon and translated Intel; 19 archive-tool checks pass. The diary includes the failed compiles, Intel half-precision repair and inherited archive path-guard correction. This remains an unfinished development alpha.
+
+- [506 — Local learned upscaling](DEVLOG.md#dev-step-506)
+- [Workflow and API](LOCAL_SUPER_RESOLUTION.md)
+- [Validation and remaining gaps](SOURCE_PUBLICATION_506.md)
+
 ## Source update — 8 November 2026, build 505
 
 Generated backgrounds now prepare bounded references from larger masked subjects. The image workspace also offers an explicit request to edit a reference image on eligible Apple Silicon Macs running macOS 27 or later. Ordinary editing still targets macOS 14+.

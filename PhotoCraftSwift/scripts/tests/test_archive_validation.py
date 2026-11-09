@@ -30,7 +30,7 @@ class ArchiveValidationTests(unittest.TestCase):
             cls.output = Path(tempfile.mkdtemp(prefix="photato-archive-tests-"))
         cls.source = cls.output / "source"
         cls.source.mkdir()
-        for name in ["LICENSE-MIT", "LICENSE-APACHE", "LICENSE-psd-tools", "NOTICE", "ATTRIBUTION.md",
+        for name in ["LICENSE-MIT", "LICENSE-APACHE", "LICENSE-psd-tools", "LICENSE-RealESRGAN", "NOTICE", "ATTRIBUTION.md",
                      "scripts/Info.plist", "scripts/PrivacyInfo.xcprivacy", "scripts/ProjectLinks.json",
                      "scripts/Photato-AppStore.entitlements", "distribution/app-store/release-policy.json",
                      "Sources/PhotoCraftImaging/Resources/FactoryRGB8Gray20.zlib"]:
@@ -90,6 +90,43 @@ class ArchiveValidationTests(unittest.TestCase):
         destination = self.case / "source"
         shutil.copytree(self.source, destination)
         return destination
+
+    def upscale_fixture(self):
+        source, archive = self.copied_source(), self.archive()
+        model = source / "Assets/GeneratedModels/LocalUpscale.mlmodelc"
+        model.mkdir(parents=True)
+        (model / "model.mil").write_bytes(b"owned synthetic archive-resource fixture; not a learned model")
+        provenance = model.parent / "LocalUpscale.provenance.json"
+        provenance.write_text('{"ownedArchiveFixture":true}\n')
+        resources = archive / "Products/Applications/Photato.app/Contents/Resources"
+        shutil.copytree(model, resources / model.name)
+        shutil.copy2(provenance, resources / provenance.name)
+        return source, archive, resources
+
+    def test_optional_upscale_model_is_source_bound_and_missing_data_rejects(self):
+        source, archive, resources = self.upscale_fixture()
+        self.assertTrue(verify_archive(archive, source, mode="ci-unsigned")["passed"])
+        shutil.rmtree(resources / "LocalUpscale.mlmodelc")
+        with self.assertRaisesRegex(ArchiveError, "upscale model presence"):
+            verify_archive(archive, source, mode="ci-unsigned")
+        self.assertTrue((source / "Assets/GeneratedModels/LocalUpscale.mlmodelc/model.mil").is_file())
+
+    def test_changed_upscale_model_and_provenance_reject(self):
+        source, archive, resources = self.upscale_fixture()
+        original = (resources / "LocalUpscale.mlmodelc/model.mil").read_bytes()
+        (resources / "LocalUpscale.mlmodelc/model.mil").write_bytes(b"changed model")
+        with self.assertRaisesRegex(ArchiveError, "upscale model bytes"):
+            verify_archive(archive, source, mode="ci-unsigned")
+        (resources / "LocalUpscale.mlmodelc/model.mil").write_bytes(original)
+        (resources / "LocalUpscale.provenance.json").write_bytes(b"changed provenance")
+        with self.assertRaisesRegex(ArchiveError, "upscale provenance"):
+            verify_archive(archive, source, mode="ci-unsigned")
+
+    def test_changed_super_resolution_license_rejects(self):
+        archive = self.archive()
+        (archive / "Products/Applications/Photato.app/Contents/Resources/LICENSE-RealESRGAN").write_bytes(b"changed license")
+        with self.assertRaisesRegex(ArchiveError, "LICENSE-RealESRGAN"):
+            verify_archive(archive, self.source, mode="ci-unsigned")
 
     def test_unsigned_archive_matches_real_universal_UUIDs_and_source_resources(self):
         result = verify_archive(self.golden, self.source, mode="ci-unsigned", source=input_manifest(self.source))
