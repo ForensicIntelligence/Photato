@@ -15,6 +15,11 @@ struct ImageGenerationReferenceRecord: Codable, Equatable, Sendable {
   let height: Int
   let previewWidth: Int
   let previewHeight: Int
+  // Optional so existing version-1 records retain their exact default encoding.
+  var requestedUse: ImageReferenceUse? = nil
+  func recording(_ use: ImageReferenceUse) -> Self {
+    var result = self; result.requestedUse = use == .inspiration ? nil : use; return result
+  }
   func validate() throws {
     guard version == 1, sha256.count == 64,
       sha256.allSatisfy({ "0123456789abcdef".contains($0) }),
@@ -111,7 +116,7 @@ struct ImageGenerationReference: Sendable {
 extension EditorStore {
   func removeImageReference() {
     guard !aiBusy else { return }
-    imageReference = nil; aiError = nil
+    imageReference = nil; imageReferenceUse = .inspiration; aiError = nil
   }
   func chooseImageReference() {
     guard !aiBusy, imageGenerationIntent == .image, let window = NSApp.keyWindow else { return }

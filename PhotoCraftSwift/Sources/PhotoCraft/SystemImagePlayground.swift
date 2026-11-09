@@ -33,11 +33,16 @@ struct SystemImagePlayground: NSViewControllerRepresentable {
     if #available(macOS 26.4, *) {
       var options = ImagePlaygroundOptions()
       options.personalization = .disabled
+      if #available(macOS 27.0, *), job.referenceUse == .editExisting {
+        options.creationStrategy = .editExisting
+      }
       if #available(macOS 27.0, *), presentation.usesCanvasSizeHint {
         // The system chooses a supported resolution/aspect ratio. This is a hint,
         // captured with the request, rather than a promise of exact output dimensions.
+        let reference = job.referenceUse == .editExisting ? job.importedReferenceRecord : nil
         options.sizeSpecification = .closest(to: CGSize(
-          width: Double(job.sourceWidth), height: Double(job.sourceHeight)))
+          width: Double(reference?.previewWidth ?? job.sourceWidth),
+          height: Double(reference?.previewHeight ?? job.sourceHeight)))
       }
       controller.options = options
     }

@@ -11,6 +11,7 @@ import PhotoCraftImaging
   let id=UUID(),sourceDocumentID:UUID,sourceRevision:UUID,lifecycle:UUID
   let sourceWidth: Int, sourceHeight: Int
   let intent: ImageGenerationIntent
+  let referenceUse: ImageReferenceUse
   let foregroundLayerID: UUID?
   var referenceImage: CGImage?
   var referenceWidth: Int?
@@ -24,12 +25,14 @@ import PhotoCraftImaging
   var failure:String?
   var pending:Bool {phase == .preparingReference || phase == .awaitingSystem || phase == .preparing}
   init(source:CraftDocument,revision:UUID,lifecycle:UUID,prompt:String,processing:GenerationRecord.Processing,
-    intent: ImageGenerationIntent = .image, reference: ImageGenerationReference? = nil) {
+    intent: ImageGenerationIntent = .image, reference: ImageGenerationReference? = nil, referenceUse: ImageReferenceUse = .inspiration) {
     original=source;sourceDocumentID=source.id;sourceRevision=revision;self.lifecycle=lifecycle
     sourceWidth = source.width; sourceHeight = source.height
     self.intent = intent; foregroundLayerID = intent == .background ? source.activeLayerID : nil
     let imported = intent == .image ? reference : nil
-    importedReferenceRecord = imported?.record; referenceImage = imported?.image
+    let use: ImageReferenceUse = intent == .image ? referenceUse : .inspiration
+    self.referenceUse = use
+    importedReferenceRecord = imported?.record.recording(use); referenceImage = imported?.image
     referenceWidth = imported?.image.width; referenceHeight = imported?.image.height
     initialPrompt=prompt;self.processing=processing
   }
@@ -126,6 +129,7 @@ extension EditorStore {
   }
   var canStartImageGeneration:Bool {
     imageGenerationContextAvailable && !editingMask
+      && (imageReferenceUse == .inspiration || (ImageReferenceUse.editingSupported && imageReference != nil))
   }
   private var imageGenerationContextAvailable:Bool {
     imageGenerationSourceAvailable() && !aiBusy && !geometryBusy && !hasToneDraft && !coalescingChanges && transformDraft==nil
@@ -135,6 +139,7 @@ extension EditorStore {
       && document.videoTimeline==nil && document.animation==nil
   }
   func startImageGeneration(capability:AICapability) throws {
+    if imageGenerationIntent == .image { try imageReferenceUse.validate(hasReference:imageReference != nil) }
     guard canStartSelectedImageGeneration else{throw CraftError.invalid("Finish the current edit before generating an image. This image workflow currently requires a still RGB document and an eligible generation target.")}
     guard imageGenerationIntent != .background || canStartBackgroundGeneration else {
       throw CraftError.invalid("Select a visible, masked pixel layer outside a group. Remove its background first.")
@@ -148,7 +153,7 @@ extension EditorStore {
     let major=ProcessInfo.processInfo.operatingSystemVersion.majorVersion
     let job=ImageGenerationJob(source:document,revision:sessionGeneration,lifecycle:layerPanelGeneration,prompt:input,
       processing:major>=27 ? .privateCloudCompute:major==26 ? .onDevice:.unknown,
-      intent: imageGenerationIntent, reference: imageReference)
+      intent: imageGenerationIntent, reference: imageReference, referenceUse: imageReferenceUse)
     // Check record/space limits before invoking the system generation interface.
     let sizing=try GenerationRecord(requestID:job.id,sourceDocumentID:job.sourceDocumentID,sourceRevision:job.sourceRevision,
       initialPrompt:input,startedAt:job.startedAt,acceptedAt:job.startedAt,processing:job.processing,resultStyle:String(repeating:"x",count:256),
@@ -238,7 +243,8 @@ extension EditorStore {
         guard self.imageSourceStillMatches(job) else{self.endImageGeneration(job,phase:.stale,message:"The document changed. The original is saved in Generated Results; no image was added.");return}
         try self.executeEditorCommand(command)
         job.resultLayerID=layer.id;self.endImageGeneration(job,phase:.completed)
-        self.status=intent == .background ? "Background created with Image Playground" : "Created with Image Playground"
+        self.status=intent == .background ? "Background created with Image Playground"
+          : job.referenceUse == .editExisting ? "Reference image edited with Image Playground" : "Created with Image Playground"
       }catch is CancellationError {
         if let self,let job,self.imageGenerationJob === job,job.pending {self.endImageGeneration(job,phase:.cancelled);self.status="Image generation cancelled"}
       }catch {

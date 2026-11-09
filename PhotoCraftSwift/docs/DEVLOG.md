@@ -1,4 +1,4 @@
-> Source delivery 503 includes the current native source and working diary through 503. The focused suite passes 114 methods per configuration. The full suite, Photoshop parity and canonical historical-evidence/website promotion remain open; see SOURCE_PUBLICATION_503.md.
+> Source delivery 505 includes native source and the working diary through 505. The focused suite passes 81 methods per configuration, including all 20 new 504–505 tests. Full-suite qualification, Photoshop parity and canonical evidence/website promotion remain open; see SOURCE_PUBLICATION_505.md.
 
 # Development log
 
@@ -518,7 +518,25 @@ For a readable account of the project from the beginning, see [Photato developme
 | 501 | 2026-11-08 | [Select People on large documents](#dev-step-501) |
 | 502 | 2026-11-08 | [Report Apple text-service availability](#dev-step-502) |
 | 503 | 2026-11-08 | [Review people before removal](#dev-step-503) |
+| 504 | 2026-11-08 | [Background generation on large documents](#dev-step-504) |
+| 505 | 2026-11-08 | [Edit a reference image](#dev-step-505) |
 <!-- history-index:end -->
+
+<a id="dev-step-505"></a>
+
+## 2026-11-08 — Edit a reference image
+
+The native image workspace and optional API can explicitly request Apple reference-image editing on eligible macOS 27 Apple Silicon. The same source passes 81 focused methods per configuration, including all 20 new 504–505 tests. Actual model output and full AI05 remain unqualified.
+
+[Detailed checkpoint 505 record](pending-updates/step505.md). [Source validation and limitations](SOURCE_PUBLICATION_505.md).
+
+<a id="dev-step-504"></a>
+
+## 2026-11-08 — Background generation on large documents
+
+Generated backgrounds can prepare bounded references beyond the former 8 MP and 6,000-side limits. The eight new tests pass on current 505 Debug and optimized binaries. Live AI-sheet verification, real generation, true outpainting and dense capacity remain open.
+
+[Detailed checkpoint 504 record](pending-updates/step504.md). [Source validation and limitations](SOURCE_PUBLICATION_505.md).
 
 <a id="dev-step-503"></a>
 

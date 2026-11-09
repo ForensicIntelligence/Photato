@@ -1,3 +1,14 @@
+## Source update — 8 November 2026, build 505
+
+Generated backgrounds now prepare bounded references from larger masked subjects. The image workspace also offers an explicit request to edit a reference image on eligible Apple Silicon Macs running macOS 27 or later. Ordinary editing still targets macOS 14+.
+
+All 81 focused methods pass in Debug, optimized Apple Silicon and translated Intel, including 20 new methods from 504–505. The records include failed attempts, the unresolved native AI-sheet connection failure and the limits of the model checks.
+
+- [504 — Background generation on large documents](DEVLOG.md#dev-step-504)
+- [505 — Edit a reference image](DEVLOG.md#dev-step-505)
+
+[Source delivery and remaining gaps](SOURCE_PUBLICATION_505.md). Standalone website promotion remains pending.
+
 ## Source update — 8 November 2026, build 503
 
 People selection now works beyond the former small-image admission limit. Apple text-service readiness explains missing device, system, model or signed-capability requirements. The Remove tool can mark background people for review before an explicit apply.

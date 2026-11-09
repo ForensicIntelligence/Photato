@@ -511,6 +511,7 @@ import UniformTypeIdentifiers
   var prompt = ""
   var imageGenerationIntent: ImageGenerationIntent = .image
   var imageReference: ImageGenerationReference?
+  var imageReferenceUse: ImageReferenceUse = .inspiration
   var imageReferenceImportID: UUID?
   @ObservationIgnored var imageReferencePreparation: @Sendable (Data) async throws -> ImageGenerationReference = {
     try ImageGenerationReference.prepare($0)

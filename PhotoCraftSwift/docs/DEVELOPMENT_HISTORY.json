@@ -8073,6 +8073,20 @@
       "link": "DEVLOG.md#dev-step-503",
       "section_sha256": "e4d72c785c374d06a2b5c31453de5dd237c82e95cd533a2af0242b1ce2d43743",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-504",
+      "title": "2026-11-08 \u2014 Background generation on large documents",
+      "link": "DEVLOG.md#dev-step-504",
+      "section_sha256": "404a58c5e446a3ce6e3b39b80f1a04baf270406f4b334dbc45fa218dd70efc9a",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-505",
+      "title": "2026-11-08 \u2014 Edit a reference image",
+      "link": "DEVLOG.md#dev-step-505",
+      "section_sha256": "bc2f358ffbe30b77fb79f25c742afe1300e31e1a316b3002c896a616e6ed8940",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10604,8 +10618,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "aa573b137a790c44eea86404765013fa0ee4a7551dc46db3d7874f49046ff85f",
-      "bytes": 111916,
+      "sha256": "63e1eb62ee6cf395a1f6b78d2d56edb0db2b20fd505adbb3eeffa1992422102d",
+      "bytes": 112871,
       "rolling_current_snapshot": false
     },
     {
@@ -10616,8 +10630,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "089bbae0ffa17a564a09c7021d3df66fe5578607e7f0e278971b4713af231e35",
-      "bytes": 113365,
+      "sha256": "11df93d4374d7d038c98b768ced17082b2f4272e70910df7d3683cd76f7621dd",
+      "bytes": 113301,
       "rolling_current_snapshot": false
     },
     {
@@ -12289,6 +12303,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/BACKGROUND_DOCUMENT_CAPACITY.md",
+      "sha256": "0bf7a34d598abb2c9d0f3c02f627beed93b14d755cbfe066eab0a2a5ad0164bd",
+      "bytes": 3967,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/BACKGROUND_LAYERS.md",
       "sha256": "90027c13883b8f52c877ea6efa48fcb1bf260ab3cd8d98c4342e7f7b4a93f39a",
       "bytes": 5299,
@@ -12794,8 +12814,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "0ad3ca21962bfe935a421238464803866b60fa8d34886aa86ac2931dbfe31074",
-      "bytes": 77312,
+      "sha256": "fb30119bbd219e56a55baa72ad36032040bd53e49d992e67e474b2810825e728",
+      "bytes": 77850,
       "rolling_current_snapshot": false
     },
     {
@@ -12836,14 +12856,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "18a76de81cbbc6c400683d3bf652fdba83dd6db88aa5f738203907b95cca1a0b",
-      "bytes": 799676,
+      "sha256": "71539fd86e9da426bd6420113d252010c8f46f26bf847a14b509a6b4dc4fe8c9",
+      "bytes": 800484,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "6221d2f0b801076c2102787e36981ec3a6e6e4a6bda685b3e090c3e04350ead3",
-      "bytes": 4457525,
+      "sha256": "9960f9b165d1a04373f4b8a06dc1c023da0f4a98e2c36879d5c844f614505e23",
+      "bytes": 4458658,
       "rolling_current_snapshot": false
     },
     {
@@ -16243,6 +16263,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/REFERENCE_IMAGE_EDITING.md",
+      "sha256": "825daa42ecc23e603c518af8de9ac12c8f4241816e1694f7b1bd40803c298bab",
+      "bytes": 4001,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/REGION_RETOUCH_REFERENCES.json",
       "sha256": "65fe4c82bdef2fef40a44ef69f015af80fb8dea358772d7a783f9411a11b378c",
       "bytes": 9481,
@@ -17149,6 +17175,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_505.md",
+      "sha256": "d24cd823fd06320d532a3d6b6c05ae9ccce9faa24dc270ff640073616df7a1d7",
+      "bytes": 4842,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -17317,6 +17349,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_505.json",
+      "sha256": "376679a0e30b14630b83fbf57421c3acbbda3c24f7e8ce70e1bbf7395a818768",
+      "bytes": 1144887,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -17342,8 +17380,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "994119cbd077061d70d1699e523bd3ace646ddfb73961c9433109fd5952b99ae",
-      "bytes": 399278,
+      "sha256": "9e306e3d8e5dc8e6bec8012679fc9f578d028ea3aa68478656394d5797a0382f",
+      "bytes": 399214,
       "rolling_current_snapshot": false
     },
     {
@@ -19646,8 +19684,8 @@
     }
   ],
   "counts": {
-    "milestones": 503,
-    "evidence_files": 1507,
+    "milestones": 505,
+    "evidence_files": 1511,
     "logs": 0,
     "missing_explicit_references": 631
   }

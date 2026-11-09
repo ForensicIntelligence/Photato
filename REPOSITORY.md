@@ -114,3 +114,7 @@ This source delivery includes all qualified distributable build500inputs and the
 ## 2026-11-08 — Native build 503 source snapshot
 
 Adds the distributable source and developer records through 503 while preserving all original Rust files and Git history. Current focused qualification passes 114 methods in Debug and each optimized architecture. This remains an unfinished development alpha. No binary or software release is included. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_503.md.
+
+## 2026-11-08 — Native build 505 source snapshot
+
+Adds large-document background references, explicit Apple reference-image editing and developer records through 505. Current focused checks pass 81 methods in each of three configurations. Original Rust files and Git history are preserved. This remains an unfinished development alpha; no binary or software release is included. See PhotoCraftSwift/docs/SOURCE_PUBLICATION_505.md.

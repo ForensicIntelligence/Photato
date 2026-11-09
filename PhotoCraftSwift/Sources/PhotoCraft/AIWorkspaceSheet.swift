@@ -55,8 +55,21 @@ extension WorkspaceView {
             Button(store.imageReference == nil ? "Choose Image…" : "Replace Image…") { store.chooseImageReference() }
             Spacer()
           }.frame(maxWidth: .infinity, alignment: .leading).disabled(store.aiBusy)
-          Text("Used as visual inspiration. The system may change the reference; exact identity, style and composition are not guaranteed.")
+          HStack {
+            Text("Use image as")
+            ReferenceImageUseControl(selection:$store.imageReferenceUse,
+              editAvailable:ImageReferenceUse.editingSupported && store.imageReference != nil,enabled:!store.aiBusy)
+              .frame(width:190)
+            Spacer()
+          }
+          Text(store.imageReferenceUse == .editExisting
+            ? "Ask the model to edit the chosen image. The result is added as a new layer; the reference file is unchanged."
+            : "Used as visual inspiration. The system may change the reference; exact identity, style and composition are not guaranteed.")
             .font(.caption).foregroundStyle(.secondary)
+          if !ImageReferenceUse.editingSupported {
+            Text("Editing a reference image requires macOS 27 or later on eligible Apple Silicon.")
+              .font(.caption).foregroundStyle(.secondary)
+          }
         }
       }
       if store.imageGenerationIntent == .background {

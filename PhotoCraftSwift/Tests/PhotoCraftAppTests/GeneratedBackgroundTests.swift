@@ -145,7 +145,7 @@ final class GeneratedBackgroundTests: XCTestCase {
       { $0.layers[1].parentID = UUID() }, { $0.layers[1].clipped = true },
       { $0.layers[1].background = true },
       { $0.layers[1].maskProperties?.enabled = false },
-      { $0.width = 0 }, { $0.height = 0 }, { $0.width = 6001 },
+      { $0.width = 0 }, { $0.height = 0 }, { $0.width = 300001 },
     ]
     for mutate in mutations {
       var bad = source; mutate(&bad); XCTAssertNil(GeneratedBackground.foreground(in: bad))

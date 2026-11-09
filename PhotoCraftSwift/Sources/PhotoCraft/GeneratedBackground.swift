@@ -20,8 +20,7 @@ struct GeneratedBackgroundRecord: Codable, Equatable, Sendable {
     self.width = width; self.height = height
   }
   func validate() throws {
-    guard version == 1, width > 0, height > 0, width <= 6000, height <= 6000,
-      width <= ForegroundSelection.maximumPixels / height else {
+    guard version == 1, GeneratedBackground.supportsCanvas(width: width, height: height) else {
       throw CraftError.invalid("Invalid generated-background placement record.")
     }
   }
@@ -29,10 +28,26 @@ struct GeneratedBackgroundRecord: Codable, Equatable, Sendable {
 
 enum GeneratedBackground {
   static let contextKey = "PtGB"
+  static func supportsCanvas(width: Int, height: Int) -> Bool {
+    width > 0 && height > 0 && width <= Surface.maxDimension && height <= Surface.maxDimension
+      && width <= Surface.maxPixels / height
+  }
+  static func referenceRequest(width: Int, height: Int) throws -> RasterPreviewRequest {
+    guard supportsCanvas(width: width, height: height) else {
+      throw CraftError.invalid("Invalid background-reference canvas.")
+    }
+    let longest = max(width, height)
+    let limit = min(2048, longest)
+    // Fix the dominant side exactly instead of flooring a nearly integral
+    // floating-point product (8001 * (2048 / 8001) can become2047).
+    let w = width == longest ? limit : max(1, Int(Double(width) * Double(limit) / Double(longest)))
+    let h = height == longest ? limit : max(1, Int(Double(height) * Double(limit) / Double(longest)))
+    return try RasterPreviewRequest(region: .init(x: 0, y: 0, width: width, height: height), width: w, height: h)
+  }
   static func foreground(in source: CraftDocument) -> Layer? {
     guard source.colorMode == .rgb, source.restrictedMode == nil, source.inkMode == nil,
       !source.isChannelOnly, source.animation == nil, source.videoTimeline == nil,
-      (try? ForegroundSelection.checkSize(source.width, source.height)) != nil,
+      supportsCanvas(width: source.width, height: source.height),
       source.layers.count < LayerLimits.maximumLayers,
       let id = source.activeLayerID, let layer = source.layers.first(where: { $0.id == id }),
       case .raster = layer.content, layer.mask != nil, layer.effectiveMaskProperties.enabled,
@@ -49,6 +64,15 @@ enum GeneratedBackground {
       throw CraftError.invalid("Select a visible, masked pixel layer outside a group. Remove its background first.")
     }
     layer.style = nil
+    if (try? ForegroundSelection.checkSize(source.width, source.height)) == nil {
+      // Document geometry is independent of the model reference budget. Keep
+      // the old admitted path below unchanged, including its resampling order.
+      let request = try referenceRequest(width: source.width, height: source.height)
+      let reduced = try Renderer.clippingCoveragePreview(layer, in: source, request: request)
+      let display = try ColorManagement.converted(reduced, from: source, to: CraftDocument(width: 1, height: 1))
+      try Task.checkCancellation()
+      return try RasterIO.displayImage(display)
+    }
     var pixels = try Renderer.clippingCoverage(layer, in: source)
     let proxyDocument = try CraftDocument(width: 1, height: 1)
     pixels = try ColorManagement.converted(pixels, from: source, to: proxyDocument)
