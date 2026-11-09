@@ -116,6 +116,8 @@ public enum ChannelCommand: Sendable {
 }
 extension CraftDocument {
   public static let maximumAlphaChannels = 52
+  /// Auxiliary-only Multichannel documents have all 56 Photoshop channel slots.
+  public var auxiliaryChannelLimit: Int { isChannelOnly ? 56 - (quickMask == nil ? 0 : 1) : Self.maximumAlphaChannels }
   public var hasAuxiliaryChannels: Bool { !(alphaChannels ?? []).isEmpty || quickMask != nil }
   public func channel(_ target: ChannelPlaneTarget) throws -> AlphaChannel {
     let value: AlphaChannel?

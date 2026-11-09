@@ -1,0 +1,23 @@
+{
+  "origin": "Owned procedural grayscale8/16 samples and full unsigned16word grid. Merged through actual Adobe Photoshop2026 Channels panel, ordered assignments in filenames. No Adobe implementation or SDK inspected/copied.",
+  "sha256": {
+    "photoshop-merge-rgb8-CBA.psd": "27ea065a502768316587617efced497f4db370839d39842a56a3add561aba0fa",
+    "photoshop-merge-rgb16-ABC.psd": "2f4a499caca15f41befc42398722bd5df4066ec749cbcaa9f653f4318d5259da",
+    "photoshop-merge-cmyk16-CABD.psd": "d31514de14c58498ab03be9e359d3936e5a86f57044ece12a8aa7256ed37b957",
+    "photoshop-merge-lab16-CAB.psd": "0cf918addc0eece13fba5038c76c2100b394c646a51301070a934964bbdd141a",
+    "photoshop-merge-multichannel8-AB.psd": "46d2b584517b15ac0be6b7facdb9db59e2abce38c666f6e7d57fe7ae333d5ab8",
+    "photoshop-merge-multichannel16-AB.psd": "a50c27e42fcbd377b6b42e47ce817385fb1feb871e5772a1ad3957997539e839",
+    "photoshop-merge-rgb16-full-grid.psd": "5cf570b7bd081768fc1d6012dfc94f8a9120d50673f8a47490f9327176253ccf"
+  },
+  "source_dimensions": {
+    "small": [
+      16,
+      12
+    ],
+    "full_grid": [
+      256,
+      256
+    ]
+  },
+  "references": "Reference UI observations and input manifests retained locally at checkpoint511. Untagged process outputs have1041=01. Grayscale samples assigned directly;16-bit reference covers the complete input domain."
+}

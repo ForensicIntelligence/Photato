@@ -46,7 +46,7 @@ extension EditorStore {
     return ["footer":channelFooterState,"sources":sources.map(SelectionChannelSourceAPI.state),"workingGrayProfile":grayName,
       "canSaveSelection":canSaveSelectionChannel,"canSaveNewDocument":canSaveSelectionChannel,
       "canLoadSelection":canEditChannels && !sources.isEmpty,
-      "canCreateAlpha":canEditChannels && (document.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels]
+      "canCreateAlpha":canEditChannels && (document.alphaChannels?.count ?? 0)<document.auxiliaryChannelLimit]
   }
   func loadSelectionSource(_ source:SelectionChannelSource,mode:SelectionMode = .replace,invert:Bool=false) {
     guard canEditChannels else{return}

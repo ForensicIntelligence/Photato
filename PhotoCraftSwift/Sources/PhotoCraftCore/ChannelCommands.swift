@@ -5,7 +5,7 @@ extension ChannelCommand {
     switch self {
     case .create(let channel):
       try channel.validate(width:d.width,height:d.height,depth:d.depth)
-      guard (d.alphaChannels?.count ?? 0) < CraftDocument.maximumAlphaChannels,
+      guard (d.alphaChannels?.count ?? 0) < d.auxiliaryChannelLimit,
         !(d.alphaChannels ?? []).contains(where:{ $0.id == channel.id }), d.quickMask?.id != channel.id else { throw CraftError.invalid("Channel limit reached or duplicate channel ID.") }
       d.alphaChannels = (d.alphaChannels ?? [])+[channel]
     case .delete(let id):

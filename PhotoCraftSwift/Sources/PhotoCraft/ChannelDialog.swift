@@ -15,11 +15,11 @@ import SwiftUI
   var documentID:UUID
   let newDocumentID=UUID()
   var createsDocument:Bool {kind == .save && documentID==newDocumentID}
-  var canSaveDestination:Bool {createsDocument || channelID != nil || (selectedDocument.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels}
+  var canSaveDestination:Bool {createsDocument || channelID != nil || (selectedDocument.alphaChannels?.count ?? 0)<selectedDocument.auxiliaryChannelLimit}
   func resetDestination() {
     customLoadSource=nil
     let masks=(selectedDocument.alphaChannels ?? []).filter{$0.spot == nil}
-    channelID = kind == .load ? masks.first?.id : (!createsDocument && (selectedDocument.alphaChannels?.count ?? 0)>=CraftDocument.maximumAlphaChannels ? masks.first?.id:nil)
+    channelID = kind == .load ? masks.first?.id : (!createsDocument && (selectedDocument.alphaChannels?.count ?? 0)>=selectedDocument.auxiliaryChannelLimit ? masks.first?.id:nil)
     mode = .replace
   }
   var committing=false
@@ -50,7 +50,7 @@ import SwiftUI
     if kind != .newSpot,let channel = try? document.channel(self.target ?? .quickMask) { name = channel.name; options = channel.options;spotEnabled=channel.spot != nil;spotColor=channel.spot?.color ?? .black;solidity=channel.spot?.solidity ?? 0 }
     else if kind == .quickOptions { options = defaults }
     if kind == .newSpot {spotEnabled=true;name="Spot Color"}
-    if kind == .save {(channelID)=((document.alphaChannels?.count ?? 0)>=CraftDocument.maximumAlphaChannels ? document.alphaChannels?.first(where:{$0.spot == nil})?.id:nil)}
+    if kind == .save {(channelID)=((document.alphaChannels?.count ?? 0)>=document.auxiliaryChannelLimit ? document.alphaChannels?.first(where:{$0.spot == nil})?.id:nil)}
   }
   func command(document: CraftDocument) throws -> Command? {
     switch kind {
@@ -89,7 +89,7 @@ struct ChannelDialogSheet: View {
           })) {ForEach(SelectionChannelSource.choices(in:draft.selectedDocument),id:\.self) {source in Text(source.title(in:draft.selectedDocument)).tag(Optional(source))}}
         } else {
           Picker("Channel",selection:$draft.channelID) {
-            Text("New").tag(UUID?.none).disabled(!draft.createsDocument && (draft.selectedDocument.alphaChannels?.count ?? 0)>=CraftDocument.maximumAlphaChannels)
+            Text("New").tag(UUID?.none).disabled(!draft.createsDocument && (draft.selectedDocument.alphaChannels?.count ?? 0)>=draft.selectedDocument.auxiliaryChannelLimit)
             ForEach(draft.createsDocument ? []:(draft.selectedDocument.alphaChannels ?? []).filter {$0.spot == nil}) {Text($0.name).tag(Optional($0.id))}
           }
         }

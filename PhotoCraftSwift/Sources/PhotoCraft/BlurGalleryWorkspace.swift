@@ -34,7 +34,7 @@ import SwiftUI
   var ready:Bool { image != nil && !rendering && error == nil }
   var canSaveMask:Bool {
     guard let document else{return false}
-    return maskError==nil && (document.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels && document.quickMask==nil && !document.colorMode.isRestricted && document.inkMode==nil
+    return maskError==nil && (document.alphaChannels?.count ?? 0)<document.auxiliaryChannelLimit && document.quickMask==nil && !document.colorMode.isRestricted && document.inkMode==nil
   }
   var pins:[BlurGallerySettings.Pin] { settings.pins(mode) }
   var pin:BlurGallerySettings.Pin? { pins.indices.contains(selected) ? pins[selected]:nil }

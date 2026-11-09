@@ -38,7 +38,7 @@ extension EditorStore {
     return nil
   }
   var canQuickSaveChannel: Bool {
-    canSaveSelectionChannel && (document.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels
+    canSaveSelectionChannel && (document.alphaChannels?.count ?? 0)<document.auxiliaryChannelLimit
   }
   var canLoadChannelFooter: Bool { canEditChannels && channelFooterLoadSource != nil }
   func saveChannelFooter(modifiers: NSEvent.ModifierFlags = []) {

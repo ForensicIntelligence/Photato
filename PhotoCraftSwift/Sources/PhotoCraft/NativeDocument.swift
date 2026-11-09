@@ -577,6 +577,7 @@ import SwiftUI
   var contactSheetWorkspace: ContactSheetWorkspace?
   var contactSheetWindow: ContactSheetWindow?
   var imageStackWorkspace: ImageStackWorkspace?
+  var channelMergeWorkspace: ChannelMergeWorkspace?
   var imageStackWindow: ImageStackWindow?
   var hdrMergeWorkspace: HDRMergeWorkspace?
   var hdrMergeWindow: HDRMergeWindow?

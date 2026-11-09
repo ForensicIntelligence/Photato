@@ -10,7 +10,7 @@ enum PSDAuxiliaryChannels {
   }
   static func imageChannels(_ header:Int,process:Int,transparency:Bool)throws->Int {
     let count=process+(transparency ? 1:0)
-    guard (process...56).contains(header),header>=count,header-count<=CraftDocument.maximumAlphaChannels+1 else {
+    guard (process...56).contains(header),header>=count,header-count <= (process == 0 ? 56 : CraftDocument.maximumAlphaChannels+1) else {
       throw CraftError.invalid("Invalid Photoshop process/transparency/auxiliary channel count.")
     };return count
   }
@@ -102,7 +102,7 @@ enum PSDAuxiliaryChannels {
       if index==quickIndex {channel.psdQuickMaskInitiallyEmpty=initiallyEmpty;document.quickMask=channel}
       else{channels.append(channel)}
     }
-    guard channels.count<=CraftDocument.maximumAlphaChannels else{throw CraftError.invalid("Too many saved alpha/spot channels.")}
+    guard channels.count<=document.auxiliaryChannelLimit else{throw CraftError.invalid("Too many saved alpha/spot channels.")}
     document.alphaChannels=channels.isEmpty ? nil:channels
   }
   static func resources(_ document:CraftDocument,first:Int)throws->Data {

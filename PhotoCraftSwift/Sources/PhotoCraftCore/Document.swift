@@ -408,7 +408,7 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     }
     guard quickMask?.spot == nil else { throw CraftError.invalid("Quick Mask cannot contain a spot ink.") }
     let channels = (alphaChannels ?? []) + (quickMask.map { [$0] } ?? [])
-    guard (alphaChannels?.count ?? 0) <= Self.maximumAlphaChannels, Set(channels.map(\.id)).count == channels.count else { throw CraftError.invalid("Channel limit or duplicate identifier.") }
+    guard (alphaChannels?.count ?? 0) <= auxiliaryChannelLimit, Set(channels.map(\.id)).count == channels.count else { throw CraftError.invalid("Channel limit or duplicate identifier.") }
     let identifiers=channels.compactMap(\.psdIdentifier);guard Set(identifiers).count==identifiers.count else{throw CraftError.invalid("Duplicate PSD channel identifier.")}
     for channel in channels { try channel.validate(width:width,height:height,depth:depth) }
     var bytes = timelineAudioBytes + retainedFrameSourceBytes + sampledTransitionBytes + (animation?.estimatedBytes ?? 0) + channels.reduce(0) { $0 + $1.pixels.allocatedBytes + ($1.psdSpotGray?.allocatedBytes ?? 0) + ($1.psdSelectedGray?.allocatedBytes ?? 0) } + (restrictedMode?.estimatedBytes ?? 0) + (inkMode?.estimatedBytes ?? 0)

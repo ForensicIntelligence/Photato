@@ -132,7 +132,7 @@ struct ChannelsMenu: View {
     Divider()
     Button("Channel Options…") { store.beginChannelDialog(.options) }.disabled(!store.canEditChannels || store.editingChannel == nil)
     Button("Split Channels") {store.splitChannels()}.disabled(!store.canSplitChannels)
-    Button("Merge Channels…") {}.disabled(true)
+    Button("Merge Channels…") { store.beginMergeChannels() }.disabled(!store.canMergeChannels)
     Divider()
     Button("Panel Options…") { store.beginChannelPanelOptions() }
       .disabled(!store.canBeginLayerCreation)

@@ -130,3 +130,7 @@ Includes source and diary507–510, reviewed numeric edit plans, language/plugin
 ## 2026-11-08 — Native source checkpoint 511
 
 Gray32 PSD/PSB HDR metadata interoperability repair, API coverage, owned fixture/provenance and diary. Original Rust files, paths and Git history remain. Focused32methods pass each tested configuration; numerical and broader acceptance gaps remain recorded. No binary upload or software release.
+
+## 2026-11-09 UTC — Native source checkpoint 512
+
+Merge Channels native UI/shared API,56-channel auxiliary-only storage, owned Photoshop references and diary. All original Rust files, repository paths and Git history are retained. Fifteen new methods pass in each tested configuration; the broader 68/69 run retains 192 legacy assertions independently reproduced on public build 511. No binary upload or software release.

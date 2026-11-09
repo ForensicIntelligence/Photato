@@ -106,7 +106,7 @@ public struct BlurGalleryMaskEdit:Sendable {
   }
   func applied(to document:CraftDocument)throws->CraftDocument {
     try Task.checkCancellation()
-    guard (document.alphaChannels?.count ?? 0)<CraftDocument.maximumAlphaChannels else {throw CraftError.invalid("Channel limit reached. Remove a channel before saving a Blur Mask.")}
+    guard (document.alphaChannels?.count ?? 0)<document.auxiliaryChannelLimit else {throw CraftError.invalid("Channel limit reached. Remove a channel before saving a Blur Mask.")}
     try validateTarget(in:document)
     let layer=try BlurGalleryMask.sourceLayer(in:document,layerID:layerID,beforeFilterID:filterID)
     let pixels=try BlurGalleryMask.surface(in:document,layer:layer,settings:settings)

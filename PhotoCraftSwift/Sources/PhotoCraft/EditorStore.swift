@@ -92,6 +92,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var upscalePreparation: UpscalePreparation = {source,scale,progress in try await LearnedUpscaleDocument.prepare(source,scale:scale,progress:progress)}
   var documentDuplicateDraft: DocumentDuplicateDraft?
   @ObservationIgnored var splitChannelsPreparation:@Sendable (CraftDocument,Data?) throws->PreparedChannelSeparation = {try ChannelSeparation.prepare($0,grayProfile:$1)}
+  @ObservationIgnored var mergeChannelsPreparation: @Sendable ([CraftDocument],ChannelMergeMode,Data?,String) throws -> PreparedChannelMerge = { try ChannelMerge.prepare($0,mode:$1,profile:$2,name:$3) }
   @ObservationIgnored var documentDuplicatePreparation: @Sendable (CraftDocument,String,Bool) throws -> CraftDocument = { try DocumentDuplicatePreparation.copy($0,name:$1,merged:$2) }
   var duplicateLayerDraft: DuplicateLayerDraft?
   var layerNameDraft: LayerNameDraft?

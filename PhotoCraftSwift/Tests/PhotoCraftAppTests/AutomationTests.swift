@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 269
+  static let expectedCommandCount = 271
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }
@@ -155,7 +155,7 @@ final class AutomationTests: XCTestCase {
       let catalogue = try XCTUnwrap(
         JSONSerialization.jsonObject(with: sameOrigin.1) as? [String: Any])
       XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 808)
+      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 809)
       XCTAssertFalse(String(decoding: sameOrigin.1, as: UTF8.self).contains("Support Development"))
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")

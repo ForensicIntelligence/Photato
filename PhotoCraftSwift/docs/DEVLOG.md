@@ -1,3 +1,5 @@
+> Source checkpoint 512 implements Merge Channels. All 15 new methods pass; broader 68/69 retains the reproduced legacy failure. See SOURCE_PUBLICATION_512.md.
+
 > Source checkpoint 511 repairs Gray32 PSD/PSB interoperability; 32 selected methods pass in each tested configuration. Earlier failures remain open. See SOURCE_PUBLICATION_511.md.
 
 > Source delivery 510 includes the native source and repository diary through checkpoint 510. Debug and optimized ARM pass 106/106 selected tests; translated Intel passes 105/106 with a confirmed unchanged baseline failure. All 14 new methods pass. See SOURCE_PUBLICATION_510.md.
@@ -528,7 +530,16 @@ For a readable account of the project from the beginning, see [Photato developme
 | 509 | 2026-11-08 | [Plugin host requirements](#dev-step-509) |
 | 510 | 2026-11-08 | [Editable gradient profiles](#dev-step-510) |
 | 511 | 2026-11-08 | [Gray32 Photoshop file export](#dev-step-511) |
+| 512 | 2026-11-09 UTC | [Merge Channels](#dev-step-512) |
 <!-- history-index:end -->
+
+<a id="dev-step-512"></a>
+
+## 2026-11-09 — Merge Channels
+
+Native mode/assignment controls and the shared Swift/API transaction create RGB, CMYK, Lab or auxiliary-only Multichannel documents. Selected sources close only after the result is registered. All 15 new tests pass in Debug and both optimized architectures. The broader run passes 68/69; its 192-assertion legacy failure reproduces exactly on public build 511. Native RGB16/Multichannel16 save/reopen and 960 independent component words pass. Full COL02 and earlier acceptance remain open; next is COL03.
+
+[Detailed checkpoint record](pending-updates/step512.md). [Workflow/API](MERGE_CHANNELS.md). [Source validation](SOURCE_PUBLICATION_512.md).
 
 <a id="dev-step-511"></a>
 

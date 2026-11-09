@@ -15,6 +15,8 @@ import UniformTypeIdentifiers
   @ObservationIgnored var selectionChannelPrepare:@Sendable (AutomationCommand,CraftDocument,ChannelDisplayOptions,CraftDocument?,ColorSettings) async throws->Command = {command,target,defaults,source,settings in
     try SelectionChannelPreparation.prepare(command,target:target,defaults:defaults,source:source,colorSettings:settings)
   }
+  @ObservationIgnored var mergeChannelsTask: Task<PreparedChannelMerge,Error>?
+  @ObservationIgnored var mergeChannelsShareIDs = Set<UUID>()
   struct Share: Identifiable {
     let id = UUID()
     weak var document: CraftNSDocument?
@@ -238,7 +240,7 @@ import UniformTypeIdentifiers
   func setDocumentTransfersEnabled(_ enabled: Bool) {
     documentTransferGeneration = UUID()
     documentTransfersEnabled = enabled && isRunning
-    if !documentTransfersEnabled { pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
+    if !documentTransfersEnabled { mergeChannelsTask?.cancel();pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
   }
   func setDocumentSavesEnabled(_ enabled: Bool) {
     documentSaveGeneration = UUID()
@@ -273,6 +275,7 @@ import UniformTypeIdentifiers
   func setDocumentClosingEnabled(_ enabled: Bool) {
     documentClosingGeneration = UUID()
     documentClosingEnabled = enabled && isRunning
+    if !documentClosingEnabled { mergeChannelsTask?.cancel() }
     if !documentClosingEnabled, let ownedCloseOperation {
       controller.documentClosing.cancel(ownedCloseOperation)
     }
@@ -311,6 +314,7 @@ import UniformTypeIdentifiers
     store.cancelHistory()
   }
   func revoke(_ id: UUID) {
+    if mergeChannelsShareIDs.contains(id) { mergeChannelsTask?.cancel() }
     linkedSourceWriteTasks[id]?.cancel()
     if imageProcessorSourceIDs.contains(id) {imageProcessorTask?.cancel()}
     if scanCropSourceID == id {scanCropTask?.cancel()}
@@ -364,6 +368,7 @@ import UniformTypeIdentifiers
       "documentDuplicate":store.documentDuplicateState,
       "upscale":UpscaleAPI.state(store),
       "channelSeparation":store.channelSeparationState,
+      "channelMerge":channelMergeState(document),
       "flattenImage":store.flattenImageState,
       "layerMerge":store.layerMergeState,
       "video": store.videoState,
@@ -785,6 +790,11 @@ import UniformTypeIdentifiers
       guard command.revision == revision(store) else {
         throw AutomationFailure(
           status: 409, message: "Stale revision. Refresh the document before retrying.")
+      }
+      if command.name == ChannelMergeAPI.cancel {
+        guard documentTransfersEnabled, documentClosingEnabled else { throw AutomationFailure(status:403,message:"Enable document transfers and document closing before cancelling Merge Channels.") }
+        guard mergeChannelsTask != nil, mergeChannelsShareIDs.contains(id) else { throw AutomationFailure(status:409,message:"No API Merge Channels operation is active for this share.") }
+        mergeChannelsTask?.cancel(); return .json(state(share,document:document))
       }
       if command.name == UpscaleAPI.cancel {
         guard documentTransfersEnabled else {throw AutomationFailure(status:403,message:"Enable document transfers before cancelling an upscale operation.")}
@@ -1445,6 +1455,7 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .contentAwareFill(try options.edit(original)) }
         return .json(state(share,document:document))
       }
+      if command.name == ChannelMergeAPI.name { return try await mergeChannels(command,document:document,share:share) }
       if command.name == ChannelSeparationAPI.name {return try await splitChannels(command,document:document,share:share)}
       if command.name == "channel.edit" {
         if try command.pathFlag("newDocument",false) {return try await newSelectionDocument(command,document:document,share:share)}
@@ -1932,6 +1943,7 @@ import UniformTypeIdentifiers
         "documentDuplicate":DocumentDuplicateAPI.stateSchema,
         "upscale":UpscaleAPI.stateSchema,
         "channelSeparation":ChannelSeparationAPI.stateSchema,
+        "channelMerge":ChannelMergeAPI.stateSchema,
         "flattenImage":FlattenImageAPI.stateSchema,
         "layerMerge":LayerMergeAPI.stateSchema,
         "layerLinks":LayerLinksAPI.stateSchema,
@@ -2119,5 +2131,23 @@ extension AutomationService {
     // Close semantics revoke work authorized only by the retired source lease.
     linkedSourceWriteTasks[source.id]?.cancel()
     cancelSharedHistory(source);cancelSharedPrint(source);cancelSharedVideoRender(source);cancelSharedSequenceExport(source);cancelSharedVariableExport(source);cancelSharedLayerCompExport(source);cancelSharedImageExport(source);cancelSharedIllustratorPaths(source);cancelSharedLayerFiles(source);cancelSharedSmartObjectComp(source);cancelSharedLayerCompEdit(source);cancelSharedAudio(source)
+  }
+}
+
+@MainActor extension AutomationService {
+  func replaceMergeChannelShares(_ ids: [UUID], with document: CraftNSDocument) throws {
+    guard isRunning, document.ownerController === controller, Set(ids).count == ids.count,
+      ids.allSatisfy({ id in shares.contains(where: { $0.id == id }) }), shares.count-ids.count+1 <= 8 else {
+      throw AutomationFailure(status:409,message:"Merge Channels sharing changed during publication.")
+    }
+    let consumed = shares.filter { ids.contains($0.id) }
+    let result = Share(document:document,generation:document.store.layerPanelGeneration)
+    for share in consumed {
+      linkedSourceWriteTasks[share.id]?.cancel(); cancelSharedHistory(share); cancelSharedPrint(share)
+      cancelSharedVideoRender(share); cancelSharedSequenceExport(share); cancelSharedVariableExport(share)
+      cancelSharedLayerCompExport(share); cancelSharedImageExport(share); cancelSharedIllustratorPaths(share)
+      cancelSharedLayerFiles(share); cancelSharedSmartObjectComp(share); cancelSharedLayerCompEdit(share); cancelSharedAudio(share)
+    }
+    shares = shares.filter { !ids.contains($0.id) } + [result]
   }
 }

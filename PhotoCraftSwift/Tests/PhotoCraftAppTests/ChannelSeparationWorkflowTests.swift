@@ -151,7 +151,7 @@ final class ChannelSeparationWorkflowTests:XCTestCase {
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:ChannelSeparationAPI.capabilities))
       let value=try JSONDecoder().decode(AutomationValue.self,from:JSONSerialization.data(withJSONObject:source.store.channelSeparationState))
       XCTAssertNoThrow(try BrushAPI.merge(value,schema:ChannelSeparationAPI.stateSchema))
-      XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count,267)
+      XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount);XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count,AutomationTests.expectedCommandCount)
     }
   }
 }

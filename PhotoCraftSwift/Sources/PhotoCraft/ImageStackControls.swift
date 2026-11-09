@@ -56,7 +56,7 @@ struct ImageStackView: View {
 }
 extension CraftDocumentController {
   var canPublishImageStack: Bool {
-    scanCropOperationID == nil && contactSheetWorkspace == nil && photomergeWorkspace == nil && hdrMergeWorkspace == nil && !documentOpening.isActive && !documentOpening.hasPendingRequests && documentOpenPanel == nil && !documentClosing.isActive && !recoveryIndex.isBusy && initialRecoveryTask == nil && NSApp?.modalWindow == nil
+    channelMergeWorkspace == nil && scanCropOperationID == nil && contactSheetWorkspace == nil && photomergeWorkspace == nil && hdrMergeWorkspace == nil && !documentOpening.isActive && !documentOpening.hasPendingRequests && documentOpenPanel == nil && !documentClosing.isActive && !recoveryIndex.isBusy && initialRecoveryTask == nil && NSApp?.modalWindow == nil
   }
   func beginImageStack(statistics: Bool = false,display: Bool = true) {
     guard canPublishImageStack else { return }

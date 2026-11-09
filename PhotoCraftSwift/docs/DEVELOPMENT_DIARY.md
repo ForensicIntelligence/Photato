@@ -1,3 +1,11 @@
+## Source update — 9 November 2026 UTC, build 512
+
+Merge Channels now works through the native Channels panel and the optional API. Assign grayscale images to RGB, CMYK, Lab or Multichannel output. The result opens as a new document; only the chosen sources close.
+
+All 15 new tests pass in Debug and both optimized architectures. The broader run passes 68/69, with the same legacy Multichannel failure reproduced on public build 511. Actual RGB16 and Multichannel16 saves reopen correctly and match all 960 Photoshop reference component values. Full parity and the recorded cleanup work remain open.
+
+[512 — Merge Channels](DEVLOG.md#dev-step-512) · [Usage/API](MERGE_CHANNELS.md) · [Validation](SOURCE_PUBLICATION_512.md).
+
 ## Source update — 8 November 2026, build 511
 
 Photoshop rejected our Gray32 PSD exports even though Photato could reopen them. The writer omitted HDR toning metadata for grayscale. That is fixed in the shared native and API export path.
@@ -809,6 +817,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-08 | 509 | [Plugin host requirements](DEVLOG.md#dev-step-509) |
 | 2026-11-08 | 510 | [Editable gradient profiles](DEVLOG.md#dev-step-510) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
+| 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -4,7 +4,7 @@ import PhotoCraftImaging
 
 extension CraftDocumentController {
   var canPublishScanCrop: Bool {
-    contactSheetWorkspace == nil && imageStackWorkspace == nil && photomergeWorkspace == nil && hdrMergeWorkspace == nil && !documentOpening.isActive && !documentOpening.hasPendingRequests && documentOpenPanel == nil && !documentClosing.isActive && !recoveryIndex.isBusy && initialRecoveryTask == nil && NSApp?.modalWindow == nil
+    channelMergeWorkspace == nil && contactSheetWorkspace == nil && imageStackWorkspace == nil && photomergeWorkspace == nil && hdrMergeWorkspace == nil && !documentOpening.isActive && !documentOpening.hasPendingRequests && documentOpenPanel == nil && !documentClosing.isActive && !recoveryIndex.isBusy && initialRecoveryTask == nil && NSApp?.modalWindow == nil
   }
   func canCropScan(_ document: CraftNSDocument) -> Bool {
     guard let layer = document.store.activeLayer else {return false}
