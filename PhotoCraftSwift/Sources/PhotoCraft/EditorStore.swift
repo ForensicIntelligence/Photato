@@ -180,6 +180,8 @@ import UniformTypeIdentifiers
   private(set) var channelCompositeRevision = UUID()
   @ObservationIgnored var renderSnapshot: RenderSnapshot?
   var selectionPath: CGPath?
+  @ObservationIgnored let selectionOutlineCache = SelectionOutlineCache()
+  @ObservationIgnored var selectionPathRequest: SelectionOutlineRequest?
   var selectionBorderDrag: SelectionBorderDrag?
   @ObservationIgnored var selectionBorderNudges: SelectionBorderNudges?
   @ObservationIgnored var selectionBorderNudgeTask: Task<Void, Never>?
@@ -827,8 +829,19 @@ import UniformTypeIdentifiers
       ? canvasRasterPreview ?? image.map { CanvasRasterPreview(base: $0) } : nil
     let displayScale = min(1, max(0.0001, viewport.resolvedZoom))
     let largeCanvas = doc.width * doc.height > Surface.maximumDensePixels ? viewport.largeCanvasRequest : nil
+    let outlineCache = selectionOutlineCache
+    let outlineStep = largeCanvas.map { max(1, ($0.region.width + max(1, $0.width) - 1) / max(1, $0.width),
+      ($0.region.height + max(1, $0.height) - 1) / max(1, $0.height)) } ?? 1
+    let sourceOutline = doc.selectionMask.map { SelectionOutlineRequest(mask: $0, region: largeCanvas?.region, sampleStep: outlineStep) }
+    let stableBrushCoverage: Bool
+    switch painting { case .stroke?, .maskStroke?, .adjustmentBrush?: stableBrushCoverage = true; default: stableBrushCoverage = false }
+    // Preserve only a previously published contour for this exact immutable
+    // coverage/view during ordinary painting. Other contexts invalidate eagerly.
+    if !(stableBrushCoverage && selectionTool == nil && paintTools == nil
+      && sourceOutline.map { next in selectionPathRequest?.sharesSource(with: next) == true } == true) {
+      selectionPath = nil; selectionPathRequest = nil
+    }
     rendering = true
-    selectionPath = nil
     let renderStarted = ProcessInfo.processInfo.systemUptime
     let frameTraceToken = canvasFrameTrace?.beginFrame(samples: max(brushPoints.count, retouchPointCount), revision: request)
     renderTask = Task { [weak self] in
@@ -913,7 +926,8 @@ import UniformTypeIdentifiers
           catch is CancellationError { throw CancellationError() }
           catch { proofFailure = error.localizedDescription }
         }
-        let path = try doc.selectionMask.map { try SelectionOutline.path($0,region:largeCanvas?.region,sampleStep:largeCanvas.map {max(1,($0.region.width+max(1,$0.width)-1)/max(1,$0.width),($0.region.height+max(1,$0.height)-1)/max(1,$0.height))} ?? 1) }
+        let outlineRequest = doc.selectionMask.map { SelectionOutlineRequest(mask: $0, region: largeCanvas?.region, sampleStep: outlineStep) }
+        let path = try await outlineCache.path(for: outlineRequest)
         let maskImage: CGImage?
         if let maskView, let layer = doc.layers.first(where: { $0.id == maskView.layerID }) {
           let maskLayer = maskView.smartFilter ? try layer.filterMaskProjection() : layer
@@ -924,7 +938,7 @@ import UniformTypeIdentifiers
           maskImage = nil
         }
         let overlay=try selectionOverlay.map{try SelectionToolPreparation.overlay(doc.coverageSelection(),color:$0,request:presentation)} ?? nil
-        return (snapshot, image, path, maskImage,overlay,proofFailure,canvasPreview)
+        return (snapshot, image, path, maskImage,overlay,proofFailure,canvasPreview,outlineRequest)
       }
       do {
         let pair = try await withTaskCancellationHandler(
@@ -948,6 +962,7 @@ import UniformTypeIdentifiers
         }
         self.proofDisplayError = pair.5
         self.selectionPath = pair.2?.path
+        self.selectionPathRequest = pair.7
         self.selectionOverlayImage = pair.4
         self.selectionOverlayRegion = largeCanvas?.region
         if (self.adjustmentBrushMaskView ?? self.currentMaskView) == maskView {

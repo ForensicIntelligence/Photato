@@ -13,6 +13,9 @@ enum ToolCursor: Hashable {
   static func selection(_ symbol: String, _ mode: SelectionMode) -> Self {
     .symbol(symbol, mode == .add ? .add : mode == .subtract ? .subtract : mode == .intersect ? .intersect : nil)
   }
+  static func marqueeCreation(symbol: String, mode: SelectionMode, repositioning: Bool) -> Self {
+    repositioning ? .closedHand : selection(symbol, mode)
+  }
   static func geometry(_ flags: NSEvent.ModifierFlags) -> Badge? {
     flags.contains(.shift) ? (flags.contains(.option) ? .constrainCenter : .constrain) : flags.contains(.option) ? .center : nil
   }

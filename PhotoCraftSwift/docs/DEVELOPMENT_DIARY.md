@@ -1,3 +1,35 @@
+## Source update — 16 November 2026, builds 525–526
+
+Selections now retain their exact contour during ordinary painting previews. Rectangular and elliptical marquees can be moved with Space while being drawn, then resized again after Space is released. Polygon vertices no longer start a drag of the old selection.
+
+All 86 selected tests pass in Debug, optimized Apple Silicon and translated Intel, including 15 new tests. The universal package passes its checks. Native launch and window title are verified; live editing and save/reopen remain unqualified because the automation controls stalled in macOS's file chooser. Full functionality and physical 60 fps remain open.
+
+[Qualification](SOURCE_PUBLICATION_526.md) · [525 record](DEVLOG.md#dev-step-525) · [526 record](DEVLOG.md#dev-step-526).
+
+<a id="dev-step-526"></a>
+
+## 2026-11-16 — Step 526: reposition a marquee while drawing
+
+Hold the mouse button while drawing a rectangular or elliptical selection, press Space and move it, then release Space to resize again. The draft retains its combine mode, anti-alias and feather settings. Escape, tool/focus/source changes and busy-state changes discard it. An unfinished polygon also keeps ownership of its later clicks, including clicks inside the previous selection.
+
+The new tests cover both marquee tools and all 16 modifier combinations, final mouse-release movement, cancellation, history, Actions, archive and the existing HTTP selection.shape command. The first polygon cursor assertion confused the toolbar icon with the existing lasso cursor; that test-only correction and the interrupted broad run are retained. No production binary or prior test assertion changed for the repair.
+
+All 86 selected tests and all 15 new tests across builds 525–526 pass in each tested configuration. The universal app launches with Photato - Untitled-1. Native automation then stalls in the system file chooser, so live editing/save/reopen/normal Quit are not marked passed. Full Photoshop cursor/default behavior, temporary Command pixel movement and off-canvas committed selection coverage remain open.
+
+[Detailed record](DEVLOG.md#dev-step-526) · [Workflow](SELECTION_INTERACTION.md) · [Validation](SOURCE_PUBLICATION_526.md).
+
+<a id="dev-step-525"></a>
+
+## 2026-11-16 — Step 525: retain selection contours during painting
+
+Painting previews used to rebuild the selection outline by scanning the entire dense canvas, even when coverage had not changed. The contour now scans only the selection bounds and is retained for unchanged coverage/view settings. Ordinary pixel, mask and Adjustment Brush previews keep a matching outline on screen while their next image is prepared. Changed or cancelled requests cannot publish a stale or partial contour.
+
+For a small selection on 24/36MP canvases, the optimized contour takes about 0.041ms on Apple Silicon and 0.061ms under Intel translation. The frozen native-524 traversal, recompiled in the same test binaries, takes 217/330ms and 372/563ms. Every contour segment matches. This measures contour preparation; it is not a Photoshop comparison, whole-stroke latency or physical display frame rate.
+
+The initial 22 focused Debug tests pass. Final combined qualification is recorded under build 526. Earlier temporary checkouts had disappeared, so the exact public source and 13 unchanged local model/fixture inputs were restored into a persistent workspace. The older dirty checkout remains untouched. All original scopes and failures remain tracked.
+
+[Detailed record](DEVLOG.md#dev-step-525) · [Contour preparation](SELECTION_CONTOURS.md).
+
 ## Source update — 2026-11-09, build 524
 
 Selection borders support dragging and arrow keys; replacement feedback starts on press. Canvas Size retains zoom/pan. Debug and normal optimized ARM/translated Intel each pass 65 selected methods, including all 13 new methods. Universal package checks pass; live UI inspection is unavailable this session.
@@ -169,14 +201,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:524 -->
-## Current tested source
+<!-- current-status-step:526 -->
+## Current development status — 16 November 2026
 
-Build 524 fixes direct selection-border dragging/nudging, replacement outline feedback and Canvas Size zoom. All 65 selected tests and 13 new methods pass in Debug and each optimized architecture. Universal package checks pass. Live UI verification is unavailable in this session.
+Build 526 includes retained selection contours, Space-repositioned marquee creation and active polygon routing. All 86 selected tests pass in Debug, optimized Apple Silicon and translated Intel, including 15 new tests. The universal package passes its checks. Native launch/title is verified; live editing and save/reopen remain unqualified after native chooser automation stalled.
 
-All 104 scopes, 652 command identities, 81 major memberships and seven passes remain. Q03 major stillneeded, the reported Sky scrolling, physical frame rate, platform/full-suite/fidelity gates and previous failures remain open. Canonical history remains failed and standalone website promotion is pending.
+The active pass remains major stillneeded. All 104 scopes, 652 identities, 81 major memberships and seven passes remain tracked. Physical 60 fps, independent Photoshop output, supported physical machines, the full suite and earlier fidelity/history failures remain open. No complete major package is closed by this batch. This source checkpoint is not a software release.
 
-[Source qualification](SOURCE_PUBLICATION_524.md)
+[Qualification](SOURCE_PUBLICATION_526.md) · [Current work order](WORK_PRIORITIES_526.json)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -892,6 +924,22 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-08 | 508 | [AI, language and plugin acceptance](DEVLOG.md#dev-step-508) |
 | 2026-11-08 | 509 | [Plugin host requirements](DEVLOG.md#dev-step-509) |
 | 2026-11-08 | 510 | [Editable gradient profiles](DEVLOG.md#dev-step-510) |
+| 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
+| 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
+| 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
+| 2026-11-09 UTC | 514 | [Editable photo blending](DEVLOG.md#dev-step-514) |
+| 2026-11-09 UTC | 515 | [Editable artboard project import](DEVLOG.md#dev-step-515) |
+| 2026-11-09 | 516 | [Editable PSD/PSB artboards](DEVLOG.md#dev-step-516) |
+| 2026-11-09 | 517 | [Saved generated-image variations](DEVLOG.md#dev-step-517) |
+| 2026-11-09 | 518 | [Editing video keyframes as a group](DEVLOG.md#dev-step-518) |
+| 2026-11-09 | 519 | [Large Sky documents and full-detail previews](DEVLOG.md#dev-step-519) |
+| 2026-11-09 | 520 | [Color and vibrance with Adjustment Brush](DEVLOG.md#dev-step-520) |
+| 2026-11-09 | 521 | [Sky preview containment and brush measurements](DEVLOG.md#dev-step-521) |
+| 2026-11-09 | 522 | [Masked adjustment preview performance](DEVLOG.md#dev-step-522) |
+| 2026-11-09 | 523 | [Retained layer-mask and Adjustment Brush previews](DEVLOG.md#dev-step-523) |
+| 2026-11-09 | 524 | [Selection borders and Canvas Size zoom](DEVLOG.md#dev-step-524) |
+| 2026-11-16 | 525 | [Selection-preview responsiveness; 22 Debug checks](DEVLOG.md#dev-step-525) |
+| 2026-11-16 | 526 | [Marquee creation and polygon routing (in progress)](DEVLOG.md#dev-step-526) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

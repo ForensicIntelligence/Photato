@@ -1087,6 +1087,16 @@
     "policy": "ToolCursor.magnetic in ToolCursorPolicies.swift; main CraftCanvas ModifierCursorView dispatches captured modes and temporary tracing alternatives.",
     "tested_combinations": 16
   },
+  "marquee_creation_526": {
+    "live_UI_qualified": false,
+    "native_view_tests": "All16 captured and live modifier combinations on both marquee tools; release, focus/tool/source/busy guards, history/API/Actions/archive pass with all15 new525\u2013526 methods in Debug and both optimized architectures.",
+    "policy": "Rectangular/elliptical creation: Space while pressed translates start and end with shared closed-Hand cursor; release resumes resize with captured combine mode. Space before press retains existing temporary Hand/pan. Active polygon clicks/hover outrank old selection-border dragging.",
+    "reference": "https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html",
+    "remaining": "Photoshop cursor art, full modifier defaults, Command temporary pixel movement, document-edge coverage and physical frame rate remain unqualified.",
+    "retrieved": "2026-11-16",
+    "single_row_column_excluded": true,
+    "source": "docs/SELECTION_FEEDBACK_526.json"
+  },
   "mask_filters_468": {
     "impact": "Existing filter menus/dialogs, captured mask target and Repeat. No new tool/modifier/global shortcut; old nine cursor methods pass Debug/normal. Full physical/context matrix remains.",
     "reference": "docs/MASK_FILTER_TARGETS_468.json"

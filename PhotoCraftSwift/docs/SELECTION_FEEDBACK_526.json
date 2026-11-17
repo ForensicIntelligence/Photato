@@ -1,0 +1,231 @@
+{
+  "Actions": 61,
+  "AppStore_upload": false,
+  "Debug": {
+    "new_passed": 15,
+    "passed": 86,
+    "selected": 86
+  },
+  "Debug_only_SIL_workaround": true,
+  "all_prior_assertions_and_tolerances_retained": true,
+  "all_prior_failures_remain_required": true,
+  "all_prior_test_files_unchanged": true,
+  "excluded_unchanged_inputs": 13,
+  "failed_attempts": {
+    "preparationFailure": "First exact-selection preparation counted73 because interrupted log had not reached13 required methods. Preflight stopped before compilation; actual expected86 now derived from passed525 log, prior524 ID book and seven new526 definitions.",
+    "priorAssertionOrToleranceWaived": false,
+    "productionChangedForRepair": false,
+    "reason": "New polygon assertion used toolbar symbol rather than existing shared lasso cursor. Mistaken broad GeometryTests regex included unrelated dense40MP. Interrupted owned xctest only; preserve partial failed run and products. Debug02 repairs the new assertion only and uses exact86 IDs."
+  },
+  "full_Q03_closed": false,
+  "full_S01_closed": false,
+  "full_suite_passed": false,
+  "goal_complete": false,
+  "included_distributable_inputs": 7862,
+  "independent_Photoshop_equality_passed": false,
+  "input_delta": {
+    "all13ExcludedInputsExact": true,
+    "allPriorTestFilesUnchanged": true,
+    "base": "ad8004e7037c47856a1a4bc47e17199720a05ba1",
+    "baselineInputs": 7871,
+    "currentInputs": 7875,
+    "modified": [
+      "Sources/PhotoCraft/AutomationSelectionTools.swift",
+      "Sources/PhotoCraft/CanvasView.swift",
+      "Sources/PhotoCraft/EditorStore.swift",
+      "Sources/PhotoCraft/SelectionAntsAPI.swift",
+      "Sources/PhotoCraft/SelectionEditing.swift",
+      "Sources/PhotoCraft/ToolCursor.swift",
+      "Sources/PhotoCraft/ToolCursorAPI.swift",
+      "Sources/PhotoCraftCore/Selection.swift",
+      "scripts/Info.plist"
+    ],
+    "new": [
+      "Sources/PhotoCraft/MarqueeCreation.swift",
+      "Sources/PhotoCraft/SelectionOutlineCache.swift",
+      "Tests/PhotoCraftAppTests/MarqueeCreationWorkflowTests.swift",
+      "Tests/PhotoCraftAppTests/SelectionOutlineResponsivenessTests.swift"
+    ],
+    "privateGeneratedModelsOrRestrictedFixtureAddedToGit": false,
+    "removed": []
+  },
+  "native": {
+    "PhotoshopMenuHeadingsObserved": true,
+    "binarySHA256": "b98d3123fff16c7ac63ac231e18bca8e6bbf0cd745e0be128c42f1e7c0cf362d",
+    "candidateLabel": "Photato Validation 526 Universal",
+    "captureSHA256": "94af1ec7ae404b118c5e2fee21347a830474911cfb328f3063195c454f41bc88",
+    "launched": true,
+    "limitation": "Native automation entered macOS GoToWindow but Return/Escape did not complete/dismiss it consistently. AX text/menu interactions responded, but no live editing, held-Space, painting, save/reopen or normal Quit is claimed. The isolated app remains intact with the chooser open. No force quit, relaunch, source workaround, permission weakening or user document modification.",
+    "nativeSelectedWorkflowPassed": false,
+    "openDialogObserved": true,
+    "paintingSaveReopenNormalQuitVerified": false,
+    "physicalFPSMeasured": false,
+    "recordedUTC": "2026-11-17T01:37:17.175753+00:00",
+    "step": 526,
+    "windowTitle": "Photato - Untitled-1"
+  },
+  "native_format": 92,
+  "new_methods": 15,
+  "normal_optimized_runs_use_no_SIL_workaround": true,
+  "optimized": {
+    "Apple Silicon": {
+      "new_passed": 15,
+      "passed": 86,
+      "selected": 86
+    },
+    "Intel translated": {
+      "new_passed": 15,
+      "passed": 86,
+      "selected": 86
+    }
+  },
+  "optimized_contour_CPU_measurements": {
+    "arm": [
+      {
+        "boundedExactContourMS": 0.040541752241551876,
+        "builds": 1,
+        "configuration": "Optimized",
+        "height": 4000,
+        "hits": 120,
+        "legacy524RecompiledMS": 216.51712502352893,
+        "physicalFPSMeasured": false,
+        "retained120RequestsMS": 0.029333285056054592,
+        "sameContourRuns": true,
+        "scope": "Frozen native524 traversal recompiled in the same test binary; no old app or Photoshop-output replay.",
+        "width": 6000
+      },
+      {
+        "boundedExactContourMS": 0.041041639633476734,
+        "builds": 1,
+        "configuration": "Optimized",
+        "height": 6000,
+        "hits": 120,
+        "legacy524RecompiledMS": 329.8870417056605,
+        "physicalFPSMeasured": false,
+        "retained120RequestsMS": 0.033374992199242115,
+        "sameContourRuns": true,
+        "scope": "Frozen native524 traversal recompiled in the same test binary; no old app or Photoshop-output replay.",
+        "width": 6000
+      }
+    ],
+    "intel": [
+      {
+        "boundedExactContourMS": 0.06037496495991945,
+        "builds": 1,
+        "configuration": "Optimized",
+        "height": 4000,
+        "hits": 120,
+        "legacy524RecompiledMS": 372.35258298460394,
+        "physicalFPSMeasured": false,
+        "retained120RequestsMS": 0.09245902765542269,
+        "sameContourRuns": true,
+        "scope": "Frozen native524 traversal recompiled in the same test binary; no old app or Photoshop-output replay.",
+        "width": 6000
+      },
+      {
+        "boundedExactContourMS": 0.06116693839430809,
+        "builds": 1,
+        "configuration": "Optimized",
+        "height": 6000,
+        "hits": 120,
+        "legacy524RecompiledMS": 562.6521250233054,
+        "physicalFPSMeasured": false,
+        "retained120RequestsMS": 0.08183298632502556,
+        "sameContourRuns": true,
+        "scope": "Frozen native524 traversal recompiled in the same test binary; no old app or Photoshop-output replay.",
+        "width": 6000
+      }
+    ]
+  },
+  "physical_60fps_qualified": false,
+  "physical_supported_platforms_qualified": false,
+  "prior_Photoshop_sample_differences": [
+    44797,
+    37102
+  ],
+  "same_ordered_optimized_IDs": true,
+  "scope_counts": {
+    "identities": 652,
+    "major_memberships": 81,
+    "passes": 7,
+    "scopes": 104
+  },
+  "software_build": 526,
+  "software_release": false,
+  "source_inputs": 7875,
+  "source_unchanged_during_every_attempt": true,
+  "source_variant": "Debug02 / optimized01",
+  "step": 526,
+  "test_only_repair": {
+    "applicationSHA256": "78cd20162c632286ad775e08b8a1452ef6e582d04280281493d0b72bdb4830c4",
+    "changedInputs": [
+      "Tests/PhotoCraftAppTests/MarqueeCreationWorkflowTests.swift"
+    ],
+    "productionAndAppBinaryUnchanged": true
+  },
+  "typed_commands": 271,
+  "universal": {
+    "AppStoreUpload": false,
+    "allInputHashesVerified": true,
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "70f3fc0ddca49a93497653043e3d86ded6db6a6c9764471e2a7beaf470995f51",
+    "binarySHA256": "b98d3123fff16c7ac63ac231e18bca8e6bbf0cd745e0be128c42f1e7c0cf362d",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "build": 526,
+    "entitlementsUnchanged": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "goalComplete": false,
+    "launched": false,
+    "minimumSystemMetadata": "14.0",
+    "originalIconRetained": true,
+    "preparedUTC": "2026-11-17T00:33:21.936507+00:00",
+    "sameSourceAsDebug02": true,
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 7875,
+    "step": 526,
+    "unsignedSlices": [
+      {
+        "allOtherUnsignedBytesExact": true,
+        "architecture": "arm64",
+        "compiledSHA256": "b934bbfb77eaffc25f66a9908c2633a5df73f2b2f8964cd6ad1622b0b4286440",
+        "signingMetadataException": {
+          "changedOffsets": [
+            3554
+          ],
+          "entireUnsignedSliceMatchesIndependentSigningReplay": true,
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3552,
+          "values": [
+            63324160,
+            62668800
+          ]
+        },
+        "unsignedExact": false
+      },
+      {
+        "allOtherUnsignedBytesExact": true,
+        "architecture": "x86_64",
+        "compiledSHA256": "f64028c46e2655f495cd98b1225ed50eaae7b1f21814ea718d3a7d07104b5665",
+        "signingMetadataException": {
+          "changedOffsets": [
+            3393,
+            3394
+          ],
+          "entireUnsignedSliceMatchesIndependentSigningReplay": true,
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3392,
+          "values": [
+            62414848,
+            63340544
+          ]
+        },
+        "unsignedExact": false
+      }
+    ],
+    "validationCandidate": true,
+    "version": "0.3.0"
+  },
+  "version": "0.3.0"
+}

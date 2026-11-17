@@ -39,6 +39,11 @@ public struct SelectionMask: Equatable, Sendable, Codable {
   private var paged:PagedSelectionCoverage? {storage.paged}
   public let bounds: IntRect?
   public var isPaged: Bool { paged != nil }
+  /// Immutable backing identity for presentation caches; no sample scan or extraction.
+  /// A false result does not imply unequal coverage values.
+  public func sharesCoverageStorage(with other: Self) -> Bool {
+    width == other.width && height == other.height && storage === other.storage
+  }
   public var pixelCount: Int { width*height }
   public var allocatedBytes: Int { dense?.count ?? paged!.allocatedBytes }
   public var mappedBytes: Int { paged?.mappedBytes ?? 0 }

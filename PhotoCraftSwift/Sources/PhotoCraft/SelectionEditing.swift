@@ -28,12 +28,16 @@ enum SelectionOutline {
       return try boundedPath(mask,region:region ?? IntRect(x:0,y:0,width:mask.width,height:mask.height),sampleStep:max(sampleStep,region == nil ? (max(mask.width,mask.height)+2047)/2048:1))
     }
     let path = CGMutablePath()
+    // Coverage outside the nonzero bounds is zero, including the samples used
+    // just outside each contour edge. Retain the original row/column run order.
+    guard let bounds = mask.bounds else { return SelectionContour(path) }
+    let endX = bounds.x + bounds.width, endY = bounds.y + bounds.height
     func selected(_ x: Int, _ y: Int) -> Bool { mask.coverage(x: x, y: y) >= 0.5 }
-    for y in 0...mask.height {
+    for y in bounds.y...endY {
       try Task.checkCancellation()
       var start: Int?
-      for x in 0...mask.width {
-        let edge = x < mask.width && selected(x, y - 1) != selected(x, y)
+      for x in bounds.x...endX {
+        let edge = x < endX && selected(x, y - 1) != selected(x, y)
         if edge && start == nil { start = x }
         if !edge, let from = start {
           path.move(to: CGPoint(x: from, y: y))
@@ -42,11 +46,11 @@ enum SelectionOutline {
         }
       }
     }
-    for x in 0...mask.width {
+    for x in bounds.x...endX {
       try Task.checkCancellation()
       var start: Int?
-      for y in 0...mask.height {
-        let edge = y < mask.height && selected(x - 1, y) != selected(x, y)
+      for y in bounds.y...endY {
+        let edge = y < endY && selected(x - 1, y) != selected(x, y)
         if edge && start == nil { start = y }
         if !edge, let from = start {
           path.move(to: CGPoint(x: x, y: from))

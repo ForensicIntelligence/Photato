@@ -8,8 +8,12 @@ Canvas Size keeps magnification and pan. It resolves an initial Fit before chang
 
 The optional API uses existing selection.transform and document.canvasSize transactions. Direct pointer presentation adds capability metadata, with no streaming or new Adobe route. Desktop/API/Actions/archive checks use the same native Swift engine.
 
-Committed transforms still clip selections to the document. Space repositioning during marquee creation, temporary Command pixel movement and complete Photoshop cursor/default behavior remain unqualified. The current session tested native AppKit view events, not the user's running UI. This does not claim complete Photoshop parity.
+Build 526 adds Space repositioning during rectangular/elliptical creation: start dragging, keep the mouse pressed, hold Space to move the draft, then release Space to resize again. The cursor follows with closed Hand during repositioning. Combine mode, anti-alias and feather are captured at press; later Shift/Option changes affect shape geometry. Escape, focus, tool, source and busy changes discard the draft. Space before press retains the existing canvas Hand/pan behavior; single row/column are excluded.
+
+An unfinished polygon takes priority over the old selection border, so a later vertex can be placed inside existing coverage. Final coverage still uses selection.shape, with the same native/API/Actions/history and archive behavior. Presentation metadata is discoverable under toolCursorFeedback.marqueeCreation and selectionTools.marqueeCreation.
+
+Committed transforms still clip selections to the document. Temporary Command pixel movement, complete Photoshop cursor/default behavior and physical frame rate remain unqualified. All 86 selected tests, including 15 new contour/marquee methods, pass in Debug and both optimized architectures. Native launch/title is verified; live editing/save/reopen remains unqualified after chooser automation failed. This does not claim complete Photoshop parity.
 
 References: [Adobe — Move a selection border](https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/move-selection-or-selection-border.html), [Adobe — Marquee tools](https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html).
 
-[Evidence](SELECTION_INTERACTION_524.json) · [Diary](pending-updates/step524.md)
+[526 evidence](SELECTION_FEEDBACK_526.json) · [524 evidence](SELECTION_INTERACTION_524.json) · [526 diary](pending-updates/step526.md)

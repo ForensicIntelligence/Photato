@@ -543,7 +543,51 @@ For a readable account of the project from the beginning, see [Photato developme
 | 522 | 2026-11-09 | [Masked adjustment preview performance](#dev-step-522) |
 | 523 | 2026-11-09 | [Retained layer-mask and Adjustment Brush previews](#dev-step-523) |
 | 524 | 2026-11-09 | [Selection borders and Canvas Size zoom](#dev-step-524) |
+| 525 | 2026-11-16 | [Selection contour preparation](#dev-step-525) |
+| 526 | 2026-11-16 | [Marquee creation and polygon routing](#dev-step-526) |
 <!-- history-index:end -->
+
+<a id="dev-step-526"></a>
+
+## 2026-11-16 — Marquee creation and polygon routing
+
+Rectangular and elliptical marquees can now be repositioned while being created: keep the mouse pressed, hold Space and move, then release Space to resume resizing. A source-bound native draft captures combine mode, anti-alias and feather. Escape, focus/tool/source changes and busy-state changes discard it; a stale mouse release cannot create another selection. The shared ToolCursor policy shows closed Hand during repositioning. Space before mouse-down retains canvas panning. Single row/column marquees remain excluded, as Adobe documents.
+
+An unfinished polygon takes priority over the old selection border for clicks and hover feedback. A later vertex can therefore be placed inside existing coverage without starting a border move. Final coverage uses the existing selection.shape-equivalent native command. Changed edits have one Undo; an unchanged result retains the existing no-op history policy. ToolCursorAPI and SelectionToolAPI describe the pointer behavior without adding remote input or an invented Adobe route. Native 92, Actions 61 and 271 typed commands are unchanged.
+
+Changed files: `Sources/PhotoCraft/MarqueeCreation.swift`, `Sources/PhotoCraft/CanvasView.swift`, `Sources/PhotoCraft/ToolCursor.swift`, `Sources/PhotoCraft/ToolCursorAPI.swift`, `Sources/PhotoCraft/AutomationSelectionTools.swift`, `Tests/PhotoCraftAppTests/MarqueeCreationWorkflowTests.swift` and `scripts/Info.plist` (build 526). Workflow guides, cursor references, priority metadata and both diaries are updated. The human diary index now includes the existing 511–524 records as well as 525–526; dates come from DEVLOG, not reconstructed timestamps. WORK_PRIORITIES_526 corrects stale current-command metadata from 266 to 271 while preserving all prior passes, memberships, queues and acceptance.
+
+The first Debug attempt compiled. Its new polygon assertion failed three times because it compared the toolbar symbol with the existing lasso cursor. Only that new expectation was corrected; production code and earlier assertions were unchanged. An accidentally broad GeometryTests regex also selected unrelated capacity tests. The owned runner was interrupted at dense40MP, and its frozen source, partial failed log, nonzero receipt and compiled products are retained. Exact-ID preparation initially found 73 methods in that incomplete log and stopped before compiling again. The passed 525 book, public 524 book and seven new 526 definitions provide the intended 86 methods.
+
+Debug02 passes all 86 selected methods, including all 15 new methods across 525–526, with 7,875 input hashes unchanged. The seven new marquee methods cover both tools and all 16 captured/live modifier combinations, Space release and final delta, captured settings, cancellation/stale guards, polygon routing, Actions, archive and HTTP equivalence. The final optimized and native outcomes are recorded below.
+
+Reference: [Adobe marquee tools](https://helpx.adobe.com/photoshop/desktop/make-selections/get-started-selections/make-selections-with-marquee-tools.html), retrieved 16 November 2026. This supplies documented interaction behavior, not Photoshop output bytes or binary inspection. Temporary Command pixel movement, off-canvas committed coverage, complete cursor/default behavior, physical 60 fps and the original fidelity/platform/history failures remain open. No complete package or master goal is closed; no software release or Store upload is made.
+
+Final combined qualification: all 86 selected methods and all 15 new methods pass in Debug, normal optimized ARM and translated Intel, with identical ordered optimized IDs and no skips/signals. All 7,875 native input hashes remain unchanged. Universal minimum-version, signatures, entitlements, executable payload, optional model/license resources and extracted ZIP checks pass. Optimized small-selection contour preparation is about 0.041ms ARM / 0.061ms translated Intel; the recompiled full-canvas native-524 reference takes 217/330ms ARM and 372/563ms Intel on 24/36MP. These are exact contour CPU comparisons, not physical FPS.
+
+The tested universal app launched with Photato - Untitled-1 and the expected menus. Native automation reached macOS GoToWindow but Return/Escape did not reliably complete or dismiss the chooser. Live editing, held-Space, painting, save/reopen and normal Quit are unqualified; the isolated app remains intact. No user document was edited and no force quit, relaunch, security weakening or source workaround was used. See SOURCE_PUBLICATION_526.md and SELECTION_FEEDBACK_526.json. All original scope and failures remain required; no software release or Store upload.
+
+Documentation audit: the inventory now includes 526 continuous milestones. The strict history check still fails on exactly the same 631 missing historical references as public 524, in the same order, with no new missing reference. Prior evidence and this failed receipt are retained; no historical gate is represented as passed.
+
+<a id="dev-step-525"></a>
+
+## 2026-11-16 — Selection contour preparation
+
+Work resumed from public source checkpoint 524, commit ad8004e7037c47856a1a4bc47e17199720a05ba1. The earlier temporary checkouts are gone. A persistent checkout now lives in Photato-current on codex/major-functions-525. All 7,858 published native inputs match their frozen hashes; 13 excluded local model/fixture inputs were recovered at their original hashes. The older checkout and its 806 pending path changes were left untouched. No owned compiler or test worker was running during recovery.
+
+Every painting preview previously cleared and rebuilt the selection outline by scanning the full dense canvas twice, even when coverage had not changed. The dense path now scans only the stored nonzero bounds, preserving every horizontal and vertical run. A one-entry actor cache retains the contour for equal coverage, region and sampling step. Main-thread admission uses immutable storage identity. Ordinary pixel, layer-mask and Adjustment Brush previews retain an already displayed matching outline; coverage-changing operations invalidate it. Cancelled or failed preparations never publish a partial path.
+
+Changed files: `Sources/PhotoCraftCore/Selection.swift`, `Sources/PhotoCraft/SelectionEditing.swift`, `Sources/PhotoCraft/SelectionOutlineCache.swift`, `Sources/PhotoCraft/EditorStore.swift`, `Sources/PhotoCraft/SelectionAntsAPI.swift`, `Tests/PhotoCraftAppTests/SelectionOutlineResponsivenessTests.swift` and `scripts/Info.plist`. The API describes the presentation change under selectionDisplay.contourPreparation. Coverage bytes, editing commands, pixels, history, Actions and archive formats are unchanged. No Adobe endpoint is added.
+
+All 22 focused Debug methods pass, including eight new methods, with 7,873 input hashes unchanged. Tests cover exact threshold/hole/edge paths, an independently specified rectangle, cache invalidation and cancellation, concurrent requests, maximum paged geometry, painting/history and read-only HTTP state. The 64×48 selection on 24/36MP canvases takes 1.071/1.075ms to trace, versus 7,846.85/11,763.44ms for the frozen native-524 traversal recompiled in the same Debug test binary. This is a contour CPU comparison, not an old-app replay, Photoshop oracle, whole-stroke latency or physical frame rate. Existing paced painting tests retain complete canonical commits.
+
+The combined 525–526 source passes all 86 selected Debug methods, including all 15 new methods, with 7,875 input hashes unchanged. Normal optimized and native outcomes are recorded with checkpoint 526 below. Full Q03, physical FPS, complex-contour budgets, supported machines and all earlier failures remain open.
+
+The separate website publication on 16 November brought its public content through checkpoint 524. Historical notes about pending website promotion describe their own earlier state. All 104 scopes, 652 identities, 81 major memberships and seven passes remain tracked.
+
+Final combined qualification: all 86 selected methods and all 15 new methods pass in Debug, normal optimized ARM and translated Intel, with identical ordered optimized IDs and no skips/signals. All 7,875 native input hashes remain unchanged. Universal minimum-version, signatures, entitlements, executable payload, optional model/license resources and extracted ZIP checks pass. Optimized small-selection contour preparation is about 0.041ms ARM / 0.061ms translated Intel; the recompiled full-canvas native-524 reference takes 217/330ms ARM and 372/563ms Intel on 24/36MP. These are exact contour CPU comparisons, not physical FPS.
+
+The tested universal app launched with Photato - Untitled-1 and the expected menus. Native automation reached macOS GoToWindow but Return/Escape did not reliably complete or dismiss the chooser. Live editing, held-Space, painting, save/reopen and normal Quit are unqualified; the isolated app remains intact. No user document was edited and no force quit, relaunch, security weakening or source workaround was used. See SOURCE_PUBLICATION_526.md and SELECTION_FEEDBACK_526.json. All original scope and failures remain required; no software release or Store upload.
 
 <a id="dev-step-524"></a>
 
