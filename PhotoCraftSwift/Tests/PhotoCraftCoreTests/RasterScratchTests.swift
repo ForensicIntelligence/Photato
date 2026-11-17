@@ -84,4 +84,67 @@ final class RasterScratchTests: XCTestCase {
     XCTAssertTrue(left.linearPixel(x:64,y:64).hasSameBits(as:source.linearPixel(x:64,y:64)))
     XCTAssertTrue(right.linearPixel(x:0,y:0).hasSameBits(as:source.linearPixel(x:0,y:0)))
   }
+
+  func testFloatCompositePatchSharesCompleteMappedTilesAndCopiesOnlyVisibleEdgeRows() throws {
+    var source = try fixture()
+    source.setLinearPixel(x: 1, y: 1, Pixel(-0.0, 5, -0.75, -0.0))
+    let mapped = try source.spillingTiles(to: RasterTileStore())
+    let prior = try Surface(width: 130, height: 66, depth: .f32, fill: .white, colorEncoding: .linearRGB)
+    let region = IntRect(x: 0, y: 0, width: 129, height: 66)
+    var expected = prior
+    for y in 0..<66 { for x in 0..<129 {
+      expected.setLinearPixel(x: x, y: y, mapped.linearPixel(x: x, y: y))
+    } }
+    var result = prior
+    XCTAssertTrue(try result.replaceFloatCompositeRegion(region, from: mapped))
+    XCTAssertEqual(result.mappedTileCount, 2)
+    XCTAssertEqual(try result.rgbaData(depth: .f32, colorEncoding: .linearRGB),
+      try expected.rgbaData(depth: .f32, colorEncoding: .linearRGB))
+    XCTAssertTrue(result.linearPixel(x: 1, y: 1).hasSameBits(as: Pixel(-0.0, 5, -0.75, -0.0)))
+    XCTAssertEqual(result.linearPixel(x: 129, y: 65), .white)
+    XCTAssertTrue(try prior.isOpaque())
+    XCTAssertFalse(try result.isOpaque())
+    result.setLinearPixel(x: 1, y: 1, .black)
+    XCTAssertTrue(mapped.linearPixel(x: 1, y: 1).hasSameBits(as: source.linearPixel(x: 1, y: 1)))
+    XCTAssertEqual(result.mappedTileCount, 1)
+  }
+
+  func testFloatCompositePatchHandlesImplicitSamplesAndRejectsNormalizationAtomically() async throws {
+    let region = IntRect(x: 0, y: 0, width: 130, height: 66)
+    let clear = try Surface(width: 130, height: 66, depth: .f32)
+    let white = try Surface(width: 130, height: 66, depth: .f32, fill: .white)
+    var receiver = clear
+    XCTAssertTrue(try receiver.replaceFloatCompositeRegion(region, from: white))
+    XCTAssertEqual(receiver, white)
+    XCTAssertTrue(try receiver.isOpaque())
+    XCTAssertTrue(try receiver.replaceFloatCompositeRegion(region, from: clear))
+    XCTAssertEqual(receiver, clear)
+    XCTAssertLessThan(receiver.tileCount, white.width / Surface.tileSide * 2 + 2)
+    XCTAssertFalse(try receiver.isOpaque())
+
+    var ordinary = clear
+    ordinary.setPixel(x: 0, y: 0, .black)
+    ordinary.setPixel(x: 65, y: 2, Pixel(0, 1, 0))
+    let unnormalized = try ordinary.mappedStoredSamples { pixel in
+      pixel.g == 1 ? Pixel(0, 1, 0, 2) : pixel
+    }
+    receiver = white
+    XCTAssertFalse(try receiver.replaceFloatCompositeRegion(region, from: unnormalized))
+    XCTAssertEqual(receiver, white)
+    XCTAssertTrue(try receiver.isOpaque())
+
+    let cancelled = Task.detached {
+      while !Task.isCancelled { await Task.yield() }
+      var snapshot = white
+      do {
+        _ = try snapshot.replaceFloatCompositeRegion(region, from: clear)
+        return false
+      } catch is CancellationError {
+        return snapshot == white
+      }
+    }
+    cancelled.cancel()
+    let preserved = try await cancelled.value
+    XCTAssertTrue(preserved)
+  }
 }

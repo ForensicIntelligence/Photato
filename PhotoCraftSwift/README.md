@@ -1,3 +1,5 @@
+**Source checkpoint 532.** Reuse completed Float32 composite tiles and preserve unaligned edge samples. All 99 selected methods pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes static checks. Physical display timing and full Photoshop parity remain open. [Qualification](docs/SOURCE_PUBLICATION_532.md).
+
 **Source checkpoint 531.** Find changed tiles without sorting direct canvas storage. All 90 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop byte comparisons remain open. [Qualification](docs/SOURCE_PUBLICATION_531.md).
 
 **Source checkpoint 530.** Ready canvas previews schedule AppKit drawing directly. All 59 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop output comparison remain open. [Qualification](docs/SOURCE_PUBLICATION_530.md).

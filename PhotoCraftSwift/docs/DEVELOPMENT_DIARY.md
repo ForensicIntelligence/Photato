@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 532: reuse tiles after recompositing
+
+A small edit used to write every pixel in the composited patch back into the canvas. Photato can now reuse complete tiles and copy just the affected rows at an edge. On the 24-megapixel Brush test, p95 for installing the patch fell from 0.96 ms to 0.16 ms. The composite and preview hashes matched build 531.
+
+All 99 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The retained Photoshop 2026 files cover 20 owned RGB32 examples. Their represented merged pixels match. The first input driver showed a longer delay before preparation. The independently scheduled test recorded a lower end-to-end p95. Physical display timing and the broader Photoshop workflows still need verification.
+
+[Detailed record](DEVLOG.md#dev-step-532) · [Measurements](SOURCE_PUBLICATION_532.md).
+
 ## 2026-11-17 — Step 531: find the tiles a stroke changed
 
 An edit to one part of a large canvas used to sort tile keys for the whole image. The damage check now skips tiles that share the same pixel storage as the previous frame. In the 24-megapixel test, p95 for a single-tile damage check fell from 1.58 ms to 0.33 ms. The complete preview, reduced preview and working sample hashes matched build 530.
@@ -241,14 +249,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:531 -->
+<!-- current-status-step:532 -->
 ## Current development status — 17 November 2026
 
-Build 531 speeds up the exact tile comparisons used for large canvases. All 90 selected tests pass in Debug and both optimized architectures. The universal package passed its checks. The working pixel and preview hashes match the preceding build in the owned 24 MP workload.
+Build 532 reuses completed composite tiles in canvas previews. All 99 selected tests pass in Debug and both optimized architectures. The universal package passed its checks. The 20 retained Photoshop RGB32 fixtures match on the checked merged samples.
 
-The current work is Q03. Physical 60 fps, actual stylus input, broader editing conditions and independent comparison with Photoshop remain open.
+The current work is Q03. Physical 60 fps, actual stylus input, and broader editing and pixel comparisons remain open.
 
-[Qualification](SOURCE_PUBLICATION_531.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_532.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -985,6 +993,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 529 | [Share unchanged canvas preview pages](DEVLOG.md#dev-step-529) |
 | 2026-11-17 | 530 | [Send ready previews directly to the AppKit canvas](DEVLOG.md#dev-step-530) |
 | 2026-11-17 | 531 | [Find changed tiles without sorting the canvas](DEVLOG.md#dev-step-531) |
+| 2026-11-17 | 532 | [Reuse recomposited tiles in the canvas](DEVLOG.md#dev-step-532) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

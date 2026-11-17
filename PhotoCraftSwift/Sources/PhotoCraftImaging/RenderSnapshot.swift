@@ -40,6 +40,10 @@ extension Renderer {
       }
       let patch = try compositeValidated(d, region: region)
       var result = previous!.surface
+      if try result.replaceFloatCompositeRegion(region, from: patch) {
+        surface = result
+        break
+      }
       if result.colorEncoding == .linearRGB {
         for y in region.y..<region.y + region.height {
           try Task.checkCancellation()

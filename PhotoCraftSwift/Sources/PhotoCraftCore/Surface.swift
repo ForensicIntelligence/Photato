@@ -390,6 +390,74 @@ public struct Surface: Codable, Equatable, Sendable {
     try Task.checkCancellation()
     self = result
   }
+  /// Install a bounded patch in document coordinates when the existing Float32
+  /// setters would leave its sample bits intact. A failed admission or
+  /// cancellation leaves the receiver untouched.
+  public mutating func replaceFloatCompositeRegion(_ region: IntRect, from source: Surface) throws -> Bool {
+    try Task.checkCancellation()
+    guard depth == .f32, source.depth == depth, colorEncoding == source.colorEncoding,
+      width == source.width, height == source.height, source.tilesAreKnownFinite
+    else { return false }
+    let r = region.clipped(toWidth: width, height: height)
+    guard r.width * r.height <= Self.maximumDensePixels else { return false }
+    guard r.width > 0, r.height > 0 else { return true }
+    let allowNegativeZero = colorEncoding == .linearRGB
+    let opaqueBits = Float(1).bitPattern
+    func canonicalAlpha(_ pixel: Pixel) -> Bool {
+      let bits = pixel.a.bitPattern
+      return bits <= opaqueBits || (allowNegativeZero && bits == 0x8000_0000)
+    }
+    guard source.storedDefaultPixel.isFinite, canonicalAlpha(source.storedDefaultPixel) else { return false }
+
+    let side = Self.tileSide, size = TileArchive.pixelCount, columns = self.columns
+    let sameDefault = storedDefaultPixel.hasSameBits(as: source.storedDefaultPixel)
+    var result = self
+    var implicitSource: RasterTile?
+    for row in r.y / side...(r.y + r.height - 1) / side {
+      let top = max(0, r.y - row * side), bottom = min(side, r.y + r.height - row * side)
+      for column in r.x / side...(r.x + r.width - 1) / side {
+        try Task.checkCancellation()
+        let left = max(0, r.x - column * side), right = min(side, r.x + r.width - column * side)
+        let key = row * columns + column
+        let incoming = source.tiles[key]
+        let complete = left == 0 && top == 0 && right == side && bottom == side
+        if incoming == nil && sameDefault {
+          if complete {
+            result.tiles[key] = nil
+            continue
+          }
+          if result.tiles[key] == nil { continue }
+        }
+        if incoming == nil && implicitSource == nil {
+          implicitSource = RasterTile(repeating: source.storedDefaultPixel, count: size)
+        }
+        guard let samples = incoming ?? implicitSource else { return false }
+        if complete {
+          guard samples.withUnsafeBufferPointer({ $0.allSatisfy(canonicalAlpha) }) else { return false }
+          result.tiles[key] = samples
+          continue
+        }
+        // At an unaligned edge preserve the rest of the destination tile,
+        // including unused storage beyond the visible canvas.
+        var changed = result.tiles[key] ?? RasterTile(repeating: storedDefaultPixel, count: size)
+        let copied = samples.withUnsafeBufferPointer { input in
+          for y in top..<bottom {
+            let range = y * side + left..<y * side + right
+            let values = input[range]
+            guard values.allSatisfy(canonicalAlpha) else { return false }
+            changed.replaceSubrange(range, with: values)
+          }
+          return true
+        }
+        guard copied else { return false }
+        result.tiles[key] = changed
+      }
+    }
+    try Task.checkCancellation()
+    result.opaqueProof = SurfaceOpaqueProof()
+    self = result
+    return true
+  }
   /// Conservative bounds of changed storage tiles. Shared COW buffers need no pixel scan.
   /// Layout changes invalidate the entire receiving surface; callers comparing geometry must
   /// also account for the previous surface's extent. Comparison preserves signed-zero bits.

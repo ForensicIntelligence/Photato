@@ -1,3 +1,7 @@
+**Source checkpoint 532.** Reuse completed Float32 composite tiles and preserve unaligned edge samples. All 99 selected methods pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes static checks. Physical display timing and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_532.md).
+
+Continue Q03 with the delay before preview preparation, layered region compositing, and physical input and display measurements.
+
 **Source checkpoint 531.** Find changed tiles without sorting direct canvas storage. All 90 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop byte comparisons remain open. [Qualification](SOURCE_PUBLICATION_531.md).
 
 Continue Q03 with layered regional render work and physical editing measurements.
