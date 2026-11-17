@@ -1,0 +1,132 @@
+{
+  "PhotoshopSampleParityMeasured": false,
+  "applicationBuild": 531,
+  "archiveSHA256": "9c74a2355a2dde11905dfc5bf229508e2b51323af824d3b508fba81c5583d9e5",
+  "individualHostedRuns": {
+    "530-1": {
+      "distinctDraws": 119,
+      "inputToDrawP95MS": 26.27254161052406
+    },
+    "530-2": {
+      "distinctDraws": 119,
+      "inputToDrawP95MS": 29.759458266198635
+    },
+    "531-1": {
+      "distinctDraws": 118,
+      "inputToDrawP95MS": 27.111124945804477
+    },
+    "531-2": {
+      "distinctDraws": 120,
+      "inputToDrawP95MS": 19.98691668268293
+    }
+  },
+  "nativeArchiveVersion": 92,
+  "newTests": 2,
+  "orderedArchitectureChecksMatch": true,
+  "performance": {
+    "canvas": [
+      6000,
+      4000
+    ],
+    "composition": {
+      "530": {
+        "compositionMS": {
+          "p50MS": 7.008250046055764,
+          "p95MS": 9.062229131814092
+        },
+        "displayMS": {
+          "p50MS": 1.0356666170991957,
+          "p95MS": 1.435541664250195
+        },
+        "tileDamageMS": {
+          "p50MS": 1.415895821992308,
+          "p95MS": 1.5782916452735662
+        }
+      },
+      "531": {
+        "compositionMS": {
+          "p50MS": 4.931374976877123,
+          "p95MS": 6.853208295069635
+        },
+        "displayMS": {
+          "p50MS": 1.012624939903617,
+          "p95MS": 1.4175208052620292
+        },
+        "tileDamageMS": {
+          "p50MS": 0.29685412300750613,
+          "p95MS": 0.32827083487063646
+        }
+      }
+    },
+    "exactBaselineSHA256": {
+      "fullPreviewSHA256": "df4e090ea3017873bb3eee85b1e4a047966bad3bb85428ff72d8aea0d0c70af7",
+      "nativeFloatSamplesSHA256": "7764532abf748e1be396f7f6e13212e49a4c45350a3bff73a225835d146db78a",
+      "reducedPreviewSHA256": "c5841d4db59d23218578c0082c37a0fdc4d459879df31b6d440f36cde1f73af1"
+    },
+    "hosted": {
+      "530": {
+        "distinctDraws": [
+          119,
+          119
+        ],
+        "phases": {
+          "inputToDraw": {
+            "p50MS": 20.730479154735804,
+            "p95MS": 28.015999938361347
+          },
+          "prepareToReady": {
+            "p50MS": 9.325999999418855,
+            "p95MS": 14.793208334594965
+          },
+          "readyToDraw": {
+            "p50MS": 3.925854165572673,
+            "p95MS": 4.432979156263173
+          }
+        }
+      },
+      "531": {
+        "distinctDraws": [
+          118,
+          120
+        ],
+        "phases": {
+          "inputToDraw": {
+            "p50MS": 12.63800001470372,
+            "p95MS": 23.549020814243704
+          },
+          "prepareToReady": {
+            "p50MS": 6.330624979455024,
+            "p95MS": 12.262145814020187
+          },
+          "readyToDraw": {
+            "p50MS": 3.3366666175425053,
+            "p95MS": 3.849708300549537
+          }
+        }
+      }
+    },
+    "order": [
+      "530-1",
+      "531-1",
+      "531-2",
+      "530-2"
+    ],
+    "ordinaryBrushSamples": 240,
+    "physicalInputMeasured": false,
+    "physicalPresentationMeasured": false,
+    "testBinarySHA256": {
+      "530": "443b4c2bf85c2cf17ffe2c84a269fee7bc761c69d43c4b828809e705a85676e7",
+      "531": "139e5b15b7a12fe6dec66bbc32ae1c62f6d15f4f0a0640a71358407f0955b1d4"
+    }
+  },
+  "physicalPresentationMeasured": false,
+  "softwareRelease": false,
+  "sourceInputs": 7884,
+  "step": 531,
+  "tested": {
+    "arm": 90,
+    "debug": 90,
+    "intel": 90
+  },
+  "typedPhotatoCommands": 271
+}

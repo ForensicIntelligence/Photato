@@ -394,6 +394,7 @@ public struct Surface: Codable, Equatable, Sendable {
   /// Layout changes invalidate the entire receiving surface; callers comparing geometry must
   /// also account for the previous surface's extent. Comparison preserves signed-zero bits.
   public func changedTileBounds(comparedTo old: Surface) throws -> IntRect? {
+    try Task.checkCancellation()
     func sameBits(_ a: Pixel, _ b: Pixel) -> Bool {
       a.hasSameBits(as: b)
     }
@@ -428,6 +429,7 @@ public struct Surface: Codable, Equatable, Sendable {
       x1 = max(x1, min(width, x + Self.tileSide))
       y1 = max(y1, min(height, y + Self.tileSide))
     }
+    try Task.checkCancellation()
     return x1 > x0 && y1 > y0
       ? IntRect(x: x0, y: y0, width: x1 - x0, height: y1 - y0) : nil
   }

@@ -3,6 +3,38 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class SurfaceValidationTests: XCTestCase {
+  func testDirectDamageCandidatesIncludeReplacementsInsertionsAndRemovals() {
+    let shared = RasterTile(repeating: .white, count: TileArchive.pixelCount)
+    let original: RasterTileMap = [0: shared, 1: shared, 2: shared]
+    var edited = original
+    // Equal sample values in independently allocated storage must still reach
+    // the bitwise comparison, even when a neighboring tile shares its storage.
+    edited[1] = RasterTile(repeating: .white, count: TileArchive.pixelCount)
+    edited[2] = nil
+    edited[3] = RasterTile(repeating: .black, count: TileArchive.pixelCount)
+    XCTAssertEqual(Set(edited.candidateKeys(comparedTo: original)), [1, 2, 3])
+    XCTAssertEqual(Set(original.candidateKeys(comparedTo: edited)), [1, 2, 3])
+    var unchanged = original.candidateKeys(comparedTo: original)
+    XCTAssertNil(unchanged.next())
+  }
+
+  func testDirectSurfaceDamagePreservesSignedZeroAtPartialTiles() throws {
+    var original = try Surface(width: 130, height: 67, depth: .f32, colorEncoding: .linearRGB)
+    original.setLinearPixel(x: 6, y: 4, .white)
+    original.setLinearPixel(x: 129, y: 66, Pixel(0, 1, 0, 0))
+    var edited = original
+    edited.setLinearPixel(x: 129, y: 66, Pixel(Float(bitPattern: 0x8000_0000), 1, 0, 0))
+    let expected = IntRect(x: 128, y: 64, width: 2, height: 3)
+    XCTAssertEqual(try edited.changedTileBounds(comparedTo: original), expected)
+    XCTAssertEqual(try original.changedTileBounds(comparedTo: edited), expected)
+    XCTAssertNotEqual(original, edited)
+    XCTAssertEqual(original.linearPixel(x: 129, y: 66).r.bitPattern, UInt32(0))
+    XCTAssertEqual(edited.linearPixel(x: 129, y: 66).r.bitPattern, UInt32(0x8000_0000))
+    edited.setLinearPixel(x: 129, y: 66, Pixel(0, 1, 0, 0))
+    XCTAssertEqual(edited, original)
+    XCTAssertNil(try edited.changedTileBounds(comparedTo: original))
+  }
+
   private final class HistoryTiles: RasterBlobDecoding {
     var pixels: [Pixel]
     init(_ pixels: [Pixel]) { self.pixels = pixels }

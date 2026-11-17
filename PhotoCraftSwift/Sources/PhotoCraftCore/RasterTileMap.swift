@@ -280,13 +280,48 @@ struct RasterTileMap: Sendable, Equatable, Sequence, ExpressibleByDictionaryLite
       if l==key {left=a.next()};if r==key {right=b.next()};return key
     }
   }
+  /// The direct dictionaries have a bounded size. Walk them in their native
+  /// order and skip shared sample storage before asking Surface to compare bits.
+  private struct DirectDifferences: IteratorProtocol {
+    private let a: [Int: RasterTile]
+    private let b: [Int: RasterTile]
+    private var left: [Int: RasterTile].Iterator
+    private var right: [Int: RasterTile].Keys.Iterator
+
+    init(_ a: [Int: RasterTile], _ b: [Int: RasterTile]) {
+      self.a = a; self.b = b
+      left = a.makeIterator()
+      right = b.keys.makeIterator()
+    }
+
+    mutating func next() -> Int? {
+      while let (key, tile) = left.next() {
+        if b[key].map({ tile.sharesSamples(with: $0) }) != true { return key }
+      }
+      while let key = right.next() {
+        if a[key] == nil { return key }
+      }
+      return nil
+    }
+  }
   struct CandidateKeys: Sequence,IteratorProtocol {
+    private var directDifference: DirectDifferences?
     private var difference:DifferenceIterator?
     private var union:KeyUnion?
     fileprivate init(_ a:RasterTileMap,_ b:RasterTileMap) {
-      if !a.direct && !b.direct && a.base === b.base {difference=DifferenceIterator(a.root,b.root)}else{union=KeyUnion(a,b)}
+      if a.direct && b.direct {
+        directDifference = DirectDifferences(a.small, b.small)
+      } else if !a.direct && !b.direct && a.base === b.base {
+        difference = DifferenceIterator(a.root, b.root)
+      } else {
+        union = KeyUnion(a, b)
+      }
     }
-    mutating func next() -> Int? {if difference != nil {return difference!.next()};return union!.next()}
+    mutating func next() -> Int? {
+      if directDifference != nil { return directDifference!.next() }
+      if difference != nil { return difference!.next() }
+      return union!.next()
+    }
   }
   /// A positive storage-identity proof only; distinct storage still needs logical comparison.
   /// Every mutation preserves dictionary/array or persistent-node copy-on-write.
@@ -294,7 +329,7 @@ struct RasterTileMap: Sendable, Equatable, Sequence, ExpressibleByDictionaryLite
     guard direct == other.direct, count == other.count else { return false }
     if !direct { return base === other.base && root === other.root }
     for (key,tile) in small {
-      guard let peer=other.small[key],tile.count==peer.count,tile.identity==peer.identity else { return false }
+      guard let peer=other.small[key],tile.sharesSamples(with:peer) else { return false }
     }
     return true
   }

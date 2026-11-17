@@ -143,6 +143,12 @@ struct RasterTile: RandomAccessCollection, MutableCollection, Equatable, @unchec
       try body(UnsafeBufferPointer(start:segment.address.advanced(by:offset).assumingMemoryBound(to:Pixel.self),count:TileArchive.pixelCount))
     }
   }
+  func sharesSamples(with other: Self) -> Bool {
+    guard count == other.count else { return false }
+    return withUnsafeBufferPointer { left in
+      other.withUnsafeBufferPointer { right in left.baseAddress == right.baseAddress }
+    }
+  }
   mutating func replaceSubrange<C: Collection>(_ range: Range<Int>, with values: C) where C.Element == Pixel {
     makeMutable(); array!.replaceSubrange(range,with:values)
   }

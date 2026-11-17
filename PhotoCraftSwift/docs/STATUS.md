@@ -1,3 +1,5 @@
+**Source checkpoint 531.** Find changed tiles without sorting direct canvas storage. All 90 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop byte comparisons remain open. [Qualification](SOURCE_PUBLICATION_531.md).
+
 **Source checkpoint 530.** Ready canvas previews schedule AppKit drawing directly. All 59 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop output comparison remain open. [Qualification](SOURCE_PUBLICATION_530.md).
 
 **Development checkpoint 529.** The regional memory-mapping experiment was withdrawn after the 24 MP timing and memory comparisons. Build 528 remains the published application source. Hosted AppKit timing now separates preview preparation from the delay before drawing. Continue Q03 with the canvas publication path. [Measurements](CANVAS_PREVIEW_EXPERIMENT_529.json).

@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 531: find the tiles a stroke changed
+
+An edit to one part of a large canvas used to sort tile keys for the whole image. The damage check now skips tiles that share the same pixel storage as the previous frame. In the 24-megapixel test, p95 for a single-tile damage check fell from 1.58 ms to 0.33 ms. The complete preview, reduced preview and working sample hashes matched build 530.
+
+All 90 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The hosted AppKit tests time the application through drawing. Physical 60 fps and Photoshop comparisons remain open.
+
+[Detailed record](DEVLOG.md#dev-step-531) · [Measurements](SOURCE_PUBLICATION_531.md).
+
 ## 2026-11-17 — Step 530: send ready previews straight to AppKit
 
 When a preview is ready, Photato now asks the attached AppKit canvas to draw. On the hosted Brush test, the median wait between the preview being ready and the draw beginning fell from 6.49 ms to 1.46 ms. In the same test, input-to-draw p95 fell from 14.36 ms to 9.86 ms.
@@ -233,14 +241,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:530 -->
+<!-- current-status-step:531 -->
 ## Current development status — 17 November 2026
 
-Build 530 sends each completed preview directly to the attached AppKit canvas. The hosted Brush test shows lower draw latency on the 1200 × 800 fixture and exact native preview pixels. All 59 selected tests pass in Debug and both optimized architectures. The universal package passed its checks.
+Build 531 speeds up the exact tile comparisons used for large canvases. All 90 selected tests pass in Debug and both optimized architectures. The universal package passed its checks. The working pixel and preview hashes match the preceding build in the owned 24 MP workload.
 
-The current work is Q03. Physical 60 fps, actual stylus sampling, the wider set of painting contexts and independent Photoshop comparison remain open.
+The current work is Q03. Physical 60 fps, actual stylus input, broader editing conditions and independent comparison with Photoshop remain open.
 
-[Qualification](SOURCE_PUBLICATION_530.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_531.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -976,6 +984,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 528 | [Open JPEG XL still images](DEVLOG.md#dev-step-528) |
 | 2026-11-17 | 529 | [Share unchanged canvas preview pages](DEVLOG.md#dev-step-529) |
 | 2026-11-17 | 530 | [Send ready previews directly to the AppKit canvas](DEVLOG.md#dev-step-530) |
+| 2026-11-17 | 531 | [Find changed tiles without sorting the canvas](DEVLOG.md#dev-step-531) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

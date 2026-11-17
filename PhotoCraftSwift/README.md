@@ -1,3 +1,5 @@
+**Source checkpoint 531.** Find changed tiles without sorting direct canvas storage. All 90 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop byte comparisons remain open. [Qualification](docs/SOURCE_PUBLICATION_531.md).
+
 **Source checkpoint 530.** Ready canvas previews schedule AppKit drawing directly. All 59 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop output comparison remain open. [Qualification](docs/SOURCE_PUBLICATION_530.md).
 
 **Source checkpoint 528.** Faster save-format checks and native JPEG XL still import. All 69 selected methods pass in Debug, optimized Apple Silicon and translated Intel. Universal package checks pass. Photoshop sample comparison and physical 60 fps remain open. [Qualification](docs/SOURCE_PUBLICATION_528.md).
