@@ -5,6 +5,56 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class CanvasFrameDiagnosticsTests: XCTestCase {
+  @MainActor func testFramePublicationInvalidatesOnlyAttachedCanvasesForCurrentStore() async throws {
+    let first = EditorStore(document: try CraftDocument(width: 60, height: 40), brushes: BrushLibrary())
+    let second = EditorStore(document: try CraftDocument(width: 60, height: 40), brushes: BrushLibrary())
+    await first.renderTask?.value
+    await second.renderTask?.value
+    let frame = CGRect(x: 0, y: 0, width: 120, height: 80)
+    let firstCanvas = CraftCanvas(store: first)
+    let secondCanvas = CraftCanvas(store: first)
+    let firstWindow = NSWindow(contentRect: frame, styleMask: [.titled], backing: .buffered, defer: false)
+    let secondWindow = NSWindow(contentRect: frame, styleMask: [.titled], backing: .buffered, defer: false)
+    firstWindow.isReleasedWhenClosed = false
+    secondWindow.isReleasedWhenClosed = false
+    firstWindow.contentView = firstCanvas
+    secondWindow.contentView = secondCanvas
+    defer {
+      firstWindow.contentView = nil; secondWindow.contentView = nil
+      firstWindow.close(); secondWindow.close()
+    }
+
+    // AppKit can clear needsDisplay when it processes the view. Count the
+    // notifications at delivery instead of sampling the later state of that flag.
+    @MainActor func invalidations(from store: EditorStore) async throws -> Int {
+      let trace = CanvasFrameTrace(directory: FileManager.default.temporaryDirectory)
+      store.canvasFrameTrace = trace
+      store.tool = .brush
+      defer {
+        store.canvasFrameTrace = nil
+        store.cancelBrush()
+      }
+      store.beginBrush(.init(x: 15, y: 15), zoom: 1)
+      await store.brushPreviewTask?.value
+      await store.renderTask?.value
+      let accepted = try XCTUnwrap(trace.events.last { $0.kind == "ready" })
+      XCTAssertNotNil(store.image)
+      return trace.events.filter { $0.kind == "invalidate" && $0.revision == accepted.revision }.count
+    }
+
+    let both = try await invalidations(from: first)
+    XCTAssertEqual(both, 2)
+    firstCanvas.store = second
+    let remaining = try await invalidations(from: first)
+    let rebound = try await invalidations(from: second)
+    XCTAssertEqual(remaining, 1)
+    XCTAssertEqual(rebound, 1)
+    firstWindow.contentView = nil
+    let detached = try await invalidations(from: second)
+    XCTAssertEqual(detached, 0)
+    XCTAssertTrue(first.session.undoStack.isEmpty); XCTAssertTrue(second.session.undoStack.isEmpty)
+  }
+
   @MainActor func testOptInBoundsCorrelationAndStalePreview() async throws {
     XCTAssertNil(CanvasFrameTrace.fromEnvironment([:]))
     XCTAssertNil(CanvasFrameTrace.fromEnvironment(["PHOTATO_CANVAS_TRACE_DIR": "relative"]))

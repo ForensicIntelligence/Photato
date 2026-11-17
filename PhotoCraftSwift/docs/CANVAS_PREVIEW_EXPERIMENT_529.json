@@ -1,0 +1,426 @@
+{
+  "candidateArchiveSHA256": "89ec6097358101f2a6055fa104cc1fbb3d239da626a3f993c292b6b2ae7655d1",
+  "candidateCurrentSource": false,
+  "candidateNewTests": [
+    "testLargeRegionalFramesMatchFullDisplayIncludingMinificationAndAlpha",
+    "testSharedQuartzProviderRetainsBytesAfterPreviewAndItsSuccessorRelease"
+  ],
+  "candidateOptimizationPublished": false,
+  "candidateQuartzComparisonsExact": 18,
+  "candidateSelectedChecks": {
+    "arm": 52,
+    "debug": 52,
+    "intel": 52
+  },
+  "candidateSourceRetained": true,
+  "decision": "Rejected because measured preview latency and peak footprint regressed.",
+  "hostedBaseline": {
+    "cases": [
+      {
+        "displayLinkCallbacks": 127,
+        "inputs": 240,
+        "prepared": 118,
+        "profile": {
+          "appKitDraw": {
+            "maxMS": 0.09287497960031033,
+            "p50MS": 0.053750001825392246,
+            "p95MS": 0.06324995774775743,
+            "samples": 118
+          },
+          "inputToDrawComplete": {
+            "maxMS": 34.680083277635276,
+            "p50MS": 15.96225006505847,
+            "p95MS": 30.30941670294851,
+            "samples": 118
+          },
+          "inputToPrepare": {
+            "maxMS": 28.462166665121913,
+            "p50MS": 2.544666640460491,
+            "p95MS": 16.77858328912407,
+            "samples": 118
+          },
+          "prepareToReady": {
+            "maxMS": 15.036458265967667,
+            "p50MS": 2.0391667494550347,
+            "p95MS": 3.621708252467215,
+            "samples": 118
+          },
+          "readyToDrawStart": {
+            "maxMS": 14.668749994598329,
+            "p50MS": 10.72583335917443,
+            "p95MS": 13.626041705720127,
+            "samples": 118
+          }
+        },
+        "tool": "Brush",
+        "uniqueContentDraws": 118
+      },
+      {
+        "displayLinkCallbacks": 127,
+        "inputs": 240,
+        "prepared": 120,
+        "profile": {
+          "appKitDraw": {
+            "maxMS": 0.07412501145154238,
+            "p50MS": 0.05191669333726168,
+            "p95MS": 0.06166670937091112,
+            "samples": 120
+          },
+          "inputToDrawComplete": {
+            "maxMS": 34.14691670332104,
+            "p50MS": 17.21245830412954,
+            "p95MS": 32.56154165137559,
+            "samples": 120
+          },
+          "inputToPrepare": {
+            "maxMS": 19.60158336441964,
+            "p50MS": 7.170333294197917,
+            "p95MS": 16.931208316236734,
+            "samples": 120
+          },
+          "prepareToReady": {
+            "maxMS": 4.634000011719763,
+            "p50MS": 2.1864583250135183,
+            "p95MS": 3.744750050827861,
+            "samples": 120
+          },
+          "readyToDrawStart": {
+            "maxMS": 16.083833295851946,
+            "p50MS": 11.121833347715437,
+            "p95MS": 14.550000079907477,
+            "samples": 120
+          }
+        },
+        "tool": "Blur",
+        "uniqueContentDraws": 120
+      },
+      {
+        "displayLinkCallbacks": 127,
+        "inputs": 240,
+        "prepared": 116,
+        "profile": {
+          "appKitDraw": {
+            "maxMS": 0.06408337503671646,
+            "p50MS": 0.05345826502889395,
+            "p95MS": 0.06037496495991945,
+            "samples": 116
+          },
+          "inputToDrawComplete": {
+            "maxMS": 37.82783343922347,
+            "p50MS": 15.79195843078196,
+            "p95MS": 20.879166666418314,
+            "samples": 116
+          },
+          "inputToPrepare": {
+            "maxMS": 28.932749992236495,
+            "p50MS": 2.745041623711586,
+            "p95MS": 5.109874997287989,
+            "samples": 116
+          },
+          "prepareToReady": {
+            "maxMS": 17.301083425991237,
+            "p50MS": 1.9145417027175426,
+            "p95MS": 4.987666616216302,
+            "samples": 116
+          },
+          "readyToDrawStart": {
+            "maxMS": 14.084916678257287,
+            "p50MS": 10.81354171037674,
+            "p95MS": 13.068791711702943,
+            "samples": 116
+          }
+        },
+        "tool": "Dodge",
+        "uniqueContentDraws": 116
+      },
+      {
+        "displayLinkCallbacks": 127,
+        "inputs": 240,
+        "prepared": 120,
+        "profile": {
+          "appKitDraw": {
+            "maxMS": 0.08041667751967907,
+            "p50MS": 0.05533336661756039,
+            "p95MS": 0.0634166644886136,
+            "samples": 120
+          },
+          "inputToDrawComplete": {
+            "maxMS": 31.38279158156365,
+            "p50MS": 16.02329162415117,
+            "p95MS": 28.15062494482845,
+            "samples": 120
+          },
+          "inputToPrepare": {
+            "maxMS": 16.82187500409782,
+            "p50MS": 2.7275417232885957,
+            "p95MS": 14.88354173488915,
+            "samples": 120
+          },
+          "prepareToReady": {
+            "maxMS": 15.32954175490886,
+            "p50MS": 2.3398332996293902,
+            "p95MS": 12.63424998614937,
+            "samples": 120
+          },
+          "readyToDrawStart": {
+            "maxMS": 14.325666707009077,
+            "p50MS": 10.552208288572729,
+            "p95MS": 12.809750041924417,
+            "samples": 120
+          }
+        },
+        "tool": "Smudge",
+        "uniqueContentDraws": 120
+      }
+    ],
+    "fixture": "Actual native NSWindow hosting 1200x800 owned raster at 50% zoom, 240 store-generated samples per stroke paced at 120 Hz.",
+    "physicalPresentationMeasured": false,
+    "pixelEquality": "Complete native command matches each accepted preview at the end of the stroke.",
+    "sourceBuild": 528
+  },
+  "instrumentsStatus": {
+    "ownedProcessesRemaining": false,
+    "physicalPresentationMeasured": false,
+    "recordFinalizationTimedOutSeconds": 50,
+    "targetExitedBeforeTimeout": true,
+    "traceExportExit": 10
+  },
+  "photoshopByteEqualityQualified": false,
+  "physicalFPSQualified": false,
+  "rejectedSoftwareCandidate": 529,
+  "remainingWork": "Trace the ready-to-draw handoff from EditorStore through CanvasHost and AppKit. Qualify large-document workloads and physical presentation.",
+  "restoredNativeInputs": 7884,
+  "softwareBuild": 528,
+  "standaloneMemory": {
+    "2": {
+      "packed": {
+        "medianPatchMS": 0.43729168828576803,
+        "p95PatchMS": 0.6184582598507404,
+        "peakFootprintBytes": 105726696,
+        "peakResidentBytes": 110510080
+      },
+      "shared": {
+        "medianPatchMS": 0.6399167468771338,
+        "p95PatchMS": 0.8225416531786323,
+        "peakFootprintBytes": 199312056,
+        "peakResidentBytes": 204111872
+      }
+    },
+    "8": {
+      "packed": {
+        "medianPatchMS": 0.41854160372167826,
+        "p95PatchMS": 0.6517916917800903,
+        "peakFootprintBytes": 119211064,
+        "peakResidentBytes": 123813888
+      },
+      "shared": {
+        "medianPatchMS": 0.656625023111701,
+        "p95PatchMS": 0.8335832972079515,
+        "peakFootprintBytes": 212616032,
+        "peakResidentBytes": 217300992
+      }
+    }
+  },
+  "step": 529,
+  "timing": {
+    "baselineTestSHA256": "30e4b4bdb6e6791eeb58b23a54805bc0bfb0cdff10348efd274aab38c62afba5",
+    "configuration": "optimized Apple Silicon",
+    "currentTestSHA256": "25257a3a82e6649f710b4417d46c441d4a198ae043d9f842240703b4a006eab8",
+    "physicalPresentationMeasured": false,
+    "runOrder": [
+      "528-1",
+      "529-1",
+      "529-2",
+      "528-2"
+    ],
+    "summary": {
+      "layered": [
+        {
+          "528": {
+            "appkit_draw": {
+              "median_ms": 3.4159166971221566,
+              "p95_ms": 3.7776874960400164
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 2.697229152545333,
+              "p95_ms": 4.987500025890768
+            }
+          },
+          "529": {
+            "appkit_draw": {
+              "median_ms": 3.4510833211243153,
+              "p95_ms": 3.8025416433811188
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 2.7243749354965985,
+              "p95_ms": 4.887833318207413
+            }
+          },
+          "brush_size": 30,
+          "height": 800,
+          "width": 1200
+        },
+        {
+          "528": {
+            "appkit_draw": {
+              "median_ms": 4.037583363242447,
+              "p95_ms": 5.919437448028475
+            },
+            "publishedFrames": [
+              119,
+              121
+            ],
+            "render": {
+              "median_ms": 3.2673542154952884,
+              "p95_ms": 6.375541677698493
+            }
+          },
+          "529": {
+            "appkit_draw": {
+              "median_ms": 3.9290625136345625,
+              "p95_ms": 4.481562529690564
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 3.046833269763738,
+              "p95_ms": 5.274624971207231
+            }
+          },
+          "brush_size": 64,
+          "height": 1536,
+          "width": 2048
+        },
+        {
+          "528": {
+            "appkit_draw": {
+              "median_ms": 3.041833348106593,
+              "p95_ms": 3.481270803604275
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 6.122645805589855,
+              "p95_ms": 8.729729102924466
+            }
+          },
+          "529": {
+            "appkit_draw": {
+              "median_ms": 3.0914583476260304,
+              "p95_ms": 3.538541670423001
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 6.844374991487712,
+              "p95_ms": 9.367770864628255
+            }
+          },
+          "brush_size": 64,
+          "height": 4000,
+          "width": 6000
+        },
+        {
+          "528": {
+            "appkit_draw": {
+              "median_ms": 3.7335208617150784,
+              "p95_ms": 4.42066666437313
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 0.430770858656615,
+              "p95_ms": 0.49914588453248143
+            }
+          },
+          "529": {
+            "appkit_draw": {
+              "median_ms": 3.773791657295078,
+              "p95_ms": 4.507249977905303
+            },
+            "publishedFrames": [
+              121,
+              121
+            ],
+            "render": {
+              "median_ms": 0.4520416841842234,
+              "p95_ms": 0.5211458192206919
+            }
+          },
+          "brush_size": 256,
+          "height": 1536,
+          "width": 2048
+        }
+      ],
+      "preview": [
+        {
+          "528": {
+            "input_to_preview": {
+              "median_ms": 1.570812484715134,
+              "p95_ms": 2.901312487665564
+            }
+          },
+          "529": {
+            "input_to_preview": {
+              "median_ms": 1.6169582959264517,
+              "p95_ms": 2.8216041391715407
+            }
+          },
+          "brush_size": 32,
+          "height": 768,
+          "width": 1024
+        },
+        {
+          "528": {
+            "input_to_preview": {
+              "median_ms": 2.9685624758712947,
+              "p95_ms": 3.202645806595683
+            }
+          },
+          "529": {
+            "input_to_preview": {
+              "median_ms": 2.9960625106468797,
+              "p95_ms": 3.2024166430346668
+            }
+          },
+          "brush_size": 64,
+          "height": 1536,
+          "width": 2048
+        },
+        {
+          "528": {
+            "input_to_preview": {
+              "median_ms": 3.9766874979250133,
+              "p95_ms": 4.299854161217809
+            }
+          },
+          "529": {
+            "input_to_preview": {
+              "median_ms": 4.281291679944843,
+              "p95_ms": 4.6588542172685266
+            }
+          },
+          "brush_size": 64,
+          "height": 4000,
+          "width": 6000
+        }
+      ]
+    }
+  }
+}

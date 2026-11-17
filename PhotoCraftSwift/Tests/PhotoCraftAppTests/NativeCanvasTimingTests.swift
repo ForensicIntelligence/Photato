@@ -10,14 +10,21 @@ final class NativeCanvasTimingTests: XCTestCase {
     guard let path = ProcessInfo.processInfo.environment["PHOTATO_NATIVE_FRAME_REPORT"] else { return }
     let directory = URL(fileURLWithPath: path, isDirectory: true)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    let large = ProcessInfo.processInfo.environment["PHOTATO_NATIVE_LARGE_FRAME"] == "1"
+    let (width, height, zoom) = large ? (6000, 4000, 0.125) : (1200, 800, 0.5)
+    let tools: [EditorTool] = large ? [.brush] : [.brush, .blur, .dodge, .smudge]
     var results: [[String: Any]] = []
-    for tool in [EditorTool.brush, .blur, .dodge, .smudge] {
-      var document = try CraftDocument(width: 1200, height: 800)
-      var pixels = try Surface(width: 1200, height: 800)
+    for tool in tools {
+      var document = try CraftDocument(width: width, height: height)
+      var pixels = try Surface(width: width, height: height)
       pixels.mapPixels { x, y, _ in Pixel(Float(x % 127) / 126, Float(y % 97) / 96, 0.4) }
       document.layers[0].content = .raster(pixels)
+      if large {
+        document.layers.append(Layer(name: "Brightness", content: .adjustment(.brightnessContrast(0.05, 0.1))))
+        document.layers.append(Layer(name: "Contrast", content: .adjustment(.brightnessContrast(-0.05, 0.1))))
+      }
       let store = EditorStore(document: document, cloneState: CloneSources(), brushes: BrushLibrary())
-      store.tool = tool; store.brush.size = 30; store.brush.color = .black
+      store.tool = tool; store.brush.size = large ? 64 : 30; store.brush.color = .black
       store.retouchSettings.brush.size = 30; store.retouchSettings.brush.pressureSize = false
       let trace = CanvasFrameTrace(directory: directory); store.canvasFrameTrace = trace
       let host = NSHostingView(rootView: WorkspaceView(store: store))
@@ -31,7 +38,7 @@ final class NativeCanvasTimingTests: XCTestCase {
       }
       host.layoutSubtreeIfNeeded()
       try await Task.sleep(for: .milliseconds(150))
-      store.setZoom(0.5, center: true); await store.renderTask?.value
+      store.setZoom(zoom, center: true); await store.renderTask?.value
       try await Task.sleep(for: .milliseconds(100))
       let began = ProcessInfo.processInfo.systemUptime
       // Drive the same store gesture entry points at120Hz while the actual
@@ -40,7 +47,8 @@ final class NativeCanvasTimingTests: XCTestCase {
       for i in 0..<240 {
         let delay = began + Double(i) / 120 - ProcessInfo.processInfo.systemUptime
         if delay > 0 { try await Task.sleep(for: .seconds(delay)) }
-        let point = StrokePoint(x: 150 + Double(i) * 2, y: 250 + sin(Double(i) / 15) * 80,
+        let point = StrokePoint(x: 150 * (large ? 4 : 1) + Double(i) * (large ? 10 : 2),
+          y: (250 + sin(Double(i) / 15) * 80) * (large ? 4 : 1),
           time: Double(i) * 1000 / 120)
         if tool == .brush {
           if i == 0 { store.beginBrush(point, zoom: store.effectiveZoom) } else { store.extendBrush(point) }
@@ -54,9 +62,11 @@ final class NativeCanvasTimingTests: XCTestCase {
       let events = trace.events
       let inputs = events.filter { $0.kind == "input" }
       let ready = events.filter { $0.kind == "ready" }
+      let invalidations = events.filter { $0.kind == "invalidate" }
       let draws = events.filter { $0.kind == "draw" && $0.revision != nil }
       XCTAssertEqual(inputs.count, 240); XCTAssertEqual(inputs.last?.samples, 240)
       XCTAssertFalse(ready.isEmpty); XCTAssertFalse(draws.isEmpty)
+      XCTAssertEqual(invalidations.map(\.revision), ready.map(\.revision))
       // No pointer geometry changes in this store-driven fixture. Preparing the
       // next preview must not redraw the previously accepted pixels every time.
       XCTAssertLessThanOrEqual(draws.count, ready.count + max(8, ready.count / 5))
@@ -70,12 +80,14 @@ final class NativeCanvasTimingTests: XCTestCase {
       let url = try XCTUnwrap(written)
       results.append(["tool": tool.rawValue, "trace": url.lastPathComponent,
         "input_count": inputs.count, "ready_count": ready.count,
-        "draw_count": draws.count, "distinct_drawn_revisions": Set(draws.compactMap(\.revision)).count,
+        "invalidate_count": invalidations.count, "draw_count": draws.count,
+        "distinct_drawn_revisions": Set(draws.compactMap(\.revision)).count,
         "display_callbacks": events.filter { $0.kind == "displayCallback" }.count,
         "physical_presentation_measured": false, "pixels_match_complete_native_command": true])
     }
     let report: [String: Any] = ["cases": results,
-      "scope": "Owned1200x800 native WorkspaceView at50%,30px tool,240 store-generated samples at120Hz. Actual AppKit draw callbacks and display-link markers; no direct offscreen draw, physical input, input-to-photon or Photoshop pixel-equivalence claim."]
+      "scope": "Owned raster in a native WorkspaceView. 240 store-generated samples at 120 Hz. Actual AppKit draw callbacks and display-link markers. Physical input, input-to-photon and Photoshop pixel equivalence remain unqualified.",
+      "width": width, "height": height, "zoom": zoom, "layered": large]
     try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
       .write(to: directory.appendingPathComponent("summary.json"), options: .atomic)
   }

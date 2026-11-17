@@ -8348,6 +8348,20 @@
       "link": "DEVLOG.md#dev-step-528",
       "section_sha256": "b5182aa1cfb7a01307c6fc88ec07f38d9e54e80496d79e1390c8a1ac3ffa3b2f",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-529",
+      "title": "2026-11-17 \u2014 Share unchanged canvas preview pages",
+      "link": "DEVLOG.md#dev-step-529",
+      "section_sha256": "f0f313620791e11b3ca6393f33e47db49f3edd5d3c26b40ddf76c06506a34022",
+      "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-530",
+      "title": "2026-11-17 \u2014 Send ready previews directly to the AppKit canvas",
+      "link": "DEVLOG.md#dev-step-530",
+      "section_sha256": "3ae451c0b73907dc8e9e62fe2722e7bbf1259669257cf48da57a0572e1705f9f",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10879,8 +10893,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "bc9010c419a03aac4b33c56e861b00ac89ab4737f4d18e240056a6c764491a0a",
-      "bytes": 127370,
+      "sha256": "ee2f0793671d833ae08009046a09a9a1182a926941b112cb9393b40a035a3be1",
+      "bytes": 127697,
       "rolling_current_snapshot": false
     },
     {
@@ -10891,8 +10905,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "14222054e351b4adb99bbc483439326ff5caae6dd3aba990efb90f1dedcaa475",
-      "bytes": 120851,
+      "sha256": "9dd015890197e1e4b1e473735e5b97a278f320068e358db63787e4dd79dbd1d5",
+      "bytes": 121178,
       "rolling_current_snapshot": false
     },
     {
@@ -19284,9 +19298,27 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/528-jpeg-xl-import/history-check01.log",
+      "sha256": "ac2e2680f672a617fac265bb3abb2f2f6ba020ede8e0f091d9451337f537d54c",
+      "bytes": 556,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/history-comparison01.json",
+      "sha256": "c63dac77a2c71f3b74c6acc0402da09959072e00373e179a35124fa802e8575f",
+      "bytes": 119,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "artifacts/528-jpeg-xl-import/history-refresh01.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0,
+      "sha256": "f4a1a3e28dd4146cefae3ee0e55e02d9e97b6797f386dd0fc7f82d1f815c8188",
+      "bytes": 76174,
       "rolling_current_snapshot": false,
       "test_result": {
         "embedded_start_time": null,
@@ -19452,6 +19484,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/528-jpeg-xl-import/source-commit01.log",
+      "sha256": "65d39fb3a87755e8e2e60683a28500fef12d705c928830ccab0e7bf43c04687d",
+      "bytes": 1473,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
       "path": "artifacts/528-jpeg-xl-import/source-deltas/528-debug01/Tests/PhotoCraftAppTests/Fixtures/jpeg-xl-import/expected.json",
       "sha256": "7a01e595e66e3df54e67731cf9d0c8f8e47ddf4ee8af131b7b8029075abf143b",
       "bytes": 4981,
@@ -19479,6 +19523,54 @@
       "path": "artifacts/528-jpeg-xl-import/source-deltas/verification.json",
       "sha256": "1bf863b413037d4529d9dc53b985dee06fcf2da9b4e7fd12cb0b80c0c52229c0",
       "bytes": 3592,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/source-publication01.json",
+      "sha256": "7ac2e29fee7081fc36d88ab1f52bb029d6393554936619c87148538ae033c0d7",
+      "bytes": 447,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/source-push01.log",
+      "sha256": "76770f3bc286157efb6f6ab512ee18ab4d1a841076d6fb90f6211c3088dfa58c",
+      "bytes": 100,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/source-scan01/redacted.json",
+      "sha256": "95fd61984c0a69e3087beec994f10024cceb02b19008ff4c16e86ddc728ba4a3",
+      "bytes": 15434,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/source-scan01/review.json",
+      "sha256": "438e0e83ed8dcad3ebd49226d6ebeef8debe5e719ad20447d8819509312d670c",
+      "bytes": 3502,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/source-scan01/scanner.log",
+      "sha256": "231e7c06f1a3faf77838753bded17b91bd9b114c750e8046ec8a6fdd4de006ef",
+      "bytes": 113,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/528-jpeg-xl-import/staged.json",
+      "sha256": "187b0b356d92844f6d84c3d08b110048a7acb3037aa7a6ec954ecdc08ddf52fd",
+      "bytes": 2526,
       "rolling_current_snapshot": false
     },
     {
@@ -19533,6 +19625,1746 @@
       "path": "artifacts/528-jpeg-xl-import/universal01/staging.json",
       "sha256": "6c8adce8a241020701d1bbd3b815483dce8c932901be2bdc4efb0cd2cbee699f",
       "bytes": 2118,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/arm-replay01/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/arm-replay01/command.json",
+      "sha256": "9c5e14d60ee4bb2b8f8f0ea82cc432440444950a87eb79aa907e1dc44cc823ac",
+      "bytes": 5455,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/arm-replay01/process.json",
+      "sha256": "003125e8b0a1c972688521e3605656aa806d3f899d40f42ef0fa166b0ce93b92",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/arm-replay01/receipt.json",
+      "sha256": "a4bd85e68f697b24711f7347f66076ee2a9a5e1c8de51178fe5506f298e7e302",
+      "bytes": 5786,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/arm-replay01/test.log",
+      "sha256": "2154d92a0b03f7f46d94c5c6cd260d0e6ab1f96cc3e874f94951473856cbeb94",
+      "bytes": 19533,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:57:11.834",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 52,
+        "failures": 0,
+        "seconds": 3.637,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/baseline01/raster-preview.json",
+      "sha256": "4be44b62f5e71083d384da1916e7a976f8f8eefe9bfec873133005e6bc0bf642",
+      "bytes": 10962,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/baseline01/test.log",
+      "sha256": "7e77b09c06b5dc408b3aa593c2bed9867c732ae5f0d714559deebb38d9326c74",
+      "bytes": 901,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:41:47.144",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 3.77,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/baseline02/dense-layered.json",
+      "sha256": "af2475fe18ed69e392c3c5c838fd611b89c00bd16e4086aaec265dd62746dd1e",
+      "bytes": 3020,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/baseline02/test.log",
+      "sha256": "f2fc8b524de09ca725e9286c3fc52b1d3d8ddd3cc538eb0704f93b366be63a8c",
+      "bytes": 944,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:44:05.776",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 19.92,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/debug-replay01/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/debug-replay01/command.json",
+      "sha256": "f9725ff3fd74c59f1bf86a3a62f3531b63740fbc4271a29b0e14ec4253c72f4d",
+      "bytes": 5461,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/debug-replay01/process.json",
+      "sha256": "2b89bf9ea63018ef026f2ca9d43b6e9df139bff248660d4de8d3b33d32bd5f30",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/debug-replay01/receipt.json",
+      "sha256": "28d983aeb0e55c22bdf60c41d8cdd3f992937422b7e6970ea92ea07b9075bda8",
+      "bytes": 5786,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/debug-replay01/test.log",
+      "sha256": "ada74a9800a77a5e7fb09d1c456fcb84e3a7f9d778c3683be0d445c8a1f41452",
+      "bytes": 19539,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:51:49.682",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 52,
+        "failures": 0,
+        "seconds": 31.793,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/display-environment.log",
+      "sha256": "9afaa5d412d3812d386887dcaa2388e436f78566b80892cd367b968b082b5789",
+      "bytes": 84,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/history-check01.log",
+      "sha256": "ac2e2680f672a617fac265bb3abb2f2f6ba020ede8e0f091d9451337f537d54c",
+      "bytes": 556,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/history-comparison01.json",
+      "sha256": "16ba406d452c04e515f1841f9716258df23e3ab06d1beadf8cb4df4c16a93026",
+      "bytes": 130,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/history-refresh01.log",
+      "sha256": "aa794d0410c390f586c6e494c1de19c8f6fad85ea68a94a9dc15925a910ff4f0",
+      "bytes": 76174,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/instrumented/stroke-39E20DBE-BF35-4DB4-9472-FA4E7C969DEC.json",
+      "sha256": "84d5142dc6b8e3b63be37ef8ea455cd7e4a5ce04e18562efe8a9033142543bda",
+      "bytes": 68011,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/instrumented/stroke-A4D5FBDC-759E-4F3A-83B7-88671605FA90.json",
+      "sha256": "d3515ee69dc12ede209d24c12030dc6305d565e9fe6b8357a74a7d70a2ae46e1",
+      "bytes": 69311,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/instrumented/stroke-BB5DF711-C185-416C-B87A-B2B4836B289B.json",
+      "sha256": "ff767d15e5cd766a7a95af06528e6bbdc8ad650467a3fc67a3fc380d9ed5bac6",
+      "bytes": 70776,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/instrumented/stroke-D824CD41-598C-4788-AA56-445C0119E11F.json",
+      "sha256": "c0b43d33d20204ee422f59c323b45741ac1ce0c590394f80423594a662be8117",
+      "bytes": 64163,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/instrumented/summary.json",
+      "sha256": "e57697e70c162692395b80b53cec97017f6e5247496850333f0742ed57bd5a4f",
+      "bytes": 1706,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/phase-timing.json",
+      "sha256": "eabdc9580f0c217e49adb7110b72c416e10e30a0eca38f51639c2d78652b9089",
+      "bytes": 4637,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/trace-export.log",
+      "sha256": "28c3ee1d8e3698496c540c01ccbb9d79fed962accf4e675fd0f33a6af02fdef5",
+      "bytes": 47,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/trace-status.json",
+      "sha256": "c2507f879c61b10ccaf6d179d2909ac3dfa9edf67528993440c1b5205051e4a9",
+      "bytes": 185,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced/stroke-0AC5C8EF-2E0F-4A34-A9B2-7807E62DA994.json",
+      "sha256": "cdc2ca7c8fbee02fca2aa60a968f1e57dbd53e9d00a769e0e218603c6ac96af2",
+      "bytes": 70963,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced/stroke-2FE3B8ED-BEC6-4C34-812C-0AF307310B4B.json",
+      "sha256": "05caa7974f22f4214a0433dcbcabbb224b01db41805f27919a310f136937ea10",
+      "bytes": 70923,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced/stroke-71168005-D9A9-4687-B0C3-9C272BDDECF3.json",
+      "sha256": "7173ef54bf9985b2bba014d4d0f84eee8889762b405dc4be906605ba0f09120a",
+      "bytes": 69558,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced/stroke-B8F56B00-607B-4283-ACEF-6D69B49FFB69.json",
+      "sha256": "bb70cc80c430d1aa66d426d9682dc63aba9397e07874d4324437e7a884388c28",
+      "bytes": 70293,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced/summary.json",
+      "sha256": "0034678878c7cbd49e50c7e6be462a3262f6ddb789e3e7cd4c9c07cc3d899806",
+      "bytes": 1706,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced-receipt.json",
+      "sha256": "15bf1d491737de923ea8ec8a2ee667ac05ab8edd171545fd0485c953163e22f1",
+      "bytes": 2443,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/untraced.log",
+      "sha256": "144384fb7d47829de44ecdeeda99dfc03716b748d11b851b8a1d92cc5609e6b6",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:00:56.245",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 12.346,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/hosted-baseline01/xctrace.log",
+      "sha256": "addaa076aa374b5e165b1c48b3df055605bf1f89b94f1589a38bce07dcddabf7",
+      "bytes": 170,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/package01.log",
+      "sha256": "df4a28432bbd66fbf298ef842980269dc1d6a7a5d6fcae3edd13da5e9ab45f62",
+      "bytes": 1780,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-1/layered.json",
+      "sha256": "3215c25d6f9a501e0e9f85b1e311eb12bc36a127332c5c29c37b86a16281762b",
+      "bytes": 3020,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-1/layered.log",
+      "sha256": "fee301f259063c95689f5852d11ebf5d6446cce162038c239df5c723630ec4f6",
+      "bytes": 944,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:57:39.603",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 19.91,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-1/preview.json",
+      "sha256": "9203fc5d906339f3198697a29c24f4d60da00a73a2bbf3507f5299e0add84d66",
+      "bytes": 10945,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-1/preview.log",
+      "sha256": "1ed43febeb162690ef3c51694b814a971d3f1b7476e8be5c5a8a72d8888e9073",
+      "bytes": 901,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:57:35.695",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 3.803,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-2/layered.json",
+      "sha256": "b6089f051cb072208c8401dd674538ae2012e2a6d1d62054b435d93476decd42",
+      "bytes": 3019,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-2/layered.log",
+      "sha256": "e1b5a27d0c21c4bcd0af6d5fe3f35bb9bc12f3ca419d7f26fedca81b1cc4a10f",
+      "bytes": 944,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:58:50.781",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 19.807,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-2/preview.json",
+      "sha256": "c8faa5fe11b071d6e3d2562f9da9e953d81297039e6cb7a48a0f2686be6607a8",
+      "bytes": 10952,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/528-2/preview.log",
+      "sha256": "2fb167d32d72329d8f227bf305db0eae0baf0740bb5d749a301894e34b18e235",
+      "bytes": 901,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:58:46.847",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 3.823,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-1/layered.json",
+      "sha256": "07ea442b56e4e07a1afe9979373bda980e2ed7e6333f19d5c92e0682f6e4a8ad",
+      "bytes": 3021,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-1/layered.log",
+      "sha256": "75ea1acfd9b3d33533853350c9a1fafaf9f3ce8c00ed37dd6aaa5f7cf39ad8e7",
+      "bytes": 944,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:58:03.490",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 19.581,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-1/preview.json",
+      "sha256": "00e5bd6b1231cfe011b0456216af06e05198d657bc69ff201fbf3a61b3a53c5e",
+      "bytes": 10943,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-1/preview.log",
+      "sha256": "bf25ebc737705c52f638ac742ef27b845a93bb0da6189ad40e7d6861517677ca",
+      "bytes": 901,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:57:59.626",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 3.76,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-2/layered.json",
+      "sha256": "e4e9dabcc9f09590c820256a254b7e36d8a4002643551cf374b3733dcac44bea",
+      "bytes": 3021,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-2/layered.log",
+      "sha256": "c5dfff1df7722e38ee066a75239836239f5263f3bb07b3e0ec22aa7a143fb256",
+      "bytes": 944,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:58:27.067",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 19.669,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-2/preview.json",
+      "sha256": "4fd75d0f09c01945ff6f27bef75bdc6008bddd8975eaaecf970d892022bd1f5a",
+      "bytes": 10959,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/529-2/preview.log",
+      "sha256": "25855a661298cc8e2475edede2673cfa8768706afbe8eb2b973057b745e1420e",
+      "bytes": 901,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:58:23.185",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 3.775,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/performance01/comparison.json",
+      "sha256": "a53edba2c497c1b3af7c1b509af6174f5b495bb680c06f0057af35b56bf63d7e",
+      "bytes": 4763,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/prototype02/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/prototype02/timing.log",
+      "sha256": "34d5ae96ce1d564cbaabedd68d92b79db32b20f890de4da6e8e306cef2d31933",
+      "bytes": 139,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification.json",
+      "sha256": "eea3499e2f58a67261491dc824aad70295e26ad4faa77ba78b413f431d2e383c",
+      "bytes": 18053,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/arm/command.json",
+      "sha256": "8b680fe9bcea87cb7853916b49ad44f49035c0e16a45c2acae33234366027bb1",
+      "bytes": 6639,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/arm/process.json",
+      "sha256": "0e532be8df86f50f17ac1b9ec35e2dba01d3230f4e7a8e84a4163ddb583cad2d",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/arm/receipt.json",
+      "sha256": "36af9c68cff0753730784252be61be1ebda6f1687d6e50a7acc4203241dbc1ef",
+      "bytes": 5737,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/arm/test.log",
+      "sha256": "257295b7b783482e3199d43d806b5f52f10c4a2bf26f21dfd6911dfbec75fa24",
+      "bytes": 94371,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:56:48.639",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 52,
+        "failures": 0,
+        "seconds": 3.563,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/debug/command.json",
+      "sha256": "13736f04f5b280673f14486e98f63f5456e2c4c1e66eace41afd3bf248360dad",
+      "bytes": 6641,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/debug/compiler-signal-summary.json",
+      "sha256": "3f70c9db43ec3174a2bcb1000a079561d9c8c620f27006192e9d73e10ce1375a",
+      "bytes": 1968,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/debug/process.json",
+      "sha256": "4918190563eb59aeedfaa014e20b48a1971748dd35946c2505061cece667ff72",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/debug/receipt.json",
+      "sha256": "fab30d1973f856cf4ce305f4075fba0e8e043de2cc7d6400ec7c661e6dbcc5b9",
+      "bytes": 5736,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/debug/test.log",
+      "sha256": "6dcd19fac797b1cdcb38406f1b4d78b2a4c9a871d1770fb43c53ad65255514b3",
+      "bytes": 497224,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "build_failed",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/inputs.json",
+      "sha256": "fdcea3ac0bec71d9f0e4ce8f66ce92ce2d8f63b3e543e9fd991df096a07e7ea0",
+      "bytes": 1148010,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel/command.json",
+      "sha256": "9889f84fca5165dc7f28773c8d008e2e96528ed4ed598c6a6fb39f89af3efbca",
+      "bytes": 11117,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel/process.json",
+      "sha256": "6fae35d5531e1291a2bd94d609b17f81a6b0636063564ba9cb2db96509901bab",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel/receipt.json",
+      "sha256": "2a244e4f7751cdc51b87f6287375cb41d20fc528af7c2ba4039e88e3e7d20e0b",
+      "bytes": 5735,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel/test.log",
+      "sha256": "84e07613962497bda816251e9f82fe553829253fabbc8ff3adc735b685b143fc",
+      "bytes": 19533,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:56:53.789",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 52,
+        "failures": 0,
+        "seconds": 5.887,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel-build/command.json",
+      "sha256": "9355c361a786a93374432798fc8afe2150959088cf2f7c819ecd323cd66ac4fe",
+      "bytes": 563,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel-build/process.json",
+      "sha256": "8e0229b7b9def41e2491362214804b44df37f3ac11b683de1fc14ffa3ad8a942",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel-build/receipt.json",
+      "sha256": "80e6cdfb44014cde03474b867f2db36325f5df30ce47a7b4a5d04fdf14a2a01f",
+      "bytes": 125,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/intel-build/test.log",
+      "sha256": "d4ede0c162a8c193e3f03266faea9aba76b2de88cd00c0a7920d6992b979703c",
+      "bytes": 74841,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/products-sha256.json",
+      "sha256": "b9f2f7e5b152021d91e6d26397753ddde392a6f152c65f0a34dc3f9063dcbae8",
+      "bytes": 449,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification01/qualification.json",
+      "sha256": "1c3bc5bb51e4cab5ca9a42c4e68700bea121a0bc3f6f223db5b6b4f44804fdcf",
+      "bytes": 17673,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification02-debug/debug/command.json",
+      "sha256": "787bcf2c8d9bab61d0663af660551caa2b8fa6c705214db8b58692416250094d",
+      "bytes": 6751,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification02-debug/debug/process.json",
+      "sha256": "d089b569ebd732d8262356864f71bd3cc9bfe8b4f42d40bccdbebef63922c8c4",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification02-debug/debug/receipt.json",
+      "sha256": "76ca3c1c9401ab9e89d49e42cd8a5697574b92c46d356fcf381716ce9bc6ad28",
+      "bytes": 5738,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification02-debug/debug/test.log",
+      "sha256": "a282f94387fb1a8bceb32a1ae7022616d73a3aa8ee01db49630c4e4106b43ba0",
+      "bytes": 1942391,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 12:50:06.181",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 52,
+        "failures": 0,
+        "seconds": 31.943,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification02-debug/inputs.json",
+      "sha256": "fdcea3ac0bec71d9f0e4ce8f66ce92ce2d8f63b3e543e9fd991df096a07e7ea0",
+      "bytes": 1148010,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/qualification02-debug/qualification.json",
+      "sha256": "364d38c5f60c466763e6d49b5f8d1a3dc198169dfa2acf03b38e995a7548f0b0",
+      "bytes": 5941,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/quartz01/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/quartz01/result.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/quartz01/signing.log",
+      "sha256": "9fc8d6ae64b92d75e56d67111b07001e23dc0bc7209371798cdbe2cf1f303feb",
+      "bytes": 81,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/quartz02/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/quartz02/result.log",
+      "sha256": "25612ac76c4bcdb759ce82cdedc51c14b9b79efcda602dd0e69229157e9634ec",
+      "bytes": 76,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/rejected-source/input-delta.json",
+      "sha256": "0e05be4f5cc64105ea9b7de2ec6885f9dc2ee4ab1353c9cde97472c8da007507",
+      "bytes": 1138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/resident01/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/resident01/packed-2.log",
+      "sha256": "7d805af6f47b49558b0aeb6288d7c041265ca4597e3b655965b9cb02621f67ff",
+      "bytes": 864,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/resident01/packed-8.log",
+      "sha256": "70293525226a5ff6296454f771fe123632580cf17c01e5a9b358c4f734bd019c",
+      "bytes": 864,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/resident01/shared-2.log",
+      "sha256": "5562956fe9081e3c3d2af985777866496a45f904e915e33c6a6110bff1b1bdcb",
+      "bytes": 863,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/resident01/shared-8.log",
+      "sha256": "0cd2dd1a211611084851944703adbfcc8b75e90134709136cdee0cff4b32733c",
+      "bytes": 862,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/restored-source.json",
+      "sha256": "64bb5016cde7bdddcbd9aa678218198d30504640e89d7fdc1a98306e6dd7302b",
+      "bytes": 220,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/universal01/archive.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/universal01/content-sha256.json",
+      "sha256": "f662bd99f31ed7272a55a666f132e88531653c9de6f12acde0ddb5707119830a",
+      "bytes": 2960,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/universal01/macho.log",
+      "sha256": "3186196326ef312b607da8b44adaf0afd2ab8ed42774953bcbc625dd98814068",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/universal01/payload-comparison.json",
+      "sha256": "d7c6bed12dd20fa368f688810638d282cc079f292d036e2e21c54edcfcb37a31",
+      "bytes": 984,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/universal01/stage.log",
+      "sha256": "7c6af9f1fe9440dc323e3b483368e4b73f65d53a71df27e07bf93ba52990b415",
+      "bytes": 193,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/529-canvas-copy-on-write/universal01/staging.json",
+      "sha256": "97de87684fdef6b20b0e35db2ff6d2fed02c325d9a89049623964a75b199df3d",
+      "bytes": 2122,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/history-refresh01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted-debug01/stroke-5D09B836-A4DE-4055-847A-D92EEF27EFE4.json",
+      "sha256": "8172009b3219e0b117c68c52ced3aac345440133f8448af95f5316a3fa55c648",
+      "bytes": 39203,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted-debug01/stroke-941F82D7-62B1-43C8-8D55-6BA322CF78D0.json",
+      "sha256": "63e4c98896a7fb8e30c7f1ba647eaab0ad671883966ad6691456b913708da33a",
+      "bytes": 41637,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted-debug01/stroke-E872AD6A-3D0F-49E8-9F65-5E4E8D530803.json",
+      "sha256": "34253b5c6df76aa0e4bfa5d408064ed8064a8293d44f7bc66c02ef7a4ed192a6",
+      "bytes": 39909,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted-debug01/stroke-F3D69431-6C76-40FE-B879-916F0C9E9493.json",
+      "sha256": "56ad493c446340b6047179cdefb270cd991b0418157cd1c10957b709cea9f74e",
+      "bytes": 40483,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted-debug01/summary.json",
+      "sha256": "886ce43d0684caa8815fb0df26eeab20919aaa3d9f9efd47d8058f5e0a65a278",
+      "bytes": 1870,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted-debug01/test.log",
+      "sha256": "b2ee9f701dc9637e3c024e92c0daf771a27af4839971b25a38a5e205d0281d22",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:12:08.831",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 28.639,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/analysis.json",
+      "sha256": "50f5e533371e4fba4e0712209b9e7ded640ae68fd7ce62ca2e21f83d134a195d",
+      "bytes": 3786,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/command.json",
+      "sha256": "9596dbd307926548f41e66f1a4190b8f755b4931e2cce5145747c3c93fb16645",
+      "bytes": 324,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/stroke-0A1735CD-DAB4-4E3C-BFEB-3B05AF5765D6.json",
+      "sha256": "c7b2f9b8e34e54782125ab71acf41d836afbeb18a81faf78a6aeebe90e6c99d4",
+      "bytes": 70916,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/stroke-1AD9C57B-778E-4ACD-B65C-53AAA6A51108.json",
+      "sha256": "9c7155a62d01d44b013f463dafc8496df2f348b6b5c23e98912c4c10abac8cb0",
+      "bytes": 70918,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/stroke-C40D1EE9-07ED-4EBF-8CA0-925F07D58140.json",
+      "sha256": "e3eb334deb015931d3689fa48942b237f7160244e254951ab891ed6c2e416053",
+      "bytes": 70880,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/stroke-C5A75C00-F955-4ED5-AEA8-BC0B604DE307.json",
+      "sha256": "6b5615946207a4162d89c59afaf35bbf6b41b807c37096f4d6d97cd90eb2ab41",
+      "bytes": 71058,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/summary.json",
+      "sha256": "5fada7ad7fb956ef68ab9947d0faf528e1dc2a65bfcfdd91cc23996fd329a4b2",
+      "bytes": 1706,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-1/test.log",
+      "sha256": "0830a1b098d47f29e96de59a10066d3cafcc0ab496ca9e8d66918f6fdc3423c0",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:24:41.255",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 12.238,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/analysis.json",
+      "sha256": "69950deddefe839c1d3d57288fb394d5eb832f3460aa693700c664a4df0311c5",
+      "bytes": 3784,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/command.json",
+      "sha256": "ef3932bc8fed5ec471a698f2c6f26477165820d467a235dc27bf290ef1352053",
+      "bytes": 324,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/stroke-0988E62F-1703-42C3-874A-492C23D9E48A.json",
+      "sha256": "64f811dee481773c7fb719261bb057ecd5d554b9f3d2acebb2afac7f98df3b1a",
+      "bytes": 70995,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/stroke-3380F67B-8C26-465B-A752-E19E88A15D5D.json",
+      "sha256": "da853a24cb2b30dcabf2d0c4a25d627b74a2528afefff3ba475b512e4e69759d",
+      "bytes": 70744,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/stroke-984E956B-8858-4BF2-B487-FEDC4F9D4EB0.json",
+      "sha256": "9dc2c2d978a0d4f50fbedcc47e9733db8daf9c2b011cf8db4ae2f6b2135f1b63",
+      "bytes": 70519,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/stroke-DDD44795-C5D7-421B-9260-CFB7A2CB7B15.json",
+      "sha256": "142a0700f801b71d82f756b249a9cf8a95e5529604aaa1024e85674c5c650e30",
+      "bytes": 70967,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/summary.json",
+      "sha256": "59a3f566a6d2bf6831059ea731198765fb8fc5277da7954de2b563df341798d0",
+      "bytes": 1706,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/528-2/test.log",
+      "sha256": "550466e59c8e68074de6c4355da15f157e76a7b241136d7766c7eb4e7ddd5ac8",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:25:18.307",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 12.245,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/analysis.json",
+      "sha256": "f6f5c023577dbbd87ce5537a822ca07af7ddbcac4c14abeccaddd3c3522ffbaa",
+      "bytes": 4527,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/command.json",
+      "sha256": "61211fad02852fb9b3212c8767d5b03c7fd97f406839b7f88bb789ba5e1fb5de",
+      "bytes": 332,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/stroke-425CF883-90CB-4DB7-861D-F4B71EE6A551.json",
+      "sha256": "f7732e9ba822699fa4e72304eaa4cd6a8d85eef2499271db33a447958fd9692f",
+      "bytes": 83983,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/stroke-444E9043-10B0-4137-AF44-6DC7F55030CB.json",
+      "sha256": "afc324566acd7004402487f91549c0c4a3ae93c1b79effcc9a5f9f9a758a9849",
+      "bytes": 83901,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/stroke-49F43159-2689-46D5-A6A8-C9CD49066578.json",
+      "sha256": "3130dfca415c2cc19a98e072d43c3813c3a529704be46d0a3dd644d3e1169c6a",
+      "bytes": 83857,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/stroke-D57804A9-6CF7-4368-A9AB-67635C95F672.json",
+      "sha256": "4a2d1dfc8a039ce044df82ea2547b3e992decbeb54b5c27389e84721bcec63a5",
+      "bytes": 83419,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/summary.json",
+      "sha256": "9bdf4a9c1e07eb4bdebf30f2ce2edb1c80337afc17f05db35f26b39d2d57066d",
+      "bytes": 1886,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-1/test.log",
+      "sha256": "d84a2dd26ef25663ea0cc448d3817485645398a56b545525b533e87eddb5da8f",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:24:53.601",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 12.262,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/analysis.json",
+      "sha256": "02c7862481c161c03e942bdb956cae12d828bcbdbb6b6c6e3b5190547d908794",
+      "bytes": 4536,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/command.json",
+      "sha256": "e51beb863540e780c89e7f5f79b72b62dbd37b4468a0e6e023dd686b8543bcdb",
+      "bytes": 332,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/stroke-2116DB44-A81F-47AD-82DA-13021B799816.json",
+      "sha256": "db3257b16c49d8456af7c0af783b5523e32cb10cf3d7c0772b3ec56b9d003774",
+      "bytes": 83234,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/stroke-A549849A-D01D-4FFA-9E5F-B8A4231DE75F.json",
+      "sha256": "258936edcfdc950387886d8f4f5ec414c511efd713e7159aafa402be26db1c54",
+      "bytes": 83971,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/stroke-A763C324-97A0-4D29-8926-8BADD5B76A75.json",
+      "sha256": "dca42924361b30bfc084e875b46b88b60ea8ecfcf3a23e52d702708af3241c90",
+      "bytes": 83894,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/stroke-A994864E-BC16-4A7B-9F77-89A410152B6D.json",
+      "sha256": "6c9cd3faf3ca2ecd3756cfc74408bcb89d5748d03b4486089029a855875d5ea1",
+      "bytes": 83740,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/summary.json",
+      "sha256": "dc5fcb0c7a15d662e23a251dc3fd7cd0d459e0d1e28541db28ccfc23265e9a20",
+      "bytes": 1886,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-2/test.log",
+      "sha256": "2d2c51352d0e13d079c843bb3bc7d87b6420278669555f1b1f50a8aa5b33217d",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:25:05.972",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 12.224,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-layered-24MP/analysis.json",
+      "sha256": "52676c95528c1807658e8ec9202e4b87ac68c2da004d6a163313937e9c8df0b1",
+      "bytes": 1133,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-layered-24MP/command.json",
+      "sha256": "56edba86009931033768a2cca109065ef42c7f1bde0b1ee66f4055ca434f0d27",
+      "bytes": 331,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-layered-24MP/stroke-BFFF1F12-4788-46D9-ADF0-59E281507A97.json",
+      "sha256": "6339666e6bc40f0f958fcd0b4e0c9a083452c95ed8b2bc936ed64e6a71f6842f",
+      "bytes": 83454,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-layered-24MP/summary.json",
+      "sha256": "4ea3762afa6bd6d37290ed730e5857b1c3855834326ec32a7b38e886f66e43c5",
+      "bytes": 718,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/530-layered-24MP/test.log",
+      "sha256": "b8c622ac2466a966312772d11b7d547b34d1c01d8c1fc447b09fc94236f3ad2c",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:25:30.659",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 12.616,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/hosted01/comparison.json",
+      "sha256": "344b74002bc299a0ad8e785ed0ffc400b8be4191fd61630279a4df09de586f32",
+      "bytes": 8200,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/lifecycle-block.swift.txt",
+      "sha256": "32a5f2cfd5a2be97611e7a2d6f1f596253916078d0b8810dedbd26870d88bdef",
+      "bytes": 2409,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/package01.log",
+      "sha256": "552e25fb8a049ae824b5ede889679accfe153c6423818620a2933978df112050",
+      "bytes": 1785,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/build-command.json",
+      "sha256": "2c5bbf51a711e0c8b4d774ce16478daaa170931c02c1da26e8ed7a8ad64f3a6b",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/build-process.json",
+      "sha256": "d28fee479ad7c0988ddca6bb9dadb17633e2255e6b38c553651178737eebed5e",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/build-receipt.json",
+      "sha256": "76e9a2d24160209a34f634ebc7f65fcb0f3a3b16bd6ce532720e770e5340d785",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/build.log",
+      "sha256": "2a6617c1c4acca6839036819350b19ccb44103b04630c7cf980a1a7795176acd",
+      "bytes": 74838,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/receipt.json",
+      "sha256": "869bdc9468433fcfc8a2063de827f315ef0ef7b90871433f191ac5f589c15b9c",
+      "bytes": 6998,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/test-command.json",
+      "sha256": "bd27a26bddf5c61817d3993b4f8b108d471a088c65cac2d16f4f49f580fe0b18",
+      "bytes": 6138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/test-process.json",
+      "sha256": "481f32301896bd6fdf6fb88a9644e1bf940c8774ba6bf2ffbe74d80d8b0681b7",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/arm/test.log",
+      "sha256": "2e2eb2f396fbce64071d1c3e72d3ee7d56175e8ddb2650c86032b81c9e308c0d",
+      "bytes": 23168,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:19:55.056",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 59,
+        "failures": 4,
+        "seconds": 13.194,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/build-command.json",
+      "sha256": "34886d56a984691492632c5d68ad4d867e18993af50e84ffb136ef2e5ff4f17c",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/build-process.json",
+      "sha256": "945c9d2e7eeb333a1d30ee6743832e938e11463995487eff1fd7bf3587a4dc0e",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/build-receipt.json",
+      "sha256": "bbdb080c0fdba6427706a928d789d24b5ad0bc6bd6cd127962ff3fb0d2e703ac",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/build.log",
+      "sha256": "d6ad4b3660a53cf0b3e9d93112ab2582e5cff89485bdbc483547ff7e24ee3ff7",
+      "bytes": 1922776,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/receipt.json",
+      "sha256": "eb97da42d2e75c08e780b3f0348a5bb8bfc1b5b1449d3cf4a5a77156e679acca",
+      "bytes": 6998,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/test-command.json",
+      "sha256": "70614276c495cbca8eb2e3fdaaee2eb773e285129ee31f4cfb6e34da8127aa61",
+      "bytes": 6138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/test-process.json",
+      "sha256": "1b9d2ed5e049a3ce9b2e4f621805975593e5b1f2edc499d8259cb0d4063ef223",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/debug/test.log",
+      "sha256": "7e7f2054d1d5c127c1ae08ae8e7f4f947808ff516f7a2c6358cb5f84b9ddf2e1",
+      "bytes": 23170,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:11:16.073",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 59,
+        "failures": 4,
+        "seconds": 42.557,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/expected-cases.json",
+      "sha256": "8f308b81e826b0b42adf25c30e2f6b1338864d76603f12ec0641ab237d5800de",
+      "bytes": 6248,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/inputs.json",
+      "sha256": "2c5ab0afd7d0c7c9e4cc3a0cecbbccde97d0aa20024ebad6e696428917a704a7",
+      "bytes": 1147884,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/build-command.json",
+      "sha256": "4bdf7d5576ee0e75a6b72c2fd85f4154759e3285da3c018d1cc4c55c56b464f0",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/build-process.json",
+      "sha256": "5e5d9329b86112d534d44af7df82a2803750374311e9ed2d74d053d6a382fff0",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/build-receipt.json",
+      "sha256": "5c96c3f3a28f7d974f42e8a6c9eb7176368d7e83f9dd3df7d01cd842d6f96f66",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/build.log",
+      "sha256": "32464ca82eb4b74eef3405b07a972d3d940e114981b6929caf1f1a2cc19716ac",
+      "bytes": 74840,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/receipt.json",
+      "sha256": "1bfa8265b32c8b5878e7f59ef59f5be009eb3454be75f5c4d75436e4e6e14a0b",
+      "bytes": 7005,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/test-command.json",
+      "sha256": "6e85c18e9352c4261310c8a5ffbdc478c0cdf5909b197b326cd2e8b86416346e",
+      "bytes": 6164,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/test-process.json",
+      "sha256": "03f1b40aeec88c16cd1a17282a3de887be52039ffa69d6e456ab0e47e7d8ebc0",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/intel/test.log",
+      "sha256": "c8ac8f6121f1be84cc8dc5f5a5d29e26bb99124f336fe4a80bcd2cfdb5ccf8d2",
+      "bytes": 23170,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:20:17.508",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 59,
+        "failures": 4,
+        "seconds": 19.267,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/products-sha256.json",
+      "sha256": "fc606f04d07ca52d08da3378f53d241269f612d33b3fd36b0c7b4b38359a41a2",
+      "bytes": 449,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01/qualification.json",
+      "sha256": "ec0442ede1045ef52f1096c65c9f914953b44ec694ee639b0226fc45f309732c",
+      "bytes": 22016,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification01-retained/test-source-delta.json",
+      "sha256": "a62e88954d45594fc69636dfdd58a245f222c8f3a1eb8c8820b1f10557a310cb",
+      "bytes": 257,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/build-command.json",
+      "sha256": "2c5bbf51a711e0c8b4d774ce16478daaa170931c02c1da26e8ed7a8ad64f3a6b",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/build-process.json",
+      "sha256": "a7f570cd7746680657d613fc5c928e7c74d1fa73f8768d624797cd32ce1eee7e",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/build-receipt.json",
+      "sha256": "974c12f77948df87f34f46be3095aec4dff16b1e569d3fc8383e4777450bf1da",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/build.log",
+      "sha256": "24b9fa97ca13b6f4aceb1f589f0edfae70a60d7cad5e1cc02a6db136ad788641",
+      "bytes": 8832,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/receipt.json",
+      "sha256": "f46ec0adea9eb5cf121b39dce3de81095cac34763f737e9de74d3fc5295d1998",
+      "bytes": 6874,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/test-command.json",
+      "sha256": "bd27a26bddf5c61817d3993b4f8b108d471a088c65cac2d16f4f49f580fe0b18",
+      "bytes": 6138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/test-process.json",
+      "sha256": "dda1da507d490684da3ee15530ead94352cd65b9f9d713d597441234740ff10c",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/arm/test.log",
+      "sha256": "94ccb9fe9f607016e2ec82d9bfc34d5bc359d13267d5175623d67ee35b6a5411",
+      "bytes": 22056,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:23:45.492",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 59,
+        "failures": 0,
+        "seconds": 11.481,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/build-command.json",
+      "sha256": "34886d56a984691492632c5d68ad4d867e18993af50e84ffb136ef2e5ff4f17c",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/build-process.json",
+      "sha256": "1a191aa28aa644928f7b24c07bd2c160056067dd3dc8f9155fefd4bf3b1e9f19",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/build-receipt.json",
+      "sha256": "ee07c14dd81322045f8ed79c50dd08b3489a5f6863ac0f31787711949b50cd52",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/build.log",
+      "sha256": "ec0a73c6b58918a71364a31dafd27c13dc2c750042f9767a48a81ce95b2d3dfe",
+      "bytes": 527,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/receipt.json",
+      "sha256": "31538c0d67915f7b4502fcb23c058bbe888897a64a84234ee3c4f86e237d0b59",
+      "bytes": 6874,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/test-command.json",
+      "sha256": "70614276c495cbca8eb2e3fdaaee2eb773e285129ee31f4cfb6e34da8127aa61",
+      "bytes": 6138,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/test-process.json",
+      "sha256": "526ff5623a8daf73140cd7c198de6c2ee9eb502c26f7f3d16fe53d9f57de4ea6",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/debug/test.log",
+      "sha256": "588235aa894fa30474f1fa505d2425144f9d86e784907f2ce9efd0fff2236480",
+      "bytes": 22058,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:21:02.607",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 59,
+        "failures": 0,
+        "seconds": 39.589,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/expected-cases.json",
+      "sha256": "8f308b81e826b0b42adf25c30e2f6b1338864d76603f12ec0641ab237d5800de",
+      "bytes": 6248,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/inputs.json",
+      "sha256": "7a043d911b3e2ad9e9500b89dbc6c8a37f2bd5e9b245528efe2f715b3bb89dc4",
+      "bytes": 1147884,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/build-command.json",
+      "sha256": "4bdf7d5576ee0e75a6b72c2fd85f4154759e3285da3c018d1cc4c55c56b464f0",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/build-process.json",
+      "sha256": "1bffe2074077936dcb6ce39decadd52b00d461b50b563232f44250ec8003871f",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/build-receipt.json",
+      "sha256": "2c4dff07dc649b92c24f7acf202883d1d31a19dbea5c496f11736ff37277d6f2",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/build.log",
+      "sha256": "406be52e47eb6e0a5576689f64899e9c3d712a8f42367a0ae8b3bda0c32d7024",
+      "bytes": 8832,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/receipt.json",
+      "sha256": "9a84bbc1f1c00987a53634c58c3799fb6625167af6f97f9d30128a678657c62e",
+      "bytes": 6881,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/test-command.json",
+      "sha256": "6e85c18e9352c4261310c8a5ffbdc478c0cdf5909b197b326cd2e8b86416346e",
+      "bytes": 6164,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/test-process.json",
+      "sha256": "758201bf8f9153ca5038f0248e5f0fd72223621f76e57a464423294435b1c332",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/intel/test.log",
+      "sha256": "f001ce507b05cb10ffa8da9af6e76b33f94789145a6834f25ccc3c7ba15836ea",
+      "bytes": 22058,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 13:24:05.398",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 59,
+        "failures": 0,
+        "seconds": 16.999,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/qualification02/qualification.json",
+      "sha256": "0f94d52f4db1c2d196886e369c16d27240eca94e62601f5b22079aa2d6f07d05",
+      "bytes": 21619,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/universal01/archive.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/universal01/content-sha256.json",
+      "sha256": "6d306da76b5342b25e853526b89c55a8df850ed271aeb261d3f9906049bc9daf",
+      "bytes": 2960,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/universal01/macho.log",
+      "sha256": "681bc2128a6a168dd04d62c8a77b8b1a37ccb5c52e3ec769053e15c329998dcb",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/universal01/payload-comparison.json",
+      "sha256": "e190367586234401c2757ae03b08fb24a3ac3f6ba1a48363ede32f18a7331583",
+      "bytes": 984,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/universal01/stage.log",
+      "sha256": "9808aef1472594687b7c223be7a4c52563c647e9615b35de4c003010a1af4e55",
+      "bytes": 193,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/530-native-canvas-publication/universal01/staging.json",
+      "sha256": "55399afa1bfa08f01489d4a0adc99d88e7d7fa018a7142e04ba01d98df6fea7d",
+      "bytes": 2127,
       "rolling_current_snapshot": false
     },
     {
@@ -21390,6 +23222,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/CANVAS_PREVIEW_EXPERIMENT_529.json",
+      "sha256": "734a416572959450e8ad8f3ad141836772745e854b2d5a17c3daf024fc030dfc",
+      "bytes": 12174,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/CANVAS_PUBLICATION_530.json",
+      "sha256": "de6b67c27a68105559e0569fbd488485116cd314e2ecb5c0ebbb7a1ebfc7bb10",
+      "bytes": 9817,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/CANVAS_STARTUP_REFERENCES.json",
       "sha256": "9e36a927250cc81a01d465d0bb98850a9c758196469f78214765393d471d3a95",
       "bytes": 8802,
@@ -21739,8 +23583,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "2c385e42b4f486a7948bd1a2cf81f5cb2d05f969e30398e23cc42dc859879e65",
-      "bytes": 85609,
+      "sha256": "17c9982f11ccd3b61c7b4407eeebc8b04af5a8ecd677ccd6c6b49dfa3685ad4e",
+      "bytes": 86436,
       "rolling_current_snapshot": false
     },
     {
@@ -21781,14 +23625,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "e7a391a28b11a35f4af791f6837276ec5c3e46761a8817bd325da0def3afdfbb",
-      "bytes": 819364,
+      "sha256": "795cb72e9e90face238febb130e2cff5fdab6123441c852ddce62d7ddc559ab8",
+      "bytes": 820856,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "4deda9cf24bc9f430c4282db3c4351f64a73f1e6ba77af38c26158895f4e7da2",
-      "bytes": 4548065,
+      "sha256": "69b2cdca2d3077c0c90952dc8e8e4a572990221805449c39ee10166c2c3f6b5e",
+      "bytes": 4557629,
       "rolling_current_snapshot": false
     },
     {
@@ -26406,6 +28250,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_530.md",
+      "sha256": "621bee8af3aec702e794edeee0e2eedc43165e0dd4324e949911f025bccb9153",
+      "bytes": 2783,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -26682,6 +28532,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_530.json",
+      "sha256": "07cccb488e4be8e830f38a788178565eb525555ba5104e9122cbdbaf55178e22",
+      "bytes": 1165859,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -26707,8 +28563,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "fa01903d291629972fcd705186c5b41dfba05959f57323f7f9530e954db3dfb9",
-      "bytes": 406368,
+      "sha256": "042762c9d5f0acf9ef157f13881825b3b0fac23a9697714fd949fc4130a36b2f",
+      "bytes": 407060,
       "rolling_current_snapshot": false
     },
     {
@@ -29089,9 +30945,9 @@
     }
   ],
   "counts": {
-    "milestones": 528,
-    "evidence_files": 2992,
-    "logs": 35,
+    "milestones": 530,
+    "evidence_files": 3219,
+    "logs": 101,
     "missing_explicit_references": 631
   }
 }

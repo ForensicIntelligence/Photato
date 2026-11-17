@@ -6,7 +6,6 @@ import SwiftUI
 
 struct CanvasHost: NSViewRepresentable {
   var store: EditorStore
-  var image: CGImage?
   var revision: Int
   var zoom: Double
   var pan: CGSize
@@ -32,8 +31,6 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.peopleWorkspace.image
     _ = store.objectFinder.image
     store.refreshObjectFinderIfNeeded()
-    _ = store.canvasRasterPreview
-    _ = store.selectionOverlayImage
     _ = store.displayedMaskImage
     _ = store.cloneOverlay
     _ = store.gradientGesture
@@ -171,7 +168,12 @@ struct CanvasHost: NSViewRepresentable {
       adjustmentSubtract:store.adjustmentBrushSubtract,fingerPainting:store.retouchSettings.focus.fingerPainting,eraserMode:store.brushGesture?.eraserMode ?? store.eraserMode,removeSubtract:store.removeSettings.subtract)
   }
 
-  var store: EditorStore
+  var store: EditorStore {
+    didSet {
+      if oldValue !== store { observeCanvasFrames() }
+    }
+  }
+  private var canvasFrameObservation: AnyCancellable?
   var typeOverlay: CanvasTypeEditor?
   var pathTypePress:PathTypePress?
   var typeBaselinePath:VectorPath?
@@ -226,8 +228,21 @@ struct CanvasHost: NSViewRepresentable {
   }
   isolated deinit { cancelTransformReference(); frameProbe?.invalidate(); airbrushTimer?.invalidate() }
   required init?(coder: NSCoder) { return nil }
+  private func observeCanvasFrames() {
+    canvasFrameObservation = window.map { _ in
+      store.canvasFramePublished.sink { [weak self] in
+        // Publication takes place on the main actor after the complete frame is installed.
+        MainActor.assumeIsolated {
+          guard let self else { return }
+          self.needsDisplay = true
+          self.store.canvasFrameTrace?.invalidated()
+        }
+      }
+    }
+  }
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
+    observeCanvasFrames()
     selectionAnts?.observeWindow()
     synchronizeFrameProbe()
     if window == nil {selectionBorderGesture = false; start = nil; end = nil; store.cancelSelectionBorderInteraction(); if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil{store.cancelTransform()}; store.guideGesture=nil; drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
@@ -918,7 +933,7 @@ struct CanvasHost: NSViewRepresentable {
     dragModifiers = event.modifierFlags
     if !panningGesture && store.tool.usesPaintingStroke {
       addSample(event)
-      // CanvasHost invalidates when a prepared preview is published. Input alone
+      // The canvas invalidates when a prepared preview is published. Input alone
       // does not change the displayed pixels or a painting gesture overlay.
       return
     }

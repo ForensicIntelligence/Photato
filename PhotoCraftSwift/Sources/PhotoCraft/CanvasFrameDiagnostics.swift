@@ -75,6 +75,10 @@ import QuartzCore
     latestPrepared = frame
     record(Event(kind: "ready", uptime: clock(), samples: frame.samples, revision: frame.revision, inputUptime: frame.input))
   }
+  func invalidated() {
+    guard let frame = latestPrepared, active else { return }
+    record(Event(kind: "invalidate", uptime: clock(), samples: frame.samples, revision: frame.revision, inputUptime: frame.input))
+  }
   func beginDraw() -> (Frame?, TimeInterval)? {
     guard stroke != nil else { return nil }
     return (latestPrepared, clock())

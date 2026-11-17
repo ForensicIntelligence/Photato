@@ -1,3 +1,5 @@
+**Source checkpoint 530.** Ready canvas previews schedule AppKit drawing directly. All 59 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop output comparison remain open. [Qualification](docs/SOURCE_PUBLICATION_530.md).
+
 **Source checkpoint 528.** Faster save-format checks and native JPEG XL still import. All 69 selected methods pass in Debug, optimized Apple Silicon and translated Intel. Universal package checks pass. Photoshop sample comparison and physical 60 fps remain open. [Qualification](docs/SOURCE_PUBLICATION_528.md).
 
 **Source checkpoint 526:** Retained exact selection contours, Space-repositioned marquee creation and active polygon routing. All 86 selected methods and 15 new methods pass in Debug and both optimized architectures; universal package checks pass. Native launch/title verified; live editing/save/reopen remain unqualified after file-chooser automation failed. Q03/S01, physical FPS and all prior failures remain open. [Qualification](docs/SOURCE_PUBLICATION_526.md).

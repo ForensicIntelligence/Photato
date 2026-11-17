@@ -1,3 +1,19 @@
+## 2026-11-17 — Step 530: send ready previews straight to AppKit
+
+When a preview is ready, Photato now asks the attached AppKit canvas to draw. On the hosted Brush test, the median wait between the preview being ready and the draw beginning fell from 6.49 ms to 1.46 ms. In the same test, input-to-draw p95 fell from 14.36 ms to 9.86 ms.
+
+All 59 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The original 1200 × 800 fixture provides the before-and-after comparison. A separate 24 MP layered test verifies the new AppKit path and exact brush pixels. Physical display timing still needs testing.
+
+[Detailed record](DEVLOG.md#dev-step-530) · [Measurements](SOURCE_PUBLICATION_530.md).
+
+## 2026-11-17 — Step 529: test a different way to store canvas previews
+
+I tried sharing unchanged memory between brush previews on large canvases. The previews matched the old bytes, but the 24-megapixel benchmark became slower. The separate memory test also rose from about 106 MB to 199 MB with two frames retained. I kept the results and restored build 528.
+
+A follow-up using an AppKit test window found that the Brush preview often waited around 11 ms between being ready and the draw beginning. That delay is the next place to look. The test measures AppKit callbacks. Physical display timing still needs testing.
+
+[Detailed record](DEVLOG.md#dev-step-529) · [Measurements](CANVAS_PREVIEW_EXPERIMENT_529.json).
+
 ## 2026-11-17 — Step 528: open JPEG XL still images
 
 Photato can open JPEG XL stills through File > Open and the optional API on systems with an ImageIO reader for the format. The two lossless fixtures, one RGB8 and one RGBA16, match all 280 authored sample values. The imported image remains separate from its original file and can be saved as a native document.
@@ -217,14 +233,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:528 -->
+<!-- current-status-step:530 -->
 ## Current development status — 17 November 2026
 
-Build 528 adds JPEG XL still import and speeds up save-format checks for opaque documents. All 69 selected tests pass in Debug, optimized Apple Silicon and translated Intel, including eight new tests. The universal package passes its checks.
+Build 530 sends each completed preview directly to the attached AppKit canvas. The hosted Brush test shows lower draw latency on the 1200 × 800 fixture and exact native preview pixels. All 59 selected tests pass in Debug and both optimized architectures. The universal package passed its checks.
 
-Photoshop's Open dialog was reached, but the fixture did not open through automation. Photoshop sample comparisons, JPEG XL output, broader platform testing and physical 60 fps remain open. The current development pass remains major functions still needed. All 104 scopes and the original acceptance criteria remain in the work order.
+The current work is Q03. Physical 60 fps, actual stylus sampling, the wider set of painting contexts and independent Photoshop comparison remain open.
 
-[Qualification](SOURCE_PUBLICATION_528.md) · [Current work order](WORK_PRIORITIES_528.json)
+[Qualification](SOURCE_PUBLICATION_530.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -958,6 +974,8 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-16 | 526 | [Marquee creation and polygon routing](DEVLOG.md#dev-step-526) |
 | 2026-11-17 | 527 | [Save format checks on large documents](DEVLOG.md#dev-step-527) |
 | 2026-11-17 | 528 | [Open JPEG XL still images](DEVLOG.md#dev-step-528) |
+| 2026-11-17 | 529 | [Share unchanged canvas preview pages](DEVLOG.md#dev-step-529) |
+| 2026-11-17 | 530 | [Send ready previews directly to the AppKit canvas](DEVLOG.md#dev-step-530) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

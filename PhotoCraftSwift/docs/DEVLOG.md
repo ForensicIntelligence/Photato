@@ -547,7 +547,51 @@ For a readable account of the project from the beginning, see [Photato developme
 | 526 | 2026-11-16 | [Marquee creation and polygon routing](#dev-step-526) |
 | 527 | 2026-11-17 | [Save format checks on large documents](#dev-step-527) |
 | 528 | 2026-11-17 | [Open JPEG XL still images](#dev-step-528) |
+| 529 | 2026-11-17 | [Share unchanged canvas preview pages](#dev-step-529) |
+| 530 | 2026-11-17 | [Send ready previews directly to the AppKit canvas](#dev-step-530) |
 <!-- history-index:end -->
+
+<a id="dev-step-530"></a>
+
+## 2026-11-17 — Send ready previews directly to the AppKit canvas
+
+The hosted baseline recorded in step 529 spent a median 10.7 ms between a ready Brush preview and the start of drawing. Inspection showed that CanvasHost relied on SwiftUI observing the image and its presentation revision before assigning the AppKit view's needsDisplay flag. Apple's AppKit reference documents that assigning this flag schedules a redraw on the app's event loop. Adobe's painting guide treats smoothing, spacing and canvas extras as separate costs. This work leaves those brush controls and edit calculations in their existing paths. [AppKit needsDisplay](https://developer.apple.com/documentation/appkit/nsview/needsdisplay) · [Photoshop painting performance](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/optimize-painting-and-cloning-using-brush-settings.html).
+
+EditorStore.swift now sends a native frame notification after the accepted image, selection overlay, mask and rendering state have been installed. CanvasView.swift subscribes while each CraftCanvas is attached and replaces the subscription if its store changes. It schedules an ordinary AppKit redraw so consecutive updates can still coalesce. The subscription holds the view weakly and ends on detach. DocumentSurfaceView.swift leaves geometry and editor controls in the SwiftUI host and takes the frame image and ordinary render revision out of its inputs. Existing panel listeners still use the presentation revision. CanvasFrameDiagnostics.swift adds an opt-in marker for when the view is marked dirty. The change is local to canvas presentation. The Photato API, Adobe-compatible API, history and persisted format add no fields or commands.
+
+The additional CanvasFrameDiagnosticsTests.swift case exercises two real AppKit canvases observing one document and checks view detachment and store replacement. NativeCanvasTimingTests.swift now verifies one direct invalidation per published frame in its single-canvas window and optionally runs a 24 MP layered Brush fixture. The original 1200 × 800 workloads remain the before/after comparison. The candidate bundle version is 530. Build 528 remains the published software pending validation.
+
+The initial Debug, Apple Silicon and Intel suites reported their lifecycle assertion results separately. The initial check read needsDisplay after the renderer completed. AppKit can already have drained the invalidation by then. The initial Debug hosted test recorded one invalidation per ready frame for all four tools. The repair checks the delivered events in each lifecycle context. Only that test file changed and all three production app hashes match across the attempts. All 59 selected tests pass on the repaired input set. The universal package passed its macOS 14 metadata, executable, entitlements, resources, signature and archive checks.
+
+The alternating optimized measurements lowered the 1200 × 800 Brush ready-to-draw median from 6.49 ms to 1.46 ms. All four tools preserve the final preview bytes against the complete native edit. Large-layered Brush tests cover a 24 MP on-screen AppKit fixture and keep all 240 samples, with one invalidation per ready frame. Timing stops at AppKit draw completion. Physical 60 fps, actual high-rate input and direct Photoshop comparison remain open. [Measurements](SOURCE_PUBLICATION_530.md).
+
+<a id="dev-step-529"></a>
+
+## 2026-11-17 — Share unchanged canvas preview pages
+
+Performance work continues under Q03. The incremental renderer already converts and packs only the affected rectangle, but it copies the packed full-canvas display buffer before it can replace those rows. Reduced previews use the same full-resolution buffer as input. The retained build 528 was measured both at 100% with sequential brush input and at fit zoom with 120 Hz simulated input on dense layered documents.
+
+The first standalone memory probe failed at compile time because Swift's memset binding takes an Int32 value. A second probe corrected that argument, then created 150 private snapshots of a 96 MB buffer, changing a 128 × 128 rectangle in each snapshot. The original and final byte checks passed. Median remap and update time was 0.205 ms and p95 was 0.245 ms. The probe isolates memory handling and omits compositing, Quartz, AppKit and display presentation.
+
+CanvasPreviewStorage.swift uses private Darwin virtual memory mappings for regional updates to buffers of 8 MiB or larger. It seals the replacement mapping read-only before publication. The Quartz provider retains the mapping for as long as it needs the bytes. A failed virtual memory operation falls back to packed Data. CanvasRasterPreview.swift supplies the same packed rows and image format to Quartz as before. CanvasReducedPreview.swift still reads the same samples with the same area filter. The change applies to the desktop presentation layer. It adds no settings, commands, archive fields or routes to the Photato or Adobe-compatible APIs.
+
+CanvasRasterPreviewTests.swift checks exact full and reduced bytes through overlapping edits, erased pixels, partially filled edge tiles and a zoom change. A second test checks that Quartz can still read a full buffer after the preview and its successor are released.
+
+The first Debug build stopped in Swift's PredictableDeadAllocationElimination pass before running tests. The retry uses the same Debug-only workaround used for 528. Both optimized architectures use standard compiler settings. The compilation logs and the compiler crash summary are retained locally.
+
+Adobe's performance guidance identifies smoothing, brush spacing and the cost of canvas extras as separate sources of latency. This change leaves those settings and brush math alone. Apple's responsiveness guide treats draw and display-link timings as stages in a frame's lifecycle. The benchmark records model preview and offscreen AppKit draw timing. Physical presentation and independent Photoshop sample parity remain open. [Adobe painting performance](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/optimize-painting-and-cloning-using-brush-settings.html) · [Apple app responsiveness](https://developer.apple.com/documentation/xcode/improving-app-responsiveness) · [Apple virtual memory interface](https://github.com/apple-oss-distributions/xnu/blob/main/osfmk/mach/mach_vm.defs).
+
+The candidate passed all 52 selected tests in Debug, optimized Apple Silicon and translated Intel. The first successful Debug and Apple Silicon SwiftPM runs had one result line split by SwiftPM's warning. Direct executions of the same bundles produced 52 intact passing records each. The universal candidate passed its package checks. A standalone test with the App Store entitlements trapped in macOS's sandbox initializer. The isolated Quartz replay completed 240 regional updates and matched all 18 draws at different zooms and pan offsets. The original frame was unchanged.
+
+The back-to-back run order was 528, 529, 529, 528. On the 24 MP Apple Silicon fixture at 100% zoom, median input-to-ready increased from 3.98 to 4.28 ms and p95 from 4.30 to 4.66 ms. The layered 24 MP fixture at fit zoom increased from 6.12 to 6.84 ms median render time and 8.73 to 9.37 ms at p95. Both versions published 121 previews in each fit-zoom run and preserved all 240 samples. Playback through the native command agreed with the previews. The 3 MP layered case improved slightly. The result does not support adopting the mapping for ordinary edits.
+
+The isolated memory comparison used 90 edits of a 128 × 128 rectangle in 96 MB frames. With two frames retained, peak footprint was 105.7 MB for the packed path and 199.3 MB for the private mapping. With eight retained it was 119.2 MB and 212.6 MB. Peak resident sizes had the same ordering. These results measure the two buffer implementations in the diagnostic process. They do not establish peak footprint for all of Photato.
+
+The candidate is withdrawn. The candidate source delta, test bundles, universal ZIP and logs are preserved locally. All 7,884 frozen build 528 inputs were restored and checked by SHA-256. The five experimental inputs, including the new test source changes and bundle version increment, were removed from the active product. No code, API schema or product version from the experiment was published.
+
+The retained build then passed the hosted AppKit workspace test for Brush, Blur, Dodge and Smudge. On a 1200 × 800 fixture at 50% zoom, each tool received 240 generated samples. Distinct draw callbacks numbered 116–120 per tool. Brush spent a median 2.0 ms preparing its preview and 10.7 ms from preview readiness to the beginning of the AppKit draw. Input-to-draw completion for Brush was 16.0 ms median and 30.3 ms p95. The instrumentation cannot assign those delays to SwiftUI, the run loop or WindowServer individually. Instruments reported the target exit, then timed out while finalizing the trace. Its file could not be exported. No matching preview-to-physical-frame evidence was obtained.
+
+The next Q03 investigation follows the preview-ready handoff through the native canvas and AppKit scheduling. Larger documents, actual pointer and tablet input, physical 60 fps and direct Photoshop sample comparison still need validation. [Timing and memory results](CANVAS_PREVIEW_EXPERIMENT_529.json).
 
 <a id="dev-step-528"></a>
 

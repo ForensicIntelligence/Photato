@@ -1,4 +1,5 @@
 import AppKit
+import Combine
 import Observation
 import PhotoCraftAI
 import PhotoCraftCore
@@ -173,6 +174,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored private(set) var sessionGeneration = UUID()
   var historyOperation: HistoryOperation?
   @ObservationIgnored var interactiveBrushPreview: InteractiveBrushPreview?
+  @ObservationIgnored let canvasFramePublished = PassthroughSubject<Void, Never>()
   var canvasRasterPreview: CanvasRasterPreview?
   @ObservationIgnored var ordinaryCanvasImage = false
   var image: CGImage? { didSet { canvasRasterPreview = nil; ordinaryCanvasImage = false } }
@@ -972,6 +974,7 @@ import UniformTypeIdentifiers
         }
         self.rendering = false
         self.canvasPresentationRevision += 1
+        self.canvasFramePublished.send(())
       } catch is CancellationError {} catch {
         guard let self, self.revision == request else { return }
         self.error = error.localizedDescription

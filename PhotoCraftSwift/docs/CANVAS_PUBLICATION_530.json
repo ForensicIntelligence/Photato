@@ -1,0 +1,339 @@
+{
+  "PhotoshopSampleParityMeasured": false,
+  "allPriorFidelityGatesRetained": true,
+  "applicationBuild": 530,
+  "archiveSHA256": "ce398a44177a2cc6679811f3c2ce80240dc761e2d4440a2d4b7cc7a0fd0de36f",
+  "baselineBuild": 528,
+  "firstAttemptFailures": {
+    "arm": [
+      "PhotoCraftAppTests.CanvasFrameDiagnosticsTests/testFramePublicationInvalidatesOnlyAttachedCanvasesForCurrentStore"
+    ],
+    "debug": [
+      "PhotoCraftAppTests.CanvasFrameDiagnosticsTests/testFramePublicationInvalidatesOnlyAttachedCanvasesForCurrentStore"
+    ],
+    "intel": [
+      "PhotoCraftAppTests.CanvasFrameDiagnosticsTests/testFramePublicationInvalidatesOnlyAttachedCanvasesForCurrentStore"
+    ]
+  },
+  "newTests": 1,
+  "orderedArchitectureChecksMatch": true,
+  "performance": {
+    "baselineBinarySHA256": "30e4b4bdb6e6791eeb58b23a54805bc0bfb0cdff10348efd274aab38c62afba5",
+    "candidateBinarySHA256": "443b4c2bf85c2cf17ffe2c84a269fee7bc761c69d43c4b828809e705a85676e7",
+    "comparisons": {
+      "Blur": {
+        "528": {
+          "draws": [
+            120,
+            120
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.04870834527537227,
+              "p95MS": 0.058854115195572376
+            },
+            "inputToDrawComplete": {
+              "p50MS": 15.37695829756558,
+              "p95MS": 17.16327079338953
+            },
+            "inputToPrepare": {
+              "p50MS": 2.934895863290876,
+              "p95MS": 4.456458322238177
+            },
+            "prepareToReady": {
+              "p50MS": 1.2716041528619826,
+              "p95MS": 3.288624982815236
+            },
+            "readyToDrawStart": {
+              "p50MS": 10.801041673403233,
+              "p95MS": 12.815645895898342
+            }
+          }
+        },
+        "530": {
+          "draws": [
+            120,
+            119
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.046250002924352884,
+              "p95MS": 0.053624913562089205
+            },
+            "inputToDrawComplete": {
+              "p50MS": 9.048250038176775,
+              "p95MS": 10.822312498930842
+            },
+            "inputToPrepare": {
+              "p50MS": 2.594458346720785,
+              "p95MS": 3.564416663721204
+            },
+            "prepareToReady": {
+              "p50MS": 1.3207917218096554,
+              "p95MS": 3.121562534943223
+            },
+            "readyToDrawStart": {
+              "p50MS": 4.976895812433213,
+              "p95MS": 6.0863958788104355
+            },
+            "readyToInvalidate": {
+              "p50MS": 0.021937477868050337,
+              "p95MS": 0.02783333184197545
+            }
+          }
+        }
+      },
+      "Brush": {
+        "528": {
+          "draws": [
+            120,
+            120
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.0447083730250597,
+              "p95MS": 0.052812567446380854
+            },
+            "inputToDrawComplete": {
+              "p50MS": 9.903083380777389,
+              "p95MS": 14.36060422565788
+            },
+            "inputToPrepare": {
+              "p50MS": 1.3527083210647106,
+              "p95MS": 8.060395892243832
+            },
+            "prepareToReady": {
+              "p50MS": 1.9435624708421528,
+              "p95MS": 3.3124166657216847
+            },
+            "readyToDrawStart": {
+              "p50MS": 6.486791651695967,
+              "p95MS": 7.600416662171483
+            }
+          }
+        },
+        "530": {
+          "draws": [
+            119,
+            120
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.04320841981098056,
+              "p95MS": 0.04922918742522597
+            },
+            "inputToDrawComplete": {
+              "p50MS": 5.957312532700598,
+              "p95MS": 9.863250073976815
+            },
+            "inputToPrepare": {
+              "p50MS": 2.404145838227123,
+              "p95MS": 5.636187503114343
+            },
+            "prepareToReady": {
+              "p50MS": 1.9851041724905372,
+              "p95MS": 3.3949792268685997
+            },
+            "readyToDrawStart": {
+              "p50MS": 1.459312450606376,
+              "p95MS": 1.7733333515934646
+            },
+            "readyToInvalidate": {
+              "p50MS": 0.0231250305660069,
+              "p95MS": 0.03106246003881097
+            }
+          }
+        }
+      },
+      "Dodge": {
+        "528": {
+          "draws": [
+            120,
+            119
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.051083334255963564,
+              "p95MS": 0.061333354096859694
+            },
+            "inputToDrawComplete": {
+              "p50MS": 14.230062486603856,
+              "p95MS": 16.254000016488135
+            },
+            "inputToPrepare": {
+              "p50MS": 2.0894166664220393,
+              "p95MS": 3.2422708463855088
+            },
+            "prepareToReady": {
+              "p50MS": 1.8493958050385118,
+              "p95MS": 3.0053333612158895
+            },
+            "readyToDrawStart": {
+              "p50MS": 10.29537501744926,
+              "p95MS": 12.380708300042897
+            }
+          }
+        },
+        "530": {
+          "draws": [
+            120,
+            120
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.04137499490752816,
+              "p95MS": 0.04681252175942063
+            },
+            "inputToDrawComplete": {
+              "p50MS": 6.795687484554946,
+              "p95MS": 9.26804164191708
+            },
+            "inputToPrepare": {
+              "p50MS": 3.6480416310951114,
+              "p95MS": 5.558104137890041
+            },
+            "prepareToReady": {
+              "p50MS": 1.85118755325675,
+              "p95MS": 3.0031250207684934
+            },
+            "readyToDrawStart": {
+              "p50MS": 1.3686874299310148,
+              "p95MS": 1.6318541602231562
+            },
+            "readyToInvalidate": {
+              "p50MS": 0.021229148842394352,
+              "p95MS": 0.027041707653552294
+            }
+          }
+        }
+      },
+      "Smudge": {
+        "528": {
+          "draws": [
+            120,
+            120
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.04758330760523677,
+              "p95MS": 0.05845836130902171
+            },
+            "inputToDrawComplete": {
+              "p50MS": 14.917208347469568,
+              "p95MS": 16.858374990988523
+            },
+            "inputToPrepare": {
+              "p50MS": 2.470916719175875,
+              "p95MS": 4.660374950617552
+            },
+            "prepareToReady": {
+              "p50MS": 2.165062469430268,
+              "p95MS": 3.455437545198947
+            },
+            "readyToDrawStart": {
+              "p50MS": 10.08529169484973,
+              "p95MS": 12.60529167484492
+            }
+          }
+        },
+        "530": {
+          "draws": [
+            120,
+            120
+          ],
+          "phases": {
+            "drawDuration": {
+              "p50MS": 0.050291651859879494,
+              "p95MS": 0.06137497257441282
+            },
+            "inputToDrawComplete": {
+              "p50MS": 14.190749963745475,
+              "p95MS": 15.840916719753295
+            },
+            "inputToPrepare": {
+              "p50MS": 3.892458276823163,
+              "p95MS": 4.920687526464462
+            },
+            "prepareToReady": {
+              "p50MS": 2.1328750299289823,
+              "p95MS": 3.3332083257846534
+            },
+            "readyToDrawStart": {
+              "p50MS": 8.02681251661852,
+              "p95MS": 10.231812484562397
+            },
+            "readyToInvalidate": {
+              "p50MS": 0.02145825419574976,
+              "p95MS": 0.02733338624238968
+            }
+          }
+        }
+      }
+    },
+    "fixture": "Owned 1200 \u00d7 800 raster at 50% zoom and 24 MP layered raster at 12.5%. 240 generated samples at 120 Hz.",
+    "large": [
+      {
+        "counts": {
+          "directInvalidation": 119,
+          "displayLink": 127,
+          "draw": 119,
+          "input": 240,
+          "ready": 119
+        },
+        "matchesFullNativeCommand": true,
+        "phases": {
+          "drawDuration": {
+            "maximumMS": 0.0697083305567503,
+            "p50MS": 0.04454166628420353,
+            "p95MS": 0.05266664084047079
+          },
+          "inputToDrawComplete": {
+            "maximumMS": 50.50562496762723,
+            "p50MS": 17.36545830499381,
+            "p95MS": 24.970208411104977
+          },
+          "inputToPrepare": {
+            "maximumMS": 26.905291597358882,
+            "p50MS": 3.0739583307877183,
+            "p95MS": 12.60775001719594
+          },
+          "prepareToReady": {
+            "maximumMS": 19.845583359710872,
+            "p50MS": 9.511208278127015,
+            "p95MS": 15.164999989792705
+          },
+          "readyToDrawStart": {
+            "maximumMS": 5.757375038228929,
+            "p50MS": 3.530625021085143,
+            "p95MS": 4.2505000019446015
+          },
+          "readyToInvalidate": {
+            "maximumMS": 0.06458337884396315,
+            "p50MS": 0.03245833795517683,
+            "p95MS": 0.03999995533376932
+          }
+        },
+        "tool": "Brush"
+      }
+    ],
+    "order": [
+      "528-1",
+      "530-1",
+      "530-2",
+      "528-2"
+    ],
+    "physicalInputMeasured": false,
+    "physicalPresentationMeasured": false
+  },
+  "physicalPresentationMeasured": false,
+  "softwareRelease": false,
+  "sourceInputs": 7884,
+  "step": 530,
+  "testOnlyRepairVerified": true,
+  "tested": {
+    "arm": 59,
+    "debug": 59,
+    "intel": 59
+  },
+  "typedPhotatoCommands": 271
+}
