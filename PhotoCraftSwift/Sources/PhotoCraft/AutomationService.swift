@@ -449,7 +449,7 @@ import UniformTypeIdentifiers
       "isModified": document.isDocumentEdited,
       "persistenceFormat": document.persistenceFormat.rawValue,
       "saveFormats": saveFormats.map(\.rawValue),
-      "saveDialogFormats": document.dialogSaveFormats.map(\.rawValue),
+      "saveDialogFormats": document.dialogSaveFormats(eligible: saveFormats).map(\.rawValue),
       "copyDialogFormats": document.dialogCopyFormats.map(\.rawValue),
       "fileHandlingPreferencesRevision": document.ownerController?.recoveryPreferences.revision.uuidString as Any? ?? NSNull(),
       "saveEncodingOptions": Dictionary(uniqueKeysWithValues: DocumentIO.Format.allCases.map {

@@ -1,3 +1,19 @@
+## 2026-11-17 — Step 528: open JPEG XL still images
+
+Photato can open JPEG XL stills through File > Open and the optional API on systems with an ImageIO reader for the format. The two lossless fixtures, one RGB8 and one RGBA16, match all 280 authored sample values. The imported image remains separate from its original file and can be saved as a native document.
+
+ImageIO presented a two-frame test file as one image. Photato now checks the codestream before it decodes the file and rejects animations with an explicit message. JPEG XL export and wider color and HDR checks remain open. The installed Photoshop Open dialog was reached, but it did not open the fixture folder through automation.
+
+[Workflow](JPEG_XL_IMPORT.md) · [Detailed record](DEVLOG.md#dev-step-528).
+
+## 2026-11-17 — Step 527: avoid repeat save format scans
+
+The Save As panel and API now reuse their writable-format decisions. JPEG and OpenEXR with transparency disabled use the existing exact opacity check. Once the raster is known to be opaque, another check can use that result until an alpha edit invalidates it.
+
+All four new tests pass. Two broader runs hit an inherited channel-separation HTTP connection error, also reproduced on build 526. That test passed with the rest of its class in isolation on both builds. The timing evidence covers opacity checks on 24 and 36 megapixel images.
+
+[Detailed record](DEVLOG.md#dev-step-527).
+
 ## Source update — 16 November 2026, builds 525–526
 
 Selections now retain their exact contour during ordinary painting previews. Rectangular and elliptical marquees can be moved with Space while being drawn, then resized again after Space is released. Polygon vertices no longer start a drag of the old selection.
@@ -201,14 +217,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:526 -->
-## Current development status — 16 November 2026
+<!-- current-status-step:528 -->
+## Current development status — 17 November 2026
 
-Build 526 includes retained selection contours, Space-repositioned marquee creation and active polygon routing. All 86 selected tests pass in Debug, optimized Apple Silicon and translated Intel, including 15 new tests. The universal package passes its checks. Native launch/title is verified; live editing and save/reopen remain unqualified after native chooser automation stalled.
+Build 528 adds JPEG XL still import and speeds up save-format checks for opaque documents. All 69 selected tests pass in Debug, optimized Apple Silicon and translated Intel, including eight new tests. The universal package passes its checks.
 
-The active pass remains major stillneeded. All 104 scopes, 652 identities, 81 major memberships and seven passes remain tracked. Physical 60 fps, independent Photoshop output, supported physical machines, the full suite and earlier fidelity/history failures remain open. No complete major package is closed by this batch. This source checkpoint is not a software release.
+Photoshop's Open dialog was reached, but the fixture did not open through automation. Photoshop sample comparisons, JPEG XL output, broader platform testing and physical 60 fps remain open. The current development pass remains major functions still needed. All 104 scopes and the original acceptance criteria remain in the work order.
 
-[Qualification](SOURCE_PUBLICATION_526.md) · [Current work order](WORK_PRIORITIES_526.json)
+[Qualification](SOURCE_PUBLICATION_528.md) · [Current work order](WORK_PRIORITIES_528.json)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -939,7 +955,9 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-09 | 523 | [Retained layer-mask and Adjustment Brush previews](DEVLOG.md#dev-step-523) |
 | 2026-11-09 | 524 | [Selection borders and Canvas Size zoom](DEVLOG.md#dev-step-524) |
 | 2026-11-16 | 525 | [Selection-preview responsiveness; 22 Debug checks](DEVLOG.md#dev-step-525) |
-| 2026-11-16 | 526 | [Marquee creation and polygon routing (in progress)](DEVLOG.md#dev-step-526) |
+| 2026-11-16 | 526 | [Marquee creation and polygon routing](DEVLOG.md#dev-step-526) |
+| 2026-11-17 | 527 | [Save format checks on large documents](DEVLOG.md#dev-step-527) |
+| 2026-11-17 | 528 | [Open JPEG XL still images](DEVLOG.md#dev-step-528) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

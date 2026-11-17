@@ -102,13 +102,32 @@ public struct Surface: Codable, Equatable, Sendable {
   }
   /// Scan allocated samples once; proof survives writes whose alpha remains one.
   /// Virtual padding is not a document pixel, and implicit planes need no dense allocation.
-  public func isOpaque()throws->Bool {
-    if opaqueProof.proven{return true}
-    if storedDefaultPixel.a != 1,tiles.count < columns*((height+Self.tileSide-1)/Self.tileSide){return false}
-    for (key,tile) in tiles {try Task.checkCancellation();guard key>=0,key<columns*((height+Self.tileSide-1)/Self.tileSide) else{throw CraftError.invalid("Invalid opacity tile index.")};let left=key%columns*Self.tileSide,top=key/columns*Self.tileSide
-      for y in 0..<min(Self.tileSide,height-top){for x in 0..<min(Self.tileSide,width-left){if tile[y*Self.tileSide+x].a != 1{return false}}}
+  public func isOpaque() throws -> Bool {
+    if opaqueProof.proven { return true }
+    let side = Self.tileSide
+    let columns = self.columns
+    let tileCapacity = columns * ((height + side - 1) / side)
+    if storedDefaultPixel.a != 1, tiles.count < tileCapacity { return false }
+    for (key, tile) in tiles {
+      try Task.checkCancellation()
+      guard key >= 0, key < tileCapacity else { throw CraftError.invalid("Invalid opacity tile index.") }
+      let visibleWidth = min(side, width - (key % columns) * side)
+      let visibleHeight = min(side, height - (key / columns) * side)
+      // Read storage once per tile, including mapped tiles. Only the visible
+      // subrectangle contributes to opacity at a partial canvas edge.
+      let opaque = tile.withUnsafeBufferPointer { samples in
+        for row in 0..<visibleHeight {
+          let offset = row * side
+          for index in offset..<(offset + visibleWidth) where samples[index].a != 1 {
+            return false
+          }
+        }
+        return true
+      }
+      if !opaque { return false }
     }
-    opaqueProof.establish();return true
+    opaqueProof.establish()
+    return true
   }
   public var tileCount: Int { tiles.count }
   /// Ordered allocated tile keys, including paged bases and COW edits. A caller can

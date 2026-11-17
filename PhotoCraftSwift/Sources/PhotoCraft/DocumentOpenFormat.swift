@@ -7,7 +7,8 @@ import UniformTypeIdentifiers
 /// Reader selection is independent of the filename. Selection verifies the
 /// container before invoking the existing decoder; it never converts the input.
 enum DocumentOpenFormat: String, CaseIterable, Sendable {
-  case automatic, native = "photato", pcraft, psd, psb, png, jpeg, tiff, exr, heic, bmp, gif, raw, movie, pdf
+  case automatic, native = "photato", pcraft, psd, psb, png, jpeg, tiff, exr, heic, bmp, gif, raw, movie, pdf, jxl
+  static var availableCases: [Self] { allCases.filter { $0 != .jxl || JPEGXLInput.isAvailable } }
   var title: String {
     switch self {
     case .pdf: "PDF"
@@ -25,6 +26,7 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     case .heic: "HEIC"
     case .bmp: "BMP"
     case .gif: "GIF"
+    case .jxl: "JPEG XL"
     }
   }
   var contentType: UTType? {
@@ -44,6 +46,7 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     case .heic: .heic
     case .bmp: .bmp
     case .gif: .gif
+    case .jxl: JPEGXLInput.contentType
     }
   }
   var persistenceFormat: DocumentIO.Format? { .init(rawValue: rawValue) }
@@ -51,12 +54,16 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     guard self == .automatic || self == actual else {
       throw CraftError.unsupported("The file does not match the selected \(title) format.")
     }
+    if actual == .jxl, !JPEGXLInput.isAvailable {
+      throw CraftError.unavailable("JPEG XL reading is unavailable on this version of macOS.")
+    }
   }
   private static func signature(_ data: Data) -> Self? {
     if data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist00".utf8)) { return .native }
     if let text = String(data: data.prefix(64), encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
       text.hasPrefix("<?xml") || text.hasPrefix("<plist") { return .native }
     if OpenEXR.recognizes(data) {return .exr}
+    if JPEGXLInput.recognizes(data) { return .jxl }
     if MovieIO.recognizes(data) { return .movie }
     if data.count >= 6, data.starts(with: Data("8BPS".utf8)) {
       let bytes = Array(data.prefix(6))
@@ -104,12 +111,13 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
   let show = NSPopUpButton()
   let formats = NSPopUpButton()
   weak var panel: NSOpenPanel?
-  var format: DocumentOpenFormat { DocumentOpenFormat.allCases[formats.indexOfSelectedItem] }
+  private let availableFormats = DocumentOpenFormat.availableCases
+  var format: DocumentOpenFormat { availableFormats[formats.indexOfSelectedItem] }
   init(panel: NSOpenPanel) {
     self.panel = panel
     super.init()
     show.addItems(withTitles: ["All Readable Documents", "All Documents"])
-    formats.addItems(withTitles: DocumentOpenFormat.allCases.map(\.title))
+    formats.addItems(withTitles: availableFormats.map(\.title))
     for control in [show, formats] { control.target = self; control.action = #selector(changed) }
     show.setAccessibilityLabel("Show documents")
     formats.setAccessibilityLabel("File format")

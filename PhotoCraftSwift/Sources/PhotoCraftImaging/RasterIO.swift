@@ -116,16 +116,33 @@ public enum RasterIO {
     if let native = try PNGRestrictedStorage.read(data, name: name) { return native }
     if let native = try TIFFRestrictedStorage.read(data, name: name) { return native }
     if let native = try TIFFModeStorage.read(data, name: name) { return native }
+    let jpegXL = JPEGXLInput.recognizes(data)
+    if jpegXL {
+      guard JPEGXLInput.isAvailable else {
+        throw CraftError.unavailable("JPEG XL reading is unavailable on this version of macOS.")
+      }
+      try JPEGXLInput.requireStill(data)
+    }
     guard let source = CGImageSourceCreateWithData(data as CFData, nil),
       let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
       let w = properties[kCGImagePropertyPixelWidth] as? Int,
       let h = properties[kCGImagePropertyPixelHeight] as? Int
     else { throw CraftError.invalid("The file is not a supported raster image.") }
     _ = try Surface(width: w, height: h)
+    // ImageIO may materialize the complete decoded source before paging.
+    if jpegXL, w > JPEGXLInput.maximumDecodedPixels / h {
+      throw CraftError.unsupported("This JPEG XL image exceeds the decoder's 1 GiB raster budget.")
+    }
+    if jpegXL, CGImageSourceGetCount(source) != 1 {
+      throw CraftError.unsupported("Open a still JPEG XL image. Animated JPEG XL is not supported.")
+    }
     guard
       let image = CGImageSourceCreateImageAtIndex(
         source, 0, [kCGImageSourceShouldCache: false] as CFDictionary)
     else { throw CraftError.invalid("Image decoding failed.") }
+    if jpegXL, CGImageSourceGetStatusAtIndex(source, 0) != .statusComplete {
+      throw CraftError.invalid("The JPEG XL image is incomplete.")
+    }
     let orientation = properties[kCGImagePropertyOrientation] as? Int ?? 1
     let depth: PixelDepth =
       image.bitsPerComponent > 16 ? .f32 : image.bitsPerComponent > 8 ? .u16 : .u8

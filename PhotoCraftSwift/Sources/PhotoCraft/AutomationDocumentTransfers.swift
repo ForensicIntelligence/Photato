@@ -37,6 +37,9 @@ extension DocumentIO {
     guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension else {
       throw AutomationFailure(status: 413, message: "Upload exceeds300,000 pixels per side. Codec, heap and transfer budgets apply separately.")
     }
+    if !native, JPEGXLInput.recognizes(data), width > (128 * 1_024 * 1_024) / MemoryLayout<Pixel>.stride / height {
+      throw AutomationFailure(status: 413, message: "Decoded JPEG XL raster exceeds the 128 MiB API budget.")
+    }
     return try decode(data, native: native, name: name, rasterByteLimit: 128 * 1_024 * 1_024)
   }
 }
@@ -53,7 +56,7 @@ extension AutomationService {
         "method": "POST", "path": "/v1/documents/import", "successStatus": 201,
         "contentTypes": DocumentIO.uploadTypes,
         "formatHeader": ["name": "X-Photato-Open-Format", "required": false,
-          "schema": ["type": "string", "enum": DocumentOpenFormat.allCases.filter{$0 != .pdf}.map(\.rawValue)],
+          "schema": ["type": "string", "enum": DocumentOpenFormat.availableCases.filter{$0 != .pdf}.map(\.rawValue)],
           "untypedBody": "application/octet-stream is accepted only when the format header is present"],
         "bodySchema": [
           "type": "string", "format": "binary", "minLength": 1,
@@ -288,6 +291,9 @@ extension AutomationService {
       }
       if MovieIO.mediaTypes.contains(contentType), !MovieIO.recognizes(request.body) {throw AutomationFailure(status:422,message:"Expected a supported movie container.")}
       if RawSourceIO.mediaTypes.contains(contentType), !RawSourceIO.recognizes(request.body) { throw AutomationFailure(status:422,message:"Expected supported camera RAW sensor data.") }
+      if contentType == JPEGXLInput.mediaType, !JPEGXLInput.recognizes(request.body) {
+        throw AutomationFailure(status: 422, message: "Expected a JPEG XL image.")
+      }
       let name = request.headers["x-photato-name"] ?? "Imported Image"
       guard !name.trimmingCharacters(in: .whitespaces).isEmpty, name.count <= 256,
         name.utf8.allSatisfy({ (32...126).contains($0) })

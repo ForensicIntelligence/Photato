@@ -21,6 +21,8 @@ extension AutomationService {
         "Successful Save/Save As clears the modified flag, retains undo/redo, and returns the current file format/name. Save As changes the document's file association. Recovery autosaves remain native archives.",
       "availability":
         "The document's saveFormats reports formats that can retain the currently supported editable structure. The encoder can still reject unsupported content. Save a Copy/download remains available for explicit flattening.",
+      "formatEligibility":
+        "Document state derives the filtered save dialog list from the same writable formats. JPEG and opaque OpenEXR eligibility use the exact raster opacity check, which can reuse a proof across edits that preserve opacity.",
       "errors": [
         "400": "Invalid filename/format/replace", "403": "Saving disabled or no Save As folder",
         "409": "Busy/stale/revoked, destination exists/is open, source externally changed",

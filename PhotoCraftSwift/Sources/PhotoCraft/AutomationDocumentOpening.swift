@@ -1,5 +1,6 @@
 import Foundation
 import PhotoCraftCore
+import PhotoCraftImaging
 
 extension AutomationService {
   var documentOpeningState: [String: Any] {
@@ -42,9 +43,15 @@ extension AutomationService {
     let count: [String: Any] = ["type": "integer", "minimum": 0]
     return [
       "desktop": "File > Open: Show All Readable Documents/All Documents, Format selector and cancellable background file/model/fingerprint reads. Earlier opened files stay open if a later read fails or is cancelled.",
-      "formats": DocumentOpenFormat.allCases.map { ["id": $0.rawValue, "title": $0.title] },
+      "formats": DocumentOpenFormat.availableCases.map { ["id": $0.rawValue, "title": $0.title] },
       "uploadPath": "/v1/documents/import", "uploadHeader": "X-Photato-Open-Format",
-      "uploadHeaderSchema": ["type": "string", "enum": DocumentOpenFormat.allCases.filter{$0 != .pdf}.map(\.rawValue)],
+      "uploadHeaderSchema": ["type": "string", "enum": DocumentOpenFormat.availableCases.filter{$0 != .pdf}.map(\.rawValue)],
+      "jpegXL": ["available": JPEGXLInput.isAvailable, "mode": "still-image import",
+        "mediaType": JPEGXLInput.mediaType, "format": "jxl",
+        "maximumDecodedPixels": JPEGXLInput.maximumDecodedPixels,
+        "maximumUploadRasterBytes": 128 * 1_024 * 1_024,
+        "output": "Opens as a new editable raster document. Save to a supported document or export format.",
+        "decoder": "System ImageIO JPEG XL reader; this format is offered only when the reader is present."],
       "pdfImportPath": PDFImportAPI.importPath,
       "contentType": "Existing upload types remain supported. application/octet-stream requires X-Photato-Open-Format. Without that header, legacy Content-Type native/raster routing is unchanged.",
       "selection": "Verifies actual container before the shared decoder; mismatches fail422 and unknown selections400. Automatic detects native chunked/plist containers independently of filenames. Full decoder validation is still required; a signature is not proof of a valid file.",

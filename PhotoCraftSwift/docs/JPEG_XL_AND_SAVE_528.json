@@ -1,0 +1,181 @@
+{
+  "all_prior_gates_retained": true,
+  "build": 528,
+  "configuration": {
+    "Debug": 69,
+    "optimized_arm64": 69,
+    "optimized_x86_64_translated": 69
+  },
+  "exact_photoshop_pixel_comparison": false,
+  "excluded_inputs_unchanged": 13,
+  "full_suite": false,
+  "jpeg_xl": {
+    "animation_protection": "Raw stream, original two-fragment container, complete box, short-fragment header, and HTTP import.",
+    "owned_exact_sample_words": 280,
+    "reference": "Authored words independently verified by libjxl v0.12.0 and PNG unpacking.",
+    "verified_depths": [
+      "RGB8",
+      "RGBA16"
+    ]
+  },
+  "live_host_editing": false,
+  "new_tests_each": 8,
+  "optimized_order_matches": true,
+  "parent": "02c3597159f492d5a98c949fb83f84289868fe2d",
+  "photoshop_reference": {
+    "app": "Adobe Photoshop 2026",
+    "bundleVersion": "27.2.0",
+    "fileOpened": false,
+    "observed": [
+      "Application window and factory menu headings",
+      "Open dialog and Go to Folder sheet",
+      "Owned fixture folder resolved in the path field",
+      "Return and activation of the selected path row reset the field rather than opening the folder"
+    ],
+    "outputSamplesCompared": false,
+    "platform": "macOS 27.2",
+    "recordedUTC": "2026-11-17T18:50:31.239949+00:00",
+    "softwareChanged": false
+  },
+  "physical_fps": false,
+  "retained_failures": {
+    "animation_fixture": "Initial test assumed a jxlc box. Repaired test extracts the fixture's two jxlp boxes. App executable unchanged.",
+    "archive_version_fixture": "Old version 87 assertion reproduced on build 526. Corrected test covers exact valid 87 bytes and unsupported 93.",
+    "channel_separation": "64/65 build 527 twice, same failure in 60/61 baseline build 526. Isolated class passed 7/7 on both."
+  },
+  "save_opacity_results": {
+    "Apple Silicon": [
+      {
+        "allTilesAllocated": true,
+        "current120JPEGPolicyReadsMS": 0.12399989645928144,
+        "currentFirstJPEGPolicyMS": 9.717541746795177,
+        "height": 4000,
+        "matchingEligibility": true,
+        "previousTwoOpacityChecksMS": 74.03191667981446,
+        "scope": "Synchronous CPU cost of prior sample predicate and current format policy. No file encoding or display timing.",
+        "width": 6000
+      },
+      {
+        "allTilesAllocated": true,
+        "current120JPEGPolicyReadsMS": 0.11233333498239517,
+        "currentFirstJPEGPolicyMS": 15.021750004962087,
+        "height": 6000,
+        "matchingEligibility": true,
+        "previousTwoOpacityChecksMS": 111.06441670563072,
+        "scope": "Synchronous CPU cost of prior sample predicate and current format policy. No file encoding or display timing.",
+        "width": 6000
+      }
+    ],
+    "Debug": [
+      {
+        "allTilesAllocated": true,
+        "current120JPEGPolicyReadsMS": 1.6225416911765933,
+        "currentFirstJPEGPolicyMS": 1974.967333371751,
+        "height": 4000,
+        "matchingEligibility": true,
+        "previousTwoOpacityChecksMS": 5917.925666668452,
+        "scope": "Synchronous CPU cost of prior sample predicate and current format policy. No file encoding or display timing.",
+        "width": 6000
+      },
+      {
+        "allTilesAllocated": true,
+        "current120JPEGPolicyReadsMS": 1.6996667254716158,
+        "currentFirstJPEGPolicyMS": 2980.434541590512,
+        "height": 6000,
+        "matchingEligibility": true,
+        "previousTwoOpacityChecksMS": 8688.394958386198,
+        "scope": "Synchronous CPU cost of prior sample predicate and current format policy. No file encoding or display timing.",
+        "width": 6000
+      }
+    ],
+    "Intel translated": [
+      {
+        "allTilesAllocated": true,
+        "current120JPEGPolicyReadsMS": 0.2596250269562006,
+        "currentFirstJPEGPolicyMS": 19.686124986037612,
+        "height": 4000,
+        "matchingEligibility": true,
+        "previousTwoOpacityChecksMS": 144.46045900695026,
+        "scope": "Synchronous CPU cost of prior sample predicate and current format policy. No file encoding or display timing.",
+        "width": 6000
+      },
+      {
+        "allTilesAllocated": true,
+        "current120JPEGPolicyReadsMS": 0.23429200518876314,
+        "currentFirstJPEGPolicyMS": 26.771209086291492,
+        "height": 6000,
+        "matchingEligibility": true,
+        "previousTwoOpacityChecksMS": 213.08637491893023,
+        "scope": "Synchronous CPU cost of prior sample predicate and current format policy. No file encoding or display timing.",
+        "width": 6000
+      }
+    ]
+  },
+  "software_release": false,
+  "source_inputs": 7884,
+  "source_inputs_published": 7871,
+  "universal": {
+    "AppStoreUpload": false,
+    "allInputHashesVerified": true,
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "4d860e3fa38b6e984c7d2e14c3b0d10283deb18cd5e0572a26d7bab53e9f8ca2",
+    "binarySHA256": "eddd27568b9f9665d36ebe851683371f647eacdb76f345a4839646322dfd3a5a",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "build": 528,
+    "entitlementsUnchanged": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "goalComplete": false,
+    "launched": false,
+    "minimumSystemMetadata": "14.0",
+    "originalIconRetained": true,
+    "preparedUTC": "2026-11-17T19:02:17.372105+00:00",
+    "sameSourceAsDebug04": true,
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 7884,
+    "step": 528,
+    "unsignedSlices": [
+      {
+        "allOtherUnsignedBytesExact": true,
+        "architecture": "arm64",
+        "compiledSHA256": "1f0f848d9fcf7be597ea0f0adab3bfd24a7f173a0cca6ef5de4ea93405466e5c",
+        "signingMetadataException": {
+          "changedOffsets": [
+            3554
+          ],
+          "entireUnsignedSliceMatchesIndependentSigningReplay": true,
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3552,
+          "values": [
+            63324160,
+            62668800
+          ]
+        },
+        "unsignedExact": false
+      },
+      {
+        "allOtherUnsignedBytesExact": true,
+        "architecture": "x86_64",
+        "compiledSHA256": "5d7f37c9e8bea266f56e4627982442cd9d7915cf49afd33318d10d73fdb574db",
+        "signingMetadataException": {
+          "changedOffsets": [
+            3393,
+            3394
+          ],
+          "entireUnsignedSliceMatchesIndependentSigningReplay": true,
+          "field": "LC_SEGMENT_64.__LINKEDIT.vmsize",
+          "offset": 3392,
+          "values": [
+            62418944,
+            63340544
+          ]
+        },
+        "unsignedExact": false
+      }
+    ],
+    "validationCandidate": true,
+    "version": "0.3.0"
+  },
+  "version": "0.3.0"
+}

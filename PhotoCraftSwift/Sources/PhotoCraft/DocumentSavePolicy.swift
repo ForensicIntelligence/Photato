@@ -162,12 +162,12 @@ extension DocumentIO {
         "This format's current encoder cannot retain 32-bit pixels. Save as Photato or PSD, or use Save a Copy to convert to 16-bit."
     }
     if format == .exr,options.exrTransparency == false,
-      (try? pixels.allStoredSamplesSatisfy({$0.a == 1})) != true {return "Use Save a Copy to omit transparency."}
+      (try? pixels.isOpaque()) != true {return "Use Save a Copy to omit transparency."}
     if format == .jpeg {
       guard document.depth == .u8 else {
         return "JPEG needs an 8-bit document. Use Save a Copy to convert."
       }
-      guard (try? pixels.allStoredSamplesSatisfy({ $0.a == 1 })) == true else {
+      guard (try? pixels.isOpaque()) == true else {
         return "JPEG cannot retain transparency. Use Save a Copy to choose a matte."
       }
     }

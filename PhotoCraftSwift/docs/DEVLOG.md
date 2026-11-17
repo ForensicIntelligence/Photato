@@ -545,7 +545,60 @@ For a readable account of the project from the beginning, see [Photato developme
 | 524 | 2026-11-09 | [Selection borders and Canvas Size zoom](#dev-step-524) |
 | 525 | 2026-11-16 | [Selection contour preparation](#dev-step-525) |
 | 526 | 2026-11-16 | [Marquee creation and polygon routing](#dev-step-526) |
+| 527 | 2026-11-17 | [Save format checks on large documents](#dev-step-527) |
+| 528 | 2026-11-17 | [Open JPEG XL still images](#dev-step-528) |
 <!-- history-index:end -->
+
+<a id="dev-step-528"></a>
+
+## 2026-11-17 — Open JPEG XL still images
+
+Adobe lists JPEG XL among its supported 32-bit Save As formats. A source audit found that Photato's File > Open selector, document declarations and upload types did not advertise JPEG XL. The installed macOS 27.2 reader identifies both a raw bitstream and a container. The installed system format list lists reading only, so export and its settings require separate work.
+
+JPEGXLInput.swift records the two signatures and queries the system reader at runtime. RasterIO.swift uses the installed ImageIO decoder, checks the decoded size before image allocation, rejects incomplete input and rejects multi-image sources reported by ImageIO. DocumentOpenFormat.swift, DocumentIO.swift and the bundle declaration expose the still format to native Open. The active reader controls the Open selector, readable type list and HTTP import format/capabilities. POST /v1/documents/import accepts image/jxl or an explicit jxl format header for an octet-stream body. Existing transfer permissions, native archive saving and supported export formats apply. The app adds no Adobe API methods for this source format.
+
+The desktop budget is 1 GiB of estimated RGBA raster data, with a 128 MiB API admission check. Those are decoder-specific budgets. Other document formats maintain their existing limits. JPEG XL layer, animation, profile, fractional alpha, HDR and write fidelity need dedicated coverage.
+
+The fixtures use two owned 7×5 sample grids. cjxl 0.12.0 produced a lossless RGB8 raw stream and an RGBA16 container. djxl decoded both, and an independent PNG reader matched all 280 authored sample words to the manifest. libjxl is a fixture tool outside the application. JPEGXLImportWorkflowTests.swift verifies format discovery, file signature despite extension, exact native samples, new document ownership, archive Save As, typed/untyped HTTP import, permissions and mismatch/truncation rejection.
+
+Reference: [Adobe Photoshop file format overview](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/photoshop-file-formats-overview.html) and [Apple ImageIO format discovery](https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/ImageIOGuide/imageio_basics/ikpg_basics.html), consulted 17 November 2026.
+
+
+The initial combined Debug run passed 67 of 68 tests. The three new JPEG XL tests passed, including all 280 sample values and the native archive round trip. The failure was a prior archive API test expecting version 87 to return HTTP 400. The same assertion fails on the retained build 526 binary. The production archive supports version 87 and newer versions through 92. DocumentIOWorkflowTests.swift now checks that 87 successfully returns exact decodable bytes and uses 93 as the unsupported upper-bound example. The remaining corruption and history assertions are retained.
+
+An independent two-frame JPEG XL probe identified a data-loss risk: on this host, ImageIO reports one image and no animation for the encoded two-frame input. JPEGXLInput.swift now inspects the initial codestream metadata before decoding. It reads at most 32 bytes of codestream data and supports complete streams and ordered container fragments. Animated files are rejected before either the native or HTTP path can silently reduce them to one frame. JPEGXLImportWorkflowTests.swift exercises the same animation in raw, boxed and fragmented form. The earlier program and test binary are retained in the Debug01 evidence. Debug02 stopped at the whitespace preflight before launching a compiler. The trailing space came from removing an earlier diary status sentence. Debug03 resumes the same native inputs.
+
+Codestream size fields and the animation flag were cross-checked against the public JPEG XL reference implementation: [size and preview header](https://github.com/libjxl/libjxl/blob/v0.12.0/lib/jxl/headers.cc) and [image metadata](https://github.com/libjxl/libjxl/blob/v0.12.0/lib/jxl/image_metadata.cc). The Swift reader only checks the header. ImageIO decodes the samples.
+
+
+Debug03 passed the archive-version test and the three still-image cases. The new animation test failed before invoking the decoder because its fixture extractor assumed a complete jxlc box. The original cjxl animation has two jxlp boxes. Debug04 corrects the fixture extraction and exercises the original file, reconstructed raw and complete-box forms, and a deliberately short first fragment. The HTTP guard now also receives the independently verified animation. Production inputs remain byte-identical to Debug03. Both test binaries and the unsuccessful assertions are kept separately.
+
+
+Debug04 passes all 69 selected methods, including eight new methods across 527–528. No skips or signals are reported. The application executable matches Debug03 by SHA-256, confirming the final animation fixture correction is test-only. The exact 280-sample still comparison and animation rejection pass.
+
+The installed Adobe Photoshop 2026, version 27.2.0, launched into its application window. Its native Open dialog resolved the fixture folder, but confirming the path reset the chooser field instead of opening it. No image opened and no Photoshop output was collected. Public Adobe documentation and the independently decoded fixture words support separate parts of the evidence.
+
+Combined build 528 passes all 69 selected methods, including eight new tests, in Debug, optimized Apple Silicon and translated Intel. The universal candidate passes macOS 14 metadata, signature, entitlements, native resource, executable payload and extracted archive checks. The optimized timing table, reference limitations and source hashes are in [Source checkpoint 528](SOURCE_PUBLICATION_528.md).
+
+The universal validation package passed its static and round-trip checks. Native desktop automation expired before returning a launch state for build 528. Live Photato interaction and normal Quit remain unverified.
+
+<a id="dev-step-527"></a>
+
+## 2026-11-17 — Save format checks on large documents
+
+Work resumed from public source build 526, commit 02c3597. The save format audit found that deciding whether a flat image could be saved as JPEG scanned every stored pixel on each call. Save As and the HTTP document summary each requested the same eligibility list twice. Opaque OpenEXR used the same uncached scan when transparency was disabled.
+
+The save policy now uses the raster engine's existing exact opacity proof for JPEG and OpenEXR. The cold check reads each tile through a single buffer and excludes invisible edge padding. Alpha edits invalidate the proof through the existing copy-on-write rules. Save As reuses one filtered list and HTTP derives its filtered list from the already computed writable formats. This applies to Photato's current Save As and optional API without adding commands or changing the Adobe API contract.
+
+Changes cover Surface.swift, DocumentSavePolicy.swift, SaveDialogFormats.swift, NativeDocument.swift, AutomationService.swift, AutomationDocumentSaving.swift and build metadata in scripts/Info.plist. SaveOpacityResponsivenessTests.swift checks owned and mapped storage, edge padding, copy-on-write invalidation, JPEG and OpenEXR admission, native/HTTP state after Undo, and synchronous costs on 24 and 36 megapixel fixtures.
+
+The first two Debug runs each passed 64 of 65 tests, including all four new save cases. The inherited channel-separation HTTP test failed during connection teardown with the same idle-to-failed transition error on the retained 526 test binary in a full 61-test baseline run. All seven channel tests passed in isolation on both binaries. The broad failures and successful isolated replays are retained separately. The first replay command stopped before running because its shell variable was read-only. The replacement command used a distinct output directory and completed both replays.
+
+The Debug timing fixtures allocate every tile on 24 and 36 megapixel opaque images. Two invocations of the previous sample predicate cost 5.80 and 8.88 seconds. The first current JPEG eligibility check took 1.98 and 3.07 seconds, and 120 subsequent reads took 1.79 and 1.82 milliseconds combined. These timings cover the opacity predicate and format eligibility. Encoding and physical display timing need separate measurements.
+
+[Adobe file formats](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html) distinguishes JPEG's lack of transparency and OpenEXR's support for 32-bit images with alpha. Photato's existing ordinary Save and Save a Copy rules continue to govern these routes. Adobe also documents JPEG matte and depth-conversion workflows that are separate from this change.
+
+Combined build 528 passes all 69 selected methods, including eight new tests, in Debug, optimized Apple Silicon and translated Intel. The universal candidate passes macOS 14 metadata, signature, entitlements, native resource, executable payload and extracted archive checks. The optimized timing table, reference limitations and source hashes are in [Source checkpoint 528](SOURCE_PUBLICATION_528.md).
 
 <a id="dev-step-526"></a>
 

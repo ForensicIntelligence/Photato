@@ -1,0 +1,19 @@
+{
+  "source": "Owned procedural 7\u00d75 RGB8 and RGBA16 sample grids; no third-party photographs",
+  "license": "MIT OR Apache-2.0",
+  "codecReference": "libjxl 0.12.0, cjxl/djxl used for fixtures only",
+  "encoder": [
+    "cjxl raw8.png raw8.jxl -d 0 --container=0 --num_threads=1",
+    "cjxl container16.png container16.jxl -d 0 --container=1 --num_threads=1"
+  ],
+  "referenceCheck": "Decoded PNG output from djxl matched all authored RGBA integer words after PNG unfiltering. Transparent words use zero RGB.",
+  "expectedAlpha": "Opaque and fully transparent samples; fractional and hidden RGB words are unqualified",
+  "files": {
+    "container16.jxl": "fb9fd198dcd7b3ae39157ee251d7ebb95082efefb1ccf96ae7dce78fe9aa3bd7",
+    "expected.json": "7a01e595e66e3df54e67731cf9d0c8f8e47ddf4ee8af131b7b8029075abf143b",
+    "raw8.jxl": "70dce81d2eb82cc823354c3f0f84dcb939cbfacce5c09ce7e4e8281defb75f2d",
+    "raw8.png": "c683942dc3b97e504b19e78e8889a0fd38e6964193b5c5c3bba475db1a4e3337",
+    "two-frames.jxl": "245e58ed73b2ba686ae5bceb8c1383a883b37dc945d56e133b6af6141c91ff58"
+  },
+  "animation": "Owned red/green one-pixel GIF, two 200ms frames. cjxl -d 0 --container=1 --num_threads=1; jxlinfo verified both frame durations. App import must reject the animation."
+}

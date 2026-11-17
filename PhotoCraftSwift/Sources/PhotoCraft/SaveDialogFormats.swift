@@ -29,7 +29,11 @@ enum SaveDialogFormats {
 
 @MainActor extension CraftNSDocument {
   var dialogSaveFormats: [DocumentIO.Format] {
-    saveFormats.filter { fileHandlingPreferences.saveDialogFormats.contains($0) }
+    dialogSaveFormats(eligible: saveFormats)
+  }
+  func dialogSaveFormats(eligible: [DocumentIO.Format]) -> [DocumentIO.Format] {
+    let selected = fileHandlingPreferences.saveDialogFormats
+    return eligible.filter { selected.contains($0) }
   }
   var dialogCopyFormats: [DocumentIO.Format] {
     SaveDialogFormats.ordered(fileHandlingPreferences.saveDialogFormats)

@@ -85,9 +85,10 @@ enum DocumentIO {
     "local.photocraft.swift.document", PcraftImport.contentTypeIdentifier, "com.adobe.photoshop-image",
     "com.adobe.photoshop-large-image", OpenEXR.contentType.identifier, "com.adobe.pdf", "public.png",
     "com.apple.quicktime-movie", "public.mpeg-4", "com.apple.m4v-video", "public.camera-raw-image", "com.adobe.raw-image", "public.jpeg", "public.tiff", "public.heic", "com.microsoft.bmp", "com.compuserve.gif",
-  ]
+  ] + (JPEGXLInput.isAvailable ? [JPEGXLInput.typeIdentifier] : [])
   static let uploadTypes =
     Format.allCases.map(\.mediaType) + MovieIO.mediaTypes + RawSourceIO.mediaTypes + [PcraftImport.mediaType, "image/heic", "image/bmp", "image/gif"]
+    + (JPEGXLInput.isAvailable ? [JPEGXLInput.mediaType] : [])
   // The filename-tag fallback also works in SwiftPM/test hosts, whose main
   // bundle does not declare our imported UTI to Launch Services.
   static var pcraftContentType: UTType {
@@ -95,7 +96,11 @@ enum DocumentIO {
       ?? UTType(importedAs: PcraftImport.contentTypeIdentifier, conformingTo: .data)
   }
   static var readableContentTypes: [UTType] {
-    readableTypes.compactMap { $0 == PcraftImport.contentTypeIdentifier ? pcraftContentType : UTType($0) }
+    readableTypes.compactMap { identifier in
+      if identifier == PcraftImport.contentTypeIdentifier { return pcraftContentType }
+      if identifier == JPEGXLInput.typeIdentifier { return JPEGXLInput.contentType }
+      return UTType(identifier)
+    }
   }
 
   static func decode(
