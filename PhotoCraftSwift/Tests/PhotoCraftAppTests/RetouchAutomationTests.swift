@@ -19,6 +19,7 @@ final class RetouchAutomationTests: XCTestCase {
       defer { store.cancelClone(); store.renderTask?.cancel() }
       store.tool = tool; store.retouchSettings.brush.size = 6; store.retouchSettings.focus.protectDetail = false
       store.setCloneSource(at: .init(8, 9))
+      try store.setAllowToolRecording(true)
       try store.startRecordingAction(name: "Retouch", set: "Tests")
       store.beginClone(.init(x: 24, y: 20)); await store.clonePrepareTask?.value
       store.extendClone(.init(x: 34, y: 24)); store.finishClone(); await store.geometryTask?.value
@@ -56,6 +57,7 @@ final class RetouchAutomationTests: XCTestCase {
         request.mapping = .init(source: .init(8, 9), anchor: .init(24, 20))
         if tool.toning == nil { request.source = .init(layer: .active, convertToTarget: tool == .cloneStamp || tool == .healingBrush) }
         var expected = original; try RetouchPreparation.command(request, in: original).apply(to: &expected)
+        try store.setAllowToolRecording(true)
         try store.startRecordingAction(name: tool.rawValue, set: "Tests")
         let status = try await helper.edit(service, document, "retouch.stroke", parameters); XCTAssertEqual(status, 200, "\(tool)")
         XCTAssertTrue(store.document == expected); XCTAssertEqual(store.session.undoStack.count, 1)
@@ -81,6 +83,7 @@ final class RetouchAutomationTests: XCTestCase {
       let stale = try await helper.edit(service, document, "retouch.stroke", parameters); XCTAssertEqual(stale, 409)
       XCTAssertTrue(document.store.document == original)
       parameters["source"] = ["id": sourceShare.id.uuidString, "revision": service.revision(input.store)]
+      try document.store.setAllowToolRecording(true)
       try document.store.startRecordingAction(name: "External", set: "Tests")
       let accepted = try await helper.edit(service, document, "retouch.stroke", parameters); XCTAssertEqual(accepted, 200)
       let result = document.store.document, action = try document.store.stopRecordingAction()

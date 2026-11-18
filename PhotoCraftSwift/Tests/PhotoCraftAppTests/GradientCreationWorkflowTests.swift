@@ -124,6 +124,7 @@ final class GradientCreationWorkflowTests:XCTestCase {
     let h=AutomationTests();try await h.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) {service,document in
       var d=try self.fixture(.u16);d.selection = .init(x:3,y:2,width:24,height:19)
       let store=document.store;store.session=EditorSession(document:d);try service.share(document)
+      try store.setAllowToolRecording(true)
       try store.startRecordingAction(name:"Owned gradient workflow",set:"Test")
       let fill=try self.fill(),created=try await h.edit(service,document,"gradient.fill.create",["fill":BrushAPI.json(fill),"name":"Recorded gradient","opacity":0.65])
       XCTAssertEqual(created,200)

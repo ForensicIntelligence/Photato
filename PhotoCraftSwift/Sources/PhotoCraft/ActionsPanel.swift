@@ -21,6 +21,12 @@ struct ActionsPanel: View {
           Button("Duplicate") { duplicateSelectedAction() }
             .disabled(action == nil || stepID != nil || !store.canDuplicateAction)
             .help("Duplicate the selected saved action. Command and set duplication are not available yet.")
+          Divider()
+          Toggle("Allow Tool Recording", isOn: Binding(
+            get: { store.actions.allowToolRecording },
+            set: { enabled in attempt { try store.setAllowToolRecording(enabled) } }
+          ))
+          .disabled(!store.canConfigureToolRecording)
         } label: { Image(systemName: "line.3.horizontal") }
           .menuStyle(.borderlessButton).fixedSize()
           .accessibilityLabel("Actions panel menu")
@@ -39,6 +45,10 @@ struct ActionsPanel: View {
         }
       } else {
         Label("Recording: \(recording!.name)", systemImage: "record.circle.fill").foregroundStyle(.red)
+        if store.session.actionRecording?.allowsTools == false {
+          Text("Tool recording is off. Menu and dialog steps can still be recorded.")
+            .font(.caption).foregroundStyle(.secondary)
+        }
         HStack {
           Button("Stop", systemImage: "stop.fill") { attempt { selected = try store.stopRecordingAction().id } }.disabled(!store.canStopRecordingAction)
           Button("Discard Recording") { attempt { _ = try store.stopRecordingAction(save: false) } }.disabled(!store.canStopRecordingAction)

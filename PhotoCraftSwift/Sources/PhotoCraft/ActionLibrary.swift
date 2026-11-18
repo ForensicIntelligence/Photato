@@ -166,22 +166,34 @@ struct ActionLibraryFile: Codable {
 }
 
 @MainActor @Observable final class ActionLibrary {
+  static let toolRecordingKey = "Photato.actions.allowToolRecording"
   static let shared: ActionLibrary = {
     let isolated = ProcessInfo.processInfo.environment["PHOTATO_ISOLATED_UI_SESSION"] == "1"
       || CommandLine.arguments.contains { $0.hasPrefix("--snapshot") }
     return ActionLibrary(persistenceURL: isolated ? nil : FileManager.default.urls(for: .applicationSupportDirectory,
-      in: .userDomainMask).first?.appendingPathComponent("Photato/Actions.photatoactions"))
+      in: .userDomainMask).first?.appendingPathComponent("Photato/Actions.photatoactions"),
+      defaults: isolated ? nil : .standard)
   }()
   private(set) var file = ActionLibraryFile()
   private(set) var revision = 0
   private(set) var loadError: String?
+  private(set) var allowToolRecording: Bool
   @ObservationIgnored let persistenceURL: URL?
-  init(persistenceURL: URL? = nil) {
+  @ObservationIgnored private let defaults: UserDefaults?
+  init(persistenceURL: URL? = nil, defaults: UserDefaults? = nil) {
     self.persistenceURL = persistenceURL
+    self.defaults = defaults
+    self.allowToolRecording = defaults?.bool(forKey: Self.toolRecordingKey) ?? false
     if let url = persistenceURL, FileManager.default.fileExists(atPath: url.path) {
       do { file = try .decode(Self.read(url)) }
       catch { loadError = "Saved actions could not be read; the file is preserved. \(error.localizedDescription)" }
     }
+  }
+  func setAllowToolRecording(_ enabled: Bool) {
+    guard enabled != allowToolRecording else { return }
+    allowToolRecording = enabled
+    defaults?.set(enabled, forKey: Self.toolRecordingKey)
+    revision += 1
   }
   static func read(_ url: URL) throws -> Data {
     guard (try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0) <= ActionLibraryFile.maximumBytes else { throw CraftError.invalid("Action file exceeds 16 MiB.") }
@@ -279,6 +291,13 @@ struct ActionLibraryFile: Codable {
       || (document.activeLayerID == nil && canChangeLayerSelection && !editingComponent && !editingMask)
   }
   var canStopRecordingAction: Bool { canChangeLayerSelection && session.actionRecording != nil }
+  var canConfigureToolRecording: Bool { actionControlsAvailable && session.actionRecording == nil }
+  func setAllowToolRecording(_ enabled: Bool) throws {
+    guard canConfigureToolRecording else {
+      throw CraftError.invalid("Stop recording and finish the current edit before changing Allow Tool Recording.")
+    }
+    actions.setAllowToolRecording(enabled)
+  }
   func canPlayAction(_ action: RecordedAction?) -> Bool {
     guard let action, session.actionRecording == nil else { return false }
     if action.isLayerSelectionOnly { return canChangeLayerSelection }
@@ -295,7 +314,7 @@ struct ActionLibraryFile: Codable {
     guard actions.loadError == nil else { throw CraftError.invalid(actions.loadError!) }
     let previousSession = sessionGeneration
     defer { retainBrushEndpointAfterRecordingChange(previousSession: previousSession) }
-    try session.startActionRecording(name: name, set: set)
+    try session.startActionRecording(name: name, set: set, allowToolRecording: actions.allowToolRecording)
     actionRevision += 1
   }
   @discardableResult func stopRecordingAction(save: Bool = true) throws -> RecordedAction {
@@ -315,6 +334,9 @@ struct ActionLibraryFile: Codable {
     ["format": "photatoactions", "version": actions.file.version, "supportedVersions": Array(1...ActionLibraryFile.maximumVersion), "libraryRevision": actions.revision,
      "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "semanticPencil": true, "semanticPaintBucket": true, "semanticTargetedBrush": true, "quickMask": ActionPlaybackAPI.quickMaskCapabilities, "colorChannelBrush": ActionPlaybackAPI.colorChannelBrushCapabilities, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "selectionOnly": "Select/deselect-only recipes validate every target, then publish final view selection without document history or dirty events; mixed recipes retain the existing prepared transaction.", "adobeATN": false],
      "canRecord": canStartRecordingAction && session.actionRecording == nil && actions.loadError == nil,
+     "allowToolRecording": actions.allowToolRecording,
+     "recordingAllowsTools": session.actionRecording.map { $0.allowsTools } as Any? ?? NSNull(),
+     "canConfigureToolRecording": canConfigureToolRecording,
      "canPlay": canUseCompositeActions && session.actionRecording == nil,
      "canPlayQuickMask": canUseQuickMaskActions && session.actionRecording == nil,
      "canPlayColorChannelBrush": canUseColorChannelActions && session.actionRecording == nil,

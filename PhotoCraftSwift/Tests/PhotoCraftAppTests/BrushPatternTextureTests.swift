@@ -72,6 +72,7 @@ final class BrushPatternTextureTests: XCTestCase {
     defer{store.cancelBrush();store.renderTask?.cancel()};store.tool = .brush;store.brush.color = .black;store.brush.size=12
     try await store.chooseBrushTexture("owned-brush-texture");let bitmap=store.brushOptions.texture.bitmap
     store.beginBrush(.init(x:10,y:16),zoom:1);store.extendBrush(.init(x:30,y:16,time:100));store.cancelBrush();XCTAssertEqual(store.document,original)
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name:"Owned texture paint",set:"Owned")
     store.beginBrush(.init(x:10,y:16),zoom:1);store.extendBrush(.init(x:30,y:16,time:100))
     let command=try XCTUnwrap(store.brushGesture?.command),captured=try XCTUnwrap(store.brushGesture?.brush)
@@ -121,7 +122,7 @@ final class BrushPatternTextureTests: XCTestCase {
       XCTAssertEqual(document.store.brush,before);XCTAssertEqual(document.store.document,doc)
       let definition=try XCTUnwrap(AutomationCommand.definitions.first{$0.name=="brush.configure"});let envelope=try XCTUnwrap(definition.schema["properties"]as?[String:Any]);let params=try XCTUnwrap(envelope["parameters"]as?[String:Any]);let fields=try XCTUnwrap(params["properties"]as?[String:Any]);XCTAssertNotNil(fields["texturePatternID"])
       XCTAssertTrue(definition.optionalParameters.contains("texturePatternID"));XCTAssertEqual(document.store.brushState["textureLoading"]as?Bool,false)
-      XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:BrushAPI.capabilities));XCTAssertEqual(AutomationCommand.definitions.count,267)
+      XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:BrushAPI.capabilities));XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount)
     }
   }
   @MainActor func testHTTPDeferredRevocationAndLibraryChangesRejectCompletePatch()async throws {

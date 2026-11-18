@@ -1,5 +1,11 @@
 # Repository administration record
 
+## Keep the Developer Diary current
+
+The repository README links directly to the [Developer Diary](DEVELOPER_DIARY.md). The GitHub page shows the ten most recent entries and links to the complete diary and [detailed development log](PhotoCraftSwift/docs/DEVLOG.md). Include the updated diary files and README build number in each source checkpoint commit.
+
+After updating the source diary, run `python3 scripts/check-diary.py --write` from the repository root to refresh the GitHub page. Run `python3 scripts/check-diary.py` to check it. The same check runs in GitHub Actions for pushes and pull requests to `main`. It checks the README link, the advertised build, the GitHub page, and the current entry and indexes in the source records.
+
 ## 2026-10-19 — Initial private GitHub repository setup
 
 The owner requested a private GitHub repository in a side conversation, with public visibility deferred until they approve a release.

@@ -18,7 +18,7 @@ final class EraserModeWorkflowTests:XCTestCase {
       store.eraserMode = mode == .block ? .brush:.block
       XCTAssertEqual(store.brushGesture?.eraserMode,mode)
       store.cancelBrush();XCTAssertEqual(store.document,doc)
-      store.eraserMode=mode;try store.startRecordingAction(name:"Owned eraser",set:"Owned")
+      store.eraserMode=mode;try store.setAllowToolRecording(true);try store.startRecordingAction(name:"Owned eraser",set:"Owned")
       store.beginBrush(.init(x:18,y:16,time:0),zoom:1);store.extendBrush(.init(x:28,y:16,time:100))
       var expected=doc;try XCTUnwrap(store.brushGesture?.command).apply(to:&expected)
       await store.brushPreviewTask?.value;store.finishBrush();await store.geometryTask?.value

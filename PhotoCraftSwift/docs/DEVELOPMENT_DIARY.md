@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 565 — Add Allow Tool Recording to Actions
+
+The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. Tool gestures still edit pixels and appear in Undo when the setting is off.
+
+All 608 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. In 52 channel-stroke sequences, both recording settings produced the same raw samples as direct editing and the same per-architecture output as build 564. Forty older Brush step encodings also matched. Both universal slices passed offscreen checks.
+
+[Detailed record](DEVLOG.md#dev-step-565) · [Validation](SOURCE_PUBLICATION_565.md).
+
 ## 2026-11-18 — Step 564 — Record Brush Actions for color channels
 
 Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. Playback resolves the recorded target against the current document, respects its selection, and takes one Undo to reverse.
@@ -505,14 +513,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:564 -->
+<!-- current-status-step:565 -->
 ## Current development status — 18 November 2026
 
-Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. All 583 selected tests passed, and both universal slices passed offscreen checks.
+The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed, and both universal slices passed offscreen checks.
 
-Live Photoshop Action capture, playback, and numerical comparison remain open.
+Photoshop channel-selection Action steps and percentage-based tool coordinates still need verification.
 
-[Qualification](SOURCE_PUBLICATION_564.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_565.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1282,6 +1290,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 562 | [Record Brush Actions for masks and channels](DEVLOG.md#dev-step-562) |
 | 2026-11-18 | 563 | [Record and replay Quick Mask Actions](DEVLOG.md#dev-step-563) |
 | 2026-11-18 | 564 | [Record Brush Actions for color channels](DEVLOG.md#dev-step-564) |
+| 2026-11-18 | 565 | [Add Allow Tool Recording to Actions](DEVLOG.md#dev-step-565) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

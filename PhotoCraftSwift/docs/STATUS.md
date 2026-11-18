@@ -1,3 +1,5 @@
+**Source checkpoint 565.** The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_565.md).
+
 **Source checkpoint 564.** Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. All 583 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_564.md).
 
 **Source checkpoint 563.** Photato Actions can enter Quick Mask, record Brush and Pencil strokes, and convert the edited mask back to a selection in one undoable Action. All 558 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_563.md).

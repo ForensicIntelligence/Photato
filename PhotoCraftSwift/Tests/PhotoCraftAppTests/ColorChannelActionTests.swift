@@ -12,6 +12,7 @@ final class ColorChannelActionTests: XCTestCase {
       let store = EditorStore(document: original, actions: ActionLibrary())
       defer { store.renderTask?.cancel() }
       try store.selectModeComponents(components)
+      try store.setAllowToolRecording(true)
       try store.startRecordingAction(name: "Paint channels", set: "Tests")
       store.tool = .brush; store.brush.color = .black; store.brush.size = 3
       store.beginBrush(.init(x: 4.5, y: 4.5), zoom: 1)
@@ -102,6 +103,7 @@ final class ColorChannelActionTests: XCTestCase {
       store.session = EditorSession(document: original)
       try service.share(file)
       let target = try await helper.edit(service, file, "mode.channel.select", selection)
+      try store.setAllowToolRecording(true)
       let start = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Process strokes"])
       var fields = self.strokeParameters
       fields["components"] = [0, 2]; fields["action"] = "stroke"
@@ -161,6 +163,7 @@ final class ColorChannelActionTests: XCTestCase {
         store.session = EditorSession(document: original)
         try service.share(file)
         let select = try await helper.edit(service, file, "ink.channel.select", ["targets": targets.map(\.key)])
+        try store.setAllowToolRecording(true)
         let start = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Ink strokes"])
         var fields = self.strokeParameters
         fields["targets"] = targets.map(\.key); fields["action"] = "stroke"

@@ -1,3 +1,7 @@
+**Source checkpoint 565.** The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_565.md).
+
+Isolate the RGB32 and Gray32 conversion differences across architectures. Also verify Photoshop’s Action step capture for channel switches and percentage-based tool coordinates.
+
 **Source checkpoint 564.** Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. All 583 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_564.md).
 
 Check Photoshop’s Allow Tool Recording control and how Actions capture channel changes before extending recorded channel edits.

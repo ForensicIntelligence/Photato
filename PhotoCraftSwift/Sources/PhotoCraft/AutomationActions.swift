@@ -2,7 +2,7 @@ import Foundation
 import PhotoCraftCore
 
 extension AutomationCommand {
-  static let actionOperations = ["list", "record", "stop", "cancel", "rename", "duplicate", "delete", "import", "export", "step.enable", "step.delete", "step.move"]
+  static let actionOperations = ["list", "record", "stop", "cancel", "toolRecording", "rename", "duplicate", "delete", "import", "export", "step.enable", "step.delete", "step.move"]
   static func actionSchema(_ key: String) -> [String: Any] {
     switch key {
     case "clipboardPayloadBase64": return ClipboardAPI.schema("payloadBase64")
@@ -27,6 +27,7 @@ extension AutomationService {
     switch operation {
     case "list", "stop", "cancel": required = []; optional = []
     case "record": required = ["name"]; optional = ["set"]
+    case "toolRecording": required = ["enabled"]; optional = []
     case "rename": required = ["actionID", "name", "set"]; optional = []
     case "duplicate": required = ["actionID"]; optional = ["name", "set"]
     case "delete": required = ["actionID"]; optional = []
@@ -52,6 +53,14 @@ extension AutomationService {
     }
     switch operation {
     case "record": try store.startRecordingAction(name: command.string("name"), set: command.parameters["set"] == nil ? "My Actions" : command.string("set"))
+    case "toolRecording":
+      guard case .bool(let enabled) = command.parameters["enabled"] else {
+        throw AutomationFailure(status: 400, message: "enabled must be boolean.")
+      }
+      guard store.canConfigureToolRecording else {
+        throw AutomationFailure(status: 409, message: "Finish the current edit before changing Allow Tool Recording.")
+      }
+      try store.setAllowToolRecording(enabled)
     case "stop": _ = try store.stopRecordingAction()
     case "cancel": _ = try store.stopRecordingAction(save: false)
     case "delete": try store.actions.remove(command.actionUUID("actionID"))

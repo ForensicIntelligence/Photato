@@ -10,6 +10,7 @@ final class BrushReleaseTests: XCTestCase {
     defer { store.cancelBrush(); store.renderTask?.cancel() }
     store.tool = .brush; store.brush.size = 16; store.brushOptions.flow = 0.4
     store.brushOptions.smoothing.amount = 0.9
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name: "Held release", set: "Test")
     store.beginBrush(.init(x: 20, y: 60, time: 0), zoom: 1)
     for i in 1..<80 { store.extendBrush(.init(x: 20 + Double(i) * 3, y: 80 + sin(Double(i) / 4) * 30, time: Double(i) * 8)) }

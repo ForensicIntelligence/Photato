@@ -535,15 +535,15 @@ public struct EditorSession: Sendable {
     try candidate.validate();document=candidate
   }
   public private(set) var actionRecording: ActionRecording?
-  public mutating func startActionRecording(name: String, set: String = "My Actions") throws {
+  public mutating func startActionRecording(name: String, set: String = "My Actions", allowToolRecording: Bool = true) throws {
     guard actionRecording == nil else { throw CraftError.invalid("An action is already recording.") }
     let action = RecordedAction(name: name, set: set); try action.validate()
-    endCoalescing(); actionRecording = ActionRecording(action: action)
+    endCoalescing(); actionRecording = ActionRecording(action: action, allowsTools: allowToolRecording)
   }
   public mutating func stopActionRecording() { actionRecording = nil; endCoalescing() }
   /// Clipboard reads have a semantic action step without a document/history mutation.
   public mutating func recordActionOperation(_ operation: ActionOperation, name: String) {
-    guard let recording = actionRecording else { return }
+    guard let recording = actionRecording, recording.allowsTools || !operation.isInteractiveToolRecording else { return }
     if recording.snapshot.steps.count < 511 { actionRecording?.pending.append(.init(name: name, operation: operation)) }
     else if recording.snapshot.steps.count == 511 { actionRecording?.pending.append(.init(name: "Recording limit", operation: .unsupported("Recording exceeded 511 steps. Split this action."))) }
   }
@@ -661,8 +661,12 @@ public struct EditorSession: Sendable {
       next.undoStack.append(HistoryEntry(label: prepared.label, document: document))
     }
     if next.actionRecording != nil, let entry = next.undoStack.last {
-      let operation = prepared.recordingCommand.map { ActionOperation(recording: $0, in: document) } ?? .unsupported("\(prepared.label) is not recordable.")
-      next.actionRecording?.append(.init(name: prepared.label, operation: operation), historyID: entry.id)
+      if next.actionRecording?.allowsTools == false, prepared.recordingCommand?.isInteractiveToolRecording == true {
+        next.actionRecording?.undone.removeAll()
+      } else {
+        let operation = prepared.recordingCommand.map { ActionOperation(recording: $0, in: document) } ?? .unsupported("\(prepared.label) is not recordable.")
+        next.actionRecording?.append(.init(name: prepared.label, operation: operation), historyID: entry.id)
+      }
     }
     next.coalescingHasChanges = true
     next.redoStack = []

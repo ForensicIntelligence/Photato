@@ -42,6 +42,7 @@ final class ColorRegionWorkflowTests: XCTestCase {
     native.bucketOptions.match.antiAlias = false
     native.bucketUsesPattern = true
     native.bucketPatternPlacement.phaseX = 1
+    try native.setAllowToolRecording(true)
     try native.startRecordingAction(name: "Pattern Clear", set: "Tests")
     let click = PathPoint(3.5, 2.5)
     native.colorRegionClick(at: click, modifiers: [.option])
@@ -97,6 +98,7 @@ final class ColorRegionWorkflowTests: XCTestCase {
       let s = file.store, point = PathPoint(7.5, 2.5)
       s.session = EditorSession(document: source)
       try service.share(file)
+      try s.setAllowToolRecording(true)
       let started = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Mask Fill"])
       XCTAssertEqual(started, 200)
       let oldRevision = service.revision(s)

@@ -15,6 +15,7 @@ final class QuickMaskHiddenCommandsWorkflowTests: XCTestCase {
     let source = try fixture(.u16), library = ActionLibrary()
     let store = EditorStore(document: source, actions: library)
     defer { store.renderTask?.cancel() }
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name: "Refine Quick Mask", set: "Tests")
     store.toggleQuickMask()
     for tool in [EditorTool.brush, .pencil] {
@@ -68,6 +69,7 @@ final class QuickMaskHiddenCommandsWorkflowTests: XCTestCase {
     defer { store.renderTask?.cancel() }
     store.toggleQuickMask()
     XCTAssertTrue(store.canStartRecordingAction)
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name: "Existing Quick Mask", set: "Tests")
     store.tool = .brush
     store.brush.color = .black
@@ -101,6 +103,7 @@ final class QuickMaskHiddenCommandsWorkflowTests: XCTestCase {
       let store = file.store
       store.session = EditorSession(document: original)
       try service.share(file)
+      try store.setAllowToolRecording(true)
       let start = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Refine"])
       let enter = try await helper.edit(service, file, "channel.edit",
         ["action": "quickMask", "enabled": true, "indicates": "selectedAreas"])

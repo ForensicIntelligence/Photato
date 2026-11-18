@@ -1,0 +1,29 @@
+name: Development diary
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  diary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /README.md
+            /DEVELOPER_DIARY.md
+            /scripts/check-diary.py
+            /PhotoCraftSwift/docs/DEVELOPMENT_DIARY.md
+            /PhotoCraftSwift/docs/DEVLOG.md
+            /PhotoCraftSwift/scripts/Info.plist
+      - name: Verify the homepage link and current diary entry
+        run: python3 scripts/check-diary.py

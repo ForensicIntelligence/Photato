@@ -1,0 +1,165 @@
+{
+  "actionMaximumVersion": 70,
+  "addedMethods": [
+    "PhotoCraftAppTests.ToolRecordingPreferenceTests/testDesktopBrushEditsAndUndoesWhenOffAndSavedStrokePlaysWhenOff",
+    "PhotoCraftAppTests.ToolRecordingPreferenceTests/testHTTPPreferenceValidationAndProcessStrokeRecording",
+    "PhotoCraftAppTests.ToolRecordingPreferenceTests/testPreferencePersistsAndOpenRecordingsKeepTheirStartSetting"
+  ],
+  "checkpoint": 565,
+  "comparison": {
+    "actionReplayMatchesDirectOnBothArchitectures": true,
+    "architectures": {
+      "arm64": {
+        "legacyWireSHA256": "5cb5bae45cd04149c5db7930aa0c5c567e4f594d8389d1cf6864428afdef4630",
+        "pixelSHA256": "2c370e2473113a99b7e67670fe2660d93e77f98ec527faa2981ce8c7278e6cef",
+        "rawPixelBytes": 182016
+      },
+      "x86_64": {
+        "legacyWireSHA256": "5cb5bae45cd04149c5db7930aa0c5c567e4f594d8389d1cf6864428afdef4630",
+        "pixelSHA256": "eb76f4b520fa0d205ed72b1566e0d7526a5523659d49f930e9682ae33403963d",
+        "rawPixelBytes": 182016
+      }
+    },
+    "base": 564,
+    "baselineBitExactOnBothArchitectures": true,
+    "bitExactAcrossArchitectures": false,
+    "bothRecordingStatesTransportIdenticalSamples": true,
+    "candidate": 565,
+    "channelStrokeSequences": 52,
+    "crossArchitectureDifferingBytes": 4398,
+    "crossArchitectureInputDifferences": 4608,
+    "crossArchitectureOutputDifferences": 4398,
+    "crossArchitectureRawModesWithDifferences": [
+      "RGB32",
+      "Gray32"
+    ],
+    "independentColorSyncProbe": {
+      "arm64": {
+        "Gray32": {
+          "colorSyncWords": [
+            "3e4a71c8",
+            "3f54d4d5"
+          ],
+          "matches": true,
+          "retainedDocumentWords": [
+            "3e4a71c8",
+            "3f54d4d5"
+          ]
+        },
+        "RGB32": {
+          "colorSyncWords": [
+            "3dcc97b6",
+            "3e5d0a8a",
+            "3eaf0f67",
+            "3f54d4d5"
+          ],
+          "matches": true,
+          "retainedDocumentWords": [
+            "3dcc97b6",
+            "3e5d0a8a",
+            "3eaf0f67",
+            "3f54d4d5"
+          ]
+        }
+      },
+      "x86_64": {
+        "Gray32": {
+          "colorSyncWords": [
+            "3e4a71c9",
+            "3f54d4d5"
+          ],
+          "matches": true,
+          "retainedDocumentWords": [
+            "3e4a71c9",
+            "3f54d4d5"
+          ]
+        },
+        "RGB32": {
+          "colorSyncWords": [
+            "3dcc97b6",
+            "3e5d0a8a",
+            "3eaf0f69",
+            "3f54d4d5"
+          ],
+          "matches": true,
+          "retainedDocumentWords": [
+            "3dcc97b6",
+            "3e5d0a8a",
+            "3eaf0f69",
+            "3f54d4d5"
+          ]
+        }
+      }
+    },
+    "legacyActionEncodings": 40,
+    "outputDifferencesAtInputDifferenceOffsets": 4397
+  },
+  "fullPhotoshopParity": false,
+  "nativeMenu": {
+    "actionsPanelMenuPresent": true,
+    "description": "The exact extracted build opened a new Photato document, and Option-F9 opened its native Actions floating window. The desktop state changed before the checkbox could be exercised by hand. Automated desktop and HTTP tests cover the on and off behavior.",
+    "extractedPackageLaunched": true,
+    "liveCheckboxToggled": false,
+    "livePaintWorkflowVerified": false,
+    "optionF9OpenedActions": true
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "d5e23a9b8b19d608667c75b18c8ea46a75be0f5d6b3a950919299912f551b2c9",
+    "binarySHA256": "a043b9482463f7cbefda506f649c45d926c3e647c345a4d0686b0d1a4b39238c",
+    "build": 565,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122076,
+          "height": 650,
+          "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopBytesVerified": false,
+  "photoshopLiveCheck": "Actions panel menu showed Allow Tool Recording unchecked.",
+  "photoshopRecordedActionVerified": false,
+  "preferenceDefault": false,
+  "priorAttempts": [
+    {
+      "name": "qualification01",
+      "passed": false
+    },
+    {
+      "name": "qualification02",
+      "passed": false
+    },
+    {
+      "name": "qualification04",
+      "passed": true
+    }
+  ],
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/record-tools-in-actions.html"
+  ],
+  "selectedMethods": {
+    "arm": 608,
+    "debug": 608,
+    "intel": 608
+  },
+  "softwareRelease": false,
+  "typedCommands": 272
+}

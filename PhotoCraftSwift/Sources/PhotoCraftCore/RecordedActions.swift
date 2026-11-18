@@ -1,5 +1,26 @@
 import Foundation
 
+extension Command {
+  /// These edits come from canvas tools. The same command can also be submitted by automation.
+  var isInteractiveToolRecording: Bool {
+    switch self {
+    case .stroke, .maskStroke, .painting, .adjustmentBrush, .paintBucket, .paintGradient,
+      .healingBrush, .spotHealing, .cloneStamp, .focus, .toning, .channel(.stroke),
+      .inkChannel(.edit(_, .stroke)):
+      return true
+    case .modeComponents(let edit):
+      if case .stroke = edit.operation { return true }
+      return false
+    case .smartFilterMask(_, let command):
+      return command.isInteractiveToolRecording
+    case .preparedAction(let edit):
+      return edit.recording?.isInteractiveToolRecording == true
+    default:
+      return false
+    }
+  }
+}
+
 /// Portable layer references, independent of document UUIDs.
 public enum ActionLayerTarget: Codable, Equatable, Sendable {
   case active
@@ -140,6 +161,15 @@ public enum ActionOperation: Codable, Sendable {
   }
 
   public var unsupportedReason: String? { if case .unsupported(let reason) = self { return reason }; return nil }
+  var isInteractiveToolRecording: Bool {
+    switch self {
+    case .stroke, .targetedBrushStroke, .colorChannelBrushStroke, .pencilStroke, .adjustmentBrush,
+      .paintBucket, .paintGradient, .retouch:
+      return true
+    default:
+      return false
+    }
+  }
   public init(recording command: Command, in d: CraftDocument) {
     func target(_ id: UUID) -> ActionLayerTarget { .init(id, in: d) }
     func targets(_ ids: Set<UUID>) -> [ActionLayerTarget] { d.layers.filter { ids.contains($0.id) }.map { target($0.id) } }
@@ -811,6 +841,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
 
 public struct ActionRecording: Sendable {
   public var action: RecordedAction
+  public let allowsTools: Bool
   struct Group: Sendable { let historyID: UUID; var steps: [RecordedActionStep] }
   var groups: [Group] = []
   var undone: [Group] = []

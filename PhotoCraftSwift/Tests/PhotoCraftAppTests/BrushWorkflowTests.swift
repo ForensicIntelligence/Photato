@@ -25,6 +25,7 @@ final class BrushWorkflowTests:XCTestCase {
     for mode in BrushPaintMode.allCases {
       store.brushOptions.paintMode = mode
       let brush = store.brush
+      try store.setAllowToolRecording(true)
       try store.startRecordingAction(name: mode.title, set: "Test")
       store.beginBrush(point, zoom: 1)
       XCTAssertEqual(store.brushGesture?.brush.settings?.paintMode, mode)
@@ -176,6 +177,7 @@ final class BrushWorkflowTests:XCTestCase {
     if profile == .calibratedRound { store.brush.hardness = 0.5 }
     let activeBrush = store.brush
     let point = StrokePoint(x: 64.5, y: 48.5)
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name: "Wide Soft", set: "Test")
     store.beginBrush(point, zoom: 1)
     store.finishBrush()
@@ -694,6 +696,7 @@ final class BrushWorkflowTests:XCTestCase {
     canvas.keyDown(with:key)
     XCTAssertEqual(store.brush.size,5_000)
 
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name:"Large Brush",set:"Test")
     let point = StrokePoint(x:64,y:48)
     store.beginBrush(point,zoom:1)
@@ -764,6 +767,7 @@ final class BrushWorkflowTests:XCTestCase {
       XCTAssertTrue(store.canConnectBrushStroke)
       XCTAssertEqual(store.session.undoStack.count,1)
 
+      try store.setAllowToolRecording(true)
       try store.startRecordingAction(name:"Connect",set:"Test")
       canvas.updateCursorModifiers(.shift)
       let cursor = ToolCursor.symbol(tool == .brush ? "paintbrush.pointed" : "pencil.tip", .constrain)
@@ -825,6 +829,7 @@ final class BrushWorkflowTests:XCTestCase {
     try await helper.withService(actions:library,pressedMouseButtons:{0}) { service,file in
       file.store.session = EditorSession(document:source)
       try service.share(file)
+      try file.store.setAllowToolRecording(true)
       let record = try await helper.edit(service,file,"actions.manage",["operation":"record","name":"Pencil Auto Erase"])
       XCTAssertEqual(record,200)
       let paint = try await helper.edit(service,file,"paint.tool",[
@@ -891,6 +896,7 @@ final class BrushWorkflowTests:XCTestCase {
     let doc=try CraftDocument(width:64,height:48),store=EditorStore(document:doc,actions:ActionLibrary(),brushes:BrushLibrary())
     defer {store.renderTask?.cancel();store.cancelBrush()}
     store.tool = .brush;store.brush.size=10;store.brush.color=Pixel(1,0,0);store.brushOptions.flow=0.5
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name:"Paint",set:"Test")
     store.beginBrush(.init(x:12,y:20,time:0),zoom:1);store.extendBrush(.init(x:44,y:25,pressure:0.4,tiltX:30,rotation:45,time:100));await store.brushPreviewTask?.value;await store.renderTask?.value
     XCTAssertTrue(store.hasToneDraft);XCTAssertEqual(store.document,doc);XCTAssertNotNil(store.brushPreviewCommand)
@@ -964,6 +970,7 @@ final class BrushWorkflowTests:XCTestCase {
       XCTAssertEqual(store.brushOptions.smoothing.amount, 0.1)
 
       store.tool = .brush
+      try store.setAllowToolRecording(true)
       try store.startRecordingAction(name: "Factory Brush", set: "Test")
       store.beginBrush(try XCTUnwrap(points.first), zoom: 1)
       for point in points.dropFirst() { store.extendBrush(point) }

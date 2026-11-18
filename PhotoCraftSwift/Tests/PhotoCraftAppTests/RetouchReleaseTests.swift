@@ -17,7 +17,7 @@ final class RetouchReleaseTests: XCTestCase {
     let store = EditorStore(document: try fixture(), cloneState: state, actions: ActionLibrary())
     store.tool = tool; store.retouchSettings.brush.size = 12; store.retouchSettings.focus.protectDetail = false
     store.setCloneSource(at: .init(25, 25)); await store.renderTask?.value
-    if recording { try store.startRecordingAction(name: "Retouch", set: "Test") }
+    if recording { try store.setAllowToolRecording(true); try store.startRecordingAction(name: "Retouch", set: "Test") }
     store.beginClone(.init(x: 70, y: 80)); await settle(store)
     return store
   }

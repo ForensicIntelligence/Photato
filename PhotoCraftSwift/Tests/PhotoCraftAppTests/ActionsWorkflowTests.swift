@@ -28,6 +28,7 @@ final class ActionsWorkflowTests: XCTestCase {
     let native = EditorStore(document: original, actions: library)
     defer { native.renderTask?.cancel() }
     let id = try XCTUnwrap(original.activeLayerID)
+    try native.setAllowToolRecording(true)
     try native.startRecordingAction(name: "Filter mask", set: "Tests")
     native.selectSmartFilterMask(id)
     XCTAssertTrue(native.smartFilterMaskEditing)
@@ -85,6 +86,7 @@ final class ActionsWorkflowTests: XCTestCase {
       let store = file.store
       store.session = EditorSession(document: source)
       try service.share(file)
+      try store.setAllowToolRecording(true)
       let began = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Two Mattes"])
       XCTAssertEqual(began, 200)
       let points: [[String: Any]] = [["x": 6.5,"y": 6.5,"pressure": 0.75],["x": 10.5,"y": 7.5]]
@@ -151,6 +153,7 @@ final class ActionsWorkflowTests: XCTestCase {
     store.tool = .brush
     store.brush.color = Pixel(0.2, 0.5, 0.8)
     store.brush.size = 5
+    try store.setAllowToolRecording(true)
     try store.startRecordingAction(name: "Paint above Shape", set: "Tests")
     store.beginBrush(.init(x: 6.5, y: 5.5), zoom: 1)
     store.extendBrush(.init(x: 12.5, y: 6.5))

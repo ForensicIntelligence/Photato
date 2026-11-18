@@ -23,7 +23,7 @@ final class FocusBlendModeWorkflowTests:XCTestCase {
       configure(store,tool,mode);await begin(store,tool);XCTAssertNil(store.error)
       let draft=try XCTUnwrap(store.cloneDraft);XCTAssertEqual(draft.brush.mode,mode);var expected=doc;try XCTUnwrap(draft.command).apply(to:&expected)
       store.retouchSettings.brush.mode = .normal;XCTAssertEqual(store.cloneDraft?.brush.mode,mode);store.cancelClone();XCTAssertEqual(store.document,doc);XCTAssertTrue(store.session.undoStack.isEmpty)
-      configure(store,tool,mode);try store.startRecordingAction(name:"Focus mode",set:"Owned");await begin(store,tool);store.finishClone();await store.geometryTask?.value;await store.retouchPreviewTask?.value
+      configure(store,tool,mode);try store.setAllowToolRecording(true);try store.startRecordingAction(name:"Focus mode",set:"Owned");await begin(store,tool);store.finishClone();await store.geometryTask?.value;await store.retouchPreviewTask?.value
       XCTAssertNil(store.error);XCTAssertEqual(store.document,expected);XCTAssertNotEqual(expected,doc);XCTAssertEqual(store.session.undoStack.count,1)
       let action=try store.stopRecordingAction(),bytes=try library.exportFile(action.id),decoded=try ActionLibraryFile.decode(bytes)
       XCTAssertEqual(decoded.version,mode == .normal ? 21:55)
@@ -82,7 +82,7 @@ final class FocusBlendModeWorkflowTests:XCTestCase {
   }
   @MainActor func testHostedPickerSchemaStateAndAllModifierCursorPolicies()throws {
     let expected=["Normal","Darken","Lighten","Hue","Saturation","Color","Luminosity"];XCTAssertEqual(FocusBlendModes.supported.map(\.rawValue),expected)
-    let definition=try XCTUnwrap(AutomationCommand.definitions.first{$0.name=="retouch.stroke"}),root=try XCTUnwrap(definition.schema["properties"]as?[String:Any]),parameters=try XCTUnwrap(root["parameters"]as?[String:Any]);XCTAssertNotNil(parameters["allOf"]);XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:definition.schema));XCTAssertEqual(AutomationCommand.definitions.count,267);XCTAssertEqual(ActionLibraryFile.maximumVersion,AutomationTests.expectedActionVersion)
+    let definition=try XCTUnwrap(AutomationCommand.definitions.first{$0.name=="retouch.stroke"}),root=try XCTUnwrap(definition.schema["properties"]as?[String:Any]),parameters=try XCTUnwrap(root["parameters"]as?[String:Any]);XCTAssertNotNil(parameters["allOf"]);XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:definition.schema));XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount);XCTAssertEqual(ActionLibraryFile.maximumVersion,AutomationTests.expectedActionVersion)
     let store=EditorStore(document:try document(),cloneState:CloneSources());defer{stop(store)};let flags:[NSEvent.ModifierFlags]=[.control,.command,.option,.shift]
     for tool in FocusTool.allCases {for mode in FocusBlendModes.supported {configure(store,tool,mode);let view=NSHostingView(rootView:WorkspaceView(store:store).focusOptions);view.frame=NSRect(x:0,y:0,width:1000,height:45);view.layoutSubtreeIfNeeded();XCTAssertGreaterThan(view.bounds.width,0)
       let state=try XCTUnwrap(store.retouchToolState[tool.rawValue.lowercased()]as?[String:Any]),brush=try XCTUnwrap(state["brush"]as?[String:Any]);XCTAssertEqual(brush["mode"]as?String,mode.rawValue)
