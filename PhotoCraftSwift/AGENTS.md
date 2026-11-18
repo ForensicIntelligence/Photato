@@ -1,3 +1,5 @@
+**Source checkpoint 544.** Wide Brush previews start from the initial pointer event. All 64 tested buffers match build 543, and all 388 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_544.md).
+
 **Source checkpoint 543.** Large gradients reuse exact samples and write by tile. All 84 tested outputs match build 542 and all 372 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence and the remaining Photoshop Gradient Map differences are open. [Qualification](docs/SOURCE_PUBLICATION_543.md).
 
 **Source checkpoint 542.** Linear and Perceptual gradient samples agree across the optimized architectures. All 370 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. The saved Photoshop Gradient Map differences remain open. [Qualification](docs/SOURCE_PUBLICATION_542.md).

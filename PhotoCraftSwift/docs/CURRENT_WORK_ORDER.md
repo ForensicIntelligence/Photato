@@ -1,3 +1,7 @@
+**Source checkpoint 544.** Wide Brush previews start from the initial pointer event. All 64 tested buffers match build 543, and all 388 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_544.md).
+
+Continue Q03 with layered regional composition. In the isolated 24 MP first-dab probe at 5,000 px, composition takes 1555 ms for about 17.2 MP of affected display. Repeat the 24 MP hosted case and qualify physical display and tablet input. Keep independent Photoshop brush sampling, preset parity and exact Gradient Maps open.
+
 **Source checkpoint 543.** Large gradients reuse exact samples and write by tile. All 84 tested outputs match build 542 and all 372 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence and the remaining Photoshop Gradient Map differences are open. [Qualification](SOURCE_PUBLICATION_543.md).
 
 Continue Q03 with large-tip Brush feedback, dense Float32 editing and physical frame delivery. Keep timed smoothing, subpixel coverage, factory presets and exact Photoshop gradient samples open for independent comparison.

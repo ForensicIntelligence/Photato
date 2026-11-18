@@ -65,8 +65,10 @@ public enum PaintToolPainter {
       if b.dual.enabled {
         for dab in dabs.1 {
           guard let box=rect(dab,b.dual.tip) else { continue };try admit(box.width*box.height)
+          let tip = BrushPainter.TipSampler(dab, bitmap: b.dual.tip, hardness: b.dual.hardness, aliased: false)
           for y in box.y..<(box.y+box.height) { for x in box.x..<(box.x+box.width) {
-            let p=toBrush.point(Double(x)+0.5,Double(y)+0.5),c=BrushPainter.tipCoverage(dab,p,bitmap:b.dual.tip,hardness:b.dual.hardness,aliased:false).0
+            let p = toBrush.point(Double(x) + 0.5, Double(y) + 0.5)
+            let c = tip.sample(p).0
             guard c>0 else { continue };let old=dual.pixel(x:x,y:y).a,k=old+Float(c*dab.flow)*(Float(dab.opacity)-old)
             dual.setPixel(x:x,y:y,Pixel(1,1,1,k))
           } }
@@ -78,10 +80,12 @@ public enum PaintToolPainter {
         guard box.width*box.height<=16_777_216 else { throw CraftError.invalid("A transformed brush tip exceeds 16 megapixels.") }
         left=min(left,box.x);top=min(top,box.y);right=max(right,box.x+box.width-1);bottom=max(bottom,box.y+box.height-1)
         let center=toLocal.point(dab.x,dab.y),cx=Int(floor(center.x)),cy=Int(floor(center.y))
+        let aliased = b.aliased || (request.tool == .colorReplacement && !o.antiAlias)
+        let tip = BrushPainter.TipSampler(dab, bitmap: b.tip, hardness: Double(brush.hardness), aliased: aliased)
         var coverage=[Float](repeating:0,count:box.width*box.height)
         for y in 0..<box.height { for x in 0..<box.width {
           let lx=x+box.x,ly=y+box.y,p=toBrush.point(Double(lx)+0.5,Double(ly)+0.5),doc=transform.point(Double(lx)+0.5,Double(ly)+0.5)
-          var (v,rn)=BrushPainter.tipCoverage(dab,p,bitmap:b.tip,hardness:Double(brush.hardness),aliased:b.aliased || (request.tool == .colorReplacement && !o.antiAlias))
+          var (v,rn)=tip.sample(p)
           if b.texture.enabled { v=b.texture.mode.combine(v,BrushPainter.texture(b.texture,doc.x,doc.y),b.texture.eachTip ? dab.depth:b.texture.depth) }
           if b.dual.enabled { v=b.dual.mode.combine(v,Double(dual.pixel(x:lx,y:ly).a),1) }
           if b.noise && v<1 { v += ((BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365)<v ? 1:0)-v)*0.7 }

@@ -1,0 +1,856 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 2,
+  "applicationBuild": 544,
+  "archiveSHA256": "4cc82e5846f3b5428119fc3580b521cd9516c5eecc4bb9e3da585cf4fc93486c",
+  "checkpoint": 544,
+  "fullPhotoshopParity": false,
+  "hostedTiming": {
+    "1800": {
+      "543": {
+        "drawsDuringInput": [
+          2,
+          3
+        ],
+        "firstDrawMS": [
+          471.66604176163673,
+          473.4236249933019
+        ],
+        "firstPrepareMS": [
+          0.17733336426317692,
+          0.18583331257104874
+        ],
+        "workerMS": [
+          467.69795822910964,
+          469.23037501983345
+        ]
+      },
+      "544": {
+        "drawsDuringInput": [
+          3,
+          2
+        ],
+        "firstDrawMS": [
+          455.182500067167,
+          511.80358335841447
+        ],
+        "firstPrepareMS": [
+          0.1841250341385603,
+          0.20587502513080835
+        ],
+        "workerMS": [
+          451.16654166486114,
+          507.2929583257064
+        ]
+      }
+    },
+    "2500": {
+      "543": {
+        "drawsDuringInput": [
+          1,
+          1
+        ],
+        "firstDrawMS": [
+          882.9712916631252,
+          881.3952916534618
+        ],
+        "firstPrepareMS": [
+          18.440166721120477,
+          18.232458387501538
+        ],
+        "workerMS": [
+          860.6281250249594,
+          859.3664999352768
+        ]
+      },
+      "544": {
+        "drawsDuringInput": [
+          1,
+          1
+        ],
+        "firstDrawMS": [
+          884.209500043653,
+          833.197083324194
+        ],
+        "firstPrepareMS": [
+          0.19870838150382042,
+          0.19987497944384813
+        ],
+        "workerMS": [
+          879.6969583490863,
+          829.1545000392944
+        ]
+      }
+    },
+    "5000": {
+      "543": {
+        "drawsDuringInput": [
+          0,
+          0
+        ],
+        "firstDrawMS": [
+          2443.5661250026897,
+          2439.5878749201074
+        ],
+        "firstPrepareMS": [
+          19.479374983347952,
+          17.868374940007925
+        ],
+        "workerMS": [
+          2419.340041698888,
+          2417.2770415898412
+        ]
+      },
+      "544": {
+        "drawsDuringInput": [
+          0,
+          0
+        ],
+        "firstDrawMS": [
+          2324.155875016004,
+          2362.390208407305
+        ],
+        "firstPrepareMS": [
+          0.18670829012989998,
+          0.19758334383368492
+        ],
+        "workerMS": [
+          2319.3599166115746,
+          2357.962124980986
+        ]
+      }
+    },
+    "64": {
+      "543": {
+        "drawsDuringInput": [
+          119,
+          119
+        ],
+        "firstDrawMS": [
+          21.098458324559033,
+          20.61799995135516
+        ],
+        "firstPrepareMS": [
+          0.2094582887366414,
+          0.17108337488025427
+        ],
+        "workerMS": [
+          5.8958332519978285,
+          5.552958231419325
+        ]
+      },
+      "544": {
+        "drawsDuringInput": [
+          120,
+          119
+        ],
+        "firstDrawMS": [
+          20.902333315461874,
+          20.488916663452983
+        ],
+        "firstPrepareMS": [
+          0.20620832219719887,
+          0.18254166934639215
+        ],
+        "workerMS": [
+          5.991541664116085,
+          5.70741668343544
+        ]
+      }
+    }
+  },
+  "isolatedWorkerPhases": {
+    "build": 544,
+    "medians": {
+      "1800": {
+        "compositeMS": 303.05583344306797,
+        "conversionMS": 69.45558334700763,
+        "paintMS": 63.61733342055231,
+        "repackedPixels": 3325952
+      },
+      "2500": {
+        "compositeMS": 604.8310833284631,
+        "conversionMS": 133.9148333063349,
+        "paintMS": 120.66158326342702,
+        "repackedPixels": 6230016
+      },
+      "5000": {
+        "compositeMS": 1555.1141666946933,
+        "conversionMS": 344.38862500246614,
+        "paintMS": 381.18429156020284,
+        "repackedPixels": 17152000
+      },
+      "64": {
+        "compositeMS": 1.9816666608676314,
+        "conversionMS": 0.7435833103954792,
+        "paintMS": 0.5195832345634699,
+        "repackedPixels": 16384
+      }
+    },
+    "runs": {
+      "1800": [
+        {
+          "compositeMS": 303.05583344306797,
+          "conversionMS": 71.50654157157987,
+          "paintMS": 65.78245828859508,
+          "repackedPixels": 3325952
+        },
+        {
+          "compositeMS": 303.1631667399779,
+          "conversionMS": 69.37395827844739,
+          "paintMS": 63.2340416777879,
+          "repackedPixels": 3325952
+        },
+        {
+          "compositeMS": 302.2045833058655,
+          "conversionMS": 69.45558334700763,
+          "paintMS": 63.61733342055231,
+          "repackedPixels": 3325952
+        }
+      ],
+      "2500": [
+        {
+          "compositeMS": 574.4124166667461,
+          "conversionMS": 142.7483749575913,
+          "paintMS": 115.24933332111686,
+          "repackedPixels": 6230016
+        },
+        {
+          "compositeMS": 612.7553749829531,
+          "conversionMS": 133.9148333063349,
+          "paintMS": 125.61458337586373,
+          "repackedPixels": 6230016
+        },
+        {
+          "compositeMS": 604.8310833284631,
+          "conversionMS": 133.76379164401442,
+          "paintMS": 120.66158326342702,
+          "repackedPixels": 6230016
+        }
+      ],
+      "5000": [
+        {
+          "compositeMS": 1668.4294583974406,
+          "conversionMS": 372.66029161401093,
+          "paintMS": 391.48562494665384,
+          "repackedPixels": 17152000
+        },
+        {
+          "compositeMS": 1555.1141666946933,
+          "conversionMS": 344.38862500246614,
+          "paintMS": 381.18429156020284,
+          "repackedPixels": 17152000
+        },
+        {
+          "compositeMS": 1553.7176249781623,
+          "conversionMS": 335.61262500006706,
+          "paintMS": 360.69283343385905,
+          "repackedPixels": 17152000
+        }
+      ],
+      "64": [
+        {
+          "compositeMS": 2.8888750821352005,
+          "conversionMS": 0.993874971754849,
+          "paintMS": 1.64770835544914,
+          "repackedPixels": 16384
+        },
+        {
+          "compositeMS": 1.9816666608676314,
+          "conversionMS": 0.7435833103954792,
+          "paintMS": 0.5081250565126538,
+          "repackedPixels": 16384
+        },
+        {
+          "compositeMS": 1.9718334078788757,
+          "conversionMS": 0.6649165879935026,
+          "paintMS": 0.5195832345634699,
+          "repackedPixels": 16384
+        }
+      ]
+    },
+    "scope": "One brush input on a native 24 MP RGB8 raster with two live adjustments and a 12.5% filtered image. Software timing and no AppKit or physical presentation."
+  },
+  "nativeTiming": {
+    "allOutputsMatchBuild543": true,
+    "results": {
+      "arm64": {
+        "1100-affine-float": {
+          "543": {
+            "bytes": 83940800,
+            "medianMS": 34.25724996486679,
+            "samplesMS": [
+              37.79670828953385,
+              33.66362501401454,
+              34.85087491571903,
+              33.653666730970144
+            ],
+            "sha256": "0650eff9204786fb8b9fc0f99f91f4254f612b9eaa44fb94632563310ac2713a"
+          },
+          "544": {
+            "bytes": 83940800,
+            "medianMS": 33.07414578739554,
+            "samplesMS": [
+              35.23079166188836,
+              32.73929166607559,
+              32.635583309456706,
+              33.40899990871549
+            ],
+            "sha256": "0650eff9204786fb8b9fc0f99f91f4254f612b9eaa44fb94632563310ac2713a"
+          }
+        },
+        "1800-retained-integer": {
+          "543": {
+            "bytes": 20985200,
+            "medianMS": 78.99879169417545,
+            "samplesMS": [
+              80.38620837032795,
+              77.52874994184822,
+              79.60504165384918,
+              78.39254173450172
+            ],
+            "sha256": "fc37226515718c7ce8f47f301d1bf63a37f3551a89be9ec94b9a866d92b728da"
+          },
+          "544": {
+            "bytes": 20985200,
+            "medianMS": 62.458875006996095,
+            "samplesMS": [
+              62.90837505366653,
+              60.290208319202065,
+              63.34029161371291,
+              62.00937496032566
+            ],
+            "sha256": "fc37226515718c7ce8f47f301d1bf63a37f3551a89be9ec94b9a866d92b728da"
+          }
+        },
+        "1800-stroke-integer": {
+          "543": {
+            "bytes": 20985200,
+            "medianMS": 117.78685421450064,
+            "samplesMS": [
+              117.37304169218987,
+              113.07091661728919,
+              121.41270842403173,
+              118.2006667368114
+            ],
+            "sha256": "c9a729e6a6f16200a1982453af006d9cb7fc23a608b2b903a2aedf6e1497f693"
+          },
+          "544": {
+            "bytes": 20985200,
+            "medianMS": 85.2875208365731,
+            "samplesMS": [
+              85.5274583445862,
+              84.15624999906868,
+              88.12275005038828,
+              85.04758332856
+            ],
+            "sha256": "c9a729e6a6f16200a1982453af006d9cb7fc23a608b2b903a2aedf6e1497f693"
+          }
+        },
+        "2500-hard-integer": {
+          "543": {
+            "bytes": 107764800,
+            "medianMS": 139.20920831151307,
+            "samplesMS": [
+              139.24908335320652,
+              133.60324990935624,
+              140.35724999848753,
+              139.16933326981962
+            ],
+            "sha256": "b09a09c58c5450e7f246340339d33be10917a2811665c7b0d4ea8b9de743141f"
+          },
+          "544": {
+            "bytes": 107764800,
+            "medianMS": 99.25324999494478,
+            "samplesMS": [
+              101.97883343789726,
+              97.93120832182467,
+              99.80345831718296,
+              98.7030416727066
+            ],
+            "sha256": "b09a09c58c5450e7f246340339d33be10917a2811665c7b0d4ea8b9de743141f"
+          }
+        },
+        "2500-soft-integer": {
+          "543": {
+            "bytes": 107764800,
+            "medianMS": 148.89833331108093,
+            "samplesMS": [
+              160.38766666315496,
+              146.84729173313826,
+              149.04354163445532,
+              148.75312498770654
+            ],
+            "sha256": "43de5d59b056fce4311b1a92c117cfba24046cca9bee28036047d319f1343e28"
+          },
+          "544": {
+            "bytes": 107764800,
+            "medianMS": 117.13087500538677,
+            "samplesMS": [
+              120.00549992080778,
+              116.4208750706166,
+              117.84087494015694,
+              113.79287508316338
+            ],
+            "sha256": "43de5d59b056fce4311b1a92c117cfba24046cca9bee28036047d319f1343e28"
+          }
+        },
+        "5000-soft-integer": {
+          "543": {
+            "bytes": 107764800,
+            "medianMS": 586.4138542092405,
+            "samplesMS": [
+              611.2078333972022,
+              597.0022917026654,
+              575.8254167158157,
+              565.3816666454077
+            ],
+            "sha256": "1b289cc4f09c80fac27051a8b6f0603b61bdbd8ed298c65f9970343e8fb660d1"
+          },
+          "544": {
+            "bytes": 107764800,
+            "medianMS": 441.907333326526,
+            "samplesMS": [
+              444.08058328554034,
+              439.73408336751163,
+              444.5727083366364,
+              433.3337916759774
+            ],
+            "sha256": "1b289cc4f09c80fac27051a8b6f0603b61bdbd8ed298c65f9970343e8fb660d1"
+          }
+        },
+        "64-soft-integer": {
+          "543": {
+            "bytes": 20985200,
+            "medianMS": 0.13531249715015292,
+            "samplesMS": [
+              0.15908328350633383,
+              0.13625004794448614,
+              0.1343749463558197,
+              0.1197917154058814
+            ],
+            "sha256": "e78ccc6b5a818d07f2dc6192615a76ab5b90d595aedd9ae8afc7d2d1f5651741"
+          },
+          "544": {
+            "bytes": 20985200,
+            "medianMS": 0.10714581003412604,
+            "samplesMS": [
+              0.1145416172221303,
+              0.0972916604951024,
+              0.12387498281896114,
+              0.09975000284612179
+            ],
+            "sha256": "e78ccc6b5a818d07f2dc6192615a76ab5b90d595aedd9ae8afc7d2d1f5651741"
+          }
+        },
+        "900-wet-float": {
+          "543": {
+            "bytes": 83940800,
+            "medianMS": 41.80493747116998,
+            "samplesMS": [
+              41.738374973647296,
+              41.347166639752686,
+              43.23800001293421,
+              41.87149996869266
+            ],
+            "sha256": "c803f4cebec853512886ebd0e65496d8e924edad112f78998164ce7a713af57f"
+          },
+          "544": {
+            "bytes": 83940800,
+            "medianMS": 41.954875050578266,
+            "samplesMS": [
+              41.84720839839429,
+              40.79383332282305,
+              44.77649996988475,
+              42.062541702762246
+            ],
+            "sha256": "c803f4cebec853512886ebd0e65496d8e924edad112f78998164ce7a713af57f"
+          }
+        }
+      },
+      "x86_64": {
+        "1100-affine-float": {
+          "543": {
+            "bytes": 83940800,
+            "medianMS": 52.98508296255022,
+            "samplesMS": [
+              53.68066602386534,
+              52.643624949269,
+              53.32654097583145,
+              51.81049997918308
+            ],
+            "sha256": "0650eff9204786fb8b9fc0f99f91f4254f612b9eaa44fb94632563310ac2713a"
+          },
+          "544": {
+            "bytes": 83940800,
+            "medianMS": 50.80491694388911,
+            "samplesMS": [
+              51.753000007010996,
+              49.94429205544293,
+              51.53441696893424,
+              50.075416918843985
+            ],
+            "sha256": "0650eff9204786fb8b9fc0f99f91f4254f612b9eaa44fb94632563310ac2713a"
+          }
+        },
+        "1800-retained-integer": {
+          "543": {
+            "bytes": 20985200,
+            "medianMS": 136.63041649851948,
+            "samplesMS": [
+              139.23824997618794,
+              140.65720804501325,
+              133.67687503341585,
+              134.02258302085102
+            ],
+            "sha256": "fc37226515718c7ce8f47f301d1bf63a37f3551a89be9ec94b9a866d92b728da"
+          },
+          "544": {
+            "bytes": 20985200,
+            "medianMS": 114.70810446189716,
+            "samplesMS": [
+              117.75500001385808,
+              110.26708292774856,
+              114.39070897176862,
+              115.02549995202571
+            ],
+            "sha256": "fc37226515718c7ce8f47f301d1bf63a37f3551a89be9ec94b9a866d92b728da"
+          }
+        },
+        "1800-stroke-integer": {
+          "543": {
+            "bytes": 20985200,
+            "medianMS": 164.38718745484948,
+            "samplesMS": [
+              165.95141601283103,
+              161.0350830014795,
+              163.70420798193663,
+              165.07016692776233
+            ],
+            "sha256": "c9a729e6a6f16200a1982453af006d9cb7fc23a608b2b903a2aedf6e1497f693"
+          },
+          "544": {
+            "bytes": 20985200,
+            "medianMS": 123.8399165449664,
+            "samplesMS": [
+              127.64816696289927,
+              122.1412910381332,
+              125.5385420517996,
+              120.1639169594273
+            ],
+            "sha256": "c9a729e6a6f16200a1982453af006d9cb7fc23a608b2b903a2aedf6e1497f693"
+          }
+        },
+        "2500-hard-integer": {
+          "543": {
+            "bytes": 107764800,
+            "medianMS": 195.08812547428533,
+            "samplesMS": [
+              198.2005831087008,
+              192.39320897031575,
+              197.78304197825491,
+              185.04166707862169
+            ],
+            "sha256": "b09a09c58c5450e7f246340339d33be10917a2811665c7b0d4ea8b9de743141f"
+          },
+          "544": {
+            "bytes": 107764800,
+            "medianMS": 146.59374952316284,
+            "samplesMS": [
+              153.90274999663234,
+              141.60554099362344,
+              151.58195805270225,
+              135.82895894069225
+            ],
+            "sha256": "b09a09c58c5450e7f246340339d33be10917a2811665c7b0d4ea8b9de743141f"
+          }
+        },
+        "2500-soft-integer": {
+          "543": {
+            "bytes": 107764800,
+            "medianMS": 222.99508342985064,
+            "samplesMS": [
+              232.00116597581655,
+              227.49812493566424,
+              218.49204192403704,
+              215.84729198366404
+            ],
+            "sha256": "43de5d59b056fce4311b1a92c117cfba24046cca9bee28036047d319f1343e28"
+          },
+          "544": {
+            "bytes": 107764800,
+            "medianMS": 184.36191702494398,
+            "samplesMS": [
+              195.7797500072047,
+              189.47604205459356,
+              179.2477919952944,
+              173.74770902097225
+            ],
+            "sha256": "43de5d59b056fce4311b1a92c117cfba24046cca9bee28036047d319f1343e28"
+          }
+        },
+        "5000-soft-integer": {
+          "543": {
+            "bytes": 107764800,
+            "medianMS": 835.6915830518119,
+            "samplesMS": [
+              848.703374969773,
+              817.6580000435933,
+              840.6200830359012,
+              830.7630830677226
+            ],
+            "sha256": "1b289cc4f09c80fac27051a8b6f0603b61bdbd8ed298c65f9970343e8fb660d1"
+          },
+          "544": {
+            "bytes": 107764800,
+            "medianMS": 679.0653539355844,
+            "samplesMS": [
+              686.2449999898672,
+              673.3780829235911,
+              684.7526249475777,
+              666.1025000503287
+            ],
+            "sha256": "1b289cc4f09c80fac27051a8b6f0603b61bdbd8ed298c65f9970343e8fb660d1"
+          }
+        },
+        "64-soft-integer": {
+          "543": {
+            "bytes": 20985200,
+            "medianMS": 0.22908352548256516,
+            "samplesMS": [
+              0.25100004859268665,
+              0.18370803445577621,
+              0.27645810041576624,
+              0.20716700237244368
+            ],
+            "sha256": "e78ccc6b5a818d07f2dc6192615a76ab5b90d595aedd9ae8afc7d2d1f5651741"
+          },
+          "544": {
+            "bytes": 20985200,
+            "medianMS": 0.18772901967167854,
+            "samplesMS": [
+              0.22316700778901577,
+              0.15887501649558544,
+              0.21658302284777164,
+              0.15358300879597664
+            ],
+            "sha256": "e78ccc6b5a818d07f2dc6192615a76ab5b90d595aedd9ae8afc7d2d1f5651741"
+          }
+        },
+        "900-wet-float": {
+          "543": {
+            "bytes": 83940800,
+            "medianMS": 65.17235399223864,
+            "samplesMS": [
+              65.15137501992285,
+              65.19333296455443,
+              65.38658298086375,
+              62.85770807880908
+            ],
+            "sha256": "c803f4cebec853512886ebd0e65496d8e924edad112f78998164ce7a713af57f"
+          },
+          "544": {
+            "bytes": 83940800,
+            "medianMS": 63.14795900834724,
+            "samplesMS": [
+              64.10308403428644,
+              62.070082989521325,
+              64.22433303669095,
+              62.19283398240805
+            ],
+            "sha256": "c803f4cebec853512886ebd0e65496d8e924edad112f78998164ce7a713af57f"
+          }
+        }
+      }
+    },
+    "scope": "Existing optimized native paint engine, four timed software renders per row after warmups. Actual output digests agree. No window presentation."
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "4cc82e5846f3b5428119fc3580b521cd9516c5eecc4bb9e3da585cf4fc93486c",
+    "binarySHA256": "e241e22a9a78b1464d91641c27eb6b1ba67ab283fae2d70a78d4b1e0049edb2d",
+    "build": 544,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122076,
+          "height": 650,
+          "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 388,
+    "debug": 388,
+    "intel": 388
+  },
+  "qualifiedCountPerConfiguration": 388,
+  "rawComparison": {
+    "changesFrom543": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 14699520,
+      "x86_64": 14699520
+    },
+    "configuration": 544,
+    "crossArchitectureDifferences": [],
+    "hashes": {
+      "arm64": {
+        "eraser-tip/16 bit/sRGB/complete": "ce34fa570ebbc80b62627cffed169c117d2fb35be054e44c9865429831b9706a",
+        "eraser-tip/32 bit/linearRGB/complete": "e8a3a2966ec568cc64599430c033474a96e740b48101103fbdc1e3612e488a43",
+        "eraser-tip/32 bit/sRGB/complete": "536d27801326a5b8a63d6474d2dc1ad95fd4b7f296231c3a86efb6948b65f828",
+        "eraser-tip/8 bit/sRGB/complete": "9cb63e93d4386a23acbdc7b1f04c5ea5ec3121769058ef02ccb11fa3ee212784",
+        "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+        "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+        "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+        "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+        "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+        "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+        "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+        "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+        "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+        "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+        "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+        "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+        "mixer-tip/16 bit/sRGB/complete": "3644bf6123e008c35c26f3f621f15f06da21e1b8d1e61f790ed2d861b7e60b2c",
+        "mixer-tip/32 bit/linearRGB/complete": "6bedc7cb8cdecccf9717faf6bf871e6df9b9c9ba8172ad2b5a4d063b46f82f6a",
+        "mixer-tip/32 bit/sRGB/complete": "9ec394d84f96a658a05b0aaa48f63c97c2d2c4a12fc0037c39300644a50d6e7b",
+        "mixer-tip/8 bit/sRGB/complete": "68d423b29488fda562bc3a40185519e708e19c3f1c218a826808552e1446d0c9",
+        "pattern-tip/16 bit/sRGB/complete": "2a28858164a30e1878cc0af82f42b9120e5d49da7e22d9b608499f71668ec6f1",
+        "pattern-tip/32 bit/linearRGB/complete": "02de6ed0e8d7428ad0be0597b6424e9aaca813b03c7857a57bd6d156ea26cacc",
+        "pattern-tip/32 bit/sRGB/complete": "2fcb7a4f2a21aac77a2fd445b0e36da7863e508206238024ea5df8713aee0b44",
+        "pattern-tip/8 bit/sRGB/complete": "2b505eca2a14410489e854aadbcd27f8b18031ae6637dbab2beb25eec7a87630",
+        "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+        "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+        "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+        "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+        "projected-bitmap/16 bit/sRGB/complete": "a7ded4a77916f5552434e7e132557fce434e890829a24c27e81d2928ad6d0a84",
+        "projected-bitmap/32 bit/linearRGB/complete": "2757bb571c28728ba5bdf11b3c2a948917eb9587dc0ce332cb3a2b0ca36eb4e9",
+        "projected-bitmap/32 bit/sRGB/complete": "559d357b413c0baea081699f71ed780fac011bae9e472fe1f5d5a270b33b507f",
+        "projected-bitmap/8 bit/sRGB/complete": "9c3145eef777cc04ebda91d9616cd28c0238c3844ed33ba5ff1a0530a41864c3",
+        "replacement-tip/16 bit/sRGB/complete": "95b7b784a55ad818badfaa38a53c5fc618a12b03e346b37021c675eb2e4e4a79",
+        "replacement-tip/32 bit/linearRGB/complete": "757d5f6ff87d19061e6897bdc65654e5033f4e86cf352a976e88c96d3b2a631d",
+        "replacement-tip/32 bit/sRGB/complete": "cc0903444cb2190046a4100e3adf65c27cdabd82bbfbae429133bd9d18983f29",
+        "replacement-tip/8 bit/sRGB/complete": "e7f5f2587a602c93598b28c56d60e9b0579b731992b3a0433db3469df707d776",
+        "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+        "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+        "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+        "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+        "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+        "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+        "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+        "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+        "round-aliased/16 bit/sRGB/complete": "4dce8b9d2aff9cb51a8909c1787b1c636719e0f5e47d5b4639c6f71fe7e9a721",
+        "round-aliased/32 bit/linearRGB/complete": "e3da97cbc41daf2a59d73533df4aa5a5c747b1a72f18a3a59ba9a6e1696571c1",
+        "round-aliased/32 bit/sRGB/complete": "eb88317b8ae160c5789db4f87c968ca9cb2f2681a6b4a507f549ee18a891c7f1",
+        "round-aliased/8 bit/sRGB/complete": "90831922c5c201c7736f8437fd59b2f6db55d85c1508aa130a433f889182e7fc",
+        "round-soft/16 bit/sRGB/complete": "efd4301031d1fc4fd24aed4d20fe29883c4c78dd2ece359768695bcfd0ccc128",
+        "round-soft/32 bit/linearRGB/complete": "d73e99b008ab1bb5f39ef9adfd99941b68a452e6ef8e877f6d8037cfe834d251",
+        "round-soft/32 bit/sRGB/complete": "e52a08e7bb709a2e42ab6591c0d86dd1e2c5a1fcf0bbc6c3041155cc656c0270",
+        "round-soft/8 bit/sRGB/complete": "3af353750ef3c4095311e8d1b0faa14cac819eee3d15780d776f1b43c50e8d00",
+        "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+        "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+        "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+        "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+        "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+        "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+        "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+        "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea",
+        "wide-hard/16 bit/sRGB/complete": "154162b2fbc40324ee43c3f85b3fb6dbd0d88c0e8e7b1f87ed19fd3ba6f2736a",
+        "wide-hard/32 bit/linearRGB/complete": "6597b5d473e6fbeb2cd2f81e91ae93c8ab4548b83ef2fc7032552e4a8c3c8288",
+        "wide-hard/32 bit/sRGB/complete": "c76863512ec2a5ee0f58ce34ffbe728f6ba460e22d44d55cdabc8382f527c428",
+        "wide-hard/8 bit/sRGB/complete": "dbad715ed9a7821b5c0491631ba02ea7cc9aa955de1632df63be23ab2a40befa"
+      },
+      "x86_64": {
+        "eraser-tip/16 bit/sRGB/complete": "ce34fa570ebbc80b62627cffed169c117d2fb35be054e44c9865429831b9706a",
+        "eraser-tip/32 bit/linearRGB/complete": "e8a3a2966ec568cc64599430c033474a96e740b48101103fbdc1e3612e488a43",
+        "eraser-tip/32 bit/sRGB/complete": "536d27801326a5b8a63d6474d2dc1ad95fd4b7f296231c3a86efb6948b65f828",
+        "eraser-tip/8 bit/sRGB/complete": "9cb63e93d4386a23acbdc7b1f04c5ea5ec3121769058ef02ccb11fa3ee212784",
+        "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+        "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+        "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+        "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+        "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+        "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+        "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+        "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+        "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+        "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+        "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+        "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+        "mixer-tip/16 bit/sRGB/complete": "3644bf6123e008c35c26f3f621f15f06da21e1b8d1e61f790ed2d861b7e60b2c",
+        "mixer-tip/32 bit/linearRGB/complete": "6bedc7cb8cdecccf9717faf6bf871e6df9b9c9ba8172ad2b5a4d063b46f82f6a",
+        "mixer-tip/32 bit/sRGB/complete": "9ec394d84f96a658a05b0aaa48f63c97c2d2c4a12fc0037c39300644a50d6e7b",
+        "mixer-tip/8 bit/sRGB/complete": "68d423b29488fda562bc3a40185519e708e19c3f1c218a826808552e1446d0c9",
+        "pattern-tip/16 bit/sRGB/complete": "2a28858164a30e1878cc0af82f42b9120e5d49da7e22d9b608499f71668ec6f1",
+        "pattern-tip/32 bit/linearRGB/complete": "02de6ed0e8d7428ad0be0597b6424e9aaca813b03c7857a57bd6d156ea26cacc",
+        "pattern-tip/32 bit/sRGB/complete": "2fcb7a4f2a21aac77a2fd445b0e36da7863e508206238024ea5df8713aee0b44",
+        "pattern-tip/8 bit/sRGB/complete": "2b505eca2a14410489e854aadbcd27f8b18031ae6637dbab2beb25eec7a87630",
+        "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+        "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+        "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+        "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+        "projected-bitmap/16 bit/sRGB/complete": "a7ded4a77916f5552434e7e132557fce434e890829a24c27e81d2928ad6d0a84",
+        "projected-bitmap/32 bit/linearRGB/complete": "2757bb571c28728ba5bdf11b3c2a948917eb9587dc0ce332cb3a2b0ca36eb4e9",
+        "projected-bitmap/32 bit/sRGB/complete": "559d357b413c0baea081699f71ed780fac011bae9e472fe1f5d5a270b33b507f",
+        "projected-bitmap/8 bit/sRGB/complete": "9c3145eef777cc04ebda91d9616cd28c0238c3844ed33ba5ff1a0530a41864c3",
+        "replacement-tip/16 bit/sRGB/complete": "95b7b784a55ad818badfaa38a53c5fc618a12b03e346b37021c675eb2e4e4a79",
+        "replacement-tip/32 bit/linearRGB/complete": "757d5f6ff87d19061e6897bdc65654e5033f4e86cf352a976e88c96d3b2a631d",
+        "replacement-tip/32 bit/sRGB/complete": "cc0903444cb2190046a4100e3adf65c27cdabd82bbfbae429133bd9d18983f29",
+        "replacement-tip/8 bit/sRGB/complete": "e7f5f2587a602c93598b28c56d60e9b0579b731992b3a0433db3469df707d776",
+        "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+        "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+        "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+        "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+        "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+        "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+        "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+        "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+        "round-aliased/16 bit/sRGB/complete": "4dce8b9d2aff9cb51a8909c1787b1c636719e0f5e47d5b4639c6f71fe7e9a721",
+        "round-aliased/32 bit/linearRGB/complete": "e3da97cbc41daf2a59d73533df4aa5a5c747b1a72f18a3a59ba9a6e1696571c1",
+        "round-aliased/32 bit/sRGB/complete": "eb88317b8ae160c5789db4f87c968ca9cb2f2681a6b4a507f549ee18a891c7f1",
+        "round-aliased/8 bit/sRGB/complete": "90831922c5c201c7736f8437fd59b2f6db55d85c1508aa130a433f889182e7fc",
+        "round-soft/16 bit/sRGB/complete": "efd4301031d1fc4fd24aed4d20fe29883c4c78dd2ece359768695bcfd0ccc128",
+        "round-soft/32 bit/linearRGB/complete": "d73e99b008ab1bb5f39ef9adfd99941b68a452e6ef8e877f6d8037cfe834d251",
+        "round-soft/32 bit/sRGB/complete": "e52a08e7bb709a2e42ab6591c0d86dd1e2c5a1fcf0bbc6c3041155cc656c0270",
+        "round-soft/8 bit/sRGB/complete": "3af353750ef3c4095311e8d1b0faa14cac819eee3d15780d776f1b43c50e8d00",
+        "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+        "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+        "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+        "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+        "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+        "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+        "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+        "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea",
+        "wide-hard/16 bit/sRGB/complete": "154162b2fbc40324ee43c3f85b3fb6dbd0d88c0e8e7b1f87ed19fd3ba6f2736a",
+        "wide-hard/32 bit/linearRGB/complete": "6597b5d473e6fbeb2cd2f81e91ae93c8ab4548b83ef2fc7032552e4a8c3c8288",
+        "wide-hard/32 bit/sRGB/complete": "c76863512ec2a5ee0f58ce34ffbe728f6ba460e22d44d55cdabc8382f527c428",
+        "wide-hard/8 bit/sRGB/complete": "dbad715ed9a7821b5c0491631ba02ea7cc9aa955de1632df63be23ab2a40befa"
+      }
+    },
+    "outputsPerArchitecture": 64
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7885,
+  "typedCommands": 271
+}

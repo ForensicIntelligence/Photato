@@ -137,9 +137,13 @@ final class BrushGesture {
     let generation=UUID();brushPreviewGeneration=generation
     // The ready ordinary canvas can capture the first input immediately. The
     // renderer still prepares its pixels off the main actor.
-    let firstFrame = brushPreviewLastStart == 0 && tool == .brush && !gesture.mask
-      && interactiveBrushPreview != nil && ordinaryCanvasImage && !rendering
-      ? startBrushPreviewFrame(samples: gesture.points.count, startWorkerImmediately: true) : nil
+    let firstFrame: (samples: Int, render: CanvasRenderRequest?)?
+    if brushPreviewLastStart == 0, tool == .brush, ordinaryCanvasImage, !rendering,
+      case .stroke? = brushPreviewCommand {
+      firstFrame = startBrushPreviewFrame(samples: gesture.points.count, startWorkerImmediately: true)
+    } else {
+      firstFrame = nil
+    }
     brushPreviewTask=Task { [weak self] in
       guard let self else { return }
       var frame = firstFrame

@@ -3,6 +3,40 @@ import XCTest
 
 final class BrushDynamicsTests:XCTestCase {
   func brush()->Brush { var b=Brush();b.size=10;b.hardness=1;b.color=Pixel(1,0,0);b.settings=BrushSettings();return b }
+  func testPreparedRoundTileMatchesScalarWeightsAtClippedAndFractionalEdges() {
+    let cases: [(x: Double, y: Double, radius: Double, isAliased: Bool, hardness: Double)] = [
+      (32.5, 32.5, 40, false, 0.4),
+      (31.999, 33.125, 47.5, true, 1),
+      (31.375, 32.5, 40, false, 1),
+      (32.5, 32.5, 500, false, 0.2),
+      (180.25, 36.75, 63, false, 0.8),
+      (58.5, 58.5, 500, true, 1),
+    ]
+    var weights = [Float](repeating: -1, count: 4096)
+    for (index, item) in cases.enumerated() {
+      let dab = BrushDab(x: item.x, y: item.y, radius: item.radius, angle: 0, roundness: 1,
+        flipX: index % 2 == 0, flipY: true, flow: 0.67, opacity: 0.8, color: .black, depth: 1)
+      let sampler = BrushPainter.TipSampler(dab, bitmap: nil, hardness: item.hardness, aliased: item.isAliased)
+      XCTAssertTrue(sampler.isAxisAlignedRound)
+      for (tileX, tileY) in [(0, 0), (64, 0), (64, 64), (384, 128), (512, 0)] {
+        let xs = 5..<61, ys = 3..<57
+        let hasCoverage = weights.withUnsafeMutableBufferPointer {
+          sampler.roundTile($0, x: xs, y: ys, tileX: tileX, tileY: tileY, flow: dab.flow)
+        }
+        var expectedAny = false
+        for row in ys {
+          for column in xs {
+            let point = (x: Double(tileX + column) + 0.5, y: Double(tileY + row) + 0.5)
+            let expected = Float(sampler.sample(point).0 * dab.flow)
+            expectedAny = expectedAny || expected > 0
+            if hasCoverage { XCTAssertEqual(weights[row * 64 + column].bitPattern, expected.bitPattern) }
+          }
+        }
+        XCTAssertEqual(hasCoverage, expectedAny)
+      }
+    }
+  }
+
   func testCompositeTilesMatchIndividualSettersAcrossPartialBounds() throws {
     let bounds = IntRect(x: 60, y: 61, width: 40, height: 90)
     let backing = try RasterTileStore()

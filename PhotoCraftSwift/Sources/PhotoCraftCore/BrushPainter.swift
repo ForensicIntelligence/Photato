@@ -106,23 +106,107 @@ public enum BrushPainter {
     case .mandala:return (0..<s.count).flatMap{ i in let r=Transform2D.rotation(Double(i)*360/Double(s.count));return [around(r),around(r * .scale(-1,1))] }
     }
   }
-  static func tipCoverage(_ dab:BrushDab,_ point:(x:Double,y:Double),bitmap:BrushBitmap?,hardness:Double,aliased:Bool)->(Double,Double) {
-    var cx=dab.x,cy=dab.y
-    if aliased { let n=max(1,Int((dab.radius*2).rounded()));cx=n%2==1 ? floor(cx)+0.5:cx.rounded();cy=n%2==1 ? floor(cy)+0.5:cy.rounded() }
-    var ux=point.x-cx,uy = -(point.y-cy)
-    if dab.projectionScale<0.999 {
-      let ax=cos(dab.projectionAngle),ay=sin(dab.projectionAngle),t=(ux*ax+uy*ay)*(1/dab.projectionScale-1);ux += t*ax;uy += t*ay
+  /// Geometry and falloff shared by every destination sample of a dab.
+  struct TipSampler {
+    private let center: (x: Double, y: Double)
+    private let direction: (cosine: Double, sine: Double)
+    private let flip: (x: Double, y: Double)
+    private let projection: (x: Double, y: Double, stretch: Double)?
+    private let bitmap: BrushBitmap?
+    private let bitmapScale: Double
+    private let roundness: Double
+    private let radius: Double
+    private let inner: Double
+    private let falloff: Double
+    private let aliased: Bool
+    let isAxisAlignedRound: Bool
+
+    init(_ dab: BrushDab, bitmap: BrushBitmap?, hardness: Double, aliased: Bool) {
+      if aliased {
+        let diameter = max(1, Int((dab.radius * 2).rounded()))
+        center = diameter % 2 == 1
+          ? (floor(dab.x) + 0.5, floor(dab.y) + 0.5) : (dab.x.rounded(), dab.y.rounded())
+      } else {
+        center = (dab.x, dab.y)
+      }
+      direction = (cos(dab.angle), sin(dab.angle))
+      flip = (dab.flipX ? -1 : 1, dab.flipY ? -1 : 1)
+      projection = dab.projectionScale < 0.999
+        ? (cos(dab.projectionAngle), sin(dab.projectionAngle), 1 / dab.projectionScale - 1) : nil
+      self.bitmap = bitmap
+      bitmapScale = bitmap.map { Double(max($0.width, $0.height)) / (2 * dab.radius) } ?? 0
+      let roundness = min(1, max(0.5 / dab.radius, dab.roundness))
+      self.roundness = roundness
+      let radius = max(0.5, dab.radius * roundness)
+      self.radius = radius
+      inner = radius * hardness
+      falloff = radius - inner
+      self.aliased = aliased
+      isAxisAlignedRound = bitmap == nil && dab.angle == 0 && roundness == 1 && projection == nil
     }
-    let cs=cos(dab.angle),sn=sin(dab.angle),u=(ux*cs+uy*sn)*(dab.flipX ? -1:1),v=(-ux*sn+uy*cs)*(dab.flipY ? -1:1)
-    let roundness=min(1,max(0.5/dab.radius,dab.roundness)),minor=max(0.5,dab.radius*roundness)
-    if let bitmap {
-      let scale=Double(max(bitmap.width,bitmap.height))/(2*dab.radius)
-      let x=u*scale+Double(bitmap.width)/2-0.5,y = -(v/roundness)*scale+Double(bitmap.height)/2-0.5
-      let sample=bitmap.sample(x,y);return (aliased ? (sample>=0.5 ? 1:0):sample,1-sample)
+
+    @inline(__always)
+    private func coverage(at distance: Double) -> Double {
+      if aliased { return distance <= radius ? 1 : 0 }
+      guard distance < radius + 0.5 else { return 0 }
+      let edge = min(1, max(0, radius + 0.5 - distance))
+      return edge * (distance <= inner || falloff < 0.001 ? 1 : 1 - BrushPainter.smooth((distance - inner) / falloff))
     }
-    let distance=hypot(u*roundness,v),value=aliased ? (distance<=minor ? 1.0:0):coverage(distance:distance,radius:minor,hardness:hardness)
-    return (value,distance/minor)
+
+    @inline(__always)
+    func sample(_ point: (x: Double, y: Double)) -> (Double, Double) {
+      var ux = point.x - center.x, uy = -(point.y - center.y)
+      if let projection {
+        let t = (ux * projection.x + uy * projection.y) * projection.stretch
+        ux += t * projection.x
+        uy += t * projection.y
+      }
+      let u = (ux * direction.cosine + uy * direction.sine) * flip.x
+      let v = (-ux * direction.sine + uy * direction.cosine) * flip.y
+      if let bitmap {
+        let x = u * bitmapScale + Double(bitmap.width) / 2 - 0.5
+        let y = -(v / roundness) * bitmapScale + Double(bitmap.height) / 2 - 0.5
+        let sample = bitmap.sample(x, y)
+        return (aliased ? (sample >= 0.5 ? 1 : 0) : sample, 1 - sample)
+      }
+      let distance = hypot(u * roundness, v)
+      return (coverage(at: distance), distance / radius)
+    }
+
+    @inline(__always)
+    func roundTile(_ weights: UnsafeMutableBufferPointer<Float>, x: Range<Int>, y: Range<Int>,
+      tileX: Int, tileY: Int, flow: Double) -> Bool {
+      let nearX = Double(tileX + x.lowerBound) + 0.5 - center.x
+      let farX = Double(tileX + x.upperBound - 1) + 0.5 - center.x
+      let nearY = Double(tileY + y.lowerBound) + 0.5 - center.y
+      let farY = Double(tileY + y.upperBound - 1) + 0.5 - center.y
+      let minimum = hypot(max(0, nearX, -farX), max(0, nearY, -farY))
+      // Leave a half-pixel margin at each boundary and sample those tiles normally.
+      let outer = aliased ? radius : radius + 0.5
+      if minimum > outer + 0.5 { return false }
+      let maximum = hypot(max(abs(nearX), abs(farX)), max(abs(nearY), abs(farY)))
+      let solidRadius = aliased ? radius : min(inner, radius - 0.5)
+      if maximum < solidRadius - 0.5 {
+        let weight = Float(flow)
+        for row in y {
+          for column in x { weights[row * 64 + column] = weight }
+        }
+        return weight > 0
+      }
+      var hasCoverage = false
+      for row in y {
+        let dy = -(Double(tileY + row) + 0.5 - center.y)
+        for column in x {
+          let dx = Double(tileX + column) + 0.5 - center.x
+          let weight = Float(coverage(at: hypot(dx, dy)) * flow)
+          weights[row * 64 + column] = weight
+          hasCoverage = hasCoverage || weight > 0
+        }
+      }
+      return hasCoverage
+    }
   }
+
   public static func validate(_ brush:Brush,points:[StrokePoint])throws {
     guard brush.size.isFinite,brush.supportedDiameterRange.contains(brush.size),brush.hardness.isFinite,(0...1).contains(brush.hardness),brush.opacity.isFinite,(0...1).contains(brush.opacity),brush.color.isFinite,(0...1).contains(brush.color.a),brush.backgroundColor?.isFinite != false,points.count<=100_000 else { throw CraftError.invalid("Invalid brush settings or input count.") }
     try brush.settings?.validate();var previousTime=0.0
@@ -204,6 +288,8 @@ public enum BrushPainter {
     let bitmap = isDual ? b.dual.tip : b.tip
     let hardness = isDual ? b.dual.hardness : Double(brush.hardness)
     let aliased = b.aliased && !isDual, maximum = b.wetEdges && !isDual
+    let eachTipTexture = b.texture.enabled && b.texture.eachTip
+    let usesEffects = !isDual && (b.noise || eachTipTexture || b.wetEdges)
     try withUnsafeTemporaryAllocation(of: Float.self, capacity: 4096) { weights in
       weights.initialize(repeating: 0)
       for (index,dab) in dabs.enumerated() {
@@ -213,6 +299,8 @@ public enum BrushPainter {
         guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
         visits += area
         let right = rect.x + rect.width, bottom = rect.y + rect.height
+        let tip = TipSampler(dab, bitmap: bitmap, hardness: hardness, aliased: aliased)
+        let ordinaryRound = tip.isAxisAlignedRound && toOriginal == .identity && !usesEffects
         let ink = SIMD4(dab.color.r,dab.color.g,dab.color.b,dab.color.a), ceiling = Float(dab.opacity)
         for row in rect.y/64...(bottom-1)/64 {
           let ty = row*64, yRange = (max(rect.y,ty)-ty)..<(min(bottom,ty+64)-ty)
@@ -220,20 +308,24 @@ public enum BrushPainter {
             try Task.checkCancellation()
             let tx = column*64, xRange = (max(rect.x,tx)-tx)..<(min(right,tx+64)-tx)
             var hasCoverage = false
-            for ly in yRange {
-              for lx in xRange {
-                let x = Double(tx+lx)+0.5, y = Double(ty+ly)+0.5
-                let p = toOriginal.point(x,y)
-                var (value,rn) = tipCoverage(dab,p,bitmap:bitmap,hardness:hardness,aliased:aliased)
-                if value > 0 && !isDual {
-                  let doc = transform.point(x,y)
-                  if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
-                  if b.texture.enabled && b.texture.eachTip { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
-                  if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
+            if ordinaryRound {
+              hasCoverage = tip.roundTile(weights, x: xRange, y: yRange, tileX: tx, tileY: ty, flow: dab.flow)
+            } else {
+              for ly in yRange {
+                for lx in xRange {
+                  let x = Double(tx+lx)+0.5, y = Double(ty+ly)+0.5
+                  let p = toOriginal.point(x,y)
+                  var (value,rn) = tip.sample(p)
+                  if value > 0 && usesEffects {
+                    let doc = transform.point(x,y)
+                    if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
+                    if eachTipTexture { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
+                    if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
+                  }
+                  let weight = Float(value*dab.flow)
+                  weights[ly*64+lx] = weight
+                  hasCoverage = hasCoverage || weight > 0
                 }
-                let weight = Float(value*dab.flow)
-                weights[ly*64+lx] = weight
-                hasCoverage = hasCoverage || weight > 0
               }
             }
             guard hasCoverage else { continue }

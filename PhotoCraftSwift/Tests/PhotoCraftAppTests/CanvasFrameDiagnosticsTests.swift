@@ -43,6 +43,49 @@ final class CanvasFrameDiagnosticsTests: XCTestCase {
     XCTAssertTrue(store.session.undoStack.isEmpty)
   }
 
+  @MainActor func testReadyWideBrushSubmitsCompleteFirstPreviewAndRetainsCommit() async throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let document = try CraftDocument(width: 160, height: 100)
+    let store = EditorStore(document: document, brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush
+    store.brush.size = 2_500
+    store.brush.hardness = 0.2
+    store.brush.color = .black
+    await store.renderTask?.value
+    let trace = CanvasFrameTrace(directory: directory)
+    store.canvasFrameTrace = trace
+
+    store.beginBrush(.init(x: -820.25, y: 100.5, time: 0), zoom: 1)
+    XCTAssertNil(store.interactiveBrushPreview)
+    XCTAssertEqual(trace.events.map(\.kind), ["input", "prepare"])
+    XCTAssertEqual(trace.events.last?.samples, 1)
+    store.extendBrush(.init(x: -320.25, y: 50.5, time: 16))
+    store.extendBrush(.init(x: 42, y: 40, time: 32))
+    await store.brushPreviewTask?.value
+
+    let completed = trace.events.filter { $0.kind == "ready" }
+    XCTAssertEqual(completed.map(\.samples), [1, 3])
+    let firstWorker = try XCTUnwrap(completed.first?.worker)
+    let secondInput = try XCTUnwrap(trace.events.first { $0.kind == "input" && $0.samples == 2 })
+    XCTAssertLessThanOrEqual(firstWorker.enqueued, secondInput.uptime)
+    var expectedPreview = document
+    try XCTUnwrap(store.brushPreviewCommand).apply(to: &expectedPreview)
+    XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: Renderer.composite(expectedPreview)))
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+
+    var expectedCommit = document
+    try XCTUnwrap(store.brushGesture).command.apply(to: &expectedCommit)
+    store.finishBrush()
+    await store.geometryTask?.value
+    XCTAssertNil(store.error)
+    XCTAssertEqual(store.document, expectedCommit)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    await store.undo()
+    XCTAssertEqual(store.document, document)
+  }
+
   @MainActor func testCancellingEarlyWorkerKeepsUnpublishedPixelsOutOfTheCanvas() async throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: directory) }
