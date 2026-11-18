@@ -8,6 +8,8 @@ After updating the source diary, run `python3 scripts/check-diary.py --write` fr
 
 On 18 November 2026, the public repository already had the diary through build 567, but GitHub truncated the large original Markdown and the About sidebar had no entry point. The archive and sidebar link make the same source records available from the repository home page. This change touches repository documentation and its check only.
 
+The build 569 archive check found three duplicate rows for steps 511–513. The chronological index now lists every checkpoint once, and the diary check enforces the order and verifies the target anchors.
+
 ## 2026-10-19 — Initial private GitHub repository setup
 
 The owner requested a private GitHub repository in a side conversation, with public visibility deferred until they approve a release.

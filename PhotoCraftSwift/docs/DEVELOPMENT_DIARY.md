@@ -1327,9 +1327,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 567 | [Use the source tone curves for 32-bit RGB and Gray](DEVLOG.md#dev-step-567) |
 | 2026-11-18 | 568 | [Match half-gamma promotion and Gray32 PSD layer stacks](DEVLOG.md#dev-step-568) |
 | 2026-11-18 | 569 | [Match HDR grayscale conversion and ICC gamma boundaries](DEVLOG.md#dev-step-569) |
-| 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
-| 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
-| 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

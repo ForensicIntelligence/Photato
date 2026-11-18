@@ -10,6 +10,8 @@ from pathlib import Path
 STEP_HEADING = re.compile(r"^## \d{4}-\d{2}-\d{2} — Step (\d+) — ", re.M)
 SECTION_HEADING = re.compile(r'^((?:<a id="dev-step-\d+"></a>\n\n)?)(?:#|##) .+', re.M)
 LINK_TARGET = re.compile(r"\]\(([^)\s]+)\)")
+INDEX_ROW = re.compile(r"^\| [^|\n]+ \| (\d+) \| .*?\((DEVLOG\.md)?#(dev-step-\d+)\) \|$", re.M)
+INDEX_HEADING = "## Complete chronological index\n"
 RECENT_COUNT = 10
 ARCHIVE_PAGE_BYTES = 128 * 1024
 SOURCE_DIRECTORY = "PhotoCraftSwift/docs"
@@ -80,7 +82,7 @@ def archive_pages(diary: str) -> dict[str, str]:
         content = rebase_links(sections[name].strip(), f"../{SOURCE_DIRECTORY}", anchors)
         pages[name] = f"{links}\n\n{content}\n\n{links}\n"
 
-    index_page = next((name for name, part in sections.items() if "## Complete chronological index\n" in part), None)
+    index_page = next((name for name, part in sections.items() if INDEX_HEADING in part), None)
     if index_page is None:
         raise ValueError("The source diary needs its complete chronological index.")
     pages["README.md"] = (
@@ -93,6 +95,18 @@ def archive_pages(diary: str) -> dict[str, str]:
         f"[Download the detailed development log]({RAW_DIARY.rsplit('/', 1)[0]}/DEVLOG.md)\n"
     )
     return {f"diary/{name}": page for name, page in pages.items()}
+
+
+def check_chronological_index(diary: str, build: int) -> None:
+    _, heading, rest = diary.partition(INDEX_HEADING)
+    if not heading or INDEX_HEADING in rest:
+        raise ValueError("The source diary needs one complete chronological index.")
+    rows = INDEX_ROW.findall(rest.partition("\n## ")[0])
+    if [int(step) for step, _, _ in rows] != list(range(1, build + 1)):
+        raise ValueError(f"The diary index must list steps 1 through {build} once each in order.")
+    for step, target, anchor in rows:
+        if anchor != f"dev-step-{int(step):03d}" or (not target and f'<a id="{anchor}"></a>' not in diary):
+            raise ValueError(f"Fix the diary index link for step {int(step)}.")
 
 
 def check(*, write: bool = False) -> int:
@@ -119,12 +133,12 @@ def check(*, write: bool = False) -> int:
         raise ValueError(f"The diary's current status must identify step {build}.")
     if not re.search(rf"^## \d{{4}}-\d{{2}}-\d{{2}} — Step {build} — ", diary, re.M):
         raise ValueError(f"Add the diary entry for step {build}.")
-    if not re.search(rf"^\| [^\n]*\| {build} \| [^\n]*\(DEVLOG\.md#{anchor}\)", diary, re.M):
-        raise ValueError(f"Link step {build} from the diary's chronological index.")
+    check_chronological_index(diary, build)
 
-    anchors = [int(step) for step in re.findall(r'^<a id="dev-step-(\d+)"></a>', log, re.M)]
-    if not anchors or max(anchors) != build or anchors.count(build) != 1:
-        raise ValueError(f"The latest detailed development log entry must be step {build}.")
+    anchors = re.findall(r'^<a id="(dev-step-\d+)"></a>', log, re.M)
+    expected_anchors = {f"dev-step-{step:03d}" for step in range(1, build + 1)}
+    if len(anchors) != build or set(anchors) != expected_anchors:
+        raise ValueError(f"The detailed development log must contain one anchor per step through {build}.")
     if not re.search(rf"^\| {build} \| [^\n]*\(#{anchor}\)", log, re.M):
         raise ValueError(f"Link step {build} from the detailed log's chronological index.")
     generated = {"DEVELOPER_DIARY.md": recent_page(diary, build), **archive_pages(diary)}
