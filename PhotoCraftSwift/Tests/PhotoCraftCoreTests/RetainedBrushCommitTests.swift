@@ -2,6 +2,101 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class RetainedBrushCommitTests: XCTestCase {
+  func testWideRetainedPrefixesAndReleaseMatchBandedPixels() throws {
+    let points: [StrokePoint] = [
+      .init(x: -115.75, y: 20.5, pressure: 0.26, time: 0),
+      .init(x: 44.5, y: 140.75, pressure: 0.27, time: 18),
+      .init(x: 166, y: 35, pressure: 0.39, time: 36),
+      .init(x: 250, y: 55, pressure: 0.21, time: 58),
+    ]
+    for depth in [PixelDepth.u8, .u16, .f32] {
+      var original = try CraftDocument(width: 193, height: 161, depth: depth)
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var pixels = try Surface(width: 193, height: 161, depth: depth,
+        fill: Pixel(0.18, 0.42, 0.67, 0.58), colorEncoding: encoding)
+      pixels.setPixel(x: 90, y: 70, .clear)
+      original.layers[0].content = .raster(pixels)
+      original.layers[0].x = 3
+      original.layers[0].y = -4
+      original.selection = .init(x: 19, y: 12, width: 160, height: 108)
+      var brush = Brush()
+      brush.size = depth == .u16 ? 5_000 : 2_500
+      brush.hardness = 0.29
+      brush.color = Pixel(0.76, 0.1, 0.42, 0.64)
+      brush.settings = .init()
+      brush.settings!.seed = 712
+      brush.settings!.flow = 0.48
+      brush.settings!.pressureSize = true
+      brush.settings!.smoothing.amount = 0.82
+      brush.settings!.smoothing.catchUpOnEnd = true
+      if depth != .u8 {
+        brush.settings!.roundness = 0.46
+        brush.settings!.shape.enabled = true
+        brush.settings!.shape.angle.control = .direction
+        brush.settings!.colorDynamics.enabled = true
+        brush.settings!.colorDynamics.hue = 0.42
+        brush.settings!.texture.enabled = true
+      }
+      XCTAssertTrue(DocumentBrushStrokeSession.supports(brush))
+      XCTAssertFalse(BrushStrokeSession.supports(brush))
+      let id = original.layers[0].id
+      let worker = try DocumentBrushStrokeSession(document: original, layerID: id, brush: brush)
+      var held = brush
+      held.settings!.smoothing.catchUpOnEnd = false
+      for index in 0..<points.count - 1 {
+        let shown = try worker.append([points[index]], includingReleaseTail: false)
+        var expected = original
+        try Command.stroke(id, Array(points.prefix(index + 1)), held).apply(to: &expected)
+        XCTAssertEqual(shown, expected)
+        XCTAssertEqual(try worker.append([], includingReleaseTail: false), expected)
+      }
+      let prepared = try worker.prepareEdit(points: points)
+      var session = EditorSession(document: original)
+      try session.startActionRecording(name: "Wide stroke")
+      try session.executePrepared(prepared)
+      var expected = original
+      try Command.stroke(id, points, brush).apply(to: &expected)
+      XCTAssertEqual(session.document, expected)
+      XCTAssertEqual(session.undoStack.count, 1)
+      var replay = original
+      try XCTUnwrap(session.actionRecording?.snapshot).apply(to: &replay)
+      XCTAssertEqual(replay, expected)
+      try session.undo()
+      XCTAssertEqual(session.document, original)
+    }
+  }
+
+  func testWideCoverageBudgetFallsBackToCompleteStrokeAndRemainsAtomic() throws {
+    let original = try CraftDocument(width: 3_000, height: 2_432)
+    let id = original.layers[0].id
+    var brush = Brush()
+    brush.size = 5_000
+    brush.settings = .init()
+    brush.settings!.colorDynamics.enabled = true
+    brush.settings!.colorDynamics.hue = 0.42
+    brush.settings!.seed = 713
+    let points: [StrokePoint] = [.init(x: 1_500, y: 1_216, time: 0)]
+    guard case .raster(let source) = original.layers[0].content else { return XCTFail("Expected raster") }
+    let bounded = try BrushStrokeSession(surface: source, brush: brush, selection: nil,
+      selectionMask: nil, transform: .identity, preserveTransparency: false, allowingWideRaster: true)
+    XCTAssertThrowsError(try bounded.append(points)) { error in
+      guard let limit = error as? BrushRetentionError, case .coverageBudget = limit else {
+        return XCTFail("Unexpected error: \(error)")
+      }
+    }
+    let worker = try DocumentBrushStrokeSession(document: original, layerID: id, brush: brush)
+    let prepared = try worker.prepareEdit(points: points)
+    var session = EditorSession(document: original)
+    try session.executePrepared(prepared)
+    var expected = original
+    try Command.stroke(id, points, brush).apply(to: &expected)
+    XCTAssertEqual(session.document, expected)
+    XCTAssertEqual(session.undoStack.count, 1)
+    try session.undo()
+    XCTAssertEqual(session.document, original)
+    XCTAssertThrowsError(try worker.append([]))
+  }
+
   func testHeldPrefixesFinalPixelsActionsAndHistoryAcrossDepthAndDynamics() throws {
     for depth in PixelDepth.allCases {
       for variant in 0..<8 {

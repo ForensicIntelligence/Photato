@@ -53,6 +53,7 @@ final class CanvasFrameDiagnosticsTests: XCTestCase {
     store.brush.size = 2_500
     store.brush.hardness = 0.2
     store.brush.color = .black
+    store.brushOptions.dual.enabled = true
     await store.renderTask?.value
     let trace = CanvasFrameTrace(directory: directory)
     store.canvasFrameTrace = trace
@@ -84,6 +85,38 @@ final class CanvasFrameDiagnosticsTests: XCTestCase {
     XCTAssertEqual(store.session.undoStack.count, 1)
     await store.undo()
     XCTAssertEqual(store.document, document)
+  }
+
+  @MainActor func testReadyWideRasterRetainsInputAndCommitsOneEdit() async throws {
+    let original = try CraftDocument(width: 200, height: 130)
+    let store = EditorStore(document: original, brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush
+    store.brush.size = 2_500
+    store.brush.hardness = 0.2
+    store.brush.color = .black
+    await store.renderTask?.value
+    store.beginBrush(.init(x: -920, y: 70, time: 0), zoom: 1)
+    let worker = try XCTUnwrap(store.interactiveBrushPreview)
+    await store.brushPreviewTask?.value
+    store.extendBrush(.init(x: -620, y: 65, time: 10))
+    store.extendBrush(.init(x: 96, y: 65, time: 50))
+    await store.brushPreviewTask?.value
+    let gesture = try XCTUnwrap(store.brushGesture)
+    XCTAssertTrue(store.interactiveBrushPreview === worker)
+    XCTAssertEqual(store.brushPreviewSampleCount, 3)
+    var expectedHeld = original
+    try gesture.heldCommand.apply(to: &expectedHeld)
+    XCTAssertEqual(store.surface, try Renderer.composite(expectedHeld))
+    var expected = original
+    try gesture.command.apply(to: &expected)
+    store.finishBrush()
+    await store.geometryTask?.value
+    XCTAssertNil(store.error)
+    XCTAssertEqual(store.document, expected)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    await store.undo()
+    XCTAssertEqual(store.document, original)
   }
 
   @MainActor func testCancellingEarlyWorkerKeepsUnpublishedPixelsOutOfTheCanvas() async throws {

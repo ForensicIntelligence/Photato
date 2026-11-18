@@ -35,6 +35,16 @@ struct BrushDab {
   var flipX:Bool,flipY:Bool
   var flow:Double,opacity:Double,color:Pixel,depth:Double
   var projectionAngle=0.0,projectionScale=1.0
+
+  func hasSameRasterSamples(as other: Self) -> Bool {
+    x.bitPattern == other.x.bitPattern && y.bitPattern == other.y.bitPattern
+      && radius.bitPattern == other.radius.bitPattern && angle.bitPattern == other.angle.bitPattern
+      && roundness.bitPattern == other.roundness.bitPattern && flipX == other.flipX && flipY == other.flipY
+      && flow.bitPattern == other.flow.bitPattern && opacity.bitPattern == other.opacity.bitPattern
+      && color.hasSameBits(as: other.color) && depth.bitPattern == other.depth.bitPattern
+      && projectionAngle.bitPattern == other.projectionAngle.bitPattern
+      && projectionScale.bitPattern == other.projectionScale.bitPattern
+  }
 }
 /// Tracks the same smoothing geometry used by the painter without raster work.
 /// Native input uses this to stop its clock once a held stroke has caught up.

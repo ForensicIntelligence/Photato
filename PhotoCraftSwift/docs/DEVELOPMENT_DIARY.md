@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 547 — Reuse work during a wide brush stroke
+
+Wide raster brushes keep their coverage between pointer samples. On the 24 MP trial, nine prefixes of a 5,000 px stroke took 4,749 ms with the complete painter and 1,872 ms with retained coverage on Apple Silicon. All 60 saved painting outputs matched.
+
+All 395 selected tests passed in each configuration. The cost of a new wide dab and physical editing cadence remain open.
+
+[Detailed record](DEVLOG.md#dev-step-547) · [Validation](SOURCE_PUBLICATION_547.md).
+
 ## 2026-11-17 — Step 546 — Faster canvas updates
 
 Changed pixels now go directly into the display buffer. At 12.5% zoom, Apple Silicon display conversion for the 5,000 px brush fell from 357 to 103 ms on the 24 MP test image. All 80 saved outputs match build 545 on each architecture.
@@ -361,14 +369,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:546 -->
-## Current development status — 17 November 2026
+<!-- current-status-step:547 -->
+## Current development status — 18 November 2026
 
-Build 546 speeds up regional preview conversion and whole-pixel minification. All 392 selected tests passed in Debug and both optimized builds. Both slices of the universal package passed their offscreen checks.
+Build 547 keeps eligible wide-brush coverage through release and uses banded painting when the memory budget requires it. All 395 selected tests passed in the three configurations. Both slices of the universal package passed their offscreen checks.
 
-Physical editing cadence, Photoshop Brush output and exact Gradient Maps remain open.
+Physical editing cadence and exact Photoshop brush output remain open.
 
-[Qualification](SOURCE_PUBLICATION_546.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_547.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1120,6 +1128,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 544 | [Prepare wide brush dabs once and start the first preview sooner](DEVLOG.md#dev-step-544) |
 | 2026-11-17 | 545 | [Compose flat tone stacks in one tile pass](DEVLOG.md#dev-step-545) |
 | 2026-11-17 | 546 | [Write changed canvas bytes directly](DEVLOG.md#dev-step-546) |
+| 2026-11-18 | 547 | [Retain coverage for wide raster brushes](DEVLOG.md#dev-step-547) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

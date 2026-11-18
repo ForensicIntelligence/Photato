@@ -1,3 +1,7 @@
+**Source checkpoint 547.** Wide raster Brush gestures retain coverage between input batches. All 60 retained outputs match build 546 and all 395 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_547.md).
+
+Continue Q03 with first-dab and changed-dab preparation. Measure changed-input frames independently of repeat draws, and qualify physical display and tablet input. Keep Photoshop Brush sampling, factory presets and the inherited ColorSync and Gradient Map differences open.
+
 **Source checkpoint 546.** Regional canvas updates pack directly into the display buffer. All 80 tested outputs match build 545 on each architecture, and all 392 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_546.md).
 
 Continue Q03 with wide-tip brush preparation. On Apple Silicon the 5,000 px software case spends 384 ms painting, 127 ms compositing and 103 ms on display conversion. Measure repeated strokes and physical display and tablet input. Keep broader layer stacks, Photoshop brush sampling and presets, exact Gradient Maps and the inherited ColorSync difference open.

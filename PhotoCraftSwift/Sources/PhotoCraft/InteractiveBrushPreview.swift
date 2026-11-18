@@ -31,7 +31,7 @@ actor InteractiveBrushPreview {
   private var committed = false
   init?(document: CraftDocument, command: Command) {
     if case .stroke(let id, _, let brush) = command {
-      guard BrushStrokeSession.supports(brush), document.animation == nil, document.variables == nil,
+      guard DocumentBrushStrokeSession.supports(brush), document.animation == nil, document.variables == nil,
         document.videoTimeline == nil, document.modeDescriptor == nil, document.restrictedMode == nil,
         document.inkMode == nil, let layer = document.layers.first(where: { $0.id == id }),
         layer.smartObject == nil, case .raster = layer.content else { return nil }

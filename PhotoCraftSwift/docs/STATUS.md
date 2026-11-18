@@ -1,3 +1,5 @@
+**Source checkpoint 547.** Wide raster Brush gestures retain coverage between input batches. All 60 retained outputs match build 546 and all 395 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_547.md).
+
 **Source checkpoint 546.** Regional canvas updates pack directly into the display buffer. All 80 tested outputs match build 545 on each architecture, and all 392 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_546.md).
 
 **Source checkpoint 545.** Eligible flat tone stacks render in one tile pass. All 64 tested outputs match build 544, and all 390 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_545.md).

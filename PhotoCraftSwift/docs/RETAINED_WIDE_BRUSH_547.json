@@ -1,0 +1,738 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 3,
+  "applicationBuild": 547,
+  "archiveSHA256": "91c3a2715029d93359125f8414e3ee70d5e586d349140e84d2aec360f7833343",
+  "checkpoint": 547,
+  "fullPhotoshopParity": false,
+  "hostedTiming": {
+    "1800": {
+      "546": {
+        "changedInputDrawsDuringInput": [
+          9,
+          9
+        ],
+        "firstDrawMS": 126.97618745733052,
+        "rawDrawsDuringInput": [
+          51,
+          51
+        ]
+      },
+      "547": {
+        "changedInputDrawsDuringInput": [
+          9,
+          9
+        ],
+        "firstDrawMS": 127.03116668853909,
+        "rawDrawsDuringInput": [
+          52,
+          52
+        ]
+      }
+    },
+    "2500": {
+      "546": {
+        "changedInputDrawsDuringInput": [
+          5,
+          5
+        ],
+        "firstDrawMS": 216.76843747263774,
+        "rawDrawsDuringInput": [
+          6,
+          6
+        ]
+      },
+      "547": {
+        "changedInputDrawsDuringInput": [
+          6,
+          6
+        ],
+        "firstDrawMS": 227.01318748295307,
+        "rawDrawsDuringInput": [
+          33,
+          33
+        ]
+      }
+    },
+    "5000": {
+      "546": {
+        "changedInputDrawsDuringInput": [
+          2,
+          2
+        ],
+        "firstDrawMS": 620.5802499316633,
+        "rawDrawsDuringInput": [
+          2,
+          2
+        ]
+      },
+      "547": {
+        "changedInputDrawsDuringInput": [
+          2,
+          2
+        ],
+        "firstDrawMS": 654.2440207558684,
+        "rawDrawsDuringInput": [
+          2,
+          2
+        ]
+      }
+    },
+    "64": {
+      "546": {
+        "changedInputDrawsDuringInput": [
+          118,
+          118
+        ],
+        "firstDrawMS": 20.850749977398664,
+        "rawDrawsDuringInput": [
+          119,
+          120
+        ]
+      },
+      "547": {
+        "changedInputDrawsDuringInput": [
+          119,
+          119
+        ],
+        "firstDrawMS": 21.971708280034363,
+        "rawDrawsDuringInput": [
+          119,
+          119
+        ]
+      }
+    }
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "91c3a2715029d93359125f8414e3ee70d5e586d349140e84d2aec360f7833343",
+    "binarySHA256": "55afab942c68a243c8994b5fa69f5d1f8399c47dd70e1c89c6654d215a9b229e",
+    "build": 547,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114203,
+          "height": 650,
+          "sha256": "583081500b385e6df2391c6ac9b696a3975ecc8ebb92dd3f2567a52c8a6c8e69",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 395,
+    "debug": 395,
+    "intel": 395
+  },
+  "qualifiedCountPerConfiguration": 395,
+  "rawComparison": {
+    "changesFrom546": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 77616960,
+      "x86_64": 77616960
+    },
+    "configuration": 547,
+    "crossArchitectureDifferences": [],
+    "hashes": {
+      "arm64": {
+        "d0-direction-1": "459c7cddd724ae70cb215d8756a4cc4f5a602c18ffd791818737df33ef5ae0b9",
+        "d0-direction-2": "72f47342aa4d1ca08191665f30c55187b82f8f25fce15b57fb44d004759cf23e",
+        "d0-direction-3": "72f47342aa4d1ca08191665f30c55187b82f8f25fce15b57fb44d004759cf23e",
+        "d0-direction-4": "2260c512797002bd451523a77b98b6775451f36942e30d29f9c6219584e4b1e9",
+        "d0-erase-1": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-erase-2": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-erase-3": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-erase-4": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-round-1": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-round-2": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-round-3": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-round-4": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-soft-mask-1": "97e64bfd3937775fa2082e18a6f81d5c32dd5ec85bce315e1e1e1b596e673865",
+        "d0-soft-mask-2": "97e64bfd3937775fa2082e18a6f81d5c32dd5ec85bce315e1e1e1b596e673865",
+        "d0-soft-mask-3": "97e64bfd3937775fa2082e18a6f81d5c32dd5ec85bce315e1e1e1b596e673865",
+        "d0-soft-mask-4": "7634cc6f48989b92ea3a5c38b5cab73447151883caa28dac84f9af4fa0eaed54",
+        "d0-textured-color-1": "364b49030abb32419e082001a0dee82f4ef21129cb074830b6a635cb95d80968",
+        "d0-textured-color-2": "364b49030abb32419e082001a0dee82f4ef21129cb074830b6a635cb95d80968",
+        "d0-textured-color-3": "364b49030abb32419e082001a0dee82f4ef21129cb074830b6a635cb95d80968",
+        "d0-textured-color-4": "f3dccab2d68a928c75c5ba24e53e5d1a47d012ea5fcdb74202544c390e9c9c55",
+        "d1-direction-1": "546cb62352237ed0913f475512a6427ea07dc0eea7b518b8e7bc729e200ce46a",
+        "d1-direction-2": "0542ca98e8289e7e95b020d28543b869ecfc01224ef921cca25896218603d5b1",
+        "d1-direction-3": "0542ca98e8289e7e95b020d28543b869ecfc01224ef921cca25896218603d5b1",
+        "d1-direction-4": "fc03af593a2decd07ae49e6417e592667db20fa882a878b15b0aa6879fc1bc2a",
+        "d1-erase-1": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-erase-2": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-erase-3": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-erase-4": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-round-1": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-round-2": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-round-3": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-round-4": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-soft-mask-1": "3f13282ca3ba0b0038bdcf3bfb712928541056dca562f1424719ed8de907354e",
+        "d1-soft-mask-2": "3f13282ca3ba0b0038bdcf3bfb712928541056dca562f1424719ed8de907354e",
+        "d1-soft-mask-3": "3f13282ca3ba0b0038bdcf3bfb712928541056dca562f1424719ed8de907354e",
+        "d1-soft-mask-4": "a402fca13d854bbb25c3f235cb8dc1f4e6d18c6622fa5688a12bd3ca2eee11ba",
+        "d1-textured-color-1": "0504000444bbb2120febee00a486141ef4da255389a959cf9e0c6906870e382f",
+        "d1-textured-color-2": "0504000444bbb2120febee00a486141ef4da255389a959cf9e0c6906870e382f",
+        "d1-textured-color-3": "0504000444bbb2120febee00a486141ef4da255389a959cf9e0c6906870e382f",
+        "d1-textured-color-4": "6c73cb68921a8ed894b5e17dd8ef55ff50dc96346a1615a9ce5068d4d2344603",
+        "d2-direction-1": "173723c980048522220a0f84762b2e415ed85555075f72d4ae63f85d7a229305",
+        "d2-direction-2": "5f55020a3e6752e75eb9d3f79a56cacc0005c12d49f852a90f6846ce7a1dff75",
+        "d2-direction-3": "5f55020a3e6752e75eb9d3f79a56cacc0005c12d49f852a90f6846ce7a1dff75",
+        "d2-direction-4": "c71d419a9963aae3b54fc176b1545399242d25d6ab41952892ae427f4accdd64",
+        "d2-erase-1": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-erase-2": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-erase-3": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-erase-4": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-round-1": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-round-2": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-round-3": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-round-4": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-soft-mask-1": "a0121eaf25788bb94cfcf55ec663432279d7a7553d04476638f1f5179e51a0cb",
+        "d2-soft-mask-2": "a0121eaf25788bb94cfcf55ec663432279d7a7553d04476638f1f5179e51a0cb",
+        "d2-soft-mask-3": "a0121eaf25788bb94cfcf55ec663432279d7a7553d04476638f1f5179e51a0cb",
+        "d2-soft-mask-4": "e792d589bb7f7eec425cb1dc6a04101b0df50a02fa2d542f7aa27d5669d4ddd0",
+        "d2-textured-color-1": "0bdcca2cee04ee1c1cd2d2d7fce90a3c112d2a373bcb35196b1f911fb09e9c17",
+        "d2-textured-color-2": "0bdcca2cee04ee1c1cd2d2d7fce90a3c112d2a373bcb35196b1f911fb09e9c17",
+        "d2-textured-color-3": "0bdcca2cee04ee1c1cd2d2d7fce90a3c112d2a373bcb35196b1f911fb09e9c17",
+        "d2-textured-color-4": "99c125f98c2569f2ddb60382092c628c5591ded6520f313287f1fbbe9cc58869"
+      },
+      "x86_64": {
+        "d0-direction-1": "459c7cddd724ae70cb215d8756a4cc4f5a602c18ffd791818737df33ef5ae0b9",
+        "d0-direction-2": "72f47342aa4d1ca08191665f30c55187b82f8f25fce15b57fb44d004759cf23e",
+        "d0-direction-3": "72f47342aa4d1ca08191665f30c55187b82f8f25fce15b57fb44d004759cf23e",
+        "d0-direction-4": "2260c512797002bd451523a77b98b6775451f36942e30d29f9c6219584e4b1e9",
+        "d0-erase-1": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-erase-2": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-erase-3": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-erase-4": "cb7446c3c9274b86338aa21c2862c36fdeb08714c276e368dd3ab8332bcd3e6c",
+        "d0-round-1": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-round-2": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-round-3": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-round-4": "ac3549b262e7f33c9713cfa300d22dffaa6050216c78ce9339e76698315de835",
+        "d0-soft-mask-1": "97e64bfd3937775fa2082e18a6f81d5c32dd5ec85bce315e1e1e1b596e673865",
+        "d0-soft-mask-2": "97e64bfd3937775fa2082e18a6f81d5c32dd5ec85bce315e1e1e1b596e673865",
+        "d0-soft-mask-3": "97e64bfd3937775fa2082e18a6f81d5c32dd5ec85bce315e1e1e1b596e673865",
+        "d0-soft-mask-4": "7634cc6f48989b92ea3a5c38b5cab73447151883caa28dac84f9af4fa0eaed54",
+        "d0-textured-color-1": "364b49030abb32419e082001a0dee82f4ef21129cb074830b6a635cb95d80968",
+        "d0-textured-color-2": "364b49030abb32419e082001a0dee82f4ef21129cb074830b6a635cb95d80968",
+        "d0-textured-color-3": "364b49030abb32419e082001a0dee82f4ef21129cb074830b6a635cb95d80968",
+        "d0-textured-color-4": "f3dccab2d68a928c75c5ba24e53e5d1a47d012ea5fcdb74202544c390e9c9c55",
+        "d1-direction-1": "546cb62352237ed0913f475512a6427ea07dc0eea7b518b8e7bc729e200ce46a",
+        "d1-direction-2": "0542ca98e8289e7e95b020d28543b869ecfc01224ef921cca25896218603d5b1",
+        "d1-direction-3": "0542ca98e8289e7e95b020d28543b869ecfc01224ef921cca25896218603d5b1",
+        "d1-direction-4": "fc03af593a2decd07ae49e6417e592667db20fa882a878b15b0aa6879fc1bc2a",
+        "d1-erase-1": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-erase-2": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-erase-3": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-erase-4": "d47ba6842e04fd9a5545bafff43826d6d62cbad6dad3e53a1b9c0413ad326577",
+        "d1-round-1": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-round-2": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-round-3": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-round-4": "9b5fc5ad440377bc69536ea37e238af64fac7fa711636fd8678dae4e0a55cd4b",
+        "d1-soft-mask-1": "3f13282ca3ba0b0038bdcf3bfb712928541056dca562f1424719ed8de907354e",
+        "d1-soft-mask-2": "3f13282ca3ba0b0038bdcf3bfb712928541056dca562f1424719ed8de907354e",
+        "d1-soft-mask-3": "3f13282ca3ba0b0038bdcf3bfb712928541056dca562f1424719ed8de907354e",
+        "d1-soft-mask-4": "a402fca13d854bbb25c3f235cb8dc1f4e6d18c6622fa5688a12bd3ca2eee11ba",
+        "d1-textured-color-1": "0504000444bbb2120febee00a486141ef4da255389a959cf9e0c6906870e382f",
+        "d1-textured-color-2": "0504000444bbb2120febee00a486141ef4da255389a959cf9e0c6906870e382f",
+        "d1-textured-color-3": "0504000444bbb2120febee00a486141ef4da255389a959cf9e0c6906870e382f",
+        "d1-textured-color-4": "6c73cb68921a8ed894b5e17dd8ef55ff50dc96346a1615a9ce5068d4d2344603",
+        "d2-direction-1": "173723c980048522220a0f84762b2e415ed85555075f72d4ae63f85d7a229305",
+        "d2-direction-2": "5f55020a3e6752e75eb9d3f79a56cacc0005c12d49f852a90f6846ce7a1dff75",
+        "d2-direction-3": "5f55020a3e6752e75eb9d3f79a56cacc0005c12d49f852a90f6846ce7a1dff75",
+        "d2-direction-4": "c71d419a9963aae3b54fc176b1545399242d25d6ab41952892ae427f4accdd64",
+        "d2-erase-1": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-erase-2": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-erase-3": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-erase-4": "cc2c595df6b729f8097a8c752881168dc7fe76f855512b3526e2a31c480f3802",
+        "d2-round-1": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-round-2": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-round-3": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-round-4": "4094afe98a79c3be152b69a874d2736534759c6686ea2173e74a3fa4490e8f84",
+        "d2-soft-mask-1": "a0121eaf25788bb94cfcf55ec663432279d7a7553d04476638f1f5179e51a0cb",
+        "d2-soft-mask-2": "a0121eaf25788bb94cfcf55ec663432279d7a7553d04476638f1f5179e51a0cb",
+        "d2-soft-mask-3": "a0121eaf25788bb94cfcf55ec663432279d7a7553d04476638f1f5179e51a0cb",
+        "d2-soft-mask-4": "e792d589bb7f7eec425cb1dc6a04101b0df50a02fa2d542f7aa27d5669d4ddd0",
+        "d2-textured-color-1": "0bdcca2cee04ee1c1cd2d2d7fce90a3c112d2a373bcb35196b1f911fb09e9c17",
+        "d2-textured-color-2": "0bdcca2cee04ee1c1cd2d2d7fce90a3c112d2a373bcb35196b1f911fb09e9c17",
+        "d2-textured-color-3": "0bdcca2cee04ee1c1cd2d2d7fce90a3c112d2a373bcb35196b1f911fb09e9c17",
+        "d2-textured-color-4": "99c125f98c2569f2ddb60382092c628c5591ded6520f313287f1fbbe9cc58869"
+      }
+    },
+    "outputsPerArchitecture": 60
+  },
+  "repeatedPreparation": {
+    "allFinalPixelDigestsMatch": true,
+    "results": {
+      "arm64": {
+        "546": {
+          "2500": {
+            "cumulativeMedianMS": 1997.3528333939612,
+            "digests": [
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec",
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec"
+            ],
+            "perPrefixMedianMS": [
+              122.18649999704212,
+              134.62410419015214,
+              128.1307500321418,
+              128.04216670338064,
+              175.34987500403076,
+              231.58443754073232,
+              311.30822916748,
+              344.6629582904279,
+              421.46381246857345
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                122.98020836897194,
+                143.9061249839142,
+                137.07675004843622,
+                140.29595837928355,
+                192.5002500647679,
+                259.48450004216284,
+                337.93391671497375,
+                364.0673332847655,
+                470.75229161418974
+              ],
+              [
+                121.3927916251123,
+                125.34208339639008,
+                119.18475001584738,
+                115.78837502747774,
+                158.19949994329363,
+                203.6843750393018,
+                284.6825416199863,
+                325.25858329609036,
+                372.17533332295716
+              ]
+            ]
+          },
+          "5000": {
+            "cumulativeMedianMS": 4748.881062492728,
+            "digests": [
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472",
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472"
+            ],
+            "perPrefixMedianMS": [
+              397.94427080778405,
+              394.79756250511855,
+              406.5059791319072,
+              390.0246666162275,
+              388.31335422582924,
+              569.4221875164658,
+              702.6351666427217,
+              690.5816458747722,
+              808.6562291719019
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                363.33791667129844,
+                368.32008336205035,
+                364.7090832237154,
+                363.9289166312665,
+                372.9262084234506,
+                524.006083374843,
+                663.3996666641906,
+                626.814250019379,
+                740.0913749588653
+              ],
+              [
+                432.55062494426966,
+                421.27504164818674,
+                448.302875040099,
+                416.1204166011885,
+                403.7005000282079,
+                614.8382916580886,
+                741.8706666212529,
+                754.3490417301655,
+                877.2210833849385
+              ]
+            ]
+          }
+        },
+        "547": {
+          "2500": {
+            "cumulativeMedianMS": 894.6088540833443,
+            "digests": [
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec",
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec"
+            ],
+            "perPrefixMedianMS": [
+              146.8818749417551,
+              0.019729137420654297,
+              0.005791662260890007,
+              0.006708316504955292,
+              147.79895829269662,
+              127.283145848196,
+              195.65491669345647,
+              142.2816875274293,
+              134.67604166362435
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                155.02983331680298,
+                0.03004167228937149,
+                0.008166651241481304,
+                0.004333327524363995,
+                156.1304166680202,
+                124.44499996490777,
+                192.22950004041195,
+                143.27641669660807,
+                136.34962507057935
+              ],
+              [
+                138.7339165667072,
+                0.009416602551937103,
+                0.00341667328029871,
+                0.009083305485546589,
+                139.46749991737306,
+                130.12129173148423,
+                199.080333346501,
+                141.28695835825056,
+                133.00245825666934
+              ]
+            ]
+          },
+          "5000": {
+            "cumulativeMedianMS": 1871.9275208422914,
+            "digests": [
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472",
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472"
+            ],
+            "perPrefixMedianMS": [
+              475.5522917257622,
+              0.012020755093544722,
+              0.005583395250141621,
+              0.004083325620740652,
+              0.005875015631318092,
+              503.6108124186285,
+              478.13552082516253,
+              0.0163125223480165,
+              414.58502085879445
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                472.2212500637397,
+                0.010291580110788345,
+                0.007583410479128361,
+                0.004541710950434208,
+                0.006666639819741249,
+                500.7577498909086,
+                467.005499987863,
+                0.01808337401598692,
+                452.8438333654776
+              ],
+              [
+                478.88333338778466,
+                0.013749930076301098,
+                0.0035833800211548805,
+                0.0036249402910470963,
+                0.005083391442894936,
+                506.46387494634837,
+                489.26554166246206,
+                0.014541670680046082,
+                376.3262083521113
+              ]
+            ]
+          }
+        }
+      },
+      "x86_64": {
+        "546": {
+          "2500": {
+            "cumulativeMedianMS": 2862.3276030411944,
+            "digests": [
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec",
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec"
+            ],
+            "perPrefixMedianMS": [
+              197.37479201285169,
+              198.5590834519826,
+              189.98587498208508,
+              188.90895799268037,
+              256.41847850056365,
+              315.1892500463873,
+              463.4443335235119,
+              497.4895205232315,
+              554.9573120079003
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                222.14466705918312,
+                225.22258292883635,
+                207.95283291954547,
+                206.0701659647748,
+                281.46391606424004,
+                331.2518340535462,
+                512.5177500303835,
+                510.5163330445066,
+                559.9763329373673
+              ],
+              [
+                172.60491696652025,
+                171.89558397512883,
+                172.0189170446247,
+                171.74775002058595,
+                231.37304093688726,
+                299.12666603922844,
+                414.3709170166403,
+                484.46270800195634,
+                549.9382910784334
+              ]
+            ]
+          },
+          "5000": {
+            "cumulativeMedianMS": 7116.426875058096,
+            "digests": [
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472",
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472"
+            ],
+            "perPrefixMedianMS": [
+              619.9918334605172,
+              599.8653750284575,
+              632.4324794695713,
+              625.2680000034161,
+              608.1958330469206,
+              805.1577290170826,
+              1035.8731665182859,
+              1009.4553750241175,
+              1180.1870834897272
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                664.2696249764413,
+                616.8207500595599,
+                665.3879589866847,
+                661.1605000216514,
+                653.1837080838159,
+                848.4869160456583,
+                1103.6152500892058,
+                1063.2408750243485,
+                1232.6034170109779
+              ],
+              [
+                575.7140419445932,
+                582.909999997355,
+                599.4769999524578,
+                589.3754999851808,
+                563.2079580100253,
+                761.8285419885069,
+                968.1310829473659,
+                955.6698750238866,
+                1127.7707499684766
+              ]
+            ]
+          }
+        },
+        "547": {
+          "2500": {
+            "cumulativeMedianMS": 1236.3404600182548,
+            "digests": [
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec",
+              "78ed33eb0509a3b61aac909c70a789b33ca7ab80594134a8256e1c90f29424ec"
+            ],
+            "perPrefixMedianMS": [
+              193.76075000036508,
+              0.01777097349986434,
+              0.005167035851627588,
+              0.005229492671787739,
+              197.96245853649452,
+              203.10989598510787,
+              260.1008750498295,
+              189.71947947284207,
+              191.65883347159252
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                196.58770901151001,
+                0.02216699067503214,
+                0.005209003575146198,
+                0.00466697383671999,
+                195.41708403266966,
+                189.3188749672845,
+                239.81954203918576,
+                171.41391697805375,
+                173.7879579886794
+              ],
+              [
+                190.93379098922014,
+                0.01337495632469654,
+                0.005125068128108978,
+                0.005792011506855488,
+                200.50783304031938,
+                216.90091700293124,
+                280.3822080604732,
+                208.0250419676304,
+                209.52970895450562
+              ]
+            ]
+          },
+          "5000": {
+            "cumulativeMedianMS": 2660.080085042864,
+            "digests": [
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472",
+              "4a95d0d0b7ea443f3ffd84ba26bfa696dfcf3e78885b7b74c84c3d206295c472"
+            ],
+            "perPrefixMedianMS": [
+              640.5745835509151,
+              0.01675001112744212,
+              0.004479486960917711,
+              0.005979498382657766,
+              0.00789598561823368,
+              732.4556045350619,
+              679.0033334982581,
+              0.0219999928958714,
+              607.9894584836438
+            ],
+            "prefixes": [
+              1,
+              2,
+              14,
+              30,
+              54,
+              101,
+              159,
+              203,
+              240
+            ],
+            "runs": [
+              [
+                672.1829170128331,
+                0.018457998521625996,
+                0.004375004209578037,
+                0.005834037438035011,
+                0.008417060598731041,
+                797.767375013791,
+                734.8111669998616,
+                0.024791923351585865,
+                653.950541978702
+              ],
+              [
+                608.9662500889972,
+                0.015042023733258247,
+                0.004583969712257385,
+                0.006124959327280521,
+                0.0073749106377363205,
+                667.1438340563327,
+                623.1954999966547,
+                0.019208062440156937,
+                562.0283749885857
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "scope": "Native painting only, nine prefixes of a fixed 240-sample stroke on a 24 MP raster, two trials per build and diameter. Legacy rebuilds each held prefix and candidate retains raster coverage. No window or display measurements."
+  },
+  "secondChangedDrawFromStartMS": {
+    "546": [
+      1416.315958253108,
+      1410.1626250194386
+    ],
+    "547": [
+      1363.9324166579172,
+      1351.7691666493192
+    ]
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7886,
+  "typedCommands": 271
+}

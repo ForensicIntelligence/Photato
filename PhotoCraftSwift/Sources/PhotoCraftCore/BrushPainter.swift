@@ -33,12 +33,20 @@ fileprivate final class BrushCoverageTile {
     }
   }
 }
+enum BrushRetentionError: Error {
+  case coverageBudget
+}
+
 fileprivate struct BrushCoverage {
+  private static let maximumBytes = 128 * 1024 * 1024
   var tiles:[Int:BrushCoverageTile]=[:]
   var dirty: Set<Int> = []
   var trackDirty = false
   private var shared: Set<Int> = []
-  init(columns: Int, color: Bool) { self.columns = columns; self.color = color }
+  private let retainingWideRaster: Bool
+  init(columns: Int, color: Bool, retainingWideRaster: Bool = false) {
+    self.columns = columns; self.color = color; self.retainingWideRaster = retainingWideRaster
+  }
   func fork() -> Self { var copy = self; copy.shared = Set(tiles.keys); copy.dirty = []; return copy }
   mutating func writable(_ key: Int) -> BrushCoverageTile? {
     guard let tile = tiles[key] else { return nil }
@@ -46,7 +54,7 @@ fileprivate struct BrushCoverage {
   }
   let columns:Int
   let color:Bool
-  var bytes:Int { tiles.count*4096*(color ? 20:4) }
+  private var tileBytes: Int { 4096 * (color ? 20 : 4) }
   func location(_ x:Int,_ y:Int)->(Int,Int) { ((y/64)*columns+x/64,(y%64)*64+x%64) }
   mutating func accumulatingTile(_ key: Int) throws -> BrushCoverageTile {
     if let found = writable(key) { return found }
@@ -56,9 +64,16 @@ fileprivate struct BrushCoverage {
     return tile
   }
   private func admitTile() throws {
-    guard bytes+4096*(color ? 20:4)<=128*1024*1024 else {
+    guard tiles.count < Self.maximumBytes / tileBytes else {
+      if retainingWideRaster { throw BrushRetentionError.coverageBudget }
       throw CraftError.invalid("Brush stroke coverage exceeds128MiB.")
     }
+  }
+  func checkDabExtent(_ rect: IntRect) throws {
+    guard retainingWideRaster else { return }
+    let columns = (rect.x + rect.width - 1) / 64 - rect.x / 64 + 1
+    let rows = (rect.y + rect.height - 1) / 64 - rect.y / 64 + 1
+    if columns * rows > Self.maximumBytes / tileBytes { throw BrushRetentionError.coverageBudget }
   }
   func value(_ x:Int,_ y:Int)->Float { let (key,index)=location(x,y);return tiles[key]?.coverage[index] ?? 0 }
   mutating func union(_ other:Self)throws {
@@ -267,7 +282,7 @@ public enum BrushPainter {
     }
   }
 
-  private static func clippedBounds(_ selection: IntRect?, inverse: Transform2D, width: Int, height: Int) -> IntRect {
+  fileprivate static func clippedBounds(_ selection: IntRect?, inverse: Transform2D, width: Int, height: Int) -> IntRect {
     let bounds = IntRect(x:0,y:0,width:width,height:height)
     guard let selection else { return bounds }
     guard selection.width > 0, selection.height > 0 else { return .init(x:0,y:0,width:0,height:0) }
@@ -295,6 +310,7 @@ public enum BrushPainter {
       for (index,dab) in dabs.enumerated() {
         if index % 32 == 0 { try Task.checkCancellation() }
         guard let rect = rasterBounds(dab,bitmap:bitmap,transform:toLocal,extent:extent) else { continue }
+        try map.checkDabExtent(rect)
         let area = rect.width * rect.height
         guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
         visits += area
@@ -408,13 +424,23 @@ public enum BrushPainter {
 /// Dual tips and symmetry retain the full painter until their incremental path is qualified.
 public final class BrushStrokeSession {
   public static func supports(_ brush: Brush) -> Bool {
+    supports(brush, allowingWideRaster: false)
+  }
+  static func supports(_ brush: Brush, allowingWideRaster: Bool) -> Bool {
     guard let settings = brush.settings else { return false }
-    return brush.size <= Brush.legacyDiameterRange.upperBound && !settings.dual.enabled && settings.symmetry.mode == .off
+    let limit = allowingWideRaster ? Brush.diameterRange.upperBound : Brush.legacyDiameterRange.upperBound
+    return brush.size <= limit && !settings.dual.enabled && settings.symmetry.mode == .off
+  }
+  private struct ProvisionalFirstDab {
+    let dab: BrushDab
+    let coverage: BrushCoverage
+    let visits: Int
   }
   private let original: Surface
   private let brush: Brush
   private let transform: Transform2D
   private let inverse: Transform2D
+  private let extent: IntRect
   private let selection: IntRect?
   private let selectionMask: SelectionMask?
   private let grayscale: Bool
@@ -426,18 +452,39 @@ public final class BrushStrokeSession {
   private var count = 0
   private var previousTime = 0.0
   private var previousTail: Set<Int> = []
+  private var firstPreview: ProvisionalFirstDab?
+  private let retainsWideRaster: Bool
   private var failed = false
 
-  public init(surface: Surface, brush: Brush, selection: IntRect? = nil,
+  public convenience init(surface: Surface, brush: Brush, selection: IntRect? = nil,
     selectionMask: SelectionMask? = nil, transform: Transform2D = .identity,
     grayscaleMask: Bool = false, preserveTransparency: Bool = false) throws {
-    guard Self.supports(brush) else { throw CraftError.unsupported("This brush uses the complete stroke renderer.") }
+    try self.init(surface: surface, brush: brush, selection: selection, selectionMask: selectionMask,
+      transform: transform, grayscaleMask: grayscaleMask, preserveTransparency: preserveTransparency, allowingWideRaster: false)
+  }
+
+  init(surface: Surface, brush: Brush, selection: IntRect?, selectionMask: SelectionMask?,
+    transform: Transform2D, grayscaleMask: Bool = false, preserveTransparency: Bool,
+    allowingWideRaster: Bool) throws {
+    guard Self.supports(brush, allowingWideRaster: allowingWideRaster) else {
+      throw CraftError.unsupported("This brush uses the complete stroke renderer.")
+    }
     try BrushPainter.validate(brush, points: []); try surface.validated(); try transform.validated()
     original = surface; result = surface; self.brush = brush; self.transform = transform
-    inverse = try transform.inverted(); self.selection = selection; self.selectionMask = selectionMask
+    let inverse = try transform.inverted()
+    self.inverse = inverse; self.selection = selection; self.selectionMask = selectionMask
     grayscale = grayscaleMask; self.preserveTransparency = preserveTransparency
+    retainsWideRaster = allowingWideRaster && brush.size > Brush.legacyDiameterRange.upperBound
+    if retainsWideRaster {
+      let bounds = selectionMask != nil && selectionMask?.bounds == nil
+        ? IntRect(x: 0, y: 0, width: 0, height: 0) : selection ?? selectionMask?.bounds
+      extent = BrushPainter.clippedBounds(bounds, inverse: inverse, width: surface.width, height: surface.height)
+    } else {
+      extent = .init(x: 0, y: 0, width: surface.width, height: surface.height)
+    }
     generator = BrushDabGenerator(brush)
-    coverage = BrushCoverage(columns: (surface.width + 63) / 64, color: brush.settings!.colorDynamics.enabled)
+    coverage = BrushCoverage(columns: (surface.width + 63) / 64,
+      color: brush.settings!.colorDynamics.enabled, retainingWideRaster: retainsWideRaster)
     coverage.trackDirty = true
   }
 
@@ -454,12 +501,38 @@ public final class BrushStrokeSession {
       if let time = point.time { guard time >= previousTime else { throw CraftError.invalid("Brush timestamps must be monotonic.") }; previousTime = time }
     }
     try Task.checkCancellation(); count += points.count; coverage.dirty = []
-    let dabs = try generator.push(points)
-    try raster(dabs.0, into: &coverage, visits: &visits)
+    let stable = try generator.push(points).0
+    var ending = generator
+    let released = try ending.finish(includingReleaseTail: includingReleaseTail).0
+    if let firstPreview {
+      if stable.isEmpty, released.count == 1, firstPreview.dab.hasSameRasterSamples(as: released[0]) {
+        try Task.checkCancellation()
+        return result
+      }
+      if let next = stable.first, firstPreview.dab.hasSameRasterSamples(as: next) {
+        // Its published pixels and coverage already represent this exact dab.
+        coverage = firstPreview.coverage
+        coverage.dirty = []
+        visits = firstPreview.visits
+        previousTail = []
+        try raster(Array(stable.dropFirst()), into: &coverage, visits: &visits)
+      } else {
+        try raster(stable, into: &coverage, visits: &visits)
+      }
+      self.firstPreview = nil
+    } else {
+      try raster(stable, into: &coverage, visits: &visits)
+    }
     let changed = coverage.dirty
-    var preview = coverage.fork(), ending = generator, tailVisits = visits
-    try raster(ending.finish(includingReleaseTail: includingReleaseTail).0, into: &preview, visits: &tailVisits)
-    let tail = preview.dirty, keys = changed.union(tail).union(previousTail)
+    if changed.isEmpty && released.isEmpty && previousTail.isEmpty {
+      try Task.checkCancellation()
+      return result
+    }
+    var preview = released.isEmpty ? coverage : coverage.fork()
+    var tailVisits = visits
+    try raster(released, into: &preview, visits: &tailVisits)
+    let tail = released.isEmpty ? [] : preview.dirty
+    let keys = changed.union(tail).union(previousTail)
     let settings = brush.settings!
     for key in keys.sorted() {
       try Task.checkCancellation()
@@ -500,11 +573,15 @@ public final class BrushStrokeSession {
       }
     }
     try Task.checkCancellation(); previousTail = tail
+    if retainsWideRaster && stable.isEmpty && released.count == 1 && visits == 0 {
+      firstPreview = ProvisionalFirstDab(dab: released[0], coverage: preview, visits: tailVisits)
+    }
     return result
   }
   private func raster(_ dabs: [BrushDab], into map: inout BrushCoverage, visits: inout Int) throws {
+    guard !dabs.isEmpty else { return }
     try BrushPainter.raster(dabs, isDual: false, brush: brush, toLocal: inverse,
-      toOriginal: transform, transform: transform, extent: .init(x:0,y:0,width:original.width,height:original.height),
+      toOriginal: transform, transform: transform, extent: extent,
       map: &map, visits: &visits)
   }
 }
