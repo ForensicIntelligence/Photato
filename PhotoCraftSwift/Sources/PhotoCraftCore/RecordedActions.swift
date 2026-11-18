@@ -81,6 +81,7 @@ public enum ActionOperation: Codable, Sendable {
   case invertSelection
   case featherSelection(Double)
   case stroke(ActionLayerTarget, [StrokePoint], Brush, mask: Bool)
+  indirect case pencilStroke(RecordedPencilStroke)
   case clear(ActionLayerTarget)
   case fill(ActionLayerTarget, Pixel)
   case style([ActionLayerTarget], LayerStyle?)
@@ -207,6 +208,9 @@ public enum ActionOperation: Codable, Sendable {
     case .featherSelection(let v): self = .featherSelection(v)
     case .stroke(let id, let points, let brush): self = .stroke(target(id), points, brush, mask: false)
     case .maskStroke(let id, let points, let brush): self = .stroke(target(id), points, brush, mask: true)
+    case .painting(let edit) where edit.request.tool == .pencil:
+      if let stroke = RecordedPencilStroke(recording: edit.request, in: d) { self = .pencilStroke(stroke) }
+      else { self = .unsupported("Pencil on Quick Mask cannot be played back yet. Disable this step before playback.") }
     case .clear(let id): self = .clear(target(id))
     case .fill(let id, let v): self = .fill(target(id), v)
     case .layerStyle(let ids, let v): self = .style(targets(ids), v)
@@ -317,6 +321,7 @@ public enum ActionOperation: Codable, Sendable {
     case .invertSelection: return .invertSelection
     case .featherSelection(let v): return .featherSelection(v)
     case .stroke(let t, let p, let b, let mask): return mask ? .maskStroke(try id(t), p, b) : .stroke(try id(t), p, b)
+    case .pencilStroke(let stroke): return try stroke.command(in: d)
     case .clear(let t): return .clear(try id(t))
     case .fill(let t, let v): return .fill(try id(t), v)
     case .style(let t, let v): return .layerStyle(try ids(t), v)
@@ -399,6 +404,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .layerStyles(let edit)=step.operation {try edit.validate()}
       if case .globalLight(let value)=step.operation {try value.validate()}
       if case .retouch(let request) = step.operation { try request.validate() }
+      if case .pencilStroke(let stroke) = step.operation { try stroke.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }
       if case .inkMode(let request) = step.operation { try request.validate() }

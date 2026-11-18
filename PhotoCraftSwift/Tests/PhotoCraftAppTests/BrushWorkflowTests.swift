@@ -28,7 +28,7 @@ final class BrushWorkflowTests:XCTestCase {
       XCTAssertTrue(store.canConnectBrushStroke)
       XCTAssertEqual(store.session.undoStack.count,1)
 
-      if tool == .brush { try store.startRecordingAction(name:"Connect",set:"Test") }
+      try store.startRecordingAction(name:"Connect",set:"Test")
       canvas.updateCursorModifiers(.shift)
       let cursor = ToolCursor.symbol(tool == .brush ? "paintbrush.pointed" : "pencil.tip", .constrain)
       XCTAssertEqual(canvas.toolCursor,cursor)
@@ -44,12 +44,10 @@ final class BrushWorkflowTests:XCTestCase {
       XCTAssertEqual(store.session.undoStack.count,2)
       let final = store.document
       XCTAssertEqual(try Renderer.composite(final).pixel(x:64,y:48),.black)
-      if tool == .brush {
-        let action = try store.stopRecordingAction()
-        XCTAssertTrue(store.canConnectBrushStroke)
-        var replay = first; try action.apply(to:&replay)
-        XCTAssertTrue(replay == final,"Brush Action replay must reproduce the connected stroke")
-      }
+      let action = try store.stopRecordingAction()
+      XCTAssertTrue(store.canConnectBrushStroke)
+      var replay = first; try action.apply(to:&replay)
+      XCTAssertTrue(replay == final,"Action replay must reproduce the connected stroke")
       let helper = AutomationTests()
       try await helper.withService(brushes:BrushLibrary(),pressedMouseButtons:{0}) { service,file in
         file.store.session = EditorSession(document:first)
@@ -68,6 +66,58 @@ final class BrushWorkflowTests:XCTestCase {
       await store.undo(); await store.renderTask?.value
       XCTAssertEqual(store.document,first)
       XCTAssertFalse(store.canConnectBrushStroke)
+      store.playAction(action); await store.geometryTask?.value
+      XCTAssertTrue(store.document == final)
+      _ = await store.requestHistory(redo:false).value
+      XCTAssertTrue(store.document == first)
+    }
+  }
+
+  @MainActor func testPencilActionHTTPAndAutoEraseSampleThePlaybackTarget() async throws {
+    var source = try CraftDocument(width:64,height:48)
+    let id = try XCTUnwrap(source.activeLayerID)
+    guard case .raster(var pixels) = source.layers[0].content else { return XCTFail("Expected raster layer") }
+    pixels.setPixel(x:16,y:16,.black)
+    source.layers[0].content = .raster(pixels)
+    var brush = Brush()
+    brush.size = 3
+    brush.color = .black
+    brush.backgroundColor = .white
+    let samples = [StrokePoint(x:16.5,y:16.5),StrokePoint(x:36.5,y:16.5)]
+
+    let library = ActionLibrary(), helper = AutomationTests()
+    try await helper.withService(actions:library,pressedMouseButtons:{0}) { service,file in
+      file.store.session = EditorSession(document:source)
+      try service.share(file)
+      let record = try await helper.edit(service,file,"actions.manage",["operation":"record","name":"Pencil Auto Erase"])
+      XCTAssertEqual(record,200)
+      let paint = try await helper.edit(service,file,"paint.tool",[
+        "tool":"pencil","points":BrushAPI.json(samples),"brush":BrushAPI.json(brush),"options":["autoErase":true]])
+      XCTAssertEqual(paint,200)
+      let stop = try await helper.edit(service,file,"actions.manage",["operation":"stop"])
+      XCTAssertEqual(stop,200)
+      let action = try XCTUnwrap(library.file.actions.first)
+      guard case .pencilStroke = try XCTUnwrap(action.steps.first).operation else {
+        return XCTFail("Expected a portable Pencil step")
+      }
+      let saved = try library.exportFile(action.id)
+      let decoded = try ActionLibraryFile.decode(saved)
+      XCTAssertEqual(decoded.version,62)
+      var older = try XCTUnwrap(JSONSerialization.jsonObject(with:saved) as? [String:Any])
+      older["version"] = 61
+      XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:older)))
+      XCTAssertEqual(try Renderer.composite(file.store.document).pixel(x:16,y:16),.white)
+
+      let destination = try CraftDocument(width:64,height:48)
+      XCTAssertNotEqual(destination.activeLayerID,id)
+      file.store.session = EditorSession(document:destination)
+      let status = try await helper.edit(service,file,"actions.play",["actionID":action.id.uuidString])
+      XCTAssertEqual(status,200)
+      XCTAssertEqual(try Renderer.composite(file.store.document).pixel(x:24,y:16),.black)
+      XCTAssertEqual(file.store.session.undoStack.count,1)
+      let undo = try await helper.edit(service,file,"history.undo")
+      XCTAssertEqual(undo,200)
+      XCTAssertTrue(file.store.document == destination)
     }
   }
 

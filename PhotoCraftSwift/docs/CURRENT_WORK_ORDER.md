@@ -1,3 +1,7 @@
+**Source checkpoint 537.** Pencil strokes record and replay in Actions, including Auto Erase on the playback target. All 199 selected methods pass in Debug and both optimized architectures. A 24-dab Photoshop reference quantifies the remaining Brush alpha differences. [Qualification](SOURCE_PUBLICATION_537.md).
+
+B01 next needs independent repeat and subpixel reference samples before changing the soft brush falloff, along with timed smoothing and factory preset qualification. Quick Mask Pencil Actions need a visibility-aware playback context. Q03 physical and stylus timing remain open.
+
 **Source checkpoint 536.** Shift-click connects Brush and Pencil strokes. All 178 selected methods pass in Debug and both optimized architectures. Photoshop alpha differs on the test sheet. [Qualification](SOURCE_PUBLICATION_536.md).
 
 B01 continues with independent Brush coverage across diameters and subpixel positions, then timed smoothing and factory presets. Pencil Action playback is open. Q03 retains publication latency, stylus timing and physical display checks.

@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 537: record Pencil strokes in Actions
+
+The Pencil now plays back in Actions. A recorded stroke keeps the points, brush settings and destination. Auto Erase checks the first pixel in the playback document, so the same step can switch between foreground and background on different images.
+
+All 199 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. A new 24-dab Photoshop comparison measured the Brush's edge softness across six sizes. Exact brush pixels still differ.
+
+[Detailed record](DEVLOG.md#dev-step-537) · [Validation](SOURCE_PUBLICATION_537.md).
+
 ## 2026-11-17 — Step 536: Shift-click with Brush and Pencil
 
 Paint a point, then Shift-click to draw a straight connection. The pointer shows when there's a point to connect to. One Undo removes the connection.
@@ -281,14 +289,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:536 -->
+<!-- current-status-step:537 -->
 ## Current development status — 17 November 2026
 
-Build 536 adds Shift-click for Brush and Pencil. All 178 selected checks passed in Debug and both optimized architectures. The development record includes the first independent Brush alpha comparison for this workflow.
+Build 537 adds Pencil Action recording and playback. All 199 selected checks passed in Debug and both optimized architectures. The qualification includes native replay, HTTP and the universal validation package.
 
-Exact Photoshop Brush coverage, timed smoothing, Pencil Action playback and physical display timing remain open.
+Quick Mask Pencil replay, exact Photoshop Brush coverage and physical display timing remain open.
 
-[Qualification](SOURCE_PUBLICATION_536.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_537.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1030,6 +1038,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 534 | [Start the background worker with Brush input](DEVLOG.md#dev-step-534) |
 | 2026-11-17 | 535 | [Match the ordinary Brush smoothing default](DEVLOG.md#dev-step-535) |
 | 2026-11-17 | 536 | [Connect Brush and Pencil strokes with Shift-click](DEVLOG.md#dev-step-536) |
+| 2026-11-17 | 537 | [Record Pencil strokes in Actions](DEVLOG.md#dev-step-537) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

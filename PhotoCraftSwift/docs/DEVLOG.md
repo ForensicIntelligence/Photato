@@ -555,7 +555,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 534 | 2026-11-17 | [Start the background worker with Brush input](#dev-step-534) |
 | 535 | 2026-11-17 | [Match the ordinary Brush smoothing default](#dev-step-535) |
 | 536 | 2026-11-17 | [Connect Brush and Pencil strokes with Shift-click](#dev-step-536) |
+| 537 | 2026-11-17 | [Record Pencil strokes in Actions](#dev-step-537) |
 <!-- history-index:end -->
+
+<a id="dev-step-537"></a>
+
+## 2026-11-17 — Record Pencil strokes in Actions
+
+The Actions panel used to flag completed Pencil steps as unsupported. PaintTools.swift now records the Pencil points, brush and Auto Erase setting with portable references to pixels, layer masks, Smart Filter masks and saved alpha channels. RecordedActions.swift resolves the target and replays through the same Pencil renderer as desktop painting. Auto Erase reads the first pixel in the playback document before choosing the foreground or background color. Recording and replay retain the existing action transaction and Undo. Quick Mask Pencil playback still needs a way to carry target visibility into the playback session.
+
+ActionLibrary.swift requires file version 62 for this new step. Previous action types keep their version requirements. AutomationPainting.swift and AutomationBrushes.swift describe the existing native API operations for capture and replay. BrushWorkflowTests.swift extends the Shift-click regression to Pencil Action replay and checks HTTP recording, file version validation and Auto Erase on another document. PaintingWorkflowTests.swift checks portable saved-alpha and mask targets. Photato records document-space points. The Photoshop tool-recording toggle, percentage coordinates and preset fallback behavior still need direct comparison. [Adobe tool recording](https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/record-tools-in-actions.html).
+
+The Photoshop reference now includes 24 isolated dabs. The stock Hard Round preset was measured on a transparent RGB8 document at 100% zoom, Normal mode, 100% opacity and flow and 0% smoothing. The six diameters span 3 to 41 px and the four hardness settings span 0% to 100%. A lossless PNG was decoded independently and compared with two-position Photato renders. Fitting a single Gaussian around the measured peak reduced the cumulative absolute alpha error on the six soft dabs from 67,780 to 2,090. The largest remaining difference was three 8-bit levels. The same curve is within one level on each of the two earlier soft 13 px dabs from step 536. Those two dabs differ from one another by one level at 137 positions after aligning their peaks. More diameters and direct subpixel input checks are still needed to explain those differences. The brush renderer keeps its current falloff. [Adobe Brush and Pencil workflow](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/paint-with-brush-or-pencil-tool.html).
+
+All 192 focused tests and seven retained compositing tests pass in Debug, optimized Apple Silicon and Intel under Rosetta. Both extracted universal executables passed the offscreen workspace check. The 24 reference Brush inputs produce identical native alpha across builds 536 and 537 on both architectures. Exact Photoshop brush coverage and physical display timing remain open. [Qualification](SOURCE_PUBLICATION_537.md).
 
 <a id="dev-step-536"></a>
 

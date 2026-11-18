@@ -1,0 +1,2520 @@
+{
+  "actionMinimumVersion": 62,
+  "addedTests": 2,
+  "applicationBuild": 537,
+  "archiveSHA256": "e7181aa0f64851519c8def569b9a54b6c61c8b353d9643a9c075a4719370a55b",
+  "brushComparisonAcrossBuilds": {
+    "exactAcrossArchitectures": true,
+    "measurements": [
+      {
+        "centered": {
+          "differing": 20,
+          "maxAbsolute": 161,
+          "nonzero": 9,
+          "sumAbsolute": 1130
+        },
+        "click": [
+          50,
+          40
+        ],
+        "diameter": 3,
+        "hardness": 100,
+        "nominal": {
+          "differing": 20,
+          "maxAbsolute": 220,
+          "nonzero": 12,
+          "sumAbsolute": 1181
+        },
+        "nonzeroPixels": 21
+      },
+      {
+        "centered": {
+          "differing": 48,
+          "maxAbsolute": 56,
+          "nonzero": 45,
+          "sumAbsolute": 1264
+        },
+        "click": [
+          125,
+          40
+        ],
+        "diameter": 7,
+        "hardness": 100,
+        "nominal": {
+          "differing": 48,
+          "maxAbsolute": 179,
+          "nonzero": 52,
+          "sumAbsolute": 2633
+        },
+        "nonzeroPixels": 69
+      },
+      {
+        "centered": {
+          "differing": 90,
+          "maxAbsolute": 49,
+          "nonzero": 137,
+          "sumAbsolute": 1456
+        },
+        "click": [
+          200,
+          40
+        ],
+        "diameter": 12,
+        "hardness": 100,
+        "nominal": {
+          "differing": 100,
+          "maxAbsolute": 169,
+          "nonzero": 124,
+          "sumAbsolute": 4529
+        },
+        "nonzeroPixels": 177
+      },
+      {
+        "centered": {
+          "differing": 96,
+          "maxAbsolute": 56,
+          "nonzero": 145,
+          "sumAbsolute": 2207
+        },
+        "click": [
+          280,
+          40
+        ],
+        "diameter": 13,
+        "hardness": 100,
+        "nominal": {
+          "differing": 98,
+          "maxAbsolute": 184,
+          "nonzero": 156,
+          "sumAbsolute": 4898
+        },
+        "nonzeroPixels": 193
+      },
+      {
+        "centered": {
+          "differing": 136,
+          "maxAbsolute": 56,
+          "nonzero": 373,
+          "sumAbsolute": 3444
+        },
+        "click": [
+          360,
+          40
+        ],
+        "diameter": 21,
+        "hardness": 100,
+        "nominal": {
+          "differing": 148,
+          "maxAbsolute": 183,
+          "nonzero": 384,
+          "sumAbsolute": 7921
+        },
+        "nonzeroPixels": 437
+      },
+      {
+        "centered": {
+          "differing": 297,
+          "maxAbsolute": 56,
+          "nonzero": 1369,
+          "sumAbsolute": 6440
+        },
+        "click": [
+          432,
+          40
+        ],
+        "diameter": 41,
+        "hardness": 100,
+        "nominal": {
+          "differing": 306,
+          "maxAbsolute": 177,
+          "nonzero": 1396,
+          "sumAbsolute": 15401
+        },
+        "nonzeroPixels": 1503
+      },
+      {
+        "centered": {
+          "differing": 20,
+          "maxAbsolute": 161,
+          "nonzero": 9,
+          "sumAbsolute": 735
+        },
+        "click": [
+          50,
+          119
+        ],
+        "diameter": 3,
+        "hardness": 75,
+        "nominal": {
+          "differing": 20,
+          "maxAbsolute": 220,
+          "nonzero": 4,
+          "sumAbsolute": 866
+        },
+        "nonzeroPixels": 21
+      },
+      {
+        "centered": {
+          "differing": 72,
+          "maxAbsolute": 60,
+          "nonzero": 37,
+          "sumAbsolute": 1503
+        },
+        "click": [
+          125,
+          119
+        ],
+        "diameter": 7,
+        "hardness": 75,
+        "nominal": {
+          "differing": 72,
+          "maxAbsolute": 178,
+          "nonzero": 32,
+          "sumAbsolute": 2828
+        },
+        "nonzeroPixels": 85
+      },
+      {
+        "centered": {
+          "differing": 152,
+          "maxAbsolute": 96,
+          "nonzero": 109,
+          "sumAbsolute": 4525
+        },
+        "click": [
+          200,
+          119
+        ],
+        "diameter": 12,
+        "hardness": 75,
+        "nominal": {
+          "differing": 155,
+          "maxAbsolute": 192,
+          "nonzero": 112,
+          "sumAbsolute": 5908
+        },
+        "nonzeroPixels": 213
+      },
+      {
+        "centered": {
+          "differing": 168,
+          "maxAbsolute": 88,
+          "nonzero": 137,
+          "sumAbsolute": 4770
+        },
+        "click": [
+          280,
+          119
+        ],
+        "diameter": 13,
+        "hardness": 75,
+        "nominal": {
+          "differing": 171,
+          "maxAbsolute": 176,
+          "nonzero": 124,
+          "sumAbsolute": 6169
+        },
+        "nonzeroPixels": 237
+      },
+      {
+        "centered": {
+          "differing": 350,
+          "maxAbsolute": 84,
+          "nonzero": 341,
+          "sumAbsolute": 11548
+        },
+        "click": [
+          360,
+          119
+        ],
+        "diameter": 21,
+        "hardness": 75,
+        "nominal": {
+          "differing": 343,
+          "maxAbsolute": 157,
+          "nonzero": 332,
+          "sumAbsolute": 12275
+        },
+        "nonzeroPixels": 543
+      },
+      {
+        "centered": {
+          "differing": 1174,
+          "maxAbsolute": 117,
+          "nonzero": 1305,
+          "sumAbsolute": 56364
+        },
+        "click": [
+          432,
+          119
+        ],
+        "diameter": 41,
+        "hardness": 75,
+        "nominal": {
+          "differing": 1183,
+          "maxAbsolute": 160,
+          "nonzero": 1288,
+          "sumAbsolute": 56323
+        },
+        "nonzeroPixels": 1923
+      },
+      {
+        "centered": {
+          "differing": 20,
+          "maxAbsolute": 95,
+          "nonzero": 9,
+          "sumAbsolute": 530
+        },
+        "click": [
+          50,
+          199
+        ],
+        "diameter": 3,
+        "hardness": 50,
+        "nominal": {
+          "differing": 20,
+          "maxAbsolute": 221,
+          "nonzero": 4,
+          "sumAbsolute": 867
+        },
+        "nonzeroPixels": 21
+      },
+      {
+        "centered": {
+          "differing": 76,
+          "maxAbsolute": 67,
+          "nonzero": 37,
+          "sumAbsolute": 1726
+        },
+        "click": [
+          125,
+          199
+        ],
+        "diameter": 7,
+        "hardness": 50,
+        "nominal": {
+          "differing": 84,
+          "maxAbsolute": 141,
+          "nonzero": 32,
+          "sumAbsolute": 2643
+        },
+        "nonzeroPixels": 92
+      },
+      {
+        "centered": {
+          "differing": 205,
+          "maxAbsolute": 66,
+          "nonzero": 109,
+          "sumAbsolute": 5334
+        },
+        "click": [
+          200,
+          199
+        ],
+        "diameter": 12,
+        "hardness": 50,
+        "nominal": {
+          "differing": 204,
+          "maxAbsolute": 130,
+          "nonzero": 112,
+          "sumAbsolute": 5889
+        },
+        "nonzeroPixels": 234
+      },
+      {
+        "centered": {
+          "differing": 219,
+          "maxAbsolute": 59,
+          "nonzero": 129,
+          "sumAbsolute": 5443
+        },
+        "click": [
+          280,
+          199
+        ],
+        "diameter": 13,
+        "hardness": 50,
+        "nominal": {
+          "differing": 226,
+          "maxAbsolute": 121,
+          "nonzero": 124,
+          "sumAbsolute": 6110
+        },
+        "nonzeroPixels": 256
+      },
+      {
+        "centered": {
+          "differing": 564,
+          "maxAbsolute": 78,
+          "nonzero": 341,
+          "sumAbsolute": 18976
+        },
+        "click": [
+          360,
+          199
+        ],
+        "diameter": 21,
+        "hardness": 50,
+        "nominal": {
+          "differing": 573,
+          "maxAbsolute": 121,
+          "nonzero": 332,
+          "sumAbsolute": 18963
+        },
+        "nonzeroPixels": 661
+      },
+      {
+        "centered": {
+          "differing": 2001,
+          "maxAbsolute": 85,
+          "nonzero": 1281,
+          "sumAbsolute": 72573
+        },
+        "click": [
+          432,
+          199
+        ],
+        "diameter": 41,
+        "hardness": 50,
+        "nominal": {
+          "differing": 2002,
+          "maxAbsolute": 110,
+          "nonzero": 1280,
+          "sumAbsolute": 72576
+        },
+        "nonzeroPixels": 2350
+      },
+      {
+        "centered": {
+          "differing": 20,
+          "maxAbsolute": 34,
+          "nonzero": 9,
+          "sumAbsolute": 280
+        },
+        "click": [
+          50,
+          276
+        ],
+        "diameter": 3,
+        "hardness": 0,
+        "nominal": {
+          "differing": 21,
+          "maxAbsolute": 117,
+          "nonzero": 4,
+          "sumAbsolute": 633
+        },
+        "nonzeroPixels": 21
+      },
+      {
+        "centered": {
+          "differing": 97,
+          "maxAbsolute": 33,
+          "nonzero": 37,
+          "sumAbsolute": 1309
+        },
+        "click": [
+          125,
+          276
+        ],
+        "diameter": 7,
+        "hardness": 0,
+        "nominal": {
+          "differing": 97,
+          "maxAbsolute": 87,
+          "nonzero": 32,
+          "sumAbsolute": 1850
+        },
+        "nonzeroPixels": 98
+      },
+      {
+        "centered": {
+          "differing": 292,
+          "maxAbsolute": 35,
+          "nonzero": 101,
+          "sumAbsolute": 4222
+        },
+        "click": [
+          200,
+          276
+        ],
+        "diameter": 12,
+        "hardness": 0,
+        "nominal": {
+          "differing": 291,
+          "maxAbsolute": 64,
+          "nonzero": 112,
+          "sumAbsolute": 4727
+        },
+        "nonzeroPixels": 293
+      },
+      {
+        "centered": {
+          "differing": 343,
+          "maxAbsolute": 34,
+          "nonzero": 121,
+          "sumAbsolute": 4721
+        },
+        "click": [
+          280,
+          276
+        ],
+        "diameter": 13,
+        "hardness": 0,
+        "nominal": {
+          "differing": 344,
+          "maxAbsolute": 59,
+          "nonzero": 120,
+          "sumAbsolute": 5246
+        },
+        "nonzeroPixels": 344
+      },
+      {
+        "centered": {
+          "differing": 879,
+          "maxAbsolute": 34,
+          "nonzero": 325,
+          "sumAbsolute": 11799
+        },
+        "click": [
+          360,
+          276
+        ],
+        "diameter": 21,
+        "hardness": 0,
+        "nominal": {
+          "differing": 874,
+          "maxAbsolute": 48,
+          "nonzero": 332,
+          "sumAbsolute": 12274
+        },
+        "nonzeroPixels": 880
+      },
+      {
+        "centered": {
+          "differing": 3356,
+          "maxAbsolute": 34,
+          "nonzero": 1245,
+          "sumAbsolute": 45449
+        },
+        "click": [
+          432,
+          276
+        ],
+        "diameter": 41,
+        "hardness": 0,
+        "nominal": {
+          "differing": 3343,
+          "maxAbsolute": 41,
+          "nonzero": 1264,
+          "sumAbsolute": 45608
+        },
+        "nonzeroPixels": 3359
+      }
+    ],
+    "nativeAlphaHashes": {
+      "centered": "3282206ef250329611bb97aebf2ce1e174806ba8b9bc6e32a43832f7bcff7be4",
+      "nominal": "360ba0fe65a4ebb678996c31a6532bc3b6965063dd36b55c602f20031112b847"
+    }
+  },
+  "checkpoint": 537,
+  "earlierSoftDabs": {
+    "description": "The two earlier 13 px soft dabs from the separate build 536 Photoshop document, recorded at 10% smoothing. Only the observed peaks were aligned. Tested with the coefficient fitted on build 537\u2019s sheet.",
+    "earlierStamps": [
+      {
+        "center": [
+          127,
+          47
+        ],
+        "differingAlpha": 112,
+        "maximumAbsolute": 1,
+        "samples": 961,
+        "sumAbsolute": 112
+      },
+      {
+        "center": [
+          62,
+          106
+        ],
+        "differingAlpha": 123,
+        "maximumAbsolute": 1,
+        "samples": 961,
+        "sumAbsolute": 123
+      }
+    ],
+    "labeling": "Stamps 1 and 2 are from the earlier sheet. Stamp 3 is from the new sheet.",
+    "pairwiseBetweenAllThreeObservedStamps": [
+      {
+        "comparedStamps": [
+          1,
+          2
+        ],
+        "differingAlpha": 137,
+        "maximumAbsolute": 1,
+        "sumAbsolute": 137
+      },
+      {
+        "comparedStamps": [
+          1,
+          3
+        ],
+        "differingAlpha": 111,
+        "maximumAbsolute": 1,
+        "sumAbsolute": 111
+      },
+      {
+        "comparedStamps": [
+          2,
+          3
+        ],
+        "differingAlpha": 122,
+        "maximumAbsolute": 1,
+        "sumAbsolute": 122
+      }
+    ],
+    "referenceAlphaSHA256": "fa62df1ca365cc0eb0473d783e7c728bd65084499c53fb7a5c2a2439a75e240c"
+  },
+  "fullPhotoshopParity": false,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "e7181aa0f64851519c8def569b9a54b6c61c8b353d9643a9c075a4719370a55b",
+    "binarySHA256": "21c78d05ca2e52cfafe6ff98d4f76f8648931bdf78f8dcba2a8c91e4839e7109",
+    "build": 537,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "pencilTargets": [
+    "pixels",
+    "layerMask",
+    "smartFilterMask",
+    "alpha"
+  ],
+  "photoshopFixtures": {
+    "configurations": {
+      "arm": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "9854e88716dc616bac09427274bedf697a907992e22f9b1e5e64ec7986241ed3"
+      },
+      "debug": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "2c3fc49b1b921157857ca11fb39bc88dd5fdb486d00f9784a8fc260962a57212"
+      },
+      "intel": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "f06675f17ab52591744633f79ee74c7b632b1250a1f307805f2bcc85cfde4b53"
+      }
+    },
+    "independentExportFixtures": 20,
+    "passed": true,
+    "scope": "Owned Photoshop 2026 merged RGBA32 reference fixtures and regional comparison. Full PSD bytes and live Photoshop use are outside this fixture result.",
+    "sourceInputs": 7884
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 199,
+    "debug": 199,
+    "intel": 199
+  },
+  "qualifiedCountPerConfiguration": 199,
+  "quickMaskPencilReplay": false,
+  "roundDabSheet": {
+    "alphaSHA256": "09968e2ea9c0718b37a9e11aa191f353743c50c648a5054c3646b4604d425502",
+    "components": [
+      {
+        "alphaSum": 803,
+        "bounds": [
+          47,
+          37,
+          5,
+          5
+        ],
+        "centerColumn": [
+          5,
+          94,
+          255,
+          94,
+          5
+        ],
+        "centerRow": [
+          4,
+          94,
+          255,
+          95,
+          5
+        ],
+        "click": [
+          50,
+          40
+        ],
+        "diameter": 3,
+        "hardness": 100,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 21,
+        "normalizedAlphaSHA256": "f758f7be218f5a2161091be34dabf60197b84cbb0bf89cd1f95d2722eb0a9788",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 9345,
+        "bounds": [
+          120,
+          35,
+          9,
+          9
+        ],
+        "centerColumn": [
+          27,
+          200,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "centerRow": [
+          27,
+          199,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "click": [
+          125,
+          40
+        ],
+        "diameter": 7,
+        "hardness": 100,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 69,
+        "normalizedAlphaSHA256": "7da6d18dedcf2d93ff4860c04451da20cf07de59c489e57335ea9fb24a26907a",
+        "opaquePixels": 21,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 28021,
+        "bounds": [
+          192,
+          32,
+          15,
+          15
+        ],
+        "centerColumn": [
+          5,
+          95,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          95,
+          4
+        ],
+        "centerRow": [
+          5,
+          95,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          94,
+          5
+        ],
+        "click": [
+          200,
+          40
+        ],
+        "diameter": 12,
+        "hardness": 100,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 177,
+        "normalizedAlphaSHA256": "9d909b0ec3796eef20d74b47aea24f7c0214317096a493a69e3fa71b39faa3d0",
+        "opaquePixels": 81,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 32878,
+        "bounds": [
+          272,
+          32,
+          15,
+          15
+        ],
+        "centerColumn": [
+          27,
+          200,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "centerRow": [
+          27,
+          199,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "click": [
+          280,
+          40
+        ],
+        "diameter": 13,
+        "hardness": 100,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 193,
+        "normalizedAlphaSHA256": "45d0a8e1f67c569fd25d99ec5c5d0336c47fed9debce438eb23a927ed78c4d8b",
+        "opaquePixels": 97,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 86631,
+        "bounds": [
+          348,
+          28,
+          23,
+          23
+        ],
+        "centerColumn": [
+          27,
+          199,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "centerRow": [
+          27,
+          200,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "click": [
+          360,
+          40
+        ],
+        "diameter": 21,
+        "hardness": 100,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 437,
+        "normalizedAlphaSHA256": "4cb0d44c90bc0a7573167deb7d5ca589274611818ab4ff5b5cd7573f29092d77",
+        "opaquePixels": 293,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 333637,
+        "bounds": [
+          410,
+          18,
+          43,
+          43
+        ],
+        "centerColumn": [
+          27,
+          199,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "centerRow": [
+          27,
+          199,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          199,
+          27
+        ],
+        "click": [
+          432,
+          40
+        ],
+        "diameter": 41,
+        "hardness": 100,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 1503,
+        "normalizedAlphaSHA256": "195b9b6dcefb11107d98ad4ddd8182ecb65edee58b7aa322d0217968ec5de672",
+        "opaquePixels": 1201,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 804,
+        "bounds": [
+          47,
+          116,
+          5,
+          5
+        ],
+        "centerColumn": [
+          5,
+          94,
+          255,
+          94,
+          4
+        ],
+        "centerRow": [
+          4,
+          94,
+          255,
+          95,
+          5
+        ],
+        "click": [
+          50,
+          119
+        ],
+        "diameter": 3,
+        "hardness": 75,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 21,
+        "normalizedAlphaSHA256": "7da68a9896c371aebf820f0c225c7b7659101583dd8cc4662b9d78b5db6a5fac",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 8464,
+        "bounds": [
+          119,
+          113,
+          11,
+          11
+        ],
+        "centerColumn": [
+          2,
+          26,
+          149,
+          255,
+          255,
+          255,
+          255,
+          255,
+          148,
+          26,
+          1
+        ],
+        "centerRow": [
+          1,
+          26,
+          148,
+          255,
+          255,
+          255,
+          255,
+          255,
+          149,
+          26,
+          1
+        ],
+        "click": [
+          125,
+          119
+        ],
+        "diameter": 7,
+        "hardness": 75,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 85,
+        "normalizedAlphaSHA256": "553d3551620cc8aaf6413437cd29f0f410f37bbd3f32ec9e6967499f19c46b5a",
+        "opaquePixels": 13,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 26582,
+        "bounds": [
+          191,
+          110,
+          17,
+          17
+        ],
+        "centerColumn": [
+          1,
+          15,
+          82,
+          211,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          212,
+          82,
+          14,
+          2
+        ],
+        "centerRow": [
+          2,
+          14,
+          82,
+          211,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          211,
+          81,
+          15,
+          1
+        ],
+        "click": [
+          200,
+          119
+        ],
+        "diameter": 12,
+        "hardness": 75,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 213,
+        "normalizedAlphaSHA256": "68795104724ac51f3cda8d795a24014fb9c3c6d983b48a85d065a435fd054ec4",
+        "opaquePixels": 61,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 30615,
+        "bounds": [
+          271,
+          110,
+          17,
+          17
+        ],
+        "centerColumn": [
+          4,
+          34,
+          134,
+          246,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          246,
+          133,
+          34,
+          4
+        ],
+        "centerRow": [
+          5,
+          34,
+          134,
+          246,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          246,
+          133,
+          34,
+          4
+        ],
+        "click": [
+          280,
+          119
+        ],
+        "diameter": 13,
+        "hardness": 75,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 237,
+        "normalizedAlphaSHA256": "adac53a9b60330c101c68833dcaf956ca6d71c42615273097cf82339624c5da9",
+        "opaquePixels": 69,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 79419,
+        "bounds": [
+          346,
+          105,
+          27,
+          27
+        ],
+        "centerColumn": [
+          1,
+          7,
+          35,
+          107,
+          208,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          208,
+          107,
+          34,
+          7,
+          1
+        ],
+        "centerRow": [
+          1,
+          7,
+          35,
+          108,
+          208,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          209,
+          107,
+          35,
+          7,
+          1
+        ],
+        "click": [
+          360,
+          119
+        ],
+        "diameter": 21,
+        "hardness": 75,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 543,
+        "normalizedAlphaSHA256": "21d3e8973a53df20ce31e0a0d0017573a2e39fd8a5c0fb86d069f138813a7add",
+        "opaquePixels": 213,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 315123,
+        "bounds": [
+          407,
+          94,
+          49,
+          49
+        ],
+        "centerColumn": [
+          2,
+          7,
+          21,
+          51,
+          102,
+          167,
+          226,
+          254,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          254,
+          227,
+          167,
+          102,
+          51,
+          21,
+          8,
+          2
+        ],
+        "centerRow": [
+          2,
+          7,
+          21,
+          52,
+          102,
+          167,
+          226,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          226,
+          167,
+          102,
+          52,
+          22,
+          7,
+          2
+        ],
+        "click": [
+          432,
+          119
+        ],
+        "diameter": 41,
+        "hardness": 75,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 1923,
+        "normalizedAlphaSHA256": "258b2d3106aaec15ae67891bd060ba11c40549f06bd91357636f2ebb357d9b16",
+        "opaquePixels": 905,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 803,
+        "bounds": [
+          47,
+          196,
+          5,
+          5
+        ],
+        "centerColumn": [
+          5,
+          94,
+          255,
+          95,
+          5
+        ],
+        "centerRow": [
+          5,
+          94,
+          255,
+          94,
+          4
+        ],
+        "click": [
+          50,
+          199
+        ],
+        "diameter": 3,
+        "hardness": 50,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 21,
+        "normalizedAlphaSHA256": "73849a761fdd528511e30bd86c9d7ae062c43508236229bd20e871caf8343226",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 7273,
+        "bounds": [
+          119,
+          193,
+          11,
+          11
+        ],
+        "centerColumn": [
+          2,
+          22,
+          106,
+          231,
+          255,
+          255,
+          255,
+          231,
+          106,
+          23,
+          2
+        ],
+        "centerRow": [
+          2,
+          23,
+          106,
+          232,
+          255,
+          255,
+          255,
+          232,
+          106,
+          22,
+          2
+        ],
+        "click": [
+          125,
+          199
+        ],
+        "diameter": 7,
+        "hardness": 50,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 92,
+        "normalizedAlphaSHA256": "9e9b1b1a7f5135e3e6efc9ea7ac7fcd461604f03af6d9de55bf698cf17b0a77f",
+        "opaquePixels": 9,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 21925,
+        "bounds": [
+          191,
+          190,
+          17,
+          17
+        ],
+        "centerColumn": [
+          2,
+          13,
+          50,
+          127,
+          219,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          220,
+          128,
+          50,
+          13,
+          3
+        ],
+        "centerRow": [
+          3,
+          13,
+          50,
+          127,
+          219,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          219,
+          128,
+          50,
+          14,
+          3
+        ],
+        "click": [
+          200,
+          199
+        ],
+        "diameter": 12,
+        "hardness": 50,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 234,
+        "normalizedAlphaSHA256": "699c1a0476ed1142d3e7c7bc4789b0b73172c33cf6fc4cb970c041dd3dc35989",
+        "opaquePixels": 37,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 24874,
+        "bounds": [
+          270,
+          189,
+          19,
+          19
+        ],
+        "centerColumn": [
+          1,
+          6,
+          24,
+          74,
+          158,
+          238,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          238,
+          158,
+          74,
+          24,
+          6,
+          1
+        ],
+        "centerRow": [
+          1,
+          6,
+          24,
+          74,
+          158,
+          238,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          238,
+          158,
+          73,
+          23,
+          6,
+          0
+        ],
+        "click": [
+          280,
+          199
+        ],
+        "diameter": 13,
+        "hardness": 50,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 256,
+        "normalizedAlphaSHA256": "7347343ba652c229a314bbb5a20c6fb271ad9e12bfc83e18686c9e5604d8740c",
+        "opaquePixels": 37,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 69739,
+        "bounds": [
+          345,
+          184,
+          29,
+          29
+        ],
+        "centerColumn": [
+          1,
+          5,
+          15,
+          35,
+          72,
+          128,
+          190,
+          239,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          240,
+          191,
+          128,
+          72,
+          35,
+          15,
+          5,
+          1
+        ],
+        "centerRow": [
+          1,
+          5,
+          15,
+          35,
+          73,
+          128,
+          190,
+          239,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          239,
+          190,
+          128,
+          73,
+          35,
+          14,
+          4,
+          1
+        ],
+        "click": [
+          360,
+          199
+        ],
+        "diameter": 21,
+        "hardness": 50,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 661,
+        "normalizedAlphaSHA256": "2943b9418101b27f6eb3a4a6f8d3d2ed8c5d50cc64646496dc0b1098b1830720",
+        "opaquePixels": 123,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 266120,
+        "bounds": [
+          404,
+          171,
+          55,
+          55
+        ],
+        "centerColumn": [
+          1,
+          2,
+          4,
+          8,
+          13,
+          24,
+          38,
+          58,
+          85,
+          117,
+          152,
+          187,
+          219,
+          242,
+          254,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          243,
+          219,
+          187,
+          152,
+          116,
+          85,
+          58,
+          38,
+          24,
+          14,
+          8,
+          4,
+          2,
+          1
+        ],
+        "centerRow": [
+          1,
+          2,
+          4,
+          7,
+          14,
+          23,
+          38,
+          58,
+          84,
+          116,
+          151,
+          187,
+          219,
+          242,
+          254,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          254,
+          242,
+          219,
+          187,
+          151,
+          117,
+          84,
+          58,
+          38,
+          23,
+          13,
+          8,
+          4,
+          2,
+          0
+        ],
+        "click": [
+          432,
+          199
+        ],
+        "diameter": 41,
+        "hardness": 50,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 2350,
+        "normalizedAlphaSHA256": "cbbf63ecd062439afebf3e5a37f26158e2133fda6dbe9537fe783ce6a176dd30",
+        "opaquePixels": 516,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 803,
+        "bounds": [
+          47,
+          273,
+          5,
+          5
+        ],
+        "centerColumn": [
+          5,
+          94,
+          255,
+          94,
+          5
+        ],
+        "centerRow": [
+          4,
+          94,
+          255,
+          94,
+          4
+        ],
+        "click": [
+          50,
+          276
+        ],
+        "diameter": 3,
+        "hardness": 0,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 21,
+        "normalizedAlphaSHA256": "2cad547e64851aaa7e5d5a2c3be19dc2d4e1d905aff7e724728487b5fd0c8eb9",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 4248,
+        "bounds": [
+          119,
+          270,
+          11,
+          11
+        ],
+        "centerColumn": [
+          2,
+          12,
+          47,
+          120,
+          212,
+          255,
+          211,
+          120,
+          46,
+          13,
+          2
+        ],
+        "centerRow": [
+          2,
+          12,
+          47,
+          120,
+          211,
+          255,
+          211,
+          120,
+          47,
+          13,
+          3
+        ],
+        "click": [
+          125,
+          276
+        ],
+        "diameter": 7,
+        "hardness": 0,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 98,
+        "normalizedAlphaSHA256": "402dedbf4d1feaa0df8f4a4bf4aa6ddd9bdeaf3a17f31a8c60ad31d189da0697",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 12861,
+        "bounds": [
+          190,
+          266,
+          19,
+          19
+        ],
+        "centerColumn": [
+          1,
+          5,
+          12,
+          28,
+          54,
+          95,
+          146,
+          199,
+          240,
+          255,
+          239,
+          199,
+          146,
+          94,
+          53,
+          27,
+          13,
+          5,
+          2
+        ],
+        "centerRow": [
+          2,
+          4,
+          12,
+          28,
+          53,
+          94,
+          145,
+          199,
+          239,
+          255,
+          240,
+          199,
+          145,
+          94,
+          53,
+          28,
+          12,
+          4,
+          2
+        ],
+        "click": [
+          200,
+          276
+        ],
+        "diameter": 12,
+        "hardness": 0,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 293,
+        "normalizedAlphaSHA256": "9b962722e90350b2dc752f307d98aee9e95b055a3a5e22bc92895ba57ed8e0b0",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 14860,
+        "bounds": [
+          269,
+          265,
+          21,
+          21
+        ],
+        "centerColumn": [
+          1,
+          3,
+          8,
+          18,
+          37,
+          67,
+          107,
+          157,
+          206,
+          241,
+          255,
+          242,
+          206,
+          157,
+          107,
+          66,
+          37,
+          18,
+          8,
+          3,
+          1
+        ],
+        "centerRow": [
+          1,
+          4,
+          8,
+          18,
+          36,
+          66,
+          107,
+          157,
+          206,
+          242,
+          255,
+          242,
+          206,
+          158,
+          108,
+          67,
+          37,
+          19,
+          8,
+          4,
+          1
+        ],
+        "click": [
+          280,
+          276
+        ],
+        "diameter": 13,
+        "hardness": 0,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 344,
+        "normalizedAlphaSHA256": "c75e400be8fc7c9334522ac87c7f354cd656ab03997ba9a965f6836f1492a2b1",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 38278,
+        "bounds": [
+          343,
+          258,
+          34,
+          35
+        ],
+        "centerColumn": [
+          0,
+          1,
+          2,
+          4,
+          7,
+          13,
+          19,
+          31,
+          46,
+          66,
+          90,
+          118,
+          148,
+          179,
+          207,
+          230,
+          245,
+          250,
+          244,
+          230,
+          207,
+          179,
+          148,
+          118,
+          90,
+          66,
+          46,
+          31,
+          20,
+          13,
+          8,
+          4,
+          2,
+          2,
+          0
+        ],
+        "centerRow": [
+          1,
+          3,
+          4,
+          7,
+          13,
+          20,
+          31,
+          47,
+          67,
+          92,
+          120,
+          152,
+          182,
+          212,
+          235,
+          250,
+          255,
+          250,
+          235,
+          211,
+          182,
+          152,
+          120,
+          91,
+          67,
+          47,
+          32,
+          20,
+          13,
+          8,
+          4,
+          2,
+          1,
+          0
+        ],
+        "click": [
+          360,
+          276
+        ],
+        "diameter": 21,
+        "hardness": 0,
+        "horizontalSymmetryError": 32,
+        "nonzeroPixels": 880,
+        "normalizedAlphaSHA256": "feb8b761633425d155efc0aa72d24c89d35ae5e96f51dda91fbbd53db796ee8a",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      },
+      {
+        "alphaSum": 146464,
+        "bounds": [
+          398,
+          242,
+          67,
+          67
+        ],
+        "centerColumn": [
+          0,
+          0,
+          1,
+          1,
+          3,
+          3,
+          5,
+          6,
+          8,
+          11,
+          14,
+          18,
+          23,
+          29,
+          36,
+          43,
+          53,
+          63,
+          74,
+          87,
+          101,
+          116,
+          132,
+          148,
+          163,
+          180,
+          196,
+          210,
+          223,
+          234,
+          242,
+          250,
+          254,
+          255,
+          254,
+          249,
+          243,
+          234,
+          222,
+          209,
+          196,
+          180,
+          164,
+          148,
+          132,
+          116,
+          101,
+          87,
+          74,
+          63,
+          53,
+          44,
+          35,
+          29,
+          22,
+          18,
+          14,
+          11,
+          9,
+          7,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0,
+          0
+        ],
+        "centerRow": [
+          0,
+          1,
+          1,
+          2,
+          3,
+          3,
+          5,
+          6,
+          9,
+          11,
+          14,
+          18,
+          22,
+          28,
+          35,
+          43,
+          53,
+          63,
+          75,
+          88,
+          101,
+          116,
+          131,
+          148,
+          164,
+          180,
+          195,
+          209,
+          222,
+          233,
+          243,
+          249,
+          254,
+          255,
+          254,
+          250,
+          243,
+          234,
+          223,
+          209,
+          195,
+          180,
+          163,
+          148,
+          132,
+          116,
+          101,
+          88,
+          75,
+          63,
+          52,
+          43,
+          35,
+          29,
+          23,
+          18,
+          14,
+          11,
+          8,
+          6,
+          5,
+          3,
+          3,
+          2,
+          1,
+          0,
+          1
+        ],
+        "click": [
+          432,
+          276
+        ],
+        "diameter": 41,
+        "hardness": 0,
+        "horizontalSymmetryError": 1,
+        "nonzeroPixels": 3359,
+        "normalizedAlphaSHA256": "b655dceaca14f7156522328499bf3c220eee0cae13e53aebc8c8f25377623515",
+        "opaquePixels": 1,
+        "peakAlpha": 255,
+        "verticalSymmetryError": 1
+      }
+    ],
+    "sha256": "9e56ae5dd6e6f295f05489077792c6c05859df68b14a1ccf67600550b6c85e09",
+    "size": [
+      480,
+      320
+    ]
+  },
+  "softGaussianFit": {
+    "gaussianMaxAbsolute": 3,
+    "gaussianSumAbsolute": 2090,
+    "model": "255 * exp(-distanceSquared / (2 * (0.234 * diameter)^2)), rounded to 8 bits.",
+    "nativeSumAbsolute": 67780,
+    "productionAlgorithmChanged": false,
+    "referenceAlphaSHA256": "09968e2ea9c0718b37a9e11aa191f353743c50c648a5054c3646b4604d425502",
+    "rows": [
+      {
+        "center": [
+          49,
+          275
+        ],
+        "currentNativeCentered": {
+          "differing": 20,
+          "maxAbsolute": 34,
+          "nonzero": 9,
+          "sumAbsolute": 280
+        },
+        "diameter": 3,
+        "gaussianDiffering": 8,
+        "gaussianMaxAbsolute": 2,
+        "gaussianSumAbsolute": 12,
+        "sampleCount": 4900
+      },
+      {
+        "center": [
+          124,
+          275
+        ],
+        "currentNativeCentered": {
+          "differing": 97,
+          "maxAbsolute": 33,
+          "nonzero": 37,
+          "sumAbsolute": 1309
+        },
+        "diameter": 7,
+        "gaussianDiffering": 50,
+        "gaussianMaxAbsolute": 2,
+        "gaussianSumAbsolute": 51,
+        "sampleCount": 4900
+      },
+      {
+        "center": [
+          199,
+          275
+        ],
+        "currentNativeCentered": {
+          "differing": 292,
+          "maxAbsolute": 35,
+          "nonzero": 101,
+          "sumAbsolute": 4222
+        },
+        "diameter": 12,
+        "gaussianDiffering": 223,
+        "gaussianMaxAbsolute": 3,
+        "gaussianSumAbsolute": 294,
+        "sampleCount": 4900
+      },
+      {
+        "center": [
+          279,
+          275
+        ],
+        "currentNativeCentered": {
+          "differing": 343,
+          "maxAbsolute": 34,
+          "nonzero": 121,
+          "sumAbsolute": 4721
+        },
+        "diameter": 13,
+        "gaussianDiffering": 119,
+        "gaussianMaxAbsolute": 1,
+        "gaussianSumAbsolute": 119,
+        "sampleCount": 4900
+      },
+      {
+        "center": [
+          359,
+          275
+        ],
+        "currentNativeCentered": {
+          "differing": 879,
+          "maxAbsolute": 34,
+          "nonzero": 325,
+          "sumAbsolute": 11799
+        },
+        "diameter": 21,
+        "gaussianDiffering": 420,
+        "gaussianMaxAbsolute": 2,
+        "gaussianSumAbsolute": 423,
+        "sampleCount": 4900
+      },
+      {
+        "center": [
+          431,
+          275
+        ],
+        "currentNativeCentered": {
+          "differing": 3356,
+          "maxAbsolute": 34,
+          "nonzero": 1245,
+          "sumAbsolute": 45449
+        },
+        "diameter": 41,
+        "gaussianDiffering": 1189,
+        "gaussianMaxAbsolute": 2,
+        "gaussianSumAbsolute": 1191,
+        "sampleCount": 4900
+      }
+    ],
+    "scope": "An in-sample diagnostic centered on the measured peak of each 0% hardness stamp. No subpixel or held-out validation."
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7884,
+  "typedCommands": 271
+}

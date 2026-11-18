@@ -91,6 +91,58 @@ public struct PaintToolRequest: Sendable {
     if !target.isPixels && options.sampleAllLayers { throw CraftError.unsupported("Sample All Layers requires a pixel-layer target.") }
   }
 }
+
+/// Store the Pencil inputs and a portable target. Auto Erase samples the
+/// playback document when the first point is applied.
+public struct RecordedPencilStroke: Codable, Sendable {
+  private enum Target: Codable, Sendable {
+    case pixels(ActionLayerTarget)
+    case layerMask(ActionLayerTarget)
+    case smartFilterMask(ActionLayerTarget)
+    case alpha(ActionChannelTarget)
+  }
+
+  private let target: Target
+  private let points: [StrokePoint]
+  private let brush: Brush
+  private let autoErase: Bool
+
+  init?(recording request: PaintToolRequest, in document: CraftDocument) {
+    switch request.target {
+    case .pixels(let id): target = .pixels(.init(id, in: document))
+    case .layerMask(let id): target = .layerMask(.init(id, in: document))
+    case .smartFilterMask(let id): target = .smartFilterMask(.init(id, in: document))
+    case .channel(.alpha(let id)): target = .alpha(.init(.alpha(id), in: document))
+    case .channel(.quickMask): return nil
+    }
+    points = request.points
+    brush = request.brush
+    autoErase = request.options.autoErase
+  }
+
+  func validate() throws {
+    try BrushPainter.validate(brush, points: points)
+    guard !points.isEmpty else { throw CraftError.invalid("A recorded Pencil stroke needs at least one point.") }
+    if case .alpha(.quickMask) = target {
+      throw CraftError.invalid("A recorded Pencil stroke requires a saved alpha channel.")
+    }
+  }
+
+  func command(in document: CraftDocument) throws -> Command {
+    let destination: PaintTarget
+    switch target {
+    case .pixels(let layer): destination = .pixels(try layer.resolve(in: document))
+    case .layerMask(let layer): destination = .layerMask(try layer.resolve(in: document))
+    case .smartFilterMask(let layer): destination = .smartFilterMask(try layer.resolve(in: document))
+    case .alpha(let channel): destination = .channel(try channel.resolve(in: document))
+    }
+    var options = PaintToolOptions.defaults(for: .pencil)
+    options.autoErase = autoErase
+    let request = PaintToolRequest(tool: .pencil, target: destination, points: points, brush: brush, options: options)
+    return .painting(try PaintingEdit.prepare(request, in: document))
+  }
+}
+
 public struct PaintingSessionResult: Sendable {
   public var tool: PaintTool
   public var mixer: MixerPaint

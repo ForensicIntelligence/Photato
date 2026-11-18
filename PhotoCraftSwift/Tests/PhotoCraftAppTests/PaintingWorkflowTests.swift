@@ -137,4 +137,44 @@ final class PaintingWorkflowTests:XCTestCase {
     XCTAssertEqual(mask.pixel(x:Int(floor(p.x)),y:Int(floor(p.y))).r,0);XCTAssertEqual(result.layers[0].content,d.layers[0].content);XCTAssertEqual(result.layers[0].x,7)
     XCTAssertTrue(try NativeArchive.decode(NativeArchive.encodeChunked(result))==result)
   }
+
+  func testRecordedPencilResolvesMasksAndNamedAlphaInAnotherDocument() throws {
+    func fixture() throws -> (CraftDocument, [PaintTarget]) {
+      var document = try CraftDocument(width:48,height:32)
+      let layer = document.layers[0].id
+      try SmartObjectIO.convert(in:document,selected:[layer]).apply(to:&document)
+      let id = document.layers[0].id
+      let mask = try Surface(width:48,height:32,fill:.white)
+      document.layers[0].mask = mask
+      document.layers[0].smartFilters = .init()
+      document.layers[0].smartFilters!.mask = mask
+      let alpha = AlphaChannel(name:"Selection source",pixels:mask)
+      try Command.channel(.create(alpha)).apply(to:&document)
+      return (document,[.layerMask(id),.smartFilterMask(id),.channel(.alpha(alpha.id))])
+    }
+    let (source,targets) = try fixture()
+    let (destination,destinations) = try fixture()
+    var brush = Brush()
+    brush.color = .black
+    brush.size = 5
+    let points = [StrokePoint(x:13,y:17),StrokePoint(x:28,y:17)]
+    for (target, routed) in zip(targets,destinations) {
+      var session = EditorSession(document:source)
+      try session.startActionRecording(name:"Paint coverage")
+      let request = PaintToolRequest(tool:.pencil,target:target,points:points,brush:brush)
+      try session.execute(.painting(try PaintingPreparation.prepare(request,in:source)))
+      let action = try XCTUnwrap(session.actionRecording?.snapshot)
+      guard case .pencilStroke = try XCTUnwrap(action.steps.first).operation else {
+        return XCTFail("Expected a Pencil stroke for \(target)")
+      }
+      XCTAssertNotEqual(target,routed)
+      let replay = try RecordedActionRenderer.prepare(action,in:destination)
+      var actual = destination
+      try replay.command.apply(to:&actual)
+      let expected = try PaintingPreparation.prepare(
+        .init(tool:.pencil,target:routed,points:points,brush:brush),in:destination).result
+      XCTAssertTrue(actual == expected)
+      XCTAssertFalse(actual == destination)
+    }
+  }
 }

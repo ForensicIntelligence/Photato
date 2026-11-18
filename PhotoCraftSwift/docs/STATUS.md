@@ -1,3 +1,5 @@
+**Source checkpoint 537.** Pencil strokes record and replay in Actions, including Auto Erase on the playback target. All 199 selected methods pass in Debug and both optimized architectures. A 24-dab Photoshop reference quantifies the remaining Brush alpha differences. [Qualification](SOURCE_PUBLICATION_537.md).
+
 **Source checkpoint 536.** Shift-click connects Brush and Pencil strokes. All 178 selected methods pass in Debug and both optimized architectures. Photoshop alpha differs on the test sheet. [Qualification](SOURCE_PUBLICATION_536.md).
 
 **Source checkpoint 535.** The ordinary Brush starts at 10% smoothing. The current desktop and API defaults, explicit zero, Actions, tab transfer and protected tool routing pass 167 selected checks in all three configurations. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_535.md).
