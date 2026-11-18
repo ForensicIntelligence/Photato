@@ -1,0 +1,467 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 1,
+  "applicationBuild": 539,
+  "archiveSHA256": "ffde2f04edcdae896a723f43f0a01ec2e3fa89adf4a6557602a4c69dae60887f",
+  "brushProfileSourceBuild": 538,
+  "checkpoint": 539,
+  "crossArchitectureLinearDifferences": [
+    "grayscale-mask/32 bit/linearRGB/complete",
+    "preserve-alpha/32 bit/linearRGB/complete",
+    "retained-color/32 bit/linearRGB/complete",
+    "retained-color/32 bit/linearRGB/retained",
+    "texture-dual-symmetry/32 bit/linearRGB/complete",
+    "wide-affine/32 bit/linearRGB/complete"
+  ],
+  "fullPhotoshopParity": false,
+  "localProfileSHA256": "8c23d2e3544501a393d91bd05a4527d3408cd3639c014e76a3288f19ef26e396",
+  "outputMatrix": {
+    "casesPerArchitecture": 32,
+    "rows": {
+      "arm64": {
+        "538": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "bca1793b35eab94be48e2a113c3dff5c00790ff0f9d48a3807ff90a3fd294fb3",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "a9576d21633a4713496a16cf2927e189689b557e28b4ba34a54bb9bd0e9e7a84",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "3aaf857bc38bfa6ae1f6203007e30a6bdaf491ae3cef64173d2ee688631ae797",
+          "retained-color/32 bit/linearRGB/retained": "3aaf857bc38bfa6ae1f6203007e30a6bdaf491ae3cef64173d2ee688631ae797",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "ab8c6e106eb7fd1a9b6c8758645ba856fbbf2b670de6fb5a071a1f2fd5d5f129",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "34cc262a2de162ce6f8b447e78b5c3abe1545a2163b40fbce0b00e30ee5b6e6b",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        },
+        "539": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "bca1793b35eab94be48e2a113c3dff5c00790ff0f9d48a3807ff90a3fd294fb3",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "a9576d21633a4713496a16cf2927e189689b557e28b4ba34a54bb9bd0e9e7a84",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "3aaf857bc38bfa6ae1f6203007e30a6bdaf491ae3cef64173d2ee688631ae797",
+          "retained-color/32 bit/linearRGB/retained": "3aaf857bc38bfa6ae1f6203007e30a6bdaf491ae3cef64173d2ee688631ae797",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "ab8c6e106eb7fd1a9b6c8758645ba856fbbf2b670de6fb5a071a1f2fd5d5f129",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "34cc262a2de162ce6f8b447e78b5c3abe1545a2163b40fbce0b00e30ee5b6e6b",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        }
+      },
+      "x86_64": {
+        "538": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        },
+        "539": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        }
+      }
+    },
+    "sameAcrossArchitectureCount": 26,
+    "sameBuildOutputPerArchitecture": true
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "ffde2f04edcdae896a723f43f0a01ec2e3fa89adf4a6557602a4c69dae60887f",
+    "binarySHA256": "4f6a896f3a6ad820eb2bb9a08511ef52823470f7411d77014bca776dcc9fc197",
+    "build": 539,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122076,
+          "height": 650,
+          "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopFixtures": {
+    "configurations": {
+      "arm": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "74c958436cd91fcd0856052dc5469dc1b6ace3392d00713c831f50ce0af4959d"
+      },
+      "debug": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "130ee97b8471e1230a12e760386711d88ea3eabce6dda6fe8b97f99a79cc7970"
+      },
+      "intel": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "a0e9858d4a54aedf5d2abde39146326d488defce9af5a0230277b106e15690d0"
+      }
+    },
+    "independentExportFixtures": 20,
+    "passed": true,
+    "scope": "Owned Photoshop 2026 merged RGBA32 reference fixtures and regional comparison. Full PSD bytes and live Photoshop use are outside this fixture result.",
+    "sourceInputs": 7884
+  },
+  "physicalPresentationMeasured": false,
+  "primaryDiameter": [
+    0.5,
+    5000
+  ],
+  "qualifiedConfigurations": {
+    "arm": 205,
+    "debug": 205,
+    "intel": 205
+  },
+  "qualifiedCountPerConfiguration": 205,
+  "renderBenchmark": {
+    "byteEquality": true,
+    "cases": {
+      "color-dynamics": {
+        "arm64": {
+          "538": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 1985.27833330445,
+            "nonzeroPixels": 19642833,
+            "renderMilliseconds": [
+              1985.27833330445,
+              2006.192458444275,
+              1965.336999972351
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "color-dynamics",
+            "sha256": "8ed844ef5f1f6b1d5dc5d67574e0e8a7d98579aa88e63d2a70b7f381ec993064",
+            "storedTiles": 4948
+          },
+          "539": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 519.5106666069478,
+            "nonzeroPixels": 19642833,
+            "renderMilliseconds": [
+              515.8851249143481,
+              519.5106666069478,
+              521.2347083725035
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "color-dynamics",
+            "sha256": "8ed844ef5f1f6b1d5dc5d67574e0e8a7d98579aa88e63d2a70b7f381ec993064",
+            "storedTiles": 4948
+          },
+          "medianReduction": 0.7383184725830185
+        },
+        "x86_64": {
+          "538": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 3607.5375420041382,
+            "nonzeroPixels": 19642833,
+            "renderMilliseconds": [
+              3613.67566708941,
+              3607.5375420041382,
+              3604.485750081949
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "color-dynamics",
+            "sha256": "8ed844ef5f1f6b1d5dc5d67574e0e8a7d98579aa88e63d2a70b7f381ec993064",
+            "storedTiles": 4948
+          },
+          "539": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 898.7290411023423,
+            "nonzeroPixels": 19642833,
+            "renderMilliseconds": [
+              929.9852499971166,
+              898.7290411023423,
+              893.2443329831585
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "color-dynamics",
+            "sha256": "8ed844ef5f1f6b1d5dc5d67574e0e8a7d98579aa88e63d2a70b7f381ec993064",
+            "storedTiles": 4948
+          },
+          "medianReduction": 0.7508746532397662
+        }
+      },
+      "soft": {
+        "arm64": {
+          "538": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 2812.021041638218,
+            "nonzeroPixels": 29246464,
+            "renderMilliseconds": [
+              2813.948875060305,
+              2812.021041638218,
+              2801.6414999729022
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "soft",
+            "sha256": "e3b3ee69748925fd51a9044c48abcf81998eb430d853ce1af4be3b0995aeaf75",
+            "storedTiles": 4944
+          },
+          "539": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 536.2309166230261,
+            "nonzeroPixels": 29246464,
+            "renderMilliseconds": [
+              536.2309166230261,
+              551.6081666573882,
+              529.0639584418386
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "soft",
+            "sha256": "e3b3ee69748925fd51a9044c48abcf81998eb430d853ce1af4be3b0995aeaf75",
+            "storedTiles": 4944
+          },
+          "medianReduction": 0.8093076443302036
+        },
+        "x86_64": {
+          "538": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 5993.129457929172,
+            "nonzeroPixels": 29246464,
+            "renderMilliseconds": [
+              6025.776749942452,
+              5933.090667007491,
+              5993.129457929172
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "soft",
+            "sha256": "e3b3ee69748925fd51a9044c48abcf81998eb430d853ce1af4be3b0995aeaf75",
+            "storedTiles": 4944
+          },
+          "539": {
+            "canvasSide": 5408,
+            "diameter": 5000,
+            "medianMilliseconds": 937.1377499774098,
+            "nonzeroPixels": 29246464,
+            "renderMilliseconds": [
+              937.1377499774098,
+              948.2066249474883,
+              924.5055420324206
+            ],
+            "rgbaBytes": 116985856,
+            "scenario": "soft",
+            "sha256": "e3b3ee69748925fd51a9044c48abcf81998eb430d853ce1af4be3b0995aeaf75",
+            "storedTiles": 4944
+          },
+          "medianReduction": 0.8436313187365683
+        }
+      }
+    },
+    "physicalPresentationMeasured": false,
+    "scope": "Optimized 5,000 px Brush on the same host. Three in-process measurements after a discarded warmup per build, architecture and scenario. Includes native render work only. Full output hashed after the last trial."
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7884,
+  "typedCommands": 271,
+  "unchangedSmallDabCases": 24
+}

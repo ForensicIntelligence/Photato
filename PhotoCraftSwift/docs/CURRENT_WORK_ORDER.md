@@ -1,3 +1,7 @@
+**Source checkpoint 539.** Large Brush coverage and output use tile-local writes. The 5,000 px color-dynamics test used 74% less render time on Apple Silicon. All 205 selected methods pass in Debug and both optimized architectures. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_539.md).
+
+Q03 still needs hosted large-tip input and display timing. B01 continues with independent subpixel samples, timed smoothing, factory presets and live tool limits.
+
 **Source checkpoint 538.** The primary Brush diameter reaches 5,000 px. All 204 selected methods pass in Debug and both optimized architectures. Wide-tip responsiveness and exact Photoshop alpha remain open. [Qualification](SOURCE_PUBLICATION_538.md).
 
 B01 continues with subpixel and independent soft-tip samples, timed smoothing and preset limits. Verify current Photoshop Brush and Pencil controls when the desktop is accessible. Q03 retains wide-tip responsiveness, physical presentation and stylus timing.

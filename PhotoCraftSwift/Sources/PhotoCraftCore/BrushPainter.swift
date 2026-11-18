@@ -5,6 +5,33 @@ fileprivate final class BrushCoverageTile {
   var colors:[SIMD4<Float>]
   func copied() -> BrushCoverageTile { let copy = BrushCoverageTile(color: !colors.isEmpty); copy.coverage = coverage; copy.colors = colors; return copy }
   init(color:Bool) { colors=color ? [SIMD4<Float>](repeating:.zero,count:4096):[] }
+
+  func accumulate(_ weights: UnsafeMutableBufferPointer<Float>, x: Range<Int>, y: Range<Int>,
+    ceiling: Float, maximum: Bool, ink: SIMD4<Float>) -> Bool {
+    func update(_ values: UnsafeMutableBufferPointer<Float>, _ colors: UnsafeMutableBufferPointer<SIMD4<Float>>?) -> Bool {
+      var changed = false
+      for row in y {
+        for column in x {
+          let i = row * 64 + column, weight = weights[i]
+          guard weight > 0 else { continue }
+          let old = values[i]
+          let next = maximum ? max(old,weight*ceiling) : max(old,old+weight*(ceiling-old))
+          guard next > old else { continue }
+          if let colors {
+            let k = old < 1 ? (next-old)/(1-old) : 0
+            colors[i] = ink*k + colors[i]*(1-k)
+          }
+          values[i] = next
+          changed = true
+        }
+      }
+      return changed
+    }
+    if colors.isEmpty { return coverage.withUnsafeMutableBufferPointer { update($0,nil) } }
+    return coverage.withUnsafeMutableBufferPointer { values in
+      colors.withUnsafeMutableBufferPointer { update(values,$0) }
+    }
+  }
 }
 fileprivate struct BrushCoverage {
   var tiles:[Int:BrushCoverageTile]=[:]
@@ -21,20 +48,27 @@ fileprivate struct BrushCoverage {
   let color:Bool
   var bytes:Int { tiles.count*4096*(color ? 20:4) }
   func location(_ x:Int,_ y:Int)->(Int,Int) { ((y/64)*columns+x/64,(y%64)*64+x%64) }
-  mutating func accumulate(_ x:Int,_ y:Int,value:Float,ceiling:Float,maximum:Bool,ink:Pixel)throws {
-    guard value>0 else { return };let (key,index)=location(x,y)
-    let tile:BrushCoverageTile
-    if let found=writable(key) { tile=found } else { guard bytes+4096*(color ? 20:4)<=128*1024*1024 else { throw CraftError.invalid("Brush stroke coverage exceeds128MiB.") };tile=BrushCoverageTile(color:color);tiles[key]=tile }
-    let old=tile.coverage[index],next=maximum ? max(old,value*ceiling):max(old,old+value*(ceiling-old))
-    guard next>old else { return }
-    if color { let k=old<1 ? (next-old)/(1-old):0;let c=SIMD4(ink.r,ink.g,ink.b,ink.a);tile.colors[index]=c*k+tile.colors[index]*(1-k) }
-    tile.coverage[index]=next; if trackDirty { dirty.insert(key) }
+  mutating func accumulatingTile(_ key: Int) throws -> BrushCoverageTile {
+    if let found = writable(key) { return found }
+    try admitTile()
+    let tile = BrushCoverageTile(color:color)
+    tiles[key] = tile
+    return tile
+  }
+  private func admitTile() throws {
+    guard bytes+4096*(color ? 20:4)<=128*1024*1024 else {
+      throw CraftError.invalid("Brush stroke coverage exceeds128MiB.")
+    }
   }
   func value(_ x:Int,_ y:Int)->Float { let (key,index)=location(x,y);return tiles[key]?.coverage[index] ?? 0 }
   mutating func union(_ other:Self)throws {
     for (key,source) in other.tiles {
-      let target:BrushCoverageTile
-      if let found=tiles[key] { target=found } else { guard bytes+4096*(color ? 20:4)<=128*1024*1024 else { throw CraftError.invalid("Brush stroke coverage exceeds128MiB.") };target=BrushCoverageTile(color:color);tiles[key]=target }
+      // The complete painter relinquishes each pass after merging it.
+      guard let target=tiles[key] else {
+        try admitTile()
+        tiles[key] = source
+        continue
+      }
       for i in 0..<4096 where source.coverage[i]>target.coverage[i] { target.coverage[i]=source.coverage[i];if color { target.colors[i]=source.colors[i] } }
     }
   }
@@ -169,24 +203,45 @@ public enum BrushPainter {
     let b = brush.settings!
     let bitmap = isDual ? b.dual.tip : b.tip
     let hardness = isDual ? b.dual.hardness : Double(brush.hardness)
-    for (index,dab) in dabs.enumerated() {
-      if index % 32 == 0 { try Task.checkCancellation() }
-      guard let rect = rasterBounds(dab,bitmap:bitmap,transform:toLocal,extent:extent) else { continue }
-      let area = rect.width * rect.height
-      guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
-      visits += area
-      for y in rect.y..<(rect.y+rect.height) {
-        if y % 32 == 0 { try Task.checkCancellation() }
-        for x in rect.x..<(rect.x+rect.width) {
-          let p = toOriginal.point(Double(x)+0.5,Double(y)+0.5), doc = transform.point(Double(x)+0.5,Double(y)+0.5)
-          var (value,rn) = tipCoverage(dab,p,bitmap:bitmap,hardness:hardness,aliased:b.aliased && !isDual)
-          guard value > 0 else { continue }
-          if !isDual {
-            if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
-            if b.texture.enabled && b.texture.eachTip { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
-            if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
+    let aliased = b.aliased && !isDual, maximum = b.wetEdges && !isDual
+    try withUnsafeTemporaryAllocation(of: Float.self, capacity: 4096) { weights in
+      weights.initialize(repeating: 0)
+      for (index,dab) in dabs.enumerated() {
+        if index % 32 == 0 { try Task.checkCancellation() }
+        guard let rect = rasterBounds(dab,bitmap:bitmap,transform:toLocal,extent:extent) else { continue }
+        let area = rect.width * rect.height
+        guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
+        visits += area
+        let right = rect.x + rect.width, bottom = rect.y + rect.height
+        let ink = SIMD4(dab.color.r,dab.color.g,dab.color.b,dab.color.a), ceiling = Float(dab.opacity)
+        for row in rect.y/64...(bottom-1)/64 {
+          let ty = row*64, yRange = (max(rect.y,ty)-ty)..<(min(bottom,ty+64)-ty)
+          for column in rect.x/64...(right-1)/64 {
+            try Task.checkCancellation()
+            let tx = column*64, xRange = (max(rect.x,tx)-tx)..<(min(right,tx+64)-tx)
+            var hasCoverage = false
+            for ly in yRange {
+              for lx in xRange {
+                let x = Double(tx+lx)+0.5, y = Double(ty+ly)+0.5
+                let p = toOriginal.point(x,y)
+                var (value,rn) = tipCoverage(dab,p,bitmap:bitmap,hardness:hardness,aliased:aliased)
+                if value > 0 && !isDual {
+                  let doc = transform.point(x,y)
+                  if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
+                  if b.texture.enabled && b.texture.eachTip { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
+                  if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
+                }
+                let weight = Float(value*dab.flow)
+                weights[ly*64+lx] = weight
+                hasCoverage = hasCoverage || weight > 0
+              }
+            }
+            guard hasCoverage else { continue }
+            let key = row*map.columns + column
+            let tile = try map.accumulatingTile(key)
+            let changed = tile.accumulate(weights,x:xRange,y:yRange,ceiling:ceiling,maximum:maximum,ink:ink)
+            if changed && map.trackDirty { map.dirty.insert(key) }
           }
-          try map.accumulate(x,y,value:Float(value*dab.flow),ceiling:Float(dab.opacity),maximum:b.wetEdges && !isDual,ink:dab.color)
         }
       }
     }
@@ -211,41 +266,44 @@ public enum BrushPainter {
     }
     // Publish only after every band has completed successfully.
     var result = surface, visits = 0
+    let textureAfterDabs = b.texture.enabled && !b.texture.eachTip
     for region in regions {
       var merged = BrushCoverage(columns:columns,color:b.colorDynamics.enabled)
       for (toLocal,toOriginal) in passes {
         var primary=BrushCoverage(columns:columns,color:b.colorDynamics.enabled),dual=BrushCoverage(columns:columns,color:false)
         try raster(dabs.0,isDual:false,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,extent:region,map:&primary,visits:&visits)
         if b.dual.enabled { try raster(dabs.1,isDual:true,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,extent:region,map:&dual,visits:&visits) }
-        for (key,tile) in primary.tiles {
-          let tx=(key%columns)*64,ty=(key/columns)*64
-          for i in 0..<4096 where tile.coverage[i]>0 {
-            let x=tx+i%64,y=ty+i/64;let old=tile.coverage[i];var value=Double(old)
-            if b.dual.enabled { value=b.dual.mode.combine(value,Double(dual.value(x,y)),1) }
-            if b.texture.enabled && !b.texture.eachTip { let doc=transform.point(Double(x)+0.5,Double(y)+0.5);value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),b.texture.depth) }
-            tile.coverage[i]=Float(value);if b.colorDynamics.enabled { tile.colors[i] *= Float(value)/old }
+        if b.dual.enabled || textureAfterDabs {
+          for (key,tile) in primary.tiles {
+            let tx=(key%columns)*64,ty=(key/columns)*64
+            for i in 0..<4096 where tile.coverage[i]>0 {
+              let x=tx+i%64,y=ty+i/64;let old=tile.coverage[i];var value=Double(old)
+              if b.dual.enabled { value=b.dual.mode.combine(value,Double(dual.value(x,y)),1) }
+              if textureAfterDabs { let doc=transform.point(Double(x)+0.5,Double(y)+0.5);value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),b.texture.depth) }
+              tile.coverage[i]=Float(value);if b.colorDynamics.enabled { tile.colors[i] *= Float(value)/old }
+            }
           }
         }
         try merged.union(primary)
       }
       for key in merged.tiles.keys.sorted() {
-        try Task.checkCancellation();let tile=merged.tiles[key]!,tx=(key%columns)*64,ty=(key/columns)*64
-        for i in 0..<4096 where tile.coverage[i]>0 {
-          let x=tx+i%64,y=ty+i/64;guard x<surface.width,y<surface.height else { continue }
+        try Task.checkCancellation()
+        let tile = merged.tiles[key]!
+        let colors = tile.colors
+        result.updateBrushTile(key,coverage:tile.coverage) { x,y,i,weight,base in
           let doc=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(doc.x)),dy=Int(floor(doc.y))
-          if let selection,!selection.contains(dx,dy) { continue }
+          if let selection,!selection.contains(dx,dy) { return nil }
           let mask=selectionMask?.coverage(x:dx,y:dy) ?? 1
           var ink=brush.color
-          if b.colorDynamics.enabled { let c=tile.colors[i]/tile.coverage[i];ink=Pixel(c.x,c.y,c.z,c.w) }
-          let alpha=unit(tile.coverage[i]*brush.opacity*ink.a*mask);guard alpha>0 else { continue }
-          var before=surface.pixel(x:x,y:y)
+          if b.colorDynamics.enabled { let c=colors[i]/weight;ink=Pixel(c.x,c.y,c.z,c.w) }
+          let alpha=unit(weight*brush.opacity*ink.a*mask);guard alpha>0 else { return nil }
+          var before=base
           if grayscaleMask { before=Pixel(before.r,before.r,before.r);let gray=unit(ink.r*0.2126+ink.g*0.7152+ink.b*0.0722);ink=Pixel(gray,gray,gray,ink.a) }
-          if preserveTransparency && !grayscaleMask && before.a<=0 { continue }
-          if brush.erase && !preserveTransparency && !grayscaleMask { result.setPixel(x:x,y:y,Pixel(before.r,before.g,before.b,before.a*(1-alpha)));continue }
+          if preserveTransparency && !grayscaleMask && before.a<=0 { return nil }
+          if brush.erase && !preserveTransparency && !grayscaleMask { return Pixel(before.r,before.g,before.b,before.a*(1-alpha)) }
           if brush.erase { ink=brush.backgroundColor ?? .white }
           ink.a=alpha
-          let painted=preserveTransparency && !grayscaleMask ? ProtectedPixels.composite(b.mode,backdrop:before,source:ink,x:dx,y:dy):b.mode.composite(backdrop:before,source:ink,x:dx,y:dy)
-          result.setPixel(x:x,y:y,painted)
+          return preserveTransparency && !grayscaleMask ? ProtectedPixels.composite(b.mode,backdrop:before,source:ink,x:dx,y:dy):b.mode.composite(backdrop:before,source:ink,x:dx,y:dy)
         }
       }
     }

@@ -310,18 +310,57 @@ public struct Surface: Codable, Equatable, Sendable {
       return
     }
     let old = storedPixel(x: x, y: y)
-    let view = encodedSample(old)
-    let value = p.quantized(depth)
+    let stored = Self.linearStoredReplacement(p, old:old, encoded:encodedSample(old))
+    if !old.hasSameBits(as: stored) { setStoredPixel(x: x, y: y, stored) }
+  }
+  private static func linearStoredReplacement(_ p: Pixel, old: Pixel, encoded: Pixel) -> Pixel {
+    let value = p.quantized(.f32)
     // Retain untouched components, including hidden RGB and signed zeros.
     // An encoded view cannot reconstruct every original Float32 linear sample.
     func changed(_ next: Float, _ prior: Float, _ stored: Float) -> Float {
       next.bitPattern == prior.bitPattern
         ? stored : PixelDepth.f32.quantize(SRGBTransfer.linear(next))
     }
-    let stored = Pixel(
-      changed(value.r, view.r, old.r), changed(value.g, view.g, old.g),
-      changed(value.b, view.b, old.b), p.a.bitPattern == view.a.bitPattern ? old.a : value.a)
-    if !old.hasSameBits(as: stored) { setStoredPixel(x: x, y: y, stored) }
+    return Pixel(
+      changed(value.r, encoded.r, old.r), changed(value.g, encoded.g, old.g),
+      changed(value.b, encoded.b, old.b), p.a.bitPattern == encoded.a.bitPattern ? old.a : value.a)
+  }
+  /// Composite one already-admitted brush tile. The transform sees the same
+  /// encoded samples as setPixel. Untouched pixels and tile padding retain their bits.
+  mutating func updateBrushTile(_ key: Int, coverage: [Float],
+    _ transform: (Int, Int, Int, Float, Pixel) -> Pixel?) {
+    let side = Self.tileSide
+    let left = key % columns * side, top = key / columns * side
+    let tileWidth = min(side,width-left), tileHeight = min(side,height-top)
+    let source = tiles[key], fallback = storedDefaultPixel
+    let linear = colorEncoding == .linearRGB, depth = self.depth
+    var invalidatesOpacity = false
+    func makeReplacement(_ input: UnsafeBufferPointer<Pixel>?) -> [Pixel]? {
+      var output: [Pixel]?
+      for y in 0..<tileHeight {
+        for x in 0..<tileWidth {
+          let index = y*side + x
+          let weight = coverage[index]
+          guard weight > 0 else { continue }
+          let old = input?[index] ?? fallback
+          let encoded = linear ? SRGBTransfer.encoded(old) : old
+          guard let edited = transform(left+x,top+y,index,weight,encoded) else { continue }
+          let stored = linear ? Self.linearStoredReplacement(edited,old:old,encoded:encoded) : edited.quantized(depth)
+          if linear && stored.hasSameBits(as:old) { continue }
+          if output == nil { output = input.map { Array($0) } ?? Array(repeating:fallback,count:side*side) }
+          output![index] = stored
+          if stored.a != 1 { invalidatesOpacity = true }
+        }
+      }
+      return output
+    }
+    let samples: [Pixel]?
+    if let source { samples = source.withUnsafeBufferPointer { makeReplacement($0) } }
+    else { samples = makeReplacement(nil) }
+    if let samples {
+      tiles[key] = RasterTile(samples)
+      if invalidatesOpacity { opaqueProof = SurfaceOpaqueProof() }
+    }
   }
   public mutating func setLinearPixel(x: Int, y: Int, _ p: Pixel) {
     guard x >= 0, y >= 0, x < width, y < height else { return }

@@ -1,3 +1,5 @@
+**Source checkpoint 539.** Large Brush coverage and output use tile-local writes. The 5,000 px color-dynamics test used 74% less render time on Apple Silicon. All 205 selected methods pass in Debug and both optimized architectures. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_539.md).
+
 **Source checkpoint 538.** The primary Brush diameter reaches 5,000 px. All 204 selected methods pass in Debug and both optimized architectures. Wide-tip responsiveness and exact Photoshop alpha remain open. [Qualification](docs/SOURCE_PUBLICATION_538.md).
 
 **Source checkpoint 537.** Pencil strokes record and replay in Actions, including Auto Erase on the playback target. All 199 selected methods pass in Debug and both optimized architectures. A 24-dab Photoshop reference quantifies the remaining Brush alpha differences. [Qualification](docs/SOURCE_PUBLICATION_537.md).
