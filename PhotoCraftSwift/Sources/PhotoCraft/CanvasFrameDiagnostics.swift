@@ -55,11 +55,11 @@ import QuartzCore
   init(directory: URL, limit: Int = 20_000, clock: @escaping () -> TimeInterval = { ProcessInfo.processInfo.systemUptime }) {
     self.directory = directory; self.limit = max(1, limit); self.clock = clock
   }
-  func begin(tool: String, eventTimestamp: TimeInterval? = nil) {
+  func begin(tool: String, eventTimestamp: TimeInterval? = nil, samples: Int = 1) {
     if stroke != nil { _ = flush() }
     stroke = UUID(); self.tool = tool; outcome = "active"; active = true
     events.removeAll(keepingCapacity: true); droppedEvents = 0; latestPrepared = nil
-    input(samples: 1, eventTimestamp: eventTimestamp)
+    input(samples: samples, eventTimestamp: eventTimestamp)
   }
   private func record(_ event: Event) {
     guard stroke != nil else { return }

@@ -1,3 +1,7 @@
+**Source checkpoint 536.** Shift-click connects Brush and Pencil strokes. All 178 selected methods pass in Debug and both optimized architectures. Photoshop alpha differs on the test sheet. [Qualification](SOURCE_PUBLICATION_536.md).
+
+B01 continues with independent Brush coverage across diameters and subpixel positions, then timed smoothing and factory presets. Pencil Action playback is open. Q03 retains publication latency, stylus timing and physical display checks.
+
 **Source checkpoint 535.** The ordinary Brush starts at 10% smoothing. The current desktop and API defaults, explicit zero, Actions, tab transfer and protected tool routing pass 167 selected checks in all three configurations. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_535.md).
 
 B01 still needs independent Photoshop Brush geometry and smoothing comparisons, plus factory preset and stylus validation. Q03 retains the measured first-frame publication delay, continuous input timing and physical presentation checks.

@@ -16,6 +16,7 @@ struct CanvasHost: NSViewRepresentable {
   func makeNSView(context: Context) -> CraftCanvas { CraftCanvas(store: store) }
   func updateNSView(_ view: CraftCanvas, context: Context) {
     _ = store.eraserMode; _ = store.brushGesture?.eraserMode
+    _ = store.brushStrokeEndpoint; _ = store.geometryBusy
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.selectionBorderDrag
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
@@ -155,6 +156,10 @@ struct CanvasHost: NSViewRepresentable {
     }
     if let adjustment = store.brushGesture?.adjustment {
       return .symbol("paintbrush.pointed",adjustment.subtract ? .subtract:.add)
+    }
+    if store.brushGesture?.connectsToPrevious == true ||
+      (!cursorPointerDown && ToolCursor.connectsBrushStroke(flags) && store.canConnectBrushStroke) {
+      return .symbol(store.tool == .pencil ? "pencil.tip" : "paintbrush.pointed", .constrain)
     }
     if let draft = store.cloneDraft {
       if let toning = draft.toning, toning != .sponge { return .symbol(toning == .burn ? "flame":"sun.max") }
@@ -822,7 +827,11 @@ struct CanvasHost: NSViewRepresentable {
     if store.tool == .move,!store.editingMask,!store.editingComponent,store.document.selection==nil,store.beginWholeLayerMove(modifiers:event.modifierFlags){transformStart=store.transformDraft;transformHandle = -1;needsDisplay=true;return}
     if store.tool.usesPaintingStroke {
       brushStartTime=event.timestamp
-      let point=brushSample(event);samples=[point];store.beginBrush(point,zoom:viewport.resolvedZoom,alternate:event.modifierFlags.contains(.option),selectionMode:store.selectionToolMode(modifiers:event.modifierFlags),eventTimestamp:event.timestamp)
+      let point = brushSample(event)
+      store.beginBrush(point,zoom:viewport.resolvedZoom,alternate:event.modifierFlags.contains(.option),
+        selectionMode:store.selectionToolMode(modifiers:event.modifierFlags),eventTimestamp:event.timestamp,
+        connectToPrevious:ToolCursor.connectsBrushStroke(event.modifierFlags))
+      samples = store.brushGesture?.points ?? [point]
       if store.brushGesture != nil { drawingEvents.begin(); synchronizeFrameProbe() }
       synchronizeBrushClock()
     }

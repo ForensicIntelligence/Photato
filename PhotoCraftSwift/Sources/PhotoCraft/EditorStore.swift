@@ -173,6 +173,7 @@ struct CanvasRenderRequest: Sendable {
   var eraserMode: EraserMode = .brush { didSet { if oldValue != eraserMode { brushRevision += 1 } } }
   var brushTextureLoading = false
   var brushGesture: BrushGesture?
+  var brushStrokeEndpoint: BrushStrokeEndpoint?
   @ObservationIgnored var brushPreviewTask: Task<Void,Never>?
   @ObservationIgnored var brushPreviewGeneration = UUID()
   @ObservationIgnored var brushPreviewFrameInterval = 1.0 / 60

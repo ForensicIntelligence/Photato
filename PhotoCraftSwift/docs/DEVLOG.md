@@ -554,7 +554,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 533 | 2026-11-17 | [Start the first Brush frame sooner](#dev-step-533) |
 | 534 | 2026-11-17 | [Start the background worker with Brush input](#dev-step-534) |
 | 535 | 2026-11-17 | [Match the ordinary Brush smoothing default](#dev-step-535) |
+| 536 | 2026-11-17 | [Connect Brush and Pencil strokes with Shift-click](#dev-step-536) |
 <!-- history-index:end -->
+
+<a id="dev-step-536"></a>
+
+## 2026-11-17 — Connect Brush and Pencil strokes with Shift-click
+
+The installed Photoshop 2026 Brush painted a white test sheet on a disposable 256 × 256 transparent RGB8 document at 100% zoom. The test used a 13 px round tip, Normal mode, 100% opacity and flow, soft and hard dabs, and Shift-click horizontal paths at 0% and 10% smoothing. Photoshop saved a lossless RGBA PNG. An independent PNG reader checked chunk CRCs and reconstructed all filter rows. The two isolated hard dabs have exactly the same 15 × 15 alpha crop. Each straight path is 175 × 15 with 2,586 nonzero samples. The two paths differed in 289 alpha samples, by at most two levels. One soft dab landed at a different location while the preset picker dismissed. Hardness initially reverted when Escape closed the picker, so the two verified soft dabs were identified separately. Return committed 100% hardness for the hard samples. After saving, 10% smoothing and 0% hardness were submitted. Photoshop exited before restoration could be confirmed. The reference PNG and raw evidence were retained locally. [Adobe Brush and Pencil workflow](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/paint-with-brush-or-pencil-tool.html).
+
+Photato previously treated Shift-click as an ordinary paint start. BrushEditing.swift now remembers the last successful Brush or Pencil endpoint on a compatible raster layer or its ordinary mask. A Shift-click begins with that endpoint and adds the clicked point using the current brush settings. The gesture captures the connection mode at press. It uses the existing renderer and history path, so the new link forms one Undo entry and Brush Actions retain its samples. Cancelling preserves the last successful endpoint. A different document revision or raster target prevents reuse. CanvasView.swift sends the modifier and refreshes the constraint cursor. CanvasFrameDiagnostics.swift counts the added starting point in the first sample batch. ToolCursor.swift, ToolCursorAPI.swift and AutomationBrushes.swift describe the same operation. Automation clients send explicit points with paint.stroke for Brush and paint.tool for Pencil. Native BrushWorkflowTests.swift covers the mouse gesture, cursor, API replay, Brush Action replay, Undo, cancelled and changed target cases, and all sixteen modifier combinations.
+
+The first Debug run passed 170 of 171 methods. Starting Action recording advanced the session generation even though the document and target were unchanged, which made the saved endpoint unavailable. ActionLibrary.swift now preserves that endpoint across starting and stopping a recording, while Undo still invalidates it. The first run also exercised the existing unsupported Pencil Action playback path. Pencil replay is checked through the explicit API, with Pencil Actions still open. The two unfinished optimized jobs from the first attempt were stopped and their logs and inputs were retained.
+
+All 171 focused and seven retained compositing checks pass in Debug, optimized Apple Silicon and Intel under Rosetta. Both executable slices from the validation ZIP pass the offscreen workspace check. A separately linked render of the nominal Photoshop inputs produces byte-identical native alpha on both architectures and on builds 535 and 536. Photoshop differs from the native result at 347 samples for the soft dab, 98 for each hard dab and 740 for each straight path. This is a geometric reference, with exact device input and timed freehand smoothing still open. [Qualification](SOURCE_PUBLICATION_536.md).
 
 <a id="dev-step-535"></a>
 

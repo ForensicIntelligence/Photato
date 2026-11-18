@@ -51,6 +51,13 @@
     "selected_menu_methods_each_architecture": 9,
     "test_report_routing_only": true
   },
+  "brush_straight_stroke_536": {
+    "cursor": "For an eligible Brush or Pencil endpoint, Shift displays the constraint badge and mouse-down captures it until the stroke ends. Option takes precedence.",
+    "modifiers_checked": 16,
+    "physical_pointer_checked": false,
+    "reference": "docs/BRUSH_REFERENCE_536.json",
+    "step": 536
+  },
   "auxiliary_paint_colors_373": {
     "API": "brush.colors and paintColorStateSchema; canonical brush background;239 commands/native85/Actions44 unchanged; no Adobe route.",
     "reference": "docs/AUXILIARY_PAINT_COLORS_373.json",

@@ -6,6 +6,101 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class BrushWorkflowTests:XCTestCase {
+  @MainActor func testShiftClickConnectsBrushAndPencilWithOneUndo() async throws {
+    for tool in [EditorTool.brush, .pencil] {
+      let original = try CraftDocument(width: 128,height: 96)
+      let store = EditorStore(document:original,actions:ActionLibrary(),brushes:BrushLibrary())
+      defer { store.cancelBrush(); store.renderTask?.cancel() }
+      store.tool = tool; store.brush.size = 8; store.brush.color = .black
+      store.brushOptions.smoothing.amount = 0
+      let canvas = CraftCanvas(store:store); canvas.frame = NSRect(x:0,y:0,width:320,height:240)
+      store.updateViewport(size: canvas.bounds.size, backingScale: 1)
+      store.setZoom(1,center:true); await store.renderTask?.value
+      func event(_ type:NSEvent.EventType, x:Double, time:Double, flags:NSEvent.ModifierFlags=[]) throws -> NSEvent {
+        let p = canvas.convert(canvas.viewPoint(CGPoint(x:x,y:48)),to:nil)
+        return try XCTUnwrap(NSEvent.mouseEvent(with:type,location:p,modifierFlags:flags,timestamp:time,
+          windowNumber:0,context:nil,eventNumber:0,clickCount:1,pressure:1))
+      }
+      canvas.mouseDown(with:try event(.leftMouseDown,x:24,time:1))
+      canvas.mouseUp(with:try event(.leftMouseUp,x:24,time:1.01))
+      await store.geometryTask?.value; await store.renderTask?.value
+      let first = store.document
+      XCTAssertTrue(store.canConnectBrushStroke)
+      XCTAssertEqual(store.session.undoStack.count,1)
+
+      if tool == .brush { try store.startRecordingAction(name:"Connect",set:"Test") }
+      canvas.updateCursorModifiers(.shift)
+      let cursor = ToolCursor.symbol(tool == .brush ? "paintbrush.pointed" : "pencil.tip", .constrain)
+      XCTAssertEqual(canvas.toolCursor,cursor)
+      canvas.mouseDown(with:try event(.leftMouseDown,x:104,time:2,flags:[.shift]))
+      let gesture = try XCTUnwrap(store.brushGesture)
+      XCTAssertTrue(gesture.connectsToPrevious)
+      XCTAssertEqual(gesture.points.map(\.x),[24,104])
+      canvas.updateCursorModifiers([])
+      XCTAssertEqual(canvas.toolCursor,cursor)
+      canvas.mouseUp(with:try event(.leftMouseUp,x:104,time:2.01))
+      await store.geometryTask?.value; await store.renderTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.session.undoStack.count,2)
+      let final = store.document
+      XCTAssertEqual(try Renderer.composite(final).pixel(x:64,y:48),.black)
+      if tool == .brush {
+        let action = try store.stopRecordingAction()
+        XCTAssertTrue(store.canConnectBrushStroke)
+        var replay = first; try action.apply(to:&replay)
+        XCTAssertTrue(replay == final,"Brush Action replay must reproduce the connected stroke")
+      }
+      let helper = AutomationTests()
+      try await helper.withService(brushes:BrushLibrary(),pressedMouseButtons:{0}) { service,file in
+        file.store.session = EditorSession(document:first)
+        try service.share(file)
+        var parameters = ["points":BrushAPI.json(gesture.points),"brush":BrushAPI.json(gesture.brush)]
+        if let request = gesture.paintingRequest {
+          parameters["tool"] = request.tool.rawValue
+          parameters["options"] = ["autoErase":request.options.autoErase]
+        }
+        let command = tool == .brush ? "paint.stroke" : "paint.tool"
+        let status = try await helper.edit(service,file,command,parameters)
+        XCTAssertEqual(status,200)
+        XCTAssertTrue(file.store.document == final,"Explicit API samples must reproduce the connected stroke")
+        XCTAssertEqual(file.store.session.undoStack.count,1)
+      }
+      await store.undo(); await store.renderTask?.value
+      XCTAssertEqual(store.document,first)
+      XCTAssertFalse(store.canConnectBrushStroke)
+    }
+  }
+
+  @MainActor func testBrushConnectionRejectsWrongTargetsAndCancelledEndpoints() async throws {
+    var document = try CraftDocument(width:128,height:96)
+    document.layers[0].mask = try Surface(width:128,height:96,fill:.white)
+    let store = EditorStore(document:document,brushes:BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush; store.brush.color = .black
+    store.beginBrush(.init(x:20,y:40),zoom:1)
+    store.finishBrush(); await store.geometryTask?.value
+    XCTAssertTrue(store.canConnectBrushStroke)
+    store.beginBrush(.init(x:45,y:40),zoom:1)
+    store.cancelBrush(); await store.renderTask?.value
+    store.maskEditingLayerID = document.layers[0].id
+    XCTAssertFalse(store.canConnectBrushStroke)
+    store.beginBrush(.init(x:80,y:40),zoom:1,connectToPrevious:true)
+    XCTAssertEqual(store.brushGesture?.points.map(\.x),[80]); store.cancelBrush()
+    store.maskEditingLayerID = nil
+    store.beginBrush(.init(x:90,y:40),zoom:1,connectToPrevious:true)
+    XCTAssertEqual(store.brushGesture?.points.map(\.x),[20,90]); store.cancelBrush()
+    store.session = EditorSession(document:try CraftDocument(width:128,height:96))
+    XCTAssertFalse(store.canConnectBrushStroke)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+    for i in 0..<16 {
+      let flags: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+      let modifiers = flags.enumerated().reduce(into:NSEvent.ModifierFlags()) { flags,bit in
+        if i & (1<<bit.offset) != 0 { flags.insert(bit.element) }
+      }
+      XCTAssertEqual(ToolCursor.connectsBrushStroke(modifiers),[8,9,10,11].contains(i))
+    }
+  }
+
   @MainActor func testNativeGesturePreviewCancelCommitAndRecordedPlayback()async throws {
     let doc=try CraftDocument(width:64,height:48),store=EditorStore(document:doc,actions:ActionLibrary(),brushes:BrushLibrary())
     defer {store.renderTask?.cancel();store.cancelBrush()}

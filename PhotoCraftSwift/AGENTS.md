@@ -1,3 +1,5 @@
+**Source checkpoint 536.** Shift-click connects Brush and Pencil strokes. All 178 selected methods pass in Debug and both optimized architectures. Photoshop alpha differs on the test sheet. [Qualification](docs/SOURCE_PUBLICATION_536.md).
+
 **Source checkpoint 535.** The ordinary Brush starts at 10% smoothing. The current desktop and API defaults, explicit zero, Actions, tab transfer and protected tool routing pass 167 selected checks in all three configurations. Physical presentation and full Photoshop parity remain open. [Qualification](docs/SOURCE_PUBLICATION_535.md).
 
 **Source checkpoint 534.** The first ordinary Brush frame submits its worker during input on a ready canvas. All 114 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical presentation and full Photoshop parity remain open. [Qualification](docs/SOURCE_PUBLICATION_534.md).

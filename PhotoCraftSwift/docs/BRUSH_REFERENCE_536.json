@@ -1,0 +1,433 @@
+{
+  "addedTests": 2,
+  "applicationBuild": 536,
+  "archiveSHA256": "b1ffd687509903e0e32a2ce5538b664bdabb97a1873ad6ef051e4fd7dbd73ac5",
+  "brushAlphaBaseline": {
+    "build": 535,
+    "comparisons": {
+      "hard0": {
+        "compareRect": [
+          186,
+          84,
+          230,
+          128
+        ],
+        "differingAlpha": 98,
+        "maxDifference": 184,
+        "nativeNonzero": 156,
+        "nativeSHA256": "e658da20e258815946793bd0b627aabfdf018a09cd160132d92a987c38251c7a",
+        "photoshopNonzero": 193,
+        "photoshopSHA256": "ac839f2e8c1993a09bd1db63ad9853d470bd90013da193e706e0d5920bd93dec",
+        "sampleCount": 1936
+      },
+      "hard10": {
+        "compareRect": [
+          186,
+          26,
+          230,
+          70
+        ],
+        "differingAlpha": 98,
+        "maxDifference": 184,
+        "nativeNonzero": 156,
+        "nativeSHA256": "e658da20e258815946793bd0b627aabfdf018a09cd160132d92a987c38251c7a",
+        "photoshopNonzero": 193,
+        "photoshopSHA256": "ac839f2e8c1993a09bd1db63ad9853d470bd90013da193e706e0d5920bd93dec",
+        "sampleCount": 1936
+      },
+      "line0": {
+        "compareRect": [
+          25,
+          138,
+          231,
+          182
+        ],
+        "differingAlpha": 740,
+        "maxDifference": 178,
+        "nativeNonzero": 2386,
+        "nativeSHA256": "19e704499313edb98ce533e2e58e0248c962b6bc5dc5379b735876e20004f7fd",
+        "photoshopNonzero": 2586,
+        "photoshopSHA256": "8077de12cd7fa2fb1634f4845af7463733cb311b2df49e57586a63a7ca3ed74e",
+        "sampleCount": 9064
+      },
+      "line10": {
+        "compareRect": [
+          25,
+          200,
+          231,
+          244
+        ],
+        "differingAlpha": 740,
+        "maxDifference": 178,
+        "nativeNonzero": 2386,
+        "nativeSHA256": "19e704499313edb98ce533e2e58e0248c962b6bc5dc5379b735876e20004f7fd",
+        "photoshopNonzero": 2586,
+        "photoshopSHA256": "3350bb869ea84e4c57f00210aeaa34bb3de425237157c064dd337fab83f51607",
+        "sampleCount": 9064
+      },
+      "soft10": {
+        "compareRect": [
+          106,
+          26,
+          149,
+          70
+        ],
+        "differingAlpha": 347,
+        "maxDifference": 59,
+        "nativeNonzero": 120,
+        "nativeSHA256": "d711cb442759920b4532c89e2317951ef3a8d29b5dc06a4cebb9714bbd14fd98",
+        "photoshopNonzero": 347,
+        "photoshopSHA256": "a227d8dc5babae0ed93e3fdacafa50d0984606a15135f2b2a36faf516337d0df",
+        "sampleCount": 1892
+      }
+    },
+    "nativeArchBytesAgree": true,
+    "photoshopDabsIdentical": true,
+    "photoshopStraightPathsDifferingAlpha": 289,
+    "photoshopStraightPathsMaxAlphaDifference": 2,
+    "rawSourceSHA256": "583430befdd7a6dca0f75a9412a81c8126d00f58cdb0bde852baa65009c27f2d",
+    "scope": "Nominal 13px white round brush on transparent RGB8 at 100%. Native vector uses observed target positions, 25% spacing, 80ms command holds and standard settings. Photoshop does not expose the exact brush engine samples in this capture."
+  },
+  "brushAlphaComparison": {
+    "build": 536,
+    "comparisons": {
+      "hard0": {
+        "compareRect": [
+          186,
+          84,
+          230,
+          128
+        ],
+        "differingAlpha": 98,
+        "maxDifference": 184,
+        "nativeNonzero": 156,
+        "nativeSHA256": "e658da20e258815946793bd0b627aabfdf018a09cd160132d92a987c38251c7a",
+        "photoshopNonzero": 193,
+        "photoshopSHA256": "ac839f2e8c1993a09bd1db63ad9853d470bd90013da193e706e0d5920bd93dec",
+        "sampleCount": 1936
+      },
+      "hard10": {
+        "compareRect": [
+          186,
+          26,
+          230,
+          70
+        ],
+        "differingAlpha": 98,
+        "maxDifference": 184,
+        "nativeNonzero": 156,
+        "nativeSHA256": "e658da20e258815946793bd0b627aabfdf018a09cd160132d92a987c38251c7a",
+        "photoshopNonzero": 193,
+        "photoshopSHA256": "ac839f2e8c1993a09bd1db63ad9853d470bd90013da193e706e0d5920bd93dec",
+        "sampleCount": 1936
+      },
+      "line0": {
+        "compareRect": [
+          25,
+          138,
+          231,
+          182
+        ],
+        "differingAlpha": 740,
+        "maxDifference": 178,
+        "nativeNonzero": 2386,
+        "nativeSHA256": "19e704499313edb98ce533e2e58e0248c962b6bc5dc5379b735876e20004f7fd",
+        "photoshopNonzero": 2586,
+        "photoshopSHA256": "8077de12cd7fa2fb1634f4845af7463733cb311b2df49e57586a63a7ca3ed74e",
+        "sampleCount": 9064
+      },
+      "line10": {
+        "compareRect": [
+          25,
+          200,
+          231,
+          244
+        ],
+        "differingAlpha": 740,
+        "maxDifference": 178,
+        "nativeNonzero": 2386,
+        "nativeSHA256": "19e704499313edb98ce533e2e58e0248c962b6bc5dc5379b735876e20004f7fd",
+        "photoshopNonzero": 2586,
+        "photoshopSHA256": "3350bb869ea84e4c57f00210aeaa34bb3de425237157c064dd337fab83f51607",
+        "sampleCount": 9064
+      },
+      "soft10": {
+        "compareRect": [
+          106,
+          26,
+          149,
+          70
+        ],
+        "differingAlpha": 347,
+        "maxDifference": 59,
+        "nativeNonzero": 120,
+        "nativeSHA256": "d711cb442759920b4532c89e2317951ef3a8d29b5dc06a4cebb9714bbd14fd98",
+        "photoshopNonzero": 347,
+        "photoshopSHA256": "a227d8dc5babae0ed93e3fdacafa50d0984606a15135f2b2a36faf516337d0df",
+        "sampleCount": 1892
+      }
+    },
+    "nativeArchBytesAgree": true,
+    "photoshopDabsIdentical": true,
+    "photoshopStraightPathsDifferingAlpha": 289,
+    "photoshopStraightPathsMaxAlphaDifference": 2,
+    "rawSourceSHA256": "583430befdd7a6dca0f75a9412a81c8126d00f58cdb0bde852baa65009c27f2d",
+    "scope": "Nominal 13px white round brush on transparent RGB8 at 100%. Native vector uses observed target positions, 25% spacing, 80ms command holds and standard settings. Photoshop does not expose the exact brush engine samples in this capture."
+  },
+  "checkpoint": 536,
+  "connectedGesture": {
+    "brushActionReplayExact": true,
+    "explicitAPIPixelEquality": [
+      "paint.stroke",
+      "paint.tool"
+    ],
+    "modifierCombinationsChecked": 16,
+    "pencilActionPlaybackQualified": false,
+    "tools": [
+      "Brush",
+      "Pencil"
+    ],
+    "undoEntries": 1
+  },
+  "fullPhotoshopParity": false,
+  "initialAttempt": {
+    "debugFailed": [
+      "PhotoCraftAppTests.BrushWorkflowTests/testShiftClickConnectsBrushAndPencilWithOneUndo"
+    ],
+    "debugPassed": 170,
+    "receiptSHA256": "8db804633cbd201ad18331c97dd388815fcd9ec12a4c97de0dc0d049590d01e6",
+    "stoppedOptimizedBuilds": [
+      "arm",
+      "intel"
+    ]
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "b1ffd687509903e0e32a2ce5538b664bdabb97a1873ad6ef051e4fd7dbd73ac5",
+    "binarySHA256": "41bc0693379feb30c869c33c2972799b1c630a334469daa5a8de15a725301dcc",
+    "build": 536,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122083,
+          "height": 650,
+          "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopFixtures": {
+    "configurations": {
+      "arm": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "be9d8eb4e75c170beb6ef4eeb5ac4a5f2ecdd86b2e8eb49f9a194fb80ee4ba99"
+      },
+      "debug": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "b4ec6e3de19843a2079bb1e324ae7db0666dcaaeb55ba32956e227d162466495"
+      },
+      "intel": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "7747d658ca149712769ab8269ad1fb4f51b5b84aff4439b93f371794d01fc923"
+      }
+    },
+    "independentExportFixtures": 20,
+    "passed": true,
+    "scope": "Owned Photoshop 2026 merged RGBA32 reference fixtures and regional comparison. Full PSD bytes and live Photoshop use are outside this fixture result.",
+    "sourceInputs": 7884
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 178,
+    "debug": 178,
+    "intel": 178
+  },
+  "qualifiedCountPerConfiguration": 178,
+  "referenceSheet": {
+    "alphaSHA256": "fa62df1ca365cc0eb0473d783e7c728bd65084499c53fb7a5c2a2439a75e240c",
+    "components": [
+      {
+        "bounds": [
+          117,
+          37,
+          21,
+          21
+        ],
+        "nonzeroPixels": 347,
+        "normalizedAlphaSHA256": "d0b2fb858e31f4b5879081a2c8fb59eb8764b80e86d51c3e2ba4c8f818bc6fc1",
+        "peakAlpha": 255
+      },
+      {
+        "bounds": [
+          200,
+          40,
+          15,
+          15
+        ],
+        "nonzeroPixels": 193,
+        "normalizedAlphaSHA256": "2380ce7121f09e946b1ca8d576b68ea6504a99db47a4f89f5fc95ebd60fb26aa",
+        "peakAlpha": 255
+      },
+      {
+        "bounds": [
+          52,
+          96,
+          21,
+          21
+        ],
+        "nonzeroPixels": 338,
+        "normalizedAlphaSHA256": "7cecf7c772753d48ab4fc114e0099b7f8234ab223c00f077778dbfdcb8fced1d",
+        "peakAlpha": 255
+      },
+      {
+        "bounds": [
+          200,
+          98,
+          15,
+          15
+        ],
+        "nonzeroPixels": 193,
+        "normalizedAlphaSHA256": "2380ce7121f09e946b1ca8d576b68ea6504a99db47a4f89f5fc95ebd60fb26aa",
+        "peakAlpha": 255
+      },
+      {
+        "bounds": [
+          40,
+          152,
+          175,
+          15
+        ],
+        "nonzeroPixels": 2586,
+        "normalizedAlphaSHA256": "1f72da1100a66526b9c490bc1ed2431d68c57c62b5ee67b2069beac69580ecff",
+        "peakAlpha": 255
+      },
+      {
+        "bounds": [
+          40,
+          214,
+          175,
+          15
+        ],
+        "nonzeroPixels": 2586,
+        "normalizedAlphaSHA256": "eb47f1db7a16afcd72c5dd1671847f10becd896e840acd92811467ab3ceffc18",
+        "peakAlpha": 255
+      }
+    ],
+    "sha256": "583430befdd7a6dca0f75a9412a81c8126d00f58cdb0bde852baa65009c27f2d",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7884
+}

@@ -2,6 +2,19 @@ import Foundation
 import PhotoCraftCore
 import PhotoCraftImaging
 
+struct BrushStrokeTarget: Equatable {
+  let tool: EditorTool
+  let layer: UUID
+  let mask: Bool
+}
+
+struct BrushStrokeEndpoint {
+  let target: BrushStrokeTarget
+  let session: UUID
+  let lifecycle: UUID
+  let point: PathPoint
+}
+
 final class BrushGesture {
   let sessionGeneration: UUID
   init(original: CraftDocument, generation: UUID, sessionGeneration: UUID, layerID: UUID, mask: Bool, brush: Brush, points: [StrokePoint], selection: SelectionToolRequest?, adjustment: AdjustmentBrushRequest?, painting: PaintToolRequest?) {
@@ -14,6 +27,8 @@ final class BrushGesture {
   let layerID:UUID
   let mask:Bool
   let brush:Brush
+  var connectsToPrevious = false
+  var endpointTarget: BrushStrokeTarget?
   var eraserMode: EraserMode?
   var points:[StrokePoint]
   private var smoothingCursor: BrushSmoothingCursor
@@ -43,7 +58,26 @@ final class BrushGesture {
   var heldCommand: Command { mask ? .maskStroke(layerID, points, heldBrush) : .stroke(layerID, points, heldBrush) }
 }
 @MainActor extension EditorStore {
-  func beginBrush(_ point:StrokePoint,zoom:Double,alternate:Bool=false,selectionMode:SelectionMode?=nil,eventTimestamp:TimeInterval?=nil) {
+  private var brushStrokeTarget: BrushStrokeTarget? {
+    guard tool == .brush || tool == .pencil, !editingComponent, !smartFilterMaskEditing,
+      document.inkMode == nil, let layer = activeLayer, layer.smartObject == nil,
+      case .raster = layer.content else { return nil }
+    return .init(tool: tool, layer: layer.id, mask: editingMask)
+  }
+
+  var canConnectBrushStroke: Bool {
+    guard let endpoint = brushStrokeEndpoint, let target = brushStrokeTarget, canUseBrush else { return false }
+    return endpoint.target == target && endpoint.session == sessionGeneration && endpoint.lifecycle == layerPanelGeneration
+  }
+
+  func retainBrushEndpointAfterRecordingChange(previousSession: UUID) {
+    guard let endpoint = brushStrokeEndpoint, endpoint.session == previousSession,
+      endpoint.lifecycle == layerPanelGeneration else { return }
+    brushStrokeEndpoint = .init(target: endpoint.target, session: sessionGeneration,
+      lifecycle: endpoint.lifecycle, point: endpoint.point)
+  }
+
+  func beginBrush(_ point:StrokePoint,zoom:Double,alternate:Bool=false,selectionMode:SelectionMode?=nil,eventTimestamp:TimeInterval?=nil,connectToPrevious:Bool=false) {
     if hasHiddenQuickMaskEditingTarget { error = Self.hiddenQuickMaskBrushMessage; return }
     guard canUseBrush else { return }; let layer = activeLayer
     guard let layerID = layer?.id ?? (document.inkMode != nil || editingChannel != nil ? document.id : nil) else { return }
@@ -68,9 +102,17 @@ final class BrushGesture {
         do {painting=try paintingRequest(kind,points:[point],brush:value)} catch {self.error=error.localizedDescription;return}
       }
     }
-    canvasFrameTrace?.begin(tool: tool.rawValue, eventTimestamp: eventTimestamp)
+    var points = [point]
+    if connectToPrevious, canConnectBrushStroke, let endpoint = brushStrokeEndpoint {
+      var first = point
+      first.x = endpoint.point.x; first.y = endpoint.point.y
+      points.insert(first, at: 0)
+    }
+    canvasFrameTrace?.begin(tool: tool.rawValue, eventTimestamp: eventTimestamp, samples: points.count)
     brushPreviewLastStart = 0; brushPreviewFrameCount = 0; brushPreviewSampleCount = 0; brushPreviewRenderMS = 0
-    brushGesture = .init(original:document,generation:layerPanelGeneration,sessionGeneration:sessionGeneration,layerID:layerID,mask:editingMask,brush:value,points:[point],selection:selection,adjustment:adjustment,painting:painting)
+    brushGesture = .init(original:document,generation:layerPanelGeneration,sessionGeneration:sessionGeneration,layerID:layerID,mask:editingMask,brush:value,points:points,selection:selection,adjustment:adjustment,painting:painting)
+    brushGesture?.connectsToPrevious = points.count > 1
+    brushGesture?.endpointTarget = brushStrokeTarget
     brushGesture?.eraserMode = tool == .eraser ? eraserMode : nil
     if let command = brushCommand(preview: false) { interactiveBrushPreview = InteractiveBrushPreview(document: document, command: command) }
     scheduleBrushPreview()
@@ -137,6 +179,14 @@ final class BrushGesture {
     let retained = interactiveBrushPreview, command = brushCommand(preview: false), points = gesture.points
     canvasFrameTrace?.end(cancelled:false);stopBrushPreview();brushGesture=nil
     guard gesture.sessionGeneration==sessionGeneration,gesture.generation==layerPanelGeneration else { render();return }
+    let rememberEndpoint: (() -> Void)?
+    if let target = gesture.endpointTarget, let point = points.last {
+      rememberEndpoint = { [weak self] in
+        guard let self, self.brushStrokeTarget == target else { return }
+        self.brushStrokeEndpoint = .init(target: target, session: self.sessionGeneration,
+          lifecycle: self.layerPanelGeneration, point: .init(point.x, point.y))
+      }
+    } else { rememberEndpoint = nil }
     if let request=gesture.selectionRequest {
       performGeometry(label:request.kind.title,prepare:{original in try await SelectionToolPreparation.command(request,in:original)})
     } else if let request=gesture.adjustmentRequest {
@@ -147,13 +197,13 @@ final class BrushGesture {
         }
       } else { performGeometry(label:"Adjustment Brush",prepare:{_ in .adjustmentBrush(request)}) }
     } else if let request=gesture.paintingRequest {
-      performGeometry(label:request.tool.title,allowAuxiliary:true,prepare:{original in .painting(try PaintingPreparation.prepare(request,in:original))})
+      performGeometry(label:request.tool.title,allowAuxiliary:true,prepare:{original in .painting(try PaintingPreparation.prepare(request,in:original))},onSuccess:rememberEndpoint)
     } else if let retained, let command {
-      performPreparedGeometry(label: command.label, cancelPreview: false) { original in
+      performPreparedGeometry(label: command.label, cancelPreview: false, prepare: { original in
         if let prepared = try await retained.prepareCommit(base: original, points: points) { return prepared }
         return try PreparedEdit(command: command, document: original)
-      }
-    } else {performGeometry(gesture.command)}
+      }, onSuccess: rememberEndpoint)
+    } else {performGeometry(gesture.command,onSuccess:rememberEndpoint)}
   }
   func cancelBrush() { guard brushGesture != nil else { return };canvasFrameTrace?.end(cancelled:true);stopBrushPreview();brushGesture=nil;render() }
 }

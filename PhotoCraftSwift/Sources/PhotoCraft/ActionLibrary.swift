@@ -243,12 +243,19 @@ struct ActionLibraryFile: Codable {
   func startRecordingAction(name: String, set: String) throws {
     guard canStartRecordingAction else { throw CraftError.invalid("Finish the current edit and choose the composite image before recording.") }
     guard actions.loadError == nil else { throw CraftError.invalid(actions.loadError!) }
-    try session.startActionRecording(name: name, set: set); actionRevision += 1
+    let previousSession = sessionGeneration
+    defer { retainBrushEndpointAfterRecordingChange(previousSession: previousSession) }
+    try session.startActionRecording(name: name, set: set)
+    actionRevision += 1
   }
   @discardableResult func stopRecordingAction(save: Bool = true) throws -> RecordedAction {
     guard canStopRecordingAction, let action = session.actionRecording?.snapshot else { throw CraftError.invalid("There is no finished recording to stop.") }
     if save { try actions.save(action) }
-    session.stopActionRecording(); actionRevision += 1; return action
+    let previousSession = sessionGeneration
+    session.stopActionRecording()
+    retainBrushEndpointAfterRecordingChange(previousSession: previousSession)
+    actionRevision += 1
+    return action
   }
   func playAction(_ action: RecordedAction) {
     guard canPlayAction(action) else { error = "Stop recording and finish the current edit before playback."; return }

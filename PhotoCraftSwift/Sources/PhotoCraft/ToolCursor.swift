@@ -19,6 +19,9 @@ enum ToolCursor: Hashable {
   static func geometry(_ flags: NSEvent.ModifierFlags) -> Badge? {
     flags.contains(.shift) ? (flags.contains(.option) ? .constrainCenter : .constrain) : flags.contains(.option) ? .center : nil
   }
+  static func connectsBrushStroke(_ flags: NSEvent.ModifierFlags) -> Bool {
+    flags.contains(.shift) && !flags.contains(.option)
+  }
   @MainActor private static var cache: [Self: NSCursor] = [:]
   @MainActor var native: NSCursor {
     switch self {
