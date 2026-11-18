@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 public struct IntRect: Codable, Equatable, Sendable {
   public var x: Int
@@ -25,6 +26,32 @@ public struct IntRect: Codable, Equatable, Sendable {
     return IntRect(x: x0, y: y0, width: max(0, x1 - x0), height: max(0, y1 - y0))
   }
 }
+private enum RasterBands {
+  static func map<T: Sendable>(_ region: IntRect, _ transform: @Sendable (IntRect) throws -> T) throws -> [T] {
+    let side = Surface.tileSide
+    let end = region.y + region.height
+    let tileRows = (end - 1) / side - region.y / side + 1
+    guard region.width * region.height >= 1_048_576, tileRows >= 4 else {
+      return [try transform(region)]
+    }
+    let jobs = 4
+    let samples = OSAllocatedUnfairLock(initialState: [Result<T, any Error>?](repeating: nil, count: jobs))
+    try Task.checkCancellation()
+    // Every job owns complete tile rows. Retain results in band order.
+    DispatchQueue.concurrentPerform(iterations: jobs) { job in
+      let top = region.y / side + job * tileRows / jobs
+      let bottom = region.y / side + (job + 1) * tileRows / jobs
+      let y = max(region.y, top * side)
+      let height = min(end, bottom * side) - y
+      let stripe = IntRect(x: region.x, y: y, width: region.width, height: height)
+      let value = Result { try transform(stripe) }
+      samples.withLock { $0[job] = value }
+    }
+    try Task.checkCancellation()
+    return try samples.withLock { $0 }.map { try $0!.get() }
+  }
+}
+
 /// Numeric storage encoding. Masks and legacy archives use sRGB-valued samples;
 /// linearRGB retains native HDR color bits without a transfer-function round trip.
 public enum SurfaceColorEncoding: String, Codable, Sendable {
@@ -710,6 +737,23 @@ public struct Surface: Codable, Equatable, Sendable {
     guard bytesPerRow >= rowLength, bytes.count >= rowLength,
       region.height - 1 <= (bytes.count - rowLength) / bytesPerRow
     else { throw CraftError.invalid("The display region does not fit in the destination buffer.") }
+    let output = DisplayBuffer(bytes: bytes)
+    let _: [Void] = try RasterBands.map(region) { band in
+      let offset = (band.y - region.y) * bytesPerRow
+      let length = (band.height - 1) * bytesPerRow + rowLength
+      let target = UnsafeMutableRawBufferPointer(rebasing: output.bytes[offset..<offset + length])
+      try packDisplayRGBA8(band, to: target, bytesPerRow: bytesPerRow)
+    }
+  }
+
+  // The borrowed buffer lives until the synchronous band dispatch returns.
+  // Each band writes disjoint rows and the caller retains exclusive ownership.
+  private struct DisplayBuffer: @unchecked Sendable {
+    let bytes: UnsafeMutableRawBufferPointer
+  }
+
+  private func packDisplayRGBA8(_ region: IntRect, to bytes: UnsafeMutableRawBufferPointer,
+    bytesPerRow: Int) throws {
     let side = Self.tileSide
     let columns = self.columns
     let right = region.x + region.width, bottom = region.y + region.height
@@ -1134,6 +1178,26 @@ extension Surface {
     try Task.checkCancellation()
     return output
   }
+  /// The flat tone pipeline supplies a pure transform, so each band can use
+  /// the same stored-sample compositor independently. The output owns its tiles.
+  package func compositingIndependentStoredRegion(
+    _ region: IntRect, _ transform: @Sendable (Pixel) -> Pixel
+  ) throws -> Surface {
+    let area = region.clipped(toWidth: width, height: height)
+    guard colorEncoding == .sRGB, area.width * area.height <= Self.maximumDensePixels else {
+      throw CraftError.invalid("The stored composition region requires a bounded SDR raster.")
+    }
+    let parts = try RasterBands.map(area) { try compositingStoredRegion($0, transform) }
+    if parts.count == 1 { return parts[0] }
+    var output = try Surface(width: width, height: height, depth: .f32)
+    for part in parts {
+      try Task.checkCancellation()
+      for (key, tile) in part.tiles { output.tiles[key] = tile }
+    }
+    try Task.checkCancellation()
+    return output
+  }
+
   public func combiningStoredSamples(
     with other: Surface, _ transform: (Pixel, Pixel) throws -> Pixel
   ) throws -> Surface {

@@ -8495,6 +8495,13 @@
       "link": "DEVLOG.md#dev-step-549",
       "section_sha256": "92df050dc3aa6800174f4f0d0d19d41bdb45857abcb1f095f1b0f3850853fc3f",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-550",
+      "title": "2026-11-18 \u2014 Parallelize large raster composition and display packing",
+      "link": "DEVLOG.md#dev-step-550",
+      "section_sha256": "9919e627c54241f51ae389bed6f8f3333876e2968e5d30c7e89d80775cfdc282",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -11026,8 +11033,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "f6079f6d55fa14231cbb63f343aa6b7c3a56985f6301d81218d387ae59d79b23",
-      "bytes": 133637,
+      "sha256": "6f63677726bce0351616f6f1e9995bf484a6e006d68fe1f6f4ee88219ad59356",
+      "bytes": 133977,
       "rolling_current_snapshot": false
     },
     {
@@ -11038,8 +11045,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "5337e2ab07aa92bbdca6ca606a966027e578e02ec313d63ba12982e1e7cba357",
-      "bytes": 127118,
+      "sha256": "f7af2e4f261d79761085e53cdcf5bd02d4fa272f89176110cd11f6329919e3e2",
+      "bytes": 127458,
       "rolling_current_snapshot": false
     },
     {
@@ -42439,8 +42446,8 @@
     },
     {
       "path": "artifacts/549-brush-coverage/history-refresh02.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0,
+      "sha256": "d024f0e87ce893a9514f3eda29e32c8a88f682503381fc594256ede4322f0fa3",
+      "bytes": 76176,
       "rolling_current_snapshot": false,
       "test_result": {
         "embedded_start_time": null,
@@ -42451,6 +42458,18 @@
     },
     {
       "path": "artifacts/549-brush-coverage/history-strict01.log",
+      "sha256": "ac2e2680f672a617fac265bb3abb2f2f6ba020ede8e0f091d9451337f537d54c",
+      "bytes": 556,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/549-brush-coverage/history-strict02.log",
       "sha256": "ac2e2680f672a617fac265bb3abb2f2f6ba020ede8e0f091d9451337f537d54c",
       "bytes": 556,
       "rolling_current_snapshot": false,
@@ -43773,6 +43792,60 @@
       }
     },
     {
+      "path": "artifacts/549-brush-coverage/source-commit01.log",
+      "sha256": "fcf8494ddf00d01ac500556c608a59ae88209f24306d7949caf637dd040d4a56",
+      "bytes": 413,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/549-brush-coverage/source-publication01.json",
+      "sha256": "33bb442f7f29992a51996a547b2159b484534a50fd658aa85b882c1a49c78193",
+      "bytes": 326,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/549-brush-coverage/source-push01.log",
+      "sha256": "98150850124f35c53e1e98e071ad8d41fcfd7e0a8b576e8e3f641f6dfe94588b",
+      "bytes": 100,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/549-brush-coverage/source-scan01/redacted.json",
+      "sha256": "d57b90fdb0f91e434e83b355e2118737fba512e2b97b9b90ecdf9193121823ae",
+      "bytes": 15436,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/549-brush-coverage/source-scan01/review.json",
+      "sha256": "e36f97573487c658d6d0cc0f227affd1636627513d8f6266712ae2db37b38788",
+      "bytes": 3496,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/549-brush-coverage/source-scan01/scanner.log",
+      "sha256": "d67a96ed66982d4d62f74e89f1c12c272be199b810287b69c092d285059a6c62",
+      "bytes": 110,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
       "path": "artifacts/549-brush-coverage/stage-universal-final.log",
       "sha256": "1f8b01ab226cdae35678711be8b60506ab53b1cf069662eb13dd6050866d189a",
       "bytes": 1774,
@@ -43783,6 +43856,12 @@
         "outcome": "no_xctest_summary",
         "scope": "absence of a test summary is not a passing test run"
       }
+    },
+    {
+      "path": "artifacts/549-brush-coverage/staged.json",
+      "sha256": "3ac17ea222d823078c13198e68e6ba47d3f8922806211e8de8eefab8dfe53b31",
+      "bytes": 915,
+      "rolling_current_snapshot": false
     },
     {
       "path": "artifacts/549-brush-coverage/universal01/archive.log",
@@ -43836,6 +43915,1263 @@
       "path": "artifacts/549-brush-coverage/universal01/staging.json",
       "sha256": "0696bc3b76b4e33f6d517426347b8366af0f584651af2692d3469e5b7b285d19",
       "bytes": 2116,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/arm64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/arm64/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/arm64/sha256.json",
+      "sha256": "72d30b06bf7fe6d3ba5e6df9cbdc2a1990d92e966bc7127af62dcbd33c9502b3",
+      "bytes": 18955,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/summary.json",
+      "sha256": "b65f7f3cb87475504c1832942564d2134902862482bd9f855cff737728d92396",
+      "bytes": 39918,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/x86_64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/x86_64/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01/x86_64/sha256.json",
+      "sha256": "8f0da0d7b4198559209375b47b19b1f3d98b58b3ca3af39b241ebaa233418eae",
+      "bytes": 18955,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/baseline-matrix01-command.log",
+      "sha256": "ef538a10aebf527d309fb5eddc14d26476a0553ab130abbe070c255c691d7769",
+      "bytes": 369,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/compare-final.log",
+      "sha256": "2397730cb1bd6e563f4e538ac3341452cb76097f543b906d73a28af80a624131",
+      "bytes": 433,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/current-fixed-captures/classic-gradient-map-reference.json",
+      "sha256": "0fb2aec4d803e48e2c6023b61c5b62a9c92723406859a833cc14646bc11ad7f9",
+      "bytes": 731,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/current-fixed-captures/gradient-map-photoshop-comparison.json",
+      "sha256": "af047e50f7c7d3eb33ebded462cd20600e34f490f3eb64e28ed9365d2fee6577",
+      "bytes": 624,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/current-fixed-captures/gradient-map-tone-reference.json",
+      "sha256": "c717c59e59d7018ff981492cc4ca60e2b3c05c5debde0c059b4331fbdb8fa9d7",
+      "bytes": 534,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/history-refresh01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/01-549-64/stroke-3AD2B4FE-AABC-4D31-9A58-CCA8135B870A.json",
+      "sha256": "c5dc12beaaef9e3d580add32629b2d091321c3b7750bf79cc1c7450973238060",
+      "bytes": 94892,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/01-549-64/summary.json",
+      "sha256": "c37fca56a59cfcee724103f95cb879cc2fb39809689fe575aae0e4a11e2d404a",
+      "bytes": 15647,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/01-549-64/test.log",
+      "sha256": "76b809fd70364e09be6672252c86ad43fd22ccad273fd5ef4076a7afbe8e7d1c",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:27.169",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.852,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/02-550-64/stroke-313E9DA3-712B-4B83-9A89-17D532211FFC.json",
+      "sha256": "f135f3f7e05051800b5e43f32497cb86ba0232311a1595944d7f2664a0e8e306",
+      "bytes": 94913,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/02-550-64/summary.json",
+      "sha256": "ab90eb084934de7914296c9b6379282e6b746a4549853a0426523914cfb156f6",
+      "bytes": 15647,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/02-550-64/test.log",
+      "sha256": "dd557b0fed005f02780d845b5e095b5ccce67d3b44388b927119754dde6461a7",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:33.794",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.575,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/03-550-1800/stroke-364A71E0-4E39-4FFA-9CD2-D5025893AF60.json",
+      "sha256": "c9c9e0d49fb83aa03cd9af39f8b69fd13e304827019ad2b4256d95b8df9df02d",
+      "bytes": 78587,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/03-550-1800/summary.json",
+      "sha256": "f35a06faf7954b1c9faba255cb5e716998e46d35f3f06d984470fc6e2766ec69",
+      "bytes": 14323,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/03-550-1800/test.log",
+      "sha256": "628e9ff28f12c63daf748ba2ecfb090911a16af352e3eadf80d30a8894f4f5c1",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:38.490",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.834,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/04-549-1800/stroke-E928E190-3D34-439E-89B9-48695F721DA9.json",
+      "sha256": "210c1c81b1836781498d60da0ab20f9169f5f29416fdf70d5f74ad19b01d4f1b",
+      "bytes": 70123,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/04-549-1800/summary.json",
+      "sha256": "0833ad1e35a1adb9b29da58f40fe0de8590394be969e6a0469b9ebef37af7a16",
+      "bytes": 14289,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/04-549-1800/test.log",
+      "sha256": "fa12fa4b7750d1728cc7002f5e752e024fb80d6cb9ea1c9fee4f467ec772c2c0",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:43.460",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 5.214,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/05-549-2500/stroke-8C31193C-F0EA-4710-B020-DD4E48C71483.json",
+      "sha256": "a0ce37831e27593b440d05112d08fdcc0769482febcc9cddb1fa1fc76c09bf83",
+      "bytes": 61738,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/05-549-2500/summary.json",
+      "sha256": "228baaa9e65958d5fcd0d4dca5eddff46258cec123cd197eb531c09d8ebbe950",
+      "bytes": 14282,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/05-549-2500/test.log",
+      "sha256": "98061c960f81f9323130459a15fdbe634496444e720488432fa7258722db0ef2",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:48.803",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 5.298,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/06-550-2500/stroke-A9D3BAC7-FAD5-49D0-92AB-3BE43F6D5619.json",
+      "sha256": "0f56bb62c596f5114be5dd1251380bc53ded6b8af1512e7dc67e3faa2f11ea57",
+      "bytes": 75391,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/06-550-2500/summary.json",
+      "sha256": "77fe70a77cddb4eee3e7499da8e863a6b08f640a1939c3edd1b12286071d0284",
+      "bytes": 14269,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/06-550-2500/test.log",
+      "sha256": "967c384540b9fc23d6edae18b9e2e35f81ca6e18af364ef1cae6bc6125c55c04",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:54.268",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.985,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/07-550-5000/stroke-B3E14605-7FD2-4BDF-8746-348F949204F2.json",
+      "sha256": "cbe0929a8c887515d496f5e7f0e4aa46d50be2afe3261644500a1aa569c6c8bf",
+      "bytes": 61375,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/07-550-5000/summary.json",
+      "sha256": "d7aab0bc7c75fd8920009c48db9d32ec08d459e90b9bb2148493d7f6b8581224",
+      "bytes": 14242,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/07-550-5000/test.log",
+      "sha256": "d1b33e8f6f09cdde30a6ab6b4cab473cf7ec8dc25eba9bec05ba7826f0e56d65",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:55:59.368",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 10.966,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/08-549-5000/stroke-26956D80-9509-4059-8172-5E335EBB0A84.json",
+      "sha256": "ab007b5da7a36ce42b503ad40585355c9ea37286f04f01ce89cf09702d2efe7c",
+      "bytes": 45937,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/08-549-5000/summary.json",
+      "sha256": "1d216205bbbaf27ea03efb8549d38eae587dc8a4020d59a213228746b529c209",
+      "bytes": 14221,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/08-549-5000/test.log",
+      "sha256": "9a7807fab287932e00b8ec03c756667263cc94fa6e8195e0df3b760c3587408a",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:10.512",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 10.958,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/09-549-5000/stroke-9C58253E-68A6-46E0-91F4-5866BD90AE44.json",
+      "sha256": "34e5da392084dbd49032d813847db0fa10bf27cc3a2eecb0ff33794a0e757f22",
+      "bytes": 45767,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/09-549-5000/summary.json",
+      "sha256": "168d79b853f8cca07f9a42ea7c0a36fcd81d8a0cb71f201a7fb9ab8527788639",
+      "bytes": 14244,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/09-549-5000/test.log",
+      "sha256": "58bdc49d9dc542989b44213a61ac7481c9736649c5edf73d4b2923c17d6e7a2d",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:21.630",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 11.162,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/10-550-5000/stroke-9E399F4D-F93A-4D2B-9BD4-08832388CACD.json",
+      "sha256": "94a1cf43c1f84eb8c1d2f76c8399eb7393a4a89de109e4a30b4f5f753113714f",
+      "bytes": 62029,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/10-550-5000/summary.json",
+      "sha256": "7cd1b9028a11bd02abcac21181bd2d2e4336af7a5cb48cd697b197000a2fded6",
+      "bytes": 14234,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/10-550-5000/test.log",
+      "sha256": "7e213b3028c13b6a28e16580c60f3492b60df5d9e0d4bd0b0ab02b8cfc664636",
+      "bytes": 890,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:32.971",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 10.647,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/11-550-2500/stroke-D3010A8A-D664-4B80-B5C6-3908C7AA9370.json",
+      "sha256": "d80e966a7af56a70f6a31676d76c8ac24c9e5d92342994344362705f07ef835e",
+      "bytes": 75401,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/11-550-2500/summary.json",
+      "sha256": "ff33696c919c35185210e873d592e9e0547a6711ff8fc2e6e24999dc32877f64",
+      "bytes": 14265,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/11-550-2500/test.log",
+      "sha256": "58c90562c4be79abfab444215524fd5336a4ed158977ed6cff7a606f525622ee",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:43.757",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.958,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/12-549-2500/stroke-F53634B1-94E8-42E2-ADBA-EBE5EBBC1C29.json",
+      "sha256": "be888fada8a995d9844692385efa9c5189279466d6f83afdf303ef34f4c3c71d",
+      "bytes": 61549,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/12-549-2500/summary.json",
+      "sha256": "22bbfee85a2bc2f45029b4b4aefaae54a1963f9ccd84b962cf7899cbe920bf28",
+      "bytes": 14260,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/12-549-2500/test.log",
+      "sha256": "4c05a7764823fbb450c05057c6f407187616212858841d750c9a7986b0fdfa51",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:48.879",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 5.208,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/13-549-1800/stroke-621405BD-D91C-48CC-A8ED-5233F80753A8.json",
+      "sha256": "1c97ec73390ab990d488cc9a73a40af208cf5a393e0aec1c24b412bc8eb780e2",
+      "bytes": 70223,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/13-549-1800/summary.json",
+      "sha256": "859e8f1f64a68c52d733acee3f03b6a66f011372a96b9bfad3ececbd6b5da58a",
+      "bytes": 14299,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/13-549-1800/test.log",
+      "sha256": "ffbf4235dae148d50a6ab9a0e1fa18e6d370b46244d80b722f9eea4bc7bc2990",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:54.244",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 5.112,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/14-550-1800/stroke-C93E8D41-DD12-4178-A0FA-757568892427.json",
+      "sha256": "5462ee40a146281e0299f8248b93fb2e906dd0e0bae5619af122e5b919d8914d",
+      "bytes": 78066,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/14-550-1800/summary.json",
+      "sha256": "41db92744572c4a58cdc7fb3d952f67261510ffdcd08c3ebd83ba482169eed71",
+      "bytes": 14305,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/14-550-1800/test.log",
+      "sha256": "622c72692f5e3710bb50acac2075780d60559f318a2b00c84b10ca139afc2d37",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:56:59.485",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.842,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/15-550-64/stroke-B793FCC9-8AEC-4FF1-A60C-622571298D4A.json",
+      "sha256": "952e7bf9530d50375bf9c93e7f7bdc6aaf83d193a52099ef88bfc12848e14bc2",
+      "bytes": 95561,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/15-550-64/summary.json",
+      "sha256": "42842d2b316f0a7f619e4c29e07444bd10bed4a731def6c0a0fe345ce10d3fb8",
+      "bytes": 15630,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/15-550-64/test.log",
+      "sha256": "77069c147311f1925182394fe7e1594560695e260b58cf1cde1cfd586cfcf39c",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:57:04.481",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.586,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/16-549-64/stroke-55D74886-76D1-43BF-B80C-BAD85E36CB8D.json",
+      "sha256": "102f91d1147ec2d0f702263a44e1aac01286b434a09cbebb6b404eac8546855e",
+      "bytes": 95617,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/16-549-64/summary.json",
+      "sha256": "26621fe47bb990ab9e48eb0cc7cb16a391e513eab0388befa072331b494ccde5",
+      "bytes": 15632,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/16-549-64/test.log",
+      "sha256": "d27661ef87009aae0f03bff89219a5ad58a486e050f915119811948b30c8edc5",
+      "bytes": 883,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:57:09.193",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 4.832,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/549/commands.json",
+      "sha256": "c06e3024a19be693d677d85f649e78af946fe6ce40cbafbe393c520c2cb45788",
+      "bytes": 2796,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/549/relink.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/550/commands.json",
+      "sha256": "de4b434f2058eefab9a17c2651f89d96f45b30e6dfc732742253ba0e48c63693",
+      "bytes": 2796,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/550/relink.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/hosted01/summary.json",
+      "sha256": "adda86ebec6b3a5046df8f6e10cb61bd778dc833b93bae615e81b091e43002b4",
+      "bytes": 29788,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/arm64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/arm64/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/arm64/sha256.json",
+      "sha256": "72d30b06bf7fe6d3ba5e6df9cbdc2a1990d92e966bc7127af62dcbd33c9502b3",
+      "bytes": 18955,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/summary.json",
+      "sha256": "b56091346cf172c37bc9ec5ca96635a049b354a83f7810199fa0d259b16a288f",
+      "bytes": 40006,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/x86_64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/x86_64/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/matrix01/x86_64/sha256.json",
+      "sha256": "8f0da0d7b4198559209375b47b19b1f3d98b58b3ca3af39b241ebaa233418eae",
+      "bytes": 18955,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/measure-hosted-paired-final.log",
+      "sha256": "4ebb6104b649173018696d89701283566a77fbc923f16645a2e17b5c55238b34",
+      "bytes": 3416,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/measure-phases-final.log",
+      "sha256": "1e416685d59183bbe3cc76fa3351fffa1600a8f751d8d2ff9938888cb52cc379",
+      "bytes": 2226,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/packaged-snapshot-final.log",
+      "sha256": "39ab2d46a446ba299708774a86b4c5cf3c08aebff09c23d5ef4d3e5beca90c1b",
+      "bytes": 65,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/packaged-snapshot01/arm64/command.json",
+      "sha256": "800258833e65359d03ca90e98373bdcddcc43f6d04a3afc6ac1f9facce7d267b",
+      "bytes": 344,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/packaged-snapshot01/arm64/launch.log",
+      "sha256": "becfbbaa3a46858a8848341a14897b1ed54ffac1d12a7fb1b2100b2faf961ef2",
+      "bytes": 174,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/packaged-snapshot01/snapshot.json",
+      "sha256": "0b7cd4248f710f435052a7504ac8cdc0256aa46ac92fd3ef4d908abc2f09b6ba",
+      "bytes": 884,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/packaged-snapshot01/x86_64/command.json",
+      "sha256": "c8d56f2eb459a826197242231c41a800080f36c1d32326a8565c4af3682537cb",
+      "bytes": 346,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/packaged-snapshot01/x86_64/launch.log",
+      "sha256": "642b994a0d57120c8f4b7fc424784da09c1786f7b1413262e1fae979ca5652c5",
+      "bytes": 175,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/performance01/phases-549-arm64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/performance01/phases-549-x86_64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/performance01/phases-550-arm64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/performance01/phases-550-x86_64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/performance01/summary.json",
+      "sha256": "e6e29b6314cee92dc6f5d861ae89fa5bac5f14b7f16a1038129b7f4027a0d841",
+      "bytes": 14509,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/phase-baseline01/phases-549-arm64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/phase-baseline01/phases-549-x86_64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/phase-baseline01/summary.json",
+      "sha256": "ce80c8281210277cdab928608e82672fbc2f53da96ec7244155da500a79ab5ca",
+      "bytes": 7394,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/phase-baseline01-command.log",
+      "sha256": "83efd5053e47ddcf1a554653984a3c01a22c64f8af59941a9e09eff9123d706c",
+      "bytes": 1115,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/preexisting-fixed-captures/gradient-fill-reference.json",
+      "sha256": "e859d07dff976304edd13193c9e4d37d132953ba752552315c14b79aec3339de",
+      "bytes": 1221,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/preexisting-fixed-captures/gradient-stripes-depth-comparison.json",
+      "sha256": "2b611b1d35551edc2f31ffb33ef8036eb079a4226de6b207b8d0f0d65ca0a697",
+      "bytes": 411,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/preexisting-fixed-captures/gradient-stripes-photoshop-comparison.json",
+      "sha256": "bf0f913f63c46404b0ca553d5a1879bb21fdb4ffd660cec1ef501ff7e1472395",
+      "bytes": 447,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/preexisting-fixed-captures/manifest.json",
+      "sha256": "c362d99c779c463d3673820d5f10bf0944d6b1947a4543ffcdc6e0df50c97d7d",
+      "bytes": 711,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/prototype01/arm64-link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/prototype01-command.log",
+      "sha256": "2f8e7b9383038dc00df21a77ccf7b826a5a52391196fee23435fb672c5228a2a",
+      "bytes": 1228,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/prototype02/arm64-link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/prototype02/summary.json",
+      "sha256": "f7cb40cd163ec1823d99563218af3d6318a3a650c12bc4539293fb573c102a75",
+      "bytes": 7941,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/prototype02/x86_64-link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/prototype02-command.log",
+      "sha256": "1523ca399f5dc372d61b5b626cdbecf8aae67f345c3f41a9c94f0d28f13ed47c",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/build-command.json",
+      "sha256": "7763e9c2b3621f3c4de735603e10c3b01033a74cc87e44bd3b7811abc25e6892",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/build-process.json",
+      "sha256": "bcb138f309a1205f533cae43fd1027306a053a06a3407b3b93450e338425432a",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/build-receipt.json",
+      "sha256": "27962491a71866b2ca1d93426762c841000c3d81046d9efb39b10abc2e0001a5",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/build.log",
+      "sha256": "3a41419a720c6d7c9335f3b0e98d12c7880f7db6f7034c9fbfd9a19a6a9490f6",
+      "bytes": 74793,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/receipt.json",
+      "sha256": "4da17377b6922a2d709249a46948cedf105927ce6f2e1f600c6a8e4be0262b55",
+      "bytes": 43035,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/test-command.json",
+      "sha256": "90055e286ebc71a8a887376d5238c07c37326840598afc605e8be759f8a6c08c",
+      "bytes": 39912,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/test-process.json",
+      "sha256": "b33ec110c3731d22ceb0b91db02cddadd69ae191f052e235cbf396a00554216e",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/arm/test.log",
+      "sha256": "50b5d9205d078ad2a9e6da78c71d48f254275dc3778cc9601e759d39cf4fd646",
+      "bytes": 143663,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:52:52.309",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 400,
+        "failures": 0,
+        "seconds": 29.177,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/build-command.json",
+      "sha256": "c9d7c92ae709afe5c6116cb73923829c4f90f2d41a55464d54c0728b9aa17006",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/build-process.json",
+      "sha256": "242103f7159a6d678286acc7df76172a75df49581b38c16b2ef12418b08b2cd3",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/build-receipt.json",
+      "sha256": "eec40370117eb23b4c51b79db102b495a91b66bc0b9bbd24e32e1378059ccc2e",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/build.log",
+      "sha256": "9d4774b86341ab78e3f96f2cd6e943057301be19f8be4751c67b973028de30da",
+      "bytes": 1921625,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/receipt.json",
+      "sha256": "7407f8170f7b3dc8afaecdf7654702a71d725526cfa401b85b322f84ba8a368d",
+      "bytes": 43035,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/test-command.json",
+      "sha256": "86da45543d82b79ca129f05fc2b052e914d5b834e40fd92df96c15ca1eed03ab",
+      "bytes": 39912,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/test-process.json",
+      "sha256": "a2d60e8da6672066167d41f8e12f4b1da7f5f6d895dea1986553cb201ce12957",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/debug/test.log",
+      "sha256": "234e9dcd6bf9ba622f9b4fff071641fe4fdfa44a26747910abd979ad70c61ddf",
+      "bytes": 143682,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:44:47.018",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 400,
+        "failures": 0,
+        "seconds": 173.723,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/expected-cases.json",
+      "sha256": "24da4e0aacda7d5851fd208f7d8909ddd627a984631c8493f683654d858df666",
+      "bytes": 41727,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/inputs.json",
+      "sha256": "30942cb2c7d1ee1f1c90ee120076a1d44196af9a3efa642dbf4dc6ba5b2dadd9",
+      "bytes": 1148146,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/build-command.json",
+      "sha256": "786887e613458447bd666541cf3776fc469591f13304b9acdb44d7e538424bc7",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/build-process.json",
+      "sha256": "369721f8f5ed4e12042538aebd0562168d792817267ca997f68c3b7dee643e98",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/build-receipt.json",
+      "sha256": "42a957595a4f720a88aa7ef5f02e7b349c2005ac366866380bf9f755c4bc6a77",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/build.log",
+      "sha256": "3b4179cb13eec76c944f37a6f15a55b46f75c98e808af5c7641aa2db7fdbdb41",
+      "bytes": 74796,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/receipt.json",
+      "sha256": "ed21fbb5e36c7cba41d81e13aa9ef82d1d8c404bf9e4cace70a07cae387e5e03",
+      "bytes": 43042,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/test-command.json",
+      "sha256": "f30dd6fe1e7c7c98726d1640b75d76eeb3e7e6087dbb52125d6ad0c2de45bcb4",
+      "bytes": 39938,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/test-process.json",
+      "sha256": "0a85fde31886a3d16614dddf9f2a61106232a5a7cca580ea07c761593a65dd19",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/intel/test.log",
+      "sha256": "94ad6121f3cef3b304fbcfe7aaadd7dd9b32964b4b9dd442f5763c0cdd561f0a",
+      "bytes": 143665,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 01:53:30.159",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 400,
+        "failures": 0,
+        "seconds": 42.709,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/products-sha256.json",
+      "sha256": "8ade1848c38d0c97d0dd374e53f4e546b6b1ed2c9ab92442e889ff564cda20c0",
+      "bytes": 449,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/qualification01/qualification.json",
+      "sha256": "924d6aa2b727558d394cd2026a06a820422ec4df69c44c621794bf95ea6e3092",
+      "bytes": 134195,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/stage-universal-final.log",
+      "sha256": "8f8828501f8f9ebfe56cf3d62f4a99811f5ff31441914e086c827d4a667b12d2",
+      "bytes": 1781,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/universal01/archive.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/universal01/content-sha256.json",
+      "sha256": "ced813a4857830ea1bfc38a198c8faf582cde28cd156d9fa71b72e173304b140",
+      "bytes": 2960,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/universal01/macho.log",
+      "sha256": "dfa5edae37c8df7678640c875ae315311ff227bbef309198f708a6965ea1d4be",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/universal01/payload-comparison.json",
+      "sha256": "65f6dbd0ae8b5d45c7ea04616fb4834efb5d4eab931eee29695862d9fdf43fc1",
+      "bytes": 998,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/universal01/stage.log",
+      "sha256": "11ab4a3d954ad178c252f83356e483ae103d02d93dbd7fa78d9d1b6559137808",
+      "bytes": 193,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/550-raster-pipeline/universal01/staging.json",
+      "sha256": "ecd449c25b8f27508815d479c6c42712c37c3990a996923f1aa583a2b26c46e6",
+      "bytes": 2133,
       "rolling_current_snapshot": false
     },
     {
@@ -46132,8 +47468,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "c301ca1ea7e87270169adfab43d5d6b71f367a483e46049fdb72740176d35188",
-      "bytes": 96867,
+      "sha256": "50e47951076a073970e667711808e4d3bd31cdf7df455c4a105c1f076ae097a1",
+      "bytes": 97387,
       "rolling_current_snapshot": false
     },
     {
@@ -46174,14 +47510,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "2764b807ad0c98c24b3cc5fc55810143a653f1d348d4e78b223dd43f98227c99",
-      "bytes": 833750,
+      "sha256": "a61c6d71fc0db36373800294644b05d8e245407d4b28aaf49ebf09de5675ad7a",
+      "bytes": 834425,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "3f43c502795719bf56a9885f5361534cfd1cb3682ed47e87cf1f0c0b722d4f4f",
-      "bytes": 4609127,
+      "sha256": "c395a8df4ecfca94013485a96b4b542e9e5d367c08958e515172362ee4a12cf0",
+      "bytes": 4611587,
       "rolling_current_snapshot": false
     },
     {
@@ -49737,6 +51073,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/RASTER_PIPELINE_550.json",
+      "sha256": "6d33f1803262358af482551218d8e520584fe6e4ff468307fe63b281f0629a53",
+      "bytes": 58965,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/RAW_DEVELOPMENT_REFERENCES.json",
       "sha256": "47bceb7bc2705f836dba101d58c242912256842facd3721b4d912e36ae3a0a66",
       "bytes": 7693,
@@ -50973,6 +52315,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_550.md",
+      "sha256": "374fcee6b266736b8b0a81458caf6b86138868a0c305baea79b73b366c29806e",
+      "bytes": 2792,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -51369,6 +52717,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_550.json",
+      "sha256": "a12deb060f282fead0e7020a58315190510dc61909c52259636d14ce3f0cf868",
+      "bytes": 1166128,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -51394,8 +52748,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "0fedfe92db89a90117103caa215040a754053a74f3313a42b0a4dcbada701c68",
-      "bytes": 412905,
+      "sha256": "dac4575b85039f9d8785be7cef0f0ebe888fa6af05d3136ee0d48ce3ceba052a",
+      "bytes": 413240,
       "rolling_current_snapshot": false
     },
     {
@@ -53788,9 +55142,9 @@
     }
   ],
   "counts": {
-    "milestones": 549,
-    "evidence_files": 5871,
-    "logs": 1094,
+    "milestones": 550,
+    "evidence_files": 6026,
+    "logs": 1154,
     "missing_explicit_references": 631
   }
 }

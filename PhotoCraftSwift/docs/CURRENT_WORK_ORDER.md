@@ -1,3 +1,7 @@
+**Source checkpoint 550.** Large raster composition and display packing run in independent bands. All 192 checked buffers match build 549 on each architecture. All 400 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_550.md).
+
+Continue Q03 with wide brush preparation and exact Photoshop brush coverage. Qualify physical display and tablet input. Keep the inherited ColorSync and Gradient Map differences open.
+
 **Source checkpoint 549.** Eligible wide dabs sample coverage in parallel. All 146 checked buffers match build 548 and all 398 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_549.md).
 
 Continue Q03 with wide-tile output and canvas publication costs. Qualify physical display and tablet input. Keep Photoshop brush sampling and the inherited ColorSync and Gradient Map differences open.

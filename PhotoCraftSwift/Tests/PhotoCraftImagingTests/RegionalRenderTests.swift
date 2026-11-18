@@ -4,6 +4,30 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class RegionalRenderTests: XCTestCase {
+  func testParallelFlatToneBandsMatchSequentialUnalignedRegion() throws {
+    var document = try CraftDocument(width: 1287, height: 951, depth: .u16)
+    let bounds = IntRect(x: 11, y: 21, width: 1220, height: 889)
+    var source = try Surface(width: document.width, height: document.height, depth: .u16,
+      fill: Pixel(0.11, 0.57, 0.82, 0.63))
+    for y in stride(from: 31, to: document.height, by: 40) {
+      for x in stride(from: 10, to: document.width, by: 72) {
+        source.setPixel(x: x, y: y, Pixel(0.71, Float(y) / 951, Float(x) / 1287, (x + y) % 3 == 0 ? 0 : 1))
+      }
+    }
+    document.layers[0].content = .raster(try source.spillingTiles(to: RasterTileStore()))
+    document.layers.append(Layer(name: "Exposure", content: .adjustment(.exposure(-0.63))))
+    var invert = Layer(name: "Invert", content: .adjustment(.invert))
+    invert.opacity = 0.39
+    document.layers.append(invert)
+
+    let expected = try Renderer.compositeFlat(document.layers, in: document,
+      over: Renderer.emptyCanvas(document), region: bounds)
+    let actual = try XCTUnwrap(FlatToneRenderer.composite(document, region: bounds))
+    try equalBits(actual, expected)
+    XCTAssertEqual(actual.pixel(x: 10, y: 41), .clear)
+    XCTAssertEqual(actual.pixel(x: 51, y: 20), .clear)
+  }
+
   func testFlatToneStackMatchesSequentialFullRegionAndRetainedDamage() throws {
     let bounds = IntRect(x: 7, y: 13, width: 281, height: 269)
     for depth in [PixelDepth.u8, .u16] {

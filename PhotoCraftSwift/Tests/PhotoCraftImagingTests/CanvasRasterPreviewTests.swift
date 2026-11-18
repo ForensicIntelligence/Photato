@@ -16,6 +16,35 @@ final class CanvasRasterPreviewTests: XCTestCase {
     preview.draw(in: context)
     return Data(bytes: context.data!, count: width * height * 4)
   }
+  func testParallelDisplayBandsPreserveUnalignedEdgesAndRetainedImage() throws {
+    let width = 1287, height = 951
+    let bounds = IntRect(x: 11, y: 21, width: 1220, height: 889)
+    let document = try CraftDocument(width: width, height: height, depth: .f32)
+    var original = try Surface(width: width, height: height, depth: .f32,
+      fill: Pixel(0.03, 0.28, 0.49, 0.83), colorEncoding: .linearRGB)
+    original.setLinearPixel(x: 10, y: 22, Pixel(-0.04, 1.7, 0.4, 0.57))
+    original.setLinearPixel(x: 900, y: 916, Pixel(0.8, 0.04, 0.39, 0.93))
+    let preview = try CanvasRasterPreview(base: ColorManagement.displayImage(original, in: document)).scaled(to: 0.125)
+    let retained = try XCTUnwrap(preview.base.dataProvider?.data) as Data
+
+    var updated = original
+    for y in stride(from: 21, to: 910, by: 43) {
+      for x in stride(from: 11, to: 1231, by: 79) {
+        updated.setLinearPixel(x: x, y: y,
+          Pixel(Float(x) / 918 - 0.2, Float(y) / 811, 1.32, Float((x + y) % 17) / 16))
+      }
+    }
+    updated = try updated.spillingTiles(to: RasterTileStore())
+    let snapshot = RenderSnapshot(document: document, surface: updated, update: .region(bounds))
+    let patched = try preview.updating(snapshot, scale: 0.125)
+    let expected = try CanvasRasterPreview(base: ColorManagement.displayImage(updated, in: document)).scaled(to: 0.125)
+
+    XCTAssertEqual(patched.repackedPixels, bounds.width * bounds.height)
+    XCTAssertEqual(patched.bytes, expected.bytes)
+    XCTAssertEqual(patched.presentation?.bytes, expected.presentation?.bytes)
+    XCTAssertEqual(preview.base.dataProvider?.data as Data?, retained)
+  }
+
   func testPatchesMatchFullDisplayIncludingEraseTileEdgesAndFractionalZoom() throws {
     var doc = try CraftDocument(width: 385, height: 257)
     var pixels = try Surface(width: 385, height: 257, fill: Pixel(0.1, 0.5, 0.8, 0.6))

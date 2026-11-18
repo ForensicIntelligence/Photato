@@ -3,7 +3,7 @@ import PhotoCraftCore
 /// Folds consecutive, channel-independent Normal adjustments into the first
 /// raster read. Other stacks use the general sequential layer compositor.
 enum FlatToneRenderer {
-  private struct Stage {
+  private struct Stage: Sendable {
     let adjustment: Adjustment
     let amount: Float
 
@@ -26,8 +26,8 @@ enum FlatToneRenderer {
     }
   }
 
-  private struct ToneTable {
-    struct Entry {
+  private struct ToneTable: Sendable {
+    struct Entry: Sendable {
       let original: UInt32
       let value: Float
     }
@@ -77,7 +77,7 @@ enum FlatToneRenderer {
     let maximum = source.depth == .u8 ? 255 : 65_535
     let table = try ToneTable(maximum: maximum, stages: stages)
     let clear = stages.reduce(Pixel.clear) { $1.apply($0) }
-    return try source.compositingStoredRegion(region) { source in
+    return try source.compositingIndependentStoredRegion(region) { source in
       if source.a <= 0 { return clear }
       if source.a == 1, let r = table.sample(source.r), let g = table.sample(source.g),
         let b = table.sample(source.b) { return Pixel(r, g, b) }
