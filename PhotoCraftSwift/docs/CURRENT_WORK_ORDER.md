@@ -1,3 +1,7 @@
+**Source checkpoint 533.** The ready ordinary Brush canvas starts its first preview with the input event. All 100 selected checks pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_533.md).
+
+Q03 remains open. Measure when the background renderer starts relative to the first input, then address the remaining delay and verify physical presentation. The next Brush settings check is the ordinary round Brush’s 10% factory smoothing, including explicit, omitted and legacy values in both editing entry points.
+
 **Source checkpoint 532.** Reuse completed Float32 composite tiles and preserve unaligned edge samples. All 99 selected methods pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes static checks. Physical display timing and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_532.md).
 
 Continue Q03 with the delay before preview preparation, layered region compositing, and physical input and display measurements.

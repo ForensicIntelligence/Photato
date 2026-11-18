@@ -1,0 +1,525 @@
+{
+  "addedTests": 1,
+  "applicationBuild": 533,
+  "archiveSHA256": "5b43c9cd3f2035bf1eef69cab669d96c076e5c3ff7caec072751b78f69477211",
+  "checkpoint": 533,
+  "fullPhotoshopParity": false,
+  "hosted": {
+    "binaries": {
+      "532": {
+        "diagnosticXCTest": "6125484e48e8895bdf3709f1d9e391b24d1942a76dd8a131a764b12c22a7828d",
+        "originalXCTest": "510bfdbcafc4af0661b0d0093ca702ff13b9f7bd185fe24fc65ddc81e592aae8"
+      },
+      "533": {
+        "diagnosticXCTest": "c9ca50d556e9b6a079c0a7a07d1c3299fc6ab184accceab6d6a9df9f57a1ae21",
+        "originalXCTest": "9d97f325a2427f80eab482f3af4e886286a12b9c20c13477679942191bb6da3d"
+      }
+    },
+    "firstFrameMedians": {
+      "532": {
+        "firstAcceptToDrawMS": 29.451937531121075,
+        "firstAcceptToPrepareMS": 18.1153750163503,
+        "firstAcceptToReadyMS": 25.8951666764915,
+        "firstAcceptToReturnMS": 0.16656250227242708,
+        "firstFeedToDrawMS": 29.58962507545948
+      },
+      "533": {
+        "firstAcceptToDrawMS": 29.144895903300494,
+        "firstAcceptToPrepareMS": 0.20050001330673695,
+        "firstAcceptToReadyMS": 25.425750005524606,
+        "firstAcceptToReturnMS": 0.22300006821751595,
+        "firstFeedToDrawMS": 29.263812524732202
+      }
+    },
+    "fixtureSHA256": "c556d0f58361a8603cac2788b8889923302829e360df55b5c4258740aaec7c8a",
+    "medians": {
+      "532": {
+        "acceptToDraw": {
+          "p50MS": 12.11118750507012,
+          "p95MS": 23.63185415742919
+        },
+        "feedInterval": {
+          "p50MS": 8.306187519337982,
+          "p95MS": 10.258875030558556
+        },
+        "feedToAccept": {
+          "p50MS": 0.019729137420654297,
+          "p95MS": 5.8908541686832905
+        },
+        "feedToDraw": {
+          "p50MS": 14.288875041529536,
+          "p95MS": 24.613499990664423
+        },
+        "inputToPrepare": {
+          "p50MS": 2.307145798113197,
+          "p95MS": 13.384145859163254
+        },
+        "prepareToReady": {
+          "p50MS": 5.941020790487528,
+          "p95MS": 10.401687526609749
+        }
+      },
+      "533": {
+        "acceptToDraw": {
+          "p50MS": 13.814104197081178,
+          "p95MS": 23.645500012207776
+        },
+        "feedInterval": {
+          "p50MS": 8.30927089555189,
+          "p95MS": 10.281708324328065
+        },
+        "feedToAccept": {
+          "p50MS": 0.022895867004990578,
+          "p95MS": 5.708458309527487
+        },
+        "feedToDraw": {
+          "p50MS": 14.340958325192332,
+          "p95MS": 24.719437526073307
+        },
+        "inputToPrepare": {
+          "p50MS": 4.275416664313525,
+          "p95MS": 12.876354216132313
+        },
+        "prepareToReady": {
+          "p50MS": 5.75089588528499,
+          "p95MS": 10.666854155715555
+        }
+      }
+    },
+    "order": [
+      "532",
+      "533",
+      "533",
+      "532",
+      "533",
+      "532",
+      "532",
+      "533"
+    ],
+    "physicalPresentationMeasured": false,
+    "trials": {
+      "532": [
+        {
+          "acceptToDraw": {
+            "p50MS": 15.275291632860899,
+            "p95MS": 23.04412506055087
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 119,
+          "feedInterval": {
+            "p50MS": 8.306833333335817,
+            "p95MS": 10.335500002838671
+          },
+          "feedToAccept": {
+            "p50MS": 0.018124934285879135,
+            "p95MS": 4.852500045672059
+          },
+          "feedToDraw": {
+            "p50MS": 16.4608332561329,
+            "p95MS": 24.891708279028535
+          },
+          "firstAcceptToDrawMS": 29.25054170191288,
+          "firstAcceptToPrepareMS": 17.952541704289615,
+          "firstAcceptToReadyMS": 25.949166738428175,
+          "firstAcceptToReturnMS": 0.17470831517130136,
+          "firstFeedToDrawMS": 29.401666717603803,
+          "firstPrepareDuringInput": false,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 4.503791686147451,
+            "p95MS": 12.42437504697591
+          },
+          "prepareToReady": {
+            "p50MS": 6.0530416667461395,
+            "p95MS": 13.684083358384669
+          }
+        },
+        {
+          "acceptToDraw": {
+            "p50MS": 11.931375018320978,
+            "p95MS": 24.353999993763864
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 118,
+          "feedInterval": {
+            "p50MS": 8.313791709952056,
+            "p95MS": 10.320458328351378
+          },
+          "feedToAccept": {
+            "p50MS": 0.02133334055542946,
+            "p95MS": 5.551458336412907
+          },
+          "feedToDraw": {
+            "p50MS": 12.341833324171603,
+            "p95MS": 25.141958380118012
+          },
+          "firstAcceptToDrawMS": 29.65333336032927,
+          "firstAcceptToPrepareMS": 18.278208328410983,
+          "firstAcceptToReadyMS": 25.841166614554822,
+          "firstAcceptToReturnMS": 0.16083335503935814,
+          "firstFeedToDrawMS": 29.777583433315158,
+          "firstPrepareDuringInput": false,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 1.7566665774211287,
+            "p95MS": 14.343916671350598
+          },
+          "prepareToReady": {
+            "p50MS": 5.9617082588374615,
+            "p95MS": 10.984333348460495
+          }
+        },
+        {
+          "acceptToDraw": {
+            "p50MS": 11.886166641488671,
+            "p95MS": 24.21958325430751
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 119,
+          "feedInterval": {
+            "p50MS": 8.273166604340076,
+            "p95MS": 10.197291732765734
+          },
+          "feedToAccept": {
+            "p50MS": 0.023166649043560028,
+            "p95MS": 7.365541649051011
+          },
+          "feedToDraw": {
+            "p50MS": 16.15808333735913,
+            "p95MS": 24.33529170230031
+          },
+          "firstAcceptToDrawMS": 31.432791613042355,
+          "firstAcceptToPrepareMS": 20.236083306372166,
+          "firstAcceptToReadyMS": 27.856416651047766,
+          "firstAcceptToReturnMS": 0.15091663226485252,
+          "firstFeedToDrawMS": 31.538416631519794,
+          "firstPrepareDuringInput": false,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 1.7762499628588557,
+            "p95MS": 15.323874889872968
+          },
+          "prepareToReady": {
+            "p50MS": 5.920333322137594,
+            "p95MS": 9.819041704759002
+          }
+        },
+        {
+          "acceptToDraw": {
+            "p50MS": 12.290999991819263,
+            "p95MS": 17.75024994276464
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 120,
+          "feedInterval": {
+            "p50MS": 8.305541705340147,
+            "p95MS": 10.167333297431469
+          },
+          "feedToAccept": {
+            "p50MS": 0.014958321116864681,
+            "p95MS": 6.230250000953674
+          },
+          "feedToDraw": {
+            "p50MS": 12.419666745699942,
+            "p95MS": 18.83120834827423
+          },
+          "firstAcceptToDrawMS": 27.43362495675683,
+          "firstAcceptToPrepareMS": 16.61920838523656,
+          "firstAcceptToReadyMS": 24.20758339576423,
+          "firstAcceptToReturnMS": 0.17229164950549603,
+          "firstFeedToDrawMS": 27.562124887481332,
+          "firstPrepareDuringInput": false,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 2.8380416333675385,
+            "p95MS": 4.436916671693325
+          },
+          "prepareToReady": {
+            "p50MS": 5.676583270542324,
+            "p95MS": 9.2042499454692
+          }
+        }
+      ],
+      "533": [
+        {
+          "acceptToDraw": {
+            "p50MS": 16.26049994956702,
+            "p95MS": 24.74750007968396
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 121,
+          "feedInterval": {
+            "p50MS": 8.2998750731349,
+            "p95MS": 10.335791623219848
+          },
+          "feedToAccept": {
+            "p50MS": 0.13595831114798784,
+            "p95MS": 6.751124979928136
+          },
+          "feedToDraw": {
+            "p50MS": 18.70616665109992,
+            "p95MS": 26.74354170449078
+          },
+          "firstAcceptToDrawMS": 29.935833415947855,
+          "firstAcceptToPrepareMS": 0.2460833638906479,
+          "firstAcceptToReadyMS": 26.079375064000487,
+          "firstAcceptToReturnMS": 0.27075002435594797,
+          "firstFeedToDrawMS": 30.071791727095842,
+          "firstPrepareDuringInput": true,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 4.390416666865349,
+            "p95MS": 14.807375031523407
+          },
+          "prepareToReady": {
+            "p50MS": 5.804958404041827,
+            "p95MS": 12.921833316795528
+          }
+        },
+        {
+          "acceptToDraw": {
+            "p50MS": 14.293750049546361,
+            "p95MS": 26.742208283394575
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 121,
+          "feedInterval": {
+            "p50MS": 8.318666717968881,
+            "p95MS": 10.31758333556354
+          },
+          "feedToAccept": {
+            "p50MS": 0.015374971553683281,
+            "p95MS": 4.554791608825326
+          },
+          "feedToDraw": {
+            "p50MS": 14.841541647911072,
+            "p95MS": 26.77324996329844
+          },
+          "firstAcceptToDrawMS": 28.121499926783144,
+          "firstAcceptToPrepareMS": 0.19266665913164616,
+          "firstAcceptToReadyMS": 24.772124947048724,
+          "firstAcceptToReturnMS": 0.21608336828649044,
+          "firstFeedToDrawMS": 28.212208300828934,
+          "firstPrepareDuringInput": true,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 4.2983751045539975,
+            "p95MS": 13.144708354957402
+          },
+          "prepareToReady": {
+            "p50MS": 5.806625005789101,
+            "p95MS": 11.527958326041698
+          }
+        },
+        {
+          "acceptToDraw": {
+            "p50MS": 10.180499986745417,
+            "p95MS": 15.939250006340444
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 121,
+          "feedInterval": {
+            "p50MS": 8.331499993801117,
+            "p95MS": 10.203624959103763
+          },
+          "feedToAccept": {
+            "p50MS": 0.030416762456297874,
+            "p95MS": 7.756291655823588
+          },
+          "feedToDraw": {
+            "p50MS": 10.306374984793365,
+            "p95MS": 18.409666721709073
+          },
+          "firstAcceptToDrawMS": 28.353958390653133,
+          "firstAcceptToPrepareMS": 0.20833336748182774,
+          "firstAcceptToReadyMS": 24.689458427019417,
+          "firstAcceptToReturnMS": 0.22991676814854145,
+          "firstFeedToDrawMS": 28.455833322368562,
+          "firstPrepareDuringInput": true,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 0.46995829325169325,
+            "p95MS": 4.404125036671758
+          },
+          "prepareToReady": {
+            "p50MS": 5.696833366528153,
+            "p95MS": 9.805749985389411
+          }
+        },
+        {
+          "acceptToDraw": {
+            "p50MS": 13.334458344615996,
+            "p95MS": 22.543499944731593
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 120,
+          "feedInterval": {
+            "p50MS": 8.233541622757912,
+            "p95MS": 10.24583331309259
+          },
+          "feedToAccept": {
+            "p50MS": 0.014125020243227482,
+            "p95MS": 4.665791639126837
+          },
+          "feedToDraw": {
+            "p50MS": 13.840375002473593,
+            "p95MS": 22.695333347655833
+          },
+          "firstAcceptToDrawMS": 35.22466670256108,
+          "firstAcceptToPrepareMS": 0.18645834643393755,
+          "firstAcceptToReadyMS": 32.270874944515526,
+          "firstAcceptToReturnMS": 0.20587502513080835,
+          "firstFeedToDrawMS": 35.32041667494923,
+          "firstPrepareDuringInput": true,
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 4.252458224073052,
+            "p95MS": 12.608000077307224
+          },
+          "prepareToReady": {
+            "p50MS": 5.68104162812233,
+            "p95MS": 9.48820833582431
+          }
+        }
+      ]
+    }
+  },
+  "nativeSmoke": {
+    "binarySHA256": "a40bfee3798844ede93f432acf1ac7f294bea07b91b971d8555deb541c478982",
+    "brushEventInPackagedAppVerified": false,
+    "build": 533,
+    "observation": "Computer-use launch expired before confirmation. Fresh inventory showed no build 533 process. Finder rebound but the lengthy connection delays prevented a packaged smoke test.",
+    "packagedLaunchVerified": false,
+    "summary": "The live packaged-app check ended when the computer-use connection expired, so runtime launch of the package remains unverified."
+  },
+  "photoshopFixtures": {
+    "configurations": {
+      "arm": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "9d97f325a2427f80eab482f3af4e886286a12b9c20c13477679942191bb6da3d"
+      },
+      "debug": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "f70187d7b096e022d39a6e99751bea51bf8554c0e3ae10aa51e0b8d135cfff73"
+      },
+      "intel": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "c25e5bc4b4d5caa128717fa691e5ea3741804363ddcc234cfcee94558d3c79e6"
+      }
+    },
+    "independentExportFixtures": 20,
+    "passed": true,
+    "scope": "Owned Photoshop 2026 merged RGBA32 reference fixtures and regional comparison. Full PSD bytes and live Photoshop use are outside this fixture result.",
+    "sourceInputs": 7884
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 100,
+    "debug": 100,
+    "intel": 100
+  },
+  "qualifiedCountPerConfiguration": 100,
+  "softwareRelease": false,
+  "sourceInputs": 7884
+}

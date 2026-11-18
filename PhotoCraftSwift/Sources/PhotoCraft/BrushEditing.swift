@@ -91,28 +91,39 @@ final class BrushGesture {
     point.time = time; extendBrush(point); return point
   }
   func scheduleBrushPreview() {
-    guard brushPreviewTask == nil else { return }
+    guard brushPreviewTask == nil, let gesture = brushGesture else { return }
     let generation=UUID();brushPreviewGeneration=generation
-    // Collect every sample, but publish at most60 previews/second. One worker runs
-    // at a time; slow frames consume the newest batch instead of building a queue.
+    // The ready ordinary canvas can capture the first input immediately. The
+    // renderer still prepares its pixels off the main actor.
+    let firstFrame = brushPreviewLastStart == 0 && tool == .brush && !gesture.mask
+      && interactiveBrushPreview != nil && ordinaryCanvasImage && !rendering
+      ? startBrushPreviewFrame(samples: gesture.points.count) : nil
     brushPreviewTask=Task { [weak self] in
       guard let self else { return }
+      var frame = firstFrame
+      // One preview runs at a time. Keep all input and render the latest batch
+      // when the previous preview and the pacing deadline allow it.
       while !Task.isCancelled,self.brushPreviewGeneration==generation {
+        if let frame {
+          await frame.render?.value
+          guard !Task.isCancelled, self.brushPreviewGeneration == generation,
+            self.brushGesture?.points.count != frame.samples else { break }
+        }
         let delay = self.brushPreviewLastStart - ProcessInfo.processInfo.systemUptime
         if delay > 0 { try? await Task.sleep(for: .seconds(delay)) }
         guard !Task.isCancelled,self.brushPreviewGeneration==generation,let gesture=self.brushGesture else { break }
-        let count=gesture.points.count
-        let now = ProcessInfo.processInfo.systemUptime
-        let interval = self.brushPreviewFrameInterval
-        self.brushPreviewLastStart = self.brushPreviewLastStart > 0 && now < self.brushPreviewLastStart + interval
-          ? self.brushPreviewLastStart + interval : now + interval
-        self.render()
-        await self.renderTask?.value
-        guard !Task.isCancelled,self.brushPreviewGeneration==generation else { break }
-        if self.brushGesture?.points.count==count { break }
+        frame = self.startBrushPreviewFrame(samples: gesture.points.count)
       }
       if self.brushPreviewGeneration==generation { self.brushPreviewTask=nil }
     }
+  }
+  private func startBrushPreviewFrame(samples: Int) -> (samples: Int, render: Task<Void, Never>?) {
+    let now = ProcessInfo.processInfo.systemUptime
+    let interval = brushPreviewFrameInterval
+    brushPreviewLastStart = brushPreviewLastStart > 0 && now < brushPreviewLastStart + interval
+      ? brushPreviewLastStart + interval : now + interval
+    render()
+    return (samples, renderTask)
   }
   func stopBrushPreview() { brushPreviewGeneration=UUID();brushPreviewTask?.cancel();brushPreviewTask=nil;interactiveBrushPreview=nil }
   var brushPreviewCommand:Command? { brushCommand(preview: true) }

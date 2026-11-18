@@ -5,6 +5,37 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class CanvasFrameDiagnosticsTests: XCTestCase {
+  @MainActor func testReadyBrushStartsFirstFrameBeforeReturningAndKeepsTheLatestBatch() async throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let document = try CraftDocument(width: 160, height: 100)
+    let store = EditorStore(document: document, brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush; store.brush.size = 12; store.brush.color = .black
+    await store.renderTask?.value
+    let trace = CanvasFrameTrace(directory: directory)
+    store.canvasFrameTrace = trace
+
+    store.beginBrush(.init(x: 20, y: 25), zoom: 1)
+    XCTAssertEqual(trace.events.map(\.kind), ["input", "prepare"])
+    XCTAssertEqual(trace.events.last?.samples, 1)
+    let startRevision = try XCTUnwrap(trace.events.last?.revision)
+    for index in 1...10 {
+      store.extendBrush(.init(x: Double(20 + 10 * index), y: Double(25 + 4 * index)))
+    }
+    XCTAssertEqual(trace.events.filter { $0.kind == "prepare" }.compactMap(\.revision), [startRevision])
+    await store.brushPreviewTask?.value
+
+    let completed = trace.events.filter { $0.kind == "ready" }
+    XCTAssertEqual(completed.map(\.samples), [1, 11])
+    XCTAssertEqual(Set(completed.compactMap(\.revision)).count, 2)
+    var expected = document
+    try XCTUnwrap(store.brushPreviewCommand).apply(to: &expected)
+    let merged = try Renderer.composite(expected)
+    XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: merged))
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
   @MainActor func testFramePublicationInvalidatesOnlyAttachedCanvasesForCurrentStore() async throws {
     let first = EditorStore(document: try CraftDocument(width: 60, height: 40), brushes: BrushLibrary())
     let second = EditorStore(document: try CraftDocument(width: 60, height: 40), brushes: BrushLibrary())

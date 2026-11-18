@@ -1,3 +1,5 @@
+**Source checkpoint 533.** The ready ordinary Brush canvas starts its first preview with the input event. All 100 selected checks pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical presentation and full Photoshop parity remain open. [Qualification](docs/SOURCE_PUBLICATION_533.md).
+
 **Source checkpoint 532.** Reuse completed Float32 composite tiles and preserve unaligned edge samples. All 99 selected methods pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes static checks. Physical display timing and full Photoshop parity remain open. [Qualification](docs/SOURCE_PUBLICATION_532.md).
 
 **Source checkpoint 531.** Find changed tiles without sorting direct canvas storage. All 90 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The universal package passes its checks. Physical editing cadence and Photoshop byte comparisons remain open. [Qualification](docs/SOURCE_PUBLICATION_531.md).

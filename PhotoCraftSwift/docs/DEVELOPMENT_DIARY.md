@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 533: start the first Brush frame sooner
+
+On a ready canvas, Photato starts preparing the first Brush mark when the input arrives. The following frames still collect every sample. In the 24-megapixel AppKit test, median time from input to preparation fell from 18.12 ms to 0.20 ms. The median time through software drawing was 29.45 ms to 29.14 ms.
+
+All 100 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. The measured stroke matches the full native command before and after commit, with one Undo. Physical display timing and Photoshop Brush pixel comparisons remain open.
+
+[Detailed record](DEVLOG.md#dev-step-533) · [Measurements](SOURCE_PUBLICATION_533.md).
+
 ## 2026-11-17 — Step 532: reuse tiles after recompositing
 
 A small edit used to write every pixel in the composited patch back into the canvas. Photato can now reuse complete tiles and copy just the affected rows at an edge. On the 24-megapixel Brush test, p95 for installing the patch fell from 0.96 ms to 0.16 ms. The composite and preview hashes matched build 531.
@@ -249,14 +257,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:532 -->
+<!-- current-status-step:533 -->
 ## Current development status — 17 November 2026
 
-Build 532 reuses completed composite tiles in canvas previews. All 99 selected tests pass in Debug and both optimized architectures. The universal package passed its checks. The 20 retained Photoshop RGB32 fixtures match on the checked merged samples.
+Build 533 starts preparing the first ordinary Brush preview sooner on a ready canvas. All 100 selected checks passed in Debug and both optimized architectures. The timing record includes the first mark and the continuous stroke, plus exact native commit and Undo checks.
 
-The current work is Q03. Physical 60 fps, actual stylus input, and broader editing and pixel comparisons remain open.
+The current work is Q03. Physical input and physical 60 fps, actual macOS 14 and Intel hardware, and broader Photoshop acceptance remain open.
 
-[Qualification](SOURCE_PUBLICATION_532.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_533.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -994,6 +1002,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 530 | [Send ready previews directly to the AppKit canvas](DEVLOG.md#dev-step-530) |
 | 2026-11-17 | 531 | [Find changed tiles without sorting the canvas](DEVLOG.md#dev-step-531) |
 | 2026-11-17 | 532 | [Reuse recomposited tiles in the canvas](DEVLOG.md#dev-step-532) |
+| 2026-11-17 | 533 | [Start the first Brush frame sooner](DEVLOG.md#dev-step-533) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
