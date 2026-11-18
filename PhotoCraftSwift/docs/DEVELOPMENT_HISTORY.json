@@ -8439,6 +8439,13 @@
       "link": "DEVLOG.md#dev-step-541",
       "section_sha256": "936a7c2d71810cf107e2a3bb3c677ef34096ac2aeb1431faf3ec05ee82d7e327",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-542",
+      "title": "2026-11-17 \u2014 Round Linear and Perceptual gradient transfers consistently",
+      "link": "DEVLOG.md#dev-step-542",
+      "section_sha256": "6adf2b1ebb4c04afc9309fffd32ca97237aa6e576f5eaac4b125dbfcc72935ff",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -10970,8 +10977,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "c74b28039f12944c066ced5f47c4def087cc7318df33135b2e9ef88a0d559c0d",
-      "bytes": 131095,
+      "sha256": "0281517956b8555502d114fd4f1da1fa2bcbbd3e08f01be4d9affce21710ac26",
+      "bytes": 131400,
       "rolling_current_snapshot": false
     },
     {
@@ -10982,8 +10989,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "663cf09caa9a5ea951b55f7a6dfb7e779def95bd6d593a776181f8796f4cf69a",
-      "bytes": 124576,
+      "sha256": "0f206468c11d5bc6166f9fcfc44da98aa677f2a5f70a54bdb396a1bb43268b04",
+      "bytes": 124881,
       "rolling_current_snapshot": false
     },
     {
@@ -31657,9 +31664,27 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/541-hosted-wide-brush/history-comparison01.json",
+      "sha256": "ed76c89b298045401bf9d16bba9ae255c4d844e9afb2c2304544cfd37531dc9e",
+      "bytes": 119,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "artifacts/541-hosted-wide-brush/history-refresh01.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0,
+      "sha256": "a1b2012efa129e7043a9e06e06ed8e2f8f6308a6b45627beb6aa130af5210162",
+      "bytes": 76175,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/history-strict01.log",
+      "sha256": "ac2e2680f672a617fac265bb3abb2f2f6ba020ede8e0f091d9451337f537d54c",
+      "bytes": 556,
       "rolling_current_snapshot": false,
       "test_result": {
         "embedded_start_time": null,
@@ -32341,6 +32366,60 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/541-hosted-wide-brush/source-commit01.log",
+      "sha256": "fb3dea7a52283ffb51ef685e2e3fdb8696034ee7a440431cd783e726adaf481b",
+      "bytes": 425,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/source-publication01.json",
+      "sha256": "f28fd74911d6c2fa63702fa6e4ead1fd97659b4aa9f404e3b6f78e6ea1af4e6f",
+      "bytes": 326,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/source-push01.log",
+      "sha256": "6157c9d849574fc1fd721a152a45caaca177cbd7c5eb5dbab5bbb668710143ed",
+      "bytes": 100,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/source-scan01/redacted.json",
+      "sha256": "12645655f0f36833b7e6fdd573836ac96dd01a587208a571511208a4944561a6",
+      "bytes": 15436,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/source-scan01/review.json",
+      "sha256": "6f67a95ded1b56c546e20e25829550386ecba8d797eda9f281ecca4a6f704b24",
+      "bytes": 3496,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/source-scan01/scanner.log",
+      "sha256": "857b21e4f23684cc902933589146e1983e3c96670df19966ed0580fe0df455ec",
+      "bytes": 110,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
       "path": "artifacts/541-hosted-wide-brush/stage-universal-final.log",
       "sha256": "03a48db0d422ea7d72f0b3739a968efd65338581bf95efabad65a4c3b1e172d7",
       "bytes": 1777,
@@ -32351,6 +32430,12 @@
         "outcome": "no_xctest_summary",
         "scope": "absence of a test summary is not a passing test run"
       }
+    },
+    {
+      "path": "artifacts/541-hosted-wide-brush/staged.json",
+      "sha256": "31f38542b75231ee1ae388fb7a65c8bc5c3a6c3d202c4340e8be054dc466bb87",
+      "bytes": 1109,
+      "rolling_current_snapshot": false
     },
     {
       "path": "artifacts/541-hosted-wide-brush/universal01/archive.log",
@@ -32662,6 +32747,1326 @@
       "path": "artifacts/541-hosted-wide-brush/wide-comparison01/summary.json",
       "sha256": "6de630e308450f7befb85f4686acb0b3a73477e59ae648b131b1362d1370c8c7",
       "bytes": 14132,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/541-arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/541-arm64/sha256.json",
+      "sha256": "b226eec446bf7f401efd9550b9e123da450bbff4c42d09d5fbf963fdb1556f0c",
+      "bytes": 3535,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/541-x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/541-x86_64/sha256.json",
+      "sha256": "b226eec446bf7f401efd9550b9e123da450bbff4c42d09d5fbf963fdb1556f0c",
+      "bytes": 3535,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/542-arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/542-arm64/sha256.json",
+      "sha256": "b226eec446bf7f401efd9550b9e123da450bbff4c42d09d5fbf963fdb1556f0c",
+      "bytes": 3535,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/542-x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/542-x86_64/sha256.json",
+      "sha256": "b226eec446bf7f401efd9550b9e123da450bbff4c42d09d5fbf963fdb1556f0c",
+      "bytes": 3535,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/brush-matrix01/summary.json",
+      "sha256": "78cd8cd0bb924e59691c9adad893e810b60bb0ebc60866b1012c2f2aba36bb80",
+      "bytes": 15134,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/541-arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/541-arm64/sha256.json",
+      "sha256": "6fa75c61b43e0dbce3d9bb74ed97dbd514e9cfeaa81381046433e580b601d45e",
+      "bytes": 13527,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/541-x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/541-x86_64/sha256.json",
+      "sha256": "b0a63b46ffe368185f00fbe298bf891d83477a0b001fba72d69383b9b87149d6",
+      "bytes": 13527,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/542-arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/542-arm64/sha256.json",
+      "sha256": "b0a63b46ffe368185f00fbe298bf891d83477a0b001fba72d69383b9b87149d6",
+      "bytes": 13527,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/542-x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/542-x86_64/sha256.json",
+      "sha256": "b0a63b46ffe368185f00fbe298bf891d83477a0b001fba72d69383b9b87149d6",
+      "bytes": 13527,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/composite-matrix01/summary.json",
+      "sha256": "ea81de61899bc61668f842a2620f727c3436a91743c54c6674fa7f250bc12ec1",
+      "bytes": 58036,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/arm64-compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/arm64-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/arm64.json",
+      "sha256": "9108e43bd46a033807ff2ca1e8abfec319c1df08cd8525b3da05cd8d1d5c6ae6",
+      "bytes": 68198,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/summary.json",
+      "sha256": "72cf49f1c3dacc57843efbcf6dbf88218065d46992262950d6da2bb00b5f8449",
+      "bytes": 161,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/x86_64-compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/x86_64-run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/cube-root-domain01/x86_64.json",
+      "sha256": "9108e43bd46a033807ff2ca1e8abfec319c1df08cd8525b3da05cd8d1d5c6ae6",
+      "bytes": 68198,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/current-fixed-captures/classic-gradient-map-reference.json",
+      "sha256": "0fb2aec4d803e48e2c6023b61c5b62a9c92723406859a833cc14646bc11ad7f9",
+      "bytes": 731,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/current-fixed-captures/gradient-map-photoshop-comparison.json",
+      "sha256": "af047e50f7c7d3eb33ebded462cd20600e34f490f3eb64e28ed9365d2fee6577",
+      "bytes": 624,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/current-fixed-captures/gradient-map-tone-reference.json",
+      "sha256": "c717c59e59d7018ff981492cc4ca60e2b3c05c5debde0c059b4331fbdb8fa9d7",
+      "bytes": 534,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/gradient-timing01/gradient-541-arm64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/gradient-timing01/gradient-541-x86_64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/gradient-timing01/gradient-542-arm64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/gradient-timing01/gradient-542-x86_64.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/gradient-timing01/summary.json",
+      "sha256": "ea3eff6c139a93bd36c742697bf67ec158aa8b3a3234116daf6acfd887d1936a",
+      "bytes": 5321,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/history-refresh01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/independent-black-white01.json",
+      "sha256": "8aa9b0a4aa25315d9e9cdff364e28b1416001f54f247114887ac0d312d1f29c2",
+      "bytes": 706,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/independent-oracle01.json",
+      "sha256": "f9646fd83d0a4854ecca72eae577655cb860f9c462cfd0117d04f96209346733",
+      "bytes": 4207,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/legacy-541/api-arm.log",
+      "sha256": "454993c16989cc2b99e09ac5b282ee2c98b0204bfef3f210b6cb7c1e4224bfb3",
+      "bytes": 1437,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:06:33.178",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 1,
+        "seconds": 2.322,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/legacy-541/api-intel.log",
+      "sha256": "bcaf2f2cb9dfa6d07c16bb1501e54fc960a9cf7eeacd7c16ba695362832f5ad0",
+      "bytes": 1437,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:06:35.674",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 1,
+        "seconds": 0.253,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/legacy-541/arm.log",
+      "sha256": "01684f5670c7f67071505cda2b6e3bfe73154e5a6c284ca8086f69bf99d025f8",
+      "bytes": 1099,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 21:55:19.638",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 0,
+        "seconds": 0.014,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/legacy-541/intel.log",
+      "sha256": "ec60d3e049534925e2dc49a84f747d676415d492a4fbcb1bf605efa15e33c3b9",
+      "bytes": 4703,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 21:55:19.815",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 1,
+        "failures": 1,
+        "seconds": 2.202,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/measure-gradient-final.log",
+      "sha256": "0d05fb356ee75836f7e730bd68f69882e4338cb5df64f138ced53d6731f75721",
+      "bytes": 265,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/packaged-snapshot-final.log",
+      "sha256": "39ab2d46a446ba299708774a86b4c5cf3c08aebff09c23d5ef4d3e5beca90c1b",
+      "bytes": 65,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/packaged-snapshot01/arm64/command.json",
+      "sha256": "b0e0938a051d83daf0ec88d2d32777cac25b110f2ff18483c1f76ca9528d167b",
+      "bytes": 344,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/packaged-snapshot01/arm64/launch.log",
+      "sha256": "070a9573176ce152233b8593454875fb4a26961b8a11cee1a427b8fc2d913b58",
+      "bytes": 174,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/packaged-snapshot01/snapshot.json",
+      "sha256": "6a82f242953a850964a4ecd90a1501466f6b6cb63d3d2b7dc748eb96581bef04",
+      "bytes": 884,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/packaged-snapshot01/x86_64/command.json",
+      "sha256": "c3965c4c64fc56909e36cb0ec3824406ca8c6950ea0370bd6630a8f44427b19e",
+      "bytes": 346,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/packaged-snapshot01/x86_64/launch.log",
+      "sha256": "17321992eee0b2bfdf67b24c374735ab6d51525affa96137df5cb89eda55ffb1",
+      "bytes": 175,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/541-arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/541-arm64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/541-x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/541-x86_64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/542-arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/542-arm64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/542-x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/542-x86_64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-01/summary.json",
+      "sha256": "6fec4388fead2eec8b03e8b81cad420b99653ae77690f0b2b7ae5ff1c10b59c4",
+      "bytes": 3550,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-error-profile01.json",
+      "sha256": "46405078b5f5332625accea00d214b9984bd2e5d31b408570e58c1cd6a2f544c",
+      "bytes": 3928,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/photoshop-rgb8-gray-coordinates01.json",
+      "sha256": "b225f9cefd0da16c8fdec8ae2410c611cf1c4fc4e4678b14083b7dd657cb1d1f",
+      "bytes": 1026,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/preexisting-fixed-captures/gradient-fill-reference.json",
+      "sha256": "e859d07dff976304edd13193c9e4d37d132953ba752552315c14b79aec3339de",
+      "bytes": 1221,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/preexisting-fixed-captures/gradient-stripes-depth-comparison.json",
+      "sha256": "2b611b1d35551edc2f31ffb33ef8036eb079a4226de6b207b8d0f0d65ca0a697",
+      "bytes": 411,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/preexisting-fixed-captures/gradient-stripes-photoshop-comparison.json",
+      "sha256": "bf0f913f63c46404b0ca553d5a1879bb21fdb4ffd660cec1ef501ff7e1472395",
+      "bytes": 447,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/preexisting-fixed-captures/manifest.json",
+      "sha256": "c362d99c779c463d3673820d5f10bf0944d6b1947a4543ffcdc6e0df50c97d7d",
+      "bytes": 711,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/production-ramp01/arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/production-ramp01/arm64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/production-ramp01/summary.json",
+      "sha256": "3fc9c50d687e45aa032f7897667166f64c203a60c1d74a579813d6f3c65536c2",
+      "bytes": 2054,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/production-ramp01/x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/production-ramp01/x86_64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/build-command.json",
+      "sha256": "7dc9ff266d477a8e28a96aba8bf5fa4d9d1d6aacfab0536a76d12f5323a8c096",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/build-process.json",
+      "sha256": "819ab70155db2b1d216b48cf13e86aa7c73b74c28112d9f5c921029cfa138a77",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/build-receipt.json",
+      "sha256": "d82552e6273883dd60230b197ab6e997d7dae22273ca750504eff1d77db171a5",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/build.log",
+      "sha256": "c11a5ca28831471190fd168f6e339bcc112221415b11f1166bb4decb51a88093",
+      "bytes": 74793,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/receipt.json",
+      "sha256": "9986ed94c73e1498c48d6b82e914b534da0afaf85e41c223ffdf69d57d96526c",
+      "bytes": 40040,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/test-command.json",
+      "sha256": "48d70ef6cf2df8e350ca617c012ccdcc4d30e713b9451da4f9013f295f836740",
+      "bytes": 36991,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/test-process.json",
+      "sha256": "47a8edfbcc61abc65e4424c8a186a3d7108bef3838738c45076968f279ed2bfc",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/arm/test.log",
+      "sha256": "b3ec9c830eca54934eab0e885c01fcd62832700619c0c4b48a1f7bd6bb375796",
+      "bytes": 125008,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:12:36.336",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 370,
+        "failures": 1,
+        "seconds": 26.71,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/build-command.json",
+      "sha256": "0191af45d0f13244cbc84284e6744e3663dd0be492251b28ac91d7a715f0b646",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/build-process.json",
+      "sha256": "93ff576508868275bf59c4ddc4effca344b1deb6d5a24eb6ea6800b25fabc113",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/build-receipt.json",
+      "sha256": "fcd6050cdd1157f50887ca36d390504517e01f357319e711bdd5f332d742ca59",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/build.log",
+      "sha256": "ae6f9f16cf51d3442797231bf007c58dff873ae3716191a90ad3f59145cd81c1",
+      "bytes": 1921781,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/receipt.json",
+      "sha256": "dd95a39093b9ab4d5f9882302615f20500764ef94e8fcc30d27a70cd31c586f6",
+      "bytes": 40040,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/test-command.json",
+      "sha256": "1207134650a136f2b3d6600f5b70f9bdaf0c8960fa32b5a81b5089273840594d",
+      "bytes": 36991,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/test-process.json",
+      "sha256": "48340bf7f4579d3be67a5586a4ca936c506bb58fde2a39f55ba514b0b5727540",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/debug/test.log",
+      "sha256": "dfdc48adf92cd42b2d930eac1bd2e411ab8ec0a895802cf07f0370e455e17355",
+      "bytes": 125024,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:04:18.203",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 370,
+        "failures": 1,
+        "seconds": 148.279,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/expected-cases.json",
+      "sha256": "3a6dfd4152467a35cde335679f89f9f58c670d7229334ed8fb02aded74f0a76a",
+      "bytes": 38656,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/fixed-capture-copies/classic-gradient-map-reference.json",
+      "sha256": "0fb2aec4d803e48e2c6023b61c5b62a9c92723406859a833cc14646bc11ad7f9",
+      "bytes": 731,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/fixed-capture-copies/gradient-fill-reference.json",
+      "sha256": "e859d07dff976304edd13193c9e4d37d132953ba752552315c14b79aec3339de",
+      "bytes": 1221,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/fixed-capture-copies/gradient-map-photoshop-comparison.json",
+      "sha256": "af047e50f7c7d3eb33ebded462cd20600e34f490f3eb64e28ed9365d2fee6577",
+      "bytes": 624,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/fixed-capture-copies/gradient-map-tone-reference.json",
+      "sha256": "c717c59e59d7018ff981492cc4ca60e2b3c05c5debde0c059b4331fbdb8fa9d7",
+      "bytes": 534,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/fixed-capture-copies/gradient-stripes-depth-comparison.json",
+      "sha256": "2b611b1d35551edc2f31ffb33ef8036eb079a4226de6b207b8d0f0d65ca0a697",
+      "bytes": 411,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/fixed-capture-copies/gradient-stripes-photoshop-comparison.json",
+      "sha256": "bf0f913f63c46404b0ca553d5a1879bb21fdb4ffd660cec1ef501ff7e1472395",
+      "bytes": 447,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/inputs.json",
+      "sha256": "fa8b51850292613495fb57283a7150b89ee5baa2e7115ebbca1c2d05523db0ba",
+      "bytes": 1148024,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/build-command.json",
+      "sha256": "4a3bd08f4c8ca3645280a27b05b946b6a92f2951d73be5702a3a1514a619c26e",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/build-process.json",
+      "sha256": "db7d79496902d4ef3701518c1c1ca5382d22c367d9f4e645a98cf42cb7930346",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/build-receipt.json",
+      "sha256": "e2b7330311ae24f79aabc50ff5eea24868966da8b3fccf2eb2d15e679448cfce",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/build.log",
+      "sha256": "090ceed4a04c979e7e38272218edb15d918c810b907fe8f51d4ee3d4a9ec96f3",
+      "bytes": 74795,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/receipt.json",
+      "sha256": "4c42d08153439ffe8ba75930e41bf0ecdae0c6a315c0245d0196031274e2d780",
+      "bytes": 40047,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/test-command.json",
+      "sha256": "f9f625310efd4ca3c019dfdcd2897fe5d2a3f43388a8ccdde43ea0e266ca8ccc",
+      "bytes": 37017,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/test-process.json",
+      "sha256": "cea12b016f70c5bef91a3e90b18761641f12d9a40b8de5a88ad3c16c51696ca7",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/intel/test.log",
+      "sha256": "0936e882eb701f0462a052c1f802d4ee5f14d41dca9ca6aaed590384e5c65673",
+      "bytes": 125010,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:13:11.911",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 370,
+        "failures": 1,
+        "seconds": 40.23,
+        "outcome": "failed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification01/qualification.json",
+      "sha256": "298c9b868773e494665b41972026d8f5e3890483b2448aa3f7858f48eba95da2",
+      "bytes": 124875,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/build-command.json",
+      "sha256": "7dc9ff266d477a8e28a96aba8bf5fa4d9d1d6aacfab0536a76d12f5323a8c096",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/build-process.json",
+      "sha256": "20b0c8c8cf10d65fe5064495aafce57f9c42894d094702654ac2c33b7c7d03a2",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/build-receipt.json",
+      "sha256": "e7d786240e288aa4a22395aa9036ff4dc1de75f06cb11fb9e476f8072772eb77",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/build.log",
+      "sha256": "cb9a2d1c31f7ea5c66af04398727db37dcb8ea4260afd66a66ff4ee3232d5759",
+      "bytes": 8832,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/receipt.json",
+      "sha256": "c63792cd831aca047104f42b78d5efa40877aaeb667e162e702ea1f4c3e1bc73",
+      "bytes": 39904,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/test-command.json",
+      "sha256": "48d70ef6cf2df8e350ca617c012ccdcc4d30e713b9451da4f9013f295f836740",
+      "bytes": 36991,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/test-process.json",
+      "sha256": "ac69de4cf8f6495f6cf78e973da14f4e683771cb7fbd33443eec74482ce235a0",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/arm/test.log",
+      "sha256": "6134431afc4b8488604e6979ee1e626eeee982db8e5d2ef7452eec23528a8a3a",
+      "bytes": 124685,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:16:45.475",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 370,
+        "failures": 0,
+        "seconds": 25.172,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/build-command.json",
+      "sha256": "0191af45d0f13244cbc84284e6744e3663dd0be492251b28ac91d7a715f0b646",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/build-process.json",
+      "sha256": "d2faa105f68a8a8a474b478df8cfb9cb2cb0c6aa539fe5b337b0fc84cd95dee7",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/build-receipt.json",
+      "sha256": "ffe0cc0f346ec4d03f2f1ba803c725386c708cc26cd88086c84da189447738e1",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/build.log",
+      "sha256": "8c66af1cd4c0b160822a8782ac3a4204f4ab6aff8ad25820b1e816acff889d52",
+      "bytes": 529,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/receipt.json",
+      "sha256": "67ead8c619814f66d05485bf7a6187857f231e1f42e62dff63a0e049dd40870f",
+      "bytes": 39904,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/test-command.json",
+      "sha256": "1207134650a136f2b3d6600f5b70f9bdaf0c8960fa32b5a81b5089273840594d",
+      "bytes": 36991,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/test-process.json",
+      "sha256": "4e01f98859e901d52997419c6c25a303de285b8b1b26df41755c82c30c0ac0a5",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/debug/test.log",
+      "sha256": "863b92136ba6d70659defd7d2f4672f035c497d4a2cf81726a27c39c65f238b0",
+      "bytes": 124701,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:14:08.793",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 370,
+        "failures": 0,
+        "seconds": 142.706,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/expected-cases.json",
+      "sha256": "3a6dfd4152467a35cde335679f89f9f58c670d7229334ed8fb02aded74f0a76a",
+      "bytes": 38656,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/inputs.json",
+      "sha256": "75ca2aa70e826168b5f8bd6d461d94c3a49fc2a1f7d77444775ea89e6aa8abba",
+      "bytes": 1148024,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/build-command.json",
+      "sha256": "4a3bd08f4c8ca3645280a27b05b946b6a92f2951d73be5702a3a1514a619c26e",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/build-process.json",
+      "sha256": "4e683c1b721c5da6e458757dd8475d45325f9bb50ebd6a1630d751f7ea310af5",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/build-receipt.json",
+      "sha256": "de4161369674d12124a3fc10819e9d2f4e8708658eb216cd0db81de7b133a909",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/build.log",
+      "sha256": "04d0bbaf0abe2f92c2fc1900af4f6d116e0a99e34ac2cb3784a28be89d709e72",
+      "bytes": 8832,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/receipt.json",
+      "sha256": "adbbc6224980672a53d2eab6610db1dddc2efa72fce882ab1bf1981d7e3f2012",
+      "bytes": 39911,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/test-command.json",
+      "sha256": "f9f625310efd4ca3c019dfdcd2897fe5d2a3f43388a8ccdde43ea0e266ca8ccc",
+      "bytes": 37017,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/test-process.json",
+      "sha256": "13ae73e7ef7c7382325e1f06aa0cd358b97ae0082fbf80af5392b9d3c5cb6c42",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/intel/test.log",
+      "sha256": "ac4fd680eef5851aeef1a07ae303f626a8d5d51094800eba25036fb86bf1e065",
+      "bytes": 124687,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-17 22:17:18.898",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 370,
+        "failures": 0,
+        "seconds": 37.722,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/products-sha256.json",
+      "sha256": "6058e6bd3c8772cbbc2eb157a6bf76918dbfa5b96107c45ca16deef0198e8031",
+      "bytes": 449,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/qualification02/qualification.json",
+      "sha256": "65e879161c3ecd994ec2229aa45ebee5269491a3835106fd4705f0e63bb7499f",
+      "bytes": 124442,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/stage-probe01/arm64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/stage-probe01/arm64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/stage-probe01/summary.json",
+      "sha256": "2888cb27d23dfebc4a7c5f2d960ece552ae57528d63d42c046b24bcd9ed2e8ee",
+      "bytes": 2411,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/stage-probe01/x86_64/compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/stage-probe01/x86_64/run.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/stage-universal-final.log",
+      "sha256": "53f2d1cb8673d9be135e9c084ebece043474e23b559ca89fc4c3c84c3f19b2cb",
+      "bytes": 1777,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/universal01/archive.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/universal01/content-sha256.json",
+      "sha256": "b63474283810085806c7a40403fa18c3da276613af053af398892ef9ec544cea",
+      "bytes": 2960,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/universal01/macho.log",
+      "sha256": "88081d52b4138de3145ceffed3fcd23936015e06112d249bde1de0ac7edff32f",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/universal01/payload-comparison.json",
+      "sha256": "28cfc818b08dab5286f9c13287c2eb9c94fe54faf44a6b301388f152e7872f3f",
+      "bytes": 984,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/universal01/stage.log",
+      "sha256": "ef02c197f0a399e4e2d8bd400b2cccaf50ca511b7e4d32e3174d04b83e51c457",
+      "bytes": 193,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/542-gradient-rounding/universal01/staging.json",
+      "sha256": "7df6e9bb8f8aae3bdcb5b964728231315f90d5d35ebdb9dd4af886b6ac8cd2b6",
+      "bytes": 2119,
       "rolling_current_snapshot": false
     },
     {
@@ -34952,8 +36357,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "e3ad5b1a5752fcc5c968a0145eb772a016366933d2aba8c708c2213265ab046f",
-      "bytes": 92190,
+      "sha256": "0e2e085d870216decfd88859853b0005f5d3d802469287aac2661159050cf93a",
+      "bytes": 92714,
       "rolling_current_snapshot": false
     },
     {
@@ -34994,14 +36399,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "b8b5523552113b025153c5ee04e4172926a2c24a6d4098a1e65c5fd6fa54bec2",
-      "bytes": 828725,
+      "sha256": "eb12cffe57fe228dc7da3cbcf52f303caff3b0b6401e9343f847dfa3093df3d9",
+      "bytes": 829403,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "62fb52b416440ab41eee0fcd1d01eb7962bc88e47e3cb38d89ebb0854b78b04b",
-      "bytes": 4591966,
+      "sha256": "ee6d332b1f2c05124b3b7088942b6a48a5ce800931806d42107fa3f2a584013c",
+      "bytes": 4594423,
       "rolling_current_snapshot": false
     },
     {
@@ -36886,6 +38291,12 @@
       "path": "docs/GRADIENT_REFERENCES.json",
       "sha256": "def37d65e61e4a34c58846992dc6bb8e271df1536745f7729c8e8dcefa93c11b",
       "bytes": 6304,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/GRADIENT_ROUNDING_542.json",
+      "sha256": "b886e1968734ccbabf0701a57cf121decd7f2f56459d1d056db20c601fb760b7",
+      "bytes": 95615,
       "rolling_current_snapshot": false
     },
     {
@@ -39709,6 +41120,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_542.md",
+      "sha256": "cc88a6f81eba5e3abecad91db557c4d4dccf788b244d17ab5080728466a0a041",
+      "bytes": 3306,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -40057,6 +41474,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_542.json",
+      "sha256": "1e256b233c8cc6d4f10d2c07d5abbd99da8f4d489d149f52ba74b75050047318",
+      "bytes": 1166004,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -40082,8 +41505,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "9b6e5da9cd4e7796027f2d10c52c4ac544da8f8b8024230017d0c6b60ff30df4",
-      "bytes": 410403,
+      "sha256": "d0f89e1bc8df83a5f445c64d9e28052007ef5278de4ede326d5938de31e9c9b1",
+      "bytes": 410703,
       "rolling_current_snapshot": false
     },
     {
@@ -42470,9 +43893,9 @@
     }
   ],
   "counts": {
-    "milestones": 541,
-    "evidence_files": 4565,
-    "logs": 588,
+    "milestones": 542,
+    "evidence_files": 4735,
+    "logs": 649,
     "missing_explicit_references": 631
   }
 }

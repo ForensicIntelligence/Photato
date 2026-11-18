@@ -263,13 +263,14 @@ public struct GradientRamp: Sendable {
     }
     return value
   }
-  // Keep the original scalar ordering and constants for executable Rust oracle comparisons.
+  // Preserve the ramp's SDR clamp and scalar order while rounding the power
+  // through the same implementation used by the extended sRGB transfer.
   static func linear(_ c: Float) -> Float {
-    c <= 0.04045 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4)
+    c <= 0.04045 ? c / 12.92 : SRGBTransfer.roundedPower((c + 0.055) / 1.055, 2.4)
   }
   static func encoded(_ c: Float) -> Float {
     let c = unit(c)
-    return c <= 0.0031308 ? 12.92 * c : 1.055 * pow(c, 1 / 2.4) - 0.055
+    return c <= 0.0031308 ? 12.92 * c : 1.055 * SRGBTransfer.roundedPower(c, 1 / 2.4) - 0.055
   }
   static func intoSpace(_ p: SIMD3<Float>, method: GradientMethod) -> SIMD3<Float> {
     if method == .classic || method == .stripes { return p }

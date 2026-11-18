@@ -560,7 +560,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 539 | 2026-11-17 | [Process Brush coverage and output by tile](#dev-step-539) |
 | 540 | 2026-11-17 | [Align linear Float32 brush output across architectures](#dev-step-540) |
 | 541 | 2026-11-17 | [Publish retained Brush and flat compositor output by tile](#dev-step-541) |
+| 542 | 2026-11-17 | [Round Linear and Perceptual gradient transfers consistently](#dev-step-542) |
 <!-- history-index:end -->
+
+<a id="dev-step-542"></a>
+
+## 2026-11-17 — Round Linear and Perceptual gradient transfers consistently
+
+Build 541's regular Brush and compositing output matched its predecessor on each platform. Its Gradient Map cases still exposed 18 architecture differences. A separate ramp run isolated these to single-precision sRGB power. The staged comparison reproduced 53 differences on the original Rust interpolation fixtures. The widened power made all 15,633 interpolation RGB words agree on the two runtimes and matched a scalar reconstruction using 80-digit power. Widening the cube root as well made no difference in the 27 legacy ramps or five additional test ramps.
+
+Gradient.swift uses Color.swift's shared rounded power while keeping the GradientRamp SDR clamp, Float32 operands, thresholds, final arithmetic, interpolation and original endpoint behavior. GradientOracleTests.swift checks the independently corrected 53 words against their legacy values and retains exact comparison for every resulting word. The original Rust fixture stays intact. GradientTests.swift checks exact Linear and Perceptual black-to-white samples. The gradient tool, Gradient Fill, Gradient Map, shapes and the shared API render through the same ramp. No schema or format revision is required. [Adobe gradient interpolation](https://helpx.adobe.com/uk/photoshop/using/gradient-interpolation.html).
+
+The original cube root matched across both runtimes for every nonnegative Float32 bit pattern through one. The compiled ramp reproduced all 343,393 checked words. All 144 compositor buffers now agree, including the 18 previously differing Gradient Map outputs. The 32 Brush buffers and all three RGB8 Photoshop fixture comparisons retain their prior pixels. The existing Photoshop differences remain 38, 285 and 270 pixels for Classic, Linear and Perceptual.
+
+The first qualification reproduced the older API assertion of 267 commands against the current registry of 271. GradientCreationWorkflowTests.swift now expects the current count. Build 541 reproduces the assertion, and the two build 542 application hashes match before and after the test correction. The second qualification passed all 370 methods on Debug and both optimized architectures. Both executables in the extracted validation ZIP passed the offscreen check. [Qualification](SOURCE_PUBLICATION_542.md).
 
 <a id="dev-step-541"></a>
 

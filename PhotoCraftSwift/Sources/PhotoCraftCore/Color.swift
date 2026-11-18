@@ -53,7 +53,7 @@ public struct Pixel: Codable, Equatable, Sendable {
 public enum SRGBTransfer {
   /// Resolve the power before returning to the original Float32 arithmetic.
   /// The platform Float32 power rounds some inputs differently on arm64 and x86_64.
-  private static func roundedPower(_ base: Float, _ exponent: Float) -> Float {
+  static func roundedPower(_ base: Float, _ exponent: Float) -> Float {
     Float(pow(Double(base), Double(exponent)))
   }
   public static func linear(_ value: Float) -> Float {

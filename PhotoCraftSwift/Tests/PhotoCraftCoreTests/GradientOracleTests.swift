@@ -4,8 +4,18 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class GradientOracleTests: XCTestCase {
+  private struct PowerCorrection: Decodable {
+    let legacy: UInt32
+    let rounded: UInt32
+  }
+
   func testExecutedRustGeometryInterpolationAndDither() throws {
     var reader = try PatternOracleTests.Reader("gradient-oracle")
+    let correctionURL = try XCTUnwrap(Bundle.module.url(
+      forResource: "gradient-power-corrections", withExtension: "json", subdirectory: "Fixtures"))
+    let corrections = try JSONDecoder().decode([Int: PowerCorrection].self, from: Data(contentsOf: correctionURL))
+    XCTAssertEqual(corrections.count, 53)
+    var usedCorrections = 0
     var geometryCount = 0
     var geometryExact = 0
     var interpolationCount = 0
@@ -19,14 +29,21 @@ final class GradientOracleTests: XCTestCase {
       geometryWorst = max(geometryWorst, abs(actual - expected))
       XCTAssertEqual(actual, expected, accuracy: max(0.000003, abs(expected) * 0.000003))
     }
-    func interpolation(_ actual: Float, _ expected: Float) {
+    func interpolation(_ actual: Float, _ legacy: Float, method: GradientMethod) {
       interpolationCount += 1
+      var expected = legacy
+      if let correction = corrections[interpolationCount] {
+        XCTAssertTrue(method == .linear || method == .perceptual)
+        XCTAssertEqual(legacy.bitPattern, correction.legacy)
+        expected = Float(bitPattern: correction.rounded)
+        usedCorrections += 1
+      }
       if actual.bitPattern == expected.bitPattern { interpolationExact += 1 }
-      interpolationWorst = max(interpolationWorst, abs(actual - expected))
+      interpolationWorst = max(interpolationWorst, abs(actual - legacy))
       if actual.bitPattern != expected.bitPattern {
         print("Gradient interpolation mismatch \(interpolationCount): \(actual) != \(expected)")
       }
-      XCTAssertEqual(actual, expected, accuracy: 0.000003)
+      XCTAssertEqual(actual, legacy, accuracy: 0.000003)
     }
     let cases = Int(reader.u())
     XCTAssertEqual(cases, 120)
@@ -76,7 +93,7 @@ final class GradientOracleTests: XCTestCase {
       let ramp = try GradientRamp(.init(colors: stops, smoothness: smooth, method: method))
       for _ in 0...192 {
         let p = ramp.sample(reader.f())
-        for v in [p.r, p.g, p.b] { interpolation(v, reader.f()) }
+        for v in [p.r, p.g, p.b] { interpolation(v, reader.f(), method: method) }
       }
     }
     let ramp = try GradientRamp(
@@ -117,6 +134,7 @@ final class GradientOracleTests: XCTestCase {
     XCTAssertEqual(ditherExact, 2046)
     XCTAssertEqual(geometryExact, geometryCount)
     XCTAssertEqual(interpolationExact, interpolationCount)
+    XCTAssertEqual(usedCorrections, corrections.count)
     var hsbCount = 0
     XCTAssertEqual(reader.u(), 135)
     for _ in 0..<135 {
@@ -146,7 +164,7 @@ final class GradientOracleTests: XCTestCase {
     print(
       "Gradient Rust geometry: \(geometryExact)/\(geometryCount) exact; max error \(geometryWorst)")
     print(
-      "Gradient Rust interpolation: \(interpolationExact)/\(interpolationCount) exact; max error \(interpolationWorst)"
+      "Gradient interpolation after power correction: \(interpolationExact)/\(interpolationCount) exact; max Rust difference \(interpolationWorst)"
     )
     print("Gradient Rust ramp/dither: \(ditherExact)/2048 exact")
   }

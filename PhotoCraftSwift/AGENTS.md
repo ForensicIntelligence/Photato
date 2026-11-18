@@ -1,3 +1,5 @@
+**Source checkpoint 542.** Linear and Perceptual gradient samples agree across the optimized architectures. All 370 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. The saved Photoshop Gradient Map differences remain open. [Qualification](docs/SOURCE_PUBLICATION_542.md).
+
 **Source checkpoint 541.** The hosted 1,800 px Brush first draw improved from 802 ms to 489 ms. The scoped Brush and compositor pixels match build 540. All 266 selected methods pass in Debug and both optimized architectures. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_541.md).
 
 **Source checkpoint 540.** All 32 tested Brush outputs now match across optimized Apple Silicon and Intel under Rosetta. All 251 selected methods pass in Debug and both optimized architectures. Photoshop Brush pixel comparisons and physical editing cadence remain open. [Qualification](docs/SOURCE_PUBLICATION_540.md).

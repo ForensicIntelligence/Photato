@@ -4,6 +4,23 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class GradientTests: XCTestCase {
+  func testRoundedLinearAndPerceptualSamplesMatchIndependentReference() throws {
+    // Exact binary32 words from the scalar 80-digit reference evaluation.
+    let cases: [(GradientMethod, Int, [UInt32])] = [
+      (.linear, 98, [0x3dee_f20f, 0x3dee_f20f, 0x3dee_f20f]),
+      (.linear, 474, [0x3e9c_d3e0, 0x3e9c_d3e0, 0x3e9c_d3e0]),
+      (.perceptual, 799, [0x3d28_af24, 0x3d28_af26, 0x3d28_af1c]),
+      (.perceptual, 853, [0x3d54_81d8, 0x3d54_81da, 0x3d54_81d0]),
+    ]
+    for (method, index, expected) in cases {
+      var gradient = GradientDefinition.blackToWhite
+      gradient.method = method
+      let p = try GradientRamp(gradient).sample(Float(index)/4096)
+      XCTAssertEqual([p.r.bitPattern, p.g.bitPattern, p.b.bitPattern], expected)
+      XCTAssertEqual(p.a, 1)
+    }
+  }
+
   func testStopsMidpointsOpacityAndCapturedColors() throws {
     var definition = GradientDefinition(
       name: "Editable",
