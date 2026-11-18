@@ -8544,6 +8544,13 @@
       "link": "DEVLOG.md#dev-step-556",
       "section_sha256": "bdac9466b1bb5aa802f2c8cf2c36714881b6b2c90ca2399babcc74b5707b9fae",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-557",
+      "title": "2026-11-18 \u2014 Add Brush and Pencil blend-mode shortcuts",
+      "link": "DEVLOG.md#dev-step-557",
+      "section_sha256": "7deaa2f8d0b7bc5230c7b8139324144d0e869e6f9f3d0c9f7793918f32740fba",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -11075,8 +11082,8 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "20f4c890a04fd5e11e4b96e5c267820bbc12c04da7115b72c6b787691ce9de11",
-      "bytes": 135680,
+      "sha256": "2388fa5df33ca58503fa64e2b8eb3f6ba37062252a45b3a5c0246b203e2e7fc5",
+      "bytes": 135934,
       "rolling_current_snapshot": false
     },
     {
@@ -11087,8 +11094,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "0d1569369c7979cfeb10dfc57370a86bf795336281c5c5318c2149cfa7c9554c",
-      "bytes": 129161,
+      "sha256": "0ecfaa78f9021d278657770ac19c53ad4574d5484b3d45c2bcad3479d569d102",
+      "bytes": 129415,
       "rolling_current_snapshot": false
     },
     {
@@ -50705,8 +50712,8 @@
     },
     {
       "path": "artifacts/556-brush-paint-modes/audit-history.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0,
+      "sha256": "205dd9a893001d7b29375703e525986237dbdd356598cad9faeac5e4c9e18876",
+      "bytes": 109,
       "rolling_current_snapshot": false,
       "test_result": {
         "embedded_start_time": null,
@@ -50806,9 +50813,27 @@
       }
     },
     {
+      "path": "artifacts/556-brush-paint-modes/history-comparison01.json",
+      "sha256": "ed5967eccd7d8ac0737d589a730ab9e7ecef16850a3c6d559af93ad573236cc1",
+      "bytes": 119,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "artifacts/556-brush-paint-modes/history-refresh01.log",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "bytes": 0,
+      "sha256": "0cc2977ed01e0fbb2f4c3fb9cdaa7a8cfa3fc311a351064fff20f06bd27d69e1",
+      "bytes": 76176,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/history-strict01.log",
+      "sha256": "ac2e2680f672a617fac265bb3abb2f2f6ba020ede8e0f091d9451337f537d54c",
+      "bytes": 556,
       "rolling_current_snapshot": false,
       "test_result": {
         "embedded_start_time": null,
@@ -51448,6 +51473,60 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/556-brush-paint-modes/source-commit01.log",
+      "sha256": "d47ac7a24de86cc71d6e3c696a9fe25445bca29988bde646513e8377707d9ece",
+      "bytes": 402,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/source-publication01.json",
+      "sha256": "5a026374621b58c82777a0a281a38a3e2b8fa82e6d859593dc588b9a6fd29f23",
+      "bytes": 326,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/source-push01.log",
+      "sha256": "8d41eeaf304d285d089d00626b2dbf915d7a22f261cbe7b77907d35734bf6261",
+      "bytes": 100,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/source-scan01/redacted.json",
+      "sha256": "1d6d49af80e3ec37328c1a7ad3e918b6f9d2f7508d2f099a6256d40910a4781d",
+      "bytes": 15436,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/source-scan01/review.json",
+      "sha256": "e4404683b3e6b95c71148d032936672a01c53ccdc43c0dee478a75f5e9288131",
+      "bytes": 3496,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/source-scan01/scanner.log",
+      "sha256": "34599fe96209889da72e4c1b84782a335575cef2ee2dc54562eddee6b03330ee",
+      "bytes": 110,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
       "path": "artifacts/556-brush-paint-modes/stage-universal.log",
       "sha256": "70fc69dd2dab4dbeeb3a73f82db6589a80b0cc5cfeef84d5c04c69a830d8f638",
       "bytes": 1777,
@@ -51458,6 +51537,12 @@
         "outcome": "no_xctest_summary",
         "scope": "absence of a test summary is not a passing test run"
       }
+    },
+    {
+      "path": "artifacts/556-brush-paint-modes/staged.json",
+      "sha256": "eb03a276bb344f7e7a036562bf8aa65f51c61e211b25d5ab286c404704c969e5",
+      "bytes": 5369,
+      "rolling_current_snapshot": false
     },
     {
       "path": "artifacts/556-brush-paint-modes/supplemental-debug01/command.json",
@@ -51541,9 +51626,765 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/557-paint-mode-keys/audit-history.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/arm64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/arm64/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/arm64/sha256.json",
+      "sha256": "d493d45a6dee12aa1e368b5506630cfa5bb5a7cf8d6f1599603f1a9baf03af3c",
+      "bytes": 13362,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/summary.json",
+      "sha256": "9c3a04fcdad04752c506189715f8aab5716176ae9c3356e001d1b7cb377643f6",
+      "bytes": 28180,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/x86_64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/x86_64/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01/x86_64/sha256.json",
+      "sha256": "d493d45a6dee12aa1e368b5506630cfa5bb5a7cf8d6f1599603f1a9baf03af3c",
+      "bytes": 13362,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/brush-matrix01.log",
+      "sha256": "c35b6c67762bfe3158b543b082a7c2be1f060c1913c69045f5171e9f8cda02a2",
+      "bytes": 197,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/checkpoint.log",
+      "sha256": "ae0b4ac2afcf0c9475969ed80454ee3c5987fdbeb2fccd0647045ec18c5e4a05",
+      "bytes": 91,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/event-translation.log",
+      "sha256": "b8444b47744af014edc224d3b47e86536586e49009bb13c491258f38e9971204",
+      "bytes": 189,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/focus01.json",
+      "sha256": "d286dcdd7f1b2da742cc49285d20bea4eb4655c94feae88aa66b8ea0a07bbcd8",
+      "bytes": 349,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/focus01.log",
+      "sha256": "9c9b3715b150f7414676406a50dd22e066fe322d63f66dd99d29c5ae27e6a6a6",
+      "bytes": 1545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 05:05:07.488",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 3,
+        "failures": 0,
+        "seconds": 0.286,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/history-refresh01.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/packaged-snapshot.log",
+      "sha256": "39ab2d46a446ba299708774a86b4c5cf3c08aebff09c23d5ef4d3e5beca90c1b",
+      "bytes": 65,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/packaged-snapshot01/arm64/command.json",
+      "sha256": "5b95a6fe2bde798166e7b93fec0a3be108929bab0764d0cc8d0ffd284a90fb23",
+      "bytes": 344,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/packaged-snapshot01/arm64/launch.log",
+      "sha256": "e04f7df9495a51cc1a454378d2dca5f888be2c7199ece41acc0613c55e5d9533",
+      "bytes": 174,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/packaged-snapshot01/snapshot.json",
+      "sha256": "4068cbac7bbd5f74f95c9bad7455c45414180f078ded32ded124917e25b019d4",
+      "bytes": 884,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/packaged-snapshot01/x86_64/command.json",
+      "sha256": "a4527709ace36ed7345572eab94c84db7797443b9fab422dbd775c0c19e34861",
+      "bytes": 346,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/packaged-snapshot01/x86_64/launch.log",
+      "sha256": "1c1974cf97cd5764d65d9dd7381afddcd5d7239c13d29ca1c0c481ce5abeb7a9",
+      "bytes": 175,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01/arm64/build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01/arm64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01/previous-build-exact.json",
+      "sha256": "9ff2dce08ac4060f4fd9b7d2bf89b8d45ba8a2357bfb73f22d66e2ac3da2867b",
+      "bytes": 233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01/summary.json",
+      "sha256": "befe6e37d0c383976a5762c30c1daea29678d3a5b4d0e619ad93437a1530d407",
+      "bytes": 2658,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01/x86_64/build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01/x86_64/capture.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/paint-mode-matrix01.log",
+      "sha256": "a1c4a63b3cce1cc03d45b0b9a3433f6d81c97185c28e19b8d43cf5133e656488",
+      "bytes": 146,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/build-command.json",
+      "sha256": "65ce9c2e2c4f89144ccde1d6a6fff2d489165a59aeb3be70f5efd5f7d9a8039f",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/build-process.json",
+      "sha256": "5d1761e9e1f0c2ce12bf3b9498b179044709969b77b25bc67de86bae59c07883",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/build-receipt.json",
+      "sha256": "e4163c2a6bb428eb421e5f98e03a79ab913ccab8a04f27edf0dbe7cc1c033b1c",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/build.log",
+      "sha256": "01216e5ea77361fcd08b8837613b37596b1d4f720c4e8c6345db57efb2fbe197",
+      "bytes": 1921852,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/receipt.json",
+      "sha256": "f73fa9ba066d8b4c5729190e4e6e2f40b4a4e46b783d5b18cce911a51ae96917",
+      "bytes": 48989,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/test-command.json",
+      "sha256": "df5097b1c2275ae9f6837816d8a65c78e7e3ce4a6df29e7a2a5bdeef3ada6864",
+      "bytes": 45488,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/test-process.json",
+      "sha256": "d6209fb4833ea10aa392f3e6c57223b62a0e5bfc6ce773fbcc3198fcf6c01764",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/debug/test.log",
+      "sha256": "79e98ced01ab40e3cf5c807b8d43e556458a479ec0dff4738bd3648949b26618",
+      "bytes": 162006,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 05:04:46.581",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 454,
+        "failures": 0,
+        "seconds": 169.354,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/expected-cases.json",
+      "sha256": "adccb8fbb6e2becabaff2af769764c7e651382fe8c354f7b4c210593e6f04ad2",
+      "bytes": 47573,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/inputs.json",
+      "sha256": "28a40f0d0ea2096190ad75499d63114799f687ed1900341e885d6fea1953cd3c",
+      "bytes": 1148146,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01/qualification.json",
+      "sha256": "58e552be5e07ab3104904f8b18c35d5caa30e92aeeb5575215a6bd6655f741e9",
+      "bytes": 50958,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification01-fixed-captures/captures.json",
+      "sha256": "e0e7a7998709d6b76e783405bee115d0bbe9b385c9e3d77ae2bea45c3432ef04",
+      "bytes": 132,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/build-command.json",
+      "sha256": "e4b696df345e10ead1553d2d07f5ca074ad86ab9d3f5054c2868b848205432eb",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/build-process.json",
+      "sha256": "ed12768610b270514e72272a645a1ee6a32ca115f01e720b12745d7483689b7a",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/build-receipt.json",
+      "sha256": "58f633957667d4c877f98da724f26b0d2904bfdb362f51578f74965a1c7910e9",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/build.log",
+      "sha256": "dfcc4b9d0193da5a6eb1aae5e462024ecb7fe25f6693e03ad3b49ace506d4b27",
+      "bytes": 74793,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/receipt.json",
+      "sha256": "de6828dc5acc95adc0177fbd75813d683a7ed2e1b1a313e0bdb9464455d3b168",
+      "bytes": 48989,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/test-command.json",
+      "sha256": "642bca67d559218a7326fdd8370990aeaa1bedbd2c49f3486ed8b604690ef385",
+      "bytes": 45488,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/test-process.json",
+      "sha256": "be9dbb438d054f41313e50c728082a0fb64611cee5970cb54a0674083ce59b6a",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/arm/test.log",
+      "sha256": "1d22a7d3b16b205f963b1f7b0c5510731fa5b4842e0094f064c34326e6eda715",
+      "bytes": 161991,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 05:17:18.708",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 454,
+        "failures": 0,
+        "seconds": 34.591,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/expected-cases.json",
+      "sha256": "adccb8fbb6e2becabaff2af769764c7e651382fe8c354f7b4c210593e6f04ad2",
+      "bytes": 47573,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/inputs.json",
+      "sha256": "28a40f0d0ea2096190ad75499d63114799f687ed1900341e885d6fea1953cd3c",
+      "bytes": 1148146,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/build-command.json",
+      "sha256": "8e665758df13bb7e6202ed3ea1e34a617a7c487e978f79a6cc01e056fa3dff49",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/build-process.json",
+      "sha256": "d94389f0cf0460bfa08c95a6f6c88c22ead7993b149097cad6787fabf4cab8a3",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/build-receipt.json",
+      "sha256": "f19064a3b4e1258c47ea2d4dcff3d60b15a9ef5a2c04b52d3572071d14d9e5b4",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/build.log",
+      "sha256": "6921b67cf8c69a475b8456a87f9e75fcfd5ff5735e1aa923ffa4824b9dad2a01",
+      "bytes": 74795,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/receipt.json",
+      "sha256": "c0e857f158df94451177b3bed2017b93e202e10309bca4252632a7c3d384c6be",
+      "bytes": 48996,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/test-command.json",
+      "sha256": "a391bbbbc86bb9bdbe662829c661e133adefd9aea562d82dbb9bb20784ab10a4",
+      "bytes": 45514,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/test-process.json",
+      "sha256": "1f485ec137ca6473f64bc7dcdf4cf3917c0a4736fdbc81b5c5baef275b5722fd",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/intel/test.log",
+      "sha256": "1b39d19840a5c20d5c4fa6513dd80ef90e74c47e1ba9f20d5c59779becf210ee",
+      "bytes": 161993,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 05:18:02.830",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 454,
+        "failures": 0,
+        "seconds": 51.897,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02/qualification.json",
+      "sha256": "2e92d2fde4ce12c5a9c9f7cadb6531c016ddf0af024a9bf7abb78c3159d8a534",
+      "bytes": 101834,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification02-fixed-captures/captures.json",
+      "sha256": "2d628ba7b8f2752ae6fa36e774033a0a3c83d185523888bd95582ec58ff742d6",
+      "bytes": 390,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification03/expected-cases.json",
+      "sha256": "adccb8fbb6e2becabaff2af769764c7e651382fe8c354f7b4c210593e6f04ad2",
+      "bytes": 47573,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification03/inputs.json",
+      "sha256": "28a40f0d0ea2096190ad75499d63114799f687ed1900341e885d6fea1953cd3c",
+      "bytes": 1148146,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification03/products-sha256.json",
+      "sha256": "4f41007cfa136561cde393d497a487ddd3e65da4c1efc7d204e8277965419449",
+      "bytes": 449,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/qualification03/qualification.json",
+      "sha256": "b9dc8978fdba06071b8dc1e429e2d60005754d72dadae57dc324e2b8c42de403",
+      "bytes": 152783,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/stage-universal.log",
+      "sha256": "2847b39290c6445fb0f5341a1f59f06a0900c717a583db320a2ff1b7e0a4525a",
+      "bytes": 1781,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
       "path": "artifacts/557-paint-mode-keys/typecheck01.log",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/universal01/archive.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/universal01/content-sha256.json",
+      "sha256": "a9931308a238f69b51d3792d79ca926b4362666547cfe5bcaf5a9ee4bca3ead3",
+      "bytes": 2960,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/universal01/macho.log",
+      "sha256": "5d2bbb213613e3f892fce827b6f599a2d0417fd407796077ba349bac6d7dcd8a",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/universal01/payload-comparison.json",
+      "sha256": "edc3597b43ea81f7a084bddc936ba6b2ef289db62cfa641e2dc7abc2b27f95f7",
+      "bytes": 998,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/universal01/stage.log",
+      "sha256": "f6514e2fe1fac1f2a1c86d2d2d24b607b7b8f645091841e09f799ea8943226a7",
+      "bytes": 193,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/557-paint-mode-keys/universal01/staging.json",
+      "sha256": "d3751d0093cabceefaf03c317a70f9f17890cbbc37d1fd10d6bc0f55c3c45e1a",
+      "bytes": 2133,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/558-paint-bucket/dense-color-region-audit.json",
+      "sha256": "1edde810eb592f56d41eb086192e4a0a89ad9b52dc6770d34ce1a5e4c205c5f3",
+      "bytes": 797,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-compile.log",
+      "sha256": "4bbff71d1dcf0025c0f192c9933366af0c0130be6dc8c990fce08eda9de63cfb",
+      "bytes": 543,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-compile02.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-compile03.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-compile04.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-probe.log",
+      "sha256": "68c69a339a7820caa3771c953cd1d3839d21c360e2d3811294167d91b41b31b2",
+      "bytes": 83,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-probe02.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-probe03.log",
+      "sha256": "ef013eb7eca4fe447cf2939af6b54236d7aab4bd91fc5349332f193df45bc5bf",
+      "bytes": 110,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/558-paint-bucket/uniform-region-probe04.log",
+      "sha256": "e812872d58795878793995c8333383865897e11a2617e21899ce54ea61bef146",
+      "bytes": 158,
       "rolling_current_snapshot": false,
       "test_result": {
         "embedded_start_time": null,
@@ -53276,8 +54117,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "cc37852867d59ff140a992563c55d4189035863feda3623ea218ec342a39cbcd",
-      "bytes": 648825,
+      "sha256": "f756863ea5aa757f28645a2c988539699ea4044731a0b1d12e13df86de68b604",
+      "bytes": 649289,
       "rolling_current_snapshot": false
     },
     {
@@ -53407,6 +54248,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/BRUSH_MODE_SHORTCUTS_557.json",
+      "sha256": "e0c1c1d316d610f32da1c334dce099d52ee531d6eddf3d0829603681313c3d2d",
+      "bytes": 3116,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/BRUSH_NUMBER_KEYS_552.json",
       "sha256": "ee5114568385f9823c4a15ea6044b6ee2558cb0c0194989b0648623a6de6e769",
       "bytes": 61039,
@@ -53432,8 +54279,8 @@
     },
     {
       "path": "docs/BRUSH_REFERENCES.json",
-      "sha256": "f538cc051007e05c570672ae20b681842a671f8527b582ba4f3376472a27980b",
-      "bytes": 8951,
+      "sha256": "90b38b965b206e8160e3e8f3bcc6b11e6d44e481de99bb015f0d99b138bfea7e",
+      "bytes": 9276,
       "rolling_current_snapshot": false
     },
     {
@@ -53780,8 +54627,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "219f9f89d2a606650bc88156caca4e845c7a83d8bf5d08ae7f116f94190806be",
-      "bytes": 373938,
+      "sha256": "9088fcc53afb610ff9c6939f72f2a971b4e04e30d043c0e7f6486dbe8fabb37c",
+      "bytes": 374043,
       "rolling_current_snapshot": false
     },
     {
@@ -53888,8 +54735,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "1c0b8de45979f22000e5de50781342e19991372a4e09aae4059863d3bf08f419",
-      "bytes": 100607,
+      "sha256": "a71685a621fc6e559607361b5bc9355be9deba53420506b8635ea795666035ce",
+      "bytes": 101186,
       "rolling_current_snapshot": false
     },
     {
@@ -53930,14 +54777,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "70ff20d274758c4a11c316f7f215f4f2c494f594b1f162591aa3dcf49e825ef7",
-      "bytes": 838520,
+      "sha256": "ab33aa1a7bdf63a9add98f4147fbdce12ed138ef6a786b1552b0591cecb3ad08",
+      "bytes": 839218,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "b33635326357e827e6986fa53f1310ec2b0dba243fd72659e95d81e4f9ba16b6",
-      "bytes": 4638947,
+      "sha256": "cd4a50f4b6c6ddf1d6864928016d2e9f1fca22910b62bb69995ae7e54b3ca6aa",
+      "bytes": 4641514,
       "rolling_current_snapshot": false
     },
     {
@@ -58777,6 +59624,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_557.md",
+      "sha256": "1d52dce4478ff5ff479483fbf7bee4f88c459adb933677568f36062731ed0e91",
+      "bytes": 1732,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -59215,6 +60068,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_SNAPSHOT_557.json",
+      "sha256": "84b87939d9a933597fb7bddc369548c92ce122ae355320071d84758001d81348",
+      "bytes": 1166128,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SPOT_HEALING_REFERENCES.json",
       "sha256": "5ca635e3a042824adb3e5cf666f214c0f69e7274a8507bf051b11bfb52eda97e",
       "bytes": 1982,
@@ -59240,8 +60099,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "ea1ea849d93873b0386ec8453a3bdb0d0cbf969b730e674fae1dd13834bc8ef7",
-      "bytes": 414913,
+      "sha256": "258c91295bf2ccd5585e4f49b2ccb29cd86dcba65b9eedbcb592545c0a741c3c",
+      "bytes": 415162,
       "rolling_current_snapshot": false
     },
     {
@@ -59378,8 +60237,8 @@
     },
     {
       "path": "docs/TOOL_CURSOR_REFERENCES.json",
-      "sha256": "7e4b89043f3d25da8dc4733785d432754eda06f6856c4360ab1cb2466b4e6bd8",
-      "bytes": 104874,
+      "sha256": "94eec9b202194275d791cc6ec31ae2919011041ee1664ef8938ab387867d8ccf",
+      "bytes": 105306,
       "rolling_current_snapshot": false
     },
     {
@@ -61646,9 +62505,9 @@
     }
   ],
   "counts": {
-    "milestones": 556,
-    "evidence_files": 6814,
-    "logs": 1422,
+    "milestones": 557,
+    "evidence_files": 6914,
+    "logs": 1462,
     "missing_explicit_references": 631
   }
 }

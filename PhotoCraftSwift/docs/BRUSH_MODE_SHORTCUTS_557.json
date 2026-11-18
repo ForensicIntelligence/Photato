@@ -1,0 +1,115 @@
+{
+  "actionMaximumVersion": 65,
+  "addedMethods": [
+    "PhotoCraftAppTests.BrushWorkflowTests/testBrushBlendKeysSelectAndCycleSharedModesWithoutEditing",
+    "PhotoCraftAppTests.BrushWorkflowTests/testBrushModeKeysRespectFirstResponderAndMatchHTTPStroke",
+    "PhotoCraftAppTests.BrushWorkflowTests/testPaintModeKeysSkipUnavailableModesAndPreserveCapturedStroke"
+  ],
+  "checkpoint": 557,
+  "cycleTools": [
+    "brush",
+    "pencil"
+  ],
+  "directChords": 25,
+  "eventProbe": [
+    "AppKit constructed all 25 direct letter chords without consuming their Option glyph.",
+    "12 [338] [81] 655360",
+    "15 [8240] [82] 655360",
+    "45 [732] [78] 655360",
+    "24 [43] [43] 131072",
+    "27 [95] [95] 131072"
+  ],
+  "fullPhotoshopParity": false,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "6a979c5df5512adebeba254f2226a04e178ca7f315c962030182c4e9299c9051",
+    "binarySHA256": "23ecb5d5abd10238d30da2129c224bef4ea46fa91720bac9d543c690fd70dd70",
+    "build": 557,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122083,
+          "height": 650,
+          "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "paintModeComparison": {
+    "allRetainedAndCompleteExact": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "bytesPerPath": 9755952,
+    "cases": 24,
+    "crossArchitectureExact": true
+  },
+  "paintModePreviousBuild": {
+    "baselineBuild": 556,
+    "candidateBuild": 557,
+    "checks": {
+      "arm64": {
+        "comparedBytes": 19511904,
+        "renderBuffers": 48
+      },
+      "x86_64": {
+        "comparedBytes": 19511904,
+        "renderBuffers": 48
+      }
+    }
+  },
+  "photoshopLiveCheck": "Mac locked",
+  "physicalKeyboardMeasured": false,
+  "presetMaximumVersion": 4,
+  "priorAttempts": [
+    {
+      "name": "qualification01",
+      "passed": true
+    },
+    {
+      "name": "qualification02",
+      "passed": true
+    }
+  ],
+  "rawComparison": {
+    "changesFrom556": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 324394512,
+      "x86_64": 324394512
+    },
+    "configuration": 557,
+    "crossArchitectureDifferences": [],
+    "outputsPerArchitecture": 146
+  },
+  "references": [
+    "https://helpx.adobe.com/content/dam/help/en/photoshop/using/default-keyboard-shortcuts/photoshop-keyboard-shortcuts.pdf",
+    "https://developer.apple.com/design/human-interface-guidelines/keyboards/"
+  ],
+  "selectedMethods": {
+    "arm": 454,
+    "debug": 454,
+    "intel": 454
+  },
+  "softwareRelease": false,
+  "typedCommands": 271
+}

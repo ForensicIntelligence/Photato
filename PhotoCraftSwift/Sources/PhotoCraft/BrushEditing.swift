@@ -42,6 +42,46 @@ enum BrushTipShortcuts {
   static let angleHelp = "Press Left or Right to rotate the tip by 1°. Hold Shift for 15°."
 }
 
+enum BrushModeChoice: Hashable {
+  case blend(BlendMode)
+  case paint(BrushPaintMode)
+
+  var title: String {
+    switch self {
+    case .blend(let mode): mode.rawValue
+    case .paint(let mode): mode.title
+    }
+  }
+
+  static func ordered(for tool: PaintTool) -> [Self] {
+    let special = BrushPaintMode.allCases.filter { $0.supports(tool) }.map(Self.paint)
+    return BlendMode.allCases.flatMap { mode in
+      mode == .dissolve ? [.blend(mode)] + special : [.blend(mode)]
+    }
+  }
+
+  static let directKeys: [String: Self] = [
+    "n": .blend(.normal), "i": .blend(.dissolve), "q": .paint(.behind), "r": .paint(.clear),
+    "k": .blend(.darken), "m": .blend(.multiply), "b": .blend(.colorBurn), "a": .blend(.linearBurn),
+    "g": .blend(.lighten), "s": .blend(.screen), "d": .blend(.colorDodge), "w": .blend(.linearDodge),
+    "o": .blend(.overlay), "f": .blend(.softLight), "h": .blend(.hardLight), "v": .blend(.vividLight),
+    "j": .blend(.linearLight), "z": .blend(.pinLight), "l": .blend(.hardMix),
+    "e": .blend(.difference), "x": .blend(.exclusion), "u": .blend(.hue),
+    "t": .blend(.saturation), "c": .blend(.color), "y": .blend(.luminosity),
+  ]
+
+  var isSpecial: Bool { if case .paint = self { true } else { false } }
+
+  static func unmodifiedKey(_ event: NSEvent) -> String? {
+    (event.charactersIgnoringModifiers ?? event.characters(byApplyingModifiers: []))?.lowercased()
+  }
+
+  static func directChoice(_ event: NSEvent) -> Self? {
+    guard event.modifierFlags.contains([.shift, .option]), let key = unmodifiedKey(event) else { return nil }
+    return directKeys[key]
+  }
+}
+
 struct BrushStrokeTarget: Equatable {
   let tool: EditorTool
   let layer: UUID
@@ -140,6 +180,54 @@ final class BrushGesture {
     return (true, previous == nil
       ? BrushNumberPrefix(setting: setting, digit: digit, timestamp: event.timestamp, tool: tool, revision: brushRevision)
       : nil)
+  }
+
+  func brushModeChoice(for tool: PaintTool) -> BrushModeChoice {
+    let settings = brushOptions
+    if let mode = settings.paintMode, mode.supports(tool) { return .paint(mode) }
+    return .blend(settings.mode)
+  }
+
+  func selectBrushMode(_ choice: BrushModeChoice, for tool: PaintTool) {
+    var settings = brushOptions
+    switch choice {
+    case .blend(let mode):
+      settings.mode = mode; settings.paintMode = nil
+    case .paint(let mode):
+      guard mode.supports(tool), (try? validateBrushPaintDestination()) != nil else { return }
+      settings.paintMode = mode
+    }
+    brushOptions = settings
+  }
+
+  func applyBrushModeKey(_ event: NSEvent) -> Bool {
+    guard canConfigureCanvasBrush, unavailableToolID == nil,
+      let paintTool = tool.paintTool, paintTool == .brush || paintTool == .pencil else { return false }
+    let modifiers = event.modifierFlags.intersection([.shift, .option, .command, .control, .function])
+    if modifiers == [.shift, .option], let choice = BrushModeChoice.directChoice(event) {
+      // Adobe's direct Behind/Clear shortcuts are Brush shortcuts. Consume
+      // either chord on Pencil without falling through to tool selection.
+      if !choice.isSpecial || paintTool == .brush { selectBrushMode(choice, for: paintTool) }
+      return true
+    }
+
+    guard modifiers == .shift else { return false }
+    let base = BrushModeChoice.unmodifiedKey(event)
+    let step: Int
+    if base == "=" || base == "+" || event.characters == "+" { step = 1 }
+    else if base == "-" || event.characters == "_" { step = -1 }
+    else { return false }
+    let modes = BrushModeChoice.ordered(for: paintTool)
+    let start = modes.firstIndex(of: brushModeChoice(for: paintTool)) ?? 0
+    let specialAvailable = (try? validateBrushPaintDestination()) != nil
+    for distance in 1...modes.count {
+      let choice = modes[(start + step * distance + modes.count) % modes.count]
+      if specialAvailable || !choice.isSpecial {
+        selectBrushMode(choice, for: paintTool)
+        break
+      }
+    }
+    return true
   }
 
   func applyBrushTipKey(_ event: NSEvent) -> Bool {

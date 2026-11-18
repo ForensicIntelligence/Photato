@@ -1,3 +1,7 @@
+**Source checkpoint 557.** Shift-plus and Shift-minus cycle the Brush and Pencil Mode picker. Shift-Option letters select documented modes directly. All 454 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_557.md).
+
+Continue with memory-bounded color matching for Paint Bucket and Magic Wand, then Paint Bucket Clear and its shared API, Edit Fill/Stroke, and portable nonraster Brush Actions. Collect exact Photoshop samples when the Mac is available. Live cursor, placement, continuous stroke, keyboard and physical editing checks remain open.
+
 **Source checkpoint 556.** Brush can paint Behind existing pixels or Clear their alpha. Pencil also supports Clear. All 418 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_556.md).
 
 Continue with Adobe's direct Behind and Clear keyboard shortcuts, Clear in Paint Bucket and Edit Fill/Stroke, and portable nonraster Brush Actions. Collect exact Photoshop samples when the Mac is available. Live cursor, placement, continuous stroke, keyboard and physical editing checks remain open.

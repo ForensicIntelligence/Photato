@@ -117,6 +117,12 @@ enum BrushAPI {
       "tools": ["brush", "mixerBrush", "patternStamp", "colorReplacement", "backgroundEraser", "brushModeEraser"],
       "automation": "Use brush.configure with brush.hardness and brush.settings.angle. Positive angles rotate counterclockwise in image space. The same brush values are used by desktop and automation strokes."
     ],
+    "paintModeShortcuts": [
+      "direct": BrushModeChoice.directKeys.mapValues(\.title),
+      "directModifier": "Shift+Option", "selectionContext": "focused Brush or Pencil canvas",
+      "specialDirectTool": "brush", "cycle": ["Shift++", "Shift+-"],
+      "configuration": "brush.configure uses settings.mode and settings.paintMode.",
+    ],
     "paintModes": [
       "field": "brush.settings.paintMode",
       "values": BrushPaintMode.allCases.map(\.rawValue),

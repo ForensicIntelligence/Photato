@@ -243,6 +243,172 @@ final class BrushWorkflowTests:XCTestCase {
       modifiers: shift ? [.numericPad, .function, .shift] : [.numericPad, .function])
   }
 
+  @MainActor func testBrushBlendKeysSelectAndCycleSharedModesWithoutEditing() throws {
+    let store = EditorStore(document: try paintModeDocument())
+    defer { store.renderTask?.cancel() }
+    let canvas = CraftCanvas(store: store)
+    let document = store.document
+    store.tool = .brush
+    let shiftOption: NSEvent.ModifierFlags = [.shift, .option]
+    canvas.keyDown(with: try tipKey("Œ", keyCode: 12, unmodified: "q", modifiers: shiftOption))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .paint(.behind))
+    canvas.keyDown(with: try tipKey("+", keyCode: 24, unmodified: "=", modifiers: .shift))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .paint(.clear))
+    canvas.keyDown(with: try tipKey("_", keyCode: 27, unmodified: "-", modifiers: .shift))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .paint(.behind))
+    canvas.keyDown(with: try tipKey("Â", keyCode: 15, unmodified: "r", modifiers: shiftOption))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .paint(.clear))
+    canvas.keyDown(with: try tipKey("˜", keyCode: 45, unmodified: "n", modifiers: shiftOption))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.normal))
+    canvas.keyDown(with: try tipKey("_", keyCode: 27, unmodified: "-", modifiers: .shift))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.luminosity))
+    canvas.keyDown(with: try tipKey("µ", keyCode: 46, unmodified: "m", modifiers: shiftOption))
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.multiply))
+    canvas.keyDown(with: try tipKey("r", keyCode: 15, modifiers: [.shift, .option, .control]))
+    canvas.keyDown(with: try tipKey("r", keyCode: 15, modifiers: [.shift, .option, .command]))
+    XCTAssertEqual(store.tool, .brush)
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.multiply))
+    let capability = try XCTUnwrap(BrushAPI.capabilities["paintModeShortcuts"] as? [String: Any])
+    let keys = try XCTUnwrap(capability["direct"] as? [String: String])
+    XCTAssertEqual(keys.count, 25)
+    XCTAssertEqual(keys["q"], "Behind")
+    XCTAssertEqual(keys["r"], "Clear")
+    XCTAssertEqual(keys["m"], "Multiply")
+    let direct: [String: String] = [
+      "n": "Normal", "i": "Dissolve", "q": "Behind", "r": "Clear",
+      "k": "Darken", "m": "Multiply", "b": "Color Burn", "a": "Linear Burn",
+      "g": "Lighten", "s": "Screen", "d": "Color Dodge", "w": "Linear Dodge",
+      "o": "Overlay", "f": "Soft Light", "h": "Hard Light", "v": "Vivid Light",
+      "j": "Linear Light", "z": "Pin Light", "l": "Hard Mix", "e": "Difference",
+      "x": "Exclusion", "u": "Hue", "t": "Saturation", "c": "Color", "y": "Luminosity",
+    ]
+    XCTAssertEqual(keys, direct)
+    let foreground = store.brush.color
+    for (key, expected) in direct {
+      canvas.keyDown(with: try tipKey(key.uppercased(), unmodified: key.uppercased(), modifiers: shiftOption))
+      XCTAssertEqual(store.brushModeChoice(for: .brush).title, expected, key)
+      XCTAssertEqual(store.tool, .brush, key)
+    }
+    XCTAssertEqual(store.brush.color, foreground)
+    let cycleStart = store.brushModeChoice(for: .brush)
+    for _ in BrushModeChoice.ordered(for: .brush) {
+      canvas.keyDown(with: try tipKey("+", keyCode: 24, unmodified: "=", modifiers: .shift))
+    }
+    XCTAssertEqual(store.brushModeChoice(for: .brush), cycleStart)
+    XCTAssertEqual(store.document, document)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
+  @MainActor func testPaintModeKeysSkipUnavailableModesAndPreserveCapturedStroke() throws {
+    var document = try paintModeDocument()
+    document.layers[0].protection = .transparency
+    let store = EditorStore(document: document)
+    defer { store.renderTask?.cancel() }
+    let canvas = CraftCanvas(store: store)
+    store.tool = .brush
+    let normal = try tipKey("˜", keyCode: 45, unmodified: "n", modifiers: [.shift, .option])
+    let clear = try tipKey("Â", keyCode: 15, unmodified: "r", modifiers: [.shift, .option])
+    let behind = try tipKey("Œ", keyCode: 12, unmodified: "q", modifiers: [.shift, .option])
+    let next = try tipKey("+", keyCode: 24, unmodified: "=", modifiers: .shift)
+    store.selectBrushMode(.blend(.dissolve), for: .brush)
+    canvas.keyDown(with: clear)
+    XCTAssertEqual(store.tool, .brush)
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.dissolve))
+    canvas.keyDown(with: next)
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.darken))
+
+    document.layers[0].protection = []
+    store.session = EditorSession(document: document)
+    store.tool = .pencil
+    store.selectBrushMode(.blend(.dissolve), for: .pencil)
+    canvas.keyDown(with: behind)
+    canvas.keyDown(with: clear)
+    XCTAssertEqual(store.tool, .pencil)
+    XCTAssertEqual(store.brushModeChoice(for: .pencil), .blend(.dissolve))
+    canvas.keyDown(with: next)
+    XCTAssertEqual(store.brushModeChoice(for: .pencil), .paint(.clear))
+
+    store.tool = .brush
+    canvas.keyDown(with: behind)
+    store.beginBrush(.init(x: 12.5, y: 11.5), zoom: 1)
+    XCTAssertEqual(store.brushGesture?.brush.settings?.paintMode, .behind)
+    canvas.keyDown(with: normal)
+    XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.normal))
+    XCTAssertEqual(store.brushGesture?.brush.settings?.paintMode, .behind)
+    store.cancelBrush()
+    XCTAssertEqual(store.document, document)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
+  @MainActor func testBrushModeKeysRespectFirstResponderAndMatchHTTPStroke() async throws {
+    _ = NSApplication.shared
+    let original = try paintModeDocument(), helper = AutomationTests()
+    try await helper.withService(brushes: BrushLibrary(), pressedMouseButtons: { 0 }) { service, file in
+      let store = file.store
+      store.session = EditorSession(document: original)
+      store.tool = .brush
+      store.brush.size = 6; store.brush.hardness = 1; store.brush.color = .white
+      store.brushOptions.smoothing.amount = 0
+      try service.share(file)
+      let canvas = CraftCanvas(store: store)
+      let rect = NSRect(x: 0, y: 0, width: 320, height: 240)
+      let window = NSWindow(contentRect: rect, styleMask: [.titled], backing: .buffered, defer: false)
+      window.isReleasedWhenClosed = false
+      let content = NSView(frame: rect)
+      window.contentView = content
+      canvas.frame = NSRect(x: 0, y: 24, width: 320, height: 216)
+      content.addSubview(canvas)
+      let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 80, height: 24))
+      content.addSubview(field)
+      defer { store.cancelBrush(); window.contentView = nil; window.close() }
+      let modeKey = try tipKey("Â", keyCode: 15, unmodified: "R", modifiers: [.shift, .option])
+      let normal = try tipKey("˜", keyCode: 45, unmodified: "N", modifiers: [.shift, .option])
+      let revision = service.revision(store)
+      XCTAssertTrue(window.makeFirstResponder(field))
+      XCTAssertFalse(window.firstResponder === canvas)
+      canvas.keyDown(with: modeKey)
+      XCTAssertEqual(store.tool, .brush)
+      XCTAssertNil(store.brushOptions.paintMode)
+      XCTAssertEqual(service.revision(store), revision)
+      XCTAssertTrue(window.makeFirstResponder(canvas))
+      canvas.keyDown(with: modeKey)
+      XCTAssertEqual(canvas.toolCursor, .symbol("eraser"))
+      XCTAssertEqual(store.brushModeChoice(for: .brush), .paint(.clear))
+      let nested = try XCTUnwrap(store.brushState["brush"] as? [String: Any])
+      let settings = try XCTUnwrap(nested["settings"] as? [String: Any])
+      XCTAssertEqual(settings["paintMode"] as? String, "clear")
+      XCTAssertNotEqual(service.revision(store), revision)
+      XCTAssertEqual(store.document, original)
+      XCTAssertTrue(store.session.undoStack.isEmpty)
+      let sample = StrokePoint(x: 17.5, y: 12.5)
+      store.beginBrush(sample, zoom: 1)
+      canvas.keyDown(with: normal)
+      XCTAssertEqual(store.brushModeChoice(for: .brush), .blend(.normal))
+      XCTAssertEqual(store.brushGesture?.brush.settings?.paintMode, .clear)
+      XCTAssertEqual(canvas.toolCursor, .symbol("eraser"))
+      canvas.flagsChanged(with: try XCTUnwrap(NSEvent.keyEvent(with: .flagsChanged,
+        location: .zero, modifierFlags: [], timestamp: 2, windowNumber: window.windowNumber,
+        context: nil, characters: "", charactersIgnoringModifiers: "", isARepeat: false, keyCode: 58)))
+      store.finishBrush(); await store.geometryTask?.value
+      let painted = store.document
+      XCTAssertNotEqual(painted, original)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      XCTAssertEqual(canvas.toolCursor, .crosshair)
+      _ = await store.requestHistory(redo: false).value
+      XCTAssertEqual(store.document, original)
+      let setup: [String: Any] = ["brush": ["settings": ["paintMode": "clear"]]]
+      let stale = try await helper.edit(service, file, "brush.configure", setup, revision: revision)
+      XCTAssertEqual(stale, 409)
+      let configured = try await helper.edit(service, file, "brush.configure", setup)
+      XCTAssertEqual(configured, 200)
+      XCTAssertEqual(store.brushModeChoice(for: .brush), .paint(.clear))
+      let stroke = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json([sample])])
+      XCTAssertEqual(stroke, 200)
+      XCTAssertEqual(store.document, painted)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+    }
+  }
+
   @MainActor func testBrushTipKeysRespectModifiersShapeAndRotationDirection() throws {
     let store = EditorStore(document: try CraftDocument(width: 60, height: 54))
     defer { store.renderTask?.cancel() }

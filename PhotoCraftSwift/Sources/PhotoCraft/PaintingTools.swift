@@ -73,39 +73,20 @@ extension EditorTool {
 }
 
 @MainActor struct BrushPaintModePicker: View {
-  private enum Choice: Hashable { case blend(PhotoCraftCore.BlendMode), paint(BrushPaintMode) }
   @Bindable var store: EditorStore
   let tool: PaintTool
 
-  private var selection: Binding<Choice> {
-    Binding(get: {
-      let settings = store.brushOptions
-      if let mode = settings.paintMode, mode.supports(tool) { return .paint(mode) }
-      return .blend(settings.mode)
-    }, set: { choice in
-      var settings = store.brushOptions
-      switch choice {
-      case .blend(let mode): settings.mode = mode; settings.paintMode = nil
-      case .paint(let mode):
-        guard mode.supports(tool), (try? store.validateBrushPaintDestination()) != nil else { return }
-        settings.paintMode = mode
-      }
-      store.brushOptions = settings
-    })
-  }
-
   var body: some View {
     let available = (try? store.validateBrushPaintDestination()) != nil
+    let selection = Binding(get: { store.brushModeChoice(for: tool) },
+                            set: { store.selectBrushMode($0, for: tool) })
     Picker("Mode:", selection: selection) {
-      ForEach(BlendMode.allCases, id: \.self) { mode in
-        Text(mode.rawValue).tag(Choice.blend(mode))
-        if mode == .dissolve {
-          ForEach(BrushPaintMode.allCases.filter { $0.supports(tool) }, id: \.self) { mode in
-            Text(mode.title).tag(Choice.paint(mode)).disabled(!available)
-          }
-        }
+      ForEach(BrushModeChoice.ordered(for: tool), id: \.self) { choice in
+        Text(choice.title).tag(choice).disabled(choice.isSpecial && !available)
       }
-    }.frame(width: 145)
+    }
+    .frame(width: 145)
+    .help("Use Shift with plus or minus to cycle through modes.")
   }
 }
 

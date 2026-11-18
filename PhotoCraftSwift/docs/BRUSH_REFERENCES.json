@@ -173,5 +173,11 @@
     "evidence": "BRUSH_PAINT_MODES_556.json",
     "scope": "Behind, Clear and momentary Brush Clear on eligible pixel destinations.",
     "open": "Exact Photoshop compositing, live input and portable Actions for nonraster Brush targets."
+  },
+  "brush_mode_shortcuts_checkpoint_557": {
+    "qualification": "SOURCE_PUBLICATION_557.md",
+    "evidence": "BRUSH_MODE_SHORTCUTS_557.json",
+    "scope": "Brush and Pencil Mode cycle and 25 direct chords on a focused canvas.",
+    "open": "Live cycle order, physical layout behavior and layer or other tool shortcuts."
   }
 }

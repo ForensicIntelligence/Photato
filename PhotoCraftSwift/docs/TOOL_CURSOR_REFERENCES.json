@@ -1791,5 +1791,13 @@
     "api": "brush.settings.paintMode routes to the same compositor through paint.stroke and paint.tool.",
     "tested_modifier_combinations": 16,
     "open": "Native Photoshop artwork and live input transitions."
+  },
+  "brush_mode_shortcuts_557": {
+    "step": 557,
+    "reference": "docs/BRUSH_MODE_SHORTCUTS_557.json",
+    "scope": "Direct mode changes update the next Clear cursor without changing an in-progress stroke.",
+    "api": "brush.settings.paintMode routes to the same compositor through paint.stroke and paint.tool.",
+    "direct_chords": 25,
+    "open": "Native Photoshop live input, physical layouts and exact pointer artwork."
   }
 }

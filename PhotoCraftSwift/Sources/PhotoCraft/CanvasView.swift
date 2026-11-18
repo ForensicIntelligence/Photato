@@ -1287,7 +1287,7 @@ struct CanvasHost: NSViewRepresentable {
         temporaryClearKey = event.keyCode
         return
       }
-      if store.applyBrushTipKey(event) { return }
+      if store.applyBrushModeKey(event) || store.applyBrushTipKey(event) { return }
       let result = store.applyBrushNumber(event, following: prefix)
       brushNumberPrefix = result.prefix
       if result.handled { return }
@@ -1295,7 +1295,9 @@ struct CanvasHost: NSViewRepresentable {
     if store.nudgeSelectionBorder(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     if store.nudgeSelectedPixels(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     if store.nudgeWholeLayers(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
-    guard !event.modifierFlags.contains(.command),
+    // A mode chord passed through by a focused field or an unavailable mode
+    // command must never act as an unmodified tool-selection or color key.
+    guard !event.modifierFlags.contains(.command), BrushModeChoice.directChoice(event) == nil,
       let key = event.charactersIgnoringModifiers?.lowercased()
     else {
       super.keyDown(with: event)
