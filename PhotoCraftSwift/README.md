@@ -1,3 +1,5 @@
+**Source checkpoint 554.** The four factory Round presets now change smoothly from soft feathering to an opaque core with a narrow edge. The aligned nonzero-hardness samples improved from a worst alpha difference of 161 to 12 of 255 levels. All 411 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_554.md).
+
 **Source checkpoint 553.** Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_553.md).
 
 **Source checkpoint 552.** Canvas numbers set Brush opacity and flow, including Airbrush. All 404 selected tests passed in three configurations. Saved Photoshop alpha establishes a wider required brush footprint. [Qualification](docs/SOURCE_PUBLICATION_552.md).

@@ -144,7 +144,7 @@ public struct BrushSymmetry:Codable,Equatable,Sendable {
   public init() {}
 }
 public struct BrushSettings:Codable,Equatable,Sendable {
-  public enum RoundTipProfile:String,Codable,CaseIterable,Sendable { case wideSoft }
+  public enum RoundTipProfile:String,Codable,CaseIterable,Sendable { case wideSoft, calibratedRound }
 
   public var tip:BrushBitmap?
   public var roundTipProfile:RoundTipProfile?

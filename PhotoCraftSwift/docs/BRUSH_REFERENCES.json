@@ -139,5 +139,27 @@
     "profile": "wideSoft",
     "maximum_alpha_level_error": 3,
     "open": "Exact placement, nonzero hardness, continuous strokes and physical tablet input."
+  },
+  "round_hardness_checkpoint_554": {
+    "qualification": "SOURCE_PUBLICATION_554.md",
+    "evidence": "WIDE_ROUND_HARDNESS_554.json",
+    "profile": "calibratedRound",
+    "hardness_percent": [
+      0,
+      50,
+      75,
+      100
+    ],
+    "training_diameters_px": [
+      7,
+      12,
+      21
+    ],
+    "holdout_diameters_px": [
+      13,
+      41
+    ],
+    "aligned_worst_nonzero_hardness_alpha_error": 12,
+    "open": "Point placement, other hardness values, continuous strokes, current live defaults and physical input."
   }
 }

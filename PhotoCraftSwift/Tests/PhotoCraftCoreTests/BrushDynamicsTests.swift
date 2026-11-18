@@ -2,6 +2,48 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class BrushDynamicsTests:XCTestCase {
+  func testCalibratedHardnessChangesContinuouslyAndMatchesAcrossRasterPaths() throws {
+    let center = StrokePoint(x: 64.25, y: 60.75)
+    var brush = Brush()
+    brush.color = .white
+    brush.size = 41
+    brush.settings = .init()
+    brush.settings?.roundTipProfile = .calibratedRound
+
+    for depth in PixelDepth.allCases {
+      let source = try Surface(width: 130, height: 117, depth: depth, fill: .clear)
+      func paint(_ hardness: Float, profile: BrushSettings.RoundTipProfile? = .calibratedRound) throws -> Surface {
+        var result = source, dab = brush
+        dab.hardness = hardness
+        dab.settings?.roundTipProfile = profile
+        try BrushPainter.stroke(surface: &result, points: [center], brush: dab)
+        return result
+      }
+      let soft = try paint(0)
+      XCTAssertEqual(try soft.rgbaData(depth: depth), try paint(0, profile: .wideSoft).rgbaData(depth: depth))
+      let nearSoft = try paint(0.001)
+      XCTAssertEqual(soft.pixel(x: 82, y: 60).a, nearSoft.pixel(x: 82, y: 60).a, accuracy: 0.01)
+      let medium = try paint(0.5)
+      XCTAssertGreaterThan(medium.pixel(x: 82, y: 60).a, soft.pixel(x: 82, y: 60).a)
+      XCTAssertGreaterThan(medium.pixel(x: 89, y: 60).a, 0)
+      XCTAssertEqual(try paint(0.499).pixel(x: 82, y: 60).a, try paint(0.501).pixel(x: 82, y: 60).a, accuracy: 0.01)
+      XCTAssertEqual(try paint(0.749).pixel(x: 82, y: 60).a, try paint(0.751).pixel(x: 82, y: 60).a, accuracy: 0.01)
+      for hardness: Float in [0.5, 0.75, 1] {
+        var dab = brush, scalar = source
+        dab.hardness = hardness
+        let offset = StrokePoint(x: center.x - 7, y: center.y + 16)
+        try BrushPainter.stroke(surface: &scalar, points: [offset], brush: dab, transform: .translation(-7, 16))
+        let retained = try BrushStrokeSession(surface: source, brush: dab)
+        let held = try retained.append([center])
+        let expected = try paint(hardness).rgbaData(depth: depth)
+        XCTAssertEqual(try held.rgbaData(depth: depth), expected)
+        XCTAssertEqual(try scalar.rgbaData(depth: depth), expected)
+      }
+      // A stored v2 preset still uses its former renderer above zero hardness.
+      XCTAssertEqual(try paint(0.5, profile: .wideSoft).rgbaData(depth: depth), try paint(0.5, profile: nil).rgbaData(depth: depth))
+    }
+  }
+
   func testWideSoftTailMatchesScalarAndRetainedPathsAtAllDepths() throws {
     var brush = Brush()
     brush.size = 41

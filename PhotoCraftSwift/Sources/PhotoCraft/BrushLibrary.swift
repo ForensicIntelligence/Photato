@@ -18,7 +18,12 @@ import PhotoCraftImaging
           var previous = factory
           previous.brush.settings?.roundTipProfile = nil
           // Upgrade untouched copies of the old factory preset. Keep edited copies and deletions.
-          if let index = saved.presets.firstIndex(of: previous) { saved.presets[index] = factory }
+          if let index = saved.presets.firstIndex(of: previous) {
+            saved.presets[index] = factory
+          } else if factory.brush.hardness == 0 {
+            previous.brush.settings?.roundTipProfile = .wideSoft
+            if let index = saved.presets.firstIndex(of: previous) { saved.presets[index] = factory }
+          }
         }
         saved.version = max(saved.version, saved.requiredVersion)
         file = saved

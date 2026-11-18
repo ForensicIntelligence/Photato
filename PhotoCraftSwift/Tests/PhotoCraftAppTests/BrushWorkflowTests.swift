@@ -8,25 +8,38 @@ import PhotoCraftImaging
 final class BrushWorkflowTests:XCTestCase {
   @MainActor func testWideSoftMigratesOnlyUntouchedFactoryCopies() throws {
     let factory = BrushPresets.builtins()
-    var saved = factory.filter { $0.brush.settings?.roundTipProfile != nil }
-    XCTAssertEqual(saved.count, 2)
-    for index in saved.indices { saved[index].brush.settings?.roundTipProfile = nil }
-    saved[1].name = "My pressure brush"
+    var saved = factory.filter { $0.brush.settings?.roundTipProfile == .calibratedRound }
+    XCTAssertEqual(saved.count, 4)
+    saved.removeAll { $0.name == "Hard Round Pressure Size" }
+    for index in saved.indices {
+      let wasSoft = saved[index].brush.hardness == 0
+      saved[index].brush.settings?.roundTipProfile = wasSoft ? .wideSoft : nil
+    }
+    saved[2].name = "My pressure brush"
     let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: url) }
     let data = try BrushPresetFile(presets: saved).encoded()
     try data.write(to: url)
     let library = BrushLibrary(persistenceURL: url)
-    XCTAssertEqual(library.file.version, 2)
-    XCTAssertEqual(library.file.presets.count, 2)
+    XCTAssertEqual(library.file.version, 3)
+    XCTAssertEqual(library.file.presets.count, 3)
     XCTAssertEqual(library.file.presets[0], factory.first { $0.id == saved[0].id })
-    XCTAssertEqual(library.file.presets[1], saved[1])
+    XCTAssertEqual(library.file.presets[1], factory.first { $0.id == saved[1].id })
+    XCTAssertEqual(library.file.presets[2], saved[2])
     XCTAssertEqual(try Data(contentsOf: url), data)
-    try library.save(saved[1])
+    try library.save(saved[2])
     XCTAssertEqual(try BrushPresetFile.decode(Data(contentsOf: url)), library.file)
   }
 
   @MainActor func testWideSoftDesktopHTTPUndoAndVersionedActionReplay() async throws {
+    try await checkRoundProfile(.wideSoft, version: 63)
+  }
+
+  @MainActor func testCalibratedRoundDesktopHTTPUndoAndVersionedActionReplay() async throws {
+    try await checkRoundProfile(.calibratedRound, version: 64)
+  }
+
+  @MainActor private func checkRoundProfile(_ profile: BrushSettings.RoundTipProfile, version: Int) async throws {
     let original = try CraftDocument(width: 128, height: 96)
     let store = EditorStore(document: original, actions: ActionLibrary(), brushes: BrushLibrary())
     defer { store.cancelBrush(); store.renderTask?.cancel() }
@@ -35,7 +48,9 @@ final class BrushWorkflowTests:XCTestCase {
     try store.selectBrush(preset.id)
     store.brush.color = .black
     store.brushOptions.smoothing.amount = 0
-    XCTAssertEqual(store.brushOptions.roundTipProfile, .wideSoft)
+    XCTAssertEqual(store.brushOptions.roundTipProfile, .calibratedRound)
+    store.brushOptions.roundTipProfile = profile
+    if profile == .calibratedRound { store.brush.hardness = 0.5 }
     let activeBrush = store.brush
     let point = StrokePoint(x: 64.5, y: 48.5)
     try store.startRecordingAction(name: "Wide Soft", set: "Test")
@@ -48,9 +63,9 @@ final class BrushWorkflowTests:XCTestCase {
     let action = try store.stopRecordingAction()
     let data = try store.actions.exportFile(action.id)
     let decoded = try ActionLibraryFile.decode(data)
-    XCTAssertEqual(decoded.version, 63)
+    XCTAssertEqual(decoded.version, version)
     var old = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-    old["version"] = 62
+    old["version"] = version - 1
     XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject: old)))
     var replay = original
     try XCTUnwrap(decoded.actions.first).apply(to: &replay)
@@ -71,7 +86,7 @@ final class BrushWorkflowTests:XCTestCase {
       XCTAssertEqual(status, 200)
       let state = try XCTUnwrap(file.store.brushState["brush"] as? [String: Any])
       let settings = try XCTUnwrap(state["settings"] as? [String: Any])
-      XCTAssertEqual(settings["roundTipProfile"] as? String, "wideSoft")
+      XCTAssertEqual(settings["roundTipProfile"] as? String, profile.rawValue)
       status = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json([point])])
       XCTAssertEqual(status, 200)
       XCTAssertTrue(file.store.document == painted)

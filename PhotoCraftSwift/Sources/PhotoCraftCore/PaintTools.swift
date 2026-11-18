@@ -109,7 +109,7 @@ public struct RecordedPencilStroke: Codable, Sendable {
   private let brush: Brush
   private let autoErase: Bool
 
-  public var retainsRoundTipProfile: Bool { brush.settings?.roundTipProfile != nil }
+  public var roundTipProfile: BrushSettings.RoundTipProfile? { brush.settings?.roundTipProfile }
 
   init?(recording request: PaintToolRequest, in document: CraftDocument) {
     switch request.target {

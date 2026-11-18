@@ -29,8 +29,11 @@ public struct BrushPresetFile:Codable,Equatable,Sendable {
   public var presets:[BrushPreset]
   public init(presets:[BrushPreset]) { self.presets=presets;version=requiredVersion }
   public static let maximumBytes=64*1024*1024
-  public static let maximumVersion=2
-  public var requiredVersion:Int { presets.contains { $0.brush.settings?.roundTipProfile != nil } ? 2 : 1 }
+  public static let maximumVersion=3
+  public var requiredVersion:Int {
+    if presets.contains(where: { $0.brush.settings?.roundTipProfile == .calibratedRound }) { return 3 }
+    return presets.contains { $0.brush.settings?.roundTipProfile != nil } ? 2 : 1
+  }
   public func validate() throws {
     guard (requiredVersion...Self.maximumVersion).contains(version),
       presets.count<=512,Set(presets.map(\.id)).count==presets.count else {
@@ -77,10 +80,10 @@ public enum BrushPresets {
       let index=out.count+1,id=UUID(uuidString:String(format:"18900000-0000-4000-8000-%012d",index))!
       var preset=BrushPreset(id:id,name:name,group:group,brush:brush);preset.includeToolSettings=false;out.append(preset)
     }
-    add("Hard Round") { _ in }
-    add("Soft Round") { $0.hardness=0;$0.size=45;$0.settings!.roundTipProfile = .wideSoft }
-    add("Hard Round Pressure Size") { $0.settings!.shape.enabled=true;$0.settings!.shape.size.control = .penPressure }
-    add("Soft Round Pressure Opacity") { $0.hardness=0;$0.settings!.roundTipProfile = .wideSoft;$0.settings!.transfer.enabled=true;$0.settings!.transfer.opacity.control = .penPressure }
+    add("Hard Round") { $0.settings!.roundTipProfile = .calibratedRound }
+    add("Soft Round") { $0.hardness=0;$0.size=45;$0.settings!.roundTipProfile = .calibratedRound }
+    add("Hard Round Pressure Size") { $0.settings!.roundTipProfile = .calibratedRound;$0.settings!.shape.enabled=true;$0.settings!.shape.size.control = .penPressure }
+    add("Soft Round Pressure Opacity") { $0.hardness=0;$0.settings!.roundTipProfile = .calibratedRound;$0.settings!.transfer.enabled=true;$0.settings!.transfer.opacity.control = .penPressure }
     add("Calligraphy Flat") { $0.settings!.roundness=0.2;$0.settings!.angle=45;$0.settings!.spacing=0.05 }
     add("Chalk","Dry Media") { $0.size=40;$0.settings!.tip=try? generatedTip("chalk");$0.settings!.shape.enabled=true;$0.settings!.shape.angle.jitter=1;$0.settings!.texture.enabled=true;$0.settings!.texture.depth=0.6 }
     add("Flat Bristle","Dry Media") { $0.size=40;$0.settings!.tip=try? generatedTip("bristle");$0.settings!.spacing=0.08;$0.settings!.shape.enabled=true;$0.settings!.shape.angle.control = .direction }

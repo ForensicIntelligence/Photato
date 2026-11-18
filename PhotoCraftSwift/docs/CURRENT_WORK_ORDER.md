@@ -1,3 +1,7 @@
+**Source checkpoint 554.** The four factory Round presets now change smoothly from soft feathering to an opaque core with a narrow edge. The aligned nonzero-hardness samples improved from a worst alpha difference of 161 to 12 of 255 levels. All 411 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_554.md).
+
+Continue B01 with controlled subpixel placement, independent intermediate hardness settings and continuous stroke output. Verify live Brush defaults and tablet input. The documented hardness and angle shortcuts can proceed independently. Physical cadence, ColorSync and Gradient Map differences remain open.
+
 **Source checkpoint 553.** Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_553.md).
 
 Continue B01 with controlled subpixel captures and the transition from zero to higher hardness. Validate hard-tip edge coverage, continuous strokes and native-to-Photoshop defaults. Physical display and tablet timing, ColorSync and Gradient Map differences remain open.

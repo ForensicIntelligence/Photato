@@ -193,7 +193,7 @@ final class LensDefaultWorkflowTests: XCTestCase {
         if let png = bitmap.representation(using: .png, properties: [:]) { try png.write(to: URL(fileURLWithPath: raw).appendingPathComponent("lens-defaults-\(scheme).png")) }
       }
     }
-    XCTAssertEqual(AutomationCommand.definitions.count, 267); XCTAssertEqual(ActionLibraryFile.maximumVersion, 63)
+    XCTAssertEqual(AutomationCommand.definitions.count, 267); XCTAssertEqual(ActionLibraryFile.maximumVersion, 64)
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: LensDefaultsAPI.capabilities))
     XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: LensDefaultsAPI.commandSchema))
 

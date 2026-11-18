@@ -4,7 +4,15 @@ import XCTest
 
 final class BrushPresetCodecTests: XCTestCase {
   func testWideSoftNativeVersionTipLockAndABRTransport() throws {
-    let preset = try XCTUnwrap(BrushPresets.builtins().first { $0.name == "Soft Round" })
+    let calibrated = try XCTUnwrap(BrushPresets.builtins().first { $0.name == "Soft Round" })
+    let current = BrushPresetFile(presets: [calibrated])
+    XCTAssertEqual(current.version, 3)
+    XCTAssertEqual(try BrushPresetFile.decode(current.encoded()), current)
+    var oldVersion = current
+    oldVersion.version = 2
+    XCTAssertThrowsError(try BrushPresetFile.decode(JSONEncoder().encode(oldVersion)))
+    var preset = calibrated
+    preset.brush.settings?.roundTipProfile = .wideSoft
     var legacy = preset
     legacy.brush.settings?.roundTipProfile = nil
     let previous = BrushPresetFile(presets: [legacy])

@@ -1,0 +1,1960 @@
+{
+  "actionMaximumVersion": 64,
+  "addedMethods": [
+    "PhotoCraftAppTests.BrushWorkflowTests/testCalibratedRoundDesktopHTTPUndoAndVersionedActionReplay",
+    "PhotoCraftCoreTests.BrushDynamicsTests/testCalibratedHardnessChangesContinuouslyAndMatchesAcrossRasterPaths"
+  ],
+  "alignedHardnessWorstAlpha": 12,
+  "alphaComparison": {
+    "crossArchitectureBytesMatch": true,
+    "matrix": [
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 15,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 24
+          },
+          "changed": 20,
+          "legacy": {
+            "differing": 20,
+            "maxAbsolute": 161,
+            "samples": 5184,
+            "sumAbsolute": 1130
+          }
+        },
+        "diameter": 3,
+        "hardness": 100,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 22,
+            "maxAbsolute": 118,
+            "samples": 5184,
+            "sumAbsolute": 637
+          },
+          "changed": 16,
+          "legacy": {
+            "differing": 20,
+            "maxAbsolute": 220,
+            "samples": 5184,
+            "sumAbsolute": 1181
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 26,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 26
+          },
+          "changed": 60,
+          "legacy": {
+            "differing": 48,
+            "maxAbsolute": 56,
+            "samples": 5184,
+            "sumAbsolute": 1264
+          }
+        },
+        "diameter": 7,
+        "hardness": 100,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 67,
+            "maxAbsolute": 142,
+            "samples": 5184,
+            "sumAbsolute": 2449
+          },
+          "changed": 64,
+          "legacy": {
+            "differing": 48,
+            "maxAbsolute": 179,
+            "samples": 5184,
+            "sumAbsolute": 2633
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 36,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 36
+          },
+          "changed": 88,
+          "legacy": {
+            "differing": 90,
+            "maxAbsolute": 49,
+            "samples": 5184,
+            "sumAbsolute": 1456
+          }
+        },
+        "diameter": 12,
+        "hardness": 100,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 110,
+            "maxAbsolute": 134,
+            "samples": 5184,
+            "sumAbsolute": 4245
+          },
+          "changed": 92,
+          "legacy": {
+            "differing": 100,
+            "maxAbsolute": 169,
+            "samples": 5184,
+            "sumAbsolute": 4529
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 31,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 33
+          },
+          "changed": 100,
+          "legacy": {
+            "differing": 96,
+            "maxAbsolute": 56,
+            "samples": 5184,
+            "sumAbsolute": 2207
+          }
+        },
+        "diameter": 13,
+        "hardness": 100,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 119,
+            "maxAbsolute": 139,
+            "samples": 5184,
+            "sumAbsolute": 4620
+          },
+          "changed": 112,
+          "legacy": {
+            "differing": 98,
+            "maxAbsolute": 184,
+            "samples": 5184,
+            "sumAbsolute": 4898
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 64,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 68
+          },
+          "changed": 148,
+          "legacy": {
+            "differing": 136,
+            "maxAbsolute": 56,
+            "samples": 5184,
+            "sumAbsolute": 3444
+          }
+        },
+        "diameter": 21,
+        "hardness": 100,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 183,
+            "maxAbsolute": 142,
+            "samples": 5184,
+            "sumAbsolute": 7489
+          },
+          "changed": 164,
+          "legacy": {
+            "differing": 148,
+            "maxAbsolute": 183,
+            "samples": 5184,
+            "sumAbsolute": 7921
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 204,
+            "maxAbsolute": 7,
+            "samples": 5184,
+            "sumAbsolute": 398
+          },
+          "changed": 332,
+          "legacy": {
+            "differing": 297,
+            "maxAbsolute": 56,
+            "samples": 5184,
+            "sumAbsolute": 6440
+          }
+        },
+        "diameter": 41,
+        "hardness": 100,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 373,
+            "maxAbsolute": 145,
+            "samples": 5184,
+            "sumAbsolute": 14737
+          },
+          "changed": 336,
+          "legacy": {
+            "differing": 306,
+            "maxAbsolute": 177,
+            "samples": 5184,
+            "sumAbsolute": 15401
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 11,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 19
+          },
+          "changed": 20,
+          "legacy": {
+            "differing": 20,
+            "maxAbsolute": 161,
+            "samples": 5184,
+            "sumAbsolute": 735
+          }
+        },
+        "diameter": 3,
+        "hardness": 75,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 22,
+            "maxAbsolute": 118,
+            "samples": 5184,
+            "sumAbsolute": 634
+          },
+          "changed": 16,
+          "legacy": {
+            "differing": 20,
+            "maxAbsolute": 220,
+            "samples": 5184,
+            "sumAbsolute": 866
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 62,
+            "maxAbsolute": 6,
+            "samples": 5184,
+            "sumAbsolute": 133
+          },
+          "changed": 76,
+          "legacy": {
+            "differing": 72,
+            "maxAbsolute": 60,
+            "samples": 5184,
+            "sumAbsolute": 1503
+          }
+        },
+        "diameter": 7,
+        "hardness": 75,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 79,
+            "maxAbsolute": 108,
+            "samples": 5184,
+            "sumAbsolute": 2312
+          },
+          "changed": 72,
+          "legacy": {
+            "differing": 72,
+            "maxAbsolute": 178,
+            "samples": 5184,
+            "sumAbsolute": 2828
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 129,
+            "maxAbsolute": 11,
+            "samples": 5184,
+            "sumAbsolute": 737
+          },
+          "changed": 152,
+          "legacy": {
+            "differing": 152,
+            "maxAbsolute": 96,
+            "samples": 5184,
+            "sumAbsolute": 4525
+          }
+        },
+        "diameter": 12,
+        "hardness": 75,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 162,
+            "maxAbsolute": 105,
+            "samples": 5184,
+            "sumAbsolute": 4124
+          },
+          "changed": 148,
+          "legacy": {
+            "differing": 155,
+            "maxAbsolute": 192,
+            "samples": 5184,
+            "sumAbsolute": 5908
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 120,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 188
+          },
+          "changed": 172,
+          "legacy": {
+            "differing": 168,
+            "maxAbsolute": 88,
+            "samples": 5184,
+            "sumAbsolute": 4770
+          }
+        },
+        "diameter": 13,
+        "hardness": 75,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 180,
+            "maxAbsolute": 92,
+            "samples": 5184,
+            "sumAbsolute": 4427
+          },
+          "changed": 164,
+          "legacy": {
+            "differing": 171,
+            "maxAbsolute": 176,
+            "samples": 5184,
+            "sumAbsolute": 6169
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 293,
+            "maxAbsolute": 8,
+            "samples": 5184,
+            "sumAbsolute": 1088
+          },
+          "changed": 368,
+          "legacy": {
+            "differing": 350,
+            "maxAbsolute": 84,
+            "samples": 5184,
+            "sumAbsolute": 11548
+          }
+        },
+        "diameter": 21,
+        "hardness": 75,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 356,
+            "maxAbsolute": 79,
+            "samples": 5184,
+            "sumAbsolute": 7215
+          },
+          "changed": 348,
+          "legacy": {
+            "differing": 343,
+            "maxAbsolute": 157,
+            "samples": 5184,
+            "sumAbsolute": 12275
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 934,
+            "maxAbsolute": 11,
+            "samples": 5184,
+            "sumAbsolute": 4626
+          },
+          "changed": 1192,
+          "legacy": {
+            "differing": 1174,
+            "maxAbsolute": 117,
+            "samples": 5184,
+            "sumAbsolute": 56364
+          }
+        },
+        "diameter": 41,
+        "hardness": 75,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 1042,
+            "maxAbsolute": 57,
+            "samples": 5184,
+            "sumAbsolute": 14569
+          },
+          "changed": 1212,
+          "legacy": {
+            "differing": 1183,
+            "maxAbsolute": 160,
+            "samples": 5184,
+            "sumAbsolute": 56323
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 14,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 22
+          },
+          "changed": 20,
+          "legacy": {
+            "differing": 20,
+            "maxAbsolute": 95,
+            "samples": 5184,
+            "sumAbsolute": 530
+          }
+        },
+        "diameter": 3,
+        "hardness": 50,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 22,
+            "maxAbsolute": 119,
+            "samples": 5184,
+            "sumAbsolute": 641
+          },
+          "changed": 16,
+          "legacy": {
+            "differing": 20,
+            "maxAbsolute": 221,
+            "samples": 5184,
+            "sumAbsolute": 867
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 50,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 52
+          },
+          "changed": 88,
+          "legacy": {
+            "differing": 76,
+            "maxAbsolute": 67,
+            "samples": 5184,
+            "sumAbsolute": 1726
+          }
+        },
+        "diameter": 7,
+        "hardness": 50,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 93,
+            "maxAbsolute": 91,
+            "samples": 5184,
+            "sumAbsolute": 2103
+          },
+          "changed": 84,
+          "legacy": {
+            "differing": 84,
+            "maxAbsolute": 141,
+            "samples": 5184,
+            "sumAbsolute": 2643
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 146,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 204
+          },
+          "changed": 212,
+          "legacy": {
+            "differing": 205,
+            "maxAbsolute": 66,
+            "samples": 5184,
+            "sumAbsolute": 5334
+          }
+        },
+        "diameter": 12,
+        "hardness": 50,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 216,
+            "maxAbsolute": 69,
+            "samples": 5184,
+            "sumAbsolute": 3717
+          },
+          "changed": 216,
+          "legacy": {
+            "differing": 204,
+            "maxAbsolute": 130,
+            "samples": 5184,
+            "sumAbsolute": 5889
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 231,
+            "maxAbsolute": 12,
+            "samples": 5184,
+            "sumAbsolute": 1197
+          },
+          "changed": 248,
+          "legacy": {
+            "differing": 219,
+            "maxAbsolute": 59,
+            "samples": 5184,
+            "sumAbsolute": 5443
+          }
+        },
+        "diameter": 13,
+        "hardness": 50,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 237,
+            "maxAbsolute": 75,
+            "samples": 5184,
+            "sumAbsolute": 4076
+          },
+          "changed": 244,
+          "legacy": {
+            "differing": 226,
+            "maxAbsolute": 121,
+            "samples": 5184,
+            "sumAbsolute": 6110
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 314,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 350
+          },
+          "changed": 576,
+          "legacy": {
+            "differing": 564,
+            "maxAbsolute": 78,
+            "samples": 5184,
+            "sumAbsolute": 18976
+          }
+        },
+        "diameter": 21,
+        "hardness": 50,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 530,
+            "maxAbsolute": 45,
+            "samples": 5184,
+            "sumAbsolute": 6617
+          },
+          "changed": 600,
+          "legacy": {
+            "differing": 573,
+            "maxAbsolute": 121,
+            "samples": 5184,
+            "sumAbsolute": 18963
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 1442,
+            "maxAbsolute": 5,
+            "samples": 5184,
+            "sumAbsolute": 2977
+          },
+          "changed": 2100,
+          "legacy": {
+            "differing": 2001,
+            "maxAbsolute": 85,
+            "samples": 5184,
+            "sumAbsolute": 72573
+          }
+        },
+        "diameter": 41,
+        "hardness": 50,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 1720,
+            "maxAbsolute": 30,
+            "samples": 5184,
+            "sumAbsolute": 13196
+          },
+          "changed": 2108,
+          "legacy": {
+            "differing": 2002,
+            "maxAbsolute": 110,
+            "samples": 5184,
+            "sumAbsolute": 72576
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 10,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 16
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 10,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 16
+          }
+        },
+        "diameter": 3,
+        "hardness": 0,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 22,
+            "maxAbsolute": 118,
+            "samples": 5184,
+            "sumAbsolute": 635
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 22,
+            "maxAbsolute": 118,
+            "samples": 5184,
+            "sumAbsolute": 635
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 29,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 29
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 29,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 29
+          }
+        },
+        "diameter": 7,
+        "hardness": 0,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 110,
+            "maxAbsolute": 65,
+            "samples": 5184,
+            "sumAbsolute": 1480
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 110,
+            "maxAbsolute": 65,
+            "samples": 5184,
+            "sumAbsolute": 1480
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 227,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 318
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 227,
+            "maxAbsolute": 3,
+            "samples": 5184,
+            "sumAbsolute": 318
+          }
+        },
+        "diameter": 12,
+        "hardness": 0,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 279,
+            "maxAbsolute": 40,
+            "samples": 5184,
+            "sumAbsolute": 2561
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 279,
+            "maxAbsolute": 40,
+            "samples": 5184,
+            "sumAbsolute": 2561
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 162,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 165
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 162,
+            "maxAbsolute": 2,
+            "samples": 5184,
+            "sumAbsolute": 165
+          }
+        },
+        "diameter": 13,
+        "hardness": 0,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 331,
+            "maxAbsolute": 36,
+            "samples": 5184,
+            "sumAbsolute": 2748
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 331,
+            "maxAbsolute": 36,
+            "samples": 5184,
+            "sumAbsolute": 2748
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 311,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 311
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 311,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 311
+          }
+        },
+        "diameter": 21,
+        "hardness": 0,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 786,
+            "maxAbsolute": 23,
+            "samples": 5184,
+            "sumAbsolute": 4464
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 786,
+            "maxAbsolute": 23,
+            "samples": 5184,
+            "sumAbsolute": 4464
+          }
+        }
+      },
+      {
+        "centered": {
+          "calibratedRound": {
+            "differing": 1045,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 1045
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 1045,
+            "maxAbsolute": 1,
+            "samples": 5184,
+            "sumAbsolute": 1045
+          }
+        },
+        "diameter": 41,
+        "hardness": 0,
+        "nominal": {
+          "calibratedRound": {
+            "differing": 2645,
+            "maxAbsolute": 12,
+            "samples": 5184,
+            "sumAbsolute": 8884
+          },
+          "changed": 0,
+          "legacy": {
+            "differing": 2645,
+            "maxAbsolute": 12,
+            "samples": 5184,
+            "sumAbsolute": 8884
+          }
+        }
+      }
+    ],
+    "noFitAtRuntime": true,
+    "outputHashes": {
+      "553-arm64": {
+        "separate-centered": "f22eed0e555ece1788eeba10719475445ffce2f73cdad7be45ad68d351d6385f",
+        "sheet-centered": "8248dead0d1726f50ea1fe55f19cd8525d44b2e5fde9f2d7e9ac3104d1def65c",
+        "sheet-nominal": "626f844773e565f0fddbd8cc40693eeb9084f6d3d39c38ce2412d6095586ce06"
+      },
+      "553-x86_64": {
+        "separate-centered": "f22eed0e555ece1788eeba10719475445ffce2f73cdad7be45ad68d351d6385f",
+        "sheet-centered": "8248dead0d1726f50ea1fe55f19cd8525d44b2e5fde9f2d7e9ac3104d1def65c",
+        "sheet-nominal": "626f844773e565f0fddbd8cc40693eeb9084f6d3d39c38ce2412d6095586ce06"
+      },
+      "554-arm64": {
+        "separate-centered": "3bfb4068bf7f6ef3d99a94f5b6179f6e82a90ec323a450b32f2c4d019f74d8d7",
+        "sheet-centered": "5a4874178c05fa56fd48167bac083928c98b81a322d0e521010c06bc4dfef8b4",
+        "sheet-nominal": "aecd748e6b708fc59d78cd921243c4f20ebc58dd5a43820aa8790eea10ebea25"
+      },
+      "554-x86_64": {
+        "separate-centered": "3bfb4068bf7f6ef3d99a94f5b6179f6e82a90ec323a450b32f2c4d019f74d8d7",
+        "sheet-centered": "5a4874178c05fa56fd48167bac083928c98b81a322d0e521010c06bc4dfef8b4",
+        "sheet-nominal": "aecd748e6b708fc59d78cd921243c4f20ebc58dd5a43820aa8790eea10ebea25"
+      }
+    },
+    "referenceAlphaSHA256": [
+      "09968e2ea9c0718b37a9e11aa191f353743c50c648a5054c3646b4604d425502",
+      "fa62df1ca365cc0eb0473d783e7c728bd65084499c53fb7a5c2a2439a75e240c"
+    ],
+    "separateDocument": [
+      {
+        "calibratedRound": {
+          "differing": 158,
+          "maxAbsolute": 2,
+          "samples": 1089,
+          "sumAbsolute": 164
+        },
+        "center": [
+          127,
+          47
+        ],
+        "hardness": 0,
+        "legacy": {
+          "differing": 158,
+          "maxAbsolute": 2,
+          "samples": 1089,
+          "sumAbsolute": 164
+        }
+      },
+      {
+        "calibratedRound": {
+          "differing": 35,
+          "maxAbsolute": 2,
+          "samples": 1089,
+          "sumAbsolute": 39
+        },
+        "center": [
+          207,
+          47
+        ],
+        "hardness": 100,
+        "legacy": {
+          "differing": 96,
+          "maxAbsolute": 56,
+          "samples": 1089,
+          "sumAbsolute": 2213
+        }
+      },
+      {
+        "calibratedRound": {
+          "differing": 169,
+          "maxAbsolute": 2,
+          "samples": 1089,
+          "sumAbsolute": 171
+        },
+        "center": [
+          62,
+          106
+        ],
+        "hardness": 0,
+        "legacy": {
+          "differing": 169,
+          "maxAbsolute": 2,
+          "samples": 1089,
+          "sumAbsolute": 171
+        }
+      },
+      {
+        "calibratedRound": {
+          "differing": 35,
+          "maxAbsolute": 2,
+          "samples": 1089,
+          "sumAbsolute": 39
+        },
+        "center": [
+          207,
+          105
+        ],
+        "hardness": 100,
+        "legacy": {
+          "differing": 96,
+          "maxAbsolute": 56,
+          "samples": 1089,
+          "sumAbsolute": 2213
+        }
+      }
+    ]
+  },
+  "checkpoint": 554,
+  "equalRadiusEvidence": {
+    "assumption": "Fixed integer-aligned center from the saved capture. This is a bound on radial models with that center.",
+    "dabs": [
+      {
+        "diameter": 3,
+        "hardness": 100,
+        "highestAlphaAndDXDY": [
+          2,
+          1,
+          -2
+        ],
+        "lowestAlphaAndDXDY": [
+          1,
+          -2,
+          -1
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 5
+      },
+      {
+        "diameter": 7,
+        "hardness": 100,
+        "highestAlphaAndDXDY": [
+          6,
+          4,
+          -2
+        ],
+        "lowestAlphaAndDXDY": [
+          5,
+          -4,
+          -2
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 20
+      },
+      {
+        "diameter": 12,
+        "hardness": 100,
+        "highestAlphaAndDXDY": [
+          2,
+          7,
+          -2
+        ],
+        "lowestAlphaAndDXDY": [
+          1,
+          -7,
+          -2
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 53
+      },
+      {
+        "diameter": 13,
+        "hardness": 100,
+        "highestAlphaAndDXDY": [
+          2,
+          -6,
+          -5
+        ],
+        "lowestAlphaAndDXDY": [
+          1,
+          -6,
+          5
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 61
+      },
+      {
+        "diameter": 21,
+        "hardness": 100,
+        "highestAlphaAndDXDY": [
+          3,
+          10,
+          6
+        ],
+        "lowestAlphaAndDXDY": [
+          2,
+          -10,
+          6
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 136
+      },
+      {
+        "diameter": 41,
+        "hardness": 100,
+        "highestAlphaAndDXDY": [
+          207,
+          12,
+          16
+        ],
+        "lowestAlphaAndDXDY": [
+          199,
+          -20,
+          0
+        ],
+        "maximumSpreadAtEqualRadius": 8,
+        "minimumPossibleWorstErrorAtThisCenter": 4,
+        "radiusSquared": 400
+      },
+      {
+        "diameter": 3,
+        "hardness": 75,
+        "highestAlphaAndDXDY": [
+          2,
+          2,
+          1
+        ],
+        "lowestAlphaAndDXDY": [
+          1,
+          -2,
+          -1
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 5
+      },
+      {
+        "diameter": 7,
+        "hardness": 75,
+        "highestAlphaAndDXDY": [
+          1,
+          5,
+          1
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -5,
+          -1
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 26
+      },
+      {
+        "diameter": 12,
+        "hardness": 75,
+        "highestAlphaAndDXDY": [
+          213,
+          -3,
+          -4
+        ],
+        "lowestAlphaAndDXDY": [
+          211,
+          -5,
+          0
+        ],
+        "maximumSpreadAtEqualRadius": 2,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 25
+      },
+      {
+        "diameter": 13,
+        "hardness": 75,
+        "highestAlphaAndDXDY": [
+          1,
+          7,
+          5
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -7,
+          -5
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 74
+      },
+      {
+        "diameter": 21,
+        "hardness": 75,
+        "highestAlphaAndDXDY": [
+          1,
+          13,
+          2
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -13,
+          2
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 173
+      },
+      {
+        "diameter": 41,
+        "hardness": 75,
+        "highestAlphaAndDXDY": [
+          19,
+          13,
+          18
+        ],
+        "lowestAlphaAndDXDY": [
+          17,
+          -22,
+          -3
+        ],
+        "maximumSpreadAtEqualRadius": 2,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 493
+      },
+      {
+        "diameter": 3,
+        "hardness": 50,
+        "highestAlphaAndDXDY": [
+          2,
+          2,
+          1
+        ],
+        "lowestAlphaAndDXDY": [
+          1,
+          -1,
+          2
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 5
+      },
+      {
+        "diameter": 7,
+        "hardness": 50,
+        "highestAlphaAndDXDY": [
+          1,
+          -2,
+          -5
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -2,
+          5
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 29
+      },
+      {
+        "diameter": 12,
+        "hardness": 50,
+        "highestAlphaAndDXDY": [
+          129,
+          4,
+          -3
+        ],
+        "lowestAlphaAndDXDY": [
+          127,
+          -5,
+          0
+        ],
+        "maximumSpreadAtEqualRadius": 2,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 25
+      },
+      {
+        "diameter": 13,
+        "hardness": 50,
+        "highestAlphaAndDXDY": [
+          160,
+          4,
+          3
+        ],
+        "lowestAlphaAndDXDY": [
+          158,
+          -5,
+          0
+        ],
+        "maximumSpreadAtEqualRadius": 2,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 25
+      },
+      {
+        "diameter": 21,
+        "hardness": 50,
+        "highestAlphaAndDXDY": [
+          1,
+          4,
+          -14
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -14,
+          -4
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 212
+      },
+      {
+        "diameter": 41,
+        "hardness": 50,
+        "highestAlphaAndDXDY": [
+          79,
+          -9,
+          17
+        ],
+        "lowestAlphaAndDXDY": [
+          77,
+          -3,
+          -19
+        ],
+        "maximumSpreadAtEqualRadius": 2,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 370
+      },
+      {
+        "diameter": 3,
+        "hardness": 0,
+        "highestAlphaAndDXDY": [
+          5,
+          0,
+          2
+        ],
+        "lowestAlphaAndDXDY": [
+          4,
+          -2,
+          0
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 4
+      },
+      {
+        "diameter": 7,
+        "hardness": 0,
+        "highestAlphaAndDXDY": [
+          1,
+          -4,
+          -4
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -4,
+          4
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 32
+      },
+      {
+        "diameter": 12,
+        "hardness": 0,
+        "highestAlphaAndDXDY": [
+          1,
+          7,
+          7
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -7,
+          -7
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 98
+      },
+      {
+        "diameter": 13,
+        "hardness": 0,
+        "highestAlphaAndDXDY": [
+          1,
+          -7,
+          8
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -8,
+          -7
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 113
+      },
+      {
+        "diameter": 21,
+        "hardness": 0,
+        "highestAlphaAndDXDY": [
+          1,
+          17,
+          2
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -2,
+          -17
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 293
+      },
+      {
+        "diameter": 41,
+        "hardness": 0,
+        "highestAlphaAndDXDY": [
+          1,
+          17,
+          29
+        ],
+        "lowestAlphaAndDXDY": [
+          0,
+          -31,
+          -13
+        ],
+        "maximumSpreadAtEqualRadius": 1,
+        "minimumPossibleWorstErrorAtThisCenter": 1,
+        "radiusSquared": 1130
+      }
+    ],
+    "referenceAlphaSHA256": "09968e2ea9c0718b37a9e11aa191f353743c50c648a5054c3646b4604d425502"
+  },
+  "fullPhotoshopParity": false,
+  "heldOutWorstAlpha": 12,
+  "independentHardDabWorstAlpha": 2,
+  "legacyMatrix": {
+    "changesFrom553": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 324394512,
+      "x86_64": 324394512
+    },
+    "configuration": 554,
+    "crossArchitectureDifferences": [],
+    "outputsPerArchitecture": 146
+  },
+  "legacyWorstAlpha": 161,
+  "maximumSizeProbe": {
+    "arm64": {
+      "0.5": {
+        "colorDynamics": true,
+        "completeMilliseconds": 213.061416,
+        "coverageBudgetExceededInRetainedPreflight": true,
+        "diameter": 5000,
+        "finalMilliseconds": 214.648333,
+        "firstMilliseconds": 158.457416,
+        "hardness": 0.5,
+        "height": 4160,
+        "physicalPresentationMeasured": false,
+        "samples": 2,
+        "sharedDocumentPixelsMatch": true,
+        "tailAlphaOutsideLegacySupport": 0.1882352977991104,
+        "width": 4160
+      },
+      "0.75": {
+        "colorDynamics": true,
+        "completeMilliseconds": 180.179667,
+        "coverageBudgetExceededInRetainedPreflight": true,
+        "diameter": 5000,
+        "finalMilliseconds": 175.548041,
+        "firstMilliseconds": 134.294959,
+        "hardness": 0.75,
+        "height": 4160,
+        "physicalPresentationMeasured": false,
+        "samples": 2,
+        "sharedDocumentPixelsMatch": true,
+        "tailAlphaOutsideLegacySupport": 0.24313725531101227,
+        "width": 4160
+      },
+      "1": {
+        "colorDynamics": true,
+        "completeMilliseconds": 157.589625,
+        "coverageBudgetExceededInRetainedPreflight": true,
+        "diameter": 5000,
+        "finalMilliseconds": 157.039709,
+        "firstMilliseconds": 118.381375,
+        "hardness": 1,
+        "height": 4160,
+        "physicalPresentationMeasured": false,
+        "samples": 2,
+        "sharedDocumentPixelsMatch": true,
+        "tailAlphaOutsideLegacySupport": 0.1568627506494522,
+        "width": 4160
+      }
+    },
+    "x86_64": {
+      "0.5": {
+        "colorDynamics": true,
+        "completeMilliseconds": 331.7365,
+        "coverageBudgetExceededInRetainedPreflight": true,
+        "diameter": 5000,
+        "finalMilliseconds": 315.658084,
+        "firstMilliseconds": 247.863583,
+        "hardness": 0.5,
+        "height": 4160,
+        "physicalPresentationMeasured": false,
+        "samples": 2,
+        "sharedDocumentPixelsMatch": true,
+        "tailAlphaOutsideLegacySupport": 0.1882352977991104,
+        "width": 4160
+      },
+      "0.75": {
+        "colorDynamics": true,
+        "completeMilliseconds": 283.339875,
+        "coverageBudgetExceededInRetainedPreflight": true,
+        "diameter": 5000,
+        "finalMilliseconds": 282.960792,
+        "firstMilliseconds": 217.069833,
+        "hardness": 0.75,
+        "height": 4160,
+        "physicalPresentationMeasured": false,
+        "samples": 2,
+        "sharedDocumentPixelsMatch": true,
+        "tailAlphaOutsideLegacySupport": 0.24313725531101227,
+        "width": 4160
+      },
+      "1": {
+        "colorDynamics": true,
+        "completeMilliseconds": 245.247333,
+        "coverageBudgetExceededInRetainedPreflight": true,
+        "diameter": 5000,
+        "finalMilliseconds": 242.44375,
+        "firstMilliseconds": 192.823583,
+        "hardness": 1,
+        "height": 4160,
+        "physicalPresentationMeasured": false,
+        "samples": 2,
+        "sharedDocumentPixelsMatch": true,
+        "tailAlphaOutsideLegacySupport": 0.1568627506494522,
+        "width": 4160
+      }
+    }
+  },
+  "nominalWorstAlpha": 145,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "15d8153d3a8a9573af2b952acba8082d38fe077435dc80601bff3ab0a93b15d0",
+    "binarySHA256": "eab669fa31738b2e7b8a233e10088e1168108c1b7768b6d9390d688132813649",
+    "build": 554,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122083,
+          "height": 650,
+          "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopLiveCheck": "Mac locked",
+  "physicalPresentationMeasured": false,
+  "presetMaximumVersion": 3,
+  "selectedMethods": {
+    "arm": 411,
+    "debug": 411,
+    "intel": 411
+  },
+  "shapeFit": {
+    "centerOffsets": [
+      {
+        "centroidMinusRecordedClick": [
+          -1.0,
+          -1.0012453300124533
+        ],
+        "diameter": 3,
+        "hardness": 100
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9997859818084537,
+          -1.0009630818619584
+        ],
+        "diameter": 7,
+        "hardness": 100
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9995717497591092,
+          -1.0006780628814105
+        ],
+        "diameter": 12,
+        "hardness": 100
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0006387249832716,
+          -1.0010645416387858
+        ],
+        "diameter": 13,
+        "hardness": 100
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.999803765395759,
+          -0.9997806789717306
+        ],
+        "diameter": 21,
+        "hardness": 100
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.000005994538975,
+          -1.0003267023741371
+        ],
+        "diameter": 41,
+        "hardness": 100
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9950248756218906,
+          -1.0
+        ],
+        "diameter": 3,
+        "hardness": 75
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.999054820415879,
+          -0.9991729678638941
+        ],
+        "diameter": 7,
+        "hardness": 75
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.001316680460462,
+          -1.0002633360920925
+        ],
+        "diameter": 12,
+        "hardness": 75
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9997386901845501,
+          -1.0011432304425936
+        ],
+        "diameter": 13,
+        "hardness": 75
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0004029262519045,
+          -1.0003021946889283
+        ],
+        "diameter": 21,
+        "hardness": 75
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9997239173275198,
+          -0.9999397060830215
+        ],
+        "diameter": 41,
+        "hardness": 75
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0062266500622665,
+          -1.00373599003736
+        ],
+        "diameter": 3,
+        "hardness": 50
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0005499793757735,
+          -1.0
+        ],
+        "diameter": 7,
+        "hardness": 50
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0007297605473204,
+          -1.0015963511972634
+        ],
+        "diameter": 12,
+        "hardness": 50
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0010050655302725,
+          -0.9996381764091019
+        ],
+        "diameter": 13,
+        "hardness": 50
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0006165846943604,
+          -0.9983079768852435
+        ],
+        "diameter": 21,
+        "hardness": 50
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0006350518563054,
+          -0.9984067338042988
+        ],
+        "diameter": 41,
+        "hardness": 50
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0,
+          -1.0
+        ],
+        "diameter": 3,
+        "hardness": 0
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0014124293785311,
+          -0.9978813559322034
+        ],
+        "diameter": 7,
+        "hardness": 0
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9999222455485577,
+          -0.9968898219423062
+        ],
+        "diameter": 12,
+        "hardness": 0
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9965006729475101,
+          -0.9989232839838492
+        ],
+        "diameter": 13,
+        "hardness": 0
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -1.0032394586969016,
+          -0.9972569099743979
+        ],
+        "diameter": 21,
+        "hardness": 0
+      },
+      {
+        "centroidMinusRecordedClick": [
+          -0.9984433034738912,
+          -1.0015157308280533
+        ],
+        "diameter": 41,
+        "hardness": 0
+      }
+    ],
+    "holdoutDiameters": [
+      13,
+      41
+    ],
+    "linearShiftedGaussian": {
+      "100": {
+        "fit": [
+          0.49996,
+          -0.99652,
+          0.00019,
+          0.70661
+        ],
+        "scores": {
+          "12": {
+            "different": 36,
+            "maximum": 1,
+            "samples": 5041,
+            "sumAbsolute": 36
+          },
+          "13": {
+            "different": 31,
+            "maximum": 2,
+            "samples": 5041,
+            "sumAbsolute": 33
+          },
+          "21": {
+            "different": 64,
+            "maximum": 2,
+            "samples": 5041,
+            "sumAbsolute": 68
+          },
+          "3": {
+            "different": 15,
+            "maximum": 3,
+            "samples": 5041,
+            "sumAbsolute": 24
+          },
+          "41": {
+            "different": 204,
+            "maximum": 7,
+            "samples": 5041,
+            "sumAbsolute": 398
+          },
+          "7": {
+            "different": 26,
+            "maximum": 1,
+            "samples": 5041,
+            "sumAbsolute": 26
+          }
+        },
+        "separate13pxHard": {
+          "1": {
+            "different": 35,
+            "maximum": 2,
+            "samples": 5041,
+            "sumAbsolute": 39
+          },
+          "3": {
+            "different": 35,
+            "maximum": 2,
+            "samples": 5041,
+            "sumAbsolute": 39
+          }
+        },
+        "trainingLoss": 6.842458389327098
+      },
+      "50": {
+        "fit": [
+          0.33003,
+          -0.81239,
+          0.09327,
+          0.47885
+        ],
+        "scores": {
+          "12": {
+            "different": 146,
+            "maximum": 3,
+            "samples": 5041,
+            "sumAbsolute": 204
+          },
+          "13": {
+            "different": 231,
+            "maximum": 12,
+            "samples": 5041,
+            "sumAbsolute": 1197
+          },
+          "21": {
+            "different": 314,
+            "maximum": 2,
+            "samples": 5041,
+            "sumAbsolute": 350
+          },
+          "3": {
+            "different": 14,
+            "maximum": 3,
+            "samples": 5041,
+            "sumAbsolute": 22
+          },
+          "41": {
+            "different": 1442,
+            "maximum": 5,
+            "samples": 5041,
+            "sumAbsolute": 2977
+          },
+          "7": {
+            "different": 50,
+            "maximum": 2,
+            "samples": 5041,
+            "sumAbsolute": 52
+          }
+        },
+        "separate13pxHard": {},
+        "trainingLoss": 4.084211445575752
+      },
+      "75": {
+        "fit": [
+          0.43071,
+          -0.92489,
+          0.04143,
+          0.61273
+        ],
+        "scores": {
+          "12": {
+            "different": 129,
+            "maximum": 11,
+            "samples": 5041,
+            "sumAbsolute": 737
+          },
+          "13": {
+            "different": 120,
+            "maximum": 3,
+            "samples": 5041,
+            "sumAbsolute": 188
+          },
+          "21": {
+            "different": 293,
+            "maximum": 8,
+            "samples": 5041,
+            "sumAbsolute": 1088
+          },
+          "3": {
+            "different": 11,
+            "maximum": 3,
+            "samples": 5041,
+            "sumAbsolute": 19
+          },
+          "41": {
+            "different": 934,
+            "maximum": 11,
+            "samples": 5041,
+            "sumAbsolute": 4626
+          },
+          "7": {
+            "different": 62,
+            "maximum": 6,
+            "samples": 5041,
+            "sumAbsolute": 133
+          }
+        },
+        "separate13pxHard": {},
+        "trainingLoss": 61.82705422089759
+      }
+    },
+    "smallDiameterBoundary": 3,
+    "sourceAlphaSHA256": [
+      "09968e2ea9c0718b37a9e11aa191f353743c50c648a5054c3646b4604d425502",
+      "fa62df1ca365cc0eb0473d783e7c728bd65084499c53fb7a5c2a2439a75e240c"
+    ],
+    "trainingDiameters": [
+      7,
+      12,
+      21
+    ]
+  },
+  "softwareRelease": false,
+  "squarePixelFilterTrial": {
+    "fitDiameters": [
+      7,
+      12,
+      21
+    ],
+    "offset": -0.8205,
+    "rows": [
+      {
+        "diameter": 3,
+        "equalRadius20Pair": [],
+        "integratedError": 844,
+        "integratedWorst": 99,
+        "pixels": 69,
+        "pointSampleError": 912,
+        "pointSampleWorst": 105,
+        "trained": false
+      },
+      {
+        "diameter": 7,
+        "equalRadius20Pair": [],
+        "integratedError": 88,
+        "integratedWorst": 6,
+        "pixels": 137,
+        "pointSampleError": 26,
+        "pointSampleWorst": 1,
+        "trained": true
+      },
+      {
+        "diameter": 12,
+        "equalRadius20Pair": [],
+        "integratedError": 290,
+        "integratedWorst": 8,
+        "pixels": 244,
+        "pointSampleError": 36,
+        "pointSampleWorst": 1,
+        "trained": true
+      },
+      {
+        "diameter": 13,
+        "equalRadius20Pair": [],
+        "integratedError": 205,
+        "integratedWorst": 7,
+        "pixels": 284,
+        "pointSampleError": 33,
+        "pointSampleWorst": 2,
+        "trained": false
+      },
+      {
+        "diameter": 21,
+        "equalRadius20Pair": [],
+        "integratedError": 352,
+        "integratedWorst": 6,
+        "pixels": 480,
+        "pointSampleError": 68,
+        "pointSampleWorst": 2,
+        "trained": true
+      },
+      {
+        "diameter": 41,
+        "equalRadius20Pair": [
+          [
+            199,
+            199,
+            200,
+            -20,
+            0
+          ],
+          [
+            207,
+            200,
+            200,
+            12,
+            16
+          ]
+        ],
+        "integratedError": 918,
+        "integratedWorst": 9,
+        "pixels": 992,
+        "pointSampleError": 398,
+        "pointSampleWorst": 7,
+        "trained": false
+      }
+    ],
+    "sigma": 0.5640000000000001,
+    "test": "Square-pixel integration of a shifted radial Gaussian"
+  },
+  "typedCommands": 271
+}

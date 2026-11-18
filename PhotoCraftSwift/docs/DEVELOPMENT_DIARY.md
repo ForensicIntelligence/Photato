@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 554 — Round brush hardness
+
+The four factory Round presets now change smoothly from soft feathering to an opaque core with a narrow edge. The aligned nonzero-hardness samples improved from a worst alpha difference of 161 to 12 of 255 levels. The two hard dabs from a separate document were within 2 levels. Older recorded settings still replay with their original profiles.
+
+All 411 selected tests passed across three builds. The next measurements cover exact pointer placement, intermediate hardness settings and continuous strokes.
+
+[Detailed record](DEVLOG.md#dev-step-554) · [Validation](SOURCE_PUBLICATION_554.md).
+
 ## 2026-11-18 — Step 553 — Wider Soft Round tip
 
 Soft Round and Soft Round Pressure Opacity now paint with a wider falloff at zero hardness. Across six saved Photoshop dabs, the new renderer was within 3 alpha levels after lining up the centers. The three held-out sizes were within two levels. The previous renderer was off by up to 35. Older Actions still replay with their original brush settings.
@@ -417,14 +425,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:553 -->
+<!-- current-status-step:554 -->
 ## Current development status — 18 November 2026
 
-Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. Both slices of the universal package passed offscreen checks.
+Build 554 updates the round brush hardness range. All 411 selected tests passed on three configurations. Both slices of the universal validation build passed offscreen checks.
 
-Exact brush placement, harder tips, physical editing cadence and tablet timing remain open.
+Exact pointer placement, other hardness settings and continuous Photoshop brush strokes still need more samples. Physical editing and tablet timing remain open.
 
-[Qualification](SOURCE_PUBLICATION_553.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_554.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1183,6 +1191,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 551 | [Parallelize brush tile output](DEVLOG.md#dev-step-551) |
 | 2026-11-18 | 552 | [Add brush opacity and flow number keys](DEVLOG.md#dev-step-552) |
 | 2026-11-18 | 553 | [Widen the zero-hardness Soft Round tip](DEVLOG.md#dev-step-553) |
+| 2026-11-18 | 554 | [Calibrate the round brush hardness range](DEVLOG.md#dev-step-554) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
