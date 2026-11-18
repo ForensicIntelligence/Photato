@@ -119,7 +119,7 @@ final class MagicWandSamplingWorkflowTests: XCTestCase {
       let caps = try await h.request(service,path:"/v1/capabilities")
       let object = try XCTUnwrap(JSONSerialization.jsonObject(with:caps.1) as? [String:Any])
       XCTAssertNotNil(object["magicWand"]); XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:MagicWandAPI.parameterSchema))
-      XCTAssertEqual(AutomationCommand.definitions.count,271); XCTAssertEqual(ActionLibraryFile.maximumVersion,65)
+      XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount); XCTAssertEqual(ActionLibraryFile.maximumVersion,65)
       XCTAssertEqual((MagicWandAPI.state(file.store)["settings"] as? [String:Any])?["sampleSize"] as? Int,11)
     }
   }

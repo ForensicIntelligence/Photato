@@ -420,6 +420,7 @@ import UniformTypeIdentifiers
       "magneticLasso":store.magneticLassoState,
       "colorRange":store.colorRangeState,
       "magicWand":MagicWandAPI.state(store),
+      "paintBucket":PaintBucketAPI.state(store),
       "focusArea":store.focusAreaState,
       "actions": store.actionState, "batch": actionBatchState,
       "width": store.document.width, "height": store.document.height,
@@ -917,6 +918,7 @@ import UniformTypeIdentifiers
       if command.name == RemoveToolAPI.name { return try await executeRemove(command,document:document,shareID:id) }
       try preflight(document)
       if command.name == MagicWandAPI.name { return try await executeMagicWand(command,document:document,shareID:id) }
+      if command.name == PaintBucketAPI.name { return try await executePaintBucket(command,document:document,shareID:id) }
       if command.name == ColorSamplingAPI.name {return try await executeColorSample(command,document:document,shareID:id)}
       if command.name == LensDefaultsAPI.name {
         guard preferenceChangesEnabled else { throw AutomationFailure(status: 403, message: "Enable preference changes in the native API window before updating lens defaults.") }
@@ -1885,6 +1887,7 @@ import UniformTypeIdentifiers
       "magneticLasso":MagneticLassoAPI.capabilities,
       "colorRange":ColorRangeAPI.capabilities,
       "magicWand":MagicWandAPI.capabilities,
+      "paintBucket":PaintBucketAPI.capabilities,
       "focusArea":FocusAreaAPI.capabilities,
       "selectionTools":SelectionToolAPI.capabilities,
       "adjustmentBrush":AdjustmentBrushAPI.capabilities,
@@ -1970,6 +1973,7 @@ import UniformTypeIdentifiers
         "magneticLasso":MagneticLassoAPI.stateSchema,
         "colorRange":ColorRangeAPI.stateSchema,
         "magicWand":MagicWandAPI.stateSchema,
+        "paintBucket":PaintBucketAPI.stateSchema,
         "focusArea":FocusAreaAPI.stateSchema,
         "selectionTools":SelectionToolAPI.stateSchema,
         "layerProtection": protectionStateSchema,

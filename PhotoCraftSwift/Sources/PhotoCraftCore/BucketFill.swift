@@ -4,8 +4,41 @@ public struct BucketOptions: Equatable, Sendable {
   public var match = ColorMatchOptions()
   public var opacity: Float = 1
   public var mode = BlendMode.normal
+  public var clearsAlpha = false
   public var sampleAllLayers = false
   public init() {}
+
+  public func validate() throws {
+    try match.validate()
+    guard opacity.isFinite, (0...1).contains(opacity) else {
+      throw CraftError.invalid("Paint Bucket opacity must be between 0 and 1.")
+    }
+  }
+}
+
+extension CraftDocument {
+  public func validateBucketTarget(layerID: UUID, mask: Bool, clearsAlpha: Bool) throws {
+    guard let layer = layers.first(where: { $0.id == layerID }) else {
+      throw CraftError.invalid("Choose a Paint Bucket target.")
+    }
+    if clearsAlpha {
+      guard !mask, layer.smartObject == nil, case .raster = layer.content else {
+        throw CraftError.unsupported("Paint Bucket Clear requires an ordinary pixel layer.")
+      }
+      try validateBrushPaintModeTarget(layerID: layerID)
+    } else if mask {
+      guard layer.mask != nil, !isLocked(layerID) else {
+        throw CraftError.invalid("Choose an unlocked pixel mask.")
+      }
+    } else {
+      guard case .raster = layer.content else {
+        throw CraftError.unsupported("Rasterize this layer before using Paint Bucket.")
+      }
+      guard !isImageLocked(layerID) else {
+        throw CraftError.invalid("Unlock this layer and its parent groups before editing it.")
+      }
+    }
+  }
 }
 
 public struct BucketFill: Sendable {
@@ -38,21 +71,25 @@ public enum BucketPainter {
   ) throws -> Bool {
     let preserve = !fill.mask && (preserveTransparency || layer.protection.locksTransparency)
     _ = try Surface(width: canvasWidth, height: canvasHeight)
-    try fill.options.match.validate()
-    let pattern = try fill.pattern.map { try PatternSampler($0, placement: fill.placement) }
+    try fill.options.validate()
+    let clear = fill.options.clearsAlpha
     guard fill.color.isFinite, (0...1).contains(fill.color.a),
-      fill.options.opacity.isFinite, (0...1).contains(fill.options.opacity),
       selectionMask == nil
         || (selectionMask?.width == canvasWidth && selectionMask?.height == canvasHeight)
     else { throw CraftError.invalid("Invalid Paint Bucket settings.") }
-    if fill.mask {
+    if clear {
+      guard !fill.mask, !preserve, !layer.isBackground, !layer.protection.locksImage,
+        layer.smartObject == nil, case .raster(let pixels) = layer.content, pixels.depth != .f32
+      else { throw CraftError.unsupported("Clear requires an unlocked 8- or 16-bit pixel layer with transparency.") }
+    } else if fill.mask {
       guard layer.mask != nil else { throw CraftError.invalid("This layer has no pixel mask.") }
     } else if case .raster = layer.content {
     } else {
       throw CraftError.unsupported("Rasterize this layer before using Paint Bucket.")
     }
     try Task.checkCancellation()
-    guard fill.options.opacity > 0, pattern != nil || fill.color.a > 0 else { return false }
+    let pattern = try fill.pattern.map { try PatternSampler($0, placement: fill.placement) }
+    guard fill.options.opacity > 0, clear || pattern != nil || fill.color.a > 0 else { return false }
     let region = try ColorRegion.selection(
       source: fill.source,
       width: canvasWidth, height: canvasHeight, seed: fill.seed,
@@ -66,15 +103,29 @@ public enum BucketPainter {
     let y1 = min(regionBounds.y + regionBounds.height, clipping.y + clipping.height)
     guard x1 > x0, y1 > y0 else { return false }
     let bounds = IntRect(x: x0, y: y0, width: x1 - x0, height: y1 - y0)
-    // A full opaque Normal fill on a canvas-sized raster can replace the
-    // implicit sample directly, including before the first tile is painted.
-    if region.isPaged, !fill.mask, !preserve, pattern == nil,
-      fill.options.mode == .normal, fill.options.opacity == 1, fill.color.a == 1,
+    // A full solid fill with coordinate-independent blending can update the
+    // implicit sample and allocated tiles, even with partial opacity.
+    if region.isPaged, !fill.mask, pattern == nil, clear || fill.options.mode != .dissolve,
       selectionMask == nil, bounds.width == canvasWidth, bounds.height == canvasHeight,
       layer.coordinateTransform == .identity, case .raster(let original) = layer.content,
       original.width == canvasWidth, original.height == canvasHeight, try region.isFullCoverage {
-      let result = try original.reframedImplicitValue(
-        width: canvasWidth, height: canvasHeight, sample: fill.color, linear: false)
+      let result: Surface
+      if !clear && !preserve && fill.options.mode == .normal && fill.options.opacity == 1 && fill.color.a == 1 {
+        result = try original.reframedImplicitValue(
+          width: canvasWidth, height: canvasHeight, sample: fill.color, linear: false)
+      } else {
+        let encoding = original.colorEncoding
+        let linear = original.depth == .f32
+        let source = linear ? SRGBTransfer.linear(fill.color) : fill.color
+        result = try original.mappedStoredSamples { stored in
+          let old = encoding == .linearRGB ? SRGBTransfer.encoded(stored) : stored
+          guard let next = try composite(old, rawInk: fill.color, ink: source, cover: fill.options.opacity,
+            mode: fill.options.mode, clearWeight: clear ? 1 : nil,
+            mask: false, preserve: preserve, linear: linear, x: 0, y: 0)
+          else { return stored }
+          return encoding == .linearRGB ? SRGBTransfer.linear(next) : next
+        }.quantizedStoredDepth(original.depth)
+      }
       try Task.checkCancellation()
       guard result != original else { return false }
       layer.content = .raster(result)
@@ -82,7 +133,7 @@ public enum BucketPainter {
     }
     return try ClonePainter.paintTarget(
       mask: fill.mask, bounds: bounds, on: &layer,
-      clipping: clipping, preserveTransparency: preserve
+      clipping: clipping, preserveTransparency: preserve || clear
     ) { pixels, transform, _ in
       let inverse = try transform.inverted()
       let local = try (inverse * .translation(Double(bounds.x), Double(bounds.y)))
@@ -96,56 +147,83 @@ public enum BucketPainter {
       }
       let foreground = sourceColor(fill.color)
       let preparedForeground = linear ? SRGBTransfer.linear(foreground) : foreground
+      let areas: AnySequence<IntRect>
+      if region.isPaged {
+        let coverage = try region.coverageSurface()
+        if coverage.defaultPixel.r == 0, coverage.tileCount <= RasterGeometry.sparseGridSourceTileLimit {
+          let layerBounds = IntRect(x: 0, y: 0, width: pixels.width, height: pixels.height)
+          let support = try coverage.projectedGeometrySupport(inverse, bounds: layerBounds, halo: 0)
+          areas = AnySequence(GeometryPatchRegions(width: pixels.width, height: pixels.height, rectangles: support))
+        } else {
+          areas = AnySequence([local])
+        }
+      } else {
+        areas = AnySequence([local])
+      }
       var changed = false
-      for y in local.y..<local.y + local.height {
-        try Task.checkCancellation()
-        for x in local.x..<local.x + local.width {
-          let p = transform.point(Double(x) + 0.5, Double(y) + 0.5)
-          let dx = Int(floor(p.x))
-          let dy = Int(floor(p.y))
-          guard dx >= clipping.x, dy >= clipping.y,
-            dx < clipping.x + clipping.width, dy < clipping.y + clipping.height
-          else { continue }
-          let coverage =
-            region.coverage(x: dx, y: dy) * fill.options.opacity
-            * (selectionMask?.coverage(x: dx, y: dy) ?? 1)
-          guard coverage > 0 else { continue }
-          let rawSource: Pixel
-          let source: Pixel
-          if let pattern {
-            rawSource = sourceColor(pattern.sample(x: Double(dx) + 0.5, y: Double(dy) + 0.5))
-            source = linear ? SRGBTransfer.linear(rawSource) : rawSource
-          } else {
-            rawSource = foreground
-            source = preparedForeground
+      for area in areas {
+        let left = max(area.x, local.x), top = max(area.y, local.y)
+        let right = min(area.x + area.width, local.x + local.width)
+        let bottom = min(area.y + area.height, local.y + local.height)
+        guard right > left, bottom > top else { continue }
+        for y in top..<bottom {
+          try Task.checkCancellation()
+          for x in left..<right {
+            let p = transform.point(Double(x) + 0.5, Double(y) + 0.5)
+            let dx = Int(floor(p.x))
+            let dy = Int(floor(p.y))
+            guard dx >= clipping.x, dy >= clipping.y,
+              dx < clipping.x + clipping.width, dy < clipping.y + clipping.height
+            else { continue }
+            let coverage =
+              region.coverage(x: dx, y: dy) * fill.options.opacity
+              * (selectionMask?.coverage(x: dx, y: dy) ?? 1)
+            guard coverage > 0 else { continue }
+            let rawSource: Pixel
+            let source: Pixel
+            if let pattern {
+              rawSource = sourceColor(pattern.sample(x: Double(dx) + 0.5, y: Double(dy) + 0.5))
+              source = linear ? SRGBTransfer.linear(rawSource) : rawSource
+            } else {
+              rawSource = foreground
+              source = preparedForeground
+            }
+            guard clear || rawSource.a > 0 else { continue }
+            let old = pixels.pixel(x: x, y: y)
+            guard let result = try composite(old, rawInk: rawSource, ink: source,
+              cover: coverage, mode: fill.options.mode, clearWeight: clear ? (pattern == nil ? 1 : rawSource.a) : nil,
+              mask: fill.mask, preserve: preserve, linear: linear, x: dx, y: dy) else { continue }
+            pixels.setPixel(x: x, y: y, result)
+            if !pixels.pixel(x: x, y: y).hasSameBits(as: old) { changed = true }
           }
-          guard rawSource.a > 0 else { continue }
-          let old = pixels.pixel(x: x, y: y)
-          if preserve && old.a <= 0 { continue }
-          let raw = fill.mask ? Pixel(unit(old.r), unit(old.r), unit(old.r)) : old
-          let backdrop = linear ? SRGBTransfer.linear(raw) : raw
-          let result: Pixel
-          if preserve {
-            let blended = ProtectedPixels.composite(fill.options.mode, backdrop: backdrop,
-              source: source, opacity: coverage, x: dx, y: dy)
-            result = linear ? SRGBTransfer.encoded(blended) : blended
-          } else if fill.options.mode == .normal && coverage == 1 && rawSource.a == 1 {
-            result = rawSource
-          } else {
-            let blended = fill.options.mode.composite(
-              backdrop: backdrop, source: source,
-              opacity: coverage, x: dx, y: dy)
-            result = linear ? SRGBTransfer.encoded(blended) : blended
-          }
-          guard result.isFinite else {
-            throw CraftError.invalid("Paint Bucket produced an invalid sample.")
-          }
-          pixels.setPixel(
-            x: x, y: y, fill.mask ? Pixel(unit(result.r), unit(result.r), unit(result.r)) : result)
-          if !pixels.pixel(x: x, y: y).hasSameBits(as: old) { changed = true }
         }
       }
       return changed
     }
+  }
+
+  private static func composite(_ old: Pixel, rawInk: Pixel, ink: Pixel, cover: Float,
+    mode: BlendMode, clearWeight: Float?, mask: Bool, preserve: Bool, linear: Bool, x: Int, y: Int
+  ) throws -> Pixel? {
+    if let clearWeight {
+      return BrushPaintMode.clear.composite(backdrop: old, ink: .clear,
+        weight: cover, opacity: clearWeight, mask: 1)
+    }
+    if preserve && old.a <= 0 { return nil }
+    let raw = mask ? Pixel(unit(old.r), unit(old.r), unit(old.r)) : old
+    let backdrop = linear ? SRGBTransfer.linear(raw) : raw
+    let result: Pixel
+    if preserve {
+      let blended = ProtectedPixels.composite(mode, backdrop: backdrop,
+        source: ink, opacity: cover, x: x, y: y)
+      result = linear ? SRGBTransfer.encoded(blended) : blended
+    } else if mode == .normal && cover == 1 && rawInk.a == 1 {
+      result = rawInk
+    } else {
+      let blended = mode.composite(backdrop: backdrop, source: ink, opacity: cover, x: x, y: y)
+      result = linear ? SRGBTransfer.encoded(blended) : blended
+    }
+    guard result.isFinite else { throw CraftError.invalid("Paint Bucket produced an invalid sample.") }
+    return mask ? Pixel(unit(result.r), unit(result.r), unit(result.r)) : result
   }
 }

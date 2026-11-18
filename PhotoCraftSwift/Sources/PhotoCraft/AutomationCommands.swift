@@ -36,6 +36,7 @@ struct AutomationCommand: Sendable {
     var schema: [String: Any] {
       if name == "sky.library" {return SkyLibraryAPI.parameterSchema}
       if name == MagicWandAPI.name { return MagicWandAPI.parameterSchema }
+      if name == PaintBucketAPI.name { return PaintBucketAPI.parameterSchema }
       if name == StyleLibraryAPI.command {return StyleLibraryAPI.parameterSchema}
       if name == PatternLibraryAPI.command { return PatternLibraryAPI.parameterSchema }
       if name == GalleryTextureAPI.name {return GalleryTextureAPI.commandSchema}
@@ -275,6 +276,7 @@ struct AutomationCommand: Sendable {
     .init(name:"paint.tool",parameters:["tool":"Painting tool","points":"Stroke samples or Magic Eraser click","brush":"Partial brush override","presetID":"Optional brush preset UUID","options":"Partial tool options","patternID":"Pattern resource ID","target":"pixels, layerMask, smartFilterMask, alpha or quickMask","layerID":"Layer UUID","channelID":"Alpha UUID"],description:"Paint using Pencil, Mixer Brush, Color Replacement, Pattern Stamp or color-aware erasers with shared native preview/history.",optionalParameters:["brush","presetID","options","patternID","target","layerID","channelID"]),
     ColorSamplingAPI.definition,
     MagicWandAPI.definition,
+    PaintBucketAPI.definition,
     .init(name:"paint.mixer",parameters:["operation":"load, clean or sample","color":"Loaded color","x":"Sample x","y":"Sample y","size":"Sample diameter","layerID":"Source layer UUID","allLayers":"Sample composite","solid":"Load solid color only"],description:"Manage persistent Mixer Brush paint; changes tool state without document history.",optionalParameters:["color","x","y","size","layerID","allLayers","solid"]),
     .init(name:"brush.configure",parameters:["brush":"Partial brush/tool settings","texturePatternID":"Optional saved pattern ID; embeds its samples and enables Texture after the brush patch","eraserMode":"Native Eraser Brush, Pencil or Block mode"],description:"Patch the active brush settings and foreground/background color context without changing document pixels. A texturePatternID atomically resolves a saved pattern into the configured brush.",optionalParameters:["texturePatternID","eraserMode"]),
     .init(name:"brush.presets",parameters:["operation":"Preset operation","presetID":"Preset UUID","name":"Preset name","group":"Group name","includeSize":"Capture diameter","includeToolSettings":"Capture tool options","includeColor":"Capture colors","index":"Destination index","data":"Base64 brush file","format":"photatobrushes or abr"],description:"Manage reusable native brush presets and supported ABR files.",optionalParameters:["presetID","name","group","includeSize","includeToolSettings","includeColor","index","data","format"]),
@@ -554,6 +556,7 @@ struct AutomationCommand: Sendable {
       throw AutomationFailure(status: 400, message: "Missing or unknown command parameters.")
     }
     if name == MagicWandAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:MagicWandAPI.schema(key),path:key)}}
+    if name == PaintBucketAPI.name { try PaintBucketAPI.validate(parameters) }
     if name == ColorSamplingAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:ColorSamplingAPI.schema(key),path:key)}}
     if BackgroundLayerAPI.commands.contains(name) {for (key,value) in parameters {_ = try BrushAPI.merge(value,schema:BackgroundLayerAPI.schema(key),path:key)}}
     if PixelPaintAPI.commands.contains(name){for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:PixelPaintAPI.schema(key),path:key)}}

@@ -335,6 +335,9 @@ public indirect enum Command: Sendable {
     if case .stroke(let id, _, let brush) = self, brush.settings?.paintMode != nil {
       try d.validateBrushPaintModeTarget(layerID: id)
     }
+    if case .paintBucket(let id, let fill) = self, fill.options.clearsAlpha {
+      try d.validateBucketTarget(layerID: id, mask: fill.mask, clearsAlpha: true)
+    }
     if d.inkMode != nil, try InkModeGeometry.apply(self, to: &d) { try d.validate(); return }
     if d.restrictedMode != nil, try RestrictedModeGeometry.apply(self, to: &d) { try d.validate(); return }
     let modeBefore = d.hasAuthoritativeModeStorage ? d : nil

@@ -1,0 +1,92 @@
+{
+  "actionMaximumVersion": 65,
+  "addedMethods": [
+    "PhotoCraftAppTests.ColorRegionWorkflowTests/testBucketAPIRejectsInvalidTargetsParametersBusyAndLockedWithoutHistory",
+    "PhotoCraftAppTests.ColorRegionWorkflowTests/testBucketClearDesktopHTTPAndModifierFeedback",
+    "PhotoCraftAppTests.ColorRegionWorkflowTests/testBucketPatternClearHTTPMatchesNativeAndKeepsFillOverridesLocal",
+    "PhotoCraftCoreTests.ColorRegionTests/testBucketClearExactSelectionAndPatternAlphaAndProtectedTargets",
+    "PhotoCraftCoreTests.ColorRegionTests/testBucketMaximumSparseSeparatedPatternAndFullPartialClears"
+  ],
+  "checkpoint": 559,
+  "comparison": {
+    "base": 558,
+    "bitExactAcrossBuildsAndArchitectures": true,
+    "bucketBuffers": 18,
+    "bytesPerArchitecture": 6907824,
+    "candidate": 559,
+    "coverageMasks": 240,
+    "sha256": [
+      "99b1b94e4c7a722f2e950902e7c8146d09b89e45eb43dd5854d155887d0d71a4",
+      "e55891b6573a74158d7474815e918d2b4d3d3bffe5db39f2e3bc4a523bbcbbb6"
+    ]
+  },
+  "directCursorModifiers": 16,
+  "fullPhotoshopParity": false,
+  "fullWritebackComparison": {
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "bitExactDenseVersusPaged": true,
+    "canvasPixels": 36300000,
+    "caseCount": 624
+  },
+  "maxSparseSide": 300000,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "ad2b2912cd0ea121efcb0e412601ba384cd3be1a633515c5bfa0b2e1bf31a2cb",
+    "binarySHA256": "fd3c5f57d1caca035f66b56ffda30b533f09bd566f43156bdea011fa5b99ccff",
+    "build": 559,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "patternAlphaWeightsClear": true,
+  "photoshopBytesVerified": false,
+  "photoshopLiveCheck": "Mac locked",
+  "presetMaximumVersion": 4,
+  "priorAttempts": [
+    {
+      "name": "qualification01",
+      "passed": true
+    },
+    {
+      "name": "qualification02",
+      "passed": true
+    }
+  ],
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-paint-bucket-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/blending-mode-descriptions.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/"
+  ],
+  "selectedMethods": {
+    "arm": 486,
+    "debug": 486,
+    "intel": 486
+  },
+  "softwareRelease": false,
+  "typedCommands": 272
+}

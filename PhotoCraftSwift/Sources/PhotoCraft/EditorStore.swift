@@ -284,9 +284,9 @@ struct CanvasRenderRequest: Sendable {
   var selectionAntiAlias = true
   var wandOptions = ColorMatchOptions()
   var wandSampleAllLayers = false
-  var bucketOptions = BucketOptions()
-  var bucketUsesPattern = false
-  var bucketPatternPlacement = PatternPlacement()
+  var bucketOptions = BucketOptions() { didSet { if oldValue != bucketOptions { brushRevision += 1 } } }
+  var bucketUsesPattern = false { didSet { if oldValue != bucketUsesPattern { brushRevision += 1 } } }
+  var bucketPatternPlacement = PatternPlacement() { didSet { if oldValue != bucketPatternPlacement { brushRevision += 1 } } }
   var patternNameDraft: PatternNameDraft?
   var gradientFillDraft: GradientFillDraft?
   var gradientOptionsRevision = UUID()

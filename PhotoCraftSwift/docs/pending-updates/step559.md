@@ -1,0 +1,13 @@
+<a id="dev-step-559"></a>
+
+## 2026-11-18 — Add Paint Bucket Clear and automation
+
+The Paint Bucket Mode picker now includes Clear. The tool removes alpha on an unlocked 8- or 16-bit pixel layer. Clear works with the bucket's existing sampled region, opacity, selection and visible-layer controls. Photato weights pattern clearing by pattern alpha. The Mac was locked during the live Photoshop check, so that pattern rule and precise Photoshop output remain provisional. [Adobe Paint Bucket](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-paint-bucket-tool.html) · [Adobe blending modes](https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/blending-mode-descriptions.html).
+
+The native picker retains its label and disables Clear when the target is protected. Its cursor shows subtraction; Option displays the existing foreground sampling action. The desktop click and Photato HTTP command capture the same PaintBucketRequest, including pattern resources and placement. They prepare a single undoable edit with the existing sampling, revision and cancellation checks. The typed `paint.bucket` command can configure the native tool or fill with request-local overrides. State and capabilities describe its settings. The pinned Adobe endpoint list supplies no dedicated Paint Bucket route. [Adobe Photoshop API v2](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/).
+
+The Core painter shares its compositor between regional and full-layer writes. On a fully covered aligned large layer, solid modes with coordinate-independent blending can update the implicit sample and allocated tiles at partial opacity. A sparse disconnected fill visits the selected tiles instead of walking the entire bounding rectangle. Protection and document geometry remain part of the prepared edit.
+
+Tests cover partial alpha with soft selections, transparent pattern samples, maximum sparse pattern and solid fills, native and HTTP pixel equality, Option feedback, configuration revision, Undo, and rejection on locked or invalid targets. Info.plist advances build 559. Dense maximum-size pattern execution, Paint Bucket Action recording, live Photoshop pixels, and Edit Fill/Stroke Clear remain open.
+
+All 486 selected checks passed in Debug and on both optimized architectures. The 240 baseline masks and 18 bucket buffers match build 558 exactly. Each optimized slice also matched all 624 dense and paged solid writeback comparisons. Both universal slices passed offscreen workspace checks. [Qualification](SOURCE_PUBLICATION_559.md).

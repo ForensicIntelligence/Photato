@@ -17,6 +17,7 @@ struct CanvasHost: NSViewRepresentable {
   func updateNSView(_ view: CraftCanvas, context: Context) {
     _ = store.eraserMode; _ = store.brushGesture?.eraserMode
     _ = store.brushOptions.paintMode; _ = store.brushGesture?.brush.settings?.paintMode
+    _ = store.bucketOptions.clearsAlpha
     _ = store.brushStrokeEndpoint; _ = store.geometryBusy
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.selectionBorderDrag
@@ -173,6 +174,14 @@ struct CanvasHost: NSViewRepresentable {
     if let draft = store.cloneDraft {
       if let toning = draft.toning, toning != .sponge { return .symbol(toning == .burn ? "flame":"sun.max") }
       if draft.focus == .smudge { return .symbol(draft.focusOptions.fingerPainting ? "hand.draw.fill":"hand.draw") }
+    }
+    if store.tool == .paintBucket {
+      if flags.contains(.option) {
+        return .colorSample(target: .foreground, available: store.canUseBucketContext && store.surface != nil)
+      }
+      if store.bucketOptions.clearsAlpha {
+        return store.canUseBucket(clearsAlpha: true) ? .symbol("drop.fill", .subtract) : .unavailable
+      }
     }
     if store.tool == .eyedropper {
       if cursorPointerDown,let g=store.eyedropperGesture{return .colorSample(target:g.target,available:true)}

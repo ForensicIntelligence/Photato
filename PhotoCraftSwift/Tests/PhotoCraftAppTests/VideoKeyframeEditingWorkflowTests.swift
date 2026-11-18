@@ -80,7 +80,7 @@ final class VideoKeyframeEditingWorkflowTests:XCTestCase {
       XCTAssertEqual(body.0.statusCode,200)
       XCTAssertNotNil(VideoAPI.stateSchema["properties"]);XCTAssertNotNil(VideoKeyframeAPI.capabilities["selectionEditing"])
       let commandSchema=try XCTUnwrap(AutomationCommand.definitions.first{$0.name==VideoKeyframeAPI.name})
-      XCTAssertEqual(AutomationCommand.definitions.count,271);XCTAssertTrue(commandSchema.optionalParameters.contains("keys"))
+      XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount);XCTAssertTrue(commandSchema.optionalParameters.contains("keys"))
       service.setDocumentTransfersEnabled(false);service.setDocumentTransfersEnabled(true)
       do {let code=try await edit(["operation":"paste","time":4]);XCTAssertEqual(code,409)}
       XCTAssertNil(service.currentKeyframeClipboard(store,shareID:share))

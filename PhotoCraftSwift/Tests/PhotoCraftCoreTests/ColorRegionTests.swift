@@ -142,6 +142,95 @@ final class ColorRegionTests: XCTestCase {
     XCTAssertNil(try work.pop())
   }
 
+  func testBucketClearExactSelectionAndPatternAlphaAndProtectedTargets() throws {
+    for depth in [PixelDepth.u8, .u16] {
+      let base = Pixel(1, 0.5, 0.25, 0.8)
+      let source = try Surface(width: 8, height: 4, depth: depth, fill: base)
+      let selection = try SelectionMask(width: 8, height: 4,
+        bytes: (0..<32).map { $0 % 8 == 0 ? 128 : ($0 % 8 < 3 ? 255 : 0) })
+      var layer = Layer(name: "Editable", content: .raster(source))
+      var options = BucketOptions(); options.clearsAlpha = true; options.opacity = 0.5
+      var request = BucketFill(source: CloneSample(surface: source), seed: .init(0.5, 1.5),
+        color: .clear, options: options)
+      XCTAssertTrue(try BucketPainter.paint(request, on: &layer,
+        canvasWidth: 8, canvasHeight: 4, selectionMask: selection))
+      guard case .raster(let cleared) = layer.content else { return XCTFail("Expected raster") }
+      var expected = source, value = source.defaultPixel
+      value.a *= 1 - (Float(128)/255 * 0.5)
+      expected.setPixel(x: 0, y: 1, value)
+      XCTAssertEqual(cleared.pixel(x: 0, y: 1), expected.pixel(x: 0, y: 1))
+      XCTAssertEqual(cleared.pixel(x: 7, y: 1), source.defaultPixel)
+      XCTAssertEqual(cleared.pixel(x: 2, y: 1).a, 0.4, accuracy: 1/255)
+
+      var texture = try Surface(width: 2, height: 1, depth: depth, fill: .white)
+      texture.setPixel(x: 1, y: 0, .clear)
+      request.options.opacity = 1
+      request.pattern = try RasterPattern(name: "Opaque then transparent", surface: texture, id: "bucket-alpha")
+      layer.content = .raster(source)
+      XCTAssertTrue(try BucketPainter.paint(request, on: &layer, canvasWidth: 8, canvasHeight: 4))
+      guard case .raster(let patterned) = layer.content else { return XCTFail("Expected raster") }
+      XCTAssertEqual(patterned.pixel(x: 0, y: 1), .clear)
+      XCTAssertEqual(patterned.pixel(x: 1, y: 1), source.defaultPixel)
+      layer.content = .raster(source)
+      layer.protection = .transparency
+      let locked = layer
+      XCTAssertThrowsError(try BucketPainter.paint(request, on: &layer, canvasWidth: 8, canvasHeight: 4))
+      XCTAssertEqual(layer, locked)
+      layer.protection = []
+      layer.mask = source; request.mask = true
+      XCTAssertThrowsError(try BucketPainter.paint(request, on: &layer, canvasWidth: 8, canvasHeight: 4))
+      XCTAssertEqual(layer.mask, source)
+    }
+  }
+
+  func testBucketMaximumSparseSeparatedPatternAndFullPartialClears() throws {
+    let side = Surface.maxDimension
+    var storage = try Surface(width: side, height: side, depth: .u16, fill: .black)
+    let near = 128, far = side - 47
+    storage.setPixel(x: near, y: near, .white)
+    storage.setPixel(x: far, y: far, .white)
+    let pattern = try RasterPattern(name: "Quarter alpha",
+      surface: Surface(width: 1, height: 1, depth: .u16, fill: Pixel(1, 0, 0, 0.25)),
+      id: "bucket-quarter")
+    var options = BucketOptions()
+    options.match.tolerance = 0; options.match.contiguous = false; options.match.antiAlias = false
+    options.clearsAlpha = true
+    var layer = Layer(name: "Large", content: .raster(storage))
+    let separated = BucketFill(source: CloneSample(surface: storage), seed: .init(Double(near), Double(near)),
+      color: .clear, options: options, pattern: pattern)
+    XCTAssertTrue(try BucketPainter.paint(separated, on: &layer, canvasWidth: side, canvasHeight: side))
+    guard case .raster(let sprayed) = layer.content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(sprayed.pixel(x: near, y: near).a, 0.75, accuracy: 1 / 65_535)
+    XCTAssertEqual(sprayed.pixel(x: far, y: far).a, 0.75, accuracy: 1 / 65_535)
+    XCTAssertEqual(sprayed.pixel(x: side / 2, y: side / 2), .black)
+    XCTAssertEqual(sprayed.tileCount, 2)
+
+    options.match.tolerance = 255; options.opacity = 0.5
+    var cleared = BucketFill(source: CloneSample(surface: storage), seed: .init(0.5, 0.5),
+      color: .clear, options: options)
+    layer.content = .raster(storage)
+    XCTAssertTrue(try BucketPainter.paint(cleared, on: &layer, canvasWidth: side, canvasHeight: side))
+    guard case .raster(let half) = layer.content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(half.defaultPixel.a, 0.5, accuracy: 1 / 65_535)
+    XCTAssertEqual(half.pixel(x: far, y: far).r, 1)
+    XCTAssertEqual(half.tileCount, 2)
+    cleared.options.opacity = 1
+    XCTAssertTrue(try BucketPainter.paint(cleared, on: &layer, canvasWidth: side, canvasHeight: side))
+    guard case .raster(let full) = layer.content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(full.defaultPixel, .clear)
+    XCTAssertEqual(full.tileCount, 0)
+
+    cleared.options.clearsAlpha = false
+    cleared.color = Pixel(1, 0, 0)
+    cleared.options.opacity = 0.25
+    layer.content = .raster(storage)
+    XCTAssertTrue(try BucketPainter.paint(cleared, on: &layer, canvasWidth: side, canvasHeight: side))
+    guard case .raster(let painted) = layer.content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(painted.defaultPixel.r, 0.25, accuracy: 1 / 65_535)
+    XCTAssertEqual(painted.pixel(x: near, y: near).g, 0.75, accuracy: 1 / 65_535)
+    XCTAssertEqual(painted.tileCount, 2)
+  }
+
   func testOriginalRustSpanFloodAndAntialiasOracle() throws {
     let data = try Data(
       contentsOf: XCTUnwrap(

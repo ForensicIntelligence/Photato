@@ -35,7 +35,7 @@ final class AdjustmentBrushColorVibranceTests:XCTestCase {
     s.adjustmentBrushKind = .colorVibrance
     let view=NSHostingView(rootView:AdjustmentBrushOptionsView(store:s));view.frame = .init(x:0,y:0,width:1700,height:44);view.layoutSubtreeIfNeeded()
     XCTAssertGreaterThan(view.fittingSize.width,400)
-    XCTAssertEqual(AutomationCommand.definitions.count,271)
+    XCTAssertEqual(AutomationCommand.definitions.count,AutomationTests.expectedCommandCount)
     let cap=AdjustmentBrushAPI.capabilities
     XCTAssertEqual(cap["nativeTypes"] as? [String],AdjustmentBrushKind.nativeKinds.map(\.rawValue))
     XCTAssertEqual((cap["types"] as? [[String:Any]])?.count,17)

@@ -3,12 +3,44 @@ import PhotoCraftCore
 import PhotoCraftImaging
 import SwiftUI
 
+extension BucketOptions {
+  static var modeNames: [String] {
+    BlendMode.allCases.flatMap { mode in
+      mode == .dissolve ? [mode.rawValue, BrushPaintMode.clear.title] : [mode.rawValue]
+    }
+  }
+
+  var modeName: String { clearsAlpha ? BrushPaintMode.clear.title : mode.rawValue }
+
+  @discardableResult mutating func chooseMode(_ name: String) -> Bool {
+    if name == BrushPaintMode.clear.title {
+      clearsAlpha = true
+    } else {
+      guard let next = BlendMode(rawValue: name) else { return false }
+      mode = next
+      clearsAlpha = false
+    }
+    return true
+  }
+}
+
 extension EditorStore {
   var canUseMagicWand: Bool {
     document.colorMode == .rgb && isCompositeColorTarget && editingChannel == nil
       && !smartFilterMaskEditing && pathTarget == nil && activeLayer != nil
       && canSelectComponentTarget && brushGesture == nil
   }
+  var canUseBucketContext: Bool {
+    !geometryBusy && !hasToneDraft && transformDraft == nil && historyOperation == nil
+      && !smartFilterMaskEditing && !editingComponent && editingChannel == nil && pathTarget == nil
+  }
+
+  func canUseBucket(clearsAlpha: Bool) -> Bool {
+    guard canUseBucketContext, let layer = activeLayer else { return false }
+    return (try? document.validateBucketTarget(layerID: layer.id, mask: editingMask,
+      clearsAlpha: clearsAlpha)) != nil
+  }
+
   func colorRegionClick(at point: PathPoint, modifiers: NSEvent.ModifierFlags = []) {
     guard !geometryBusy, !hasToneDraft, transformDraft == nil,
       let layer = activeLayer, point.x >= 0, point.y >= 0,
@@ -24,36 +56,26 @@ extension EditorStore {
       performGeometry(label: "Magic Wand", allowAuxiliary: true) { try request.command(in: $0) }
       return
     }
-    if !isWand && modifiers.contains(.option) {
+    guard canUseBucketContext else { return }
+    if modifiers.contains(.option) {
       if let surface { brush.color = surface.pixel(x: Int(floor(point.x)), y: Int(floor(point.y))) }
       return
     }
-    let mask = editingMask
-    if !isWand && (editingMask ? document.isLocked(layer.id) : document.isImageLocked(layer.id)) {
-      error = "Unlock this layer and its parent groups before editing it."
+    let options = bucketOptions, mask = editingMask
+    do {
+      try document.validateBucketTarget(layerID: layer.id, mask: mask, clearsAlpha: options.clearsAlpha)
+    } catch {
+      self.error = error.localizedDescription
       return
     }
-    let bucket = bucketOptions
-    let color = brush.color
-    let pattern = !isWand && bucketUsesPattern ? patterns.selected : nil
-    if !isWand && bucketUsesPattern && (pattern == nil || patterns.busy) {
-      error =
-        patterns.busy ? "Wait for patterns to finish loading." : "Choose or define a pattern first."
+    let pattern = bucketUsesPattern ? patterns.selected : nil
+    if bucketUsesPattern && (pattern == nil || patterns.busy) {
+      error = patterns.busy ? "Wait for patterns to finish loading." : "Choose or define a pattern first."
       return
     }
-    let placement = bucketPatternPlacement
-    let all = !mask && (isWand ? wandSampleAllLayers : bucket.sampleAllLayers)
-    let id = layer.id
-    performGeometry(label: isWand ? "Magic Wand" : "Paint Bucket") { document in
-      let sample = try Renderer.cloneSample(
-        in: document, layerID: id,
-        sampling: all ? .all : .current, mask: mask)
-      return .paintBucket(
-        id,
-        BucketFill(
-          source: sample, seed: point, color: color,
-          options: bucket, mask: mask, pattern: pattern, placement: placement))
-    }
+    let request = PaintBucketRequest(layerID: layer.id, point: point, color: brush.color, options: options,
+      mask: mask, pattern: pattern, placement: bucketPatternPlacement)
+    performGeometry(label: "Paint Bucket") { try request.command(in: $0) }
   }
 }
 
@@ -82,9 +104,16 @@ extension WorkspaceView {
         Text("Pattern").tag(true)
       }.frame(width: 140).controlSize(.small)
       if store.bucketUsesPattern { bucketPatternPicker }
-      Picker("Mode", selection: $store.bucketOptions.mode) {
-        ForEach(BlendMode.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+      Picker("Mode", selection: Binding(get: { store.bucketOptions.modeName }, set: { name in
+        var options = store.bucketOptions
+        if options.chooseMode(name) { store.bucketOptions = options }
+      })) {
+        ForEach(BucketOptions.modeNames, id: \.self) { name in
+          Text(name).tag(name).disabled(name == BrushPaintMode.clear.title && !store.canUseBucket(clearsAlpha: true))
+        }
       }.frame(width: 150).controlSize(.small)
+        .accessibilityIdentifier("paintBucket.mode")
+        .help("Clear removes alpha from pixels on an unlocked pixel layer.")
       percentField("Opacity:", value: $store.bucketOptions.opacity)
       matchOptions($store.bucketOptions.match)
       Toggle("All Layers", isOn: $store.bucketOptions.sampleAllLayers).disabled(store.editingMask)

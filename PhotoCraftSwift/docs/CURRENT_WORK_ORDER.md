@@ -1,3 +1,7 @@
+**Source checkpoint 559.** Paint Bucket has a Clear mode, a typed Photato API, and bounded writeback for separated sparse and full solid fills. All 486 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_559.md).
+
+Continue with Clear in Edit Fill/Stroke and portable Paint Bucket and nonraster Brush Actions. Dense pattern writeback and exact Photoshop color-region bytes remain open. Live cursor, placement, continuous stroke, keyboard and physical editing checks remain open.
+
 **Source checkpoint 558.** Paint Bucket and Magic Wand page large color matches, including tested sparse selections and fills at 300,000 pixels per side. All 481 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_558.md).
 
 Continue with Paint Bucket Clear and its native API. Extend large partial-opacity, pattern and connected-background fills, and qualify live Photoshop output when the Mac is available. Edit Fill/Stroke and portable nonraster Brush Actions remain queued. Live cursor, placement, continuous stroke, keyboard and physical editing checks remain open.
