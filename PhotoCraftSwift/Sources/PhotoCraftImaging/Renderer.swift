@@ -293,7 +293,7 @@ public enum Renderer {
         if case .modern(let settings)=adjustment,settings.needsNeighborhood {
           let developed=try settings.neighborhood(output)
           evaluate={_,x,y in developed.pixel(x:x,y:y)}
-        } else {evaluate=try adjustment.spatialEvaluator(depth:d.depth)}
+        } else {evaluate=try adjustment.spatialEvaluator(depth:d.depth, pixelCount:region.width * region.height)}
         let documentTone = adjustment.usesDocumentToneSpace
         output = try (consume output).compositingPixels(in: region) { x, y, b in
           let m = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
@@ -323,19 +323,14 @@ public enum Renderer {
         continue
       }
       if case .gradientFill(let fill) = layer.content {
-        let sampler = try GradientFillSampler(fill, layer: layer, document: d)
-        for y in region.y..<region.y + region.height {
-          try Task.checkCancellation()
-          for x in region.x..<region.x + region.width {
-            var pixel = sampler.sample(x: x, y: y)
-            pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-            guard pixel.a > 0 else { continue }
-            output.setPixel(
-              x: x, y: y,
-              compositePixel(
-                layer.blendMode, backdrop: output.pixel(x: x, y: y), source: pixel,
-                opacity: layer.opacity, depth: d.depth, x: x, y: y))
-          }
+        let sample = try GradientFillSampler(fill, layer: layer, document: d)
+          .batch(pixelCount: region.width * region.height)
+        output = try (consume output).compositingPixels(in: region) { x, y, backdrop in
+          var pixel = sample(x, y)
+          pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+          guard pixel.a > 0 else { return nil }
+          return compositePixel(layer.blendMode, backdrop: backdrop, source: pixel,
+            opacity: layer.opacity, depth: d.depth, x: x, y: y)
         }
         continue
       }

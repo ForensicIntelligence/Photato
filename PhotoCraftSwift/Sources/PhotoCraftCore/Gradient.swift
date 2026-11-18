@@ -224,6 +224,35 @@ public struct GradientRamp: Sendable {
     let alpha = opacity.isEmpty ? 1 : unit(Self.sample(opacity, t: t, smoothness: smoothness).x)
     return Pixel(rgb.x, rgb.y, rgb.z, alpha)
   }
+
+  /// Use one sampler per render. Exact parameter keys share work without
+  /// changing the ramp geometry or quantizing continuous input.
+  public struct Sampler {
+    private struct Entry {
+      var key = UInt32.max
+      var color = Pixel.clear
+    }
+
+    private let ramp: GradientRamp
+    private var entries: [Entry]
+    private static let slotCount = 16_384
+
+    public init(_ ramp: GradientRamp, pixelCount: Int) {
+      self.ramp = ramp
+      entries = pixelCount >= 65_536 ? Array(repeating: Entry(), count: Self.slotCount) : []
+    }
+
+    public mutating func sample(_ parameter: Float) -> Pixel {
+      guard !entries.isEmpty else { return ramp.sample(parameter) }
+      let key = parameter.bitPattern
+      let hash = (key ^ (key >> 16)) &* 0x045d_9f3b
+      let index = Int((hash ^ (hash >> 16)) & UInt32(Self.slotCount - 1))
+      if entries[index].key == key { return entries[index].color }
+      let color = ramp.sample(parameter)
+      entries[index] = Entry(key: key, color: color)
+      return color
+    }
+  }
   /// Photoshop Stripes holds each stop until the next position. Midpoints and
   /// smoothness do not change the bands. Stable coincident stops use the last value.
   private static func held(_ stops: [Stop], t: Float) -> SIMD3<Float> {

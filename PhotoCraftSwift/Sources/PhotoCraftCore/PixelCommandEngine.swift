@@ -34,7 +34,7 @@ enum PixelCommandEngine {
         try value.validate(in:d)
         let edited=try value.neighborhood(s)
         evaluate={_,x,y in edited.pixel(x:x,y:y)}
-      } else {evaluate=try a.spatialEvaluator(depth:d.depth)}
+      } else {evaluate=try a.spatialEvaluator(depth:d.depth,pixelCount:s.width * s.height)}
       let matrix = d.layers[i].coordinateTransform
       let before = d
       let linearLookup:ColorLookupTransfer?

@@ -1,3 +1,7 @@
+**Source checkpoint 543.** Large gradients reuse exact samples and write by tile. All 84 tested outputs match build 542 and all 372 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence and the remaining Photoshop Gradient Map differences are open. [Qualification](SOURCE_PUBLICATION_543.md).
+
+Continue Q03 with large-tip Brush feedback, dense Float32 editing and physical frame delivery. Keep timed smoothing, subpixel coverage, factory presets and exact Photoshop gradient samples open for independent comparison.
+
 **Source checkpoint 542.** Linear and Perceptual gradient samples agree across the optimized architectures. All 370 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. The saved Photoshop Gradient Map differences remain open. [Qualification](SOURCE_PUBLICATION_542.md).
 
 Continue Q03 with the remaining large-tip preparation cost and physical feedback measurements. Gradient sampling, timed Brush smoothing, subpixel coverage and factory presets still need independent Photoshop qualification.

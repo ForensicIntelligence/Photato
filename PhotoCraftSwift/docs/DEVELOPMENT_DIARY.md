@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 543: reuse gradient samples
+
+Large gradients reuse identical colour samples, and fill rendering writes a tile at a time. On Apple Silicon the 2,048 × 2,048 Perceptual raster fell from 351 to 49 ms. All 84 test images matched build 542 byte for byte.
+
+All 372 selected tests passed in Debug and both optimized builds. The three saved Photoshop Gradient Map differences remain.
+
+[Detailed record](DEVLOG.md#dev-step-543) · [Validation](SOURCE_PUBLICATION_543.md).
+
 ## 2026-11-17 — Step 542: get the same gradient pixels on Apple Silicon and Intel
 
 Linear and Perceptual gradients now round the nonlinear part of sRGB the same way across the two builds. All 18 Gradient Map buffers that differed in build 541 now match, and the 32 tested Brush buffers are byte-identical to the prior build.
@@ -329,14 +337,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:542 -->
+<!-- current-status-step:543 -->
 ## Current development status — 17 November 2026
 
-Build 542 makes Linear and Perceptual gradients consistent across the tested architectures. All 370 selected checks passed in Debug and both optimized builds.
+Build 543 speeds up large gradients. All 372 selected checks passed in Debug and both optimized builds, and the universal package passed offscreen checks.
 
 Exact Photoshop gradients, large-brush responsiveness and live display timing remain open.
 
-[Qualification](SOURCE_PUBLICATION_542.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_543.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1084,6 +1092,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 540 | [Align linear Float32 brush output across architectures](DEVLOG.md#dev-step-540) |
 | 2026-11-17 | 541 | [Publish retained Brush and flat compositor output by tile](DEVLOG.md#dev-step-541) |
 | 2026-11-17 | 542 | [Round Linear and Perceptual gradient transfers consistently](DEVLOG.md#dev-step-542) |
+| 2026-11-17 | 543 | [Reuse exact gradient samples and publish tiles](DEVLOG.md#dev-step-543) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

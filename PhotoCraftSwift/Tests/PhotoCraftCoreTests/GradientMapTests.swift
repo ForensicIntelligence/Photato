@@ -4,6 +4,35 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class GradientMapTests: XCTestCase {
+  func testToneTablePreservesScalarOutputAndCoordinateDither() throws {
+    for depth in PixelDepth.allCases {
+      for method in GradientMethod.allCases {
+        var gradient = GradientDefinition.blackToWhite
+        gradient.method = method
+        gradient.colors = [
+          .init(0, .rgb(Pixel(0.02, 0.68, 0.37))),
+          .init(0.6, .rgb(Pixel(0.8, 0.2, 0.07)), midpoint: 0.62),
+          .init(1, .rgb(Pixel(0.82, 0.88, 0.96))),
+        ]
+        for reverse in [false, true] {
+          let settings = GradientMapAdjustment(gradient: gradient, reverse: reverse, dither: true)
+          let scalar = try GradientMapTransfer(settings, depth: depth)
+          let batched = try GradientMapTransfer(settings, depth: depth, pixelCount: 1_048_576)
+          var differences = 0
+          for i in 0...4096 {
+            let t = Float(i) / 4096
+            let p = Pixel(t, t, t, i % 7 == 0 ? 0 : 0.37)
+            if !batched.apply(p, x: i - 2000, y: i / 64).hasSameBits(
+                as: scalar.apply(p, x: i - 2000, y: i / 64)) {
+              differences += 1
+            }
+          }
+          XCTAssertEqual(differences, 0)
+        }
+      }
+    }
+  }
+
   func testLuminanceReverseAndTransparency() throws {
     var g = GradientDefinition.blackToWhite
     g.method = .classic

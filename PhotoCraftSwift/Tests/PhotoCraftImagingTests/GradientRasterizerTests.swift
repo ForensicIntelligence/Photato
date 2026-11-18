@@ -6,6 +6,39 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class GradientRasterizerTests: XCTestCase, @unchecked Sendable {
+  func testLargeTileRenderMatchesScalarAtOffsetWithDither() throws {
+    let frame = IntRect(x: -25, y: 17, width: 383, height: 316)
+    let region = IntRect(x: -11, y: 32, width: 317, height: 233)
+    let colors: [GradientColorStop] = [
+      .init(0, .rgb(Pixel(0.12, 0.71, 0.24))),
+      .init(0.41, .foreground, midpoint: 0.36),
+      .init(1, .rgb(Pixel(0.83, 0.65, 0.91))),
+    ]
+    let foreground = Pixel(0.6, 0.3, 0.7)
+    for (i, depth) in PixelDepth.allCases.enumerated() {
+      var placement = GradientPlacement()
+      placement.angle = [Float(0), 90, 27.5][i]
+      placement.reverse = i % 2 == 0
+      let snap = i != 2
+      let gradient = GradientDefinition(colors: colors,
+        opacity: [.init(0, 0.28), .init(0.51, 0.71), .init(1, 0.63)],
+        smoothness: 0.62, method: i == 0 ? .linear : .perceptual)
+      let rendered = try GradientRasterizer.render(gradient, placement: placement, frame: frame,
+        region: region, depth: depth, dither: true, foreground: foreground, snapEndpoints: snap)
+      let field = try GradientField(placement, frame: frame, snapEndpoints: snap)
+      let ramp = try GradientRamp(gradient, foreground: foreground)
+      var scalar = try Surface(width: region.width, height: region.height, depth: depth)
+      for y in 0..<scalar.height {
+        for x in 0..<scalar.width {
+          let px = region.x + x, py = region.y + y
+          let sample = ramp.sample(field.parameter(x: Float(px) + 0.5, y: Float(py) + 0.5))
+          scalar.setPixel(x: x, y: y, GradientRamp.dither(sample, x: px, y: py))
+        }
+      }
+      XCTAssertEqual(try rendered.rgbaData(depth: depth), try scalar.rgbaData(depth: depth))
+    }
+  }
+
   func testRegionalAndFullRendersAgreeExactlyAcrossDepthsStylesMethodsAndDither() throws {
     let frame = IntRect(x: -13, y: 21, width: 47, height: 31)
     let region = IntRect(x: 2, y: 24, width: 17, height: 23)

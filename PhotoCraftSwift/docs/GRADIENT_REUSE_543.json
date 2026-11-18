@@ -1,0 +1,832 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 2,
+  "applicationBuild": 543,
+  "archiveSHA256": "d45facdda0dabfb69c7e53e379f7eb351ed36abd5dee0c6729733e3c21ffa459",
+  "archivedOutputComparison": {
+    "changes": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 170938176,
+      "x86_64": 170938176
+    },
+    "configurations": {
+      "542-arm64": {
+        "d0-m0-fill": "66a0b96d2b6df5bf53fc504126c2caa19811143d3aec3e36c7a45291d1ba12d9",
+        "d0-m0-fill-composite": "140fcdb14e9a95a9c3254de7ff18d1669b54268f4418464d14667c85115caa57",
+        "d0-m0-fill-edge": "cfd6a2ea081869a097e5b74022fce578e51ba9b0c0c1734271ae171526f8e717",
+        "d0-m0-map-command": "aa64e2eb3f2f80715041573099bc547ee310cc7f0811568551c830cc7a39ee39",
+        "d0-m0-map-composite": "15009f6baccde59e40f861a559ef3485e8dbf8f25b76938e773f32ea47808aec",
+        "d0-m0-paint": "1cf017cbbfe926bdc5fd6bec22a7cd0acde461d51915c003f313ea50e36372a9",
+        "d0-m0-raster-clip": "733e60a9a20a1255d92585bdfe54bfaf57158f06861d76eb5bd68a5c90661f6e",
+        "d0-m1-fill": "8a7b1353d51cabe8ec34c5d6e78c4a125ff648c4660e7180dba18309183681f8",
+        "d0-m1-fill-composite": "c4876b4178627442f8cf3169495f63f8e804b0a1305001cb7e48f81a1de56abc",
+        "d0-m1-fill-edge": "ba5f0152c1f34929a88ad0aa763f41cf16c22068e33ca4c6c2933627349366d1",
+        "d0-m1-map-command": "3be4fcb1cdd79d902ff3b859671bced23946c7b911bcbf82c12e889fb2526bf6",
+        "d0-m1-map-composite": "ceb145b30708e12caed3eb49584c4fffbc7837ddfa50fe74fd627cdbe08da186",
+        "d0-m1-paint": "c17179dfd265e6753934d6f170deddae6df2a0c0b42226bc68595440af42d10b",
+        "d0-m1-raster-clip": "251906b25a4eeb8afdcce9a14b51814f4c3473d97366792508c87e17d1887910",
+        "d0-m2-fill": "fd5744eb32694fe9fa90296769ea1b75efb0053a8a35546023025e707e54c6a4",
+        "d0-m2-fill-composite": "742ff52fec1d16031e12f55271a2611951efffcb19879ca7effde954a673c05e",
+        "d0-m2-fill-edge": "76a7a175d2c581ffad97fc428c9adda53688104424be7fc7d31c8e59a33e1edb",
+        "d0-m2-map-command": "b96dba7cb89a83071733c551d9b91cb9c7fd3e6ce05716b403a119fb32f9b6f4",
+        "d0-m2-map-composite": "73e60be40d81b660612985a57becd44a7c334dfb475cce05765fb617276d0d84",
+        "d0-m2-paint": "c11674c3e7e09fb3cd0ead72869b5661a57ccc843097cb2305c12f1b5663e764",
+        "d0-m2-raster-clip": "6c7eafdffc4bd0fd644d45a428ab3a7685773dbe474c1c24e6b76f2ae44453ee",
+        "d0-m3-fill": "ee23454efaf94739e363ca1ca4d1d28b738ed750d437470ed5ee72a518c0089e",
+        "d0-m3-fill-composite": "38cb8db5acadec0507d6ecc66bc280b957fcd8977685e41ee3950b6d9734cbdc",
+        "d0-m3-fill-edge": "aaf11aa45b35b8cdec640c16ecc3c5a3cef95af32c9e593ab5e12cebbdaff5e0",
+        "d0-m3-map-command": "892b35035c2a931c6fa72cfd203e56155e11c342f26267e9921d668d6e2af49b",
+        "d0-m3-map-composite": "089fcafdb0916f57eb03ec271a3388e219a65a8fedbea915d909c7e4855b3de1",
+        "d0-m3-paint": "4ae3a83768021809815e0b09ef0196a864318762f40ee150e6b3fa4ffbcb54dc",
+        "d0-m3-raster-clip": "3636482836959c67891d8e69cc47888465fee3635113c0b3fc730469728a18a0",
+        "d1-m0-fill": "1cbf86abe3464c6c560d6aaf9ad0c694f5d464333809218f687989abf7a49e3c",
+        "d1-m0-fill-composite": "3a5814c61cfb9e9e7f494e69beb1e0cdcb945a75345167c168d6fd3fb093db01",
+        "d1-m0-fill-edge": "4b7f5fa8d9e566261fca3a2b748bf3c091c4da70fef60338ba63e8764b622bb8",
+        "d1-m0-map-command": "5f89a8e6e9cf56671db77350c371b33e8f6c309e514b480fc77ff22539e771e2",
+        "d1-m0-map-composite": "fd26d7294821ccd1f7f9f4f69623b3cc7d3e2c82810feeeeda70323333f7ab35",
+        "d1-m0-paint": "71e6c4c4af0eab531127452d899f7d364e88f4ecbc3c284176a396ea8a74c127",
+        "d1-m0-raster-clip": "718abb7d5c85ec29baac93307d670983769324a18adaafe0d9308c69618b697c",
+        "d1-m1-fill": "425a7cde7e660b74ec137aafbe76b200cddc87de34878fb713b1dbe4ee8f0c3c",
+        "d1-m1-fill-composite": "3a87e36383c8efe99f4df75a3f2af88323c8f325826466949962ae1d1c4cf55f",
+        "d1-m1-fill-edge": "1184747a9af77f40e66901db84da90369b2eb3d604b36e899aa7d35aa09442ee",
+        "d1-m1-map-command": "6d48ea8529fefca724643307423f0cf075489a3c44cb528555b20be626fde99f",
+        "d1-m1-map-composite": "b6fb2d1bb390d5e9b794fc816c681515af56b9c528683ad2efdac33549f809e6",
+        "d1-m1-paint": "bf5eeadd3f6d68ec46953adbd70837db5b0796488eb2ddf32d21c8f03804d429",
+        "d1-m1-raster-clip": "51494256363827e1aea6214b517d10a0e9bce96ed69c235d1766de78d4b263f6",
+        "d1-m2-fill": "c334696418021ac227c3d00fb957c9fafa80bc1b6fb967c6292bf336e18d3328",
+        "d1-m2-fill-composite": "1904e42ba7fdc7ea760083d67a5ebc5c300db43fceae39739f45b2ec8f075ac2",
+        "d1-m2-fill-edge": "ccae4342a51561656bd072da958bcf30c1711b8d47487d1334ffd97acf598cbc",
+        "d1-m2-map-command": "1700ec3b8c890824fe0a89b14aa9191488ba0924f2089642a9d75cfb92beddd5",
+        "d1-m2-map-composite": "6f45b652f11e100fbf1b8c6540fb81cfc030fc9b3df0b3ea3c0e89ce5bdecabe",
+        "d1-m2-paint": "f867f18283b49714d60ad1a85c7f44df3b5bd5119cb546b0186afa4159c83e49",
+        "d1-m2-raster-clip": "6eb9ec6d0e70f72358fe84286c474a34d9b7f21f67531b3922f666ed44f17c1f",
+        "d1-m3-fill": "31d574c806b5dddc144cd7ca9ec45cbad728bb6153aaa2b921b94fa0cecef96d",
+        "d1-m3-fill-composite": "e7f0634d0fe458d530c89235d878e107960fecec4f728e8553750a821619cf09",
+        "d1-m3-fill-edge": "742eeacc24455da074c53188fe8e07c0a58fe85d2be1a708641646cafbbaab55",
+        "d1-m3-map-command": "b197cde2ad20e17389ec63ac47255951325356e0a3771d4acdde1c60437af14b",
+        "d1-m3-map-composite": "b7d37a758955357cdec301773b95a174f92ad6f428ddd39033609f6fe47dd7db",
+        "d1-m3-paint": "e9d7703ff480200940887ead4a3fee632057343220fc6c363b8daef04a7fbd5a",
+        "d1-m3-raster-clip": "f50dd67bf0a401af72605612adc122ecb0c77cb6d3b833bf943d15f9dab61611",
+        "d2-m0-fill": "519f2243c0818f78e5f609b4ba4fb72813839ad83241f4eba65d061f2126b3ac",
+        "d2-m0-fill-composite": "57654867f87bbb43957d9a8febec5e3494758ebd88ae71b80c1019cca5db2488",
+        "d2-m0-fill-edge": "9ae862f5f154e899e4f5d64cec56f9889e698257520e83dfa5e9f31650235077",
+        "d2-m0-map-command": "4c772e0405eaad06130092817b74f49ae802b2a3416846f4a219949cd9cb3659",
+        "d2-m0-map-composite": "0ae7eae47d0ebc832fce6898f9778ac083c665ad8b0adbf2e1084d6bed824335",
+        "d2-m0-paint": "0e051735f7c262024a13a615dc3b92b4f4e59bc8c9450eb879614e514ca8f496",
+        "d2-m0-raster-clip": "c69e14cc9a5b8fa79b974658f2efcc021badca92f24ab409f556fd32af82faa5",
+        "d2-m1-fill": "13ab9579e412fce2df0892bab1af391528a66df92bb0ae8024653ef9ca7682aa",
+        "d2-m1-fill-composite": "2b80cb765a18947788825f50310988296ee9216ee6ceb81b5c85b40d93d2101a",
+        "d2-m1-fill-edge": "c08be138996eea59e038bd48ba554f2ea754639e25d3d7ca403373faaa9edbf5",
+        "d2-m1-map-command": "2927e0215f9d261965974ce2310b29909e87d5049d6e6739d22b109c2fa79b39",
+        "d2-m1-map-composite": "cfd200382d9300526d7282f3752e20d2eed687d664aa52d105dd0baabb5318e8",
+        "d2-m1-paint": "2c18efe628ac573ec3ac1269c5616f70ebc54d978c0d15704631c68547156d30",
+        "d2-m1-raster-clip": "5d9e0873e0e5eb1acd61e46f9e3705425425b6be374501675946dd10521ecf81",
+        "d2-m2-fill": "6ef5bc227f289f5b91e964e5a96bff2faef11014e56166f7b7d0ae1a3b6f6bbc",
+        "d2-m2-fill-composite": "f99bbd1b48a2e24b131a86069e62078e0ce2ec18cb9200c40aaad74d10fd3dd1",
+        "d2-m2-fill-edge": "4bea87763cf98887ba9f35e4e2789170435f8e65229e3e938a7310ddcbda24c8",
+        "d2-m2-map-command": "16dee5012e288f67a1c11063ff20154de46dd2862362fdd5fd6541c5301fc7d7",
+        "d2-m2-map-composite": "a6b8deabf3348ca739240f2c185ad9f83aebc6aa5c55764b21617c579fd1fe3e",
+        "d2-m2-paint": "f7181e7361160b69ea7a74e123a2a0a55cf8eb8f0a7928eecb29b19dba9e40d9",
+        "d2-m2-raster-clip": "9b2b3b96f02d14f666c4debc0a6a8bf8eb6f9e714819e04bfc2f6041953a4f58",
+        "d2-m3-fill": "554383fe81c55e3e16e2becfcb54a4e565712f7a1ac942b79a84633234424f8b",
+        "d2-m3-fill-composite": "f3d7448a2b95df6780230f311af6244f77da6639991d853fa9580c5dc00ae67a",
+        "d2-m3-fill-edge": "5739604fe60af5357d038b64fd75116d5d50061f4e2d06847988cea856307dea",
+        "d2-m3-map-command": "de3d6a1fa725d54a67e887429a7752e48797e19668c9092267ba3312f95eadf5",
+        "d2-m3-map-composite": "4f7fc1b5f61b97776b12de6bfc9356991a98097be77ba9759fae7c1d5b8915ee",
+        "d2-m3-paint": "4521167fc812cde3c9a9dadf739c1ed34b46a777db279f3a45b365cccee5588b",
+        "d2-m3-raster-clip": "119faf12ff78493036716097880fce81206d5eceb0acbe18226f886e3ebf64c6"
+      },
+      "542-x86_64": {
+        "d0-m0-fill": "66a0b96d2b6df5bf53fc504126c2caa19811143d3aec3e36c7a45291d1ba12d9",
+        "d0-m0-fill-composite": "140fcdb14e9a95a9c3254de7ff18d1669b54268f4418464d14667c85115caa57",
+        "d0-m0-fill-edge": "cfd6a2ea081869a097e5b74022fce578e51ba9b0c0c1734271ae171526f8e717",
+        "d0-m0-map-command": "aa64e2eb3f2f80715041573099bc547ee310cc7f0811568551c830cc7a39ee39",
+        "d0-m0-map-composite": "15009f6baccde59e40f861a559ef3485e8dbf8f25b76938e773f32ea47808aec",
+        "d0-m0-paint": "1cf017cbbfe926bdc5fd6bec22a7cd0acde461d51915c003f313ea50e36372a9",
+        "d0-m0-raster-clip": "733e60a9a20a1255d92585bdfe54bfaf57158f06861d76eb5bd68a5c90661f6e",
+        "d0-m1-fill": "8a7b1353d51cabe8ec34c5d6e78c4a125ff648c4660e7180dba18309183681f8",
+        "d0-m1-fill-composite": "c4876b4178627442f8cf3169495f63f8e804b0a1305001cb7e48f81a1de56abc",
+        "d0-m1-fill-edge": "ba5f0152c1f34929a88ad0aa763f41cf16c22068e33ca4c6c2933627349366d1",
+        "d0-m1-map-command": "3be4fcb1cdd79d902ff3b859671bced23946c7b911bcbf82c12e889fb2526bf6",
+        "d0-m1-map-composite": "ceb145b30708e12caed3eb49584c4fffbc7837ddfa50fe74fd627cdbe08da186",
+        "d0-m1-paint": "c17179dfd265e6753934d6f170deddae6df2a0c0b42226bc68595440af42d10b",
+        "d0-m1-raster-clip": "251906b25a4eeb8afdcce9a14b51814f4c3473d97366792508c87e17d1887910",
+        "d0-m2-fill": "fd5744eb32694fe9fa90296769ea1b75efb0053a8a35546023025e707e54c6a4",
+        "d0-m2-fill-composite": "742ff52fec1d16031e12f55271a2611951efffcb19879ca7effde954a673c05e",
+        "d0-m2-fill-edge": "76a7a175d2c581ffad97fc428c9adda53688104424be7fc7d31c8e59a33e1edb",
+        "d0-m2-map-command": "b96dba7cb89a83071733c551d9b91cb9c7fd3e6ce05716b403a119fb32f9b6f4",
+        "d0-m2-map-composite": "73e60be40d81b660612985a57becd44a7c334dfb475cce05765fb617276d0d84",
+        "d0-m2-paint": "c11674c3e7e09fb3cd0ead72869b5661a57ccc843097cb2305c12f1b5663e764",
+        "d0-m2-raster-clip": "6c7eafdffc4bd0fd644d45a428ab3a7685773dbe474c1c24e6b76f2ae44453ee",
+        "d0-m3-fill": "ee23454efaf94739e363ca1ca4d1d28b738ed750d437470ed5ee72a518c0089e",
+        "d0-m3-fill-composite": "38cb8db5acadec0507d6ecc66bc280b957fcd8977685e41ee3950b6d9734cbdc",
+        "d0-m3-fill-edge": "aaf11aa45b35b8cdec640c16ecc3c5a3cef95af32c9e593ab5e12cebbdaff5e0",
+        "d0-m3-map-command": "892b35035c2a931c6fa72cfd203e56155e11c342f26267e9921d668d6e2af49b",
+        "d0-m3-map-composite": "089fcafdb0916f57eb03ec271a3388e219a65a8fedbea915d909c7e4855b3de1",
+        "d0-m3-paint": "4ae3a83768021809815e0b09ef0196a864318762f40ee150e6b3fa4ffbcb54dc",
+        "d0-m3-raster-clip": "3636482836959c67891d8e69cc47888465fee3635113c0b3fc730469728a18a0",
+        "d1-m0-fill": "1cbf86abe3464c6c560d6aaf9ad0c694f5d464333809218f687989abf7a49e3c",
+        "d1-m0-fill-composite": "3a5814c61cfb9e9e7f494e69beb1e0cdcb945a75345167c168d6fd3fb093db01",
+        "d1-m0-fill-edge": "4b7f5fa8d9e566261fca3a2b748bf3c091c4da70fef60338ba63e8764b622bb8",
+        "d1-m0-map-command": "5f89a8e6e9cf56671db77350c371b33e8f6c309e514b480fc77ff22539e771e2",
+        "d1-m0-map-composite": "fd26d7294821ccd1f7f9f4f69623b3cc7d3e2c82810feeeeda70323333f7ab35",
+        "d1-m0-paint": "71e6c4c4af0eab531127452d899f7d364e88f4ecbc3c284176a396ea8a74c127",
+        "d1-m0-raster-clip": "718abb7d5c85ec29baac93307d670983769324a18adaafe0d9308c69618b697c",
+        "d1-m1-fill": "425a7cde7e660b74ec137aafbe76b200cddc87de34878fb713b1dbe4ee8f0c3c",
+        "d1-m1-fill-composite": "3a87e36383c8efe99f4df75a3f2af88323c8f325826466949962ae1d1c4cf55f",
+        "d1-m1-fill-edge": "1184747a9af77f40e66901db84da90369b2eb3d604b36e899aa7d35aa09442ee",
+        "d1-m1-map-command": "6d48ea8529fefca724643307423f0cf075489a3c44cb528555b20be626fde99f",
+        "d1-m1-map-composite": "b6fb2d1bb390d5e9b794fc816c681515af56b9c528683ad2efdac33549f809e6",
+        "d1-m1-paint": "bf5eeadd3f6d68ec46953adbd70837db5b0796488eb2ddf32d21c8f03804d429",
+        "d1-m1-raster-clip": "51494256363827e1aea6214b517d10a0e9bce96ed69c235d1766de78d4b263f6",
+        "d1-m2-fill": "c334696418021ac227c3d00fb957c9fafa80bc1b6fb967c6292bf336e18d3328",
+        "d1-m2-fill-composite": "1904e42ba7fdc7ea760083d67a5ebc5c300db43fceae39739f45b2ec8f075ac2",
+        "d1-m2-fill-edge": "ccae4342a51561656bd072da958bcf30c1711b8d47487d1334ffd97acf598cbc",
+        "d1-m2-map-command": "1700ec3b8c890824fe0a89b14aa9191488ba0924f2089642a9d75cfb92beddd5",
+        "d1-m2-map-composite": "6f45b652f11e100fbf1b8c6540fb81cfc030fc9b3df0b3ea3c0e89ce5bdecabe",
+        "d1-m2-paint": "f867f18283b49714d60ad1a85c7f44df3b5bd5119cb546b0186afa4159c83e49",
+        "d1-m2-raster-clip": "6eb9ec6d0e70f72358fe84286c474a34d9b7f21f67531b3922f666ed44f17c1f",
+        "d1-m3-fill": "31d574c806b5dddc144cd7ca9ec45cbad728bb6153aaa2b921b94fa0cecef96d",
+        "d1-m3-fill-composite": "e7f0634d0fe458d530c89235d878e107960fecec4f728e8553750a821619cf09",
+        "d1-m3-fill-edge": "742eeacc24455da074c53188fe8e07c0a58fe85d2be1a708641646cafbbaab55",
+        "d1-m3-map-command": "b197cde2ad20e17389ec63ac47255951325356e0a3771d4acdde1c60437af14b",
+        "d1-m3-map-composite": "b7d37a758955357cdec301773b95a174f92ad6f428ddd39033609f6fe47dd7db",
+        "d1-m3-paint": "e9d7703ff480200940887ead4a3fee632057343220fc6c363b8daef04a7fbd5a",
+        "d1-m3-raster-clip": "f50dd67bf0a401af72605612adc122ecb0c77cb6d3b833bf943d15f9dab61611",
+        "d2-m0-fill": "519f2243c0818f78e5f609b4ba4fb72813839ad83241f4eba65d061f2126b3ac",
+        "d2-m0-fill-composite": "57654867f87bbb43957d9a8febec5e3494758ebd88ae71b80c1019cca5db2488",
+        "d2-m0-fill-edge": "9ae862f5f154e899e4f5d64cec56f9889e698257520e83dfa5e9f31650235077",
+        "d2-m0-map-command": "4c772e0405eaad06130092817b74f49ae802b2a3416846f4a219949cd9cb3659",
+        "d2-m0-map-composite": "0ae7eae47d0ebc832fce6898f9778ac083c665ad8b0adbf2e1084d6bed824335",
+        "d2-m0-paint": "0e051735f7c262024a13a615dc3b92b4f4e59bc8c9450eb879614e514ca8f496",
+        "d2-m0-raster-clip": "c69e14cc9a5b8fa79b974658f2efcc021badca92f24ab409f556fd32af82faa5",
+        "d2-m1-fill": "13ab9579e412fce2df0892bab1af391528a66df92bb0ae8024653ef9ca7682aa",
+        "d2-m1-fill-composite": "2b80cb765a18947788825f50310988296ee9216ee6ceb81b5c85b40d93d2101a",
+        "d2-m1-fill-edge": "c08be138996eea59e038bd48ba554f2ea754639e25d3d7ca403373faaa9edbf5",
+        "d2-m1-map-command": "2927e0215f9d261965974ce2310b29909e87d5049d6e6739d22b109c2fa79b39",
+        "d2-m1-map-composite": "cfd200382d9300526d7282f3752e20d2eed687d664aa52d105dd0baabb5318e8",
+        "d2-m1-paint": "2c18efe628ac573ec3ac1269c5616f70ebc54d978c0d15704631c68547156d30",
+        "d2-m1-raster-clip": "5d9e0873e0e5eb1acd61e46f9e3705425425b6be374501675946dd10521ecf81",
+        "d2-m2-fill": "6ef5bc227f289f5b91e964e5a96bff2faef11014e56166f7b7d0ae1a3b6f6bbc",
+        "d2-m2-fill-composite": "f99bbd1b48a2e24b131a86069e62078e0ce2ec18cb9200c40aaad74d10fd3dd1",
+        "d2-m2-fill-edge": "4bea87763cf98887ba9f35e4e2789170435f8e65229e3e938a7310ddcbda24c8",
+        "d2-m2-map-command": "16dee5012e288f67a1c11063ff20154de46dd2862362fdd5fd6541c5301fc7d7",
+        "d2-m2-map-composite": "a6b8deabf3348ca739240f2c185ad9f83aebc6aa5c55764b21617c579fd1fe3e",
+        "d2-m2-paint": "f7181e7361160b69ea7a74e123a2a0a55cf8eb8f0a7928eecb29b19dba9e40d9",
+        "d2-m2-raster-clip": "9b2b3b96f02d14f666c4debc0a6a8bf8eb6f9e714819e04bfc2f6041953a4f58",
+        "d2-m3-fill": "554383fe81c55e3e16e2becfcb54a4e565712f7a1ac942b79a84633234424f8b",
+        "d2-m3-fill-composite": "f3d7448a2b95df6780230f311af6244f77da6639991d853fa9580c5dc00ae67a",
+        "d2-m3-fill-edge": "5739604fe60af5357d038b64fd75116d5d50061f4e2d06847988cea856307dea",
+        "d2-m3-map-command": "de3d6a1fa725d54a67e887429a7752e48797e19668c9092267ba3312f95eadf5",
+        "d2-m3-map-composite": "4f7fc1b5f61b97776b12de6bfc9356991a98097be77ba9759fae7c1d5b8915ee",
+        "d2-m3-paint": "4521167fc812cde3c9a9dadf739c1ed34b46a777db279f3a45b365cccee5588b",
+        "d2-m3-raster-clip": "119faf12ff78493036716097880fce81206d5eceb0acbe18226f886e3ebf64c6"
+      },
+      "543-arm64": {
+        "d0-m0-fill": "66a0b96d2b6df5bf53fc504126c2caa19811143d3aec3e36c7a45291d1ba12d9",
+        "d0-m0-fill-composite": "140fcdb14e9a95a9c3254de7ff18d1669b54268f4418464d14667c85115caa57",
+        "d0-m0-fill-edge": "cfd6a2ea081869a097e5b74022fce578e51ba9b0c0c1734271ae171526f8e717",
+        "d0-m0-map-command": "aa64e2eb3f2f80715041573099bc547ee310cc7f0811568551c830cc7a39ee39",
+        "d0-m0-map-composite": "15009f6baccde59e40f861a559ef3485e8dbf8f25b76938e773f32ea47808aec",
+        "d0-m0-paint": "1cf017cbbfe926bdc5fd6bec22a7cd0acde461d51915c003f313ea50e36372a9",
+        "d0-m0-raster-clip": "733e60a9a20a1255d92585bdfe54bfaf57158f06861d76eb5bd68a5c90661f6e",
+        "d0-m1-fill": "8a7b1353d51cabe8ec34c5d6e78c4a125ff648c4660e7180dba18309183681f8",
+        "d0-m1-fill-composite": "c4876b4178627442f8cf3169495f63f8e804b0a1305001cb7e48f81a1de56abc",
+        "d0-m1-fill-edge": "ba5f0152c1f34929a88ad0aa763f41cf16c22068e33ca4c6c2933627349366d1",
+        "d0-m1-map-command": "3be4fcb1cdd79d902ff3b859671bced23946c7b911bcbf82c12e889fb2526bf6",
+        "d0-m1-map-composite": "ceb145b30708e12caed3eb49584c4fffbc7837ddfa50fe74fd627cdbe08da186",
+        "d0-m1-paint": "c17179dfd265e6753934d6f170deddae6df2a0c0b42226bc68595440af42d10b",
+        "d0-m1-raster-clip": "251906b25a4eeb8afdcce9a14b51814f4c3473d97366792508c87e17d1887910",
+        "d0-m2-fill": "fd5744eb32694fe9fa90296769ea1b75efb0053a8a35546023025e707e54c6a4",
+        "d0-m2-fill-composite": "742ff52fec1d16031e12f55271a2611951efffcb19879ca7effde954a673c05e",
+        "d0-m2-fill-edge": "76a7a175d2c581ffad97fc428c9adda53688104424be7fc7d31c8e59a33e1edb",
+        "d0-m2-map-command": "b96dba7cb89a83071733c551d9b91cb9c7fd3e6ce05716b403a119fb32f9b6f4",
+        "d0-m2-map-composite": "73e60be40d81b660612985a57becd44a7c334dfb475cce05765fb617276d0d84",
+        "d0-m2-paint": "c11674c3e7e09fb3cd0ead72869b5661a57ccc843097cb2305c12f1b5663e764",
+        "d0-m2-raster-clip": "6c7eafdffc4bd0fd644d45a428ab3a7685773dbe474c1c24e6b76f2ae44453ee",
+        "d0-m3-fill": "ee23454efaf94739e363ca1ca4d1d28b738ed750d437470ed5ee72a518c0089e",
+        "d0-m3-fill-composite": "38cb8db5acadec0507d6ecc66bc280b957fcd8977685e41ee3950b6d9734cbdc",
+        "d0-m3-fill-edge": "aaf11aa45b35b8cdec640c16ecc3c5a3cef95af32c9e593ab5e12cebbdaff5e0",
+        "d0-m3-map-command": "892b35035c2a931c6fa72cfd203e56155e11c342f26267e9921d668d6e2af49b",
+        "d0-m3-map-composite": "089fcafdb0916f57eb03ec271a3388e219a65a8fedbea915d909c7e4855b3de1",
+        "d0-m3-paint": "4ae3a83768021809815e0b09ef0196a864318762f40ee150e6b3fa4ffbcb54dc",
+        "d0-m3-raster-clip": "3636482836959c67891d8e69cc47888465fee3635113c0b3fc730469728a18a0",
+        "d1-m0-fill": "1cbf86abe3464c6c560d6aaf9ad0c694f5d464333809218f687989abf7a49e3c",
+        "d1-m0-fill-composite": "3a5814c61cfb9e9e7f494e69beb1e0cdcb945a75345167c168d6fd3fb093db01",
+        "d1-m0-fill-edge": "4b7f5fa8d9e566261fca3a2b748bf3c091c4da70fef60338ba63e8764b622bb8",
+        "d1-m0-map-command": "5f89a8e6e9cf56671db77350c371b33e8f6c309e514b480fc77ff22539e771e2",
+        "d1-m0-map-composite": "fd26d7294821ccd1f7f9f4f69623b3cc7d3e2c82810feeeeda70323333f7ab35",
+        "d1-m0-paint": "71e6c4c4af0eab531127452d899f7d364e88f4ecbc3c284176a396ea8a74c127",
+        "d1-m0-raster-clip": "718abb7d5c85ec29baac93307d670983769324a18adaafe0d9308c69618b697c",
+        "d1-m1-fill": "425a7cde7e660b74ec137aafbe76b200cddc87de34878fb713b1dbe4ee8f0c3c",
+        "d1-m1-fill-composite": "3a87e36383c8efe99f4df75a3f2af88323c8f325826466949962ae1d1c4cf55f",
+        "d1-m1-fill-edge": "1184747a9af77f40e66901db84da90369b2eb3d604b36e899aa7d35aa09442ee",
+        "d1-m1-map-command": "6d48ea8529fefca724643307423f0cf075489a3c44cb528555b20be626fde99f",
+        "d1-m1-map-composite": "b6fb2d1bb390d5e9b794fc816c681515af56b9c528683ad2efdac33549f809e6",
+        "d1-m1-paint": "bf5eeadd3f6d68ec46953adbd70837db5b0796488eb2ddf32d21c8f03804d429",
+        "d1-m1-raster-clip": "51494256363827e1aea6214b517d10a0e9bce96ed69c235d1766de78d4b263f6",
+        "d1-m2-fill": "c334696418021ac227c3d00fb957c9fafa80bc1b6fb967c6292bf336e18d3328",
+        "d1-m2-fill-composite": "1904e42ba7fdc7ea760083d67a5ebc5c300db43fceae39739f45b2ec8f075ac2",
+        "d1-m2-fill-edge": "ccae4342a51561656bd072da958bcf30c1711b8d47487d1334ffd97acf598cbc",
+        "d1-m2-map-command": "1700ec3b8c890824fe0a89b14aa9191488ba0924f2089642a9d75cfb92beddd5",
+        "d1-m2-map-composite": "6f45b652f11e100fbf1b8c6540fb81cfc030fc9b3df0b3ea3c0e89ce5bdecabe",
+        "d1-m2-paint": "f867f18283b49714d60ad1a85c7f44df3b5bd5119cb546b0186afa4159c83e49",
+        "d1-m2-raster-clip": "6eb9ec6d0e70f72358fe84286c474a34d9b7f21f67531b3922f666ed44f17c1f",
+        "d1-m3-fill": "31d574c806b5dddc144cd7ca9ec45cbad728bb6153aaa2b921b94fa0cecef96d",
+        "d1-m3-fill-composite": "e7f0634d0fe458d530c89235d878e107960fecec4f728e8553750a821619cf09",
+        "d1-m3-fill-edge": "742eeacc24455da074c53188fe8e07c0a58fe85d2be1a708641646cafbbaab55",
+        "d1-m3-map-command": "b197cde2ad20e17389ec63ac47255951325356e0a3771d4acdde1c60437af14b",
+        "d1-m3-map-composite": "b7d37a758955357cdec301773b95a174f92ad6f428ddd39033609f6fe47dd7db",
+        "d1-m3-paint": "e9d7703ff480200940887ead4a3fee632057343220fc6c363b8daef04a7fbd5a",
+        "d1-m3-raster-clip": "f50dd67bf0a401af72605612adc122ecb0c77cb6d3b833bf943d15f9dab61611",
+        "d2-m0-fill": "519f2243c0818f78e5f609b4ba4fb72813839ad83241f4eba65d061f2126b3ac",
+        "d2-m0-fill-composite": "57654867f87bbb43957d9a8febec5e3494758ebd88ae71b80c1019cca5db2488",
+        "d2-m0-fill-edge": "9ae862f5f154e899e4f5d64cec56f9889e698257520e83dfa5e9f31650235077",
+        "d2-m0-map-command": "4c772e0405eaad06130092817b74f49ae802b2a3416846f4a219949cd9cb3659",
+        "d2-m0-map-composite": "0ae7eae47d0ebc832fce6898f9778ac083c665ad8b0adbf2e1084d6bed824335",
+        "d2-m0-paint": "0e051735f7c262024a13a615dc3b92b4f4e59bc8c9450eb879614e514ca8f496",
+        "d2-m0-raster-clip": "c69e14cc9a5b8fa79b974658f2efcc021badca92f24ab409f556fd32af82faa5",
+        "d2-m1-fill": "13ab9579e412fce2df0892bab1af391528a66df92bb0ae8024653ef9ca7682aa",
+        "d2-m1-fill-composite": "2b80cb765a18947788825f50310988296ee9216ee6ceb81b5c85b40d93d2101a",
+        "d2-m1-fill-edge": "c08be138996eea59e038bd48ba554f2ea754639e25d3d7ca403373faaa9edbf5",
+        "d2-m1-map-command": "2927e0215f9d261965974ce2310b29909e87d5049d6e6739d22b109c2fa79b39",
+        "d2-m1-map-composite": "cfd200382d9300526d7282f3752e20d2eed687d664aa52d105dd0baabb5318e8",
+        "d2-m1-paint": "2c18efe628ac573ec3ac1269c5616f70ebc54d978c0d15704631c68547156d30",
+        "d2-m1-raster-clip": "5d9e0873e0e5eb1acd61e46f9e3705425425b6be374501675946dd10521ecf81",
+        "d2-m2-fill": "6ef5bc227f289f5b91e964e5a96bff2faef11014e56166f7b7d0ae1a3b6f6bbc",
+        "d2-m2-fill-composite": "f99bbd1b48a2e24b131a86069e62078e0ce2ec18cb9200c40aaad74d10fd3dd1",
+        "d2-m2-fill-edge": "4bea87763cf98887ba9f35e4e2789170435f8e65229e3e938a7310ddcbda24c8",
+        "d2-m2-map-command": "16dee5012e288f67a1c11063ff20154de46dd2862362fdd5fd6541c5301fc7d7",
+        "d2-m2-map-composite": "a6b8deabf3348ca739240f2c185ad9f83aebc6aa5c55764b21617c579fd1fe3e",
+        "d2-m2-paint": "f7181e7361160b69ea7a74e123a2a0a55cf8eb8f0a7928eecb29b19dba9e40d9",
+        "d2-m2-raster-clip": "9b2b3b96f02d14f666c4debc0a6a8bf8eb6f9e714819e04bfc2f6041953a4f58",
+        "d2-m3-fill": "554383fe81c55e3e16e2becfcb54a4e565712f7a1ac942b79a84633234424f8b",
+        "d2-m3-fill-composite": "f3d7448a2b95df6780230f311af6244f77da6639991d853fa9580c5dc00ae67a",
+        "d2-m3-fill-edge": "5739604fe60af5357d038b64fd75116d5d50061f4e2d06847988cea856307dea",
+        "d2-m3-map-command": "de3d6a1fa725d54a67e887429a7752e48797e19668c9092267ba3312f95eadf5",
+        "d2-m3-map-composite": "4f7fc1b5f61b97776b12de6bfc9356991a98097be77ba9759fae7c1d5b8915ee",
+        "d2-m3-paint": "4521167fc812cde3c9a9dadf739c1ed34b46a777db279f3a45b365cccee5588b",
+        "d2-m3-raster-clip": "119faf12ff78493036716097880fce81206d5eceb0acbe18226f886e3ebf64c6"
+      },
+      "543-x86_64": {
+        "d0-m0-fill": "66a0b96d2b6df5bf53fc504126c2caa19811143d3aec3e36c7a45291d1ba12d9",
+        "d0-m0-fill-composite": "140fcdb14e9a95a9c3254de7ff18d1669b54268f4418464d14667c85115caa57",
+        "d0-m0-fill-edge": "cfd6a2ea081869a097e5b74022fce578e51ba9b0c0c1734271ae171526f8e717",
+        "d0-m0-map-command": "aa64e2eb3f2f80715041573099bc547ee310cc7f0811568551c830cc7a39ee39",
+        "d0-m0-map-composite": "15009f6baccde59e40f861a559ef3485e8dbf8f25b76938e773f32ea47808aec",
+        "d0-m0-paint": "1cf017cbbfe926bdc5fd6bec22a7cd0acde461d51915c003f313ea50e36372a9",
+        "d0-m0-raster-clip": "733e60a9a20a1255d92585bdfe54bfaf57158f06861d76eb5bd68a5c90661f6e",
+        "d0-m1-fill": "8a7b1353d51cabe8ec34c5d6e78c4a125ff648c4660e7180dba18309183681f8",
+        "d0-m1-fill-composite": "c4876b4178627442f8cf3169495f63f8e804b0a1305001cb7e48f81a1de56abc",
+        "d0-m1-fill-edge": "ba5f0152c1f34929a88ad0aa763f41cf16c22068e33ca4c6c2933627349366d1",
+        "d0-m1-map-command": "3be4fcb1cdd79d902ff3b859671bced23946c7b911bcbf82c12e889fb2526bf6",
+        "d0-m1-map-composite": "ceb145b30708e12caed3eb49584c4fffbc7837ddfa50fe74fd627cdbe08da186",
+        "d0-m1-paint": "c17179dfd265e6753934d6f170deddae6df2a0c0b42226bc68595440af42d10b",
+        "d0-m1-raster-clip": "251906b25a4eeb8afdcce9a14b51814f4c3473d97366792508c87e17d1887910",
+        "d0-m2-fill": "fd5744eb32694fe9fa90296769ea1b75efb0053a8a35546023025e707e54c6a4",
+        "d0-m2-fill-composite": "742ff52fec1d16031e12f55271a2611951efffcb19879ca7effde954a673c05e",
+        "d0-m2-fill-edge": "76a7a175d2c581ffad97fc428c9adda53688104424be7fc7d31c8e59a33e1edb",
+        "d0-m2-map-command": "b96dba7cb89a83071733c551d9b91cb9c7fd3e6ce05716b403a119fb32f9b6f4",
+        "d0-m2-map-composite": "73e60be40d81b660612985a57becd44a7c334dfb475cce05765fb617276d0d84",
+        "d0-m2-paint": "c11674c3e7e09fb3cd0ead72869b5661a57ccc843097cb2305c12f1b5663e764",
+        "d0-m2-raster-clip": "6c7eafdffc4bd0fd644d45a428ab3a7685773dbe474c1c24e6b76f2ae44453ee",
+        "d0-m3-fill": "ee23454efaf94739e363ca1ca4d1d28b738ed750d437470ed5ee72a518c0089e",
+        "d0-m3-fill-composite": "38cb8db5acadec0507d6ecc66bc280b957fcd8977685e41ee3950b6d9734cbdc",
+        "d0-m3-fill-edge": "aaf11aa45b35b8cdec640c16ecc3c5a3cef95af32c9e593ab5e12cebbdaff5e0",
+        "d0-m3-map-command": "892b35035c2a931c6fa72cfd203e56155e11c342f26267e9921d668d6e2af49b",
+        "d0-m3-map-composite": "089fcafdb0916f57eb03ec271a3388e219a65a8fedbea915d909c7e4855b3de1",
+        "d0-m3-paint": "4ae3a83768021809815e0b09ef0196a864318762f40ee150e6b3fa4ffbcb54dc",
+        "d0-m3-raster-clip": "3636482836959c67891d8e69cc47888465fee3635113c0b3fc730469728a18a0",
+        "d1-m0-fill": "1cbf86abe3464c6c560d6aaf9ad0c694f5d464333809218f687989abf7a49e3c",
+        "d1-m0-fill-composite": "3a5814c61cfb9e9e7f494e69beb1e0cdcb945a75345167c168d6fd3fb093db01",
+        "d1-m0-fill-edge": "4b7f5fa8d9e566261fca3a2b748bf3c091c4da70fef60338ba63e8764b622bb8",
+        "d1-m0-map-command": "5f89a8e6e9cf56671db77350c371b33e8f6c309e514b480fc77ff22539e771e2",
+        "d1-m0-map-composite": "fd26d7294821ccd1f7f9f4f69623b3cc7d3e2c82810feeeeda70323333f7ab35",
+        "d1-m0-paint": "71e6c4c4af0eab531127452d899f7d364e88f4ecbc3c284176a396ea8a74c127",
+        "d1-m0-raster-clip": "718abb7d5c85ec29baac93307d670983769324a18adaafe0d9308c69618b697c",
+        "d1-m1-fill": "425a7cde7e660b74ec137aafbe76b200cddc87de34878fb713b1dbe4ee8f0c3c",
+        "d1-m1-fill-composite": "3a87e36383c8efe99f4df75a3f2af88323c8f325826466949962ae1d1c4cf55f",
+        "d1-m1-fill-edge": "1184747a9af77f40e66901db84da90369b2eb3d604b36e899aa7d35aa09442ee",
+        "d1-m1-map-command": "6d48ea8529fefca724643307423f0cf075489a3c44cb528555b20be626fde99f",
+        "d1-m1-map-composite": "b6fb2d1bb390d5e9b794fc816c681515af56b9c528683ad2efdac33549f809e6",
+        "d1-m1-paint": "bf5eeadd3f6d68ec46953adbd70837db5b0796488eb2ddf32d21c8f03804d429",
+        "d1-m1-raster-clip": "51494256363827e1aea6214b517d10a0e9bce96ed69c235d1766de78d4b263f6",
+        "d1-m2-fill": "c334696418021ac227c3d00fb957c9fafa80bc1b6fb967c6292bf336e18d3328",
+        "d1-m2-fill-composite": "1904e42ba7fdc7ea760083d67a5ebc5c300db43fceae39739f45b2ec8f075ac2",
+        "d1-m2-fill-edge": "ccae4342a51561656bd072da958bcf30c1711b8d47487d1334ffd97acf598cbc",
+        "d1-m2-map-command": "1700ec3b8c890824fe0a89b14aa9191488ba0924f2089642a9d75cfb92beddd5",
+        "d1-m2-map-composite": "6f45b652f11e100fbf1b8c6540fb81cfc030fc9b3df0b3ea3c0e89ce5bdecabe",
+        "d1-m2-paint": "f867f18283b49714d60ad1a85c7f44df3b5bd5119cb546b0186afa4159c83e49",
+        "d1-m2-raster-clip": "6eb9ec6d0e70f72358fe84286c474a34d9b7f21f67531b3922f666ed44f17c1f",
+        "d1-m3-fill": "31d574c806b5dddc144cd7ca9ec45cbad728bb6153aaa2b921b94fa0cecef96d",
+        "d1-m3-fill-composite": "e7f0634d0fe458d530c89235d878e107960fecec4f728e8553750a821619cf09",
+        "d1-m3-fill-edge": "742eeacc24455da074c53188fe8e07c0a58fe85d2be1a708641646cafbbaab55",
+        "d1-m3-map-command": "b197cde2ad20e17389ec63ac47255951325356e0a3771d4acdde1c60437af14b",
+        "d1-m3-map-composite": "b7d37a758955357cdec301773b95a174f92ad6f428ddd39033609f6fe47dd7db",
+        "d1-m3-paint": "e9d7703ff480200940887ead4a3fee632057343220fc6c363b8daef04a7fbd5a",
+        "d1-m3-raster-clip": "f50dd67bf0a401af72605612adc122ecb0c77cb6d3b833bf943d15f9dab61611",
+        "d2-m0-fill": "519f2243c0818f78e5f609b4ba4fb72813839ad83241f4eba65d061f2126b3ac",
+        "d2-m0-fill-composite": "57654867f87bbb43957d9a8febec5e3494758ebd88ae71b80c1019cca5db2488",
+        "d2-m0-fill-edge": "9ae862f5f154e899e4f5d64cec56f9889e698257520e83dfa5e9f31650235077",
+        "d2-m0-map-command": "4c772e0405eaad06130092817b74f49ae802b2a3416846f4a219949cd9cb3659",
+        "d2-m0-map-composite": "0ae7eae47d0ebc832fce6898f9778ac083c665ad8b0adbf2e1084d6bed824335",
+        "d2-m0-paint": "0e051735f7c262024a13a615dc3b92b4f4e59bc8c9450eb879614e514ca8f496",
+        "d2-m0-raster-clip": "c69e14cc9a5b8fa79b974658f2efcc021badca92f24ab409f556fd32af82faa5",
+        "d2-m1-fill": "13ab9579e412fce2df0892bab1af391528a66df92bb0ae8024653ef9ca7682aa",
+        "d2-m1-fill-composite": "2b80cb765a18947788825f50310988296ee9216ee6ceb81b5c85b40d93d2101a",
+        "d2-m1-fill-edge": "c08be138996eea59e038bd48ba554f2ea754639e25d3d7ca403373faaa9edbf5",
+        "d2-m1-map-command": "2927e0215f9d261965974ce2310b29909e87d5049d6e6739d22b109c2fa79b39",
+        "d2-m1-map-composite": "cfd200382d9300526d7282f3752e20d2eed687d664aa52d105dd0baabb5318e8",
+        "d2-m1-paint": "2c18efe628ac573ec3ac1269c5616f70ebc54d978c0d15704631c68547156d30",
+        "d2-m1-raster-clip": "5d9e0873e0e5eb1acd61e46f9e3705425425b6be374501675946dd10521ecf81",
+        "d2-m2-fill": "6ef5bc227f289f5b91e964e5a96bff2faef11014e56166f7b7d0ae1a3b6f6bbc",
+        "d2-m2-fill-composite": "f99bbd1b48a2e24b131a86069e62078e0ce2ec18cb9200c40aaad74d10fd3dd1",
+        "d2-m2-fill-edge": "4bea87763cf98887ba9f35e4e2789170435f8e65229e3e938a7310ddcbda24c8",
+        "d2-m2-map-command": "16dee5012e288f67a1c11063ff20154de46dd2862362fdd5fd6541c5301fc7d7",
+        "d2-m2-map-composite": "a6b8deabf3348ca739240f2c185ad9f83aebc6aa5c55764b21617c579fd1fe3e",
+        "d2-m2-paint": "f7181e7361160b69ea7a74e123a2a0a55cf8eb8f0a7928eecb29b19dba9e40d9",
+        "d2-m2-raster-clip": "9b2b3b96f02d14f666c4debc0a6a8bf8eb6f9e714819e04bfc2f6041953a4f58",
+        "d2-m3-fill": "554383fe81c55e3e16e2becfcb54a4e565712f7a1ac942b79a84633234424f8b",
+        "d2-m3-fill-composite": "f3d7448a2b95df6780230f311af6244f77da6639991d853fa9580c5dc00ae67a",
+        "d2-m3-fill-edge": "5739604fe60af5357d038b64fd75116d5d50061f4e2d06847988cea856307dea",
+        "d2-m3-map-command": "de3d6a1fa725d54a67e887429a7752e48797e19668c9092267ba3312f95eadf5",
+        "d2-m3-map-composite": "4f7fc1b5f61b97776b12de6bfc9356991a98097be77ba9759fae7c1d5b8915ee",
+        "d2-m3-paint": "4521167fc812cde3c9a9dadf739c1ed34b46a777db279f3a45b365cccee5588b",
+        "d2-m3-raster-clip": "119faf12ff78493036716097880fce81206d5eceb0acbe18226f886e3ebf64c6"
+      }
+    },
+    "crossArchitectureDifferences": {
+      "542": [],
+      "543": []
+    },
+    "outputsPerArchitecture": 84
+  },
+  "checkpoint": 543,
+  "fullPhotoshopParity": false,
+  "gradientMapGridComparison": {
+    "differingOutputs": 0,
+    "floatingCasesPerArchitecture": 65552,
+    "guide": "Nontransparent grayscale on every tone position, four methods, Reverse and Dither at every depth.",
+    "integerCasesPerArchitecture": 131104,
+    "totalPerArchitecture": {
+      "arm64": 196656,
+      "x86_64": 196656
+    }
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "d45facdda0dabfb69c7e53e379f7eb351ed36abd5dee0c6729733e3c21ffa459",
+    "binarySHA256": "4173d75c0bb60be3fcc2e229badbae7be8456911cf0b877cbfad4570d5e4bce6",
+    "build": 543,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopRGB8GradientMap": {
+    "alphaDifferences": 0,
+    "changedPixels": {
+      "Classic": 38,
+      "Linear": 285,
+      "Perceptual": 270
+    },
+    "maximumRGB8Delta": 1,
+    "totalPixelsPerFixture": 16384
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 372,
+    "debug": 372,
+    "intel": 372
+  },
+  "qualifiedCountPerConfiguration": 372,
+  "renderTiming": {
+    "allOutputsMatchBuild542": true,
+    "results": {
+      "arm64": {
+        "fill-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 585.6936249765567,
+            "samplesMS": [
+              585.2708333404735,
+              593.7566666398197,
+              584.1105832951143,
+              585.7431249460205,
+              598.855416639708,
+              585.644125007093
+            ],
+            "sha256": "044b24a3690e9f1d4db4e0fb885290e44866af9e172e5e76ac4918523ea83500"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 261.1604791600257,
+            "samplesMS": [
+              261.33075007237494,
+              264.5464166998863,
+              260.9902082476765,
+              264.26429161801934,
+              260.0493333302438,
+              256.50079164188355
+            ],
+            "sha256": "044b24a3690e9f1d4db4e0fb885290e44866af9e172e5e76ac4918523ea83500"
+          }
+        },
+        "map-command-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 471.59272915450856,
+            "samplesMS": [
+              474.5498748961836,
+              468.6355834128335,
+              467.05391665454954,
+              475.74220842216164,
+              478.28533325809985,
+              461.19825006462634
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 183.33731254097074,
+            "samplesMS": [
+              185.16233342234045,
+              183.62633336801082,
+              186.1740832682699,
+              181.66929169092327,
+              183.04829171393067,
+              182.51800001598895
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          }
+        },
+        "map-composite-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 522.0426458399743,
+            "samplesMS": [
+              518.583583412692,
+              498.28570836689323,
+              525.5017082672566,
+              531.542458338663,
+              506.0747916577384,
+              529.2889999691397
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 245.3958750120364,
+            "samplesMS": [
+              246.80537497624755,
+              243.98637504782528,
+              239.84125000424683,
+              247.29383329395205,
+              241.65129172615707,
+              251.15762499626726
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          }
+        },
+        "raster-Classic": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 147.2954791970551,
+            "samplesMS": [
+              146.95633330848068,
+              145.56033327244222,
+              145.4188332427293,
+              150.77908337116241,
+              149.04795831535012,
+              147.63462508562952
+            ],
+            "sha256": "c92cb1ac5cf5c18c90ddc38dc2f91df9afe13efc4ba3a61ad43fdc879865b8a1"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 48.19997918093577,
+            "samplesMS": [
+              50.715333432890475,
+              47.69870836753398,
+              48.70124999433756,
+              49.37291669193655,
+              46.93624994251877,
+              47.46299993712455
+            ],
+            "sha256": "c92cb1ac5cf5c18c90ddc38dc2f91df9afe13efc4ba3a61ad43fdc879865b8a1"
+          }
+        },
+        "raster-Linear": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 313.6427083518356,
+            "samplesMS": [
+              315.79195836093277,
+              311.49345834273845,
+              309.31329168379307,
+              319.4890832528472,
+              310.8658749843016,
+              318.28037498053163
+            ],
+            "sha256": "657a5ac5fed5e04512639ff7956f24ebde487f70e060711395f8fc065e0bc894"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 48.34083333844319,
+            "samplesMS": [
+              52.053916617296636,
+              48.13108337111771,
+              48.55058330576867,
+              51.80033331271261,
+              47.96175006777048,
+              47.06212494056672
+            ],
+            "sha256": "657a5ac5fed5e04512639ff7956f24ebde487f70e060711395f8fc065e0bc894"
+          }
+        },
+        "raster-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 350.61781253898516,
+            "samplesMS": [
+              355.09691666811705,
+              351.04375006631017,
+              350.19187501166016,
+              365.53974996786565,
+              346.60141658969223,
+              347.7367500308901
+            ],
+            "sha256": "c868830da7fbf2d58c4c820c17727a718f1f7322133a34db76e62e78adb1c7c6"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 49.282479158136994,
+            "samplesMS": [
+              49.92599994875491,
+              49.12579176016152,
+              47.78908332809806,
+              51.916833384893835,
+              49.43916655611247,
+              48.52787510026246
+            ],
+            "sha256": "c868830da7fbf2d58c4c820c17727a718f1f7322133a34db76e62e78adb1c7c6"
+          }
+        },
+        "rotated-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 361.1044374993071,
+            "samplesMS": [
+              360.7534166658297,
+              361.7131250211969,
+              342.0783750480041,
+              363.95558330696076,
+              353.08079165406525,
+              361.4554583327845
+            ],
+            "sha256": "bff5150cbf9d7249d5c347055e6236b2533af187826f1b3d783a8ab522b2f8f6"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 272.9022708372213,
+            "samplesMS": [
+              275.15449991915375,
+              270.2472083037719,
+              272.24700001534075,
+              266.51854161173105,
+              273.55754165910184,
+              274.27545830141753
+            ],
+            "sha256": "bff5150cbf9d7249d5c347055e6236b2533af187826f1b3d783a8ab522b2f8f6"
+          }
+        }
+      },
+      "x86_64": {
+        "fill-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 990.9373125410639,
+            "samplesMS": [
+              1022.4401250015944,
+              1013.0968750454485,
+              1013.4429580066353,
+              966.5947500616312,
+              968.7777500366792,
+              957.8702920116484
+            ],
+            "sha256": "044b24a3690e9f1d4db4e0fb885290e44866af9e172e5e76ac4918523ea83500"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 536.0240624868311,
+            "samplesMS": [
+              548.3330830466002,
+              546.9203749671578,
+              538.6296659708023,
+              531.9132501026616,
+              523.7083749379963,
+              533.4184590028599
+            ],
+            "sha256": "044b24a3690e9f1d4db4e0fb885290e44866af9e172e5e76ac4918523ea83500"
+          }
+        },
+        "map-command-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 766.7578544933349,
+            "samplesMS": [
+              801.2245839927346,
+              817.1282080002129,
+              804.5420410344377,
+              732.2911249939352,
+              709.5573329133913,
+              702.7764999074861
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 354.7277710167691,
+            "samplesMS": [
+              396.24708401970565,
+              368.4672500239685,
+              356.9937919965014,
+              350.5340419942513,
+              346.2443749886006,
+              352.46175003703684
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          }
+        },
+        "map-composite-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 851.8237710231915,
+            "samplesMS": [
+              831.8549169925973,
+              827.3114999756217,
+              832.8752920497209,
+              871.9272919697687,
+              870.7722499966621,
+              897.5427499972284
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 469.5718544535339,
+            "samplesMS": [
+              449.28716600406915,
+              466.9117499142885,
+              472.43691596668214,
+              468.3324589859694,
+              470.81124992109835,
+              477.8245419729501
+            ],
+            "sha256": "0eb67ddb332cec72c0f1b028c0db0c4c0e5af9d68ea6108392896293425c267b"
+          }
+        },
+        "raster-Classic": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 323.7635834957473,
+            "samplesMS": [
+              320.5171669833362,
+              314.2530410550535,
+              306.299666990526,
+              330.4408750263974,
+              329.2422090889886,
+              327.0100000081584
+            ],
+            "sha256": "c92cb1ac5cf5c18c90ddc38dc2f91df9afe13efc4ba3a61ad43fdc879865b8a1"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 93.78481196472421,
+            "samplesMS": [
+              89.23370798584074,
+              78.29312491230667,
+              75.86341700516641,
+              111.77887499798089,
+              101.18895792402327,
+              98.33591594360769
+            ],
+            "sha256": "c92cb1ac5cf5c18c90ddc38dc2f91df9afe13efc4ba3a61ad43fdc879865b8a1"
+          }
+        },
+        "raster-Linear": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 553.5879579838365,
+            "samplesMS": [
+              573.4544170554727,
+              576.9112500129268,
+              560.9237079042941,
+              546.2522080633789,
+              542.9770409828052,
+              541.5384580846876
+            ],
+            "sha256": "657a5ac5fed5e04512639ff7956f24ebde487f70e060711395f8fc065e0bc894"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 90.11770901270211,
+            "samplesMS": [
+              94.98154208995402,
+              85.74329200200737,
+              82.62050000485033,
+              94.74341606255621,
+              91.5303339716047,
+              88.70508405379951
+            ],
+            "sha256": "657a5ac5fed5e04512639ff7956f24ebde487f70e060711395f8fc065e0bc894"
+          }
+        },
+        "raster-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 603.4783750073984,
+            "samplesMS": [
+              607.7820840291679,
+              592.8825420560315,
+              602.8111670166254,
+              604.1455829981714,
+              607.1957079693675,
+              597.6028750883415
+            ],
+            "sha256": "c868830da7fbf2d58c4c820c17727a718f1f7322133a34db76e62e78adb1c7c6"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 94.15777097456157,
+            "samplesMS": [
+              95.88058304507285,
+              93.4614590369165,
+              92.37287507858127,
+              94.8680000146851,
+              92.52687497064471,
+              94.85408291220665
+            ],
+            "sha256": "c868830da7fbf2d58c4c820c17727a718f1f7322133a34db76e62e78adb1c7c6"
+          }
+        },
+        "rotated-Perceptual": {
+          "542": {
+            "byteCount": 16777216,
+            "medianMS": 597.617374965921,
+            "samplesMS": [
+              613.2185000460595,
+              602.3939580190927,
+              594.8607500176877,
+              591.172790969722,
+              600.3739999141544,
+              589.5408330252394
+            ],
+            "sha256": "bff5150cbf9d7249d5c347055e6236b2533af187826f1b3d783a8ab522b2f8f6"
+          },
+          "543": {
+            "byteCount": 16777216,
+            "medianMS": 438.45383351435885,
+            "samplesMS": [
+              436.39275000896305,
+              431.4138329355046,
+              429.0009170072153,
+              440.51491701975465,
+              448.68029200006276,
+              447.57333397865295
+            ],
+            "sha256": "bff5150cbf9d7249d5c347055e6236b2533af187826f1b3d783a8ab522b2f8f6"
+          }
+        }
+      }
+    },
+    "scope": "2048 \u00d7 2048 complete RGB8 software renders. Each entry is six samples in two trials after warmups. The timer encloses the render or command. The input document is prepared before timing. No display presentation."
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7885,
+  "typedCommands": 271
+}

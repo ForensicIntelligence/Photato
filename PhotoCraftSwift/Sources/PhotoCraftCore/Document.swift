@@ -113,7 +113,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
     return { self.apply($0) }
   }
   /// Document-space coordinates keep ordered dither stable across tiles and cropped layers.
-  public func spatialEvaluator(depth: PixelDepth) throws -> @Sendable (Pixel, Int, Int) -> Pixel {
+  public func spatialEvaluator(depth: PixelDepth, pixelCount: Int = 0) throws -> @Sendable (Pixel, Int, Int) -> Pixel {
     if case .source(let settings)=self {let transfer=try SourceAdjustmentTransfer(settings,depth:depth);return {transfer.apply($0,x:$1,y:$2)}}
     if case .modern(let settings) = self {
       guard !settings.needsNeighborhood else {throw CraftError.unsupported("This adjustment needs its complete layer input.")}
@@ -125,7 +125,7 @@ public enum Adjustment: Codable, Equatable, Sendable {
       return { transfer.apply($0, x: $1, y: $2) }
     }
     if case .gradientMap(let settings) = self {
-      let transfer = try GradientMapTransfer(settings, depth: depth)
+      let transfer = try GradientMapTransfer(settings, depth: depth, pixelCount: pixelCount)
       return { transfer.apply($0, x: $1, y: $2) }
     }
     let evaluate = evaluator(depth: depth)

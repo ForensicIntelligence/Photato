@@ -17,16 +17,13 @@ public enum GradientRasterizer {
     }
     let ramp = try GradientRamp(gradient, foreground: foreground, background: background)
     let field = try GradientField(placement, frame: frame, snapEndpoints: snapEndpoints)
-    var result = try Surface(width: area.width, height: area.height, depth: depth)
-    for y in 0..<area.height {
-      try Task.checkCancellation()
-      let py = area.y + y
-      for x in 0..<area.width {
-        let px = area.x + x
-        let sample = ramp.sample(field.parameter(x: Float(px) + 0.5, y: Float(py) + 0.5))
-        result.setPixel(x: x, y: y, dither ? GradientRamp.dither(sample, x: px, y: py) : sample)
-      }
+    let output = try Surface(width: area.width, height: area.height, depth: depth)
+    let local = IntRect(x: 0, y: 0, width: output.width, height: output.height)
+    var sampler = GradientRamp.Sampler(ramp, pixelCount: output.width * output.height)
+    return try (consume output).compositingPixels(in: local) { x, y, _ in
+      let px = area.x + x, py = area.y + y
+      let sample = sampler.sample(field.parameter(x: Float(px) + 0.5, y: Float(py) + 0.5))
+      return dither ? GradientRamp.dither(sample, x: px, y: py) : sample
     }
-    return result
   }
 }

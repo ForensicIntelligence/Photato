@@ -16,6 +16,13 @@ struct GradientFillSampler {
     let pixel = ramp.sample(field.parameter(x: Float(x) + 0.5, y: Float(y) + 0.5))
     return dither ? GradientRamp.dither(pixel, x: x, y: y) : pixel
   }
+  func batch(pixelCount: Int) -> (Int, Int) -> Pixel {
+    var samples = GradientRamp.Sampler(ramp, pixelCount: pixelCount)
+    return { x, y in
+      let pixel = samples.sample(field.parameter(x: Float(x) + 0.5, y: Float(y) + 0.5))
+      return dither ? GradientRamp.dither(pixel, x: x, y: y) : pixel
+    }
+  }
 }
 
 extension Renderer {
@@ -32,11 +39,11 @@ extension Renderer {
     -> Surface
   {
     let sampler = try GradientFillSampler(fill, layer: layer, document: document)
-    var surface = try Surface(width: document.width, height: document.height, depth: .f32)
-    for y in 0..<document.height {
-      try Task.checkCancellation()
-      for x in 0..<document.width { surface.setPixel(x: x, y: y, sampler.sample(x: x, y: y)) }
+    let surface = try Surface(width: document.width, height: document.height, depth: .f32)
+    let area = IntRect(x: 0, y: 0, width: surface.width, height: surface.height)
+    let sample = sampler.batch(pixelCount: area.width * area.height)
+    return try (consume surface).compositingPixels(in: area) { x, y, _ in
+      sample(x, y)
     }
-    return surface
   }
 }

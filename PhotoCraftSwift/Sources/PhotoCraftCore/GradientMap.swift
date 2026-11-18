@@ -28,15 +28,21 @@ public struct GradientMapAdjustment: Codable, Equatable, Sendable {
 public struct GradientMapTransfer: Sendable {
   private static let bayer: [Float] = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5]
   private let ramp: GradientRamp
-  private let classicRGB16: ClassicRGB16Gradient?
+  private let toneSamples: [Pixel]?
   private let settings: GradientMapAdjustment
   private let depth: PixelDepth
-  public init(_ settings: GradientMapAdjustment, depth: PixelDepth) throws {
+  public init(_ settings: GradientMapAdjustment, depth: PixelDepth, pixelCount: Int = 0) throws {
     try settings.validate()
-    ramp = try GradientRamp(settings.gradient)
-    classicRGB16 =
-      depth == .u16 && settings.gradient.method == .classic
-      ? ClassicRGB16Gradient(settings.gradient) : nil
+    let ramp = try GradientRamp(settings.gradient)
+    self.ramp = ramp
+    if depth == .u16 && settings.gradient.method == .classic {
+      toneSamples = ClassicRGB16Gradient(settings.gradient).samples
+    } else if depth != .f32 && pixelCount >= 65_536 {
+      // Integer-depth tone coordinates already lie on this exact grid.
+      toneSamples = (0...4096).map { ramp.sample(Float($0) / 4096) }
+    } else {
+      toneSamples = nil
+    }
     self.settings = settings
     self.depth = depth
   }
@@ -59,7 +65,7 @@ public struct GradientMapTransfer: Sendable {
       if depth == .u8 { tone = (tone * 4096).rounded() / 4096 }
     }
     if settings.reverse { tone = 1 - tone }
-    var result = classicRGB16?.samples[Int((tone * 4096).rounded())] ?? ramp.sample(tone)
+    var result = toneSamples?[Int((tone * 4096).rounded())] ?? ramp.sample(tone)
     if settings.dither {
       // Source PhotoCraft ordered dither; exact Photoshop noise remains unqualified.
       let noise = ((Self.bayer[(y & 3) * 4 + (x & 3)] + 0.5) / 16 - 0.5) / 255

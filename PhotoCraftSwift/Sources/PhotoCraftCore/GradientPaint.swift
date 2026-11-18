@@ -96,6 +96,7 @@ public enum GradientPainter {
         .bounds(width: clipping.width, height: clipping.height)
         .clipped(toWidth: pixels.width, height: pixels.height)
       let linear = pixels.depth == .f32 && !stroke.mask
+      var sampler = GradientRamp.Sampler(ramp, pixelCount: local.width * local.height)
       var changed = false
       for y in local.y..<local.y + local.height {
         try Task.checkCancellation()
@@ -109,7 +110,7 @@ public enum GradientPainter {
           let coverage = stroke.opacity * (selectionMask?.coverage(x: dx, y: dy) ?? 1)
           guard coverage > 0 else { continue }
           let t = field.parameter(x: Float(dx) + 0.5, y: Float(dy) + 0.5)
-          var source = ramp.sample(stroke.reverse ? 1 - t : t)
+          var source = sampler.sample(stroke.reverse ? 1 - t : t)
           if !stroke.transparency { source.a = 1 }
           if stroke.dither { source = GradientRamp.dither(source, x: dx, y: dy) }
           if stroke.mask {
