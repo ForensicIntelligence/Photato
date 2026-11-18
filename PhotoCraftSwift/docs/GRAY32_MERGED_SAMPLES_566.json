@@ -1,0 +1,400 @@
+{
+  "actionMaximumVersion": 70,
+  "checkpoint": 566,
+  "comparison": {
+    "baseline": [
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-0.psb",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-0.psd",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-1.psb",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-1.psd",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-2.psb",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-2.psd",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-3.psb",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      },
+      {
+        "channels": 2,
+        "compression": 0,
+        "differentGrayWords": 24,
+        "extraPlaneWords": 192,
+        "extraWordsAllOpaque": true,
+        "file": "native-gray32-3.psd",
+        "grayPlaneSHA256": "a443ab56a67fa786abc5de387c6b6dfe76b9cc826ba4422c22113c2de89d39ab"
+      }
+    ],
+    "candidate": {
+      "arm": [
+        {
+          "channels": 1,
+          "compression": 0,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-0.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 0,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-0.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 1,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-1.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 1,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-1.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 2,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-2.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 2,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-2.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 3,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-3.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 3,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-3.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        }
+      ],
+      "debug": [
+        {
+          "channels": 1,
+          "compression": 0,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-0.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 0,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-0.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 1,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-1.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 1,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-1.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 2,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-2.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 2,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-2.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 3,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-3.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 3,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-3.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        }
+      ],
+      "intel": [
+        {
+          "channels": 1,
+          "compression": 0,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-0.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 0,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-0.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 1,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-1.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 1,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-1.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 2,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-2.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 2,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-2.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 3,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-3.psb",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        },
+        {
+          "channels": 1,
+          "compression": 3,
+          "differentGrayWords": 0,
+          "extraPlaneWords": 0,
+          "extraWordsAllOpaque": false,
+          "file": "native-gray32-3.psd",
+          "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+        }
+      ]
+    },
+    "reference": {
+      "channels": 1,
+      "compression": 0,
+      "differentGrayWords": 0,
+      "extraPlaneWords": 0,
+      "extraWordsAllOpaque": false,
+      "file": "photoshop-reopened-native-gray32-raw.psd",
+      "grayPlaneSHA256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34"
+    }
+  },
+  "firstAttempt": "SwiftPM could not write the manifest compiler cache in the workspace sandbox.",
+  "fullPhotoshopParity": false,
+  "newMethods": 2,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "4eb4df3572aa47c951580ef9da14db610ba118b811053005ddbd33cbc1cc5aa0",
+    "binarySHA256": "d8bdd117df2d012f0352e5134967c35602a903536cf158d064f5b3efc6b66ae8",
+    "build": 566,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "reference": {
+    "ICC_present": true,
+    "channel_names_hex": {},
+    "channels": 1,
+    "color_mode_bytes": 110,
+    "color_mode_signature": "hdrt",
+    "compression": 0,
+    "depth": 32,
+    "file": "photoshop-reopened-native-gray32-raw.psd",
+    "height": 12,
+    "mode": 1,
+    "raw_bytes": 768,
+    "raw_sha256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34",
+    "resource_ids": [
+      1061,
+      1060,
+      1082,
+      1083,
+      1005,
+      1062,
+      1037,
+      1049,
+      1011,
+      10000,
+      1012,
+      1015,
+      1024,
+      1026,
+      1072,
+      1069,
+      1032,
+      1092,
+      1097,
+      1054,
+      1050,
+      1064,
+      1039,
+      1044,
+      1036,
+      1057,
+      1058
+    ],
+    "sha256": "2a9801f4a6cf2b695ffa3f632f7f02bbfe02650dc5981d8c51dc9143f630162a",
+    "untagged": null,
+    "width": 16
+  },
+  "selectedMethods": {
+    "arm": 629,
+    "debug": 629,
+    "intel": 629
+  },
+  "softwareRelease": false,
+  "typedCommands": 272
+}

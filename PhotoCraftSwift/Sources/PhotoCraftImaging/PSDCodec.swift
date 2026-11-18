@@ -1082,7 +1082,18 @@ public enum PSDCodec {
     let compOutput = try PSDLayerComps.prepare(doc)
     let auxiliaryChannels=PSDAuxiliaryChannels.all(doc)
     guard includeComposite || auxiliaryChannels.isEmpty else {throw CraftError.unsupported("Auxiliary channel export requires complete PSD/PSB merged planes; TIFF mapping remains separate.")}
-    let mergedTransparency=try PSDAuxiliaryChannels.mergedTransparency(doc)
+    // The validated single Background covers the canvas without blending. Its stored
+    // gray samples are authoritative, and its opaque merged image needs no alpha.
+    let gray32Background: NativeModeRaster?
+    if includeComposite, doc.depth == .f32, doc.colorMode == .grayscale,
+      doc.layers.count == 1, let layer = doc.layers.first, layer.isBackground, layer.visible,
+      let native = layer.nativeMode, native.isOpaque
+    {
+      gray32Background = native
+    } else {
+      gray32Background = nil
+    }
+    let mergedTransparency = try gray32Background == nil && PSDAuxiliaryChannels.mergedTransparency(doc)
     guard !doc.layers.isEmpty, doc.width <= format.maximumDimension,
       doc.height <= format.maximumDimension
     else {
@@ -1565,11 +1576,18 @@ public enum PSDCodec {
     let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
       || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
       ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
-    let pagedModeComposite = try doc.modeDescriptor != nil && (doc.width>NativeModeRaster.maximumPixels/doc.height || doc.layers.contains(where:{$0.nativeMode?.requiresPagedArchive == true})) ? PSDModeCompositeRows(doc):nil
-    let composite = try pagedComposite == nil && pagedModeComposite == nil ? Renderer.composite(doc):nil
-    let nativeComposite = try pagedModeComposite == nil ? doc.modeDescriptor.map { descriptor in
-      try NativeModeRaster.converting(composite!, to: descriptor.mode, depth: doc.depth, profile: descriptor.profile, intent: descriptor.intent)
-    }:nil
+    let pagedModeComposite = try gray32Background == nil && doc.modeDescriptor != nil
+      && (doc.width > NativeModeRaster.maximumPixels / doc.height || doc.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }))
+      ? PSDModeCompositeRows(doc) : nil
+    let composite = try gray32Background == nil && pagedComposite == nil && pagedModeComposite == nil
+      ? Renderer.composite(doc) : nil
+    let nativeComposite: NativeModeRaster?
+    if let composite, let descriptor = doc.modeDescriptor {
+      nativeComposite = try NativeModeRaster.converting(composite, to: descriptor.mode,
+        depth: doc.depth, profile: descriptor.profile, intent: descriptor.intent)
+    } else {
+      nativeComposite = nil
+    }
     try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,
       compression: compositeCompression, channels: colorChannels + (mergedTransparency ? 1:0) + auxiliaryChannels.count, format: format, to: output) { index in
         let channel = index / doc.height, y = index % doc.height
@@ -1582,8 +1600,11 @@ public enum PSDCodec {
         bytes.reserveCapacity(doc.width * (depth / 8))
         for x in 0..<doc.width {
           let value: Float
-          if let nativeComposite { value = PSDModeStorage.mergedSample(nativeComposite, component: channel, index: y * doc.width + x) }
-          else {
+          if let gray32Background {
+            value = gray32Background.value(component: 0, index: y * doc.width + x)
+          } else if let nativeComposite {
+            value = PSDModeStorage.mergedSample(nativeComposite, component: channel, index: y * doc.width + x)
+          } else {
             let p = depth == 32
               ? PSDMergedSample.encodeLinear(composite!.linearPixel(x: x, y: y),transparency:mergedTransparency)
               : PSDMergedSample.encode(composite!.pixel(x: x, y: y), depth: depth)

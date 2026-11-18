@@ -3616,3 +3616,9 @@ Compatibility with Firefly v2 Action-file execution remains open for these strok
 Send `actions.manage` with `operation` set to `toolRecording` and a Boolean `enabled`. The setting is a shared application preference and defaults to off. Shared document state reports `allowToolRecording`, `canConfigureToolRecording`, and the active recording’s captured setting in `recordingAllowsTools`. The last field is null when no recording is active. Changing the preference advances the shared API revision.
 
 Configure the preference before starting a recording on the shared document. Changing it on that document during recording returns HTTP 409. Other active recordings keep their captured setting. Tool edits still commit and have normal Undo and Redo behavior while capture is off. Saved Actions can play regardless of this preference. This setting belongs to the Photato recorder; Firefly v2 Action jobs retain their existing upload and execution contract. [Qualification](SOURCE_PUBLICATION_565.md).
+
+### Gray32 Background in PSD and PSB
+
+Build 566 writes the exact stored grayscale samples to the merged image when the only layer is a visible, opaque 32-bit grayscale Background. The file has no merged transparency channel in this case. Any saved channels follow the grayscale plane.
+
+The serializer is shared by the native Save family, authenticated Photato `file.psd` and `file.psb` downloads, and PSD resource outputs in both job interfaces. The Photato `photoshopContainers.gray32BackgroundComposite` capability describes the behavior. [Qualification](SOURCE_PUBLICATION_566.md).

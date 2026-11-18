@@ -20,6 +20,7 @@ final class Gray32ExportWorkflowTests: XCTestCase {
   func assertOutput(_ bytes: Data, source: CraftDocument,
     file: StaticString = #filePath, line: UInt = #line) throws {
     XCTAssertGreaterThanOrEqual(bytes.count, 140, file: file, line: line)
+    XCTAssertEqual(Array(bytes[12..<14]), [0, 1], file: file, line: line)
     XCTAssertEqual(Array(bytes[26..<30]), [0, 0, 0, 110], file: file, line: line)
     XCTAssertEqual(bytes[30..<34], Data("hdrt".utf8), file: file, line: line)
     let restored = try PSDCodec.read(bytes)
@@ -52,6 +53,7 @@ final class Gray32ExportWorkflowTests: XCTestCase {
       let containers = try XCTUnwrap(AutomationService.documentTransferCapabilities["photoshopContainers"] as? [String:Any])
       let hdr = try XCTUnwrap(containers["hdrMetadata"] as? [String:Any])
       XCTAssertEqual(hdr["modes"] as? [String], ["rgb","grayscale"])
+      XCTAssertNotNil(containers["gray32BackgroundComposite"] as? String)
     }
   }
   func testAdobeResourceOutputUsesTheSameGray32MetadataAndSampleSerializer() throws {

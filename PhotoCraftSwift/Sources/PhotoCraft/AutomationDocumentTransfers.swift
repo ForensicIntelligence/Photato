@@ -134,7 +134,8 @@ extension AutomationService {
       "photoshopContainers": [
         "readVersions": [1, 2], "writeFormats": ["psd", "psb"],
         "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16], "indexed": [8], "bitmap": [1], "multichannel": [8, 16]],
-        "hdrMetadata": ["modes":["rgb","grayscale"],"depth":32,"behavior":"PSD/PSB exports preserve imported HDR toning metadata or supply the neutral block for newly created documents. Native saves, Photato downloads and both resource job encoders share this serializer; numeric component words are unchanged."],
+        "hdrMetadata": ["modes":["rgb","grayscale"],"depth":32,"behavior":"PSD/PSB exports preserve imported HDR toning metadata or supply the neutral block for newly created documents. Native saves, Photato downloads and both resource job encoders share this serializer; layer component words are unchanged."],
+        "gray32BackgroundComposite": "A visible, opaque Gray32 Background that is the only layer supplies the merged gray samples directly. The merged image has no transparency plane. Saved auxiliary channels follow the gray plane.",
         "psbMediaType": "application/x-photoshop",
         "maximumFileBytes": PSDCodec.maximumFileBytes,"maximumPSDFileBytes":PSDCodec.maximumPSDFileBytes,"maximumDataBytes":PSDCodec.maximumInputBytes,"maximumRetainedMetadataBytes":PSDCodec.maximumMetadataBytes,
         "maximumDimension": Surface.maxDimension, "maximumPixels": Surface.maxPixels,

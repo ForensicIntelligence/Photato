@@ -4,6 +4,14 @@
 
 The 10 most recent entries, newest first.
 
+## 2026-11-18 — Step 566 — Preserve opaque Gray32 merged samples in PSD and PSB
+
+PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The writer uses the stored grayscale samples for the merged image and leaves out the redundant transparency plane. Saved auxiliary channels still follow the grayscale plane.
+
+An independent reader checked every sample of the 16 × 12 test image against a raw PSD saved by Photoshop 2026 at checkpoint 511. All 192 merged samples match byte for byte in PSD and PSB in all four compression modes. The comparison covers the grayscale plane and the channel count. All 629 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The tests also cover a saved auxiliary channel, hidden Background, both API encoders, and authenticated Photato downloads. Both universal app slices passed offscreen checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-566) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_566.md).
+
 ## 2026-11-18 — Step 565 — Add Allow Tool Recording to Actions
 
 The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. Tool gestures still edit pixels and appear in Undo when the setting is off.
@@ -75,11 +83,3 @@ On the canvas, Shift-plus and Shift-minus cycle paint modes. Shift-Option-Q sele
 All 454 selected tests passed across three builds. They cover direct shortcuts, focus, the cursor, Undo and the Photato API. Live Photoshop keyboard comparisons remain open.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-557) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_557.md).
-
-## 2026-11-18 — Step 556 — Behind and Clear
-
-The Brush Mode picker now has Behind and Clear. Behind puts paint underneath existing pixels. Clear removes their alpha and also works with Pencil. You can hold the grave-accent key to use Clear for a Brush stroke.
-
-All 418 selected tests passed across three builds. They check pixel math, transparent and locked layers, Undo, replay and the Photato API. Exact Photoshop pixel comparisons remain open.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-556) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_556.md).

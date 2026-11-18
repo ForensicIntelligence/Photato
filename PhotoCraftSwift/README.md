@@ -1,3 +1,5 @@
+**Source checkpoint 566.** PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. All 629 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_566.md).
+
 **Source checkpoint 565.** The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_565.md).
 
 **Source checkpoint 564.** Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. All 583 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_564.md).

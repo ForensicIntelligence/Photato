@@ -2,5 +2,13 @@
   "reference": "photoshop-owned-gray32.psd",
   "sha256": "18d62b7fcad63fd6e3e859786544e26f55d1847fe57d6a8471ce9c65335147b6",
   "provenance": "Owned procedural 16x12 grayscale sample fixture. Opened in Adobe Photoshop 2026, converted from Gray16 to Gray32 using the native Image > Mode command, then saved as PSD. No Adobe implementation code, plug-in SDK, or proprietary input content was used.",
-  "reason": "Independent interoperable Gray32 PSD, including the 110-byte hdrt color-mode block. Before checkpoint511, the native Gray32 exporter emitted an empty color-mode block and Photoshop rejected the file."
+  "reason": "Independent interoperable Gray32 PSD, including the 110-byte hdrt color-mode block. Before checkpoint511, the native Gray32 exporter emitted an empty color-mode block and Photoshop rejected the file.",
+  "merged_plane_reference": {
+    "file": "photoshop-reopened-gray32-merged.be-f32",
+    "provenance": "Owned procedural 16x12 Gray32 raster. Photoshop 2026 reopened the Photato raw PSD written at checkpoint 511 and saved it as a raw PSD. The merged grayscale plane was extracted without transforming any samples.",
+    "source_photoshop_saved_psd_sha256": "2a9801f4a6cf2b695ffa3f632f7f02bbfe02650dc5981d8c51dc9143f630162a",
+    "plane_sha256": "1769bd4eabd697ba394bf4da3718e2c75e7a4034a2234a191b72f7c81df6de34",
+    "header_channels": 1,
+    "layout": "192 big-endian IEEE 754 binary32 grayscale samples, left to right and top to bottom"
+  }
 }

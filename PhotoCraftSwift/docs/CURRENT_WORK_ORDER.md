@@ -1,3 +1,7 @@
+**Source checkpoint 566.** PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. All 629 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_566.md).
+
+Collect independent Photoshop RGB32 and Gray32 conversion references. Compare multilayer Gray32 merged output and continue verifying Actions channel switches and percentage-based tool coordinates.
+
 **Source checkpoint 565.** The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_565.md).
 
 Isolate the RGB32 and Gray32 conversion differences across architectures. Also verify Photoshop’s Action step capture for channel switches and percentage-based tool coordinates.

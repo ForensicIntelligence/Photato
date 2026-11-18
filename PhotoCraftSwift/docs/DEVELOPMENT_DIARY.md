@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 566 — Preserve opaque Gray32 merged samples in PSD and PSB
+
+PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The writer uses the stored grayscale samples for the merged image and leaves out the redundant transparency plane. Saved auxiliary channels still follow the grayscale plane.
+
+An independent reader checked every sample of the 16 × 12 test image against a raw PSD saved by Photoshop 2026 at checkpoint 511. All 192 merged samples match byte for byte in PSD and PSB in all four compression modes. The comparison covers the grayscale plane and the channel count. All 629 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The tests also cover a saved auxiliary channel, hidden Background, both API encoders, and authenticated Photato downloads. Both universal app slices passed offscreen checks.
+
+[Detailed record](DEVLOG.md#dev-step-566) · [Validation](SOURCE_PUBLICATION_566.md).
+
 ## 2026-11-18 — Step 565 — Add Allow Tool Recording to Actions
 
 The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. Tool gestures still edit pixels and appear in Undo when the setting is off.
@@ -513,14 +521,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:565 -->
+<!-- current-status-step:566 -->
 ## Current development status — 18 November 2026
 
-The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed, and both universal slices passed offscreen checks.
+PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The merged gray plane matched a Photoshop 2026 save across PSD and PSB. All 629 selected tests passed, and both universal app slices passed offscreen checks.
 
-Photoshop channel-selection Action steps and percentage-based tool coordinates still need verification.
+Exact output for multilayer Gray32 composites and RGB32 and Gray32 color-conversion workflows still needs verification. The independent reference covers one owned image and excludes container metadata such as the ICC profile.
 
-[Qualification](SOURCE_PUBLICATION_565.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_566.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1291,6 +1299,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 563 | [Record and replay Quick Mask Actions](DEVLOG.md#dev-step-563) |
 | 2026-11-18 | 564 | [Record Brush Actions for color channels](DEVLOG.md#dev-step-564) |
 | 2026-11-18 | 565 | [Add Allow Tool Recording to Actions](DEVLOG.md#dev-step-565) |
+| 2026-11-18 | 566 | [Preserve opaque Gray32 merged samples in PSD and PSB](DEVLOG.md#dev-step-566) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
