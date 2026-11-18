@@ -2,7 +2,7 @@
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
-**Development alpha — source build 559.** Paint Bucket has a Clear mode, a typed Photato API, and bounded writeback for separated sparse and full solid fills. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_559.md).
+**Development alpha — source build 560.** Edit Fill and Stroke can erase pixels through the native dialogs, the existing Photato API, and recorded Actions. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_560.md).
 
 ## Project layout
 

@@ -186,7 +186,7 @@ final class LiquifyMeshRecallTests: XCTestCase {
       store.cancelFilter()
       XCTAssertEqual(store.document, before); XCTAssertEqual(store.filterRecall.liquifyMeshes.revision, revision)
       XCTAssertEqual(AutomationCommand.definitions.count, 267)
-      XCTAssertEqual(ActionLibraryFile.maximumVersion, 65)
+      XCTAssertEqual(ActionLibraryFile.maximumVersion, AutomationTests.expectedActionVersion)
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject: FilterRecallAPI.capabilities))
       XCTAssertTrue((FilterRecallAPI.stateSchema["required"] as? [String] ?? []).contains("lastLiquifyMesh"))
     }

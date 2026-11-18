@@ -1,3 +1,7 @@
+**Source checkpoint 560.** Edit Fill and Stroke can erase pixels through the native dialogs, the existing Photato API, and recorded Actions. All 522 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_560.md).
+
+Continue with portable Paint Bucket and nonraster Brush Actions. Collect Photoshop reference samples for Clear and verify the live dialogs when desktop access returns.
+
 **Source checkpoint 559.** Paint Bucket has a Clear mode, a typed Photato API, and bounded writeback for separated sparse and full solid fills. All 486 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_559.md).
 
 Continue with Clear in Edit Fill/Stroke and portable Paint Bucket and nonraster Brush Actions. Dense pattern writeback and exact Photoshop color-region bytes remain open. Live cursor, placement, continuous stroke, keyboard and physical editing checks remain open.

@@ -398,7 +398,23 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
         guard opacity.isFinite,(0...1).contains(opacity),index == nil || index!>=0 else {throw CraftError.invalid("Invalid recorded Blur Gallery output.")}
       }
       if case .stackLayers(let targets, _) = step.operation { guard !targets.isEmpty, targets.count <= LayerLimits.maximumLayers else { throw CraftError.invalid("Invalid recorded layer arrangement targets.") } }
-      if case .pathPixelPaint(_,let coverage,let settings,let pattern,let placement,_) = step.operation{try settings.validate(.fill);_ = try coverage.coverageSurface();if let pattern{try pattern.validate()};try placement?.validate()}
+      switch step.operation {
+      case .pixelPaint(let kind, let target, let settings) where settings.clearsAlpha == true:
+        try settings.validate(kind)
+        guard case .layer = target else { throw CraftError.unsupported("Recorded Edit Clear requires a pixel layer.") }
+      case .patternPixelPaint(let target, let pattern, let placement, let settings) where settings.clearsAlpha == true:
+        try settings.validate(.fill)
+        guard case .layer = target else { throw CraftError.unsupported("Recorded Edit Clear requires a pixel layer.") }
+        try pattern.validate()
+        try placement.validate()
+      case .pathPixelPaint(_, let coverage, let settings, let pattern, let placement, _):
+        guard settings.clearsAlpha != true else { throw CraftError.invalid("Recorded path coverage requires Path Fill settings.") }
+        try settings.validate(.fill)
+        _ = try coverage.coverageSurface()
+        if let pattern { try pattern.validate() }
+        try placement?.validate()
+      default: break
+      }
       if case .fitImage(let options) = step.operation { try options.validate() }
       if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}

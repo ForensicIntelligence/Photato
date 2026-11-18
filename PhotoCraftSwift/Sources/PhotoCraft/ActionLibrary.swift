@@ -5,12 +5,14 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 65
+  static let maximumVersion = 66
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
-    let brushVersion = actions.lazy.flatMap(\.steps).compactMap { step -> Int? in
+    let paintVersion = actions.lazy.flatMap(\.steps).compactMap { step -> Int? in
       let mode: BrushPaintMode?, profile: BrushSettings.RoundTipProfile?
       switch step.operation {
+      case .pixelPaint(_, _, let settings), .patternPixelPaint(_, _, _, let settings):
+        return settings.clearsAlpha == true ? 66 : nil
       case .stroke(_, _, let brush, _): (mode, profile) = (brush.settings?.paintMode, brush.settings?.roundTipProfile)
       case .pencilStroke(let value): (mode, profile) = (value.paintMode, value.roundTipProfile)
       case .adjustmentBrush(let value):
@@ -21,7 +23,7 @@ struct ActionLibraryFile: Codable {
       if mode != nil { return 65 }
       return profile.map { $0 == .calibratedRound ? 64 : 63 }
     }.max()
-    if let brushVersion { return brushVersion }
+    if let paintVersion { return paintVersion }
     if actions.contains(where: { $0.steps.contains { if case .pencilStroke = $0.operation { return true }; return false } }) { return 62 }
     if actions.contains(where:{$0.steps.contains{if case .adjustmentBrush(let value)=$0.operation,case .modern=value.request.adjustment{return true};return false}}){return 61}
     if actions.contains(where: { $0.steps.contains { step in

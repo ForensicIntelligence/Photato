@@ -3576,3 +3576,11 @@ Existing PhotoCraft import can recover currently decodable originals from retain
 ## Checkpoint486: Classic RGB16 Gradient Map
 
 Existing `adjustmentBrush.edit` and settings/state paths share the corrected native Classic RGB16 interpolation and ordinary history. Capabilities describe the arithmetic, bounded qualification and remaining gaps. No new route, command, schema, Actions/native version or Adobe descriptor was introduced. All three new tests pass on both optimized architectures; the broader Intel batch retains the reproduced build485 Legacy-vector170 failure. [Evidence](CLASSIC_RGB16_BOUNDARIES_486.json).
+
+### Clear in Edit Fill and Stroke
+
+Build 560 adds `"mode": "Clear"` to the existing `pixels.fill` and `pixels.stroke` commands. Clear requires an ordinary 8- or 16-bit RGB pixel layer with editable transparency. `pixelPaint.canClear` reports whether the active native target can use it. Use the existing matching `layerID`, revision and sharing requirements.
+
+Solid Clear accepts omitted `color`. Pattern Clear in Fill accepts a `patternID` and optional placement and uses pattern alpha. Stroke retains its required `width` and optional `location`. The engine uses coverage and opacity to reduce alpha and preserves the layer extent and selection. Requests combining Clear and `preserveTransparency: true` return 400. Unsupported targets return 422. Normal color modes retain their existing inputs.
+
+The edit uses one Undo. Clear recordings require Photato Actions 66. The Adobe compatibility endpoint set stays the same. [Validation](SOURCE_PUBLICATION_560.md).

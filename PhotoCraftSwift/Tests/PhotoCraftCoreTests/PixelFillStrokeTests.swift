@@ -2,6 +2,92 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class PixelFillStrokeTests:XCTestCase{
+  func testEditClearWeightsSelectionAndPatternAlphaAtBothIntegerDepths() throws {
+    for depth in [PixelDepth.u8, .u16] {
+      var document = try CraftDocument(width: 6, height: 2, depth: depth)
+      let source = try Surface(width: 6, height: 2, depth: depth, fill: Pixel(0.2, 0.4, 0.6, 0.8))
+      document.layers[0].content = .raster(source)
+      let selection = try SelectionMask(width: 6, height: 2,
+        bytes: [128, 255, 0, 128, 255, 0, 128, 255, 0, 128, 255, 0])
+      document.setCoverageSelection(selection)
+      var settings = PixelPaintSettings(color: .clear)
+      settings.clearsAlpha = true
+      settings.opacity = 0.25
+      let target = PixelPaintTarget.layer(document.layers[0].id)
+      var solid = document, patterned = document
+      try PixelFillStroke.apply(.init(.fill, target: target, settings: settings), to: &solid)
+      var texture = try Surface(width: 2, height: 1, depth: depth, fill: .white)
+      texture.setPixel(x: 1, y: 0, .clear)
+      let pattern = try RasterPattern(name: "Alternating", surface: texture, id: "edit-clear-test")
+      settings.opacity = 1
+      try PixelFillStroke.apply(.init(.fill, target: target, settings: settings, pattern: pattern), to: &patterned)
+      var expected = source, pixel = source.defaultPixel
+      pixel.a *= 1 - (Float(128) / 255) * 0.25
+      expected.setPixel(x: 0, y: 0, pixel)
+      guard case .raster(let solidPixels) = solid.layers[0].content,
+        case .raster(let patternedPixels) = patterned.layers[0].content else { return XCTFail("Expected pixel layers") }
+      XCTAssertEqual(solidPixels.pixel(x: 0, y: 0), expected.pixel(x: 0, y: 0))
+      XCTAssertEqual(solidPixels.pixel(x: 2, y: 0), source.defaultPixel)
+      XCTAssertEqual(patternedPixels.pixel(x: 1, y: 0), source.defaultPixel)
+      XCTAssertEqual(patternedPixels.pixel(x: 4, y: 0), .clear)
+      XCTAssertEqual(try patterned.coverageSelection(), try document.coverageSelection())
+      XCTAssertEqual(patterned.layers[0].coordinateTransform, document.layers[0].coordinateTransform)
+    }
+  }
+
+  func testEditClearStrokeUsesAllThreeLocationsAndKeepsTransformedExtent() throws {
+    let source = try Surface(width: 9, height: 8, depth: .u16, fill: Pixel(0.4, 0.2, 0.9))
+    for location in PixelStrokeLocation.allCases {
+      var document = try CraftDocument(width: 14, height: 12, depth: .u16)
+      document.layers[0].content = .raster(source)
+      document.layers[0].x = 2
+      document.layers[0].y = 1
+      document.selection = .init(x: 5, y: 4, width: 4, height: 4)
+      let initial = document
+      var settings = PixelPaintSettings()
+      settings.clearsAlpha = true
+      settings.width = 2
+      settings.location = location
+      try PixelFillStroke.apply(.init(.stroke, target: .layer(document.layers[0].id), settings: settings), to: &document)
+      guard case .raster(let output) = document.layers[0].content else { return XCTFail("Expected pixel layer") }
+      XCTAssertEqual(output.pixel(x: 3, y: 4), location == .outside ? source.defaultPixel : .clear)
+      XCTAssertEqual(output.pixel(x: 2, y: 4), location == .inside ? source.defaultPixel : .clear)
+      XCTAssertEqual(output.pixel(x: 0, y: 0), source.defaultPixel)
+      XCTAssertEqual(output.width, source.width)
+      XCTAssertEqual(output.height, source.height)
+      XCTAssertEqual(document.layers[0].coordinateTransform, initial.layers[0].coordinateTransform)
+      XCTAssertEqual(document.selection, initial.selection)
+    }
+  }
+
+  func testEditClearRejectsProtectedAndScalarTargetsAndKeepsSparseUniformStorage() throws {
+    var settings = PixelPaintSettings()
+    settings.clearsAlpha = true
+    for depth in [PixelDepth.u8, .f32] {
+      var document = try fixture(depth)
+      let id = document.layers[0].id
+      document.layers[0].mask = try Surface(width: 20, height: 16, depth: depth, fill: .white)
+      if depth == .u8 { document.layers[0].protection = .transparency }
+      for target in [PixelPaintTarget.layer(id), .mask(id)] {
+        let original = document
+        XCTAssertFalse(PixelFillStroke.clearAvailable(document, target: target))
+        XCTAssertThrowsError(try PixelFillStroke.apply(.init(.fill, target: target, settings: settings), to: &document))
+        XCTAssertEqual(document, original)
+      }
+    }
+    let side = Surface.maxDimension
+    var document = try CraftDocument(width: side, height: side)
+    document.layers[0].content = .raster(try Surface(width: side, height: side, fill: .white))
+    let target = PixelPaintTarget.layer(document.layers[0].id)
+    XCTAssertTrue(PixelFillStroke.clearAvailable(document, target: target))
+    try PixelFillStroke.apply(.init(.fill, target: target, settings: settings), to: &document)
+    guard case .raster(let output) = document.layers[0].content else { return XCTFail("Expected pixel layer") }
+    XCTAssertEqual(output.defaultPixel, .clear)
+    XCTAssertEqual(output.tileCount, 0)
+    XCTAssertEqual(output.width, side)
+    XCTAssertEqual(output.height, side)
+  }
+
   func fixture(_ depth:PixelDepth = .u8)throws->CraftDocument{var d=try CraftDocument(width:20,height:16,depth:depth);var pixels=try Surface(width:20,height:16,depth:depth);for y in 4..<10{for x in 5..<12{pixels.setPixel(x:x,y:y,Pixel(0.2,0.4,0.6,0.5))}};d.layers[0].content = .raster(pixels);return d}
   func testFillOpacityModesPreservedAlphaAndUntargetedSamplesAllDepths()throws{
     for depth in PixelDepth.allCases{for mode in [BlendMode.normal,.multiply,.screen,.difference]{var d=try fixture(depth),settings=PixelPaintSettings(color:Pixel(0.8,0.3,0.2));d.selection = .init(x:7,y:6,width:3,height:2);settings.opacity=0.5;settings.mode=mode;settings.preserveTransparency=true;let source=d;try Command.pixelPaint(.init(.fill,target:.layer(d.layers[0].id),settings:settings)).apply(to:&d);guard case .raster(let out)=d.layers[0].content,case .raster(let before)=source.layers[0].content else{return XCTFail()};for y in 0..<16{for x in 0..<20{let p=out.pixel(x:x,y:y);if source.selection!.contains(x,y){XCTAssertEqual(p.a,before.pixel(x:x,y:y).a);XCTAssertTrue(p.isFinite)}else{XCTAssertTrue(p.hasSameBits(as:before.pixel(x:x,y:y)))}}};XCTAssertEqual(d.selection,source.selection);XCTAssertEqual(d.layers[0].id,source.layers[0].id)}}

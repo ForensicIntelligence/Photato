@@ -10,7 +10,7 @@ enum PixelPaintAPI{
     case "target":return ChannelAPI.parameterSchema("target")!
     case "color":return ["type":"array","minItems":4,"maxItems":4,"items":BrushAPI.number(0,1)]
     case "mask","preserveTransparency":return BrushAPI.flag
-    case "mode":return BrushAPI.enumeration(BlendMode.allCases.map(\.rawValue))
+    case "mode":return BrushAPI.enumeration(PixelPaintSettings.modeNames)
     case "location":return BrushAPI.enumeration(PixelStrokeLocation.allCases.map(\.rawValue))
     case "width":return BrushAPI.number(1,250,integer:true)
     default:return BrushAPI.number(0,1)
@@ -18,10 +18,19 @@ enum PixelPaintAPI{
   static var settingsSchema:[String:Any]{let fields=["color":schema("color"),"opacity":schema("opacity"),"mode":schema("mode"),"preserveTransparency":schema("preserveTransparency"),"width":schema("width"),"location":schema("location")];return BrushAPI.object(fields,required:Array(fields.keys).sorted())}
   static var targetSchema:[String:Any]{BrushAPI.object(["kind":BrushAPI.enumeration(["layer","mask","channel"]),"id":["type":"string"]],required:["kind","id"])}
   static var patternSchema:[String:Any]{BrushAPI.object(["id":["type":"string"],"name":["type":"string"],"width":BrushAPI.number(1,30000,integer:true),"height":BrushAPI.number(1,30000,integer:true),"depth":BrushAPI.enumeration(PixelDepth.allCases.map(\.rawValue)),"source":BrushAPI.enumeration(["document","library"])],required:["id","name","width","height","depth","source"])}
-  static var stateSchema:[String:Any]{BrushAPI.object(["patterns":["type":"array","maxItems":2048,"items":patternSchema],"patternBusy":BrushAPI.flag,"canPatternFill":BrushAPI.flag,"fillContents":["type":"string"],"canCommitFill":BrushAPI.flag,"canCommitStroke":BrushAPI.flag,"available":BrushAPI.flag,"target":["anyOf":[["type":"null"],targetSchema]],"fillSettings":settingsSchema,"strokeSettings":settingsSchema,"busy":BrushAPI.flag,"hasSelection":BrushAPI.flag],required:["canCommitFill","canCommitStroke","available","target","fillSettings","strokeSettings","busy","hasSelection","patterns","patternBusy","canPatternFill","fillContents"])}
+  static var stateSchema:[String:Any]{BrushAPI.object(["patterns":["type":"array","maxItems":2048,"items":patternSchema],"patternBusy":BrushAPI.flag,"canPatternFill":BrushAPI.flag,"fillContents":["type":"string"],"canCommitFill":BrushAPI.flag,"canCommitStroke":BrushAPI.flag,"canClear":BrushAPI.flag,"available":BrushAPI.flag,"target":["anyOf":[["type":"null"],targetSchema]],"fillSettings":settingsSchema,"strokeSettings":settingsSchema,"busy":BrushAPI.flag,"hasSelection":BrushAPI.flag],required:["canCommitFill","canCommitStroke","canClear","available","target","fillSettings","strokeSettings","busy","hasSelection","patterns","patternBusy","canPatternFill","fillContents"])}
+  static func inkCondition(for command: String) -> [String: Any] {
+    let requiredInk: [String: Any] = command == "pixels.fill"
+      ? ["anyOf": [["required": ["color"]], ["required": ["patternID"]]]]
+      : ["required": ["color"]]
+    return ["if": ["required": ["mode"], "properties": ["mode": ["const": BrushPaintMode.clear.title]]],
+      "then": ["properties": ["preserveTransparency": ["const": false]]],
+      "else": requiredInk]
+  }
   static var resultSchema:[String:Any]{["type":"object","required":["revision","pixelPaint"],"properties":["revision":["type":"string"],"pixelPaint":stateSchema]]}
   static var capabilities:[String:Any]{[
     "commands":commands,"stateSchema":stateSchema,"resultSchema":resultSchema,"settingsSchema":settingsSchema,
+    "clear":"Mode Clear on an ordinary RGB8/16 pixel layer removes alpha through existing Fill or Stroke coverage and opacity. Solid Clear needs no color. Pattern Clear weights removal by texel alpha. Locked transparency, Background, Preserve Transparency and scalar targets are incompatible. State canClear describes the active native target. New Clear recipes require Actions66. Photoshop byte/default equivalence for Clear remains open.",
     "behavior":"Color Fill and Stroke share the native engine, UI/history/Actions41/42; explicit path coverage uses Actions50. Stroke uses the current selection, or unmasked raster alpha when no selection exists. Masks/channels without a selection use the canvas boundary. Inside/Center/Outside, mode, opacity and Preserve Transparency are explicit. Fill covers the selection or canvas. Shape/type/Smart Objects are never rasterized implicitly.",
     "storage":"Paged GRAY8 coverage, disc extrema and bounded target support patches; preserve all untargeted samples and original selection. Uniform full-target color fills map implicit pixels without materializing a giant plane. Sparse300000-side cases do not establish dense maximum-capacity or physical60fps acceptance.",
     "hiddenQuickMask":"Fill remains available as a dialog but committing a hidden Quick Mask rejects422; Stroke is unavailable while hidden. State canCommitFill/canCommitStroke distinguishes commit availability from the common Fill-dialog availability. Filtering remains allowed; visibility is checked again at prepared commit.",
@@ -33,7 +42,7 @@ enum PixelPaintAPI{
     "cursor":"Native dialogs and controls introduce no new canvas tool or modifier action. Existing effective tool cursors remain unchanged; opacity sliders use native control cursors. No pointer injection is added.",
     "adobe":"The pinned v2 contract has no separately qualified destructive Edit Fill/Stroke selection endpoint. No route or unverified actionJSON descriptor is invented. Existing layer-style strokes, fills and resource jobs keep their distinct contracts. Complete Adobe action/job conformance remains open."
   ]}
-  static func settings(_ value:PixelPaintSettings)->[String:Any]{["color":[value.color.r,value.color.g,value.color.b,value.color.a],"opacity":value.opacity,"mode":value.mode.rawValue,"width":value.width,"location":value.location.rawValue,"preserveTransparency":value.preserveTransparency]}
+  static func settings(_ value:PixelPaintSettings)->[String:Any]{["color":[value.color.r,value.color.g,value.color.b,value.color.a],"opacity":value.opacity,"mode":value.modeName,"width":value.width,"location":value.location.rawValue,"preserveTransparency":value.preserveTransparency]}
   static func target(_ value:PixelPaintTarget)->[String:Any]{switch value{case .layer(let id):return ["kind":"layer","id":id.uuidString];case .mask(let id):return ["kind":"mask","id":id.uuidString];case .channel(let target):switch target{case .alpha(let id):return ["kind":"channel","id":id.uuidString];case .quickMask:return ["kind":"channel","id":"quickMask"]}}}
 }
 extension AutomationCommand{
@@ -41,18 +50,43 @@ extension AutomationCommand{
     let target:PixelPaintTarget
     if parameters["target"] != nil{guard parameters["layerID"]==nil,parameters["mask"]==nil else{throw AutomationFailure(status:400,message:"Choose a layer/mask or channel target, not both.")};target = .channel(try channelTarget())}
     else{let text=try string("layerID");guard let id=UUID(uuidString:text) else{throw AutomationFailure(status:400,message:"Invalid layer UUID.")};let mask=parameters["mask"]==nil ? false:try selectedPixelFlag("mask");target=mask ? .mask(id):.layer(id)}
+    let modeName = parameters["mode"] == nil ? BlendMode.normal.rawValue : try string("mode")
+    let clearsAlpha = modeName == BrushPaintMode.clear.title
+    guard let blend = clearsAlpha ? BlendMode.normal : BlendMode(rawValue: modeName) else {
+      throw AutomationFailure(status: 400, message: "Invalid paint mode.")
+    }
     let captured:RasterPattern?,ink:Pixel
     if parameters["patternID"] != nil{guard name=="pixels.fill",parameters["color"]==nil else{throw AutomationFailure(status:400,message:"Choose a color or saved pattern for Fill, not both.")};let id=try string("patternID");guard let pattern=patterns.first(where:{$0.id==id}) else{throw AutomationFailure(status:404,message:"Pattern not found in this document or native library.")};captured=pattern;ink = .white}
-    else{guard parameters["placement"]==nil else{throw AutomationFailure(status:400,message:"Pattern placement requires patternID.")};captured=nil;guard case .array(let values)=parameters["color"],values.count==4 else{throw AutomationFailure(status:400,message:"Supply color RGBA or patternID.")};let colors=try values.map{value->Float in guard case .number(let n)=value,n.isFinite,(0...1).contains(n) else{throw AutomationFailure(status:400,message:"Color components must be0–1.")};return Float(n)};ink=Pixel(colors[0],colors[1],colors[2],colors[3])}
+    else {
+      guard parameters["placement"] == nil else { throw AutomationFailure(status: 400, message: "Pattern placement requires patternID.") }
+      captured = nil
+      if clearsAlpha, parameters["color"] == nil { ink = .clear }
+      else {
+        guard case .array(let values) = parameters["color"], values.count == 4 else {
+          throw AutomationFailure(status: 400, message: "Supply color RGBA or choose Clear or Pattern Fill.")
+        }
+        let colors = try values.map { value -> Float in
+          guard case .number(let number) = value, number.isFinite, (0...1).contains(number) else {
+            throw AutomationFailure(status: 400, message: "Color components must be 0–1.")
+          }
+          return Float(number)
+        }
+        ink = Pixel(colors[0], colors[1], colors[2], colors[3])
+      }
+    }
     var placement:PatternPlacement?
     if let raw=parameters["placement"]{guard case .object(let fields)=raw else{throw AutomationFailure(status:400,message:"Pattern placement must be an object.")};var value=PatternPlacement();for (key,raw) in fields{guard case .number(let n)=raw,n.isFinite else{throw AutomationFailure(status:400,message:"Invalid pattern placement number.")};switch key{case "scale":value.scale=Float(n);case "angle":value.angle=Float(n);case "phaseX":value.phaseX=Float(n);case "phaseY":value.phaseY=Float(n);default:throw AutomationFailure(status:400,message:"Unknown pattern placement field.")}};try value.validate();placement=value}
     var settings=PixelPaintSettings(color:ink);settings.opacity=parameters["opacity"]==nil ? 1:Float(try number("opacity",range:0...1));settings.preserveTransparency=parameters["preserveTransparency"]==nil ? false:try selectedPixelFlag("preserveTransparency")
-    if parameters["mode"] != nil{guard let mode=BlendMode(rawValue:try string("mode")) else{throw AutomationFailure(status:400,message:"Invalid paint mode.")};settings.mode=mode}
+    settings.mode = blend
+    settings.clearsAlpha = clearsAlpha ? true : nil
+    if clearsAlpha, settings.preserveTransparency {
+      throw AutomationFailure(status: 400, message: "Turn off Preserve Transparency before using Clear.")
+    }
     let kind:PixelPaintKind=name=="pixels.fill" ? .fill:.stroke
     if kind == .stroke{settings.width=try integer("width",range:1...250);if parameters["location"] != nil{guard let location=PixelStrokeLocation(rawValue:try string("location")) else{throw AutomationFailure(status:400,message:"Invalid Stroke location.")};settings.location=location}}
     try settings.validate(kind);return .init(kind,target:target,settings:settings,pattern:captured,placement:placement)
   }
 }
 @MainActor extension EditorStore{
-  var pixelPaintState:[String:Any]{["patterns":pixelFillPatterns.map{pattern ->[String:Any] in ["id":pattern.id,"name":pattern.displayName,"width":pattern.surface.width,"height":pattern.surface.height,"depth":pattern.surface.depth.rawValue,"source":document.pattern(pattern.id)==nil ? "library":"document"]},"patternBusy":patterns.busy,"canPatternFill":canFillWithPattern,"fillContents":lastPixelFillContents,"canCommitFill":canUsePixelPaint && !hasHiddenQuickMaskEditingTarget,"canCommitStroke":canUsePixelStroke,"available":canUsePixelPaint,"target":nativePixelPaintTarget.map{PixelPaintAPI.target($0)} as Any? ?? NSNull(),"fillSettings":PixelPaintAPI.settings(lastPixelFill),"strokeSettings":PixelPaintAPI.settings(lastPixelStroke),"busy":geometryBusy,"hasSelection":document.selection != nil]}
+  var pixelPaintState:[String:Any]{["patterns":pixelFillPatterns.map{pattern ->[String:Any] in ["id":pattern.id,"name":pattern.displayName,"width":pattern.surface.width,"height":pattern.surface.height,"depth":pattern.surface.depth.rawValue,"source":document.pattern(pattern.id)==nil ? "library":"document"]},"patternBusy":patterns.busy,"canPatternFill":canFillWithPattern,"fillContents":lastPixelFillContents,"canCommitFill":canUsePixelPaint && !hasHiddenQuickMaskEditingTarget,"canCommitStroke":canUsePixelStroke,"canClear":canClearPixelPaint,"available":canUsePixelPaint,"target":nativePixelPaintTarget.map{PixelPaintAPI.target($0)} as Any? ?? NSNull(),"fillSettings":PixelPaintAPI.settings(lastPixelFill),"strokeSettings":PixelPaintAPI.settings(lastPixelStroke),"busy":geometryBusy,"hasSelection":document.selection != nil]}
 }
