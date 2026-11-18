@@ -3,6 +3,30 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class BrushPresetCodecTests: XCTestCase {
+  func testWideSoftNativeVersionTipLockAndABRTransport() throws {
+    let preset = try XCTUnwrap(BrushPresets.builtins().first { $0.name == "Soft Round" })
+    var legacy = preset
+    legacy.brush.settings?.roundTipProfile = nil
+    let previous = BrushPresetFile(presets: [legacy])
+    XCTAssertEqual(try BrushPresetFile.decode(previous.encoded()), previous)
+    XCTAssertEqual(previous.version, 1)
+    let native = BrushPresetFile(presets: [preset])
+    XCTAssertEqual(try BrushPresetFile.decode(native.encoded()), native)
+    XCTAssertEqual(native.version, 2)
+    var mislabeled = native
+    mislabeled.version = 1
+    XCTAssertThrowsError(try BrushPresetFile.decode(JSONEncoder().encode(mislabeled)))
+    let abr = try XCTUnwrap(ABRCodec.read(ABRCodec.write([preset])).presets.first)
+    XCTAssertEqual(abr.brush.hardness, preset.brush.hardness)
+    XCTAssertEqual(abr.brush.size, preset.brush.size)
+    XCTAssertNil(abr.brush.settings?.roundTipProfile)
+    var locked = legacy.brush
+    locked.settings?.lockedSections = ["tip"]
+    XCTAssertNil(preset.applying(to: locked).settings?.roundTipProfile)
+    locked.settings?.roundTipProfile = .wideSoft
+    XCTAssertEqual(legacy.applying(to: locked).settings?.roundTipProfile, .wideSoft)
+  }
+
   func testMaximumDiameterRoundTripsNativeAndComputedABR() throws {
     var preset = BrushPresets.builtins()[0]
     preset.brush.size = 5_000

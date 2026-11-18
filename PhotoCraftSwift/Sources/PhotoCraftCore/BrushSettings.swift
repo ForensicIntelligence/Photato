@@ -144,7 +144,10 @@ public struct BrushSymmetry:Codable,Equatable,Sendable {
   public init() {}
 }
 public struct BrushSettings:Codable,Equatable,Sendable {
+  public enum RoundTipProfile:String,Codable,CaseIterable,Sendable { case wideSoft }
+
   public var tip:BrushBitmap?
+  public var roundTipProfile:RoundTipProfile?
   public var spacing=0.25
   public var spacingEnabled=true
   public var angle=0.0
@@ -193,7 +196,7 @@ public struct BrushSettings:Codable,Equatable,Sendable {
     b.smoothing=current.smoothing;b.symmetry=current.symmetry;b.zoom=current.zoom;b.seed=current.seed;b.lockedSections=current.lockedSections
     for section in current.lockedSections {
       switch section {
-      case "tip":b.tip=current.tip;b.angle=current.angle;b.roundness=current.roundness;b.flipX=current.flipX;b.flipY=current.flipY;b.spacing=current.spacing;b.spacingEnabled=current.spacingEnabled
+      case "tip":b.tip=current.tip;b.roundTipProfile=current.roundTipProfile;b.angle=current.angle;b.roundness=current.roundness;b.flipX=current.flipX;b.flipY=current.flipY;b.spacing=current.spacing;b.spacingEnabled=current.spacingEnabled
       case "shape":b.shape=current.shape
       case "scattering":b.scattering=current.scattering
       case "texture":b.texture=current.texture

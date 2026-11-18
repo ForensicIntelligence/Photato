@@ -571,7 +571,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 550 | 2026-11-18 | [Parallelize large raster composition and display packing](#dev-step-550) |
 | 551 | 2026-11-18 | [Parallelize brush tile output](#dev-step-551) |
 | 552 | 2026-11-18 | [Add brush opacity and flow number keys](#dev-step-552) |
+| 553 | 2026-11-18 | [Widen the zero-hardness Soft Round tip](#dev-step-553) |
 <!-- history-index:end -->
+
+<a id="dev-step-553"></a>
+
+## 2026-11-18 — Widen the zero-hardness Soft Round tip
+
+Photoshop 2026 was inaccessible while the Mac was locked. The two earlier RGB8 alpha exports remained available. The fit from step 552 used only the 7, 12 and 21 px samples at zero hardness. A Gaussian with standard deviation 23.37% of the nominal diameter placed all three held-out diameters and the two earlier 13 px dabs within two alpha levels. The fit used rendered pixels from documents created for this check. The 3 px hard round and the higher-hardness falloffs need separate work.
+
+BrushPainter.swift samples the wider falloff for the optional wideSoft profile on a zero-hardness, antialiased primary round tip. It evaluates row and column factors separately on ordinary raster tiles, and it uses the same support bound in the scalar path, raster damage, mask extent and band scheduling. The tip ends at half an RGB8 alpha level for all storage depths. The raster-visit budget scales with the greater area and retained coverage still falls back to bounded bands. Bitmap and dual tips, aliased strokes, prior brush records without the setting and higher-hardness values use the previous renderer. The switch at zero hardness is a current limitation while the remaining falloffs are established.
+
+BrushSettings.swift retains the profile with the existing tip-section lock. BrushPresets.swift enables it for Soft Round and Soft Round Pressure Opacity. BrushLibrary.swift upgrades exact copies of the old built-ins in memory. Modified presets, user presets and deletions are respected. The next library write persists the upgrades. Native preset version 2 and Action version 63 preserve the setting. Older version payloads with the new profile are rejected. ActionLibrary.swift and PaintTools.swift track that format requirement, including recorded masked and Adjustment Brush commands. ABR carries its standard round-tip metadata. Use the Photato format to export the specific profile.
+
+AutomationBrushes.swift extends the existing brush.configure and paint.stroke schema and brush state. The optional value is wideSoft. Null clears it, and omission keeps the active value. The pinned Adobe Photoshop v2 contract has no direct freehand route. AUTOMATION_API.md describes usage and version requirements. Info.plist advances the build to 553.
+
+BrushDynamicsTests.swift covers the wider tail through tiled, scalar and retained strokes at all supported depths, plus the banded 5,000 px footprint. BrushPresetCodecTests.swift covers native versioning, tip lock and ABR transport. BrushWorkflowTests.swift covers migration, desktop painting, recorded replay, Undo, HTTP validation, state and document equivalence.
+
+The first qualification stopped before compiling app sources. SwiftPM attempted to write its manifest module cache outside the writable sandbox. The logs are preserved under qualification01. The same sources went into qualification02 with access to the Xcode and native test runtimes.
+
+Qualification02 passed the five new tests, but three existing cases expected the application-wide Action library maximum of 62 after the new version had been added. The suite logs, app and test binaries, and source diff are preserved. Thirty-nine test files now expect maximum version 63. Existing format-specific expectations and output fixtures were retained. The app binaries were byte-identical before and after this test-only change.
+
+The first renderer comparison script applied the two-level bound to all sizes. The 12 px training sample differed by three levels, consistent with the step 552 fit. The follow-up checked the training and held-out groups independently. Saved reference and renderer bytes were retained.
+
+The Swift renderer's alpha differed by at most 3 of 255 levels on the six saved zero-hardness dabs from 3 to 41 px after aligning their centers. The original Photato renderer differed by up to 35 levels on the same samples. Two separate 13 px dabs differed by at most 2 levels. The recorded-click comparison without center alignment still differs by up to 118 levels. Verified sample bytes match between the optimized architectures. Higher-hardness outputs matched build 552 in all 18 saved cases.
+
+The history refresh initially found a newly generated Actions screenshot at a rolling path also cited by step 425. The current screenshot was moved into the step 553 test evidence so the old citation is not mistaken for recovered evidence. The strict index continues to report 631 earlier missing references. This step adds none.
+
+All 409 selected tests passed in three configurations after the version assertions were updated. The first 5,000 px color-dynamics preview and the final two-point stroke completed on both architectures. The final retained-session result exactly equals the complete-render result. The 146 legacy raster buffers are byte-exact with build 552 on each architecture. The signed universal validation package passed offscreen workspace checks on both slices. [Qualification](SOURCE_PUBLICATION_553.md).
 
 <a id="dev-step-552"></a>
 

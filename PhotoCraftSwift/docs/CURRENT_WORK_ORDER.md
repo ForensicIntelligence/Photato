@@ -1,3 +1,7 @@
+**Source checkpoint 553.** Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_553.md).
+
+Continue B01 with controlled subpixel captures and the transition from zero to higher hardness. Validate hard-tip edge coverage, continuous strokes and native-to-Photoshop defaults. Physical display and tablet timing, ColorSync and Gradient Map differences remain open.
+
 **Source checkpoint 552.** Canvas numbers set Brush opacity and flow, including Airbrush. All 404 selected tests passed in three configurations. Saved Photoshop alpha establishes a wider required brush footprint. [Qualification](SOURCE_PUBLICATION_552.md).
 
 Continue B01 with controlled subpixel and repeat captures, a broader brush support model and exact alpha comparison. Q03 physical display cadence and tablet timing, inherited ColorSync and Gradient Map differences remain open.

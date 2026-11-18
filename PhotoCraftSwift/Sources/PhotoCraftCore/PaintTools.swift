@@ -109,6 +109,8 @@ public struct RecordedPencilStroke: Codable, Sendable {
   private let brush: Brush
   private let autoErase: Bool
 
+  public var retainsRoundTipProfile: Bool { brush.settings?.roundTipProfile != nil }
+
   init?(recording request: PaintToolRequest, in document: CraftDocument) {
     switch request.target {
     case .pixels(let id): target = .pixels(.init(id, in: document))

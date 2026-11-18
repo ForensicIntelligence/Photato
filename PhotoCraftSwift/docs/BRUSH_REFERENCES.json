@@ -123,5 +123,21 @@
     "native_picker_paint_UndoRedo": true,
     "normal_latest": 453,
     "exact_Photoshop_and_fullB01_open": true
+  },
+  "soft_round_checkpoint_553": {
+    "qualification": "SOURCE_PUBLICATION_553.md",
+    "evidence": "WIDE_SOFT_ROUND_553.json",
+    "measure": "Saved, center-aligned RGB8 single-dab alpha",
+    "diameters_px": [
+      3,
+      7,
+      12,
+      13,
+      21,
+      41
+    ],
+    "profile": "wideSoft",
+    "maximum_alpha_level_error": 3,
+    "open": "Exact placement, nonzero hardness, continuous strokes and physical tablet input."
   }
 }

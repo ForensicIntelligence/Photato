@@ -1,3 +1,5 @@
+**Source checkpoint 553.** Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_553.md).
+
 **Source checkpoint 552.** Canvas numbers set Brush opacity and flow, including Airbrush. All 404 selected tests passed in three configurations. Saved Photoshop alpha establishes a wider required brush footprint. [Qualification](docs/SOURCE_PUBLICATION_552.md).
 
 **Source checkpoint 551.** Wide brush output tiles are prepared in parallel. All 338 checked buffers match build 550 on each architecture. All 401 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_551.md).

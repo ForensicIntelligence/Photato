@@ -27,15 +27,21 @@ public struct BrushPreset:Codable,Equatable,Identifiable,Sendable {
 public struct BrushPresetFile:Codable,Equatable,Sendable {
   public var version=1
   public var presets:[BrushPreset]
-  public init(presets:[BrushPreset]) { self.presets=presets }
+  public init(presets:[BrushPreset]) { self.presets=presets;version=requiredVersion }
   public static let maximumBytes=64*1024*1024
+  public static let maximumVersion=2
+  public var requiredVersion:Int { presets.contains { $0.brush.settings?.roundTipProfile != nil } ? 2 : 1 }
   public func validate() throws {
-    guard version==1,presets.count<=512,Set(presets.map(\.id)).count==presets.count else { throw CraftError.invalid("Brush library requires version1 and at most512 unique presets.") }
+    guard (requiredVersion...Self.maximumVersion).contains(version),
+      presets.count<=512,Set(presets.map(\.id)).count==presets.count else {
+      throw CraftError.invalid("Unsupported brush library version or invalid preset count or IDs.")
+    }
     var bytes=0
     for p in presets { try p.validate();bytes += p.brush.settings?.bitmapBytes ?? 0;guard bytes<=48*1024*1024 else { throw CraftError.invalid("Brush library bitmaps exceed48MiB.") } }
   }
   public func encoded() throws ->Data {
-    try validate();let e=JSONEncoder();e.outputFormatting=[.sortedKeys];let data=try e.encode(self);guard data.count<=Self.maximumBytes else { throw CraftError.invalid("Brush library exceeds64MiB.") };return data
+    var file=self;file.version=max(version,requiredVersion)
+    try file.validate();let e=JSONEncoder();e.outputFormatting=[.sortedKeys];let data=try e.encode(file);guard data.count<=Self.maximumBytes else { throw CraftError.invalid("Brush library exceeds64MiB.") };return data
   }
   public static func decode(_ data:Data)throws->Self { guard data.count<=maximumBytes else { throw CraftError.invalid("Brush library exceeds64MiB.") };let file=try JSONDecoder().decode(Self.self,from:data);try file.validate();return file }
 }
@@ -72,9 +78,9 @@ public enum BrushPresets {
       var preset=BrushPreset(id:id,name:name,group:group,brush:brush);preset.includeToolSettings=false;out.append(preset)
     }
     add("Hard Round") { _ in }
-    add("Soft Round") { $0.hardness=0;$0.size=45 }
+    add("Soft Round") { $0.hardness=0;$0.size=45;$0.settings!.roundTipProfile = .wideSoft }
     add("Hard Round Pressure Size") { $0.settings!.shape.enabled=true;$0.settings!.shape.size.control = .penPressure }
-    add("Soft Round Pressure Opacity") { $0.hardness=0;$0.settings!.transfer.enabled=true;$0.settings!.transfer.opacity.control = .penPressure }
+    add("Soft Round Pressure Opacity") { $0.hardness=0;$0.settings!.roundTipProfile = .wideSoft;$0.settings!.transfer.enabled=true;$0.settings!.transfer.opacity.control = .penPressure }
     add("Calligraphy Flat") { $0.settings!.roundness=0.2;$0.settings!.angle=45;$0.settings!.spacing=0.05 }
     add("Chalk","Dry Media") { $0.size=40;$0.settings!.tip=try? generatedTip("chalk");$0.settings!.shape.enabled=true;$0.settings!.shape.angle.jitter=1;$0.settings!.texture.enabled=true;$0.settings!.texture.depth=0.6 }
     add("Flat Bristle","Dry Media") { $0.size=40;$0.settings!.tip=try? generatedTip("bristle");$0.settings!.spacing=0.08;$0.settings!.shape.enabled=true;$0.settings!.shape.angle.control = .direction }

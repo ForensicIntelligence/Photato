@@ -2,6 +2,61 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class BrushDynamicsTests:XCTestCase {
+  func testWideSoftTailMatchesScalarAndRetainedPathsAtAllDepths() throws {
+    var brush = Brush()
+    brush.size = 41
+    brush.hardness = 0
+    brush.color = .white
+    brush.settings = .init()
+    brush.settings?.roundTipProfile = .wideSoft
+    let points = [StrokePoint(x: 64.25, y: 52.75), StrokePoint(x: 74, y: 57)]
+    let translated = points.map { StrokePoint(x: $0.x + 16, y: $0.y - 8) }
+    let bounds = try XCTUnwrap(BrushPainter.strokeBounds(points: points, brush: brush))
+    XCTAssertTrue(bounds.contains(92, 52))
+    for depth in PixelDepth.allCases {
+      let source = try Surface(width: 128, height: 111, depth: depth, fill: .clear)
+      var wide = source, scalar = source, compact = source
+      try BrushPainter.stroke(surface: &wide, points: points, brush: brush)
+      try BrushPainter.stroke(surface: &scalar, points: translated, brush: brush,
+        transform: .translation(16, -8))
+      var legacy = brush
+      legacy.settings?.roundTipProfile = nil
+      try BrushPainter.stroke(surface: &compact, points: points, brush: legacy)
+      let retained = try BrushStrokeSession(surface: source, brush: brush, selection: nil,
+        selectionMask: nil, transform: .identity, preserveTransparency: false)
+      _ = try retained.append([points[0]], includingReleaseTail: false)
+      let final = try retained.append([points[1]], includingReleaseTail: true)
+      let expected = try wide.rgbaData(depth: depth)
+      XCTAssertEqual(try scalar.rgbaData(depth: depth), expected)
+      XCTAssertEqual(try final.rgbaData(depth: depth), expected)
+      XCTAssertGreaterThan(wide.pixel(x: 37, y: 52).a, 0)
+      XCTAssertEqual(compact.pixel(x: 37, y: 52).a, 0)
+      XCTAssertEqual(wide.pixel(x: 29, y: 52).a, 0)
+    }
+  }
+
+  func testWideSoftMaximumDiameterSchedulesBandsBeyondOldBounds() throws {
+    var brush = Brush()
+    brush.size = 5_000
+    brush.hardness = 0
+    brush.color = .white
+    brush.settings = .init()
+    brush.settings?.roundTipProfile = .wideSoft
+    let point = StrokePoint(x: 1.5, y: 1.5)
+    var wide = try Surface(width: 4_500, height: 4, fill: .clear)
+    var legacy = wide
+    let bounds = try XCTUnwrap(BrushPainter.strokeBounds(points: [point], brush: brush))
+    try BrushPainter.stroke(surface: &wide, points: [point], brush: brush)
+    brush.settings?.roundTipProfile = nil
+    try BrushPainter.stroke(surface: &legacy, points: [point], brush: brush)
+    for x in [2_501, 3_075, 4_100] {
+      XCTAssertTrue(bounds.contains(x, 1))
+      XCTAssertGreaterThan(wide.pixel(x: x, y: 1).a, 0)
+      XCTAssertEqual(legacy.pixel(x: x, y: 1).a, 0)
+    }
+    XCTAssertEqual(wide.pixel(x: 4_200, y: 1).a, 0)
+  }
+
   func testParallelBrushOutputRestoresAbsentTailTilesAcrossBatches() throws {
     let width = 1_013, height = 1_107
     let columns = (width + 63) / 64, rows = (height + 63) / 64

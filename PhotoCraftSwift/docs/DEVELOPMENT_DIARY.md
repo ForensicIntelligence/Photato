@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 553 — Wider Soft Round tip
+
+Soft Round and Soft Round Pressure Opacity now paint with a wider falloff at zero hardness. Across six saved Photoshop dabs, the new renderer was within 3 alpha levels after lining up the centers. The three held-out sizes were within two levels. The previous renderer was off by up to 35. Older Actions still replay with their original brush settings.
+
+The 409 selected tests passed in Debug and both optimized builds. The next brush checks cover exact pointer positions, harder tips and continuous strokes.
+
+[Detailed record](DEVLOG.md#dev-step-553) · [Validation](SOURCE_PUBLICATION_553.md).
+
 ## 2026-11-18 — Step 552 — Brush opacity and flow number keys
 
 With the canvas focused, number keys set opacity and Shift-number keys set flow. Airbrush swaps which modifier controls each value. Two digits set an exact percentage. This shares the existing settings used by the Options bar and the API.
@@ -409,14 +417,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:552 -->
+<!-- current-status-step:553 -->
 ## Current development status — 18 November 2026
 
-Build 552 adds brush number keys for opacity and flow. All 404 selected tests passed in Debug and both optimized builds. Both slices of the universal package passed their offscreen checks.
+Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. Both slices of the universal package passed offscreen checks.
 
-Exact Photoshop brush coverage, physical editing cadence and tablet timing remain open.
+Exact brush placement, harder tips, physical editing cadence and tablet timing remain open.
 
-[Qualification](SOURCE_PUBLICATION_552.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_553.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1174,6 +1182,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 550 | [Parallelize large raster composition and display packing](DEVLOG.md#dev-step-550) |
 | 2026-11-18 | 551 | [Parallelize brush tile output](DEVLOG.md#dev-step-551) |
 | 2026-11-18 | 552 | [Add brush opacity and flow number keys](DEVLOG.md#dev-step-552) |
+| 2026-11-18 | 553 | [Widen the zero-hardness Soft Round tip](DEVLOG.md#dev-step-553) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

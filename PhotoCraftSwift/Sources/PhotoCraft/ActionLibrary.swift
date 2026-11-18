@@ -5,9 +5,17 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 62
+  static let maximumVersion = 63
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
+    if actions.contains(where: { $0.steps.contains { step in
+      switch step.operation {
+      case .stroke(_, _, let brush, _): return brush.settings?.roundTipProfile != nil
+      case .pencilStroke(let value): return value.retainsRoundTipProfile
+      case .adjustmentBrush(let value): return value.request.brush.settings?.roundTipProfile != nil
+      default: return false
+      }
+    } }) { return 63 }
     if actions.contains(where: { $0.steps.contains { if case .pencilStroke = $0.operation { return true }; return false } }) { return 62 }
     if actions.contains(where:{$0.steps.contains{if case .adjustmentBrush(let value)=$0.operation,case .modern=value.request.adjustment{return true};return false}}){return 61}
     if actions.contains(where: { $0.steps.contains { step in

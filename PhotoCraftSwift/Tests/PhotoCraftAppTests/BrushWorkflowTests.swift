@@ -6,6 +6,85 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class BrushWorkflowTests:XCTestCase {
+  @MainActor func testWideSoftMigratesOnlyUntouchedFactoryCopies() throws {
+    let factory = BrushPresets.builtins()
+    var saved = factory.filter { $0.brush.settings?.roundTipProfile != nil }
+    XCTAssertEqual(saved.count, 2)
+    for index in saved.indices { saved[index].brush.settings?.roundTipProfile = nil }
+    saved[1].name = "My pressure brush"
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: url) }
+    let data = try BrushPresetFile(presets: saved).encoded()
+    try data.write(to: url)
+    let library = BrushLibrary(persistenceURL: url)
+    XCTAssertEqual(library.file.version, 2)
+    XCTAssertEqual(library.file.presets.count, 2)
+    XCTAssertEqual(library.file.presets[0], factory.first { $0.id == saved[0].id })
+    XCTAssertEqual(library.file.presets[1], saved[1])
+    XCTAssertEqual(try Data(contentsOf: url), data)
+    try library.save(saved[1])
+    XCTAssertEqual(try BrushPresetFile.decode(Data(contentsOf: url)), library.file)
+  }
+
+  @MainActor func testWideSoftDesktopHTTPUndoAndVersionedActionReplay() async throws {
+    let original = try CraftDocument(width: 128, height: 96)
+    let store = EditorStore(document: original, actions: ActionLibrary(), brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush
+    let preset = try XCTUnwrap(store.brushes.file.presets.first { $0.name == "Soft Round" })
+    try store.selectBrush(preset.id)
+    store.brush.color = .black
+    store.brushOptions.smoothing.amount = 0
+    XCTAssertEqual(store.brushOptions.roundTipProfile, .wideSoft)
+    let activeBrush = store.brush
+    let point = StrokePoint(x: 64.5, y: 48.5)
+    try store.startRecordingAction(name: "Wide Soft", set: "Test")
+    store.beginBrush(point, zoom: 1)
+    store.finishBrush()
+    await store.geometryTask?.value
+    let painted = store.document
+    XCTAssertFalse(painted == original)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    let action = try store.stopRecordingAction()
+    let data = try store.actions.exportFile(action.id)
+    let decoded = try ActionLibraryFile.decode(data)
+    XCTAssertEqual(decoded.version, 63)
+    var old = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+    old["version"] = 62
+    XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject: old)))
+    var replay = original
+    try XCTUnwrap(decoded.actions.first).apply(to: &replay)
+    XCTAssertTrue(replay == painted)
+    _ = await store.requestHistory(redo: false).value
+    XCTAssertTrue(store.document == original)
+
+    let helper = AutomationTests()
+    try await helper.withService(brushes: BrushLibrary(), pressedMouseButtons: { 0 }) { service, file in
+      file.store.session = EditorSession(document: original)
+      try service.share(file)
+      let before = file.store.brush
+      var status = try await helper.edit(service, file, "brush.configure",
+        ["brush": ["settings": ["roundTipProfile": "unknown"]]])
+      XCTAssertEqual(status, 400)
+      XCTAssertEqual(file.store.brush, before)
+      status = try await helper.edit(service, file, "brush.configure", ["brush": BrushAPI.json(activeBrush)])
+      XCTAssertEqual(status, 200)
+      let state = try XCTUnwrap(file.store.brushState["brush"] as? [String: Any])
+      let settings = try XCTUnwrap(state["settings"] as? [String: Any])
+      XCTAssertEqual(settings["roundTipProfile"] as? String, "wideSoft")
+      status = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json([point])])
+      XCTAssertEqual(status, 200)
+      XCTAssertTrue(file.store.document == painted)
+      XCTAssertEqual(file.store.session.undoStack.count, 1)
+      status = try await helper.edit(service, file, "brush.configure",
+        ["brush": ["settings": ["roundTipProfile": NSNull()]]])
+      XCTAssertEqual(status, 200)
+      XCTAssertNil(file.store.brushOptions.roundTipProfile)
+      XCTAssertTrue(file.store.document == painted)
+      XCTAssertEqual(file.store.session.undoStack.count, 1)
+    }
+  }
+
   @MainActor private func brushDigit(_ digit: Int, at time: TimeInterval, modifiers: NSEvent.ModifierFlags = [],
     repeatKey: Bool = false) throws -> NSEvent {
     let keyCodes: [UInt16] = [29, 18, 19, 20, 21, 23, 22, 26, 28, 25]

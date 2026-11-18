@@ -12,7 +12,17 @@ import PhotoCraftImaging
   init(persistenceURL: URL? = nil) {
     self.persistenceURL = persistenceURL
     if let url=persistenceURL, FileManager.default.fileExists(atPath:url.path) {
-      do { file = try .decode(Self.read(url)) }
+      do {
+        var saved = try BrushPresetFile.decode(Self.read(url))
+        for factory in file.presets where factory.brush.settings?.roundTipProfile != nil {
+          var previous = factory
+          previous.brush.settings?.roundTipProfile = nil
+          // Upgrade untouched copies of the old factory preset. Keep edited copies and deletions.
+          if let index = saved.presets.firstIndex(of: previous) { saved.presets[index] = factory }
+        }
+        saved.version = max(saved.version, saved.requiredVersion)
+        file = saved
+      }
       catch { loadError = "Saved brushes could not be read; the file is preserved. \(error.localizedDescription)" }
     }
   }
@@ -22,7 +32,7 @@ import PhotoCraftImaging
   }
   func update(_ edit:(inout BrushPresetFile)throws->Void) throws {
     guard loadError == nil else { throw CraftError.invalid(loadError!) }
-    var next=file;try edit(&next);let data=try next.encoded()
+    var next=file;try edit(&next);next.version=max(next.version,next.requiredVersion);let data=try next.encoded()
     if let url=persistenceURL { try FileManager.default.createDirectory(at:url.deletingLastPathComponent(),withIntermediateDirectories:true);try data.write(to:url,options:.atomic) }
     file=next;revision += 1
   }

@@ -157,6 +157,26 @@ public enum BrushPainter {
     case .mandala:return (0..<s.count).flatMap{ i in let r=Transform2D.rotation(Double(i)*360/Double(s.count));return [around(r),around(r * .scale(-1,1))] }
     }
   }
+  private static let softSigmaPerRadius = 0.4674
+  // End the finite tip at half an RGB8 alpha level. Higher depths use the
+  // same footprint, with the remaining coverage stored at their own precision.
+  private static let softCutoffSquared = 2 * log(510.0)
+  private static let softReachScale = softSigmaPerRadius * sqrt(softCutoffSquared)
+
+  private static func usesWideSoftTip(_ brush: Brush) -> Bool {
+    guard let settings = brush.settings else { return false }
+    return settings.roundTipProfile == .wideSoft && settings.tip == nil && !settings.aliased && brush.hardness == 0
+  }
+
+  fileprivate static func requiresBandedCoverage(_ brush: Brush) -> Bool {
+    brush.size * (usesWideSoftTip(brush) ? softReachScale : 1) > Brush.legacyDiameterRange.upperBound
+  }
+
+  private static func tipReachScale(bitmap: BrushBitmap?, wideSoft: Bool) -> Double {
+    if wideSoft { return softReachScale }
+    return bitmap == nil ? 1 : sqrt(2)
+  }
+
   /// Geometry and falloff shared by every destination sample of a dab.
   struct TipSampler: Sendable {
     private let center: (x: Double, y: Double)
@@ -170,10 +190,11 @@ public enum BrushPainter {
     private let inner: Double
     private let falloff: Double
     private let aliased: Bool
+    private let softInverseSigma: Double?
     let isAxisAlignedRound: Bool
-    var hasBroadFalloff: Bool { !aliased && falloff >= 32 }
+    var hasBroadFalloff: Bool { softInverseSigma != nil || (!aliased && falloff >= 32) }
 
-    init(_ dab: BrushDab, bitmap: BrushBitmap?, hardness: Double, aliased: Bool) {
+    init(_ dab: BrushDab, bitmap: BrushBitmap?, hardness: Double, aliased: Bool, wideSoft: Bool = false) {
       if aliased {
         let diameter = max(1, Int((dab.radius * 2).rounded()))
         center = diameter % 2 == 1
@@ -194,6 +215,7 @@ public enum BrushPainter {
       inner = radius * hardness
       falloff = radius - inner
       self.aliased = aliased
+      softInverseSigma = wideSoft ? 1 / (radius * BrushPainter.softSigmaPerRadius) : nil
       isAxisAlignedRound = bitmap == nil && dab.angle == 0 && roundness == 1 && projection == nil
     }
 
@@ -221,8 +243,38 @@ public enum BrushPainter {
         let sample = bitmap.sample(x, y)
         return (aliased ? (sample >= 0.5 ? 1 : 0) : sample, 1 - sample)
       }
-      let distance = hypot(u * roundness, v)
+      let horizontal = u * roundness
+      let distance = hypot(horizontal, v)
+      if let softInverseSigma {
+        let x = horizontal * softInverseSigma, y = v * softInverseSigma
+        let xx = x * x, yy = y * y
+        let alpha = xx + yy < BrushPainter.softCutoffSquared ? exp(-0.5 * xx) * exp(-0.5 * yy) : 0
+        return (alpha, distance / radius)
+      }
       return (coverage(at: distance), distance / radius)
+    }
+
+    private func softRoundTile(_ weights: UnsafeMutableBufferPointer<Float>, x: Range<Int>, y: Range<Int>,
+      tileX: Int, tileY: Int, flow: Double, inverseSigma: Double) -> Bool {
+      withUnsafeTemporaryAllocation(of: (Double, Double).self, capacity: x.count) { columns in
+        for (index, column) in x.enumerated() {
+          let dx = (Double(tileX + column) + 0.5 - center.x) * inverseSigma
+          let square = dx * dx
+          columns.baseAddress!.advanced(by: index).initialize(to: (square, exp(-0.5 * square)))
+        }
+        var hasCoverage = false
+        for row in y {
+          let dy = (Double(tileY + row) + 0.5 - center.y) * inverseSigma
+          let square = dy * dy, rowAlpha = exp(-0.5 * square)
+          for (index, column) in x.enumerated() {
+            let (columnSquare, columnAlpha) = columns[index]
+            let value = columnSquare + square < BrushPainter.softCutoffSquared ? Float(columnAlpha * rowAlpha * flow) : 0
+            weights[row * 64 + column] = value
+            hasCoverage = hasCoverage || value > 0
+          }
+        }
+        return hasCoverage
+      }
     }
 
     @inline(__always)
@@ -232,7 +284,13 @@ public enum BrushPainter {
       let farX = Double(tileX + x.upperBound - 1) + 0.5 - center.x
       let nearY = Double(tileY + y.lowerBound) + 0.5 - center.y
       let farY = Double(tileY + y.upperBound - 1) + 0.5 - center.y
-      let minimum = hypot(max(0, nearX, -farX), max(0, nearY, -farY))
+      let nearestX = max(0, nearX, -farX), nearestY = max(0, nearY, -farY)
+      if let softInverseSigma {
+        let dx = nearestX * softInverseSigma, dy = nearestY * softInverseSigma
+        guard dx * dx + dy * dy < BrushPainter.softCutoffSquared else { return false }
+        return softRoundTile(weights, x: x, y: y, tileX: tileX, tileY: tileY, flow: flow, inverseSigma: softInverseSigma)
+      }
+      let minimum = hypot(nearestX, nearestY)
       // Leave a half-pixel margin at each boundary and sample those tiles normally.
       let outer = aliased ? radius : radius + 0.5
       if minimum > outer + 0.5 { return false }
@@ -267,18 +325,22 @@ public enum BrushPainter {
   public static func strokeBounds(points:[StrokePoint],brush:Brush)throws->IntRect? {
     try validate(brush,points:points);guard let settings=brush.settings,!points.isEmpty else { return nil }
     var generator=BrushDabGenerator(brush);var dabs=try generator.push(points).0;dabs += try generator.finish().0
+    let reachScale = tipReachScale(bitmap: settings.tip, wideSoft: usesWideSoftTip(brush))
     var x=Double.infinity,y=Double.infinity,r = -Double.infinity,b = -Double.infinity
     for pass in symmetry(settings.symmetry) { for dab in dabs where dab.radius>0 {
-      let p=pass.point(dab.x,dab.y),radius=dab.radius*(settings.tip == nil ? 1:sqrt(2))+1
+      let p=pass.point(dab.x,dab.y),radius=dab.radius*reachScale+1
       x=min(x,p.x-radius);y=min(y,p.y-radius);r=max(r,p.x+radius);b=max(b,p.y+radius)
     } }
     guard x.isFinite else { return nil };return .init(x:Int(floor(x)),y:Int(floor(y)),width:Int(ceil(r)-floor(x)),height:Int(ceil(b)-floor(y)))
   }
   private static let rasterVisitLimit = 134_217_728
+  // Allow proportionally more visits for the wider footprint. Banding and the
+  // coverage budget still bound each working set.
+  private static let wideSoftVisitLimit = Int(ceil(Double(rasterVisitLimit) * softReachScale * softReachScale))
   private static let coverageBandSide = 1024
 
-  private static func rasterBounds(_ dab: BrushDab, bitmap: BrushBitmap?, transform: Transform2D, extent: IntRect) -> IntRect? {
-    let reach = dab.radius * (bitmap == nil ? 1 : sqrt(2)) + 1
+  private static func rasterBounds(_ dab: BrushDab, reachScale: Double, transform: Transform2D, extent: IntRect) -> IntRect? {
+    let reach = dab.radius * reachScale + 1
     let center = transform.point(dab.x, dab.y)
     let rx = reach * hypot(transform.a, transform.c), ry = reach * hypot(transform.b, transform.d)
     let right = extent.x + extent.width, bottom = extent.y + extent.height
@@ -292,17 +354,17 @@ public enum BrushPainter {
 
   /// A large dab can need more coverage storage than one working set. Visit
   /// disjoint bands in tile order, reusing the exact per-pixel deposition.
-  private static func coverageBands(_ dabs: [BrushDab], bitmap: BrushBitmap?, transforms: [Transform2D],
-    extent: IntRect, surfaceWidth: Int) throws -> [IntRect] {
+  private static func coverageBands(_ dabs: [BrushDab], reachScale: Double, visitLimit: Int,
+    transforms: [Transform2D], extent: IntRect, surfaceWidth: Int) throws -> [IntRect] {
     let side = coverageBandSide
     let columns = (surfaceWidth + side - 1) / side
     var keys: Set<Int> = [], plannedVisits = 0
     for transform in transforms {
       for (index,dab) in dabs.enumerated() {
         if index % 32 == 0 { try Task.checkCancellation() }
-        guard let rect = rasterBounds(dab,bitmap:bitmap,transform:transform,extent:extent) else { continue }
+        guard let rect = rasterBounds(dab,reachScale:reachScale,transform:transform,extent:extent) else { continue }
         let area = rect.width * rect.height
-        guard area <= rasterVisitLimit - plannedVisits else {
+        guard area <= visitLimit - plannedVisits else {
           throw CraftError.invalid("Brush stroke exceeds the raster work limit.")
         }
         plannedVisits += area
@@ -454,16 +516,19 @@ public enum BrushPainter {
     let hardness = isDual ? b.dual.hardness : Double(brush.hardness)
     let aliased = b.aliased && !isDual, maximum = b.wetEdges && !isDual
     let texture = !isDual && b.texture.enabled && b.texture.eachTip ? b.texture : nil
+    let wideSoft = usesWideSoftTip(brush)
+    let reachScale = tipReachScale(bitmap: bitmap, wideSoft: wideSoft && !isDual)
+    let visitLimit = wideSoft ? wideSoftVisitLimit : rasterVisitLimit
     try withUnsafeTemporaryAllocation(of: Float.self, capacity: 4096) { weights in
       weights.initialize(repeating: 0)
       for (index,dab) in dabs.enumerated() {
         if index % 32 == 0 { try Task.checkCancellation() }
-        guard let rect = rasterBounds(dab,bitmap:bitmap,transform:toLocal,extent:extent) else { continue }
+        guard let rect = rasterBounds(dab,reachScale:reachScale,transform:toLocal,extent:extent) else { continue }
         try map.checkDabExtent(rect)
         let area = rect.width * rect.height
-        guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
+        guard area <= visitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
         visits += area
-        let tip = TipSampler(dab, bitmap: bitmap, hardness: hardness, aliased: aliased)
+        let tip = TipSampler(dab, bitmap: bitmap, hardness: hardness, aliased: aliased, wideSoft: wideSoft && !isDual)
         let ink = SIMD4(dab.color.r,dab.color.g,dab.color.b,dab.color.a), ceiling = Float(dab.opacity)
         let layout = DabRaster(rect, mapColumns: map.columns)
         let sampling = DabCoverage(tip: tip, toOriginal: toOriginal, transform: transform, noise: !isDual && b.noise,
@@ -491,11 +556,13 @@ public enum BrushPainter {
       (toLocal: inverse * pass, toOriginal: try pass.inverted() * transform)
     }
     let regions: [IntRect]
-    if brush.size > Brush.legacyDiameterRange.upperBound {
+    let wideSoft = usesWideSoftTip(brush)
+    if requiresBandedCoverage(brush) {
       if selectionMask != nil && selectionMask?.bounds == nil { return }
       let extent = clippedBounds(selection ?? selectionMask?.bounds, inverse:inverse, width:surface.width, height:surface.height)
       guard extent.width > 0, extent.height > 0 else { return }
-      regions = try coverageBands(dabs.0, bitmap:b.tip, transforms:passes.map { $0.toLocal },
+      regions = try coverageBands(dabs.0, reachScale:tipReachScale(bitmap:b.tip,wideSoft:wideSoft),
+        visitLimit:wideSoft ? wideSoftVisitLimit : rasterVisitLimit, transforms:passes.map { $0.toLocal },
         extent:extent, surfaceWidth:surface.width)
     } else {
       regions = [.init(x:0,y:0,width:surface.width,height:surface.height)]
@@ -558,8 +625,9 @@ public final class BrushStrokeSession {
   }
   static func supports(_ brush: Brush, allowingWideRaster: Bool) -> Bool {
     guard let settings = brush.settings else { return false }
-    let limit = allowingWideRaster ? Brush.diameterRange.upperBound : Brush.legacyDiameterRange.upperBound
-    return brush.size <= limit && !settings.dual.enabled && settings.symmetry.mode == .off
+    return brush.size <= Brush.diameterRange.upperBound
+      && (allowingWideRaster || !BrushPainter.requiresBandedCoverage(brush))
+      && !settings.dual.enabled && settings.symmetry.mode == .off
   }
   private struct ProvisionalFirstDab {
     let dab: BrushDab
@@ -604,7 +672,7 @@ public final class BrushStrokeSession {
     let inverse = try transform.inverted()
     self.inverse = inverse; self.selection = selection; self.selectionMask = selectionMask
     grayscale = grayscaleMask; self.preserveTransparency = preserveTransparency
-    retainsWideRaster = allowingWideRaster && brush.size > Brush.legacyDiameterRange.upperBound
+    retainsWideRaster = allowingWideRaster && BrushPainter.requiresBandedCoverage(brush)
     if retainsWideRaster {
       let bounds = selectionMask != nil && selectionMask?.bounds == nil
         ? IntRect(x: 0, y: 0, width: 0, height: 0) : selection ?? selectionMask?.bounds
