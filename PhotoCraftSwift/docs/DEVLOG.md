@@ -588,7 +588,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 567 | 2026-11-18 | [Use the source tone curves for 32-bit RGB and Gray](#dev-step-567) |
 | 568 | 2026-11-18 | [Match half-gamma promotion and Gray32 PSD layer stacks](#dev-step-568) |
 | 569 | 2026-11-18 | [Match HDR grayscale conversion and ICC gamma boundaries](#dev-step-569) |
+| 570 | 2026-11-18 | [Preserve the working profile when merging before conversion](#dev-step-570) |
 <!-- history-index:end -->
+
+<a id="dev-step-570"></a>
+
+## 2026-11-18 — Preserve the working profile when merging before conversion
+
+The explicit merge option had been compositing the display RGB cache and clearing the source mode descriptor. This changed the interpretation of retained component planes before the requested mode or precision conversion. `Sources/PhotoCraftImaging/DocumentModeInput.swift` now keeps an unchanged full-canvas native component layer and its descriptor. For eligible flat Normal RGB raster stacks, `Sources/PhotoCraftCore/NativeModeRaster.swift` projects the retained RGB and alpha samples in their working coordinates. The shared renderer composites those samples under the source profile. `Sources/PhotoCraftCore/LayerMerge.swift` shares the established 8- and 16-bit Normal blend routine for unmasked stacks inside its existing 4,194,304-pixel budget. The full document canvas, active identity, and one history operation remain part of the prepared conversion. Rich stacks and other component stacks use the general render path.
+
+The native workspace, recorded Actions, Photato `document.convertMode` and the applicable Adobe-compatible action adapter already call the same prepared command. `Sources/PhotoCraft/AutomationDocumentMode.swift` describes the working-profile merge in API discovery. The Swift tests cover a hidden Gray16 layer, a Display P3 HDR two-layer stack and nine sampled RGB16 boundary words, including the independent per-architecture results. The source version is 570 in `scripts/Info.plist`.
+
+An owned five-file reference run in Photoshop 2026 27.2.0 used Merge Visible or, for the one-visible Gray16 control, Flatten Image, together with Grayscale or 32 Bits/Channel. The installed Apple Silicon and Rosetta slices ran under North America General Purpose 2. The initial Intel launch timed out, then its same background process was found and completed the capture. The two HDR files with ZIP-encoded input layers gave non-finite Photoshop output and were excluded from byte comparisons. An independent decoder confirmed both the raw and ZIP inputs contain identical finite layer words. The alternate raw and ZIP-prediction comparison timed out before opening files in a later Photoshop session. The background process received a normal quit request. [Adobe merge and stamp documentation](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).
+
+Build 569 differed at 5,119 of 5,120 Gray16 words, 15,354 of 15,360 opaque RGB16 words and 15,357 of 15,360 translucent RGB16 words in the Apple Silicon comparison. The first candidate matched Gray16 and opaque RGB16, with 34 remaining translucent RGB16 differences. Reusing the measured working-grid Normal routine removed those differences on the corrected Debug build. An independently linked driver and PSD reader matched all 35,840 valid Photoshop words on each optimized architecture. The per-case hashes are recorded in `artifacts/570-mode-merge/optimized-comparison01/comparison.json`. The 32-bit profile conversion tests and the existing mode and merge regression suites are part of qualification.
+
+Frozen source01 is retained separately from corrected source02, with 7,932 hashed inputs each. Qualification01 failed during SwiftPM manifest startup when its module cache was inaccessible. Qualification02 passed all 677 selected tests in Debug, optimized Apple Silicon and optimized Intel under Rosetta. The corrected source adds the shared integer merge and its measured regression. Qualification03 passed all 678 selected tests in each of those configurations. Both slices of the signed universal archive passed offscreen checks after extraction. The per-run build and XCTest commands are retained under `artifacts/570-mode-merge/qualification03`. Raw numerical controls, exported IEEE words and all first-attempt failures are retained under `artifacts/570-mode-merge`. The separate 16-bit RGB-to-Gray16 curve investigation remains open. At 128 Float32 ULPs from the direct ICC inverse, the 4,096-interval Float32 search still had eight conflicts, recorded in `artifacts/570-curve-solve/solve01.log`.
+
+[Qualification](SOURCE_PUBLICATION_570.md).
 
 <a id="dev-step-569"></a>
 

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 570 — Preserve the working profile when merging before conversion
+
+Merging eligible RGB layers before an Image Mode change now uses their working-profile samples. If the composite is already a single full-canvas layer, the conversion uses its original color and alpha planes. The existing Normal merge routine handles integer rounding for supported RGB stacks before promotion to 32 Bits/Channel.
+
+All 35,840 words in the three valid Photoshop references match on each optimized architecture. All 678 selected tests passed in each build configuration. The two external HDR merge cases still need readable references.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md).
+
 ## 2026-11-18 — Step 569 — Match HDR grayscale conversion and ICC gamma boundaries
 
 32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
@@ -549,14 +557,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:569 -->
+<!-- current-status-step:570 -->
 ## Current development status — 18 November 2026
 
-32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
+Photato now uses the original components when a merge leaves a single unchanged full-canvas layer. It also composites eligible RGB layers in the document’s working profile before applying an Image Mode change. The working-grid integer merge uses the existing Normal merge arithmetic.
 
-The grayscale comparison covers the default 32-bit gray destination with relative colorimetric intent, recognized standard RGB primaries, and custom linear RGB matrix profiles whose luminance weights sum to one. Other destination profiles, intents and custom white points still use ColorSync. Eight- and sixteen-bit grayscale conversion, transparent Multiply, and whole-file identity remain open.
+The separate 8- and 16-bit RGB-to-Grayscale curves and dither, transparent Multiply, and full color conversion parity remain open.
 
-[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_569.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
+[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

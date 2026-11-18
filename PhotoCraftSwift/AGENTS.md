@@ -1,3 +1,5 @@
+**Source checkpoint 570.** The Image Mode merge path preserves single-layer native samples and composites eligible RGB stacks in their working profile. Continue exact SDR RGB-to-Grayscale and HDR PSD interchange checks from the recorded measurements. [Qualification](docs/SOURCE_PUBLICATION_570.md).
+
 **Source checkpoint 569.** 32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves. All 661 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_569.md).
 
 **Source checkpoint 568.** RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks. All 657 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_568.md).

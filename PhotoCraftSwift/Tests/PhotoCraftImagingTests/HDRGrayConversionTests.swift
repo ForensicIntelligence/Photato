@@ -102,5 +102,39 @@ final class HDRGrayConversionTests: XCTestCase {
     XCTAssertEqual(try gray.planeBytes(1), try raster.planeBytes(3))
     XCTAssertEqual(result.layers[0].mask, mask)
   }
+
+  func testMergeUsesRetainedDisplayP3BeforeConvertingToGray() throws {
+    let icc = try Data(contentsOf: fixtureURL("authored-p3-32", "icc"))
+    var source = try CraftDocument(width: 2, height: 1, depth: .f32)
+    source.modeDescriptor = try .init(mode: .rgb, depth: .f32, profile: icc)
+
+    func layer(_ name: String, _ samples: [Pixel]) throws -> Layer {
+      var native = try NativeModeRaster(width: 2, height: 1, mode: .rgb, depth: .f32, profile: icc)
+      for (i, p) in samples.enumerated() {
+        for (c, v) in [p.r, p.g, p.b, p.a].enumerated() { try native.set(v, component: c, index: i) }
+      }
+      var layer = Layer(name: name, content: .raster(try native.surface()))
+      layer.nativeMode = native
+      return layer
+    }
+
+    let bottom = try layer("Base", [Pixel(0, -0.5, 4, 1), Pixel(2, 0.5, -1, 1)])
+    let top = try layer("Overlay", [Pixel(2, 0.5, 0, 0.5), Pixel(0, 1.5, 3, 0.5)])
+    source.layers = [bottom, top]
+    source.activeLayerID = top.id
+    let conversion = DocumentModeConversion(mode: .grayscale, depth: .f32)
+    let command = try DocumentModeInput.command(.init(conversion, mergeVisible: true), in: source)
+    var merged = source
+    try command.apply(to: &merged)
+    let gray = try XCTUnwrap(merged.layers.first?.nativeMode)
+    let expectedLayer = try layer("Independent composite", [Pixel(1, 0, 2, 1), Pixel(1, 1, 1, 1)])
+    var independent = source
+    independent.layers = [expectedLayer]
+    independent.activeLayerID = expectedLayer.id
+    let expected = try independent.convertingMode(conversion)
+    XCTAssertEqual(merged.layers.count, 1)
+    XCTAssertEqual(merged.activeLayerID, top.id)
+    XCTAssertEqual(try gray.planes, try expected.layers[0].nativeMode?.planes)
+  }
 }
 

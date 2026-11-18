@@ -1,0 +1,130 @@
+{
+  "build": 570,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "photoshopSettings": "North America General Purpose 2",
+  "photoshopVersion": "27.2.0",
+  "qualification": {
+    "arm": {
+      "appSHA256": "288d16bfcbc602c51f57157e165e139328d6fd09fd2130a41471a789b4aec8e6",
+      "architecture": "arm64",
+      "passedMethods": 678,
+      "testBinarySHA256": "1e55a3c5c315b25c7a8aba0cbf82bd199e12d3977b2a8e88effc944730872482"
+    },
+    "debug": {
+      "appSHA256": "ed70eddb97f153bdd4521fb52926cd261ce448eb0cd29f29a229f19273b05894",
+      "architecture": "arm64",
+      "passedMethods": 678,
+      "testBinarySHA256": "0409cba6de23eeb2c2e54cf3fdbd098509e5e1077a74e5956f006ee2f13c1b93"
+    },
+    "intel": {
+      "appSHA256": "b290144bfaa7737f130616631ef5e2669f62f78c3ed27ab8eb5e54b4b8cd91c5",
+      "architecture": "x86_64",
+      "passedMethods": 678,
+      "testBinarySHA256": "0ce645c105843198fd514b10d3ca1bbadb21c969d5275aa382d41c11d4047e24"
+    }
+  },
+  "sampleWords": {
+    "arm": {
+      "gray16": {
+        "mismatchedWords": 0,
+        "photatoSHA256": "136b3cd1194002c30b78cda59583fcc8087b67af30bb180466ee8892afb840c6",
+        "photoshopSHA256": "136b3cd1194002c30b78cda59583fcc8087b67af30bb180466ee8892afb840c6",
+        "status": "compared",
+        "words": 5120
+      },
+      "p3-alpha": {
+        "status": "no finite alternate Photoshop reference"
+      },
+      "p3-solid": {
+        "status": "no finite alternate Photoshop reference"
+      },
+      "rgb16-alpha": {
+        "mismatchedWords": 0,
+        "photatoSHA256": "bacf3330f7735cb40d0a0503b28db63f8eb18fe4be6efbaab406991b193fd4de",
+        "photoshopSHA256": "bacf3330f7735cb40d0a0503b28db63f8eb18fe4be6efbaab406991b193fd4de",
+        "status": "compared",
+        "words": 15360
+      },
+      "rgb16-solid": {
+        "mismatchedWords": 0,
+        "photatoSHA256": "33196fd6299a1543fb6a2b67f8b452aa52004804c5a9b008f6e2f73e5d3e791c",
+        "photoshopSHA256": "33196fd6299a1543fb6a2b67f8b452aa52004804c5a9b008f6e2f73e5d3e791c",
+        "status": "compared",
+        "words": 15360
+      }
+    },
+    "intel": {
+      "gray16": {
+        "mismatchedWords": 0,
+        "photatoSHA256": "ffeb9286936971f4f0187782bb5a52389a7d4613d10a57fbcf5b074c04490d6c",
+        "photoshopSHA256": "ffeb9286936971f4f0187782bb5a52389a7d4613d10a57fbcf5b074c04490d6c",
+        "status": "compared",
+        "words": 5120
+      },
+      "p3-alpha": {
+        "status": "no finite alternate Photoshop reference"
+      },
+      "p3-solid": {
+        "status": "no finite alternate Photoshop reference"
+      },
+      "rgb16-alpha": {
+        "mismatchedWords": 0,
+        "photatoSHA256": "6b34b4cc0977e790f1b567d86827dbdbf7e53f84b125c01c4f96297a0cd11467",
+        "photoshopSHA256": "6b34b4cc0977e790f1b567d86827dbdbf7e53f84b125c01c4f96297a0cd11467",
+        "status": "compared",
+        "words": 15360
+      },
+      "rgb16-solid": {
+        "mismatchedWords": 0,
+        "photatoSHA256": "37d21df4886a6894998e95df879bb7e6cb6d04ee98cd89a0d7e12c6df7a4b29d",
+        "photoshopSHA256": "37d21df4886a6894998e95df879bb7e6cb6d04ee98cd89a0d7e12c6df7a4b29d",
+        "status": "compared",
+        "words": 15360
+      }
+    }
+  },
+  "source": {
+    "baseManifest": "SOURCE_SNAPSHOT_569.json",
+    "changedSHA256": {
+      "Sources/PhotoCraft/AutomationDocumentMode.swift": "ebb7fbd2d4d5046b4e068cfb5e0cfed92030d72b98b8f497b2bc5765b1e1933f",
+      "Sources/PhotoCraftCore/LayerMerge.swift": "0a431026a352d94581c53cfd18d34453bed385db993bd56018114456abb1a154",
+      "Sources/PhotoCraftCore/NativeModeRaster.swift": "ac950dd7c9d63df17e17c50374f609f2a508ced18449a2e725989b3a6ffc9a56",
+      "Sources/PhotoCraftImaging/DocumentModeInput.swift": "0b4637adc62dd7b4ba7170a37ea208338462e54488f2ea4333776b3c3b332bd1",
+      "Tests/PhotoCraftImagingTests/HDRGrayConversionTests.swift": "e54eacebf46a27e79c07dbf0fda83a00f543af1a3c71ed2f929cf5df88e125b4",
+      "Tests/PhotoCraftImagingTests/SDRToHDRConversionTests.swift": "64552ad85547f686825be906140b153f09086f180991b51b0f6172cd5f8d1dd2",
+      "scripts/Info.plist": "52846e6d3f0eb06f93cbd9fd3b51f0837048eb1501b05161768cc954e3383205"
+    },
+    "frozenManifestSHA256": "0cbdd3e01783323a4256e985501d9e6bc7a589f0fdcd2edba8d90b2a0f9eee8e",
+    "inputs": 7932
+  },
+  "validationArchive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "2b1b28294328caf4e28df50172870e431fae396e0aeee0b0611ca61f420d36f4",
+    "binarySHA256": "c4ea8085357b6f3757542a7c4fd451db5fe7f2edae605b5c0b6fe22a1c717ded",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "entitlementsUnchanged": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0"
+  }
+}

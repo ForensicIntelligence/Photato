@@ -103,47 +103,7 @@ public enum LayerMerge {
     let p = try plan(operation, layerIDs: layerIDs, in: document)
     try Task.checkCancellation()
     let bounds = p.bounds
-    // Keep Float32 input, arithmetic and committed pixels in linear storage.
-    var pixels = try Surface(
-      width: bounds.width, height: bounds.height, depth: document.depth,
-      fill: Pixel(1, 1, 1, 0),
-      colorEncoding: document.depth == .f32 ? .linearRGB : .sRGB)
-    var occupied = [Bool](repeating: false, count: bounds.width * bounds.height)
-    for layer in p.layers {
-      guard case .raster(let surface) = layer.content else { continue }
-      let x0 = max(bounds.x, layer.x)
-      let y0 = max(bounds.y, layer.y)
-      let x1 = min(bounds.x + bounds.width, layer.x + surface.width)
-      let y1 = min(bounds.y + bounds.height, layer.y + surface.height)
-      guard x0 < x1, y0 < y1 else { continue }
-      for y in y0..<y1 {
-        try Task.checkCancellation()
-        for x in x0..<x1 {
-          let px = x - bounds.x
-          let py = y - bounds.y
-          let index = py * bounds.width + px
-          let source =
-            document.depth == .f32
-            ? surface.linearPixel(x: x - layer.x, y: y - layer.y)
-            : surface.pixel(x: x - layer.x, y: y - layer.y)
-          let storedBackdrop =
-            document.depth == .f32
-            ? pixels.linearPixel(x: px, y: py) : pixels.pixel(x: px, y: py)
-          let backdrop = occupied[index] ? storedBackdrop : Pixel(source.r, source.g, source.b, 0)
-          let result = NormalLayerComposite.composite(
-            backdrop: backdrop, source: source, opacity: layer.opacity, depth: document.depth)
-          guard result.isFinite else {
-            throw CraftError.invalid("Merged colors exceed the floating-point range.")
-          }
-          if document.depth == .f32 {
-            pixels.setLinearPixel(x: px, y: py, result)
-          } else {
-            pixels.setPixel(x: px, y: py, result)
-          }
-          occupied[index] = true
-        }
-      }
-    }
+    var pixels = try compositeNormalPixels(p.layers, depth: document.depth, bounds: bounds)
     guard let contentBounds = try pixels.contentBounds() else {
       throw CraftError.unsupported("Merging entirely transparent layers is not available yet.")
     }
@@ -162,5 +122,67 @@ public enum LayerMerge {
     try candidate.validate()
     try Task.checkCancellation()
     document = candidate
+  }
+
+  /// Use the measured integer Normal merge for ordinary working-coordinate data.
+  /// Keep the full canvas for the subsequent color-mode conversion.
+  public static func integerModeComposite(_ document: CraftDocument) throws -> Surface? {
+    guard document.depth != .f32, document.width > 0, document.height > 0,
+      document.width <= 4_194_304 / document.height else { return nil }
+    let layers = document.layers.filter { $0.visible && $0.opacity > 0 }
+    guard !layers.isEmpty, layers.allSatisfy({
+      if case .raster = $0.content {
+        return $0.blendMode == .normal && $0.mask == nil && $0.vectorMask == nil
+      }
+      return false
+    }) else { return nil }
+    let bounds = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    return try compositeNormalPixels(layers, depth: document.depth, bounds: bounds, fill: .clear)
+  }
+
+  private static func compositeNormalPixels(_ layers: [Layer], depth: PixelDepth, bounds: IntRect,
+    fill: Pixel = Pixel(1, 1, 1, 0)) throws -> Surface
+  {
+    // Keep Float32 input, arithmetic and committed pixels in linear storage.
+    var pixels = try Surface(
+      width: bounds.width, height: bounds.height, depth: depth, fill: fill,
+      colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+    var occupied = [Bool](repeating: false, count: bounds.width * bounds.height)
+    for layer in layers {
+      guard case .raster(let surface) = layer.content else { continue }
+      let x0 = max(bounds.x, layer.x)
+      let y0 = max(bounds.y, layer.y)
+      let x1 = min(bounds.x + bounds.width, layer.x + surface.width)
+      let y1 = min(bounds.y + bounds.height, layer.y + surface.height)
+      guard x0 < x1, y0 < y1 else { continue }
+      for y in y0..<y1 {
+        try Task.checkCancellation()
+        for x in x0..<x1 {
+          let px = x - bounds.x
+          let py = y - bounds.y
+          let index = py * bounds.width + px
+          let source =
+            depth == .f32
+            ? surface.linearPixel(x: x - layer.x, y: y - layer.y)
+            : surface.pixel(x: x - layer.x, y: y - layer.y)
+          let storedBackdrop =
+            depth == .f32
+            ? pixels.linearPixel(x: px, y: py) : pixels.pixel(x: px, y: py)
+          let backdrop = occupied[index] ? storedBackdrop : Pixel(source.r, source.g, source.b, 0)
+          let result = NormalLayerComposite.composite(
+            backdrop: backdrop, source: source, opacity: layer.opacity, depth: depth)
+          guard result.isFinite else {
+            throw CraftError.invalid("Merged colors exceed the floating-point range.")
+          }
+          if depth == .f32 {
+            pixels.setLinearPixel(x: px, y: py, result)
+          } else {
+            pixels.setPixel(x: px, y: py, result)
+          }
+          occupied[index] = true
+        }
+      }
+    }
+    return pixels
   }
 }

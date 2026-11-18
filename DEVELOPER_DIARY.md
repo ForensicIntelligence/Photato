@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **569** · The 10 most recent entries, newest first.
+Source build **570** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 570 — Preserve the working profile when merging before conversion
+
+Merging eligible RGB layers before an Image Mode change now uses their working-profile samples. If the composite is already a single full-canvas layer, the conversion uses its original color and alpha planes. The existing Normal merge routine handles integer rounding for supported RGB stacks before promotion to 32 Bits/Channel.
+
+All 35,840 words in the three valid Photoshop references match on each optimized architecture. All 678 selected tests passed in each build configuration. The two external HDR merge cases still need readable references.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md).
 
 ## 2026-11-18 — Step 569 — Match HDR grayscale conversion and ICC gamma boundaries
 
@@ -77,11 +85,3 @@ Paint Bucket clicks can now be saved in an Action. Playback uses the new documen
 All 527 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 240 color-region masks and 18 direct bucket buffers matched build 560 byte for byte on both architectures. Both slices of the macOS 14+ universal archive passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-561) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_561.md).
-
-## 2026-11-18 — Step 560 — Add Clear to Edit Fill and Stroke
-
-Choose Clear to erase pixels within a selection, along an outline, or across a whole pixel layer. Clear uses the existing Fill and Stroke API commands and can be recorded as a Photato Action.
-
-All 522 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. On each architecture, 264 existing Fill, Stroke, and Path Clear pixel buffers and the legacy settings JSON matched build 559 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-560) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_560.md).

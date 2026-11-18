@@ -456,6 +456,18 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   private func defaultComponents() -> [Float] {
     componentStorage.map { depth == .f32 ? Float(bitPattern: $0.defaultWord) : Float($0.defaultWord) / (depth == .u8 ? 255 : 65535) }
   }
+  /// A temporary RGB surface in the ICC's own coordinates for compositing.
+  /// Unlike the display cache, this surface has undergone no color conversion.
+  public func retainedRGBSurface() throws -> Surface {
+    guard mode == .rgb else { throw CraftError.invalid("RGB working samples require an RGB raster.") }
+    let defaults = defaultComponents()
+    let fill = Pixel(defaults[0], defaults[1], defaults[2], defaults[3])
+    return try projectedSurface(fill: fill, encoding: depth == .f32 ? .linearRGB : .sRGB,
+      components: [0, 1, 2, 3]) { i in
+      Pixel(value(component: 0, index: i), value(component: 1, index: i),
+        value(component: 2, index: i), value(component: 3, index: i))
+    }
+  }
   public func surface(backing:RasterTileStore? = nil)throws->Surface {
     try validate()
     let transform=try NativeModeTransform(mode:mode,depth:depth,profile:profile,intent:intent)

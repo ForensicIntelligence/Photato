@@ -137,4 +137,66 @@ final class SDRToHDRConversionTests: XCTestCase {
     XCTAssertEqual(try explicit.layers[0].nativeMode?.planes, try baseline.planes)
     XCTAssertNotEqual(try preserved.planeBytes(0), try baseline.planeBytes(0))
   }
+
+  func testMergeKeepsTheGrayWorkingProfileBeforePrecisionPromotion() throws {
+    let row = try XCTUnwrap(references().first { $0.caseName == "owned-gray-gamma18-16" })
+    var source = try fixture(row)
+    XCTAssertEqual(source.colorMode, .grayscale)
+    var hidden = source.layers[0]
+    hidden.id = UUID()
+    hidden.visible = false
+    hidden.background = nil
+    source.layers.append(hidden)
+    source.activeLayerID = hidden.id
+    let conversion = DocumentModeConversion(mode: .grayscale, depth: .f32)
+    let expected = try source.convertingMode(conversion)
+    let command = try DocumentModeInput.command(.init(conversion, mergeVisible: true), in: source)
+    var merged = source
+    try command.apply(to: &merged)
+    XCTAssertEqual(merged.layers.count, 1)
+    XCTAssertEqual(merged.activeLayerID, hidden.id)
+    XCTAssertEqual(merged.modeDescriptor, expected.modeDescriptor)
+    XCTAssertEqual(try merged.layers[0].nativeMode?.planes, try expected.layers[0].nativeMode?.planes)
+  }
+
+  func testTranslucentRGB16MergeUsesTheWorkingGridBeforePrecisionPromotion() throws {
+    let url = try XCTUnwrap(Bundle.module.url(forResource: "owned-rgb-gamma128", withExtension: "icc",
+      subdirectory: "Fixtures/sdr-hdr"))
+    let profile = try Data(contentsOf: url)
+    var source = try CraftDocument(width: 3, height: 1, depth: .u16)
+    source.modeDescriptor = try .init(mode: .rgb, depth: .u16, profile: profile)
+    func layer(_ name: String, colors: [[Int]], alpha: [Int]) throws -> Layer {
+      var native = try NativeModeRaster(width: 3, height: 1, mode: .rgb, depth: .u16, profile: profile)
+      for (index, components) in colors.enumerated() {
+        for (channel, value) in (components + [alpha[index]]).enumerated() {
+          try native.set(Float(value) / 32_768, component: channel, index: index)
+        }
+      }
+      var layer = Layer(name: name, content: .raster(try native.surface()))
+      layer.nativeMode = native
+      return layer
+    }
+    let base = try layer("Background", colors: [[9276, 27363, 19824], [18473, 31732, 26267],
+      [158, 13219, 26762]], alpha: [32768, 32768, 32768])
+    let overlay = try layer("Overlay", colors: [[209, 22777, 14101], [10494, 2061, 20340],
+      [231, 24861, 23268]], alpha: [53 * 512, 26 * 512, 53 * 512])
+    source.layers = [base, overlay]
+    source.activeLayerID = overlay.id
+    let operation = DocumentModeRequest(.init(mode: .rgb, depth: .f32), mergeVisible: true)
+    let command = try DocumentModeInput.command(operation, in: source)
+    var merged = source
+    try command.apply(to: &merged)
+    let converted = try XCTUnwrap(merged.layers.first?.nativeMode)
+    // Three observed rounding cases from an independently saved Photoshop merge.
+    #if arch(x86_64)
+    let expected: [[UInt32]] = [[0x3e6dca32, 0x3f2e8a16, 0x3da70b7f],
+      [0x3f59182e, 0x3f46622b, 0x3f55d286], [0x3f2db1f4, 0x3f5a71cb, 0x3f5a7d83]]
+    #else
+    let expected: [[UInt32]] = [[0x3e6d0000, 0x3f2e8000, 0x3da70000],
+      [0x3f588000, 0x3f458000, 0x3f550000], [0x3f2d8000, 0x3f5a0000, 0x3f5a0000]]
+    #endif
+    for channel in expected.indices {
+      XCTAssertEqual((0..<3).map { converted.rawWord(component: channel, index: $0) }, expected[channel])
+    }
+  }
 }
