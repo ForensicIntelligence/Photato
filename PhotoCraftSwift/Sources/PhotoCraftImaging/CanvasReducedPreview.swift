@@ -34,8 +34,16 @@ public struct CanvasReducedPreview: Sendable {
       bounds = IntRect(x: left, y: top, width: max(0, right - left), height: max(0, bottom - top))
     }
     var output = prior?.bytes ?? Data(count: width * height * 4)
+    let stepX = source.width / width, stepY = source.height / height
+    let integral = source.width % width == 0 && source.height % height == 0
+      && stepX <= 65_535 / stepY
     try output.withUnsafeMutableBytes { (target: UnsafeMutableRawBufferPointer) in
       try bytes.withUnsafeBytes { (input: UnsafeRawBufferPointer) in
+        if integral {
+          try renderIntegral(input, sourceWidth: source.width, target: target, width: width,
+            bounds: bounds, stepX: stepX, stepY: stepY)
+          return
+        }
         for y in bounds.y..<bounds.y + bounds.height {
           try Task.checkCancellation()
           let top = Double(y) * sy, bottom = Double(y + 1) * sy
@@ -53,7 +61,6 @@ public struct CanvasReducedPreview: Sendable {
               }
             }
             let offset = (y * width + x) * 4
-            func byte(_ value: Double) -> UInt8 { UInt8(min(255, max(0, value.rounded()))) }
             target[offset] = a > 0 ? byte(red / a) : 0
             target[offset + 1] = a > 0 ? byte(green / a) : 0
             target[offset + 2] = a > 0 ? byte(blue / a) : 0
@@ -70,5 +77,41 @@ public struct CanvasReducedPreview: Sendable {
         decode: nil, shouldInterpolate: true, intent: .relativeColorimetric)
     else { throw CraftError.invalid("Could not create the reduced canvas preview.") }
     return Self(image: image, bytes: output, sourceWidth: source.width, sourceHeight: source.height)
+  }
+
+  /// Whole-pixel boxes have unit weights. All sums in the generic Double loop
+  /// are exact integers here, and at most 65,535 samples fit in the UInt32 lanes.
+  private static func renderIntegral(_ input: UnsafeRawBufferPointer, sourceWidth: Int,
+    target: UnsafeMutableRawBufferPointer, width: Int, bounds: IntRect,
+    stepX: Int, stepY: Int) throws {
+    let area = Double(stepX * stepY), rowStride = sourceWidth * 4
+    for y in bounds.y..<bounds.y + bounds.height {
+      try Task.checkCancellation()
+      let firstRow = y * stepY * rowStride
+      for x in bounds.x..<bounds.x + bounds.width {
+        let first = firstRow + x * stepX * 4
+        var sum = SIMD4<UInt32>.zero
+        for row in 0..<stepY {
+          let offset = first + row * rowStride
+          for column in 0..<stepX {
+            let packed = input.loadUnaligned(fromByteOffset: offset + column * 4, as: SIMD4<UInt8>.self)
+            let a = UInt32(packed.w)
+            let rgb = SIMD4(UInt32(packed.x), UInt32(packed.y), UInt32(packed.z), 1)
+            sum &+= rgb &* SIMD4(repeating: a)
+          }
+        }
+        let offset = (y * width + x) * 4
+        let alpha = Double(sum.w)
+        target[offset] = alpha > 0 ? byte(Double(sum.x) / alpha) : 0
+        target[offset + 1] = alpha > 0 ? byte(Double(sum.y) / alpha) : 0
+        target[offset + 2] = alpha > 0 ? byte(Double(sum.z) / alpha) : 0
+        target[offset + 3] = byte(alpha / area)
+      }
+    }
+  }
+
+  @inline(__always)
+  private static func byte(_ value: Double) -> UInt8 {
+    UInt8(min(255, max(0, value.rounded())))
   }
 }

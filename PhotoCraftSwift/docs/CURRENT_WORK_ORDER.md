@@ -1,3 +1,7 @@
+**Source checkpoint 546.** Regional canvas updates pack directly into the display buffer. All 80 tested outputs match build 545 on each architecture, and all 392 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_546.md).
+
+Continue Q03 with wide-tip brush preparation. On Apple Silicon the 5,000 px software case spends 384 ms painting, 127 ms compositing and 103 ms on display conversion. Measure repeated strokes and physical display and tablet input. Keep broader layer stacks, Photoshop brush sampling and presets, exact Gradient Maps and the inherited ColorSync difference open.
+
 **Source checkpoint 545.** Eligible flat tone stacks render in one tile pass. All 64 tested outputs match build 544, and all 390 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_545.md).
 
 Continue Q03 with brush preparation, the largest measured software phase at 383 ms in the 5,000 px case. Extend exact composition to broader layer stacks and measure real display and tablet input. Keep independent Photoshop brush sampling, preset parity and exact Gradient Maps open.

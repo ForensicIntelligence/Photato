@@ -46,16 +46,25 @@ public struct CanvasRasterPreview: Sendable {
     case .region(let damage):
       let r = damage.clipped(toWidth: base.width, height: base.height)
       guard r.width > 0, r.height > 0 else { return Self(image: base, bytes: bytes, repackedPixels: 0) }
-      let patch = try ColorManagement.displayImage(snapshot.surface.cropped(to: r), in: snapshot.document)
-      guard let data = patch.dataProvider?.data, let source = CFDataGetBytePtr(data) else {
-        throw CraftError.invalid("The display patch has no pixels.")
-      }
       try Task.checkCancellation()
       var output = bytes
-      output.withUnsafeMutableBytes { target in
-        for row in 0..<r.height {
-          target.baseAddress!.advanced(by: ((r.y + row) * base.width + r.x) * 4)
-            .copyMemory(from: source.advanced(by: row * patch.bytesPerRow), byteCount: r.width * 4)
+      let stride = base.bytesPerRow
+      let firstByte = r.y * stride + r.x * 4
+      if snapshot.document.workingICC == nil {
+        try output.withUnsafeMutableBytes { (target: UnsafeMutableRawBufferPointer) in
+          let destination = UnsafeMutableRawBufferPointer(rebasing: target[firstByte...])
+          try snapshot.surface.writeDisplayRGBA8(r, to: destination, bytesPerRow: stride)
+        }
+      } else {
+        let patch = try ColorManagement.displayImage(snapshot.surface.cropped(to: r), in: snapshot.document)
+        guard let data = patch.dataProvider?.data, let source = CFDataGetBytePtr(data) else {
+          throw CraftError.invalid("The display patch has no pixels.")
+        }
+        output.withUnsafeMutableBytes { (target: UnsafeMutableRawBufferPointer) in
+          for row in 0..<r.height {
+            target.baseAddress!.advanced(by: firstByte + row * stride)
+              .copyMemory(from: source.advanced(by: row * patch.bytesPerRow), byteCount: r.width * 4)
+          }
         }
       }
       try Task.checkCancellation()

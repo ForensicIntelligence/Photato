@@ -690,6 +690,63 @@ public struct Surface: Codable, Equatable, Sendable {
       }
     }
   }
+
+  @inline(__always)
+  private static func rgba8Word(_ value: Pixel) -> UInt32 {
+    func channel(_ sample: Float) -> UInt32 { UInt32((unit(sample) * 255).rounded()) }
+    return (channel(value.r) | channel(value.g) << 8 | channel(value.b) << 16 | channel(value.a) << 24).littleEndian
+  }
+
+  /// Write the existing straight-alpha sRGB8 display representation into the
+  /// caller's buffer, starting at its first byte and preserving row padding.
+  package func writeDisplayRGBA8(_ region: IntRect, to bytes: UnsafeMutableRawBufferPointer,
+    bytesPerRow: Int) throws {
+    try validated()
+    guard region == region.clipped(toWidth: width, height: height),
+      region.width > 0, region.height > 0,
+      region.width <= Self.maximumDensePixels / region.height
+    else { throw CraftError.invalid("The display region must fit inside the raster.") }
+    let rowLength = region.width * 4
+    guard bytesPerRow >= rowLength, bytes.count >= rowLength,
+      region.height - 1 <= (bytes.count - rowLength) / bytesPerRow
+    else { throw CraftError.invalid("The display region does not fit in the destination buffer.") }
+    let side = Self.tileSide
+    let columns = self.columns
+    let right = region.x + region.width, bottom = region.y + region.height
+    let linear = colorEncoding == .linearRGB
+    let defaultWord = Self.rgba8Word(encodedSample(storedDefaultPixel))
+    for row in region.y / side...(bottom - 1) / side {
+      let tileY = row * side
+      let ys = max(region.y, tileY)..<min(bottom, tileY + side)
+      for column in region.x / side...(right - 1) / side {
+        try Task.checkCancellation()
+        let tileX = column * side
+        let xs = max(region.x, tileX)..<min(right, tileX + side)
+        if let tile = tiles[row * columns + column] {
+          tile.withUnsafeBufferPointer { samples in
+            for y in ys {
+              let source = (y - tileY) * side - tileX
+              let target = (y - region.y) * bytesPerRow - region.x * 4
+              for x in xs {
+                let stored = samples[source + x]
+                let pixel = linear ? SRGBTransfer.encoded(stored) : stored
+                bytes.storeBytes(of: Self.rgba8Word(pixel), toByteOffset: target + x * 4, as: UInt32.self)
+              }
+            }
+          }
+        } else {
+          for y in ys {
+            let target = (y - region.y) * bytesPerRow - region.x * 4
+            for x in xs {
+              bytes.storeBytes(of: defaultWord, toByteOffset: target + x * 4, as: UInt32.self)
+            }
+          }
+        }
+      }
+    }
+    try Task.checkCancellation()
+  }
+
   /// Straight-alpha interleaved RGBA, little-endian for 16/32-bit samples.
   /// Visits each allocated tile once; avoids per-pixel dictionary lookups and temporary arrays.
   public func rgbaData(
@@ -710,10 +767,7 @@ public struct Surface: Codable, Equatable, Sendable {
             ? SRGBTransfer.linear(stored) : SRGBTransfer.encoded(stored)
         switch outputDepth {
         case .u8:
-          bytes[offset] = UInt8((unit(value.r) * 255).rounded())
-          bytes[offset + 1] = UInt8((unit(value.g) * 255).rounded())
-          bytes[offset + 2] = UInt8((unit(value.b) * 255).rounded())
-          bytes[offset + 3] = UInt8((unit(value.a) * 255).rounded())
+          bytes.storeBytes(of: Self.rgba8Word(value), toByteOffset: offset, as: UInt32.self)
         case .u16:
           bytes.storeBytes(
             of: UInt16((unit(value.r) * 65535).rounded()).littleEndian,

@@ -49,6 +49,78 @@ final class CanvasRasterPreviewTests: XCTestCase {
 }
 
 extension CanvasRasterPreviewTests {
+  func testRegionalDisplayPacksMappedSamplesAndPreservesManagedColor() throws {
+    let cases: [(PixelDepth, SurfaceColorEncoding, CFString?)] = [
+      (.u8, .sRGB, nil), (.u16, .sRGB, nil), (.f32, .linearRGB, nil),
+      (.u8, .sRGB, CGColorSpace.displayP3),
+    ]
+    for (depth, encoding, profileName) in cases {
+      var document = try CraftDocument(width: 259, height: 201, depth: depth)
+      if let profileName {
+        document.workingICC = try XCTUnwrap(CGColorSpace(name: profileName)?.copyICCData()) as Data
+      }
+      var source = try Surface(width: document.width, height: document.height, depth: depth,
+        fill: Pixel(0.81, 0.26, 0.37, 0.64), colorEncoding: encoding)
+      source.setPixel(x: 190, y: 122, Pixel(0.12, 0.61, 0.79, 0.47))
+      source = try source.spillingTiles(to: RasterTileStore())
+      document.layers[0].content = .raster(source)
+      let before = try Renderer.render(document)
+      let preview = try CanvasRasterPreview(base: ColorManagement.displayImage(before.surface, in: document)).scaled(to: 0.5)
+      let retained = try XCTUnwrap(preview.base.dataProvider?.data) as Data
+      source.setPixel(x: 191, y: 129, Pixel(0.21, 0.88, 0.42, 0.503))
+      source.setPixel(x: 254, y: 191, .clear)
+      if depth == .f32 { source.setLinearPixel(x: 256, y: 198, Pixel(-0.0, 3.4, -0.22, 0.63)) }
+      document.layers[0].content = .raster(source)
+      let after = try Renderer.render(document, reusing: before)
+      guard case .region = after.update else { return XCTFail("Expected partial display damage") }
+      let patched = try preview.updating(after, scale: 0.5)
+      let full = try CanvasRasterPreview(base: ColorManagement.displayImage(after.surface, in: document)).scaled(to: 0.5)
+      XCTAssertEqual(patched.base.dataProvider?.data as Data?, full.base.dataProvider?.data as Data?)
+      XCTAssertEqual(patched.presentation?.bytes, full.presentation?.bytes)
+      XCTAssertEqual(preview.base.dataProvider?.data as Data?, retained)
+      XCTAssertLessThan(patched.repackedPixels, source.width * source.height)
+    }
+  }
+
+  func testWholePixelBoxesMatchIndependentAlphaWeightedBytes() throws {
+    let cases: [(Int, Int, Double)] = [(96, 48, 0.125), (12, 10, 0.16), (384, 256, 0.0001)]
+    for (width, height, scale) in cases {
+      var source = Data()
+      for index in 0..<(width * height) {
+        let alpha: UInt8 = index % width < width / 4 ? 0 : UInt8((index * 53) % 256)
+        source.append(contentsOf: [UInt8((index * 61) % 256), UInt8((index * 13) % 256),
+          UInt8((index * 23) % 256), alpha])
+      }
+      let provider = try XCTUnwrap(CGDataProvider(data: source as CFData))
+      let base = try XCTUnwrap(CGImage(width: width, height: height, bitsPerComponent: 8,
+        bitsPerPixel: 32, bytesPerRow: width * 4, space: RasterIO.colorSpace(),
+        bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue), provider: provider,
+        decode: nil, shouldInterpolate: true, intent: .relativeColorimetric))
+      let view = try XCTUnwrap(CanvasRasterPreview(base: base).scaled(to: scale).presentation)
+      let dx = width / view.image.width, dy = height / view.image.height
+      XCTAssertEqual(view.image.width * dx, width)
+      XCTAssertEqual(view.image.height * dy, height)
+      var expected = Data()
+      for y in 0..<view.image.height {
+        for x in 0..<view.image.width {
+          var rgb = [Int](repeating: 0, count: 3)
+          var alpha = 0
+          for iy in (y * dy)..<((y + 1) * dy) {
+            for ix in (x * dx)..<((x + 1) * dx) {
+              let i = (iy * width + ix) * 4, coverage = Int(source[i + 3])
+              alpha += coverage
+              for channel in rgb.indices { rgb[channel] += Int(source[i + channel]) * coverage }
+            }
+          }
+          let colors = rgb.map { UInt8(alpha == 0 ? 0 : (2 * $0 + alpha) / (2 * alpha)) }
+          expected.append(contentsOf: colors)
+          expected.append(UInt8((2 * alpha + dx * dy) / (2 * dx * dy)))
+        }
+      }
+      XCTAssertEqual(view.bytes, expected)
+    }
+  }
+
   func testReducedRegionalDisplayMatchesFullAndPreservesAlpha() throws {
     var doc = try CraftDocument(width: 385, height: 257)
     var pixels = try Surface(width: 385, height: 257, fill: Pixel(0.1, 0.5, 0.8, 0.6))

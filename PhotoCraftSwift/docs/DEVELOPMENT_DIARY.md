@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 546 — Faster canvas updates
+
+Changed pixels now go directly into the display buffer. At 12.5% zoom, Apple Silicon display conversion for the 5,000 px brush fell from 357 to 103 ms on the 24 MP test image. All 80 saved outputs match build 545 on each architecture.
+
+All 392 selected tests passed in the three configurations. Large brushes still need faster preparation to reach the display target.
+
+[Detailed record](DEVLOG.md#dev-step-546) · [Validation](SOURCE_PUBLICATION_546.md).
+
 ## 2026-11-17 — Step 545 — Faster composition under tone layers
 
 The renderer combines a raster and eligible tone layers in one pass through its tiles. On Apple Silicon, the 5,000 px first-dab software composition fell from 1,628 to 124 ms on the 24 MP test image. The hosted AppKit first draw took 896 ms in the paired runs.
@@ -353,14 +361,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:545 -->
+<!-- current-status-step:546 -->
 ## Current development status — 17 November 2026
 
-Build 545 speeds up flat tone stacks. All 390 selected tests passed in Debug and the two optimized builds. Both slices of the universal package passed their offscreen checks.
+Build 546 speeds up regional preview conversion and whole-pixel minification. All 392 selected tests passed in Debug and both optimized builds. Both slices of the universal package passed their offscreen checks.
 
 Physical editing cadence, Photoshop Brush output and exact Gradient Maps remain open.
 
-[Qualification](SOURCE_PUBLICATION_545.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_546.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1111,6 +1119,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 543 | [Reuse exact gradient samples and publish tiles](DEVLOG.md#dev-step-543) |
 | 2026-11-17 | 544 | [Prepare wide brush dabs once and start the first preview sooner](DEVLOG.md#dev-step-544) |
 | 2026-11-17 | 545 | [Compose flat tone stacks in one tile pass](DEVLOG.md#dev-step-545) |
+| 2026-11-17 | 546 | [Write changed canvas bytes directly](DEVLOG.md#dev-step-546) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |
