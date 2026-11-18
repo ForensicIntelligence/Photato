@@ -41,16 +41,7 @@ public final class RasterTileStore: @unchecked Sendable {
       throw CraftError.invalid("Invalid raster scratch capacity or sample layout.")
     }
     self.maximumBytes = maximumBytes
-    let folder = directory ?? FileManager.default.temporaryDirectory
-    guard folder.isFileURL else { throw CraftError.invalid("Raster scratch requires a local directory.") }
-    let url = folder.appendingPathComponent("photato-raster-\(UUID().uuidString).tiles")
-    let fd = url.withUnsafeFileSystemRepresentation { open($0!, O_RDWR | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, S_IRUSR | S_IWUSR) }
-    guard fd >= 0 else { throw RasterScratchFailure.io(operation: "creation", code: errno) }
-    // Never expose a mutable path to a live mapping. Closing the last reference
-    // reclaims the unlinked file, including cancellation and failed imports.
-    let removed = url.withUnsafeFileSystemRepresentation { unlink($0!) }
-    guard removed == 0 else { let code = errno; close(fd); throw RasterScratchFailure.io(operation: "unlink", code: code) }
-    file = ScratchDescriptor(fd)
+    file = try ScratchDescriptor(directory: directory, prefix: "photato-raster", suffix: "tiles")
   }
   func append(_ tile: RasterTile) throws -> RasterTile {
     try Task.checkCancellation()
@@ -84,11 +75,30 @@ public final class RasterTileStore: @unchecked Sendable {
   }
 }
 
-fileprivate final class ScratchDescriptor: @unchecked Sendable {
+final class ScratchDescriptor: @unchecked Sendable {
   let fd: Int32
-  init(_ fd: Int32) { self.fd = fd }
+
+  init(directory: URL? = nil, prefix: String, suffix: String) throws {
+    let folder = directory ?? FileManager.default.temporaryDirectory
+    guard folder.isFileURL else { throw CraftError.invalid("Raster scratch requires a local directory.") }
+    let url = folder.appendingPathComponent("\(prefix)-\(UUID().uuidString).\(suffix)")
+    let descriptor = url.withUnsafeFileSystemRepresentation {
+      $0.map { open($0, O_RDWR | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, S_IRUSR | S_IWUSR) } ?? -1
+    }
+    guard descriptor >= 0 else { throw RasterScratchFailure.io(operation: "creation", code: errno) }
+    // The owning descriptor controls the lifetime, even after a failed edit.
+    let removed = url.withUnsafeFileSystemRepresentation { $0.map { unlink($0) } ?? -1 }
+    guard removed == 0 else {
+      let code = errno
+      close(descriptor)
+      throw RasterScratchFailure.io(operation: "unlink", code: code)
+    }
+    fd = descriptor
+  }
+
   deinit { close(fd) }
 }
+
 final class RasterScratchSegment: @unchecked Sendable {
   fileprivate let file: ScratchDescriptor
   let address: UnsafeMutableRawPointer

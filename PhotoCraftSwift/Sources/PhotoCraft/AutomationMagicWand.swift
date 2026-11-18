@@ -69,7 +69,7 @@ enum MagicWandAPI {
       "algorithm":"Same existing RGBA8 matching and span flood. Average the clipped square's quantized RGBA channels with integer nearest rounding, then apply existing tolerance/connectivity/antialiasing. Hidden RGB and alpha participate as before. A contiguous seed must match the average. Exact Photoshop sampling/alpha/profile/rounding/connectivity/output remains unqualified.",
       "input":"Current layer in document coordinates, visible composite with sampleAllLayers, or ordinary layer mask. Locked sources may be sampled. RGB composite editing context; component/alpha/QuickMask/path/Smart Filter mask targets are unsupported.",
       "history":"One prepared native selection Undo; source content is retained. Existing semantic Magic Wand Actions recording remains unsupported. No native/archive/Actions version change.",
-      "limits":"Sampling support is at most101x101. Existing dense color-region preparation and renderer limits remain; full maximum/dense capacity, physical platform, 60fps and exact Photoshop defaults/output remain open. API sharing/request limits still apply.",
+      "limits":"Sampling support is at most101x101. Large color-region matching uses paged coverage with bounded heap buffers. Uniform and sparse cases are exercised at the maximum canvas size. Dense rendering time, scratch capacity and exact Photoshop defaults/output remain open. API sharing/request limits still apply.",
       "adobe":"No dedicated endpoint in the pinned Photoshop v2 contract. No unverified actionJSON descriptor, UXP runtime or plugin support is claimed."]
   }
 }

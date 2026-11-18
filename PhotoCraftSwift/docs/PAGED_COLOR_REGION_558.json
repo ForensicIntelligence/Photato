@@ -1,0 +1,90 @@
+{
+  "actionMaximumVersion": 65,
+  "addedMethods": [
+    "PhotoCraftAppTests.MagicWandSamplingWorkflowTests/testMaximumSparseColorRegionThroughNativeToolsAndHTTP",
+    "PhotoCraftCoreTests.ColorRegionTests/testColorRegionScratchEvictsDirtyBitsAndSpillsWorkInOrder",
+    "PhotoCraftCoreTests.ColorRegionTests/testMaximumSparseForegroundAndBackgroundSelectionAndLocalBucketFill",
+    "PhotoCraftCoreTests.ColorRegionTests/testMaximumUniformSelectionAndOpaqueBucketUseImplicitSamples",
+    "PhotoCraftCoreTests.ColorRegionTests/testPagedAndDenseCoverageMatchAcrossDepthsTransformsAndSettings"
+  ],
+  "checkpoint": 558,
+  "comparison": {
+    "base": 557,
+    "bitExactAcrossBuildsAndArchitectures": true,
+    "bucketBuffers": 18,
+    "bytesPerArchitecture": 6907824,
+    "candidate": 558,
+    "coverageMasks": 240,
+    "sha256": [
+      "99b1b94e4c7a722f2e950902e7c8146d09b89e45eb43dd5854d155887d0d71a4",
+      "e55891b6573a74158d7474815e918d2b4d3d3bffe5db39f2e3bc4a523bbcbbb6"
+    ]
+  },
+  "contiguousCacheBytes": 262144,
+  "denseMaximumRuntimeQualified": false,
+  "fullPhotoshopParity": false,
+  "lowDiskLoadVerified": false,
+  "maxImplicitCoverageTiles": 0,
+  "maxSparseSide": 300000,
+  "maximumFloodCancellationPreservedDocument": true,
+  "maximumSparseArchiveBytes": 2512,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "ca75bbaa9bf524c5c0d02825394f6ad4afa5c6f897d7629611657d652ef4065d",
+    "binarySHA256": "d8a6d3870d07b2a1838058e407fd27f167f2d675cb792d97349a7c9a2334d8a3",
+    "build": 558,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122083,
+          "height": 650,
+          "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopBytesVerified": false,
+  "presetMaximumVersion": 4,
+  "priorAttempts": [
+    {
+      "name": "qualification01",
+      "passed": false
+    },
+    {
+      "name": "qualification02",
+      "passed": true
+    },
+    {
+      "name": "qualification04",
+      "passed": true
+    }
+  ],
+  "references": [
+    "https://helpx.adobe.com/ie/photoshop/desktop/make-selections/automatic-color-based-selections/select-areas-by-color-with-the-magic-wand-tool.html",
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-paint-bucket-tool.html"
+  ],
+  "returningMethods": 22,
+  "selectedMethods": {
+    "arm": 481,
+    "debug": 481,
+    "intel": 481
+  },
+  "softwareRelease": false,
+  "typedCommands": 271
+}

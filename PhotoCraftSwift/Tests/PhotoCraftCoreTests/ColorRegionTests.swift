@@ -4,6 +4,144 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class ColorRegionTests: XCTestCase {
+  func testPagedAndDenseCoverageMatchAcrossDepthsTransformsAndSettings() throws {
+    let width = 139, height = 81
+    for depth in PixelDepth.allCases {
+      var surface = try Surface(width: width, height: height, depth: depth, fill: .white)
+      for y in 0..<height {
+        for x in 0..<width where (x / 7 + y / 5) % 4 == 0 || (x + y) % 57 == 0 {
+          surface.setPixel(x: x, y: y, Pixel(0.17, 0.34, 0.78, x % 2 == 0 ? 0 : 0.61))
+        }
+      }
+      for transform in [Transform2D.identity, .translation(11, -9), .translation(0.25, 0.5),
+                        .rotation(8), .scale(0.000_001, 1)] {
+        let source = CloneSample(surface: surface, transform: transform, outside: .white)
+        for mask in [false, true] {
+          for contiguous in [false, true] {
+            for antiAlias in [false, true] {
+              for size in [1, 5] {
+                var options = ColorMatchOptions()
+                options.sampleSize = size
+                options.tolerance = size == 1 ? 0 : 43
+                options.antiAlias = antiAlias
+                options.contiguous = contiguous
+                let seed = PathPoint(63.5, 62.5)
+                let dense = try ColorRegion.selection(source: source, width: width, height: height,
+                  seed: seed, options: options, mask: mask)
+                let paged = try ColorRegion.selection(source: source, width: width, height: height,
+                  seed: seed, options: options, mask: mask, densePixelLimit: 0)
+                XCTAssertEqual(try dense.bytes, try paged.bytes,
+                  "\(depth), \(transform), \(mask), \(contiguous), \(antiAlias), \(size)")
+                XCTAssertEqual(dense.bounds, paged.bounds)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  func testMaximumSparseForegroundAndBackgroundSelectionAndLocalBucketFill() throws {
+    let side = Surface.maxDimension
+    let x = side - 36, y = side - 32
+    var source = try Surface(width: side, height: side, fill: .black)
+    for dy in 0..<4 {
+      for dx in 0..<4 { source.setPixel(x: x + dx, y: y + dy, .white) }
+    }
+    source.setPixel(x: 16, y: 12, .white)
+    let sampling = CloneSample(surface: source)
+    var options = ColorMatchOptions()
+    options.tolerance = 0
+    let connected = try ColorRegion.selection(source: sampling, width: side, height: side,
+      seed: .init(Double(x) + 1.5, Double(y) + 1.5), options: options)
+    XCTAssertTrue(connected.isPaged)
+    XCTAssertEqual(connected.bounds, IntRect(x: x - 1, y: y - 1, width: 6, height: 6))
+    XCTAssertEqual(connected.coverage(x: x + 1, y: y + 1), 1)
+    XCTAssertEqual(connected.coverage(x: x, y: y), 184.0 / 255.0)
+    XCTAssertEqual(connected.coverage(x: x - 1, y: y + 1), 43.0 / 255.0)
+    XCTAssertEqual(connected.coverage(x: 16, y: 12), 0)
+
+    options.contiguous = false
+    let disconnected = try ColorRegion.selection(source: sampling, width: side, height: side,
+      seed: .init(16.5, 12.5), options: options)
+    XCTAssertEqual(disconnected.coverage(x: x + 1, y: y + 1), 1)
+    XCTAssertEqual(disconnected.coverage(x: 16, y: 12), 142.0 / 255.0)
+    XCTAssertLessThan(disconnected.mappedBytes, 20 * TileArchive.byteCount)
+    let background = try ColorRegion.selection(source: sampling, width: side, height: side,
+      seed: .init(0.5, 0.5), options: options)
+    XCTAssertEqual(background.bounds, IntRect(x: 0, y: 0, width: side, height: side))
+    XCTAssertEqual(try background.coverageSurface().defaultPixel, .white)
+    XCTAssertEqual(background.coverage(x: x + 1, y: y + 1), 0)
+    XCTAssertEqual(background.coverage(x: x - 1, y: y + 1), 213.0 / 255.0)
+    XCTAssertLessThan(background.mappedBytes, 20 * TileArchive.byteCount)
+
+    var bucket = BucketOptions()
+    options.contiguous = true; options.antiAlias = false
+    bucket.match = options
+    var layer = Layer(name: "Pixels", content: .raster(source))
+    let color = Pixel(1, 0, 0)
+    let fill = BucketFill(source: sampling, seed: .init(Double(x), Double(y)), color: color, options: bucket)
+    XCTAssertTrue(try BucketPainter.paint(fill, on: &layer, canvasWidth: side, canvasHeight: side))
+    guard case .raster(let filled) = layer.content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(filled.pixel(x: x, y: y), color)
+    XCTAssertEqual(filled.pixel(x: 16, y: 12), .white)
+    XCTAssertEqual(filled.pixel(x: 0, y: 0), .black)
+  }
+
+  func testMaximumUniformSelectionAndOpaqueBucketUseImplicitSamples() throws {
+    let side = Surface.maxDimension
+    for depth in PixelDepth.allCases {
+      let storage = try Surface(width: side, height: side, depth: depth, fill: .black,
+        colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+      let sample = CloneSample(surface: storage)
+      let selection = try ColorRegion.selection(source: sample, width: side, height: side,
+        seed: .init(Double(side) - 0.5, Double(side) - 0.5), options: .init())
+      XCTAssertTrue(try selection.isFullCoverage)
+      XCTAssertEqual(try selection.coverageSurface().tileCount, 0)
+      XCTAssertEqual(selection.mappedBytes, 0)
+      let outside = try ColorRegion.selection(source: sample, width: side, height: side,
+        seed: .init(-1, 0), options: .init())
+      XCTAssertNil(outside.bounds)
+      XCTAssertEqual(try outside.coverageSurface().tileCount, 0)
+
+      var layer = Layer(name: "Pixels", content: .raster(storage))
+      let ink = Pixel(0.9, 0.72, 0.31)
+      let fill = BucketFill(source: sample, seed: .init(1, 1), color: ink)
+      XCTAssertTrue(try BucketPainter.paint(fill, on: &layer, canvasWidth: side, canvasHeight: side))
+      guard case .raster(let raster) = layer.content else { return XCTFail("Expected raster") }
+      var oracle = try Surface(width: 1, height: 1, depth: depth, colorEncoding: storage.colorEncoding)
+      oracle.setPixel(x: 0, y: 0, ink)
+      XCTAssertEqual(raster.defaultPixel, oracle.pixel(x: 0, y: 0))
+      XCTAssertEqual(raster.pixel(x: side - 1, y: side - 1), raster.defaultPixel)
+      XCTAssertEqual(raster.tileCount, 0)
+      XCTAssertFalse(try BucketPainter.paint(fill, on: &layer, canvasWidth: side, canvasHeight: side))
+    }
+  }
+
+  func testColorRegionScratchEvictsDirtyBitsAndSpillsWorkInOrder() throws {
+    let marks = try ColorRegionMarks()
+    let pageSpan = 16_384 * 8
+    for i in 0..<34 {
+      let anchor = i * pageSpan + 3
+      try marks.insert(anchor...(anchor + 11))
+    }
+    try marks.insert((pageSpan * 66 - 2)...(pageSpan * 66 + 4))
+    for i in (0..<34).reversed() {
+      let anchor = i * pageSpan + 3
+      XCTAssertFalse(try marks.contains(anchor - 1))
+      XCTAssertTrue(try marks.contains(anchor))
+      XCTAssertTrue(try marks.contains(anchor + 11))
+      XCTAssertFalse(try marks.contains(anchor + 12))
+    }
+    XCTAssertTrue(try marks.contains(pageSpan * 66 - 2))
+    XCTAssertTrue(try marks.contains(pageSpan * 66 + 4))
+    XCTAssertFalse(try marks.contains(pageSpan * 66 + 5))
+    let work = try ColorRegionWorklist(seed: 70_000_000_000)
+    for i in 1...9_000 { try work.push(70_000_000_000 + i) }
+    for i in (0...9_000).reversed() { XCTAssertEqual(try work.pop(), 70_000_000_000 + i) }
+    XCTAssertNil(try work.pop())
+  }
+
   func testOriginalRustSpanFloodAndAntialiasOracle() throws {
     let data = try Data(
       contentsOf: XCTUnwrap(

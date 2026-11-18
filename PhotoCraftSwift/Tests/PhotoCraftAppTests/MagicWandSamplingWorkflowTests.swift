@@ -12,6 +12,59 @@ final class MagicWandSamplingWorkflowTests: XCTestCase {
     if mask { d.layers[0].mask = surface } else { d.layers[0].content = .raster(surface) }
     return d
   }
+  @MainActor func testMaximumSparseColorRegionThroughNativeToolsAndHTTP() async throws {
+    let side = Surface.maxDimension, x = 137_005, y = 142_071
+    var original = try CraftDocument(width: side, height: side)
+    var pixels = try Surface(width: side, height: side, fill: .black)
+    pixels.setPixel(x: x, y: y, .white)
+    pixels.setPixel(x: x + 1, y: y, .white)
+    pixels.setPixel(x: 100, y: 100, .white)
+    let layer = Layer(name: "Sparse pixels", content: .raster(pixels))
+    original.layers = [layer]; original.activeLayerID = layer.id
+    let seed = PathPoint(Double(x) + 0.5, Double(y) + 0.5)
+    let native = EditorStore(document: original)
+    defer { native.renderTask?.cancel() }
+    native.chooseTool(WorkspaceCatalog.tool("magicWand"))
+    native.wandOptions.antiAlias = false
+    native.wandOptions.tolerance = 0
+    native.colorRegionClick(at: seed)
+    await native.geometryTask?.value
+    XCTAssertNil(native.error)
+    XCTAssertEqual(native.document.layers, original.layers)
+    XCTAssertEqual(native.document.selection, IntRect(x: x, y: y, width: 2, height: 1))
+    let expected = native.document
+    XCTAssertTrue(expected.selectionMask?.isPaged == true)
+    XCTAssertEqual(native.session.undoStack.count, 1)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, file in
+      file.store.session = .init(document: original)
+      try service.share(file)
+      let status = try await helper.edit(service, file, "selection.wand", [
+        "operation": "select", "x": seed.x, "y": seed.y, "contiguous": true, "tolerance": 0, "antiAlias": false,
+      ])
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(file.store.document, expected)
+      XCTAssertEqual(file.store.session.undoStack.count, 1)
+    }
+
+    await native.undo()
+    XCTAssertEqual(native.document, original)
+    native.chooseTool(WorkspaceCatalog.tool("paintBucket"))
+    native.bucketOptions.match = native.wandOptions
+    native.brush.color = Pixel(1, 0, 0)
+    native.colorRegionClick(at: seed)
+    await native.geometryTask?.value
+    XCTAssertNil(native.error)
+    XCTAssertEqual(native.session.undoStack.count, 1)
+    guard case .raster(let filled) = native.document.layers[0].content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(filled.pixel(x: x, y: y), Pixel(1, 0, 0))
+    XCTAssertEqual(filled.pixel(x: x + 1, y: y), Pixel(1, 0, 0))
+    XCTAssertEqual(filled.pixel(x: 100, y: 100), .white)
+    XCTAssertEqual(filled.pixel(x: 0, y: 0), .black)
+    await native.undo()
+    XCTAssertEqual(native.document, original)
+  }
+
   @MainActor func testNativeAverageCapturesOptionsAndHasOneUndo() async throws {
     let original = try fixture(.u16), store = EditorStore(document:try fixture(.u16))
     defer { store.renderTask?.cancel() }; store.session = .init(document:original)
@@ -66,7 +119,7 @@ final class MagicWandSamplingWorkflowTests: XCTestCase {
       let caps = try await h.request(service,path:"/v1/capabilities")
       let object = try XCTUnwrap(JSONSerialization.jsonObject(with:caps.1) as? [String:Any])
       XCTAssertNotNil(object["magicWand"]); XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:MagicWandAPI.parameterSchema))
-      XCTAssertEqual(AutomationCommand.definitions.count,267); XCTAssertEqual(ActionLibraryFile.maximumVersion,65)
+      XCTAssertEqual(AutomationCommand.definitions.count,271); XCTAssertEqual(ActionLibraryFile.maximumVersion,65)
       XCTAssertEqual((MagicWandAPI.state(file.store)["settings"] as? [String:Any])?["sampleSize"] as? Int,11)
     }
   }

@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 558 — Large Paint Bucket and Magic Wand regions
+
+Magic Wand and Paint Bucket now page large color selections. The tested sparse cases work on 300,000-pixel-square canvases, and a uniform opaque fill can update the whole canvas without allocating pixel tiles.
+
+All 481 selected tests passed across three builds. Existing coverage and bucket buffers matched build 557 byte for byte. Dense maximum-size timing, other fill modes and exact Photoshop comparisons remain open.
+
+[Detailed record](DEVLOG.md#dev-step-558) · [Validation](SOURCE_PUBLICATION_558.md).
+
 ## 2026-11-18 — Step 557 — Brush and Pencil blend-mode shortcuts
 
 On the canvas, Shift-plus and Shift-minus cycle paint modes. Shift-Option-Q selects Behind and Shift-Option-R selects Clear on Brush. The shortcut changes the next stroke, so you can switch modes without interrupting the stroke underway.
@@ -449,14 +457,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:557 -->
+<!-- current-status-step:558 -->
 ## Current development status — 18 November 2026
 
-Shift-plus and Shift-minus cycle the Brush and Pencil Mode picker. Shift-Option letters select documented modes directly. All 454 selected tests passed, and both universal slices passed offscreen checks.
+Paint Bucket and Magic Wand page large color matches, including tested sparse selections and fills at 300,000 pixels per side. All 481 selected tests passed, and both universal slices passed offscreen checks.
 
-Live Photoshop shortcut behavior, exact paint bytes and physical editing cadence remain open.
+Dense maximum-size runtime, Paint Bucket Clear and Photoshop numerical comparisons remain open.
 
-[Qualification](SOURCE_PUBLICATION_557.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_558.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1219,6 +1227,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 555 | [Add brush hardness, rotation and smoothing keys](DEVLOG.md#dev-step-555) |
 | 2026-11-18 | 556 | [Add Behind and Clear painting modes](DEVLOG.md#dev-step-556) |
 | 2026-11-18 | 557 | [Add Brush and Pencil blend-mode shortcuts](DEVLOG.md#dev-step-557) |
+| 2026-11-18 | 558 | [Page large Paint Bucket and Magic Wand regions](DEVLOG.md#dev-step-558) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

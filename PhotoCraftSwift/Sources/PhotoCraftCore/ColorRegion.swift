@@ -23,40 +23,81 @@ public enum ColorRegion {
     source: CloneSample, width: Int, height: Int, seed: PathPoint,
     options: ColorMatchOptions, mask: Bool = false
   ) throws -> SelectionMask {
+    try selection(source: source, width: width, height: height, seed: seed,
+      options: options, mask: mask, densePixelLimit: Surface.maximumDensePixels)
+  }
+
+  static func selection(
+    source: CloneSample, width: Int, height: Int, seed: PathPoint,
+    options: ColorMatchOptions, mask: Bool = false, densePixelLimit: Int
+  ) throws -> SelectionMask {
     _ = try Surface(width: width, height: height)
     try options.validate()
+    try Task.checkCancellation()
     guard seed.x.isFinite, seed.y.isFinite,
       abs(seed.x) <= 1_000_000, abs(seed.y) <= 1_000_000,
       source.outside.isFinite, (0...1).contains(source.outside.a)
     else { throw CraftError.invalid("Invalid color sample.") }
     try source.surface.validated()
-    let inverse = try source.transform.inverted()
-    let nearest =
-      inverse.a == 1 && inverse.d == 1 && inverse.b == 0 && inverse.c == 0
-      && inverse.tx.rounded() == inverse.tx && inverse.ty.rounded() == inverse.ty
+    let projection = try ColorRegionProjection(source: source, width: width, height: height, mask: mask)
     let sx = Int(floor(seed.x))
     let sy = Int(floor(seed.y))
-    guard sx >= 0, sy >= 0, sx < width, sy < height else {
-      return try SelectionMask(
-        width: width, height: height,
-        bytes: [UInt8](repeating: 0, count: width * height))
+    guard projection.canvas.contains(sx, sy) else {
+      return try constantCoverage(width: width, height: height, selected: false)
+    }
+    if options.tolerance == 255 || projection.hasUniformSample {
+      return try constantCoverage(width: width, height: height, selected: true)
+    }
+    if width > densePixelLimit / height {
+      return try pagedSelection(projection: projection, seedX: sx, seedY: sy, options: options)
     }
     var pixels = [SIMD4<UInt8>](repeating: .zero, count: width * height)
     for y in 0..<height {
       try Task.checkCancellation()
       for x in 0..<width {
-        let p = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
-        let value = ClonePainter.sample(
-          source.surface, x: p.x, y: p.y,
-          nearest: nearest, linear: source.surface.depth == .f32 && !mask,
-          outside: source.outside, grayscale: mask)
-        func q(_ f: Float) -> UInt8 { UInt8((unit(f) * 255).rounded()) }
-        pixels[y * width + x] = SIMD4(q(value.r), q(value.g), q(value.b), q(value.a))
+        pixels[y * width + x] = projection.sample(x, y)
       }
     }
     return try selection(
       pixels: pixels, width: width, height: height,
       seedX: sx, seedY: sy, options: options)
+  }
+
+  static func constantCoverage(width: Int, height: Int, selected: Bool) throws -> SelectionMask {
+    let surface = try Surface(width: width, height: height, fill: selected ? .white : .black)
+    return try SelectionMask(paged: PagedSelectionCoverage(quantized: surface))
+  }
+
+  static func matchTarget(width: Int, height: Int, seedX: Int, seedY: Int, size: Int,
+    sample: (Int, Int) -> SIMD4<UInt8>
+  ) throws -> SIMD4<UInt8> {
+    if size == 1 { return sample(seedX, seedY) }
+    let area = try ColorAveraging.region(x: Double(seedX), y: Double(seedY),
+      width: width, height: height, size: size)
+    var sum = SIMD4<Int>(repeating: 0)
+    for y in area.y..<(area.y + area.height) {
+      try Task.checkCancellation()
+      for x in area.x..<(area.x + area.width) {
+        let p = sample(x, y)
+        sum.x += Int(p.x); sum.y += Int(p.y); sum.z += Int(p.z); sum.w += Int(p.w)
+      }
+    }
+    let count = area.width * area.height
+    return SIMD4(UInt8((sum.x + count / 2) / count), UInt8((sum.y + count / 2) / count),
+      UInt8((sum.z + count / 2) / count), UInt8((sum.w + count / 2) / count))
+  }
+
+  static func matches(_ pixel: SIMD4<UInt8>, _ target: SIMD4<UInt8>, tolerance: Int) -> Bool {
+    abs(Int(pixel.x) - Int(target.x)) <= tolerance
+      && abs(Int(pixel.y) - Int(target.y)) <= tolerance
+      && abs(Int(pixel.z) - Int(target.z)) <= tolerance
+      && abs(Int(pixel.w) - Int(target.w)) <= tolerance
+  }
+
+  static func edgeCoverage(selected: Bool, count: Int) -> UInt8 {
+    let average = Float(count * 255) / (9 * 255)
+    let coverage: Float = selected ? 0.5 + 0.5 * average : 0.5 * average
+    return UInt8((coverage * 255).rounded())
   }
 
   public static func selection(
@@ -73,33 +114,10 @@ public enum ColorRegion {
     guard seedX >= 0, seedY >= 0, seedX < width, seedY < height else {
       return try SelectionMask(width: width, height: height, bytes: marks)
     }
-    let target: SIMD4<UInt8>
-    if options.sampleSize == 1 {
-      // Preserve the original point-sample path, including hidden RGB/alpha.
-      target = pixels[seedY * width + seedX]
-    } else {
-      let area = try ColorAveraging.region(x: Double(seedX), y: Double(seedY),
-        width: width, height: height, size: options.sampleSize)
-      var sum = SIMD4<Int>(repeating: 0)
-      for y in area.y..<(area.y + area.height) {
-        try Task.checkCancellation()
-        for x in area.x..<(area.x + area.width) {
-          let p = pixels[y * width + x]
-          sum.x += Int(p.x); sum.y += Int(p.y)
-          sum.z += Int(p.z); sum.w += Int(p.w)
-        }
-      }
-      let count = area.width * area.height
-      target = SIMD4(UInt8((sum.x + count / 2) / count), UInt8((sum.y + count / 2) / count),
-        UInt8((sum.z + count / 2) / count), UInt8((sum.w + count / 2) / count))
-    }
-    let tolerance = options.tolerance
+    let target = try matchTarget(width: width, height: height, seedX: seedX, seedY: seedY,
+      size: options.sampleSize) { x, y in pixels[y * width + x] }
     func similar(_ index: Int) -> Bool {
-      let p = pixels[index]
-      return abs(Int(p.x) - Int(target.x)) <= tolerance
-        && abs(Int(p.y) - Int(target.y)) <= tolerance
-        && abs(Int(p.z) - Int(target.z)) <= tolerance
-        && abs(Int(p.w) - Int(target.w)) <= tolerance
+      matches(pixels[index], target, tolerance: options.tolerance)
     }
     var bx0 = width
     var by0 = height
@@ -168,9 +186,7 @@ public enum ColorRegion {
             }
           }
           if edge {
-            let avg = Float(sum) / (9 * 255)
-            let f: Float = value > 127 ? 0.5 + 0.5 * avg : 0.5 * avg
-            output[y * width + x] = UInt8((f * 255).rounded())
+            output[y * width + x] = edgeCoverage(selected: value > 127, count: sum / 255)
           }
         }
       }

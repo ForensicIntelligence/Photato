@@ -1,3 +1,5 @@
+**Source checkpoint 558.** Paint Bucket and Magic Wand page large color matches, including tested sparse selections and fills at 300,000 pixels per side. All 481 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_558.md).
+
 **Source checkpoint 557.** Shift-plus and Shift-minus cycle the Brush and Pencil Mode picker. Shift-Option letters select documented modes directly. All 454 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_557.md).
 
 **Source checkpoint 556.** Brush can paint Behind existing pixels or Clear their alpha. Pencil also supports Clear. All 418 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_556.md).

@@ -10,7 +10,7 @@ struct PagedSelectionCoverage: Equatable, Sendable {
   var mappedBytes: Int { surface.mappedBytes }
   var bounds: IntRect? { get throws { try surface.scalarCoverageBounds() } }
   init(surface: Surface) throws { try Task.checkCancellation(); self.surface = try surface.quantizedCoverageStorage() }
-  private init(quantized surface: Surface) { self.surface = surface }
+  init(quantized surface: Surface) { self.surface = surface }
   init(width: Int, height: Int, bytes: [UInt8]) throws {
     _ = try Surface(width:width,height:height)
     guard bytes.count == width*height else {throw CraftError.invalid("Invalid selection coverage.")}

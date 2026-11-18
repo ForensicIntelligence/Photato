@@ -66,6 +66,20 @@ public enum BucketPainter {
     let y1 = min(regionBounds.y + regionBounds.height, clipping.y + clipping.height)
     guard x1 > x0, y1 > y0 else { return false }
     let bounds = IntRect(x: x0, y: y0, width: x1 - x0, height: y1 - y0)
+    // A full opaque Normal fill on a canvas-sized raster can replace the
+    // implicit sample directly, including before the first tile is painted.
+    if region.isPaged, !fill.mask, !preserve, pattern == nil,
+      fill.options.mode == .normal, fill.options.opacity == 1, fill.color.a == 1,
+      selectionMask == nil, bounds.width == canvasWidth, bounds.height == canvasHeight,
+      layer.coordinateTransform == .identity, case .raster(let original) = layer.content,
+      original.width == canvasWidth, original.height == canvasHeight, try region.isFullCoverage {
+      let result = try original.reframedImplicitValue(
+        width: canvasWidth, height: canvasHeight, sample: fill.color, linear: false)
+      try Task.checkCancellation()
+      guard result != original else { return false }
+      layer.content = .raster(result)
+      return true
+    }
     return try ClonePainter.paintTarget(
       mask: fill.mask, bounds: bounds, on: &layer,
       clipping: clipping, preserveTransparency: preserve
