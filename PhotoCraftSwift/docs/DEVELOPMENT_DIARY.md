@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 548 — Faster first draw for wide Normal brushes
+
+The brush prepares its Normal ink once per stroke. The 5,000 px example on the 24 MP workspace reached its first AppKit draw in 505 ms, compared with 679 ms in the paired build 547 trials. All 121 tested outputs matched.
+
+All 397 selected tests passed in each configuration. Large-tip editing still needs faster coverage work and physical display testing.
+
+[Detailed record](DEVLOG.md#dev-step-548) · [Validation](SOURCE_PUBLICATION_548.md).
+
 ## 2026-11-18 — Step 547 — Reuse work during a wide brush stroke
 
 Wide raster brushes keep their coverage between pointer samples. On the 24 MP trial, nine prefixes of a 5,000 px stroke took 4,749 ms with the complete painter and 1,872 ms with retained coverage on Apple Silicon. All 60 saved painting outputs matched.
@@ -369,14 +377,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:547 -->
+<!-- current-status-step:548 -->
 ## Current development status — 18 November 2026
 
-Build 547 keeps eligible wide-brush coverage through release and uses banded painting when the memory budget requires it. All 395 selected tests passed in the three configurations. Both slices of the universal package passed their offscreen checks.
+Build 548 speeds up Normal brush output. All 397 selected tests passed in Debug and both optimized builds. Both slices of the universal package passed their offscreen checks.
 
 Physical editing cadence and exact Photoshop brush output remain open.
 
-[Qualification](SOURCE_PUBLICATION_547.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_548.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1129,6 +1137,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 545 | [Compose flat tone stacks in one tile pass](DEVLOG.md#dev-step-545) |
 | 2026-11-17 | 546 | [Write changed canvas bytes directly](DEVLOG.md#dev-step-546) |
 | 2026-11-18 | 547 | [Retain coverage for wide raster brushes](DEVLOG.md#dev-step-547) |
+| 2026-11-18 | 548 | [Speed up Normal brush tile output](DEVLOG.md#dev-step-548) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

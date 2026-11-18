@@ -1,3 +1,7 @@
+**Source checkpoint 548.** Prepared Normal brush output speeds up complete and retained raster painting. All 121 checked buffers match build 547 and all 397 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_548.md).
+
+Continue Q03 with exact wide-tip coverage and changed-dab preparation. Apply timing and pixel comparisons to selected, textured and other blend configurations. Keep physical display and tablet input, Photoshop sampling and the inherited ColorSync and Gradient Map gaps open.
+
 **Source checkpoint 547.** Wide raster Brush gestures retain coverage between input batches. All 60 retained outputs match build 546 and all 395 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_547.md).
 
 Continue Q03 with first-dab and changed-dab preparation. Measure changed-input frames independently of repeat draws, and qualify physical display and tablet input. Keep Photoshop Brush sampling, factory presets and the inherited ColorSync and Gradient Map differences open.

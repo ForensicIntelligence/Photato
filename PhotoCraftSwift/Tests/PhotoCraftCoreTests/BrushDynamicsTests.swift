@@ -2,6 +2,53 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class BrushDynamicsTests:XCTestCase {
+  func testNormalRasterTilePathMatchesFullCoverageMaskAcrossStorageDepths() throws {
+    let width = 193, height = 129
+    let fullSelection = try SelectionMask(width: width, height: height,
+      bytes: [UInt8](repeating: 255, count: width * height))
+    let points: [StrokePoint] = [
+      .init(x: -200.25, y: 40.5, time: 0),
+      .init(x: -166.75, y: 99.25, time: 17),
+      .init(x: 650.5, y: 59.75, time: 49),
+    ]
+    for depth in PixelDepth.allCases {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var source = try Surface(width: width, height: height, depth: depth,
+        fill: Pixel(0.3, 0.52, 0.22, 0.71), colorEncoding: encoding)
+      source.setLinearPixel(x: 72, y: 92, Pixel(-0.0, 1.51, -0.13, 0))
+      source.setLinearPixel(x: 129, y: 121, Pixel(2.6, -0.04, 0.18, 0.52))
+      source = try source.spillingTiles(to: RasterTileStore())
+      for texture in [false, true] {
+        var brush = Brush()
+        brush.size = 2_500
+        brush.hardness = 0.14
+        brush.opacity = 0.54
+        brush.color = Pixel(-0.0, 0.24, 0.82, 0.68)
+        brush.settings = .init()
+        brush.settings!.flow = 0.67
+        brush.settings!.spacing = 0.25
+        brush.settings!.texture.enabled = texture
+        brush.settings!.texture.eachTip = false
+        brush.settings!.texture.depth = 0.48
+        let retained = try BrushStrokeSession(surface: source, brush: brush,
+          selection: nil, selectionMask: nil, transform: .identity,
+          preserveTransparency: false, allowingWideRaster: true)
+        for index in points.indices {
+          let prefix = Array(points.prefix(index + 1))
+          var expected = source
+          try BrushPainter.stroke(surface: &expected, points: prefix, brush: brush,
+            selectionMask: fullSelection)
+          var actual = source
+          try BrushPainter.stroke(surface: &actual, points: prefix, brush: brush)
+          let retainedPixels = try retained.append([points[index]], includingReleaseTail: false)
+          let reference = try expected.rgbaData(depth: .f32, colorEncoding: encoding)
+          XCTAssertEqual(try actual.rgbaData(depth: .f32, colorEncoding: encoding), reference)
+          XCTAssertEqual(try retainedPixels.rgbaData(depth: .f32, colorEncoding: encoding), reference)
+        }
+      }
+    }
+  }
+
   func brush()->Brush { var b=Brush();b.size=10;b.hardness=1;b.color=Pixel(1,0,0);b.settings=BrushSettings();return b }
   func testPreparedRoundTileMatchesScalarWeightsAtClippedAndFractionalEdges() {
     let cases: [(x: Double, y: Double, radius: Double, isAliased: Bool, hardness: Double)] = [

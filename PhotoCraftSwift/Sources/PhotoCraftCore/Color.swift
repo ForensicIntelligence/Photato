@@ -203,9 +203,15 @@ public enum BlendMode: String, CaseIterable, Codable, Sendable {
       a = Float(h & 0xffffff) / 16_777_216 < a ? 1 : 0
     }
     if a <= 0 { return b }
+    return Self.sourceOver(backdrop: b, source: s.rgb, alpha: a, blend: rgb(b.rgb, s.rgb))
+  }
+
+  /// Source-over with a positive source alpha and an already evaluated blend color.
+  @inline(__always)
+  static func sourceOver(backdrop b: Pixel, source s: SIMD3<Float>, alpha a: Float, blend: SIMD3<Float>) -> Pixel {
     let ab = unit(b.a)
     let ao = a + ab * (1 - a)
-    let c = ((1 - a) * ab * b.rgb + (1 - ab) * a * s.rgb + a * ab * rgb(b.rgb, s.rgb)) / ao
+    let c = ((1 - a) * ab * b.rgb + (1 - ab) * a * s + a * ab * blend) / ao
     return Pixel(c.x, c.y, c.z, ao)
   }
 }

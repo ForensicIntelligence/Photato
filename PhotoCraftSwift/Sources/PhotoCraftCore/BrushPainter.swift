@@ -88,6 +88,35 @@ fileprivate struct BrushCoverage {
     }
   }
 }
+/// Prepared Normal color for a raster without per-pixel selection or ink.
+fileprivate struct NormalRasterBrush {
+  private let color: SIMD3<Float>
+  private let colorAlpha: Float
+  private let opacity: Float
+
+  init?(_ brush: Brush, settings: BrushSettings, hasSelection: Bool,
+    grayscale: Bool, preserveTransparency: Bool, pendingTexture: Bool = false) {
+    guard settings.mode == .normal, !settings.colorDynamics.enabled, !brush.erase,
+      !hasSelection, !grayscale, !preserveTransparency, !pendingTexture else { return nil }
+    color = brush.color.rgb
+    colorAlpha = brush.color.a
+    opacity = brush.opacity
+  }
+
+  @inline(__always)
+  func apply(_ coverage: Float, to backdrop: Pixel) -> Pixel? {
+    let a = unit(coverage * opacity * colorAlpha)
+    guard a > 0 else { return nil }
+    return BlendMode.sourceOver(backdrop: backdrop, source: color, alpha: a, blend: color)
+  }
+
+  func write(_ coverage: [Float], key: Int, to surface: inout Surface, original: Surface? = nil) {
+    surface.updateBrushTile(key, coverage: coverage, rebuildingFrom: original) { _, _, _, weight, pixel in
+      apply(weight, to: pixel)
+    }
+  }
+}
+
 public enum BrushPainter {
   static func smooth(_ t:Double)->Double { let t=min(1,max(0,t));return t*t*(3-2*t) }
   static func coverage(distance:Double,radius:Double,hardness:Double)->Double {
@@ -375,6 +404,8 @@ public enum BrushPainter {
     // Publish only after every band has completed successfully.
     var result = surface, visits = 0
     let textureAfterDabs = b.texture.enabled && !b.texture.eachTip
+    let normal = NormalRasterBrush(brush, settings: b, hasSelection: selection != nil || selectionMask != nil,
+      grayscale: grayscaleMask, preserveTransparency: preserveTransparency)
     for region in regions {
       var merged = BrushCoverage(columns:columns,color:b.colorDynamics.enabled)
       for (toLocal,toOriginal) in passes {
@@ -397,6 +428,10 @@ public enum BrushPainter {
       for key in merged.tiles.keys.sorted() {
         try Task.checkCancellation()
         let tile = merged.tiles[key]!
+        if let normal {
+          normal.write(tile.coverage, key: key, to: &result)
+          continue
+        }
         let colors = tile.colors
         result.updateBrushTile(key,coverage:tile.coverage) { x,y,i,weight,base in
           let doc=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(doc.x)),dy=Int(floor(doc.y))
@@ -534,9 +569,16 @@ public final class BrushStrokeSession {
     let tail = released.isEmpty ? [] : preview.dirty
     let keys = changed.union(tail).union(previousTail)
     let settings = brush.settings!
+    let normal = NormalRasterBrush(brush, settings: settings, hasSelection: selection != nil || selectionMask != nil,
+      grayscale: grayscale, preserveTransparency: preserveTransparency,
+      pendingTexture: settings.texture.enabled && !settings.texture.eachTip)
     for key in keys.sorted() {
       try Task.checkCancellation()
       let tile = preview.tiles[key]
+      if let normal {
+        normal.write(tile?.coverage ?? [], key: key, to: &result, original: original)
+        continue
+      }
       // Rebuild from the stroke's original pixels. This also clears a previous
       // tail when the revised stroke has no coverage on its former tile.
       result.updateBrushTile(key, coverage: tile?.coverage ?? [], rebuildingFrom: original) { x, y, i, old, base in
