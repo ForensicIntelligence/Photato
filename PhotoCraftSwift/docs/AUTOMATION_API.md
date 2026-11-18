@@ -3590,3 +3590,9 @@ The edit uses one Undo. Clear recordings require Photato Actions 66. The Adobe c
 In build 561, a successful `paint.bucket` fill that changes pixels can add a Paint Bucket step to an active recording. Configuration, rejected edits, and fills with no pixel changes add no step. Use the existing `actions.manage` and `actions.play` commands. The playback state advertises `semanticPaintBucket`.
 
 Action version 67 stores the seed in document pixels, a portable layer or mask target, bucket settings, and an optional embedded pattern and placement. Playback samples the destination after earlier steps and uses the destination selection. The entire Action is one prepared edit. A missing target, unusable seed, or changed document rejects the edit without partial results. [Validation](SOURCE_PUBLICATION_561.md).
+
+### Brush Actions on masks and saved channels
+
+Build 562 adds playable Brush steps for Smart Filter masks and saved alpha and spot channels. The existing `paint.stroke` route and Brush through `paint.tool` record their own semantics, including automatic raster-layer creation for a prepared stroke over nonraster content. Use `actions.manage` and `actions.play`. Playback state exposes `semanticTargetedBrush`.
+
+The Action stores document-coordinate samples and Brush settings. Replay resolves the layer or saved channel in the destination and uses its selection, sample interpretation, and mask geometry. Saved channels use name and occurrence and must match the recorded alpha or spot type. The entire Action is one prepared edit. An invalid target rejects the transaction. Action version 68 covers the new records. [Validation](SOURCE_PUBLICATION_562.md).

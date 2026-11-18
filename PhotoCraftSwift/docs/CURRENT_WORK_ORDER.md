@@ -1,3 +1,7 @@
+**Source checkpoint 562.** Photato Actions can record Brush strokes on Smart Filter masks and saved alpha and spot channels. They also retain automatic pixel-layer creation when painting over a shape. All 531 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_562.md).
+
+Continue with Quick Mask entry, painting, and exit in Actions. Recheck Photoshop recording controls and live channel playback when desktop access returns.
+
 **Source checkpoint 561.** Paint Bucket fills can be recorded and replayed in Photato Actions with the saved settings and the playback document’s own pixels and selection. All 527 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_561.md).
 
 Continue with Brush Actions for Smart Filter masks and saved auxiliary channels. Recheck Photoshop Action recording and ruler units when desktop access returns.

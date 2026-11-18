@@ -1,0 +1,100 @@
+{
+  "actionMaximumVersion": 68,
+  "addedMethods": [
+    "PhotoCraftAppTests.ActionsWorkflowTests/testHTTPSavedBrushActionsReplayDuplicateNamesAndRejectWrongChannelTypeAtomically",
+    "PhotoCraftAppTests.ActionsWorkflowTests/testNativePreparedBrushActionRecreatesPixelLayerAboveShape",
+    "PhotoCraftAppTests.ActionsWorkflowTests/testNativeSmartFilterMaskBrushActionSurvivesExportAndReplaysWithOneUndo",
+    "PhotoCraftCoreTests.PaintToolTests/testTargetedBrushReceiptsKeepLegacyWireAndRejectTemporaryOrMissingMaskTargets"
+  ],
+  "checkpoint": 562,
+  "comparison": {
+    "architectures": {
+      "arm64": {
+        "legacyWireSHA256": "69fed314b1bab07aec6af1734366db70ebfd1375de4c2f83905c1508b1f00955",
+        "pixelSHA256": "01c5d0bd7c8c0273c3ee8d1e497d81b4fa01b87f90c27bfcac792f8536671ba4",
+        "rawPixelBytes": 2232192
+      },
+      "x86_64": {
+        "legacyWireSHA256": "69fed314b1bab07aec6af1734366db70ebfd1375de4c2f83905c1508b1f00955",
+        "pixelSHA256": "01c5d0bd7c8c0273c3ee8d1e497d81b4fa01b87f90c27bfcac792f8536671ba4",
+        "rawPixelBytes": 2232192
+      }
+    },
+    "base": 561,
+    "baselineBitExactOnBothArchitectures": true,
+    "bitExactAcrossArchitectures": true,
+    "candidate": 562,
+    "legacyActionEncodings": 12,
+    "paintBuffersPerArchitecture": 96
+  },
+  "directTargets": [
+    "smartFilterMask",
+    "savedAlphaChannel",
+    "savedSpotChannel"
+  ],
+  "fullPhotoshopParity": false,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "b82db46182dfea684f006e1efb4469f3efde27fd10dcb6462b205adbc87c2f59",
+    "binarySHA256": "3621671222db1418d8767442d0fe3e040decd5e3c2fc6592be561e2c7ac801ff",
+    "build": 562,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122083,
+          "height": 650,
+          "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopBytesVerified": false,
+  "photoshopLiveCheck": "Mac locked",
+  "preparedTargets": [
+    "pixelLayer",
+    "layerMask",
+    "smartFilterMask",
+    "savedAlphaChannel",
+    "savedSpotChannel"
+  ],
+  "priorAttempts": [
+    {
+      "name": "qualification01",
+      "passed": true
+    },
+    {
+      "name": "qualification02",
+      "passed": true
+    }
+  ],
+  "quickMaskActionPlayback": false,
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/record-tools-in-actions.html",
+    "https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/mask-smart-filter-effects.html",
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/manage-channels-in-the-channels-panel.html"
+  ],
+  "selectedMethods": {
+    "arm": 531,
+    "debug": 531,
+    "intel": 531
+  },
+  "softwareRelease": false,
+  "strokeCoordinates": "document pixels",
+  "typedCommands": 272
+}

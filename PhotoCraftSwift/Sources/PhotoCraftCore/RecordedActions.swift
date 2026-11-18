@@ -35,6 +35,7 @@ public enum ActionOperation: Codable, Sendable {
   case globalLight(GlobalLight)
   indirect case retouch(RecordedRetouchStroke)
   indirect case paintBucket(RecordedPaintBucket)
+  indirect case targetedBrushStroke(RecordedTargetedBrushStroke)
   case documentMode(DocumentModeRequest)
   case restrictedMode(RestrictedModeRequest)
   case inkMode(InkModeRequest)
@@ -212,6 +213,13 @@ public enum ActionOperation: Codable, Sendable {
     case .featherSelection(let v): self = .featherSelection(v)
     case .stroke(let id, let points, let brush): self = .stroke(target(id), points, brush, mask: false)
     case .maskStroke(let id, let points, let brush): self = .stroke(target(id), points, brush, mask: true)
+    case .smartFilterMask(let id, .maskStroke(let maskID, let points, let brush)) where id == maskID:
+      self = .targetedBrushStroke(.init(target: .smartFilterMask(target(id)), points: points, brush: brush))
+    case .channel(.stroke(.alpha(let id), let points, let brush)):
+      self = .targetedBrushStroke(.init(target: .savedChannel(id, in: d), points: points, brush: brush))
+    case .painting(let edit) where edit.request.tool == .brush:
+      self = RecordedTargetedBrushStroke(recording: edit.request, in: d).map(Self.targetedBrushStroke)
+        ?? .unsupported("Brush on Quick Mask cannot be played back yet. Disable this step before playback.")
     case .painting(let edit) where edit.request.tool == .pencil:
       if let stroke = RecordedPencilStroke(recording: edit.request, in: d) { self = .pencilStroke(stroke) }
       else { self = .unsupported("Pencil on Quick Mask cannot be played back yet. Disable this step before playback.") }
@@ -328,6 +336,7 @@ public enum ActionOperation: Codable, Sendable {
     case .featherSelection(let v): return .featherSelection(v)
     case .stroke(let t, let p, let b, let mask): return mask ? .maskStroke(try id(t), p, b) : .stroke(try id(t), p, b)
     case .pencilStroke(let stroke): return try stroke.command(in: d)
+    case .targetedBrushStroke(let stroke): return try stroke.command(in: d)
     case .clear(let t): return .clear(try id(t))
     case .fill(let t, let v): return .fill(try id(t), v)
     case .style(let t, let v): return .layerStyle(try ids(t), v)
@@ -369,6 +378,91 @@ public enum ActionOperation: Codable, Sendable {
     case .fitImage(let options): return .fitImage(options)
     case .resolution(let v): return .resolution(v)
     case .rotate(let v): return .rotateCanvas(v)
+    }
+  }
+}
+
+/// Stores portable targets and input samples for Brush routes that are not
+/// represented by the original raster/layer-mask Action case.
+public struct RecordedTargetedBrushStroke: Codable, Sendable {
+  enum Target: Codable, Sendable {
+    case pixels(ActionLayerTarget)
+    case layerMask(ActionLayerTarget)
+    case smartFilterMask(ActionLayerTarget)
+    case savedChannel(ActionChannelTarget, spot: Bool)
+
+    static func savedChannel(_ id: UUID, in document: CraftDocument) -> Self {
+      let reference = ActionChannelTarget(.alpha(id), in: document)
+      let isSpot = document.alphaChannels?.first(where: { $0.id == id })?.spot != nil
+      return .savedChannel(reference, spot: isSpot)
+    }
+
+    var isPixelLayer: Bool { if case .pixels = self { return true }; return false }
+  }
+
+  let target: Target
+  let points: [StrokePoint]
+  let brush: Brush
+  /// A prepared Brush uses the tool's own channel and mask preparation.
+  let preparation: PaintToolOptions?
+
+  init(target: Target, points: [StrokePoint], brush: Brush, preparation: PaintToolOptions? = nil) {
+    self.target = target
+    self.points = points
+    self.brush = brush
+    self.preparation = preparation
+  }
+
+  init?(recording request: PaintToolRequest, in document: CraftDocument) {
+    let destination: Target
+    switch request.target {
+    case .pixels(let id): destination = .pixels(.init(id, in: document))
+    case .layerMask(let id): destination = .layerMask(.init(id, in: document))
+    case .smartFilterMask(let id): destination = .smartFilterMask(.init(id, in: document))
+    case .channel(.alpha(let id)): destination = .savedChannel(id, in: document)
+    case .channel(.quickMask): return nil
+    }
+    self.init(target: destination, points: request.points, brush: request.brush, preparation: request.options)
+  }
+
+  func validate() throws {
+    var effectiveBrush = brush
+    if preparation != nil { effectiveBrush.settings = brush.settings ?? .init() }
+    try BrushPainter.validate(effectiveBrush, points: points)
+    try preparation?.validate()
+    guard !points.isEmpty, target.isPixelLayer || (brush.settings?.paintMode == nil && preparation?.sampleAllLayers != true) else {
+      throw CraftError.invalid("Invalid recorded Brush samples or settings for this target.")
+    }
+    if case .savedChannel(let channel, _) = target {
+      guard case .named(let name, let occurrence) = channel, !name.isEmpty, name.utf8.count <= 1024,
+        (0..<56).contains(occurrence)
+      else { throw CraftError.invalid("A recorded channel stroke needs a saved channel.") }
+    }
+  }
+
+  func command(in document: CraftDocument) throws -> Command {
+    try validate()
+    let destination: PaintTarget
+    switch target {
+    case .pixels(let layer): destination = .pixels(try layer.resolve(in: document))
+    case .layerMask(let layer): destination = .layerMask(try layer.resolve(in: document))
+    case .smartFilterMask(let layer): destination = .smartFilterMask(try layer.resolve(in: document))
+    case .savedChannel(let channel, let spot):
+      let plane = try channel.resolve(in: document)
+      guard (try document.channel(plane).spot != nil) == spot else {
+        throw CraftError.invalid("The saved channel has a different alpha or spot type.")
+      }
+      destination = .channel(plane)
+    }
+    if let preparation {
+      let request = PaintToolRequest(tool: .brush, target: destination, points: points, brush: brush, options: preparation)
+      return .painting(try PaintingEdit.prepare(request, in: document))
+    }
+    switch destination {
+    case .pixels(let id): return .stroke(id, points, brush)
+    case .layerMask(let id): return .maskStroke(id, points, brush)
+    case .smartFilterMask(let id): return .smartFilterMask(id, .maskStroke(id, points, brush))
+    case .channel(let channel): return .channel(.stroke(channel, points, brush))
     }
   }
 }
@@ -427,6 +521,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .globalLight(let value)=step.operation {try value.validate()}
       if case .retouch(let request) = step.operation { try request.validate() }
       if case .paintBucket(let request) = step.operation { try request.validate() }
+      if case .targetedBrushStroke(let stroke) = step.operation { try stroke.validate() }
       if case .pencilStroke(let stroke) = step.operation { try stroke.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }

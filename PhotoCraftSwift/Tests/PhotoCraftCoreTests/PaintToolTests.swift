@@ -14,6 +14,41 @@ final class PaintToolTests: XCTestCase {
     var b=Brush();b.size=12;b.hardness=1;b.color=Pixel(1,0,0);b.backgroundColor = .white;b.settings = .init();b.settings!.pressureSize=false;b.settings!.spacing=0.25
     return .init(tool:tool,target:.pixels(d.layers[0].id),points:[.init(x:20,y:20),.init(x:60,y:20)],brush:b)
   }
+  func testTargetedBrushReceiptsKeepLegacyWireAndRejectTemporaryOrMissingMaskTargets() throws {
+    var original = try document(.u16)
+    let id = original.layers[0].id
+    original.layers[0].mask = try Surface(width: original.width, height: original.height, depth: .u16, fill: .white)
+    var input = request(.brush, original)
+    input.target = .layerMask(id)
+    let command = Command.painting(try PaintingEdit.prepare(input, in: original))
+    let portable = ActionOperation(recording: command, in: original)
+    guard case .targetedBrushStroke(let recipe) = portable else { return XCTFail("Expected a prepared Brush step") }
+    XCTAssertEqual(recipe.target.isPixelLayer, false)
+    XCTAssertEqual(recipe.points, input.points)
+    XCTAssertEqual(recipe.brush, input.brush)
+    XCTAssertEqual(recipe.preparation, input.options)
+    XCTAssertEqual(try XCTUnwrap(portable.command(in: original)).label, "Brush")
+    let legacy = ActionOperation(recording: .maskStroke(id, input.points, input.brush), in: original)
+    let wire = try JSONEncoder().encode(legacy)
+    XCTAssertTrue(String(decoding: wire, as: UTF8.self).contains("\"stroke\""))
+    XCTAssertFalse(String(decoding: wire, as: UTF8.self).contains("targetedBrushStroke"))
+    let action = RecordedAction(name: "Masked Brush", steps: [
+      .init(name: "Rename", operation: .rename(.active, "Renamed")),
+      .init(name: "Brush", operation: portable),
+    ])
+    for protected in [false, true] {
+      var wrong = original
+      if protected { wrong.layers[0].protection = .all }
+      else { wrong.layers[0].mask = nil }
+      let retained = wrong
+      XCTAssertThrowsError(try action.apply(to: &wrong))
+      XCTAssertEqual(wrong, retained)
+    }
+    let temporary = RecordedTargetedBrushStroke(target: .savedChannel(.quickMask, spot: false),
+      points: input.points, brush: input.brush)
+    XCTAssertThrowsError(try temporary.validate())
+  }
+
   func testPencilAliasingAutoEraseSelectionAndAutomaticLayer()throws {
     var d=try document();var r=request(.pencil,d);r.brush.size=1;r.points=[.init(x:20,y:20),.init(x:25,y:20)];r.brush.color=green;r.options.autoErase=true
     let e=try PaintingEdit.prepare(r,in:d);XCTAssertEqual(pixels(e.result).pixel(x:22,y:20),.white);XCTAssertEqual(pixels(e.result).pixel(x:22,y:19),pixels(d).pixel(x:22,y:19))
