@@ -1,3 +1,7 @@
+**Source checkpoint 545.** Eligible flat tone stacks render in one tile pass. All 64 tested outputs match build 544, and all 390 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_545.md).
+
+Continue Q03 with brush preparation, the largest measured software phase at 383 ms in the 5,000 px case. Extend exact composition to broader layer stacks and measure real display and tablet input. Keep independent Photoshop brush sampling, preset parity and exact Gradient Maps open.
+
 **Source checkpoint 544.** Wide Brush previews start from the initial pointer event. All 64 tested buffers match build 543, and all 388 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_544.md).
 
 Continue Q03 with layered regional composition. In the isolated 24 MP first-dab probe at 5,000 px, composition takes 1555 ms for about 17.2 MP of affected display. Repeat the 24 MP hosted case and qualify physical display and tablet input. Keep independent Photoshop brush sampling, preset parity and exact Gradient Maps open.

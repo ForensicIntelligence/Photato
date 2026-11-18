@@ -1028,6 +1028,58 @@ extension Surface {
     if let indexBuilder {output.tiles=RasterTileMap(base:try indexBuilder.finish())}
     return output
   }
+  /// Maps an aligned SDR source into a bounded Float32 compositing surface.
+  /// Read each source tile once and keep samples outside the requested region clear.
+  public func compositingStoredRegion(
+    _ region: IntRect, _ transform: (Pixel) throws -> Pixel
+  ) throws -> Surface {
+    let area = region.clipped(toWidth: width, height: height)
+    guard colorEncoding == .sRGB, area.width * area.height <= Self.maximumDensePixels else {
+      throw CraftError.invalid("The stored composition region requires a bounded SDR raster.")
+    }
+    var output = try Surface(width: width, height: height, depth: .f32)
+    guard area.width > 0, area.height > 0 else { return output }
+    let side = Self.tileSide
+    let columns = self.columns
+    let right = area.x + area.width, bottom = area.y + area.height
+    var implicit: Pixel?
+    for row in area.y / side...(bottom - 1) / side {
+      let top = row * side
+      let ys = max(0, area.y - top)..<min(side, bottom - top)
+      for column in area.x / side...(right - 1) / side {
+        try Task.checkCancellation()
+        let left = column * side
+        let xs = max(0, area.x - left)..<min(side, right - left)
+        let key = row * columns + column
+        if let tile = tiles[key] {
+          let values = try tile.withUnsafeBufferPointer { samples in
+            var result = [Pixel](repeating: .clear, count: side * side)
+            try result.withUnsafeMutableBufferPointer { changed in
+              for y in ys {
+                for x in xs {
+                  let index = y * side + x
+                  changed[index] = try transform(samples[index]).quantized(.f32)
+                }
+              }
+            }
+            return result
+          }
+          output.tiles[key] = RasterTile(values)
+        } else {
+          if implicit == nil { implicit = try transform(storedDefaultPixel).quantized(.f32) }
+          let value = implicit!
+          if value.hasSameBits(as: .clear) { continue }
+          var tile = RasterTile(repeating: .clear, count: side * side)
+          for y in ys {
+            for x in xs { tile[y * side + x] = value }
+          }
+          output.tiles[key] = tile
+        }
+      }
+    }
+    try Task.checkCancellation()
+    return output
+  }
   public func combiningStoredSamples(
     with other: Surface, _ transform: (Pixel, Pixel) throws -> Pixel
   ) throws -> Surface {

@@ -237,6 +237,9 @@ public enum Renderer {
         d.children(of: nil), in: d, over: output,
         cache: GroupRenderCache(inputTarget: inputTarget, region: region, video:videoTransitions, facts:facts))
     }
+    if inputTarget == nil, let toned = try FlatToneRenderer.composite(d, region: region) {
+      return toned
+    }
     return try compositeFlat(
       d.layers, in: d, over: output, inputTarget: inputTarget, region: region, facts: facts)
   }

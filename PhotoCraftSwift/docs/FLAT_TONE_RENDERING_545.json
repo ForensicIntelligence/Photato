@@ -1,0 +1,767 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 2,
+  "applicationBuild": 545,
+  "archiveSHA256": "66508fd331b68081d01d0cf7bdcc8ce43e455f63d2b4d652c46390c82a454ca2",
+  "checkpoint": 545,
+  "fullPhotoshopParity": false,
+  "hostedTiming": {
+    "1800": {
+      "544": {
+        "drawsDuringInput": [
+          3,
+          3
+        ],
+        "firstDrawMS": [
+          458.3267499692738,
+          456.06454159133136
+        ],
+        "workerMS": [
+          454.46200005244464,
+          451.9319999963045
+        ]
+      },
+      "545": {
+        "drawsDuringInput": [
+          23,
+          25
+        ],
+        "firstDrawMS": [
+          181.738541694358,
+          179.3517917394638
+        ],
+        "workerMS": [
+          177.69579158630222,
+          175.3833332331851
+        ]
+      }
+    },
+    "2500": {
+      "544": {
+        "drawsDuringInput": [
+          1,
+          1
+        ],
+        "firstDrawMS": [
+          863.5919166263193,
+          842.1732500428334
+        ],
+        "workerMS": [
+          858.8246250292286,
+          838.0590000888333
+        ]
+      },
+      "545": {
+        "drawsDuringInput": [
+          5,
+          5
+        ],
+        "firstDrawMS": [
+          320.3617916442454,
+          311.50095839984715
+        ],
+        "workerMS": [
+          316.09437498264015,
+          307.26037500426173
+        ]
+      }
+    },
+    "5000": {
+      "544": {
+        "drawsDuringInput": [
+          0,
+          0
+        ],
+        "firstDrawMS": [
+          2363.5077917715535,
+          2379.828750039451
+        ],
+        "workerMS": [
+          2359.1088333632797,
+          2375.332875060849
+        ]
+      },
+      "545": {
+        "drawsDuringInput": [
+          1,
+          2
+        ],
+        "firstDrawMS": [
+          905.4698750842363,
+          886.0224166419357
+        ],
+        "workerMS": [
+          900.7879999699071,
+          881.7157499724999
+        ]
+      }
+    },
+    "64": {
+      "544": {
+        "drawsDuringInput": [
+          119,
+          119
+        ],
+        "firstDrawMS": [
+          21.227708319202065,
+          23.619916755706072
+        ],
+        "workerMS": [
+          5.900166695937514,
+          5.676250089891255
+        ]
+      },
+      "545": {
+        "drawsDuringInput": [
+          119,
+          119
+        ],
+        "firstDrawMS": [
+          22.012374945916235,
+          21.07462496496737
+        ],
+        "workerMS": [
+          5.864458275027573,
+          5.619916599243879
+        ]
+      }
+    }
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "66508fd331b68081d01d0cf7bdcc8ce43e455f63d2b4d652c46390c82a454ca2",
+    "binarySHA256": "93c4901cdaca12dcda232e6d4780ccda7989b8958b48f53c7e65633d01fcaeee",
+    "build": 545,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "physicalPresentationMeasured": false,
+  "qualifiedConfigurations": {
+    "arm": 390,
+    "debug": 390,
+    "intel": 390
+  },
+  "qualifiedCountPerConfiguration": 390,
+  "rawComparison": {
+    "changesFrom544": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 99310592,
+      "x86_64": 99310592
+    },
+    "configuration": 545,
+    "crossArchitectureDifferences": [],
+    "hashes": {
+      "arm64": {
+        "rgb16-clear-edge": "8a4e1cd6fc0a7960e17eefb32d035391468faf2f8bca7a9f8a1611c5dbc92a4b",
+        "rgb16-clear-full": "a2c932c6a17b142eded35124190ce78eaeede2073280b937d12ae0aaf3d35ff1",
+        "rgb16-clear-region": "91e86acde3cc8be086b99d0adb0d1e9aa2ede4bfb28baf1406dfd85dddb45f27",
+        "rgb16-clear-retained": "47ff992f0627599dd389fc8beabea0ba46cd6f5f2481342799ada158c68e3305",
+        "rgb16-legacy-edge": "f8ea548586bfb45a9ea44f2d62b241ab79c21319218a89fd91bd2c36c0c79753",
+        "rgb16-legacy-full": "3861fd2a308a8ac6878940f12854c09f783710ede806c39b5b4243d1f9457f9c",
+        "rgb16-legacy-region": "20b6a7a17aa6ee59f6d57cc907ad197602b0fcfbcba44cd34b921040b340ee7d",
+        "rgb16-legacy-retained": "0898ef93e4d3dd2eac979c57fbf3a140787a28b3de826303916f416b28c15c4e",
+        "rgb16-mapped-edge": "466032c5bf15cb3ddb73b85b8a86c07f3b9f1705244ed3d9fe10686e6e3054f1",
+        "rgb16-mapped-full": "13849c4c09ec97309240ca6c3aa89b0895598510583df7cc39d1ceeec8a338f1",
+        "rgb16-mapped-region": "c782cd3fc80f12c7767406a16a5a72316dca37a468bb77250e402a5d0aa0e163",
+        "rgb16-mapped-retained": "a367eab1acb69f5903c0f500f0b3d13bb4b71b754b3c7736a03b32aec78215e7",
+        "rgb16-mixed-edge": "466032c5bf15cb3ddb73b85b8a86c07f3b9f1705244ed3d9fe10686e6e3054f1",
+        "rgb16-mixed-full": "13849c4c09ec97309240ca6c3aa89b0895598510583df7cc39d1ceeec8a338f1",
+        "rgb16-mixed-region": "c782cd3fc80f12c7767406a16a5a72316dca37a468bb77250e402a5d0aa0e163",
+        "rgb16-mixed-retained": "a367eab1acb69f5903c0f500f0b3d13bb4b71b754b3c7736a03b32aec78215e7",
+        "rgb16-multiply-edge": "fe250ca8585c1815375096cf94f7447d1561a9a33cb854dd300bcc70c1a57ea8",
+        "rgb16-multiply-full": "42709b3985daa0e1c0e89c640c9e0cf51e3523655d9248da2d8255b11e138249",
+        "rgb16-multiply-region": "c2f2ebab3a16bd37b8132b34d57c4746ede3f10a3d23adba0a3e22422d5de024",
+        "rgb16-multiply-retained": "2970ed4ca8bfa93c2fd7fae0973377345ba09c2c9e488e71e0d80a6f521b7a6a",
+        "rgb16-opaque-edge": "7d841930469199288dcb3a9b2b4d54fd8466048ea12efd42209bba532d502acc",
+        "rgb16-opaque-full": "64b262d190c43beb33483a55e3531c54c2dcdb076a72ecd8c49c6a412f6877da",
+        "rgb16-opaque-region": "2f57c2e5b79c14b42f99f42d28ec5a3006cbcb6e7858b60c242911caa9abb3e1",
+        "rgb16-opaque-retained": "28cf7d8634e07dadd049cb1ee6afe41fdd6721ba8ae757d2e96b7dba46517d03",
+        "rgb16-unsupported-edge": "00d3e97213c696556a8ff131192454302b9bc05bd45e0df94e7d4140b4977b99",
+        "rgb16-unsupported-full": "e7b4a521d2fbfa114a27f739297df3cb4c162ac741c9313a212d945453a06f00",
+        "rgb16-unsupported-region": "1c8fe8f02661b91612403b564957ca5f1fad8111674c42e0b124395b3f27238e",
+        "rgb16-unsupported-retained": "bfbe79c9304f85f8b2d38f5a94b1b52daafa716ba7bfe03577648f92e1622b39",
+        "rgb32-linear-edge": "b9cdb61b7803a6a9f5db4731e837f12f0a16b4da451516cc311523bc0e7dce99",
+        "rgb32-linear-full": "e9d85ad6bf2c484319b7b1e160e4a1f4179e5e69304729826b77f5f4a5e2d091",
+        "rgb32-linear-region": "8ad140ba9809f2979a51cfca605e2d77f4cff46f89ab293cb7165ae27f1914f8",
+        "rgb32-linear-retained": "3519b00eec8a6db7d68a343a017bb520e0075401f84d09d00ed5f2bb19e161fd",
+        "rgb8-implicit-edge": "02912caa6d8ee977dc82c1eaa1dd6390f5ba24747ea0deb4a2e26dcc48d21a96",
+        "rgb8-implicit-full": "61cd0052186b673fb3951d9e93b0334a570c8575210c190a69720c1bf2b27d08",
+        "rgb8-implicit-region": "0147fbab9b4365e97e862cb7ea06eab0a58561fa844cb0c919a74252df5d4819",
+        "rgb8-implicit-retained": "67b66832d419e02a9a094f2494091852325d3d8116f3b510e96a0f563e876af1",
+        "rgb8-legacy-edge": "f8ea548586bfb45a9ea44f2d62b241ab79c21319218a89fd91bd2c36c0c79753",
+        "rgb8-legacy-full": "3861fd2a308a8ac6878940f12854c09f783710ede806c39b5b4243d1f9457f9c",
+        "rgb8-legacy-region": "20b6a7a17aa6ee59f6d57cc907ad197602b0fcfbcba44cd34b921040b340ee7d",
+        "rgb8-legacy-retained": "322f94755f96bf495a110c7a1fe323543ced3a39483d169b5bca28114a5db10d",
+        "rgb8-mapped-edge": "8535c58314821a5f92687070794af9a324edc68030c4f29b7aed393310f90994",
+        "rgb8-mapped-full": "d270eec54902e2244a015d52a3e60fc48dc2c413778a07306da3d6655b070f33",
+        "rgb8-mapped-region": "2bca72766a58c6c18f04a678c8cd836f0d8f08e04e2975d9d09d7e763bd3e874",
+        "rgb8-mapped-retained": "ec43bbcd233df28460c86913a1bf3f96825bc5473be8c7d9cbd0de235c315a37",
+        "rgb8-masked-edge": "c98da78968ddf769c0480eb8b020e4fbd62f08e8ddbddbe55d8ffc4766bd12cc",
+        "rgb8-masked-full": "e3b652917cb7249d34768a5529be52e45e0965b96db6474b742239fdf6607cf1",
+        "rgb8-masked-region": "283bf1d23baf994072535b49bddbf55172d6e27c766a00bb47eb504d5addb509",
+        "rgb8-masked-retained": "039e0580c98a8dd48927499a56a1f89b0c029be8bc7c1ffc985da2ea36fe98ac",
+        "rgb8-mixed-edge": "8535c58314821a5f92687070794af9a324edc68030c4f29b7aed393310f90994",
+        "rgb8-mixed-full": "d270eec54902e2244a015d52a3e60fc48dc2c413778a07306da3d6655b070f33",
+        "rgb8-mixed-region": "2bca72766a58c6c18f04a678c8cd836f0d8f08e04e2975d9d09d7e763bd3e874",
+        "rgb8-mixed-retained": "ec43bbcd233df28460c86913a1bf3f96825bc5473be8c7d9cbd0de235c315a37",
+        "rgb8-opaque-edge": "89157b28f12b3975614c4b3194ab34443799a5a1abde793094c91cd67b378862",
+        "rgb8-opaque-full": "33c9ec2212874b31d0e3233916773391f2b3cde50f5dd8f4bdcb23dc2222715c",
+        "rgb8-opaque-region": "58a217789c52932224e73aaa2d0e1a057eb8ce002892df4f02cb87a6b2831646",
+        "rgb8-opaque-retained": "3f2750e79c0a4313d97b12b39873ae4aeebde4adf61d94bd3efaf3977b7ff506",
+        "rgb8-translated-edge": "8a4e1cd6fc0a7960e17eefb32d035391468faf2f8bca7a9f8a1611c5dbc92a4b",
+        "rgb8-translated-full": "58a8e4128d3c42eb0fcf73b94a1970ea5b3583caa42761c100530d85fb7b189c",
+        "rgb8-translated-region": "34a97c47e5bbccb0b9864b31d7cceba3a111d86efe33ef00de78c0dad6252a96",
+        "rgb8-translated-retained": "93c5658ec51af6c04a94f94edd316be9ecd8ffe2df2f35d77390c754b06588b8",
+        "rgb8-visibility-edge": "3124bf0ee6f6e598e715c651608019ab75e95f58f713e12c5e8de1ab2d5a5099",
+        "rgb8-visibility-full": "27a472afabc2b9d815d6b736aebe60cdd64bdea2705799442b0216b84facee75",
+        "rgb8-visibility-region": "835c6c6e068aa9666e6be77c68758f52346b1829654be06657f852259c984b7f",
+        "rgb8-visibility-retained": "bba427b9c6a688b22f40d14252a831a281aabb33b70fe60da9369c795b85cdfe"
+      },
+      "x86_64": {
+        "rgb16-clear-edge": "8a4e1cd6fc0a7960e17eefb32d035391468faf2f8bca7a9f8a1611c5dbc92a4b",
+        "rgb16-clear-full": "a2c932c6a17b142eded35124190ce78eaeede2073280b937d12ae0aaf3d35ff1",
+        "rgb16-clear-region": "91e86acde3cc8be086b99d0adb0d1e9aa2ede4bfb28baf1406dfd85dddb45f27",
+        "rgb16-clear-retained": "47ff992f0627599dd389fc8beabea0ba46cd6f5f2481342799ada158c68e3305",
+        "rgb16-legacy-edge": "f8ea548586bfb45a9ea44f2d62b241ab79c21319218a89fd91bd2c36c0c79753",
+        "rgb16-legacy-full": "3861fd2a308a8ac6878940f12854c09f783710ede806c39b5b4243d1f9457f9c",
+        "rgb16-legacy-region": "20b6a7a17aa6ee59f6d57cc907ad197602b0fcfbcba44cd34b921040b340ee7d",
+        "rgb16-legacy-retained": "0898ef93e4d3dd2eac979c57fbf3a140787a28b3de826303916f416b28c15c4e",
+        "rgb16-mapped-edge": "466032c5bf15cb3ddb73b85b8a86c07f3b9f1705244ed3d9fe10686e6e3054f1",
+        "rgb16-mapped-full": "13849c4c09ec97309240ca6c3aa89b0895598510583df7cc39d1ceeec8a338f1",
+        "rgb16-mapped-region": "c782cd3fc80f12c7767406a16a5a72316dca37a468bb77250e402a5d0aa0e163",
+        "rgb16-mapped-retained": "a367eab1acb69f5903c0f500f0b3d13bb4b71b754b3c7736a03b32aec78215e7",
+        "rgb16-mixed-edge": "466032c5bf15cb3ddb73b85b8a86c07f3b9f1705244ed3d9fe10686e6e3054f1",
+        "rgb16-mixed-full": "13849c4c09ec97309240ca6c3aa89b0895598510583df7cc39d1ceeec8a338f1",
+        "rgb16-mixed-region": "c782cd3fc80f12c7767406a16a5a72316dca37a468bb77250e402a5d0aa0e163",
+        "rgb16-mixed-retained": "a367eab1acb69f5903c0f500f0b3d13bb4b71b754b3c7736a03b32aec78215e7",
+        "rgb16-multiply-edge": "fe250ca8585c1815375096cf94f7447d1561a9a33cb854dd300bcc70c1a57ea8",
+        "rgb16-multiply-full": "42709b3985daa0e1c0e89c640c9e0cf51e3523655d9248da2d8255b11e138249",
+        "rgb16-multiply-region": "c2f2ebab3a16bd37b8132b34d57c4746ede3f10a3d23adba0a3e22422d5de024",
+        "rgb16-multiply-retained": "2970ed4ca8bfa93c2fd7fae0973377345ba09c2c9e488e71e0d80a6f521b7a6a",
+        "rgb16-opaque-edge": "7d841930469199288dcb3a9b2b4d54fd8466048ea12efd42209bba532d502acc",
+        "rgb16-opaque-full": "64b262d190c43beb33483a55e3531c54c2dcdb076a72ecd8c49c6a412f6877da",
+        "rgb16-opaque-region": "2f57c2e5b79c14b42f99f42d28ec5a3006cbcb6e7858b60c242911caa9abb3e1",
+        "rgb16-opaque-retained": "28cf7d8634e07dadd049cb1ee6afe41fdd6721ba8ae757d2e96b7dba46517d03",
+        "rgb16-unsupported-edge": "00d3e97213c696556a8ff131192454302b9bc05bd45e0df94e7d4140b4977b99",
+        "rgb16-unsupported-full": "e7b4a521d2fbfa114a27f739297df3cb4c162ac741c9313a212d945453a06f00",
+        "rgb16-unsupported-region": "1c8fe8f02661b91612403b564957ca5f1fad8111674c42e0b124395b3f27238e",
+        "rgb16-unsupported-retained": "bfbe79c9304f85f8b2d38f5a94b1b52daafa716ba7bfe03577648f92e1622b39",
+        "rgb32-linear-edge": "b9cdb61b7803a6a9f5db4731e837f12f0a16b4da451516cc311523bc0e7dce99",
+        "rgb32-linear-full": "e9d85ad6bf2c484319b7b1e160e4a1f4179e5e69304729826b77f5f4a5e2d091",
+        "rgb32-linear-region": "8ad140ba9809f2979a51cfca605e2d77f4cff46f89ab293cb7165ae27f1914f8",
+        "rgb32-linear-retained": "3519b00eec8a6db7d68a343a017bb520e0075401f84d09d00ed5f2bb19e161fd",
+        "rgb8-implicit-edge": "02912caa6d8ee977dc82c1eaa1dd6390f5ba24747ea0deb4a2e26dcc48d21a96",
+        "rgb8-implicit-full": "61cd0052186b673fb3951d9e93b0334a570c8575210c190a69720c1bf2b27d08",
+        "rgb8-implicit-region": "0147fbab9b4365e97e862cb7ea06eab0a58561fa844cb0c919a74252df5d4819",
+        "rgb8-implicit-retained": "67b66832d419e02a9a094f2494091852325d3d8116f3b510e96a0f563e876af1",
+        "rgb8-legacy-edge": "f8ea548586bfb45a9ea44f2d62b241ab79c21319218a89fd91bd2c36c0c79753",
+        "rgb8-legacy-full": "3861fd2a308a8ac6878940f12854c09f783710ede806c39b5b4243d1f9457f9c",
+        "rgb8-legacy-region": "20b6a7a17aa6ee59f6d57cc907ad197602b0fcfbcba44cd34b921040b340ee7d",
+        "rgb8-legacy-retained": "322f94755f96bf495a110c7a1fe323543ced3a39483d169b5bca28114a5db10d",
+        "rgb8-mapped-edge": "8535c58314821a5f92687070794af9a324edc68030c4f29b7aed393310f90994",
+        "rgb8-mapped-full": "d270eec54902e2244a015d52a3e60fc48dc2c413778a07306da3d6655b070f33",
+        "rgb8-mapped-region": "2bca72766a58c6c18f04a678c8cd836f0d8f08e04e2975d9d09d7e763bd3e874",
+        "rgb8-mapped-retained": "ec43bbcd233df28460c86913a1bf3f96825bc5473be8c7d9cbd0de235c315a37",
+        "rgb8-masked-edge": "c98da78968ddf769c0480eb8b020e4fbd62f08e8ddbddbe55d8ffc4766bd12cc",
+        "rgb8-masked-full": "e3b652917cb7249d34768a5529be52e45e0965b96db6474b742239fdf6607cf1",
+        "rgb8-masked-region": "283bf1d23baf994072535b49bddbf55172d6e27c766a00bb47eb504d5addb509",
+        "rgb8-masked-retained": "039e0580c98a8dd48927499a56a1f89b0c029be8bc7c1ffc985da2ea36fe98ac",
+        "rgb8-mixed-edge": "8535c58314821a5f92687070794af9a324edc68030c4f29b7aed393310f90994",
+        "rgb8-mixed-full": "d270eec54902e2244a015d52a3e60fc48dc2c413778a07306da3d6655b070f33",
+        "rgb8-mixed-region": "2bca72766a58c6c18f04a678c8cd836f0d8f08e04e2975d9d09d7e763bd3e874",
+        "rgb8-mixed-retained": "ec43bbcd233df28460c86913a1bf3f96825bc5473be8c7d9cbd0de235c315a37",
+        "rgb8-opaque-edge": "89157b28f12b3975614c4b3194ab34443799a5a1abde793094c91cd67b378862",
+        "rgb8-opaque-full": "33c9ec2212874b31d0e3233916773391f2b3cde50f5dd8f4bdcb23dc2222715c",
+        "rgb8-opaque-region": "58a217789c52932224e73aaa2d0e1a057eb8ce002892df4f02cb87a6b2831646",
+        "rgb8-opaque-retained": "3f2750e79c0a4313d97b12b39873ae4aeebde4adf61d94bd3efaf3977b7ff506",
+        "rgb8-translated-edge": "8a4e1cd6fc0a7960e17eefb32d035391468faf2f8bca7a9f8a1611c5dbc92a4b",
+        "rgb8-translated-full": "58a8e4128d3c42eb0fcf73b94a1970ea5b3583caa42761c100530d85fb7b189c",
+        "rgb8-translated-region": "34a97c47e5bbccb0b9864b31d7cceba3a111d86efe33ef00de78c0dad6252a96",
+        "rgb8-translated-retained": "93c5658ec51af6c04a94f94edd316be9ecd8ffe2df2f35d77390c754b06588b8",
+        "rgb8-visibility-edge": "3124bf0ee6f6e598e715c651608019ab75e95f58f713e12c5e8de1ab2d5a5099",
+        "rgb8-visibility-full": "27a472afabc2b9d815d6b736aebe60cdd64bdea2705799442b0216b84facee75",
+        "rgb8-visibility-region": "835c6c6e068aa9666e6be77c68758f52346b1829654be06657f852259c984b7f",
+        "rgb8-visibility-retained": "bba427b9c6a688b22f40d14252a831a281aabb33b70fe60da9369c795b85cdfe"
+      }
+    },
+    "outputsPerArchitecture": 64
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7886,
+  "typedCommands": 271,
+  "workerPhases": {
+    "results": {
+      "arm64": {
+        "544": {
+          "medians": {
+            "1800": {
+              "compositeMS": 316.0347082884982,
+              "conversionMS": 73.34687502589077,
+              "paintMS": 66.9522499665618,
+              "repackedPixels": 3325952
+            },
+            "2500": {
+              "compositeMS": 592.2721666283906,
+              "conversionMS": 139.10816668067127,
+              "paintMS": 121.85308325570077,
+              "repackedPixels": 6230016
+            },
+            "5000": {
+              "compositeMS": 1627.5628749281168,
+              "conversionMS": 359.1526250820607,
+              "paintMS": 385.57174999732524,
+              "repackedPixels": 17152000
+            },
+            "64": {
+              "compositeMS": 2.2630415624007583,
+              "conversionMS": 0.9091667598113418,
+              "paintMS": 0.6546250078827143,
+              "repackedPixels": 16384
+            }
+          },
+          "runs": {
+            "1800": [
+              {
+                "compositeMS": 318.40212491806597,
+                "conversionMS": 74.89375001750886,
+                "paintMS": 67.71341676358134,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 316.0347082884982,
+                "conversionMS": 72.10141676478088,
+                "paintMS": 66.1880417028442,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 313.70479171164334,
+                "conversionMS": 73.34687502589077,
+                "paintMS": 66.9522499665618,
+                "repackedPixels": 3325952
+              }
+            ],
+            "2500": [
+              {
+                "compositeMS": 589.5907083759084,
+                "conversionMS": 141.1391666624695,
+                "paintMS": 121.85308325570077,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 592.2721666283906,
+                "conversionMS": 139.10816668067127,
+                "paintMS": 120.23691670037806,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 615.5582499923185,
+                "conversionMS": 132.84179172478616,
+                "paintMS": 129.9595416057855,
+                "repackedPixels": 6230016
+              }
+            ],
+            "5000": [
+              {
+                "compositeMS": 1663.6666667181998,
+                "conversionMS": 374.26095828413963,
+                "paintMS": 390.0406250031665,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 1627.5628749281168,
+                "conversionMS": 359.1526250820607,
+                "paintMS": 383.1981250550598,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 1615.639541647397,
+                "conversionMS": 352.65575000084937,
+                "paintMS": 385.57174999732524,
+                "repackedPixels": 17152000
+              }
+            ],
+            "64": [
+              {
+                "compositeMS": 2.879083273001015,
+                "conversionMS": 1.0089999996125698,
+                "paintMS": 1.5536666614934802,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 2.2630415624007583,
+                "conversionMS": 0.9091667598113418,
+                "paintMS": 0.6546250078827143,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 2.1263749804347754,
+                "conversionMS": 0.8083332795649767,
+                "paintMS": 0.5497083766385913,
+                "repackedPixels": 16384
+              }
+            ]
+          }
+        },
+        "545": {
+          "medians": {
+            "1800": {
+              "compositeMS": 24.44683329667896,
+              "conversionMS": 71.74795831087977,
+              "paintMS": 67.89950001984835,
+              "repackedPixels": 3325952
+            },
+            "2500": {
+              "compositeMS": 45.67349993158132,
+              "conversionMS": 132.65108328778297,
+              "paintMS": 121.034458396025,
+              "repackedPixels": 6230016
+            },
+            "5000": {
+              "compositeMS": 123.9087083376944,
+              "conversionMS": 355.1813749363646,
+              "paintMS": 382.77358340565115,
+              "repackedPixels": 17152000
+            },
+            "64": {
+              "compositeMS": 2.2309166379272938,
+              "conversionMS": 0.7173334015533328,
+              "paintMS": 0.5439582746475935,
+              "repackedPixels": 16384
+            }
+          },
+          "runs": {
+            "1800": [
+              {
+                "compositeMS": 27.201583376154304,
+                "conversionMS": 73.78570828586817,
+                "paintMS": 68.18920827936381,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 24.25291668623686,
+                "conversionMS": 71.74795831087977,
+                "paintMS": 65.92274992726743,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 24.44683329667896,
+                "conversionMS": 71.6977083357051,
+                "paintMS": 67.89950001984835,
+                "repackedPixels": 3325952
+              }
+            ],
+            "2500": [
+              {
+                "compositeMS": 47.270666575059295,
+                "conversionMS": 147.96291675884277,
+                "paintMS": 121.034458396025,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 45.67349993158132,
+                "conversionMS": 132.23612506408244,
+                "paintMS": 123.19370836485177,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 45.09366664569825,
+                "conversionMS": 132.65108328778297,
+                "paintMS": 120.37083331961185,
+                "repackedPixels": 6230016
+              }
+            ],
+            "5000": [
+              {
+                "compositeMS": 133.89712502248585,
+                "conversionMS": 367.3770416062325,
+                "paintMS": 382.7238333178684,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 123.3527916483581,
+                "conversionMS": 355.1813749363646,
+                "paintMS": 384.93045838549733,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 123.9087083376944,
+                "conversionMS": 348.5555415973067,
+                "paintMS": 382.77358340565115,
+                "repackedPixels": 17152000
+              }
+            ],
+            "64": [
+              {
+                "compositeMS": 3.173791687004268,
+                "conversionMS": 1.0132082970812917,
+                "paintMS": 1.7674166010692716,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 2.2309166379272938,
+                "conversionMS": 0.7159999804571271,
+                "paintMS": 0.5439582746475935,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 2.1929165814071894,
+                "conversionMS": 0.7173334015533328,
+                "paintMS": 0.528583419509232,
+                "repackedPixels": 16384
+              }
+            ]
+          }
+        }
+      },
+      "x86_64": {
+        "544": {
+          "medians": {
+            "1800": {
+              "compositeMS": 522.0823750132695,
+              "conversionMS": 118.44608397223055,
+              "paintMS": 100.28795909602195,
+              "repackedPixels": 3325952
+            },
+            "2500": {
+              "compositeMS": 967.4891249742359,
+              "conversionMS": 218.04524993058294,
+              "paintMS": 177.1765419980511,
+              "repackedPixels": 6230016
+            },
+            "5000": {
+              "compositeMS": 2692.966709029861,
+              "conversionMS": 592.2958749579266,
+              "paintMS": 576.630000025034,
+              "repackedPixels": 17152000
+            },
+            "64": {
+              "compositeMS": 3.5437089391052723,
+              "conversionMS": 0.9599999757483602,
+              "paintMS": 0.7761670276522636,
+              "repackedPixels": 16384
+            }
+          },
+          "runs": {
+            "1800": [
+              {
+                "compositeMS": 529.042583075352,
+                "conversionMS": 118.44608397223055,
+                "paintMS": 104.53675000462681,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 519.2302078939974,
+                "conversionMS": 122.19045800156891,
+                "paintMS": 100.28795909602195,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 522.0823750132695,
+                "conversionMS": 117.81787499785423,
+                "paintMS": 98.77554094418883,
+                "repackedPixels": 3325952
+              }
+            ],
+            "2500": [
+              {
+                "compositeMS": 967.4891249742359,
+                "conversionMS": 225.85595794953406,
+                "paintMS": 179.64958399534225,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 952.5598749751225,
+                "conversionMS": 216.7073329910636,
+                "paintMS": 177.1765419980511,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 967.6391670946032,
+                "conversionMS": 218.04524993058294,
+                "paintMS": 176.96416599210352,
+                "repackedPixels": 6230016
+              }
+            ],
+            "5000": [
+              {
+                "compositeMS": 2692.966709029861,
+                "conversionMS": 608.5855830460787,
+                "paintMS": 560.2913749171421,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 2667.8902090061456,
+                "conversionMS": 591.7825830401853,
+                "paintMS": 583.1844999920577,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 2708.2004999974743,
+                "conversionMS": 592.2958749579266,
+                "paintMS": 576.630000025034,
+                "repackedPixels": 17152000
+              }
+            ],
+            "64": [
+              {
+                "compositeMS": 4.533624975010753,
+                "conversionMS": 1.9532910082489252,
+                "paintMS": 1.9516670145094395,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 3.5388750256970525,
+                "conversionMS": 0.9382920106872916,
+                "paintMS": 0.7761670276522636,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 3.5437089391052723,
+                "conversionMS": 0.9599999757483602,
+                "paintMS": 0.7347080390900373,
+                "repackedPixels": 16384
+              }
+            ]
+          }
+        },
+        "545": {
+          "medians": {
+            "1800": {
+              "compositeMS": 50.82433298230171,
+              "conversionMS": 122.85541708115488,
+              "paintMS": 113.09904104564339,
+              "repackedPixels": 3325952
+            },
+            "2500": {
+              "compositeMS": 80.52499999757856,
+              "conversionMS": 227.1597080398351,
+              "paintMS": 181.01083301007748,
+              "repackedPixels": 6230016
+            },
+            "5000": {
+              "compositeMS": 235.06816604640335,
+              "conversionMS": 624.8854589648545,
+              "paintMS": 587.5560829881579,
+              "repackedPixels": 17152000
+            },
+            "64": {
+              "compositeMS": 3.681874950416386,
+              "conversionMS": 1.039208029396832,
+              "paintMS": 0.9477920830249786,
+              "repackedPixels": 16384
+            }
+          },
+          "runs": {
+            "1800": [
+              {
+                "compositeMS": 51.09804205130786,
+                "conversionMS": 131.83062500320375,
+                "paintMS": 116.63912504445761,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 44.73945894278586,
+                "conversionMS": 122.19091597944498,
+                "paintMS": 113.09904104564339,
+                "repackedPixels": 3325952
+              },
+              {
+                "compositeMS": 50.82433298230171,
+                "conversionMS": 122.85541708115488,
+                "paintMS": 111.90845898818225,
+                "repackedPixels": 3325952
+              }
+            ],
+            "2500": [
+              {
+                "compositeMS": 80.52499999757856,
+                "conversionMS": 229.24937505740672,
+                "paintMS": 181.70741596259177,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 81.69775002170354,
+                "conversionMS": 219.1525420639664,
+                "paintMS": 177.59116692468524,
+                "repackedPixels": 6230016
+              },
+              {
+                "compositeMS": 74.19900002423674,
+                "conversionMS": 227.1597080398351,
+                "paintMS": 181.01083301007748,
+                "repackedPixels": 6230016
+              }
+            ],
+            "5000": [
+              {
+                "compositeMS": 240.04162498749793,
+                "conversionMS": 605.27129098773,
+                "paintMS": 584.7531250910833,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 228.46254205796868,
+                "conversionMS": 632.2128749452531,
+                "paintMS": 587.5560829881579,
+                "repackedPixels": 17152000
+              },
+              {
+                "compositeMS": 235.06816604640335,
+                "conversionMS": 624.8854589648545,
+                "paintMS": 589.6735419519246,
+                "repackedPixels": 17152000
+              }
+            ],
+            "64": [
+              {
+                "compositeMS": 4.931958043016493,
+                "conversionMS": 1.9420000026002526,
+                "paintMS": 2.078167046420276,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 3.681874950416386,
+                "conversionMS": 1.039208029396832,
+                "paintMS": 0.9477920830249786,
+                "repackedPixels": 16384
+              },
+              {
+                "compositeMS": 3.448417061008513,
+                "conversionMS": 0.944207888096571,
+                "paintMS": 0.7713750237599015,
+                "repackedPixels": 16384
+              }
+            ]
+          }
+        }
+      }
+    },
+    "scope": "Three software runs per build and diameter on the same 24 MP RGB8 raster, two live adjustments and 12.5% filtered display preparation. No OS input events or window presentation."
+  }
+}

@@ -4,6 +4,85 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class RegionalRenderTests: XCTestCase {
+  func testFlatToneStackMatchesSequentialFullRegionAndRetainedDamage() throws {
+    let bounds = IntRect(x: 7, y: 13, width: 281, height: 269)
+    for depth in [PixelDepth.u8, .u16] {
+      var document = try CraftDocument(width: 321, height: 299, depth: depth)
+      let maximum: Float = depth == .u8 ? 255 : 65_535
+      var source = try Surface(width: document.width, height: document.height, depth: depth)
+      source.mapPixels { x, y, _ in
+        let index = y * 321 + x
+        return Pixel(Float(index % (Int(maximum) + 1)) / maximum,
+          Float((index * 17) % (Int(maximum) + 1)) / maximum,
+          Float((index * 13) % (Int(maximum) + 1)) / maximum,
+          index % 13 == 0 ? 0 : index % 23 == 0 ? 0.61 : 1)
+      }
+      document.layers[0].content = .raster(try source.spillingTiles(to: RasterTileStore()))
+      document.layers.append(Layer(name: "Brightness and contrast", content: .adjustment(.brightnessContrast(-0.12, 1.6))))
+      var exposure = Layer(name: "Exposure", content: .adjustment(.exposure(-0.63)))
+      exposure.opacity = 0.73
+      document.layers.append(exposure)
+      var invert = Layer(name: "Invert", content: .adjustment(.invert))
+      invert.opacity = 0.34
+      document.layers.append(invert)
+      let backdrop = try Renderer.emptyCanvas(document)
+      XCTAssertNotNil(try FlatToneRenderer.composite(document, region: bounds))
+      try equalBits(Renderer.composite(document, region: bounds),
+        Renderer.compositeFlat(document.layers, in: document, over: backdrop, region: bounds))
+
+      let before = try Renderer.render(document)
+      try equalBits(before.surface, Renderer.compositeFlat(document.layers, in: document, over: backdrop))
+      try paint(&document, x: 12, y: 9)
+      try paint(&document, x: 300, y: 281)
+      let after = try Renderer.render(document, reusing: before)
+      guard case .region(let damage) = after.update else { return XCTFail("Expected retained regional damage") }
+      XCTAssertGreaterThanOrEqual(damage.width * damage.height, 65_536)
+      try equalBits(after.surface, Renderer.compositeFlat(document.layers, in: document, over: backdrop))
+    }
+  }
+
+  func testFlatToneStackRetainsOffGridAndSignedZeroAndDefersMaskedLayers() throws {
+    struct LegacyRaster: Encodable {
+      let width = 277
+      let height = 269
+      let depth = PixelDepth.u8
+      let defaultPixel = Pixel(-0.0, 0.0142, 1.03)
+      var tiles: [String: [Pixel]] {
+        let samples = (0..<4096).map { index -> Pixel in
+          if index % 31 == 0 { return Pixel(Float.greatestFiniteMagnitude, 0.03123, -0.0) }
+          if index % 23 == 0 { return Pixel(0.39, 0.61, -0.25, 0) }
+          let red = Float(index % 133) / 133
+          let alpha = Float(index % 7) / 7
+          return Pixel(red, -0.0, 0.51807, alpha)
+        }
+        return ["0": samples]
+      }
+      func encode(to encoder: any Encoder) throws {
+        var values = encoder.container(keyedBy: Keys.self)
+        try values.encode(width, forKey: .width)
+        try values.encode(height, forKey: .height)
+        try values.encode(depth, forKey: .depth)
+        try values.encode(defaultPixel, forKey: .defaultPixel)
+        try values.encode(tiles, forKey: .tiles)
+      }
+      enum Keys: String, CodingKey { case width, height, depth, defaultPixel, tiles }
+    }
+    let source = try JSONDecoder().decode(Surface.self, from: JSONEncoder().encode(LegacyRaster()))
+    var document = try CraftDocument(width: source.width, height: source.height)
+    document.layers[0].content = .raster(source)
+    document.layers.append(Layer(name: "Exposure", content: .adjustment(.exposure(2))))
+    document.layers.append(Layer(name: "Invert", content: .adjustment(.invert)))
+    let bounds = IntRect(x: 3, y: 6, width: 268, height: 258)
+    let backdrop = try Renderer.emptyCanvas(document)
+    XCTAssertNotNil(try FlatToneRenderer.composite(document, region: bounds))
+    try equalBits(Renderer.composite(document, region: bounds),
+      Renderer.compositeFlat(document.layers, in: document, over: backdrop, region: bounds))
+    document.layers[1].mask = try Surface(width: source.width, height: source.height, fill: Pixel(0.44, 0.44, 0.44))
+    XCTAssertNil(try FlatToneRenderer.composite(document, region: bounds))
+    try equalBits(Renderer.composite(document, region: bounds),
+      Renderer.compositeFlat(document.layers, in: document, over: backdrop, region: bounds))
+  }
+
   func equalBits(_ a: Surface, _ b: Surface, file: StaticString = #filePath, line: UInt = #line)
     throws
   {
