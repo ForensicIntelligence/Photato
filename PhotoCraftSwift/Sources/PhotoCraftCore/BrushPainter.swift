@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 fileprivate final class BrushCoverageTile {
   var coverage=[Float](repeating:0,count:4096)
@@ -6,7 +7,7 @@ fileprivate final class BrushCoverageTile {
   func copied() -> BrushCoverageTile { let copy = BrushCoverageTile(color: !colors.isEmpty); copy.coverage = coverage; copy.colors = colors; return copy }
   init(color:Bool) { colors=color ? [SIMD4<Float>](repeating:.zero,count:4096):[] }
 
-  func accumulate(_ weights: UnsafeMutableBufferPointer<Float>, x: Range<Int>, y: Range<Int>,
+  func accumulate(_ weights: UnsafeBufferPointer<Float>, x: Range<Int>, y: Range<Int>,
     ceiling: Float, maximum: Bool, ink: SIMD4<Float>) -> Bool {
     func update(_ values: UnsafeMutableBufferPointer<Float>, _ colors: UnsafeMutableBufferPointer<SIMD4<Float>>?) -> Bool {
       var changed = false
@@ -151,7 +152,7 @@ public enum BrushPainter {
     }
   }
   /// Geometry and falloff shared by every destination sample of a dab.
-  struct TipSampler {
+  struct TipSampler: Sendable {
     private let center: (x: Double, y: Double)
     private let direction: (cosine: Double, sine: Double)
     private let flip: (x: Double, y: Double)
@@ -164,6 +165,7 @@ public enum BrushPainter {
     private let falloff: Double
     private let aliased: Bool
     let isAxisAlignedRound: Bool
+    var hasBroadFalloff: Bool { !aliased && falloff >= 32 }
 
     init(_ dab: BrushDab, bitmap: BrushBitmap?, hardness: Double, aliased: Bool) {
       if aliased {
@@ -326,14 +328,126 @@ public enum BrushPainter {
     return .init(x:x0,y:y0,width:x1-x0,height:y1-y0)
   }
 
+  private struct DabRaster: Sendable {
+    struct Tile: Sendable {
+      let key: Int
+      let originX: Int
+      let originY: Int
+      let x: Range<Int>
+      let y: Range<Int>
+    }
+
+    let extent: IntRect
+    let mapColumns: Int
+    let columns: Int
+    let count: Int
+
+    init(_ extent: IntRect, mapColumns: Int) {
+      self.extent = extent
+      self.mapColumns = mapColumns
+      columns = (extent.x + extent.width - 1) / 64 - extent.x / 64 + 1
+      count = columns * ((extent.y + extent.height - 1) / 64 - extent.y / 64 + 1)
+    }
+
+    func tile(at index: Int) -> Tile {
+      let row = extent.y / 64 + index / columns
+      let column = extent.x / 64 + index % columns
+      let tx = column * 64, ty = row * 64
+      return Tile(key: row * mapColumns + column, originX: tx, originY: ty,
+        x: (max(extent.x, tx) - tx)..<(min(extent.x + extent.width, tx + 64) - tx),
+        y: (max(extent.y, ty) - ty)..<(min(extent.y + extent.height, ty + 64) - ty))
+    }
+  }
+
+  private struct DabCoverage: Sendable {
+    let tip: TipSampler
+    let toOriginal: Transform2D
+    let transform: Transform2D
+    let noise: Bool
+    let texture: BrushTexture?
+    let wetEdges: Bool
+    let flow: Double
+    let textureDepth: Double
+
+    var ordinaryRound: Bool {
+      tip.isAxisAlignedRound && toOriginal == .identity && !noise && texture == nil && !wetEdges
+    }
+
+    func sample(_ tile: DabRaster.Tile, into weights: UnsafeMutableBufferPointer<Float>) -> Bool {
+      if ordinaryRound {
+        return tip.roundTile(weights, x: tile.x, y: tile.y, tileX: tile.originX, tileY: tile.originY, flow: flow)
+      }
+      var hasCoverage = false
+      for ly in tile.y {
+        for lx in tile.x {
+          let x = Double(tile.originX + lx) + 0.5, y = Double(tile.originY + ly) + 0.5
+          let p = toOriginal.point(x, y)
+          var (value, rn) = tip.sample(p)
+          if value > 0 && (noise || texture != nil || wetEdges) {
+            let doc = transform.point(x, y)
+            if noise && value < 1 {
+              let n = BrushRandom.pixel(Int(floor(doc.x)), Int(floor(doc.y)), 0x6E6F697365)
+              value += ((n < value ? 1 : 0) - value) * 0.7
+            }
+            if let texture { value = texture.mode.combine(value, BrushPainter.texture(texture, doc.x, doc.y), textureDepth) }
+            if wetEdges { value *= 0.5 + 0.5 * smooth((rn - 0.5) * 2) }
+          }
+          let weight = Float(value * flow)
+          weights[ly * 64 + lx] = weight
+          hasCoverage = hasCoverage || weight > 0
+        }
+      }
+      return hasCoverage
+    }
+  }
+
+  private static func deposit(_ weights: UnsafeBufferPointer<Float>, tile: DabRaster.Tile,
+    ceiling: Float, maximum: Bool, ink: SIMD4<Float>, map: inout BrushCoverage) throws {
+    let covered = try map.accumulatingTile(tile.key)
+    let changed = covered.accumulate(weights, x: tile.x, y: tile.y, ceiling: ceiling, maximum: maximum, ink: ink)
+    if changed && map.trackDirty { map.dirty.insert(tile.key) }
+  }
+
+  private static func rasterLargeDab(_ sampling: DabCoverage, layout: DabRaster, ceiling: Float,
+    maximum: Bool, ink: SIMD4<Float>, map: inout BrushCoverage) throws {
+    // Sample disjoint tiles in parallel. Keep coverage admission and deposition
+    // in the original order, and cap temporary weights at 4 MiB per dab.
+    let tilesPerJob = 64, jobsPerBatch = 4
+    for start in stride(from: 0, to: layout.count, by: tilesPerJob * jobsPerBatch) {
+      try Task.checkCancellation()
+      let jobs = min(jobsPerBatch, (layout.count - start + tilesPerJob - 1) / tilesPerJob)
+      let prepared = OSAllocatedUnfairLock(initialState: [[(DabRaster.Tile, [Float])]](repeating: [], count: jobs))
+      DispatchQueue.concurrentPerform(iterations: jobs) { job in
+        let first = start + job * tilesPerJob
+        let last = min(layout.count, first + tilesPerJob)
+        var tiles: [(DabRaster.Tile, [Float])] = []
+        tiles.reserveCapacity(last - first)
+        for index in first..<last {
+          let tile = layout.tile(at: index)
+          var weights = [Float](repeating: 0, count: 4096)
+          let covered = weights.withUnsafeMutableBufferPointer { sampling.sample(tile, into: $0) }
+          if covered { tiles.append((tile, weights)) }
+        }
+        prepared.withLock { [tiles] in $0[job] = tiles }
+      }
+      for tiles in prepared.withLock({ $0 }) {
+        for (tile, weights) in tiles {
+          try Task.checkCancellation()
+          try weights.withUnsafeBufferPointer {
+            try deposit($0, tile: tile, ceiling: ceiling, maximum: maximum, ink: ink, map: &map)
+          }
+        }
+      }
+    }
+  }
+
   fileprivate static func raster(_ dabs: [BrushDab], isDual: Bool, brush: Brush, toLocal: Transform2D,
     toOriginal: Transform2D, transform: Transform2D, extent: IntRect, map: inout BrushCoverage, visits: inout Int) throws {
     let b = brush.settings!
     let bitmap = isDual ? b.dual.tip : b.tip
     let hardness = isDual ? b.dual.hardness : Double(brush.hardness)
     let aliased = b.aliased && !isDual, maximum = b.wetEdges && !isDual
-    let eachTipTexture = b.texture.enabled && b.texture.eachTip
-    let usesEffects = !isDual && (b.noise || eachTipTexture || b.wetEdges)
+    let texture = !isDual && b.texture.enabled && b.texture.eachTip ? b.texture : nil
     try withUnsafeTemporaryAllocation(of: Float.self, capacity: 4096) { weights in
       weights.initialize(repeating: 0)
       for (index,dab) in dabs.enumerated() {
@@ -343,41 +457,20 @@ public enum BrushPainter {
         let area = rect.width * rect.height
         guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
         visits += area
-        let right = rect.x + rect.width, bottom = rect.y + rect.height
         let tip = TipSampler(dab, bitmap: bitmap, hardness: hardness, aliased: aliased)
-        let ordinaryRound = tip.isAxisAlignedRound && toOriginal == .identity && !usesEffects
         let ink = SIMD4(dab.color.r,dab.color.g,dab.color.b,dab.color.a), ceiling = Float(dab.opacity)
-        for row in rect.y/64...(bottom-1)/64 {
-          let ty = row*64, yRange = (max(rect.y,ty)-ty)..<(min(bottom,ty+64)-ty)
-          for column in rect.x/64...(right-1)/64 {
-            try Task.checkCancellation()
-            let tx = column*64, xRange = (max(rect.x,tx)-tx)..<(min(right,tx+64)-tx)
-            var hasCoverage = false
-            if ordinaryRound {
-              hasCoverage = tip.roundTile(weights, x: xRange, y: yRange, tileX: tx, tileY: ty, flow: dab.flow)
-            } else {
-              for ly in yRange {
-                for lx in xRange {
-                  let x = Double(tx+lx)+0.5, y = Double(ty+ly)+0.5
-                  let p = toOriginal.point(x,y)
-                  var (value,rn) = tip.sample(p)
-                  if value > 0 && usesEffects {
-                    let doc = transform.point(x,y)
-                    if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
-                    if eachTipTexture { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
-                    if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
-                  }
-                  let weight = Float(value*dab.flow)
-                  weights[ly*64+lx] = weight
-                  hasCoverage = hasCoverage || weight > 0
-                }
-              }
-            }
-            guard hasCoverage else { continue }
-            let key = row*map.columns + column
-            let tile = try map.accumulatingTile(key)
-            let changed = tile.accumulate(weights,x:xRange,y:yRange,ceiling:ceiling,maximum:maximum,ink:ink)
-            if changed && map.trackDirty { map.dirty.insert(key) }
+        let layout = DabRaster(rect, mapColumns: map.columns)
+        let sampling = DabCoverage(tip: tip, toOriginal: toOriginal, transform: transform, noise: !isDual && b.noise,
+          texture: texture, wetEdges: maximum, flow: dab.flow, textureDepth: dab.depth)
+        if area > 262_144 && (!sampling.ordinaryRound || tip.hasBroadFalloff) {
+          try rasterLargeDab(sampling, layout: layout, ceiling: ceiling, maximum: maximum, ink: ink, map: &map)
+          continue
+        }
+        for index in 0..<layout.count {
+          try Task.checkCancellation()
+          let tile = layout.tile(at: index)
+          if sampling.sample(tile, into: weights) {
+            try deposit(UnsafeBufferPointer(weights), tile: tile, ceiling: ceiling, maximum: maximum, ink: ink, map: &map)
           }
         }
       }

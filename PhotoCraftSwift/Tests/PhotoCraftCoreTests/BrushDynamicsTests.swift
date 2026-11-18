@@ -2,6 +2,59 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class BrushDynamicsTests:XCTestCase {
+  func testParallelDabCoverageMatchesSerialClippedStrips() throws {
+    let width = 673, height = 449
+    var source = try Surface(width: width, height: height, depth: .f32,
+      fill: Pixel(0.41, 0.24, 0.58, 0.76), colorEncoding: .linearRGB)
+    source.setLinearPixel(x: 493, y: 148, Pixel(-0.0, 1.7, -0.2, 0))
+    let points: [StrokePoint] = [
+      .init(x: -30.125, y: 179.125, time: 0),
+      .init(x: 650.7, y: 235.4, time: 24),
+    ]
+
+    for textured in [false, true] {
+      var brush = Brush()
+      brush.size = 2_500
+      brush.hardness = 0.21
+      brush.color = Pixel(0.73, 0.29, 0.8, 0.58)
+      brush.opacity = 0.63
+      brush.settings = .init()
+      brush.settings!.flow = 0.61
+      brush.settings!.spacing = 0.25
+      brush.settings!.smoothing.amount = 0
+      if textured {
+        brush.settings!.mode = .multiply
+        brush.settings!.angle = 29
+        brush.settings!.roundness = 0.72
+        brush.settings!.noise = true
+        brush.settings!.wetEdges = true
+        brush.settings!.texture.enabled = true
+        brush.settings!.texture.eachTip = true
+        brush.settings!.texture.pattern = .canvas
+        brush.settings!.texture.depth = 0.57
+      }
+
+      // Each strip clips wide-dab preparation below the parallel threshold.
+      // The strips share the original coordinate space and cover every pixel once.
+      var serial = source
+      for x in stride(from: 0, to: width, by: 224) {
+        let strip = IntRect(x: x, y: 0, width: min(224, width - x), height: height)
+        try BrushPainter.stroke(surface: &serial, points: points, brush: brush, selection: strip)
+      }
+      var complete = source
+      try BrushPainter.stroke(surface: &complete, points: points, brush: brush)
+      let retained = try BrushStrokeSession(surface: source, brush: brush,
+        selection: nil, selectionMask: nil, transform: .identity,
+        preserveTransparency: false, allowingWideRaster: true)
+      _ = try retained.append([points[0]], includingReleaseTail: false)
+      let held = try retained.append([points[1]], includingReleaseTail: false)
+      let expected = try serial.rgbaData(depth: .f32, colorEncoding: .linearRGB)
+      XCTAssertNotEqual(expected, try source.rgbaData(depth: .f32, colorEncoding: .linearRGB))
+      XCTAssertEqual(try complete.rgbaData(depth: .f32, colorEncoding: .linearRGB), expected)
+      XCTAssertEqual(try held.rgbaData(depth: .f32, colorEncoding: .linearRGB), expected)
+    }
+  }
+
   func testNormalRasterTilePathMatchesFullCoverageMaskAcrossStorageDepths() throws {
     let width = 193, height = 129
     let fullSelection = try SelectionMask(width: width, height: height,

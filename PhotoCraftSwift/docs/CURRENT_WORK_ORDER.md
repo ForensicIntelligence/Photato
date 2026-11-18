@@ -1,3 +1,7 @@
+**Source checkpoint 549.** Eligible wide dabs sample coverage in parallel. All 146 checked buffers match build 548 and all 398 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_549.md).
+
+Continue Q03 with wide-tile output and canvas publication costs. Qualify physical display and tablet input. Keep Photoshop brush sampling and the inherited ColorSync and Gradient Map differences open.
+
 **Source checkpoint 548.** Prepared Normal brush output speeds up complete and retained raster painting. All 121 checked buffers match build 547 and all 397 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_548.md).
 
 Continue Q03 with exact wide-tip coverage and changed-dab preparation. Apply timing and pixel comparisons to selected, textured and other blend configurations. Keep physical display and tablet input, Photoshop sampling and the inherited ColorSync and Gradient Map gaps open.

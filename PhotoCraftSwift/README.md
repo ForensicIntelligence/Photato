@@ -1,3 +1,5 @@
+**Source checkpoint 549.** Eligible wide dabs sample coverage in parallel. All 146 checked buffers match build 548 and all 398 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_549.md).
+
 **Source checkpoint 548.** Prepared Normal brush output speeds up complete and retained raster painting. All 121 checked buffers match build 547 and all 397 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_548.md).
 
 **Source checkpoint 547.** Wide raster Brush gestures retain coverage between input batches. All 60 retained outputs match build 546 and all 395 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_547.md).
