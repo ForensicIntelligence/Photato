@@ -219,7 +219,9 @@ extension WorkspaceView {
         }
         Picker("Mode:",selection:$store.brushOptions.mode){ForEach(BlendMode.allCases,id: \.self){Text($0.rawValue).tag($0)}}.frame(width:145).controlSize(.small)
         percentField("Opacity:",value:$store.brush.opacity)
+          .help(BrushNumberPrefix.help(.opacity, airbrush: store.brushOptions.buildUp))
         numberField("Flow:",value:Binding(get:{store.brushOptions.flow*100},set:{store.brushOptions.flow=$0/100}),range:0...100,suffix:"%")
+          .help(BrushNumberPrefix.help(.flow, airbrush: store.brushOptions.buildUp))
         numberField("Smoothing:",value:Binding(get:{store.brushOptions.smoothing.amount*100},set:{store.brushOptions.smoothing.amount=$0/100}),range:0...100,suffix:"%")
         Toggle("Airbrush",isOn:$store.brushOptions.buildUp).help("Build up paint while holding still")
         Toggle("Pressure Size",isOn:$store.brushOptions.pressureSize)

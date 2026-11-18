@@ -1,3 +1,5 @@
+**Source checkpoint 552.** Canvas numbers set Brush opacity and flow, including Airbrush. All 404 selected tests passed in three configurations. Saved Photoshop alpha establishes a wider required brush footprint. [Qualification](SOURCE_PUBLICATION_552.md).
+
 **Source checkpoint 551.** Wide brush output tiles are prepared in parallel. All 338 checked buffers match build 550 on each architecture. All 401 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_551.md).
 
 **Source checkpoint 550.** Large raster composition and display packing run in independent bands. All 192 checked buffers match build 549 on each architecture. All 400 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_550.md).

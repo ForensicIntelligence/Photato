@@ -1,6 +1,35 @@
+import AppKit
 import Foundation
 import PhotoCraftCore
 import PhotoCraftImaging
+
+/// Pending digit for the next key on a focused canvas.
+struct BrushNumberPrefix {
+  enum Setting { case opacity, flow }
+  static let interval: TimeInterval = 0.5
+  let setting: Setting
+  let digit: Int
+  let timestamp: TimeInterval
+  let tool: EditorTool
+  let revision: Int
+
+  static func digit(in event: NSEvent) -> Int? {
+    func digit(_ characters: String?) -> Int? {
+      guard let bytes = characters?.utf8, bytes.count == 1, let key = bytes.first,
+        (48...57).contains(key) else { return nil }
+      return Int(key - 48)
+    }
+    // On shifted layouts the reported character can be punctuation. The
+    // unshifted character uses the current input source, including the keypad.
+    return digit(event.charactersIgnoringModifiers) ?? digit(event.characters(byApplyingModifiers: []))
+  }
+
+  static func help(_ setting: Setting, airbrush: Bool) -> String {
+    let shifted = (setting == .flow) != airbrush
+    let keys = shifted ? "Shift and a number key" : "a number key"
+    return "Press \(keys) for tens, or two digits quickly for an exact percentage."
+  }
+}
 
 struct BrushStrokeTarget: Equatable {
   let tool: EditorTool
@@ -58,6 +87,42 @@ final class BrushGesture {
   var heldCommand: Command { mask ? .maskStroke(layerID, points, heldBrush) : .stroke(layerID, points, heldBrush) }
 }
 @MainActor extension EditorStore {
+  /// Updates the same values as the Options bar. An in-progress gesture has
+  /// already captured its Brush and retains those settings through release.
+  func applyBrushNumber(_ event: NSEvent, following prefix: BrushNumberPrefix?)
+    -> (handled: Bool, prefix: BrushNumberPrefix?) {
+    guard canConfigureCanvasBrush, unavailableToolID == nil,
+      event.modifierFlags.intersection([.command, .control, .option, .function]).isEmpty,
+      let digit = BrushNumberPrefix.digit(in: event) else { return (false, nil) }
+
+    let shift = event.modifierFlags.contains(.shift)
+    let setting: BrushNumberPrefix.Setting
+    switch tool {
+    case .brush:
+      setting = shift != brushOptions.buildUp ? .flow : .opacity
+    case .pencil where !shift, .eraser where eraserMode == .pencil && !shift:
+      setting = .opacity
+    case .eraser where eraserMode == .brush:
+      setting = shift != brushOptions.buildUp ? .flow : .opacity
+    default:
+      return (false, nil)
+    }
+
+    if event.isARepeat { return (true, prefix) }
+    let previous = prefix.flatMap {
+      $0.setting == setting && $0.tool == tool && $0.revision == brushRevision
+        && (0...BrushNumberPrefix.interval).contains(event.timestamp - $0.timestamp) ? $0.digit : nil
+    }
+    let value = previous.map { 10 * $0 + digit } ?? (digit == 0 ? 100 : digit * 10)
+    switch setting {
+    case .opacity: brush.opacity = Float(value) / 100
+    case .flow: brushOptions.flow = Double(value) / 100
+    }
+    return (true, previous == nil
+      ? BrushNumberPrefix(setting: setting, digit: digit, timestamp: event.timestamp, tool: tool, revision: brushRevision)
+      : nil)
+  }
+
   private var brushStrokeTarget: BrushStrokeTarget? {
     guard tool == .brush || tool == .pencil, !editingComponent, !smartFilterMaskEditing,
       document.inkMode == nil, let layer = activeLayer, layer.smartObject == nil,

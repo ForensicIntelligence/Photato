@@ -175,10 +175,11 @@ struct CanvasHost: NSViewRepresentable {
 
   var store: EditorStore {
     didSet {
-      if oldValue !== store { observeCanvasFrames() }
+      if oldValue !== store { brushNumberPrefix = nil; observeCanvasFrames() }
     }
   }
   private var canvasFrameObservation: AnyCancellable?
+  private var brushNumberPrefix: BrushNumberPrefix?
   var typeOverlay: CanvasTypeEditor?
   var pathTypePress:PathTypePress?
   var typeBaselinePath:VectorPath?
@@ -256,6 +257,7 @@ struct CanvasHost: NSViewRepresentable {
         .sink { [weak self, weak target] note in
           guard let target, note.object as? NSWindow === target else { return }
           MainActor.assumeIsolated {
+            self?.brushNumberPrefix = nil
             self?.drawingEvents.end()
             self?.airbrushTimer?.invalidate(); self?.airbrushTimer = nil
             if self?.store.transformDraft?.movingPixels == true || self?.store.transformDraft?.pixelMask == true || self?.store.transformDraft?.channelTarget != nil || self?.store.transformDraft?.collectionLayerIDs != nil{self?.store.cancelTransform()}; self?.store.guideGesture=nil; self?.store.cancelMagneticLasso(); self?.store.cancelBrush(); self?.store.cancelClone()
@@ -267,6 +269,7 @@ struct CanvasHost: NSViewRepresentable {
   }
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
+    brushNumberPrefix = nil
     cancelMarqueeCreation()
     store.cancelSelectionBorderInteraction()
     pathTypePress=nil
@@ -292,6 +295,11 @@ struct CanvasHost: NSViewRepresentable {
   }
   override var isFlipped: Bool { true }
   override var acceptsFirstResponder: Bool { true }
+  override func resignFirstResponder() -> Bool {
+    let resigned = super.resignFirstResponder()
+    if resigned { brushNumberPrefix = nil }
+    return resigned
+  }
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
     guard let value = sender.draggingPasteboard.string(forType: .string),
       store.gradientCanvasDrop(value) != nil
@@ -679,6 +687,7 @@ struct CanvasHost: NSViewRepresentable {
     c.restoreGState()
   }
   override func mouseDown(with event: NSEvent) {
+    brushNumberPrefix = nil
     cursorLocationInView = convert(event.locationInWindow,from:nil)
     beginCursorGesture(event); defer { refreshToolCursor() }
     guard activateDocument() else { return }
@@ -1118,6 +1127,8 @@ struct CanvasHost: NSViewRepresentable {
     needsDisplay = true
   }
   override func keyDown(with event: NSEvent) {
+    let prefix = brushNumberPrefix
+    brushNumberPrefix = nil
     updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
     if event.keyCode == 49, creatingMarquee { spaceHeld = true; needsDisplay = true; return }
@@ -1255,6 +1266,11 @@ struct CanvasHost: NSViewRepresentable {
         return
       default: break
       }
+    }
+    if window.map({ $0.firstResponder === self && $0.attachedSheet == nil }) != false {
+      let result = store.applyBrushNumber(event, following: prefix)
+      brushNumberPrefix = result.prefix
+      if result.handled { return }
     }
     if store.nudgeSelectionBorder(keyCode:event.keyCode,modifiers:event.modifierFlags){return}
     if store.nudgeSelectedPixels(keyCode:event.keyCode,modifiers:event.modifierFlags){return}

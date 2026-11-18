@@ -2095,6 +2095,8 @@ All three commands use the normal shared-document command envelope and revision.
 - `import`: data in base64, optional format photatobrushes (default) or abr. Creates independent preset IDs and returns unsupported-ABR warnings.
 - `export`: optional presetID (otherwise whole library) and format. Returns base64 data. ABR rejects native color/size capture choices, symmetry and custom airbrush rates it cannot preserve; the native format is lossless for supported native settings.
 
+The canvas number keys use the same values. Use `brush.configure` with `{"brush":{"opacity":0.45,"settings":{"flow":0.37}}}` to set 45% opacity and 37% flow. The `brushes.numericShortcuts` capability describes the desktop modifiers and the `brush` state reports the values. A keyboard change advances the brush revision and creates no document history entry. A stroke retains the brush captured at its start.
+
 `paint.stroke` requires `points:[{x,y}]`. Optional sample fields are pressure0…1 (default1), tiltX/tiltY−90…90 degrees, rotation−360…360 degrees, wheel0…1, and monotonic time0…3600000 milliseconds since stroke start. Optional brush recursively overrides the current settings; presetID applies a preset first. Optional target defaults to pixels; layerID defaults to the active layer. layerMask and smartFilterMask require the corresponding existing mask. alpha requires channelID; quickMask requires an active Quick Mask. Irrelevant target fields reject. Each stroke uses a frozen seed/settings snapshot and is one undoable native command. The native canvas routes the same implementation through its selected target.
 
 Example paint parameters:

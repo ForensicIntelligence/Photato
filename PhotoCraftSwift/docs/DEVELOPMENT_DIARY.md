@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 552 — Brush opacity and flow number keys
+
+With the canvas focused, number keys set opacity and Shift-number keys set flow. Airbrush swaps which modifier controls each value. Two digits set an exact percentage. This shares the existing settings used by the Options bar and the API.
+
+The tests passed in Debug and both optimized builds. A closer look at 28 saved Photoshop dabs showed that every one extends beyond the current brush footprint. Exact brush pixels and a live shortcut check remain open.
+
+[Detailed record](DEVLOG.md#dev-step-552) · [Validation](SOURCE_PUBLICATION_552.md).
+
 ## 2026-11-18 — Step 551 — Faster paint output for wide brushes
 
 Photato calculates independent brush output tiles in parallel and installs them in their original order. The 5,000 px brush on a 24 MP workspace reached its first offscreen AppKit draw in 181 ms, down from 315 ms. All 338 checked buffers match build 550 on each architecture.
@@ -401,14 +409,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:551 -->
+<!-- current-status-step:552 -->
 ## Current development status — 18 November 2026
 
-Build 551 speeds up large brush output. All 401 selected tests passed in Debug and both optimized builds. Both slices of the universal package passed their offscreen checks.
+Build 552 adds brush number keys for opacity and flow. All 404 selected tests passed in Debug and both optimized builds. Both slices of the universal package passed their offscreen checks.
 
-Physical editing cadence and exact Photoshop brush output remain open.
+Exact Photoshop brush coverage, physical editing cadence and tablet timing remain open.
 
-[Qualification](SOURCE_PUBLICATION_551.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_552.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1165,6 +1173,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 549 | [Sample wide brush coverage in parallel](DEVLOG.md#dev-step-549) |
 | 2026-11-18 | 550 | [Parallelize large raster composition and display packing](DEVLOG.md#dev-step-550) |
 | 2026-11-18 | 551 | [Parallelize brush tile output](DEVLOG.md#dev-step-551) |
+| 2026-11-18 | 552 | [Add brush opacity and flow number keys](DEVLOG.md#dev-step-552) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

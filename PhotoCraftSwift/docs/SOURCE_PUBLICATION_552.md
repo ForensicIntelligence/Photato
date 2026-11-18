@@ -1,0 +1,17 @@
+# Source checkpoint 552
+
+Native Swift 0.3.0, build 552, 18 November 2026. With the canvas focused, number keys set Brush opacity and Shift-number keys set flow. Airbrush swaps the modifiers. Brush-mode Eraser uses the same mapping. Pencil and Pencil-mode Eraser use number keys for opacity. Block Eraser has no binding because its options do not expose opacity or flow. [Adobe Brush and Pencil guide](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/paint-with-brush-or-pencil-tool.html) · [Adobe keyboard reference](https://helpx.adobe.com/content/dam/help/en/photoshop/using/default-keyboard-shortcuts/photoshop-keyboard-shortcuts.pdf).
+
+One digit sets tens and a single 0 sets 100%. Two digits within 0.5 seconds set an exact percentage, including 00 for zero. The interval is Photato's implementation choice. Text editing and modal controls keep their normal keyboard handling. While a stroke is held, the settings update for the next stroke and the current stroke retains the captured values. [Adobe employee note on double zero](https://community.adobe.com/questions-712/brush-softness-ctrl-option-drag-up-or-down-not-working-1069773) · [Apple keyboard guidance](https://developer.apple.com/design/human-interface-guidelines/keyboards/).
+
+The existing brush.configure operation sets the same opacity and flow fields and the brush state reports the values. Number-key changes use the same revision behavior and create no image history entry. The HTTP test verifies that a stale settings revision is rejected and that painting with the keyboard and API settings produces the same document. The pinned Adobe v2 contract has no direct freehand brush equivalent.
+
+All 404 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Three new tests cover modifiers and percentages, AppKit focus and held stroke capture, and HTTP state and pixels. All 146 brush buffers match build 551 on both architectures. Both universal builds passed their offscreen workspace checks. The Mac was locked during the attempted Photoshop UI check. Live keyboard timing, physical presentation and tablet input remain open. The unsupported PSD shape reference remains outside the selected tests.
+
+## Round brush footprint
+
+The independent support test examined 24 saved dabs at four hardness settings and four isolated 13 px dabs exported from another document. In every case, two positive-alpha samples are farther apart than a circle of Photato's current support diameter can contain. The 41 px soft dab spanned 66.85 px between its farthest positive samples and the hard dab spanned 43.93 px. The current round-tip formula permits positive alpha strictly inside a 42 px diameter at that nominal size. This rules out subpixel alignment alone as a repair. Exact falloff, the broader raster bounds and independent positions still need validation.
+
+A second diagnostic fitted models using only 7, 12 and 21 px samples and evaluated 3, 13 and 41 px as holdouts. The 0% hardness Gaussian differs by at most two alpha levels on the held-out sizes and two 13 px captures from the earlier document. The 100% hardness feather model misses the 3 px case by up to 103 levels. Those failures leave the production coverage formula unchanged.
+
+[Development record](DEVLOG.md#dev-step-552) · [Validation evidence](BRUSH_NUMBER_KEYS_552.json) · [Frozen source](SOURCE_SNAPSHOT_552.json)

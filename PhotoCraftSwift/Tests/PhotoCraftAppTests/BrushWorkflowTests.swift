@@ -6,6 +6,159 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class BrushWorkflowTests:XCTestCase {
+  @MainActor private func brushDigit(_ digit: Int, at time: TimeInterval, modifiers: NSEvent.ModifierFlags = [],
+    repeatKey: Bool = false) throws -> NSEvent {
+    let keyCodes: [UInt16] = [29, 18, 19, 20, 21, 23, 22, 26, 28, 25]
+    return try XCTUnwrap(NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: modifiers,
+      timestamp: time, windowNumber: 0, context: nil, characters: String(digit), charactersIgnoringModifiers: String(digit),
+      isARepeat: repeatKey, keyCode: keyCodes[digit]))
+  }
+
+  @MainActor func testBrushNumberKeysUseExactPercentagesAndAirbrushModifiers() throws {
+    _ = NSApplication.shared
+    let store = EditorStore(document: try CraftDocument(width: 48, height: 32))
+    defer { store.renderTask?.cancel() }
+    store.tool = .brush
+    let canvas = CraftCanvas(store: store)
+
+    canvas.keyDown(with: try brushDigit(4, at: 1))
+    XCTAssertEqual(store.brush.opacity, 0.4)
+    canvas.keyDown(with: try brushDigit(4, at: 1.1, repeatKey: true))
+    XCTAssertEqual(store.brush.opacity, 0.4)
+    canvas.keyDown(with: try brushDigit(5, at: 1.2))
+    XCTAssertEqual(store.brush.opacity, 0.45)
+    canvas.keyDown(with: try brushDigit(3, at: 2, modifiers: .shift))
+    canvas.keyDown(with: try brushDigit(7, at: 2.4, modifiers: .shift))
+    XCTAssertEqual(store.brushOptions.flow, 0.37)
+    canvas.keyDown(with: try brushDigit(0, at: 3))
+    XCTAssertEqual(store.brush.opacity, 1)
+    canvas.keyDown(with: try brushDigit(0, at: 3.2))
+    XCTAssertEqual(store.brush.opacity, 0)
+    canvas.keyDown(with: try brushDigit(4, at: 4))
+    canvas.keyDown(with: try brushDigit(5, at: 4.6))
+    XCTAssertEqual(store.brush.opacity, 0.5)
+
+    canvas.keyDown(with: try brushDigit(5, at: 5))
+    store.brushOptions.buildUp = true
+    canvas.keyDown(with: try brushDigit(6, at: 5.1, modifiers: .shift))
+    XCTAssertEqual(store.brush.opacity, 0.6, "Airbrush changes interrupt even when the value adjusted is still opacity")
+    canvas.keyDown(with: try brushDigit(4, at: 5.2))
+    XCTAssertEqual(store.brushOptions.flow, 0.4)
+    canvas.keyDown(with: try brushDigit(7, at: 5.3))
+    XCTAssertEqual(store.brushOptions.flow, 0.47)
+
+    for modifier in [NSEvent.ModifierFlags.command, .option, .control, .function] {
+      let revision = store.brushRevision
+      canvas.keyDown(with: try brushDigit(2, at: 6, modifiers: modifier))
+      canvas.keyDown(with: try brushDigit(2, at: 6.1, modifiers: [modifier, .shift]))
+      XCTAssertEqual(store.brushRevision, revision)
+    }
+    store.tool = .pencil
+    canvas.keyDown(with: try brushDigit(2, at: 7, modifiers: .shift))
+    XCTAssertEqual(store.brush.opacity, 0.6)
+    canvas.keyDown(with: try brushDigit(7, at: 7.1))
+    XCTAssertEqual(store.brush.opacity, 0.7)
+    XCTAssertEqual(store.brushOptions.flow, 0.47)
+
+    store.tool = .eraser
+    store.eraserMode = .block
+    canvas.keyDown(with: try brushDigit(9, at: 8))
+    XCTAssertEqual(store.brush.opacity, 0.7)
+    store.eraserMode = .pencil
+    canvas.keyDown(with: try brushDigit(8, at: 8.1))
+    XCTAssertEqual(store.brush.opacity, 0.8)
+    store.eraserMode = .brush
+    canvas.keyDown(with: try brushDigit(3, at: 8.2))
+    XCTAssertEqual(store.brushOptions.flow, 0.3)
+    XCTAssertEqual(store.brush.opacity, 0.8)
+  }
+
+  @MainActor func testBrushNumberKeysRespectFocusAndCapturedStroke() async throws {
+    _ = NSApplication.shared
+    let original = try CraftDocument(width: 48, height: 32)
+    let store = EditorStore(document: original)
+    store.tool = .brush
+    store.brush.color = .black
+    store.brushOptions.smoothing.amount = 0
+    let canvas = CraftCanvas(store: store)
+    let rect = NSRect(x: 0, y: 0, width: 400, height: 300)
+    let window = NSWindow(contentRect: rect, styleMask: [.titled], backing: .buffered, defer: false)
+    window.isReleasedWhenClosed = false
+    let contents = NSView(frame: rect)
+    window.contentView = contents
+    canvas.frame = NSRect(x: 0, y: 24, width: 400, height: 276)
+    contents.addSubview(canvas)
+    let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 60, height: 24))
+    contents.addSubview(field)
+    defer { store.cancelBrush(); store.renderTask?.cancel(); window.contentView = nil; window.close() }
+
+    XCTAssertTrue(window.makeFirstResponder(canvas))
+    canvas.keyDown(with: try brushDigit(4, at: 1))
+    XCTAssertEqual(store.brush.opacity, 0.4)
+    XCTAssertTrue(window.makeFirstResponder(field))
+    XCTAssertFalse(window.firstResponder === canvas)
+    canvas.keyDown(with: try brushDigit(9, at: 1.1))
+    XCTAssertEqual(store.brush.opacity, 0.4)
+    XCTAssertTrue(window.makeFirstResponder(canvas))
+    canvas.keyDown(with: try brushDigit(5, at: 1.2))
+    XCTAssertEqual(store.brush.opacity, 0.5, "Focus transfer discards the earlier digit")
+
+    let point = StrokePoint(x: 18, y: 16)
+    store.beginBrush(point, zoom: 1)
+    let captured = try XCTUnwrap(store.brushGesture?.brush)
+    canvas.keyDown(with: try brushDigit(2, at: 2))
+    XCTAssertEqual(store.brush.opacity, 0.2)
+    XCTAssertEqual(store.brushGesture?.brush.opacity, 0.5)
+    XCTAssertEqual(store.session.undoStack.count, 0)
+    var expected = original
+    try Command.stroke(XCTUnwrap(expected.activeLayerID), [point], captured).apply(to: &expected)
+    store.finishBrush()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.document, expected)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    _ = await store.requestHistory(redo: false).value
+    XCTAssertEqual(store.document, original)
+  }
+
+  @MainActor func testBrushNumericSettingsMatchHTTPStateAndStroke() async throws {
+    let original = try CraftDocument(width: 48, height: 32)
+    let helper = AutomationTests()
+    try await helper.withService(brushes: BrushLibrary(), pressedMouseButtons: { 0 }) { service, file in
+      file.store.session = EditorSession(document: original)
+      let store = file.store
+      store.tool = .brush
+      store.brush.color = .black
+      store.brushOptions.smoothing.amount = 0
+      try service.share(file)
+      let canvas = CraftCanvas(store: store)
+      let oldRevision = service.revision(store)
+      canvas.keyDown(with: try brushDigit(4, at: 1))
+      canvas.keyDown(with: try brushDigit(5, at: 1.1))
+      canvas.keyDown(with: try brushDigit(3, at: 2, modifiers: .shift))
+      canvas.keyDown(with: try brushDigit(7, at: 2.2, modifiers: .shift))
+      XCTAssertNotEqual(service.revision(store), oldRevision)
+      XCTAssertEqual(store.session.undoStack.count, 0)
+      let keyboardSetting = store.brush
+      let nested = try XCTUnwrap(store.brushState["brush"] as? [String: Any])
+      let settings = try XCTUnwrap(nested["settings"] as? [String: Any])
+      XCTAssertEqual((nested["opacity"] as? NSNumber)?.floatValue, 0.45)
+      XCTAssertEqual((settings["flow"] as? NSNumber)?.doubleValue, 0.37)
+      let patch: [String: Any] = ["brush": ["opacity": 0.45, "settings": ["flow": 0.37]]]
+      var status = try await helper.edit(service, file, "brush.configure", patch, revision: oldRevision)
+      XCTAssertEqual(status, 409)
+      status = try await helper.edit(service, file, "brush.configure", patch)
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(store.brush, keyboardSetting)
+      let samples = [StrokePoint(x: 17, y: 13)]
+      var expected = original
+      try Command.stroke(XCTUnwrap(expected.activeLayerID), samples, keyboardSetting).apply(to: &expected)
+      status = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json(samples)])
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(store.document, expected)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+    }
+  }
+
   @MainActor func testMaximumBrushDiameterNativePreviewActionUndoAndHTTP() async throws {
     let original = try CraftDocument(width:128,height:96)
     let store = EditorStore(document:original,actions:ActionLibrary(),brushes:BrushLibrary())

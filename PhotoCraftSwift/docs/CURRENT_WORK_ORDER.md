@@ -1,3 +1,7 @@
+**Source checkpoint 552.** Canvas numbers set Brush opacity and flow, including Airbrush. All 404 selected tests passed in three configurations. Saved Photoshop alpha establishes a wider required brush footprint. [Qualification](SOURCE_PUBLICATION_552.md).
+
+Continue B01 with controlled subpixel and repeat captures, a broader brush support model and exact alpha comparison. Q03 physical display cadence and tablet timing, inherited ColorSync and Gradient Map differences remain open.
+
 **Source checkpoint 551.** Wide brush output tiles are prepared in parallel. All 338 checked buffers match build 550 on each architecture. All 401 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_551.md).
 
 Continue Q03 with physical display and tablet input checks. Investigate exact Photoshop brush coverage. Keep the inherited ColorSync and Gradient Map differences open.
