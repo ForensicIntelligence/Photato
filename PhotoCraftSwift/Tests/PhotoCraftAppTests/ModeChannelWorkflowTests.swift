@@ -40,6 +40,44 @@ final class ModeChannelWorkflowTests: XCTestCase {
       XCTAssertEqual(desktop.document, source)
     }
   }
+  @MainActor func testNativeAndHTTPLinearGrayscaleKeepHDRAndUndo() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      var source = try CraftDocument(width: 2, height: 1, depth: .f32)
+      source.workingICC = try NativeModeProfile.standard(.rgb, depth: .f32)
+      var pixels = try Surface(width: 2, height: 1, depth: .f32, colorEncoding: .linearRGB)
+      pixels.setLinearPixel(x: 0, y: 0, Pixel(2.5, 0, 0, 0.75))
+      pixels.setLinearPixel(x: 1, y: 0, Pixel(0, -0.375, 0, 0.125))
+      source.layers[0].content = .raster(pixels)
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+
+      let desktop = EditorStore(document: source)
+      defer { desktop.renderTask?.cancel() }
+      desktop.beginDocumentMode(.grayscale, depth: .f32)
+      let draft = try XCTUnwrap(desktop.documentModeWorkspace)
+      await draft.task?.value
+      XCTAssertTrue(draft.ready, draft.error ?? "")
+      desktop.commitDocumentMode()
+      await draft.commitTask?.value
+      let gray = try XCTUnwrap(desktop.document.layers[0].nativeMode)
+      XCTAssertEqual(gray.value(component: 0, index: 0), 0.5562113523483276)
+      XCTAssertEqual(gray.value(component: 0, index: 1), -0.26883941888809204)
+      XCTAssertEqual(gray.value(component: 1, index: 0), 0.75)
+      XCTAssertEqual(gray.value(component: 1, index: 1), 0.125)
+      XCTAssertEqual(desktop.session.undoStack.count, 1)
+
+      let edited = try await helper.edit(service, document, "document.convertMode", ["mode": "grayscale", "depth": 32])
+      XCTAssertEqual(edited, 200)
+      XCTAssertEqual(document.store.document, desktop.document)
+      XCTAssertNotNil(DocumentModeAPI.capabilities["linearRGBToGray"] as? String)
+      let undone = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undone, 200)
+      await desktop.undo()
+      XCTAssertEqual(document.store.document, source)
+      XCTAssertEqual(desktop.document, source)
+    }
+  }
   @MainActor func testHostedModePanelsKeepRowsWithinPanelBounds() async throws {
     let helper = LayerRevealTests()
     for mode in DocumentColorMode.componentModes {

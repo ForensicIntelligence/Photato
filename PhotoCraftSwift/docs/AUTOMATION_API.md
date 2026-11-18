@@ -3634,3 +3634,7 @@ The `documentModes.sameModeSDRToHDR` capability describes the operation. The exi
 Native Save, authenticated Photato PSD/PSB downloads, and the compatible resource encoders compose supported Gray32 raster stacks directly from their stored samples. Normal and opaque-base Multiply are included. Eligible documents with a visible, opaque Background omit merged transparency. Saved channels still follow the merged image. See `photoshopContainers.gray32MergedComposite`.
 
 The existing `document.convertMode` command and compatible conversion adapter also use the measured gamma 0.5 calculation when promoting an unchanged RGB or grayscale mode to 32 Bits/Channel. [Qualification](SOURCE_PUBLICATION_568.md).
+
+### Linear Gray32 and fixed gamma
+
+The existing `document.convertMode` command and compatible conversion adapter use the measured RGB primaries for supported 32-bit documents when converting to the default linear Grayscale profile with relative colorimetric intent. Straight HDR colors and independent alpha remain available through `mode.channel.read` and the native channel storage. See `documentModes.linearRGBToGray` and `documentModes.sameModeSDRToHDR`. [Qualification](SOURCE_PUBLICATION_569.md).

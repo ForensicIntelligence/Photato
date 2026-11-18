@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **568** · The 10 most recent entries, newest first.
+Source build **569** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 569 — Match HDR grayscale conversion and ICC gamma boundaries
+
+32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
+
+All 8,510,976 samples in 257 tested precision promotions and 194,560 samples in 38 RGB32-to-Gray32 cases match Photoshop on each architecture. All 661 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-569) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_569.md).
 
 ## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
 
@@ -75,11 +83,3 @@ Choose Clear to erase pixels within a selection, along an outline, or across a w
 All 522 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. On each architecture, 264 existing Fill, Stroke, and Path Clear pixel buffers and the legacy settings JSON matched build 559 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-560) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_560.md).
-
-## 2026-11-18 — Step 559 — Paint Bucket Clear and automation
-
-Clear removes alpha from the color region you click. The Photato API can configure the Paint Bucket or fill a region using the same options. Separated sparse fills and full solid fills also update much larger canvases without a whole-canvas write loop in the tested cases.
-
-All 486 selected tests passed across three builds. The 624 actual dense and paged writeback comparisons matched on each optimized architecture. Live Photoshop output comparisons remain open.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-559) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_559.md).

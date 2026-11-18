@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 569 — Match HDR grayscale conversion and ICC gamma boundaries
+
+32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
+
+All 8,510,976 samples in 257 tested precision promotions and 194,560 samples in 38 RGB32-to-Gray32 cases match Photoshop on each architecture. All 661 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-569) · [Validation](SOURCE_PUBLICATION_569.md).
+
 ## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
 
 RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
@@ -537,14 +545,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:568 -->
+<!-- current-status-step:569 -->
 ## Current development status — 18 November 2026
 
-RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
+32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
 
-The Gray32 comparison covers aligned, full-canvas raster stacks using Normal or Multiply over an opaque base. It includes an ordinary pixel mask, partial layer opacity, and transparent Normal. Cross-mode conversion, transparent Multiply, other blend modes, transformed stacks, and whole-file identity remain open.
+The grayscale comparison covers the default 32-bit gray destination with relative colorimetric intent, recognized standard RGB primaries, and custom linear RGB matrix profiles whose luminance weights sum to one. Other destination profiles, intents and custom white points still use ColorSync. Eight- and sixteen-bit grayscale conversion, transparent Multiply, and whole-file identity remain open.
 
-[Qualification](SOURCE_PUBLICATION_568.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_569.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1318,6 +1326,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 566 | [Preserve opaque Gray32 merged samples in PSD and PSB](DEVLOG.md#dev-step-566) |
 | 2026-11-18 | 567 | [Use the source tone curves for 32-bit RGB and Gray](DEVLOG.md#dev-step-567) |
 | 2026-11-18 | 568 | [Match half-gamma promotion and Gray32 PSD layer stacks](DEVLOG.md#dev-step-568) |
+| 2026-11-18 | 569 | [Match HDR grayscale conversion and ICC gamma boundaries](DEVLOG.md#dev-step-569) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

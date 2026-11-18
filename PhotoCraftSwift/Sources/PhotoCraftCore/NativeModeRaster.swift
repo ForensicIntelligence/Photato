@@ -293,6 +293,33 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     }
     return result
   }
+  static func convertingHDRToGray(_ source: Surface, retained: NativeModeRaster?,
+    descriptor: DocumentModeDescriptor, transfer: HDRGrayTransfer) throws -> Self
+  {
+    var result = try Self(width: source.width, height: source.height, mode: .grayscale,
+      depth: .f32, profile: descriptor.profile, intent: descriptor.intent)
+    if let retained {
+      let defaults = retained.defaultComponents()
+      try result.setDefaults([transfer.sample(defaults[0], defaults[1], defaults[2]), defaults[3]])
+      // Alpha is independent of the color transform. Share its paged COW storage.
+      result.componentStorage[1] = retained.componentStorage[3]
+      try retained.forEachStoredIndex { i in
+        let value = transfer.sample(retained.value(component: 0, index: i),
+          retained.value(component: 1, index: i), retained.value(component: 2, index: i))
+        try result.set(value, component: 0, index: i)
+      }
+    } else {
+      let p = try source.interpretingSamples(as: .sRGB).defaultPixel
+      try result.setDefaults([transfer.sample(p.r, p.g, p.b), p.a])
+      try forEachStoredPixel([source]) { x, y in
+        let p = source.linearPixel(x: x, y: y), i = y * source.width + x
+        try result.set(transfer.sample(p.r, p.g, p.b), component: 0, index: i)
+        try result.set(p.a, component: 1, index: i)
+      }
+    }
+    return result
+  }
+
   /// Convert retained components directly; routing CMYK/Lab through an RGB display
   /// cache would lose out-of-gamut colors and independent ink separations.
   public func converted(to target:DocumentColorMode,depth outputDepth:PixelDepth,profile outputProfile:Data?=nil,intent outputIntent:ModeRenderingIntent = .relativeColorimetric)throws->Self {

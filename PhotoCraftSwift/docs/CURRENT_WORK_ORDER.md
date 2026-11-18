@@ -1,3 +1,7 @@
+**Source checkpoint 569.** 32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves. All 661 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_569.md).
+
+Finish the RGB16-to-Gray fixed-point comparison and measure 8-bit conversion dithering. Continue custom linear white-point and transparent Multiply comparisons. Photoshop Actions still need validation for channel switches and percentage coordinates.
+
 **Source checkpoint 568.** RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks. All 657 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_568.md).
 
 Extend the direct power path for lower gamma values after verifying RGB and 8-bit inputs. Compare RGB-to-Gray mode conversion and finish measuring transparent Multiply and other HDR blend modes. Photoshop Actions still need validation for channel switches and percentage coordinates.

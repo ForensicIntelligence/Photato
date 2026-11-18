@@ -1,3 +1,5 @@
+**Source checkpoint 569.** 32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves. All 661 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_569.md).
+
 **Source checkpoint 568.** RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks. All 657 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_568.md).
 
 **Source checkpoint 567.** Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. All 651 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_567.md).

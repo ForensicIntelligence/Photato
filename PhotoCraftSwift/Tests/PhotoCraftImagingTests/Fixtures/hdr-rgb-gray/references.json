@@ -1,0 +1,83 @@
+[
+  {
+    "name": "linear-32",
+    "inputICCSHA256": "6bc95ec84df696d3dbcb10b8e8a948cfcecf377d1520ed3c83f2fef6675b5e3d",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "778695d9c720a23f576062d7987c3baeff8f3187c3ce84f8b989a91474a39964",
+    "graySamplesSHA256": "383f0737e17d9db76a820ce4219e86937cedeb462b373d78923c10cda931da20",
+    "photoshopArmSavedSHA256": "6c5a6e47ef8d8dce8aa2579762c6feebb1de812d86409747a0a4ed646d584528",
+    "photoshopIntelSavedSHA256": "aeadabccdc3b02d79a8761ef8f2e33fb43a236b2dd91e55501b104b630bb3a4b"
+  },
+  {
+    "name": "authored-adobe-32",
+    "inputICCSHA256": "66081670b62b612f277afb359c116289c23d12731533b19e41d3db8b7270aca6",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "92ba253de3fc66217f5f8c99bcb09f08291215cd964ae67117ddeaf733008a57",
+    "graySamplesSHA256": "050170eb62aa11096fc49fe0588c5897bdf43008115c80eb2cffb9d4bacd64d3",
+    "photoshopArmSavedSHA256": "93a4f2f89e3a5d27b34f2d2642f2d0626ea563d13a23cd87b487fa0cf9b2056b",
+    "photoshopIntelSavedSHA256": "41922422de097e6147ec63bc26310673ae39ee410472e8b0f5edac13664d5cbe"
+  },
+  {
+    "name": "authored-p3-32",
+    "inputICCSHA256": "824a4f5fd857b611a8610e0d746dff6c1dff3257be457eadffa6da648e620299",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "3efed35e9b921b2c11459c094bfdfacba84f9f53f24f5e9bd9841b8d270f5db5",
+    "graySamplesSHA256": "81f28bbbd0b6e5c68ce8ff3669a1a29cc783ffd6b1d9842ebf42040376ccc360",
+    "photoshopArmSavedSHA256": "d9d0c08337d1e0e330f37612fd880ea328a91598e06831b0be8b09825bae3045",
+    "photoshopIntelSavedSHA256": "35f19a547b97c139184225863b4bca17eaf2edcdcf2613a252b49b2ed3d55a3a"
+  },
+  {
+    "name": "cycle-primaries-32",
+    "inputICCSHA256": "10157ef93dbc30613b6678ccc9dcffa6eb6afd0cce77562d4ce054e8ef62bc53",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "4f2f63d43231ee5fd852d6fff59319c116d50a8c3261a934e8aee76fbedfb701",
+    "graySamplesSHA256": "27f76ae17428b5ad3a1c89080b860d6d57b8eddf52ca7838f71f8ae688574321",
+    "photoshopArmSavedSHA256": "dabed12046d82ad3b28cb57244f93d1c26462de92345a7e34c75a67cf883c1d9",
+    "photoshopIntelSavedSHA256": "be0dc08f3271296e4e81a5d62d704847202b9c4fa011c47ba1a48558debb81b2"
+  },
+  {
+    "name": "custom-y-32",
+    "inputICCSHA256": "c28666143e5662da2f783a4de48a53834fce34b3b72c0a27dd2fc17b8b234079",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "944d2c9c2888f2a85c324281703125a96011129cacf553a7c316fe7f297501cb",
+    "graySamplesSHA256": "545bff4fbdcd170572f4cc9e46d1ff80ab291ecef9851e3470cdb3c0c37ff173",
+    "photoshopArmSavedSHA256": "50fe87009d5f0e779e029b2ccecd91750deb6de00a09e79434c9c69307b2c0f5",
+    "photoshopIntelSavedSHA256": "541dc35199757dbac504589537a9d8abc80d7a05462e4a8422d11d33dee5b2d8"
+  },
+  {
+    "name": "near-y-32",
+    "inputICCSHA256": "bd67844f88894351084923958b15a4f8c274e8ec9f00c376503e74642405156b",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "614a74b2732cf93bb1ac8b559e974d8bab1ec471ab8b18f40288601135240cb4",
+    "graySamplesSHA256": "383f0737e17d9db76a820ce4219e86937cedeb462b373d78923c10cda931da20",
+    "photoshopArmSavedSHA256": "f7711b0a2ac97a54b6a7f1c5a450a56adca2a881b4207522f206efaae29540d4",
+    "photoshopIntelSavedSHA256": "c29918a6ce6661e9c2e0e84e609d5cf6b85158b15e2edabacec2c233e36b4486"
+  },
+  {
+    "name": "same-y-other-chromaticity-32",
+    "inputICCSHA256": "b3e79af71026539d906b18dcd0c0ee2379464c3f09d08c5b0249fc1098589ea2",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "dd33f0204b6c3309e434a99534acfaccfb1eaed0875de98e698d7cc006550fa4",
+    "graySamplesSHA256": "b85cf2e37328f8b6257ae9b81422d511464e14d842d981d73bd9fde30fba409c",
+    "photoshopArmSavedSHA256": "c0988929019e066e9a532759622d773b6f0e16f1c85f795580cd71c4f3e02969",
+    "photoshopIntelSavedSHA256": "e06d635ad17e22192809a4c97ba728cb47b31dd3a50a6fecb4766400343863da"
+  },
+  {
+    "name": "srgb-shift-65-32",
+    "inputICCSHA256": "e860ba1b40ba933431b8a153d7afd04684a6487df294d380fb8c025fd01cb0e9",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "e16befb2dbf298741a8bdfafe73860fa94001e36147c5ea9b052a6b58a61cd9b",
+    "graySamplesSHA256": "383f0737e17d9db76a820ce4219e86937cedeb462b373d78923c10cda931da20",
+    "photoshopArmSavedSHA256": "943fc5b57103e4752336fe77fd23320dcfd5634fb0db26aaae94d97e417d508c",
+    "photoshopIntelSavedSHA256": "4dfd27f813c9e4ebcfc2cfc18e78c150fd0bc021e4f7900e4f84f6522a93a8ed"
+  },
+  {
+    "name": "srgb-shift-66-32",
+    "inputICCSHA256": "85a1803827e077c857a5711795fb412f256a0179f34627de74207df44fddf4b3",
+    "inputSamplesSHA256": "38384109e6d64d85cbd60787d0df7d472ac91cfab6dc1ccdaae3b65ec2d72e9b",
+    "inputFileSHA256": "9b0a624df1ed18785ef8ed2f80a55e136e9fb3c038af66fd582a6df67a6e27fc",
+    "graySamplesSHA256": "b85cf2e37328f8b6257ae9b81422d511464e14d842d981d73bd9fde30fba409c",
+    "photoshopArmSavedSHA256": "9af00d274ce068bda2180c9bb1d1d4ad37ad850a16e25275a27e4651abc9bc12",
+    "photoshopIntelSavedSHA256": "3a14b0b2d8851cbd33136566304a5738a8d6d7b7f26a2583ce0da1bff9eaae7b"
+  }
+]

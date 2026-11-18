@@ -6,6 +6,9 @@ import Foundation
 struct SDRToHDRTransfer {
   private static let workingMaximum = 32_768
   private static let curveIntervals = 4_096
+  // ICC curv exponent words are unsigned 8.8 fixed point. The half-gamma
+  // case inside this observed interval is evaluated separately below.
+  private static let interpolatedPowerRange: ClosedRange<UInt32> = 103...640
 
   private enum Curve {
     case linear
@@ -101,16 +104,25 @@ struct SDRToHDRTransfer {
   }
 
   private static func powerCurve(_ raw: UInt32) -> Curve? {
+    guard raw > 0 else { return nil }
     if raw == 128 { return .values((0...workingMaximum).map(squareRootSample)) }
-    // Smaller exponents have not been qualified against both architectures.
-    guard raw > 128 else { return nil }
     let gamma = Double(raw) / 256
-    if raw > 640 {
-      return .values((0...workingMaximum).map { powf(Float($0) / Float(workingMaximum), Float(gamma)) })
+    func direct(_ code: Int) -> Float {
+      let value = powf(Float(code) / Float(workingMaximum), Float(gamma))
+      #if arch(x86_64)
+      // The Intel reference flushes subnormal results. Apply that only to
+      // these samples and leave the process floating-point mode alone.
+      return value < Float.leastNormalMagnitude ? 0 : value
+      #else
+      return value
+      #endif
+    }
+    if !interpolatedPowerRange.contains(raw) {
+      return .values((0...workingMaximum).map(direct))
     }
     var values = interpolated { pow($0, gamma) }
     for code in 0..<128 {
-      values[code] = powf(Float(code) / Float(workingMaximum), Float(gamma))
+      values[code] = direct(code)
     }
     return .values(values)
   }

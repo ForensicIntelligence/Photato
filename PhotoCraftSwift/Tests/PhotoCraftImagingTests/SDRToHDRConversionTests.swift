@@ -18,6 +18,7 @@ final class SDRToHDRConversionTests: XCTestCase {
     let channels: Int
     let depth: Int
     let samples: Int
+    let fixedGamma: Int?
   }
 
   private func references() throws -> [Reference] {
@@ -91,7 +92,7 @@ final class SDRToHDRConversionTests: XCTestCase {
   }
 
   func testPowerAndParametricPrecisionPromotionProducesReferencePlanes() throws {
-    for reference in try references() where !reference.profile.hasSuffix("gamma128")
+    for reference in try references() where reference.fixedGamma == nil && !reference.profile.hasSuffix("gamma128")
       && (reference.profile.contains("gamma") || reference.profile.contains("parametric")) {
       try assertReference(reference)
     }
@@ -101,6 +102,18 @@ final class SDRToHDRConversionTests: XCTestCase {
     let cases = try references().filter { $0.profile.hasSuffix("gamma128") }
     XCTAssertEqual(Set(cases.map(\.caseName)), Set(["owned-gray-gamma128-8", "owned-gray-gamma128-16",
       "owned-rgb-gamma128-8", "owned-rgb-gamma128-16"]))
+    for reference in cases { try assertReference(reference) }
+  }
+
+  func testPowerPromotionMatchesPhotoshopAcrossTheDirectAndInterpolatedBoundaries() throws {
+    let cases = try references().filter { $0.fixedGamma != nil }
+    let gray = [1, 102, 103, 127, 640, 641].flatMap { gamma in
+      [8, 16].map { "gamma-gray-\(gamma)-\($0)" }
+    } + ["gamma-gray-4096-16", "gamma-gray-65535-16"]
+    let rgb = [102, 103, 127].flatMap { gamma in
+      [8, 16].map { "gamma-rgb-\(gamma)-\($0)" }
+    }
+    XCTAssertEqual(Set(cases.map(\.caseName)), Set(gray + rgb))
     for reference in cases { try assertReference(reference) }
   }
 

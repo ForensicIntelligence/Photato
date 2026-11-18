@@ -76,6 +76,14 @@ extension CraftDocument {
     let descriptor = try DocumentModeDescriptor(mode: request.mode, depth: request.depth,
       profile: destinationProfile, intent: request.intent)
     if modeDescriptor == descriptor, depth == request.depth { return self }
+    var grayTransfer: HDRGrayTransfer?
+    if colorMode == .rgb, depth == .f32, descriptor.mode == .grayscale, request.depth == .f32,
+      descriptor.intent == .relativeColorimetric,
+      descriptor.profile == (try NativeModeProfile.standard(.grayscale, depth: .f32))
+    {
+      let rgbProfile = try modeDescriptor?.profile ?? workingICC ?? NativeModeProfile.standard(.rgb, depth: .f32)
+      grayTransfer = HDRGrayTransfer(rgbProfile)
+    }
     var result = self; result.restrictedMode = nil
     for i in layers.indices {
       let source = layers[i]
@@ -85,6 +93,9 @@ extension CraftDocument {
         if let hdrTransfer, pixels.depth == depth {
           native = try NativeModeRaster.promotingToHDR(pixels, retained: source.nativeMode,
             descriptor: descriptor, transfer: hdrTransfer)
+        } else if let grayTransfer, source.nativeMode != nil || pixels.colorEncoding == .linearRGB {
+          native = try NativeModeRaster.convertingHDRToGray(pixels, retained: source.nativeMode,
+            descriptor: descriptor, transfer: grayTransfer)
         } else if let retained = source.nativeMode {
           native = try retained.converted(to: request.mode, depth: request.depth,
             profile: descriptor.profile, intent: request.intent)
