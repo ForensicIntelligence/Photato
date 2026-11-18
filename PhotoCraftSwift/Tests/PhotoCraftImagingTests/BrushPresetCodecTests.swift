@@ -3,6 +3,19 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class BrushPresetCodecTests: XCTestCase {
+  func testMaximumDiameterRoundTripsNativeAndComputedABR() throws {
+    var preset = BrushPresets.builtins()[0]
+    preset.brush.size = 5_000
+    let source = BrushPresetFile(presets:[preset])
+    XCTAssertEqual(try BrushPresetFile.decode(source.encoded()).presets,[preset])
+    let decoded = try ABRCodec.read(ABRCodec.write([preset]))
+    XCTAssertEqual(decoded.warnings,[])
+    XCTAssertEqual(decoded.presets.map { $0.brush.size },[5_000])
+    preset.brush.size = 5_001
+    XCTAssertThrowsError(try BrushPresetFile(presets:[preset]).encoded())
+    XCTAssertThrowsError(try ABRCodec.write([preset]))
+  }
+
   func testNativePresetsAndCaptureOptions() throws {
     let presets=BrushPresets.builtins()
     XCTAssertEqual(presets.count,12)

@@ -48,7 +48,7 @@ struct SelectionToolOptionsView:View {
       if store.tool == .objectSelection {
         Picker("Mode:",selection:$store.objectSelectionMode){ForEach(ObjectSelectionMode.allCases,id:\.self){Text($0.rawValue).tag($0)}}.frame(width:160).disabled(!store.canUseSelectionTools)
       } else {
-        number("Size:",$store.brush.size,1...2048)
+        number("Size:",$store.brush.size,Brush.diameterRange)
         if store.tool == .selectionBrush {
           number("Hardness:",Binding(get:{Double(store.brush.hardness)*100},set:{store.brush.hardness=Float($0/100)}),0...100)
           number("Opacity:",Binding(get:{Double(store.brush.opacity)*100},set:{store.brush.opacity=Float($0/100)}),0...100)

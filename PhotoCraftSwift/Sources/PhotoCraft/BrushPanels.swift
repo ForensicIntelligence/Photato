@@ -106,7 +106,13 @@ struct BrushSettingsPanel:View {
       Text(Self.titles[section] ?? section).font(.headline)
       switch section {
       case "tip":
-        scalar("Size",$store.brush.size,0.5...2048)
+        HStack {
+          Text("Size").frame(width:95,alignment:.leading)
+          BrushDiameterSlider(diameter:$store.brush.size)
+          TextField("Size",value:Binding(get:{store.brush.size},set:{store.setBrushDiameter($0)}),
+            format:.number.precision(.fractionLength(0...1))).labelsHidden().frame(width:60)
+          Text("px").foregroundStyle(.secondary)
+        }
         scalar("Hardness",Binding(get:{Double(store.brush.hardness)},set:{store.brush.hardness=Float($0)}),0...1,percent:true)
         scalar("Angle",$store.brushOptions.angle,-180...180)
         scalar("Roundness",$store.brushOptions.roundness,0.01...1,percent:true)
@@ -177,6 +183,19 @@ struct BrushSettingsPanel:View {
     }.controlSize(.small)
   }
 }
+struct BrushDiameterSlider: View {
+  @Binding var diameter: Double
+  var body: some View {
+    let range = Brush.diameterRange
+    // A logarithmic scale gives small brushes usable travel across this range.
+    let position = Binding(get: { log(min(range.upperBound,max(range.lowerBound,diameter))) },
+      set: { diameter = min(range.upperBound,max(range.lowerBound,(exp($0)*10).rounded()/10)) })
+    Slider(value:position,in:log(range.lowerBound)...log(range.upperBound))
+      .accessibilityLabel("Size")
+      .accessibilityValue(Text("\(diameter, format:.number.precision(.fractionLength(0...1))) pixels"))
+  }
+}
+
 struct BrushStrokePreview:View {
   let brush:Brush
   @State var image:CGImage?

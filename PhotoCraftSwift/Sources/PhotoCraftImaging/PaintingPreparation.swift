@@ -8,7 +8,7 @@ public enum PaintingPreparation {
     return try PaintingEdit.prepare(request,in:document,sample:sample)
   }
   public static func loadMixer(in document:CraftDocument,layerID:UUID,point:PathPoint,size:Double,allLayers:Bool,solid:Bool)throws->MixerPaint {
-    guard point.x.isFinite,point.y.isFinite,abs(point.x)<=1_000_000,abs(point.y)<=1_000_000,size.isFinite,(0.5...2048).contains(size),let layer=document.layers.first(where:{$0.id==layerID}) else { throw CraftError.invalid("Invalid Mixer Brush source or size.") }
+    guard point.x.isFinite,point.y.isFinite,abs(point.x)<=1_000_000,abs(point.y)<=1_000_000,size.isFinite,Brush.diameterRange.contains(size),let layer=document.layers.first(where:{$0.id==layerID}) else { throw CraftError.invalid("Invalid Mixer Brush source or size.") }
     let source=try allLayers ? Renderer.composite(document):Renderer.layerSurface(layer,in:document)
     let inverse=try (allLayers ? Transform2D.identity:layer.coordinateTransform).inverted()
     let n=solid ? 1:min(256,max(1,Int(ceil(size))))

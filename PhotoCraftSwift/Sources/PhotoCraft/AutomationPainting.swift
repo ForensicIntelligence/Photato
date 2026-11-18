@@ -24,7 +24,7 @@ enum PaintingAPI {
     case "options":return ["anyOf":PaintTool.allCases.map{options($0)}]
     case "operation":return BrushAPI.enumeration(["load","clean","sample"])
     case "x","y":return BrushAPI.number(-1_000_000,1_000_000)
-    case "size":return BrushAPI.number(0.5,2048)
+    case "size":return BrushAPI.diameter
     case "color":return BrushAPI.color
     case "allLayers","solid":return BrushAPI.flag
     case "patternID":return ["type":"string","minLength":1,"maxLength":255]
@@ -114,7 +114,7 @@ extension AutomationService {
     func flag(_ key:String,_ fallback:Bool)throws->Bool {guard let v=command.parameters[key] else{return fallback};guard case .bool(let b)=v else{throw AutomationFailure(status:400,message:"Invalid \(key).")};return b}
     let options=store.paintToolOptions[.mixerBrush] ?? .defaults(for:.mixerBrush)
     guard let layerID=try command.parameters["layerID"].map({_ in try command.actionUUID("layerID")}) ?? store.document.activeLayerID else{throw AutomationFailure(status:400,message:"Choose a source layer.")}
-    let point=try PathPoint(command.number("x",range:-1_000_000...1_000_000),command.number("y",range:-1_000_000...1_000_000)),size=try command.parameters["size"].map{_ in try command.number("size",range:0.5...2048)} ?? store.brush.size
+    let point=try PathPoint(command.number("x",range:-1_000_000...1_000_000),command.number("y",range:-1_000_000...1_000_000)),size=try command.parameters["size"].map{_ in try command.number("size",range:Brush.diameterRange)} ?? store.brush.size
     let all=try flag("allLayers",options.sampleAllLayers),solid=try flag("solid",options.loadSolidColorOnly),original=store.document,generation=store.layerPanelGeneration,expectedToken=token
     store.geometryBusy=true;defer{if store.layerPanelGeneration==generation{store.geometryBusy=false;store.geometryTask=nil}}
     let worker=Task.detached(priority:.userInitiated){try PaintingPreparation.loadMixer(in:original,layerID:layerID,point:point,size:size,allLayers:all,solid:solid)}

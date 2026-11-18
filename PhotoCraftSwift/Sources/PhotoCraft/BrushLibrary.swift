@@ -50,6 +50,12 @@ import PhotoCraftImaging
 }
 
 @MainActor extension EditorStore {
+  func setBrushDiameter(_ diameter: Double) {
+    guard diameter.isFinite else { return }
+    let range = Brush.diameterRange
+    brush.size = min(range.upperBound,max(range.lowerBound,diameter))
+  }
+
   var brushOptions:BrushSettings {
     get { brush.settings ?? .init() }
     set { brush.settings=newValue }
@@ -79,7 +85,7 @@ import PhotoCraftImaging
     try Task.checkCancellation();if geometryTask?.isCancelled == true { throw CancellationError() }
     guard document==original,layerPanelGeneration==generation else { throw CraftError.invalid("Document changed while defining the brush.") }
     try validateCommit()
-    var value=Brush();value.color=brush.color;value.size=Double(min(2048,max(tip.width,tip.height)));value.hardness=1;value.settings = .init();value.settings!.tip=tip
+    var value=Brush();value.color=brush.color;value.size=Double(max(tip.width,tip.height));value.hardness=1;value.settings = .init();value.settings!.tip=tip
     var preset=BrushPreset(name:name,group:group,brush:value);preset.includeToolSettings=false
     try brushes.save(preset);brush=preset.applying(to:brush);selectedBrushID=preset.id;return preset
   }

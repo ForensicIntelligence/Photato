@@ -1,3 +1,7 @@
+**Source checkpoint 538.** The primary Brush diameter reaches 5,000 px. All 204 selected methods pass in Debug and both optimized architectures. Wide-tip responsiveness and exact Photoshop alpha remain open. [Qualification](SOURCE_PUBLICATION_538.md).
+
+B01 continues with subpixel and independent soft-tip samples, timed smoothing and preset limits. Verify current Photoshop Brush and Pencil controls when the desktop is accessible. Q03 retains wide-tip responsiveness, physical presentation and stylus timing.
+
 **Source checkpoint 537.** Pencil strokes record and replay in Actions, including Auto Erase on the playback target. All 199 selected methods pass in Debug and both optimized architectures. A 24-dab Photoshop reference quantifies the remaining Brush alpha differences. [Qualification](SOURCE_PUBLICATION_537.md).
 
 B01 next needs independent repeat and subpixel reference samples before changing the soft brush falloff, along with timed smoothing and factory preset qualification. Quick Mask Pencil Actions need a visibility-aware playback context. Q03 physical and stylus timing remain open.

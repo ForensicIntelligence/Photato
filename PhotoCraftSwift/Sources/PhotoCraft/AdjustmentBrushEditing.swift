@@ -53,7 +53,7 @@ struct AdjustmentBrushOptionsView:View {
       Picker("Adjustment:",selection:Binding(get:{store.currentAdjustmentBrushKind},set:{store.replaceAdjustmentBrush($0)})){ForEach(store.availableAdjustmentBrushKinds,id:\.self){Text($0.title).tag($0)}}.frame(width:220)
       Button("New Adjustment"){store.newAdjustmentBrush()}
       Picker("Brush",selection:$store.adjustmentBrushSubtract){Text("Add").tag(false);Text("Subtract").tag(true)}.pickerStyle(.segmented).frame(width:130)
-      number("Size:",$store.brush.size,0.5...2048)
+      number("Size:",$store.brush.size,Brush.diameterRange)
       number("Hardness:",Binding(get:{Double(store.brush.hardness)*100},set:{store.brush.hardness=Float($0/100)}),0...100)
       number("Opacity:",Binding(get:{Double(store.brush.opacity)*100},set:{store.brush.opacity=Float($0/100)}),0...100)
       number("Flow:",Binding(get:{store.brushOptions.flow*100},set:{store.brushOptions.flow=$0/100}),0...100)

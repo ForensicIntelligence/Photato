@@ -6,6 +6,71 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class BrushWorkflowTests:XCTestCase {
+  @MainActor func testMaximumBrushDiameterNativePreviewActionUndoAndHTTP() async throws {
+    let original = try CraftDocument(width:128,height:96)
+    let store = EditorStore(document:original,actions:ActionLibrary(),brushes:BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush
+    store.brush.color = .black
+    store.setBrushDiameter(4998)
+    let canvas = CraftCanvas(store:store)
+    canvas.frame = NSRect(x:0,y:0,width:320,height:240)
+    store.updateViewport(size:canvas.bounds.size,backingScale:1)
+    store.setZoom(1,center:true)
+    await store.renderTask?.value
+    let key = try XCTUnwrap(NSEvent.keyEvent(with:.keyDown,location:.zero,modifierFlags:[],timestamp:1,
+      windowNumber:0,context:nil,characters:"]",charactersIgnoringModifiers:"]",isARepeat:false,keyCode:30))
+    canvas.keyDown(with:key)
+    XCTAssertEqual(store.brush.size,5_000)
+
+    try store.startRecordingAction(name:"Large Brush",set:"Test")
+    let point = StrokePoint(x:64,y:48)
+    store.beginBrush(point,zoom:1)
+    let captured = try XCTUnwrap(store.brushGesture?.brush)
+    XCTAssertEqual(captured.size,5_000)
+    await store.brushPreviewTask?.value
+    await store.renderTask?.value
+    XCTAssertTrue(store.document == original)
+    XCTAssertEqual(store.surface?.pixel(x:64,y:48),.black)
+    store.finishBrush()
+    await store.geometryTask?.value
+    let final = store.document
+    XCTAssertTrue(final != original)
+    XCTAssertEqual(store.session.undoStack.count,1)
+    let action = try store.stopRecordingAction()
+    var replay = original
+    try action.apply(to:&replay)
+    XCTAssertTrue(replay == final)
+    _ = await store.requestHistory(redo:false).value
+    XCTAssertTrue(store.document == original)
+
+    let helper = AutomationTests()
+    try await helper.withService(brushes:BrushLibrary(),pressedMouseButtons:{0}) { service,file in
+      file.store.session = EditorSession(document:original)
+      try service.share(file)
+      let bad = try await helper.edit(service,file,"brush.configure",["brush":["size":5001]])
+      XCTAssertEqual(bad,400)
+      let configure = try await helper.edit(service,file,"brush.configure",["brush":BrushAPI.json(captured)])
+      XCTAssertEqual(configure,200)
+      XCTAssertEqual(file.store.brush.size,5_000)
+      let status = try await helper.edit(service,file,"paint.stroke",["points":BrushAPI.json([point])])
+      XCTAssertEqual(status,200)
+      XCTAssertTrue(file.store.document == final)
+      XCTAssertEqual(file.store.session.undoStack.count,1)
+    }
+  }
+
+  @MainActor func testDefinedBrushRetainsSampleDiameterAbovePreviousLimit() async throws {
+    var document = try CraftDocument(width:2_400,height:2)
+    document.layers[0].content = .raster(try Surface(width:2_400,height:2,fill:.black))
+    let store = EditorStore(document:document,brushes:BrushLibrary())
+    defer { store.renderTask?.cancel() }
+    let preset = try await store.defineBrush(name:"Wide sample")
+    XCTAssertEqual(preset.brush.size,2_400)
+    XCTAssertEqual(preset.brush.settings?.tip?.width,2_400)
+    XCTAssertEqual(store.brush.size,2_400)
+  }
+
   @MainActor func testShiftClickConnectsBrushAndPencilWithOneUndo() async throws {
     for tool in [EditorTool.brush, .pencil] {
       let original = try CraftDocument(width: 128,height: 96)

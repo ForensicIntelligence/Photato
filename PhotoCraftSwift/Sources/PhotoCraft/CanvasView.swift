@@ -1285,7 +1285,7 @@ struct CanvasHost: NSViewRepresentable {
       if store.tool.usesRetouchStroke {
         store.retouchSettings.brush.size = min(2048, store.retouchSettings.brush.size + 5)
       } else {
-        store.brush.size = min(2048, store.brush.size + 5)
+        store.setBrushDiameter(store.brush.size + 5)
       }
     case "\u{1b}": store.perform(.selection(nil))
     case "\u{7f}": store.clear()

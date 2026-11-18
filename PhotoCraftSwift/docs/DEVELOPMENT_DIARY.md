@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 538: use a 5,000 px brush
+
+Set a primary Brush diameter up to 5,000 pixels from the native controls or API. Large strokes process small regions before committing, with the same Undo and recorded Action behavior.
+
+All 204 selected checks passed. The optimized Apple Silicon and Intel versions rendered the same bytes for a full-size dab and the 24 earlier Brush samples. Wide strokes still need performance work.
+
+[Detailed record](DEVLOG.md#dev-step-538) · [Validation](SOURCE_PUBLICATION_538.md).
+
 ## 2026-11-17 — Step 537: record Pencil strokes in Actions
 
 The Pencil now plays back in Actions. A recorded stroke keeps the points, brush settings and destination. Auto Erase checks the first pixel in the playback document, so the same step can switch between foreground and background on different images.
@@ -289,14 +297,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:537 -->
+<!-- current-status-step:538 -->
 ## Current development status — 17 November 2026
 
-Build 537 adds Pencil Action recording and playback. All 199 selected checks passed in Debug and both optimized architectures. The qualification includes native replay, HTTP and the universal validation package.
+Build 538 extends the primary brush to 5,000 px. All 204 selected checks passed in Debug and both optimized architectures. The development record includes full-size color coverage, preview, history, preset and HTTP checks.
 
-Quick Mask Pencil replay, exact Photoshop Brush coverage and physical display timing remain open.
+Brush pixel parity, live Pencil limits and physical display timing remain open.
 
-[Qualification](SOURCE_PUBLICATION_537.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_538.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1039,6 +1047,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 535 | [Match the ordinary Brush smoothing default](DEVLOG.md#dev-step-535) |
 | 2026-11-17 | 536 | [Connect Brush and Pencil strokes with Shift-click](DEVLOG.md#dev-step-536) |
 | 2026-11-17 | 537 | [Record Pencil strokes in Actions](DEVLOG.md#dev-step-537) |
+| 2026-11-17 | 538 | [Support 5,000 px primary brush diameters](DEVLOG.md#dev-step-538) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

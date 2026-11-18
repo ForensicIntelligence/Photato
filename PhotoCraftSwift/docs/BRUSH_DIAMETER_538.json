@@ -1,0 +1,197 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 5,
+  "applicationBuild": 538,
+  "archiveSHA256": "51df4bb1bf767658d216149e5aaccf882c910b5a93509ef76920c37a8caaa5be",
+  "checkpoint": 538,
+  "earlierApplicationObservation": "ERASER_MODES_455.json",
+  "fullPhotoshopParity": false,
+  "legacyDiameterMaximum": 2048,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "51df4bb1bf767658d216149e5aaccf882c910b5a93509ef76920c37a8caaa5be",
+    "binarySHA256": "7995381051ab0958a6620c664c3eb07e4b7ea5071e2e40f5190f5b2356390f12",
+    "build": 538,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122076,
+          "height": 650,
+          "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopFixtures": {
+    "configurations": {
+      "arm": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "1357d5a75f5af6582d07abcea1ae66377cec8f3bfb9746868a09989a03a1147d"
+      },
+      "debug": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "cc23fc702e1c125d4d0df261c12b24ed2774288840816fa875165395b11ebaeb"
+      },
+      "intel": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "b14caed6ea63933436e89f32120a28c1139a3c0fab01c70d3a8fe3eb5c0c633f"
+      }
+    },
+    "independentExportFixtures": 20,
+    "passed": true,
+    "scope": "Owned Photoshop 2026 merged RGBA32 reference fixtures and regional comparison. Full PSD bytes and live Photoshop use are outside this fixture result.",
+    "sourceInputs": 7884
+  },
+  "physicalPresentationMeasured": false,
+  "primaryDiameter": [
+    0.5,
+    5000
+  ],
+  "qualifiedConfigurations": {
+    "arm": 204,
+    "debug": 204,
+    "intel": 204
+  },
+  "qualifiedCountPerConfiguration": 204,
+  "ranLivePhotoshopInThisCheckpoint": false,
+  "referenceBrushAndAdjustmentDiameterSource": "https://community.adobe.com/questions-712/brush-size-limits-at-5000px-1181701",
+  "sampleBitmapMaximum": 2500,
+  "separateRetouchAndDualBoundsRetained": true,
+  "softwareRelease": false,
+  "sourceInputs": 7884,
+  "typedCommands": 271,
+  "unchangedSmallDabCases": 24,
+  "wholeWideDab": {
+    "architecturesAgree": true,
+    "runs": {
+      "arm64": {
+        "canvasSide": 5408,
+        "diameter": 5000,
+        "nonzeroPixels": 19642833,
+        "renderMilliseconds": 2113.277249969542,
+        "rgbaBytes": 116985856,
+        "sha256": "8ed844ef5f1f6b1d5dc5d67574e0e8a7d98579aa88e63d2a70b7f381ec993064",
+        "storedTiles": 4948
+      },
+      "x86_64": {
+        "canvasSide": 5408,
+        "diameter": 5000,
+        "nonzeroPixels": 19642833,
+        "renderMilliseconds": 3721.998041961342,
+        "rgbaBytes": 116985856,
+        "sha256": "8ed844ef5f1f6b1d5dc5d67574e0e8a7d98579aa88e63d2a70b7f381ec993064",
+        "storedTiles": 4948
+      }
+    },
+    "scope": "One 5,000 px static round color-dynamics dab from each exact optimized Core build. Software render timing is diagnostic."
+  }
+}

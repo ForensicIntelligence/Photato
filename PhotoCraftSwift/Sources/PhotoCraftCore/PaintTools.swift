@@ -82,7 +82,9 @@ public struct PaintToolRequest: Sendable {
     self.tool=tool;self.target=target;self.points=points;self.brush=brush;self.options=options ?? .defaults(for:tool)
   }
   public func validate() throws {
-    try BrushPainter.validate(brush,points:points);try options.validate();try mixer.validate()
+    var resolved = brush
+    resolved.settings = resolved.settings ?? .init()
+    try BrushPainter.validate(resolved,points:points);try options.validate();try mixer.validate()
     if tool == .patternStamp { guard let pattern else { throw CraftError.invalid("Choose a pattern before painting.") };try pattern.validate() }
     if tool == .magicEraser && points.count != 1 { throw CraftError.invalid("Magic Eraser requires one click.") }
     if !target.isPixels && [.colorReplacement,.backgroundEraser,.magicEraser].contains(tool) {
@@ -121,7 +123,9 @@ public struct RecordedPencilStroke: Codable, Sendable {
   }
 
   func validate() throws {
-    try BrushPainter.validate(brush, points: points)
+    var resolved = brush
+    resolved.settings = resolved.settings ?? .init()
+    try BrushPainter.validate(resolved, points: points)
     guard !points.isEmpty else { throw CraftError.invalid("A recorded Pencil stroke needs at least one point.") }
     if case .alpha(.quickMask) = target {
       throw CraftError.invalid("A recorded Pencil stroke requires a saved alpha channel.")

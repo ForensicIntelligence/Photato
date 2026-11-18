@@ -80,7 +80,7 @@ struct PaintingToolOptionsView:View {
   var body:some View {
     HStack(spacing:10) {
       if kind != .magicEraser {
-        field("Size:",value:Binding(get:{store.brush.size},set:{if $0.isFinite{store.brush.size=min(2048,max(0.5,$0))}}),suffix:"px")
+        field("Size:",value:Binding(get:{store.brush.size},set:{store.setBrushDiameter($0)}),suffix:"px")
         if kind != .pencil {field("Hardness:",value:Binding(get:{Double(store.brush.hardness)*100},set:{if $0.isFinite{store.brush.hardness=Float(min(100,max(0,$0))/100)}}),suffix:"%")}
         Button("Brush Settings"){NSApp.sendAction(#selector(AppDelegate.showBrushSettings),to:nil,from:nil)}
       }

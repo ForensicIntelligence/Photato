@@ -20,8 +20,12 @@ import PhotoCraftCore
           .help("Eraser size and hardness")
           .popover(isPresented:$showTip) {
             VStack(alignment:.leading) {
-              HStack { Text("Size"); TextField("Size",value:Binding(get:{store.brush.size},set:{if $0.isFinite{store.brush.size=min(2048,max(0.5,$0))}}),format:.number).frame(width:70);Text("px") }
-              Slider(value:$store.brush.size,in:0.5...2048)
+              HStack {
+                Text("Size")
+                TextField("Size",value:Binding(get:{store.brush.size},set:{store.setBrushDiameter($0)}),format:.number).frame(width:70)
+                Text("px")
+              }
+              BrushDiameterSlider(diameter:$store.brush.size)
               percent("Hardness",get:{Double(store.brush.hardness)},set:{store.brush.hardness=Float($0)}).disabled(store.eraserMode != .brush)
             }.padding().frame(width:230)
           }

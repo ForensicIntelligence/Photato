@@ -3,6 +3,59 @@ import XCTest
 
 final class BrushDynamicsTests:XCTestCase {
   func brush()->Brush { var b=Brush();b.size=10;b.hardness=1;b.color=Pixel(1,0,0);b.settings=BrushSettings();return b }
+  func testMaximumDiameterPaintsFullColorCoverageAcrossBands() throws {
+    var value = brush()
+    value.size = 5_000
+    value.settings!.colorDynamics.enabled = true
+    var surface = try Surface(width:5_408,height:5_408,fill:.clear)
+    try Painter.stroke(surface:&surface,points:[.init(x:2700.5,y:2700.5)],brush:value)
+
+    for boundary in [1024,2048,3072,4096] {
+      for offset in [-1,0,1] {
+        XCTAssertEqual(surface.pixel(x:boundary+offset,y:2700),value.color)
+        XCTAssertEqual(surface.pixel(x:2700,y:boundary+offset),value.color)
+      }
+    }
+    XCTAssertEqual(surface.pixel(x:199,y:2700),.clear)
+    XCTAssertEqual(surface.pixel(x:200,y:2700).a,128/255,accuracy:1/255)
+    XCTAssertEqual(surface.pixel(x:5200,y:2700).a,128/255,accuracy:1/255)
+    XCTAssertEqual(surface.pixel(x:5201,y:2700),.clear)
+    XCTAssertEqual(surface.pixel(x:300,y:300),.clear)
+    XCTAssertGreaterThan(surface.tileCount * 4096 * 20,128*1024*1024)
+  }
+
+  func testWideBrushMatchesUnbandedScaledCoverageAndKeepsWorkAtomic() throws {
+    var wide = brush()
+    wide.size = 5_000
+    wide.opacity = 0.73
+    wide.settings!.aliased = true
+    wide.settings!.spacing = 0.2
+    wide.settings!.flow = 0.42
+    wide.settings!.colorDynamics.enabled = true
+    wide.settings!.colorDynamics.brightness = 0.2
+    var small = wide
+    small.size /= 4
+    let points = [StrokePoint(x:760,y:52),.init(x:1890,y:52)]
+    let scaled = points.map { StrokePoint(x:$0.x*4,y:$0.y*4) }
+    let selected = IntRect(x:650,y:28,width:1670,height:48)
+    let selectedScaled = IntRect(x:selected.x*4,y:selected.y*4,width:selected.width*4,height:selected.height*4)
+    var source = try Surface(width:2560,height:112,fill:.clear)
+    var expected = source
+    try Painter.stroke(surface:&expected,points:points,brush:small,selection:selected)
+    try Painter.stroke(surface:&source,points:scaled,brush:wide,selection:selectedScaled,transform:.scale(4,4))
+    XCTAssertTrue(source == expected)
+
+    let original = try Surface(width:80_000,height:20_000,fill:.clear)
+    var rejected = original
+    let overBudget = [StrokePoint(x:7000,y:7000),.init(x:43_000,y:7000)]
+    XCTAssertThrowsError(try Painter.stroke(surface:&rejected,points:overBudget,brush:wide))
+    XCTAssertTrue(rejected == original)
+    var legacy = wide
+    legacy.settings = nil
+    XCTAssertThrowsError(try Painter.stroke(surface:&rejected,points:[.init(x:7000,y:7000)],brush:legacy))
+    XCTAssertTrue(rejected == original)
+  }
+
   func testSettingsStaySmallAndSnapshotsKeepValueSemantics()throws {
     XCTAssertLessThan(MemoryLayout<Brush>.size,128)
     var a=brush();a.settings!.texture.enabled=true;a.settings!.texture.seed=UInt64.max

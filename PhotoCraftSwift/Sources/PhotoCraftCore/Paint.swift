@@ -18,6 +18,10 @@ public struct StrokePoint: Codable, Equatable, Sendable {
   }
 }
 public struct Brush: Codable, Equatable, Sendable {
+  public static let diameterRange: ClosedRange<Double> = 0.5...5_000
+  static let legacyDiameterRange: ClosedRange<Double> = 0.5...2_048
+  var supportedDiameterRange: ClosedRange<Double> { settings == nil ? Self.legacyDiameterRange : Self.diameterRange }
+
   public var size: Double = 30
   public var hardness: Float = 0.8
   public var opacity: Float = 1
@@ -58,7 +62,7 @@ public enum Painter {
       try BrushPainter.stroke(surface: &surface, points: points, brush: brush, selection: selection, selectionMask: selectionMask, transform: transform ?? .translation(Double(offsetX),Double(offsetY)), grayscaleMask: grayscaleMask, preserveTransparency: preserveTransparency)
       return
     }
-    guard brush.size.isFinite, (0.5...2048).contains(brush.size), brush.hardness.isFinite,
+    guard brush.size.isFinite, Brush.legacyDiameterRange.contains(brush.size), brush.hardness.isFinite,
       (0...1).contains(brush.hardness), brush.opacity.isFinite, (0...1).contains(brush.opacity),
       brush.color.isFinite, brush.backgroundColor?.isFinite != false, points.count <= 100_000
     else { throw CraftError.invalid("Invalid brush settings or stroke size.") }

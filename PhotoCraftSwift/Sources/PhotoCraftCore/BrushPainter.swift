@@ -90,7 +90,7 @@ public enum BrushPainter {
     return (value,distance/minor)
   }
   public static func validate(_ brush:Brush,points:[StrokePoint])throws {
-    guard brush.size.isFinite,(0.5...2048).contains(brush.size),brush.hardness.isFinite,(0...1).contains(brush.hardness),brush.opacity.isFinite,(0...1).contains(brush.opacity),brush.color.isFinite,(0...1).contains(brush.color.a),brush.backgroundColor?.isFinite != false,points.count<=100_000 else { throw CraftError.invalid("Invalid brush settings or input count.") }
+    guard brush.size.isFinite,brush.supportedDiameterRange.contains(brush.size),brush.hardness.isFinite,(0...1).contains(brush.hardness),brush.opacity.isFinite,(0...1).contains(brush.opacity),brush.color.isFinite,(0...1).contains(brush.color.a),brush.backgroundColor?.isFinite != false,points.count<=100_000 else { throw CraftError.invalid("Invalid brush settings or input count.") }
     try brush.settings?.validate();var previousTime=0.0
     for p in points { try p.validatedBrushInput();if let time=p.time { guard time>=previousTime else { throw CraftError.invalid("Brush timestamps must be monotonic.") };previousTime=time } }
   }
@@ -104,72 +104,149 @@ public enum BrushPainter {
     } }
     guard x.isFinite else { return nil };return .init(x:Int(floor(x)),y:Int(floor(y)),width:Int(ceil(r)-floor(x)),height:Int(ceil(b)-floor(y)))
   }
-  fileprivate static func raster(_ dabs:[BrushDab],isDual:Bool,brush:Brush,toLocal:Transform2D,toOriginal:Transform2D,transform:Transform2D,width:Int,height:Int,map:inout BrushCoverage,visits:inout Int)throws {
-    let b=brush.settings!
-        let bitmap=isDual ? b.dual.tip:b.tip,hardness=isDual ? b.dual.hardness:Double(brush.hardness)
-        for (index,dab) in dabs.enumerated() {
-          if index%32==0 { try Task.checkCancellation() }
-          let reach=dab.radius*(bitmap==nil ? 1:Double(2).squareRoot())+1,center=toLocal.point(dab.x,dab.y)
-          let rx=reach*hypot(toLocal.a,toLocal.c),ry=reach*hypot(toLocal.b,toLocal.d)
-          let x0=Int(max(0,min(Double(width),floor(center.x-rx)))),x1=Int(max(-1,min(Double(width-1),ceil(center.x+rx))))
-          let y0=Int(max(0,min(Double(height),floor(center.y-ry)))),y1=Int(max(-1,min(Double(height-1),ceil(center.y+ry))))
-          guard x0<=x1,y0<=y1 else { continue }
-          let area=(x1-x0+1)*(y1-y0+1);guard area<=134_217_728-visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") };visits += area
-          for y in y0...y1 { for x in x0...x1 {
-            let p=toOriginal.point(Double(x)+0.5,Double(y)+0.5),doc=transform.point(Double(x)+0.5,Double(y)+0.5)
-            var (value,rn)=tipCoverage(dab,p,bitmap:bitmap,hardness:hardness,aliased:b.aliased && !isDual)
-            guard value>0 else { continue }
-            if !isDual {
-              if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
-              if b.texture.enabled && b.texture.eachTip { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
-              if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
-            }
-            try map.accumulate(x,y,value:Float(value*dab.flow),ceiling:Float(dab.opacity),maximum:b.wetEdges && !isDual,ink:dab.color)
-          } }
+  private static let rasterVisitLimit = 134_217_728
+  private static let coverageBandSide = 1024
+
+  private static func rasterBounds(_ dab: BrushDab, bitmap: BrushBitmap?, transform: Transform2D, extent: IntRect) -> IntRect? {
+    let reach = dab.radius * (bitmap == nil ? 1 : sqrt(2)) + 1
+    let center = transform.point(dab.x, dab.y)
+    let rx = reach * hypot(transform.a, transform.c), ry = reach * hypot(transform.b, transform.d)
+    let right = extent.x + extent.width, bottom = extent.y + extent.height
+    let x0 = Int(max(Double(extent.x), min(Double(right), floor(center.x - rx))))
+    let x1 = Int(max(Double(extent.x - 1), min(Double(right - 1), ceil(center.x + rx))))
+    let y0 = Int(max(Double(extent.y), min(Double(bottom), floor(center.y - ry))))
+    let y1 = Int(max(Double(extent.y - 1), min(Double(bottom - 1), ceil(center.y + ry))))
+    guard x0 <= x1, y0 <= y1 else { return nil }
+    return .init(x:x0,y:y0,width:x1-x0+1,height:y1-y0+1)
+  }
+
+  /// A large dab can need more coverage storage than one working set. Visit
+  /// disjoint bands in tile order, reusing the exact per-pixel deposition.
+  private static func coverageBands(_ dabs: [BrushDab], bitmap: BrushBitmap?, transforms: [Transform2D],
+    extent: IntRect, surfaceWidth: Int) throws -> [IntRect] {
+    let side = coverageBandSide
+    let columns = (surfaceWidth + side - 1) / side
+    var keys: Set<Int> = [], plannedVisits = 0
+    for transform in transforms {
+      for (index,dab) in dabs.enumerated() {
+        if index % 32 == 0 { try Task.checkCancellation() }
+        guard let rect = rasterBounds(dab,bitmap:bitmap,transform:transform,extent:extent) else { continue }
+        let area = rect.width * rect.height
+        guard area <= rasterVisitLimit - plannedVisits else {
+          throw CraftError.invalid("Brush stroke exceeds the raster work limit.")
+        }
+        plannedVisits += area
+        for y in rect.y/side...(rect.y+rect.height-1)/side {
+          for x in rect.x/side...(rect.x+rect.width-1)/side { keys.insert(y * columns + x) }
         }
       }
+    }
+    return keys.sorted().map { key in
+      let x = key % columns * side, y = key / columns * side
+      let left = max(x, extent.x), top = max(y, extent.y)
+      let right = min(x+side, extent.x+extent.width), bottom = min(y+side, extent.y+extent.height)
+      return .init(x:left,y:top,width:right-left,height:bottom-top)
+    }
+  }
+
+  private static func clippedBounds(_ selection: IntRect?, inverse: Transform2D, width: Int, height: Int) -> IntRect {
+    let bounds = IntRect(x:0,y:0,width:width,height:height)
+    guard let selection else { return bounds }
+    guard selection.width > 0, selection.height > 0 else { return .init(x:0,y:0,width:0,height:0) }
+    let left = Double(selection.x), top = Double(selection.y)
+    let right = left + Double(selection.width), bottom = top + Double(selection.height)
+    let corners = [inverse.point(left,top),inverse.point(right,top),inverse.point(left,bottom),inverse.point(right,bottom)]
+    // Include a guard pixel because final admission samples transformed pixel centers.
+    let x0 = Int(max(0,min(Double(width),floor(corners.map { $0.x }.min()!)-1)))
+    let y0 = Int(max(0,min(Double(height),floor(corners.map { $0.y }.min()!)-1)))
+    let x1 = Int(max(0,min(Double(width),ceil(corners.map { $0.x }.max()!)+1)))
+    let y1 = Int(max(0,min(Double(height),ceil(corners.map { $0.y }.max()!)+1)))
+    return .init(x:x0,y:y0,width:x1-x0,height:y1-y0)
+  }
+
+  fileprivate static func raster(_ dabs: [BrushDab], isDual: Bool, brush: Brush, toLocal: Transform2D,
+    toOriginal: Transform2D, transform: Transform2D, extent: IntRect, map: inout BrushCoverage, visits: inout Int) throws {
+    let b = brush.settings!
+    let bitmap = isDual ? b.dual.tip : b.tip
+    let hardness = isDual ? b.dual.hardness : Double(brush.hardness)
+    for (index,dab) in dabs.enumerated() {
+      if index % 32 == 0 { try Task.checkCancellation() }
+      guard let rect = rasterBounds(dab,bitmap:bitmap,transform:toLocal,extent:extent) else { continue }
+      let area = rect.width * rect.height
+      guard area <= rasterVisitLimit - visits else { throw CraftError.invalid("Brush stroke exceeds the raster work limit.") }
+      visits += area
+      for y in rect.y..<(rect.y+rect.height) {
+        if y % 32 == 0 { try Task.checkCancellation() }
+        for x in rect.x..<(rect.x+rect.width) {
+          let p = toOriginal.point(Double(x)+0.5,Double(y)+0.5), doc = transform.point(Double(x)+0.5,Double(y)+0.5)
+          var (value,rn) = tipCoverage(dab,p,bitmap:bitmap,hardness:hardness,aliased:b.aliased && !isDual)
+          guard value > 0 else { continue }
+          if !isDual {
+            if b.noise && value<1 { let n=BrushRandom.pixel(Int(floor(doc.x)),Int(floor(doc.y)),0x6E6F697365);value += ((n<value ? 1:0)-value)*0.7 }
+            if b.texture.enabled && b.texture.eachTip { value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),dab.depth) }
+            if b.wetEdges { value *= 0.5+0.5*smooth((rn-0.5)*2) }
+          }
+          try map.accumulate(x,y,value:Float(value*dab.flow),ceiling:Float(dab.opacity),maximum:b.wetEdges && !isDual,ink:dab.color)
+        }
+      }
+    }
+  }
 
   public static func stroke(surface:inout Surface,points:[StrokePoint],brush:Brush,selection:IntRect?=nil,selectionMask:SelectionMask?=nil,transform:Transform2D = .identity,grayscaleMask:Bool=false,preserveTransparency:Bool=false)throws {
     try validate(brush,points:points);try transform.validated();guard let b=brush.settings,!points.isEmpty else { return };try Task.checkCancellation()
     var generator=BrushDabGenerator(brush);var dabs=try generator.push(points);let tail=try generator.finish();dabs.0 += tail.0;dabs.1 += tail.1
-    let inverse=try transform.inverted(),columns=(surface.width+63)/64,color=b.colorDynamics.enabled
-    var merged=BrushCoverage(columns:columns,color:color),visits=0
-    for pass in symmetry(b.symmetry) {
-      let undoPass=try pass.inverted(),toLocal=inverse*pass,toOriginal=undoPass*transform
-      var primary=BrushCoverage(columns:columns,color:color),dual=BrushCoverage(columns:columns,color:false)
-      try raster(dabs.0,isDual:false,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,width:surface.width,height:surface.height,map:&primary,visits:&visits)
-      if b.dual.enabled { try raster(dabs.1,isDual:true,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,width:surface.width,height:surface.height,map:&dual,visits:&visits) }
-      for (key,tile) in primary.tiles {
-        let tx=(key%columns)*64,ty=(key/columns)*64
-        for i in 0..<4096 where tile.coverage[i]>0 {
-          let x=tx+i%64,y=ty+i/64;let old=tile.coverage[i];var value=Double(old)
-          if b.dual.enabled { value=b.dual.mode.combine(value,Double(dual.value(x,y)),1) }
-          if b.texture.enabled && !b.texture.eachTip { let doc=transform.point(Double(x)+0.5,Double(y)+0.5);value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),b.texture.depth) }
-          tile.coverage[i]=Float(value);if color { tile.colors[i] *= Float(value)/old }
-        }
-      }
-      try merged.union(primary)
+    let inverse = try transform.inverted(), columns = (surface.width+63)/64
+    let passes = try symmetry(b.symmetry).map { pass in
+      (toLocal: inverse * pass, toOriginal: try pass.inverted() * transform)
     }
-    // No target mutations until the entire bounded stroke has rendered successfully.
-    var result=surface
-    for key in merged.tiles.keys.sorted() {
-      try Task.checkCancellation();let tile=merged.tiles[key]!,tx=(key%columns)*64,ty=(key/columns)*64
-      for i in 0..<4096 where tile.coverage[i]>0 {
-        let x=tx+i%64,y=ty+i/64;guard x<surface.width,y<surface.height else { continue }
-        let doc=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(doc.x)),dy=Int(floor(doc.y))
-        if let selection,!selection.contains(dx,dy) { continue }
-        let mask=selectionMask?.coverage(x:dx,y:dy) ?? 1
-        var ink=brush.color
-        if color { let c=tile.colors[i]/tile.coverage[i];ink=Pixel(c.x,c.y,c.z,c.w) }
-        let alpha=unit(tile.coverage[i]*brush.opacity*ink.a*mask);guard alpha>0 else { continue }
-        var before=surface.pixel(x:x,y:y)
-        if grayscaleMask { before=Pixel(before.r,before.r,before.r);let gray=unit(ink.r*0.2126+ink.g*0.7152+ink.b*0.0722);ink=Pixel(gray,gray,gray,ink.a) }
-        if preserveTransparency && !grayscaleMask && before.a<=0 { continue }
-        if brush.erase && !preserveTransparency && !grayscaleMask { result.setPixel(x:x,y:y,Pixel(before.r,before.g,before.b,before.a*(1-alpha)));continue }
-        if brush.erase { ink=brush.backgroundColor ?? .white }
-        ink.a=alpha
-        let painted=preserveTransparency && !grayscaleMask ? ProtectedPixels.composite(b.mode,backdrop:before,source:ink,x:dx,y:dy):b.mode.composite(backdrop:before,source:ink,x:dx,y:dy)
-        result.setPixel(x:x,y:y,painted)
+    let regions: [IntRect]
+    if brush.size > Brush.legacyDiameterRange.upperBound {
+      if selectionMask != nil && selectionMask?.bounds == nil { return }
+      let extent = clippedBounds(selection ?? selectionMask?.bounds, inverse:inverse, width:surface.width, height:surface.height)
+      guard extent.width > 0, extent.height > 0 else { return }
+      regions = try coverageBands(dabs.0, bitmap:b.tip, transforms:passes.map { $0.toLocal },
+        extent:extent, surfaceWidth:surface.width)
+    } else {
+      regions = [.init(x:0,y:0,width:surface.width,height:surface.height)]
+    }
+    // Publish only after every band has completed successfully.
+    var result = surface, visits = 0
+    for region in regions {
+      var merged = BrushCoverage(columns:columns,color:b.colorDynamics.enabled)
+      for (toLocal,toOriginal) in passes {
+        var primary=BrushCoverage(columns:columns,color:b.colorDynamics.enabled),dual=BrushCoverage(columns:columns,color:false)
+        try raster(dabs.0,isDual:false,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,extent:region,map:&primary,visits:&visits)
+        if b.dual.enabled { try raster(dabs.1,isDual:true,brush:brush,toLocal:toLocal,toOriginal:toOriginal,transform:transform,extent:region,map:&dual,visits:&visits) }
+        for (key,tile) in primary.tiles {
+          let tx=(key%columns)*64,ty=(key/columns)*64
+          for i in 0..<4096 where tile.coverage[i]>0 {
+            let x=tx+i%64,y=ty+i/64;let old=tile.coverage[i];var value=Double(old)
+            if b.dual.enabled { value=b.dual.mode.combine(value,Double(dual.value(x,y)),1) }
+            if b.texture.enabled && !b.texture.eachTip { let doc=transform.point(Double(x)+0.5,Double(y)+0.5);value=b.texture.mode.combine(value,texture(b.texture,doc.x,doc.y),b.texture.depth) }
+            tile.coverage[i]=Float(value);if b.colorDynamics.enabled { tile.colors[i] *= Float(value)/old }
+          }
+        }
+        try merged.union(primary)
+      }
+      for key in merged.tiles.keys.sorted() {
+        try Task.checkCancellation();let tile=merged.tiles[key]!,tx=(key%columns)*64,ty=(key/columns)*64
+        for i in 0..<4096 where tile.coverage[i]>0 {
+          let x=tx+i%64,y=ty+i/64;guard x<surface.width,y<surface.height else { continue }
+          let doc=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(doc.x)),dy=Int(floor(doc.y))
+          if let selection,!selection.contains(dx,dy) { continue }
+          let mask=selectionMask?.coverage(x:dx,y:dy) ?? 1
+          var ink=brush.color
+          if b.colorDynamics.enabled { let c=tile.colors[i]/tile.coverage[i];ink=Pixel(c.x,c.y,c.z,c.w) }
+          let alpha=unit(tile.coverage[i]*brush.opacity*ink.a*mask);guard alpha>0 else { continue }
+          var before=surface.pixel(x:x,y:y)
+          if grayscaleMask { before=Pixel(before.r,before.r,before.r);let gray=unit(ink.r*0.2126+ink.g*0.7152+ink.b*0.0722);ink=Pixel(gray,gray,gray,ink.a) }
+          if preserveTransparency && !grayscaleMask && before.a<=0 { continue }
+          if brush.erase && !preserveTransparency && !grayscaleMask { result.setPixel(x:x,y:y,Pixel(before.r,before.g,before.b,before.a*(1-alpha)));continue }
+          if brush.erase { ink=brush.backgroundColor ?? .white }
+          ink.a=alpha
+          let painted=preserveTransparency && !grayscaleMask ? ProtectedPixels.composite(b.mode,backdrop:before,source:ink,x:dx,y:dy):b.mode.composite(backdrop:before,source:ink,x:dx,y:dy)
+          result.setPixel(x:x,y:y,painted)
+        }
       }
     }
     try Task.checkCancellation();surface=result
@@ -182,7 +259,7 @@ public enum BrushPainter {
 public final class BrushStrokeSession {
   public static func supports(_ brush: Brush) -> Bool {
     guard let settings = brush.settings else { return false }
-    return !settings.dual.enabled && settings.symmetry.mode == .off
+    return brush.size <= Brush.legacyDiameterRange.upperBound && !settings.dual.enabled && settings.symmetry.mode == .off
   }
   private let original: Surface
   private let brush: Brush
@@ -286,7 +363,7 @@ public final class BrushStrokeSession {
   }
   private func raster(_ dabs: [BrushDab], into map: inout BrushCoverage, visits: inout Int) throws {
     try BrushPainter.raster(dabs, isDual: false, brush: brush, toLocal: inverse,
-      toOriginal: transform, transform: transform, width: original.width, height: original.height,
+      toOriginal: transform, transform: transform, extent: .init(x:0,y:0,width:original.width,height:original.height),
       map: &map, visits: &visits)
   }
 }

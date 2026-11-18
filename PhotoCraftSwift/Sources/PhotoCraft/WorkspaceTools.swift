@@ -340,8 +340,8 @@ extension WorkspaceView {
   var brushSettings: some View {
     VStack(alignment: .leading, spacing: 14) {
       Text("Brush Tip").font(.headline)
-      numberField("Size", value: $store.brush.size, range: 1...2048, suffix: "px")
-      Slider(value: $store.brush.size, in: 1...300)
+      numberField("Size", value: $store.brush.size, range: Brush.diameterRange, suffix: "px")
+      BrushDiameterSlider(diameter:$store.brush.size)
       percentField("Hardness", value: $store.brush.hardness)
       Slider(value: $store.brush.hardness, in: 0...1)
       Text("Round brush · Pressure controls size").font(.caption).foregroundStyle(.secondary)

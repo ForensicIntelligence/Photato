@@ -232,7 +232,7 @@ extension Layer {
   }
   mutating func expandMask(for points: [StrokePoint], brush: Brush, clipping: IntRect? = nil) throws
   {
-    guard brush.size.isFinite, (0.5...2048).contains(brush.size), points.count <= 100_000,
+    guard brush.size.isFinite, brush.supportedDiameterRange.contains(brush.size), points.count <= 100_000,
       points.allSatisfy({
         $0.x.isFinite && $0.y.isFinite && abs($0.x) <= 1_000_000 && abs($0.y) <= 1_000_000
           && $0.pressure.isFinite && (0...1).contains($0.pressure)
