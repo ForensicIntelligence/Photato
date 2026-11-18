@@ -1,3 +1,7 @@
+**Source checkpoint 541.** The hosted 1,800 px Brush first draw improved from 802 ms to 489 ms. The scoped Brush and compositor pixels match build 540. All 266 selected methods pass in Debug and both optimized architectures. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_541.md).
+
+Q03 continues with full-size Brush preparation, dense linear rendering and physical measurements. B01 still needs timed smoothing, independent subpixel samples and factory preset validation.
+
 **Source checkpoint 540.** All 32 tested Brush outputs now match across optimized Apple Silicon and Intel under Rosetta. All 251 selected methods pass in Debug and both optimized architectures. Photoshop Brush pixel comparisons and physical editing cadence remain open. [Qualification](SOURCE_PUBLICATION_540.md).
 
 Q03 continues with the measured large-tip preparation and dense linear Float32 render costs. The 1,800 px retained path and the 2,500–5,000 px complete path both need faster on-canvas feedback. B01 still needs timed smoothing, independent subpixel samples and factory preset validation.

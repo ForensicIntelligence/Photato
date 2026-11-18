@@ -294,37 +294,31 @@ public enum Renderer {
           let developed=try settings.neighborhood(output)
           evaluate={_,x,y in developed.pixel(x:x,y:y)}
         } else {evaluate=try adjustment.spatialEvaluator(depth:d.depth)}
-        for y in region.y..<region.y + region.height {
-          try Task.checkCancellation()
-          for x in region.x..<region.x + region.width {
-            let m = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-            let amount = unit(layer.opacity * m)
-            if amount == 0 { continue }
-            let b = output.pixel(x: x, y: y)
-            let p = evaluate(b, x, y)
-            if adjustment.usesDocumentToneSpace, layer.blendMode == .normal {
-              let mixed = LevelsTransfer.mix(b, with: p, coverage: amount, depth: d.depth)
-              guard mixed.isFinite else {
-                throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
-              }
-              output.setPixel(x: x, y: y, mixed)
-              continue
+        let documentTone = adjustment.usesDocumentToneSpace
+        output = try (consume output).compositingPixels(in: region) { x, y, b in
+          let m = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+          let amount = unit(layer.opacity * m)
+          guard amount != 0 else { return nil }
+          let p = evaluate(b, x, y)
+          if documentTone, layer.blendMode == .normal {
+            let mixed = LevelsTransfer.mix(b, with: p, coverage: amount, depth: d.depth)
+            guard mixed.isFinite else {
+              throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
             }
-            if adjustment.usesDocumentToneSpace, d.depth == .f32 {
-              let before = SRGBTransfer.linear(b)
-              let after = SRGBTransfer.linear(p)
-              let rgb =
-                before.rgb + (layer.blendMode.rgb(before.rgb, after.rgb) - before.rgb) * amount
-              let mixed = SRGBTransfer.encoded(Pixel(rgb.x, rgb.y, rgb.z, b.a))
-              guard mixed.isFinite else {
-                throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
-              }
-              output.setPixel(x: x, y: y, mixed)
-              continue
-            }
-            let c = b.rgb + (layer.blendMode.rgb(b.rgb, p.rgb) - b.rgb) * amount
-            output.setPixel(x: x, y: y, Pixel(c.x, c.y, c.z, b.a))
+            return mixed
           }
+          if documentTone, d.depth == .f32 {
+            let before = SRGBTransfer.linear(b)
+            let after = SRGBTransfer.linear(p)
+            let rgb = before.rgb + (layer.blendMode.rgb(before.rgb, after.rgb) - before.rgb) * amount
+            let mixed = SRGBTransfer.encoded(Pixel(rgb.x, rgb.y, rgb.z, b.a))
+            guard mixed.isFinite else {
+              throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
+            }
+            return mixed
+          }
+          let c = b.rgb + (layer.blendMode.rgb(b.rgb, p.rgb) - b.rgb) * amount
+          return Pixel(c.x, c.y, c.z, b.a)
         }
         continue
       }
@@ -406,29 +400,27 @@ public enum Renderer {
       let x1 = min(region.x + region.width, ox + surface.width)
       let y1 = min(region.y + region.height, oy + surface.height)
       if x0 >= x1 || y0 >= y1 { continue }
+      if d.depth != .f32 {
+        let area = IntRect(x: x0, y: y0, width: x1-x0, height: y1-y0)
+        output = try (consume output).compositingPixels(in: area) { x, y, backdrop in
+          var p = surface.pixel(x: x - ox, y: y - oy)
+          p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+          guard p.a > 0 else { return nil }
+          return compositePixel(layer.blendMode, backdrop: backdrop, source: p,
+            opacity: layer.opacity, depth: d.depth, x: x, y: y)
+        }
+        continue
+      }
       for y in y0..<y1 {
         if y % 64 == 0 { try Task.checkCancellation() }
         for x in x0..<x1 {
-          var p =
-            d.depth == .f32
-            ? surface.linearPixel(x: x - ox, y: y - oy)
-            : surface.pixel(x: x - ox, y: y - oy)
+          var p = surface.linearPixel(x: x - ox, y: y - oy)
           p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
           guard p.a > 0 else { continue }
-          if d.depth == .f32 {
-            output.setLinearPixel(
-              x: x, y: y,
-              compositeLinearPixel(
-                layer.blendMode, backdrop: output.linearPixel(x: x, y: y),
-                source: p, opacity: layer.opacity, x: x, y: y))
-            continue
-          }
-          output.setPixel(
+          output.setLinearPixel(
             x: x, y: y,
-            compositePixel(
-              layer.blendMode,
-              backdrop: output.pixel(x: x, y: y), source: p, opacity: layer.opacity, depth: d.depth,
-              x: x, y: y))
+            compositeLinearPixel(layer.blendMode, backdrop: output.linearPixel(x: x, y: y),
+              source: p, opacity: layer.opacity, x: x, y: y))
         }
       }
     }

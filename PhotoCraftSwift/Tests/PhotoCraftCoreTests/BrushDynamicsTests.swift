@@ -3,6 +3,32 @@ import XCTest
 
 final class BrushDynamicsTests:XCTestCase {
   func brush()->Brush { var b=Brush();b.size=10;b.hardness=1;b.color=Pixel(1,0,0);b.settings=BrushSettings();return b }
+  func testCompositeTilesMatchIndividualSettersAcrossPartialBounds() throws {
+    let bounds = IntRect(x: 60, y: 61, width: 40, height: 90)
+    let backing = try RasterTileStore()
+    let formats: [(PixelDepth, SurfaceColorEncoding)] = [(.u8, .sRGB), (.u16, .sRGB), (.f32, .sRGB), (.f32, .linearRGB)]
+    for (depth, encoding) in formats {
+      var original = try Surface(width: 77, height: 129, depth: depth,
+        fill: Pixel(0.18, 0.96, 0.31), colorEncoding: encoding)
+      original.setLinearPixel(x: 64, y: 64, Pixel(-0.0, 0.34, 2.7, 0))
+      original.setLinearPixel(x: 65, y: 65, Pixel(-0.0, 0.534_101, 2.5, 1))
+      original = try original.spillingTiles(to: backing)
+      func edit(_ x: Int, _ y: Int, _ p: Pixel) -> Pixel? {
+        guard (x + y) % 4 != 0 else { return nil }
+        return Pixel(p.r, Float(y)/128, p.b, 0.4)
+      }
+      var expected = original
+      for y in 61..<129 {
+        for x in 60..<77 {
+          if let p = edit(x, y, original.pixel(x: x, y: y)) { expected.setPixel(x: x, y: y, p) }
+        }
+      }
+      let actual = try original.compositingPixels(in: bounds, edit)
+      XCTAssertEqual(try actual.rgbaData(depth: depth, colorEncoding: encoding),
+        try expected.rgbaData(depth: depth, colorEncoding: encoding))
+      XCTAssertFalse(try actual.isOpaque())
+    }
+  }
   func testBrushTilePublicationMatchesIndividualSettersInOwnedAndPagedStorage() throws {
     let scratch = try RasterTileStore()
     let formats: [(PixelDepth,SurfaceColorEncoding)] = [

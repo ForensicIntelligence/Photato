@@ -327,23 +327,53 @@ public struct Surface: Codable, Equatable, Sendable {
   }
   /// Composite one already-admitted brush tile. The transform sees the same
   /// encoded samples as setPixel. Untouched pixels and tile padding retain their bits.
-  mutating func updateBrushTile(_ key: Int, coverage: [Float],
+  mutating func updateBrushTile(_ key: Int, coverage: [Float], rebuildingFrom original: Surface? = nil,
     _ transform: (Int, Int, Int, Float, Pixel) -> Pixel?) {
+    editEncodedTile(key, in: .init(x: 0, y: 0, width: width, height: height), original: original,
+      includes: { !coverage.isEmpty && coverage[$0] > 0 }) { x, y, index, old in
+      transform(x, y, index, coverage[index], old)
+    }
+  }
+  /// Evaluates independent compositing samples by tile. A nil sample leaves its
+  /// input intact. Consuming a local backdrop lets it release completed tiles.
+  public consuming func compositingPixels(in region: IntRect,
+    _ transform: (Int, Int, Pixel) throws -> Pixel?) throws -> Self {
+    let r = region.clipped(toWidth: width, height: height), side = Self.tileSide
+    guard r.width > 0, r.height > 0 else { return self }
+    var output = consume self
+    let columns = output.columns
+    for row in r.y/side...(r.y+r.height-1)/side {
+      for column in r.x/side...(r.x+r.width-1)/side {
+        try Task.checkCancellation()
+        try output.editEncodedTile(row*columns+column, in: r, includes: { _ in true }) { x, y, _, old in
+          try transform(x, y, old)
+        }
+      }
+    }
+    try Task.checkCancellation()
+    return output
+  }
+  private mutating func editEncodedTile(_ key: Int, in region: IntRect, original: Surface? = nil,
+    includes: (Int) -> Bool, _ transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows {
     let side = Self.tileSide
     let left = key % columns * side, top = key / columns * side
-    let tileWidth = min(side,width-left), tileHeight = min(side,height-top)
-    let source = tiles[key], fallback = storedDefaultPixel
+    let xRange = (max(region.x,left)-left)..<(min(region.x+region.width,left+side)-left)
+    let yRange = (max(region.y,top)-top)..<(min(region.y+region.height,top+side)-top)
+    let source: RasterTile?
+    if let original { source = original.tiles[key] }
+    else { source = tiles[key] }
+    let fallback = original?.storedDefaultPixel ?? storedDefaultPixel
     let linear = colorEncoding == .linearRGB, depth = self.depth
     var invalidatesOpacity = false
-    func makeReplacement(_ input: UnsafeBufferPointer<Pixel>?) -> [Pixel]? {
+    func makeReplacement(_ input: UnsafeBufferPointer<Pixel>?,
+      transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows -> [Pixel]? {
       // An implicit tile reads the same background sample at every pixel.
       let encodedDefault = linear && input == nil ? SRGBTransfer.encoded(fallback) : fallback
       var output: [Pixel]?
-      for y in 0..<tileHeight {
-        for x in 0..<tileWidth {
+      for y in yRange {
+        for x in xRange {
           let index = y*side + x
-          let weight = coverage[index]
-          guard weight > 0 else { continue }
+          guard includes(index) else { continue }
           let old: Pixel
           let encoded: Pixel
           if let input {
@@ -353,7 +383,7 @@ public struct Surface: Codable, Equatable, Sendable {
             old = fallback
             encoded = encodedDefault
           }
-          guard let edited = transform(left+x,top+y,index,weight,encoded) else { continue }
+          guard let edited = try transform(left+x,top+y,index,encoded) else { continue }
           let stored = linear ? Self.linearStoredReplacement(edited,old:old,encoded:encoded) : edited.quantized(depth)
           if linear && stored.hasSameBits(as:old) { continue }
           if output == nil { output = input.map { Array($0) } ?? Array(repeating:fallback,count:side*side) }
@@ -364,11 +394,16 @@ public struct Surface: Codable, Equatable, Sendable {
       return output
     }
     let samples: [Pixel]?
-    if let source { samples = source.withUnsafeBufferPointer { makeReplacement($0) } }
-    else { samples = makeReplacement(nil) }
+    if let source { samples = try source.withUnsafeBufferPointer { try makeReplacement($0, transform: transform) } }
+    else { samples = try makeReplacement(nil, transform: transform) }
     if let samples {
       tiles[key] = RasterTile(samples)
-      if invalidatesOpacity { opaqueProof = SurfaceOpaqueProof() }
+    } else if original != nil {
+      // An abandoned provisional tail may have been the tile's only edit.
+      tiles[key] = source
+    }
+    if invalidatesOpacity || (original.map { opaqueProof.proven && !$0.opaqueProof.proven } ?? false) {
+      opaqueProof = SurfaceOpaqueProof()
     }
   }
   public mutating func setLinearPixel(x: Int, y: Int, _ p: Pixel) {

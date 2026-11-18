@@ -368,52 +368,43 @@ public final class BrushStrokeSession {
     var preview = coverage.fork(), ending = generator, tailVisits = visits
     try raster(ending.finish(includingReleaseTail: includingReleaseTail).0, into: &preview, visits: &tailVisits)
     let tail = preview.dirty, keys = changed.union(tail).union(previousTail)
-    let settings = brush.settings!, columns = coverage.columns
+    let settings = brush.settings!
     for key in keys.sorted() {
       try Task.checkCancellation()
-      let tile = preview.tiles[key], tx = (key % columns) * 64, ty = (key / columns) * 64
-      for i in 0..<4096 {
-        let x = tx + i % 64, y = ty + i / 64
-        guard x < original.width, y < original.height else { continue }
-        // Rebuild from the stroke's original pixels; never compound opacity per frame.
-        let base = original.pixel(x: x, y: y)
-        var painted = base
+      let tile = preview.tiles[key]
+      // Rebuild from the stroke's original pixels. This also clears a previous
+      // tail when the revised stroke has no coverage on its former tile.
+      result.updateBrushTile(key, coverage: tile?.coverage ?? [], rebuildingFrom: original) { x, y, i, old, base in
         let doc = transform.point(Double(x) + 0.5, Double(y) + 0.5)
         let dx = Int(floor(doc.x)), dy = Int(floor(doc.y))
-        let old = tile?.coverage[i] ?? 0
         var value = Double(old)
         if settings.texture.enabled && !settings.texture.eachTip {
           value = settings.texture.mode.combine(value, BrushPainter.texture(settings.texture, doc.x, doc.y), settings.texture.depth)
         }
-        if value > 0, selection?.contains(dx, dy) != false {
-          let amount = Float(value), mask = selectionMask?.coverage(x: dx, y: dy) ?? 1
-          var ink = brush.color
-          if settings.colorDynamics.enabled, let tile {
-            // Preserve the same Float32 rounding as the complete painter's texture pass.
-            let color = (tile.colors[i] * (amount / old)) / amount
-            ink = Pixel(color.x, color.y, color.z, color.w)
-          }
-          let alpha = unit(amount * brush.opacity * ink.a * mask)
-          var before = base
-          if grayscale {
-            before = Pixel(before.r, before.r, before.r)
-            let gray = unit(ink.r * 0.2126 + ink.g * 0.7152 + ink.b * 0.0722)
-            ink = Pixel(gray, gray, gray, ink.a)
-          }
-          if alpha > 0 && !(preserveTransparency && !grayscale && before.a <= 0) {
-            if brush.erase && !preserveTransparency && !grayscale {
-              painted = Pixel(before.r, before.g, before.b, before.a * (1 - alpha))
-            } else {
-              if brush.erase { ink = brush.backgroundColor ?? .white }; ink.a = alpha
-              painted = preserveTransparency && !grayscale
-                ? ProtectedPixels.composite(settings.mode, backdrop: before, source: ink, x: dx, y: dy)
-                : settings.mode.composite(backdrop: before, source: ink, x: dx, y: dy)
-            }
-          }
+        guard value > 0, selection?.contains(dx, dy) != false else { return nil }
+        let amount = Float(value), mask = selectionMask?.coverage(x: dx, y: dy) ?? 1
+        var ink = brush.color
+        if settings.colorDynamics.enabled, let tile {
+          // Preserve the same Float32 rounding as the complete painter's texture pass.
+          let color = (tile.colors[i] * (amount / old)) / amount
+          ink = Pixel(color.x, color.y, color.z, color.w)
         }
-        if painted.hasSameBits(as: base), original.colorEncoding == .linearRGB {
-          result.setLinearPixel(x: x, y: y, original.linearPixel(x: x, y: y))
-        } else { result.setPixel(x: x, y: y, painted) }
+        let alpha = unit(amount * brush.opacity * ink.a * mask)
+        var before = base
+        if grayscale {
+          before = Pixel(before.r, before.r, before.r)
+          let gray = unit(ink.r * 0.2126 + ink.g * 0.7152 + ink.b * 0.0722)
+          ink = Pixel(gray, gray, gray, ink.a)
+        }
+        guard alpha > 0, !(preserveTransparency && !grayscale && before.a <= 0) else { return nil }
+        if brush.erase && !preserveTransparency && !grayscale {
+          return Pixel(before.r, before.g, before.b, before.a * (1 - alpha))
+        }
+        if brush.erase { ink = brush.backgroundColor ?? .white }
+        ink.a = alpha
+        return preserveTransparency && !grayscale
+          ? ProtectedPixels.composite(settings.mode, backdrop: before, source: ink, x: dx, y: dy)
+          : settings.mode.composite(backdrop: before, source: ink, x: dx, y: dy)
       }
     }
     try Task.checkCancellation(); previousTail = tail

@@ -55,4 +55,35 @@ final class IncrementalBrushTests: XCTestCase {
     XCTAssertFalse(BrushStrokeSession.supports(brush))
     XCTAssertThrowsError(try BrushStrokeSession(surface: source, brush: brush))
   }
+
+  func testAbandonedTailRestoresOriginalTileAndKeepsPublishedPreview() throws {
+    let backing = try RasterTileStore()
+    let formats: [(PixelDepth, SurfaceColorEncoding)] = [(.u8, .sRGB), (.f32, .linearRGB)]
+    for (depth, encoding) in formats {
+      var source = try Surface(width: 129, height: 65, depth: depth, colorEncoding: encoding)
+      source.setLinearPixel(x: 118, y: 26, Pixel(-0.0, 0.201_321, 1.7, 0.2))
+      source = try source.spillingTiles(to: backing)
+      var brush = Brush()
+      brush.size = 5
+      brush.color = Pixel(0.9, 0.2, 0.5)
+      brush.settings = .init()
+      brush.settings!.smoothing.amount = 0.95
+      brush.settings!.smoothing.catchUpOnEnd = true
+      let points = [StrokePoint(x: 9.5, y: 26.5, time: 0), StrokePoint(x: 111.5, y: 26.5, time: 8)]
+      let stroke = try BrushStrokeSession(surface: source, brush: brush)
+      let preview = try stroke.append(points)
+      XCTAssertGreaterThan(preview.pixel(x: 100, y: 26).a, 0)
+      let region = IntRect(x: 64, y: 0, width: 65, height: 65)
+      let saved = try preview.cropped(to: region).rgbaData(depth: depth, colorEncoding: encoding)
+      let held = try stroke.append([], includingReleaseTail: false)
+      XCTAssertEqual(try held.cropped(to: region).rgbaData(depth: depth, colorEncoding: encoding),
+        try source.cropped(to: region).rgbaData(depth: depth, colorEncoding: encoding))
+      XCTAssertEqual(held.mappedTileCount, source.mappedTileCount)
+      XCTAssertEqual(try preview.cropped(to: region).rgbaData(depth: depth, colorEncoding: encoding), saved)
+      var expected = source
+      try BrushPainter.stroke(surface: &expected, points: points, brush: brush)
+      XCTAssertEqual(try stroke.append([]).rgbaData(depth: depth, colorEncoding: encoding),
+        try expected.rgbaData(depth: depth, colorEncoding: encoding))
+    }
+  }
 }
