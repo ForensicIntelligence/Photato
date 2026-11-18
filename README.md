@@ -4,7 +4,7 @@
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
-**Development alpha — source build 566.** PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_566.md).
+**Development alpha — source build 567.** Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_567.md).
 
 ## Project layout
 

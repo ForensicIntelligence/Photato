@@ -1,3 +1,7 @@
+**Source checkpoint 567.** Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. All 651 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_567.md).
+
+Integrate the independently verified gamma 0.5 conversion, then measure RGB to Gray mode conversion and the output for transparent or masked layers. Photoshop Actions still need validation for channel switches and percentage coordinates.
+
 **Source checkpoint 566.** PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. All 629 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_566.md).
 
 Collect independent Photoshop RGB32 and Gray32 conversion references. Compare multilayer Gray32 merged output and continue verifying Actions channel switches and percentage-based tool coordinates.

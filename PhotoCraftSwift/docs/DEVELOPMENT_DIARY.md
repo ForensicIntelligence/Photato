@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
+
+Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile.
+
+All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture. Photoshop itself returned different values across architectures for 13,057 samples from the gamma and parametric cases. The Swift conversion matches the rounding observed on each architecture. All 651 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The desktop conversion and the authenticated Photato command produce the same stored samples and both Undo correctly. Both universal app slices passed offscreen checks.
+
+[Detailed record](DEVLOG.md#dev-step-567) · [Validation](SOURCE_PUBLICATION_567.md).
+
 ## 2026-11-18 — Step 566 — Preserve opaque Gray32 merged samples in PSD and PSB
 
 PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The writer uses the stored grayscale samples for the merged image and leaves out the redundant transparency plane. Saved auxiliary channels still follow the grayscale plane.
@@ -521,14 +529,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:566 -->
+<!-- current-status-step:567 -->
 ## Current development status — 18 November 2026
 
-PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The merged gray plane matched a Photoshop 2026 save across PSD and PSB. All 629 selected tests passed, and both universal app slices passed offscreen checks.
+Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture.
 
-Exact output for multilayer Gray32 composites and RGB32 and Gray32 color-conversion workflows still needs verification. The independent reference covers one owned image and excludes container metadata such as the ICC profile.
+The comparison covers opaque, same-mode precision promotion. Cross-mode color conversion, arbitrary color profiles, other rendering intents, transparent sample parity, and full PSD file identity still need testing. The app’s gamma 0.5 conversion remains open. A standalone Swift probe matched all 32,896 saved samples on each architecture and provides a reference for integrating that special case.
 
-[Qualification](SOURCE_PUBLICATION_566.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_567.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1300,6 +1308,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 564 | [Record Brush Actions for color channels](DEVLOG.md#dev-step-564) |
 | 2026-11-18 | 565 | [Add Allow Tool Recording to Actions](DEVLOG.md#dev-step-565) |
 | 2026-11-18 | 566 | [Preserve opaque Gray32 merged samples in PSD and PSB](DEVLOG.md#dev-step-566) |
+| 2026-11-18 | 567 | [Use the source tone curves for 32-bit RGB and Gray](DEVLOG.md#dev-step-567) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

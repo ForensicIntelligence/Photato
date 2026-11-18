@@ -60,8 +60,21 @@ extension CraftDocument {
     try validate(); try Task.checkCancellation()
     guard !isChannelOnly else{throw CraftError.unsupported("Load this mask into an image document before changing its color mode.")}
     if inkMode != nil { return try convertingInkMode(request) }
+    var destinationProfile = request.profile
+    var hdrTransfer: SDRToHDRTransfer?
+    if request.mode == colorMode, request.depth == .f32, depth != .f32,
+      request.mode == .rgb || request.mode == .grayscale
+    {
+      let sourceProfile = try modeDescriptor?.profile ?? workingICC ?? NativeModeProfile.standard(colorMode, depth: depth)
+      if let linearProfile = try? NativeModeProfile.atDepth(sourceProfile, mode: colorMode, depth: .f32) {
+        destinationProfile = destinationProfile ?? linearProfile
+        if destinationProfile == linearProfile, request.intent == .relativeColorimetric {
+          hdrTransfer = SDRToHDRTransfer(profile: sourceProfile, mode: colorMode, depth: depth)
+        }
+      }
+    }
     let descriptor = try DocumentModeDescriptor(mode: request.mode, depth: request.depth,
-      profile: request.profile, intent: request.intent)
+      profile: destinationProfile, intent: request.intent)
     if modeDescriptor == descriptor, depth == request.depth { return self }
     var result = self; result.restrictedMode = nil
     for i in layers.indices {
@@ -69,7 +82,10 @@ extension CraftDocument {
       switch source.content {
       case .raster(let pixels):
         let native: NativeModeRaster
-        if let retained = source.nativeMode {
+        if let hdrTransfer, pixels.depth == depth {
+          native = try NativeModeRaster.promotingToHDR(pixels, retained: source.nativeMode,
+            descriptor: descriptor, transfer: hdrTransfer)
+        } else if let retained = source.nativeMode {
           native = try retained.converted(to: request.mode, depth: request.depth,
             profile: descriptor.profile, intent: request.intent)
         } else {

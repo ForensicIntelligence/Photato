@@ -6,6 +6,40 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class ModeChannelWorkflowTests: XCTestCase {
+  @MainActor func testNativeAndHTTPPrecisionPromotionShareSamplesAndUndo() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      var source = try CraftDocument(width: 2, height: 1)
+      let url = URL(fileURLWithPath: "/System/Library/ColorSync/Profiles/sRGB Profile.icc")
+      source.workingICC = try Data(contentsOf: url)
+      source.layers[0].content = .raster(try Surface(width: 2, height: 1,
+        fill: Pixel(1 / 255, 2 / 255, 3 / 255, 128 / 255)))
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      let desktop = EditorStore(document: source)
+      defer { desktop.renderTask?.cancel() }
+      desktop.beginDocumentMode(.rgb, depth: .f32)
+      let draft = try XCTUnwrap(desktop.documentModeWorkspace)
+      await draft.task?.value
+      XCTAssertTrue(draft.ready, draft.error ?? "")
+      desktop.commitDocumentMode()
+      await draft.commitTask?.value
+      let promoted = try XCTUnwrap(desktop.document.layers[0].nativeMode)
+      XCTAssertEqual(promoted.rawWord(component: 0, index: 0), 0x39a11851)
+      XCTAssertEqual(promoted.value(component: 3, index: 0), 128 / 255)
+      XCTAssertEqual(desktop.session.undoStack.count, 1)
+
+      let edited = try await helper.edit(service, document, "document.convertMode", ["mode": "rgb", "depth": 32])
+      XCTAssertEqual(edited, 200)
+      XCTAssertEqual(document.store.document, desktop.document)
+      XCTAssertNotNil(DocumentModeAPI.capabilities["sameModeSDRToHDR"] as? String)
+      let undone = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undone, 200)
+      await desktop.undo()
+      XCTAssertEqual(document.store.document, source)
+      XCTAssertEqual(desktop.document, source)
+    }
+  }
   @MainActor func testHostedModePanelsKeepRowsWithinPanelBounds() async throws {
     let helper = LayerRevealTests()
     for mode in DocumentColorMode.componentModes {

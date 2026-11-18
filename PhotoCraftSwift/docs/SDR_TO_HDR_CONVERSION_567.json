@@ -1,0 +1,3427 @@
+{
+  "actionMaximumVersion": 70,
+  "cases": [
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32853,
+          "exact": 43,
+          "maxAbsoluteDifference": 1.5020370483398438e-05,
+          "maxPositiveULPDifference": 139460,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 9589,
+          "exact": 23307,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 11,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32855,
+          "exact": 41,
+          "maxAbsoluteDifference": 1.4990568161010742e-05,
+          "maxPositiveULPDifference": 139460,
+          "sampleCount": 32896
+        }
+      },
+      "case": "gray16",
+      "curve": "sampled",
+      "oracleSampleSHA256": "faa033bb7db07314130726ecce86b3be900e9a67cd21986977b0162f303de874",
+      "referenceFileSHA256": "8a1aa4de32a8dd84ead7168170b3f8bce36203ae96df3d08528056b7e89454a1",
+      "samples": 32896,
+      "sourceProfileSHA256": "73d504558e7d03ef4ff2676ba62c7553ee5bd856b45da2d330e33e012ad61fb3",
+      "testInputSHA256": "3be4ff9a84c6806b3f8189344cf4fb59275649124edaa3ca1c12e32232cf8dcf"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 254,
+          "exact": 2,
+          "maxAbsoluteDifference": 3.6716461181640625e-05,
+          "maxPositiveULPDifference": 128413,
+          "sampleCount": 256
+        },
+        "crossArchitecture": {
+          "different": 70,
+          "exact": 186,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 256
+        },
+        "x86_64": {
+          "different": 254,
+          "exact": 2,
+          "maxAbsoluteDifference": 3.6835670471191406e-05,
+          "maxPositiveULPDifference": 128413,
+          "sampleCount": 256
+        }
+      },
+      "case": "gray8",
+      "curve": "sampled",
+      "oracleSampleSHA256": "4f8eabd238d5b9678dd18f50554b2c5a6f027cdd51af7a3712cc42082334761a",
+      "referenceFileSHA256": "078f399064108fe1fc2d8b65f6302dff868527680661013067de857359e0bcd5",
+      "samples": 256,
+      "sourceProfileSHA256": "73d504558e7d03ef4ff2676ba62c7553ee5bd856b45da2d330e33e012ad61fb3",
+      "testInputSHA256": "d9a93dd92178f5622f7fb5befc7968b72c21eed065b9347bc9d0240ffd2f5d00"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 98559,
+          "exact": 129,
+          "maxAbsoluteDifference": 1.5020370483398438e-05,
+          "maxPositiveULPDifference": 139460,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 28767,
+          "exact": 69921,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 11,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 98565,
+          "exact": 123,
+          "maxAbsoluteDifference": 1.4990568161010742e-05,
+          "maxPositiveULPDifference": 139460,
+          "sampleCount": 98688
+        }
+      },
+      "case": "rgb16",
+      "curve": "sampled",
+      "oracleSampleSHA256": "f83c69d88b0c350c55370a958d58abb32e8f3b0088bdac29a31addce13903cdb",
+      "referenceFileSHA256": "b10797c0bf29742e2d6aab8c8e9bc7521510298bedf55ab54f2f86c10e02cd0c",
+      "samples": 98688,
+      "sourceProfileSHA256": "2b3aa1645779a9e634744faf9b01e9102b0c9b88fd6deced7934df86b949af7e",
+      "testInputSHA256": "2fe928101b1f8862061e2175d6360cb0a0ae425cb550f7888821dd5995e9de30"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 762,
+          "exact": 6,
+          "maxAbsoluteDifference": 3.6716461181640625e-05,
+          "maxPositiveULPDifference": 128413,
+          "sampleCount": 768
+        },
+        "crossArchitecture": {
+          "different": 210,
+          "exact": 558,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 768
+        },
+        "x86_64": {
+          "different": 762,
+          "exact": 6,
+          "maxAbsoluteDifference": 3.6835670471191406e-05,
+          "maxPositiveULPDifference": 128413,
+          "sampleCount": 768
+        }
+      },
+      "case": "rgb8",
+      "curve": "sampled",
+      "oracleSampleSHA256": "a383f53179107acf24b406a19228c4219e367bff1178818f2ba67b744d339caf",
+      "referenceFileSHA256": "6c03991a5d9cdc6e6cd7455220316300b57e1843a75c6b422244b0ed121632f0",
+      "samples": 768,
+      "sourceProfileSHA256": "2b3aa1645779a9e634744faf9b01e9102b0c9b88fd6deced7934df86b949af7e",
+      "testInputSHA256": "9f0e4222f8e0428c67669d639442de23aafba40a874a479982a350954127c34a"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 98673,
+          "exact": 15,
+          "maxAbsoluteDifference": 0.00013786554336547852,
+          "maxPositiveULPDifference": 105342,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 5790,
+          "exact": 92898,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 20,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 98670,
+          "exact": 18,
+          "maxAbsoluteDifference": 0.00013786554336547852,
+          "maxPositiveULPDifference": 105342,
+          "sampleCount": 98688
+        }
+      },
+      "case": "adobergb16",
+      "curve": "power",
+      "oracleSampleSHA256": "e83bc3371dfdef2ab3d9e3d24d4f441128404db7e19a9b2e2d4e119aa3db6ff2",
+      "referenceFileSHA256": "392afda5550407e48144bb98bf2c9dfde74e2e59912ad78e580959d10caa1a43",
+      "samples": 98688,
+      "sourceProfileSHA256": "304f569a83c1e5eddaddac54e99ed03339333db013738bb499ab64f049887e28",
+      "testInputSHA256": "3760dc157f034b5a76f120b08f02fd477acf6d5f47a605f7c590607eb7283b03"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32891,
+          "exact": 5,
+          "maxAbsoluteDifference": 0.00013786554336547852,
+          "maxPositiveULPDifference": 105342,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1930,
+          "exact": 30966,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 20,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32890,
+          "exact": 6,
+          "maxAbsoluteDifference": 0.00013786554336547852,
+          "maxPositiveULPDifference": 105342,
+          "sampleCount": 32896
+        }
+      },
+      "case": "gray-gamma16",
+      "curve": "power",
+      "oracleSampleSHA256": "12e7733387a3e673c40c30a478027c2a4dbf0f813b113c6db9ea77219ba89a25",
+      "referenceFileSHA256": "a1477c51d056c44739b40bd1a14bf2d91fd057c3e9f33c0cd32dfc12cae9554c",
+      "samples": 32896,
+      "sourceProfileSHA256": "c60b00ebb573ccfd5c952213c8c5aef9ad2f5685c0ef144cde7f1ae730901d3a",
+      "testInputSHA256": "098d4bf3ad270590219ada143c0712f4557599cc9b866a201bf5008ab579418b"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 4788,
+          "exact": 93900,
+          "maxAbsoluteDifference": 7.450580596923828e-08,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 4788,
+          "exact": 93900,
+          "maxAbsoluteDifference": 7.450580596923828e-08,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 98688
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 98574,
+          "exact": 114,
+          "maxAbsoluteDifference": 1.150369644165039e-05,
+          "maxPositiveULPDifference": 2495,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 28767,
+          "exact": 69921,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 11,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 98496,
+          "exact": 192,
+          "maxAbsoluteDifference": 1.1444091796875e-05,
+          "maxPositiveULPDifference": 2495,
+          "sampleCount": 98688
+        }
+      },
+      "case": "p3-16",
+      "curve": "power",
+      "oracleSampleSHA256": "afce3f848b5dd3ce24ef8afe4c45ad0592c9bad02b3170dbd5a3f808678744f4",
+      "referenceFileSHA256": "a419f163ea789d8ba4c97b34e4e99b0aa9e77f326f28b289acd14fad79b00884",
+      "samples": 98688,
+      "sourceProfileSHA256": "0ff6958f98684c61f6bbdce1368ddeaf3873baf84545baba482e920d92a914c0",
+      "testInputSHA256": "3d081b803a60f8c375633bd51bec0927a7860a852d7ac64a047be805755086fe"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 97744,
+          "exact": 944,
+          "maxAbsoluteDifference": 0.0004493594169616699,
+          "maxPositiveULPDifference": 933792937,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 97744,
+          "exact": 944,
+          "maxAbsoluteDifference": 0.0004493594169616699,
+          "maxPositiveULPDifference": 933792937,
+          "sampleCount": 98688
+        }
+      },
+      "case": "rgb-custom16",
+      "curve": "sampled",
+      "oracleSampleSHA256": "00c623bf4641d12054e5564fc214a6d62bd9429b016872a24d63ee62d4bfe946",
+      "referenceFileSHA256": "2a4289da3328f3bb9d521343ea4ef733781e4cb3eb40c94704150945f76cd8b9",
+      "samples": 98688,
+      "sourceProfileSHA256": "b772c83c262a866efe1e8d727dcf7f481a3fad84e8daefd84b7bae42d0b55b36",
+      "testInputSHA256": "636f9aa503858581180dfd41506abf0f9b81def1feb23e6967ebc6d97434c6ef"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 4,
+          "exact": 32892,
+          "maxAbsoluteDifference": 3.637978807091713e-12,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 4,
+          "exact": 32892,
+          "maxAbsoluteDifference": 3.637978807091713e-12,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32892,
+          "exact": 4,
+          "maxAbsoluteDifference": 0.0004180577234365046,
+          "maxPositiveULPDifference": 67244718,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1816,
+          "exact": 31080,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 6,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32892,
+          "exact": 4,
+          "maxAbsoluteDifference": 0.0004180577234365046,
+          "maxPositiveULPDifference": 67244718,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gray-gamma18-16",
+      "curve": "power",
+      "oracleSampleSHA256": "ab2e1d95d59e368742618259b3e822e10f3bf095715af92a92b3eeba10c82b69",
+      "referenceFileSHA256": "fb7ff8893166030ba5186c5e50b4f20a0238d2ee89ff9b30ebde753c3a1d5213",
+      "samples": 32896,
+      "sourceProfileSHA256": "8b044caf6a3107187e65176ad525eae3d49e49d2a3189d719423a296257e325b",
+      "testInputSHA256": "87ce03123d6fba77ce76e45265eb8d0ea33f185ddea6989bcf0500efcb646a5b"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 254,
+          "exact": 2,
+          "maxAbsoluteDifference": 0.0004173665656708181,
+          "maxPositiveULPDifference": 20744996,
+          "sampleCount": 256
+        },
+        "crossArchitecture": {
+          "different": 12,
+          "exact": 244,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 256
+        },
+        "x86_64": {
+          "different": 254,
+          "exact": 2,
+          "maxAbsoluteDifference": 0.0004173665656708181,
+          "maxPositiveULPDifference": 20744996,
+          "sampleCount": 256
+        }
+      },
+      "case": "owned-gray-gamma18-8",
+      "curve": "power",
+      "oracleSampleSHA256": "e6294d77470d69ce396c24743afe159377ace3b9fa9c32f04100a32e3a68f8bd",
+      "referenceFileSHA256": "3e08b9833178631cbac6867e74e7d7427be8bd1be89889c971916a3e0690094b",
+      "samples": 256,
+      "sourceProfileSHA256": "8b044caf6a3107187e65176ad525eae3d49e49d2a3189d719423a296257e325b",
+      "testInputSHA256": "25967c96527c04669197edddede9b856127646823bcbd36435d7f73c3e51fb63"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 180,
+          "exact": 32716,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 180,
+          "exact": 32716,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32846,
+          "exact": 50,
+          "maxAbsoluteDifference": 6.794929504394531e-06,
+          "maxPositiveULPDifference": 834,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1887,
+          "exact": 31009,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 20,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32849,
+          "exact": 47,
+          "maxAbsoluteDifference": 6.794929504394531e-06,
+          "maxPositiveULPDifference": 834,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gray-gamma32-16",
+      "curve": "power",
+      "oracleSampleSHA256": "68795700c2478062c20b687e95fe716dc22131f91464038d80684f771e017e1c",
+      "referenceFileSHA256": "2960aeaa1b0944f4caa6f3c314f8a11f30fcba12fd2d8a7760628e0d492f027a",
+      "samples": 32896,
+      "sourceProfileSHA256": "299ab50974933fa7c927a726f1da6d9cd9ae94cfa9520fd54a73947a9168768d",
+      "testInputSHA256": "26d722406099f649b280701a6ebec715375d1531431f8bb88880bc7f8c4b5ed6"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32804,
+          "exact": 92,
+          "maxAbsoluteDifference": 7.62939453125e-06,
+          "maxPositiveULPDifference": 258,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1792,
+          "exact": 31104,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32803,
+          "exact": 93,
+          "maxAbsoluteDifference": 7.659196853637695e-06,
+          "maxPositiveULPDifference": 258,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gray-linear-16",
+      "curve": "linear",
+      "oracleSampleSHA256": "3fdc1e2207ea3660e81fad31e2dec5b08d52d5fcb5b8a883c8a0eb27bf0898a6",
+      "referenceFileSHA256": "5d14084a9dd32b3d94414f71405a87611706967f579d5f68925c4b65dd30b836",
+      "samples": 32896,
+      "sourceProfileSHA256": "6c86ea74ad664442cf7f3701eb5a26e3ac9accde6427bd024365b04bcaf7a46b",
+      "testInputSHA256": "3bf857dcc24fd65c89ead75c67582f5778ea4183ad8b8c027e94969b1d66b02c"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 256,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 256
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 80,
+          "exact": 176,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 256
+        },
+        "crossArchitecture": {
+          "different": 11,
+          "exact": 245,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 256
+        },
+        "x86_64": {
+          "different": 85,
+          "exact": 171,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 256
+        }
+      },
+      "case": "owned-gray-linear-8",
+      "curve": "linear",
+      "oracleSampleSHA256": "af2e30a7f07a1e584c2cc236e350d2c7e8e7b47a1998162ddcee47222c86dab2",
+      "referenceFileSHA256": "239cb297d60c4b5106ce129fb70695f832b9d5c58ed4b743be77e79a781e1d4b",
+      "samples": 256,
+      "sourceProfileSHA256": "6c86ea74ad664442cf7f3701eb5a26e3ac9accde6427bd024365b04bcaf7a46b",
+      "testInputSHA256": "eb85eac711ada9dee76f9076830c14564f2bf5e45c8afd7c629b84ccb1688118"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 97744,
+          "exact": 944,
+          "maxAbsoluteDifference": 0.0004493594169616699,
+          "maxPositiveULPDifference": 933792937,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 97744,
+          "exact": 944,
+          "maxAbsoluteDifference": 0.0004493594169616699,
+          "maxPositiveULPDifference": 933792937,
+          "sampleCount": 98688
+        }
+      },
+      "case": "owned-rgb-curves-16",
+      "curve": "sampled",
+      "oracleSampleSHA256": "00c623bf4641d12054e5564fc214a6d62bd9429b016872a24d63ee62d4bfe946",
+      "referenceFileSHA256": "35f72b06ebb7f82ebf6f8db8342d4da7e546efa567cd8d7273f0ba35c083237a",
+      "samples": 98688,
+      "sourceProfileSHA256": "e50cb1656884ceaa542601310c9338fee0a5b349ace55e2ca50ed97aac0d5846",
+      "testInputSHA256": "678991b63708ec7d141ea0d69350f70020854875d2b47f6bb53b8aba5ccbd3f2"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 764,
+          "exact": 4,
+          "maxAbsoluteDifference": 0.0004493594169616699,
+          "maxPositiveULPDifference": 64832,
+          "sampleCount": 768
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        },
+        "x86_64": {
+          "different": 764,
+          "exact": 4,
+          "maxAbsoluteDifference": 0.0004493594169616699,
+          "maxPositiveULPDifference": 64832,
+          "sampleCount": 768
+        }
+      },
+      "case": "owned-rgb-curves-8",
+      "curve": "sampled",
+      "oracleSampleSHA256": "19b4b3102ce4c27a9afd847d64f04192a331600a1bf8960a16722697de06faa2",
+      "referenceFileSHA256": "170bcdf2bd2c538122e2f3c5448f148a3ec96198d877deccdad08ef8e49af912",
+      "samples": 768,
+      "sourceProfileSHA256": "e50cb1656884ceaa542601310c9338fee0a5b349ace55e2ca50ed97aac0d5846",
+      "testInputSHA256": "2c6955c962cfb60b25f6f29874f6b8c0377ea442ef489a48baaa89bf85bd6aa2"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 98688,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 4788,
+          "exact": 93900,
+          "maxAbsoluteDifference": 7.450580596923828e-08,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 4788,
+          "exact": 93900,
+          "maxAbsoluteDifference": 7.450580596923828e-08,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 98688
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 98574,
+          "exact": 114,
+          "maxAbsoluteDifference": 1.150369644165039e-05,
+          "maxPositiveULPDifference": 2495,
+          "sampleCount": 98688
+        },
+        "crossArchitecture": {
+          "different": 28767,
+          "exact": 69921,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 11,
+          "sampleCount": 98688
+        },
+        "x86_64": {
+          "different": 98496,
+          "exact": 192,
+          "maxAbsoluteDifference": 1.1444091796875e-05,
+          "maxPositiveULPDifference": 2495,
+          "sampleCount": 98688
+        }
+      },
+      "case": "owned-rgb-parametric-16",
+      "curve": "power",
+      "oracleSampleSHA256": "afce3f848b5dd3ce24ef8afe4c45ad0592c9bad02b3170dbd5a3f808678744f4",
+      "referenceFileSHA256": "418f38bb4b40301e2baadd0c2544fee0b5d23b239ec7f690f8e9a1dc332c209e",
+      "samples": 98688,
+      "sourceProfileSHA256": "261eb393c6a1d56e891f43f5a15267ec45af0c04d7931b5fcc30ba8eb91fb910",
+      "testInputSHA256": "42591481db400cdc8aa90ff7020878d6c7bfd75b26dd8d88fbfbc437196e77a0"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 768,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 768
+        },
+        "crossArchitecture": {
+          "different": 33,
+          "exact": 735,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 768
+        },
+        "x86_64": {
+          "different": 33,
+          "exact": 735,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 768
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 762,
+          "exact": 6,
+          "maxAbsoluteDifference": 3.427267074584961e-05,
+          "maxPositiveULPDifference": 39500,
+          "sampleCount": 768
+        },
+        "crossArchitecture": {
+          "different": 210,
+          "exact": 558,
+          "maxAbsoluteDifference": 2.384185791015625e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 768
+        },
+        "x86_64": {
+          "different": 762,
+          "exact": 6,
+          "maxAbsoluteDifference": 3.427267074584961e-05,
+          "maxPositiveULPDifference": 39500,
+          "sampleCount": 768
+        }
+      },
+      "case": "owned-rgb-parametric-8",
+      "curve": "power",
+      "oracleSampleSHA256": "bd4a7412cee584935447c59766c721404ee21ed58accdf674b9ad0f08e1ab98b",
+      "referenceFileSHA256": "5a3dea3845ee825233c2e35804048039e61693423ce14f3e5a6c24cc9ceb05f3",
+      "samples": 768,
+      "sourceProfileSHA256": "261eb393c6a1d56e891f43f5a15267ec45af0c04d7931b5fcc30ba8eb91fb910",
+      "testInputSHA256": "4437c424b25de732ccfe4d2320d50059348e7d7e9856f89e14d8153174d7a852"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 234,
+          "exact": 32662,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 234,
+          "exact": 32662,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32849,
+          "exact": 47,
+          "maxAbsoluteDifference": 6.496906280517578e-06,
+          "maxPositiveULPDifference": 1034,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1955,
+          "exact": 30941,
+          "maxAbsoluteDifference": 8.940696716308594e-08,
+          "maxPositiveULPDifference": 17,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 6.496906280517578e-06,
+          "maxPositiveULPDifference": 1033,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-1024-16",
+      "curve": "power",
+      "oracleSampleSHA256": "08b59c890bfbcbb9d418a395057ccc39cdaba658f853916c7e7183293d32afeb",
+      "referenceFileSHA256": "e47f66b61563009cf475e0424798ceaa4670e120852b703ca8d66eaa997ae872",
+      "samples": 32896,
+      "sourceProfileSHA256": "cc344bc891c09258fb3939b0d5b4df4e27832f5c5482c18402b7a76833ecc31c",
+      "testInputSHA256": "282fd90db97bf57a61f0aecc5b012a120781b4057e9e4d943fbfdd90d808158d"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 32893,
+          "exact": 3,
+          "maxAbsoluteDifference": 0.004785656929016113,
+          "maxPositiveULPDifference": 531956979,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1996,
+          "exact": 30900,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32893,
+          "exact": 3,
+          "maxAbsoluteDifference": 0.004785656929016113,
+          "maxPositiveULPDifference": 531956979,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32893,
+          "exact": 3,
+          "maxAbsoluteDifference": 0.004785656929016113,
+          "maxPositiveULPDifference": 531956979,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1996,
+          "exact": 30900,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32893,
+          "exact": 3,
+          "maxAbsoluteDifference": 0.004785656929016113,
+          "maxPositiveULPDifference": 531956979,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-128-16",
+      "curve": "unqualifiedPower",
+      "oracleSampleSHA256": "7ca6903b95c48a46a15f49e3014647ff2095f94c4b2d3d098291d9dd588ce922",
+      "referenceFileSHA256": "751ce51ddbd87435eb1f8895cb3525adb89abdc2349352e1ab01c643ed9f5191",
+      "samples": 32896,
+      "sourceProfileSHA256": "eb4364ae83110b288b8d99432e25a8e5a7ee8de3dd12253119d8859028b6eb18",
+      "testInputSHA256": "1e948af3d0f31cc50b2fb4c54ba11b1d7a29a96cce6c3c8f72495900d77cb02f"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32826,
+          "exact": 70,
+          "maxAbsoluteDifference": 7.68899917602539e-06,
+          "maxPositiveULPDifference": 264,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1853,
+          "exact": 31043,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32821,
+          "exact": 75,
+          "maxAbsoluteDifference": 7.68899917602539e-06,
+          "maxPositiveULPDifference": 264,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-255-16",
+      "curve": "power",
+      "oracleSampleSHA256": "8f40a746dd2b8d02934fbce300dff7991b9bdbe7f9a7ddba78f6373662adfa3a",
+      "referenceFileSHA256": "a72f3c086378d91e6e57d5234cbc751c740bacdb50d087ee61636ce9a3ac816b",
+      "samples": 32896,
+      "sourceProfileSHA256": "7d1c7b04f30343c3a9eca9c2fda27c3e5ac5fb50c53aebae000bae7d0238a40a",
+      "testInputSHA256": "3d2743683ea085bc057bb8598cb957d8fa0814e6a6ad939f08f713db2e1969dc"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32804,
+          "exact": 92,
+          "maxAbsoluteDifference": 7.62939453125e-06,
+          "maxPositiveULPDifference": 258,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1792,
+          "exact": 31104,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32803,
+          "exact": 93,
+          "maxAbsoluteDifference": 7.659196853637695e-06,
+          "maxPositiveULPDifference": 258,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-256-16",
+      "curve": "linear",
+      "oracleSampleSHA256": "3fdc1e2207ea3660e81fad31e2dec5b08d52d5fcb5b8a883c8a0eb27bf0898a6",
+      "referenceFileSHA256": "8a45d9a70ac47c9a465a5ba76d8dbb2534601e41f0fe4a7377b0690f8c112d9e",
+      "samples": 32896,
+      "sourceProfileSHA256": "bd4d5b3681e08559d47fb8a00205c169aa64d4c95c76d2283156b2350635896b",
+      "testInputSHA256": "410b0a13bfc36b9a47ab463380973036198da39b743e9a6c8304fe9e49f9cc24"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32802,
+          "exact": 94,
+          "maxAbsoluteDifference": 7.68899917602539e-06,
+          "maxPositiveULPDifference": 259,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1904,
+          "exact": 30992,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32802,
+          "exact": 94,
+          "maxAbsoluteDifference": 7.68899917602539e-06,
+          "maxPositiveULPDifference": 259,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-257-16",
+      "curve": "power",
+      "oracleSampleSHA256": "603d8d361c0304c0dd94570bf79d48e6358d1f2deb6a6ae193fb28d303588379",
+      "referenceFileSHA256": "59d1ffd6227d0adb426ff024432852de6e96da983ffd0117d2bc0fb57dc5bc7e",
+      "samples": 32896,
+      "sourceProfileSHA256": "ad8b64c09bbd7950d00729a921e7860e1cf7332a9fb586beb5005bdf7fc5183c",
+      "testInputSHA256": "545164278ae436d8cc38c67fa39a47d955aaba77213ad5a0e4a4beed6c5b2b6c"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32829,
+          "exact": 67,
+          "maxAbsoluteDifference": 7.897615432739258e-06,
+          "maxPositiveULPDifference": 341,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1893,
+          "exact": 31003,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 6,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32834,
+          "exact": 62,
+          "maxAbsoluteDifference": 7.897615432739258e-06,
+          "maxPositiveULPDifference": 341,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-282-16",
+      "curve": "power",
+      "oracleSampleSHA256": "38d9ab03eb24544d8d61bf5f2f1eb27b63c58a90cc5a855f6be4b05de6c4aef5",
+      "referenceFileSHA256": "c3fd0b14eb9b1428394b280c96d032c079b227d7d1568d65cf33c78d925b4b7a",
+      "samples": 32896,
+      "sourceProfileSHA256": "1afdb6b67cb370fe56643fede39f54bce26d01d5f39253c34512dcbe5b391c2a",
+      "testInputSHA256": "f38dd127a0d34b7a6ad2f607a89e90b7926621f5b7352d214b1f1d29bf171e2b"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 1.4551915228366852e-11,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 1.4551915228366852e-11,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32845,
+          "exact": 51,
+          "maxAbsoluteDifference": 8.046627044677734e-06,
+          "maxPositiveULPDifference": 1085,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1910,
+          "exact": 30986,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 10,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32840,
+          "exact": 56,
+          "maxAbsoluteDifference": 8.046627044677734e-06,
+          "maxPositiveULPDifference": 1085,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-320-16",
+      "curve": "power",
+      "oracleSampleSHA256": "632ecac22a05245560db1ecb394a750f59e2a8d04e378aaa817fb5474e48ffea",
+      "referenceFileSHA256": "fe7912b6013f84eebc9cfbf03fb98e9ad1e00201c54ed9406a2fcb374791ff61",
+      "samples": 32896,
+      "sourceProfileSHA256": "3a3135ac999d925e72fba8424446187e5394abeb1a6ba19b7f0c706957a37242",
+      "testInputSHA256": "a8a0e0977c9b95d6e8086ebeb2fe843f05959cd9c5af2fd4f10a04e4e186b514"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 5,
+          "exact": 32891,
+          "maxAbsoluteDifference": 1.4551915228366852e-11,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 5,
+          "exact": 32891,
+          "maxAbsoluteDifference": 1.4551915228366852e-11,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32840,
+          "exact": 56,
+          "maxAbsoluteDifference": 8.13603401184082e-06,
+          "maxPositiveULPDifference": 2828,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1848,
+          "exact": 31048,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 11,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32839,
+          "exact": 57,
+          "maxAbsoluteDifference": 8.13603401184082e-06,
+          "maxPositiveULPDifference": 2828,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-384-16",
+      "curve": "power",
+      "oracleSampleSHA256": "95d91a14cde987bd7fee62ae56edf2ebb6222b043d8e2c276ceb929852d8015c",
+      "referenceFileSHA256": "59bcdc87dd1c25d88ce67e053ffb1b457f06048e746121e7f0c156c1a2c34304",
+      "samples": 32896,
+      "sourceProfileSHA256": "1e77eabf955aa8557c633c3abca9a5bc18189c3d8dacaea102bf9c2bcee651c7",
+      "testInputSHA256": "54be575ae58e9677c412ccbc03cd1018df2e142e7de52afe1e75d1baf8b99a22"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32841,
+          "exact": 55,
+          "maxAbsoluteDifference": 7.68899917602539e-06,
+          "maxPositiveULPDifference": 7922,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1938,
+          "exact": 30958,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 7,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32849,
+          "exact": 47,
+          "maxAbsoluteDifference": 7.68899917602539e-06,
+          "maxPositiveULPDifference": 7922,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-512-16",
+      "curve": "power",
+      "oracleSampleSHA256": "942d61dea1c5ad268c67055bab0b7680a03434592bb204a3d8f7a365f537bc8b",
+      "referenceFileSHA256": "43414c752165c857e3f20d6f9930a352fee7593bf9c79af362b7147a57ac2442",
+      "samples": 32896,
+      "sourceProfileSHA256": "83df3a5f25261b0b5246c0f89b55889f5bbe79e032c4e5f48092b6700dbc1a26",
+      "testInputSHA256": "a4242d600bb620b836a2001af819d7b84c8ce00180b92eb52de1debfefe4a80f"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32893,
+          "exact": 3,
+          "maxAbsoluteDifference": 0.0002466738224029541,
+          "maxPositiveULPDifference": 213796,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1959,
+          "exact": 30937,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 14,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32893,
+          "exact": 3,
+          "maxAbsoluteDifference": 0.0002466738224029541,
+          "maxPositiveULPDifference": 213796,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-614-16",
+      "curve": "power",
+      "oracleSampleSHA256": "0f6852272c112eddb02ddd587e35b38610b109e2d232b202c0a5d7988fca01a1",
+      "referenceFileSHA256": "46a7283dc3b99770bdde84f264127297df32ee4b7f819a9fa08fd6c33bcbec1a",
+      "samples": 32896,
+      "sourceProfileSHA256": "b26b341e5ef8d3c1bae31081b92aad2ee09a7e69622302ccee1f3f6720a2eea6",
+      "testInputSHA256": "9defc1bd271a2fa588621363ca8e17871609cde75448c0e1a15171fa91bdf2d2"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 207,
+          "exact": 32689,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 207,
+          "exact": 32689,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 682,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1849,
+          "exact": 31047,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 21,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 682,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-665-16",
+      "curve": "power",
+      "oracleSampleSHA256": "fa981074552e4c2f97abb844d4e7199cca444c286f7b308e043eff08f41a3ff0",
+      "referenceFileSHA256": "d45fdaaf4bc73ff9c030fc41319343b4e6ffccff631e69aa8d4d6b7fd28816ae",
+      "samples": 32896,
+      "sourceProfileSHA256": "d5ac0b0c817e34822fe49eb702e0d7032492994c5be21fea58215a3e002c6d95",
+      "testInputSHA256": "1cc46a8b3916573494b2cc57d1733047302da5a4afb7026f6da3e457a9aa5b44"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 195,
+          "exact": 32701,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 195,
+          "exact": 32701,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32847,
+          "exact": 49,
+          "maxAbsoluteDifference": 7.0035457611083984e-06,
+          "maxPositiveULPDifference": 707,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1892,
+          "exact": 31004,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 20,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32852,
+          "exact": 44,
+          "maxAbsoluteDifference": 7.0035457611083984e-06,
+          "maxPositiveULPDifference": 707,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-700-16",
+      "curve": "power",
+      "oracleSampleSHA256": "28d7ae1b71b3170b97055c186b7c16c3b6718fd97aaa900631119228ecb6af96",
+      "referenceFileSHA256": "dfc181283ca25b299dec4a50e0540eb847840684a5fc1f9209a223d9ee084046",
+      "samples": 32896,
+      "sourceProfileSHA256": "f18a1b6644f02b94d22b48c50dd1b0fc55f116ad9d0bc12016e3af19eb956eb8",
+      "testInputSHA256": "0faafd59403207ce969eb5a3b0e6dba64af68f844c7d1aa76552ab2efc0b4231"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 213,
+          "exact": 32683,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 213,
+          "exact": 32683,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32850,
+          "exact": 46,
+          "maxAbsoluteDifference": 6.884336471557617e-06,
+          "maxPositiveULPDifference": 757,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1992,
+          "exact": 30904,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 15,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32847,
+          "exact": 49,
+          "maxAbsoluteDifference": 6.884336471557617e-06,
+          "maxPositiveULPDifference": 757,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-750-16",
+      "curve": "power",
+      "oracleSampleSHA256": "2910f390cd04b3352ce302de3ff87362428326d9fcf66003aecb3ff3629ade8d",
+      "referenceFileSHA256": "0c19656946f43551f6d839ca5271b27e91fdd7bd9c6f1a264d48b25c825258bd",
+      "samples": 32896,
+      "sourceProfileSHA256": "adb3fb3124b9033a139bd2528247031f02aeed646e8660a9eb72a60188f53ba4",
+      "testInputSHA256": "64053124303026861c6aca41f53c6cdab4f02be8c419ecb8d7c8b4e17b1bcf8e"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 195,
+          "exact": 32701,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 195,
+          "exact": 32701,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32849,
+          "exact": 47,
+          "maxAbsoluteDifference": 6.884336471557617e-06,
+          "maxPositiveULPDifference": 776,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1847,
+          "exact": 31049,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 21,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32853,
+          "exact": 43,
+          "maxAbsoluteDifference": 6.884336471557617e-06,
+          "maxPositiveULPDifference": 776,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-767-16",
+      "curve": "power",
+      "oracleSampleSHA256": "87ed78765dbdec161920c184a5a750239f277980fdd62c28bb8ed96a4fe08064",
+      "referenceFileSHA256": "ae36799a11ff93e01814c02bfea02d0677ad76ac520b6954a3a06d3639144c99",
+      "samples": 32896,
+      "sourceProfileSHA256": "e6b75e270e53f0aaa4dca38ffb498c26a8ec253b18e859bed80324ea9ca79d1e",
+      "testInputSHA256": "e59cac784408eefc8460264c83a1c016e657724633b2645de77d7e8b645546ee"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 324,
+          "exact": 32572,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 324,
+          "exact": 32572,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32846,
+          "exact": 50,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 780,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1851,
+          "exact": 31045,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 21,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32844,
+          "exact": 52,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 780,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-768-16",
+      "curve": "power",
+      "oracleSampleSHA256": "2dbdeb8658e98bf2ad7bc48e92254d1b51d67cebc051ab99fffc45a888224464",
+      "referenceFileSHA256": "664fd7b81a2a1c6c61def518820bd514c79443cedc32e0e620eaa29034a4b40a",
+      "samples": 32896,
+      "sourceProfileSHA256": "a206632463090a99b5ae25652bb65bf2646487af1b17a2b5cea1215e03a7502f",
+      "testInputSHA256": "f83edc9c177accd37457da19243c8fdf18bc5d269a4e4e792e7026380c691d63"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 209,
+          "exact": 32687,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 209,
+          "exact": 32687,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32843,
+          "exact": 53,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 777,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1912,
+          "exact": 30984,
+          "maxAbsoluteDifference": 8.940696716308594e-08,
+          "maxPositiveULPDifference": 21,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32844,
+          "exact": 52,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 776,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-769-16",
+      "curve": "power",
+      "oracleSampleSHA256": "01fa04dabc4828cced676c1b5ea3db730ea78a747e94cba541f563742c58beeb",
+      "referenceFileSHA256": "9ae4b8ddbee82889427016161f579aff08de223c467fe5bd60f0695229314694",
+      "samples": 32896,
+      "sourceProfileSHA256": "20ecda23eacb704d132bd4a8a9b313f08edda8575e08be5e4c76fa1f410d9fe0",
+      "testInputSHA256": "e089267b453dacd92aa23e2121e5908643727301d7dbda2fb56c658d3ca271e5"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32754,
+          "exact": 142,
+          "maxAbsoluteDifference": 7.599592208862305e-06,
+          "maxPositiveULPDifference": 528505048,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1962,
+          "exact": 30934,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 3,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32757,
+          "exact": 139,
+          "maxAbsoluteDifference": 7.599592208862305e-06,
+          "maxPositiveULPDifference": 528505048,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-129-16",
+      "curve": "power",
+      "oracleSampleSHA256": "3579ed29a184e7183e197d82569a97ce6355d5de547735846c81f8f393cca32d",
+      "referenceFileSHA256": "1ca7e93b0f402341f048b6af7b2124a2232f8195e0e8e317840354157972fdcf",
+      "samples": 32896,
+      "sourceProfileSHA256": "531f41a393e17715f31cf035fe3e28ecb95a71e8bae0d1848477470519dfb607",
+      "testInputSHA256": "181a1ab591043f37535ade3651d45708ffb9e7e5ce8aa71d63e6d9ca0355c4b1"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 213,
+          "exact": 32683,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 213,
+          "exact": 32683,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32842,
+          "exact": 54,
+          "maxAbsoluteDifference": 6.258487701416016e-06,
+          "maxPositiveULPDifference": 1522,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1879,
+          "exact": 31017,
+          "maxAbsoluteDifference": 8.940696716308594e-08,
+          "maxPositiveULPDifference": 42,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32844,
+          "exact": 52,
+          "maxAbsoluteDifference": 6.22868537902832e-06,
+          "maxPositiveULPDifference": 1522,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-1500-16",
+      "curve": "power",
+      "oracleSampleSHA256": "d8ed96c0726dfd30e26e1fdfd09ce222eb135db6487b820223811ea5de47efc3",
+      "referenceFileSHA256": "c68d884679d2e607aae83427c35fdba26cf6a1f9aff258997d274c5cfe782808",
+      "samples": 32896,
+      "sourceProfileSHA256": "997c88b174b3ff7422b42f4076f478a6f0480eeef68d8b1652d5b8a6762dd96a",
+      "testInputSHA256": "cb866343c51909e7d3066dcae5f6987ce4f8fa3772193e56a8e4d8dcc111dd70"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32769,
+          "exact": 127,
+          "maxAbsoluteDifference": 6.198883056640625e-06,
+          "maxPositiveULPDifference": 403387683,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1911,
+          "exact": 30985,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 3,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32769,
+          "exact": 127,
+          "maxAbsoluteDifference": 6.198883056640625e-06,
+          "maxPositiveULPDifference": 403387683,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-159-16",
+      "curve": "power",
+      "oracleSampleSHA256": "0ae92cd5b9858888ea3287c836fc025e5914561deee0157447dc91b49ab0e44f",
+      "referenceFileSHA256": "ab346ef275c7a94a019d228c2cb69acef6f998ee0734bc628dfaa102a0be870b",
+      "samples": 32896,
+      "sourceProfileSHA256": "73d39a4fdab06e5f5941955cd0a84609b4bbc6b59b0171f34b2060c5463a69fb",
+      "testInputSHA256": "f842adb8c4b6930aad51fe626da39c58343e997faf142c114824f17cc0eecd68"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 4,
+          "exact": 32892,
+          "maxAbsoluteDifference": 9.313225746154785e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 4,
+          "exact": 32892,
+          "maxAbsoluteDifference": 9.313225746154785e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32799,
+          "exact": 97,
+          "maxAbsoluteDifference": 6.735324859619141e-06,
+          "maxPositiveULPDifference": 295001171,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1881,
+          "exact": 31015,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32796,
+          "exact": 100,
+          "maxAbsoluteDifference": 6.735324859619141e-06,
+          "maxPositiveULPDifference": 295001171,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-185-16",
+      "curve": "power",
+      "oracleSampleSHA256": "a8a443fde8afaad0440d224b6a829335e08701bf8056dea1d64dec375cae55a9",
+      "referenceFileSHA256": "6101bf38f56cab010a53edc0af82d4770790afbfc8533f70bd9fd22fa2d29303",
+      "samples": 32896,
+      "sourceProfileSHA256": "5f8d710934b39794fe503ec50d43c107a84114ebed39461837b0bdbe67e003d8",
+      "testInputSHA256": "beafad37444708f2d2c4e0df09c25f3f07857945cc9fe139f6be5328fb672476"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32805,
+          "exact": 91,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 269995666,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1816,
+          "exact": 31080,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32804,
+          "exact": 92,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 269995666,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-191-16",
+      "curve": "power",
+      "oracleSampleSHA256": "080dde1d04f17725ba977eb5e5d806c9cdaa51f8e968c24279887e0914a207bb",
+      "referenceFileSHA256": "5a07103da864528364975220fe3b7d89ec0d6c55fbd2daa0e59e3856eefa4126",
+      "samples": 32896,
+      "sourceProfileSHA256": "99311b009a91ac7e34a05d7fadf7a5710c382899da44d4551f9f7189b7fa9deb",
+      "testInputSHA256": "b9a1680dfe45d6f851c1a61af22c8134ceadd1ab0a6671b46a32362b357bda5a"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 4,
+          "exact": 32892,
+          "maxAbsoluteDifference": 9.313225746154785e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 4,
+          "exact": 32892,
+          "maxAbsoluteDifference": 9.313225746154785e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32801,
+          "exact": 95,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 265766140,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1939,
+          "exact": 30957,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32797,
+          "exact": 99,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 265766140,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-192-16",
+      "curve": "power",
+      "oracleSampleSHA256": "8120be9f1051b614a1503b1c4421f9f0bd9c56321491d6f92a1a6e6e5a7bd2cf",
+      "referenceFileSHA256": "fd1b141bf9b22181cda6994c427287196b844ba005c516a10b0a1a4c9d843376",
+      "samples": 32896,
+      "sourceProfileSHA256": "67717314e860dbf06c542a75392c2cd0b9551f744118ada6a7eb0f1afa8780ef",
+      "testInputSHA256": "981432a38daf6cffb1d092f2edfea7077fce7df59b382244f06559eefb77eabe"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 6,
+          "exact": 32890,
+          "maxAbsoluteDifference": 9.313225746154785e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 6,
+          "exact": 32890,
+          "maxAbsoluteDifference": 9.313225746154785e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32801,
+          "exact": 95,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 261661080,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1874,
+          "exact": 31022,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32800,
+          "exact": 96,
+          "maxAbsoluteDifference": 6.854534149169922e-06,
+          "maxPositiveULPDifference": 261661080,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-193-16",
+      "curve": "power",
+      "oracleSampleSHA256": "e673c49354a9d30b6409b0192d31d41b24e5dafaec5dce387f4aef35807f154c",
+      "referenceFileSHA256": "996783f01a24913179d25560653156707fed1f699322453de52da53a4b39df97",
+      "samples": 32896,
+      "sourceProfileSHA256": "42cb0c82f602a53348da52d054b39065ba58d17f352a60d29cebfa0d59ed9127",
+      "testInputSHA256": "c15ea874a7039da31c0c9cfc9e41dd2663fe9862d454a2deb715aea14f5e03eb"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32813,
+          "exact": 83,
+          "maxAbsoluteDifference": 6.973743438720703e-06,
+          "maxPositiveULPDifference": 232520632,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1912,
+          "exact": 30984,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32811,
+          "exact": 85,
+          "maxAbsoluteDifference": 6.973743438720703e-06,
+          "maxPositiveULPDifference": 232520632,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-200-16",
+      "curve": "power",
+      "oracleSampleSHA256": "151afff0c8fa9756d26916afe2dc28c21fbb7cc157cb39da9498af92cc861f4c",
+      "referenceFileSHA256": "6b1eb48e6eccd63c69fb3cd2f566c4495ed7869f9d7b682396e900517cafa622",
+      "samples": 32896,
+      "sourceProfileSHA256": "11b2edab3b2193a5140a5b8cc31895dd944acdc88f7173886ce6cb0f330b02a3",
+      "testInputSHA256": "3e9cfcb383205cd01a1a03fd2465b5719ee0a067d80cb2c8a60a40750565d714"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 4.656612873077393e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 4.656612873077393e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32807,
+          "exact": 89,
+          "maxAbsoluteDifference": 7.331371307373047e-06,
+          "maxPositiveULPDifference": 132825287,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1890,
+          "exact": 31006,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32802,
+          "exact": 94,
+          "maxAbsoluteDifference": 7.331371307373047e-06,
+          "maxPositiveULPDifference": 132825287,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-224-16",
+      "curve": "power",
+      "oracleSampleSHA256": "e9097809d41cc1a4e310f57be66e0319add51a931e8d32ca8753f684e41cbb7a",
+      "referenceFileSHA256": "168e54615d4cb06b04b6ffca61c708c59df425bc91e970aac68ecfd311fb6e3d",
+      "samples": 32896,
+      "sourceProfileSHA256": "75da8eae34f40ccac054f64b1ac1158c06c308b0feb6b63fcb06f61f308e71fc",
+      "testInputSHA256": "231beaab3f0b0b08eefc927f263ca641a74e26bf33f2c02f5e0ea0489de11c3b"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 5.820766091346741e-11,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 5.820766091346741e-11,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32806,
+          "exact": 90,
+          "maxAbsoluteDifference": 7.3909759521484375e-06,
+          "maxPositiveULPDifference": 107911440,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1833,
+          "exact": 31063,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32804,
+          "exact": 92,
+          "maxAbsoluteDifference": 7.3909759521484375e-06,
+          "maxPositiveULPDifference": 107911440,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-230-16",
+      "curve": "power",
+      "oracleSampleSHA256": "865d96f1ee3846e68d8d2142c535474d27863950fe9f5704a2499ec16a3b48ce",
+      "referenceFileSHA256": "e0a732be2ce92816b89f8fbbb7d63cf5d0930667d4a6fce5758e07bb9711a439",
+      "samples": 32896,
+      "sourceProfileSHA256": "0a2c51312dd59534bd59da4a69d2446fbc89eb91882e60a8ee158d3e8bed3798",
+      "testInputSHA256": "5ea51ce30305b8de76129a81d06b76fa89bc1b93e808d561e38c460163435239"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 4.656612873077393e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 4.656612873077393e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32811,
+          "exact": 85,
+          "maxAbsoluteDifference": 7.450580596923828e-06,
+          "maxPositiveULPDifference": 103361519,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1926,
+          "exact": 30970,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 4,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32819,
+          "exact": 77,
+          "maxAbsoluteDifference": 7.450580596923828e-06,
+          "maxPositiveULPDifference": 103361519,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-231-16",
+      "curve": "power",
+      "oracleSampleSHA256": "53d557782be8e49231c107f0e844e19aebbf8af42f36ce8c992aa0924793e399",
+      "referenceFileSHA256": "fc153da4c0678ed36feff211b68079f307b1bc3443d3276642808586ef389f43",
+      "samples": 32896,
+      "sourceProfileSHA256": "aedbc19c6361df19890fa540e0bd85d32ffb38cf33efe6a228522622f35c6e5c",
+      "testInputSHA256": "1ff047f77d6442416b7f5023683674a85ea379ce02c17ba03dd8129ff2d3b5ff"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 2.3283064365386963e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 2.3283064365386963e-10,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32815,
+          "exact": 81,
+          "maxAbsoluteDifference": 7.62939453125e-06,
+          "maxPositiveULPDifference": 24895470,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1916,
+          "exact": 30980,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 5,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32815,
+          "exact": 81,
+          "maxAbsoluteDifference": 7.62939453125e-06,
+          "maxPositiveULPDifference": 24895470,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-250-16",
+      "curve": "power",
+      "oracleSampleSHA256": "083fe7aad057fdd4ca58732ee9eb92022f7c9f1979745676f24c972a122382fc",
+      "referenceFileSHA256": "0d85e947e655e7d935f7914261378e29233b8d32250c3c0efe0289d87c7189bf",
+      "samples": 32896,
+      "sourceProfileSHA256": "235f58398f33a0092bd5c05031773697d0d48a56cf798a2d3ed4ac6ecae852d3",
+      "testInputSHA256": "2f396b8cf3119a4e51446a1f1e15fbb1d24fdafb41710eb3bd7142e99c98e5f8"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32855,
+          "exact": 41,
+          "maxAbsoluteDifference": 7.212162017822266e-06,
+          "maxPositiveULPDifference": 18986,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1925,
+          "exact": 30971,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 21,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32857,
+          "exact": 39,
+          "maxAbsoluteDifference": 7.212162017822266e-06,
+          "maxPositiveULPDifference": 18986,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-630-16",
+      "curve": "power",
+      "oracleSampleSHA256": "8a974b50f40ff19834737f586c1d6e2431d3aedccaaba09a9dd677cc179235a4",
+      "referenceFileSHA256": "8f69397801774c87a931a9e57e7b72c34064aec9714aae384e0057b9c850c2a5",
+      "samples": 32896,
+      "sourceProfileSHA256": "105a6262552af8c1bd26f9f3bb154398ed75d9475ad8993bc301267f1ce5fa8a",
+      "testInputSHA256": "43c4c9b2be77d980b9605795613ef9974bce9f0b9079366643d398271eb17bc3"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 4.440892098500626e-16,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 2,
+          "exact": 32894,
+          "maxAbsoluteDifference": 4.440892098500626e-16,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32859,
+          "exact": 37,
+          "maxAbsoluteDifference": 7.18235969543457e-06,
+          "maxPositiveULPDifference": 17072,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1916,
+          "exact": 30980,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 10,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32857,
+          "exact": 39,
+          "maxAbsoluteDifference": 7.18235969543457e-06,
+          "maxPositiveULPDifference": 17072,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-639-16",
+      "curve": "power",
+      "oracleSampleSHA256": "d03507e6760e284badfa05826716aecadf0af5b200d7a386fa125b5d22d79506",
+      "referenceFileSHA256": "1e0b116d47749c47e23d74a2a876bcd30f9d056feed49d6930ce270eedf0b4d8",
+      "samples": 32896,
+      "sourceProfileSHA256": "c32ed4a6fd50d48c886fd9fe915ca125d403ba0939a0cd1ca0affa824271c5cb",
+      "testInputSHA256": "94b45fd83408dd7c7ef97f410b009350a1e5ef53f53b9d9368d41d2fc6e1f61f"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1,
+          "exact": 32895,
+          "maxAbsoluteDifference": 5.684341886080802e-14,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 1,
+          "exact": 32895,
+          "maxAbsoluteDifference": 5.684341886080802e-14,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32856,
+          "exact": 40,
+          "maxAbsoluteDifference": 7.212162017822266e-06,
+          "maxPositiveULPDifference": 16800,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1899,
+          "exact": 30997,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 16,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32858,
+          "exact": 38,
+          "maxAbsoluteDifference": 7.212162017822266e-06,
+          "maxPositiveULPDifference": 16800,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-640-16",
+      "curve": "power",
+      "oracleSampleSHA256": "3af085df821d83429b3b42f124d5f06e92eec7a41fc47bbfa4ee8f3b3cb7575b",
+      "referenceFileSHA256": "c5439d4d7d396e277c12e43c25c8027c5aee44c586fdec6db1aae1d7df541b97",
+      "samples": 32896,
+      "sourceProfileSHA256": "a4512c5c54a5aee0986ff4e4a948b04ac2906d25641ebeec8515bcfc120897e2",
+      "testInputSHA256": "de2e98874580f755dd6b60968ee2603519a48df3bb3c02bc7c4e18d51a9f3868"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 232,
+          "exact": 32664,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 232,
+          "exact": 32664,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32846,
+          "exact": 50,
+          "maxAbsoluteDifference": 7.152557373046875e-06,
+          "maxPositiveULPDifference": 651,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1936,
+          "exact": 30960,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 17,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32848,
+          "exact": 48,
+          "maxAbsoluteDifference": 7.152557373046875e-06,
+          "maxPositiveULPDifference": 650,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-641-16",
+      "curve": "power",
+      "oracleSampleSHA256": "4e75c40c3cecea85915c5b0c38d4912f031500910acfda30bc05d02402f6cfb9",
+      "referenceFileSHA256": "5827e663362ad4d13eab1307d23e259cf79e6db1feb98379583b18e6c4528eb1",
+      "samples": 32896,
+      "sourceProfileSHA256": "16955e2b31434c9e946714b8642c39c46385e86a846ddc053dbc9f2370d23acd",
+      "testInputSHA256": "f09306ed0844c2fb60fe5a04d8e06fc4a272d88d711df564e6d7a6a31d96c95f"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 196,
+          "exact": 32700,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 196,
+          "exact": 32700,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 7.152557373046875e-06,
+          "maxPositiveULPDifference": 657,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1925,
+          "exact": 30971,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 16,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 7.152557373046875e-06,
+          "maxPositiveULPDifference": 657,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-645-16",
+      "curve": "power",
+      "oracleSampleSHA256": "5a0f266b48f24baa0851a8f051a255941c2b0a6e917b83612d9203d0d6aad0b4",
+      "referenceFileSHA256": "c0860eac8249bdeaa8d5cba7dd004e23706cf10fd8a7829d8a5b8381ece53bea",
+      "samples": 32896,
+      "sourceProfileSHA256": "2c2a7202439ab6cb214ed976b661b32fc92a73d6d7cdac7c78e435ebc2b6db66",
+      "testInputSHA256": "663913da4ac28f1145d18d554d42e390afd282bb9547b4820bb1bc7300149819"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 203,
+          "exact": 32693,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 203,
+          "exact": 32693,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 7.152557373046875e-06,
+          "maxPositiveULPDifference": 666,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1862,
+          "exact": 31034,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 20,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32850,
+          "exact": 46,
+          "maxAbsoluteDifference": 7.152557373046875e-06,
+          "maxPositiveULPDifference": 666,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-650-16",
+      "curve": "power",
+      "oracleSampleSHA256": "3994fbb36cffd6a23d78cda5e5316ac3b5ec293914699cdf0cb4ffb42f44a706",
+      "referenceFileSHA256": "bebeb38c2c96c952d35265e18556777e20fa1ed87c891b050eb39cb08d01d325",
+      "samples": 32896,
+      "sourceProfileSHA256": "ea6855ee166b3de19e91a70f75728b08fee114624a8f60a6661df5204702f519",
+      "testInputSHA256": "a4960e694c20abf16ed509295c795c8593a0af50fb4a202fa7c305217e49da71"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 209,
+          "exact": 32687,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 209,
+          "exact": 32687,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32843,
+          "exact": 53,
+          "maxAbsoluteDifference": 7.12275505065918e-06,
+          "maxPositiveULPDifference": 659,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1993,
+          "exact": 30903,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 18,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32842,
+          "exact": 54,
+          "maxAbsoluteDifference": 7.12275505065918e-06,
+          "maxPositiveULPDifference": 659,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-655-16",
+      "curve": "power",
+      "oracleSampleSHA256": "bf808c59f04a263404eaf72a0164d98f3109491884eb8b93785faa9ddd1d6e63",
+      "referenceFileSHA256": "18a711589dfdb4e58d73c84739a40d1345dab488635c7836559ce2270c94eafb",
+      "samples": 32896,
+      "sourceProfileSHA256": "cb05dce535df2d9c6622d368c8b4f68d17127b96d2aa7d9efe8c5ca47edba5e0",
+      "testInputSHA256": "6048d0b708c2bb593fd86aa06f1adbf2e4f0333821d2da34683e6f40e17034f2"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 199,
+          "exact": 32697,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 199,
+          "exact": 32697,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32850,
+          "exact": 46,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 669,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1877,
+          "exact": 31019,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 11,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32851,
+          "exact": 45,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 669,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-659-16",
+      "curve": "power",
+      "oracleSampleSHA256": "07c9fad06214b60c958566fdd93bcf13a5e492b1ebf3182eb7d515d9f6900ff6",
+      "referenceFileSHA256": "5a27f49819ab05ae32f23a5245eb67aab89d4f9c42d97d72eefddd65c31d7112",
+      "samples": 32896,
+      "sourceProfileSHA256": "3f09823112afcaf4ab0b5b2345d7b18624dd4bba8c2fba775a7e4c5bb81b0dac",
+      "testInputSHA256": "43217f7dce10fd7ef10a51d4cad280d0387d5142ac375431f948cb13f9521a49"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 193,
+          "exact": 32703,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 193,
+          "exact": 32703,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32848,
+          "exact": 48,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 678,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1945,
+          "exact": 30951,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 18,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32849,
+          "exact": 47,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 678,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-660-16",
+      "curve": "power",
+      "oracleSampleSHA256": "2872797f3e63fc2f7b7f000b4d134e4cf8da0ec350ef5158be38382766feef64",
+      "referenceFileSHA256": "4eea5e1bfb98786d1d24fa0d329b2faf50965ce52383e549086369aee6a55a2f",
+      "samples": 32896,
+      "sourceProfileSHA256": "7afc20e46f5294a83c4b39af66941bbfd6caa77f285a0784a842bb84b69eaf03",
+      "testInputSHA256": "964442d192727ad149f7c39a9473905664c0e34aa52fa9e28771984040e98536"
+    },
+    {
+      "after": {
+        "arm64": {
+          "different": 0,
+          "exact": 32896,
+          "maxAbsoluteDifference": 0,
+          "maxPositiveULPDifference": 0,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 210,
+          "exact": 32686,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 210,
+          "exact": 32686,
+          "maxAbsoluteDifference": 5.960464477539063e-08,
+          "maxPositiveULPDifference": 1,
+          "sampleCount": 32896
+        }
+      },
+      "before": {
+        "arm64": {
+          "different": 32844,
+          "exact": 52,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 684,
+          "sampleCount": 32896
+        },
+        "crossArchitecture": {
+          "different": 1916,
+          "exact": 30980,
+          "maxAbsoluteDifference": 1.1920928955078125e-07,
+          "maxPositiveULPDifference": 12,
+          "sampleCount": 32896
+        },
+        "x86_64": {
+          "different": 32845,
+          "exact": 51,
+          "maxAbsoluteDifference": 7.092952728271484e-06,
+          "maxPositiveULPDifference": 684,
+          "sampleCount": 32896
+        }
+      },
+      "case": "owned-gamma-664-16",
+      "curve": "power",
+      "oracleSampleSHA256": "74b502f16b534cd05572e67a0ea6b4aac298c28077f0e001a3f84675ab5e47b7",
+      "referenceFileSHA256": "c34998d0ae04c8f206d2013549e7c3eb43863476395738acec1b0aae7650adaa",
+      "samples": 32896,
+      "sourceProfileSHA256": "53c357f48896d33141588da21dc48515e2ebe397519c1340ea5b97ebfcd6fdcd",
+      "testInputSHA256": "761e7595927bb7bbf3a1ed9aad6f9216747feab4f4edaa0edbe2ce2c1008ec56"
+    }
+  ],
+  "checkpoint": 567,
+  "comparisonsByCurve": {
+    "linear": {
+      "after": {
+        "ARMExact": 66048,
+        "IntelExact": 66048,
+        "cases": 3,
+        "differAcrossArchitectures": 0,
+        "samples": 66048,
+        "worstARMAbsoluteError": 0,
+        "worstIntelAbsoluteError": 0
+      },
+      "before": {
+        "ARMExact": 360,
+        "IntelExact": 357,
+        "cases": 3,
+        "differAcrossArchitectures": 3595,
+        "samples": 66048,
+        "worstARMAbsoluteError": 7.62939453125e-06,
+        "worstIntelAbsoluteError": 7.659196853637695e-06
+      }
+    },
+    "power": {
+      "after": {
+        "ARMExact": 1580032,
+        "IntelExact": 1566975,
+        "cases": 44,
+        "differAcrossArchitectures": 13057,
+        "samples": 1580032,
+        "worstARMAbsoluteError": 0,
+        "worstIntelAbsoluteError": 7.450580596923828e-08
+      },
+      "before": {
+        "ARMExact": 2629,
+        "IntelExact": 2777,
+        "cases": 44,
+        "differAcrossArchitectures": 137715,
+        "samples": 1580032,
+        "worstARMAbsoluteError": 0.0004180577234365046,
+        "worstIntelAbsoluteError": 0.0004180577234365046
+      }
+    },
+    "sampled": {
+      "after": {
+        "ARMExact": 330752,
+        "IntelExact": 330752,
+        "cases": 7,
+        "differAcrossArchitectures": 0,
+        "samples": 330752,
+        "worstARMAbsoluteError": 0,
+        "worstIntelAbsoluteError": 0
+      },
+      "before": {
+        "ARMExact": 2072,
+        "IntelExact": 2064,
+        "cases": 7,
+        "differAcrossArchitectures": 38636,
+        "samples": 330752,
+        "worstARMAbsoluteError": 0.0004493594169616699,
+        "worstIntelAbsoluteError": 0.0004493594169616699
+      }
+    },
+    "unqualifiedPower": {
+      "after": {
+        "ARMExact": 3,
+        "IntelExact": 3,
+        "cases": 1,
+        "differAcrossArchitectures": 1996,
+        "samples": 32896,
+        "worstARMAbsoluteError": 0.004785656929016113,
+        "worstIntelAbsoluteError": 0.004785656929016113
+      },
+      "before": {
+        "ARMExact": 3,
+        "IntelExact": 3,
+        "cases": 1,
+        "differAcrossArchitectures": 1996,
+        "samples": 32896,
+        "worstARMAbsoluteError": 0.004785656929016113,
+        "worstIntelAbsoluteError": 0.004785656929016113
+      }
+    }
+  },
+  "fullPhotoshopParity": false,
+  "independentIntelAdobeComparison": {
+    "linear": {
+      "adobeCrossArchitectureDifferences": 0,
+      "cases": 3,
+      "exact": 66048,
+      "maximumAbsoluteDifference": 0,
+      "samples": 66048
+    },
+    "power": {
+      "adobeCrossArchitectureDifferences": 13057,
+      "cases": 44,
+      "exact": 1580032,
+      "maximumAbsoluteDifference": 0,
+      "samples": 1580032
+    },
+    "sampled": {
+      "adobeCrossArchitectureDifferences": 0,
+      "cases": 7,
+      "exact": 330752,
+      "maximumAbsoluteDifference": 0,
+      "samples": 330752
+    },
+    "unqualifiedPower": {
+      "adobeCrossArchitectureDifferences": 32791,
+      "cases": 1,
+      "exact": 133,
+      "maximumAbsoluteDifference": 5.424022674560547e-06,
+      "samples": 32896
+    }
+  },
+  "intelPhotoshopCaseHashes": {
+    "adobergb16": {
+      "photoshopIntelPlaneSHA256": "e83bc3371dfdef2ab3d9e3d24d4f441128404db7e19a9b2e2d4e119aa3db6ff2",
+      "photoshopIntelSavedSHA256": "0dc7b8f7fa8ce8654a80d9d1efd66f050974e6d3dd53f17c1fd83a066504ea61"
+    },
+    "gray-gamma16": {
+      "photoshopIntelPlaneSHA256": "12e7733387a3e673c40c30a478027c2a4dbf0f813b113c6db9ea77219ba89a25",
+      "photoshopIntelSavedSHA256": "905b96092b5e35e3404e1b8d44dd31bd5e55bd35970c0dca4797dee75e441129"
+    },
+    "gray16": {
+      "photoshopIntelPlaneSHA256": "faa033bb7db07314130726ecce86b3be900e9a67cd21986977b0162f303de874",
+      "photoshopIntelSavedSHA256": "70d72493e7b724b3f946c4aeb214c221433392a6ac54b06c0f36f2333dbedf03"
+    },
+    "gray8": {
+      "photoshopIntelPlaneSHA256": "4f8eabd238d5b9678dd18f50554b2c5a6f027cdd51af7a3712cc42082334761a",
+      "photoshopIntelSavedSHA256": "47387620e8e4ca6c9b6584809aef0c5a5ebdbc196d40c040f7d8a806d2f4f787"
+    },
+    "owned-gamma-1024-16": {
+      "photoshopIntelPlaneSHA256": "d221c2a705df33b225c89f3bae78cc947ca6fb4b5754180c7687b0a84848a150",
+      "photoshopIntelSavedSHA256": "3d86d201878ed05dfd211f13fc8a8a7b4e7f368365cc6667aee4ff61a7570502"
+    },
+    "owned-gamma-128-16": {
+      "photoshopIntelPlaneSHA256": "bd3d7bcdea6ff6cae4c54f2c09d037c8e91339e4679b15fa89d7d0fbb352cdcd",
+      "photoshopIntelSavedSHA256": "f83cd67fccf4c9db7ed4c3ad69a5126dc07f07373c18a548157d21b8a8c6b5b3"
+    },
+    "owned-gamma-129-16": {
+      "photoshopIntelPlaneSHA256": "3579ed29a184e7183e197d82569a97ce6355d5de547735846c81f8f393cca32d",
+      "photoshopIntelSavedSHA256": "693dda781435d2264118b122d284497f76acb4fa44521b4ad86a20c76df7fac0"
+    },
+    "owned-gamma-1500-16": {
+      "photoshopIntelPlaneSHA256": "2f4e87f4154603276b3cadf43f62e7c1ff09f0e91a8608a900152b39cf4e5db6",
+      "photoshopIntelSavedSHA256": "b3a09748cc90111b875ad281edb0ab653807ca4f39371fbad09c21456622e88f"
+    },
+    "owned-gamma-159-16": {
+      "photoshopIntelPlaneSHA256": "0ae92cd5b9858888ea3287c836fc025e5914561deee0157447dc91b49ab0e44f",
+      "photoshopIntelSavedSHA256": "963609cffc7076b13f87dd30dc0ee728a20e9b9728789ad48cf6b17a0b2ea8c4"
+    },
+    "owned-gamma-185-16": {
+      "photoshopIntelPlaneSHA256": "a18e5c9e6689c2c9630982885467fffd0a323d0c5e966b93ef7a0734caac6eee",
+      "photoshopIntelSavedSHA256": "c626d4410246d97e69f9f3635fef89d8a6a9344fe8dc5f7b1d8c4bdfcfaff669"
+    },
+    "owned-gamma-191-16": {
+      "photoshopIntelPlaneSHA256": "080dde1d04f17725ba977eb5e5d806c9cdaa51f8e968c24279887e0914a207bb",
+      "photoshopIntelSavedSHA256": "91a1a4b2c3d4cd994bf3407cc3092ad5fb482280e1301cad9e8b994e7da29cc7"
+    },
+    "owned-gamma-192-16": {
+      "photoshopIntelPlaneSHA256": "07460c4fbc792747af70c8af07d6a313dc887f27f17b0e84d8d4fc61a39d1d13",
+      "photoshopIntelSavedSHA256": "5bf252378ec572369da82ed247a81b26d0720e12c961b59279de01e30fa36701"
+    },
+    "owned-gamma-193-16": {
+      "photoshopIntelPlaneSHA256": "aa40569e40c9998efee95f4959d72fed3185765a2d353f0508abbd09932bddc1",
+      "photoshopIntelSavedSHA256": "567e8048e3bb737d2b24e3c1dbce172ed1b90c822abb70d8398f32fd72e7dc04"
+    },
+    "owned-gamma-200-16": {
+      "photoshopIntelPlaneSHA256": "151afff0c8fa9756d26916afe2dc28c21fbb7cc157cb39da9498af92cc861f4c",
+      "photoshopIntelSavedSHA256": "8d3379102b677a4fcd20f44a83600e68f761d9d3c3b3a90d09555676473c0a69"
+    },
+    "owned-gamma-224-16": {
+      "photoshopIntelPlaneSHA256": "9a690d40049effb5326a9e521a867da063baa86c1f7e47a5af805be852586690",
+      "photoshopIntelSavedSHA256": "aba7d4110c641ed289f7b3d1a71cefb9922c5388f06b41a504a014d14afb17d9"
+    },
+    "owned-gamma-230-16": {
+      "photoshopIntelPlaneSHA256": "27c9b1a3ef1e447cce072e6ca7749c471b89db94ecff23161a2f365e392e2f46",
+      "photoshopIntelSavedSHA256": "b5f3263dd986bb7d06008e7a377790b6c25d41621d98d13f78b25b348feb998c"
+    },
+    "owned-gamma-231-16": {
+      "photoshopIntelPlaneSHA256": "efd5742ae799853f2a167a3134761c918944820933d0219f6f2718e889596a5f",
+      "photoshopIntelSavedSHA256": "8e16a29c8be62d2a2d2ca2d5a56736529136dd40bd8d048830496d45b651e1e2"
+    },
+    "owned-gamma-250-16": {
+      "photoshopIntelPlaneSHA256": "932ebb23ad87b16a445c1d6b6241a4aaa8cc6fb842b68dc7ea89cf05a9bc5de0",
+      "photoshopIntelSavedSHA256": "429cdfe6aac68370660e233f73ca8a9a307bdda8d3854b60d64618aed446bf1b"
+    },
+    "owned-gamma-255-16": {
+      "photoshopIntelPlaneSHA256": "8f40a746dd2b8d02934fbce300dff7991b9bdbe7f9a7ddba78f6373662adfa3a",
+      "photoshopIntelSavedSHA256": "0407e844375e2292f43e56b2fd6d41b94286da81d371deec7c0d0182f7b63c48"
+    },
+    "owned-gamma-256-16": {
+      "photoshopIntelPlaneSHA256": "3fdc1e2207ea3660e81fad31e2dec5b08d52d5fcb5b8a883c8a0eb27bf0898a6",
+      "photoshopIntelSavedSHA256": "1bb2e96b582f79dde2302ddcfbae63ca2cf33a56d83b3aa4965d7c7129393311"
+    },
+    "owned-gamma-257-16": {
+      "photoshopIntelPlaneSHA256": "603d8d361c0304c0dd94570bf79d48e6358d1f2deb6a6ae193fb28d303588379",
+      "photoshopIntelSavedSHA256": "3d74bb1a2a15e63bf60067aa58ee1a5b2e2875cc45a9e0d27aa14ade06da6237"
+    },
+    "owned-gamma-282-16": {
+      "photoshopIntelPlaneSHA256": "38d9ab03eb24544d8d61bf5f2f1eb27b63c58a90cc5a855f6be4b05de6c4aef5",
+      "photoshopIntelSavedSHA256": "90e68c908972157a74d2e31e735e7a9ee3f983f026296a3c8127bc75b8536750"
+    },
+    "owned-gamma-320-16": {
+      "photoshopIntelPlaneSHA256": "4d8ca3cd7b1c603203a71904ac7993ce11f5a2adf5742733bab6352c9dfbc5f1",
+      "photoshopIntelSavedSHA256": "0f218ef7d10eb2559d18aed90ee1da1b00da351dd038fe6dc4176da13263bf5a"
+    },
+    "owned-gamma-384-16": {
+      "photoshopIntelPlaneSHA256": "7fdeb649ab919c07a04457024c79cfa495bc4bcc8a9e9ec9d00b54c96ac2e8df",
+      "photoshopIntelSavedSHA256": "d5cab04cde9e99272f87548b86ec461a9e0893eca0dcae1177e2079d9b206606"
+    },
+    "owned-gamma-512-16": {
+      "photoshopIntelPlaneSHA256": "942d61dea1c5ad268c67055bab0b7680a03434592bb204a3d8f7a365f537bc8b",
+      "photoshopIntelSavedSHA256": "2ae8481735f02842f98bf40f7466f84feeab848974fb58331a7f232a515fd57d"
+    },
+    "owned-gamma-614-16": {
+      "photoshopIntelPlaneSHA256": "0f6852272c112eddb02ddd587e35b38610b109e2d232b202c0a5d7988fca01a1",
+      "photoshopIntelSavedSHA256": "5bff5cbebc0486c0eb408150c4aeb309062b45d837db57304055faecd4d360e6"
+    },
+    "owned-gamma-630-16": {
+      "photoshopIntelPlaneSHA256": "8a974b50f40ff19834737f586c1d6e2431d3aedccaaba09a9dd677cc179235a4",
+      "photoshopIntelSavedSHA256": "5d49a5cd316188e16103a16a655a1554e62876397e46b012c6cedd7b8983cc4d"
+    },
+    "owned-gamma-639-16": {
+      "photoshopIntelPlaneSHA256": "2a30a6d591bbad18513e3af10f4d971b28236a70ac5978d945c43997d35de1af",
+      "photoshopIntelSavedSHA256": "09b4bdf1ab110b1bd4a5a8cc7919c86d98b62d9cfbfd7a5d2f71385d542916a3"
+    },
+    "owned-gamma-640-16": {
+      "photoshopIntelPlaneSHA256": "2465dc254ef61b1da2fe01112a0190cac6cbb3c527d37f6462e10ce9c722ec9e",
+      "photoshopIntelSavedSHA256": "1d5c671a7a513e9744b1bdb5c0571cc94f47a7938d5c98e2f6d63cf761b3a52c"
+    },
+    "owned-gamma-641-16": {
+      "photoshopIntelPlaneSHA256": "ae8810711112e326b90d31fb46d08935f5c526e68c935f374d89ff2c89dba4d4",
+      "photoshopIntelSavedSHA256": "7cbb41ae2a6dd9f54aa417321264d3910b9e143026763e41a7316e4d47de3723"
+    },
+    "owned-gamma-645-16": {
+      "photoshopIntelPlaneSHA256": "e63566b0e21c571ef1f664876babb6bb82c95597b7685278e30916f92ee3a503",
+      "photoshopIntelSavedSHA256": "215c709c327a4456d132c354b5e8376e56bf3b8304bc1b6e2b6cdedc0f6a28ed"
+    },
+    "owned-gamma-650-16": {
+      "photoshopIntelPlaneSHA256": "2707e57cffb71397138d0a028ae8fc11e9be18d31cbb98f0201299bbfd77e7dc",
+      "photoshopIntelSavedSHA256": "a483a1a83edd48642adbf78c12b5753f5e3f6bd9d0f9237a97c9c750a0947d34"
+    },
+    "owned-gamma-655-16": {
+      "photoshopIntelPlaneSHA256": "949beb89170a1b1164e2b56a18bde9dc5ddb9839e700cd453f9b34a906595ef8",
+      "photoshopIntelSavedSHA256": "fbd8618f00b3d04e396c78ddd8f1d63dcb83fd288c178083e9e449573207600f"
+    },
+    "owned-gamma-659-16": {
+      "photoshopIntelPlaneSHA256": "92a9689b17dcf0cff7a174a1a8a8cb3240772df61c68bbe3b72ea1038b5d5557",
+      "photoshopIntelSavedSHA256": "c7b7369a0b16cb4cd1cc2e1d0a181d4487363bdbe46c1c95ebec9f73080a5431"
+    },
+    "owned-gamma-660-16": {
+      "photoshopIntelPlaneSHA256": "03c64b97a6f5d6d7ea48d62590c465ea764d35bd481300df8783e315ac1ba59b",
+      "photoshopIntelSavedSHA256": "4135ad241586928fee3cedd97af8514091d7304726c9214e469776069428af9a"
+    },
+    "owned-gamma-664-16": {
+      "photoshopIntelPlaneSHA256": "557be4b6c3db2fda702ec667334d5bf281a53651c9cfa02f75daada2aea3947a",
+      "photoshopIntelSavedSHA256": "1da79eede3602f7c4213eb7db29542ad0da8f37904fc3012973b66092a455e58"
+    },
+    "owned-gamma-665-16": {
+      "photoshopIntelPlaneSHA256": "6e590a07ddfeb0bae2460e1e698e65e84d7baf45e7bc0c1d25aa3958a90733a8",
+      "photoshopIntelSavedSHA256": "041a727b4774655f5298366b32743319027922fe58f9da0f57c5ace7a0eb4ab5"
+    },
+    "owned-gamma-700-16": {
+      "photoshopIntelPlaneSHA256": "7d6caf8fefb38814d76c92eb1e50cfb5b7a47761df141f9e603888f0cf97e0e8",
+      "photoshopIntelSavedSHA256": "fc9bdcde27c4baee696bbc9c5f588c1516f3a73efb0329eeab0f799dea1e5e3a"
+    },
+    "owned-gamma-750-16": {
+      "photoshopIntelPlaneSHA256": "9e170313d061c5535195b8e6a6d90bbc8611ef7a0cc7666e078258fda31972d2",
+      "photoshopIntelSavedSHA256": "76b7f918b41dce2e8c849fbba5a0fc8724f495964b70200113f9c91266cd103d"
+    },
+    "owned-gamma-767-16": {
+      "photoshopIntelPlaneSHA256": "2156778468c0d0240968614cf93325ece265da46fbe91fde4bf9fbdd248347a9",
+      "photoshopIntelSavedSHA256": "28e3cfa5c2a9903e790d03e195cac2714b2b4d6b38d7b3d94e60b182b671cb99"
+    },
+    "owned-gamma-768-16": {
+      "photoshopIntelPlaneSHA256": "473be494633112b0d0482c19324dfc4ae6aee3b314d3ab6fac48a8021eb11e1e",
+      "photoshopIntelSavedSHA256": "d728ece104db870434a5fc5363cff7d047576cf71fae554735c00da279cb536c"
+    },
+    "owned-gamma-769-16": {
+      "photoshopIntelPlaneSHA256": "63d1277818399c390d20beba2819e27dc2962fac8ee93ddaad52c9a0c31139a1",
+      "photoshopIntelSavedSHA256": "6150906da27e2debb9053933e5daf4f005a098a3347c8a13d1733d1f53dbff33"
+    },
+    "owned-gray-gamma18-16": {
+      "photoshopIntelPlaneSHA256": "dd756e3bf8d68376039828fe96c80317eca2ca2647f82dd22acb192a7453c5c5",
+      "photoshopIntelSavedSHA256": "8e8c9faadacd7297eff392815bb52ff5bcb3fd289827d1cf9d1c9d6ee1a19228"
+    },
+    "owned-gray-gamma18-8": {
+      "photoshopIntelPlaneSHA256": "e6294d77470d69ce396c24743afe159377ace3b9fa9c32f04100a32e3a68f8bd",
+      "photoshopIntelSavedSHA256": "46b5c49218f1cd1e1121c15c93ded9f7014ac0ba49c881e37001c985353202a7"
+    },
+    "owned-gray-gamma32-16": {
+      "photoshopIntelPlaneSHA256": "80e3bc7a0c76ffd5e108b0586bab50c6d31ddce16b41c96d878d9037c4d460aa",
+      "photoshopIntelSavedSHA256": "22c1671d15b2fce6b36c3da0480d839efe9a3519acc02b1cabbe10e5fe7e05c4"
+    },
+    "owned-gray-linear-16": {
+      "photoshopIntelPlaneSHA256": "3fdc1e2207ea3660e81fad31e2dec5b08d52d5fcb5b8a883c8a0eb27bf0898a6",
+      "photoshopIntelSavedSHA256": "895ac5053d60c3b27eaaf284b8a60afd4a85151b64a7af0f8f9791bc295333e3"
+    },
+    "owned-gray-linear-8": {
+      "photoshopIntelPlaneSHA256": "af2e30a7f07a1e584c2cc236e350d2c7e8e7b47a1998162ddcee47222c86dab2",
+      "photoshopIntelSavedSHA256": "5b67482e96ebb8ce239e17946fca4744cd5caf617c4e413011c53256836e2334"
+    },
+    "owned-rgb-curves-16": {
+      "photoshopIntelPlaneSHA256": "00c623bf4641d12054e5564fc214a6d62bd9429b016872a24d63ee62d4bfe946",
+      "photoshopIntelSavedSHA256": "f1f5403eb9b18f6ebd7c8ba8a326e8716a711cf2c10c9ae11fb61b5987ecc70e"
+    },
+    "owned-rgb-curves-8": {
+      "photoshopIntelPlaneSHA256": "19b4b3102ce4c27a9afd847d64f04192a331600a1bf8960a16722697de06faa2",
+      "photoshopIntelSavedSHA256": "086efa71575f598fccda7e40d4d9e471384dc5e41cdea57cd7733db0c5699946"
+    },
+    "owned-rgb-parametric-16": {
+      "photoshopIntelPlaneSHA256": "95aa9d62d2cccf340f27b1168388b6d0768ccb1bb260175513db14a1e6ec0544",
+      "photoshopIntelSavedSHA256": "ec4977b112a40721be49769f0376c2d4c79b1419e2d374068bd50f7df1271124"
+    },
+    "owned-rgb-parametric-8": {
+      "photoshopIntelPlaneSHA256": "3ef036d6af2ece0d84f9930ad54a821282204755d71e729ed77178ddc2864410",
+      "photoshopIntelSavedSHA256": "43c5e603ccecc0e8bd667668d576f5417532c44efc71044c115507a09ce7f1cb"
+    },
+    "p3-16": {
+      "photoshopIntelPlaneSHA256": "95aa9d62d2cccf340f27b1168388b6d0768ccb1bb260175513db14a1e6ec0544",
+      "photoshopIntelSavedSHA256": "8897d19edd67e29a9dd4079c64370b926359a16f7ebeefa6ec971cc087c81a38"
+    },
+    "rgb-custom16": {
+      "photoshopIntelPlaneSHA256": "00c623bf4641d12054e5564fc214a6d62bd9429b016872a24d63ee62d4bfe946",
+      "photoshopIntelSavedSHA256": "8b23750bf64c8ffe4df0c014f0c53ba1d7235c5198d8840b77059a1783cd1792"
+    },
+    "rgb16": {
+      "photoshopIntelPlaneSHA256": "f83c69d88b0c350c55370a958d58abb32e8f3b0088bdac29a31addce13903cdb",
+      "photoshopIntelSavedSHA256": "d31dd2f3cbd86442b56062be702f2940414b44f189b8567545bf2dfd91916e86"
+    },
+    "rgb8": {
+      "photoshopIntelPlaneSHA256": "a383f53179107acf24b406a19228c4219e367bff1178818f2ba67b744d339caf",
+      "photoshopIntelSavedSHA256": "1a2532ac155a54cbe794a961bcb3d0fafa6f9197444a989c485b2f353b9ff255"
+    }
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "fa4dd001a54b829bf770fdb98b39fdc7c5344697037337a42584058f6d297196",
+    "binarySHA256": "c7da0326667f15d824d1e2b6e45874e4597a6de82ca087d3684037561fe36e49",
+    "build": 567,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "referenceVersion": "Adobe Photoshop 2026 27.2.0",
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/adjust-color/color-modes/bit-depth-in-photoshop.html",
+    "https://developer.adobe.com/photoshop/"
+  ],
+  "softwareRelease": false,
+  "standaloneGammaHalfProbe": {
+    "arm64": {
+      "different": 0,
+      "exact": 32896,
+      "firstDifferences": [],
+      "maxAbsoluteDifference": 0,
+      "maxPositiveULPDifference": 0,
+      "planeSHA256": "7ca6903b95c48a46a15f49e3014647ff2095f94c4b2d3d098291d9dd588ce922",
+      "sampleCount": 32896,
+      "sha256": "751ce51ddbd87435eb1f8895cb3525adb89abdc2349352e1ab01c643ed9f5191"
+    },
+    "x86_64": {
+      "different": 0,
+      "exact": 32896,
+      "firstDifferences": [],
+      "maxAbsoluteDifference": 0,
+      "maxPositiveULPDifference": 0,
+      "planeSHA256": "bd3d7bcdea6ff6cae4c54f2c09d037c8e91339e4679b15fa89d7d0fbb352cdcd",
+      "sampleCount": 32896,
+      "sha256": "f83cd67fccf4c9db7ed4c3ad69a5126dc07f07373c18a548157d21b8a8c6b5b3"
+    }
+  },
+  "testedMethods": 651,
+  "typedCommands": 272
+}

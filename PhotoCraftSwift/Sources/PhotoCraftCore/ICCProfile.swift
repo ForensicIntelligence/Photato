@@ -6,13 +6,13 @@ public enum ICCProfile {
   public static let maximumTags = 4096
   // Retain ranges rather than copying payloads. ICC tags may share the same data;
   // repeating a large payload must not multiply the decoder's memory allocation.
-  private static func tags(_ data: Data) throws -> [String: Range<Int>] {
+  static func tags(_ data: Data, colorSpace: String = "RGB ") throws -> [String: Range<Int>] {
     guard data.count >= 132, data.count <= maximumBytes else {
       throw CraftError.invalid("Invalid working ICC profile size.")
     }
     func n(_ i: Int) -> Int { data[i..<i + 4].reduce(0) { ($0 << 8) | Int($1) } }
     func text(_ i: Int) -> String { String(decoding: data[i..<i + 4], as: UTF8.self) }
-    guard n(0) == data.count, text(16) == "RGB ", text(36) == "acsp",
+    guard n(0) == data.count, text(16) == colorSpace, text(36) == "acsp",
       ["XYZ ", "Lab "].contains(text(20)), [2, 4].contains(data[8]),
       n(128) <= maximumTags, n(128) <= (data.count - 132) / 12
     else {

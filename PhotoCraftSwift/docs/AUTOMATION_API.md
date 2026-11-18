@@ -3622,3 +3622,9 @@ Configure the preference before starting a recording on the shared document. Cha
 Build 566 writes the exact stored grayscale samples to the merged image when the only layer is a visible, opaque 32-bit grayscale Background. The file has no merged transparency channel in this case. Any saved channels follow the grayscale plane.
 
 The serializer is shared by the native Save family, authenticated Photato `file.psd` and `file.psb` downloads, and PSD resource outputs in both job interfaces. The Photato `photoshopContainers.gray32BackgroundComposite` capability describes the behavior. [Qualification](SOURCE_PUBLICATION_566.md).
+
+### Same-mode 32-bit precision promotion
+
+Send the existing `document.convertMode` command with the current RGB or grayscale mode and `depth: 32`. The shared Swift path promotes integer samples through their ICC transfer curves. It uses a 15-bit working domain for nonlinear curves and stores a linearized version of the source profile. Sampled curves use a 4,097-point Float32 table. Power and the tested parametric curve use the measured direct or interpolated path. Explicit different destination profiles, other intents, and unsupported curves retain the existing ColorSync path.
+
+The `documentModes.sameModeSDRToHDR` capability describes the operation. The existing action conversion adapter uses the same Swift path. Read the stored samples with `mode.channel.read`. [Qualification](SOURCE_PUBLICATION_567.md).

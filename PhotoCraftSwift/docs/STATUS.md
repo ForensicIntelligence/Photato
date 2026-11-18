@@ -1,3 +1,5 @@
+**Source checkpoint 567.** Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. All 651 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_567.md).
+
 **Source checkpoint 566.** PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. All 629 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_566.md).
 
 **Source checkpoint 565.** The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. All 608 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_565.md).

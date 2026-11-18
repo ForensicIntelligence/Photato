@@ -4,6 +4,14 @@
 
 The 10 most recent entries, newest first.
 
+## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
+
+Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile.
+
+All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture. Photoshop itself returned different values across architectures for 13,057 samples from the gamma and parametric cases. The Swift conversion matches the rounding observed on each architecture. All 651 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The desktop conversion and the authenticated Photato command produce the same stored samples and both Undo correctly. Both universal app slices passed offscreen checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-567) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_567.md).
+
 ## 2026-11-18 — Step 566 — Preserve opaque Gray32 merged samples in PSD and PSB
 
 PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The writer uses the stored grayscale samples for the merged image and leaves out the redundant transparency plane. Saved auxiliary channels still follow the grayscale plane.
@@ -75,11 +83,3 @@ Magic Wand and Paint Bucket now page large color selections. The tested sparse c
 All 481 selected tests passed across three builds. Existing coverage and bucket buffers matched build 557 byte for byte. Dense maximum-size timing, other fill modes and exact Photoshop comparisons remain open.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-558) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_558.md).
-
-## 2026-11-18 — Step 557 — Brush and Pencil blend-mode shortcuts
-
-On the canvas, Shift-plus and Shift-minus cycle paint modes. Shift-Option-Q selects Behind and Shift-Option-R selects Clear on Brush. The shortcut changes the next stroke, so you can switch modes without interrupting the stroke underway.
-
-All 454 selected tests passed across three builds. They cover direct shortcuts, focus, the cursor, Undo and the Photato API. Live Photoshop keyboard comparisons remain open.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-557) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_557.md).

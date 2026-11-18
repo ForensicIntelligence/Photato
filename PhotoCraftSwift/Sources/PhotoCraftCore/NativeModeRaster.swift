@@ -263,6 +263,36 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     }
     return result
   }
+  static func promotingToHDR(_ source: Surface, retained: NativeModeRaster?,
+    descriptor: DocumentModeDescriptor, transfer: SDRToHDRTransfer) throws -> Self
+  {
+    var result = try Self(width: source.width, height: source.height, mode: descriptor.mode,
+      depth: .f32, profile: descriptor.profile, intent: descriptor.intent)
+    let alpha = descriptor.mode.componentCount
+    let maximum: Float = source.depth == .u8 ? 255 : 65_535
+    func values(_ raw: (Int) -> UInt32) -> [Float] {
+      (0..<alpha).map { transfer.sample(raw($0), component: $0) } + [Float(raw(alpha)) / maximum]
+    }
+    func store(_ components: [Float], at index: Int) throws {
+      for c in components.indices { try result.set(components[c], component: c, index: index) }
+    }
+    if let retained {
+      try result.setDefaults(values { retained.componentStorage[$0].defaultWord })
+      try retained.forEachStoredIndex { index in
+        try store(values { retained.rawWord(component: $0, index: index) }, at: index)
+      }
+    } else {
+      func promote(_ pixel: Pixel) -> [Float] {
+        let components = [pixel.r, pixel.g, pixel.b, pixel.a]
+        return values { UInt32((components[$0] * maximum).rounded()) }
+      }
+      try result.setDefaults(promote(source.defaultPixel))
+      try forEachStoredPixel([source]) { x, y in
+        try store(promote(source.pixel(x: x, y: y)), at: y * source.width + x)
+      }
+    }
+    return result
+  }
   /// Convert retained components directly; routing CMYK/Lab through an RGB display
   /// cache would lose out-of-gamut colors and independent ink separations.
   public func converted(to target:DocumentColorMode,depth outputDepth:PixelDepth,profile outputProfile:Data?=nil,intent outputIntent:ModeRenderingIntent = .relativeColorimetric)throws->Self {
