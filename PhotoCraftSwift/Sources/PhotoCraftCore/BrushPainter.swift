@@ -103,7 +103,7 @@ fileprivate struct NormalRasterBrush: Sendable {
 
   init?(_ brush: Brush, settings: BrushSettings, hasSelection: Bool,
     grayscale: Bool, preserveTransparency: Bool, pendingTexture: Bool = false) {
-    guard settings.mode == .normal, !settings.colorDynamics.enabled, !brush.erase,
+    guard settings.mode == .normal, settings.paintMode == nil, !settings.colorDynamics.enabled, !brush.erase,
       !hasSelection, !grayscale, !preserveTransparency, !pendingTexture else { return nil }
     color = brush.color.rgb
     colorAlpha = brush.color.a
@@ -387,6 +387,9 @@ public enum BrushPainter {
 
   public static func validate(_ brush:Brush,points:[StrokePoint])throws {
     guard brush.size.isFinite,brush.supportedDiameterRange.contains(brush.size),brush.hardness.isFinite,(0...1).contains(brush.hardness),brush.opacity.isFinite,(0...1).contains(brush.opacity),brush.color.isFinite,(0...1).contains(brush.color.a),brush.backgroundColor?.isFinite != false,points.count<=100_000 else { throw CraftError.invalid("Invalid brush settings or input count.") }
+    guard brush.settings?.paintMode == nil || !brush.erase else {
+      throw CraftError.invalid("Behind and Clear are paint modes. Use the normal Eraser settings to erase.")
+    }
     try brush.settings?.validate();var previousTime=0.0
     for p in points { try p.validatedBrushInput();if let time=p.time { guard time>=previousTime else { throw CraftError.invalid("Brush timestamps must be monotonic.") };previousTime=time } }
   }
@@ -617,7 +620,15 @@ public enum BrushPainter {
     }
   }
 
+  fileprivate static func validatePaintSurface(_ brush: Brush, depth: PixelDepth, grayscale: Bool, locked: Bool) throws {
+    guard brush.settings?.paintMode != nil else { return }
+    guard depth != .f32, !grayscale, !locked else {
+      throw CraftError.unsupported("Behind and Clear require an 8- or 16-bit pixel layer with unlocked transparency.")
+    }
+  }
+
   public static func stroke(surface:inout Surface,points:[StrokePoint],brush:Brush,selection:IntRect?=nil,selectionMask:SelectionMask?=nil,transform:Transform2D = .identity,grayscaleMask:Bool=false,preserveTransparency:Bool=false)throws {
+    try validatePaintSurface(brush, depth: surface.depth, grayscale: grayscaleMask, locked: preserveTransparency)
     try validate(brush,points:points);try transform.validated();guard let b=brush.settings,!points.isEmpty else { return };try Task.checkCancellation()
     var generator=BrushDabGenerator(brush);var dabs=try generator.push(points);let tail=try generator.finish();dabs.0 += tail.0;dabs.1 += tail.1
     let inverse = try transform.inverted(), columns = (surface.width+63)/64
@@ -671,6 +682,9 @@ public enum BrushPainter {
         let mask=selectionMask?.coverage(x:dx,y:dy) ?? 1
         var ink=brush.color
         if b.colorDynamics.enabled { let c=colors[i]/weight;ink=Pixel(c.x,c.y,c.z,c.w) }
+        if let mode = b.paintMode {
+          return mode.composite(backdrop: base, ink: ink, weight: weight, opacity: brush.opacity, mask: mask)
+        }
         let alpha=unit(weight*brush.opacity*ink.a*mask);guard alpha>0 else { return nil }
         var before=base
         if grayscaleMask { before=Pixel(before.r,before.r,before.r);let gray=unit(ink.r*0.2126+ink.g*0.7152+ink.b*0.0722);ink=Pixel(gray,gray,gray,ink.a) }
@@ -737,6 +751,7 @@ public final class BrushStrokeSession {
       throw CraftError.unsupported("This brush uses the complete stroke renderer.")
     }
     try BrushPainter.validate(brush, points: []); try surface.validated(); try transform.validated()
+    try BrushPainter.validatePaintSurface(brush, depth: surface.depth, grayscale: grayscaleMask, locked: preserveTransparency)
     original = surface; result = surface; self.brush = brush; self.transform = transform
     let inverse = try transform.inverted()
     self.inverse = inverse; self.selection = selection; self.selectionMask = selectionMask
@@ -823,6 +838,9 @@ public final class BrushStrokeSession {
           // Preserve the same Float32 rounding as the complete painter's texture pass.
           let color = (colors[i] * (amount / old)) / amount
           ink = Pixel(color.x, color.y, color.z, color.w)
+        }
+        if let mode = settings.paintMode {
+          return mode.composite(backdrop: base, ink: ink, weight: amount, opacity: brush.opacity, mask: mask)
         }
         let alpha = unit(amount * brush.opacity * ink.a * mask)
         var before = base

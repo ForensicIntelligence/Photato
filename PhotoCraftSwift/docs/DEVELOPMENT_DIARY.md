@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 556 — Behind and Clear
+
+The Brush Mode picker now has Behind and Clear. Behind puts paint underneath existing pixels. Clear removes their alpha and also works with Pencil. You can hold the grave-accent key to use Clear for a Brush stroke.
+
+All 418 selected tests passed across three builds. They check pixel math, transparent and locked layers, Undo, replay and the Photato API. Exact Photoshop pixel comparisons remain open.
+
+[Detailed record](DEVLOG.md#dev-step-556) · [Validation](SOURCE_PUBLICATION_556.md).
+
 ## 2026-11-18 — Step 555 — Brush keyboard controls
 
 Braces change brush hardness. The arrow keys rotate the tip, and holding Shift makes a larger turn. Option and number keys set smoothing. The test for an active stroke confirms that keyboard changes apply to the next stroke.
@@ -433,14 +441,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:555 -->
+<!-- current-status-step:556 -->
 ## Current development status — 18 November 2026
 
-The focused canvas accepts braces for brush hardness, Left and Right for tip rotation, and Option-digits for smoothing. All 413 selected tests passed, and both universal slices passed offscreen checks.
+Brush can paint Behind existing pixels or Clear their alpha. Pencil also supports Clear. All 418 selected tests passed, and both universal slices passed offscreen checks.
 
-Exact Photoshop pointer placement and continuous stroke output remain open, along with live keyboard and tablet checks.
+Live Photoshop mode admission, exact paint bytes and physical editing cadence remain open.
 
-[Qualification](SOURCE_PUBLICATION_555.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_556.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1201,6 +1209,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 553 | [Widen the zero-hardness Soft Round tip](DEVLOG.md#dev-step-553) |
 | 2026-11-18 | 554 | [Calibrate the round brush hardness range](DEVLOG.md#dev-step-554) |
 | 2026-11-18 | 555 | [Add brush hardness, rotation and smoothing keys](DEVLOG.md#dev-step-555) |
+| 2026-11-18 | 556 | [Add Behind and Clear painting modes](DEVLOG.md#dev-step-556) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

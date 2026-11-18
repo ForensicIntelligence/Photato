@@ -1,0 +1,102 @@
+{
+  "actionMaximumVersion": 65,
+  "addedMethods": [
+    "PhotoCraftAppTests.BrushWorkflowTests/testBrushPaintModesDesktopHTTPUndoAndActions",
+    "PhotoCraftAppTests.BrushWorkflowTests/testTemporaryBrushClearCapturesKeyAndRetainsCursorThroughRelease",
+    "PhotoCraftAppTests.ModePaintingWorkflowTests/testBrushPaintModesPreserveNativeAlphaAcrossLayeredModes",
+    "PhotoCraftCoreTests.BrushDynamicsTests/testBehindAndClearMatchIndependentAlphaArithmeticAndRetainedStrokes",
+    "PhotoCraftImagingTests.BrushPresetCodecTests/testPaintModePresetRoundTripAndABRLossPrevention"
+  ],
+  "checkpoint": 556,
+  "clearModifierCombinations": 16,
+  "depths": [
+    8,
+    16
+  ],
+  "fullPhotoshopParity": false,
+  "layerModes": [
+    "rgb",
+    "grayscale",
+    "cmyk",
+    "lab"
+  ],
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "4c48fea5eca3a22811a4b62195b361c1957e1a6da6587bb0f3237cc2b75383b3",
+    "binarySHA256": "a04ea1947bdb9f16af146e60b76bf305ae1a3e5c382705afe076cbf63fba1a3b",
+    "build": 556,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "paintModeComparison": {
+    "allRetainedAndCompleteExact": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "bytesPerPath": 9755952,
+    "cases": 24,
+    "crossArchitectureExact": true
+  },
+  "paintModes": {
+    "behind": [
+      "brush"
+    ],
+    "clear": [
+      "brush",
+      "pencil"
+    ]
+  },
+  "photoshopLiveCheck": "Mac locked",
+  "physicalKeyboardMeasured": false,
+  "presetMaximumVersion": 4,
+  "rawComparison": {
+    "changesFrom555": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 324394512,
+      "x86_64": 324394512
+    },
+    "configuration": 556,
+    "crossArchitectureDifferences": [],
+    "outputsPerArchitecture": 146
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/blending-mode-descriptions.html",
+    "https://helpx.adobe.com/content/dam/help/en/photoshop/using/default-keyboard-shortcuts/photoshop-keyboard-shortcuts.pdf",
+    "https://developer.apple.com/design/human-interface-guidelines/keyboards/"
+  ],
+  "selectedMethods": {
+    "arm": 418,
+    "debug": 418,
+    "intel": 418
+  },
+  "softwareRelease": false,
+  "supplementalDebugMethods": 33,
+  "typedCommands": 271
+}

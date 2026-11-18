@@ -19,7 +19,7 @@ public struct BrushPreset:Codable,Equatable,Identifiable,Sendable {
     if includeToolSettings && current.settings?.lockedSections.contains("smoothing") != true { value.settings!.smoothing=brush.settings?.smoothing ?? .init() }
     if !includeSize { value.size=current.size }
     if current.settings?.lockedSections.contains("tip")==true { value.size=current.size;value.hardness=current.hardness }
-    if !includeToolSettings { value.opacity=current.opacity;value.settings!.mode=current.settings?.mode ?? .normal;value.settings!.flow=current.settings?.flow ?? 1;value.settings!.pressureSize=current.settings?.pressureSize ?? true;value.settings!.pressureOpacity=current.settings?.pressureOpacity ?? false }
+    if !includeToolSettings { value.opacity=current.opacity;value.settings!.mode=current.settings?.mode ?? .normal;value.settings!.paintMode=current.settings?.paintMode;value.settings!.flow=current.settings?.flow ?? 1;value.settings!.pressureSize=current.settings?.pressureSize ?? true;value.settings!.pressureOpacity=current.settings?.pressureOpacity ?? false }
     if !includeColor { value.color=current.color;value.backgroundColor=current.backgroundColor }
     return value
   }
@@ -29,8 +29,9 @@ public struct BrushPresetFile:Codable,Equatable,Sendable {
   public var presets:[BrushPreset]
   public init(presets:[BrushPreset]) { self.presets=presets;version=requiredVersion }
   public static let maximumBytes=64*1024*1024
-  public static let maximumVersion=3
+  public static let maximumVersion=4
   public var requiredVersion:Int {
+    if presets.contains(where: { $0.brush.settings?.paintMode != nil }) { return 4 }
     if presets.contains(where: { $0.brush.settings?.roundTipProfile == .calibratedRound }) { return 3 }
     return presets.contains { $0.brush.settings?.roundTipProfile != nil } ? 2 : 1
   }

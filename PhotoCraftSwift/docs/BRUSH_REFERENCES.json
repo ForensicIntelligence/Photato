@@ -167,5 +167,11 @@
     "evidence": "BRUSH_TIP_SHORTCUTS_555.json",
     "scope": "Hardness, primary-tip rotation and smoothing on the focused canvas.",
     "open": "Live Photoshop step, layout and physical-input verification."
+  },
+  "brush_paint_modes_checkpoint_556": {
+    "qualification": "SOURCE_PUBLICATION_556.md",
+    "evidence": "BRUSH_PAINT_MODES_556.json",
+    "scope": "Behind, Clear and momentary Brush Clear on eligible pixel destinations.",
+    "open": "Exact Photoshop compositing, live input and portable Actions for nonraster Brush targets."
   }
 }

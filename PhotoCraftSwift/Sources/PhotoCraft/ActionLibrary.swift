@@ -5,18 +5,23 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 64
+  static let maximumVersion = 65
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
-    let profileVersion = actions.lazy.flatMap(\.steps).compactMap { step -> BrushSettings.RoundTipProfile? in
+    let brushVersion = actions.lazy.flatMap(\.steps).compactMap { step -> Int? in
+      let mode: BrushPaintMode?, profile: BrushSettings.RoundTipProfile?
       switch step.operation {
-      case .stroke(_, _, let brush, _): return brush.settings?.roundTipProfile
-      case .pencilStroke(let value): return value.roundTipProfile
-      case .adjustmentBrush(let value): return value.request.brush.settings?.roundTipProfile
+      case .stroke(_, _, let brush, _): (mode, profile) = (brush.settings?.paintMode, brush.settings?.roundTipProfile)
+      case .pencilStroke(let value): (mode, profile) = (value.paintMode, value.roundTipProfile)
+      case .adjustmentBrush(let value):
+        let settings = value.request.brush.settings
+        (mode, profile) = (settings?.paintMode, settings?.roundTipProfile)
       default: return nil
       }
-    }.map { $0 == .calibratedRound ? 64 : 63 }.max()
-    if let profileVersion { return profileVersion }
+      if mode != nil { return 65 }
+      return profile.map { $0 == .calibratedRound ? 64 : 63 }
+    }.max()
+    if let brushVersion { return brushVersion }
     if actions.contains(where: { $0.steps.contains { if case .pencilStroke = $0.operation { return true }; return false } }) { return 62 }
     if actions.contains(where:{$0.steps.contains{if case .adjustmentBrush(let value)=$0.operation,case .modern=value.request.adjustment{return true};return false}}){return 61}
     if actions.contains(where: { $0.steps.contains { step in

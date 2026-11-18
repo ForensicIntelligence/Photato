@@ -540,6 +540,9 @@ extension Command {
       }
       d.setCoverageSelection(try mask.feathered(radius: radius))
     case .maskStroke(let id, let points, var brush):
+      guard brush.settings?.paintMode == nil else {
+        throw CraftError.unsupported("Behind and Clear require a pixel layer, not a mask.")
+      }
       let i = try index(id)
       try d.layers[i].expandMask(for: points, brush: brush, clipping: d.selection)
       guard var mask = d.layers[i].mask else { throw CraftError.invalid("This layer has no mask.") }

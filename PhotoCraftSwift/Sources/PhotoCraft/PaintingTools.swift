@@ -15,6 +15,13 @@ extension EditorTool {
   var usesPaintingStroke:Bool { usesSelectionStroke || self == .adjustmentBrush || self == .eraser || (paintTool != nil && self != .magicEraser) }
 }
 @MainActor extension EditorStore {
+  func validateBrushPaintDestination() throws {
+    guard isCompositeColorTarget, !editingMask, editingChannel == nil, let id = activeLayer?.id else {
+      throw CraftError.unsupported("Behind and Clear require an ordinary pixel target.")
+    }
+    try document.validateBrushPaintModeTarget(layerID: id)
+  }
+
   var currentPaintOptions:PaintToolOptions {
     get {let kind=tool.paintTool ?? .brush;return paintToolOptions[kind] ?? .defaults(for:kind)}
     set {paintToolOptions[tool.paintTool ?? .brush]=newValue}
@@ -65,6 +72,43 @@ extension EditorTool {
   }
 }
 
+@MainActor struct BrushPaintModePicker: View {
+  private enum Choice: Hashable { case blend(PhotoCraftCore.BlendMode), paint(BrushPaintMode) }
+  @Bindable var store: EditorStore
+  let tool: PaintTool
+
+  private var selection: Binding<Choice> {
+    Binding(get: {
+      let settings = store.brushOptions
+      if let mode = settings.paintMode, mode.supports(tool) { return .paint(mode) }
+      return .blend(settings.mode)
+    }, set: { choice in
+      var settings = store.brushOptions
+      switch choice {
+      case .blend(let mode): settings.mode = mode; settings.paintMode = nil
+      case .paint(let mode):
+        guard mode.supports(tool), (try? store.validateBrushPaintDestination()) != nil else { return }
+        settings.paintMode = mode
+      }
+      store.brushOptions = settings
+    })
+  }
+
+  var body: some View {
+    let available = (try? store.validateBrushPaintDestination()) != nil
+    Picker("Mode:", selection: selection) {
+      ForEach(BlendMode.allCases, id: \.self) { mode in
+        Text(mode.rawValue).tag(Choice.blend(mode))
+        if mode == .dissolve {
+          ForEach(BrushPaintMode.allCases.filter { $0.supports(tool) }, id: \.self) { mode in
+            Text(mode.title).tag(Choice.paint(mode)).disabled(!available)
+          }
+        }
+      }
+    }.frame(width: 145)
+  }
+}
+
 struct PaintingToolOptionsView:View {
   @Bindable var store:EditorStore
   var kind:PaintTool {store.tool.paintTool ?? .pencil}
@@ -84,7 +128,8 @@ struct PaintingToolOptionsView:View {
         if kind != .pencil {field("Hardness:",value:Binding(get:{Double(store.brush.hardness)*100},set:{if $0.isFinite{store.brush.hardness=Float(min(100,max(0,$0))/100)}}),suffix:"%")}
         Button("Brush Settings"){NSApp.sendAction(#selector(AppDelegate.showBrushSettings),to:nil,from:nil)}
       }
-      if kind == .pencil || kind == .patternStamp {
+      if kind == .pencil { BrushPaintModePicker(store: store, tool: .pencil) }
+      if kind == .patternStamp {
         Picker("Mode:",selection:$store.brushOptions.mode){ForEach(BlendMode.allCases,id:\.self){Text($0.rawValue).tag($0)}}.frame(width:145)
       }
       if [.pencil,.patternStamp,.magicEraser].contains(kind) {

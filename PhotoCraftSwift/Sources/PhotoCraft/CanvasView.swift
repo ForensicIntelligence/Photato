@@ -16,6 +16,7 @@ struct CanvasHost: NSViewRepresentable {
   func makeNSView(context: Context) -> CraftCanvas { CraftCanvas(store: store) }
   func updateNSView(_ view: CraftCanvas, context: Context) {
     _ = store.eraserMode; _ = store.brushGesture?.eraserMode
+    _ = store.brushOptions.paintMode; _ = store.brushGesture?.brush.settings?.paintMode
     _ = store.brushStrokeEndpoint; _ = store.geometryBusy
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.selectionBorderDrag
@@ -52,6 +53,7 @@ struct CanvasHost: NSViewRepresentable {
 }
 @MainActor final class CraftCanvas: ModifierCursorView {
   override func clearCursorInput() {
+    temporaryClearKey = nil
     cancelMarqueeCreation()
     if selectionBorderGesture { start = nil; end = nil }; selectionBorderGesture = false
     store.cancelSelectionBorderInteraction()
@@ -157,8 +159,15 @@ struct CanvasHost: NSViewRepresentable {
     if let adjustment = store.brushGesture?.adjustment {
       return .symbol("paintbrush.pointed",adjustment.subtract ? .subtract:.add)
     }
-    if store.brushGesture?.connectsToPrevious == true ||
-      (!cursorPointerDown && ToolCursor.connectsBrushStroke(flags) && store.canConnectBrushStroke) {
+    let connectsStroke = store.brushGesture?.connectsToPrevious == true ||
+      (!cursorPointerDown && ToolCursor.connectsBrushStroke(flags) && store.canConnectBrushStroke)
+    if let tool = store.tool.paintTool,
+      let mode = store.brushGesture.map({ $0.brush.settings?.paintMode }) ?? (holdsTemporaryClear ? .clear : store.brushOptions.paintMode),
+      mode.supports(tool) {
+      if (try? store.validateBrushPaintDestination()) == nil { return .unavailable }
+      if mode == .clear { return .symbol("eraser", connectsStroke ? .constrain : nil) }
+    }
+    if connectsStroke {
       return .symbol(store.tool == .pencil ? "pencil.tip" : "paintbrush.pointed", .constrain)
     }
     if let draft = store.cloneDraft {
@@ -175,11 +184,13 @@ struct CanvasHost: NSViewRepresentable {
 
   var store: EditorStore {
     didSet {
-      if oldValue !== store { brushNumberPrefix = nil; observeCanvasFrames() }
+      if oldValue !== store { brushNumberPrefix = nil; temporaryClearKey = nil; observeCanvasFrames() }
     }
   }
   private var canvasFrameObservation: AnyCancellable?
   private var brushNumberPrefix: BrushNumberPrefix?
+  private var temporaryClearKey: UInt16?
+  var holdsTemporaryClear: Bool { temporaryClearKey != nil && store.tool == .brush }
   var typeOverlay: CanvasTypeEditor?
   var pathTypePress:PathTypePress?
   var typeBaselinePath:VectorPath?
@@ -258,6 +269,7 @@ struct CanvasHost: NSViewRepresentable {
           guard let target, note.object as? NSWindow === target else { return }
           MainActor.assumeIsolated {
             self?.brushNumberPrefix = nil
+            self?.temporaryClearKey = nil
             self?.drawingEvents.end()
             self?.airbrushTimer?.invalidate(); self?.airbrushTimer = nil
             if self?.store.transformDraft?.movingPixels == true || self?.store.transformDraft?.pixelMask == true || self?.store.transformDraft?.channelTarget != nil || self?.store.transformDraft?.collectionLayerIDs != nil{self?.store.cancelTransform()}; self?.store.guideGesture=nil; self?.store.cancelMagneticLasso(); self?.store.cancelBrush(); self?.store.cancelClone()
@@ -270,6 +282,7 @@ struct CanvasHost: NSViewRepresentable {
   func synchronizeTool() {
     guard gestureToolID != store.selectedTool.id else { return }
     brushNumberPrefix = nil
+    temporaryClearKey = nil
     cancelMarqueeCreation()
     store.cancelSelectionBorderInteraction()
     pathTypePress=nil
@@ -297,7 +310,7 @@ struct CanvasHost: NSViewRepresentable {
   override var acceptsFirstResponder: Bool { true }
   override func resignFirstResponder() -> Bool {
     let resigned = super.resignFirstResponder()
-    if resigned { brushNumberPrefix = nil }
+    if resigned { brushNumberPrefix = nil; temporaryClearKey = nil; refreshToolCursor() }
     return resigned
   }
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
@@ -839,7 +852,7 @@ struct CanvasHost: NSViewRepresentable {
       let point = brushSample(event)
       store.beginBrush(point,zoom:viewport.resolvedZoom,alternate:event.modifierFlags.contains(.option),
         selectionMode:store.selectionToolMode(modifiers:event.modifierFlags),eventTimestamp:event.timestamp,
-        connectToPrevious:ToolCursor.connectsBrushStroke(event.modifierFlags))
+        connectToPrevious:ToolCursor.connectsBrushStroke(event.modifierFlags),temporaryClear:holdsTemporaryClear)
       samples = store.brushGesture?.points ?? [point]
       if store.brushGesture != nil { drawingEvents.begin(); synchronizeFrameProbe() }
       synchronizeBrushClock()
@@ -1268,6 +1281,12 @@ struct CanvasHost: NSViewRepresentable {
       }
     }
     if window.map({ $0.firstResponder === self && $0.attachedSheet == nil }) != false {
+      if store.tool == .brush, store.canConfigureCanvasBrush, store.unavailableToolID == nil,
+        event.modifierFlags.intersection([.command,.control,.option,.function]).isEmpty,
+        event.characters == "`" || event.characters == "~" {
+        temporaryClearKey = event.keyCode
+        return
+      }
       if store.applyBrushTipKey(event) { return }
       let result = store.applyBrushNumber(event, following: prefix)
       brushNumberPrefix = result.prefix
@@ -1314,6 +1333,11 @@ struct CanvasHost: NSViewRepresentable {
     }
   }
   override func keyUp(with event: NSEvent) {
+    if temporaryClearKey == event.keyCode {
+      temporaryClearKey = nil
+      refreshToolCursor()
+      return
+    }
     if event.keyCode == 49 || event.charactersIgnoringModifiers == " " {
       updateCursorModifiers(event.modifierFlags)
       spaceHeld = false

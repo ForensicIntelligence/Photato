@@ -51,6 +51,20 @@ public struct Brush: Codable, Equatable, Sendable {
     try c.encodeIfPresent(backgroundColor,forKey:.backgroundColor);try c.encodeIfPresent(settings,forKey:.settings)
   }
 }
+extension CraftDocument {
+  /// Called by desktop, automation and replay before a special paint stroke
+  /// can alter pixels. A new ordinary layer has its own effective protection.
+  public func validateBrushPaintModeTarget(layerID: UUID) throws {
+    guard depth != .f32, DocumentColorMode.componentModes.contains(colorMode) else {
+      throw CraftError.unsupported("Behind and Clear require an 8- or 16-bit document with layer transparency.")
+    }
+    guard let layer = layers.first(where: { $0.id == layerID }) else { throw CraftError.invalid("Choose a pixel layer.") }
+    guard !layer.isBackground, !isImageLocked(layerID), !isTransparencyLocked(layerID) else {
+      throw CraftError.invalid("Unlock the layer and its transparency before using Behind or Clear.")
+    }
+  }
+}
+
 public enum Painter {
   public static func stroke(
     surface: inout Surface, points: [StrokePoint], brush: Brush, selection: IntRect? = nil,

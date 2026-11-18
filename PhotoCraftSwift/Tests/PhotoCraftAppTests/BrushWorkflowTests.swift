@@ -6,6 +6,129 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class BrushWorkflowTests:XCTestCase {
+  private func paintModeDocument() throws -> CraftDocument {
+    var doc = try CraftDocument(width: 40, height: 32)
+    let layer = Layer(name: "Pixels", content: .raster(try Surface(width: 40, height: 32,
+      fill: Pixel(0.75, 0.25, 0, 0.5))))
+    doc.layers = [layer]; doc.activeLayerID = layer.id
+    return doc
+  }
+
+  @MainActor func testBrushPaintModesDesktopHTTPUndoAndActions() async throws {
+    let original = try paintModeDocument()
+    let store = EditorStore(document: original, actions: ActionLibrary(), brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush
+    store.brush.size = 7; store.brush.hardness = 1; store.brush.opacity = 0.5
+    store.brush.color = Pixel(0, 0, 1); store.brushOptions.smoothing.amount = 0
+    let point = StrokePoint(x: 16.5, y: 12.5)
+    for mode in BrushPaintMode.allCases {
+      store.brushOptions.paintMode = mode
+      let brush = store.brush
+      try store.startRecordingAction(name: mode.title, set: "Test")
+      store.beginBrush(point, zoom: 1)
+      XCTAssertEqual(store.brushGesture?.brush.settings?.paintMode, mode)
+      store.finishBrush(); await store.geometryTask?.value
+      let painted = store.document
+      XCTAssertFalse(painted == original)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      let action = try store.stopRecordingAction()
+      let data = try store.actions.exportFile(action.id)
+      let decoded = try ActionLibraryFile.decode(data)
+      XCTAssertEqual(decoded.version, 65)
+      var old = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+      old["version"] = 64
+      XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject: old)))
+      var replay = original
+      try XCTUnwrap(decoded.actions.first).apply(to: &replay)
+      XCTAssertTrue(replay == painted)
+      _ = await store.requestHistory(redo: false).value
+      XCTAssertTrue(store.document == original)
+
+      let helper = AutomationTests()
+      try await helper.withService(brushes: BrushLibrary(), pressedMouseButtons: { 0 }) { service, file in
+        file.store.session = EditorSession(document: original)
+        try service.share(file)
+        var status = try await helper.edit(service, file, "brush.configure", ["brush": BrushAPI.json(brush)])
+        XCTAssertEqual(status, 200)
+        XCTAssertEqual(file.store.brushOptions.paintMode, mode)
+        status = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json([point])])
+        XCTAssertEqual(status, 200)
+        XCTAssertTrue(file.store.document == painted)
+        XCTAssertEqual(file.store.session.undoStack.count, 1)
+        if mode == .behind {
+          status = try await helper.edit(service, file, "paint.tool",
+            ["tool": "pencil", "brush": BrushAPI.json(brush), "points": BrushAPI.json([point])])
+          XCTAssertEqual(status, 400)
+          XCTAssertTrue(file.store.document == painted)
+        } else {
+          file.store.session = EditorSession(document: original)
+          let id = try XCTUnwrap(original.activeLayerID)
+          let request = PaintToolRequest(tool: .pencil, target: .pixels(id), points: [point], brush: brush)
+          let expected = try PaintingPreparation.prepare(request, in: original).result
+          status = try await helper.edit(service, file, "paint.tool",
+            ["tool":"pencil", "brush": BrushAPI.json(brush), "points": BrushAPI.json([point])])
+          XCTAssertEqual(status, 200)
+          XCTAssertTrue(file.store.document == expected)
+        }
+        var locked = original; locked.layers[0].protection = .transparency
+        file.store.session = EditorSession(document: locked)
+        status = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json([point])])
+        XCTAssertEqual(status, 422)
+        XCTAssertTrue(file.store.document == locked)
+        XCTAssertTrue(file.store.session.undoStack.isEmpty)
+      }
+    }
+  }
+
+  @MainActor func testTemporaryBrushClearCapturesKeyAndRetainsCursorThroughRelease() async throws {
+    let original = try paintModeDocument()
+    let store = EditorStore(document: original, actions: ActionLibrary(), brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush
+    store.brush.size = 6; store.brush.hardness = 1; store.brush.color = .white
+    store.brushOptions.smoothing.amount = 0
+    let canvas = CraftCanvas(store: store)
+    canvas.frame = NSRect(x: 0, y: 0, width: 320, height: 240)
+    store.updateViewport(size: canvas.bounds.size, backingScale: 1)
+    store.setZoom(1, center: true); await store.renderTask?.value
+    func key(_ type: NSEvent.EventType, _ flags: NSEvent.ModifierFlags) throws -> NSEvent {
+      try XCTUnwrap(NSEvent.keyEvent(with: type, location: .zero, modifierFlags: flags, timestamp: 1,
+        windowNumber: 0, context: nil, characters: flags.contains(.shift) ? "~" : "`",
+        charactersIgnoringModifiers: "`", isARepeat: false, keyCode: 50))
+    }
+    func mouse(_ type: NSEvent.EventType, time: TimeInterval) throws -> NSEvent {
+      let p = canvas.convert(canvas.viewPoint(CGPoint(x: 16.5, y: 12.5)), to: nil)
+      return try XCTUnwrap(NSEvent.mouseEvent(with: type, location: p, modifierFlags: [], timestamp: time,
+        windowNumber: 0, context: nil, eventNumber: 1, clickCount: 1, pressure: 1))
+    }
+    let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+    for bits in 0..<16 {
+      let flags = modifiers.enumerated().reduce(NSEvent.ModifierFlags()) {
+        bits & (1 << $1.offset) == 0 ? $0 : $0.union($1.element)
+      }
+      canvas.keyDown(with: try key(.keyDown, flags))
+      XCTAssertEqual(canvas.holdsTemporaryClear, bits == 0 || bits == 8)
+      canvas.keyUp(with: try key(.keyUp, []))
+      XCTAssertFalse(canvas.holdsTemporaryClear)
+    }
+    canvas.keyDown(with: try key(.keyDown, []))
+    XCTAssertEqual(canvas.toolCursor, .symbol("eraser"))
+    canvas.mouseDown(with: try mouse(.leftMouseDown, time: 2))
+    XCTAssertEqual(store.brushGesture?.brush.settings?.paintMode, .clear)
+    canvas.keyUp(with: try key(.keyUp, []))
+    XCTAssertEqual(canvas.toolCursor, .symbol("eraser"))
+    canvas.mouseUp(with: try mouse(.leftMouseUp, time: 2.1))
+    await store.geometryTask?.value
+    guard case .raster(let pixels) = store.document.layers[0].content else { return XCTFail("Expected pixels") }
+    XCTAssertEqual(pixels.pixel(x: 16, y: 12), .clear)
+    XCTAssertNil(store.brushOptions.paintMode)
+    XCTAssertEqual(canvas.toolCursor, .crosshair)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    _ = await store.requestHistory(redo: false).value
+    XCTAssertTrue(store.document == original)
+  }
+
   @MainActor func testWideSoftMigratesOnlyUntouchedFactoryCopies() throws {
     let factory = BrushPresets.builtins()
     var saved = factory.filter { $0.brush.settings?.roundTipProfile == .calibratedRound }

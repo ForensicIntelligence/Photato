@@ -5,6 +5,28 @@ import PhotoCraftImaging
 @testable import PhotoCraft
 
 final class ModePaintingWorkflowTests: XCTestCase {
+  func testBrushPaintModesPreserveNativeAlphaAcrossLayeredModes() throws {
+    for mode in DocumentColorMode.componentModes { for depth in [PixelDepth.u8, .u16] {
+      var source = try CraftDocument(width: 12, height: 8)
+      let layer = Layer(name: "Owned Paint", content: .raster(try Surface(width: 12, height: 8,
+        fill: Pixel(0.2, 0.35, 0.5, 0.5))))
+      source.layers = [layer]; source.activeLayerID = layer.id
+      let original = try source.convertingMode(.init(mode: mode, depth: depth))
+      let id = try XCTUnwrap(original.activeLayerID)
+      for paintMode in BrushPaintMode.allCases {
+        var edited = original
+        var brush = Brush(); brush.size = 3; brush.opacity = 0.5
+        brush.hardness = 1; brush.color = .black; brush.settings = .init(); brush.settings!.paintMode = paintMode
+        try Command.stroke(id, [.init(x: 6.5, y: 3.5)], brush).apply(to: &edited)
+        guard case .raster(let pixels) = edited.layers[0].content else { return XCTFail("Expected pixels") }
+        XCTAssertEqual(pixels.pixel(x: 6, y: 3).a, paintMode == .behind ? 0.75 : 0.25, accuracy: 0.004, "\(mode) \(depth)")
+        XCTAssertEqual(pixels.pixel(x: 0, y: 0).a, 0.5, accuracy: 0.004)
+        let reopened = try NativeArchive.decode(NativeArchive.encodeChunked(edited))
+        XCTAssertTrue(reopened == edited)
+      }
+    } }
+  }
+
   var contexts: [(DocumentColorMode, PixelDepth)] {
     (DocumentColorMode.componentModes + [.indexed, .bitmap]).flatMap { mode in
       (mode == .bitmap ? [PixelDepth.u8] : mode.depths).map { (mode, $0) }

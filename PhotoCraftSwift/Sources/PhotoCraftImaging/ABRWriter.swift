@@ -22,6 +22,9 @@ extension ABRCodec {
     }
     for preset in presets {
       try Task.checkCancellation();let brush=preset.brush,b=brush.settings ?? .init()
+      if preset.includeToolSettings, b.paintMode != nil {
+        throw CraftError.unsupported("Use Photato Brushes to export a preset with Behind or Clear.")
+      }
       guard !preset.includeColor,preset.includeSize,b.symmetry.mode == .off,b.buildUpRate==20 else { throw CraftError.unsupported("ABR cannot preserve this preset's color/size-capture choice, symmetry or custom airbrush rate. Export Photato Brushes for a lossless copy.") }
       var d=PSDDescriptor("brushPreset",items:[.init("Nm  ",str(preset.name)),.init("Brsh",try tipDescriptor(brush))])
       func number(_ k:String,_ n:Double) { d.items.append(.init(k,.number(n))) }

@@ -1783,5 +1783,13 @@
     "scope": "Keyboard changes to the brush already in use. The existing canvas, paint gesture and native pointer policies continue.",
     "api": "brush.configure and paint.stroke retain the same setting and target paths.",
     "open": "Live Photoshop cursor and keyboard layout verification."
+  },
+  "brush_clear_cursor_556": {
+    "step": 556,
+    "reference": "docs/BRUSH_PAINT_MODES_556.json",
+    "scope": "Clear displays an eraser cursor through the captured stroke, with a constraint badge for connected strokes.",
+    "api": "brush.settings.paintMode routes to the same compositor through paint.stroke and paint.tool.",
+    "tested_modifier_combinations": 16,
+    "open": "Native Photoshop artwork and live input transitions."
   }
 }

@@ -3,6 +3,23 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class BrushPresetCodecTests: XCTestCase {
+  func testPaintModePresetRoundTripAndABRLossPrevention() throws {
+    var preset = try XCTUnwrap(BrushPresets.builtins().first)
+    preset.includeToolSettings = true
+    preset.brush.settings?.paintMode = .behind
+    let file = BrushPresetFile(presets: [preset])
+    XCTAssertEqual(file.version, 4)
+    XCTAssertEqual(try BrushPresetFile.decode(file.encoded()), file)
+    var old = file; old.version = 3
+    XCTAssertThrowsError(try BrushPresetFile.decode(JSONEncoder().encode(old)))
+    XCTAssertThrowsError(try ABRCodec.write([preset]))
+    var live = preset.brush; live.settings?.paintMode = .clear
+    XCTAssertEqual(preset.applying(to: live).settings?.paintMode, .behind)
+    preset.includeToolSettings = false
+    XCTAssertEqual(preset.applying(to: live).settings?.paintMode, .clear)
+    XCTAssertNoThrow(try ABRCodec.write([preset]))
+  }
+
   func testWideSoftNativeVersionTipLockAndABRTransport() throws {
     let calibrated = try XCTUnwrap(BrushPresets.builtins().first { $0.name == "Soft Round" })
     let current = BrushPresetFile(presets: [calibrated])

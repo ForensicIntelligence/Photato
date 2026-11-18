@@ -143,6 +143,33 @@ public struct BrushSymmetry:Codable,Equatable,Sendable {
   public var count=4
   public init() {}
 }
+/// Porter–Duff operations available to paint tools on transparent pixel layers.
+/// Layer blend modes continue to use BlendMode.
+public enum BrushPaintMode: String, Codable, CaseIterable, Sendable {
+  case behind, clear
+
+  public var title: String { self == .behind ? "Behind" : "Clear" }
+
+  public func supports(_ tool: PaintTool) -> Bool {
+    tool == .brush || (tool == .pencil && self == .clear)
+  }
+
+  func composite(backdrop: Pixel, ink: Pixel, weight: Float, opacity: Float, mask: Float) -> Pixel? {
+    switch self {
+    case .behind:
+      let alpha = unit(weight * opacity * ink.a * mask)
+      guard alpha > 0, backdrop.a < 1 else { return nil }
+      // The existing pixels sit in front of the new paint.
+      return BlendMode.normal.composite(backdrop: Pixel(ink.r, ink.g, ink.b, alpha), source: backdrop)
+    case .clear:
+      let removal = unit(weight * opacity * mask)
+      guard removal > 0, backdrop.a > 0 else { return nil }
+      let alpha = backdrop.a * (1 - removal)
+      return alpha == 0 ? .clear : Pixel(backdrop.r, backdrop.g, backdrop.b, alpha)
+    }
+  }
+}
+
 public struct BrushSettings:Codable,Equatable,Sendable {
   public enum RoundTipProfile:String,Codable,CaseIterable,Sendable { case wideSoft, calibratedRound }
 
@@ -156,6 +183,7 @@ public struct BrushSettings:Codable,Equatable,Sendable {
   public var flipY=false
   public var flow=1.0
   public var mode:BlendMode = .normal
+  public var paintMode:BrushPaintMode?
   public var pressureSize=false
   public var pressureOpacity=false
   public var aliased=false

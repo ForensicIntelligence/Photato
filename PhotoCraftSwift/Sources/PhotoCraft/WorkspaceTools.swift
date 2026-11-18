@@ -217,7 +217,7 @@ extension WorkspaceView {
         }.buttonStyle(.plain).help("Brush size and hardness").popover(isPresented: $brushPopover) {
           brushSettings
         }
-        Picker("Mode:",selection:$store.brushOptions.mode){ForEach(BlendMode.allCases,id: \.self){Text($0.rawValue).tag($0)}}.frame(width:145).controlSize(.small)
+        BrushPaintModePicker(store: store, tool: .brush).controlSize(.small)
         percentField("Opacity:",value:$store.brush.opacity)
           .help(BrushNumberPrefix.help(.opacity, airbrush: store.brushOptions.buildUp))
         numberField("Flow:",value:Binding(get:{store.brushOptions.flow*100},set:{store.brushOptions.flow=$0/100}),range:0...100,suffix:"%")

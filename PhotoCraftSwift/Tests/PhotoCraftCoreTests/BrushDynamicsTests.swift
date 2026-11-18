@@ -2,6 +2,46 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class BrushDynamicsTests:XCTestCase {
+  func testBehindAndClearMatchIndependentAlphaArithmeticAndRetainedStrokes() throws {
+    let point = StrokePoint(x: 2.5, y: 1.5)
+    var mask = [UInt8](repeating: 0, count: 18)
+    for x in 0..<3 { mask[6+x] = 255 }
+    mask[9] = 128
+    let selection = try SelectionMask(width: 6, height: 3, bytes: mask)
+    for depth in [PixelDepth.u8, .u16] {
+      var source = try Surface(width: 6, height: 3, depth: depth, fill: .clear)
+      for (x, alpha): (Int, Float) in [(0, 1), (1, 0.5), (2, 0), (3, 1), (4, 1)] {
+        source.setPixel(x: x, y: 1, Pixel(1, 0, 0, alpha))
+      }
+      for mode in BrushPaintMode.allCases {
+        var brush = Brush(); brush.size = 12; brush.hardness = 1
+        brush.color = Pixel(0, 0, 1, mode == .clear ? 0 : 0.5)
+        brush.settings = .init(); brush.settings!.paintMode = mode
+        var expected = source, actual = source
+        for x in 0..<4 {
+          let original = source.pixel(x: x, y: 1)
+          let maskWeight = Float(mask[6+x]) / 255
+          if mode == .behind {
+            let uncovered = 0.5 * maskWeight * (1 - original.a)
+            let alpha = original.a + uncovered
+            let sample = Pixel(original.a / alpha, 0, uncovered / alpha, alpha)
+            expected.setPixel(x: x, y: 1, sample)
+          } else if original.a > 0 {
+            let alpha = original.a * (1 - maskWeight)
+            expected.setPixel(x: x, y: 1, alpha == 0 ? .clear : Pixel(1, 0, 0, alpha))
+          }
+        }
+        try BrushPainter.stroke(surface: &actual, points: [point], brush: brush, selectionMask: selection)
+        let retained = try BrushStrokeSession(surface: source, brush: brush, selectionMask: selection)
+        XCTAssertEqual(try retained.append([point]).rgbaData(depth: depth), try expected.rgbaData(depth: depth))
+        XCTAssertEqual(try actual.rgbaData(depth: depth), try expected.rgbaData(depth: depth))
+        XCTAssertThrowsError(try BrushPainter.stroke(surface: &actual, points: [point], brush: brush, preserveTransparency: true))
+        XCTAssertThrowsError(try BrushPainter.stroke(surface: &actual, points: [point], brush: brush, grayscaleMask: true))
+        XCTAssertEqual(try actual.rgbaData(depth: depth), try expected.rgbaData(depth: depth))
+      }
+    }
+  }
+
   func testCalibratedHardnessChangesContinuouslyAndMatchesAcrossRasterPaths() throws {
     let center = StrokePoint(x: 64.25, y: 60.75)
     var brush = Brush()

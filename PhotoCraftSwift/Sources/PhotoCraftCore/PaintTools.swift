@@ -85,6 +85,9 @@ public struct PaintToolRequest: Sendable {
     var resolved = brush
     resolved.settings = resolved.settings ?? .init()
     try BrushPainter.validate(resolved,points:points);try options.validate();try mixer.validate()
+    if let mode = brush.settings?.paintMode, !mode.supports(tool) || !target.isPixels {
+      throw CraftError.unsupported("\(mode.title) requires a supported paint tool and a pixel layer.")
+    }
     if tool == .patternStamp { guard let pattern else { throw CraftError.invalid("Choose a pattern before painting.") };try pattern.validate() }
     if tool == .magicEraser && points.count != 1 { throw CraftError.invalid("Magic Eraser requires one click.") }
     if !target.isPixels && [.colorReplacement,.backgroundEraser,.magicEraser].contains(tool) {
@@ -110,6 +113,7 @@ public struct RecordedPencilStroke: Codable, Sendable {
   private let autoErase: Bool
 
   public var roundTipProfile: BrushSettings.RoundTipProfile? { brush.settings?.roundTipProfile }
+  public var paintMode: BrushPaintMode? { brush.settings?.paintMode }
 
   init?(recording request: PaintToolRequest, in document: CraftDocument) {
     switch request.target {
@@ -210,6 +214,7 @@ public struct PaintingEdit: Sendable {
       }
       var layer=d.layers[i]
       if target.isPixels {
+        if brush.settings?.paintMode != nil { try d.validateBrushPaintModeTarget(layerID: layer.id) }
         guard !d.isImageLocked(layer.id),layer.smartObject == nil,case .raster(var surface)=layer.content else { throw CraftError.invalid("Choose an unlocked ordinary pixel layer for this tool.") }
         // The upstream Background representation is name + position/transparency locks.
         // Require the bottom root layer and canvas bounds to avoid renaming arbitrary layers.

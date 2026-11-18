@@ -193,11 +193,19 @@ final class BrushGesture {
       lifecycle: endpoint.lifecycle, point: endpoint.point)
   }
 
-  func beginBrush(_ point:StrokePoint,zoom:Double,alternate:Bool=false,selectionMode:SelectionMode?=nil,eventTimestamp:TimeInterval?=nil,connectToPrevious:Bool=false) {
+  func beginBrush(_ point:StrokePoint,zoom:Double,alternate:Bool=false,selectionMode:SelectionMode?=nil,eventTimestamp:TimeInterval?=nil,connectToPrevious:Bool=false,temporaryClear:Bool=false) {
     if hasHiddenQuickMaskEditingTarget { error = Self.hiddenQuickMaskBrushMessage; return }
     guard canUseBrush else { return }; let layer = activeLayer
     guard let layerID = layer?.id ?? (document.inkMode != nil || editingChannel != nil ? document.id : nil) else { return }
     var value=brush;value.settings=value.settings ?? .init();value.settings!.seed=UInt64.random(in:1...9_007_199_254_740_991);value.settings!.zoom=min(64,max(0.01,zoom))
+    if temporaryClear, tool == .brush { value.settings?.paintMode = .clear }
+    if let mode = value.settings?.paintMode {
+      if let paintTool = tool.paintTool, mode.supports(paintTool) {
+        do { try validateBrushPaintDestination() } catch { self.error = error.localizedDescription; return }
+      } else {
+        value.settings?.paintMode = nil
+      }
+    }
     value.erase=tool == .eraser;value.backgroundColor=backgroundColor
     if editingMask && value.erase { value.color=backgroundColor;value.erase=false }
     if tool == .eraser {

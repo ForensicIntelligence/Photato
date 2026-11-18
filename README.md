@@ -2,7 +2,7 @@
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
-**Development alpha — source build 555.** The focused canvas accepts braces for brush hardness, Left and Right for tip rotation, and Option-digits for smoothing. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_555.md).
+**Development alpha — source build 556.** Brush can paint Behind existing pixels or Clear their alpha. Pencil also supports Clear. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_556.md).
 
 ## Project layout
 

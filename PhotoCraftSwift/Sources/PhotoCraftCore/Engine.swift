@@ -332,6 +332,9 @@ public indirect enum Command: Sendable {
     try validateVideoContext(in: d)
     try validateAnimationContext(in: d)
     try validateProtection(in:d)
+    if case .stroke(let id, _, let brush) = self, brush.settings?.paintMode != nil {
+      try d.validateBrushPaintModeTarget(layerID: id)
+    }
     if d.inkMode != nil, try InkModeGeometry.apply(self, to: &d) { try d.validate(); return }
     if d.restrictedMode != nil, try RestrictedModeGeometry.apply(self, to: &d) { try d.validate(); return }
     let modeBefore = d.hasAuthoritativeModeStorage ? d : nil
