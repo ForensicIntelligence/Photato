@@ -12,6 +12,26 @@ final class ImageProcessorTests: XCTestCase {
   func settings() -> ImageProcessorSettings {
     var s = ImageProcessorSettings();s.jpeg = .init(enabled:true,resize:true,width:20,height:20);s.psd = .init(enabled:true,resize:true,width:40,height:40);s.tiff = .init(enabled:true);s.convertJPEGToSRGB = false;return s
   }
+  func testQuickMaskActionHonorsHiddenOpenSnapshotInImageProcessor() throws {
+    var document = try scan(width: 12, height: 8)
+    document.selection = .init(x: 3, y: 2, width: 5, height: 4)
+    try Command.channel(.quickMask(true, .init())).apply(to: &document)
+    let action = RecordedAction(name: "Invert and exit", steps: [
+      .init(name: "Invert", operation: .quickMaskEdit(.invert)),
+      .init(name: "Exit", operation: .quickMaskEdit(.transition(false, .init()))),
+    ])
+    var setup = settings()
+    setup.actionID = action.id
+    setup.jpeg.enabled = false; setup.tiff.enabled = false; setup.psd.resize = false
+    let hidden = ActionBatchSource(document: document, hiddenQuickMaskID: document.quickMask?.id)
+    XCTAssertThrowsError(try ImageProcessor.render([hidden], settings: setup, action: action)) {
+      XCTAssertTrue($0.localizedDescription.contains("Show the target Quick Mask"))
+    }
+    let output = try ImageProcessor.render([.init(document: document)], settings: setup, action: action)
+    XCTAssertEqual(output.records.count, 1)
+    XCTAssertNotNil(document.quickMask)
+  }
+
   func testMultipleFormatsFitDimensionsDuplicateNamesAndOriginalPreservation() throws {
     let document = try scan(),source = ActionBatchSource(document:document);var s = settings();s.copyright = "Owned test imagery"
     let output = try ImageProcessor.render([source,source],settings:s)

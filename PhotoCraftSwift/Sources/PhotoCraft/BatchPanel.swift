@@ -39,7 +39,7 @@ import SwiftUI
   }
   func addOpen() {
     guard let documents = controller?.documents.compactMap({ $0 as? CraftNSDocument }), documents.allSatisfy(PhotomergeWorkspace.readable), sources.count + documents.count <= 256 else { error = "Finish open-document edits; choose at most 256 sources."; return }
-    sources += documents.map { ActionBatchSource(document: $0.store.document) }
+    sources += documents.map { ActionBatchSource(document: $0.store.document, hiddenQuickMaskID: $0.store.hiddenActionQuickMaskID) }
   }
   func chooseDestination() {
     let panel = NSOpenPanel(); panel.canChooseDirectories = true; panel.canChooseFiles = false; panel.canCreateDirectories = true; panel.prompt = "Choose Output Folder"

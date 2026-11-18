@@ -3,6 +3,15 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 extension EditorStore {
+  var hiddenActionQuickMaskID: UUID? { isQuickMaskVisible ? nil : document.quickMask?.id }
+
+  @discardableResult
+  func reconcileActionQuickMask(_ action: RecordedAction, previousID: UUID?) -> Bool {
+    guard action.usesQuickMask, document.quickMask?.id != previousID else { return false }
+    resetQuickMaskEditingContext()
+    return true
+  }
+
   func recordClipboardCopy(ids: Set<UUID>, merged: Bool) {
     guard session.actionRecording != nil else { return }
     let targets = merged ? [] : document.layers.filter { ids.contains($0.id) }.map { ActionLayerTarget($0.id, in: document) }
@@ -17,6 +26,8 @@ extension EditorStore {
       try action.validate()
       if try applyLayerSelectionAction(action) { status = "Play \(action.name)"; completion?(.success(())); return }
       let original = document, generation = layerPanelGeneration
+      let fromQuickMask = canUseQuickMaskActions && action.canStartInQuickMask
+      let hiddenQuickMaskID = action.requiresVisibleQuickMask ? hiddenActionQuickMaskID : nil
       let clipboardRevision = clipboard.changeCount
       let input = try action.requiresInitialClipboard ? clipboard.read() : nil
       let masterDocuments = action.usesMasterPalette || action.usesExternalRetouchSources ? NSDocumentController.shared.documents.compactMap { $0 as? CraftNSDocument }
@@ -26,7 +37,8 @@ extension EditorStore {
       geometryTask = Task { [weak self] in
         var outcome: Result<Void, Error> = .success(())
         let worker = Task.detached(priority: .userInitiated) {
-          let result = try RecordedActionRenderer.prepare(action, in: original, clipboard: input?.decoded(), masters: masters)
+          let result = try RecordedActionRenderer.prepare(action, in: original, clipboard: input?.decoded(),
+            masters: masters, hiddenQuickMaskID: hiddenQuickMaskID)
           return (try PreparedEdit(command: result.command, document: original), try result.clipboard.map(ClipboardRepresentations.init), result.lastIndexedPalette)
         }
         do {
@@ -35,6 +47,10 @@ extension EditorStore {
           guard let self, self.layerPanelGeneration == generation else { completion?(.failure(CancellationError())); return }
           try validate?()
           guard self.document == original else { throw CraftError.invalid("The document changed during Actions playback.") }
+          guard (!action.requiresVisibleQuickMask || self.hiddenActionQuickMaskID == hiddenQuickMaskID),
+            !fromQuickMask || self.hasQuickMaskActionTarget else {
+            throw CraftError.invalid("The Quick Mask target or visibility changed during Actions playback.")
+          }
           if action.requiresInitialClipboard || action.writesClipboard {
             guard self.clipboard.changeCount == clipboardRevision else { throw CraftError.invalid("The clipboard changed during Actions playback.") }
           }
@@ -46,7 +62,8 @@ extension EditorStore {
           // Validate the history transaction before publishing clipboard side effects.
           var candidate = self.session; try candidate.executePrepared(prepared)
           if let output { try self.clipboard.write(output) }
-          try self.executeCompositePreparedEdit(prepared)
+          try self.executeCompositePreparedEdit(prepared, allowAuxiliary: fromQuickMask)
+          self.reconcileActionQuickMask(action, previousID: original.quickMask?.id)
           self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
           if let lastPalette { self.previousIndexedPalette = lastPalette }
           if self.document != original { self.onChange?(.changeDone) }

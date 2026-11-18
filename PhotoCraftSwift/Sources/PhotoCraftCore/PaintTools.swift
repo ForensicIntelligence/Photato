@@ -105,6 +105,7 @@ public struct RecordedPencilStroke: Codable, Sendable {
     case layerMask(ActionLayerTarget)
     case smartFilterMask(ActionLayerTarget)
     case alpha(ActionChannelTarget)
+    case quickMask
   }
 
   private let target: Target
@@ -115,13 +116,15 @@ public struct RecordedPencilStroke: Codable, Sendable {
   public var roundTipProfile: BrushSettings.RoundTipProfile? { brush.settings?.roundTipProfile }
   public var paintMode: BrushPaintMode? { brush.settings?.paintMode }
 
-  init?(recording request: PaintToolRequest, in document: CraftDocument) {
+  public var paintsQuickMask: Bool { if case .quickMask = target { return true }; return false }
+
+  init(recording request: PaintToolRequest, in document: CraftDocument) {
     switch request.target {
     case .pixels(let id): target = .pixels(.init(id, in: document))
     case .layerMask(let id): target = .layerMask(.init(id, in: document))
     case .smartFilterMask(let id): target = .smartFilterMask(.init(id, in: document))
     case .channel(.alpha(let id)): target = .alpha(.init(.alpha(id), in: document))
-    case .channel(.quickMask): return nil
+    case .channel(.quickMask): target = .quickMask
     }
     points = request.points
     brush = request.brush
@@ -145,6 +148,7 @@ public struct RecordedPencilStroke: Codable, Sendable {
     case .layerMask(let layer): destination = .layerMask(try layer.resolve(in: document))
     case .smartFilterMask(let layer): destination = .smartFilterMask(try layer.resolve(in: document))
     case .alpha(let channel): destination = .channel(try channel.resolve(in: document))
+    case .quickMask: destination = .channel(.quickMask)
     }
     var options = PaintToolOptions.defaults(for: .pencil)
     options.autoErase = autoErase

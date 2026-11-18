@@ -81,7 +81,7 @@ enum ImageProcessor {
         document = try converted(document,profile:profile)
       }
       if let action {
-        let playback = try RecordedActionRenderer.prepare(action,in:document)
+        let playback = try RecordedActionRenderer.prepare(action, in: document, hiddenQuickMaskID: input.hiddenQuickMaskID)
         try playback.command.apply(to:&document)
       }
       guard document.width <= maximumPixels/document.height,document.estimatedBytes <= 512*1024*1024 else {throw CraftError.unsupported("The action result exceeds Image Processor source limits.")}

@@ -48,17 +48,25 @@ extension AutomationService {
     }else{naming=nil;_ = try ActionBatch.outputName("test",index:0,suffix:suffix,format:format)}
     var stop = false
     if let value = command.parameters["stopOnError"] { guard case .bool(let flag) = value else { throw AutomationFailure(status: 400, message: "stopOnError must be boolean.") }; stop = flag }
-    let snapshots = inputs.map { $0.2.store.document }
+    let snapshots = inputs.map { input in
+      let store = input.2.store
+      return ActionBatchSource(document: store.document, hiddenQuickMaskID: action.requiresVisibleQuickMask ? store.hiddenActionQuickMaskID : nil)
+    }
     let clipboardBytes = try command.actionClipboardBytes()
     let token = token, saveGeneration = documentSaveGeneration
     let operationID = UUID(); actionBatchNaming=naming; actionBatchOperationID = operationID; actionBatchSourceIDs = ids; actionBatchResults = []
     let task = Task { @MainActor in
       let decoder = Task.detached(priority: .userInitiated) { try clipboardBytes.map(ClipboardAPI.decode) }
       let clipboard = try await withTaskCancellationHandler { try await decoder.value } onCancel: { decoder.cancel() }
-      return try await ActionBatch.run(sources: snapshots.map { ActionBatchSource(document: $0) }, action: action, destination: destination, format: format, options: options, suffix: suffix, naming:naming, stopOnError: stop, clipboard: clipboard, validateClipboard: ClipboardAPI.validate, validateOutput: Self.checkLimits, validatePublication: {
+      return try await ActionBatch.run(sources: snapshots, action: action, destination: destination, format: format, options: options, suffix: suffix, naming:naming, stopOnError: stop, clipboard: clipboard, validateClipboard: ClipboardAPI.validate, validateOutput: Self.checkLimits, validatePublication: {
         guard self.isRunning, self.token == token, self.documentSavesEnabled, self.documentSaveGeneration == saveGeneration else { throw AutomationFailure(status: 409, message: "Batch saving was revoked or its output folder changed.") }
         for (i, input) in inputs.enumerated() {
-          guard self.shares.contains(where: { $0.id == input.0 && $0.document === input.2 }), self.revision(input.2.store) == input.1, input.2.store.document == snapshots[i] else { throw AutomationFailure(status: 409, message: "Batch source changed or sharing ended.") }
+          let store = input.2.store
+          guard self.shares.contains(where: { $0.id == input.0 && $0.document === input.2 }),
+            self.revision(store) == input.1, store.document == snapshots[i].document,
+            !action.requiresVisibleQuickMask || store.hiddenActionQuickMaskID == snapshots[i].hiddenQuickMaskID else {
+            throw AutomationFailure(status: 409, message: "Batch source changed or sharing ended.")
+          }
         }
       }, progress: { self.actionBatchResults = $0 })
     }

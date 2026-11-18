@@ -28,7 +28,7 @@ import UniformTypeIdentifiers
     guard !busy,let controller else{return}
     let documents = controller.documents.compactMap{$0 as? CraftNSDocument}.filter {item in !openSources.values.contains(where:{$0 === item})}
     guard documents.allSatisfy(ContactSheetWorkspace.readable),sources.count+documents.count <= ImageProcessor.maximumSources else {error = "Finish open-document edits and choose at most256 images.";return}
-    for document in documents {let source = ActionBatchSource(document:document.store.document);sources.append(source);openSources[source.id] = document}
+    for document in documents {let source = ActionBatchSource(document:document.store.document,hiddenQuickMaskID:document.store.hiddenActionQuickMaskID);sources.append(source);openSources[source.id] = document}
     error = nil
   }
   func addFiles(_ urls: [URL],folder: Bool = false) throws {
@@ -85,7 +85,7 @@ import UniformTypeIdentifiers
       try settings.validate();guard !sources.isEmpty else {throw CraftError.invalid("Choose images to process.")}
       for i in sources.indices {if let document = openSources[sources[i].id] {
         guard controller?.documents.contains(where:{$0 === document}) == true,ContactSheetWorkspace.readable(document) else {throw CraftError.invalid("Finish editing the open source images.")}
-        let old = sources[i];sources[i] = ActionBatchSource(id:old.id,name:document.store.document.name,document:document.store.document,url:nil)
+        let old = sources[i];sources[i] = ActionBatchSource(id:old.id,name:document.store.document.name,document:document.store.document,url:nil,hiddenQuickMaskID:document.store.hiddenActionQuickMaskID)
       }}
       let inputs = sources,settings = settings,action = try settings.actionID.map{try library.action($0)},id = UUID()
       operationID = id;busy = true;error = nil;completed = 0;outputs = []
@@ -103,7 +103,12 @@ import UniformTypeIdentifiers
           self.outputs = try prepared.commit(to:destination) {
             try Task.checkCancellation()
             for input in inputs {if let document = self.openSources[input.id] {
-              guard self.controller?.documents.contains(where:{$0 === document}) == true,ContactSheetWorkspace.readable(document),document.store.document == input.document else {throw CraftError.invalid("An open source changed. Run Image Processor again.")}
+              let store = document.store
+              guard self.controller?.documents.contains(where:{$0 === document}) == true,
+                ContactSheetWorkspace.readable(document), store.document == input.document,
+                action?.requiresVisibleQuickMask != true || store.hiddenActionQuickMaskID == input.hiddenQuickMaskID else {
+                throw CraftError.invalid("An open source changed. Run Image Processor again.")
+              }
             }}
           }
           self.completed = inputs.count

@@ -6,6 +6,47 @@ final class AlphaChannelTests: XCTestCase {
     var d = try CraftDocument(width:12,height:8,depth:depth)
     d.selection = .init(x:2,y:2,width:6,height:4); return d
   }
+  func testRecordedQuickMaskPreservesNoSelectionAndExplicitFullAtAllDepths() throws {
+    for depth in PixelDepth.allCases {
+      for indicates in [ChannelDisplayOptions.Indicates.maskedAreas, .selectedAreas] {
+        var options = ChannelDisplayOptions()
+        options.indicates = indicates
+        let enter = Command.channel(.quickMask(true, options)), exit = Command.channel(.quickMask(false, options))
+        for full in [false, true] {
+          var origin = try CraftDocument(width: 15, height: 11, depth: depth)
+          if full { origin.selection = .init(x: 0, y: 0, width: 15, height: 11) }
+          var staged = origin
+          try enter.apply(to: &staged)
+          let temporary = try XCTUnwrap(staged.quickMask)
+          let action = RecordedAction(name: "Quick Mask round trip", steps: [
+            .init(name: "Enter", operation: .init(recording: enter, in: origin)),
+            .init(name: "Exit", operation: .init(recording: exit, in: staged)),
+          ])
+          XCTAssertEqual(temporary.psdQuickMaskInitiallyEmpty, !full)
+          XCTAssertTrue(action.canStartInQuickMask)
+          XCTAssertFalse(action.requiresVisibleQuickMask)
+          try exit.apply(to: &staged)
+          let wire = try JSONEncoder().encode(action)
+          var result = origin
+          try JSONDecoder().decode(RecordedAction.self, from: wire).apply(to: &result)
+          XCTAssertEqual(result, staged)
+          XCTAssertNil(result.quickMask)
+          if full { XCTAssertEqual(result.selection, origin.selection) }
+          else if indicates == .maskedAreas { XCTAssertNil(result.selection) }
+        }
+      }
+      var missing = try fixture(depth)
+      let before = missing
+      let action = RecordedAction(name: "Missing Quick Mask", steps: [
+        .init(name: "Rename", operation: .rename(.active, "Temporary")),
+        .init(name: "Invert mask", operation: .quickMaskEdit(.invert)),
+      ])
+      XCTAssertFalse(action.canStartInQuickMask)
+      XCTAssertThrowsError(try action.apply(to: &missing))
+      XCTAssertEqual(missing, before)
+    }
+  }
+
   func testSaveLoadCombineNative20AndHistoryAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       let original = try fixture(depth); var session = EditorSession(document:original)

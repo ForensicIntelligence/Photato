@@ -3596,3 +3596,9 @@ Action version 67 stores the seed in document pixels, a portable layer or mask t
 Build 562 adds playable Brush steps for Smart Filter masks and saved alpha and spot channels. The existing `paint.stroke` route and Brush through `paint.tool` record their own semantics, including automatic raster-layer creation for a prepared stroke over nonraster content. Use `actions.manage` and `actions.play`. Playback state exposes `semanticTargetedBrush`.
 
 The Action stores document-coordinate samples and Brush settings. Replay resolves the layer or saved channel in the destination and uses its selection, sample interpretation, and mask geometry. Saved channels use name and occurrence and must match the recorded alpha or spot type. The entire Action is one prepared edit. An invalid target rejects the transaction. Action version 68 covers the new records. [Validation](SOURCE_PUBLICATION_562.md).
+
+### Quick Mask Actions
+
+Build 563 records Quick Mask entry and exit through `channel.edit`, strokes through `paint.stroke` and Pencil through `paint.tool`, and temporary mask options, Fill, Invert, and filters. Use the existing `actions.manage` and `actions.play` commands. The playback state describes these operations and indicates when playback can start from Quick Mask.
+
+Action version 69 retains the operation, options, and document-coordinate samples. Entry uses the destination selection. Exit converts the plane back to selection coverage. Paint, Fill, and Invert reject a hidden existing plane. A fresh plane created by an earlier exit and entry is visible. Filters remain available while hidden. A failed Action publishes no steps or history. Batch and Image Processor use the captured visibility of an open source. [Validation](SOURCE_PUBLICATION_563.md).

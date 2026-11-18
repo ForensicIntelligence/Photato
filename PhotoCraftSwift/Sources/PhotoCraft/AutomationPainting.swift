@@ -39,7 +39,7 @@ enum PaintingAPI {
   static var capabilities:[String:Any] {
     ["commands":commands,"tools":PaintTool.allCases.map(\.rawValue),"options":Dictionary(uniqueKeysWithValues:PaintTool.allCases.map{($0.rawValue,options($0))}),
      "brushActions":BrushAPI.recordedTargets,
-     "pencilActions":["minimumFileVersion":62,"targets":["pixels","layerMask","smartFilterMask","alpha"],"play":"actions.play","capture":"Pencil steps retain samples, brush settings and Auto Erase. Auto Erase samples the destination when replayed. Quick Mask playback remains unavailable."],
+     "pencilActions":["minimumFileVersion":62,"targets":["pixels","layerMask","smartFilterMask","alpha"],"play":"actions.play","capture":"Pencil steps retain samples, brush settings and Auto Erase. Auto Erase samples the destination when replayed.","quickMaskMinimumFileVersion":69],
      "targets":["pixels","layerMask","smartFilterMask","alpha","quickMask"],
     "hiddenQuickMask":"Painting a hidden Quick Mask is rejected422, matching native gesture entry. The real PaintingEdit request target is validated before preparing and again before commit; show the mask to paint. Other channel-filter operations keep their separate policy.",
      "targetLimits":"Color Replacement, Background Eraser and Magic Eraser require ordinary pixel layers. Other tools also support grayscale masks/channels. Brush/Pencil automatically create a layer above nonraster content where the document mode permits layers. Background conversion follows the current native representation.",

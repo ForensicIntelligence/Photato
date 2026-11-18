@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 563 — Record and replay Quick Mask Actions
+
+Enter Quick Mask, edit the selection with Brush or Pencil, and exit in one Action. Replay starts with the new document’s selection and can be undone in one step.
+
+All 558 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. On both architectures, 24 Quick Mask sequences and 24 older Fill Action encodings matched build 562 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
+
+[Detailed record](DEVLOG.md#dev-step-563) · [Validation](SOURCE_PUBLICATION_563.md).
+
 ## 2026-11-18 — Step 562 — Record Brush Actions for masks and channels
 
 Brush strokes on Smart Filter masks and saved channels now play back in Actions. A stroke above a shape can still create an ordinary pixel layer.
@@ -489,14 +497,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:562 -->
+<!-- current-status-step:563 -->
 ## Current development status — 18 November 2026
 
-Photato Actions can record Brush strokes on Smart Filter masks and saved alpha and spot channels. They also retain automatic pixel-layer creation when painting over a shape. All 531 selected tests passed, and both universal slices passed offscreen checks.
+Photato Actions can enter Quick Mask, record Brush and Pencil strokes, and convert the edited mask back to a selection in one undoable Action. All 558 selected tests passed, and both universal slices passed offscreen checks.
 
-Quick Mask Action playback and the comparison with Photoshop remain open.
+Process color and ink-plate Actions and the live Photoshop comparison remain open.
 
-[Qualification](SOURCE_PUBLICATION_562.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_563.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1264,6 +1272,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 560 | [Add Clear to Edit Fill and Stroke](DEVLOG.md#dev-step-560) |
 | 2026-11-18 | 561 | [Record Paint Bucket Actions](DEVLOG.md#dev-step-561) |
 | 2026-11-18 | 562 | [Record Brush Actions for masks and channels](DEVLOG.md#dev-step-562) |
+| 2026-11-18 | 563 | [Record and replay Quick Mask Actions](DEVLOG.md#dev-step-563) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

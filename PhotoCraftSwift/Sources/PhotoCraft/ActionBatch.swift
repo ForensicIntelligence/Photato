@@ -7,9 +7,20 @@ struct ActionBatchSource: Sendable, Identifiable {
   let name: String
   let document: CraftDocument?
   let url: URL?
-  init(id: UUID,name: String,document: CraftDocument?,url: URL?) {self.id=id;self.name=name;self.document=document;self.url=url}
-  init(document: CraftDocument) { id = UUID(); name = document.name; self.document = document; url = nil }
-  init(url: URL) { id = UUID(); name = url.deletingPathExtension().lastPathComponent; document = nil; self.url = url }
+  let hiddenQuickMaskID: UUID?
+  init(id: UUID, name: String, document: CraftDocument?, url: URL?, hiddenQuickMaskID: UUID? = nil) {
+    self.id = id; self.name = name; self.document = document; self.url = url
+    self.hiddenQuickMaskID = hiddenQuickMaskID
+  }
+  init(document: CraftDocument) {
+    self.init(document: document, hiddenQuickMaskID: nil)
+  }
+  init(document: CraftDocument, hiddenQuickMaskID: UUID?) {
+    self.init(id: UUID(), name: document.name, document: document, url: nil, hiddenQuickMaskID: hiddenQuickMaskID)
+  }
+  init(url: URL) {
+    self.init(id: UUID(), name: url.deletingPathExtension().lastPathComponent, document: nil, url: url)
+  }
 }
 struct ActionBatchResult: Identifiable, Sendable {
   let id: UUID
@@ -82,7 +93,9 @@ enum ActionBatch {
           else if let url = source.url { document = try DocumentIO.read(url) }
           else { throw CraftError.invalid("Missing batch source.") }
           try validateOutput(document)
-          let playback = try RecordedActionRenderer.prepare(action, in: document, clipboard: clipboard, masters: masters.filter { $0.0 != source.id }.map { $0.1 }, validateClipboard: validateClipboard, validate: validateOutput)
+          let playback = try RecordedActionRenderer.prepare(action, in: document, clipboard: clipboard,
+            masters: masters.filter { $0.0 != source.id }.map { $0.1 }, hiddenQuickMaskID: source.hiddenQuickMaskID,
+            validateClipboard: validateClipboard, validate: validateOutput)
           try playback.command.apply(to: &document)
           try validateOutput(document)
           let bytes = try DocumentIO.encode(document, format: format, options: options)

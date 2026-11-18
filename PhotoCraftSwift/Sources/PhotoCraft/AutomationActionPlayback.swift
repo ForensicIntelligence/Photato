@@ -3,6 +3,12 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 enum ActionPlaybackAPI {
+  static var quickMaskCapabilities: [String: Any] {
+    ["minimumFileVersion": 69, "commands": ["channel.edit", "paint.stroke", "paint.tool", "actions.play"],
+     "steps": ["enter", "Brush", "Pencil", "options", "fill", "invert", "filter", "exit"],
+     "history": "Entry uses the destination selection. Exit restores selection coverage. The whole Action has one Undo.",
+     "visibility": "Paint, Fill and Invert require a visible temporary plane. Filters can run while it is hidden. An earlier exit and entry makes a fresh plane."]
+  }
   static var resultSchema: [String: Any] {
     ["type": "object", "description": "Standard shared-document state, with an optional clipboard payload when playback performs Copy or Cut.",
      "properties": ["clipboardPayloadBase64": ClipboardAPI.schema("payloadBase64")], "additionalProperties": true]
@@ -43,20 +49,29 @@ extension AutomationService {
       _ = try store.applyLayerSelectionAction(action)
       return .json(state(share, document: document))
     }
+    let fromQuickMask = store.canUseQuickMaskActions && action.canStartInQuickMask
+    let maskID = store.document.quickMask?.id
+    let hiddenQuickMaskID = action.requiresVisibleQuickMask ? store.hiddenActionQuickMaskID : nil
     let captured = inputs, snapshots = inputs.map { $0.2.store.document }
-    let playback: (Data?, [PaletteColor]?) = try await executePreparedResult(document: document, shareID: share.id, revision: command.revision, validateCommit: { [self] in
+    let playback: (Data?, [PaletteColor]?) = try await executePreparedResult(document: document, shareID: share.id, revision: command.revision, allowAuxiliary: fromQuickMask, validateCommit: { [self] in
+      guard (!action.requiresVisibleQuickMask || store.hiddenActionQuickMaskID == hiddenQuickMaskID),
+        !fromQuickMask || store.hasQuickMaskActionTarget else {
+        throw AutomationFailure(status: 409, message: "The Quick Mask target or visibility changed during Actions playback.")
+      }
       for (index, input) in captured.enumerated() {
         guard shares.contains(where: { $0.id == input.0 && $0.document === input.2 }), revision(input.2.store) == input.1,
           input.2.store.document == snapshots[index] else { throw AutomationFailure(status: 409, message: "A master source changed or sharing ended.") }
         try preflight(input.2)
       }
     }) { source in
-      let result = try RecordedActionRenderer.prepare(action, in: source, clipboard: initial.map(ClipboardAPI.decode), masters: snapshots, validateClipboard: ClipboardAPI.validate, validate: Self.checkLimits)
+      let result = try RecordedActionRenderer.prepare(action, in: source, clipboard: initial.map(ClipboardAPI.decode),
+        masters: snapshots, hiddenQuickMaskID: hiddenQuickMaskID, validateClipboard: ClipboardAPI.validate, validate: Self.checkLimits)
       let bytes = try result.clipboard?.encoded()
       if let bytes, bytes.count > ClipboardAPI.maximumBytes { throw AutomationFailure(status: 413, message: "Action clipboard output exceeds2MiB. The document was not changed.") }
       if let bytes { _ = try ClipboardAPI.decode(bytes) }
       return (result.command, (bytes, result.lastIndexedPalette))
     }
+    if store.reconcileActionQuickMask(action, previousID: maskID) { store.render() }
     if let palette = playback.1 { store.previousIndexedPalette = palette }
     var result = state(share, document: document)
     if let output = playback.0 { result["clipboardPayloadBase64"] = output.base64EncodedString() }

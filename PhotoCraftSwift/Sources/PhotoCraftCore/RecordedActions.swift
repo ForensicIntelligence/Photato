@@ -36,6 +36,7 @@ public enum ActionOperation: Codable, Sendable {
   indirect case retouch(RecordedRetouchStroke)
   indirect case paintBucket(RecordedPaintBucket)
   indirect case targetedBrushStroke(RecordedTargetedBrushStroke)
+  indirect case quickMaskEdit(RecordedQuickMaskEdit)
   case documentMode(DocumentModeRequest)
   case restrictedMode(RestrictedModeRequest)
   case inkMode(InkModeRequest)
@@ -117,6 +118,25 @@ public enum ActionOperation: Codable, Sendable {
   case replaceText(RecordedTextReplacement)
   case resolution(Double)
   case rotate(CanvasTurn)
+
+  public var quickMaskVisibilityError: String? {
+    let paintMessage = "Show the target Quick Mask before painting."
+    switch self {
+    case .targetedBrushStroke(let value) where value.paintsQuickMask: return paintMessage
+    case .pencilStroke(let value) where value.paintsQuickMask: return paintMessage
+    case .quickMaskEdit(.fill), .pixelPaint(.fill, .channel(.quickMask), _),
+         .patternPixelPaint(.channel(.quickMask), _, _, _):
+      return "Show the target Quick Mask before filling."
+    case .quickMaskEdit(.invert): return "Show the target Quick Mask before applying Invert."
+    case .pixelPaint(.stroke, .channel(.quickMask), _): return "Show the target Quick Mask before using Stroke."
+    default: return nil
+    }
+  }
+
+  var isQuickMaskStep: Bool {
+    if case .quickMaskEdit = self { return true }
+    return quickMaskVisibilityError != nil
+  }
 
   public var unsupportedReason: String? { if case .unsupported(let reason) = self { return reason }; return nil }
   public init(recording command: Command, in d: CraftDocument) {
@@ -217,12 +237,17 @@ public enum ActionOperation: Codable, Sendable {
       self = .targetedBrushStroke(.init(target: .smartFilterMask(target(id)), points: points, brush: brush))
     case .channel(.stroke(.alpha(let id), let points, let brush)):
       self = .targetedBrushStroke(.init(target: .savedChannel(id, in: d), points: points, brush: brush))
+    case .channel(.quickMask(let enabled, let options)): self = .quickMaskEdit(.transition(enabled, options))
+    case .channel(.options(.quickMask, let options)): self = .quickMaskEdit(.options(options))
+    case .channel(.fill(.quickMask, let gray, let opacity)): self = .quickMaskEdit(.fill(gray, opacity))
+    case .channel(.invert(.quickMask)): self = .quickMaskEdit(.invert)
+    case .channel(.filter(.quickMask, let filter)): self = .quickMaskEdit(.filter(filter))
+    case .channel(.stroke(.quickMask, let points, let brush)):
+      self = .targetedBrushStroke(.init(target: .quickMask, points: points, brush: brush))
     case .painting(let edit) where edit.request.tool == .brush:
-      self = RecordedTargetedBrushStroke(recording: edit.request, in: d).map(Self.targetedBrushStroke)
-        ?? .unsupported("Brush on Quick Mask cannot be played back yet. Disable this step before playback.")
+      self = .targetedBrushStroke(.init(recording: edit.request, in: d))
     case .painting(let edit) where edit.request.tool == .pencil:
-      if let stroke = RecordedPencilStroke(recording: edit.request, in: d) { self = .pencilStroke(stroke) }
-      else { self = .unsupported("Pencil on Quick Mask cannot be played back yet. Disable this step before playback.") }
+      self = .pencilStroke(.init(recording: edit.request, in: d))
     case .clear(let id): self = .clear(target(id))
     case .fill(let id, let v): self = .fill(target(id), v)
     case .layerStyle(let ids, let v): self = .style(targets(ids), v)
@@ -337,6 +362,7 @@ public enum ActionOperation: Codable, Sendable {
     case .stroke(let t, let p, let b, let mask): return mask ? .maskStroke(try id(t), p, b) : .stroke(try id(t), p, b)
     case .pencilStroke(let stroke): return try stroke.command(in: d)
     case .targetedBrushStroke(let stroke): return try stroke.command(in: d)
+    case .quickMaskEdit(let edit): return .channel(edit.command)
     case .clear(let t): return .clear(try id(t))
     case .fill(let t, let v): return .fill(try id(t), v)
     case .style(let t, let v): return .layerStyle(try ids(t), v)
@@ -390,6 +416,7 @@ public struct RecordedTargetedBrushStroke: Codable, Sendable {
     case layerMask(ActionLayerTarget)
     case smartFilterMask(ActionLayerTarget)
     case savedChannel(ActionChannelTarget, spot: Bool)
+    case quickMask
 
     static func savedChannel(_ id: UUID, in document: CraftDocument) -> Self {
       let reference = ActionChannelTarget(.alpha(id), in: document)
@@ -413,14 +440,16 @@ public struct RecordedTargetedBrushStroke: Codable, Sendable {
     self.preparation = preparation
   }
 
-  init?(recording request: PaintToolRequest, in document: CraftDocument) {
+  var paintsQuickMask: Bool { if case .quickMask = target { return true }; return false }
+
+  init(recording request: PaintToolRequest, in document: CraftDocument) {
     let destination: Target
     switch request.target {
     case .pixels(let id): destination = .pixels(.init(id, in: document))
     case .layerMask(let id): destination = .layerMask(.init(id, in: document))
     case .smartFilterMask(let id): destination = .smartFilterMask(.init(id, in: document))
     case .channel(.alpha(let id)): destination = .savedChannel(id, in: document)
-    case .channel(.quickMask): return nil
+    case .channel(.quickMask): destination = .quickMask
     }
     self.init(target: destination, points: request.points, brush: request.brush, preparation: request.options)
   }
@@ -447,6 +476,7 @@ public struct RecordedTargetedBrushStroke: Codable, Sendable {
     case .pixels(let layer): destination = .pixels(try layer.resolve(in: document))
     case .layerMask(let layer): destination = .layerMask(try layer.resolve(in: document))
     case .smartFilterMask(let layer): destination = .smartFilterMask(try layer.resolve(in: document))
+    case .quickMask: destination = .channel(.quickMask)
     case .savedChannel(let channel, let spot):
       let plane = try channel.resolve(in: document)
       guard (try document.channel(plane).spot != nil) == spot else {
@@ -463,6 +493,40 @@ public struct RecordedTargetedBrushStroke: Codable, Sendable {
     case .layerMask(let id): return .maskStroke(id, points, brush)
     case .smartFilterMask(let id): return .smartFilterMask(id, .maskStroke(id, points, brush))
     case .channel(let channel): return .channel(.stroke(channel, points, brush))
+    }
+  }
+}
+
+public enum RecordedQuickMaskEdit: Codable, Sendable {
+  case transition(Bool, ChannelDisplayOptions)
+  case options(ChannelDisplayOptions)
+  case fill(Float, Float)
+  case invert
+  case filter(RasterFilter)
+
+  var command: ChannelCommand {
+    switch self {
+    case .transition(let enabled, let options): return .quickMask(enabled, options)
+    case .options(let options): return .options(.quickMask, options)
+    case .fill(let gray, let opacity): return .fill(.quickMask, gray, opacity)
+    case .invert: return .invert(.quickMask)
+    case .filter(let filter): return .filter(.quickMask, filter)
+    }
+  }
+
+  func validate() throws {
+    switch self {
+    case .transition(_, let options), .options(let options): try options.validate()
+    case .fill(let gray, let opacity):
+      guard gray.isFinite, opacity.isFinite, (0...1).contains(gray), (0...1).contains(opacity) else {
+        throw CraftError.invalid("Invalid recorded Quick Mask fill.")
+      }
+    case .invert: break
+    case .filter(let filter):
+      guard AuxiliaryChannelFiltering.kinds.contains(filter.kind) ||
+        AuxiliaryChannelFiltering.legacyBoundedAPIKinds.contains(filter.kind)
+      else { throw CraftError.unsupported("This filter requires an RGB image target.") }
+      try filter.validate()
     }
   }
 }
@@ -522,6 +586,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .retouch(let request) = step.operation { try request.validate() }
       if case .paintBucket(let request) = step.operation { try request.validate() }
       if case .targetedBrushStroke(let stroke) = step.operation { try stroke.validate() }
+      if case .quickMaskEdit(let edit) = step.operation { try edit.validate() }
       if case .pencilStroke(let stroke) = step.operation { try stroke.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }
@@ -549,6 +614,19 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .addContent(_, .adjustment(.modern(let value)))=step.operation {try value.validate()}
     }
     for step in steps { if case .stroke(_,let points,let brush,_) = step.operation { try BrushPainter.validate(brush,points:points) } }
+  }
+  public var usesQuickMask: Bool { steps.contains { $0.enabled && $0.operation.isQuickMaskStep } }
+  public var requiresVisibleQuickMask: Bool {
+    steps.contains { $0.enabled && $0.operation.quickMaskVisibilityError != nil }
+  }
+  public var canStartInQuickMask: Bool {
+    let enabled = steps.lazy.filter(\.enabled)
+    guard !enabled.isEmpty else { return false }
+    for step in enabled {
+      if case .quickMaskEdit(.transition(false, _)) = step.operation { return true }
+      guard step.operation.isQuickMaskStep else { return false }
+    }
+    return true
   }
   public var requiresInitialClipboard: Bool {
     for step in steps where step.enabled {

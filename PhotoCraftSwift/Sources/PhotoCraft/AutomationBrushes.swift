@@ -8,7 +8,7 @@ enum BrushAPI {
      "targets": ["smartFilterMask", "alpha"], "alphaIncludesSpot": true,
      "preparedBrushTargets": ["pixels", "layerMask", "smartFilterMask", "alpha"],
      "capture": "An Action keeps the brush settings and samples in document coordinates. Replay resolves the Smart Filter mask or saved alpha/spot channel in the destination and uses its current selection. A prepared Brush retains automatic pixel-layer creation.",
-     "quickMask": "Temporary Quick Mask strokes are excluded from targeted Brush Actions."]
+     "quickMask": ActionPlaybackAPI.quickMaskCapabilities]
   }
 
   static func number(_ lo:Double=0,_ hi:Double=1,integer:Bool=false)->[String:Any] { ["type":integer ? "integer":"number","minimum":lo,"maximum":hi] }

@@ -46,16 +46,26 @@ extension AutomationService {
     let anchor = inputs.first{$0.0 == anchorID}!.2
     guard inputs.allSatisfy({$0.2.store.session.actionRecording == nil}) else {throw AutomationFailure(status:409,message:"Stop action recording before processing images.")}
     let action = try settings.actionID.map{try anchor.store.actions.action($0)}
-    let snapshots = inputs.map{$0.2.store.document},token = token,generation = generation,transfer = documentTransferGeneration,id = UUID()
+    let tracksQuickMask = action?.requiresVisibleQuickMask == true
+    let snapshots = inputs.map { input in
+      let store = input.2.store
+      return ActionBatchSource(document: store.document, hiddenQuickMaskID: tracksQuickMask ? store.hiddenActionQuickMaskID : nil)
+    }
+    let token = token,generation = generation,transfer = documentTransferGeneration,id = UUID()
     imageProcessorOperationID = id;imageProcessorSourceIDs = ids;documentTransferBusy = true
-    let worker = Task.detached(priority:.userInitiated) {try ImageProcessor.render(snapshots.map{ActionBatchSource(document:$0)},settings:settings,action:action).zip()}
+    let worker = Task.detached(priority:.userInitiated) {try ImageProcessor.render(snapshots,settings:settings,action:action).zip()}
     imageProcessorTask = worker
     defer {if imageProcessorOperationID == id {imageProcessorTask = nil;imageProcessorOperationID = nil;imageProcessorSourceIDs = []};documentTransferBusy = false}
     let bytes = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()};try Task.checkCancellation()
     prune()
     guard !worker.isCancelled,isRunning,self.token == token,self.generation == generation,documentTransfersEnabled,documentTransferGeneration == transfer else {throw AutomationFailure(status:409,message:"Image Processor export was cancelled or revoked.")}
     for (index,input) in inputs.enumerated() {
-      guard shares.contains(where:{$0.id == input.0 && $0.document === input.2}),revision(input.2.store) == input.1,input.2.store.document == snapshots[index],input.2.closeWorkflowID == nil else {throw AutomationFailure(status:409,message:"A source changed, closed or stopped sharing during Image Processor export.")}
+      let store = input.2.store
+      guard shares.contains(where:{$0.id == input.0 && $0.document === input.2}), revision(store) == input.1,
+        store.document == snapshots[index].document, input.2.closeWorkflowID == nil,
+        !tracksQuickMask || store.hiddenActionQuickMaskID == snapshots[index].hiddenQuickMaskID else {
+        throw AutomationFailure(status:409,message:"A source changed, closed or stopped sharing during Image Processor export.")
+      }
     }
     return .init(status:200,contentType:"application/zip",body:bytes)
   }

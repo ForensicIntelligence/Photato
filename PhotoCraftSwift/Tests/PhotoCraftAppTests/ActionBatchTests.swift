@@ -11,6 +11,42 @@ final class ActionBatchTests: XCTestCase {
     try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true); return url
   }
   func action() -> RecordedAction { .init(name: "Black", steps: [.init(name: "Fill", operation: .fill(.active, .black))]) }
+  @MainActor func testQuickMaskActionBatchUsesEachFilesSelectionAndKeepsInputs() async throws {
+    let root = try folder(); defer { try? FileManager.default.removeItem(at: root) }
+    var first = try CraftDocument(width: 12, height: 9, name: "First")
+    first.selection = .init(x: 2, y: 2, width: 5, height: 4)
+    let second = try CraftDocument(width: 12, height: 9, name: "Second")
+    let input = root.appendingPathComponent("first.photato")
+    let bytes = try NativeArchive.encodeChunked(first)
+    try bytes.write(to: input)
+    var brush = Brush(); brush.size = 3; brush.color = .white
+    let stroke = Command.channel(.stroke(.quickMask, [StrokePoint(x: 9.5, y: 6.5)], brush))
+    let quick = RecordedAction(name: "Select with Quick Mask", steps: [
+      .init(name: "Enter", operation: .quickMaskEdit(.transition(true, .init()))),
+      .init(name: "Paint", operation: .init(recording: stroke, in: first)),
+      .init(name: "Exit", operation: .quickMaskEdit(.transition(false, .init()))),
+    ])
+    let results = try await ActionBatch.run(sources: [.init(url: input), .init(document: second)],
+      action: quick, destination: root, format: .native)
+    for (result, original) in zip(results, [first, second]) {
+      let name = try XCTUnwrap(result.output)
+      let output = try DocumentIO.read(root.appendingPathComponent(name))
+      var expected = original
+      try quick.apply(to: &expected)
+      XCTAssertEqual(output, expected)
+      XCTAssertNil(output.quickMask)
+    }
+    XCTAssertEqual(try Data(contentsOf: input), bytes)
+    var hidden = first
+    try Command.channel(.quickMask(true, .init())).apply(to: &hidden)
+    let hiddenID = try XCTUnwrap(hidden.quickMask?.id)
+    let paintOnly = RecordedAction(name: "Paint existing mask", steps: [quick.steps[1]])
+    let refused = try await ActionBatch.run(sources: [.init(document: hidden, hiddenQuickMaskID: hiddenID)],
+      action: paintOnly, destination: root, format: .native, suffix: "-hidden")
+    XCTAssertNil(refused.first?.output)
+    XCTAssertTrue(refused.first?.error?.contains("Show the target Quick Mask") == true)
+  }
+
   @MainActor func testFilesAndSnapshotsProduceIndependentCopiesWithPerFileErrors() async throws {
     let root = try folder(); defer { try? FileManager.default.removeItem(at: root) }
     let model = try CraftDocument(width: 5, height: 4, name: "Source")

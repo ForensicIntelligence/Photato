@@ -11,6 +11,165 @@ final class QuickMaskHiddenCommandsWorkflowTests: XCTestCase {
     return document
   }
 
+  @MainActor func testNativeQuickMaskActionRecordsBothToolsAndReplaysWithOneUndo() async throws {
+    let source = try fixture(.u16), library = ActionLibrary()
+    let store = EditorStore(document: source, actions: library)
+    defer { store.renderTask?.cancel() }
+    try store.startRecordingAction(name: "Refine Quick Mask", set: "Tests")
+    store.toggleQuickMask()
+    for tool in [EditorTool.brush, .pencil] {
+      store.tool = tool
+      store.brush.color = .black
+      store.brush.size = 3
+      let y = tool == .brush ? 7.5 : 10.5
+      store.beginBrush(.init(x: 7.5, y: y, pressure: 0.9), zoom: 1)
+      store.extendBrush(.init(x: 12.5, y: y, pressure: 0.8))
+      store.finishBrush()
+      await store.geometryTask?.value
+      XCTAssertNil(store.error)
+    }
+    store.toggleQuickMask()
+    let action = try store.stopRecordingAction()
+    XCTAssertEqual(action.steps.count, 4)
+    XCTAssertTrue(action.usesQuickMask)
+    XCTAssertTrue(action.requiresVisibleQuickMask)
+    XCTAssertTrue(action.canStartInQuickMask)
+    guard case .targetedBrushStroke = action.steps[1].operation,
+      case .pencilStroke = action.steps[2].operation else { return XCTFail("Expected Brush and Pencil steps") }
+    let bytes = try library.exportFile(action.id)
+    XCTAssertEqual(try ActionLibraryFile.decode(bytes).version, 69)
+    var old = try XCTUnwrap(JSONSerialization.jsonObject(with: bytes) as? [String: Any])
+    old["version"] = 68
+    XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject: old)))
+
+    var destination = try fixture(.u16)
+    destination.selection = .init(x: 6, y: 6, width: 9, height: 6)
+    var expected = destination
+    try action.apply(to: &expected)
+    XCTAssertNotEqual(expected.selectionMask, source.selectionMask)
+    let replay = EditorStore(document: destination, actions: ActionLibrary())
+    defer { replay.renderTask?.cancel() }
+    try replay.actions.importFile(bytes)
+    replay.playAction(try XCTUnwrap(replay.actions.file.actions.first))
+    await replay.geometryTask?.value
+    XCTAssertNil(replay.error)
+    XCTAssertEqual(replay.document, expected)
+    XCTAssertNil(replay.document.quickMask)
+    XCTAssertNil(replay.editingChannel)
+    XCTAssertEqual(replay.session.undoStack.count, 1)
+    await replay.undo()
+    XCTAssertEqual(replay.document, destination)
+    await replay.redo()
+    XCTAssertEqual(replay.document, expected)
+  }
+
+  @MainActor func testQuickMaskActionRechecksVisibilityBeforeNativeCommit() async throws {
+    let store = EditorStore(document: try fixture(), actions: ActionLibrary())
+    defer { store.renderTask?.cancel() }
+    store.toggleQuickMask()
+    XCTAssertTrue(store.canStartRecordingAction)
+    try store.startRecordingAction(name: "Existing Quick Mask", set: "Tests")
+    store.tool = .brush
+    store.brush.color = .black
+    store.brush.size = 4
+    store.beginBrush(.init(x: 8.5, y: 8.5), zoom: 1)
+    store.finishBrush()
+    await store.geometryTask?.value
+    let action = try store.stopRecordingAction()
+    XCTAssertEqual(action.steps.count, 1)
+    await store.undo()
+    XCTAssertTrue(store.canPlayAction(action))
+    let source = store.document, history = store.session.undoStack.count
+    var validations = 0
+    store.playPreparedAction(action, validate: {
+      validations += 1
+      if validations == 2 {
+        store.hiddenQuickMaskDocumentID = source.id
+        store.hiddenQuickMaskID = source.quickMask?.id
+      }
+    })
+    await store.geometryTask?.value
+    XCTAssertEqual(validations, 2)
+    XCTAssertTrue(store.error?.contains("visibility changed") == true)
+    XCTAssertEqual(store.document, source)
+    XCTAssertEqual(store.session.undoStack.count, history)
+  }
+
+  @MainActor func testHTTPQuickMaskActionRecordsEntryStrokeAndExitOnDestinationSelection() async throws {
+    let helper = AutomationTests(), library = ActionLibrary(), original = try fixture(.u16)
+    try await helper.withService(actions: library, pressedMouseButtons: { 0 }) { service, file in
+      let store = file.store
+      store.session = EditorSession(document: original)
+      try service.share(file)
+      let start = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Refine"])
+      let enter = try await helper.edit(service, file, "channel.edit",
+        ["action": "quickMask", "enabled": true, "indicates": "selectedAreas"])
+      let brush: [String: Any] = ["size": 5, "color": ["r": 0, "g": 0, "b": 0, "a": 1]]
+      let points = [["x": 16.5, "y": 9.5], ["x": 19.5, "y": 10.5]]
+      let stroke = try await helper.edit(service, file, "paint.stroke", ["target": "quickMask", "points": points, "brush": brush])
+      let pencil = try await helper.edit(service, file, "paint.tool",
+        ["tool": "pencil", "target": "quickMask", "points": [["x": 18.5, "y": 14.5]], "brush": brush])
+      let exit = try await helper.edit(service, file, "channel.edit", ["action": "quickMask", "enabled": false])
+      let stop = try await helper.edit(service, file, "actions.manage", ["operation": "stop"])
+      XCTAssertEqual([start, enter, stroke, pencil, exit, stop], Array(repeating: 200, count: 6))
+      let action = try XCTUnwrap(library.file.actions.first)
+      XCTAssertEqual(action.steps.count, 4)
+      var destination = try self.fixture(.u16)
+      destination.selection = nil
+      var expected = destination
+      try action.apply(to: &expected)
+      store.session = EditorSession(document: destination)
+      let result = try await helper.edit(service, file, "actions.play", ["actionID": action.id.uuidString])
+      XCTAssertEqual(result, 200)
+      XCTAssertEqual(store.document, expected)
+      XCTAssertNil(store.editingChannel)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+    }
+  }
+
+  @MainActor func testHTTPQuickMaskActionsGuardHiddenPlaneAllowFiltersAndResetAfterReentry() async throws {
+    let helper = AutomationTests(), library = ActionLibrary()
+    let original = try fixture(.u16)
+    try await helper.withService(actions: library, pressedMouseButtons: { 0 }) { service, file in
+      let store = file.store
+      store.session = EditorSession(document: original)
+      try service.share(file)
+      let enter = try await helper.edit(service, file, "channel.edit", ["action": "quickMask", "enabled": true])
+      let hide = try await helper.edit(service, file, "channel.view", ["target": "quickMask", "visible": false])
+      XCTAssertEqual([enter, hide], [200, 200])
+      XCTAssertTrue(store.canUseQuickMaskActions)
+      XCTAssertFalse(store.isQuickMaskVisible)
+      let old = store.document, history = store.session.undoStack.count
+      let fill = RecordedActionStep(name: "Fill", operation: .pixelPaint(.fill, .channel(.quickMask), .init(color: .black)))
+      let blocked = RecordedAction(name: "Hidden legacy Fill", steps: [fill])
+      try library.save(blocked)
+      let rejected = try await helper.edit(service, file, "actions.play", ["actionID": blocked.id.uuidString])
+      XCTAssertEqual(rejected, 422)
+      XCTAssertEqual(store.document, old)
+      XCTAssertEqual(store.session.undoStack.count, history)
+      let filter = RecordedAction(name: "Hidden Gaussian", steps: [
+        .init(name: "Gaussian", operation: .quickMaskEdit(.filter(RasterFilter(.gaussianBlur)))),
+      ])
+      try library.save(filter)
+      let filtered = try await helper.edit(service, file, "actions.play", ["actionID": filter.id.uuidString])
+      XCTAssertEqual(filtered, 200)
+      XCTAssertFalse(store.isQuickMaskVisible)
+      XCTAssertEqual(store.document.quickMask?.id, old.quickMask?.id)
+      XCTAssertNotEqual(store.document.quickMask?.pixels, old.quickMask?.pixels)
+      let replacement = RecordedAction(name: "Re-enter and Fill", steps: [
+        .init(name: "Exit", operation: .quickMaskEdit(.transition(false, .init()))),
+        .init(name: "Enter", operation: .quickMaskEdit(.transition(true, .init()))), fill,
+      ])
+      try library.save(replacement)
+      let replaced = try await helper.edit(service, file, "actions.play", ["actionID": replacement.id.uuidString])
+      XCTAssertEqual(replaced, 200)
+      XCTAssertNotEqual(store.document.quickMask?.id, old.quickMask?.id)
+      XCTAssertTrue(store.isQuickMaskVisible)
+      XCTAssertEqual(store.editingChannel, .quickMask)
+      XCTAssertEqual(store.document.layers, original.layers)
+    }
+  }
+
   @MainActor func testHiddenFillAndInvertRejectDirectAndPreparedEditsAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       let store = EditorStore(document: try fixture(depth))

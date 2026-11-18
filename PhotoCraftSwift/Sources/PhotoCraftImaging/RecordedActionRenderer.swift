@@ -12,7 +12,7 @@ public struct RenderedAction: Sendable {
 /// The private clipboard never accesses the platform pasteboard.
 public enum RecordedActionRenderer {
   public static func prepare(_ action: RecordedAction, in source: CraftDocument,
-    clipboard initial: ClipboardContent? = nil, masters: [CraftDocument] = [],
+    clipboard initial: ClipboardContent? = nil, masters: [CraftDocument] = [], hiddenQuickMaskID: UUID? = nil,
     validateClipboard: @escaping @Sendable (ClipboardContent) throws -> Void = { _ in },
     validate: @Sendable (CraftDocument) throws -> Void = { _ in }) throws -> RenderedAction {
     try validate(source)
@@ -20,6 +20,9 @@ public enum RecordedActionRenderer {
     var result = source, clipboard = initial, wroteClipboard = false
     var lastIndexedPalette: [PaletteColor]?
     try action.apply(to: &result, resolve: { operation, document in
+      if let message = operation.quickMaskVisibilityError, let hiddenQuickMaskID, document.quickMask?.id == hiddenQuickMaskID {
+        throw CraftError.invalid(message)
+      }
       switch operation {
       case .replaceText(let request):
         try TextReplacementPreparation.prepare(document,request:request).command.apply(to:&document)
