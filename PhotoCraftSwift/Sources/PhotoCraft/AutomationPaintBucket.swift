@@ -79,6 +79,7 @@ enum PaintBucketAPI {
         required: ["revision", "paintBucket"]),
       "clear": "Reduces destination alpha using fill opacity, region and selection coverage. Pattern fill also weights that removal by pattern alpha. Requires unlocked 8- or 16-bit pixel transparency.",
       "history": "Configure has no document history. A successful fill is one native undoable document edit. Fill overrides are request-local.",
+      "actions": "A fill that changes pixels can record a portable Paint Bucket step in Photato Actions version 67. Playback samples the current document and selection at the saved pixel coordinate. Pattern fills retain the original pattern and placement. Configure and foreground sampling create no Paint Bucket step.",
       "adobe": "The pinned Photoshop v2 contract has no dedicated Paint Bucket endpoint."]
   }
 

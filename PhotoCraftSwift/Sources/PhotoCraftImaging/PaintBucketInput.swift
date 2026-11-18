@@ -26,7 +26,7 @@ public struct PaintBucketRequest: Sendable {
     else { throw CraftError.invalid("Sample inside the document.") }
     try document.validateBucketTarget(layerID: layerID, mask: mask, clearsAlpha: options.clearsAlpha)
     let sample = try Renderer.cloneSample(in: document, layerID: layerID,
-      sampling: options.sampleAllLayers && !mask ? .all : .current, mask: mask)
+      sampling: options.sampling(mask: mask), mask: mask)
     return .paintBucket(layerID, BucketFill(source: sample, seed: point, color: color,
       options: options, mask: mask, pattern: pattern, placement: placement))
   }

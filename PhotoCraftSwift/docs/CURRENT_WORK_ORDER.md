@@ -1,3 +1,7 @@
+**Source checkpoint 561.** Paint Bucket fills can be recorded and replayed in Photato Actions with the saved settings and the playback document’s own pixels and selection. All 527 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_561.md).
+
+Continue with Brush Actions for Smart Filter masks and saved auxiliary channels. Recheck Photoshop Action recording and ruler units when desktop access returns.
+
 **Source checkpoint 560.** Edit Fill and Stroke can erase pixels through the native dialogs, the existing Photato API, and recorded Actions. All 522 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_560.md).
 
 Continue with portable Paint Bucket and nonraster Brush Actions. Collect Photoshop reference samples for Clear and verify the live dialogs when desktop access returns.

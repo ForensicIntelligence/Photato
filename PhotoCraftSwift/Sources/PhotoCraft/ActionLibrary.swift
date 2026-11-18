@@ -5,12 +5,13 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 66
+  static let maximumVersion = 67
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
     let paintVersion = actions.lazy.flatMap(\.steps).compactMap { step -> Int? in
       let mode: BrushPaintMode?, profile: BrushSettings.RoundTipProfile?
       switch step.operation {
+      case .paintBucket: return 67
       case .pixelPaint(_, _, let settings), .patternPixelPaint(_, _, _, let settings):
         return settings.clearsAlpha == true ? 66 : nil
       case .stroke(_, _, let brush, _): (mode, profile) = (brush.settings?.paintMode, brush.settings?.roundTipProfile)
@@ -280,7 +281,7 @@ struct ActionLibraryFile: Codable {
   }
   var actionState: [String: Any] {
     ["format": "photatoactions", "version": actions.file.version, "supportedVersions": Array(1...ActionLibraryFile.maximumVersion), "libraryRevision": actions.revision,
-     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "semanticPencil": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "selectionOnly": "Select/deselect-only recipes validate every target, then publish final view selection without document history or dirty events; mixed recipes retain the existing prepared transaction.", "adobeATN": false],
+     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "semanticPencil": true, "semanticPaintBucket": true, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "selectionOnly": "Select/deselect-only recipes validate every target, then publish final view selection without document history or dirty events; mixed recipes retain the existing prepared transaction.", "adobeATN": false],
      "canRecord": canStartRecordingAction && session.actionRecording == nil && actions.loadError == nil,
      "canPlay": canUseActions && session.actionRecording == nil,
      "canPlaySelectionOnly": canChangeLayerSelection && session.actionRecording == nil,

@@ -3584,3 +3584,9 @@ Build 560 adds `"mode": "Clear"` to the existing `pixels.fill` and `pixels.strok
 Solid Clear accepts omitted `color`. Pattern Clear in Fill accepts a `patternID` and optional placement and uses pattern alpha. Stroke retains its required `width` and optional `location`. The engine uses coverage and opacity to reduce alpha and preserves the layer extent and selection. Requests combining Clear and `preserveTransparency: true` return 400. Unsupported targets return 422. Normal color modes retain their existing inputs.
 
 The edit uses one Undo. Clear recordings require Photato Actions 66. The Adobe compatibility endpoint set stays the same. [Validation](SOURCE_PUBLICATION_560.md).
+
+### Paint Bucket Action recording
+
+In build 561, a successful `paint.bucket` fill that changes pixels can add a Paint Bucket step to an active recording. Configuration, rejected edits, and fills with no pixel changes add no step. Use the existing `actions.manage` and `actions.play` commands. The playback state advertises `semanticPaintBucket`.
+
+Action version 67 stores the seed in document pixels, a portable layer or mask target, bucket settings, and an optional embedded pattern and placement. Playback samples the destination after earlier steps and uses the destination selection. The entire Action is one prepared edit. A missing target, unusable seed, or changed document rejects the edit without partial results. [Validation](SOURCE_PUBLICATION_561.md).

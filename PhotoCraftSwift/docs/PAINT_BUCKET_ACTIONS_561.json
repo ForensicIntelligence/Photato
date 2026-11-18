@@ -1,0 +1,93 @@
+{
+  "actionMaximumVersion": 67,
+  "addedMethods": [
+    "PhotoCraftAppTests.ColorRegionWorkflowTests/testHTTPBucketRecordsNativeMaskRecipeAndRollsBackOnInvalidPlayback",
+    "PhotoCraftAppTests.ColorRegionWorkflowTests/testNativeBucketActionCapturesPatternAndReplaysWithNewSelection",
+    "PhotoCraftCoreTests.ColorRegionTests/testBucketActionRequiresMatchingSourceAndSerializesOnlyTheRecipe",
+    "PhotoCraftImagingTests.ColorRegionRenderTests/testBucketActionAtIneligibleSeedFailsBeforePublishingAnyStep",
+    "PhotoCraftImagingTests.ColorRegionRenderTests/testBucketActionResamplesCompositeAfterEarlierStepOnDifferentCanvas"
+  ],
+  "checkpoint": 561,
+  "comparison": {
+    "base": 560,
+    "bitExactAcrossBuildsAndArchitectures": true,
+    "bucketBuffers": 18,
+    "bytesPerArchitecture": 6907824,
+    "candidate": 561,
+    "coverageMasks": 240,
+    "sha256": [
+      "99b1b94e4c7a722f2e950902e7c8146d09b89e45eb43dd5854d155887d0d71a4",
+      "e55891b6573a74158d7474815e918d2b4d3d3bffe5db39f2e3bc4a523bbcbbb6"
+    ]
+  },
+  "coordinates": "document pixels",
+  "embeddedPatternAsset": true,
+  "fullPhotoshopParity": false,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "3ea07b1f4d536945085a8992879f969e1fef9bd8f36414dbfafe57e46d05daa4",
+    "binarySHA256": "8585922314c257bb6fd884f37f3bbbd46c45601a75408defef97b1441713a1b4",
+    "build": 561,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122083,
+          "height": 650,
+          "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopBytesVerified": false,
+  "photoshopLiveCheck": "Mac locked",
+  "priorAttempts": [
+    {
+      "name": "qualification01",
+      "passed": false
+    },
+    {
+      "name": "qualification02",
+      "passed": false
+    },
+    {
+      "name": "qualification04",
+      "passed": true
+    },
+    {
+      "name": "qualification05",
+      "passed": true
+    },
+    {
+      "name": "qualification06",
+      "passed": true
+    }
+  ],
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/automate-tasks/automation-settings-and-presets/record-tools-in-actions.html",
+    "https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/fill-objects-selections-layers/fill-paint-bucket-tool.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/"
+  ],
+  "selectedMethods": {
+    "arm": 527,
+    "debug": 527,
+    "intel": 527
+  },
+  "softwareRelease": false,
+  "typedCommands": 272
+}

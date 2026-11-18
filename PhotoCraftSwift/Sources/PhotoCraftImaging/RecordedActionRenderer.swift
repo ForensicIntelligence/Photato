@@ -30,6 +30,11 @@ public enum RecordedActionRenderer {
         try LayerMergePreparation.command(document,layerIDs:ids,operation:operation).apply(to:&document)
       case .flattenImage:
         try FlattenPreparation.command(document).apply(to:&document)
+      case .paintBucket(let recording):
+        let request = PaintBucketRequest(layerID: try recording.target.resolve(in: document),
+          point: recording.point, color: recording.color, options: recording.options,
+          mask: recording.mask, pattern: recording.pattern, placement: recording.placement)
+        try request.command(in: document).apply(to: &document)
       case .retouch(let request):
         try RetouchPreparation.command(request, in: document, sources: masters).apply(to: &document)
       case .inkMode(var request):

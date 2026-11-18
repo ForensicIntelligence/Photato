@@ -34,6 +34,7 @@ public enum ActionOperation: Codable, Sendable {
   case layerStyles(RecordedStyleEdit)
   case globalLight(GlobalLight)
   indirect case retouch(RecordedRetouchStroke)
+  indirect case paintBucket(RecordedPaintBucket)
   case documentMode(DocumentModeRequest)
   case restrictedMode(RestrictedModeRequest)
   case inkMode(InkModeRequest)
@@ -130,6 +131,9 @@ public enum ActionOperation: Codable, Sendable {
     case .flattenImage:self = .flattenImage
     case .layerStyles(let edit):self = .layerStyles(RecordedStyleEdit(edit,in:d))
     case .globalLight(let value):self = .globalLight(value)
+    case .paintBucket(let id, let fill):
+      self = RecordedPaintBucket(recording: fill, layerID: id, in: d).map(Self.paintBucket)
+        ?? .unsupported("This Paint Bucket sample has no portable source provenance.")
     case .cloneStamp, .healingBrush, .spotHealing, .toning, .focus:
       self = RecordedRetouchStroke(recording: command, in: d).map(Self.retouch)
         ?? .unsupported("This retouch sample has no portable source provenance.")
@@ -262,6 +266,8 @@ public enum ActionOperation: Codable, Sendable {
       throw CraftError.unsupported("Flatten Image Actions require the native compositor.")
     case .retouch:
       throw CraftError.unsupported("Retouch Actions require compositor sampling playback.")
+    case .paintBucket:
+      throw CraftError.unsupported("Paint Bucket Actions require compositor sampling playback.")
     case .documentMode, .restrictedMode, .inkMode, .clipboardCopy, .clipboardCut, .clipboardPaste:
       throw CraftError.unsupported("This action requires compositor/clipboard playback.")
     case .toneAdjustment(let target,let settings):return .toneAdjustment(.init(settings,layerID:try target.map(id)))
@@ -420,6 +426,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .layerStyles(let edit)=step.operation {try edit.validate()}
       if case .globalLight(let value)=step.operation {try value.validate()}
       if case .retouch(let request) = step.operation { try request.validate() }
+      if case .paintBucket(let request) = step.operation { try request.validate() }
       if case .pencilStroke(let stroke) = step.operation { try stroke.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }

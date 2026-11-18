@@ -4,6 +4,36 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class ColorRegionTests: XCTestCase {
+  func testBucketActionRequiresMatchingSourceAndSerializesOnlyTheRecipe() throws {
+    let document = try CraftDocument(width: 11, height: 6)
+    let id = document.layers[0].id
+    let surface = try Surface(width: 11, height: 6, fill: .white)
+    let point = PathPoint(5.5, 2.5)
+    var fill = BucketFill(source: CloneSample(surface: surface), seed: point, color: .black)
+    let opaque = ActionOperation(recording: .paintBucket(id, fill), in: document)
+    XCTAssertNotNil(opaque.unsupportedReason)
+    let origin = RetouchSampleOrigin(document: document, layerID: id, sampling: .current,
+      ignoreAdjustments: false, mask: false)
+    fill.source = CloneSample(surface: surface, origin: origin)
+    fill.options.sampleAllLayers = true
+    let mismatch = ActionOperation(recording: .paintBucket(id, fill), in: document)
+    XCTAssertNotNil(mismatch.unsupportedReason)
+    fill.options.sampleAllLayers = false
+    let operation = ActionOperation(recording: .paintBucket(id, fill), in: document)
+    guard case .paintBucket(let recipe) = operation else { return XCTFail("Expected a portable bucket recipe") }
+    try recipe.validate()
+    XCTAssertEqual(recipe.target, .active)
+    XCTAssertEqual(recipe.point, point)
+    let wire = try JSONEncoder().encode(recipe)
+    let fields = try XCTUnwrap(JSONSerialization.jsonObject(with: wire) as? [String: Any])
+    XCTAssertEqual(Set(fields.keys), ["point", "target", "color", "options", "mask", "placement"])
+    var invalid = fields
+    invalid["point"] = ["x": Surface.maxDimension, "y": 1]
+    let bad = try JSONDecoder().decode(RecordedPaintBucket.self, from: JSONSerialization.data(withJSONObject: invalid))
+    XCTAssertThrowsError(try bad.validate())
+    XCTAssertThrowsError(try operation.command(in: document))
+  }
+
   func testPagedAndDenseCoverageMatchAcrossDepthsTransformsAndSettings() throws {
     let width = 139, height = 81
     for depth in PixelDepth.allCases {

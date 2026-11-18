@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 561 — Record Paint Bucket Actions
+
+Paint Bucket clicks can now be saved in an Action. Playback uses the new document’s layer, mask, or visible composite. A recorded pattern stays with the Action.
+
+All 527 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 240 color-region masks and 18 direct bucket buffers matched build 560 byte for byte on both architectures. Both slices of the macOS 14+ universal archive passed offscreen checks.
+
+[Detailed record](DEVLOG.md#dev-step-561) · [Validation](SOURCE_PUBLICATION_561.md).
+
 ## 2026-11-18 — Step 560 — Add Clear to Edit Fill and Stroke
 
 Choose Clear to erase pixels within a selection, along an outline, or across a whole pixel layer. Clear uses the existing Fill and Stroke API commands and can be recorded as a Photato Action.
@@ -473,14 +481,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:560 -->
+<!-- current-status-step:561 -->
 ## Current development status — 18 November 2026
 
-Edit Fill and Stroke can erase pixels through the native dialogs, the existing Photato API, and recorded Actions. All 522 selected tests passed, and both universal slices passed offscreen checks.
+Paint Bucket fills can be recorded and replayed in Photato Actions with the saved settings and the playback document’s own pixels and selection. All 527 selected tests passed, and both universal slices passed offscreen checks.
 
-Portable Paint Bucket Actions and exact Photoshop Clear output comparisons remain open.
+Brush Actions for additional targets and the comparison with Photoshop remain open.
 
-[Qualification](SOURCE_PUBLICATION_560.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_561.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1246,6 +1254,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 558 | [Page large Paint Bucket and Magic Wand regions](DEVLOG.md#dev-step-558) |
 | 2026-11-18 | 559 | [Add Paint Bucket Clear and automation](DEVLOG.md#dev-step-559) |
 | 2026-11-18 | 560 | [Add Clear to Edit Fill and Stroke](DEVLOG.md#dev-step-560) |
+| 2026-11-18 | 561 | [Record Paint Bucket Actions](DEVLOG.md#dev-step-561) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

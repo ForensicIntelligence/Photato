@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ColorMatchOptions: Equatable, Sendable {
+public struct ColorMatchOptions: Codable, Equatable, Sendable {
   public var sampleSize = 1
   public var tolerance = 32
   public var contiguous = true

@@ -28,6 +28,127 @@ final class ColorRegionWorkflowTests: XCTestCase {
     await s.renderTask?.value
     XCTAssertNil(s.error)
   }
+  @MainActor func testNativeBucketActionCapturesPatternAndReplaysWithNewSelection() async throws {
+    let patterns = PatternLibrary(), actions = ActionLibrary()
+    var texture = try Surface(width: 2, height: 1, depth: .u16, fill: .white)
+    texture.setPixel(x: 1, y: 0, .clear)
+    let pattern = try RasterPattern(name: "Alternating", surface: texture, id: "portable-bucket")
+    try await patterns.install([pattern])
+    let source = try store().document
+    let native = EditorStore(document: source, patterns: patterns, actions: actions)
+    defer { native.renderTask?.cancel() }
+    native.chooseTool(WorkspaceCatalog.tool("paintBucket"))
+    native.bucketOptions.clearsAlpha = true
+    native.bucketOptions.match.antiAlias = false
+    native.bucketUsesPattern = true
+    native.bucketPatternPlacement.phaseX = 1
+    try native.startRecordingAction(name: "Pattern Clear", set: "Tests")
+    let click = PathPoint(3.5, 2.5)
+    native.colorRegionClick(at: click, modifiers: [.option])
+    XCTAssertEqual(native.session.actionRecording?.snapshot.steps.count, 0)
+    native.colorRegionClick(at: click)
+    await finish(native)
+    XCTAssertEqual(native.session.undoStack.count, 1)
+    _ = await native.requestHistory(redo: false).value
+    XCTAssertEqual(native.session.actionRecording?.snapshot.steps.count, 0)
+    _ = await native.requestHistory(redo: true).value
+    let action = try native.stopRecordingAction()
+    let step = try XCTUnwrap(action.steps.first)
+    XCTAssertEqual(action.steps.count, 1)
+    guard case .paintBucket(let recipe) = step.operation else { return XCTFail("Expected a portable bucket step") }
+    XCTAssertEqual(recipe.target, .active)
+    XCTAssertEqual(recipe.point, click)
+    XCTAssertEqual(recipe.pattern, pattern)
+    XCTAssertEqual(recipe.placement.phaseX, 1)
+    XCTAssertTrue(recipe.options.clearsAlpha)
+    let exported = try actions.exportFile(action.id)
+    XCTAssertEqual(try ActionLibraryFile.decode(exported).version, 67)
+    var downgraded = try XCTUnwrap(JSONSerialization.jsonObject(with: exported) as? [String: Any])
+    downgraded["version"] = 66
+    XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject: downgraded)))
+    XCTAssertFalse(String(decoding: exported, as: UTF8.self).contains(source.layers[0].id.uuidString))
+    XCTAssertFalse(String(decoding: exported, as: UTF8.self).contains(source.id.uuidString))
+    let replacement = try RasterPattern(name: "Replacement",
+      surface: Surface(width: 2, height: 1, depth: .u16, fill: .clear), id: pattern.id)
+    try await patterns.install([replacement])
+    var destination = try store().document
+    destination.selection = .init(x: 2, y: 1, width: 4, height: 3)
+    XCTAssertNotEqual(destination.activeLayerID, source.activeLayerID)
+    let playback = EditorStore(document: destination, patterns: patterns, actions: ActionLibrary())
+    defer { playback.renderTask?.cancel() }
+    try playback.actions.importFile(exported)
+    playback.playAction(try XCTUnwrap(playback.actions.file.actions.first))
+    await finish(playback)
+    guard case .raster(let result) = playback.document.layers[0].content else { return XCTFail("Expected pixel layer") }
+    XCTAssertEqual(result.pixel(x: 3, y: 2), .clear)
+    XCTAssertEqual(result.pixel(x: 2, y: 2), .white)
+    XCTAssertEqual(result.pixel(x: 7, y: 2), .white)
+    XCTAssertEqual(playback.document.selection, destination.selection)
+    XCTAssertEqual(playback.session.undoStack.count, 1)
+    _ = await playback.requestHistory(redo: false).value
+    XCTAssertEqual(playback.document, destination)
+  }
+
+  @MainActor func testHTTPBucketRecordsNativeMaskRecipeAndRollsBackOnInvalidPlayback() async throws {
+    let helper = AutomationTests(), actions = ActionLibrary()
+    var source = try store().document
+    source.layers[0].mask = try Surface(width: source.width, height: source.height, depth: .u16, fill: .white)
+    try await helper.withService(actions: actions, pressedMouseButtons: { 0 }) { service, file in
+      let s = file.store, point = PathPoint(7.5, 2.5)
+      s.session = EditorSession(document: source)
+      try service.share(file)
+      let started = try await helper.edit(service, file, "actions.manage", ["operation": "record", "name": "Mask Fill"])
+      XCTAssertEqual(started, 200)
+      let oldRevision = service.revision(s)
+      let configured = try await helper.edit(service, file, "paint.bucket",
+        ["operation": "configure", "antiAlias": false, "tolerance": 0, "sampleAllLayers": true])
+      XCTAssertEqual(configured, 200)
+      let parameters: [String: Any] = ["operation": "fill", "x": point.x, "y": point.y,
+        "target": "layerMask", "color": ["r": 0, "g": 0, "b": 0, "a": 1]]
+      let stale = try await helper.edit(service, file, "paint.bucket", parameters, revision: oldRevision)
+      XCTAssertEqual(stale, 409)
+      XCTAssertEqual(s.session.actionRecording?.snapshot.steps.count, 0)
+      let changed = try await helper.edit(service, file, "paint.bucket", parameters)
+      XCTAssertEqual(changed, 200)
+      let noop = try await helper.edit(service, file, "paint.bucket", parameters)
+      XCTAssertEqual(noop, 200)
+      XCTAssertEqual(s.session.actionRecording?.snapshot.steps.count, 1)
+      XCTAssertEqual(s.session.undoStack.count, 1)
+      let stopped = try await helper.edit(service, file, "actions.manage", ["operation": "stop"])
+      XCTAssertEqual(stopped, 200)
+      let action = try XCTUnwrap(actions.file.actions.first)
+      guard case .paintBucket(let recipe) = action.steps.first?.operation else { return XCTFail("Expected a mask bucket recipe") }
+      XCTAssertTrue(recipe.mask)
+      XCTAssertEqual(recipe.point, point)
+      XCTAssertEqual(recipe.options.sampling(mask: recipe.mask), .current)
+      let documentBefore = s.document
+      XCTAssertEqual(documentBefore.layers[0].content, source.layers[0].content)
+      XCTAssertEqual(documentBefore.layers[0].mask?.pixel(x: 7, y: 2), .black)
+      var replay = try self.store().document
+      replay.layers[0].mask = source.layers[0].mask
+      XCTAssertNotEqual(replay.activeLayerID, source.activeLayerID)
+      s.session = EditorSession(document: replay)
+      let committed = try await helper.edit(service, file, "actions.play", ["actionID": action.id.uuidString])
+      XCTAssertEqual(committed, 200)
+      XCTAssertEqual(s.document.layers[0].mask, documentBefore.layers[0].mask)
+      XCTAssertEqual(s.document.layers[0].content, replay.layers[0].content)
+      let undo = try await helper.edit(service, file, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(s.document, replay)
+      var missingMask = replay
+      missingMask.layers[0].mask = nil
+      s.session = EditorSession(document: missingMask)
+      let multi = RecordedAction(name: "Mask Rollback", steps: [
+        .init(name: "Rename", operation: .rename(.active, "Changed")), action.steps[0],
+      ])
+      try actions.save(multi)
+      let denied = try await helper.edit(service, file, "actions.play", ["actionID": multi.id.uuidString])
+      XCTAssertEqual(denied, 422)
+      XCTAssertEqual(s.document, missingMask)
+      XCTAssertTrue(s.session.undoStack.isEmpty)
+    }
+  }
+
   @MainActor func testBucketClearDesktopHTTPAndModifierFeedback() async throws {
     let native = try store()
     defer { native.renderTask?.cancel() }
@@ -107,9 +228,12 @@ final class ColorRegionWorkflowTests: XCTestCase {
     native.bucketOptions.match.antiAlias = false
     native.bucketUsesPattern = true
     native.bucketPatternPlacement.phaseX = 1
+    native.brush.color = .black
+    try native.session.startActionRecording(name: "Pattern Clear")
     native.colorRegionClick(at: .init(3.5, 2.5))
     await finish(native)
     let expected = native.document
+    let nativeOperation = try XCTUnwrap(native.session.actionRecording?.snapshot.steps.first?.operation)
     guard case .raster(let pixels) = expected.layers[0].content else { return XCTFail("Expected raster") }
     XCTAssertEqual(pixels.pixel(x: 2, y: 2), .white)
     XCTAssertEqual(pixels.pixel(x: 3, y: 2), .clear)
@@ -118,6 +242,8 @@ final class ColorRegionWorkflowTests: XCTestCase {
     try await helper.withService(patterns: library, pressedMouseButtons: { 0 }) { service, file in
       let store = file.store
       store.session = .init(document: original)
+      store.brush.color = .black
+      try store.session.startActionRecording(name: "Pattern Clear")
       try service.share(file)
       let defaults = store.bucketOptions
       let parameters: [String: Any] = ["operation":"fill", "x":3.5, "y":2.5, "mode":"Clear",
@@ -129,6 +255,10 @@ final class ColorRegionWorkflowTests: XCTestCase {
       XCTAssertFalse(store.bucketUsesPattern)
       XCTAssertEqual(store.bucketPatternPlacement, PatternPlacement())
       XCTAssertEqual(store.session.undoStack.count, 1)
+      let apiOperation = try XCTUnwrap(store.session.actionRecording?.snapshot.steps.first?.operation)
+      let encoder = JSONEncoder()
+      encoder.outputFormatting = .sortedKeys
+      XCTAssertEqual(try encoder.encode(apiOperation), try encoder.encode(nativeOperation))
       await store.undo()
       XCTAssertEqual(store.document, original)
       var missing = parameters

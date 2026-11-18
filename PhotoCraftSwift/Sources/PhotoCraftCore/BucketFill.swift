@@ -1,12 +1,16 @@
 import Foundation
 
-public struct BucketOptions: Equatable, Sendable {
+public struct BucketOptions: Codable, Equatable, Sendable {
   public var match = ColorMatchOptions()
   public var opacity: Float = 1
   public var mode = BlendMode.normal
   public var clearsAlpha = false
   public var sampleAllLayers = false
   public init() {}
+
+  public func sampling(mask: Bool) -> CloneSampling {
+    sampleAllLayers && !mask ? .all : .current
+  }
 
   public func validate() throws {
     try match.validate()
@@ -61,6 +65,46 @@ public struct BucketFill: Sendable {
     self.mask = mask
     self.pattern = pattern
     self.placement = placement
+  }
+}
+
+/// The source image is sampled from the playback document at this step.
+public struct RecordedPaintBucket: Codable, Sendable {
+  public let target: ActionLayerTarget
+  public let point: PathPoint
+  public let color: Pixel
+  public let options: BucketOptions
+  public let mask: Bool
+  public let pattern: RasterPattern?
+  public let placement: PatternPlacement
+
+  init?(recording fill: BucketFill, layerID: UUID, in document: CraftDocument) {
+    guard let origin = fill.source.origin, origin.documentID == document.id,
+      origin.layerID == layerID, origin.sampling == fill.options.sampling(mask: fill.mask),
+      origin.mask == fill.mask, !origin.ignoreAdjustments, !origin.convertToTarget
+    else { return nil }
+    target = ActionLayerTarget(layerID, in: document)
+    point = fill.seed
+    color = fill.color
+    options = fill.options
+    mask = fill.mask
+    pattern = fill.pattern
+    placement = fill.placement
+  }
+
+  public func validate() throws {
+    try options.validate()
+    guard point.x.isFinite, point.y.isFinite, point.x >= 0, point.y >= 0,
+      point.x < Double(Surface.maxDimension), point.y < Double(Surface.maxDimension),
+      color.isFinite, (0...1).contains(color.a), !mask || !options.clearsAlpha
+    else { throw CraftError.invalid("Invalid recorded Paint Bucket settings.") }
+    if case .named(_, let occurrence) = target, !(0..<LayerLimits.maximumLayers).contains(occurrence) {
+      throw CraftError.invalid("Invalid recorded Paint Bucket layer.")
+    }
+    if let pattern {
+      try pattern.validate()
+      try placement.validate()
+    }
   }
 }
 

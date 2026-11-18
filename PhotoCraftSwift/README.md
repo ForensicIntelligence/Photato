@@ -1,3 +1,5 @@
+**Source checkpoint 561.** Paint Bucket fills can be recorded and replayed in Photato Actions with the saved settings and the playback document’s own pixels and selection. All 527 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_561.md).
+
 **Source checkpoint 560.** Edit Fill and Stroke can erase pixels through the native dialogs, the existing Photato API, and recorded Actions. All 522 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_560.md).
 
 **Source checkpoint 559.** Paint Bucket has a Clear mode, a typed Photato API, and bounded writeback for separated sparse and full solid fills. All 486 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_559.md).
