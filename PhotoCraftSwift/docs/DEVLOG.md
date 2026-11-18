@@ -553,7 +553,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 532 | 2026-11-17 | [Reuse recomposited tiles in the canvas](#dev-step-532) |
 | 533 | 2026-11-17 | [Start the first Brush frame sooner](#dev-step-533) |
 | 534 | 2026-11-17 | [Start the background worker with Brush input](#dev-step-534) |
+| 535 | 2026-11-17 | [Match the ordinary Brush smoothing default](#dev-step-535) |
 <!-- history-index:end -->
+
+<a id="dev-step-535"></a>
+
+## 2026-11-17 — Match the ordinary Brush smoothing default
+
+The installed Photoshop 2026 Brush showed 10% smoothing in the disposable document in step 533. Adobe's painting guide documents 10% smoothing and 25% spacing for a standard round brush. Photato already starts its live brush at 25% spacing, and the previous live smoothing value was 0%. EditorStore.swift now initializes the live ordinary Brush at 10%, including when the ordinary Brush settings are configured while Move is selected. Other painting tools keep their previous initial amount. Editing one group's amount keeps the other group's amount available when switching tools. The other existing shared brush settings keep their current routing. DocumentWorkspace.swift carries both amounts across workspace tab changes. [Adobe painting performance](https://helpx.adobe.com/photoshop/desktop/apply-painting-techniques/brushes-presets/optimize-painting-and-cloning-using-brush-settings.html).
+
+The existing options-bar and Brush Settings bindings read the live value. AutomationBrushes.swift publishes the reference amount and spacing. The active-brush API keeps its current-tool contract, and the explicitly named paint, adjustment and selection commands resolve their source tool's amount. The core Brush, native format, preset decoder, and recorded Action decoder still use stored data. A legacy value with absent settings retains its earlier behavior, and a typed explicit zero still disables smoothing. The candidate bundle version is 535.
+
+BrushWorkflowTests.swift checks desktop and HTTP pixel equality at the new default, the distinct exact output of explicit zero, and replay of both a new Action and a legacy Action with omitted settings. It also covers tip-only presets, separate tool values and explicit API tool routing. DocumentWorkspaceTests.swift checks both slots during the real workspace tab transfer. The held-preview and committed-stroke tests now apply their corresponding commands when comparing bytes. The raw-input and historical canvas timing fixtures explicitly request 0% to maintain their original workloads. Exact Photoshop smoothing math, every factory preset, physical input and display cadence remain open.
+
+The first Debug run passed 157 of 160 methods. The ordinary Brush initializer assigned the new amount before the existing symmetry setup replaced the full settings value. The repaired initialization assigns smoothing and symmetry together. The unfinished optimized jobs for the first attempt were stopped, and their logs and inputs were retained. Transferring a changed amount for the nonselected group now also advances the brush revision. The first run also exposed an obsolete count of 267 in EraserModeWorkflowTests.swift. The published build 534 reproduced that exact assertion with 271 registered commands. The test now checks the current count exactly, with its eraser workflow and Actions format assertions retained.
+
+All 160 focused and seven Photoshop-reference methods pass in three configurations. The ordinary Brush's native 10% corner stroke matches between desktop, HTTP and recorded Action replay. Legacy absent settings and explicit zero have their own checks. Both extracted executable slices ran the offscreen workspace check. The hosted 24 MP timing compares explicit zero and factory 10% in the same optimized application and records the held and committed outputs. Across three runs per setting, continuous input-to-draw p95 measured 17.20 ms at 0% and 18.44 ms at 10%. Physical presentation remains open. [Qualification](SOURCE_PUBLICATION_535.md).
 
 <a id="dev-step-534"></a>
 

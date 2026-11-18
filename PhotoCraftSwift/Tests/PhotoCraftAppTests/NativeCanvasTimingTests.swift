@@ -25,6 +25,7 @@ final class NativeCanvasTimingTests: XCTestCase {
       }
       let store = EditorStore(document: document, cloneState: CloneSources(), brushes: BrushLibrary())
       store.tool = tool; store.brush.size = large ? 64 : 30; store.brush.color = .black
+      if tool == .brush { store.brushOptions.smoothing.amount = 0 }
       store.retouchSettings.brush.size = 30; store.retouchSettings.brush.pressureSize = false
       let trace = CanvasFrameTrace(directory: directory); store.canvasFrameTrace = trace
       let host = NSHostingView(rootView: WorkspaceView(store: store))

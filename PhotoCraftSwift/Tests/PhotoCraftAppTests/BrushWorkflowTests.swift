@@ -13,7 +13,7 @@ final class BrushWorkflowTests:XCTestCase {
     try store.startRecordingAction(name:"Paint",set:"Test")
     store.beginBrush(.init(x:12,y:20,time:0),zoom:1);store.extendBrush(.init(x:44,y:25,pressure:0.4,tiltX:30,rotation:45,time:100));await store.brushPreviewTask?.value;await store.renderTask?.value
     XCTAssertTrue(store.hasToneDraft);XCTAssertEqual(store.document,doc);XCTAssertNotNil(store.brushPreviewCommand)
-    let draft=try XCTUnwrap(store.brushGesture);var expected=doc;try draft.command.apply(to:&expected)
+    var expected=doc;try XCTUnwrap(store.brushPreviewCommand).apply(to:&expected)
     XCTAssertTrue(store.surface == (try Renderer.composite(expected)),"Preview must include every queued sample");store.cancelBrush();await store.renderTask?.value;XCTAssertEqual(store.document,doc);XCTAssertFalse(store.hasToneDraft)
     store.beginBrush(.init(x:12,y:20,time:0),zoom:1);store.extendBrush(.init(x:44,y:25,time:100));let command=try XCTUnwrap(store.brushGesture?.command);expected=doc;try command.apply(to:&expected)
     store.finishBrush();await store.geometryTask?.value;XCTAssertNil(store.error);XCTAssertEqual(store.document,expected);XCTAssertEqual(store.session.undoStack.count,1)
@@ -24,6 +24,112 @@ final class BrushWorkflowTests:XCTestCase {
     XCTAssertEqual(try ActionLibraryFile.decode(store.actions.exportFile(legacy.id)).version,store.actions.file.version)
     var downgraded=try JSONSerialization.jsonObject(with:saved) as! [String:Any];downgraded["version"]=1;XCTAssertThrowsError(try ActionLibraryFile.decode(JSONSerialization.data(withJSONObject:downgraded)))
   }
+  @MainActor func testFactoryBrushSmoothingAndOtherToolAmountsAreIndependent() throws {
+    let store = EditorStore(document: try CraftDocument(width: 160, height: 100), brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.1)
+    XCTAssertEqual(store.brushOptions.spacing, 0.25)
+    func apiBrush(_ tool: PaintTool) throws -> Brush {
+      let request = try AutomationCommand(data: JSONSerialization.data(withJSONObject: [
+        "command": "paint.tool", "revision": "test", "parameters": ["tool": tool.rawValue, "points": [["x": 18, "y": 22]]]
+      ]))
+      return try request.paintingRequest(store: store).brush
+    }
+    XCTAssertEqual(try apiBrush(.pencil).settings?.smoothing.amount, 0)
+    store.tool = .brush
+    try store.selectBrush(store.brushes.file.presets[0].id)
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.1)
+    store.brushOptions.smoothing.amount = 0
+    store.brush.size = 48
+    store.tool = .eraser
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0)
+    XCTAssertEqual(store.brush.size, 48)
+    store.brushOptions.smoothing.amount = 0.37
+    XCTAssertEqual(try apiBrush(.brush).settings?.smoothing.amount, 0)
+    store.tool = .pencil
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.37)
+    store.tool = .brush
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0)
+    store.tool = .selectionBrush
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.37)
+    store.tool = .brush
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+
+    let source = EditorStore(document: store.document, brushes: BrushLibrary())
+    defer { source.renderTask?.cancel() }
+    source.tool = .brush; source.brush = store.brush
+    source.tool = .pencil; source.brushOptions.smoothing.amount = 0.59; source.tool = .brush
+    XCTAssertEqual(source.brush, store.brush)
+    let revision = store.brushRevision
+    store.inheritBrushSettings(from: source)
+    XCTAssertGreaterThan(store.brushRevision, revision)
+    store.tool = .eraser
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.59)
+  }
+
+  @MainActor func testFactorySmoothingThroughDesktopAndHTTPAndLegacyReplay() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(actions: ActionLibrary(), brushes: BrushLibrary(), pressedMouseButtons: { 0 }) { service, file in
+      let document = try CraftDocument(width: 168, height: 128)
+      let store = file.store
+      store.session = EditorSession(document: document)
+      try service.share(file)
+      let points: [StrokePoint] = [.init(x: 18, y: 38, time: 0), .init(x: 66, y: 95, time: 8),
+        .init(x: 105, y: 20, time: 16), .init(x: 150, y: 86, time: 24)]
+      let input = BrushAPI.json(points)
+      let metadata = try XCTUnwrap(BrushAPI.capabilities["factoryBrush"] as? [String: Any])
+      XCTAssertEqual(metadata["smoothingAmount"] as? Double, 0.1)
+      XCTAssertEqual(store.brushOptions.smoothing.amount, 0.1)
+
+      store.tool = .brush
+      try store.startRecordingAction(name: "Factory Brush", set: "Test")
+      store.beginBrush(try XCTUnwrap(points.first), zoom: 1)
+      for point in points.dropFirst() { store.extendBrush(point) }
+      XCTAssertEqual(store.brushGesture?.brush.settings?.smoothing.amount, 0.1)
+      store.finishBrush(); await store.geometryTask?.value; await store.renderTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      let smoothed = store.document
+      let recorded = try store.stopRecordingAction()
+      let exported = try store.actions.exportFile(recorded.id)
+      let imported = try XCTUnwrap(try ActionLibraryFile.decode(exported).actions.first)
+      var replay = document; try imported.apply(to: &replay)
+      XCTAssertEqual(replay, smoothed)
+
+      await store.undo()
+      store.tool = .move
+      var status = try await helper.edit(service, file, "paint.stroke", ["points": input])
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(store.document, smoothed)
+      await store.undo()
+      status = try await helper.edit(service, file, "paint.stroke", ["points": input,
+        "brush": ["settings": ["smoothing": ["amount": 0]]]])
+      XCTAssertEqual(status, 200)
+      var brush = store.brush
+      brush.settings!.smoothing.amount = 0
+      var explicitZero = document
+      try Command.stroke(document.layers[0].id, points, brush).apply(to: &explicitZero)
+      XCTAssertEqual(store.document, explicitZero)
+      XCTAssertFalse(explicitZero == smoothed, "Explicit zero must produce a different stroke on the corner fixture")
+      XCTAssertEqual(store.brushOptions.smoothing.amount, 0.1)
+      await store.undo()
+
+      var legacy = store.brush
+      legacy.settings = nil
+      let legacyStep = RecordedActionStep(name: "Legacy Brush", operation: .stroke(.active, points, legacy, mask: false))
+      let legacyAction = RecordedAction(name: "Legacy Brush", steps: [legacyStep])
+      try store.actions.save(legacyAction)
+      let legacyFile = try ActionLibraryFile.decode(store.actions.exportFile(legacyAction.id))
+      let decoded = try XCTUnwrap(legacyFile.actions.first)
+      var originalLegacy = document, decodedLegacy = document
+      try Command.stroke(document.layers[0].id, points, legacy).apply(to: &originalLegacy)
+      try decoded.apply(to: &decodedLegacy)
+      XCTAssertEqual(decodedLegacy, originalLegacy)
+      XCTAssertEqual(store.document, document)
+    }
+  }
+
   @MainActor func testLibraryAtomicPersistenceDefineAndPresetLocks()async throws {
     let folder=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString);defer{try? FileManager.default.removeItem(at:folder)}
     let url=folder.appendingPathComponent("Brushes.photatobrushes"),library=BrushLibrary(persistenceURL:url)

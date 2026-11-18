@@ -221,7 +221,7 @@ private struct DocumentWorkspaceRoot: View {
     document.store.patternStampOrigin = previous.store.patternStampOrigin
     document.store.patternStampID = previous.store.patternStampID
     document.store.selectedBrushID = previous.store.selectedBrushID
-    document.store.brush = previous.store.brush
+    document.store.inheritBrushSettings(from: previous.store)
     document.store.backgroundColor = previous.store.backgroundColor
     document.store.autoSelect = previous.store.autoSelect
     document.store.showLayerBounds = previous.store.showLayerBounds

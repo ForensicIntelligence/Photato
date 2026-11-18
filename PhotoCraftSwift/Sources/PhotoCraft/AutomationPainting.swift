@@ -54,7 +54,7 @@ extension AutomationCommand {
   }
   @MainActor func paintingRequest(store:EditorStore)throws->PaintToolRequest {
     let tool=try paintTool(),d=store.document
-    var base=store.brush;base.backgroundColor=store.backgroundColor
+    var base=store.paintingBrush(ordinary:tool == .brush);base.backgroundColor=store.backgroundColor
     if parameters["presetID"] != nil {base=try store.brushes.preset(actionUUID("presetID")).applying(to:base)}
     let brush=try BrushAPI.decode(parameters["brush"],base:base)
     guard let raw=parameters["points"] else{throw AutomationFailure(status:400,message:"points required.")}

@@ -56,7 +56,7 @@ extension AutomationCommand {
     result.sampleAllLayers=try adjustmentBrushFlag("sampleAllLayers",store.selectionSampleAllLayers)
     result.hardEdge=try adjustmentBrushFlag("hardEdge",store.objectFinderHardEdge)
     result.enhanceEdge=try adjustmentBrushFlag("enhanceEdge",store.selectionEnhanceEdge)
-    result.brush=try BrushAPI.decode(parameters["brush"],base:store.brush)
+    result.brush=try BrushAPI.decode(parameters["brush"],base:store.paintingBrush(ordinary:false))
     if kind == .object {
       guard let value=parameters["region"] else{throw AutomationFailure(status:400,message:"Object Selection needs a region.")}
       let raw=try BrushAPI.merge(value,schema:SelectionToolAPI.schema("region"),path:"region") as! [String:Any]
@@ -82,7 +82,7 @@ extension AutomationService {
     let mode=try command.selectionMode(store.selectionPaintMode),all=try command.adjustmentBrushFlag("sampleAllLayers",store.selectionSampleAllLayers),enhance=try command.adjustmentBrushFlag("enhanceEdge",store.selectionEnhanceEdge)
     let object:ObjectSelectionMode
     if command.parameters["objectMode"] != nil {guard let value=ObjectSelectionMode(rawValue:try command.string("objectMode")) else{throw AutomationFailure(status:400,message:"Unknown object selection mode.")};object=value}else{object=store.objectSelectionMode}
-    let brush=try BrushAPI.decode(command.parameters["brush"],base:store.brush)
+    let brush=try BrushAPI.decode(command.parameters["brush"],base:store.paintingBrush(ordinary:false))
     var color=store.selectionOverlayColor
     if let v=command.parameters["overlayColor"] {let raw=try BrushAPI.merge(v,schema:BrushAPI.color,base:BrushAPI.json(color),path:"overlayColor");color=try JSONDecoder().decode(Pixel.self,from:JSONSerialization.data(withJSONObject:raw))}
     let enabled=try command.adjustmentBrushFlag("objectFinderEnabled",store.objectFinderEnabled),hard=try command.adjustmentBrushFlag("hardEdge",store.objectFinderHardEdge)
@@ -90,6 +90,6 @@ extension AutomationService {
     if let v=command.parameters["finderOverlayColor"] {let raw=try BrushAPI.merge(v,schema:BrushAPI.color,base:BrushAPI.json(finderColor),path:"finderOverlayColor");finderColor=try JSONDecoder().decode(Pixel.self,from:JSONSerialization.data(withJSONObject:raw))}
     store.objectFinderEnabled=enabled;store.objectFinderHardEdge=hard;store.objectFinderColor=finderColor
     if command.parameters["mode"] != nil {store.selectionMode=mode;store.selectionPaintMode=mode}
-    store.objectSelectionMode=object;store.selectionSampleAllLayers=all;store.selectionEnhanceEdge=enhance;store.brush=brush;store.selectionOverlayColor=color;store.render()
+    store.objectSelectionMode=object;store.selectionSampleAllLayers=all;store.selectionEnhanceEdge=enhance;store.configurePaintingBrush(brush,ordinary:false);store.selectionOverlayColor=color;store.render()
   }
 }

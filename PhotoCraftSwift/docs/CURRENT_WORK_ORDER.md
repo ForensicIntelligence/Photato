@@ -1,3 +1,7 @@
+**Source checkpoint 535.** The ordinary Brush starts at 10% smoothing. The current desktop and API defaults, explicit zero, Actions, tab transfer and protected tool routing pass 167 selected checks in all three configurations. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_535.md).
+
+B01 still needs independent Photoshop Brush geometry and smoothing comparisons, plus factory preset and stylus validation. Q03 retains the measured first-frame publication delay, continuous input timing and physical presentation checks.
+
 **Source checkpoint 534.** The first ordinary Brush frame submits its worker during input on a ready canvas. All 114 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_534.md).
 
 Q03 remains open for publication latency, steady-stroke scheduling and display measurements. Verify the ordinary Brush factory smoothing default and handle explicit and legacy settings before changing paint defaults.

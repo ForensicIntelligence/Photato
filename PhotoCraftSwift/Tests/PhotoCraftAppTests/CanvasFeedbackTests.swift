@@ -25,6 +25,7 @@ final class CanvasFeedbackTests: XCTestCase {
     for tool in [EditorTool.brush, .eraser] {
       let (store, canvas, window) = try await fixture(tool)
       defer { canvas.drawingEvents.end(); store.cancelBrush(); store.renderTask?.cancel(); window.contentView = nil; window.close() }
+      store.brushOptions.smoothing.amount = 0
       canvas.mouseDown(with: try event(.leftMouseDown, CGPoint(x: 150, y: 200), time: 1))
       let gesture = try XCTUnwrap(store.brushGesture)
       for i in 1...1000 {

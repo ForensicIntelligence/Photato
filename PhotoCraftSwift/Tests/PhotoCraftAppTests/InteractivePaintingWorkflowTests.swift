@@ -17,9 +17,10 @@ final class InteractivePaintingWorkflowTests: XCTestCase {
     for i in 1...200 { store.extendBrush(.init(x: 20 + Double(i), y: 60 + sin(Double(i) / 8) * 20, time: Double(i))) }
     await store.brushPreviewTask?.value; await store.renderTask?.value
     XCTAssertTrue(store.interactiveBrushPreview === worker, "An idle preview must retain its incremental worker")
-    var expected = doc; try XCTUnwrap(store.brushGesture?.command).apply(to: &expected)
-    XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: Renderer.composite(expected)))
+    var held = doc; try XCTUnwrap(store.brushPreviewCommand).apply(to: &held)
+    XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: Renderer.composite(held)))
     XCTAssertNotNil(store.canvasRasterPreview); XCTAssertEqual(store.document, doc)
+    var expected = doc; try XCTUnwrap(store.brushGesture?.command).apply(to: &expected)
     store.finishBrush(); await store.geometryTask?.value; await store.renderTask?.value
     XCTAssertEqual(store.document, expected); XCTAssertNotNil(store.canvasRasterPreview)
     XCTAssertEqual((store.brushState["preview"] as? [String: Any])?["displayedSamples"] as? Int, 201)

@@ -124,7 +124,7 @@ extension AutomationCommand {
     let kind=try adjustmentBrushKind(old.flatMap(AdjustmentBrushKind.init(adjustment:)) ?? store.adjustmentBrushKind)
     let base=old.flatMap{AdjustmentBrushKind(adjustment:$0)==kind ? $0:nil} ?? (kind == .exposure ? .exposure(1):kind == .colorLookup ? .colorLookup(.init()):kind.initial)
     let value=try decodeSettings?(parameters["settings"],kind,base) ?? AdjustmentBrushAPI.decode(parameters["settings"],kind:kind,base:base)
-    let brush=try BrushAPI.decode(parameters["brush"],base:store.brush)
+    let brush=try BrushAPI.decode(parameters["brush"],base:store.paintingBrush(ordinary:false))
     var points:[StrokePoint]=[]
     if !object {
       guard let input=parameters["points"] else{throw AutomationFailure(status:400,message:"points required.")}
@@ -149,7 +149,7 @@ extension AutomationCommand {
 extension AutomationService {
   func configureAdjustmentBrush(_ command:AutomationCommand,store:EditorStore)throws {
     let kind=try command.adjustmentBrushKind(store.adjustmentBrushKind),subtract=try command.adjustmentBrushFlag("subtract",store.adjustmentBrushSubtract),object=try command.adjustmentBrushFlag("applyToObject",store.adjustmentBrushObject),overlay=try command.adjustmentBrushFlag("overlay",store.adjustmentBrushOverlay),new=try command.adjustmentBrushFlag("newLayer",store.adjustmentBrushNewLayer)
-    let brush=try BrushAPI.decode(command.parameters["brush"],base:store.brush)
-    store.adjustmentBrushKind=kind;store.adjustmentBrushSubtract=subtract;store.adjustmentBrushObject=object;store.adjustmentBrushOverlay=overlay;store.adjustmentBrushNewLayer=new;store.brush=brush;store.render()
+    let brush=try BrushAPI.decode(command.parameters["brush"],base:store.paintingBrush(ordinary:false))
+    store.adjustmentBrushKind=kind;store.adjustmentBrushSubtract=subtract;store.adjustmentBrushObject=object;store.adjustmentBrushOverlay=overlay;store.adjustmentBrushNewLayer=new;store.configurePaintingBrush(brush,ordinary:false);store.render()
   }
 }

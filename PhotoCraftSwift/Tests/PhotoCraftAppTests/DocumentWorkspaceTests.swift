@@ -95,6 +95,7 @@ final class DocumentWorkspaceTests: XCTestCase {
     defer { cleanup(controller) }
     let a = try fixture(controller, name: "A")
     a.store.chooseTool(WorkspaceCatalog.tool("brush"))
+    a.store.brushOptions.smoothing.amount = 0.42
     a.store.brush.size = 37
     a.store.brush.color = Pixel(0.25, 0.5, 0.75)
     a.store.workspace.collapsedDock = true
@@ -109,9 +110,14 @@ final class DocumentWorkspaceTests: XCTestCase {
     XCTAssertEqual(b.store.zoom, 0)
     XCTAssertEqual(b.store.pan, .zero)
     b.store.chooseTool(WorkspaceCatalog.tool("eraser"))
+    XCTAssertEqual(b.store.brushOptions.smoothing.amount, 0)
+    b.store.brushOptions.smoothing.amount = 0.31
     let group = try XCTUnwrap(controller.documentWindows.current)
     group.workspace.select(a)
     XCTAssertEqual(a.store.tool, .eraser)
+    XCTAssertEqual(a.store.brushOptions.smoothing.amount, 0.31)
+    a.store.chooseTool(WorkspaceCatalog.tool("brush"))
+    XCTAssertEqual(a.store.brushOptions.smoothing.amount, 0.42)
     XCTAssertEqual(a.store.zoom, 2)
     XCTAssertEqual(a.store.pan, CGSize(width: 12, height: -8))
     XCTAssertTrue(controller.documents.allSatisfy { !$0.isDocumentEdited })

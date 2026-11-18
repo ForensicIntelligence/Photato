@@ -78,7 +78,7 @@ final class InteractivePaintingPerformanceTests: XCTestCase {
         XCTAssertNil(store.error)
       }
       var expected = doc
-      try XCTUnwrap(store.brushGesture?.command).apply(to: &expected)
+      try XCTUnwrap(store.brushPreviewCommand).apply(to: &expected)
       XCTAssertEqual(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: Renderer.composite(expected)), nil)
       func summary(_ values: [Double]) -> [String: Any] {
         let ordered = values.sorted()
@@ -137,7 +137,7 @@ extension InteractivePaintingPerformanceTests {
       await store.brushPreviewTask?.value; await store.renderTask?.value
       let elapsed = ProcessInfo.processInfo.systemUptime - began
       XCTAssertEqual(store.brushPreviewSampleCount, 240)
-      var expected = doc; try XCTUnwrap(store.brushGesture?.command).apply(to: &expected)
+      var expected = doc; try XCTUnwrap(store.brushPreviewCommand).apply(to: &expected)
       XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: Renderer.composite(expected)))
       func statistics(_ samples: [Double]) -> [String: Any] {
         let sorted = samples.sorted()

@@ -168,7 +168,7 @@ final class CanvasFrameDiagnosticsTests: XCTestCase {
     for i in 1...20 { store.extendBrush(.init(x: Double(15 + i * 3), y: 20 + sin(Double(i)) * 10), eventTimestamp: 100 + Double(i) / 120) }
     await store.brushPreviewTask?.value; await store.renderTask?.value
     let gesture = try XCTUnwrap(store.brushGesture)
-    var expected = doc; try gesture.command.apply(to: &expected)
+    var expected = doc; try XCTUnwrap(store.brushPreviewCommand).apply(to: &expected)
     XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: Renderer.composite(expected)))
     let context = try XCTUnwrap(CGContext(data: nil, width: 240, height: 160, bitsPerComponent: 8,
       bytesPerRow: 960, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
@@ -178,7 +178,9 @@ final class CanvasFrameDiagnosticsTests: XCTestCase {
     let drawn = try XCTUnwrap(trace.events.last(where: { $0.kind == "draw" }))
     XCTAssertEqual(drawn.revision, accepted.revision); XCTAssertEqual(drawn.samples, 21)
     XCTAssertGreaterThanOrEqual(drawn.uptime, accepted.uptime)
+    var committed = doc; try gesture.command.apply(to: &committed)
     store.finishBrush(); await store.geometryTask?.value; await store.renderTask?.value
+    XCTAssertEqual(store.document, committed)
     XCTAssertFalse(trace.active); XCTAssertEqual(store.session.undoStack.count, 1)
     let task = try XCTUnwrap(trace.flush()); let written = await task.value; let url = try XCTUnwrap(written)
     let report = try JSONDecoder().decode(CanvasFrameTrace.Report.self, from: Data(contentsOf: url))

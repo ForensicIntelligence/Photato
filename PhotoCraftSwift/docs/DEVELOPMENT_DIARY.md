@@ -1,3 +1,11 @@
+## 2026-11-17 — Step 535: set the ordinary Brush to 10% smoothing
+
+The Brush opens at 10% smoothing. You can still set it to 0%, and your choice follows the workspace across document tabs. Saved Actions and presets use their recorded settings.
+
+All 167 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. For the tested corner stroke, the new default produced the same native pixels from the desktop, HTTP and recorded replay. Exact Photoshop brush pixels and physical display timing still need verification.
+
+[Detailed record](DEVLOG.md#dev-step-535) · [Validation](SOURCE_PUBLICATION_535.md).
+
 ## 2026-11-17 — Step 534: start the Brush worker during input
 
 Photato now queues work for the first mark during input. The worker starts a median 0.23 ms after input. Across two rounds of the 24-megapixel test, the median time through the first AppKit draw was 27.52 ms to 20.77 ms.
@@ -265,14 +273,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:534 -->
+<!-- current-status-step:535 -->
 ## Current development status — 17 November 2026
 
-Build 534 submits the first ordinary Brush render worker while the canvas handles input. All 114 selected checks passed in Debug and both optimized architectures. The development record reports the first draw, the continuous stroke and the new background timings.
+Build 535 matches the observed ordinary Brush smoothing default. All 167 selected checks passed in Debug and both optimized architectures. The development record covers native desktop and API output, saved Actions and the 24 MP timing fixture.
 
-Physical display timing, platform testing and broader Photoshop parity work continue.
+Exact Photoshop Brush geometry, physical display timing and broader Photoshop parity work continue.
 
-[Qualification](SOURCE_PUBLICATION_534.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_535.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1012,6 +1020,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-17 | 532 | [Reuse recomposited tiles in the canvas](DEVLOG.md#dev-step-532) |
 | 2026-11-17 | 533 | [Start the first Brush frame sooner](DEVLOG.md#dev-step-533) |
 | 2026-11-17 | 534 | [Start the background worker with Brush input](DEVLOG.md#dev-step-534) |
+| 2026-11-17 | 535 | [Match the ordinary Brush smoothing default](DEVLOG.md#dev-step-535) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

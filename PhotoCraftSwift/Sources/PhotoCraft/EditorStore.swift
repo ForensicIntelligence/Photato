@@ -204,6 +204,9 @@ struct CanvasRenderRequest: Sendable {
     didSet {
       unavailableToolID = nil
       if oldValue != tool {
+        if Self.usesOrdinaryBrushSmoothing(oldValue) != Self.usesOrdinaryBrushSmoothing(tool) {
+          switchBrushSmoothing()
+        }
         cancelSelectionBorderInteraction()
         cancelEyedropper()
         cancelMagneticLasso()
@@ -500,7 +503,58 @@ struct CanvasRenderRequest: Sendable {
     get { localBrushRevision + paintPalette.revision }
     set { localBrushRevision = newValue - paintPalette.revision }
   }
+  nonisolated static let factoryBrushSmoothingAmount = 0.1
   private var brushSettingsValue = Brush()
+  private var inactiveBrushSmoothingAmount: Double?
+
+  private static func usesOrdinaryBrushSmoothing(_ tool: EditorTool) -> Bool {
+    tool == .brush || (!tool.usesPaintingStroke && tool != .magicEraser)
+  }
+
+  private static func brush(_ brush: Brush, withSmoothingAmount amount: Double?) -> Brush {
+    let defaults = BrushSettings()
+    var settings = brush.settings ?? defaults
+    settings.smoothing.amount = amount ?? defaults.smoothing.amount
+    var result = brush
+    result.settings = amount == nil && settings == defaults ? nil : settings
+    return result
+  }
+
+  private func switchBrushSmoothing() {
+    let previous = brushSettingsValue.settings?.smoothing.amount
+    let updated = Self.brush(brushSettingsValue, withSmoothingAmount: inactiveBrushSmoothingAmount)
+    if updated != brushSettingsValue {
+      brushSettingsValue = updated
+      localBrushRevision += 1
+    }
+    inactiveBrushSmoothingAmount = previous
+  }
+
+  func paintingBrush(ordinary: Bool) -> Brush {
+    Self.usesOrdinaryBrushSmoothing(tool) == ordinary
+      ? brush : Self.brush(brush, withSmoothingAmount: inactiveBrushSmoothingAmount)
+  }
+
+  func configurePaintingBrush(_ value: Brush, ordinary: Bool) {
+    if Self.usesOrdinaryBrushSmoothing(tool) == ordinary {
+      brush = value
+    } else {
+      brush = Self.brush(value, withSmoothingAmount: brushSettingsValue.settings?.smoothing.amount)
+      setInactiveBrushSmoothingAmount(value.settings?.smoothing.amount)
+    }
+  }
+
+  func inheritBrushSettings(from other: EditorStore) {
+    brush = other.brush
+    setInactiveBrushSmoothingAmount(other.inactiveBrushSmoothingAmount)
+  }
+
+  private func setInactiveBrushSmoothingAmount(_ amount: Double?) {
+    guard amount != inactiveBrushSmoothingAmount else { return }
+    inactiveBrushSmoothingAmount = amount
+    localBrushRevision += 1
+  }
+
   var brush: Brush {
     get {
       var value = brushSettingsValue
@@ -626,8 +680,10 @@ struct CanvasRenderRequest: Sendable {
     session = EditorSession(document: document)
     if document.isChannelOnly,document.quickMask == nil {alphaEditingID=document.alphaChannels?.first?.id}
     timelineVisible = document.animation != nil || document.videoTimeline != nil
-    brush.settings = .init()
-    brush.settings!.symmetry.center = .init(Double(document.width)/2,Double(document.height)/2)
+    var brushDefaults = BrushSettings()
+    brushDefaults.smoothing.amount = Self.factoryBrushSmoothingAmount
+    brushDefaults.symmetry.center = .init(Double(document.width)/2,Double(document.height)/2)
+    brush.settings = brushDefaults
     let library = self.gradients
     gradientOptions.gradient = library.selectedPreset?.gradient ?? .foregroundToBackground
     if let loading = library.loadTask {
