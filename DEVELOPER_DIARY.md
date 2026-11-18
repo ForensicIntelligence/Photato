@@ -1,8 +1,8 @@
 # Photato Developer Diary
 
-[Complete diary](https://www.forensicintelligence.ca/photato/diary.html#entries) · [Full diary Markdown](https://raw.githubusercontent.com/ForensicIntelligence/Photato/main/PhotoCraftSwift/docs/DEVELOPMENT_DIARY.md) · [Detailed development log](PhotoCraftSwift/docs/DEVLOG.md)
+**[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-The 10 most recent entries, newest first.
+Source build **567** · The 10 most recent entries, newest first.
 
 ## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
 

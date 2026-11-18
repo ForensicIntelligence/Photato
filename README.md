@@ -1,6 +1,6 @@
 # Photato
 
-**[Developer Diary](DEVELOPER_DIARY.md)**
+**[Developer Diary](DEVELOPER_DIARY.md)** · [Full diary archive](diary/README.md)
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 

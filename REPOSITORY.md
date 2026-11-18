@@ -2,9 +2,11 @@
 
 ## Keep the Developer Diary current
 
-The repository README links directly to the [Developer Diary](DEVELOPER_DIARY.md). The GitHub page shows the ten most recent entries and links to the complete diary and [detailed development log](PhotoCraftSwift/docs/DEVLOG.md). Include the updated diary files and README build number in each source checkpoint commit.
+The repository README and GitHub’s **About** sidebar link to the [Developer Diary](DEVELOPER_DIARY.md). The diary opens at the ten most recent entries and links to the [full GitHub archive](diary/README.md), the website edition, and the original Markdown downloads. The original diary exceeds GitHub’s rendering limit. The archive presents it in smaller pages with a chronological index.
 
-After updating the source diary, run `python3 scripts/check-diary.py --write` from the repository root to refresh the GitHub page. Run `python3 scripts/check-diary.py` to check it. The same check runs in GitHub Actions for pushes and pull requests to `main`. It checks the README link, the advertised build, the GitHub page, and the current entry and indexes in the source records.
+After updating the source diary, run `python3 scripts/check-diary.py --write` from the repository root to refresh the GitHub landing page and archive. Run `python3 scripts/check-diary.py` before pushing. Include the changed diary files and README build number in the same commit as each completed source checkpoint. GitHub Actions checks the links, build number, current entry, and all generated pages on pushes and pull requests to `main`.
+
+On 18 November 2026, the public repository already had the diary through build 567, but GitHub truncated the large original Markdown and the About sidebar had no entry point. The archive and sidebar link make the same source records available from the repository home page. This change touches repository documentation and its check only.
 
 ## 2026-10-19 — Initial private GitHub repository setup
 

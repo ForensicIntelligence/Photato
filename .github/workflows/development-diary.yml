@@ -21,9 +21,10 @@ jobs:
           sparse-checkout: |
             /README.md
             /DEVELOPER_DIARY.md
+            /diary/
             /scripts/check-diary.py
             /PhotoCraftSwift/docs/DEVELOPMENT_DIARY.md
             /PhotoCraftSwift/docs/DEVLOG.md
             /PhotoCraftSwift/scripts/Info.plist
-      - name: Verify the homepage link and current diary entry
+      - name: Verify the diary links, latest entry, and archive pages
         run: python3 scripts/check-diary.py
