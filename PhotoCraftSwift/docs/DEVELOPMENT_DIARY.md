@@ -4,6 +4,8 @@
 
 All 8,510,976 samples in 257 tested precision promotions and 194,560 samples in 38 RGB32-to-Gray32 cases match Photoshop on each architecture. All 661 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
 
+Follow-up testing measured 4,410 rounding thresholds for 16-bit grayscale. Separate Float32 luminance products ordered all of the samples correctly. A 4,096-interval curve fits the measured thresholds, but its exact endpoint calculation remains open. Build 569 continues to use ColorSync for this conversion.
+
 [Detailed record](DEVLOG.md#dev-step-569) · [Validation](SOURCE_PUBLICATION_569.md).
 
 ## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
