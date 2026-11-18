@@ -40,6 +40,7 @@ extension AutomationService {
   /// Return bounded worker output only after the matching document transaction commits.
   func executePreparedResult<Output: Sendable>(document: CraftNSDocument, shareID: UUID, revision expected: String,
     allowFitImage:Bool = false,allowPixelMaskTransform:Bool = false,allowSelection:Bool = false,allowPixelPaint:Bool = false, allowAuxiliary: Bool = false, allowPathTarget: Bool = false, allowModeComponents: Bool = false, allowColorProfile: Bool = false, allowLinkedSmartObject: Bool = false,
+    colorChannelActionTarget: ColorChannelActionTarget? = nil,
     validatePreparedOutput: @escaping @Sendable (Output) throws -> Void = {_ in},
     validateCommit: @escaping @MainActor () throws -> Void = {},
     prepare: @escaping @Sendable (CraftDocument) async throws -> (Command, Output)) async throws -> Output {
@@ -48,7 +49,9 @@ extension AutomationService {
       throw AutomationFailure(status: 422, message: "This operation requires the composite color-profile target.")
     }
     let pathContext = allowPathTarget && !store.editingComponent && !store.editingMask && !store.smartFilterMaskEditing && !store.geometryBusy && !store.hasToneDraft && store.transformDraft == nil
-    guard (allowFitImage && store.canBeginFitImage) || (allowPixelPaint && store.canUsePixelPaint) || (allowPixelMaskTransform && store.canBeginPixelMaskTransform) || allowSelection || (allowLinkedSmartObject && store.canManageLinkedArtwork) || (allowModeComponents && store.canEditModeComponents) || (allowColorProfile && store.canBeginColorProfile) || pathContext || store.clipboardTargetAvailable || (allowAuxiliary && store.canEditChannels) else {
+    let channelActionContext = colorChannelActionTarget != nil && store.canUseColorChannelActions
+      && store.colorChannelActionTarget == colorChannelActionTarget
+    guard channelActionContext || (allowFitImage && store.canBeginFitImage) || (allowPixelPaint && store.canUsePixelPaint) || (allowPixelMaskTransform && store.canBeginPixelMaskTransform) || allowSelection || (allowLinkedSmartObject && store.canManageLinkedArtwork) || (allowModeComponents && store.canEditModeComponents) || (allowColorProfile && store.canBeginColorProfile) || pathContext || store.clipboardTargetAvailable || (allowAuxiliary && store.canEditChannels) else {
       throw AutomationFailure(status: 422, message: "This operation requires the RGB layer target.")
     }
     let paintMaskTarget=allowAuxiliary ? store.selectedMaskPaintTarget:nil
@@ -97,10 +100,18 @@ extension AutomationService {
     var candidate = store.session
     try candidate.executePrepared(prepared)
     try Self.checkLimits(candidate.document)
-    try store.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents,allowLinkedSmartObject:allowLinkedSmartObject)
+    if let colorChannelActionTarget {
+      guard store.colorChannelActionTarget == colorChannelActionTarget else {
+        throw AutomationFailure(status: 409, message: "The color-channel target changed during Actions playback.")
+      }
+      try store.commitColorChannelAction(prepared, to: colorChannelActionTarget)
+    } else {
+      try store.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents,allowLinkedSmartObject:allowLinkedSmartObject)
+    }
     switch command {
     case .photoAlign(let edit): store.selectedLayerIDs = edit.selectedLayerIDs
     case .photoBlend(let edit): store.selectedLayerIDs = edit.selectedLayerIDs
+    case .preparedAction where colorChannelActionTarget != nil: break
     case .preparedAction, .preparedDocumentMode, .toneAdjustment, .hdrToning, .proceduralRender, .maskAllObjects, .focusArea, .skyReplacement, .frame, .artboard, .contentAwareFill, .selectionRefinement, .mergeLayers, .preparedLayerMerge, .embedSmartObject, .independentSmartObjectCopy, .addLayer:
       store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? [])
     default: break

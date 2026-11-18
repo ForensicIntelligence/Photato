@@ -1,3 +1,7 @@
+**Source checkpoint 564.** Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. All 583 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_564.md).
+
+Check Photoshop’s Allow Tool Recording control and how Actions capture channel changes before extending recorded channel edits.
+
 **Source checkpoint 563.** Photato Actions can enter Quick Mask, record Brush and Pencil strokes, and convert the edited mask back to a selection in one undoable Action. All 558 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_563.md).
 
 Continue with Brush Actions for process color components and independent ink plates. Recheck Photoshop recording controls and live channel playback when desktop access returns.

@@ -3602,3 +3602,11 @@ The Action stores document-coordinate samples and Brush settings. Replay resolve
 Build 563 records Quick Mask entry and exit through `channel.edit`, strokes through `paint.stroke` and Pencil through `paint.tool`, and temporary mask options, Fill, Invert, and filters. Use the existing `actions.manage` and `actions.play` commands. The playback state describes these operations and indicates when playback can start from Quick Mask.
 
 Action version 69 retains the operation, options, and document-coordinate samples. Entry uses the destination selection. Exit converts the plane back to selection coverage. Paint, Fill, and Invert reject a hidden existing plane. A fresh plane created by an earlier exit and entry is visible. Filters remain available while hidden. A failed Action publishes no steps or history. Batch and Image Processor use the captured visibility of an open source. [Validation](SOURCE_PUBLICATION_563.md).
+
+### Brush Actions for process and ink channels
+
+Start and stop recording with `actions.manage`. Use `mode.channel.edit` with `action: stroke`, `paint.stroke` with selected process components, or `ink.channel.edit` with `action: stroke`. The stroke becomes a portable Action step in file version 70. Replay with `actions.play` or send the same recipe to Batch.
+
+Process recipes capture the layer reference, document color mode, and component indices. Duotone uses the gray source. Multichannel resolves each plate by name and its occurrence among plates of that name. For an explicit editing target, all enabled strokes must resolve to that target. The service checks the captured target again at commit. A mismatched mode or missing destination returns HTTP 422, and a target change during execution returns HTTP 409. The worker uses the destination’s existing selection and commits one Undo. Shared-document Action state includes `canPlayColorChannelBrush` and `playback.colorChannelBrush`. [Validation](SOURCE_PUBLICATION_564.md).
+
+Compatibility with Firefly v2 Action-file execution remains open for these strokes. This increment uses the Photato Action file and the existing Photato API commands. [Photoshop API v2 GA](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/).

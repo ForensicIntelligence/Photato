@@ -18,6 +18,12 @@ extension EditorStore {
     session.recordActionOperation(.clipboardCopy(targets, merged: merged), name: merged ? "Copy Merged" : "Copy")
     actionRevision += 1
   }
+  func commitColorChannelAction(_ prepared: PreparedEdit, to target: ColorChannelActionTarget) throws {
+    guard prepared.isRecordedAction, colorChannelActionTarget == target else {
+      throw CraftError.invalid("The color-channel target changed during Actions playback.")
+    }
+    try session.executePrepared(prepared)
+  }
   func playPreparedAction(_ action: RecordedAction,
     validate: (@MainActor () throws -> Void)? = nil,
     completion: (@MainActor (Result<Void, Error>) -> Void)? = nil) {
@@ -27,6 +33,7 @@ extension EditorStore {
       if try applyLayerSelectionAction(action) { status = "Play \(action.name)"; completion?(.success(())); return }
       let original = document, generation = layerPanelGeneration
       let fromQuickMask = canUseQuickMaskActions && action.canStartInQuickMask
+      let colorTarget = matchingColorChannelActionTarget(for: action)
       let hiddenQuickMaskID = action.requiresVisibleQuickMask ? hiddenActionQuickMaskID : nil
       let clipboardRevision = clipboard.changeCount
       let input = try action.requiresInitialClipboard ? clipboard.read() : nil
@@ -62,9 +69,13 @@ extension EditorStore {
           // Validate the history transaction before publishing clipboard side effects.
           var candidate = self.session; try candidate.executePrepared(prepared)
           if let output { try self.clipboard.write(output) }
-          try self.executeCompositePreparedEdit(prepared, allowAuxiliary: fromQuickMask)
+          if let colorTarget {
+            try self.commitColorChannelAction(prepared, to: colorTarget)
+          } else {
+            try self.executeCompositePreparedEdit(prepared, allowAuxiliary: fromQuickMask)
+            self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
+          }
           self.reconcileActionQuickMask(action, previousID: original.quickMask?.id)
-          self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
           if let lastPalette { self.previousIndexedPalette = lastPalette }
           if self.document != original { self.onChange?(.changeDone) }
           self.status = prepared.label

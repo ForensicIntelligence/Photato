@@ -483,6 +483,7 @@ public struct PreparedEdit: Sendable {
     clipboardPlaneTarget.map{ClipboardPlaneEdit(source:original,result:result,target:$0,title:label)}
   }
   public var isFitImageEdit: Bool { if case .fitImage = recordingCommand { return true }; return false }
+  public var isRecordedAction: Bool { if case .preparedAction = recordingCommand { return true }; return false }
   public var channelCommand: ChannelCommand? { if case .channel(let command) = recordingCommand { return command }; return nil }
   public var pixelPaintRequest: PixelPaintRequest? { if case .pixelPaint(let request) = recordingCommand { return request }; return nil }
   public var paintingRequest: PaintToolRequest? { if case .painting(let edit) = recordingCommand { return edit.request }; return nil }

@@ -3,6 +3,13 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 enum ActionPlaybackAPI {
+  static var colorChannelBrushCapabilities: [String: Any] {
+    ["minimumFileVersion": 70,
+     "commands": ["mode.channel.edit", "ink.channel.edit", "paint.stroke", "actions.play"],
+     "targets": ["processComponents", "duotoneGray", "multichannelPlates"],
+     "identity": "Process strokes retain the color mode, layer reference and component indices. Multichannel strokes resolve plate names by occurrence.",
+     "playback": "An explicitly selected channel target admits Actions whose enabled strokes all address that target. The entire Action has one Undo."]
+  }
   static var quickMaskCapabilities: [String: Any] {
     ["minimumFileVersion": 69, "commands": ["channel.edit", "paint.stroke", "paint.tool", "actions.play"],
      "steps": ["enter", "Brush", "Pencil", "options", "fill", "invert", "filter", "exit"],
@@ -50,10 +57,16 @@ extension AutomationService {
       return .json(state(share, document: document))
     }
     let fromQuickMask = store.canUseQuickMaskActions && action.canStartInQuickMask
+    let colorTarget = store.matchingColorChannelActionTarget(for: action)
+    if store.hasExplicitInkActionTarget || store.colorChannelActionTarget != nil {
+      guard colorTarget != nil else {
+        throw AutomationFailure(status: 422, message: "Choose the recorded color-channel target or return to the composite before playback.")
+      }
+    }
     let maskID = store.document.quickMask?.id
     let hiddenQuickMaskID = action.requiresVisibleQuickMask ? store.hiddenActionQuickMaskID : nil
     let captured = inputs, snapshots = inputs.map { $0.2.store.document }
-    let playback: (Data?, [PaletteColor]?) = try await executePreparedResult(document: document, shareID: share.id, revision: command.revision, allowAuxiliary: fromQuickMask, validateCommit: { [self] in
+    let playback: (Data?, [PaletteColor]?) = try await executePreparedResult(document: document, shareID: share.id, revision: command.revision, allowAuxiliary: fromQuickMask, colorChannelActionTarget: colorTarget, validateCommit: { [self] in
       guard (!action.requiresVisibleQuickMask || store.hiddenActionQuickMaskID == hiddenQuickMaskID),
         !fromQuickMask || store.hasQuickMaskActionTarget else {
         throw AutomationFailure(status: 409, message: "The Quick Mask target or visibility changed during Actions playback.")

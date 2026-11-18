@@ -5,12 +5,13 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 69
+  static let maximumVersion = 70
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
     let paintVersion = actions.lazy.flatMap(\.steps).compactMap { step -> Int? in
       let mode: BrushPaintMode?, profile: BrushSettings.RoundTipProfile?
       switch step.operation {
+      case .colorChannelBrushStroke: return 70
       case .quickMaskEdit: return 69
       case .targetedBrushStroke: return step.operation.quickMaskVisibilityError == nil ? 68 : 69
       case .paintBucket: return 67
@@ -257,22 +258,40 @@ struct ActionLibraryFile: Codable {
     !geometryBusy && !hasToneDraft && transformDraft == nil && !coalescingChanges && numericEditor == nil && layerNameDraft == nil
   }
   var canUseActions: Bool { actionControlsAvailable && clipboardTargetAvailable }
+  private var canUseCompositeActions: Bool { canUseActions && !hasExplicitInkActionTarget }
   var hasQuickMaskActionTarget: Bool {
     editingChannel == .quickMask && isCompositeColorTarget && !editingMask && pathTarget == nil
   }
   var canUseQuickMaskActions: Bool { actionControlsAvailable && hasQuickMaskActionTarget && canEditChannels }
+  var hasExplicitInkActionTarget: Bool { document.inkMode != nil && !inkTargets.isEmpty }
+  var colorChannelActionTarget: ColorChannelActionTarget? {
+    guard editingChannel == nil, !editingMask, !smartFilterMaskEditing, pathTarget == nil else { return nil }
+    if hasExplicitInkActionTarget { return .ink(Set(effectiveInkTargets)) }
+    let components = effectiveComponentTargets
+    guard let id = document.activeLayerID, !components.isEmpty else { return nil }
+    return .components(id, document.colorMode, components)
+  }
+  var canUseColorChannelActions: Bool {
+    actionControlsAvailable && colorChannelActionTarget != nil && (hasExplicitInkActionTarget ? canEditInkChannels : canEditModeComponents)
+  }
   var canStartRecordingAction: Bool {
-    canUseActions || canUseQuickMaskActions
+    canUseCompositeActions || canUseQuickMaskActions || canUseColorChannelActions
       || (document.activeLayerID == nil && canChangeLayerSelection && !editingComponent && !editingMask)
   }
   var canStopRecordingAction: Bool { canChangeLayerSelection && session.actionRecording != nil }
   func canPlayAction(_ action: RecordedAction?) -> Bool {
     guard let action, session.actionRecording == nil else { return false }
     if action.isLayerSelectionOnly { return canChangeLayerSelection }
-    return canUseActions || (canUseQuickMaskActions && action.canStartInQuickMask)
+    return canUseCompositeActions || (canUseQuickMaskActions && action.canStartInQuickMask)
+      || matchingColorChannelActionTarget(for: action) != nil
+  }
+  func matchingColorChannelActionTarget(for action: RecordedAction) -> ColorChannelActionTarget? {
+    guard canUseColorChannelActions, let target = colorChannelActionTarget,
+      action.canPlay(on: target, in: document) else { return nil }
+    return target
   }
   func startRecordingAction(name: String, set: String) throws {
-    guard canStartRecordingAction else { throw CraftError.invalid("Finish the current edit and choose the composite image or Quick Mask before recording.") }
+    guard canStartRecordingAction else { throw CraftError.invalid("Finish the current edit and choose the composite image or a supported channel before recording.") }
     guard actions.loadError == nil else { throw CraftError.invalid(actions.loadError!) }
     let previousSession = sessionGeneration
     defer { retainBrushEndpointAfterRecordingChange(previousSession: previousSession) }
@@ -294,10 +313,11 @@ struct ActionLibraryFile: Codable {
   }
   var actionState: [String: Any] {
     ["format": "photatoactions", "version": actions.file.version, "supportedVersions": Array(1...ActionLibraryFile.maximumVersion), "libraryRevision": actions.revision,
-     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "semanticPencil": true, "semanticPaintBucket": true, "semanticTargetedBrush": true, "quickMask": ActionPlaybackAPI.quickMaskCapabilities, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "selectionOnly": "Select/deselect-only recipes validate every target, then publish final view selection without document history or dirty events; mixed recipes retain the existing prepared transaction.", "adobeATN": false],
+     "playback": ["semanticColorModes": true, "semanticClipboard": true, "semanticRetouch": true, "semanticPencil": true, "semanticPaintBucket": true, "semanticTargetedBrush": true, "quickMask": ActionPlaybackAPI.quickMaskCapabilities, "colorChannelBrush": ActionPlaybackAPI.colorChannelBrushCapabilities, "retouchSources": "Retouch strokes store settings and sampling recipes. External sources must be open on desktop or explicitly shared with revisions through the API; Batch uses its explicit sources.", "resultSchema": ActionPlaybackAPI.resultSchema, "masterSources": "Desktop uses eligible open documents; API uses explicit shared sources; Batch uses its source snapshots.", "clipboard": "Desktop reads an initial image only when required and publishes Copy/Cut after successful playback. API and Batch use a private clipboard; API returns copied data up to2MiB. Action files contain commands, not clipboard images.", "previousPalette": "Explicit palette saved with the conversion settings.", "selectionOnly": "Select/deselect-only recipes validate every target, then publish final view selection without document history or dirty events; mixed recipes retain the existing prepared transaction.", "adobeATN": false],
      "canRecord": canStartRecordingAction && session.actionRecording == nil && actions.loadError == nil,
-     "canPlay": canUseActions && session.actionRecording == nil,
+     "canPlay": canUseCompositeActions && session.actionRecording == nil,
      "canPlayQuickMask": canUseQuickMaskActions && session.actionRecording == nil,
+     "canPlayColorChannelBrush": canUseColorChannelActions && session.actionRecording == nil,
      "canPlaySelectionOnly": canChangeLayerSelection && session.actionRecording == nil,
      "canStopRecording": canStopRecordingAction,
      "canDuplicate": canDuplicateAction, "duplication": ActionDuplicationAPI.capabilities,

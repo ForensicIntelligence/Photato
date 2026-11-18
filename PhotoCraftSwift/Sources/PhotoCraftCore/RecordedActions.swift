@@ -37,6 +37,7 @@ public enum ActionOperation: Codable, Sendable {
   indirect case paintBucket(RecordedPaintBucket)
   indirect case targetedBrushStroke(RecordedTargetedBrushStroke)
   indirect case quickMaskEdit(RecordedQuickMaskEdit)
+  indirect case colorChannelBrushStroke(RecordedColorChannelStroke)
   case documentMode(DocumentModeRequest)
   case restrictedMode(RestrictedModeRequest)
   case inkMode(InkModeRequest)
@@ -237,6 +238,19 @@ public enum ActionOperation: Codable, Sendable {
       self = .targetedBrushStroke(.init(target: .smartFilterMask(target(id)), points: points, brush: brush))
     case .channel(.stroke(.alpha(let id), let points, let brush)):
       self = .targetedBrushStroke(.init(target: .savedChannel(id, in: d), points: points, brush: brush))
+    case .modeComponents(let edit):
+      if case .stroke(let points, let brush) = edit.operation {
+        self = .colorChannelBrushStroke(.init(target: .components(target(edit.layerID), d.colorMode, edit.components.sorted()),
+          points: points, brush: brush))
+      } else {
+        self = .unsupported("\(command.label) is not yet recordable. Remove or disable this step before playback.")
+      }
+    case .inkChannel(.edit(let targets, .stroke(let points, let brush))):
+      if let plates = try? targets.map({ try RecordedColorChannelStroke.Plate(recording: $0, in: d) }) {
+        self = .colorChannelBrushStroke(.init(target: .ink(plates), points: points, brush: brush))
+      } else {
+        self = .unsupported("The stroke has no portable ink targets.")
+      }
     case .channel(.quickMask(let enabled, let options)): self = .quickMaskEdit(.transition(enabled, options))
     case .channel(.options(.quickMask, let options)): self = .quickMaskEdit(.options(options))
     case .channel(.fill(.quickMask, let gray, let opacity)): self = .quickMaskEdit(.fill(gray, opacity))
@@ -363,6 +377,7 @@ public enum ActionOperation: Codable, Sendable {
     case .pencilStroke(let stroke): return try stroke.command(in: d)
     case .targetedBrushStroke(let stroke): return try stroke.command(in: d)
     case .quickMaskEdit(let edit): return .channel(edit.command)
+    case .colorChannelBrushStroke(let stroke): return try stroke.command(in: d)
     case .clear(let t): return .clear(try id(t))
     case .fill(let t, let v): return .fill(try id(t), v)
     case .style(let t, let v): return .layerStyle(try ids(t), v)
@@ -497,6 +512,101 @@ public struct RecordedTargetedBrushStroke: Codable, Sendable {
   }
 }
 
+/// A current document's editing destination, resolved from a portable stroke.
+public enum ColorChannelActionTarget: Equatable, Sendable {
+  case components(UUID, DocumentColorMode, Set<Int>)
+  case ink(Set<InkChannelTarget>)
+}
+
+public struct RecordedColorChannelStroke: Codable, Sendable {
+  enum Plate: Codable, Hashable, Sendable {
+    case duotone
+    case named(String, occurrence: Int)
+
+    init(recording target: InkChannelTarget, in document: CraftDocument) throws {
+      switch target {
+      case .duotone: self = .duotone
+      case .plate(let id):
+        let plates = try document.multichannelRaster().plates
+        guard let index = plates.firstIndex(where: { $0.id == id }) else {
+          throw CraftError.invalid("The recorded ink plate is missing.")
+        }
+        let name = plates[index].name
+        self = .named(name, occurrence: plates[..<index].filter { $0.name == name }.count)
+      }
+    }
+
+    func resolve(in document: CraftDocument) throws -> InkChannelTarget {
+      switch self {
+      case .duotone:
+        guard document.colorMode == .duotone else { throw CraftError.invalid("This stroke needs a Duotone source.") }
+        return .duotone
+      case .named(let name, let occurrence):
+        let matches = try document.multichannelRaster().plates.filter { $0.name == name }
+        guard matches.indices.contains(occurrence) else { throw CraftError.invalid("The recorded ink plate is missing.") }
+        return .plate(matches[occurrence].id)
+      }
+    }
+  }
+  enum Target: Codable, Sendable {
+    case components(ActionLayerTarget, DocumentColorMode, [Int])
+    case ink([Plate])
+  }
+  let target: Target
+  let points: [StrokePoint]
+  let brush: Brush
+
+  func validate() throws {
+    try BrushPainter.validate(brush, points: points)
+    guard !points.isEmpty, brush.settings?.paintMode == nil else {
+      throw CraftError.invalid("A color-channel stroke needs a compatible brush and input samples.")
+    }
+    switch target {
+    case .components(_, let mode, let indices):
+      guard DocumentColorMode.componentModes.contains(mode), !indices.isEmpty,
+        Set(indices).count == indices.count, indices.allSatisfy({ (0..<mode.componentCount).contains($0) }) else {
+        throw CraftError.invalid("Invalid recorded color components.")
+      }
+    case .ink(let plates):
+      guard (1...MultichannelRaster.maximumChannels).contains(plates.count),
+        Set(plates).count == plates.count,
+        !plates.contains(.duotone) || plates == [.duotone] else {
+        throw CraftError.invalid("Invalid recorded ink destinations.")
+      }
+      for plate in plates {
+        if case .named(let name, let occurrence) = plate,
+          name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || name.utf8.count > 1024
+            || !(0..<MultichannelRaster.maximumChannels).contains(occurrence) {
+          throw CraftError.invalid("Invalid recorded ink plate.")
+        }
+      }
+    }
+  }
+
+  func command(in document: CraftDocument) throws -> Command {
+    try validate()
+    switch target {
+    case .components(let layer, let mode, let indices):
+      guard mode == document.colorMode else { throw CraftError.invalid("The destination color mode differs from this Action.") }
+      return .modeComponents(.init(layerID: try layer.resolve(in: document), components: Set(indices),
+        operation: .stroke(points, brush)))
+    case .ink(let plates):
+      return .inkChannel(.edit(try plates.map { try $0.resolve(in: document) }, .stroke(points, brush)))
+    }
+  }
+
+  func matches(_ destination: ColorChannelActionTarget, in document: CraftDocument) -> Bool {
+    switch (target, destination) {
+    case (.components(let layer, let mode, let indices), .components(let id, let currentMode, let components)):
+      return mode == currentMode && Set(indices) == components && (try? layer.resolve(in: document)) == id
+    case (.ink(let plates), .ink(let current)):
+      guard let resolved = try? plates.map({ try $0.resolve(in: document) }) else { return false }
+      return Set(resolved) == current
+    default: return false
+    }
+  }
+}
+
 public enum RecordedQuickMaskEdit: Codable, Sendable {
   case transition(Bool, ChannelDisplayOptions)
   case options(ChannelDisplayOptions)
@@ -587,6 +697,7 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .paintBucket(let request) = step.operation { try request.validate() }
       if case .targetedBrushStroke(let stroke) = step.operation { try stroke.validate() }
       if case .quickMaskEdit(let edit) = step.operation { try edit.validate() }
+      if case .colorChannelBrushStroke(let stroke) = step.operation { try stroke.validate() }
       if case .pencilStroke(let stroke) = step.operation { try stroke.validate() }
       if case .documentMode(let request) = step.operation { _ = try DocumentModeDescriptor(mode: request.conversion.mode, depth: request.conversion.depth, profile: request.conversion.profile, intent: request.conversion.intent) }
       if case .restrictedMode(let request) = step.operation { try request.validate() }
@@ -627,6 +738,13 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       guard step.operation.isQuickMaskStep else { return false }
     }
     return true
+  }
+  public func canPlay(on target: ColorChannelActionTarget, in document: CraftDocument) -> Bool {
+    let enabled = steps.lazy.filter(\.enabled)
+    return !enabled.isEmpty && enabled.allSatisfy {
+      guard case .colorChannelBrushStroke(let stroke) = $0.operation else { return false }
+      return stroke.matches(target, in: document)
+    }
   }
   public var requiresInitialClipboard: Bool {
     for step in steps where step.enabled {
