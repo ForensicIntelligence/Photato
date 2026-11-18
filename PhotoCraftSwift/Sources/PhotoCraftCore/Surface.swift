@@ -336,14 +336,23 @@ public struct Surface: Codable, Equatable, Sendable {
     let linear = colorEncoding == .linearRGB, depth = self.depth
     var invalidatesOpacity = false
     func makeReplacement(_ input: UnsafeBufferPointer<Pixel>?) -> [Pixel]? {
+      // An implicit tile reads the same background sample at every pixel.
+      let encodedDefault = linear && input == nil ? SRGBTransfer.encoded(fallback) : fallback
       var output: [Pixel]?
       for y in 0..<tileHeight {
         for x in 0..<tileWidth {
           let index = y*side + x
           let weight = coverage[index]
           guard weight > 0 else { continue }
-          let old = input?[index] ?? fallback
-          let encoded = linear ? SRGBTransfer.encoded(old) : old
+          let old: Pixel
+          let encoded: Pixel
+          if let input {
+            old = input[index]
+            encoded = linear ? SRGBTransfer.encoded(old) : old
+          } else {
+            old = fallback
+            encoded = encodedDefault
+          }
           guard let edited = transform(left+x,top+y,index,weight,encoded) else { continue }
           let stored = linear ? Self.linearStoredReplacement(edited,old:old,encoded:encoded) : edited.quantized(depth)
           if linear && stored.hasSameBits(as:old) { continue }

@@ -51,16 +51,21 @@ public struct Pixel: Codable, Equatable, Sendable {
 /// Extended sRGB transfer between the editor's encoded color values and linear
 /// HDR storage/compositing. Surface declares its stored sample representation.
 public enum SRGBTransfer {
+  /// Resolve the power before returning to the original Float32 arithmetic.
+  /// The platform Float32 power rounds some inputs differently on arm64 and x86_64.
+  private static func roundedPower(_ base: Float, _ exponent: Float) -> Float {
+    Float(pow(Double(base), Double(exponent)))
+  }
   public static func linear(_ value: Float) -> Float {
     if value == 0 || abs(value) == 1 { return value }
     let a = abs(value)
-    let v = a <= 0.04045 ? a / 12.92 : pow((a + 0.055) / 1.055, 2.4)
+    let v = a <= 0.04045 ? a / 12.92 : roundedPower((a + 0.055) / 1.055, 2.4)
     return value < 0 ? -v : v
   }
   public static func encoded(_ value: Float) -> Float {
     if value == 0 || abs(value) == 1 { return value }
     let a = abs(value)
-    let v = a <= 0.0031308 ? a * 12.92 : 1.055 * pow(a, 1 / 2.4) - 0.055
+    let v = a <= 0.0031308 ? a * 12.92 : 1.055 * roundedPower(a, 1 / 2.4) - 0.055
     return value < 0 ? -v : v
   }
   public static func linear(_ p: Pixel) -> Pixel {

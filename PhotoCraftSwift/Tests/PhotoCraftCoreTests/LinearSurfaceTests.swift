@@ -4,6 +4,36 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class LinearSurfaceTests: XCTestCase {
+  func testExtendedTransferMatchesIndependentFloat32ReferenceInBothDirections() {
+    // Expected power values are rounded from an 80-digit calculation of the
+    // exact binary32 operands, then encoded using the existing binary32 arithmetic.
+    let toLinear: [(UInt32, UInt32)] = [
+      (0x3d35_80b6, 0x3b61_ac60), (0x3d39_f0ba, 0x3b67_a07f),
+      (0x3d3c_60bc, 0x3b6a_ef8f), (0x3d44_f0c5, 0x3b76_c6e3),
+    ]
+    let toEncoded: [(UInt32, UInt32)] = [
+      (0x3bfe_80ff, 0x3dac_cd43), (0x3c10_4090, 0x3dbc_1ca9),
+      (0x3c67_c0e8, 0x3dfd_cc8f), (0x3cb2_80b3, 0x3e23_0a66),
+    ]
+    let probes: [((Float) -> Float, [(UInt32, UInt32)])] = [
+      (SRGBTransfer.linear, toLinear), (SRGBTransfer.encoded, toEncoded),
+    ]
+    for (convert, cases) in probes {
+      let sign: UInt32 = 0x8000_0000
+      for (input, expected) in cases {
+        XCTAssertEqual(convert(Float(bitPattern: input)).bitPattern, expected)
+        XCTAssertEqual(convert(Float(bitPattern: input | sign)).bitPattern, expected | sign)
+      }
+      XCTAssertEqual(convert(-0.0).bitPattern, sign)
+      XCTAssertEqual(convert(-1), -1)
+      XCTAssertEqual(convert(1), 1)
+    }
+    XCTAssertTrue(SRGBTransfer.linear(Float.greatestFiniteMagnitude).isInfinite)
+    XCTAssertTrue(SRGBTransfer.encoded(Float.greatestFiniteMagnitude).isFinite)
+    let pixel = Pixel(0.2,-0.1,1.4,-0.0)
+    XCTAssertEqual(SRGBTransfer.linear(pixel).a.bitPattern,pixel.a.bitPattern)
+    XCTAssertEqual(SRGBTransfer.encoded(pixel).a.bitPattern,pixel.a.bitPattern)
+  }
   let words: [UInt32] = [
     0, 0x8000_0000, 1, 0x8000_0001, 0x007f_ffff, 0x0080_0000,
     0x3dcc_cccd, 0x3eaa_aaab, 0x3f80_0001, 0xc050_0000, 0x7f7f_ffff,

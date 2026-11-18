@@ -1,3 +1,7 @@
+**Source checkpoint 540.** All 32 tested Brush outputs now match across optimized Apple Silicon and Intel under Rosetta. All 251 selected methods pass in Debug and both optimized architectures. Photoshop Brush pixel comparisons and physical editing cadence remain open. [Qualification](SOURCE_PUBLICATION_540.md).
+
+Q03 continues with the measured large-tip preparation and dense linear Float32 render costs. The 1,800 px retained path and the 2,500–5,000 px complete path both need faster on-canvas feedback. B01 still needs timed smoothing, independent subpixel samples and factory preset validation.
+
 **Source checkpoint 539.** Large Brush coverage and output use tile-local writes. The 5,000 px color-dynamics test used 74% less render time on Apple Silicon. All 205 selected methods pass in Debug and both optimized architectures. Physical editing cadence remains open. [Qualification](SOURCE_PUBLICATION_539.md).
 
 Q03 still needs hosted large-tip input and display timing. B01 continues with independent subpixel samples, timed smoothing, factory presets and live tool limits.

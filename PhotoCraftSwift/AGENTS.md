@@ -1,3 +1,5 @@
+**Source checkpoint 540.** All 32 tested Brush outputs now match across optimized Apple Silicon and Intel under Rosetta. All 251 selected methods pass in Debug and both optimized architectures. Photoshop Brush pixel comparisons and physical editing cadence remain open. [Qualification](docs/SOURCE_PUBLICATION_540.md).
+
 **Source checkpoint 539.** Large Brush coverage and output use tile-local writes. The 5,000 px color-dynamics test used 74% less render time on Apple Silicon. All 205 selected methods pass in Debug and both optimized architectures. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_539.md).
 
 **Source checkpoint 538.** The primary Brush diameter reaches 5,000 px. All 204 selected methods pass in Debug and both optimized architectures. Wide-tip responsiveness and exact Photoshop alpha remain open. [Qualification](docs/SOURCE_PUBLICATION_538.md).

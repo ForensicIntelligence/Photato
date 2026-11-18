@@ -12,7 +12,8 @@ final class BrushDynamicsTests:XCTestCase {
       var original = try Surface(width:70,height:72,depth:depth,colorEncoding:encoding)
       original.setLinearPixel(x:67,y:66,Pixel(-0.0,0.187_331,2.6,0))
       original.setLinearPixel(x:66,y:67,Pixel(0.713_337,-0.0,1.42,1))
-      let inputs = try [original,original.spillingTiles(to:scratch)]
+      let implicit = try Surface(width:70,height:72,depth:depth,fill:Pixel(0.31,0.74,0.02,0.43),colorEncoding:encoding)
+      let inputs = try [original,original.spillingTiles(to:scratch),implicit]
       for source in inputs {
         var expected = source, actual = source
         let storedView = source.pixel(x:67,y:66)
@@ -25,7 +26,10 @@ final class BrushDynamicsTests:XCTestCase {
         coverage[6*64+5] = 0.2
         // Weight on padding must be ignored.
         coverage[63*64+63] = 1
-        actual.updateBrushTile(3,coverage:coverage) { _,_,_,weight,_ in weight == 1 ? first : second }
+        actual.updateBrushTile(3,coverage:coverage) { x,y,_,weight,encoded in
+          XCTAssertTrue(encoded.hasSameBits(as:source.pixel(x:x,y:y)))
+          return weight == 1 ? first : second
+        }
         XCTAssertTrue(actual == expected)
         XCTAssertTrue(actual.linearPixel(x:66,y:67).hasSameBits(as:source.linearPixel(x:66,y:67)))
         XCTAssertTrue(actual.linearPixel(x:67,y:66).hasSameBits(as:expected.linearPixel(x:67,y:66)))

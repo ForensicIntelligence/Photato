@@ -1,0 +1,2111 @@
+{
+  "actionFileMaximumVersion": 62,
+  "addedTests": 1,
+  "applicationBuild": 540,
+  "archiveSHA256": "cd0ec2a21030644c7cde31627766094617d5e17f88898af3e4ebfee206570596",
+  "autoBlendReferenceCorrection": {
+    "baselineSHA256": "69a0f15a686f7522355ad98e161f7c7b56c08e558baf79099ecc87e94fdad068",
+    "bytes": 983040,
+    "changedAlphaWords": 0,
+    "changedRGBWords": 252,
+    "correctedSHA256": "94c5dd66889d368fd8aed26147a1d475006ea11baaf699a5f2978a1cc0aaa7c3",
+    "corrections": {
+      "3c4ece7f": {
+        "count": 12,
+        "encoded": "3decd0ed",
+        "limit": 65535,
+        "roundedLinear": "3c4ece80",
+        "sample": 7578
+      },
+      "3d810b68": {
+        "count": 240,
+        "encoded": "3e8e8e8f",
+        "limit": 255,
+        "roundedLinear": "3d810b67",
+        "sample": 71
+      }
+    },
+    "independentPowerPrecisionDecimalDigits": 80,
+    "programs": [
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "8 bit-panorama-seamlessfalse-fillfalse",
+        "offset": 0,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "8 bit-panorama-seamlessfalse-filltrue",
+        "offset": 40960,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "correctedWords": 120,
+        "layers": 2,
+        "name": "8 bit-panorama-seamlesstrue-fillfalse",
+        "offset": 81920,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "correctedWords": 120,
+        "layers": 3,
+        "name": "8 bit-panorama-seamlesstrue-filltrue",
+        "offset": 122880,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "8 bit-stack-seamlessfalse-fillfalse",
+        "offset": 163840,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "8 bit-stack-seamlessfalse-filltrue",
+        "offset": 204800,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "8 bit-stack-seamlesstrue-fillfalse",
+        "offset": 245760,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "8 bit-stack-seamlesstrue-filltrue",
+        "offset": 286720,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "16 bit-panorama-seamlessfalse-fillfalse",
+        "offset": 327680,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "16 bit-panorama-seamlessfalse-filltrue",
+        "offset": 368640,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "16 bit-panorama-seamlesstrue-fillfalse",
+        "offset": 409600,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "16 bit-panorama-seamlesstrue-filltrue",
+        "offset": 450560,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "16 bit-stack-seamlessfalse-fillfalse",
+        "offset": 491520,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "16 bit-stack-seamlessfalse-filltrue",
+        "offset": 532480,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "correctedWords": 6,
+        "layers": 2,
+        "name": "16 bit-stack-seamlesstrue-fillfalse",
+        "offset": 573440,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "correctedWords": 6,
+        "layers": 3,
+        "name": "16 bit-stack-seamlesstrue-filltrue",
+        "offset": 614400,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "32 bit-panorama-seamlessfalse-fillfalse",
+        "offset": 655360,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "32 bit-panorama-seamlessfalse-filltrue",
+        "offset": 696320,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "32 bit-panorama-seamlesstrue-fillfalse",
+        "offset": 737280,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "32 bit-panorama-seamlesstrue-filltrue",
+        "offset": 778240,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "32 bit-stack-seamlessfalse-fillfalse",
+        "offset": 819200,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "32 bit-stack-seamlessfalse-filltrue",
+        "offset": 860160,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 2,
+        "name": "32 bit-stack-seamlesstrue-fillfalse",
+        "offset": 901120,
+        "visible": [
+          true,
+          true
+        ]
+      },
+      {
+        "bytes": 40960,
+        "layers": 3,
+        "name": "32 bit-stack-seamlesstrue-filltrue",
+        "offset": 942080,
+        "visible": [
+          true,
+          true,
+          true
+        ]
+      }
+    ]
+  },
+  "broaderConsumerComparison": {
+    "expected": [
+      "PhotoCraftAppTests.PatternPatchWorkflowTests/testAPIInvalidMixedMissingPatternsBusyAndRevocationDoNotCommit",
+      "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema",
+      "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeCaptureCancellationSourceChangeAndAvailabilityGuards",
+      "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeUsePatternControlsSharedOutputHistoryAndPersistence",
+      "PhotoCraftAppTests.PatternPatchWorkflowTests/testPatternDonorMatchesExistingNormalPatchAllDepthsAndDiffusionValues",
+      "PhotoCraftAppTests.PhotoBlendLegacyCaptureTests/testCaptureOpaqueBlendProgramsWithoutChangingSource",
+      "PhotoCraftCoreTests.BucketFillTests/testAllDepthsFillOnlyConnectedRegionWithPersistenceAndOneUndo",
+      "PhotoCraftCoreTests.BucketFillTests/testCroppedTargetExpandsWithoutMovingLinkedOrUnlinkedMasks",
+      "PhotoCraftCoreTests.BucketFillTests/testMaskFillUsesScalarCoverageAndExpandsImplicitOutside",
+      "PhotoCraftCoreTests.BucketFillTests/testNoOpInvalidLockedAndCancelledEditsAreAtomic",
+      "PhotoCraftCoreTests.BucketFillTests/testRotatedScaledLayerIsFilledInDocumentCoordinates",
+      "PhotoCraftCoreTests.BucketFillTests/testSelectionOpacityAndBlendAreAppliedOnceAtNativeDepth",
+      "PhotoCraftCoreTests.ChannelArithmeticTests/testAuxiliaryAndPixelMaskTargetsAndNoOpGeometry",
+      "PhotoCraftCoreTests.ChannelArithmeticTests/testCalculationsOrderScaleOffsetCoverageAndInvalidAtomicity",
+      "PhotoCraftCoreTests.ChannelArithmeticTests/testEmptyTargetExpansionPreserveTransparencyAndOffCanvasPixels",
+      "PhotoCraftCoreTests.ChannelArithmeticTests/testHandComputedRGBMaskSelectionAndOutsideBitsAtEveryDepth",
+      "PhotoCraftCoreTests.ChannelArithmeticTests/testMaximumImplicitCanvasAndNativeChannelPlaneBytes",
+      "PhotoCraftCoreTests.CloneStampTests/testCommandUndoMasksArchiveAndInheritedLock",
+      "PhotoCraftCoreTests.CloneStampTests/testExactOpaqueCopyAllDepthsAndImmutableOverlappingSource",
+      "PhotoCraftCoreTests.CloneStampTests/testFloatTransformedSamplesUseLinearLightAndIntegerSamplesStayEncoded",
+      "PhotoCraftCoreTests.CloneStampTests/testFlowAccumulatesUnderOpacityCeilingAndFractionalSelection",
+      "PhotoCraftCoreTests.CloneStampTests/testInvalidStrokeIsAtomicAndSegmentationDoesNotChangeSpacing",
+      "PhotoCraftCoreTests.CloneStampTests/testRoundTipAgainstExecutedRustOracle",
+      "PhotoCraftCoreTests.CloneStampTests/testTransformsPremultipliedResamplingAndOffsets",
+      "PhotoCraftCoreTests.CurvesTests/testIdentityHiddenColorsAndUnchangedComponentsRetainBits",
+      "PhotoCraftCoreTests.CurvesTests/testIndependentRustSplineOracleAndComponentBeforeComposite",
+      "PhotoCraftCoreTests.CurvesTests/testSelectionAlphaUndoNativeStorageAndFailedEditAreAtomic",
+      "PhotoCraftCoreTests.CurvesTests/testValidationPointEditingAndLimits",
+      "PhotoCraftCoreTests.GradientMapToneTests/testIndependentPhotoshopRGB16ToneVectors",
+      "PhotoCraftCoreTests.GradientMapToneTests/testRGB16ReverseAlphaAndInvalidSamples",
+      "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits",
+      "PhotoCraftCoreTests.HueSaturationTests/testColorizeHasNoHiddenSaturationFloorAndRetainsInactiveSettings",
+      "PhotoCraftCoreTests.HueSaturationTests/testColorizeLightnessPrecedesTintSynthesis",
+      "PhotoCraftCoreTests.HueSaturationTests/testIdentityExcludedColorsHiddenRGBAndFloatOverflow",
+      "PhotoCraftCoreTests.HueSaturationTests/testMasterAndRangeLightnessHaveDifferentEndpoints",
+      "PhotoCraftCoreTests.HueSaturationTests/testMasterLightnessPrecedesPositiveSaturationAndExtremesStayFinite",
+      "PhotoCraftCoreTests.HueSaturationTests/testNearGrayRangeLightnessAndHueRetainFullRangeWeight",
+      "PhotoCraftCoreTests.HueSaturationTests/testOverlappingRangeLightnessClampsInStoredOrder",
+      "PhotoCraftCoreTests.HueSaturationTests/testRangeWrappingFeatherEdgesValidationAndPointConstraints",
+      "PhotoCraftCoreTests.HueSaturationTests/testRetainedRustHSLRangesAndFloatStorageOracle",
+      "PhotoCraftCoreTests.HueSaturationTests/testSelectedPixelEditHistoryNativeArchiveAndLegacySaturation",
+      "PhotoCraftCoreTests.LayerCreationTests/testBelowGroupInsertsBeforeWholeSubtreeAndAboveInsertsInside",
+      "PhotoCraftCoreTests.LayerCreationTests/testColorLabelByteCodesPreserveUnrelatedAndFutureMetadata",
+      "PhotoCraftCoreTests.LayerCreationTests/testConfiguredCreationPreservesSelectionAndIsOneUndoAtEveryDepth",
+      "PhotoCraftCoreTests.LayerCreationTests/testInvalidOptionsClippingLockedParentAndLimitNeverMutateSession",
+      "PhotoCraftCoreTests.LayerCreationTests/testNeutralModeFamiliesAndTransparentDefault",
+      "PhotoCraftCoreTests.LayerCreationTests/testSuggestedNameAvoidsExistingNamesAndStartsAtOne",
+      "PhotoCraftCoreTests.MaskFilterTests/testAllEightFiltersPreserveColorSourcePropertiesOtherMasksAndOneHistoryAtEveryDepth",
+      "PhotoCraftCoreTests.MaskFilterTests/testAverageHasExactNumericGrayWithoutGammaOrMaskAlphaAndRetainsDisabledProperties",
+      "PhotoCraftCoreTests.MaskFilterTests/testCancelledMaskFilterLeavesTheOriginalUnchanged",
+      "PhotoCraftCoreTests.MaskFilterTests/testInvalidKindsMissingMasksAndLocksCannotPublish",
+      "PhotoCraftCoreTests.MaskFilterTests/testLinearStorageAndUnselectedIgnoredSamplesRemainBitIdentical",
+      "PhotoCraftCoreTests.MaskFilterTests/testMaskFilteringDoesNotRequireRasterOrSmartObjectColorContent",
+      "PhotoCraftCoreTests.MaskFilterTests/testRecordingMaskFilterNeverSubstitutesAColorFilter",
+      "PhotoCraftCoreTests.MaskFilterTests/testSelectionUsesStoredMaskPlacementAndPreservesUnselectedSamplesExactly",
+      "PhotoCraftCoreTests.MaskFilterTests/testSparseMaximumGeometryUsesExistingConstantFilterProofWithoutDenseAllocation",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testBudgetIOAndCancellationLeaveSourceUnchanged",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testContrastReframeBeyondOldAdmissionUsesCheckedMappedOutput",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testDerivedSurfacesAndChannelsStreamBeyondSmallWorkingSet",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testEveryModeDepthMethodAndEdgeRuleMatchesPreservedDenseGeometry",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testHugeUniformSourceToSmallInterpolationMatchesIndependentDenseKernel",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumNearestGridTurnsPreserveLiteralWords",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumSparseNearestResizeUsesImplicitDefaultsAndLastPixel",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumUniformExpandedReframeStaysImplicit",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testReframeKeepsAllRawSamplesAgainstPriorRowAlgorithm",
+      "PhotoCraftCoreTests.NativeComponentGeometryTests/testTrimMatchesPriorNumericalScanIncludingImplicitGaps",
+      "PhotoCraftCoreTests.PagedHistogramTests/testMaskValidationEmptyBoundsAndCooperativeCancellation",
+      "PhotoCraftCoreTests.PagedHistogramTests/testMaximumTranslatedMaskedLayerAndArchiveKeepCountsAndInputs",
+      "PhotoCraftCoreTests.PagedHistogramTests/testMaximumUniformAndSparseCountsUse64BitBinsAndExcludePadding",
+      "PhotoCraftCoreTests.PagedHistogramTests/testPagedMatchesOriginalEveryCounterAtAllDepthsAndEncodings",
+      "PhotoCraftCoreTests.PagedHistogramTests/testPixelLayerTranslationSelectionHolesAndAffineFallbackMatchOriginal",
+      "PhotoCraftCoreTests.TonalStepsTests/testEveryRGB8PosterizeLevelAgainstExecutedRustOracle",
+      "PhotoCraftCoreTests.TonalStepsTests/testPosterizeHighDepthDoesNotReduceInputsToRGB8AndPreservesHiddenSamples",
+      "PhotoCraftCoreTests.TonalStepsTests/testSelectionHistoryPersistenceValidationAndThresholdHistogram",
+      "PhotoCraftCoreTests.TonalStepsTests/testThresholdDepthBoundariesAndReferenceLuminance",
+      "PhotoCraftImagingTests.GradientFillRenderTests/testCanvasCoverageGroupClippingPickingAndClipboard",
+      "PhotoCraftImagingTests.GradientFillRenderTests/testDescriptorBoundsUnsupportedSettingsAndRasterizationDropsStaleTag",
+      "PhotoCraftImagingTests.GradientFillRenderTests/testEditablePSDAtAllDepthsStylesMethodsAndIndependentMergedDecode",
+      "PhotoCraftImagingTests.GradientFillRenderTests/testMaskFrameChangesInvalidateEntireFillWhileInteriorEditsStayRegional",
+      "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences",
+      "PhotoCraftImagingTests.GradientStripesRenderTests/testCoincidentMapStopsPersistAtEveryDepth",
+      "PhotoCraftImagingTests.GradientStripesRenderTests/testEmptyGeneratedMaskIsIdentityButUnsupportedMasksStillReject",
+      "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopCoincidentBoundariesAndLegacyRGB32Retention",
+      "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopOmittedAngleAndInactiveSeedSurviveEdits",
+      "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopTwoAndThreeStopStripesPixels",
+      "PhotoCraftImagingTests.GradientStripesRenderTests/testStripesFillTransportAndNativeArchive",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testDescriptorPreservedUntilColorChangesAndRasterizationRemovesIt",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testExportFillQuantizationMatrix",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testFeatheredCanvasMaskMatchesReferenceEdgeWithoutMutatingEditableData",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshop16BitFillQuantizationMatrixIsExact",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshopSavedSolidFillsRetainTypesAndMeasureExactness",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testPinnedOriginalCorpusReportsUnsupportedAndNonExactResults",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testSolidColorValidationAndFloatKeys",
+      "PhotoCraftImagingTests.PSDSolidColorTests/testSolidFillPSDAtAllDepthsRetainsEditableColorAndMasks",
+      "PhotoCraftImagingTests.PSDTonalStepsTests/testEditablePSDAllDepthsGroupsMasksClippingAndNativeArchive",
+      "PhotoCraftImagingTests.PSDTonalStepsTests/testIndependentRecordsPaddingValidationAndStaleMetadata",
+      "PhotoCraftImagingTests.PSDTonalStepsTests/testPinnedPhotoshopRGB8AndRGB16CompositesAndSettings",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents",
+      "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource",
+      "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries",
+      "PhotoCraftImagingTests.VectorRenderTests/testBooleanCoverageAndJoinedWindingHoles",
+      "PhotoCraftImagingTests.VectorRenderTests/testEmptyMaskRevealsAllAndFeatherDoesNotClipAtCanvasEdge",
+      "PhotoCraftImagingTests.VectorRenderTests/testPSDPathFixedPointRoundTripAndMalformedRecords",
+      "PhotoCraftImagingTests.VectorRenderTests/testPSDVectorMetadataAndSavedPathsRoundTripAtAllDepths",
+      "PhotoCraftImagingTests.VectorRenderTests/testPhotoshopVectorMasksAndPathsMatchSavedComposite",
+      "PhotoCraftImagingTests.VectorRenderTests/testPixelAndVectorMasksMultiplyAtEveryDepthIncludingGroups"
+    ],
+    "newFailures": {
+      "arm": [],
+      "intel": []
+    },
+    "rows": {
+      "539-arm": {
+        "exit": 1,
+        "failures": [
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences"
+        ],
+        "missing": [],
+        "outcomes": {
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testAPIInvalidMixedMissingPatternsBusyAndRevocationDoNotCommit": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema": "failed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeCaptureCancellationSourceChangeAndAvailabilityGuards": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeUsePatternControlsSharedOutputHistoryAndPersistence": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testPatternDonorMatchesExistingNormalPatchAllDepthsAndDiffusionValues": "passed",
+          "PhotoCraftAppTests.PhotoBlendLegacyCaptureTests/testCaptureOpaqueBlendProgramsWithoutChangingSource": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testAllDepthsFillOnlyConnectedRegionWithPersistenceAndOneUndo": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testCroppedTargetExpandsWithoutMovingLinkedOrUnlinkedMasks": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testMaskFillUsesScalarCoverageAndExpandsImplicitOutside": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testNoOpInvalidLockedAndCancelledEditsAreAtomic": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testRotatedScaledLayerIsFilledInDocumentCoordinates": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testSelectionOpacityAndBlendAreAppliedOnceAtNativeDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testAuxiliaryAndPixelMaskTargetsAndNoOpGeometry": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testCalculationsOrderScaleOffsetCoverageAndInvalidAtomicity": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testEmptyTargetExpansionPreserveTransparencyAndOffCanvasPixels": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testHandComputedRGBMaskSelectionAndOutsideBitsAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testMaximumImplicitCanvasAndNativeChannelPlaneBytes": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testCommandUndoMasksArchiveAndInheritedLock": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testExactOpaqueCopyAllDepthsAndImmutableOverlappingSource": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFloatTransformedSamplesUseLinearLightAndIntegerSamplesStayEncoded": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFlowAccumulatesUnderOpacityCeilingAndFractionalSelection": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testInvalidStrokeIsAtomicAndSegmentationDoesNotChangeSpacing": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testRoundTipAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testTransformsPremultipliedResamplingAndOffsets": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIdentityHiddenColorsAndUnchangedComponentsRetainBits": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIndependentRustSplineOracleAndComponentBeforeComposite": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testSelectionAlphaUndoNativeStorageAndFailedEditAreAtomic": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testValidationPointEditingAndLimits": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testIndependentPhotoshopRGB16ToneVectors": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB16ReverseAlphaAndInvalidSamples": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeHasNoHiddenSaturationFloorAndRetainsInactiveSettings": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeLightnessPrecedesTintSynthesis": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testIdentityExcludedColorsHiddenRGBAndFloatOverflow": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterAndRangeLightnessHaveDifferentEndpoints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterLightnessPrecedesPositiveSaturationAndExtremesStayFinite": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testNearGrayRangeLightnessAndHueRetainFullRangeWeight": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testOverlappingRangeLightnessClampsInStoredOrder": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRangeWrappingFeatherEdgesValidationAndPointConstraints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRetainedRustHSLRangesAndFloatStorageOracle": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testSelectedPixelEditHistoryNativeArchiveAndLegacySaturation": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testBelowGroupInsertsBeforeWholeSubtreeAndAboveInsertsInside": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testColorLabelByteCodesPreserveUnrelatedAndFutureMetadata": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testConfiguredCreationPreservesSelectionAndIsOneUndoAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testInvalidOptionsClippingLockedParentAndLimitNeverMutateSession": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testNeutralModeFamiliesAndTransparentDefault": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testSuggestedNameAvoidsExistingNamesAndStartsAtOne": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAllEightFiltersPreserveColorSourcePropertiesOtherMasksAndOneHistoryAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAverageHasExactNumericGrayWithoutGammaOrMaskAlphaAndRetainsDisabledProperties": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testCancelledMaskFilterLeavesTheOriginalUnchanged": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testInvalidKindsMissingMasksAndLocksCannotPublish": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testLinearStorageAndUnselectedIgnoredSamplesRemainBitIdentical": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testMaskFilteringDoesNotRequireRasterOrSmartObjectColorContent": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testRecordingMaskFilterNeverSubstitutesAColorFilter": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSelectionUsesStoredMaskPlacementAndPreservesUnselectedSamplesExactly": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSparseMaximumGeometryUsesExistingConstantFilterProofWithoutDenseAllocation": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testBudgetIOAndCancellationLeaveSourceUnchanged": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testContrastReframeBeyondOldAdmissionUsesCheckedMappedOutput": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testDerivedSurfacesAndChannelsStreamBeyondSmallWorkingSet": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testEveryModeDepthMethodAndEdgeRuleMatchesPreservedDenseGeometry": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testHugeUniformSourceToSmallInterpolationMatchesIndependentDenseKernel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumNearestGridTurnsPreserveLiteralWords": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumSparseNearestResizeUsesImplicitDefaultsAndLastPixel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumUniformExpandedReframeStaysImplicit": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testReframeKeepsAllRawSamplesAgainstPriorRowAlgorithm": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testTrimMatchesPriorNumericalScanIncludingImplicitGaps": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaskValidationEmptyBoundsAndCooperativeCancellation": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumTranslatedMaskedLayerAndArchiveKeepCountsAndInputs": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumUniformAndSparseCountsUse64BitBinsAndExcludePadding": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPagedMatchesOriginalEveryCounterAtAllDepthsAndEncodings": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPixelLayerTranslationSelectionHolesAndAffineFallbackMatchOriginal": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testEveryRGB8PosterizeLevelAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testPosterizeHighDepthDoesNotReduceInputsToRGB8AndPreservesHiddenSamples": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testSelectionHistoryPersistenceValidationAndThresholdHistogram": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testThresholdDepthBoundariesAndReferenceLuminance": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testCanvasCoverageGroupClippingPickingAndClipboard": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testDescriptorBoundsUnsupportedSettingsAndRasterizationDropsStaleTag": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testEditablePSDAtAllDepthsStylesMethodsAndIndependentMergedDecode": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testMaskFrameChangesInvalidateEntireFillWhileInteriorEditsStayRegional": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences": "failed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testCoincidentMapStopsPersistAtEveryDepth": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testEmptyGeneratedMaskIsIdentityButUnsupportedMasksStillReject": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopCoincidentBoundariesAndLegacyRGB32Retention": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopOmittedAngleAndInactiveSeedSurviveEdits": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopTwoAndThreeStopStripesPixels": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testStripesFillTransportAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testDescriptorPreservedUntilColorChangesAndRasterizationRemovesIt": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testExportFillQuantizationMatrix": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testFeatheredCanvasMaskMatchesReferenceEdgeWithoutMutatingEditableData": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshop16BitFillQuantizationMatrixIsExact": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshopSavedSolidFillsRetainTypesAndMeasureExactness": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPinnedOriginalCorpusReportsUnsupportedAndNonExactResults": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidColorValidationAndFloatKeys": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidFillPSDAtAllDepthsRetainsEditableColorAndMasks": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testEditablePSDAllDepthsGroupsMasksClippingAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testIndependentRecordsPaddingValidationAndStaleMetadata": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testPinnedPhotoshopRGB8AndRGB16CompositesAndSettings": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testBooleanCoverageAndJoinedWindingHoles": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testEmptyMaskRevealsAllAndFeatherDoesNotClipAtCanvasEdge": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDPathFixedPointRoundTripAndMalformedRecords": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDVectorMetadataAndSavedPathsRoundTripAtAllDepths": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPhotoshopVectorMasksAndPathsMatchSavedComposite": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPixelAndVectorMasksMultiplyAtEveryDepthIncludingGroups": "passed"
+        },
+        "testBinarySHA256": "74c958436cd91fcd0856052dc5469dc1b6ace3392d00713c831f50ce0af4959d"
+      },
+      "539-intel": {
+        "exit": 1,
+        "failures": [
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema",
+          "PhotoCraftAppTests.PhotoBlendLegacyCaptureTests/testCaptureOpaqueBlendProgramsWithoutChangingSource",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries"
+        ],
+        "missing": [],
+        "outcomes": {
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testAPIInvalidMixedMissingPatternsBusyAndRevocationDoNotCommit": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema": "failed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeCaptureCancellationSourceChangeAndAvailabilityGuards": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeUsePatternControlsSharedOutputHistoryAndPersistence": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testPatternDonorMatchesExistingNormalPatchAllDepthsAndDiffusionValues": "passed",
+          "PhotoCraftAppTests.PhotoBlendLegacyCaptureTests/testCaptureOpaqueBlendProgramsWithoutChangingSource": "failed",
+          "PhotoCraftCoreTests.BucketFillTests/testAllDepthsFillOnlyConnectedRegionWithPersistenceAndOneUndo": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testCroppedTargetExpandsWithoutMovingLinkedOrUnlinkedMasks": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testMaskFillUsesScalarCoverageAndExpandsImplicitOutside": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testNoOpInvalidLockedAndCancelledEditsAreAtomic": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testRotatedScaledLayerIsFilledInDocumentCoordinates": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testSelectionOpacityAndBlendAreAppliedOnceAtNativeDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testAuxiliaryAndPixelMaskTargetsAndNoOpGeometry": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testCalculationsOrderScaleOffsetCoverageAndInvalidAtomicity": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testEmptyTargetExpansionPreserveTransparencyAndOffCanvasPixels": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testHandComputedRGBMaskSelectionAndOutsideBitsAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testMaximumImplicitCanvasAndNativeChannelPlaneBytes": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testCommandUndoMasksArchiveAndInheritedLock": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testExactOpaqueCopyAllDepthsAndImmutableOverlappingSource": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFloatTransformedSamplesUseLinearLightAndIntegerSamplesStayEncoded": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFlowAccumulatesUnderOpacityCeilingAndFractionalSelection": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testInvalidStrokeIsAtomicAndSegmentationDoesNotChangeSpacing": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testRoundTipAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testTransformsPremultipliedResamplingAndOffsets": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIdentityHiddenColorsAndUnchangedComponentsRetainBits": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIndependentRustSplineOracleAndComponentBeforeComposite": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testSelectionAlphaUndoNativeStorageAndFailedEditAreAtomic": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testValidationPointEditingAndLimits": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testIndependentPhotoshopRGB16ToneVectors": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB16ReverseAlphaAndInvalidSamples": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits": "failed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeHasNoHiddenSaturationFloorAndRetainsInactiveSettings": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeLightnessPrecedesTintSynthesis": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testIdentityExcludedColorsHiddenRGBAndFloatOverflow": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterAndRangeLightnessHaveDifferentEndpoints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterLightnessPrecedesPositiveSaturationAndExtremesStayFinite": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testNearGrayRangeLightnessAndHueRetainFullRangeWeight": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testOverlappingRangeLightnessClampsInStoredOrder": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRangeWrappingFeatherEdgesValidationAndPointConstraints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRetainedRustHSLRangesAndFloatStorageOracle": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testSelectedPixelEditHistoryNativeArchiveAndLegacySaturation": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testBelowGroupInsertsBeforeWholeSubtreeAndAboveInsertsInside": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testColorLabelByteCodesPreserveUnrelatedAndFutureMetadata": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testConfiguredCreationPreservesSelectionAndIsOneUndoAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testInvalidOptionsClippingLockedParentAndLimitNeverMutateSession": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testNeutralModeFamiliesAndTransparentDefault": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testSuggestedNameAvoidsExistingNamesAndStartsAtOne": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAllEightFiltersPreserveColorSourcePropertiesOtherMasksAndOneHistoryAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAverageHasExactNumericGrayWithoutGammaOrMaskAlphaAndRetainsDisabledProperties": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testCancelledMaskFilterLeavesTheOriginalUnchanged": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testInvalidKindsMissingMasksAndLocksCannotPublish": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testLinearStorageAndUnselectedIgnoredSamplesRemainBitIdentical": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testMaskFilteringDoesNotRequireRasterOrSmartObjectColorContent": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testRecordingMaskFilterNeverSubstitutesAColorFilter": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSelectionUsesStoredMaskPlacementAndPreservesUnselectedSamplesExactly": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSparseMaximumGeometryUsesExistingConstantFilterProofWithoutDenseAllocation": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testBudgetIOAndCancellationLeaveSourceUnchanged": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testContrastReframeBeyondOldAdmissionUsesCheckedMappedOutput": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testDerivedSurfacesAndChannelsStreamBeyondSmallWorkingSet": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testEveryModeDepthMethodAndEdgeRuleMatchesPreservedDenseGeometry": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testHugeUniformSourceToSmallInterpolationMatchesIndependentDenseKernel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumNearestGridTurnsPreserveLiteralWords": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumSparseNearestResizeUsesImplicitDefaultsAndLastPixel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumUniformExpandedReframeStaysImplicit": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testReframeKeepsAllRawSamplesAgainstPriorRowAlgorithm": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testTrimMatchesPriorNumericalScanIncludingImplicitGaps": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaskValidationEmptyBoundsAndCooperativeCancellation": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumTranslatedMaskedLayerAndArchiveKeepCountsAndInputs": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumUniformAndSparseCountsUse64BitBinsAndExcludePadding": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPagedMatchesOriginalEveryCounterAtAllDepthsAndEncodings": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPixelLayerTranslationSelectionHolesAndAffineFallbackMatchOriginal": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testEveryRGB8PosterizeLevelAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testPosterizeHighDepthDoesNotReduceInputsToRGB8AndPreservesHiddenSamples": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testSelectionHistoryPersistenceValidationAndThresholdHistogram": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testThresholdDepthBoundariesAndReferenceLuminance": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testCanvasCoverageGroupClippingPickingAndClipboard": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testDescriptorBoundsUnsupportedSettingsAndRasterizationDropsStaleTag": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testEditablePSDAtAllDepthsStylesMethodsAndIndependentMergedDecode": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testMaskFrameChangesInvalidateEntireFillWhileInteriorEditsStayRegional": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences": "failed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testCoincidentMapStopsPersistAtEveryDepth": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testEmptyGeneratedMaskIsIdentityButUnsupportedMasksStillReject": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopCoincidentBoundariesAndLegacyRGB32Retention": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopOmittedAngleAndInactiveSeedSurviveEdits": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopTwoAndThreeStopStripesPixels": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testStripesFillTransportAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testDescriptorPreservedUntilColorChangesAndRasterizationRemovesIt": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testExportFillQuantizationMatrix": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testFeatheredCanvasMaskMatchesReferenceEdgeWithoutMutatingEditableData": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshop16BitFillQuantizationMatrixIsExact": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshopSavedSolidFillsRetainTypesAndMeasureExactness": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPinnedOriginalCorpusReportsUnsupportedAndNonExactResults": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidColorValidationAndFloatKeys": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidFillPSDAtAllDepthsRetainsEditableColorAndMasks": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testEditablePSDAllDepthsGroupsMasksClippingAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testIndependentRecordsPaddingValidationAndStaleMetadata": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testPinnedPhotoshopRGB8AndRGB16CompositesAndSettings": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit": "failed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries": "failed",
+          "PhotoCraftImagingTests.VectorRenderTests/testBooleanCoverageAndJoinedWindingHoles": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testEmptyMaskRevealsAllAndFeatherDoesNotClipAtCanvasEdge": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDPathFixedPointRoundTripAndMalformedRecords": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDVectorMetadataAndSavedPathsRoundTripAtAllDepths": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPhotoshopVectorMasksAndPathsMatchSavedComposite": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPixelAndVectorMasksMultiplyAtEveryDepthIncludingGroups": "passed"
+        },
+        "testBinarySHA256": "a0e9858d4a54aedf5d2abde39146326d488defce9af5a0230277b106e15690d0"
+      },
+      "540-arm": {
+        "exit": 1,
+        "failures": [
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences"
+        ],
+        "missing": [],
+        "outcomes": {
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testAPIInvalidMixedMissingPatternsBusyAndRevocationDoNotCommit": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema": "failed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeCaptureCancellationSourceChangeAndAvailabilityGuards": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeUsePatternControlsSharedOutputHistoryAndPersistence": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testPatternDonorMatchesExistingNormalPatchAllDepthsAndDiffusionValues": "passed",
+          "PhotoCraftAppTests.PhotoBlendLegacyCaptureTests/testCaptureOpaqueBlendProgramsWithoutChangingSource": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testAllDepthsFillOnlyConnectedRegionWithPersistenceAndOneUndo": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testCroppedTargetExpandsWithoutMovingLinkedOrUnlinkedMasks": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testMaskFillUsesScalarCoverageAndExpandsImplicitOutside": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testNoOpInvalidLockedAndCancelledEditsAreAtomic": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testRotatedScaledLayerIsFilledInDocumentCoordinates": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testSelectionOpacityAndBlendAreAppliedOnceAtNativeDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testAuxiliaryAndPixelMaskTargetsAndNoOpGeometry": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testCalculationsOrderScaleOffsetCoverageAndInvalidAtomicity": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testEmptyTargetExpansionPreserveTransparencyAndOffCanvasPixels": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testHandComputedRGBMaskSelectionAndOutsideBitsAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testMaximumImplicitCanvasAndNativeChannelPlaneBytes": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testCommandUndoMasksArchiveAndInheritedLock": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testExactOpaqueCopyAllDepthsAndImmutableOverlappingSource": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFloatTransformedSamplesUseLinearLightAndIntegerSamplesStayEncoded": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFlowAccumulatesUnderOpacityCeilingAndFractionalSelection": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testInvalidStrokeIsAtomicAndSegmentationDoesNotChangeSpacing": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testRoundTipAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testTransformsPremultipliedResamplingAndOffsets": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIdentityHiddenColorsAndUnchangedComponentsRetainBits": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIndependentRustSplineOracleAndComponentBeforeComposite": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testSelectionAlphaUndoNativeStorageAndFailedEditAreAtomic": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testValidationPointEditingAndLimits": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testIndependentPhotoshopRGB16ToneVectors": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB16ReverseAlphaAndInvalidSamples": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeHasNoHiddenSaturationFloorAndRetainsInactiveSettings": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeLightnessPrecedesTintSynthesis": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testIdentityExcludedColorsHiddenRGBAndFloatOverflow": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterAndRangeLightnessHaveDifferentEndpoints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterLightnessPrecedesPositiveSaturationAndExtremesStayFinite": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testNearGrayRangeLightnessAndHueRetainFullRangeWeight": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testOverlappingRangeLightnessClampsInStoredOrder": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRangeWrappingFeatherEdgesValidationAndPointConstraints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRetainedRustHSLRangesAndFloatStorageOracle": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testSelectedPixelEditHistoryNativeArchiveAndLegacySaturation": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testBelowGroupInsertsBeforeWholeSubtreeAndAboveInsertsInside": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testColorLabelByteCodesPreserveUnrelatedAndFutureMetadata": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testConfiguredCreationPreservesSelectionAndIsOneUndoAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testInvalidOptionsClippingLockedParentAndLimitNeverMutateSession": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testNeutralModeFamiliesAndTransparentDefault": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testSuggestedNameAvoidsExistingNamesAndStartsAtOne": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAllEightFiltersPreserveColorSourcePropertiesOtherMasksAndOneHistoryAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAverageHasExactNumericGrayWithoutGammaOrMaskAlphaAndRetainsDisabledProperties": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testCancelledMaskFilterLeavesTheOriginalUnchanged": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testInvalidKindsMissingMasksAndLocksCannotPublish": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testLinearStorageAndUnselectedIgnoredSamplesRemainBitIdentical": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testMaskFilteringDoesNotRequireRasterOrSmartObjectColorContent": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testRecordingMaskFilterNeverSubstitutesAColorFilter": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSelectionUsesStoredMaskPlacementAndPreservesUnselectedSamplesExactly": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSparseMaximumGeometryUsesExistingConstantFilterProofWithoutDenseAllocation": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testBudgetIOAndCancellationLeaveSourceUnchanged": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testContrastReframeBeyondOldAdmissionUsesCheckedMappedOutput": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testDerivedSurfacesAndChannelsStreamBeyondSmallWorkingSet": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testEveryModeDepthMethodAndEdgeRuleMatchesPreservedDenseGeometry": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testHugeUniformSourceToSmallInterpolationMatchesIndependentDenseKernel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumNearestGridTurnsPreserveLiteralWords": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumSparseNearestResizeUsesImplicitDefaultsAndLastPixel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumUniformExpandedReframeStaysImplicit": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testReframeKeepsAllRawSamplesAgainstPriorRowAlgorithm": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testTrimMatchesPriorNumericalScanIncludingImplicitGaps": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaskValidationEmptyBoundsAndCooperativeCancellation": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumTranslatedMaskedLayerAndArchiveKeepCountsAndInputs": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumUniformAndSparseCountsUse64BitBinsAndExcludePadding": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPagedMatchesOriginalEveryCounterAtAllDepthsAndEncodings": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPixelLayerTranslationSelectionHolesAndAffineFallbackMatchOriginal": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testEveryRGB8PosterizeLevelAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testPosterizeHighDepthDoesNotReduceInputsToRGB8AndPreservesHiddenSamples": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testSelectionHistoryPersistenceValidationAndThresholdHistogram": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testThresholdDepthBoundariesAndReferenceLuminance": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testCanvasCoverageGroupClippingPickingAndClipboard": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testDescriptorBoundsUnsupportedSettingsAndRasterizationDropsStaleTag": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testEditablePSDAtAllDepthsStylesMethodsAndIndependentMergedDecode": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testMaskFrameChangesInvalidateEntireFillWhileInteriorEditsStayRegional": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences": "failed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testCoincidentMapStopsPersistAtEveryDepth": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testEmptyGeneratedMaskIsIdentityButUnsupportedMasksStillReject": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopCoincidentBoundariesAndLegacyRGB32Retention": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopOmittedAngleAndInactiveSeedSurviveEdits": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopTwoAndThreeStopStripesPixels": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testStripesFillTransportAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testDescriptorPreservedUntilColorChangesAndRasterizationRemovesIt": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testExportFillQuantizationMatrix": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testFeatheredCanvasMaskMatchesReferenceEdgeWithoutMutatingEditableData": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshop16BitFillQuantizationMatrixIsExact": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshopSavedSolidFillsRetainTypesAndMeasureExactness": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPinnedOriginalCorpusReportsUnsupportedAndNonExactResults": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidColorValidationAndFloatKeys": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidFillPSDAtAllDepthsRetainsEditableColorAndMasks": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testEditablePSDAllDepthsGroupsMasksClippingAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testIndependentRecordsPaddingValidationAndStaleMetadata": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testPinnedPhotoshopRGB8AndRGB16CompositesAndSettings": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testBooleanCoverageAndJoinedWindingHoles": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testEmptyMaskRevealsAllAndFeatherDoesNotClipAtCanvasEdge": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDPathFixedPointRoundTripAndMalformedRecords": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDVectorMetadataAndSavedPathsRoundTripAtAllDepths": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPhotoshopVectorMasksAndPathsMatchSavedComposite": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPixelAndVectorMasksMultiplyAtEveryDepthIncludingGroups": "passed"
+        },
+        "testBinarySHA256": "504447da5846a06de8c02816e75ea93ad2899d9d753a54235036711ffa87a30f"
+      },
+      "540-intel": {
+        "exit": 1,
+        "failures": [
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries"
+        ],
+        "missing": [],
+        "outcomes": {
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testAPIInvalidMixedMissingPatternsBusyAndRevocationDoNotCommit": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testHTTPPatternPatchMatchesNativeAllDepthsAndExposesStrictAlternateSchema": "failed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeCaptureCancellationSourceChangeAndAvailabilityGuards": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testNativeUsePatternControlsSharedOutputHistoryAndPersistence": "passed",
+          "PhotoCraftAppTests.PatternPatchWorkflowTests/testPatternDonorMatchesExistingNormalPatchAllDepthsAndDiffusionValues": "passed",
+          "PhotoCraftAppTests.PhotoBlendLegacyCaptureTests/testCaptureOpaqueBlendProgramsWithoutChangingSource": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testAllDepthsFillOnlyConnectedRegionWithPersistenceAndOneUndo": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testCroppedTargetExpandsWithoutMovingLinkedOrUnlinkedMasks": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testMaskFillUsesScalarCoverageAndExpandsImplicitOutside": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testNoOpInvalidLockedAndCancelledEditsAreAtomic": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testRotatedScaledLayerIsFilledInDocumentCoordinates": "passed",
+          "PhotoCraftCoreTests.BucketFillTests/testSelectionOpacityAndBlendAreAppliedOnceAtNativeDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testAuxiliaryAndPixelMaskTargetsAndNoOpGeometry": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testCalculationsOrderScaleOffsetCoverageAndInvalidAtomicity": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testEmptyTargetExpansionPreserveTransparencyAndOffCanvasPixels": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testHandComputedRGBMaskSelectionAndOutsideBitsAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.ChannelArithmeticTests/testMaximumImplicitCanvasAndNativeChannelPlaneBytes": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testCommandUndoMasksArchiveAndInheritedLock": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testExactOpaqueCopyAllDepthsAndImmutableOverlappingSource": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFloatTransformedSamplesUseLinearLightAndIntegerSamplesStayEncoded": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testFlowAccumulatesUnderOpacityCeilingAndFractionalSelection": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testInvalidStrokeIsAtomicAndSegmentationDoesNotChangeSpacing": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testRoundTipAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.CloneStampTests/testTransformsPremultipliedResamplingAndOffsets": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIdentityHiddenColorsAndUnchangedComponentsRetainBits": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testIndependentRustSplineOracleAndComponentBeforeComposite": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testSelectionAlphaUndoNativeStorageAndFailedEditAreAtomic": "passed",
+          "PhotoCraftCoreTests.CurvesTests/testValidationPointEditingAndLimits": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testIndependentPhotoshopRGB16ToneVectors": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB16ReverseAlphaAndInvalidSamples": "passed",
+          "PhotoCraftCoreTests.GradientMapToneTests/testRGB8AndFloatTransfersKeepPreviousBits": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeHasNoHiddenSaturationFloorAndRetainsInactiveSettings": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testColorizeLightnessPrecedesTintSynthesis": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testIdentityExcludedColorsHiddenRGBAndFloatOverflow": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterAndRangeLightnessHaveDifferentEndpoints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testMasterLightnessPrecedesPositiveSaturationAndExtremesStayFinite": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testNearGrayRangeLightnessAndHueRetainFullRangeWeight": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testOverlappingRangeLightnessClampsInStoredOrder": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRangeWrappingFeatherEdgesValidationAndPointConstraints": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testRetainedRustHSLRangesAndFloatStorageOracle": "passed",
+          "PhotoCraftCoreTests.HueSaturationTests/testSelectedPixelEditHistoryNativeArchiveAndLegacySaturation": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testBelowGroupInsertsBeforeWholeSubtreeAndAboveInsertsInside": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testColorLabelByteCodesPreserveUnrelatedAndFutureMetadata": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testConfiguredCreationPreservesSelectionAndIsOneUndoAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testInvalidOptionsClippingLockedParentAndLimitNeverMutateSession": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testNeutralModeFamiliesAndTransparentDefault": "passed",
+          "PhotoCraftCoreTests.LayerCreationTests/testSuggestedNameAvoidsExistingNamesAndStartsAtOne": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAllEightFiltersPreserveColorSourcePropertiesOtherMasksAndOneHistoryAtEveryDepth": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testAverageHasExactNumericGrayWithoutGammaOrMaskAlphaAndRetainsDisabledProperties": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testCancelledMaskFilterLeavesTheOriginalUnchanged": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testInvalidKindsMissingMasksAndLocksCannotPublish": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testLinearStorageAndUnselectedIgnoredSamplesRemainBitIdentical": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testMaskFilteringDoesNotRequireRasterOrSmartObjectColorContent": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testRecordingMaskFilterNeverSubstitutesAColorFilter": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSelectionUsesStoredMaskPlacementAndPreservesUnselectedSamplesExactly": "passed",
+          "PhotoCraftCoreTests.MaskFilterTests/testSparseMaximumGeometryUsesExistingConstantFilterProofWithoutDenseAllocation": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testBudgetIOAndCancellationLeaveSourceUnchanged": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testContrastReframeBeyondOldAdmissionUsesCheckedMappedOutput": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testDerivedSurfacesAndChannelsStreamBeyondSmallWorkingSet": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testEveryModeDepthMethodAndEdgeRuleMatchesPreservedDenseGeometry": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testHugeUniformSourceToSmallInterpolationMatchesIndependentDenseKernel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumNearestGridTurnsPreserveLiteralWords": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumSparseNearestResizeUsesImplicitDefaultsAndLastPixel": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testMaximumUniformExpandedReframeStaysImplicit": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testReframeKeepsAllRawSamplesAgainstPriorRowAlgorithm": "passed",
+          "PhotoCraftCoreTests.NativeComponentGeometryTests/testTrimMatchesPriorNumericalScanIncludingImplicitGaps": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaskValidationEmptyBoundsAndCooperativeCancellation": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumTranslatedMaskedLayerAndArchiveKeepCountsAndInputs": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testMaximumUniformAndSparseCountsUse64BitBinsAndExcludePadding": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPagedMatchesOriginalEveryCounterAtAllDepthsAndEncodings": "passed",
+          "PhotoCraftCoreTests.PagedHistogramTests/testPixelLayerTranslationSelectionHolesAndAffineFallbackMatchOriginal": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testEveryRGB8PosterizeLevelAgainstExecutedRustOracle": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testPosterizeHighDepthDoesNotReduceInputsToRGB8AndPreservesHiddenSamples": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testSelectionHistoryPersistenceValidationAndThresholdHistogram": "passed",
+          "PhotoCraftCoreTests.TonalStepsTests/testThresholdDepthBoundariesAndReferenceLuminance": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testCanvasCoverageGroupClippingPickingAndClipboard": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testDescriptorBoundsUnsupportedSettingsAndRasterizationDropsStaleTag": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testEditablePSDAtAllDepthsStylesMethodsAndIndependentMergedDecode": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testMaskFrameChangesInvalidateEntireFillWhileInteriorEditsStayRegional": "passed",
+          "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences": "failed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testCoincidentMapStopsPersistAtEveryDepth": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testEmptyGeneratedMaskIsIdentityButUnsupportedMasksStillReject": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopCoincidentBoundariesAndLegacyRGB32Retention": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopOmittedAngleAndInactiveSeedSurviveEdits": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testPhotoshopTwoAndThreeStopStripesPixels": "passed",
+          "PhotoCraftImagingTests.GradientStripesRenderTests/testStripesFillTransportAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testDescriptorPreservedUntilColorChangesAndRasterizationRemovesIt": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testExportFillQuantizationMatrix": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testFeatheredCanvasMaskMatchesReferenceEdgeWithoutMutatingEditableData": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshop16BitFillQuantizationMatrixIsExact": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshopSavedSolidFillsRetainTypesAndMeasureExactness": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testPinnedOriginalCorpusReportsUnsupportedAndNonExactResults": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidColorValidationAndFloatKeys": "passed",
+          "PhotoCraftImagingTests.PSDSolidColorTests/testSolidFillPSDAtAllDepthsRetainsEditableColorAndMasks": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testEditablePSDAllDepthsGroupsMasksClippingAndNativeArchive": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testIndependentRecordsPaddingValidationAndStaleMetadata": "passed",
+          "PhotoCraftImagingTests.PSDTonalStepsTests/testPinnedPhotoshopRGB8AndRGB16CompositesAndSettings": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testActualDensePagedFramesCrossCombinedBudgetAndMatchSmallKernelAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testAll99LegacyProgramsRetainEverySampleBitInOrdinaryAndPagedPaths": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testBackingRetainsRawImplicitSignedZeroHDRAndPatchBoundaryWords": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testCancellationOverflowAndAlignmentCapacityRejectWithoutChangingSources": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testManyMaximumSourcesRemainEditableThroughModeNoneNativeArchiveAndUndo": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testMaximumSparseGeometryAllDepthsAndElevenAnalyticalModes": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testOwnedSourceAboveSmartObjectHeapBudgetCanPrepareEditablePagedContents": "passed",
+          "PhotoCraftImagingTests.PagedImageStatisticsTests/testSixtyFiveFramesRetainOrderVisibilityAndHDRWithoutOldSixteenFrameCap": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testActualDensePagedSourceAboveEightMegapixelsMatchesLegacyAtEdges": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testAll104ProgramsMatchEveryFrozenLegacyAndPagedSampleBit": "failed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testBoundedImageUsesProofedSourceAndPreservesPrintBudget": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testCustomRGBWorkingProfileSurvivesPagedProofAtIntegerAndFloatDepths": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testInvalidPreserveProfileAndCancellationDoNotPublish": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testMaximumSparseRGBAndNativeModesRetainNumbersGeometryAndSource": "passed",
+          "PhotoCraftImagingTests.PagedSoftProofTests/testProofBeforeAreaReductionMatchesFrozenAndPatchBoundaries": "failed",
+          "PhotoCraftImagingTests.VectorRenderTests/testBooleanCoverageAndJoinedWindingHoles": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testEmptyMaskRevealsAllAndFeatherDoesNotClipAtCanvasEdge": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDPathFixedPointRoundTripAndMalformedRecords": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPSDVectorMetadataAndSavedPathsRoundTripAtAllDepths": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPhotoshopVectorMasksAndPathsMatchSavedComposite": "passed",
+          "PhotoCraftImagingTests.VectorRenderTests/testPixelAndVectorMasksMultiplyAtEveryDepthIncludingGroups": "passed"
+        },
+        "testBinarySHA256": "2fd7f8c6b8483af35cc2af17b5b7b0b508e4cb2f9935446f9b9d68f1715bf1c3"
+      }
+    }
+  },
+  "checkpoint": 540,
+  "fullPhotoshopParity": false,
+  "gradientMapReferenceCorrection": {
+    "correctedOutput": [
+      1062698355,
+      1046997904,
+      1061431205,
+      1052602532
+    ],
+    "extendedSRGBWorkingLuma": 1049614376,
+    "independentPowerPrecisionDecimalDigits": 80,
+    "input": [
+      1050253722,
+      1058139013,
+      1064011039,
+      1052602532
+    ],
+    "legacyOutput": [
+      1062698355,
+      1046997906,
+      1061431205,
+      1052602532
+    ],
+    "linearRamp": [
+      1059934856,
+      1026286406,
+      1057772646
+    ],
+    "vector": 170
+  },
+  "hostedBrushTiming": {
+    "binaries": {
+      "538": {
+        "diagnosticXCTest": "8b37ccc459a40ef70cbe1568f5e4814894aeb5b01aad4e73ae0e08252671ff36",
+        "originalXCTest": "1357d5a75f5af6582d07abcea1ae66377cec8f3bfb9746868a09989a03a1147d"
+      },
+      "540": {
+        "diagnosticXCTest": "9a53a3e8f27eb9dcfdf3b832110d15392b420f7eab5ae3bf75c19a5a9d831ef8",
+        "originalXCTest": "504447da5846a06de8c02816e75ea93ad2899d9d753a54235036711ffa87a30f"
+      }
+    },
+    "fixtureSHA256": "5d9b71711b27bbbfd7100793c7c08788eabff5c0a70ee8c6ebda4b306e6e602d",
+    "order": [
+      [
+        64,
+        "538"
+      ],
+      [
+        64,
+        "540"
+      ],
+      [
+        1800,
+        "540"
+      ],
+      [
+        1800,
+        "538"
+      ],
+      [
+        2500,
+        "538"
+      ],
+      [
+        2500,
+        "540"
+      ],
+      [
+        5000,
+        "540"
+      ],
+      [
+        5000,
+        "538"
+      ]
+    ],
+    "physicalInputMeasured": false,
+    "physicalPresentationMeasured": false,
+    "results": {
+      "1800": {
+        "538": {
+          "acceptToDraw": {
+            "p50MS": 1921.270833350718,
+            "p95MS": 1921.270833350718
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 3,
+          "distinctDrawsDuringInput": 1,
+          "drawInterval": {
+            "p50MS": 1908.6136249825358,
+            "p95MS": 1908.6136249825358
+          },
+          "durationOfAcceptedInputSeconds": 1.9852202084148303,
+          "feedInterval": {
+            "p50MS": 8.328458410687745,
+            "p95MS": 11.205749935470521
+          },
+          "feedToAccept": {
+            "p50MS": 0.012625008821487427,
+            "p95MS": 0.025583314709365368
+          },
+          "feedToDraw": {
+            "p50MS": 1921.2839165702462,
+            "p95MS": 1921.2839165702462
+          },
+          "firstAcceptToDrawMS": 847.7134166751057,
+          "firstAcceptToPrepareMS": 0.2109584165737033,
+          "firstAcceptToReadyMS": 843.7002083519474,
+          "firstAcceptToReturnMS": 0.23404171224683523,
+          "firstFeedToDrawMS": 847.8182499529794,
+          "firstPrepareDuringInput": true,
+          "firstWorker": {
+            "acceptToEnqueueMS": 0.2152083907276392,
+            "acceptToStartMS": 0.23012503515928984,
+            "resultToReadyMS": 0.10075001046061516,
+            "workerDurationMS": 843.3693333063275
+          },
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 14.195250114426017,
+            "p95MS": 14.195250114426017
+          },
+          "prepareToReady": {
+            "p50MS": 1903.3384165959433,
+            "p95MS": 1903.3384165959433
+          },
+          "readyFrameCount": 3
+        },
+        "540": {
+          "acceptToDraw": {
+            "p50MS": 1314.8065833374858,
+            "p95MS": 1314.8065833374858
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 3,
+          "distinctDrawsDuringInput": 1,
+          "drawInterval": {
+            "p50MS": 1309.7063333261758,
+            "p95MS": 1309.7063333261758
+          },
+          "durationOfAcceptedInputSeconds": 1.9838150000432506,
+          "feedInterval": {
+            "p50MS": 8.324500056914985,
+            "p95MS": 10.812874999828637
+          },
+          "feedToAccept": {
+            "p50MS": 0.00937492586672306,
+            "p95MS": 0.020875013433396816
+          },
+          "feedToDraw": {
+            "p50MS": 1314.8136666277424,
+            "p95MS": 1314.8136666277424
+          },
+          "firstAcceptToDrawMS": 740.5689583392814,
+          "firstAcceptToPrepareMS": 0.1926249824464321,
+          "firstAcceptToReadyMS": 736.7723333882168,
+          "firstAcceptToReturnMS": 0.22091669961810112,
+          "firstFeedToDrawMS": 740.682250005193,
+          "firstPrepareDuringInput": true,
+          "firstWorker": {
+            "acceptToEnqueueMS": 0.19687507301568985,
+            "acceptToStartMS": 0.22050004918128252,
+            "resultToReadyMS": 0.10533339809626341,
+            "workerDurationMS": 736.4464999409392
+          },
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 6.67041668202728,
+            "p95MS": 6.67041668202728
+          },
+          "prepareToReady": {
+            "p50MS": 1304.5466666808352,
+            "p95MS": 1304.5466666808352
+          },
+          "readyFrameCount": 3
+        }
+      },
+      "2500": {
+        "538": {
+          "acceptToDraw": {
+            "p50MS": 3646.8308334005997,
+            "p95MS": 3646.8308334005997
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 3,
+          "distinctDrawsDuringInput": 1,
+          "drawInterval": {
+            "p50MS": 2830.877500004135,
+            "p95MS": 2830.877500004135
+          },
+          "durationOfAcceptedInputSeconds": 1.9843306666007265,
+          "feedInterval": {
+            "p50MS": 8.327916613779962,
+            "p95MS": 10.775083326734602
+          },
+          "feedToAccept": {
+            "p50MS": 0.014291726984083652,
+            "p95MS": 0.08995842654258013
+          },
+          "feedToDraw": {
+            "p50MS": 3646.844416623935,
+            "p95MS": 3646.844416623935
+          },
+          "firstAcceptToDrawMS": 1580.3224999690428,
+          "firstAcceptToPrepareMS": 18.949291668832302,
+          "firstAcceptToReadyMS": 1575.6923749577254,
+          "firstAcceptToReturnMS": 0.14083331916481256,
+          "firstFeedToDrawMS": 1580.4415832972154,
+          "firstPrepareDuringInput": false,
+          "firstWorker": {
+            "acceptToEnqueueMS": 18.98616668768227,
+            "acceptToStartMS": 19.006249960511923,
+            "resultToReadyMS": 0.31441659666597843,
+            "workerDurationMS": 1556.3717084005475
+          },
+          "initialDrawnSamples": 2,
+          "initialPreparedSamples": 2,
+          "inputToPrepare": {
+            "p50MS": 21.625416702590883,
+            "p95MS": 21.625416702590883
+          },
+          "prepareToReady": {
+            "p50MS": 2818.6085000634193,
+            "p95MS": 2818.6085000634193
+          },
+          "readyFrameCount": 3
+        },
+        "540": {
+          "acceptToDraw": {
+            "p50MS": 2387.1491249883547,
+            "p95MS": 2387.1491249883547
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 3,
+          "distinctDrawsDuringInput": 1,
+          "drawInterval": {
+            "p50MS": 2157.557541737333,
+            "p95MS": 2157.557541737333
+          },
+          "durationOfAcceptedInputSeconds": 1.9929764167172834,
+          "feedInterval": {
+            "p50MS": 8.332499885000288,
+            "p95MS": 10.664791683666408
+          },
+          "feedToAccept": {
+            "p50MS": 0.008624978363513947,
+            "p95MS": 0.017291633412241936
+          },
+          "feedToDraw": {
+            "p50MS": 2387.1588750043884,
+            "p95MS": 2387.1588750043884
+          },
+          "firstAcceptToDrawMS": 1287.4671666650102,
+          "firstAcceptToPrepareMS": 18.088083365000784,
+          "firstAcceptToReadyMS": 1283.1160000059754,
+          "firstAcceptToReturnMS": 0.1392083941027522,
+          "firstFeedToDrawMS": 1287.5719165895134,
+          "firstPrepareDuringInput": false,
+          "firstWorker": {
+            "acceptToEnqueueMS": 18.12608342152089,
+            "acceptToStartMS": 18.137541715987027,
+            "resultToReadyMS": 0.09083328768610954,
+            "workerDurationMS": 1264.8876250023022
+          },
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 18.088083365000784,
+            "p95MS": 18.088083365000784
+          },
+          "prepareToReady": {
+            "p50MS": 2146.193625056185,
+            "p95MS": 2146.193625056185
+          },
+          "readyFrameCount": 3
+        }
+      },
+      "5000": {
+        "538": {
+          "acceptToDraw": {
+            "p50MS": 4632.682166644372,
+            "p95MS": 4632.682166644372
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 2,
+          "distinctDrawsDuringInput": 0,
+          "drawInterval": {
+            "p50MS": 7683.553499984555,
+            "p95MS": 7683.553499984555
+          },
+          "durationOfAcceptedInputSeconds": 1.990133791579865,
+          "feedInterval": {
+            "p50MS": 8.329999982379377,
+            "p95MS": 11.24712498858571
+          },
+          "feedToAccept": {
+            "p50MS": 0.012166681699454784,
+            "p95MS": 0.019708415493369102
+          },
+          "feedToDraw": {
+            "p50MS": 4632.788458373398,
+            "p95MS": 4632.788458373398
+          },
+          "firstAcceptToDrawMS": 4632.682166644372,
+          "firstAcceptToPrepareMS": 19.13887495175004,
+          "firstAcceptToReadyMS": 4627.89779168088,
+          "firstAcceptToReturnMS": 0.13950001448392868,
+          "firstFeedToDrawMS": 4632.788458373398,
+          "firstPrepareDuringInput": false,
+          "firstWorker": {
+            "acceptToEnqueueMS": 19.180958275683224,
+            "acceptToStartMS": 19.206291646696627,
+            "resultToReadyMS": 0.10012509301304817,
+            "workerDurationMS": 4608.59137494117
+          },
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 19.13887495175004,
+            "p95MS": 19.13887495175004
+          },
+          "prepareToReady": {
+            "p50MS": 4608.75891672913,
+            "p95MS": 4608.75891672913
+          },
+          "readyFrameCount": 2
+        },
+        "540": {
+          "acceptToDraw": {
+            "p50MS": 3699.440833297558,
+            "p95MS": 3699.440833297558
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 2,
+          "distinctDrawsDuringInput": 0,
+          "drawInterval": {
+            "p50MS": 5418.532500043511,
+            "p95MS": 5418.532500043511
+          },
+          "durationOfAcceptedInputSeconds": 1.9838964582886547,
+          "feedInterval": {
+            "p50MS": 8.328000083565712,
+            "p95MS": 10.955124977044761
+          },
+          "feedToAccept": {
+            "p50MS": 0.012499978765845299,
+            "p95MS": 0.018499908037483692
+          },
+          "feedToDraw": {
+            "p50MS": 3699.6787500102073,
+            "p95MS": 3699.6787500102073
+          },
+          "firstAcceptToDrawMS": 3699.575833277777,
+          "firstAcceptToPrepareMS": 21.377416676841676,
+          "firstAcceptToReadyMS": 3695.087833330035,
+          "firstAcceptToReturnMS": 0.13304164167493582,
+          "firstFeedToDrawMS": 3699.688791646622,
+          "firstPrepareDuringInput": false,
+          "firstWorker": {
+            "acceptToEnqueueMS": 21.41445828601718,
+            "acceptToStartMS": 21.433999994769692,
+            "resultToReadyMS": 0.0926250359043479,
+            "workerDurationMS": 3673.561208299361
+          },
+          "initialDrawnSamples": 2,
+          "initialPreparedSamples": 2,
+          "inputToPrepare": {
+            "p50MS": 21.242416696622968,
+            "p95MS": 21.242416696622968
+          },
+          "prepareToReady": {
+            "p50MS": 3673.7104166531935,
+            "p95MS": 3673.7104166531935
+          },
+          "readyFrameCount": 2
+        }
+      },
+      "64": {
+        "538": {
+          "acceptToDraw": {
+            "p50MS": 9.213166660629213,
+            "p95MS": 17.153708264231682
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 120,
+          "distinctDrawsDuringInput": 119,
+          "drawInterval": {
+            "p50MS": 16.6851666290313,
+            "p95MS": 20.28662501834333
+          },
+          "durationOfAcceptedInputSeconds": 1.984221416641958,
+          "feedInterval": {
+            "p50MS": 8.332083350978792,
+            "p95MS": 10.057333391159773
+          },
+          "feedToAccept": {
+            "p50MS": 0.016041682101786137,
+            "p95MS": 4.335541627369821
+          },
+          "feedToDraw": {
+            "p50MS": 9.224250097759068,
+            "p95MS": 18.02199997473508
+          },
+          "firstAcceptToDrawMS": 20.69391671102494,
+          "firstAcceptToPrepareMS": 0.19699998665601015,
+          "firstAcceptToReadyMS": 17.883291700854897,
+          "firstAcceptToReturnMS": 0.21891668438911438,
+          "firstFeedToDrawMS": 20.818291697651148,
+          "firstPrepareDuringInput": true,
+          "firstWorker": {
+            "acceptToEnqueueMS": 0.200541689991951,
+            "acceptToStartMS": 0.21891668438911438,
+            "resultToReadyMS": 10.207708342932165,
+            "workerDurationMS": 7.4566666735336185
+          },
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 0.08945830632001162,
+            "p95MS": 4.398458288051188
+          },
+          "prepareToReady": {
+            "p50MS": 5.609250045381486,
+            "p95MS": 9.527291636914015
+          },
+          "readyFrameCount": 120
+        },
+        "540": {
+          "acceptToDraw": {
+            "p50MS": 10.630541597492993,
+            "p95MS": 19.06658324878663
+          },
+          "commitAndUndoChecked": true,
+          "distinctDraws": 121,
+          "distinctDrawsDuringInput": 119,
+          "drawInterval": {
+            "p50MS": 16.43799990415573,
+            "p95MS": 20.5903333844617
+          },
+          "durationOfAcceptedInputSeconds": 1.9843520832946524,
+          "feedInterval": {
+            "p50MS": 8.240374969318509,
+            "p95MS": 11.64283324033022
+          },
+          "feedToAccept": {
+            "p50MS": 0.016749952919781208,
+            "p95MS": 3.6778333596885204
+          },
+          "feedToDraw": {
+            "p50MS": 10.691916686482728,
+            "p95MS": 20.34208329860121
+          },
+          "firstAcceptToDrawMS": 22.43308338802308,
+          "firstAcceptToPrepareMS": 0.2188333310186863,
+          "firstAcceptToReadyMS": 19.716708338819444,
+          "firstAcceptToReturnMS": 0.24354166816920042,
+          "firstFeedToDrawMS": 22.57391670718789,
+          "firstPrepareDuringInput": true,
+          "firstWorker": {
+            "acceptToEnqueueMS": 0.22437504958361387,
+            "acceptToStartMS": 0.24087505880743265,
+            "resultToReadyMS": 11.860583326779306,
+            "workerDurationMS": 7.615249953232706
+          },
+          "initialDrawnSamples": 1,
+          "initialPreparedSamples": 1,
+          "inputToPrepare": {
+            "p50MS": 0.10270834900438786,
+            "p95MS": 10.599291766993701
+          },
+          "prepareToReady": {
+            "p50MS": 5.600208416581154,
+            "p95MS": 9.4555834075436
+          },
+          "readyFrameCount": 121
+        }
+      }
+    },
+    "workload": "24 MP with two adjustment layers at 12.5% zoom, 240 generated points at 120 Hz, soft Brush with smoothing disabled, 2400 px stroke travel."
+  },
+  "independentReference": {
+    "cases": {
+      "encoded": {
+        "armMatches": 2,
+        "canonicalDisagreements": 0,
+        "examples": [
+          {
+            "arm": "3daccd45",
+            "expected": "3daccd43",
+            "input": "3bfe80ff",
+            "intel": "3daccd43"
+          },
+          {
+            "arm": "3dbc1ca7",
+            "expected": "3dbc1ca9",
+            "input": "3c104090",
+            "intel": "3dbc1ca9"
+          },
+          {
+            "arm": "3dfdcc91",
+            "expected": "3dfdcc8f",
+            "input": "3c67c0e8",
+            "intel": "3dfdcc8f"
+          },
+          {
+            "arm": "3e230a64",
+            "expected": "3e230a66",
+            "input": "3cb280b3",
+            "intel": "3e230a66"
+          }
+        ],
+        "intelMatches": 3630,
+        "samples": 3632
+      },
+      "linear": {
+        "armMatches": 1,
+        "canonicalDisagreements": 0,
+        "examples": [
+          {
+            "arm": "3b61ac5f",
+            "expected": "3b61ac60",
+            "input": "3d3580b6",
+            "intel": "3b61ac60"
+          },
+          {
+            "arm": "3b67a080",
+            "expected": "3b67a07f",
+            "input": "3d39f0ba",
+            "intel": "3b67a07f"
+          },
+          {
+            "arm": "3b6aef90",
+            "expected": "3b6aef8f",
+            "input": "3d3c60bc",
+            "intel": "3b6aef8f"
+          },
+          {
+            "arm": "3b76c6e4",
+            "expected": "3b76c6e3",
+            "input": "3d44f0c5",
+            "intel": "3b76c6e3"
+          }
+        ],
+        "intelMatches": 1836,
+        "samples": 1837
+      }
+    },
+    "method": "80-digit Python Decimal power with exact Float32 operands and retained Float32 arithmetic around the power stage."
+  },
+  "outputMatrix": {
+    "casesPerArchitecture": 32,
+    "changesFromBuild539": {
+      "arm64": {
+        "changedAlphaWords": 0,
+        "changedBuffers": [
+          "grayscale-mask/32 bit/linearRGB/complete",
+          "preserve-alpha/32 bit/linearRGB/complete",
+          "retained-color/32 bit/linearRGB/complete",
+          "retained-color/32 bit/linearRGB/retained",
+          "texture-dual-symmetry/32 bit/linearRGB/complete",
+          "wide-affine/32 bit/linearRGB/complete"
+        ],
+        "changedRGBWords": 832,
+        "maxULP": 7
+      },
+      "x86_64": {
+        "changedAlphaWords": 0,
+        "changedBuffers": [],
+        "changedRGBWords": 0,
+        "maxULP": 0
+      }
+    },
+    "newCrossArchitectureDifferences": [],
+    "oldCrossArchitectureDifferences": [
+      "grayscale-mask/32 bit/linearRGB/complete",
+      "preserve-alpha/32 bit/linearRGB/complete",
+      "retained-color/32 bit/linearRGB/complete",
+      "retained-color/32 bit/linearRGB/retained",
+      "texture-dual-symmetry/32 bit/linearRGB/complete",
+      "wide-affine/32 bit/linearRGB/complete"
+    ],
+    "rows": {
+      "arm64": {
+        "539": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "bca1793b35eab94be48e2a113c3dff5c00790ff0f9d48a3807ff90a3fd294fb3",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "a9576d21633a4713496a16cf2927e189689b557e28b4ba34a54bb9bd0e9e7a84",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "3aaf857bc38bfa6ae1f6203007e30a6bdaf491ae3cef64173d2ee688631ae797",
+          "retained-color/32 bit/linearRGB/retained": "3aaf857bc38bfa6ae1f6203007e30a6bdaf491ae3cef64173d2ee688631ae797",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "ab8c6e106eb7fd1a9b6c8758645ba856fbbf2b670de6fb5a071a1f2fd5d5f129",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "34cc262a2de162ce6f8b447e78b5c3abe1545a2163b40fbce0b00e30ee5b6e6b",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        },
+        "540": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        }
+      },
+      "x86_64": {
+        "539": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        },
+        "540": {
+          "grayscale-mask/16 bit/sRGB/complete": "ea021719201aa39bb8211c365633c28d1db98d50b9e8e795d2931ed021dd1b74",
+          "grayscale-mask/32 bit/linearRGB/complete": "43a2cc964a19af3f4c6fc362be4258d33371530196a239b9d0fb688e8ceb591f",
+          "grayscale-mask/32 bit/sRGB/complete": "d8140e1df1af68d80b62781adf666535381bf1c11c932146d7fac0ad5264b891",
+          "grayscale-mask/8 bit/sRGB/complete": "ed800dc7ec6e9f5ff31308c2d64256403f92d244ba78ea3feda52f65327565fa",
+          "linear-erase/16 bit/sRGB/complete": "cfadfe974303dc52a2c211e5fa4bff88f3cc4791fbc99f4d825c3d2c09cabfa7",
+          "linear-erase/32 bit/linearRGB/complete": "5d38645cd296fd81eaedc7a68b55c2fc8dea57ffbae5bb0ce7ae725070459a19",
+          "linear-erase/32 bit/sRGB/complete": "8991c51f09d710fb84a586bfdb50bdff68fa8226e0590c333d53e19b7bb613c3",
+          "linear-erase/8 bit/sRGB/complete": "9aef82dcfe2f7194232ca0f5500981a195bd3d9bb1fcb91cbf1602e7c5f70c3a",
+          "masked-dissolve/16 bit/sRGB/complete": "6cd51b15a1b3ece1b9042f0ce36d5a4e3fe6b4d574d507953f410e93d383ac6d",
+          "masked-dissolve/32 bit/linearRGB/complete": "f02617e7d9a8faad93a5d0eea0578b272b20f4e33697a933d679fe94b0926728",
+          "masked-dissolve/32 bit/sRGB/complete": "a38128f0e438ec38700d9e62c7c0a8e0b19829a5a4e2ac0c1dae1402850bd21c",
+          "masked-dissolve/8 bit/sRGB/complete": "3c56f1c3346073f80c4804916408a005f64dfd3896162a8cb5955c5f2b465b1d",
+          "preserve-alpha/16 bit/sRGB/complete": "b927659c8d992cc4762b099483d83f2d8aff4c790b35832a8f73f5de988b255b",
+          "preserve-alpha/32 bit/linearRGB/complete": "8f2ed37f7d391484260488e96e91eabbe59cff9e042abdda20919db679ec02e7",
+          "preserve-alpha/32 bit/sRGB/complete": "fc09501de46a5bc6044a0b63a888d9199a906082ca94714410abd46b47d4548c",
+          "preserve-alpha/8 bit/sRGB/complete": "7fcd3f44343dc6eb13abc1a51e8e59cf842a0f48c649909470cbce25e6a39ba9",
+          "retained-color/16 bit/sRGB/complete": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/16 bit/sRGB/retained": "13bc8ee578912535f61e7a8f0661777432115e900193b3a3e9571226d65bb724",
+          "retained-color/32 bit/linearRGB/complete": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/linearRGB/retained": "e1414ffd5f68c09805cfb2a7456734763b6f0ae030ebb6b67c73b00e1f6f9d8a",
+          "retained-color/32 bit/sRGB/complete": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/32 bit/sRGB/retained": "a5780a25f946986c4aa9ad232350db8a4c47c22daa1e659df916f76b05e4232b",
+          "retained-color/8 bit/sRGB/complete": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "retained-color/8 bit/sRGB/retained": "913b7e68d54fcd1e0e281441217272525472d15a1baddcd3a7569621551c4009",
+          "texture-dual-symmetry/16 bit/sRGB/complete": "e4fa3989889c2be8d571e35da4816a5c09f4bb741633600ad23399709935ebbe",
+          "texture-dual-symmetry/32 bit/linearRGB/complete": "8e86afe6c6b2ff6f95a5087f1db9fd61836944222bd5b872702819b5867c7e58",
+          "texture-dual-symmetry/32 bit/sRGB/complete": "c12403a73ffdf60b16f2fcd60a1bf8567395837a2c3ac50e53d744c3f6649c27",
+          "texture-dual-symmetry/8 bit/sRGB/complete": "a50c378b2a7a21cac0f968d38f02d9a897304787719fd7b3031f5455db4ea2a3",
+          "wide-affine/16 bit/sRGB/complete": "27bbd5a7a582eaa64aecada0d5736071e071c03d8c4d4f5e88d87950b3514c15",
+          "wide-affine/32 bit/linearRGB/complete": "63e2180afc90d40167b3db2b0d9c4bb2f670fc22465374dd0d6033cfbb4b130f",
+          "wide-affine/32 bit/sRGB/complete": "b3b4bf6ee624447d2c53e63a2fbdbee1267deebf8b0c67b09c36abb9a53477a7",
+          "wide-affine/8 bit/sRGB/complete": "5daa3503b43805bc727d35c6c7a09807e7484a4476eb1930ea80e80757309dea"
+        }
+      }
+    }
+  },
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "cd0ec2a21030644c7cde31627766094617d5e17f88898af3e4ebfee206570596",
+    "binarySHA256": "b0ea69a9f6c38789088059e2e005110d2276a92302b84af97a1b81085d8f6e5c",
+    "build": 540,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopFixtures": {
+    "configurations": {
+      "arm": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "504447da5846a06de8c02816e75ea93ad2899d9d753a54235036711ffa87a30f"
+      },
+      "debug": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "02f152621100d2e2770734e71c96736ebba45edc844bddb84a13d7cdc6908a47"
+      },
+      "intel": {
+        "cases": [
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testFiniteRangeOverflowIsReportedInsteadOfSilentlyReplacingPixels",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPhotoshopMergedSamplesAndStraightLayersForEveryProbe",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testPSD32OpacityKeepsCanonicalStoredByteValue",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32CompositeTests/testRegionsAndIncrementalRenderMatchWholeNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testEmptyAndHiddenGroupsDoNotAlterTheVisibleNormalStack",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation",
+            "outcome": "passed"
+          },
+          {
+            "name": "PhotoCraftImagingTests.RGB32GroupCompositeTests/testRegionalRenderingUsesWholeCanvasOpacityClassification",
+            "outcome": "passed"
+          }
+        ],
+        "exit": 0,
+        "passed": true,
+        "testBinarySHA256": "2fd7f8c6b8483af35cc2af17b5b7b0b508e4cb2f9935446f9b9d68f1715bf1c3"
+      }
+    },
+    "independentExportFixtures": 20,
+    "passed": true,
+    "scope": "Owned Photoshop 2026 merged RGBA32 reference fixtures and regional comparison. Full PSD bytes and live Photoshop use are outside this fixture result.",
+    "sourceInputs": 7884
+  },
+  "physicalPresentationMeasured": false,
+  "productionFullDomain": {
+    "blockSize": 1048576,
+    "build": 540,
+    "compiledProduction": true,
+    "differingBlocks": [],
+    "elapsedSeconds": 80.34241395897698,
+    "method": "Power in Double with original Float32 inputs, exponents and final arithmetic.",
+    "nonnegativeFiniteInputs": 2139095040,
+    "outputBytesPerArchitecture": 17112760320
+  },
+  "qualifiedConfigurations": {
+    "arm": 251,
+    "debug": 251,
+    "intel": 251
+  },
+  "qualifiedCountPerConfiguration": 251,
+  "renderBenchmark": {
+    "candidateCrossArchitectureEquality": true,
+    "compiled539And540": {
+      "arm64": {
+        "539": {
+          "dense": {
+            "medianMilliseconds": 66.84818747453392,
+            "milliseconds": [
+              67.65320827253163,
+              63.44450009055436,
+              63.238083268515766,
+              63.803000026382506,
+              67.0833750627935,
+              67.02937500085682,
+              67.04333331435919,
+              66.92187499720603,
+              66.7744999518618,
+              66.66825001593679
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "cd04f08cc9f5f82b875219ae26f8789bc7b1a6e55958504addb5467cbab284d6"
+          },
+          "implicit": {
+            "medianMilliseconds": 63.198645832017064,
+            "milliseconds": [
+              65.24720834568143,
+              62.84145836252719,
+              62.36066669225693,
+              61.728041735477746,
+              61.432624934241176,
+              64.94145828764886,
+              63.361583393998444,
+              63.62745841033757,
+              63.035708270035684,
+              64.71695832442492
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "9610d50b2a21a3b9d26e48618f40af3a5dd289f6275703cb9b1e8ff781f14efe"
+          }
+        },
+        "540": {
+          "dense": {
+            "medianMilliseconds": 89.62502080248669,
+            "milliseconds": [
+              93.26695837080479,
+              89.41016672179103,
+              92.48599992133677,
+              89.34779174160212,
+              91.78070828784257,
+              89.88970832433552,
+              89.53095832839608,
+              89.7190832765773,
+              89.16129160206765,
+              89.34608323033899
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "245732cd53c0b09335b759417114102c9ad0eaf9fa418561320d6f8a4a572c90"
+          },
+          "implicit": {
+            "medianMilliseconds": 59.61162497987971,
+            "milliseconds": [
+              59.78516675531864,
+              59.49091666843742,
+              59.15737501345575,
+              59.42691664677113,
+              58.79383336286992,
+              60.25124993175268,
+              59.73233329132199,
+              60.50775002222508,
+              59.8676250083372,
+              57.91879165917635
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "3108c43d2defa8d89014dcdb646bcf2d27830dae710288ecd6dee6d5004e3163"
+          }
+        }
+      },
+      "x86_64": {
+        "539": {
+          "dense": {
+            "medianMilliseconds": 116.75685399677604,
+            "milliseconds": [
+              119.84275002032518,
+              117.60474997572601,
+              116.75116699188948,
+              118.33720898721367,
+              113.35645895451307,
+              113.7008749647066,
+              113.67520794738084,
+              117.224125075154,
+              114.46020903531462,
+              116.76254100166261
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "d0dad2a9d222853783082eb38577971dff1ef61ad425824e95c9333569df9708"
+          },
+          "implicit": {
+            "medianMilliseconds": 120.42854202445596,
+            "milliseconds": [
+              122.60837492067367,
+              119.34908293187618,
+              121.39533297158778,
+              118.41950006783009,
+              119.10220899153501,
+              120.9219170268625,
+              121.78008304908872,
+              119.93516702204943,
+              121.08141696080565,
+              118.45295794773847
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "31c2725fa60c6f909a29ee91da71412e6209f80ea4cbe9d81e97d14dde5bb837"
+          }
+        },
+        "540": {
+          "dense": {
+            "medianMilliseconds": 154.85475002788007,
+            "milliseconds": [
+              153.8252499885857,
+              153.76929100602865,
+              158.75445900019258,
+              155.64854198601097,
+              154.64687498752028,
+              157.0117500377819,
+              153.83666602429003,
+              155.66145803313702,
+              153.61412498168647,
+              155.06262506823987
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "245732cd53c0b09335b759417114102c9ad0eaf9fa418561320d6f8a4a572c90"
+          },
+          "implicit": {
+            "medianMilliseconds": 99.15558295324445,
+            "milliseconds": [
+              101.8961250083521,
+              98.7842499744147,
+              97.95891703106463,
+              99.40404095686972,
+              98.17150002345443,
+              103.7132500205189,
+              101.77716601174325,
+              100.42883292771876,
+              98.90712494961917,
+              98.1282499851659
+            ],
+            "rgbaBytes": 16777216,
+            "sha256": "3108c43d2defa8d89014dcdb646bcf2d27830dae710288ecd6dee6d5004e3163"
+          }
+        }
+      }
+    },
+    "scope": "One 990 px soft Brush over a 1024 \u00d7 1024 linear Float32 RGB surface. Ten complete render measurements in two trials with warmups, alternating baseline and current renders. Implicit uniform background and dense generated pattern. No screen presentation."
+  },
+  "renderBenchmarkBeforeImplicitCache": {
+    "candidateCrossArchitectureEquality": true,
+    "compiled539And540": {
+      "arm64": {
+        "539": {
+          "medianMilliseconds": 61.894916696473956,
+          "milliseconds": [
+            63.415333279408514,
+            61.87929166480899,
+            61.524291639216244,
+            61.894916696473956,
+            62.51149997115135
+          ],
+          "rgbaBytes": 16777216,
+          "sha256": "9610d50b2a21a3b9d26e48618f40af3a5dd289f6275703cb9b1e8ff781f14efe"
+        },
+        "540": {
+          "medianMilliseconds": 89.0765415970236,
+          "milliseconds": [
+            90.13241657521576,
+            90.32512502744794,
+            89.0765415970236,
+            88.14754174090922,
+            86.66079165413976
+          ],
+          "rgbaBytes": 16777216,
+          "sha256": "3108c43d2defa8d89014dcdb646bcf2d27830dae710288ecd6dee6d5004e3163"
+        }
+      },
+      "x86_64": {
+        "539": {
+          "medianMilliseconds": 116.5944579988718,
+          "milliseconds": [
+            119.89325005561113,
+            118.63154207821935,
+            115.47091603279114,
+            116.5944579988718,
+            115.12800003401935
+          ],
+          "rgbaBytes": 16777216,
+          "sha256": "31c2725fa60c6f909a29ee91da71412e6209f80ea4cbe9d81e97d14dde5bb837"
+        },
+        "540": {
+          "medianMilliseconds": 150.09925002232194,
+          "milliseconds": [
+            153.9885839447379,
+            149.7607909841463,
+            151.89745801035315,
+            150.09925002232194,
+            149.35558405704796
+          ],
+          "rgbaBytes": 16777216,
+          "sha256": "3108c43d2defa8d89014dcdb646bcf2d27830dae710288ecd6dee6d5004e3163"
+        }
+      }
+    },
+    "scope": "One 990 px soft Brush over a 1024 \u00d7 1024 linear Float32 RGB surface. Five complete render measurements after one discarded warmup. No screen presentation."
+  },
+  "signedTransferProbeNew": {
+    "build": 540,
+    "crossArchitectureDifferences": {
+      "decodeBase": 0,
+      "decodePowerFloat": 2966,
+      "encodePowerFloat": 6780,
+      "input": 0,
+      "nativeEncoded": 0,
+      "nativeLinear": 0,
+      "wideEncoded": 0,
+      "wideLinear": 0
+    },
+    "firstDifferences": {
+      "decodePowerFloat": {
+        "arm64": "0x3a5da551",
+        "input": "0x39a800a8",
+        "x86_64": "0x3a5da550"
+      },
+      "encodePowerFloat": {
+        "arm64": "0x3d611308",
+        "input": "0x3a7800f8",
+        "x86_64": "0x3d611307"
+      }
+    },
+    "samples": 1061749
+  },
+  "signedTransferProbeOld": {
+    "build": 539,
+    "crossArchitectureDifferences": {
+      "decodeBase": 0,
+      "decodePowerFloat": 2966,
+      "encodePowerFloat": 6780,
+      "input": 0,
+      "nativeEncoded": 3632,
+      "nativeLinear": 1837,
+      "wideEncoded": 0,
+      "wideLinear": 0
+    },
+    "firstDifferences": {
+      "decodePowerFloat": {
+        "arm64": "0x3a5da551",
+        "input": "0x39a800a8",
+        "x86_64": "0x3a5da550"
+      },
+      "encodePowerFloat": {
+        "arm64": "0x3d611308",
+        "input": "0x3a7800f8",
+        "x86_64": "0x3d611307"
+      },
+      "nativeEncoded": {
+        "arm64": "0x3daccd45",
+        "input": "0x3bfe80ff",
+        "x86_64": "0x3daccd43"
+      },
+      "nativeLinear": {
+        "arm64": "0x3b61ac5f",
+        "input": "0x3d3580b6",
+        "x86_64": "0x3b61ac60"
+      }
+    },
+    "samples": 1061749
+  },
+  "softwareRelease": false,
+  "sourceInputs": 7884,
+  "standaloneFullDomain": {
+    "blockSize": 1048576,
+    "differingBlocks": [],
+    "elapsedSeconds": 73.356186332996,
+    "method": "Power in Double with original Float32 inputs, exponents and final arithmetic. Independent candidate, not production binary.",
+    "nonnegativeFiniteInputs": 2139095040,
+    "outputBytesPerArchitecture": 17112760320
+  },
+  "typedCommands": 271,
+  "unchangedSmallDabCases": 24
+}
