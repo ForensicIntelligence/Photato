@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **567** · The 10 most recent entries, newest first.
+Source build **568** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
+
+RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
+
+All 2,142,336 stored samples from 59 tested conversion cases match the corresponding Photoshop files on each architecture. Five Gray32 layer stacks match all 960 merged words under each of four compression modes in PSD and PSB. All 657 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_568.md).
 
 ## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
 
@@ -75,11 +83,3 @@ Clear removes alpha from the color region you click. The Photato API can configu
 All 486 selected tests passed across three builds. The 624 actual dense and paged writeback comparisons matched on each optimized architecture. Live Photoshop output comparisons remain open.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-559) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_559.md).
-
-## 2026-11-18 — Step 558 — Large Paint Bucket and Magic Wand regions
-
-Magic Wand and Paint Bucket now page large color selections. The tested sparse cases work on 300,000-pixel-square canvases, and a uniform opaque fill can update the whole canvas without allocating pixel tiles.
-
-All 481 selected tests passed across three builds. Existing coverage and bucket buffers matched build 557 byte for byte. Dense maximum-size timing, other fill modes and exact Photoshop comparisons remain open.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-558) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_558.md).

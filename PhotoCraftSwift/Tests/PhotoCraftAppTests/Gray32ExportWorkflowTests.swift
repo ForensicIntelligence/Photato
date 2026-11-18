@@ -15,6 +15,13 @@ final class Gray32ExportWorkflowTests: XCTestCase {
     document.modeDescriptor = try .init(mode: .grayscale, depth: .f32, profile: gray.profile)
     document.layers[0].nativeMode = gray; document.layers[0].content = .raster(try gray.surface())
     document.layers[0].background = true
+    for (i, value) in [Float(-0.125), 0.5].enumerated() {
+      try gray.set(value, component: 0, index: i)
+      try gray.set(0.5, component: 1, index: i)
+    }
+    var top = Layer(name: "Owned Gray32 top", content: .raster(try gray.surface()))
+    top.nativeMode = gray
+    document.layers.append(top)
     return document
   }
   func assertOutput(_ bytes: Data, source: CraftDocument,
@@ -25,7 +32,10 @@ final class Gray32ExportWorkflowTests: XCTestCase {
     XCTAssertEqual(bytes[30..<34], Data("hdrt".utf8), file: file, line: line)
     let restored = try PSDCodec.read(bytes)
     XCTAssertEqual(restored.colorMode, .grayscale, file: file, line: line)
-    XCTAssertEqual(try restored.layers[0].nativeMode?.planes, try source.layers[0].nativeMode?.planes, file: file, line: line)
+    XCTAssertEqual(restored.layers.count, source.layers.count, file: file, line: line)
+    for (actual, original) in zip(restored.layers, source.layers) {
+      XCTAssertEqual(try actual.nativeMode?.planes, try original.nativeMode?.planes, file: file, line: line)
+    }
   }
   @MainActor func testRealHTTPGray32PSDAndPSBDownloadsKeepPermissionsRevisionsAndSource() async throws {
     let helper = AutomationTests()
@@ -54,6 +64,7 @@ final class Gray32ExportWorkflowTests: XCTestCase {
       let hdr = try XCTUnwrap(containers["hdrMetadata"] as? [String:Any])
       XCTAssertEqual(hdr["modes"] as? [String], ["rgb","grayscale"])
       XCTAssertNotNil(containers["gray32BackgroundComposite"] as? String)
+      XCTAssertNotNil(containers["gray32MergedComposite"] as? String)
     }
   }
   func testAdobeResourceOutputUsesTheSameGray32MetadataAndSampleSerializer() throws {

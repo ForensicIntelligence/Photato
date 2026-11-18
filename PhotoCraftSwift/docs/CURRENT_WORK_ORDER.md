@@ -1,3 +1,7 @@
+**Source checkpoint 568.** RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks. All 657 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_568.md).
+
+Extend the direct power path for lower gamma values after verifying RGB and 8-bit inputs. Compare RGB-to-Gray mode conversion and finish measuring transparent Multiply and other HDR blend modes. Photoshop Actions still need validation for channel switches and percentage coordinates.
+
 **Source checkpoint 567.** Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. All 651 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_567.md).
 
 Integrate the independently verified gamma 0.5 conversion, then measure RGB to Gray mode conversion and the output for transparent or masked layers. Photoshop Actions still need validation for channel switches and percentage coordinates.

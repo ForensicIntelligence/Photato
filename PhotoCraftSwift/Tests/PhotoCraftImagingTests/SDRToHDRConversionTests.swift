@@ -91,9 +91,17 @@ final class SDRToHDRConversionTests: XCTestCase {
   }
 
   func testPowerAndParametricPrecisionPromotionProducesReferencePlanes() throws {
-    for reference in try references() where reference.profile.contains("gamma") || reference.profile.contains("parametric") {
+    for reference in try references() where !reference.profile.hasSuffix("gamma128")
+      && (reference.profile.contains("gamma") || reference.profile.contains("parametric")) {
       try assertReference(reference)
     }
+  }
+
+  func testHalfGammaPrecisionPromotionMatchesRGBAndGrayAtBothSourceDepths() throws {
+    let cases = try references().filter { $0.profile.hasSuffix("gamma128") }
+    XCTAssertEqual(Set(cases.map(\.caseName)), Set(["owned-gray-gamma128-8", "owned-gray-gamma128-16",
+      "owned-rgb-gamma128-8", "owned-rgb-gamma128-16"]))
+    for reference in cases { try assertReference(reference) }
   }
 
   func testDifferentLinearDestinationStillUsesICCAndPreservesSourceAlpha() throws {

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "opaque-layer-opacity",
+    "channels": 1,
+    "samples": 160,
+    "sourceFileSHA256": "0eabf0c7909e3a953b420cd0da6a34276b8d6232ad119dc675b2bdc79a988dd2",
+    "armSavedFileSHA256": "ea80983271dc46ca7d975d8de1a0245d9cde6a8b8d5e0bd00ae5b6fc60d16955",
+    "intelSavedFileSHA256": "d7c240e956b8c95bc658ecc1263953cf7551aaf18a39206847e97b77736a4e5f",
+    "armMergedSHA256": "3e555536bd9b5880291dce86a85f78928295a4552fd86b4007cb19c73f3d2636",
+    "intelMergedSHA256": "7ed3a97fed9c4201a5ba65dffd51eec0ab56a5be614aa6e9a73a3ebd3cadbc4a"
+  },
+  {
+    "name": "opaque-masked",
+    "channels": 1,
+    "samples": 160,
+    "sourceFileSHA256": "69381f0f02688afea879dfb6a2b5624307834952f93717097d063871f644ef97",
+    "armSavedFileSHA256": "04ba25cfc042b23f130f16437d324eac25fa6a34427fbb232be5f5a47d134156",
+    "intelSavedFileSHA256": "1cda70e06b4151e58fc97754842841c2041e237c88c7cfbbeab845adda0aba25",
+    "armMergedSHA256": "8fd09275c4dad4cdc3a0470647390393105a7f5012b9b4d5696d83bec89511c9",
+    "intelMergedSHA256": "bfde56d6c8f5c63ffe43710468fb9a01c8388df98cc3234a47929a506a547bf8"
+  },
+  {
+    "name": "opaque-multiply",
+    "channels": 1,
+    "samples": 160,
+    "sourceFileSHA256": "cd7ac3d43ff75766d01a9cab32c26cd6ca2db636a1adfde74e48ee18f946654f",
+    "armSavedFileSHA256": "d35efc54a36046d22394ab02e4df8c0ac50997dd5f2232fa95bf911490c81576",
+    "intelSavedFileSHA256": "cc9f5423433e2d09c3eae6924931a2801c1f3f40dc852d404a8347608a8fb77c",
+    "armMergedSHA256": "07a595f906f02492b10ed750d982ad60a1fe4a44ae67103d2c8fd1fadebb526d",
+    "intelMergedSHA256": "07a595f906f02492b10ed750d982ad60a1fe4a44ae67103d2c8fd1fadebb526d"
+  },
+  {
+    "name": "opaque-normal",
+    "channels": 1,
+    "samples": 160,
+    "sourceFileSHA256": "5e7269f0d099c9bc6151f1f82154742b611ba555200d966004f2b32f0375a297",
+    "armSavedFileSHA256": "50d13da4f651fa84a9ce3d5f7c96cec216b6be644859e4ab43e889574faade69",
+    "intelSavedFileSHA256": "28f844b365d49365057788ab25acd2ea14821e01f8e898d07a1bddf69725984a",
+    "armMergedSHA256": "6dea8f48f862bb40a0d7f81d60595717cc0334865c559cffda75bdbdfea576cc",
+    "intelMergedSHA256": "75c70a9acd36b406cbc23b44eef29098e8fc95b045270a98bb54b4597b88f74d"
+  },
+  {
+    "name": "transparent-normal",
+    "channels": 2,
+    "samples": 320,
+    "sourceFileSHA256": "c5d50c7a81d84876844cf6d567fb25e42ddec7c2ca611544ef57e3696d6cb345",
+    "armSavedFileSHA256": "914c277be39f85a5ad4e9d8822eccf2c00161b17cd8e0845559df6d2d56cee14",
+    "intelSavedFileSHA256": "4564687ce391b3dede64479612d07cd7ce53f56eafc3b41026f2baa7c971182c",
+    "armMergedSHA256": "ae54ec4b72cf72cebfa98939696522f1f0c83f2bbdaed22322373905c5678d5e",
+    "intelMergedSHA256": "c68a68773a0e6a699c91151311a24eeede9585d28c79b17470fa58b67f479863"
+  }
+]

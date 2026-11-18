@@ -1,6 +1,6 @@
 # SDR to HDR precision references
 
-The five test ICC profiles are original project fixtures. Each uses a minimal matrix or
+The test ICC profiles are original project fixtures. Each uses a minimal matrix or
 grayscale header, public color-space coefficients and authored tone curves. The
 test reconstructs the matching opaque raw PSD inputs and checks their SHA-256.
 

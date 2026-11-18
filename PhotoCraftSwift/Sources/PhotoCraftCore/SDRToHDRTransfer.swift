@@ -101,7 +101,8 @@ struct SDRToHDRTransfer {
   }
 
   private static func powerCurve(_ raw: UInt32) -> Curve? {
-    // At and below this exponent Photoshop used a different conversion path.
+    if raw == 128 { return .values((0...workingMaximum).map(squareRootSample)) }
+    // Smaller exponents have not been qualified against both architectures.
     guard raw > 128 else { return nil }
     let gamma = Double(raw) / 256
     if raw > 640 {
@@ -112,6 +113,26 @@ struct SDRToHDRTransfer {
       values[code] = powf(Float(code) / Float(workingMaximum), Float(gamma))
     }
     return .values(values)
+  }
+
+  private static func squareRootSample(_ code: Int) -> Float {
+    let input = Float(code) / Float(workingMaximum)
+    #if arch(arm64)
+    // The Apple Silicon reference uses two estimates. Recreate the rounding
+    // from their bin midpoints so the same source samples give the saved values.
+    guard code > 0 else { return 0 }
+    let parity = input.exponent & 1
+    let sourceBin = Int((input.significand - 1) * 128)
+    let rootMidpoint = (1 + (Double(sourceBin) + 0.5) / 128) * Double(1 << parity)
+    let inverseRoot = Float(sign: .plus, exponent: -(input.exponent - parity) / 2 - 1,
+      significand: Float((512 / rootMidpoint.squareRoot()).rounded()) / 256)
+    let inverseBin = Int((inverseRoot.significand - 1) * 256)
+    let inverseMidpoint = 1 + (Double(inverseBin) + 0.5) / 256
+    return Float(sign: .plus, exponent: -inverseRoot.exponent - 1,
+      significand: Float((512 / inverseMidpoint).rounded()) / 256)
+    #else
+    return input.squareRoot()
+    #endif
   }
 
   // Photoshop's observed sampled-curve path builds 4,097 Float32 endpoints.

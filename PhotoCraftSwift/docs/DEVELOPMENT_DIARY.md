@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
+
+RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
+
+All 2,142,336 stored samples from 59 tested conversion cases match the corresponding Photoshop files on each architecture. Five Gray32 layer stacks match all 960 merged words under each of four compression modes in PSD and PSB. All 657 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-568) · [Validation](SOURCE_PUBLICATION_568.md).
+
 ## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
 
 Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile.
@@ -529,14 +537,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:567 -->
+<!-- current-status-step:568 -->
 ## Current development status — 18 November 2026
 
-Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile. All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture.
+RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
 
-The comparison covers opaque, same-mode precision promotion. Cross-mode color conversion, arbitrary color profiles, other rendering intents, transparent sample parity, and full PSD file identity still need testing. The app’s gamma 0.5 conversion remains open. A standalone Swift probe matched all 32,896 saved samples on each architecture and provides a reference for integrating that special case.
+The Gray32 comparison covers aligned, full-canvas raster stacks using Normal or Multiply over an opaque base. It includes an ordinary pixel mask, partial layer opacity, and transparent Normal. Cross-mode conversion, transparent Multiply, other blend modes, transformed stacks, and whole-file identity remain open.
 
-[Qualification](SOURCE_PUBLICATION_567.md) · [Current work order](CURRENT_WORK_ORDER.md)
+[Qualification](SOURCE_PUBLICATION_568.md) · [Current work order](CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project
@@ -1309,6 +1317,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 565 | [Add Allow Tool Recording to Actions](DEVLOG.md#dev-step-565) |
 | 2026-11-18 | 566 | [Preserve opaque Gray32 merged samples in PSD and PSB](DEVLOG.md#dev-step-566) |
 | 2026-11-18 | 567 | [Use the source tone curves for 32-bit RGB and Gray](DEVLOG.md#dev-step-567) |
+| 2026-11-18 | 568 | [Match half-gamma promotion and Gray32 PSD layer stacks](DEVLOG.md#dev-step-568) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](DEVLOG.md#dev-step-513) |

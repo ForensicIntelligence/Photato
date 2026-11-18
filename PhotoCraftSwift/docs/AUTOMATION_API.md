@@ -3628,3 +3628,9 @@ The serializer is shared by the native Save family, authenticated Photato `file.
 Send the existing `document.convertMode` command with the current RGB or grayscale mode and `depth: 32`. The shared Swift path promotes integer samples through their ICC transfer curves. It uses a 15-bit working domain for nonlinear curves and stores a linearized version of the source profile. Sampled curves use a 4,097-point Float32 table. Power and the tested parametric curve use the measured direct or interpolated path. Explicit different destination profiles, other intents, and unsupported curves retain the existing ColorSync path.
 
 The `documentModes.sameModeSDRToHDR` capability describes the operation. The existing action conversion adapter uses the same Swift path. Read the stored samples with `mode.channel.read`. [Qualification](SOURCE_PUBLICATION_567.md).
+
+### Gray32 raster stacks and gamma 0.5
+
+Native Save, authenticated Photato PSD/PSB downloads, and the compatible resource encoders compose supported Gray32 raster stacks directly from their stored samples. Normal and opaque-base Multiply are included. Eligible documents with a visible, opaque Background omit merged transparency. Saved channels still follow the merged image. See `photoshopContainers.gray32MergedComposite`.
+
+The existing `document.convertMode` command and compatible conversion adapter also use the measured gamma 0.5 calculation when promoting an unchanged RGB or grayscale mode to 32 Bits/Channel. [Qualification](SOURCE_PUBLICATION_568.md).

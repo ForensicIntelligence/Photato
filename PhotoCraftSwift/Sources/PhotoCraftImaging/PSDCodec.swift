@@ -882,7 +882,8 @@ public enum PSDCodec {
       try PSDPatternFill.importPlacement(&layer, width: doc.width, height: doc.height)
       try PSDSmartObjects.restore(&layer, in: doc, files: embeddedFiles, filterMasks: filterMasks)
       try PSDText.restore(&layer, in: doc)
-      if layers.isEmpty,colorMode == .rgb,layer.parentID==nil,layer.x==0,layer.y==0,layer.opacity==1,layer.blendMode == .normal,
+      let recognizesBackground = colorMode == .rgb || (colorMode == .grayscale && depth == 32 && tiffComposite == nil)
+      if layers.isEmpty,recognizesBackground,layer.parentID==nil,!layer.isClipped,layer.x==0,layer.y==0,layer.opacity==1,layer.blendMode == .normal,
         layer.mask==nil,layer.vectorMask==nil,layer.style==nil,layer.smartObject==nil,layer.protection.locksTransparency,
         !record.channels.contains(where:{$0.0 == -1}),case .raster(let pixels)=layer.content,pixels.width==doc.width,pixels.height==doc.height,try pixels.isOpaque() {
         layer.background=true
@@ -1082,18 +1083,9 @@ public enum PSDCodec {
     let compOutput = try PSDLayerComps.prepare(doc)
     let auxiliaryChannels=PSDAuxiliaryChannels.all(doc)
     guard includeComposite || auxiliaryChannels.isEmpty else {throw CraftError.unsupported("Auxiliary channel export requires complete PSD/PSB merged planes; TIFF mapping remains separate.")}
-    // The validated single Background covers the canvas without blending. Its stored
-    // gray samples are authoritative, and its opaque merged image needs no alpha.
-    let gray32Background: NativeModeRaster?
-    if includeComposite, doc.depth == .f32, doc.colorMode == .grayscale,
-      doc.layers.count == 1, let layer = doc.layers.first, layer.isBackground, layer.visible,
-      let native = layer.nativeMode, native.isOpaque
-    {
-      gray32Background = native
-    } else {
-      gray32Background = nil
-    }
-    let mergedTransparency = try gray32Background == nil && PSDAuxiliaryChannels.mergedTransparency(doc)
+    let gray32Composite = try includeComposite ? PSDGray32CompositeRows(doc) : nil
+    let mergedTransparency = try gray32Composite?.hasOpaqueBackground != true
+      && PSDAuxiliaryChannels.mergedTransparency(doc)
     guard !doc.layers.isEmpty, doc.width <= format.maximumDimension,
       doc.height <= format.maximumDimension
     else {
@@ -1576,10 +1568,10 @@ public enum PSDCodec {
     let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
       || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
       ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
-    let pagedModeComposite = try gray32Background == nil && doc.modeDescriptor != nil
+    let pagedModeComposite = try gray32Composite == nil && doc.modeDescriptor != nil
       && (doc.width > NativeModeRaster.maximumPixels / doc.height || doc.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }))
       ? PSDModeCompositeRows(doc) : nil
-    let composite = try gray32Background == nil && pagedComposite == nil && pagedModeComposite == nil
+    let composite = try gray32Composite == nil && pagedComposite == nil && pagedModeComposite == nil
       ? Renderer.composite(doc) : nil
     let nativeComposite: NativeModeRaster?
     if let composite, let descriptor = doc.modeDescriptor {
@@ -1594,15 +1586,14 @@ public enum PSDCodec {
         try Task.checkCancellation()
         let imageChannels=colorChannels+(mergedTransparency ? 1:0)
         if channel>=imageChannels {return try PSDAuxiliaryChannels.row(auxiliaryChannels[channel-imageChannels],y:y,depth:depth)}
+        if let gray32Composite { return try gray32Composite.row(y, channel: channel, transparency: mergedTransparency) }
         if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}
         if let pagedModeComposite {return try pagedModeComposite.row(y,channel:channel,depth:depth)}
         var bytes: [UInt8] = []
         bytes.reserveCapacity(doc.width * (depth / 8))
         for x in 0..<doc.width {
           let value: Float
-          if let gray32Background {
-            value = gray32Background.value(component: 0, index: y * doc.width + x)
-          } else if let nativeComposite {
+          if let nativeComposite {
             value = PSDModeStorage.mergedSample(nativeComposite, component: channel, index: y * doc.width + x)
           } else {
             let p = depth == 32

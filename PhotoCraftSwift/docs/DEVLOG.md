@@ -586,7 +586,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 565 | 2026-11-18 | [Add Allow Tool Recording to Actions](#dev-step-565) |
 | 566 | 2026-11-18 | [Preserve opaque Gray32 merged samples in PSD and PSB](#dev-step-566) |
 | 567 | 2026-11-18 | [Use the source tone curves for 32-bit RGB and Gray](#dev-step-567) |
+| 568 | 2026-11-18 | [Match half-gamma promotion and Gray32 PSD layer stacks](#dev-step-568) |
 <!-- history-index:end -->
+
+<a id="dev-step-568"></a>
+
+## 2026-11-18 — Match half-gamma promotion and Gray32 PSD layer stacks
+
+RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
+
+The SDR transfer in `Sources/PhotoCraftCore/SDRToHDRTransfer.swift` now handles the ICC gamma word 128. RGB and grayscale use the same rounded 15-bit input at either source depth. The ARM calculation models the two observed numerical estimates, and the Intel path uses the Swift Float square root. Using the original 8-bit normalization without the working sample step gave mismatches, including five Gray8 samples on Apple Silicon and 254 on Intel. Four procedural PSDs and their independently decoded samples provide the new Swift conversion tests.
+
+`Sources/PhotoCraftImaging/PSDGray32CompositeRows.swift` uses the original Float32 planes as the inputs to ordinary grayscale raster stacks. It reads an unfeathered pixel mask once per layer and writes one merged row at a time. An eligible opaque Background omits the merged alpha channel. Transparent Normal uses the existing PSD white matte, with any saved channels after the merged image. The original editable layer planes remain independent. The first Debug suite passed, but an independent reopen and streamed resave exposed that Gray32 Background identity was discarded on import. The repair recognizes the opaque bottom layer from its geometry, lock and lack of a transparency channel. A locked regular layer named Background keeps its alpha. The Gray32 reference uses one round for interpolation on Apple Silicon and separate operations on Intel. The Gray32 layer tests cover both forms of opacity, mask, Normal, opaque-base Multiply, transparent Normal, all output compression modes, and named auxiliary channel ordering.
+
+The new paths are shared by the existing desktop mode conversion and Save family, the Photato API, and the applicable Adobe-compatible conversion and resource serialization. The capability descriptions now cover gamma 0.5 and merged Gray32 stacks. The real loopback test verifies permissions, revision handling, and read-only multi-layer PSD/PSB downloads. Existing tests verify the compatible resource serializer and matching desktop/HTTP conversion with Undo.
+
+All 2,142,336 stored samples from 59 tested conversion cases match the corresponding Photoshop files on each architecture. Five Gray32 layer stacks match all 960 merged words under each of four compression modes in PSD and PSB. All 657 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed universal validation archive passed an offscreen workspace check. This increment did not exercise a physical Intel Mac, a macOS 14 installation or interactive canvas input.
+
+Photoshop 2026 27.2.0 was run independently on each architecture. The script opened only generated test documents, forced stack recomposition by toggling the top layer’s visibility, then saved a separate PSD copy. Screen failed at open on both slices. Adobe lists Normal and Multiply among its supported 32-bit blend modes. [Adobe HDR feature support](https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/features-that-support-32-bpc-hdr-images.html).
+
+Build inputs were copied to a content-verified temporary snapshot before compiling. The validation used SwiftPM Debug and optimized compilers, the exact XCTest selection on Apple Silicon and under Rosetta, and an independent Python decoder for compressed PSD and PSB from both output writers. The first frozen Intel suite reported a blank offscreen Sky sheet preview. The same test passed on an isolated rerun of both build 567 and that candidate. The initial attempt and screenshots were retained, and the corrected source was tested with the same Sky check. The per-case hashes in the receipt bind the saved reference files and numerical planes to the check. Original generated inputs and logs are retained locally.
+
+The Gray32 comparison covers aligned, full-canvas raster stacks using Normal or Multiply over an opaque base. It includes an ordinary pixel mask, partial layer opacity, and transparent Normal. Cross-mode conversion, transparent Multiply, other blend modes, transformed stacks, and whole-file identity remain open. Independent native powf probes also matched the 32,896 Gray16 samples for each of gamma 0.25 and 0.375 on each architecture. Those profiles still use the fallback in build 568.
+
+[Qualification](SOURCE_PUBLICATION_568.md).
 
 <a id="dev-step-567"></a>
 

@@ -32,9 +32,9 @@ enum PSDMergedSample {
     // Original Photoshop RGB32 references round each distance-from-white operation
     // separately, including opaque samples. Do not fuse these operations or apply
     // them to the straight layer planes, which retain their original sample bits.
-    func matte(_ color: Float) -> Float { 1 - (1 - color) * p.a }
-    return Pixel(matte(p.r), matte(p.g), matte(p.b), p.a)
+    return Pixel(whiteMatte(p.r, alpha: p.a), whiteMatte(p.g, alpha: p.a), whiteMatte(p.b, alpha: p.a), p.a)
   }
+  static func whiteMatte(_ sample: Float, alpha: Float) -> Float { 1 - (1 - sample) * alpha }
   static func decode(_ p: Pixel) -> Pixel {
     guard p.a > 0 else { return Pixel(1, 1, 1, 0) }
     let white = 1 - p.a

@@ -595,6 +595,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 565 | [Add Allow Tool Recording to Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-565) |
 | 2026-11-18 | 566 | [Preserve opaque Gray32 merged samples in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-566) |
 | 2026-11-18 | 567 | [Use the source tone curves for 32-bit RGB and Gray](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-567) |
+| 2026-11-18 | 568 | [Match half-gamma promotion and Gray32 PSD layer stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) |
 | 2026-11-08 | 511 | [Gray32 Photoshop file export](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-511) |
 | 2026-11-09 UTC | 512 | [Merge Channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-512) |
 | 2026-11-09 UTC | 513 | [Legacy Macintosh proof](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-513) |
