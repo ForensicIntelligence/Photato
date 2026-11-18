@@ -97,7 +97,7 @@ final class BrushGesture {
     // renderer still prepares its pixels off the main actor.
     let firstFrame = brushPreviewLastStart == 0 && tool == .brush && !gesture.mask
       && interactiveBrushPreview != nil && ordinaryCanvasImage && !rendering
-      ? startBrushPreviewFrame(samples: gesture.points.count) : nil
+      ? startBrushPreviewFrame(samples: gesture.points.count, startWorkerImmediately: true) : nil
     brushPreviewTask=Task { [weak self] in
       guard let self else { return }
       var frame = firstFrame
@@ -117,12 +117,12 @@ final class BrushGesture {
       if self.brushPreviewGeneration==generation { self.brushPreviewTask=nil }
     }
   }
-  private func startBrushPreviewFrame(samples: Int) -> (samples: Int, render: Task<Void, Never>?) {
+  private func startBrushPreviewFrame(samples: Int, startWorkerImmediately: Bool = false) -> (samples: Int, render: CanvasRenderRequest?) {
     let now = ProcessInfo.processInfo.systemUptime
     let interval = brushPreviewFrameInterval
     brushPreviewLastStart = brushPreviewLastStart > 0 && now < brushPreviewLastStart + interval
       ? brushPreviewLastStart + interval : now + interval
-    render()
+    render(startWorkerImmediately: startWorkerImmediately)
     return (samples, renderTask)
   }
   func stopBrushPreview() { brushPreviewGeneration=UUID();brushPreviewTask?.cancel();brushPreviewTask=nil;interactiveBrushPreview=nil }

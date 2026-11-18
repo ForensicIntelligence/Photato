@@ -29,10 +29,44 @@ final class CanvasFrameDiagnosticsTests: XCTestCase {
     let completed = trace.events.filter { $0.kind == "ready" }
     XCTAssertEqual(completed.map(\.samples), [1, 11])
     XCTAssertEqual(Set(completed.compactMap(\.revision)).count, 2)
+    let first = try XCTUnwrap(completed.first)
+    let worker = try XCTUnwrap(first.worker)
+    let firstAdditionalInput = try XCTUnwrap(trace.events.first { $0.kind == "input" && $0.samples == 2 })
+    XCTAssertLessThanOrEqual(worker.enqueued, firstAdditionalInput.uptime)
+    XCTAssertLessThanOrEqual(worker.enqueued, worker.started)
+    XCTAssertLessThanOrEqual(worker.started, worker.ended)
+    XCTAssertLessThanOrEqual(worker.ended, first.uptime)
     var expected = document
     try XCTUnwrap(store.brushPreviewCommand).apply(to: &expected)
     let merged = try Renderer.composite(expected)
     XCTAssertNil(try XCTUnwrap(store.surface).changedTileBounds(comparedTo: merged))
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
+  @MainActor func testCancellingEarlyWorkerKeepsUnpublishedPixelsOutOfTheCanvas() async throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let document = try CraftDocument(width: 160, height: 100)
+    let store = EditorStore(document: document, brushes: BrushLibrary())
+    defer { store.cancelBrush(); store.renderTask?.cancel() }
+    store.tool = .brush; store.brush.size = 12; store.brush.color = .black
+    await store.renderTask?.value
+    let trace = CanvasFrameTrace(directory: directory)
+    store.canvasFrameTrace = trace
+    let presentation = store.canvasPresentationRevision
+
+    store.beginBrush(.init(x: 20, y: 25), zoom: 1)
+    let cancelled = try XCTUnwrap(store.renderTask)
+    cancelled.cancel()
+    XCTAssertTrue(cancelled.isCancelled)
+    await cancelled.value
+    await store.brushPreviewTask?.value
+    XCTAssertEqual(store.canvasPresentationRevision, presentation)
+    XCTAssertTrue(trace.events.filter { $0.kind == "ready" }.isEmpty)
+    XCTAssertNil(store.error)
+    store.cancelBrush()
+    await store.renderTask?.value
+    XCTAssertEqual(store.document, document)
     XCTAssertTrue(store.session.undoStack.isEmpty)
   }
 

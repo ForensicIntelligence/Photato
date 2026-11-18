@@ -1,3 +1,7 @@
+**Source checkpoint 534.** The first ordinary Brush frame submits its worker during input on a ready canvas. All 114 selected methods pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_534.md).
+
+Q03 remains open for publication latency, steady-stroke scheduling and display measurements. Verify the ordinary Brush factory smoothing default and handle explicit and legacy settings before changing paint defaults.
+
 **Source checkpoint 533.** The ready ordinary Brush canvas starts its first preview with the input event. All 100 selected checks pass in Debug, optimized Apple Silicon and Intel under Rosetta. Physical presentation and full Photoshop parity remain open. [Qualification](SOURCE_PUBLICATION_533.md).
 
 Q03 remains open. Measure when the background renderer starts relative to the first input, then address the remaining delay and verify physical presentation. The next Brush settings check is the ordinary round Brush’s 10% factory smoothing, including explicit, omitted and legacy values in both editing entry points.

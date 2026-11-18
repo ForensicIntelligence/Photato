@@ -552,7 +552,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 531 | 2026-11-17 | [Find changed tiles without sorting the canvas](#dev-step-531) |
 | 532 | 2026-11-17 | [Reuse recomposited tiles in the canvas](#dev-step-532) |
 | 533 | 2026-11-17 | [Start the first Brush frame sooner](#dev-step-533) |
+| 534 | 2026-11-17 | [Start the background worker with Brush input](#dev-step-534) |
 <!-- history-index:end -->
+
+<a id="dev-step-534"></a>
+
+## 2026-11-17 — Start the background worker with Brush input
+
+Build 533 recorded the first render request at about 0.20 ms after accepted input, and the preview became ready around 25.43 ms. EditorStore.swift still launched the worker inside a queued main-actor task. A ready ordinary Brush canvas now submits that worker during input. The main actor still accepts and publishes the result. A render request cancels both the publication and an already-submitted worker. Later paced frames and other rendering callers retain deferred submission. Rendering formulas and inputs use the same immutable capture, and cancellation and revision checks protect the current canvas and history.
+
+CanvasFrameDiagnostics.swift adds optional worker submission, start and completion times to an accepted frame. AutomationBrushes.swift describes these fields in the existing opt-in diagnostics metadata. The desktop and both API command paths still use the same editing data and transaction contracts. CanvasFrameDiagnosticsTests.swift verifies worker timing order and synchronous submission before the next input, plus rejection of a cancelled result before publication. The candidate bundle version is 534. The timing comparison reuses the same 24 MP layered Brush fixture and retained optimized build 533. The installed Photoshop 2026 reference from step 533 covers the Brush controls and Undo for one mark. Exact Photoshop stroke pixels, physical input and display cadence remain open. [Adobe feature catalogue](https://www.adobe.com/products/photoshop/features/all.html).
+
+The first Debug build failed to compile an existing Reviewed Edit Plan test that reads the render task's cancellation status. The two unfinished optimized compilations from that source were stopped and their logs retained. The corrected request exposes the same cancellation status and waits for an early worker to finish cancelling even if publication has yet to start. The focused run now includes all 13 existing Reviewed Edit Plan checks.
+
+The extracted build 533 package was also tested using its built-in offscreen workspace command. Both slices reached the snapshot writer on the first attempt, which tried to save outside the app sandbox and received a permissions error. Redirecting the output to the validation app's own temporary directory passed on Apple Silicon and under Rosetta. The same command will check build 534. This exercises packaged startup and view construction. Interactive launch and physical display behavior still require separate testing.
+
+All 107 focused and seven Photoshop-reference methods passed in three configurations. Across both rounds of the matched 24 MP test, median first input to AppKit draw measured 27.52 ms to 20.77 ms. The new worker starts a median 0.23 ms after input, with computation and remaining main-actor wait recorded separately. The continuous measurements and individual trial results are in the report. Every timing run verified the exact native preview and committed stroke, and Undo restored the original. The universal archive passed static checks. The extracted app ran its built-in offscreen workspace command on Apple Silicon and under Rosetta. [Qualification](SOURCE_PUBLICATION_534.md).
 
 <a id="dev-step-533"></a>
 

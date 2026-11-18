@@ -7,6 +7,19 @@ import PhotoCraftImaging
 import SwiftUI
 import UniformTypeIdentifiers
 
+struct CanvasRenderRequest: Sendable {
+  let publication: Task<Void, Never>
+  let cancelEarlyWorker: @Sendable () -> Void
+
+  var value: Void { get async { await publication.value } }
+  var isCancelled: Bool { publication.isCancelled }
+
+  func cancel() {
+    publication.cancel()
+    cancelEarlyWorker()
+  }
+}
+
 @MainActor @Observable final class EditorStore {
   let identity = UUID()
   var layerPanelGeneration = UUID()
@@ -582,7 +595,7 @@ import UniformTypeIdentifiers
   var timelineContentGeneration = 0
   var timelinePlaybackRenderCount = 0
   var timelinePlaybackRevision = UUID()
-  var renderTask: Task<Void, Never>?
+  var renderTask: CanvasRenderRequest?
   var aiTask: Task<Void, Never>?
   var document: CraftDocument { session.document }
   var activeLayer: Layer? {
@@ -745,7 +758,7 @@ import UniformTypeIdentifiers
       return false
     }
   }
-  func render(isAnimationPlayback: Bool = false) {
+  func render(isAnimationPlayback: Bool = false, startWorkerImmediately: Bool = false) {
     layerContentFilter.refreshIfNeeded(in: self)
     if let draft = layerOpacityDraft, !draft.matches(self) { layerOpacityDraft = nil }
 
@@ -846,8 +859,11 @@ import UniformTypeIdentifiers
     rendering = true
     let renderStarted = ProcessInfo.processInfo.systemUptime
     let frameTraceToken = canvasFrameTrace?.beginFrame(samples: max(brushPoints.count, retouchPointCount), revision: request)
-    renderTask = Task { [weak self] in
-      let worker = Task.detached(priority: .userInitiated) {
+    let submitWorker = {
+      let enqueued = frameTraceToken.map { _ in ProcessInfo.processInfo.systemUptime }
+      return Task.detached(priority: .userInitiated) {
+        let workerStart = enqueued.map { _ in ProcessInfo.processInfo.systemUptime }
+        try Task.checkCancellation()
         var doc = doc
         let presentation = try largeCanvas.map {
           try RasterPreviewRequest(region: $0.region, width: $0.width, height: $0.height)
@@ -940,8 +956,22 @@ import UniformTypeIdentifiers
           maskImage = nil
         }
         let overlay=try selectionOverlay.map{try SelectionToolPreparation.overlay(doc.coverageSelection(),color:$0,request:presentation)} ?? nil
-        return (snapshot, image, path, maskImage,overlay,proofFailure,canvasPreview,outlineRequest)
+        let timing = enqueued.flatMap { queued in
+          workerStart.map { started in
+            CanvasFrameTrace.WorkerTiming(enqueued: queued, started: started, ended: ProcessInfo.processInfo.systemUptime)
+          }
+        }
+        return (snapshot, image, path, maskImage, overlay, proofFailure, canvasPreview, outlineRequest, timing)
       }
+    }
+    let earlyWorker = startWorkerImmediately ? submitWorker() : nil
+    let publication = Task { [weak self] in
+      if Task.isCancelled {
+        earlyWorker?.cancel()
+        _ = await earlyWorker?.result
+        return
+      }
+      let worker = earlyWorker ?? submitWorker()
       do {
         let pair = try await withTaskCancellationHandler(
           operation: { try await worker.value }, onCancel: { worker.cancel() })
@@ -951,7 +981,7 @@ import UniformTypeIdentifiers
         self.image = pair.1
         self.canvasRasterPreview = pair.6
         self.ordinaryCanvasImage = ordinaryDisplay
-        self.canvasFrameTrace?.prepared(frameTraceToken)
+        self.canvasFrameTrace?.prepared(frameTraceToken, worker: pair.8)
         if !brushPoints.isEmpty {
           self.brushPreviewFrameCount += 1
           self.brushPreviewSampleCount = brushPoints.count
@@ -976,11 +1006,12 @@ import UniformTypeIdentifiers
         self.canvasPresentationRevision += 1
         self.canvasFramePublished.send(())
       } catch is CancellationError {} catch {
-        guard let self, self.revision == request else { return }
+        guard !Task.isCancelled, let self, self.revision == request else { return }
         self.error = error.localizedDescription
         self.rendering = false
       }
     }
+    renderTask = CanvasRenderRequest(publication: publication, cancelEarlyWorker: { earlyWorker?.cancel() })
   }
   func groupSelection() {
     guard canCreateGroup(fromSelection: true) else { return }

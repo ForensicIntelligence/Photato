@@ -10,6 +10,11 @@ import QuartzCore
     let samples: Int
     let input: TimeInterval
   }
+  struct WorkerTiming: Codable, Sendable {
+    let enqueued: TimeInterval
+    let started: TimeInterval
+    let ended: TimeInterval
+  }
   struct Event: Codable, Sendable {
     let kind: String
     let uptime: TimeInterval
@@ -20,6 +25,7 @@ import QuartzCore
     var durationMS: Double?
     var displayTimestamp: TimeInterval?
     var displayTarget: TimeInterval?
+    var worker: WorkerTiming?
   }
   struct Report: Codable, Sendable {
     let version: Int
@@ -70,10 +76,11 @@ import QuartzCore
     record(Event(kind: "prepare", uptime: clock(), samples: samples, revision: revision, inputUptime: frame.input))
     return frame
   }
-  func prepared(_ frame: Frame?) {
+  func prepared(_ frame: Frame?, worker: WorkerTiming? = nil) {
     guard let frame, active, frame.stroke == stroke else { return }
     latestPrepared = frame
-    record(Event(kind: "ready", uptime: clock(), samples: frame.samples, revision: frame.revision, inputUptime: frame.input))
+    record(Event(kind: "ready", uptime: clock(), samples: frame.samples, revision: frame.revision,
+      inputUptime: frame.input, worker: worker))
   }
   func invalidated() {
     guard let frame = latestPrepared, active else { return }
