@@ -5,7 +5,7 @@ import PhotoCraftImaging
 
 /// Pending digit for the next key on a focused canvas.
 struct BrushNumberPrefix {
-  enum Setting { case opacity, flow }
+  enum Setting { case opacity, flow, smoothing }
   static let interval: TimeInterval = 0.5
   let setting: Setting
   let digit: Int
@@ -24,11 +24,22 @@ struct BrushNumberPrefix {
     return digit(event.charactersIgnoringModifiers) ?? digit(event.characters(byApplyingModifiers: []))
   }
 
-  static func help(_ setting: Setting, airbrush: Bool) -> String {
+  static func help(_ setting: Setting, airbrush: Bool = false) -> String {
+    if setting == .smoothing {
+      return "Press Option and a number key for tens, or two digits quickly for an exact percentage."
+    }
     let shifted = (setting == .flow) != airbrush
     let keys = shifted ? "Shift and a number key" : "a number key"
     return "Press \(keys) for tens, or two digits quickly for an exact percentage."
   }
+}
+
+enum BrushTipShortcuts {
+  static let hardnessStep: Float = 0.25
+  static let angleStep: Double = 1
+  static let largeAngleStep: Double = 15
+  static let hardnessHelp = "Press { or } to soften or harden the brush tip."
+  static let angleHelp = "Press Left or Right to rotate the tip by 1°. Hold Shift for 15°."
 }
 
 struct BrushStrokeTarget: Equatable {
@@ -92,20 +103,27 @@ final class BrushGesture {
   func applyBrushNumber(_ event: NSEvent, following prefix: BrushNumberPrefix?)
     -> (handled: Bool, prefix: BrushNumberPrefix?) {
     guard canConfigureCanvasBrush, unavailableToolID == nil,
-      event.modifierFlags.intersection([.command, .control, .option, .function]).isEmpty,
+      event.modifierFlags.intersection([.command, .control, .function]).isEmpty,
       let digit = BrushNumberPrefix.digit(in: event) else { return (false, nil) }
 
     let shift = event.modifierFlags.contains(.shift)
     let setting: BrushNumberPrefix.Setting
-    switch tool {
-    case .brush:
-      setting = shift != brushOptions.buildUp ? .flow : .opacity
-    case .pencil where !shift, .eraser where eraserMode == .pencil && !shift:
-      setting = .opacity
-    case .eraser where eraserMode == .brush:
-      setting = shift != brushOptions.buildUp ? .flow : .opacity
-    default:
-      return (false, nil)
+    if event.modifierFlags.contains(.option) {
+      guard !shift,
+        tool == .brush || tool == .pencil || tool == .mixerBrush || (tool == .eraser && eraserMode != .block)
+      else { return (false, nil) }
+      setting = .smoothing
+    } else {
+      switch tool {
+      case .brush:
+        setting = shift != brushOptions.buildUp ? .flow : .opacity
+      case .pencil where !shift, .eraser where eraserMode == .pencil && !shift:
+        setting = .opacity
+      case .eraser where eraserMode == .brush:
+        setting = shift != brushOptions.buildUp ? .flow : .opacity
+      default:
+        return (false, nil)
+      }
     }
 
     if event.isARepeat { return (true, prefix) }
@@ -117,10 +135,43 @@ final class BrushGesture {
     switch setting {
     case .opacity: brush.opacity = Float(value) / 100
     case .flow: brushOptions.flow = Double(value) / 100
+    case .smoothing: brushOptions.smoothing.amount = Double(value) / 100
     }
     return (true, previous == nil
       ? BrushNumberPrefix(setting: setting, digit: digit, timestamp: event.timestamp, tool: tool, revision: brushRevision)
       : nil)
+  }
+
+  func applyBrushTipKey(_ event: NSEvent) -> Bool {
+    let flags = event.modifierFlags
+    guard canConfigureCanvasBrush, unavailableToolID == nil,
+      flags.intersection([.command, .control]).isEmpty else { return false }
+    switch tool {
+    case .brush, .mixerBrush, .patternStamp, .colorReplacement, .backgroundEraser: break
+    case .eraser where eraserMode == .brush: break
+    default: return false
+    }
+
+    let character = event.charactersIgnoringModifiers?.unicodeScalars.first?.value
+    // AppKit marks real arrow events as function keys. A translated Home or
+    // End event from Fn-arrow still has its own distinct character.
+    if !flags.contains(.option),
+      character == UInt32(NSLeftArrowFunctionKey) || character == UInt32(NSRightArrowFunctionKey) {
+      let direction = character == UInt32(NSLeftArrowFunctionKey) ? 1.0 : -1.0
+      let step = flags.contains(.shift) ? BrushTipShortcuts.largeAngleStep : BrushTipShortcuts.angleStep
+      // The painter measures positive angles counterclockwise in image space.
+      brushOptions.angle = (brushOptions.angle + direction * step).remainder(dividingBy: 360)
+      return true
+    }
+    guard !flags.contains(.function), brushOptions.tip == nil, !brushOptions.aliased,
+      tool != .colorReplacement || currentPaintOptions.antiAlias else { return false }
+    let shiftedBracket = flags.contains(.shift) && !flags.contains(.option) ? event.charactersIgnoringModifiers : nil
+    let direction: Float
+    if event.characters == "{" || shiftedBracket == "[" { direction = -1 }
+    else if event.characters == "}" || shiftedBracket == "]" { direction = 1 }
+    else { return false }
+    brush.hardness = min(1, max(0, brush.hardness + direction * BrushTipShortcuts.hardnessStep))
+    return true
   }
 
   private var brushStrokeTarget: BrushStrokeTarget? {

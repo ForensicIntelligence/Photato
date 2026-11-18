@@ -1,3 +1,7 @@
+**Source checkpoint 555.** The focused canvas accepts braces for brush hardness, Left and Right for tip rotation, and Option-digits for smoothing. All 413 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_555.md).
+
+Continue B01 with the documented Clear and Behind paint operations, alongside controlled subpixel and continuous stroke captures. Live shortcut behavior, Brush defaults, cursor preferences, physical editing cadence, ColorSync and Gradient Map differences remain open.
+
 **Source checkpoint 554.** The four factory Round presets now change smoothly from soft feathering to an opaque core with a narrow edge. The aligned nonzero-hardness samples improved from a worst alpha difference of 161 to 12 of 255 levels. All 411 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_554.md).
 
 Continue B01 with controlled subpixel placement, independent intermediate hardness settings and continuous stroke output. Verify live Brush defaults and tablet input. The documented hardness and angle shortcuts can proceed independently. Physical cadence, ColorSync and Gradient Map differences remain open.

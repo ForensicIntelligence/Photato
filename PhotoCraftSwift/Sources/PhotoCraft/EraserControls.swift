@@ -26,7 +26,8 @@ import PhotoCraftCore
                 Text("px")
               }
               BrushDiameterSlider(diameter:$store.brush.size)
-              percent("Hardness",get:{Double(store.brush.hardness)},set:{store.brush.hardness=Float($0)}).disabled(store.eraserMode != .brush)
+              percent("Hardness",get:{Double(store.brush.hardness)},set:{store.brush.hardness=Float($0)})
+                .help(BrushTipShortcuts.hardnessHelp).disabled(store.eraserMode != .brush)
             }.padding().frame(width:230)
           }
       } else { Text("16 px").help("Block size follows the view zoom; it ignores the brush diameter.") }
@@ -35,6 +36,7 @@ import PhotoCraftCore
       percent("Opacity:",get:{Double(store.brush.opacity)},set:{store.brush.opacity=Float($0)}).disabled(store.eraserMode == .block)
       percent("Flow:",get:{store.brushOptions.flow},set:{store.brushOptions.flow=$0}).disabled(store.eraserMode != .brush)
       percent("Smoothing:",get:{store.brushOptions.smoothing.amount},set:{store.brushOptions.smoothing.amount=$0})
+        .help(BrushNumberPrefix.help(.smoothing))
       if store.eraserMode == .brush { Toggle("Airbrush",isOn:$store.brushOptions.buildUp) }
       Toggle("Erase to History",isOn:.constant(false)).disabled(true).help("Requires a history source; not available yet.")
       Button("Brush Settings") { NSApp.sendAction(#selector(AppDelegate.showBrushSettings),to:nil,from:nil) }.disabled(store.eraserMode == .block)

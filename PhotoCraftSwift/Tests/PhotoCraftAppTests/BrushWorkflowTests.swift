@@ -108,6 +108,112 @@ final class BrushWorkflowTests:XCTestCase {
       isARepeat: repeatKey, keyCode: keyCodes[digit]))
   }
 
+  @MainActor private func tipKey(_ character: String, keyCode: UInt16 = 0,
+    unmodified: String? = nil, modifiers: NSEvent.ModifierFlags = []) throws -> NSEvent {
+    try XCTUnwrap(NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: modifiers,
+      timestamp: 1, windowNumber: 0, context: nil, characters: character,
+      charactersIgnoringModifiers: unmodified ?? character, isARepeat: false, keyCode: keyCode))
+  }
+
+  @MainActor private func tipArrow(_ key: Int, keyCode: UInt16, shift: Bool = false) throws -> NSEvent {
+    try tipKey(String(XCTUnwrap(UnicodeScalar(key))), keyCode: keyCode,
+      modifiers: shift ? [.numericPad, .function, .shift] : [.numericPad, .function])
+  }
+
+  @MainActor func testBrushTipKeysRespectModifiersShapeAndRotationDirection() throws {
+    let store = EditorStore(document: try CraftDocument(width: 60, height: 54))
+    defer { store.renderTask?.cancel() }
+    let canvas = CraftCanvas(store: store)
+    let original = store.document, size = store.brush.size
+    store.tool = .brush
+    store.brush.hardness = 0.625
+    canvas.keyDown(with: try tipKey("{", keyCode: 33, modifiers: .shift))
+    XCTAssertEqual(store.brush.hardness, 0.375)
+    canvas.keyDown(with: try tipKey("]", keyCode: 30, modifiers: .shift))
+    XCTAssertEqual(store.brush.hardness, 0.625)
+    canvas.keyDown(with: try tipKey("{", keyCode: 28, unmodified: "8", modifiers: .option))
+    XCTAssertEqual(store.brush.hardness, 0.375)
+    XCTAssertEqual(store.brush.size, size)
+    canvas.keyDown(with: try tipKey("{", keyCode: 33, modifiers: .shift))
+    canvas.keyDown(with: try tipKey("{", keyCode: 33, modifiers: .shift))
+    XCTAssertEqual(store.brush.hardness, 0)
+    store.brush.hardness = 0.875
+    canvas.keyDown(with: try tipKey("}", keyCode: 30, modifiers: .shift))
+    XCTAssertEqual(store.brush.hardness, 1)
+    canvas.keyDown(with: try tipArrow(NSRightArrowFunctionKey, keyCode: 124))
+    XCTAssertEqual(store.brushOptions.angle, -1)
+    canvas.keyDown(with: try tipArrow(NSLeftArrowFunctionKey, keyCode: 123, shift: true))
+    XCTAssertEqual(store.brushOptions.angle, 14)
+    store.brushOptions.angle = 179
+    canvas.keyDown(with: try tipArrow(NSLeftArrowFunctionKey, keyCode: 123, shift: true))
+    XCTAssertEqual(store.brushOptions.angle, -166)
+
+    let stored = store.brush
+    for flags: NSEvent.ModifierFlags in [[.shift, .command], [.shift, .control], [.shift, .function], [.shift, .option]] {
+      let event = try tipKey("]", keyCode: 30, modifiers: flags)
+      XCTAssertFalse(store.applyBrushTipKey(event))
+      canvas.keyDown(with: event)
+    }
+    canvas.keyDown(with: try tipArrow(NSHomeFunctionKey, keyCode: 123))
+    XCTAssertEqual(store.brush, stored)
+    store.brushOptions.aliased = true
+    XCTAssertFalse(store.applyBrushTipKey(try tipKey("{", keyCode: 33, modifiers: .shift)))
+    store.brushOptions.aliased = false
+    store.brushOptions.tip = try BrushPresets.generatedTip("leaf", size: 8)
+    XCTAssertFalse(store.applyBrushTipKey(try tipKey("{", keyCode: 33, modifiers: .shift)))
+    XCTAssertTrue(store.applyBrushTipKey(try tipArrow(NSRightArrowFunctionKey, keyCode: 124)))
+    XCTAssertEqual(store.brushOptions.angle, -167)
+    store.tool = .eraser
+    for mode in [EraserMode.pencil, .block] {
+      store.eraserMode = mode
+      XCTAssertFalse(store.applyBrushTipKey(try tipArrow(NSRightArrowFunctionKey, keyCode: 124)))
+    }
+    store.eraserMode = .brush
+    XCTAssertTrue(store.applyBrushTipKey(try tipArrow(NSRightArrowFunctionKey, keyCode: 124)))
+    store.tool = .move
+    XCTAssertFalse(store.applyBrushTipKey(try tipArrow(NSRightArrowFunctionKey, keyCode: 124)))
+    XCTAssertEqual(store.document, original)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
+  @MainActor func testBrushSmoothingKeysUseSeparateToolAndPercentageState() throws {
+    let store = EditorStore(document: try CraftDocument(width: 40, height: 32))
+    defer { store.renderTask?.cancel() }
+    let canvas = CraftCanvas(store: store)
+    store.tool = .brush
+    canvas.keyDown(with: try brushDigit(4, at: 1))
+    canvas.keyDown(with: try brushDigit(3, at: 1.1, modifiers: .option))
+    canvas.keyDown(with: try brushDigit(7, at: 1.2, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.37)
+    XCTAssertEqual(store.brush.opacity, 0.4)
+    canvas.keyDown(with: try brushDigit(0, at: 2, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 1)
+    canvas.keyDown(with: try brushDigit(0, at: 2.1, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0)
+    canvas.keyDown(with: try brushDigit(4, at: 3, modifiers: .option))
+    canvas.keyDown(with: try brushDigit(5, at: 3.1, modifiers: .option, repeatKey: true))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.4)
+    canvas.keyDown(with: try brushDigit(5, at: 3.2, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.45)
+    store.tool = .mixerBrush
+    canvas.keyDown(with: try brushDigit(2, at: 4, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.2)
+    store.tool = .pencil
+    canvas.keyDown(with: try brushDigit(3, at: 5, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.3)
+    store.tool = .eraser
+    store.eraserMode = .block
+    let blocked = store.brushOptions.smoothing.amount
+    canvas.keyDown(with: try brushDigit(8, at: 6, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, blocked)
+    store.eraserMode = .brush
+    canvas.keyDown(with: try brushDigit(9, at: 7, modifiers: .option))
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.9)
+    store.tool = .brush
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.45)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+  }
+
   @MainActor func testBrushNumberKeysUseExactPercentagesAndAirbrushModifiers() throws {
     _ = NSApplication.shared
     let store = EditorStore(document: try CraftDocument(width: 48, height: 32))
@@ -141,12 +247,15 @@ final class BrushWorkflowTests:XCTestCase {
     canvas.keyDown(with: try brushDigit(7, at: 5.3))
     XCTAssertEqual(store.brushOptions.flow, 0.47)
 
-    for modifier in [NSEvent.ModifierFlags.command, .option, .control, .function] {
+    for modifier in [NSEvent.ModifierFlags.command, .control, .function] {
       let revision = store.brushRevision
       canvas.keyDown(with: try brushDigit(2, at: 6, modifiers: modifier))
       canvas.keyDown(with: try brushDigit(2, at: 6.1, modifiers: [modifier, .shift]))
       XCTAssertEqual(store.brushRevision, revision)
     }
+    let unmodified = store.brushRevision
+    canvas.keyDown(with: try brushDigit(2, at: 6.2, modifiers: [.option, .shift]))
+    XCTAssertEqual(store.brushRevision, unmodified)
     store.tool = .pencil
     canvas.keyDown(with: try brushDigit(2, at: 7, modifiers: .shift))
     XCTAssertEqual(store.brush.opacity, 0.6)
@@ -191,7 +300,12 @@ final class BrushWorkflowTests:XCTestCase {
     XCTAssertEqual(store.brush.opacity, 0.4)
     XCTAssertTrue(window.makeFirstResponder(field))
     XCTAssertFalse(window.firstResponder === canvas)
+    let beforeTextEdit = store.brush
     canvas.keyDown(with: try brushDigit(9, at: 1.1))
+    canvas.keyDown(with: try brushDigit(8, at: 1.1, modifiers: .option))
+    canvas.keyDown(with: try tipKey("{", keyCode: 33, modifiers: .shift))
+    canvas.keyDown(with: try tipArrow(NSLeftArrowFunctionKey, keyCode: 123))
+    XCTAssertEqual(store.brush, beforeTextEdit)
     XCTAssertEqual(store.brush.opacity, 0.4)
     XCTAssertTrue(window.makeFirstResponder(canvas))
     canvas.keyDown(with: try brushDigit(5, at: 1.2))
@@ -201,8 +315,14 @@ final class BrushWorkflowTests:XCTestCase {
     store.beginBrush(point, zoom: 1)
     let captured = try XCTUnwrap(store.brushGesture?.brush)
     canvas.keyDown(with: try brushDigit(2, at: 2))
+    canvas.keyDown(with: try brushDigit(1, at: 2.1, modifiers: .option))
+    canvas.keyDown(with: try tipKey("{", keyCode: 33, modifiers: .shift))
+    canvas.keyDown(with: try tipArrow(NSRightArrowFunctionKey, keyCode: 124))
     XCTAssertEqual(store.brush.opacity, 0.2)
-    XCTAssertEqual(store.brushGesture?.brush.opacity, 0.5)
+    XCTAssertEqual(store.brushOptions.smoothing.amount, 0.1)
+    XCTAssertEqual(store.brush.hardness, captured.hardness - 0.25)
+    XCTAssertEqual(store.brushOptions.angle, -1)
+    XCTAssertEqual(store.brushGesture?.brush, captured)
     XCTAssertEqual(store.session.undoStack.count, 0)
     var expected = original
     try Command.stroke(XCTUnwrap(expected.activeLayerID), [point], captured).apply(to: &expected)
@@ -222,6 +342,9 @@ final class BrushWorkflowTests:XCTestCase {
       let store = file.store
       store.tool = .brush
       store.brush.color = .black
+      store.brush.hardness = 0.75
+      store.brushOptions.roundness = 0.48
+      store.brushOptions.roundTipProfile = .calibratedRound
       store.brushOptions.smoothing.amount = 0
       try service.share(file)
       let canvas = CraftCanvas(store: store)
@@ -230,6 +353,11 @@ final class BrushWorkflowTests:XCTestCase {
       canvas.keyDown(with: try brushDigit(5, at: 1.1))
       canvas.keyDown(with: try brushDigit(3, at: 2, modifiers: .shift))
       canvas.keyDown(with: try brushDigit(7, at: 2.2, modifiers: .shift))
+      canvas.keyDown(with: try brushDigit(4, at: 3, modifiers: .option))
+      canvas.keyDown(with: try brushDigit(2, at: 3.1, modifiers: .option))
+      canvas.keyDown(with: try tipKey("{", keyCode: 33, modifiers: .shift))
+      canvas.keyDown(with: try tipArrow(NSLeftArrowFunctionKey, keyCode: 123))
+      canvas.keyDown(with: try tipArrow(NSRightArrowFunctionKey, keyCode: 124, shift: true))
       XCTAssertNotEqual(service.revision(store), oldRevision)
       XCTAssertEqual(store.session.undoStack.count, 0)
       let keyboardSetting = store.brush
@@ -237,13 +365,20 @@ final class BrushWorkflowTests:XCTestCase {
       let settings = try XCTUnwrap(nested["settings"] as? [String: Any])
       XCTAssertEqual((nested["opacity"] as? NSNumber)?.floatValue, 0.45)
       XCTAssertEqual((settings["flow"] as? NSNumber)?.doubleValue, 0.37)
-      let patch: [String: Any] = ["brush": ["opacity": 0.45, "settings": ["flow": 0.37]]]
+      XCTAssertEqual((nested["hardness"] as? NSNumber)?.floatValue, 0.5)
+      XCTAssertEqual((settings["angle"] as? NSNumber)?.doubleValue, -14)
+      XCTAssertEqual((settings["smoothing"] as? [String: NSNumber])?["amount"]?.doubleValue, 0.42)
+      let patch: [String: Any] = ["brush": ["opacity": 0.45, "hardness": 0.5,
+        "settings": ["flow": 0.37, "angle": -14, "smoothing": ["amount": 0.42]]]]
       var status = try await helper.edit(service, file, "brush.configure", patch, revision: oldRevision)
       XCTAssertEqual(status, 409)
+      store.brush.hardness = 1
+      store.brushOptions.angle = 0
+      store.brushOptions.smoothing.amount = 0
       status = try await helper.edit(service, file, "brush.configure", patch)
       XCTAssertEqual(status, 200)
       XCTAssertEqual(store.brush, keyboardSetting)
-      let samples = [StrokePoint(x: 17, y: 13)]
+      let samples = [StrokePoint(x: 17, y: 13, time: 0), StrokePoint(x: 25, y: 20, time: 18)]
       var expected = original
       try Command.stroke(XCTUnwrap(expected.activeLayerID), samples, keyboardSetting).apply(to: &expected)
       status = try await helper.edit(service, file, "paint.stroke", ["points": BrushAPI.json(samples)])

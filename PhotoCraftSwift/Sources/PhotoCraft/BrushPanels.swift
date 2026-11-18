@@ -114,7 +114,9 @@ struct BrushSettingsPanel:View {
           Text("px").foregroundStyle(.secondary)
         }
         scalar("Hardness",Binding(get:{Double(store.brush.hardness)},set:{store.brush.hardness=Float($0)}),0...1,percent:true)
+          .help(BrushTipShortcuts.hardnessHelp)
         scalar("Angle",$store.brushOptions.angle,-180...180)
+          .help(BrushTipShortcuts.angleHelp)
         scalar("Roundness",$store.brushOptions.roundness,0.01...1,percent:true)
         Toggle("Spacing",isOn:$store.brushOptions.spacingEnabled)
         scalar("Spacing",$store.brushOptions.spacing,0.01...10,percent:true)
@@ -171,6 +173,7 @@ struct BrushSettingsPanel:View {
       case "buildUp":Toggle("Build-up (Airbrush)",isOn:$store.brushOptions.buildUp);scalar("Dabs / second",$store.brushOptions.buildUpRate,0.1...100)
       case "smoothing":
         scalar("Smoothing",$store.brushOptions.smoothing.amount,0...1,percent:true)
+          .help(BrushNumberPrefix.help(.smoothing))
         Toggle("Pulled String Mode",isOn:$store.brushOptions.smoothing.pulledString);Toggle("Stroke Catch-up",isOn:$store.brushOptions.smoothing.catchUp);Toggle("Catch-up on Stroke End",isOn:$store.brushOptions.smoothing.catchUpOnEnd);Toggle("Adjust for Zoom",isOn:$store.brushOptions.smoothing.adjustForZoom)
       case "protectTexture":Toggle("Protect Texture",isOn:$store.brushOptions.protectTexture)
       case "symmetry":

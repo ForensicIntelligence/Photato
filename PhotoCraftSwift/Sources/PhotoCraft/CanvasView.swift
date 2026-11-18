@@ -1268,6 +1268,7 @@ struct CanvasHost: NSViewRepresentable {
       }
     }
     if window.map({ $0.firstResponder === self && $0.attachedSheet == nil }) != false {
+      if store.applyBrushTipKey(event) { return }
       let result = store.applyBrushNumber(event, following: prefix)
       brushNumberPrefix = result.prefix
       if result.handled { return }
@@ -1292,12 +1293,16 @@ struct CanvasHost: NSViewRepresentable {
     case "d": store.resetColors()
     case "\r": if store.tool == .crop && store.unavailableToolID == nil { store.cropToSelection() }
     case "[":
+      guard event.modifierFlags.intersection([.command, .control, .option, .shift, .function]).isEmpty
+      else { super.keyDown(with: event); return }
       if store.tool.usesRetouchStroke {
         store.retouchSettings.brush.size = max(1, store.retouchSettings.brush.size - 5)
       } else {
         store.brush.size = max(1, store.brush.size - 5)
       }
     case "]":
+      guard event.modifierFlags.intersection([.command, .control, .option, .shift, .function]).isEmpty
+      else { super.keyDown(with: event); return }
       if store.tool.usesRetouchStroke {
         store.retouchSettings.brush.size = min(2048, store.retouchSettings.brush.size + 5)
       } else {

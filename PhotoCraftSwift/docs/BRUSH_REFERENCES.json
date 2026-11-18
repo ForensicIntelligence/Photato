@@ -161,5 +161,11 @@
     ],
     "aligned_worst_nonzero_hardness_alpha_error": 12,
     "open": "Point placement, other hardness values, continuous strokes, current live defaults and physical input."
+  },
+  "keyboard_settings_checkpoint_555": {
+    "qualification": "SOURCE_PUBLICATION_555.md",
+    "evidence": "BRUSH_TIP_SHORTCUTS_555.json",
+    "scope": "Hardness, primary-tip rotation and smoothing on the focused canvas.",
+    "open": "Live Photoshop step, layout and physical-input verification."
   }
 }

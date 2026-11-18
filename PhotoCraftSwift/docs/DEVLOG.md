@@ -573,7 +573,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 552 | 2026-11-18 | [Add brush opacity and flow number keys](#dev-step-552) |
 | 553 | 2026-11-18 | [Widen the zero-hardness Soft Round tip](#dev-step-553) |
 | 554 | 2026-11-18 | [Calibrate the round brush hardness range](#dev-step-554) |
+| 555 | 2026-11-18 | [Add brush hardness, rotation and smoothing keys](#dev-step-555) |
 <!-- history-index:end -->
+
+<a id="dev-step-555"></a>
+
+## 2026-11-18 — Add brush hardness, rotation and smoothing keys
+
+At 04:00 MST the Mac was locked, so Photoshop 2026 was unavailable for live comparison. The Adobe desktop shortcut table and the Adobe Learn brush demonstration establish the brace keys. The desktop table specifies Left and Right for single-degree rotation and Shift-arrows for 15°. An Adobe brush keyboard reference documents Option-digits for Smoothing. The current Adobe smoothing guide lists Brush, Pencil, Mixer Brush and Eraser. The 25-point hardness increment is consistent with the published brush shortcut material. Live verification from an off-grid starting hardness and exact behavior on other layouts remain open. [Adobe shortcut table](https://helpx.adobe.com/content/dam/help/en/photoshop/using/default-keyboard-shortcuts/photoshop-keyboard-shortcuts.pdf) · [Adobe Learn brush guide](https://www.adobe.com/learn/photoshop/web/photoshop-brushes-intro) · [Brush keyboard reference](https://jkost.com/blog/2017/05/brushes-and-painting-tool-shortcuts-in-photoshop-cc.html) · [Adobe stroke smoothing guide](https://helpx.adobe.com/ph_fil/photoshop/desktop/repair-retouch/clean-restore-images/create-smoother-more-polished-brush-strokes-with-stroke-smoothing.html).
+
+The macOS GUI standards checklist and Apple's keyboard guidance were applied to focus, modifiers and native control help. The shortcuts run in the focused canvas after active edit routing. Fields, dialogs, movement tools and existing keyboard navigation retain their handlers. An AppKit event probe distinguished the actual arrow character from Home using the same key code and function modifiers. It also confirmed separate event values for a typed brace and an Option-number glyph. [Apple keyboard guidance](https://developer.apple.com/design/human-interface-guidelines/keyboards/).
+
+BrushEditing.swift maps braces to 25-percentage-point hardness changes, clamped at 0 and 100. Left rotates counterclockwise and Right clockwise. Shift uses 15° instead of 1°. Angles wrap at a full turn through the Brush Settings panel's signed angle range. The bindings apply to the existing tip controls shared by Brush, Mixer Brush, Pattern Stamp, Color Replacement, Background Eraser and Brush-mode Eraser. Hardness only applies when the stroke uses an antialiased analytic tip. When a keyboard layout directly emits a brace, that character takes precedence over an Option-number interpretation. CanvasView.swift prevents shifted or other modified brackets from falling through to plain diameter changes.
+
+Option-number keys set Smoothing for Brush, Pencil, Mixer Brush and non-Block Eraser. They reuse the numeric entry interval, two-digit entry and individual tool state. Tool settings update without a document history entry. An ongoing stroke uses its captured values through release. BrushPanels.swift, WorkspaceTools.swift and EraserControls.swift add help to the existing controls. Changing these values keeps the same paint tool and pointer policy. No new document operation or file format is needed.
+
+AutomationBrushes.swift exposes the shortcuts and existing writable fields through the capability listing and brush state. brush.configure and paint.stroke use the same brush settings as the desktop. AUTOMATION_API.md documents the patch and angle convention. Info.plist advances the build to 555. BrushWorkflowTests.swift adds two tests and extends the earlier focus, held stroke and HTTP comparison tests. The new checks cover typed braces, modified events, angle wrap, sampled and aliased tips, restoring the Brush smoothing amount after another tool, independent number sequences and matched native/API raster output. The Adobe contract has no freehand brush setting route.
+
+The next related tool gap is the Brush-only Behind mode and the Clear operation used by the held grave-accent shortcut. The current shared layer blend enum does not have either brush mode. Adobe describes their tool and transparency-lock restrictions separately. That needs an explicit paint operation with shared desktop and API admission. Cursor preferences and physical brush placement still need their own validation. [Adobe blending mode descriptions](https://helpx.adobe.com/photoshop/desktop/repair-retouch/adjust-light-tone/blending-mode-descriptions.html).
+
+All 413 selected methods passed in Debug and optimized Apple Silicon and Intel under Rosetta. The scoped brush matrix matched all 146 earlier buffers on both architectures. The universal test archive retained the validated source hashes and passed both offscreen AppKit workspace checks. The Actions workflow's rolling screenshot was preserved with this run so it does not stand in for earlier evidence. [Qualification](SOURCE_PUBLICATION_555.md).
 
 <a id="dev-step-554"></a>
 

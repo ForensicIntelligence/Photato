@@ -1776,5 +1776,12 @@
       "cursor_behavior": "Existing Command/Shift selection controls and native AppKit text/resize controls retain their standard pointer; no separate modifier tool action identified.",
       "name": "Timeline and other panel controls"
     }
-  ]
+  ],
+  "brush_keyboard_settings_555": {
+    "step": 555,
+    "reference": "docs/BRUSH_TIP_SHORTCUTS_555.json",
+    "scope": "Keyboard changes to the brush already in use. The existing canvas, paint gesture and native pointer policies continue.",
+    "api": "brush.configure and paint.stroke retain the same setting and target paths.",
+    "open": "Live Photoshop cursor and keyboard layout verification."
+  }
 }

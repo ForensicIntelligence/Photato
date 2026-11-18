@@ -1,0 +1,81 @@
+{
+  "actionMaximumVersion": 64,
+  "addedMethods": [
+    "PhotoCraftAppTests.BrushWorkflowTests/testBrushSmoothingKeysUseSeparateToolAndPercentageState",
+    "PhotoCraftAppTests.BrushWorkflowTests/testBrushTipKeysRespectModifiersShapeAndRotationDirection"
+  ],
+  "checkpoint": 555,
+  "eventProbe": [
+    "123 10485760 [63234] [63234]",
+    "123 10485760 [63273] [63273]",
+    "123 10616832 [63234] [63234]",
+    "123 10616832 [63273] [63273]",
+    "28 524288 [123] [56]",
+    "21 524288 [162] [52]"
+  ],
+  "fullPhotoshopParity": false,
+  "hardnessPercentagePoints": 25,
+  "packagedSnapshot": {
+    "allPassed": true,
+    "archiveSHA256": "b33aafcbf8dff93e302c987d284d82e01b5ce1f95e6fee121a7a562d9e8949f5",
+    "binarySHA256": "50ae9a49d9c7520ac1a217c7fd5db716fc91e4ad87102547fc2b4f3d8228b21d",
+    "build": 555,
+    "interactiveInputMeasured": false,
+    "mode": "Existing --snapshot-small AppKit/SwiftUI command from the exact extracted package.",
+    "physicalPresentationMeasured": false,
+    "runs": {
+      "arm64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 114115,
+          "height": 650,
+          "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+          "width": 1000
+        }
+      },
+      "x86_64": {
+        "exit": 0,
+        "passed": true,
+        "png": {
+          "bytes": 122087,
+          "height": 650,
+          "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+          "width": 1000
+        }
+      }
+    }
+  },
+  "photoshopLiveCheck": "Mac locked",
+  "physicalKeyboardMeasured": false,
+  "presetMaximumVersion": 3,
+  "rawComparison": {
+    "changesFrom554": {
+      "arm64": [],
+      "x86_64": []
+    },
+    "comparedBytes": {
+      "arm64": 324394512,
+      "x86_64": 324394512
+    },
+    "configuration": 555,
+    "crossArchitectureDifferences": [],
+    "outputsPerArchitecture": 146
+  },
+  "references": [
+    "https://helpx.adobe.com/content/dam/help/en/photoshop/using/default-keyboard-shortcuts/photoshop-keyboard-shortcuts.pdf",
+    "https://helpx.adobe.com/ph_fil/photoshop/desktop/repair-retouch/clean-restore-images/create-smoother-more-polished-brush-strokes-with-stroke-smoothing.html",
+    "https://jkost.com/blog/2017/05/brushes-and-painting-tool-shortcuts-in-photoshop-cc.html",
+    "https://developer.apple.com/design/human-interface-guidelines/keyboards/"
+  ],
+  "rotateDegrees": 1,
+  "secondsBetweenDigits": 0.5,
+  "selectedMethods": {
+    "arm": 413,
+    "debug": 413,
+    "intel": 413
+  },
+  "shiftRotateDegrees": 15,
+  "softwareRelease": false,
+  "typedCommands": 271
+}

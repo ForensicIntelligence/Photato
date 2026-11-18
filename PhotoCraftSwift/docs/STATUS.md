@@ -1,3 +1,5 @@
+**Source checkpoint 555.** The focused canvas accepts braces for brush hardness, Left and Right for tip rotation, and Option-digits for smoothing. All 413 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_555.md).
+
 **Source checkpoint 554.** The four factory Round presets now change smoothly from soft feathering to an opaque core with a narrow edge. The aligned nonzero-hardness samples improved from a worst alpha difference of 161 to 12 of 255 levels. All 411 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_554.md).
 
 **Source checkpoint 553.** Build 553 widens zero-hardness Soft Round coverage. Aligned single-dab alpha differs from saved Photoshop samples by at most 3 of 255 levels across the six tested sizes. All 409 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_553.md).
