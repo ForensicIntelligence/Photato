@@ -2,6 +2,47 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class BrushDynamicsTests:XCTestCase {
+  func testParallelBrushOutputRestoresAbsentTailTilesAcrossBatches() throws {
+    let width = 1_013, height = 1_107
+    let columns = (width + 63) / 64, rows = (height + 63) / 64
+    let weights: [Float] = (0..<4096).map { $0 % 7 == 0 ? 0.63 : 0 }
+    let blend: @Sendable (Float, Pixel) -> Pixel = { coverage, before in
+      BlendMode.normal.composite(backdrop: before, source: Pixel(0.32, 0.75, 0.83, coverage))
+    }
+    for depth in [PixelDepth.u8, .f32] {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var original = try Surface(width: width, height: height, depth: depth,
+        fill: Pixel(0.14, 0.31, 0.61, 0.47), colorEncoding: encoding)
+      for key in stride(from: 0, to: columns * rows, by: 9) {
+        let x = key % columns * 64, y = key / columns * 64
+        if depth == .f32 { original.setLinearPixel(x: x + 3, y: y + 3, Pixel(-0.0, 1.8, -0.21, 0)) }
+        else { original.setPixel(x: x + 3, y: y + 3, Pixel(0.31, 0.41, 0.83, 0)) }
+      }
+      original = try original.spillingTiles(to: RasterTileStore())
+      var preview = original
+      for key in 0..<columns * rows {
+        preview.setPixel(x: key % columns * 64, y: key / columns * 64, .white)
+      }
+      let inputs: [Surface.BrushTileInput] = (0..<columns * rows).map {
+        .init(key: $0, coverage: $0 % 3 == 0 ? [] : weights, colors: [])
+      }
+      var expected = preview, actual = preview
+      for input in inputs {
+        expected.updateBrushTile(input.key, coverage: input.coverage, rebuildingFrom: original) { _, _, _, coverage, before in
+          blend(coverage, before)
+        }
+      }
+      try actual.updateBrushTiles(inputs, rebuildingFrom: original) { _, _, _, coverage, before, _ in
+        blend(coverage, before)
+      }
+      XCTAssertEqual(try actual.rgbaData(depth: .f32, colorEncoding: encoding),
+        try expected.rgbaData(depth: .f32, colorEncoding: encoding))
+      XCTAssertEqual(actual.pixel(x: 0, y: 0), original.pixel(x: 0, y: 0))
+      XCTAssertEqual(actual.tileCount, expected.tileCount)
+      XCTAssertFalse(try actual.isOpaque())
+    }
+  }
+
   func testParallelDabCoverageMatchesSerialClippedStrips() throws {
     let width = 673, height = 449
     var source = try Surface(width: width, height: height, depth: .f32,

@@ -1,3 +1,5 @@
+**Source checkpoint 551.** Wide brush output tiles are prepared in parallel. All 338 checked buffers match build 550 on each architecture. All 401 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_551.md).
+
 **Source checkpoint 550.** Large raster composition and display packing run in independent bands. All 192 checked buffers match build 549 on each architecture. All 400 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_550.md).
 
 **Source checkpoint 549.** Eligible wide dabs sample coverage in parallel. All 146 checked buffers match build 548 and all 398 selected methods passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical editing cadence remains open. [Qualification](docs/SOURCE_PUBLICATION_549.md).

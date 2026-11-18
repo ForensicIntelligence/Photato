@@ -34,17 +34,20 @@ private enum RasterBands {
     guard region.width * region.height >= 1_048_576, tileRows >= 4 else {
       return [try transform(region)]
     }
-    let jobs = 4
-    let samples = OSAllocatedUnfairLock(initialState: [Result<T, any Error>?](repeating: nil, count: jobs))
-    try Task.checkCancellation()
-    // Every job owns complete tile rows. Retain results in band order.
-    DispatchQueue.concurrentPerform(iterations: jobs) { job in
-      let top = region.y / side + job * tileRows / jobs
-      let bottom = region.y / side + (job + 1) * tileRows / jobs
+    return try mapFour { job in
+      let top = region.y / side + job * tileRows / 4
+      let bottom = region.y / side + (job + 1) * tileRows / 4
       let y = max(region.y, top * side)
       let height = min(end, bottom * side) - y
-      let stripe = IntRect(x: region.x, y: y, width: region.width, height: height)
-      let value = Result { try transform(stripe) }
+      return try transform(IntRect(x: region.x, y: y, width: region.width, height: height))
+    }
+  }
+
+  static func mapFour<T: Sendable>(_ transform: @Sendable (Int) throws -> T) throws -> [T] {
+    let samples = OSAllocatedUnfairLock(initialState: [Result<T, any Error>?](repeating: nil, count: 4))
+    try Task.checkCancellation()
+    DispatchQueue.concurrentPerform(iterations: 4) { job in
+      let value = Result { try transform(job) }
       samples.withLock { $0[job] = value }
     }
     try Task.checkCancellation()
@@ -361,6 +364,72 @@ public struct Surface: Codable, Equatable, Sendable {
       transform(x, y, index, coverage[index], old)
     }
   }
+  struct BrushTileInput: Sendable {
+    let key: Int
+    let coverage: [Float]
+    let colors: [SIMD4<Float>]
+  }
+
+  /// Prepare each admitted tile from an immutable source, then install results
+  /// on the caller. Brush coverage and dab order are settled before this pass.
+  mutating func updateBrushTiles(_ inputs: [BrushTileInput], rebuildingFrom original: Surface? = nil,
+    _ transform: @Sendable (Int, Int, Int, Float, Pixel, [SIMD4<Float>]) -> Pixel?) throws {
+    let region = IntRect(x: 0, y: 0, width: width, height: height)
+    if inputs.count < 64 {
+      for input in inputs {
+        try Task.checkCancellation()
+        editEncodedTile(input.key, in: region, original: original,
+          includes: { !input.coverage.isEmpty && input.coverage[$0] > 0 }) { x, y, index, old in
+            transform(x, y, index, input.coverage[index], old, input.colors)
+          }
+      }
+      return
+    }
+    // The completed output tiles occupy at most 16 MiB until installation.
+    let batchSize = 256
+    for start in stride(from: 0, to: inputs.count, by: batchSize) {
+      let count = min(batchSize, inputs.count - start)
+      let stripes = try { [snapshot = self] in
+        try RasterBands.mapFour { worker in
+          var edits: [BrushTileEdit] = []
+          let first = start + worker * count / 4
+          let last = start + (worker + 1) * count / 4
+          edits.reserveCapacity(last - first)
+          for input in inputs[first..<last] {
+            try Task.checkCancellation()
+            let edit = snapshot.prepareEncodedTile(input.key, in: region, original: original,
+              includes: { !input.coverage.isEmpty && input.coverage[$0] > 0 }) { x, y, index, old in
+                transform(x, y, index, input.coverage[index], old, input.colors)
+              }
+            if let tile = edit.tile {
+              edits.append(.init(key: input.key, tile: tile, invalidatesOpacity: edit.invalidatesOpacity))
+            } else if let original {
+              // A revised smoothing tail can leave this key without coverage.
+              edits.append(.init(key: input.key, tile: original.tiles[input.key], invalidatesOpacity: false))
+            }
+          }
+          return edits
+        }
+      }()
+      var invalidatesOpacity = false
+      for edits in stripes {
+        for edit in edits {
+          tiles[edit.key] = edit.tile
+          invalidatesOpacity = invalidatesOpacity || edit.invalidatesOpacity
+        }
+      }
+      if invalidatesOpacity || (original.map { opaqueProof.proven && !$0.opaqueProof.proven } ?? false) {
+        opaqueProof = SurfaceOpaqueProof()
+      }
+    }
+  }
+
+  private struct BrushTileEdit: Sendable {
+    let key: Int
+    let tile: RasterTile?
+    let invalidatesOpacity: Bool
+  }
+
   /// Evaluates independent compositing samples by tile. A nil sample leaves its
   /// input intact. Consuming a local backdrop lets it release completed tiles.
   public consuming func compositingPixels(in region: IntRect,
@@ -382,6 +451,21 @@ public struct Surface: Codable, Equatable, Sendable {
   }
   private mutating func editEncodedTile(_ key: Int, in region: IntRect, original: Surface? = nil,
     includes: (Int) -> Bool, _ transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows {
+    let edit = try prepareEncodedTile(key, in: region, original: original, includes: includes, transform)
+    if let tile = edit.tile {
+      tiles[key] = tile
+    } else if let original {
+      // An abandoned provisional tail may have been the tile's only edit.
+      tiles[key] = original.tiles[key]
+    }
+    if edit.invalidatesOpacity || (original.map { opaqueProof.proven && !$0.opaqueProof.proven } ?? false) {
+      opaqueProof = SurfaceOpaqueProof()
+    }
+  }
+
+  private func prepareEncodedTile(_ key: Int, in region: IntRect, original: Surface? = nil,
+    includes: (Int) -> Bool, _ transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows
+    -> (tile: RasterTile?, invalidatesOpacity: Bool) {
     let side = Self.tileSide
     let left = key % columns * side, top = key / columns * side
     let xRange = (max(region.x,left)-left)..<(min(region.x+region.width,left+side)-left)
@@ -423,15 +507,7 @@ public struct Surface: Codable, Equatable, Sendable {
     let samples: [Pixel]?
     if let source { samples = try source.withUnsafeBufferPointer { try makeReplacement($0, transform: transform) } }
     else { samples = try makeReplacement(nil, transform: transform) }
-    if let samples {
-      tiles[key] = RasterTile(samples)
-    } else if original != nil {
-      // An abandoned provisional tail may have been the tile's only edit.
-      tiles[key] = source
-    }
-    if invalidatesOpacity || (original.map { opaqueProof.proven && !$0.opaqueProof.proven } ?? false) {
-      opaqueProof = SurfaceOpaqueProof()
-    }
+    return (samples.map(RasterTile.init), invalidatesOpacity)
   }
   public mutating func setLinearPixel(x: Int, y: Int, _ p: Pixel) {
     guard x >= 0, y >= 0, x < width, y < height else { return }

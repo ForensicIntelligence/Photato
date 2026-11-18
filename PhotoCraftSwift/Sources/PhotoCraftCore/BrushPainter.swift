@@ -76,6 +76,12 @@ fileprivate struct BrushCoverage {
     let rows = (rect.y + rect.height - 1) / 64 - rect.y / 64 + 1
     if columns * rows > Self.maximumBytes / tileBytes { throw BrushRetentionError.coverageBudget }
   }
+  func outputTiles(_ keys: [Int]) -> [Surface.BrushTileInput] {
+    keys.map { key in
+      let tile = tiles[key]
+      return .init(key: key, coverage: tile?.coverage ?? [], colors: tile?.colors ?? [])
+    }
+  }
   func value(_ x:Int,_ y:Int)->Float { let (key,index)=location(x,y);return tiles[key]?.coverage[index] ?? 0 }
   mutating func union(_ other:Self)throws {
     for (key,source) in other.tiles {
@@ -90,7 +96,7 @@ fileprivate struct BrushCoverage {
   }
 }
 /// Prepared Normal color for a raster without per-pixel selection or ink.
-fileprivate struct NormalRasterBrush {
+fileprivate struct NormalRasterBrush: Sendable {
   private let color: SIMD3<Float>
   private let colorAlpha: Float
   private let opacity: Float
@@ -111,8 +117,8 @@ fileprivate struct NormalRasterBrush {
     return BlendMode.sourceOver(backdrop: backdrop, source: color, alpha: a, blend: color)
   }
 
-  func write(_ coverage: [Float], key: Int, to surface: inout Surface, original: Surface? = nil) {
-    surface.updateBrushTile(key, coverage: coverage, rebuildingFrom: original) { _, _, _, weight, pixel in
+  func write(_ tiles: [Surface.BrushTileInput], to surface: inout Surface, original: Surface? = nil) throws {
+    try surface.updateBrushTiles(tiles, rebuildingFrom: original) { _, _, _, weight, pixel, _ in
       apply(weight, to: pixel)
     }
   }
@@ -518,29 +524,25 @@ public enum BrushPainter {
         }
         try merged.union(primary)
       }
-      for key in merged.tiles.keys.sorted() {
-        try Task.checkCancellation()
-        let tile = merged.tiles[key]!
-        if let normal {
-          normal.write(tile.coverage, key: key, to: &result)
-          continue
-        }
-        let colors = tile.colors
-        result.updateBrushTile(key,coverage:tile.coverage) { x,y,i,weight,base in
-          let doc=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(doc.x)),dy=Int(floor(doc.y))
-          if let selection,!selection.contains(dx,dy) { return nil }
-          let mask=selectionMask?.coverage(x:dx,y:dy) ?? 1
-          var ink=brush.color
-          if b.colorDynamics.enabled { let c=colors[i]/weight;ink=Pixel(c.x,c.y,c.z,c.w) }
-          let alpha=unit(weight*brush.opacity*ink.a*mask);guard alpha>0 else { return nil }
-          var before=base
-          if grayscaleMask { before=Pixel(before.r,before.r,before.r);let gray=unit(ink.r*0.2126+ink.g*0.7152+ink.b*0.0722);ink=Pixel(gray,gray,gray,ink.a) }
-          if preserveTransparency && !grayscaleMask && before.a<=0 { return nil }
-          if brush.erase && !preserveTransparency && !grayscaleMask { return Pixel(before.r,before.g,before.b,before.a*(1-alpha)) }
-          if brush.erase { ink=brush.backgroundColor ?? .white }
-          ink.a=alpha
-          return preserveTransparency && !grayscaleMask ? ProtectedPixels.composite(b.mode,backdrop:before,source:ink,x:dx,y:dy):b.mode.composite(backdrop:before,source:ink,x:dx,y:dy)
-        }
+      let tiles = merged.outputTiles(merged.tiles.keys.sorted())
+      if let normal {
+        try normal.write(tiles, to: &result)
+        continue
+      }
+      try result.updateBrushTiles(tiles) { x,y,i,weight,base,colors in
+        let doc=transform.point(Double(x)+0.5,Double(y)+0.5),dx=Int(floor(doc.x)),dy=Int(floor(doc.y))
+        if let selection,!selection.contains(dx,dy) { return nil }
+        let mask=selectionMask?.coverage(x:dx,y:dy) ?? 1
+        var ink=brush.color
+        if b.colorDynamics.enabled { let c=colors[i]/weight;ink=Pixel(c.x,c.y,c.z,c.w) }
+        let alpha=unit(weight*brush.opacity*ink.a*mask);guard alpha>0 else { return nil }
+        var before=base
+        if grayscaleMask { before=Pixel(before.r,before.r,before.r);let gray=unit(ink.r*0.2126+ink.g*0.7152+ink.b*0.0722);ink=Pixel(gray,gray,gray,ink.a) }
+        if preserveTransparency && !grayscaleMask && before.a<=0 { return nil }
+        if brush.erase && !preserveTransparency && !grayscaleMask { return Pixel(before.r,before.g,before.b,before.a*(1-alpha)) }
+        if brush.erase { ink=brush.backgroundColor ?? .white }
+        ink.a=alpha
+        return preserveTransparency && !grayscaleMask ? ProtectedPixels.composite(b.mode,backdrop:before,source:ink,x:dx,y:dy):b.mode.composite(backdrop:before,source:ink,x:dx,y:dy)
       }
     }
     try Task.checkCancellation();surface=result
@@ -665,16 +667,12 @@ public final class BrushStrokeSession {
     let normal = NormalRasterBrush(brush, settings: settings, hasSelection: selection != nil || selectionMask != nil,
       grayscale: grayscale, preserveTransparency: preserveTransparency,
       pendingTexture: settings.texture.enabled && !settings.texture.eachTip)
-    for key in keys.sorted() {
-      try Task.checkCancellation()
-      let tile = preview.tiles[key]
-      if let normal {
-        normal.write(tile?.coverage ?? [], key: key, to: &result, original: original)
-        continue
-      }
-      // Rebuild from the stroke's original pixels. This also clears a previous
-      // tail when the revised stroke has no coverage on its former tile.
-      result.updateBrushTile(key, coverage: tile?.coverage ?? [], rebuildingFrom: original) { x, y, i, old, base in
+    let tiles = preview.outputTiles(keys.sorted())
+    if let normal {
+      try normal.write(tiles, to: &result, original: original)
+    } else {
+      try result.updateBrushTiles(tiles, rebuildingFrom: original) {
+        [brush, transform, selection, selectionMask, grayscale, preserveTransparency] x, y, i, old, base, colors in
         let doc = transform.point(Double(x) + 0.5, Double(y) + 0.5)
         let dx = Int(floor(doc.x)), dy = Int(floor(doc.y))
         var value = Double(old)
@@ -684,9 +682,9 @@ public final class BrushStrokeSession {
         guard value > 0, selection?.contains(dx, dy) != false else { return nil }
         let amount = Float(value), mask = selectionMask?.coverage(x: dx, y: dy) ?? 1
         var ink = brush.color
-        if settings.colorDynamics.enabled, let tile {
+        if settings.colorDynamics.enabled {
           // Preserve the same Float32 rounding as the complete painter's texture pass.
-          let color = (tile.colors[i] * (amount / old)) / amount
+          let color = (colors[i] * (amount / old)) / amount
           ink = Pixel(color.x, color.y, color.z, color.w)
         }
         let alpha = unit(amount * brush.opacity * ink.a * mask)
