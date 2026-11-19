@@ -1,3 +1,7 @@
+**Source checkpoint 585.** Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Qualification](SOURCE_PUBLICATION_585.md).
+
+Continue pixel-mask Feather and the remaining clipped blend modes. Measure the filter scheduling and edge rules against owned impulses and non-uniform masks. Owned Photoshop masks save, reopen and render at 1,000 pixels on both tested architectures. Photato currently caps the property at 100 pixels and needs bounded mask rendering for the wider range.
+
 **Source checkpoint 584.** Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. [Qualification](SOURCE_PUBLICATION_584.md).
 
 Continue contributed pixel-mask Feather. Use saved impulse and non-uniform masks to check the radius schedule, boundary handling, and Float32 operation order. Adjacent masked clips and additional blend modes remain open.

@@ -1,0 +1,2472 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "dead7845c3dba4b7cbeafc3a19b4f45293b7efe23deb64c6f958dcd62535f8ef",
+    "binarySHA256": "3d87305adee73a90e3693740d04dd055f74b10a1ce79bc87257b0308507fed4f",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 9046
+  },
+  "build": 585,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Feather on contributing masks",
+    "Additional layer blend modes",
+    "Rich and adjacent masked clipping",
+    "Adobe-signed reference replication",
+    "Physical supported platforms",
+    "Full Photoshop parity"
+  ],
+  "qualification": {
+    "caseSelectionSHA256": "f26d56754a0fe0f92dbea0e51bdc4723621416112a5dd0ecf60632e5170080b6",
+    "configurations": {
+      "arm": {
+        "appSHA256": "a4ef2ca371dc3c5e2a274f4b2289a3e62bf3c8ad8a7284743eba19657cacde2c",
+        "testBinarySHA256": "272f79664e30b49319acaa7fe4a0e8ae52a0079319fe7987fb5c1f1fb14078d3"
+      },
+      "debug": {
+        "appSHA256": "548d67817291471f28daaa7679c48846250d5783b55cd51bc08555260937b947",
+        "testBinarySHA256": "589f20888bbbbf5eb5bcb4b7485f16969852283b0a2a5f622d6a2af5aae1fabb"
+      },
+      "intel": {
+        "appSHA256": "6e4c2c4ede3f7e129703db93190dfb3cf31b01ac4bb8c797b9b9ae1b0067e917",
+        "testBinarySHA256": "bc4901b1c50442b81e31b71d0c4bb629d484eaf00f53b4d2428fbe47f7fcb1d1"
+      }
+    },
+    "focusedDebug": 99,
+    "selectedPerConfiguration": 787
+  },
+  "referenceInstallation": {
+    "observedBundleSigning": "ad hoc",
+    "reportedPhotoshopVersion": "27.2.0",
+    "verifiedAgainstAdobeSignedInstallation": false
+  },
+  "referenceProvenance": {
+    "countedOutputCasesPerArchitecture": 96,
+    "files": [
+      {
+        "path": "arm-clipped-arithmetic-16-opaque-divide-100-merge-mask-merged.psd",
+        "sha256": "78d5b159c9983f1237069bb7db67b6626dcc98d7c445a39b56862b5805cbe5a3"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-opaque-divide-37-merge-mask-merged.psd",
+        "sha256": "caaa7ba23a1fb327a9cc80e4112260a5683381db8ed2cb0f0f11cbeba5dee817"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-opaque-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "0a783a00884b624700da50fc06c85af2e7ab6cec445baa9b1de88366fd42209a"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-opaque-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "bc95ba391b8d964bdc6ec14deab43197f608cf70b689cb0dea1b9c8f1297e59d"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-opaque-subtract-100-merge-mask-merged.psd",
+        "sha256": "e3a640ed1ee76045ed7976721617d2562fa24e06bb9a99da3c8e0144617e9b71"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-opaque-subtract-37-merge-mask-merged.psd",
+        "sha256": "7d9cfe752da4265c4bc9a9477d76c96837257e621a0362198b194a438b76aa63"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-partial-divide-100-merge-mask-merged.psd",
+        "sha256": "737d2b5e619be222a0c45eece8cb3eb963d24865cb98f4f347b0e4dd717f3302"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-partial-divide-37-merge-mask-merged.psd",
+        "sha256": "04b2e049d7a8ec0f009f526074c035da71034caab2730f7550af165cca7357fb"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-partial-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "25e9d800d6549950357b4a4a28691c0e49c127e53fa531930ce32c82108c3121"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-partial-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "231c3d6de5b53919458cda14e8879e00000ed39daa55cb7921020908c940b353"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-partial-subtract-100-merge-mask-merged.psd",
+        "sha256": "aa49716bc13c5d629f2238e9a391cbc69efdd87d2ee2c033108a8b10aab86078"
+      },
+      {
+        "path": "arm-clipped-arithmetic-16-partial-subtract-37-merge-mask-merged.psd",
+        "sha256": "0cba4a20375aa24b2ee39a9f367b1640952a0136744b6d728d281d67038bd20c"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-baseMask-divide-100-merge-mask-merged.psd",
+        "sha256": "fb34e81b2bb2feb5b9875c96357093afb8755e4cfca57274cd8e3b4785e30d39"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-baseMask-divide-37-merge-mask-merged.psd",
+        "sha256": "cf7355da733351c557d78ce5d29d69c5f00298fddaafffd23661e65e4429db8e"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-baseMask-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "7c01225fc95d79ddc6aa266793de8b4b2e9f85d682681b3ac71e3900fdf70c63"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-baseMask-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "ceca7845d2ac5f00e2fbe2b4aaf6a302e43c515e32c05bc5fa57245ee2c79238"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-baseMask-subtract-100-merge-mask-merged.psd",
+        "sha256": "d8ecfcb019e5f1a268f6de0e448a07d8940be66d2b3ea23f59393c076e67e4ea"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-baseMask-subtract-37-merge-mask-merged.psd",
+        "sha256": "a30608139501dbe7de626511d051da002ad97e1a05f2a34a4a3302149526f268"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-clipMask-divide-100-merge-mask-merged.psd",
+        "sha256": "d0896a6b4a30031909280e844add71f4893a36d3ce393b4d38c58b101a36a985"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-clipMask-divide-37-merge-mask-merged.psd",
+        "sha256": "847f492f420283315370dc5e967569a44a63faf9013ed4f685ba04fbe63d634c"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-clipMask-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "f308747779d314cb64dc223530d0be00bd43b1910ffe8db0f534ce1978d4b663"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-clipMask-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "abbbd6825af3cfc9e324e7076bdab22baecc9bbb19f596f4ced886c061b923fc"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-clipMask-subtract-100-merge-mask-merged.psd",
+        "sha256": "7541cd0df22fbabe46335fb7d06cc8d8663002f11f048545ac10a227296cbfdd"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-clipMask-subtract-37-merge-mask-merged.psd",
+        "sha256": "370de879dd1bb881e925731632d89cb08f8c1cbf22b751918c8ecfbe85a3eeb5"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-dimBase-divide-100-merge-mask-merged.psd",
+        "sha256": "d86fd09d8f6de554f84bf3b2c29501d7e8c65af075f929d170cc5f723ad24860"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-dimBase-divide-37-merge-mask-merged.psd",
+        "sha256": "7727790955b9881ef0baf96373217ef323e048521670270d8801040a1480d32b"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-dimBase-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "ed2d6f8f9cc84634f40643b5d32da2a5cfb99f12f086a5f02f9be71cd186af04"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-dimBase-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "d3ed994538b000a2037cd583dfa369c443a945160a956a2f0d40af7ef3b93fea"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-dimBase-subtract-100-merge-mask-merged.psd",
+        "sha256": "6adb8d790b746d0f9166323d30fb3517bf60b0efec2438549a64f2c661b28280"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-dimBase-subtract-37-merge-mask-merged.psd",
+        "sha256": "1ec4a1b6ea347fe84f68366428722108dcc5ee6ada9af88bd27e303760aa4e93"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-full13-divide-37-merge-mask-merged.psd",
+        "sha256": "9cf0ff0c3fc945cb94949b771fb6a12d74ed45fbfc8e705b65d758b669a7c7d7"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-full21-divide-37-merge-mask-merged.psd",
+        "sha256": "37b49a38d7da9927e8364d0fd266e6858f4a6fb1098230d2b4887c56c53b98e5"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-full261-divide-37-merge-mask-merged.psd",
+        "sha256": "781078808ce86dcab8d37cfe42c0ff7ff60308370935b7a0b2dbfdbe7b68b7cc"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-full35-divide-37-merge-mask-merged.psd",
+        "sha256": "6df2215244c791b50065c0b327cf12219b0d7c7973b11f8f0509612206cc35de"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-full69-divide-37-merge-mask-merged.psd",
+        "sha256": "b858a33bc6729239bfab63ccec370a50fcae03cca25c49c67c487f908e093c6f"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-full7-divide-37-merge-mask-merged.psd",
+        "sha256": "7c1ff2b7cb998e851a93d07baea755b058cc446dfcdbfc709991702f0c9e695b"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-divide-79-merge-down-merged.psd",
+        "sha256": "3f2b775fb33b6a437b76300f9afbbdbb5480b3d51efd56f2c8c89dc0b1554ec0"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-divide-79-merge-mask-merged.psd",
+        "sha256": "17dd7dbfc2eb56938a002d69905078d5936e80a4008a11f7f576ec1101745d7b"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-divide-79-stamp-down-merged.psd",
+        "sha256": "dc20abeaf3efdee2932229abb7fa6d81561596ae8f7298496ed8275d420fb331"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-divide-79-stamp-mask-merged.psd",
+        "sha256": "22a3aa7b944c0bd42fafba33e4db1edd1eaa72edf0a48125d5f20c8b52737d6c"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-linearAdd-79-merge-down-merged.psd",
+        "sha256": "05ab87c4f399935dfd529882bc632e21232be1bc204be5468f1d2afa9c7a80db"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-linearAdd-79-merge-mask-merged.psd",
+        "sha256": "830998c0182a0a342e9a1f7bce7bf4e17a0ec4d653387175e24d90fb253a8d1e"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-linearAdd-79-stamp-down-merged.psd",
+        "sha256": "d588ef3ddac939082afa0b22553106b94f9656b0632dc4d4cd860a7b41199558"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-linearAdd-79-stamp-mask-merged.psd",
+        "sha256": "028ce4c8181d0ef7ce226afd248e3801f0c80bf50dfd86ffa3c7fcd8928e28f6"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-subtract-79-merge-down-merged.psd",
+        "sha256": "a0482d3a4adb54274eab265919c985f0a9621a7648e0701f8489a59ae39e9941"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-subtract-79-merge-mask-merged.psd",
+        "sha256": "775632d4e5884fe687bb5fcd659423c26a0f6a65ee74e87bf830029767a07a86"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-subtract-79-stamp-down-merged.psd",
+        "sha256": "88666d4c5c72b6a3f4f5c97a30b41bd6edcb456adf4844d9d7d2d75e96390c92"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-masked-subtract-79-stamp-mask-merged.psd",
+        "sha256": "68d4d70fa7e7fdc283bb28fc24f39504bcb2975e6a37da0e6a5bfc7bad5db4ef"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-opaque-divide-100-merge-mask-merged.psd",
+        "sha256": "97ac96e6448baed1e99673c1c2fcdec17f40d745062f86c40b869deed1c9e71a"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-opaque-divide-37-merge-mask-merged.psd",
+        "sha256": "0ceba4f262a6368ca381265d71a53badf0c293971cd5a0ab5c32fb64d7fbe44f"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-opaque-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "793bc1f4221df5cde4c44afb3a62f90c931fb4a926337557056f929b817f3452"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-opaque-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "e983c79b93fdb24ca03037ad04432cc59e7fad2ab36bee317c0116a8c2231efc"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-opaque-subtract-100-merge-mask-merged.psd",
+        "sha256": "13d8a9e2b7002eb0db0a19b4eb182c9975f1ed77a8bda09d863947053425433a"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-opaque-subtract-37-merge-mask-merged.psd",
+        "sha256": "025d0db1de5c7d21c1bd0450329e49a6b04de13f3dad2f62d711dd2018c96470"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-partial-divide-100-merge-mask-merged.psd",
+        "sha256": "e7291230d9a89ccdafdd4b92b1c591e7b83f58a9e45a19c274190ce94417fac1"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-partial-divide-37-merge-mask-merged.psd",
+        "sha256": "19287d386ceb944577082d6d9bf86fdc5d3683947779bb5d922bd93cc420fdd6"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-partial-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "5b2fdba1499052f335720423c945bd18810c9a658c498842d4d9344e1bffc1be"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-partial-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "aeda094c574898e7cf8cdad3fda5e1fab9ac8061c5d7cec65986087b722fa6f6"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-partial-subtract-100-merge-mask-merged.psd",
+        "sha256": "267143d8714f50e3d8b5c320c99cc482d1ff37f806e0bd732cdf5ef6afc54316"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-partial-subtract-37-merge-mask-merged.psd",
+        "sha256": "7d80ed3d49902214ad3bf9b8d29911a4f6f3291d22bbde3205253bb9451e6ed9"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-shift13-divide-37-merge-mask-merged.psd",
+        "sha256": "bd048bdc64c38071bed79fa30c718f5847cb765372ea42e1082aa62aa048932c"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-shift21-divide-37-merge-mask-merged.psd",
+        "sha256": "d0dc4c600d102fad670b896ab8dacb8238efbf1404f9b925a538608a98b6454a"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-shift261-divide-37-merge-mask-merged.psd",
+        "sha256": "7705c9568489e639d5ab66ecb3afbc1c36b39a84421575f18f47a3ad3400004d"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-shift35-divide-37-merge-mask-merged.psd",
+        "sha256": "e98fffbba105c337d2184ab3fd7b5bef65bac11e23e9091bfe448393830015a7"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-shift69-divide-37-merge-mask-merged.psd",
+        "sha256": "2a68efcde1da6cc3089e6144ef1cfcd5cbf9eb69b8129c8c524656c03e2578d7"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-shift7-divide-37-merge-mask-merged.psd",
+        "sha256": "7dc8cdeb8365d162764d23266f57cb969d645b94656ca17eb13b2eabb1e020dd"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidBase-divide-100-merge-mask-merged.psd",
+        "sha256": "601fb93a77160145aae98d166724fbf079d57b48385d8c98602f7a548aae6c7b"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidBase-divide-37-merge-mask-merged.psd",
+        "sha256": "be7f428e09d984fbac190981b6f4cdb63b3e2cd396069fdf21fb9973a8571399"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidBase-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "28f75341b179d5179398055f9e7b844b712d8afc2d78b28ed09be2c30d74aedf"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidBase-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "3c9ae9e6a8ba30789db089f291610f48ae461e8df1bad0bdc2aa718ab3b5b2e9"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidBase-subtract-100-merge-mask-merged.psd",
+        "sha256": "9dccd5eacfae8b650657d16b32219bef4ea97f7c96a86df3924f1f002245cb3a"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidBase-subtract-37-merge-mask-merged.psd",
+        "sha256": "15a95a57d9a7b90f0640f33be8cbbf82f603f12f3a453eb9394ca7230d28548d"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidClip-divide-100-merge-mask-merged.psd",
+        "sha256": "512ce5143f9e377cf19e62c573061a95ad02597516cdc860bd3b8aca1427213e"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidClip-divide-37-merge-mask-merged.psd",
+        "sha256": "aac884c67fbdd918fbee128c64884d0e099994f9f1d3190886a84368a6638f24"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidClip-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "8c9e24f65b4ed21e27431fe8569b9d8b50104f085d67481f2dea8d414460060a"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidClip-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "fd1e189a51a109da3c1bebc9a5dc3464e1482de457850f3692ce54fbdda0bed4"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidClip-subtract-100-merge-mask-merged.psd",
+        "sha256": "1257f0d860b1f43f8b237bf60b3de97359b2257360783f7d9875e1be5449ba2e"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-solidClip-subtract-37-merge-mask-merged.psd",
+        "sha256": "f2f1814bea923bf744df6ad1e350ef1d1e4ea1cf380f61bf31ac3efb0ad7bddf"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-threshold-divide-100-merge-mask-merged.psd",
+        "sha256": "0e653f448301a42e78659788a5cc6f6c620274076e359180bd5805463f3ea067"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-threshold-divide-37-merge-mask-merged.psd",
+        "sha256": "7936abd1bcdc562b0d6a57f3ff695f505259b8e217e5bcaad6768499e5b40ce5"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-threshold-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "40bebf9686efa4c6ed49c11711fea52fe6925a3f8eba00939c7968de9649669d"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-threshold-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "b51f26ee52682e5aecfc437982455c8b0c06bf241021022f60eff8114597ce86"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-threshold-subtract-100-merge-mask-merged.psd",
+        "sha256": "0b0e65dc60d2e0266544f0419251b5c2d1dcec3edf94f6210c5b5b9cb961e03f"
+      },
+      {
+        "path": "arm-clipped-arithmetic-32-threshold-subtract-37-merge-mask-merged.psd",
+        "sha256": "8862f86f6f5afe9822b0a837d1bbf34bbea2c97beda8ff10b728a67ba589f5fd"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-opaque-divide-100-merge-mask-merged.psd",
+        "sha256": "7c7d800ab2986c5d1fc2b7c8bc7a11991fd5a5029260bb50deb2dd269dfecf56"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-opaque-divide-37-merge-mask-merged.psd",
+        "sha256": "7719289e8aa84d3c7f64444ad5ef0605263278c7a1e3e5915cf029a4488a4c71"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-opaque-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "1e9c5462360b1e8e368a97eeae460c8af985c1f400d88c5760420c302bec4d7d"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-opaque-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "989f57f11d84351ab0ad308434b39fdb0f3f18f62ca984479ab7e9b396275efa"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-opaque-subtract-100-merge-mask-merged.psd",
+        "sha256": "46d1c2535309985dc3728158b56fb9d3e1cdc0ee6f4ec98e2afb461a073cbd85"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-opaque-subtract-37-merge-mask-merged.psd",
+        "sha256": "430eb973b07f279e6cefc85f19b1a8892f57dc9b39dfec592910c1d2996721a0"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-partial-divide-100-merge-mask-merged.psd",
+        "sha256": "9864dea9f306392d2b5f0b88771aa90eeca88be18fef9d3d25548c14d1561f33"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-partial-divide-37-merge-mask-merged.psd",
+        "sha256": "a16e35e515c20786206db53fe6d75b15b256b0c6bb1406e7ae96f48274b56f5c"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-partial-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "d41dde7966b9450296f54e49f43ed7d1aa9559af0a799bd9cc901d0a7bde0543"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-partial-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "d4a6bf995fa8ae4f7df96b0f26d3c926f83ffb5a9303acc632113ce164fc7f54"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-partial-subtract-100-merge-mask-merged.psd",
+        "sha256": "8a9e3f091f8c3f4e9fd87e3daca187b9101d5a40bb1c80377c987e2e7691efe7"
+      },
+      {
+        "path": "arm-clipped-arithmetic-8-partial-subtract-37-merge-mask-merged.psd",
+        "sha256": "042d6f5f0df7abc0827552d526ca63ddc2e9fd08c8bc30d68609f60775006c75"
+      },
+      {
+        "path": "clipped-arithmetic-16-opaque-divide-100-merge-mask.psd",
+        "sha256": "92548e90f68c14aa999ee84aee9375340672f9805008e29407bc7575690bae9c"
+      },
+      {
+        "path": "clipped-arithmetic-16-opaque-divide-37-merge-mask.psd",
+        "sha256": "9a3b44810fa84f0457527761bf456033cf3bd8c6c816371ee99c2e54bc9692b3"
+      },
+      {
+        "path": "clipped-arithmetic-16-opaque-linearAdd-100-merge-mask.psd",
+        "sha256": "a0586e7ed29aed9e496f13131114655b6d61bc1a514c6472d060b6a5d304b1fe"
+      },
+      {
+        "path": "clipped-arithmetic-16-opaque-linearAdd-37-merge-mask.psd",
+        "sha256": "bba46737a63e56d07bf60259c7c24d2f8cce05100b879dc160da08c1919167e9"
+      },
+      {
+        "path": "clipped-arithmetic-16-opaque-subtract-100-merge-mask.psd",
+        "sha256": "00ef4cbb9a0202d8b5372d190a2f085334bafa06347a792c7a480e450cc9227e"
+      },
+      {
+        "path": "clipped-arithmetic-16-opaque-subtract-37-merge-mask.psd",
+        "sha256": "cb1206660397c9cb4808a54a97c8927b21c076467e2d1411b7ddbcba61a34150"
+      },
+      {
+        "path": "clipped-arithmetic-16-partial-divide-100-merge-mask.psd",
+        "sha256": "5c2b80ac5672ec9cec6a9772f4be73d675ba10be2f9c0c82ffa1c87c2b15edea"
+      },
+      {
+        "path": "clipped-arithmetic-16-partial-divide-37-merge-mask.psd",
+        "sha256": "e0464767a9fd2adc6a3521c28c859bd568dacc8d5a60246691b320bc9d91701b"
+      },
+      {
+        "path": "clipped-arithmetic-16-partial-linearAdd-100-merge-mask.psd",
+        "sha256": "78cc3cf925ccc1bca00548e62b24bf11cbcccbbe870131205633cc0eb902a552"
+      },
+      {
+        "path": "clipped-arithmetic-16-partial-linearAdd-37-merge-mask.psd",
+        "sha256": "8ffe0cab18cd3bd728f5841ee29b99e4501b68793887f3e0424bc6db0849242b"
+      },
+      {
+        "path": "clipped-arithmetic-16-partial-subtract-100-merge-mask.psd",
+        "sha256": "5be50be3ba39c0461596b2bfac57bb8331bb9585c30a92f378d96b09e7c1b132"
+      },
+      {
+        "path": "clipped-arithmetic-16-partial-subtract-37-merge-mask.psd",
+        "sha256": "2de10e8178876b9b172255a44ae762364fda89b6f63df3d84b3ef11cdbba8b81"
+      },
+      {
+        "path": "clipped-arithmetic-32-baseMask-divide-100-merge-mask.psd",
+        "sha256": "ace0fa77f9defec88373d12344529ca26e864ef078d3ab7b5cb7d20405ee486c"
+      },
+      {
+        "path": "clipped-arithmetic-32-baseMask-divide-37-merge-mask.psd",
+        "sha256": "fe94ea52d98ac3134e0ad1a9610e3889794f56881c49054c6c75098198b4188c"
+      },
+      {
+        "path": "clipped-arithmetic-32-baseMask-linearAdd-100-merge-mask.psd",
+        "sha256": "cf4b5df0229887441ac10e2dc2e750b785bb64d417914d0ca8cf7b9d5a5e021f"
+      },
+      {
+        "path": "clipped-arithmetic-32-baseMask-linearAdd-37-merge-mask.psd",
+        "sha256": "213f41da8fd329eb8e8a160d5694de9fda0d3b3bedc63b1bf22b072749d5719f"
+      },
+      {
+        "path": "clipped-arithmetic-32-baseMask-subtract-100-merge-mask.psd",
+        "sha256": "bffcede1460138d8cb2350cf6e0242c33726e9f5bbfd6dae9b4bc8e6db1d3cf6"
+      },
+      {
+        "path": "clipped-arithmetic-32-baseMask-subtract-37-merge-mask.psd",
+        "sha256": "f3239e1601f229e8ae95043b1b0b6e83a9eb009598b09fd7de0a45962c45f9da"
+      },
+      {
+        "path": "clipped-arithmetic-32-clipMask-divide-100-merge-mask.psd",
+        "sha256": "29f043738075237532bf9538fb0fd0ad45f95f5827046641776292fbedb003bc"
+      },
+      {
+        "path": "clipped-arithmetic-32-clipMask-divide-37-merge-mask.psd",
+        "sha256": "5289cb5774ea980004e97b37f14563612b6cec35e50863b92350c5fb5bc7126b"
+      },
+      {
+        "path": "clipped-arithmetic-32-clipMask-linearAdd-100-merge-mask.psd",
+        "sha256": "cfa0d8acc241dedfcafd9365235d74ce2f657c70497b707ffe588f5d5b6236a3"
+      },
+      {
+        "path": "clipped-arithmetic-32-clipMask-linearAdd-37-merge-mask.psd",
+        "sha256": "4e30b7aacd683c003d2223f2c90cbcdfbdc7b340b6b11a38389dd14d38159573"
+      },
+      {
+        "path": "clipped-arithmetic-32-clipMask-subtract-100-merge-mask.psd",
+        "sha256": "5928ab66508c528dd8caf580e478f55a3be76b77b55f19039deecce443a05f77"
+      },
+      {
+        "path": "clipped-arithmetic-32-clipMask-subtract-37-merge-mask.psd",
+        "sha256": "5260ec0b2db163b3d76fed3e1d455e83ae896ddd78270b6948adcfb86c20c5e5"
+      },
+      {
+        "path": "clipped-arithmetic-32-dimBase-divide-100-merge-mask.psd",
+        "sha256": "11c8102964babe8bb04bc41730cdc89e518a6c6235b4507d459f6d0cbc90a8a9"
+      },
+      {
+        "path": "clipped-arithmetic-32-dimBase-divide-37-merge-mask.psd",
+        "sha256": "30092f911c7040d82bc5ab1d98b1aa1531152df93883d1673dcb50bf68e6604d"
+      },
+      {
+        "path": "clipped-arithmetic-32-dimBase-linearAdd-100-merge-mask.psd",
+        "sha256": "2739b788a70a150174a12913b1c24169bb8300fabf69ff727c8ebec095235204"
+      },
+      {
+        "path": "clipped-arithmetic-32-dimBase-linearAdd-37-merge-mask.psd",
+        "sha256": "66c4f355d511f4aa713c594d4720396dfa64bc4c10a95a10964dcd34a2331c19"
+      },
+      {
+        "path": "clipped-arithmetic-32-dimBase-subtract-100-merge-mask.psd",
+        "sha256": "ee141bfe6666b470537a4acfdf000de20180ab9a595ff531144d4706ca0e3c20"
+      },
+      {
+        "path": "clipped-arithmetic-32-dimBase-subtract-37-merge-mask.psd",
+        "sha256": "f591614e24194e07e7f6d77dfd393df7fb8256549e06cef2de23d3e8916faee6"
+      },
+      {
+        "path": "clipped-arithmetic-32-full13-divide-37-merge-mask.psd",
+        "sha256": "9849adb6f0340b8bec95c2026a762634df2b7642cd28ec2ed77de940b7ee1eee"
+      },
+      {
+        "path": "clipped-arithmetic-32-full21-divide-37-merge-mask.psd",
+        "sha256": "6bbf9645a3ae8412164438d027c5ab5da0c8c922a5815a476af395434a2261ab"
+      },
+      {
+        "path": "clipped-arithmetic-32-full261-divide-37-merge-mask.psd",
+        "sha256": "5ef343aa1fe25d5131d0639475f96bf95c227eb178350ea47b5c6a80aaf69e8b"
+      },
+      {
+        "path": "clipped-arithmetic-32-full35-divide-37-merge-mask.psd",
+        "sha256": "dc77bf859c315e0581ed25f9f43e3d8c85ca03ccc84b045ff60c5959ce5da5a2"
+      },
+      {
+        "path": "clipped-arithmetic-32-full69-divide-37-merge-mask.psd",
+        "sha256": "ebe955a1618dc934499218613518c191b169ea762b058edf27c585c78a94426e"
+      },
+      {
+        "path": "clipped-arithmetic-32-full7-divide-37-merge-mask.psd",
+        "sha256": "107597e38cf66a344837d9c772ce77a5004061cc5e5c6299d83a62b1fe081ced"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-divide-79-merge-down.psd",
+        "sha256": "576eb0494dc6d00c61aca0fd5a150411dfaa654423f6e0fcc31792e33a5731a9"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-divide-79-merge-mask.psd",
+        "sha256": "23a7d19e5d68690de5188088c4bb45d0399a8173ca03059090ad46a9d5a9dac3"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-divide-79-stamp-down.psd",
+        "sha256": "6684470ca79f879b91bd937532356f980c910ea8bd5350c4495d1a213217d51d"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-divide-79-stamp-mask.psd",
+        "sha256": "81f3e6ce9b05f28e2d3bd957dfdb0571b6a6495b102b50fbf888bf32ee858065"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-linearAdd-79-merge-down.psd",
+        "sha256": "4b6b36626231de50157a57af628c65ad72cda737ce8278be189c1b95a98dd1cd"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-linearAdd-79-merge-mask.psd",
+        "sha256": "181661a1d52aa85d5338f5f415d2f33dc1fa1fa4287c3953d5c56b48225a317b"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-linearAdd-79-stamp-down.psd",
+        "sha256": "295f28e8fac773bfa9a5fc6f728e123c7a3c576edf467a8a3b2dcf64ace9bab6"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-linearAdd-79-stamp-mask.psd",
+        "sha256": "23f64d9b3b38bf44e5db109cc5e183f854d5498d4f2b6264c405096adc014d2b"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-subtract-79-merge-down.psd",
+        "sha256": "0f908f7fc789c2c0cda2a6220ec6d63531571b5a89ba6001d59d7ecda59b589a"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-subtract-79-merge-mask.psd",
+        "sha256": "9101cb44409286600895a8e0f22b17191fb47fbb150dda78359e67e8a538e813"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-subtract-79-stamp-down.psd",
+        "sha256": "15726631bc8aa67b21f4e2d4652e51e16c6f25e723e481c85beaf4b27e91fa14"
+      },
+      {
+        "path": "clipped-arithmetic-32-masked-subtract-79-stamp-mask.psd",
+        "sha256": "95862fc83176140b3f8c0f4be5d112ba6ab0474262948639809ad9d2d79dc825"
+      },
+      {
+        "path": "clipped-arithmetic-32-opaque-divide-100-merge-mask.psd",
+        "sha256": "d9ed093ad72292bb1a6e06df682d29ab218fca1b3e7ed057a4064e6e36a4b70c"
+      },
+      {
+        "path": "clipped-arithmetic-32-opaque-divide-37-merge-mask.psd",
+        "sha256": "68770bb6b266ed81b8a9e5b72c2ed748e97756ea2435ed1ece365f6e205f03bb"
+      },
+      {
+        "path": "clipped-arithmetic-32-opaque-linearAdd-100-merge-mask.psd",
+        "sha256": "c1560eb02618b56ab181ce0b76be15de93f57a06801fc777874e2a31521bef0e"
+      },
+      {
+        "path": "clipped-arithmetic-32-opaque-linearAdd-37-merge-mask.psd",
+        "sha256": "170d9e1ee1d95bf2236c657047870a824b77c9a1055d5060ceb8829d6de9c6cf"
+      },
+      {
+        "path": "clipped-arithmetic-32-opaque-subtract-100-merge-mask.psd",
+        "sha256": "cc56f4de7166aeed16b7e536c7a1a553c1ec7e693d1685c24e10828ac254b210"
+      },
+      {
+        "path": "clipped-arithmetic-32-opaque-subtract-37-merge-mask.psd",
+        "sha256": "e567d307e0a5f0e47da36ce35c8b61cb94c167f5942667f75e3874374be87f3d"
+      },
+      {
+        "path": "clipped-arithmetic-32-partial-divide-100-merge-mask.psd",
+        "sha256": "a52eb3548416510dc42e1727c61ac425cb72ff885884f5af3e36c6960e2c24fd"
+      },
+      {
+        "path": "clipped-arithmetic-32-partial-divide-37-merge-mask.psd",
+        "sha256": "4ae7447b7d27b911ced499a50c98d9007545f9e55c44f98a67c5a75336ababf9"
+      },
+      {
+        "path": "clipped-arithmetic-32-partial-linearAdd-100-merge-mask.psd",
+        "sha256": "686d9f6b24231cbe98057b3031afd05676adc94b7508e1296b9ce545895af158"
+      },
+      {
+        "path": "clipped-arithmetic-32-partial-linearAdd-37-merge-mask.psd",
+        "sha256": "cb4ed3a1b37b5bb28949c7d9b27642f0e5414336270af0421196c819be2c64dd"
+      },
+      {
+        "path": "clipped-arithmetic-32-partial-subtract-100-merge-mask.psd",
+        "sha256": "0099658b914c5e61140e89ad7fdfd4a505865f46aa2876ddd8434b453758c07b"
+      },
+      {
+        "path": "clipped-arithmetic-32-partial-subtract-37-merge-mask.psd",
+        "sha256": "568f14b64f68d8a9fa80ad3ad311b1ed23cfc96f68fbb4333b313d797f9005b4"
+      },
+      {
+        "path": "clipped-arithmetic-32-shift13-divide-37-merge-mask.psd",
+        "sha256": "8c71cf5d6c2dfbff18a22e20e04a84a667aa62985a34ca2a96cd96eb7d5f1f22"
+      },
+      {
+        "path": "clipped-arithmetic-32-shift21-divide-37-merge-mask.psd",
+        "sha256": "a9393397ba4a788276a4a355256dfb1c4265e6e9c3b9e9f20b52663c4f8fad02"
+      },
+      {
+        "path": "clipped-arithmetic-32-shift261-divide-37-merge-mask.psd",
+        "sha256": "6155f872fac31a6a4df9f2ef87595d4ba70ade32a548c42bb42bc468c14250cb"
+      },
+      {
+        "path": "clipped-arithmetic-32-shift35-divide-37-merge-mask.psd",
+        "sha256": "e710af8908a1824e0871fd6a7fbcf80ce0a1d32e4a43c940d79851d54d381fcb"
+      },
+      {
+        "path": "clipped-arithmetic-32-shift69-divide-37-merge-mask.psd",
+        "sha256": "24d6e95c0d70fbf6bb428ebe6aa73cadacbb9baf547ca303afb6a9f81564cee9"
+      },
+      {
+        "path": "clipped-arithmetic-32-shift7-divide-37-merge-mask.psd",
+        "sha256": "463c04a8cc43a9e0def9a2c99a8448a6f8086e9a01dada5a026bd285a1ec1425"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidBase-divide-100-merge-mask.psd",
+        "sha256": "f8b57b27de7ee25fa12db9a56ed7e2f42c639f3d469d0df83861a7be8e73a494"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidBase-divide-37-merge-mask.psd",
+        "sha256": "51a0c130d125d49b73399b137c987fe0ce31044536ee8177ea4f6dc08a0ee98c"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidBase-linearAdd-100-merge-mask.psd",
+        "sha256": "2e22e075cc7d4c7689ea4802962abd9cf63c9e85e49c3f8911effed9169b6173"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidBase-linearAdd-37-merge-mask.psd",
+        "sha256": "834302f05d47b86877d1701f0b51c13a4c21c6ee5a6ca6922bb70b0b2b3d09df"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidBase-subtract-100-merge-mask.psd",
+        "sha256": "5dada180478bfd546449a3b1645d102cfbc834b59754bec6d78c465673bac6cf"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidBase-subtract-37-merge-mask.psd",
+        "sha256": "5cfeed170ee3a3687c062f90b6a8d2fecef72d28a89a594e5957658b9bd4a595"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidClip-divide-100-merge-mask.psd",
+        "sha256": "61933d150eee6f4c0da2a754ac37d015f18776c1d339ba55649e8df626dd7d5f"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidClip-divide-37-merge-mask.psd",
+        "sha256": "d2deb5998de66a85cb32c249a51017b56311768e504b43183cb98604b2b90938"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidClip-linearAdd-100-merge-mask.psd",
+        "sha256": "78352d75a01537f94de616691fa3af0ea35bf1f6df9a02b93d0b0fffdc89c0ab"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidClip-linearAdd-37-merge-mask.psd",
+        "sha256": "81f711617fa24e0a12f612969bb04ab508c6f15425f5b553af8339e869da6063"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidClip-subtract-100-merge-mask.psd",
+        "sha256": "7845bb4dd47f304ce4fac089a2214e0a86b379831ff9172c73b6b68ee03bfff1"
+      },
+      {
+        "path": "clipped-arithmetic-32-solidClip-subtract-37-merge-mask.psd",
+        "sha256": "1bbf942b5285dc4c97d6c044520714c469ded449fd7a1ac439191dc3be584171"
+      },
+      {
+        "path": "clipped-arithmetic-32-threshold-divide-100-merge-mask.psd",
+        "sha256": "f3f44837beb02663355e56be98954f5bd06a356091087747af52b383352af2ed"
+      },
+      {
+        "path": "clipped-arithmetic-32-threshold-divide-37-merge-mask.psd",
+        "sha256": "0f75f82125ada699e311468fc5ae7a8e68833e1c7a78f87b890ddf6d5de519c6"
+      },
+      {
+        "path": "clipped-arithmetic-32-threshold-linearAdd-100-merge-mask.psd",
+        "sha256": "114a9b4b011e825ca1fac231fec783f88969d16f8911aaf5505b9bed7a7a10df"
+      },
+      {
+        "path": "clipped-arithmetic-32-threshold-linearAdd-37-merge-mask.psd",
+        "sha256": "bdc0d311793b2560729c23710ece20ad3b3b747517118bc7905d58f225803d6b"
+      },
+      {
+        "path": "clipped-arithmetic-32-threshold-subtract-100-merge-mask.psd",
+        "sha256": "d307aaf5b2db3e7ef4e8a48bdd0706348e78e97f8bd919cc2b4d73766219efc7"
+      },
+      {
+        "path": "clipped-arithmetic-32-threshold-subtract-37-merge-mask.psd",
+        "sha256": "cc165eb9b0edf9072c1e6f6bf390a9a7d5ffc1a3f208e915330ffcdc2a6790bd"
+      },
+      {
+        "path": "clipped-arithmetic-8-opaque-divide-100-merge-mask.psd",
+        "sha256": "761da054ccf976f55cffab8714b22e6fc769505b989f9b61038c4f7858e49a30"
+      },
+      {
+        "path": "clipped-arithmetic-8-opaque-divide-37-merge-mask.psd",
+        "sha256": "c9817b8d0dffc9673c814241eba0b51daee030a81d081dd7b5d02eba1c6aff0b"
+      },
+      {
+        "path": "clipped-arithmetic-8-opaque-linearAdd-100-merge-mask.psd",
+        "sha256": "d096be19e66899e5dd2a5cc792fa0e0d0592787e3f4b338728608ead4892fc75"
+      },
+      {
+        "path": "clipped-arithmetic-8-opaque-linearAdd-37-merge-mask.psd",
+        "sha256": "701feabac2d5e518f13dec1da3f6fe70bc117b7c26919d7cc8c80d9b0a40845a"
+      },
+      {
+        "path": "clipped-arithmetic-8-opaque-subtract-100-merge-mask.psd",
+        "sha256": "bf02f3f5e0d3704aa6263b2c9fbf66ff9a4cee46e14d9bb78d2ad079953cb877"
+      },
+      {
+        "path": "clipped-arithmetic-8-opaque-subtract-37-merge-mask.psd",
+        "sha256": "677d74559d54dbf96bedd5f74954583dfb172cc976ce3eea6d47e798eba42b34"
+      },
+      {
+        "path": "clipped-arithmetic-8-partial-divide-100-merge-mask.psd",
+        "sha256": "a16f3e64eb6fc556722bd5ef53a0e45d3e738028aaa5a9f466bbd0043c8bd5ec"
+      },
+      {
+        "path": "clipped-arithmetic-8-partial-divide-37-merge-mask.psd",
+        "sha256": "9157f44ba7235601b35982eb55da8c8f16a121d7271001fef0941a886faee1ac"
+      },
+      {
+        "path": "clipped-arithmetic-8-partial-linearAdd-100-merge-mask.psd",
+        "sha256": "400b2bc80c57db61489aadc66eaae4cd4844b147100e40dc5464b227c23c3003"
+      },
+      {
+        "path": "clipped-arithmetic-8-partial-linearAdd-37-merge-mask.psd",
+        "sha256": "a52d623761421c5136f10167b937b49e69e14103e03d3620412857c8f0c0bcb1"
+      },
+      {
+        "path": "clipped-arithmetic-8-partial-subtract-100-merge-mask.psd",
+        "sha256": "7c5a33fa8d604639d2c668472bc9d758a4703def9e42b6a8cd78cf4ff3789e53"
+      },
+      {
+        "path": "clipped-arithmetic-8-partial-subtract-37-merge-mask.psd",
+        "sha256": "0730c670b56f8ca4a6f37b825d414b393ffa5956814d682a090e192779148726"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-opaque-divide-100-merge-mask-merged.psd",
+        "sha256": "c2b6aabad3f356e53a50973d8827b33d77a4bc82cddc85043df0f4a00b60fc86"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-opaque-divide-37-merge-mask-merged.psd",
+        "sha256": "58815d2be09da5610f8b1decfc8e8e518b83b328c03652baa9bf8a627646b7d6"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-opaque-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "4330e68f4795891705718c4e1b281abd1ff9483d7a69ae31050a74e976c0b48e"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-opaque-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "136f3c5ebda5c77619df1df1e7fc3f24f99be7cfc919811df95a3e8fa9a05b54"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-opaque-subtract-100-merge-mask-merged.psd",
+        "sha256": "6112716e4e8f8e3365174e280d4a1498e8de6c792c1c7afdaa2d93ea68c68128"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-opaque-subtract-37-merge-mask-merged.psd",
+        "sha256": "a0c00b394f2d83d490dfa7d6867150e1c710fbe5b826a9dc421d4dace8e9d97c"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-partial-divide-100-merge-mask-merged.psd",
+        "sha256": "829ab7ff847746c280c867da24e8edb629412a10e6eb5cf0882e90da97c7debc"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-partial-divide-37-merge-mask-merged.psd",
+        "sha256": "fe4851997dc82029cff311f30ebdf218f12ee3a97466111f6ca2d10b7c5f47ee"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-partial-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "707fe4662d74e3554ddeb71bf06105211c3d972dafb4778f3ad3c21637831835"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-partial-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "463413737fa1015b56de581d026f9fe55e670b2d2d5885839983efe329d04178"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-partial-subtract-100-merge-mask-merged.psd",
+        "sha256": "829f192e5b7c9c687ba444e8cb3bdba345bd7ac11abff0e72b72209cf6594f74"
+      },
+      {
+        "path": "intel-clipped-arithmetic-16-partial-subtract-37-merge-mask-merged.psd",
+        "sha256": "4775c5573502858256ddbb49dbbc4bba6a6668e357c014e58fe884888ea61aef"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-baseMask-divide-100-merge-mask-merged.psd",
+        "sha256": "1a18c51e89b04cc4d8bbd3bcb930f7d2251617ff65e80f017f18d0522c1a17ee"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-baseMask-divide-37-merge-mask-merged.psd",
+        "sha256": "8153d24308be50acdb3caa97611220509760c4d6b36787b824c9d6512f7015a6"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-baseMask-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "3ba250da3198a18ae13d157ae1f2123bf0d1a71d05435795670f124c6f00135c"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-baseMask-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "1e7413af1f9b3b1b184499e2e4b2673f27c0611e4a7e8eaf23710af9f743fbe7"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-baseMask-subtract-100-merge-mask-merged.psd",
+        "sha256": "aaa3e100ee775f34591d60607dc27fcdf8902c75daae05035b23d778f71e186c"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-baseMask-subtract-37-merge-mask-merged.psd",
+        "sha256": "1f2b34d37f490fc887424557348a6761fc645d5de9776a8c6d6c7d958582a8d3"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-clipMask-divide-100-merge-mask-merged.psd",
+        "sha256": "9a6122c6a4dcb10875f137d9b3f444b309898027324f5a21eadc80c7bcda0bc0"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-clipMask-divide-37-merge-mask-merged.psd",
+        "sha256": "7a9a8cc8234c5ac74f903529097bbce1cd962f352900259a3ba64d19e5fb464e"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-clipMask-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "20bd63466bcf6696731e1ef68eac3ad3b9641759ec2cd09d8b68b74cc9e78324"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-clipMask-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "f37a9e31d5ac1915aaf42d8069386684f9b27dfb7fdade1fc6588b41a3f1d772"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-clipMask-subtract-100-merge-mask-merged.psd",
+        "sha256": "660c54218fc1e08794c4376b93f013a2fe89134f852a3c6cd50bb9f627f9423d"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-clipMask-subtract-37-merge-mask-merged.psd",
+        "sha256": "2c0d1511a1fff4dcfc9868086a11653030752c01cd662d781be3658722f64dea"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-dimBase-divide-100-merge-mask-merged.psd",
+        "sha256": "a658bc2372907b210250ff7060ec5ba62f226d040d17687950421d7d6dbf49d2"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-dimBase-divide-37-merge-mask-merged.psd",
+        "sha256": "bde2679da78d50543c6a399abb0196f26996035b2a439e86aff9be89926b1a18"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-dimBase-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "2d38611a90be7283b676dbfadbf2b0dbe1e9b6237c395b6949f4197962c77535"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-dimBase-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "1712a5545a3e0facb355330fa9242fc75a5543a8ecc32551a3dbd51bdf5bbce3"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-dimBase-subtract-100-merge-mask-merged.psd",
+        "sha256": "a4da37ce3a80a5b75e95298b4f59150ae84863394b2b59eb06c30c2173e9e329"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-dimBase-subtract-37-merge-mask-merged.psd",
+        "sha256": "7b097aec8b149847020c92246f71a224b5dca31efcec7ceaacbd4935952fd7fd"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-full13-divide-37-merge-mask-merged.psd",
+        "sha256": "a91433ce8e72e9a9c9f6f2d65346032e82a2a0da75ffa3ed6aa0c4288ec71bfe"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-full21-divide-37-merge-mask-merged.psd",
+        "sha256": "17780fb60656075491ea92cc5b0e0cfd341a9ed3b6283d9cdbefbd5640a59adc"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-full261-divide-37-merge-mask-merged.psd",
+        "sha256": "6043784843b534a70602de21699932e3c476456079f91ac475d90a8bed5c8de4"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-full35-divide-37-merge-mask-merged.psd",
+        "sha256": "d2eb1738d28de5d5a8a69f9a701f57ae3f81c52a57179c8ca738df4e9480e504"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-full69-divide-37-merge-mask-merged.psd",
+        "sha256": "cc1a9c393ebfe0be4d9a7c326ed4e3afa905562250bf0795c97c23ad2864a896"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-full7-divide-37-merge-mask-merged.psd",
+        "sha256": "6a1598077129d7d75b31a6f604b1e37e99e2861fedecb993c7cc1f8994c41c35"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-divide-79-merge-down-merged.psd",
+        "sha256": "0a07781924cb9e88350a07493e38be5b91eacf4140441665b82249dd59ede930"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-divide-79-merge-mask-merged.psd",
+        "sha256": "209955474ebde9c3b0a343824638ffd0cea657981f47d415e5a389b17e65f376"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-divide-79-stamp-down-merged.psd",
+        "sha256": "2850d6c1ebbdaa487d42329b308d86e666282584176f9698d397a1b38584cb0a"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-divide-79-stamp-mask-merged.psd",
+        "sha256": "fef187b96095aad4ad1ecd6e6b2aa3ba7fdd4265368a64b96caf17f349646d83"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-linearAdd-79-merge-down-merged.psd",
+        "sha256": "6ea2f5454fff949429df227546027783019baa7ec13ebc781019f4586451af8e"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-linearAdd-79-merge-mask-merged.psd",
+        "sha256": "47923913eea3a0dd2c864e11e6b4f95b83d9b227e5c2ecb13d3d668aa6fcac8e"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-linearAdd-79-stamp-down-merged.psd",
+        "sha256": "0f3b762f7eb600e2201db863f2d936580b645d60daf1b6e317960e13d9827c98"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-linearAdd-79-stamp-mask-merged.psd",
+        "sha256": "be4b48da5b2c49ab66800521cbee209bd76b6185105fbba958ba41b3f4893348"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-subtract-79-merge-down-merged.psd",
+        "sha256": "d0e187dc575105bada563e7b0026939b8a6a4781e30051fe8e2cb78bc7f730db"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-subtract-79-merge-mask-merged.psd",
+        "sha256": "d5a4ad6272dbd76ee18677c2b1c3688d866a788a6b342d98415ee963bef0fd7b"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-subtract-79-stamp-down-merged.psd",
+        "sha256": "0bee19ac4e1a21bb032bdee7f67069621bebb61338d5936e898d2abde5c4dca9"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-masked-subtract-79-stamp-mask-merged.psd",
+        "sha256": "0b1328d7f6f715c8b52f964e1a1581551a4523c0adbb63a2f7bc2858f61f34ef"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-opaque-divide-100-merge-mask-merged.psd",
+        "sha256": "ac447be57768c206c3eec159e84d269358277104bf3a9191671fad1da9b4abe8"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-opaque-divide-37-merge-mask-merged.psd",
+        "sha256": "459ff508f51e8bbe739edd569fae322694bffeb0172a140f0aa6b8af4b33bc7c"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-opaque-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "f01617d2d1e7a05166a9c6a25b0c9f5ebd8445a900346ec709cd005b4a2f8c86"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-opaque-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "7ecb23a6f857a9450c116cde24a8730545297e5ec794ecba89e63fc74fa9eed2"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-opaque-subtract-100-merge-mask-merged.psd",
+        "sha256": "87c9b8b43712b5fbf748cf11a41d0dca84786a1338ee9c4945d617c56a7b9dac"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-opaque-subtract-37-merge-mask-merged.psd",
+        "sha256": "4d17ee6a1a45b868ab34c997cec7739e96fe7940c5a49e7c2fc263537a3b48fe"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-partial-divide-100-merge-mask-merged.psd",
+        "sha256": "511f114cbbf7975429684539518e9d8f4d9f00eec80fa620079c59019aac8af0"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-partial-divide-37-merge-mask-merged.psd",
+        "sha256": "a96708ac9702b27bdcf1bf5b4fbd7aee4fab11e6429c28a47e9a4cd75da73e18"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-partial-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "95d31f3b3438b3419568a78322e47a4adc50b0778d430445e660c7b248da2d30"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-partial-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "82bf1d0d72ac60d3a7ce5f047562b8ae3cd581e10db7fc3358cfe778e171045e"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-partial-subtract-100-merge-mask-merged.psd",
+        "sha256": "b4731ad6f1a81f41dab47ba0dc0547404b7f63746807327dbd5b838225bd7fd0"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-partial-subtract-37-merge-mask-merged.psd",
+        "sha256": "5507cc8a1015f4fa16ec958335a5789e1004fe4bbdbb8a8e79f6ba700e3d7fc2"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-shift13-divide-37-merge-mask-merged.psd",
+        "sha256": "3735766aecd7cce0218b1f3bd27f971ec14019c8b85ee8bd267b89c201943b2a"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-shift21-divide-37-merge-mask-merged.psd",
+        "sha256": "ff2c9e1d8585312c52cf872028e86ba3311680f1943088a68a560237867ba9d8"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-shift261-divide-37-merge-mask-merged.psd",
+        "sha256": "c96622727f878cd63704b01dc23028fec19f8a780116e8b6a17ba38af1b606dc"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-shift35-divide-37-merge-mask-merged.psd",
+        "sha256": "428a6699f37e52877646781cf0402119fdb0e814d15c87786421e27b7f99530a"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-shift69-divide-37-merge-mask-merged.psd",
+        "sha256": "fc19de99f6794c3d9b6fed7ac547d4507560cd2ef6c589db09ee9e72617b65d3"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-shift7-divide-37-merge-mask-merged.psd",
+        "sha256": "01f1bf33bb2d2c0793420bde598bd62916358feb3a899988d3cef629cdf43596"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidBase-divide-100-merge-mask-merged.psd",
+        "sha256": "b9e99e751b5591f33ebbe814a1b45e0354426832df1372a5f23248bb45793f82"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidBase-divide-37-merge-mask-merged.psd",
+        "sha256": "ef0278b2e342e92cebc8eaf8c18d5171f8168ba3788560abf98189576af93d81"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidBase-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "a3235167766687ca5aaa080f8f0d322f138269f198fd2bbdfd130d502619be47"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidBase-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "4ca54eaee9d4a072f049d8784766f3f2cb7d2e50dd5e95eac1d9430e6940f219"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidBase-subtract-100-merge-mask-merged.psd",
+        "sha256": "7971f8e2cbf4b7dfa0a9506903620378984a79e948ae91109914ff3df6eec1ca"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidBase-subtract-37-merge-mask-merged.psd",
+        "sha256": "622d3df91221b3a5a6797dd32dbc33dc7c8c011fee61e63bfa3cbc8a89dc2570"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidClip-divide-100-merge-mask-merged.psd",
+        "sha256": "56e710e7abdf4395729c5d4edc891621d83c632c48b87ffc95eb1bd0d9bb1875"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidClip-divide-37-merge-mask-merged.psd",
+        "sha256": "eec97481739ce627b9026d817b7f23347c644c3b92828c461197a6c6e2e1bc34"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidClip-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "f8ddeb5b4fef2c9ad6872f741300f8b5d0e6ff7d49ca9aaca70ffd97cfab97ac"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidClip-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "c3a45cdf2199ad417d76436c416731f4488088d1d5446ed8a496f4379ebab665"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidClip-subtract-100-merge-mask-merged.psd",
+        "sha256": "5b0b526f0b4384d4c45e48dba91de72378104220f5d9272a684c3e71839291fa"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-solidClip-subtract-37-merge-mask-merged.psd",
+        "sha256": "16b2084fe049ca28e03513b35f62b13e3fd59e7335a7e6a700675591e3420c4d"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-threshold-divide-100-merge-mask-merged.psd",
+        "sha256": "dd6384253afef63ae6836559e0ec63d8263a6e22ce3d0d04ecb1c5dd67708f23"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-threshold-divide-37-merge-mask-merged.psd",
+        "sha256": "3aa91fc7f484433d6d0ff5db798a5fb697a6dbee65e064c1b4e96f0fde9033c6"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-threshold-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "fab6619058d9295dcb8ea8d0f753e5220abb0ec7e0622a2d1a542df506a86dee"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-threshold-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "d366fc9c64f0d5b277541ff47d1b52eaed79c0c387d6c58eb505c97d00698fa5"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-threshold-subtract-100-merge-mask-merged.psd",
+        "sha256": "9c3b0b90c8a1e47e3060344c0108d4857eb9ea06ddb415b9170c3f101fc0c1fe"
+      },
+      {
+        "path": "intel-clipped-arithmetic-32-threshold-subtract-37-merge-mask-merged.psd",
+        "sha256": "7ab9148687e4bd47c2ee10978ff0ec7901e2ff824ec05f86c80ac607d9c88aeb"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-opaque-divide-100-merge-mask-merged.psd",
+        "sha256": "a511b5588a520f3ffe5c834379a8735db42f02670bf08e54e07463000478adfa"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-opaque-divide-37-merge-mask-merged.psd",
+        "sha256": "3462b8836c800f53be841d1e25811811ca8c70c8dbfc3f3202bde8509821a6c4"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-opaque-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "11755e0f5fd67e0078812702cf732785dbcf07f871a85e402d18ba2e0f4783f9"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-opaque-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "2d9fae1db6efc138c9306a55d96308ddc96a68de978d7f4975bf7ac0e7ceb120"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-opaque-subtract-100-merge-mask-merged.psd",
+        "sha256": "af5531ea7a312613d14f66126514804ec04af04e735d3fea99ff714510ee2596"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-opaque-subtract-37-merge-mask-merged.psd",
+        "sha256": "6eaec1857dac77a5f28cb8c42900d97aacf650f5999e73defbdbba6a4c9bb5a0"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-partial-divide-100-merge-mask-merged.psd",
+        "sha256": "bb861745e37b7d4399d711ea3268c7f53535c9416082574651ee19ca5ac376a1"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-partial-divide-37-merge-mask-merged.psd",
+        "sha256": "96f0328c964466d02b99523f041e5a377403cf2a5b32a7ee865fc8262fbb85f5"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-partial-linearAdd-100-merge-mask-merged.psd",
+        "sha256": "9c6cbe453c39723f74d00f2f99d8b33872d0af7bca58d97056128479f6beef5d"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-partial-linearAdd-37-merge-mask-merged.psd",
+        "sha256": "87c2c0299375e1adefe0397f0c5058a024246d65bad0b9f17301771cb3bc7f41"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-partial-subtract-100-merge-mask-merged.psd",
+        "sha256": "4e790c044b4833dbb89172cf7d56ed6c03f21c6ba7023484fb34a1a6f6c66a51"
+      },
+      {
+        "path": "intel-clipped-arithmetic-8-partial-subtract-37-merge-mask-merged.psd",
+        "sha256": "c7eb1410bbf030780cec1c9a6cd61b288ed8527e1539320c926e1a51ea01bfb1"
+      }
+    ],
+    "hdrCaptures": {
+      "photoshop01": {
+        "arm": {
+          "active": false,
+          "architecture": "16777228",
+          "pid": 45222
+        },
+        "intel": {
+          "active": false,
+          "architecture": "16777223",
+          "pid": 47427
+        }
+      },
+      "photoshop02": {
+        "arm": {
+          "active": false,
+          "architecture": "16777228",
+          "pid": 52176
+        },
+        "intel": {
+          "active": false,
+          "architecture": "16777223",
+          "pid": 52319
+        }
+      },
+      "photoshop03": {
+        "arm": {
+          "active": false,
+          "architecture": "16777228",
+          "pid": 52956
+        },
+        "intel": {
+          "active": false,
+          "architecture": "16777223",
+          "pid": 53044
+        }
+      }
+    },
+    "origin": "Project-owned compiled Swift PSD fixtures saved through documented Photoshop 27.2.0 scripting.",
+    "processors": {
+      "arm": {
+        "active": false,
+        "architecture": "16777228",
+        "pid": 45222
+      },
+      "intel": {
+        "active": false,
+        "architecture": "16777223",
+        "pid": 47427
+      }
+    },
+    "referenceInstallation": {
+      "observedBundleSigning": "ad hoc",
+      "verifiedAgainstAdobeSignedInstallation": false
+    }
+  },
+  "sourceInputs": 9046,
+  "sourceInputsChangedSince584": [
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "91d6e600fba2bbc2fc386864da2c35f50254ad6e783521d54bc72957e653c394"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NormalLayerComposite.swift",
+      "sha256": "8f74d7596f09df18350a1b3ba9eade4f46c7d4d7d878385a487c36ccb45cc141"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PreparedLayerMerge.swift",
+      "sha256": "1ba0cf7f6dea26fc4f27644d8b06c8e2543b5e26c6c68637ce6da711651bcd87"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ClippingMaskRasterMerge.swift",
+      "sha256": "d41beb00af445f95fa71e2b9f614d84cebd747ef385af80b1a583c0f92187318"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift",
+      "sha256": "5ac5212229376c4f792ebc157d9862c9ca40d836d5a07ea08e3ec7bca57a4cbf"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "54fcad420a9a60c206d5f74a08b54c20c62574fbdcfeb0dad3a90e9c245bdb5d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-opaque-divide-100-merge-mask-merged.psd",
+      "sha256": "78d5b159c9983f1237069bb7db67b6626dcc98d7c445a39b56862b5805cbe5a3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-opaque-divide-37-merge-mask-merged.psd",
+      "sha256": "caaa7ba23a1fb327a9cc80e4112260a5683381db8ed2cb0f0f11cbeba5dee817"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-opaque-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "0a783a00884b624700da50fc06c85af2e7ab6cec445baa9b1de88366fd42209a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-opaque-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "bc95ba391b8d964bdc6ec14deab43197f608cf70b689cb0dea1b9c8f1297e59d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-opaque-subtract-100-merge-mask-merged.psd",
+      "sha256": "e3a640ed1ee76045ed7976721617d2562fa24e06bb9a99da3c8e0144617e9b71"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-opaque-subtract-37-merge-mask-merged.psd",
+      "sha256": "7d9cfe752da4265c4bc9a9477d76c96837257e621a0362198b194a438b76aa63"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-partial-divide-100-merge-mask-merged.psd",
+      "sha256": "737d2b5e619be222a0c45eece8cb3eb963d24865cb98f4f347b0e4dd717f3302"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-partial-divide-37-merge-mask-merged.psd",
+      "sha256": "04b2e049d7a8ec0f009f526074c035da71034caab2730f7550af165cca7357fb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-partial-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "25e9d800d6549950357b4a4a28691c0e49c127e53fa531930ce32c82108c3121"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-partial-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "231c3d6de5b53919458cda14e8879e00000ed39daa55cb7921020908c940b353"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-partial-subtract-100-merge-mask-merged.psd",
+      "sha256": "aa49716bc13c5d629f2238e9a391cbc69efdd87d2ee2c033108a8b10aab86078"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-16-partial-subtract-37-merge-mask-merged.psd",
+      "sha256": "0cba4a20375aa24b2ee39a9f367b1640952a0136744b6d728d281d67038bd20c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-baseMask-divide-100-merge-mask-merged.psd",
+      "sha256": "fb34e81b2bb2feb5b9875c96357093afb8755e4cfca57274cd8e3b4785e30d39"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-baseMask-divide-37-merge-mask-merged.psd",
+      "sha256": "cf7355da733351c557d78ce5d29d69c5f00298fddaafffd23661e65e4429db8e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-baseMask-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "7c01225fc95d79ddc6aa266793de8b4b2e9f85d682681b3ac71e3900fdf70c63"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-baseMask-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "ceca7845d2ac5f00e2fbe2b4aaf6a302e43c515e32c05bc5fa57245ee2c79238"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-baseMask-subtract-100-merge-mask-merged.psd",
+      "sha256": "d8ecfcb019e5f1a268f6de0e448a07d8940be66d2b3ea23f59393c076e67e4ea"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-baseMask-subtract-37-merge-mask-merged.psd",
+      "sha256": "a30608139501dbe7de626511d051da002ad97e1a05f2a34a4a3302149526f268"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-clipMask-divide-100-merge-mask-merged.psd",
+      "sha256": "d0896a6b4a30031909280e844add71f4893a36d3ce393b4d38c58b101a36a985"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-clipMask-divide-37-merge-mask-merged.psd",
+      "sha256": "847f492f420283315370dc5e967569a44a63faf9013ed4f685ba04fbe63d634c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-clipMask-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "f308747779d314cb64dc223530d0be00bd43b1910ffe8db0f534ce1978d4b663"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-clipMask-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "abbbd6825af3cfc9e324e7076bdab22baecc9bbb19f596f4ced886c061b923fc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-clipMask-subtract-100-merge-mask-merged.psd",
+      "sha256": "7541cd0df22fbabe46335fb7d06cc8d8663002f11f048545ac10a227296cbfdd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-clipMask-subtract-37-merge-mask-merged.psd",
+      "sha256": "370de879dd1bb881e925731632d89cb08f8c1cbf22b751918c8ecfbe85a3eeb5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-dimBase-divide-100-merge-mask-merged.psd",
+      "sha256": "d86fd09d8f6de554f84bf3b2c29501d7e8c65af075f929d170cc5f723ad24860"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-dimBase-divide-37-merge-mask-merged.psd",
+      "sha256": "7727790955b9881ef0baf96373217ef323e048521670270d8801040a1480d32b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-dimBase-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "ed2d6f8f9cc84634f40643b5d32da2a5cfb99f12f086a5f02f9be71cd186af04"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-dimBase-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "d3ed994538b000a2037cd583dfa369c443a945160a956a2f0d40af7ef3b93fea"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-dimBase-subtract-100-merge-mask-merged.psd",
+      "sha256": "6adb8d790b746d0f9166323d30fb3517bf60b0efec2438549a64f2c661b28280"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-dimBase-subtract-37-merge-mask-merged.psd",
+      "sha256": "1ec4a1b6ea347fe84f68366428722108dcc5ee6ada9af88bd27e303760aa4e93"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-full13-divide-37-merge-mask-merged.psd",
+      "sha256": "9cf0ff0c3fc945cb94949b771fb6a12d74ed45fbfc8e705b65d758b669a7c7d7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-full21-divide-37-merge-mask-merged.psd",
+      "sha256": "37b49a38d7da9927e8364d0fd266e6858f4a6fb1098230d2b4887c56c53b98e5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-full261-divide-37-merge-mask-merged.psd",
+      "sha256": "781078808ce86dcab8d37cfe42c0ff7ff60308370935b7a0b2dbfdbe7b68b7cc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-full35-divide-37-merge-mask-merged.psd",
+      "sha256": "6df2215244c791b50065c0b327cf12219b0d7c7973b11f8f0509612206cc35de"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-full69-divide-37-merge-mask-merged.psd",
+      "sha256": "b858a33bc6729239bfab63ccec370a50fcae03cca25c49c67c487f908e093c6f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-full7-divide-37-merge-mask-merged.psd",
+      "sha256": "7c1ff2b7cb998e851a93d07baea755b058cc446dfcdbfc709991702f0c9e695b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-divide-79-merge-down-merged.psd",
+      "sha256": "3f2b775fb33b6a437b76300f9afbbdbb5480b3d51efd56f2c8c89dc0b1554ec0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-divide-79-merge-mask-merged.psd",
+      "sha256": "17dd7dbfc2eb56938a002d69905078d5936e80a4008a11f7f576ec1101745d7b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-divide-79-stamp-down-merged.psd",
+      "sha256": "dc20abeaf3efdee2932229abb7fa6d81561596ae8f7298496ed8275d420fb331"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-divide-79-stamp-mask-merged.psd",
+      "sha256": "22a3aa7b944c0bd42fafba33e4db1edd1eaa72edf0a48125d5f20c8b52737d6c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-linearAdd-79-merge-down-merged.psd",
+      "sha256": "05ab87c4f399935dfd529882bc632e21232be1bc204be5468f1d2afa9c7a80db"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-linearAdd-79-merge-mask-merged.psd",
+      "sha256": "830998c0182a0a342e9a1f7bce7bf4e17a0ec4d653387175e24d90fb253a8d1e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-linearAdd-79-stamp-down-merged.psd",
+      "sha256": "d588ef3ddac939082afa0b22553106b94f9656b0632dc4d4cd860a7b41199558"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-linearAdd-79-stamp-mask-merged.psd",
+      "sha256": "028ce4c8181d0ef7ce226afd248e3801f0c80bf50dfd86ffa3c7fcd8928e28f6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-subtract-79-merge-down-merged.psd",
+      "sha256": "a0482d3a4adb54274eab265919c985f0a9621a7648e0701f8489a59ae39e9941"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-subtract-79-merge-mask-merged.psd",
+      "sha256": "775632d4e5884fe687bb5fcd659423c26a0f6a65ee74e87bf830029767a07a86"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-subtract-79-stamp-down-merged.psd",
+      "sha256": "88666d4c5c72b6a3f4f5c97a30b41bd6edcb456adf4844d9d7d2d75e96390c92"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-masked-subtract-79-stamp-mask-merged.psd",
+      "sha256": "68d4d70fa7e7fdc283bb28fc24f39504bcb2975e6a37da0e6a5bfc7bad5db4ef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-opaque-divide-100-merge-mask-merged.psd",
+      "sha256": "97ac96e6448baed1e99673c1c2fcdec17f40d745062f86c40b869deed1c9e71a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-opaque-divide-37-merge-mask-merged.psd",
+      "sha256": "0ceba4f262a6368ca381265d71a53badf0c293971cd5a0ab5c32fb64d7fbe44f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-opaque-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "793bc1f4221df5cde4c44afb3a62f90c931fb4a926337557056f929b817f3452"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-opaque-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "e983c79b93fdb24ca03037ad04432cc59e7fad2ab36bee317c0116a8c2231efc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-opaque-subtract-100-merge-mask-merged.psd",
+      "sha256": "13d8a9e2b7002eb0db0a19b4eb182c9975f1ed77a8bda09d863947053425433a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-opaque-subtract-37-merge-mask-merged.psd",
+      "sha256": "025d0db1de5c7d21c1bd0450329e49a6b04de13f3dad2f62d711dd2018c96470"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-partial-divide-100-merge-mask-merged.psd",
+      "sha256": "e7291230d9a89ccdafdd4b92b1c591e7b83f58a9e45a19c274190ce94417fac1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-partial-divide-37-merge-mask-merged.psd",
+      "sha256": "19287d386ceb944577082d6d9bf86fdc5d3683947779bb5d922bd93cc420fdd6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-partial-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "5b2fdba1499052f335720423c945bd18810c9a658c498842d4d9344e1bffc1be"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-partial-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "aeda094c574898e7cf8cdad3fda5e1fab9ac8061c5d7cec65986087b722fa6f6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-partial-subtract-100-merge-mask-merged.psd",
+      "sha256": "267143d8714f50e3d8b5c320c99cc482d1ff37f806e0bd732cdf5ef6afc54316"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-partial-subtract-37-merge-mask-merged.psd",
+      "sha256": "7d80ed3d49902214ad3bf9b8d29911a4f6f3291d22bbde3205253bb9451e6ed9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-shift13-divide-37-merge-mask-merged.psd",
+      "sha256": "bd048bdc64c38071bed79fa30c718f5847cb765372ea42e1082aa62aa048932c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-shift21-divide-37-merge-mask-merged.psd",
+      "sha256": "d0dc4c600d102fad670b896ab8dacb8238efbf1404f9b925a538608a98b6454a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-shift261-divide-37-merge-mask-merged.psd",
+      "sha256": "7705c9568489e639d5ab66ecb3afbc1c36b39a84421575f18f47a3ad3400004d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-shift35-divide-37-merge-mask-merged.psd",
+      "sha256": "e98fffbba105c337d2184ab3fd7b5bef65bac11e23e9091bfe448393830015a7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-shift69-divide-37-merge-mask-merged.psd",
+      "sha256": "2a68efcde1da6cc3089e6144ef1cfcd5cbf9eb69b8129c8c524656c03e2578d7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-shift7-divide-37-merge-mask-merged.psd",
+      "sha256": "7dc8cdeb8365d162764d23266f57cb969d645b94656ca17eb13b2eabb1e020dd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidBase-divide-100-merge-mask-merged.psd",
+      "sha256": "601fb93a77160145aae98d166724fbf079d57b48385d8c98602f7a548aae6c7b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidBase-divide-37-merge-mask-merged.psd",
+      "sha256": "be7f428e09d984fbac190981b6f4cdb63b3e2cd396069fdf21fb9973a8571399"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidBase-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "28f75341b179d5179398055f9e7b844b712d8afc2d78b28ed09be2c30d74aedf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidBase-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "3c9ae9e6a8ba30789db089f291610f48ae461e8df1bad0bdc2aa718ab3b5b2e9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidBase-subtract-100-merge-mask-merged.psd",
+      "sha256": "9dccd5eacfae8b650657d16b32219bef4ea97f7c96a86df3924f1f002245cb3a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidBase-subtract-37-merge-mask-merged.psd",
+      "sha256": "15a95a57d9a7b90f0640f33be8cbbf82f603f12f3a453eb9394ca7230d28548d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidClip-divide-100-merge-mask-merged.psd",
+      "sha256": "512ce5143f9e377cf19e62c573061a95ad02597516cdc860bd3b8aca1427213e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidClip-divide-37-merge-mask-merged.psd",
+      "sha256": "aac884c67fbdd918fbee128c64884d0e099994f9f1d3190886a84368a6638f24"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidClip-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "8c9e24f65b4ed21e27431fe8569b9d8b50104f085d67481f2dea8d414460060a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidClip-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "fd1e189a51a109da3c1bebc9a5dc3464e1482de457850f3692ce54fbdda0bed4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidClip-subtract-100-merge-mask-merged.psd",
+      "sha256": "1257f0d860b1f43f8b237bf60b3de97359b2257360783f7d9875e1be5449ba2e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-solidClip-subtract-37-merge-mask-merged.psd",
+      "sha256": "f2f1814bea923bf744df6ad1e350ef1d1e4ea1cf380f61bf31ac3efb0ad7bddf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-threshold-divide-100-merge-mask-merged.psd",
+      "sha256": "0e653f448301a42e78659788a5cc6f6c620274076e359180bd5805463f3ea067"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-threshold-divide-37-merge-mask-merged.psd",
+      "sha256": "7936abd1bcdc562b0d6a57f3ff695f505259b8e217e5bcaad6768499e5b40ce5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-threshold-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "40bebf9686efa4c6ed49c11711fea52fe6925a3f8eba00939c7968de9649669d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-threshold-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "b51f26ee52682e5aecfc437982455c8b0c06bf241021022f60eff8114597ce86"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-threshold-subtract-100-merge-mask-merged.psd",
+      "sha256": "0b0e65dc60d2e0266544f0419251b5c2d1dcec3edf94f6210c5b5b9cb961e03f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-32-threshold-subtract-37-merge-mask-merged.psd",
+      "sha256": "8862f86f6f5afe9822b0a837d1bbf34bbea2c97beda8ff10b728a67ba589f5fd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-opaque-divide-100-merge-mask-merged.psd",
+      "sha256": "7c7d800ab2986c5d1fc2b7c8bc7a11991fd5a5029260bb50deb2dd269dfecf56"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-opaque-divide-37-merge-mask-merged.psd",
+      "sha256": "7719289e8aa84d3c7f64444ad5ef0605263278c7a1e3e5915cf029a4488a4c71"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-opaque-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "1e9c5462360b1e8e368a97eeae460c8af985c1f400d88c5760420c302bec4d7d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-opaque-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "989f57f11d84351ab0ad308434b39fdb0f3f18f62ca984479ab7e9b396275efa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-opaque-subtract-100-merge-mask-merged.psd",
+      "sha256": "46d1c2535309985dc3728158b56fb9d3e1cdc0ee6f4ec98e2afb461a073cbd85"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-opaque-subtract-37-merge-mask-merged.psd",
+      "sha256": "430eb973b07f279e6cefc85f19b1a8892f57dc9b39dfec592910c1d2996721a0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-partial-divide-100-merge-mask-merged.psd",
+      "sha256": "9864dea9f306392d2b5f0b88771aa90eeca88be18fef9d3d25548c14d1561f33"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-partial-divide-37-merge-mask-merged.psd",
+      "sha256": "a16e35e515c20786206db53fe6d75b15b256b0c6bb1406e7ae96f48274b56f5c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-partial-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "d41dde7966b9450296f54e49f43ed7d1aa9559af0a799bd9cc901d0a7bde0543"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-partial-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "d4a6bf995fa8ae4f7df96b0f26d3c926f83ffb5a9303acc632113ce164fc7f54"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-partial-subtract-100-merge-mask-merged.psd",
+      "sha256": "8a9e3f091f8c3f4e9fd87e3daca187b9101d5a40bb1c80377c987e2e7691efe7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/arm-clipped-arithmetic-8-partial-subtract-37-merge-mask-merged.psd",
+      "sha256": "042d6f5f0df7abc0827552d526ca63ddc2e9fd08c8bc30d68609f60775006c75"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-opaque-divide-100-merge-mask.psd",
+      "sha256": "92548e90f68c14aa999ee84aee9375340672f9805008e29407bc7575690bae9c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-opaque-divide-37-merge-mask.psd",
+      "sha256": "9a3b44810fa84f0457527761bf456033cf3bd8c6c816371ee99c2e54bc9692b3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-opaque-linearAdd-100-merge-mask.psd",
+      "sha256": "a0586e7ed29aed9e496f13131114655b6d61bc1a514c6472d060b6a5d304b1fe"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-opaque-linearAdd-37-merge-mask.psd",
+      "sha256": "bba46737a63e56d07bf60259c7c24d2f8cce05100b879dc160da08c1919167e9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-opaque-subtract-100-merge-mask.psd",
+      "sha256": "00ef4cbb9a0202d8b5372d190a2f085334bafa06347a792c7a480e450cc9227e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-opaque-subtract-37-merge-mask.psd",
+      "sha256": "cb1206660397c9cb4808a54a97c8927b21c076467e2d1411b7ddbcba61a34150"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-partial-divide-100-merge-mask.psd",
+      "sha256": "5c2b80ac5672ec9cec6a9772f4be73d675ba10be2f9c0c82ffa1c87c2b15edea"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-partial-divide-37-merge-mask.psd",
+      "sha256": "e0464767a9fd2adc6a3521c28c859bd568dacc8d5a60246691b320bc9d91701b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-partial-linearAdd-100-merge-mask.psd",
+      "sha256": "78cc3cf925ccc1bca00548e62b24bf11cbcccbbe870131205633cc0eb902a552"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-partial-linearAdd-37-merge-mask.psd",
+      "sha256": "8ffe0cab18cd3bd728f5841ee29b99e4501b68793887f3e0424bc6db0849242b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-partial-subtract-100-merge-mask.psd",
+      "sha256": "5be50be3ba39c0461596b2bfac57bb8331bb9585c30a92f378d96b09e7c1b132"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-16-partial-subtract-37-merge-mask.psd",
+      "sha256": "2de10e8178876b9b172255a44ae762364fda89b6f63df3d84b3ef11cdbba8b81"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-baseMask-divide-100-merge-mask.psd",
+      "sha256": "ace0fa77f9defec88373d12344529ca26e864ef078d3ab7b5cb7d20405ee486c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-baseMask-divide-37-merge-mask.psd",
+      "sha256": "fe94ea52d98ac3134e0ad1a9610e3889794f56881c49054c6c75098198b4188c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-baseMask-linearAdd-100-merge-mask.psd",
+      "sha256": "cf4b5df0229887441ac10e2dc2e750b785bb64d417914d0ca8cf7b9d5a5e021f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-baseMask-linearAdd-37-merge-mask.psd",
+      "sha256": "213f41da8fd329eb8e8a160d5694de9fda0d3b3bedc63b1bf22b072749d5719f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-baseMask-subtract-100-merge-mask.psd",
+      "sha256": "bffcede1460138d8cb2350cf6e0242c33726e9f5bbfd6dae9b4bc8e6db1d3cf6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-baseMask-subtract-37-merge-mask.psd",
+      "sha256": "f3239e1601f229e8ae95043b1b0b6e83a9eb009598b09fd7de0a45962c45f9da"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-clipMask-divide-100-merge-mask.psd",
+      "sha256": "29f043738075237532bf9538fb0fd0ad45f95f5827046641776292fbedb003bc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-clipMask-divide-37-merge-mask.psd",
+      "sha256": "5289cb5774ea980004e97b37f14563612b6cec35e50863b92350c5fb5bc7126b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-clipMask-linearAdd-100-merge-mask.psd",
+      "sha256": "cfa0d8acc241dedfcafd9365235d74ce2f657c70497b707ffe588f5d5b6236a3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-clipMask-linearAdd-37-merge-mask.psd",
+      "sha256": "4e30b7aacd683c003d2223f2c90cbcdfbdc7b340b6b11a38389dd14d38159573"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-clipMask-subtract-100-merge-mask.psd",
+      "sha256": "5928ab66508c528dd8caf580e478f55a3be76b77b55f19039deecce443a05f77"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-clipMask-subtract-37-merge-mask.psd",
+      "sha256": "5260ec0b2db163b3d76fed3e1d455e83ae896ddd78270b6948adcfb86c20c5e5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-dimBase-divide-100-merge-mask.psd",
+      "sha256": "11c8102964babe8bb04bc41730cdc89e518a6c6235b4507d459f6d0cbc90a8a9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-dimBase-divide-37-merge-mask.psd",
+      "sha256": "30092f911c7040d82bc5ab1d98b1aa1531152df93883d1673dcb50bf68e6604d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-dimBase-linearAdd-100-merge-mask.psd",
+      "sha256": "2739b788a70a150174a12913b1c24169bb8300fabf69ff727c8ebec095235204"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-dimBase-linearAdd-37-merge-mask.psd",
+      "sha256": "66c4f355d511f4aa713c594d4720396dfa64bc4c10a95a10964dcd34a2331c19"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-dimBase-subtract-100-merge-mask.psd",
+      "sha256": "ee141bfe6666b470537a4acfdf000de20180ab9a595ff531144d4706ca0e3c20"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-dimBase-subtract-37-merge-mask.psd",
+      "sha256": "f591614e24194e07e7f6d77dfd393df7fb8256549e06cef2de23d3e8916faee6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-full13-divide-37-merge-mask.psd",
+      "sha256": "9849adb6f0340b8bec95c2026a762634df2b7642cd28ec2ed77de940b7ee1eee"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-full21-divide-37-merge-mask.psd",
+      "sha256": "6bbf9645a3ae8412164438d027c5ab5da0c8c922a5815a476af395434a2261ab"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-full261-divide-37-merge-mask.psd",
+      "sha256": "5ef343aa1fe25d5131d0639475f96bf95c227eb178350ea47b5c6a80aaf69e8b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-full35-divide-37-merge-mask.psd",
+      "sha256": "dc77bf859c315e0581ed25f9f43e3d8c85ca03ccc84b045ff60c5959ce5da5a2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-full69-divide-37-merge-mask.psd",
+      "sha256": "ebe955a1618dc934499218613518c191b169ea762b058edf27c585c78a94426e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-full7-divide-37-merge-mask.psd",
+      "sha256": "107597e38cf66a344837d9c772ce77a5004061cc5e5c6299d83a62b1fe081ced"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-divide-79-merge-down.psd",
+      "sha256": "576eb0494dc6d00c61aca0fd5a150411dfaa654423f6e0fcc31792e33a5731a9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-divide-79-merge-mask.psd",
+      "sha256": "23a7d19e5d68690de5188088c4bb45d0399a8173ca03059090ad46a9d5a9dac3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-divide-79-stamp-down.psd",
+      "sha256": "6684470ca79f879b91bd937532356f980c910ea8bd5350c4495d1a213217d51d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-divide-79-stamp-mask.psd",
+      "sha256": "81f3e6ce9b05f28e2d3bd957dfdb0571b6a6495b102b50fbf888bf32ee858065"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-linearAdd-79-merge-down.psd",
+      "sha256": "4b6b36626231de50157a57af628c65ad72cda737ce8278be189c1b95a98dd1cd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-linearAdd-79-merge-mask.psd",
+      "sha256": "181661a1d52aa85d5338f5f415d2f33dc1fa1fa4287c3953d5c56b48225a317b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-linearAdd-79-stamp-down.psd",
+      "sha256": "295f28e8fac773bfa9a5fc6f728e123c7a3c576edf467a8a3b2dcf64ace9bab6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-linearAdd-79-stamp-mask.psd",
+      "sha256": "23f64d9b3b38bf44e5db109cc5e183f854d5498d4f2b6264c405096adc014d2b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-subtract-79-merge-down.psd",
+      "sha256": "0f908f7fc789c2c0cda2a6220ec6d63531571b5a89ba6001d59d7ecda59b589a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-subtract-79-merge-mask.psd",
+      "sha256": "9101cb44409286600895a8e0f22b17191fb47fbb150dda78359e67e8a538e813"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-subtract-79-stamp-down.psd",
+      "sha256": "15726631bc8aa67b21f4e2d4652e51e16c6f25e723e481c85beaf4b27e91fa14"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-masked-subtract-79-stamp-mask.psd",
+      "sha256": "95862fc83176140b3f8c0f4be5d112ba6ab0474262948639809ad9d2d79dc825"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-opaque-divide-100-merge-mask.psd",
+      "sha256": "d9ed093ad72292bb1a6e06df682d29ab218fca1b3e7ed057a4064e6e36a4b70c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-opaque-divide-37-merge-mask.psd",
+      "sha256": "68770bb6b266ed81b8a9e5b72c2ed748e97756ea2435ed1ece365f6e205f03bb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-opaque-linearAdd-100-merge-mask.psd",
+      "sha256": "c1560eb02618b56ab181ce0b76be15de93f57a06801fc777874e2a31521bef0e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-opaque-linearAdd-37-merge-mask.psd",
+      "sha256": "170d9e1ee1d95bf2236c657047870a824b77c9a1055d5060ceb8829d6de9c6cf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-opaque-subtract-100-merge-mask.psd",
+      "sha256": "cc56f4de7166aeed16b7e536c7a1a553c1ec7e693d1685c24e10828ac254b210"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-opaque-subtract-37-merge-mask.psd",
+      "sha256": "e567d307e0a5f0e47da36ce35c8b61cb94c167f5942667f75e3874374be87f3d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-partial-divide-100-merge-mask.psd",
+      "sha256": "a52eb3548416510dc42e1727c61ac425cb72ff885884f5af3e36c6960e2c24fd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-partial-divide-37-merge-mask.psd",
+      "sha256": "4ae7447b7d27b911ced499a50c98d9007545f9e55c44f98a67c5a75336ababf9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-partial-linearAdd-100-merge-mask.psd",
+      "sha256": "686d9f6b24231cbe98057b3031afd05676adc94b7508e1296b9ce545895af158"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-partial-linearAdd-37-merge-mask.psd",
+      "sha256": "cb4ed3a1b37b5bb28949c7d9b27642f0e5414336270af0421196c819be2c64dd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-partial-subtract-100-merge-mask.psd",
+      "sha256": "0099658b914c5e61140e89ad7fdfd4a505865f46aa2876ddd8434b453758c07b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-partial-subtract-37-merge-mask.psd",
+      "sha256": "568f14b64f68d8a9fa80ad3ad311b1ed23cfc96f68fbb4333b313d797f9005b4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-shift13-divide-37-merge-mask.psd",
+      "sha256": "8c71cf5d6c2dfbff18a22e20e04a84a667aa62985a34ca2a96cd96eb7d5f1f22"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-shift21-divide-37-merge-mask.psd",
+      "sha256": "a9393397ba4a788276a4a355256dfb1c4265e6e9c3b9e9f20b52663c4f8fad02"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-shift261-divide-37-merge-mask.psd",
+      "sha256": "6155f872fac31a6a4df9f2ef87595d4ba70ade32a548c42bb42bc468c14250cb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-shift35-divide-37-merge-mask.psd",
+      "sha256": "e710af8908a1824e0871fd6a7fbcf80ce0a1d32e4a43c940d79851d54d381fcb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-shift69-divide-37-merge-mask.psd",
+      "sha256": "24d6e95c0d70fbf6bb428ebe6aa73cadacbb9baf547ca303afb6a9f81564cee9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-shift7-divide-37-merge-mask.psd",
+      "sha256": "463c04a8cc43a9e0def9a2c99a8448a6f8086e9a01dada5a026bd285a1ec1425"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidBase-divide-100-merge-mask.psd",
+      "sha256": "f8b57b27de7ee25fa12db9a56ed7e2f42c639f3d469d0df83861a7be8e73a494"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidBase-divide-37-merge-mask.psd",
+      "sha256": "51a0c130d125d49b73399b137c987fe0ce31044536ee8177ea4f6dc08a0ee98c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidBase-linearAdd-100-merge-mask.psd",
+      "sha256": "2e22e075cc7d4c7689ea4802962abd9cf63c9e85e49c3f8911effed9169b6173"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidBase-linearAdd-37-merge-mask.psd",
+      "sha256": "834302f05d47b86877d1701f0b51c13a4c21c6ee5a6ca6922bb70b0b2b3d09df"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidBase-subtract-100-merge-mask.psd",
+      "sha256": "5dada180478bfd546449a3b1645d102cfbc834b59754bec6d78c465673bac6cf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidBase-subtract-37-merge-mask.psd",
+      "sha256": "5cfeed170ee3a3687c062f90b6a8d2fecef72d28a89a594e5957658b9bd4a595"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidClip-divide-100-merge-mask.psd",
+      "sha256": "61933d150eee6f4c0da2a754ac37d015f18776c1d339ba55649e8df626dd7d5f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidClip-divide-37-merge-mask.psd",
+      "sha256": "d2deb5998de66a85cb32c249a51017b56311768e504b43183cb98604b2b90938"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidClip-linearAdd-100-merge-mask.psd",
+      "sha256": "78352d75a01537f94de616691fa3af0ea35bf1f6df9a02b93d0b0fffdc89c0ab"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidClip-linearAdd-37-merge-mask.psd",
+      "sha256": "81f711617fa24e0a12f612969bb04ab508c6f15425f5b553af8339e869da6063"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidClip-subtract-100-merge-mask.psd",
+      "sha256": "7845bb4dd47f304ce4fac089a2214e0a86b379831ff9172c73b6b68ee03bfff1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-solidClip-subtract-37-merge-mask.psd",
+      "sha256": "1bbf942b5285dc4c97d6c044520714c469ded449fd7a1ac439191dc3be584171"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-threshold-divide-100-merge-mask.psd",
+      "sha256": "f3f44837beb02663355e56be98954f5bd06a356091087747af52b383352af2ed"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-threshold-divide-37-merge-mask.psd",
+      "sha256": "0f75f82125ada699e311468fc5ae7a8e68833e1c7a78f87b890ddf6d5de519c6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-threshold-linearAdd-100-merge-mask.psd",
+      "sha256": "114a9b4b011e825ca1fac231fec783f88969d16f8911aaf5505b9bed7a7a10df"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-threshold-linearAdd-37-merge-mask.psd",
+      "sha256": "bdc0d311793b2560729c23710ece20ad3b3b747517118bc7905d58f225803d6b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-threshold-subtract-100-merge-mask.psd",
+      "sha256": "d307aaf5b2db3e7ef4e8a48bdd0706348e78e97f8bd919cc2b4d73766219efc7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-32-threshold-subtract-37-merge-mask.psd",
+      "sha256": "cc165eb9b0edf9072c1e6f6bf390a9a7d5ffc1a3f208e915330ffcdc2a6790bd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-opaque-divide-100-merge-mask.psd",
+      "sha256": "761da054ccf976f55cffab8714b22e6fc769505b989f9b61038c4f7858e49a30"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-opaque-divide-37-merge-mask.psd",
+      "sha256": "c9817b8d0dffc9673c814241eba0b51daee030a81d081dd7b5d02eba1c6aff0b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-opaque-linearAdd-100-merge-mask.psd",
+      "sha256": "d096be19e66899e5dd2a5cc792fa0e0d0592787e3f4b338728608ead4892fc75"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-opaque-linearAdd-37-merge-mask.psd",
+      "sha256": "701feabac2d5e518f13dec1da3f6fe70bc117b7c26919d7cc8c80d9b0a40845a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-opaque-subtract-100-merge-mask.psd",
+      "sha256": "bf02f3f5e0d3704aa6263b2c9fbf66ff9a4cee46e14d9bb78d2ad079953cb877"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-opaque-subtract-37-merge-mask.psd",
+      "sha256": "677d74559d54dbf96bedd5f74954583dfb172cc976ce3eea6d47e798eba42b34"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-partial-divide-100-merge-mask.psd",
+      "sha256": "a16f3e64eb6fc556722bd5ef53a0e45d3e738028aaa5a9f466bbd0043c8bd5ec"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-partial-divide-37-merge-mask.psd",
+      "sha256": "9157f44ba7235601b35982eb55da8c8f16a121d7271001fef0941a886faee1ac"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-partial-linearAdd-100-merge-mask.psd",
+      "sha256": "400b2bc80c57db61489aadc66eaae4cd4844b147100e40dc5464b227c23c3003"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-partial-linearAdd-37-merge-mask.psd",
+      "sha256": "a52d623761421c5136f10167b937b49e69e14103e03d3620412857c8f0c0bcb1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-partial-subtract-100-merge-mask.psd",
+      "sha256": "7c5a33fa8d604639d2c668472bc9d758a4703def9e42b6a8cd78cf4ff3789e53"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/clipped-arithmetic-8-partial-subtract-37-merge-mask.psd",
+      "sha256": "0730c670b56f8ca4a6f37b825d414b393ffa5956814d682a090e192779148726"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-opaque-divide-100-merge-mask-merged.psd",
+      "sha256": "c2b6aabad3f356e53a50973d8827b33d77a4bc82cddc85043df0f4a00b60fc86"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-opaque-divide-37-merge-mask-merged.psd",
+      "sha256": "58815d2be09da5610f8b1decfc8e8e518b83b328c03652baa9bf8a627646b7d6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-opaque-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "4330e68f4795891705718c4e1b281abd1ff9483d7a69ae31050a74e976c0b48e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-opaque-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "136f3c5ebda5c77619df1df1e7fc3f24f99be7cfc919811df95a3e8fa9a05b54"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-opaque-subtract-100-merge-mask-merged.psd",
+      "sha256": "6112716e4e8f8e3365174e280d4a1498e8de6c792c1c7afdaa2d93ea68c68128"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-opaque-subtract-37-merge-mask-merged.psd",
+      "sha256": "a0c00b394f2d83d490dfa7d6867150e1c710fbe5b826a9dc421d4dace8e9d97c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-partial-divide-100-merge-mask-merged.psd",
+      "sha256": "829ab7ff847746c280c867da24e8edb629412a10e6eb5cf0882e90da97c7debc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-partial-divide-37-merge-mask-merged.psd",
+      "sha256": "fe4851997dc82029cff311f30ebdf218f12ee3a97466111f6ca2d10b7c5f47ee"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-partial-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "707fe4662d74e3554ddeb71bf06105211c3d972dafb4778f3ad3c21637831835"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-partial-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "463413737fa1015b56de581d026f9fe55e670b2d2d5885839983efe329d04178"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-partial-subtract-100-merge-mask-merged.psd",
+      "sha256": "829f192e5b7c9c687ba444e8cb3bdba345bd7ac11abff0e72b72209cf6594f74"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-16-partial-subtract-37-merge-mask-merged.psd",
+      "sha256": "4775c5573502858256ddbb49dbbc4bba6a6668e357c014e58fe884888ea61aef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-baseMask-divide-100-merge-mask-merged.psd",
+      "sha256": "1a18c51e89b04cc4d8bbd3bcb930f7d2251617ff65e80f017f18d0522c1a17ee"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-baseMask-divide-37-merge-mask-merged.psd",
+      "sha256": "8153d24308be50acdb3caa97611220509760c4d6b36787b824c9d6512f7015a6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-baseMask-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "3ba250da3198a18ae13d157ae1f2123bf0d1a71d05435795670f124c6f00135c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-baseMask-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "1e7413af1f9b3b1b184499e2e4b2673f27c0611e4a7e8eaf23710af9f743fbe7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-baseMask-subtract-100-merge-mask-merged.psd",
+      "sha256": "aaa3e100ee775f34591d60607dc27fcdf8902c75daae05035b23d778f71e186c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-baseMask-subtract-37-merge-mask-merged.psd",
+      "sha256": "1f2b34d37f490fc887424557348a6761fc645d5de9776a8c6d6c7d958582a8d3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-clipMask-divide-100-merge-mask-merged.psd",
+      "sha256": "9a6122c6a4dcb10875f137d9b3f444b309898027324f5a21eadc80c7bcda0bc0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-clipMask-divide-37-merge-mask-merged.psd",
+      "sha256": "7a9a8cc8234c5ac74f903529097bbce1cd962f352900259a3ba64d19e5fb464e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-clipMask-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "20bd63466bcf6696731e1ef68eac3ad3b9641759ec2cd09d8b68b74cc9e78324"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-clipMask-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "f37a9e31d5ac1915aaf42d8069386684f9b27dfb7fdade1fc6588b41a3f1d772"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-clipMask-subtract-100-merge-mask-merged.psd",
+      "sha256": "660c54218fc1e08794c4376b93f013a2fe89134f852a3c6cd50bb9f627f9423d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-clipMask-subtract-37-merge-mask-merged.psd",
+      "sha256": "2c0d1511a1fff4dcfc9868086a11653030752c01cd662d781be3658722f64dea"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-dimBase-divide-100-merge-mask-merged.psd",
+      "sha256": "a658bc2372907b210250ff7060ec5ba62f226d040d17687950421d7d6dbf49d2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-dimBase-divide-37-merge-mask-merged.psd",
+      "sha256": "bde2679da78d50543c6a399abb0196f26996035b2a439e86aff9be89926b1a18"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-dimBase-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "2d38611a90be7283b676dbfadbf2b0dbe1e9b6237c395b6949f4197962c77535"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-dimBase-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "1712a5545a3e0facb355330fa9242fc75a5543a8ecc32551a3dbd51bdf5bbce3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-dimBase-subtract-100-merge-mask-merged.psd",
+      "sha256": "a4da37ce3a80a5b75e95298b4f59150ae84863394b2b59eb06c30c2173e9e329"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-dimBase-subtract-37-merge-mask-merged.psd",
+      "sha256": "7b097aec8b149847020c92246f71a224b5dca31efcec7ceaacbd4935952fd7fd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-full13-divide-37-merge-mask-merged.psd",
+      "sha256": "a91433ce8e72e9a9c9f6f2d65346032e82a2a0da75ffa3ed6aa0c4288ec71bfe"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-full21-divide-37-merge-mask-merged.psd",
+      "sha256": "17780fb60656075491ea92cc5b0e0cfd341a9ed3b6283d9cdbefbd5640a59adc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-full261-divide-37-merge-mask-merged.psd",
+      "sha256": "6043784843b534a70602de21699932e3c476456079f91ac475d90a8bed5c8de4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-full35-divide-37-merge-mask-merged.psd",
+      "sha256": "d2eb1738d28de5d5a8a69f9a701f57ae3f81c52a57179c8ca738df4e9480e504"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-full69-divide-37-merge-mask-merged.psd",
+      "sha256": "cc1a9c393ebfe0be4d9a7c326ed4e3afa905562250bf0795c97c23ad2864a896"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-full7-divide-37-merge-mask-merged.psd",
+      "sha256": "6a1598077129d7d75b31a6f604b1e37e99e2861fedecb993c7cc1f8994c41c35"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-divide-79-merge-down-merged.psd",
+      "sha256": "0a07781924cb9e88350a07493e38be5b91eacf4140441665b82249dd59ede930"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-divide-79-merge-mask-merged.psd",
+      "sha256": "209955474ebde9c3b0a343824638ffd0cea657981f47d415e5a389b17e65f376"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-divide-79-stamp-down-merged.psd",
+      "sha256": "2850d6c1ebbdaa487d42329b308d86e666282584176f9698d397a1b38584cb0a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-divide-79-stamp-mask-merged.psd",
+      "sha256": "fef187b96095aad4ad1ecd6e6b2aa3ba7fdd4265368a64b96caf17f349646d83"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-linearAdd-79-merge-down-merged.psd",
+      "sha256": "6ea2f5454fff949429df227546027783019baa7ec13ebc781019f4586451af8e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-linearAdd-79-merge-mask-merged.psd",
+      "sha256": "47923913eea3a0dd2c864e11e6b4f95b83d9b227e5c2ecb13d3d668aa6fcac8e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-linearAdd-79-stamp-down-merged.psd",
+      "sha256": "0f3b762f7eb600e2201db863f2d936580b645d60daf1b6e317960e13d9827c98"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-linearAdd-79-stamp-mask-merged.psd",
+      "sha256": "be4b48da5b2c49ab66800521cbee209bd76b6185105fbba958ba41b3f4893348"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-subtract-79-merge-down-merged.psd",
+      "sha256": "d0e187dc575105bada563e7b0026939b8a6a4781e30051fe8e2cb78bc7f730db"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-subtract-79-merge-mask-merged.psd",
+      "sha256": "d5a4ad6272dbd76ee18677c2b1c3688d866a788a6b342d98415ee963bef0fd7b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-subtract-79-stamp-down-merged.psd",
+      "sha256": "0bee19ac4e1a21bb032bdee7f67069621bebb61338d5936e898d2abde5c4dca9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-masked-subtract-79-stamp-mask-merged.psd",
+      "sha256": "0b1328d7f6f715c8b52f964e1a1581551a4523c0adbb63a2f7bc2858f61f34ef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-opaque-divide-100-merge-mask-merged.psd",
+      "sha256": "ac447be57768c206c3eec159e84d269358277104bf3a9191671fad1da9b4abe8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-opaque-divide-37-merge-mask-merged.psd",
+      "sha256": "459ff508f51e8bbe739edd569fae322694bffeb0172a140f0aa6b8af4b33bc7c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-opaque-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "f01617d2d1e7a05166a9c6a25b0c9f5ebd8445a900346ec709cd005b4a2f8c86"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-opaque-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "7ecb23a6f857a9450c116cde24a8730545297e5ec794ecba89e63fc74fa9eed2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-opaque-subtract-100-merge-mask-merged.psd",
+      "sha256": "87c9b8b43712b5fbf748cf11a41d0dca84786a1338ee9c4945d617c56a7b9dac"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-opaque-subtract-37-merge-mask-merged.psd",
+      "sha256": "4d17ee6a1a45b868ab34c997cec7739e96fe7940c5a49e7c2fc263537a3b48fe"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-partial-divide-100-merge-mask-merged.psd",
+      "sha256": "511f114cbbf7975429684539518e9d8f4d9f00eec80fa620079c59019aac8af0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-partial-divide-37-merge-mask-merged.psd",
+      "sha256": "a96708ac9702b27bdcf1bf5b4fbd7aee4fab11e6429c28a47e9a4cd75da73e18"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-partial-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "95d31f3b3438b3419568a78322e47a4adc50b0778d430445e660c7b248da2d30"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-partial-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "82bf1d0d72ac60d3a7ce5f047562b8ae3cd581e10db7fc3358cfe778e171045e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-partial-subtract-100-merge-mask-merged.psd",
+      "sha256": "b4731ad6f1a81f41dab47ba0dc0547404b7f63746807327dbd5b838225bd7fd0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-partial-subtract-37-merge-mask-merged.psd",
+      "sha256": "5507cc8a1015f4fa16ec958335a5789e1004fe4bbdbb8a8e79f6ba700e3d7fc2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-shift13-divide-37-merge-mask-merged.psd",
+      "sha256": "3735766aecd7cce0218b1f3bd27f971ec14019c8b85ee8bd267b89c201943b2a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-shift21-divide-37-merge-mask-merged.psd",
+      "sha256": "ff2c9e1d8585312c52cf872028e86ba3311680f1943088a68a560237867ba9d8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-shift261-divide-37-merge-mask-merged.psd",
+      "sha256": "c96622727f878cd63704b01dc23028fec19f8a780116e8b6a17ba38af1b606dc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-shift35-divide-37-merge-mask-merged.psd",
+      "sha256": "428a6699f37e52877646781cf0402119fdb0e814d15c87786421e27b7f99530a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-shift69-divide-37-merge-mask-merged.psd",
+      "sha256": "fc19de99f6794c3d9b6fed7ac547d4507560cd2ef6c589db09ee9e72617b65d3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-shift7-divide-37-merge-mask-merged.psd",
+      "sha256": "01f1bf33bb2d2c0793420bde598bd62916358feb3a899988d3cef629cdf43596"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidBase-divide-100-merge-mask-merged.psd",
+      "sha256": "b9e99e751b5591f33ebbe814a1b45e0354426832df1372a5f23248bb45793f82"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidBase-divide-37-merge-mask-merged.psd",
+      "sha256": "ef0278b2e342e92cebc8eaf8c18d5171f8168ba3788560abf98189576af93d81"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidBase-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "a3235167766687ca5aaa080f8f0d322f138269f198fd2bbdfd130d502619be47"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidBase-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "4ca54eaee9d4a072f049d8784766f3f2cb7d2e50dd5e95eac1d9430e6940f219"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidBase-subtract-100-merge-mask-merged.psd",
+      "sha256": "7971f8e2cbf4b7dfa0a9506903620378984a79e948ae91109914ff3df6eec1ca"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidBase-subtract-37-merge-mask-merged.psd",
+      "sha256": "622d3df91221b3a5a6797dd32dbc33dc7c8c011fee61e63bfa3cbc8a89dc2570"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidClip-divide-100-merge-mask-merged.psd",
+      "sha256": "56e710e7abdf4395729c5d4edc891621d83c632c48b87ffc95eb1bd0d9bb1875"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidClip-divide-37-merge-mask-merged.psd",
+      "sha256": "eec97481739ce627b9026d817b7f23347c644c3b92828c461197a6c6e2e1bc34"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidClip-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "f8ddeb5b4fef2c9ad6872f741300f8b5d0e6ff7d49ca9aaca70ffd97cfab97ac"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidClip-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "c3a45cdf2199ad417d76436c416731f4488088d1d5446ed8a496f4379ebab665"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidClip-subtract-100-merge-mask-merged.psd",
+      "sha256": "5b0b526f0b4384d4c45e48dba91de72378104220f5d9272a684c3e71839291fa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-solidClip-subtract-37-merge-mask-merged.psd",
+      "sha256": "16b2084fe049ca28e03513b35f62b13e3fd59e7335a7e6a700675591e3420c4d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-threshold-divide-100-merge-mask-merged.psd",
+      "sha256": "dd6384253afef63ae6836559e0ec63d8263a6e22ce3d0d04ecb1c5dd67708f23"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-threshold-divide-37-merge-mask-merged.psd",
+      "sha256": "3aa91fc7f484433d6d0ff5db798a5fb697a6dbee65e064c1b4e96f0fde9033c6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-threshold-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "fab6619058d9295dcb8ea8d0f753e5220abb0ec7e0622a2d1a542df506a86dee"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-threshold-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "d366fc9c64f0d5b277541ff47d1b52eaed79c0c387d6c58eb505c97d00698fa5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-threshold-subtract-100-merge-mask-merged.psd",
+      "sha256": "9c3b0b90c8a1e47e3060344c0108d4857eb9ea06ddb415b9170c3f101fc0c1fe"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-32-threshold-subtract-37-merge-mask-merged.psd",
+      "sha256": "7ab9148687e4bd47c2ee10978ff0ec7901e2ff824ec05f86c80ac607d9c88aeb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-opaque-divide-100-merge-mask-merged.psd",
+      "sha256": "a511b5588a520f3ffe5c834379a8735db42f02670bf08e54e07463000478adfa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-opaque-divide-37-merge-mask-merged.psd",
+      "sha256": "3462b8836c800f53be841d1e25811811ca8c70c8dbfc3f3202bde8509821a6c4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-opaque-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "11755e0f5fd67e0078812702cf732785dbcf07f871a85e402d18ba2e0f4783f9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-opaque-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "2d9fae1db6efc138c9306a55d96308ddc96a68de978d7f4975bf7ac0e7ceb120"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-opaque-subtract-100-merge-mask-merged.psd",
+      "sha256": "af5531ea7a312613d14f66126514804ec04af04e735d3fea99ff714510ee2596"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-opaque-subtract-37-merge-mask-merged.psd",
+      "sha256": "6eaec1857dac77a5f28cb8c42900d97aacf650f5999e73defbdbba6a4c9bb5a0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-partial-divide-100-merge-mask-merged.psd",
+      "sha256": "bb861745e37b7d4399d711ea3268c7f53535c9416082574651ee19ca5ac376a1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-partial-divide-37-merge-mask-merged.psd",
+      "sha256": "96f0328c964466d02b99523f041e5a377403cf2a5b32a7ee865fc8262fbb85f5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-partial-linearAdd-100-merge-mask-merged.psd",
+      "sha256": "9c6cbe453c39723f74d00f2f99d8b33872d0af7bca58d97056128479f6beef5d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-partial-linearAdd-37-merge-mask-merged.psd",
+      "sha256": "87c2c0299375e1adefe0397f0c5058a024246d65bad0b9f17301771cb3bc7f41"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-partial-subtract-100-merge-mask-merged.psd",
+      "sha256": "4e790c044b4833dbb89172cf7d56ed6c03f21c6ba7023484fb34a1a6f6c66a51"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/intel-clipped-arithmetic-8-partial-subtract-37-merge-mask-merged.psd",
+      "sha256": "c7eb1410bbf030780cec1c9a6cd61b288ed8527e1539320c926e1a51ea01bfb1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipped-arithmetic/references.json",
+      "sha256": "82fda8d9b5374b333c27098521d280da60cbb7eee15b07ad5ac5ce03dce9930c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "46c6df58debccf8d057cd3db1a82327eb43644d60bc6c51b28fbe3fa01b15c29"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "357ce5c366329bd3412416f95a578588d56553399abaac59ee1e47329f84f129"
+    }
+  ]
+}

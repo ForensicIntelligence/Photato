@@ -137,6 +137,17 @@ final class AutomationLayerMergeTests: XCTestCase {
       with: "", options: .regularExpression) })
   }
 
+  @MainActor func testClippedArithmeticModesThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
+    try await verifyClippedWorkflow(folder: "clipped-arithmetic", cases: [
+      ("clipped-arithmetic-8-partial-linearAdd-37-merge-mask", .clippingMask, "clippingMask", "Clipping base"),
+      ("clipped-arithmetic-16-opaque-subtract-37-merge-mask", .clippingMask, "clippingMask", "Clipping base"),
+      ("clipped-arithmetic-16-partial-divide-37-merge-mask", .clippingMask, "clippingMask", "Clipping base"),
+      ("clipped-arithmetic-32-masked-linearAdd-79-stamp-mask", .stampGroup, "stampGroup", "Clipping base"),
+      ("clipped-arithmetic-32-masked-subtract-79-merge-down", .down, "down", "Lower clip"),
+      ("clipped-arithmetic-32-masked-divide-79-stamp-down", .stampDown, "stampDown", "Lower clip"),
+    ])
+  }
+
   @MainActor private func verifyClippedWorkflow(
     folder: String, referenceArchitecture: String? = nil, cases: [(String, LayerMergeOperation, String, String)],
     sourceName: (String) -> String = { $0 }

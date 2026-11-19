@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 585 — Add three arithmetic clipping blend modes
+
+Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The HDR checks include masked clips, mixed opacity and translated Divide layers.
+
+All 787 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The tests compare 96 saved Photoshop results per architecture.
+
+[Detailed record](DEVLOG.md#dev-step-585) · [Validation](SOURCE_PUBLICATION_585.md).
+
 ## 2026-11-19 — Step 584 — Preserve pixel masks in clipping merges and stamps
 
 Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. The tests cover disabled masks, integer offsets, Density and partial clip opacity. Stamp Group and Stamp Down retain the contributing mask on its own layer.
@@ -667,14 +675,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:584 -->
+<!-- current-status-step:585 -->
 ## Current development status — 19 November 2026
 
-Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel.
+Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
 
-All 782 selected checks passed in three configurations, and both signed universal slices passed offscreen checks. Feather, other rich clipping operations and broader Photoshop parity remain open.
+All 787 selected tests passed in three configurations, and both signed universal slices passed offscreen checks. Feather and other rich clipping operations remain open.
 
-[Source checkpoint 584](SOURCE_PUBLICATION_584.md) · [Detailed record](DEVLOG.md#dev-step-584).
+[Source checkpoint 585](SOURCE_PUBLICATION_585.md) · [Detailed record](DEVLOG.md#dev-step-585).
 
 <!-- current-status:end -->
 
@@ -1465,6 +1473,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 582 | [Preserve independent clipping in merges and stamps](DEVLOG.md#dev-step-582) |
 | 2026-11-18 | 583 | [Add four clipped blend modes](DEVLOG.md#dev-step-583) |
 | 2026-11-19 | 584 | [Preserve pixel masks in clipping merges and stamps](DEVLOG.md#dev-step-584) |
+| 2026-11-19 | 585 | [Add three arithmetic clipping blend modes](DEVLOG.md#dev-step-585) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

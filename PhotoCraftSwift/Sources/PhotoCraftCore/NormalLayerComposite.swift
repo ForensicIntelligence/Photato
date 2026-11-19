@@ -53,6 +53,12 @@ public enum NormalLayerComposite {
       case .darken: blend = min(b, s)
       case .lighten: blend = max(b, s)
       case .difference: blend = abs(b - s)
+      case .linearDodge: blend = min(maximum, b + s)
+      case .subtract: blend = max(0, b - s)
+      case .divide:
+        if b == 0 { blend = 0 }
+        else if s == 0 { blend = maximum }
+        else { blend = min(maximum, (b * maximum + s / 2) / s) }
       default: throw CraftError.unsupported("This blend mode has no prepared integer clipping path.")
       }
       // Round the working color sample before interpolating by coverage.

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **584** · The 10 most recent entries, newest first.
+Source build **585** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 585 — Add three arithmetic clipping blend modes
+
+Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The HDR checks include masked clips, mixed opacity and translated Divide layers.
+
+All 787 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The tests compare 96 saved Photoshop results per architecture.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_585.md).
 
 ## 2026-11-19 — Step 584 — Preserve pixel masks in clipping merges and stamps
 
@@ -75,11 +83,3 @@ Merging and stamping 32-bit Normal layers now matches the saved Photoshop sample
 The new tests compare the stored layer before and after reopening a PSD. All 750 selected tests passed in each of the three build configurations. Both slices in the local universal archive passed their offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-576) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md).
-
-## 2026-11-18 — Step 575 — Render sparse stamps at maximum canvas size
-
-Stamp Layers and Stamp Visible now skip large empty areas of a sparse document. A 300,000-pixel-square test document with two separated layers used two render patches. The tests covered raster stacks, simple groups, a translucent canvas background and both stamp operations at 8, 16 and 32 bits per channel.
-
-Both ActionJSON job routes matched saved Photoshop layer samples for tagged and untagged files. All 749 selected tests passed in all three build configurations. Both slices of the local universal archive passed their offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_575.md).

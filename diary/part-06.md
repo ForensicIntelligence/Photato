@@ -612,6 +612,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 582 | [Preserve independent clipping in merges and stamps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) |
 | 2026-11-18 | 583 | [Add four clipped blend modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-583) |
 | 2026-11-19 | 584 | [Preserve pixel masks in clipping merges and stamps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) |
+| 2026-11-19 | 585 | [Add three arithmetic clipping blend modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

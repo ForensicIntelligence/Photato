@@ -205,6 +205,17 @@ final class AutomationActionJobsTests: XCTestCase {
       with: "", options: .regularExpression) })
   }
 
+  @MainActor func testClippedArithmeticModesMatchSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "clipped-arithmetic", cases: [
+      ("clipped-arithmetic-8-opaque-divide-37-merge-mask", "Clipping base", false),
+      ("clipped-arithmetic-16-partial-linearAdd-37-merge-mask", "Clipping base", false),
+      ("clipped-arithmetic-16-opaque-subtract-37-merge-mask", "Clipping base", false),
+      ("clipped-arithmetic-32-masked-linearAdd-79-merge-down", "Lower clip", false),
+      ("clipped-arithmetic-32-masked-subtract-79-stamp-down", "Lower clip", true),
+      ("clipped-arithmetic-32-masked-divide-79-stamp-mask", "Clipping base", true),
+    ])
+  }
+
   @MainActor private func verifyClippedJobRoutes(
     folder: String, referenceArchitecture: String? = nil, cases: [(String, String, Bool)],
     sourceName: (String) -> String = { $0 }

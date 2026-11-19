@@ -337,6 +337,106 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertEqual(pixels.pixel(x: side - 1, y: side - 1), Pixel(1, 1, 1, before.a))
   }
 
+  func testClippedArithmeticModesMatchSavedStoredLayers() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    for depth in [8, 16] {
+      for mode in ["linearAdd", "subtract", "divide"] {
+        for coverage in ["opaque", "partial"] {
+          for opacity in [100, 37] {
+            let name = "clipped-arithmetic-\(depth)-\(coverage)-\(mode)-\(opacity)-merge-mask"
+            let source = try PSDCodec.read(file("clipped-arithmetic/\(name)"))
+            let expected = try PSDCodec.read(file("clipped-arithmetic/\(architecture)-\(name)-merged"))
+            let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+            XCTAssertTrue(LayerMerge.canApply(.clippingMask, layerIDs: [base.id], in: source), name)
+            let edit = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask)
+            let result = try edit.applied(to: source)
+            XCTAssertEqual(result.activeLayerID, base.id, name)
+            try compare(result, expected, label: name)
+            try compare(PSDCodec.read(PSDCodec.writeRasterLayers(result)), expected, label: "PSD " + name)
+          }
+        }
+      }
+    }
+  }
+
+  func testHDRClippedArithmeticMatchesSavedLayersAcrossCoverageAndWidths() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let modes = ["linearAdd", "subtract", "divide"]
+    let shapes = ["opaque", "partial", "solidBase", "solidClip", "baseMask", "clipMask", "dimBase", "threshold"]
+    var cases: [(String, LayerMergeOperation)] = shapes.flatMap { shape in
+      modes.flatMap { mode in
+        [100, 37].map { ("\(shape)-\(mode)-\($0)-merge-mask", .clippingMask) }
+      }
+    }
+    for (suffix, operation) in [("merge-mask", LayerMergeOperation.clippingMask),
+                                ("stamp-mask", .stampGroup), ("merge-down", .down), ("stamp-down", .stampDown)] {
+      cases += modes.map { ("masked-\($0)-79-\(suffix)", operation) }
+    }
+    for width in [7, 13, 21, 35, 69, 261] {
+      cases += [("full\(width)-divide-37-merge-mask", .clippingMask),
+                ("shift\(width)-divide-37-merge-mask", .clippingMask)]
+    }
+    XCTAssertEqual(cases.count, 72)
+    for (suffix, operation) in cases {
+      let name = "clipped-arithmetic-32-" + suffix
+      var source = try PSDCodec.read(file("clipped-arithmetic/\(name)"))
+      let expected = try PSDCodec.read(file("clipped-arithmetic/\(architecture)-\(name)-merged"))
+      let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+      let clip = try XCTUnwrap(source.layers.first { $0.name == "Lower clip" })
+      let selectsClip = operation == .down || operation == .stampDown
+      let target = selectsClip ? clip.id : base.id
+      source.activeLayerID = target
+      XCTAssertTrue(LayerMerge.canApply(operation, layerIDs: [target], in: source), name)
+      let result = try LayerMergePreparation.prepare(source, layerIDs: [target], operation: operation).applied(to: source)
+      XCTAssertEqual(result.activeLayerID, operation == .stampDown ? clip.id : base.id, name)
+      for actual in [result, try PSDCodec.read(PSDCodec.writeRasterLayers(result))] {
+        try compare(actual, expected, label: name)
+        let retained = try XCTUnwrap(actual.layers.first { $0.name == base.name })
+        XCTAssertEqual(retained.opacity, base.opacity, name)
+        XCTAssertEqual(retained.mask, base.mask, name)
+        if operation == .stampDown || operation == .stampGroup {
+          let contributor = try XCTUnwrap(actual.layers.first { $0.name == clip.name })
+          XCTAssertEqual(contributor.mask, clip.mask, name)
+          XCTAssertEqual(contributor.blendMode, clip.blendMode, name)
+        }
+      }
+    }
+  }
+
+  func testHDRClippedDivideAllocatesOnlyTheDifferentImplicitScanlineRemainder() throws {
+    let width = Surface.tileSide + 2
+    let basePixels = try Surface(width: width, height: 1, depth: .f32,
+      fill: Pixel(0.875, 0.875, 0.875, 1)).interpretingSamples(as: .linearRGB)
+    let clipPixels = try Surface(width: width, height: 1, depth: .f32,
+      fill: Pixel(0.5, 0.5, 0.5, 1)).interpretingSamples(as: .linearRGB)
+    let base = Layer(name: "Clipping base", content: .raster(basePixels))
+    var clip = Layer(name: "Lower clip", content: .raster(clipPixels))
+    clip.clipped = true
+    clip.blendMode = .divide
+    clip.opacity = 94 / 255
+    var document = try CraftDocument(width: width, height: 1, depth: .f32)
+    document.layers = [base, clip]
+    document.activeLayerID = base.id
+    let result = try LayerMergePreparation.prepare(document, layerIDs: [base.id], operation: .clippingMask).result
+    guard case .raster(let output) = result.layers.first?.content else { return XCTFail("Expected a raster") }
+    #if arch(arm64)
+    XCTAssertEqual(output.linearPixel(x: 0, y: 0).r.bitPattern, 0x3f994949)
+    XCTAssertEqual(output.tileCount, 1)
+    #else
+    XCTAssertEqual(output.linearPixel(x: 0, y: 0).r.bitPattern, 0x3f99494a)
+    XCTAssertEqual(output.tileCount, 0)
+    #endif
+    XCTAssertEqual(output.linearPixel(x: width - 1, y: 0).r.bitPattern, 0x3f99494a)
+  }
+
   func testClippedMultiplyDarkenLightenAndDifferenceMatchSavedLayersAtAllRGBDepths() throws {
     #if arch(x86_64)
     let architecture = "intel"

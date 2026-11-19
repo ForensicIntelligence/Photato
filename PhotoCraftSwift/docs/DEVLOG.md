@@ -603,7 +603,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 582 | 2026-11-18 | [Preserve independent clipping in merges and stamps](#dev-step-582) |
 | 583 | 2026-11-18 | [Add four clipped blend modes](#dev-step-583) |
 | 584 | 2026-11-19 | [Preserve pixel masks in clipping merges and stamps](#dev-step-584) |
+| 585 | 2026-11-19 | [Add three arithmetic clipping blend modes](#dev-step-585) |
 <!-- history-index:end -->
+
+<a id="dev-step-585"></a>
+
+## 2026-11-19 — Add three arithmetic clipping blend modes
+
+Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The RGB8 and RGB16 path clamps the working-domain arithmetic before interpolating by clip coverage. Divide rounds the ratio and gives black for zero divided by zero. The original integer candidate matched 61,200 colour words per architecture and passed all 97 focused methods.
+
+The HDR studies isolated three differences. For Add and Subtract, an unmasked opaque contributing source uses separately weighted colours, even when the base raster has transparency or an editable mask. A contributing source with transparency or a pixel mask uses the measured per-channel evaluation for its mode. HDR Divide weights the base before dividing and floors the divisor at 2⁻³⁹. On Apple Silicon, the final pixels after each clipped row's full four-pixel groups use separate multiply and add. Intel flushes subnormal intermediates in the measured path. The first model incorrectly divided before weighting. The first integrated run also uncovered an Intel Linear Dodge case where a fully weighted subnormal clip term must be rounded before adding it to the base. A separate synthetic fixture accidentally converted its linear fill through sRGB. The corrected replay retains the original failures in its evidence. Its remaining ARM mismatches after correcting the weighting identified the final one to three columns. Full and translated widths from 7 to 261 pixels tested the boundary independently of Photato tile geometry. A sparse, implicit Divide regression verifies that Photato allocates the final tile only if the scalar result differs.
+
+The integrated suite compares 96 saved results per architecture, including PSD reopen, all four contextual actions for masked HDR examples and the preserved editable base mask. Desktop, Photato HTTP and both local Adobe-compatible job routes use the same implementation. All 99 focused tests and 787 selected tests per configuration passed. Both signed universal slices passed offscreen checks. These reference files came from the installed ad-hoc-signed Photoshop 27.2.0. Reproduction on an Adobe-signed installation, physical platform tests and additional rich clipping workflows remain open. [Qualification](SOURCE_PUBLICATION_585.md).
 
 <a id="dev-step-584"></a>
 
