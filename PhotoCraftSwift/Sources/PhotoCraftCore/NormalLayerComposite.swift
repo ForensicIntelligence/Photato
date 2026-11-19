@@ -36,21 +36,29 @@ public enum NormalLayerComposite {
     return Pixel(channel(b.r, s.r), channel(b.g, s.g), channel(b.b, s.b), normalized(alpha))
   }
 
-  package static func screenClipping(
-    backdrop: Pixel, source: Pixel, opacity: Float, depth: PixelDepth
-  ) -> Pixel {
+  package static func blendClippedInteger(
+    backdrop: Pixel, source: Pixel, mode: BlendMode, opacity: Float, depth: PixelDepth
+  ) throws -> Pixel {
     precondition(depth != .f32)
     let maximum = depth == .u8 ? 255 : 32768
     let weight = clippingAlpha(source.a, opacity: clippingOpacity(opacity, depth: depth), depth: depth)
-    func channel(_ backdrop: Float, _ source: Float) -> Float {
+    func channel(_ backdrop: Float, _ source: Float) throws -> Float {
       let b = working(backdrop, depth: depth)
       let s = working(source, depth: depth)
-      let screen = maximum - ((maximum - b) * (maximum - s) + maximum / 2) / maximum
-      // Round the complementary color product before interpolating by coverage.
-      let mixed = (screen * weight + b * (maximum - weight) + maximum / 2) / maximum
+      let blend: Int
+      switch mode {
+      case .multiply: blend = (b * s + maximum / 2) / maximum
+      case .screen: blend = maximum - ((maximum - b) * (maximum - s) + maximum / 2) / maximum
+      case .darken: blend = min(b, s)
+      case .lighten: blend = max(b, s)
+      case .difference: blend = abs(b - s)
+      default: throw CraftError.unsupported("This blend mode has no prepared integer clipping path.")
+      }
+      // Round the working color sample before interpolating by coverage.
+      let mixed = (blend * weight + b * (maximum - weight) + maximum / 2) / maximum
       return normalized(mixed, depth: depth)
     }
-    return Pixel(channel(backdrop.r, source.r), channel(backdrop.g, source.g),
+    return try Pixel(channel(backdrop.r, source.r), channel(backdrop.g, source.g),
       channel(backdrop.b, source.b), backdrop.a)
   }
 

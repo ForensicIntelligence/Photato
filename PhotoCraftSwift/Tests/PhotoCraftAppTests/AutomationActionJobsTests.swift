@@ -187,6 +187,14 @@ final class AutomationActionJobsTests: XCTestCase {
     ])
   }
 
+  @MainActor func testClippedBlendModesMatchSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "clipped-blend-modes", cases: [
+      ("chain-8-clip-darken", "Clipping base", false),
+      ("chain-16-clip-multiply", "Clipping base", false),
+      ("chain-32-clip-difference", "Clipping base", false),
+    ])
+  }
+
   @MainActor private func verifyClippedJobRoutes(
     folder: String, referenceArchitecture: String? = nil, cases: [(String, String, Bool)]
   ) async throws {

@@ -1405,6 +1405,8 @@ Build 576 also verifies the prepared Normal RGB32 layer output through the deskt
 
 Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
 
+Build 583 accepts Multiply, Darken, Lighten and Difference as contributing modes in supported RGB8, RGB16 and RGB32 clipping stacks. The existing merge and stamp operations use the same updated compositor in the desktop editor, Photato HTTP API and both local ActionJSON job routes. [Validation](SOURCE_PUBLICATION_583.md).
+
 Build 582 accepts supported raster clipping groups with Blend Clipped Layers as Group disabled. The existing `clippingMask`, `stampGroup`, `down`, and `stampDown` operations share the stored-layer compositor with both local ActionJSON job routes. [Validation](SOURCE_PUBLICATION_582.md).
 
 Build 581 accepts adjacent Normal raster clips through `layer.merge` with `down` or `stampDown`. The selected upper clip identifies the destination directly beneath it. Both local ActionJSON job routes share the same rule. [Validation](SOURCE_PUBLICATION_581.md).

@@ -39,16 +39,19 @@ enum ClippingMaskRasterMerge {
       return SRGBTransfer.linear(pixels.defaultPixel)
     }
     func combine(_ backdrop: Pixel, _ sample: Pixel, clip: Clip) throws -> Pixel {
-      if clip.blendMode == .screen {
-        return NormalLayerComposite.screenClipping(backdrop: backdrop, source: sample,
-          opacity: clip.opacity, depth: depth)
+      if !linear && clip.blendMode != .normal {
+        return try NormalLayerComposite.blendClippedInteger(backdrop: backdrop, source: sample,
+          mode: clip.blendMode, opacity: clip.opacity, depth: depth)
       }
       let opaque = Pixel(backdrop.r, backdrop.g, backdrop.b, 1)
       let result: Pixel
       if linear {
         let alpha = RGB32NormalRenderer.scaleAlpha(sample.a, by: clip.opacity,
           flushSubnormal: clip.opacity != 1)
-        result = try RGB32NormalRenderer.blend(opaque, Pixel(sample.r, sample.g, sample.b, alpha),
+        let b = clip.blendMode
+        let source = Pixel(b.channel(backdrop.r, sample.r), b.channel(backdrop.g, sample.g),
+          b.channel(backdrop.b, sample.b), alpha)
+        result = try RGB32NormalRenderer.blend(opaque, source,
           opaque: true, copiesSource: clip.copiesOpaqueSource, forLayerOutput: true)
       } else {
         result = NormalLayerComposite.composite(backdrop: opaque, source: sample, opacity: clip.opacity, depth: depth)
@@ -66,7 +69,7 @@ enum ClippingMaskRasterMerge {
       let bounds = IntRect(x: layer.x - base.x, y: layer.y - base.y, width: pixels.width, height: pixels.height)
       let intersection = bounds.clipped(toWidth: size.width, height: size.height)
       guard intersection.width > 0 && intersection.height > 0 else { continue }
-      let copies = linear && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: pixels, in: document)
+      let copies = linear && layer.blendMode == .normal && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: pixels, in: document)
         ? try pixels.isOpaque() : false
       let source = Clip(pixels: pixels, bounds: bounds, opacity: layer.opacity,
         blendMode: layer.blendMode, copiesOpaqueSource: copies)

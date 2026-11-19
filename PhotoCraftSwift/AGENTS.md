@@ -1,3 +1,5 @@
+**Source checkpoint 583.** Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Qualification](docs/SOURCE_PUBLICATION_583.md).
+
 **Source checkpoint 582.** Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. [Qualification](docs/SOURCE_PUBLICATION_582.md).
 
 **Source checkpoint 581.** Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. [Qualification](docs/SOURCE_PUBLICATION_581.md).

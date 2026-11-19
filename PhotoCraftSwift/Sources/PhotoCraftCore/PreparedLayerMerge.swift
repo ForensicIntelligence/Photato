@@ -103,7 +103,11 @@ public struct LayerMergePlan: Sendable {
   }
 
   package static func supportsClippingBlend(_ mode: BlendMode, depth: PixelDepth) -> Bool {
-    mode == .normal || (mode == .screen && depth != .f32)
+    switch mode {
+    case .normal, .multiply, .darken, .lighten, .difference: return true
+    case .screen: return depth != .f32
+    default: return false
+    }
   }
 
   package static func supportsClippingRaster(_ layer: Layer) -> Bool {

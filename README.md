@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 582.** Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md).
+**Development alpha — source build 583.** Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_583.md).
 
 ## Project layout
 

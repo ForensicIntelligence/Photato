@@ -119,6 +119,14 @@ final class AutomationLayerMergeTests: XCTestCase {
     ])
   }
 
+  @MainActor func testClippedBlendModesThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
+    try await verifyClippedWorkflow(folder: "clipped-blend-modes", cases: [
+      ("chain-8-clip-multiply", .clippingMask, "clippingMask", "Clipping base"),
+      ("chain-16-clip-lighten", .clippingMask, "clippingMask", "Clipping base"),
+      ("chain-32-clip-difference", .clippingMask, "clippingMask", "Clipping base"),
+    ])
+  }
+
   @MainActor private func verifyClippedWorkflow(
     folder: String, referenceArchitecture: String? = nil, cases: [(String, LayerMergeOperation, String, String)]
   ) async throws {

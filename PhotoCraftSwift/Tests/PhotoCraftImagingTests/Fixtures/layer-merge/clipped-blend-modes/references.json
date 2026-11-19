@@ -1,0 +1,161 @@
+{
+  "origin": "Project-owned PSDs saved by Photoshop 2026 through its scripting interface.",
+  "processors": {
+    "arm": {
+      "pid": 28176,
+      "architecture": "16777228",
+      "active": false
+    },
+    "intel": {
+      "pid": 28317,
+      "architecture": "16777223",
+      "active": false
+    }
+  },
+  "files": [
+    {
+      "path": "chain-8-clip-multiply.psd",
+      "sha256": "e7f86fb0cdc9c4e2a5ae047c1fee2520fd67823ad02354eb6365c8aa92b3c022"
+    },
+    {
+      "path": "arm-chain-8-clip-multiply-merged.psd",
+      "sha256": "57f1f753c9d6da4bb7315d4353d290f32fdd7bb655380ed382559cc28e379aa8"
+    },
+    {
+      "path": "intel-chain-8-clip-multiply-merged.psd",
+      "sha256": "4540a55c4e60de58d3003bffe6febf4031d254956100bcf6f8202c9507620a7d"
+    },
+    {
+      "path": "chain-8-clip-darken.psd",
+      "sha256": "8b1ecbe177a4d2700f901fc1a2059a1908286c2e66f1550567f23fae97c870e5"
+    },
+    {
+      "path": "arm-chain-8-clip-darken-merged.psd",
+      "sha256": "ece62898d01ee23e2dfe749b1831a7f482d20f5bae7e7849d3232afd33485ce9"
+    },
+    {
+      "path": "intel-chain-8-clip-darken-merged.psd",
+      "sha256": "b3964ffcb657f251a5c208ecf6688c65a1ef3657e1c54c12f160251e98207626"
+    },
+    {
+      "path": "chain-8-clip-lighten.psd",
+      "sha256": "69336b1e9b925c20e7eda164a90e6629cd311a39670d3ac5a624692df03eaf01"
+    },
+    {
+      "path": "arm-chain-8-clip-lighten-merged.psd",
+      "sha256": "ee2166044eee6f76d59982d1a1ff9dd66eb7027facff2b0b2dd923f63f41bc69"
+    },
+    {
+      "path": "intel-chain-8-clip-lighten-merged.psd",
+      "sha256": "9d798c6a629d5f726382b767063db82dcd135b41c8e39e8912743e43580d62b4"
+    },
+    {
+      "path": "chain-8-clip-difference.psd",
+      "sha256": "2a8ef46a76e2cc2b7451df00a5a56549542dcc28a4ed6b8e4cfbff9742540660"
+    },
+    {
+      "path": "arm-chain-8-clip-difference-merged.psd",
+      "sha256": "69aaae4f5b19d09b14d61f9d4d3c2581f0e61075cb1e20460373ae6f82b72241"
+    },
+    {
+      "path": "intel-chain-8-clip-difference-merged.psd",
+      "sha256": "84e591ff184640686bba114765ac414bc47793b66f021923a203c374b07386fc"
+    },
+    {
+      "path": "chain-16-clip-multiply.psd",
+      "sha256": "ba2768146dcc4de0d630e6c8389f70aee9729b4bfcee63e1109f3a8b4b2dd16d"
+    },
+    {
+      "path": "arm-chain-16-clip-multiply-merged.psd",
+      "sha256": "9c99a7f54de52e0a02b1ab89c1c9ac604f20275ce0c3d391c0fd3e78e4f1b974"
+    },
+    {
+      "path": "intel-chain-16-clip-multiply-merged.psd",
+      "sha256": "cb746e98f271b9617414f10f292eb3eb88637721592401cd41c982d515690b4d"
+    },
+    {
+      "path": "chain-16-clip-darken.psd",
+      "sha256": "479b553f47ba47a2ac257e166284d5c4c59f3393e745f0c7fc707692c4b62fca"
+    },
+    {
+      "path": "arm-chain-16-clip-darken-merged.psd",
+      "sha256": "576c1c2bd913bdb21457cef3e1cbf90fe09ec7693b0159395f0371764ce183ef"
+    },
+    {
+      "path": "intel-chain-16-clip-darken-merged.psd",
+      "sha256": "fd6b764d924c6df2e3cbf6bec750162a66ba1501d3130de67171daa0707a1ed4"
+    },
+    {
+      "path": "chain-16-clip-lighten.psd",
+      "sha256": "fc2780044cfb70675a10349dbcee2a970b5b5f31a633d796d79c06ec8a6b4ba0"
+    },
+    {
+      "path": "arm-chain-16-clip-lighten-merged.psd",
+      "sha256": "82001662587798e78ceeb5e76fff9a37b1c59e84aa1f98de88fad02b713ade3a"
+    },
+    {
+      "path": "intel-chain-16-clip-lighten-merged.psd",
+      "sha256": "ff08ab795ef68747e27f7fb294155a485226f0e2451190a02b61c9eb65be317a"
+    },
+    {
+      "path": "chain-16-clip-difference.psd",
+      "sha256": "d6adc07b418cd44556154dc149a5c60100304f51bd49b294ef8e4fa1e6b508db"
+    },
+    {
+      "path": "arm-chain-16-clip-difference-merged.psd",
+      "sha256": "ad37c675f1c0095e63184ce3848422ff96c81e96d312c87a6a8ec80ce3113536"
+    },
+    {
+      "path": "intel-chain-16-clip-difference-merged.psd",
+      "sha256": "ac1f5cbd81c8b8db3cfc394d4796415431143b8b0c3d66df667feffd6d925067"
+    },
+    {
+      "path": "chain-32-clip-multiply.psd",
+      "sha256": "92beb0dd237f2490f4ec6594e1b859670a9ba053b0c384424c7e826b8632c2e9"
+    },
+    {
+      "path": "arm-chain-32-clip-multiply-merged.psd",
+      "sha256": "0ba8b2748719e32a52330b021f4cbbc47bc3a36ad5c241a721aeff1fff8e6906"
+    },
+    {
+      "path": "intel-chain-32-clip-multiply-merged.psd",
+      "sha256": "54dba078cbe48db69f156bf0fad2f31cdfdea3691318369343f49cf32863008d"
+    },
+    {
+      "path": "chain-32-clip-darken.psd",
+      "sha256": "4585abfa116c32fd1baf9f404c6054df7df84ce560cdb1eebb34afd6b9cd3e6e"
+    },
+    {
+      "path": "arm-chain-32-clip-darken-merged.psd",
+      "sha256": "4ffd2352721d4d4b29c0f00c1c930458093ad900caca2dd51ecb248513ba219c"
+    },
+    {
+      "path": "intel-chain-32-clip-darken-merged.psd",
+      "sha256": "b53dcedabf385a0142ee2f8167ef77765fbdf925f1a5d2c36fc942735ee41ab0"
+    },
+    {
+      "path": "chain-32-clip-lighten.psd",
+      "sha256": "7caa87feddf3baaa64b065b8696a39a10e37eb71a48f806569d4fcfc8a3bc67e"
+    },
+    {
+      "path": "arm-chain-32-clip-lighten-merged.psd",
+      "sha256": "da319689af6076b530c779e5bf0a118e0a85c7f429b2d4face2d3d174c8faef2"
+    },
+    {
+      "path": "intel-chain-32-clip-lighten-merged.psd",
+      "sha256": "4a5f374ce883a3f7573e04b2b087837dca80b0348d7f3abf467a495d76c1bd8f"
+    },
+    {
+      "path": "chain-32-clip-difference.psd",
+      "sha256": "533fbd0c99152a405d4a9bece6ce56a9619f5ab80515aa4c9fab810962d67034"
+    },
+    {
+      "path": "arm-chain-32-clip-difference-merged.psd",
+      "sha256": "12a9bce6a67ce868e1e55fe645bbc2287868bb3136f35c1569471d5f3b8624eb"
+    },
+    {
+      "path": "intel-chain-32-clip-difference-merged.psd",
+      "sha256": "3ac01fa5862584ffdcd924bea99fc60c0ddde26d7694ef6bfb52b2b08e1abdf2"
+    }
+  ]
+}

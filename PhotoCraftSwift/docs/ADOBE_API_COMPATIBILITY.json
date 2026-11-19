@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "clipped_blend_modes_build583": {
+    "evidence": "docs/CLIPPED_BLEND_MODE_REFERENCES_583.json",
+    "scope": "Multiply, Darken, Lighten and Difference on contributing clips in supported RGB8, RGB16 and RGB32 merge and stamp operations.",
+    "limits": "Additional blend modes, rich sources and hosted service parity remain open."
+  },
   "independent_clipping_build582": {
     "evidence": "docs/INDEPENDENT_CLIPPING_REFERENCES_582.json",
     "scope": "Merge and stamp operations preserve the clipping base blend option, mode and opacity in supported raster groups.",

@@ -225,6 +225,28 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
   }
 
+  func testClippedMultiplyDarkenLightenAndDifferenceMatchSavedLayersAtAllRGBDepths() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    for depth in [8, 16, 32] {
+      for mode in ["multiply", "darken", "lighten", "difference"] {
+        let name = "chain-\(depth)-clip-\(mode)"
+        var source = try PSDCodec.read(file("clipped-blend-modes/\(name)"))
+        let expected = try PSDCodec.read(file("clipped-blend-modes/\(architecture)-\(name)-merged"))
+        let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+        source.activeLayerID = base.id
+        XCTAssertTrue(LayerMerge.canApply(.clippingMask, layerIDs: [base.id], in: source), name)
+        let result = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask).applied(to: source)
+        XCTAssertEqual(result.activeLayerID, base.id, name)
+        try compare(result, expected, label: name)
+        try compare(PSDCodec.read(PSDCodec.writeRasterLayers(result)), expected, label: "PSD " + name)
+      }
+    }
+  }
+
   func testIndependentNormalClippingMatchesSavedPhotoshopLayersAndRetainsFlag() throws {
     for bits in [8, 16] {
       for (variant, operation) in [

@@ -601,7 +601,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 580 | 2026-11-18 | [Match Screen clipping and unchanged stamp history](#dev-step-580) |
 | 581 | 2026-11-18 | [Merge and stamp adjacent clipped layers](#dev-step-581) |
 | 582 | 2026-11-18 | [Preserve independent clipping in merges and stamps](#dev-step-582) |
+| 583 | 2026-11-18 | [Add four clipped blend modes](#dev-step-583) |
 <!-- history-index:end -->
+
+<a id="dev-step-583"></a>
+
+## 2026-11-18 — Add four clipped blend modes
+
+Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The saved Photoshop matrix covers 12 operations per architecture with partial clip opacity and zero or partial base alpha. The independent stored-layer comparison matched all 62,736 sample words per architecture.
+
+The prepared layer renderer reuses the Screen path's fixed-point opacity handling and the HDR layer-output compositor. The desktop, Photato HTTP and both local ActionJSON job routes share the operation. The first build passed 88 focused Debug methods. The same 8,453 source inputs passed all 776 selected methods in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. Interactive and physical platform checks remain open. [Qualification](SOURCE_PUBLICATION_583.md).
+
+A local storage cleanup removed 3,468 obsolete build outputs and compiler caches and freed about 75 GiB. The two successful universal archives, 582 and 583, matched their checksums after cleanup. The build 584 candidate, source and qualification records were kept. The itemized local record is at `artifacts/development-history-audit/cleanup-20261118/photato-retention-582-583-receipt.json`.
 
 <a id="dev-step-582"></a>
 

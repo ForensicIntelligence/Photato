@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **582** · The 10 most recent entries, newest first.
+Source build **583** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 583 — Add four clipped blend modes
+
+Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
+
+The saved Photoshop comparison matched 62,736 stored sample words per architecture. All 776 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-583) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_583.md).
 
 ## 2026-11-18 — Step 582 — Preserve independent clipping in merges and stamps
 
@@ -75,11 +83,3 @@ Stamp Layers combines selected artwork on a new layer. Stamp Visible does the sa
 The saved Photoshop references match at 8, 16 and 32 bits per channel. The test documents include locked layers, clipping, hidden layers and selections across different groups. All 745 selected tests passed in each of the three configurations. Both slices of the universal validation archive passed their offscreen workspace checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-574) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_574.md).
-
-## 2026-11-18 — Step 573 — Match HDR Normal rounding at the Float32 underflow boundary
-
-On Intel, very small color contributions can disappear during 32-bit Normal compositing. Photato now matches the measured rounding, including products just below the smallest normal Float32 value. The Apple Silicon build keeps its fused calculation.
-
-The new tests compare 57,504 straight color and alpha words with separately saved Photoshop results on each architecture. An ordinary opaque source that covers the canvas retains its original colors over uniform backdrop alpha. Grouped clipping can preserve those colors even when the base alpha varies. All 708 selected tests passed in all three configurations. The local universal archive passed both offscreen workspace checks. The translucent test also exposed a difference in Merge Visible that remains open.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md).

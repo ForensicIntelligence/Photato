@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 583 — Add four clipped blend modes
+
+Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
+
+The saved Photoshop comparison matched 62,736 stored sample words per architecture. All 776 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-583) · [Validation](SOURCE_PUBLICATION_583.md).
+
 ## 2026-11-18 — Step 582 — Preserve independent clipping in merges and stamps
 
 Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. The saved pixels for the tested Multiply cases matched with the underlying backdrop visible or hidden.
@@ -651,14 +659,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:582 -->
+<!-- current-status-step:583 -->
 ## Current development status — 18 November 2026
 
-Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity.
+Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
 
-All 773 selected checks passed in three build configurations. Both signed universal slices passed their offscreen checks. Rich clipping, additional blend modes, and broader Photoshop parity remain open.
+All 776 selected checks passed in three configurations, and both signed universal slices passed offscreen checks. Clipping with editable masks, other blend modes and broader Photoshop parity remain open.
 
-[Source checkpoint 582](SOURCE_PUBLICATION_582.md) · [Detailed record](DEVLOG.md#dev-step-582).
+[Source checkpoint 583](SOURCE_PUBLICATION_583.md) · [Detailed record](DEVLOG.md#dev-step-583).
 
 <!-- current-status:end -->
 
@@ -1447,6 +1455,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 580 | [Match Screen clipping and unchanged stamp history](DEVLOG.md#dev-step-580) |
 | 2026-11-18 | 581 | [Merge and stamp adjacent clipped layers](DEVLOG.md#dev-step-581) |
 | 2026-11-18 | 582 | [Preserve independent clipping in merges and stamps](DEVLOG.md#dev-step-582) |
+| 2026-11-18 | 583 | [Add four clipped blend modes](DEVLOG.md#dev-step-583) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

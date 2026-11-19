@@ -1,3 +1,7 @@
+**Source checkpoint 583.** Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Qualification](SOURCE_PUBLICATION_583.md).
+
+Continue editable pixel masks on clipping merges and stamps. Check partial clip opacity across all three RGB depths and measure Float32 Density and Feather using the saved Photoshop files.
+
 **Source checkpoint 582.** Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. [Qualification](SOURCE_PUBLICATION_582.md).
 
 Continue the four additional clipped blend modes and editable pixel-mask work. Measure Float32 mask Density and Feather against the saved Photoshop controls.
