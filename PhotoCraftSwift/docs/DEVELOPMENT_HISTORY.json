@@ -8817,6 +8817,119 @@
           "rolling_current_snapshot": false
         }
       ]
+    },
+    {
+      "id": "dev-step-571",
+      "title": "2026-11-18 \u2014 Fix HDR PSD and PSB compression for Photoshop",
+      "link": "DEVLOG.md#dev-step-571",
+      "section_sha256": "0e97e5c3356c7b37c9993d3c466d336ed6832246a2f5910a27915c82fc52b53f",
+      "references_explicitly_named_in_entry": [
+        {
+          "reference": "Sources/PhotoCraft/DocumentEncodingOptions.swift",
+          "existing_paths": [
+            "Sources/PhotoCraft/DocumentEncodingOptions.swift"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "Sources/PhotoCraftImaging/PSDChannelCodec.swift",
+          "existing_paths": [
+            "Sources/PhotoCraftImaging/PSDChannelCodec.swift"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "Sources/PhotoCraftImaging/PSDChannelWriter.swift",
+          "existing_paths": [
+            "Sources/PhotoCraftImaging/PSDChannelWriter.swift"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "Sources/PhotoCraftImaging/PSDCodec.swift",
+          "existing_paths": [
+            "Sources/PhotoCraftImaging/PSDCodec.swift"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/debug-exports01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/debug-exports01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/debug-exports03",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/debug-exports03"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/live-reference01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/live-reference01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/live-reference02",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/live-reference02"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/merge-rgb-isolation01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/merge-rgb-isolation01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/optimized-exports01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/optimized-exports01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/packaged-snapshot01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/packaged-snapshot01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/qualification01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/qualification01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/qualification02",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/qualification02"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "artifacts/571-psd-float-interop/universal01",
+          "existing_paths": [
+            "artifacts/571-psd-float-interop/universal01"
+          ],
+          "rolling_current_snapshot": false
+        },
+        {
+          "reference": "scripts/Info.plist",
+          "existing_paths": [
+            "scripts/Info.plist"
+          ],
+          "rolling_current_snapshot": false
+        }
+      ]
     }
   ],
   "missing_explicit_references": [
@@ -11344,20 +11457,20 @@
   "evidence_files": [
     {
       "path": "AGENTS.md",
-      "sha256": "b24ca510f9e3ce5b9b1aeff99bc5bd6516c42feff46b6b4c2a7c318b48eaeb8e",
-      "bytes": 139513,
+      "sha256": "d27662a2f0d0ced4f2ac9170cd9d05142525f18406f42d6e9c6a72ad85818185",
+      "bytes": 139741,
       "rolling_current_snapshot": false
     },
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "d7a0e273425a563ef5850c72f942c4d00025cef5d0c91d5fd59f1c85618150fd",
-      "bytes": 9923,
+      "sha256": "efbbd03b4b2572c988c58501f8d014283206f7b845ff8280552751df3dea539d",
+      "bytes": 10320,
       "rolling_current_snapshot": false
     },
     {
       "path": "README.md",
-      "sha256": "cda3fffde0e31ae9f1d29b2592f10559cf3c7862e9541b9c90ea9af5f8ef428e",
-      "bytes": 132943,
+      "sha256": "0ef78c1bd4c4e2907e1eb8d6eea62f7cf515eb31c45176e243d1729f993daf01",
+      "bytes": 133261,
       "rolling_current_snapshot": false
     },
     {
@@ -66990,6 +67103,1050 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "artifacts/571-psd-float-interop/debug-exports01/debug/export.log",
+      "sha256": "d8735ff567cc0eb31e7f010f548da9424354a2b2144eba062ec2ff6757cbf953",
+      "bytes": 167,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports01/debug/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports02/comparison.json",
+      "sha256": "a98e0d692f78fd2832a06de7353af11d629dfb16f64d75075bd6bc2dfc9e7d76",
+      "bytes": 4710,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports02/debug/export.log",
+      "sha256": "fb9daa09f2b8916b81fb7839fae6a7998c96b37f5659317b1b785eb904034e9c",
+      "bytes": 303,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports02/debug/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports03/comparison.json",
+      "sha256": "77d0fd3750a8c09dca0af4d480f3a233c48720781dcb3f0cfa057362487068af",
+      "bytes": 5430,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports03/debug/export.log",
+      "sha256": "fb9daa09f2b8916b81fb7839fae6a7998c96b37f5659317b1b785eb904034e9c",
+      "bytes": 303,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/debug-exports03/debug/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/frozen-build-inputs01.json",
+      "sha256": "275d1ce59e1e90b47eeecfabea2ece8da5609f94b8e2610e74e6301a6e58d1cf",
+      "bytes": 1154507,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/frozen-build-inputs02.json",
+      "sha256": "4752ed3727c4612f26b875724d6b31f0fea841f53315aaed7abad815c89e9796",
+      "bytes": 1154507,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/isolated-compression01/arm/run-1.log",
+      "sha256": "13d5aebc735f32ba8e1abc1f6e9d1ae390987c4aa8bf8bb2b31edeef30207b63",
+      "bytes": 1392,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/isolated-compression01/intel/run-1.log",
+      "sha256": "13d5aebc735f32ba8e1abc1f6e9d1ae390987c4aa8bf8bb2b31edeef30207b63",
+      "bytes": 1392,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/isolated-compression01/profile-acquisition.json",
+      "sha256": "3241ca038c5829ef707b02e64ae7147564ed63f2db4193bd14a709950def2b76",
+      "bytes": 173,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference01/arm/run-1.log",
+      "sha256": "a2b6d1fbb5325a30da3cdd1e0ee5ae94c25a91761469f89e4b73d223f851a1e3",
+      "bytes": 667,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference01/intel/run-1.log",
+      "sha256": "a2b6d1fbb5325a30da3cdd1e0ee5ae94c25a91761469f89e4b73d223f851a1e3",
+      "bytes": 667,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference01/profile-acquisition.json",
+      "sha256": "459ee58f979829010f2b3a5da410e6dd81c3266930d56102d3d2c0043748c12c",
+      "bytes": 173,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference02/arm/run-1.log",
+      "sha256": "0e1ab25464301679b1cbe9bef7c90b7400ecebd16a6fbc3712e47ac0da3d890a",
+      "bytes": 1955,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference02/comparison.json",
+      "sha256": "639c4c0d42d3eb5cc21f9b8ca542a9318a240c2c25f86965785ffb8c91aa1f1c",
+      "bytes": 825,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference02/intel/run-1.log",
+      "sha256": "0e1ab25464301679b1cbe9bef7c90b7400ecebd16a6fbc3712e47ac0da3d890a",
+      "bytes": 1955,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/live-reference02/profile-acquisition.json",
+      "sha256": "cf0c3c700926a1765181029248eb097a6ad3019692fb57848d98f71d97bb6819",
+      "bytes": 173,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/arm/run-1.log",
+      "sha256": "3c930f7df25d8d782cfeb3ed27b29581f0a80d54de2c2edb3745c3bc7e75bd7f",
+      "bytes": 187,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/arm/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/arm/probe.log",
+      "sha256": "d870d23a2aa51299c101bea9199fc10c72eaedd0fcee0a96a0de0a1f12d4c0f3",
+      "bytes": 30,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/comparison.json",
+      "sha256": "ee0c76dc1148423634a188f01e575332e4eab094d98742818443b33914e882ee",
+      "bytes": 4151,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/intel/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/intel/probe.log",
+      "sha256": "d870d23a2aa51299c101bea9199fc10c72eaedd0fcee0a96a0de0a1f12d4c0f3",
+      "bytes": 30,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/rounding-models.json",
+      "sha256": "d5dcfb9f283beeb9397f7deb7fd9ffba6f58f4e732c2304e3d19e92c155bb917",
+      "bytes": 113987,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/comparison01/rounding-models02.json",
+      "sha256": "6d9f6e9f4435531c2717de719b079b5bd95dcaf84c798ac3cef5162c71854dfe",
+      "bytes": 113178,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/intel/run-1.log",
+      "sha256": "3c930f7df25d8d782cfeb3ed27b29581f0a80d54de2c2edb3745c3bc7e75bd7f",
+      "bytes": 187,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/merge-rgb-isolation01/profile-acquisition.json",
+      "sha256": "836132c9196c90ef2f34ccdd5c15c8d428159b1c7c0fbc52f9dca1c6ec364256",
+      "bytes": 173,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/optimized-exports01/arm/export.log",
+      "sha256": "fb9daa09f2b8916b81fb7839fae6a7998c96b37f5659317b1b785eb904034e9c",
+      "bytes": 303,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/optimized-exports01/arm/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/optimized-exports01/comparison.json",
+      "sha256": "7fbbc6ebf5ff7d898ae60da59c4ab32a9a0a29bf2abbcba8334f98d9e45ced44",
+      "bytes": 10855,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/optimized-exports01/intel/export.log",
+      "sha256": "fb9daa09f2b8916b81fb7839fae6a7998c96b37f5659317b1b785eb904034e9c",
+      "bytes": 303,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/optimized-exports01/intel/link.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/packaged-snapshot01/arm64/command.json",
+      "sha256": "51219ef033f0b8660c47cd1d5dbe3ac5a537d56fc5571a84b0f7a48e9a8380ec",
+      "bytes": 344,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/packaged-snapshot01/arm64/launch.log",
+      "sha256": "1dbdbd9129003aa5ce5d5976213f66f57548bd89d670e10996ae9946acc6d752",
+      "bytes": 174,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/packaged-snapshot01/snapshot.json",
+      "sha256": "7722e7f6a2a829a9f2f9ba7d9eec51492fb55ccb5a7bcdfab871f39d05908590",
+      "bytes": 884,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/packaged-snapshot01/x86_64/command.json",
+      "sha256": "2f3417e4fa211af5b2d136ed26f411863938a57121cafc3a58ef940fef5ff601",
+      "bytes": 346,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/packaged-snapshot01/x86_64/launch.log",
+      "sha256": "9aec361bc5c463fad4679c7225c3ec0fc9d4af7cda203e7af47a8f2da0e70c66",
+      "bytes": 175,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/photoshop-predictor-mismatch01.json",
+      "sha256": "b5d18df31be65462f375860c9a1badad585551b55c897bf3a501673a5258db33",
+      "bytes": 639,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/build-command.json",
+      "sha256": "d2525eb6caa1d7c0e606f405ca6dee78bb1d46ec00d05ae83e8e9df31bd91dd5",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/build-process.json",
+      "sha256": "15438cca03e51a1ab6c5aaf90a43216bf36ab789f98b453bc1346809c889c91e",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/build-receipt.json",
+      "sha256": "9c3a19a7d2f6664fbf58762f0808e98e8295dc3f6f804c391158ddaa2806c1c6",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/build.log",
+      "sha256": "c30f58ff052cd5144726c9dafc3d70c7717eef501d61af0aa71f528caab80f26",
+      "bytes": 71602,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/captures/pattern-pixel-fill-analytical.json",
+      "sha256": "7af26901de111da81f5e4704d75c794535cf5cbb454316fb11091574d91ef790",
+      "bytes": 10233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/captures/pixel-stroke-analytical.json",
+      "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+      "bytes": 3186,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/receipt.json",
+      "sha256": "520d0b37b9e905415b154324bb50be3412b53bc12fae46f12d41a25089ab423f",
+      "bytes": 75552,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/test-command.json",
+      "sha256": "fbd0e54b42020018da41893d7f9e5d17e0d432bea0bd17e9dd8c40a65fe67e68",
+      "bytes": 70371,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/test-process.json",
+      "sha256": "592c09d13bbf570c9a9a7020a9ce6406adf6cb348fddb91b327585636a321f8b",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/arm/test.log",
+      "sha256": "c1b2afad0eb5b8c67383e04685ef0874d8e6e6d42e6b4c4224ae37b8b3c410f0",
+      "bytes": 252536,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 17:01:07.336",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 694,
+        "failures": 0,
+        "seconds": 56.334,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/build-command.json",
+      "sha256": "79a10e1f9660ac2d410e356c6a50679d63cc67ac5e362acc2e4b096b2d0f686d",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/build-process.json",
+      "sha256": "f77fccc303e05df201c975db265a07764f8d0a04dbf72c47e066211a9800da75",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/build-receipt.json",
+      "sha256": "5d93f317fb18341ef31af609199191e09ba6094242a33255f5763b08405ffacf",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/build.log",
+      "sha256": "0249a65792ae2dfb7b5211f7b3c6f6c9b2bc6373bcd50a080d7687964cfd81b7",
+      "bytes": 1853747,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/captures/pattern-pixel-fill-analytical.json",
+      "sha256": "7af26901de111da81f5e4704d75c794535cf5cbb454316fb11091574d91ef790",
+      "bytes": 10233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/captures/pixel-stroke-analytical.json",
+      "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+      "bytes": 3186,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/receipt.json",
+      "sha256": "6933d0409c24a25d9b4efdd09cc4326c3f3cd07cf1bd406279ec9eb5085a1099",
+      "bytes": 75552,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/test-command.json",
+      "sha256": "bf8151865266379904c111dca15da2433f6e621156957333f3db16ef854d8383",
+      "bytes": 70371,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/test-process.json",
+      "sha256": "c48683fe7285c68cd1cb7d2e4b43f42104e99e38b90f1dd91ffca339d32e8fa2",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/debug/test.log",
+      "sha256": "fae37170095dbddc7b6cbd5c64f7e58fc7637ee7d09739aaa3f22d9f4e12f5d9",
+      "bytes": 252534,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 16:52:26.437",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 694,
+        "failures": 0,
+        "seconds": 273.4,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/expected-cases.json",
+      "sha256": "9aa0a94b72dcc8a7cbcc4a27c87d547962f0e68a7684c35c49366ee43cb2b81e",
+      "bytes": 73656,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/inputs.json",
+      "sha256": "275d1ce59e1e90b47eeecfabea2ece8da5609f94b8e2610e74e6301a6e58d1cf",
+      "bytes": 1154507,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/build-command.json",
+      "sha256": "b7c0c048cdb9e15144d186fa750c2081c263cf2600ee9e9f0b80d770f93b8001",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/build-process.json",
+      "sha256": "f155438b3528241c6f52d19e09cc2d5e5ef3b8bcf9b727b8ee525f9c089f13a5",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/build-receipt.json",
+      "sha256": "cc49455fe55026bce794c17367d2e2a09b4513a0b4c465de3afb4a736cd88c15",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/build.log",
+      "sha256": "667074fcde9ea045e7befb4b0589bd9253952d7d981a338649144f330d8516cb",
+      "bytes": 71604,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/captures/pattern-pixel-fill-analytical.json",
+      "sha256": "7af26901de111da81f5e4704d75c794535cf5cbb454316fb11091574d91ef790",
+      "bytes": 10233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/captures/pixel-stroke-analytical.json",
+      "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+      "bytes": 3186,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/receipt.json",
+      "sha256": "8d38da3b953d9c8710f0eb4b30cc9a1bc690116d4a1ba7aeebe6590da19fb8fc",
+      "bytes": 75559,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/test-command.json",
+      "sha256": "e961111d806819a72e88bd39b50e9e69fa761f3ce3f1c1c16380b8c6df193aa1",
+      "bytes": 70397,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/test-process.json",
+      "sha256": "5a679eecc7b059b8578c68cd7bfe754e7575894a48dcea6259efb326e0214201",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/intel/test.log",
+      "sha256": "f765344ad1ae325bfdc092cb2d02bcb6f797dfc873faf58b342ead78daa9ab30",
+      "bytes": 252538,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 17:02:16.476",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 694,
+        "failures": 0,
+        "seconds": 89.371,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification01/qualification.json",
+      "sha256": "cb0666a1751a6a95342fcb0d29ec72c419ff15d33b529b8c06ffedfb7afa830c",
+      "bytes": 235274,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/build-command.json",
+      "sha256": "e141d056b8e72ca462c00c1582206602534d213d669d14301c4d6e8edfe1c45b",
+      "bytes": 473,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/build-process.json",
+      "sha256": "82f6b0ecdb1743589696d3838987f89cde06b0168dff173b4c7510ea9962dcfd",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/build-receipt.json",
+      "sha256": "440fdbab17a6fb57f66b119b31bc76f2383ecc80c18e9ec4e17c40bce6ef3721",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/build.log",
+      "sha256": "7c545da1bae5be9bb8362e7fa6e0ac7b098f6cecc4bad42a4dd15c2b89bba863",
+      "bytes": 71577,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/captures/pattern-pixel-fill-analytical.json",
+      "sha256": "7af26901de111da81f5e4704d75c794535cf5cbb454316fb11091574d91ef790",
+      "bytes": 10233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/captures/pixel-stroke-analytical.json",
+      "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+      "bytes": 3186,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/receipt.json",
+      "sha256": "7263707c875342177a0fa1b0e55da82cba8be28f93b81e2b5d18898bd2f99180",
+      "bytes": 75552,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/test-command.json",
+      "sha256": "1c7793a4d43493ceacbddb4be7bc81ae87fc91f0dbe0c5855b02fe01c2937ffe",
+      "bytes": 70371,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/test-process.json",
+      "sha256": "55d89deed1a4632f955844f25b08916302dac05c1297f6ce229cc9dc72c489ed",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/arm/test.log",
+      "sha256": "73155eae0302aec4c23b5dcec08b8bdc990184549f2371d3a40f169b8fcdd587",
+      "bytes": 252572,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 17:13:25.857",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 694,
+        "failures": 0,
+        "seconds": 56.701,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/build-command.json",
+      "sha256": "012c8b7cc86e1508022afede0550bed560768b3dac9224240c2149193ffb87c6",
+      "bytes": 565,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/build-process.json",
+      "sha256": "70060d056f6b42ff72afe719ef0962daf740cf830b0d5dc228275b028b3743cc",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/build-receipt.json",
+      "sha256": "6a8626682ebca5447184fbe764883abb5f1787502462b1bad1fb97ce16b36656",
+      "bytes": 424,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/build.log",
+      "sha256": "6d75d1e86cd07f9ae1074140b5bbdcac7f030e6d812d67123c2a36b5c954c81a",
+      "bytes": 1853654,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/captures/pattern-pixel-fill-analytical.json",
+      "sha256": "7af26901de111da81f5e4704d75c794535cf5cbb454316fb11091574d91ef790",
+      "bytes": 10233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/captures/pixel-stroke-analytical.json",
+      "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+      "bytes": 3186,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/receipt.json",
+      "sha256": "3e6520aa3a122d914bf071488c79d68e57065ee7c28f2e9cf4c6c3ac7b0faaf0",
+      "bytes": 75552,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/test-command.json",
+      "sha256": "11c1c79c92b84e6958155a1dae1e2c45cec089904a929dcb457a8bdbe9e13743",
+      "bytes": 70371,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/test-process.json",
+      "sha256": "73ee479f9dd9b3969f798c91946899f7f6fa00a19dab260c41617d78d9e6c78f",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/debug/test.log",
+      "sha256": "8d587980247265df64f2473f164bf740175396651cf464adf50688794ad1a460",
+      "bytes": 252535,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 17:04:50.134",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 694,
+        "failures": 0,
+        "seconds": 271.588,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/expected-cases.json",
+      "sha256": "1e4f9d5289c04ed664ca4d79e526d07b658d12b5a9efdb454550ecdebeb4b3f3",
+      "bytes": 73656,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/inputs.json",
+      "sha256": "4752ed3727c4612f26b875724d6b31f0fea841f53315aaed7abad815c89e9796",
+      "bytes": 1154507,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/build-command.json",
+      "sha256": "ed6f5e6c2f39776edb170dfcd9755e897eb6d4eb2dc01724af1d25d1979b84f4",
+      "bytes": 478,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/build-process.json",
+      "sha256": "c39de79c43e4c9d22af7b7450acf9b177d5b5ace97d3096dee2d4c19cec6eb45",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/build-receipt.json",
+      "sha256": "a25a6266058ebe8854dfe86690cf0b5b251c79c3e820017b601b8e69a27fe60d",
+      "bytes": 431,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/build.log",
+      "sha256": "82162d52c6b23acb7c2a7a40cdd1ae8bd1a7c42ea18866482d0c23a26aeff9e0",
+      "bytes": 71580,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/captures/blend-programs.json",
+      "sha256": "96f50497a42ac44f8d14294921ee4ed11620ed0d1711006a5d1a644a5d49ae13",
+      "bytes": 4247,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/captures/pattern-pixel-fill-analytical.json",
+      "sha256": "7af26901de111da81f5e4704d75c794535cf5cbb454316fb11091574d91ef790",
+      "bytes": 10233,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/captures/pixel-stroke-analytical.json",
+      "sha256": "5f19a2e5f6d5fe1cdea73eb3c2ad1e10d4469223ec2f9270771e7e126a4705c8",
+      "bytes": 3186,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/captures/selection-ants-native-geometry.json",
+      "sha256": "00620aa35606a1093e0998ca9e18a9df8be449c48532512975fcf4716ac3fcaf",
+      "bytes": 131,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/captures/tool-modifier-matrix.json",
+      "sha256": "7760bc691cb103ee55961df1afc216d9f64a93d314b94ef15a515fc2ff96b66f",
+      "bytes": 99214,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/receipt.json",
+      "sha256": "68f83c3f615d0471efac0e3767c808b501020d890312d2280fd91cc7cc7d4afc",
+      "bytes": 75559,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/test-command.json",
+      "sha256": "06040705a641e9ffd026511dfb5ddea7683f53b4348c7e9133dd0dd50d5b408c",
+      "bytes": 70397,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/test-process.json",
+      "sha256": "d3a0da0c76732e8561d546241f211d902802331ab21c8b42bc5f2f404c92ff7f",
+      "bytes": 19,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/intel/test.log",
+      "sha256": "91756e468e51741b76d223304c2ad0b0acdd8bd085d5719544c266ab71148123",
+      "bytes": 252538,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": "2026-11-18 17:14:34.982",
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "tests": 694,
+        "failures": 0,
+        "seconds": 85.67,
+        "outcome": "passed",
+        "scope": "last reported XCTest summary only"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/qualification02/qualification.json",
+      "sha256": "ae26f63275873e71934cd2d4f5729c38586fa6511cfcf02404681cfe1fe5a260",
+      "bytes": 235274,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/archive.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/content-sha256.json",
+      "sha256": "ab862fba44659450b933cd8c591be8f6c16e93d0a657201072d5a9b316421374",
+      "bytes": 2960,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/macho.log",
+      "sha256": "ef383917cf03bc3d5516c1a70948f2a4bc638a04e408f31bcf7dfacac4facfb6",
+      "bytes": 545,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/payload-comparison.json",
+      "sha256": "b36f7ab5bf1347082072941a05b242964ca90d3caa7ff9b4cc9fd6dc750859f4",
+      "bytes": 998,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/products-sha256.json",
+      "sha256": "d7c633561a4e3a5b1a47baa64833c9741f2839e9257d7dbdcd5202b02aa71b13",
+      "bytes": 449,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/stage.log",
+      "sha256": "7e6257b3d76a9be47639e84422b30906559e34ce7dce65153c6b78c1262e1329",
+      "bytes": 193,
+      "rolling_current_snapshot": false,
+      "test_result": {
+        "embedded_start_time": null,
+        "time_zone": "not embedded in XCTest line; do not assume UTC",
+        "outcome": "no_xctest_summary",
+        "scope": "absence of a test summary is not a passing test run"
+      }
+    },
+    {
+      "path": "artifacts/571-psd-float-interop/universal01/staging.json",
+      "sha256": "3e01bc81c1f876a4dc033b49a7c15a2bc25f6c05b27ed47bdc89e0667e4fbff0",
+      "bytes": 2135,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "artifacts/classic-gradient-map-reference.json",
       "sha256": "0fb2aec4d803e48e2c6023b61c5b62a9c92723406859a833cc14646bc11ad7f9",
       "bytes": 731,
@@ -69229,8 +70386,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "2e1a424119c685caad31f6bbec1d93f24a7da41a769b0b034eed3d7ba8bb444c",
-      "bytes": 375910,
+      "sha256": "08b1dddd8cbb09b41461120cccbcf3d24c3eb865704e830b4dc758a3a758bcdd",
+      "bytes": 376390,
       "rolling_current_snapshot": false
     },
     {
@@ -69379,14 +70536,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "6eac6c3ee60ec44c7a7067c66f1e4a9c49b773d952b0277a6ef2f261fa7ab2bc",
-      "bytes": 849748,
+      "sha256": "822494c433f649d1cb29d6f1adad3d7026ba4e031c0121de30f82c5503e833e2",
+      "bytes": 850686,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "510228f3d4496fe9b57be8b4d00f1b13968ac5a9a3aac8b476e76055c71a55ed",
-      "bytes": 4686369,
+      "sha256": "6cdfe4237be3361f095c27613a4d35de55788c343ed7f989f2b632b9e74b5a79",
+      "bytes": 4692843,
       "rolling_current_snapshot": false
     },
     {
@@ -72876,6 +74033,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/PSD_FLOAT_COMPRESSION_REFERENCES_571.json",
+      "sha256": "bdcb5c2fd0ee5087678e9d9a080bfb34c88a5165a6e3fb3aee9d8d3d16ee7202",
+      "bytes": 30911,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/PSD_GLOBAL_LIGHT.md",
       "sha256": "5069a8421e3aa92e3eb9bb29bb2aee3c1c15ed96443a9306bef2a5785450f6c6",
       "bytes": 4335,
@@ -74370,6 +75533,12 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_571.md",
+      "sha256": "4671f321e44f04db6fe0fcc2d0c618297fd2240b967c4760bbc86344282da276",
+      "bytes": 2209,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -74911,8 +76080,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "d21aa87ede6c4f65377408ca7547dc86ccec9eba5c6099e365e3963f328a8f71",
-      "bytes": 418625,
+      "sha256": "880323c53a9a100eaa1d8684c9e2306d59a9de0786805700504620b798924cd4",
+      "bytes": 418848,
       "rolling_current_snapshot": false
     },
     {
@@ -77329,9 +78498,9 @@
     }
   ],
   "counts": {
-    "milestones": 570,
-    "evidence_files": 8686,
-    "logs": 2085,
+    "milestones": 571,
+    "evidence_files": 8820,
+    "logs": 2124,
     "missing_explicit_references": 630
   }
 }
