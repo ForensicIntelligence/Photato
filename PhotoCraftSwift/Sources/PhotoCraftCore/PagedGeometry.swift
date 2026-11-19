@@ -23,9 +23,16 @@ struct RasterGridMap {
 
 /// At most one row of bounded support intervals is resident. Sparse projected
 /// rectangles never become a canvas-sized Set/bitmap, even when enlarged.
-struct GeometryPatchRegions:Sequence {
-  let width:Int,height:Int,rectangles:[IntRect]
-  func makeIterator()->AnyIterator<IntRect> {
+package struct GeometryPatchRegions: Sequence {
+  private let width: Int, height: Int, rectangles: [IntRect]
+
+  package init(width: Int, height: Int, rectangles: [IntRect]) {
+    self.width = width
+    self.height = height
+    self.rectangles = rectangles
+  }
+
+  package func makeIterator() -> AnyIterator<IntRect> {
     var row=0,intervals:[Range<Int>]=[],intervalIndex=0,column=0
     return AnyIterator {
       while true {

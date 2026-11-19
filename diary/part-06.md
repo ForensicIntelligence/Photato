@@ -602,6 +602,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 572 | [Match Intel HDR Normal layer and group compositing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) |
 | 2026-11-18 | 573 | [Match HDR Normal rounding at the Float32 underflow boundary](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) |
 | 2026-11-18 | 574 | [Add Stamp Layers and Stamp Visible](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-574) |
+| 2026-11-18 | 575 | [Render sparse stamps at maximum canvas size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

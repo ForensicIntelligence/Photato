@@ -45,20 +45,32 @@ enum PagedCanvasRenderer {
     }
     let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let sources=try region==complete && video==nil ? pointwiseSources(d,facts:facts):nil
+    let sparseStamp = forStamp && sources == nil && region == complete && video == nil
+      ? try stampSupport(d) : nil
     let columns=(d.width+63)/64,total=columns*((d.height+63)/64)
     var template=try Renderer.emptyCanvas(d, fill: forStamp ? Pixel(1, 1, 1, 0) : .clear)
+    var firstMissing = total
     if let sources {
-      var firstMissing=0
+      firstMissing = 0
       for key in TileKeys(sources) {
         try Task.checkCancellation()
-        if key>firstMissing {break};firstMissing=key+1
+        if key > firstMissing { break }
+        firstMissing = key + 1
       }
-      if firstMissing<total {
-        let x=(firstMissing%columns)*64,y=(firstMissing/columns)*64
-        let sampled=try render(.init(x:x,y:y,width:1,height:1))
-        let implicit=d.depth == .f32 ? sampled.linearPixel(x:x,y:y):sampled.pixel(x:x,y:y)
-        template=try template.mappedStoredSamples {_ in implicit}
+    } else if let sparseStamp {
+      firstMissing = 0
+      for patch in sparseStamp {
+        try Task.checkCancellation()
+        let first = (patch.y / 64) * columns + patch.x / 64
+        if first > firstMissing { break }
+        firstMissing = first + (patch.width + 63) / 64
       }
+    }
+    if firstMissing < total {
+      let x = (firstMissing % columns) * 64, y = (firstMissing / columns) * 64
+      let sampled = try render(.init(x: x, y: y, width: 1, height: 1))
+      let implicit = d.depth == .f32 ? sampled.linearPixel(x: x, y: y) : sampled.pixel(x: x, y: y)
+      template = try template.mappedStoredSamples { _ in implicit }
     }
     let builder=try Surface.PagedBuilder(template:template)
     var completedPatches=0
@@ -79,6 +91,11 @@ enum PagedCanvasRenderer {
         let x=first%columns*64,y=row*64
         try append(.init(x:x,y:y,width:min(d.width-x,(end-first)*64),height:min(64,d.height-y)))
       }
+    } else if let sparseStamp {
+      for patch in sparseStamp {
+        try Task.checkCancellation()
+        try append(patch)
+      }
     } else {
       let left=region.x/64*64,top=region.y/64*64
       let right=min(d.width,((region.x+region.width+63)/64)*64)
@@ -93,6 +110,49 @@ enum PagedCanvasRenderer {
     let result=try builder.finish()
     if reachedInput {throw AdjustmentInputReached(surface:result)}
     return result
+  }
+
+  /// Support of translated Normal stamp inputs. Outside these rectangles every
+  /// full-canvas source contributes its implicit value and partial rasters are absent.
+  /// The original document still supplies the global opacity and copy proofs.
+  private static func stampSupport(_ document: CraftDocument) throws -> GeometryPatchRegions? {
+    var rectangles: [IntRect] = []
+    let side = Surface.tileSide
+    let flat = document.layers.allSatisfy { !$0.isGroup && $0.parentID == nil && !$0.isClipped }
+    var firstVisible = true
+    for layer in document.layers {
+      try Task.checkCancellation()
+      guard layer.affine == nil, layer.style == nil, layer.blendMode == .normal,
+        layer.mask == nil, layer.vectorMask == nil, layer.smartObject == nil,
+        layer.smartFilters == nil, layer.warp == nil, layer.sourceProjection == nil
+      else { return nil }
+      if case .group(let group) = layer.content {
+        guard group.frame == nil, group.artboard == nil, layer.x == 0, layer.y == 0 else { return nil }
+        continue
+      }
+      guard case .raster(let source) = layer.content else { return nil }
+      guard layer.visible && layer.opacity > 0 else { continue }
+      let aligned = layer.x == 0 && layer.y == 0
+        && source.width == document.width && source.height == document.height
+      // The first HDR raster can seed RGB even at zero alpha. Subsequent
+      // transparent implicit source samples leave the existing pixel alone.
+      let skipsTransparentDefault = flat && document.depth == .f32 && !firstVisible && source.defaultPixel.a == 0
+      firstVisible = false
+      if aligned || skipsTransparentDefault {
+        let sourceColumns = (source.width + side - 1) / side
+        for key in source.storedTileKeys {
+          try Task.checkCancellation()
+          let x = key % sourceColumns * side, y = key / sourceColumns * side
+          let changes = IntRect(x: layer.x + x, y: layer.y + y,
+            width: min(side, source.width - x), height: min(side, source.height - y))
+          rectangles.append(changes.clipped(toWidth: document.width, height: document.height))
+        }
+      } else {
+        let bounds = IntRect(x: layer.x, y: layer.y, width: source.width, height: source.height)
+        rectangles.append(bounds.clipped(toWidth: document.width, height: document.height))
+      }
+    }
+    return GeometryPatchRegions(width: document.width, height: document.height, rectangles: rectangles)
   }
 
   /// Exhaustive pointwise eligibility: every missing tile has the same samples.

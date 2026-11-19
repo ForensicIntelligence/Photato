@@ -1,3 +1,7 @@
+**Source checkpoint 575.** Stamp Layers and Stamp Visible now process supported sparse raster stacks at 300,000 × 300,000 pixels. The largest tested canvas with two distant layers needed two render patches. [Qualification](SOURCE_PUBLICATION_575.md).
+
+Continue destructive HDR merge and stamp comparisons, including in-bounds zero alpha. Verify live shortcut dispatch and extend sparse coverage to richer sources.
+
 **Source checkpoint 574.** Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API. [Qualification](SOURCE_PUBLICATION_574.md).
 
 Measure maximum-size sparse stamping and verify live shortcut dispatch. Continue the ordinary HDR merge, small-alpha and independent clipping comparisons.

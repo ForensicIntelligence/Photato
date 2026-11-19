@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 575 — Render sparse stamps at maximum canvas size
+
+Stamp Layers and Stamp Visible now skip large empty areas of a sparse document. A 300,000-pixel-square test document with two separated layers used two render patches. The tests covered raster stacks, simple groups, a translucent canvas background and both stamp operations at 8, 16 and 32 bits per channel.
+
+Both ActionJSON job routes matched saved Photoshop layer samples for tagged and untagged files. All 749 selected tests passed in all three build configurations. Both slices of the local universal archive passed their offscreen checks.
+
+[Detailed record](DEVLOG.md#dev-step-575) · [Validation](SOURCE_PUBLICATION_575.md).
+
 ## 2026-11-18 — Step 574 — Add Stamp Layers and Stamp Visible
 
 Stamp Layers combines selected artwork on a new layer. Stamp Visible does the same for visible artwork. Both preserve the original layers and can be undone in one step. Photato exposes the shortcuts in the Layer menu and supports the same operation in recorded Actions and through the API.
@@ -587,14 +595,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:574 -->
+<!-- current-status-step:575 -->
 ## Current development status — 18 November 2026
 
-Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API.
+Stamp Layers and Stamp Visible now process supported sparse raster stacks at 300,000 × 300,000 pixels. The largest tested canvas with two distant layers needed two render patches.
 
-All 745 selected tests passed in Debug and both optimized builds. The local universal archive passed the offscreen checks and declares macOS 14 as its minimum. Interactive shortcuts, maximum-size sparse stamping and broader Photoshop parity remain open.
+All 749 selected tests passed in Debug and both optimized builds. The local universal archive passed both offscreen checks. Interactive shortcuts, complex sparse sources and broader Photoshop parity remain open.
 
-[Source checkpoint 574](SOURCE_PUBLICATION_574.md) · [Detailed record](DEVLOG.md#dev-step-574).
+[Source checkpoint 575](SOURCE_PUBLICATION_575.md) · [Detailed record](DEVLOG.md#dev-step-575).
 
 <!-- current-status:end -->
 
@@ -1375,6 +1383,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 572 | [Match Intel HDR Normal layer and group compositing](DEVLOG.md#dev-step-572) |
 | 2026-11-18 | 573 | [Match HDR Normal rounding at the Float32 underflow boundary](DEVLOG.md#dev-step-573) |
 | 2026-11-18 | 574 | [Add Stamp Layers and Stamp Visible](DEVLOG.md#dev-step-574) |
+| 2026-11-18 | 575 | [Render sparse stamps at maximum canvas size](DEVLOG.md#dev-step-575) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -120,6 +120,74 @@ final class AutomationActionJobsTests: XCTestCase {
     }
   }
 
+  @MainActor func testStampDescriptorsAcrossBothJobRoutesPreserveIndependentPhotoshopLayers() async throws {
+    let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures")
+    let stampFixtures = root.appendingPathComponent("layer-stamp")
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let selectAll = #"[{"_obj":"selectAllLayers","_target":[{"_ref":"layer","_enum":"ordinal","_value":"targetEnum"}]}]"#
+    let selectMiddle = #"[{"_obj":"select","_target":[{"_ref":"layer","_name":"Middle"}]}]"#
+    let visible = #"[{"_obj":"$MrgV","$Dplc":true}]"#
+    let selected = #"[{"_obj":"mergeLayersNew","duplicate":true}]"#
+    let cases: [(String, String, [String])] = [
+      ("layer-merge/photoshop-source-rgb8.psd", "owned-8-stamp-visible", [visible]),
+      ("layer-merge/photoshop-source-rgb8.psd", "owned-8-stamp-selected", [selectAll, selected]),
+      ("layer-merge/photoshop-source-rgb16.psd", "owned-16-stamp-visible", [visible]),
+      ("layer-merge/photoshop-source-rgb16.psd", "owned-16-stamp-selected", [selectAll, selected]),
+      ("layer-stamp/root-stack.psd", "root-stack-stamp-visible", [selectMiddle, visible]),
+    ]
+    let transport = Transport()
+    let comparisons = AutomationLayerMergeTests()
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
+      let untouched = shared.store.document
+      for (input, fixture, actions) in cases {
+        let sourceBytes = try Data(contentsOf: root.appendingPathComponent(input))
+        let original = try PSDCodec.read(sourceBytes)
+        let expected = try PSDCodec.read(Data(contentsOf: stampFixtures
+          .appendingPathComponent("\(architecture)-\(fixture).psd")))
+        let versions: [(input: Data, expected: CraftDocument)]
+        if original.workingICC == nil, let capturedProfile = expected.workingICC {
+          // Photoshop Save As records the working profile in these otherwise untagged sources.
+          // Test both tagging policies against the same independent pixel reference.
+          XCTAssertEqual(try ColorManagement.space(for: original), try ColorManagement.space(for: expected))
+          var untaggedExpected = expected
+          untaggedExpected.workingICC = nil
+          untaggedExpected.profileIsUntagged = true
+          var taggedSource = original
+          let assign = ColorProfileRequest(.assign, profile: capturedProfile)
+          try ColorProfileInput.command(assign, in: original).apply(to: &taggedSource)
+          let taggedBytes = try PSDCodec.writeRasterLayers(taggedSource)
+          XCTAssertEqual(try PSDCodec.read(taggedBytes).workingICC, capturedProfile)
+          versions = [(sourceBytes, untaggedExpected), (taggedBytes, expected)]
+        } else {
+          versions = [(sourceBytes, expected)]
+        }
+        var payload = body()
+        payload["options"] = ["actions": actions.map { ["source": ["content": $0, "contentType": "application/json"]] }]
+        for variant in versions {
+          service.setResourceJobsEnabled(false)
+          service.setResourceJobsEnabled(true)
+          await transport.set(variant.input)
+          var outputs: [Data] = []
+          for route in ["/v1/action-jobs", "/v2/execute-actions"] {
+            let result = try await output(service, submit: route, payload: payload)
+            let decoded = try PSDCodec.read(result.2)
+            try comparisons.samePixels(decoded, variant.expected)
+            XCTAssertEqual(decoded.workingICC, variant.expected.workingICC, fixture)
+            outputs.append(result.2)
+          }
+          XCTAssertEqual(outputs[0], outputs[1], fixture)
+        }
+      }
+      XCTAssertEqual(shared.store.document, untouched)
+      XCTAssertTrue(shared.store.session.undoStack.isEmpty)
+    }
+  }
+
   @MainActor func testRGB32MergedPhotoshopGoldenThroughDesktopDownloadAndBothJobs() async throws {
     try await assertRGB32Golden(folder: "rgb32-composite", name: "08-three-layers")
   }

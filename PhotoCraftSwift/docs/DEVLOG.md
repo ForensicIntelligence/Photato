@@ -593,7 +593,25 @@ For a readable account of the project from the beginning, see [Photato developme
 | 572 | 2026-11-18 | [Match Intel HDR Normal layer and group compositing](#dev-step-572) |
 | 573 | 2026-11-18 | [Match HDR Normal rounding at the Float32 underflow boundary](#dev-step-573) |
 | 574 | 2026-11-18 | [Add Stamp Layers and Stamp Visible](#dev-step-574) |
+| 575 | 2026-11-18 | [Render sparse stamps at maximum canvas size](#dev-step-575) |
 <!-- history-index:end -->
+
+<a id="dev-step-575"></a>
+
+## 2026-11-18 — Render sparse stamps at maximum canvas size
+
+The previous paged stamp could visit 689,136 render patches on a 300,000 × 300,000 canvas containing two tiny layers at opposite corners. The new support planner uses the actual raster geometry and allocated source tiles. It samples an untouched tile in the original document for the implicit result and renders the contributing patches through the existing compositor. An independent rectangle model matched dense tile enumeration and the first missing tile in all 3,500 randomized cases. [Adobe's canvas limit](https://helpx.adobe.com/au/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/file-size.html).
+
+The new Swift tests verify two visited patches in the maximum-size separated-layer and grouped cases. They check transparent black inside a source raster, transparent white in the gap, exact active layer placement, both stamp modes, RGB8/16/32, and a full-canvas translucent implicit backdrop. The compact reference uses the same compositor without the sparse scheduler.
+
+The first three maximum-size tests passed in all Debug attempts. The first HTTP check found exact raster samples but compared untagged inputs with the tagged Photoshop Save As references. An independent PSD resource reader confirmed no ICC resource in both original SDR inputs and a 3,144-byte ICC resource in the two stamped references. The second attempt preserved the source's untagged flag while replacing its profile bytes, so the writer correctly omitted that profile. The third attempt uses the native Assign Profile command and verifies the encoded tag before submitting the tagged variant. Both local job routes now pass with tagged and untagged inputs. Their output bytes agree for each pair of equivalent requests, and the decoded layer samples match the saved Photoshop references.
+
+The frozen 8,005-input snapshot passed 61 focused Debug tests. The implementation changes six build inputs, including its API capability description and bundle build number. All 749 selected tests passed in each configuration, and the exact compiled slices passed the extracted universal archive checks. Interactive shortcut dispatch, complex sparse inputs, physical Intel and macOS 14 execution remain open.
+
+
+**Local build cleanup.** Removed the build 572 validation ZIP and 11,995 older compiled artifacts and build cache entries from the current and legacy workspaces. The measured increase in free space was 30.19 GiB. The two last successful universal archives, 573 and 574, matched their SHA-256 receipts before and after deletion. Build 575's qualification and packaging inputs were protected. The cleanup kept source, the installed app, mixed evidence archives and cloud-only files. The itemized record is at `artifacts/development-history-audit/cleanup-20261118/photato-retention-through-572-receipt.json`.
+
+[Qualification](SOURCE_PUBLICATION_575.md).
 
 <a id="dev-step-574"></a>
 

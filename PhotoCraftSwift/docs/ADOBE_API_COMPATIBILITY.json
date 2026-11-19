@@ -307,7 +307,7 @@
     "action_events": ["mergeLayersNew", "$Mrg2", "mergeVisible", "$MrgV"],
     "parameters": "A true duplicate or $Dplc boolean requests the stamped operation. Existing local job endpoints retain their respective contracts.",
     "scope": "The shared compositor inserts a new raster above the active or top selected layer while preserving original layers. Saved Photoshop RGB8, RGB16 and RGB32 reference samples pass in both optimized architectures.",
-    "limits": "Physical platform, hosted Adobe service, other modes and maximum-size sparse stamp performance remain open."
+    "limits": "Physical platforms, the hosted Adobe service, other modes and complex sparse cases remain open. Build 575 verifies both local job routes against tagged and untagged RGB8 and RGB16 captures."
   },
   "working_profiles_step116": {
     "evidence": "docs/WORKING_PROFILE_REFERENCES.json",

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **574** · The 10 most recent entries, newest first.
+Source build **575** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 575 — Render sparse stamps at maximum canvas size
+
+Stamp Layers and Stamp Visible now skip large empty areas of a sparse document. A 300,000-pixel-square test document with two separated layers used two render patches. The tests covered raster stacks, simple groups, a translucent canvas background and both stamp operations at 8, 16 and 32 bits per channel.
+
+Both ActionJSON job routes matched saved Photoshop layer samples for tagged and untagged files. All 749 selected tests passed in all three build configurations. Both slices of the local universal archive passed their offscreen checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_575.md).
 
 ## 2026-11-18 — Step 574 — Add Stamp Layers and Stamp Visible
 
@@ -77,11 +85,3 @@ PSD and PSB exports now preserve all 32-bit grayscale samples when the document 
 An independent reader checked every sample of the 16 × 12 test image against a raw PSD saved by Photoshop 2026 at checkpoint 511. All 192 merged samples match byte for byte in PSD and PSB in all four compression modes. The comparison covers the grayscale plane and the channel count. All 629 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The tests also cover a saved auxiliary channel, hidden Background, both API encoders, and authenticated Photato downloads. Both universal app slices passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-566) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_566.md).
-
-## 2026-11-18 — Step 565 — Add Allow Tool Recording to Actions
-
-The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. Tool gestures still edit pixels and appear in Undo when the setting is off.
-
-All 608 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. In 52 channel-stroke sequences, both recording settings produced the same raw samples as direct editing and the same per-architecture output as build 564. Forty older Brush step encodings also matched. Both universal slices passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-565) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_565.md).

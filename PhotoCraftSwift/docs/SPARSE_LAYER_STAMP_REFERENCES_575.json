@@ -1,0 +1,101 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "4c4a4fe13745ebe7fb9943f72cb94ba0f9f491e7e44f21c9a7573820777e8429",
+    "binarySHA256": "20cb2cfd99248557024f96affc21ed659283c744756c2063312c9a3c8b9edd42",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 8005
+  },
+  "build": 575,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Interactive native shortcuts",
+    "Complex sparse source geometry",
+    "Physical supported platforms",
+    "Full Photoshop parity"
+  ],
+  "qualification": {
+    "caseSelectionSHA256": "3b3e33de2c56164322aac3607b6760274c76de2151ea9195d065cecfc5305341",
+    "configurations": {
+      "arm": {
+        "appSHA256": "d32c9d2111653273ca3cd7e97b45f90b1d9355c4b241553e01fffead391af58e",
+        "testBinarySHA256": "4678cd62eef58711d472b758d765dd90c125bdc104910b7da185bebfcb67cff1"
+      },
+      "debug": {
+        "appSHA256": "92d418f291b6821bba2158d1d14b366e78b1a9c45a29fc7f597bc382e911ea18",
+        "testBinarySHA256": "fd2b19a1e7a208ef1a3334fee6b6981e34e2b8db3155d186642dfe455be54f39"
+      },
+      "intel": {
+        "appSHA256": "7d5111bb54fd56f4d18be6e9759e7e11d7b3ca6cdcb8932577136a1ed3f54279",
+        "testBinarySHA256": "98d46a743422cde0813774cab509c03bff74d8fc103e3b3a985bc696f45d2826"
+      }
+    },
+    "focusedDebug": 61,
+    "selectedPerConfiguration": 749
+  },
+  "sourceInputs": 8005,
+  "sourceInputsChangedSince574": [
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "507aceb5eeb412e4672a5fe5882627c0af706b0e26a929e692d72ccef864cba6"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PagedGeometry.swift",
+      "sha256": "80651cdcd082cb0bd86401bcba1138280a26ac5e90cbe862634a748104223b29"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "c481d6b76d23dd71c5148101e6123961ebf4811746d418d5a612ae1912d0baf0"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift",
+      "sha256": "862433453f03879b5035a018611c3f6b0383c05685988f0497cfa09d9a411f52"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStampTests.swift",
+      "sha256": "abedb3c6ed2e7b1b9a2587afe461aeef6043ea70e46f97b5032c204a33e25169"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "8c0e6637cc73dfc1e4c1e440339b0f74b393bc8c0a4f8fc80e1a152515e90211"
+    }
+  ],
+  "spatialSupport": {
+    "coveredTilesAndFirstMissingAgreeWithDenseScan": true,
+    "fixedSeed": 575,
+    "maximumFixtureCanvas": [
+      300000,
+      300000
+    ],
+    "method": "Independent rectangle and tile model. Prepared Swift outputs and timings are separate qualification.",
+    "proposedPlannedPatches": 2,
+    "randomizedRectangleSets": 3500,
+    "theoreticalBaselinePatches": 689136
+  }
+}

@@ -101,6 +101,145 @@ final class LayerStampTests: XCTestCase {
     }
   }
 
+  func testMaximumSparseStampPatchesPreserveTransparentRGBAtAllDepths() async throws {
+    for depth in PixelDepth.allCases {
+      let size = Surface.maxDimension
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var first = try Surface(width: 3, height: 2, depth: depth, colorEncoding: encoding)
+      first.setPixel(x: 0, y: 0, Pixel(1, 0, 0, 1))
+      first.setPixel(x: 2, y: 1, Pixel(1, 0, 0, 1))
+      let second = try Surface(width: 2, height: 3, depth: depth,
+        fill: Pixel(0, 0, 1, 1), colorEncoding: encoding)
+      var bottom = Layer(name: "First", content: .raster(first))
+      bottom.x = 2
+      bottom.y = 4
+      var top = Layer(name: "Second", content: .raster(second))
+      top.x = size - 3
+      top.y = size - 4
+      var document = try CraftDocument(width: size, height: size, depth: depth)
+      document.layers = [bottom, top]
+      document.activeLayerID = top.id
+      let source = document
+      let result = try await Task.detached {
+        var renderedPatches = 0
+        let canvas = IntRect(x: 0, y: 0, width: size, height: size)
+        let rendered = try PagedCanvasRenderer.composite(source, region: canvas, forStamp: true, onPatch: {
+          renderedPatches = $0
+          if $0 > 4 { withUnsafeCurrentTask { $0?.cancel() } }
+        })
+        return (rendered, renderedPatches)
+      }.value
+      XCTAssertEqual(result.1, 2)
+      XCTAssertTrue(result.0.pixel(x: 3, y: 4).hasSameBits(as: .clear))
+      let sample = depth == .f32 ? result.0.linearPixel(x: 6, y: 4) : result.0.pixel(x: 6, y: 4)
+      XCTAssertTrue(sample.hasSameBits(as: Pixel(1, 1, 1, 0)))
+      for operation in [LayerMergeOperation.stampVisible, .stampSelected] {
+        let ids: Set<UUID> = operation == .stampSelected ? [bottom.id, top.id] : []
+        let stamped = try LayerMergePreparation.prepare(source, layerIDs: ids, operation: operation).result
+        XCTAssertEqual(Array(stamped.layers.dropLast()), source.layers)
+        let stamp = try XCTUnwrap(stamped.layers.last)
+        XCTAssertEqual(stamp.id, stamped.activeLayerID)
+        XCTAssertEqual(stamp.x, 2)
+        XCTAssertEqual(stamp.y, 4)
+        guard case .raster(let pixels) = stamp.content else { return XCTFail("Expected raster stamp") }
+        XCTAssertEqual(pixels.width, size - 3)
+        XCTAssertEqual(pixels.height, size - 5)
+        XCTAssertLessThanOrEqual(pixels.tileCount, 8)
+        XCTAssertTrue(pixels.pixel(x: 1, y: 0).hasSameBits(as: .clear))
+        let gap = depth == .f32 ? pixels.linearPixel(x: 4, y: 0) : pixels.pixel(x: 4, y: 0)
+        XCTAssertTrue(gap.hasSameBits(as: Pixel(1, 1, 1, 0)))
+        let end = depth == .f32 ? pixels.linearPixel(x: pixels.width - 1, y: pixels.height - 1)
+          : pixels.pixel(x: pixels.width - 1, y: pixels.height - 1)
+        XCTAssertTrue(end.hasSameBits(as: Pixel(0, 0, 1, 1)))
+      }
+    }
+  }
+
+  func testMaximumSparseStampKeepsItsParentAndGroupPixels() async throws {
+    let size = Surface.maxDimension
+    func document(side: Int) throws -> CraftDocument {
+      let group = Layer(name: "Nested", content: .group(.init(passThrough: true)))
+      let red = try Surface(width: 2, height: 2, depth: .f32, fill: Pixel(1, 0, 0, 0.5), colorEncoding: .linearRGB)
+      let blue = try Surface(width: 2, height: 2, depth: .f32, fill: Pixel(0, 0, 1, 0.5), colorEncoding: .linearRGB)
+      var base = Layer(name: "Base", content: .raster(red))
+      base.x = 2
+      base.y = 2
+      var child = Layer(name: "Child", content: .raster(blue))
+      child.x = side - 3
+      child.y = side - 3
+      child.parentID = group.id
+      var document = try CraftDocument(width: side, height: side, depth: .f32)
+      document.layers = [base, child, group]
+      document.activeLayerID = child.id
+      return document
+    }
+    let original = try document(side: size)
+    let measured = try await Task.detached {
+      var patches = 0
+      let canvas = IntRect(x: 0, y: 0, width: size, height: size)
+      let pixels = try PagedCanvasRenderer.composite(original, region: canvas, forStamp: true, onPatch: {
+        patches = $0
+        if $0 > 4 { withUnsafeCurrentTask { $0?.cancel() } }
+      })
+      return (pixels, patches)
+    }.value
+    XCTAssertEqual(measured.1, 2)
+    let compact = try document(side: 64)
+    let reference = try Renderer.compositePrepared(compact,
+      region: IntRect(x: 0, y: 0, width: 64, height: 64), forStamp: true)
+    for (x, y, expectedX, expectedY) in [(2, 2, 2, 2), (3, 5, 3, 5), (size - 3, size - 3, 61, 61)] {
+      XCTAssertTrue(measured.0.linearPixel(x: x, y: y).hasSameBits(
+        as: reference.linearPixel(x: expectedX, y: expectedY)))
+    }
+    let prepared = try LayerMergePreparation.prepare(original, layerIDs: [], operation: .stampVisible)
+    let stamp = prepared.result.layers[2]
+    XCTAssertEqual(stamp.id, prepared.result.activeLayerID)
+    XCTAssertEqual(stamp.parentID, original.layers[2].id)
+    XCTAssertEqual(prepared.result.layers.filter { $0.id != stamp.id }, original.layers)
+  }
+
+  func testSparseStampSamplesTheImplicitFullCanvasBackdrop() async throws {
+    let size = Surface.maxDimension
+    let background = Pixel(0.25, 0.5, 0.75, 0.5)
+    let foreground = Pixel(1, 0, 0, 0.5)
+    for depth in PixelDepth.allCases {
+      func document(_ side: Int) throws -> CraftDocument {
+        let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+        var backdrop = try Surface(width: side, height: side, depth: depth,
+          fill: background, colorEncoding: encoding)
+        backdrop.setPixel(x: 2, y: 3, Pixel(0, 0, 1, 1))
+        let base = Layer(name: "Base", content: .raster(backdrop))
+        var cover = Layer(name: "Cover", content: .raster(try Surface(
+          width: 2, height: 3, depth: depth, fill: foreground, colorEncoding: encoding)))
+        cover.x = side - 3
+        cover.y = side - 4
+        var source = try CraftDocument(width: side, height: side, depth: depth)
+        source.layers = [base, cover]
+        source.activeLayerID = cover.id
+        return source
+      }
+      let large = try document(size)
+      let compact = try document(64)
+      let result = try await Task.detached {
+        let extent = IntRect(x: 0, y: 0, width: size, height: size)
+        return try PagedCanvasRenderer.composite(large, region: extent, forStamp: true, onPatch: {
+          if $0 > 4 { withUnsafeCurrentTask { $0?.cancel() } }
+        })
+      }.value
+      let reference = try Renderer.compositePrepared(compact,
+        region: IntRect(x: 0, y: 0, width: 64, height: 64), forStamp: true)
+      func sample(_ pixels: Surface, _ x: Int, _ y: Int) -> Pixel {
+        depth == .f32 ? pixels.linearPixel(x: x, y: y) : pixels.pixel(x: x, y: y)
+      }
+      XCTAssertLessThanOrEqual(result.tileCount, 2)
+      for (x, y) in [(2, 3), (17, 24), (size - 2, size - 3)] {
+        let compactX = x > 32 ? 64 - (size - x) : x
+        let compactY = y > 32 ? 64 - (size - y) : y
+        XCTAssertTrue(sample(result, x, y).hasSameBits(as: sample(reference, compactX, compactY)))
+      }
+    }
+  }
+
   func testRejectedAndStaleStampPreservesDocument() throws {
     var source = try fixture("root-stack")
     source.activeLayerID = source.layers[1].id

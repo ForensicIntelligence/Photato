@@ -10,7 +10,7 @@ enum LayerMergeAPI {
   }
   static var capabilities:[String:Any] {[
     "command":"layer.merge","stateSchema":stateSchema,
-    "behavior":"Source-bound native RGB composition. Stamp creates a raster directly above the active or top selected layer and preserves the source layers. Both workflows preserve transparency and document state with one Undo, cancellation and stale-commit protection.",
+    "behavior":"Source-bound native RGB composition. Stamp creates a raster directly above the active or top selected layer and preserves the source layers. Both workflows preserve transparency and document state with one Undo, cancellation and stale-commit protection. Sparse stamping visits the contributing raster regions for eligible translated Normal-layer stacks and groups.",
     "limitations":"Numerical, palette, ink and temporal composition remain open. Destructive merges retain their existing hierarchy restrictions. Selected stamping requires complete clipping bases. Exact Photoshop backdrop, effects, interpolation, bounds, platform and performance qualification is open.",
     "adobe":"Supported mergeLayersNew and mergeVisible ActionJSON events share the compositor on isolated resource jobs. A true duplicate flag requests stamping."]}
 }
