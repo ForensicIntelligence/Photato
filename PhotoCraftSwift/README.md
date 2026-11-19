@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 597.** Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. [Qualification](docs/SOURCE_PUBLICATION_597.md).
+
 **Source checkpoint 596.** Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. [Qualification](docs/SOURCE_PUBLICATION_596.md).
 
 **Source checkpoint 595.** Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. [Qualification](docs/SOURCE_PUBLICATION_595.md).

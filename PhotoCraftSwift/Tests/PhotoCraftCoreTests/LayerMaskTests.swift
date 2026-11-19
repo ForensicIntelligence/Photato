@@ -4,6 +4,35 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class LayerMaskTests: XCTestCase {
+  func testStreamedFeatherReusesSecondStageRowsWithinBudgetWithoutChangingWords() throws {
+    let width = 79, height = 91
+    let windows = [23, 19, 17, 5]
+    let secondWidth = width - windows[0] - windows[1] + 2
+    let requiredBytes = secondWidth * windows[1] * MemoryLayout<Double>.stride
+    for integer in [true, false] {
+      let input = (0..<height).map { y in
+        (0..<width).map { x -> Float in
+          let code = (x * 317 + y * 271 + x * y * 41) % 32769
+          return integer ? Float(code) : Float(code) / 32768
+        }
+      }
+      var replayReads = 0, retainedReads = 0
+      let replay = try XCTUnwrap(StreamingAreaFeather.filter(width: width, height: height,
+        widths: windows, integerSamples: integer, secondStageCacheBytes: requiredBytes - 1) { y in
+        replayReads += 1
+        return input[y]
+      })
+      let retained = try XCTUnwrap(StreamingAreaFeather.filter(width: width, height: height,
+        widths: windows, integerSamples: integer, secondStageCacheBytes: requiredBytes) { y in
+        retainedReads += 1
+        return input[y]
+      })
+      XCTAssertEqual(retained.map(\.bitPattern), replay.map(\.bitPattern))
+      XCTAssertEqual(retainedReads, height + height - windows[0])
+      XCTAssertGreaterThan(replayReads, retainedReads)
+    }
+  }
+
   func testFeatherInputBandsRetainReplayRowsAndImplicitBands() throws {
     let region = IntRect(x: 27, y: 17, width: 171, height: 258)
     var bands = FeatherInputBands(region: region)

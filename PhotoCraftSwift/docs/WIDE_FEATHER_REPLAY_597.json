@@ -1,0 +1,464 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "64821e07ebe4483e298db2ca6e8c7dc56466436357fa5607c20bde276e1f929e",
+    "binarySHA256": "508e368e49206eee73371894bd32efd9e2ed7554f6995d8d9664413373d44e6d",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 597,
+  "cache": {
+    "overflowPath": "first-stage replay",
+    "secondStageMaximumBytes": 41943040,
+    "type": "Double horizontal sums"
+  },
+  "comparison": {
+    "allWordsIdentical": true,
+    "configurations": {
+      "arm": {
+        "pixel-f32": {
+          "596": {
+            "medianSeconds": 0.179514458,
+            "seconds": [
+              0.179595208,
+              0.179514458,
+              0.179491083
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "597": {
+            "medianSeconds": 0.13522275,
+            "seconds": [
+              0.134722542,
+              0.135598083,
+              0.13522275
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "words": 105
+        },
+        "pixel-u16": {
+          "596": {
+            "medianSeconds": 0.224319084,
+            "seconds": [
+              0.22430225,
+              0.224959083,
+              0.224319084
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "597": {
+            "medianSeconds": 0.179159333,
+            "seconds": [
+              0.179677542,
+              0.178492875,
+              0.179159333
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "words": 105
+        },
+        "pixel-u8": {
+          "596": {
+            "medianSeconds": 0.216665459,
+            "seconds": [
+              0.216665459,
+              0.216339417,
+              0.217454209
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "597": {
+            "medianSeconds": 0.173200459,
+            "seconds": [
+              0.173591541,
+              0.172829166,
+              0.173200459
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "words": 105
+        },
+        "smart-filter": {
+          "596": {
+            "medianSeconds": 0.866670584,
+            "seconds": [
+              0.866670584,
+              0.866716667,
+              0.865884667
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "597": {
+            "medianSeconds": 0.820678875,
+            "seconds": [
+              0.82072025,
+              0.820678875,
+              0.819573833
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "words": 420
+        },
+        "vector-1000": {
+          "596": {
+            "medianSeconds": 1.000656959,
+            "seconds": [
+              0.998408458,
+              1.000656959,
+              1.010586833
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "597": {
+            "medianSeconds": 0.933069875,
+            "seconds": [
+              0.912270958,
+              0.9382685,
+              0.933069875
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "words": 105
+        },
+        "vector-2": {
+          "596": {
+            "medianSeconds": 0.014555458,
+            "seconds": [
+              0.019652417,
+              0.014550709,
+              0.014555458
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "597": {
+            "medianSeconds": 0.014422292,
+            "seconds": [
+              0.014364292,
+              0.014422292,
+              0.016458875
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "words": 105
+        },
+        "vector-250-curved": {
+          "596": {
+            "medianSeconds": 0.177161041,
+            "seconds": [
+              0.16737275,
+              0.177161041,
+              0.181170708
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "597": {
+            "medianSeconds": 0.164356917,
+            "seconds": [
+              0.174010167,
+              0.164356917,
+              0.162753375
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "words": 105
+        },
+        "vector-250-inverted": {
+          "596": {
+            "medianSeconds": 0.16375475,
+            "seconds": [
+              0.171171542,
+              0.16375475,
+              0.163173417
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "597": {
+            "medianSeconds": 0.154954083,
+            "seconds": [
+              0.155805417,
+              0.150485958,
+              0.154954083
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "words": 105
+        }
+      },
+      "intel": {
+        "pixel-f32": {
+          "596": {
+            "medianSeconds": 0.211132375,
+            "seconds": [
+              0.211132375,
+              0.209121583,
+              0.211486084
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "597": {
+            "medianSeconds": 0.169685166,
+            "seconds": [
+              0.169685166,
+              0.169107625,
+              0.170740209
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "words": 105
+        },
+        "pixel-u16": {
+          "596": {
+            "medianSeconds": 0.30353125,
+            "seconds": [
+              0.30353125,
+              0.302757208,
+              0.304491583
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "597": {
+            "medianSeconds": 0.260666875,
+            "seconds": [
+              0.258186125,
+              0.261752334,
+              0.260666875
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "words": 105
+        },
+        "pixel-u8": {
+          "596": {
+            "medianSeconds": 0.273942959,
+            "seconds": [
+              0.270910208,
+              0.273942959,
+              0.275578125
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "597": {
+            "medianSeconds": 0.231530416,
+            "seconds": [
+              0.2305865,
+              0.232622959,
+              0.231530416
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "words": 105
+        },
+        "smart-filter": {
+          "596": {
+            "medianSeconds": 0.953620625,
+            "seconds": [
+              0.953620625,
+              0.950502917,
+              0.956680458
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "597": {
+            "medianSeconds": 0.911518834,
+            "seconds": [
+              0.910163209,
+              0.91725275,
+              0.911518834
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "words": 420
+        },
+        "vector-1000": {
+          "596": {
+            "medianSeconds": 1.510058791,
+            "seconds": [
+              1.497664208,
+              1.510058791,
+              1.526480417
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "597": {
+            "medianSeconds": 1.408535,
+            "seconds": [
+              1.418910875,
+              1.407017292,
+              1.408535
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "words": 105
+        },
+        "vector-2": {
+          "596": {
+            "medianSeconds": 0.0202675,
+            "seconds": [
+              0.019359083,
+              0.023018667,
+              0.0202675
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "597": {
+            "medianSeconds": 0.018913417,
+            "seconds": [
+              0.018913417,
+              0.016229208,
+              0.021389666
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "words": 105
+        },
+        "vector-250-curved": {
+          "596": {
+            "medianSeconds": 0.255522666,
+            "seconds": [
+              0.256434875,
+              0.255522666,
+              0.2549395
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "597": {
+            "medianSeconds": 0.260319791,
+            "seconds": [
+              0.299325416,
+              0.260319791,
+              0.243766209
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "words": 105
+        },
+        "vector-250-inverted": {
+          "596": {
+            "medianSeconds": 0.237033417,
+            "seconds": [
+              0.237033417,
+              0.22884075,
+              0.237888209
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "597": {
+            "medianSeconds": 0.22133875,
+            "seconds": [
+              0.22133875,
+              0.220955834,
+              0.22812175
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "words": 105
+        }
+      }
+    },
+    "host": "27.2",
+    "timing": "Median of three alternating build runs on the same Apple Silicon host while separate qualification was active. Intel used Rosetta.",
+    "wordsPerArchitecture": 1155
+  },
+  "expectedCasesSHA256": "c8567b5df6d6df55ee2d2b64d7d01939cc1207d73650c0e1f04a705e25d39da8",
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Broad whole-canvas runtime",
+    "Wide filter arithmetic and interactive frame pacing",
+    "Complete Photoshop byte parity",
+    "Physical Intel and macOS 14"
+  ],
+  "qualification": {
+    "arm": {
+      "appSHA256": "960b6382576473f3f306308cab7c4dc7529af0dcafc3e1fdf694bf068226d6e2",
+      "testBinarySHA256": "6f869205112523c375280d360a8429193445da70efc7b0c79ec131b4aa587086"
+    },
+    "debug": {
+      "appSHA256": "21dabf55592a07d73bc6331647e8782550f88cfb95a87db68ff2e645e00dda5d",
+      "testBinarySHA256": "72e3145a637dee1dfb149dd17dd253f8bbbbd29fcc41e231e73af0f64498fb4f"
+    },
+    "intel": {
+      "appSHA256": "38339e08a268a435107fee7a98b99408ea89ce05993ccebaacd94fc131cdea29",
+      "testBinarySHA256": "629d0c015e25056e8d321580a7dc9762e68aa1c0b5ceb27debc8ad640e60cd9e"
+    }
+  },
+  "references": [
+    "../Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/references.json",
+    "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/"
+  ],
+  "rosettaCurveRecheck": {
+    "allWordsIdentical": true,
+    "mode": "Nine alternating Rosetta curve renders per build after the regression suite stopped.",
+    "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a",
+    "timings": {
+      "596": {
+        "medianSeconds": 0.244949875,
+        "seconds": [
+          0.249648167,
+          0.2400705,
+          0.247763542,
+          0.24917075,
+          0.243269458,
+          0.25197975,
+          0.240955625,
+          0.24407875,
+          0.244949875
+        ]
+      },
+      "597": {
+        "medianSeconds": 0.238593166,
+        "seconds": [
+          0.238256709,
+          0.238593166,
+          0.236915375,
+          0.249998209,
+          0.249552208,
+          0.240124959,
+          0.237615459,
+          0.253999334,
+          0.234797792
+        ]
+      }
+    },
+    "words": 105
+  },
+  "selectedChecksPerConfiguration": 909,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince596": [
+    {
+      "path": "Sources/PhotoCraftCore/StreamingAreaFeather.swift",
+      "sha256": "0705f81ed69363d33c74f8973ab9be4775566f29ffb8209dffcf64a95989bcd1"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/LayerMaskTests.swift",
+      "sha256": "37086941fbc47b172ea6fbe153775ce162f726e25aa993a3cdc8aca1356b5f99"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "231f484004273300f15be2c4355be9428bbd00904e9db02bc00dfefaa02a5c81"
+    }
+  ]
+}

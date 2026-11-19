@@ -1,3 +1,7 @@
+**Source checkpoint 597.** Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. [Qualification](SOURCE_PUBLICATION_597.md).
+
+Use the remaining timing evidence to reduce wide filter arithmetic and cover broad whole-canvas mask execution. Qualify global opacity for large inverted paths and collect wider Photoshop edge and Smart Filter settings references.
+
 **Source checkpoint 596.** Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. [Qualification](SOURCE_PUBLICATION_596.md).
 
 Use the remaining timing evidence to reduce wide filter arithmetic and cover broad whole-canvas mask execution. Qualify global opacity for large inverted paths and collect wider Photoshop edge and Smart Filter settings references.

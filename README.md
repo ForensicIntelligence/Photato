@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 596.** Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md).
+**Development alpha — source build 597.** Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_597.md).
 
 ## Project layout
 

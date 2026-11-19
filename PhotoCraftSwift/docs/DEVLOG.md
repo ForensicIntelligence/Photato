@@ -615,7 +615,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 594 | 2026-11-19 | [Match measured short vector-mask Feather responses](#dev-step-594) |
 | 595 | 2026-11-19 | [Prepare vector-mask Feather around the viewport](#dev-step-595) |
 | 596 | 2026-11-19 | [Reuse source bands during wide mask Feather](#dev-step-596) |
+| 597 | 2026-11-19 | [Reuse window sums during wide mask Feather](#dev-step-597) |
 <!-- history-index:end -->
+
+<a id="dev-step-597"></a>
+
+## 2026-11-19 — Reuse window sums during wide mask Feather
+
+The second stage retains its exact Double horizontal sums in a circular buffer capped at 40 MiB. The first pass then runs once and the second stage subtracts stored sums as rows leave its window. If the buffer exceeds that budget, the filter replays outgoing rows with the existing streaming arithmetic.
+
+The regression compares both sides of the memory threshold and verifies that retained sums reduce source reads while preserving every output word in the integer and Float32 paths. The 1,000 px vector viewport went from 1.001 s to 0.933 s on Apple Silicon. The RGB32 pixel-mask control went from 0.180 s to 0.135 s and the oversize Smart Filter mask from 0.867 s to 0.821 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 596 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
+
+The first Rosetta curve comparison showed a small increase in median time. A separate nine-run replay per build measured 0.245 s to 0.239 s and preserved all sampled words.
+
+All 909 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal slices launched offscreen. Wide filter arithmetic and full-canvas runtime, physical platform testing, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_597.md).
 
 <a id="dev-step-596"></a>
 

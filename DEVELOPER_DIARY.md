@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **596** · The 10 most recent entries, newest first.
+Source build **597** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 597 — Reuse window sums during wide mask Feather
+
+Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. The 1,000 px vector viewport went from 1.001 s to 0.933 s on Apple Silicon. The RGB32 pixel-mask control went from 0.180 s to 0.135 s and the oversize Smart Filter mask from 0.867 s to 0.821 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 596 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
+
+All 909 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-597) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_597.md).
 
 ## 2026-11-19 — Step 596 — Reuse source bands during wide mask Feather
 
@@ -75,11 +83,3 @@ Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API 
 All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Fractional settings and other mask geometries still need exact Photoshop comparisons.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_588.md).
-
-## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
-
-Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. It follows the canvas and stored mask edges, including masks that extend outside the canvas. In the app tests, 34,975 coverage samples matched the 21 saved Apple Silicon references exactly. All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
-
-Photoshop's 250 and 1,000 px textured controls also match the model. The current app range is 100 px. Fractional radii, a few Intel rounding cases, and the wider control are still in development.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md).

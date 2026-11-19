@@ -1,14 +1,19 @@
 /// Streams square windows without keeping the padded source or all of a pass's
-/// rows. The two widest stages replay their outgoing rows from the source.
+/// rows. The first stage replays outgoing rows. The second retains its exact
+/// horizontal sums when its ring fits the workspace budget.
 enum StreamingAreaFeather {
+  static let maximumSecondStageCacheBytes = 40 * 1_024 * 1_024
+
   static func filter(width: Int, height: Int, widths: [Int], integerSamples: Bool,
+    secondStageCacheBytes: Int = maximumSecondStageCacheBytes,
     row: (Int) -> [Float]) -> [Float]? {
     let firstSide = widths[0], secondSide = widths[1]
     let firstWidth = width - firstSide + 1
+    let secondWidth = firstWidth - secondSide + 1
+    let storesSecondRows = secondWidth <= secondStageCacheBytes / MemoryLayout<Double>.stride / secondSide
     var first = Stage(width: firstWidth, side: firstSide, replay: true, integerSamples: integerSamples)
-    var laggedFirst = first
-    var second = Stage(width: firstWidth - secondSide + 1, side: secondSide, replay: true,
-      integerSamples: integerSamples)
+    var laggedFirst: Stage? = storesSecondRows ? nil : first
+    var second = Stage(width: secondWidth, side: secondSide, replay: !storesSecondRows, integerSamples: integerSamples)
     var currentWidth = second.width
     var remaining: [Stage] = []
     for side in widths.dropFirst(2) {
@@ -20,10 +25,10 @@ enum StreamingAreaFeather {
     output.reserveCapacity(currentWidth * resultHeight)
     for y in 0..<height {
       if y % 16 == 0 && Task.isCancelled { return nil }
-      // The second stage will discard the first-stage output from `secondSide`
-      // rows ago. Replay the first stage at that offset with its own running sum.
+      // When the ring exceeds the budget, keep an independent pass to replay
+      // the first-stage output from secondSide rows ago.
       let lag = y - secondSide
-      let leaving = lag >= 0 ? laggedFirst.advance(row(lag),
+      let leaving = lag >= 0 ? laggedFirst?.advance(row(lag),
         leaving: lag >= firstSide ? row(lag - firstSide) : nil) : nil
       guard let entering = first.advance(row(y), leaving: y >= firstSide ? row(y - firstSide) : nil)
       else { continue }
