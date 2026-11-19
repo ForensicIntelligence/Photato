@@ -132,6 +132,107 @@ final class PSDCompressionOptionsTests: XCTestCase {
     }
   }
 
+  func testLargeFlattenedPSBDecodesSparseProcessAndSavedPlanesTogether() throws {
+    let width = 1_201, height = 30_001
+    let cases: [(PixelDepth, PSDCompression, Bool)] = [
+      (.u8, .raw, false), (.u8, .rle, true), (.u16, .rle, false), (.f32, .rle, true),
+    ]
+    for (depth, compression, transparent) in cases {
+      let bitCount = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
+      let format = PSDFileFormat.psb
+      let process = transparent ? 4 : 3
+      var descriptor = try CraftDocument(width: width, height: height, depth: depth)
+      let gray = try Surface(width: width, height: height, depth: depth)
+      descriptor.alphaChannels = [AlphaChannel(name: "Saved alpha", pixels: gray)]
+      let defaults: [Float]
+      if depth == .f32 {
+        // Use finite four-byte repeated patterns to keep this RLE control below
+        // the Data container limit. Other fixtures exercise nonuniform byte runs.
+        defaults = [0x3f3f3f3f, 0x3f5f5f5f, 0x3f7f7f7f, 0x3f1f1f1f, 0x3e3e3e3e]
+          .map { Float(bitPattern: $0) }
+      } else {
+        defaults = transparent ? [0.75, 0.875, 1, 0.5, 0.25] : [0.25, 0.5, 0.75, 0.25]
+      }
+      let edits: [(plane: Int, x: Int, y: Int, value: Float)] = [
+        (0, 0, 0, transparent ? 0.99 : 0.1),
+        (transparent ? 3 : 1, 64, 65, 0.75),
+        (2, width - 1, height - 1, 0.625),
+        (process, width - 1, height - 1, 0.875),
+      ]
+      let output = PSDOutput()
+      try output.text("8BPS")
+      try output.n(format.rawValue, 2)
+      try output.append(Data(count: 6))
+      try output.n(defaults.count, 2)
+      try output.n(height, 4)
+      try output.n(width, 4)
+      try output.n(bitCount, 2)
+      try output.n(3, 2)
+      try output.section(Data())
+      try output.section(PSDAuxiliaryChannels.resources(descriptor, first: process))
+      var mask = PSDWriter()
+      if transparent {
+        mask.n(0, format.sectionLengthBytes)
+        mask.n(0, 4)
+        let key = bitCount == 32 ? "Mt32" : "Mtrn"
+        mask.text(format.tagSignature(key) + key)
+        mask.n(0, format.tagLengthBytes(key))
+      }
+      try output.section(mask.data, lengthBytes: format.sectionLengthBytes)
+      try PSDChannelWriter.write(width: width, height: height, depth: bitCount, compression: compression,
+        channels: defaults.count, format: format, to: output, repeatedRows: { index in
+          let plane = index / height, y = index % height
+          guard let changed = edits.first(where: { $0.plane == plane })?.y else { return height - y }
+          if y == changed { return 1 }
+          return y < changed ? changed - y : height - y
+        }) { index in
+          let plane = index / height, y = index % height
+          var sample: [UInt8] = []
+          try PSDChannelCodec.append(defaults[plane], depth: bitCount, to: &sample)
+          var row = Array(PSDChannelWriter.repeating(Data(sample), count: width))
+          if let edit = edits.first(where: { $0.plane == plane }), y == edit.y {
+            var word: [UInt8] = []
+            try PSDChannelCodec.append(edit.value, depth: bitCount, to: &word)
+            let first = edit.x * sample.count
+            row.replaceSubrange(first..<first + sample.count, with: word)
+          }
+          return row
+        }
+      let bytes = output.data
+      // Dense staging of this nonzero image would exceed this scratch cap.
+      let restored = try PSDCodec.readPaged(bytes, scratchByteLimit: 512 * 1024)
+      guard case .raster(let raster) = restored.layers[0].content else { return XCTFail("Expected a raster layer") }
+      let alpha = try XCTUnwrap(restored.alphaChannels?.first)
+      XCTAssertEqual(alpha.name, "Saved alpha")
+      XCTAssertEqual(raster.tileCount, 3)
+      XCTAssertEqual(alpha.pixels.tileCount, 1)
+      func stored(_ value: Float) -> Float {
+        guard bitCount != 32 else { return value }
+        let maximum: Float = bitCount == 8 ? 255 : 65_535
+        return (value * maximum).rounded() / maximum
+      }
+      for (x, y) in [(0, 0), (64, 65), (15, 150), (width - 1, height - 1)] {
+        func sample(_ index: Int) -> Float {
+          let difference = edits.first { $0.plane == index && $0.x == x && $0.y == y }
+          return stored(difference?.value ?? defaults[index])
+        }
+        let alphaValue = transparent ? sample(3) : 1
+        func color(_ index: Int) -> Float {
+          let value = sample(index)
+          return transparent ? (value - (1 - alphaValue)) / alphaValue : value
+        }
+        let expected = Pixel(color(0), color(1), color(2), alphaValue).quantized(depth)
+        let actual = bitCount == 32 ? raster.linearPixel(x: x, y: y) : raster.pixel(x: x, y: y)
+        XCTAssertTrue(actual.hasSameBits(as: expected), "depth \(bitCount), compression \(compression), location \(x), \(y)")
+        XCTAssertEqual(alpha.pixels.pixel(x: x, y: y).r, sample(process))
+      }
+      if compression == .rle {
+        XCTAssertThrowsError(try PSDCodec.readPaged(bytes.dropLast()))
+        XCTAssertThrowsError(try PSDCodec.readPaged(bytes + Data([128])))
+      }
+    }
+  }
+
   func testPackBitsLayerRetainsImplicitColorAndEveryEditedBit() throws {
     let width = 131, height = 129
     let changes = [IntRect(x: 0, y: 0, width: 1, height: 1),

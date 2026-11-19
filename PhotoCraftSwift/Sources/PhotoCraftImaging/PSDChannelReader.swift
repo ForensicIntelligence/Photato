@@ -41,6 +41,58 @@ final class PSDChannelReader {
     }
   }
 
+  private init(plane: PSDReader, lengths: PSDReader?, parent: PSDChannelReader, height: Int) {
+    source = plane
+    self.lengths = lengths
+    rowLengthBytes = parent.rowLengthBytes
+    rowBytes = parent.rowBytes
+    width = parent.width
+    depth = parent.depth
+    compression = parent.compression
+    remainingRows = height
+  }
+
+  /// Move past the merged process planes while retaining independent bounded
+  /// readers. Later saved alpha or spot planes remain in this stream.
+  func detachSeekablePlanes(count: Int, height: Int) throws -> [PSDChannelReader] {
+    guard supportsSparseRows, (3...4).contains(count), (1...Surface.maxDimension).contains(height),
+      height <= remainingRows / count else {
+      throw CraftError.invalid("Invalid Photoshop merged plane geometry.")
+    }
+    var readers: [PSDChannelReader] = []
+    readers.reserveCapacity(count)
+    for _ in 0..<count {
+      try Task.checkCancellation()
+      let table = try lengths?.view(height * rowLengthBytes)
+      let payloadBytes: Int
+      if var entries = table {
+        let data = try entries.bytes(entries.remaining)
+        payloadBytes = try data.withUnsafeBytes { records in
+          var total = 0
+          for row in 0..<height {
+            if row % 1024 == 0 { try Task.checkCancellation() }
+            let offset = row * rowLengthBytes
+            let length = rowLengthBytes == 2
+              ? Int(UInt16(bigEndian: records.loadUnaligned(fromByteOffset: offset, as: UInt16.self)))
+              : Int(UInt32(bigEndian: records.loadUnaligned(fromByteOffset: offset, as: UInt32.self)))
+            guard length <= source.remaining - total else {
+              throw CraftError.invalid("Truncated Photoshop merged plane.")
+            }
+            total += length
+          }
+          return total
+        }
+      } else {
+        payloadBytes = height * rowBytes
+      }
+      let plane = try source.view(payloadBytes)
+      readers.append(PSDChannelReader(plane: plane, lengths: table, parent: self, height: height))
+    }
+    remainingRows -= height * count
+    try finishIfAtEnd()
+    return readers
+  }
+
   func nextRow() throws -> [UInt8] {
     guard remainingRows > 0 else {
       throw CraftError.invalid("No remaining PSD channel rows.")

@@ -162,6 +162,12 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(interchange["largeSavedChannelExport"] as? String,
         "Raw and PackBits output reuse unchanged rows in sparse saved channels. Unchanged original Float32 words remain exact.")
       XCTAssertFalse(String(decoding: sameOrigin.1, as: UTF8.self).contains("Support Development"))
+      let transfers = try XCTUnwrap(catalogue["documentTransfers"] as? [String: Any])
+      let containers = try XCTUnwrap(transfers["photoshopContainers"] as? [String: Any])
+      let sparseRGB = try XCTUnwrap(containers["sparseFlattenedRGBInput"] as? [String: Any])
+      XCTAssertEqual(sparseRGB["compression"] as? [String], ["raw", "rle"])
+      XCTAssertEqual(sparseRGB["depths"] as? [Int], [8, 16, 32])
+      XCTAssertEqual(sparseRGB["keepsSavedChannels"] as? Bool, true)
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
     }

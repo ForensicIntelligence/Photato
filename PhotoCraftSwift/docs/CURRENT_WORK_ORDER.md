@@ -1,3 +1,7 @@
+**Source checkpoint 613.** Large flattened Raw and PackBits RGB documents retain editable pixels, transparency and saved channels without staging all process planes. [Qualification](SOURCE_PUBLICATION_613.md).
+
+Verify sparse ZIP layer and mask import, then measure native-mode and dense document interchange.
+
 **Source checkpoint 612.** Sparse PSD and PSB output reuses unchanged saved alpha, spot, and Quick Mask rows and retains the exact unchanged Float32 source words. [Qualification](SOURCE_PUBLICATION_612.md).
 
 Verify flattened RGB sparse import, then check dense and ZIP paths and compare with Adobe-authored channel files.

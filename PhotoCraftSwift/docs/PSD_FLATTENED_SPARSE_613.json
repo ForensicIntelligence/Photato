@@ -1,0 +1,164 @@
+{
+  "build": 613,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince612": [
+    {
+      "path": "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "sha256": "d28f057d0de95aadb3a8243cfdf3598b11a36a0ea6bc0638ed5152792b1b93b9"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDChannelReader.swift",
+      "sha256": "c9907de264224325782fafcd43ed7f723c16a9e73a3bae02162f4d1656e76f96"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "88fd55ae95433e10bfa5620ea457120ff1ab27dd950b9f699c4048e9104497b5"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDRasterPaging.swift",
+      "sha256": "ccb37d93a610e1fc6c3d36932c838c51f72f39c86e6824e2b398251338cbbaef"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "00a6500033d4b1166a0bbc33d6406b74d076ea081a695b464d5b935cd6857d4f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompressionOptionsTests.swift",
+      "sha256": "308ee38e3d11a166ba628ab87da77a65f1d7657188c78bdab8c0e088e3a46793"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "5f2e24468560f63e29a77744d4e10c259f50dd4f13b1b274930ad9c0371780f2"
+    }
+  ],
+  "selectedChecksPerConfiguration": 961,
+  "focusedAuxiliaryChecksPerConfiguration": 30,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "37d42d21af673252ec5b45d4cd8c37b29903c9804401f3a02bb4021a5f96ab1b",
+      "testBinarySHA256": "fa1504e93475720b015d8a1db09048506425b5db3fc8a504b3a15a2bfbf05f08",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "6067a20dc1f6a647041129585a002fb49680c870a4ead665aba16e89153612be",
+      "testBinarySHA256": "576f59a1dffaa73c2cf3881acc2328235e113e96f1d9f6604e72f4981a7bca37",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "a9eb926f54827f6c19ddb73ed1ed780d2990cf37dd167f3320cdb9c2d6724fb6",
+      "testBinarySHA256": "f28dbc9bcf820759447b01aee59661bd69b19bf1c2b2d3cf5ff61bf68e106351",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "5b823b46400e3cc9cf527116336ecb21c50c4176bb8fe4aaaeca952a5c36f3b6",
+    "binarySHA256": "c2f09b59a1cc14b09444ba6b33866f98a0ffd66c8db756686d3eb0c1f800312c",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+        "bytes": 122076
+      }
+    }
+  },
+  "independentFlattenedControls": {
+    "architecture": "arm64",
+    "configuration": "Debug",
+    "checks": [
+      {
+        "mode": "baseline",
+        "opened": false,
+        "peakResidentBytes": 18808832,
+        "requiredBytesAtFailure": 851968,
+        "scratchLimitBytes": 786432,
+        "seconds": 18.655342292,
+        "build": 612,
+        "checkerSHA256": "800a2769b04d959644c6b4591fca6485c2166d149d7c6686d4e577287b6ebd01"
+      },
+      {
+        "height": 30001,
+        "mappedAlphaBytes": 65536,
+        "mappedRGBBytes": 196608,
+        "matchedRGBAWords": 42372,
+        "matchedSavedGrayWords": 2401,
+        "mode": "bounded",
+        "opened": true,
+        "peakResidentBytes": 19955712,
+        "seconds": 0.209797,
+        "width": 1201,
+        "build": 613,
+        "checkerSHA256": "d60bc515f81c2fc88112172c8ca6f22b9b8db0bcccf6d6fc4732be071661119c"
+      },
+      {
+        "height": 300000,
+        "mappedAlphaBytes": 65536,
+        "mappedRGBBytes": 196608,
+        "matchedRGBAWords": 36864,
+        "matchedSavedGrayWords": 1024,
+        "mode": "maximum",
+        "opened": true,
+        "peakResidentBytes": 23412736,
+        "seconds": 13.576591334,
+        "width": 300000,
+        "build": 613,
+        "checkerSHA256": "d60bc515f81c2fc88112172c8ca6f22b9b8db0bcccf6d6fc4732be071661119c"
+      }
+    ],
+    "disposableFilesRemoved": true
+  },
+  "focus": [
+    "PhotoCraftAppTests.AutomationEncodingOptionsTests/testImportAndBothJobsRetainSavedChannelsWithoutMergedPreview",
+    "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testAbsentMergedPreviewRetainsIndependentAuxiliaryPlanesAtEveryDepth",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testAllIndependentCompressedPlanesAndNative77PreserveEveryWord",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testFiftySixChannelBoundaryNeverDropsPlanesAndCancellationIsAtomic",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testFloatSpotGrayUsesOriginalOnlyUntilTheSampleChanges",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testLargeSavedChannelsRetainImplicitGrayAndExactChangedWords",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testLayeredPSDPSBOutputsKeepPlanesAndAreCapturedForIndependentReader",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testMetadataValidationNamesAndUnknownBookColorsAreExplicit",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testPagedSavedChannelsRoundTripThroughFileAndDataWriters",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testSparseFloatWriterKeepsOriginalOnlyWordsAcrossTheMaximumCanvas",
+    "PhotoCraftImagingTests.PSDAuxiliaryChannelTests/testUnusedRawPreviewPlanesSkipFilePagesAndValidateTheirBounds",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testAllLayerAndMergedCompressionsRetainSamplesMasksAndMetadata",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testCancellationStopsRLEBeforePublishingAFile",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testFourPlanarMethodsAndBothRowTableWidthsRoundTripExactly",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testLargeFlattenedPSBDecodesSparseProcessAndSavedPlanesTogether",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testLayerWithPaintAcrossFirstRowFitsItsSparseBudget",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testOptionalRGB8PreviewMatchesOwnedPhotoshopPlaceholderAndKeepsEditableLayers",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testOversizedPSDRowRejectsAtomicallyWhilePSBRetainsAllBytes",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testPackBitsLayerRejectsChangedNonfiniteAndTruncatedRows",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testPackBitsLayerRetainsImplicitColorAndEveryEditedBit",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testPackBitsMatchesOriginalRustBoundaryAndRandomRows",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testRepeatedRLECacheValidationKeepsAuxiliaryRowsAndRejectsMalformedRows",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testRepeatedRowsKeepExactPlanarBytesAndCompression",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testSparseLayerRowInspectionPreservesTheLiveCursor",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testSparsePagedMergedRowsMatchOrdinaryBandsAtEveryDepth",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testWidePaintedRowKeepsSparseLayerAndMaskedCompositeBytes",
+    "PhotoCraftImagingTests.PSDFileOutputTests/testFileAndDataSerializationMatchForIndependentPSBCorpora",
+    "PhotoCraftImagingTests.PSDFileOutputTests/testLengthChecksAndMidOutputBudgetFailureKeepExistingFile",
+    "PhotoCraftImagingTests.PSDFileOutputTests/testRowCompressionMatchesPreviousWholePlaneEncoderAcrossDepthsAndBoundaries"
+  ],
+  "limits": "The maximum-size file used independently generated RGB8 PackBits data. Live Photoshop exchange and dense and ZIP maximum-size input remain open."
+}

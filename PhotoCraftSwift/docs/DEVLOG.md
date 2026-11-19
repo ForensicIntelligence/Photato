@@ -631,7 +631,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 610 | 2026-11-19 | [Read saved Photoshop channels without a merged preview](#dev-step-610) |
 | 611 | 2026-11-19 | [Import large PSD and PSB saved channels into sparse tiles](#dev-step-611) |
 | 612 | 2026-11-19 | [Save large PSD and PSB channels with repeated rows](#dev-step-612) |
+| 613 | 2026-11-19 | [Import large flattened RGB PSD and PSB without staging all process planes](#dev-step-613) |
 <!-- history-index:end -->
+
+<a id="dev-step-613"></a>
+
+## 2026-11-19 — Import large flattened RGB PSD and PSB without staging all process planes
+
+The flattened RGB importer now detaches bounded individual readers for seekable Raw or PackBits process and transparency planes, then uses the existing sparse raster assembly. Saved channels later in the same image stream stay in the parent reader. Each child keeps its own bounds and PackBits table. The renderer keeps the dominant color implicit and retains edited tiles. A white-matted transparent preview decodes both the implicit samples and changed pixels in the stored color space. Native modes and unseekable ZIP continue through their existing decoders.
+
+In an independently authored 1,201 × 30,001 flattened PSB, build 612 reached a 768 KiB tile scratch cap after staging the image. Build 613 opened that control with three RGBA tiles and one saved-alpha tile. The native file reader also opened a 300,000 × 300,000 PSB with declared merged transparency and saved alpha in 13.58 seconds in an Apple Silicon Debug run. The checker matched 36,864 RGBA words and 1,024 saved alpha words. The file was 7.04 GB. Both disposable files were removed.
+
+The added regression covers RGB8 Raw and PackBits, RGB16 PackBits, and RGB32 PackBits. It checks sample words, transparency, the saved alpha, and invalid lengths and extra bytes. The first fixture required an edit in every plane. The unchanged green plane now uses its implicit row for the full height. The first test run passed its other 27 cases. The new case exceeded the Data output limit because some Float32 byte patterns did not compress. The retry uses finite repeated-byte default samples so the same bounded decoder test remains within that limit. Capability discovery adds `documentTransfers.photoshopContainers.sparseFlattenedRGBInput`.
+
+The final focused run passed all 30 checks. It included the repaired flat PSB regression, the real HTTP capability catalogue and the shared import and job routes. The maximum-size input was synthetic. Large ZIP composites, native color-mode staging and live Photoshop exchange remain open.
+
+All 961 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_613.md).
 
 <a id="dev-step-612"></a>
 

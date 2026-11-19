@@ -1,3 +1,7 @@
+### Large flattened Photoshop RGB import (checkpoint 613)
+
+Desktop Open, Photato `POST /v1/documents/import`, and Photoshop resource inputs in both job interfaces share the same reader. Capability discovery adds `documentTransfers.photoshopContainers.sparseFlattenedRGBInput`. For large flattened Raw and PackBits RGB data, bounded readers keep process and transparency planes separate from later saved channels. Implicit samples and changed tiles preserve editable pixels and alpha within the existing scratch budgets. Native file I/O passed the 300,000 × 300,000 synthetic control. Existing API size limits and Adobe contract still apply.
+
 ### Sparse Photoshop saved-channel export (checkpoint 612)
 
 Desktop save, Photato `document.saveAs`, Photato PSD/PSB downloads and applicable outputs of both job interfaces use the shared row writer. Capability discovery adds `alphaChannels.photoshopInterchange.largeSavedChannelExport`. Sparse saved channels supply runs of identical default rows and rebuild changed tile columns. Float32 selected-area and spot output also uses the original gray tile grid, so unchanged source words remain exact. Existing format-specific compression, API size and job limits continue to apply. A maximum-size round trip was checked with native PSB file I/O.

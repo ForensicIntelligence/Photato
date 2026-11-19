@@ -67,7 +67,8 @@ enum PSDRasterPaging {
 
   /// Retain only tiles that differ from the implicit RGB(A) or numeric gray sample.
   static func sparseLayer(width: Int, height: Int, depth: PixelDepth,
-    channels: [PSDChannelReader], context: Context, invertMask: Bool = false) throws -> Surface {
+    channels: [PSDChannelReader], context: Context, invertMask: Bool = false,
+    mergedTransparency: Bool = false) throws -> Surface {
     let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
     let components = channels.count, sampleSize = bits / 8, side = Surface.tileSide
     let isMask = components == 1
@@ -87,12 +88,14 @@ enum PSDRasterPaging {
       try representativeSample(in: $0, rows: sampleRows, height: height, width: width, sampleSize: sampleSize)
     }
     let numeric = try samples.map { try PSDChannelCodec.sample($0, 0, depth: bits) }
-    let implicit = isMask ? gray(numeric[0])
+    let storedDefault = isMask ? gray(numeric[0])
       : Pixel(numeric[0], numeric[1], numeric[2], components == 4 ? numeric[3] : 1)
+    let implicit = mergedTransparency ? PSDMergedSample.decode(storedDefault) : storedDefault
     let encoding: SurfaceColorEncoding = linear ? .linearRGB : .sRGB
     let seed = try Surface(width: 1, height: 1, depth: depth, colorEncoding: encoding)
     let template = try seed.reframedImplicitValue(width: width, height: height, sample: implicit, linear: linear)
     let fill = linear ? template.linearDefaultPixel : template.defaultPixel
+    let defaultChannels = mergedTransparency ? storedDefault : fill
     let pattern = samples.map { bytes in Array(PSDChannelWriter.repeating(Data(bytes), count: side)) }
     let builder = try Surface.PagedBuilder(template: template, backing: context.backing)
     let stripe = try PSDPlaneScratch(width: width, height: min(side, height), depth: bits, components: components)
@@ -128,8 +131,9 @@ enum PSDRasterPaging {
             if isMask {
               pixel = try gray(stripe.sample(x: x + px, y: py, component: 0))
             } else {
-              pixel = try Pixel(sample(0, fill.r), sample(1, fill.g), sample(2, fill.b),
-                components == 4 ? sample(3, fill.a) : 1)
+              let stored = try Pixel(sample(0, defaultChannels.r), sample(1, defaultChannels.g),
+                sample(2, defaultChannels.b), components == 4 ? sample(3, defaultChannels.a) : 1)
+              pixel = mergedTransparency ? PSDMergedSample.decode(stored) : stored
             }
             if pixel.hasSameBits(as: fill) { continue }
             if linear { patch.setLinearPixel(x: px, y: py, pixel) }

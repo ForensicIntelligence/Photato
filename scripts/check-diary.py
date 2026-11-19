@@ -110,8 +110,9 @@ def check_chronological_index(diary: str, build: int) -> None:
 
 
 def check_readme_links(root: Path, readme: str) -> None:
-    top = "\n".join(readme.splitlines()[:12])
-    if "\n## Developer Diary\n" not in top or not {"DEVELOPER_DIARY.md", "diary/README.md"}.issubset(LINK_TARGET.findall(top)):
+    sections = readme.split("\n## ")
+    diary = next((section for section in sections[1:3] if section.startswith("Developer Diary\n")), "")
+    if not {"DEVELOPER_DIARY.md", "diary/README.md"}.issubset(LINK_TARGET.findall(diary)):
         raise ValueError("Keep the Developer Diary section and both diary links near the top of README.md.")
 
     native_readme = (root / "PhotoCraftSwift/README.md").read_text(encoding="utf-8")

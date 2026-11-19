@@ -1,3 +1,5 @@
+**Source checkpoint 613.** Large flattened Raw and PackBits RGB documents retain editable pixels, transparency and saved channels without staging all process planes. [Qualification](docs/SOURCE_PUBLICATION_613.md).
+
 **Source checkpoint 612.** Sparse PSD and PSB output reuses unchanged saved alpha, spot, and Quick Mask rows and retains the exact unchanged Float32 source words. [Qualification](docs/SOURCE_PUBLICATION_612.md).
 
 **Source checkpoint 611.** Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles. [Qualification](docs/SOURCE_PUBLICATION_611.md).

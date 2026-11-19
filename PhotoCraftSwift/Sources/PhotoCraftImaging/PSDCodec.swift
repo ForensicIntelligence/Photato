@@ -978,9 +978,18 @@ public enum PSDCodec {
       }
     } else if count == 0,let paging {
       try paging.admitRaster(bytes:storageBytes(width:width,height:height))
-      let surface=try PSDRasterPaging.merged(width:width,height:height,depth:pixelDepth,components:imageChannels,
-        transparency:mergedTransparency,context:paging,reader:merged)
-      let layer=Layer(name:"Background",content:.raster(surface));doc.layers=[layer];doc.activeLayerID=layer.id
+      let surface: Surface
+      if width > Surface.maximumDensePixels / height, merged.supportsSparseRows {
+        let channels = try merged.detachSeekablePlanes(count: imageChannels, height: height)
+        surface = try PSDRasterPaging.sparseLayer(width: width, height: height, depth: pixelDepth,
+          channels: channels, context: paging, mergedTransparency: mergedTransparency)
+      } else {
+        surface = try PSDRasterPaging.merged(width: width, height: height, depth: pixelDepth, components: imageChannels,
+          transparency: mergedTransparency, context: paging, reader: merged)
+      }
+      let layer = Layer(name: "Background", content: .raster(surface))
+      doc.layers = [layer]
+      doc.activeLayerID = layer.id
     } else if count == 0 {
       guard storageBytes(width: width, height: height) <= 512 * 1024 * 1024 else {
         throw CraftError.invalid("PSD pixels exceed the memory budget.")
