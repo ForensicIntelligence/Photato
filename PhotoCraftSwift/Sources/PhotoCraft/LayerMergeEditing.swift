@@ -7,10 +7,15 @@ enum LayerMergeIntent {
     ids.count==1 && document.layers.contains{ids.contains($0.id) && $0.isGroup}
   }
   nonisolated static func operation(_ ids:Set<UUID>,in document:CraftDocument)->LayerMergeOperation {
-    ids.count==1 && !singleGroup(ids,in:document) && LayerMerge.canApply(.down,layerIDs:ids,in:document) ? .down:.selected
+    if LayerMerge.isClippingBase(ids, in: document) { return .clippingMask }
+    if ids.count == 1 && !singleGroup(ids, in: document) && LayerMerge.canApply(.down, layerIDs: ids, in: document) {
+      return .down
+    }
+    return .selected
   }
   nonisolated static func adobeCommand(_ document:CraftDocument,_ ids:Set<UUID>,_ operation:LayerMergeOperation)throws->Command {
-    try LayerMergePreparation.command(document,layerIDs:ids,operation:operation == .down && singleGroup(ids,in:document) ? .selected:operation)
+    let contextual = operation == .down ? self.operation(ids, in: document) : operation
+    return try LayerMergePreparation.command(document, layerIDs: ids, operation: contextual)
   }
 }
 extension EditorStore {

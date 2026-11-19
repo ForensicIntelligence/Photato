@@ -596,9 +596,12 @@ For a readable account of the project from the beginning, see [Photato developme
 | 575 | 2026-11-18 | [Render sparse stamps at maximum canvas size](#dev-step-575) |
 | 576 | 2026-11-18 | [Match stored RGB32 Normal merge and stamp samples](#dev-step-576) |
 | 577 | 2026-11-18 | [Preserve stored RGB32 pixel masks when merging and stamping](#dev-step-577) |
+| 578 | 2026-11-18 | [Add contextual Merge Clipping Mask](#dev-step-578) |
 <!-- history-index:end -->
 
-### Build 578 in progress — Merge Clipping Mask
+<a id="dev-step-578"></a>
+
+## 2026-11-18 — Add contextual Merge Clipping Mask
 
 The installed Photoshop build uses its existing Merge Layers event for Merge Clipping Mask when a single raster clipping base is selected. Command-E retains its documented Layer menu binding. Photoshop reports Merge Down when the bottom clip is selected instead. The exploratory capture found no distinct mergeClippingMask ActionJSON event. The second capture uses authored 8-, 16- and 32-bit root and nested stacks with unrelated layers on both sides. The contextual base command keeps the base and unrelated rows, consumes consecutive clips under the same parent, discards hidden clips from the stack, and leaves hidden clip samples out of the new raster. A hidden or locked base rejects the command. Locked clips can be consumed. Photoshop preserves base opacity, Normal or Multiply base blending, the stored raster extent and alpha even at zero base opacity, for off-canvas pixels, or for entirely transparent base samples. [Adobe's merge and stamp commands](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).
 
@@ -607,6 +610,10 @@ A probe linked against the existing Photato renderer found RGB differences in al
 An isolated Swift candidate adds the contextual native menu and Layers panel action, the Photato layer.merge clippingMask operation, the existing Adobe merge descriptor contextual mapping, portable Action library version 72, and single-step Undo. It preserves the base's original extent and uses allocated tiles and clip geometry for sparse planning. Qualification01 passed 68 focused Debug tests including saved pixels, layer names and metadata, native routing, Actions replay and maximum-size sparse output. Qualification02 added four geometry outcomes, two unavailable controls and both real local ActionJSON job routes. All 69 focused Debug tests passed. Its 17 changed inputs are tests and fixtures. The application hash matches qualification01. The same 8,160 inputs entered qualification03 on Debug, optimized Apple Silicon and Intel under Rosetta.
 
 The follow-up duplicate-flag capture reports Stamp Group at the clipping base and Stamp Down at the bottom clip. Both operations update the existing base raster in place and keep the clip chain. The selected row stays active. On the tested RGB32 stack only the base RGB changes, and its bytes equal the matching destructive merge. An entirely hidden chain retains its existing base samples. This is separate from the existing multi-selection stamp, and it is still open. Evidence is under `artifacts/578-merge-clipping/photoshop05` and `artifacts/578-merge-clipping/stamp-base-comparison01.json`.
+
+The ordinary single-layer duplicate-flag capture also reports Stamp Down. On both architectures and at all three depths, it updates the raster immediately below the active layer to the same stored bounds and samples as Merge Down. The active layer is preserved and stays selected. An ordinary bottom layer has no Stamp Down target. The RGB8 case reduced the lower raster from bounds [0, 0, 256, 8] to [0, 1, 256, 7]. The capture and linked decoder are in `artifacts/578-merge-clipping/photoshop06` and `artifacts/578-merge-clipping/stamp-ordinary01`. The RGB8 and RGB16 Screen-clip samples also match a separate integer kernel with rounded complementary multiplication. Screen clips and both contextual stamp operations remain open in build 578. See `artifacts/578-merge-clipping/formula-screen02/result.log`.
+
+The first full run found eight assertions that still expected the previous Action library maximum. Qualification04 updates the shared expectation to 72. All 757 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Application hashes match the first full run. Both slices of the extracted universal validation archive passed signature and offscreen checks. [Qualification](SOURCE_PUBLICATION_578.md).
 
 <a id="dev-step-577"></a>
 

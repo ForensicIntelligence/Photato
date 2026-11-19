@@ -37,6 +37,27 @@ public struct LayerMergePlan: Sendable {
         throw CraftError.invalid("Merge Down requires an adjacent visible pixel layer below the selection.")
       }
       roots=[siblings[index-1],top];base=roots[0]
+    case .clippingMask:
+      guard layerIDs.count == 1, let id = layerIDs.first, let candidate = hierarchy.byID[id],
+        candidate.visible, !candidate.isClipped, candidate.clipsBlendAsGroup,
+        Self.supportsClippingRaster(candidate) else {
+        throw CraftError.invalid("Select a visible raster layer at the base of a clipping mask.")
+      }
+      let siblings = siblingsByParent[candidate.parentID] ?? []
+      guard let index = siblings.firstIndex(where: { $0.id == id }) else {
+        throw CraftError.invalid("The clipping base is missing from its layer stack.")
+      }
+      let clips = siblings.dropFirst(index + 1).prefix(while: \.isClipped)
+      guard !clips.isEmpty else {
+        throw CraftError.invalid("The selected layer has no clipping mask.")
+      }
+      guard clips.filter({ $0.visible && $0.opacity > 0 }).allSatisfy({
+        $0.blendMode == .normal && Self.supportsClippingRaster($0)
+      }) else {
+        throw CraftError.unsupported("This clipping mask includes a blend mode or rendered source that needs a separate merge path.")
+      }
+      roots = [candidate] + clips
+      base = candidate
     case .selected:
       roots=d.layers.filter{layerIDs.contains($0.id) && !hierarchy.ancestors(of:$0.id).contains{layerIDs.contains($0.id)}}
       guard let top=roots.last,top.visible,roots.count>1 || top.isGroup else{throw CraftError.invalid("Select multiple layers or a group to merge.")}
@@ -63,7 +84,11 @@ public struct LayerMergePlan: Sendable {
     parentID = operation == .visible ? nil : base.parentID
     includesBackground = d.layers.contains { $0.isBackground && included.contains($0.id) }
     for layer in d.layers where sourceIDs.contains(layer.id) {
-      guard operation.preservesSources || layer.isBackground || !hierarchy.effectiveProtection(layer.id).fullyLocks else{throw CraftError.invalid("Unlock the merged layers and their parent groups first.")}
+      let consumedClip = operation == .clippingMask && layer.id != base.id
+      guard operation.preservesSources || consumedClip || layer.isBackground
+        || !hierarchy.effectiveProtection(layer.id).fullyLocks else {
+        throw CraftError.invalid("Unlock the merged layers and their parent groups first.")
+      }
       if operation == .visible, !layer.visible {
         throw CraftError.unsupported("Hidden descendants inside a visible merged group require qualified retention semantics; no layers were removed.")
       }
@@ -71,6 +96,13 @@ public struct LayerMergePlan: Sendable {
         throw CraftError.unsupported("Include the clipping base when merging clipped artwork.")
       }
     }
+  }
+
+  package static func supportsClippingRaster(_ layer: Layer) -> Bool {
+    guard case .raster = layer.content else { return false }
+    return layer.affine == nil && layer.mask == nil && layer.vectorMask == nil && layer.style == nil
+      && layer.smartObject == nil && layer.smartFilters == nil && layer.warp == nil
+      && layer.sourceProjection == nil && layer.importedSmartAppearance == nil
   }
 }
 

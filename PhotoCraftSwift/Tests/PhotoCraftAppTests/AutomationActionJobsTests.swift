@@ -120,6 +120,44 @@ final class AutomationActionJobsTests: XCTestCase {
     }
   }
 
+  @MainActor func testClippingMaskDescriptorInBothJobRoutesFollowsSelectedBase() async throws {
+    let transport = Transport()
+    let helper = AutomationTests()
+    let folder = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge")
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    try await helper.withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
+      let untouched = shared.store.document
+      service.setResourceJobsEnabled(true)
+      let select = #"[{"_obj":"select","_target":[{"_ref":"layer","_name":"Clipping base"}]}]"#
+      let merge = #"[{"_obj":"mergeLayersNew"}]"#
+      var payload = body()
+      payload["options"] = ["actions": [select, merge].map {
+        ["source": ["content": $0, "contentType": "application/json"]]
+      }]
+      for bits in [8, 16, 32] {
+        service.setResourceJobsEnabled(false)
+        service.setResourceJobsEnabled(true)
+        let source = try Data(contentsOf: folder.appendingPathComponent("chain-\(bits)-base.psd"))
+        await transport.set(source)
+        let wanted = try PSDCodec.read(Data(contentsOf: folder.appendingPathComponent(
+          "\(architecture)-chain-\(bits)-base-merged.psd")))
+        var outputs: [Data] = []
+        for route in ["/v1/action-jobs", "/v2/execute-actions"] {
+          let result = try await output(service, submit: route, payload: payload)
+          outputs.append(result.2)
+          try AutomationLayerMergeTests().samePixels(PSDCodec.read(result.2), wanted)
+        }
+        XCTAssertEqual(outputs.first, outputs.last)
+      }
+      XCTAssertEqual(shared.store.document, untouched)
+    }
+  }
+
   @MainActor func testStampDescriptorsAcrossBothJobRoutesPreserveIndependentPhotoshopLayers() async throws {
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
       .appendingPathComponent("PhotoCraftImagingTests/Fixtures")

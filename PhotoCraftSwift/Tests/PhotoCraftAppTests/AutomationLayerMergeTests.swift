@@ -32,6 +32,35 @@ final class AutomationLayerMergeTests: XCTestCase {
     }
   }
 
+  @MainActor func testClippingMaskHTTPDiscoveryMergeRejectAndUndo() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var original = try fixture("clipping-merge/chain-8-base")
+      let base = try XCTUnwrap(original.layers.first { $0.name == "Clipping base" })
+      let clipped = try XCTUnwrap(original.layers.first { $0.name == "Lower clip" })
+      original.activeLayerID = base.id
+      shared.store.session = EditorSession(document: original)
+      try service.share(shared)
+      let share = try XCTUnwrap(service.shares.first)
+      let response = try await helper.request(service, path: "/v1/documents/\(share.id)")
+      let state = try XCTUnwrap(JSONSerialization.jsonObject(with: response.1) as? [String: Any])
+      XCTAssertEqual((state["layerMerge"] as? [String:Any])?["clippingMask"] as? Bool, true)
+      let invalid = try await helper.edit(service, shared, "layer.merge",
+        ["operation": "clippingMask", "layerIDs": [clipped.id.uuidString]])
+      XCTAssertEqual(invalid, 422)
+      XCTAssertEqual(shared.store.document, original)
+      let success = try await helper.edit(service, shared, "layer.merge",
+        ["operation": "clippingMask", "layerIDs": [base.id.uuidString]])
+      XCTAssertEqual(success, 200)
+      XCTAssertEqual(shared.store.document.layers.map(\.name), ["Unrelated below", "Clipping base", "Unrelated above"])
+      XCTAssertEqual(shared.store.document.activeLayerID, base.id)
+      XCTAssertEqual(shared.store.session.undoStack.last?.label, "Merge Clipping Mask")
+      let undo = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(shared.store.document, original)
+    }
+  }
+
   func fixture(_ name: String) throws -> CraftDocument {
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent()

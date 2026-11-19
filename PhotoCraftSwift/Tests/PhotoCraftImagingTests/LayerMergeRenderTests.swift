@@ -9,7 +9,9 @@ final class LayerMergeRenderTests: XCTestCase {
     try Data(
       contentsOf: XCTUnwrap(
         Bundle.module.url(
-          forResource: name, withExtension: "psd", subdirectory: "Fixtures/layer-merge")))
+          forResource: (name as NSString).lastPathComponent, withExtension: "psd",
+          subdirectory: ["Fixtures/layer-merge", (name as NSString).deletingLastPathComponent]
+            .filter { !$0.isEmpty }.joined(separator: "/"))))
   }
   func compare(_ actual: CraftDocument, _ expected: CraftDocument, label: String) throws {
     XCTAssertEqual(actual.layers.count, expected.layers.count, label)
@@ -85,7 +87,7 @@ final class LayerMergeRenderTests: XCTestCase {
         let label = "\(name)-\(suffix)"
         let ids: Set<UUID>
         switch operation {
-        case .down: ids = [try XCTUnwrap(document.activeLayerID)]
+        case .down, .clippingMask: ids = [try XCTUnwrap(document.activeLayerID)]
         case .selected, .stampSelected: ids = Set(document.layers.map(\.id))
         case .visible, .stampVisible: ids = []
         }
@@ -136,6 +138,91 @@ final class LayerMergeRenderTests: XCTestCase {
         try compare(PSDCodec.read(PSDCodec.writeRasterLayers(result)), expected, label: "PSD " + name)
       }
     }
+  }
+
+  func testPreparedMergeClippingMaskMatchesSavedPixelsVisibilityAndLayerPlacement() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    for name in ["locked-base-base", "chain-32-hide-base"] {
+      let source = try PSDCodec.read(file("clipping-merge/\(name)"))
+      let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+      XCTAssertThrowsError(try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask), name)
+    }
+    var cases = [
+      "chain-32-hide-all-clips", "chain-32-active-clip", "empty-base", "outside-base", "padding-base",
+      "zero-base-opacity-base",
+    ]
+    for bits in [8, 16, 32] {
+      cases += [
+        "chain-\(bits)-base", "nested-\(bits)-base", "chain-\(bits)-base-half",
+        "chain-\(bits)-lower-half", "chain-\(bits)-base-multiply",
+        "chain-\(bits)-lock-hidden", "chain-\(bits)-lock-lower",
+      ]
+    }
+    for name in cases {
+      var source = try PSDCodec.read(file("clipping-merge/\(name)"))
+      let expected = try PSDCodec.read(file("clipping-merge/\(architecture)-\(name)-merged"))
+      let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+      let down = name.hasSuffix("active-clip")
+      let selected = try XCTUnwrap(source.layers.first { $0.name == (down ? "Lower clip" : base.name) })
+      source.activeLayerID = selected.id
+      let operation: LayerMergeOperation = down ? .down : .clippingMask
+      let plan = try LayerMergePlan(operation, layerIDs: [selected.id], in: source)
+      let result = try LayerMergePreparation.prepare(source, layerIDs: [selected.id], operation: operation).result
+      XCTAssertEqual(result.activeLayerID, base.id, name)
+      XCTAssertEqual(result.layers.map(\.name), expected.layers.map(\.name), name)
+      XCTAssertEqual(result.layers.filter { $0.id != base.id }, source.layers.filter { !plan.removedIDs.contains($0.id) }, name)
+      let expectedBase = try XCTUnwrap(expected.layers.first { $0.name == base.name }, name)
+      let destination = try XCTUnwrap(result.layers.first { $0.id == base.id }, name)
+      let roundTripped = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+      let reopened = try XCTUnwrap(roundTripped.layers.first { $0.name == base.name }, name)
+      for layer in [destination, reopened] {
+        XCTAssertEqual(layer.name, expectedBase.name, name)
+        XCTAssertEqual(layer.x, expectedBase.x, name)
+        XCTAssertEqual(layer.y, expectedBase.y, name)
+        XCTAssertEqual(layer.blendMode, expectedBase.blendMode, name)
+        XCTAssertEqual(layer.opacity, expectedBase.opacity, name)
+        XCTAssertFalse(layer.isClipped, name)
+        guard case .raster(let pixels) = layer.content, case .raster(let reference) = expectedBase.content else {
+          return XCTFail("Expected raster samples for \(name)")
+        }
+        XCTAssertEqual(pixels.width, reference.width, name)
+        XCTAssertEqual(pixels.height, reference.height, name)
+        let encoding: SurfaceColorEncoding = source.depth == .f32 ? .linearRGB : .sRGB
+        XCTAssertEqual(try pixels.rgbaData(depth: source.depth, colorEncoding: encoding),
+          try reference.rgbaData(depth: source.depth, colorEncoding: encoding), name)
+      }
+    }
+  }
+
+  func testMergeClippingMaskPreservesSparseCanvasAndOriginalAlpha() throws {
+    let size = Surface.maxDimension
+    let alpha: Float = 0.5
+    let raw = try Surface(width: size, height: size, depth: .f32, fill: Pixel(0.25, 0.75, 0.25, alpha))
+      .interpretingSamples(as: .linearRGB)
+    var base = Layer(name: "Base", content: .raster(raw))
+    base.opacity = 0.5
+    let patch = try Surface(width: 2, height: 3, depth: .f32, fill: Pixel(0.75, 0.25, 0.5, 1))
+      .interpretingSamples(as: .linearRGB)
+    var top = Layer(name: "Clip", content: .raster(patch))
+    top.x = size - 2
+    top.y = size - 3
+    top.clipped = true
+    var document = try CraftDocument(width: size, height: size, depth: .f32)
+    document.layers = [base, top]
+    document.activeLayerID = base.id
+    let result = try LayerMergePreparation.prepare(document, layerIDs: [base.id], operation: .clippingMask).result
+    XCTAssertEqual(result.layers.count, 1)
+    XCTAssertEqual(result.layers[0].opacity, base.opacity)
+    guard case .raster(let pixels) = result.layers[0].content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(pixels.width, size)
+    XCTAssertEqual(pixels.height, size)
+    XCTAssertLessThanOrEqual(pixels.tileCount, 1)
+    XCTAssertTrue(pixels.linearPixel(x: 0, y: 0).hasSameBits(as: Pixel(0.25, 0.75, 0.25, alpha)))
+    XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
   }
 
   func testPhotoshopOffCanvasBoundsHiddenPixelsAndActiveVisiblePosition() throws {

@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "merge_clipping_mask_build578": {
+    "evidence": "docs/CLIPPING_MASK_MERGE_REFERENCES_578.json",
+    "scope": "The existing mergeLayersNew ActionJSON event merges a supported clipping stack when a single raster base is selected. Both local job routes share the native implementation.",
+    "limits": "Grouped Normal clips are covered. Rich sources, Screen clips, in-place stamps and hosted service parity remain open."
+  },
   "working_profiles_step116": {
     "evidence": "docs/WORKING_PROFILE_REFERENCES.json",
     "scope": "Both existing partial job routes retain PSD raster working profiles through the native engine; RGB32 raw merge regression compares independent original-profile bytes. Full Photoshop colour settings/conversion contract and six endpoints remain open.",

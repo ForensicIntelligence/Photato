@@ -8,6 +8,23 @@ public enum LayerMergePreparation {
   public static func prepare(_ source:CraftDocument,layerIDs:Set<UUID>,operation:LayerMergeOperation)throws->PreparedLayerMerge {
     try source.validate();try Task.checkCancellation()
     let plan=try LayerMergePlan(operation,layerIDs:layerIDs,in:source)
+    let clippingLayers = source.layers.filter { $0.id != plan.base.id && plan.sourceIDs.contains($0.id) }
+    let mergesOneClip = operation == .down && clippingLayers.count == 1
+      && clippingLayers[0].isClipped && !plan.base.isClipped && plan.base.clipsBlendAsGroup
+      && LayerMergePlan.supportsClippingRaster(plan.base) && LayerMergePlan.supportsClippingRaster(clippingLayers[0])
+      && clippingLayers[0].blendMode == .normal
+    if operation == .clippingMask || mergesOneClip {
+      var merged = plan.base
+      merged.content = .raster(try ClippingMaskRasterMerge.render(base: merged, clips: clippingLayers, document: source))
+      var result = source
+      result.layers = source.layers.compactMap { layer in
+        if layer.id == merged.id { return merged }
+        return plan.removedIDs.contains(layer.id) ? nil : layer
+      }
+      result.activeLayerID = merged.id
+      try result.validate(); try Task.checkCancellation()
+      return .init(source: source, result: result, layerIDs: layerIDs, operation: operation)
+    }
     var isolated=source
     if operation != .stampVisible {
       isolated.layers=source.layers.filter{plan.sourceIDs.contains($0.id)}

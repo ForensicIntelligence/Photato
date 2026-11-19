@@ -165,7 +165,7 @@ enum RGB32NormalRenderer {
     #endif
   }
 
-  @inline(__always) private static func scaleAlpha(_ source: Float, by multiplier: Float,
+  @inline(__always) static func scaleAlpha(_ source: Float, by multiplier: Float,
     flushSubnormal: Bool) -> Float {
     let coverage = source * multiplier
     #if arch(x86_64)

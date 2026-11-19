@@ -1,3 +1,7 @@
+**Source checkpoint 578.** Command-E now merges a supported Normal raster clipping stack into its base. Photato retains the base geometry, alpha, opacity and blend mode and preserves the unrelated layers. [Qualification](SOURCE_PUBLICATION_578.md).
+
+Continue the observed in-place Stamp Down and Stamp Group workflows, then qualify other clipping blend modes.
+
 **Source checkpoint 577.** Prepared 32-bit Normal layer merges and stamps now account for stored raster pixel masks, including zero coverage and the measured Intel rounding. A maximum-size sparse mask example used two render patches. [Qualification](SOURCE_PUBLICATION_577.md).
 
 Finish the contextual Merge Clipping Mask workflow and continue independent clipping, rich stack and physical checks.

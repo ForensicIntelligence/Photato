@@ -1,0 +1,802 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "0aecf44f20ed4dc06dc024ae35af2f175eaa64bde7bd4f233bf210dbde3191eb",
+    "binarySHA256": "09a9676f11a774efc367d6300b0bb8a394188a208173ff821d02c87827c82048",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 8160
+  },
+  "build": 578,
+  "maximumTestCanvas": [
+    300000,
+    300000
+  ],
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Contextual Stamp Down and Stamp Group",
+    "Screen clips and rich clipping stacks",
+    "Physical supported platforms",
+    "Full Photoshop parity"
+  ],
+  "qualification": {
+    "caseSelectionSHA256": "96933fbc18715a69f77bfebfcc21a28d2429afb0837d9a11798fc430aa2b34f0",
+    "configurations": {
+      "arm": {
+        "appSHA256": "14913f69489e886eea4573fc427b01ab900a84f38cc4cfad89c86a7128bdf6f6",
+        "testBinarySHA256": "fcf0d2af1408f6c3949f5c09845043ee80f9936dd322b9256cfccda997117633"
+      },
+      "debug": {
+        "appSHA256": "9f4839019af3b9d4c5d4398a700752dc1c29a3e541fef92f58551c15c7ea5259",
+        "testBinarySHA256": "e7aa2024cc0540af93c8265415a4731fbb940fc604d934bc514bfe38ea2db21f"
+      },
+      "intel": {
+        "appSHA256": "9246645d4e3887e9a645d32721a55a4344b2d32a2529f8568b3f2937e1705396",
+        "testBinarySHA256": "70a953622df9761a5085400b6e8b01c5823c4111ac9a2b2ca690ca069d909929"
+      }
+    },
+    "focusedDebug": 69,
+    "selectedPerConfiguration": 757
+  },
+  "referenceProvenance": {
+    "files": [
+      {
+        "path": "arm-chain-16-base-half-merged.psd",
+        "sha256": "07a866a03216bc532b9cbd370e1770929e526d888fb3e37164bd2e7df7e6b918"
+      },
+      {
+        "path": "arm-chain-16-base-merged.psd",
+        "sha256": "3884886c6670c1481b13a485ec64e144ddc0e543b432d2ed0e9ad6842c260011"
+      },
+      {
+        "path": "arm-chain-16-base-multiply-merged.psd",
+        "sha256": "fc97cc183fb4cf86aa4288275d4f6956353f347f8ae04c077bde7dff062cc7cd"
+      },
+      {
+        "path": "arm-chain-16-lock-hidden-merged.psd",
+        "sha256": "678795faa8452eb749b777f4b3e352990794c795dda16cdf7cd349e07678afd2"
+      },
+      {
+        "path": "arm-chain-16-lock-lower-merged.psd",
+        "sha256": "f145614675fdf7b9a3907ca57535eb4440d217cef0e35c816f82055974cc2b21"
+      },
+      {
+        "path": "arm-chain-16-lower-half-merged.psd",
+        "sha256": "77d48818d764ba9d46c30674c0a0170888d3f8853ff2c019d7dac3d0656e9bd8"
+      },
+      {
+        "path": "arm-chain-32-active-clip-merged.psd",
+        "sha256": "0db9f5da65df59d98a7e1a090392b3fe5ab3176aa3ff7b3e3354bc6deac01f2f"
+      },
+      {
+        "path": "arm-chain-32-base-half-merged.psd",
+        "sha256": "b551b94cd2f2ef9002a77b915805fda39536ede46cc7e6da9768a53933720ae2"
+      },
+      {
+        "path": "arm-chain-32-base-merged.psd",
+        "sha256": "579a02b8dbf774450edcd536af570a34ae29b23d227013510811c009159b34be"
+      },
+      {
+        "path": "arm-chain-32-base-multiply-merged.psd",
+        "sha256": "42ccce25b9d0236c1bf9f5d76c342d97e5bde582baffd8ed066ab161c4981c4e"
+      },
+      {
+        "path": "arm-chain-32-hide-all-clips-merged.psd",
+        "sha256": "597b9a19e6f0a4c6c73b88472d4b47ef04b1a96d6d09c8c8b95a3c45b3d64ed9"
+      },
+      {
+        "path": "arm-chain-32-lock-hidden-merged.psd",
+        "sha256": "2b96d1ec0b8b86905bd15725a9ee2e8194275a3a30addce3725c3817c591548c"
+      },
+      {
+        "path": "arm-chain-32-lock-lower-merged.psd",
+        "sha256": "d73215de8f1f7c7a6640b3e8bca8098f2f26ed158ae6be9f6430e25b14f85a7f"
+      },
+      {
+        "path": "arm-chain-32-lower-half-merged.psd",
+        "sha256": "a4162d2174b03cc2710b7b7a6d5a9238ee7ce720d69b1b1d8e92d7735f9607dd"
+      },
+      {
+        "path": "arm-chain-8-base-half-merged.psd",
+        "sha256": "31213015991d6b2ffe71ef5483b62761d351e51b68e681434fa323f5faf3d11a"
+      },
+      {
+        "path": "arm-chain-8-base-merged.psd",
+        "sha256": "4c533d5cb08fd10a455f98665738a3fa6cc641d11dc709f84ad98b83bc136b6d"
+      },
+      {
+        "path": "arm-chain-8-base-multiply-merged.psd",
+        "sha256": "5a888515184b7328c51d50d5ed5b9a2607c88e0a6a141edad1f56016289de0c0"
+      },
+      {
+        "path": "arm-chain-8-lock-hidden-merged.psd",
+        "sha256": "19662c73ee511133859569f748dec4934ec49e4d94f5ae47cfe5b299b485267a"
+      },
+      {
+        "path": "arm-chain-8-lock-lower-merged.psd",
+        "sha256": "a306ab082a1406fc1cabeb8a06e4b7165d907b0db266d62941f3d4dcea231ce5"
+      },
+      {
+        "path": "arm-chain-8-lower-half-merged.psd",
+        "sha256": "4e1f9d65ebabc56ad6ab2d8c2cd8de120e9521c761dad39a6ff845d354efb331"
+      },
+      {
+        "path": "arm-empty-base-merged.psd",
+        "sha256": "8c6f2088899e29f751eb15789615f882cfaeaa746b609a8cbcb2cf181e7a7715"
+      },
+      {
+        "path": "arm-nested-16-base-merged.psd",
+        "sha256": "028ee195a87ee8ef1b685cdf3c3d8dea837ecb6998b6940f3129129775936e0c"
+      },
+      {
+        "path": "arm-nested-32-base-merged.psd",
+        "sha256": "59ad1e4445165592a61b3c9a277d2e18282dd4e456abdb96788514c357f4760f"
+      },
+      {
+        "path": "arm-nested-8-base-merged.psd",
+        "sha256": "5204d2f577c4b9361fe36e786c01e7758fd221d46a0a0ca05dc36479c70ce850"
+      },
+      {
+        "path": "arm-outside-base-merged.psd",
+        "sha256": "2c1512f7713f9091413c7f9bfeebfb04dc522968f6c8ca579a660ce0805d3910"
+      },
+      {
+        "path": "arm-padding-base-merged.psd",
+        "sha256": "5ffb24cd9338ed822800281a21af0a5276f55ae2a0acfc05761ad96bed69275e"
+      },
+      {
+        "path": "arm-zero-base-opacity-base-merged.psd",
+        "sha256": "f715dcb492ced03116e9e3303ae3219181fd5da9df9157caaad0576cdf55fea8"
+      },
+      {
+        "path": "chain-16-base-half.psd",
+        "sha256": "588468a6479801254706c65d75c390d5ebfcd509efa904fa29b9124ecb56f12d"
+      },
+      {
+        "path": "chain-16-base-multiply.psd",
+        "sha256": "fe9d7ea24c7dee3cf3a517091daddc469f3e1e3ea298dc603c03b357ec6f9b17"
+      },
+      {
+        "path": "chain-16-base.psd",
+        "sha256": "a696b370ef144f69ec904a5e672463fa31b99327ee2983e84f43136ec5614f15"
+      },
+      {
+        "path": "chain-16-lock-hidden.psd",
+        "sha256": "2b72adc13f6caf318f3c803ee1063a0d2ca607ca9c7f5bb89c5c849c70677e25"
+      },
+      {
+        "path": "chain-16-lock-lower.psd",
+        "sha256": "80e7fb12ecc37159617e71a6ff358817914a71cadf2f3361d933becf96ca0fd2"
+      },
+      {
+        "path": "chain-16-lower-half.psd",
+        "sha256": "6e8d95eb90757b4669ab467d725c47d7e5b48f8c332f81fc7880684df4d1d407"
+      },
+      {
+        "path": "chain-32-active-clip.psd",
+        "sha256": "377ca8c66bca07014b204fad90c29d556ab544159ec526d0e545c923b9403ef1"
+      },
+      {
+        "path": "chain-32-base-half.psd",
+        "sha256": "c9e56184c9605e674569bf9ed4d4cd5184bcfa32947101a3c1a26de8fe4e5fba"
+      },
+      {
+        "path": "chain-32-base-multiply.psd",
+        "sha256": "24d51180307736429aaa1c8e14c0c02d135676e88dfbe9b4c382795466df885d"
+      },
+      {
+        "path": "chain-32-base.psd",
+        "sha256": "d8b1216da48f827800ae590178cf5ec06d70f67c28a645d466d39909af5c6c20"
+      },
+      {
+        "path": "chain-32-hide-all-clips.psd",
+        "sha256": "b940c3533de2254e6e9797db679a4f6101de75f7e9686ac07fe5c45419d3732f"
+      },
+      {
+        "path": "chain-32-hide-base.psd",
+        "sha256": "5bf96691bf94cd65acb29781513fd1aebb0b102c9eabeeb362acb92ce8279238"
+      },
+      {
+        "path": "chain-32-lock-hidden.psd",
+        "sha256": "c8c5280c693056942d6d2a53b89c28a01293df7e6d1c3348a8b3a27dbaafe7ec"
+      },
+      {
+        "path": "chain-32-lock-lower.psd",
+        "sha256": "edad6b23f9935eae767bfe811f9129b425a730c57b9303553ba5ccf65b55e1b2"
+      },
+      {
+        "path": "chain-32-lower-half.psd",
+        "sha256": "9673db78a77205c74aa4b6200dd3b4d492466397c6d9f2755114b379a0480783"
+      },
+      {
+        "path": "chain-8-base-half.psd",
+        "sha256": "4bf24fa2340b06f134f3b19ab5d932b071e8f07c8cf59ffb1de0bb2d631234c5"
+      },
+      {
+        "path": "chain-8-base-multiply.psd",
+        "sha256": "b0c9cf55d043f7fb1dcd39659b221f472a1582a79225b6778a2a5c0463a0220b"
+      },
+      {
+        "path": "chain-8-base.psd",
+        "sha256": "7428516af12cfd167687b94d5d289ea381fd8a6c15bcd796c6be3a0112f4782a"
+      },
+      {
+        "path": "chain-8-lock-hidden.psd",
+        "sha256": "5348f2382365675926b6f9d03f0027b8d73f8eaee8dedcb39a6919a9c12d8f6d"
+      },
+      {
+        "path": "chain-8-lock-lower.psd",
+        "sha256": "78889305081a7c62579a509d5ba4707f725964416e12d105d099bf9a166fa681"
+      },
+      {
+        "path": "chain-8-lower-half.psd",
+        "sha256": "6925f851ea8e61d620698905f3fab9a983083a879d5a90b0da4634739bc6be07"
+      },
+      {
+        "path": "empty-base.psd",
+        "sha256": "1623818e6d98669bc35aa7f21d96764875543b130d0ad305c45771fb80fa7032"
+      },
+      {
+        "path": "intel-chain-16-base-half-merged.psd",
+        "sha256": "aa2aab4d020aaadefe057822342a09f0386800e9a3e34f26ea77a1e7fb0503ae"
+      },
+      {
+        "path": "intel-chain-16-base-merged.psd",
+        "sha256": "4ecc2914c442371aab6fb97a9076d5766b81303b3477e5da61426813609e2516"
+      },
+      {
+        "path": "intel-chain-16-base-multiply-merged.psd",
+        "sha256": "f5f530c393a0720a05690612dc7618ee89c030b2db58ea3b463275e57200b53a"
+      },
+      {
+        "path": "intel-chain-16-lock-hidden-merged.psd",
+        "sha256": "dc5650e05d29a6bf0d3037b60da51d62a0647d4accf43b013fc46df8293defe9"
+      },
+      {
+        "path": "intel-chain-16-lock-lower-merged.psd",
+        "sha256": "68873a617683b1e1edb5f2e8bea098f539cb5ab4490bc0af354faec7f0b91ddd"
+      },
+      {
+        "path": "intel-chain-16-lower-half-merged.psd",
+        "sha256": "083fa23d030c285ba09fa1a0432aca7cbba5f16b61748a8e37400c92fce92914"
+      },
+      {
+        "path": "intel-chain-32-active-clip-merged.psd",
+        "sha256": "3d16c8c30110d0345b15507de6507eb6237918a054cf9d49a92feea576c78e12"
+      },
+      {
+        "path": "intel-chain-32-base-half-merged.psd",
+        "sha256": "c5ff5d74c5f90628e10650e1dfdf4ca3a9397ec836330fc8875c75037e7e470b"
+      },
+      {
+        "path": "intel-chain-32-base-merged.psd",
+        "sha256": "14b2ec52675aa771cc22dccd9987051b0139345d7ba511329c79c8db3a1b1802"
+      },
+      {
+        "path": "intel-chain-32-base-multiply-merged.psd",
+        "sha256": "52b159900ff9f684ad1c46ee6590471d72063d11df82054eece2cb25b0b6e989"
+      },
+      {
+        "path": "intel-chain-32-hide-all-clips-merged.psd",
+        "sha256": "118d31b4e1fa24aa1957d291dab8a8f9be541c1f231f8ccaa221952fccf6333a"
+      },
+      {
+        "path": "intel-chain-32-lock-hidden-merged.psd",
+        "sha256": "6bc1bd92a339c0a2cd9431f767a27201269059efd3f8d872de28124efb97e960"
+      },
+      {
+        "path": "intel-chain-32-lock-lower-merged.psd",
+        "sha256": "9a91a262e3e975bbd2c874a94a843a3363162120101c157005837fd6163d07d7"
+      },
+      {
+        "path": "intel-chain-32-lower-half-merged.psd",
+        "sha256": "eb50b5e3b865b0fea8a1a54ddfe822bef5a391a39be7ddd4b10242a6b8d6ee70"
+      },
+      {
+        "path": "intel-chain-8-base-half-merged.psd",
+        "sha256": "89840aacc2a2093c1b62950c207242c18a72228672c11cf16b7ab69575a64bd9"
+      },
+      {
+        "path": "intel-chain-8-base-merged.psd",
+        "sha256": "50eb52fc93e6c66755af1d3d8e59a545f9e6bb0579d8394a0261d5a965860153"
+      },
+      {
+        "path": "intel-chain-8-base-multiply-merged.psd",
+        "sha256": "4d84038183c74747ed3519e46dc3165296b188c86476dea95aab5072792583c6"
+      },
+      {
+        "path": "intel-chain-8-lock-hidden-merged.psd",
+        "sha256": "0d51147f5e183e92cdf7682dc4bf474fa76310d8ec8250c6260763e57d9131a7"
+      },
+      {
+        "path": "intel-chain-8-lock-lower-merged.psd",
+        "sha256": "3f1d9ccafb1c39c703095e17840a13f0d643a30b9af6deb2a2262f351427258c"
+      },
+      {
+        "path": "intel-chain-8-lower-half-merged.psd",
+        "sha256": "86336294f5aaed4fabb9c07f6758b4fe9656f67c8d5294a61797d0e41161b01c"
+      },
+      {
+        "path": "intel-empty-base-merged.psd",
+        "sha256": "c44cbb7be7422cfbd42c9040d089904924e1eed44d480bbff594829995d94268"
+      },
+      {
+        "path": "intel-nested-16-base-merged.psd",
+        "sha256": "df55514b337c1e39c6b3b4cb9555c30fef64654a20478780be208d7db3ee095d"
+      },
+      {
+        "path": "intel-nested-32-base-merged.psd",
+        "sha256": "2040f27dee89de2d14c2cb1f7eb4a87429b4e771b22161e84a596f5f61d7b193"
+      },
+      {
+        "path": "intel-nested-8-base-merged.psd",
+        "sha256": "af9df3850e353d4b2658b0f9dc4dc085ed99fcbfc19cb31dd54d7f99bfd1781a"
+      },
+      {
+        "path": "intel-outside-base-merged.psd",
+        "sha256": "a07327baf21ad9731bcf524ff3f46652dc74c5f02a27d5c9b3b33d72fd8321ce"
+      },
+      {
+        "path": "intel-padding-base-merged.psd",
+        "sha256": "742f8e6dbfd538815c139ebe239aa8f68e1d4faf96e3fb7b0dc25ff99ad9b123"
+      },
+      {
+        "path": "intel-zero-base-opacity-base-merged.psd",
+        "sha256": "aef79debe2f56a41d8e9d87d40f19ceb5e48f96e7cfb953cd456246d73d1da28"
+      },
+      {
+        "path": "locked-base-base.psd",
+        "sha256": "ef3c7f6cbebd1b78b52a9003d862eb82541a56037e4dc841f7f90b134d19b33c"
+      },
+      {
+        "path": "nested-16-base.psd",
+        "sha256": "91949d7d3b110abc0f85adae7f939781f47cf685a03cb2144d8434df836aadc7"
+      },
+      {
+        "path": "nested-32-base.psd",
+        "sha256": "0bdf0616c2cf5af89e16071d942369550f090d3d93ad0958d97f4b71e5b417f5"
+      },
+      {
+        "path": "nested-8-base.psd",
+        "sha256": "4cd53c91453c766759b1d8d5c525a6defdb09cd7726a667fbc4e3d84425cf6bf"
+      },
+      {
+        "path": "outside-base.psd",
+        "sha256": "222fad79f5556374aa535aa4712780d149260e6725236c14230934ebd73cd0ef"
+      },
+      {
+        "path": "padding-base.psd",
+        "sha256": "4871061a4df3e4708c7b292ea623bba8859c151b5b1e070ee5ea15d127e8bb7b"
+      },
+      {
+        "path": "zero-base-opacity-base.psd",
+        "sha256": "83ced714380f01602572dba2156c6cfa01b2d1b36cffed0e00b8b7cfa2ec5760"
+      }
+    ],
+    "provenance": "Owned procedural images. Photoshop 27.2.0, saved layered source and result after contextual mergeLayersNew on each architecture."
+  },
+  "sourceInputs": 8160,
+  "sourceInputsChangedSince577": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "sha256": "11cc6e7fe9d7e17a151b58993a4b2eed5aa3b835783ad6279814e2d3e2d37e33"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "c14d3986a80c21723b3fbefe1ac255aea168c5eee3f01cb245f6aa2216461a61"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "a44d5691370bcf42c5c4c9d8b42030461d5455a4321e4962b0230bfcb206708e"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerMergeEditing.swift",
+      "sha256": "793244fe1d34e6dc19ff39dd1d528037f5e8a08bdefc5c30f23cc12c646ba913"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMerge.swift",
+      "sha256": "beb380a090008e14a8c8ff64be9bf71926f40fdc40db5822d697f763bd4c624a"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PreparedLayerMerge.swift",
+      "sha256": "ceb07279e7a489a140a6dc72b154cb1786f326b15067bf4cbed376844eb80287"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ClippingMaskRasterMerge.swift",
+      "sha256": "e7be1fc708e53aebfb55c92b843cea90f3c72f878339b298989c3bdab1032a3c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerMergePreparation.swift",
+      "sha256": "463ee0f25061a899777d0cabd876d0ad998cbffba14e6bff621bcedfe5213366"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RGB32NormalRenderer.swift",
+      "sha256": "c3890c512363839b2d2192dbf1ef69badefa729a0bfe4ed81e8b40ee486d495f"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift",
+      "sha256": "58ae95d8097c61f309d65688350eac6c9283ff9043ebc9bd5eed50c35893ef37"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "46becf7a7ff27e061e70d577d2fb64cd13a9db667450b1269b97154e9729e8a9"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "20f487f725c926df95435965a9801993443c11ce74f3849ca2ad22cb58e85adb"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerMergeWorkflowTests.swift",
+      "sha256": "0e0b3e6ef5561ee7a17365c05417ccbac390f6e0c000121ce73a19c37ba9233c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-16-base-half-merged.psd",
+      "sha256": "07a866a03216bc532b9cbd370e1770929e526d888fb3e37164bd2e7df7e6b918"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-16-base-merged.psd",
+      "sha256": "3884886c6670c1481b13a485ec64e144ddc0e543b432d2ed0e9ad6842c260011"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-16-base-multiply-merged.psd",
+      "sha256": "fc97cc183fb4cf86aa4288275d4f6956353f347f8ae04c077bde7dff062cc7cd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-16-lock-hidden-merged.psd",
+      "sha256": "678795faa8452eb749b777f4b3e352990794c795dda16cdf7cd349e07678afd2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-16-lock-lower-merged.psd",
+      "sha256": "f145614675fdf7b9a3907ca57535eb4440d217cef0e35c816f82055974cc2b21"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-16-lower-half-merged.psd",
+      "sha256": "77d48818d764ba9d46c30674c0a0170888d3f8853ff2c019d7dac3d0656e9bd8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-active-clip-merged.psd",
+      "sha256": "0db9f5da65df59d98a7e1a090392b3fe5ab3176aa3ff7b3e3354bc6deac01f2f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-base-half-merged.psd",
+      "sha256": "b551b94cd2f2ef9002a77b915805fda39536ede46cc7e6da9768a53933720ae2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-base-merged.psd",
+      "sha256": "579a02b8dbf774450edcd536af570a34ae29b23d227013510811c009159b34be"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-base-multiply-merged.psd",
+      "sha256": "42ccce25b9d0236c1bf9f5d76c342d97e5bde582baffd8ed066ab161c4981c4e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-hide-all-clips-merged.psd",
+      "sha256": "597b9a19e6f0a4c6c73b88472d4b47ef04b1a96d6d09c8c8b95a3c45b3d64ed9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-lock-hidden-merged.psd",
+      "sha256": "2b96d1ec0b8b86905bd15725a9ee2e8194275a3a30addce3725c3817c591548c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-lock-lower-merged.psd",
+      "sha256": "d73215de8f1f7c7a6640b3e8bca8098f2f26ed158ae6be9f6430e25b14f85a7f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-32-lower-half-merged.psd",
+      "sha256": "a4162d2174b03cc2710b7b7a6d5a9238ee7ce720d69b1b1d8e92d7735f9607dd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-8-base-half-merged.psd",
+      "sha256": "31213015991d6b2ffe71ef5483b62761d351e51b68e681434fa323f5faf3d11a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-8-base-merged.psd",
+      "sha256": "4c533d5cb08fd10a455f98665738a3fa6cc641d11dc709f84ad98b83bc136b6d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-8-base-multiply-merged.psd",
+      "sha256": "5a888515184b7328c51d50d5ed5b9a2607c88e0a6a141edad1f56016289de0c0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-8-lock-hidden-merged.psd",
+      "sha256": "19662c73ee511133859569f748dec4934ec49e4d94f5ae47cfe5b299b485267a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-8-lock-lower-merged.psd",
+      "sha256": "a306ab082a1406fc1cabeb8a06e4b7165d907b0db266d62941f3d4dcea231ce5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-chain-8-lower-half-merged.psd",
+      "sha256": "4e1f9d65ebabc56ad6ab2d8c2cd8de120e9521c761dad39a6ff845d354efb331"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-empty-base-merged.psd",
+      "sha256": "8c6f2088899e29f751eb15789615f882cfaeaa746b609a8cbcb2cf181e7a7715"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-nested-16-base-merged.psd",
+      "sha256": "028ee195a87ee8ef1b685cdf3c3d8dea837ecb6998b6940f3129129775936e0c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-nested-32-base-merged.psd",
+      "sha256": "59ad1e4445165592a61b3c9a277d2e18282dd4e456abdb96788514c357f4760f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-nested-8-base-merged.psd",
+      "sha256": "5204d2f577c4b9361fe36e786c01e7758fd221d46a0a0ca05dc36479c70ce850"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-outside-base-merged.psd",
+      "sha256": "2c1512f7713f9091413c7f9bfeebfb04dc522968f6c8ca579a660ce0805d3910"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-padding-base-merged.psd",
+      "sha256": "5ffb24cd9338ed822800281a21af0a5276f55ae2a0acfc05761ad96bed69275e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/arm-zero-base-opacity-base-merged.psd",
+      "sha256": "f715dcb492ced03116e9e3303ae3219181fd5da9df9157caaad0576cdf55fea8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-16-base-half.psd",
+      "sha256": "588468a6479801254706c65d75c390d5ebfcd509efa904fa29b9124ecb56f12d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-16-base-multiply.psd",
+      "sha256": "fe9d7ea24c7dee3cf3a517091daddc469f3e1e3ea298dc603c03b357ec6f9b17"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-16-base.psd",
+      "sha256": "a696b370ef144f69ec904a5e672463fa31b99327ee2983e84f43136ec5614f15"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-16-lock-hidden.psd",
+      "sha256": "2b72adc13f6caf318f3c803ee1063a0d2ca607ca9c7f5bb89c5c849c70677e25"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-16-lock-lower.psd",
+      "sha256": "80e7fb12ecc37159617e71a6ff358817914a71cadf2f3361d933becf96ca0fd2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-16-lower-half.psd",
+      "sha256": "6e8d95eb90757b4669ab467d725c47d7e5b48f8c332f81fc7880684df4d1d407"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-active-clip.psd",
+      "sha256": "377ca8c66bca07014b204fad90c29d556ab544159ec526d0e545c923b9403ef1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-base-half.psd",
+      "sha256": "c9e56184c9605e674569bf9ed4d4cd5184bcfa32947101a3c1a26de8fe4e5fba"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-base-multiply.psd",
+      "sha256": "24d51180307736429aaa1c8e14c0c02d135676e88dfbe9b4c382795466df885d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-base.psd",
+      "sha256": "d8b1216da48f827800ae590178cf5ec06d70f67c28a645d466d39909af5c6c20"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-hide-all-clips.psd",
+      "sha256": "b940c3533de2254e6e9797db679a4f6101de75f7e9686ac07fe5c45419d3732f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-hide-base.psd",
+      "sha256": "5bf96691bf94cd65acb29781513fd1aebb0b102c9eabeeb362acb92ce8279238"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-lock-hidden.psd",
+      "sha256": "c8c5280c693056942d6d2a53b89c28a01293df7e6d1c3348a8b3a27dbaafe7ec"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-lock-lower.psd",
+      "sha256": "edad6b23f9935eae767bfe811f9129b425a730c57b9303553ba5ccf65b55e1b2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-32-lower-half.psd",
+      "sha256": "9673db78a77205c74aa4b6200dd3b4d492466397c6d9f2755114b379a0480783"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-8-base-half.psd",
+      "sha256": "4bf24fa2340b06f134f3b19ab5d932b071e8f07c8cf59ffb1de0bb2d631234c5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-8-base-multiply.psd",
+      "sha256": "b0c9cf55d043f7fb1dcd39659b221f472a1582a79225b6778a2a5c0463a0220b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-8-base.psd",
+      "sha256": "7428516af12cfd167687b94d5d289ea381fd8a6c15bcd796c6be3a0112f4782a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-8-lock-hidden.psd",
+      "sha256": "5348f2382365675926b6f9d03f0027b8d73f8eaee8dedcb39a6919a9c12d8f6d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-8-lock-lower.psd",
+      "sha256": "78889305081a7c62579a509d5ba4707f725964416e12d105d099bf9a166fa681"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/chain-8-lower-half.psd",
+      "sha256": "6925f851ea8e61d620698905f3fab9a983083a879d5a90b0da4634739bc6be07"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/empty-base.psd",
+      "sha256": "1623818e6d98669bc35aa7f21d96764875543b130d0ad305c45771fb80fa7032"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-16-base-half-merged.psd",
+      "sha256": "aa2aab4d020aaadefe057822342a09f0386800e9a3e34f26ea77a1e7fb0503ae"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-16-base-merged.psd",
+      "sha256": "4ecc2914c442371aab6fb97a9076d5766b81303b3477e5da61426813609e2516"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-16-base-multiply-merged.psd",
+      "sha256": "f5f530c393a0720a05690612dc7618ee89c030b2db58ea3b463275e57200b53a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-16-lock-hidden-merged.psd",
+      "sha256": "dc5650e05d29a6bf0d3037b60da51d62a0647d4accf43b013fc46df8293defe9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-16-lock-lower-merged.psd",
+      "sha256": "68873a617683b1e1edb5f2e8bea098f539cb5ab4490bc0af354faec7f0b91ddd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-16-lower-half-merged.psd",
+      "sha256": "083fa23d030c285ba09fa1a0432aca7cbba5f16b61748a8e37400c92fce92914"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-active-clip-merged.psd",
+      "sha256": "3d16c8c30110d0345b15507de6507eb6237918a054cf9d49a92feea576c78e12"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-base-half-merged.psd",
+      "sha256": "c5ff5d74c5f90628e10650e1dfdf4ca3a9397ec836330fc8875c75037e7e470b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-base-merged.psd",
+      "sha256": "14b2ec52675aa771cc22dccd9987051b0139345d7ba511329c79c8db3a1b1802"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-base-multiply-merged.psd",
+      "sha256": "52b159900ff9f684ad1c46ee6590471d72063d11df82054eece2cb25b0b6e989"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-hide-all-clips-merged.psd",
+      "sha256": "118d31b4e1fa24aa1957d291dab8a8f9be541c1f231f8ccaa221952fccf6333a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-lock-hidden-merged.psd",
+      "sha256": "6bc1bd92a339c0a2cd9431f767a27201269059efd3f8d872de28124efb97e960"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-lock-lower-merged.psd",
+      "sha256": "9a91a262e3e975bbd2c874a94a843a3363162120101c157005837fd6163d07d7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-32-lower-half-merged.psd",
+      "sha256": "eb50b5e3b865b0fea8a1a54ddfe822bef5a391a39be7ddd4b10242a6b8d6ee70"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-8-base-half-merged.psd",
+      "sha256": "89840aacc2a2093c1b62950c207242c18a72228672c11cf16b7ab69575a64bd9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-8-base-merged.psd",
+      "sha256": "50eb52fc93e6c66755af1d3d8e59a545f9e6bb0579d8394a0261d5a965860153"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-8-base-multiply-merged.psd",
+      "sha256": "4d84038183c74747ed3519e46dc3165296b188c86476dea95aab5072792583c6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-8-lock-hidden-merged.psd",
+      "sha256": "0d51147f5e183e92cdf7682dc4bf474fa76310d8ec8250c6260763e57d9131a7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-8-lock-lower-merged.psd",
+      "sha256": "3f1d9ccafb1c39c703095e17840a13f0d643a30b9af6deb2a2262f351427258c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-chain-8-lower-half-merged.psd",
+      "sha256": "86336294f5aaed4fabb9c07f6758b4fe9656f67c8d5294a61797d0e41161b01c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-empty-base-merged.psd",
+      "sha256": "c44cbb7be7422cfbd42c9040d089904924e1eed44d480bbff594829995d94268"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-nested-16-base-merged.psd",
+      "sha256": "df55514b337c1e39c6b3b4cb9555c30fef64654a20478780be208d7db3ee095d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-nested-32-base-merged.psd",
+      "sha256": "2040f27dee89de2d14c2cb1f7eb4a87429b4e771b22161e84a596f5f61d7b193"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-nested-8-base-merged.psd",
+      "sha256": "af9df3850e353d4b2658b0f9dc4dc085ed99fcbfc19cb31dd54d7f99bfd1781a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-outside-base-merged.psd",
+      "sha256": "a07327baf21ad9731bcf524ff3f46652dc74c5f02a27d5c9b3b33d72fd8321ce"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-padding-base-merged.psd",
+      "sha256": "742f8e6dbfd538815c139ebe239aa8f68e1d4faf96e3fb7b0dc25ff99ad9b123"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/intel-zero-base-opacity-base-merged.psd",
+      "sha256": "aef79debe2f56a41d8e9d87d40f19ceb5e48f96e7cfb953cd456246d73d1da28"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/locked-base-base.psd",
+      "sha256": "ef3c7f6cbebd1b78b52a9003d862eb82541a56037e4dc841f7f90b134d19b33c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/nested-16-base.psd",
+      "sha256": "91949d7d3b110abc0f85adae7f939781f47cf685a03cb2144d8434df836aadc7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/nested-32-base.psd",
+      "sha256": "0bdf0616c2cf5af89e16071d942369550f090d3d93ad0958d97f4b71e5b417f5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/nested-8-base.psd",
+      "sha256": "4cd53c91453c766759b1d8d5c525a6defdb09cd7726a667fbc4e3d84425cf6bf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/outside-base.psd",
+      "sha256": "222fad79f5556374aa535aa4712780d149260e6725236c14230934ebd73cd0ef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/padding-base.psd",
+      "sha256": "4871061a4df3e4708c7b292ea623bba8859c151b5b1e070ee5ea15d127e8bb7b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/references.json",
+      "sha256": "8e742b3b3d6ae30a7fc92a4349b420e73a81cf2ebded65344c8ea29557a9f914"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/clipping-merge/zero-base-opacity-base.psd",
+      "sha256": "83ced714380f01602572dba2156c6cfa01b2d1b36cffed0e00b8b7cfa2ec5760"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "c0baf28b51c6e249948c9ddc384c726032c8f2c1f5d7a6777f471492c922cfa2"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "c5ab3fd473cdbcdbab49cdeee8ada2c53d67aca835f8efd55ea2205f4382cbac"
+    }
+  ]
+}

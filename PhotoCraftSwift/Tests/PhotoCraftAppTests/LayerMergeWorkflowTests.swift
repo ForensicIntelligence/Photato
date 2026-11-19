@@ -77,6 +77,41 @@ final class LayerMergeWorkflowTests: XCTestCase {
     }
   }
 
+  @MainActor func testLayerMenuRoutesClippingBaseAndRecordsPortableMerge() async throws {
+    var source = try AutomationLayerMergeTests().fixture("clipping-merge/chain-8-base")
+    let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+    let lower = try XCTUnwrap(source.layers.first { $0.name == "Lower clip" })
+    source.activeLayerID = base.id
+    let store = EditorStore(document: source)
+    defer { store.renderTask?.cancel() }
+    XCTAssertEqual(store.menuMergeOperation, .clippingMask)
+    XCTAssertEqual(store.menuMergeTitle, "Merge Clipping Mask")
+    XCTAssertTrue(store.canMerge(.clippingMask))
+    XCTAssertEqual(store.layerPanelTitle(.merge, context: base.id), "Merge Clipping Mask")
+    store.select(lower.id)
+    XCTAssertEqual(store.menuMergeOperation, .down)
+    store.select(base.id)
+    let command = try LayerMergeIntent.adobeCommand(source, [base.id], .down)
+    guard case .preparedLayerMerge(let edited) = command else { return XCTFail("Expected prepared merge") }
+    XCTAssertEqual(edited.operation, .clippingMask)
+    let recorded = ActionOperation(recording: command, in: source)
+    let action = RecordedAction(name: "Merge clipping chain", steps: [
+      RecordedActionStep(name: "Merge Clipping Mask", operation: recorded)
+    ])
+    XCTAssertEqual(ActionLibraryFile(actions: [action]).requiredVersion, 72)
+    let rendered = try RecordedActionRenderer.prepare(action, in: source)
+    var replayed = source
+    try rendered.command.apply(to: &replayed)
+    XCTAssertEqual(replayed, edited.result)
+    store.merge(store.menuMergeOperation)
+    await store.geometryTask?.value
+    XCTAssertEqual(store.document, edited.result)
+    XCTAssertEqual(store.session.undoStack.last?.label, "Merge Clipping Mask")
+    XCTAssertEqual(store.selectedLayerIDs, [base.id])
+    await store.undo()
+    XCTAssertEqual(store.document, source)
+  }
+
   @MainActor func testStampFromEditorRecordsPortableActionAndOneUndo() async throws {
     let s = try store()
     defer { s.renderTask?.cancel() }

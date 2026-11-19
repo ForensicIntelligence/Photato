@@ -2,6 +2,7 @@ import Foundation
 
 public enum LayerMergeOperation: String, CaseIterable, Sendable, Codable {
   case down = "Merge Down"
+  case clippingMask = "Merge Clipping Mask"
   case selected = "Merge Layers"
   case visible = "Merge Visible"
   case stampSelected = "Stamp Layers"
@@ -26,6 +27,14 @@ public enum LayerMerge {
     (try? LayerMergePlan(operation, layerIDs: layerIDs, in: document)) != nil
   }
 
+  public static func isClippingBase(_ ids: Set<UUID>, in document: CraftDocument) -> Bool {
+    guard ids.count == 1, let id = ids.first,
+      let index = document.layers.firstIndex(where: { $0.id == id }) else { return false }
+    let base = document.layers[index]
+    guard base.visible, !base.isClipped else { return false }
+    return document.layers.dropFirst(index + 1).first { $0.parentID == base.parentID }?.isClipped == true
+  }
+
   /// Validate the operation and expose its allocation bounds before starting work.
   public static func outputBounds(
     _ operation: LayerMergeOperation, layerIDs: Set<UUID>, in document: CraftDocument
@@ -44,6 +53,8 @@ public enum LayerMerge {
     switch operation {
     case .stampSelected, .stampVisible:
       throw CraftError.unsupported("Stamping layers requires the document compositor.")
+    case .clippingMask:
+      throw CraftError.unsupported("Merging a clipping mask requires the document compositor.")
     case .down:
       guard layerIDs.count == 1, let id = layerIDs.first,
         let index = d.layers.firstIndex(where: { $0.id == id }), index > 0,

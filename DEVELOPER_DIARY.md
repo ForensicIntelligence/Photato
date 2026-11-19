@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **577** · The 10 most recent entries, newest first.
+Source build **578** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 578 — Add contextual Merge Clipping Mask
+
+Selecting the base of a supported raster clipping stack now makes Command-E run Merge Clipping Mask. The command combines visible clips into the base and removes the consumed clips. Hidden clips contribute no color. The base keeps its opacity, blend mode and stored geometry, including transparent or off-canvas samples.
+
+The save-and-reopen tests compare 8-, 16- and 32-bit Photoshop reference layers. Undo, Actions and both local Adobe-compatible job routes are covered. All 757 selected checks passed on each of the three build configurations.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_578.md).
 
 ## 2026-11-18 — Step 577 — Preserve stored RGB32 pixel masks when merging and stamping
 
@@ -77,11 +85,3 @@ All 8,510,976 samples in 257 tested precision promotions and 194,560 samples in 
 Follow-up testing measured 4,410 rounding thresholds for 16-bit grayscale. Separate Float32 luminance products ordered all of the samples correctly. A 4,096-interval curve fits the measured thresholds, but its exact endpoint calculation remains open. Build 569 continues to use ColorSync for this conversion.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-569) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_569.md).
-
-## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
-
-RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
-
-All 2,142,336 stored samples from 59 tested conversion cases match the corresponding Photoshop files on each architecture. Five Gray32 layer stacks match all 960 merged words under each of four compression modes in PSD and PSB. All 657 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_568.md).

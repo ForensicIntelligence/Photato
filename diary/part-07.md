@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 578 — Add contextual Merge Clipping Mask
+
+Selecting the base of a supported raster clipping stack now makes Command-E run Merge Clipping Mask. The command combines visible clips into the base and removes the consumed clips. Hidden clips contribute no color. The base keeps its opacity, blend mode and stored geometry, including transparent or off-canvas samples.
+
+The save-and-reopen tests compare 8-, 16- and 32-bit Photoshop reference layers. Undo, Actions and both local Adobe-compatible job routes are covered. All 757 selected checks passed on each of the three build configurations.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_578.md).
+
 ## 2026-11-18 — Step 577 — Preserve stored RGB32 pixel masks when merging and stamping
 
 Normal 32-bit layer output now uses stored pixel masks. The comparison covers saved binary coverage and feathered selections, including transparency and the Intel rounding at tiny alpha values. A small translated mask in a 300,000 × 300,000 document used two render patches.
@@ -613,14 +621,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:577 -->
+<!-- current-status-step:578 -->
 ## Current development status — 18 November 2026
 
-Prepared 32-bit Normal layer merges and stamps now account for stored raster pixel masks, including zero coverage and the measured Intel rounding. A maximum-size sparse mask example used two render patches.
+Command-E now merges a supported Normal raster clipping stack into its base. Photato retains the base geometry, alpha, opacity and blend mode and preserves the unrelated layers.
 
-All 752 selected tests passed in three build configurations. Vector masks, independent clipping and broader Photoshop parity remain open.
+All 757 selected tests passed in three build configurations. The extracted universal package passed both offscreen checks. Screen clips, in-place stamps and broader Photoshop parity remain open.
 
-[Source checkpoint 577](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577).
+[Source checkpoint 578](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_578.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-578).
 
 <!-- current-status:end -->
 

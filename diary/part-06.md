@@ -605,6 +605,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 575 | [Render sparse stamps at maximum canvas size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) |
 | 2026-11-18 | 576 | [Match stored RGB32 Normal merge and stamp samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-576) |
 | 2026-11-18 | 577 | [Preserve stored RGB32 pixel masks when merging and stamping](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) |
+| 2026-11-18 | 578 | [Add contextual Merge Clipping Mask](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -431,8 +431,8 @@ struct AutomationCommand: Sendable {
     .init(
       name: "layer.merge",
       parameters: [
-        "operation": "down, selected, visible, stampSelected or stampVisible",
-        "layerIDs": "unique UUID array; one for down, two or more or one group for selected and stampSelected, empty for visible and stampVisible",
+        "operation": "down, clippingMask, selected, visible, stampSelected or stampVisible",
+        "layerIDs": "unique UUID array; one for down or clippingMask, two or more or one group for selected and stampSelected, empty for visible and stampVisible",
       ],
       description:
         "Merge or stamp supported static RGB layers through the shared native compositor. Stamps create a raster and retain the source layers. Each edit uses one Undo. Visible operations clip to the canvas. Selected and down operations retain supported off-canvas geometry. Renderer resource budgets apply."
@@ -641,6 +641,7 @@ struct AutomationCommand: Sendable {
       let operation: LayerMergeOperation
       switch try string("operation") {
       case "down": operation = .down
+      case "clippingMask": operation = .clippingMask
       case "selected": operation = .selected
       case "visible": operation = .visible
       case "stampSelected": operation = .stampSelected
@@ -660,7 +661,7 @@ struct AutomationCommand: Sendable {
       let validSelection: Bool
       switch operation {
       case .visible, .stampVisible: validSelection = ids.isEmpty
-      case .down: validSelection = ids.count == 1
+      case .down, .clippingMask: validSelection = ids.count == 1
       case .selected, .stampSelected:
         validSelection = ids.count >= 2 || (ids.count == 1 && document.layers.first(where: { $0.id == ids[0] })?.isGroup == true)
       }
