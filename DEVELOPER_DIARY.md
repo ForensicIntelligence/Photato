@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **570** · The 10 most recent entries, newest first.
+Source build **571** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 571 — Fix HDR PSD and PSB compression for Photoshop
+
+Photoshop was reading plain ZIP as predicted ZIP on 32-bit layers. This could corrupt HDR colors when opening a PSD or PSB exported by Photato. New exports use the prediction expected for those layers. ZIP requests for the merged preview write raw data because Photoshop refused ZIP in that section. Photato still reads its older files.
+
+Photoshop opened the tested files on Apple Silicon and Intel under Rosetta. The saved 32-bit grayscale samples match across both formats and save encodings. All 694 selected tests passed in each of three build configurations. The local universal archive passed both offscreen workspace checks. A separate mismatch remains in the Intel masked merge.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md).
 
 ## 2026-11-18 — Step 570 — Preserve the working profile when merging before conversion
 
@@ -77,11 +85,3 @@ Brush strokes on Smart Filter masks and saved channels now play back in Actions.
 All 531 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 96 direct and prepared Brush output buffers and 12 older Action encodings matched build 561 byte for byte on each architecture. Both slices of the macOS 14+ universal archive passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-562) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_562.md).
-
-## 2026-11-18 — Step 561 — Record Paint Bucket Actions
-
-Paint Bucket clicks can now be saved in an Action. Playback uses the new document’s layer, mask, or visible composite. A recorded pattern stays with the Action.
-
-All 527 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 240 color-region masks and 18 direct bucket buffers matched build 560 byte for byte on both architectures. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-561) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_561.md).

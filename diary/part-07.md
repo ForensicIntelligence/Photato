@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 571 — Fix HDR PSD and PSB compression for Photoshop
+
+Photoshop was reading plain ZIP as predicted ZIP on 32-bit layers. This could corrupt HDR colors when opening a PSD or PSB exported by Photato. New exports use the prediction expected for those layers. ZIP requests for the merged preview write raw data because Photoshop refused ZIP in that section. Photato still reads its older files.
+
+Photoshop opened the tested files on Apple Silicon and Intel under Rosetta. The saved 32-bit grayscale samples match across both formats and save encodings. All 694 selected tests passed in each of three build configurations. The local universal archive passed both offscreen workspace checks. A separate mismatch remains in the Intel masked merge.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md).
+
 ## 2026-11-18 — Step 570 — Preserve the working profile when merging before conversion
 
 Merging eligible RGB layers before an Image Mode change now uses their working-profile samples. If the composite is already a single full-canvas layer, the conversion uses its original color and alpha planes. The existing Normal merge routine handles integer rounding for supported RGB stacks before promotion to 32 Bits/Channel.
@@ -557,14 +565,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:570 -->
+<!-- current-status-step:571 -->
 ## Current development status — 18 November 2026
 
-Photato now uses the original components when a merge leaves a single unchanged full-canvas layer. It also composites eligible RGB layers in the document’s working profile before applying an Image Mode change. The working-grid integer merge uses the existing Normal merge arithmetic.
+A ZIP request for 32-bit PSD and PSB layers now writes prediction. ZIP requests for the merged preview use raw samples so Photoshop can open the file. Photoshop testing now has readable reference files for the two earlier Display P3 cases.
 
-The separate 8- and 16-bit RGB-to-Grayscale curves and dither, transparent Multiply, and full color conversion parity remain open.
+Exact grayscale conversion for 8- and 16-bit RGB, the remaining Intel HDR masked merge difference, transparent Multiply, and full color conversion parity remain open.
 
-[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
+[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

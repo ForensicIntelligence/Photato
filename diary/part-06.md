@@ -598,6 +598,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 568 | [Match half-gamma promotion and Gray32 PSD layer stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) |
 | 2026-11-18 | 569 | [Match HDR grayscale conversion and ICC gamma boundaries](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-569) |
 | 2026-11-18 | 570 | [Preserve the working profile when merging before conversion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) |
+| 2026-11-18 | 571 | [Fix HDR PSD and PSB compression for Photoshop](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

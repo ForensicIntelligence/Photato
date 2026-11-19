@@ -1,0 +1,973 @@
+{
+  "build": 571,
+  "diagnosis": {
+    "legacyZipWithPredictionApplied": {
+      "arm": {
+        "p3-alpha": {
+          "compared": 1462,
+          "correctRawInterpretationMatches": 0,
+          "finiteMatches": 1442,
+          "nonfiniteMatches": 20
+        },
+        "p3-solid": {
+          "compared": 1462,
+          "correctRawInterpretationMatches": 0,
+          "finiteMatches": 1442,
+          "nonfiniteMatches": 20
+        }
+      },
+      "intel": {
+        "p3-alpha": {
+          "compared": 1462,
+          "correctRawInterpretationMatches": 0,
+          "finiteMatches": 1439,
+          "nonfiniteMatches": 20
+        },
+        "p3-solid": {
+          "compared": 1462,
+          "correctRawInterpretationMatches": 0,
+          "finiteMatches": 1439,
+          "nonfiniteMatches": 20
+        }
+      }
+    },
+    "photoshopFixtureLayerStreamsWithPrediction": 81,
+    "photoshopRGB32FixtureFiles": 10
+  },
+  "independentExportComparisons": {
+    "arm": {
+      "01-opaque-samples.psb": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "992e1ba2d73a8f1993ac0b320ec2f66b8feee1dda16c9b1a37cc88408a9e5f95"
+      },
+      "01-opaque-samples.psd": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "1b1da351b1b518e2e14e3edf3a15e8ecc5cbf44a70918d0b4b13145d87a4cefd"
+      },
+      "02-alpha-samples.psb": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "738e06fec47045b0f12c8bd5a8d6a1ffb9d703b4d8ccb7d7c88123f6ae9e459d"
+      },
+      "02-alpha-samples.psd": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "56743fa9fa2ccccc04c5bdfd822d4eb5861173d5f4167195a4e6341448adb9b2"
+      },
+      "03-opaque-base.psb": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "b25f19bd917c309ff3dc305c9a1dd7ebec9353960658fb51a1c219059b6ea73f"
+      },
+      "03-opaque-base.psd": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "2ac6f71d7eafb18523fb1282a1e68c0489e3cb9cf4f08704c4c05730dd13c3e1"
+      },
+      "04-translucent-base.psb": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "0e5803ccbd4f116e599c569cad73c7f3ecfdc4dbfa7b0f3686c04c13b482b465"
+      },
+      "04-translucent-base.psd": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "95a7defc2a98bb71ed09c32db057007c11fa43bb47caa531a4dfccb8d41418a8"
+      },
+      "05-mask-opacity.psb": {
+        "layerMarker": 3,
+        "layerWords": 2192,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "0a55addf8d1a71e7d1f67b2b719214d1acb952e5bb441e3b481695e82d9f20a5"
+      },
+      "05-mask-opacity.psd": {
+        "layerMarker": 3,
+        "layerWords": 2192,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "7207e5f50796c99d1f0f43776a15db75cbc6a2e4889117bcf097fedcf2ded695"
+      },
+      "06-cartesian-alpha.psb": {
+        "layerMarker": 3,
+        "layerWords": 32512,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "f703472a598d41a7fdc1cf0192195bbec55596cbc24bca6ceb4a03dcce7ffbbf"
+      },
+      "06-cartesian-alpha.psd": {
+        "layerMarker": 3,
+        "layerWords": 32512,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "d91dc22046c8a6f2a6b98af9ff811eddf7e57dcb0a38925261673bebb05f3e99"
+      },
+      "07-random-mask.psb": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "bdadaef4dd1c1ed7f6a24ec83316cf7723d3d391a8dafa684a851c784dc26169"
+      },
+      "07-random-mask.psd": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "61ba485bfb206cd5bf0cb75ff6f6888c3dcf54b25903a6becb4421641ce91253"
+      },
+      "08-three-layers.psb": {
+        "layerMarker": 3,
+        "layerWords": 52284,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "539a496c322ad3708e68ab9a566ffed14e687c062e989921c0fbb3e561ccccf8"
+      },
+      "08-three-layers.psd": {
+        "layerMarker": 3,
+        "layerWords": 52284,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "4a54749fec3633b515ae1eb1a6bbfb46e94d6f31e2aa55a35890e2f4fa2bf49d"
+      },
+      "09-offset-hdr.psb": {
+        "layerMarker": 3,
+        "layerWords": 31220,
+        "mergedMarker": 0,
+        "mergedWords": 24576,
+        "zipSHA256": "76142b934b572eafae8627ddf14aa8d8b6fad439b8716c9389f7aa7a1506cedd"
+      },
+      "09-offset-hdr.psd": {
+        "layerMarker": 3,
+        "layerWords": 31220,
+        "mergedMarker": 0,
+        "mergedWords": 24576,
+        "zipSHA256": "055f82e6daed87f55b0528ff313884b4615f64908e91c00442997a7b5117396f"
+      },
+      "10-opaque-base-random-mask.psb": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "c5cc9721558e42c311b1819521e188d3ed94ac7f4f20a59d11ebde1f476f537f"
+      },
+      "10-opaque-base-random-mask.psd": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "ed773e45fd4936a40cba79ae1ef1499ee6d3588965edc9ace8db5568c30164ab"
+      },
+      "p3-alpha.psb": {
+        "layerMarker": 3,
+        "layerWords": 35112,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "9eb6e244648167044635b3453975cbadb00782a19b354cc2315bec9218a97822"
+      },
+      "p3-alpha.psd": {
+        "layerMarker": 3,
+        "layerWords": 35112,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "bcd99aa0a9ac73b475b5d5b1136211de2f87c60c7c65d75794b9e2d74e9a49f7"
+      },
+      "p3-solid.psb": {
+        "layerMarker": 3,
+        "layerWords": 29992,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "2ac7156288cb1d39a0d5f7c8b1b35c9ad03e1c30b72495452fc42291e73c2627"
+      },
+      "p3-solid.psd": {
+        "layerMarker": 3,
+        "layerWords": 29992,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "8d34b9d466dcc0ecf6725b7a712af32657d8ac6cf2eb4ab399f471ea7cdd654e"
+      }
+    },
+    "debug": {
+      "01-opaque-samples.psb": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "992e1ba2d73a8f1993ac0b320ec2f66b8feee1dda16c9b1a37cc88408a9e5f95"
+      },
+      "01-opaque-samples.psd": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "1b1da351b1b518e2e14e3edf3a15e8ecc5cbf44a70918d0b4b13145d87a4cefd"
+      },
+      "02-alpha-samples.psb": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "738e06fec47045b0f12c8bd5a8d6a1ffb9d703b4d8ccb7d7c88123f6ae9e459d"
+      },
+      "02-alpha-samples.psd": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "56743fa9fa2ccccc04c5bdfd822d4eb5861173d5f4167195a4e6341448adb9b2"
+      },
+      "03-opaque-base.psb": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "b25f19bd917c309ff3dc305c9a1dd7ebec9353960658fb51a1c219059b6ea73f"
+      },
+      "03-opaque-base.psd": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "2ac6f71d7eafb18523fb1282a1e68c0489e3cb9cf4f08704c4c05730dd13c3e1"
+      },
+      "04-translucent-base.psb": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "0e5803ccbd4f116e599c569cad73c7f3ecfdc4dbfa7b0f3686c04c13b482b465"
+      },
+      "04-translucent-base.psd": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "95a7defc2a98bb71ed09c32db057007c11fa43bb47caa531a4dfccb8d41418a8"
+      },
+      "05-mask-opacity.psb": {
+        "layerMarker": 3,
+        "layerWords": 2192,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "0a55addf8d1a71e7d1f67b2b719214d1acb952e5bb441e3b481695e82d9f20a5"
+      },
+      "05-mask-opacity.psd": {
+        "layerMarker": 3,
+        "layerWords": 2192,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "7207e5f50796c99d1f0f43776a15db75cbc6a2e4889117bcf097fedcf2ded695"
+      },
+      "06-cartesian-alpha.psb": {
+        "layerMarker": 3,
+        "layerWords": 32512,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "f703472a598d41a7fdc1cf0192195bbec55596cbc24bca6ceb4a03dcce7ffbbf"
+      },
+      "06-cartesian-alpha.psd": {
+        "layerMarker": 3,
+        "layerWords": 32512,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "d91dc22046c8a6f2a6b98af9ff811eddf7e57dcb0a38925261673bebb05f3e99"
+      },
+      "07-random-mask.psb": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "bdadaef4dd1c1ed7f6a24ec83316cf7723d3d391a8dafa684a851c784dc26169"
+      },
+      "07-random-mask.psd": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "61ba485bfb206cd5bf0cb75ff6f6888c3dcf54b25903a6becb4421641ce91253"
+      },
+      "08-three-layers.psb": {
+        "layerMarker": 3,
+        "layerWords": 52284,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "539a496c322ad3708e68ab9a566ffed14e687c062e989921c0fbb3e561ccccf8"
+      },
+      "08-three-layers.psd": {
+        "layerMarker": 3,
+        "layerWords": 52284,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "4a54749fec3633b515ae1eb1a6bbfb46e94d6f31e2aa55a35890e2f4fa2bf49d"
+      },
+      "09-offset-hdr.psb": {
+        "layerMarker": 3,
+        "layerWords": 31220,
+        "mergedMarker": 0,
+        "mergedWords": 24576,
+        "zipSHA256": "76142b934b572eafae8627ddf14aa8d8b6fad439b8716c9389f7aa7a1506cedd"
+      },
+      "09-offset-hdr.psd": {
+        "layerMarker": 3,
+        "layerWords": 31220,
+        "mergedMarker": 0,
+        "mergedWords": 24576,
+        "zipSHA256": "055f82e6daed87f55b0528ff313884b4615f64908e91c00442997a7b5117396f"
+      },
+      "10-opaque-base-random-mask.psb": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "c5cc9721558e42c311b1819521e188d3ed94ac7f4f20a59d11ebde1f476f537f"
+      },
+      "10-opaque-base-random-mask.psd": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "ed773e45fd4936a40cba79ae1ef1499ee6d3588965edc9ace8db5568c30164ab"
+      },
+      "p3-alpha.psb": {
+        "layerMarker": 3,
+        "layerWords": 35112,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "9eb6e244648167044635b3453975cbadb00782a19b354cc2315bec9218a97822"
+      },
+      "p3-alpha.psd": {
+        "layerMarker": 3,
+        "layerWords": 35112,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "bcd99aa0a9ac73b475b5d5b1136211de2f87c60c7c65d75794b9e2d74e9a49f7"
+      },
+      "p3-solid.psb": {
+        "layerMarker": 3,
+        "layerWords": 29992,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "2ac7156288cb1d39a0d5f7c8b1b35c9ad03e1c30b72495452fc42291e73c2627"
+      },
+      "p3-solid.psd": {
+        "layerMarker": 3,
+        "layerWords": 29992,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "8d34b9d466dcc0ecf6725b7a712af32657d8ac6cf2eb4ab399f471ea7cdd654e"
+      }
+    },
+    "intel": {
+      "01-opaque-samples.psb": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "992e1ba2d73a8f1993ac0b320ec2f66b8feee1dda16c9b1a37cc88408a9e5f95"
+      },
+      "01-opaque-samples.psd": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "1b1da351b1b518e2e14e3edf3a15e8ecc5cbf44a70918d0b4b13145d87a4cefd"
+      },
+      "02-alpha-samples.psb": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "738e06fec47045b0f12c8bd5a8d6a1ffb9d703b4d8ccb7d7c88123f6ae9e459d"
+      },
+      "02-alpha-samples.psd": {
+        "layerMarker": 3,
+        "layerWords": 1024,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "56743fa9fa2ccccc04c5bdfd822d4eb5861173d5f4167195a4e6341448adb9b2"
+      },
+      "03-opaque-base.psb": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "b25f19bd917c309ff3dc305c9a1dd7ebec9353960658fb51a1c219059b6ea73f"
+      },
+      "03-opaque-base.psd": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "2ac6f71d7eafb18523fb1282a1e68c0489e3cb9cf4f08704c4c05730dd13c3e1"
+      },
+      "04-translucent-base.psb": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "0e5803ccbd4f116e599c569cad73c7f3ecfdc4dbfa7b0f3686c04c13b482b465"
+      },
+      "04-translucent-base.psd": {
+        "layerMarker": 3,
+        "layerWords": 2048,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "95a7defc2a98bb71ed09c32db057007c11fa43bb47caa531a4dfccb8d41418a8"
+      },
+      "05-mask-opacity.psb": {
+        "layerMarker": 3,
+        "layerWords": 2192,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "0a55addf8d1a71e7d1f67b2b719214d1acb952e5bb441e3b481695e82d9f20a5"
+      },
+      "05-mask-opacity.psd": {
+        "layerMarker": 3,
+        "layerWords": 2192,
+        "mergedMarker": 0,
+        "mergedWords": 1024,
+        "zipSHA256": "7207e5f50796c99d1f0f43776a15db75cbc6a2e4889117bcf097fedcf2ded695"
+      },
+      "06-cartesian-alpha.psb": {
+        "layerMarker": 3,
+        "layerWords": 32512,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "f703472a598d41a7fdc1cf0192195bbec55596cbc24bca6ceb4a03dcce7ffbbf"
+      },
+      "06-cartesian-alpha.psd": {
+        "layerMarker": 3,
+        "layerWords": 32512,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "d91dc22046c8a6f2a6b98af9ff811eddf7e57dcb0a38925261673bebb05f3e99"
+      },
+      "07-random-mask.psb": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "bdadaef4dd1c1ed7f6a24ec83316cf7723d3d391a8dafa684a851c784dc26169"
+      },
+      "07-random-mask.psd": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "61ba485bfb206cd5bf0cb75ff6f6888c3dcf54b25903a6becb4421641ce91253"
+      },
+      "08-three-layers.psb": {
+        "layerMarker": 3,
+        "layerWords": 52284,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "539a496c322ad3708e68ab9a566ffed14e687c062e989921c0fbb3e561ccccf8"
+      },
+      "08-three-layers.psd": {
+        "layerMarker": 3,
+        "layerWords": 52284,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "4a54749fec3633b515ae1eb1a6bbfb46e94d6f31e2aa55a35890e2f4fa2bf49d"
+      },
+      "09-offset-hdr.psb": {
+        "layerMarker": 3,
+        "layerWords": 31220,
+        "mergedMarker": 0,
+        "mergedWords": 24576,
+        "zipSHA256": "76142b934b572eafae8627ddf14aa8d8b6fad439b8716c9389f7aa7a1506cedd"
+      },
+      "09-offset-hdr.psd": {
+        "layerMarker": 3,
+        "layerWords": 31220,
+        "mergedMarker": 0,
+        "mergedWords": 24576,
+        "zipSHA256": "055f82e6daed87f55b0528ff313884b4615f64908e91c00442997a7b5117396f"
+      },
+      "10-opaque-base-random-mask.psb": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "c5cc9721558e42c311b1819521e188d3ed94ac7f4f20a59d11ebde1f476f537f"
+      },
+      "10-opaque-base-random-mask.psd": {
+        "layerMarker": 3,
+        "layerWords": 35900,
+        "mergedMarker": 0,
+        "mergedWords": 16384,
+        "zipSHA256": "ed773e45fd4936a40cba79ae1ef1499ee6d3588965edc9ace8db5568c30164ab"
+      },
+      "p3-alpha.psb": {
+        "layerMarker": 3,
+        "layerWords": 35112,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "9eb6e244648167044635b3453975cbadb00782a19b354cc2315bec9218a97822"
+      },
+      "p3-alpha.psd": {
+        "layerMarker": 3,
+        "layerWords": 35112,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "bcd99aa0a9ac73b475b5d5b1136211de2f87c60c7c65d75794b9e2d74e9a49f7"
+      },
+      "p3-solid.psb": {
+        "layerMarker": 3,
+        "layerWords": 29992,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "2ac7156288cb1d39a0d5f7c8b1b35c9ad03e1c30b72495452fc42291e73c2627"
+      },
+      "p3-solid.psd": {
+        "layerMarker": 3,
+        "layerWords": 29992,
+        "mergedMarker": 0,
+        "mergedWords": 15360,
+        "zipSHA256": "8d34b9d466dcc0ecf6725b7a712af32657d8ac6cf2eb4ab399f471ea7cdd654e"
+      }
+    }
+  },
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "photoshopReferences": {
+    "colorSettingsPerArchitecture": {
+      "arm": "North America General Purpose 2",
+      "intel": "North America General Purpose 2"
+    },
+    "grayscaleReferences": {
+      "arm": {
+        "p3-alpha": {
+          "build570MergeMismatches": 0,
+          "files": 4,
+          "matchedSHA256": "2d691845b9dde389f1c44a0610ae2016dae51252d673fe54d5ecd3b557fd177d",
+          "wordsPerFile": 5120
+        },
+        "p3-solid": {
+          "build570MergeMismatches": 0,
+          "files": 4,
+          "matchedSHA256": "42654d2dba39088805285688a9544088cd0069e2421587a5969c7b9c193cb6d2",
+          "wordsPerFile": 5120
+        }
+      },
+      "intel": {
+        "p3-alpha": {
+          "build570MergeMismatches": 291,
+          "files": 4,
+          "matchedSHA256": "ff339ada10ffc88d719539af1fc8884eb70e2ec6c85a448e815a8e8c0f04b113",
+          "wordsPerFile": 5120
+        },
+        "p3-solid": {
+          "build570MergeMismatches": 0,
+          "files": 4,
+          "matchedSHA256": "42654d2dba39088805285688a9544088cd0069e2421587a5969c7b9c193cb6d2",
+          "wordsPerFile": 5120
+        }
+      }
+    },
+    "openAndInspectPerArchitecture": {
+      "arm": {
+        "hdrFilesSaved": 8,
+        "mergedRawOrRLEOpened": 8,
+        "mergedZipVariantsRejectedAtOpen": 8
+      },
+      "intel": {
+        "hdrFilesSaved": 8,
+        "mergedRawOrRLEOpened": 8,
+        "mergedZipVariantsRejectedAtOpen": 8
+      }
+    },
+    "rgbMergeBeforeGrayscale": {
+      "arm": {
+        "p3-alpha": {
+          "mismatchedWords": 0,
+          "photatoSHA256": "221e45bb34c03b87d127b50ddd69291fd64fd377e5a5e0c9995525e72b2161fb",
+          "photoshopSHA256": "221e45bb34c03b87d127b50ddd69291fd64fd377e5a5e0c9995525e72b2161fb",
+          "planes": [
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            },
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            },
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            }
+          ],
+          "status": "compared",
+          "words": 15360
+        },
+        "p3-solid": {
+          "mismatchedWords": 0,
+          "photatoSHA256": "98b092cdf8f5bb64f6c1617b30c8880ed2f0161d35f0bc6bf88a9c3938e1a9e7",
+          "photoshopSHA256": "98b092cdf8f5bb64f6c1617b30c8880ed2f0161d35f0bc6bf88a9c3938e1a9e7",
+          "planes": [
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            },
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            },
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            }
+          ],
+          "status": "compared",
+          "words": 15360
+        }
+      },
+      "intel": {
+        "p3-alpha": {
+          "mismatchedWords": 1277,
+          "photatoSHA256": "221e45bb34c03b87d127b50ddd69291fd64fd377e5a5e0c9995525e72b2161fb",
+          "photoshopSHA256": "cc9ccc9383e23ef2db948253e33e71441c986b9a37bf868764a01bfcfb97f12b",
+          "planes": [
+            {
+              "different": 346,
+              "firstDifferences": [
+                [
+                  538,
+                  "0xbda2ac28",
+                  "0xbda2ac2b"
+                ],
+                [
+                  542,
+                  "0x3fca09de",
+                  "0x3fca09df"
+                ],
+                [
+                  544,
+                  "0x3f040634",
+                  "0x3f040633"
+                ],
+                [
+                  548,
+                  "0x3ea1d6c0",
+                  "0x3ea1d6c1"
+                ],
+                [
+                  554,
+                  "0x3e60e222",
+                  "0x3e60e221"
+                ]
+              ],
+              "samples": 5120
+            },
+            {
+              "different": 410,
+              "firstDifferences": [
+                [
+                  519,
+                  "0x3f6bbcae",
+                  "0x3f6bbcaf"
+                ],
+                [
+                  527,
+                  "0x3ea2a570",
+                  "0x3ea2a571"
+                ],
+                [
+                  531,
+                  "0xbcbf54b0",
+                  "0xbcbf54aa"
+                ],
+                [
+                  538,
+                  "0x3b9c3024",
+                  "0x3b9c3025"
+                ],
+                [
+                  544,
+                  "0x3ee3ac34",
+                  "0x3ee3ac35"
+                ]
+              ],
+              "samples": 5120
+            },
+            {
+              "different": 521,
+              "firstDifferences": [
+                [
+                  519,
+                  "0x3f2c2562",
+                  "0x3f2c2563"
+                ],
+                [
+                  526,
+                  "0x3f72dbf6",
+                  "0x3f72dbf7"
+                ],
+                [
+                  529,
+                  "0x3f3e63b8",
+                  "0x3f3e63b7"
+                ],
+                [
+                  538,
+                  "0x3facafe2",
+                  "0x3facafe1"
+                ],
+                [
+                  553,
+                  "0x3e6aab34",
+                  "0x3e6aab32"
+                ]
+              ],
+              "samples": 5120
+            }
+          ],
+          "status": "compared",
+          "words": 15360
+        },
+        "p3-solid": {
+          "mismatchedWords": 0,
+          "photatoSHA256": "98b092cdf8f5bb64f6c1617b30c8880ed2f0161d35f0bc6bf88a9c3938e1a9e7",
+          "photoshopSHA256": "98b092cdf8f5bb64f6c1617b30c8880ed2f0161d35f0bc6bf88a9c3938e1a9e7",
+          "planes": [
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            },
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            },
+            {
+              "different": 0,
+              "firstDifferences": [],
+              "samples": 5120
+            }
+          ],
+          "status": "compared",
+          "words": 15360
+        }
+      }
+    },
+    "roundingCandidatesOnOneMaskedFixture": {
+      "arm": [
+        {
+          "alphaOrder": "am_o",
+          "different": 0,
+          "equation": "current",
+          "mask": "stored",
+          "opacity": "div"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 0,
+          "equation": "current",
+          "mask": "stored",
+          "opacity": "u16"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 360,
+          "equation": "direct_fused",
+          "mask": "stored",
+          "opacity": "div"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 360,
+          "equation": "direct_fused",
+          "mask": "stored",
+          "opacity": "u16"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 659,
+          "equation": "current",
+          "mask": "stored",
+          "opacity": "double"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 673,
+          "equation": "current",
+          "mask": "double",
+          "opacity": "div"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 673,
+          "equation": "current",
+          "mask": "double",
+          "opacity": "u16"
+        },
+        {
+          "alphaOrder": "double",
+          "different": 698,
+          "equation": "current",
+          "mask": "stored",
+          "opacity": "div"
+        }
+      ],
+      "intel": [
+        {
+          "alphaOrder": "am_o",
+          "different": 0,
+          "equation": "serial",
+          "mask": "stored",
+          "opacity": "div"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 0,
+          "equation": "serial",
+          "mask": "stored",
+          "opacity": "u16"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 626,
+          "equation": "serial",
+          "mask": "stored",
+          "opacity": "double"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 647,
+          "equation": "serial",
+          "mask": "double",
+          "opacity": "div"
+        },
+        {
+          "alphaOrder": "am_o",
+          "different": 647,
+          "equation": "serial",
+          "mask": "double",
+          "opacity": "u16"
+        },
+        {
+          "alphaOrder": "double",
+          "different": 660,
+          "equation": "serial",
+          "mask": "stored",
+          "opacity": "div"
+        },
+        {
+          "alphaOrder": "double",
+          "different": 660,
+          "equation": "serial",
+          "mask": "stored",
+          "opacity": "u16"
+        },
+        {
+          "alphaOrder": "double",
+          "different": 872,
+          "equation": "serial",
+          "mask": "stored",
+          "opacity": "double"
+        }
+      ]
+    },
+    "versionPerArchitecture": {
+      "arm": "27.2.0",
+      "intel": "27.2.0"
+    }
+  },
+  "qualification": {
+    "Debug Apple Silicon": {
+      "compiledAppSHA256": "3261731a2491b4e7aa029c7d9bd61c508699e24e8693475eb72557a719727629",
+      "passed": 694,
+      "receiptSHA256": "3e6520aa3a122d914bf071488c79d68e57065ee7c28f2e9cf4c6c3ac7b0faaf0",
+      "selected": 694,
+      "testBinarySHA256": "a1cb74c2bd4c83dabdb1db017736c1147a4f2b927a5dc61a95a72a3cdc857808"
+    },
+    "Release Apple Silicon": {
+      "compiledAppSHA256": "09460c52770828c4f543cb7efe57ec2cd286710e8610c8be574a6c7051a3a0e9",
+      "passed": 694,
+      "receiptSHA256": "7263707c875342177a0fa1b0e55da82cba8be28f93b81e2b5d18898bd2f99180",
+      "selected": 694,
+      "testBinarySHA256": "d38b27b64bbf7edfa9b875576334749600a912898a02bd211b03882bfa851075"
+    },
+    "Release Intel under Rosetta": {
+      "compiledAppSHA256": "00ff3ac2998004bac096bf8bc689eb284dbca92f344ab089bdb10214178eb802",
+      "passed": 694,
+      "receiptSHA256": "68f83c3f615d0471efac0e3767c808b501020d890312d2280fd91cc7cc7d4afc",
+      "selected": 694,
+      "testBinarySHA256": "b6cbb6a67a3e0becd9726fc62922d7aa1de849b8572bd6333e1aa37e3673589b"
+    }
+  },
+  "softwareRelease": false,
+  "source": {
+    "baseManifest": "SOURCE_SNAPSHOT_569.json",
+    "changedSHA256": {
+      "Sources/PhotoCraft/DocumentEncodingOptions.swift": "8d8e20887a3a98c89eadd821c49f7cd73d7efeb20b64060308dd3c729ab1a0ce",
+      "Sources/PhotoCraftImaging/PSDChannelCodec.swift": "a79205a14ae89b794be61856812b55633fa1f932aa6a6cf0f745272d936b55d3",
+      "Sources/PhotoCraftImaging/PSDChannelWriter.swift": "0366fa0a40887960b4791753a32606cf20a09f4e90a3bc7e84f692a2b41ed080",
+      "Sources/PhotoCraftImaging/PSDCodec.swift": "68a4b0a3afe9184e785af31927bba13c2bfe943cccc00130e0bc0595121f1a58",
+      "Tests/PhotoCraftAppTests/PhotoshopEncodingOptionsTests.swift": "b4881c305ebcf4196626cf3bd9ac88957fda4c957960725207b1b8269bb76301",
+      "Tests/PhotoCraftImagingTests/PSDDepthTests.swift": "7f5df2e3d9533120be7f76701a4d70c24a42ebf16da84237e9d4e2a278bf266d",
+      "Tests/PhotoCraftImagingTests/PSDModeTests.swift": "d553bc136a003ee8969bc9c0da519156b3cbe755672d05c97aa2c0df27b927e2",
+      "scripts/Info.plist": "34a6cfee4f3ca85cb63f1599e9358cfa257178fc530eb488e27c350e86dc75c7"
+    },
+    "excludedInputs": 13,
+    "frozenManifestSHA256": "4752ed3727c4612f26b875724d6b31f0fea841f53315aaed7abad815c89e9796",
+    "includedInputs": 7919,
+    "inputs": 7932,
+    "previousDelta": "MERGE_MODE_REFERENCES_570.json"
+  },
+  "validationArchive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "3ac5f42db9b03fc19abb9c4bfa91d8989e69de93718fe4922c87d55797cf0d51",
+    "binarySHA256": "88834bfe2b88f3f71cafe054e0cdd0c0aee10007be49a53335cd737f8787ddb4",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true
+  }
+}

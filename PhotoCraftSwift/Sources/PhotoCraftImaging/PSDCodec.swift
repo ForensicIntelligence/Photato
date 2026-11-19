@@ -1053,10 +1053,19 @@ public enum PSDCodec {
 
   static func writeRasterLayers(
     _ doc: CraftDocument, compression: PSDCompression, format: PSDFileFormat,
-    compositeCompression: PSDCompression = .raw, output: PSDOutput, includeComposite: Bool = true
+    compositeCompression requestedCompositeCompression: PSDCompression = .raw,
+    output: PSDOutput, includeComposite: Bool = true
   ) throws {
     try Task.checkCancellation()
     try doc.validate()
+    // Photoshop rejects ZIP markers in the final Image Data section.
+    // Preserve RLE and raw requests, and retain Bitmap's predictor validation.
+    let compositeCompression: PSDCompression
+    switch requestedCompositeCompression {
+    case .zip: compositeCompression = .raw
+    case .zipPrediction where doc.colorMode != .bitmap: compositeCompression = .raw
+    default: compositeCompression = requestedCompositeCompression
+    }
     let unmanagedColorMetadata=try PSDColorMetadata.unmanagedRGBOutput(doc)
     let exportedLight = try PSDGlobalLight.exportLight(doc)
     guard doc.variables == nil else { throw CraftError.unsupported("Save the editable variables and data sets in Photato format. Export a data-set variation to create a PSD without template definitions.") }

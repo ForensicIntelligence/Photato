@@ -6,11 +6,15 @@ import zlib
 /// Z_NO_FLUSH preserves a single zlib stream, including its final checksum.
 enum PSDChannelWriter {
   static func write(
-    width: Int, height: Int, depth: Int, compression: PSDCompression,
+    width: Int, height: Int, depth: Int, compression requestedCompression: PSDCompression,
     channels: Int = 1, format: PSDFileFormat = .psd,
     to output: PSDOutput, row: (Int) throws -> [UInt8]
   ) throws {
     _ = try PSDChannelCodec.streamByteCount(width: width, height: height, depth: depth, channels: channels)
+    // Photoshop 2026 applies the predictor to Float32 ZIP channel data.
+    // Write the prediction marker and payload together for that depth.
+    let compression: PSDCompression = depth == 32 && requestedCompression == .zip
+      ? .zipPrediction : requestedCompression
     try output.n(compression.rawValue, 2)
     let table = output.count
     if compression == .rle {

@@ -78,6 +78,28 @@ final class PhotoshopEncodingOptionsTests: XCTestCase {
       XCTAssertEqual(mismatch.0.statusCode,400);XCTAssertEqual(doc.store.document,before)
     }
   }
+  @MainActor func testHTTPFloatZIPRequestsUseThePhotoshopCompatibleEncoding() async throws {
+    let helper = AutomationTests()
+    let model = try DocumentSaveWorkflowTests().fixture(depth: .f32)
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: model)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let zip = #"{"psdLayerCompression":"zip","psdCompositeCompression":"zip"}"#
+      let predicted = RasterEncodingOptions(psdLayerCompression: .zipPrediction,
+        psdCompositeCompression: .raw)
+      for format in [DocumentIO.Format.psd, .psb] {
+        let (response, bytes) = try await helper.request(service,
+          path: "/v1/documents/\(id)/file.\(format.rawValue)",
+          headers: ["X-Photato-Export-Options": zip])
+        XCTAssertEqual(response.statusCode, 200)
+        XCTAssertEqual(bytes, try DocumentIO.encode(model, format: format, options: predicted))
+      }
+      XCTAssertEqual(document.store.document, model)
+      XCTAssertTrue(document.rememberedEncodingOptions.isEmpty)
+    }
+  }
   private struct Transport: AdobeResourceTransport {
     let bytes: Data
     func fetch(_ url: URL) async throws -> Data { bytes }

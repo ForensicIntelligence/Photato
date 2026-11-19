@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 571.** A ZIP request for 32-bit PSD and PSB layers now writes prediction. ZIP requests for the merged preview use raw samples so Photoshop can open the file. [Qualification](docs/SOURCE_PUBLICATION_571.md).
+
 **Source checkpoint 570.** Image Mode conversion keeps the working profile when merging eligible RGB layers, and preserves the original color and alpha planes of a single unchanged full-canvas layer. [Qualification](docs/SOURCE_PUBLICATION_570.md).
 
 **Source checkpoint 569.** 32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves. All 661 selected tests passed in three configurations. [Qualification](docs/SOURCE_PUBLICATION_569.md).

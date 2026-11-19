@@ -1,6 +1,5 @@
 import Foundation
 import PhotoCraftCore
-import zlib
 
 /// Native Swift PSD sample layout and prediction, using macOS's zlib for DEFLATE.
 /// Prediction follows PhotoCraft crates/psd/src/compression.rs (MIT OR Apache-2.0).
@@ -47,34 +46,11 @@ enum PSDChannelCodec {
     else {
       throw CraftError.invalid("PSD channel size does not match its geometry.")
     }
-    if compression == .rle {
-      let output = PSDOutput(), rowBytes = width * (depth / 8)
-      try PSDChannelWriter.write(width: width, height: height, depth: depth,
-        compression: compression, format: format, to: output) { y in
-          Array(bytes[(y * rowBytes)..<((y + 1) * rowBytes)])
-        }
-      return output.data
-    }
-    var output = PSDWriter()
-    output.n(compression.rawValue, 2)
-    if compression == .raw {
-      output.data.append(contentsOf: bytes)
-    } else {
-      var encoded = bytes
-      if compression == .zipPrediction {
-        predict(&encoded, width: width, depth: depth, decode: false)
-      }
-      var count = compressBound(uLong(encoded.count))
-      var packed = [UInt8](repeating: 0, count: Int(count))
-      let status = packed.withUnsafeMutableBufferPointer { target in
-        encoded.withUnsafeBufferPointer { source in
-          compress2(
-            target.baseAddress!, &count, source.baseAddress!, uLong(encoded.count),
-            Z_DEFAULT_COMPRESSION)
-        }
-      }
-      guard status == Z_OK else { throw CraftError.invalid("PSD ZIP compression failed.") }
-      output.data.append(contentsOf: packed.prefix(Int(count)))
+    let output = PSDOutput()
+    let rowBytes = width * (depth / 8)
+    try PSDChannelWriter.write(width: width, height: height, depth: depth,
+      compression: compression, format: format, to: output) { y in
+        Array(bytes[(y * rowBytes)..<((y + 1) * rowBytes)])
     }
     return output.data
   }

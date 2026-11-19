@@ -49,6 +49,36 @@ final class PSDModeTests: XCTestCase {
       } }
     } }
   }
+  func testPSDAndPSBKeepLayerZIPAndWriteRawMergedImageForZIPChoices() throws {
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: folder) }
+
+    for mode in [DocumentColorMode.rgb, .grayscale] {
+      for depth in PixelDepth.allCases {
+        var source = try fixture(mode, depth)
+        source.layers[0].mask = try Surface(width: 4, height: 3, depth: .u8,
+          fill: Pixel(0.5, 0.5, 0.5))
+        let layerCompression: PSDCompression = depth == .f32 ? .zipPrediction : .zip
+        for format in PSDFileFormat.allCases {
+          let reference = try PSDCodec.writeRasterLayers(source, compression: layerCompression,
+            format: format, compositeCompression: .raw)
+          let zip = try PSDCodec.writeRasterLayers(source, compression: .zip, format: format,
+            compositeCompression: .zip)
+          let zipPrediction = try PSDCodec.writeRasterLayers(source, compression: .zip, format: format,
+            compositeCompression: .zipPrediction)
+          XCTAssertEqual(zip, reference)
+          XCTAssertEqual(zipPrediction, reference)
+          try assertPlanes(PSDCodec.read(zip), source)
+
+          let url = folder.appendingPathComponent(format == .psd ? "compatibility.psd" : "compatibility.psb")
+          try PSDCodec.writeRasterLayers(source, to: url, compression: .zip, format: format,
+            compositeCompression: .zip)
+          XCTAssertEqual(try Data(contentsOf: url), reference)
+        }
+      }
+    }
+  }
   /// A standalone raw fixture assembled from literal file-layout fields. It does
   /// not call the production writer or the mode sample transformation helper.
   func flattened(mode: Int, depth: Int, planes: [[UInt8]], alpha: Bool = false, profile: Data? = nil) -> Data {

@@ -33,6 +33,8 @@ final class PSDDepthTests: XCTestCase {
         let plane = Array(v.raw.prefix(v.width * v.height * v.depth / 8))
         let encoded = try PSDChannelCodec.encode(
           plane, width: v.width, height: v.height, depth: v.depth, compression: compression)
+        let expectedMarker = v.depth == 32 && compression == .zip ? 3 : v.compression
+        XCTAssertEqual(Array(encoded.prefix(2)), [0, UInt8(expectedMarker)])
         XCTAssertEqual(
           try PSDChannelCodec.decode(encoded, width: v.width, height: v.height, depth: v.depth),
           plane)
