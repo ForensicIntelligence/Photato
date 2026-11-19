@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **572** · The 10 most recent entries, newest first.
+Source build **573** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 573 — Match HDR Normal rounding at the Float32 underflow boundary
+
+On Intel, very small color contributions can disappear during 32-bit Normal compositing. Photato now matches the measured rounding, including products just below the smallest normal Float32 value. The Apple Silicon build keeps its fused calculation.
+
+The new tests compare 57,504 straight color and alpha words with separately saved Photoshop results on each architecture. An ordinary opaque source that covers the canvas retains its original colors over uniform backdrop alpha. Grouped clipping can preserve those colors even when the base alpha varies. All 708 selected tests passed in all three configurations. The local universal archive passed both offscreen workspace checks. The translucent test also exposed a difference in Merge Visible that remains open.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md).
 
 ## 2026-11-18 — Step 572 — Match Intel HDR Normal layer and group compositing
 
@@ -77,11 +85,3 @@ Photato Actions can record Brush strokes on process color components, Duotone gr
 All 583 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. On each architecture, 52 tested channel strokes replayed to the same samples as direct editing and matched build 563’s raw planes. Forty legacy Brush step encodings also matched. Both slices of the macOS 14+ validation archive passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-564) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_564.md).
-
-## 2026-11-18 — Step 563 — Record and replay Quick Mask Actions
-
-Enter Quick Mask, edit the selection with Brush or Pencil, and exit in one Action. Replay starts with the new document’s selection and can be undone in one step.
-
-All 558 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. On both architectures, 24 Quick Mask sequences and 24 older Fill Action encodings matched build 562 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-563) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_563.md).

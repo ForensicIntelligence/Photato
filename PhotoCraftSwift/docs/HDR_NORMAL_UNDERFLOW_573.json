@@ -1,0 +1,671 @@
+{
+  "additionalFindings": {
+    "independentClippingWithHiddenClipAlphaWordDifferencesOutOf4096": {
+      "arm": 586,
+      "intel": 510
+    },
+    "mergeVisibleAdobeVsPhotatoTranslucentAppleSilicon": {
+      "allMismatchedPixelsHadSourceAlphaOne": true,
+      "canvasDifferentWords": 0,
+      "comparedWords": 5184,
+      "mergeDifferentWords": 98,
+      "mismatchedPixels": 69
+    },
+    "mergeVisibleAdobeVsPhotatoTranslucentRosetta": {
+      "canvasDifferentWords": 0,
+      "comparedWords": 5184,
+      "mergeDifferentWords": 3198
+    },
+    "oppositeFiniteExtrema": {
+      "arm": {
+        "opaque": {
+          "fileSHA256": "6aed08fb1e876e26d7c54846f58e62f1370904309cbc25096d747dcc90bdfc5c",
+          "rgbaHexWords": [
+            "ff7fffff",
+            "00000000",
+            "00000000",
+            "3f800000"
+          ]
+        },
+        "partial": {
+          "fileSHA256": "056b4684eaf20d6c0d0d43399b39605d2a26a5920304f516b9dcdb9cac155965",
+          "rgbaHexWords": [
+            "7f7fffff",
+            "00000000",
+            "00000000",
+            "3f800000"
+          ]
+        }
+      },
+      "intel": {
+        "opaque": {
+          "fileSHA256": "522b5ee27e8d349bebe7bf0dc543bf459864946c5daff0a05aa18a56db49d857",
+          "rgbaHexWords": [
+            "ff7fffff",
+            "00000000",
+            "00000000",
+            "3f800000"
+          ]
+        },
+        "partial": {
+          "fileSHA256": "daa3c7e6cdf838d9303b1ba292c89d4d04bf72838c33f9daaa0d3f76e50add19",
+          "rgbaHexWords": [
+            "7f7fffff",
+            "00000000",
+            "00000000",
+            "3f800000"
+          ]
+        }
+      }
+    },
+    "smallAlphaFineSweep": {
+      "firstDivisionAlphaWord": "0x24e69595",
+      "matchedWordsPerArchitecture": 6912,
+      "maximumFallbackAlphaWord": "0x24e69594",
+      "pixelsPerArchitecture": 1728,
+      "rendererChangePending": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "297e8d003890865129800847bbbdfa5250ea8311bfb93ba7ad20101bf57b2df6",
+    "binarySHA256": "7aa5f57897a8355cf8588a7e8255d3bb6c6d8b1f1a8cce2ac7193dd39c63feb6",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 7968
+  },
+  "build": 573,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Full suite",
+    "Exact tiny and zero alpha handling",
+    "Merge operation differences",
+    "Independent HDR clipping",
+    "Physical supported platforms",
+    "Measured 60 fps",
+    "Full Photoshop parity"
+  ],
+  "photoshop": {
+    "backdropAlphaFixtures": [
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "a83db02965455f97e5c930effe0b02880d40d49fd0a9a06046fee5cd74460219",
+            "rgbaWordsSHA256": "a0f48b8a88ea49575d07cb2b2adb66c156e99b1d99f92000a21d8bb0515d80f9"
+          },
+          "intel": {
+            "captureSHA256": "b0b1b0ac4a3fff8b19e0c0a62296c31ec739461d29b0a4c9668f5740af147711",
+            "rgbaWordsSHA256": "a0f48b8a88ea49575d07cb2b2adb66c156e99b1d99f92000a21d8bb0515d80f9"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "046a6258ebbccbb74a34e0f6e25fa28426d76570af7070e9008bd79221af7d77",
+        "name": "base-opaque-144",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "eb0e7ba79a5e51c016b226c74f88470171d67222e72f0724e62387c15d8c354a",
+            "rgbaWordsSHA256": "f8f76c61e4a0d3ccb979f9b08b1e3755401d4a6a3b562a158cc517d83a02f7b2"
+          },
+          "intel": {
+            "captureSHA256": "591143bad71198b00dde3d9204408a58daa0bf7671b6316c939084643d24666f",
+            "rgbaWordsSHA256": "f8f76c61e4a0d3ccb979f9b08b1e3755401d4a6a3b562a158cc517d83a02f7b2"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "4907a93c0aea9fb9ac733222a839745634c907aa5edcc5033084c23bd048ccb5",
+        "name": "base-opaque-16",
+        "width": 16
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "208dbf35270b136e2c86dab86cc71556ff0f81fd689a628abc2475202c352911",
+            "rgbaWordsSHA256": "f7d9672dc14052d33ce50e7b22ea3536542c3971e7c22f32af905cc1ee55120d"
+          },
+          "intel": {
+            "captureSHA256": "51640059c3fc9fbf88ee1b14742a1108f1e6b52c13e17ad288873ad5fc6dd540",
+            "rgbaWordsSHA256": "f7d9672dc14052d33ce50e7b22ea3536542c3971e7c22f32af905cc1ee55120d"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "b78cd0263c4d8d2f731db567ee47356ed5f84b6d38f5deae78a0a68886f47133",
+        "name": "base-opaque-72",
+        "width": 72
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "58fd7d85d9624b62ea87129f351135ddc5b8ff4ab05a88efdaceb73119db3b43",
+            "rgbaWordsSHA256": "a0f48b8a88ea49575d07cb2b2adb66c156e99b1d99f92000a21d8bb0515d80f9"
+          },
+          "intel": {
+            "captureSHA256": "0235458412b84011dc333e5783afbded7b163fb11c1a22606c8c0ea02b3fbbd4",
+            "rgbaWordsSHA256": "a0f48b8a88ea49575d07cb2b2adb66c156e99b1d99f92000a21d8bb0515d80f9"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "4994908749386bc9e2ec88de07e38a5048721dbd932193b24067bb5fea03d92e",
+        "name": "base-uniform-144",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "a9b94475161cf0bf5b1232605db130d5d61410290a47124912b5a7d76ae56a6f",
+            "rgbaWordsSHA256": "f8f76c61e4a0d3ccb979f9b08b1e3755401d4a6a3b562a158cc517d83a02f7b2"
+          },
+          "intel": {
+            "captureSHA256": "5bd17e075b8aef44882efe9ecbd65a1e58b1df00e7ce3811448a41ab5c270da4",
+            "rgbaWordsSHA256": "f8f76c61e4a0d3ccb979f9b08b1e3755401d4a6a3b562a158cc517d83a02f7b2"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "68c2a8e0dbb8b7e7e711f59cceb0572c037dcbe4a44caf95ab5f6a0a9f000a3f",
+        "name": "base-uniform-16",
+        "width": 16
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "9ad3cc98e9d76215c3231d138a6b67ce97438189acdfbf83f2f3282baace9c7b",
+            "rgbaWordsSHA256": "f7d9672dc14052d33ce50e7b22ea3536542c3971e7c22f32af905cc1ee55120d"
+          },
+          "intel": {
+            "captureSHA256": "ce430ab7ea2fc7a964188f178f661ebd6e613aeffca7c810733dd6b36cd927d9",
+            "rgbaWordsSHA256": "f7d9672dc14052d33ce50e7b22ea3536542c3971e7c22f32af905cc1ee55120d"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "5276008d09c3d12ccf783563c235ae878a39a2a2aa239b8e98cca40062ded377",
+        "name": "base-uniform-72",
+        "width": 72
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "3fbf3f0b22833f4a3621bebcdc54af18d49fdb293405b0b976ab9cbd2bb1fbe4",
+            "rgbaWordsSHA256": "effe186d2b58fc5a6180a02f83c4b3385070f0f7594173ff841a361c4a6fe3b2"
+          },
+          "intel": {
+            "captureSHA256": "864bb041ecf792c3896fa6785756b73169a10921347f73f9aa4d15f106da9b28",
+            "rgbaWordsSHA256": "effe186d2b58fc5a6180a02f83c4b3385070f0f7594173ff841a361c4a6fe3b2"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "98fac108c23b51922c2f06a08c50e83c43e0cc1e590f32c1617e453ceb670346",
+        "name": "base-variable-144",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "b68ecf2231b2a6c982414c41ae397af4ec81eddcef582716fc03900b7855ead6",
+            "rgbaWordsSHA256": "fcbf7ed620384c84c1aecfd6e5c8fdd14198cc7d4086883da908b0894493bcad"
+          },
+          "intel": {
+            "captureSHA256": "d436c7cbba29f9cfe7628aa8bd51ff9131fbf1c7c5e0cc9fa346458da6ad0d6e",
+            "rgbaWordsSHA256": "fcbf7ed620384c84c1aecfd6e5c8fdd14198cc7d4086883da908b0894493bcad"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "b946504a38459573cb4258bde0a121f04ee4917b2b8ea7c33294c27c860eb6af",
+        "name": "base-variable-16",
+        "width": 16
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "ea9016a50c26f73f124508bed6e0f8eb9f4a7a8711c72b0df2fc14f4c698015d",
+            "rgbaWordsSHA256": "7f530698b8b18b7859db7db59c4238e79a143a96a59464279fc3814a0ebf6d73"
+          },
+          "intel": {
+            "captureSHA256": "b7be48cddce14ffb25640a1072fc0ce5a4cb4ead230ca74b33665c4851d6b864",
+            "rgbaWordsSHA256": "7f530698b8b18b7859db7db59c4238e79a143a96a59464279fc3814a0ebf6d73"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "5145388594ceafbff1a809134fced7764a57f6103abe22c83757ff39913b0fae",
+        "name": "base-variable-72",
+        "width": 72
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "744f2cee454a52d0be31e50ce25363f8042e615e544ab745d767966d5cba7e87",
+            "rgbaWordsSHA256": "938c99bdf66424f66b11e62f86b40cb31d192d4700f9b51e2d1e2ffd597889be"
+          },
+          "intel": {
+            "captureSHA256": "1dca31a6ea5e5127611a82c99ac4731533f0ab9997a8db233069df5e8e090020",
+            "rgbaWordsSHA256": "938c99bdf66424f66b11e62f86b40cb31d192d4700f9b51e2d1e2ffd597889be"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "6eae2e2acc30e830562028bd62d3351e7aac40fec7ac04a8254ec256e56a4a90",
+        "name": "clip-opaque",
+        "width": 36
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "0f6df72b61e4d6ad5b71855bcabdace4a1c7cbb51ff3d8eedff15d939b2d4f54",
+            "rgbaWordsSHA256": "913fc39b7914d04a9ac5ba66f32aa84246c6cb1ed4231e70d4ef4fcddd3c248e"
+          },
+          "intel": {
+            "captureSHA256": "886151070d93f23217ed67fadb70dc255bba703b86f31830eba4d866f971e0d9",
+            "rgbaWordsSHA256": "913fc39b7914d04a9ac5ba66f32aa84246c6cb1ed4231e70d4ef4fcddd3c248e"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "4272ef59d9d6c591a5dc964bd5366fa755951a8b5de61d7a6d55c2d34ba4e52e",
+        "name": "clip-uniform",
+        "width": 36
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "b34953adf1b72dd395126f420753b4f4a8671dcaf6d55ba02d53b3e709aebd6f",
+            "rgbaWordsSHA256": "1e9431b02300a32445eb544200ee6d58ed8e139cc4eee0c7d1ad3d2edaf68a06"
+          },
+          "intel": {
+            "captureSHA256": "7952d5d2693c539247af3828a221b2acbc1c440d7bb856859a7d1ce4cdebaf12",
+            "rgbaWordsSHA256": "1e9431b02300a32445eb544200ee6d58ed8e139cc4eee0c7d1ad3d2edaf68a06"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "ece0120e7b224e2e089e0f409d8c70574fd53e82ebfa158b66d53c8f985a20a2",
+        "name": "clip-variable",
+        "width": 36
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "747710911d5247cde2251c137f3b74d8ddee74e267b8f07397d9a9eec355ecb4",
+            "rgbaWordsSHA256": "bafb788fd1e4a04a9642cc1c5988a25fe408103d319d392711b444f21b4c2839"
+          },
+          "intel": {
+            "captureSHA256": "df2c8eeabe530aa2bad50c036126bfe39e70c49316de5d3030547ef15352fad1",
+            "rgbaWordsSHA256": "bafb788fd1e4a04a9642cc1c5988a25fe408103d319d392711b444f21b4c2839"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "03f26b47e1d7c3b98a4edf1b7e0ad798ad351c9929e424accff2b3b58f6db7f4",
+        "name": "stack-opaque-base",
+        "width": 36
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "adad8a4f809ef4b6812a43165a4874ecd3d84314057ad4441c8ad820b0070629",
+            "rgbaWordsSHA256": "bafb788fd1e4a04a9642cc1c5988a25fe408103d319d392711b444f21b4c2839"
+          },
+          "intel": {
+            "captureSHA256": "c97411c605b6770a4466b5241238f340d6595b32e120f8cdc2f8555ea231b798",
+            "rgbaWordsSHA256": "bafb788fd1e4a04a9642cc1c5988a25fe408103d319d392711b444f21b4c2839"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "a9a42bb2b09d5a3d8f241ebcfe03dd5d8ddbc8fc598c9ef2c60f6ebbceb68d33",
+        "name": "stack-uniform",
+        "width": 36
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "0b78e34a02d7db0297190339dff544aceb787ba927cbe98a52ae6f31b23c27d6",
+            "rgbaWordsSHA256": "01ef37ceb8c470674ad04fd97be3b6117bff21ac9f07719ad2058130be2bf6d3"
+          },
+          "intel": {
+            "captureSHA256": "66e8a314ed68036e01ab5630c2d46d90793f126ca30685b3dd593a8472060064",
+            "rgbaWordsSHA256": "01ef37ceb8c470674ad04fd97be3b6117bff21ac9f07719ad2058130be2bf6d3"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "6afab200261f521098a7fae782f32a52742027e14abf2dcc581a811c9d5a8580",
+        "name": "stack-variable-opaque-middle",
+        "width": 36
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "316fa019555d1ec4a6793c5dfbcf276d28d1b70bd3cade3b40a15ac47caecde8",
+            "rgbaWordsSHA256": "cfeba34463f1c508c6be3721757a57de458a12da8ee2ee50dc61fd584e60f562"
+          },
+          "intel": {
+            "captureSHA256": "95eb01596279f56f9439e97c0bf7785e42b37e3f9f4eef98c8ce0410c962da90",
+            "rgbaWordsSHA256": "d94bc5cd19d43ebd792d1fe5ecdf1838fec39ccd7c15589154ae4a051e1c30da"
+          }
+        },
+        "height": 7,
+        "inputSHA256": "9485a28fc2f1924dc38eca60c9db3c1f758a1caf174dd12831df77cf696bb7fb",
+        "name": "stack-variable",
+        "width": 36
+      }
+    ],
+    "colorSettings": "North America General Purpose 2",
+    "fixtureOrigin": "Two independently authored sample matrices encoded as layered RGB32 documents.",
+    "opaqueSourceFixtures": [
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "8efa292b1b641814aaa064f4502bd0d586ee952dde676eb3b849a8436fa519f4",
+            "rgbaWordsSHA256": "f760588ede41193fd8e3497b0111ff1343a9ca2c0c84a213969df00dd5ba752f"
+          },
+          "intel": {
+            "captureSHA256": "700212be64e035d63525108686598a89ccc91086fc49ed3016bf127497bfed27",
+            "rgbaWordsSHA256": "9fb01de37e65d25386c6e69572708bf72e977099d2ba0b848a85e41dd7342418"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "6850a21ce4abca884748b0ab73b4416e42ae262abab7159f46953cb7b0e5d805",
+        "name": "clipped-far",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "7f8eeb9164cad438b19b0ef078f75716035056ce990b9856c8b12f279ef49063",
+            "rgbaWordsSHA256": "f0b0f970b146e29d0eeb93a927e0d44885e382f3e206e59eb206d3462257a4b1"
+          },
+          "intel": {
+            "captureSHA256": "0de1dbfd461521f7119ade96cd36c9b83085886957b945ada8639739d6422fc5",
+            "rgbaWordsSHA256": "f0b0f970b146e29d0eeb93a927e0d44885e382f3e206e59eb206d3462257a4b1"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "ed1bc25dcd05b2b3267444c89d9e4161686074045498e0337e452260728b91e7",
+        "name": "clipped-full",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "79454b7edf00fd4d9635b5f799c6652e70a1bea4013a2337e969804d6d21af3d",
+            "rgbaWordsSHA256": "2ffb379acca162e112d95ee8e495593b38bd7a4aa01f357e24171efbcf04e814"
+          },
+          "intel": {
+            "captureSHA256": "c5174793088581194498d39c3fae450429740ad255dfd222d14366ba734cd790",
+            "rgbaWordsSHA256": "bc6232ede97f3522f85ae913bec7eeb88f63ece09d99e902cff41cfa749c779a"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "cf8e5bb50442302ba58e5f8d385e3f17e314192aac826520b80f6874feff1517",
+        "name": "clipped-near",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "5c09e63ac03a2489d00eac0715c2fbbdee88bd0c595031111f3b416bb2da40de",
+            "rgbaWordsSHA256": "eb4278ba3e318880c094b1f7d0d6e8e51ea2a8fdfd8fc3202f35f4342b111114"
+          },
+          "intel": {
+            "captureSHA256": "006efe31f6d9bbadbc24788b82b00c24e3abfc7f2df4f6ac4f5b6d0d3df5f8ac",
+            "rgbaWordsSHA256": "eb4278ba3e318880c094b1f7d0d6e8e51ea2a8fdfd8fc3202f35f4342b111114"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "66144756d2c93788456601e195848c3cb2ddd645e01f2d19e0cba7df90d8ee57",
+        "name": "clipped-translucent-back",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "9a679df35277055fa4109902fad3f171093929cc28eb7aeebe82ea01a21a95b4",
+            "rgbaWordsSHA256": "f760588ede41193fd8e3497b0111ff1343a9ca2c0c84a213969df00dd5ba752f"
+          },
+          "intel": {
+            "captureSHA256": "f93d829f799ad10c94622f4281c23c144e4d2f719467d997b4e60f8d0fefdae5",
+            "rgbaWordsSHA256": "9fb01de37e65d25386c6e69572708bf72e977099d2ba0b848a85e41dd7342418"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "d563d4005205dac3b03cee0fed6a8e505b9fd6ec77a7c4a47b7d95f51748902e",
+        "name": "ordinary-far",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "b8103f19957e6222b95cd3a68ba783fabd2f75e97c595e371fbeed359b4f364b",
+            "rgbaWordsSHA256": "f0b0f970b146e29d0eeb93a927e0d44885e382f3e206e59eb206d3462257a4b1"
+          },
+          "intel": {
+            "captureSHA256": "783820a006583babd4a4b3269bad30c6c49ceaf91c99eb495c4130557a842e8a",
+            "rgbaWordsSHA256": "f0b0f970b146e29d0eeb93a927e0d44885e382f3e206e59eb206d3462257a4b1"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "bd248d0e13eecc9fe5505724fab261d4afdd9ebdbbe268d1a8239af04e094901",
+        "name": "ordinary-full",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "113038e217a6e3e8df4b43dbc145d7d8332d0a94e39557f7165f253ea1dd1507",
+            "rgbaWordsSHA256": "2ffb379acca162e112d95ee8e495593b38bd7a4aa01f357e24171efbcf04e814"
+          },
+          "intel": {
+            "captureSHA256": "9f90346a0c6df70b75dc855b334bf736250cdf02aeb153b46fb499d434f3b787",
+            "rgbaWordsSHA256": "bc6232ede97f3522f85ae913bec7eeb88f63ece09d99e902cff41cfa749c779a"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "87e1ca92f6f3453fa39fb09ed53499ff3da082880baa747cd5d078cb8c9b79fe",
+        "name": "ordinary-near",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "bbf17a2acee39a0818441c330897f57d934c6b30397a23b390c55e3ddf365cdf",
+            "rgbaWordsSHA256": "f0b0f970b146e29d0eeb93a927e0d44885e382f3e206e59eb206d3462257a4b1"
+          },
+          "intel": {
+            "captureSHA256": "c48fc2d1ca0731f26fc8397b7df41dcf3243b877732a246c96416c3539205ee7",
+            "rgbaWordsSHA256": "f0b0f970b146e29d0eeb93a927e0d44885e382f3e206e59eb206d3462257a4b1"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "c3bf52d2223b01a633b9710e5af99981dfe607c72b5ab07305719ff74af27445",
+        "name": "ordinary-translucent-back",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "501f91f7afc0b5372640d36e36e302811809e639efc615456ba53ec1b85211df",
+            "rgbaWordsSHA256": "4d76e336c4961a64f3183b585d32a9b793a9a96dc2a0ba2ad57f0f2b48038f36"
+          },
+          "intel": {
+            "captureSHA256": "2fcf44f5dfee32083d47c8122492bed82a9d698e80ae1dccac9a710adbd412fa",
+            "rgbaWordsSHA256": "b88124ad2488e47f486d86a45855e891f0b98b40e2b21a15aeaeba5dac45cd04"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "45a825e9f987213b36518e4af937592923af02fda6e00eb3142e93ceeac6e6f9",
+        "name": "clipped-offscreen-alpha",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "794c335e705beab0c1c68b2dbb5919579ed7fad2ab8b891a5dc916cd5837dfd5",
+            "rgbaWordsSHA256": "0dfe2ca3b557b97f6da9a1dcd4d7697292c3800cd01eb9da4904c030282240a5"
+          },
+          "intel": {
+            "captureSHA256": "4ea064022a755eeaded0e50c14275bca528d952ec9d59bf70081da42d73688f7",
+            "rgbaWordsSHA256": "78917fe4df3eef2c7c565d8f856c00cae8cd92c1928de491eea03e641234a1e8"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "d8849b5a32bf899e9bd093e107b2762f2ba33f066cdd194f70a4c578f98cf196",
+        "name": "clipped-offset",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "6cc5e020d5e75cf0d3673f9f40bf9192baee2b7b03c73af236e979d0fa2ed4f7",
+            "rgbaWordsSHA256": "4d76e336c4961a64f3183b585d32a9b793a9a96dc2a0ba2ad57f0f2b48038f36"
+          },
+          "intel": {
+            "captureSHA256": "188e9732c337772896255e35028b2e2206d347ad5af3fa12ed00cb2c9075b458",
+            "rgbaWordsSHA256": "b88124ad2488e47f486d86a45855e891f0b98b40e2b21a15aeaeba5dac45cd04"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "2b65ba100ead156e913f8bd6a1611ac671bfdbb0a1559f3d6d33f28231de52c1",
+        "name": "ordinary-offscreen-alpha",
+        "width": 144
+      },
+      {
+        "architectures": {
+          "arm": {
+            "captureSHA256": "1547a988b158f8212e443d8b2e02c43e064dfb701efd4103988545cd7f62c3e1",
+            "rgbaWordsSHA256": "0dfe2ca3b557b97f6da9a1dcd4d7697292c3800cd01eb9da4904c030282240a5"
+          },
+          "intel": {
+            "captureSHA256": "e277f59d98331d013e50ea388a6175956f44a18e6f6869f9ab798b85930a84c3",
+            "rgbaWordsSHA256": "78917fe4df3eef2c7c565d8f856c00cae8cd92c1928de491eea03e641234a1e8"
+          }
+        },
+        "height": 4,
+        "inputSHA256": "bb9c8db684c6775edda0f96e0403d0ce5ab74eb088a7b5989f74c1f2ef987762",
+        "name": "ordinary-offset",
+        "width": 144
+      }
+    ],
+    "positiveCoverageFixtures": [
+      {
+        "architectures": {
+          "arm": {
+            "fileSHA256": "0179eb321aa0d9e25abaa46797210f88967768ee840bda1a92daa9c67e2256ef",
+            "rgbaWordsSHA256": "89a609bf03b6b6161bcd7205e96c60b5a25db62c60030e22da2d805fd261b141"
+          },
+          "intel": {
+            "fileSHA256": "eb4e867eea270faee32f71b39fc6247b5cff819857ee51cf2f6367dde24b4720",
+            "rgbaWordsSHA256": "0b02e1121f33d7fee85d112589ec4ffe458c2d33e9b4c4cd373008f10cab10eb"
+          }
+        },
+        "inputSHA256": "3776ec16e08c3ef36166c6f5a9910b0c2ee43bac74124c42799ef26f68010539",
+        "nPixels": 1620,
+        "name": "opaque"
+      },
+      {
+        "architectures": {
+          "arm": {
+            "fileSHA256": "74c4e0bc6fac4f433f3f9341838db25a91cc3125b3ba9cd0e306ba1cf2c19b0a",
+            "rgbaWordsSHA256": "14055d0435f188d7b04e05aa410cf29aa776b5614cc0da950e5d1d80cf21f78a"
+          },
+          "intel": {
+            "fileSHA256": "4accba0c848090b5e14accdb770f3862af1350e0cf20fc53ec78a3694f587d66",
+            "rgbaWordsSHA256": "687c5d973c4eb1518b607035201385cb1de21a7375f120b38decf9810f6737d8"
+          }
+        },
+        "inputSHA256": "b3369c12302f4cf7f267894a0948ef49080361dfa60a6522cb4d7b1084cab1e5",
+        "nPixels": 1296,
+        "name": "translucent"
+      }
+    ],
+    "previousOptimizedIntelDifferencesOnPositiveCoverageDeck": 7012,
+    "referenceOperation": "Merge Visible, straight layer samples where both input alphas are positive.",
+    "testedStraightRGBAWordsPerArchitecture": 57504,
+    "version": "27.2.0"
+  },
+  "qualification": {
+    "configurations": {
+      "arm": {
+        "appSHA256": "e6819c6be243b69c127e421792b6355513bf0af2644fabaec1dc487363c5035c",
+        "passes": 708,
+        "testBinarySHA256": "a2033d7fd67db48cbd0f308f654476e269bc3e6d280d99e143fed9373c8d1fdc"
+      },
+      "debug": {
+        "appSHA256": "35c36e7057305e885ead040087444cdf6b12550aa92830e1e78ce4a19afe5eee",
+        "passes": 708,
+        "testBinarySHA256": "5e09f474a5636269f057409b619671da29cb68a933f3a462658ab47305c712b8"
+      },
+      "intel": {
+        "appSHA256": "33feebbae5e62150bc99b37ce8c493e64448dd36f47262470a23d3b430b80566",
+        "passes": 708,
+        "testBinarySHA256": "e22321195335016200f7053a69d3e47703fd940175d75121f285b75bf4f98363"
+      }
+    },
+    "previousQualification03PassesPerConfiguration": 706,
+    "qualification04DocumentedThenSuperseded": true,
+    "selectedCases": 708,
+    "selectedCasesSHA256": "48d9881a06cd08ae56d79f95f183b8e71375fbf0aeb0ac95d6e8c8a9ecb6c355"
+  },
+  "sourceInputs": 7968,
+  "sourceInputsChangedSince572": {
+    "Sources/PhotoCraftImaging/CompositionFacts.swift": "a5ab75741c5cf52602410aceb1ad6e1618fba4b0b0620c5344c7fb5a1ddde15a",
+    "Sources/PhotoCraftImaging/RGB32HierarchyRenderer.swift": "cca89df0981c2cca8108275e587c9a0aa058e6a25921fbeb3a707020bd6d4dda",
+    "Sources/PhotoCraftImaging/RGB32NormalRenderer.swift": "3bc1d4b36993733c2c3c35977bdb3994ecd50dc1dedab6ca8c6e3d2c87184af2",
+    "Sources/PhotoCraftImaging/SparseCanvasRenderer.swift": "3f9830c9f4083811654e20eda9d58da2344b5b148b2a583e4fe4fd92cdf06e47",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/README.md": "1f39b5d0671c0a300c9eb5ec18d8c87b3d0db19ff6b859c01eb0ac4a9da893dd",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-opaque-144.psd": "046a6258ebbccbb74a34e0f6e25fa28426d76570af7070e9008bd79221af7d77",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-opaque-16.psd": "4907a93c0aea9fb9ac733222a839745634c907aa5edcc5033084c23bd048ccb5",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-opaque-72.psd": "b78cd0263c4d8d2f731db567ee47356ed5f84b6d38f5deae78a0a68886f47133",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-uniform-144.psd": "4994908749386bc9e2ec88de07e38a5048721dbd932193b24067bb5fea03d92e",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-uniform-16.psd": "68c2a8e0dbb8b7e7e711f59cceb0572c037dcbe4a44caf95ab5f6a0a9f000a3f",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-uniform-72.psd": "5276008d09c3d12ccf783563c235ae878a39a2a2aa239b8e98cca40062ded377",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-variable-144.psd": "98fac108c23b51922c2f06a08c50e83c43e0cc1e590f32c1617e453ceb670346",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-variable-16.psd": "b946504a38459573cb4258bde0a121f04ee4917b2b8ea7c33294c27c860eb6af",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/base-variable-72.psd": "5145388594ceafbff1a809134fced7764a57f6103abe22c83757ff39913b0fae",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/clip-opaque.psd": "6eae2e2acc30e830562028bd62d3351e7aac40fec7ac04a8254ec256e56a4a90",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/clip-uniform.psd": "4272ef59d9d6c591a5dc964bd5366fa755951a8b5de61d7a6d55c2d34ba4e52e",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/clip-variable.psd": "ece0120e7b224e2e089e0f409d8c70574fd53e82ebfa158b66d53c8f985a20a2",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/references.json": "959dabf1c83212a1fa98cbf60b4185afa6068bfab5e553532ad11bb016ea323a",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/stack-opaque-base.psd": "03f26b47e1d7c3b98a4edf1b7e0ad798ad351c9929e424accff2b3b58f6db7f4",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/stack-uniform.psd": "a9a42bb2b09d5a3d8f241ebcfe03dd5d8ddbc8fc598c9ef2c60f6ebbceb68d33",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/stack-variable-opaque-middle.psd": "6afab200261f521098a7fae782f32a52742027e14abf2dcc581a811c9d5a8580",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/backdrop-alpha/stack-variable.psd": "9485a28fc2f1924dc38eca60c9db3c1f758a1caf174dd12831df77cf696bb7fb",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/clipped-far.psd": "6850a21ce4abca884748b0ab73b4416e42ae262abab7159f46953cb7b0e5d805",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/clipped-full.psd": "ed1bc25dcd05b2b3267444c89d9e4161686074045498e0337e452260728b91e7",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/clipped-near.psd": "cf8e5bb50442302ba58e5f8d385e3f17e314192aac826520b80f6874feff1517",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/clipped-offscreen-alpha.psd": "45a825e9f987213b36518e4af937592923af02fda6e00eb3142e93ceeac6e6f9",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/clipped-offset.psd": "d8849b5a32bf899e9bd093e107b2762f2ba33f066cdd194f70a4c578f98cf196",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/clipped-translucent-back.psd": "66144756d2c93788456601e195848c3cb2ddd645e01f2d19e0cba7df90d8ee57",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/ordinary-far.psd": "d563d4005205dac3b03cee0fed6a8e505b9fd6ec77a7c4a47b7d95f51748902e",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/ordinary-full.psd": "bd248d0e13eecc9fe5505724fab261d4afdd9ebdbbe268d1a8239af04e094901",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/ordinary-near.psd": "87e1ca92f6f3453fa39fb09ed53499ff3da082880baa747cd5d078cb8c9b79fe",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/ordinary-offscreen-alpha.psd": "2b65ba100ead156e913f8bd6a1611ac671bfdbb0a1559f3d6d33f28231de52c1",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/ordinary-offset.psd": "bb9c8db684c6775edda0f96e0403d0ce5ab74eb088a7b5989f74c1f2ef987762",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/ordinary-translucent-back.psd": "c3bf52d2223b01a633b9710e5af99981dfe607c72b5ab07305719ff74af27445",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque-source/references.json": "d8f5276c2d88394cf5136caa4e579f339ea14dff5f540d7a4c46ec59b550f3c8",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/opaque.psd": "3776ec16e08c3ef36166c6f5a9910b0c2ee43bac74124c42799ef26f68010539",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/references.json": "7e2173175b8eb2587c05b22beb0cd970cde5f89f0142271e180a06c578a27268",
+    "Tests/PhotoCraftImagingTests/Fixtures/rgb32-composite/subnormal/translucent.psd": "b3369c12302f4cf7f267894a0948ef49080361dfa60a6522cb4d7b1084cab1e5",
+    "Tests/PhotoCraftImagingTests/RGB32CompositeTests.swift": "97710ddf690aeee998749d262a7d4b011d3d8a0fd2fc216db4c93758f568f16b",
+    "scripts/Info.plist": "56f3d0d2ef779501b9b52c2180bfb8ddc7030fb910f42feb73f3aec0d89df24a"
+  }
+}

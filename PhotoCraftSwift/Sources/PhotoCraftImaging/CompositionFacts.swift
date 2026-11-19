@@ -11,6 +11,7 @@ final class CompositionFacts {
   private var preparedMasks = Set<UUID>()
   private var opaqueBases: [UUID:Bool] = [:]
   private var opaqueGroups: [UUID:Bool] = [:]
+  private var uniformRasterAlphas: [UUID: Float?] = [:]
   private var retainedDerivedMaskBytes = 0
 
   init(_ document: CraftDocument) {
@@ -63,7 +64,7 @@ final class CompositionFacts {
       case .raster(let source)=layer.content,
       source.width==document.width, source.height==document.height,
       let maskUnit=try unitMask(layer) {
-      value=try maskUnit && source.allStoredSamplesSatisfy {$0.a==1}
+      value=try maskUnit && source.isOpaque()
     } else {value=try RGB32NormalRenderer.hasOpaqueBase(layer,document:document)}
     opaqueBases[layer.id]=value;return value
   }
@@ -83,6 +84,14 @@ final class CompositionFacts {
     }
     opaqueGroups[layer.id]=value;return value
   }
+
+  func uniformRasterAlpha(_ source: Surface, layerID: UUID) throws -> Float? {
+    if let result = uniformRasterAlphas[layerID] { return result }
+    let result = try RGB32NormalRenderer.uniformRasterAlpha(source)
+    uniformRasterAlphas.updateValue(result, forKey: layerID)
+    return result
+  }
+
   /// Exact at aligned integer sample centers, including cropped masks with an
   /// independent outside value. Unknown geometries use the existing global test.
   private func unitMask(_ layer: Layer) throws -> Bool? {

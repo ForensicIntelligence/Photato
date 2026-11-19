@@ -1,3 +1,7 @@
+**Source checkpoint 573.** Intel HDR Normal compositing now matches the measured rounding when a color contribution underflows. The renderer also preserves Photoshop's opaque-source copy rules for ordinary and clipped layers. [Qualification](SOURCE_PUBLICATION_573.md).
+
+The owned Merge Visible, Merge Down and Merge Layers captures localize a difference in the prepared HDR transaction. Stamp Visible and Stamp Layers both retain the original layers and place the new layer above the active or top selected layer. Add the native and API stamp workflow using the captured placement and naming. Apply the exact small-alpha rule and continue isolating independent clipping. See [Adobe's documented behavior](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).
+
 **Source checkpoint 569.** 32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves. All 661 selected tests passed in three configurations. [Qualification](SOURCE_PUBLICATION_569.md).
 
 Finish the RGB16-to-Gray fixed-point comparison and measure 8-bit conversion dithering. Continue custom linear white-point and transparent Multiply comparisons. Photoshop Actions still need validation for channel switches and percentage coordinates.

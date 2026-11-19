@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 573 — Match HDR Normal rounding at the Float32 underflow boundary
+
+On Intel, very small color contributions can disappear during 32-bit Normal compositing. Photato now matches the measured rounding, including products just below the smallest normal Float32 value. The Apple Silicon build keeps its fused calculation.
+
+The new tests compare 57,504 straight color and alpha words with separately saved Photoshop results on each architecture. An ordinary opaque source that covers the canvas retains its original colors over uniform backdrop alpha. Grouped clipping can preserve those colors even when the base alpha varies. All 708 selected tests passed in all three configurations. The local universal archive passed both offscreen workspace checks. The translucent test also exposed a difference in Merge Visible that remains open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md).
+
 ## 2026-11-18 — Step 572 — Match Intel HDR Normal layer and group compositing
 
 Photoshop's Intel build rounds the multiply and add separately when compositing 32-bit Normal layers. On Apple Silicon it uses a fused operation. Photato now follows those results for color, alpha and the opacity of supported groups. The tests use separately captured Photoshop results for each architecture.
@@ -573,14 +581,15 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:572 -->
+<!-- current-status-step:573 -->
 ## Current development status — 18 November 2026
 
-Normal HDR layers now use Photoshop's measured rounding for the current architecture. The same arithmetic applies to group opacity and grouped clipping in the native renderer. The masked Display P3 merge used before Grayscale conversion has its own Photoshop reference for each architecture.
+Intel HDR Normal compositing now matches the measured rounding when a color contribution underflows. The renderer also preserves Photoshop's opaque-source copy rules for ordinary and clipped layers.
 
-Independent HDR clipping, other blends, exact grayscale conversion for 8- and 16-bit RGB, and full file and color parity remain open.
+All 57,504 straight words from each architecture's new comparisons match Photoshop. All 708 selected tests passed in Debug and both optimized builds. The macOS 14+ local universal archive passed its offscreen checks. Merge Visible, very low alpha and independent HDR clipping still need work.
 
-[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
+[Source checkpoint 573](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-573).
+
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

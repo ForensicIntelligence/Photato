@@ -1,0 +1,32 @@
+[
+  {
+    "name": "opaque",
+    "inputSHA256": "3776ec16e08c3ef36166c6f5a9910b0c2ee43bac74124c42799ef26f68010539",
+    "nPixels": 1620,
+    "architectures": {
+      "arm": {
+        "fileSHA256": "0179eb321aa0d9e25abaa46797210f88967768ee840bda1a92daa9c67e2256ef",
+        "rgbaWordsSHA256": "89a609bf03b6b6161bcd7205e96c60b5a25db62c60030e22da2d805fd261b141"
+      },
+      "intel": {
+        "fileSHA256": "eb4e867eea270faee32f71b39fc6247b5cff819857ee51cf2f6367dde24b4720",
+        "rgbaWordsSHA256": "0b02e1121f33d7fee85d112589ec4ffe458c2d33e9b4c4cd373008f10cab10eb"
+      }
+    }
+  },
+  {
+    "name": "translucent",
+    "inputSHA256": "b3369c12302f4cf7f267894a0948ef49080361dfa60a6522cb4d7b1084cab1e5",
+    "nPixels": 1296,
+    "architectures": {
+      "arm": {
+        "fileSHA256": "74c4e0bc6fac4f433f3f9341838db25a91cc3125b3ba9cd0e306ba1cf2c19b0a",
+        "rgbaWordsSHA256": "14055d0435f188d7b04e05aa410cf29aa776b5614cc0da950e5d1d80cf21f78a"
+      },
+      "intel": {
+        "fileSHA256": "4accba0c848090b5e14accdb770f3862af1350e0cf20fc53ec78a3694f587d66",
+        "rgbaWordsSHA256": "687c5d973c4eb1518b607035201385cb1de21a7375f120b38decf9810f6737d8"
+      }
+    }
+  }
+]

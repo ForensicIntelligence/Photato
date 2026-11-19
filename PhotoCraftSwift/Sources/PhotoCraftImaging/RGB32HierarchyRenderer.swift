@@ -8,17 +8,20 @@ enum RGB32HierarchyRenderer {
     let layer: Layer
     let pixels: Surface?
     let mask: LayerMaskSampler?
-    let children: [Node]
+    var children: [Node]
     var clips: [Node] = []
     let opaque: Bool
+    var copiesSource: Bool
+    let rasterAlpha: Float?
   }
 
   static func composite(_ document: CraftDocument, region: IntRect, facts:CompositionFacts? = nil) throws -> Surface? {
     guard !document.hasArtboards && !document.hasFrames, !document.layers.contains(where: { $0.style != nil && $0.style?.isChannelBlendingOnly != true }), document.depth == .f32,
-      let nodes = try nodes(document.children(of: nil), document: document, region: region,facts:facts)
+      var nodes = try nodes(document.children(of: nil), document: document, region: region,facts:facts)
     else { return nil }
     var result = try Renderer.emptyCanvas(document)
     let opaque = nodes.first?.opaque ?? false
+    _ = prepareCopyRules(&nodes, over: 0, seeded: false, opaque: opaque)
     for y in region.y..<region.y + region.height {
       try Task.checkCancellation()
       for x in region.x..<region.x + region.width {
@@ -71,6 +74,8 @@ enum RGB32HierarchyRenderer {
     let pixels: Surface?
     let children: [Node]
     let opaque: Bool
+    let copiesSource: Bool
+    let rasterAlpha: Float?
     if layer.isGroup {
       guard
         let built = try nodes(
@@ -94,14 +99,64 @@ enum RGB32HierarchyRenderer {
         }
       }
       opaque = covered
+      copiesSource = false
+      rasterAlpha = nil
     } else if case .raster(let surface) = layer.content {
       pixels = surface
       children = []
       opaque = try facts.map {try $0.opaqueBase(layer)} ?? RGB32NormalRenderer.hasOpaqueBase(layer, document: document)
+      copiesSource = opaque && mask == nil
+        && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: surface, in: document)
+      if opaque {
+        rasterAlpha = 1
+      } else if mask == nil {
+        rasterAlpha = try RGB32NormalRenderer.uniformAlpha(layer, source: surface, in: document, facts: facts)
+      } else {
+        rasterAlpha = nil
+      }
     } else {
       return nil
     }
-    return Node(layer: layer, pixels: pixels, mask: mask, children: children, opaque: opaque)
+    return Node(layer: layer, pixels: pixels, mask: mask, children: children, opaque: opaque,
+      copiesSource: copiesSource, rasterAlpha: rasterAlpha)
+  }
+
+  // Decide once per stack, using whole-canvas coverage even for regional output.
+  private static func prepareCopyRules(_ nodes: inout [Node], over backdrop: Float?,
+    seeded: Bool, opaque: Bool) -> Float? {
+    var alpha = backdrop
+    var seeded = seeded
+    for i in nodes.indices {
+      let opacity = RGB32NormalRenderer.expandedOpacity(nodes[i].layer.opacity, opaque: opaque)
+      if let group = nodes[i].layer.group {
+        let after: Float?
+        if group.passThrough {
+          after = prepareCopyRules(&nodes[i].children, over: alpha, seeded: seeded, opaque: opaque)
+        } else {
+          let childOpaque = nodes[i].children.first?.opaque ?? false
+          let isolated = prepareCopyRules(&nodes[i].children, over: 0, seeded: false, opaque: childOpaque)
+          after = RGB32NormalRenderer.compositeUniformAlpha(backdrop: alpha, source: isolated,
+            seeded: seeded, opaque: opaque && seeded, copiesSource: false)
+        }
+        if nodes[i].mask != nil {
+          alpha = nil
+        } else if opacity == 1 {
+          alpha = after
+        } else if let before = alpha, let after {
+          alpha = unit(RGB32NormalRenderer.multiplyAdd(before, 1 - opacity, to: after * opacity))
+        } else {
+          alpha = nil
+        }
+      } else {
+        // Clips retain the base's alpha. Their copy eligibility is local to the clip.
+        nodes[i].copiesSource = nodes[i].copiesSource && alpha != nil
+        alpha = RGB32NormalRenderer.compositeUniformAlpha(backdrop: alpha,
+          source: nodes[i].rasterAlpha.map { unit($0 * opacity) }, seeded: seeded,
+          opaque: opaque, copiesSource: nodes[i].copiesSource)
+      }
+      seeded = true
+    }
+    return alpha
   }
 
   private static func sample(_ node: Node, x: Int, y: Int) -> Pixel {
@@ -141,14 +196,18 @@ enum RGB32HierarchyRenderer {
             var clipped = sample(clip, x: x, y: y)
             clipped.a = unit(clipped.a * clip.layer.opacity)
             let alpha = source.a
-            let prior=source
-            source = BlendChannelRestrictions.applying(clip.layer.style?.restrictedChannels,after:try RGB32NormalRenderer.blend(source,clipped,opaque:true),before:prior)
+            let prior = source
+            let blended = try RGB32NormalRenderer.blend(source, clipped, opaque: true,
+              copiesSource: clip.copiesSource)
+            source = BlendChannelRestrictions.applying(clip.layer.style?.restrictedChannels,
+              after: blended, before: prior)
             source.a = alpha
           }
         }
         source.a = unit(
           source.a * RGB32NormalRenderer.expandedOpacity(node.layer.opacity, opaque: opaque))
-        output = seeded ? try RGB32NormalRenderer.blend(output, source, opaque: opaque) : source
+        output = seeded ? try RGB32NormalRenderer.blend(output, source, opaque: opaque,
+          copiesSource: node.copiesSource) : source
       }
       output=BlendChannelRestrictions.applying(node.layer.style?.restrictedChannels,after:output,before:before)
       seeded = true

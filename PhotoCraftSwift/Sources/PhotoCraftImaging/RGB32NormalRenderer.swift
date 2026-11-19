@@ -19,6 +19,7 @@ enum RGB32NormalRenderer {
     else { return nil }
     var output = backdrop
     let opaqueBase = try facts.map {try $0.opaqueBase(layers.first)} ?? hasOpaqueBase(layers.first, document: document)
+    var backdropAlpha: Float? = 0
     for (index, layer) in layers.enumerated() {
       try Task.checkCancellation()
       guard case .raster(let source) = layer.content else { continue }
@@ -30,6 +31,18 @@ enum RGB32NormalRenderer {
       let y0 = max(region.y, layer.y)
       let x1 = min(region.x + region.width, layer.x + source.width)
       let y1 = min(region.y + region.height, layer.y + source.height)
+      let copiesSource: Bool
+      if index > 0, backdropAlpha != nil, mask == nil,
+        canCopyOpaqueRaster(layer, source: source, in: document) {
+        copiesSource = try facts?.opaqueBase(layer) ?? source.isOpaque()
+      } else {
+        copiesSource = false
+      }
+      let sourceAlpha = opaqueBase || copiesSource || mask != nil ? nil : try uniformAlpha(
+        layer, source: source, in: document, facts: facts)
+      backdropAlpha = compositeUniformAlpha(backdrop: backdropAlpha,
+        source: sourceAlpha.map { unit($0 * opacity) }, seeded: index > 0,
+        opaque: opaqueBase, copiesSource: copiesSource)
       guard x0 < x1 && y0 < y1 else { continue }
       for y in y0..<y1 {
         if y % 64 == 0 { try Task.checkCancellation() }
@@ -46,13 +59,48 @@ enum RGB32NormalRenderer {
             continue
           }
           guard pixel.a > 0 else { continue }
-          output.setLinearPixel(
-            x: x, y: y,
-            BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:try blend(output.linearPixel(x:x,y:y),pixel,opaque:opaqueBase),before:output.linearPixel(x:x,y:y)))
+          let previous = output.linearPixel(x: x, y: y)
+          let blended = try blend(previous, pixel, opaque: opaqueBase, copiesSource: copiesSource)
+          output.setLinearPixel(x: x, y: y,
+            BlendChannelRestrictions.applying(layer.style?.restrictedChannels, after: blended, before: previous))
         }
       }
     }
     return output
+  }
+
+  /// A canvas-sized opaque source can copy over uniform backdrop alpha.
+  /// Grouped clipping preserves its base alpha and checks the source alone.
+  static func canCopyOpaqueRaster(_ layer: Layer, source: Surface, in document: CraftDocument) -> Bool {
+    layer.opacity == 1 && coversCanvas(layer, source: source, in: document)
+  }
+
+  private static func coversCanvas(_ layer: Layer, source: Surface, in document: CraftDocument) -> Bool {
+    layer.affine == nil && layer.x == 0 && layer.y == 0
+      && source.width == document.width && source.height == document.height
+  }
+
+  static func uniformAlpha(_ layer: Layer, source: Surface, in document: CraftDocument,
+    facts: CompositionFacts?) throws -> Float? {
+    guard coversCanvas(layer, source: source, in: document) else { return nil }
+    if let facts { return try facts.uniformRasterAlpha(source, layerID: layer.id) }
+    return try uniformRasterAlpha(source)
+  }
+
+  static func uniformRasterAlpha(_ source: Surface) throws -> Float? {
+    let alpha = source.linearPixel(x: 0, y: 0).a
+    if alpha == 1 { return try source.isOpaque() ? 1 : nil }
+    return try source.allStoredSamplesSatisfy { $0.a == alpha } ? alpha : nil
+  }
+
+  /// This proof always covers the full canvas, even when drawing one patch.
+  static func compositeUniformAlpha(backdrop: Float?, source: Float?, seeded: Bool,
+    opaque: Bool, copiesSource: Bool) -> Float? {
+    if opaque || copiesSource { return 1 }
+    if !seeded { return source }
+    if source == 0 { return backdrop }
+    guard let backdrop, let source else { return nil }
+    return unit(multiplyAdd(-backdrop, source, to: source + backdrop))
   }
 
   /// Determine this from the entire canvas, so regional updates use the same
@@ -72,14 +120,33 @@ enum RGB32NormalRenderer {
     #endif
   }
 
-  static func blend(_ backdrop: Pixel, _ source: Pixel, opaque: Bool) throws -> Pixel {
+  @inline(__always) private static func interpolate(_ backdrop: Float, _ source: Float, ratio: Float) -> Float {
+    let delta = source - backdrop
+    #if arch(x86_64)
+    var contribution = delta * ratio
+    let minimum = Float.leastNormalMagnitude
+    // Photoshop flushes the product even when its unrounded magnitude is
+    // below the normal boundary and Float rounds it up to that boundary.
+    if contribution.magnitude < minimum || (contribution.magnitude == minimum
+      && (Double(delta) * Double(ratio)).magnitude < Double(minimum)) {
+      contribution = Float(signOf: contribution, magnitudeOf: 0)
+    }
+    let result = backdrop + contribution
+    return result.isSubnormal ? Float(signOf: result, magnitudeOf: 0) : result
+    #else
+    return backdrop.addingProduct(delta, ratio)
+    #endif
+  }
+
+  static func blend(_ backdrop: Pixel, _ source: Pixel, opaque: Bool, copiesSource: Bool = false) throws -> Pixel {
     guard source.a > 0 else { return backdrop }
+    if copiesSource && source.a == 1 && source.isFinite { return source }
     let alpha: Float = opaque ? 1 : multiplyAdd(-backdrop.a, source.a, to: source.a + backdrop.a)
     let ratio = opaque ? source.a : alpha > 0 ? unit(source.a / alpha) : 0
     let result = Pixel(
-      multiplyAdd(source.r - backdrop.r, ratio, to: backdrop.r),
-      multiplyAdd(source.g - backdrop.g, ratio, to: backdrop.g),
-      multiplyAdd(source.b - backdrop.b, ratio, to: backdrop.b), alpha)
+      interpolate(backdrop.r, source.r, ratio: ratio),
+      interpolate(backdrop.g, source.g, ratio: ratio),
+      interpolate(backdrop.b, source.b, ratio: ratio), alpha)
     guard result.isFinite else {
       throw CraftError.invalid("Layer composition exceeds the floating-point range.")
     }
@@ -93,7 +160,7 @@ enum RGB32NormalRenderer {
     else { return false }
     if layer.mask == nil, layer.vectorMask == nil, layer.x == 0, layer.y == 0,
       source.width == document.width, source.height == document.height {
-      return try source.allStoredSamplesSatisfy { $0.a == 1 }
+      return try source.isOpaque()
     }
     let mask = try LayerMaskSampler.make(
       layer: layer, document: document,

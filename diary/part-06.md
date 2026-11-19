@@ -600,6 +600,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 570 | [Preserve the working profile when merging before conversion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) |
 | 2026-11-18 | 571 | [Fix HDR PSD and PSB compression for Photoshop](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) |
 | 2026-11-18 | 572 | [Match Intel HDR Normal layer and group compositing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) |
+| 2026-11-18 | 573 | [Match HDR Normal rounding at the Float32 underflow boundary](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -58,6 +58,7 @@ enum SparseCanvasRenderer {
       opaque = try s.allStoredSamplesSatisfy { $0.a == 1 }
     } else { opaque = false }
     var output = try Renderer.emptyCanvas(d)
+    var backdropAlpha: Float? = 0
     for (index, layer) in layers.enumerated() {
       try Task.checkCancellation()
       var source = sources[index]
@@ -69,9 +70,24 @@ enum SparseCanvasRenderer {
       }
       if linearNormal {
         let opacity = RGB32NormalRenderer.expandedOpacity(layer.opacity, opaque: opaque)
+        let unmasked = layer.mask == nil || !layer.effectiveMaskProperties.enabled
+        let copiesSource: Bool
+        if index > 0, backdropAlpha != nil, unmasked,
+          case .raster(let original) = layer.content,
+          RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: original, in: d) {
+          copiesSource = try source.isOpaque()
+        } else {
+          copiesSource = false
+        }
+        let sourceAlpha = opaque || copiesSource || !unmasked ? nil : try RGB32NormalRenderer.uniformAlpha(
+          layer, source: source, in: d, facts: nil)
+        backdropAlpha = RGB32NormalRenderer.compositeUniformAlpha(backdrop: backdropAlpha,
+          source: sourceAlpha.map { unit($0 * opacity) }, seeded: index > 0,
+          opaque: opaque, copiesSource: copiesSource)
         output = try output.combiningStoredSamples(with: source) { backdrop, source in
           var pixel = source; pixel.a = unit(pixel.a * opacity)
-          let mixed = try index == 0 ? pixel:RGB32NormalRenderer.blend(backdrop,pixel,opaque:opaque)
+          let mixed = try index == 0 ? pixel : RGB32NormalRenderer.blend(backdrop, pixel, opaque: opaque,
+            copiesSource: copiesSource)
           return BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:mixed,before:backdrop)
         }
       } else {
