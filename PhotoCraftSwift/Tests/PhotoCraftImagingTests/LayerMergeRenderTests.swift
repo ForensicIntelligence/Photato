@@ -225,6 +225,50 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
   }
 
+  func testScreenClippingMergeAndStampMatchPhotoshopStoredSamples() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let variants: [(String, LayerMergeOperation)] = [
+      ("lower-17", .clippingMask), ("upper-50", .clippingMask),
+      ("both", .clippingMask), ("only", .clippingMask),
+      ("stamp", .stampGroup), ("down", .down)
+    ]
+    for stack in ["chain", "nested", "holdout-chain"] {
+      for bits in [8, 16] {
+        for (variant, operation) in variants {
+          let name = "\(stack)-\(bits)-screen-\(variant)"
+          let referenceName = stack == "holdout-chain" ? name : "\(architecture)-\(name)"
+          let original = try PSDCodec.read(file("screen-clipping/\(name)"))
+          let reference = try PSDCodec.read(file("screen-clipping/\(referenceName)-merged"))
+          let selectedName = operation == .down ? "Lower clip" : "Clipping base"
+          let selected = try XCTUnwrap(original.layers.first { $0.name == selectedName }, name)
+          let wanted = try XCTUnwrap(reference.layers.first { $0.name == "Clipping base" }, name)
+          let edit = try LayerMergePreparation.prepare(original, layerIDs: [selected.id], operation: operation)
+          let result = try edit.applied(to: original)
+          XCTAssertEqual(result.layers.map(\.name), reference.layers.map(\.name), name)
+          if operation == .stampGroup {
+            XCTAssertEqual(result.layers.map(\.id), original.layers.map(\.id), name)
+          }
+          for doc in [result, try PSDCodec.read(PSDCodec.writeRasterLayers(result))] {
+            let base = try XCTUnwrap(doc.layers.first { $0.name == "Clipping base" }, name)
+            guard case .raster(let pixels) = base.content, case .raster(let expected) = wanted.content else {
+              return XCTFail("Expected stored Screen output for \(name)")
+            }
+            XCTAssertEqual(base.x, wanted.x, name)
+            XCTAssertEqual(base.y, wanted.y, name)
+            XCTAssertEqual(pixels.width, expected.width, name)
+            XCTAssertEqual(pixels.height, expected.height, name)
+            XCTAssertEqual(try pixels.rgbaData(depth: original.depth, colorEncoding: .sRGB),
+              try expected.rgbaData(depth: original.depth, colorEncoding: .sRGB), name)
+          }
+        }
+      }
+    }
+  }
+
   func testContextualStampsMatchSavedDestinationAndKeepOtherLayers() throws {
     #if arch(x86_64)
     let architecture = "intel"

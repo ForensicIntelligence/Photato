@@ -92,6 +92,50 @@ final class AutomationLayerMergeTests: XCTestCase {
     }
   }
 
+  @MainActor func testScreenClippingThroughDesktopAndNativeHTTPMatchesPhotoshop() async throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      try service.share(shared)
+      let cases: [(String, LayerMergeOperation, String)] = [
+        ("chain-8-screen-both", .clippingMask, "clippingMask"),
+        ("chain-16-screen-stamp", .stampGroup, "stampGroup"),
+        ("chain-16-screen-down", .down, "down"),
+      ]
+      for (name, operation, command) in cases {
+        var source = try fixture("screen-clipping/\(name)")
+        let selectedName = operation == .down ? "Lower clip" : "Clipping base"
+        let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName })
+        source.activeLayerID = selected.id
+        let reference = try fixture("screen-clipping/\(architecture)-\(name)-merged")
+        let desktop = EditorStore(document: source)
+        defer { desktop.renderTask?.cancel() }
+        let contextual = operation == .stampGroup ? desktop.contextualStamp(.stampSelected) : desktop.menuMergeOperation
+        XCTAssertEqual(contextual, operation, name)
+        XCTAssertTrue(desktop.canMerge(operation), name)
+        desktop.merge(contextual)
+        await desktop.geometryTask?.value
+        XCTAssertNil(desktop.error)
+        try samePixels(desktop.document, reference)
+        let store = shared.store
+        store.session = EditorSession(document: source)
+        store.selectedLayerIDs = [selected.id]
+        let status = try await helper.edit(service, shared, "layer.merge",
+          ["operation": command, "layerIDs": [selected.id.uuidString]])
+        XCTAssertEqual(status, 200, name)
+        XCTAssertEqual(store.document, desktop.document, name)
+        XCTAssertEqual(store.session.undoStack.last?.label, operation.rawValue, name)
+        let undo = try await helper.edit(service, shared, "history.undo")
+        XCTAssertEqual(undo, 200, name)
+        XCTAssertEqual(store.document, source, name)
+      }
+    }
+  }
+
   func fixture(_ name: String) throws -> CraftDocument {
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent()

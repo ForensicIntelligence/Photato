@@ -646,7 +646,14 @@ public struct EditorSession: Sendable {
       throw CraftError.invalid("The document changed while processing. The result was not applied.")
     }
     let candidate = prepared.result
-    guard candidate != document else {
+    let isInPlaceStamp: Bool
+    if case .preparedLayerMerge(let merge) = prepared.recordingCommand {
+      isInPlaceStamp = merge.operation.inPlaceMergeOperation != nil
+    } else {
+      isInPlaceStamp = false
+    }
+    // An in-place stamp still creates a history state when its samples already match.
+    guard candidate != document || isInPlaceStamp else {
       if let command = prepared.recordingCommand {
         switch command {
         case .preparedAction(let edit): if let recording=edit.recording {recordActionOperation(recording,name:prepared.label)}

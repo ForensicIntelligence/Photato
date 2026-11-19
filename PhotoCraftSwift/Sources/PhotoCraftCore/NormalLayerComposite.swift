@@ -20,15 +20,8 @@ public enum NormalLayerComposite {
         b.b.addingProduct(s.b - b.b, ratio), alpha)
     }
     let maximum = depth == .u8 ? 255 : 32768
-    func working(_ value: Float) -> Int {
-      if depth == .u8 { return Int((unit(value) * 255).rounded()) }
-      let stored = Int((unit(value) * 65535).rounded())
-      return (stored * 32768 + 32767) / 65535
-    }
-    func normalized(_ value: Int) -> Float {
-      if depth == .u8 { return Float(value) / 255 }
-      return Float((value * 65535 + 16384) / 32768) / 65535
-    }
+    func working(_ value: Float) -> Int { Self.working(value, depth: depth) }
+    func normalized(_ value: Int) -> Float { Self.normalized(value, depth: depth) }
     let opacityByte = Int((unit(opacity) * 255).rounded())
     let sa = (working(s.a) * opacityByte + 127) / 255
     let ba = working(b.a)
@@ -41,5 +34,39 @@ public enum NormalLayerComposite {
           / maximum)
     }
     return Pixel(channel(b.r, s.r), channel(b.g, s.g), channel(b.b, s.b), normalized(alpha))
+  }
+
+  package static func screenClipping(
+    backdrop: Pixel, source: Pixel, opacity: Float, depth: PixelDepth
+  ) -> Pixel {
+    precondition(depth != .f32)
+    let maximum = depth == .u8 ? 255 : 32768
+    let opacityByte = Int((unit(opacity) * 255).rounded())
+    let sourceAlpha = working(source.a, depth: depth)
+    // At 16 bits the clip opacity is promoted before multiplying by pixel alpha.
+    let weight = depth == .u8
+      ? (sourceAlpha * opacityByte + 127) / 255
+      : (sourceAlpha * ((opacityByte * maximum + 127) / 255) + maximum / 2) / maximum
+    func channel(_ backdrop: Float, _ source: Float) -> Float {
+      let b = working(backdrop, depth: depth)
+      let s = working(source, depth: depth)
+      let screen = maximum - ((maximum - b) * (maximum - s) + maximum / 2) / maximum
+      // Round the complementary color product before interpolating by coverage.
+      let mixed = (screen * weight + b * (maximum - weight) + maximum / 2) / maximum
+      return normalized(mixed, depth: depth)
+    }
+    return Pixel(channel(backdrop.r, source.r), channel(backdrop.g, source.g),
+      channel(backdrop.b, source.b), backdrop.a)
+  }
+
+  private static func working(_ value: Float, depth: PixelDepth) -> Int {
+    if depth == .u8 { return Int((unit(value) * 255).rounded()) }
+    let stored = Int((unit(value) * 65535).rounded())
+    return (stored * 32768 + 32767) / 65535
+  }
+
+  private static func normalized(_ value: Int, depth: PixelDepth) -> Float {
+    if depth == .u8 { return Float(value) / 255 }
+    return Float((value * 65535 + 16384) / 32768) / 65535
   }
 }

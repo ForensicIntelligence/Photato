@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 580 — Match Screen clipping and unchanged stamp history
+
+Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
+
+The saved-layer comparisons cover 36 Photoshop results. The 12 larger results account for 93,264 exact stored samples. The native editor and both local API families use the same implementation. All 765 selected checks passed in each configuration.
+
+[Detailed record](DEVLOG.md#dev-step-580) · [Validation](SOURCE_PUBLICATION_580.md).
+
 ## 2026-11-18 — Step 579 — Add in-place Stamp Down and Stamp Group
 
 Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. Both commands preserve the selected layer and the rest of the stack.
@@ -627,14 +635,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:579 -->
+<!-- current-status-step:580 -->
 ## Current development status — 18 November 2026
 
-Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack.
+Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
 
-All 761 selected tests passed in three build configurations. The extracted universal package passed both offscreen checks. Adjacent clipped layers, Screen blending and broader Photoshop parity remain open.
+All 765 selected checks passed in three configurations. The extracted universal package passed both offscreen checks. Adjacent clipped pairs, independent clipping and broader Photoshop parity remain open.
 
-[Source checkpoint 579](SOURCE_PUBLICATION_579.md) · [Detailed record](DEVLOG.md#dev-step-579).
+[Source checkpoint 580](SOURCE_PUBLICATION_580.md) · [Detailed record](DEVLOG.md#dev-step-580).
 
 <!-- current-status:end -->
 
@@ -1420,6 +1428,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 577 | [Preserve stored RGB32 pixel masks when merging and stamping](DEVLOG.md#dev-step-577) |
 | 2026-11-18 | 578 | [Add contextual Merge Clipping Mask](DEVLOG.md#dev-step-578) |
 | 2026-11-18 | 579 | [Add in-place Stamp Down and Stamp Group](DEVLOG.md#dev-step-579) |
+| 2026-11-18 | 580 | [Match Screen clipping and unchanged stamp history](DEVLOG.md#dev-step-580) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

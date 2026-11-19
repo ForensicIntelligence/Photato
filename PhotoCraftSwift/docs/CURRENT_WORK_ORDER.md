@@ -1,3 +1,7 @@
+**Source checkpoint 580.** Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical. [Qualification](SOURCE_PUBLICATION_580.md).
+
+Finish qualifying Merge Down and Stamp Down between adjacent Normal clips. Continue measuring independent clipping and non-Normal bases.
+
 **Source checkpoint 579.** Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. [Qualification](SOURCE_PUBLICATION_579.md).
 
 Continue qualifying Screen clips, then handle Stamp Down and Merge Down between two clips with the adjacent-clip references.

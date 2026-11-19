@@ -598,7 +598,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 577 | 2026-11-18 | [Preserve stored RGB32 pixel masks when merging and stamping](#dev-step-577) |
 | 578 | 2026-11-18 | [Add contextual Merge Clipping Mask](#dev-step-578) |
 | 579 | 2026-11-18 | [Add in-place Stamp Down and Stamp Group](#dev-step-579) |
+| 580 | 2026-11-18 | [Match Screen clipping and unchanged stamp history](#dev-step-580) |
 <!-- history-index:end -->
+
+<a id="dev-step-580"></a>
+
+## 2026-11-18 — Match Screen clipping and unchanged stamp history
+
+Merge Clipping Mask, Stamp Group and Merge Down on the first clip now use the measured 8-bit and 16-bit Screen arithmetic. The 16-bit path promotes the opacity byte before combining it with source alpha. The saved-layer tests cover 24 small references from both Photoshop architectures and 12 larger references captured on Apple Silicon. The larger comparison matched all 93,264 stored sample words. Photoshop stopped responding after that capture, before the larger Intel run. A translated Photato build can check against the saved Apple Silicon files. [Photoshop blend modes](https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/features-that-support-32-bpc-hdr-images.html).
+
+Stamp Group with every clip hidden created a Photoshop history state without changing the raster. The script could navigate back and forward across that state. The candidate now gives unchanged in-place stamps one Undo entry and records the operation in Actions. The 77 focused Debug checks passed on 8,316 frozen inputs, including native editor dispatch, Photato HTTP, both Adobe-compatible local job routes, and the history and Actions regression. All 765 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+The same comparison also measured Merge Down and Stamp Down between two adjacent Normal clips. The 8-bit and 16-bit cases match when the calculation uses the lower row’s stored RGB inside its bounds and transparent white for zero-alpha upper pixels outside those bounds. The 16-bit controls apply the same measured opacity promotion to both rows. The isolated build 581 candidate keeps the destination clipped and uses the established ordinary HDR layer-output kernel for RGB32. All 79 of its focused Debug checks passed, including the 300,000 × 300,000 sparse canvas test. Its first ActionJSON expansion then hit a thread-stack limit in the nested RGB32 Stamp Down path. The revised candidate prepares the isolated raster without recursively preparing the document. The same 81-method check is running again.
+
+Both slices of the extracted signed universal validation package passed the offscreen checks. [Qualification](SOURCE_PUBLICATION_580.md).
 
 <a id="dev-step-579"></a>
 

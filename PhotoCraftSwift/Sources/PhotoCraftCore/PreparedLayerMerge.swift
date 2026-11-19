@@ -52,7 +52,7 @@ public struct LayerMergePlan: Sendable {
         throw CraftError.invalid("The selected layer has no clipping mask.")
       }
       guard clips.filter({ $0.visible && $0.opacity > 0 }).allSatisfy({
-        $0.blendMode == .normal && Self.supportsClippingRaster($0)
+        Self.supportsClippingBlend($0.blendMode, depth: d.depth) && Self.supportsClippingRaster($0)
       }) else {
         throw CraftError.unsupported("This clipping mask includes a blend mode or rendered source that needs a separate merge path.")
       }
@@ -96,6 +96,10 @@ public struct LayerMergePlan: Sendable {
         throw CraftError.unsupported("Include the clipping base when merging clipped artwork.")
       }
     }
+  }
+
+  package static func supportsClippingBlend(_ mode: BlendMode, depth: PixelDepth) -> Bool {
+    mode == .normal || (mode == .screen && depth != .f32)
   }
 
   package static func supportsClippingRaster(_ layer: Layer) -> Bool {

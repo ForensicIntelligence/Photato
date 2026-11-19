@@ -607,6 +607,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 577 | [Preserve stored RGB32 pixel masks when merging and stamping](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) |
 | 2026-11-18 | 578 | [Add contextual Merge Clipping Mask](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) |
 | 2026-11-18 | 579 | [Add in-place Stamp Down and Stamp Group](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-579) |
+| 2026-11-18 | 580 | [Match Screen clipping and unchanged stamp history](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-580) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

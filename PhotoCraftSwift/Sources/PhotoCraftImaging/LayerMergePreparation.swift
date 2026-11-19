@@ -32,7 +32,7 @@ public enum LayerMergePreparation {
     let mergesOneClip = operation == .down && clippingLayers.count == 1
       && clippingLayers[0].isClipped && !plan.base.isClipped && plan.base.clipsBlendAsGroup
       && LayerMergePlan.supportsClippingRaster(plan.base) && LayerMergePlan.supportsClippingRaster(clippingLayers[0])
-      && clippingLayers[0].blendMode == .normal
+      && LayerMergePlan.supportsClippingBlend(clippingLayers[0].blendMode, depth: source.depth)
     if operation == .clippingMask || mergesOneClip {
       var merged = plan.base
       merged.content = .raster(try ClippingMaskRasterMerge.render(base: merged, clips: clippingLayers, document: source))

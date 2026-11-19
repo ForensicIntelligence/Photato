@@ -150,6 +150,30 @@ final class LayerMergeWorkflowTests: XCTestCase {
     }
   }
 
+  @MainActor func testStampGroupOfHiddenClipsRecordsUndoAndActionWithoutPixelChanges() async throws {
+    var source = try AutomationLayerMergeTests().fixture("context-stamp/chain-32-hide-all-clips")
+    let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+    source.activeLayerID = base.id
+    let store = EditorStore(document: source)
+    defer { store.renderTask?.cancel() }
+    try store.session.startActionRecording(name: "Stamp hidden clips")
+    store.merge(store.contextualStamp(.stampSelected))
+    await store.geometryTask?.value
+    XCTAssertNil(store.error)
+    XCTAssertEqual(store.document, source)
+    XCTAssertEqual(store.session.undoStack.map(\.label), ["Stamp Group"])
+    let step = try XCTUnwrap(store.session.actionRecording?.snapshot.steps.first)
+    XCTAssertEqual(step.name, "Stamp Group")
+    guard case .merge(_, .stampGroup) = step.operation else { return XCTFail("Expected a Stamp Group action") }
+    await store.undo()
+    XCTAssertEqual(store.document, source)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+    XCTAssertEqual(store.session.redoStack.map(\.label), ["Stamp Group"])
+    await store.redo()
+    XCTAssertEqual(store.document, source)
+    XCTAssertEqual(store.session.undoStack.map(\.label), ["Stamp Group"])
+  }
+
   @MainActor func testStampFromEditorRecordsPortableActionAndOneUndo() async throws {
     let s = try store()
     defer { s.renderTask?.cancel() }

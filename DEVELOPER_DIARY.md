@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **579** · The 10 most recent entries, newest first.
+Source build **580** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 580 — Match Screen clipping and unchanged stamp history
+
+Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
+
+The saved-layer comparisons cover 36 Photoshop results. The 12 larger results account for 93,264 exact stored samples. The native editor and both local API families use the same implementation. All 765 selected checks passed in each configuration.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-580) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_580.md).
 
 ## 2026-11-18 — Step 579 — Add in-place Stamp Down and Stamp Group
 
@@ -75,11 +83,3 @@ Photoshop was reading plain ZIP as predicted ZIP on 32-bit layers. This could co
 Photoshop opened the tested files on Apple Silicon and Intel under Rosetta. The saved 32-bit grayscale samples match across both formats and save encodings. All 694 selected tests passed in each of three build configurations. The local universal archive passed both offscreen workspace checks. A separate mismatch remains in the Intel masked merge.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md).
-
-## 2026-11-18 — Step 570 — Preserve the working profile when merging before conversion
-
-Merging eligible RGB layers before an Image Mode change now uses their working-profile samples. If the composite is already a single full-canvas layer, the conversion uses its original color and alpha planes. The existing Normal merge routine handles integer rounding for supported RGB stacks before promotion to 32 Bits/Channel.
-
-All 35,840 words in the three valid Photoshop references match on each optimized architecture. All 678 selected tests passed in each build configuration. The two external HDR merge cases still need readable references.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md).

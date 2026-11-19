@@ -7,6 +7,7 @@ enum ClippingMaskRasterMerge {
     let pixels: Surface
     let bounds: IntRect
     let opacity: Float
+    let blendMode: BlendMode
     let copiesOpaqueSource: Bool
   }
 
@@ -38,6 +39,10 @@ enum ClippingMaskRasterMerge {
       return SRGBTransfer.linear(pixels.defaultPixel)
     }
     func combine(_ backdrop: Pixel, _ sample: Pixel, clip: Clip) throws -> Pixel {
+      if clip.blendMode == .screen {
+        return NormalLayerComposite.screenClipping(backdrop: backdrop, source: sample,
+          opacity: clip.opacity, depth: depth)
+      }
       let opaque = Pixel(backdrop.r, backdrop.g, backdrop.b, 1)
       let result: Pixel
       if linear {
@@ -63,7 +68,8 @@ enum ClippingMaskRasterMerge {
       guard intersection.width > 0 && intersection.height > 0 else { continue }
       let copies = linear && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: pixels, in: document)
         ? try pixels.isOpaque() : false
-      let source = Clip(pixels: pixels, bounds: bounds, opacity: layer.opacity, copiesOpaqueSource: copies)
+      let source = Clip(pixels: pixels, bounds: bounds, opacity: layer.opacity,
+        blendMode: layer.blendMode, copiesOpaqueSource: copies)
       sources.append(source)
       if intersection == localBounds {
         backdrop = try combine(backdrop, implicit(pixels), clip: source)
