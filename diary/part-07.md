@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 615 — Keep large Grayscale, CMYK and Lab Photoshop planes sparse
+
+The native file reader opened an independently authored 300,000 × 300,000 Grayscale/16 PSB and matched all 18,432 checked gray and alpha words. The Apple Silicon Debug run took 2.61 seconds and retained 24 KiB of mapped component samples.
+
+Build 614 exhausted a 384 KiB scratch limit on the smaller 1,531 × 5,491 control. Build 615 opened it under that allowance and matched all 19,842 checked words. All 963 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-615) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_615.md).
+
 ## 2026-11-19 — Step 614 — Read large ZIP-compressed Photoshop layers and masks as sparse rasters
 
 The native file reader opened an independently authored 300,000 × 128 RGB8 PSB with a ZIP-compressed layer, translated mask and saved alpha. All 36,864 checked component words matched. The Apple Silicon Debug run took 5.48 seconds.
@@ -915,14 +923,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:614 -->
+<!-- current-status-step:615 -->
 ## Current development status — 19 November 2026
 
-Large Raw, PackBits and ZIP RGB Photoshop layers, masks and saved channels retain sparse editable raster storage.
+Large editable and flattened Grayscale, CMYK and Lab Photoshop files keep unchanged separation samples implicit.
 
-All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 963 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 614](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_614.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-614).
+[Source checkpoint 615](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_615.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-615).
 
 <!-- current-status:end -->
 

@@ -55,7 +55,7 @@ final class PSDChannelReader {
   /// Move past the merged process planes while retaining independent bounded
   /// readers. Later saved alpha or spot planes remain in this stream.
   func detachSeekablePlanes(count: Int, height: Int) throws -> [PSDChannelReader] {
-    guard hasSeekableRows, (3...4).contains(count), (1...Surface.maxDimension).contains(height),
+    guard hasSeekableRows, (1...5).contains(count), (1...Surface.maxDimension).contains(height),
       height <= remainingRows / count else {
       throw CraftError.invalid("Invalid Photoshop merged plane geometry.")
     }

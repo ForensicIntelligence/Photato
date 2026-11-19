@@ -297,6 +297,84 @@ final class PSDCompressionOptionsTests: XCTestCase {
     }
   }
 
+  func testLargeNativeModePlanesKeepUntouchedSeparationsImplicitAfterFirstRowEdit() throws {
+    let width = 1_531, height = 5_491
+    let variants: [(DocumentColorMode, PixelDepth, PSDCompression, PSDFileFormat, Int)] = [
+      (.grayscale, .u8, .rle, .psb, 1),
+      (.grayscale, .f32, .zipPrediction, .psd, 1),
+      (.cmyk, .u8, .raw, .psb, 4),
+      (.cmyk, .u16, .rle, .psd, 4),
+      (.lab, .u8, .rle, .psb, 9),
+      (.lab, .u16, .zipPrediction, .psd, 9),
+    ]
+    for (mode, depth, method, format, modeCode) in variants {
+      let components = mode.componentCount
+      let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
+      let bytesPerSample = bits / 8
+      let defaultWords = (0..<components).map { component in
+        bits == 32 ? Float(0.375).bitPattern : UInt32(53 + 19 * component) * (bits == 16 ? 257 : 1)
+      }
+      let first: UInt32 = bits == 32 ? Float(-0.25).bitPattern : bits == 16 ? 0xd123 : 0xd1
+      let last: UInt32 = bits == 32 ? Float(1.5).bitPattern : bits == 16 ? 0x123d : 0x12
+      func encoded(_ word: UInt32) -> [UInt8] {
+        withUnsafeBytes(of: word.bigEndian) { Array($0.suffix(bytesPerSample)) }
+      }
+      func row(_ y: Int, _ component: Int) -> [UInt8] {
+        var result = Array(PSDChannelWriter.repeating(Data(encoded(defaultWords[component])), count: width))
+        if y == 0 || y == height - 1 {
+          let x = y == 0 ? width / 2 : width - 1, firstByte = x * bytesPerSample
+          result.replaceSubrange(firstByte..<firstByte + bytesPerSample, with: encoded(y == 0 ? first : last))
+        }
+        return result
+      }
+      func repeatedRows(_ index: Int) -> Int { index % height == 1 ? height - 2 : 1 }
+      let descriptor = try DocumentModeDescriptor(mode: mode, depth: depth)
+      let context = try PSDRasterPaging.Context(scratchByteLimit: 384 * 1024)
+      var planes: [Int: PSDChannelReader] = [:]
+      for component in 0..<components {
+        let plane = PSDOutput()
+        try PSDChannelWriter.write(width: width, height: height, depth: bits, compression: method,
+          format: format, to: plane, repeatedRows: repeatedRows) { row($0, component) }
+        planes[component] = try PSDChannelReader(PSDReader(data: plane.data), width: width, height: height,
+          depth: bits, format: format)
+      }
+      let editable = try PSDModePaging.layer(width: width, height: height, depth: depth, descriptor: descriptor,
+        planes: planes, context: context)
+      for plane in planes.values { XCTAssertEqual(plane.remainingRows, 0) }
+
+      let output = PSDOutput()
+      try output.text("8BPS")
+      try output.n(format.rawValue, 2)
+      try output.append(Data(count: 6))
+      try output.n(components, 2)
+      try output.n(height, 4)
+      try output.n(width, 4)
+      try output.n(bits, 2)
+      try output.n(modeCode, 2)
+      try output.section(Data())
+      try output.section(Data())
+      try output.section(Data(), lengthBytes: format.sectionLengthBytes)
+      try PSDChannelWriter.write(width: width, height: height, depth: bits, compression: method,
+        channels: components, format: format, to: output, repeatedRows: repeatedRows) { row($0 % height, $0 / height) }
+      let flattened = try PSDCodec.readPaged(output.data, scratchByteLimit: 384 * 1024)
+      XCTAssertEqual(flattened.colorMode, mode)
+      let merged = try XCTUnwrap(flattened.layers.first?.nativeMode)
+      for raster in [editable, merged] {
+        XCTAssertLessThanOrEqual(raster.mappedComponentSampleBytes, 2 * 4096 * components * bytesPerSample)
+        for component in 0..<components {
+          func expected(_ word: UInt32) -> UInt32 {
+            mode == .cmyk ? (bits == 8 ? 255 : 65_535) - word : word
+          }
+          for (index, word) in [(0, defaultWords[component]), (width / 2, first),
+            (width * (height / 2) + 31, defaultWords[component]), (width * height - 1, last)] {
+            XCTAssertEqual(raster.rawWord(component: component, index: index), expected(word))
+          }
+        }
+        XCTAssertEqual(raster.value(component: components, index: width * height - 1), 1)
+      }
+    }
+  }
+
   func testLargePredictedZIPLayerAndMaskOpenWithinScratchBudget() throws {
     let width = 1_201, height = 30_001
     let background = Pixel(0.125, 0.5, 0.75)

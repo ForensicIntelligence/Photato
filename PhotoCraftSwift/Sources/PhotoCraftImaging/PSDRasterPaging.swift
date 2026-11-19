@@ -170,7 +170,7 @@ enum PSDRasterPaging {
     return try builder.finish()
   }
 
-  private static func representativeSample(width: Int, sampleSize: Int,
+  static func representativeSample(width: Int, sampleSize: Int,
     inspect: (([UInt8]) -> Void) throws -> Void) rethrows -> [UInt8] {
     var votes = [[UInt8]: Int]()
     var mode = [UInt8](), maximum = 0

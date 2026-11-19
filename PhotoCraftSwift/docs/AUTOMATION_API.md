@@ -1,3 +1,7 @@
+### Sparse Photoshop native process planes (checkpoint 615)
+
+Desktop Open, Photato imports, and both resource job readers share the native component decoder. Discovery adds `documentTransfers.photoshopContainers.sparseNativeProcessInput`. Large Grayscale, CMYK and Lab rasters preserve original process words and alpha samples for Raw, PackBits, ZIP and ZIP with prediction. Native file I/O passed the independent maximum-size Grayscale/16 control. API input and job budgets still apply.
+
 ### Large compressed Photoshop layers and masks (checkpoint 614)
 
 Desktop Open, Photato imports, and both resource job readers share the updated parser. Capability discovery adds `documentTransfers.photoshopContainers.sparseLayeredRGBInput` and updates saved-channel import metadata. Large RGB layer pixels, editable pixel masks and saved planes use an implicit value for Raw, PackBits, ZIP and ZIP with prediction. Existing transfer limits apply. The maximum-width ZIP control is independently authored. Photoshop save interoperability still uses Raw or PackBits for the merged preview.

@@ -633,7 +633,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 612 | 2026-11-19 | [Save large PSD and PSB channels with repeated rows](#dev-step-612) |
 | 613 | 2026-11-19 | [Import large flattened RGB PSD and PSB without staging all process planes](#dev-step-613) |
 | 614 | 2026-11-19 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](#dev-step-614) |
+| 615 | 2026-11-19 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](#dev-step-615) |
 <!-- history-index:end -->
+
+<a id="dev-step-615"></a>
+
+## 2026-11-19 — Keep large Grayscale, CMYK and Lab Photoshop planes sparse
+
+Both editable layers and flattened images in large Grayscale, CMYK and Lab PSD/PSB documents now sample each native component plane before choosing its implicit word. An atypical center pixel on the first scanline no longer forces the untouched separation to occupy disk. Seekable Raw and PackBits sample around the plane. Sequential ZIP and ZIP with prediction use a bounded prefix. Rows that equal the validated implicit word advance the native row builder without recreating a component array. Changed integer CMYK words still invert in their stored bit depth, and the display cache remains separate from the editable native samples. The current import and job pathways share the parser. Capability discovery adds `documentTransfers.photoshopContainers.sparseNativeProcessInput`.
+
+All 32 focused Debug imaging and API checks passed. The new regression exercises both the native layer decoder and the flattened container reader across six Grayscale, CMYK and Lab depth and compression controls. It preserves the complete alpha default and verifies exact native words across both affected and unchanged rows.
+
+An independent PackBits writer generated flattened Grayscale/16 PSB controls. A first-row edit at the center is the previous reader's misleading initial sample. Build 614 exhausted a 384 KiB scratch budget on the 1,531 × 5,491 file. Build 615 opened it and matched 19,842 stored gray/alpha words. The native file path opened the 300,000 × 300,000 control in 2.61 seconds in one Apple Silicon Debug run and matched all 18,432 checked words. The 2.81 GB file needed 24 KiB of mapped component bytes. Both disposable files were deleted. [Adobe large document format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+The maximum-size Gray/16 file was synthetic. Live Photoshop exchange, native mode masks at full canvas size, dense mode scratch behavior and equally large CMYK/Lab files remain open.
+
+All 963 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_615.md).
 
 <a id="dev-step-614"></a>
 

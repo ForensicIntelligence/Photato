@@ -799,16 +799,37 @@ extension NativeModeRaster {
         guard (0...1).contains(Float(bitPattern:word)) else {throw CraftError.invalid("Invalid floating component opacity.")}
       }
     }
+    /// A decoder with its own sampling policy can seed a plane before accepting rows.
+    package func seedImplicitWord(_ word: UInt32, component: Int) throws {
+      do {
+        guard !failed, !finished, rows.indices.contains(component), rows[component] == 0,
+          planes[component] == nil else { throw CraftError.invalid("Cannot reseed a component plane.") }
+        try Task.checkCancellation()
+        try check(word, component: component)
+        planes[component] = try ComponentPlane(width: candidate.width, height: candidate.height,
+          depth: candidate.depth, defaultWord: word)
+      } catch { failed = true; throw error }
+    }
+    /// The codec has validated that every sample in this row equals the seed.
+    package func appendImplicitRow(component: Int) throws {
+      do {
+        guard !failed, !finished, rows.indices.contains(component), rows[component] < candidate.height,
+          planes[component] != nil else { throw CraftError.invalid("Invalid implicit component row.") }
+        try Task.checkCancellation()
+        rows[component] += 1
+      } catch { failed = true; throw error }
+    }
     public func appendRow(_ words: [UInt32], component: Int) throws {
       do {
         guard !failed,!finished,rows.indices.contains(component),rows[component]<candidate.height,
           words.count == candidate.width else {throw CraftError.invalid("Invalid or repeated component row.")}
         try Task.checkCancellation()
+        if planes[component] == nil {
+          try seedImplicitWord(words[words.count / 2], component: component)
+        }
         if builders[component] == nil {
-          let word=words[words.count/2];try check(word,component:component)
-          let plane=try ComponentPlane(width:candidate.width,height:candidate.height,depth:candidate.depth,defaultWord:word)
-          planes[component]=plane
-          builders[component]=try ComponentPlaneBuilder(plane:plane,cacheBlocks:2,reserve:backing.reserveComponentScratch)
+          builders[component] = try ComponentPlaneBuilder(plane: planes[component]!, cacheBlocks: 2,
+            reserve: backing.reserveComponentScratch)
         }
         let defaultWord=planes[component]!.defaultWord,offset=rows[component]*candidate.width
         for x in words.indices {
@@ -822,7 +843,8 @@ extension NativeModeRaster {
     }
     public func fill(component: Int, word: UInt32) throws {
       do {
-        guard !failed,!finished,rows.indices.contains(component),rows[component] == 0 else {throw CraftError.invalid("Cannot replace an accepted component plane.")}
+        guard !failed, !finished, rows.indices.contains(component), rows[component] == 0,
+          planes[component] == nil else { throw CraftError.invalid("Cannot replace an accepted component plane.") }
         try Task.checkCancellation();try check(word,component:component)
         planes[component]=try ComponentPlane(width:candidate.width,height:candidate.height,depth:candidate.depth,defaultWord:word)
         rows[component]=candidate.height

@@ -1,3 +1,7 @@
+**Source checkpoint 615.** Large editable and flattened Grayscale, CMYK and Lab Photoshop files keep unchanged separation samples implicit. [Qualification](SOURCE_PUBLICATION_615.md).
+
+Verify large native-mode output and continue dense and live Photoshop interchange checks.
+
 **Source checkpoint 614.** Large Raw, PackBits and ZIP RGB Photoshop layers, masks and saved channels retain sparse editable raster storage. [Qualification](SOURCE_PUBLICATION_614.md).
 
 Verify large Gray, CMYK and Lab native planes next, then measure output and dense interchange.

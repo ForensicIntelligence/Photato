@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 import PhotoCraftCore
 
@@ -23,27 +24,76 @@ enum PSDModePaging {
     return try NativeModeRaster.RowBuilder(width:width,height:height,mode:descriptor.mode,depth:depth,
       profile:descriptor.profile,intent:descriptor.intent,backing:context.backing)
   }
+  private static func appendSparsePlane(_ reader: PSDChannelReader, component: Int,
+    width: Int, height: Int, depth: PixelDepth, mode: DocumentColorMode,
+    to output: NativeModeRaster.RowBuilder) throws {
+    let sampleBytes = depth == .u8 ? 1 : depth == .u16 ? 2 : 4
+    let count = min(height, 7)
+    var prefetched: [[UInt8]] = []
+    let sample = try PSDRasterPaging.representativeSample(width: width, sampleSize: sampleBytes) { observe in
+      if reader.hasSeekableRows {
+        let rows = (0..<count).map { $0 * (height - 1) / max(1, count - 1) }
+        try reader.inspectPlaneRows(at: rows, height: height, observe)
+      } else {
+        let prefixCount = min(count, (6 * 1024 * 1024) / (width * sampleBytes))
+        for _ in 0..<prefixCount {
+          let row = try reader.nextRow()
+          prefetched.append(row)
+          observe(row)
+        }
+      }
+    }
+    let seed = try words(sample, width: 1, depth: depth, mode: mode, component: component)[0]
+    try output.seedImplicitWord(seed, component: component)
+    let expected = PSDChannelWriter.repeating(Data(sample), count: width)
+    func matches(_ row: [UInt8]) -> Bool {
+      row.withUnsafeBytes { actual in
+        expected.withUnsafeBytes { implicit in
+          memcmp(actual.baseAddress!, implicit.baseAddress!, actual.count) == 0
+        }
+      }
+    }
+    func append(_ row: [UInt8]?) throws {
+      if let row {
+        try output.appendRow(words(row, width: width, depth: depth, mode: mode, component: component), component: component)
+      } else {
+        try output.appendImplicitRow(component: component)
+      }
+    }
+    let sampledCount = prefetched.count
+    for row in prefetched { try append(matches(row) ? nil : row) }
+    prefetched = []
+    var uniformPacket: Data?
+    for _ in sampledCount..<height {
+      try append(reader.nextSparseRow(uniformPacket: &uniformPacket, isUniform: matches))
+    }
+  }
+
   static func layer(width:Int,height:Int,depth:PixelDepth,descriptor:DocumentModeDescriptor,
     planes:[Int:PSDChannelReader],context:PSDRasterPaging.Context) throws -> NativeModeRaster {
     let output=try builder(width:width,height:height,depth:depth,descriptor:descriptor,context:context)
     let count=descriptor.mode.componentCount
-    for y in 0..<height {
-      try Task.checkCancellation()
-      for c in 0..<count {
-        guard let plane=planes[c] else {throw CraftError.invalid("Missing Photoshop component plane.")}
-        try output.appendRow(words(plane.nextRow(),width:width,depth:depth,mode:descriptor.mode,component:c),component:c)
-      }
-      if let alpha=planes[-1] {try output.appendRow(words(alpha.nextRow(),width:width,depth:depth,mode:descriptor.mode,component:count),component:count)}
+    for component in 0..<count {
+      guard let plane = planes[component] else { throw CraftError.invalid("Missing Photoshop component plane.") }
+      try appendPlane(plane, component: component, width: width, height: height, depth: depth,
+        mode: descriptor.mode, to: output)
     }
-    if planes[-1] == nil {try output.fill(component:count,word:depth == .f32 ? Float(1).bitPattern:depth == .u8 ? 255:65535)}
+    if let alpha = planes[-1] {
+      try appendPlane(alpha, component: count, width: width, height: height, depth: depth, mode: descriptor.mode, to: output)
+    } else {
+      try output.fill(component: count, word: depth == .f32 ? Float(1).bitPattern : depth == .u8 ? 255 : 65535)
+    }
     return try output.finish()
   }
   static func merged(width:Int,height:Int,depth:PixelDepth,descriptor:DocumentModeDescriptor,
     imageChannels:Int,transparency:Bool,reader:PSDChannelReader,context:PSDRasterPaging.Context) throws -> NativeModeRaster {
     let output=try builder(width:width,height:height,depth:depth,descriptor:descriptor,context:context)
-    for c in 0..<imageChannels {for _ in 0..<height {
-      try output.appendRow(words(reader.nextRow(),width:width,depth:depth,mode:descriptor.mode,component:c),component:c)
-    }}
+    let views = width > NativeModeRaster.maximumPixels / height && reader.hasSeekableRows
+      ? try reader.detachSeekablePlanes(count: imageChannels, height: height) : nil
+    for component in 0..<imageChannels {
+      try appendPlane(views?[component] ?? reader, component: component, width: width, height: height,
+        depth: depth, mode: descriptor.mode, to: output)
+    }
     if imageChannels == descriptor.mode.componentCount {
       try output.fill(component:descriptor.mode.componentCount,word:depth == .f32 ? Float(1).bitPattern:depth == .u8 ? 255:65535)
     }
@@ -54,5 +104,18 @@ enum PSDModePaging {
       }
     }
     return native
+  }
+
+  private static func appendPlane(_ reader: PSDChannelReader, component: Int,
+    width: Int, height: Int, depth: PixelDepth, mode: DocumentColorMode,
+    to output: NativeModeRaster.RowBuilder) throws {
+    if width > NativeModeRaster.maximumPixels / height {
+      try appendSparsePlane(reader, component: component, width: width, height: height, depth: depth, mode: mode, to: output)
+    } else {
+      for _ in 0..<height {
+        try output.appendRow(words(reader.nextRow(), width: width, depth: depth, mode: mode, component: component),
+          component: component)
+      }
+    }
   }
 }

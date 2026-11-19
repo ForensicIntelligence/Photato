@@ -173,6 +173,10 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(sparseLayers["depths"] as? [Int], [8, 16, 32])
       XCTAssertEqual(sparseLayers["keepsEditableLayerMasks"] as? Bool, true)
       XCTAssertEqual(sparseLayers["keepsSavedChannels"] as? Bool, true)
+      let nativeProcess = try XCTUnwrap(containers["sparseNativeProcessInput"] as? [String: Any])
+      XCTAssertEqual(nativeProcess["modes"] as? [String], ["grayscale", "cmyk", "lab"])
+      XCTAssertEqual(nativeProcess["compression"] as? [String], ["raw", "rle", "zip", "zipPrediction"])
+      XCTAssertEqual(nativeProcess["keepsProcessWords"] as? Bool, true)
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
     }
