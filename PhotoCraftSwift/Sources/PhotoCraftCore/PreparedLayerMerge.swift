@@ -52,7 +52,7 @@ public struct LayerMergePlan: Sendable {
         throw CraftError.invalid("The selected layer has no clipping mask.")
       }
       guard clips.filter({ $0.visible && $0.opacity > 0 }).allSatisfy({
-        Self.supportsClippingBlend($0.blendMode, depth: d.depth) && Self.supportsClippingRaster($0)
+        Self.supportsClippedRaster($0, depth: d.depth)
       }) else {
         throw CraftError.unsupported("This clipping mask includes a blend mode or rendered source that needs a separate merge path.")
       }
@@ -77,7 +77,9 @@ public struct LayerMergePlan: Sendable {
       base=layer
     }
     mergesAdjacentClips = (operation == .down || operation == .stampDown)
-      && roots.count == 2 && roots.allSatisfy { $0.isClipped && $0.blendMode == .normal && Self.supportsClippingRaster($0) }
+      && roots.count == 2 && roots.allSatisfy {
+        $0.isClipped && $0.blendMode == .normal && $0.mask == nil && Self.supportsClippingRaster($0)
+      }
       && clippingBases[roots[0].id] != nil && clippingBases[roots[0].id] == clippingBases[roots[1].id]
     let rootsToRender = Set(roots.map(\.id))
     let included = hierarchy.subtreeIDs(rootsToRender)
@@ -110,9 +112,21 @@ public struct LayerMergePlan: Sendable {
     }
   }
 
+  package static func supportsClippedRaster(_ layer: Layer, depth: PixelDepth) -> Bool {
+    guard supportsClippingRaster(layer), supportsClippingBlend(layer.blendMode, depth: depth) else {
+      return false
+    }
+    guard layer.mask != nil, layer.effectiveMaskProperties.enabled else { return true }
+    let properties = layer.effectiveMaskProperties
+    guard properties.feather == 0 else { return false }
+    let transform = layer.maskCoordinateTransform
+    return transform.a == 1 && transform.b == 0 && transform.c == 0 && transform.d == 1
+      && Int(exactly: transform.tx) != nil && Int(exactly: transform.ty) != nil
+  }
+
   package static func supportsClippingRaster(_ layer: Layer) -> Bool {
     guard case .raster = layer.content else { return false }
-    return layer.affine == nil && layer.mask == nil && layer.vectorMask == nil && layer.style == nil
+    return layer.affine == nil && layer.vectorMask == nil && layer.style == nil
       && layer.smartObject == nil && layer.smartFilters == nil && layer.warp == nil
       && layer.sourceProjection == nil && layer.importedSmartAppearance == nil
   }

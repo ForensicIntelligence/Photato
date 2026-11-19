@@ -47,6 +47,7 @@ public enum NormalLayerComposite {
       let s = working(source, depth: depth)
       let blend: Int
       switch mode {
+      case .normal: blend = s
       case .multiply: blend = (b * s + maximum / 2) / maximum
       case .screen: blend = maximum - ((maximum - b) * (maximum - s) + maximum / 2) / maximum
       case .darken: blend = min(b, s)
@@ -83,6 +84,28 @@ public enum NormalLayerComposite {
       return normalized(result, depth: depth)
     }
     return Pixel(channel(lower.r, upper.r), channel(lower.g, upper.g), channel(lower.b, upper.b), coverage)
+  }
+
+  package static func clippedMaskCoverage(_ sample: Float, density: Float, depth: PixelDepth) -> Float {
+    let value = unit(sample)
+    if density == 1 { return value }
+    if density == 0 { return 1 }
+    if depth == .f32 {
+      let byte = (unit(density) * 255).rounded()
+      if byte == 255 { return value }
+      // Multiplication by the rounded reciprocal matches Photoshop's saved HDR coverage.
+      let weight = byte * (Float(1) / 255)
+      return 1 - weight * (1 - value)
+    }
+    let maximum = depth == .u8 ? 255 : 32768
+    let complement = maximum - working(value, depth: depth)
+    let amount = clippingOpacity(density, depth: depth)
+    let covered = maximum - (complement * amount + maximum / 2) / maximum
+    return normalized(covered, depth: depth)
+  }
+
+  package static func applyClippedPixelMask(_ coverage: Float, to alpha: Float, depth: PixelDepth) -> Float {
+    normalized(clippingAlpha(alpha, opacity: working(coverage, depth: depth), depth: depth), depth: depth)
   }
 
   package static func clippingOpacity(_ opacity: Float, depth: PixelDepth) -> Int {

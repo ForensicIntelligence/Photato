@@ -225,6 +225,118 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
   }
 
+  func testClippingEditsMatchSavedPhotoshopWithEditablePixelMasks() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let commands: [(String, LayerMergeOperation)] = [
+      ("merge-mask", .clippingMask), ("stamp-mask", .stampGroup),
+      ("merge-down", .down), ("stamp-down", .stampDown),
+    ]
+    for depth in [8, 16, 32] {
+      let variants = ["base", "clip", "both", "disabled", "offset", "density"]
+      for variant in variants {
+        let name = "mask-\(depth)-\(variant)"
+        let original = try PSDCodec.read(file("pixel-masked-clipping/\(name)"))
+        let base = try XCTUnwrap(original.layers.first { $0.name == "Clipping base" })
+        let top = try XCTUnwrap(original.layers.first { $0.name == "Lower clip" })
+        for (suffix, operation) in commands {
+          let label = "\(name)-\(suffix)"
+          let expected = try PSDCodec.read(file("pixel-masked-clipping/\(architecture)-\(label)-merged"))
+          var source = original
+          let selected = operation == .down || operation == .stampDown ? top.id : base.id
+          source.activeLayerID = selected
+          XCTAssertTrue(LayerMerge.canApply(operation, layerIDs: [selected], in: source), label)
+          let result = try LayerMergePreparation.prepare(source, layerIDs: [selected], operation: operation).applied(to: source)
+          XCTAssertEqual(result.activeLayerID, operation == .stampDown ? top.id : base.id, label)
+          let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+          for output in [result, reopened] {
+            try compare(output, expected, label: label)
+            let written = try XCTUnwrap(output.layers.first { $0.name == base.name }, label)
+            XCTAssertEqual(written.mask, base.mask, label)
+            XCTAssertEqual(written.maskProperties, base.maskProperties, label)
+            if operation == .stampGroup || operation == .stampDown {
+              let retained = try XCTUnwrap(output.layers.first { $0.name == top.name }, label)
+              XCTAssertEqual(retained.mask, top.mask, label)
+              XCTAssertEqual(retained.maskProperties, top.maskProperties, label)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  func testClippingAppliesPixelMaskBeforeFractionalLayerOpacity() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    for depth in [8, 16, 32] {
+      let variants = ["clip", "offset", "disabled", "density"]
+      let modes = ["normal29", "multiply63"] + (depth == 32 ? [] : ["screen63"])
+      for variant in variants {
+        for mode in modes {
+          let name = "mask-\(depth)-\(variant)-\(mode)"
+          let source = try PSDCodec.read(file("pixel-masked-clipping/\(name)"))
+          let reference = try PSDCodec.read(file("pixel-masked-clipping/\(architecture)-\(name)-merged"))
+          let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+          let result = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask)
+            .applied(to: source)
+          try compare(result, reference, label: name)
+          try compare(PSDCodec.read(PSDCodec.writeRasterLayers(result)), reference, label: "PSD " + name)
+        }
+      }
+    }
+  }
+
+  func testClippedFloatMaskDensityMatchesSavedCoverageAcrossByteRanges() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let settings = ["density17", "density40", "density73", "dbyte001", "dbyte003", "dbyte019",
+      "dbyte025", "dbyte051", "dbyte077", "dbyte127", "dbyte128", "dbyte153", "dbyte191",
+      "dbyte221", "dbyte254"]
+    for setting in settings {
+      let name = "coverage-32-\(setting)-merge-mask"
+      let source = try PSDCodec.read(file("pixel-masked-clipping/\(name)"))
+      let reference = try PSDCodec.read(file("pixel-masked-clipping/\(architecture)-\(name)-merged"))
+      let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" })
+      let result = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask)
+        .applied(to: source)
+      try compare(result, reference, label: setting)
+      try compare(PSDCodec.read(PSDCodec.writeRasterLayers(result)), reference, label: "PSD " + setting)
+    }
+  }
+
+  func testClippedPixelMaskOnlyAllocatesItsSparseCoverageOnMaximumCanvas() throws {
+    let side = Surface.maxDimension
+    var source = try CraftDocument(width: side, height: side, depth: .u16)
+    let basePixels = try Surface(width: side, height: side, depth: .u16, fill: Pixel(0.25, 0.5, 0.75, 0.5))
+    let base = Layer(name: "Clipping base", content: .raster(basePixels))
+    let upper = try Surface(width: side, height: side, depth: .u16, fill: .white)
+    var clip = Layer(name: "Clip", content: .raster(upper))
+    clip.clipped = true
+    clip.mask = try Surface(width: 1, height: 1, depth: .u16, fill: .white)
+    var properties = MaskProperties()
+    properties.transform = .translation(Double(side - 1), Double(side - 1))
+    clip.maskProperties = properties
+    source.layers = [base, clip]
+    source.activeLayerID = base.id
+    let result = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask).result
+    guard let layer = result.layers.first, case .raster(let pixels) = layer.content else { return XCTFail("Expected raster result") }
+    let before = basePixels.pixel(x: 0, y: 0)
+    XCTAssertEqual(pixels.width, side)
+    XCTAssertEqual(pixels.height, side)
+    XCTAssertLessThanOrEqual(pixels.tileCount, 1)
+    XCTAssertEqual(pixels.pixel(x: 0, y: 0), before)
+    XCTAssertEqual(pixels.pixel(x: side - 1, y: side - 1), Pixel(1, 1, 1, before.a))
+  }
+
   func testClippedMultiplyDarkenLightenAndDifferenceMatchSavedLayersAtAllRGBDepths() throws {
     #if arch(x86_64)
     let architecture = "intel"

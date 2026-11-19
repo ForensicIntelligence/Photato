@@ -54,8 +54,7 @@ public enum LayerMergePreparation {
     let mergesOneClip = operation == .down && clippingLayers.count == 1
       && clippingLayers[0].isClipped && !plan.base.isClipped
       && LayerMergePlan.supportsClippingRaster(plan.base)
-      && LayerMergePlan.supportsClippingRaster(clippingLayers[0])
-      && LayerMergePlan.supportsClippingBlend(clippingLayers[0].blendMode, depth: source.depth)
+      && LayerMergePlan.supportsClippedRaster(clippingLayers[0], depth: source.depth)
     var clippedDestination: Layer?
     if operation == .clippingMask || mergesOneClip {
       var merged = plan.base

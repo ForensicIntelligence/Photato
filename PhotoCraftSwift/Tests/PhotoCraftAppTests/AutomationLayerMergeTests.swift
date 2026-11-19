@@ -127,8 +127,19 @@ final class AutomationLayerMergeTests: XCTestCase {
     ])
   }
 
+  @MainActor func testClippedPixelMasksThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
+    try await verifyClippedWorkflow(folder: "pixel-masked-clipping", cases: [
+      ("mask-8-both-merge-mask", .clippingMask, "clippingMask", "Clipping base"),
+      ("mask-16-density-merge-down", .down, "down", "Lower clip"),
+      ("mask-32-offset-stamp-down", .stampDown, "stampDown", "Lower clip"),
+      ("mask-32-density-stamp-mask", .stampGroup, "stampGroup", "Clipping base"),
+    ], sourceName: { $0.replacingOccurrences(of: #"-((merge|stamp)-(mask|down))$"#,
+      with: "", options: .regularExpression) })
+  }
+
   @MainActor private func verifyClippedWorkflow(
-    folder: String, referenceArchitecture: String? = nil, cases: [(String, LayerMergeOperation, String, String)]
+    folder: String, referenceArchitecture: String? = nil, cases: [(String, LayerMergeOperation, String, String)],
+    sourceName: (String) -> String = { $0 }
   ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
@@ -139,7 +150,7 @@ final class AutomationLayerMergeTests: XCTestCase {
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
       try service.share(shared)
       for (name, operation, command, selectedName) in cases {
-        var source = try fixture("\(folder)/\(name)")
+        var source = try fixture("\(folder)/\(sourceName(name))")
         let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName })
         source.activeLayerID = selected.id
         let reference = try fixture("\(folder)/\(referenceArchitecture ?? architecture)-\(name)-merged")

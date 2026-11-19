@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 584 — Preserve pixel masks in clipping merges and stamps
+
+Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. The tests cover disabled masks, integer offsets, Density and partial clip opacity. Stamp Group and Stamp Down retain the contributing mask on its own layer.
+
+All 782 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. Feather on a contributing mask remains in development.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_584.md).
+
 ## 2026-11-18 — Step 583 — Add four clipped blend modes
 
 Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
@@ -661,14 +669,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:583 -->
-## Current development status — 18 November 2026
+<!-- current-status-step:584 -->
+## Current development status — 19 November 2026
 
-Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
+Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel.
 
-All 776 selected checks passed in three configurations, and both signed universal slices passed offscreen checks. Clipping with editable masks, other blend modes and broader Photoshop parity remain open.
+All 782 selected checks passed in three configurations, and both signed universal slices passed offscreen checks. Feather, other rich clipping operations and broader Photoshop parity remain open.
 
-[Source checkpoint 583](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_583.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-583).
+[Source checkpoint 584](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_584.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-584).
 
 <!-- current-status:end -->
 

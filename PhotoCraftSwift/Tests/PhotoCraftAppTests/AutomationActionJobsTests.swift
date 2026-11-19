@@ -195,8 +195,19 @@ final class AutomationActionJobsTests: XCTestCase {
     ])
   }
 
+  @MainActor func testClippedPixelMasksMatchSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "pixel-masked-clipping", cases: [
+      ("mask-8-clip-merge-mask", "Clipping base", false),
+      ("mask-16-density-stamp-mask", "Clipping base", true),
+      ("mask-32-offset-stamp-down", "Lower clip", true),
+      ("mask-32-density-stamp-mask", "Clipping base", true),
+    ], sourceName: { $0.replacingOccurrences(of: #"-((merge|stamp)-(mask|down))$"#,
+      with: "", options: .regularExpression) })
+  }
+
   @MainActor private func verifyClippedJobRoutes(
-    folder: String, referenceArchitecture: String? = nil, cases: [(String, String, Bool)]
+    folder: String, referenceArchitecture: String? = nil, cases: [(String, String, Bool)],
+    sourceName: (String) -> String = { $0 }
   ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
@@ -214,7 +225,7 @@ final class AutomationActionJobsTests: XCTestCase {
         let selection = ["_obj": "select", "_target": [["_ref": "layer", "_name": target]]] as [String: Any]
         let select = String(decoding: try JSONSerialization.data(withJSONObject: [selection]), as: UTF8.self)
         let action = duplicates ? #"[{"_obj":"mergeLayersNew","$Dplc":true}]"# : #"[{"_obj":"mergeLayersNew"}]"#
-        await transport.set(try Data(contentsOf: root.appendingPathComponent(name + ".psd")))
+        await transport.set(try Data(contentsOf: root.appendingPathComponent(sourceName(name) + ".psd")))
         let expected = try PSDCodec.read(Data(contentsOf: root.appendingPathComponent(
           "\(referenceArchitecture ?? architecture)-\(name)-merged.psd")))
         var payload = body()

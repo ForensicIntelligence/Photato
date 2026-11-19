@@ -9,6 +9,23 @@ enum ClippingMaskRasterMerge {
     let opacity: Float
     let blendMode: BlendMode
     let copiesOpaqueSource: Bool
+    let mask: ClipMask?
+  }
+
+  private struct ClipMask {
+    let pixels: Surface
+    let bounds: IntRect
+    let properties: MaskProperties
+
+    func coverage(_ sample: Float, depth: PixelDepth) -> Float {
+      let value = properties.inverted ? 1 - sample : sample
+      return NormalLayerComposite.clippedMaskCoverage(value, density: properties.density, depth: depth)
+    }
+
+    func coverage(x: Int, y: Int, depth: PixelDepth) -> Float {
+      let raw = bounds.contains(x, y) ? pixels.pixel(x: x - bounds.x, y: y - bounds.y).r : properties.outside
+      return coverage(raw, depth: depth)
+    }
   }
 
   static func render(base: Layer, clips: [Layer], document: CraftDocument) throws -> Surface {
@@ -38,24 +55,28 @@ enum ClippingMaskRasterMerge {
       }
       return SRGBTransfer.linear(pixels.defaultPixel)
     }
-    func combine(_ backdrop: Pixel, _ sample: Pixel, clip: Clip) throws -> Pixel {
-      if !linear && clip.blendMode != .normal {
+    func combine(_ backdrop: Pixel, _ source: Pixel, clip: Clip, coverage: Float = 1) throws -> Pixel {
+      var sample = source
+      if clip.mask != nil {
+        if linear {
+          if coverage == 0 { return backdrop }
+          sample.a = RGB32NormalRenderer.scaleAlpha(sample.a, by: coverage, flushSubnormal: true)
+        } else {
+          sample.a = NormalLayerComposite.applyClippedPixelMask(coverage, to: sample.a, depth: depth)
+        }
+      }
+      if !linear {
         return try NormalLayerComposite.blendClippedInteger(backdrop: backdrop, source: sample,
           mode: clip.blendMode, opacity: clip.opacity, depth: depth)
       }
       let opaque = Pixel(backdrop.r, backdrop.g, backdrop.b, 1)
-      let result: Pixel
-      if linear {
-        let alpha = RGB32NormalRenderer.scaleAlpha(sample.a, by: clip.opacity,
-          flushSubnormal: clip.opacity != 1)
-        let b = clip.blendMode
-        let source = Pixel(b.channel(backdrop.r, sample.r), b.channel(backdrop.g, sample.g),
-          b.channel(backdrop.b, sample.b), alpha)
-        result = try RGB32NormalRenderer.blend(opaque, source,
-          opaque: true, copiesSource: clip.copiesOpaqueSource, forLayerOutput: true)
-      } else {
-        result = NormalLayerComposite.composite(backdrop: opaque, source: sample, opacity: clip.opacity, depth: depth)
-      }
+      let alpha = RGB32NormalRenderer.scaleAlpha(sample.a, by: clip.opacity,
+        flushSubnormal: clip.opacity != 1)
+      let b = clip.blendMode
+      let blended = Pixel(b.channel(backdrop.r, sample.r), b.channel(backdrop.g, sample.g),
+        b.channel(backdrop.b, sample.b), alpha)
+      let result = try RGB32NormalRenderer.blend(opaque, blended,
+        opaque: true, copiesSource: clip.copiesOpaqueSource, forLayerOutput: true)
       return Pixel(result.r, result.g, result.b, backdrop.a)
     }
     var backdrop = try implicit(basePixels)
@@ -69,13 +90,27 @@ enum ClippingMaskRasterMerge {
       let bounds = IntRect(x: layer.x - base.x, y: layer.y - base.y, width: pixels.width, height: pixels.height)
       let intersection = bounds.clipped(toWidth: size.width, height: size.height)
       guard intersection.width > 0 && intersection.height > 0 else { continue }
-      let copies = linear && layer.blendMode == .normal && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: pixels, in: document)
+      let mask = try prepareMask(layer, relativeTo: base)
+      let copies = linear && mask == nil && layer.blendMode == .normal
+        && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: pixels, in: document)
         ? try pixels.isOpaque() : false
       let source = Clip(pixels: pixels, bounds: bounds, opacity: layer.opacity,
-        blendMode: layer.blendMode, copiesOpaqueSource: copies)
+        blendMode: layer.blendMode, copiesOpaqueSource: copies, mask: mask)
       sources.append(source)
       if intersection == localBounds {
-        backdrop = try combine(backdrop, implicit(pixels), clip: source)
+        var coverage: Float = 1
+        if let mask {
+          let maskIntersection = mask.bounds.clipped(toWidth: size.width, height: size.height)
+          coverage = mask.coverage(mask.properties.outside, depth: depth)
+          let inBounds = mask.coverage(mask.pixels.defaultPixel.r, depth: depth)
+          if maskIntersection == localBounds {
+            coverage = inBounds
+          } else if coverage != inBounds {
+            rectangles.append(maskIntersection)
+          }
+          try appendTiles(mask.pixels, x: mask.bounds.x, y: mask.bounds.y)
+        }
+        backdrop = try combine(backdrop, implicit(pixels), clip: source, coverage: coverage)
         try appendTiles(pixels, x: bounds.x, y: bounds.y)
       } else {
         // The implicit clip can contribute everywhere inside its rectangle.
@@ -97,7 +132,8 @@ enum ClippingMaskRasterMerge {
           for clip in sources where clip.bounds.contains(x, y) {
             let cx = x - clip.bounds.x, cy = y - clip.bounds.y
             let foreground = linear ? clip.pixels.linearPixel(x: cx, y: cy) : clip.pixels.pixel(x: cx, y: cy)
-            sample = try combine(sample, foreground, clip: clip)
+            let coverage = clip.mask?.coverage(x: x, y: y, depth: depth) ?? 1
+            sample = try combine(sample, foreground, clip: clip, coverage: coverage)
           }
           if linear { patch.setLinearPixel(x: x - rect.x, y: y - rect.y, sample) }
           else { patch.setPixel(x: x - rect.x, y: y - rect.y, sample) }
@@ -106,6 +142,19 @@ enum ClippingMaskRasterMerge {
       try builder.append(patch, atX: rect.x, atY: rect.y)
     }
     return try builder.finish()
+  }
+
+  private static func prepareMask(_ layer: Layer, relativeTo base: Layer) throws -> ClipMask? {
+    let properties = layer.effectiveMaskProperties
+    guard let pixels = layer.mask, properties.enabled else { return nil }
+    let transform = layer.maskCoordinateTransform
+    guard let x = Int(exactly: transform.tx - Double(base.x)),
+      let y = Int(exactly: transform.ty - Double(base.y)),
+      x <= Int.max - pixels.width, y <= Int.max - pixels.height else {
+      throw CraftError.unsupported("The clip mask lies outside the supported coordinate range.")
+    }
+    return ClipMask(pixels: pixels, bounds: IntRect(x: x, y: y, width: pixels.width, height: pixels.height),
+      properties: properties)
   }
 
   static func renderAdjacent(lower: Layer, upper: Layer, depth: PixelDepth) throws

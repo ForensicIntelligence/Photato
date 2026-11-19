@@ -602,7 +602,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 581 | 2026-11-18 | [Merge and stamp adjacent clipped layers](#dev-step-581) |
 | 582 | 2026-11-18 | [Preserve independent clipping in merges and stamps](#dev-step-582) |
 | 583 | 2026-11-18 | [Add four clipped blend modes](#dev-step-583) |
+| 584 | 2026-11-19 | [Preserve pixel masks in clipping merges and stamps](#dev-step-584) |
 <!-- history-index:end -->
+
+<a id="dev-step-584"></a>
+
+## 2026-11-19 — Preserve pixel masks in clipping merges and stamps
+
+Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. Stamping into an existing layer also leaves the contributing clip mask editable. The saved files cover Merge Clipping Mask, Stamp Group, Merge Down and Stamp Down on the first clip. They include disabled masks, integer offsets, partial Density and partial layer opacity. A 300,000 × 300,000 maximum-size sparse test with a one-pixel translated mask allocates one output tile. [Adobe layer masks](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/add-layer-masks.html).
+
+The first 92 focused checks qualified ordinary mask coverage and integer Density. Adding partial layer opacity exposed 59 to 94 mismatched words in the tested RGB16 Normal clips. Promoting the opacity byte into the 16-bit working domain and applying it after mask coverage matched the new references, and all 93 focused checks passed. Float32 coverage at the 40 percent setting still differed in 276 of 1,089 samples with direct byte division. Multiplying by the rounded reciprocal of 255 matched the three development density planes and all twelve additional holdouts, for 53,967 exact coverage samples per architecture. The integration checks 119 saved outputs and PSD reopen per architecture, including the complex HDR Density examples.
+
+Prepared clipping and the sparse renderer share the new coverage path with the native editor, Photato HTTP and both local ActionJSON job routes. The final 8,757 build inputs passed 94 focused checks and 782 selected methods in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks.
+
+The installed Photoshop 27.2.0 reference app reports an ad-hoc signature. The comparisons use project-owned files saved through Photoshop scripting. Reproduction on an Adobe-signed installation remains open.
+
+Feather observations on owned files show separable, exactly representable taps at tested radii through 2 pixels. Larger tested tap sequences factor into combinations of uniform moving averages and still differ when evaluated as a single Float32 outer product. The radius schedule, filtering order and boundaries need independent confirmation. Transformed, feathered and adjacent contributing masks remain open. [Qualification](SOURCE_PUBLICATION_584.md).
 
 <a id="dev-step-583"></a>
 

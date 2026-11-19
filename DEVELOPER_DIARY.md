@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **583** · The 10 most recent entries, newest first.
+Source build **584** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 584 — Preserve pixel masks in clipping merges and stamps
+
+Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. The tests cover disabled masks, integer offsets, Density and partial clip opacity. Stamp Group and Stamp Down retain the contributing mask on its own layer.
+
+All 782 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. Feather on a contributing mask remains in development.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_584.md).
 
 ## 2026-11-18 — Step 583 — Add four clipped blend modes
 
@@ -75,11 +83,3 @@ Stamp Layers and Stamp Visible now skip large empty areas of a sparse document. 
 Both ActionJSON job routes matched saved Photoshop layer samples for tagged and untagged files. All 749 selected tests passed in all three build configurations. Both slices of the local universal archive passed their offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_575.md).
-
-## 2026-11-18 — Step 574 — Add Stamp Layers and Stamp Visible
-
-Stamp Layers combines selected artwork on a new layer. Stamp Visible does the same for visible artwork. Both preserve the original layers and can be undone in one step. Photato exposes the shortcuts in the Layer menu and supports the same operation in recorded Actions and through the API.
-
-The saved Photoshop references match at 8, 16 and 32 bits per channel. The test documents include locked layers, clipping, hidden layers and selections across different groups. All 745 selected tests passed in each of the three configurations. Both slices of the universal validation archive passed their offscreen workspace checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-574) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_574.md).

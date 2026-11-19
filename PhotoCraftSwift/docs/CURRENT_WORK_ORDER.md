@@ -1,3 +1,7 @@
+**Source checkpoint 584.** Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. [Qualification](SOURCE_PUBLICATION_584.md).
+
+Continue contributed pixel-mask Feather. Use saved impulse and non-uniform masks to check the radius schedule, boundary handling, and Float32 operation order. Adjacent masked clips and additional blend modes remain open.
+
 **Source checkpoint 583.** Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Qualification](SOURCE_PUBLICATION_583.md).
 
 Continue editable pixel masks on clipping merges and stamps. Check partial clip opacity across all three RGB depths and measure Float32 Density and Feather using the saved Photoshop files.
