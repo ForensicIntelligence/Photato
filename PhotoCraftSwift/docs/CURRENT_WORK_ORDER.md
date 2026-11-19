@@ -1,3 +1,7 @@
+**Source checkpoint 596.** Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. [Qualification](SOURCE_PUBLICATION_596.md).
+
+Use the remaining timing evidence to reduce wide filter arithmetic and cover broad whole-canvas mask execution. Qualify global opacity for large inverted paths and collect wider Photoshop edge and Smart Filter settings references.
+
 **Source checkpoint 595.** Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. [Qualification](SOURCE_PUBLICATION_595.md).
 
 Continue broad-mask full-canvas paging and accelerate the remaining Feather kernel work. Qualify global opacity proofs for large inverted and uniformly covered masks. Collect the remaining Photoshop vector and Smart Filter mask references.

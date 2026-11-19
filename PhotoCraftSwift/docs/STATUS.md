@@ -1,3 +1,5 @@
+**Source checkpoint 596.** Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. [Qualification](SOURCE_PUBLICATION_596.md).
+
 **Source checkpoint 595.** Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. [Qualification](SOURCE_PUBLICATION_595.md).
 
 **Source checkpoint 594.** The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. [Qualification](SOURCE_PUBLICATION_594.md).

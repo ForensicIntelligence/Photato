@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 596 — Reuse source bands during wide mask Feather
+
+Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. The 1,000 px vector viewport went from 1.343 s to 0.995 s on Apple Silicon. The oversize Smart Filter mask control went from 1.483 s to 0.862 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 595 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
+
+All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md).
+
 ## 2026-11-19 — Step 595 — Prepare vector-mask Feather around the viewport
 
 Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. On Apple Silicon, the 15 × 7 viewport through a 24,576 px mask at 1,000 px Feather took 8.506 s in build 594 and 1.367 s in build 595. The 250 px curved control took 6.063 s and 0.206 s.
@@ -757,14 +765,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:595 -->
+<!-- current-status-step:596 -->
 ## Current development status — 19 November 2026
 
-Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin.
+Wide Feather reuses source row bands for vector, pixel and Smart Filter masks.
 
-All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
+All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
 
-[Source checkpoint 595](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_595.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-595).
+[Source checkpoint 596](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-596).
 
 <!-- current-status:end -->
 

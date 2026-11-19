@@ -614,7 +614,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 593 | 2026-11-19 | [Bound vector mask Feather on large canvases](#dev-step-593) |
 | 594 | 2026-11-19 | [Match measured short vector-mask Feather responses](#dev-step-594) |
 | 595 | 2026-11-19 | [Prepare vector-mask Feather around the viewport](#dev-step-595) |
+| 596 | 2026-11-19 | [Reuse source bands during wide mask Feather](#dev-step-596) |
 <!-- history-index:end -->
+
+<a id="dev-step-596"></a>
+
+## 2026-11-19 — Reuse source bands during wide mask Feather
+
+The streamed stages previously reread the same file-backed tile rows as their input windows advanced. Four reusable bands hold up to 8 MiB of input Float32 samples per filter operation. The filter uses the same padded coordinates, window sizes, sum order and per-depth rounding.
+
+The new regression covers repeated reads, implicit bands, a partial last band and the width limit. The 1,000 px vector viewport went from 1.343 s to 0.995 s on Apple Silicon. The oversize Smart Filter mask control went from 1.483 s to 0.862 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 595 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
+
+All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal slices launched offscreen. Wide filter arithmetic and full-canvas runtime, physical platform testing, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_596.md).
 
 <a id="dev-step-595"></a>
 

@@ -1,0 +1,427 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "d165cfaa597f73427241d75a3c12f399cb343b93d0946efcc2acac693a22df82",
+    "binarySHA256": "b275e8b732764bbc40192e12fb97f3220d865ce1b5060b508ff934a582e13626",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 596,
+  "cache": {
+    "bands": 4,
+    "inputSampleUpperBoundMiB": 8,
+    "maximumSamplesPerBand": 524288
+  },
+  "comparison": {
+    "allWordsIdentical": true,
+    "configurations": {
+      "arm": {
+        "pixel-f32": {
+          "595": {
+            "medianSeconds": 0.311261875,
+            "seconds": [
+              0.308930334,
+              0.311261875,
+              0.316266125
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "596": {
+            "medianSeconds": 0.179265333,
+            "seconds": [
+              0.178564292,
+              0.180010583,
+              0.179265333
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "words": 105
+        },
+        "pixel-u16": {
+          "595": {
+            "medianSeconds": 0.3757815,
+            "seconds": [
+              0.378161416,
+              0.372524333,
+              0.3757815
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "596": {
+            "medianSeconds": 0.224440916,
+            "seconds": [
+              0.224440916,
+              0.223014042,
+              0.224636125
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "words": 105
+        },
+        "pixel-u8": {
+          "595": {
+            "medianSeconds": 0.352742292,
+            "seconds": [
+              0.353537125,
+              0.352742292,
+              0.352230625
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "596": {
+            "medianSeconds": 0.216418292,
+            "seconds": [
+              0.218098833,
+              0.216061584,
+              0.216418292
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "words": 105
+        },
+        "smart-filter": {
+          "595": {
+            "medianSeconds": 1.482722459,
+            "seconds": [
+              1.480927583,
+              1.482722459,
+              1.485727042
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "596": {
+            "medianSeconds": 0.862414667,
+            "seconds": [
+              0.866144,
+              0.860929917,
+              0.862414667
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "words": 420
+        },
+        "vector-1000": {
+          "595": {
+            "medianSeconds": 1.342933583,
+            "seconds": [
+              1.335001208,
+              1.342933583,
+              1.361205167
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "596": {
+            "medianSeconds": 0.995452875,
+            "seconds": [
+              0.995452875,
+              0.997425208,
+              0.992417917
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "words": 105
+        },
+        "vector-2": {
+          "595": {
+            "medianSeconds": 0.019825625,
+            "seconds": [
+              0.019825625,
+              0.014860333,
+              0.019912792
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "596": {
+            "medianSeconds": 0.016328083,
+            "seconds": [
+              0.016328083,
+              0.016399792,
+              0.015297416
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "words": 105
+        },
+        "vector-250-curved": {
+          "595": {
+            "medianSeconds": 0.209920708,
+            "seconds": [
+              0.226951167,
+              0.209920708,
+              0.201303125
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "596": {
+            "medianSeconds": 0.174604416,
+            "seconds": [
+              0.171283166,
+              0.174604416,
+              0.184913
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "words": 105
+        },
+        "vector-250-inverted": {
+          "595": {
+            "medianSeconds": 0.2071895,
+            "seconds": [
+              0.2071895,
+              0.208478958,
+              0.205636958
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "596": {
+            "medianSeconds": 0.168464167,
+            "seconds": [
+              0.168464167,
+              0.176393167,
+              0.156672167
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "words": 105
+        }
+      },
+      "intel": {
+        "pixel-f32": {
+          "595": {
+            "medianSeconds": 0.376483333,
+            "seconds": [
+              0.376483333,
+              0.36952825,
+              0.565437584
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "596": {
+            "medianSeconds": 0.211310083,
+            "seconds": [
+              0.211310083,
+              0.207632292,
+              0.291965541
+            ],
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae"
+          },
+          "words": 105
+        },
+        "pixel-u16": {
+          "595": {
+            "medianSeconds": 0.511781625,
+            "seconds": [
+              0.534724833,
+              0.507937958,
+              0.511781625
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "596": {
+            "medianSeconds": 0.309271792,
+            "seconds": [
+              0.301578375,
+              0.309271792,
+              0.309852917
+            ],
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d"
+          },
+          "words": 105
+        },
+        "pixel-u8": {
+          "595": {
+            "medianSeconds": 0.455745666,
+            "seconds": [
+              0.457734833,
+              0.447486,
+              0.455745666
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "596": {
+            "medianSeconds": 0.269899666,
+            "seconds": [
+              0.269899666,
+              0.269388417,
+              0.270062375
+            ],
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a"
+          },
+          "words": 105
+        },
+        "smart-filter": {
+          "595": {
+            "medianSeconds": 3.6606755,
+            "seconds": [
+              3.6606755,
+              3.6994695,
+              1.703102792
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "596": {
+            "medianSeconds": 1.385207334,
+            "seconds": [
+              2.1792175,
+              1.385207334,
+              0.956975958
+            ],
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab"
+          },
+          "words": 420
+        },
+        "vector-1000": {
+          "595": {
+            "medianSeconds": 1.986667541,
+            "seconds": [
+              1.986667541,
+              2.029042875,
+              1.981703834
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "596": {
+            "medianSeconds": 1.516022416,
+            "seconds": [
+              1.491719666,
+              1.519434916,
+              1.516022416
+            ],
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "words": 105
+        },
+        "vector-2": {
+          "595": {
+            "medianSeconds": 0.01952025,
+            "seconds": [
+              0.02401925,
+              0.01952025,
+              0.017257708
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "596": {
+            "medianSeconds": 0.0194265,
+            "seconds": [
+              0.0194265,
+              0.017301375,
+              0.021578625
+            ],
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "words": 105
+        },
+        "vector-250-curved": {
+          "595": {
+            "medianSeconds": 0.295771584,
+            "seconds": [
+              0.318773084,
+              0.295771584,
+              0.292231667
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "596": {
+            "medianSeconds": 0.251123459,
+            "seconds": [
+              0.2576175,
+              0.248485875,
+              0.251123459
+            ],
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "words": 105
+        },
+        "vector-250-inverted": {
+          "595": {
+            "medianSeconds": 0.30883725,
+            "seconds": [
+              0.313100292,
+              0.298968916,
+              0.30883725
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "596": {
+            "medianSeconds": 0.237863,
+            "seconds": [
+              0.240210833,
+              0.231821958,
+              0.237863
+            ],
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "words": 105
+        }
+      }
+    },
+    "host": "27.2",
+    "timing": "Median of three alternating build runs on the same Apple Silicon host while separate qualification was active. Intel used Rosetta.",
+    "wordsPerArchitecture": 1155
+  },
+  "expectedCasesSHA256": "6d017e40b62d6c6577a19295d9d7e7132e63840bc69f8aad07998e3aeb8871c0",
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122083,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Broad whole-canvas runtime",
+    "Wide filter arithmetic and interactive frame pacing",
+    "Complete Photoshop byte parity",
+    "Physical Intel and macOS 14"
+  ],
+  "qualification": {
+    "arm": {
+      "appSHA256": "45cafe21ae8d2969051e8b7bdbfbdf575b368fd0b5c274586e22ff14946b8371",
+      "testBinarySHA256": "ac3144e787b7fff46dc9472335daf02809e1638b923da9986081c0d5fab736d8"
+    },
+    "debug": {
+      "appSHA256": "763781c2ebb65ca65c99049f91be2d04c4648db7cdbea468748d66428b857eb0",
+      "testBinarySHA256": "c431f196ae8ff64391bf0b9e41628117b8f5226b62fd39e7dc910387bef544bd"
+    },
+    "intel": {
+      "appSHA256": "548aaf9203c4cdfe66012902e60e2791f3588fd0b2708eadf33b2739ef793540",
+      "testBinarySHA256": "e40f91fe634560241800fbc427cb207ffa3f78a01e4e2d7ce4d24c061e215ca4"
+    }
+  },
+  "references": [
+    "../Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/references.json"
+  ],
+  "selectedChecksPerConfiguration": 908,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince595": [
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "133cc2fb6a971e4038dc43e7693e1b006cbbc9ad8e62915f70cc5ea37a7e1274"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/LayerMaskTests.swift",
+      "sha256": "a5f5a80b79cb9f1e78fa0edb7ef49887ba1c4d01e505fcb04256238b78b1e9ad"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "8cd57807bb79528c9cdced03c7940b69c65ee8eb94640654c5eb1b6e61f205e0"
+    }
+  ]
+}

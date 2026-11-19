@@ -182,14 +182,20 @@ struct AreaMaskFeather: Sendable {
     let stageImplicit = stageSample(implicit)
 
     func inputRow(stored: [Float]?, offset: Int) -> [Float] {
-      var values = [Float](repeating: stageOutside, count: w)
       let leading = read.x == bounds.x && extendEdges ? stored?[offset] ?? stageImplicit : stageOutside
       let trailing = read.x + read.width - 1 == boundRight && extendEdges
         ? stored?[offset + read.width - 1] ?? stageImplicit : stageOutside
       let start = max(0, read.x - inputX), end = min(w, read.x + read.width - inputX)
-      for x in 0..<start { values[x] = leading }
-      for x in start..<end { values[x] = stored?[offset + inputX + x - read.x] ?? stageImplicit }
-      for x in end..<w { values[x] = trailing }
+      var values: [Float] = []
+      values.reserveCapacity(w)
+      values.append(contentsOf: repeatElement(leading, count: start))
+      if let stored {
+        let first = offset + inputX + start - read.x
+        values.append(contentsOf: stored[first..<first + end - start])
+      } else {
+        values.append(contentsOf: repeatElement(stageImplicit, count: end - start))
+      }
+      values.append(contentsOf: repeatElement(trailing, count: w - end))
       return values
     }
 
@@ -198,12 +204,14 @@ struct AreaMaskFeather: Sendable {
       return extendEdges ? min(boundBottom, max(bounds.y, y)) : y
     }
     if streamed {
+      var bands = FeatherInputBands(region: read)
+      let outsideRow = [Float](repeating: stageOutside, count: w)
       let filtered = StreamingAreaFeather.filter(width: w, height: h, widths: widths,
         integerSamples: integerDepth != nil) { row in
         let sy = sourceY(row)
-        guard sy >= read.y, sy < read.y + read.height else { return [Float](repeating: stageOutside, count: w) }
-        let line = IntRect(x: read.x, y: sy, width: read.width, height: 1)
-        return inputRow(stored: storedSamples(in: line), offset: 0)
+        guard sy >= read.y, sy < read.y + read.height else { return outsideRow }
+        let (samples, offset) = bands.samples(for: sy, load: storedSamples)
+        return inputRow(stored: samples, offset: offset)
       }
       guard let filtered else { return nil }
       return outputSamples(filtered)
@@ -319,5 +327,39 @@ struct AreaMaskFeather: Sendable {
       }
     }
     return result
+  }
+}
+
+/// The streamed stages replay up to four source rows at different offsets.
+/// Read them in bands so adjacent rows can share file-backed tile decoding.
+struct FeatherInputBands {
+  private struct Band {
+    let top: Int
+    let samples: [Float]?
+  }
+
+  private let region: IntRect
+  private let bandHeight: Int
+  private let capacity = 4
+  private var bands: [Band] = []
+
+  init(region: IntRect) {
+    self.region = region
+    // At most two MiB of Float32 samples per band, including wide canvases.
+    bandHeight = min(Surface.tileSide, max(1, 524_288 / region.width))
+  }
+
+  mutating func samples(for row: Int, load: (IntRect) -> [Float]?) -> ([Float]?, Int) {
+    let top = region.y + ((row - region.y) / bandHeight) * bandHeight
+    let band: Band
+    if let index = bands.firstIndex(where: { $0.top == top }) {
+      band = bands.remove(at: index)
+    } else {
+      if bands.count == capacity { bands.removeFirst() }
+      let height = min(bandHeight, region.y + region.height - top)
+      band = Band(top: top, samples: load(IntRect(x: region.x, y: top, width: region.width, height: height)))
+    }
+    bands.append(band)
+    return (band.samples, (row - top) * region.width)
   }
 }

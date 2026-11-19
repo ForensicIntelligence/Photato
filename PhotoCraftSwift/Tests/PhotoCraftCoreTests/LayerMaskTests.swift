@@ -4,6 +4,39 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class LayerMaskTests: XCTestCase {
+  func testFeatherInputBandsRetainReplayRowsAndImplicitBands() throws {
+    let region = IntRect(x: 27, y: 17, width: 171, height: 258)
+    var bands = FeatherInputBands(region: region)
+    var reads: [IntRect] = []
+    for y in [17, 18, 81, 100, 145, 156, 209, 208, 81, 274, 17] {
+      let (values, offset) = bands.samples(for: y) { band in
+        reads.append(band)
+        if band.y == 81 { return nil }
+        return (band.y..<band.y + band.height).flatMap { row in
+          (0..<band.width).map { Float(row * 256 + $0) }
+        }
+      }
+      if (81..<145).contains(y) {
+        XCTAssertNil(values)
+      } else {
+        let values = try XCTUnwrap(values)
+        XCTAssertEqual(values[offset], Float(y * 256))
+        XCTAssertEqual(values[offset + region.width - 1], Float(y * 256 + region.width - 1))
+      }
+    }
+    XCTAssertEqual(reads.map(\.y), [17, 81, 145, 209, 273, 17])
+    XCTAssertEqual(reads.map(\.height), [64, 64, 64, 64, 2, 64])
+    XCTAssertTrue(reads.allSatisfy { $0.x == region.x && $0.width == region.width })
+
+    let maximum = IntRect(x: 0, y: 0, width: Surface.maxDimension, height: 600)
+    var maximumBands = FeatherInputBands(region: maximum)
+    _ = maximumBands.samples(for: 220) { band in
+      XCTAssertEqual(band.height, 1)
+      XCTAssertEqual(band.width, maximum.width)
+      return nil
+    }
+  }
+
   func layer() throws -> Layer {
     var l = Layer(name: "Masked", content: .raster(try Surface(width: 12, height: 8, fill: .white)))
     l.x = 5

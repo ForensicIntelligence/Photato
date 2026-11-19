@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **595** · The 10 most recent entries, newest first.
+Source build **596** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 596 — Reuse source bands during wide mask Feather
+
+Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. The 1,000 px vector viewport went from 1.343 s to 0.995 s on Apple Silicon. The oversize Smart Filter mask control went from 1.483 s to 0.862 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 595 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
+
+All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md).
 
 ## 2026-11-19 — Step 595 — Prepare vector-mask Feather around the viewport
 
@@ -75,11 +83,3 @@ Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radi
 Photoshop's 250 and 1,000 px textured controls also match the model. The current app range is 100 px. Fractional radii, a few Intel rounding cases, and the wider control are still in development.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md).
-
-## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
-
-Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. Existing Feather output is preserved across the tested depths and transforms. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
-
-Separate Photoshop tests reproduced the saved 100, 250 and 1,000 px line samples. The two-dimensional Intel results still need investigation before widening the control.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md).
