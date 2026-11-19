@@ -12,6 +12,7 @@ struct VectorFeatherCoverage: Sendable {
   let support: [IntRect]
   let maximumResidentBytes: Int
   let transferredInputPixels: Int
+  let prefersUniformTiles: Bool
 
   var isIdentity: Bool { density == 0 || (!isRegionLimited && plane.isConstantOutside && adjustedOutside == 1) }
   var adjustedOutside: Float { adjusted(plane.implicitInterior) }
@@ -52,6 +53,7 @@ struct VectorFeatherCoverage: Sendable {
       transferredInputPixels = 0
       hasSamples = local.width > 0 && local.height > 0
       rawSupport = nil
+      prefersUniformTiles = false
     } else {
       let pieces = try Self.preparePieces(contours, mask: mask, region: region, padding: pad,
         fill: fill, window: window)
@@ -60,6 +62,7 @@ struct VectorFeatherCoverage: Sendable {
       transferredInputPixels = pieces.transferredPixels
       hasSamples = !pieces.samples.isEmpty
       rawSupport = pieces.rawSupport
+      prefersUniformTiles = window == nil && pieces.solidTiles >= 256
     }
     plane = FeatheredMask(vectorPlane: source, radius: mask.feather, outside: outside)
     maximumResidentBytes = residentBytes + plane.maximumResidentBytes
@@ -86,6 +89,13 @@ struct VectorFeatherCoverage: Sendable {
   func coverage(x: Double, y: Double) -> Float {
     if density == 0 { return 1 }
     return adjusted(plane.sampleInSource(x: x + Double(padding), y: y + Double(padding)))
+  }
+
+  func constantCoverage(in region: IntRect) -> Float? {
+    if density == 0 { return 1 }
+    guard !isRegionLimited else { return nil }
+    let padded = IntRect(x: region.x + padding, y: region.y + padding, width: region.width, height: region.height)
+    return plane.constantVectorCoverage(in: padded).map(adjusted)
   }
 
   func rectangleIsUnit(width: Int, height: Int) throws -> Bool? {
@@ -199,7 +209,8 @@ struct VectorFeatherCoverage: Sendable {
 
   private static func preparePieces(_ contours: [IntRect], mask: VectorMask,
     region: VectorPathGeometry.FilledRegion, padding: Int, fill: Pixel, window: IntRect?
-  ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int, transferredPixels: Int, rawSupport: [IntRect]?) {
+  ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int, transferredPixels: Int,
+    rawSupport: [IntRect]?, solidTiles: Int) {
     let block = FeatherSamplePlane.vectorPieceSide
     struct Cell: Hashable {
       let column: Int
@@ -230,7 +241,7 @@ struct VectorFeatherCoverage: Sendable {
       ? VectorPieceCoverage(region.path, blockSide: block) : nil
     var samples: [FeatherSamplePlane.Piece] = []
     var rawSupport = window == nil ? RawSupport() : nil
-    var bytes = 0, transferredPixels = 0
+    var bytes = 0, transferredPixels = 0, solidTiles = 0
     for rect in cells.values.sorted(by: { ($0.y, $0.x) < ($1.y, $1.x) }) {
       try Task.checkCancellation()
       let entire = IntRect(x: 0, y: 0, width: rect.width, height: rect.height)
@@ -250,6 +261,7 @@ struct VectorFeatherCoverage: Sendable {
         ? IntRect(x: rect.x + scope.x, y: rect.y + scope.y, width: scope.width, height: scope.height)
         : rect
       var surface = try Surface(width: sampleRect.width, height: sampleRect.height, fill: fill)
+      var binaryTiles: FeatherBinaryTiles?
       if inside == true || (mask.path.components.first?.operation != .subtract &&
         VectorRasterizer.coversCanvasRectangle(mask.path, width: rect.width, height: rect.height, origin: origin)
       ) {
@@ -257,11 +269,15 @@ struct VectorFeatherCoverage: Sendable {
         surface = try Surface(width: sampleRect.width, height: sampleRect.height, fill: Pixel(value, value, value))
       } else if rect.width * rect.height > 1_048_576 {
         surface = try VectorRasterizer.pagedCoverage(region, template: surface, origin: origin,
-          window: scope == entire ? nil : scope, clipRectangle: rectangle, compactTransfer: window == nil)
+          window: scope == entire ? nil : scope, clipRectangle: rectangle, compactTransfer: window == nil,
+          binaryTiles: window == nil ? { binaryTiles = $0 } : nil)
         transferredPixels += scope.width * scope.height
       } else {
         let raw = try VectorRasterizer.coverageBytes(region, width: rect.width, height: rect.height,
           origin: origin)
+        if window == nil && fill.r == outside {
+          binaryTiles = try VectorRasterizer.binaryCoverageTiles(raw, width: rect.width, height: rect.height)
+        }
         for y in 0..<rect.height {
           try Task.checkCancellation()
           for x in 0..<rect.width {
@@ -272,12 +288,18 @@ struct VectorFeatherCoverage: Sendable {
         transferredPixels += rect.width * rect.height
       }
       if surface.tileCount != 0 || surface.defaultPixel.r != fill.r {
-        samples.append(.init(x: sampleRect.x, y: sampleRect.y, samples: surface))
+        samples.append(.init(x: sampleRect.x, y: sampleRect.y, samples: surface, binaryTiles: binaryTiles))
         bytes += surface.allocatedBytes
+        if let binaryTiles {
+          solidTiles += binaryTiles.tiles(with: 1 - outside)
+          bytes += binaryTiles.residentBytes
+        } else if surface.tileCount == 0 {
+          solidTiles += (surface.width / Surface.tileSide) * (surface.height / Surface.tileSide)
+        }
         if try rawSupport?.record(surface, at: sampleRect, outside: fill.r) == false { rawSupport = nil }
       }
     }
-    return (samples, bytes, transferredPixels, rawSupport?.rectangles)
+    return (samples, bytes, transferredPixels, rawSupport?.rectangles, solidTiles)
   }
 }
 

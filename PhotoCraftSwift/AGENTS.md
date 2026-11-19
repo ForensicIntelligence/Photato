@@ -1,3 +1,5 @@
+**Source checkpoint 603.** Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical. [Qualification](docs/SOURCE_PUBLICATION_603.md).
+
 **Source checkpoint 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Qualification](docs/SOURCE_PUBLICATION_602.md).
 
 **Source checkpoint 601.** Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work. [Qualification](docs/SOURCE_PUBLICATION_601.md).
@@ -375,6 +377,8 @@ The maintainer requires every development step to be documented from the initial
 Keep `docs/DEVLOG.md` current as work proceeds, including investigation, decisions and rejected approaches, source/file changes, test commands and their outcomes, failed attempts and repairs, reference provenance, live UI checks, and remaining limitations. Record each meaningful step, not just successful milestones or the final answer. Finish the record before ending a work session.
 
 Record every meaningful addition, modification, deletion, rename, rollback and replacement, including code, tests, assets, configuration, documentation and API changes. Related edits may share an entry, but identify affected paths/modules, the before/after behavior, reason, validation and unresolved effects. Explicitly name deleted or withdrawn items and any replacement; preserve their prior evidence instead of silently erasing the history. Do not claim an exhaustive historical edit record where evidence is missing.
+
+Keep the developer diary and archive links above the checkpoint notes in the native README.
 
 Maintain `docs/DEVELOPMENT_DIARY.md` as the human-readable chronological companion to DEVLOG. Update its milestone index and material narrative at each completed checkpoint; keep ongoing detailed notes in DEVLOG. Clearly distinguish completed, experimental, failed and in-progress work, and date retrospective reconstructions. The diary is documentation, not a substitute for source control or proof of Photoshop parity.
 

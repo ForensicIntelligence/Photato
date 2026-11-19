@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_602.md).
+**Development alpha — source build 603.** Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md).
 
 ## Project layout
 

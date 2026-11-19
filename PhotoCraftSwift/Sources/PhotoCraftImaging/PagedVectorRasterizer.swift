@@ -73,7 +73,8 @@ extension VectorRasterizer {
   static func pagedCoverage(_ region: VectorPathGeometry.FilledRegion, template empty: Surface,
     origin: PathPoint, antiAlias: Bool = true,
     maximumScratchPreparedBytes: Int = Surface.maxPixels + Surface.maxDimension,
-    window: IntRect? = nil, clipRectangle: Bool = false, compactTransfer: Bool = false
+    window: IntRect? = nil, clipRectangle: Bool = false, compactTransfer: Bool = false,
+    binaryTiles: ((FeatherBinaryTiles) -> Void)? = nil
   ) throws -> Surface {
     let width = empty.width, height = empty.height, outside = empty.defaultPixel.r
     let outline=region.path,bounds=outline.boundingBoxOfPath
@@ -120,7 +121,7 @@ extension VectorRasterizer {
       // Keep the same Core Graphics context, origin, clip and Gray8 bytes.
       return try withExtendedLifetime(backing) {
         try compactGrayTransfer(bytes, template: empty, inverted: region.inverted,
-          bounds: IntRect(x: left, y: top, width: right-left, height: bottom-top))
+          bounds: IntRect(x: left, y: top, width: right-left, height: bottom-top), binaryTiles: binaryTiles)
       }
     }
     let builder=try Surface.PagedBuilder(template:empty)
@@ -138,7 +139,7 @@ extension VectorRasterizer {
   }
 
   private static func compactGrayTransfer(_ bytes: UnsafePointer<UInt8>, template: Surface, inverted: Bool,
-    bounds: IntRect
+    bounds: IntRect, binaryTiles: ((FeatherBinaryTiles) -> Void)?
   ) throws -> Surface {
     let width = template.width, height = template.height, side = Surface.tileSide
     if bounds == IntRect(x: 0, y: 0, width: width, height: height), bytes[0] == 0 || bytes[0] == 255 {
@@ -161,6 +162,10 @@ extension VectorRasterizer {
     let full = [UInt8](repeating: 255, count: side)
     var solid: [Int: Surface.PagedBuilder.PreparedTile] = [:]
     let other: Float = inverted ? 0 : 1
+    let columns = (width + side - 1) / side, rows = (height + side - 1) / side
+    var classification: [UInt8]? = binaryTiles.map { _ in
+      [UInt8](repeating: inverted ? 1 : 0, count: columns * rows)
+    }
     for y in stride(from: bounds.y, to: bounds.y + bounds.height, by: side) {
       try Task.checkCancellation()
       let h = min(side, height - y)
@@ -173,6 +178,7 @@ extension VectorRasterizer {
           }
           if uniform {
             if first == 0 { continue }
+            classification?[(y / side) * columns + x / side] = inverted ? 0 : 1
             let key = w * (side + 1) + h
             let tile: Surface.PagedBuilder.PreparedTile
             if let saved = solid[key] {
@@ -187,6 +193,7 @@ extension VectorRasterizer {
             continue
           }
         }
+        classification?[(y / side) * columns + x / side] = 2
         var patch = try Surface(width: w, height: h, depth: template.depth,
           fill: template.defaultPixel, colorEncoding: template.colorEncoding)
         for row in 0..<h {
@@ -201,8 +208,38 @@ extension VectorRasterizer {
         try builder.append(patch, atX: x, atY: y)
       }
     }
+    if let classification {
+      binaryTiles?(FeatherBinaryTiles(columns: columns, rows: rows, values: classification))
+    }
     return try builder.finish()
   }
+
+  /// Small pieces already have a contiguous Gray8 buffer in mask polarity.
+  static func binaryCoverageTiles(_ bytes: [UInt8], width: Int, height: Int) throws -> FeatherBinaryTiles {
+    let side = Surface.tileSide
+    let columns = (width + side - 1) / side, rows = (height + side - 1) / side
+    let zero = [UInt8](repeating: 0, count: side)
+    let full = [UInt8](repeating: 255, count: side)
+    var kinds = [UInt8]()
+    kinds.reserveCapacity(columns * rows)
+    try bytes.withUnsafeBufferPointer { samples in
+      for y in stride(from: 0, to: height, by: side) {
+        try Task.checkCancellation()
+        let h = min(side, height - y)
+        for x in stride(from: 0, to: width, by: side) {
+          let w = min(side, width - x)
+          let raw = samples.baseAddress! + y * width + x, first = raw[0]
+          guard first == 0 || first == 255 else { kinds.append(2); continue }
+          let uniform = (first == 0 ? zero : full).withUnsafeBytes { pattern in
+            (0..<h).allSatisfy { memcmp(raw + $0 * width, pattern.baseAddress!, w) == 0 }
+          }
+          kinds.append(uniform ? (first == 0 ? 0 : 1) : 2)
+        }
+      }
+    }
+    return FeatherBinaryTiles(columns: columns, rows: rows, values: kinds)
+  }
+
   static func coversCanvasRectangle(_ path:VectorPath,width:Int,height:Int,origin:PathPoint)->Bool {
     guard let rect = axisAlignedRectangle(path) else { return false }
     return rect.minX <= origin.x && rect.minY <= origin.y

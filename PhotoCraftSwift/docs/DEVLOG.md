@@ -621,7 +621,38 @@ For a readable account of the project from the beginning, see [Photato developme
 | 600 | 2026-11-19 | [Prove RGB32 raster-base opacity with rectangular Feather](#dev-step-600) |
 | 601 | 2026-11-19 | [Render sparse curved Feather from stored coverage](#dev-step-601) |
 | 602 | 2026-11-19 | [Skip solid pieces of dense feathered vector masks](#dev-step-602) |
+| 603 | 2026-11-19 | [Reuse exact composited tiles under solid vector Feather](#dev-step-603) |
 <!-- history-index:end -->
+
+<a id="dev-step-603"></a>
+
+## 2026-11-19 — Reuse exact composited tiles under solid vector Feather
+
+The build 602 preparation path still let the compositor redraw the complete interior of a large feathered vector mask. A representative-tile probe on build 601 matched 31,902,720 component words on each architecture across short normal and wide inverted controls at RGB8, RGB16 and RGB32. Its source and output are in `artifacts/603-uniform-vector-composite/representative-probe01`. [Adobe Photoshop catalogue](https://www.adobe.com/products/photoshop/features/all.html).
+
+`PagedVectorRasterizer` records which actual Gray8 tiles are all zero or all one as it transfers mixed pieces. `FeatheredMask` keeps bounded per-piece prefix counts for exact footprint queries. The short Gaussian uses the output sample support. Wide Feather includes the complete cache tile so rolling sums see the same input. `VectorFeatherCoverage` and `LayerMaskSampler` expose the exact composed density for that region. `CompositionFacts` can use the same proof when checking global opacity and still checks the ordinary samples when it cannot prove a constant.
+
+`PagedCanvasRenderer` retains the current ordered pointwise support and considers all feathered layers. A run with constant coverage and no stored source or mask tiles can reuse a representative rendered by the ordinary compositor. It tests the coverage words and tile dimensions, and keeps the original disjoint run order. Changed raster data, pixel mask tiles and mixed Feather keep the ordinary renderer. The acceleration is reserved for masks with a meaningful number of solid tiles, and the tile and mask caches stay bounded.
+
+The new regressions check the exact filtered words inside mixed Gray8 pieces for both polarities and two kernel widths, then check whole-canvas reuse across fractional vector edges, Boolean holes, partial tiles and stored raster and pixel-mask samples. Source01 and its broad qualification are recorded in `artifacts/603-uniform-vector-composite/qualification01`.
+
+Source01 rendered the complete 300,000 × 300,000 rounded-mask control on both architectures. All eight cropped outputs matched build 602 viewports. Two focused checks still failed. The ordinary narrow-buffer raster branch did not produce binary tile counts, and a short solid fixture stayed at 38 rendered patches. The direct wide proof also requested more of the native cache than could contribute to its output and returned no proof near a curve. The logs and interruption record remain in `artifacts/603-uniform-vector-composite/qualification01` and `artifacts/603-uniform-vector-composite/focused-debug01.log`.
+
+Source02 adds binary classification of the existing small Gray8 buffers. Its wide proof includes the cache prefix through the requested sample's last input position. Later samples do not enter the streaming sums for the requested outputs. The wide fixture checks a solid window starting within one cache tile and still checks the neighboring Boolean edge separately. The repaired run is frozen under `artifacts/603-uniform-vector-composite/qualification02`. The installed Photoshop document-count request returned AppleEvent error −1712. No fresh reference was saved.
+
+The four focused Debug tests passed. Complete output comparisons used the optimized binary objects from each frozen source. Independent fixture source and receipts are in `artifacts/603-uniform-vector-composite/render-comparisons`.
+
+All 307,518,180 RGBA words in four complete renders matched build 602 on each architecture. The controls cover RGB8, RGB16, and RGB32, both mask polarities, 2 px and 110.25 px Feather, a clipped raster stack inside a group, and altered raster and pixel mask tiles.
+
+The 300,000 × 75 control went from 39 rendered patches to 15. The RGB16 wide-Feather control went from 156 to 111.
+
+The full 300,000 × 300,000 rounded-mask control completed in 6.47 s on Apple Silicon and 13.10 s under Rosetta, with 28 rendered patches. The maximum-size ellipse completed in 64.16 s on Apple Silicon and 113.97 s under Rosetta, with 9,804 rendered patches. The rounded mask at 110.25 px Feather completed in 110.45 s on Apple Silicon and 171.10 s under Rosetta, with 5,632 rendered patches. Across the three composites, all 745,024 RGBA words in 26 sampled regions matched build 602 viewports on each architecture. These are single runs on the same Mac. [Adobe PSB dimensions](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html).
+
+All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum.
+
+The installed Photoshop app returned an AppleEvent timeout on a read-only document count. Fresh Photoshop samples, practical wide Feather on maximum-size ellipses, physical Intel and macOS 14 runtime, large-file export at the maximum dimensions and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_603.md).
+
+The public diary verifier caught the older checkpoint notes pushing both links below the top of the native README. The links now open the native README above the checkpoint notes. The source hashes and validated package were verified before this documentation repair.
 
 <a id="dev-step-602"></a>
 

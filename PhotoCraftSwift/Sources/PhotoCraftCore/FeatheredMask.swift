@@ -1,6 +1,50 @@
 import Foundation
 import os
 
+/// Counts binary Gray8 tiles over a piece. Mixed tiles are deliberately unknown.
+package struct FeatherBinaryTiles: Sendable {
+  private let stride: Int
+  private let zeros: [UInt16]
+  private let ones: [UInt16]
+
+  package var residentBytes: Int { (zeros.count + ones.count) * MemoryLayout<UInt16>.stride }
+
+  package func tiles(with sample: Float) -> Int { Int((sample == 0 ? zeros : ones).last ?? 0) }
+
+  package init(columns: Int, rows: Int, values: [UInt8]) {
+    precondition(values.count == columns * rows && values.count <= Int(UInt16.max))
+    stride = columns + 1
+    func prefix(for sample: UInt8) -> [UInt16] {
+      var prefix = [UInt16](repeating: 0, count: (rows + 1) * (columns + 1))
+      for y in 0..<rows {
+        var count: UInt16 = 0
+        for x in 0..<columns {
+          if values[y * columns + x] == sample { count += 1 }
+          prefix[(y + 1) * (columns + 1) + x + 1] = prefix[y * (columns + 1) + x + 1] + count
+        }
+      }
+      return prefix
+    }
+    zeros = prefix(for: 0)
+    ones = prefix(for: 1)
+  }
+
+  func constant(in region: IntRect) -> Float? {
+    let side = Surface.tileSide
+    let left = region.x / side, top = region.y / side
+    let right = (region.x + region.width + side - 1) / side
+    let bottom = (region.y + region.height + side - 1) / side
+    let area = (right - left) * (bottom - top)
+    func count(_ table: [UInt16]) -> Int {
+      Int(table[bottom * stride + right]) + Int(table[top * stride + left])
+        - Int(table[bottom * stride + left]) - Int(table[top * stride + right])
+    }
+    if count(zeros) == area { return 0 }
+    if count(ones) == area { return 1 }
+    return nil
+  }
+}
+
 /// A scalar plane may be wider than an editable Surface when it includes a
 /// virtual border. Disjoint pieces retain their own sparse raster storage.
 package struct FeatherSamplePlane: Sendable {
@@ -10,16 +54,22 @@ package struct FeatherSamplePlane: Sendable {
     let x: Int
     let y: Int
     let samples: Surface
+    let binaryTiles: FeatherBinaryTiles?
 
-    package init(x: Int, y: Int, samples: Surface) {
+    package init(x: Int, y: Int, samples: Surface, binaryTiles: FeatherBinaryTiles? = nil) {
       self.x = x
       self.y = y
       self.samples = samples
+      self.binaryTiles = binaryTiles
     }
 
     func overlap(with region: IntRect) -> IntRect {
       IntRect(x: region.x - x, y: region.y - y, width: region.width, height: region.height)
         .clipped(toWidth: samples.width, height: samples.height)
+    }
+
+    func constant(in local: IntRect) -> Float? {
+      samples.tileCount == 0 ? samples.defaultPixel.r : binaryTiles?.constant(in: local)
     }
   }
 
@@ -64,23 +114,28 @@ package struct FeatherSamplePlane: Sendable {
     return grid == nil && rectangle == nil
   }
 
-  /// A complete footprint in equally filled implicit pieces has one sample.
+  /// A footprint can cross cells, but every contributing sample must agree.
   func constantFeatherSample(in region: IntRect) -> Float? {
-    guard let grid, let piece = grid.piece(atX: region.x, y: region.y),
-      piece.samples.tileCount == 0 else { return nil }
-    let value = piece.samples.defaultPixel.r
-    let overlap = piece.overlap(with: region)
-    if overlap.width == region.width && overlap.height == region.height { return value }
-    guard grid.crossesCellBoundary(region) else { return nil }
+    guard let grid else { return nil }
+    if !grid.crossesCellBoundary(region) {
+      guard let piece = grid.piece(atX: region.x, y: region.y) else { return implicit }
+      let part = piece.overlap(with: region)
+      if part.width == 0 || part.height == 0 { return implicit }
+      guard let value = piece.constant(in: part) else { return nil }
+      return value == implicit || (part.width == region.width && part.height == region.height) ? value : nil
+    }
     var covered = 0
+    var value: Float?
     for next in grid.overlapping(region, width: width, height: height) {
       let part = next.overlap(with: region)
       if part.width > 0 && part.height > 0 {
-        guard next.samples.tileCount == 0 && next.samples.defaultPixel.r == value else { return nil }
+        guard let sample = next.constant(in: part), value == nil || value == sample else { return nil }
+        value = sample
         covered += part.width * part.height
       }
     }
-    return covered == region.width * region.height ? value : nil
+    if covered == 0 { return implicit }
+    return covered == region.width * region.height || value == implicit ? value : nil
   }
 
   func hasFeatherSamples(in region: IntRect) -> Bool {
@@ -479,9 +534,7 @@ package final class FeatheredMask: Sendable {
     let right = min(source.width, inputRight), bottom = min(source.height, inputBottom)
     let box = IntRect(x: left, y: top, width: right - left, height: bottom - top)
     if box.width == inputWidth, box.height == inputHeight, let constant = source.constantFeatherSample(in: box) {
-      let horizontal = Self.weightedConstant(constant, weights: weights)
-      let vertical = Self.weightedConstant(horizontal, weights: weights)
-      return .uniform(Self.stored(vertical, outside: outside, threshold: storageThreshold))
+      return .uniform(filteredConstant(constant))
     }
     let input = source.featherInput(in: box)
     let clampLeft = edges.contains(.left), clampRight = edges.contains(.right)
@@ -535,5 +588,37 @@ package final class FeatheredMask: Sendable {
       }
     }
     return .samples(output, width: width)
+  }
+
+  private func filteredConstant(_ sample: Float) -> Float {
+    if area != nil { return sample }
+    let horizontal = Self.weightedConstant(sample, weights: weights)
+    return Self.stored(Self.weightedConstant(horizontal, weights: weights),
+      outside: outside, threshold: storageThreshold)
+  }
+
+  /// Exact at integer centers for a whole binary vector plane. Wide rolling
+  /// sums include the prefix from the start of each cache tile. Samples after
+  /// the last requested output and its support cannot enter those sums.
+  package func constantVectorCoverage(in region: IntRect) -> Float? {
+    guard region.width > 0 && region.height > 0, edges.isEmpty, source.implicit == outside else { return nil }
+    let side = cacheSide, pad = support
+    let x = region.x - origin.x, y = region.y - origin.y
+    let right = x + region.width, bottom = y + region.height
+    guard x >= 0, y >= 0, right <= width, bottom <= height else { return nil }
+    let left = (area == nil ? x : x / side * side) + origin.x - pad
+    let top = (area == nil ? y : y / side * side) + origin.y - pad
+    let endX = right + origin.x + pad
+    let endY = bottom + origin.y + pad
+    let footprint = IntRect(x: left, y: top, width: endX - left, height: endY - top)
+    let read = footprint.clipped(toWidth: source.width, height: source.height)
+    guard read.width > 0 && read.height > 0 else { return outside }
+    let fullyInside = read == footprint
+    if let sample = source.constantFeatherSample(in: read), fullyInside || sample == outside {
+      if fullyInside { return filteredConstant(sample) }
+      if implicitEqualsOutside { return outside }
+    }
+    if implicitEqualsOutside && !source.hasFeatherSamples(in: read) { return outside }
+    return nil
   }
 }

@@ -1,0 +1,1464 @@
+{
+  "build": 603,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince602": [
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "ba378048e6295fbc4821eebc4ba7e633ac483f4153c0d47f606772e7d6c5a794"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CompositionFacts.swift",
+      "sha256": "c37ed19e7587fda60d938ff3de5cdb624ae2382bee34248c71cc0635bf0b8b32"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "201f70f0d31459fb22cecbe4008b5ababa70b8d2b8cf3d78fd8257a77c3579f1"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedVectorRasterizer.swift",
+      "sha256": "411f32cf519ed15d86e87072ace6693be9a2ec45163ab0cd813c133a8359a029"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorFeatherCoverage.swift",
+      "sha256": "4992de42ec526194b20c0ffb3533755b6d91039f685790b69e04c5db45315bc4"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorRasterizer.swift",
+      "sha256": "9cf89606914ef9beaa7cb008b2827958cec9623c329b044c0b88a64f8ce5fb5c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/VectorRenderTests.swift",
+      "sha256": "5ec65b614254ac2e298b5b2720b33fbe895a042f247a5be8cbaed3a56317e153"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "cdc77c03c965b0221b1451134c0680645fb3a585b055f9cae480ba83403f78aa"
+    }
+  ],
+  "selectedChecksPerConfiguration": 922,
+  "focusedDebugPassed": 4,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "0b5159893fd13e9c5f21ea7b879a2bc3e09792d6e097a12b944631666a950a28",
+      "testBinarySHA256": "460f93b083a8bcd20b82cba0d656feed4a2e7aae7fc5c3795129086f0f4e8ff7",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "9e0670d7de87064b676d6ee8bebb180111a0642a251b9f07e99b7ba2d9321d01",
+      "testBinarySHA256": "9f9363c522d0e862a8671544aceeb65eef62e7e9c2e246579e364cb6ca04bb66",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "eb7c0205138589a519a309da9450320a51545d775740a5ebfee07c6c7a895066",
+      "testBinarySHA256": "cc0a557c3a8e85fc6988d204c2aec2d4dbf93214968b56fa77f9400eaf2b6298",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "3722f92ef730f76e32f8d48c6b744500ebaa4f9c4ae8842906eddd2bc0df14b8",
+    "binarySHA256": "b6e575a943b28a64e4956eacd1f9e1310bb14a2a14fa664afc30c4168b3b6ad3",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "bytes": 122083
+      }
+    }
+  },
+  "completeOutputControls": {
+    "arm": {
+      "short-raster": {
+        "build602": {
+          "case": "short-raster",
+          "height": 75,
+          "indexBytes": 18624,
+          "patches": 39,
+          "seconds": 1.363390625,
+          "sha256": "f44b3630808edda177f038cec6a28e05560e93a617581514a1c7f90430e8ce57",
+          "width": 300000,
+          "words": 90000000
+        },
+        "build603": {
+          "case": "short-raster",
+          "height": 75,
+          "indexBytes": 18624,
+          "patches": 15,
+          "seconds": 0.094321209,
+          "sha256": "f44b3630808edda177f038cec6a28e05560e93a617581514a1c7f90430e8ce57",
+          "width": 300000,
+          "words": 90000000
+        }
+      },
+      "wide-8": {
+        "build602": {
+          "case": "wide-8",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 156,
+          "seconds": 15.118246292,
+          "sha256": "c2b78e48e83a1065e0d32e0aae6b4231f530b58b714d91a588c4b695e9bcbcaa",
+          "width": 24595,
+          "words": 72506060
+        },
+        "build603": {
+          "case": "wide-8",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 111,
+          "seconds": 10.121674708,
+          "sha256": "c2b78e48e83a1065e0d32e0aae6b4231f530b58b714d91a588c4b695e9bcbcaa",
+          "width": 24595,
+          "words": 72506060
+        }
+      },
+      "wide-16": {
+        "build602": {
+          "case": "wide-16",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 156,
+          "seconds": 19.6599635,
+          "sha256": "f90e77f665dfbe7bf686081c0dffce2873cd03b17e4721fd6db14ce4ce096959",
+          "width": 24595,
+          "words": 72506060
+        },
+        "build603": {
+          "case": "wide-16",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 111,
+          "seconds": 10.0099925,
+          "sha256": "f90e77f665dfbe7bf686081c0dffce2873cd03b17e4721fd6db14ce4ce096959",
+          "width": 24595,
+          "words": 72506060
+        }
+      },
+      "wide-32-group": {
+        "build602": {
+          "case": "wide-32-group",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 156,
+          "seconds": 22.465569292,
+          "sha256": "6cc2ce5f2d0dffa9dbde56c191788348184eca91aa65288783bafeb9673683c8",
+          "width": 24595,
+          "words": 72506060
+        },
+        "build603": {
+          "case": "wide-32-group",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 111,
+          "seconds": 12.830487583,
+          "sha256": "6cc2ce5f2d0dffa9dbde56c191788348184eca91aa65288783bafeb9673683c8",
+          "width": 24595,
+          "words": 72506060
+        }
+      }
+    },
+    "intel": {
+      "short-raster": {
+        "build602": {
+          "case": "short-raster",
+          "height": 75,
+          "indexBytes": 18624,
+          "patches": 39,
+          "seconds": 2.893165667,
+          "sha256": "f44b3630808edda177f038cec6a28e05560e93a617581514a1c7f90430e8ce57",
+          "width": 300000,
+          "words": 90000000
+        },
+        "build603": {
+          "case": "short-raster",
+          "height": 75,
+          "indexBytes": 18624,
+          "patches": 15,
+          "seconds": 0.156679292,
+          "sha256": "f44b3630808edda177f038cec6a28e05560e93a617581514a1c7f90430e8ce57",
+          "width": 300000,
+          "words": 90000000
+        }
+      },
+      "wide-8": {
+        "build602": {
+          "case": "wide-8",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 156,
+          "seconds": 19.580080375,
+          "sha256": "c2b78e48e83a1065e0d32e0aae6b4231f530b58b714d91a588c4b695e9bcbcaa",
+          "width": 24595,
+          "words": 72506060
+        },
+        "build603": {
+          "case": "wide-8",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 111,
+          "seconds": 12.920649833,
+          "sha256": "c2b78e48e83a1065e0d32e0aae6b4231f530b58b714d91a588c4b695e9bcbcaa",
+          "width": 24595,
+          "words": 72506060
+        }
+      },
+      "wide-16": {
+        "build602": {
+          "case": "wide-16",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 156,
+          "seconds": 23.703821625,
+          "sha256": "f90e77f665dfbe7bf686081c0dffce2873cd03b17e4721fd6db14ce4ce096959",
+          "width": 24595,
+          "words": 72506060
+        },
+        "build603": {
+          "case": "wide-16",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 111,
+          "seconds": 12.66365575,
+          "sha256": "f90e77f665dfbe7bf686081c0dffce2873cd03b17e4721fd6db14ce4ce096959",
+          "width": 24595,
+          "words": 72506060
+        }
+      },
+      "wide-32-group": {
+        "build602": {
+          "case": "wide-32-group",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 156,
+          "seconds": 35.512011417,
+          "sha256": "6cc2ce5f2d0dffa9dbde56c191788348184eca91aa65288783bafeb9673683c8",
+          "width": 24595,
+          "words": 72506060
+        },
+        "build603": {
+          "case": "wide-32-group",
+          "height": 737,
+          "indexBytes": 73920,
+          "patches": 111,
+          "seconds": 23.033915959,
+          "sha256": "6cc2ce5f2d0dffa9dbde56c191788348184eca91aa65288783bafeb9673683c8",
+          "width": 24595,
+          "words": 72506060
+        }
+      }
+    }
+  },
+  "maximumCanvasControls": {
+    "arm": {
+      "rounded": {
+        "build602Viewport": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "0129310fa84408598aa451a0c64259b68657e92e840a897fd3668e3408d65475",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "c3d0b25d3f238daa5f70170ba0af8a191152bc4a76906113ea8dbd4817ab5257",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "viewport",
+          "patches": 0,
+          "seconds": 8.3e-08,
+          "tileIndexBytes": 0,
+          "tiles": 0
+        },
+        "build603Whole": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "0129310fa84408598aa451a0c64259b68657e92e840a897fd3668e3408d65475",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "c3d0b25d3f238daa5f70170ba0af8a191152bc4a76906113ea8dbd4817ab5257",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "whole",
+          "patches": 28,
+          "seconds": 6.474921333,
+          "tileIndexBytes": 351636448,
+          "tiles": 21977278
+        }
+      },
+      "ellipse": {
+        "build602Viewport": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1686,
+                152359,
+                97,
+                83
+              ],
+              "sha256": "af42dca82f4713454f2a479075b7230406fb05c3c039057153a5b45b763d194b",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148473,
+                9943,
+                97,
+                83
+              ],
+              "sha256": "bdc1a91b82b41975ceff9d4bbfaba514b0439c1b3a9139543386d0665cbae3bc",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "ea7f7c1e8847f6fc06e756671e7388127054c0717ebdc0d2b8bc212252dcb56c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                231412,
+                248467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                295262,
+                152349,
+                97,
+                83
+              ],
+              "sha256": "67e59ee6c3a4c8aa4acd02825230d021050178bab09dd627f0b28eac9bdb8521",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148503,
+                294731,
+                97,
+                83
+              ],
+              "sha256": "2861c9408766fd2829cafcb03b74a9300f3acbe2a6055e6934109bd82046c0f6",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "8fa38e8fd80720f8de82962ec3c0147b732ed72ea9d8ab6f939df5cbbce6f7ac",
+              "words": 1444
+            }
+          ],
+          "mode": "viewport",
+          "patches": 0,
+          "seconds": 1.67e-07,
+          "tileIndexBytes": 0,
+          "tiles": 0
+        },
+        "build603Whole": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1686,
+                152359,
+                97,
+                83
+              ],
+              "sha256": "af42dca82f4713454f2a479075b7230406fb05c3c039057153a5b45b763d194b",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148473,
+                9943,
+                97,
+                83
+              ],
+              "sha256": "bdc1a91b82b41975ceff9d4bbfaba514b0439c1b3a9139543386d0665cbae3bc",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "ea7f7c1e8847f6fc06e756671e7388127054c0717ebdc0d2b8bc212252dcb56c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                231412,
+                248467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                295262,
+                152349,
+                97,
+                83
+              ],
+              "sha256": "67e59ee6c3a4c8aa4acd02825230d021050178bab09dd627f0b28eac9bdb8521",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148503,
+                294731,
+                97,
+                83
+              ],
+              "sha256": "2861c9408766fd2829cafcb03b74a9300f3acbe2a6055e6934109bd82046c0f6",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "8fa38e8fd80720f8de82962ec3c0147b732ed72ea9d8ab6f939df5cbbce6f7ac",
+              "words": 1444
+            }
+          ],
+          "mode": "whole",
+          "patches": 9804,
+          "seconds": 64.160565,
+          "tileIndexBytes": 256888288,
+          "tiles": 16055518
+        }
+      },
+      "wide-rounded": {
+        "build602Viewport": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "a5fbcda482fa7883a80c1ae94ee34c129c778caf0d8a07f574c140f2667e2f64",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "0bba0657fa7b8e8f70608f030f02d500f36a850a856ffd5a415301de95cd3d21",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "1e49dcaea8219c12a015839b2849d7bdc74080512054e623a67669e62fa4eb1d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "ea7f8001b79df2908a70afacb75a405ce621787600928947689e152f0ebb2783",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "663eb4de5022f12c175bb74e5e55ac0e92eae3d984ac75c61183e5cb41816d42",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "viewport",
+          "patches": 0,
+          "seconds": 2.92e-07,
+          "tileIndexBytes": 0,
+          "tiles": 0
+        },
+        "build603Whole": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "a5fbcda482fa7883a80c1ae94ee34c129c778caf0d8a07f574c140f2667e2f64",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "0bba0657fa7b8e8f70608f030f02d500f36a850a856ffd5a415301de95cd3d21",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "1e49dcaea8219c12a015839b2849d7bdc74080512054e623a67669e62fa4eb1d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "ea7f8001b79df2908a70afacb75a405ce621787600928947689e152f0ebb2783",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "663eb4de5022f12c175bb74e5e55ac0e92eae3d984ac75c61183e5cb41816d42",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "whole",
+          "patches": 5632,
+          "seconds": 110.454069667,
+          "tileIndexBytes": 351637504,
+          "tiles": 21977344
+        }
+      }
+    },
+    "intel": {
+      "rounded": {
+        "build602Viewport": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "0129310fa84408598aa451a0c64259b68657e92e840a897fd3668e3408d65475",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "c3d0b25d3f238daa5f70170ba0af8a191152bc4a76906113ea8dbd4817ab5257",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "viewport",
+          "patches": 0,
+          "seconds": 5e-07,
+          "tileIndexBytes": 0,
+          "tiles": 0
+        },
+        "build603Whole": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "0129310fa84408598aa451a0c64259b68657e92e840a897fd3668e3408d65475",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "c3d0b25d3f238daa5f70170ba0af8a191152bc4a76906113ea8dbd4817ab5257",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "whole",
+          "patches": 28,
+          "seconds": 13.09533525,
+          "tileIndexBytes": 351636448,
+          "tiles": 21977278
+        }
+      },
+      "ellipse": {
+        "build602Viewport": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1686,
+                152359,
+                97,
+                83
+              ],
+              "sha256": "af42dca82f4713454f2a479075b7230406fb05c3c039057153a5b45b763d194b",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148473,
+                9943,
+                97,
+                83
+              ],
+              "sha256": "bdc1a91b82b41975ceff9d4bbfaba514b0439c1b3a9139543386d0665cbae3bc",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "ea7f7c1e8847f6fc06e756671e7388127054c0717ebdc0d2b8bc212252dcb56c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                231412,
+                248467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                295262,
+                152349,
+                97,
+                83
+              ],
+              "sha256": "67e59ee6c3a4c8aa4acd02825230d021050178bab09dd627f0b28eac9bdb8521",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148503,
+                294731,
+                97,
+                83
+              ],
+              "sha256": "2861c9408766fd2829cafcb03b74a9300f3acbe2a6055e6934109bd82046c0f6",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "8fa38e8fd80720f8de82962ec3c0147b732ed72ea9d8ab6f939df5cbbce6f7ac",
+              "words": 1444
+            }
+          ],
+          "mode": "viewport",
+          "patches": 0,
+          "seconds": 8.33e-07,
+          "tileIndexBytes": 0,
+          "tiles": 0
+        },
+        "build603Whole": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1686,
+                152359,
+                97,
+                83
+              ],
+              "sha256": "af42dca82f4713454f2a479075b7230406fb05c3c039057153a5b45b763d194b",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148473,
+                9943,
+                97,
+                83
+              ],
+              "sha256": "bdc1a91b82b41975ceff9d4bbfaba514b0439c1b3a9139543386d0665cbae3bc",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "7a0e1ca84e4b26ab4366bd37997e0c61372b0edf6d1d64f7fc2212de8be0474d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "1b033305feae36b213d69471d80bb906118a7d2d5c5312f1f9b0379f78f9493f",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "ea7f7c1e8847f6fc06e756671e7388127054c0717ebdc0d2b8bc212252dcb56c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                231412,
+                248467,
+                97,
+                83
+              ],
+              "sha256": "234ed3ba02a4eea6ede5d3e5e0bfa6498ce2b772498bb58ecd8caaec3b6e42e3",
+              "words": 32204
+            },
+            {
+              "rect": [
+                295262,
+                152349,
+                97,
+                83
+              ],
+              "sha256": "67e59ee6c3a4c8aa4acd02825230d021050178bab09dd627f0b28eac9bdb8521",
+              "words": 32204
+            },
+            {
+              "rect": [
+                148503,
+                294731,
+                97,
+                83
+              ],
+              "sha256": "2861c9408766fd2829cafcb03b74a9300f3acbe2a6055e6934109bd82046c0f6",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "8fa38e8fd80720f8de82962ec3c0147b732ed72ea9d8ab6f939df5cbbce6f7ac",
+              "words": 1444
+            }
+          ],
+          "mode": "whole",
+          "patches": 9804,
+          "seconds": 113.9677085,
+          "tileIndexBytes": 256888288,
+          "tiles": 16055518
+        }
+      },
+      "wide-rounded": {
+        "build602Viewport": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "a5fbcda482fa7883a80c1ae94ee34c129c778caf0d8a07f574c140f2667e2f64",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "0bba0657fa7b8e8f70608f030f02d500f36a850a856ffd5a415301de95cd3d21",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "1e49dcaea8219c12a015839b2849d7bdc74080512054e623a67669e62fa4eb1d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "ea7f8001b79df2908a70afacb75a405ce621787600928947689e152f0ebb2783",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "663eb4de5022f12c175bb74e5e55ac0e92eae3d984ac75c61183e5cb41816d42",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "viewport",
+          "patches": 0,
+          "seconds": 1.042e-06,
+          "tileIndexBytes": 0,
+          "tiles": 0
+        },
+        "build603Whole": {
+          "canvas": 300000,
+          "controls": [
+            {
+              "rect": [
+                0,
+                0,
+                97,
+                83
+              ],
+              "sha256": "df79166df8139b5fbac796b8fcd108fad0223fe9860a8f76de63b2e643df195c",
+              "words": 32204
+            },
+            {
+              "rect": [
+                429,
+                455,
+                97,
+                83
+              ],
+              "sha256": "a5fbcda482fa7883a80c1ae94ee34c129c778caf0d8a07f574c140f2667e2f64",
+              "words": 32204
+            },
+            {
+              "rect": [
+                1016,
+                351,
+                97,
+                83
+              ],
+              "sha256": "0bba0657fa7b8e8f70608f030f02d500f36a850a856ffd5a415301de95cd3d21",
+              "words": 32204
+            },
+            {
+              "rect": [
+                149980,
+                149997,
+                97,
+                83
+              ],
+              "sha256": "1e49dcaea8219c12a015839b2849d7bdc74080512054e623a67669e62fa4eb1d",
+              "words": 32204
+            },
+            {
+              "rect": [
+                150028,
+                150027,
+                97,
+                83
+              ],
+              "sha256": "ea7f8001b79df2908a70afacb75a405ce621787600928947689e152f0ebb2783",
+              "words": 32204
+            },
+            {
+              "rect": [
+                253975,
+                262101,
+                97,
+                83
+              ],
+              "sha256": "c8cdb71c356ca2906a1a0c5d75a6f6661dd56f73ab2268f8ab4877e41754f2ba",
+              "words": 32204
+            },
+            {
+              "rect": [
+                297212,
+                298467,
+                97,
+                83
+              ],
+              "sha256": "663eb4de5022f12c175bb74e5e55ac0e92eae3d984ac75c61183e5cb41816d42",
+              "words": 32204
+            },
+            {
+              "rect": [
+                299981,
+                299981,
+                19,
+                19
+              ],
+              "sha256": "d37512ba118ebe09e9958e57973b7c63fc01851e274952dbbd72e558c699f632",
+              "words": 1444
+            }
+          ],
+          "mode": "whole",
+          "patches": 5632,
+          "seconds": 171.098966917,
+          "tileIndexBytes": 351637504,
+          "tiles": 21977344
+        }
+      }
+    }
+  },
+  "completeOutputComparedFields": [
+    "sha256",
+    "case",
+    "width",
+    "height",
+    "words"
+  ],
+  "photoshop": {
+    "documentCountAppleEventError": -1712,
+    "freshSamples": 0,
+    "documentation": "https://www.adobe.com/products/photoshop/features/all.html",
+    "psbDimensions": "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html"
+  },
+  "limits": "The installed Photoshop app returned an AppleEvent timeout on a read-only document count. Fresh Photoshop samples, practical wide Feather on maximum-size ellipses, physical Intel and macOS 14 runtime, large-file export at the maximum dimensions and full Photoshop byte parity remain open."
+}

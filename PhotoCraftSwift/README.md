@@ -1,3 +1,7 @@
+**[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
+
+**Source checkpoint 603.** Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical. [Qualification](docs/SOURCE_PUBLICATION_603.md).
+
 **Source checkpoint 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Qualification](docs/SOURCE_PUBLICATION_602.md).
 
 **Source checkpoint 601.** Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work. [Qualification](docs/SOURCE_PUBLICATION_601.md).
@@ -7,8 +11,6 @@
 **Source checkpoint 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Qualification](docs/SOURCE_PUBLICATION_599.md).
 
 **Source checkpoint 598.** Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks. [Qualification](docs/SOURCE_PUBLICATION_598.md).
-
-**[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
 **Source checkpoint 597.** Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. [Qualification](docs/SOURCE_PUBLICATION_597.md).
 

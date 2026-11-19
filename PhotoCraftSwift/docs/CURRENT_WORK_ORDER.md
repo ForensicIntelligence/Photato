@@ -1,3 +1,7 @@
+**Source checkpoint 603.** Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical. [Qualification](SOURCE_PUBLICATION_603.md).
+
+Measure dense wide-Feather composition at the maximum dimensions and reduce work in repeated boundary rows. Keep the exact streaming input order, straight RGB32 samples, and file format limits. Retry live Photoshop capture when document scripting responds.
+
 **Source checkpoint 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Qualification](SOURCE_PUBLICATION_602.md).
 
 Skip repeated composition in dense solid mask interiors. Classify exact Feather footprints, carry those constants through the existing layer compositor and reuse result tiles. Compare whole output and dense boundary limits. Retry live Photoshop capture when document scripting responds.

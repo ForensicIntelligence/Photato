@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 603 — Reuse exact composited tiles under solid vector Feather
+
+The 300,000 × 75 control went from 39 rendered patches to 15. The RGB16 wide-Feather control went from 156 to 111.
+
+The full 300,000 × 300,000 rounded-mask control completed in 6.47 s on Apple Silicon and 13.10 s under Rosetta, with 28 rendered patches. The maximum-size ellipse completed in 64.16 s on Apple Silicon and 113.97 s under Rosetta, with 9,804 rendered patches. The rounded mask at 110.25 px Feather completed in 110.45 s on Apple Silicon and 171.10 s under Rosetta, with 5,632 rendered patches. Across the three composites, all 745,024 RGBA words in 26 sampled regions matched build 602 viewports on each architecture. These are single runs on the same Mac.
+
+All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-603) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md).
+
 ## 2026-11-19 — Step 602 — Skip solid pieces of dense feathered vector masks
 
 At 1,000 px Feather, the interior viewport of the maximum-size document needed no scratch transfer, down from 51,595,425 source pixels. The whole 49,155 × 73 wide-Feather control transferred 18,434,046 source pixels, down from 36,890,622.
@@ -817,14 +827,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:602 -->
+<!-- current-status-step:603 -->
 ## Current development status — 19 November 2026
 
-Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid.
+Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical.
 
-All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 602](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_602.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-602).
+[Source checkpoint 603](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-603).
 
 <!-- current-status:end -->
 

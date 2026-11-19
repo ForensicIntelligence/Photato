@@ -556,6 +556,67 @@ final class VectorRenderTests: XCTestCase {
     }
   }
 
+  func testCurvedMaskProvesExactCoverageInsideMixedGrayPieces() throws {
+    let width = 14_301, height = 2_005
+    let outline = featherTestOval(center: .init(7_011.375, 1_001.125), rx: 6_800.25, ry: 975.125)
+    let hole = rect(4_997.25, 794.5, 161.375, 307.25, .subtract)
+    // The earlier rows of this cache tile also lie inside the filled outline.
+    let core = IntRect(x: 2_411, y: 930, width: 767, height: 121)
+    let boundary = IntRect(x: 4_991, y: 841, width: 23, height: 81)
+    for radius in [2.25, 110.25] {
+      for inverted in [false, true] {
+        var mask = VectorMask(path: VectorPath(components: [outline, hole], inverted: inverted))
+        mask.feather = radius
+        mask.density = 0.8125
+        let sampler = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: inverted ? 1 : 0)
+        XCTAssertTrue(sampler.prefersUniformTiles)
+        let word = try XCTUnwrap(sampler.constantCoverage(in: core)).bitPattern
+        for y in [core.y, core.y+37, core.y+core.height-1] {
+          for x in [core.x, core.x+243, core.x+core.width-1] {
+            XCTAssertEqual(word, sampler.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5).bitPattern)
+          }
+        }
+        XCTAssertNil(sampler.constantCoverage(in: boundary))
+      }
+    }
+  }
+
+  func testSolidFeatherTileReusePreservesRasterAndPixelMaskExceptions() throws {
+    let width = 300_000, height = 75
+    let outline = featherTestOval(center: .init(23_011.375, 31.25), rx: 18_600.125, ry: 4_760.5)
+    let hole = rect(16_328.25, 28.625, 201.125, 36.25, .subtract)
+    var document = try CraftDocument(width: width, height: height, depth: .f32)
+    var mask = VectorMask(path: VectorPath(components: [outline, hole], inverted: true))
+    mask.feather = 2
+    mask.density = 0.8125
+    var base = Layer(name: "Masked base", content: .fill(Pixel(0.51, 0.33, 0.32)))
+    base.vectorMask = mask
+    var color = try Surface(width: width, height: height, depth: .f32,
+      fill: Pixel(0.23, 0.49, 0.78), colorEncoding: .linearRGB)
+    color.setLinearPixel(x: 24_576, y: 41, Pixel(0.12, 0.34, 0.65))
+    var top = Layer(name: "Raster variation", content: .raster(color))
+    top.opacity = 0.375
+    top.blendMode = .multiply
+    top.mask = try Surface(width: width, height: height, fill: .white)
+    top.mask?.setPixel(x: 32_879, y: 71, .black)
+    document.layers = [base, top]
+    document.activeLayerID = top.id
+    let canvas = IntRect(x: 0, y: 0, width: width, height: height)
+    var patches = 0
+    let output = try PagedCanvasRenderer.composite(document, region: canvas, onPatch: { patches = $0 })
+    XCTAssertLessThan(patches, 24)
+    let facts = CompositionFacts(document, vectorViewport: canvas)
+    for (x, y) in [(4_406, 4), (4_459, 64), (8_185, 6), (16_321, 62), (16_524, 21),
+      (24_572, 39), (32_873, 69), (41_600, 64), (299_985, 66)]
+    {
+      let roi = IntRect(x: x, y: y, width: 14, height: min(13, height - y))
+      let ordinary = try Renderer.compositePrepared(document, region: roi, facts: facts)
+      XCTAssertEqual(try output.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB),
+        try ordinary.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB), "\(x),\(y)")
+    }
+    print("Solid Feather: \(patches) patches for a \(width) × \(height) canvas")
+  }
+
   private func featherTestOval(center: PathPoint, rx: Double, ry: Double) -> PathComponent {
     let x = center.x, y = center.y, k = 0.5522847498307936
     return PathComponent(knots: [

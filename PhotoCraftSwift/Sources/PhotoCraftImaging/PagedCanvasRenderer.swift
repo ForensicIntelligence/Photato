@@ -29,7 +29,7 @@ enum PagedCanvasRenderer {
     try Task.checkCancellation();try validateResources(d)
     let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let facts=CompositionFacts(d, vectorViewport: region)
-    let sources: [AnySequence<Int>]?
+    let sources: PointwiseSources?
     if region == complete, inputTarget == nil, video == nil, !forLayerOutput,
       let plan = RectangleFeatherPlan(d) {
       if plan.prefersPointwise, let sparse = try pointwiseSources(d, facts: facts) {
@@ -52,7 +52,7 @@ enum PagedCanvasRenderer {
     var firstMissing = total
     if let sources {
       firstMissing = 0
-      for key in TileKeys(sources) {
+      for key in TileKeys(sources.keys) {
         try Task.checkCancellation()
         if key > firstMissing { break }
         firstMissing = key + 1
@@ -74,22 +74,34 @@ enum PagedCanvasRenderer {
     }
     let builder=try Surface.PagedBuilder(template:template)
     var completedPatches=0
+    func didRender() { completedPatches += 1; onPatch?(completedPatches) }
     func append(_ patch:IntRect) throws {
       let x=max(patch.x,region.x),y=max(patch.y,region.y)
       let work=IntRect(x:x,y:y,width:min(patch.x+patch.width,region.x+region.width)-x,
         height:min(patch.y+patch.height,region.y+region.height)-y)
       let rendered=try render(work)
       try builder.append(rendered.cropped(to:patch),atX:patch.x,atY:patch.y)
-      completedPatches += 1;onPatch?(completedPatches)
+      didRender()
     }
     if let sources {
-      var keys=TileKeys(sources).makeIterator(),next=keys.next()
+      let reuse = inputTarget == nil && !forLayerOutput ? sources.uniformTiles(document: d) : nil
+      var keys=TileKeys(sources.keys).makeIterator(),next=keys.next()
       while let first=next {
         try Task.checkCancellation()
         let row=first/columns;var end=first+1;next=keys.next()
         while let key=next,key==end,key/columns==row,end-first<32 {end+=1;next=keys.next()}
-        let x=first%columns*64,y=row*64
-        try append(.init(x:x,y:y,width:min(d.width-x,(end-first)*64),height:min(64,d.height-y)))
+        let firstColumn = first % columns, endColumn = firstColumn + end - first
+        if let reuse {
+          try reuse.append(row: row, columns: firstColumn..<endColumn, to: builder, ordinary: append) { rect in
+            let output = try render(rect)
+            let tile = try builder.prepareTile(output.cropped(to: rect))
+            didRender()
+            return tile
+          }
+        } else {
+          let x=firstColumn*64,y=row*64
+          try append(.init(x:x,y:y,width:min(d.width-x,(end-first)*64),height:min(64,d.height-y)))
+        }
       }
     } else if let layerSupport {
       for patch in layerSupport {
@@ -168,23 +180,39 @@ enum PagedCanvasRenderer {
 
   /// Exhaustive pointwise eligibility: every missing tile has the same samples.
   /// Spatial/dithered/affine/rich sources keep complete patch evaluation.
-  private static func pointwiseSources(_ d: CraftDocument,facts:CompositionFacts) throws -> [AnySequence<Int>]? {
+  private struct PointwiseSources {
+    let keys: [AnySequence<Int>]
+    let stored: [AnySequence<Int>]
+    let feathers: [LayerMaskSampler]
+
+    func uniformTiles(document: CraftDocument) -> SolidFeatherTiles? {
+      guard feathers.contains(where: \.prefersUniformFeatherTiles),
+        feathers.reduce(0, { $0 + ($1.vectorFeatherBytes ?? 0) }) <= CompositionFacts.maximumDerivedMaskCacheBytes
+      else { return nil }
+      return SolidFeatherTiles(document: document, feathers: feathers, stored: TileKeys(stored))
+    }
+  }
+
+  private static func pointwiseSources(_ d: CraftDocument,facts:CompositionFacts) throws -> PointwiseSources? {
     guard d.videoTimeline == nil else {return nil}
-    var sources: [AnySequence<Int>] = []
+    var stored: [AnySequence<Int>] = []
+    var featherKeys: [AnySequence<Int>] = []
+    var feathers: [LayerMaskSampler] = []
     for layer in d.layers {
       guard layer.style==nil,layer.smartObject?.pdfSource==nil,layer.smartFilters==nil,layer.warp==nil,
         layer.blendMode != .dissolve,layer.coordinateTransform == .identity else {return nil}
       if let vector = layer.vectorMask, vector.enabled {
         let sampler = try facts.mask(layer)
-        if let rectangles = sampler?.vectorFeatherSupport {
+        if let sampler, let rectangles = sampler.vectorFeatherSupport {
           let columns = (d.width + Surface.tileSide - 1) / Surface.tileSide
           let patches = GeometryPatchRegions(width: d.width, height: d.height, rectangles: rectangles)
-          sources.append(AnySequence(patches.lazy.flatMap { rect -> Range<Int> in
+          featherKeys.append(AnySequence(patches.lazy.flatMap { rect -> Range<Int> in
             let first = rect.y / Surface.tileSide * columns + rect.x / Surface.tileSide
             return first..<(first + (rect.width + Surface.tileSide - 1) / Surface.tileSide)
           }))
+          feathers.append(sampler)
         } else if let raw = sampler?.vectorTileSource {
-          sources.append(raw.storedTileKeys)
+          stored.append(raw.storedTileKeys)
         } else if sampler != nil {
           return nil
         }
@@ -192,12 +220,12 @@ enum PagedCanvasRenderer {
       if let mask=layer.mask,layer.effectiveMaskProperties.enabled {
         guard mask.width==d.width,mask.height==d.height,
           layer.maskCoordinateTransform == .identity,layer.effectiveMaskProperties.feather==0 else {return nil}
-        sources.append(mask.storedTileKeys)
+        stored.append(mask.storedTileKeys)
       }
       switch layer.content {
       case .raster(let surface):
         guard surface.width==d.width,surface.height==d.height else {return nil}
-        sources.append(surface.storedTileKeys)
+        stored.append(surface.storedTileKeys)
       case .fill:break
       case .group(let group):
         guard group.frame==nil,group.artboard==nil else {return nil}
@@ -211,7 +239,87 @@ enum PagedCanvasRenderer {
       case .text,.shape,.gradientFill,.patternFill:return nil
       }
     }
-    return sources
+    return PointwiseSources(keys: featherKeys + stored, stored: stored, feathers: feathers)
+  }
+
+  /// Each proof covers every stored sample and Feather footprint in the run.
+  /// The ordinary compositor calculates each distinct constant tile once.
+  private final class SolidFeatherTiles {
+    private struct Signature: Hashable {
+      let width: Int
+      let height: Int
+      let coverage: [UInt32]
+    }
+
+    private let width: Int, height: Int, columns: Int
+    private let feathers: [LayerMaskSampler]
+    private let stored: AnyIterator<Int>
+    private var nextStored: Int?
+    private var cache: [Signature: Surface.PagedBuilder.PreparedTile] = [:]
+
+    init(document: CraftDocument, feathers: [LayerMaskSampler], stored: TileKeys) {
+      width = document.width
+      height = document.height
+      columns = (width + Surface.tileSide - 1) / Surface.tileSide
+      self.feathers = feathers
+      self.stored = stored.makeIterator()
+      nextStored = self.stored.next()
+    }
+
+    func append(row: Int, columns run: Range<Int>, to builder: Surface.PagedBuilder,
+      ordinary: (IntRect) throws -> Void,
+      renderTile: (IntRect) throws -> Surface.PagedBuilder.PreparedTile
+    ) throws {
+      let side = Surface.tileSide
+      let y = row * side, h = min(side, height - y), rowKey = row * columns
+      var pending: Int?
+      func bounds(_ span: Range<Int>) -> IntRect {
+        let x = span.lowerBound * side
+        return IntRect(x: x, y: y, width: min(width, span.upperBound * side) - x, height: h)
+      }
+      func flush(before end: Int) throws {
+        if let start = pending {
+          try ordinary(bounds(start..<end))
+          pending = nil
+        }
+      }
+      func classify(_ span: Range<Int>) throws {
+        let rect = bounds(span)
+        let tileWidth = min(side, rect.width)
+        let fullOrSingle = span.count == 1 || rect.width % side == 0
+        let coverage = fullOrSingle ? feathers.compactMap { $0.constantFeatheredVectorCoverage(in: rect)?.bitPattern } : []
+        if coverage.count == feathers.count {
+          try flush(before: span.lowerBound)
+          let key = Signature(width: tileWidth, height: h, coverage: coverage)
+          let tile: Surface.PagedBuilder.PreparedTile
+          if let saved = cache[key] {
+            tile = saved
+          } else {
+            tile = try renderTile(IntRect(x: rect.x, y: y, width: tileWidth, height: h))
+            if cache.count < 128 { cache[key] = tile }
+          }
+          try builder.append(tile, row: row, columns: span)
+        } else if span.count > 1 {
+          let middle = span.lowerBound + span.count / 2
+          try classify(span.lowerBound..<middle)
+          try classify(middle..<span.upperBound)
+        } else if pending == nil {
+          pending = span.lowerBound
+        }
+      }
+
+      var column = run.lowerBound
+      while let key = nextStored, key < rowKey + run.upperBound {
+        nextStored = stored.next()
+        let changed = key - rowKey
+        if changed < column { continue }
+        if column < changed { try classify(column..<changed) }
+        if pending == nil { pending = changed }
+        column = changed + 1
+      }
+      if column < run.upperBound { try classify(column..<run.upperBound) }
+      try flush(before: run.upperBound)
+    }
   }
 
   private struct TileKeys:Sequence {

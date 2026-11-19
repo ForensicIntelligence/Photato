@@ -130,6 +130,10 @@ final class CompositionFacts {
             guard let rectangles = sampler.vectorFeatherSupport, sampler.vectorFeatherOutside == 1
             else { return nil }
             for patch in GeometryPatchRegions(width: document.width, height: document.height, rectangles: rectangles) {
+              if let coverage = sampler.constantFeatheredVectorCoverage(in: patch) {
+                if coverage != 1 { return false }
+                continue
+              }
               for y in patch.y..<(patch.y + patch.height) {
                 try Task.checkCancellation()
                 for x in patch.x..<(patch.x + patch.width) where sampler.featheredVectorCoverage(x: x, y: y) != 1 {

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **602** · The 10 most recent entries, newest first.
+Source build **603** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 603 — Reuse exact composited tiles under solid vector Feather
+
+The 300,000 × 75 control went from 39 rendered patches to 15. The RGB16 wide-Feather control went from 156 to 111.
+
+The full 300,000 × 300,000 rounded-mask control completed in 6.47 s on Apple Silicon and 13.10 s under Rosetta, with 28 rendered patches. The maximum-size ellipse completed in 64.16 s on Apple Silicon and 113.97 s under Rosetta, with 9,804 rendered patches. The rounded mask at 110.25 px Feather completed in 110.45 s on Apple Silicon and 171.10 s under Rosetta, with 5,632 rendered patches. Across the three composites, all 745,024 RGBA words in 26 sampled regions matched build 602 viewports on each architecture. These are single runs on the same Mac.
+
+All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-603) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md).
 
 ## 2026-11-19 — Step 602 — Skip solid pieces of dense feathered vector masks
 
@@ -79,11 +89,3 @@ The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Phot
 All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-594) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_594.md).
-
-## 2026-11-19 — Step 593 — Bound vector mask Feather on large canvases
-
-Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. The maximum sparse canvas test used four patches, and the native and HTTP settings share the same 1,000 px range.
-
-All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_593.md).
