@@ -3,24 +3,33 @@ import Foundation
 /// One numeric printing plane. Samples have no RGB transfer function or alpha.
 public struct InkPlane: Codable, Equatable, Sendable {
   public static let maximumPixels = 8_388_608
+  public static let maximumDocumentPixels = Surface.maxPixels
   public let width: Int
   public let height: Int
   public let depth: PixelDepth
   private var storage: ComponentPlane
-  /// Portable legacy bytes; current ink/file workflows retain their explicit8MP cap.
+  /// Portable legacy bytes. Large plates use raw words and indexed archive pages.
   public var bytes: Data {
-    var result = Data(count: count * stride)
-    for i in 0..<count { ComponentPlane.store(storage.word(at: i), in: &result, offset: i * stride, stride: stride) }
-    return result
+    get throws {
+      guard !requiresPagedArchive else { throw CraftError.unsupported("Use bounded rows for large printing plates.") }
+      return storage.legacyBytes
+    }
   }
   public var residentSampleBytes: Int { storage.residentEditBytes }
   public var count: Int { width * height }
-  public var estimatedBytes: Int { count * stride }
+  public var estimatedBytes: Int { requiresPagedArchive ? storage.estimatedResidentBytes : count * stride }
+  public var requiresPagedArchive: Bool { count > Self.maximumPixels }
+  package var retainedSampleBytes: Int { storage.mappedSampleBytes }
+  package var defaultWord: UInt32 { storage.defaultWord }
+  package var storedSampleRanges: AnySequence<Range<Int>> { storage.storedSampleRanges }
   private var stride: Int { depth == .u8 ? 1 : 2 }
 
   public init(width: Int, height: Int, depth: PixelDepth = .u8, bytes: Data) throws {
     try Self.dimensions(width, height, depth)
-    guard bytes.count == width * height * (depth == .u8 ? 1 : 2) else { throw CraftError.invalid("Ink plane sample count differs from its dimensions.") }
+    guard width <= Self.maximumPixels / height,
+      bytes.count == width * height * (depth == .u8 ? 1 : 2) else {
+      throw CraftError.invalid("Legacy ink plane data exceeds its dimensions or dense capacity.")
+    }
     self.width = width; self.height = height; self.depth = depth
     storage = try ComponentPlane(width: width, height: height, depth: depth)
     let bytes = Data(bytes)
@@ -35,10 +44,14 @@ public struct InkPlane: Codable, Equatable, Sendable {
     self.width = width; self.height = height; self.depth = depth
     storage = try ComponentPlane(width: width, height: height, depth: depth, defaultWord: UInt32((value * (depth == .u8 ? 255 : 65535)).rounded()))
   }
+  package init(storage: ComponentPlane) throws {
+    try Self.dimensions(storage.width, storage.height, storage.depth)
+    width = storage.width; height = storage.height; depth = storage.depth; self.storage = storage
+  }
   static func dimensions(_ width: Int, _ height: Int, _ depth: PixelDepth) throws {
     guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
-      width <= maximumPixels / height, [.u8, .u16].contains(depth) else {
-      throw CraftError.invalid("Ink planes require 8-bit or 16-bit samples and at most 8,388,608 pixels.")
+      width <= maximumDocumentPixels / height, [.u8, .u16].contains(depth) else {
+      throw CraftError.invalid("Ink planes require 8-bit or 16-bit samples within the document dimensions.")
     }
   }
   public func validate() throws {
@@ -68,14 +81,36 @@ public struct InkPlane: Codable, Equatable, Sendable {
   /// Share unchanged sample blocks, then edit scalar samples in place. Returning the original value
   /// preserves the original bytes without passing through a display surface.
   public func mapped(_ transform: (Int, Int, Float) throws -> Float) throws -> Self {
+    try mapped(in: IntRect(x: 0, y: 0, width: width, height: height), transform)
+  }
+  func mapped(in area: IntRect, _ transform: (Int, Int, Float) throws -> Float) throws -> Self {
     var result = self
-    for i in 0..<count {
-      if i % 4096 == 0 { try Task.checkCancellation() }
-      let old = value(at: i), next = try transform(i % width, i / width, old)
-      guard next.isFinite, (0...1).contains(next) else { throw CraftError.invalid("Invalid numeric ink sample.") }
-      if next != old { result.store(next, at: i) }
+    for y in area.y..<(area.y + area.height) {
+      try Task.checkCancellation()
+      for x in area.x..<(area.x + area.width) {
+        let i = y * width + x
+        if x % 4096 == 0 { try Task.checkCancellation() }
+        let old = value(at: i), next = try transform(x, y, old)
+        guard next.isFinite, (0...1).contains(next) else { throw CraftError.invalid("Invalid numeric ink sample.") }
+        if next != old { result.store(next, at: i) }
+      }
     }
     return result
+  }
+  func mappingUniformly(_ transform: (Float) -> Float) throws -> Self {
+    let scale: Float = depth == .u8 ? 255 : 65535
+    let implicit = transform(Float(storage.defaultWord) / scale)
+    let plane = try ComponentPlane(width: width, height: height, depth: depth,
+      defaultWord: UInt32((unit(implicit) * scale).rounded()))
+    let builder = try ComponentPlaneBuilder(plane: plane, cacheBlocks: 2)
+    for range in storedSampleRanges {
+      try Task.checkCancellation()
+      for index in range {
+        let word = UInt32((unit(transform(value(at: index))) * scale).rounded())
+        if word != plane.defaultWord { try builder.setWord(word, at: index) }
+      }
+    }
+    return try Self(storage: builder.finish())
   }
   public func converted(to depth: PixelDepth, inverted: Bool = false) throws -> Self {
     if depth == self.depth, !inverted { return self }
@@ -89,6 +124,15 @@ public struct InkPlane: Codable, Equatable, Sendable {
   /// Grayscale editing/display cache; ink density is inverted for a paper preview.
   public func surface(inverted: Bool = false) throws -> Surface {
     try validate()
+    if requiresPagedArchive {
+      func gray(_ word: UInt32) -> Pixel {
+        let value = Float(word) / (depth == .u8 ? 255 : 65535)
+        let shade = inverted ? 1 - value : value
+        return Pixel(shade, shade, shade)
+      }
+      return try InkProjection.surface(width: width, height: height, depth: depth, region: nil,
+        implicit: gray(storage.defaultWord), storedRanges: [storage.storedSampleRanges]) { gray(storage.word(at: $0)) }
+    }
     var result = try Surface(width: width, height: height, depth: depth)
     for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
       let value = value(at: y * width + x), gray = inverted ? 1 - value : value
@@ -103,8 +147,13 @@ public struct InkPlane: Codable, Equatable, Sendable {
       previous.width == width, previous.height == height else {
       throw CraftError.invalid("Ink editing requires matching plane and cache dimensions.")
     }
+    let area: IntRect
+    if requiresPagedArchive {
+      guard let bounds = try edited.changedTileBounds(comparedTo: previous) else { return self }
+      area = bounds
+    } else { area = IntRect(x: 0, y: 0, width: width, height: height) }
     var result = self
-    for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
+    for y in area.y..<(area.y + area.height) { try Task.checkCancellation(); for x in area.x..<(area.x + area.width) {
       let p = edited.pixel(x: x, y: y)
       guard p != previous.pixel(x: x, y: y) else { continue }
       guard p.isFinite else { throw CraftError.invalid("Ink edits require finite pixels.") }
@@ -113,12 +162,26 @@ public struct InkPlane: Codable, Equatable, Sendable {
     } }
     return result
   }
-  private enum CodingKeys: String, CodingKey { case width, height, depth, bytes, blob }
+  private enum CodingKeys: String, CodingKey { case width, height, depth, bytes, blob, componentPage }
   public init(from decoder: Decoder) throws {
     let c = try decoder.container(keyedBy: CodingKeys.self)
     let width = try c.decode(Int.self, forKey: .width), height = try c.decode(Int.self, forKey: .height)
     let depth = try c.decode(PixelDepth.self, forKey: .depth)
     try Self.dimensions(width, height, depth)
+    if c.contains(.componentPage) {
+      guard !c.contains(.bytes), !c.contains(.blob), width > Self.maximumPixels / height,
+        let context = decoder.userInfo[.historyTileDecoder] as? any ComponentBlobDecoding else {
+        throw CraftError.invalid("Large ink pages require their native archive context.")
+      }
+      let record = try c.decode(ComponentPlaneArchive.Record.self, forKey: .componentPage)
+      guard record.width == width, record.height == height, record.depth == depth else {
+        throw CraftError.invalid("Ink page geometry differs from its header.")
+      }
+      try self.init(storage: ComponentPlaneArchive.decode(record, context: context,
+        budget: decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget, chargeMappedSamplesSeparately: true))
+      return
+    }
+    guard width <= Self.maximumPixels / height else { throw CraftError.invalid("Large ink planes require indexed pages.") }
     let size = width * height * (depth == .u8 ? 1 : 2)
     try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?.reserve(tiles: (size + TileArchive.byteCount - 1) / TileArchive.byteCount)
     let bytes: Data
@@ -133,7 +196,11 @@ public struct InkPlane: Codable, Equatable, Sendable {
   public func encode(to encoder: Encoder) throws {
     try validate(); var c = encoder.container(keyedBy: CodingKeys.self)
     try c.encode(width, forKey: .width); try c.encode(height, forKey: .height); try c.encode(depth, forKey: .depth)
-    if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {
+    if requiresPagedArchive {
+      guard let context = encoder.userInfo[.historyTileEncoder] as? any ComponentBlobEncoding,
+        context.supportsComponentPages else { throw CraftError.invalid("Large ink planes require indexed pages.") }
+      try c.encode(ComponentPlaneArchive.encode(storage, context: context), forKey: .componentPage)
+    } else if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {
       try c.encode(context.storeBytes(bytes), forKey: .blob)
     } else { try c.encode(bytes, forKey: .bytes) }
   }

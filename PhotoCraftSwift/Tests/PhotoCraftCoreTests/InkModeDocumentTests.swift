@@ -58,7 +58,7 @@ final class InkModeDocumentTests: XCTestCase {
     guard case .duotone(let ink) = session.document.inkMode,
       case .duotone(let old) = original.inkMode,
       case .raster(let cache) = session.document.layers[0].content else { return XCTFail() }
-    XCTAssertEqual(ink.gray.bytes, Data([0, 128, 54])); XCTAssertEqual(ink.settings, old.settings)
+    XCTAssertEqual(try ink.gray.bytes, Data([0, 128, 54])); XCTAssertEqual(ink.settings, old.settings)
     XCTAssertEqual(ink.sourceModeData, old.sourceModeData)
     XCTAssertEqual(cache.pixel(x: 2, y: 0).r, cache.pixel(x: 2, y: 0).g)
     XCTAssertTrue(try NativeArchive.decode(NativeArchive.encodeChunked(session.document)) == session.document)

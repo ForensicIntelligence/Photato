@@ -43,8 +43,20 @@ final class PSDMultichannelTests: XCTestCase {
       XCTAssertEqual(document.alphaChannels?.map(\.options.indicates), [.maskedAreas,.selectedAreas])
       let max = depth == 8 ? 255 : 65535
       for c in 0..<7 { for i in 0..<12 {
-        let value = c < 5 ? raster.plates[c].samples.value(at: i) : document.alphaChannels![c-5].pixels.pixel(x: i%4, y: i/4).r
-        XCTAssertEqual(Int((value * Float(max)).rounded()), c < 5 ? max-fileSamples[c][i] : fileSamples[c][i], name)
+        let value: Float
+        let inverted: Bool
+        if c < raster.plates.count {
+          value = raster.plates[c].samples.value(at: i)
+          inverted = true
+        } else {
+          let alpha = document.alphaChannels![c - raster.plates.count]
+          value = alpha.pixels.pixel(x: i % 4, y: i / 4).r
+          // The fixture contains Photoshop editing gray. Selected Areas
+          // stores the complement of Photato's normalized selection coverage.
+          inverted = alpha.options.indicates == .selectedAreas
+        }
+        let expected = inverted ? max - fileSamples[c][i] : fileSamples[c][i]
+        XCTAssertEqual(Int((value * Float(max)).rounded()), expected, "\(name) plane \(c) sample \(i)")
       } }
       let data = try PSDCodec.writeRasterLayers(document, compositeCompression: .zipPrediction)
       try assertSamples(PSDCodec.read(data), document)
@@ -121,6 +133,92 @@ final class PSDMultichannelTests: XCTestCase {
     }
     XCTAssertThrowsError(try PSDChannelCodec.byteCount(width:1,height:1,depth:8,channels:57))
     XCTAssertThrowsError(try PSDChannelCodec.byteCount(width:8192,height:8192,depth:16,channels:56))
+  }
+
+  func testMaximumWidthPrintPlateKeepsNumericWordsAcrossAllPSBCompressions() throws {
+    let width = 300_000, height = 29, depth = PixelDepth.u16
+    let center = width / 2, last = width * height - 1
+    let plate = try InkPlane(width: width, height: height, depth: depth, value: 0.25)
+      .replacing(offset: center, values: [0.5]).replacing(offset: last, values: [0.75])
+    let ink = InkPlate(name: "Print black", color: .black, solidity: 1, samples: plate)
+    var document = try CraftDocument(width: width, height: height, depth: depth)
+      .replacingInkMode(.multichannel(MultichannelRaster(plates: [ink])))
+    var alpha = try Surface(width: width, height: height, depth: depth, fill: Pixel(0.5, 0.5, 0.5))
+    alpha.setPixel(x: 0, y: height - 1, .white)
+    var options = ChannelDisplayOptions()
+    options.indicates = .selectedAreas
+    document.alphaChannels = [AlphaChannel(name: "Saved coverage", pixels: alpha, options: options)]
+    let folder = try PSDFileOutputTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    XCTAssertEqual(document.minimumArchiveVersion, 93)
+    XCTAssertThrowsError(try plate.bytes)
+    for compression in PSDCompression.allCases {
+      let target = folder.appendingPathComponent("plates-\(compression.rawValue).psb")
+      try PSDCodec.writeRasterLayers(document, to: target, format: .psb, compositeCompression: compression)
+      let reopened = try PSDCodec.read(target)
+      let loaded = try XCTUnwrap(reopened.multichannelRaster().plates.first?.samples)
+      XCTAssertEqual(loaded, plate)
+      XCTAssertEqual(loaded.rawWord(at: 0), 16_384)
+      XCTAssertEqual(loaded.rawWord(at: center), 32_768)
+      XCTAssertEqual(loaded.rawWord(at: last), 49_151)
+      XCTAssertLessThanOrEqual(loaded.retainedSampleBytes, 2 * 4096 * 2)
+      let saved = try XCTUnwrap(reopened.alphaChannels?.first)
+      XCTAssertEqual(saved.name, "Saved coverage")
+      XCTAssertEqual(saved.options.indicates, .selectedAreas)
+      XCTAssertEqual(saved.pixels.pixel(x: 0, y: height - 1), .white)
+      XCTAssertEqual(saved.pixels.pixel(x: 1, y: height - 1), alpha.pixel(x: 1, y: height - 1))
+      XCTAssertThrowsError(try PSDCodec.read(Data(contentsOf: target).dropLast()))
+    }
+    let native = folder.appendingPathComponent("plates.photato")
+    try NativeArchive.write(document, to: native)
+    XCTAssertEqual(try NativeArchive.read(native), document)
+    XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(document)), document)
+
+    let preview = try Renderer.composite(document)
+    XCTAssertEqual(preview.pixel(x: 0, y: 0).r, (1 - plate.value(at: 0)) * (1 - plate.value(at: 0)))
+    XCTAssertEqual(preview.pixel(x: width - 1, y: height - 1).r, (1 - plate.value(at: last)) * (1 - plate.value(at: last)))
+    var session = EditorSession(document: document)
+    try session.execute(.inkChannel(.edit([.plate(ink.id)], .invert)))
+    let inverted = try XCTUnwrap(session.document.multichannelRaster().plates.first?.samples)
+    XCTAssertEqual(inverted.rawWord(at: 0), 49_151)
+    XCTAssertEqual(inverted.rawWord(at: last), 16_384)
+    try session.undo()
+    XCTAssertEqual(session.document, document)
+  }
+
+  func testMaximumSizeInkPreviewAndViewportUpdateAfterEditAndUndo() throws {
+    let side = 300_000
+    let last = side * side - 1
+    let plate = InkPlate(name: "Black", color: .black, solidity: 1,
+      samples: try InkPlane(width: side, height: side, depth: .u16, value: 0.25))
+    let document = try CraftDocument(width: side, height: side, depth: .u16)
+      .replacingInkMode(.multichannel(MultichannelRaster(plates: [plate])))
+    var session = EditorSession(document: document)
+    let initial = try Renderer.render(document)
+    let corner = side - 1
+    let defaultPixel = initial.surface.pixel(x: corner, y: corner)
+    XCTAssertEqual(defaultPixel, initial.surface.pixel(x: 0, y: 0))
+    XCTAssertNil(initial.surface.storedTileKeys.first { _ in true })
+
+    try session.execute(.inkChannel(.write(.plate(plate.id), last, [0.75])))
+    let edited = try Renderer.render(session.document, reusing: initial)
+    XCTAssertEqual(edited.update, .full)
+    XCTAssertEqual(edited.surface.pixel(x: 0, y: 0), defaultPixel)
+    let newPixel = edited.surface.pixel(x: corner, y: corner)
+    let sample = try session.document.multichannelRaster().plates[0].samples.value(at: last)
+    XCTAssertEqual(newPixel.r, (1 - sample) * (1 - sample))
+    XCTAssertNotEqual(newPixel, defaultPixel)
+    XCTAssertEqual(edited.surface.storedTileKeys.reduce(0) { count, _ in count + 1 }, 1)
+
+    let region = IntRect(x: corner - 1, y: corner - 1, width: 2, height: 2)
+    let viewport = try Renderer.composite(session.document, region: region)
+    XCTAssertEqual(viewport.pixel(x: corner, y: corner), newPixel)
+    XCTAssertEqual(viewport.pixel(x: corner - 1, y: corner - 1), defaultPixel)
+    XCTAssertEqual(viewport.pixel(x: corner - 2, y: corner), .clear)
+
+    try session.undo()
+    let undone = try Renderer.render(session.document, reusing: edited)
+    XCTAssertEqual(undone.surface.pixel(x: corner, y: corner), defaultPixel)
   }
   func testEmitOutputsForIndependentDecoderWhenRequested() throws {
     guard let path = ProcessInfo.processInfo.environment["PHOTATO_INK_PSD_OUTPUT_DIR"] else { return }

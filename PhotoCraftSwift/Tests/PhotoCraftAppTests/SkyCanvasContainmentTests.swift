@@ -6,6 +6,17 @@ import XCTest
 @testable import PhotoCraft
 
 final class SkyCanvasContainmentTests: XCTestCase {
+  private func wheel(horizontal: Int32, vertical: Int32, modifiers: CGEventFlags = []) throws -> NSEvent {
+    // Supply test-owned modifier state even if someone is using the Mac during a run.
+    let source = try XCTUnwrap(CGEventSource(stateID: .privateState))
+    let event = try XCTUnwrap(CGEvent(scrollWheelEvent2Source: source, units: .pixel,
+      wheelCount: 2, wheel1: vertical, wheel2: horizontal, wheel3: 0))
+    event.flags = modifiers
+    let scroll = try XCTUnwrap(NSEvent(cgEvent: event))
+    XCTAssertEqual(scroll.modifierFlags.contains(.option), modifiers.contains(.maskAlternate))
+    return scroll
+  }
+
   @MainActor func testHostedSheetKeepsPannedPreviewBelowToolsAndAboveActions() async throws {
     _ = NSApplication.shared
     let model = try fixture(side: 1024), store = EditorStore(document: model.original)
@@ -29,9 +40,8 @@ final class SkyCanvasContainmentTests: XCTestCase {
       let view = try XCTUnwrap(canvas(in: host))
       model.tool = index == 1 ? .brush : .hand
       model.setZoom(4, center: true)
-      let cg = try XCTUnwrap(CGEvent(scrollWheelEvent2Source: nil, units: .pixel,
-        wheelCount: 2, wheel1: index == 1 ? -400 : 400, wheel2: 400, wheel3: 0))
-      view.scrollWheel(with: try XCTUnwrap(NSEvent(cgEvent: cg)))
+      view.scrollWheel(with: try wheel(horizontal: 400, vertical: index == 1 ? -400 : 400))
+      XCTAssertEqual(model.zoom, 4)
       host.layoutSubtreeIfNeeded()
       let rect = view.convert(view.bounds, to: host)
       XCTAssertGreaterThanOrEqual(rect.minY, 40, "Preview overlaps sheet chrome: \(rect)")
@@ -153,9 +163,8 @@ final class SkyCanvasContainmentTests: XCTestCase {
     let canvas = try XCTUnwrap(descendants(root).compactMap { $0 as? SkyCanvasView }.first)
     model.tool = .hand; model.setZoom(1, center: true)
     for (index, delta) in [(0, 1000), (1, -2000), (2, 1000)] {
-      let cg = try XCTUnwrap(CGEvent(scrollWheelEvent2Source: nil, units: .pixel,
-        wheelCount: 2, wheel1: Int32(delta), wheel2: 250, wheel3: 0))
-      canvas.scrollWheel(with: try XCTUnwrap(NSEvent(cgEvent: cg)))
+      canvas.scrollWheel(with: try wheel(horizontal: 250, vertical: Int32(delta)))
+      XCTAssertEqual(model.zoom, 1)
       root.layoutSubtreeIfNeeded(); canvas.displayIfNeeded()
       let viewport = canvas.convert(canvas.bounds, to: root)
       XCTAssertGreaterThanOrEqual(viewport.minY, 40)
@@ -295,16 +304,14 @@ final class SkyCanvasContainmentTests: XCTestCase {
     header.frame = CGRect(x: 20, y: 310, width: 100, height: 30); root.addSubview(header)
     let footer = NSButton(title: "Cancel", target: nil, action: nil)
     footer.frame = CGRect(x: 20, y: 5, width: 100, height: 30); root.addSubview(footer)
-    let cg = try XCTUnwrap(CGEvent(scrollWheelEvent2Source: nil, units: .pixel,
-      wheelCount: 2, wheel1: 500, wheel2: -350, wheel3: 0))
-    let scroll = try XCTUnwrap(NSEvent(cgEvent: cg))
+    let scroll = try wheel(horizontal: -350, vertical: 500)
     model.zoom = 4
     canvas.scrollWheel(with: scroll)
     XCTAssertEqual(model.pan.width, -scroll.scrollingDeltaX)
     XCTAssertEqual(model.pan.height, -scroll.scrollingDeltaY)
+    XCTAssertEqual(model.zoom, 4)
     let zoom = model.zoom
-    cg.flags = .maskAlternate
-    let zoomEvent = try XCTUnwrap(NSEvent(cgEvent: cg))
+    let zoomEvent = try wheel(horizontal: -350, vertical: 500, modifiers: .maskAlternate)
     let anchor = canvas.convert(zoomEvent.locationInWindow, from: nil)
     let documentPoint = model.viewport.documentPoint(at: anchor)
     canvas.scrollWheel(with: zoomEvent)

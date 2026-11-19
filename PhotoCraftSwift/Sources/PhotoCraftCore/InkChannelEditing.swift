@@ -96,14 +96,23 @@ public enum InkChannelCommand: Sendable {
         let edited: InkPlane
         switch operation {
         case .fill(let gray, let opacity):
-          edited = try Self.map(plane) { x, y, old in
-            let amount = document.selectionCoverage(x: x, y: y) * opacity
-            return old * (1 - amount) + (target.inverted ? 1 - gray : gray) * amount
+          let value = target.inverted ? 1 - gray : gray
+          if plane.requiresPagedArchive, document.selection == nil {
+            edited = try plane.mappingUniformly { $0 * (1 - opacity) + value * opacity }
+          } else {
+            edited = try Self.map(plane, selection: document.selection) { x, y, old in
+              let amount = document.selectionCoverage(x: x, y: y) * opacity
+              return old * (1 - amount) + value * amount
+            }
           }
         case .invert:
-          edited = try Self.map(plane) { x, y, old in
-            let amount = document.selectionCoverage(x: x, y: y)
-            return old * (1 - amount) + (1 - old) * amount
+          if plane.requiresPagedArchive, document.selection == nil {
+            edited = try plane.mappingUniformly { 1 - $0 }
+          } else {
+            edited = try Self.map(plane, selection: document.selection) { x, y, old in
+              let amount = document.selectionCoverage(x: x, y: y)
+              return old * (1 - amount) + (1 - old) * amount
+            }
           }
         case .stroke, .filter:
           let before = try plane.surface(inverted: target.inverted)
@@ -123,8 +132,11 @@ public enum InkChannelCommand: Sendable {
     }
     try result.validate(); document = result
   }
-  private static func map(_ plane: InkPlane, _ transform: (Int, Int, Float) -> Float) throws -> InkPlane {
-    try plane.mapped { x, y, value in unit(transform(x, y, value)) }
+  private static func map(_ plane: InkPlane, selection: IntRect?,
+    _ transform: (Int, Int, Float) -> Float) throws -> InkPlane {
+    let bounds = IntRect(x: 0, y: 0, width: plane.width, height: plane.height)
+    let area = (selection ?? bounds).clipped(toWidth: plane.width, height: plane.height)
+    return try plane.mapped(in: area) { x, y, value in unit(transform(x, y, value)) }
   }
 
 }

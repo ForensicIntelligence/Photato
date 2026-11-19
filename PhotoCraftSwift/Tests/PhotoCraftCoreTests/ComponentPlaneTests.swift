@@ -136,7 +136,7 @@ final class ComponentPlaneTests: XCTestCase {
     XCTAssertThrowsError(try InkPlane(width: 4096, height: 2049, depth: .u16))
     let data = (0..<10007).reduce(into: Data()) { bytes, i in let v = UInt16(truncatingIfNeeded: i * 511); bytes.append(UInt8(truncatingIfNeeded: v)); bytes.append(UInt8(v >> 8)) }
     let exact = try InkPlane(width: 10007, height: 1, depth: .u16, bytes: data)
-    XCTAssertEqual(exact.bytes, data)
+    XCTAssertEqual(try exact.bytes, data)
     XCTAssertEqual(try JSONDecoder().decode(InkPlane.self, from: JSONEncoder().encode(exact)), exact)
     XCTAssertEqual(try exact.mapped { _, _, value in value }.bytes, data)
     try capture("ink-legacy-u16", exact.bytes)

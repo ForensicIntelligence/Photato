@@ -67,6 +67,10 @@ extension Renderer {
       old.depth == d.depth, old.colorSpace == d.colorSpace, old.sourceICC == d.sourceICC,
       old.workingICC == d.workingICC
     else { return .full }
+    // Ink projections and channel-only canvases have no raster layer to
+    // invalidate. Their numerical planes are the inputs to the preview.
+    if old.inkMode != d.inkMode || old.isChannelOnly != d.isChannelOnly { return .full }
+    if d.isChannelOnly, old.alphaChannels?.first?.pixels != d.alphaChannels?.first?.pixels { return .full }
     if old.layers.count != d.layers.count {
       return try addedMaskedAdjustmentDamage(from: old, to: d) ?? .full
     }

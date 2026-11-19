@@ -11,7 +11,7 @@ enum InkChannelAPI {
     case "target": return target
     case "targets": var value = targets; if command != "ink.channel.select" && command != "ink.channel.visibility" { value["minItems"] = 1 }; return value
     case "action": return BrushAPI.enumeration(command == "ink.channel.manage" ? ["create", "delete", "duplicate", "move", "options"] : ["fill", "stroke", "invert", "filter", "selection"])
-    case "offset": return BrushAPI.number(0, Double(InkPlane.maximumPixels - 1), integer: true)
+    case "offset": return BrushAPI.number(0, Double(InkPlane.maximumDocumentPixels - 1), integer: true)
     case "count": return BrushAPI.number(1, 4096, integer: true)
     case "index": return BrushAPI.number(0, 55, integer: true)
     case "values": return ["type": "array", "minItems": 1, "maxItems": 4096, "items": BrushAPI.number()]
@@ -29,10 +29,10 @@ enum InkChannelAPI {
   }
   static var capabilities: [String: Any] { [
     "commands": commands, "targets": target,
-    "storage": ["sampleBlockSize": ComponentPlane.blockSamples, "copyOnWriteLevels": 4, "rawSampleBits": true, "implicitUniformFill": true, "maximumPixels": InkPlane.maximumPixels, "limits": "Ink editing, rendering, native encoding and PSD/PSB routes retain the existing8,388,608pixel limit. The internal paged numeric-plane foundation does not lift application document limits."],
+    "storage": ["sampleBlockSize": ComponentPlane.blockSamples, "copyOnWriteLevels": 4, "rawSampleBits": true, "implicitUniformFill": true, "maximumPixels": InkPlane.maximumDocumentPixels, "denseLimit": InkPlane.maximumPixels, "limits": "Large Multichannel files use paged numerical plates and indexed native archive version 93. Duotone and dense conversion retain their existing limits."],
     "readResultSchema": BrushAPI.object([
       "target": target, "offset": schema("offset", command: ""), "values": schema("values", command: ""),
-      "width": BrushAPI.number(1, Double(InkPlane.maximumPixels), integer: true), "height": BrushAPI.number(1, Double(InkPlane.maximumPixels), integer: true),
+      "width": BrushAPI.number(1, Double(Surface.maxDimension), integer: true), "height": BrushAPI.number(1, Double(Surface.maxDimension), integer: true),
       "depth": ["type": "integer", "enum": [8, 16]], "revision": ["type": "string"]], required: ["target", "offset", "values", "width", "height", "depth", "revision"]),
     "samples": "Read/write use retained normalized gray for Duotone and density for Multichannel (zero means no ink). At most4096 samples per page. Writes ignore selection and replace the requested numeric range. Fill/stroke/filter/invert use channel-view gray (zero is black/full ink), respect selection and preserve unedited plane bytes. Selection loading accepts exactly one target.",
     "targeting": "Explicit editing targets are independent of desktop selection. Empty select means all ink channels; empty visibility hides image plates without selecting another target. View changes do not add history. One visible Multichannel plate displays gray; multiple plates display their retained ink colors. No RGB layer is synthesized.",

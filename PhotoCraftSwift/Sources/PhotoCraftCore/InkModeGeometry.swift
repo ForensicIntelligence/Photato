@@ -14,7 +14,7 @@ extension InkPlane {
       && abs(transform.a) + abs(transform.c) == 1 && abs(transform.b) + abs(transform.d) == 1
     let direct = method == .nearest || grid
     let cache = direct ? nil : try surface()
-    var output = result.bytes
+    var output = try result.bytes
     let stride = depth == .u8 ? 1 : 2
     for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
       var p = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
@@ -22,9 +22,9 @@ extension InkPlane {
       guard p.x >= 0, p.y >= 0, p.x < Double(self.width), p.y < Double(self.height) else { continue }
       let destination = (y * width + x) * stride
       if direct {
-        let source = (Int(floor(p.y)) * self.width + Int(floor(p.x))) * stride
-        output[destination] = bytes[source]
-        if stride == 2 { output[destination + 1] = bytes[source + 1] }
+        let word = rawWord(at: Int(floor(p.y)) * self.width + Int(floor(p.x)))
+        output[destination] = UInt8(truncatingIfNeeded: word)
+        if stride == 2 { output[destination + 1] = UInt8(word >> 8) }
       } else {
         let p = RasterGeometry.sample(cache!, x: p.x, y: p.y, method: method, clampEdges: clampEdges)
         let value = unit(p.r * p.a + fill * (1 - p.a))

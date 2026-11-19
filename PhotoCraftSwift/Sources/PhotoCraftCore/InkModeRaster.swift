@@ -100,7 +100,7 @@ public struct DuotoneRaster: Codable, Equatable, Sendable {
   }
   public func validate() throws {
     try gray.validate(); try settings.validate()
-    guard gray.depth == .u8, (sourceModeData?.count ?? 0) <= 1_048_576 else {
+    guard gray.depth == .u8, !gray.requiresPagedArchive, (sourceModeData?.count ?? 0) <= 1_048_576 else {
       throw CraftError.invalid("Duotone requires one 8-bit grayscale plane and bounded mode metadata.")
     }
   }
@@ -179,10 +179,23 @@ public enum InkModeRaster: Codable, Equatable, Sendable {
     case .multichannel(let r): r.plates.reduce(0) { $0 + $1.samples.estimatedBytes + $1.name.utf8.count + 128 }
     }
   }
+  public var requiresPagedArchive: Bool {
+    if case .multichannel(let raster) = self { return raster.plates.first?.samples.requiresPagedArchive == true }
+    return false
+  }
   public func validate() throws { switch self { case .duotone(let r): try r.validate(); case .multichannel(let r): try r.validate() } }
   public func surface(region: IntRect? = nil) throws -> Surface {
     try validate(); try Task.checkCancellation()
     let region = (region ?? .init(x: 0, y: 0, width: width, height: height)).clipped(toWidth: width, height: height)
+    if case .multichannel(let raster) = self, requiresPagedArchive {
+      let implicit = Self.overprint(raster.plates) { plate in
+        Float(plate.samples.defaultWord) / (plate.samples.depth == .u8 ? 255 : 65535)
+      }
+      return try InkProjection.surface(width: width, height: height, depth: .f32, region: region,
+        implicit: implicit, storedRanges: raster.plates.map { $0.samples.storedSampleRanges }) { index in
+        Self.overprint(raster.plates) { $0.samples.value(at: index) }
+      }
+    }
     var result = try Surface(width: width, height: height, depth: .f32, colorEncoding: .sRGB)
     switch self {
     case .duotone(let raster):
@@ -192,16 +205,21 @@ public enum InkModeRaster: Codable, Equatable, Sendable {
       } }
     case .multichannel(let raster):
       for y in region.y..<(region.y + region.height) { try Task.checkCancellation(); for x in region.x..<(region.x + region.width) {
-        var p = Pixel.white
-        for plate in raster.plates {
-          let density = plate.samples.value(at: y * width + x), cover = plate.solidity * density, keep = 1 - cover
-          p.r = keep * p.r * (1 - density + density * plate.color.r) + cover * plate.color.r
-          p.g = keep * p.g * (1 - density + density * plate.color.g) + cover * plate.color.g
-          p.b = keep * p.b * (1 - density + density * plate.color.b) + cover * plate.color.b
-        }
+        let p = Self.overprint(raster.plates) { $0.samples.value(at: y * width + x) }
         result.setPixel(x: x, y: y, p)
       } }
     }
     return result
+  }
+
+  private static func overprint(_ plates: [InkPlate], sample: (InkPlate) -> Float) -> Pixel {
+    var p = Pixel.white
+    for plate in plates {
+      let density = sample(plate), cover = plate.solidity * density, keep = 1 - cover
+      p.r = keep * p.r * (1 - density + density * plate.color.r) + cover * plate.color.r
+      p.g = keep * p.g * (1 - density + density * plate.color.g) + cover * plate.color.g
+      p.b = keep * p.b * (1 - density + density * plate.color.b) + cover * plate.color.b
+    }
+    return p
   }
 }

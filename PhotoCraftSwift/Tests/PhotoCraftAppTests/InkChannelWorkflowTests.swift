@@ -17,7 +17,8 @@ final class InkChannelWorkflowTests: XCTestCase {
   func request(_ name: String, _ fields: [String: Any]) throws -> AutomationCommand { try InkModeControlsTests().command(name, fields) }
   func testNumericViewsRetainRawPlatesAndValidateTargets() throws {
     let storage = try XCTUnwrap(InkChannelAPI.capabilities["storage"] as? [String: Any])
-    XCTAssertEqual(storage["maximumPixels"] as? Int, 8_388_608)
+    XCTAssertEqual(storage["maximumPixels"] as? Int, InkPlane.maximumDocumentPixels)
+    XCTAssertEqual(storage["denseLimit"] as? Int, 8_388_608)
     XCTAssertEqual(storage["sampleBlockSize"] as? Int, 4096)
     XCTAssertEqual(storage["rawSampleBits"] as? Bool, true)
     for depth in [PixelDepth.u8, .u16] {

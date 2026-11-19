@@ -157,6 +157,9 @@ public enum Renderer {
       if area.width>0,area.height>0 {try builder.append(gray.cropped(to:area),atX:area.x,atY:area.y)}
       return try builder.finish()
     }
+    // Ink documents supply their own bounded numerical projection. The
+    // layered RGB compositor's mode limits do not apply to printing plates.
+    if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     let requested = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height)).clipped(toWidth: d.width, height: d.height)
     if d.layers.contains(where:{if case .adjustment(.modern(let value))=$0.content {return value.needsNeighborhood};return false}),
       requested != IntRect(x:0,y:0,width:d.width,height:d.height) {
@@ -172,7 +175,6 @@ public enum Renderer {
         let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
       try PagedCanvasRenderer.validateResources(d)
     }
-    if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     let (d,videoTransitions) = try preparedSources(d,videoTime:videoTime)
     if needsPaged {
       // Checked source preparation can turn a retained Warp/Smart Filter into

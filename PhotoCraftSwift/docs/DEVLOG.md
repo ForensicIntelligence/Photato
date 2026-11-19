@@ -638,7 +638,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 617 | 2026-11-19 | [Add the optional Workflow Guide](#dev-step-617) |
 | 618 | 2026-11-19 | [Save deep RGB Photoshop files without a merged preview](#dev-step-618) |
 | 619 | 2026-11-19 | [Rank Workflow Guide suggestions and highlight each step](#dev-step-619) |
+| 620 | 2026-11-19 | [Keep maximum-size Multichannel printing plates editable](#dev-step-620) |
 <!-- history-index:end -->
+
+<a id="dev-step-620"></a>
+
+## 2026-11-19 — Keep maximum-size Multichannel printing plates editable
+
+Photato previously refused Multichannel Photoshop files containing more than 8,388,608 pixels in a printing plate. Adobe's Large Document Format allows 300,000 pixels per side. This checkpoint extends flat Multichannel mode 7 at 8 and 16 bits per channel through both PSD and PSB geometry limits. An unchanged plate region retains one implicit numeric word. Modified blocks use the existing disk-backed component store. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+`InkPlane.swift`, `InkProjection.swift`, `InkModeRaster.swift` and `InkChannelEditing.swift` retain editable words and project sparse overprints and individual plate previews. Whole-plane Fill and Invert update the implicit word and existing blocks. `InkModeGeometry.swift` reads a nearest source word directly for eligible dense outputs. `Renderer.swift` routes ink rendering to the component preview. `RenderSnapshot.swift` invalidates the cached preview when an ink plane or a channel-only canvas changes. The first maximum-size viewport regression exposed the backing store's tile-origin requirement. The fixed projection writes aligned tiles and clips the sampled subrectangle, leaving the remainder transparent.
+
+`PSDMultichannelStorage.swift` and `PSDModePaging.swift` use paged numeric rows for large plates and sparse masks across Raw, PackBits, ZIP and ZIP with prediction. Integer inversion keeps each on-disk gray word exact, and the existing writer reuses unchanged rows. `NativeModeRaster.swift`, `ComponentPlaneArchive.swift`, `NativeIndexedArchive.swift`, `NativeChunkedArchive.swift` and `LayerStyle.swift` add paged printing plates to native archive version 93. Legacy archives retain their original decoding. `AutomationDocumentTransfers.swift`, `AutomationChannels.swift` and `AutomationInkChannels.swift` expose the two storage limits, exact sample ranges and archive negotiation through the shared native implementation. The published Adobe v2 schema stays intact.
+
+The first focused suite showed 192 failures in one independent legacy fixture test. The 619 executable reproduced the same assertions, and the checkpoint 512 record reported the same count. Each mismatch was the last plane's Selected Areas value against its stored gray. The independently generated files are unchanged. `PSDMultichannelTests.swift` now checks normalized coverage using the polarity already established in the Photoshop reference work from checkpoints 401 and 484. The second focused suite passed all 16 of these fixtures. It also exposed one stale native-version list assertion in `DocumentIOWorkflowTests.swift`, updated to require all 93 available versions. The earlier logs preserve both failures and the unrelated stale maximum-pixel expectation corrected in `InkChannelWorkflowTests.swift`. [Adobe alpha masks and display modes](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/alpha-channels-and-masks-in-photoshop.html).
+
+The standalone AppKit-independent reader opened separately authored 300,000 × 29 and 300,000 × 300,000 PackBits controls. The maximum control matched 5,184 independently specified 16-bit words in the ink and saved-mask regions, retained two preview tiles, and reopened the editable native archive. The 619 executable refused the wide control. A separate Python PackBits parser compared every sample in the regenerated 300,000-square PSB. It checked 600,000 rows and 180 billion words across the ink and mask planes. The parser decodes each distinct row and checks repeated packets by comparing every byte in those rows.
+
+The installed Photoshop version check timed out before a new file was sent. The previous Photoshop reference work establishes mask polarity. This checkpoint independently verifies format samples, edit history and native/API transfer. Live Photoshop comparison with the new maximum-size file, dense physical capacity, exact overprint appearance and maximum-size conversion and geometry remain open.
+
+The first maximum control loaded its component data but the renderer still applied the RGB compositor's mode limit. The repaired render and viewport paths passed all 87 selected Debug tests, including independent small PSD/PSB fixtures, all four compression methods at 300,000 pixels wide, the 300,000-square edit/Undo and unaligned viewport, archive integrity, and HTTP native-93 and PSB round trips. The final independent run opened the maximum-size 16-bit PSB in 6.086 seconds and saved the regenerated 5,628,000,255-byte PackBits PSB in 2.624 seconds on this Apple Silicon machine. The two independently checked export attempts produced the same SHA-256. These durations are for a sparse two-plane control.
+
+The checked source patch contains 28 feature inputs and one test-fixture correction and applies to the retained 619 source. Broader qualification completed with 1025 selected methods per architecture. The nine disposable fixtures and regenerated exports occupied 16,891,293,696 allocated bytes and were removed after verification. The scripts, inputs, hashes and receipts preserve their provenance. No user document was altered.
+
+The initial optimized Apple Silicon run showed transient wheel modifiers in the Sky Replacement tests. The repaired fixtures use private input and explicit modifiers. Both retained source manifests have 9,217 files and differ only in the test file. The initial failed receipt remains in the local evidence.
+
+All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. [Validation](SOURCE_PUBLICATION_620.md).
 
 <a id="dev-step-619"></a>
 

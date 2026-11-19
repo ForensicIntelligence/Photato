@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 620 — Keep maximum-size Multichannel printing plates editable
+
+PSB can retain sparse editable spots and masks up to 300,000 × 300,000 pixels. Large Photato archives use format 93.
+
+All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_620.md).
+
 ## 2026-11-19 — Step 619 — Rank Workflow Guide suggestions and highlight each step
 
 Open Photato > Settings > Workflow Guide to control visibility, launch behavior and the suggestion limit. Choose Show Me while a guide is open to repeat its highlight. Preferences are stored locally.
@@ -955,14 +963,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:619 -->
+<!-- current-status-step:620 -->
 ## Current development status — 19 November 2026
 
-The Workflow Guide ranks suggestions by task context, adds a configurable maximum, and flashes the walkthrough target.
+Large 8- and 16-bit Multichannel printing plates and masks open, remain editable, and save through the native paged PSD and PSB pipeline.
 
-All 972 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 619](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_619.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-619).
+[Source checkpoint 620](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_620.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-620).
 
 <!-- current-status:end -->
 

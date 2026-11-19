@@ -149,6 +149,10 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     try requireDensePlanes()
     return componentStorage[component].legacyBytes
   }
+  package func inkPlane(component: Int) throws -> InkPlane {
+    guard (0..<mode.componentCount).contains(component) else { throw CraftError.invalid("Ink source component not found.") }
+    return try InkPlane(storage: componentStorage[component])
+  }
   public func hasAlphaContent() throws -> Bool {
     try componentStorage[mode.componentCount].containsPositiveSample()
   }

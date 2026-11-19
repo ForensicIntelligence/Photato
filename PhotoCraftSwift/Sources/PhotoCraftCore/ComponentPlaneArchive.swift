@@ -111,7 +111,8 @@ enum ComponentPlaneArchive {
       defaultWord: plane.defaultWord, blocks: blocks, root: root, level: level)
   }
   static func decode(_ record: Record, context: any ComponentBlobDecoding,
-    budget: RasterDecodeBudget?, alpha: Bool = false, directory: URL? = nil) throws -> ComponentPlane {
+    budget: RasterDecodeBudget?, alpha: Bool = false, directory: URL? = nil,
+    chargeMappedSamplesSeparately: Bool = false) throws -> ComponentPlane {
     try Task.checkCancellation()
     guard context.supportsComponentPages, record.version == 1, (0...maximumLevel).contains(record.level) else {
       throw CraftError.invalid("Unsupported component archive version or context.")
@@ -136,7 +137,8 @@ enum ComponentPlaneArchive {
     let scratchBytes = sampleOffset + record.blocks * blockBytes
     // Legacy owned reads keep their full sample admission. Paged reads charge
     // bounded transfers and the presence bitmap, separately from mapped samples.
-    try budget?.reserve(bytes: context.usesMappedComponents ? bitmapBytes + (record.level + 1) * maximumPageBytes + blockBytes * 2 : plane.logicalBytes + (record.level + 1) * maximumPageBytes + blockBytes * 2)
+    let sampleBudget = context.usesMappedComponents || chargeMappedSamplesSeparately ? bitmapBytes : plane.logicalBytes
+    try budget?.reserve(bytes: sampleBudget + (record.level + 1) * maximumPageBytes + blockBytes * 2)
     try context.reserveComponentScratch(bytes: scratchBytes)
     let writer = try ComponentPlaneWriter(plane: plane, maximumBytes: scratchBytes, directory: directory)
     var previous = -1, total = 0

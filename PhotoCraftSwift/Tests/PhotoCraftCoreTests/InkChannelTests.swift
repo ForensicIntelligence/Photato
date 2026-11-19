@@ -28,7 +28,7 @@ final class InkChannelTests: XCTestCase {
       let result = session.document, after = try result.multichannelRaster()
       XCTAssertEqual(after.plates[0].samples.value(at: 1), 0); XCTAssertEqual(after.plates[0].samples.value(at: 2), depth == .u8 ? 128.0/255 : 32768.0/65535)
       XCTAssertTrue(Array(after.plates.dropFirst()) == Array(before.plates.dropFirst()))
-      XCTAssertEqual(after.plates[0].samples.bytes.suffix(depth == .u8 ? 5 : 10), before.plates[0].samples.bytes.suffix(depth == .u8 ? 5 : 10))
+      XCTAssertEqual(try after.plates[0].samples.bytes.suffix(depth == .u8 ? 5 : 10), try before.plates[0].samples.bytes.suffix(depth == .u8 ? 5 : 10))
       let reopened = try NativeArchive.decode(NativeArchive.encodeChunked(result)); XCTAssertTrue(reopened == result)
       try session.undo(); XCTAssertTrue(session.document == original); try session.redo(); XCTAssertTrue(session.document == result)
     }
@@ -43,7 +43,7 @@ final class InkChannelTests: XCTestCase {
       for index in [0,2] {
         XCTAssertEqual(filled.plates[index].samples.value(at: 1), 1)
         XCTAssertEqual(filled.plates[index].samples.value(at: 2), depth == .u8 ? 192.0/255 : 33024.0/65535)
-        XCTAssertEqual(filled.plates[index].samples.bytes.suffix(depth == .u8 ? 5 : 10), before.plates[index].samples.bytes.suffix(depth == .u8 ? 5 : 10))
+        XCTAssertEqual(try filled.plates[index].samples.bytes.suffix(depth == .u8 ? 5 : 10), try before.plates[index].samples.bytes.suffix(depth == .u8 ? 5 : 10))
       }
       XCTAssertEqual(filled.plates[1], before.plates[1])
       d.setCoverageSelection(nil); try Command.inkChannel(.edit([.plate(ids[0])], .invert)).apply(to: &d)

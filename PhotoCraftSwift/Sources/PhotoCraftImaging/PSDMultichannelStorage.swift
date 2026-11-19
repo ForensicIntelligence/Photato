@@ -18,11 +18,7 @@ enum PSDMultichannelStorage {
     }
     let (quickIndex,initiallyEmpty)=try PSDAuxiliaryChannels.quickMaskInfo(blocks,first:0,count:channels)
     let names = try PSDInkChannels.names(blocks, count: channels), displays = try PSDInkChannels.displays(blocks, count: channels)
-    // Printing plates still use dense numerical InkPlane storage. Auxiliary masks
-    // use paged Surface storage and must not inherit that plate-only size limit.
-    if displays.contains(where: { $0.kind == 2 }), width > InkPlane.maximumPixels / height {
-      throw CraftError.unsupported("Multichannel printing plates currently support at most8,388,608 pixels; auxiliary-only selection files use paged storage.")
-    }
+    let large = width > InkPlane.maximumPixels / height
     let context = try paging ?? PSDRasterPaging.Context(heapByteLimit: 512 * 1024 * 1024)
     var identifiers: [UInt32] = []
     if let block = blocks.first(where: { $0.id == 1053 }) {
@@ -60,31 +56,55 @@ enum PSDMultichannelStorage {
     for channel in 0..<channels {
       try Task.checkCancellation()
       let info = displays[channel], id = UUID()
+      // Inspection of a seekable channel must start within that plane's own
+      // row table. Sequential compression already advances plane by plane.
+      let input = large && reader.hasSeekableRows ? try reader.detachSeekablePlanes(count: 1, height: height)[0] : reader
       if info.kind == 2 {
-        var bytes = Data(); bytes.reserveCapacity(width * height * (depth / 8))
-        for _ in 0..<height {
-          try Task.checkCancellation(); let row = try reader.nextRow()
-          if depth == 8 { bytes.append(contentsOf: row.map { 255 - $0 }) }
-          else { for x in 0..<width {
-            let input = Int(row[x * 2]) << 8 | Int(row[x * 2 + 1]), value = 65535 - input
-            bytes.append(UInt8(value & 255)); bytes.append(UInt8(value >> 8))
-          } }
+        let plane: InkPlane
+        if large {
+          plane = try PSDModePaging.inkPlane(input, width: width, height: height, depth: pixelDepth, context: context)
+        } else {
+          var bytes = Data()
+          bytes.reserveCapacity(width * height * (depth / 8))
+          for _ in 0..<height {
+            try Task.checkCancellation()
+            let row = try input.nextRow()
+            if depth == 8 {
+              bytes.append(contentsOf: row.map { 255 - $0 })
+            } else {
+              for x in 0..<width {
+                let word = UInt16(row[x * 2]) << 8 | UInt16(row[x * 2 + 1])
+                let density = UInt16.max - word
+                bytes.append(UInt8(truncatingIfNeeded: density))
+                bytes.append(UInt8(density >> 8))
+              }
+            }
+          }
+          plane = try InkPlane(width: width, height: height, depth: pixelDepth, bytes: bytes)
         }
-        let plane = try InkPlane(width: width, height: height, depth: pixelDepth, bytes: bytes)
         plates.append(.init(id: id, name: names[channel], color: info.color, solidity: info.opacity, samples: plane))
         if !identifiers.isEmpty {var value=PSDWriter();value.n(Int(identifiers[channel]),4);metadata[PSDInkChannels.identifierKey(id)]=value.data}
       } else {
         let tiles = ((width + 63) / 64) * ((height + 63) / 64)
         try context.admitRaster(bytes: tiles * 65536)
-        let pixels = try PSDRasterPaging.layer(width: width, height: height, depth: pixelDepth,
-          components: 1, fill: .black, mask: true, clampMask: false, skipImplicitDefault: true, context: context) { _ in
-            var row=try reader.nextRow()
-            if info.kind==0 {
-              if depth==8 {row=row.map {255-$0}}
-              else {for x in 0..<width {let at=x*2,value=65535-(Int(row[at])<<8|Int(row[at+1]));row[at]=UInt8(value>>8);row[at+1]=UInt8(value&255)}}
+        let pixels: Surface
+        if large {
+          pixels = try PSDRasterPaging.sparseLayer(width: width, height: height, depth: pixelDepth,
+            channels: [input], context: context, invertMask: info.kind == 0)
+        } else {
+          pixels = try PSDRasterPaging.layer(width: width, height: height, depth: pixelDepth,
+            components: 1, fill: .black, mask: true, clampMask: false, skipImplicitDefault: true, context: context) { _ in
+              var row = try input.nextRow()
+              if info.kind == 0 {
+                if depth == 8 { row = row.map { 255 - $0 } }
+                else { for x in 0..<width {
+                  let at = x * 2, value = 65535 - (Int(row[at]) << 8 | Int(row[at + 1]))
+                  row[at] = UInt8(value >> 8); row[at + 1] = UInt8(value & 255)
+                } }
+              }
+              return [row]
             }
-            return [row]
-          }
+        }
         var options = ChannelDisplayOptions(); options.color = info.color; options.opacity = info.opacity
         options.indicates = info.kind == 0 ? .selectedAreas : .maskedAreas
         var alpha = AlphaChannel(id: id, name: names[channel], pixels: pixels, options: options)
@@ -95,6 +115,7 @@ enum PSDMultichannelStorage {
       }
       if !info.raw.isEmpty { metadata[PSDInkChannels.key(id)] = info.raw }
     }
+    try reader.discardRemaining()
     var document = try CraftDocument(width: width, height: height, depth: pixelDepth, name: name)
     if plates.isEmpty {
       guard !alphas.isEmpty else{throw CraftError.invalid("Multichannel document has no channels.")}
@@ -148,12 +169,16 @@ enum PSDMultichannelStorage {
       try output.finishLength(mark,width:format.sectionLengthBytes)
     }
     let storedAuxiliary = alphas.map(PSDAuxiliaryChannels.storedRows)
+    let storedInk: [PSDNativeRowSupport?] = try plates.map { plate in
+      try plate.samples.requiresPagedArchive ? PSDNativeRowSupport(width: document.width, height: document.height,
+        streams: [plate.samples.storedSampleRanges]) : nil
+    }
     let repeatedRows: ((Int) -> Int)?
-    if storedAuxiliary.contains(where: { $0 != nil }) {
+    if storedInk.contains(where: { $0 != nil }) || storedAuxiliary.contains(where: { $0 != nil }) {
       repeatedRows = { row in
-        let channel = row / document.height - plates.count
-        guard channel >= 0 else { return 1 }
-        return storedAuxiliary[channel]?.repeatedRows(from: row % document.height) ?? 1
+        let channel = row / document.height, y = row % document.height
+        if channel < plates.count { return storedInk[channel]?.repeatedRows(from: y) ?? 1 }
+        return storedAuxiliary[channel - plates.count]?.repeatedRows(from: y) ?? 1
       }
     } else { repeatedRows = nil }
     try PSDChannelWriter.write(width: document.width, height: document.height, depth: document.bitsPerChannel,
@@ -164,11 +189,14 @@ enum PSDMultichannelStorage {
         if let stored = storedAuxiliary[index] { return try stored.row(y, channel: 0, depth: document.bitsPerChannel) }
         return try PSDAuxiliaryChannels.row(alphas[index], y: y, depth: document.bitsPerChannel)
       }
+      let plane = plates[channel].samples
+      let maximum: UInt32 = document.depth == .u8 ? 255 : 65535
+      if let stored = storedInk[channel] {
+        return try stored.row(y, depth: document.bitsPerChannel) { index in Float(maximum - plane.rawWord(at: index)) / Float(maximum) }
+      }
       var bytes: [UInt8] = []; bytes.reserveCapacity(document.width * (document.bitsPerChannel / 8))
       for x in 0..<document.width {
-        let value: Int
-        let plane = plates[channel].samples, i = y * document.width + x
-        value = (document.depth == .u8 ? 255 : 65535) - Int(plane.rawWord(at: i))
+        let value = maximum - plane.rawWord(at: y * document.width + x)
         if document.depth == .u16 { bytes.append(UInt8(value >> 8)) }
         bytes.append(UInt8(value & 255))
       }

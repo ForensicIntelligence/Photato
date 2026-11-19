@@ -94,4 +94,30 @@ final class MultichannelFormatWorkflowTests: XCTestCase {
       }
     } }
   }
+
+  @MainActor func testLargeMultichannelNativeDownloadUsesVersion93AndKeepsThePrintPlate() async throws {
+    let width = 4097, height = 2049, depth = PixelDepth.u16
+    let plate = try InkPlane(width: width, height: height, depth: depth, value: 0.25)
+      .replacing(offset: width * height - 1, values: [0.875])
+    let ink = InkPlate(name: "Owned printing plate", color: .black, samples: plate)
+    let original = try CraftDocument(width: width, height: height, depth: depth)
+      .replacingInkMode(.multichannel(MultichannelRaster(plates: [ink])))
+    let files = DocumentIOWorkflowTests()
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, doc in
+      doc.store.session = EditorSession(document: original)
+      try service.share(doc)
+      service.setDocumentTransfersEnabled(true)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let path = "/v1/documents/\(id)/file.photato"
+      let incompatible = try await files.request(service, path: path, headers: ["X-Photato-Archive-Version": "92"])
+      XCTAssertEqual(incompatible.0.statusCode, 422)
+      let compatible = try await files.request(service, path: path, headers: ["X-Photato-Archive-Version": "93"])
+      XCTAssertEqual(compatible.0.statusCode, 200, String(decoding: compatible.1, as: UTF8.self))
+      XCTAssertEqual(try NativeArchive.decode(compatible.1), original)
+      let psb = try await files.request(service, path: "/v1/documents/\(id)/file.psb",
+        headers: ["X-Photato-Export-Options": #"{"psdCompositeCompression":"rle"}"#])
+      XCTAssertEqual(psb.0.statusCode, 200)
+      try assertPreserved(PSDCodec.read(psb.1), original)
+    }
+  }
 }

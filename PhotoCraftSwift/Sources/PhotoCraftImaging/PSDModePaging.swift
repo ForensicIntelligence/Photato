@@ -5,7 +5,7 @@ import PhotoCraftCore
 /// Keep original numerical separations independently of their RGB display cache.
 /// Public PSD words are big endian; integer CMYK ink inversion is exact.
 enum PSDModePaging {
-  private static func words(_ row:[UInt8],width:Int,depth:PixelDepth,mode:DocumentColorMode,component:Int) throws -> [UInt32] {
+  private static func words(_ row:[UInt8],width:Int,depth:PixelDepth,inverted:Bool) throws -> [UInt32] {
     let stride=depth == .u8 ? 1:depth == .u16 ? 2:4
     guard row.count == width*stride else {throw CraftError.invalid("Incomplete Photoshop component row.")}
     var result=[UInt32](repeating:0,count:width)
@@ -13,7 +13,7 @@ enum PSDModePaging {
       if x%4096 == 0 {try Task.checkCancellation()}
       var word:UInt32=0
       for b in 0..<stride {word=(word<<8)|UInt32(row[x*stride+b])}
-      if mode == .cmyk,component<mode.componentCount {word=(depth == .u8 ? 255:65535)-word}
+      if inverted {word=(depth == .u8 ? 255:65535)-word}
       result[x]=word
     }
     return result
@@ -25,7 +25,7 @@ enum PSDModePaging {
       profile:descriptor.profile,intent:descriptor.intent,backing:context.backing)
   }
   private static func appendSparsePlane(_ reader: PSDChannelReader, component: Int,
-    width: Int, height: Int, depth: PixelDepth, mode: DocumentColorMode,
+    width: Int, height: Int, depth: PixelDepth, inverted: Bool,
     to output: NativeModeRaster.RowBuilder) throws {
     let sampleBytes = depth == .u8 ? 1 : depth == .u16 ? 2 : 4
     let count = min(height, 7)
@@ -43,7 +43,7 @@ enum PSDModePaging {
         }
       }
     }
-    let seed = try words(sample, width: 1, depth: depth, mode: mode, component: component)[0]
+    let seed = try words(sample, width: 1, depth: depth, inverted: inverted)[0]
     try output.seedImplicitWord(seed, component: component)
     let expected = PSDChannelWriter.repeating(Data(sample), count: width)
     func matches(_ row: [UInt8]) -> Bool {
@@ -55,7 +55,7 @@ enum PSDModePaging {
     }
     func append(_ row: [UInt8]?) throws {
       if let row {
-        try output.appendRow(words(row, width: width, depth: depth, mode: mode, component: component), component: component)
+        try output.appendRow(words(row, width: width, depth: depth, inverted: inverted), component: component)
       } else {
         try output.appendImplicitRow(component: component)
       }
@@ -76,10 +76,10 @@ enum PSDModePaging {
     for component in 0..<count {
       guard let plane = planes[component] else { throw CraftError.invalid("Missing Photoshop component plane.") }
       try appendPlane(plane, component: component, width: width, height: height, depth: depth,
-        mode: descriptor.mode, to: output)
+        inverted: descriptor.mode == .cmyk, to: output)
     }
     if let alpha = planes[-1] {
-      try appendPlane(alpha, component: count, width: width, height: height, depth: depth, mode: descriptor.mode, to: output)
+      try appendPlane(alpha, component: count, width: width, height: height, depth: depth, inverted: false, to: output)
     } else {
       try output.fill(component: count, word: depth == .f32 ? Float(1).bitPattern : depth == .u8 ? 255 : 65535)
     }
@@ -92,7 +92,7 @@ enum PSDModePaging {
       ? try reader.detachSeekablePlanes(count: imageChannels, height: height) : nil
     for component in 0..<imageChannels {
       try appendPlane(views?[component] ?? reader, component: component, width: width, height: height,
-        depth: depth, mode: descriptor.mode, to: output)
+        depth: depth, inverted: descriptor.mode == .cmyk && component < descriptor.mode.componentCount, to: output)
     }
     if imageChannels == descriptor.mode.componentCount {
       try output.fill(component:descriptor.mode.componentCount,word:depth == .f32 ? Float(1).bitPattern:depth == .u8 ? 255:65535)
@@ -107,15 +107,27 @@ enum PSDModePaging {
   }
 
   private static func appendPlane(_ reader: PSDChannelReader, component: Int,
-    width: Int, height: Int, depth: PixelDepth, mode: DocumentColorMode,
+    width: Int, height: Int, depth: PixelDepth, inverted: Bool,
     to output: NativeModeRaster.RowBuilder) throws {
     if width > NativeModeRaster.maximumPixels / height {
-      try appendSparsePlane(reader, component: component, width: width, height: height, depth: depth, mode: mode, to: output)
+      try appendSparsePlane(reader, component: component, width: width, height: height, depth: depth, inverted: inverted, to: output)
     } else {
       for _ in 0..<height {
-        try output.appendRow(words(reader.nextRow(), width: width, depth: depth, mode: mode, component: component),
+        try output.appendRow(words(reader.nextRow(), width: width, depth: depth, inverted: inverted),
           component: component)
       }
     }
+  }
+
+  /// Multichannel uses the same bounded numeric builder as the other native
+  /// modes. File grayscale is inverted into the printing plate's ink density.
+  static func inkPlane(_ reader: PSDChannelReader, width: Int, height: Int, depth: PixelDepth,
+    context: PSDRasterPaging.Context) throws -> InkPlane {
+    try context.admitComponents(width: width, height: height, count: 2, bytesPerSample: depth == .u8 ? 1 : 2)
+    let output = try NativeModeRaster.RowBuilder(width: width, height: height, mode: .grayscale,
+      depth: depth, backing: context.backing)
+    try appendPlane(reader, component: 0, width: width, height: height, depth: depth, inverted: true, to: output)
+    try output.fill(component: 1, word: depth == .u8 ? 255 : 65535)
+    return try output.finish().inkPlane(component: 0)
   }
 }

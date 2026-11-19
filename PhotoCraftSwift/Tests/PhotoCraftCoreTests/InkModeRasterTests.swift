@@ -7,14 +7,14 @@ final class InkModeRasterTests: XCTestCase {
   func testPlaneSamplesDepthByteOrderAndBounds() throws {
     let bytes = Data([99, 0, 128, 255, 99])
     let eight = try InkPlane(width: 3, height: 1, bytes: bytes[1..<4])
-    XCTAssertEqual(eight.bytes, Data([0, 128, 255]))
+    XCTAssertEqual(try eight.bytes, Data([0, 128, 255]))
     let sixteen = try eight.converted(to: .u16)
-    XCTAssertEqual(sixteen.bytes, Data([0, 0, 128, 128, 255, 255]))
+    XCTAssertEqual(try sixteen.bytes, Data([0, 0, 128, 128, 255, 255]))
     XCTAssertEqual(try sixteen.converted(to: .u8), eight)
     XCTAssertEqual(try sixteen.converted(to: .u16, inverted: true).bytes, Data([255, 255, 127, 127, 0, 0]))
     let edited = try sixteen.replacing(offset: 1, values: [1])
-    XCTAssertEqual(edited.bytes, Data([0, 0, 255, 255, 255, 255]))
-    XCTAssertEqual(sixteen.bytes, Data([0, 0, 128, 128, 255, 255]))
+    XCTAssertEqual(try edited.bytes, Data([0, 0, 255, 255, 255, 255]))
+    XCTAssertEqual(try sixteen.bytes, Data([0, 0, 128, 128, 255, 255]))
     for values: [Float] in [[.nan], [.infinity], [-0.1], [1.1]] { XCTAssertThrowsError(try eight.replacing(offset: 0, values: values)) }
     XCTAssertThrowsError(try eight.replacing(offset: -1, values: [0]))
     XCTAssertThrowsError(try eight.replacing(offset: 3, values: [0]))
@@ -54,9 +54,9 @@ final class InkModeRasterTests: XCTestCase {
     let raster = try DuotoneRaster(gray: source, settings: .init(inks: [ink]))
     var separated = try raster.separations()
     XCTAssertEqual(separated.plates[0].id, ink.id); XCTAssertEqual(separated.plates[0].name, ink.name)
-    XCTAssertEqual(separated.plates[0].samples.bytes, Data([128, 63, 0]))
+    XCTAssertEqual(try separated.plates[0].samples.bytes, Data([128, 63, 0]))
     separated.plates[0].samples = try separated.plates[0].samples.replacing(offset: 0, values: [0])
-    XCTAssertEqual(raster.gray, source); XCTAssertEqual(separated.plates[0].samples.bytes, Data([0, 63, 0]))
+    XCTAssertEqual(raster.gray, source); XCTAssertEqual(try separated.plates[0].samples.bytes, Data([0, 63, 0]))
     XCTAssertEqual(try separated.plates[0].samples.surface(inverted: true).pixel(x: 0, y: 0), .white)
   }
   func testMultichannelInkDensitySolidityOrderAndSixteenBitStorage() throws {
@@ -70,7 +70,7 @@ final class InkModeRasterTests: XCTestCase {
     XCTAssertEqual(try InkModeRaster.multichannel(covered).surface().pixel(x: 0, y: 0), magenta.color)
     let reordered = try MultichannelRaster(plates: [magenta, cyan])
     XCTAssertEqual(try InkModeRaster.multichannel(reordered).surface().pixel(x: 0, y: 0), Pixel(0, 0, 1))
-    XCTAssertEqual(covered.plates[0].samples.bytes, Data([255, 255])); XCTAssertEqual(covered.depth, .u16)
+    XCTAssertEqual(try covered.plates[0].samples.bytes, Data([255, 255])); XCTAssertEqual(covered.depth, .u16)
   }
   func testModelValidationAndCodablePreserveInkIdentityAndBytes() throws {
     let source = try gray([1, 2, 253, 254])
@@ -120,7 +120,7 @@ final class InkModeRasterTests: XCTestCase {
       let expectedRGB = try Data(contentsOf: url.deletingLastPathComponent().appendingPathComponent(item.name + ".rgb"))
       XCTAssertEqual(rgb, expectedRGB, "Rust ink display differs: \(item.name)")
       let separated = try raster.separations()
-      let plates = separated.plates.reduce(into: Data()) { $0.append($1.samples.bytes) }
+      let plates = try separated.plates.reduce(into: Data()) { $0.append(try $1.samples.bytes) }
       let expectedPlates = try Data(contentsOf: url.deletingLastPathComponent().appendingPathComponent(item.name + ".plates"))
       XCTAssertEqual(plates, expectedPlates, "Rust ink plates differ: \(item.name)")
     }

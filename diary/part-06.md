@@ -647,6 +647,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 617 | [Add the optional Workflow Guide](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) |
 | 2026-11-19 | 618 | [Save deep RGB Photoshop files without a merged preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) |
 | 2026-11-19 | 619 | [Rank Workflow Guide suggestions and highlight each step](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) |
+| 2026-11-19 | 620 | [Keep maximum-size Multichannel printing plates editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

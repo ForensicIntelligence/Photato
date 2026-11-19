@@ -82,7 +82,9 @@ final class LargeSelectionFileWorkflowTests: XCTestCase {
       try self.capture(psb.1, "large-selection-api.psb")
       let capabilities = try XCTUnwrap(ChannelAPI.photoshopCapabilities["standaloneSelections"] as? [String: Any])
       XCTAssertEqual(capabilities["maximumPSBside"] as? Int, 300000)
-      XCTAssertEqual(capabilities["printingPlateMaximumPixels"] as? Int, 8_388_608)
+      XCTAssertEqual(capabilities["printingPlateMaximumPixels"] as? Int, InkPlane.maximumDocumentPixels)
+      XCTAssertEqual(capabilities["printingPlateDenseMaximumPixels"] as? Int, 8_388_608)
+      XCTAssertEqual(capabilities["printingPlateNativeVersion"] as? Int, 93)
       XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
     }
   }

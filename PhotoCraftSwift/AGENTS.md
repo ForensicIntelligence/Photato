@@ -1,3 +1,5 @@
+**Source checkpoint 620.** Large 8- and 16-bit Multichannel printing plates and masks open, remain editable, and save through the native paged PSD and PSB pipeline. [Qualification](docs/SOURCE_PUBLICATION_620.md).
+
 **Source checkpoint 619.** The Workflow Guide ranks suggestions by task context, adds a configurable maximum, and flashes the walkthrough target. [Qualification](docs/SOURCE_PUBLICATION_619.md).
 
 **Source checkpoint 618.** Eligible editable RGB8, RGB16, and RGB32 PSD and PSB files can omit the merged preview while keeping saved alpha, spot and Quick Mask planes. [Qualification](docs/SOURCE_PUBLICATION_618.md).

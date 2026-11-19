@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **619** · The 10 most recent entries, newest first.
+Source build **620** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 620 — Keep maximum-size Multichannel printing plates editable
+
+PSB can retain sparse editable spots and masks up to 300,000 × 300,000 pixels. Large Photato archives use format 93.
+
+All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_620.md).
 
 ## 2026-11-19 — Step 619 — Rank Workflow Guide suggestions and highlight each step
 
@@ -75,11 +83,3 @@ The native reader opened a synthetic 300,000 × 300,000 grayscale PSB in 4.22 se
 A smaller 1,201 × 30,001 PSB retained all 10,593 checked alpha samples within a 768 KiB scratch allowance. Build 610 exceeded that allowance. The test set covers RGB8 Raw and PackBits and RGB16 and RGB32 PackBits. All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md).
-
-## 2026-11-19 — Step 610 — Read saved Photoshop channels without a merged preview
-
-A synthetic sparse 300,000 × 300,000 PSB opened with the exact editable raster in 3.5 ms on Apple Silicon Debug. The reader skipped 270 GB of unused logical raw preview data.
-
-The native reader matched all 4,016 editable-layer and saved-channel sample words across 80 independently assembled PSD and PSB controls. A loopback regression covered Photato import, truncated-input rejection, and both job interfaces. All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-610) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_610.md).
