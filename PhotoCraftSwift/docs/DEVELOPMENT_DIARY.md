@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 574 — Add Stamp Layers and Stamp Visible
+
+Stamp Layers combines selected artwork on a new layer. Stamp Visible does the same for visible artwork. Both preserve the original layers and can be undone in one step. Photato exposes the shortcuts in the Layer menu and supports the same operation in recorded Actions and through the API.
+
+The saved Photoshop references match at 8, 16 and 32 bits per channel. The test documents include locked layers, clipping, hidden layers and selections across different groups. All 745 selected tests passed in each of the three configurations. Both slices of the universal validation archive passed their offscreen workspace checks.
+
+[Detailed record](DEVLOG.md#dev-step-574) · [Validation](SOURCE_PUBLICATION_574.md).
+
 ## 2026-11-18 — Step 573 — Match HDR Normal rounding at the Float32 underflow boundary
 
 On Intel, very small color contributions can disappear during 32-bit Normal compositing. Photato now matches the measured rounding, including products just below the smallest normal Float32 value. The Apple Silicon build keeps its fused calculation.
@@ -579,14 +587,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:573 -->
+<!-- current-status-step:574 -->
 ## Current development status — 18 November 2026
 
-Intel HDR Normal compositing now matches the measured rounding when a color contribution underflows. The renderer also preserves Photoshop's opaque-source copy rules for ordinary and clipped layers.
+Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API.
 
-All 57,504 straight words from each architecture's new comparisons match Photoshop. All 708 selected tests passed in Debug and both optimized builds. The macOS 14+ local universal archive passed its offscreen checks. Merge Visible, very low alpha and independent HDR clipping still need work.
+All 745 selected tests passed in Debug and both optimized builds. The local universal archive passed the offscreen checks and declares macOS 14 as its minimum. Interactive shortcuts, maximum-size sparse stamping and broader Photoshop parity remain open.
 
-[Source checkpoint 573](SOURCE_PUBLICATION_573.md) · [Detailed record](DEVLOG.md#dev-step-573).
+[Source checkpoint 574](SOURCE_PUBLICATION_574.md) · [Detailed record](DEVLOG.md#dev-step-574).
 
 <!-- current-status:end -->
 
@@ -1366,6 +1374,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 571 | [Fix HDR PSD and PSB compression for Photoshop](DEVLOG.md#dev-step-571) |
 | 2026-11-18 | 572 | [Match Intel HDR Normal layer and group compositing](DEVLOG.md#dev-step-572) |
 | 2026-11-18 | 573 | [Match HDR Normal rounding at the Float32 underflow boundary](DEVLOG.md#dev-step-573) |
+| 2026-11-18 | 574 | [Add Stamp Layers and Stamp Visible](DEVLOG.md#dev-step-574) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

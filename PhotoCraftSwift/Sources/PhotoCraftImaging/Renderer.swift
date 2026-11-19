@@ -139,13 +139,14 @@ public enum Renderer {
   }
   /// Large embedded RGB source caches share normal preparation and composition,
   /// but retain output pages even below the ordinary36MP dense threshold.
-  static func compositePaged(_ d:CraftDocument)throws->Surface {
+  static func compositePaged(_ d: CraftDocument, forStamp: Bool = false) throws -> Surface {
     try d.validate()
     guard d.colorMode == .rgb,d.inkMode==nil,d.restrictedMode==nil else {throw CraftError.unsupported("Paged source composition requires RGB.")}
-    return try compositeValidated(d,preferPaged:true)
+    return try compositeValidated(d, preferPaged: true, forStamp: forStamp)
   }
   static func compositeValidated(
-    _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil,preferPaged:Bool = false
+    _ d: CraftDocument, region: IntRect? = nil, inputTarget: UUID? = nil, videoTime: Double? = nil,
+    preferPaged: Bool = false, forStamp: Bool = false
   ) throws -> Surface {
     try Task.checkCancellation()
     if d.isChannelOnly,let channel=d.alphaChannels?.first {
@@ -167,7 +168,7 @@ public enum Renderer {
     let needsPaged=preferPaged || requested.width * requested.height > Surface.maximumDensePixels
       || (d.colorMode == .rgb && groupCompositionExceedsBudget(d,region:requested,video:videoTime != nil))
     if needsPaged {
-      if (!preferPaged || requested.width*requested.height>Surface.maximumDensePixels),inputTarget == nil, videoTime == nil,
+      if !forStamp, (!preferPaged || requested.width*requested.height>Surface.maximumDensePixels),inputTarget == nil, videoTime == nil,
         let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
       try PagedCanvasRenderer.validateResources(d)
     }
@@ -177,15 +178,15 @@ public enum Renderer {
       // Checked source preparation can turn a retained Warp/Smart Filter into
       // an ordinary sparse raster. Reuse the exact pointwise compositor rather
       // than visiting every patch of a mostly implicit maximum-size canvas.
-      if requested == IntRect(x:0,y:0,width:d.width,height:d.height),
+      if !forStamp, requested == IntRect(x:0,y:0,width:d.width,height:d.height),
         requested.width*requested.height>Surface.maximumDensePixels,
         inputTarget==nil,videoTransitions==nil,
         let sparse=try SparseCanvasRenderer.composite(d){return sparse}
       return try PagedCanvasRenderer.composite(d, region: requested, inputTarget: inputTarget,
-        video: videoTransitions)
+        video: videoTransitions, forStamp: forStamp)
     }
     return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
-      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d):nil)
+      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d):nil, forStamp: forStamp)
   }
   /// Prepare immutable sources once for a composition or streamed export snapshot.
   /// Callers validate the original document before entering this shared preparation.
@@ -214,10 +215,18 @@ public enum Renderer {
   }
   /// Sources/transitions are prepared once before bounded patch composition.
   static func compositePrepared(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
-    video videoTransitions: VideoTransitionRenderContext? = nil, facts: CompositionFacts? = nil
+    video videoTransitions: VideoTransitionRenderContext? = nil, facts: CompositionFacts? = nil,
+    forStamp: Bool = false
   ) throws -> Surface {
-    let output = try emptyCanvas(d)
+    let emptySample = forStamp ? Pixel(1, 1, 1, 0) : .clear
+    var output = try emptyCanvas(d, fill: emptySample)
     guard region.width > 0, region.height > 0 else { return output }
+    if forStamp, d.depth != .f32, d.layers.allSatisfy({ layer in
+      !layer.isGroup && layer.parentID == nil && !layer.isClipped && layer.affine == nil && layer.style == nil
+    }), let patch = try LayerMerge.integerModeComposite(d, region: region, emptySample: emptySample) {
+      try output.mapPixels(in: region) { x, y, _ in patch.pixel(x: x - region.x, y: y - region.y) }
+      return output
+    }
     if inputTarget == nil, videoTransitions == nil,
       let linear = try RGB32NormalRenderer.composite(d, over: output, region: region, facts: facts)
     {
@@ -229,7 +238,7 @@ public enum Renderer {
           "This grouped document exceeds the current CPU compositing memory budget.")
       }
       if inputTarget == nil, videoTransitions == nil,
-        let linear = try RGB32HierarchyRenderer.composite(d, region: region, facts: facts)
+        let linear = try RGB32HierarchyRenderer.composite(d, region: region, facts: facts, emptySample: emptySample)
       {
         return linear
       }
@@ -237,15 +246,15 @@ public enum Renderer {
         d.children(of: nil), in: d, over: output,
         cache: GroupRenderCache(inputTarget: inputTarget, region: region, video:videoTransitions, facts:facts))
     }
-    if inputTarget == nil, let toned = try FlatToneRenderer.composite(d, region: region) {
+    if !forStamp, inputTarget == nil, let toned = try FlatToneRenderer.composite(d, region: region) {
       return toned
     }
     return try compositeFlat(
       d.layers, in: d, over: output, inputTarget: inputTarget, region: region, facts: facts)
   }
-  static func emptyCanvas(_ d: CraftDocument) throws -> Surface {
+  static func emptyCanvas(_ d: CraftDocument, fill: Pixel = .clear) throws -> Surface {
     try Surface(
-      width: d.width, height: d.height, depth: .f32,
+      width: d.width, height: d.height, depth: .f32, fill: fill,
       colorEncoding: d.depth == .f32 ? .linearRGB : .sRGB)
   }
   static func compositeFlat(

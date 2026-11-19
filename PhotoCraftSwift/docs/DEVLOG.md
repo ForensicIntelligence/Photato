@@ -592,7 +592,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 571 | 2026-11-18 | [Fix HDR PSD and PSB compression for Photoshop](#dev-step-571) |
 | 572 | 2026-11-18 | [Match Intel HDR Normal layer and group compositing](#dev-step-572) |
 | 573 | 2026-11-18 | [Match HDR Normal rounding at the Float32 underflow boundary](#dev-step-573) |
+| 574 | 2026-11-18 | [Add Stamp Layers and Stamp Visible](#dev-step-574) |
 <!-- history-index:end -->
+
+<a id="dev-step-574"></a>
+
+## 2026-11-18 — Add Stamp Layers and Stamp Visible
+
+Photoshop 27.2.0 saved eleven of sixteen additional RGB32 stamp probes on both architectures. A stamp reads locked originals, takes visible content from selections spanning groups and uses the top selected layer for its name and position. A locked group may contain the inserted stamp. An existing clipped layer keeps its clipping flag if a stamp is inserted between it and its former base. The visible operation rejects a hidden active layer or a document with only one visible pixel layer. The selected operation rejected an explicitly selected clip whose base was omitted. The single ordinary layer duplicate descriptor did not create a new layer and needs a separate keyboard check.
+
+Photato now prepares both stamps as new raster layers in one Undo using the existing paged compositor. Option alternates were added to the Layer menu, along with the documented Option-Command-E and Shift-Option-Command-E keys. The operation also routes through the Layers panel, the Photato API and the existing ActionJSON merge adapters. Native Actions 71 records stamp operations and resolves playback targets against the playback document.
+
+The frozen source includes eight independent RGB32 stamp results for each architecture and tests for layer names, bounds, original layers, exact raster bytes, stale protection, shortcuts, API requests and Actions playback. Swift parsing passed. The first Debug launch stopped at a sandboxed module-cache write. The next launch reached the compiler, which rejected a stored property captured before initialization. The revised plan uses a local set during initialization and keeps the first source and both logs. The next attempt found that existing Core tests use the public removed-layer set. That property is retained for destructive merges and is empty for stamps. Debug qualification resumed from the corrected snapshot. Integer-depth PSD stamp samples, parent-group rendering beyond the observed pass-through case, live keyboard dispatch and broader Photoshop parity remain open. [Adobe stamp workflow](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).
+
+The first completed Debug run executed all 744 selected tests. One test failed in six RGB32 fixtures. A separately linked probe checked every sample and found 36 differing color words in twelve fully transparent pixels, with no difference at any covered pixel. The API, menu wiring, action replay and stale checks passed. New Photoshop captures verified that a visible stamp goes from an existing Layer 9 to Layer 10 and that selected children render independently of unselected parent visibility, opacity and blend mode. They also confirmed the Undo labels and added 8-bit and 16-bit PSD references. The same probe found no 8-bit differences and 925 differing alpha words in each 16-bit stamp. The existing working-grid merge matched both of those 16-bit files exactly. The revised stamp compositor uses that integer grid for ordinary raster patches and starts uncovered RGB32 areas with transparent white, preserving hidden color in the first covered raster. The revised 8,005-input snapshot passed all 57 focused Debug tests, including saved Photoshop RGB8, RGB16 and RGB32 stamp samples, placement, preserved source layers, menu wiring and Undo. The broad qualification ran the same 8,005 source inputs through 745 selected tests per configuration in Debug, optimized Apple Silicon and Intel under Rosetta. All passed. The local universal archive passed both offscreen workspace checks with macOS 14 deployment metadata. Stamp performance on maximum-size sparse documents remains open.
+
+[Qualification](SOURCE_PUBLICATION_574.md).
 
 <a id="dev-step-573"></a>
 

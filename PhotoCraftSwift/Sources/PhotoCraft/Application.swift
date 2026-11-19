@@ -273,6 +273,12 @@ import SwiftUI
     if item.action == #selector(duplicateDocument) { return store?.canDuplicateDocument == true }
     if item.action == #selector(flattenImage) { return store?.canFlattenImage == true }
     if item.action == #selector(mergeVisible) { return store?.canMerge(.visible) == true }
+    if item.action == #selector(stampLayers(_:)) {
+      guard let title = item.representedObject as? String,
+        let operation = LayerMergeOperation(rawValue: title), operation.preservesSources
+      else { return false }
+      return store?.canMerge(operation) == true
+    }
     if item.action == #selector(layerViaCopy) { return store?.canLayerVia(.copy) == true }
     if item.action == #selector(layerViaCut) { return store?.canLayerVia(.cut) == true }
 

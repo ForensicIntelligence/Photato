@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 573.** Intel HDR Normal compositing now matches the measured rounding when a color contribution underflows. The renderer also preserves Photoshop's opaque-source copy rules for ordinary and clipped layers. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md).
+**Development alpha — source build 574.** Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_574.md).
 
 ## Project layout
 

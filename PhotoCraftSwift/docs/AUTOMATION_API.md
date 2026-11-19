@@ -1383,6 +1383,24 @@ Maintain both interfaces as supported product APIs: the Photato API for native d
 
 Current status (step115): eighteen typed document commands, optional resource action jobs, document uploads/downloads and native Save/Save As. `layer.merge` and Adobe action descriptors use the shared native merge transaction, including direct linear RGB32 storage. Full merge contexts, format/profile fidelity, six Adobe endpoints and complete Photoshop parity remain open.
 
+## Layer stamping (build 574)
+
+Send `layer.merge` to `/v1/documents/{id}/commands` with the current revision. Use `stampVisible` and an empty `layerIDs` array to stamp the visible document above its active layer. Use `stampSelected` with two or more distinct layer IDs or one group to stamp the selected layers above the highest selected layer. Selected stamps require the base of any included clipped layer.
+
+```json
+{"command":"layer.merge","revision":"CURRENT_REVISION","parameters":{"operation":"stampVisible","layerIDs":[]}}
+```
+
+Both operations create an active pixel layer and preserve the originals. They share native Undo, cancellation and revision checks. Read `layerMerge.stampVisible`, `layerMerge.stampSelected` and `layerMerge.selectedLayerIDs` in document state for current availability. Native Actions require library version 71 for stamps.
+
+The existing Adobe-compatible `/v2/execute-actions` and legacy `/v1/action-jobs` handlers accept `duplicate: true` or `"$Dplc": true` on the corresponding merge event. Ordinary merge semantics apply when the flag is omitted or false. The action uses the shared local compositor.
+
+```json
+[{"_obj":"$MrgV","$Dplc":true}]
+```
+
+The recorded 8-, 16- and 32-bit comparisons cover local desktop Photoshop and Photato. Hosted service equivalence and maximum-size sparse stamp performance are open. [Build 574 validation](SOURCE_PUBLICATION_574.md).
+
 ## Layer merging (step115)
 
 Post to `/v1/documents/{id}/commands` with the current revision:

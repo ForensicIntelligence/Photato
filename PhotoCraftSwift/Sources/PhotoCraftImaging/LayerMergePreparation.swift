@@ -10,8 +10,8 @@ public enum LayerMergePreparation {
     let plan=try LayerMergePlan(operation,layerIDs:layerIDs,in:source)
     // Keep the established Photoshop pixel vectors, including hidden RGB and the
     // integer-depth arithmetic, unchanged whenever the old primitive applies.
-    let hasPreparedSources=source.layers.contains{plan.removedIDs.contains($0.id) && ($0.smartFilters != nil || $0.warp != nil || $0.sourceProjection != nil || $0.importedSmartAppearance != nil)}
-    if !plan.includesBackground,!hasPreparedSources,
+    let hasPreparedSources=source.layers.contains{plan.sourceIDs.contains($0.id) && ($0.smartFilters != nil || $0.warp != nil || $0.sourceProjection != nil || $0.importedSmartAppearance != nil)}
+    if !operation.preservesSources,!plan.includesBackground,!hasPreparedSources,
       let allocation=try? LayerMerge.outputBounds(operation,layerIDs:layerIDs,in:source),allocation.width<=4_194_304/allocation.height {
       var result=source
       do {try LayerMerge.apply(operation,layerIDs:layerIDs,to:&result)
@@ -21,15 +21,19 @@ public enum LayerMergePreparation {
       }
     }
     var isolated=source
-    isolated.layers=source.layers.filter{plan.removedIDs.contains($0.id)}
-    for i in isolated.layers.indices where plan.rootIDs.contains(isolated.layers[i].id) {isolated.layers[i].parentID=nil}
+    if operation != .stampVisible {
+      isolated.layers=source.layers.filter{plan.sourceIDs.contains($0.id)}
+      for index in isolated.layers.indices where plan.rootIDs.contains(isolated.layers[index].id) {
+        isolated.layers[index].parentID = nil
+      }
+    }
     isolated.activeLayerID=isolated.layers.first(where:{$0.id==plan.base.id})?.id ?? isolated.layers.last?.id
     isolated.setCoverageSelection(nil)
     // Auxiliary/retained document state does not influence layer composition.
     isolated.alphaChannels=nil;isolated.quickMask=nil;isolated.layerComps=nil;isolated.variables=nil
     let canvas=IntRect(x:0,y:0,width:source.width,height:source.height)
     var boxes=[canvas]
-    if operation != .visible && !plan.includesBackground {
+    if operation != .visible && operation != .stampVisible && !plan.includesBackground {
       for layer in isolated.layers where !layer.isGroup && !layer.isCanvasFill {
         if let box=try Renderer.layoutBounds(layer,in:source,stored:true){boxes.append(box)}
       }
@@ -42,14 +46,28 @@ public enum LayerMergePreparation {
     }
     let bounds=try LayerLayout.union(boxes) ?? canvas
     isolated=try CanvasFrameGeometry.reframed(isolated,bounds:bounds)
-    var pixels=try Renderer.compositePaged(isolated).quantizedStoredDepth(source.depth)
+    var pixels=try Renderer.compositePaged(isolated, forStamp: operation.preservesSources).quantizedStoredDepth(source.depth)
     var origin=(bounds.x,bounds.y)
-    if plan.includesBackground {
+    if plan.includesBackground && !operation.preservesSources {
       pixels=try BackgroundLayer.opaque(pixels,over:.white).quantizedStoredDepth(source.depth)
     } else if let nonempty=try pixels.contentBounds() {
       pixels=try pixels.cropped(to:nonempty);origin=(bounds.x+nonempty.x,bounds.y+nonempty.y)
     } else {
       pixels=try Surface(width:1,height:1,depth:source.depth,colorEncoding:source.depth == .f32 ? .linearRGB:.sRGB);origin=(0,0)
+    }
+    if operation.preservesSources {
+      guard let insertion = source.layers.firstIndex(where: { $0.id == plan.base.id }) else {
+        throw CraftError.invalid("The stamp's insertion layer no longer exists.")
+      }
+      let name = operation == .stampVisible ? nextLayerName(in: source) : "\(plan.base.name) (merged)"
+      var stamp = Layer(name: name, content: .raster(pixels))
+      stamp.parentID = plan.parentID
+      stamp.x = origin.0; stamp.y = origin.1
+      var result = source
+      result.layers.insert(stamp, at: insertion + 1)
+      result.activeLayerID = stamp.id
+      try result.validate(); try Task.checkCancellation()
+      return .init(source: source, result: result, layerIDs: operation == .stampVisible ? [] : layerIDs, operation: operation)
     }
     var merged=Layer(name:plan.includesBackground ? "Background":plan.base.name,content:.raster(pixels))
     let background=source.layers.first{$0.isBackground && plan.removedIDs.contains($0.id)}
@@ -67,5 +85,20 @@ public enum LayerMergePreparation {
     result.activeLayerID=merged.id
     try result.validate();try Task.checkCancellation()
     return .init(source:source,result:result,layerIDs:layerIDs,operation:operation)
+  }
+
+  private static func nextLayerName(in document: CraftDocument) -> String {
+    let prefix = "Layer "
+    let numbers = Set(document.layers.compactMap { layer -> Int? in
+      guard layer.name.hasPrefix(prefix) else { return nil }
+      let suffix = layer.name.dropFirst(prefix.count)
+      guard let number = Int(suffix), number > 0, String(number) == suffix else { return nil }
+      return number
+    })
+    let maximum = numbers.max() ?? 0
+    if maximum < Int.max { return "\(prefix)\(maximum + 1)" }
+    var available = 1
+    while numbers.contains(available) { available += 1 }
+    return "\(prefix)\(available)"
   }
 }

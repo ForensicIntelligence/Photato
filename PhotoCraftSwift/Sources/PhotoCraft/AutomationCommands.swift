@@ -182,7 +182,7 @@ struct AutomationCommand: Sendable {
         case "filter": properties[key] = RasterFilter.apiSchema
         case "options": properties[key] = DocumentEncodingOptions.schema
         case "operation":
-          properties[key] = ["type": "string", "enum": ["down", "selected", "visible"]]
+          properties[key] = ["type": "string", "enum": name == "layer.merge" ? LayerMergeAPI.operations : ["down", "selected", "visible"]]
         case "mode": properties[key] = ["type": "string", "enum": ["replace", "add", "subtract", "intersect"]]
         case "layerIDs":
           properties[key] = [
@@ -431,11 +431,11 @@ struct AutomationCommand: Sendable {
     .init(
       name: "layer.merge",
       parameters: [
-        "operation": "down, selected or visible",
-        "layerIDs": "unique UUID array; one for down, two or more or one group for selected, empty for visible",
+        "operation": "down, selected, visible, stampSelected or stampVisible",
+        "layerIDs": "unique UUID array; one for down, two or more or one group for selected and stampSelected, empty for visible and stampVisible",
       ],
       description:
-        "Merge supported static RGB layers through the shared native compositor, including groups, complete clipping bases, type, shapes, masks, transforms, effects and resolved Smart artwork. One Undo; preserves untouched layers and document state. Visible clips to canvas; selected/down retain supported off-canvas geometry. Numerical/temporal and unresolved hierarchy cases reject explicitly; renderer resource budgets apply."
+        "Merge or stamp supported static RGB layers through the shared native compositor. Stamps create a raster and retain the source layers. Each edit uses one Undo. Visible operations clip to the canvas. Selected and down operations retain supported off-canvas geometry. Renderer resource budgets apply."
     ),
     .init(name: EmptyLayerDeletionAPI.name, parameters: [:],
       description: "Delete supported empty raster layers and plain groups through the native transaction. Retains nonempty, locked and extended editable content, one editable layer and surviving selection. No-op adds no Undo. Discover limitations in emptyLayerDeletion."),
@@ -643,6 +643,8 @@ struct AutomationCommand: Sendable {
       case "down": operation = .down
       case "selected": operation = .selected
       case "visible": operation = .visible
+      case "stampSelected": operation = .stampSelected
+      case "stampVisible": operation = .stampVisible
       default: throw AutomationFailure(status: 400, message: "Invalid merge operation.")
       }
       guard case .array(let values) = parameters["layerIDs"], values.count <= LayerLimits.maximumLayers else {
@@ -655,8 +657,14 @@ struct AutomationCommand: Sendable {
         }
         return id
       }
-      guard Set(ids).count == ids.count,
-        operation == .visible ? ids.isEmpty : operation == .down ? ids.count == 1 : (ids.count >= 2 || (ids.count == 1 && document.layers.first(where:{$0.id==ids[0]})?.isGroup == true))
+      let validSelection: Bool
+      switch operation {
+      case .visible, .stampVisible: validSelection = ids.isEmpty
+      case .down: validSelection = ids.count == 1
+      case .selected, .stampSelected:
+        validSelection = ids.count >= 2 || (ids.count == 1 && document.layers.first(where: { $0.id == ids[0] })?.isGroup == true)
+      }
+      guard Set(ids).count == ids.count, validSelection
       else {
         throw AutomationFailure(
           status: 400, message: "Invalid layer selection for merge operation.")

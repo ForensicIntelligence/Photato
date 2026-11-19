@@ -4,6 +4,10 @@ public enum LayerMergeOperation: String, CaseIterable, Sendable, Codable {
   case down = "Merge Down"
   case selected = "Merge Layers"
   case visible = "Merge Visible"
+  case stampSelected = "Stamp Layers"
+  case stampVisible = "Stamp Visible"
+
+  public var preservesSources: Bool { self == .stampSelected || self == .stampVisible }
 }
 
 /// Raster merge transactions. Rich layers, masks, clipping, groups and Background
@@ -38,6 +42,8 @@ public enum LayerMerge {
     let members: [Layer]
     let base: Layer
     switch operation {
+    case .stampSelected, .stampVisible:
+      throw CraftError.unsupported("Stamping layers requires the document compositor.")
     case .down:
       guard layerIDs.count == 1, let id = layerIDs.first,
         let index = d.layers.firstIndex(where: { $0.id == id }), index > 0,
@@ -126,9 +132,12 @@ public enum LayerMerge {
 
   /// Use the measured integer Normal merge for ordinary working-coordinate data.
   /// Keep the full canvas for the subsequent color-mode conversion.
-  public static func integerModeComposite(_ document: CraftDocument) throws -> Surface? {
-    guard document.depth != .f32, document.width > 0, document.height > 0,
-      document.width <= 4_194_304 / document.height else { return nil }
+  public static func integerModeComposite(_ document: CraftDocument, region: IntRect? = nil,
+    emptySample: Pixel = .clear) throws -> Surface?
+  {
+    let bounds = region ?? IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    guard document.depth != .f32, bounds.width > 0, bounds.height > 0,
+      bounds.width <= 4_194_304 / bounds.height else { return nil }
     let layers = document.layers.filter { $0.visible && $0.opacity > 0 }
     guard !layers.isEmpty, layers.allSatisfy({
       if case .raster = $0.content {
@@ -136,8 +145,7 @@ public enum LayerMerge {
       }
       return false
     }) else { return nil }
-    let bounds = IntRect(x: 0, y: 0, width: document.width, height: document.height)
-    return try compositeNormalPixels(layers, depth: document.depth, bounds: bounds, fill: .clear)
+    return try compositeNormalPixels(layers, depth: document.depth, bounds: bounds, fill: emptySample)
   }
 
   private static func compositeNormalPixels(_ layers: [Layer], depth: PixelDepth, bounds: IntRect,

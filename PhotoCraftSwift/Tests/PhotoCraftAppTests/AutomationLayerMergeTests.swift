@@ -6,6 +6,32 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationLayerMergeTests: XCTestCase {
+  @MainActor func testStampHTTPDiscoveryValidationAndHistory() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      try service.share(shared)
+      let original = try fixture("photoshop-source-rgb8")
+      shared.store.session = EditorSession(document: original)
+      let share = try XCTUnwrap(service.shares.first)
+      let response = try await helper.request(service, path: "/v1/documents/\(share.id)")
+      let body = try XCTUnwrap(JSONSerialization.jsonObject(with: response.1) as? [String: Any])
+      let state = try XCTUnwrap(body["layerMerge"] as? [String: Any])
+      XCTAssertEqual(state["stampVisible"] as? Bool, true)
+      let reject = try await helper.edit(service, shared, "layer.merge", ["operation": "stampVisible", "layerIDs": original.layers.map { $0.id.uuidString }])
+      XCTAssertEqual(reject, 400)
+      XCTAssertEqual(shared.store.document, original)
+      let accept = try await helper.edit(service, shared, "layer.merge", ["operation": "stampVisible", "layerIDs": [String]()])
+      XCTAssertEqual(accept, 200)
+      let result = shared.store.document
+      XCTAssertEqual(result.layers.count, original.layers.count + 1)
+      XCTAssertEqual(result.layers.filter { $0.id != result.activeLayerID }, original.layers)
+      XCTAssertEqual(shared.store.session.undoStack.last?.label, "Stamp Visible")
+      let undo = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(shared.store.document, original)
+    }
+  }
+
   func fixture(_ name: String) throws -> CraftDocument {
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent()

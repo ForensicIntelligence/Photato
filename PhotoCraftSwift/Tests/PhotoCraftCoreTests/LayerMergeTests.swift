@@ -103,7 +103,7 @@ final class LayerMergeTests: XCTestCase {
 
   func testAtomicMergeBoundsNamesSelectionAndUndoAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
-      for operation in LayerMergeOperation.allCases {
+      for operation in [LayerMergeOperation.down, .selected, .visible] {
         let d = try document(depth)
         var session = EditorSession(document: d)
         try session.execute(

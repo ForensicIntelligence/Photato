@@ -61,7 +61,7 @@ final class PhotoshopMenuTests: XCTestCase {
           "Plugins", "Window", "Help",
         ])
       let items = allItems(menu).filter {
-        !$0.isSeparatorItem && !$0.isHidden && $0.identifier != nil
+        !$0.isSeparatorItem && !$0.isHidden && !$0.isAlternate && $0.identifier != nil
       }
       // Keep every independently captured27.2 entry and shortcut intact.
       // Separate later adjustment commands and the Photato-only Relight extension.

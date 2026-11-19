@@ -1,3 +1,5 @@
+**Source checkpoint 574.** Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API. [Qualification](docs/SOURCE_PUBLICATION_574.md).
+
 **Source checkpoint 573.** Intel HDR Normal compositing now matches the measured rounding when a color contribution underflows. The renderer also preserves Photoshop's opaque-source copy rules for ordinary and clipped layers. [Qualification](docs/SOURCE_PUBLICATION_573.md).
 
 **Source checkpoint 572.** Normal HDR layers now use Photoshop's measured rounding for the current architecture. The same arithmetic applies to group opacity and grouped clipping in the native renderer. [Qualification](docs/SOURCE_PUBLICATION_572.md).

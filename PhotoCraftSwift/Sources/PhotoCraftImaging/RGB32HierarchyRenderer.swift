@@ -15,17 +15,20 @@ enum RGB32HierarchyRenderer {
     let rasterAlpha: Float?
   }
 
-  static func composite(_ document: CraftDocument, region: IntRect, facts:CompositionFacts? = nil) throws -> Surface? {
+  static func composite(_ document: CraftDocument, region: IntRect, facts: CompositionFacts? = nil,
+    emptySample: Pixel = .clear) throws -> Surface?
+  {
     guard !document.hasArtboards && !document.hasFrames, !document.layers.contains(where: { $0.style != nil && $0.style?.isChannelBlendingOnly != true }), document.depth == .f32,
       var nodes = try nodes(document.children(of: nil), document: document, region: region,facts:facts)
     else { return nil }
-    var result = try Renderer.emptyCanvas(document)
+    var result = try Renderer.emptyCanvas(document, fill: emptySample)
     let opaque = nodes.first?.opaque ?? false
     _ = prepareCopyRules(&nodes, over: 0, seeded: false, opaque: opaque)
     for y in region.y..<region.y + region.height {
       try Task.checkCancellation()
       for x in region.x..<region.x + region.width {
-        let pixel = try stack(nodes, over: .clear, seeded: false, opaque: opaque, x: x, y: y)
+        let pixel = try stack(nodes, over: emptySample, seeded: false, opaque: opaque, x: x, y: y,
+          emptySample: emptySample)
         guard pixel.isFinite else {
           throw CraftError.invalid("Group composition exceeds the floating-point range.")
         }
@@ -159,15 +162,18 @@ enum RGB32HierarchyRenderer {
     return alpha
   }
 
-  private static func sample(_ node: Node, x: Int, y: Int) -> Pixel {
+  private static func sample(_ node: Node, x: Int, y: Int, emptySample: Pixel = .clear) -> Pixel {
     guard let surface = node.pixels else { return .clear }
-    var value = surface.linearPixel(x: x - node.layer.x, y: y - node.layer.y)
+    let localX = x - node.layer.x, localY = y - node.layer.y
+    guard localX >= 0, localY >= 0, localX < surface.width, localY < surface.height else { return emptySample }
+    var value = surface.linearPixel(x: localX, y: localY)
     value.a *= node.mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
     return value
   }
 
   private static func stack(
-    _ nodes: [Node], over backdrop: Pixel, seeded: Bool, opaque: Bool, x: Int, y: Int
+    _ nodes: [Node], over backdrop: Pixel, seeded: Bool, opaque: Bool, x: Int, y: Int,
+    emptySample: Pixel
   ) throws -> Pixel {
     var output = backdrop
     var seeded = seeded
@@ -177,11 +183,12 @@ enum RGB32HierarchyRenderer {
         let after: Pixel
         if group.passThrough {
           after = try stack(
-            node.children, over: output, seeded: seeded, opaque: opaque, x: x, y: y)
+            node.children, over: output, seeded: seeded, opaque: opaque, x: x, y: y,
+            emptySample: emptySample)
         } else {
           let isolated = try stack(
-            node.children, over: .clear, seeded: false,
-            opaque: node.children.first?.opaque ?? false, x: x, y: y)
+            node.children, over: emptySample, seeded: false,
+            opaque: node.children.first?.opaque ?? false, x: x, y: y, emptySample: emptySample)
           after =
             seeded ? try RGB32NormalRenderer.blend(output, isolated, opaque: opaque) : isolated
         }
@@ -190,7 +197,7 @@ enum RGB32HierarchyRenderer {
             * (node.mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1))
         output = try mix(before, after, amount: amount, opaque: opaque)
       } else {
-        var source = sample(node, x: x, y: y)
+        var source = sample(node, x: x, y: y, emptySample: seeded ? .clear : emptySample)
         if source.a > 0 {
           for clip in node.clips {
             var clipped = sample(clip, x: x, y: y)

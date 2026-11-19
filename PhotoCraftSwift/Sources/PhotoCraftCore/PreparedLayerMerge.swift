@@ -2,7 +2,7 @@ import Foundation
 
 /// Structural selection, shared by UI, API, Actions and the compositor worker.
 public struct LayerMergePlan: Sendable {
-  public let rootIDs: Set<UUID>, removedIDs: Set<UUID>
+  public let rootIDs: Set<UUID>, sourceIDs: Set<UUID>, removedIDs: Set<UUID>
   public let base: Layer
   public let parentID: UUID?
   public let includesBackground: Bool
@@ -12,6 +12,9 @@ public struct LayerMergePlan: Sendable {
     }
     guard d.animation == nil, d.videoTimeline == nil else {
       throw CraftError.unsupported("Merging temporal layers requires frame and Timeline composition.")
+    }
+    if operation.preservesSources, d.layers.count >= LayerLimits.maximumLayers {
+      throw CraftError.invalid("The document has reached its layer limit.")
     }
     let hierarchy = LayerHierarchyIndex(d)
     let siblingsByParent=Dictionary(grouping:d.layers,by: \.parentID)
@@ -39,23 +42,32 @@ public struct LayerMergePlan: Sendable {
       guard let top=roots.last,top.visible,roots.count>1 || top.isGroup else{throw CraftError.invalid("Select multiple layers or a group to merge.")}
       guard roots.allSatisfy({$0.parentID==top.parentID}) else{throw CraftError.unsupported("Merging selections across different parent groups needs independent Photoshop qualification.")}
       base=top
-    case .visible:
+    case .stampSelected:
+      roots = d.layers.filter { layerIDs.contains($0.id) && !hierarchy.ancestors(of: $0.id).contains { layerIDs.contains($0.id) } }
+      guard let top = roots.last, roots.count > 1 || top.isGroup,
+        roots.contains(where: \.visible)
+      else { throw CraftError.invalid("Select multiple layers with visible artwork, or a visible group to stamp.") }
+      base = top
+    case .visible, .stampVisible:
       roots=(siblingsByParent[nil] ?? []).filter(\.visible)
       guard let active=d.activeLayerID,let layer=hierarchy.byID[active],layer.visible,
         !hierarchy.ancestors(of:active).contains(where:{!$0.visible}),
         roots.count>1 || roots.first?.isGroup==true else{throw CraftError.invalid("Select a visible layer in an image with multiple visible layers or a visible group.")}
       base=layer
     }
-    let selectedRoots=Set(roots.map(\.id)),removed=hierarchy.subtreeIDs(selectedRoots)
-    rootIDs=selectedRoots;removedIDs=removed
-    parentID=operation == .visible ? nil:roots.first?.parentID
-    includesBackground=d.layers.contains{$0.isBackground && removed.contains($0.id)}
-    for layer in d.layers where removedIDs.contains(layer.id) {
-      guard layer.isBackground || !hierarchy.effectiveProtection(layer.id).fullyLocks else{throw CraftError.invalid("Unlock the merged layers and their parent groups first.")}
+    let rootsToRender = Set(roots.map(\.id))
+    let included = hierarchy.subtreeIDs(rootsToRender)
+    rootIDs = rootsToRender
+    sourceIDs = included
+    removedIDs = operation.preservesSources ? [] : included
+    parentID = operation == .visible ? nil : base.parentID
+    includesBackground = d.layers.contains { $0.isBackground && included.contains($0.id) }
+    for layer in d.layers where sourceIDs.contains(layer.id) {
+      guard operation.preservesSources || layer.isBackground || !hierarchy.effectiveProtection(layer.id).fullyLocks else{throw CraftError.invalid("Unlock the merged layers and their parent groups first.")}
       if operation == .visible, !layer.visible {
         throw CraftError.unsupported("Hidden descendants inside a visible merged group require qualified retention semantics; no layers were removed.")
       }
-      if layer.isClipped,let clippingBase=clippingBases[layer.id],!removedIDs.contains(clippingBase) {
+      if operation != .stampVisible,layer.isClipped,let clippingBase=clippingBases[layer.id],!sourceIDs.contains(clippingBase) {
         throw CraftError.unsupported("Include the clipping base when merging clipped artwork.")
       }
     }

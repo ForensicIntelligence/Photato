@@ -352,6 +352,15 @@ import PhotoCraftCore
           let primary = make(child, parent: path)
           submenu.addItem(primary)
           guard let childPath = primary.identifier?.rawValue else { continue }
+          if let operation = Self.stampMenuOperations[childPath] {
+            let alternate = NSMenuItem(title: operation.rawValue, action: #selector(stampLayers(_:)), keyEquivalent: primary.keyEquivalent)
+            alternate.target = self
+            alternate.identifier = NSUserInterfaceItemIdentifier("stamp:" + childPath)
+            alternate.representedObject = operation.rawValue
+            alternate.keyEquivalentModifierMask = primary.keyEquivalentModifierMask.union(.option)
+            alternate.isAlternate = true
+            submenu.addItem(alternate)
+          }
           for shortcut in PhotoshopMenuCatalog.alternativeShortcuts[childPath] ?? [] {
             let alternate = make(child, parent: path)
             // Native menu dispatch retains validation and first-responder clipboard routing.
@@ -414,6 +423,15 @@ import PhotoCraftCore
     store.merge(store.menuMergeOperation)
   }
   @objc func mergeVisible() { store?.merge(.visible) }
+  static let stampMenuOperations: [String: LayerMergeOperation] = [
+    "Layer > Merge Layers": .stampSelected, "Layer > Merge Visible": .stampVisible,
+  ]
+  @objc func stampLayers(_ item: NSMenuItem) {
+    guard let title = item.representedObject as? String,
+      let operation = LayerMergeOperation(rawValue: title), operation.preservesSources
+    else { return }
+    store?.merge(operation)
+  }
 
   @objc func hideOthers() { NSApp.hideOtherApplications(nil) }
   @objc func showAllApplications() { NSApp.unhideAllApplications(nil) }

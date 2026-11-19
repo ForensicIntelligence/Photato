@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import XCTest
 
 @testable import PhotoCraft
@@ -16,7 +17,7 @@ final class LayerMergeWorkflowTests: XCTestCase {
     return EditorStore(document: d)
   }
   @MainActor func testDefaultMergeRoutingUndoAndCancellation() async throws {
-    for operation in LayerMergeOperation.allCases {
+    for operation in [LayerMergeOperation.down, .selected, .visible] {
       let s = try store()
       s.renderTask?.cancel()
       let before = s.document
@@ -62,7 +63,49 @@ final class LayerMergeWorkflowTests: XCTestCase {
       XCTAssertEqual(visible.action, #selector(AppDelegate.mergeVisible))
       XCTAssertEqual(visible.keyEquivalent, "e")
       XCTAssertEqual(visible.keyEquivalentModifierMask, [.command, .shift])
+      let stampSelected = try XCTUnwrap(layer.item(withTitle: "Stamp Layers"))
+      let stampVisible = try XCTUnwrap(layer.item(withTitle: "Stamp Visible"))
+      XCTAssertEqual(stampSelected.action, #selector(AppDelegate.stampLayers(_:)))
+      XCTAssertEqual(stampVisible.action, #selector(AppDelegate.stampLayers(_:)))
+      XCTAssertTrue(stampSelected.isAlternate)
+      XCTAssertTrue(stampVisible.isAlternate)
+      XCTAssertEqual(stampSelected.keyEquivalent, "e")
+      XCTAssertEqual(stampVisible.keyEquivalent, "e")
+      XCTAssertEqual(stampSelected.keyEquivalentModifierMask, [.command, .option])
+      XCTAssertEqual(stampVisible.keyEquivalentModifierMask, [.command, .option, .shift])
       XCTAssertEqual(layer.item(withTitle: "Flatten Image")?.action, #selector(AppDelegate.flattenImage))
     }
+  }
+
+  @MainActor func testStampFromEditorRecordsPortableActionAndOneUndo() async throws {
+    let s = try store()
+    defer { s.renderTask?.cancel() }
+    let original = s.document
+    let prepared = try LayerMergePreparation.prepare(original, layerIDs: [try XCTUnwrap(original.activeLayerID)], operation: .stampVisible)
+    let step = RecordedActionStep(name: "Stamp Visible", operation: ActionOperation(recording: .preparedLayerMerge(prepared), in: original))
+    guard case .merge(let targets, .stampVisible) = step.operation else { return XCTFail("Missing stamp action") }
+    XCTAssertTrue(targets.isEmpty)
+    let action = RecordedAction(name: "Stamp test", steps: [step])
+    XCTAssertEqual(ActionLibraryFile(actions: [action]).requiredVersion, 71)
+    s.merge(.stampVisible)
+    await s.geometryTask?.value
+    XCTAssertNil(s.error)
+    let edited = s.document
+    XCTAssertEqual(edited.layers.count, original.layers.count + 1)
+    XCTAssertEqual(edited.layers.dropLast(), ArraySlice(original.layers))
+    XCTAssertEqual(s.session.undoStack.last?.label, "Stamp Visible")
+    await s.undo()
+    XCTAssertEqual(s.document, original)
+    await s.redo()
+    XCTAssertEqual(s.document, edited)
+    var second = try store().document
+    let bottom = second.layers[0].id
+    second.activeLayerID = bottom
+    let playback = try RecordedActionRenderer.prepare(action, in: second)
+    let initial = second
+    try playback.command.apply(to: &second)
+    XCTAssertEqual(second.layers[1].id, second.activeLayerID)
+    XCTAssertEqual(second.layers.filter { $0.id != second.activeLayerID }, initial.layers)
+    XCTAssertNotEqual(second.activeLayerID, edited.activeLayerID)
   }
 }

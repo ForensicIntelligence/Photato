@@ -1,0 +1,352 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "337e6d4a9664d0c831a603d4d3df4946cf69b2b48dc0d2cc4917ef79f5936435",
+    "binarySHA256": "1185c5e5af909fada3819ca48c9cb0f07c87e1a0025236d0259d905d8d9609ec",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 8005
+  },
+  "build": 574,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Interactive native shortcuts",
+    "Sparse stamp performance on maximum-size canvases",
+    "Other blend modes and image modes",
+    "Physical supported platforms",
+    "Full Photoshop parity"
+  ],
+  "photoshop": {
+    "capturedBy": "Photoshop desktop Save As PSD after invoking Merge Visible or Merge Layers with the Dplc boolean enabled.",
+    "colorSettings": "North America General Purpose 2",
+    "files": {
+      "arm-hidden-upper-hidden-top-selected.psd": "39652422b79a05ea4b092f60314a8fb54ebe53d477383babeba0755c35d6713e",
+      "arm-inside-group-cross-parent-half-opacity.psd": "4707e9665d3a663d765c8d68902a55a079e0d1b2d39df59eaf11b2e19821e573",
+      "arm-inside-group-cross-parent-hidden-group.psd": "cb23e3867f671dbaa77172c47ac51852dbdf9c77b93afc1658d1c45cc7f9faf2",
+      "arm-inside-group-cross-parent-isolated.psd": "ce7b5f3f474700971f8f8bc3d067b0fc601fccc7236893a047139aca4ba64746",
+      "arm-inside-group-cross-parent-selected.psd": "e3467e543685e6ff2a6dd9615ff58b3a7ae00777f89f80d4fd5b6b61c749091c",
+      "arm-inside-group-stamp-single-group.psd": "42e1b08bc3db8eb26ce459127a8ffbf8fe5f67681fe4f0bc1375763826ac132e",
+      "arm-owned-16-stamp-selected.psd": "ac386f650ea853e4c8c40720a4b4141ac574bc26654c251fcdc578dfc2e0044e",
+      "arm-owned-16-stamp-visible.psd": "972f26a25edc9bb5f5a0ba6fc0f51d5382efc50a08722ff7b31db80c83255ae0",
+      "arm-owned-8-stamp-selected.psd": "9a3051ed6434d63e559de1b07a23d2680ccde09582854045c07f64993aafb681",
+      "arm-owned-8-stamp-visible.psd": "7eef69c1d31649f98577b642003e96f3803f34fb624c8493d856da722beb3b1f",
+      "arm-root-stack-clipping-base-active.psd": "7fe32529dddfb55b5a014ae4b2f05a49cb8e548f321afb09d6b8dce9345342a3",
+      "arm-root-stack-duplicate-selected-name.psd": "27ddfb111b9cecb64300507481c6fe258843a921d63645cb7ee877fb90b78164",
+      "arm-root-stack-locked-active.psd": "63ed6c680a57fffa0267465590589c463d14f0c66ef666ed299726844f0994e7",
+      "arm-root-stack-naming-gap.psd": "596864260190d4345096e3f4ba0565fd5f742ffadeaaa850284eb87d56820d95",
+      "arm-root-stack-stamp-selected.psd": "995c13912f35ac97644c1203e2c29181fda6b63e94b18ccff677bfedf4502f0d",
+      "arm-root-stack-stamp-visible.psd": "d041ef2f6f9ee82a0a1551ae16d725be7afe5a59263225f969549c46b7a53ae4",
+      "hidden-upper.psd": "f4b85fe8dace304aec679f67162c49772430d1a477a4910a062da1e3492000ff",
+      "inside-group.psd": "173a85f15d13b4eff334c0bca1448245b56d77779659ac3bb14c1b90e5ad18c7",
+      "intel-hidden-upper-hidden-top-selected.psd": "c946a096276938af7b3f8d0b0aacfc6d08bb3ad340739c4b2b78de924294f679",
+      "intel-inside-group-cross-parent-half-opacity.psd": "aef144f9f26784774bb78f5f783e306388c24aadd0af8b3e1b126ec5bc5b3560",
+      "intel-inside-group-cross-parent-hidden-group.psd": "5574072f19f591a7f4b9d9744b2452ea1694570ff7e0d9cd2e8219215c7bfb66",
+      "intel-inside-group-cross-parent-isolated.psd": "dc2acba0648d5bd24093bfd9bdc59bcf5453f882711575862ab307789c08005a",
+      "intel-inside-group-cross-parent-selected.psd": "d66f7fce860636a15e6bea0bc467f0211fdcb4cbcce394b24be6b500b14dc418",
+      "intel-inside-group-stamp-single-group.psd": "f831ef41be9a0b5fd8adbc27917946ee5bcb06c99a45f4dfa33ae32b35317df8",
+      "intel-owned-16-stamp-selected.psd": "c048933fe9801e4b2638e964fca77494f61242ab79bbd38d2f23fa492199c00d",
+      "intel-owned-16-stamp-visible.psd": "d5ca54954d2dbd04efd3461275597b51127ceefd0839eb2b8f60730a6c56e1a5",
+      "intel-owned-8-stamp-selected.psd": "fea8baf97fdcf21813eef18f92d15995f0fc413c94447c477c7672ff1813267d",
+      "intel-owned-8-stamp-visible.psd": "237cd075f3cf92c8c0f793da66dce49d99819fde49b1b0e6bcf4d6c4c18c7072",
+      "intel-root-stack-clipping-base-active.psd": "b7be59c3ac2efe3dd6137b1347746f455ccb262f7533a108206052e49cb1f301",
+      "intel-root-stack-duplicate-selected-name.psd": "342bef5aeefdf93d919d52889e445e5ce70953c17b319478a35f2c33ec1973dd",
+      "intel-root-stack-locked-active.psd": "83c7f2201abd42012c24c5287b21d1f8ba03fbd144cdd2025cc15df2d2c61818",
+      "intel-root-stack-naming-gap.psd": "8477b28283a2999b3cf1e2ed86a594488796644c7860ea697e3e659edd3a7434",
+      "intel-root-stack-stamp-selected.psd": "d3a04a6db4718de511d5bfc96ffe3b975ac105c95345d0064c7334c8f54762fd",
+      "intel-root-stack-stamp-visible.psd": "f6369020f27ca75001b4767e5adf417080d6280599e55b40ada4282126ba7904",
+      "root-stack.psd": "bbe5b3e292d06271f7788f87ba851db0d0dde70ca96f8f0864868057ad7a9081"
+    },
+    "photoshop": "27.2.0",
+    "qualification": "Intel slice captured under Rosetta on Apple Silicon.",
+    "sdrSource": "The existing independently authored layer-merge 8-bit and 16-bit source fixtures.",
+    "source": "Three independently authored RGB32 layered documents with generated solid rectangles. See the runtime cases in LayerStampTests for the source changes made in Photoshop before each stamp."
+  },
+  "priorCandidateDifferences": {
+    "RGB16AlphaWordsPerStamp": 925,
+    "RGB32TransparentColorWords": 36,
+    "RGB32TransparentPixels": 12
+  },
+  "qualification": {
+    "caseSelectionSHA256": "a6be67c2f6048681c5d1ad6c70716a9e663e7d97e61ef6f0732337146b4bbada",
+    "configurations": {
+      "arm": {
+        "appSHA256": "27175ed9431664994e6d3fe680bce89b64fea61cbafd78e01ab6187d2214dd9c",
+        "testBinarySHA256": "7ecb533dd1b35340ae4c45618332b9492d87d1b5fb1045a93588e257c2bdb59d"
+      },
+      "debug": {
+        "appSHA256": "b87dc7253a4b6c8a1c64c328e27099507d52ad0ca53d46e60a3ab50244984c43",
+        "testBinarySHA256": "b28e9def35eee43af10bb9ebd9c38fa8768c17064a40917626394fdfb8b9ed25"
+      },
+      "intel": {
+        "appSHA256": "4a75461a1005c102a286343ea3ab42a1ce5e62bee6580e3189f0bade8f794563",
+        "testBinarySHA256": "bcd500efbfc437166e7da55ef1e5fe5ef3864fdc8d5afb94308e6209f1f7d560"
+      }
+    },
+    "focusedDebug": 57,
+    "selectedPerConfiguration": 745
+  },
+  "sourceInputs": 8005,
+  "sourceInputsChangedSince573": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "sha256": "7e788b147769d53fa049d792822c90a58dc7b04d045b5185cb4b1bb622feaa4f"
+    },
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "c953298a8885abb6a96f607df21555ab76f43fbbcaaeeef480079b227999f167"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "abf9b2a71d42b1790b513703fd1189780be6e52cbda52c855fbbb0b369fac97d"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "0fc23d23e8ebeabf9f14e5cb10fdd79393c0ec56693e2d6111f61df5659af134"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "1ab147f63fd3af76dadad321c068188664e1c13d90bc24ffdc08d68abac77448"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerPanelMenu.swift",
+      "sha256": "43d581e8bcf6ea587b3112815a73c58e6b833214659d5e90affbb71a3f6fa60c"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "sha256": "bca204503962fc17f5b6032b250abd2b4baa7632326c1a83673e678276b637a8"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMerge.swift",
+      "sha256": "a3d7addbb44e52339666e84d9a3d0b76d490443837ecad468ed66627fd1e5afd"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PhotoshopActionProgram.swift",
+      "sha256": "afcb953bccfb19a58f85e6afefcddd79464302ddd5ba975e364a1873c0417246"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PreparedLayerMerge.swift",
+      "sha256": "af14cf662ed9eb52094d39cc811a27dbe34ee1fc6a30eaeca0ad5dc71671fe4e"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerMergePreparation.swift",
+      "sha256": "000439c7d8bacb17c33ba434898de433e201b899ba981c5293c83767a1f99e40"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "b53fb5ff0136d2dc1420fa159b5898df2fb46e91f49a227258b675994569bf63"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RGB32HierarchyRenderer.swift",
+      "sha256": "996082dc1e6138fec3e90511b174414467005c77f85ce8dc48a9b3e756612820"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "d7c7a812b64f9e0f90eaf877edf3581013b172643b568cbacf9fd1840eca71c6"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "565964feadbe1ef2283392346085f345104b667fef2bb76bdbd8daeeb045c131"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "6f69852c6579cca4ed270030226f1146f1014dc8b5c4d55c8ccc2263962041c3"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerMergeWorkflowTests.swift",
+      "sha256": "bf746b04cf55b57f4ec2f7c862190164da864001bb50cb1b83fb0cc3242a60e5"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PhotoshopMenuTests.swift",
+      "sha256": "ffbdd77980b7a275f836127d53a25dc02b6f1e7a9e075ba55e00d9773119c15e"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/LayerMergeTests.swift",
+      "sha256": "4ac376f98299cebb0e302247be84935d36804876461fe894d678ff510ed1d05e"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/PhotoshopActionProgramTests.swift",
+      "sha256": "22a224c48f6a84e3c79eedc7102d8da3406542bda60ec3e18a588ba5f005f96b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-hidden-upper-hidden-top-selected.psd",
+      "sha256": "39652422b79a05ea4b092f60314a8fb54ebe53d477383babeba0755c35d6713e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-inside-group-cross-parent-half-opacity.psd",
+      "sha256": "4707e9665d3a663d765c8d68902a55a079e0d1b2d39df59eaf11b2e19821e573"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-inside-group-cross-parent-hidden-group.psd",
+      "sha256": "cb23e3867f671dbaa77172c47ac51852dbdf9c77b93afc1658d1c45cc7f9faf2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-inside-group-cross-parent-isolated.psd",
+      "sha256": "ce7b5f3f474700971f8f8bc3d067b0fc601fccc7236893a047139aca4ba64746"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-inside-group-cross-parent-selected.psd",
+      "sha256": "e3467e543685e6ff2a6dd9615ff58b3a7ae00777f89f80d4fd5b6b61c749091c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-inside-group-stamp-single-group.psd",
+      "sha256": "42e1b08bc3db8eb26ce459127a8ffbf8fe5f67681fe4f0bc1375763826ac132e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-owned-16-stamp-selected.psd",
+      "sha256": "ac386f650ea853e4c8c40720a4b4141ac574bc26654c251fcdc578dfc2e0044e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-owned-16-stamp-visible.psd",
+      "sha256": "972f26a25edc9bb5f5a0ba6fc0f51d5382efc50a08722ff7b31db80c83255ae0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-owned-8-stamp-selected.psd",
+      "sha256": "9a3051ed6434d63e559de1b07a23d2680ccde09582854045c07f64993aafb681"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-owned-8-stamp-visible.psd",
+      "sha256": "7eef69c1d31649f98577b642003e96f3803f34fb624c8493d856da722beb3b1f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-root-stack-clipping-base-active.psd",
+      "sha256": "7fe32529dddfb55b5a014ae4b2f05a49cb8e548f321afb09d6b8dce9345342a3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-root-stack-duplicate-selected-name.psd",
+      "sha256": "27ddfb111b9cecb64300507481c6fe258843a921d63645cb7ee877fb90b78164"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-root-stack-locked-active.psd",
+      "sha256": "63ed6c680a57fffa0267465590589c463d14f0c66ef666ed299726844f0994e7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-root-stack-naming-gap.psd",
+      "sha256": "596864260190d4345096e3f4ba0565fd5f742ffadeaaa850284eb87d56820d95"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-root-stack-stamp-selected.psd",
+      "sha256": "995c13912f35ac97644c1203e2c29181fda6b63e94b18ccff677bfedf4502f0d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/arm-root-stack-stamp-visible.psd",
+      "sha256": "d041ef2f6f9ee82a0a1551ae16d725be7afe5a59263225f969549c46b7a53ae4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/hidden-upper.psd",
+      "sha256": "f4b85fe8dace304aec679f67162c49772430d1a477a4910a062da1e3492000ff"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/inside-group.psd",
+      "sha256": "173a85f15d13b4eff334c0bca1448245b56d77779659ac3bb14c1b90e5ad18c7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-hidden-upper-hidden-top-selected.psd",
+      "sha256": "c946a096276938af7b3f8d0b0aacfc6d08bb3ad340739c4b2b78de924294f679"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-inside-group-cross-parent-half-opacity.psd",
+      "sha256": "aef144f9f26784774bb78f5f783e306388c24aadd0af8b3e1b126ec5bc5b3560"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-inside-group-cross-parent-hidden-group.psd",
+      "sha256": "5574072f19f591a7f4b9d9744b2452ea1694570ff7e0d9cd2e8219215c7bfb66"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-inside-group-cross-parent-isolated.psd",
+      "sha256": "dc2acba0648d5bd24093bfd9bdc59bcf5453f882711575862ab307789c08005a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-inside-group-cross-parent-selected.psd",
+      "sha256": "d66f7fce860636a15e6bea0bc467f0211fdcb4cbcce394b24be6b500b14dc418"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-inside-group-stamp-single-group.psd",
+      "sha256": "f831ef41be9a0b5fd8adbc27917946ee5bcb06c99a45f4dfa33ae32b35317df8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-owned-16-stamp-selected.psd",
+      "sha256": "c048933fe9801e4b2638e964fca77494f61242ab79bbd38d2f23fa492199c00d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-owned-16-stamp-visible.psd",
+      "sha256": "d5ca54954d2dbd04efd3461275597b51127ceefd0839eb2b8f60730a6c56e1a5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-owned-8-stamp-selected.psd",
+      "sha256": "fea8baf97fdcf21813eef18f92d15995f0fc413c94447c477c7672ff1813267d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-owned-8-stamp-visible.psd",
+      "sha256": "237cd075f3cf92c8c0f793da66dce49d99819fde49b1b0e6bcf4d6c4c18c7072"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-root-stack-clipping-base-active.psd",
+      "sha256": "b7be59c3ac2efe3dd6137b1347746f455ccb262f7533a108206052e49cb1f301"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-root-stack-duplicate-selected-name.psd",
+      "sha256": "342bef5aeefdf93d919d52889e445e5ce70953c17b319478a35f2c33ec1973dd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-root-stack-locked-active.psd",
+      "sha256": "83c7f2201abd42012c24c5287b21d1f8ba03fbd144cdd2025cc15df2d2c61818"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-root-stack-naming-gap.psd",
+      "sha256": "8477b28283a2999b3cf1e2ed86a594488796644c7860ea697e3e659edd3a7434"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-root-stack-stamp-selected.psd",
+      "sha256": "d3a04a6db4718de511d5bfc96ffe3b975ac105c95345d0064c7334c8f54762fd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/intel-root-stack-stamp-visible.psd",
+      "sha256": "f6369020f27ca75001b4767e5adf417080d6280599e55b40ada4282126ba7904"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/references.json",
+      "sha256": "8878bfa33847502e6f1641b8c62dd08c3ff5193e5495db31e294c16295eb4dd0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-stamp/root-stack.psd",
+      "sha256": "bbe5b3e292d06271f7788f87ba851db0d0dde70ca96f8f0864868057ad7a9081"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "a41a08af3b8237ef527de87df02fcda2e91fc58b04dc567f2acd006a88dc838a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStampTests.swift",
+      "sha256": "e42d0eb7ecbf0a079102ebfd5363901966dc2feb81741c6a3b46058d313bb74b"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "52995582fd903160d0cde706c9be880a943067ea3e9ddf36e8b40866f68e82ff"
+    }
+  ]
+}

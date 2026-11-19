@@ -302,6 +302,13 @@
     "provenance": "artifacts/runs/20261019T212322Z-115-linear-editing/adobe-merge-terminology.json",
     "limits": "No hosted service interoperability or complete action selection/Background/group/mask/transform/color equivalence claim. Local authorization, limits and output delivery deviations remain. PSD comparisons through the native decoder qualify working-space values; the Adobe linear-sRGB profile conversion changes original RGB sample bits, independently observed in the live output. No original-profile raw parity claim."
   },
+  "layer_stamping_build574": {
+    "evidence": "docs/LAYER_STAMP_REFERENCES_574.json",
+    "action_events": ["mergeLayersNew", "$Mrg2", "mergeVisible", "$MrgV"],
+    "parameters": "A true duplicate or $Dplc boolean requests the stamped operation. Existing local job endpoints retain their respective contracts.",
+    "scope": "The shared compositor inserts a new raster above the active or top selected layer while preserving original layers. Saved Photoshop RGB8, RGB16 and RGB32 reference samples pass in both optimized architectures.",
+    "limits": "Physical platform, hosted Adobe service, other modes and maximum-size sparse stamp performance remain open."
+  },
   "working_profiles_step116": {
     "evidence": "docs/WORKING_PROFILE_REFERENCES.json",
     "scope": "Both existing partial job routes retain PSD raster working profiles through the native engine; RGB32 raw merge regression compares independent original-profile bytes. Full Photoshop colour settings/conversion contract and six endpoints remain open.",

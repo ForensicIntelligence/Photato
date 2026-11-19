@@ -36,7 +36,7 @@ final class LayerMergeRenderTests: XCTestCase {
   }
   func testPhotoshopLayerMergesAndPSDExportAtAllDepths() throws {
     for bits in [8, 16, 32] {
-      for operation in LayerMergeOperation.allCases {
+      for operation in [LayerMergeOperation.down, .selected, .visible] {
         var original = try PSDCodec.read(file("photoshop-source-rgb\(bits)"))
         original.activeLayerID = original.layers.last?.id
         let ids =

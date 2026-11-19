@@ -33,7 +33,8 @@ final class PhotoshopActionProgramTests: XCTestCase {
       XCTAssertThrowsError(try program.applying(to: d, components: .red))
     }
     for action in [
-      "[{\"_obj\":\"$Mrg2\",\"duplicate\":true}]", "[{\"_obj\":\"selectAllLayers\"}]",
+      "[{\"_obj\":\"$Mrg2\",\"duplicate\":1}]", "[{\"_obj\":\"selectAllLayers\"}]",
+      "[{\"_obj\":\"$Mrg2\",\"duplicate\":true,\"$Dplc\":true}]",
       "[{\"_obj\":\"$MrgV\",\"_target\":[]}]",
     ] {
       XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON: action))
@@ -47,6 +48,30 @@ final class PhotoshopActionProgramTests: XCTestCase {
     d.layers[1].x = 400_000
     XCTAssertThrowsError(
       try PhotoshopActionProgram(actionJSON: "[{\"_obj\":\"$Mrg2\"}]").applying(to: d))
+  }
+
+  func testStampActionDescriptorKeepsLayerSelectionAndRejectsComponentTarget() throws {
+    let document = try LayerMergeTests().document(.f32)
+    let program = try PhotoshopActionProgram(actionJSON: json([["_obj": "$MrgV", "$Dplc": true]]))
+    XCTAssertEqual(program.steps, [.stampVisible])
+    let selected = try PhotoshopActionProgram(actionJSON: json([["_obj": "mergeLayersNew", "duplicate": true]]))
+    XCTAssertEqual(selected.steps, [.stampSelected])
+    let ordinary = try PhotoshopActionProgram(actionJSON: json([["_obj": "mergeVisible", "duplicate": false]]))
+    XCTAssertEqual(ordinary.steps, [.mergeVisible])
+    let compositor: PhotoshopActionProgram.MergeRenderer = { source, ids, op in
+      guard op == .stampVisible, ids == Set(source.activeLayerID.map { [$0] } ?? []) else {
+        throw CraftError.invalid("Wrong stamp input")
+      }
+      var result = source
+      let stamp = Layer(name: "Layer 1", content: .raster(try Surface(width: 1, height: 1, depth: source.depth)))
+      result.layers.append(stamp)
+      result.activeLayerID = stamp.id
+      return .preparedLayerMerge(.init(source: source, result: result, layerIDs: [], operation: op))
+    }
+    let result = try program.applying(to: document, mergeRenderer: compositor)
+    XCTAssertEqual(result.session.document.layers.dropLast(), ArraySlice(document.layers))
+    XCTAssertEqual(result.selectedLayerIDs, Set(result.session.document.activeLayerID.map { [$0] } ?? []))
+    XCTAssertThrowsError(try program.applying(to: document, components: .red, mergeRenderer: compositor))
   }
 
   func testActionAdapterMatchesAllIndependentPhotoshopOutputBytes() throws {

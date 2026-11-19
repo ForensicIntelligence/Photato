@@ -13,6 +13,8 @@ public struct PhotoshopActionProgram: Sendable {
     case flattenImage
     case mergeSelected
     case mergeVisible
+    case stampSelected
+    case stampVisible
     case selectComponents(RGBComponents?)
     case selectModeComponent(DocumentColorMode, Int?)
     case convertMode(DocumentColorMode?, PixelDepth?, Bool)
@@ -197,12 +199,17 @@ public struct PhotoshopActionProgram: Sendable {
         guard !hasComponentTarget, let flattenRenderer else {throw CraftError.unsupported("Flatten Image requires the composite target and native compositor.")}
         try session.execute(flattenRenderer(session.document))
         selectedLayers = Set(session.document.activeLayerID.map{[$0]} ?? [])
-      case .mergeSelected, .mergeVisible:
+      case .mergeSelected, .mergeVisible, .stampSelected, .stampVisible:
         guard !hasComponentTarget else {
           throw CraftError.unsupported("Merge requires the RGB target.")
         }
-        let operation: LayerMergeOperation =
-          step == .mergeVisible ? .visible : selectedLayers.count == 1 ? .down : .selected
+        let operation: LayerMergeOperation
+        switch step {
+        case .stampSelected: operation = .stampSelected
+        case .stampVisible: operation = .stampVisible
+        case .mergeVisible: operation = .visible
+        default: operation = selectedLayers.count == 1 ? .down : .selected
+        }
         if let mergeRenderer {try session.execute(mergeRenderer(session.document,selectedLayers,operation))}
         else {try session.execute(.mergeLayers(selectedLayers,operation))}
         selectedLayers = Set(session.document.activeLayerID.map { [$0] } ?? [])
@@ -460,12 +467,17 @@ public struct PhotoshopActionProgram: Sendable {
     case "flattenImage", "$FltI":
       try known(fields, keys: metadata)
       return .flattenImage
-    case "mergeLayersNew", "$Mrg2":
-      try known(fields, keys: metadata)
-      return .mergeSelected
-    case "mergeVisible", "$MrgV":
-      try known(fields, keys: metadata)
-      return .mergeVisible
+    case "mergeLayersNew", "$Mrg2", "mergeVisible", "$MrgV":
+      try known(fields, keys: metadata.union(["duplicate", "$Dplc"]))
+      if fields["duplicate"] != nil && fields["$Dplc"] != nil {
+        throw CraftError.invalid("Specify the duplicate flag once.")
+      }
+      let visible = event == "mergeVisible" || event == "$MrgV"
+      if let raw = fields["duplicate"] ?? fields["$Dplc"] {
+        guard let duplicate = raw.boolean else { throw CraftError.invalid("The duplicate flag must be boolean.") }
+        if duplicate { return visible ? .stampVisible : .stampSelected }
+      }
+      return visible ? .mergeVisible : .mergeSelected
     case "selectAllLayers":
       try known(fields, keys: metadata.union(["_target", "null"]))
       guard (fields["_target"] == nil) != (fields["null"] == nil),

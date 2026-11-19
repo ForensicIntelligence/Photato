@@ -33,20 +33,20 @@ enum PagedCanvasRenderer {
   }
 
   static func composite(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
-    video: VideoTransitionRenderContext? = nil, onPatch: ((Int) -> Void)? = nil
+    video: VideoTransitionRenderContext? = nil, forStamp: Bool = false, onPatch: ((Int) -> Void)? = nil
   ) throws -> Surface {
     guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
     let facts=CompositionFacts(d)
     var reachedInput=false
     func render(_ rect:IntRect) throws -> Surface {
-      do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts)}
+      do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts,forStamp:forStamp)}
       catch let captured as AdjustmentInputReached {reachedInput=true;return captured.surface}
     }
     let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let sources=try region==complete && video==nil ? pointwiseSources(d,facts:facts):nil
     let columns=(d.width+63)/64,total=columns*((d.height+63)/64)
-    var template=try Renderer.emptyCanvas(d)
+    var template=try Renderer.emptyCanvas(d, fill: forStamp ? Pixel(1, 1, 1, 0) : .clear)
     if let sources {
       var firstMissing=0
       for key in TileKeys(sources) {

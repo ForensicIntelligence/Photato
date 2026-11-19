@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **573** · The 10 most recent entries, newest first.
+Source build **574** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 574 — Add Stamp Layers and Stamp Visible
+
+Stamp Layers combines selected artwork on a new layer. Stamp Visible does the same for visible artwork. Both preserve the original layers and can be undone in one step. Photato exposes the shortcuts in the Layer menu and supports the same operation in recorded Actions and through the API.
+
+The saved Photoshop references match at 8, 16 and 32 bits per channel. The test documents include locked layers, clipping, hidden layers and selections across different groups. All 745 selected tests passed in each of the three configurations. Both slices of the universal validation archive passed their offscreen workspace checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-574) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_574.md).
 
 ## 2026-11-18 — Step 573 — Match HDR Normal rounding at the Float32 underflow boundary
 
@@ -77,11 +85,3 @@ The Actions menu now controls whether a new recording captures Brush and other s
 All 608 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. In 52 channel-stroke sequences, both recording settings produced the same raw samples as direct editing and the same per-architecture output as build 564. Forty older Brush step encodings also matched. Both universal slices passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-565) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_565.md).
-
-## 2026-11-18 — Step 564 — Record Brush Actions for color channels
-
-Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. Playback resolves the recorded target against the current document, respects its selection, and takes one Undo to reverse.
-
-All 583 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. On each architecture, 52 tested channel strokes replayed to the same samples as direct editing and matched build 563’s raw planes. Forty legacy Brush step encodings also matched. Both slices of the macOS 14+ validation archive passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-564) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_564.md).

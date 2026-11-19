@@ -1,3 +1,7 @@
+**Source checkpoint 574.** Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API. [Qualification](SOURCE_PUBLICATION_574.md).
+
+Measure maximum-size sparse stamping and verify live shortcut dispatch. Continue the ordinary HDR merge, small-alpha and independent clipping comparisons.
+
 **Source checkpoint 573.** Intel HDR Normal compositing now matches the measured rounding when a color contribution underflows. The renderer also preserves Photoshop's opaque-source copy rules for ordinary and clipped layers. [Qualification](SOURCE_PUBLICATION_573.md).
 
 The owned Merge Visible, Merge Down and Merge Layers captures localize a difference in the prepared HDR transaction. Stamp Visible and Stamp Layers both retain the original layers and place the new layer above the active or top selected layer. Add the native and API stamp workflow using the captured placement and naming. Apply the exact small-alpha rule and continue isolating independent clipping. See [Adobe's documented behavior](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).

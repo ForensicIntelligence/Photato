@@ -84,7 +84,9 @@ extension EditorStore {
     case .applyMask: return editable && layer.map(canApplyMask) == true
     case .merge:
       return LayerMerge.canApply(LayerMergeIntent.operation(ids,in:document),layerIDs:ids,in:document)
-    case .mergeVisible: return LayerMerge.canApply(.visible, layerIDs: ids, in: document)
+    case .mergeVisible:
+      let operation: LayerMergeOperation = NSEvent.modifierFlags.contains(.option) ? .stampVisible : .visible
+      return LayerMerge.canApply(operation, layerIDs: ids, in: document)
     }
   }
   func performLayerPanel(_ action: LayerPanelAction, context: UUID? = nil) {
@@ -109,7 +111,7 @@ extension EditorStore {
     case .applyMask: applyMask()
     case .deleteMask: deleteMask()
     case .merge: merge(menuMergeOperation)
-    case .mergeVisible: merge(.visible)
+    case .mergeVisible: merge(NSEvent.modifierFlags.contains(.option) ? .stampVisible : .visible)
     }
   }
 }
