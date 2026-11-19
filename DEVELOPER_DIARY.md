@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **600** · The 10 most recent entries, newest first.
+Source build **601** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 601 — Render sparse curved Feather from stored coverage
+
+The sparse inverted rectangle control rendered in two patches, down from 36. The distant curved mask on a 300,000 × 300,000 canvas used 46, down from 92. Both controls matched the complete build 600 render.
+
+All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_601.md).
 
 ## 2026-11-19 — Step 600 — Prove RGB32 raster-base opacity with rectangular Feather
 
@@ -77,11 +85,3 @@ Smart Filter masks accept Feather through 1,000 px and render projected mask reg
 All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md).
-
-## 2026-11-19 — Step 591 — Match measured fractional RGB32 Feather schedules
-
-Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. The comparisons cover texture, lines and edges. Apple Silicon matched every sample. The Intel texture comparison found five differences, each one Float32 step.
-
-All 861 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-591) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_591.md).

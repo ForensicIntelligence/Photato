@@ -38,6 +38,7 @@ struct VectorFeatherCoverage: Sendable {
     let source: FeatherSamplePlane
     let residentBytes: Int
     let hasSamples: Bool
+    let rawSupport: [IntRect]?
     let integerRectangle = VectorRasterizer.integerRectangle(mask.path)
     globalRectangle = viewport == nil ? integerRectangle : nil
     if let rectangle = integerRectangle {
@@ -50,6 +51,7 @@ struct VectorFeatherCoverage: Sendable {
       residentBytes = 0
       transferredInputPixels = 0
       hasSamples = local.width > 0 && local.height > 0
+      rawSupport = nil
     } else {
       let pieces = try Self.preparePieces(contours, mask: mask, region: region, padding: pad,
         fill: fill, window: window)
@@ -57,17 +59,26 @@ struct VectorFeatherCoverage: Sendable {
       residentBytes = pieces.residentBytes
       transferredInputPixels = pieces.transferredPixels
       hasSamples = !pieces.samples.isEmpty
+      rawSupport = pieces.rawSupport
     }
     plane = FeatheredMask(vectorPlane: source, radius: mask.feather, outside: outside)
     maximumResidentBytes = residentBytes + plane.maximumResidentBytes
     if !hasSamples {
       support = []
     } else {
-      support = contours.compactMap {
+      let boundingSupport = contours.compactMap {
         let rect = IntRect(x: $0.x - pad - radius, y: $0.y - pad - radius,
           width: $0.width + 2 * radius, height: $0.height + 2 * radius)
           .clipped(toWidth: width, height: height)
         return rect.width > 0 && rect.height > 0 ? rect : nil
+      }
+      if let rawSupport, boundingSupport.count <= 32 {
+        // Wide window sums can retain a tiny residual within their cache tile.
+        // Admit the whole cache footprint, intersected with the original support.
+        let margin = radius + (mask.feather > 100 ? FeatheredMask.vectorTileSide(radius: mask.feather) : 0)
+        support = Self.refinedSupport(rawSupport, within: boundingSupport, padding: pad, margin: margin)
+      } else {
+        support = boundingSupport
       }
     }
   }
@@ -100,6 +111,58 @@ struct VectorFeatherCoverage: Sendable {
 
   private func adjusted(_ raw: Float) -> Float {
     density == 1 ? raw : 1 - density * (1 - raw)
+  }
+
+  private struct RawSupport {
+    static let maximumRectangles = 4_096
+    var rectangles: [IntRect] = []
+    var remainingTiles = 65_536
+
+    mutating func record(_ surface: Surface, at rect: IntRect, outside: Float) throws -> Bool {
+      if surface.defaultPixel.r != outside {
+        rectangles.append(rect)
+        return rectangles.count <= Self.maximumRectangles
+      }
+      guard surface.tileCount <= remainingTiles else { return false }
+      remainingTiles -= surface.tileCount
+      let side = Surface.tileSide, columns = (surface.width + side - 1) / side
+      let keys = surface.storedTileKeys.makeIterator()
+      var next = keys.next()
+      while let first = next {
+        try Task.checkCancellation()
+        let row = first / columns
+        var end = first + 1
+        next = keys.next()
+        while let key = next, key == end, key / columns == row {
+          end += 1
+          next = keys.next()
+        }
+        let x = first % columns * side, y = row * side
+        rectangles.append(IntRect(x: rect.x + x, y: rect.y + y,
+          width: min(surface.width - x, (end - first) * side), height: min(side, surface.height - y)))
+        if rectangles.count > Self.maximumRectangles { return false }
+      }
+      return true
+    }
+  }
+
+  private static func refinedSupport(_ raw: [IntRect], within original: [IntRect],
+    padding: Int, margin: Int
+  ) -> [IntRect] {
+    var result: [IntRect] = []
+    for run in raw {
+      for boundary in original {
+        let x = max(boundary.x, run.x - padding - margin)
+        let y = max(boundary.y, run.y - padding - margin)
+        let endX = min(boundary.x + boundary.width, run.x + run.width - padding + margin)
+        let endY = min(boundary.y + boundary.height, run.y + run.height - padding + margin)
+        if endX > x && endY > y {
+          result.append(IntRect(x: x, y: y, width: endX - x, height: endY - y))
+          if result.count > RawSupport.maximumRectangles { return original }
+        }
+      }
+    }
+    return result
   }
 
   private static func contourBounds(_ path: CGPath, padding: Int, width: Int, height: Int) -> [IntRect] {
@@ -136,7 +199,7 @@ struct VectorFeatherCoverage: Sendable {
 
   private static func preparePieces(_ contours: [IntRect], mask: VectorMask,
     region: VectorPathGeometry.FilledRegion, padding: Int, fill: Pixel, window: IntRect?
-  ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int, transferredPixels: Int) {
+  ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int, transferredPixels: Int, rawSupport: [IntRect]?) {
     let block = 8192
     struct Cell: Hashable {
       let column: Int
@@ -163,6 +226,7 @@ struct VectorFeatherCoverage: Sendable {
     }
     let rectangle = VectorRasterizer.axisAlignedRectangle(mask.path) != nil
     var samples: [FeatherSamplePlane.Piece] = []
+    var rawSupport = window == nil ? RawSupport() : nil
     var bytes = 0, transferredPixels = 0
     for rect in cells.values.sorted(by: { ($0.y, $0.x) < ($1.y, $1.x) }) {
       try Task.checkCancellation()
@@ -181,7 +245,7 @@ struct VectorFeatherCoverage: Sendable {
         surface = try Surface(width: rect.width, height: rect.height, fill: Pixel(value, value, value))
       } else if rect.width * rect.height > 1_048_576 {
         surface = try VectorRasterizer.pagedCoverage(region, template: surface, origin: origin,
-          window: scope == entire ? nil : scope, clipRectangle: rectangle)
+          window: scope == entire ? nil : scope, clipRectangle: rectangle, compactTransfer: window == nil)
         transferredPixels += scope.width * scope.height
       } else {
         let raw = try VectorRasterizer.coverageBytes(region, width: rect.width, height: rect.height,
@@ -198,8 +262,9 @@ struct VectorFeatherCoverage: Sendable {
       if surface.tileCount != 0 || surface.defaultPixel.r != fill.r {
         samples.append(.init(x: rect.x, y: rect.y, samples: surface))
         bytes += surface.allocatedBytes
+        if try rawSupport?.record(surface, at: rect, outside: fill.r) == false { rawSupport = nil }
       }
     }
-    return (samples, bytes, transferredPixels)
+    return (samples, bytes, transferredPixels, rawSupport?.rectangles)
   }
 }

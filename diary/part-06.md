@@ -628,6 +628,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 598 | [Render whole-canvas rectangular vector masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) |
 | 2026-11-19 | 599 | [Reuse wide vector-mask Feather windows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) |
 | 2026-11-19 | 600 | [Prove RGB32 raster-base opacity with rectangular Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-600) |
+| 2026-11-19 | 601 | [Render sparse curved Feather from stored coverage](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

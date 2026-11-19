@@ -29,16 +29,22 @@ enum PagedCanvasRenderer {
     try Task.checkCancellation();try validateResources(d)
     let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let facts=CompositionFacts(d, vectorViewport: region)
+    let sources: [AnySequence<Int>]?
     if region == complete, inputTarget == nil, video == nil, !forLayerOutput,
       let plan = RectangleFeatherPlan(d) {
-      return try plan.composite(d, facts: facts, onPatch: onPatch)
+      if plan.prefersPointwise, let sparse = try pointwiseSources(d, facts: facts) {
+        sources = sparse
+      } else {
+        return try plan.composite(d, facts: facts, onPatch: onPatch)
+      }
+    } else {
+      sources = try region == complete && video == nil ? pointwiseSources(d, facts: facts) : nil
     }
     var reachedInput=false
     func render(_ rect:IntRect) throws -> Surface {
       do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts,forLayerOutput:forLayerOutput)}
       catch let captured as AdjustmentInputReached {reachedInput=true;return captured.surface}
     }
-    let sources=try region==complete && video==nil ? pointwiseSources(d,facts:facts):nil
     let layerSupport = forLayerOutput && sources == nil && region == complete && video == nil
       ? try layerOutputSupport(d) : nil
     let columns=(d.width+63)/64,total=columns*((d.height+63)/64)
@@ -277,6 +283,7 @@ enum PagedCanvasRenderer {
     private let x: Axis
     private let y: Axis
     private let exceptions: [AnySequence<Int>]
+    let prefersPointwise: Bool
 
     init?(_ document: CraftDocument) {
       guard document.videoTimeline == nil,
@@ -286,6 +293,8 @@ enum PagedCanvasRenderer {
       var shapes: [(rect: IntRect, margin: Int, phaseCount: Int)] = []
       var sources: [AnySequence<Int>] = []
       var hasFill = false
+      var changedTiles = 0
+      var estimatesAllMasks = true
       for layer in visible {
         guard layer.style == nil, layer.smartObject == nil, layer.smartFilters == nil,
           layer.sourceProjection == nil, layer.coordinateTransform == .identity, layer.blendMode != .dissolve
@@ -293,20 +302,31 @@ enum PagedCanvasRenderer {
         if let vector = layer.vectorMask, vector.enabled, vector.density > 0 {
           guard vector.feather > 0, let rect = VectorRasterizer.integerRectangle(vector.path) else { return nil }
           let cacheSide = FeatheredMask.vectorTileSide(radius: vector.feather)
-          let margin = Int(MaskSampler.featherDamageRadius(vector.feather)) + cacheSide + 1
-          shapes.append((rect, margin, cacheSide / Surface.tileSide))
+          let radius = Int(MaskSampler.featherDamageRadius(vector.feather)) + 1
+          shapes.append((rect, radius + cacheSide, cacheSide / Surface.tileSide))
+          let affected = IntRect(x: rect.x - radius, y: rect.y - radius,
+            width: rect.width + 2 * radius, height: rect.height + 2 * radius)
+            .clipped(toWidth: document.width, height: document.height)
+          if affected.width > 0 && affected.height > 0 {
+            let side = Surface.tileSide
+            let columns = (affected.x + affected.width - 1) / side - affected.x / side + 1
+            let rows = (affected.y + affected.height - 1) / side - affected.y / side + 1
+            changedTiles += columns * rows
+          }
+        } else if layer.vectorMask?.enabled == true {
+          estimatesAllMasks = false
         }
         if let mask = layer.mask, layer.effectiveMaskProperties.enabled {
           guard mask.width == document.width, mask.height == document.height,
             layer.effectiveMaskProperties.feather == 0, layer.maskCoordinateTransform == .identity
           else { return nil }
-          if mask.tileCount > 0 { sources.append(mask.storedTileKeys) }
+          if mask.tileCount > 0 { sources.append(mask.storedTileKeys); changedTiles += mask.tileCount }
         }
         switch layer.content {
         case .fill: hasFill = true
         case .raster(let surface):
           guard surface.width == document.width, surface.height == document.height else { return nil }
-          if surface.tileCount > 0 { sources.append(surface.storedTileKeys) }
+          if surface.tileCount > 0 { sources.append(surface.storedTileKeys); changedTiles += surface.tileCount }
         default: return nil
         }
       }
@@ -319,6 +339,10 @@ enum PagedCanvasRenderer {
       { return nil }
       x = Axis(length: document.width, bounds: shapes.map { ($0.rect.x, $0.rect.width, $0.margin, $0.phaseCount) })
       y = Axis(length: document.height, bounds: shapes.map { ($0.rect.y, $0.rect.height, $0.margin, $0.phaseCount) })
+      // The pointwise plan already merges adjacent affected tiles into bands.
+      // Consult it only when all layers were covered by this cheap upper bound.
+      prefersPointwise = estimatesAllMasks && visible.count == document.layers.count
+        && changedTiles <= x.counts.count * y.counts.count
       exceptions = sources
     }
 

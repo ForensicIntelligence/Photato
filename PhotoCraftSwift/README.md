@@ -1,3 +1,5 @@
+**Source checkpoint 601.** Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work. [Qualification](docs/SOURCE_PUBLICATION_601.md).
+
 **Source checkpoint 600.** Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows. [Qualification](docs/SOURCE_PUBLICATION_600.md).
 
 **Source checkpoint 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Qualification](docs/SOURCE_PUBLICATION_599.md).

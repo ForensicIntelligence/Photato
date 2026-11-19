@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 601 — Render sparse curved Feather from stored coverage
+
+The sparse inverted rectangle control rendered in two patches, down from 36. The distant curved mask on a 300,000 × 300,000 canvas used 46, down from 92. Both controls matched the complete build 600 render.
+
+All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-601) · [Validation](SOURCE_PUBLICATION_601.md).
+
 ## 2026-11-19 — Step 600 — Prove RGB32 raster-base opacity with rectangular Feather
 
 The 37.8 MP opaque-base test with 2 px Feather went from 52.80 s to 0.02 s on Apple Silicon and from 69.40 s to 0.02 s under Rosetta. These are single runs on the same host.
@@ -797,14 +805,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:600 -->
+<!-- current-status-step:601 -->
 ## Current development status — 19 November 2026
 
-Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows.
+Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work.
 
-All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 600](SOURCE_PUBLICATION_600.md) · [Detailed record](DEVLOG.md#dev-step-600).
+[Source checkpoint 601](SOURCE_PUBLICATION_601.md) · [Detailed record](DEVLOG.md#dev-step-601).
 
 <!-- current-status:end -->
 
@@ -1611,6 +1619,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 598 | [Render whole-canvas rectangular vector masks](DEVLOG.md#dev-step-598) |
 | 2026-11-19 | 599 | [Reuse wide vector-mask Feather windows](DEVLOG.md#dev-step-599) |
 | 2026-11-19 | 600 | [Prove RGB32 raster-base opacity with rectangular Feather](DEVLOG.md#dev-step-600) |
+| 2026-11-19 | 601 | [Render sparse curved Feather from stored coverage](DEVLOG.md#dev-step-601) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

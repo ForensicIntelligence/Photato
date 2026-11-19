@@ -73,7 +73,7 @@ extension VectorRasterizer {
   static func pagedCoverage(_ region: VectorPathGeometry.FilledRegion, template empty: Surface,
     origin: PathPoint, antiAlias: Bool = true,
     maximumScratchPreparedBytes: Int = Surface.maxPixels + Surface.maxDimension,
-    window: IntRect? = nil, clipRectangle: Bool = false
+    window: IntRect? = nil, clipRectangle: Bool = false, compactTransfer: Bool = false
   ) throws -> Surface {
     let width = empty.width, height = empty.height, outside = empty.defaultPixel.r
     let outline=region.path,bounds=outline.boundingBoxOfPath
@@ -115,8 +115,15 @@ extension VectorRasterizer {
       context.translateBy(x:-origin.x-Double(x),y:-origin.y-Double(y))
       context.setFillColor(gray:1,alpha:1);context.addPath(outline);context.fillPath()
     }}
-    let builder=try Surface.PagedBuilder(template:empty)
     let bytes=backing.memory.assumingMemoryBound(to:UInt8.self)
+    if compactTransfer && window == nil && outside == (region.inverted ? 1 : 0) {
+      // Keep the same Core Graphics context, origin, clip and Gray8 bytes.
+      return try withExtendedLifetime(backing) {
+        try compactGrayTransfer(bytes, template: empty, inverted: region.inverted,
+          bounds: IntRect(x: left, y: top, width: right-left, height: bottom-top))
+      }
+    }
+    let builder=try Surface.PagedBuilder(template:empty)
     for y in stride(from:top,to:bottom,by:64) {for x in stride(from:left,to:right,by:2048) {
       try Task.checkCancellation()
       let w=min(2048,right-x),h=min(64,bottom-y)
@@ -128,6 +135,73 @@ extension VectorRasterizer {
       try builder.append(patch,atX:x,atY:y)
     }}
     return try withExtendedLifetime(backing) {try builder.finish()}
+  }
+
+  private static func compactGrayTransfer(_ bytes: UnsafePointer<UInt8>, template: Surface, inverted: Bool,
+    bounds: IntRect
+  ) throws -> Surface {
+    let width = template.width, height = template.height, side = Surface.tileSide
+    if bounds == IntRect(x: 0, y: 0, width: width, height: height), bytes[0] == 0 || bytes[0] == 255 {
+      let pattern = [UInt8](repeating: bytes[0], count: 65_536)
+      let uniform = try pattern.withUnsafeBytes { raw in
+        for i in stride(from: 0, to: width * height, by: raw.count) {
+          try Task.checkCancellation()
+          if memcmp(bytes + i, raw.baseAddress!, min(raw.count, width * height - i)) != 0 { return false }
+        }
+        return true
+      }
+      if uniform {
+        let value: Float = (bytes[0] == 255) != inverted ? 1 : 0
+        return try Surface(width: width, height: height, depth: template.depth,
+          fill: Pixel(value, value, value), colorEncoding: template.colorEncoding)
+      }
+    }
+    let builder = try Surface.PagedBuilder(template: template)
+    let zero = [UInt8](repeating: 0, count: side)
+    let full = [UInt8](repeating: 255, count: side)
+    var solid: [Int: Surface.PagedBuilder.PreparedTile] = [:]
+    let other: Float = inverted ? 0 : 1
+    for y in stride(from: bounds.y, to: bounds.y + bounds.height, by: side) {
+      try Task.checkCancellation()
+      let h = min(side, height - y)
+      for x in stride(from: bounds.x, to: bounds.x + bounds.width, by: side) {
+        let w = min(side, width - x), raw = bytes + y * width + x
+        let first = raw[0]
+        if first == 0 || first == 255 {
+          let uniform = (first == 0 ? zero : full).withUnsafeBytes { row in
+            (0..<h).allSatisfy { memcmp(raw + $0 * width, row.baseAddress!, w) == 0 }
+          }
+          if uniform {
+            if first == 0 { continue }
+            let key = w * (side + 1) + h
+            let tile: Surface.PagedBuilder.PreparedTile
+            if let saved = solid[key] {
+              tile = saved
+            } else {
+              let patch = try Surface(width: w, height: h, depth: template.depth,
+                fill: Pixel(other, other, other), colorEncoding: template.colorEncoding)
+              tile = try builder.prepareTile(patch)
+              solid[key] = tile
+            }
+            try builder.append(tile, row: y / side, columns: (x / side)..<(x / side + 1))
+            continue
+          }
+        }
+        var patch = try Surface(width: w, height: h, depth: template.depth,
+          fill: template.defaultPixel, colorEncoding: template.colorEncoding)
+        for row in 0..<h {
+          for column in 0..<w {
+            let gray = raw[row * width + column]
+            if gray != 0 {
+              let value = Float(inverted ? 255 - gray : gray) / 255
+              patch.setPixel(x: column, y: row, Pixel(value, value, value))
+            }
+          }
+        }
+        try builder.append(patch, atX: x, atY: y)
+      }
+    }
+    return try builder.finish()
   }
   static func coversCanvasRectangle(_ path:VectorPath,width:Int,height:Int,origin:PathPoint)->Bool {
     guard let rect = axisAlignedRectangle(path) else { return false }

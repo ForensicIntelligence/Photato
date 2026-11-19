@@ -1,3 +1,7 @@
+**Source checkpoint 601.** Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work. [Qualification](SOURCE_PUBLICATION_601.md).
+
+Exercise dense nonrectangular masks across the full canvas. Start by measuring uniform interior rows and bounding the work in regions where the existing Gray8 rasterizer gives constant coverage. Preserve antialiased edge samples and exact Feather output. Retry live Photoshop capture for wide vector and Smart Filter masks when document scripting responds.
+
 **Source checkpoint 600.** Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows. [Qualification](SOURCE_PUBLICATION_600.md).
 
 Retain the lower patch count for sparse inverted rectangles. Extend bounded whole-canvas Feather to nonrectangular vector paths and check exact opacity around their real coverage support. Collect fresh Photoshop outputs for wide vector and Smart Filter masks.

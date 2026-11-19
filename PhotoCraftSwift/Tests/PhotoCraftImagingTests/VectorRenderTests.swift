@@ -422,6 +422,7 @@ final class VectorRenderTests: XCTestCase {
       XCTAssertLessThan(patches, 100)
       XCTAssertTrue(whole.linearPixel(x: near.x, y: near.y).hasSameBits(as: expected))
       if !opaque {
+        XCTAssertLessThanOrEqual(patches, 2)
         let remote = IntRect(x: 287_035, y: 294_043, width: 7, height: 7)
         let viewport = try Renderer.composite(full, region: remote)
         XCTAssertLessThan(whole.linearPixel(x: remote.x, y: remote.y).a, expected.a)
@@ -441,6 +442,58 @@ final class VectorRenderTests: XCTestCase {
     pixels.setLinearPixel(x: side - 2, y: side - 2, Pixel(back.r, back.g, back.b, 0.8))
     full.layers[0].content = .raster(pixels)
     XCTAssertFalse(try CompositionFacts(full, vectorViewport: near).opaqueBase(full.layers[0]))
+  }
+
+  func testCompactGrayTransferMatchesOriginalOnCurvesAndPartialTiles() throws {
+    let width = 1_037, height = 1_031
+    var curve = rect(12.25, -39.625, 1_081.375, 1_111.25)
+    curve.knots[0].outgoing = PathPoint(400.125, 170.5)
+    curve.knots[1].incoming = PathPoint(799.375, 88.75)
+    for inverted in [false, true] {
+      let path = VectorPath(components: [curve, rect(771.3, 707.75, 141.125, 139.25, .subtract)], inverted: inverted)
+      let region = try VectorPathGeometry.filledRegion(path)
+      let template = try Surface(width: width, height: height, fill: inverted ? .white : .black)
+      let origin = PathPoint(0, 0)
+      let old = try VectorRasterizer.pagedCoverage(region, template: template, origin: origin)
+      let compact = try VectorRasterizer.pagedCoverage(region, template: template, origin: origin, compactTransfer: true)
+      XCTAssertEqual(try compact.rgbaData(depth: .u8), try old.rgbaData(depth: .u8))
+      let fullRegion = try VectorPathGeometry.filledRegion(VectorPath(
+        components: [rect(-9, -11, 1_081, 1_070)], inverted: inverted))
+      let uniform = try VectorRasterizer.pagedCoverage(fullRegion, template: template, origin: origin, compactTransfer: true)
+      XCTAssertEqual(uniform.tileCount, 0)
+      XCTAssertEqual(uniform.defaultPixel.r, inverted ? 0 : 1)
+    }
+  }
+
+  func testWholeCurvedFeatherUsesStoredCoverageSupport() throws {
+    let width = 8_195, height = 4_609
+    var document = try CraftDocument(width: width, height: height, depth: .f32)
+    let ribbon = PathComponent(knots: [
+      PathKnot(PathPoint(302.25, 333.625), outgoing: PathPoint(1_220.375, 600.25)),
+      PathKnot(PathPoint(3_659.5, 3_200.125), incoming: PathPoint(2_355.5, 2_570.5)),
+      PathKnot(PathPoint(3_659.5, 3_222.125), outgoing: PathPoint(2_355.5, 2_592.5)),
+      PathKnot(PathPoint(302.25, 355.625), incoming: PathPoint(1_220.375, 622.25)),
+    ], closed: true)
+    var mask = VectorMask(path: VectorPath(components: [ribbon], inverted: true))
+    mask.feather = 2
+    var layer = Layer(name: "Feathered curved ribbon", content: .fill(.white))
+    layer.vectorMask = mask
+    document.layers = [layer]
+    document.activeLayerID = layer.id
+    var patches = 0
+    let canvas = IntRect(x: 0, y: 0, width: width, height: height)
+    let image = try PagedCanvasRenderer.composite(document, region: canvas, onPatch: { patches = $0 })
+    XCTAssertLessThan(patches, 90)
+    XCTAssertLessThan(image.mappedTileCount, 240)
+    XCTAssertLessThan(image.linearPixel(x: 307, y: 343).a, 0.1)
+    XCTAssertEqual(image.linearPixel(x: 2_100, y: 500).a, 1)
+    for (x, y) in [(298, 328), (304, 340), (905, 612), (1_874, 1_589), (3_652, 3_204), (2_100, 500)] {
+      let roi = IntRect(x: x, y: y, width: 11, height: 13)
+      let viewport = try Renderer.composite(document, region: roi)
+      XCTAssertEqual(try image.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB),
+        try viewport.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB), "\(x),\(y)")
+    }
+    print("Curved Feather: \(patches) output patches, \(image.mappedTileCount) stored tiles")
   }
 
   func testWideVectorFeatherPreservesEditablePSDAndPSBMaskProperties() throws {

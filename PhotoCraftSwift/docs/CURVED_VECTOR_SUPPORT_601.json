@@ -1,0 +1,459 @@
+{
+  "build": 601,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince600": [
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "334117005337689d9c25b99e88f2db607ed70d973377b11551b3417995b72f8d"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedVectorRasterizer.swift",
+      "sha256": "637ca5f518c0b1a34529752bbd5d1dbe84b6e93d6feae9d7a01b7967e30df184"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorFeatherCoverage.swift",
+      "sha256": "da57f16ee7c7fe5bf81cf2ffa4991ab132489078d8c7bb5d920e9e9415eca154"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/VectorRenderTests.swift",
+      "sha256": "b65fe0eb9af39d21751b6e9213bbaa26469ac50afa94477f12d98beb06214e33"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "8f717c8bcad6f5c9ee5cbf0797bf0f39df09daf65323f971afa2f49cdccc8aaa"
+    }
+  ],
+  "selectedChecksPerConfiguration": 918,
+  "focusedDebugPassed": 4,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "e1c191e234889db6696cfcc5458d64c5d0a7c570fb18c511f8cea621d3f6d705",
+      "testBinarySHA256": "5e86d34346abd3fdaf18695a8e249b47a6684c6770891ea072b0a2cc1c51ee57",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "8bbac4ff49dc17d1c74a8701a7b97d5881f9ce512631a5e07ce41b2d1208b296",
+      "testBinarySHA256": "d7d059dac41ce230c597dc787cafe7a833e04d3aaf014161aaded7b3ce4862b7",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "17d551bf83bfefdff8f1173ed42c20a8410344d72348fb8c05ced3cadd7d04f5",
+      "testBinarySHA256": "26008fd0d43b3b052fc6a68bbe624ad8278907333cd0f17e37a1d4b106176414",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "fcb0326f7e11d46502149861f9638a4bd35fe79717a754ec4c1e895390093e10",
+    "binarySHA256": "4a7a9d28231d5850d61e00b976a3e4cdf1fe96dab099b6b5a6b4b16bb1f6a92b",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "wholeCanvasControls": {
+    "arm": {
+      "sparse": {
+        "build600": {
+          "cells": 4,
+          "fixture": "sparse",
+          "height": 4609,
+          "implicit": [
+            1055846128,
+            1036388642,
+            1044858414,
+            1065353216
+          ],
+          "mappedTiles": 4,
+          "patches": 36,
+          "seconds": 0.025896958,
+          "sha256": "2fe8645aead1d232035f6198c66e59368ad32126a1a6a068504a47e7f3ec920e",
+          "width": 8195,
+          "wordsInStoredCells": 65536
+        },
+        "build601": {
+          "cells": 4,
+          "fixture": "sparse",
+          "height": 4609,
+          "implicit": [
+            1055846128,
+            1036388642,
+            1044858414,
+            1065353216
+          ],
+          "mappedTiles": 4,
+          "patches": 2,
+          "seconds": 0.010918834,
+          "sha256": "2fe8645aead1d232035f6198c66e59368ad32126a1a6a068504a47e7f3ec920e",
+          "width": 8195,
+          "wordsInStoredCells": 65536
+        }
+      },
+      "ribbon": {
+        "build600": {
+          "cells": 132,
+          "fixture": "ribbon",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 2484,
+          "patches": 92,
+          "seconds": 1.101996542,
+          "sha256": "235efe041de878facded89a507e792729ab4e8c7235087fc1e3f3e1f81580aeb",
+          "width": 8195,
+          "wordsInStoredCells": 2162688
+        },
+        "build601": {
+          "cells": 132,
+          "fixture": "ribbon",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 218,
+          "patches": 46,
+          "seconds": 0.191826834,
+          "sha256": "235efe041de878facded89a507e792729ab4e8c7235087fc1e3f3e1f81580aeb",
+          "width": 8195,
+          "wordsInStoredCells": 2162688
+        }
+      },
+      "wide": {
+        "build600": {
+          "cells": 404,
+          "fixture": "wide",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 598,
+          "patches": 23,
+          "seconds": 0.575664375,
+          "sha256": "596e7f8adf252bc874b789897d1b34ac4e12e9b125ac44f3548af758e1d5b094",
+          "width": 8195,
+          "wordsInStoredCells": 6619136
+        },
+        "build601": {
+          "cells": 404,
+          "fixture": "wide",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 598,
+          "patches": 23,
+          "seconds": 0.575101833,
+          "sha256": "596e7f8adf252bc874b789897d1b34ac4e12e9b125ac44f3548af758e1d5b094",
+          "width": 8195,
+          "wordsInStoredCells": 6619136
+        }
+      },
+      "broad": {
+        "build600": {
+          "cells": 1243,
+          "fixture": "broad",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 2679,
+          "patches": 94,
+          "seconds": 1.313107167,
+          "sha256": "2a4ceee17fc330361e75b0e5a25d8e08564db8fdf941d4cee0d065b061cd8d8b",
+          "width": 8195,
+          "wordsInStoredCells": 20365312
+        },
+        "build601": {
+          "cells": 1243,
+          "fixture": "broad",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 1310,
+          "patches": 67,
+          "seconds": 0.641268167,
+          "sha256": "2a4ceee17fc330361e75b0e5a25d8e08564db8fdf941d4cee0d065b061cd8d8b",
+          "width": 8195,
+          "wordsInStoredCells": 20365312
+        }
+      },
+      "remote": {
+        "build600": {
+          "cells": 131,
+          "fixture": "ribbon",
+          "height": 300000,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 2484,
+          "patches": 92,
+          "seconds": 1.071407542,
+          "sha256": "63ebb60d66326cde769c38715a4a13467ab610121a20ef4dd2db7b2925433b78",
+          "width": 300000,
+          "wordsInStoredCells": 2146304
+        },
+        "build601": {
+          "cells": 131,
+          "fixture": "ribbon",
+          "height": 300000,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 218,
+          "patches": 46,
+          "seconds": 0.186883458,
+          "sha256": "63ebb60d66326cde769c38715a4a13467ab610121a20ef4dd2db7b2925433b78",
+          "width": 300000,
+          "wordsInStoredCells": 2146304
+        }
+      }
+    },
+    "intel": {
+      "sparse": {
+        "build600": {
+          "cells": 4,
+          "fixture": "sparse",
+          "height": 4609,
+          "implicit": [
+            1055846128,
+            1036388642,
+            1044858414,
+            1065353216
+          ],
+          "mappedTiles": 4,
+          "patches": 36,
+          "seconds": 0.037426084,
+          "sha256": "f4cd4f791f231738879f8e45d40add1e6e3d2890cb7499f3c10e3d3ea06a1b79",
+          "width": 8195,
+          "wordsInStoredCells": 65536
+        },
+        "build601": {
+          "cells": 4,
+          "fixture": "sparse",
+          "height": 4609,
+          "implicit": [
+            1055846128,
+            1036388642,
+            1044858414,
+            1065353216
+          ],
+          "mappedTiles": 4,
+          "patches": 2,
+          "seconds": 0.012415583,
+          "sha256": "f4cd4f791f231738879f8e45d40add1e6e3d2890cb7499f3c10e3d3ea06a1b79",
+          "width": 8195,
+          "wordsInStoredCells": 65536
+        }
+      },
+      "ribbon": {
+        "build600": {
+          "cells": 132,
+          "fixture": "ribbon",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 2484,
+          "patches": 92,
+          "seconds": 2.018441416,
+          "sha256": "235efe041de878facded89a507e792729ab4e8c7235087fc1e3f3e1f81580aeb",
+          "width": 8195,
+          "wordsInStoredCells": 2162688
+        },
+        "build601": {
+          "cells": 132,
+          "fixture": "ribbon",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 218,
+          "patches": 46,
+          "seconds": 0.317643042,
+          "sha256": "235efe041de878facded89a507e792729ab4e8c7235087fc1e3f3e1f81580aeb",
+          "width": 8195,
+          "wordsInStoredCells": 2162688
+        }
+      },
+      "wide": {
+        "build600": {
+          "cells": 404,
+          "fixture": "wide",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 598,
+          "patches": 23,
+          "seconds": 1.107851417,
+          "sha256": "596e7f8adf252bc874b789897d1b34ac4e12e9b125ac44f3548af758e1d5b094",
+          "width": 8195,
+          "wordsInStoredCells": 6619136
+        },
+        "build601": {
+          "cells": 404,
+          "fixture": "wide",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 598,
+          "patches": 23,
+          "seconds": 1.142742791,
+          "sha256": "596e7f8adf252bc874b789897d1b34ac4e12e9b125ac44f3548af758e1d5b094",
+          "width": 8195,
+          "wordsInStoredCells": 6619136
+        }
+      },
+      "broad": {
+        "build600": {
+          "cells": 1243,
+          "fixture": "broad",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 2679,
+          "patches": 94,
+          "seconds": 2.680581916,
+          "sha256": "2a4ceee17fc330361e75b0e5a25d8e08564db8fdf941d4cee0d065b061cd8d8b",
+          "width": 8195,
+          "wordsInStoredCells": 20365312
+        },
+        "build601": {
+          "cells": 1243,
+          "fixture": "broad",
+          "height": 4609,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 1310,
+          "patches": 67,
+          "seconds": 1.151240458,
+          "sha256": "2a4ceee17fc330361e75b0e5a25d8e08564db8fdf941d4cee0d065b061cd8d8b",
+          "width": 8195,
+          "wordsInStoredCells": 20365312
+        }
+      },
+      "remote": {
+        "build600": {
+          "cells": 131,
+          "fixture": "ribbon",
+          "height": 300000,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 2484,
+          "patches": 92,
+          "seconds": 2.040030167,
+          "sha256": "63ebb60d66326cde769c38715a4a13467ab610121a20ef4dd2db7b2925433b78",
+          "width": 300000,
+          "wordsInStoredCells": 2146304
+        },
+        "build601": {
+          "cells": 131,
+          "fixture": "ribbon",
+          "height": 300000,
+          "implicit": [
+            1065353216,
+            1065353216,
+            1065353216,
+            1065353216
+          ],
+          "mappedTiles": 218,
+          "patches": 46,
+          "seconds": 0.334080083,
+          "sha256": "63ebb60d66326cde769c38715a4a13467ab610121a20ef4dd2db7b2925433b78",
+          "width": 300000,
+          "wordsInStoredCells": 2146304
+        }
+      }
+    }
+  },
+  "comparedFields": [
+    "sha256",
+    "implicit",
+    "cells",
+    "wordsInStoredCells",
+    "width",
+    "height"
+  ],
+  "photoshop": {
+    "documentCountAppleEventError": -1712,
+    "documentCountAttempts": 2,
+    "freshSamples": 0,
+    "documentation": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html"
+  },
+  "limits": "The installed Photoshop app timed out on both read-only document count requests. Fresh Photoshop outputs, maximum-size dense curved masks, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open."
+}

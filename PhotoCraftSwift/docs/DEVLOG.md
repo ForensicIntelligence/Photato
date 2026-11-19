@@ -619,7 +619,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 598 | 2026-11-19 | [Render whole-canvas rectangular vector masks](#dev-step-598) |
 | 599 | 2026-11-19 | [Reuse wide vector-mask Feather windows](#dev-step-599) |
 | 600 | 2026-11-19 | [Prove RGB32 raster-base opacity with rectangular Feather](#dev-step-600) |
+| 601 | 2026-11-19 | [Render sparse curved Feather from stored coverage](#dev-step-601) |
 <!-- history-index:end -->
+
+<a id="dev-step-601"></a>
+
+## 2026-11-19 — Render sparse curved Feather from stored coverage
+
+Build 600 rendered 26 patches for a sparse inverted rectangle that build 599 handled in two. The rectangular plan now estimates affected mask and raster tiles. It uses the existing pointwise renderer when its affected-tile count is at most the representative count and it can supply a complete plan.
+
+`PagedVectorRasterizer` now transfers the Gray8 output of whole feathered-mask pieces in tiles. It skips implicit tiles and shares solid coverage tiles of the same dimensions. A uniform piece needs only an implicit sample. The Core Graphics clip, transform and antialiased bytes are the same inputs to this transfer. `VectorFeatherCoverage` derives affected runs from stored tiles, adds the filter footprint and intersects the result with the former path bounds. Wide Feather includes the cache-tile extent so the affected runs also cover residuals from rolling sums. Large support lists retain the bounding plan. [Adobe vector mask controls](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html) · [Apple CGPath](https://developer.apple.com/documentation/coregraphics/cgpath).
+
+`VectorRenderTests` adds a curve transfer comparison at a partial tile boundary and a whole-canvas curved ribbon. The existing RGB32 regression also checks the sparse rectangle's patch count. Frozen inputs and build logs are recorded under `artifacts/601-curved-vector-support/qualification01`.
+
+The four focused Debug tests passed, including both new tests. The large curved ribbon matched the corresponding viewport outputs across six crops.
+
+Five controls matched build 600 bit for bit on each architecture. The comparison hashes the implicit RGBA sample, the index of every tile containing a different sample, and every visible RGBA word in those tiles. The controls cover a sparse inverted rectangle, a narrow curve, a wide-Feather curve, a broad curve and a narrow curve near the far corner of a maximum-size canvas.
+
+The sparse rectangle used two render patches, down from 36. The curve on a 300,000 × 300,000 canvas used 46, down from 92. The maximum-size case took 0.19 s on Apple Silicon, down from 1.07 s, and 0.33 s under Rosetta, down from 2.04 s. These times are from single runs on the same Mac.
+
+All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum.
+
+The installed Photoshop app timed out on both read-only document count requests. Fresh Photoshop outputs, maximum-size dense curved masks, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_601.md).
 
 <a id="dev-step-600"></a>
 
