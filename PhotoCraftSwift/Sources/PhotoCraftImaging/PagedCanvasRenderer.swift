@@ -15,9 +15,6 @@ enum PagedCanvasRenderer {
         throw CraftError.unsupported("Large layer styles still require bounded effect maps.")
       }
       if d.width > Surface.maximumDensePixels/d.height {
-        guard layer.vectorMask?.enabled != true || layer.vectorMask?.feather==0 else {
-          throw CraftError.unsupported("Large feathered vector masks still require bounded kernel preparation.")
-        }
         // Renderer prepares Warp through its checked dense/paged raster backend
         // before composition. Canvas area alone is not a Warp source limit.
         if layer.smartFilters != nil {_ = try SmartFilterEngine.renderBounds(layer,in:d)}
@@ -161,25 +158,36 @@ enum PagedCanvasRenderer {
 
   /// Exhaustive pointwise eligibility: every missing tile has the same samples.
   /// Spatial/dithered/affine/rich sources keep complete patch evaluation.
-  private static func pointwiseSources(_ d: CraftDocument,facts:CompositionFacts) throws -> [Surface]? {
+  private static func pointwiseSources(_ d: CraftDocument,facts:CompositionFacts) throws -> [AnySequence<Int>]? {
     guard d.videoTimeline == nil else {return nil}
-    var sources:[Surface]=[]
+    var sources: [AnySequence<Int>] = []
     for layer in d.layers {
       guard layer.style==nil,layer.smartObject?.pdfSource==nil,layer.smartFilters==nil,layer.warp==nil,
         layer.blendMode != .dissolve,layer.coordinateTransform == .identity else {return nil}
-      if let vector=layer.vectorMask,vector.enabled {
-        guard vector.feather==0,d.width>Surface.maximumDensePixels/d.height else {return nil}
-        if let source=try facts.mask(layer)?.vectorTileSource {sources.append(source)}
+      if let vector = layer.vectorMask, vector.enabled {
+        let sampler = try facts.mask(layer)
+        if let rectangles = sampler?.vectorFeatherSupport {
+          let columns = (d.width + Surface.tileSide - 1) / Surface.tileSide
+          let patches = GeometryPatchRegions(width: d.width, height: d.height, rectangles: rectangles)
+          sources.append(AnySequence(patches.lazy.flatMap { rect -> Range<Int> in
+            let first = rect.y / Surface.tileSide * columns + rect.x / Surface.tileSide
+            return first..<(first + (rect.width + Surface.tileSide - 1) / Surface.tileSide)
+          }))
+        } else if let raw = sampler?.vectorTileSource {
+          sources.append(raw.storedTileKeys)
+        } else if sampler != nil {
+          return nil
+        }
       }
       if let mask=layer.mask,layer.effectiveMaskProperties.enabled {
         guard mask.width==d.width,mask.height==d.height,
           layer.maskCoordinateTransform == .identity,layer.effectiveMaskProperties.feather==0 else {return nil}
-        sources.append(mask)
+        sources.append(mask.storedTileKeys)
       }
       switch layer.content {
       case .raster(let surface):
         guard surface.width==d.width,surface.height==d.height else {return nil}
-        sources.append(surface)
+        sources.append(surface.storedTileKeys)
       case .fill:break
       case .group(let group):
         guard group.frame==nil,group.artboard==nil else {return nil}
@@ -197,10 +205,10 @@ enum PagedCanvasRenderer {
   }
 
   private struct TileKeys:Sequence {
-    let sources:[Surface]
-    init(_ sources:[Surface]) {self.sources=sources}
+    let sources: [AnySequence<Int>]
+    init(_ sources: [AnySequence<Int>]) { self.sources = sources }
     func makeIterator()->AnyIterator<Int> {
-      var iterators=sources.map {$0.storedTileKeys.makeIterator()}
+      var iterators = sources.map { $0.makeIterator() }
       var heads=iterators.indices.map {iterators[$0].next()}
       return AnyIterator {
         var first:Int?

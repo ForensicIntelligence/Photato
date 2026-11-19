@@ -47,7 +47,8 @@ final class CompositionFacts {
       total += MaskSampler.maximumFeatherCacheBytes
     }
     if let vector=layer.vectorMask,vector.enabled {
-      if let source=sampler?.vectorTileSource {total += source.allocatedBytes}
+      if let bytes = sampler?.vectorFeatherBytes { total += bytes }
+      else if let source=sampler?.vectorTileSource {total += source.allocatedBytes}
       else if document.width<=Surface.maximumDensePixels/document.height {
         let pad=2*Int(ceil(vector.feather*3))
         total += tiled(document.width+pad,document.height+pad)
@@ -96,12 +97,27 @@ final class CompositionFacts {
   /// independent outside value. Unknown geometries use the existing global test.
   private func unitMask(_ layer: Layer) throws -> Bool? {
     if let vector=layer.vectorMask,vector.enabled,vector.density != 0 {
-      guard vector.feather==0,document.width>Surface.maximumDensePixels/document.height else {return nil}
-      if let source=try mask(layer)?.vectorTileSource {
-        guard try source.allStoredSamplesSatisfy({p in
-          let value=unit(p.r)
-          return (vector.density==1 ? value:1-vector.density*(1-value))==1
-        }) else {return false}
+      if vector.feather > 0 {
+        if let sampler = try mask(layer) {
+          guard let rectangles = sampler.vectorFeatherSupport, sampler.vectorFeatherOutside == 1
+          else { return nil }
+          for patch in GeometryPatchRegions(width: document.width, height: document.height, rectangles: rectangles) {
+            for y in patch.y..<(patch.y + patch.height) {
+              try Task.checkCancellation()
+              for x in patch.x..<(patch.x + patch.width) where sampler.featheredVectorCoverage(x: x, y: y) != 1 {
+                return false
+              }
+            }
+          }
+        }
+      } else {
+        guard document.width > Surface.maximumDensePixels / document.height else { return nil }
+        if let source = try mask(layer)?.vectorTileSource {
+          guard try source.allStoredSamplesSatisfy({ p in
+            let value = unit(p.r)
+            return (vector.density == 1 ? value : 1 - vector.density * (1 - value)) == 1
+          }) else { return false }
+        }
       }
     }
     guard let source=layer.mask else {return true}

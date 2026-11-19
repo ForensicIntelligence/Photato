@@ -23,6 +23,13 @@ public enum VectorRasterizer {
         bytes: [UInt8](repeating: value, count: width * height))
     }
     let region = try VectorPathGeometry.filledRegion(path)
+    return try SelectionMask(width: width, height: height,
+      bytes: coverageBytes(region, width: width, height: height, origin: origin, antiAlias: antiAlias))
+  }
+
+  static func coverageBytes(_ region: VectorPathGeometry.FilledRegion, width: Int, height: Int,
+    origin: PathPoint, antiAlias: Bool = true
+  ) throws -> [UInt8] {
     guard
       let context = CGContext(
         data: nil, width: width, height: height,
@@ -44,7 +51,7 @@ public enum VectorRasterizer {
         start: data.assumingMemoryBound(to: UInt8.self),
         count: width * height))
     if region.inverted { for i in bytes.indices { bytes[i] = 255 - bytes[i] } }
-    return try SelectionMask(width: width, height: height, bytes: bytes)
+    return bytes
   }
 }
 
@@ -52,6 +59,13 @@ public enum VectorRasterizer {
 public struct LayerMaskSampler: Sendable {
   private var pixel: MaskSampler?
   private var vector: MaskSampler?
+  private var featheredVector: VectorFeatherCoverage?
+  var vectorFeatherSupport: [IntRect]? { featheredVector?.support }
+  var vectorFeatherBytes: Int? { featheredVector?.maximumResidentBytes }
+  var vectorFeatherOutside: Float? { featheredVector?.adjustedOutside }
+  func featheredVectorCoverage(x: Int, y: Int) -> Float {
+    featheredVector?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+  }
   /// Available only for aligned, unfeathered paged vector coverage.
   var vectorTileSource: Surface?
   /// `pixelRegion` permits identity elision only for integer pixel-center renders.
@@ -64,6 +78,7 @@ public struct LayerMaskSampler: Sendable {
     if let region = pixelRegion,
       (sampler.pixel?.isIdentity(over: region) ?? true)
         && (sampler.vector?.isIdentity(over: region) ?? true)
+        && (sampler.featheredVector?.isIdentity ?? true)
     {
       return nil
     }
@@ -78,19 +93,29 @@ public struct LayerMaskSampler: Sendable {
     let outside: Float = mask.path.isEmpty
       ? (mask.path.inverted ? 0 : 1)
       : (try VectorPathGeometry.filledRegion(mask.path).inverted ? 1 : 0)
-    if document.width > Surface.maximumDensePixels/document.height {
-      guard mask.feather==0 else {throw CraftError.unsupported("Large feathered vector masks still require bounded kernel preparation.")}
-      let surface=try VectorRasterizer.pagedCoverage(mask.path,width:document.width,
-        height:document.height,emptyRevealsAll:true)
-      var prepared=Layer(name:"Paged vector coverage",content:.fill(.clear));prepared.mask=surface
-      var properties=MaskProperties();properties.density=mask.density
-      properties.outside=outside
-      prepared.maskProperties=properties;vectorTileSource=surface
-      vector=try MaskSampler(layer:prepared);return
-    }
     let pad = Int(ceil(mask.feather * 3))
     let width = document.width + 2 * pad
     let height = document.height + 2 * pad
+    let useBounded = width > Surface.maxDimension || height > Surface.maxDimension
+      || width > Surface.maximumDensePixels / height || mask.feather > 100
+    if useBounded {
+      if mask.feather > 0 {
+        featheredVector = try VectorFeatherCoverage(mask: mask, width: document.width,
+          height: document.height, outside: outside)
+      } else {
+        let surface = try VectorRasterizer.pagedCoverage(mask.path, width: document.width,
+          height: document.height, emptyRevealsAll: true)
+        var prepared = Layer(name: "Paged vector coverage", content: .fill(.clear))
+        var properties = MaskProperties()
+        properties.density = mask.density
+        properties.outside = outside
+        prepared.mask = surface
+        prepared.maskProperties = properties
+        vectorTileSource = surface
+        vector = try MaskSampler(layer: prepared)
+      }
+      return
+    }
     let coverage = try VectorRasterizer.coverage(
       mask.path, width: width, height: height,
       origin: PathPoint(-Double(pad), -Double(pad)), emptyRevealsAll: true)
@@ -116,6 +141,7 @@ public struct LayerMaskSampler: Sendable {
     vector = try MaskSampler(layer: prepared)
   }
   public func coverage(x: Double, y: Double) -> Float {
-    (pixel?.coverage(x: x, y: y) ?? 1) * (vector?.coverage(x: x, y: y) ?? 1)
+    let coverage = featheredVector?.coverage(x: x, y: y) ?? vector?.coverage(x: x, y: y) ?? 1
+    return (pixel?.coverage(x: x, y: y) ?? 1) * coverage
   }
 }

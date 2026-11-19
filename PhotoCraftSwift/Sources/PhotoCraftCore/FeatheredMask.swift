@@ -1,9 +1,90 @@
 import Foundation
 import os
 
+/// A scalar plane may be wider than an editable Surface when it includes a
+/// virtual border. Disjoint pieces retain their own sparse raster storage.
+package struct FeatherSamplePlane: Sendable {
+  package struct Piece: Sendable {
+    let x: Int
+    let y: Int
+    let samples: Surface
+
+    package init(x: Int, y: Int, samples: Surface) {
+      self.x = x
+      self.y = y
+      self.samples = samples
+    }
+
+    func overlap(with region: IntRect) -> IntRect {
+      IntRect(x: region.x - x, y: region.y - y, width: region.width, height: region.height)
+        .clipped(toWidth: samples.width, height: samples.height)
+    }
+  }
+
+  let width: Int
+  let height: Int
+  let implicit: Float
+  private let surface: Surface?
+  private let pieces: [Piece]
+
+  init(_ surface: Surface) {
+    self.surface = surface
+    width = surface.width
+    height = surface.height
+    implicit = unit(surface.defaultPixel.r)
+    pieces = []
+  }
+
+  package init(width: Int, height: Int, outside: Float, pieces: [Piece]) {
+    self.width = width
+    self.height = height
+    implicit = outside
+    surface = nil
+    self.pieces = pieces
+  }
+
+  var isUniform: Bool {
+    if let surface { return surface.tileCount == 0 }
+    return pieces.isEmpty
+  }
+
+  func hasFeatherSamples(in region: IntRect) -> Bool {
+    if let surface { return surface.hasFeatherSamples(in: region) }
+    return pieces.contains { piece in
+      let part = piece.overlap(with: region)
+      return part.width > 0 && part.height > 0
+        && (piece.samples.defaultPixel.r != implicit || piece.samples.hasFeatherSamples(in: part))
+    }
+  }
+
+  func featherInput(in region: IntRect) -> [Float]? {
+    if let surface { return surface.featherInput(in: region) }
+    var output: [Float]?
+    for piece in pieces {
+      let overlap = piece.overlap(with: region)
+      guard overlap.width > 0, overlap.height > 0 else { continue }
+      let input = piece.samples.featherInput(in: overlap)
+      let fill = unit(piece.samples.defaultPixel.r)
+      guard input != nil || fill != implicit else { continue }
+      if output == nil {
+        output = [Float](repeating: implicit, count: region.width * region.height)
+      }
+      let dx = piece.x + overlap.x - region.x
+      let dy = piece.y + overlap.y - region.y
+      for y in 0..<overlap.height {
+        let destination = (dy + y) * region.width + dx
+        for x in 0..<overlap.width {
+          output![destination + x] = input?[y * overlap.width + x] ?? fill
+        }
+      }
+    }
+    return output
+  }
+}
+
 /// Evaluate pixel-mask Feather on demand. Kernel coordinates are virtual,
 /// including when the source already spans 300,000 pixels.
-final class FeatheredMask: Sendable {
+package final class FeatheredMask: Sendable {
   struct ClampedEdges: OptionSet, Sendable {
     let rawValue: UInt8
     static let left = Self(rawValue: 1)
@@ -34,7 +115,9 @@ final class FeatheredMask: Sendable {
   private static let slots = 64
   static let maximumCacheBytes = side * side * slots * MemoryLayout<Float>.stride
 
-  private let source: Surface
+  private let source: FeatherSamplePlane
+  private let cacheSide: Int
+  private let cacheSlots: Int
   private let weights: [Float]
   private let outside: Float
   private let edges: ClampedEdges
@@ -48,9 +131,9 @@ final class FeatheredMask: Sendable {
   var width: Int { area?.bounds.width ?? (source.width + 2 * padding) }
   var height: Int { area?.bounds.height ?? (source.height + 2 * padding) }
   var implicitMatchesOutside: Bool { implicitEqualsOutside }
-  var isConstantOutside: Bool { source.tileCount == 0 && implicitMatchesOutside }
+  package var isConstantOutside: Bool { source.isUniform && implicitMatchesOutside }
   var support: Int { area?.support ?? padding }
-  var implicitInterior: Float { area?.interiorSample(defaultSample) ?? filteredDefault }
+  package var implicitInterior: Float { area?.interiorSample(defaultSample) ?? filteredDefault }
   var clampedSourceEdges: ClampedEdges {
     guard let area else { return edges }
     guard area.extendEdges else { return [] }
@@ -61,10 +144,39 @@ final class FeatheredMask: Sendable {
     if area.bounds.y + area.bounds.height == source.height { clamped.insert(.bottom) }
     return clamped
   }
-  private let cache = OSAllocatedUnfairLock(initialState: [Entry?](repeating: nil, count: FeatheredMask.slots))
+  private let cache: OSAllocatedUnfairLock<[Entry?]>
 
-  init(source: Surface, radius: Double, outside: Float, edges: ClampedEdges, area: AreaMaskFeather? = nil) {
+  convenience init(source: Surface, radius: Double, outside: Float, edges: ClampedEdges,
+    area: AreaMaskFeather? = nil
+  ) {
+    self.init(source: FeatherSamplePlane(source), radius: radius, outside: outside, edges: edges,
+      area: area, cacheSide: Self.side, cacheSlots: Self.slots)
+  }
+
+  package convenience init(vectorPlane: FeatherSamplePlane, radius: Double, outside: Float) {
+    let area = AreaMaskFeather(wideRadius: radius, width: vectorPlane.width, height: vectorPlane.height)
+    self.init(source: vectorPlane, radius: radius, outside: outside, edges: [], area: area,
+      cacheSide: area == nil ? Self.side : 512, cacheSlots: area == nil ? Self.slots : 16)
+  }
+
+  package var maximumResidentBytes: Int { cacheSide * cacheSide * cacheSlots * MemoryLayout<Float>.stride }
+
+  package func sampleInSource(x: Double, y: Double) -> Float {
+    let x = x - Double(origin.x), y = y - Double(origin.y)
+    if let px = Int(exactly: x - 0.5), let py = Int(exactly: y - 0.5) {
+      if px < 0 || py < 0 || px >= width || py >= height { return outside }
+      return unit(value(px, py))
+    }
+    return MaskSampler.sample(width: width, height: height, x: x, y: y, outside: outside, value: value)
+  }
+
+  private init(source: FeatherSamplePlane, radius: Double, outside: Float, edges: ClampedEdges,
+    area: AreaMaskFeather?, cacheSide: Int, cacheSlots: Int
+  ) {
     self.source = source
+    self.cacheSide = cacheSide
+    self.cacheSlots = cacheSlots
+    cache = OSAllocatedUnfairLock(initialState: [Entry?](repeating: nil, count: cacheSlots))
     self.outside = outside
     self.edges = edges
     self.area = area
@@ -75,7 +187,7 @@ final class FeatheredMask: Sendable {
     let total = raw.reduce(0, +)
     let kernel = raw.map { $0 / total }
     weights = kernel
-    let implicit = unit(source.defaultPixel.r)
+    let implicit = source.implicit
     defaultSample = implicit
     let horizontal = Self.weightedConstant(implicit, weights: kernel)
     horizontalDefault = horizontal
@@ -91,10 +203,10 @@ final class FeatheredMask: Sendable {
 
   func value(_ x: Int, _ y: Int) -> Float {
     if isConstantOutside { return outside }
-    let side = Self.side
+    let side = cacheSide
     let column = x / side, row = y / side
     // Direct mapping retains consecutive tiles across a compositor patch.
-    let slot = (column + row * 17) % Self.slots
+    let slot = (column + row * 17) % cacheSlots
     return cache.withLock { entries in
       if entries[slot]?.x != column || entries[slot]?.y != row {
         let originX = column * side, originY = row * side

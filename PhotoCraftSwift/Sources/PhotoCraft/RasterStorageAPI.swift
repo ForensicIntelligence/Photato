@@ -18,7 +18,7 @@ enum RasterStorageAPI {
         "editCommand":MaskManagementAPI.featherCommand,
         "maximumRetainedSampleBytesPerMask":MaskSampler.maximumFeatherCacheBytes,
         "behavior":"Layer pixel-mask Feather renders requested tiles for 0–1000 px. Wide settings use bounded streamed square stages. Whole-pixel translated RGB32 controls have stored Photoshop references. Fractional wide settings use discrete windows that approximate the requested variance. Other geometry and depths, broader Intel exactness and sparse full-canvas export remain open."],
-      "unfeatheredVectorMasks":true,"vectorCoverageMaximumPatchPixels":131_072,
+      "unfeatheredVectorMasks":true,"sparseFeatheredVectorMasks":true,"vectorCoverageMaximumPatchPixels":131_072,
       "vectorGrayScratchMaximumLogicalBytes":Surface.maxPixels,"vectorCoordinateBlockSide":16_384,
       "vectorGrayScratchMaximumBytes":Surface.maxPixels+Surface.maxDimension,
       "vectorGrayScratchPreparation":"Checked bounded zero writes and synchronization prepare active drawing rectangles plus a guard row before native mapped drawing. Admission/I/O failure discards derived output; the original model is unchanged by rendering.",

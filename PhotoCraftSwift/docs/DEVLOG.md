@@ -611,7 +611,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 590 | 2026-11-19 | [Match integer raster-mask Feather stages](#dev-step-590) |
 | 591 | 2026-11-19 | [Match measured fractional RGB32 Feather schedules](#dev-step-591) |
 | 592 | 2026-11-19 | [Bound Smart Filter mask Feather on large documents](#dev-step-592) |
+| 593 | 2026-11-19 | [Bound vector mask Feather on large canvases](#dev-step-593) |
 <!-- history-index:end -->
+
+<a id="dev-step-593"></a>
+
+## 2026-11-19 — Bound vector mask Feather on large canvases
+
+Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. The native compositor shares the boolean path across its padded scalar pieces. It evaluates separated contour halos in bounded patches, including coverage from paths beyond the canvas. Properties adds a continuous Feather slider and precise entry. The `path.edit` operation updates the existing mask properties and shares native Undo. [Adobe property range](https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/) · [Layer-mask fields](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+Six fractional, curved, inverted and off-canvas mask cases match the previous dense short-radius path across 56,244 coverage words. The complete 300,000 × 300,000 sparse control renders in four patches. The 1,000 px nonuniform viewport returns fractional center coverage and zero distant coverage. The initial maximum-canvas fixtures inherited a stale active ID. Corrected fixture metadata allowed the same renderer to run through the public viewport and whole-document entry points. The hosted Mac controls retained 912.125 px in both appearances.
+
+The editable PSD and PSB tests include vector-only and combined pixel/vector masks. All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen launch checks. Physical platforms, live input, and dense wide-mask performance remain open. [Validation](SOURCE_PUBLICATION_593.md).
+
+Measurements from the archived Photoshop 2026 RGB32 PSD show distinct edge responses at 1.5 px and 2 px. A separable model fits the measured corner samples with less than 0.000001 normalized error. Photato’s current short-radius approximation differs by up to 0.014 on these normalized edge profiles. The installed Photoshop session timed out on its document-count request, so wider radii still need fresh reference files.
 
 <a id="dev-step-592"></a>
 

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 593 — Bound vector mask Feather on large canvases
+
+Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. The maximum sparse canvas test used four patches, and the native and HTTP settings share the same 1,000 px range.
+
+All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_593.md).
+
 ## 2026-11-19 — Step 592 — Bound Smart Filter mask Feather on large documents
 
 Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. The maximum sparse canvas test updates two distant mask regions. The Properties controls and Photato API use the same limit and retain an editable mask on save.
@@ -733,14 +741,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:592 -->
+<!-- current-status-step:593 -->
 ## Current development status — 19 November 2026
 
-Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents.
+Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB.
 
-All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks.
+All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks.
 
-[Source checkpoint 592](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-592).
+[Source checkpoint 593](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_593.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-593).
 
 <!-- current-status:end -->
 

@@ -19,7 +19,8 @@ enum PathAPI {
     case "closed","workPath","stroke","simulatePressure","antiAlias":return BrushAPI.flag
     case "brush":return BrushAPI.brush
     case "pathID","layerID":return ["type":"string","format":"uuid"]
-    case "operation":return BrushAPI.enumeration(["save","delete","selection","vectorMask"])
+    case "operation":return BrushAPI.enumeration(["save","delete","selection","vectorMask","vectorMaskProperties"])
+    case "maskProperties":return vectorMaskPropertiesSchema
     case "method":return BrushAPI.enumeration(["freeform","curvature"])
     case "tool":return BrushAPI.enumeration(["pen","freeformPen","curvaturePen","pathSelection","directSelection"])
     case "combine":return BrushAPI.enumeration(PathOperation.allCases.map(\.rawValue))
@@ -27,12 +28,23 @@ enum PathAPI {
     case "feather":return BrushAPI.number(0,100)
     default:return ["type":"string","minLength":1,"maxLength":255]
   }}
+  static var vectorMaskPropertiesSchema: [String: Any] {
+    BrushAPI.object(["enabled": BrushAPI.flag, "linked": BrushAPI.flag,
+      "density": BrushAPI.number(0, 1), "feather": BrushAPI.number(0, VectorMask.featherRange.upperBound)])
+  }
+
+  static var vectorMaskStateSchema: [String: Any] {
+    var properties = vectorMaskPropertiesSchema
+    properties["required"] = ["enabled", "linked", "density", "feather"]
+    return ["anyOf": [["type": "null"], properties]]
+  }
+
   static var stateSchema:[String:Any]{
     let named=BrushAPI.object(["id":schema("pathID"),"name":schema("name"),"isWorkPath":BrushAPI.flag,"path":path],required:["id","name","isWorkPath","path"])
     let fields:[String:Any]=["illustratorExport":IllustratorPathExportAPI.stateSchema,"fill":PathFillAPI.stateSchema,"paths":ShapeAPI.array(named,256),"selectedID":["anyOf":[["type":"null"],schema("pathID")]],"target":BrushAPI.enumeration(["none","saved","vectorMask","shape"]),"selectedPath":["anyOf":[["type":"null"],path]],"tolerance":schema("tolerance"),"operation":schema("combine"),"gestureActive":BrushAPI.flag,"editable":BrushAPI.flag,"tool":["type":"string"]]
     return BrushAPI.object(fields,required:Array(fields.keys))
   }
-  static var capabilities:[String:Any]{["vectorFilling":["gradientAlignment":"A vector mask with a filled exterior does not crop an aligned gradient to its contour bounds. Finite custom shapes and text-inside layouts reject unbounded filled regions before publication; ordinary text-on-path follows its contour.","leadingSubtract":"The first Subtract component starts with its filled exterior; later Combine, Subtract, Intersect and Exclude are resolved before antialiasing. Final path inversion remains independent. Original component order and cubic handles are retained.","PSD":"PSD contours use Even-Odd filling. Import selects the native Even-Odd rule where it changes the region; equivalent rules retain their native representation. Even-Odd paths export through PSD/PSB. Nonzero paths whose region would change reject editable PSD transport instead of silently changing it.","finiteOutlines":"An unbounded exterior cannot become a finite custom-shape outline; use vector masks or selection coverage. Native92/Actions60 encoding and existing operation identities remain unchanged. Older builds have different leading-subtract rendering semantics.","qualification":"Owned Photoshop2026 RGB8 rectangle and joined-contour reference; all original AA/feather/wider path/component/platform/performance requirements remain open."],"fill":PathFillAPI.capabilities,"commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, full Fill Path history/contents/capacity/defaults and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
+  static var capabilities:[String:Any]{["vectorMaskProperties":["operation":"path.edit with vectorMaskProperties, layerID and a nonempty maskProperties object.","schema":vectorMaskPropertiesSchema,"state":"layers[].vectorMask","geometry":"Settings edits retain the current vector path and share native undo."],"vectorFilling":["gradientAlignment":"A vector mask with a filled exterior does not crop an aligned gradient to its contour bounds. Finite custom shapes and text-inside layouts reject unbounded filled regions before publication; ordinary text-on-path follows its contour.","leadingSubtract":"The first Subtract component starts with its filled exterior; later Combine, Subtract, Intersect and Exclude are resolved before antialiasing. Final path inversion remains independent. Original component order and cubic handles are retained.","PSD":"PSD contours use Even-Odd filling. Import selects the native Even-Odd rule where it changes the region; equivalent rules retain their native representation. Even-Odd paths export through PSD/PSB. Nonzero paths whose region would change reject editable PSD transport instead of silently changing it.","finiteOutlines":"An unbounded exterior cannot become a finite custom-shape outline; use vector masks or selection coverage. Native92/Actions60 encoding and existing operation identities remain unchanged. Older builds have different leading-subtract rendering semantics.","qualification":"Owned Photoshop2026 RGB8 rectangle and joined-contour reference; all original AA/feather/wider path/component/platform/performance requirements remain open."],"fill":PathFillAPI.capabilities,"commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, full Fill Path history/contents/capacity/defaults and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
 }
 extension AutomationCommand {
   func pathFlag(_ key:String,_ fallback:Bool)throws->Bool{guard let value=parameters[key] else{return fallback};guard case .bool(let flag)=value else{throw AutomationFailure(status:400,message:"\(key) must be boolean.")};return flag}
@@ -76,6 +88,22 @@ extension AutomationCommand {
         let mode=try ShapeAPI.decode(SelectionMode.self,parameters["selectionMode"],schema:PathAPI.schema("selectionMode"),base:.replace),feather=try parameters["feather"].map{_ in try number("feather",range:0...100)} ?? 0
         return .selectionCoverage(try VectorRasterizer.coverage(resolved(),width:document.width,height:document.height,antiAlias:pathFlag("antiAlias",true),emptyRevealsAll:selectedIsVectorMask && parameters["pathID"]==nil).feathered(radius:feather),mode)
       case "vectorMask":try pathFields(["operation","layerID"],["pathID"]);return .vectorMask(try actionUUID("layerID"),VectorMask(path:try resolved()))
+      case "vectorMaskProperties":
+        try pathFields(["operation", "layerID", "maskProperties"], [])
+        let id = try actionUUID("layerID")
+        guard let layer = document.layers.first(where: { $0.id == id })
+        else { throw AutomationFailure(status: 404, message: "Layer not found.") }
+        guard var mask = layer.vectorMask
+        else { throw AutomationFailure(status: 422, message: "This layer has no vector mask.") }
+        guard let value = parameters["maskProperties"],
+          let fields = try BrushAPI.merge(value, schema: PathAPI.vectorMaskPropertiesSchema, path: "maskProperties") as? [String: Any],
+          !fields.isEmpty
+        else { throw AutomationFailure(status: 400, message: "Supply a vector mask setting.") }
+        if let enabled = fields["enabled"] as? Bool { mask.enabled = enabled }
+        if let linked = fields["linked"] as? Bool { mask.linked = linked }
+        if let density = fields["density"] as? Double { mask.density = Float(density) }
+        if let feather = fields["feather"] as? Double { mask.feather = feather }
+        return .vectorMask(id, mask)
       default:throw AutomationFailure(status:400,message:"Unknown path operation.")
       }
     }
@@ -89,6 +117,12 @@ extension AutomationCommand {
     return .savePath(saved)
   }
 }
+extension VectorMask {
+  var apiProperties: [String: Any] {
+    ["enabled": enabled, "linked": linked, "density": density, "feather": feather]
+  }
+}
+
 extension EditorStore {
   var pathState:[String:Any]{
     let target:String,id:UUID?

@@ -66,6 +66,15 @@ extension VectorRasterizer {
       let value:Float=region.inverted ? 0:1
       return try Surface(width:width,height:height,fill:Pixel(value,value,value))
     }
+    return try pagedCoverage(region, template: empty, origin: origin, antiAlias: antiAlias,
+      maximumScratchPreparedBytes: maximumScratchPreparedBytes)
+  }
+
+  static func pagedCoverage(_ region: VectorPathGeometry.FilledRegion, template empty: Surface,
+    origin: PathPoint, antiAlias: Bool = true,
+    maximumScratchPreparedBytes: Int = Surface.maxPixels + Surface.maxDimension
+  ) throws -> Surface {
+    let width = empty.width, height = empty.height, outside = empty.defaultPixel.r
     let outline=region.path,bounds=outline.boundingBoxOfPath
     if bounds.isNull || bounds.isEmpty {return empty}
     let x0=Int(max(0,min(Double(width),floor(bounds.minX-origin.x-1))))
@@ -108,7 +117,7 @@ extension VectorRasterizer {
     }}
     return try withExtendedLifetime(backing) {try builder.finish()}
   }
-  private static func coversCanvasRectangle(_ path:VectorPath,width:Int,height:Int,origin:PathPoint)->Bool {
+  static func coversCanvasRectangle(_ path:VectorPath,width:Int,height:Int,origin:PathPoint)->Bool {
     guard path.components.count==1,let part=path.components.first,part.closed,part.knots.count==4,
       part.knots.allSatisfy({$0.incoming==$0.anchor && $0.outgoing==$0.anchor}) else {return false}
     let points=part.knots.map(\.anchor)

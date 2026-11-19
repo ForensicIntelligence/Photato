@@ -121,6 +121,18 @@ struct AreaMaskFeather: Sendable {
     }
   }
 
+  init?(wideRadius radius: Double, width: Int, height: Int) {
+    guard radius > 100, let widths = Self.widths(at: radius) else { return nil }
+    self.widths = widths
+    integerDepth = nil
+    taps = nil
+    quarterPixel = false
+    streamed = true
+    extendEdges = false
+    let pad = widths.reduce(0) { $0 + $1 / 2 }
+    bounds = IntRect(x: -pad, y: -pad, width: width + 2 * pad, height: height + 2 * pad)
+  }
+
   func interiorSample(_ value: Float) -> Float {
     guard let integerDepth else { return value }
     return NormalLayerComposite.normalized(NormalLayerComposite.working(value, depth: integerDepth),
@@ -135,7 +147,7 @@ struct AreaMaskFeather: Sendable {
   }
 
   /// A nil sample plane means the result is uniform across the requested tile.
-  func prepare(source: Surface, outside: Float, x: Int, y: Int, width: Int, height: Int)
+  func prepare(source: FeatherSamplePlane, outside: Float, x: Int, y: Int, width: Int, height: Int)
     -> (samples: [Float]?, uniform: Float)? {
     let pad = support
     let inputX = bounds.x + x - pad, inputY = bounds.y + y - pad
@@ -147,7 +159,7 @@ struct AreaMaskFeather: Sendable {
     let bottom = extendEdges ? min(inputY + h - 1, boundBottom) : inputY + h - 1
     let read = IntRect(x: left, y: top, width: right - left + 1, height: bottom - top + 1)
       .clipped(toWidth: source.width, height: source.height)
-    let implicit = unit(source.defaultPixel.r)
+    let implicit = source.implicit
     if read.width == 0 || read.height == 0 { return (nil, outside) }
     let fullyInside = left >= 0 && top >= 0 && right < source.width && bottom < source.height
     if !source.hasFeatherSamples(in: read), implicit == outside || fullyInside {

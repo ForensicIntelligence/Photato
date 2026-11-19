@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **592** · The 10 most recent entries, newest first.
+Source build **593** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 593 — Bound vector mask Feather on large canvases
+
+Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. The maximum sparse canvas test used four patches, and the native and HTTP settings share the same 1,000 px range.
+
+All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_593.md).
 
 ## 2026-11-19 — Step 592 — Bound Smart Filter mask Feather on large documents
 
@@ -75,11 +83,3 @@ Supported clipping merges and stamps preserve the editable base pixel mask and a
 All 782 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. Feather on a contributing mask remains in development.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_584.md).
-
-## 2026-11-18 — Step 583 — Add four clipped blend modes
-
-Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
-
-The saved Photoshop comparison matched 62,736 stored sample words per architecture. All 776 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-583) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_583.md).

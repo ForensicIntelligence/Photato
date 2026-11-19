@@ -186,11 +186,23 @@ struct VectorMaskControls: View {
               get: { mask.feather },
               set: { value in
                 if value.isFinite {
-                  store.updateVectorMask(id) { $0.feather = min(100, max(0, value)) }
+                  guard VectorMask.featherRange.contains(value) else {
+                    store.error = "Enter a Feather value between 0 and 1,000 pixels."
+                    return
+                  }
+                  store.updateVectorMask(id) { $0.feather = value }
                 }
-              }), format: .number.precision(.fractionLength(1)))
+              }), format: .number.precision(.fractionLength(0...16)))
+            .accessibilityLabel("Vector mask feather pixels")
+            .help("Feather from 0 to 1,000 pixels")
           Text("px")
         }
+        Slider(value: Binding(
+          get: { mask.feather },
+          set: { value in store.updateVectorMask(id) { $0.feather = (value * 10).rounded() / 10 } }
+        ), in: VectorMask.featherRange, onEditingChanged: store.coalesce)
+          .accessibilityLabel("Vector mask feather")
+          .accessibilityValue(mask.feather.formatted() + " pixels")
       }.padding(9).controlSize(.mini).disabled(!store.pathIsEditable)
     }
   }

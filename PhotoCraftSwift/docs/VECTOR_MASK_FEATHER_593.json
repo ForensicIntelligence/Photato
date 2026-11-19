@@ -1,0 +1,245 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "bf2f09379e0a827392c7cfcb8e3dab2461f66c827a2cef2515f1f1bca1027eed",
+    "binarySHA256": "1827a49ed749a65a0c1ea596f88dd76d3b949c8f8b29763152fa1b23dfb4e82a",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 593,
+  "controls": {
+    "density": 0.8,
+    "feather": 912.125,
+    "manualInteraction": false,
+    "offscreen": true,
+    "styles": {
+      "dark": {
+        "pixels": [
+          296,
+          118
+        ],
+        "sha256": "6c86fca8197dfed0cc2c8ca18dec9c6e94b9073b7967c902cb6501c8ab52f8df"
+      },
+      "light": {
+        "pixels": [
+          296,
+          118
+        ],
+        "sha256": "ff23572d01c9405644ae1e5772a886868c6355f7ce00d8ed2d529a5a2ae52fd5"
+      }
+    }
+  },
+  "legacyCoverageWords": 56244,
+  "nativeRenderProbe": {
+    "completeCanvasPatches": 4,
+    "logicalCanvas": [
+      300000,
+      300000
+    ],
+    "retainedBytes": 3584,
+    "wideCenterAlpha": 0.076304555,
+    "wideRadius": 1000
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122076,
+        "height": 650,
+        "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Apply the measured short-radius model and qualify wider and curved Photoshop vector coverage",
+    "full dense capacity",
+    "physical UI, Intel and macOS 14"
+  ],
+  "photoshopComparison": {
+    "archivedFixture": "Tests/PhotoCraftImagingTests/Fixtures/photoshop-vector-32.psd",
+    "archivedFixtureSHA256": "1ba69ec34b536913d483c4479e575be4d7fcb78412cb1ec8f6a2ea58720b98ad",
+    "scope": "Normalized edge and corner transitions in the archived merged image. General mask coverage and byte parity remain open.",
+    "shortRadiusRGB32": {
+      "1.5": {
+        "channels": 3,
+        "cornerPixels": 81,
+        "denominator": 256,
+        "dyadicWeights": [
+          3,
+          11,
+          29,
+          52,
+          66,
+          52,
+          29,
+          11,
+          3
+        ],
+        "edgeLocations": [
+          [
+            92,
+            66
+          ],
+          [
+            50,
+            72
+          ]
+        ],
+        "edges": 2,
+        "maxCoverageDifferenceFromSampledGaussian": 0.013980150142150927,
+        "maxRGB32CornerResidualToProduct": 5.774372129896399e-07,
+        "maxRGB32EdgeResidual": 4.1255131932871336e-07
+      },
+      "2": {
+        "channels": 3,
+        "cornerPixels": 169,
+        "denominator": 256,
+        "dyadicWeights": [
+          1,
+          3,
+          8,
+          17,
+          31,
+          44,
+          48,
+          44,
+          31,
+          17,
+          8,
+          3,
+          1
+        ],
+        "edgeLocations": [
+          [
+            108,
+            25
+          ],
+          [
+            106,
+            34
+          ]
+        ],
+        "edges": 2,
+        "maxCoverageDifferenceFromSampledGaussian": 0.010441576612359504,
+        "maxRGB32CornerResidualToProduct": 8.042584613262628e-07,
+        "maxRGB32EdgeResidual": 6.889892923966912e-07
+      }
+    },
+    "wideCapture": {
+      "documentCountAppleEventExit": -1712,
+      "savedFiles": 0
+    }
+  },
+  "qualification": {
+    "configurations": {
+      "arm": {
+        "appSHA256": "1207f7ce2a79438f448dd2cc990a47844c05204dc9d517889ffc15eef2c8cd87",
+        "testBinarySHA256": "a534c2379380faa90a9cfdb1ed88634e6c02a8990633144d41502ab51153b187"
+      },
+      "debug": {
+        "appSHA256": "05c0e49c253d84b3a25508825ca878c11ce56a370186042de69310926c7653dd",
+        "testBinarySHA256": "544b8d2e2d17057bb7d07d8922e1bb7cdafa0733c8ff59e1d0bf49466e5d5bd2"
+      },
+      "intel": {
+        "appSHA256": "5386700aa934d81d8bb24a202180eba43b4f3f521cf1f6f7638b759ec38e6eb7",
+        "testBinarySHA256": "c47b9f036fec0a51f8b71b7ed5afe2b7a7dc2751c843dcde6238171e54de7474"
+      }
+    },
+    "expectedCasesSHA256": "8b5f6770be0113105db639fa247492a2936f3e8b36b1a1322489d3bcd2bf2113",
+    "selected": 904
+  },
+  "references": [
+    "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+  ],
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince592": [
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "a1f0e50ec23d1edd97606cbbb532eaf54a229c6a71d39656edfb3ed3d9b812b4"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPaths.swift",
+      "sha256": "f27b63d20445e5af5d798e5f718c1e0aab87a15dd71d634435fe788d7ba7bf74"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "cda6e4264e9daaa26873f079643afc994079c7caf690f158a104fc84bfc4448a"
+    },
+    {
+      "path": "Sources/PhotoCraft/RasterStorageAPI.swift",
+      "sha256": "4d3aead1a511292a7e0b2ff237661f2e425f545312eb4ce6c28819547ea2ad46"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspacePaths.swift",
+      "sha256": "6a650fa89d0c8f1ce5171e491347f25de5bd878744c99b359df396ec804255d9"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "b8b81f6612b4794d50a7b729342cd7f271c67eeea0abf4fdf173782561570ba9"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "a2737a191b925f3a795c29f5995420342c8b4381c982b73815a18f7b7aa291c4"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMask.swift",
+      "sha256": "00acfa8e23336700fba90604d88b0cb418d0dcf5d45cfd4851882cd95f083502"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/VectorPath.swift",
+      "sha256": "487f0fbcc691e924094184fee8332703b4f4f20da9819b38dbd718373b37fbbb"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CompositionFacts.swift",
+      "sha256": "9d9e969b77a53a146765d3115703279bd8aa86ae993bcb4b4f0ac93b83a33dee"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "05f6c800893091180097c8d5cf4bd2988b9d9cb55e6189f2f455ec442a53ab62"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedVectorRasterizer.swift",
+      "sha256": "44c046ab4e5a993ff2a6f5120b113683a3750632ac1302ccfa67a1b8ec4c7dc9"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorFeatherCoverage.swift",
+      "sha256": "2c5b34230e3185c7ec834242829d8e65f489b90a81be3620e2938c190a9667f1"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorRasterizer.swift",
+      "sha256": "1d28ab0c21dca329d05be61d13db516ad85965fa2be2b9743b22b1b842a7d145"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathWorkflowTests.swift",
+      "sha256": "7b52e244a691863c65357dc6c561e9d2243749bc916c04a36d1711bf7d6fc1ff"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/VectorRenderTests.swift",
+      "sha256": "b069e15fa30af1d93c6c4a39fa0acb558af0c5c97e7dbcc60bdd8bbee787a9b4"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "ed44e97ff97a425501464e76c8250616bae7bc319aa1e08e7a34ac1e69113087"
+    }
+  ],
+  "wideViewportSeconds": {
+    "arm": 0.284,
+    "debug": 25.965,
+    "intel": 0.323
+  }
+}

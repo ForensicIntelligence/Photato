@@ -1,3 +1,7 @@
+**Source checkpoint 593.** Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. [Qualification](SOURCE_PUBLICATION_593.md).
+
+Use the measured 1.5 px and 2 px vector transitions and corner samples to validate a separable renderer. Capture wider vector and Smart Filter mask coverage and persisted settings when Photoshop responds. Continue the sparse broad-shape and dense Feather performance limits and the remaining mask editing and interchange differences.
+
 **Source checkpoint 592.** Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. [Qualification](SOURCE_PUBLICATION_592.md).
 
 Capture independently saved Photoshop Smart Filter masks to measure the coverage kernel and locate the persisted density and Feather fields. Continue the vector-mask range, arbitrary affine and dense wide-mask performance, and the broader Smart Filter workflow tests.

@@ -149,6 +149,8 @@ public struct NamedPath: Codable, Equatable, Identifiable, Sendable {
   }
 }
 public struct VectorMask: Codable, Equatable, Sendable {
+  public static let featherRange: ClosedRange<Double> = 0...1000
+
   public var path: VectorPath
   public var enabled = true
   public var linked = true
@@ -157,9 +159,9 @@ public struct VectorMask: Codable, Equatable, Sendable {
   public init(path: VectorPath = VectorPath()) { self.path = path }
   public func validate() throws {
     try path.validate()
-    guard density.isFinite, (0...1).contains(density), feather.isFinite, (0...100).contains(feather)
+    guard density.isFinite, (0...1).contains(density), feather.isFinite, Self.featherRange.contains(feather)
     else {
-      throw CraftError.invalid("Invalid vector mask properties; feather supports 0–100 pixels.")
+      throw CraftError.invalid("Invalid vector mask properties. Feather must be between 0 and \(Int(Self.featherRange.upperBound)) pixels.")
     }
   }
 }

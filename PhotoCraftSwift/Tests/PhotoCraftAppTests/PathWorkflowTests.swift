@@ -109,6 +109,53 @@ final class PathWorkflowTests: XCTestCase {
     XCTAssertEqual(s.selectedVectorPath, original)
     s.renderTask?.cancel()
   }
+  @MainActor func testVectorMaskFeatherThroughPropertiesHTTPStateAndUndo() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var document = try CraftDocument(width: 32, height: 24)
+      let id = document.layers[0].id
+      let mask = VectorMask(path: VectorPath(inverted: true))
+      document.layers[0].vectorMask = mask
+      let native = EditorStore(document: document)
+      defer { native.renderTask?.cancel() }
+      native.selectPath(.vectorMask(id))
+      native.updateVectorMask(id) {
+        $0.feather = 1_000
+        $0.linked = false
+      }
+      XCTAssertNil(native.error)
+      XCTAssertEqual(native.document.layers[0].vectorMask?.path, mask.path)
+      XCTAssertEqual(native.document.layers[0].vectorMask?.feather, 1_000)
+
+      shared.store.session = EditorSession(document: document)
+      try service.share(shared)
+      let params: [String: Any] = ["operation": "vectorMaskProperties", "layerID": id.uuidString,
+        "maskProperties": ["feather": 1_000, "linked": false]]
+      let applied = try await helper.edit(service, shared, "path.edit", params)
+      XCTAssertEqual(applied, 200)
+      XCTAssertEqual(shared.store.document, native.document)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let (response, data) = try await helper.request(service, path: "/v1/documents/\(share)")
+      XCTAssertEqual(response.statusCode, 200)
+      let state = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+      let layers = try XCTUnwrap(state["layers"] as? [[String: Any]])
+      let properties = try XCTUnwrap(layers.first?["vectorMask"] as? [String: Any])
+      XCTAssertEqual(properties["feather"] as? Double, 1_000)
+      XCTAssertEqual(properties["linked"] as? Bool, false)
+
+      var rejected = params
+      rejected["maskProperties"] = ["feather": 1_000.01]
+      let bad = try await helper.edit(service, shared, "path.edit", rejected)
+      XCTAssertEqual(bad, 400)
+      XCTAssertEqual(shared.store.document, native.document)
+      let undo = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(undo, 200)
+      await native.undo()
+      XCTAssertEqual(shared.store.document, document)
+      XCTAssertEqual(native.document, document)
+    }
+  }
+
   @MainActor func testVectorMaskPreviewCancelSelectionAndLockedEditing() throws {
     let s = try store()
     draw(s)

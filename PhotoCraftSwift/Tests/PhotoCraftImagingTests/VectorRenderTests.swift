@@ -69,6 +69,112 @@ final class VectorRenderTests: XCTestCase {
     XCTAssertGreaterThan(image.pixel(x: 8, y: 5).a, 0.3)
     XCTAssertLessThan(image.pixel(x: 8, y: 5).a, 0.5)
   }
+  func testBoundedVectorFeatherMatchesExistingCoverageAtEveryPixel() throws {
+    var curve = rect(49.25, 19.5, 23.75, 36)
+    curve.knots[0].outgoing = PathPoint(62.75, 3.5)
+    curve.knots[1].incoming = PathPoint(70, 7.125)
+    let parts = [rect(-9, -15, 35, 44), curve, rect(61, 33, 9, 12, .subtract)]
+    for invert in [false, true] {
+      var mask = VectorMask(path: VectorPath(components: parts, inverted: invert))
+      mask.density = 0.71
+      for radius in [0.125, 2.25, 14] {
+        mask.feather = radius
+        var document = try CraftDocument(width: 109, height: 86, depth: .f32)
+        var layer = Layer(name: "Vector", content: .fill(.white))
+        layer.vectorMask = mask
+        document.layers = [layer]
+        let exact = try LayerMaskSampler(layer: layer, document: document)
+        let bounded = try VectorFeatherCoverage(mask: mask, width: document.width,
+          height: document.height, outside: invert ? 1 : 0)
+        var disagreements = 0
+        for y in 0..<document.height {
+          for x in 0..<document.width {
+            let sample = (Double(x) + 0.5, Double(y) + 0.5)
+            if bounded.coverage(x: sample.0, y: sample.1).bitPattern != exact.coverage(x: sample.0, y: sample.1).bitPattern {
+              disagreements += 1
+            }
+          }
+        }
+        XCTAssertEqual(disagreements, 0, "radius \(radius), inverted \(invert)")
+      }
+    }
+  }
+
+  func testMaximumVectorCanvasFeatherKeepsDistantContoursAndOffCanvasCoverage() throws {
+    var document = try CraftDocument(width: 300_000, height: 300_000)
+    var layer = Layer(name: "Vector", content: .fill(.white))
+    var mask = VectorMask(path: VectorPath(components: [
+      rect(15, -8, 22, 7), rect(59, 61, 14, 12), rect(299_905, 299_902, 20, 19)
+    ]))
+    mask.feather = 2
+    layer.vectorMask = mask
+    document.layers = [layer]
+    document.activeLayerID = layer.id
+    var patches = 0
+    let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    let raster = try PagedCanvasRenderer.composite(document, region: canvas, onPatch: { patches = $0 })
+    XCTAssertGreaterThan(raster.pixel(x: 22, y: 0).a, 0)
+    XCTAssertGreaterThan(raster.pixel(x: 65, y: 65).a, 0.88)
+    XCTAssertGreaterThan(raster.pixel(x: 299_913, y: 299_909).a, 0.88)
+    XCTAssertEqual(raster.pixel(x: 150_000, y: 150_000).a, 0)
+    XCTAssertLessThanOrEqual(patches, 14)
+    XCTAssertLessThan(raster.allocatedBytes, 4 * 1_024 * 1_024)
+    let ordinary = try Renderer.composite(document)
+    XCTAssertEqual(ordinary, raster)
+    let region = IntRect(x: 58, y: 58, width: 18, height: 18)
+    let local = try Renderer.composite(document, region: region)
+    XCTAssertEqual(try raster.cropped(to: region).rgbaData(depth: .u8),
+      try local.cropped(to: region).rgbaData(depth: .u8))
+  }
+
+  func testNonuniformThousandPixelVectorFeatherInMaximumCanvasViewport() throws {
+    var document = try CraftDocument(width: 300_000, height: 300_000, depth: .f32)
+    var layer = Layer(name: "Wide vector coverage", content: .fill(.white))
+    var mask = VectorMask(path: VectorPath(components: [rect(149_600, 149_650, 800, 700)]))
+    mask.feather = 1_000
+    layer.vectorMask = mask
+    document.layers = [layer]
+    document.activeLayerID = layer.id
+    let center = IntRect(x: 149_998, y: 149_998, width: 5, height: 5)
+    let output = try Renderer.composite(document, region: center)
+    let alpha = output.linearPixel(x: 150_000, y: 150_000).a
+    XCTAssertGreaterThan(alpha, 0.05)
+    XCTAssertLessThan(alpha, 0.5)
+    XCTAssertGreaterThan(output.linearPixel(x: 149_999, y: 150_001).a, 0.05)
+    let far = try Renderer.composite(document, region: .init(x: 298_000, y: 291_000, width: 1, height: 1))
+    XCTAssertEqual(far.linearPixel(x: 298_000, y: 291_000).a, 0)
+  }
+
+  func testWideVectorFeatherPreservesEditablePSDAndPSBMaskProperties() throws {
+    for both in [false, true] {
+      for format in PSDFileFormat.allCases {
+        var document = try CraftDocument(width: 64, height: 64, depth: .u16)
+        var layer = Layer(name: "Vector target", content: .raster(try Surface(width: 64, height: 64,
+          depth: .u16, fill: Pixel(0.75, 0.5, 0.25))))
+        var mask = VectorMask(path: both ? VectorPath(components: [rect(-4, 5, 27, 34)]) : VectorPath())
+        mask.density = Float(137) / 255
+        mask.linked = false
+        mask.feather = both ? 101.25 : 1_000
+        layer.vectorMask = mask
+        if both {
+          layer.mask = try Surface(width: 64, height: 64, depth: .u16, fill: .white)
+          layer.mask?.setPixel(x: 36, y: 14, .black)
+        }
+        document.layers = [layer]
+        document.activeLayerID = layer.id
+        let restored = try PSDCodec.read(PSDCodec.writeRasterLayers(document, format: format))
+        XCTAssertEqual(restored.layers[0].vectorMask, mask)
+        if both {
+          XCTAssertEqual(restored.layers[0].mask?.pixel(x: 36, y: 14).r, 0)
+          XCTAssertEqual(restored.layers[0].mask?.pixel(x: 35, y: 14).r, 1)
+        } else {
+          XCTAssertNil(restored.layers[0].mask)
+        }
+        XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(document)), document)
+      }
+    }
+  }
+
   func testPSDPathFixedPointRoundTripAndMalformedRecords() throws {
     var path = VectorPath(components: [
       rect(-3.125, 4.25, 20.5, 13.75), rect(5, 8, 4, 4, .subtract),

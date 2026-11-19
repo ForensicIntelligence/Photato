@@ -287,7 +287,7 @@ public struct MaskSampler: Sendable {
     }
   }
 
-  @inline(__always) private static func sample(
+  @inline(__always) static func sample(
     width: Int, height: Int, x: Double, y: Double, outside: Float, value: (Int, Int) -> Float
   ) -> Float {
     guard x.isFinite, y.isFinite else { return outside }
