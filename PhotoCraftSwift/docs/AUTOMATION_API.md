@@ -1,3 +1,9 @@
+### Workflow Guide catalogue (checkpoint 617)
+
+The authenticated `GET /v1/capabilities` response includes `workflowGuide`, the read-only catalogue used by **Window > Workflow Guide**. `menu` names the window command, `optional` is `true`, and `processing` is `local`. `suggestionOrder` maps editor context names to ordered lesson IDs. The desktop filters those lists by the active document and layer state before showing up to four suggestions.
+
+Each entry in `lessons` has `id`, `title`, `requirement`, and `steps`. A step contains `instruction` and may contain the `observedCheck` identifier for a change the desktop can recognize. A lesson may contain a `diaryAnchor` for its development record. `scope` describes the catalogue. Fetching it leaves documents and editor history untouched. Workflow Guide is a Photato feature with no Adobe Photoshop v2 endpoint.
+
 ### Sparse Photoshop native layer output (checkpoint 616)
 
 Discovery adds `documentTransfers.photoshopContainers.sparseNativeLayerOutput`. Editable Grayscale, CMYK and Lab layer output reuses stored process words and repeated rows through the common PSD/PSB writer. Eligible aligned Gray32 composite previews use the same row support. Desktop saves, Photato API downloads, and supported Photoshop v2 jobs use the shared serializer.

@@ -23,6 +23,7 @@ import SwiftUI
   var imageProcessorWindow: ImageProcessorWindow?
   var batchWindow: BatchWindow?
   var actionsWindow: NSWindowController?
+  var workflowGuideWindow: WorkflowGuideWindow?
   var scriptEventsWindow: ScriptEventsWindow?
   var layerCompsWindow: NSWindowController?
   var brushSettingsWindow: NSWindowController?
@@ -129,6 +130,10 @@ import SwiftUI
   }
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
+    if item.action == #selector(toggleWorkflowGuide) {
+      item.state = workflowGuideWindow?.window?.isVisible == true ? .on : .off
+      return true
+    }
     if [#selector(fit),#selector(actual),#selector(zoomIn),#selector(zoomOut)].contains(item.action),let sky=store?.skyWorkspace{return sky.canNavigate}
     if item.action == #selector(showScriptEvents) { return canShowScriptEvents }
     if let result = validateStylesPanel(item) {return result}

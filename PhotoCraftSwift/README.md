@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 617.** The optional Workflow Guide suggests useful next steps and walks through 20 editing tasks. [Qualification](docs/SOURCE_PUBLICATION_617.md).
+
 **Source checkpoint 616.** Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer. [Qualification](docs/SOURCE_PUBLICATION_616.md).
 
 **Source checkpoint 615.** Large editable and flattened Grayscale, CMYK and Lab Photoshop files keep unchanged separation samples implicit. [Qualification](docs/SOURCE_PUBLICATION_615.md).

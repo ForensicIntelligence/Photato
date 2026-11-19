@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **616** · The 10 most recent entries, newest first.
+Source build **617** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 617 — Add the optional Workflow Guide
+
+Open Window > Workflow Guide to browse suggestions for the selected layer, tool or other editor context. The guide runs locally and links to the development diary. The authenticated Photato capability catalogue exposes the same lessons.
+
+All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_617.md).
 
 ## 2026-11-19 — Step 616 — Write native Photoshop separations and Gray32 previews from stored blocks
 
@@ -75,11 +83,3 @@ The 300,000 × 300,000 RGB8 PSB with paint across the first row saved in 9.20 s 
 An independent encoder matched all 8,445,600,024 bytes of RLE tables and payloads on each architecture. Separate Apple Silicon RGB16 and RGB32 checks preserved both raster layers and their mask. All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-608) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_608.md).
-
-## 2026-11-19 — Step 607 — Choose sparse Photoshop layer samples across the canvas
-
-The editable 300,000 × 300,000 RLE PSB with paint across its first row reopened in 1.72 s on Apple Silicon and 2.70 s under Rosetta. All raster bits matched. Its 4,690 retained tiles occupied about 293 MiB.
-
-The raw and mixed-compression controls each went from 8,911 mapped tiles to 21. Row inspection preserved the live cursor and continued to reject malformed input in both PSD and PSB. All 940 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-607) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_607.md).

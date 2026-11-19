@@ -410,6 +410,10 @@ import PhotoCraftCore
     NSApp.windowsMenu = nil
     documentWindowMenu = main.item(withTitle: "Window")?.submenu
     documentWindowMenu?.delegate = self
+    let guide = NSMenuItem(title: "Workflow Guide", action: #selector(toggleWorkflowGuide), keyEquivalent: "")
+    guide.target = self
+    guide.identifier = NSUserInterfaceItemIdentifier("Window > Workflow Guide")
+    documentWindowMenu?.addItem(guide)
     workspaceMenu = documentWindowMenu?.item(withTitle: "Workspace")?.submenu
     workspaceMenu?.delegate = self
     recentDocumentsMenu = main.item(withTitle: "File")?.submenu?.item(withTitle: "Open Recent")?.submenu

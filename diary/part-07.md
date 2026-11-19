@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 617 — Add the optional Workflow Guide
+
+Open Window > Workflow Guide to browse suggestions for the selected layer, tool or other editor context. The guide runs locally and links to the development diary. The authenticated Photato capability catalogue exposes the same lessons.
+
+All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_617.md).
+
 ## 2026-11-19 — Step 616 — Write native Photoshop separations and Gray32 previews from stored blocks
 
 A two-layer 1,531 × 5,491 Gray32 control matched all 34,060,421 bytes from build 615. Restoring the same sparse layers and writing the file took 274.9 milliseconds in the paired Apple Silicon Debug run, down from 44.80 seconds.
@@ -931,14 +939,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:616 -->
+<!-- current-status-step:617 -->
 ## Current development status — 19 November 2026
 
-Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer.
+The optional Workflow Guide suggests useful next steps and walks through 20 editing tasks.
 
-All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 616](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_616.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-616).
+[Source checkpoint 617](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_617.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-617).
 
 <!-- current-status:end -->
 

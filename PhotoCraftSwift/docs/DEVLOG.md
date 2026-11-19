@@ -635,7 +635,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 614 | 2026-11-19 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](#dev-step-614) |
 | 615 | 2026-11-19 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](#dev-step-615) |
 | 616 | 2026-11-19 | [Write native Photoshop separations and Gray32 previews from stored blocks](#dev-step-616) |
+| 617 | 2026-11-19 | [Add the optional Workflow Guide](#dev-step-617) |
 <!-- history-index:end -->
+
+<a id="dev-step-617"></a>
+
+## 2026-11-19 — Add the optional Workflow Guide
+
+19 November 2026 · Implementation and preview qualification. The user asked for a floating guide that explains what to do next after an editor action and walks through the chosen task. The developer diary supplied workflows, control names and test evidence. It has no frequency data, so the ranking is authored for relevance and likely usefulness in the current context. The guide can be opened and closed through **Window > Workflow Guide** and is off at launch.
+
+`WorkflowGuide.swift` hosts a floating AppKit panel with native SwiftUI controls. It follows the active document and observes layer selection, masks, tools, brush and marquee settings, selection bounds, saved channels, crop and transform, layer opacity and visibility, zoom and rulers. `EditorStore.swift` delivers repeated clicks on the selected layer or tool. `NativeDocument.swift` keeps a weak reference to the visible guide, and `Application.swift` and `PhotoshopMenus.swift` add the window command alongside the existing reference menu. AppKit menu notifications provide additional context after supported commands. Closing the window removes the menu observer and ends the walkthrough.
+
+`WorkflowGuideContent.swift` defines 20 lessons in 15 contexts, with up to four available suggestions at a time. Lessons include masking, layer opacity, saving a selection, painting on a separate layer, cropping, revisiting edits, and exporting. Authored checks compare supported editor state with the state at the start of the step. The guide stays with its starting document and allows manual progress through instructions. The user performs all document edits. Suggestions operate offline and linked diary entries open only on request.
+
+`AutomationService.swift` adds `workflowGuide` to the existing authenticated `GET /v1/capabilities` response. Both the panel and the HTTP catalogue read the same Swift lesson definitions. The published Adobe Photoshop v2 contract has no counterpart for this Photato window. `WorkflowGuideTests.swift` and `AutomationTests.swift` cover contextual suggestions and requirements, native panel/menu wiring, repeat clicks, a duplicate-layer edit, pausing a walkthrough across documents, and the lesson catalogue returned over a real authenticated loopback connection. `scripts/Info.plist` advances the isolated candidate to build 617.
+
+The first focused run with the catalogue and four guide tests passed all five cases. The follow-up run required the hosted SwiftUI view to observe the native duplicate-layer edit on its own. The final run dispatches the actual Window > Workflow Guide and View > 100% menu actions and restores the original main menu at teardown. All five cases passed again. Two rebuild attempts hit the host module-cache and nested sandbox restrictions before the established build flags were restored. A third attempt omitted the existing Debug optimizer workaround, and the compiler exited with signal 4. Each attempt is retained separately in `artifacts/617-workflow-guide/`.
+
+The final Debug command was `swift build --build-tests --scratch-path /private/tmp/photato-617-workflow-guide-debug --cache-path .build/pm-cache --disable-sandbox --disable-build-manifest-caching --build-system native --triple arm64-apple-macosx14.0 --jobs 4 -Xswiftc -module-cache-path -Xswiftc /private/tmp/photato-617-workflow-guide-debug-modules -Xswiftc -Xllvm -Xswiftc -sil-disable-pass=predictable-deadalloc-elim`. The focused run used `xctest -XCTest PhotoCraftAppTests.WorkflowGuideTests,PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue` against that test bundle. Evidence is in `build-debug08.log` and `focused-guide-and-api04.log`. `workflow-guide-source.patch` passed `git apply --check` on the isolated build 616 source.
+
+The Apple Silicon Debug preview was ad hoc signed under an isolated bundle ID. Its ZIP was extracted, its signature and full package contents were verified, and the extracted binary rendered the 1000 × 650 offscreen workspace using `arch -arm64 <extracted app>/Contents/MacOS/Photato --snapshot-small <isolated PNG>`. The five focused tests cover the guide separately, including native panel hosting. Physical interaction, Intel and full-suite qualification remain open. Full qualification was queued behind the preceding file-interchange candidate. The preview is a local build for evaluation.
+
+The GitHub README was updated separately ahead of this source checkpoint to feature the two local automation interfaces and the Workflow Guide. The entry described the guide as in development. Adobe's own documentation records the contextual Discover panel, so the public description focuses on Photato's offline, editor-aware implementation and links the compatibility coverage. The diary checker now recognizes the Developer Diary section within the first two README sections, immediately beneath the new feature highlights.
+
+The build 613 GitHub diary regenerated and passed its link and continuity checks before publication. The separate resident-history audit recorded 11,208 evidence files and flagged 630 missing older references. All explicit references for steps 613 and 614 were present. The strict historical check remains open. The refreshed inventory and its check log are recorded in the build 613 resident audit directory.
+
+The subsequent native reference-menu test identified the app-specific Window entry in the reference comparison. AppKit supplies a fallback identifier even when the new menu item has no assigned identifier. The repaired test registers `Window > Workflow Guide` as an app addition and still compares the complete captured reference order and shortcuts. The first two queued qualification attempts were retired before they duplicated a known menu failure. The repaired source is in `qualification03`.
+
+All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. [Validation](SOURCE_PUBLICATION_617.md).
 
 <a id="dev-step-616"></a>
 

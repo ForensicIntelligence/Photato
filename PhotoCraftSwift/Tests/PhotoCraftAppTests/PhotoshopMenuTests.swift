@@ -65,8 +65,8 @@ final class PhotoshopMenuTests: XCTestCase {
       }
       // Keep every independently captured27.2 entry and shortcut intact.
       // Separate later adjustment commands and the Photato-only Relight extension.
-      let additions = ["Photato > Generated Results…",SaveDialogFormats.menuPath] + ["Light…","Clarity and dehaze…","Grain…"].map {"Layer > New Adjustment Layer > " + $0} + ["Filter > Photato","Filter > Photato > Relight…","Filter > Photato > Lighting Effects…"]
-      XCTAssertEqual(items.count, 809)
+      let additions = ["Photato > Generated Results…",SaveDialogFormats.menuPath] + ["Light…","Clarity and dehaze…","Grain…"].map {"Layer > New Adjustment Layer > " + $0} + ["Filter > Photato","Filter > Photato > Relight…","Filter > Photato > Lighting Effects…","Window > Workflow Guide"]
+      XCTAssertEqual(items.count, expected.count + additions.count)
       XCTAssertEqual(items.filter { !additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue },
         expected.map { $0.path.joined(separator: " > ") })
       XCTAssertEqual(items.filter { additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue }, additions)

@@ -180,6 +180,12 @@ final class AutomationTests: XCTestCase {
       let nativeOutput = try XCTUnwrap(containers["sparseNativeLayerOutput"] as? [String: Any])
       XCTAssertEqual(nativeOutput["modes"] as? [String], ["grayscale", "cmyk", "lab"])
       XCTAssertEqual(nativeOutput["keepsProcessWords"] as? Bool, true)
+      let guide = try XCTUnwrap(catalogue["workflowGuide"] as? [String: Any])
+      let lessons = try XCTUnwrap(guide["lessons"] as? [[String: Any]])
+      let maskLesson = try XCTUnwrap(lessons.first { ($0["id"] as? String) == "add-layer-mask" })
+      XCTAssertEqual(maskLesson["diaryAnchor"] as? String, "dev-step-007")
+      XCTAssertEqual((maskLesson["steps"] as? [[String: String]])?.count, 4)
+      XCTAssertEqual(guide["processing"] as? String, "local")
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
     }

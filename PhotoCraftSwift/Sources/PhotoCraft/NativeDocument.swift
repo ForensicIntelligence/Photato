@@ -569,6 +569,7 @@ import SwiftUI
   }
 }
 @MainActor final class CraftDocumentController: NSDocumentController {
+  weak var workflowGuide: WorkflowGuideModel?
   let documentWindows = DocumentWindows()
   private(set) var paintPalette = PaintPalette()
   private(set) var eyedropperPreferences=EyedropperPreferences()

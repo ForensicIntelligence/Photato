@@ -784,6 +784,9 @@ struct CanvasRenderRequest: Sendable {
     if wasAlpha || changedMaskOwner { render() }
     invalidatePeopleIfNeeded()
     refreshObjectFinderIfNeeded()
+    if let guide = documentController?.workflowGuide, documentController?.documentWindows.activeDocument?.store === self {
+      guide.showLayer(.capture(self))
+    }
   }
   @discardableResult func undo() async -> Bool {
     finishNumericField()
@@ -1327,6 +1330,11 @@ struct CanvasRenderRequest: Sendable {
       rememberedTools[group[0].id] = item.id
     }
     status = item.native == nil ? "\(item.title) is not available yet" : item.title
+    if let native = item.native, let guide = documentController?.workflowGuide,
+      documentController?.documentWindows.activeDocument?.store === self {
+      guide.update(.capture(self))
+      guide.showTool(native)
+    }
   }
   func chooseShortcut(_ key: String, cycle: Bool) -> Bool {
     guard

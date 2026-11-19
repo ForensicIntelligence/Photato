@@ -6,7 +6,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 - **A desktop editor with two local automation APIs.** Enable Photato’s optional HTTP server to edit shared documents and run jobs from scripts or a browser on the same Mac. The Photato `/v1` API publishes the available commands and their schemas at `GET /v1/capabilities`. Both interfaces use the native Swift editing engine. [Automation API](PhotoCraftSwift/docs/AUTOMATION_API.md)
 - **Adobe Photoshop API v2 compatibility on your Mac.** Use the supported Firefly Photoshop v2 request and job formats against Photato’s local server. The compatibility layer is independently implemented. It covers a documented subset, and full endpoint and action coverage remains a development goal. [Photato compatibility matrix](PhotoCraftSwift/docs/ADOBE_API_COMPATIBILITY.json) · [Adobe’s published contract](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/)
-- **An offline Workflow Guide for learning while editing, in development.** The optional floating window follows the active layer, selection, tool, and supported editor controls. It offers a short list of likely next tasks, then walks through the one you choose. The guide can recognize supported steps as you perform them in the editor. The walkthroughs are authored from tested workflows in the developer diary.
+- **An offline Workflow Guide for learning while editing.** The optional floating window follows the active layer, selection, tool, and supported editor controls. It offers a short list of likely next tasks, then walks through the one you choose. The guide can recognize supported steps as you perform them in the editor. The walkthroughs are authored from tested workflows in the developer diary.
 - **An editor you can audit and build yourself.** Photato’s Swift editor, file codecs, automation engine and Xcode project are public. The diary links each published source checkpoint to its tests, independent references and remaining gaps. [Source and license](PhotoCraftSwift/) · [Developer diary](DEVELOPER_DIARY.md)
 
 ## Developer Diary
@@ -15,7 +15,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 616.** Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_616.md).
+**Development alpha — source build 617.** The optional Workflow Guide suggests useful next steps and walks through 20 editing tasks. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_617.md).
 
 ## Project layout
 

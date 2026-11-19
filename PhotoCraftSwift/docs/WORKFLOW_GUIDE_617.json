@@ -1,0 +1,72 @@
+{
+  "build": 617,
+  "sourceInputs": 9214,
+  "selectedTestsPerConfiguration": 968,
+  "sourceChanges": {
+    "Sources/PhotoCraft/Application.swift": "b41309f8a8b15b2f5e1fcdf2653c9420e7a6ca548c4915ad0ad87b0f3cf9616b",
+    "Sources/PhotoCraft/AutomationService.swift": "bb531d97d61d77e16e8004b124e9a4e5824768cf6b72e91bd3a78da46c92d63a",
+    "Sources/PhotoCraft/EditorStore.swift": "478fea0bbdc973404dc24fbc27a5ac68a20bda6cec31abbddc255ec67ef6fb5a",
+    "Sources/PhotoCraft/NativeDocument.swift": "533c5b60c4e762231fe4617aaa295c214c6d1183792255a7421479e2a867da6d",
+    "Sources/PhotoCraft/PhotoshopMenus.swift": "09488c9f39b7d9778bab47a4eb5f985b4d4afa555504891e7be313623e33b409",
+    "Sources/PhotoCraft/WorkflowGuide.swift": "a88696f0e68672658d186ff5788750c9d72064cc4a2fb88a84796eada6687b40",
+    "Sources/PhotoCraft/WorkflowGuideContent.swift": "a76e7787975425b841ee17575a16c335d137519835bd69ed38a7c4cd251b1683",
+    "Tests/PhotoCraftAppTests/AutomationTests.swift": "366da3dd937a115b19fee6d8bcb9436266ad0678d37a20d32fe5a0fe78acd935",
+    "Tests/PhotoCraftAppTests/PhotoshopMenuTests.swift": "7e20719651cf90455c937caa90b15551b3639b320705f608aaa634d30ef0ebc7",
+    "Tests/PhotoCraftAppTests/WorkflowGuideTests.swift": "d6b3d8337d4fc06a918494389e50da89b324dba477438af0317116cc630b1da6",
+    "scripts/Info.plist": "345a4f2675ca14ad8b096a0241150e1e7903c35dc3d97b1afd5952f4b06ca5e7"
+  },
+  "configurations": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "aea658a2cbc58f1bf6e19d02d9c0114b017d8a15e644548b3a65d78c59a3acd0",
+      "testBinarySHA256": "e548db5a6547c7d6cca4d5ff7a776b8280ccf2d78cf6fd1f4bd109fe0452dfa1",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "1487aa18d18b3c5d84610d32e097218e4a54651627dc5937087ccab1ae795095",
+      "testBinarySHA256": "934e88e5ebc42e49466a32add86645d86ad21ca2438540a3e509dc8b35037fe6",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "e8589b922e420a90ece2581ec5ab2cdd68e378be1af1bb08de18961c41811655",
+      "testBinarySHA256": "fdf7431ff65e49cf94360d0c8b74b9771287fc68167656ce0493529e3ec6952b",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "58103725d8ebf36bed6144dad7a9ad560aa24d57fbe88e3d6395644ec6bb6cea",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "guideUnits": {
+    "lessons": 20,
+    "contexts": 15,
+    "maximumSuggestions": 4
+  }
+}
