@@ -51,6 +51,7 @@ extension WorkspaceView {
       }.frame(maxWidth: .infinity)
     }.frame(width: doubleTools ? 68 : 40).background(StudioTheme.chrome)
       .overlay(alignment: .trailing) { Rectangle().fill(StudioTheme.line).frame(width: 1) }
+      .workflowGuideAnchor(.tools)
   }
   var toolRailFooter: some View {
     VStack(spacing: 5) {
@@ -65,7 +66,8 @@ extension WorkspaceView {
       ZStack {
         Rectangle().fill(pixelColor(store.backgroundColor)).frame(width: 19, height: 19)
           .overlay(Rectangle().stroke(.white.opacity(0.8))).offset(x: 5, y: 4)
-        CompactColorWell(color: colorBinding).frame(width: 23, height: 23).offset(x: -4, y: -4)
+        CompactColorWell(color: colorBinding).frame(width: 23, height: 23)
+          .workflowGuideAnchor(.foreground).offset(x: -4, y: -4)
       }.frame(height: 30)
       QuickMaskModeButton(store:store).frame(width:32,height:22)
         .contextMenu { Button("Quick Mask Options…") { store.beginChannelDialog(.quickOptions) } }
@@ -108,6 +110,10 @@ extension WorkspaceView {
       "\(tool.title)\(tool.shortcut.isEmpty ? "" : " (\(tool.shortcut))")\(tool.native == nil ? " — not available yet" : "") · Right-click for grouped tools"
     )
     .accessibilityLabel(tool.title + " Tool")
+    .background {
+      WorkflowGuideAnchor(targets: group.compactMap { $0.native.map(WorkflowGuideTarget.tool) })
+        .allowsHitTesting(false)
+    }
     .contextMenu {
       ForEach(group) { member in
         Button(member.title + (member.native == nil ? " — not available yet" : "")) {
@@ -129,6 +135,7 @@ extension WorkspaceView {
         HStack(spacing: 12) { toolOptions }.frame(height: 33)
       }.scrollIndicators(.hidden).frame(minWidth: 0, maxWidth: .infinity)
         .layoutPriority(-1)
+        .workflowGuideAnchor(.options)
       iconButton("square.and.arrow.up", "Export Image") { store.exportImage() }
       iconButton("sparkles", "Create with Apple Intelligence") { store.showAI = true }
       iconButton("list.bullet.rectangle", "Workspace Feature Map") { store.showGaps = true }

@@ -15,7 +15,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 618.** Eligible editable RGB8, RGB16, and RGB32 PSD and PSB files can omit the merged preview while keeping saved alpha, spot and Quick Mask planes. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_618.md).
+**Development alpha — source build 619.** The Workflow Guide ranks suggestions by task context, adds a configurable maximum, and flashes the walkthrough target. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_619.md).
 
 ## Project layout
 

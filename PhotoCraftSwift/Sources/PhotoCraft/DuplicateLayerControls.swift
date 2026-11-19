@@ -264,6 +264,7 @@ struct DuplicateLayerSheet: View {
         VStack(spacing: 10) {
           Button("OK") { store.commitDuplicate(draft) }.keyboardShortcut(.defaultAction)
             .disabled(!draft.valid || draft.processing).frame(width: 76)
+            .workflowGuideSheetHighlight(.duplicateLayer, control: .modalConfirm, store: store)
           Button("Cancel") { store.cancelDuplicate() }.keyboardShortcut(.cancelAction).frame(
             width: 76)
           if draft.processing { ProgressView().controlSize(.small) }

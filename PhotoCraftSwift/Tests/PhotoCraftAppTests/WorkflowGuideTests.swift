@@ -5,6 +5,36 @@ import XCTest
 @testable import PhotoCraft
 
 final class WorkflowGuideTests: XCTestCase {
+  @MainActor func testRankedSuggestionsApplyTheSavedLimitBeforeTheyAreShown() throws {
+    let suite = "photato.guide.settings.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let preferences = WorkflowGuidePreferences(defaults: defaults)
+    let guide = WorkflowGuideModel(preferences: preferences)
+    var state = WorkflowGuideSnapshot()
+    state.documentID = UUID()
+    state.layerID = UUID()
+    state.isRaster = true
+    state.canChangeOpacity = true
+    state.canTransform = true
+    guide.update(state)
+    XCTAssertEqual(guide.suggestions, [WorkflowGuideContent.opacity, WorkflowGuideContent.duplicate,
+      WorkflowGuideContent.addMask, WorkflowGuideContent.transform])
+    preferences.setMaximumSuggestions(2)
+    XCTAssertEqual(guide.suggestions, [WorkflowGuideContent.opacity, WorkflowGuideContent.duplicate])
+    preferences.setMaximumSuggestions(0)
+    XCTAssertEqual(guide.suggestions.count, 2)
+    preferences.opensAtLaunch = true
+    preferences.setShown(true)
+    let reloaded = WorkflowGuidePreferences(defaults: defaults)
+    XCTAssertEqual(reloaded.maximumSuggestions, 2)
+    XCTAssertTrue(reloaded.opensAtLaunch)
+    XCTAssertFalse(reloaded.isShown)
+    preferences.setMaximumSuggestions(8)
+    XCTAssertEqual(guide.suggestions.count, 7)
+    XCTAssertEqual(guide.suggestions.last, WorkflowGuideContent.save)
+  }
+
   @MainActor func testSuggestionsFollowLayerSelectionToolOptionsAndMaskState() throws {
     let document = try CraftDocument(width: 8, height: 6)
     let store = EditorStore(document: document)
@@ -113,10 +143,18 @@ final class WorkflowGuideTests: XCTestCase {
     defer {
       NSApp.mainMenu = previousMenu
       delegate.workflowGuideWindow?.window?.close()
+      delegate.workflowGuidePreferencesWindow?.close()
       delegate.controller.documentWindows.activeDocument = nil
       document.store.renderTask?.cancel()
     }
     delegate.installPhotoshopMenus()
+    let appMenu = try XCTUnwrap(NSApp.mainMenu?.item(withTitle: "Photato")?.submenu)
+    let settings = try XCTUnwrap(appMenu.item(withTitle: "Settings…")?.submenu)
+    let guideSettings = try XCTUnwrap(settings.item(withTitle: "Workflow Guide…"))
+    XCTAssertTrue(delegate.validateMenuItem(guideSettings))
+    settings.performActionForItem(at: settings.index(of: guideSettings))
+    XCTAssertEqual(delegate.workflowGuidePreferencesWindow?.window?.title, "Settings — Workflow Guide")
+    XCTAssertTrue(delegate.workflowGuidePreferencesWindow?.window?.isVisible == true)
     let windowMenu = try XCTUnwrap(NSApp.mainMenu?.item(withTitle: "Window")?.submenu)
     let item = try XCTUnwrap(windowMenu.item(withTitle: "Workflow Guide"))
     XCTAssertNil(delegate.workflowGuideWindow)
@@ -129,6 +167,7 @@ final class WorkflowGuideTests: XCTestCase {
     XCTAssertTrue(panel.isExcludedFromWindowsMenu)
     XCTAssertEqual(panel.title, "Workflow Guide")
     XCTAssertTrue(delegate.controller.workflowGuide === guide.model)
+    XCTAssertTrue(delegate.controller.workflowGuidePreferences.isShown)
     let viewMenu = try XCTUnwrap(NSApp.mainMenu?.item(withTitle: "View")?.submenu)
     let action = try XCTUnwrap(viewMenu.item(withTitle: "100%"))
     viewMenu.performActionForItem(at: viewMenu.index(of: action))
@@ -137,5 +176,61 @@ final class WorkflowGuideTests: XCTestCase {
     XCTAssertEqual(guide.model.caption, "100%")
     panel.close()
     XCTAssertNil(delegate.controller.workflowGuide)
+    XCTAssertFalse(delegate.controller.workflowGuidePreferences.isShown)
+  }
+
+  @MainActor func testGuideHighlightsTheVisibleLayerAndTheDuplicateSheetWithoutTakingFocus() async throws {
+    _ = NSApplication.shared
+    let delegate = AppDelegate(workspaces: WorkspaceLibrary())
+    let document = CraftNSDocument(model: try CraftDocument(width: 80, height: 60))
+    delegate.controller.addDocument(document)
+    document.makeWindowControllers()
+    document.showWindows()
+    delegate.controller.documentWindows.activeDocument = document
+    let editor = try XCTUnwrap(document.windowForSheet)
+    defer {
+      if let sheet = editor.attachedSheet { editor.endSheet(sheet) }
+      delegate.workflowGuideWindow?.close()
+      document.close()
+    }
+    delegate.setWorkflowGuideVisible(true, takesFocus: false)
+    let guide = try XCTUnwrap(delegate.workflowGuideWindow)
+    let deadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while guide.highlighter.overlay == nil, ContinuousClock.now < deadline {
+      guide.model.start(WorkflowGuideContent.duplicate)
+      if guide.highlighter.overlay == nil { try await Task.sleep(for: .milliseconds(25)) }
+    }
+    let first = try XCTUnwrap(guide.highlighter.overlay)
+    XCTAssertTrue(first.parent === editor)
+    XCTAssertTrue(first.ignoresMouseEvents)
+    XCTAssertFalse(first.isKeyWindow)
+    XCTAssertEqual(guide.model.walkthrough?.index, 0)
+    guide.model.showMe()
+    let replay = try XCTUnwrap(guide.highlighter.overlay)
+    XCTAssertEqual(replay.frame, first.frame)
+    XCTAssertFalse(replay === first)
+    XCTAssertEqual(guide.model.walkthrough?.index, 0)
+
+    guide.model.next()
+    document.store.beginDuplicate()
+    let sheetDeadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while editor.attachedSheet == nil, ContinuousClock.now < sheetDeadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    _ = try XCTUnwrap(editor.attachedSheet)
+    guide.model.showMe()
+    let request = try XCTUnwrap(guide.highlighter.sheetHighlight)
+    XCTAssertEqual(request.control, .modalConfirm)
+    let layoutDeadline = ContinuousClock.now.advanced(by: .seconds(2))
+    while guide.highlighter.visibleSheetHighlight == nil && guide.highlighter.overlay == nil,
+      ContinuousClock.now < layoutDeadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    XCTAssertEqual(guide.highlighter.visibleSheetHighlight, request.id)
+    XCTAssertNil(guide.highlighter.overlay)
+    guide.model.end()
+    XCTAssertNil(guide.highlighter.overlay)
+    XCTAssertNil(guide.highlighter.sheetHighlight)
+    XCTAssertFalse(document.isDocumentEdited)
   }
 }

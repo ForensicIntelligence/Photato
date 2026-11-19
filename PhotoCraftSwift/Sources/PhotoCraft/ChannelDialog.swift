@@ -126,7 +126,9 @@ struct ChannelDialogSheet: View {
       if draft.committing {ProgressView("Applying selection…").controlSize(.small)}
       if let error = draft.error { Text(error).foregroundStyle(.red) }
       HStack { Spacer(); Button("Cancel") { store.cancelChannelDialog() }.keyboardShortcut(.cancelAction)
-        Button("OK") { store.commitChannelDialog(draft) }.keyboardShortcut(.defaultAction).disabled(draft.committing || (draft.kind == .load && draft.selectionSource == nil) || (draft.kind == .save && !draft.canSaveDestination)) }
+        Button("OK") { store.commitChannelDialog(draft) }.keyboardShortcut(.defaultAction).disabled(draft.committing || (draft.kind == .load && draft.selectionSource == nil) || (draft.kind == .save && !draft.canSaveDestination))
+          .workflowGuideSheetHighlight(.savedSelection, control: .modalConfirm, store: store)
+      }
     }.padding(20).frame(width:380)
   }
 }

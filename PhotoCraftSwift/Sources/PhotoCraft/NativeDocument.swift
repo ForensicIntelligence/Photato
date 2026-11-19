@@ -570,7 +570,9 @@ import SwiftUI
 }
 @MainActor final class CraftDocumentController: NSDocumentController {
   weak var workflowGuide: WorkflowGuideModel?
+  private(set) var workflowGuidePreferences = WorkflowGuidePreferences()
   let documentWindows = DocumentWindows()
+  lazy var workflowGuideHighlighter = WorkflowGuideHighlighter(windows: documentWindows)
   private(set) var paintPalette = PaintPalette()
   private(set) var eyedropperPreferences=EyedropperPreferences()
   let filterRecall = FilterRecall()
@@ -608,12 +610,13 @@ import SwiftUI
     workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil,
     paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
-    scriptEvents: ScriptEventsStore? = nil
+    scriptEvents: ScriptEventsStore? = nil, workflowGuidePreferences: WorkflowGuidePreferences? = nil
   ) {
     self.init()
     // AppKit may return its existing document-controller singleton from init().
     // Configure the returned instance, not storage allocated before super.init().
     self.workspaces = workspaces
+    self.workflowGuidePreferences = workflowGuidePreferences ?? WorkflowGuidePreferences()
     self.paintPalette = paintPalette ?? PaintPalette()
     self.eyedropperPreferences=eyedropperPreferences ?? EyedropperPreferences()
     self.recoveryPreferences = recoveryPreferences ?? RecoveryPreferencesStore()

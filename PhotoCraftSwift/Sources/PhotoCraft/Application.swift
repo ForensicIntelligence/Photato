@@ -6,12 +6,13 @@ import SwiftUI
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
   let controller: CraftDocumentController
-  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard), eyedropperPreferences:EyedropperPreferences(defaults:.standard), liquifyMeshes: .shared, lensDefaults: .shared, scriptEvents: .shared) }
+  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard), eyedropperPreferences:EyedropperPreferences(defaults:.standard), liquifyMeshes: .shared, lensDefaults: .shared, scriptEvents: .shared, workflowGuidePreferences: WorkflowGuidePreferences(defaults: .standard)) }
   init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
-    liquifyMeshes: LiquifyMeshLibrary? = nil, lensDefaults: LensDefaultLibrary? = nil, scriptEvents: ScriptEventsStore? = nil) {
+    liquifyMeshes: LiquifyMeshLibrary? = nil, lensDefaults: LensDefaultLibrary? = nil, scriptEvents: ScriptEventsStore? = nil,
+    workflowGuidePreferences: WorkflowGuidePreferences? = nil) {
     controller = CraftDocumentController(
-      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences:eyedropperPreferences, scriptEvents: scriptEvents)
+      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences:eyedropperPreferences, scriptEvents: scriptEvents, workflowGuidePreferences: workflowGuidePreferences)
     super.init()
     controller.filterRecall.liquifyMeshes = liquifyMeshes ?? LiquifyMeshLibrary()
     controller.filterRecall.lensDefaults = lensDefaults ?? LensDefaultLibrary()
@@ -24,6 +25,7 @@ import SwiftUI
   var batchWindow: BatchWindow?
   var actionsWindow: NSWindowController?
   var workflowGuideWindow: WorkflowGuideWindow?
+  var workflowGuidePreferencesWindow: NSWindowController?
   var scriptEventsWindow: ScriptEventsWindow?
   var layerCompsWindow: NSWindowController?
   var brushSettingsWindow: NSWindowController?
@@ -93,6 +95,7 @@ import SwiftUI
     }
     controller.startIndexedRecovery()
     NSApp.activate(ignoringOtherApps: true)
+    if controller.workflowGuidePreferences.opensAtLaunch { setWorkflowGuideVisible(true, takesFocus: false) }
   }
   func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool { true }
   // Let AppKit finish recovery before deciding whether launch needs a new document.
@@ -131,9 +134,10 @@ import SwiftUI
   func buildMenus() { installPhotoshopMenus() }
   func validateMenuItem(_ item: NSMenuItem) -> Bool {
     if item.action == #selector(toggleWorkflowGuide) {
-      item.state = workflowGuideWindow?.window?.isVisible == true ? .on : .off
+      item.state = controller.workflowGuidePreferences.isShown ? .on : .off
       return true
     }
+    if item.action == #selector(showWorkflowGuidePreferences) { return true }
     if [#selector(fit),#selector(actual),#selector(zoomIn),#selector(zoomOut)].contains(item.action),let sky=store?.skyWorkspace{return sky.canNavigate}
     if item.action == #selector(showScriptEvents) { return canShowScriptEvents }
     if let result = validateStylesPanel(item) {return result}
@@ -1403,6 +1407,7 @@ import SwiftUI
       eyedropperPreferences:EyedropperPreferences(defaults:isolatedSession ? nil:.standard),
       liquifyMeshes: isolatedSession ? LiquifyMeshLibrary() : .shared,
       lensDefaults: isolatedSession ? LensDefaultLibrary() : .shared,
-      scriptEvents: isolatedSession ? ScriptEventsStore() : .shared)
+      scriptEvents: isolatedSession ? ScriptEventsStore() : .shared,
+      workflowGuidePreferences: WorkflowGuidePreferences(defaults: isolatedSession ? nil : .standard))
   }
 }

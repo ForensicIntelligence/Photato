@@ -661,6 +661,10 @@ import UniformTypeIdentifiers
       if let response = try await handleDocumentTransfer(request) { return response }
       if request.method == "GET", request.path == "/v1/capabilities" {
         var result = Self.capabilities
+        if var guide = result["workflowGuide"] as? [String: Any] {
+          guide["preferences"] = controller.workflowGuidePreferences.capability
+          result["workflowGuide"] = guide
+        }
         result["printingEnabled"] = printingEnabled
         result["printers"] = printingEnabled ? NSPrinter.printerNames : []
         result["photomergeState"] = ["open":controller.photomergeWorkspace != nil,"loading":controller.photomergeWorkspace?.loading ?? false,"rendering":controller.photomergeWorkspace?.rendering ?? false,"creatingFromAPI":photomergeOperationID != nil]

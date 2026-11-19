@@ -38,6 +38,7 @@ extension WorkspaceView {
             }
           }
         }
+        .workflowGuideAnchor(.layerList)
         .onAppear { _ = layerReveal.appear(store) }
         .onChange(of: store.layerNameDraft?.id) { _, _ in _ = layerReveal.rename(store) }
         .onChange(of: LayerRevealObservation(store)) { _, _ in _ = layerReveal.track(store) }
@@ -81,6 +82,7 @@ extension WorkspaceView {
         }.labelsHidden().controlSize(.small).frame(maxWidth: .infinity).disabled(
           store.activeLayer == nil || store.activeLayer.map { store.document.isLocked($0.id) } == true)
         LayerOpacityControl(store: store)
+          .workflowGuideAnchor(.opacity)
       }
       HStack(spacing: 6) {
         Text("Lock:").foregroundStyle(.secondary)
@@ -129,6 +131,7 @@ extension WorkspaceView {
       )
       .frame(width: 22, height: metrics.size.controlHeight)
       .background((layer.colorLabel ?? .none).swatch.opacity(0.55))
+      .workflowGuideAnchor(.layerEye, when: layer.id == store.document.activeLayerID)
       Color.clear.frame(width: metrics.indentation)
       if layer.isGroup {
         LayerGroupDisclosureControl(store: store, layer: layer, height: metrics.size.controlHeight)
@@ -179,6 +182,7 @@ extension WorkspaceView {
               store.editingMask && layer.id == store.document.activeLayerID ? .white : .gray
             )
             .overlay { MaskThumbnailControl(store: store, layer: layer, kind: .pixel) }
+            .workflowGuideAnchor(.mask, when: layer.id == store.document.activeLayerID)
         }
         if let mask = layer.vectorMask {
           layerPreview(layer, component: .vectorMask, metrics: metrics)
@@ -231,6 +235,7 @@ extension WorkspaceView {
     )
     .contextMenu { LayerEditingMenu(store: store, contextLayer: layer.id) }
     .accessibilityElement(children: .contain).accessibilityLabel("Layer \(layer.name)")
+    .workflowGuideAnchor(.layerRow, when: layer.id == store.document.activeLayerID)
   }
   func layerPreview(_ layer: Layer, component: LayerThumbnailComponent, metrics: LayerRowMetrics)
     -> some View

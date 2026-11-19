@@ -155,6 +155,7 @@ struct NewLayerSheet: View {
         }
         VStack(spacing: 10) {
           Button("OK") { store.commitNewLayer(draft) }.keyboardShortcut(.defaultAction)
+            .workflowGuideSheetHighlight(.newLayer, control: .modalConfirm, store: store)
             .disabled(draft.validatedOptions == nil).frame(width: 76)
           Button("Cancel") { store.cancelNewLayer() }.keyboardShortcut(.cancelAction)
             .frame(width: 76)

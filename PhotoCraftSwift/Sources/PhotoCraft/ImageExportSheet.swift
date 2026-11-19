@@ -25,6 +25,7 @@ struct ImageExportSheet: View {
           Form {
             Section("File Settings") {
               Picker("Format", selection: $draft.settings.format) { Text("PNG").tag(ImageExportSettings.Format.png); Text("JPG").tag(ImageExportSettings.Format.jpeg); Text("GIF").tag(ImageExportSettings.Format.gif) }
+                .workflowGuideSheetHighlight(.imageExport, control: .modalFormat, store: store)
               if draft.settings.format == .jpeg {
                 HStack { Text("Quality"); Slider(value: Binding(get: { Double(draft.settings.quality) }, set: { draft.settings.quality = Int($0) }), in: 0...100, step: 1); Text("\(draft.settings.quality)%").monospacedDigit().frame(width: 42) }
               } else { Toggle("Transparency", isOn: $draft.settings.transparency) }
@@ -68,6 +69,7 @@ struct ImageExportSheet: View {
         Button("Cancel") { store.cancelImageExport() }.keyboardShortcut(.cancelAction)
         Button(draft.preferences ? "Done" : draft.previewFiles.count > 1 ? "Export All…" : "Export…") { store.finishNativeImageExport(draft) }
           .keyboardShortcut(.defaultAction).disabled(store.imageExportID != nil || (!draft.preferences && (draft.busy || draft.previewFiles.isEmpty || draft.error != nil)))
+          .workflowGuideSheetHighlight(.imageExport, control: .modalConfirm, store: store)
       }.padding()
     }.frame(width: draft.preferences ? 450 : 1000, height: draft.preferences ? 530 : 660)
       .task { draft.refresh() }

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **618** · The 10 most recent entries, newest first.
+Source build **619** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 619 — Rank Workflow Guide suggestions and highlight each step
+
+Open Photato > Settings > Workflow Guide to control visibility, launch behavior and the suggestion limit. Choose Show Me while a guide is open to repeat its highlight. Preferences are stored locally.
+
+All 972 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_619.md).
 
 ## 2026-11-19 — Step 618 — Save deep RGB Photoshop files without a merged preview
 
@@ -75,11 +83,3 @@ A synthetic sparse 300,000 × 300,000 PSB opened with the exact editable raster 
 The native reader matched all 4,016 editable-layer and saved-channel sample words across 80 independently assembled PSD and PSB controls. A loopback regression covered Photato import, truncated-input rejection, and both job interfaces. All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-610) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_610.md).
-
-## 2026-11-19 — Step 609 — Set PSD and PSB file compatibility
-
-Always includes a merged preview. Ask prompts during eligible desktop saves. Never skips the preview for RGB8 documents without saved channels. Unattended Ask saves include the preview by default.
-
-All 1,974 PSD and 1,732 PSB placeholder bytes matched across five Adobe controls. Native saves, copy and cancellation passed, along with loopback API saves and downloads for all three settings. All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_609.md).

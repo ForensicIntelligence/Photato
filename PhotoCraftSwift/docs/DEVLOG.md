@@ -637,7 +637,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 616 | 2026-11-19 | [Write native Photoshop separations and Gray32 previews from stored blocks](#dev-step-616) |
 | 617 | 2026-11-19 | [Add the optional Workflow Guide](#dev-step-617) |
 | 618 | 2026-11-19 | [Save deep RGB Photoshop files without a merged preview](#dev-step-618) |
+| 619 | 2026-11-19 | [Rank Workflow Guide suggestions and highlight each step](#dev-step-619) |
 <!-- history-index:end -->
+
+<a id="dev-step-619"></a>
+
+## 2026-11-19 — Rank Workflow Guide suggestions and highlight each step
+
+The maintainer requested likely-first suggestions without user tracking, controls for panel visibility and the maximum number of suggestions, and a repeatable highlight over the control mentioned by each step. `WorkflowGuideContent.swift` ranks the 20 walkthroughs by current editor context and filters unavailable choices before applying the limit. Ordinary layer suggestions lead with Opacity and Duplicate Layer. The app stores only the two guide preferences through `UserDefaults`, with four suggestions and launch visibility off as the defaults. There is no usage history or network dependency.
+
+`WorkflowGuidePreferences.swift`, `Application.swift`, `NativeDocument.swift` and `PhotoshopMenus.swift` add **Photato > Settings… > Workflow Guide…**. It has an immediate Show Workflow Guide switch, a separate launch preference, and a maximum from one to eight. The Window menu continues to open and close the guide. The two Photato menu items have their own identifiers and leave the captured reference items and shortcuts in place. `PhotoshopMenuTests.swift` distinguishes both app-specific additions from the recorded reference rather than changing the reference inventory.
+
+`WorkflowGuide.swift` highlights on starting a walkthrough and using Back or Next. **Show Me** repeats the current highlight without advancing. `WorkflowGuideHighlight.swift` resolves visible controls, tool groups, menu headers and available open menu rows using in-app geometry. Its transient AppKit panel ignores mouse events, keeps keyboard focus where it is, and shows one steady outline. `WorkspaceLayers.swift`, `WorkspaceTools.swift`, `DocumentSurfaceView.swift` and `CropOptions.swift` label the supported editor regions and controls. `DuplicateLayerControls.swift`, `NewLayerControls.swift`, `ChannelDialog.swift`, `ImageExportSheet.swift` and `DocumentPersistence.swift` provide targets in supported save and editing sheets. The guide shows a textual location if a target is unavailable and retargets a supported confirmation after its sheet opens.
+
+The authenticated Photato catalogue now returns editorial `suggestionOrder`, current and permitted settings, and all 60 authored highlight targets. `AutomationService.swift` attaches live preferences in the authenticated route while retaining the static command metadata. Highlight presentation stays inside the desktop app. `WorkflowGuideTests.swift` and `AutomationTests.swift` exercise saved preferences, ranked cap, menu commands, the guide and actual editor window, replay of a highlighted control, and the loopback catalogue. `scripts/Info.plist` advances the isolated candidate to 619.
+
+The first Debug build exposed an erroneous instance reference inside the static API catalogue. It was moved to the request handler. The first focused run passed six cases and identified a whole-sheet fallback during the duplicate confirmation test. Waiting for SwiftUI layout and trying the in-app accessibility tree still could not resolve the exact control in the hosted sheet. The named SwiftUI sheets now draw their own outline on the actual control and confirm that it appeared. Native Save panels use the AppKit format popup and default button where available. Unknown sheet layouts can use the sheet outline. The menu test now classifies the two explicit Photato menu identifiers separately from the pinned reference. The numbered logs retain each attempt.
+
+The final Apple Silicon Debug build targets macOS 14. Nine focused XCTest cases passed in `focused-guide-and-api05.log`. A real document window verified the selected-layer outline, repeat on the same step, and the OK button's SwiftUI outline in Duplicate Layer. The AppKit overlay permits clicks through it and does not become key. The focused run also verified source-document state, preference persistence in a disposable `UserDefaults` domain, the full recorded menu and shortcut order, the authenticated catalogue, and the Image Processor regression. The preview ZIP used a separate app sandbox and ad hoc signature. Its extracted executable and package contents verified and produced a 1000 × 650 offscreen workspace snapshot. Physical menu tracking and further modal examples remain outside this checkpoint.
+
+Source build 614 and its diary were qualified and published to GitHub during this work. The local build rotation preserved 612, 613 and 614. The 611 cleanup removed 288 build paths and increased available space by 7.83 GiB. The command used the verified local-build manifest `/private/tmp/photato-requested-cleanup-614-three-20261119.all.receipt.json`.
+
+All 972 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. [Validation](SOURCE_PUBLICATION_619.md).
 
 <a id="dev-step-618"></a>
 

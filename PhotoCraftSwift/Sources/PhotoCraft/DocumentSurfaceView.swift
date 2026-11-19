@@ -17,6 +17,7 @@ struct DocumentSurfaceView: View {
             activateDocument: activateDocument
           )
           .id(store.identity)
+          .workflowGuideAnchor(.canvas, when: isActive)
           if isActive && store.document.selection != nil && store.transformDraft == nil && store.cropDraft == nil && store.regionRetouchDraft == nil {
             WorkspaceView(store: store).contextualActions.padding(.bottom, 18)
           }

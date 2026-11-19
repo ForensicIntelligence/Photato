@@ -27,6 +27,7 @@ extension WorkspaceView {
         numberField("Angle",value:cropOption(\.frame.angle,default:0),range:-45...45,suffix:"°")
         Toggle("Straighten",isOn:$store.cropStraighten).toggleStyle(.button).help("Draw along a horizontal or vertical feature")
         Toggle("Delete Cropped Pixels",isOn:cropOption(\.deletePixels,default:true)).disabled(!store.canRetainCroppedPixels).help("Convert Background, indexed or ink content to regular component layers to retain cropped pixels.")
+          .workflowGuideAnchor(.cropDelete)
         Picker("Fill",selection:cropOption(\.fill,default:.transparent)) {
           Text("Transparent").tag(CropRequest.Fill.transparent);Text("Background Color").tag(CropRequest.Fill.background);Text("Content-Aware Fill").tag(CropRequest.Fill.contentAware)
         }.frame(width:190).controlSize(.small)

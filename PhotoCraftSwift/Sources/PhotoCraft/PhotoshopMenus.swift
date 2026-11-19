@@ -414,6 +414,11 @@ import PhotoCraftCore
     guide.target = self
     guide.identifier = NSUserInterfaceItemIdentifier("Window > Workflow Guide")
     documentWindowMenu?.addItem(guide)
+    let guideSettings = NSMenuItem(title: "Workflow Guide…", action: #selector(showWorkflowGuidePreferences),
+      keyEquivalent: "")
+    guideSettings.target = self
+    guideSettings.identifier = NSUserInterfaceItemIdentifier("Photato > Settings… > Workflow Guide…")
+    main.item(withTitle: "Photato")?.submenu?.item(withTitle: "Settings…")?.submenu?.addItem(guideSettings)
     workspaceMenu = documentWindowMenu?.item(withTitle: "Workspace")?.submenu
     workspaceMenu?.delegate = self
     recentDocumentsMenu = main.item(withTitle: "File")?.submenu?.item(withTitle: "Open Recent")?.submenu

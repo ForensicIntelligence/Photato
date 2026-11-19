@@ -85,6 +85,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     formats.target = self
     formats.action = #selector(updateFormat)
     formats.setAccessibilityLabel("File format")
+    formats.identifier = WorkflowGuideHighlighter.saveFormatControl
     explanation.textColor = .secondaryLabelColor
     explanation.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
     view.orientation = .vertical

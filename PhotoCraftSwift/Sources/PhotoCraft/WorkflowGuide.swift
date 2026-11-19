@@ -106,9 +106,18 @@ struct WorkflowGuideSnapshot: Equatable {
   private(set) var context = WorkflowGuideContext.document
   private(set) var caption = "Open a document to see suggested workflows."
   private(set) var walkthrough: Walkthrough?
+  private(set) var highlightHint: String?
+  let preferences: WorkflowGuidePreferences
+  @ObservationIgnored var presentTarget: ((WorkflowGuideTarget?) -> Bool)?
+
+  init(preferences: WorkflowGuidePreferences? = nil) {
+    self.preferences = preferences ?? WorkflowGuidePreferences()
+  }
+
   var suggestions: [WorkflowGuideLesson] {
-    let contextual = WorkflowGuideContent.suggestions(for: context, state: snapshot)
-    return contextual.isEmpty ? WorkflowGuideContent.suggestions(for: .document, state: snapshot) : contextual
+    let limit = preferences.maximumSuggestions
+    let contextual = WorkflowGuideContent.suggestions(for: context, state: snapshot, maximum: limit)
+    return contextual.isEmpty ? WorkflowGuideContent.suggestions(for: .document, state: snapshot, maximum: limit) : contextual
   }
   var onLessonDocument: Bool {
     walkthrough.map { $0.documentID == snapshot.documentID } ?? false
@@ -123,6 +132,8 @@ struct WorkflowGuideSnapshot: Equatable {
     guard old != value else { return }
     snapshot = value
     if old.documentID != value.documentID {
+      _ = presentTarget?(nil)
+      highlightHint = nil
       if value.layerID != nil { showLayer(value) }
       else {
         context = .document
@@ -182,6 +193,7 @@ struct WorkflowGuideSnapshot: Equatable {
   func start(_ lesson: WorkflowGuideLesson) {
     guard let documentID = snapshot.documentID, suggestions.contains(lesson), !lesson.steps.isEmpty else { return }
     walkthrough = Walkthrough(lesson: lesson, documentID: documentID, baseline: snapshot)
+    showMe()
   }
 
   func next() {
@@ -190,6 +202,7 @@ struct WorkflowGuideSnapshot: Equatable {
     walk.index += 1
     walk.baseline = snapshot
     walkthrough = walk
+    showMe()
   }
 
   func back() {
@@ -197,9 +210,19 @@ struct WorkflowGuideSnapshot: Equatable {
     walk.index -= 1
     walk.baseline = snapshot
     walkthrough = walk
+    showMe()
   }
 
-  func end() { walkthrough = nil }
+  func showMe() {
+    guard onLessonDocument, let target = walkthrough?.step.target else { return }
+    highlightHint = presentTarget?(target) == true ? nil : "Look for \(target.label) in the editor."
+  }
+
+  func end() {
+    walkthrough = nil
+    highlightHint = nil
+    _ = presentTarget?(nil)
+  }
 }
 
 struct WorkflowGuideView: View {
@@ -220,8 +243,15 @@ struct WorkflowGuideView: View {
               Label("Verified in the editor", systemImage: "checkmark.circle")
                 .font(.subheadline).foregroundStyle(.secondary)
             }
+            if let hint = model.highlightHint {
+              Text(hint).font(.subheadline).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
             HStack {
               Button("Back", action: model.back).disabled(walk.index == 0)
+              Spacer()
+              Button("Show Me", action: model.showMe).disabled(walk.step.target == nil)
+                .help("Highlight the control for this step again")
               Spacer()
               Button(walk.index == walk.lesson.steps.count - 1 ? "Done" : "Next", action: model.next)
             }
@@ -265,17 +295,21 @@ struct WorkflowGuideView: View {
 }
 
 @MainActor final class WorkflowGuideWindow: NSWindowController, NSWindowDelegate {
-  let model = WorkflowGuideModel()
+  let model: WorkflowGuideModel
+  let highlighter: WorkflowGuideHighlighter
   private weak var documents: CraftDocumentController?
 
   init(documents: CraftDocumentController) {
     self.documents = documents
+    model = WorkflowGuideModel(preferences: documents.workflowGuidePreferences)
+    highlighter = documents.workflowGuideHighlighter
     let panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 340, height: 285),
       styleMask: [.titled, .closable, .resizable, .utilityWindow], backing: .buffered, defer: false)
     super.init(window: panel)
     panel.title = "Workflow Guide"
     panel.identifier = NSUserInterfaceItemIdentifier("photato.workflowGuide")
     panel.isFloatingPanel = true
+    panel.worksWhenModal = true
     panel.hidesOnDeactivate = true
     panel.becomesKeyOnlyIfNeeded = true
     panel.isExcludedFromWindowsMenu = true
@@ -293,21 +327,30 @@ struct WorkflowGuideView: View {
     panel.contentViewController = NSHostingController(rootView: WorkflowGuideView(model: model) { [weak documents] in
       WorkflowGuideSnapshot.capture(documents?.documentWindows.activeDocument?.store)
     })
+    model.presentTarget = { [weak highlighter] target in highlighter?.show(target) == true }
   }
 
   required init?(coder: NSCoder) { nil }
 
-  func open() {
-    guard let window, !window.isVisible else { return }
+  func open(takesFocus: Bool) {
+    guard let window, !model.preferences.isShown else { return }
+    model.preferences.setShown(true)
     documents?.workflowGuide = model
     model.update(.capture(documents?.documentWindows.activeDocument?.store))
     NotificationCenter.default.addObserver(self, selector: #selector(menuAction(_:)),
       name: NSMenu.didSendActionNotification, object: nil)
-    window.makeKeyAndOrderFront(nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(sheetBecameKey(_:)),
+      name: NSWindow.didBecomeKeyNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(menuBeganTracking(_:)),
+      name: NSMenu.didBeginTrackingNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(menuEndedTracking(_:)),
+      name: NSMenu.didEndTrackingNotification, object: nil)
+    if takesFocus { window.makeKeyAndOrderFront(nil) } else { window.orderFront(nil) }
   }
 
   func windowWillClose(_ notification: Notification) {
-    NotificationCenter.default.removeObserver(self, name: NSMenu.didSendActionNotification, object: nil)
+    NotificationCenter.default.removeObserver(self)
+    model.preferences.setShown(false)
     if documents?.workflowGuide === model { documents?.workflowGuide = nil }
     model.end()
   }
@@ -319,12 +362,32 @@ struct WorkflowGuideView: View {
     model.update(.capture(documents?.documentWindows.activeDocument?.store))
     model.note(context, item.title)
   }
+
+  @objc private func sheetBecameKey(_ notification: Notification) {
+    guard let sheet = notification.object as? NSWindow, let target = model.walkthrough?.step.target,
+      model.onLessonDocument, target.confirmsInSheet,
+      let editor = documents?.documentWindows.current?.window,
+      sheet.sheetParent === editor || sheet === NSApp.modalWindow else { return }
+    model.showMe()
+  }
+
+  @objc private func menuBeganTracking(_ notification: Notification) {
+    guard let menu = notification.object as? NSMenu, model.onLessonDocument,
+      let target = model.walkthrough?.step.target else { return }
+    highlighter.showMenuItem(for: target, in: menu)
+  }
+
+  @objc private func menuEndedTracking(_ notification: Notification) { highlighter.clearMenuHighlight() }
 }
 
 @MainActor extension AppDelegate {
   @objc func toggleWorkflowGuide() {
-    if let panel = workflowGuideWindow?.window, panel.isVisible { panel.close(); return }
+    setWorkflowGuideVisible(!controller.workflowGuidePreferences.isShown)
+  }
+
+  func setWorkflowGuideVisible(_ visible: Bool, takesFocus: Bool = true) {
+    if !visible { workflowGuideWindow?.close(); return }
     if workflowGuideWindow == nil { workflowGuideWindow = WorkflowGuideWindow(documents: controller) }
-    workflowGuideWindow?.open()
+    workflowGuideWindow?.open(takesFocus: takesFocus)
   }
 }
