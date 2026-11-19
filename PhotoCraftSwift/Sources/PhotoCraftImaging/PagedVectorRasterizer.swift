@@ -72,15 +72,19 @@ extension VectorRasterizer {
 
   static func pagedCoverage(_ region: VectorPathGeometry.FilledRegion, template empty: Surface,
     origin: PathPoint, antiAlias: Bool = true,
-    maximumScratchPreparedBytes: Int = Surface.maxPixels + Surface.maxDimension
+    maximumScratchPreparedBytes: Int = Surface.maxPixels + Surface.maxDimension,
+    window: IntRect? = nil, clipRectangle: Bool = false
   ) throws -> Surface {
     let width = empty.width, height = empty.height, outside = empty.defaultPixel.r
     let outline=region.path,bounds=outline.boundingBoxOfPath
     if bounds.isNull || bounds.isEmpty {return empty}
-    let x0=Int(max(0,min(Double(width),floor(bounds.minX-origin.x-1))))
-    let y0=Int(max(0,min(Double(height),floor(bounds.minY-origin.y-1))))
-    let x1=Int(max(0,min(Double(width),ceil(bounds.maxX-origin.x+1))))
-    let y1=Int(max(0,min(Double(height),ceil(bounds.maxY-origin.y+1))))
+    let pathLeft=Int(max(0,min(Double(width),floor(bounds.minX-origin.x-1))))
+    let pathTop=Int(max(0,min(Double(height),floor(bounds.minY-origin.y-1))))
+    let pathRight=Int(max(0,min(Double(width),ceil(bounds.maxX-origin.x+1))))
+    let pathBottom=Int(max(0,min(Double(height),ceil(bounds.maxY-origin.y+1))))
+    let x0=max(window?.x ?? 0,pathLeft),y0=max(window?.y ?? 0,pathTop)
+    let x1=min(window.map { $0.x + $0.width } ?? width,pathRight)
+    let y1=min(window.map { $0.y + $0.height } ?? height,pathBottom)
     guard x1>x0,y1>y0 else {return empty}
     let left=x0/64*64,top=y0/64*64,right=min(width,((x1+63)/64)*64),bottom=min(height,((y1+63)/64)*64)
     let backing=try VectorGrayBacking(width:width,height:height,maximumPreparedBytes:maximumScratchPreparedBytes)
@@ -88,18 +92,26 @@ extension VectorRasterizer {
     // Whole native coordinate bases preserve legacy coverage when they fit.
     // Larger contexts lose far-edge pixels; local16K bases keep coordinates valid.
     let block=16_384
+    // An integer clip can change curve subdivision in Core Graphics. Draw
+    // arbitrary contours with the original clip and bound their transfer.
+    // An axis-aligned rectangle can also limit the native drawing area.
+    let drawWindow = clipRectangle ? window : nil
     for y in stride(from:y0/block*block,to:y1,by:block) {for x in stride(from:x0/block*block,to:x1,by:block) {
       try Task.checkCancellation()
       let w=min(block,width-x),h=min(block,height-y)
-      // Charge checked physical writes before mapped native drawing. Contexts
-      // never overlap; preserve a conservative64-pixel rasterization margin.
-      let px=max(x,x0-64),py=max(y,y0-64),pr=min(x+w,x1+64),pb=min(y+h,y1+64)
+      let px=max(x,(drawWindow == nil ? pathLeft : x0)-64)
+      let py=max(y,(drawWindow == nil ? pathTop : y0)-64)
+      let pr=min(x+w,(drawWindow == nil ? pathRight : x1)+64)
+      let pb=min(y+h,(drawWindow == nil ? pathBottom : y1)+64)
       try backing.prepare(x:px,y:py,width:pr-px,height:pb-py,stride:width)
       guard let context=CGContext(data:backing.memory.advanced(by:y*width+x),width:w,height:h,
         bitsPerComponent:8,bytesPerRow:width,space:CGColorSpaceCreateDeviceGray(),bitmapInfo:CGImageAlphaInfo.none.rawValue)
       else {throw CraftError.invalid("Could not rasterize the vector coordinate block.")}
       context.setShouldAntialias(antiAlias);context.setAllowsAntialiasing(antiAlias)
       context.translateBy(x:0,y:Double(h));context.scaleBy(x:1,y:-1)
+      if let window = drawWindow {
+        context.clip(to: CGRect(x: window.x - x, y: window.y - y, width: window.width, height: window.height))
+      }
       context.translateBy(x:-origin.x-Double(x),y:-origin.y-Double(y))
       context.setFillColor(gray:1,alpha:1);context.addPath(outline);context.fillPath()
     }}
@@ -118,16 +130,21 @@ extension VectorRasterizer {
     return try withExtendedLifetime(backing) {try builder.finish()}
   }
   static func coversCanvasRectangle(_ path:VectorPath,width:Int,height:Int,origin:PathPoint)->Bool {
+    guard let rect = axisAlignedRectangle(path) else { return false }
+    return rect.minX <= origin.x && rect.minY <= origin.y
+      && rect.maxX >= origin.x + Double(width) && rect.maxY >= origin.y + Double(height)
+  }
+
+  static func axisAlignedRectangle(_ path: VectorPath) -> (minX: Double, minY: Double, maxX: Double, maxY: Double)? {
     guard path.components.count==1,let part=path.components.first,part.closed,part.knots.count==4,
-      part.knots.allSatisfy({$0.incoming==$0.anchor && $0.outgoing==$0.anchor}) else {return false}
+      part.knots.allSatisfy({$0.incoming==$0.anchor && $0.outgoing==$0.anchor}) else {return nil}
     let points=part.knots.map(\.anchor)
-    guard (0..<4).allSatisfy({i in (i+1..<4).allSatisfy{points[i] != points[$0]}}) else {return false}
+    guard (0..<4).allSatisfy({i in (i+1..<4).allSatisfy{points[i] != points[$0]}}) else {return nil}
     for i in 0..<4 {
       let a=points[i],b=points[(i+1)%4]
-      if (a.x==b.x)==(a.y==b.y) {return false}
+      if (a.x==b.x)==(a.y==b.y) {return nil}
     }
     let xs=points.map(\.x),ys=points.map(\.y)
-    return xs.min()!<=origin.x && ys.min()!<=origin.y &&
-      xs.max()!>=origin.x+Double(width) && ys.max()!>=origin.y+Double(height)
+    return (xs.min()!, ys.min()!, xs.max()!, ys.max()!)
   }
 }

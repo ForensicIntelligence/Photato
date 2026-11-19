@@ -4,40 +4,58 @@ import PhotoCraftCore
 /// Per-composition facts for one immutable prepared document. Reused across output
 /// patches; never retained as mutable document state or shared between workers.
 final class CompositionFacts {
+  private struct MaskKey: Hashable {
+    let layerID: UUID
+    let regional: Bool
+  }
   static let maximumDerivedMaskCacheBytes=512*1024*1024
   let document: CraftDocument
+  private let vectorViewport: IntRect?
   private let originals: [UUID:Layer]
-  private var masks: [UUID:LayerMaskSampler] = [:]
-  private var preparedMasks = Set<UUID>()
+  private var masks: [MaskKey:LayerMaskSampler] = [:]
+  private var preparedMasks = Set<MaskKey>()
   private var opaqueBases: [UUID:Bool] = [:]
   private var opaqueGroups: [UUID:Bool] = [:]
   private var uniformRasterAlphas: [UUID: Float?] = [:]
   private var retainedDerivedMaskBytes = 0
 
-  init(_ document: CraftDocument) {
-    self.document=document; originals=Dictionary(uniqueKeysWithValues:document.layers.map {($0.id,$0)})
+  init(_ document: CraftDocument, vectorViewport: IntRect? = nil) {
+    self.document = document
+    let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    self.vectorViewport = vectorViewport == canvas ? nil : vectorViewport
+    originals = Dictionary(uniqueKeysWithValues: document.layers.map { ($0.id, $0) })
   }
   func mask(_ layer: Layer, region: IntRect? = nil) throws -> LayerMaskSampler? {
+    var viewport: IntRect?
+    if let bounds = vectorViewport, let region, region.width > 0, region.height > 0,
+      layer.vectorMask.map({ $0.enabled && $0.feather > 0 }) == true,
+      bounds.contains(region.x, region.y), bounds.contains(region.x + region.width - 1, region.y + region.height - 1)
+    {
+      viewport = bounds
+    }
     guard let original=originals[layer.id], original.maskProperties==layer.maskProperties,
       original.vectorMask==layer.vectorMask, original.maskCoordinateTransform==layer.maskCoordinateTransform
-    else {return try LayerMaskSampler.make(layer:layer,document:document,pixelRegion:region)}
+    else {return try LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region, vectorViewport: viewport)}
     let same: Bool
     switch (original.mask,layer.mask) {
     case (nil,nil):same=true
     case let(a?,b?):same=try a.changedTileBounds(comparedTo:b)==nil
     default:same=false
     }
-    guard same else {return try LayerMaskSampler.make(layer:layer,document:document,pixelRegion:region)}
-    if !preparedMasks.contains(layer.id) {
+    guard same else {return try LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region, vectorViewport: viewport)}
+    let globalKey = MaskKey(layerID: layer.id, regional: false)
+    if preparedMasks.contains(globalKey) { return masks[globalKey] }
+    let key = MaskKey(layerID: layer.id, regional: viewport != nil)
+    if !preparedMasks.contains(key) {
       let sampler=try LayerMaskSampler.make(layer:layer,document:document,
-        pixelRegion:.init(x:0,y:0,width:document.width,height:document.height))
+        pixelRegion:.init(x:0,y:0,width:document.width,height:document.height), vectorViewport: viewport)
       let cost=derivedMaskBytes(layer,sampler:sampler)
       if cost <= Self.maximumDerivedMaskCacheBytes-retainedDerivedMaskBytes {
-        masks[layer.id]=sampler;preparedMasks.insert(layer.id);retainedDerivedMaskBytes += cost
+        masks[key]=sampler;preparedMasks.insert(key);retainedDerivedMaskBytes += cost
       }
       return sampler
     }
-    return masks[layer.id]
+    return masks[key]
   }
   private func derivedMaskBytes(_ layer: Layer,sampler:LayerMaskSampler?) -> Int {
     var total=0
@@ -98,6 +116,13 @@ final class CompositionFacts {
   private func unitMask(_ layer: Layer) throws -> Bool? {
     if let vector=layer.vectorMask,vector.enabled,vector.density != 0 {
       if vector.feather > 0 {
+        // A real viewport sample can disprove global opacity. Use the full
+        // mask for affirmative proofs, including clipping and copy paths.
+        if let viewport = vectorViewport, viewport.width > 0, viewport.height > 0,
+          let sampler = try mask(layer, region: viewport),
+          sampler.coverage(x: Double(viewport.x + viewport.width / 2) + 0.5,
+            y: Double(viewport.y + viewport.height / 2) + 0.5) != 1
+        { return false }
         if let sampler = try mask(layer) {
           guard let rectangles = sampler.vectorFeatherSupport, sampler.vectorFeatherOutside == 1
           else { return nil }

@@ -1,3 +1,7 @@
+**Source checkpoint 595.** Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. [Qualification](SOURCE_PUBLICATION_595.md).
+
+Continue broad-mask full-canvas paging and accelerate the remaining Feather kernel work. Qualify global opacity proofs for large inverted and uniformly covered masks. Collect the remaining Photoshop vector and Smart Filter mask references.
+
 **Source checkpoint 594.** The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. [Qualification](SOURCE_PUBLICATION_594.md).
 
 Collect new authored Photoshop references for additional short and wide radii, subpixel and curved paths, and Smart Filter mask coverage and persisted settings. Use the saved whole-composite differences to guide color and antialiasing checks. Continue the broad-shape and dense Feather capacity work.

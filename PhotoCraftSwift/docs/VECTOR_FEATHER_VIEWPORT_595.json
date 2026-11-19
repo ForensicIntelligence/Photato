@@ -1,0 +1,226 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "f51db6cbe7559a0606c71d85376e6445069d8b30c81d5fe5cbad6a3967ad1bfe",
+    "binarySHA256": "3aa870be120c528e306461e3bdf12cd5fff0fc12a0a51c11e205a577657afd7f",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 595,
+  "comparison": {
+    "allCapturedWordsIdentical": true,
+    "caseWordsPerBuildAndArchitecture": 420,
+    "cases": [
+      {
+        "inverted": false,
+        "radius": 2,
+        "shape": "rectangle",
+        "shapeSide": 12288
+      },
+      {
+        "inverted": true,
+        "radius": 250,
+        "shape": "rectangle",
+        "shapeSide": 12288
+      },
+      {
+        "inverted": false,
+        "radius": 1000,
+        "shape": "rectangle",
+        "shapeSide": 24576
+      },
+      {
+        "inverted": false,
+        "radius": 250,
+        "shape": "cubic",
+        "shapeSide": 16384
+      }
+    ],
+    "host": {
+      "architecture": "arm64",
+      "macOS": "27.2"
+    },
+    "logicalCanvas": [
+      300000,
+      300000
+    ],
+    "measurementContext": "One sequential replay per build and architecture while the separate qualification suite was active. Intel used Rosetta.",
+    "method": "Renderer.composite with a viewport on an owned document containing a broad subpixel rectangle or a curved vector mask.",
+    "runs": {
+      "arm": {
+        "12288-2-rectangle": {
+          "594": {
+            "seconds": 3.447478792,
+            "wordsSHA256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "595": {
+            "seconds": 0.018427583,
+            "wordsSHA256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          }
+        },
+        "12288-250-rectangle": {
+          "594": {
+            "seconds": 3.481912625,
+            "wordsSHA256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "595": {
+            "seconds": 0.209754042,
+            "wordsSHA256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          }
+        },
+        "16384-250-cubic": {
+          "594": {
+            "seconds": 6.063080834,
+            "wordsSHA256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "595": {
+            "seconds": 0.205608209,
+            "wordsSHA256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          }
+        },
+        "24576-1000-rectangle": {
+          "594": {
+            "seconds": 8.505826166,
+            "wordsSHA256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "595": {
+            "seconds": 1.366878292,
+            "wordsSHA256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          }
+        }
+      },
+      "intel": {
+        "12288-2-rectangle": {
+          "594": {
+            "seconds": 5.348598666,
+            "wordsSHA256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          },
+          "595": {
+            "seconds": 0.01981475,
+            "wordsSHA256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09"
+          }
+        },
+        "12288-250-rectangle": {
+          "594": {
+            "seconds": 5.4841465,
+            "wordsSHA256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          },
+          "595": {
+            "seconds": 0.296830583,
+            "wordsSHA256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8"
+          }
+        },
+        "16384-250-cubic": {
+          "594": {
+            "seconds": 9.846053542000002,
+            "wordsSHA256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          },
+          "595": {
+            "seconds": 0.287147667,
+            "wordsSHA256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a"
+          }
+        },
+        "24576-1000-rectangle": {
+          "594": {
+            "seconds": 13.103847416999999,
+            "wordsSHA256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          },
+          "595": {
+            "seconds": 1.956255792,
+            "wordsSHA256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3"
+          }
+        }
+      }
+    },
+    "viewport": [
+      15,
+      7
+    ]
+  },
+  "expectedCasesSHA256": "bfee71fe12fc3b3caee17bd472025936e374151385de467d83d0910f25d19f2b",
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122083,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Broad whole-canvas raster preparation",
+    "Wide filter arithmetic latency and frame pacing",
+    "Complete Photoshop byte parity",
+    "Physical Intel and macOS 14"
+  ],
+  "qualification": {
+    "arm": {
+      "appSHA256": "f798fdc62866e10570f84cdb73ea6fcc92d0f1d3a0036fa4e9e9c62c0896a8d1",
+      "testBinarySHA256": "fea45bcbcd29fa1d6d60288b9ec4ed14b98065eeb2d9587af573b248e3b32fde"
+    },
+    "debug": {
+      "appSHA256": "906b77e1166b8e3de594682b9ca4a92cdeb280612fab5f54eff35f846ae0eb69",
+      "testBinarySHA256": "1fb58c3cfcae97b48cf9283063e6f60b4cdb9800e1895c92b579b2a9427c3638"
+    },
+    "intel": {
+      "appSHA256": "ec8d08ddf7836d1055e1154ea12951a336d3e172c661ba529ebc5d67e86b9581",
+      "testBinarySHA256": "04e7cab123036e819dbb8157c34ca3c1bc4739a66e147ea3631129c92c0a00e0"
+    }
+  },
+  "reference": "https://helpx.adobe.com/au/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/file-size.html",
+  "selectedChecksPerConfiguration": 907,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince594": [
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "1bfec57112fcb07ce5e6e1c9183e367ebf5bb6c0415ad5b81b7371723c010dbd"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CompositionFacts.swift",
+      "sha256": "0f9f3710c0c044a4a73952af989e9db3f026525231616f4e93a7a79a3d4c9ccb"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "a4047a4896160cf07a4aadde4495cc21f27b7fc0327c5d3f0ae9f4ff15ea9db9"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedVectorRasterizer.swift",
+      "sha256": "175d2222577684fd640b5bcc22b769e4c151c73bca17a64e630b6bf85d53024a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "7667d81a8dbdca274d64aff188c15d59c54bedcb755d316f89a15a5093eb6796"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorFeatherCoverage.swift",
+      "sha256": "2ecd4e43fc36d4b2cdc9a6ce2b4a8a5a0fbf02e91a704551459292c33d72a36a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorRasterizer.swift",
+      "sha256": "203ea1fa511695eabb17907f8c01ddd55bbaef93a91a866799a27838b03e9216"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/VectorRenderTests.swift",
+      "sha256": "13cb86949874c7a644040a3c43845c40d8f08525b530e5aa59b2be7d8f5e158d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "d097b4a813651150e3798fd0ddf205c9fffb71a280559adc415d9faca60a87c1"
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 595.** Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. [Qualification](docs/SOURCE_PUBLICATION_595.md).
+
 **Source checkpoint 594.** The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. [Qualification](docs/SOURCE_PUBLICATION_594.md).
 
 **Source checkpoint 593.** Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_593.md).

@@ -212,6 +212,68 @@ final class VectorRenderTests: XCTestCase {
     XCTAssertEqual(far.linearPixel(x: 298_000, y: 291_000).a, 0)
   }
 
+  func testBroadVectorFeatherViewportPreservesWholeCoverageWords() throws {
+    let width = 2_500, height = 1_750
+    var curved = rect(-17.375, 80.25, 2_420.625, 1_540.5)
+    curved.knots[0].outgoing = PathPoint(650.5, -42.25)
+    curved.knots[1].incoming = PathPoint(1_710.75, 165.125)
+    let shape = [curved, rect(400.25, 810.5, 333.5, 268.75, .subtract)]
+    let viewport = IntRect(x: 1_083, y: 66, width: 13, height: 27)
+    for (inverted, radius) in [(false, 2.0), (true, 115.25)] {
+      var mask = VectorMask(path: VectorPath(components: shape, inverted: inverted))
+      mask.feather = radius
+      mask.density = 0.78
+      let outside: Float = inverted ? 1 : 0
+      let full = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: outside)
+      let regional = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: outside,
+        viewport: viewport)
+      XCTAssertLessThan(regional.transferredInputPixels, full.transferredInputPixels / 2)
+      for y in viewport.y..<viewport.y + viewport.height {
+        for x in viewport.x..<viewport.x + viewport.width {
+          for phase in [0.25, 0.5] {
+            let px = Double(x) + phase, py = Double(y) + phase
+            XCTAssertEqual(regional.coverage(x: px, y: py).bitPattern,
+              full.coverage(x: px, y: py).bitPattern, "\(radius) px at \(px),\(py)")
+          }
+        }
+      }
+    }
+  }
+
+  func testMaximumCanvasBroadVectorMaskOnlyRasterizesViewportHalo() throws {
+    var document = try CraftDocument(width: 300_000, height: 300_000, depth: .f32)
+    let shape = rect(100_000.25, 100_000.25, 24_576, 24_576)
+    var mask = VectorMask(path: VectorPath(components: [shape]))
+    mask.feather = 2
+    let viewport = IntRect(x: 99_995, y: 111_110, width: 12, height: 5)
+    let sampler = try VectorFeatherCoverage(mask: mask, width: document.width, height: document.height,
+      outside: 0, viewport: viewport)
+    XCTAssertGreaterThan(sampler.transferredInputPixels, 0)
+    XCTAssertLessThan(sampler.transferredInputPixels, 24_000)
+    var layer = Layer(name: "Broad feathered mask", content: .fill(.white))
+    layer.vectorMask = mask
+    document.layers = [layer]
+    document.activeLayerID = layer.id
+    let publicViewport = try Renderer.composite(document, region: viewport)
+    let pagedViewport = try PagedCanvasRenderer.composite(document, region: viewport)
+    XCTAssertLessThan(publicViewport.linearPixel(x: viewport.x, y: viewport.y).a, 0.2)
+    XCTAssertGreaterThan(publicViewport.linearPixel(x: viewport.x + viewport.width - 1, y: viewport.y).a, 0.99)
+    for y in viewport.y..<viewport.y + viewport.height {
+      for x in viewport.x..<viewport.x + viewport.width {
+        let expected = sampler.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5)
+        XCTAssertEqual(publicViewport.linearPixel(x: x, y: y).a.bitPattern, expected.bitPattern)
+        XCTAssertEqual(pagedViewport.linearPixel(x: x, y: y).a.bitPattern, expected.bitPattern)
+      }
+    }
+    mask.path.inverted = true
+    let clearCorner = IntRect(x: 20, y: 20, width: 1, height: 1)
+    let localOutside = try VectorFeatherCoverage(mask: mask, width: document.width, height: document.height,
+      outside: 1, viewport: clearCorner)
+    XCTAssertEqual(localOutside.transferredInputPixels, 0)
+    XCTAssertEqual(localOutside.coverage(x: 20.5, y: 20.5), 1)
+    XCTAssertFalse(localOutside.isIdentity)
+  }
+
   func testWideVectorFeatherPreservesEditablePSDAndPSBMaskProperties() throws {
     for both in [false, true] {
       for format in PSDFileFormat.allCases {

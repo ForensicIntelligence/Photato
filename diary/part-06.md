@@ -622,6 +622,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 592 | [Bound Smart Filter mask Feather on large documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) |
 | 2026-11-19 | 593 | [Bound vector mask Feather on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) |
 | 2026-11-19 | 594 | [Match measured short vector-mask Feather responses](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-594) |
+| 2026-11-19 | 595 | [Prepare vector-mask Feather around the viewport](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-595) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

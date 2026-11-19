@@ -7,14 +7,17 @@ struct VectorFeatherCoverage: Sendable {
   private let plane: FeatheredMask
   private let padding: Int
   private let density: Float
+  private let isRegionLimited: Bool
   let support: [IntRect]
   let maximumResidentBytes: Int
+  let transferredInputPixels: Int
 
-  var isIdentity: Bool { density == 0 || (plane.isConstantOutside && adjustedOutside == 1) }
+  var isIdentity: Bool { density == 0 || (!isRegionLimited && plane.isConstantOutside && adjustedOutside == 1) }
   var adjustedOutside: Float { adjusted(plane.implicitInterior) }
 
-  init(mask: VectorMask, width: Int, height: Int, outside: Float) throws {
+  init(mask: VectorMask, width: Int, height: Int, outside: Float, viewport: IntRect? = nil) throws {
     density = mask.density
+    isRegionLimited = viewport != nil
     let radius = Int(MaskSampler.featherDamageRadius(mask.feather))
     // Bilinear sampling at a document edge can touch one additional position.
     let pad = radius + 1
@@ -23,11 +26,21 @@ struct VectorFeatherCoverage: Sendable {
     let region = try VectorPathGeometry.filledRegion(mask.path)
     let contours = Self.contourBounds(region.path, padding: pad, width: rawWidth, height: rawHeight)
     let fill = Pixel(outside, outside, outside)
-    let pieces = try Self.preparePieces(contours, mask: mask, region: region, padding: pad, fill: fill)
+    // Retain the full source footprint of every cache tile touched by the
+    // viewport. This also preserves the origin and order of both filter passes.
+    let margin = radius + FeatheredMask.vectorTileSide(radius: mask.feather)
+    let window = viewport.map {
+      IntRect(x: $0.x + pad - margin, y: $0.y + pad - margin,
+        width: $0.width + 2 * margin, height: $0.height + 2 * margin)
+        .clipped(toWidth: rawWidth, height: rawHeight)
+    }
+    let pieces = try Self.preparePieces(contours, mask: mask, region: region, padding: pad,
+      fill: fill, window: window)
     plane = FeatheredMask(vectorPlane: FeatherSamplePlane(
       width: rawWidth, height: rawHeight, outside: outside, pieces: pieces.samples),
       radius: mask.feather, outside: outside)
     maximumResidentBytes = pieces.residentBytes + plane.maximumResidentBytes
+    transferredInputPixels = pieces.transferredPixels
     if pieces.samples.isEmpty {
       support = []
     } else {
@@ -82,8 +95,8 @@ struct VectorFeatherCoverage: Sendable {
   }
 
   private static func preparePieces(_ contours: [IntRect], mask: VectorMask,
-    region: VectorPathGeometry.FilledRegion, padding: Int, fill: Pixel
-  ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int) {
+    region: VectorPathGeometry.FilledRegion, padding: Int, fill: Pixel, window: IntRect?
+  ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int, transferredPixels: Int) {
     let block = 8192
     struct Cell: Hashable {
       let column: Int
@@ -108,10 +121,17 @@ struct VectorFeatherCoverage: Sendable {
         }
       }
     }
+    let rectangle = VectorRasterizer.axisAlignedRectangle(mask.path) != nil
     var samples: [FeatherSamplePlane.Piece] = []
-    var bytes = 0
+    var bytes = 0, transferredPixels = 0
     for rect in cells.values.sorted(by: { ($0.y, $0.x) < ($1.y, $1.x) }) {
       try Task.checkCancellation()
+      let entire = IntRect(x: 0, y: 0, width: rect.width, height: rect.height)
+      let scope = window.map {
+        IntRect(x: $0.x - rect.x, y: $0.y - rect.y, width: $0.width, height: $0.height)
+          .clipped(toWidth: rect.width, height: rect.height)
+      } ?? entire
+      guard scope.width > 0, scope.height > 0 else { continue }
       let origin = PathPoint(Double(rect.x - padding), Double(rect.y - padding))
       var surface = try Surface(width: rect.width, height: rect.height, fill: fill)
       if mask.path.components.first?.operation != .subtract,
@@ -120,7 +140,9 @@ struct VectorFeatherCoverage: Sendable {
         let value = 1 - fill.r
         surface = try Surface(width: rect.width, height: rect.height, fill: Pixel(value, value, value))
       } else if rect.width * rect.height > 1_048_576 {
-        surface = try VectorRasterizer.pagedCoverage(region, template: surface, origin: origin)
+        surface = try VectorRasterizer.pagedCoverage(region, template: surface, origin: origin,
+          window: scope == entire ? nil : scope, clipRectangle: rectangle)
+        transferredPixels += scope.width * scope.height
       } else {
         let raw = try VectorRasterizer.coverageBytes(region, width: rect.width, height: rect.height,
           origin: origin)
@@ -131,12 +153,13 @@ struct VectorFeatherCoverage: Sendable {
             if value != fill.r { surface.setPixel(x: x, y: y, Pixel(value, value, value)) }
           }
         }
+        transferredPixels += rect.width * rect.height
       }
       if surface.tileCount != 0 || surface.defaultPixel.r != fill.r {
         samples.append(.init(x: rect.x, y: rect.y, samples: surface))
         bytes += surface.allocatedBytes
       }
     }
-    return (samples, bytes)
+    return (samples, bytes, transferredPixels)
   }
 }

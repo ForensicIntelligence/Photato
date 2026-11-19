@@ -73,8 +73,14 @@ public struct LayerMaskSampler: Sendable {
   public static func make(layer: Layer, document: CraftDocument, pixelRegion: IntRect? = nil) throws
     -> Self?
   {
+    try make(layer: layer, document: document, pixelRegion: pixelRegion, vectorViewport: nil)
+  }
+
+  static func make(layer: Layer, document: CraftDocument, pixelRegion: IntRect?, vectorViewport: IntRect?) throws
+    -> Self?
+  {
     guard layer.mask != nil || layer.vectorMask != nil else { return nil }
-    let sampler = try Self(layer: layer, document: document)
+    let sampler = try Self(layer: layer, document: document, vectorViewport: vectorViewport)
     if let region = pixelRegion,
       (sampler.pixel?.isIdentity(over: region) ?? true)
         && (sampler.vector?.isIdentity(over: region) ?? true)
@@ -85,6 +91,10 @@ public struct LayerMaskSampler: Sendable {
     return sampler
   }
   public init(layer: Layer, document: CraftDocument) throws {
+    try self.init(layer: layer, document: document, vectorViewport: nil)
+  }
+
+  private init(layer: Layer, document: CraftDocument, vectorViewport: IntRect?) throws {
     pixel = try layer.mask.map { _ in
       try MaskSampler(layer: layer, canvasSize: (document.width, document.height))
     }
@@ -101,7 +111,7 @@ public struct LayerMaskSampler: Sendable {
     if useBounded {
       if mask.feather > 0 {
         featheredVector = try VectorFeatherCoverage(mask: mask, width: document.width,
-          height: document.height, outside: outside)
+          height: document.height, outside: outside, viewport: vectorViewport)
       } else {
         let surface = try VectorRasterizer.pagedCoverage(mask.path, width: document.width,
           height: document.height, emptyRevealsAll: true)

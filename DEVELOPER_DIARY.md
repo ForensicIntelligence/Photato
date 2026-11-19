@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **594** · The 10 most recent entries, newest first.
+Source build **595** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 595 — Prepare vector-mask Feather around the viewport
+
+Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. On Apple Silicon, the 15 × 7 viewport through a 24,576 px mask at 1,000 px Feather took 8.506 s in build 594 and 1.367 s in build 595. The 250 px curved control took 6.063 s and 0.206 s.
+
+All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-595) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_595.md).
 
 ## 2026-11-19 — Step 594 — Match measured short vector-mask Feather responses
 
@@ -75,11 +83,3 @@ Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents
 Separate Photoshop tests reproduced the saved 100, 250 and 1,000 px line samples. The two-dimensional Intel results still need investigation before widening the control.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md).
-
-## 2026-11-19 — Step 585 — Add three arithmetic clipping blend modes
-
-Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The HDR checks include masked clips, mixed opacity and translated Divide layers.
-
-All 787 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The tests compare 96 saved Photoshop results per architecture.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_585.md).

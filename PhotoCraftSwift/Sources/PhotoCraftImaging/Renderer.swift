@@ -186,7 +186,8 @@ public enum Renderer {
         video: videoTransitions, forLayerOutput: forLayerOutput)
     }
     return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
-      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d):nil, forLayerOutput: forLayerOutput)
+      facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d, vectorViewport: requested):nil,
+      forLayerOutput: forLayerOutput)
   }
   /// Prepare immutable sources once for a composition or streamed export snapshot.
   /// Callers validate the original document before entering this shared preparation.

@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 595 — Prepare vector-mask Feather around the viewport
+
+Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. On Apple Silicon, the 15 × 7 viewport through a 24,576 px mask at 1,000 px Feather took 8.506 s in build 594 and 1.367 s in build 595. The 250 px curved control took 6.063 s and 0.206 s.
+
+All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-595) · [Validation](SOURCE_PUBLICATION_595.md).
+
 ## 2026-11-19 — Step 594 — Match measured short vector-mask Feather responses
 
 The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. Dense rendering, paged whole-canvas rendering and tiled viewports produced identical alpha words at the tested coordinates.
@@ -747,14 +755,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:594 -->
+<!-- current-status-step:595 -->
 ## Current development status — 19 November 2026
 
-The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses.
+Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin.
 
-All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
+All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
 
-[Source checkpoint 594](SOURCE_PUBLICATION_594.md) · [Detailed record](DEVLOG.md#dev-step-594).
+[Source checkpoint 595](SOURCE_PUBLICATION_595.md) · [Detailed record](DEVLOG.md#dev-step-595).
 
 <!-- current-status:end -->
 
@@ -1555,6 +1563,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 592 | [Bound Smart Filter mask Feather on large documents](DEVLOG.md#dev-step-592) |
 | 2026-11-19 | 593 | [Bound vector mask Feather on large canvases](DEVLOG.md#dev-step-593) |
 | 2026-11-19 | 594 | [Match measured short vector-mask Feather responses](DEVLOG.md#dev-step-594) |
+| 2026-11-19 | 595 | [Prepare vector-mask Feather around the viewport](DEVLOG.md#dev-step-595) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

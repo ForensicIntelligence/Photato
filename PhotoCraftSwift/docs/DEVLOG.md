@@ -613,7 +613,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 592 | 2026-11-19 | [Bound Smart Filter mask Feather on large documents](#dev-step-592) |
 | 593 | 2026-11-19 | [Bound vector mask Feather on large canvases](#dev-step-593) |
 | 594 | 2026-11-19 | [Match measured short vector-mask Feather responses](#dev-step-594) |
+| 595 | 2026-11-19 | [Prepare vector-mask Feather around the viewport](#dev-step-595) |
 <!-- history-index:end -->
+
+<a id="dev-step-595"></a>
+
+## 2026-11-19 — Prepare vector-mask Feather around the viewport
+
+Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. Rasterization keeps the original Core Graphics coordinate block and selects only the blocks overlapping the viewport input footprint. Large rectangular masks also restrict native drawing within those blocks. Curved paths keep their original Core Graphics clip to preserve antialiasing words, and transfer only the input window. A partial mask can disprove global opacity. Affirmative opacity and opaque-copy checks still use the whole mask.
+
+On Apple Silicon, the 15 × 7 viewport through a 24,576 px mask at 1,000 px Feather took 8.506 s in build 594 and 1.367 s in build 595. The 250 px curved control took 6.063 s and 0.206 s. All 420 viewport alpha words matched build 594 per architecture across four cases. The first implementation changed 19 raw Gray8 samples in a wide curved control. Keeping the original native drawing clip for those contours restored the coverage words. Additional tests compare regional and whole coverage for a fractional curved contour, a cutout, inversion and subpixel samples. Both public viewport routes agree on the maximum-canvas control. [Adobe canvas size](https://helpx.adobe.com/au/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/file-size.html).
+
+All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen. Wide-kernel runtime, full-canvas preparation, global opacity proofs, and full Photoshop pixel parity remain open. [Validation](SOURCE_PUBLICATION_595.md).
 
 <a id="dev-step-594"></a>
 

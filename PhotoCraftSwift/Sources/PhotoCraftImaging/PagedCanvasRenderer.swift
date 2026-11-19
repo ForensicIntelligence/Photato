@@ -27,7 +27,7 @@ enum PagedCanvasRenderer {
   ) throws -> Surface {
     guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
-    let facts=CompositionFacts(d)
+    let facts=CompositionFacts(d, vectorViewport: region)
     var reachedInput=false
     func render(_ rect:IntRect) throws -> Surface {
       do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts,forLayerOutput:forLayerOutput)}

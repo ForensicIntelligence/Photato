@@ -157,9 +157,11 @@ package final class FeatheredMask: Sendable {
   package convenience init(vectorPlane: FeatherSamplePlane, radius: Double, outside: Float) {
     let area = AreaMaskFeather(wideRadius: radius, width: vectorPlane.width, height: vectorPlane.height)
     self.init(source: vectorPlane, radius: radius, outside: outside, edges: [], area: area,
-      cacheSide: area == nil ? Self.side : 512, cacheSlots: area == nil ? Self.slots : 16,
+      cacheSide: Self.vectorTileSide(radius: radius), cacheSlots: area == nil ? Self.slots : 16,
       measuredWeights: Self.measuredVectorWeights(radius))
   }
+
+  package static func vectorTileSide(radius: Double) -> Int { radius > 100 ? 512 : side }
 
   // Normalized edges and corners in the archived Photoshop RGB32 vector PSD.
   // The two separable passes retain the binary fractions on aligned contours.
