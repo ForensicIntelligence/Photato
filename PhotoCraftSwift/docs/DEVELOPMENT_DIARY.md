@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 610 — Read saved Photoshop channels without a merged preview
+
+A synthetic sparse 300,000 × 300,000 PSB opened with the exact editable raster in 3.5 ms on Apple Silicon Debug. The reader skipped 270 GB of unused logical raw preview data.
+
+The native reader matched all 4,016 editable-layer and saved-channel sample words across 80 independently assembled PSD and PSB controls. A loopback regression covered Photato import, truncated-input rejection, and both job interfaces. All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-610) · [Validation](SOURCE_PUBLICATION_610.md).
+
 ## 2026-11-19 — Step 609 — Set PSD and PSB file compatibility
 
 Always includes a merged preview. Ask prompts during eligible desktop saves. Never skips the preview for RGB8 documents without saved channels. Unattended Ask saves include the preview by default.
@@ -873,14 +881,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:609 -->
+<!-- current-status-step:610 -->
 ## Current development status — 19 November 2026
 
-File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files.
+Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent.
 
-All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 609](SOURCE_PUBLICATION_609.md) · [Detailed record](DEVLOG.md#dev-step-609).
+[Source checkpoint 610](SOURCE_PUBLICATION_610.md) · [Detailed record](DEVLOG.md#dev-step-610).
 
 <!-- current-status:end -->
 
@@ -1696,6 +1704,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 607 | [Choose sparse Photoshop layer samples across the canvas](DEVLOG.md#dev-step-607) |
 | 2026-11-19 | 608 | [Save full-width sparse raster edits to PSB](DEVLOG.md#dev-step-608) |
 | 2026-11-19 | 609 | [Set PSD and PSB file compatibility](DEVLOG.md#dev-step-609) |
+| 2026-11-19 | 610 | [Read saved Photoshop channels without a merged preview](DEVLOG.md#dev-step-610) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,3 +1,7 @@
+**Source checkpoint 610.** Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent. [Qualification](SOURCE_PUBLICATION_610.md).
+
+Measure Adobe compatibility-off export at higher bit depths and with saved channels. Continue dense PSB and File Handling checks.
+
 **Source checkpoint 609.** File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files. [Qualification](SOURCE_PUBLICATION_609.md).
 
 Measure Photoshop compatibility-off output at 16/32 bits and with saved channels. Continue dense PSB and wide Feather validation.

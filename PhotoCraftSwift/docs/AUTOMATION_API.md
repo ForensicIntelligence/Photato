@@ -1796,6 +1796,15 @@ Component editing integration (step106): the earlier step102 core foundation is 
 
 `channel.target` requires `{ "channel": "Red" }` (or RGB/Green/Blue). It updates document-local target and preview state without adding document history. A target change invalidates the revision even if its preview already matches. `channel.fill` requires `{ "value": 1, "opacity": 0.5 }`; both numbers must be finite in0–1. It fills the active RGB8 pixel layer's selected component using the shared native transaction. Select an individual target first. Invalid parameters return400; busy or stale requests409; unsupported target/depth/locked/writer contexts422. Undo/Redo uses the existing shared history commands. These operations add to the original twelve document commands; they do not reinterpret layer.fill or the two view-only commands.
 
+### Photoshop inputs without a merged preview
+
+Layered PSD and PSB files can declare that they lack a merged preview and still
+carry saved alpha, spot, or Quick Mask planes. Native Open,
+`POST /v1/documents/import`, Photato `/v1/action-jobs`, and Adobe
+`/v2/execute-actions` decode those planes from the validated input stream. They
+use the editable layers for image pixels. Missing or malformed declared
+channel data is rejected. See `documentTransfers.photoshopContainers.optionalMergedPreviewInput`.
+
 ## Photoshop File Handling preferences
 
 Authenticated `GET /v1/preferences/photoshop-file-handling` returns the current

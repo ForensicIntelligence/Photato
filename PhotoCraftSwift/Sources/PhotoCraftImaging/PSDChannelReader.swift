@@ -149,6 +149,15 @@ final class PSDChannelReader {
       throw CraftError.invalid("Invalid number of PSD rows to discard.")
     }
     guard count > 0 else { return }
+    if compression == 0 {
+      // Unused raw rows need only a bounds check. Keep the file cursor at the
+      // first retained plane without fetching every byte of the preview.
+      try Task.checkCancellation()
+      _ = try source.view(count * rowBytes)
+      remainingRows -= count
+      try finishIfAtEnd()
+      return
+    }
     guard compression == 1 else {
       for _ in 0..<count { _ = try nextRow() }
       return

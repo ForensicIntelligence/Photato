@@ -42,6 +42,107 @@ final class PSDAuxiliaryChannelTests:XCTestCase {
       }
     }
   }
+  func testAbsentMergedPreviewRetainsIndependentAuxiliaryPlanesAtEveryDepth() throws {
+    let directory = try PSDFileOutputTests().directory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    // A public Version Info record with one-character writer/reader names.
+    let noPreview = Data([0x38, 0x42, 0x49, 0x4D, 0x04, 0x21, 0, 0, 0, 0, 0, 21,
+      0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 84, 0, 0, 0, 1, 0, 84, 0, 0, 0, 1, 0])
+    func layout(_ bytes: Data, _ format: PSDFileFormat) throws
+      -> (resourceLength: Int, layerStart: Int, previewStart: Int) {
+      var reader = PSDReader(data: bytes)
+      _ = try reader.bytes(26)
+      _ = try reader.section()
+      let resourceLength = reader.offset
+      _ = try reader.section()
+      let layerStart = reader.offset
+      _ = try reader.section(lengthBytes: format.sectionLengthBytes)
+      return (resourceLength, layerStart, reader.offset)
+    }
+    func withoutPreview(_ bytes: Data, format: PSDFileFormat, planes: Data) throws -> Data {
+      let sections = try layout(bytes, format)
+      let resourceStart = sections.resourceLength + 4
+      var output = PSDWriter()
+      output.data = Data(bytes.prefix(sections.resourceLength))
+      output.n(sections.layerStart - resourceStart + noPreview.count, 4)
+      output.data.append(bytes[resourceStart..<sections.layerStart])
+      output.data.append(noPreview)
+      output.data.append(bytes[sections.layerStart..<sections.previewStart])
+      output.data.append(planes)
+      return output.data
+    }
+    let controls = try rows().filter { $0["mode"] as? Int == 3 && $0["independentCorpus"] as? Bool != true }
+    XCTAssertEqual(controls.count, 24)
+    for row in controls {
+      let name = try XCTUnwrap(row["file"] as? String)
+      let format: PSDFileFormat = row["version"] as? Int == 2 ? .psb : .psd
+      let input = try data(name)
+      let original = try layout(input, format)
+      var document = try PSDCodec.read(input)
+      // Change an editable pixel without regenerating the independent plane stream.
+      let id = try XCTUnwrap(document.layers.first?.id)
+      try Command.fill(id, Pixel(0.5, 0.25, 0.75)).apply(to: &document)
+      document.layers[0].background = true
+      let layerBytes = try PSDCodec.writeRasterLayers(document, format: format)
+      XCTAssertEqual(layerBytes[12..<14], input[12..<14])
+      let planes = Data(input[original.previewStart...])
+      let layerOnly = try withoutPreview(layerBytes, format: format, planes: planes)
+      let opened = try PSDCodec.read(layerOnly)
+      try compare(opened, row: row)
+      XCTAssertEqual(try Renderer.composite(opened), try Renderer.composite(PSDCodec.read(layerBytes)))
+      XCTAssertEqual(opened.layers.count, 1)
+      XCTAssertThrowsError(try PSDCodec.read(layerOnly.dropLast()), name)
+      XCTAssertThrowsError(try PSDCodec.read(layerOnly + Data([7])), name)
+      XCTAssertThrowsError(try PSDCodec.read(withoutPreview(input, format: format, planes: planes)), name)
+      let target = directory.appendingPathComponent(name)
+      try layerOnly.write(to: target)
+      let paged = try PSDCodec.read(target)
+      try compare(paged, row: row)
+      XCTAssertEqual(try Renderer.composite(paged), try Renderer.composite(opened))
+
+      // A signed layer count also declares an obsolete merged transparency plane.
+      // Leave alpha/spot/Quick Mask samples at their original channel positions.
+      if row["compression"] as? Int == 0 {
+        document.layers[0].background = false
+        let transparent = try PSDCodec.writeRasterLayers(document, format: format)
+        let offset = try layout(transparent, format).previewStart
+        var marked = Data(transparent[offset...])
+        let processAndTransparency = document.width * document.height * (document.bitsPerChannel / 8) * 4
+        marked.replaceSubrange(2..<(2 + processAndTransparency), with: repeatElement(0, count: processAndTransparency))
+        let restored = try PSDCodec.read(withoutPreview(transparent, format: format, planes: marked))
+        try compare(restored, row: row)
+        XCTAssertEqual(try Renderer.composite(restored), try Renderer.composite(PSDCodec.read(transparent)))
+      }
+    }
+  }
+
+  func testUnusedRawPreviewPlanesSkipFilePagesAndValidateTheirBounds() throws {
+    let directory = try PSDFileOutputTests().directory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let width = 300_000, height = 2, retained = [UInt8](repeating: 17, count: 300_000)
+    var bytes = Data(count: 2 + width * height * 3)
+    bytes.append(contentsOf: retained)
+    bytes.append(contentsOf: retained)
+    let path = directory.appendingPathComponent("Uncompressed planes.psb")
+    try bytes.write(to: path)
+    let source = try PSDFileSource(path)
+    let reader = try PSDChannelReader(PSDReader(file: source), width: width, height: height,
+      depth: 8, channels: 4, format: .psb)
+    let callsBeforeDiscard = source.metrics.readCalls
+    try reader.discardRows(height * 3)
+    XCTAssertEqual(source.metrics.readCalls, callsBeforeDiscard)
+    for _ in 0..<height { XCTAssertEqual(try reader.nextRow(), retained) }
+    XCTAssertEqual(reader.remainingRows, 0)
+    try source.validateUnchanged()
+
+    let short = try PSDChannelReader(PSDReader(data: Data(bytes.prefix(100))), width: width,
+      height: height, depth: 8, channels: 4, format: .psb)
+    XCTAssertThrowsError(try short.discardRows(height * 3))
+    let long = try PSDChannelReader(PSDReader(data: bytes + Data([0])), width: width,
+      height: height, depth: 8, channels: 4, format: .psb)
+    XCTAssertThrowsError(try long.discardRemaining())
+  }
+
   func testFloatSpotGrayUsesOriginalOnlyUntilTheSampleChanges()throws {
     var d=try PSDCodec.read(data("m3-d32-v1-c0.psd"));let channel=try XCTUnwrap(d.alphaChannels?.last),original=try XCTUnwrap(channel.psdSpotGray)
     var before=Data();for y in 0..<d.height{before.append(contentsOf:try PSDAuxiliaryChannels.row(channel,y:y,depth:32))}

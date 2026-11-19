@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 610.** Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent. [Qualification](docs/SOURCE_PUBLICATION_610.md).
+
 **Source checkpoint 609.** File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_609.md).
 
 **Source checkpoint 608.** Large sparse PSD and PSB saves can stream full-width raster edits through the existing row writer. [Qualification](docs/SOURCE_PUBLICATION_608.md).

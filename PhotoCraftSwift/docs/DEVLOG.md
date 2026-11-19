@@ -628,7 +628,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 607 | 2026-11-19 | [Choose sparse Photoshop layer samples across the canvas](#dev-step-607) |
 | 608 | 2026-11-19 | [Save full-width sparse raster edits to PSB](#dev-step-608) |
 | 609 | 2026-11-19 | [Set PSD and PSB file compatibility](#dev-step-609) |
+| 610 | 2026-11-19 | [Read saved Photoshop channels without a merged preview](#dev-step-610) |
 <!-- history-index:end -->
+
+<a id="dev-step-610"></a>
+
+## 2026-11-19 — Read saved Photoshop channels without a merged preview
+
+An explicit missing-merged-preview flag now preserves saved alpha, spot, and Quick Mask planes when layered PSD or PSB input still carries their complete channel stream. Editable layers remain the source of the image. Photato validates the declared stream and its auxiliary metadata and rejects missing, truncated, or extra channel bytes. Files with neither decoded layers nor a real composite still reject. Native Open, the Photato import route, and the two resource-job interfaces use this reader. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/) · [Adobe channel storage guidance](https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/channels-in-photoshop.html).
+
+Eighty independently assembled PSD/PSB controls combine explicit editable layer records with the existing independently generated saved-channel streams. They exercise RGB and Grayscale at 8, 16, and 32 bits, and CMYK and Lab at 8 and 16 bits. Compression covers raw, PackBits, ZIP, and ZIP with prediction. Build 609 rejected all 80. Build 610 opened each and matched all 4,016 checked editable-layer and saved-channel sample words. The native regressions also cover the signed layer count, file-backed reads, and rejection of missing or extra bytes. Seven auxiliary-channel tests passed in Debug. A loopback HTTP test retained the saved RGB16 plane through PSB import and both job interfaces. A truncated stream returned HTTP 422 without publishing a document. All 22 focused Debug tests passed.
+
+When the existing renderer will use the editable layers, unused raw preview planes advance the file cursor in one checked operation. The native regression confirms zero additional file page reads during that skip and checks both truncation and trailing bytes. The separately assembled 300,000 × 300,000 PSB retained its one small editable test layer and opened in 3.5 ms in one Apple Silicon Debug run. The sparse file declared 270 GB of raw preview data and allocated 4 KiB on disk. A separate 900 MB logical control opened in 143 ms on 609 and 9.6 ms on 610 on the same Mac. Both builds matched every checked layer sample in that control. These timings describe sparse synthetic inputs.
+
+The live Photoshop document query timed out. A search of 72,636 project file paths found no additional local Photoshop-authored compatibility-off reference with deep samples or saved channels. The scanner skipped 45,539 cloud-only files. Reader controls are synthetic. Photoshop-authored compatibility-off export at higher depths and with saved channels still needs direct verification.
+
+All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_610.md).
 
 <a id="dev-step-609"></a>
 

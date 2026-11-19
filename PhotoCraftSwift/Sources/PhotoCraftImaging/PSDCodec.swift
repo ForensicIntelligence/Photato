@@ -923,15 +923,13 @@ public enum PSDCodec {
       try source.validateUnchanged()
       return doc
     }
-    if PSDImageResources.hasRealMergedData(resourceBlocks) == false {
-      guard count > 0 else {
-        throw CraftError.unsupported("This Photoshop file has neither a real merged image nor decoded layers.")
-      }
-      guard auxiliaryCount == 0 else {
-        throw CraftError.unsupported("A Photoshop file without a real merged image cannot supply auxiliary channel planes.")
-      }
-      // Embedded PSB sources can retain unused backing-file capacity here.
-      // The explicit Version Info flag makes decoded layers authoritative.
+    let hasNoMergedImage = PSDImageResources.hasRealMergedData(resourceBlocks) == false
+    if hasNoMergedImage, count == 0 {
+      throw CraftError.unsupported("This Photoshop file has neither a real merged image nor decoded layers.")
+    }
+    if hasNoMergedImage, auxiliaryCount == 0 {
+      // An unused placeholder may be followed by embedded PSB backing capacity.
+      // Saved auxiliary planes, when present, require a validated channel stream.
       _ = try r.view(r.remaining)
       try PSDArtboards.read(into: &doc)
       try PSDLayerComps.read(into: &doc)

@@ -114,6 +114,48 @@ final class AutomationEncodingOptionsTests: XCTestCase {
       XCTAssertEqual(shared.store.document, before); XCTAssertTrue(service.shares.isEmpty)
     }
   }
+  @MainActor func testImportAndBothJobsRetainSavedChannelsWithoutMergedPreview() async throws {
+    var model = try DocumentSaveWorkflowTests().fixture(depth: .u16)
+    var plane = try Surface(width: model.width, height: model.height, depth: .u16, fill: .black)
+    plane.setPixel(x: 2, y: 1, Pixel(0.25, 0.25, 0.25))
+    model.alphaChannels = [AlphaChannel(name: "Owned saved selection", pixels: plane)]
+    let original = try PSDCodec.writeRasterLayers(model, format: .psb)
+    let colorBytes = original[26..<30].reduce(0) { ($0 << 8) | Int($1) }
+    let resourceSize = 30 + colorBytes
+    let length = original[resourceSize..<resourceSize + 4].reduce(0) { ($0 << 8) | Int($1) }
+    let resourcesEnd = resourceSize + 4 + length
+    let flag = Data([0x38, 0x42, 0x49, 0x4D, 0x04, 0x21, 0, 0, 0, 0, 0, 21,
+      0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 84, 0, 0, 0, 1, 0, 84, 0, 0, 0, 1, 0])
+    var input = Data(original.prefix(resourceSize))
+    var nextLength = UInt32(length + flag.count).bigEndian
+    withUnsafeBytes(of: &nextLength) { input.append(contentsOf: $0) }
+    input.append(original[(resourceSize + 4)..<resourcesEnd])
+    input.append(flag)
+    input.append(original[resourcesEnd...])
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }, resourceTransport: Transport(data: input)) { service, original in
+      defer { for doc in service.controller.documents where doc !== original { doc.close() } }
+      service.setDocumentTransfersEnabled(true)
+      service.setResourceJobsEnabled(true)
+      let uploads = AutomationOpeningTests()
+      let truncated = try await uploads.upload(service, bytes: input.dropLast(), type: "application/x-photoshop")
+      XCTAssertEqual(truncated.0.statusCode, 422)
+      XCTAssertTrue(service.shares.isEmpty)
+      let opened = try await uploads.upload(service, bytes: input, type: "application/x-photoshop")
+      XCTAssertEqual(opened.0.statusCode, 201)
+      let document = try XCTUnwrap(service.shares.last?.document?.store.document)
+      XCTAssertEqual(document.alphaChannels?.map(\.name), ["Owned saved selection"])
+      XCTAssertEqual(document.alphaChannels?.first?.pixels, plane)
+      let payload = body(outputs: [output("image/vnd.adobe.photoshop")])
+      let expected = try PSDCodec.writeRasterLayers(AdobeActionAssets.decode(input))
+      for route in ["/v1/action-jobs", "/v2/execute-actions"] {
+        let files = try await outputs(service, route: route, payload: payload)
+        XCTAssertEqual(files, [expected])
+        XCTAssertEqual(try PSDCodec.read(XCTUnwrap(files.first)).alphaChannels?.first?.pixels, plane)
+      }
+    }
+  }
+
   @MainActor func testPhotatoOnlyJobOptionsAreRejectedByAdobeRouteAndAppliedByNativeRoute() async throws {
     let input = try PSDCodec.writeRasterLayers(DocumentSaveWorkflowTests().fixture())
     let decoded = try AdobeActionAssets.decode(input)

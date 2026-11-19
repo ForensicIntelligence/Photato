@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **609** · The 10 most recent entries, newest first.
+Source build **610** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 610 — Read saved Photoshop channels without a merged preview
+
+A synthetic sparse 300,000 × 300,000 PSB opened with the exact editable raster in 3.5 ms on Apple Silicon Debug. The reader skipped 270 GB of unused logical raw preview data.
+
+The native reader matched all 4,016 editable-layer and saved-channel sample words across 80 independently assembled PSD and PSB controls. A loopback regression covered Photato import, truncated-input rejection, and both job interfaces. All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-610) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_610.md).
 
 ## 2026-11-19 — Step 609 — Set PSD and PSB file compatibility
 
@@ -79,13 +87,3 @@ The sparse inverted rectangle control rendered in two patches, down from 36. The
 All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_601.md).
-
-## 2026-11-19 — Step 600 — Prove RGB32 raster-base opacity with rectangular Feather
-
-The 37.8 MP opaque-base test with 2 px Feather went from 52.80 s to 0.02 s on Apple Silicon and from 69.40 s to 0.02 s under Rosetta. These are single runs on the same host.
-
-The 300,000 × 300,000 opaque-base test at 1,000 px completed in 1.27 s on Apple Silicon and 1.79 s under Rosetta. The narrow and wide opaque controls and the distant inverted-hole control each matched 9,248 sampled Float32 words on each architecture against the corresponding build 599 37.8 MP controls.
-
-All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-600) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_600.md).

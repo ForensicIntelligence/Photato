@@ -135,6 +135,7 @@ extension AutomationService {
         "readVersions": [1, 2], "writeFormats": ["psd", "psb"],
         "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16], "indexed": [8], "bitmap": [1], "multichannel": [8, 16]],
         "hdrMetadata": ["modes":["rgb","grayscale"],"depth":32,"behavior":"PSD/PSB exports preserve imported HDR toning metadata or supply the neutral block for newly created documents. Native saves, Photato downloads and both resource job encoders share this serializer; layer component words are unchanged."],
+        "optionalMergedPreviewInput": "Layered PSD and PSB input can retain saved alpha, spot and Quick Mask planes when Version Info marks the merged preview absent. The complete channel stream and declared channel metadata are validated. Desktop and Photato imports and both job inputs share this decoder.",
         "gray32BackgroundComposite": "An eligible Gray32 raster stack with a visible, opaque Background has no merged transparency plane. Saved auxiliary channels follow the merged gray plane.",
         "gray32MergedComposite": "Aligned, full-canvas Gray32 raster layers use the stored gray and alpha planes directly for Normal and for Multiply over an opaque base. Ordinary unfeathered pixel masks are included. Transparent stacks use the existing merged white matte. Native saves, Photato downloads and Adobe-compatible resource outputs share this codec.",
         "psbMediaType": "application/x-photoshop",
