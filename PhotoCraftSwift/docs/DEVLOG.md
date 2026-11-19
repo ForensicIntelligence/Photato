@@ -608,7 +608,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 587 | 2026-11-19 | [Match staged RGB32 pixel-mask Feather](#dev-step-587) |
 | 588 | 2026-11-19 | [Support layer-mask Feather through 1,000 px](#dev-step-588) |
 | 589 | 2026-11-19 | [Apply Feather in raster clipping merges and stamps](#dev-step-589) |
+| 590 | 2026-11-19 | [Match integer raster-mask Feather stages](#dev-step-590) |
 <!-- history-index:end -->
+
+<a id="dev-step-590"></a>
+
+## 2026-11-19 — Match integer raster-mask Feather stages
+
+Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. The mask and raster must share the bit depth and use integer translations. The sampler converts samples into the 255 or 32,768 working domain. The measured 0.5 and 1.25 px kernels round after each separable axis. Square windows round once after each pass. The 3.5 px test uses four measured square windows. Wide requests stream those windows, and the existing clipping pass still applies Density and opacity after resolving the feathered coverage.
+
+The three input shapes are a point, a textured full-size mask, and a translated textured mask with white outside coverage. The 34 layered Photoshop controls cover both depths at 0.5, 1.25, 3.5, 4, 8, 100 and 250 px. The tested combinations use saved editable masks and stored raster samples. The Swift tests compare the sampled coverage and clipping output. An independent reader also extracted 51,578 stored colour words from the native PSD exports in each configuration. Every word matched its Photoshop reference. [Photoshop PSD format](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+The references came from Photoshop 27.2.0 on Apple Silicon. The installation uses an ad-hoc signature. Its background process stopped responding during shutdown after the capture. The Photato Intel slice ran the same comparisons under Rosetta using the Apple Silicon reference files. The independent Photoshop Rosetta capture remains pending.
+
+All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Desktop and HTTP test cases use the same prepared clipping edit and Undo. Both extracted universal slices passed offscreen checks. Other fractional settings, arbitrary affine masks, older Float32 rounding gaps and physical platform coverage remain open. [Validation](SOURCE_PUBLICATION_590.md).
 
 <a id="dev-step-589"></a>
 

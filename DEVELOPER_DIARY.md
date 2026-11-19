@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **589** · The 10 most recent entries, newest first.
+Source build **590** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 590 — Match integer raster-mask Feather stages
+
+Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. The 34 Photoshop control files cover points, textures and translated masks. An independent reader checked 51,578 native PSD colour words in each test configuration. All matched the saved Apple Silicon Photoshop references.
+
+All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The independent Photoshop Rosetta capture remains pending.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_590.md).
 
 ## 2026-11-19 — Step 589 — Apply Feather in raster clipping merges and stamps
 
@@ -75,11 +83,3 @@ Merge Down and Stamp Down now work between adjacent Normal raster clips in the s
 The stored raster matches the tested 8-, 16- and 32-bit Photoshop outputs. The first ActionJSON expansion found a stack overflow. Reusing the raster-output helper repaired it, and all 769 selected tests passed on each configuration.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-581) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_581.md).
-
-## 2026-11-18 — Step 580 — Match Screen clipping and unchanged stamp history
-
-Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
-
-The saved-layer comparisons cover 36 Photoshop results. The 12 larger results account for 93,264 exact stored samples. The native editor and both local API families use the same implementation. All 765 selected checks passed in each configuration.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-580) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_580.md).

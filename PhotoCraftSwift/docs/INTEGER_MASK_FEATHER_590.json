@@ -1,0 +1,1113 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "ea707b1e41406657bc1666eb5537efaddc4ffbf5f127a251385d8b0cd5e5578d",
+    "binarySHA256": "47808c1fd1133f8bf886174248c7bcf70d2be296fe6fce3e512ec38c3a7fbf60",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 590,
+  "independentNativePSDReadback": {
+    "arm": {
+      "rgb16-offset-texture-250": {
+        "different": 0,
+        "exportSHA256": "3da03b9e6c63f10b1115afdab09931882e8338dd4b5797c754e83145a399b1ed",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-offset-texture-4": {
+        "different": 0,
+        "exportSHA256": "2593336972f9c811b928d5a09a376ae5c8c44869878fe4f82ba9f3b9aa04589a",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-offset-texture-8": {
+        "different": 0,
+        "exportSHA256": "67d070cc18e14d70b2e702b158ad0e4156853000aff63b01c87f81df3078b993",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-0p5": {
+        "different": 0,
+        "exportSHA256": "b5051e39674b5b4ea8890fa8d5c3d71419cd913a3e089b5b3cfc7f3dd1c223c1",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-100": {
+        "different": 0,
+        "exportSHA256": "f260e7e90117ff7a5c298a7d07bbd8381c56d2d311e0e5a0aa951eb55748dcb7",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-1p25": {
+        "different": 0,
+        "exportSHA256": "6b2de82549b392320cff478d9fd9b07b6861e0dc24f98eee414c922dc4ae1921",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-250": {
+        "different": 0,
+        "exportSHA256": "fd873848bee41688d9f2c609389d7b771868140e942e1ee92e1042ac7e47eb85",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-3p5": {
+        "different": 0,
+        "exportSHA256": "59b98ff2bf00b3c19dc4d5bf9d882c8905451b22fc3e499ba3793a1a1ca9b631",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-4": {
+        "different": 0,
+        "exportSHA256": "357b13762f8083d880a5467e8aea70797f36eb7150a8d76c488557ecc8048ee1",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-8": {
+        "different": 0,
+        "exportSHA256": "2556355e7a446f7fe46afe84a346a9b045de0ef92ce3258437d39edc0506c1cd",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-0p5": {
+        "different": 0,
+        "exportSHA256": "4c7c6d89335862365573e0a0c07a33dd370c919d996eb6b42c64fb2d54ae6444",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-100": {
+        "different": 0,
+        "exportSHA256": "b495625550e69f60c5881fc9f4dd9df6c69b250e903b6df38fe084eb45f50e03",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-1p25": {
+        "different": 0,
+        "exportSHA256": "f693ac3bd0c8f6dd9b94a8d7407d55dfe53f4b5852b5e8e258654ffa5eeb54d3",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-250": {
+        "different": 0,
+        "exportSHA256": "335fefa737fa292e3af3c1781d31593f33abd6cead992938acb1fe123fb948be",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-3p5": {
+        "different": 0,
+        "exportSHA256": "fff3103e75faebdb80ba18cf87df66322af39719f19090c82109d9b1c08d96b5",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-4": {
+        "different": 0,
+        "exportSHA256": "3881297e6dd1e8b0d8c5d9b2173fc946d5b655d3ddf9d0783d9c09bb0fb96728",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-8": {
+        "different": 0,
+        "exportSHA256": "79de87383044c505bcae78cba9691de0131f33bc0bbcfc0f10a5bfb4743ce815",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-250": {
+        "different": 0,
+        "exportSHA256": "c324389636dd491fe47141e96de20ecc55dca6cfd63fba8bbee03031885a8ef0",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-4": {
+        "different": 0,
+        "exportSHA256": "f508ed05c1bb7a1576e8edab46e41340fa8562bb4a285aea0b1b151341e0ba22",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-8": {
+        "different": 0,
+        "exportSHA256": "8c8cc46e29d1e7de925d507a4d2551a67988d52e73646161973eb6e0e1505aa4",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-0p5": {
+        "different": 0,
+        "exportSHA256": "e8ec55c55a05eec814c347011e22d68585c28becc5f32c04d0fa02d1f17cbd84",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-100": {
+        "different": 0,
+        "exportSHA256": "e312eb34582cc593e3d414e54e2472761e1e5a70b5ad9c541771561f319a2e44",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-1p25": {
+        "different": 0,
+        "exportSHA256": "2d578d9f573129c3c391bcbabd4187d6be5663078d59858948b6646042d9d78f",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-250": {
+        "different": 0,
+        "exportSHA256": "e312eb34582cc593e3d414e54e2472761e1e5a70b5ad9c541771561f319a2e44",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-3p5": {
+        "different": 0,
+        "exportSHA256": "415a626da169d8fdf271e4d64a8d42848d579bd0be4e083fe483bb125a6811ac",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-4": {
+        "different": 0,
+        "exportSHA256": "539f6e2307f31fed63bc373256328c7730b505e97951cccea74d1dd82fb4ee86",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-8": {
+        "different": 0,
+        "exportSHA256": "4c5e5a921fe43fde5aefb4a000da3bf540b60fa5cc85a161132b20dd43ae8508",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-0p5": {
+        "different": 0,
+        "exportSHA256": "9ac1c4c98c69f47a1ed24c7d651ee5dbfbf93b4beb4942e24ebb62a8f83dd520",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-100": {
+        "different": 0,
+        "exportSHA256": "0e6aa14279500a1575efc0d8122aea670fa97674346d959102df2fe3bd57a796",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-1p25": {
+        "different": 0,
+        "exportSHA256": "c47be23b892fc416f98ab97719d640c0ccdb0f54c5823c582533b97a79a1a112",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-250": {
+        "different": 0,
+        "exportSHA256": "c9c391fb195879daa13cc348de2f89ecf9cff03210639d7d3533d69d74972a7f",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-3p5": {
+        "different": 0,
+        "exportSHA256": "82a6d0f4f94d98c6e2db81f3529c23de284d686282d50e5f2809c2f433b1eac9",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-4": {
+        "different": 0,
+        "exportSHA256": "de303735715b8655e156fe960e53d468eeebb3b3aa1c709db21ffb4b1b657017",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-8": {
+        "different": 0,
+        "exportSHA256": "35ff3cfab0f4f3631036dc976580cf8a1f7c90071e7ff961185d66af9fc52c2f",
+        "maximum": 0,
+        "words": 1517
+      }
+    },
+    "debug": {
+      "rgb16-offset-texture-250": {
+        "different": 0,
+        "exportSHA256": "3da03b9e6c63f10b1115afdab09931882e8338dd4b5797c754e83145a399b1ed",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-offset-texture-4": {
+        "different": 0,
+        "exportSHA256": "2593336972f9c811b928d5a09a376ae5c8c44869878fe4f82ba9f3b9aa04589a",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-offset-texture-8": {
+        "different": 0,
+        "exportSHA256": "67d070cc18e14d70b2e702b158ad0e4156853000aff63b01c87f81df3078b993",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-0p5": {
+        "different": 0,
+        "exportSHA256": "b5051e39674b5b4ea8890fa8d5c3d71419cd913a3e089b5b3cfc7f3dd1c223c1",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-100": {
+        "different": 0,
+        "exportSHA256": "f260e7e90117ff7a5c298a7d07bbd8381c56d2d311e0e5a0aa951eb55748dcb7",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-1p25": {
+        "different": 0,
+        "exportSHA256": "6b2de82549b392320cff478d9fd9b07b6861e0dc24f98eee414c922dc4ae1921",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-250": {
+        "different": 0,
+        "exportSHA256": "fd873848bee41688d9f2c609389d7b771868140e942e1ee92e1042ac7e47eb85",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-3p5": {
+        "different": 0,
+        "exportSHA256": "59b98ff2bf00b3c19dc4d5bf9d882c8905451b22fc3e499ba3793a1a1ca9b631",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-4": {
+        "different": 0,
+        "exportSHA256": "357b13762f8083d880a5467e8aea70797f36eb7150a8d76c488557ecc8048ee1",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-8": {
+        "different": 0,
+        "exportSHA256": "2556355e7a446f7fe46afe84a346a9b045de0ef92ce3258437d39edc0506c1cd",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-0p5": {
+        "different": 0,
+        "exportSHA256": "4c7c6d89335862365573e0a0c07a33dd370c919d996eb6b42c64fb2d54ae6444",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-100": {
+        "different": 0,
+        "exportSHA256": "b495625550e69f60c5881fc9f4dd9df6c69b250e903b6df38fe084eb45f50e03",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-1p25": {
+        "different": 0,
+        "exportSHA256": "f693ac3bd0c8f6dd9b94a8d7407d55dfe53f4b5852b5e8e258654ffa5eeb54d3",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-250": {
+        "different": 0,
+        "exportSHA256": "335fefa737fa292e3af3c1781d31593f33abd6cead992938acb1fe123fb948be",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-3p5": {
+        "different": 0,
+        "exportSHA256": "fff3103e75faebdb80ba18cf87df66322af39719f19090c82109d9b1c08d96b5",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-4": {
+        "different": 0,
+        "exportSHA256": "3881297e6dd1e8b0d8c5d9b2173fc946d5b655d3ddf9d0783d9c09bb0fb96728",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-8": {
+        "different": 0,
+        "exportSHA256": "79de87383044c505bcae78cba9691de0131f33bc0bbcfc0f10a5bfb4743ce815",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-250": {
+        "different": 0,
+        "exportSHA256": "c324389636dd491fe47141e96de20ecc55dca6cfd63fba8bbee03031885a8ef0",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-4": {
+        "different": 0,
+        "exportSHA256": "f508ed05c1bb7a1576e8edab46e41340fa8562bb4a285aea0b1b151341e0ba22",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-8": {
+        "different": 0,
+        "exportSHA256": "8c8cc46e29d1e7de925d507a4d2551a67988d52e73646161973eb6e0e1505aa4",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-0p5": {
+        "different": 0,
+        "exportSHA256": "e8ec55c55a05eec814c347011e22d68585c28becc5f32c04d0fa02d1f17cbd84",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-100": {
+        "different": 0,
+        "exportSHA256": "e312eb34582cc593e3d414e54e2472761e1e5a70b5ad9c541771561f319a2e44",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-1p25": {
+        "different": 0,
+        "exportSHA256": "2d578d9f573129c3c391bcbabd4187d6be5663078d59858948b6646042d9d78f",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-250": {
+        "different": 0,
+        "exportSHA256": "e312eb34582cc593e3d414e54e2472761e1e5a70b5ad9c541771561f319a2e44",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-3p5": {
+        "different": 0,
+        "exportSHA256": "415a626da169d8fdf271e4d64a8d42848d579bd0be4e083fe483bb125a6811ac",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-4": {
+        "different": 0,
+        "exportSHA256": "539f6e2307f31fed63bc373256328c7730b505e97951cccea74d1dd82fb4ee86",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-8": {
+        "different": 0,
+        "exportSHA256": "4c5e5a921fe43fde5aefb4a000da3bf540b60fa5cc85a161132b20dd43ae8508",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-0p5": {
+        "different": 0,
+        "exportSHA256": "9ac1c4c98c69f47a1ed24c7d651ee5dbfbf93b4beb4942e24ebb62a8f83dd520",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-100": {
+        "different": 0,
+        "exportSHA256": "0e6aa14279500a1575efc0d8122aea670fa97674346d959102df2fe3bd57a796",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-1p25": {
+        "different": 0,
+        "exportSHA256": "c47be23b892fc416f98ab97719d640c0ccdb0f54c5823c582533b97a79a1a112",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-250": {
+        "different": 0,
+        "exportSHA256": "c9c391fb195879daa13cc348de2f89ecf9cff03210639d7d3533d69d74972a7f",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-3p5": {
+        "different": 0,
+        "exportSHA256": "82a6d0f4f94d98c6e2db81f3529c23de284d686282d50e5f2809c2f433b1eac9",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-4": {
+        "different": 0,
+        "exportSHA256": "de303735715b8655e156fe960e53d468eeebb3b3aa1c709db21ffb4b1b657017",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-8": {
+        "different": 0,
+        "exportSHA256": "35ff3cfab0f4f3631036dc976580cf8a1f7c90071e7ff961185d66af9fc52c2f",
+        "maximum": 0,
+        "words": 1517
+      }
+    },
+    "intel": {
+      "rgb16-offset-texture-250": {
+        "different": 0,
+        "exportSHA256": "3da03b9e6c63f10b1115afdab09931882e8338dd4b5797c754e83145a399b1ed",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-offset-texture-4": {
+        "different": 0,
+        "exportSHA256": "2593336972f9c811b928d5a09a376ae5c8c44869878fe4f82ba9f3b9aa04589a",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-offset-texture-8": {
+        "different": 0,
+        "exportSHA256": "67d070cc18e14d70b2e702b158ad0e4156853000aff63b01c87f81df3078b993",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-0p5": {
+        "different": 0,
+        "exportSHA256": "b5051e39674b5b4ea8890fa8d5c3d71419cd913a3e089b5b3cfc7f3dd1c223c1",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-100": {
+        "different": 0,
+        "exportSHA256": "f260e7e90117ff7a5c298a7d07bbd8381c56d2d311e0e5a0aa951eb55748dcb7",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-1p25": {
+        "different": 0,
+        "exportSHA256": "6b2de82549b392320cff478d9fd9b07b6861e0dc24f98eee414c922dc4ae1921",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-250": {
+        "different": 0,
+        "exportSHA256": "fd873848bee41688d9f2c609389d7b771868140e942e1ee92e1042ac7e47eb85",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-3p5": {
+        "different": 0,
+        "exportSHA256": "59b98ff2bf00b3c19dc4d5bf9d882c8905451b22fc3e499ba3793a1a1ca9b631",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-4": {
+        "different": 0,
+        "exportSHA256": "357b13762f8083d880a5467e8aea70797f36eb7150a8d76c488557ecc8048ee1",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-point-8": {
+        "different": 0,
+        "exportSHA256": "2556355e7a446f7fe46afe84a346a9b045de0ef92ce3258437d39edc0506c1cd",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-0p5": {
+        "different": 0,
+        "exportSHA256": "4c7c6d89335862365573e0a0c07a33dd370c919d996eb6b42c64fb2d54ae6444",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-100": {
+        "different": 0,
+        "exportSHA256": "b495625550e69f60c5881fc9f4dd9df6c69b250e903b6df38fe084eb45f50e03",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-1p25": {
+        "different": 0,
+        "exportSHA256": "f693ac3bd0c8f6dd9b94a8d7407d55dfe53f4b5852b5e8e258654ffa5eeb54d3",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-250": {
+        "different": 0,
+        "exportSHA256": "335fefa737fa292e3af3c1781d31593f33abd6cead992938acb1fe123fb948be",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-3p5": {
+        "different": 0,
+        "exportSHA256": "fff3103e75faebdb80ba18cf87df66322af39719f19090c82109d9b1c08d96b5",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-4": {
+        "different": 0,
+        "exportSHA256": "3881297e6dd1e8b0d8c5d9b2173fc946d5b655d3ddf9d0783d9c09bb0fb96728",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb16-texture-8": {
+        "different": 0,
+        "exportSHA256": "79de87383044c505bcae78cba9691de0131f33bc0bbcfc0f10a5bfb4743ce815",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-250": {
+        "different": 0,
+        "exportSHA256": "c324389636dd491fe47141e96de20ecc55dca6cfd63fba8bbee03031885a8ef0",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-4": {
+        "different": 0,
+        "exportSHA256": "f508ed05c1bb7a1576e8edab46e41340fa8562bb4a285aea0b1b151341e0ba22",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-offset-texture-8": {
+        "different": 0,
+        "exportSHA256": "8c8cc46e29d1e7de925d507a4d2551a67988d52e73646161973eb6e0e1505aa4",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-0p5": {
+        "different": 0,
+        "exportSHA256": "e8ec55c55a05eec814c347011e22d68585c28becc5f32c04d0fa02d1f17cbd84",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-100": {
+        "different": 0,
+        "exportSHA256": "e312eb34582cc593e3d414e54e2472761e1e5a70b5ad9c541771561f319a2e44",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-1p25": {
+        "different": 0,
+        "exportSHA256": "2d578d9f573129c3c391bcbabd4187d6be5663078d59858948b6646042d9d78f",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-250": {
+        "different": 0,
+        "exportSHA256": "e312eb34582cc593e3d414e54e2472761e1e5a70b5ad9c541771561f319a2e44",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-3p5": {
+        "different": 0,
+        "exportSHA256": "415a626da169d8fdf271e4d64a8d42848d579bd0be4e083fe483bb125a6811ac",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-4": {
+        "different": 0,
+        "exportSHA256": "539f6e2307f31fed63bc373256328c7730b505e97951cccea74d1dd82fb4ee86",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-point-8": {
+        "different": 0,
+        "exportSHA256": "4c5e5a921fe43fde5aefb4a000da3bf540b60fa5cc85a161132b20dd43ae8508",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-0p5": {
+        "different": 0,
+        "exportSHA256": "9ac1c4c98c69f47a1ed24c7d651ee5dbfbf93b4beb4942e24ebb62a8f83dd520",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-100": {
+        "different": 0,
+        "exportSHA256": "0e6aa14279500a1575efc0d8122aea670fa97674346d959102df2fe3bd57a796",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-1p25": {
+        "different": 0,
+        "exportSHA256": "c47be23b892fc416f98ab97719d640c0ccdb0f54c5823c582533b97a79a1a112",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-250": {
+        "different": 0,
+        "exportSHA256": "c9c391fb195879daa13cc348de2f89ecf9cff03210639d7d3533d69d74972a7f",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-3p5": {
+        "different": 0,
+        "exportSHA256": "82a6d0f4f94d98c6e2db81f3529c23de284d686282d50e5f2809c2f433b1eac9",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-4": {
+        "different": 0,
+        "exportSHA256": "de303735715b8655e156fe960e53d468eeebb3b3aa1c709db21ffb4b1b657017",
+        "maximum": 0,
+        "words": 1517
+      },
+      "rgb8-texture-8": {
+        "different": 0,
+        "exportSHA256": "35ff3cfab0f4f3631036dc976580cf8a1f7c90071e7ff961185d66af9fc52c2f",
+        "maximum": 0,
+        "words": 1517
+      }
+    }
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122083,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "independent Rosetta Photoshop captures",
+    "additional fractional and short radii",
+    "arbitrary affine transforms",
+    "dense wide mask performance",
+    "vector masks and Smart Filters",
+    "physical Intel and macOS 14"
+  ],
+  "photoshopReferences": {
+    "cases": [
+      {
+        "label": "rgb8-point-0p5",
+        "radius": 0.5,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-point-1p25",
+        "radius": 1.25,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-point-3p5",
+        "radius": 3.5,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-point-4",
+        "radius": 4,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-point-8",
+        "radius": 8,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-point-100",
+        "radius": 100,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-point-250",
+        "radius": 250,
+        "source": "rgb8-point"
+      },
+      {
+        "label": "rgb8-texture-0p5",
+        "radius": 0.5,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-texture-1p25",
+        "radius": 1.25,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-texture-3p5",
+        "radius": 3.5,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-texture-4",
+        "radius": 4,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-texture-8",
+        "radius": 8,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-texture-100",
+        "radius": 100,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-texture-250",
+        "radius": 250,
+        "source": "rgb8-texture"
+      },
+      {
+        "label": "rgb8-offset-texture-4",
+        "radius": 4,
+        "source": "rgb8-offset-texture"
+      },
+      {
+        "label": "rgb8-offset-texture-8",
+        "radius": 8,
+        "source": "rgb8-offset-texture"
+      },
+      {
+        "label": "rgb8-offset-texture-250",
+        "radius": 250,
+        "source": "rgb8-offset-texture"
+      },
+      {
+        "label": "rgb16-point-0p5",
+        "radius": 0.5,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-point-1p25",
+        "radius": 1.25,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-point-3p5",
+        "radius": 3.5,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-point-4",
+        "radius": 4,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-point-8",
+        "radius": 8,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-point-100",
+        "radius": 100,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-point-250",
+        "radius": 250,
+        "source": "rgb16-point"
+      },
+      {
+        "label": "rgb16-texture-0p5",
+        "radius": 0.5,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-texture-1p25",
+        "radius": 1.25,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-texture-3p5",
+        "radius": 3.5,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-texture-4",
+        "radius": 4,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-texture-8",
+        "radius": 8,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-texture-100",
+        "radius": 100,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-texture-250",
+        "radius": 250,
+        "source": "rgb16-texture"
+      },
+      {
+        "label": "rgb16-offset-texture-4",
+        "radius": 4,
+        "source": "rgb16-offset-texture"
+      },
+      {
+        "label": "rgb16-offset-texture-8",
+        "radius": 8,
+        "source": "rgb16-offset-texture"
+      },
+      {
+        "label": "rgb16-offset-texture-250",
+        "radius": 250,
+        "source": "rgb16-offset-texture"
+      }
+    ],
+    "filesSHA256": {
+      "arm-rgb16-offset-texture-250-merged.psd": "954ca604453ac80bf295d06633c6f58e11a14be778ea8323401a8b7b61051683",
+      "arm-rgb16-offset-texture-4-merged.psd": "50d299c9534441170707b40e1267bae1fd1290638c1579f49eed8538b2b99950",
+      "arm-rgb16-offset-texture-8-merged.psd": "31d1350befd463e742a8353b6cbc79fabe5790c1df849392e696c0aac881371d",
+      "arm-rgb16-point-0p5-merged.psd": "bbbab58b63a6679d66d0d7a41298071acb783fbd4673f939a04e81dadc5441f2",
+      "arm-rgb16-point-100-merged.psd": "ba0e518150acdcf2938926554735ae3a036f695974ecf0675e042f6a188d0939",
+      "arm-rgb16-point-1p25-merged.psd": "3dcfa2c4dd90fe144039abb8ea0f22de75ba43943ee20043f9b8efd99c03c08c",
+      "arm-rgb16-point-250-merged.psd": "824bfbf0350b70f0e24d6566d6f94ef80ca030e6cdf5ff40cbe7da2f906aad20",
+      "arm-rgb16-point-3p5-merged.psd": "be8f0be5c2549b286d83759f151b02c6bbdf26297063b1d4923b1bdb85dbe47d",
+      "arm-rgb16-point-4-merged.psd": "6e407669e29d291135da318b6176761acc3a87424587487c187e4e60a3eea691",
+      "arm-rgb16-point-8-merged.psd": "b54ecbd25da49ec0c9dfeb54017d182a6bf5e1455068e63533ee3c8787b34169",
+      "arm-rgb16-texture-0p5-merged.psd": "e8ba75f9afee478103097469f0308a7e83d97be7efd893045df43e96398a6792",
+      "arm-rgb16-texture-100-merged.psd": "f087726171686975fadbf304376e99828777410f9d2c6de81b4a5199b50969c2",
+      "arm-rgb16-texture-1p25-merged.psd": "f580675137e4e29da2900a2e5a1352ae017ce0a9e998f1d89a71f9054954650f",
+      "arm-rgb16-texture-250-merged.psd": "43870cae45fa7583c88434317802d5de60a61c283054e35cd1ca27153e2e0da8",
+      "arm-rgb16-texture-3p5-merged.psd": "d24aa6a667f6fe518b2e9bc9b9f6db92880766306df3f9963c0ba198ce107690",
+      "arm-rgb16-texture-4-merged.psd": "975fa5140459347546040c006f3b38f77dccfd377e84f7b95c8b410378061557",
+      "arm-rgb16-texture-8-merged.psd": "14c268ab978915d9863d4f18d58a74dd08ca2947474cf8847a362fead5e98241",
+      "arm-rgb8-offset-texture-250-merged.psd": "588923e1ac3597ff4c54bae8ae11a12224ed55b516e5a849df7d09aea548c7c0",
+      "arm-rgb8-offset-texture-4-merged.psd": "b4da9bd8f76af0586a05da79cf66b72d2b2ec6189425b186029b799f64e406dc",
+      "arm-rgb8-offset-texture-8-merged.psd": "c1c02148f88ea1c8b99d9d5c93e1da53c5ba8d53abfcbbe6356d5a71ba889ff9",
+      "arm-rgb8-point-0p5-merged.psd": "8fcc3f74a2a252a1df023b008c3cc642aa0e9eb7f41e0af01b68ace5a67b1fd6",
+      "arm-rgb8-point-100-merged.psd": "b9c8a0634fe5dda4f158e122eb20fcd80735c07594c10f0f060abb90f393aeb6",
+      "arm-rgb8-point-1p25-merged.psd": "bf070ab28c38c62b6c71af8b12d33080ed84051b559b2ac1f9ae85df957072d0",
+      "arm-rgb8-point-250-merged.psd": "2eb4f179df8ef6a670d1c33031f9404c2949eeba9c4ba987b65144c4a56927d2",
+      "arm-rgb8-point-3p5-merged.psd": "5468eb673edb4a17569fff59f4034723b6e27ce28fb318bd0faf027d85f759c5",
+      "arm-rgb8-point-4-merged.psd": "85e29af9bc87693ed213d89a6b4b63b54a1428bc949757c957beaee8c49bc1d2",
+      "arm-rgb8-point-8-merged.psd": "28aa60e725d0b119fca01dfff3e0cc15be370761ef48207da87e22d6ec5f4dec",
+      "arm-rgb8-texture-0p5-merged.psd": "d7a5721e156b3a111dddc80e8a2b514a5ffe21e621f4ab7e949acbcaa08f53e9",
+      "arm-rgb8-texture-100-merged.psd": "96b469acb476a9b63cab133928bc30227faa7681e95b45b1fa86ecc32dc13f8a",
+      "arm-rgb8-texture-1p25-merged.psd": "6ebd181c7528bfc35178c1582bfa670d0f1d74e8a3f714ae79cb8454ae20a66e",
+      "arm-rgb8-texture-250-merged.psd": "bc396007308577e126cfd7aedc7601c9deb741945d7c68524e16ecc4f05c0edd",
+      "arm-rgb8-texture-3p5-merged.psd": "10211e2cfe1adcd089a0ec036aa8724cc5349f54491b023f92cadc57e4861360",
+      "arm-rgb8-texture-4-merged.psd": "269fca1f96cff7420cb992a1dd11656286fb3841ed3003a92b6a9211076ac711",
+      "arm-rgb8-texture-8-merged.psd": "c99097d5210fd681d32cb8a222c2ffbd244033cab441c35fedf119a1e3f2077a",
+      "rgb16-offset-texture-4.psd": "d4c5bf7e6c226b9687342f11dc38ccd8e665ece7ab83bb746f3ef7294f958117",
+      "rgb16-offset-texture.psd": "2f8bd2005a5c00187d731ecec57ec9f7c1e683292e116ec71aafc5fc901ab5c7",
+      "rgb16-point.psd": "e063835c8881ff651f93aef263f05d1b26a385ddb5a57ee6846463652e1ba1aa",
+      "rgb16-texture.psd": "13a9e2f63573d56017707dde6ce4d3a6629a2ba9bf8c2cbf1f8c06bf0e0c0eb2",
+      "rgb8-offset-texture.psd": "e5e7bcf01c0808cc27704624abf0d57518f99a3f1d3af7ef094e5f0e60cac696",
+      "rgb8-point.psd": "f579bc5ffd20823e23e65dd5a6d21ead3488f8092b75ef2d564f1bbd88963460",
+      "rgb8-texture-1p25.psd": "5a0da7dc348b6c51755f8fbb138cfe8c07658af8c57a3aa25bb1d247c1fbe56c",
+      "rgb8-texture.psd": "a5ca2779d984305f9a0992c7924b63c5db2ef2bb286f35f3b72ce69e5708c870"
+    },
+    "inputs": "Owned synthetic masks. PSD files captured using Photoshop CLI scripting.",
+    "photoshopVersion": "27.2.0",
+    "signature": "ad hoc",
+    "sourceArchitecture": "arm64"
+  },
+  "qualification": {
+    "configurations": {
+      "arm": {
+        "appSHA256": "035bb73eb6a905f69f11cfe9932955fdeb506a086abcfe0994021a77f533634d",
+        "testBinarySHA256": "9fb1fb7b672a81ffa4c02cf31eb2522302aa0ba38059c07c8a7e2b89bac4bd54"
+      },
+      "debug": {
+        "appSHA256": "ac9b92959f19bb00071997b8c5958e1eceab5c7f010eb98bcee39f19a2daab76",
+        "testBinarySHA256": "79ed56f9fa65d2d18c4bad3b8cd7bc02ed3f689d0cea9e4a41a0f5510593a360"
+      },
+      "intel": {
+        "appSHA256": "6de91e777c4f65fc37819b2686e734998532de960dbf717f43bc7d16ad02807a",
+        "testBinarySHA256": "4cfd9404c25a09a0020572c3746bce15a86748e742a8aabd5c91c7d0e0b716eb"
+      }
+    },
+    "expectedCasesSHA256": "1e1184523eb62e8ef192ef7811ed801072ee88b8d872f5f9050857e04cd31333",
+    "selected": 858
+  },
+  "sourceInputs": 9155,
+  "sourceInputsChangedSince589": [
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "6cc452d2a88010815b5985592c6d52d680f0847e20de21a2666dec38b2565125"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "949454702b2675bc16c56f7e3766e18cb07ea88187b7d70d13cd1d003c5ca38c"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "068609325e5eeb3745c3fc843f44623cd0a003dd876b5d11fb685501b4755396"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NormalLayerComposite.swift",
+      "sha256": "2f75755cd60b339909f85d6ba8572f23e93e9e7ea0ab793acb55d1c696d98af0"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/StreamingAreaFeather.swift",
+      "sha256": "5bf1f58700eac60a6721221e382f92fd7810bc003ac05a7df9c2e39db261d160"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "a7c576fb84117d9ddb9cca0f93f338af2063f03bb936d738e56a7393aad0dd51"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-offset-texture-250-merged.psd",
+      "sha256": "954ca604453ac80bf295d06633c6f58e11a14be778ea8323401a8b7b61051683"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-offset-texture-4-merged.psd",
+      "sha256": "50d299c9534441170707b40e1267bae1fd1290638c1579f49eed8538b2b99950"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-offset-texture-8-merged.psd",
+      "sha256": "31d1350befd463e742a8353b6cbc79fabe5790c1df849392e696c0aac881371d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-0p5-merged.psd",
+      "sha256": "bbbab58b63a6679d66d0d7a41298071acb783fbd4673f939a04e81dadc5441f2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-100-merged.psd",
+      "sha256": "ba0e518150acdcf2938926554735ae3a036f695974ecf0675e042f6a188d0939"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-1p25-merged.psd",
+      "sha256": "3dcfa2c4dd90fe144039abb8ea0f22de75ba43943ee20043f9b8efd99c03c08c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-250-merged.psd",
+      "sha256": "824bfbf0350b70f0e24d6566d6f94ef80ca030e6cdf5ff40cbe7da2f906aad20"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-3p5-merged.psd",
+      "sha256": "be8f0be5c2549b286d83759f151b02c6bbdf26297063b1d4923b1bdb85dbe47d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-4-merged.psd",
+      "sha256": "6e407669e29d291135da318b6176761acc3a87424587487c187e4e60a3eea691"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-point-8-merged.psd",
+      "sha256": "b54ecbd25da49ec0c9dfeb54017d182a6bf5e1455068e63533ee3c8787b34169"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-0p5-merged.psd",
+      "sha256": "e8ba75f9afee478103097469f0308a7e83d97be7efd893045df43e96398a6792"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-100-merged.psd",
+      "sha256": "f087726171686975fadbf304376e99828777410f9d2c6de81b4a5199b50969c2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-1p25-merged.psd",
+      "sha256": "f580675137e4e29da2900a2e5a1352ae017ce0a9e998f1d89a71f9054954650f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-250-merged.psd",
+      "sha256": "43870cae45fa7583c88434317802d5de60a61c283054e35cd1ca27153e2e0da8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-3p5-merged.psd",
+      "sha256": "d24aa6a667f6fe518b2e9bc9b9f6db92880766306df3f9963c0ba198ce107690"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-4-merged.psd",
+      "sha256": "975fa5140459347546040c006f3b38f77dccfd377e84f7b95c8b410378061557"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb16-texture-8-merged.psd",
+      "sha256": "14c268ab978915d9863d4f18d58a74dd08ca2947474cf8847a362fead5e98241"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-offset-texture-250-merged.psd",
+      "sha256": "588923e1ac3597ff4c54bae8ae11a12224ed55b516e5a849df7d09aea548c7c0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-offset-texture-4-merged.psd",
+      "sha256": "b4da9bd8f76af0586a05da79cf66b72d2b2ec6189425b186029b799f64e406dc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-offset-texture-8-merged.psd",
+      "sha256": "c1c02148f88ea1c8b99d9d5c93e1da53c5ba8d53abfcbbe6356d5a71ba889ff9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-0p5-merged.psd",
+      "sha256": "8fcc3f74a2a252a1df023b008c3cc642aa0e9eb7f41e0af01b68ace5a67b1fd6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-100-merged.psd",
+      "sha256": "b9c8a0634fe5dda4f158e122eb20fcd80735c07594c10f0f060abb90f393aeb6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-1p25-merged.psd",
+      "sha256": "bf070ab28c38c62b6c71af8b12d33080ed84051b559b2ac1f9ae85df957072d0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-250-merged.psd",
+      "sha256": "2eb4f179df8ef6a670d1c33031f9404c2949eeba9c4ba987b65144c4a56927d2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-3p5-merged.psd",
+      "sha256": "5468eb673edb4a17569fff59f4034723b6e27ce28fb318bd0faf027d85f759c5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-4-merged.psd",
+      "sha256": "85e29af9bc87693ed213d89a6b4b63b54a1428bc949757c957beaee8c49bc1d2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-point-8-merged.psd",
+      "sha256": "28aa60e725d0b119fca01dfff3e0cc15be370761ef48207da87e22d6ec5f4dec"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-0p5-merged.psd",
+      "sha256": "d7a5721e156b3a111dddc80e8a2b514a5ffe21e621f4ab7e949acbcaa08f53e9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-100-merged.psd",
+      "sha256": "96b469acb476a9b63cab133928bc30227faa7681e95b45b1fa86ecc32dc13f8a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-1p25-merged.psd",
+      "sha256": "6ebd181c7528bfc35178c1582bfa670d0f1d74e8a3f714ae79cb8454ae20a66e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-250-merged.psd",
+      "sha256": "bc396007308577e126cfd7aedc7601c9deb741945d7c68524e16ecc4f05c0edd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-3p5-merged.psd",
+      "sha256": "10211e2cfe1adcd089a0ec036aa8724cc5349f54491b023f92cadc57e4861360"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-4-merged.psd",
+      "sha256": "269fca1f96cff7420cb992a1dd11656286fb3841ed3003a92b6a9211076ac711"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/arm-rgb8-texture-8-merged.psd",
+      "sha256": "c99097d5210fd681d32cb8a222c2ffbd244033cab441c35fedf119a1e3f2077a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/references.json",
+      "sha256": "466ed20ebbc4e03249d4f0499bb74dc82d73f37519eecf6db8a37bef0528a77b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb16-offset-texture-4.psd",
+      "sha256": "d4c5bf7e6c226b9687342f11dc38ccd8e665ece7ab83bb746f3ef7294f958117"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb16-offset-texture.psd",
+      "sha256": "2f8bd2005a5c00187d731ecec57ec9f7c1e683292e116ec71aafc5fc901ab5c7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb16-point.psd",
+      "sha256": "e063835c8881ff651f93aef263f05d1b26a385ddb5a57ee6846463652e1ba1aa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb16-texture.psd",
+      "sha256": "13a9e2f63573d56017707dde6ce4d3a6629a2ba9bf8c2cbf1f8c06bf0e0c0eb2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb8-offset-texture.psd",
+      "sha256": "e5e7bcf01c0808cc27704624abf0d57518f99a3f1d3af7ef094e5f0e60cac696"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb8-point.psd",
+      "sha256": "f579bc5ffd20823e23e65dd5a6d21ead3488f8092b75ef2d564f1bbd88963460"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb8-texture-1p25.psd",
+      "sha256": "5a0da7dc348b6c51755f8fbb138cfe8c07658af8c57a3aa25bb1d247c1fbe56c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/integer-feather/rgb8-texture.psd",
+      "sha256": "a5ca2779d984305f9a0992c7924b63c5db2ef2bb286f35f3b72ce69e5708c870"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "3da0ec6dc79eff0f126a74a780f8fef6b9c912fa373ab8c4bef77e4786066c73"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "fad55a410bb795dc56b4e98db30854807d8227b9deaabebd42cf26b62ce59c54"
+    }
+  ],
+  "workingDomains": {
+    "rgb16": 32768,
+    "rgb8": 255
+  }
+}

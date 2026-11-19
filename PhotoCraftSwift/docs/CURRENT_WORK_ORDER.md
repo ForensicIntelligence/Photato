@@ -1,3 +1,7 @@
+**Source checkpoint 590.** Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. [Qualification](SOURCE_PUBLICATION_590.md).
+
+Use the saved textured and translated controls to separate radius scheduling from per-stage rounding. Continue the unmeasured fractional settings, additional short radii, affine sampling and the separate Smart Filter and vector-mask ranges. Resume independent Rosetta captures after the previous Photoshop reference session closes. Test adjacent masked clips and dense wide-mask workloads.
+
 **Source checkpoint 589.** Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. [Qualification](SOURCE_PUBLICATION_589.md).
 
 Next, measure stage rounding for editable RGB8 and RGB16 masks and connect it to clipping. Use the saved partial-opacity and outside-canvas controls to track the remaining Intel residuals. Adjacent masked clips, fractional and affine coverage, Smart Filter and vector masks, and wide dense performance remain open.

@@ -1,17 +1,19 @@
 /// Streams square windows without keeping the padded source or all of a pass's
 /// rows. The two widest stages replay their outgoing rows from the source.
 enum StreamingAreaFeather {
-  static func filter(width: Int, height: Int, widths: [Int], row: (Int) -> [Float]) -> [Float]? {
+  static func filter(width: Int, height: Int, widths: [Int], integerSamples: Bool,
+    row: (Int) -> [Float]) -> [Float]? {
     let firstSide = widths[0], secondSide = widths[1]
     let firstWidth = width - firstSide + 1
-    var first = Stage(width: firstWidth, side: firstSide, replay: true)
+    var first = Stage(width: firstWidth, side: firstSide, replay: true, integerSamples: integerSamples)
     var laggedFirst = first
-    var second = Stage(width: firstWidth - secondSide + 1, side: secondSide, replay: true)
+    var second = Stage(width: firstWidth - secondSide + 1, side: secondSide, replay: true,
+      integerSamples: integerSamples)
     var currentWidth = second.width
     var remaining: [Stage] = []
     for side in widths.dropFirst(2) {
       currentWidth -= side - 1
-      remaining.append(Stage(width: currentWidth, side: side, replay: false))
+      remaining.append(Stage(width: currentWidth, side: side, replay: false, integerSamples: integerSamples))
     }
     let resultHeight = height - widths.reduce(0) { $0 + $1 - 1 }
     var output: [Float] = []
@@ -39,14 +41,16 @@ enum StreamingAreaFeather {
     let width: Int
     let side: Int
     private let replay: Bool
+    private let integerSamples: Bool
     private var vertical: [Double]
     private var ring: [Double]
     private var rows = 0
 
-    init(width: Int, side: Int, replay: Bool) {
+    init(width: Int, side: Int, replay: Bool, integerSamples: Bool) {
       self.width = width
       self.side = side
       self.replay = replay
+      self.integerSamples = integerSamples
       vertical = [Double](repeating: 0, count: width)
       ring = [Double](repeating: 0, count: replay ? 0 : width * side)
     }
@@ -73,6 +77,7 @@ enum StreamingAreaFeather {
       rows += 1
       guard rows >= side else { return nil }
       let area = Double(side * side)
+      if integerSamples { return vertical.map { Float(($0 / area).rounded()) } }
       return vertical.map { Float($0 / area) }
     }
   }

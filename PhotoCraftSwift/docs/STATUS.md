@@ -1,3 +1,5 @@
+**Source checkpoint 590.** Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. [Qualification](SOURCE_PUBLICATION_590.md).
+
 **Source checkpoint 589.** Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. [Qualification](SOURCE_PUBLICATION_589.md).
 
 **Source checkpoint 588.** Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. [Qualification](SOURCE_PUBLICATION_588.md).

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 590 — Match integer raster-mask Feather stages
+
+Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. The 34 Photoshop control files cover points, textures and translated masks. An independent reader checked 51,578 native PSD colour words in each test configuration. All matched the saved Apple Silicon Photoshop references.
+
+All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The independent Photoshop Rosetta capture remains pending.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_590.md).
+
 ## 2026-11-19 — Step 589 — Apply Feather in raster clipping merges and stamps
 
 Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. Saved RGB32 layer output matches five Photoshop cases at 250 or 1,000 px on both architectures. The tests also exercise sparse 300,000 × 300,000 documents and verify Undo through the desktop model and HTTP.
@@ -709,14 +717,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:589 -->
+<!-- current-status-step:590 -->
 ## Current development status — 19 November 2026
 
-Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips.
+Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges.
 
-All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal slices passed offscreen checks. Lower-bit-depth output and the remaining Intel rounding still need work.
+All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal slices passed offscreen checks. Additional fractional and transformed masks still need exact comparisons.
 
-[Source checkpoint 589](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_589.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-589).
+[Source checkpoint 590](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_590.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-590).
 
 <!-- current-status:end -->
 

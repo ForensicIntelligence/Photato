@@ -49,7 +49,7 @@ final class FeatheredMask: Sendable {
   var height: Int { area?.bounds.height ?? (source.height + 2 * padding) }
   var isConstantOutside: Bool { source.tileCount == 0 && implicitEqualsOutside }
   var support: Int { area?.support ?? padding }
-  var implicitInterior: Float { area == nil ? filteredDefault : defaultSample }
+  var implicitInterior: Float { area?.interiorSample(defaultSample) ?? filteredDefault }
   var clampedSourceEdges: ClampedEdges {
     guard let area else { return edges }
     guard area.extendEdges else { return [] }
@@ -83,7 +83,8 @@ final class FeatheredMask: Sendable {
     // samples, bound the possible vertical results before eliding their edges.
     let low = Self.weightedConstant(min(horizontal, outside), weights: kernel)
     let high = Self.weightedConstant(max(horizontal, outside), weights: kernel)
-    implicitEqualsOutside = implicit == outside && abs(low - outside) <= 0.000001
+    implicitEqualsOutside = implicit == outside && (area?.interiorSample(implicit) ?? implicit) == outside
+      && abs(low - outside) <= 0.000001
       && abs(high - outside) <= 0.000001
   }
 

@@ -1,0 +1,222 @@
+{
+  "cases": [
+    {
+      "label": "rgb8-point-0p5",
+      "radius": 0.5,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-point-1p25",
+      "radius": 1.25,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-point-3p5",
+      "radius": 3.5,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-point-4",
+      "radius": 4,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-point-8",
+      "radius": 8,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-point-100",
+      "radius": 100,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-point-250",
+      "radius": 250,
+      "source": "rgb8-point"
+    },
+    {
+      "label": "rgb8-texture-0p5",
+      "radius": 0.5,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-texture-1p25",
+      "radius": 1.25,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-texture-3p5",
+      "radius": 3.5,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-texture-4",
+      "radius": 4,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-texture-8",
+      "radius": 8,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-texture-100",
+      "radius": 100,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-texture-250",
+      "radius": 250,
+      "source": "rgb8-texture"
+    },
+    {
+      "label": "rgb8-offset-texture-4",
+      "radius": 4,
+      "source": "rgb8-offset-texture"
+    },
+    {
+      "label": "rgb8-offset-texture-8",
+      "radius": 8,
+      "source": "rgb8-offset-texture"
+    },
+    {
+      "label": "rgb8-offset-texture-250",
+      "radius": 250,
+      "source": "rgb8-offset-texture"
+    },
+    {
+      "label": "rgb16-point-0p5",
+      "radius": 0.5,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-point-1p25",
+      "radius": 1.25,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-point-3p5",
+      "radius": 3.5,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-point-4",
+      "radius": 4,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-point-8",
+      "radius": 8,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-point-100",
+      "radius": 100,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-point-250",
+      "radius": 250,
+      "source": "rgb16-point"
+    },
+    {
+      "label": "rgb16-texture-0p5",
+      "radius": 0.5,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-texture-1p25",
+      "radius": 1.25,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-texture-3p5",
+      "radius": 3.5,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-texture-4",
+      "radius": 4,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-texture-8",
+      "radius": 8,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-texture-100",
+      "radius": 100,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-texture-250",
+      "radius": 250,
+      "source": "rgb16-texture"
+    },
+    {
+      "label": "rgb16-offset-texture-4",
+      "radius": 4,
+      "source": "rgb16-offset-texture"
+    },
+    {
+      "label": "rgb16-offset-texture-8",
+      "radius": 8,
+      "source": "rgb16-offset-texture"
+    },
+    {
+      "label": "rgb16-offset-texture-250",
+      "radius": 250,
+      "source": "rgb16-offset-texture"
+    }
+  ],
+  "filesSHA256": {
+    "arm-rgb16-offset-texture-250-merged.psd": "954ca604453ac80bf295d06633c6f58e11a14be778ea8323401a8b7b61051683",
+    "arm-rgb16-offset-texture-4-merged.psd": "50d299c9534441170707b40e1267bae1fd1290638c1579f49eed8538b2b99950",
+    "arm-rgb16-offset-texture-8-merged.psd": "31d1350befd463e742a8353b6cbc79fabe5790c1df849392e696c0aac881371d",
+    "arm-rgb16-point-0p5-merged.psd": "bbbab58b63a6679d66d0d7a41298071acb783fbd4673f939a04e81dadc5441f2",
+    "arm-rgb16-point-100-merged.psd": "ba0e518150acdcf2938926554735ae3a036f695974ecf0675e042f6a188d0939",
+    "arm-rgb16-point-1p25-merged.psd": "3dcfa2c4dd90fe144039abb8ea0f22de75ba43943ee20043f9b8efd99c03c08c",
+    "arm-rgb16-point-250-merged.psd": "824bfbf0350b70f0e24d6566d6f94ef80ca030e6cdf5ff40cbe7da2f906aad20",
+    "arm-rgb16-point-3p5-merged.psd": "be8f0be5c2549b286d83759f151b02c6bbdf26297063b1d4923b1bdb85dbe47d",
+    "arm-rgb16-point-4-merged.psd": "6e407669e29d291135da318b6176761acc3a87424587487c187e4e60a3eea691",
+    "arm-rgb16-point-8-merged.psd": "b54ecbd25da49ec0c9dfeb54017d182a6bf5e1455068e63533ee3c8787b34169",
+    "arm-rgb16-texture-0p5-merged.psd": "e8ba75f9afee478103097469f0308a7e83d97be7efd893045df43e96398a6792",
+    "arm-rgb16-texture-100-merged.psd": "f087726171686975fadbf304376e99828777410f9d2c6de81b4a5199b50969c2",
+    "arm-rgb16-texture-1p25-merged.psd": "f580675137e4e29da2900a2e5a1352ae017ce0a9e998f1d89a71f9054954650f",
+    "arm-rgb16-texture-250-merged.psd": "43870cae45fa7583c88434317802d5de60a61c283054e35cd1ca27153e2e0da8",
+    "arm-rgb16-texture-3p5-merged.psd": "d24aa6a667f6fe518b2e9bc9b9f6db92880766306df3f9963c0ba198ce107690",
+    "arm-rgb16-texture-4-merged.psd": "975fa5140459347546040c006f3b38f77dccfd377e84f7b95c8b410378061557",
+    "arm-rgb16-texture-8-merged.psd": "14c268ab978915d9863d4f18d58a74dd08ca2947474cf8847a362fead5e98241",
+    "arm-rgb8-offset-texture-250-merged.psd": "588923e1ac3597ff4c54bae8ae11a12224ed55b516e5a849df7d09aea548c7c0",
+    "arm-rgb8-offset-texture-4-merged.psd": "b4da9bd8f76af0586a05da79cf66b72d2b2ec6189425b186029b799f64e406dc",
+    "arm-rgb8-offset-texture-8-merged.psd": "c1c02148f88ea1c8b99d9d5c93e1da53c5ba8d53abfcbbe6356d5a71ba889ff9",
+    "arm-rgb8-point-0p5-merged.psd": "8fcc3f74a2a252a1df023b008c3cc642aa0e9eb7f41e0af01b68ace5a67b1fd6",
+    "arm-rgb8-point-100-merged.psd": "b9c8a0634fe5dda4f158e122eb20fcd80735c07594c10f0f060abb90f393aeb6",
+    "arm-rgb8-point-1p25-merged.psd": "bf070ab28c38c62b6c71af8b12d33080ed84051b559b2ac1f9ae85df957072d0",
+    "arm-rgb8-point-250-merged.psd": "2eb4f179df8ef6a670d1c33031f9404c2949eeba9c4ba987b65144c4a56927d2",
+    "arm-rgb8-point-3p5-merged.psd": "5468eb673edb4a17569fff59f4034723b6e27ce28fb318bd0faf027d85f759c5",
+    "arm-rgb8-point-4-merged.psd": "85e29af9bc87693ed213d89a6b4b63b54a1428bc949757c957beaee8c49bc1d2",
+    "arm-rgb8-point-8-merged.psd": "28aa60e725d0b119fca01dfff3e0cc15be370761ef48207da87e22d6ec5f4dec",
+    "arm-rgb8-texture-0p5-merged.psd": "d7a5721e156b3a111dddc80e8a2b514a5ffe21e621f4ab7e949acbcaa08f53e9",
+    "arm-rgb8-texture-100-merged.psd": "96b469acb476a9b63cab133928bc30227faa7681e95b45b1fa86ecc32dc13f8a",
+    "arm-rgb8-texture-1p25-merged.psd": "6ebd181c7528bfc35178c1582bfa670d0f1d74e8a3f714ae79cb8454ae20a66e",
+    "arm-rgb8-texture-250-merged.psd": "bc396007308577e126cfd7aedc7601c9deb741945d7c68524e16ecc4f05c0edd",
+    "arm-rgb8-texture-3p5-merged.psd": "10211e2cfe1adcd089a0ec036aa8724cc5349f54491b023f92cadc57e4861360",
+    "arm-rgb8-texture-4-merged.psd": "269fca1f96cff7420cb992a1dd11656286fb3841ed3003a92b6a9211076ac711",
+    "arm-rgb8-texture-8-merged.psd": "c99097d5210fd681d32cb8a222c2ffbd244033cab441c35fedf119a1e3f2077a",
+    "rgb16-offset-texture-4.psd": "d4c5bf7e6c226b9687342f11dc38ccd8e665ece7ab83bb746f3ef7294f958117",
+    "rgb16-offset-texture.psd": "2f8bd2005a5c00187d731ecec57ec9f7c1e683292e116ec71aafc5fc901ab5c7",
+    "rgb16-point.psd": "e063835c8881ff651f93aef263f05d1b26a385ddb5a57ee6846463652e1ba1aa",
+    "rgb16-texture.psd": "13a9e2f63573d56017707dde6ce4d3a6629a2ba9bf8c2cbf1f8c06bf0e0c0eb2",
+    "rgb8-offset-texture.psd": "e5e7bcf01c0808cc27704624abf0d57518f99a3f1d3af7ef094e5f0e60cac696",
+    "rgb8-point.psd": "f579bc5ffd20823e23e65dd5a6d21ead3488f8092b75ef2d564f1bbd88963460",
+    "rgb8-texture-1p25.psd": "5a0da7dc348b6c51755f8fbb138cfe8c07658af8c57a3aa25bb1d247c1fbe56c",
+    "rgb8-texture.psd": "a5ca2779d984305f9a0992c7924b63c5db2ef2bb286f35f3b72ce69e5708c870"
+  },
+  "inputs": "Owned synthetic masks. PSD files captured using Photoshop CLI scripting.",
+  "photoshopVersion": "27.2.0",
+  "signature": "ad hoc",
+  "sourceArchitecture": "arm64"
+}

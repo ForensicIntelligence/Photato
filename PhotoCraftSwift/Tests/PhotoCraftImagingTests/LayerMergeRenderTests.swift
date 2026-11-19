@@ -326,6 +326,46 @@ final class LayerMergeRenderTests: XCTestCase {
     }
   }
 
+  func testIntegerMaskFeatherMatchesStoredPhotoshopTexturesPointsAndOffsets() throws {
+    struct Reference: Decodable {
+      let source: String
+      let radius: Double
+      let label: String
+    }
+    struct References: Decodable { let cases: [Reference] }
+    let manifest = try XCTUnwrap(Bundle.module.url(forResource: "references",
+      withExtension: "json", subdirectory: "Fixtures/layer-merge/integer-feather"))
+    let cases = try JSONDecoder().decode(References.self, from: Data(contentsOf: manifest)).cases
+    XCTAssertEqual(cases.count, 34)
+    for record in cases {
+      var source = try PSDCodec.read(file("integer-feather/\(record.source)"))
+      let expected = try PSDCodec.read(file("integer-feather/arm-\(record.label)-merged"))
+      let base = try XCTUnwrap(source.layers.first)
+      let clipIndex = try XCTUnwrap(source.layers.firstIndex { $0.isClipped })
+      let mask = try XCTUnwrap(source.layers[clipIndex].mask)
+      XCTAssertEqual(mask.depth, source.depth, record.label)
+      var properties = source.layers[clipIndex].effectiveMaskProperties
+      properties.feather = record.radius
+      source.layers[clipIndex].maskProperties = properties
+      source.activeLayerID = base.id
+      let sampler = try MaskSampler(layer: source.layers[clipIndex], canvasSize: (source.width, source.height))
+      guard case .raster(let reference) = expected.layers.first?.content else {
+        return XCTFail(record.label)
+      }
+      var different = 0
+      for y in 0..<source.height {
+        for x in 0..<source.width {
+          let coverage = sampler.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5)
+          if coverage.bitPattern != reference.pixel(x: x, y: y).r.bitPattern { different += 1 }
+        }
+      }
+      XCTAssertEqual(different, 0, record.label)
+      let merged = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask)
+        .applied(to: source)
+      try compare(merged, expected, label: record.label)
+    }
+  }
+
   func testFeatheredClippingImpulseRecordsRemainingIntelSampleDifferences() throws {
     #if arch(x86_64)
     let architecture = "intel"

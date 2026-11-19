@@ -125,13 +125,13 @@ public enum NormalLayerComposite {
     return (working(alpha, depth: depth) * opacity + maximum / 2) / maximum
   }
 
-  private static func working(_ value: Float, depth: PixelDepth) -> Int {
+  static func working(_ value: Float, depth: PixelDepth) -> Int {
     if depth == .u8 { return Int((unit(value) * 255).rounded()) }
     let stored = Int((unit(value) * 65535).rounded())
     return (stored * 32768 + 32767) / 65535
   }
 
-  private static func normalized(_ value: Int, depth: PixelDepth) -> Float {
+  static func normalized(_ value: Int, depth: PixelDepth) -> Float {
     if depth == .u8 { return Float(value) / 255 }
     return Float((value * 65535 + 16384) / 32768) / 65535
   }

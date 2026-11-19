@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "integer_feather_build590": {
+    "evidence": "docs/INTEGER_MASK_FEATHER_590.json",
+    "scope": "Shared raster pixel-mask Feather rendering at RGB8 and RGB16 with reference comparisons at seven radii.",
+    "limits": "Existing Adobe job descriptors apply. Further fractional, affine, and physical platform coverage remains open."
+  },
   "feathered_clipping_build589": {
     "evidence": "docs/FEATHERED_CLIPPING_589.json",
     "scope": "Eligible raster clipping merges and stamps use existing layer-mask Feather through 1,000 px on the desktop, Photato API, and both local ActionJSON job routes.",

@@ -144,6 +144,13 @@ final class AutomationLayerMergeTests: XCTestCase {
     ], requestTimeout: 90)
   }
 
+  @MainActor func testIntegerMaskFeatherThroughDesktopAndHTTPMatchesPhotoshopAndUndoes() async throws {
+    try await verifyClippedWorkflow(folder: "integer-feather", referenceArchitecture: "arm", cases: [
+      ("rgb8-texture-1p25", .clippingMask, "clippingMask", "Reference Black"),
+      ("rgb16-offset-texture-4", .clippingMask, "clippingMask", "Reference Black"),
+    ])
+  }
+
   @MainActor func testClippedArithmeticModesThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
     try await verifyClippedWorkflow(folder: "clipped-arithmetic", cases: [
       ("clipped-arithmetic-8-partial-linearAdd-37-merge-mask", .clippingMask, "clippingMask", "Clipping base"),

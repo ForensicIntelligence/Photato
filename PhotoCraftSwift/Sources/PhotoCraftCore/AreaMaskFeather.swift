@@ -1,12 +1,19 @@
-/// A staged box filter for the measured whole-pixel RGB32 path and wide layer masks.
+/// Staged square windows and measured short kernels for raster-layer masks.
 /// The source is extended once across the canvas, raster and mask envelope.
-/// Each pass narrows to Float32 after division by the area of the square window.
+/// Each square pass stores either a Float32 average or a rounded integer sample.
 struct AreaMaskFeather: Sendable {
   let bounds: IntRect
   let widths: [Int]
   let extendEdges: Bool
   private let streamed: Bool
+  private let integerDepth: PixelDepth?
+  private let taps: [Int]?
   var support: Int { widths.reduce(0) { $0 + $1 / 2 } }
+
+  private static let dyadicTaps: [Double: [Int]] = [
+    0.5: [1, 55, 144, 55, 1],
+    1.25: [1, 6, 25, 57, 78, 57, 25, 6, 1],
+  ]
 
   static func widths(at radius: Double) -> [Int]? {
     guard (3...MaskProperties.layerFeatherRange.upperBound).contains(radius) else { return nil }
@@ -32,20 +39,33 @@ struct AreaMaskFeather: Sendable {
   }
 
   init?(layer: Layer, source: Surface, radius: Double, canvas: (width: Int, height: Int)?) {
-    guard let widths = Self.widths(at: radius) else { return nil }
     let wide = radius > 100
     let raster: Surface?
     if case .raster(let value) = layer.content { raster = value } else { raster = nil }
-    guard wide || source.depth == .f32 && raster?.depth == .f32 else { return nil }
-    self.widths = widths
-    streamed = wide
+    let envelope: IntRect?
     if let canvas, let (mx, my) = Self.translation(layer.maskCoordinateTransform),
       let (rx, ry) = Self.translation(layer.coordinateTransform),
       (1...Surface.maxDimension).contains(canvas.width), (1...Surface.maxDimension).contains(canvas.height) {
       let left = min(0, rx, mx), top = min(0, ry, my)
       let right = max(canvas.width, rx + (raster?.width ?? 0), mx + source.width)
       let bottom = max(canvas.height, ry + (raster?.height ?? 0), my + source.height)
-      bounds = .init(x: left - mx, y: top - my, width: right - left, height: bottom - top)
+      envelope = .init(x: left - mx, y: top - my, width: right - left, height: bottom - top)
+    } else {
+      envelope = nil
+    }
+    let integerDepth = envelope != nil && raster?.depth == source.depth && source.depth != .f32
+      ? source.depth : nil
+    let taps = integerDepth == nil ? nil : Self.dyadicTaps[radius]
+    let measuredFractional = integerDepth != nil && radius == 3.5 ? [7, 7, 7, 3] : nil
+    guard let widths = taps.map({ [$0.count] }) ?? measuredFractional ?? Self.widths(at: radius),
+      wide || integerDepth != nil || source.depth == .f32 && raster?.depth == .f32
+    else { return nil }
+    self.widths = widths
+    self.integerDepth = integerDepth
+    self.taps = taps
+    streamed = wide
+    if let envelope {
+      bounds = envelope
       extendEdges = true
     } else {
       guard wide else { return nil }
@@ -53,6 +73,12 @@ struct AreaMaskFeather: Sendable {
       bounds = .init(x: -pad, y: -pad, width: source.width + 2 * pad, height: source.height + 2 * pad)
       extendEdges = false
     }
+  }
+
+  func interiorSample(_ value: Float) -> Float {
+    guard let integerDepth else { return value }
+    return NormalLayerComposite.normalized(NormalLayerComposite.working(value, depth: integerDepth),
+      depth: integerDepth)
   }
 
   private static func translation(_ t: Transform2D) -> (Int, Int)? {
@@ -78,16 +104,33 @@ struct AreaMaskFeather: Sendable {
     let implicit = unit(source.defaultPixel.r)
     if read.width == 0 || read.height == 0 { return (nil, outside) }
     let fullyInside = left >= 0 && top >= 0 && right < source.width && bottom < source.height
-    if !source.hasFeatherSamples(in: read), implicit == outside || fullyInside { return (nil, implicit) }
+    if !source.hasFeatherSamples(in: read), implicit == outside || fullyInside {
+      return (nil, interiorSample(implicit))
+    }
+    func stageSample(_ value: Float) -> Float {
+      guard let integerDepth else { return value }
+      return Float(NormalLayerComposite.working(value, depth: integerDepth))
+    }
+    func storedSamples(in region: IntRect) -> [Float]? {
+      let samples = source.featherInput(in: region)
+      guard integerDepth != nil else { return samples }
+      return samples?.map(stageSample)
+    }
+    func outputSamples(_ values: [Float]) -> (samples: [Float]?, uniform: Float) {
+      guard let integerDepth else { return (values, outside) }
+      return (values.map { NormalLayerComposite.normalized(Int($0), depth: integerDepth) }, outside)
+    }
+    let stageOutside = stageSample(outside)
+    let stageImplicit = stageSample(implicit)
 
     func inputRow(stored: [Float]?, offset: Int) -> [Float] {
-      var values = [Float](repeating: outside, count: w)
-      let leading = read.x == bounds.x && extendEdges ? stored?[offset] ?? implicit : outside
+      var values = [Float](repeating: stageOutside, count: w)
+      let leading = read.x == bounds.x && extendEdges ? stored?[offset] ?? stageImplicit : stageOutside
       let trailing = read.x + read.width - 1 == boundRight && extendEdges
-        ? stored?[offset + read.width - 1] ?? implicit : outside
+        ? stored?[offset + read.width - 1] ?? stageImplicit : stageOutside
       let start = max(0, read.x - inputX), end = min(w, read.x + read.width - inputX)
       for x in 0..<start { values[x] = leading }
-      for x in start..<end { values[x] = stored?[offset + inputX + x - read.x] ?? implicit }
+      for x in start..<end { values[x] = stored?[offset + inputX + x - read.x] ?? stageImplicit }
       for x in end..<w { values[x] = trailing }
       return values
     }
@@ -97,17 +140,18 @@ struct AreaMaskFeather: Sendable {
       return extendEdges ? min(boundBottom, max(bounds.y, y)) : y
     }
     if streamed {
-      let filtered = StreamingAreaFeather.filter(width: w, height: h, widths: widths) { row in
+      let filtered = StreamingAreaFeather.filter(width: w, height: h, widths: widths,
+        integerSamples: integerDepth != nil) { row in
         let sy = sourceY(row)
-        guard sy >= read.y, sy < read.y + read.height else { return [Float](repeating: outside, count: w) }
+        guard sy >= read.y, sy < read.y + read.height else { return [Float](repeating: stageOutside, count: w) }
         let line = IntRect(x: read.x, y: sy, width: read.width, height: 1)
-        return inputRow(stored: source.featherInput(in: line), offset: 0)
+        return inputRow(stored: storedSamples(in: line), offset: 0)
       }
       guard let filtered else { return nil }
-      return (filtered, outside)
+      return outputSamples(filtered)
     }
 
-    let stored = source.featherInput(in: read)
+    let stored = storedSamples(in: read)
     var data: [Float] = []
     data.reserveCapacity(w * h)
     for row in 0..<h {
@@ -115,18 +159,43 @@ struct AreaMaskFeather: Sendable {
       if sy >= read.y && sy < read.y + read.height {
         data.append(contentsOf: inputRow(stored: stored, offset: (sy - read.y) * read.width))
       } else {
-        data.append(contentsOf: repeatElement(outside, count: w))
+        data.append(contentsOf: repeatElement(stageOutside, count: w))
       }
     }
+    if let taps {
+      return outputSamples(Self.dyadicPass(data, width: w, height: h, taps: taps))
+    }
     for k in widths {
-      data = Self.pass(data, width: w, height: h, side: k)
+      data = Self.pass(data, width: w, height: h, side: k, integerSamples: integerDepth != nil)
       w -= k - 1
       h -= k - 1
     }
-    return (data, outside)
+    return outputSamples(data)
   }
 
-  private static func pass(_ input: [Float], width: Int, height: Int, side: Int) -> [Float] {
+  private static func dyadicPass(_ input: [Float], width: Int, height: Int, taps: [Int]) -> [Float] {
+    let columns = width - taps.count + 1, rows = height - taps.count + 1
+    var horizontal = [Int](repeating: 0, count: columns * height)
+    for y in 0..<height {
+      for x in 0..<columns {
+        var sum = 0
+        for i in taps.indices { sum += Int(input[y * width + x + i]) * taps[i] }
+        horizontal[y * columns + x] = (sum + 128) / 256
+      }
+    }
+    var output = [Float](repeating: 0, count: columns * rows)
+    for y in 0..<rows {
+      for x in 0..<columns {
+        var sum = 0
+        for i in taps.indices { sum += horizontal[(y + i) * columns + x] * taps[i] }
+        output[y * columns + x] = Float((sum + 128) / 256)
+      }
+    }
+    return output
+  }
+
+  private static func pass(_ input: [Float], width: Int, height: Int, side: Int,
+    integerSamples: Bool) -> [Float] {
     let columns = width - side + 1, rows = height - side + 1
     var horizontal = [Double](repeating: 0, count: columns * height)
     for y in 0..<height {
@@ -152,7 +221,11 @@ struct AreaMaskFeather: Sendable {
         let entering = (y + side - 1) * columns, leaving = start - columns
         for x in 0..<columns { vertical[x] += horizontal[entering + x] - horizontal[leaving + x] }
       }
-      for x in 0..<columns { result[start + x] = Float(vertical[x] / area) }
+      if integerSamples {
+        for x in 0..<columns { result[start + x] = Float((vertical[x] / area).rounded()) }
+      } else {
+        for x in 0..<columns { result[start + x] = Float(vertical[x] / area) }
+      }
     }
     return result
   }
