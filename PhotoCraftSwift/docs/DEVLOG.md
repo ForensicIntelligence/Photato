@@ -618,7 +618,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 597 | 2026-11-19 | [Reuse window sums during wide mask Feather](#dev-step-597) |
 | 598 | 2026-11-19 | [Render whole-canvas rectangular vector masks](#dev-step-598) |
 | 599 | 2026-11-19 | [Reuse wide vector-mask Feather windows](#dev-step-599) |
+| 600 | 2026-11-19 | [Prove RGB32 raster-base opacity with rectangular Feather](#dev-step-600) |
 <!-- history-index:end -->
+
+<a id="dev-step-600"></a>
+
+## 2026-11-19 — Prove RGB32 raster-base opacity with rectangular Feather
+
+The compositor selects RGB32 Normal opacity arithmetic using the whole bottom raster, even when drawing a small viewport. A feathered rectangle on that layer could send the calculation through a canvas-wide pixel scan or prevent the paged renderer from reusing tiles. Adobe documents the independent path, Density and Feather controls. [Adobe vector masks](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html).
+
+`FeatheredMask` groups equivalent axis windows by their full input footprint and the exact output interval being checked. Each representative uses the same kernel and samples as ordinary rendering. `VectorFeatherCoverage` first checks whether Density makes all coverage round to one and looks for a real sample that rules out opacity. The sampler supplies a proof only from a global rectangular mask. `CompositionFacts` still checks the pixel mask and the raster's own alpha independently. `PagedCanvasRenderer` uses the rectangular plan for eligible large or widely feathered all-raster RGB32 stacks.
+
+`VectorRenderTests` checks proof results against every sample in seven bounded controls. The 300,000 × 300,000 test compares the opaque and transparent RGB32 blend paths with separate small raster controls, then checks a distant vector hole, a pixel-mask hole and transparent raster samples. The first build rejected the generic cache callback under Swift's Sendable checks. The callback now carries a Sendable result and captures only Sendable values. The original compile failure and corrected source snapshot are recorded under `artifacts/600-rectangular-opacity/qualification01` and `artifacts/600-rectangular-opacity/qualification02`.
+
+Both new methods passed in the focused Debug run. The installed Photoshop app answered a version-only AppleEvent with 27.2.0. An edit, save and reopen request for six authored RGB32 controls returned AppleEvent error −1712 before any saved file appeared. The subsequent read-only document count also timed out. The two input PSDs and capture script are preserved locally for another attempt.
+
+The 37.8 MP opaque-base test with 2 px Feather went from 52.80 s to 0.02 s on Apple Silicon and from 69.40 s to 0.02 s under Rosetta. These are single runs on the same host.
+
+The 300,000 × 300,000 opaque-base test at 1,000 px completed in 1.27 s on Apple Silicon and 1.79 s under Rosetta. The narrow and wide opaque controls and the distant inverted-hole control each matched 9,248 sampled Float32 words on each architecture against the corresponding build 599 37.8 MP controls.
+
+The small inverted-hole control rendered 26 patches in build 600 and two in build 599. Its single-run Apple Silicon time increased from 0.015 s to 0.018 s. Under Rosetta it increased from 0.009 s to 0.027 s.
+
+A 36-mask corpus matched all 859,143 coverage words against build 599 on each architecture. Every opacity result matched an exhaustive scan of its corpus case. The prior wide inverted-stripe control with a fill layer also matched all 11,560 sampled words in an Apple Silicon rerun.
+
+All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed signature and offscreen launch checks and declare macOS 14 as the minimum.
+
+Photoshop 27.2.0 answered a version request. Its six-file Feather capture timed out before saving any controls. Fresh Photoshop samples, broader vector geometry, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_600.md).
 
 <a id="dev-step-599"></a>
 

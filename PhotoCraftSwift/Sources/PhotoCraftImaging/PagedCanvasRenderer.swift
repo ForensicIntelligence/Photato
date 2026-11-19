@@ -310,12 +310,13 @@ enum PagedCanvasRenderer {
         default: return nil
         }
       }
-      // RGB32 Normal expands opacity using a proof about the entire bottom
-      // layer. A feathered bottom raster can still need the general proof.
-      guard !shapes.isEmpty, shapes.count <= 32,
-        hasFill || document.depth != .f32 ||
-          visible.first?.vectorMask.map({ $0.enabled && $0.density > 0 && $0.feather > 0 }) != true
-      else { return nil }
+      guard !shapes.isEmpty, shapes.count <= 32 else { return nil }
+      // Small, narrowly feathered masks can still take the dense rasterizer.
+      // Large canvases and wide Feather both prepare a bounded vector plane.
+      if !hasFill, document.depth == .f32, let bottom = visible.first?.vectorMask,
+        bottom.enabled, bottom.density > 0, bottom.feather > 0, bottom.feather <= 100,
+        document.width <= Surface.maximumDensePixels / document.height
+      { return nil }
       x = Axis(length: document.width, bounds: shapes.map { ($0.rect.x, $0.rect.width, $0.margin, $0.phaseCount) })
       y = Axis(length: document.height, bounds: shapes.map { ($0.rect.y, $0.rect.height, $0.margin, $0.phaseCount) })
       exceptions = sources

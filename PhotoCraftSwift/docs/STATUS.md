@@ -1,3 +1,5 @@
+**Source checkpoint 600.** Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows. [Qualification](SOURCE_PUBLICATION_600.md).
+
 **Source checkpoint 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Qualification](SOURCE_PUBLICATION_599.md).
 
 **Source checkpoint 598.** Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks. [Qualification](SOURCE_PUBLICATION_598.md).

@@ -63,6 +63,9 @@ public struct LayerMaskSampler: Sendable {
   var vectorFeatherSupport: [IntRect]? { featheredVector?.support }
   var vectorFeatherBytes: Int? { featheredVector?.maximumResidentBytes }
   var vectorFeatherOutside: Float? { featheredVector?.adjustedOutside }
+  func rectangleFeatherIsUnit(width: Int, height: Int) throws -> Bool? {
+    try featheredVector?.rectangleIsUnit(width: width, height: height)
+  }
   func featheredVectorCoverage(x: Int, y: Int) -> Float {
     featheredVector?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
   }

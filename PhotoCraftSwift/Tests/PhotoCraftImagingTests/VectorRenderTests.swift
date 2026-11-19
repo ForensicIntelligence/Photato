@@ -355,6 +355,94 @@ final class VectorRenderTests: XCTestCase {
     }
   }
 
+  func testRectangularFeatherOpacityProofMatchesEveryCanvasSample() throws {
+    let width = 151, height = 131
+    let cases: [(PathComponent, Bool, Double, Float)] = [
+      (rect(-50, -50, 250, 235), false, 2, 1),
+      (rect(-50, -50, 250, 235), false, 2.25, 1),
+      (rect(12, 23, 105, 79), false, 2, 0x1p-26),
+      (rect(-9, 33, 11, 81), true, 4.5, 0.82),
+      (rect(177, 180, 17, 15), true, 2, 1),
+      (rect(-330, -330, 811, 791), false, 110.25, 1),
+      (rect(187, 177, 81, 85), true, 110.25, 0.73),
+    ]
+    for (index, fixture) in cases.enumerated() {
+      let (path, inverted, radius, density) = fixture
+      var mask = VectorMask(path: VectorPath(components: [path], inverted: inverted))
+      mask.feather = radius
+      mask.density = density
+      let sampler = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: inverted ? 1 : 0)
+      let expected = (0..<height).allSatisfy { y in
+        (0..<width).allSatisfy { x in sampler.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) == 1 }
+      }
+      XCTAssertEqual(try sampler.rectangleIsUnit(width: width, height: height), expected, "case \(index)")
+      let clipped = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: inverted ? 1 : 0,
+        viewport: IntRect(x: 90, y: 90, width: 2, height: 3))
+      XCTAssertNil(try clipped.rectangleIsUnit(width: width, height: height))
+    }
+  }
+
+  func testMaximumRGB32RasterStackUsesGlobalFeatheredBaseOpacity() throws {
+    let side = 300_000
+    let back = Pixel(0, 0.37, 0.63), front = Pixel(1, 0.31, 0.11)
+    func document(size: Int, transparentReference: Bool = false) throws -> CraftDocument {
+      var doc = try CraftDocument(width: size, height: size, depth: .f32)
+      var backing = try Surface(width: size, height: size, depth: .f32, fill: back, colorEncoding: .linearRGB)
+      if transparentReference { backing.setLinearPixel(x: 0, y: 0, Pixel(back.r, back.g, back.b, 0.5)) }
+      let base = Layer(name: "Raster base", content: .raster(backing))
+      var top = Layer(name: "Partial raster overlay", content: .raster(try Surface(width: size, height: size,
+        depth: .f32, fill: front, colorEncoding: .linearRGB)))
+      top.opacity = 119 / 255
+      doc.layers = [base, top]
+      doc.activeLayerID = top.id
+      return doc
+    }
+    var full = try document(size: side)
+    let opaqueControl = try Renderer.composite(document(size: 17)).linearPixel(x: 16, y: 16)
+    let transparentControl = try Renderer.composite(document(size: 17, transparentReference: true))
+      .linearPixel(x: 16, y: 16)
+    XCTAssertFalse(opaqueControl.hasSameBits(as: transparentControl))
+    let canvas = IntRect(x: 0, y: 0, width: side, height: side)
+    let near = IntRect(x: 123, y: 67, width: 5, height: 7)
+    let hole = rect(287_025, 294_031, 29, 39, .subtract)
+    for opaque in [true, false] {
+      let path = opaque ? rect(-20, -20, Double(side + 40), Double(side + 40)) : hole
+      var mask = VectorMask(path: VectorPath(components: [path]))
+      mask.feather = 2
+      full.layers[0].vectorMask = mask
+      let facts = CompositionFacts(full, vectorViewport: near)
+      let localMask = try XCTUnwrap(facts.mask(full.layers[0], region: near))
+      XCTAssertEqual(localMask.coverage(x: Double(near.x) + 0.5, y: Double(near.y) + 0.5), 1)
+      XCTAssertEqual(try facts.opaqueBase(full.layers[0]), opaque)
+      let expected = opaque ? opaqueControl : transparentControl
+      let local = try Renderer.composite(full, region: near)
+      XCTAssertTrue(local.linearPixel(x: near.x, y: near.y).hasSameBits(as: expected))
+      var patches = 0
+      let whole = try PagedCanvasRenderer.composite(full, region: canvas, onPatch: { patches = $0 })
+      XCTAssertLessThan(patches, 100)
+      XCTAssertTrue(whole.linearPixel(x: near.x, y: near.y).hasSameBits(as: expected))
+      if !opaque {
+        let remote = IntRect(x: 287_035, y: 294_043, width: 7, height: 7)
+        let viewport = try Renderer.composite(full, region: remote)
+        XCTAssertLessThan(whole.linearPixel(x: remote.x, y: remote.y).a, expected.a)
+        XCTAssertEqual(try whole.cropped(to: remote).rgbaData(depth: .f32, colorEncoding: .linearRGB),
+          try viewport.cropped(to: remote).rgbaData(depth: .f32, colorEncoding: .linearRGB))
+      }
+    }
+    var mask = VectorMask(path: VectorPath(components: [rect(-20, -20, Double(side + 40), Double(side + 40))]))
+    mask.feather = 2
+    full.layers[0].vectorMask = mask
+    var pixelMask = try Surface(width: side, height: side, depth: .f32, fill: .white)
+    pixelMask.setPixel(x: side - 2, y: side - 2, .black)
+    full.layers[0].mask = pixelMask
+    XCTAssertFalse(try CompositionFacts(full, vectorViewport: near).opaqueBase(full.layers[0]))
+    full.layers[0].mask = nil
+    guard case .raster(var pixels) = full.layers[0].content else { return XCTFail("Raster fixture") }
+    pixels.setLinearPixel(x: side - 2, y: side - 2, Pixel(back.r, back.g, back.b, 0.8))
+    full.layers[0].content = .raster(pixels)
+    XCTAssertFalse(try CompositionFacts(full, vectorViewport: near).opaqueBase(full.layers[0]))
+  }
+
   func testWideVectorFeatherPreservesEditablePSDAndPSBMaskProperties() throws {
     for both in [false, true] {
       for format in PSDFileFormat.allCases {

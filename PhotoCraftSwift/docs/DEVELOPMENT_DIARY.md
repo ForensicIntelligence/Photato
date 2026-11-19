@@ -1,3 +1,13 @@
+## 2026-11-19 — Step 600 — Prove RGB32 raster-base opacity with rectangular Feather
+
+The 37.8 MP opaque-base test with 2 px Feather went from 52.80 s to 0.02 s on Apple Silicon and from 69.40 s to 0.02 s under Rosetta. These are single runs on the same host.
+
+The 300,000 × 300,000 opaque-base test at 1,000 px completed in 1.27 s on Apple Silicon and 1.79 s under Rosetta. The narrow and wide opaque controls and the distant inverted-hole control each matched 9,248 sampled Float32 words on each architecture against the corresponding build 599 37.8 MP controls.
+
+All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-600) · [Validation](SOURCE_PUBLICATION_600.md).
+
 ## 2026-11-19 — Step 599 — Reuse wide vector-mask Feather windows
 
 The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask completed in 35.71 s on Apple Silicon and 49.08 s under Rosetta. Build 598 exceeded the 200-second cutoff on Apple Silicon. The new whole-canvas output matched all 11,560 sampled Float32 words of the previous viewport output on each architecture.
@@ -787,14 +797,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:599 -->
+<!-- current-status-step:600 -->
 ## Current development status — 19 November 2026
 
-Wide rectangular vector masks reuse filtered windows across the canvas.
+Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows.
 
-All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 599](SOURCE_PUBLICATION_599.md) · [Detailed record](DEVLOG.md#dev-step-599).
+[Source checkpoint 600](SOURCE_PUBLICATION_600.md) · [Detailed record](DEVLOG.md#dev-step-600).
 
 <!-- current-status:end -->
 
@@ -1600,6 +1610,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 597 | [Reuse window sums during wide mask Feather](DEVLOG.md#dev-step-597) |
 | 2026-11-19 | 598 | [Render whole-canvas rectangular vector masks](DEVLOG.md#dev-step-598) |
 | 2026-11-19 | 599 | [Reuse wide vector-mask Feather windows](DEVLOG.md#dev-step-599) |
+| 2026-11-19 | 600 | [Prove RGB32 raster-base opacity with rectangular Feather](DEVLOG.md#dev-step-600) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

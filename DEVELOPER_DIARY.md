@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **599** · The 10 most recent entries, newest first.
+Source build **600** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 600 — Prove RGB32 raster-base opacity with rectangular Feather
+
+The 37.8 MP opaque-base test with 2 px Feather went from 52.80 s to 0.02 s on Apple Silicon and from 69.40 s to 0.02 s under Rosetta. These are single runs on the same host.
+
+The 300,000 × 300,000 opaque-base test at 1,000 px completed in 1.27 s on Apple Silicon and 1.79 s under Rosetta. The narrow and wide opaque controls and the distant inverted-hole control each matched 9,248 sampled Float32 words on each architecture against the corresponding build 599 37.8 MP controls.
+
+All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-600) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_600.md).
 
 ## 2026-11-19 — Step 599 — Reuse wide vector-mask Feather windows
 
@@ -75,11 +85,3 @@ Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 1
 All 861 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-591) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_591.md).
-
-## 2026-11-19 — Step 590 — Match integer raster-mask Feather stages
-
-Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. The 34 Photoshop control files cover points, textures and translated masks. An independent reader checked 51,578 native PSD colour words in each test configuration. All matched the saved Apple Silicon Photoshop references.
-
-All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The independent Photoshop Rosetta capture remains pending.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_590.md).

@@ -1,3 +1,7 @@
+**Source checkpoint 600.** Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows. [Qualification](SOURCE_PUBLICATION_600.md).
+
+Retain the lower patch count for sparse inverted rectangles. Extend bounded whole-canvas Feather to nonrectangular vector paths and check exact opacity around their real coverage support. Collect fresh Photoshop outputs for wide vector and Smart Filter masks.
+
 **Source checkpoint 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Qualification](SOURCE_PUBLICATION_599.md).
 
 Prove global opacity for RGB32 bottom raster layers with bounded rectangular Feather before enabling whole-canvas tile reuse on those stacks. Extend coverage to broader paths and capture fresh Photoshop references for wide vector and Smart Filter masks.

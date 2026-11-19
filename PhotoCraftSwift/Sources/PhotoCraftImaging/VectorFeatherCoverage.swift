@@ -8,6 +8,7 @@ struct VectorFeatherCoverage: Sendable {
   private let padding: Int
   private let density: Float
   private let isRegionLimited: Bool
+  private let globalRectangle: IntRect?
   let support: [IntRect]
   let maximumResidentBytes: Int
   let transferredInputPixels: Int
@@ -37,7 +38,9 @@ struct VectorFeatherCoverage: Sendable {
     let source: FeatherSamplePlane
     let residentBytes: Int
     let hasSamples: Bool
-    if let rectangle = VectorRasterizer.integerRectangle(mask.path) {
+    let integerRectangle = VectorRasterizer.integerRectangle(mask.path)
+    globalRectangle = viewport == nil ? integerRectangle : nil
+    if let rectangle = integerRectangle {
       let scope = window ?? IntRect(x: 0, y: 0, width: rawWidth, height: rawHeight)
       var local = IntRect(x: rectangle.x + pad - scope.x, y: rectangle.y + pad - scope.y,
         width: rectangle.width, height: rectangle.height).clipped(toWidth: scope.width, height: scope.height)
@@ -72,6 +75,27 @@ struct VectorFeatherCoverage: Sendable {
   func coverage(x: Double, y: Double) -> Float {
     if density == 0 { return 1 }
     return adjusted(plane.sampleInSource(x: x + Double(padding), y: y + Double(padding)))
+  }
+
+  func rectangleIsUnit(width: Int, height: Int) throws -> Bool? {
+    guard let rectangle = globalRectangle else { return nil }
+    // Density is monotone over unit coverage, including when Float32 rounds
+    // even the least possible coverage back to one.
+    if adjusted(0) == 1 { return true }
+    if adjustedOutside == 1 {
+      let x = max(0, min(width - 1, rectangle.x + rectangle.width / 2))
+      let y = max(0, min(height - 1, rectangle.y + rectangle.height / 2))
+      if coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) != 1 { return false }
+    } else {
+      for y in [0, height - 1] {
+        for x in [0, width - 1] {
+          if coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) != 1 { return false }
+        }
+      }
+    }
+    return try plane.rectangleSamplesAreUnit(in: IntRect(x: padding, y: padding, width: width, height: height)) {
+      adjusted($0)
+    }
   }
 
   private func adjusted(_ raw: Float) -> Float {

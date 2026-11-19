@@ -124,13 +124,17 @@ final class CompositionFacts {
             y: Double(viewport.y + viewport.height / 2) + 0.5) != 1
         { return false }
         if let sampler = try mask(layer) {
-          guard let rectangles = sampler.vectorFeatherSupport, sampler.vectorFeatherOutside == 1
-          else { return nil }
-          for patch in GeometryPatchRegions(width: document.width, height: document.height, rectangles: rectangles) {
-            for y in patch.y..<(patch.y + patch.height) {
-              try Task.checkCancellation()
-              for x in patch.x..<(patch.x + patch.width) where sampler.featheredVectorCoverage(x: x, y: y) != 1 {
-                return false
+          if let vectorUnit = try sampler.rectangleFeatherIsUnit(width: document.width, height: document.height) {
+            if !vectorUnit { return false }
+          } else {
+            guard let rectangles = sampler.vectorFeatherSupport, sampler.vectorFeatherOutside == 1
+            else { return nil }
+            for patch in GeometryPatchRegions(width: document.width, height: document.height, rectangles: rectangles) {
+              for y in patch.y..<(patch.y + patch.height) {
+                try Task.checkCancellation()
+                for x in patch.x..<(patch.x + patch.width) where sampler.featheredVectorCoverage(x: x, y: y) != 1 {
+                  return false
+                }
               }
             }
           }

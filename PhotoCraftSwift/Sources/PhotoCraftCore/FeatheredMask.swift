@@ -291,7 +291,13 @@ package final class FeatheredMask: Sendable {
   func value(_ x: Int, _ y: Int) -> Float {
     if isConstantOutside { return outside }
     let side = cacheSide
-    let column = x / side, row = y / side
+    return withTile(column: x / side, row: y / side) {
+      $0.value(atX: x % side, y: y % side)
+    } ?? outside
+  }
+
+  private func withTile<T: Sendable>(column: Int, row: Int, _ read: @Sendable (Values) -> T) -> T? {
+    let side = cacheSide
     // Direct mapping retains consecutive tiles across a compositor patch.
     let slot = (column + row * 17) % cacheSlots
     return cache.withLock { state in
@@ -306,19 +312,79 @@ package final class FeatheredMask: Sendable {
           } else if let cached = state.rectangles[window] {
             values = cached
           } else {
-            guard let samples = area.filterRectangle(window, outside: outside) else { return outside }
+            guard let samples = area.filterRectangle(window, outside: outside) else { return nil }
             values = .samples(samples, width: tileWidth)
             state.insert(values, for: window)
           }
         } else {
           guard let prepared = prepare(x: originX - padding, y: originY - padding,
-            width: tileWidth, height: tileHeight) else { return outside }
+            width: tileWidth, height: tileHeight) else { return nil }
           values = prepared
         }
         state.positions[slot] = Entry(x: column, y: row, values: values)
       }
-      return state.positions[slot]!.values.value(atX: x % side, y: y % side)
+      return read(state.positions[slot]!.values)
     }
+  }
+
+  private struct RectangleAxisWindow: Hashable {
+    let extent: Int
+    let sourceSamples: Range<Int>
+    let insideRectangle: Range<Int>
+    let requested: Range<Int>
+  }
+
+  /// For binary rectangles with unclamped edges, equal pairs of axis windows
+  /// have the same full input and the same output subset. The raw-source range
+  /// also preserves the short filter's special treatment of rows off the source.
+  package func rectangleSamplesAreUnit(in region: IntRect, adjusted: @Sendable (Float) -> Float) throws -> Bool {
+    try Task.checkCancellation()
+    if isConstantOutside { return adjusted(outside) == 1 }
+    let rect = source.rectangle
+    let side = cacheSide, pad = support
+    func representatives(start: Int, count: Int, origin: Int, extent: Int, sourceExtent: Int,
+      inside: Range<Int>) -> [(tile: Int, samples: Range<Int>)] {
+      let first = start - origin, end = first + count
+      var seen: Set<RectangleAxisWindow> = []
+      var result: [(Int, Range<Int>)] = []
+      for tile in (first / side)...((end - 1) / side) {
+        let offset = tile * side
+        let length = min(side, extent - offset)
+        let input = origin + offset - pad
+        let inputEnd = input + length + 2 * pad
+        func local(_ interval: Range<Int>) -> Range<Int> {
+          let low = max(input, interval.lowerBound), high = min(inputEnd, interval.upperBound)
+          return low < high ? (low - input)..<(high - input) : 0..<0
+        }
+        let samples = max(0, first - offset)..<min(length, end - offset)
+        let key = RectangleAxisWindow(extent: length, sourceSamples: local(0..<sourceExtent),
+          insideRectangle: local(inside), requested: samples)
+        if seen.insert(key).inserted { result.append((tile, samples)) }
+      }
+      return result
+    }
+    let axes = origin
+    let columns = representatives(start: region.x, count: region.width, origin: axes.x,
+      extent: width, sourceExtent: source.width, inside: rect.map { $0.x..<($0.x + $0.width) } ?? 0..<0)
+    let rows = representatives(start: region.y, count: region.height, origin: axes.y,
+      extent: height, sourceExtent: source.height, inside: rect.map { $0.y..<($0.y + $0.height) } ?? 0..<0)
+    for row in rows {
+      for column in columns {
+        try Task.checkCancellation()
+        guard let unitTile = withTile(column: column.tile, row: row.tile, { values in
+          switch values {
+          case .uniform(let value): return adjusted(unit(value)) == 1
+          case .samples(let values, let width):
+            for y in row.samples {
+              for x in column.samples where adjusted(unit(values[y * width + x])) != 1 { return false }
+            }
+            return true
+          }
+        }) else { throw CancellationError() }
+        if !unitTile { return false }
+      }
+    }
+    return true
   }
 
   func region(_ bounds: IntRect) throws -> Values {
