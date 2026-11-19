@@ -80,7 +80,8 @@ struct AreaMaskFeather: Sendable {
     return widths
   }
 
-  init?(layer: Layer, source: Surface, radius: Double, canvas: (width: Int, height: Int)?) {
+  init?(layer: Layer, source: Surface, radius: Double, canvas: (width: Int, height: Int)?,
+    roundsIntegerStages: Bool = true) {
     let wide = radius > 100
     let raster: Surface?
     if case .raster(let value) = layer.content { raster = value } else { raster = nil }
@@ -95,7 +96,7 @@ struct AreaMaskFeather: Sendable {
     } else {
       envelope = nil
     }
-    let integerDepth = envelope != nil && raster?.depth == source.depth && source.depth != .f32
+    let integerDepth = roundsIntegerStages && envelope != nil && raster?.depth == source.depth && source.depth != .f32
       ? source.depth : nil
     let rgb32 = source.depth == .f32 && raster?.depth == .f32
     let taps = integerDepth == nil ? nil : Self.dyadicTaps[radius]

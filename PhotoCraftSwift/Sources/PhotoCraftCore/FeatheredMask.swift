@@ -47,7 +47,8 @@ final class FeatheredMask: Sendable {
   var origin: (x: Int, y: Int) { (area?.bounds.x ?? -padding, area?.bounds.y ?? -padding) }
   var width: Int { area?.bounds.width ?? (source.width + 2 * padding) }
   var height: Int { area?.bounds.height ?? (source.height + 2 * padding) }
-  var isConstantOutside: Bool { source.tileCount == 0 && implicitEqualsOutside }
+  var implicitMatchesOutside: Bool { implicitEqualsOutside }
+  var isConstantOutside: Bool { source.tileCount == 0 && implicitMatchesOutside }
   var support: Int { area?.support ?? padding }
   var implicitInterior: Float { area?.interiorSample(defaultSample) ?? filteredDefault }
   var clampedSourceEdges: ClampedEdges {

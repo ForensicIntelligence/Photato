@@ -1,3 +1,7 @@
+**Source checkpoint 592.** Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. [Qualification](SOURCE_PUBLICATION_592.md).
+
+Capture independently saved Photoshop Smart Filter masks to measure the coverage kernel and locate the persisted density and Feather fields. Continue the vector-mask range, arbitrary affine and dense wide-mask performance, and the broader Smart Filter workflow tests.
+
 **Source checkpoint 591.** Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. [Qualification](SOURCE_PUBLICATION_591.md).
 
 Continue bounded Smart Filter mask Feather. Reuse the mask support rules for sparse placed rasters and compare PSD settings with a saved Photoshop filter-mask reference. The installed Photoshop session must respond before collecting fresh references. The remaining layer-mask work includes unmeasured radii, five Intel texture differences, affine masks and dense wide-radius performance.

@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "smart_filter_mask_feather_build592": {
+    "evidence": "docs/SMART_FILTER_MASK_FEATHER_592.json",
+    "scope": "Shared native Smart Filter mask rendering and Photato smartFilter.set up to 1,000 px.",
+    "limits": "Extended editable filter-mask settings and new actionJSON property descriptors are unqualified. Existing Adobe API filter job paths retain their scope."
+  },
   "fractional_rgb32_feather_build591": {
     "evidence": "docs/FRACTIONAL_RGB32_FEATHER_591.json",
     "scope": "Shared aligned raster-mask rendering and clipping merges at fourteen measured fractional settings.",

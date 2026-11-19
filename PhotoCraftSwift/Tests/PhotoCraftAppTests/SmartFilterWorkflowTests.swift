@@ -85,6 +85,50 @@ final class SmartFilterWorkflowTests: XCTestCase {
       XCTAssertEqual(try Renderer.composite(shared.store.document).rgbaData(depth: .u8), try Renderer.composite(d).rgbaData(depth: .u8))
     }
   }
+  @MainActor func testFeatherRangeThroughPropertiesHTTPNativeSaveAndUndo() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var initial = try fixture()
+      let id = initial.layers[0].id
+      try SmartFilterEngine.append(RasterFilter(.highPass), to: id, in: &initial)
+      shared.store.session = EditorSession(document: initial)
+      try service.share(shared)
+      let native = EditorStore(document: initial)
+      defer { native.renderTask?.cancel() }
+      native.selectSmartFilterMask(id)
+      native.updateMask(id) { $0.feather = 1_000 }
+      XCTAssertNil(native.error)
+      let edited = native.document
+      XCTAssertEqual(edited.layers[0].smartFilters?.maskProperties.feather, 1_000)
+      XCTAssertEqual(edited.layers[0].smartFilters?.mask, initial.layers[0].smartFilters?.mask)
+      XCTAssertEqual(edited.layers[0].smartObject, initial.layers[0].smartObject)
+      XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(edited)), edited)
+      let stack = try XCTUnwrap(edited.layers[0].smartFilters)
+      var payload = stack.apiState
+      payload.removeValue(forKey: "hasMask")
+      payload.removeValue(forKey: "maskTransform")
+
+      let applied = try await helper.edit(service, shared, "smartFilter.set",
+        ["layerID": id.uuidString, "stack": payload])
+      XCTAssertEqual(applied, 200)
+      XCTAssertEqual(shared.store.document, edited)
+      XCTAssertEqual(try Renderer.composite(shared.store.document).rgbaData(depth: .u8),
+        try Renderer.composite(edited).rgbaData(depth: .u8))
+
+      payload["mask"] = ["feather": 1_000.125]
+      let rejected = try await helper.edit(service, shared, "smartFilter.set",
+        ["layerID": id.uuidString, "stack": payload])
+      XCTAssertEqual(rejected, 400)
+      XCTAssertEqual(shared.store.document, edited)
+
+      let undone = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(undone, 200)
+      await native.undo()
+      XCTAssertEqual(shared.store.document, initial)
+      XCTAssertEqual(native.document, initial)
+    }
+  }
+
   @MainActor func testPublishedExecuteActionsRetainsEditablePSDStack() async throws {
     var d = try fixture(); d.layers[0].name = "Artwork"
     let transport = FilterTransport(try PSDCodec.writeRasterLayers(d))

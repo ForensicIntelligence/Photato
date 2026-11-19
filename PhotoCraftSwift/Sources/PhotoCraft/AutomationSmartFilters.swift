@@ -25,7 +25,8 @@ extension SmartFilterStack {
           "operation": ["type": "string", "enum": ["keep", "reveal", "hide", "selection", "delete"]],
           "enabled": ["type": "boolean"], "linked": ["type": "boolean"],
           "density": ["type": "number", "minimum": 0, "maximum": 1],
-          "feather": ["type": "number", "minimum": 0, "maximum": 100]]]]]]]
+          "feather": ["type": "number", "minimum": MaskProperties.filterFeatherRange.lowerBound,
+            "maximum": MaskProperties.filterFeatherRange.upperBound]]]]]]]
   }
   static var apiStateSchema: [String: Any] {
     let alternatives = apiSchema["anyOf"] as! [[String: Any]]
@@ -44,9 +45,9 @@ extension SmartFilterStack {
         "maximumDimension":Surface.maxDimension,"logicalMaximumPixels":Surface.maxPixels,
         "maximumOutputPatchPixels":RasterGeometry.maximumPatchPixels,
         "behavior":"Affine placement, ordered editable filters, per-filter blend/opacity/visibility, selection and pixel masks share the native engine. Source bytes and original samples remain unchanged.",
-        "limits":"Other filter families, non-RGB, Warp and large feather kernels retain separate limits. Embedded source64MiB and owned-content256MiB remain independent; dense capacity, RSS, throughput and Photoshop/platform parity remain open."],
+        "limits":"Other filter families, non-RGB and Warp retain separate limits. Mask Feather affects the projected support of sparse RGB stacks. Embedded source64MiB and owned-content256MiB remain independent; dense capacity, RSS, throughput and Photoshop/platform parity remain open."],
       "order": "filters is application order, bottom first. set replaces the list, permitting edit, reorder, remove and per-filter enable/blend/opacity. null clears the stack.",
-      "masks": "First filter creates a white mask, or uses current selection. Mask painting uses document coordinates and respects selection. Read layers[].smartFilters for state; set accepts enabled, filters and mask settings only.",
+      "masks": "First filter creates a white mask, or uses current selection. Mask painting uses document coordinates and respects selection. Feather accepts 0–1,000 px. Read layers[].smartFilters for state; set accepts enabled, filters and mask settings only.",
       "persistence": "Native15 archives retain editable stacks. Supported PSD filters use filterFX/FEid. Raster exports render the result.",
       "limitations": "See filters.kinds for the current native catalogue; Photoshop pixel equality and independent Smart Filter interchange remain unqualified. Average has no qualified PSD descriptor and rejects layered export. Unsupported mask tools reject."]
   }
@@ -113,7 +114,7 @@ extension AutomationCommand {
       if mask["enabled"] != nil { stack.maskProperties.enabled = try flag(mask, "enabled") }
       if mask["linked"] != nil { stack.maskProperties.linked = try flag(mask, "linked") }
       if mask["density"] != nil { stack.maskProperties.density = Float(try number(mask, "density", 0...1)) }
-      if mask["feather"] != nil { stack.maskProperties.feather = try number(mask, "feather", 0...100) }
+      if mask["feather"] != nil { stack.maskProperties.feather = try number(mask, "feather", MaskProperties.filterFeatherRange) }
     }
     do { try stack.validate() } catch { throw fail(error.localizedDescription) }
     // Imported originals may retain an empty stack and its enable/mask state.

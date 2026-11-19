@@ -610,7 +610,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 589 | 2026-11-19 | [Apply Feather in raster clipping merges and stamps](#dev-step-589) |
 | 590 | 2026-11-19 | [Match integer raster-mask Feather stages](#dev-step-590) |
 | 591 | 2026-11-19 | [Match measured fractional RGB32 Feather schedules](#dev-step-591) |
+| 592 | 2026-11-19 | [Bound Smart Filter mask Feather on large documents](#dev-step-592) |
 <!-- history-index:end -->
+
+<a id="dev-step-592"></a>
+
+## 2026-11-19 — Bound Smart Filter mask Feather on large documents
+
+Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. A maximum-canvas baseline reproduced the former 1 px rejection. A separate small-canvas control reproduced the 100 px admission limit. The new renderer combines the base and filter tiles with the mask’s transformed footprint, including nonzero outside coverage, inversion, and density. The Properties pane provides native sliders and exact entry. Its Delete control routes to the selected mask. The Photato API uses the same mask Feather range. [Photoshop Smart Filter masks](https://helpx.adobe.com/photoshop/desktop/effects-filters/smart-filters/mask-smart-filter-effects.html) · [Feather range](https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/).
+
+The first sandboxed test attempt could not bind loopback listeners. All 22 affected baseline tests passed with loopback access on the previous binary. The first 592 focused run matched dense and paged bytes across 36 combinations of RGB depth, mask geometry, radius, density, and inversion. The non-uniform 1,000 px test passed on a 300,000 × 64 raster. The 300,000 × 300,000 sparse test passed the pixel and persistence checks and retained 18 output tiles. Its initial 16-tile assertion was too small for the fixture’s tile geometry. The updated bound accounts for both separate mask regions.
+
+All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks. Native saves preserve the editable mask and original Smart Object. The new test checks the Properties edit, HTTP state, rejection above 1,000 px, native save and Undo. PSD/PSB’s editable filter-mask settings, exact Photoshop byte comparisons, physical UI input and wide dense performance remain open. [Validation](SOURCE_PUBLICATION_592.md).
 
 <a id="dev-step-591"></a>
 

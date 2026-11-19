@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **591** · The 10 most recent entries, newest first.
+Source build **592** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 592 — Bound Smart Filter mask Feather on large documents
+
+Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. The maximum sparse canvas test updates two distant mask regions. The Properties controls and Photato API use the same limit and retain an editable mask on save.
+
+All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md).
 
 ## 2026-11-19 — Step 591 — Match measured fractional RGB32 Feather schedules
 
@@ -75,11 +83,3 @@ Multiply, Darken, Lighten and Difference now participate in supported raster cli
 The saved Photoshop comparison matched 62,736 stored sample words per architecture. All 776 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-583) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_583.md).
-
-## 2026-11-18 — Step 582 — Preserve independent clipping in merges and stamps
-
-Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. The saved pixels for the tested Multiply cases matched with the underlying backdrop visible or hidden.
-
-The native editor and both local API families share the updated behavior. All 773 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md).

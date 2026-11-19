@@ -4,7 +4,7 @@ import Foundation
 /// The outside value is independent of the surface's in-bounds default pixel.
 public struct MaskProperties: Codable, Equatable, Sendable {
   public static let layerFeatherRange: ClosedRange<Double> = 0...1000
-  public static let filterFeatherRange: ClosedRange<Double> = 0...100
+  public static let filterFeatherRange: ClosedRange<Double> = 0...1000
 
   public var transform = Transform2D.identity
   public var outside: Float = 0
@@ -44,6 +44,7 @@ extension Layer {
 public struct MaskSampler: Sendable {
   private let mask: Surface
   private let feathered: FeatheredMask?
+  private let sourceToDocument: Transform2D
   private let inverse: Transform2D
   private let properties: MaskProperties
   public init(
@@ -54,7 +55,8 @@ public struct MaskSampler: Sendable {
     properties = layer.effectiveMaskProperties
     try properties.validate(featherRange: usesLayerFeather ? MaskProperties.layerFeatherRange : MaskProperties.filterFeatherRange)
     mask = source
-    var matrix = layer.maskCoordinateTransform
+    sourceToDocument = layer.maskCoordinateTransform
+    var matrix = sourceToDocument
     if feather && properties.enabled && properties.feather > 0 {
       var edges = FeatheredMask.ClampedEdges()
       if let canvasSize,
@@ -84,8 +86,11 @@ public struct MaskSampler: Sendable {
       }
       try Task.checkCancellation()
       let radius = properties.feather
-      let area = usesLayerFeather
-        ? AreaMaskFeather(layer: layer, source: source, radius: radius, canvas: canvasSize) : nil
+      // Existing Smart Filter values keep their original Gaussian kernel.
+      // Wider values use the shared streamed area preparation.
+      let area = usesLayerFeather || radius > 100
+        ? AreaMaskFeather(layer: layer, source: source, radius: radius, canvas: canvasSize,
+            roundsIntegerStages: usesLayerFeather) : nil
       let result = FeatheredMask(source: source, radius: properties.feather,
         outside: properties.outside, edges: edges, area: area)
       feathered = result
@@ -93,19 +98,30 @@ public struct MaskSampler: Sendable {
     } else {
       feathered = nil
     }
-    inverse = try matrix.inverted()
+    if let feathered, abs(matrix.tx) > 1_000_000 || abs(matrix.ty) > 1_000_000 {
+      // The padded sampling origin is virtual and can extend beyond the
+      // validated mask placement when the whole mask is scaled.
+      inverse = .translation(-Double(feathered.origin.x), -Double(feathered.origin.y))
+        * (try sourceToDocument.inverted())
+    } else {
+      inverse = try matrix.inverted()
+    }
   }
   @inline(__always) public func coverage(x: Double, y: Double) -> Float {
     if !properties.enabled { return 1 }
     let p = inverse.point(x, y)
-    var v: Float
+    let v: Float
     if let feathered {
       v = Self.sample(width: feathered.width, height: feathered.height,
         x: p.x, y: p.y, outside: properties.outside, value: feathered.value)
     } else {
       v = Self.sample(mask, x: p.x, y: p.y, outside: properties.outside)
     }
-    if properties.inverted { v = 1 - v }
+    return adjustedCoverage(v)
+  }
+
+  @inline(__always) func adjustedCoverage(_ raw: Float) -> Float {
+    let v = properties.inverted ? 1 - raw : raw
     // Full density is an identity operation. Subtracting twice from white
     // changes Float32 mask samples and therefore the resulting RGB32 composite.
     if properties.density == 1 { return v }
@@ -137,6 +153,81 @@ public struct MaskSampler: Sendable {
       width: local.width, height: local.height)
     let values = local.width > 0 && local.height > 0 ? try feathered.region(local) : .uniform(properties.outside)
     return FeatherRegion(bounds: bounds, values: values, outside: properties.outside)
+  }
+
+  struct PagedFeatherSupport {
+    let defaultCoverage: Float
+    let rectangles: [IntRect]
+    let aligned: Bool
+  }
+
+  /// Project the areas where a feathered mask can vary from a known coverage.
+  /// Rectangles are local to the placed raster and include interpolation support.
+  func pagedFeatherSupport(in bounds: IntRect) throws -> PagedFeatherSupport? {
+    guard let feathered else { return nil }
+    let t = sourceToDocument
+    let aligned = t.a == 1 && t.b == 0 && t.c == 0 && t.d == 1
+      && t.tx.rounded() == t.tx && t.ty.rounded() == t.ty
+    // Rounding a projected footprint is safe when forming the inverse does
+    // not lose precision through an ill-conditioned basis.
+    let crossProduct = max(abs(t.a * t.d), abs(t.b * t.c))
+    guard aligned || (abs(t.a * t.d - t.b * t.c) > crossProduct * 0.00001
+      && max(abs(inverse.a), abs(inverse.b), abs(inverse.c), abs(inverse.d)) <= 1_000_000) else {
+      return nil
+    }
+    let left = t.tx - Double(bounds.x), top = t.ty - Double(bounds.y)
+    let enclosesOutput = aligned && left <= 0 && top <= 0
+      && left + Double(mask.width) >= Double(bounds.width)
+      && top + Double(mask.height) >= Double(bounds.height)
+    let rawDefault = enclosesOutput ? feathered.implicitInterior : properties.outside
+    let support = feathered.support
+    var rectangles: [IntRect] = []
+
+    func append(_ rect: IntRect) {
+      let clipped = rect.clipped(toWidth: bounds.width, height: bounds.height)
+      if clipped.width > 0 && clipped.height > 0 { rectangles.append(clipped) }
+    }
+
+    func project(_ x: Int, _ y: Int, width: Int, height: Int) {
+      if aligned {
+        append(IntRect(x: Int(left) + x - support, y: Int(top) + y - support,
+          width: width + 2 * support, height: height + 2 * support))
+        return
+      }
+      // One source sample for bilinear interpolation and one destination
+      // pixel for rounding of the inverse coordinate calculation.
+      let halo = support + 1
+      let x0 = Double(x - halo), y0 = Double(y - halo)
+      let x1 = Double(x + width + halo), y1 = Double(y + height + halo)
+      let corners = [t.point(x0, y0), t.point(x1, y0), t.point(x0, y1), t.point(x1, y1)]
+      let firstX = Int(floor(corners.map(\.x).min()!)) - bounds.x - 1
+      let firstY = Int(floor(corners.map(\.y).min()!)) - bounds.y - 1
+      let lastX = Int(ceil(corners.map(\.x).max()!)) - bounds.x + 1
+      let lastY = Int(ceil(corners.map(\.y).max()!)) - bounds.y + 1
+      append(IntRect(x: firstX, y: firstY, width: lastX - firstX, height: lastY - firstY))
+    }
+
+    if enclosesOutput {
+      if !feathered.implicitMatchesOutside {
+        let local = IntRect(x: Int(left), y: Int(top), width: mask.width, height: mask.height)
+        for edge in featherInteriorEdgeRegions(of: local) { append(edge) }
+      }
+    } else if !feathered.implicitMatchesOutside || (!aligned && rawDefault != 0 && rawDefault != 1) {
+      // Bilinear mixing of a fractional constant can change a Float32 bit.
+      project(0, 0, width: mask.width, height: mask.height)
+      return PagedFeatherSupport(defaultCoverage: adjustedCoverage(rawDefault),
+        rectangles: rectangles, aligned: aligned)
+    }
+
+    let side = Surface.tileSide
+    let columns = (mask.width + side - 1) / side
+    for key in mask.storedTileKeys {
+      try Task.checkCancellation()
+      let x = (key % columns) * side, y = (key / columns) * side
+      project(x, y, width: min(side, mask.width - x), height: min(side, mask.height - y))
+    }
+    return PagedFeatherSupport(defaultCoverage: adjustedCoverage(rawDefault),
+      rectangles: rectangles, aligned: aligned)
   }
 
   package var featherSupport: Int { feathered?.support ?? 0 }

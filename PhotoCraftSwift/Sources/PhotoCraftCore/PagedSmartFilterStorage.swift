@@ -19,8 +19,9 @@ enum PagedSmartFilterStorage {
     s.depth == .f32 ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)
   }
   static func combine(_ a:Surface,_ b:Surface,pointwise:Bool,extraSources:[Surface]=[],
-    implicitOperation:((Pixel,Pixel)->Pixel)?=nil,
-    operation:(Pixel,Pixel,Int,Int)->Pixel)throws->Surface {
+    affectedRegions: [IntRect] = [], implicitOperation: ((Pixel, Pixel) -> Pixel)? = nil,
+    preparePatch: ((IntRect) throws -> ((Pixel, Pixel, Int, Int) -> Pixel))? = nil,
+    operation: @escaping (Pixel, Pixel, Int, Int) -> Pixel) throws -> Surface {
     try Task.checkCancellation()
     let implicitA=try a.reframedImplicitValue(width:1,height:1)
     let implicitB=try b.reframedImplicitValue(width:1,height:1)
@@ -29,21 +30,30 @@ enum PagedSmartFilterStorage {
     func working(_ s:Surface,_ x:Int,_ y:Int)->Pixel {a.depth == .f32 ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)}
     let value=implicitOperation?(working(implicitA,0,0),working(implicitB,0,0))
       ?? operation(working(implicitA,0,0),working(implicitB,0,0),0,0)
-    // Spatial operations have no global default proof and visit every patch.
+    // Visit the full grid only when no default coverage is established.
     let template=try a.reframedImplicitValue(width:a.width,height:a.height,
       sample:pointwise ? value:.clear,linear:a.depth == .f32)
     let builder=try Surface.PagedBuilder(template:template)
     func append(_ rect:IntRect)throws {
+      let sample = try preparePatch?(rect) ?? operation
       var patch=try template.reframedImplicitValue(width:rect.width,height:rect.height)
       for y in 0..<rect.height {try Task.checkCancellation();for x in 0..<rect.width {
-        let px=rect.x+x,py=rect.y+y,p=operation(working(a,px,py),working(b,px,py),px,py)
+        let px=rect.x+x,py=rect.y+y,p=sample(working(a,px,py),working(b,px,py),px,py)
         if a.depth == .f32 {patch.setLinearPixel(x:x,y:y,p)}else{patch.setPixel(x:x,y:y,p)}
       }}
       try builder.append(patch,atX:rect.x,atY:rect.y)
     }
     if pointwise {
       let columns=(a.width+63)/64
-      var keys=TileKeys([a,b]+extraSources).makeIterator(),next=keys.next()
+      var sources = ([a, b] + extraSources).map(\.storedTileKeys)
+      if !affectedRegions.isEmpty {
+        let patches = GeometryPatchRegions(width: a.width, height: a.height, rectangles: affectedRegions)
+        sources.append(AnySequence(patches.lazy.flatMap { rect -> Range<Int> in
+          let start = rect.y / 64 * columns + rect.x / 64
+          return start..<(start + (rect.width + 63) / 64)
+        }))
+      }
+      var keys = TileKeys(sources: sources).makeIterator(), next = keys.next()
       while let first=next {
         try Task.checkCancellation()
         let row=first/columns;var end=first+1;next=keys.next()
@@ -59,10 +69,9 @@ enum PagedSmartFilterStorage {
     return try builder.finish()
   }
   private struct TileKeys:Sequence {
-    let sources:[Surface]
-    init(_ sources:[Surface]){self.sources=sources}
+    let sources: [AnySequence<Int>]
     func makeIterator()->AnyIterator<Int>{
-      var iterators=sources.map{$0.storedTileKeys.makeIterator()}
+      var iterators = sources.map { $0.makeIterator() }
       var heads=iterators.indices.map{iterators[$0].next()}
       return AnyIterator {
         guard let key=heads.compactMap({$0}).min() else{return nil}

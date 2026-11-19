@@ -124,6 +124,7 @@ public enum SmartFilterEngine {
     var properties = projected.layers[i].effectiveMaskProperties
     properties.transform = projected.layers[i].maskCoordinateTransform
     result.smartFilters?.maskProperties = properties
+    try properties.validate(featherRange: MaskProperties.filterFeatherRange)
     document.layers[i] = result
   }
   /// Source pixels -> affine placement -> filters -> filter mask. Layer masks and
@@ -195,30 +196,15 @@ public enum SmartFilterEngine {
           item.blendMode.composite(backdrop: a, source: b, opacity: item.opacity, x: px + x, y: py + y)
         }
       }
-      if stack.mask != nil {
-        let sampler = try MaskSampler(layer: layer.filterMaskProjection(), canvasSize: (document.width, document.height), usesLayerFeather: false)
-        if paged && (current.depth != .f32 || current.colorEncoding == .linearRGB) && sampler.isIdentity(over:bounds) { /* Preserve current. */ }
-        else {
-        func masked(_ a:Pixel,_ b:Pixel,_ k:Float)->Pixel {
-          if k == 0 { return a }; if k == 1 { return b }
-          let alpha = a.a * (1 - k) + b.a * k
-          guard alpha > 0 else { return .clear }
-          let rgb = (a.rgb * a.a * (1 - k) + b.rgb * b.a * k) / alpha
-          return Pixel(rgb.x, rgb.y, rgb.z, alpha)
-        }
-        let projection=try layer.filterMaskProjection(),mask=stack.mask!
-        let pointwise=stack.maskProperties.feather==0 && mask.width==bounds.width && mask.height==bounds.height
-          && projection.maskCoordinateTransform == .translation(Double(x),Double(y))
-        var implicit:((Pixel,Pixel)->Pixel)?
-        if pointwise {
-          var raw=projection;raw.mask=try mask.reframedImplicitValue(width:mask.width,height:mask.height)
-          let prepared=try MaskSampler(layer:raw,canvasSize:(document.width,document.height),usesLayerFeather:false)
-          let k=prepared.coverage(x:Double(x)+0.5,y:Double(y)+0.5)
-          implicit={a,b in masked(a,b,k)}
-        }
-        current = try combine(base,current,paged:paged,pointwise:pointwise,extraSources:pointwise ? [mask]:[],implicitOperation:implicit) {a,b,px,py in
-          masked(a,b,sampler.coverage(x:Double(px+x)+0.5,y:Double(py+y)+0.5))
-        }
+      if let mask = stack.mask {
+        let projection = try layer.filterMaskProjection()
+        let canvas = (document.width, document.height)
+        let sampler = try MaskSampler(layer: projection, canvasSize: canvas, usesLayerFeather: false)
+        if !paged || (current.depth == .f32 && current.colorEncoding != .linearRGB)
+          || !sampler.isIdentity(over: bounds)
+        {
+          current = try applyMask(mask, projection: projection, sampler: sampler, canvas: canvas,
+            bounds: bounds, base: base, filtered: current, paged: paged)
         }
       }
     }
@@ -233,6 +219,53 @@ public enum SmartFilterEngine {
     }
     return result
   }
+  private static func applyMask(_ mask: Surface, projection: Layer, sampler: MaskSampler,
+    canvas: (Int, Int), bounds: IntRect, base: Surface, filtered: Surface, paged: Bool
+  ) throws -> Surface {
+    func masked(_ a: Pixel, _ b: Pixel, _ coverage: Float) -> Pixel {
+      if coverage == 0 { return a }
+      if coverage == 1 { return b }
+      let alpha = a.a * (1 - coverage) + b.a * coverage
+      guard alpha > 0 else { return .clear }
+      let rgb = (a.rgb * a.a * (1 - coverage) + b.rgb * b.a * coverage) / alpha
+      return Pixel(rgb.x, rgb.y, rgb.z, alpha)
+    }
+
+    func applySample(_ a: Pixel, _ b: Pixel, _ x: Int, _ y: Int) -> Pixel {
+      masked(a, b, sampler.coverage(x: Double(x + bounds.x) + 0.5, y: Double(y + bounds.y) + 0.5))
+    }
+
+    if paged, let support = try sampler.pagedFeatherSupport(in: bounds) {
+      let preparePatch: ((IntRect) throws -> ((Pixel, Pixel, Int, Int) -> Pixel))? = support.aligned
+        ? { rect in
+          guard let region = try sampler.featherRegion(in: IntRect(
+            x: rect.x + bounds.x, y: rect.y + bounds.y, width: rect.width, height: rect.height))
+          else { return applySample }
+          return { a, b, x, y in
+            masked(a, b, sampler.adjustedCoverage(region.sample(x: x + bounds.x, y: y + bounds.y)))
+          }
+        } : nil
+      return try PagedSmartFilterStorage.combine(base, filtered, pointwise: true,
+        affectedRegions: support.rectangles,
+        implicitOperation: { masked($0, $1, support.defaultCoverage) },
+        preparePatch: preparePatch, operation: applySample)
+    }
+
+    let pointwise = projection.effectiveMaskProperties.feather == 0
+      && mask.width == bounds.width && mask.height == bounds.height
+      && projection.maskCoordinateTransform == .translation(Double(bounds.x), Double(bounds.y))
+    var implicit: ((Pixel, Pixel) -> Pixel)?
+    if pointwise {
+      var raw = projection
+      raw.mask = try mask.reframedImplicitValue(width: mask.width, height: mask.height)
+      let prepared = try MaskSampler(layer: raw, canvasSize: canvas, usesLayerFeather: false)
+      let coverage = prepared.coverage(x: Double(bounds.x) + 0.5, y: Double(bounds.y) + 0.5)
+      implicit = { masked($0, $1, coverage) }
+    }
+    return try combine(base, filtered, paged: paged, pointwise: pointwise,
+      extraSources: pointwise ? [mask] : [], implicitOperation: implicit, operation: applySample)
+  }
+
   public static func renderBounds(_ layer: Layer, in document: CraftDocument) throws -> IntRect {
     if let cached=try layer.originalSmartAppearanceLayer(),case .raster(let pixels)=cached.content{return try cached.coordinateTransform.bounds(width:pixels.width,height:pixels.height)}
     guard case .raster(let source) = layer.content else { throw CraftError.invalid("Missing Smart Object source pixels.") }
@@ -246,18 +279,11 @@ public enum SmartFilterEngine {
         layer.smartFilters?.enabled != true || layer.smartFilters!.filters.allSatisfy({!$0.enabled || $0.opacity==0 || RasterFilterEngine.pagedFilterKinds.contains($0.filter.kind)}) else {
         throw CraftError.unsupported("Large Smart Filters currently support the eight basic RGB filters without Warp; other families retain separate preparation limits.")
       }
-      if let stack=layer.smartFilters,let mask=stack.mask,stack.maskProperties.enabled,stack.maskProperties.feather>0 {
-        let pad=2*Int(ceil(3*max(0.05,stack.maskProperties.feather)))
-        guard mask.width+pad<=Surface.maxDimension,mask.height+pad<=Surface.maxDimension,
-          mask.width+pad<=Surface.maximumDensePixels/(mask.height+pad) else {
-          throw CraftError.unsupported("This Smart Filter mask still requires bounded feather preparation.")
-        }
-      }
     }
     return bounds
   }
   private static func combine(_ a: Surface, _ b: Surface,paged:Bool,pointwise:Bool,extraSources:[Surface]=[],
-    implicitOperation:((Pixel,Pixel)->Pixel)?=nil,operation: (Pixel, Pixel, Int, Int) -> Pixel) throws -> Surface {
+    implicitOperation:((Pixel,Pixel)->Pixel)?=nil,operation: @escaping (Pixel, Pixel, Int, Int) -> Pixel) throws -> Surface {
     if paged {return try PagedSmartFilterStorage.combine(a,b,pointwise:pointwise,extraSources:extraSources,implicitOperation:implicitOperation,operation:operation)}
     var result = a
     for y in 0..<a.height {

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 592 — Bound Smart Filter mask Feather on large documents
+
+Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. The maximum sparse canvas test updates two distant mask regions. The Properties controls and Photato API use the same limit and retain an editable mask on save.
+
+All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md).
+
 ## 2026-11-19 — Step 591 — Match measured fractional RGB32 Feather schedules
 
 Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. The comparisons cover texture, lines and edges. Apple Silicon matched every sample. The Intel texture comparison found five differences, each one Float32 step.
@@ -725,14 +733,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:591 -->
+<!-- current-status-step:592 -->
 ## Current development status — 19 November 2026
 
-Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings.
+Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents.
 
-All 861 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks.
+All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks.
 
-[Source checkpoint 591](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_591.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-591).
+[Source checkpoint 592](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-592).
 
 <!-- current-status:end -->
 

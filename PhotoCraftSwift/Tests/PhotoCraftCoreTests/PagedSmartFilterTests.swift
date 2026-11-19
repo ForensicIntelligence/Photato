@@ -81,6 +81,89 @@ final class PagedSmartFilterTests:XCTestCase {
     expected.setPixel(x:0,y:0,BlendMode.normal.composite(backdrop:a.pixel(x:0,y:0),source:b.pixel(x:0,y:0),opacity:0.5,x:0,y:0))
     XCTAssertTrue(output.pixel(x:64,y:64).hasSameBits(as:expected.pixel(x:0,y:0)))
   }
+  func testPagedFeatherMatchesDensePixelsWithEdgesAndAffineCoverage() throws {
+    for depth in PixelDepth.allCases {
+      var document = try PagedSmartFilterFixture.document(depth, kind: .highPass, variant: 0)
+      for (width, height, transform, fill, outside) in [
+        (137, 75, Transform2D.identity, Float(0.75), Float(0.25)),
+        (65, 69, .translation(63, -3), 0.25, 0.25),
+        (65, 69, .translation(3.25, -4.75) * .rotation(17) * .scale(0.95, 1.05), 0.25, 0.25),
+        (65, 69, .translation(63.5, -3.5) * .rotation(-7), 1, 1)
+      ] {
+        var mask = try Surface(width: width, height: height, depth: .f32, fill: Pixel(fill, fill, fill))
+        mask.setPixel(x: 0, y: 0, .white)
+        mask.setPixel(x: 63, y: 64, .black)
+        mask.setPixel(x: width - 1, y: height - 1, .black)
+        document.layers[0].smartFilters?.mask = mask
+        document.layers[0].smartFilters?.maskProperties.transform = transform
+        document.layers[0].smartFilters?.maskProperties.outside = outside
+        for (radius, density, inverted) in [(0.25, Float(1), false), (3.5, 0.625, true), (14, 1, false)] {
+          document.layers[0].smartFilters?.maskProperties.feather = radius
+          document.layers[0].smartFilters?.maskProperties.density = density
+          document.layers[0].smartFilters?.maskProperties.inverted = inverted
+          let owner = document.layers[0]
+          let dense = try SmartFilterEngine.renderedLayer(owner, in: document)
+          let paged = try SmartFilterEngine.renderedLayer(owner, in: document, paged: true)
+          guard case .raster(let a) = dense.content, case .raster(let b) = paged.content else {
+            return XCTFail("Missing Smart Filter output")
+          }
+          let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+          XCTAssertEqual(try a.rgbaData(depth: .f32, colorEncoding: encoding),
+            try b.rgbaData(depth: .f32, colorEncoding: encoding), "\(depth), \(transform), \(radius)")
+        }
+      }
+    }
+  }
+
+  func testMaximumCanvasFeatherVisitsSeparatedSparseMaskTiles() throws {
+    var document = try PagedSmartFilterFixture.constantDocument(width: 300_000, height: 300_000)
+    let id = document.layers[0].id
+    var stack = SmartFilterStack()
+    stack.filters = [.init(filter: RasterFilter(.highPass))]
+    try stack.createMask(in: document, value: 0)
+    for (x, y) in [(63, 63), (299_920, 299_911)] {
+      for dy in 0..<9 {
+        for dx in 0..<9 { stack.mask?.setPixel(x: x + dx, y: y + dy, .white) }
+      }
+    }
+    stack.maskProperties.feather = 1
+    let original = document.layers[0].content
+    try SmartFilterEngine.set(stack, on: id, in: &document)
+    let rendered = try SmartFilterEngine.renderedLayer(document.layers[0], in: document)
+    guard case .raster(let pixels) = rendered.content else { return XCTFail("Missing Smart Filter output") }
+    XCTAssertEqual(document.layers[0].content, original)
+    XCTAssertEqual(document.layers[0].smartFilters, stack)
+    XCTAssertEqual(pixels.pixel(x: 150_000, y: 150_000), .white)
+    XCTAssertLessThan(pixels.pixel(x: 67, y: 67).r, 0.75)
+    XCTAssertLessThan(pixels.pixel(x: 299_924, y: 299_915).r, 0.75)
+    XCTAssertLessThan(pixels.pixel(x: 62, y: 67).r, 1)
+    XCTAssertEqual(pixels.pixel(x: 50, y: 67), .white)
+    // The first 9 × 9 island crosses both tile boundaries. Its stored tiles
+    // and three-pixel halo intersect 4 × 4 output tiles at most. The second
+    // island fits in one stored tile, so its halo intersects at most 3 × 3.
+    XCTAssertLessThanOrEqual(pixels.tileCount, 4 * 4 + 3 * 3)
+    XCTAssertLessThan(pixels.allocatedBytes, 8 * 1_024 * 1_024)
+    XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(document)), document)
+  }
+
+  func testWideFeatherUsesTheMaskOnAnOversizePlacedRaster() throws {
+    var document = try PagedSmartFilterFixture.constantDocument(width: 300_000, height: 64, depth: .f32)
+    var stack = SmartFilterStack()
+    stack.filters = [.init(filter: RasterFilter(.highPass))]
+    try stack.createMask(in: document, value: 0)
+    stack.mask = try Surface.rectangularCoverage(width: document.width, height: document.height,
+      rectangle: IntRect(x: 149_968, y: 0, width: 64, height: 64))
+    stack.maskProperties.feather = 1000
+    document.layers[0].smartFilters = stack
+    let rendered = try SmartFilterEngine.renderedLayer(document.layers[0], in: document)
+    guard case .raster(let pixels) = rendered.content else { return XCTFail("Missing Smart Filter output") }
+    XCTAssertEqual(pixels.linearPixel(x: 5, y: 32), .white)
+    XCTAssertLessThan(pixels.linearPixel(x: 150_000, y: 32).r, 0.9999)
+    XCTAssertLessThan(pixels.linearPixel(x: 150_700, y: 32).r, 1)
+    XCTAssertEqual(pixels.linearPixel(x: 160_000, y: 32), .white)
+    XCTAssertLessThan(pixels.tileCount, 120)
+  }
+
   func testMaximumDepthConversionMatchesLegacySettersAndSharesSparseExtent()throws {
     for from in PixelDepth.allCases {for to in PixelDepth.allCases where from != to {
       var large=try Surface(width:300_000,height:300_000,depth:from,fill:Pixel(0.3,0.7,0.2),colorEncoding:from == .f32 ? .linearRGB:.sRGB)

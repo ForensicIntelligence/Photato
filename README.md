@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 591.** Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_591.md).
+**Development alpha — source build 592.** Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md).
 
 ## Project layout
 

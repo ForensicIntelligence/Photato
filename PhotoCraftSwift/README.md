@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 592.** Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. [Qualification](docs/SOURCE_PUBLICATION_592.md).
+
 **Source checkpoint 591.** Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. [Qualification](docs/SOURCE_PUBLICATION_591.md).
 
 **Source checkpoint 590.** Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. [Qualification](docs/SOURCE_PUBLICATION_590.md).

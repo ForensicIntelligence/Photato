@@ -246,7 +246,8 @@ extension WorkspaceView {
           .controlSize(.small)
         }
         if layer.mask != nil && store.pathTarget != .vectorMask(layer.id) {
-          Text(store.editingMask ? "Layer Mask · Editing" : "Layer Mask").fontWeight(.medium)
+          Text(store.smartFilterMaskEditing ? "Filter Mask" : store.editingMask ? "Layer Mask · Editing" : "Layer Mask")
+            .fontWeight(.medium)
           Text("Black hides · White reveals").foregroundStyle(.secondary)
           MaskControls(store: store, layer: layer)
           HStack {

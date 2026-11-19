@@ -1405,6 +1405,8 @@ Build 576 also verifies the prepared Normal RGB32 layer output through the deskt
 
 Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
 
+Build 592 accepts `stack.mask.feather` from 0 to 1,000 px in `smartFilter.set`. The range appears in discovery and state. The native renderer visits the mask's projected regions on supported large RGB stacks. Native `.photato` archives store the existing property. Older builds reject filter mask radii above 100 px. Editable PSD/PSB filter-mask Feather remains unsupported. [Validation](SOURCE_PUBLICATION_592.md).
+
 Build 591 uses measured fractional RGB32 Feather schedules in the existing `mask.feather` and `layer.merge` paths. Native and HTTP tests compare the edit, Merge Clipping Mask, and Undo with saved layered PSD output. [Validation](SOURCE_PUBLICATION_591.md).
 
 Build 590 uses shared integer rounding for aligned RGB8 and RGB16 mask Feather in `layer.merge`. The existing mask radius and layer merge operations use the updated renderer. The same prepared operation applies to both local ActionJSON job routes. [Validation](SOURCE_PUBLICATION_590.md).
