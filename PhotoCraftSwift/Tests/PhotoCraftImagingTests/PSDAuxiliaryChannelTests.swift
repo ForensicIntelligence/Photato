@@ -143,6 +143,69 @@ final class PSDAuxiliaryChannelTests:XCTestCase {
     XCTAssertThrowsError(try long.discardRemaining())
   }
 
+  func testLargeSavedChannelsRetainImplicitGrayAndExactChangedWords() throws {
+    let width = 1201, height = 30_001
+    for depth in PixelDepth.allCases {
+      let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
+      for compression: PSDCompression in depth == .u8 ? [.raw, .rle] : [.rle] {
+        var document = try CraftDocument(width: width, height: height, depth: depth)
+        let empty = try Surface(width: width, height: height, depth: depth, fill: .black)
+        var selected = ChannelDisplayOptions()
+        selected.indicates = .selectedAreas
+        document.alphaChannels = [
+          AlphaChannel(name: "Selected gray", pixels: empty, options: selected),
+          AlphaChannel(name: "Ink", pixels: empty, spot: SpotInk(color: Pixel(1, 0, 0), solidity: 0.5)),
+        ]
+        document.quickMask = AlphaChannel(name: "Quick Mask", pixels: empty)
+        let blocks = try PSDImageResources.blocks(PSDAuxiliaryChannels.resources(document, first: 3))
+        document.alphaChannels = nil
+        document.quickMask = nil
+
+        let explicitFirst: Float = depth == .f32 ? -0.0 : 0.25
+        let explicitLast: Float = depth == .f32 ? 1.5 : 0.75
+        let output = PSDOutput()
+        try PSDChannelWriter.write(width: width, height: height, depth: bits, compression: compression,
+          channels: 3, format: .psb, to: output, repeatedRows: { index in
+            index % height == 1 ? height - 2 : 1
+          }) { index in
+            let y = index % height
+            var bytes = [UInt8](repeating: 0, count: width * (bits / 8))
+            if y == 0 || y == height - 1 {
+              var word: [UInt8] = []
+              try PSDChannelCodec.append(y == 0 ? explicitFirst : explicitLast, depth: bits, to: &word)
+              let at = (y == 0 ? 3 : width - 1) * (bits / 8)
+              bytes.replaceSubrange(at..<at + word.count, with: word)
+            }
+            return bytes
+          }
+
+        let context = try PSDRasterPaging.Context(scratchByteLimit: 12 * 65_536)
+        let reader = try PSDChannelReader(PSDReader(data: output.data), width: width, height: height,
+          depth: bits, channels: 3, format: .psb)
+        try PSDAuxiliaryChannels.read(reader, first: 3, count: 3, blocks: blocks, document: &document, paging: context)
+        XCTAssertEqual(reader.remainingRows, 0)
+        let channels = PSDAuxiliaryChannels.all(document)
+        XCTAssertEqual(channels.map(\.name), ["Selected gray", "Ink", "Quick Mask"])
+        for (index, channel) in channels.enumerated() {
+          XCTAssertEqual(channel.pixels.defaultPixel.r, index == 2 ? 0 : 1)
+          XCTAssertEqual(channel.pixels.tileCount, depth == .f32 && index != 2 ? 1 : 2)
+          if depth == .f32, index != 2 {
+            let original = try XCTUnwrap(channel.psdSpotGray ?? channel.psdSelectedGray)
+            XCTAssertEqual(original.tileCount, 2)
+            XCTAssertEqual(original.pixel(x: 3, y: 0).r.bitPattern, Float(-0.0).bitPattern)
+          }
+          for (x, y, expected) in [(3, 0, explicitFirst), (width - 1, height - 1, explicitLast)] {
+            let row = try PSDAuxiliaryChannels.row(channel, y: y, depth: bits)
+            var expectedBytes: [UInt8] = []
+            try PSDChannelCodec.append(expected, depth: bits, to: &expectedBytes)
+            let at = x * (bits / 8)
+            XCTAssertEqual(Array(row[at..<at + expectedBytes.count]), expectedBytes)
+          }
+        }
+      }
+    }
+  }
+
   func testFloatSpotGrayUsesOriginalOnlyUntilTheSampleChanges()throws {
     var d=try PSDCodec.read(data("m3-d32-v1-c0.psd"));let channel=try XCTUnwrap(d.alphaChannels?.last),original=try XCTUnwrap(channel.psdSpotGray)
     var before=Data();for y in 0..<d.height{before.append(contentsOf:try PSDAuxiliaryChannels.row(channel,y:y,depth:32))}

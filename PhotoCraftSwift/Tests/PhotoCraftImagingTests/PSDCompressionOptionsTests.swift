@@ -232,15 +232,15 @@ final class PSDCompressionOptionsTests: XCTestCase {
           format: format, to: output) { row in [UInt8](repeating: UInt8(row), count: width) }
         let reader = try PSDChannelReader(PSDReader(data: output.data), width: width, height: height, depth: 8, format: format)
         var values: [UInt8] = []
-        try reader.inspectLayerRows(at: [0, 2, 6]) { values.append($0[0]) }
+        try reader.inspectPlaneRows(at: [0, 2, 6], height: height) { values.append($0[0]) }
         XCTAssertEqual(values, [0, 2, 6])
         XCTAssertEqual(reader.remainingRows, height)
-        XCTAssertThrowsError(try reader.inspectLayerRows(at: [2, 1]) { _ in })
+        XCTAssertThrowsError(try reader.inspectPlaneRows(at: [2, 1], height: height) { _ in })
         for y in 0..<height {
           XCTAssertEqual(try reader.nextRow(), [UInt8](repeating: UInt8(y), count: width))
         }
         let truncated = try PSDChannelReader(PSDReader(data: output.data.dropLast()), width: width, height: height, depth: 8, format: format)
-        XCTAssertThrowsError(try truncated.inspectLayerRows(at: [height - 1]) { _ in })
+        XCTAssertThrowsError(try truncated.inspectPlaneRows(at: [height - 1], height: height) { _ in })
       }
     }
   }

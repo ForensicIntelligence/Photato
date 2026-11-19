@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 611 — Import large PSD and PSB saved channels into sparse tiles
+
+The native reader opened a synthetic 300,000 × 300,000 grayscale PSB in 4.22 seconds in one Apple Silicon Debug run. All 9,216 stored alpha samples and both editable grayscale layer samples matched the authored input. The saved alpha used 192 KiB of mapped sample storage.
+
+A smaller 1,201 × 30,001 PSB retained all 10,593 checked alpha samples within a 768 KiB scratch allowance. Build 610 exceeded that allowance. The test set covers RGB8 Raw and PackBits and RGB16 and RGB32 PackBits. All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md).
+
 ## 2026-11-19 — Step 610 — Read saved Photoshop channels without a merged preview
 
 A synthetic sparse 300,000 × 300,000 PSB opened with the exact editable raster in 3.5 ms on Apple Silicon Debug. The reader skipped 270 GB of unused logical raw preview data.
@@ -883,14 +891,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:610 -->
+<!-- current-status-step:611 -->
 ## Current development status — 19 November 2026
 
-Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent.
+Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles.
 
-All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 610](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_610.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-610).
+[Source checkpoint 611](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-611).
 
 <!-- current-status:end -->
 

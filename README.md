@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 610.** Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_610.md).
+**Development alpha — source build 611.** Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md).
 
 ## Project layout
 

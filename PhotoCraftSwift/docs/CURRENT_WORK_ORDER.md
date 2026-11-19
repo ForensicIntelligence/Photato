@@ -1,3 +1,7 @@
+**Source checkpoint 611.** Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles. [Qualification](SOURCE_PUBLICATION_611.md).
+
+Verify the paged saved-channel exporter, then check dense and ZIP paths and compare with Adobe-authored channel files.
+
 **Source checkpoint 610.** Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent. [Qualification](SOURCE_PUBLICATION_610.md).
 
 Measure Adobe compatibility-off export at higher bit depths and with saved channels. Continue dense PSB and File Handling checks.

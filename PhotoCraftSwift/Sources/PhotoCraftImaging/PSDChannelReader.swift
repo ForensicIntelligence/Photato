@@ -15,7 +15,7 @@ final class PSDChannelReader {
   private let compression: Int
   private var zip: PSDZIPReader?
   private(set) var remainingRows: Int
-  var supportsSparseLayerRows: Bool { compression == 0 || compression == 1 }
+  var supportsSparseRows: Bool { compression == 0 || compression == 1 }
 
   init(
     _ source: PSDReader, width: Int, height: Int, depth: Int, channels: Int = 1,
@@ -65,11 +65,11 @@ final class PSDChannelReader {
 
   /// Inspect a few seekable rows without advancing the live channel decoder.
   /// RLE layer rows have their own lengths, so only the selected rows are decoded.
-  func inspectLayerRows(at indices: [Int], _ visit: ([UInt8]) throws -> Void) throws {
-    guard supportsSparseLayerRows, remainingRows <= Surface.maxDimension,
-      let last = indices.last, indices[0] >= 0, last < remainingRows,
+  func inspectPlaneRows(at indices: [Int], height: Int, _ visit: ([UInt8]) throws -> Void) throws {
+    guard supportsSparseRows, (1...Surface.maxDimension).contains(height), height <= remainingRows,
+      let last = indices.last, indices[0] >= 0, last < height,
       Swift.zip(indices, indices.dropFirst()).allSatisfy({ $0.0 < $0.1 })
-    else { throw CraftError.invalid("Invalid Photoshop layer row sample.") }
+    else { throw CraftError.invalid("Invalid Photoshop plane row sample.") }
     var payload = source
     guard var lengths else {
       var nextRow = 0
@@ -107,9 +107,9 @@ final class PSDChannelReader {
 
   /// A uniform packet is reusable after its decoded bytes matched every sample
   /// of the caller's fixed implicit row. Retained packets belong to one plane.
-  func nextSparseLayerRow(uniformPacket: inout Data?, isUniform: ([UInt8]) -> Bool) throws -> [UInt8]? {
+  func nextSparseRow(uniformPacket: inout Data?, isUniform: ([UInt8]) -> Bool) throws -> [UInt8]? {
     try Task.checkCancellation()
-    guard supportsSparseLayerRows, remainingRows > 0 else { throw CraftError.invalid("Expected a seekable Photoshop layer row.") }
+    guard supportsSparseRows, remainingRows > 0 else { throw CraftError.invalid("Expected a seekable Photoshop row.") }
     if compression == 0 {
       let row = try nextRow()
       return isUniform(row) ? nil : row

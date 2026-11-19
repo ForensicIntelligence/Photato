@@ -1,3 +1,5 @@
+**Source checkpoint 611.** Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles. [Qualification](docs/SOURCE_PUBLICATION_611.md).
+
 **Source checkpoint 610.** Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent. [Qualification](docs/SOURCE_PUBLICATION_610.md).
 
 **Source checkpoint 609.** File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_609.md).

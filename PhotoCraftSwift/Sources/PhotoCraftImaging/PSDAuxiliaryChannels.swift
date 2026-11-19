@@ -73,7 +73,20 @@ enum PSDAuxiliaryChannels {
       var sourceGray:Surface?
       let pixels:Surface
       let inverted=info.kind==2 || info.kind==0
-      if inverted,depth==32 {
+      if document.width > Surface.maximumDensePixels / document.height, reader.supportsSparseRows {
+        let gray = try PSDRasterPaging.sparseLayer(width: document.width, height: document.height,
+          depth: document.depth, channels: [reader], context: context, invertMask: inverted && depth != 32)
+        if inverted, depth == 32 {
+          sourceGray = gray
+          try context.admitRaster(bytes: tiles * 65536)
+          pixels = try gray.mappedStoredSamples(backing: context.backing) { sample in
+            let value = 1 - sample.r
+            return Pixel(value, value, value)
+          }
+        } else {
+          pixels = gray
+        }
+      } else if inverted,depth==32 {
         let gray=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
           fill:.black,mask:true,clampMask:false,context:context) {_ in [try reader.nextRow()]}
         sourceGray=gray;try context.admitRaster(bytes:tiles*65536)

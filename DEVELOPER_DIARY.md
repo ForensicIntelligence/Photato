@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **610** · The 10 most recent entries, newest first.
+Source build **611** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 611 — Import large PSD and PSB saved channels into sparse tiles
+
+The native reader opened a synthetic 300,000 × 300,000 grayscale PSB in 4.22 seconds in one Apple Silicon Debug run. All 9,216 stored alpha samples and both editable grayscale layer samples matched the authored input. The saved alpha used 192 KiB of mapped sample storage.
+
+A smaller 1,201 × 30,001 PSB retained all 10,593 checked alpha samples within a 768 KiB scratch allowance. Build 610 exceeded that allowance. The test set covers RGB8 Raw and PackBits and RGB16 and RGB32 PackBits. All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md).
 
 ## 2026-11-19 — Step 610 — Read saved Photoshop channels without a merged preview
 
@@ -79,11 +87,3 @@ Whole-mask preparation for the 300,000 × 300,000 control at 110.25 px Feather t
 Ten mask controls matched build 601 across all 10,873,881 Float32 coverage words per architecture. Two additional whole-canvas RGB32 layer stacks matched all 28,706,520 RGBA words per architecture. The controls cover both mask polarities, short and wide Feather through 1,000 px, Boolean holes, partial cells, and near-edge viewports on a 300,000 × 300,000 document. All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-602) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_602.md).
-
-## 2026-11-19 — Step 601 — Render sparse curved Feather from stored coverage
-
-The sparse inverted rectangle control rendered in two patches, down from 36. The distant curved mask on a 300,000 × 300,000 canvas used 46, down from 92. Both controls matched the complete build 600 render.
-
-All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_601.md).

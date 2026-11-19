@@ -1184,14 +1184,16 @@ extension Surface {
   /// Evaluate a coordinate-independent operation on implicit samples and allocated tiles.
   /// No missing tile is materialized. Used by large-canvas composition, not spatial filters.
   public func mappedStoredSamples(
-    encoding: SurfaceColorEncoding? = nil, _ transform: (Pixel) throws -> Pixel
+    encoding: SurfaceColorEncoding? = nil, backing: RasterTileStore? = nil,
+    _ transform: (Pixel) throws -> Pixel
   ) throws -> Surface {
     let value = try transform(storedDefaultPixel)
     guard value.isFinite else { throw CraftError.invalid("Non-finite sparse raster result.") }
     var output = try Surface(width: width, height: height, depth: .f32,
       colorEncoding: encoding ?? colorEncoding)
     output.storedDefaultPixel = value
-    let scratch = width * height > Self.maximumDensePixels || mappedTileIndexBytes>0 ? try RasterTileStore() : nil
+    let scratch = try backing ?? (width * height > Self.maximumDensePixels || mappedTileIndexBytes > 0
+      ? RasterTileStore() : nil)
     let indexBuilder = scratch == nil ? nil:try RuntimeTileIndex.Builder()
     for (key, tile) in tiles {
       try Task.checkCancellation()

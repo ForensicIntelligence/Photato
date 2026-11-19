@@ -629,7 +629,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 608 | 2026-11-19 | [Save full-width sparse raster edits to PSB](#dev-step-608) |
 | 609 | 2026-11-19 | [Set PSD and PSB file compatibility](#dev-step-609) |
 | 610 | 2026-11-19 | [Read saved Photoshop channels without a merged preview](#dev-step-610) |
+| 611 | 2026-11-19 | [Import large PSD and PSB saved channels into sparse tiles](#dev-step-611) |
 <!-- history-index:end -->
+
+<a id="dev-step-611"></a>
+
+## 2026-11-19 — Import large PSD and PSB saved channels into sparse tiles
+
+Large saved alpha, spot, and Quick Mask planes in seekable Raw and PackBits image data now use implicit numeric gray plus tiles for differences. The decoder samples seven rows of each large plane and then checks every row. A validated identical PackBits packet can reuse that check. Selected-area and spot samples invert at their stored integer depth. For floating-point selected-area and spot channels, an unchanged original gray plane retains the exact source words and a second paged surface supplies the editable coverage. Both surfaces share the import scratch budget.
+
+Photato Open and the import and job interfaces share the parser. The four large-plane cases in the new imaging test cover RGB8 Raw and PackBits and RGB16 and RGB32 PackBits with three saved planes. The test checks output words, signed zero, out-of-range floating-point values, and scratch accounting. All 22 Debug imaging tests in the two affected suites passed. The application qualification also passed all 23 focused Debug checks with loopback enabled. All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The Debug run reached the harness deadline after 825 passing cases. The remaining 133 passed in a second batch from the same binary. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_611.md).
+
+An independent writer constructed grayscale PSBs with one editable raster and a saved alpha with an implicit value and three distant changed samples. The 1,201 × 30,001 control exceeded the 768 KiB scratch allowance in 610. Build 611 reopened it and matched all 10,593 samples across its three loaded alpha tiles. The native file reader opened the 300,000 × 300,000 control and matched all 9,216 stored alpha words and both grayscale layer words. The 2.82 GB PackBits input took 4.22 seconds in one Apple Silicon Debug run. The process reported 20.7 MiB peak resident memory, and the saved alpha used 192 KiB of mapped samples. Both disposable fixtures were deleted after verification. [Adobe Large Document Format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+The first independent run returned the expected reader result on the bounded file, then macOS denied a system timing query from `/usr/bin/time -l`. A second run read the process memory counter directly and repeated both controls from the same inputs. The first application qualification could not start a loopback listener inside the restricted shell. A separate qualification run uses the same compiled binaries with loopback enabled. Its coverage includes the Photato import route and both job interfaces.
+
+The maximum-size input is synthetic. Live exchange with Photoshop and comparable checks for dense and ZIP-compressed saved planes remain open.
 
 <a id="dev-step-610"></a>
 

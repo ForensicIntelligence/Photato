@@ -638,6 +638,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 608 | [Save full-width sparse raster edits to PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-608) |
 | 2026-11-19 | 609 | [Set PSD and PSB file compatibility](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) |
 | 2026-11-19 | 610 | [Read saved Photoshop channels without a merged preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-610) |
+| 2026-11-19 | 611 | [Import large PSD and PSB saved channels into sparse tiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

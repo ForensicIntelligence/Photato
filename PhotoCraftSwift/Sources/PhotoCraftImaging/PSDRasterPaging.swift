@@ -65,24 +65,34 @@ enum PSDRasterPaging {
     return try builder.finish()
   }
 
-  /// The archive rows prove which tiles differ from a finite implicit RGB(A)
-  /// sample. Only changed planes enter the existing bounded staging stripe.
+  /// Retain only tiles that differ from the implicit RGB(A) or numeric gray sample.
   static func sparseLayer(width: Int, height: Int, depth: PixelDepth,
-    channels: [PSDChannelReader], context: Context) throws -> Surface {
+    channels: [PSDChannelReader], context: Context, invertMask: Bool = false) throws -> Surface {
     let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
     let components = channels.count, sampleSize = bits / 8, side = Surface.tileSide
+    let isMask = components == 1
+    let linear = depth == .f32 && !isMask
+    let maximumCode: Float = depth == .u8 ? 255 : 65535
+    func gray(_ sample: Float) -> Pixel {
+      let value: Float
+      if invertMask {
+        value = depth == .f32 ? 1 - sample : (maximumCode - (sample * maximumCode).rounded()) / maximumCode
+      } else { value = sample }
+      return Pixel(value, value, value)
+    }
     let columnCount = (width + side - 1) / side
     let sampleCount = min(height, 7)
     let sampleRows = (0..<sampleCount).map { $0 * (height - 1) / max(1, sampleCount - 1) }
     let samples = try channels.map {
-      try representativeSample(in: $0, rows: sampleRows, width: width, sampleSize: sampleSize)
+      try representativeSample(in: $0, rows: sampleRows, height: height, width: width, sampleSize: sampleSize)
     }
     let numeric = try samples.map { try PSDChannelCodec.sample($0, 0, depth: bits) }
-    let implicit = Pixel(numeric[0], numeric[1], numeric[2], components == 4 ? numeric[3] : 1)
-    let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+    let implicit = isMask ? gray(numeric[0])
+      : Pixel(numeric[0], numeric[1], numeric[2], components == 4 ? numeric[3] : 1)
+    let encoding: SurfaceColorEncoding = linear ? .linearRGB : .sRGB
     let seed = try Surface(width: 1, height: 1, depth: depth, colorEncoding: encoding)
-    let template = try seed.reframedImplicitValue(width: width, height: height, sample: implicit, linear: depth == .f32)
-    let fill = depth == .f32 ? template.linearDefaultPixel : template.defaultPixel
+    let template = try seed.reframedImplicitValue(width: width, height: height, sample: implicit, linear: linear)
+    let fill = linear ? template.linearDefaultPixel : template.defaultPixel
     let pattern = samples.map { bytes in Array(PSDChannelWriter.repeating(Data(bytes), count: side)) }
     let builder = try Surface.PagedBuilder(template: template, backing: context.backing)
     let stripe = try PSDPlaneScratch(width: width, height: min(side, height), depth: bits, components: components)
@@ -94,7 +104,7 @@ enum PSDRasterPaging {
       for py in 0..<rows {
         try Task.checkCancellation()
         for component in channels.indices {
-          let different = try channels[component].nextSparseLayerRow(uniformPacket: &packets[component]) { row in
+          let different = try channels[component].nextSparseRow(uniformPacket: &packets[component]) { row in
             markChangedColumns(row, pattern: pattern[component], touched: &touched)
           }
           if let different {
@@ -114,10 +124,15 @@ enum PSDRasterPaging {
             func sample(_ component: Int, _ fallback: Float) throws -> Float {
               staged[row + component] ? try stripe.sample(x: x + px, y: py, component: component) : fallback
             }
-            let pixel = try Pixel(sample(0, fill.r), sample(1, fill.g), sample(2, fill.b),
-              components == 4 ? sample(3, fill.a) : 1)
+            let pixel: Pixel
+            if isMask {
+              pixel = try gray(stripe.sample(x: x + px, y: py, component: 0))
+            } else {
+              pixel = try Pixel(sample(0, fill.r), sample(1, fill.g), sample(2, fill.b),
+                components == 4 ? sample(3, fill.a) : 1)
+            }
             if pixel.hasSameBits(as: fill) { continue }
-            if depth == .f32 { patch.setLinearPixel(x: px, y: py, pixel) }
+            if linear { patch.setLinearPixel(x: px, y: py, pixel) }
             else { patch.setPixel(x: px, y: py, pixel) }
           }
         }
@@ -128,11 +143,11 @@ enum PSDRasterPaging {
   }
 
   private static func representativeSample(in channel: PSDChannelReader, rows: [Int],
-    width: Int, sampleSize: Int) throws -> [UInt8] {
+    height: Int, width: Int, sampleSize: Int) throws -> [UInt8] {
     var votes = [[UInt8]: Int]()
     var mode = [UInt8](), maximum = 0
     let reads = min(width, 33)
-    try channel.inspectLayerRows(at: rows) { row in
+    try channel.inspectPlaneRows(at: rows, height: height) { row in
       for sample in 0..<reads {
         let offset = (sample * (width - 1) / max(1, reads - 1)) * sampleSize
         let bytes = Array(row[offset..<offset + sampleSize])
