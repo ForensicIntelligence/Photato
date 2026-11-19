@@ -221,6 +221,12 @@ struct AreaMaskFeather: Sendable {
     let implicit = source.implicit
     if read.width == 0 || read.height == 0 { return (nil, outside) }
     let fullyInside = left >= 0 && top >= 0 && right < source.width && bottom < source.height
+    if streamed, !extendEdges, integerDepth == nil, fullyInside,
+      let constant = source.constantFeatherSample(in: read), constant == 0 || constant == 1
+    {
+      // A binary constant produces exact integer sums in every area pass.
+      return (nil, constant)
+    }
     if !source.hasFeatherSamples(in: read), implicit == outside || fullyInside {
       return (nil, interiorSample(implicit))
     }

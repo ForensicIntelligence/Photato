@@ -1,3 +1,5 @@
+**Source checkpoint 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Qualification](docs/SOURCE_PUBLICATION_602.md).
+
 **Source checkpoint 601.** Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work. [Qualification](docs/SOURCE_PUBLICATION_601.md).
 
 **Source checkpoint 600.** Large RGB32 raster stacks with rectangular vector masks determine bottom-layer opacity from representative mask windows. [Qualification](docs/SOURCE_PUBLICATION_600.md).

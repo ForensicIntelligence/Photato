@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **601** · The 10 most recent entries, newest first.
+Source build **602** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 602 — Skip solid pieces of dense feathered vector masks
+
+At 1,000 px Feather, the interior viewport of the maximum-size document needed no scratch transfer, down from 51,595,425 source pixels. The whole 49,155 × 73 wide-Feather control transferred 18,434,046 source pixels, down from 36,890,622.
+
+Whole-mask preparation for the 300,000 × 300,000 control at 110.25 px Feather took 10.39 s on Apple Silicon and 14.14 s under Rosetta. The four checked regions matched all 42,286 coverage words against build 601 viewport output on each architecture. These measurements are single runs on the same Mac.
+
+Ten mask controls matched build 601 across all 10,873,881 Float32 coverage words per architecture. Two additional whole-canvas RGB32 layer stacks matched all 28,706,520 RGBA words per architecture. The controls cover both mask polarities, short and wide Feather through 1,000 px, Boolean holes, partial cells, and near-edge viewports on a 300,000 × 300,000 document. All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-602) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_602.md).
 
 ## 2026-11-19 — Step 601 — Render sparse curved Feather from stored coverage
 
@@ -77,11 +87,3 @@ Vector masks accept Feather through 1,000 px and keep their paths editable in na
 All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_593.md).
-
-## 2026-11-19 — Step 592 — Bound Smart Filter mask Feather on large documents
-
-Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. The maximum sparse canvas test updates two distant mask regions. The Properties controls and Photato API use the same limit and retain an editable mask on save.
-
-All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md).

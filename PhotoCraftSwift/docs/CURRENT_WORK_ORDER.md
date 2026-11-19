@@ -1,3 +1,7 @@
+**Source checkpoint 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Qualification](SOURCE_PUBLICATION_602.md).
+
+Skip repeated composition in dense solid mask interiors. Classify exact Feather footprints, carry those constants through the existing layer compositor and reuse result tiles. Compare whole output and dense boundary limits. Retry live Photoshop capture when document scripting responds.
+
 **Source checkpoint 601.** Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work. [Qualification](SOURCE_PUBLICATION_601.md).
 
 Exercise dense nonrectangular masks across the full canvas. Start by measuring uniform interior rows and bounding the work in regions where the existing Gray8 rasterizer gives constant coverage. Preserve antialiased edge samples and exact Feather output. Retry live Photoshop capture for wide vector and Smart Filter masks when document scripting responds.

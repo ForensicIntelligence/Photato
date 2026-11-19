@@ -1,3 +1,13 @@
+## 2026-11-19 — Step 602 — Skip solid pieces of dense feathered vector masks
+
+At 1,000 px Feather, the interior viewport of the maximum-size document needed no scratch transfer, down from 51,595,425 source pixels. The whole 49,155 × 73 wide-Feather control transferred 18,434,046 source pixels, down from 36,890,622.
+
+Whole-mask preparation for the 300,000 × 300,000 control at 110.25 px Feather took 10.39 s on Apple Silicon and 14.14 s under Rosetta. The four checked regions matched all 42,286 coverage words against build 601 viewport output on each architecture. These measurements are single runs on the same Mac.
+
+Ten mask controls matched build 601 across all 10,873,881 Float32 coverage words per architecture. Two additional whole-canvas RGB32 layer stacks matched all 28,706,520 RGBA words per architecture. The controls cover both mask polarities, short and wide Feather through 1,000 px, Boolean holes, partial cells, and near-edge viewports on a 300,000 × 300,000 document. All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-602) · [Validation](SOURCE_PUBLICATION_602.md).
+
 ## 2026-11-19 — Step 601 — Render sparse curved Feather from stored coverage
 
 The sparse inverted rectangle control rendered in two patches, down from 36. The distant curved mask on a 300,000 × 300,000 canvas used 46, down from 92. Both controls matched the complete build 600 render.
@@ -805,14 +815,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:601 -->
+<!-- current-status-step:602 -->
 ## Current development status — 19 November 2026
 
-Large feathered vector masks use stored coverage to limit render work. Sparse inverted rectangles use the existing affected-tile renderer when it has less work.
+Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid.
 
-All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 601](SOURCE_PUBLICATION_601.md) · [Detailed record](DEVLOG.md#dev-step-601).
+[Source checkpoint 602](SOURCE_PUBLICATION_602.md) · [Detailed record](DEVLOG.md#dev-step-602).
 
 <!-- current-status:end -->
 
@@ -1620,6 +1630,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 599 | [Reuse wide vector-mask Feather windows](DEVLOG.md#dev-step-599) |
 | 2026-11-19 | 600 | [Prove RGB32 raster-base opacity with rectangular Feather](DEVLOG.md#dev-step-600) |
 | 2026-11-19 | 601 | [Render sparse curved Feather from stored coverage](DEVLOG.md#dev-step-601) |
+| 2026-11-19 | 602 | [Skip solid pieces of dense feathered vector masks](DEVLOG.md#dev-step-602) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

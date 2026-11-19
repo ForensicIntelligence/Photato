@@ -1,0 +1,1071 @@
+{
+  "build": 602,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince601": [
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "83433e3000519c31e963327e998426ad5b903638fee8a887aac64b978436e086"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "397a4bf495bfcdf82f4ea63f107453b99d322052b48b514d483093da5c929886"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorFeatherCoverage.swift",
+      "sha256": "0fa764ec6675b960ebdc0f958903510029b779404dd7f156ff25802839b25f5a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/VectorRenderTests.swift",
+      "sha256": "1edda771409909559098bec0db51269d8fbfd6a0cbee65441ab92b26202718d6"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "d6e90634659703c75946057ef2ac840eef600ac84b30d2600274d2daaa28a74b"
+    }
+  ],
+  "selectedChecksPerConfiguration": 920,
+  "focusedDebugPassed": 4,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "dbfbcca191aefcf9942a464b12113b8768e3ea4d312aad5d74b0f9cbdf0e8874",
+      "testBinarySHA256": "16bc4ddb2f1c511d131dba4139bd3febcaad3fdf6496d5354e855494e7173a4e",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "cfb69cd722c66ef8ba2482da845e6a387359c35221d5de2d83347a57c657ae63",
+      "testBinarySHA256": "16425b5adbc40fa199c3cbd088d2e0f9c7d1e0be5263e32fb49c11235ee4d786",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "72baecad5c08a7f4a09478cd599c97e4c8f5d44b3613017a9d14324d2c07354f",
+      "testBinarySHA256": "84e45279e946f196716719d3727863665e47513679cea5d28526b6bb5c166ed7",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "120c5fb9434d55ed7fb9d6c1e13cf5405c79231607fcb970e4559eb8b9580643",
+    "binarySHA256": "4e5d2a164ecb9dd94cd7008f21efd6f8b82949f2afef7f56ebd95923b01ebea9",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "controls": {
+    "arm": {
+      "coverage": {
+        "whole-short": {
+          "build601": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "preparationSeconds": 0.1008675,
+            "preparedPixels": 4273614,
+            "radius": 2,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 4.6043585,
+            "sha256": "59938be4e655e52ec52d79abf2d2d3826840a17f784d6cb9662f58d359d9f5a2",
+            "sourceAndCacheResidentBytes": 101711872,
+            "width": 49155
+          },
+          "build602": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "preparationSeconds": 0.069699708,
+            "preparedPixels": 2848206,
+            "radius": 2,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 4.3385862920000005,
+            "sha256": "59938be4e655e52ec52d79abf2d2d3826840a17f784d6cb9662f58d359d9f5a2",
+            "sourceAndCacheResidentBytes": 68157440,
+            "width": 49155
+          }
+        },
+        "whole-fractional": {
+          "build601": {
+            "case": "whole-fractional",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.133031542,
+            "preparedPixels": 6140250,
+            "radius": 8.125,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 13.567419541,
+            "sha256": "29f1aa35bf32e1360b2048822fcbe6cbe04467c8d7dce8817a9a8d8e50761702",
+            "sourceAndCacheResidentBytes": 101842944,
+            "width": 49155
+          },
+          "build602": {
+            "case": "whole-fractional",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.090961709,
+            "preparedPixels": 4092250,
+            "radius": 8.125,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 12.767979125,
+            "sha256": "29f1aa35bf32e1360b2048822fcbe6cbe04467c8d7dce8817a9a8d8e50761702",
+            "sourceAndCacheResidentBytes": 68288512,
+            "width": 49155
+          }
+        },
+        "whole-wide": {
+          "build601": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.134553166,
+            "preparedPixels": 36890622,
+            "radius": 110.25,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 86.11173225,
+            "sha256": "b1a9d69ea4194d477d4523c0ae5d91281aa281ca78d2ec178c4383dea8d4cfa9",
+            "sourceAndCacheResidentBytes": 20907264,
+            "width": 49155
+          },
+          "build602": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.075204458,
+            "preparedPixels": 18434046,
+            "radius": 110.25,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 83.674934583,
+            "sha256": "b1a9d69ea4194d477d4523c0ae5d91281aa281ca78d2ec178c4383dea8d4cfa9",
+            "sourceAndCacheResidentBytes": 20907264,
+            "width": 49155
+          }
+        },
+        "maximum-interior": {
+          "build601": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.128027167,
+            "preparedPixels": 3221961,
+            "radius": 110.25,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.020904042,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16881152,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.0018365,
+            "preparedPixels": 0,
+            "radius": 110.25,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.000175333,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16777216,
+            "width": 300000
+          }
+        },
+        "maximum-seam": {
+          "build601": {
+            "case": "maximum-seam",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.202716875,
+            "preparedPixels": 3221961,
+            "radius": 110.25,
+            "rectangle": [
+              245744,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.021340833,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16881152,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-seam",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.00185,
+            "preparedPixels": 0,
+            "radius": 110.25,
+            "rectangle": [
+              245744,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.000176375,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16777216,
+            "width": 300000
+          }
+        },
+        "maximum-hole": {
+          "build601": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.145063791,
+            "preparedPixels": 3252556,
+            "radius": 110.25,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 10656,
+            "sampleSeconds": 0.021034167,
+            "sha256": "08d825f4857546da6c4229da86b80aebb5562badd70d791c5535d506710f0cd2",
+            "sourceAndCacheResidentBytes": 16884864,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.136935416,
+            "preparedPixels": 3252556,
+            "radius": 110.25,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 10656,
+            "sampleSeconds": 0.0209855,
+            "sha256": "08d825f4857546da6c4229da86b80aebb5562badd70d791c5535d506710f0cd2",
+            "sourceAndCacheResidentBytes": 16884864,
+            "width": 300000
+          }
+        },
+        "maximum-curve": {
+          "build601": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.13110725,
+            "preparedPixels": 1675520,
+            "radius": 110.25,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 13708,
+            "sampleSeconds": 0.059839417,
+            "sha256": "df4cbaf7b21df3061de555d23d5c5f811b8e1b55de16432f0a6173517a8cbc04",
+            "sourceAndCacheResidentBytes": 16832896,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.085199417,
+            "preparedPixels": 1354752,
+            "radius": 110.25,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 13708,
+            "sampleSeconds": 0.057275666,
+            "sha256": "df4cbaf7b21df3061de555d23d5c5f811b8e1b55de16432f0a6173517a8cbc04",
+            "sourceAndCacheResidentBytes": 16821760,
+            "width": 300000
+          }
+        }
+      },
+      "composite": {
+        "whole-short": {
+          "build601": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "patches": 50,
+            "radius": 2,
+            "renderSeconds": 1.185377416,
+            "sha256": "1feed7cbc9e725f84a081e70d73540adcfcb6dbb3fceeed8b1f8f82617a76b20",
+            "width": 49155,
+            "words": 14353260
+          },
+          "build602": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "patches": 50,
+            "radius": 2,
+            "renderSeconds": 1.192642709,
+            "sha256": "1feed7cbc9e725f84a081e70d73540adcfcb6dbb3fceeed8b1f8f82617a76b20",
+            "width": 49155,
+            "words": 14353260
+          }
+        },
+        "whole-wide": {
+          "build601": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "patches": 50,
+            "radius": 110.25,
+            "renderSeconds": 3.601774333,
+            "sha256": "0e775c5f344a7652dc7abc681cd0341d5aaffd66704baadd2d199b935603ffbe",
+            "width": 49155,
+            "words": 14353260
+          },
+          "build602": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "patches": 50,
+            "radius": 110.25,
+            "renderSeconds": 3.55294275,
+            "sha256": "0e775c5f344a7652dc7abc681cd0341d5aaffd66704baadd2d199b935603ffbe",
+            "width": 49155,
+            "words": 14353260
+          }
+        }
+      },
+      "maximum-feather": {
+        "maximum-interior": {
+          "build601": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 1.31944925,
+            "preparedPixels": 51595425,
+            "radius": 1000,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 17922,
+            "sampleSeconds": 0.965503708,
+            "sha256": "fa57f7b67930d923e602e0fe58b75831c60df8b096032b3787fe85554c895e32",
+            "sourceAndCacheResidentBytes": 16880384,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.002520416,
+            "preparedPixels": 0,
+            "radius": 1000,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 17922,
+            "sampleSeconds": 0.000611667,
+            "sha256": "fa57f7b67930d923e602e0fe58b75831c60df8b096032b3787fe85554c895e32",
+            "sourceAndCacheResidentBytes": 16777216,
+            "width": 300000
+          }
+        },
+        "maximum-hole": {
+          "build601": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 1.389872417,
+            "preparedPixels": 51717616,
+            "radius": 1000,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 21312,
+            "sampleSeconds": 0.493651542,
+            "sha256": "1902c490dcd045779f42544681dbb0aaaf4c70721b27ebfb4f1c64d901014d37",
+            "sourceAndCacheResidentBytes": 16823680,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.821659042,
+            "preparedPixels": 34958858,
+            "radius": 1000,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 21312,
+            "sampleSeconds": 0.417151125,
+            "sha256": "1902c490dcd045779f42544681dbb0aaaf4c70721b27ebfb4f1c64d901014d37",
+            "sourceAndCacheResidentBytes": 16778880,
+            "width": 300000
+          }
+        },
+        "maximum-curve": {
+          "build601": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.729659542,
+            "preparedPixels": 26056220,
+            "radius": 1000,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 27416,
+            "sampleSeconds": 0.322779,
+            "sha256": "bcb63f5753a1f412ee3945517360d95d26fd259af23590d7dda3c383091d6d93",
+            "sourceAndCacheResidentBytes": 16822528,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.615153792,
+            "preparedPixels": 24771000,
+            "radius": 1000,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 27416,
+            "sampleSeconds": 0.324190541,
+            "sha256": "bcb63f5753a1f412ee3945517360d95d26fd259af23590d7dda3c383091d6d93",
+            "sourceAndCacheResidentBytes": 16779136,
+            "width": 300000
+          }
+        }
+      }
+    },
+    "intel": {
+      "coverage": {
+        "whole-short": {
+          "build601": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "preparationSeconds": 0.16422125,
+            "preparedPixels": 4273614,
+            "radius": 2,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 5.624780041,
+            "sha256": "59938be4e655e52ec52d79abf2d2d3826840a17f784d6cb9662f58d359d9f5a2",
+            "sourceAndCacheResidentBytes": 101711872,
+            "width": 49155
+          },
+          "build602": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "preparationSeconds": 0.109145708,
+            "preparedPixels": 2848206,
+            "radius": 2,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 5.311129292,
+            "sha256": "59938be4e655e52ec52d79abf2d2d3826840a17f784d6cb9662f58d359d9f5a2",
+            "sourceAndCacheResidentBytes": 68157440,
+            "width": 49155
+          }
+        },
+        "whole-fractional": {
+          "build601": {
+            "case": "whole-fractional",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.22336425,
+            "preparedPixels": 6140250,
+            "radius": 8.125,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 22.290584375,
+            "sha256": "29f1aa35bf32e1360b2048822fcbe6cbe04467c8d7dce8817a9a8d8e50761702",
+            "sourceAndCacheResidentBytes": 101842944,
+            "width": 49155
+          },
+          "build602": {
+            "case": "whole-fractional",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.147677042,
+            "preparedPixels": 4092250,
+            "radius": 8.125,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 21.310836792,
+            "sha256": "29f1aa35bf32e1360b2048822fcbe6cbe04467c8d7dce8817a9a8d8e50761702",
+            "sourceAndCacheResidentBytes": 68288512,
+            "width": 49155
+          }
+        },
+        "whole-wide": {
+          "build601": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.195283041,
+            "preparedPixels": 36890622,
+            "radius": 110.25,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 102.35961525,
+            "sha256": "b1a9d69ea4194d477d4523c0ae5d91281aa281ca78d2ec178c4383dea8d4cfa9",
+            "sourceAndCacheResidentBytes": 20907264,
+            "width": 49155
+          },
+          "build602": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "preparationSeconds": 0.087539833,
+            "preparedPixels": 18434046,
+            "radius": 110.25,
+            "rectangle": [
+              0,
+              0,
+              49155,
+              73
+            ],
+            "samples": 3588315,
+            "sampleSeconds": 98.126784209,
+            "sha256": "b1a9d69ea4194d477d4523c0ae5d91281aa281ca78d2ec178c4383dea8d4cfa9",
+            "sourceAndCacheResidentBytes": 20907264,
+            "width": 49155
+          }
+        },
+        "maximum-interior": {
+          "build601": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.185917209,
+            "preparedPixels": 3221961,
+            "radius": 110.25,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.030470416,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16881152,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.001425166,
+            "preparedPixels": 0,
+            "radius": 110.25,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.000373084,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16777216,
+            "width": 300000
+          }
+        },
+        "maximum-seam": {
+          "build601": {
+            "case": "maximum-seam",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.248599667,
+            "preparedPixels": 3221961,
+            "radius": 110.25,
+            "rectangle": [
+              245744,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.030856083,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16881152,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-seam",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.001452667,
+            "preparedPixels": 0,
+            "radius": 110.25,
+            "rectangle": [
+              245744,
+              142915,
+              103,
+              87
+            ],
+            "samples": 8961,
+            "sampleSeconds": 0.00039075,
+            "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+            "sourceAndCacheResidentBytes": 16777216,
+            "width": 300000
+          }
+        },
+        "maximum-hole": {
+          "build601": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.21425325,
+            "preparedPixels": 3252556,
+            "radius": 110.25,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 10656,
+            "sampleSeconds": 0.029758416,
+            "sha256": "08d825f4857546da6c4229da86b80aebb5562badd70d791c5535d506710f0cd2",
+            "sourceAndCacheResidentBytes": 16884864,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.218519958,
+            "preparedPixels": 3252556,
+            "radius": 110.25,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 10656,
+            "sampleSeconds": 0.030177333,
+            "sha256": "08d825f4857546da6c4229da86b80aebb5562badd70d791c5535d506710f0cd2",
+            "sourceAndCacheResidentBytes": 16884864,
+            "width": 300000
+          }
+        },
+        "maximum-curve": {
+          "build601": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.176653542,
+            "preparedPixels": 1675520,
+            "radius": 110.25,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 13708,
+            "sampleSeconds": 0.079566667,
+            "sha256": "df4cbaf7b21df3061de555d23d5c5f811b8e1b55de16432f0a6173517a8cbc04",
+            "sourceAndCacheResidentBytes": 16832896,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.094228167,
+            "preparedPixels": 1354752,
+            "radius": 110.25,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 13708,
+            "sampleSeconds": 0.075624333,
+            "sha256": "df4cbaf7b21df3061de555d23d5c5f811b8e1b55de16432f0a6173517a8cbc04",
+            "sourceAndCacheResidentBytes": 16821760,
+            "width": 300000
+          }
+        }
+      },
+      "composite": {
+        "whole-short": {
+          "build601": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "patches": 50,
+            "radius": 2,
+            "renderSeconds": 1.9549047499999999,
+            "sha256": "73500b450ebcda11903becde8655c2884ee6056d6665af2d47ec0a4dc0c9199d",
+            "width": 49155,
+            "words": 14353260
+          },
+          "build602": {
+            "case": "whole-short",
+            "height": 73,
+            "inverted": false,
+            "patches": 50,
+            "radius": 2,
+            "renderSeconds": 1.979183583,
+            "sha256": "73500b450ebcda11903becde8655c2884ee6056d6665af2d47ec0a4dc0c9199d",
+            "width": 49155,
+            "words": 14353260
+          }
+        },
+        "whole-wide": {
+          "build601": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "patches": 50,
+            "radius": 110.25,
+            "renderSeconds": 5.551857667,
+            "sha256": "7cc569c448fb5e2f0f7b0afa06c2efc8886b229e6edd4d8520ba589beb903358",
+            "width": 49155,
+            "words": 14353260
+          },
+          "build602": {
+            "case": "whole-wide",
+            "height": 73,
+            "inverted": true,
+            "patches": 50,
+            "radius": 110.25,
+            "renderSeconds": 5.431756208,
+            "sha256": "7cc569c448fb5e2f0f7b0afa06c2efc8886b229e6edd4d8520ba589beb903358",
+            "width": 49155,
+            "words": 14353260
+          }
+        }
+      },
+      "maximum-feather": {
+        "maximum-interior": {
+          "build601": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 2.053719542,
+            "preparedPixels": 51595425,
+            "radius": 1000,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 17922,
+            "sampleSeconds": 1.343164792,
+            "sha256": "fa57f7b67930d923e602e0fe58b75831c60df8b096032b3787fe85554c895e32",
+            "sourceAndCacheResidentBytes": 16880384,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-interior",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.00175075,
+            "preparedPixels": 0,
+            "radius": 1000,
+            "rectangle": [
+              224141,
+              142915,
+              103,
+              87
+            ],
+            "samples": 17922,
+            "sampleSeconds": 0.001149834,
+            "sha256": "fa57f7b67930d923e602e0fe58b75831c60df8b096032b3787fe85554c895e32",
+            "sourceAndCacheResidentBytes": 16777216,
+            "width": 300000
+          }
+        },
+        "maximum-hole": {
+          "build601": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 2.058931709,
+            "preparedPixels": 51717616,
+            "radius": 1000,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 21312,
+            "sampleSeconds": 0.738454875,
+            "sha256": "1902c490dcd045779f42544681dbb0aaaf4c70721b27ebfb4f1c64d901014d37",
+            "sourceAndCacheResidentBytes": 16823680,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-hole",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 1.305920333,
+            "preparedPixels": 34958858,
+            "radius": 1000,
+            "rectangle": [
+              151201,
+              149108,
+              111,
+              96
+            ],
+            "samples": 21312,
+            "sampleSeconds": 0.601106334,
+            "sha256": "1902c490dcd045779f42544681dbb0aaaf4c70721b27ebfb4f1c64d901014d37",
+            "sourceAndCacheResidentBytes": 16778880,
+            "width": 300000
+          }
+        },
+        "maximum-curve": {
+          "build601": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 1.141727542,
+            "preparedPixels": 26056220,
+            "radius": 1000,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 27416,
+            "sampleSeconds": 0.462652417,
+            "sha256": "bcb63f5753a1f412ee3945517360d95d26fd259af23590d7dda3c383091d6d93",
+            "sourceAndCacheResidentBytes": 16822528,
+            "width": 300000
+          },
+          "build602": {
+            "case": "maximum-curve",
+            "height": 300000,
+            "inverted": true,
+            "preparationSeconds": 0.944669041,
+            "preparedPixels": 24771000,
+            "radius": 1000,
+            "rectangle": [
+              295244,
+              152355,
+              149,
+              92
+            ],
+            "samples": 27416,
+            "sampleSeconds": 0.464015125,
+            "sha256": "bcb63f5753a1f412ee3945517360d95d26fd259af23590d7dda3c383091d6d93",
+            "sourceAndCacheResidentBytes": 16779136,
+            "width": 300000
+          }
+        }
+      }
+    }
+  },
+  "wholeMaximumMask": {
+    "arm": {
+      "height": 300000,
+      "preparationSeconds": 10.38853025,
+      "preparedPixels": 10661543936,
+      "radius": 110.25,
+      "samples": {
+        "maximum-curve": {
+          "sha256": "df4cbaf7b21df3061de555d23d5c5f811b8e1b55de16432f0a6173517a8cbc04",
+          "words": 13708
+        },
+        "maximum-hole": {
+          "sha256": "08d825f4857546da6c4229da86b80aebb5562badd70d791c5535d506710f0cd2",
+          "words": 10656
+        },
+        "maximum-interior": {
+          "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+          "words": 8961
+        },
+        "maximum-seam": {
+          "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+          "words": 8961
+        }
+      },
+      "sourceAndCacheResidentBytes": 17861504,
+      "width": 300000
+    },
+    "intel": {
+      "height": 300000,
+      "preparationSeconds": 14.135229416,
+      "preparedPixels": 10661543936,
+      "radius": 110.25,
+      "samples": {
+        "maximum-curve": {
+          "sha256": "df4cbaf7b21df3061de555d23d5c5f811b8e1b55de16432f0a6173517a8cbc04",
+          "words": 13708
+        },
+        "maximum-hole": {
+          "sha256": "08d825f4857546da6c4229da86b80aebb5562badd70d791c5535d506710f0cd2",
+          "words": 10656
+        },
+        "maximum-interior": {
+          "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+          "words": 8961
+        },
+        "maximum-seam": {
+          "sha256": "74806c880f54509ec02b9fa1d1008eafbdb465f458e30d0a1c3708bcd328a23f",
+          "words": 8961
+        }
+      },
+      "sourceAndCacheResidentBytes": 17861504,
+      "width": 300000
+    }
+  },
+  "comparedFields": {
+    "mask": [
+      "sha256",
+      "rectangle",
+      "inverted",
+      "radius",
+      "samples",
+      "width",
+      "height"
+    ],
+    "composite": [
+      "sha256",
+      "inverted",
+      "radius",
+      "words",
+      "width",
+      "height"
+    ]
+  },
+  "photoshop": {
+    "documentCountAppleEventError": -1712,
+    "freshSamples": 0,
+    "documentation": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html"
+  },
+  "limits": "The installed Photoshop app timed out on a read-only document count. Fresh Photoshop outputs, practical full-canvas compositing of maximum-size dense masks, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open."
+}

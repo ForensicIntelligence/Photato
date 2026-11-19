@@ -200,7 +200,7 @@ struct VectorFeatherCoverage: Sendable {
   private static func preparePieces(_ contours: [IntRect], mask: VectorMask,
     region: VectorPathGeometry.FilledRegion, padding: Int, fill: Pixel, window: IntRect?
   ) throws -> (samples: [FeatherSamplePlane.Piece], residentBytes: Int, transferredPixels: Int, rawSupport: [IntRect]?) {
-    let block = 8192
+    let block = FeatherSamplePlane.vectorPieceSide
     struct Cell: Hashable {
       let column: Int
       let row: Int
@@ -225,6 +225,9 @@ struct VectorFeatherCoverage: Sendable {
       }
     }
     let rectangle = VectorRasterizer.axisAlignedRectangle(mask.path) != nil
+    let outside: Float = region.inverted ? 1 : 0
+    let constantCoverage = cells.count > 1 && !rectangle && fill.r == outside
+      ? VectorPieceCoverage(region.path, blockSide: block) : nil
     var samples: [FeatherSamplePlane.Piece] = []
     var rawSupport = window == nil ? RawSupport() : nil
     var bytes = 0, transferredPixels = 0
@@ -237,12 +240,21 @@ struct VectorFeatherCoverage: Sendable {
       } ?? entire
       guard scope.width > 0, scope.height > 0 else { continue }
       let origin = PathPoint(Double(rect.x - padding), Double(rect.y - padding))
-      var surface = try Surface(width: rect.width, height: rect.height, fill: fill)
-      if mask.path.components.first?.operation != .subtract,
+      // A viewport only needs the region containing its padded filter windows.
+      // A distant edge in the same cell need not force a native draw there.
+      let scopeBounds = CGRect(x: origin.x + Double(scope.x), y: origin.y + Double(scope.y),
+        width: Double(scope.width), height: Double(scope.height))
+      let inside = constantCoverage?.contains(scopeBounds)
+      if inside == false { continue }
+      let sampleRect = inside == true
+        ? IntRect(x: rect.x + scope.x, y: rect.y + scope.y, width: scope.width, height: scope.height)
+        : rect
+      var surface = try Surface(width: sampleRect.width, height: sampleRect.height, fill: fill)
+      if inside == true || (mask.path.components.first?.operation != .subtract &&
         VectorRasterizer.coversCanvasRectangle(mask.path, width: rect.width, height: rect.height, origin: origin)
-      {
+      ) {
         let value = 1 - fill.r
-        surface = try Surface(width: rect.width, height: rect.height, fill: Pixel(value, value, value))
+        surface = try Surface(width: sampleRect.width, height: sampleRect.height, fill: Pixel(value, value, value))
       } else if rect.width * rect.height > 1_048_576 {
         surface = try VectorRasterizer.pagedCoverage(region, template: surface, origin: origin,
           window: scope == entire ? nil : scope, clipRectangle: rectangle, compactTransfer: window == nil)
@@ -260,11 +272,107 @@ struct VectorFeatherCoverage: Sendable {
         transferredPixels += rect.width * rect.height
       }
       if surface.tileCount != 0 || surface.defaultPixel.r != fill.r {
-        samples.append(.init(x: rect.x, y: rect.y, samples: surface))
+        samples.append(.init(x: sampleRect.x, y: sampleRect.y, samples: surface))
         bytes += surface.allocatedBytes
-        if try rawSupport?.record(surface, at: rect, outside: fill.r) == false { rawSupport = nil }
+        if try rawSupport?.record(surface, at: sampleRect, outside: fill.r) == false { rawSupport = nil }
       }
     }
     return (samples, bytes, transferredPixels, rawSupport?.rectangles)
+  }
+}
+
+/// Conservative Bézier control-point bounds for identifying rectangular areas of constant
+/// coverage. Only a region separated from the resolved path can use a constant.
+struct VectorPieceCoverage {
+  private static let maxBoxes = 8_192
+  // Leave a margin around the geometric outline for native antialiasing.
+  private static let guardPixels = 8.0
+  private let path: CGPath
+  private let outlineBoxes: [CGRect]
+
+  init?(_ path: CGPath, blockSide: Int) {
+    var outline = Outline(maximumSpan: Double(blockSide))
+    path.applyWithBlock { element in outline.append(element.pointee) }
+    outline.close()
+    guard outline.usable else { return nil }
+    self.path = path
+    outlineBoxes = outline.boxes
+  }
+
+  /// The resolved path uses the same winding rule as CGContext.fillPath.
+  /// A piece near any segment still uses the original antialiased draw.
+  func contains(_ area: CGRect) -> Bool? {
+    guard !outlineBoxes.contains(where: { $0.intersects(area) }) else { return nil }
+    return path.contains(CGPoint(x: area.midX, y: area.midY), using: .winding)
+  }
+
+  private struct Outline {
+    let maximumSpan: Double
+    var boxes: [CGRect] = []
+    var usable = true
+    private var start: CGPoint?
+    private var current: CGPoint?
+
+    init(maximumSpan: Double) {
+      self.maximumSpan = maximumSpan
+    }
+
+    mutating func append(_ element: CGPathElement) {
+      guard usable else { return }
+      let p = element.points
+      switch element.type {
+      case .moveToPoint:
+        close()
+        start = p[0]
+        current = p[0]
+      case .addLineToPoint:
+        guard let current else { usable = false; return }
+        add(current, current, p[0], p[0])
+        self.current = p[0]
+      case .addQuadCurveToPoint:
+        guard let current else { usable = false; return }
+        add(current, point(toward: p[0], from: current), point(toward: p[0], from: p[1]), p[1])
+        self.current = p[1]
+      case .addCurveToPoint:
+        guard let current else { usable = false; return }
+        add(current, p[0], p[1], p[2])
+        self.current = p[2]
+      case .closeSubpath:
+        close()
+      @unknown default:
+        usable = false
+      }
+    }
+
+    mutating func close() {
+      if let current, let start, current != start { add(current, current, start, start) }
+      current = start
+    }
+
+    private func point(toward control: CGPoint, from end: CGPoint) -> CGPoint {
+      CGPoint(x: (end.x + 2 * control.x) / 3, y: (end.y + 2 * control.y) / 3)
+    }
+
+    private func midpoint(_ a: CGPoint, _ b: CGPoint) -> CGPoint {
+      CGPoint(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
+    }
+
+    // Split long segments before bounding their control-point hulls.
+    private mutating func add(_ a: CGPoint, _ b: CGPoint, _ c: CGPoint, _ d: CGPoint, depth: Int = 0) {
+      guard usable && boxes.count < VectorPieceCoverage.maxBoxes else { usable = false; return }
+      let x = min(a.x, b.x, c.x, d.x), right = max(a.x, b.x, c.x, d.x)
+      let y = min(a.y, b.y, c.y, d.y), bottom = max(a.y, b.y, c.y, d.y)
+      guard x.isFinite, right.isFinite, y.isFinite, bottom.isFinite else { usable = false; return }
+      let width = right - x, height = bottom - y
+      if depth == 12 || max(width, height) <= maximumSpan {
+        let margin = VectorPieceCoverage.guardPixels
+        boxes.append(CGRect(x: x - margin, y: y - margin, width: width + 2 * margin, height: height + 2 * margin))
+        return
+      }
+      let ab = midpoint(a, b), bc = midpoint(b, c), cd = midpoint(c, d)
+      let abc = midpoint(ab, bc), bcd = midpoint(bc, cd), center = midpoint(abc, bcd)
+      add(a, ab, abc, center, depth: depth + 1)
+      add(center, bcd, cd, d, depth: depth + 1)
+    }
   }
 }

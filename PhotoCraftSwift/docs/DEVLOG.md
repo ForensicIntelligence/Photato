@@ -620,7 +620,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 599 | 2026-11-19 | [Reuse wide vector-mask Feather windows](#dev-step-599) |
 | 600 | 2026-11-19 | [Prove RGB32 raster-base opacity with rectangular Feather](#dev-step-600) |
 | 601 | 2026-11-19 | [Render sparse curved Feather from stored coverage](#dev-step-601) |
+| 602 | 2026-11-19 | [Skip solid pieces of dense feathered vector masks](#dev-step-602) |
 <!-- history-index:end -->
+
+<a id="dev-step-602"></a>
+
+## 2026-11-19 — Skip solid pieces of dense feathered vector masks
+
+The baseline scratch rasterizer prepares each occupied 8,192-pixel cell in the resolved outline's bounding grid. On a maximum-size oval, the geometric probe classified 87.6% of that bounding area as wholly inside or outside the resolved path. A 49,152 × 49,152 ellipse, ring and inverted ring verified 216 classified pieces covering 3,409,227,375 Gray8 samples per architecture against the existing renderer. The maximum-size result measures classified area. The source and results are under `artifacts/602-dense-vector-support/constant-piece-probe01`. [Adobe vector mask controls](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html) · [Core Graphics containment](https://developer.apple.com/documentation/coregraphics/cgpath/contains(_:using:transform:)).
+
+`VectorFeatherCoverage` now checks whether a raw source piece is separated from every resolved path segment. It preserves the original Core Graphics drawing context and antialiased bytes for boundary pieces. Empty pieces use implicit outside coverage. Fully covered pieces use one implicit binary sample. `FeatherSamplePlane` indexes disjoint pieces by their existing grid so normal filtering only looks up relevant pieces. `FeatheredMask` and `AreaMaskFeather` use the existing kernel's constant result when a complete filter footprint is inside one uniform piece. Seams and mixed samples keep the existing paths.
+
+The new tests compare raw bytes near fractional outer and Boolean hole boundaries and compare short- and wide-Feather whole-mask samples with viewport samples across piece seams in each polarity. The installed Photoshop app remains open. A six-second read-only document count returned AppleEvent error −1712. No fresh Photoshop fixture was saved. Frozen source and logs are recorded under `artifacts/602-dense-vector-support/qualification01`.
+
+Source01 compiled in Debug. The direct polygon and Gray8 checks passed. The new seam test found four unexpected scratch transfers for a solid viewport because the original query classified the entire 8,192-pixel cell, including a distant hole. The sampled output comparisons in that test passed. The separate focused output is `artifacts/602-dense-vector-support/focused-debug01.log`. The driver stopped qualification01 before completing the other configurations and recorded the reason in `artifacts/602-dense-vector-support/qualification01/interrupted-after-focused.json`.
+
+Source02 checks the full padded viewport footprint within each cell. A solid partial piece keeps its own position and dimensions. When two adjacent implicit pieces share a value, their covered area can establish a constant filter window across the seam. Boundary pieces keep the original drawing scope, quantization and transfer. The frozen rerun uses `artifacts/602-dense-vector-support/qualification02`.
+
+All four focused Debug checks passed in the isolated test run. The coverage comparisons record every Float32 word in each requested rectangle. The composite checks record every rendered RGBA word in each horizontal control. Independent control source, compile driver and results are in `artifacts/602-dense-vector-support/render-comparisons`.
+
+Ten mask controls matched build 601 across all 10,873,881 Float32 coverage words per architecture. Two additional whole-canvas RGB32 layer stacks matched all 28,706,520 RGBA words per architecture. The controls cover both mask polarities, short and wide Feather through 1,000 px, Boolean holes, partial cells, and near-edge viewports on a 300,000 × 300,000 document.
+
+At 1,000 px Feather, the interior viewport of the maximum-size document needed no scratch transfer, down from 51,595,425 source pixels. The whole 49,155 × 73 wide-Feather control transferred 18,434,046 source pixels, down from 36,890,622.
+
+Whole-mask preparation for the 300,000 × 300,000 control at 110.25 px Feather took 10.39 s on Apple Silicon and 14.14 s under Rosetta. The four checked regions matched all 42,286 coverage words against build 601 viewport output on each architecture. These measurements are single runs on the same Mac.
+
+All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum.
+
+The installed Photoshop app timed out on a read-only document count. Fresh Photoshop outputs, practical full-canvas compositing of maximum-size dense masks, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_602.md).
 
 <a id="dev-step-601"></a>
 

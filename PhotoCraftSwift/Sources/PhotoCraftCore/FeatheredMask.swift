@@ -4,6 +4,8 @@ import os
 /// A scalar plane may be wider than an editable Surface when it includes a
 /// virtual border. Disjoint pieces retain their own sparse raster storage.
 package struct FeatherSamplePlane: Sendable {
+  package static let vectorPieceSide = 8_192
+
   package struct Piece: Sendable {
     let x: Int
     let y: Int
@@ -25,7 +27,7 @@ package struct FeatherSamplePlane: Sendable {
   let height: Int
   let implicit: Float
   private let surface: Surface?
-  private let pieces: [Piece]
+  private let grid: PieceGrid?
   let rectangle: IntRect?
 
   init(_ surface: Surface) {
@@ -33,7 +35,7 @@ package struct FeatherSamplePlane: Sendable {
     width = surface.width
     height = surface.height
     implicit = unit(surface.defaultPixel.r)
-    pieces = []
+    grid = nil
     rectangle = nil
   }
 
@@ -42,7 +44,7 @@ package struct FeatherSamplePlane: Sendable {
     self.height = height
     implicit = outside
     surface = nil
-    self.pieces = pieces
+    grid = pieces.isEmpty ? nil : PieceGrid(width: width, pieces: pieces)
     rectangle = nil
   }
 
@@ -52,14 +54,33 @@ package struct FeatherSamplePlane: Sendable {
     self.height = height
     implicit = outside
     surface = nil
-    pieces = []
+    grid = nil
     let clipped = rectangle.clipped(toWidth: width, height: height)
     self.rectangle = clipped.width > 0 && clipped.height > 0 ? clipped : nil
   }
 
   var isUniform: Bool {
     if let surface { return surface.tileCount == 0 }
-    return pieces.isEmpty && rectangle == nil
+    return grid == nil && rectangle == nil
+  }
+
+  /// A complete footprint in equally filled implicit pieces has one sample.
+  func constantFeatherSample(in region: IntRect) -> Float? {
+    guard let grid, let piece = grid.piece(atX: region.x, y: region.y),
+      piece.samples.tileCount == 0 else { return nil }
+    let value = piece.samples.defaultPixel.r
+    let overlap = piece.overlap(with: region)
+    if overlap.width == region.width && overlap.height == region.height { return value }
+    guard grid.crossesCellBoundary(region) else { return nil }
+    var covered = 0
+    for next in grid.overlapping(region, width: width, height: height) {
+      let part = next.overlap(with: region)
+      if part.width > 0 && part.height > 0 {
+        guard next.samples.tileCount == 0 && next.samples.defaultPixel.r == value else { return nil }
+        covered += part.width * part.height
+      }
+    }
+    return covered == region.width * region.height ? value : nil
   }
 
   func hasFeatherSamples(in region: IntRect) -> Bool {
@@ -68,11 +89,11 @@ package struct FeatherSamplePlane: Sendable {
       let overlap = Self.localOverlap(rectangle, in: region)
       return overlap.width > 0 && overlap.height > 0
     }
-    return pieces.contains { piece in
+    return grid?.overlapping(region, width: width, height: height).contains { piece in
       let part = piece.overlap(with: region)
       return part.width > 0 && part.height > 0
         && (piece.samples.defaultPixel.r != implicit || piece.samples.hasFeatherSamples(in: part))
-    }
+    } ?? false
   }
 
   func featherInput(in region: IntRect) -> [Float]? {
@@ -91,8 +112,9 @@ package struct FeatherSamplePlane: Sendable {
       }
       return samples
     }
+    guard let grid else { return nil }
     var output: [Float]?
-    for piece in pieces {
+    for piece in grid.overlapping(region, width: width, height: height) {
       let overlap = piece.overlap(with: region)
       guard overlap.width > 0, overlap.height > 0 else { continue }
       let input = piece.samples.featherInput(in: overlap)
@@ -117,6 +139,44 @@ package struct FeatherSamplePlane: Sendable {
     IntRect(x: rectangle.x - region.x, y: rectangle.y - region.y,
       width: rectangle.width, height: rectangle.height)
       .clipped(toWidth: region.width, height: region.height)
+  }
+
+  /// Vector preparation yields at most one bounded piece per grid cell.
+  private struct PieceGrid: Sendable {
+    private static let side = FeatherSamplePlane.vectorPieceSide
+    private let columns: Int
+    private let pieces: [Int: Piece]
+
+    init(width: Int, pieces: [Piece]) {
+      let side = Self.side
+      let columns = (width + side - 1) / side
+      self.columns = columns
+      self.pieces = Dictionary(uniqueKeysWithValues: pieces.map {
+        precondition($0.x % side + $0.samples.width <= side && $0.y % side + $0.samples.height <= side)
+        return (($0.y / side) * columns + $0.x / side, $0)
+      })
+    }
+
+    func piece(atX x: Int, y: Int) -> Piece? { pieces[(y / Self.side) * columns + x / Self.side] }
+
+    func crossesCellBoundary(_ region: IntRect) -> Bool {
+      region.x % Self.side + region.width > Self.side || region.y % Self.side + region.height > Self.side
+    }
+
+    func overlapping(_ region: IntRect, width: Int, height: Int) -> [Piece] {
+      let scope = region.clipped(toWidth: width, height: height)
+      guard scope.width > 0, scope.height > 0 else { return [] }
+      let side = Self.side
+      let columns = (scope.x / side)...((scope.x + scope.width - 1) / side)
+      let rows = (scope.y / side)...((scope.y + scope.height - 1) / side)
+      var result: [Piece] = []
+      for row in rows {
+        for column in columns {
+          if let piece = pieces[row * self.columns + column] { result.append(piece) }
+        }
+      }
+      return result
+    }
   }
 }
 
@@ -418,6 +478,11 @@ package final class FeatheredMask: Sendable {
     let left = max(0, inputLeft), top = max(0, inputTop)
     let right = min(source.width, inputRight), bottom = min(source.height, inputBottom)
     let box = IntRect(x: left, y: top, width: right - left, height: bottom - top)
+    if box.width == inputWidth, box.height == inputHeight, let constant = source.constantFeatherSample(in: box) {
+      let horizontal = Self.weightedConstant(constant, weights: weights)
+      let vertical = Self.weightedConstant(horizontal, weights: weights)
+      return .uniform(Self.stored(vertical, outside: outside, threshold: storageThreshold))
+    }
     let input = source.featherInput(in: box)
     let clampLeft = edges.contains(.left), clampRight = edges.contains(.right)
     let clampTop = edges.contains(.top), clampBottom = edges.contains(.bottom)

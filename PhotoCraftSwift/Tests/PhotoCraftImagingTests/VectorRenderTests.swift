@@ -496,6 +496,80 @@ final class VectorRenderTests: XCTestCase {
     print("Curved Feather: \(patches) output patches, \(image.mappedTileCount) stored tiles")
   }
 
+  func testCurvePieceClassificationKeepsAntialiasedEdgesAndBooleanHoles() throws {
+    let oval = featherTestOval(center: .init(24_100, 300), rx: 23_900, ry: 410)
+    let hole = rect(16_112.25, 219.375, 213.25, 154.25, .subtract)
+    let areas: [(CGRect, Bool?)] = [
+      (CGRect(x: 8_192, y: 256, width: 97, height: 65), true),
+      (CGRect(x: 16_170, y: 256, width: 67, height: 65), false),
+      (CGRect(x: 96, y: 256, width: 31, height: 65), false),
+      (CGRect(x: 16_103, y: 256, width: 18, height: 65), nil),
+      (CGRect(x: 193, y: 291, width: 18, height: 17), nil),
+    ]
+    for inverted in [false, true] {
+      let path = VectorPath(components: [oval, hole], inverted: inverted)
+      let region = try VectorPathGeometry.filledRegion(path)
+      let classifier = try XCTUnwrap(VectorPieceCoverage(region.path, blockSide: 8_192))
+      for (area, expected) in areas {
+        let result = classifier.contains(area)
+        XCTAssertEqual(result, expected, "\(area)")
+        let raw = try VectorRasterizer.coverageBytes(region, width: Int(area.width), height: Int(area.height),
+          origin: PathPoint(area.minX, area.minY))
+        if let expected {
+          XCTAssertTrue(raw.allSatisfy { $0 == (expected != inverted ? 255 : 0) }, "\(area)")
+        } else {
+          XCTAssertTrue(raw.contains { $0 > 0 && $0 < 255 }, "\(area)")
+        }
+      }
+    }
+  }
+
+  func testDenseCurvedFeatherSkipsSolidPiecesAndKeepsCrossCellSamples() throws {
+    let width = 49_155, height = 73
+    let oval = featherTestOval(center: .init(24_575.25, 37.375), rx: 24_559.375, ry: 5_300.25)
+    let hole = rect(16_271.625, 12.25, 204.5, 52.125, .subtract)
+    for inverted in [false, true] {
+      let outside: Float = inverted ? 1 : 0
+      var mask = VectorMask(path: VectorPath(components: [oval, hole], inverted: inverted))
+      mask.density = 0.8125
+      for radius in [2, 110.25] {
+        mask.feather = radius
+        let plane = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: outside)
+        let center = IntRect(x: 24_565, y: 29, width: 29, height: 13)
+        let centerPlane = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: outside,
+          viewport: center)
+        XCTAssertEqual(centerPlane.transferredInputPixels, 0)
+        let pad = Int(MaskSampler.featherDamageRadius(radius)) + 1
+        XCTAssertLessThan(plane.transferredInputPixels, (width + 2 * pad) * (height + 2 * pad) * 4 / 5)
+        XCTAssertEqual(plane.coverage(x: 24_570.5, y: 33.5), inverted ? 0.1875 : 1)
+        for x in [18, 8_186, 16_272, 16_384, 16_475, 32_758, 49_125] {
+          let roi = IntRect(x: x, y: 32, width: 13, height: 5)
+          let viewport = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: outside,
+            viewport: roi)
+          for px in x..<(x + roi.width) {
+            let y = 35.5
+            XCTAssertEqual(plane.coverage(x: Double(px) + 0.5, y: y).bitPattern,
+              viewport.coverage(x: Double(px) + 0.5, y: y).bitPattern, "\(radius), \(inverted), \(px)")
+          }
+        }
+      }
+    }
+  }
+
+  private func featherTestOval(center: PathPoint, rx: Double, ry: Double) -> PathComponent {
+    let x = center.x, y = center.y, k = 0.5522847498307936
+    return PathComponent(knots: [
+      PathKnot(PathPoint(x + rx, y), incoming: PathPoint(x + rx, y - k * ry),
+        outgoing: PathPoint(x + rx, y + k * ry)),
+      PathKnot(PathPoint(x, y + ry), incoming: PathPoint(x + k * rx, y + ry),
+        outgoing: PathPoint(x - k * rx, y + ry)),
+      PathKnot(PathPoint(x - rx, y), incoming: PathPoint(x - rx, y + k * ry),
+        outgoing: PathPoint(x - rx, y - k * ry)),
+      PathKnot(PathPoint(x, y - ry), incoming: PathPoint(x - k * rx, y - ry),
+        outgoing: PathPoint(x + k * rx, y - ry)),
+    ], closed: true)
+  }
+
   func testWideVectorFeatherPreservesEditablePSDAndPSBMaskProperties() throws {
     for both in [false, true] {
       for format in PSDFileFormat.allCases {
