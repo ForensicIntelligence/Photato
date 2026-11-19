@@ -13,17 +13,29 @@ final class PSDCompositeRows {
   private var video:VideoTransitionRenderContext?
   private var facts:CompositionFacts?
   init(_ document:CraftDocument,transparency:Bool=true) {self.document=document;self.transparency=transparency}
-  private func render(_ region:IntRect) throws -> Surface {
-    // Non-RGB composition keeps its separate native mode/ink path.
-    guard document.colorMode == .rgb,document.inkMode == nil,document.restrictedMode == nil else {
-      return try Renderer.composite(document,region:region)
-    }
+  private func prepare() throws {
     if prepared == nil {
       try document.validate()
       let (snapshot,transitions) = try Renderer.preparedSources(document)
       prepared=snapshot;video=transitions
       if snapshot.width>Surface.maximumDensePixels/snapshot.height {facts=CompositionFacts(snapshot)}
     }
+  }
+  func sparseRows() throws -> PSDStoredRows? {
+    guard document.colorMode == .rgb, document.inkMode == nil, document.restrictedMode == nil,
+      document.width > Surface.maximumDensePixels / document.height else { return nil }
+    try prepare()
+    guard let prepared, let facts, video == nil,
+      let result = try PagedCanvasRenderer.sparseExportComposite(prepared, facts: facts)
+    else { return nil }
+    return PSDStoredRows(result, kind: .merged(transparency: transparency))
+  }
+  private func render(_ region:IntRect) throws -> Surface {
+    // Non-RGB composition keeps its separate native mode/ink path.
+    guard document.colorMode == .rgb,document.inkMode == nil,document.restrictedMode == nil else {
+      return try Renderer.composite(document,region:region)
+    }
+    try prepare()
     return try Renderer.compositePrepared(prepared!,region:region,video:video,facts:facts)
   }
   func row(_ y:Int,channel:Int,depth:Int) throws -> [UInt8] {
@@ -48,6 +60,75 @@ final class PSDCompositeRows {
       let value:Float
       switch channel {case 0:value=p.r;case 1:value=p.g;case 2:value=p.b;default:value=p.a}
       try PSDChannelCodec.append(value,depth:depth,to:&bytes)
+    }
+    return bytes
+  }
+}
+
+/// For sparse layer and merged planes, rows outside stored tile bands are
+/// identical. Within a band only the stored columns can differ from the default.
+struct PSDStoredRows {
+  enum Kind: Equatable {
+    case layer, mask, merged(transparency: Bool)
+  }
+
+  private let surface: Surface
+  private let kind: Kind
+  private let columnsByBand: [[Int]]
+  private let emptyBandEnds: [Int]
+
+  init?(_ surface: Surface, kind: Kind) {
+    guard surface.width > Surface.maximumDensePixels / surface.height,
+      surface.tileCount <= RasterGeometry.sparseGridSourceTileLimit else { return nil }
+    self.surface = surface
+    self.kind = kind
+    let side = Surface.tileSide
+    let columns = (surface.width + side - 1) / side
+    var bands = [[Int]](repeating: [], count: (surface.height + side - 1) / side)
+    for key in surface.storedTileKeys { bands[key / columns].append(key % columns) }
+    columnsByBand = bands
+    var end = surface.height
+    var ends = [Int](repeating: end, count: bands.count)
+    for band in bands.indices.reversed() {
+      ends[band] = end
+      if !bands[band].isEmpty { end = band * side }
+    }
+    emptyBandEnds = ends
+  }
+
+  func repeatedRows(from y: Int) -> Int {
+    let band = y / Surface.tileSide
+    return columnsByBand[band].isEmpty ? emptyBandEnds[band] - y : 1
+  }
+
+  func row(_ y: Int, channel: Int, depth: Int) throws -> [UInt8] {
+    let side = Surface.tileSide, sampleBytes = depth / 8
+    let linear = depth == 32 && kind != .mask
+    func sample(_ pixel: Pixel) -> Float {
+      let stored: Pixel
+      switch kind {
+      case .mask: return unit(pixel.r)
+      case .layer: stored = pixel
+      case .merged(let transparency):
+        stored = linear ? PSDMergedSample.encodeLinear(pixel, transparency: transparency)
+          : PSDMergedSample.encode(pixel, depth: depth)
+      }
+      switch channel { case 0: return stored.r; case 1: return stored.g; case 2: return stored.b; default: return stored.a }
+    }
+    var pattern: [UInt8] = []
+    try PSDChannelCodec.append(sample(linear ? surface.linearDefaultPixel : surface.defaultPixel), depth: depth, to: &pattern)
+    var bytes = Array(PSDChannelWriter.repeating(Data(pattern), count: surface.width))
+    var patch: [UInt8] = []
+    patch.reserveCapacity(side * sampleBytes)
+    for column in columnsByBand[y / side] {
+      try Task.checkCancellation()
+      let start = column * side, end = min(surface.width, start + side)
+      patch.removeAll(keepingCapacity: true)
+      for x in start..<end {
+        let p = linear ? surface.linearPixel(x: x, y: y) : surface.pixel(x: x, y: y)
+        try PSDChannelCodec.append(sample(p), depth: depth, to: &patch)
+      }
+      bytes.replaceSubrange((start * sampleBytes)..<(end * sampleBytes), with: patch)
     }
     return bytes
   }

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 605 — Stream repeated rows in sparse PSB files
+
+Photato saved the 11.26 GB editable solid-fill PSB at 300,000 × 300,000 pixels in 3.22 s and reopened it in 2.12 s. An independent reader checked all 1,200,000 merged row lengths and 140 sampled channel values. These were single runs on the same Mac.
+
+The 300,000 × 131 RLE file was byte-identical to build 604. Save time went from 10.97 s to 0.30 s on Apple Silicon and from 17.54 s to 0.34 s under Rosetta. All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-605) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md).
+
 ## 2026-11-19 — Step 604 — Reuse wide vector Feather profiles at canvas edges
 
 At 110.25 px Feather, the rounded 300,000 × 300,000 control went from 5,632 rendered patches to 119. Apple Silicon went from 110.45 s to 13.47 s. Under Rosetta it went from 171.10 s to 25.76 s. All 226,872 sampled RGBA words matched the build 603 whole render on each architecture. These are single runs on the same Mac.
@@ -835,14 +843,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:604 -->
+<!-- current-status-step:605 -->
 ## Current development status — 19 November 2026
 
-Wide feathered vector masks reuse identical edge profiles in both the filter and the compositor.
+Large sparse Photoshop files reuse merged pixels and identical rows during export.
 
-All 924 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 604](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_604.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604).
+[Source checkpoint 605](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-605).
 
 <!-- current-status:end -->
 

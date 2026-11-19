@@ -85,6 +85,9 @@ public struct Surface: Codable, Equatable, Sendable {
   public private(set) var colorEncoding: SurfaceColorEncoding = .sRGB
   /// Existing editing/display APIs read sRGB values. Linear access retains HDR bits.
   public var defaultPixel: Pixel { encodedSample(storedDefaultPixel) }
+  package var linearDefaultPixel: Pixel {
+    colorEncoding == .linearRGB ? storedDefaultPixel : SRGBTransfer.linear(storedDefaultPixel)
+  }
   private func encodedSample(_ p: Pixel) -> Pixel {
     colorEncoding == .linearRGB ? SRGBTransfer.encoded(p) : p
   }

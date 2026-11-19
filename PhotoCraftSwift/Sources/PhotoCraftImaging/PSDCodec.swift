@@ -1015,7 +1015,7 @@ public enum PSDCodec {
       doc.activeLayerID = layer.id
     }
     // Layered inputs do not use the merged process cache, but it remains validated.
-    while merged.remainingRows>auxiliaryCount*height {_ = try merged.nextRow()}
+    try merged.discardRows(merged.remainingRows - auxiliaryCount * height)
     try PSDAuxiliaryChannels.read(merged,first:imageChannels,count:auxiliaryCount,blocks:resourceBlocks,document:&doc,paging:paging)
     try merged.discardRemaining()
     try PSDArtboards.read(into:&doc)
@@ -1484,15 +1484,20 @@ public enum PSDCodec {
       } else {
         surface = nil
       }
+      let storedLayerRows = layer.nativeMode == nil ? surface.flatMap { PSDStoredRows($0, kind: .layer) } : nil
+      let storedMaskRows = layer.mask.flatMap { PSDStoredRows($0, kind: .mask) }
       for channel in 0..<channelLengthOffsets[entryIndex].count {
         let start = output.count
         let isMask = channel == colorChannels + 1
         let source = isMask ? layer.mask : surface
         if let source {
+          let storedRows = isMask ? storedMaskRows : storedLayerRows
           try PSDChannelWriter.write(
             width: source.width, height: source.height, depth: depth,
-            compression: compression, format: format, to: output
+            compression: compression, format: format, to: output,
+            repeatedRows: storedRows.map { rows in { rows.repeatedRows(from: $0) } }
           ) { y in
+            if let storedRows { return try storedRows.row(y, channel: channel, depth: depth) }
             var row: [UInt8] = []
             row.reserveCapacity(source.width * (depth / 8))
             for x in 0..<source.width {
@@ -1577,6 +1582,7 @@ public enum PSDCodec {
     let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
       || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
       ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
+    let sparseComposite = try pagedComposite?.sparseRows()
     let pagedModeComposite = try gray32Composite == nil && doc.modeDescriptor != nil
       && (doc.width > NativeModeRaster.maximumPixels / doc.height || doc.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }))
       ? PSDModeCompositeRows(doc) : nil
@@ -1589,13 +1595,18 @@ public enum PSDCodec {
     } else {
       nativeComposite = nil
     }
+    let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
+    let repeatedRows: ((Int) -> Int)? = sparseComposite.map { rows in
+      { index in index / doc.height < imageChannels ? rows.repeatedRows(from: index % doc.height) : 1 }
+    }
     try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,
-      compression: compositeCompression, channels: colorChannels + (mergedTransparency ? 1:0) + auxiliaryChannels.count, format: format, to: output) { index in
+      compression: compositeCompression, channels: imageChannels + auxiliaryChannels.count,
+      format: format, to: output, repeatedRows: repeatedRows) { index in
         let channel = index / doc.height, y = index % doc.height
         try Task.checkCancellation()
-        let imageChannels=colorChannels+(mergedTransparency ? 1:0)
         if channel>=imageChannels {return try PSDAuxiliaryChannels.row(auxiliaryChannels[channel-imageChannels],y:y,depth:depth)}
         if let gray32Composite { return try gray32Composite.row(y, channel: channel, transparency: mergedTransparency) }
+        if let sparseComposite { return try sparseComposite.row(y, channel: channel, depth: depth) }
         if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}
         if let pagedModeComposite {return try pagedModeComposite.row(y,channel:channel,depth:depth)}
         var bytes: [UInt8] = []

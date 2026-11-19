@@ -1,0 +1,194 @@
+{
+  "build": 605,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince604": [
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "e223f010b772b59c4320fdb70a4afed6e4f038dce6e96a9c342903879736d891"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDChannelReader.swift",
+      "sha256": "ce73338e30e6b6d1d8edaf13a65b900f9593979e92c9be6d54c02ff6007f74b4"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDChannelWriter.swift",
+      "sha256": "fc8e141f39149be1f858db3e45ac1a576a4047b982b127c54767de2c954018b2"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "e5b3ae79473e0574c5a0bc754e51ec10482bf1653db95e876c4646c7b8995510"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCompositeRows.swift",
+      "sha256": "2925c85cb0e155564f85ee16a08d93daddcc71beaea5fd4ac83f4e16ba118634"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDOutput.swift",
+      "sha256": "ccec848753ab6661020c3aacb9c362b6df6ffade7fb1e5f5cbe0fcc1351e5be4"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "eddbd418638456dbcf97518fa6620c7facba81e881a1fa140fa2d33a258bb340"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompressionOptionsTests.swift",
+      "sha256": "eddcc55e0c29231da62c1556ade7cc00e4e0bf34b28c0d84f8dda388a7af99f4"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "8c6863684e7420b398bfca052f1e09e33f9fb113811196998a3a88269ac1bd35"
+    }
+  ],
+  "selectedChecksPerConfiguration": 932,
+  "compressionChecksPerConfiguration": 8,
+  "additionalDebugFileChecks": 24,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "d3e4c0cfa630bcbefe1ff98797b28518d736f7275cc27ddb9ecb333f6dfe97aa",
+      "testBinarySHA256": "98bde6c7b26f436c7f313f1a55353881164be1da41edd6dbb1f1095c7c3bf358",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "eab88427c66329f99d14f048bdcdac42797f7f6f5dd4810269be421c06e21e9e",
+      "testBinarySHA256": "6d21dc9cea4ff7836132b25c75a10f1a5113bcc176c0f1e29e0b6b14401ccca9",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "499deb0b8f11ac2e5e49cdae4ae905e484903b0e89d72e36fc9e6519713ce0e9",
+      "testBinarySHA256": "48bf52e0722757ae065c2585f22a9a669329a6b04b89ef1c2fa266f568843327",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "913a910c73fa7292bfe93e845ca2ecda7f47b31b30eb7bf08f5159ea7f09748a",
+    "binarySHA256": "76c4a7a7c01aa97156b868a507564d753f49bb017510401c87fed01a5a4be52e",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "maximumWidth": {
+    "arm": {
+      "build604": {
+        "bytes": 3691397,
+        "height": 131,
+        "readSeconds": 1.677647333,
+        "sampledPixels": 7,
+        "sha256": "d067e27befbc967314ba35ee4b0dfc318f74030970be516107e39f66f9d98188",
+        "width": 300000,
+        "writeSeconds": 10.970862625
+      },
+      "build605": {
+        "bytes": 3691397,
+        "height": 131,
+        "readSeconds": 1.473062708,
+        "sampledPixels": 7,
+        "sha256": "d067e27befbc967314ba35ee4b0dfc318f74030970be516107e39f66f9d98188",
+        "width": 300000,
+        "writeSeconds": 0.297344584
+      },
+      "independent": {
+        "channels": 3,
+        "checkedSamples": 21,
+        "fileBytes": 3691397,
+        "height": 131,
+        "packedMergedBytes": 1842417,
+        "rleRowLengths": {
+          "4688": 381,
+          "4690": 6,
+          "4691": 3,
+          "4692": 3
+        },
+        "rows": 393,
+        "width": 300000
+      }
+    },
+    "intel": {
+      "build604": {
+        "bytes": 3691397,
+        "height": 131,
+        "readSeconds": 2.867598834,
+        "sampledPixels": 7,
+        "sha256": "d067e27befbc967314ba35ee4b0dfc318f74030970be516107e39f66f9d98188",
+        "width": 300000,
+        "writeSeconds": 17.538038041
+      },
+      "build605": {
+        "bytes": 3691397,
+        "height": 131,
+        "readSeconds": 2.56475425,
+        "sampledPixels": 7,
+        "sha256": "d067e27befbc967314ba35ee4b0dfc318f74030970be516107e39f66f9d98188",
+        "width": 300000,
+        "writeSeconds": 0.338081083
+      },
+      "independent": {
+        "channels": 3,
+        "checkedSamples": 21,
+        "fileBytes": 3691397,
+        "height": 131,
+        "packedMergedBytes": 1842417,
+        "rleRowLengths": {
+          "4688": 381,
+          "4690": 6,
+          "4691": 3,
+          "4692": 3
+        },
+        "rows": 393,
+        "width": 300000
+      }
+    }
+  },
+  "maximumSolidFill": {
+    "bytes": 11260803568,
+    "color8": [
+      51,
+      102,
+      153
+    ],
+    "editableFill": true,
+    "height": 300000,
+    "readSeconds": 2.1204365,
+    "width": 300000,
+    "writeSeconds": 3.216530208
+  },
+  "independentMaximumSolidFill": {
+    "channels": 4,
+    "checkedSamples": 140,
+    "fileBytes": 11260803568,
+    "height": 300000,
+    "packedMergedBytes": 5625600000,
+    "rleRowLengths": {
+      "4688": 1200000
+    },
+    "rows": 1200000,
+    "width": 300000
+  },
+  "photoshopDocumentCountAppleEventError": -1712,
+  "limits": "The 300,000 \u00d7 300,000 control used an editable solid fill. Maximum-size nonuniform raster imports, dense or rich-layer performance, live Photoshop cross-open, and physical Intel and macOS 14 runtime remain open."
+}

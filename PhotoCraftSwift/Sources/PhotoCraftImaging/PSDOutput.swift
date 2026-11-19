@@ -43,10 +43,16 @@ final class PSDOutput {
     else { throw CraftError.invalid("PSD output length is out of range.") }
     var w = PSDWriter()
     w.n(value, width)
+    try patch(w.data, at: offset)
+  }
+  func patch(_ bytes: Data, at offset: Int) throws {
+    guard offset >= 0, offset <= count, bytes.count <= count - offset else {
+      throw CraftError.invalid("Invalid PSD output patch range.")
+    }
     if let file {
-      try file.patch(w.data, at: offset)
+      try file.patch(bytes, at: offset)
     } else {
-      data.replaceSubrange(offset..<offset + width, with: w.data)
+      data.replaceSubrange(offset..<offset + bytes.count, with: bytes)
     }
   }
   func finishLength(_ mark: Int, width: Int) throws {

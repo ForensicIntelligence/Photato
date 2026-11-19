@@ -623,7 +623,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 602 | 2026-11-19 | [Skip solid pieces of dense feathered vector masks](#dev-step-602) |
 | 603 | 2026-11-19 | [Reuse exact composited tiles under solid vector Feather](#dev-step-603) |
 | 604 | 2026-11-19 | [Reuse wide vector Feather profiles at canvas edges](#dev-step-604) |
+| 605 | 2026-11-19 | [Stream repeated rows in sparse PSB files](#dev-step-605) |
 <!-- history-index:end -->
+
+<a id="dev-step-605"></a>
+
+## 2026-11-19 — Stream repeated rows in sparse PSB files
+
+For I02, the existing RGB exporter rendered the same bounded regions once for each merged channel, even on an almost-empty canvas. The file layout is planar, with 32-bit PSB RLE row lengths. The 300,000 × 131 RGB8 control reopens its editable raster through the file URL reader. Build 604 reproduced the 3,691,397-byte build 603 file with SHA-256 `d067e27befbc967314ba35ee4b0dfc318f74030970be516107e39f66f9d98188`. An independent decoder checked three merged planes and seven positions. The original build 603 attempt used the memory API and hit its existing decoded-layer budget. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+`PSDCompositeRows` can now retain a compact result from the same pointwise compositor used by the editor. It first checks that the prepared RGB stack and every nonimplicit tile fit the sparse path. Other stacks use the existing bounded band renderer. `PSDStoredRows` fills untouched row intervals from the exact implicit sample, with edits confined to stored tile columns. It also supplies rows for large sparse layer and mask planes. `Surface` exposes the exact linear implicit sample for Float32 export.
+
+`PSDChannelWriter` writes repeated bytes in bounded blocks and backpatches the matching RLE row lengths through `PSDOutput`. The same PackBits encoder and ZIP stream produce the existing wire format. `PSDChannelReader` can compare consecutive compressed rows in unused caches and reuse validation only for equal payloads. Changed rows, unusual padding, auxiliary rows, unexpected trailing bytes and truncated input still go through the existing checks. The existing desktop export, Photato API and Photoshop-compatible serialization share these changes. These paths use the same compression options and request schemas.
+
+The first frozen compile in `artifacts/605-psb-output/qualification01` caught a Swift Sequence counting error in the tile bound. The repaired guard tests whether any key remains after the sparse limit. The fresh three-configuration run is `artifacts/605-psb-output/qualification02`. The standalone build 604 probe wrote and reopened its file, then macOS blocked the memory-statistics query in `time -l`. The retry uses portable timing and independently decodes the output.
+
+Three new methods check exact raw, RLE and ZIP bytes across repeated runs and both row table widths, malformed compressed caches and auxiliary planes, and sparse versus original RGB8, RGB16 and RGB32 rows including masks and edits at partial tile edges. A separate disposable reconstruction checks a 300,000 × 300,000 editable solid fill and independently inspects its PSB row table. Photoshop again returned AppleEvent error −1712 on the read-only document count.
+
+The standalone executable linked against the repaired Debug modules saved and reopened the 300,000 × 131 file byte for byte against the build 604 control. It reopened seven edited or implicit positions, and the independent decoder checked all three merged components at those positions. The 300,000 × 300,000 RLE solid-fill file was 11,260,803,568 bytes. The native file path wrote it in 3.70 s and reopened the editable fill in 7.25 s. These are single runs on this Mac. The independent decoder verified all 1,200,000 four-byte merged row lengths and 140 component samples, including both canvas edges. The owned scratch files were removed after the checks. See `artifacts/605-psb-output/file-probes01` for the probe source and receipts.
+
+The optimized Apple Silicon probe reproduced the same maximum-width file SHA-256. Its native write took 0.30 s compared with 10.97 s on build 604. The optimized probe wrote the maximum solid-fill file in 3.22 s and reopened the editable fill in 2.12 s. The independent oracle reproduced all 1,200,000 merged row lengths and 140 component checks. The test suite and both file paths leave the maximum editable nonuniform raster import as a distinct workflow to qualify.
+
+In the second run, all three new tests passed in Debug. Seven of the eight compression methods passed. The eighth method had two RGB32 ZIP marker assertions expecting compression marker 2, which failed identically in the retained 604 binary. Since build 571, the Float32 layer writer has emitted marker 3 and the matching predictor for this request. The test now expects that format and still compares every decoded sample. The affected test from the failed run is retained with its original input manifest. The third qualification reuses the completed compiler caches and recompiles the corrected test against the same application sources.
+
+The same maximum-width file SHA-256 matched under Rosetta. The write went from 17.54 s to 0.34 s. A separate Debug run passed 24 file streaming, depth, auxiliary-channel, file output and maximum-width artboard checks. Imports of unused data still reject corrupt previews, row tables, padding and compressed checksums.
+
+All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum.
+
+The 300,000 × 300,000 control used an editable solid fill. Maximum-size nonuniform raster imports, dense or rich-layer performance, live Photoshop cross-open, and physical Intel and macOS 14 runtime remain open. [Validation](SOURCE_PUBLICATION_605.md).
 
 <a id="dev-step-604"></a>
 

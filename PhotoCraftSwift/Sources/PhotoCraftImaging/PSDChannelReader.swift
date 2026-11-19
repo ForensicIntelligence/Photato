@@ -58,20 +58,50 @@ final class PSDChannelReader {
       }
     }
     remainingRows -= 1
-    if remainingRows == 0 {
-      if let zip {
-        try zip.finish()
-      } else if source.remaining != 0 {
-        throw CraftError.invalid("Unexpected PSD channel bytes.")
-      }
-    }
+    try finishIfAtEnd()
     return row
   }
 
-  /// Validate even unused caches/channels, without allocating their full output.
-  func discardRemaining() throws {
-    while remainingRows > 0 { _ = try nextRow() }
+  private func finishIfAtEnd() throws {
+    guard remainingRows == 0 else { return }
+    if let zip {
+      try zip.finish()
+    } else if source.remaining != 0 {
+      throw CraftError.invalid("Unexpected PSD channel bytes.")
+    }
   }
+
+  /// Validate even unused caches/channels, without allocating their full output.
+  func discardRows(_ count: Int) throws {
+    guard (0...remainingRows).contains(count) else {
+      throw CraftError.invalid("Invalid number of PSD rows to discard.")
+    }
+    guard count > 0 else { return }
+    guard compression == 1 else {
+      for _ in 0..<count { _ = try nextRow() }
+      return
+    }
+    var validated: Data?
+    for _ in 0..<count {
+      try Task.checkCancellation()
+      let length = try lengths!.length(rowLengthBytes)
+      if length <= rowBytes * 2 {
+        let packed = try source.bytes(length)
+        if packed != validated {
+          _ = try PSDCodec.decodePackBits(packed, expected: rowBytes)
+          validated = packed
+        }
+      } else {
+        // Valid files can contain arbitrary trailing PackBits no-ops. Keep the
+        // existing bounded streaming validator for unusually long rows.
+        _ = try PSDCodec.decodePackBits(source.view(length), expected: rowBytes)
+      }
+      remainingRows -= 1
+    }
+    try finishIfAtEnd()
+  }
+
+  func discardRemaining() throws { try discardRows(remainingRows) }
 }
 
 /// Incremental zlib reader with exact input/output, checksum and end-marker

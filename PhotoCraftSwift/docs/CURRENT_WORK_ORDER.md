@@ -1,3 +1,7 @@
+**Source checkpoint 605.** Large sparse Photoshop files reuse merged pixels and identical rows during export. [Qualification](SOURCE_PUBLICATION_605.md).
+
+Qualify a nonuniform 300,000 × 300,000 editable RGB raster round trip. Measure retained sample storage, compare every edited tile and implicit pixel, and exercise both deep samples and malformed rows. Continue variable-edge Feather work and retry Photoshop 2026 file verification when the live app responds.
+
 **Source checkpoint 604.** Wide feathered vector masks reuse identical edge profiles in both the filter and the compositor. [Qualification](SOURCE_PUBLICATION_604.md).
 
 Move the proved large-canvas composition into the PSB output workflow. Audit the existing band and PackBits pipelines, then qualify reusable merged rows against independent bytes and real file round trips. Continue broad variable-edge Feather performance and retry live Photoshop capture when document scripting responds.

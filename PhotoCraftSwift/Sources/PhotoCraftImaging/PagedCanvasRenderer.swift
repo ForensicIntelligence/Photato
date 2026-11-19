@@ -22,6 +22,17 @@ enum PagedCanvasRenderer {
     }
   }
 
+  /// An export can retain a compact composite across its planar writes when
+  /// the same pointwise proof bounds the entire set of nonimplicit tiles.
+  static func sparseExportComposite(_ d: CraftDocument, facts: CompositionFacts) throws -> Surface? {
+    guard d.layers.allSatisfy({ $0.vectorMask?.enabled != true }),
+      let sources = try pointwiseSources(d, facts: facts)
+    else { return nil }
+    let remaining = TileKeys(sources.keys).dropFirst(RasterGeometry.sparseGridSourceTileLimit)
+    guard remaining.first(where: { _ in true }) == nil else { return nil }
+    return try composite(d, region: .init(x: 0, y: 0, width: d.width, height: d.height))
+  }
+
   static func composite(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
     video: VideoTransitionRenderContext? = nil, forLayerOutput: Bool = false, onPatch: ((Int) -> Void)? = nil
   ) throws -> Surface {

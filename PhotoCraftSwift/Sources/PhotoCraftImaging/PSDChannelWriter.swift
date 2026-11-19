@@ -8,7 +8,7 @@ enum PSDChannelWriter {
   static func write(
     width: Int, height: Int, depth: Int, compression requestedCompression: PSDCompression,
     channels: Int = 1, format: PSDFileFormat = .psd,
-    to output: PSDOutput, row: (Int) throws -> [UInt8]
+    to output: PSDOutput, repeatedRows: ((Int) -> Int)? = nil, row: (Int) throws -> [UInt8]
   ) throws {
     _ = try PSDChannelCodec.streamByteCount(width: width, height: height, depth: depth, channels: channels)
     // Photoshop 2026 applies the predictor to Float32 ZIP channel data.
@@ -21,8 +21,14 @@ enum PSDChannelWriter {
       try output.append(Data(count: height * channels * format.rowLengthBytes))
     }
     let zip = compression == .zip || compression == .zipPrediction ? try PSDZIPWriter(output) : nil
-    for y in 0..<(height * channels) {
+    let rowCount = height * channels
+    var y = 0
+    while y < rowCount {
       try Task.checkCancellation()
+      let copies = repeatedRows?(y) ?? 1
+      guard (1...(height - y % height)).contains(copies) else {
+        throw CraftError.invalid("PSD repeated rows must stay within their channel.")
+      }
       var bytes = try row(y)
       guard bytes.count == width * (depth / 8) else {
         throw CraftError.invalid("PSD output row size does not match its geometry.")
@@ -35,11 +41,53 @@ enum PSDChannelWriter {
         guard format == .psb || packed.count <= Int(UInt16.max) else {
           throw CraftError.unsupported("An RLE row exceeds the PSD limit. Use PSB or another compression method.")
         }
-        try output.patchLength(packed.count, at: table + y * format.rowLengthBytes, width: format.rowLengthBytes)
-        try output.append(packed)
-      } else if let zip { try zip.append(bytes) } else { try output.append(Data(bytes)) }
+        let lengthOffset = table + y * format.rowLengthBytes
+        if copies == 1 {
+          try output.patchLength(packed.count, at: lengthOffset, width: format.rowLengthBytes)
+        } else {
+          var length = PSDWriter()
+          length.n(packed.count, format.rowLengthBytes)
+          try output.patch(repeating(length.data, count: copies), at: lengthOffset)
+        }
+        try append(packed, copies: copies, to: output)
+      } else if let zip {
+        for _ in 0..<copies { try zip.append(bytes) }
+      } else {
+        try append(Data(bytes), copies: copies, to: output)
+      }
+      y += copies
     }
     try zip?.finish()
+  }
+
+  private static func append(_ row: Data, copies: Int, to output: PSDOutput) throws {
+    if copies == 1 { try output.append(row); return }
+    let batchSize = min(copies, max(1, (512 * 1024) / row.count))
+    let batch = repeating(row, count: batchSize)
+    for start in stride(from: 0, to: copies, by: batchSize) {
+      let length = min(batchSize, copies - start) * row.count
+      try output.append(length == batch.count ? batch : batch.prefix(length))
+    }
+  }
+
+  /// Build a repeated byte pattern with bounded storage and contiguous copies.
+  static func repeating(_ pattern: Data, count: Int) -> Data {
+    if count == 1 { return pattern }
+    if pattern.count == 1 { return Data(repeating: pattern.first!, count: count) }
+    var result = Data(count: pattern.count * count)
+    result.withUnsafeMutableBytes { bytes in
+      let target = bytes.baseAddress!
+      pattern.withUnsafeBytes { source in
+        target.copyMemory(from: source.baseAddress!, byteCount: source.count)
+      }
+      var filled = pattern.count
+      while filled < bytes.count {
+        let length = min(filled, bytes.count - filled)
+        target.advanced(by: filled).copyMemory(from: target, byteCount: length)
+        filled += length
+      }
+    }
+    return result
   }
 }
 

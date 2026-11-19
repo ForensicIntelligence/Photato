@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **604** · The 10 most recent entries, newest first.
+Source build **605** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 605 — Stream repeated rows in sparse PSB files
+
+Photato saved the 11.26 GB editable solid-fill PSB at 300,000 × 300,000 pixels in 3.22 s and reopened it in 2.12 s. An independent reader checked all 1,200,000 merged row lengths and 140 sampled channel values. These were single runs on the same Mac.
+
+The 300,000 × 131 RLE file was byte-identical to build 604. Save time went from 10.97 s to 0.30 s on Apple Silicon and from 17.54 s to 0.34 s under Rosetta. All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-605) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md).
 
 ## 2026-11-19 — Step 604 — Reuse wide vector Feather profiles at canvas edges
 
@@ -81,11 +89,3 @@ Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. T
 All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md).
-
-## 2026-11-19 — Step 595 — Prepare vector-mask Feather around the viewport
-
-Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. On Apple Silicon, the 15 × 7 viewport through a 24,576 px mask at 1,000 px Feather took 8.506 s in build 594 and 1.367 s in build 595. The 250 px curved control took 6.063 s and 0.206 s.
-
-All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-595) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_595.md).
