@@ -1541,6 +1541,13 @@ extension Surface {
   }
   /// One-pass, row-major bounded patch import. No complete heap descriptor map is built.
   public final class PagedBuilder {
+    package struct PreparedTile {
+      fileprivate let owner: ObjectIdentifier
+      fileprivate let width: Int
+      fileprivate let height: Int
+      fileprivate let tile: RasterTile?
+    }
+
     private let template:Surface
     private let backing:RasterTileStore
     private let index:RuntimeTileIndex.Builder
@@ -1574,6 +1581,50 @@ extension Surface {
           }
         }
       } catch {failed=true;throw error}
+    }
+
+    /// Store one rendered tile once. Repeated destinations share the immutable
+    /// samples while retaining their own row-major index entries.
+    package func prepareTile(_ patch: Surface) throws -> PreparedTile {
+      do {
+        try Task.checkCancellation()
+        guard !finished, !failed, patch.depth == template.depth, patch.colorEncoding == template.colorEncoding,
+          patch.width <= Surface.tileSide, patch.height <= Surface.tileSide
+        else { throw CraftError.invalid("Invalid repeated tile or paged builder lifecycle.") }
+        try patch.validated()
+        let implicit = template.storedDefaultPixel
+        var tile: RasterTile?
+        if let samples = patch.tiles[0] {
+          let matches = (0..<patch.height).allSatisfy { y in
+            (0..<patch.width).allSatisfy { x in samples[y * Surface.tileSide + x].hasSameBits(as: implicit) }
+          }
+          if !matches { tile = try samples.isBacked ? samples : backing.append(samples) }
+        } else if !patch.storedDefaultPixel.hasSameBits(as: implicit) {
+          tile = try backing.append(RasterTile(repeating: patch.storedDefaultPixel, count: TileArchive.pixelCount))
+        }
+        return PreparedTile(owner: ObjectIdentifier(self), width: patch.width, height: patch.height, tile: tile)
+      } catch { failed = true; throw error }
+    }
+
+    package func append(_ tile: PreparedTile, row: Int, columns: Range<Int>) throws {
+      do {
+        try Task.checkCancellation()
+        let side = Surface.tileSide
+        guard !finished, !failed, tile.owner == ObjectIdentifier(self),
+          row >= 0, row < (template.height + side - 1) / side,
+          !columns.isEmpty, columns.lowerBound >= 0, columns.upperBound <= template.columns,
+          min(side, template.height - row * side) == tile.height,
+          min(side, template.width - columns.lowerBound * side) == tile.width,
+          min(side, template.width - (columns.upperBound - 1) * side) == tile.width
+        else { throw CraftError.invalid("Repeated tiles must match the destination grid and lifecycle.") }
+        let start = row * template.columns
+        guard start + columns.lowerBound > lastVisited
+        else { throw CraftError.invalid("Paged import patches must be ordered and must not overlap.") }
+        if let samples = tile.tile {
+          for column in columns { try index.append(key: start + column, tile: samples) }
+        }
+        lastVisited = start + columns.upperBound - 1
+      } catch { failed = true; throw error }
     }
     public func finish() throws -> Surface {
       do {

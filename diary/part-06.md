@@ -625,6 +625,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 595 | [Prepare vector-mask Feather around the viewport](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-595) |
 | 2026-11-19 | 596 | [Reuse source bands during wide mask Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) |
 | 2026-11-19 | 597 | [Reuse window sums during wide mask Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-597) |
+| 2026-11-19 | 598 | [Render whole-canvas rectangular vector masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 598 — Render whole-canvas rectangular vector masks
+
+A 300,000 × 300,000 document with a rectangular vector mask and a sparse raster edit rendered in 197 tiles in the regression test. The tile index reuses the rendered samples across the canvas. On a 37.8 MP RGB32 control, median whole-canvas render time went from 3.912 s to 0.103 s on Apple Silicon and from 8.245 s to 0.194 s under Rosetta. Each median uses three alternating runs on the same host.
+
+All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md).
+
 ## 2026-11-19 — Step 597 — Reuse window sums during wide mask Feather
 
 Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. The 1,000 px vector viewport went from 1.001 s to 0.933 s on Apple Silicon. The RGB32 pixel-mask control went from 0.180 s to 0.135 s and the oversize Smart Filter mask from 0.867 s to 0.821 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 596 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
@@ -773,14 +781,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:597 -->
+<!-- current-status-step:598 -->
 ## Current development status — 19 November 2026
 
-Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache.
+Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks.
 
-All 909 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
+All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
 
-[Source checkpoint 597](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_597.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-597).
+[Source checkpoint 598](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598).
 
 <!-- current-status:end -->
 

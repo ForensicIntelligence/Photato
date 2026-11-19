@@ -274,6 +274,87 @@ final class VectorRenderTests: XCTestCase {
     XCTAssertFalse(localOutside.isIdentity)
   }
 
+  func testIntegerVectorFeatherMatchesNativeGray8CoverageAtEverySample() throws {
+    for invert in [false, true] {
+      var mask = VectorMask(path: VectorPath(components: [rect(-23, 33, 133, 48, .subtract)], inverted: invert))
+      mask.density = 0.73
+      for radius in [0.125, 1.5, 2, 2.25, 14] {
+        mask.feather = radius
+        let document = try CraftDocument(width: 141, height: 94, depth: .f32)
+        var layer = Layer(name: "Integer vector mask", content: .fill(.white))
+        layer.vectorMask = mask
+        let native = try LayerMaskSampler(layer: layer, document: document)
+        let virtual = try VectorFeatherCoverage(mask: mask, width: document.width,
+          height: document.height, outside: invert ? 0 : 1)
+        XCTAssertEqual(virtual.transferredInputPixels, 0)
+        var differences = 0
+        for y in 0..<document.height {
+          for x in 0..<document.width {
+            let px = Double(x) + 0.5, py = Double(y) + 0.5
+            if native.coverage(x: px, y: py).bitPattern != virtual.coverage(x: px, y: py).bitPattern {
+              differences += 1
+            }
+          }
+        }
+        XCTAssertEqual(differences, 0, "radius \(radius), inverted \(invert)")
+      }
+    }
+  }
+
+  func testMaximumCanvasWholeVectorFeatherReusesPatternTiles() throws {
+    let side = 300_000
+    var document = try CraftDocument(width: side, height: side, depth: .f32)
+    let base = Layer(name: "Canvas fill", content: .fill(Pixel(0.17, 0.28, 0.42)))
+    var raster = try Surface(width: side, height: side, depth: .f32, fill: Pixel(0.72, 0.37, 0.51),
+      colorEncoding: .linearRGB)
+    let exception = (x: 28_010, y: 35_610)
+    raster.setLinearPixel(x: exception.x, y: exception.y, Pixel(0.83, 0.06, 0.93, 0.41))
+    var layer = Layer(name: "Sparse raster with broad mask", content: .raster(raster))
+    var mask = VectorMask(path: VectorPath(components: [rect(27_777, 35_333, 240_000, 195_000)]))
+    mask.feather = 2
+    mask.density = 0.87
+    layer.vectorMask = mask
+    layer.opacity = 0.76
+    document.layers = [base, layer]
+    document.activeLayerID = layer.id
+    try document.validate()
+    var patches = 0
+    let canvas = IntRect(x: 0, y: 0, width: side, height: side)
+    let image = try PagedCanvasRenderer.composite(document, region: canvas, onPatch: { patches = $0 })
+    XCTAssertLessThan(patches, 200)
+    XCTAssertGreaterThan(image.mappedTileCount, 1_000_000)
+    XCTAssertLessThan(image.allocatedBytes, 8 * 1_024 * 1_024)
+    for (x, y) in [(0, 0), (27_773, 35_330), (27_773, 153_551), (200_050, 35_330),
+      (187_109, 116_073), (267_773, 230_328), (110_090, 230_328),
+      (exception.x - 3, exception.y - 2), (exception.x + 64 - 3, exception.y - 2), (299_993, 299_991)] {
+      let roi = IntRect(x: x, y: y, width: 7, height: 9)
+      let viewport = try Renderer.composite(document, region: roi)
+      XCTAssertEqual(try image.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB),
+        try viewport.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB), "\(x),\(y)")
+    }
+    print("Whole 300,000-square vector mask: \(patches) rendered tiles, \(image.mappedTileCount) index entries")
+  }
+
+  func testWholeWideRectanglesRespectFeatherPhaseAndPartialTiles() throws {
+    let width = 8_097, height = 4_711
+    var document = try CraftDocument(width: width, height: height, depth: .f32)
+    var layer = Layer(name: "Inverted stripe", content: .fill(Pixel(0.56, 0.3, 0.75)))
+    var mask = VectorMask(path: VectorPath(components: [rect(1619, -1_000, 3_513, 7_500, .subtract)]))
+    mask.feather = 110.25
+    mask.density = 0.8
+    layer.vectorMask = mask
+    document.layers = [layer]
+    document.activeLayerID = layer.id
+    let image = try Renderer.composite(document)
+    for (x, y) in [(0, 0), (1_617, 0), (1_617, 741), (1_617, 1_118), (1_617, 3_128),
+      (5_131, 741), (5_131, 1_118), (5_131, 4_704), (3_171, 2_250), (8_090, 4_704)] {
+      let roi = IntRect(x: x, y: y, width: 7, height: 7)
+      let viewport = try Renderer.composite(document, region: roi)
+      XCTAssertEqual(try image.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB),
+        try viewport.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB), "\(x),\(y)")
+    }
+  }
+
   func testWideVectorFeatherPreservesEditablePSDAndPSBMaskProperties() throws {
     for both in [false, true] {
       for format in PSDFileFormat.allCases {

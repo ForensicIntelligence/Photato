@@ -135,6 +135,15 @@ extension VectorRasterizer {
       && rect.maxX >= origin.x + Double(width) && rect.maxY >= origin.y + Double(height)
   }
 
+  static func integerRectangle(_ path: VectorPath) -> IntRect? {
+    guard let rect = axisAlignedRectangle(path),
+      let x = Int(exactly: rect.minX), let y = Int(exactly: rect.minY),
+      let right = Int(exactly: rect.maxX), let bottom = Int(exactly: rect.maxY),
+      right > x, bottom > y
+    else { return nil }
+    return IntRect(x: x, y: y, width: right - x, height: bottom - y)
+  }
+
   static func axisAlignedRectangle(_ path: VectorPath) -> (minX: Double, minY: Double, maxX: Double, maxY: Double)? {
     guard path.components.count==1,let part=path.components.first,part.closed,part.knots.count==4,
       part.knots.allSatisfy({$0.incoming==$0.anchor && $0.outgoing==$0.anchor}) else {return nil}

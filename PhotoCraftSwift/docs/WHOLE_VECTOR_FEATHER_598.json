@@ -1,0 +1,427 @@
+{
+  "build": 598,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince597": [
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "5cbea2b07260cda337a78ec8427188932255b88127fb7f007bb3e9abb6b93257"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "cad7cce89e51162efd550ed3366d92e49c0e259d5b8334ba20d27b5a20070932"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "3c53856c3920562a63e02436d4fc8036b192df3fd5e1743c726b4ac623409cf1"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedVectorRasterizer.swift",
+      "sha256": "f75fa037336ea5bf31764f0dbc781ea18f1b4306dbd88cab3cfd0351f9d21920"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/VectorFeatherCoverage.swift",
+      "sha256": "bebeddadecfea7f785a52cb62aa8d8d7dcff1fbab313b2a4ba2307dbcaa6d05d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/VectorRenderTests.swift",
+      "sha256": "4abe4218e5e3a7e370b4e1179d74b8db678baf02bdd910203b21ed9a0a57f99d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "f7e0870ff92e92ddcca9b9f4f57cfbe70821d44015fd67d50111481aafabba71"
+    }
+  ],
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "859088b1fd0b090664255811a8a47b14b8a3ad21be6a2c3a208d3abd835cf1b3",
+    "binarySHA256": "00e42d0fcae5362a046e259eba2380bb515ddb329f01bea2e995658010493524",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true,
+    "packageInfoSHA256": "f7e0870ff92e92ddcca9b9f4f57cfbe70821d44015fd67d50111481aafabba71",
+    "metadataChangeAfterCompilation": {
+      "CFBundleVersion": {
+        "compiledSource": "597",
+        "packaged": "598"
+      }
+    }
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "selectedChecksPerConfiguration": 912,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "2c581d33b1a098efbe038cd49811d4bf1887c950970c8ff95a5b5d0ab8bfb133",
+      "testBinarySHA256": "4ab36d5e88eb80721945978235da5b9ce690f6ef6943e6bc089d2c4e5a7cd492",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "5930c90e517c3e4f3c58243768b0dda80bcbc1a01e14b28823b022c570b7a34a",
+      "testBinarySHA256": "414aed8cd170644b04443eaeb12e5a786437aba2dd70fd34da50932da6be7ece",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "11358915614a01a638b48845aad8275e6baacb60ab8cb701b724a89553de31b4",
+      "testBinarySHA256": "e5e9c7e05d418cc1d25a82e3b519825c677c5c2d3ef8ae31a3ec3e4508d4c326",
+      "passed": true
+    }
+  },
+  "comparedControls": {
+    "arm": {
+      "standard": {
+        "597": [
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 153,
+            "seconds": 3.918288583,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 3927,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 153,
+            "seconds": 3.910859458,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 3927,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 153,
+            "seconds": 3.9117215,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 3927,
+            "width": 8195,
+            "words": 11560
+          }
+        ],
+        "598": [
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 156,
+            "seconds": 0.103708125,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 5817,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 156,
+            "seconds": 0.102439625,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 5817,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 156,
+            "seconds": 0.103494459,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 5817,
+            "width": 8195,
+            "words": 11560
+          }
+        ]
+      },
+      "maximum": {
+        "597Viewport": {
+          "height": 300000,
+          "mode": "viewport",
+          "radius": 2,
+          "renderedPatches": 0,
+          "seconds": 8.4e-08,
+          "sha256": "48bf98a070f5d5c18cf043207083a1f061be50882d715434c5c965237b6999a4",
+          "storedTileCount": 0,
+          "width": 300000,
+          "words": 11560
+        },
+        "598Whole": {
+          "height": 300000,
+          "mode": "whole",
+          "radius": 2,
+          "renderedPatches": 157,
+          "seconds": 0.732941625,
+          "sha256": "48bf98a070f5d5c18cf043207083a1f061be50882d715434c5c965237b6999a4",
+          "storedTileCount": 11885866,
+          "width": 300000,
+          "words": 11560
+        }
+      }
+    },
+    "intel": {
+      "standard": {
+        "597": [
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 153,
+            "seconds": 6.9787665,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 3927,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 153,
+            "seconds": 8.245250917,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 3927,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 153,
+            "seconds": 11.955962792,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 3927,
+            "width": 8195,
+            "words": 11560
+          }
+        ],
+        "598": [
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 156,
+            "seconds": 0.194212792,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 5817,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 156,
+            "seconds": 0.404388417,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 5817,
+            "width": 8195,
+            "words": 11560
+          },
+          {
+            "height": 4609,
+            "mode": "whole",
+            "radius": 2,
+            "renderedPatches": 156,
+            "seconds": 0.194176833,
+            "sha256": "90954cc98646b10a5489f6fa47f281281b6c29e4d28b8a6f0136523efb90d832",
+            "storedTileCount": 5817,
+            "width": 8195,
+            "words": 11560
+          }
+        ]
+      },
+      "maximum": {
+        "597Viewport": {
+          "height": 300000,
+          "mode": "viewport",
+          "radius": 2,
+          "renderedPatches": 0,
+          "seconds": 3.33e-07,
+          "sha256": "48bf98a070f5d5c18cf043207083a1f061be50882d715434c5c965237b6999a4",
+          "storedTileCount": 0,
+          "width": 300000,
+          "words": 11560
+        },
+        "598Whole": {
+          "height": 300000,
+          "mode": "whole",
+          "radius": 2,
+          "renderedPatches": 157,
+          "seconds": 1.219164916,
+          "sha256": "48bf98a070f5d5c18cf043207083a1f061be50882d715434c5c965237b6999a4",
+          "storedTileCount": 11885866,
+          "width": 300000,
+          "words": 11560
+        }
+      }
+    }
+  },
+  "maximumWideComparison": {
+    "width": 300000,
+    "height": 300000,
+    "radius": 1000,
+    "translated": false,
+    "cutoffSeconds": 200,
+    "completed": false
+  },
+  "legacyPagedCorpus": {
+    "cases": 24,
+    "matchingPreviousBuild": 24,
+    "sha256ByCaseAndConfiguration": {
+      "debug": {
+        "0-0": "f0bd804315e4a741afc06f8c7501448135c25e6c667366766e473909a4a18815",
+        "0-1": "ece1daa7a0c0477b21556f48480983367bb5fc57b877c52eca464ab43368952f",
+        "0-2": "e84ccc58c90e0339c0ef90a72685dcc3328296704589c9902527888dd6f82ec2",
+        "0-3": "db6a6efb75a92337731f2f46552e1d8c4bd53cf9c64a7e2edad31f2f99638afa",
+        "0-4": "75a4d299704b5595483986cf49b397d5f2771540aaa97de6d1dea72b0cd36287",
+        "0-5": "524dc47ea73d3d9b1a0b34b97f8ccdc053de5ca407434a078603dfe3d8bf9ae4",
+        "0-6": "f0bd804315e4a741afc06f8c7501448135c25e6c667366766e473909a4a18815",
+        "0-7": "baad4acdf4cd3052ebd47e7a64c52547f3e35c0fbe3c5abd46c56d9aa7ddb812",
+        "1-0": "61073e2d7cb69ac9dffc11872df94280fdee42fe563ab1099235d4d2b1d5dbfb",
+        "1-1": "221e168b27f73fe9f2dd4108fe7676a9954d475f5ae651089a56985c585f3d99",
+        "1-2": "f2eb0266838f404f07e651829e9a66152d73b4840cc7c929ac90d21c3b70da46",
+        "1-3": "ace8a2d52a5957ef2cdc5b2f745925cf4b41b55fd0b4134142bfa5f030a0aa8b",
+        "1-4": "d1b8bd3b439ad8f07103b3a441bf20f1320d2e5115c68afcb5a66f5a4641e396",
+        "1-5": "13ca671b86092b03d9ea55ce3ba36397d5c8d624c58c997b55e3ebc948be09b0",
+        "1-6": "61073e2d7cb69ac9dffc11872df94280fdee42fe563ab1099235d4d2b1d5dbfb",
+        "1-7": "4d8e2d4ebdc5e51b52b097bc1ebc8f6db0fa5cd04b8785b3577fdf7822195ca3",
+        "2-0": "38915babce88ffa409e84173881d3cd48af4ed26047be2830bf314d7de76ac76",
+        "2-1": "cc13050f4dfa0a1c77447542df1e00965fd9b60818f466da09e81fded4fec2a6",
+        "2-2": "d851bb7e8f3622817cc93e113edcbc1911edf3f2a264d4ea276382f2b62c9b32",
+        "2-3": "f8dded7ce329308567c8f53af5675f3735bc8033e7176cdead174d571670dcca",
+        "2-4": "bbd30e2de63f82a99d3fc3f24030f96f137a6d60dba1917cdae157708fc99a05",
+        "2-5": "ff483f0d048c4d8529748aa71b0f3094585df40e4b5b848acf2deec1032d01cc",
+        "2-6": "38915babce88ffa409e84173881d3cd48af4ed26047be2830bf314d7de76ac76",
+        "2-7": "aab0293a6b61ff107090129f10b9ab9f2d75c67766425fcad3a0ad965a79dd9b"
+      },
+      "arm": {
+        "0-0": "f0bd804315e4a741afc06f8c7501448135c25e6c667366766e473909a4a18815",
+        "0-1": "ece1daa7a0c0477b21556f48480983367bb5fc57b877c52eca464ab43368952f",
+        "0-2": "e84ccc58c90e0339c0ef90a72685dcc3328296704589c9902527888dd6f82ec2",
+        "0-3": "db6a6efb75a92337731f2f46552e1d8c4bd53cf9c64a7e2edad31f2f99638afa",
+        "0-4": "75a4d299704b5595483986cf49b397d5f2771540aaa97de6d1dea72b0cd36287",
+        "0-5": "524dc47ea73d3d9b1a0b34b97f8ccdc053de5ca407434a078603dfe3d8bf9ae4",
+        "0-6": "f0bd804315e4a741afc06f8c7501448135c25e6c667366766e473909a4a18815",
+        "0-7": "baad4acdf4cd3052ebd47e7a64c52547f3e35c0fbe3c5abd46c56d9aa7ddb812",
+        "1-0": "61073e2d7cb69ac9dffc11872df94280fdee42fe563ab1099235d4d2b1d5dbfb",
+        "1-1": "221e168b27f73fe9f2dd4108fe7676a9954d475f5ae651089a56985c585f3d99",
+        "1-2": "f2eb0266838f404f07e651829e9a66152d73b4840cc7c929ac90d21c3b70da46",
+        "1-3": "ace8a2d52a5957ef2cdc5b2f745925cf4b41b55fd0b4134142bfa5f030a0aa8b",
+        "1-4": "d1b8bd3b439ad8f07103b3a441bf20f1320d2e5115c68afcb5a66f5a4641e396",
+        "1-5": "13ca671b86092b03d9ea55ce3ba36397d5c8d624c58c997b55e3ebc948be09b0",
+        "1-6": "61073e2d7cb69ac9dffc11872df94280fdee42fe563ab1099235d4d2b1d5dbfb",
+        "1-7": "4d8e2d4ebdc5e51b52b097bc1ebc8f6db0fa5cd04b8785b3577fdf7822195ca3",
+        "2-0": "38915babce88ffa409e84173881d3cd48af4ed26047be2830bf314d7de76ac76",
+        "2-1": "cc13050f4dfa0a1c77447542df1e00965fd9b60818f466da09e81fded4fec2a6",
+        "2-2": "d851bb7e8f3622817cc93e113edcbc1911edf3f2a264d4ea276382f2b62c9b32",
+        "2-3": "f8dded7ce329308567c8f53af5675f3735bc8033e7176cdead174d571670dcca",
+        "2-4": "bbd30e2de63f82a99d3fc3f24030f96f137a6d60dba1917cdae157708fc99a05",
+        "2-5": "ff483f0d048c4d8529748aa71b0f3094585df40e4b5b848acf2deec1032d01cc",
+        "2-6": "38915babce88ffa409e84173881d3cd48af4ed26047be2830bf314d7de76ac76",
+        "2-7": "aab0293a6b61ff107090129f10b9ab9f2d75c67766425fcad3a0ad965a79dd9b"
+      },
+      "intel": {
+        "0-0": "f0bd804315e4a741afc06f8c7501448135c25e6c667366766e473909a4a18815",
+        "0-1": "ece1daa7a0c0477b21556f48480983367bb5fc57b877c52eca464ab43368952f",
+        "0-2": "e84ccc58c90e0339c0ef90a72685dcc3328296704589c9902527888dd6f82ec2",
+        "0-3": "db6a6efb75a92337731f2f46552e1d8c4bd53cf9c64a7e2edad31f2f99638afa",
+        "0-4": "75a4d299704b5595483986cf49b397d5f2771540aaa97de6d1dea72b0cd36287",
+        "0-5": "524dc47ea73d3d9b1a0b34b97f8ccdc053de5ca407434a078603dfe3d8bf9ae4",
+        "0-6": "f0bd804315e4a741afc06f8c7501448135c25e6c667366766e473909a4a18815",
+        "0-7": "baad4acdf4cd3052ebd47e7a64c52547f3e35c0fbe3c5abd46c56d9aa7ddb812",
+        "1-0": "61073e2d7cb69ac9dffc11872df94280fdee42fe563ab1099235d4d2b1d5dbfb",
+        "1-1": "221e168b27f73fe9f2dd4108fe7676a9954d475f5ae651089a56985c585f3d99",
+        "1-2": "f2eb0266838f404f07e651829e9a66152d73b4840cc7c929ac90d21c3b70da46",
+        "1-3": "ace8a2d52a5957ef2cdc5b2f745925cf4b41b55fd0b4134142bfa5f030a0aa8b",
+        "1-4": "d1b8bd3b439ad8f07103b3a441bf20f1320d2e5115c68afcb5a66f5a4641e396",
+        "1-5": "13ca671b86092b03d9ea55ce3ba36397d5c8d624c58c997b55e3ebc948be09b0",
+        "1-6": "61073e2d7cb69ac9dffc11872df94280fdee42fe563ab1099235d4d2b1d5dbfb",
+        "1-7": "4d8e2d4ebdc5e51b52b097bc1ebc8f6db0fa5cd04b8785b3577fdf7822195ca3",
+        "2-0": "38915babce88ffa409e84173881d3cd48af4ed26047be2830bf314d7de76ac76",
+        "2-1": "cc13050f4dfa0a1c77447542df1e00965fd9b60818f466da09e81fded4fec2a6",
+        "2-2": "d851bb7e8f3622817cc93e113edcbc1911edf3f2a264d4ea276382f2b62c9b32",
+        "2-3": "f8dded7ce329308567c8f53af5675f3735bc8033e7176cdead174d571670dcca",
+        "2-4": "bbd30e2de63f82a99d3fc3f24030f96f137a6d60dba1917cdae157708fc99a05",
+        "2-5": "ff483f0d048c4d8529748aa71b0f3094585df40e4b5b848acf2deec1032d01cc",
+        "2-6": "38915babce88ffa409e84173881d3cd48af4ed26047be2830bf314d7de76ac76",
+        "2-7": "aab0293a6b61ff107090129f10b9ab9f2d75c67766425fcad3a0ad965a79dd9b"
+      }
+    },
+    "referenceDifferences": [
+      "0-7",
+      "1-7",
+      "2-0",
+      "2-1",
+      "2-2",
+      "2-4",
+      "2-5",
+      "2-6",
+      "2-7"
+    ],
+    "historicalFailureConfirmedOn597": true,
+    "legacyCancellationProbeStoppedOnBothBuilds": true
+  },
+  "overlappingMasks": {
+    "architecture": "arm64",
+    "matchedWordsPerDepth": 4840,
+    "sha256ByDepth": {
+      "RGB8": "23ba4a88cbeda17efa0f6ac2a5c6fe547b136f2ca2391c99eb2c404fe210f3b8",
+      "RGB16": "866dc075bfc7fc29b2e189742c361bd766ff93f183678562babfd731625bb2ed",
+      "RGB32": "a11782bfb250e8317c0e48e7a59f71b59943e27dc583613c453f3bbf99fdd474"
+    }
+  },
+  "regressionCanvas": {
+    "width": 300000,
+    "height": 300000,
+    "renderedTiles": 197,
+    "indexEntries": 10564685,
+    "sourceOverrideCompared": true,
+    "matchingViewportRegions": 10
+  },
+  "adobe": {
+    "archivedNormalizedMaximumResidual": {
+      "1.5": 5.774372129896399e-07,
+      "2": 8.042584613262628e-07
+    },
+    "documentation": {
+      "vectorMasks": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html",
+      "canvasLimit": "https://helpx.adobe.com/photoshop/kb/optimize-photoshop-cc-performance.html"
+    },
+    "installedVersion": "27.2.0",
+    "appleEventTimeout": -1712,
+    "freshReferenceCollected": false,
+    "archivedVectorReferenceTested": true
+  },
+  "limits": "Fresh Photoshop samples remain pending after an AppleEvent timeout. Broad curved and subpixel paths, RGB32 bottom-layer opacity proofs, complex stacks, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open. The 1,000 px maximum-canvas stripe exceeded the 200-second validation cutoff."
+}

@@ -34,14 +34,30 @@ struct VectorFeatherCoverage: Sendable {
         width: $0.width + 2 * margin, height: $0.height + 2 * margin)
         .clipped(toWidth: rawWidth, height: rawHeight)
     }
-    let pieces = try Self.preparePieces(contours, mask: mask, region: region, padding: pad,
-      fill: fill, window: window)
-    plane = FeatheredMask(vectorPlane: FeatherSamplePlane(
-      width: rawWidth, height: rawHeight, outside: outside, pieces: pieces.samples),
-      radius: mask.feather, outside: outside)
-    maximumResidentBytes = pieces.residentBytes + plane.maximumResidentBytes
-    transferredInputPixels = pieces.transferredPixels
-    if pieces.samples.isEmpty {
+    let source: FeatherSamplePlane
+    let residentBytes: Int
+    let hasSamples: Bool
+    if let rectangle = VectorRasterizer.integerRectangle(mask.path) {
+      let scope = window ?? IntRect(x: 0, y: 0, width: rawWidth, height: rawHeight)
+      var local = IntRect(x: rectangle.x + pad - scope.x, y: rectangle.y + pad - scope.y,
+        width: rectangle.width, height: rectangle.height).clipped(toWidth: scope.width, height: scope.height)
+      local.x += scope.x
+      local.y += scope.y
+      source = FeatherSamplePlane(width: rawWidth, height: rawHeight, outside: outside, rectangle: local)
+      residentBytes = 0
+      transferredInputPixels = 0
+      hasSamples = local.width > 0 && local.height > 0
+    } else {
+      let pieces = try Self.preparePieces(contours, mask: mask, region: region, padding: pad,
+        fill: fill, window: window)
+      source = FeatherSamplePlane(width: rawWidth, height: rawHeight, outside: outside, pieces: pieces.samples)
+      residentBytes = pieces.residentBytes
+      transferredInputPixels = pieces.transferredPixels
+      hasSamples = !pieces.samples.isEmpty
+    }
+    plane = FeatheredMask(vectorPlane: source, radius: mask.feather, outside: outside)
+    maximumResidentBytes = residentBytes + plane.maximumResidentBytes
+    if !hasSamples {
       support = []
     } else {
       support = contours.compactMap {

@@ -616,7 +616,38 @@ For a readable account of the project from the beginning, see [Photato developme
 | 595 | 2026-11-19 | [Prepare vector-mask Feather around the viewport](#dev-step-595) |
 | 596 | 2026-11-19 | [Reuse source bands during wide mask Feather](#dev-step-596) |
 | 597 | 2026-11-19 | [Reuse window sums during wide mask Feather](#dev-step-597) |
+| 598 | 2026-11-19 | [Render whole-canvas rectangular vector masks](#dev-step-598) |
 <!-- history-index:end -->
+
+<a id="dev-step-598"></a>
+
+## 2026-11-19 — Render whole-canvas rectangular vector masks
+
+Adobe documents editable vector paths with independent Density and Feather, and a 300,000 × 300,000 pixel document limit. The code inspection found that the existing full-canvas compositor rendered every tile in a broad vector mask’s support, including long runs of equal samples. The same mask could already prepare a small requested viewport. [Adobe vector mask controls](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html) · [Adobe document limit](https://helpx.adobe.com/photoshop/kb/optimize-photoshop-cc-performance.html).
+
+`VectorFeatherCoverage`, `PagedVectorRasterizer` and `FeatheredMask` represent an integer-aligned rectangle as two Gray8 coverage values in a virtual plane. The original filters still compute the feathered samples. `PagedCanvasRenderer` classifies each axis by its relation to the full filter footprint and, for wide Feather, by cache phase. It renders a tile at an actual canvas coordinate and shares the immutable samples through `Surface.PagedBuilder`. Stored source pixels and pixel-mask tiles get their own render. Curves, subpixel edges, groups, unsupported layer kinds and feathered bottom rasters that need the RGB32 global-opacity proof use the existing paths.
+
+`VectorRenderTests` compares the virtual input against native Gray8 rasterization, checks a full maximum-size document with a sparse source override, and checks wide inverted coverage at different cache phases and at partial canvas tiles. The three focused Debug tests passed. The full 300,000 × 300,000 fixture rendered 197 tiles and indexed 10,564,685 stored positions. Its sampled regions matched the viewport render exactly.
+
+The local Photoshop 2026 installation reports version 27.2.0 in its bundle metadata. Its live AppleScript request for the version and open-document count returned error −1712 after the configured seven-second timeout. This attempt collected no new Photoshop samples. The previous owned RGB32 Photoshop Feather reference remains part of the selected suite.
+
+The source snapshot and the Debug, optimized Apple Silicon and translated Intel attempt are recorded under `artifacts/598-whole-vector-feather/qualification01`. The independent retained-597 probe initially needed a writable Swift module cache and an unlabeled `PathKnot` argument. After those corrections, the probe produced hashes for the 37.8 MP whole-canvas control and the maximum-size viewport control.
+
+An additional Debug comparison of the 24 old paged composite fixtures reproduced nine fixture mismatches on both builds 597 and 598. A separate capture established that the entire rendered byte sequence matched the retained build for all 24 fixtures in Debug and both optimized architectures. The subsequent historical cancellation probe reached a maximum-canvas fallback on both builds and was stopped. The sparse hierarchy, regional composition and archived Photoshop controls passed in a separate run. The 1.5 px and 2 px archived Photoshop checks report normalized maximum differences of approximately 0.00000058 and 0.00000080, respectively.
+
+An overlapping-mask control combined two feathered vector masks, two blend modes and sparse raster and pixel-mask edits. The Apple Silicon whole-canvas render matched 4,840 Float32 words per depth against the previous viewport renderer at RGB8, RGB16 and RGB32.
+
+The full 300,000 × 300,000 control with an inverted 1,000 px Feather stripe exceeded its 200-second cutoff. Its regional reference is preserved for the pending whole-canvas comparison. The wide Feather regression that completed uses 110.25 px.
+
+The first package attempt caught an indentation change in the version line. Restoring the original tab made the packaging input byte-identical to the tested metadata outside the new build number.
+
+On a 37.8 MP RGB32 control, median whole-canvas render time went from 3.912 s to 0.103 s on Apple Silicon and from 8.245 s to 0.194 s under Rosetta. Each median uses three alternating runs on the same host.
+
+The 37.8 MP and 300,000 × 300,000 controls each matched 11,560 sampled Float32 words against build 597 on both architectures. For the larger control the new whole-canvas render was compared with the previous viewport render.
+
+All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen launch and signature checks and declare macOS 14 as their minimum. Only the app’s build number changed after compilation. Packaging checks recorded the executable hashes and verified the new metadata.
+
+Fresh Photoshop samples remain pending after an AppleEvent timeout. Broad curved and subpixel paths, RGB32 bottom-layer opacity proofs, complex stacks, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open. The 1,000 px maximum-canvas stripe exceeded the 200-second validation cutoff. [Validation](SOURCE_PUBLICATION_598.md).
 
 <a id="dev-step-597"></a>
 

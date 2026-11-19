@@ -26,6 +26,7 @@ package struct FeatherSamplePlane: Sendable {
   let implicit: Float
   private let surface: Surface?
   private let pieces: [Piece]
+  private let rectangle: IntRect?
 
   init(_ surface: Surface) {
     self.surface = surface
@@ -33,6 +34,7 @@ package struct FeatherSamplePlane: Sendable {
     height = surface.height
     implicit = unit(surface.defaultPixel.r)
     pieces = []
+    rectangle = nil
   }
 
   package init(width: Int, height: Int, outside: Float, pieces: [Piece]) {
@@ -41,15 +43,30 @@ package struct FeatherSamplePlane: Sendable {
     implicit = outside
     surface = nil
     self.pieces = pieces
+    rectangle = nil
+  }
+
+  /// Integer Gray8 edges divide the padded plane into two exact sample values.
+  package init(width: Int, height: Int, outside: Float, rectangle: IntRect) {
+    self.width = width
+    self.height = height
+    implicit = outside
+    surface = nil
+    pieces = []
+    self.rectangle = rectangle.width > 0 && rectangle.height > 0 ? rectangle : nil
   }
 
   var isUniform: Bool {
     if let surface { return surface.tileCount == 0 }
-    return pieces.isEmpty
+    return pieces.isEmpty && rectangle == nil
   }
 
   func hasFeatherSamples(in region: IntRect) -> Bool {
     if let surface { return surface.hasFeatherSamples(in: region) }
+    if let rectangle {
+      let overlap = Self.localOverlap(rectangle, in: region)
+      return overlap.width > 0 && overlap.height > 0
+    }
     return pieces.contains { piece in
       let part = piece.overlap(with: region)
       return part.width > 0 && part.height > 0
@@ -59,6 +76,20 @@ package struct FeatherSamplePlane: Sendable {
 
   func featherInput(in region: IntRect) -> [Float]? {
     if let surface { return surface.featherInput(in: region) }
+    if let rectangle {
+      let overlap = Self.localOverlap(rectangle, in: region)
+      guard overlap.width > 0, overlap.height > 0 else { return nil }
+      let inside = 1 - implicit
+      if overlap.width == region.width && overlap.height == region.height {
+        return [Float](repeating: inside, count: region.width * region.height)
+      }
+      var samples = [Float](repeating: implicit, count: region.width * region.height)
+      for y in overlap.y..<(overlap.y + overlap.height) {
+        let start = y * region.width + overlap.x
+        for x in start..<(start + overlap.width) { samples[x] = inside }
+      }
+      return samples
+    }
     var output: [Float]?
     for piece in pieces {
       let overlap = piece.overlap(with: region)
@@ -79,6 +110,12 @@ package struct FeatherSamplePlane: Sendable {
       }
     }
     return output
+  }
+
+  private static func localOverlap(_ rectangle: IntRect, in region: IntRect) -> IntRect {
+    IntRect(x: rectangle.x - region.x, y: rectangle.y - region.y,
+      width: rectangle.width, height: rectangle.height)
+      .clipped(toWidth: region.width, height: region.height)
   }
 }
 

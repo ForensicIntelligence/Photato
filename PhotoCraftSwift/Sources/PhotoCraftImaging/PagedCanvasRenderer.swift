@@ -27,13 +27,17 @@ enum PagedCanvasRenderer {
   ) throws -> Surface {
     guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
+    let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let facts=CompositionFacts(d, vectorViewport: region)
+    if region == complete, inputTarget == nil, video == nil, !forLayerOutput,
+      let plan = RectangleFeatherPlan(d) {
+      return try plan.composite(d, facts: facts, onPatch: onPatch)
+    }
     var reachedInput=false
     func render(_ rect:IntRect) throws -> Surface {
       do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts,forLayerOutput:forLayerOutput)}
       catch let captured as AdjustmentInputReached {reachedInput=true;return captured.surface}
     }
-    let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let sources=try region==complete && video==nil ? pointwiseSources(d,facts:facts):nil
     let layerSupport = forLayerOutput && sources == nil && region == complete && video == nil
       ? try layerOutputSupport(d) : nil
@@ -217,6 +221,168 @@ enum PagedCanvasRenderer {
         for i in heads.indices where heads[i]==key {heads[i]=iterators[i].next()}
         return key
       }
+    }
+  }
+
+  /// If a tile's entire Feather cache footprint stays on one side of an edge,
+  /// it can reuse a result from the same zone and cache phase on that axis.
+  /// Aligned raster tiles are exceptions and always render at their own addresses.
+  private struct RectangleFeatherPlan {
+    private enum Zone: Hashable {
+      case before, inside(Int), after, boundary(Int)
+    }
+
+    private struct Axis {
+      let classes: [Int]
+      let counts: [Int]
+      let representative: Int
+
+      init(length: Int, bounds: [(start: Int, length: Int, margin: Int, phaseCount: Int)]) {
+        let side = Surface.tileSide
+        let count = (length + side - 1) / side
+        let edge = bounds.map(\.phaseCount).max()! * side
+        var identifiers: [[Zone]: Int] = [:]
+        var ids: [Int] = [], frequencies: [Int] = [], first: [Int] = []
+        for index in 0..<count {
+          let start = index * side, end = min(start + side, length)
+          let signature: [Zone]
+          if start < edge || end > length - edge {
+            // The partial cache tiles at a canvas edge can have a different footprint.
+            signature = [.boundary(index)]
+          } else {
+            signature = bounds.map { bound in
+              let left = start - bound.margin, right = end + bound.margin
+              let last = bound.start + bound.length
+              if right <= bound.start { return .before }
+              if left >= last { return .after }
+              if left >= bound.start && right <= last { return .inside(index % bound.phaseCount) }
+              return .boundary(index)
+            }
+          }
+          let id = identifiers[signature] ?? frequencies.count
+          if id == frequencies.count {
+            identifiers[signature] = id
+            frequencies.append(0)
+            first.append(index)
+          }
+          ids.append(id)
+          frequencies[id] += 1
+        }
+        classes = ids
+        counts = frequencies
+        representative = first[frequencies.indices.max(by: { frequencies[$0] < frequencies[$1] })!]
+      }
+    }
+
+    private let x: Axis
+    private let y: Axis
+    private let exceptions: [AnySequence<Int>]
+
+    init?(_ document: CraftDocument) {
+      guard document.videoTimeline == nil,
+        document.layers.allSatisfy({ !$0.isGroup && !$0.isClipped && $0.parentID == nil })
+      else { return nil }
+      let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
+      var shapes: [(rect: IntRect, margin: Int, phaseCount: Int)] = []
+      var sources: [AnySequence<Int>] = []
+      var hasFill = false
+      for layer in visible {
+        guard layer.style == nil, layer.smartObject == nil, layer.smartFilters == nil,
+          layer.sourceProjection == nil, layer.coordinateTransform == .identity, layer.blendMode != .dissolve
+        else { return nil }
+        if let vector = layer.vectorMask, vector.enabled, vector.density > 0 {
+          guard vector.feather > 0, let rect = VectorRasterizer.integerRectangle(vector.path) else { return nil }
+          let cacheSide = FeatheredMask.vectorTileSide(radius: vector.feather)
+          let margin = Int(MaskSampler.featherDamageRadius(vector.feather)) + cacheSide + 1
+          shapes.append((rect, margin, cacheSide / Surface.tileSide))
+        }
+        if let mask = layer.mask, layer.effectiveMaskProperties.enabled {
+          guard mask.width == document.width, mask.height == document.height,
+            layer.effectiveMaskProperties.feather == 0, layer.maskCoordinateTransform == .identity
+          else { return nil }
+          if mask.tileCount > 0 { sources.append(mask.storedTileKeys) }
+        }
+        switch layer.content {
+        case .fill: hasFill = true
+        case .raster(let surface):
+          guard surface.width == document.width, surface.height == document.height else { return nil }
+          if surface.tileCount > 0 { sources.append(surface.storedTileKeys) }
+        default: return nil
+        }
+      }
+      // RGB32 Normal expands opacity using a proof about the entire bottom
+      // layer. A feathered bottom raster can still need the general proof.
+      guard !shapes.isEmpty, shapes.count <= 32,
+        hasFill || document.depth != .f32 ||
+          visible.first?.vectorMask.map({ $0.enabled && $0.density > 0 && $0.feather > 0 }) != true
+      else { return nil }
+      x = Axis(length: document.width, bounds: shapes.map { ($0.rect.x, $0.rect.width, $0.margin, $0.phaseCount) })
+      y = Axis(length: document.height, bounds: shapes.map { ($0.rect.y, $0.rect.height, $0.margin, $0.phaseCount) })
+      exceptions = sources
+    }
+
+    func composite(_ document: CraftDocument, facts: CompositionFacts,
+      onPatch: ((Int) -> Void)?
+    ) throws -> Surface {
+      let side = Surface.tileSide, columns = x.classes.count
+      let seedX = x.representative * side, seedY = y.representative * side
+      let seed = try Renderer.compositePrepared(document,
+        region: IntRect(x: seedX, y: seedY, width: 1, height: 1), facts: facts)
+      let implicit = document.depth == .f32 ? seed.linearPixel(x: seedX, y: seedY) : seed.pixel(x: seedX, y: seedY)
+      let template = try Renderer.emptyCanvas(document).mappedStoredSamples { _ in implicit }
+      let builder = try Surface.PagedBuilder(template: template)
+      var patches = 0
+      func render(column: Int, row: Int) throws -> Surface.PagedBuilder.PreparedTile {
+        let px = column * side, py = row * side
+        let rect = IntRect(x: px, y: py, width: min(side, document.width - px), height: min(side, document.height - py))
+        let surface = try Renderer.compositePrepared(document, region: rect, facts: facts)
+        let tile = try builder.prepareTile(surface.cropped(to: rect))
+        patches += 1
+        onPatch?(patches)
+        return tile
+      }
+      var runs: [Range<Int>] = []
+      var begin = 0
+      for column in 1..<columns where x.classes[column] != x.classes[begin] {
+        runs.append(begin..<column)
+        begin = column
+      }
+      runs.append(begin..<columns)
+      var cache: [Int: Surface.PagedBuilder.PreparedTile] = [:]
+      let keys = TileKeys(exceptions).makeIterator()
+      var next = keys.next()
+      for (row, yClass) in y.classes.enumerated() {
+        try Task.checkCancellation()
+        let rowStart = row * columns
+        var rowCache: [Int: Surface.PagedBuilder.PreparedTile] = [:]
+        for run in runs {
+          let xClass = x.classes[run.lowerBound]
+          let key = yClass * x.counts.count + xClass
+          var ordinary = cache[key] ?? rowCache[xClass]
+          var column = run.lowerBound
+          while column < run.upperBound {
+            if next == rowStart + column {
+              try builder.append(render(column: column, row: row), row: row, columns: column..<(column + 1))
+              next = keys.next()
+              column += 1
+              continue
+            }
+            let end = min(run.upperBound, next.map { $0 - rowStart } ?? run.upperBound)
+            if ordinary == nil {
+              let tile = try render(column: column, row: row)
+              ordinary = tile
+              if cache.count < 4_096 && y.counts[yClass] > 1 {
+                cache[key] = tile
+              } else if x.counts[xClass] > run.count {
+                rowCache[xClass] = tile
+              }
+            }
+            try builder.append(ordinary!, row: row, columns: column..<end)
+            column = end
+          }
+        }
+      }
+      return try builder.finish()
     }
   }
 }

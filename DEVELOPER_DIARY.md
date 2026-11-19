@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **597** · The 10 most recent entries, newest first.
+Source build **598** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 598 — Render whole-canvas rectangular vector masks
+
+A 300,000 × 300,000 document with a rectangular vector mask and a sparse raster edit rendered in 197 tiles in the regression test. The tile index reuses the rendered samples across the canvas. On a 37.8 MP RGB32 control, median whole-canvas render time went from 3.912 s to 0.103 s on Apple Silicon and from 8.245 s to 0.194 s under Rosetta. Each median uses three alternating runs on the same host.
+
+All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md).
 
 ## 2026-11-19 — Step 597 — Reuse window sums during wide mask Feather
 
@@ -75,11 +83,3 @@ Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down command
 All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The lower-radius Intel comparisons still have differences of up to two Float32 steps.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-589) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_589.md).
-
-## 2026-11-19 — Step 588 — Support layer-mask Feather through 1,000 px
-
-Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. The renderer streams the wide filter. The saved 250 and 1,000 px RGB32 controls match exactly on both tested architectures, and the editable 1,000 px setting survives native, PSD and PSB round trips.
-
-All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Fractional settings and other mask geometries still need exact Photoshop comparisons.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_588.md).
