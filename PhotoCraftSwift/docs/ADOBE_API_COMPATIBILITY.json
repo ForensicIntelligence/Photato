@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "fractional_rgb32_feather_build591": {
+    "evidence": "docs/FRACTIONAL_RGB32_FEATHER_591.json",
+    "scope": "Shared aligned raster-mask rendering and clipping merges at fourteen measured fractional settings.",
+    "limits": "Existing job descriptors apply. Intel has five observed one-step texture differences, and other fractional and affine settings remain open."
+  },
   "integer_feather_build590": {
     "evidence": "docs/INTEGER_MASK_FEATHER_590.json",
     "scope": "Shared raster pixel-mask Feather rendering at RGB8 and RGB16 with reference comparisons at seven radii.",

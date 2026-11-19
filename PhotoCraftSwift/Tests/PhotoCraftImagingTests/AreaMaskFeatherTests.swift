@@ -5,6 +5,87 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class AreaMaskFeatherTests: XCTestCase {
+  private static let fractionalRadii = [
+    0.125, 0.25, 2.0625, 2.125, 2.1875, 2.25, 2.5, 2.75, 3.125, 3.25, 3.5, 3.75, 4.25, 4.5,
+  ]
+
+  func testFractionalRGB32FeatherMatchesStoredTextureAndKnownIntelResidual() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    let knownDifferences: [Double: Int] = [3.75: 3, 4.25: 2]
+    #else
+    let architecture = "arm"
+    let knownDifferences: [Double: Int] = [:]
+    #endif
+    let original = try PSDCodec.read(readFixture("texture"))
+    var layer = try XCTUnwrap(original.layers.first { $0.name == "Reference Mask" })
+    for radius in Self.fractionalRadii {
+      var properties = layer.effectiveMaskProperties
+      properties.feather = radius
+      layer.maskProperties = properties
+      let label = "\(architecture)-texture-\(radius)".replacingOccurrences(of: ".", with: "p")
+      let expected = try fractionalReference(label)
+      let sampler = try MaskSampler(layer: layer, canvasSize: (original.width, original.height))
+      let differences = measure(sampler, against: expected)
+      let count = knownDifferences[radius, default: 0]
+      XCTAssertEqual(differences.count, count, label)
+      XCTAssertEqual(differences.maximum, count > 0 ? 1 : 0, label)
+    }
+  }
+
+  func testFractionalRGB32FeatherMatchesIndependentLineStepAndEdgeMasks() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let squareCases = Self.fractionalRadii.filter { $0 >= 2 && $0 != 3.125 }.map { ("line", $0) }
+    for (geometry, radius) in squareCases + [("edge", 0.25), ("step", 0.25)] {
+      let label = "\(architecture)-\(geometry)-\(radius)".replacingOccurrences(of: ".", with: "p")
+      let expected = try fractionalReference(label)
+      let width = expected.width, height = expected.height
+      var mask = try Surface(width: width, height: height, depth: .f32, fill: .black)
+      for y in 0..<height {
+        switch geometry {
+        case "edge": mask.setPixel(x: 0, y: y, .white)
+        case "step":
+          for x in width / 2..<width { mask.setPixel(x: x, y: y, .white) }
+        default: mask.setPixel(x: width / 2, y: y, .white)
+        }
+      }
+      var layer = Layer(name: "Line mask", content: .raster(try Surface(
+        width: width, height: height, depth: .f32, fill: .white, colorEncoding: .linearRGB)))
+      layer.mask = mask
+      var properties = MaskProperties()
+      properties.feather = radius
+      layer.maskProperties = properties
+      let sampler = try MaskSampler(layer: layer, canvasSize: (width, height))
+      XCTAssertEqual(measure(sampler, against: expected).count, 0, label)
+    }
+  }
+
+  private func fractionalReference(_ label: String) throws -> Surface {
+    let reference = try PSDCodec.read(readFixture(label, folder: "layer-merge/fractional-feather-rgb32"))
+    guard case .raster(let expected) = reference.layers.first?.content else {
+      throw CraftError.invalid("Missing \(label) raster reference.")
+    }
+    return expected
+  }
+
+  private func measure(_ sampler: MaskSampler, against reference: Surface) -> (count: Int, maximum: Int) {
+    var count = 0, maximum = 0
+    for y in 0..<reference.height {
+      for x in 0..<reference.width {
+        let value = sampler.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5)
+        let expected = reference.linearPixel(x: x, y: y).r
+        let steps = abs(Int(value.bitPattern) - Int(expected.bitPattern))
+        if steps > 0 { count += 1 }
+        maximum = max(maximum, steps)
+      }
+    }
+    return (count, maximum)
+  }
+
   func testIntegerFeatherMatchesStoredPhotoshopCoverageAtCanvasAndMaskEdges() throws {
     XCTAssertEqual(MaskSampler.featherDamageRadius(100), 311)
     let records = try readFixture("references", fileExtension: "json")

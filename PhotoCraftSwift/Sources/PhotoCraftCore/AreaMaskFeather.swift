@@ -8,12 +8,54 @@ struct AreaMaskFeather: Sendable {
   private let streamed: Bool
   private let integerDepth: PixelDepth?
   private let taps: [Int]?
+  private let quarterPixel: Bool
   var support: Int { widths.reduce(0) { $0 + $1 / 2 } }
 
   private static let dyadicTaps: [Double: [Int]] = [
     0.5: [1, 55, 144, 55, 1],
     1.25: [1, 6, 25, 57, 78, 57, 25, 6, 1],
   ]
+
+  // Photoshop's two builds select different discrete windows at some fractional
+  // settings. These sequences come from matching saved RGB32 mask samples.
+  private static func fractionalRGB32Widths(at radius: Double) -> [Int]? {
+    switch radius {
+    case 0.125: return [1]
+    case 0.25: return [3]
+    case 2.0625: return [5, 3, 3, 3]
+    case 2.25: return [5, 5, 3, 3]
+    case 2.5: return [5, 5, 5, 3]
+    case 3.25: return [7, 7, 5, 3]
+    case 3.5: return [7, 7, 7, 3]
+    case 4.5: return [9, 9, 9, 3]
+    default: break
+    }
+    #if arch(x86_64)
+    switch radius {
+    case 2.125: return [5, 3, 3, 3]
+    case 2.1875: return [5, 5, 3]
+    case 2.75: return [5, 5, 5, 3, 3]
+    case 3.125: return [7, 5, 5, 3, 3]
+    case 3.75: return [7, 7, 7, 3, 3]
+    case 4.25: return [9, 9, 7, 3]
+    default: return nil
+    }
+    #else
+    switch radius {
+    case 2.125: return [5, 5, 3]
+    case 2.1875: return [5, 5, 3, 3]
+    case 2.75: return [7, 5, 5]
+    case 3.125: return [7, 7, 5, 3]
+    case 3.75: return [9, 7, 7]
+    case 4.25: return [9, 9, 7, 3, 3]
+    default: return nil
+    }
+    #endif
+  }
+
+  static func squareSupport(at radius: Double) -> Int {
+    (fractionalRGB32Widths(at: radius) ?? widths(at: radius))?.reduce(0) { $0 + $1 / 2 } ?? 0
+  }
 
   static func widths(at radius: Double) -> [Int]? {
     guard (3...MaskProperties.layerFeatherRange.upperBound).contains(radius) else { return nil }
@@ -55,14 +97,17 @@ struct AreaMaskFeather: Sendable {
     }
     let integerDepth = envelope != nil && raster?.depth == source.depth && source.depth != .f32
       ? source.depth : nil
+    let rgb32 = source.depth == .f32 && raster?.depth == .f32
     let taps = integerDepth == nil ? nil : Self.dyadicTaps[radius]
-    let measuredFractional = integerDepth != nil && radius == 3.5 ? [7, 7, 7, 3] : nil
+    let measuredFractional = rgb32 ? Self.fractionalRGB32Widths(at: radius)
+      : integerDepth != nil && radius == 3.5 ? [7, 7, 7, 3] : nil
     guard let widths = taps.map({ [$0.count] }) ?? measuredFractional ?? Self.widths(at: radius),
-      wide || integerDepth != nil || source.depth == .f32 && raster?.depth == .f32
+      wide || integerDepth != nil || rgb32
     else { return nil }
     self.widths = widths
     self.integerDepth = integerDepth
     self.taps = taps
+    quarterPixel = rgb32 && radius == 0.25
     streamed = wide
     if let envelope {
       bounds = envelope
@@ -165,12 +210,45 @@ struct AreaMaskFeather: Sendable {
     if let taps {
       return outputSamples(Self.dyadicPass(data, width: w, height: h, taps: taps))
     }
-    for k in widths {
+    if quarterPixel {
+      return (Self.quarterPixelPass(data, width: w, height: h), outside)
+    }
+    for k in widths where k > 1 {
       data = Self.pass(data, width: w, height: h, side: k, integerSamples: integerDepth != nil)
       w -= k - 1
       h -= k - 1
     }
     return outputSamples(data)
+  }
+
+  private static func quarterPixelPass(_ input: [Float], width: Int, height: Int) -> [Float] {
+    let columns = width - 2, rows = height - 2
+    @inline(__always) func blend(_ first: Float, _ center: Float, _ last: Float) -> Float {
+      let pair = first + last
+      let middle = center * (206.0 / 256.0)
+      #if arch(x86_64)
+      return middle + pair * (25.0 / 256.0)
+      #else
+      return middle.addingProduct(pair, 25.0 / 256.0)
+      #endif
+    }
+    var vertical = [Float](repeating: 0, count: width * rows)
+    for y in 0..<rows {
+      let row = y * width
+      for x in 0..<width {
+        let i = row + x
+        vertical[i] = blend(input[i], input[i + width], input[i + 2 * width])
+      }
+    }
+    var output = [Float](repeating: 0, count: columns * rows)
+    for y in 0..<rows {
+      let row = y * width, destination = y * columns
+      for x in 0..<columns {
+        let i = row + x
+        output[destination + x] = blend(vertical[i], vertical[i + 1], vertical[i + 2])
+      }
+    }
+    return output
   }
 
   private static func dyadicPass(_ input: [Float], width: Int, height: Int, taps: [Int]) -> [Float] {

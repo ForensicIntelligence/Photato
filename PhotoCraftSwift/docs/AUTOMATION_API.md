@@ -1405,6 +1405,8 @@ Build 576 also verifies the prepared Normal RGB32 layer output through the deskt
 
 Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
 
+Build 591 uses measured fractional RGB32 Feather schedules in the existing `mask.feather` and `layer.merge` paths. Native and HTTP tests compare the edit, Merge Clipping Mask, and Undo with saved layered PSD output. [Validation](SOURCE_PUBLICATION_591.md).
+
 Build 590 uses shared integer rounding for aligned RGB8 and RGB16 mask Feather in `layer.merge`. The existing mask radius and layer merge operations use the updated renderer. The same prepared operation applies to both local ActionJSON job routes. [Validation](SOURCE_PUBLICATION_590.md).
 
 Build 589 applies contributing raster-mask Feather through 1,000 px in eligible `layer.merge` operations. The existing operation names and undo behavior apply. Compatible `mergeLayersNew` ActionJSON jobs use the same layer-merge preparation. Raster clip operations preserve the clipping base's editable mask. Exact output remains dependent on the measured depth, radius and geometry. [Validation](SOURCE_PUBLICATION_589.md).

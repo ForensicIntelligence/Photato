@@ -1,3 +1,7 @@
+**Source checkpoint 591.** Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. [Qualification](SOURCE_PUBLICATION_591.md).
+
+Continue bounded Smart Filter mask Feather. Reuse the mask support rules for sparse placed rasters and compare PSD settings with a saved Photoshop filter-mask reference. The installed Photoshop session must respond before collecting fresh references. The remaining layer-mask work includes unmeasured radii, five Intel texture differences, affine masks and dense wide-radius performance.
+
 **Source checkpoint 590.** Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. [Qualification](SOURCE_PUBLICATION_590.md).
 
 Use the saved textured and translated controls to separate radius scheduling from per-stage rounding. Continue the unmeasured fractional settings, additional short radii, affine sampling and the separate Smart Filter and vector-mask ranges. Resume independent Rosetta captures after the previous Photoshop reference session closes. Test adjacent masked clips and dense wide-mask workloads.

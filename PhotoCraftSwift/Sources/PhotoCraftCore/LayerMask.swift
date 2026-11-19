@@ -219,7 +219,7 @@ public struct MaskSampler: Sendable {
   /// Includes both the legacy Gaussian footprint and any staged box windows.
   public static func featherDamageRadius(_ radius: Double) -> Double {
     let gaussian = ceil(3 * max(0.05, radius))
-    let area = AreaMaskFeather.widths(at: radius)?.reduce(0) { $0 + $1 / 2 } ?? 0
+    let area = AreaMaskFeather.squareSupport(at: radius)
     return max(gaussian, Double(area))
   }
 

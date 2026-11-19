@@ -1,0 +1,715 @@
+{
+  "applicationSignature": "ad hoc",
+  "architectures": [
+    "arm64",
+    "x86_64 under Rosetta"
+  ],
+  "authorship": "Project-owned masks saved as editable-layer output by Photoshop 2026.",
+  "storedReferences": {
+    "arm-edge-0p25.psd": "4744ba056736b3023bf2d1112328f7f87737c545ac7c1fbf413a703192553673",
+    "arm-line-2p0625.psd": "227a238a29ecbf0c4f0cfc6f26fd676b6f332c97d958fbe3633c020252a0bdeb",
+    "arm-line-2p125.psd": "4c9bc49304cf94f67675a6c0adeaab5ada946fc242cebb69609fd8f5027f7955",
+    "arm-line-2p1875.psd": "04f94212e951c4bf543082b8a149882ccb687f23363ca7c3214c4038a794b4ef",
+    "arm-line-2p25.psd": "d07bde942f92f2e2811b3f46cc8a3e86ea0655f3b53a77d568e632b460d60422",
+    "arm-line-2p5.psd": "dac3ce24113c6687be5f67223b8fb643ddcc0579b84fb92b0d27199fb7f8acd3",
+    "arm-line-2p75.psd": "f19519bee466252397c492bdbbbcd55a0f5645087ec43ec057eb2ee4a92b30c6",
+    "arm-line-3p25.psd": "cadc31b3d3e10bce658c7944172d7e265d6f48e68c7d5231afdbc9eb0a7f0089",
+    "arm-line-3p5.psd": "4bd1e3c7290a67dd9369b537efd1c89cb3e19ddb7f725a5100ab3f87aa349b85",
+    "arm-line-3p75.psd": "1bdfaf4f1e124f7ba9c21c7b3c49d21e64562c6d168bf3d2d64a2f11a5303555",
+    "arm-line-4p25.psd": "b50e15fdbbfaf28ac8cfd678c134249bd1a096368c3b95c7b2b67628f31a8327",
+    "arm-line-4p5.psd": "c9c78f85bf5d474454321eafd781f813dc051bf5b40ebde4e86c6a9bc973af29",
+    "arm-step-0p25.psd": "e1cd5ce00c3aa6c51af522d6c0cd32c98c144f21491c810ff1cdc14afb2b961c",
+    "arm-texture-0p125.psd": "9a47a76008592edbb8e4303b2de113c22d769af4300e64f65df55d93645c7d7a",
+    "arm-texture-0p25.psd": "fedd9018f831f1480ccaf3e2b2e3ffd6b14c04bbd5555a13c7bc5f9fb9bcc23d",
+    "arm-texture-2p0625.psd": "86c2bb73b1d86b1aa5941d8a5995b5d5b5cd1da9e7438e819dcd9b4b37c96782",
+    "arm-texture-2p125.psd": "92368c044642491a5055173cff6a0314e7e5cc22c37731c0ab1bf040975d6aae",
+    "arm-texture-2p1875.psd": "2afd03d6902420f0e908a4de3c53c962914adf69b5b1d9e3f7d180656392bade",
+    "arm-texture-2p25.psd": "39dd2cfc984f9f8748cfaab3cf3d5f037f64ca882c10457117a236d9aae4f494",
+    "arm-texture-2p5.psd": "6a197e4a52f6b38fed52e91f17e4aceaaef678e3ef03d00424d5a4344c88cf41",
+    "arm-texture-2p75.psd": "011e60db6f7b9d4d8ffc3b47189f6e7f2a1ae1246c1e9b862f60cf57e775645b",
+    "arm-texture-3p125.psd": "ed1880d4438e9118633098baef4fdf78b454d3c3df53c2e58bc82630d79aa45f",
+    "arm-texture-3p25.psd": "163d493da3ef1d8e92a3689d29079a9628a73fe4cc979d5a85f60f9406c3b83f",
+    "arm-texture-3p5.psd": "bbad6cf96efdfc6fff8ae0cc13226723a6ed696c9081a7ab31bde87e25a27402",
+    "arm-texture-3p75.psd": "e2b705db824f55a93446f7bc472b0b2b86bddaf0ffadeb760d7816fbbda0ef7a",
+    "arm-texture-4p25.psd": "f35db31adac8b540e725027c57fbc22dab92202f44f6fce1d16961f9119d360d",
+    "arm-texture-4p5.psd": "774c7cc1b42645b340566cccf5dfbcd0232e1c55c64b6c15abbf55968788d60e",
+    "intel-edge-0p25.psd": "a4b4a71e0080ae6ee4e4e22398bf9680b565918579fdde6a329e9e0410003ef7",
+    "intel-line-2p0625.psd": "b793a39bbaaf8262225d453a6cd2bbb365377b810b9a72afb1a1aa82c2ffc8aa",
+    "intel-line-2p125.psd": "f0ba5233bf3eecdb754446089b30bb8cb0c0666bbfa0806289640a8499f81988",
+    "intel-line-2p1875.psd": "57abcb7cc6bde8ea305f3e672e2b1871f3775b067755a9fb3440e810e9035367",
+    "intel-line-2p25.psd": "b5eb44aa9f798c7948b09d9977624f843d8119b3ab73133d099cc58da95822a9",
+    "intel-line-2p5.psd": "f4a1ac8446d215e9b05f6f340e796412d94c29cf137d9120c284dd5448642859",
+    "intel-line-2p75.psd": "f6902e8012b2548a20b1506df67b693aec277f3fa920e9255947aefbf5e43adf",
+    "intel-line-3p25.psd": "7cde70cdabbdedcce419390c67126036266ab8d1a1eb1bb0a8ab8ea8362a1be5",
+    "intel-line-3p5.psd": "b22fb6433908b4361bd412c288791a349fc5f30662992ade5cb12a0d185bdf49",
+    "intel-line-3p75.psd": "5d6924af5201e24a7d92542f32fa168f559d26df3eed3876e1eed973bc0bea48",
+    "intel-line-4p25.psd": "5addef2e830b99e708434752c29499ac23455397e13c38fee141c22bafc75aad",
+    "intel-line-4p5.psd": "e2d5fb9d36c753fa6779cc6efdf3b218e86de8b6aeee131b9792f99d20e32f57",
+    "intel-step-0p25.psd": "33a0300657b634598530c5347452993bb7c12c2cfd735f0182bdc1d51615aa39",
+    "intel-texture-0p125.psd": "18b1bf471e0932a200d52d3d9522c316432e7aa853cdf7d10e5870bae3c8c366",
+    "intel-texture-0p25.psd": "466c2d23df215d4e0150ae03b169cac61a51096ff802c6b69b87e49611ce0d32",
+    "intel-texture-2p0625.psd": "c2d50eaec6d783784aef0ac2c0839dd4d2365e043a8745f35627f4d6a59b3445",
+    "intel-texture-2p125.psd": "0a01ef92cf27e07cc61c558414795a91e789c67555de6796a8533719cfc5dc76",
+    "intel-texture-2p1875.psd": "8340d00f97a6cba578a1e095c2b239e64cd177459b85f94fe1aabd316932d614",
+    "intel-texture-2p25.psd": "740df482535eb45dc7ad218714ca6c44a225ad8f91fa5cf0e4986b752e293c46",
+    "intel-texture-2p5.psd": "161b1460396a3328611358f21420ad97927bc8826e4af6698135d4e637a056c0",
+    "intel-texture-2p75.psd": "27372e09cb5acc06f16d3d81689b22145bc66882b944af373c0356f520bf4a57",
+    "intel-texture-3p125.psd": "7ef5d6c6a63a4b95f063c99cdd1f66d71ea75878d84d4a0c37937263cd50fe94",
+    "intel-texture-3p25.psd": "3cdf1f02df64114dffb8358bc466243b562b11a66d26ff8793c960e7934e685a",
+    "intel-texture-3p5.psd": "9f4afba80fb0a7fb15795afae23b65b21f758faaee4fe64b14891429260ca6ad",
+    "intel-texture-3p75.psd": "28a88d0ddfc9a673cbd49d9fbc6060b32c20442a4f5158e0db093a0adbb02faf",
+    "intel-texture-4p25.psd": "1f07cf831afe69b7644e7715543aa406dd468909096a07eb5389bbcfd3d7e27a",
+    "intel-texture-4p5.psd": "2cdd5e7e4f1c37347edc20fff36d0d3f26f3a080a026f40f64f5cadf21ad60d8"
+  },
+  "testedRadii": [
+    0.125,
+    0.25,
+    2.0625,
+    2.125,
+    2.1875,
+    2.25,
+    2.5,
+    2.75,
+    3.125,
+    3.25,
+    3.5,
+    3.75,
+    4.25,
+    4.5
+  ],
+  "textureStages": {
+    "arm": {
+      "2.0625": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            3,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.125": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.1875": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.25": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.5": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.75": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            5,
+            5
+          ]
+        },
+        "best": []
+      },
+      "3.125": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            7,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.25": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            7,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.5": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            7,
+            7,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.75": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            9,
+            7,
+            7
+          ]
+        },
+        "best": []
+      },
+      "4.25": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            9,
+            9,
+            7,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "4.5": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            9,
+            9,
+            9,
+            3
+          ]
+        },
+        "best": []
+      }
+    },
+    "intel": {
+      "2.0625": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            3,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.125": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            3,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.1875": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.25": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.5": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "2.75": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            5,
+            5,
+            5,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.125": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            5,
+            5,
+            3,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.25": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            7,
+            5,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.5": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            7,
+            7,
+            3
+          ]
+        },
+        "best": []
+      },
+      "3.75": {
+        "base": {
+          "different": 3,
+          "maxULP": 1,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            7,
+            7,
+            7,
+            3,
+            3
+          ]
+        },
+        "best": [
+          {
+            "different": 3,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3,
+              3
+            ]
+          },
+          {
+            "different": 3,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3,
+              3
+            ]
+          },
+          {
+            "different": 3,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3,
+              3
+            ]
+          },
+          {
+            "different": 3,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3,
+              3
+            ]
+          },
+          {
+            "different": 3,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3,
+              3
+            ]
+          }
+        ]
+      },
+      "4.25": {
+        "base": {
+          "different": 2,
+          "maxULP": 1,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            9,
+            9,
+            7,
+            3
+          ]
+        },
+        "best": [
+          {
+            "different": 2,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3
+            ]
+          },
+          {
+            "different": 2,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3
+            ]
+          },
+          {
+            "different": 2,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3
+            ]
+          },
+          {
+            "different": 2,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3
+            ]
+          },
+          {
+            "different": 2,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3
+            ]
+          }
+        ]
+      },
+      "4.5": {
+        "base": {
+          "different": 0,
+          "maxULP": 0,
+          "mode": [
+            "div",
+            "div",
+            "div",
+            "div"
+          ],
+          "order": [
+            9,
+            9,
+            9,
+            3
+          ]
+        },
+        "best": []
+      }
+    }
+  },
+  "version": "27.2.0"
+}

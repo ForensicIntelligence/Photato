@@ -1,0 +1,1329 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "d068ef7f627e21ebeb5edea4ae0d72a1470cda67b067435b6ad72fde76855fb1",
+    "binarySHA256": "7e71f98d2d7f7f2bb5a84b954c1f5ff3b029d4fbe73c9d23f0a9cced916ae2b1",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 591,
+  "independentNativePSDReadback": {
+    "arm": {
+      "0.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "7135169a0e4be661425978e76cedfa81a3f5cc41da38c2df097e3f83ca96ad2e",
+        "photoshopRSHA256": "7135169a0e4be661425978e76cedfa81a3f5cc41da38c2df097e3f83ca96ad2e",
+        "words": 391
+      },
+      "0.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "b64acd1c7aef7074cc7fe55010ba3feb6bee72315d225a7802f44dbd4e5c1b0b",
+        "photoshopRSHA256": "b64acd1c7aef7074cc7fe55010ba3feb6bee72315d225a7802f44dbd4e5c1b0b",
+        "words": 391
+      },
+      "2.0625": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "photoshopRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "words": 391
+      },
+      "2.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "f76e1b91368556857091a0bf19a6281bf0c6d75d30dcb2ae34168109c3d0c26c",
+        "photoshopRSHA256": "f76e1b91368556857091a0bf19a6281bf0c6d75d30dcb2ae34168109c3d0c26c",
+        "words": 391
+      },
+      "2.1875": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "photoshopRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "words": 391
+      },
+      "2.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "photoshopRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "words": 391
+      },
+      "2.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "ef4fb4150ffaad19cdb96b520a414dbf9229d4cdb01541c35b5c8572495573ed",
+        "photoshopRSHA256": "ef4fb4150ffaad19cdb96b520a414dbf9229d4cdb01541c35b5c8572495573ed",
+        "words": 391
+      },
+      "2.75": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "3dd3047022e725f97a14efc0ac3756257a3bfb5b1ea4e90b243b941f288e4f5f",
+        "photoshopRSHA256": "3dd3047022e725f97a14efc0ac3756257a3bfb5b1ea4e90b243b941f288e4f5f",
+        "words": 391
+      },
+      "3.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "photoshopRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "words": 391
+      },
+      "3.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "photoshopRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "words": 391
+      },
+      "3.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "ed83c4eaa84dda6032797bb33c51f382118f9fbd96446fd62c667c6a7f8375d4",
+        "photoshopRSHA256": "ed83c4eaa84dda6032797bb33c51f382118f9fbd96446fd62c667c6a7f8375d4",
+        "words": 391
+      },
+      "3.75": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "92ec10cdab0119d444057736d1e90bed01e68b65d9332d78583ad870873caad7",
+        "photoshopRSHA256": "92ec10cdab0119d444057736d1e90bed01e68b65d9332d78583ad870873caad7",
+        "words": 391
+      },
+      "4.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "10c2f7a0f3a41a07e6eb0f894c91483ab1b1a3edc25ef0610d151f9c0aa96dd6",
+        "photoshopRSHA256": "10c2f7a0f3a41a07e6eb0f894c91483ab1b1a3edc25ef0610d151f9c0aa96dd6",
+        "words": 391
+      },
+      "4.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "1be59432d82d3a643365a343fd6ef17dcea239f77b07044731992248728527dc",
+        "photoshopRSHA256": "1be59432d82d3a643365a343fd6ef17dcea239f77b07044731992248728527dc",
+        "words": 391
+      }
+    },
+    "debug": {
+      "0.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "7135169a0e4be661425978e76cedfa81a3f5cc41da38c2df097e3f83ca96ad2e",
+        "photoshopRSHA256": "7135169a0e4be661425978e76cedfa81a3f5cc41da38c2df097e3f83ca96ad2e",
+        "words": 391
+      },
+      "0.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "b64acd1c7aef7074cc7fe55010ba3feb6bee72315d225a7802f44dbd4e5c1b0b",
+        "photoshopRSHA256": "b64acd1c7aef7074cc7fe55010ba3feb6bee72315d225a7802f44dbd4e5c1b0b",
+        "words": 391
+      },
+      "2.0625": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "photoshopRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "words": 391
+      },
+      "2.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "f76e1b91368556857091a0bf19a6281bf0c6d75d30dcb2ae34168109c3d0c26c",
+        "photoshopRSHA256": "f76e1b91368556857091a0bf19a6281bf0c6d75d30dcb2ae34168109c3d0c26c",
+        "words": 391
+      },
+      "2.1875": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "photoshopRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "words": 391
+      },
+      "2.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "photoshopRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "words": 391
+      },
+      "2.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "ef4fb4150ffaad19cdb96b520a414dbf9229d4cdb01541c35b5c8572495573ed",
+        "photoshopRSHA256": "ef4fb4150ffaad19cdb96b520a414dbf9229d4cdb01541c35b5c8572495573ed",
+        "words": 391
+      },
+      "2.75": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "3dd3047022e725f97a14efc0ac3756257a3bfb5b1ea4e90b243b941f288e4f5f",
+        "photoshopRSHA256": "3dd3047022e725f97a14efc0ac3756257a3bfb5b1ea4e90b243b941f288e4f5f",
+        "words": 391
+      },
+      "3.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "photoshopRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "words": 391
+      },
+      "3.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "photoshopRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "words": 391
+      },
+      "3.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "ed83c4eaa84dda6032797bb33c51f382118f9fbd96446fd62c667c6a7f8375d4",
+        "photoshopRSHA256": "ed83c4eaa84dda6032797bb33c51f382118f9fbd96446fd62c667c6a7f8375d4",
+        "words": 391
+      },
+      "3.75": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "92ec10cdab0119d444057736d1e90bed01e68b65d9332d78583ad870873caad7",
+        "photoshopRSHA256": "92ec10cdab0119d444057736d1e90bed01e68b65d9332d78583ad870873caad7",
+        "words": 391
+      },
+      "4.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "10c2f7a0f3a41a07e6eb0f894c91483ab1b1a3edc25ef0610d151f9c0aa96dd6",
+        "photoshopRSHA256": "10c2f7a0f3a41a07e6eb0f894c91483ab1b1a3edc25ef0610d151f9c0aa96dd6",
+        "words": 391
+      },
+      "4.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "1be59432d82d3a643365a343fd6ef17dcea239f77b07044731992248728527dc",
+        "photoshopRSHA256": "1be59432d82d3a643365a343fd6ef17dcea239f77b07044731992248728527dc",
+        "words": 391
+      }
+    },
+    "intel": {
+      "0.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "7135169a0e4be661425978e76cedfa81a3f5cc41da38c2df097e3f83ca96ad2e",
+        "photoshopRSHA256": "7135169a0e4be661425978e76cedfa81a3f5cc41da38c2df097e3f83ca96ad2e",
+        "words": 391
+      },
+      "0.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "53f00991e7a769a98d690ea593aa22f9bfbf276a6188583fc68f8c7532f058ab",
+        "photoshopRSHA256": "53f00991e7a769a98d690ea593aa22f9bfbf276a6188583fc68f8c7532f058ab",
+        "words": 391
+      },
+      "2.0625": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "photoshopRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "words": 391
+      },
+      "2.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "photoshopRSHA256": "be89111f510bc988b7e00ba6154b7c15e0bb1db69cacb0042647bb08511fb0ce",
+        "words": 391
+      },
+      "2.1875": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "f76e1b91368556857091a0bf19a6281bf0c6d75d30dcb2ae34168109c3d0c26c",
+        "photoshopRSHA256": "f76e1b91368556857091a0bf19a6281bf0c6d75d30dcb2ae34168109c3d0c26c",
+        "words": 391
+      },
+      "2.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "photoshopRSHA256": "bb699cf5256094a0c7522470e85271adbf4850f537f4956fdc1ecd29bc36dc67",
+        "words": 391
+      },
+      "2.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "ef4fb4150ffaad19cdb96b520a414dbf9229d4cdb01541c35b5c8572495573ed",
+        "photoshopRSHA256": "ef4fb4150ffaad19cdb96b520a414dbf9229d4cdb01541c35b5c8572495573ed",
+        "words": 391
+      },
+      "2.75": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "f4c4f3fb36b46dd1102957543b36913b87d0d21aafc4867ea8a0b540be085718",
+        "photoshopRSHA256": "f4c4f3fb36b46dd1102957543b36913b87d0d21aafc4867ea8a0b540be085718",
+        "words": 391
+      },
+      "3.125": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "97bc27a39dda8b0bd8b08b8c5c3e0bd44293d3b25d49596ba08bfeeb79d4c755",
+        "photoshopRSHA256": "97bc27a39dda8b0bd8b08b8c5c3e0bd44293d3b25d49596ba08bfeeb79d4c755",
+        "words": 391
+      },
+      "3.25": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "photoshopRSHA256": "913b19ddef071051ede183b61a18e1417b861064a5b587b18fbef8fc3b2d2524",
+        "words": 391
+      },
+      "3.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "ed83c4eaa84dda6032797bb33c51f382118f9fbd96446fd62c667c6a7f8375d4",
+        "photoshopRSHA256": "ed83c4eaa84dda6032797bb33c51f382118f9fbd96446fd62c667c6a7f8375d4",
+        "words": 391
+      },
+      "3.75": {
+        "different": 3,
+        "maxULP": 1,
+        "nativeRSHA256": "e4177507edcc0909baf721ad743341d18c9552150c9244129c0e2bef8d176374",
+        "photoshopRSHA256": "92ab4feef1cce1fc01eff177a329a683689a168c57f071287a045d06daeb29aa",
+        "words": 391
+      },
+      "4.25": {
+        "different": 2,
+        "maxULP": 1,
+        "nativeRSHA256": "6e512dcce256fec432e4f87bebd1fa6e8c96399618fb67341677a07948edd404",
+        "photoshopRSHA256": "d581b0d9b51e820658035e6168670b776bc48d2b0eda715c990d3b9edf206bf1",
+        "words": 391
+      },
+      "4.5": {
+        "different": 0,
+        "maxULP": 0,
+        "nativeRSHA256": "1be59432d82d3a643365a343fd6ef17dcea239f77b07044731992248728527dc",
+        "photoshopRSHA256": "1be59432d82d3a643365a343fd6ef17dcea239f77b07044731992248728527dc",
+        "words": 391
+      }
+    }
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122083,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "additional fractional radii",
+    "arbitrary affine transforms",
+    "dense wide mask performance",
+    "vector masks and Smart Filters",
+    "physical Intel and macOS 14"
+  ],
+  "photoshopReferences": {
+    "applicationSignature": "ad hoc",
+    "architectures": [
+      "arm64",
+      "x86_64 under Rosetta"
+    ],
+    "authorship": "Project-owned masks saved as editable-layer output by Photoshop 2026.",
+    "storedReferences": {
+      "arm-edge-0p25.psd": "4744ba056736b3023bf2d1112328f7f87737c545ac7c1fbf413a703192553673",
+      "arm-line-2p0625.psd": "227a238a29ecbf0c4f0cfc6f26fd676b6f332c97d958fbe3633c020252a0bdeb",
+      "arm-line-2p125.psd": "4c9bc49304cf94f67675a6c0adeaab5ada946fc242cebb69609fd8f5027f7955",
+      "arm-line-2p1875.psd": "04f94212e951c4bf543082b8a149882ccb687f23363ca7c3214c4038a794b4ef",
+      "arm-line-2p25.psd": "d07bde942f92f2e2811b3f46cc8a3e86ea0655f3b53a77d568e632b460d60422",
+      "arm-line-2p5.psd": "dac3ce24113c6687be5f67223b8fb643ddcc0579b84fb92b0d27199fb7f8acd3",
+      "arm-line-2p75.psd": "f19519bee466252397c492bdbbbcd55a0f5645087ec43ec057eb2ee4a92b30c6",
+      "arm-line-3p25.psd": "cadc31b3d3e10bce658c7944172d7e265d6f48e68c7d5231afdbc9eb0a7f0089",
+      "arm-line-3p5.psd": "4bd1e3c7290a67dd9369b537efd1c89cb3e19ddb7f725a5100ab3f87aa349b85",
+      "arm-line-3p75.psd": "1bdfaf4f1e124f7ba9c21c7b3c49d21e64562c6d168bf3d2d64a2f11a5303555",
+      "arm-line-4p25.psd": "b50e15fdbbfaf28ac8cfd678c134249bd1a096368c3b95c7b2b67628f31a8327",
+      "arm-line-4p5.psd": "c9c78f85bf5d474454321eafd781f813dc051bf5b40ebde4e86c6a9bc973af29",
+      "arm-step-0p25.psd": "e1cd5ce00c3aa6c51af522d6c0cd32c98c144f21491c810ff1cdc14afb2b961c",
+      "arm-texture-0p125.psd": "9a47a76008592edbb8e4303b2de113c22d769af4300e64f65df55d93645c7d7a",
+      "arm-texture-0p25.psd": "fedd9018f831f1480ccaf3e2b2e3ffd6b14c04bbd5555a13c7bc5f9fb9bcc23d",
+      "arm-texture-2p0625.psd": "86c2bb73b1d86b1aa5941d8a5995b5d5b5cd1da9e7438e819dcd9b4b37c96782",
+      "arm-texture-2p125.psd": "92368c044642491a5055173cff6a0314e7e5cc22c37731c0ab1bf040975d6aae",
+      "arm-texture-2p1875.psd": "2afd03d6902420f0e908a4de3c53c962914adf69b5b1d9e3f7d180656392bade",
+      "arm-texture-2p25.psd": "39dd2cfc984f9f8748cfaab3cf3d5f037f64ca882c10457117a236d9aae4f494",
+      "arm-texture-2p5.psd": "6a197e4a52f6b38fed52e91f17e4aceaaef678e3ef03d00424d5a4344c88cf41",
+      "arm-texture-2p75.psd": "011e60db6f7b9d4d8ffc3b47189f6e7f2a1ae1246c1e9b862f60cf57e775645b",
+      "arm-texture-3p125.psd": "ed1880d4438e9118633098baef4fdf78b454d3c3df53c2e58bc82630d79aa45f",
+      "arm-texture-3p25.psd": "163d493da3ef1d8e92a3689d29079a9628a73fe4cc979d5a85f60f9406c3b83f",
+      "arm-texture-3p5.psd": "bbad6cf96efdfc6fff8ae0cc13226723a6ed696c9081a7ab31bde87e25a27402",
+      "arm-texture-3p75.psd": "e2b705db824f55a93446f7bc472b0b2b86bddaf0ffadeb760d7816fbbda0ef7a",
+      "arm-texture-4p25.psd": "f35db31adac8b540e725027c57fbc22dab92202f44f6fce1d16961f9119d360d",
+      "arm-texture-4p5.psd": "774c7cc1b42645b340566cccf5dfbcd0232e1c55c64b6c15abbf55968788d60e",
+      "intel-edge-0p25.psd": "a4b4a71e0080ae6ee4e4e22398bf9680b565918579fdde6a329e9e0410003ef7",
+      "intel-line-2p0625.psd": "b793a39bbaaf8262225d453a6cd2bbb365377b810b9a72afb1a1aa82c2ffc8aa",
+      "intel-line-2p125.psd": "f0ba5233bf3eecdb754446089b30bb8cb0c0666bbfa0806289640a8499f81988",
+      "intel-line-2p1875.psd": "57abcb7cc6bde8ea305f3e672e2b1871f3775b067755a9fb3440e810e9035367",
+      "intel-line-2p25.psd": "b5eb44aa9f798c7948b09d9977624f843d8119b3ab73133d099cc58da95822a9",
+      "intel-line-2p5.psd": "f4a1ac8446d215e9b05f6f340e796412d94c29cf137d9120c284dd5448642859",
+      "intel-line-2p75.psd": "f6902e8012b2548a20b1506df67b693aec277f3fa920e9255947aefbf5e43adf",
+      "intel-line-3p25.psd": "7cde70cdabbdedcce419390c67126036266ab8d1a1eb1bb0a8ab8ea8362a1be5",
+      "intel-line-3p5.psd": "b22fb6433908b4361bd412c288791a349fc5f30662992ade5cb12a0d185bdf49",
+      "intel-line-3p75.psd": "5d6924af5201e24a7d92542f32fa168f559d26df3eed3876e1eed973bc0bea48",
+      "intel-line-4p25.psd": "5addef2e830b99e708434752c29499ac23455397e13c38fee141c22bafc75aad",
+      "intel-line-4p5.psd": "e2d5fb9d36c753fa6779cc6efdf3b218e86de8b6aeee131b9792f99d20e32f57",
+      "intel-step-0p25.psd": "33a0300657b634598530c5347452993bb7c12c2cfd735f0182bdc1d51615aa39",
+      "intel-texture-0p125.psd": "18b1bf471e0932a200d52d3d9522c316432e7aa853cdf7d10e5870bae3c8c366",
+      "intel-texture-0p25.psd": "466c2d23df215d4e0150ae03b169cac61a51096ff802c6b69b87e49611ce0d32",
+      "intel-texture-2p0625.psd": "c2d50eaec6d783784aef0ac2c0839dd4d2365e043a8745f35627f4d6a59b3445",
+      "intel-texture-2p125.psd": "0a01ef92cf27e07cc61c558414795a91e789c67555de6796a8533719cfc5dc76",
+      "intel-texture-2p1875.psd": "8340d00f97a6cba578a1e095c2b239e64cd177459b85f94fe1aabd316932d614",
+      "intel-texture-2p25.psd": "740df482535eb45dc7ad218714ca6c44a225ad8f91fa5cf0e4986b752e293c46",
+      "intel-texture-2p5.psd": "161b1460396a3328611358f21420ad97927bc8826e4af6698135d4e637a056c0",
+      "intel-texture-2p75.psd": "27372e09cb5acc06f16d3d81689b22145bc66882b944af373c0356f520bf4a57",
+      "intel-texture-3p125.psd": "7ef5d6c6a63a4b95f063c99cdd1f66d71ea75878d84d4a0c37937263cd50fe94",
+      "intel-texture-3p25.psd": "3cdf1f02df64114dffb8358bc466243b562b11a66d26ff8793c960e7934e685a",
+      "intel-texture-3p5.psd": "9f4afba80fb0a7fb15795afae23b65b21f758faaee4fe64b14891429260ca6ad",
+      "intel-texture-3p75.psd": "28a88d0ddfc9a673cbd49d9fbc6060b32c20442a4f5158e0db093a0adbb02faf",
+      "intel-texture-4p25.psd": "1f07cf831afe69b7644e7715543aa406dd468909096a07eb5389bbcfd3d7e27a",
+      "intel-texture-4p5.psd": "2cdd5e7e4f1c37347edc20fff36d0d3f26f3a080a026f40f64f5cadf21ad60d8"
+    },
+    "testedRadii": [
+      0.125,
+      0.25,
+      2.0625,
+      2.125,
+      2.1875,
+      2.25,
+      2.5,
+      2.75,
+      3.125,
+      3.25,
+      3.5,
+      3.75,
+      4.25,
+      4.5
+    ],
+    "textureStages": {
+      "arm": {
+        "2.0625": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              3,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.125": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.1875": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.25": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.5": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.75": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              5,
+              5
+            ]
+          },
+          "best": []
+        },
+        "3.125": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.25": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.5": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.75": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              7,
+              7
+            ]
+          },
+          "best": []
+        },
+        "4.25": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "4.5": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              9,
+              3
+            ]
+          },
+          "best": []
+        }
+      },
+      "intel": {
+        "2.0625": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              3,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.125": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              3,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.1875": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.25": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.5": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "2.75": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              5,
+              5,
+              5,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.125": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              5,
+              5,
+              3,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.25": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              5,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.5": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3
+            ]
+          },
+          "best": []
+        },
+        "3.75": {
+          "base": {
+            "different": 3,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              7,
+              7,
+              7,
+              3,
+              3
+            ]
+          },
+          "best": [
+            {
+              "different": 3,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                7,
+                7,
+                7,
+                3,
+                3
+              ]
+            },
+            {
+              "different": 3,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                7,
+                7,
+                7,
+                3,
+                3
+              ]
+            },
+            {
+              "different": 3,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                7,
+                7,
+                7,
+                3,
+                3
+              ]
+            },
+            {
+              "different": 3,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                7,
+                7,
+                7,
+                3,
+                3
+              ]
+            },
+            {
+              "different": 3,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                7,
+                7,
+                7,
+                3,
+                3
+              ]
+            }
+          ]
+        },
+        "4.25": {
+          "base": {
+            "different": 2,
+            "maxULP": 1,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              7,
+              3
+            ]
+          },
+          "best": [
+            {
+              "different": 2,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                9,
+                9,
+                7,
+                3
+              ]
+            },
+            {
+              "different": 2,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                9,
+                9,
+                7,
+                3
+              ]
+            },
+            {
+              "different": 2,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                9,
+                9,
+                7,
+                3
+              ]
+            },
+            {
+              "different": 2,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                9,
+                9,
+                7,
+                3
+              ]
+            },
+            {
+              "different": 2,
+              "maxULP": 1,
+              "mode": [
+                "div",
+                "div",
+                "div",
+                "div"
+              ],
+              "order": [
+                9,
+                9,
+                7,
+                3
+              ]
+            }
+          ]
+        },
+        "4.5": {
+          "base": {
+            "different": 0,
+            "maxULP": 0,
+            "mode": [
+              "div",
+              "div",
+              "div",
+              "div"
+            ],
+            "order": [
+              9,
+              9,
+              9,
+              3
+            ]
+          },
+          "best": []
+        }
+      }
+    },
+    "version": "27.2.0"
+  },
+  "qualification": {
+    "configurations": {
+      "arm": {
+        "appSHA256": "7874a9a6e6b9645e58bcefc32acf2fbe5f42dd6856922185ed408a2247a64b44",
+        "testBinarySHA256": "7c6734c90269166d043b1eb9c70539333232f82cfddd44393b20dc2fe4f781eb"
+      },
+      "debug": {
+        "appSHA256": "3e5f0e77f405490fe09da36210371c5eebb3ca6cac5d6975684c721aad20865b",
+        "testBinarySHA256": "cdc685f08ba2f67ff2c4273b4b81950a74d599ab484b398f88693903549d03c1"
+      },
+      "intel": {
+        "appSHA256": "dc0f44a89283faa2384093b92a4ec26ca004d48d977db95cbcd9c496932a0b03",
+        "testBinarySHA256": "1a0fd2a87bace8f594011b569e778f79b0df5c1aef979e744f0afe5b008a0272"
+      }
+    },
+    "expectedCasesSHA256": "ae39356f09df9c33c1cf586259848b01a95699fcf5403133d977f4f3b8116f9e",
+    "selected": 861
+  },
+  "referenceSampleCounts": {
+    "intelTextureDifferent": 5,
+    "intelTextureMaximumULP": 1,
+    "lineStepEdgePerArchitecture": 5915,
+    "texturePerArchitecture": 5474
+  },
+  "sourceInputs": 9210,
+  "sourceInputsChangedSince590": [
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "7bb6b611667bdaad7a12102f96752a11fba59ac71d33de9b5ef44868718c7c9b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "154f762228967689ac8b204aad7a66ca100de1c80418a7221162fb6b7f625ad0"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMask.swift",
+      "sha256": "efddbf1bc8892837092eebf6776b648a5bc83ecfa2c92511ada15cee7d12b4ec"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "d933af4710e6979358db76ee5e247bf5fa8da99f2ae9515a809834ea3f2a76bc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/AreaMaskFeatherTests.swift",
+      "sha256": "c6fa9520a6757f6ae25bcaadf91d8377f4be700053d767fdc95eaf71c1446d7b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-edge-0p25.psd",
+      "sha256": "4744ba056736b3023bf2d1112328f7f87737c545ac7c1fbf413a703192553673"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-2p0625.psd",
+      "sha256": "227a238a29ecbf0c4f0cfc6f26fd676b6f332c97d958fbe3633c020252a0bdeb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-2p125.psd",
+      "sha256": "4c9bc49304cf94f67675a6c0adeaab5ada946fc242cebb69609fd8f5027f7955"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-2p1875.psd",
+      "sha256": "04f94212e951c4bf543082b8a149882ccb687f23363ca7c3214c4038a794b4ef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-2p25.psd",
+      "sha256": "d07bde942f92f2e2811b3f46cc8a3e86ea0655f3b53a77d568e632b460d60422"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-2p5.psd",
+      "sha256": "dac3ce24113c6687be5f67223b8fb643ddcc0579b84fb92b0d27199fb7f8acd3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-2p75.psd",
+      "sha256": "f19519bee466252397c492bdbbbcd55a0f5645087ec43ec057eb2ee4a92b30c6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-3p25.psd",
+      "sha256": "cadc31b3d3e10bce658c7944172d7e265d6f48e68c7d5231afdbc9eb0a7f0089"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-3p5.psd",
+      "sha256": "4bd1e3c7290a67dd9369b537efd1c89cb3e19ddb7f725a5100ab3f87aa349b85"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-3p75.psd",
+      "sha256": "1bdfaf4f1e124f7ba9c21c7b3c49d21e64562c6d168bf3d2d64a2f11a5303555"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-4p25.psd",
+      "sha256": "b50e15fdbbfaf28ac8cfd678c134249bd1a096368c3b95c7b2b67628f31a8327"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-line-4p5.psd",
+      "sha256": "c9c78f85bf5d474454321eafd781f813dc051bf5b40ebde4e86c6a9bc973af29"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-step-0p25.psd",
+      "sha256": "e1cd5ce00c3aa6c51af522d6c0cd32c98c144f21491c810ff1cdc14afb2b961c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-0p125.psd",
+      "sha256": "9a47a76008592edbb8e4303b2de113c22d769af4300e64f65df55d93645c7d7a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-0p25.psd",
+      "sha256": "fedd9018f831f1480ccaf3e2b2e3ffd6b14c04bbd5555a13c7bc5f9fb9bcc23d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-2p0625.psd",
+      "sha256": "86c2bb73b1d86b1aa5941d8a5995b5d5b5cd1da9e7438e819dcd9b4b37c96782"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-2p125.psd",
+      "sha256": "92368c044642491a5055173cff6a0314e7e5cc22c37731c0ab1bf040975d6aae"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-2p1875.psd",
+      "sha256": "2afd03d6902420f0e908a4de3c53c962914adf69b5b1d9e3f7d180656392bade"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-2p25.psd",
+      "sha256": "39dd2cfc984f9f8748cfaab3cf3d5f037f64ca882c10457117a236d9aae4f494"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-2p5.psd",
+      "sha256": "6a197e4a52f6b38fed52e91f17e4aceaaef678e3ef03d00424d5a4344c88cf41"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-2p75.psd",
+      "sha256": "011e60db6f7b9d4d8ffc3b47189f6e7f2a1ae1246c1e9b862f60cf57e775645b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-3p125.psd",
+      "sha256": "ed1880d4438e9118633098baef4fdf78b454d3c3df53c2e58bc82630d79aa45f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-3p25.psd",
+      "sha256": "163d493da3ef1d8e92a3689d29079a9628a73fe4cc979d5a85f60f9406c3b83f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-3p5.psd",
+      "sha256": "bbad6cf96efdfc6fff8ae0cc13226723a6ed696c9081a7ab31bde87e25a27402"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-3p75.psd",
+      "sha256": "e2b705db824f55a93446f7bc472b0b2b86bddaf0ffadeb760d7816fbbda0ef7a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-4p25.psd",
+      "sha256": "f35db31adac8b540e725027c57fbc22dab92202f44f6fce1d16961f9119d360d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/arm-texture-4p5.psd",
+      "sha256": "774c7cc1b42645b340566cccf5dfbcd0232e1c55c64b6c15abbf55968788d60e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-edge-0p25.psd",
+      "sha256": "a4b4a71e0080ae6ee4e4e22398bf9680b565918579fdde6a329e9e0410003ef7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-2p0625.psd",
+      "sha256": "b793a39bbaaf8262225d453a6cd2bbb365377b810b9a72afb1a1aa82c2ffc8aa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-2p125.psd",
+      "sha256": "f0ba5233bf3eecdb754446089b30bb8cb0c0666bbfa0806289640a8499f81988"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-2p1875.psd",
+      "sha256": "57abcb7cc6bde8ea305f3e672e2b1871f3775b067755a9fb3440e810e9035367"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-2p25.psd",
+      "sha256": "b5eb44aa9f798c7948b09d9977624f843d8119b3ab73133d099cc58da95822a9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-2p5.psd",
+      "sha256": "f4a1ac8446d215e9b05f6f340e796412d94c29cf137d9120c284dd5448642859"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-2p75.psd",
+      "sha256": "f6902e8012b2548a20b1506df67b693aec277f3fa920e9255947aefbf5e43adf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-3p25.psd",
+      "sha256": "7cde70cdabbdedcce419390c67126036266ab8d1a1eb1bb0a8ab8ea8362a1be5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-3p5.psd",
+      "sha256": "b22fb6433908b4361bd412c288791a349fc5f30662992ade5cb12a0d185bdf49"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-3p75.psd",
+      "sha256": "5d6924af5201e24a7d92542f32fa168f559d26df3eed3876e1eed973bc0bea48"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-4p25.psd",
+      "sha256": "5addef2e830b99e708434752c29499ac23455397e13c38fee141c22bafc75aad"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-line-4p5.psd",
+      "sha256": "e2d5fb9d36c753fa6779cc6efdf3b218e86de8b6aeee131b9792f99d20e32f57"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-step-0p25.psd",
+      "sha256": "33a0300657b634598530c5347452993bb7c12c2cfd735f0182bdc1d51615aa39"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-0p125.psd",
+      "sha256": "18b1bf471e0932a200d52d3d9522c316432e7aa853cdf7d10e5870bae3c8c366"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-0p25.psd",
+      "sha256": "466c2d23df215d4e0150ae03b169cac61a51096ff802c6b69b87e49611ce0d32"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-2p0625.psd",
+      "sha256": "c2d50eaec6d783784aef0ac2c0839dd4d2365e043a8745f35627f4d6a59b3445"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-2p125.psd",
+      "sha256": "0a01ef92cf27e07cc61c558414795a91e789c67555de6796a8533719cfc5dc76"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-2p1875.psd",
+      "sha256": "8340d00f97a6cba578a1e095c2b239e64cd177459b85f94fe1aabd316932d614"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-2p25.psd",
+      "sha256": "740df482535eb45dc7ad218714ca6c44a225ad8f91fa5cf0e4986b752e293c46"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-2p5.psd",
+      "sha256": "161b1460396a3328611358f21420ad97927bc8826e4af6698135d4e637a056c0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-2p75.psd",
+      "sha256": "27372e09cb5acc06f16d3d81689b22145bc66882b944af373c0356f520bf4a57"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-3p125.psd",
+      "sha256": "7ef5d6c6a63a4b95f063c99cdd1f66d71ea75878d84d4a0c37937263cd50fe94"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-3p25.psd",
+      "sha256": "3cdf1f02df64114dffb8358bc466243b562b11a66d26ff8793c960e7934e685a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-3p5.psd",
+      "sha256": "9f4afba80fb0a7fb15795afae23b65b21f758faaee4fe64b14891429260ca6ad"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-3p75.psd",
+      "sha256": "28a88d0ddfc9a673cbd49d9fbc6060b32c20442a4f5158e0db093a0adbb02faf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-4p25.psd",
+      "sha256": "1f07cf831afe69b7644e7715543aa406dd468909096a07eb5389bbcfd3d7e27a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/intel-texture-4p5.psd",
+      "sha256": "2cdd5e7e4f1c37347edc20fff36d0d3f26f3a080a026f40f64f5cadf21ad60d8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/fractional-feather-rgb32/references.json",
+      "sha256": "909919b3a280db41ecad07facfc7e442c1a52e290ccf3a9e0b7692bdba394269"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "69687f6b3b091bf94ed13b8e3a0e726f88baeea0f39bb43402ca7344acf4ba32"
+    }
+  ]
+}

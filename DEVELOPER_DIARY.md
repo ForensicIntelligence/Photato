@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **590** · The 10 most recent entries, newest first.
+Source build **591** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 591 — Match measured fractional RGB32 Feather schedules
+
+Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. The comparisons cover texture, lines and edges. Apple Silicon matched every sample. The Intel texture comparison found five differences, each one Float32 step.
+
+All 861 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-591) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_591.md).
 
 ## 2026-11-19 — Step 590 — Match integer raster-mask Feather stages
 
@@ -75,11 +83,3 @@ Supported raster clipping merges and stamps preserve Blend Clipped Layers as Gro
 The native editor and both local API families share the updated behavior. All 773 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md).
-
-## 2026-11-18 — Step 581 — Merge and stamp adjacent clipped layers
-
-Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. Merge Down keeps the destination clipped and removes the upper layer. Stamp Down keeps both rows and the upper selection.
-
-The stored raster matches the tested 8-, 16- and 32-bit Photoshop outputs. The first ActionJSON expansion found a stack overflow. Reusing the raster-output helper repaired it, and all 769 selected tests passed on each configuration.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-581) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_581.md).

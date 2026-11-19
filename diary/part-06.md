@@ -618,6 +618,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 588 | [Support layer-mask Feather through 1,000 px](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) |
 | 2026-11-19 | 589 | [Apply Feather in raster clipping merges and stamps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-589) |
 | 2026-11-19 | 590 | [Match integer raster-mask Feather stages](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) |
+| 2026-11-19 | 591 | [Match measured fractional RGB32 Feather schedules](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-591) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

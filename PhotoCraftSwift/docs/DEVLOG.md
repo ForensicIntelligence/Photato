@@ -609,7 +609,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 588 | 2026-11-19 | [Support layer-mask Feather through 1,000 px](#dev-step-588) |
 | 589 | 2026-11-19 | [Apply Feather in raster clipping merges and stamps](#dev-step-589) |
 | 590 | 2026-11-19 | [Match integer raster-mask Feather stages](#dev-step-590) |
+| 591 | 2026-11-19 | [Match measured fractional RGB32 Feather schedules](#dev-step-591) |
 <!-- history-index:end -->
+
+<a id="dev-step-591"></a>
+
+## 2026-11-19 — Match measured fractional RGB32 Feather schedules
+
+Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. At 0.125 px the recorded mask samples stay identical to the unfiltered values. At 0.25 px the mask uses a three-tap filter with the vertical pass first. The implementation uses the measured Float32 accumulation for each architecture. Twelve other settings use discrete square windows, with different sequences where the saved Apple Silicon and Intel Photoshop results select different support widths. The canvas sampler, clipping merges, and mask edits use the shared implementation. [Adobe layer-mask property](https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/).
+
+The project-owned reference set contains 54 editable PSD results from Photoshop 27.2.0 on Apple Silicon and its Intel slice under Rosetta. The application has an ad-hoc signature. For each architecture the tests compare 5,474 textured samples and 5,915 line, step and edge samples from separate capture sets. Every Apple Silicon sample matched. The Intel texture changes at 3.75 and 4.25 px total five differences, each one Float32 step. A separate PSD reader verifies the same texture samples in exported layer records. The test for the native editor and HTTP checks Feather, Merge Clipping Mask, and Undo.
+
+All 861 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks. Other fractional settings, arbitrary affine masks, Smart Filter and vector-mask Feather ranges, physical platforms and dense wide-mask performance remain open. [Validation](SOURCE_PUBLICATION_591.md).
 
 <a id="dev-step-590"></a>
 

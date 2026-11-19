@@ -151,6 +151,52 @@ final class AutomationLayerMergeTests: XCTestCase {
     ])
   }
 
+  @MainActor func testFractionalRGB32FeatherThroughDesktopAndHTTPMatchesPhotoshopAndUndoes() async throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var original = try fixture("../layer-mask-area/texture")
+      let base = try XCTUnwrap(original.layers.first { !$0.isClipped })
+      let maskLayer = try XCTUnwrap(original.layers.first { $0.isClipped })
+      original.activeLayerID = base.id
+      shared.store.session = EditorSession(document: original)
+      shared.store.selectedLayerIDs = [base.id]
+      try service.share(shared)
+
+      let desktop = EditorStore(document: original)
+      defer { desktop.renderTask?.cancel() }
+      for (radius, label) in [(0.25, "0p25"), (2.75, "2p75"), (4.5, "4p5")] {
+        desktop.updateMask(maskLayer.id) { $0.feather = radius }
+        let edited = desktop.document
+        let setting = try await helper.edit(service, shared, "mask.feather",
+          ["layerID": maskLayer.id.uuidString, "radius": radius])
+        XCTAssertEqual(setting, 200)
+        XCTAssertEqual(shared.store.document, edited)
+        XCTAssertTrue(desktop.canMerge(.clippingMask))
+        desktop.merge(.clippingMask)
+        await desktop.geometryTask?.value
+        XCTAssertNil(desktop.error)
+        let merged = try await helper.edit(service, shared, "layer.merge",
+          ["operation": "clippingMask", "layerIDs": [base.id.uuidString]])
+        XCTAssertEqual(merged, 200)
+        XCTAssertEqual(shared.store.document, desktop.document)
+        try samePixels(desktop.document, fixture("fractional-feather-rgb32/\(architecture)-texture-\(label)"))
+
+        let undoMerge = try await helper.edit(service, shared, "history.undo")
+        XCTAssertEqual(undoMerge, 200)
+        XCTAssertEqual(shared.store.document, edited)
+        let undoFeather = try await helper.edit(service, shared, "history.undo")
+        XCTAssertEqual(undoFeather, 200)
+        XCTAssertEqual(shared.store.document, original)
+        desktop.session = EditorSession(document: original)
+      }
+    }
+  }
+
   @MainActor func testClippedArithmeticModesThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
     try await verifyClippedWorkflow(folder: "clipped-arithmetic", cases: [
       ("clipped-arithmetic-8-partial-linearAdd-37-merge-mask", .clippingMask, "clippingMask", "Clipping base"),
