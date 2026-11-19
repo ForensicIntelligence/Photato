@@ -47,6 +47,25 @@ public struct MaskSampler: Sendable {
   private let sourceToDocument: Transform2D
   private let inverse: Transform2D
   private let properties: MaskProperties
+
+  /// Vector coverage is already in document coordinates with a padded border.
+  /// It has its own Feather response and shares the scalar interpolation path.
+  package init(vectorCoverage source: Surface, mask vector: VectorMask, padding: Int, outside: Float) {
+    var properties = MaskProperties()
+    properties.density = vector.density
+    properties.outside = outside
+    properties.feather = vector.feather
+    self.properties = properties
+    mask = source
+    sourceToDocument = .translation(-Double(padding), -Double(padding))
+    let result = vector.feather > 0
+      ? FeatheredMask(vectorPlane: FeatherSamplePlane(source), radius: vector.feather, outside: outside)
+      : nil
+    feathered = result
+    inverse = .translation(Double(padding - (result?.origin.x ?? 0)),
+      Double(padding - (result?.origin.y ?? 0)))
+  }
+
   public init(
     layer: Layer, feather: Bool = true, canvasSize: (width: Int, height: Int)? = nil,
     usesLayerFeather: Bool = true

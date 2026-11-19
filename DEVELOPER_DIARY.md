@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **593** · The 10 most recent entries, newest first.
+Source build **594** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 594 — Match measured short vector-mask Feather responses
+
+The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. Dense rendering, paged whole-canvas rendering and tiled viewports produced identical alpha words at the tested coordinates.
+
+All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-594) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_594.md).
 
 ## 2026-11-19 — Step 593 — Bound vector mask Feather on large canvases
 
@@ -75,11 +83,3 @@ Linear Dodge (Add), Subtract and Divide now work in supported raster clipping me
 All 787 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The tests compare 96 saved Photoshop results per architecture.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_585.md).
-
-## 2026-11-19 — Step 584 — Preserve pixel masks in clipping merges and stamps
-
-Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. The tests cover disabled masks, integer offsets, Density and partial clip opacity. Stamp Group and Stamp Down retain the contributing mask on its own layer.
-
-All 782 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. Feather on a contributing mask remains in development.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_584.md).

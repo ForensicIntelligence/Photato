@@ -77,7 +77,7 @@ final class VectorRenderTests: XCTestCase {
     for invert in [false, true] {
       var mask = VectorMask(path: VectorPath(components: parts, inverted: invert))
       mask.density = 0.71
-      for radius in [0.125, 2.25, 14] {
+      for radius in [0.125, 1.5, 2, 2.25, 14] {
         mask.feather = radius
         var document = try CraftDocument(width: 109, height: 86, depth: .f32)
         var layer = Layer(name: "Vector", content: .fill(.white))
@@ -97,6 +97,73 @@ final class VectorRenderTests: XCTestCase {
         }
         XCTAssertEqual(disagreements, 0, "radius \(radius), inverted \(invert)")
       }
+    }
+  }
+
+  func testArchivedVectorFeatherEdgesAndCornersThroughDenseAndPagedRendering() throws {
+    let url = try XCTUnwrap(Bundle.module.url(forResource: "photoshop-vector-32",
+      withExtension: "psd", subdirectory: "Fixtures"))
+    let data = try Data(contentsOf: url)
+    let archived = try PSDCodec.read(data)
+    let width = archived.width, height = archived.height
+    var reader = PSDReader(data: data, offset: 26)
+    for _ in 0..<3 { _ = try reader.section() }
+    let bytes = try PSDChannelCodec.decode(reader.bytes(reader.remaining), width: width,
+      height: height, depth: 32, channels: 3)
+    func sample(_ x: Int, _ y: Int, channel: Int) throws -> Double {
+      Double(try PSDChannelCodec.sample(bytes, (channel * height + y) * width + x, depth: 32))
+    }
+
+    // The archived merged planes contain two isolated flat-field edge pairs.
+    let controls: [(radius: Double, x: Int, y: Int, rightY: Int, bottomX: Int, side: Int)] = [
+      (1.5, 92, 72, 66, 50, 9), (2, 108, 34, 25, 106, 13),
+    ]
+    for control in controls {
+      let (radius, x, y, rightY, bottomX, side) = control
+      var mask = try XCTUnwrap(archived.layers.compactMap(\.vectorMask).first { $0.feather == radius })
+      mask.density = 1
+      let cases = [IntRect(x: x, y: rightY, width: side, height: 1),
+        IntRect(x: bottomX, y: y, width: 1, height: side),
+        IntRect(x: x, y: y, width: side, height: side)]
+      var layer = Layer(name: "Aligned vector mask", content: .fill(.white))
+      layer.vectorMask = mask
+      var dense = try CraftDocument(width: width, height: height, depth: .f32)
+      dense.layers = [layer]
+      dense.activeLayerID = layer.id
+      var paged = try CraftDocument(width: 300_000, height: 300_000, depth: .f32)
+      paged.layers = [layer]
+      paged.activeLayerID = layer.id
+      let denseResult = try Renderer.composite(dense)
+      let pagedResult = try Renderer.composite(paged)
+      let plateau = try (0..<3).map { channel in
+        (try sample(x - 1, rightY, channel: channel), try sample(x + side, rightY, channel: channel))
+      }
+      let right = try (0..<side).map { k in
+        let (inside, outside) = plateau[1]
+        let outer = (try sample(x + k, rightY, channel: 1) - inside) / (outside - inside)
+        return Float(1 - (outer * 256).rounded() / 256)
+      }
+      var worst: Double = 0
+      for (index, bounds) in cases.enumerated() {
+        let viewport = try Renderer.composite(paged, region: bounds)
+        for row in 0..<bounds.height {
+          for column in 0..<bounds.width {
+            let px = bounds.x + column, py = bounds.y + row
+            let actual = denseResult.linearPixel(x: px, y: py).a
+            let expected = index == 0 ? right[column] : index == 1 ? right[row] : right[column] * right[row]
+            XCTAssertEqual(actual.bitPattern, expected.bitPattern, "\(radius) px at \(px),\(py)")
+            XCTAssertEqual(pagedResult.linearPixel(x: px, y: py).a.bitPattern, actual.bitPattern)
+            XCTAssertEqual(viewport.linearPixel(x: px, y: py).a.bitPattern, actual.bitPattern)
+            for (channel, values) in plateau.enumerated() {
+              let (inside, outside) = values
+              let reference = (outside - (try sample(px, py, channel: channel))) / (outside - inside)
+              worst = max(worst, abs(Double(actual) - reference))
+            }
+          }
+        }
+      }
+      print("Archived RGB32 vector Feather \(radius) px: normalized residual \(worst)")
+      XCTAssertLessThan(worst, 0.000001)
     }
   }
 

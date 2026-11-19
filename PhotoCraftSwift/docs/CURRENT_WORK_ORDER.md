@@ -1,3 +1,7 @@
+**Source checkpoint 594.** The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. [Qualification](SOURCE_PUBLICATION_594.md).
+
+Collect new authored Photoshop references for additional short and wide radii, subpixel and curved paths, and Smart Filter mask coverage and persisted settings. Use the saved whole-composite differences to guide color and antialiasing checks. Continue the broad-shape and dense Feather capacity work.
+
 **Source checkpoint 593.** Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. [Qualification](SOURCE_PUBLICATION_593.md).
 
 Use the measured 1.5 px and 2 px vector transitions and corner samples to validate a separable renderer. Capture wider vector and Smart Filter mask coverage and persisted settings when Photoshop responds. Continue the sparse broad-shape and dense Feather performance limits and the remaining mask editing and interchange differences.

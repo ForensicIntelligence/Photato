@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 594 — Match measured short vector-mask Feather responses
+
+The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. Dense rendering, paged whole-canvas rendering and tiled viewports produced identical alpha words at the tested coordinates.
+
+All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-594) · [Validation](SOURCE_PUBLICATION_594.md).
+
 ## 2026-11-19 — Step 593 — Bound vector mask Feather on large canvases
 
 Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. The maximum sparse canvas test used four patches, and the native and HTTP settings share the same 1,000 px range.
@@ -739,14 +747,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:593 -->
+<!-- current-status-step:594 -->
 ## Current development status — 19 November 2026
 
-Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB.
+The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses.
 
-All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal slices passed offscreen checks.
+All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
 
-[Source checkpoint 593](SOURCE_PUBLICATION_593.md) · [Detailed record](DEVLOG.md#dev-step-593).
+[Source checkpoint 594](SOURCE_PUBLICATION_594.md) · [Detailed record](DEVLOG.md#dev-step-594).
 
 <!-- current-status:end -->
 
@@ -1546,6 +1554,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 591 | [Match measured fractional RGB32 Feather schedules](DEVLOG.md#dev-step-591) |
 | 2026-11-19 | 592 | [Bound Smart Filter mask Feather on large documents](DEVLOG.md#dev-step-592) |
 | 2026-11-19 | 593 | [Bound vector mask Feather on large canvases](DEVLOG.md#dev-step-593) |
+| 2026-11-19 | 594 | [Match measured short vector-mask Feather responses](DEVLOG.md#dev-step-594) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

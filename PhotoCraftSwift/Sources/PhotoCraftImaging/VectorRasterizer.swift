@@ -129,16 +129,7 @@ public struct LayerMaskSampler: Sendable {
         if value != outside { surface.setPixel(x: x, y: y, Pixel(value, value, value)) }
       }
     }
-    var prepared = Layer(name: "Vector coverage", content: .fill(.clear))
-    prepared.x = -pad
-    prepared.y = -pad
-    prepared.mask = surface
-    var properties = MaskProperties()
-    properties.density = mask.density
-    properties.feather = mask.feather
-    properties.outside = outside
-    prepared.maskProperties = properties
-    vector = try MaskSampler(layer: prepared)
+    vector = MaskSampler(vectorCoverage: surface, mask: mask, padding: pad, outside: outside)
   }
   public func coverage(x: Double, y: Double) -> Float {
     let coverage = featheredVector?.coverage(x: x, y: y) ?? vector?.coverage(x: x, y: y) ?? 1

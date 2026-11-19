@@ -1,3 +1,5 @@
+**Source checkpoint 594.** The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. [Qualification](docs/SOURCE_PUBLICATION_594.md).
+
 **Source checkpoint 593.** Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_593.md).
 
 **Source checkpoint 592.** Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. [Qualification](docs/SOURCE_PUBLICATION_592.md).

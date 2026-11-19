@@ -126,6 +126,7 @@ package final class FeatheredMask: Sendable {
   private let horizontalDefault: Float
   private let filteredDefault: Float
   private let implicitEqualsOutside: Bool
+  private let storageThreshold: Float
   private let padding: Int
   var origin: (x: Int, y: Int) { (area?.bounds.x ?? -padding, area?.bounds.y ?? -padding) }
   var width: Int { area?.bounds.width ?? (source.width + 2 * padding) }
@@ -156,7 +157,20 @@ package final class FeatheredMask: Sendable {
   package convenience init(vectorPlane: FeatherSamplePlane, radius: Double, outside: Float) {
     let area = AreaMaskFeather(wideRadius: radius, width: vectorPlane.width, height: vectorPlane.height)
     self.init(source: vectorPlane, radius: radius, outside: outside, edges: [], area: area,
-      cacheSide: area == nil ? Self.side : 512, cacheSlots: area == nil ? Self.slots : 16)
+      cacheSide: area == nil ? Self.side : 512, cacheSlots: area == nil ? Self.slots : 16,
+      measuredWeights: Self.measuredVectorWeights(radius))
+  }
+
+  // Normalized edges and corners in the archived Photoshop RGB32 vector PSD.
+  // The two separable passes retain the binary fractions on aligned contours.
+  private static func measuredVectorWeights(_ radius: Double) -> [Float]? {
+    let taps: [Int]
+    switch radius {
+    case 1.5: taps = [3, 11, 29, 52, 66, 52, 29, 11, 3]
+    case 2: taps = [1, 3, 8, 17, 31, 44, 48, 44, 31, 17, 8, 3, 1]
+    default: return nil
+    }
+    return taps.map { Float($0) / 256 }
   }
 
   package var maximumResidentBytes: Int { cacheSide * cacheSide * cacheSlots * MemoryLayout<Float>.stride }
@@ -171,7 +185,7 @@ package final class FeatheredMask: Sendable {
   }
 
   private init(source: FeatherSamplePlane, radius: Double, outside: Float, edges: ClampedEdges,
-    area: AreaMaskFeather?, cacheSide: Int, cacheSlots: Int
+    area: AreaMaskFeather?, cacheSide: Int, cacheSlots: Int, measuredWeights: [Float]? = nil
   ) {
     self.source = source
     self.cacheSide = cacheSide
@@ -181,24 +195,34 @@ package final class FeatheredMask: Sendable {
     self.edges = edges
     self.area = area
     let sigma = max(0.05, radius)
-    let pad = area == nil ? Int(ceil(3 * sigma)) : 0
+    let pad = measuredWeights.map { $0.count / 2 } ?? (area == nil ? Int(ceil(3 * sigma)) : 0)
     padding = pad
-    let raw = (-pad...pad).map { Float(exp(-Double($0 * $0) / (2 * sigma * sigma))) }
-    let total = raw.reduce(0, +)
-    let kernel = raw.map { $0 / total }
+    let kernel: [Float]
+    let threshold: Float
+    if let measuredWeights {
+      kernel = measuredWeights
+      threshold = 0
+    } else {
+      let raw = (-pad...pad).map { Float(exp(-Double($0 * $0) / (2 * sigma * sigma))) }
+      let total = raw.reduce(0, +)
+      kernel = raw.map { $0 / total }
+      threshold = 0.000001
+    }
     weights = kernel
+    storageThreshold = threshold
     let implicit = source.implicit
     defaultSample = implicit
     let horizontal = Self.weightedConstant(implicit, weights: kernel)
     horizontalDefault = horizontal
-    filteredDefault = Self.stored(Self.weightedConstant(horizontal, weights: kernel), outside: outside)
+    filteredDefault = Self.stored(Self.weightedConstant(horizontal, weights: kernel), outside: outside,
+      threshold: threshold)
     // Outside rows bypass the horizontal pass. For equal implicit and outside
     // samples, bound the possible vertical results before eliding their edges.
     let low = Self.weightedConstant(min(horizontal, outside), weights: kernel)
     let high = Self.weightedConstant(max(horizontal, outside), weights: kernel)
     implicitEqualsOutside = implicit == outside && (area?.interiorSample(implicit) ?? implicit) == outside
-      && abs(low - outside) <= 0.000001
-      && abs(high - outside) <= 0.000001
+      && abs(low - outside) <= threshold
+      && abs(high - outside) <= threshold
   }
 
   func value(_ x: Int, _ y: Int) -> Float {
@@ -231,9 +255,8 @@ package final class FeatheredMask: Sendable {
     weights.reduce(0) { $0 + value * $1 }
   }
 
-  private static func stored(_ value: Float, outside: Float) -> Float {
-    // Preserve the previous Float32 storage threshold and read-time clamp.
-    abs(value - outside) > 0.000001 ? unit(value) : outside
+  private static func stored(_ value: Float, outside: Float, threshold: Float) -> Float {
+    abs(value - outside) > threshold ? unit(value) : outside
   }
 
   private func prepare(x: Int, y: Int, width: Int, height: Int) -> Values? {
@@ -298,7 +321,7 @@ package final class FeatheredMask: Sendable {
       for row in 0..<height {
         var value: Float = 0
         for i in weights.indices { value += line[row + i] * weights[i] }
-        output[row * width + column] = Self.stored(value, outside: outside)
+        output[row * width + column] = Self.stored(value, outside: outside, threshold: storageThreshold)
       }
     }
     return .samples(output, width: width)

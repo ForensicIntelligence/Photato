@@ -612,7 +612,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 591 | 2026-11-19 | [Match measured fractional RGB32 Feather schedules](#dev-step-591) |
 | 592 | 2026-11-19 | [Bound Smart Filter mask Feather on large documents](#dev-step-592) |
 | 593 | 2026-11-19 | [Bound vector mask Feather on large canvases](#dev-step-593) |
+| 594 | 2026-11-19 | [Match measured short vector-mask Feather responses](#dev-step-594) |
 <!-- history-index:end -->
+
+<a id="dev-step-594"></a>
+
+## 2026-11-19 — Match measured short vector-mask Feather responses
+
+The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. The native vector layer-mask sampler uses the observed separable weights in both dense and paged rendering. The comparison reads the original RGB32 PSD merged channels and normalizes the flat-field plateaus. [Fixture provenance](../Tests/PhotoCraftImagingTests/Fixtures/provenance.json).
+
+The two pairs of edge profiles and two corners provide 294 sample coordinates per renderer. Full small-canvas rendering, the complete sparse 300,000 × 300,000 canvas and paged viewports agree bit for bit on those alpha samples. Their largest difference from the archived normalized RGB32 transition was 8.04e-07. Another test checks all 93,740 bounded and dense coverage words for clipped, curved and inverted cases across five radii.
+
+Independent decoding of the RGB merged planes from editable PSD exports found 91,724 exact words out of 110,592, up from 67,371 in build 593.
+
+All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks. The 1,320-coordinate comparison over the curved portion of the 1.5 px reference still found a maximum normalized coverage difference of 0.007399. Full Photoshop composite bytes and additional radii remain open. [Validation](SOURCE_PUBLICATION_594.md).
 
 <a id="dev-step-593"></a>
 
