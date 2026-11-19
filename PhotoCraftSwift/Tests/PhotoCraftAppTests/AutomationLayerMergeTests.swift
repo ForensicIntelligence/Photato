@@ -61,6 +61,37 @@ final class AutomationLayerMergeTests: XCTestCase {
     }
   }
 
+  @MainActor func testInPlaceStampsThroughNativeHTTPRetainLayerIDsAndHistory() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      try service.share(shared)
+      for (name, operation, selectedName) in [
+        ("ordinary-8-top-stamp", "stampDown", "Layer 1"),
+        ("chain-8-active-base", "stampGroup", "Clipping base"),
+      ] {
+        var source = try fixture("context-stamp/\(name)")
+        let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName })
+        source.activeLayerID = selected.id
+        shared.store.session = EditorSession(document: source)
+        shared.store.selectedLayerIDs = [selected.id]
+        let share = try XCTUnwrap(service.shares.first)
+        let response = try await helper.request(service, path: "/v1/documents/\(share.id)")
+        let state = try XCTUnwrap(JSONSerialization.jsonObject(with: response.1) as? [String: Any])
+        XCTAssertEqual((state["layerMerge"] as? [String: Any])?[operation] as? Bool, true)
+        let status = try await helper.edit(service, shared, "layer.merge",
+          ["operation": operation, "layerIDs": [selected.id.uuidString]])
+        XCTAssertEqual(status, 200)
+        XCTAssertEqual(shared.store.document.layers.map(\.id), source.layers.map(\.id))
+        XCTAssertEqual(shared.store.document.activeLayerID, selected.id)
+        XCTAssertEqual(shared.store.session.undoStack.last?.label,
+          operation == "stampDown" ? "Stamp Down" : "Stamp Group")
+        let undo = try await helper.edit(service, shared, "history.undo")
+        XCTAssertEqual(undo, 200)
+        XCTAssertEqual(shared.store.document, source)
+      }
+    }
+  }
+
   func fixture(_ name: String) throws -> CraftDocument {
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent()

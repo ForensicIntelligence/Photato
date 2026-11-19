@@ -13,8 +13,18 @@ enum LayerMergeIntent {
     }
     return .selected
   }
+  nonisolated static func stampOperation(_ ids: Set<UUID>, in document: CraftDocument) -> LayerMergeOperation {
+    guard ids.count == 1, !singleGroup(ids, in: document) else { return .stampSelected }
+    return LayerMerge.isClippingBase(ids, in: document) ? .stampGroup : .stampDown
+  }
+
   nonisolated static func adobeCommand(_ document:CraftDocument,_ ids:Set<UUID>,_ operation:LayerMergeOperation)throws->Command {
-    let contextual = operation == .down ? self.operation(ids, in: document) : operation
+    let contextual: LayerMergeOperation
+    switch operation {
+    case .down: contextual = self.operation(ids, in: document)
+    case .stampSelected: contextual = stampOperation(ids, in: document)
+    default: contextual = operation
+    }
     return try LayerMergePreparation.command(document, layerIDs: ids, operation: contextual)
   }
 }
@@ -23,6 +33,10 @@ extension EditorStore {
     LayerMergeIntent.operation(clipboardLayerIDs,in:document)
   }
   var menuMergeTitle:String {LayerMergeIntent.singleGroup(clipboardLayerIDs,in:document) ? "Merge Group":menuMergeOperation.rawValue}
+  func contextualStamp(_ operation: LayerMergeOperation) -> LayerMergeOperation {
+    operation == .stampSelected ? LayerMergeIntent.stampOperation(clipboardLayerIDs, in: document) : operation
+  }
+
   func canMerge(_ operation: LayerMergeOperation) -> Bool {
     clipboardTargetAvailable && !smartFilterMaskEditing
       && LayerMerge.canApply(operation, layerIDs: clipboardLayerIDs, in: document)

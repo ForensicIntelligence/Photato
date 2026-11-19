@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **578** · The 10 most recent entries, newest first.
+Source build **579** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 579 — Add in-place Stamp Down and Stamp Group
+
+Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. Both commands preserve the selected layer and the rest of the stack.
+
+The updated raster matched saved 8-, 16- and 32-bit Photoshop references. The native menu, local API, Actions and Undo share the two operations. All 761 selected tests passed in each of the three configurations.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-579) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_579.md).
 
 ## 2026-11-18 — Step 578 — Add contextual Merge Clipping Mask
 
@@ -75,13 +83,3 @@ Merging eligible RGB layers before an Image Mode change now uses their working-p
 All 35,840 words in the three valid Photoshop references match on each optimized architecture. All 678 selected tests passed in each build configuration. The two external HDR merge cases still need readable references.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md).
-
-## 2026-11-18 — Step 569 — Match HDR grayscale conversion and ICC gamma boundaries
-
-32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
-
-All 8,510,976 samples in 257 tested precision promotions and 194,560 samples in 38 RGB32-to-Gray32 cases match Photoshop on each architecture. All 661 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
-
-Follow-up testing measured 4,410 rounding thresholds for 16-bit grayscale. Separate Float32 luminance products ordered all of the samples correctly. A 4,096-interval curve fits the measured thresholds, but its exact endpoint calculation remains open. Build 569 continues to use ColorSync for this conversion.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-569) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_569.md).

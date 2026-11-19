@@ -87,7 +87,7 @@ final class LayerMergeRenderTests: XCTestCase {
         let label = "\(name)-\(suffix)"
         let ids: Set<UUID>
         switch operation {
-        case .down, .clippingMask: ids = [try XCTUnwrap(document.activeLayerID)]
+        case .down, .clippingMask, .stampDown, .stampGroup: ids = [try XCTUnwrap(document.activeLayerID)]
         case .selected, .stampSelected: ids = Set(document.layers.map(\.id))
         case .visible, .stampVisible: ids = []
         }
@@ -223,6 +223,65 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertLessThanOrEqual(pixels.tileCount, 1)
     XCTAssertTrue(pixels.linearPixel(x: 0, y: 0).hasSameBits(as: Pixel(0.25, 0.75, 0.25, alpha)))
     XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
+  }
+
+  func testContextualStampsMatchSavedDestinationAndKeepOtherLayers() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let ordinary = [8, 16, 32].flatMap { depth in
+      ["top-stamp", "bottom-half", "top-half", "bottom-multiply"].map {
+        ("ordinary-\(depth)-\($0)", LayerMergeOperation.stampDown, "Layer 1", "Source")
+      }
+    }
+    let grouped = [8, 16, 32].map {
+      ("chain-\($0)-active-base", LayerMergeOperation.stampGroup, "Clipping base", "Clipping base")
+    }
+    let edgeCases: [(String, LayerMergeOperation, String, String)] = [
+      ("chain-32-active-clip", .stampDown, "Lower clip", "Clipping base"),
+      ("chain-32-hide-all-clips", .stampGroup, "Clipping base", "Clipping base"),
+      ("nested-32-active-base", .stampGroup, "Clipping base", "Clipping base"),
+    ]
+    for (name, operation, selectedName, destinationName) in ordinary + grouped + edgeCases {
+      var original = try PSDCodec.read(file("context-stamp/\(name)"))
+      let selected = try XCTUnwrap(original.layers.first { $0.name == selectedName }, name)
+      let destination = try XCTUnwrap(original.layers.first { $0.name == destinationName }, name)
+      original.activeLayerID = selected.id
+      let reference = try PSDCodec.read(file("context-stamp/\(architecture)-\(name)-stamped"))
+      let expected = try XCTUnwrap(reference.layers.first { $0.name == destinationName }, name)
+      let edit = try LayerMergePreparation.prepare(original, layerIDs: [selected.id], operation: operation)
+      XCTAssertEqual(edit.layerIDs, [selected.id], name)
+      let result = try edit.applied(to: original)
+      XCTAssertEqual(result.activeLayerID, selected.id, name)
+      XCTAssertEqual(result.layers.map(\.id), original.layers.map(\.id), name)
+      XCTAssertEqual(result.layers.filter { $0.id != destination.id },
+        original.layers.filter { $0.id != destination.id }, name)
+      let saved = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+      for output in [result, saved] {
+        let layer = try XCTUnwrap(output.layers.first { $0.name == destinationName }, name)
+        XCTAssertEqual(layer.x, expected.x, name)
+        XCTAssertEqual(layer.y, expected.y, name)
+        XCTAssertEqual(layer.opacity, expected.opacity, name)
+        XCTAssertEqual(layer.blendMode, expected.blendMode, name)
+        XCTAssertEqual(layer.isClipped, expected.isClipped, name)
+        guard case .raster(let pixels) = layer.content, case .raster(let wanted) = expected.content else {
+          return XCTFail("Raster stamp expected for \(name)")
+        }
+        XCTAssertEqual(pixels.width, wanted.width, name)
+        XCTAssertEqual(pixels.height, wanted.height, name)
+        let encoding: SurfaceColorEncoding = original.depth == .f32 ? .linearRGB : .sRGB
+        XCTAssertEqual(try pixels.rgbaData(depth: original.depth, colorEncoding: encoding),
+          try wanted.rgbaData(depth: original.depth, colorEncoding: encoding), name)
+      }
+    }
+    for name in ["ordinary-32-bottom-stamp","ordinary-32-top-locked","ordinary-32-bottom-locked","ordinary-32-bottom-hidden"] {
+      let original = try PSDCodec.read(file("context-stamp/\(name)"))
+      let selected = try XCTUnwrap(original.layers.first { $0.name == (name.hasSuffix("bottom-stamp") ? "Source" : "Layer 1") })
+      XCTAssertFalse(LayerMerge.canApply(.stampDown, layerIDs: [selected.id], in: original), name)
+      XCTAssertThrowsError(try LayerMergePreparation.prepare(original, layerIDs: [selected.id], operation: .stampDown), name)
+    }
   }
 
   func testPhotoshopOffCanvasBoundsHiddenPixelsAndActiveVisiblePosition() throws {

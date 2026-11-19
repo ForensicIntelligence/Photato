@@ -29,7 +29,7 @@ public struct LayerMergePlan: Sendable {
     guard layerIDs.isSubset(of: Set(hierarchy.byID.keys)) else {throw CraftError.invalid("Layer no longer exists.")}
     let roots: [Layer]
     switch operation {
-    case .down:
+    case .down, .stampDown:
       guard layerIDs.count == 1,let id=layerIDs.first,let top=hierarchy.byID[id] else{throw CraftError.invalid("Select one layer to merge down.")}
       let siblings=siblingsByParent[top.parentID] ?? []
       guard let index=siblings.firstIndex(where:{$0.id==id}),index>0,
@@ -37,7 +37,7 @@ public struct LayerMergePlan: Sendable {
         throw CraftError.invalid("Merge Down requires an adjacent visible pixel layer below the selection.")
       }
       roots=[siblings[index-1],top];base=roots[0]
-    case .clippingMask:
+    case .clippingMask, .stampGroup:
       guard layerIDs.count == 1, let id = layerIDs.first, let candidate = hierarchy.byID[id],
         candidate.visible, !candidate.isClipped, candidate.clipsBlendAsGroup,
         Self.supportsClippingRaster(candidate) else {
@@ -80,12 +80,12 @@ public struct LayerMergePlan: Sendable {
     let included = hierarchy.subtreeIDs(rootsToRender)
     rootIDs = rootsToRender
     sourceIDs = included
-    removedIDs = operation.preservesSources ? [] : included
+    removedIDs = operation.preservesSources || operation.inPlaceMergeOperation != nil ? [] : included
     parentID = operation == .visible ? nil : base.parentID
     includesBackground = d.layers.contains { $0.isBackground && included.contains($0.id) }
     for layer in d.layers where sourceIDs.contains(layer.id) {
-      let consumedClip = operation == .clippingMask && layer.id != base.id
-      guard operation.preservesSources || consumedClip || layer.isBackground
+      let readsClip = (operation == .clippingMask || operation == .stampGroup) && layer.id != base.id
+      guard operation.preservesSources || readsClip || layer.isBackground
         || !hierarchy.effectiveProtection(layer.id).fullyLocks else {
         throw CraftError.invalid("Unlock the merged layers and their parent groups first.")
       }

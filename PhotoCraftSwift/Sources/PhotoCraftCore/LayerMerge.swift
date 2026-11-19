@@ -5,10 +5,20 @@ public enum LayerMergeOperation: String, CaseIterable, Sendable, Codable {
   case clippingMask = "Merge Clipping Mask"
   case selected = "Merge Layers"
   case visible = "Merge Visible"
+  case stampDown = "Stamp Down"
+  case stampGroup = "Stamp Group"
   case stampSelected = "Stamp Layers"
   case stampVisible = "Stamp Visible"
 
   public var preservesSources: Bool { self == .stampSelected || self == .stampVisible }
+
+  package var inPlaceMergeOperation: LayerMergeOperation? {
+    switch self {
+    case .stampDown: return .down
+    case .stampGroup: return .clippingMask
+    default: return nil
+    }
+  }
 }
 
 /// Raster merge transactions. Rich layers, masks, clipping, groups and Background
@@ -51,7 +61,7 @@ public enum LayerMerge {
     let members: [Layer]
     let base: Layer
     switch operation {
-    case .stampSelected, .stampVisible:
+    case .stampDown, .stampGroup, .stampSelected, .stampVisible:
       throw CraftError.unsupported("Stamping layers requires the document compositor.")
     case .clippingMask:
       throw CraftError.unsupported("Merging a clipping mask requires the document compositor.")

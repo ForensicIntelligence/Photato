@@ -597,7 +597,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 576 | 2026-11-18 | [Match stored RGB32 Normal merge and stamp samples](#dev-step-576) |
 | 577 | 2026-11-18 | [Preserve stored RGB32 pixel masks when merging and stamping](#dev-step-577) |
 | 578 | 2026-11-18 | [Add contextual Merge Clipping Mask](#dev-step-578) |
+| 579 | 2026-11-18 | [Add in-place Stamp Down and Stamp Group](#dev-step-579) |
 <!-- history-index:end -->
+
+<a id="dev-step-579"></a>
+
+## 2026-11-18 — Add in-place Stamp Down and Stamp Group
+
+Option-Command-E now has two in-place paths in the candidate. A raster above an eligible destination uses Stamp Down. A raster at the base of a supported clipping stack uses Stamp Group. The Layers menu, local API and duplicate-flag Actions share the same routing. Both commands preserve the other layers and the selected row. The native Action library uses version 73 for the new operations. [Adobe's merge and stamp commands](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).
+
+Saved Photoshop references cover 18 successful cases at 8, 16 and 32 bits. The ordinary Stamp Down cases include partial opacity on either layer and a Multiply destination. In those cases Photoshop bakes the destination opacity into the new samples and keeps the destination blend mode on its original row. The four unavailable controls include a bottom-layer selection, a hidden destination and locked ordinary rows. All 73 focused Debug methods passed on 8,219 frozen inputs. All 761 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. Physical platform checks and live key dispatch remain open.
+
+The next capture used 33 clipping scenarios per architecture. Photoshop rejected Stamp Down from an upper clip when the layer immediately beneath it was hidden. With that layer visible, Stamp Down kept the upper clip active and Merge Down made the lower clip active. The tested Screen cases are at 8 and 16 bits. Adobe omits Screen from its 32-bit blend-mode list, and the prior 32-bit control rejected the mode. [Photoshop 32-bit blend modes](https://helpx.adobe.com/photoshop/desktop/adjust-color/hdr-and-channel-manipulation/features-that-support-32-bpc-hdr-images.html).
+
+Both slices of the extracted signed universal validation package passed the offscreen checks. [Qualification](SOURCE_PUBLICATION_579.md).
 
 <a id="dev-step-578"></a>
 

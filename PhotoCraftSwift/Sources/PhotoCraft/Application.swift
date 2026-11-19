@@ -275,8 +275,10 @@ import SwiftUI
     if item.action == #selector(mergeVisible) { return store?.canMerge(.visible) == true }
     if item.action == #selector(stampLayers(_:)) {
       guard let title = item.representedObject as? String,
-        let operation = LayerMergeOperation(rawValue: title), operation.preservesSources
+        let requested = LayerMergeOperation(rawValue: title), requested.preservesSources
       else { return false }
+      let operation = store?.contextualStamp(requested) ?? requested
+      item.title = operation.rawValue
       return store?.canMerge(operation) == true
     }
     if item.action == #selector(layerViaCopy) { return store?.canLayerVia(.copy) == true }

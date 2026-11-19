@@ -120,6 +120,46 @@ final class AutomationActionJobsTests: XCTestCase {
     }
   }
 
+  @MainActor func testContextualStampDescriptorsPreserveOtherLayersOnBothJobRoutes() async throws {
+    let transport = Transport()
+    let helper = AutomationTests()
+    let folder = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/layer-merge/context-stamp")
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    try await helper.withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
+      let untouched = shared.store.document
+      for (name, selected) in [("ordinary-8-top-stamp", "Layer 1"), ("chain-8-active-base", "Clipping base"),
+                              ("ordinary-32-top-stamp", "Layer 1"), ("chain-32-active-base", "Clipping base")] {
+        service.setResourceJobsEnabled(false)
+        service.setResourceJobsEnabled(true)
+        await transport.set(try Data(contentsOf: folder.appendingPathComponent(name + ".psd")))
+        let target = try JSONSerialization.data(withJSONObject: [
+          ["_obj": "select", "_target": [["_ref": "layer", "_name": selected]]]
+        ])
+        let select = try XCTUnwrap(String(data: target, encoding: .utf8))
+        let stamp = #"[{"_obj":"mergeLayersNew","$Dplc":true}]"#
+        var payload = body()
+        payload["options"] = ["actions": [select, stamp].map {
+          ["source": ["content": $0, "contentType": "application/json"]]
+        }]
+        let wanted = try PSDCodec.read(Data(contentsOf: folder.appendingPathComponent(
+          "\(architecture)-\(name)-stamped.psd")))
+        var outputs: [Data] = []
+        for route in ["/v1/action-jobs", "/v2/execute-actions"] {
+          let result = try await output(service, submit: route, payload: payload)
+          outputs.append(result.2)
+          try AutomationLayerMergeTests().samePixels(PSDCodec.read(result.2), wanted)
+        }
+        XCTAssertEqual(outputs.first, outputs.last)
+      }
+      XCTAssertEqual(shared.store.document, untouched)
+    }
+  }
+
   @MainActor func testClippingMaskDescriptorInBothJobRoutesFollowsSelectedBase() async throws {
     let transport = Transport()
     let helper = AutomationTests()

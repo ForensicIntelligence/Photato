@@ -8,6 +8,26 @@ public enum LayerMergePreparation {
   public static func prepare(_ source:CraftDocument,layerIDs:Set<UUID>,operation:LayerMergeOperation)throws->PreparedLayerMerge {
     try source.validate();try Task.checkCancellation()
     let plan=try LayerMergePlan(operation,layerIDs:layerIDs,in:source)
+    if let underlying = operation.inPlaceMergeOperation {
+      var preparedSource = source
+      guard let index = source.layers.firstIndex(where: { $0.id == plan.base.id }) else {
+        throw CraftError.invalid("The stamp destination is missing.")
+      }
+      if operation == .stampDown {
+        // The destination blend mode remains external to the baked pixels.
+        preparedSource.layers[index].blendMode = .normal
+      }
+      let rendered = try prepare(preparedSource, layerIDs: layerIDs, operation: underlying)
+      guard var baked = rendered.result.layers.first(where: { $0.id == plan.base.id }) else {
+        throw CraftError.invalid("The stamp did not produce a destination layer.")
+      }
+      baked.blendMode = plan.base.blendMode
+      var result = source
+      result.layers[index] = baked
+      result.activeLayerID = layerIDs.first
+      try result.validate(); try Task.checkCancellation()
+      return .init(source: source, result: result, layerIDs: layerIDs, operation: operation)
+    }
     let clippingLayers = source.layers.filter { $0.id != plan.base.id && plan.sourceIDs.contains($0.id) }
     let mergesOneClip = operation == .down && clippingLayers.count == 1
       && clippingLayers[0].isClipped && !plan.base.isClipped && plan.base.clipsBlendAsGroup

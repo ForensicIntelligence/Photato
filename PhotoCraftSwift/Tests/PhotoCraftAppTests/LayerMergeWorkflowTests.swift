@@ -112,6 +112,44 @@ final class LayerMergeWorkflowTests: XCTestCase {
     XCTAssertEqual(store.document, source)
   }
 
+  @MainActor func testContextualStampRoutingAndUndoRetainSelectionAndContributors() async throws {
+    for (name, operation, selectedName) in [
+      ("ordinary-8-top-stamp", LayerMergeOperation.stampDown, "Layer 1"),
+      ("chain-8-active-base", .stampGroup, "Clipping base"),
+    ] {
+      var source = try AutomationLayerMergeTests().fixture("context-stamp/\(name)")
+      let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName })
+      source.activeLayerID = selected.id
+      let store = EditorStore(document: source)
+      defer { store.renderTask?.cancel() }
+      XCTAssertEqual(store.contextualStamp(.stampSelected), operation)
+      XCTAssertEqual(store.contextualStamp(.stampVisible), .stampVisible)
+      XCTAssertTrue(store.canMerge(operation))
+      let edit = try LayerMergeIntent.adobeCommand(source, [selected.id], .stampSelected)
+      guard case .preparedLayerMerge(let prepared) = edit else { return XCTFail("Expected prepared stamp") }
+      XCTAssertEqual(prepared.operation, operation)
+      let action = RecordedAction(name: "In-place stamp", steps: [
+        RecordedActionStep(name: operation.rawValue, operation: ActionOperation(recording: edit, in: source))
+      ])
+      XCTAssertEqual(ActionLibraryFile(actions: [action]).requiredVersion, 73)
+      var replay = source
+      try RecordedActionRenderer.prepare(action, in: source).command.apply(to: &replay)
+      XCTAssertEqual(replay, prepared.result)
+      store.merge(store.contextualStamp(.stampSelected))
+      await store.geometryTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.document, prepared.result)
+      XCTAssertEqual(store.document.layers.map(\.id), source.layers.map(\.id))
+      XCTAssertEqual(store.document.activeLayerID, selected.id)
+      XCTAssertEqual(store.selectedLayerIDs, [selected.id])
+      XCTAssertEqual(store.session.undoStack.last?.label, operation.rawValue)
+      await store.undo()
+      XCTAssertEqual(store.document, source)
+      await store.redo()
+      XCTAssertEqual(store.document, prepared.result)
+    }
+  }
+
   @MainActor func testStampFromEditorRecordsPortableActionAndOneUndo() async throws {
     let s = try store()
     defer { s.renderTask?.cancel() }

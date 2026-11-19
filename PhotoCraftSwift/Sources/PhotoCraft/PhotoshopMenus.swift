@@ -427,10 +427,10 @@ import PhotoCraftCore
     "Layer > Merge Layers": .stampSelected, "Layer > Merge Visible": .stampVisible,
   ]
   @objc func stampLayers(_ item: NSMenuItem) {
-    guard let title = item.representedObject as? String,
+    guard let store, let title = item.representedObject as? String,
       let operation = LayerMergeOperation(rawValue: title), operation.preservesSources
     else { return }
-    store?.merge(operation)
+    store.merge(store.contextualStamp(operation))
   }
 
   @objc func hideOthers() { NSApp.hideOtherApplications(nil) }

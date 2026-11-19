@@ -1405,6 +1405,8 @@ Build 576 also verifies the prepared Normal RGB32 layer output through the deskt
 
 Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
 
+Build 579 adds `stampDown` and `stampGroup` to `layer.merge`. Each takes one selected layer ID. The existing `mergeLayersNew` descriptor with the duplicate flag dispatches according to the selection. These two in-place operations use native Action library version 73. [Validation](SOURCE_PUBLICATION_579.md).
+
 Build 578 adds `clippingMask` to `layer.merge`. Pass exactly one clipping base ID. The existing `mergeLayersNew` descriptor uses the same compositor when its sole target is a clipping base. Clipboard and document revision guards still apply. The native Action library uses format 72 for this operation. [Validation](SOURCE_PUBLICATION_578.md).
 
 ## Layer merging (step115)

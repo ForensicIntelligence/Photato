@@ -1,3 +1,7 @@
+**Source checkpoint 579.** Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. [Qualification](SOURCE_PUBLICATION_579.md).
+
+Continue qualifying Screen clips, then handle Stamp Down and Merge Down between two clips with the adjacent-clip references.
+
 **Source checkpoint 578.** Command-E now merges a supported Normal raster clipping stack into its base. Photato retains the base geometry, alpha, opacity and blend mode and preserves the unrelated layers. [Qualification](SOURCE_PUBLICATION_578.md).
 
 Continue the observed in-place Stamp Down and Stamp Group workflows, then qualify other clipping blend modes.

@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 579 — Add in-place Stamp Down and Stamp Group
+
+Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. Both commands preserve the selected layer and the rest of the stack.
+
+The updated raster matched saved 8-, 16- and 32-bit Photoshop references. The native menu, local API, Actions and Undo share the two operations. All 761 selected tests passed in each of the three configurations.
+
+[Detailed record](DEVLOG.md#dev-step-579) · [Validation](SOURCE_PUBLICATION_579.md).
+
 ## 2026-11-18 — Step 578 — Add contextual Merge Clipping Mask
 
 Selecting the base of a supported raster clipping stack now makes Command-E run Merge Clipping Mask. The command combines visible clips into the base and removes the consumed clips. Hidden clips contribute no color. The base keeps its opacity, blend mode and stored geometry, including transparent or off-canvas samples.
@@ -619,14 +627,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:578 -->
+<!-- current-status-step:579 -->
 ## Current development status — 18 November 2026
 
-Command-E now merges a supported Normal raster clipping stack into its base. Photato retains the base geometry, alpha, opacity and blend mode and preserves the unrelated layers.
+Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack.
 
-All 757 selected tests passed in three build configurations. The extracted universal package passed both offscreen checks. Screen clips, in-place stamps and broader Photoshop parity remain open.
+All 761 selected tests passed in three build configurations. The extracted universal package passed both offscreen checks. Adjacent clipped layers, Screen blending and broader Photoshop parity remain open.
 
-[Source checkpoint 578](SOURCE_PUBLICATION_578.md) · [Detailed record](DEVLOG.md#dev-step-578).
+[Source checkpoint 579](SOURCE_PUBLICATION_579.md) · [Detailed record](DEVLOG.md#dev-step-579).
 
 <!-- current-status:end -->
 
@@ -1411,6 +1419,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 576 | [Match stored RGB32 Normal merge and stamp samples](DEVLOG.md#dev-step-576) |
 | 2026-11-18 | 577 | [Preserve stored RGB32 pixel masks when merging and stamping](DEVLOG.md#dev-step-577) |
 | 2026-11-18 | 578 | [Add contextual Merge Clipping Mask](DEVLOG.md#dev-step-578) |
+| 2026-11-18 | 579 | [Add in-place Stamp Down and Stamp Group](DEVLOG.md#dev-step-579) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

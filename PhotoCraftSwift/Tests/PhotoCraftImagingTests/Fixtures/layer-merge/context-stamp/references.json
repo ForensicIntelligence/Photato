@@ -1,0 +1,237 @@
+{
+  "origin": "Project-owned procedural Photoshop 27.2.0 reference files from the existing mergeLayersNew event with Dplc=true.",
+  "files": [
+    {
+      "path": "arm-chain-16-active-base-stamped.psd",
+      "sha256": "cb1b3e4ba8f249d8a3ffc8dd1f1e652fa6b16b345d512c328c316020eacfa0d8"
+    },
+    {
+      "path": "arm-chain-32-active-base-stamped.psd",
+      "sha256": "9c3785dfc05ec8b13226f802bf8a594f5f60dda14144a9aa3993d01647f82340"
+    },
+    {
+      "path": "arm-chain-32-active-clip-stamped.psd",
+      "sha256": "12db1559dea13db9e8ad91a4adb7d8d7bdec32a6603921799e37d092936f2c85"
+    },
+    {
+      "path": "arm-chain-32-hide-all-clips-stamped.psd",
+      "sha256": "acae5cafe55290d847ef51c91c1f504ebee23eb723ecaf191d09ac1b5259f17b"
+    },
+    {
+      "path": "arm-chain-8-active-base-stamped.psd",
+      "sha256": "20b5eba712996368de67e8efdda70ab09aa72ce75a1c9ccde7dd68f5f7bf49b8"
+    },
+    {
+      "path": "arm-nested-32-active-base-stamped.psd",
+      "sha256": "89293499737f46b45297431786838f1f72e9aef1acc5d973b1e5336f2c9ddc54"
+    },
+    {
+      "path": "arm-ordinary-16-bottom-half-stamped.psd",
+      "sha256": "809990bc5bf2a44d5b36a2177232c18ef87eef7defe670abd725dbd0fe9dc665"
+    },
+    {
+      "path": "arm-ordinary-16-bottom-multiply-stamped.psd",
+      "sha256": "ea448197b5ed0793d2c2339571f65a717c4b4e1c8eb93c73300393d01fb00aa7"
+    },
+    {
+      "path": "arm-ordinary-16-top-half-stamped.psd",
+      "sha256": "1bfe26383fdab2230b5176d8204485f265a6cfdd9a94e03ede4d29e51fa75b1c"
+    },
+    {
+      "path": "arm-ordinary-16-top-stamp-stamped.psd",
+      "sha256": "b616b8a532065d8d0a621ab2b68956206d88a3f29bc6f708750bb467d8bc2213"
+    },
+    {
+      "path": "arm-ordinary-32-bottom-half-stamped.psd",
+      "sha256": "470a8c346ba53cf6c7b1d217754fa5cb0411f5c033200763b3de695c67752927"
+    },
+    {
+      "path": "arm-ordinary-32-bottom-multiply-stamped.psd",
+      "sha256": "3a01f84a1474d63a08892400b469655ed8d2b831447325951c19a0a6bd255546"
+    },
+    {
+      "path": "arm-ordinary-32-top-half-stamped.psd",
+      "sha256": "5478e74eebc5a15e4aa2262ad0d59b214121e815512d56ecb7645dbd56d51b9f"
+    },
+    {
+      "path": "arm-ordinary-32-top-stamp-stamped.psd",
+      "sha256": "7c136f80ea94bba7707c1721de85851ae2f7fa0ac4f20d2c281c5bcd8b6d854e"
+    },
+    {
+      "path": "arm-ordinary-8-bottom-half-stamped.psd",
+      "sha256": "ad40f77250b7471baa6fc9a6a90d019363401b8b7ee716544211248d73ebcf49"
+    },
+    {
+      "path": "arm-ordinary-8-bottom-multiply-stamped.psd",
+      "sha256": "42166c166091d40ec336a380989d504e9cb51be7dcb453db0bc30183828b20f5"
+    },
+    {
+      "path": "arm-ordinary-8-top-half-stamped.psd",
+      "sha256": "d825298da44f186732b118c6dfccdc0862a2bf6b43db4baa61861bb275198fb8"
+    },
+    {
+      "path": "arm-ordinary-8-top-stamp-stamped.psd",
+      "sha256": "5d6b3d71014a38c00fb4afad99fa41827c4598a6c0c2f19f9f9f8fa564a19c25"
+    },
+    {
+      "path": "chain-16-active-base.psd",
+      "sha256": "ff98fa0ccd9971e6d9faa29b96d531d2436631435349ef49dabe0df06cc632be"
+    },
+    {
+      "path": "chain-32-active-base.psd",
+      "sha256": "26817a39fa9f3353d6bd1e2f1e8de4e6547a65d564d71075e727806dea5a2405"
+    },
+    {
+      "path": "chain-32-active-clip.psd",
+      "sha256": "1bddaa87e6b0bdc2206b208d2ab153d9fda0c709afbaa9c2a0661c34f6d3d451"
+    },
+    {
+      "path": "chain-32-hide-all-clips.psd",
+      "sha256": "1601d49633610cd6ea8eaa5afb51bf6309ca1d82daecfb796031e6a17bf90f1a"
+    },
+    {
+      "path": "chain-8-active-base.psd",
+      "sha256": "37f193767bec6b9a4a594b8f695542f666f0fec2944bfe46676250ce87fe75bf"
+    },
+    {
+      "path": "intel-chain-16-active-base-stamped.psd",
+      "sha256": "b334a418e0850722d7210ac3feb0c284a256f3b541d6bb204d9cc97835c40e3e"
+    },
+    {
+      "path": "intel-chain-32-active-base-stamped.psd",
+      "sha256": "3d5a14e7e475220d837e080e1346531f63a0fed978eb67e3d8f8a797e8ac988c"
+    },
+    {
+      "path": "intel-chain-32-active-clip-stamped.psd",
+      "sha256": "fa4149d691a4cf2750012e7b0e061e8358e45d1e90db3135559bf0934992384e"
+    },
+    {
+      "path": "intel-chain-32-hide-all-clips-stamped.psd",
+      "sha256": "0f02b390c399c5d7d0e51f41a91c4b747001b839e05f011f5273ad78cecc7f4b"
+    },
+    {
+      "path": "intel-chain-8-active-base-stamped.psd",
+      "sha256": "9e56e3845656801e5865ff479eef25d31455a5089cf702733488a2b2ad3b81e0"
+    },
+    {
+      "path": "intel-nested-32-active-base-stamped.psd",
+      "sha256": "c9829ee9a6d9933c4760873bdb0df0ae17c5bc5fb4b9d8406940170d5c653967"
+    },
+    {
+      "path": "intel-ordinary-16-bottom-half-stamped.psd",
+      "sha256": "e1223572075d49e0d533dc407d9ba1207390cc9197c0017e8fdbdbf582c4a6f7"
+    },
+    {
+      "path": "intel-ordinary-16-bottom-multiply-stamped.psd",
+      "sha256": "1e6c55279098e3254fa737857f1329c6f6371761f58e7995817380abf2dfaa81"
+    },
+    {
+      "path": "intel-ordinary-16-top-half-stamped.psd",
+      "sha256": "a7214352b0017ca322a42b75b4b5ea60265f03b1f06db916ab457c61b6bd852d"
+    },
+    {
+      "path": "intel-ordinary-16-top-stamp-stamped.psd",
+      "sha256": "361551b88ae7a40bf33e19ce3573879c60b16ef5dc6013871d372eb732740b17"
+    },
+    {
+      "path": "intel-ordinary-32-bottom-half-stamped.psd",
+      "sha256": "248a86d46995d4ad5af27ab54fd9967cd241b0c7769cd69b7b94bd878ce0c2d9"
+    },
+    {
+      "path": "intel-ordinary-32-bottom-multiply-stamped.psd",
+      "sha256": "3a73f77d34ca164acf9857ef0e25b1baf74c51777ab748200214a29cce483ebc"
+    },
+    {
+      "path": "intel-ordinary-32-top-half-stamped.psd",
+      "sha256": "b491d635d3af4505ed12f6bfa4e643afe22d98dc501641d1b5de446a84efea9b"
+    },
+    {
+      "path": "intel-ordinary-32-top-stamp-stamped.psd",
+      "sha256": "922b72bc14caaaaa3fc9e646ff3ce5b158d0d5c030b86b19c89e89dd63849085"
+    },
+    {
+      "path": "intel-ordinary-8-bottom-half-stamped.psd",
+      "sha256": "72c42ff3febd4879b8eab57f573e0dc7fca7e02dc90570f156d98252901407c1"
+    },
+    {
+      "path": "intel-ordinary-8-bottom-multiply-stamped.psd",
+      "sha256": "4150ac396c75c96c0911320461bba670f159034538e0068a5f318ff86ee0c54c"
+    },
+    {
+      "path": "intel-ordinary-8-top-half-stamped.psd",
+      "sha256": "7f6a2c6415a89511c9e018f867561ff880778166382c5b30431b88b4cb6e74ad"
+    },
+    {
+      "path": "intel-ordinary-8-top-stamp-stamped.psd",
+      "sha256": "e9e932bc7de18caf9fa97ee6d7ffd98d231a8c1f576e1d85db1ba74f59cc9f13"
+    },
+    {
+      "path": "nested-32-active-base.psd",
+      "sha256": "6d9119e117029c0c784f978cadc71ca37f3cc0081acdc88c4241bebe1959b57a"
+    },
+    {
+      "path": "ordinary-16-bottom-half.psd",
+      "sha256": "48eaf242d1002836247114895503cec376603c67e82effdee85a34870c48a1df"
+    },
+    {
+      "path": "ordinary-16-bottom-multiply.psd",
+      "sha256": "989e3f14368aa4220975ce9c9053440befb0e09c135c8159ce596279ab072423"
+    },
+    {
+      "path": "ordinary-16-top-half.psd",
+      "sha256": "0888c1b78d59dc91bcf85263cb1d2e09ca9d1ef29ccc8fb71c607b07c2d56b4e"
+    },
+    {
+      "path": "ordinary-16-top-stamp.psd",
+      "sha256": "05d953e9898c3133da7d49e594450086af53fb708244619da35cfc78569600a5"
+    },
+    {
+      "path": "ordinary-32-bottom-half.psd",
+      "sha256": "ce3aea73fbd868a685e0a31d8f2b4388befc71a2962483ee4d0a4e3d03ebdcd0"
+    },
+    {
+      "path": "ordinary-32-bottom-hidden.psd",
+      "sha256": "92975d5a0ffcfbbba91ea1ca4e9909f2a18c3c55260a17a71b1cf95263569e61"
+    },
+    {
+      "path": "ordinary-32-bottom-locked.psd",
+      "sha256": "4e4959bf2344c81de593cf827d6f23f70b4924a02c21bdaaa54921ee3ea024ba"
+    },
+    {
+      "path": "ordinary-32-bottom-multiply.psd",
+      "sha256": "123fedcc3bf7a30646ff623be5071f8c6dc92017c4ea4f43444c9ae923ec9e1a"
+    },
+    {
+      "path": "ordinary-32-bottom-stamp.psd",
+      "sha256": "bd15246768092b43ce6285fe0e61c7050a4f2c4b14eab46550165affabcb60a7"
+    },
+    {
+      "path": "ordinary-32-top-half.psd",
+      "sha256": "e403dad382329468476466a02024985576d39a6295647780dce432fba135e657"
+    },
+    {
+      "path": "ordinary-32-top-locked.psd",
+      "sha256": "09c0bb9ea0f2d90b83c1bd437fddd3a913b5f510212fce2b5108f19cc65d5e1d"
+    },
+    {
+      "path": "ordinary-32-top-stamp.psd",
+      "sha256": "e5974f1857585d2390c00602e0020d751646807fc925bbc8b2744386def159b1"
+    },
+    {
+      "path": "ordinary-8-bottom-half.psd",
+      "sha256": "b80b5d97c2ff7f910f711b81618682b6a169fea5301d4b0306df6e4a2fd885b2"
+    },
+    {
+      "path": "ordinary-8-bottom-multiply.psd",
+      "sha256": "84e5530a0aa082846c7b7cf092dc03413327a9002aa0fbee30383451f7422e66"
+    },
+    {
+      "path": "ordinary-8-top-half.psd",
+      "sha256": "a4d041cedb11ab48379bc5368a7ad126cf2b14803fa108f210e0a48bccc8edf2"
+    },
+    {
+      "path": "ordinary-8-top-stamp.psd",
+      "sha256": "130b7f59753508855f116c3d8e726a31ecfa8e83bac9d854d0e05533dd6eff08"
+    }
+  ]
+}
