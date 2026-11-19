@@ -309,6 +309,11 @@
     "scope": "The shared compositor inserts a new raster above the active or top selected layer while preserving original layers. Saved Photoshop RGB8, RGB16 and RGB32 reference samples pass in both optimized architectures.",
     "limits": "Physical platforms, the hosted Adobe service, other modes and complex sparse cases remain open. Build 575 verifies both local job routes against tagged and untagged RGB8 and RGB16 captures."
   },
+  "normal_rgb32_layer_output_build576": {
+    "evidence": "docs/HDR_LAYER_OUTPUT_REFERENCES_576.json",
+    "scope": "Prepared Normal RGB32 merge and stamp output preserves the measured alpha and color words for ordinary raster stacks.",
+    "limits": "Results are compared to desktop Photoshop captures. The hosted service, masks and rich stack parity remain open."
+  },
   "working_profiles_step116": {
     "evidence": "docs/WORKING_PROFILE_REFERENCES.json",
     "scope": "Both existing partial job routes retain PSD raster working profiles through the native engine; RGB32 raw merge regression compares independent original-profile bytes. Full Photoshop colour settings/conversion contract and six endpoints remain open.",

@@ -1,0 +1,760 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "7044bd053f5ca908fb2eeabd6c34820ff74166d3bf138770e981ebad45e0bf44",
+    "binarySHA256": "a0ff2fe14de9aa9f8c70acb73542e877d6bd2814f8e009ca8a12cbb3da2e14e5",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 8050
+  },
+  "build": 576,
+  "independentOpacityModelMatchesPerArchitecture": 205108,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Raster and vector masks",
+    "Non-Normal layer modes, clipping and rich groups",
+    "Core-only legacy merge",
+    "Interactive validation and physical platforms",
+    "Full Photoshop parity"
+  ],
+  "priorCompiledBuild575SampleDifferences": {
+    "arm": 1604,
+    "intel": 11421
+  },
+  "qualification": {
+    "caseSelectionSHA256": "5d99eaf6b2b4c5983edf7b675dd2d9653d84777bafb183201ae1c1626dec5934",
+    "configurations": {
+      "arm": {
+        "appSHA256": "49839cbce93ee9a08722c3354eafd17e558578b05e7bd5bf77f03826742411c8",
+        "testBinarySHA256": "ab810238434b7eb18527d088b2d781872bf27dd8045e9df996e7e62997049a93"
+      },
+      "debug": {
+        "appSHA256": "1fc5975902d0473500342624393c0923e06aedbc79f9840b281f85a21f5f22b9",
+        "testBinarySHA256": "cc036acd0bee4e11b17ced87bcf068062d3b7423e1096915195c9a1687a826b3"
+      },
+      "intel": {
+        "appSHA256": "cf7eff3d2b2bbb4a8df3b4a5e9fc086ccf1c9cda702ef48b62925f43388a07b3",
+        "testBinarySHA256": "515f6851f8c5179378ede79ddb4bdb6394ec525339682bb7efa67e0107626a1d"
+      }
+    },
+    "focusedDebug": 62,
+    "selectedPerConfiguration": 750
+  },
+  "referenceProvenance": {
+    "author": "Project procedural layered inputs",
+    "colorSettings": "North America General Purpose 2",
+    "editor": "Adobe Photoshop 27.2.0",
+    "families": {
+      "alphaCutoff": "Procedural inputs. Isolated Photoshop desktop Merge Down, Merge Visible and Stamp Visible.",
+      "coverageOne": "Also includes the independently selected merge and stamp.",
+      "legacyIntel": "Fresh Intel saves of the original 256-pixel-wide HDR merge fixture. The older independent Apple Silicon samples remain in place.",
+      "opacity": "Photoshop saved the edited input with the recorded opacity byte and then saved the Merge Visible result."
+    },
+    "files": [
+      {
+        "path": "arm-boundary-top-0-visible.psd",
+        "sha256": "62f50beddf10d67b04b6582d57b34568585a862c52a550ebcf27eff6cfc99c85"
+      },
+      {
+        "path": "arm-boundary-top-50-visible.psd",
+        "sha256": "b790d6bb9762015289ca751ed928c58d119297c46be09d8741323052918f2d1c"
+      },
+      {
+        "path": "arm-boundary-top-75-base-25-visible.psd",
+        "sha256": "f1ba8ef6353091510f9f0aef8830b1a1c7d93f2375b6e035b723039b74ccbcc5"
+      },
+      {
+        "path": "arm-boundary-top-99-visible.psd",
+        "sha256": "a8b2d3553c199b6ad692b5626818b9bbbf306226acec4547704b15b659ae77d1"
+      },
+      {
+        "path": "arm-boundary-visible.psd",
+        "sha256": "d4e7c0fc52b05592dcad308ae555b0b1941283052876802c6af98438266616eb"
+      },
+      {
+        "path": "arm-coverage-one-down.psd",
+        "sha256": "8e3586acd2fb077d33d0b1b6d92ec55af7e8c14be96fd4eb74f00f330db8a858"
+      },
+      {
+        "path": "arm-coverage-one-selected.psd",
+        "sha256": "390afc8f8a7f65fdd07f8513a61f63993119f8fb30f8f6e28b16eb9e8fff8059"
+      },
+      {
+        "path": "arm-coverage-one-stamp-selected.psd",
+        "sha256": "174b93de5b82e0ff6b656926118ae1eadc5f98bd51d6283e98a6ad6e4f2e031b"
+      },
+      {
+        "path": "arm-coverage-one-stamp-visible.psd",
+        "sha256": "87dd423b150758ed9730c576b73713c3647493cebfc429c2d9942065e645352d"
+      },
+      {
+        "path": "arm-coverage-one-visible.psd",
+        "sha256": "454a8606edcae1bd7aa773ba156956b9a21614d4cc47c8754f1fc4337184392f"
+      },
+      {
+        "path": "arm-opaque-down.psd",
+        "sha256": "b0fdb8c8587be351ec9e8833e95e946d77e637818bc394c0290657b8efb4c8dc"
+      },
+      {
+        "path": "arm-opaque-stamp-visible.psd",
+        "sha256": "a06962ea0b9a29d8892e4997a4d1533cf683ebc47e5700278f45a3e1d32f8dd5"
+      },
+      {
+        "path": "arm-opaque-visible.psd",
+        "sha256": "33f3db28d63c72184f7befa8ce52b05d67242c6f87b3b3adb4f5695d1b769cf1"
+      },
+      {
+        "path": "arm-translucent-down.psd",
+        "sha256": "927627b94439e924072832bed72e249f206fc4ec016d24d443ffad5d3a9e56de"
+      },
+      {
+        "path": "arm-translucent-stamp-visible.psd",
+        "sha256": "7974258fbbec30eb367b3b7b144945ab864623ec9d098b8a59848dc59eea2924"
+      },
+      {
+        "path": "arm-translucent-visible.psd",
+        "sha256": "ff164345adab3f34deadc99fd712886536b177da1e40314d367fca42ab10ccda"
+      },
+      {
+        "path": "boundary-top-0.psd",
+        "sha256": "4a3557f6faebd80a86f0a0c224897c2e14e79a5b73f1507fea505b387ec52d34"
+      },
+      {
+        "path": "boundary-top-50.psd",
+        "sha256": "0f173a1214a82a9ca12cdb398ea617d8b7636bd76cff9052e76e7a9dcb922a3e"
+      },
+      {
+        "path": "boundary-top-75-base-25.psd",
+        "sha256": "ebcd12e8f719dac1fcd4679c1d7617656f40adfa8d742ad39f8cf7251ab06267"
+      },
+      {
+        "path": "boundary-top-99.psd",
+        "sha256": "cb457a63b719db943630f0a4e11ee8d15b72985db74bf90ff58dadb58a6dfa06"
+      },
+      {
+        "path": "boundary.psd",
+        "sha256": "6d981b61b8ae57dc61e502d3d11d1773d05a6c6c582f13f49675946a8dd8f043"
+      },
+      {
+        "path": "coverage-one.psd",
+        "sha256": "6678d29e61b451334fab9c4821fd7c3404230199e1e5637c36e4cc5a0c711926"
+      },
+      {
+        "path": "intel-boundary-top-0-visible.psd",
+        "sha256": "c65c28a6c2993c19668a973032d634cdcd9dcd6b793520bf110ff27cc8e5b915"
+      },
+      {
+        "path": "intel-boundary-top-50-visible.psd",
+        "sha256": "4e3aa7fad39e3796583ca4eb0d17de5dab9a1fb802c445a6e5dbd3d8753f1dd9"
+      },
+      {
+        "path": "intel-boundary-top-75-base-25-visible.psd",
+        "sha256": "53e998c763224aef616a4330696dcff4d0b559090356e3377e190604f8c5b33e"
+      },
+      {
+        "path": "intel-boundary-top-99-visible.psd",
+        "sha256": "2e641289ac5b50d8c45c13220bf9866d828b83b40a565e528c6d0f5addfe6988"
+      },
+      {
+        "path": "intel-boundary-visible.psd",
+        "sha256": "387345115c2021b32f20daf0d830164114b14cdd8e9b6c0260701c00ff792c30"
+      },
+      {
+        "path": "intel-coverage-one-down.psd",
+        "sha256": "84cb52ba20764d383f45e18263a9c1f07875afcc129cebc95711443aaf97009b"
+      },
+      {
+        "path": "intel-coverage-one-selected.psd",
+        "sha256": "b9b596821bab7a263bd7ac3daf2a438367046812eb8a6c45cd3468deb3836803"
+      },
+      {
+        "path": "intel-coverage-one-stamp-selected.psd",
+        "sha256": "b482595c4ed7699f0a94cd647ae2851d7f0ab0363c9dfaab8920ee5e7452b530"
+      },
+      {
+        "path": "intel-coverage-one-stamp-visible.psd",
+        "sha256": "7ab03a3577316243f827d00b7c7832e6195ee6e7f86ca76bca1e7f20af79ecdc"
+      },
+      {
+        "path": "intel-coverage-one-visible.psd",
+        "sha256": "e68cd004d1294978e0dc77f8d43bc64d60f4389f155cab2a1eb04d4a182a233d"
+      },
+      {
+        "path": "intel-legacy-down.psd",
+        "sha256": "0c11b769c2fc6d3f7ed526c678483db50bff02dc29047d07a5741172df2c8d93"
+      },
+      {
+        "path": "intel-legacy-down.rgba",
+        "sha256": "201484660f0718eed22748b8ba9742af43eaae4f4ea979fb4cd076459452256f"
+      },
+      {
+        "path": "intel-legacy-selected.psd",
+        "sha256": "6429244fa2cd0420720d814cb7a52504ccbf8a97bf851d2cceee4c259e99a7de"
+      },
+      {
+        "path": "intel-legacy-visible.psd",
+        "sha256": "fe70f35a61dbdb92c0eede040c3dc996c8506684df343b080fce01397e809f75"
+      },
+      {
+        "path": "intel-opaque-down.psd",
+        "sha256": "774f3deb326c0990c94aa6ce418d11541d85d0008cd5fc1d2ce57154e9791dd3"
+      },
+      {
+        "path": "intel-opaque-stamp-visible.psd",
+        "sha256": "4226856e4db79a8409e0bafecee436ff03e1c3abe5d15c689c84373ff8475222"
+      },
+      {
+        "path": "intel-opaque-visible.psd",
+        "sha256": "668961955132b61e8853bd3c14ff0b603b0f0f17f60814091ca547374dc4751c"
+      },
+      {
+        "path": "intel-translucent-down.psd",
+        "sha256": "658d887f88a34e29c02ccd9337593a755840daaacdbbdbb380b152bb1b1f29dc"
+      },
+      {
+        "path": "intel-translucent-stamp-visible.psd",
+        "sha256": "3000bd4a4872912991a4cb515228e13e3e19c03c77a0761fe50c02df1fca6b1c"
+      },
+      {
+        "path": "intel-translucent-visible.psd",
+        "sha256": "952b43d3c76b4f158b311bd8bccfbb915e0bf19e6da02881be8217770b29470d"
+      },
+      {
+        "path": "opaque.psd",
+        "sha256": "3776ec16e08c3ef36166c6f5a9910b0c2ee43bac74124c42799ef26f68010539"
+      },
+      {
+        "path": "translucent.psd",
+        "sha256": "b3369c12302f4cf7f267894a0948ef49080361dfa60a6522cb4d7b1084cab1e5"
+      }
+    ],
+    "platform": "Native Apple Silicon and Intel under Rosetta",
+    "reference": "Saved as layered PSD after the named merge or stamp; ordinary Normal raster layers"
+  },
+  "savedSampleMatrix": {
+    "arm": {
+      "arm-boundary-visible": {
+        "bounds": [
+          0,
+          0,
+          48,
+          36
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 195,
+        "words": 6912
+      },
+      "arm-coverage-one-down": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "arm-coverage-one-selected": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "arm-coverage-one-stamp-selected": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "arm-coverage-one-stamp-visible": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "arm-coverage-one-visible": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "arm-opaque-down": {
+        "bounds": [
+          0,
+          0,
+          72,
+          27
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 20,
+        "words": 7776
+      },
+      "arm-opaque-stamp-visible": {
+        "bounds": [
+          0,
+          0,
+          72,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 20,
+        "words": 7776
+      },
+      "arm-opaque-visible": {
+        "bounds": [
+          0,
+          0,
+          72,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 20,
+        "words": 7776
+      },
+      "arm-translucent-down": {
+        "bounds": [
+          1,
+          0,
+          71,
+          27
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 342,
+        "words": 7668
+      },
+      "arm-translucent-stamp-visible": {
+        "bounds": [
+          1,
+          0,
+          71,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 342,
+        "words": 7668
+      },
+      "arm-translucent-visible": {
+        "bounds": [
+          1,
+          0,
+          71,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 342,
+        "words": 7668
+      }
+    },
+    "intel": {
+      "intel-boundary-visible": {
+        "bounds": [
+          0,
+          0,
+          48,
+          36
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 217,
+        "words": 6912
+      },
+      "intel-coverage-one-down": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "intel-coverage-one-selected": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "intel-coverage-one-stamp-selected": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "intel-coverage-one-stamp-visible": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "intel-coverage-one-visible": {
+        "bounds": [
+          0,
+          0,
+          96,
+          32
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 0,
+        "words": 12288
+      },
+      "intel-opaque-down": {
+        "bounds": [
+          0,
+          0,
+          72,
+          27
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 452,
+        "words": 7776
+      },
+      "intel-opaque-stamp-visible": {
+        "bounds": [
+          0,
+          0,
+          72,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 452,
+        "words": 7776
+      },
+      "intel-opaque-visible": {
+        "bounds": [
+          0,
+          0,
+          72,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 452,
+        "words": 7776
+      },
+      "intel-translucent-down": {
+        "bounds": [
+          1,
+          0,
+          71,
+          27
+        ],
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 576,
+        "words": 7668
+      },
+      "intel-translucent-stamp-visible": {
+        "bounds": [
+          1,
+          0,
+          71,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 576,
+        "words": 7668
+      },
+      "intel-translucent-visible": {
+        "bounds": [
+          1,
+          0,
+          71,
+          27
+        ],
+        "differencesFromFirstSavedCommand": 0,
+        "mismatches": 0,
+        "whenLaterZeroAlphaSkipped": 576,
+        "words": 7668
+      }
+    }
+  },
+  "sourceInputs": 8050,
+  "sourceInputsChangedSince575": [
+    {
+      "path": "Sources/PhotoCraftImaging/LayerMergePreparation.swift",
+      "sha256": "2065d2c4fbcac83cde15b10845e53c8f7fe0eaa69001d60fc35b953d1fe2e8de"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "cdc7c5b305149b3629195299b58272da9efd77aedd2c7ac4d2599abeda52f982"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RGB32NormalRenderer.swift",
+      "sha256": "37f0adb4a5f5e7688776350c5bf5c9ba014538725a2466bd4ecec6356d995e08"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "e44a4480d98066a3d038a3364431f06692024c59474ba4b3b0483edf334f2196"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "21c4bab8c4acd01ab1ff9ba4ac59c97164998e31b8bc1b929d42a9aa8fdb1af9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-boundary-top-0-visible.psd",
+      "sha256": "62f50beddf10d67b04b6582d57b34568585a862c52a550ebcf27eff6cfc99c85"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-boundary-top-50-visible.psd",
+      "sha256": "b790d6bb9762015289ca751ed928c58d119297c46be09d8741323052918f2d1c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-boundary-top-75-base-25-visible.psd",
+      "sha256": "f1ba8ef6353091510f9f0aef8830b1a1c7d93f2375b6e035b723039b74ccbcc5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-boundary-top-99-visible.psd",
+      "sha256": "a8b2d3553c199b6ad692b5626818b9bbbf306226acec4547704b15b659ae77d1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-boundary-visible.psd",
+      "sha256": "d4e7c0fc52b05592dcad308ae555b0b1941283052876802c6af98438266616eb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-coverage-one-down.psd",
+      "sha256": "8e3586acd2fb077d33d0b1b6d92ec55af7e8c14be96fd4eb74f00f330db8a858"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-coverage-one-selected.psd",
+      "sha256": "390afc8f8a7f65fdd07f8513a61f63993119f8fb30f8f6e28b16eb9e8fff8059"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-coverage-one-stamp-selected.psd",
+      "sha256": "174b93de5b82e0ff6b656926118ae1eadc5f98bd51d6283e98a6ad6e4f2e031b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-coverage-one-stamp-visible.psd",
+      "sha256": "87dd423b150758ed9730c576b73713c3647493cebfc429c2d9942065e645352d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-coverage-one-visible.psd",
+      "sha256": "454a8606edcae1bd7aa773ba156956b9a21614d4cc47c8754f1fc4337184392f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-opaque-down.psd",
+      "sha256": "b0fdb8c8587be351ec9e8833e95e946d77e637818bc394c0290657b8efb4c8dc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-opaque-stamp-visible.psd",
+      "sha256": "a06962ea0b9a29d8892e4997a4d1533cf683ebc47e5700278f45a3e1d32f8dd5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-opaque-visible.psd",
+      "sha256": "33f3db28d63c72184f7befa8ce52b05d67242c6f87b3b3adb4f5695d1b769cf1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-translucent-down.psd",
+      "sha256": "927627b94439e924072832bed72e249f206fc4ec016d24d443ffad5d3a9e56de"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-translucent-stamp-visible.psd",
+      "sha256": "7974258fbbec30eb367b3b7b144945ab864623ec9d098b8a59848dc59eea2924"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/arm-translucent-visible.psd",
+      "sha256": "ff164345adab3f34deadc99fd712886536b177da1e40314d367fca42ab10ccda"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/boundary-top-0.psd",
+      "sha256": "4a3557f6faebd80a86f0a0c224897c2e14e79a5b73f1507fea505b387ec52d34"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/boundary-top-50.psd",
+      "sha256": "0f173a1214a82a9ca12cdb398ea617d8b7636bd76cff9052e76e7a9dcb922a3e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/boundary-top-75-base-25.psd",
+      "sha256": "ebcd12e8f719dac1fcd4679c1d7617656f40adfa8d742ad39f8cf7251ab06267"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/boundary-top-99.psd",
+      "sha256": "cb457a63b719db943630f0a4e11ee8d15b72985db74bf90ff58dadb58a6dfa06"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/boundary.psd",
+      "sha256": "6d981b61b8ae57dc61e502d3d11d1773d05a6c6c582f13f49675946a8dd8f043"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/coverage-one.psd",
+      "sha256": "6678d29e61b451334fab9c4821fd7c3404230199e1e5637c36e4cc5a0c711926"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-boundary-top-0-visible.psd",
+      "sha256": "c65c28a6c2993c19668a973032d634cdcd9dcd6b793520bf110ff27cc8e5b915"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-boundary-top-50-visible.psd",
+      "sha256": "4e3aa7fad39e3796583ca4eb0d17de5dab9a1fb802c445a6e5dbd3d8753f1dd9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-boundary-top-75-base-25-visible.psd",
+      "sha256": "53e998c763224aef616a4330696dcff4d0b559090356e3377e190604f8c5b33e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-boundary-top-99-visible.psd",
+      "sha256": "2e641289ac5b50d8c45c13220bf9866d828b83b40a565e528c6d0f5addfe6988"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-boundary-visible.psd",
+      "sha256": "387345115c2021b32f20daf0d830164114b14cdd8e9b6c0260701c00ff792c30"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-coverage-one-down.psd",
+      "sha256": "84cb52ba20764d383f45e18263a9c1f07875afcc129cebc95711443aaf97009b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-coverage-one-selected.psd",
+      "sha256": "b9b596821bab7a263bd7ac3daf2a438367046812eb8a6c45cd3468deb3836803"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-coverage-one-stamp-selected.psd",
+      "sha256": "b482595c4ed7699f0a94cd647ae2851d7f0ab0363c9dfaab8920ee5e7452b530"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-coverage-one-stamp-visible.psd",
+      "sha256": "7ab03a3577316243f827d00b7c7832e6195ee6e7f86ca76bca1e7f20af79ecdc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-coverage-one-visible.psd",
+      "sha256": "e68cd004d1294978e0dc77f8d43bc64d60f4389f155cab2a1eb04d4a182a233d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-legacy-down.psd",
+      "sha256": "0c11b769c2fc6d3f7ed526c678483db50bff02dc29047d07a5741172df2c8d93"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-legacy-down.rgba",
+      "sha256": "201484660f0718eed22748b8ba9742af43eaae4f4ea979fb4cd076459452256f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-legacy-selected.psd",
+      "sha256": "6429244fa2cd0420720d814cb7a52504ccbf8a97bf851d2cceee4c259e99a7de"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-legacy-visible.psd",
+      "sha256": "fe70f35a61dbdb92c0eede040c3dc996c8506684df343b080fce01397e809f75"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-opaque-down.psd",
+      "sha256": "774f3deb326c0990c94aa6ce418d11541d85d0008cd5fc1d2ce57154e9791dd3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-opaque-stamp-visible.psd",
+      "sha256": "4226856e4db79a8409e0bafecee436ff03e1c3abe5d15c689c84373ff8475222"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-opaque-visible.psd",
+      "sha256": "668961955132b61e8853bd3c14ff0b603b0f0f17f60814091ca547374dc4751c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-translucent-down.psd",
+      "sha256": "658d887f88a34e29c02ccd9337593a755840daaacdbbdbb380b152bb1b1f29dc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-translucent-stamp-visible.psd",
+      "sha256": "3000bd4a4872912991a4cb515228e13e3e19c03c77a0761fe50c02df1fca6b1c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/intel-translucent-visible.psd",
+      "sha256": "952b43d3c76b4f158b311bd8bccfbb915e0bf19e6da02881be8217770b29470d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/opaque.psd",
+      "sha256": "3776ec16e08c3ef36166c6f5a9910b0c2ee43bac74124c42799ef26f68010539"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/references.json",
+      "sha256": "aaff7ab6a6a3138ccffe02e3c70348598bd3ab4a6004a649a13c4210dd83121c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-normal/translucent.psd",
+      "sha256": "b3369c12302f4cf7f267894a0948ef49080361dfa60a6522cb4d7b1084cab1e5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "c7f72ab13fc0b62c90d3f9dc3f7ed61f2fdaa411230383fcdebfe9084f81feec"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStampTests.swift",
+      "sha256": "a22e6b62c3e1f5800997816fab39a047b1127fec8ba92e4af54f798aef7464ce"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "df8e9b3edd2e1806ab70bb163ac911a64b7d5a4ebe1c8b7a6547b3846457d9e4"
+    }
+  ]
+}

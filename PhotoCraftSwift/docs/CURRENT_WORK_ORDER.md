@@ -1,3 +1,7 @@
+**Source checkpoint 576.** Normal 32-bit merges and stamps preserve the measured color and alpha words in their resulting raster layers, including transparent and very-low-alpha samples. [Qualification](SOURCE_PUBLICATION_576.md).
+
+Continue the measured pixel-mask output path, then compare clipped and grouped HDR layers and the direct Core merge.
+
 **Source checkpoint 575.** Stamp Layers and Stamp Visible now process supported sparse raster stacks at 300,000 × 300,000 pixels. The largest tested canvas with two distant layers needed two render patches. [Qualification](SOURCE_PUBLICATION_575.md).
 
 Continue destructive HDR merge and stamp comparisons, including in-bounds zero alpha. Verify live shortcut dispatch and extend sparse coverage to richer sources.

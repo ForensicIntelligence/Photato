@@ -123,7 +123,7 @@ final class LayerStampTests: XCTestCase {
       let result = try await Task.detached {
         var renderedPatches = 0
         let canvas = IntRect(x: 0, y: 0, width: size, height: size)
-        let rendered = try PagedCanvasRenderer.composite(source, region: canvas, forStamp: true, onPatch: {
+        let rendered = try PagedCanvasRenderer.composite(source, region: canvas, forLayerOutput: true, onPatch: {
           renderedPatches = $0
           if $0 > 4 { withUnsafeCurrentTask { $0?.cancel() } }
         })
@@ -177,7 +177,7 @@ final class LayerStampTests: XCTestCase {
     let measured = try await Task.detached {
       var patches = 0
       let canvas = IntRect(x: 0, y: 0, width: size, height: size)
-      let pixels = try PagedCanvasRenderer.composite(original, region: canvas, forStamp: true, onPatch: {
+      let pixels = try PagedCanvasRenderer.composite(original, region: canvas, forLayerOutput: true, onPatch: {
         patches = $0
         if $0 > 4 { withUnsafeCurrentTask { $0?.cancel() } }
       })
@@ -186,7 +186,7 @@ final class LayerStampTests: XCTestCase {
     XCTAssertEqual(measured.1, 2)
     let compact = try document(side: 64)
     let reference = try Renderer.compositePrepared(compact,
-      region: IntRect(x: 0, y: 0, width: 64, height: 64), forStamp: true)
+      region: IntRect(x: 0, y: 0, width: 64, height: 64), forLayerOutput: true)
     for (x, y, expectedX, expectedY) in [(2, 2, 2, 2), (3, 5, 3, 5), (size - 3, size - 3, 61, 61)] {
       XCTAssertTrue(measured.0.linearPixel(x: x, y: y).hasSameBits(
         as: reference.linearPixel(x: expectedX, y: expectedY)))
@@ -222,12 +222,12 @@ final class LayerStampTests: XCTestCase {
       let compact = try document(64)
       let result = try await Task.detached {
         let extent = IntRect(x: 0, y: 0, width: size, height: size)
-        return try PagedCanvasRenderer.composite(large, region: extent, forStamp: true, onPatch: {
+        return try PagedCanvasRenderer.composite(large, region: extent, forLayerOutput: true, onPatch: {
           if $0 > 4 { withUnsafeCurrentTask { $0?.cancel() } }
         })
       }.value
       let reference = try Renderer.compositePrepared(compact,
-        region: IntRect(x: 0, y: 0, width: 64, height: 64), forStamp: true)
+        region: IntRect(x: 0, y: 0, width: 64, height: 64), forLayerOutput: true)
       func sample(_ pixels: Surface, _ x: Int, _ y: Int) -> Pixel {
         depth == .f32 ? pixels.linearPixel(x: x, y: y) : pixels.pixel(x: x, y: y)
       }

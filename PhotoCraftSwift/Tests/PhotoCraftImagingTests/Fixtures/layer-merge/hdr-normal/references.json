@@ -1,0 +1,191 @@
+{
+  "author": "Project procedural layered inputs",
+  "editor": "Adobe Photoshop 27.2.0",
+  "colorSettings": "North America General Purpose 2",
+  "platform": "Native Apple Silicon and Intel under Rosetta",
+  "reference": "Saved as layered PSD after the named merge or stamp; ordinary Normal raster layers",
+  "files": [
+    {
+      "path": "arm-boundary-top-0-visible.psd",
+      "sha256": "62f50beddf10d67b04b6582d57b34568585a862c52a550ebcf27eff6cfc99c85"
+    },
+    {
+      "path": "arm-boundary-top-50-visible.psd",
+      "sha256": "b790d6bb9762015289ca751ed928c58d119297c46be09d8741323052918f2d1c"
+    },
+    {
+      "path": "arm-boundary-top-75-base-25-visible.psd",
+      "sha256": "f1ba8ef6353091510f9f0aef8830b1a1c7d93f2375b6e035b723039b74ccbcc5"
+    },
+    {
+      "path": "arm-boundary-top-99-visible.psd",
+      "sha256": "a8b2d3553c199b6ad692b5626818b9bbbf306226acec4547704b15b659ae77d1"
+    },
+    {
+      "path": "arm-boundary-visible.psd",
+      "sha256": "d4e7c0fc52b05592dcad308ae555b0b1941283052876802c6af98438266616eb"
+    },
+    {
+      "path": "arm-coverage-one-down.psd",
+      "sha256": "8e3586acd2fb077d33d0b1b6d92ec55af7e8c14be96fd4eb74f00f330db8a858"
+    },
+    {
+      "path": "arm-coverage-one-selected.psd",
+      "sha256": "390afc8f8a7f65fdd07f8513a61f63993119f8fb30f8f6e28b16eb9e8fff8059"
+    },
+    {
+      "path": "arm-coverage-one-stamp-selected.psd",
+      "sha256": "174b93de5b82e0ff6b656926118ae1eadc5f98bd51d6283e98a6ad6e4f2e031b"
+    },
+    {
+      "path": "arm-coverage-one-stamp-visible.psd",
+      "sha256": "87dd423b150758ed9730c576b73713c3647493cebfc429c2d9942065e645352d"
+    },
+    {
+      "path": "arm-coverage-one-visible.psd",
+      "sha256": "454a8606edcae1bd7aa773ba156956b9a21614d4cc47c8754f1fc4337184392f"
+    },
+    {
+      "path": "arm-opaque-down.psd",
+      "sha256": "b0fdb8c8587be351ec9e8833e95e946d77e637818bc394c0290657b8efb4c8dc"
+    },
+    {
+      "path": "arm-opaque-stamp-visible.psd",
+      "sha256": "a06962ea0b9a29d8892e4997a4d1533cf683ebc47e5700278f45a3e1d32f8dd5"
+    },
+    {
+      "path": "arm-opaque-visible.psd",
+      "sha256": "33f3db28d63c72184f7befa8ce52b05d67242c6f87b3b3adb4f5695d1b769cf1"
+    },
+    {
+      "path": "arm-translucent-down.psd",
+      "sha256": "927627b94439e924072832bed72e249f206fc4ec016d24d443ffad5d3a9e56de"
+    },
+    {
+      "path": "arm-translucent-stamp-visible.psd",
+      "sha256": "7974258fbbec30eb367b3b7b144945ab864623ec9d098b8a59848dc59eea2924"
+    },
+    {
+      "path": "arm-translucent-visible.psd",
+      "sha256": "ff164345adab3f34deadc99fd712886536b177da1e40314d367fca42ab10ccda"
+    },
+    {
+      "path": "boundary-top-0.psd",
+      "sha256": "4a3557f6faebd80a86f0a0c224897c2e14e79a5b73f1507fea505b387ec52d34"
+    },
+    {
+      "path": "boundary-top-50.psd",
+      "sha256": "0f173a1214a82a9ca12cdb398ea617d8b7636bd76cff9052e76e7a9dcb922a3e"
+    },
+    {
+      "path": "boundary-top-75-base-25.psd",
+      "sha256": "ebcd12e8f719dac1fcd4679c1d7617656f40adfa8d742ad39f8cf7251ab06267"
+    },
+    {
+      "path": "boundary-top-99.psd",
+      "sha256": "cb457a63b719db943630f0a4e11ee8d15b72985db74bf90ff58dadb58a6dfa06"
+    },
+    {
+      "path": "boundary.psd",
+      "sha256": "6d981b61b8ae57dc61e502d3d11d1773d05a6c6c582f13f49675946a8dd8f043"
+    },
+    {
+      "path": "coverage-one.psd",
+      "sha256": "6678d29e61b451334fab9c4821fd7c3404230199e1e5637c36e4cc5a0c711926"
+    },
+    {
+      "path": "intel-boundary-top-0-visible.psd",
+      "sha256": "c65c28a6c2993c19668a973032d634cdcd9dcd6b793520bf110ff27cc8e5b915"
+    },
+    {
+      "path": "intel-boundary-top-50-visible.psd",
+      "sha256": "4e3aa7fad39e3796583ca4eb0d17de5dab9a1fb802c445a6e5dbd3d8753f1dd9"
+    },
+    {
+      "path": "intel-boundary-top-75-base-25-visible.psd",
+      "sha256": "53e998c763224aef616a4330696dcff4d0b559090356e3377e190604f8c5b33e"
+    },
+    {
+      "path": "intel-boundary-top-99-visible.psd",
+      "sha256": "2e641289ac5b50d8c45c13220bf9866d828b83b40a565e528c6d0f5addfe6988"
+    },
+    {
+      "path": "intel-boundary-visible.psd",
+      "sha256": "387345115c2021b32f20daf0d830164114b14cdd8e9b6c0260701c00ff792c30"
+    },
+    {
+      "path": "intel-coverage-one-down.psd",
+      "sha256": "84cb52ba20764d383f45e18263a9c1f07875afcc129cebc95711443aaf97009b"
+    },
+    {
+      "path": "intel-coverage-one-selected.psd",
+      "sha256": "b9b596821bab7a263bd7ac3daf2a438367046812eb8a6c45cd3468deb3836803"
+    },
+    {
+      "path": "intel-coverage-one-stamp-selected.psd",
+      "sha256": "b482595c4ed7699f0a94cd647ae2851d7f0ab0363c9dfaab8920ee5e7452b530"
+    },
+    {
+      "path": "intel-coverage-one-stamp-visible.psd",
+      "sha256": "7ab03a3577316243f827d00b7c7832e6195ee6e7f86ca76bca1e7f20af79ecdc"
+    },
+    {
+      "path": "intel-coverage-one-visible.psd",
+      "sha256": "e68cd004d1294978e0dc77f8d43bc64d60f4389f155cab2a1eb04d4a182a233d"
+    },
+    {
+      "path": "intel-legacy-down.psd",
+      "sha256": "0c11b769c2fc6d3f7ed526c678483db50bff02dc29047d07a5741172df2c8d93"
+    },
+    {
+      "path": "intel-legacy-down.rgba",
+      "sha256": "201484660f0718eed22748b8ba9742af43eaae4f4ea979fb4cd076459452256f"
+    },
+    {
+      "path": "intel-legacy-selected.psd",
+      "sha256": "6429244fa2cd0420720d814cb7a52504ccbf8a97bf851d2cceee4c259e99a7de"
+    },
+    {
+      "path": "intel-legacy-visible.psd",
+      "sha256": "fe70f35a61dbdb92c0eede040c3dc996c8506684df343b080fce01397e809f75"
+    },
+    {
+      "path": "intel-opaque-down.psd",
+      "sha256": "774f3deb326c0990c94aa6ce418d11541d85d0008cd5fc1d2ce57154e9791dd3"
+    },
+    {
+      "path": "intel-opaque-stamp-visible.psd",
+      "sha256": "4226856e4db79a8409e0bafecee436ff03e1c3abe5d15c689c84373ff8475222"
+    },
+    {
+      "path": "intel-opaque-visible.psd",
+      "sha256": "668961955132b61e8853bd3c14ff0b603b0f0f17f60814091ca547374dc4751c"
+    },
+    {
+      "path": "intel-translucent-down.psd",
+      "sha256": "658d887f88a34e29c02ccd9337593a755840daaacdbbdbb380b152bb1b1f29dc"
+    },
+    {
+      "path": "intel-translucent-stamp-visible.psd",
+      "sha256": "3000bd4a4872912991a4cb515228e13e3e19c03c77a0761fe50c02df1fca6b1c"
+    },
+    {
+      "path": "intel-translucent-visible.psd",
+      "sha256": "952b43d3c76b4f158b311bd8bccfbb915e0bf19e6da02881be8217770b29470d"
+    },
+    {
+      "path": "opaque.psd",
+      "sha256": "3776ec16e08c3ef36166c6f5a9910b0c2ee43bac74124c42799ef26f68010539"
+    },
+    {
+      "path": "translucent.psd",
+      "sha256": "b3369c12302f4cf7f267894a0948ef49080361dfa60a6522cb4d7b1084cab1e5"
+    }
+  ],
+  "families": {
+    "alphaCutoff": "Procedural inputs. Isolated Photoshop desktop Merge Down, Merge Visible and Stamp Visible.",
+    "coverageOne": "Also includes the independently selected merge and stamp.",
+    "opacity": "Photoshop saved the edited input with the recorded opacity byte and then saved the Merge Visible result.",
+    "legacyIntel": "Fresh Intel saves of the original 256-pixel-wide HDR merge fixture. The older independent Apple Silicon samples remain in place."
+  }
+}

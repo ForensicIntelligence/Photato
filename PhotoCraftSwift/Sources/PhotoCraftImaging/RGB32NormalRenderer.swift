@@ -3,13 +3,27 @@ import PhotoCraftCore
 /// The measured RGB32 Normal raster-stack path. Other layer kinds, blend modes,
 /// groups and transforms continue through the general renderer.
 enum RGB32NormalRenderer {
+  static func supportsLayerOutput(_ document: CraftDocument) -> Bool {
+    guard document.depth == .f32 else { return false }
+    return document.layers.allSatisfy { layer in
+      guard !layer.isGroup, layer.parentID == nil, !layer.isClipped else { return false }
+      guard layer.visible && layer.opacity > 0 else { return true }
+      guard case .raster = layer.content else { return false }
+      return layer.affine == nil && layer.blendMode == .normal && layer.style == nil
+        && layer.mask == nil && layer.vectorMask == nil && layer.smartObject == nil
+        && layer.smartFilters == nil && layer.warp == nil && layer.sourceProjection == nil
+        && layer.importedSmartAppearance == nil
+    }
+  }
+
   static func composite(_ document: CraftDocument, over backdrop: Surface, region: IntRect,
-    facts:CompositionFacts? = nil)
+    facts: CompositionFacts? = nil, forLayerOutput: Bool = false)
     throws -> Surface?
   {
     guard !document.layers.contains(where: { $0.style != nil && $0.style?.isChannelBlendingOnly != true }), document.depth == .f32,
       !document.layers.contains(where: { $0.isGroup || $0.parentID != nil || $0.isClipped })
     else { return nil }
+    let writesLayer = forLayerOutput && supportsLayerOutput(document)
     let layers = document.layers.filter { $0.visible && $0.opacity > 0 && $0.style?.restrictedChannels?.count != 3 }
     guard
       layers.allSatisfy({ layer in
@@ -41,8 +55,8 @@ enum RGB32NormalRenderer {
       let sourceAlpha = opaqueBase || copiesSource || mask != nil ? nil : try uniformAlpha(
         layer, source: source, in: document, facts: facts)
       backdropAlpha = compositeUniformAlpha(backdrop: backdropAlpha,
-        source: sourceAlpha.map { unit($0 * opacity) }, seeded: index > 0,
-        opaque: opaqueBase, copiesSource: copiesSource)
+        source: sourceAlpha.map { layerOpacityAlpha($0, opacity: opacity, forLayerOutput: writesLayer) }, seeded: index > 0,
+        opaque: opaqueBase, copiesSource: copiesSource, forLayerOutput: writesLayer)
       guard x0 < x1 && y0 < y1 else { continue }
       for y in y0..<y1 {
         if y % 64 == 0 { try Task.checkCancellation() }
@@ -50,7 +64,7 @@ enum RGB32NormalRenderer {
           var pixel = source.linearPixel(x: x - layer.x, y: y - layer.y)
           // The mask product rounds before the layer-opacity product.
           pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-          pixel.a = unit(pixel.a * opacity)
+          pixel.a = layerOpacityAlpha(pixel.a, opacity: opacity, forLayerOutput: writesLayer)
           if index == 0 {
             // Photoshop seeds the stack with the first layer's straight RGB,
             // including RGB beneath zero alpha. Later interpolation can reveal
@@ -58,9 +72,10 @@ enum RGB32NormalRenderer {
             output.setLinearPixel(x:x,y:y,BlendChannelRestrictions.applying(layer.style?.restrictedChannels,after:pixel,before:output.linearPixel(x:x,y:y)))
             continue
           }
-          guard pixel.a > 0 else { continue }
+          guard writesLayer || pixel.a > 0 else { continue }
           let previous = output.linearPixel(x: x, y: y)
-          let blended = try blend(previous, pixel, opaque: opaqueBase, copiesSource: copiesSource)
+          let blended = try blend(previous, pixel, opaque: opaqueBase, copiesSource: copiesSource,
+            forLayerOutput: writesLayer)
           output.setLinearPixel(x: x, y: y,
             BlendChannelRestrictions.applying(layer.style?.restrictedChannels, after: blended, before: previous))
         }
@@ -95,12 +110,12 @@ enum RGB32NormalRenderer {
 
   /// This proof always covers the full canvas, even when drawing one patch.
   static func compositeUniformAlpha(backdrop: Float?, source: Float?, seeded: Bool,
-    opaque: Bool, copiesSource: Bool) -> Float? {
+    opaque: Bool, copiesSource: Bool, forLayerOutput: Bool = false) -> Float? {
     if opaque || copiesSource { return 1 }
     if !seeded { return source }
-    if source == 0 { return backdrop }
+    if !forLayerOutput && source == 0 { return backdrop }
     guard let backdrop, let source else { return nil }
-    return unit(multiplyAdd(-backdrop, source, to: source + backdrop))
+    return unit(combinedAlpha(backdrop, source, forLayerOutput: forLayerOutput))
   }
 
   /// Determine this from the entire canvas, so regional updates use the same
@@ -138,11 +153,40 @@ enum RGB32NormalRenderer {
     #endif
   }
 
-  static func blend(_ backdrop: Pixel, _ source: Pixel, opaque: Bool, copiesSource: Bool = false) throws -> Pixel {
-    guard source.a > 0 else { return backdrop }
+  @inline(__always) private static func layerOpacityAlpha(_ source: Float, opacity: Float,
+    forLayerOutput: Bool) -> Float {
+    let coverage = source * opacity
+    #if arch(x86_64)
+    // Full opacity uses the stored coverage. Partial opacity takes the
+    // measured Intel multiplication path, which flushes subnormal products.
+    if forLayerOutput && opacity != 1 && coverage.isSubnormal { return 0 }
+    #endif
+    return unit(coverage)
+  }
+
+  @inline(__always) private static func combinedAlpha(_ backdrop: Float, _ source: Float,
+    forLayerOutput: Bool) -> Float {
+    let alpha = multiplyAdd(-backdrop, source, to: source + backdrop)
+    #if arch(x86_64)
+    if forLayerOutput && alpha.isSubnormal { return Float(signOf: alpha, magnitudeOf: 0) }
+    #endif
+    return alpha
+  }
+
+  static func blend(_ backdrop: Pixel, _ source: Pixel, opaque: Bool, copiesSource: Bool = false,
+    forLayerOutput: Bool = false) throws -> Pixel {
+    guard forLayerOutput || source.a > 0 else { return backdrop }
     if copiesSource && source.a == 1 && source.isFinite { return source }
-    let alpha: Float = opaque ? 1 : multiplyAdd(-backdrop.a, source.a, to: source.a + backdrop.a)
-    let ratio = opaque ? source.a : alpha > 0 ? unit(source.a / alpha) : 0
+    let alpha: Float = opaque ? 1 : combinedAlpha(backdrop.a, source.a, forLayerOutput: forLayerOutput)
+    let ratio: Float
+    if opaque {
+      ratio = source.a
+    } else if forLayerOutput && alpha < 1e-16 {
+      // The saved layer uses the later raster's straight RGB at negligible coverage.
+      ratio = 1
+    } else {
+      ratio = alpha > 0 ? unit(source.a / alpha) : 0
+    }
     let result = Pixel(
       interpolate(backdrop.r, source.r, ratio: ratio),
       interpolate(backdrop.g, source.g, ratio: ratio),

@@ -56,9 +56,13 @@ final class AutomationLayerMergeTests: XCTestCase {
       {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
           .deletingLastPathComponent()
-        let raw = try Data(
-          contentsOf: root.appendingPathComponent(
-            "PhotoCraftImagingTests/Fixtures/layer-merge/original-profile-down-rgb32.rgba"))
+        #if arch(x86_64)
+        let reference = "hdr-normal/intel-legacy-down.rgba"
+        #else
+        let reference = "original-profile-down-rgb32.rgba"
+        #endif
+        let raw = try Data(contentsOf: root.appendingPathComponent(
+          "PhotoCraftImagingTests/Fixtures/layer-merge/" + reference))
         let output = try x.rgbaData(depth: .f32, colorEncoding: .linearRGB)
         XCTAssertEqual(output.count, raw.count)
         XCTAssertEqual(zip(output, raw).filter { $0 != $1 }.count, 0)
@@ -77,7 +81,12 @@ final class AutomationLayerMergeTests: XCTestCase {
           ("down", LayerMergeOperation.down), ("selected", .selected), ("visible", .visible),
         ] {
           let original = try fixture("photoshop-source-rgb\(bits)")
-          let expected = try fixture("photoshop-\(name)-rgb\(bits)")
+          #if arch(x86_64)
+          let expectedName = bits == 32 ? "hdr-normal/intel-legacy-\(name)" : "photoshop-\(name)-rgb\(bits)"
+          #else
+          let expectedName = "photoshop-\(name)-rgb\(bits)"
+          #endif
+          let expected = try fixture(expectedName)
           let desktop = EditorStore(document: original)
           defer { desktop.renderTask?.cancel() }
           if operation == .selected { desktop.selectedLayerIDs = Set(original.layers.map(\.id)) }

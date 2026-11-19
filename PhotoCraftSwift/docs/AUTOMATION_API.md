@@ -1401,6 +1401,8 @@ The existing Adobe-compatible `/v2/execute-actions` and legacy `/v1/action-jobs`
 
 The recorded 8-, 16- and 32-bit comparisons cover local desktop Photoshop and Photato. Build 575 supports the 300,000-pixel-side sparse raster cases through the same command. Both local ActionJSON job routes pass tagged and untagged RGB8 and RGB16 examples. Hosted service equivalence and complex sparse cases remain open. [Build 575 validation](SOURCE_PUBLICATION_575.md).
 
+Build 576 also verifies the prepared Normal RGB32 layer output through the desktop and native API commands, using independent saves for the current architecture. The existing merge and duplicate descriptors keep the same request fields. [Validation](SOURCE_PUBLICATION_576.md).
+
 ## Layer merging (step115)
 
 Post to `/v1/documents/{id}/commands` with the current revision:

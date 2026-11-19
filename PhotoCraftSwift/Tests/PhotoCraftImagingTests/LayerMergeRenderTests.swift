@@ -53,6 +53,66 @@ final class LayerMergeRenderTests: XCTestCase {
       }
     }
   }
+
+  func testPreparedHDRNormalMergeAndStampMatchSavedStraightLayerSamples() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    func fixture(_ name: String) throws -> CraftDocument {
+      let url = try XCTUnwrap(Bundle.module.url(forResource: name, withExtension: "psd",
+        subdirectory: "Fixtures/layer-merge/hdr-normal"))
+      return try PSDCodec.read(Data(contentsOf: url))
+    }
+    let modes: [(String, LayerMergeOperation)] = [
+      ("down", .down), ("visible", .visible), ("stamp-visible", .stampVisible),
+    ]
+    let examples: [(String, [(String, LayerMergeOperation)])] = [
+      ("boundary", [("visible", .visible)]),
+      ("boundary-top-0", [("visible", .visible)]),
+      ("boundary-top-50", [("visible", .visible)]),
+      ("boundary-top-99", [("visible", .visible)]),
+      ("boundary-top-75-base-25", [("visible", .visible)]),
+      ("opaque", modes),
+      ("translucent", modes),
+      ("coverage-one", modes + [("selected", .selected), ("stamp-selected", .stampSelected)]),
+    ]
+    for (name, operations) in examples {
+      var document = try fixture(name)
+      document.activeLayerID = document.layers.last?.id
+      for (suffix, operation) in operations {
+        let label = "\(name)-\(suffix)"
+        let ids: Set<UUID>
+        switch operation {
+        case .down: ids = [try XCTUnwrap(document.activeLayerID)]
+        case .selected, .stampSelected: ids = Set(document.layers.map(\.id))
+        case .visible, .stampVisible: ids = []
+        }
+        let expected = try XCTUnwrap(fixture("\(architecture)-\(label)").layers.last)
+        let result = try LayerMergePreparation.prepare(document, layerIDs: ids, operation: operation).applied(to: document)
+        if operation.preservesSources {
+          XCTAssertEqual(result.layers.filter { $0.id != result.activeLayerID }, document.layers, label)
+        } else {
+          XCTAssertEqual(result.layers.count, 1, label)
+        }
+        let roundTripped = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+        let merged = try XCTUnwrap(result.layers.first { $0.id == result.activeLayerID }, label)
+        for actual in [merged, try XCTUnwrap(roundTripped.layers.last)] {
+          XCTAssertEqual(actual.x, expected.x, label)
+          XCTAssertEqual(actual.y, expected.y, label)
+          guard case .raster(let pixels) = actual.content, case .raster(let reference) = expected.content else {
+            return XCTFail("Expected a raster for \(label)")
+          }
+          XCTAssertEqual(pixels.width, reference.width, label)
+          XCTAssertEqual(pixels.height, reference.height, label)
+          XCTAssertEqual(try pixels.rgbaData(depth: .f32, colorEncoding: .linearRGB),
+            try reference.rgbaData(depth: .f32, colorEncoding: .linearRGB), label)
+        }
+      }
+    }
+  }
+
   func testPhotoshopOffCanvasBoundsHiddenPixelsAndActiveVisiblePosition() throws {
     let original = try PSDCodec.read(file("photoshop-source-geometry-hidden-rgb8"))
     for (operation, active, key) in [

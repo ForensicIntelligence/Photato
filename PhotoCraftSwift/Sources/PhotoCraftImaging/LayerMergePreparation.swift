@@ -8,18 +8,6 @@ public enum LayerMergePreparation {
   public static func prepare(_ source:CraftDocument,layerIDs:Set<UUID>,operation:LayerMergeOperation)throws->PreparedLayerMerge {
     try source.validate();try Task.checkCancellation()
     let plan=try LayerMergePlan(operation,layerIDs:layerIDs,in:source)
-    // Keep the established Photoshop pixel vectors, including hidden RGB and the
-    // integer-depth arithmetic, unchanged whenever the old primitive applies.
-    let hasPreparedSources=source.layers.contains{plan.sourceIDs.contains($0.id) && ($0.smartFilters != nil || $0.warp != nil || $0.sourceProjection != nil || $0.importedSmartAppearance != nil)}
-    if !operation.preservesSources,!plan.includesBackground,!hasPreparedSources,
-      let allocation=try? LayerMerge.outputBounds(operation,layerIDs:layerIDs,in:source),allocation.width<=4_194_304/allocation.height {
-      var result=source
-      do {try LayerMerge.apply(operation,layerIDs:layerIDs,to:&result)
-        return .init(source:source,result:result,layerIDs:layerIDs,operation:operation)
-      } catch CraftError.unsupported(let reason) where reason == "Merging entirely transparent layers is not available yet." {
-        // Transparent output is representable as an ordinary empty pixel layer.
-      }
-    }
     var isolated=source
     if operation != .stampVisible {
       isolated.layers=source.layers.filter{plan.sourceIDs.contains($0.id)}
@@ -31,6 +19,21 @@ public enum LayerMergePreparation {
     isolated.setCoverageSelection(nil)
     // Auxiliary/retained document state does not influence layer composition.
     isolated.alphaChannels=nil;isolated.quickMask=nil;isolated.layerComps=nil;isolated.variables=nil
+    let writesRGB32Layer = RGB32NormalRenderer.supportsLayerOutput(isolated)
+    let hasPreparedSources = isolated.layers.contains {
+      $0.smartFilters != nil || $0.warp != nil || $0.sourceProjection != nil || $0.importedSmartAppearance != nil
+    }
+    if !operation.preservesSources, !plan.includesBackground, !writesRGB32Layer, !hasPreparedSources,
+      let allocation = try? LayerMerge.outputBounds(operation, layerIDs: layerIDs, in: source),
+      allocation.width <= 4_194_304 / allocation.height {
+      var result = source
+      do {
+        try LayerMerge.apply(operation, layerIDs: layerIDs, to: &result)
+        return .init(source: source, result: result, layerIDs: layerIDs, operation: operation)
+      } catch CraftError.unsupported(let reason) where reason == "Merging entirely transparent layers is not available yet." {
+        // Transparent output is representable as an ordinary empty pixel layer.
+      }
+    }
     let canvas=IntRect(x:0,y:0,width:source.width,height:source.height)
     var boxes=[canvas]
     if operation != .visible && operation != .stampVisible && !plan.includesBackground {
@@ -46,7 +49,8 @@ public enum LayerMergePreparation {
     }
     let bounds=try LayerLayout.union(boxes) ?? canvas
     isolated=try CanvasFrameGeometry.reframed(isolated,bounds:bounds)
-    var pixels=try Renderer.compositePaged(isolated, forStamp: operation.preservesSources).quantizedStoredDepth(source.depth)
+    var pixels = try Renderer.compositePaged(isolated,
+      forLayerOutput: operation.preservesSources || writesRGB32Layer).quantizedStoredDepth(source.depth)
     var origin=(bounds.x,bounds.y)
     if plan.includesBackground && !operation.preservesSources {
       pixels=try BackgroundLayer.opaque(pixels,over:.white).quantizedStoredDepth(source.depth)

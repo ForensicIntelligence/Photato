@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 575.** Stamp Layers and Stamp Visible now process supported sparse raster stacks at 300,000 × 300,000 pixels. The largest tested canvas with two distant layers needed two render patches. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_575.md).
+**Development alpha — source build 576.** Normal 32-bit merges and stamps preserve the measured color and alpha words in their resulting raster layers, including transparent and very-low-alpha samples. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md).
 
 ## Project layout
 

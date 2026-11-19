@@ -1,3 +1,5 @@
+**Source checkpoint 576.** Normal 32-bit merges and stamps preserve the measured color and alpha words in their resulting raster layers, including transparent and very-low-alpha samples. [Qualification](docs/SOURCE_PUBLICATION_576.md).
+
 **Source checkpoint 575.** Stamp Layers and Stamp Visible now process supported sparse raster stacks at 300,000 × 300,000 pixels. The largest tested canvas with two distant layers needed two render patches. [Qualification](docs/SOURCE_PUBLICATION_575.md).
 
 **Source checkpoint 574.** Stamp Layers and Stamp Visible create a new editable pixel layer while retaining the originals. Both commands are available from the native Layer menu, Actions and the Photato API. [Qualification](docs/SOURCE_PUBLICATION_574.md).

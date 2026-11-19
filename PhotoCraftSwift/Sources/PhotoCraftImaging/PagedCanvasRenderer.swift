@@ -33,22 +33,22 @@ enum PagedCanvasRenderer {
   }
 
   static func composite(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
-    video: VideoTransitionRenderContext? = nil, forStamp: Bool = false, onPatch: ((Int) -> Void)? = nil
+    video: VideoTransitionRenderContext? = nil, forLayerOutput: Bool = false, onPatch: ((Int) -> Void)? = nil
   ) throws -> Surface {
     guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
     let facts=CompositionFacts(d)
     var reachedInput=false
     func render(_ rect:IntRect) throws -> Surface {
-      do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts,forStamp:forStamp)}
+      do {return try Renderer.compositePrepared(d,region:rect,inputTarget:inputTarget,video:video,facts:facts,forLayerOutput:forLayerOutput)}
       catch let captured as AdjustmentInputReached {reachedInput=true;return captured.surface}
     }
     let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let sources=try region==complete && video==nil ? pointwiseSources(d,facts:facts):nil
-    let sparseStamp = forStamp && sources == nil && region == complete && video == nil
-      ? try stampSupport(d) : nil
+    let layerSupport = forLayerOutput && sources == nil && region == complete && video == nil
+      ? try layerOutputSupport(d) : nil
     let columns=(d.width+63)/64,total=columns*((d.height+63)/64)
-    var template=try Renderer.emptyCanvas(d, fill: forStamp ? Pixel(1, 1, 1, 0) : .clear)
+    var template=try Renderer.emptyCanvas(d, fill: forLayerOutput ? Pixel(1, 1, 1, 0) : .clear)
     var firstMissing = total
     if let sources {
       firstMissing = 0
@@ -57,9 +57,9 @@ enum PagedCanvasRenderer {
         if key > firstMissing { break }
         firstMissing = key + 1
       }
-    } else if let sparseStamp {
+    } else if let layerSupport {
       firstMissing = 0
-      for patch in sparseStamp {
+      for patch in layerSupport {
         try Task.checkCancellation()
         let first = (patch.y / 64) * columns + patch.x / 64
         if first > firstMissing { break }
@@ -91,8 +91,8 @@ enum PagedCanvasRenderer {
         let x=first%columns*64,y=row*64
         try append(.init(x:x,y:y,width:min(d.width-x,(end-first)*64),height:min(64,d.height-y)))
       }
-    } else if let sparseStamp {
-      for patch in sparseStamp {
+    } else if let layerSupport {
+      for patch in layerSupport {
         try Task.checkCancellation()
         try append(patch)
       }
@@ -112,14 +112,12 @@ enum PagedCanvasRenderer {
     return result
   }
 
-  /// Support of translated Normal stamp inputs. Outside these rectangles every
+  /// Support of translated Normal layer output. Outside these rectangles every
   /// full-canvas source contributes its implicit value and partial rasters are absent.
   /// The original document still supplies the global opacity and copy proofs.
-  private static func stampSupport(_ document: CraftDocument) throws -> GeometryPatchRegions? {
+  private static func layerOutputSupport(_ document: CraftDocument) throws -> GeometryPatchRegions? {
     var rectangles: [IntRect] = []
     let side = Surface.tileSide
-    let flat = document.layers.allSatisfy { !$0.isGroup && $0.parentID == nil && !$0.isClipped }
-    var firstVisible = true
     for layer in document.layers {
       try Task.checkCancellation()
       guard layer.affine == nil, layer.style == nil, layer.blendMode == .normal,
@@ -134,11 +132,9 @@ enum PagedCanvasRenderer {
       guard layer.visible && layer.opacity > 0 else { continue }
       let aligned = layer.x == 0 && layer.y == 0
         && source.width == document.width && source.height == document.height
-      // The first HDR raster can seed RGB even at zero alpha. Subsequent
-      // transparent implicit source samples leave the existing pixel alone.
-      let skipsTransparentDefault = flat && document.depth == .f32 && !firstVisible && source.defaultPixel.a == 0
-      firstVisible = false
-      if aligned || skipsTransparentDefault {
+      // A translated transparent raster can affect straight HDR color in its
+      // rectangle, even when its implicit alpha is zero.
+      if aligned {
         let sourceColumns = (source.width + side - 1) / side
         for key in source.storedTileKeys {
           try Task.checkCancellation()

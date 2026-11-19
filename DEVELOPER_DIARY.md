@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **575** · The 10 most recent entries, newest first.
+Source build **576** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 576 — Match stored RGB32 Normal merge and stamp samples
+
+Merging and stamping 32-bit Normal layers now matches the saved Photoshop samples in the tested raster stacks. These tests cover very low alpha, transparent pixels, partial layer opacity and an opaque Background. A fresh Intel capture also confirmed that its saved alpha differs from Apple Silicon on one older fixture.
+
+The new tests compare the stored layer before and after reopening a PSD. All 750 selected tests passed in each of the three build configurations. Both slices in the local universal archive passed their offscreen checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-576) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md).
 
 ## 2026-11-18 — Step 575 — Render sparse stamps at maximum canvas size
 
@@ -77,11 +85,3 @@ Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the s
 All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture. Photoshop itself returned different values across architectures for 13,057 samples from the gamma and parametric cases. The Swift conversion matches the rounding observed on each architecture. All 651 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The desktop conversion and the authenticated Photato command produce the same stored samples and both Undo correctly. Both universal app slices passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-567) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_567.md).
-
-## 2026-11-18 — Step 566 — Preserve opaque Gray32 merged samples in PSD and PSB
-
-PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The writer uses the stored grayscale samples for the merged image and leaves out the redundant transparency plane. Saved auxiliary channels still follow the grayscale plane.
-
-An independent reader checked every sample of the 16 × 12 test image against a raw PSD saved by Photoshop 2026 at checkpoint 511. All 192 merged samples match byte for byte in PSD and PSB in all four compression modes. The comparison covers the grayscale plane and the channel count. All 629 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The tests also cover a saved auxiliary channel, hidden Background, both API encoders, and authenticated Photato downloads. Both universal app slices passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-566) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_566.md).
