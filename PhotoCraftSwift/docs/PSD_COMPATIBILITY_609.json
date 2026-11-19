@@ -1,0 +1,259 @@
+{
+  "build": 609,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince608": [
+    {
+      "path": "Sources/PhotoCraft/AdobeActionAssets.swift",
+      "sha256": "f0a300d0d6398787340553518392918678eebb1474a5ac18e4112dd8be9c48b3"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationImageProcessor.swift",
+      "sha256": "c4e378f8fe29c182d99cf199ab8eae0f463a5ff0645c7af59f3409815faf81ee"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPhotoshopFilePreferences.swift",
+      "sha256": "69ed3f329053fd8e96935f4812e5a4a567efcd48d60bd3e8a5136f9a70a2df71"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentEncodingOptions.swift",
+      "sha256": "08eee2bf2f3c4e5af1cd43fb29fedad05cfdecd8a0800f3a95e1160bbb089c8b"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentIO.swift",
+      "sha256": "d6eb6ac4eaa52a76303e01852ba99ea5cc7ec2b6567bed34e0167a207bf0332b"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentPersistence.swift",
+      "sha256": "c1ace4c71e253fdb37c23deb7baba5194c01b68edc0de29ad934e7769045bd56"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentSaving.swift",
+      "sha256": "5b4548bfb907cb14f82dde12c4a071366b97fba9aa0bb8fee25fb37dddf22732"
+    },
+    {
+      "path": "Sources/PhotoCraft/ImageProcessor.swift",
+      "sha256": "fe094a6bae2395d091300b05f916dd5f80847ada6126d6a201bc74ac8ca18e4d"
+    },
+    {
+      "path": "Sources/PhotoCraft/ImageProcessorControls.swift",
+      "sha256": "22f7af75c6dce3195c89092631145e3304190d42a1bf70f3ccd01d16b45304d9"
+    },
+    {
+      "path": "Sources/PhotoCraft/NativeDocument.swift",
+      "sha256": "0e46834ea879e1ff46dbc42da84afb6d96facecfc5bcd18f8b4a1fb2baf559d8"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopFilePreferences.swift",
+      "sha256": "8d3ae42c511e2a44703fbafb0e787609c6817b098c03c260783f609940e13df2"
+    },
+    {
+      "path": "Sources/PhotoCraft/PreparedDocumentOutput.swift",
+      "sha256": "9f868ba5ccb595cb84c359bcb59b181c193a9645263fbc3e4108dccb59c86a49"
+    },
+    {
+      "path": "Sources/PhotoCraft/RecoveryPreferences.swift",
+      "sha256": "a8c42524e3c5d51cc688902c1976ffb83eaf4574702c44edd1c0543327caf594"
+    },
+    {
+      "path": "Sources/PhotoCraft/RecoveryPreferencesView.swift",
+      "sha256": "7089a63f03fdf1c76c2b293d8b4b6843374f0aa9ee3c4c9da9250112f5d3a848"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "4e77537de60c87cfbc785e222761f3349b5044aae73481595b4a74ee713af816"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDImageResources.swift",
+      "sha256": "7624a93eb5f8523d53a20f5aa6768bd8a1b734446b1fb366870e95f932cf610b"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RasterEncodingOptions.swift",
+      "sha256": "6b050e23a85c527e0af4f31c80f69aa5eff3651f6be5c2e4306d82a3d5ea6015"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ImageProcessorTests.swift",
+      "sha256": "ca584b904a1895a2a6771616d34ac8aa259d73cbfb33e36f6fade4628cc6b452"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PhotoshopEncodingOptionsTests.swift",
+      "sha256": "5e05a6a4910a27a449c6ad2418d31e9529f740fe80959c34bc44fc509d9e9aed"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PhotoshopFilePreferencesTests.swift",
+      "sha256": "17b64752aaae4d8c9da6fe4ff3c559c5b06ce99ddcd5ab7fe9533664be6652f7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompressionOptionsTests.swift",
+      "sha256": "edc6314c75975aa5c69b0c9eaf645a8f285dc37e5cff6e133b73677813ba5697"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "adedb5420e6ec20a15ed5653449ed8602b63f3ddbeabf150b01add296efd588a"
+    }
+  ],
+  "selectedChecksPerConfiguration": 954,
+  "focusedCompatibilityChecksPerConfiguration": 40,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "c17243aa7f31a25a3ce0501be203b445dad2aca50da77c4d745752b35e7d85d3",
+      "testBinarySHA256": "1c57850a1db27e8ecbf90b734b93252d5dce7f46e5a7fe66f2f7d244c0b1e1ba",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "f6ea5461929d514dbca64bfdbbbb8a0146d4e458f047b518e9ad38f3b44da41c",
+      "testBinarySHA256": "35a0f89773f03283c2e9fe9a324df520d9e03a858f5d679c82ea4005342b0e1d",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "57b4378357d386cf429f9a8b0add286d2fc7284bb3db390c3edf46acb8ec5dbe",
+      "testBinarySHA256": "10429545dbe720c0ef5996c6928a26a70ee9aeaaa0556e1387edcabd5b92d037",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "de52f8dada34389c64429078936c1764aa1c7bbc7df4460d8c193abde997cb41",
+    "binarySHA256": "4d9b6dd8a587113fb229fc53a92ce69c1d45e113aecb0656bc1e103d3a4d1bd8",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234",
+        "bytes": 122076
+      }
+    }
+  },
+  "standaloneAdobePSDPlaceholders": [
+    {
+      "fixture": "PhotoCraftImagingTests/Fixtures/layer-comps/ag-psd-layer-comps.psd",
+      "mergedImageSectionBytesMatched": 1202,
+      "mergedSHA256": "9f8c6f8234ecb4d5771c3a00886ef0a58fabe4255df25f803d563668136d58ad",
+      "originalSHA256": "d6b4daeed5856d1fcfd6f4ae72cf10c9ac91a415d6e9db26da483027b6ded366"
+    },
+    {
+      "fixture": "PhotoCraftImagingTests/Fixtures/reference-layers-minimal-gradient-fill.psd",
+      "mergedImageSectionBytesMatched": 386,
+      "mergedSHA256": "7520d7b17ca8a0a2cac6ae5774b772fe2bff2ccd44fc0b68e008a90c6f5297ab",
+      "originalSHA256": "8d995a89eee1b4b11e0639cb4546e46aff8c9fd168a7b7ddfb4abb9f4b75e806"
+    },
+    {
+      "fixture": "PhotoCraftImagingTests/Fixtures/reference-layers-minimal-pattern-fill.psd",
+      "mergedImageSectionBytesMatched": 386,
+      "mergedSHA256": "7520d7b17ca8a0a2cac6ae5774b772fe2bff2ccd44fc0b68e008a90c6f5297ab",
+      "originalSHA256": "c1f7bb729d8476f328388ed58fd9fadc72819426b23b45f7cbf9ece1b0e36865"
+    }
+  ],
+  "embeddedPhotoshop2026PSBPlaceholders": [
+    {
+      "source": "PhotoCraftImagingTests/Fixtures/select-mask-smart/observed-new-layer-with-mask.psd",
+      "sourceSHA256": "c80594960253533d64bdbdbf374cf2d90df846ad6c024b31b6faf40dcad033c3",
+      "sourceEmbeddedOffset": 23756,
+      "matchedPlaceholderBytes": 866,
+      "placeholderSHA256": "45bf98c76acf7ce1c113ea95c4e3f100a11749e504e0a0bdc4733428a550d6e7",
+      "reopenedEditableAndRenderedSamplesMatch": true
+    },
+    {
+      "source": "PhotoCraftImagingTests/Fixtures/select-mask-smart/observed-smart-object-layer-mask.psd",
+      "sourceSHA256": "bbedaf4fc128796a0948e4b504248db0559a99815d594097ec611bf2fbaca9a3",
+      "sourceEmbeddedOffset": 21636,
+      "matchedPlaceholderBytes": 866,
+      "placeholderSHA256": "45bf98c76acf7ce1c113ea95c4e3f100a11749e504e0a0bdc4733428a550d6e7",
+      "reopenedEditableAndRenderedSamplesMatch": true
+    }
+  ],
+  "nativeWorkflow": {
+    "methods": [
+      [
+        "PhotoCraftAppTests.ImageProcessorTests",
+        "testActionsSettingsRoundTripAndValidation",
+        "passed"
+      ],
+      [
+        "PhotoCraftAppTests.PhotoshopFilePreferencesTests",
+        "testCompatibilityPreferenceAndInteractiveSaveSheetPreserveSources",
+        "passed"
+      ]
+    ],
+    "exitCode": 0,
+    "requested": [
+      "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCompatibilityPreferenceAndInteractiveSaveSheetPreserveSources",
+      "PhotoCraftAppTests.ImageProcessorTests/testActionsSettingsRoundTripAndValidation"
+    ]
+  },
+  "focus": [
+    "PhotoCraftAppTests.ImageProcessorTests/testActionsSettingsRoundTripAndValidation",
+    "PhotoCraftAppTests.ImageProcessorTests/testFolderInputsCancellationAndChangedOpenSourcePublishNothing",
+    "PhotoCraftAppTests.ImageProcessorTests/testHTTPExportMatchesNativePermissionsSchemaAndStaleSources",
+    "PhotoCraftAppTests.ImageProcessorTests/testHTTPRevocationAndCancellationReturnNoArchive",
+    "PhotoCraftAppTests.ImageProcessorTests/testMultipleFormatsFitDimensionsDuplicateNamesAndOriginalPreservation",
+    "PhotoCraftAppTests.ImageProcessorTests/testNativePublicationPreservesExistingFilesRejectsSymlinksAndRollsBack",
+    "PhotoCraftAppTests.ImageProcessorTests/testNativeWorkspaceFilesOpenImagesSettingsAndMenu",
+    "PhotoCraftAppTests.ImageProcessorTests/testProfileReuseEmbeddingAndNoEnlargement",
+    "PhotoCraftAppTests.ImageProcessorTests/testQuickMaskActionHonorsHiddenOpenSnapshotInImageProcessor",
+    "PhotoCraftAppTests.PhotoshopEncodingOptionsTests/testActualHTTPPSDPSBDownloadsAndSavingUseSameBytes",
+    "PhotoCraftAppTests.PhotoshopEncodingOptionsTests/testFailedPreparedSaveAndMismatchedOptionsPreserveFileAndSettings",
+    "PhotoCraftAppTests.PhotoshopEncodingOptionsTests/testHTTPFloatZIPRequestsUseThePhotoshopCompatibleEncoding",
+    "PhotoCraftAppTests.PhotoshopEncodingOptionsTests/testNativeJobCompressionCacheAndAdobeContractBoundary",
+    "PhotoCraftAppTests.PhotoshopEncodingOptionsTests/testNativeSaveCopyAndFormatSwitchPreserveIndependentChoices",
+    "PhotoCraftAppTests.PhotoshopEncodingOptionsTests/testOptionalPSDAndPSBCompatibilityAcrossDownloadsSaveAndJobs",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testBothHTTPJobInterfacesKeepOutputContractWithPreferenceEnabled",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCancelStaleBusyAndPersistenceFailureKeepArchiveAndDocumentState",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCompatibilityPreferenceAndInteractiveSaveSheetPreserveSources",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testCopyPartialOverrideAndOtherFormatsDoNotMutateSaveSettingsOrHistory",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPCompatibilityDefaultsExplicitOverridesAndUnattendedAsk",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSeparatePermissionStrictSchemaStaleAndRecoveryIsolation",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPSharedDownloadsAndSaveUseNativePreference",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testHTTPUnreadableAndWriteFailureDoNotPublishPreference",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testLegacyMigrationReloadAndRecentUpdatesPreserveAllSettings",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testNativeDefaultsFollowPreferenceWithoutStickySaveChoicesAtAllDepths",
+    "PhotoCraftAppTests.PhotoshopFilePreferencesTests/testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testAllLayerAndMergedCompressionsRetainSamplesMasksAndMetadata",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testCancellationStopsRLEBeforePublishingAFile",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testFourPlanarMethodsAndBothRowTableWidthsRoundTripExactly",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testLayerWithPaintAcrossFirstRowFitsItsSparseBudget",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testOptionalRGB8PreviewMatchesOwnedPhotoshopPlaceholderAndKeepsEditableLayers",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testOversizedPSDRowRejectsAtomicallyWhilePSBRetainsAllBytes",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testPackBitsLayerRejectsChangedNonfiniteAndTruncatedRows",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testPackBitsLayerRetainsImplicitColorAndEveryEditedBit",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testPackBitsMatchesOriginalRustBoundaryAndRandomRows",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testRepeatedRLECacheValidationKeepsAuxiliaryRowsAndRejectsMalformedRows",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testRepeatedRowsKeepExactPlanarBytesAndCompression",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testSparseLayerRowInspectionPreservesTheLiveCursor",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testSparsePagedMergedRowsMatchOrdinaryBandsAtEveryDepth",
+    "PhotoCraftImagingTests.PSDCompressionOptionsTests/testWidePaintedRowKeepsSparseLayerAndMaskedCompositeBytes"
+  ],
+  "photoshopCrossOpen": {
+    "version": "27.2.0",
+    "window": "Photoshop Home",
+    "windowScreenshotDigests": {
+      "window": "74300c1af73c7230762ab816efc8c9f610ebf073d0960d858acf67adbae7b3e8",
+      "after-open": "74300c1af73c7230762ab816efc8c9f610ebf073d0960d858acf67adbae7b3e8",
+      "after-control": "74300c1af73c7230762ab816efc8c9f610ebf073d0960d858acf67adbae7b3e8"
+    },
+    "photatoGeneratedSmallPSBOpenedInWindow": false,
+    "adobeAuthoredMatchedPSDOpenedInWindow": false,
+    "saveScriptAppleEventError": -1712,
+    "crossOpenVerified": false
+  },
+  "limits": "Higher bit depths, saved channels, Photoshop factory preferences, exact dialog timing, live Photoshop cross-open, and physical Intel and macOS 14 runtime remain open."
+}

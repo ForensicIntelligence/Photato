@@ -78,6 +78,51 @@ final class PhotoshopEncodingOptionsTests: XCTestCase {
       XCTAssertEqual(mismatch.0.statusCode,400);XCTAssertEqual(doc.store.document,before)
     }
   }
+  @MainActor func testOptionalPSDAndPSBCompatibilityAcrossDownloadsSaveAndJobs() async throws {
+    let model = try DocumentSaveWorkflowTests().fixture(depth: .u8)
+    let bytes = try PSDCodec.writeRasterLayers(model)
+    let helper = AutomationTests()
+    let directory = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let options = RasterEncodingOptions(psdMaximizeCompatibility: false)
+    let fields = DocumentEncodingOptions.json(options)
+    let header = String(decoding: try JSONSerialization.data(withJSONObject: fields), as: UTF8.self)
+    let jobs = AutomationEncodingOptionsTests()
+    try await helper.withService(pressedMouseButtons: { 0 }, resourceTransport: Transport(bytes: bytes)) { service, doc in
+      doc.store.session = EditorSession(document: model)
+      service.setDocumentTransfersEnabled(true)
+      service.setDocumentSavesEnabled(true)
+      service.setSaveDirectory(directory)
+      service.setResourceJobsEnabled(true)
+      try service.share(doc)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      for format in [DocumentIO.Format.psd, .psb] {
+        let expected = try DocumentIO.encode(model, format: format, options: options)
+        XCTAssertNotEqual(expected, try DocumentIO.encode(model, format: format))
+        let download = try await helper.request(service, path: "/v1/documents/\(id)/file.\(format.rawValue)",
+          headers: ["X-Photato-Export-Options": header])
+        XCTAssertEqual(download.0.statusCode, 200)
+        XCTAssertEqual(download.1, expected)
+      }
+      XCTAssertTrue(doc.rememberedEncodingOptions.isEmpty)
+      let saved = try await helper.edit(service, doc, "document.saveAs",
+        ["name": "No preview", "format": "psb", "replace": false, "options": fields])
+      XCTAssertEqual(saved, 200)
+      XCTAssertEqual(doc.rememberedEncodingOptions[.psb], options)
+      XCTAssertEqual(try Data(contentsOf: directory.appendingPathComponent("No preview.psb")),
+        try DocumentIO.encode(model, format: .psb, options: options))
+      let payload = jobs.body(outputs: [jobs.output("image/vnd.adobe.photoshop", extra: ["encodingOptions": fields])])
+      let outputs = try await jobs.outputs(service, route: "/v1/action-jobs", payload: payload)
+      let imported = try AdobeActionAssets.decode(bytes)
+      XCTAssertEqual(outputs, [try DocumentIO.encode(imported, format: .psd, options: options)])
+      let adobe = try await helper.request(service, path: "/v2/execute-actions", body: payload)
+      XCTAssertEqual(adobe.0.statusCode, 422)
+      let mismatch = try await helper.request(service, path: "/v1/documents/\(id)/file.png",
+        headers: ["X-Photato-Export-Options": header])
+      XCTAssertEqual(mismatch.0.statusCode, 400)
+    }
+  }
+
   @MainActor func testHTTPFloatZIPRequestsUseThePhotoshopCompatibleEncoding() async throws {
     let helper = AutomationTests()
     let model = try DocumentSaveWorkflowTests().fixture(depth: .f32)

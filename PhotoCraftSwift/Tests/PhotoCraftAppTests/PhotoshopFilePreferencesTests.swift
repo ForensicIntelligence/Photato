@@ -32,8 +32,11 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       let preferences = RecoveryPreferencesStore(url: url)
       XCTAssertNil(preferences.loadError)
       XCTAssertFalse(preferences.value.disablePSDCompression)
+      XCTAssertEqual(preferences.value.maximizePSDCompatibility, .always)
       XCTAssertEqual(try Data(contentsOf: url), bytes)
-      var next = preferences.value; next.disablePSDCompression = true
+      var next = preferences.value
+      next.disablePSDCompression = true
+      next.maximizePSDCompatibility = .never
       try preferences.commit(next, revision: preferences.revision)
       let model = try DocumentSaveWorkflowTests().fixture()
       let file = folder.appendingPathComponent("recent\(version).photato")
@@ -82,6 +85,90 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       }
     }
   }
+  @MainActor func testCompatibilityPreferenceAndInteractiveSaveSheetPreserveSources() async throws {
+    _ = NSApplication.shared
+    let (folder, preferences, controller, doc) = try fixture(.u8)
+    defer { doc.close() }
+    let model = doc.store.document
+    let source = folder.appendingPathComponent("Compatibility.psd")
+    let withoutPreview = RasterEncodingOptions(psdMaximizeCompatibility: false)
+    let withPreview = try DocumentIO.encode(model, format: .psd)
+    let without = try DocumentIO.encode(model, format: .psd, options: withoutPreview)
+    XCTAssertNotEqual(withPreview, without)
+    let save = DocumentSaveWorkflowTests()
+    try await save.save(doc, to: source, format: .psd)
+    XCTAssertEqual(try Data(contentsOf: source), withPreview)
+    var changed = preferences.value
+    changed.maximizePSDCompatibility = .never
+    try preferences.commit(changed, revision: preferences.revision)
+    try await save.save(doc, to: source, format: .psd, operation: .saveOperation)
+    XCTAssertEqual(try Data(contentsOf: source), without)
+    XCTAssertEqual(doc.rememberedEncodingOptions[.psd], .init())
+    XCTAssertEqual(try doc.data(ofType: DocumentIO.Format.psd.typeIdentifier), without)
+    for format in [DocumentIO.Format.native, .png, .tiff] {
+      XCTAssertNil(doc.effectiveEncodingOptions(.init(), format: format).psdMaximizeCompatibility)
+    }
+    let deep = try save.fixture(depth: .u16)
+    XCTAssertNil(changed.encodingOptions(.init(), format: .psd, document: deep).psdMaximizeCompatibility)
+
+    changed.maximizePSDCompatibility = .ask
+    try preferences.commit(changed, revision: preferences.revision)
+    XCTAssertFalse(changed.shouldAskPhotoshopCompatibility(.init(), format: .psd, document: deep))
+    XCTAssertFalse(changed.shouldAskPhotoshopCompatibility(withoutPreview, format: .psd, document: model))
+    XCTAssertTrue(changed.shouldAskPhotoshopCompatibility(.init(), format: .psd, document: model))
+    XCTAssertEqual(try doc.data(ofType: DocumentIO.Format.psd.typeIdentifier), withPreview)
+    doc.makeWindowControllers()
+    doc.showWindows()
+    let window = try XCTUnwrap(doc.windowForSheet)
+    func sheet() async throws -> NSWindow {
+      let deadline = ContinuousClock.now.advanced(by: .seconds(3))
+      while window.attachedSheet == nil, ContinuousClock.now < deadline {
+        try await Task.sleep(for: .milliseconds(10))
+      }
+      return try XCTUnwrap(window.attachedSheet)
+    }
+    func buttons(_ view: NSView) -> [NSButton] {
+      (view as? NSButton).map { [$0] } ?? view.subviews.flatMap(buttons)
+    }
+    let interactiveSave = Task { try await save.save(doc, to: source, format: .psd, operation: .saveOperation) }
+    let prompt = try await sheet()
+    XCTAssertTrue(doc.fileOperationBusy)
+    XCTAssertFalse(doc.canRunFileCommand)
+    let controls = buttons(try XCTUnwrap(prompt.contentView))
+    let option = try XCTUnwrap(controls.first { $0.title == "Maximize Compatibility" })
+    XCTAssertEqual(option.state, .on)
+    XCTAssertGreaterThan(option.frame.width, 0)
+    try XCTUnwrap(controls.first { $0.title == "Save" }).performClick(nil)
+    try await interactiveSave.value
+    XCTAssertEqual(try Data(contentsOf: source), withPreview)
+    XCTAssertEqual(doc.rememberedEncodingOptions[.psd], .init())
+
+    let target = folder.appendingPathComponent("Compatibility copy.psb")
+    let copy = Task { try await doc.copyDocument(to: target, format: .psb, interactiveCompatibility: true) }
+    let copyPrompt = try await sheet()
+    let copyButtons = buttons(try XCTUnwrap(copyPrompt.contentView))
+    try XCTUnwrap(copyButtons.first { $0.title == "Maximize Compatibility" }).performClick(nil)
+    try XCTUnwrap(copyButtons.first { $0.title == "Save" }).performClick(nil)
+    try await copy.value
+    XCTAssertEqual(try Data(contentsOf: target), try DocumentIO.encode(model, format: .psb, options: withoutPreview))
+    XCTAssertEqual(doc.fileURL, source)
+    XCTAssertNil(doc.rememberedEncodingOptions[.psb])
+
+    let cancelled = Task { try await save.save(doc, to: source, format: .psd, operation: .saveOperation) }
+    let cancelPrompt = try await sheet()
+    let cancel = try XCTUnwrap(buttons(try XCTUnwrap(cancelPrompt.contentView)).first { $0.title == "Cancel" })
+    cancel.performClick(nil)
+    do {
+      try await cancelled.value
+      XCTFail("The cancelled save completed.")
+    } catch let error as CocoaError { XCTAssertEqual(error.code, .userCancelled) }
+    XCTAssertEqual(try Data(contentsOf: source), withPreview)
+    XCTAssertEqual(doc.store.document, model)
+    XCTAssertTrue(doc.store.session.undoStack.isEmpty)
+    XCTAssertFalse(doc.fileOperationBusy)
+    _ = controller
+  }
+
   @MainActor func testOrdinarySaveReevaluatesDefaultAndExplicitOptionsStayAuthoritative() async throws {
     let (folder, _, controller, doc) = try fixture(.f32); defer { doc.close() }
     let target = folder.appendingPathComponent("ordinary.psb")
@@ -164,11 +251,13 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       let unauthorized = try await helper.request(service, path: route, authenticate: false)
       XCTAssertEqual(unauthorized.0.statusCode, 401)
       service.setPreferenceChangesEnabled(true)
-      var body: [String: Any] = ["revision": preferences.revision.uuidString, "disablePSDCompression": true]
+      var body: [String: Any] = ["revision": preferences.revision.uuidString, "disablePSDCompression": true,
+        "maximizePSDCompatibility": "never"]
       let denied = try await helper.request(service, path: route, body: body)
       XCTAssertEqual(denied.0.statusCode, 403)
       service.setPhotoshopPreferenceChangesEnabled(true)
-      for (key, value) in [("disablePSDCompression", 1 as Any), ("revision", "bad" as Any), ("unknown", false as Any)] {
+      for (key, value) in [("disablePSDCompression", 1 as Any), ("revision", "bad" as Any),
+        ("maximizePSDCompatibility", "sometimes" as Any), ("unknown", false as Any)] {
         var bad = body; bad[key] = value
         let invalid = try await helper.request(service, path: route, body: bad)
         XCTAssertEqual(invalid.0.statusCode, 400)
@@ -181,6 +270,8 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       XCTAssertEqual(busy.0.statusCode, 409)
       let accepted = try await helper.request(service, path: route, body: body)
       XCTAssertEqual(accepted.0.statusCode, 200)
+      XCTAssertEqual(preferences.value.maximizePSDCompatibility, .never)
+      XCTAssertEqual(service.photoshopFilePreferencesState["maximizePSDCompatibility"] as? String, "never")
       let stale = try await helper.request(service, path: route, body: body)
       XCTAssertEqual(stale.0.statusCode, 409)
       let recovery = try await helper.request(service, path: "/v1/preferences/recovery",
@@ -193,6 +284,7 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       XCTAssertEqual(recent.0.statusCode, 200)
       XCTAssertTrue(preferences.value.disablePSDCompression)
       body["revision"] = preferences.revision.uuidString; body["disablePSDCompression"] = false
+      body["maximizePSDCompatibility"] = "always"
       let reset = try await helper.request(service, path: route, body: body)
       XCTAssertEqual(reset.0.statusCode, 200)
       XCTAssertEqual(preferences.value, .init(enabled: false, intervalMinutes: 15, recentFileLimit: 7))
@@ -206,6 +298,46 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       XCTAssertFalse(service.photoshopPreferenceChangesEnabled)
     }
   }
+  @MainActor func testHTTPCompatibilityDefaultsExplicitOverridesAndUnattendedAsk() async throws {
+    let helper = AutomationTests()
+    let folder = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, doc in
+      let model = try DocumentSaveWorkflowTests().fixture()
+      doc.store.session = EditorSession(document: model)
+      service.setDocumentTransfersEnabled(true)
+      service.setDocumentSavesEnabled(true)
+      service.setSaveDirectory(folder)
+      service.setPhotoshopPreferenceChangesEnabled(true)
+      try service.share(doc)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let preferences = service.controller.recoveryPreferences
+      let disabled = RasterEncodingOptions(psdMaximizeCompatibility: false)
+      for choice in PhotoshopCompatibilityPreference.allCases {
+        let setPreference = try await helper.request(service, path: route,
+          body: ["revision": preferences.revision.uuidString, "maximizePSDCompatibility": choice.rawValue])
+        XCTAssertEqual(setPreference.0.statusCode, 200)
+        let expectedOptions: RasterEncodingOptions = choice == .never ? disabled : .init()
+        for format in [DocumentIO.Format.psd, .psb] {
+          let download = try await helper.request(service, path: "/v1/documents/\(id)/file.\(format.rawValue)")
+          XCTAssertEqual(download.0.statusCode, 200)
+          XCTAssertEqual(download.1, try DocumentIO.encode(model, format: format, options: expectedOptions))
+        }
+        let status = try await helper.edit(service, doc, "document.saveAs",
+          ["name": choice.rawValue, "format": "psb", "replace": false])
+        XCTAssertEqual(status, 200)
+        XCTAssertEqual(try Data(contentsOf: folder.appendingPathComponent(choice.rawValue + ".psb")),
+          try DocumentIO.encode(model, format: .psb, options: expectedOptions))
+        XCTAssertEqual(doc.rememberedEncodingOptions[.psb], .init())
+      }
+      let explicit = try await helper.request(service, path: "/v1/documents/\(id)/file.psb",
+        headers: ["X-Photato-Export-Options": #"{"psdMaximizeCompatibility":true}"#])
+      XCTAssertEqual(explicit.0.statusCode, 200)
+      XCTAssertEqual(explicit.1, try DocumentIO.encode(model, format: .psb))
+      XCTAssertEqual(doc.store.document, model)
+    }
+  }
+
   @MainActor func testHTTPSharedDownloadsAndSaveUseNativePreference() async throws {
     let helper = AutomationTests(), folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }

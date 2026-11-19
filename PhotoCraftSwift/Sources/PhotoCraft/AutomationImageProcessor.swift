@@ -17,7 +17,7 @@ enum ImageProcessorAPI {
      "result":"HTTP200 application/zip with JPEG/PSD/TIFF folders and image-processor.json records(source,file,width,height,format). Sources/history are unchanged. All files prepare before download; failure/revocation returns no archive.",
      "settings":"Optional per-format enable/resize/width/height; JPEG quality0–12 and sRGB conversion; TIFF LZW; embedded ICC; copyright; optional loaded Action UUID; first-image profile reuse; dontEnlarge. Native Save/Load uses the same JSON settings.",
      "limits":"Transfers enabled,1–8 explicitly shared current sources including target;8MP/512MiB each,128MiB total ZIP. Native file/folder workflow allows256 sources. Still images only; codec/Actions support limits apply. No arbitrary API filesystem access.",
-     "open":"Maximize Compatibility must currently be true. Interactive first-image Camera Raw settings, clipboard/master-palette Actions, exact encoder/resampling/defaults and live/platform parity are unqualified.",
+     "open":"Maximize Compatibility can be omitted for RGB/8 PSD files without saved channels. Interactive first-image Camera Raw settings, clipboard/master-palette Actions, exact encoder/resampling/defaults and live/platform parity are unqualified.",
      "adobe":"No dedicated Image Processor endpoint in the pinned public v2 contract. Existing published actions/edit routes remain distinct; no route or descriptor is invented."]
   }
 }

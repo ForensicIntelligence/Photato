@@ -35,6 +35,18 @@ enum PSDImageResources {
       return flag == 1
     } catch { return nil }
   }
+  static func versionInfo(hasRealMergedData: Bool) -> Data {
+    var version = PSDWriter()
+    version.n(1, 4)
+    version.n(hasRealMergedData ? 1 : 0, 1)
+    for name in ["Photato", "Photato"] {
+      version.n(name.utf16.count, 4)
+      for unit in name.utf16 { version.n(Int(unit), 2) }
+    }
+    version.n(1, 4)
+    return block(1057, data: version.data)
+  }
+
   static func blocks(_ data: Data) throws -> [Block] {
     guard data.count <= maximumBytes else {
       throw CraftError.invalid("PSD image metadata exceeds the 16 MiB limit.")

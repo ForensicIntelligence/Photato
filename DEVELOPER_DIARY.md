@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **608** · The 10 most recent entries, newest first.
+Source build **609** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 609 — Set PSD and PSB file compatibility
+
+Always includes a merged preview. Ask prompts during eligible desktop saves. Never skips the preview for RGB8 documents without saved channels. Unattended Ask saves include the preview by default.
+
+All 1,974 PSD and 1,732 PSB placeholder bytes matched across five Adobe controls. Native saves, copy and cancellation passed, along with loopback API saves and downloads for all three settings. All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_609.md).
 
 ## 2026-11-19 — Step 608 — Save full-width sparse raster edits to PSB
 
@@ -81,11 +89,3 @@ The 300,000 × 300,000 opaque-base test at 1,000 px completed in 1.27 s on Apple
 All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-600) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_600.md).
-
-## 2026-11-19 — Step 599 — Reuse wide vector-mask Feather windows
-
-The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask completed in 35.71 s on Apple Silicon and 49.08 s under Rosetta. Build 598 exceeded the 200-second cutoff on Apple Silicon. The new whole-canvas output matched all 11,560 sampled Float32 words of the previous viewport output on each architecture.
-
-All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md).

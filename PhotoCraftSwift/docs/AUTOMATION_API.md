@@ -1494,9 +1494,9 @@ Errors: invalid parameters400, disabled saving/missing folder403, missing source
 
 ## PSD and PSB compression choices (step141)
 
-The shared encoding-options object additionally accepts `psdLayerCompression` and `psdCompositeCompression` for `psd` and `psb`. Each is an optional string: `raw`, `rle`, `zip` or `zipPrediction`. Layer compression includes raster masks. Composite compression applies to the complete merged image, which is always included. Omitting a choice preserves the existing encoder default: ZIP prediction for layers/masks and raw merged data. Explicit choices preserve the same sample encoding, profile, layer structure and metadata path.
+The shared encoding-options object additionally accepts `psdLayerCompression` and `psdCompositeCompression` for `psd` and `psb`. Each is an optional string: `raw`, `rle`, `zip` or `zipPrediction`. Layer compression includes raster masks. Composite compression applies when the file includes a complete merged image. Omitting a choice preserves the existing encoder default: ZIP prediction for layers/masks and raw merged data. Explicit choices preserve the same sample encoding, profile, layer structure and metadata path.
 
-The native Save As/Copy accessory exposes independent layer/composite choices and keeps separate PSD and PSB drafts. Successful Save/Save As remembers them per format; ordinary Save reuses those successful choices. Cancelling a later accessory draft, failed/stale saves and Save a Copy do not replace remembered settings. These are current Photato per-output controls, not a claim that Photoshop’s global Disable Compression or Maximize Compatibility preferences/dialogs have been completed.
+The native Save As/Copy accessory exposes independent layer/composite choices and keeps separate PSD and PSB drafts. Successful Save/Save As remembers them per format; ordinary Save reuses those successful choices. Cancelling a later accessory draft, failed/stale saves and Save a Copy do not replace remembered settings. File Handling supplies the default compression and compatibility choices when the corresponding output options are omitted.
 
 The same two fields work in `document.save`, `document.saveAs`, the bounded `X-Photato-Export-Options` download header and `/v1/action-jobs` output `encodingOptions`. They appear in capability/parameter schemas and `saveEncodingOptions` state. Wrong enum/type/null, unknown keys or options for an unrelated format return400. The native API command/route count and permissions are unchanged. Options are a complete set, not a patch; `{}` selects defaults.
 
@@ -1796,15 +1796,16 @@ Component editing integration (step106): the earlier step102 core foundation is 
 
 `channel.target` requires `{ "channel": "Red" }` (or RGB/Green/Blue). It updates document-local target and preview state without adding document history. A target change invalidates the revision even if its preview already matches. `channel.fill` requires `{ "value": 1, "opacity": 0.5 }`; both numbers must be finite in0–1. It fills the active RGB8 pixel layer's selected component using the shared native transaction. Select an individual target first. Invalid parameters return400; busy or stale requests409; unsupported target/depth/locked/writer contexts422. Undo/Redo uses the existing shared history commands. These operations add to the original twelve document commands; they do not reinterpret layer.fill or the two view-only commands.
 
-## Photoshop file compression preferences (step142)
+## Photoshop File Handling preferences
 
-Authenticated `GET /v1/preferences/photoshop-file-handling` reads `revision`,
-`disablePSDCompression`, `isPersistent`, `canUpdate`, `isBusy` and `loadError`.
-`POST` to the same path requires the separate native **Allow Photoshop file
-preference changes** permission and exactly this JSON object:
+Authenticated `GET /v1/preferences/photoshop-file-handling` returns the current
+`revision`, `disablePSDCompression`, `maximizePSDCompatibility`, and
+`saveDialogFormats`, plus persistence, availability and error state.
+To update the settings, enable **Allow Photoshop file preference changes** in the
+native API window and send the current revision with one or more settings.
 
 ```json
-{"revision":"<current File Handling revision UUID>","disablePSDCompression":true}
+{"revision":"<current File Handling revision UUID>","maximizePSDCompatibility":"never"}
 ```
 
 The permission resets whenever the API starts or stops. Recovery-preference and
@@ -1826,18 +1827,21 @@ Each output operation snapshots its preference before background encoding;
 already-running downloads retain that snapshot. Native save/recovery operations
 and document sheets reject settings changes while busy.
 
-The version3 File Handling archive preserves recovery intervals and recent files.
-Versions1/2 load with `disablePSDCompression:false`; older readers reject version3.
-Native settings errors, stale drafts and failed writes preserve previous bytes and
-values. Preference changes do not edit documents, change Undo history, modify
-existing image files, or change recovery snapshot contents.
+Set `maximizePSDCompatibility` to `always`, `ask`, or `never`. Always includes
+a merged preview. Ask prompts on eligible desktop saves and includes the preview
+for unattended saves and downloads. Never omits the preview for RGB/8 PSD and PSB
+files without saved channels. Other documents keep their previews under the
+application preference. The version 4 settings archive records this choice and
+loads settings files without it as Always.
 
-Stateless Photato `/v1/action-jobs` and Adobe `/v2/execute-actions` retain their
-own output contracts and do not inherit desktop preferences. There is no Adobe
-application-preferences endpoint in the pinned v2 contract. No Adobe route or
-field is added. `Maximize PSD and PSB File Compatibility` and its output framing
-remain outstanding. Current guidance is recorded in the [Adobe performance
-reference](https://helpx.adobe.com/photoshop/desktop/troubleshoot/performance-stability-issues/fine-tune-photoshop-features-for-performance.html).
+A Photato API client can explicitly choose the output independently of the
+desktop preference. Set `"psdMaximizeCompatibility":false` in `options` for
+`document.save`, `document.saveAs`, or batch output. Use the same JSON in the
+`X-Photato-Export-Options` download header, or in `encodingOptions` for Photato
+`/v1/action-jobs` PSD output. Explicit omission requires RGB/8 without saved
+channels. Use `true` to include the merged preview. Adobe
+`/v2/execute-actions` uses its published compatibility default. [Adobe Firefly
+technical notes](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/technical-usage-notes/).
 
 
 ### Original PhotoCraft project input (step153, qualified subset)

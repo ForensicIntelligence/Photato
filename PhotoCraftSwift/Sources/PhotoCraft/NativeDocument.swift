@@ -341,7 +341,8 @@ import SwiftUI
       defer { self.fileOperationTask = nil }
       do {
         try await self.persistDocument(
-          to: url, format: format, operation: saveOperation, options: options, encoder: self.saveEncoder)
+          to: url, format: format, operation: saveOperation, options: options,
+          interactiveCompatibility: true, encoder: self.saveEncoder)
         completionHandler(nil)
       } catch { completionHandler(error) }
     }

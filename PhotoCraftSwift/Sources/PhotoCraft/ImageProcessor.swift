@@ -28,7 +28,6 @@ struct ImageProcessorSettings: Codable,Equatable,Sendable {
   func validate() throws {
     try jpeg.validate();try psd.validate();try tiff.validate()
     guard !formats.isEmpty,(0...12).contains(jpegQuality),copyright.utf8.count <= 4096,!copyright.contains("\0") else {throw CraftError.invalid("Select at least one output format, JPEG quality0–12 and copyright text up to4096 bytes.")}
-    guard maximizeCompatibility else {throw CraftError.unsupported("PSD output currently includes its compatibility composite. Disabling that composite is not implemented yet.")}
   }
   func encoded() throws -> Data {try validate();let encoder = JSONEncoder();encoder.outputFormatting = [.prettyPrinted,.sortedKeys];return try encoder.encode(self)}
   static func decode(_ data: Data) throws -> Self {
@@ -100,7 +99,8 @@ enum ImageProcessor {
         output.profileIsUntagged = settings.includeICC ? nil:true
         // Applied variations are output, while editable definitions stay in sources.
         output.variables = nil
-        let encoding = RasterEncodingOptions(tiffCompression:format == .tiff ? (settings.tiffLZW ? .lzw:RasterEncodingOptions.TIFFCompression.none):nil,jpegQuality:format == .jpeg ? settings.jpegQuality:nil,jpegEmbedProfile:format == .jpeg ? settings.includeICC:nil)
+        let encoding = RasterEncodingOptions(tiffCompression:format == .tiff ? (settings.tiffLZW ? .lzw:RasterEncodingOptions.TIFFCompression.none):nil,jpegQuality:format == .jpeg ? settings.jpegQuality:nil,jpegEmbedProfile:format == .jpeg ? settings.includeICC:nil,
+          psdMaximizeCompatibility: format == .psd ? settings.maximizeCompatibility : nil)
         let bytes = try DocumentIO.encode(output,format:format,options:encoding)
         guard bytes.count <= maximumBytes-total else {throw CraftError.invalid("Processed images exceed128MiB. Process fewer images at once.")}
         total += bytes.count

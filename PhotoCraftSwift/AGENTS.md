@@ -1,3 +1,5 @@
+**Source checkpoint 609.** File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_609.md).
+
 **Source checkpoint 608.** Large sparse PSD and PSB saves can stream full-width raster edits through the existing row writer. [Qualification](docs/SOURCE_PUBLICATION_608.md).
 
 **Source checkpoint 607.** Large Photoshop layers sample across their height and retain sparse storage when their channels use raw or RLE. [Qualification](docs/SOURCE_PUBLICATION_607.md).

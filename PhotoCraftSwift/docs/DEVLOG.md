@@ -627,7 +627,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 606 | 2026-11-19 | [Reopen sparse editable PSB raster layers](#dev-step-606) |
 | 607 | 2026-11-19 | [Choose sparse Photoshop layer samples across the canvas](#dev-step-607) |
 | 608 | 2026-11-19 | [Save full-width sparse raster edits to PSB](#dev-step-608) |
+| 609 | 2026-11-19 | [Set PSD and PSB file compatibility](#dev-step-609) |
 <!-- history-index:end -->
+
+<a id="dev-step-609"></a>
+
+## 2026-11-19 — Set PSD and PSB file compatibility
+
+File Handling has an Always, Ask, and Never menu for the merged preview. Photato uses Always for new profiles and existing settings files that predate this option. Adobe documents the three choices. Its current factory selection and exact prompt timing still need a live comparison. [Adobe File Handling API](https://developer.adobe.com/photoshop/uxp/2022/ps-reference/classes/preferences/preferencesfilehandling) · [Adobe option definitions](https://developer.adobe.com/photoshop/uxp/2022/ps-reference/modules/constants#maximizecompatibility).
+
+Ask presents a native confirmation sheet with the preview selected when saving eligible RGB8 documents. The sheet can also omit the preview for a copy. Cancel preserves the original file. Never omits the preview for RGB8 files without saved channels. Documents outside that scope keep their previews under the application preference. Explicit Photato export requests to omit the preview require a supported document. Image Processor uses the same encoder.
+
+The same File Handling preference is available through the authorized Photato settings API. Its unattended Ask mode includes the merged preview by default. Session-based downloads and saves use the application choice when the request omits the per-output flag. Photato action jobs accept the per-output flag. Adobe's published jobs continue to use their documented default. [Firefly technical notes](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/technical-usage-notes/).
+
+An independent parser compared all 1,974 placeholder bytes in three Photoshop PSD files and all 1,732 bytes in two embedded PSBs authored by Photoshop 2026. Each RGB8 placeholder was white PackBits, with resource 1057 marking the merged image absent. Photato reopened both PSBs with unchanged rendered pixels and editable layers. A separate four-document PSD/PSB control preserved editable fills, layer comps and artboard guides. The placeholder comparison covers the merged data section. [Public file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+The hosted native tests exercised Always, Never, Save/Cancel on the Ask sheet, Save a Copy without its preview, and Image Processor output. The 40 focused Debug tests passed, including loopback HTTP tests for all three preferences. The desktop Photoshop save script timed out. Photoshop Home stayed visible after sending the Photato PSB and a corresponding Adobe-authored PSD. Higher depths and saved channels lack verified compatibility-off output. See `artifacts/609-psb-compatibility-reference/development-investigation01.md` for the development attempts.
+
+All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_609.md).
 
 <a id="dev-step-608"></a>
 

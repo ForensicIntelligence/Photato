@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 609 — Set PSD and PSB file compatibility
+
+Always includes a merged preview. Ask prompts during eligible desktop saves. Never skips the preview for RGB8 documents without saved channels. Unattended Ask saves include the preview by default.
+
+All 1,974 PSD and 1,732 PSB placeholder bytes matched across five Adobe controls. Native saves, copy and cancellation passed, along with loopback API saves and downloads for all three settings. All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_609.md).
+
 ## 2026-11-19 — Step 608 — Save full-width sparse raster edits to PSB
 
 The 300,000 × 300,000 RGB8 PSB with paint across the first row saved in 9.20 s on Apple Silicon and 10.40 s under Rosetta. It reopened in 1.78 s and 2.86 s respectively. All authored raster bits matched.
@@ -867,14 +875,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:608 -->
+<!-- current-status-step:609 -->
 ## Current development status — 19 November 2026
 
-Large sparse PSD and PSB saves can stream full-width raster edits through the existing row writer.
+File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files.
 
-All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 608](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_608.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-608).
+[Source checkpoint 609](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_609.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-609).
 
 <!-- current-status:end -->
 

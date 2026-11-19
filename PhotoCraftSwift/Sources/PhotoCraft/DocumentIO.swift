@@ -154,7 +154,8 @@ enum DocumentIO {
       return try PSDCodec.writeRasterLayers(document,
         compression: options.psdLayerCompression?.codec ?? .zipPrediction,
         format: format == .psd ? .psd : .psb,
-        compositeCompression: options.psdCompositeCompression?.codec ?? .raw)
+        compositeCompression: options.psdCompositeCompression?.codec ?? .raw,
+        maximizeCompatibility: options.psdMaximizeCompatibility ?? true)
     case .png: return try RasterIO.encoded(document, type: .png, options: options)
     case .jpeg: return try RasterIO.encoded(document, type: .jpeg, options: options)
     case .tiff: return try RasterIO.encoded(document, type: .tiff, options: options)

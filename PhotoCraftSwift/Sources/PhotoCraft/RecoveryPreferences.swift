@@ -8,15 +8,18 @@ struct RecoveryPreferences: Codable, Equatable {
   var intervalMinutes = 10
   var recentFileLimit = 20
   var disablePSDCompression = false
+  var maximizePSDCompatibility: PhotoshopCompatibilityPreference = .always
   var saveDialogFormats = SaveDialogFormats.defaults
   init(enabled: Bool = true, intervalMinutes: Int = 10, recentFileLimit: Int = 20,
-    disablePSDCompression: Bool = false, saveDialogFormats: Set<DocumentIO.Format> = SaveDialogFormats.defaults) {
+    disablePSDCompression: Bool = false, maximizePSDCompatibility: PhotoshopCompatibilityPreference = .always,
+    saveDialogFormats: Set<DocumentIO.Format> = SaveDialogFormats.defaults) {
     self.enabled = enabled; self.intervalMinutes = intervalMinutes; self.recentFileLimit = recentFileLimit
     self.disablePSDCompression = disablePSDCompression
+    self.maximizePSDCompatibility = maximizePSDCompatibility
     self.saveDialogFormats = saveDialogFormats
   }
   private enum CodingKeys: String, CodingKey {
-    case enabled, intervalMinutes, recentFileLimit, disablePSDCompression, saveDialogFormats
+    case enabled, intervalMinutes, recentFileLimit, disablePSDCompression, maximizePSDCompatibility, saveDialogFormats
   }
   init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -24,6 +27,8 @@ struct RecoveryPreferences: Codable, Equatable {
     intervalMinutes = try values.decode(Int.self, forKey: .intervalMinutes)
     recentFileLimit = try values.decodeIfPresent(Int.self, forKey: .recentFileLimit) ?? 20
     disablePSDCompression = try values.decodeIfPresent(Bool.self, forKey: .disablePSDCompression) ?? false
+    maximizePSDCompatibility = try values.decodeIfPresent(PhotoshopCompatibilityPreference.self,
+      forKey: .maximizePSDCompatibility) ?? .always
     if let formats = try values.decodeIfPresent([String].self, forKey: .saveDialogFormats) {
       saveDialogFormats = try SaveDialogFormats.parse(formats)
     }
@@ -34,6 +39,7 @@ struct RecoveryPreferences: Codable, Equatable {
     try values.encode(intervalMinutes, forKey: .intervalMinutes)
     try values.encode(recentFileLimit, forKey: .recentFileLimit)
     try values.encode(disablePSDCompression, forKey: .disablePSDCompression)
+    try values.encode(maximizePSDCompatibility, forKey: .maximizePSDCompatibility)
     try values.encode(SaveDialogFormats.ordered(saveDialogFormats).map(\.rawValue), forKey: .saveDialogFormats)
   }
   var delay: TimeInterval { enabled ? TimeInterval(intervalMinutes * 60) : 0 }

@@ -286,6 +286,42 @@ final class PSDCompressionOptionsTests: XCTestCase {
     _ = try reader.view(length)
     return try reader.bytes(reader.remaining)
   }
+  func testOptionalRGB8PreviewMatchesOwnedPhotoshopPlaceholderAndKeepsEditableLayers() throws {
+    let fixtures = try XCTUnwrap(Bundle.module.url(forResource: "Fixtures", withExtension: nil))
+    let reference = try Data(contentsOf: fixtures.appendingPathComponent("reference-layers-minimal-gradient-fill.psd"))
+    let document = try PSDCodec.read(reference)
+    let directory = try PSDFileOutputTests().directory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    for format in PSDFileFormat.allCases {
+      let packed = try PSDCodec.writeRasterLayers(document, format: format, maximizeCompatibility: false)
+      var reader = PSDReader(data: packed)
+      _ = try reader.bytes(26)
+      _ = try reader.section()
+      let resources = try PSDImageResources.blocks(try reader.section().data)
+      XCTAssertEqual(PSDImageResources.hasRealMergedData(resources), false)
+      let placeholder = try merged(packed, format)
+      if format == .psd {
+        XCTAssertEqual(placeholder, try merged(reference, .psd))
+      } else {
+        let table = Data([0, 0, 0, 2])
+        let row = Data([225, 255])
+        XCTAssertEqual(placeholder, Data([0, 1]) +
+          PSDChannelWriter.repeating(table, count: 96) + PSDChannelWriter.repeating(row, count: 96))
+      }
+      let output = directory.appendingPathComponent(format == .psd ? "No preview.psd" : "No preview.psb")
+      try PSDCodec.writeRasterLayers(document, to: output, format: format, maximizeCompatibility: false)
+      XCTAssertEqual(try Data(contentsOf: output), packed)
+      let reopened = try PSDCodec.read(output)
+      let layer = try XCTUnwrap(reopened.layers.first)
+      guard case .gradientFill = layer.content else {
+        return XCTFail("The gradient fill did not remain editable.")
+      }
+      XCTAssertEqual(try Renderer.composite(reopened), try Renderer.composite(document))
+      XCTAssertEqual(try PSDCodec.writeRasterLayers(document, format: format, maximizeCompatibility: true),
+        try PSDCodec.writeRasterLayers(document, format: format))
+    }
+  }
+
   func testAllLayerAndMergedCompressionsRetainSamplesMasksAndMetadata() throws {
     let folder = try PSDFileOutputTests().directory();defer { try? FileManager.default.removeItem(at:folder) }
     for depth in PixelDepth.allCases {

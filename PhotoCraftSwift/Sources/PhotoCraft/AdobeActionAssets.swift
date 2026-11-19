@@ -144,7 +144,8 @@ enum AdobeActionAssets {
           data = try PSDCodec.writeRasterLayers(converted,
             compression: output.encodingOptions.psdLayerCompression?.codec ?? .zipPrediction,
             compositeCompression: output.encodingOptions.psdCompositeCompression?.codec ?? .raw,
-            maximumBytes: maximumResourceBytes)
+            maximumBytes: maximumResourceBytes,
+            maximizeCompatibility: output.encodingOptions.psdMaximizeCompatibility ?? true)
         case .jpeg:
           data = try DocumentIO.encode(converted, format: output.mediaType.format!, options: output.encodingOptions)
         case .png, .tiff:

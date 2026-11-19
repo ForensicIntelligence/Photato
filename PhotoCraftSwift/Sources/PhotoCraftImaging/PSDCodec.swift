@@ -933,6 +933,7 @@ public enum PSDCodec {
       // Embedded PSB sources can retain unused backing-file capacity here.
       // The explicit Version Info flag makes decoded layers authoritative.
       _ = try r.view(r.remaining)
+      try PSDArtboards.read(into: &doc)
       try PSDLayerComps.read(into: &doc)
       try doc.validate()
       try source.validateUnchanged()
@@ -1028,37 +1029,45 @@ public enum PSDCodec {
     try source.validateUnchanged()
     return doc
   }
+  /// Documents whose layer records retain all image data when omitting the merged preview.
+  public static func canOmitMergedImage(_ doc: CraftDocument) -> Bool {
+    doc.colorMode == .rgb && doc.depth == .u8 && !doc.hasAuxiliaryChannels
+      && doc.inkMode == nil && doc.restrictedMode == nil && !doc.isChannelOnly && !doc.layers.isEmpty
+  }
+
   public static func writeRasterLayers(
     _ doc: CraftDocument, compression: PSDCompression = .zipPrediction,
     format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw,
-    maximumBytes: Int = maximumInputBytes
+    maximumBytes: Int = maximumInputBytes, maximizeCompatibility: Bool = true
   ) throws -> Data {
     guard (1...maximumInputBytes).contains(maximumBytes) else {
       throw CraftError.invalid("Invalid Photoshop Data output budget.")
     }
     let output = PSDOutput(maximumBytes: maximumBytes)
     try writeRasterLayers(doc, compression: compression, format: format,
-      compositeCompression: compositeCompression, output: output)
+      compositeCompression: compositeCompression, output: output, maximizeCompatibility: maximizeCompatibility)
     return output.data
   }
 
   /// Atomic native file output using the same serialization as API Data responses.
   public static func writeRasterLayers(
     _ doc: CraftDocument, to url: URL, compression: PSDCompression = .zipPrediction,
-    format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw
+    format: PSDFileFormat = .psd, compositeCompression: PSDCompression = .raw,
+    maximizeCompatibility: Bool = true
   ) throws {
     let maximumBytes=format == .psd ? maximumPSDFileBytes:maximumFileBytes
     let file = try AtomicFileWriter(to: url, maximumBytes: maximumBytes)
     try writeRasterLayers(
       doc, compression: compression, format: format,
-      compositeCompression: compositeCompression, output: PSDOutput(file: file,maximumBytes:maximumBytes))
+      compositeCompression: compositeCompression, output: PSDOutput(file: file,maximumBytes:maximumBytes),
+      maximizeCompatibility: maximizeCompatibility)
     try file.commit()
   }
 
   static func writeRasterLayers(
     _ doc: CraftDocument, compression: PSDCompression, format: PSDFileFormat,
     compositeCompression requestedCompositeCompression: PSDCompression = .raw,
-    output: PSDOutput, includeComposite: Bool = true
+    output: PSDOutput, includeComposite: Bool = true, maximizeCompatibility: Bool = true
   ) throws {
     try Task.checkCancellation()
     try doc.validate()
@@ -1069,6 +1078,9 @@ public enum PSDCodec {
     case .zip: compositeCompression = .raw
     case .zipPrediction where doc.colorMode != .bitmap: compositeCompression = .raw
     default: compositeCompression = requestedCompositeCompression
+    }
+    if !maximizeCompatibility, !includeComposite || !canOmitMergedImage(doc) {
+      throw CraftError.unsupported("Disabling Maximize Compatibility currently requires RGB/8 without saved channels.")
     }
     let unmanagedColorMetadata=try PSDColorMetadata.unmanagedRGBOutput(doc)
     let exportedLight = try PSDGlobalLight.exportLight(doc)
@@ -1096,8 +1108,8 @@ public enum PSDCodec {
     let compOutput = try PSDLayerComps.prepare(doc)
     let auxiliaryChannels=PSDAuxiliaryChannels.all(doc)
     guard includeComposite || auxiliaryChannels.isEmpty else {throw CraftError.unsupported("Auxiliary channel export requires complete PSD/PSB merged planes; TIFF mapping remains separate.")}
-    let gray32Composite = try includeComposite ? PSDGray32CompositeRows(doc) : nil
-    let mergedTransparency = try gray32Composite?.hasOpaqueBackground != true
+    let gray32Composite = try includeComposite && maximizeCompatibility ? PSDGray32CompositeRows(doc) : nil
+    let mergedTransparency = try maximizeCompatibility && gray32Composite?.hasOpaqueBackground != true
       && PSDAuxiliaryChannels.mergedTransparency(doc)
     guard !doc.layers.isEmpty, doc.width <= format.maximumDimension,
       doc.height <= format.maximumDimension
@@ -1155,6 +1167,7 @@ public enum PSDCodec {
     let originalResources = doc.sourceMetadata?["psdResources"] ?? Data()
     let retainedResources = compOutput.layerIDs.isEmpty ? originalResources : try PSDImageResources.blocks(originalResources).filter { $0.id != 1065 }.reduce(into: Data()) { $0.append($1.raw) }
     resources.data = try PSDImageResources.preserved(retainedResources,preservingLayerLinks:true)
+    if !maximizeCompatibility { resources.data.append(PSDImageResources.versionInfo(hasRealMergedData: false)) }
     if let compResource = compOutput.resource { resources.data.append(compResource) }
     resources.data.append(try PSDAuxiliaryChannels.resources(doc,first:colorChannels+(mergedTransparency ? 1:0)))
     if let metadata = try RasterMetadata.metadata(
@@ -1583,6 +1596,13 @@ public enum PSDCodec {
     }
     try output.finishLength(maskLength, width: format.sectionLengthBytes)
     if !includeComposite { return }
+    if !maximizeCompatibility {
+      // Photoshop writes a white RGB/8 PackBits placeholder with no merged alpha.
+      let white = [UInt8](repeating: 255, count: doc.width)
+      try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth, compression: .rle,
+        channels: colorChannels, format: format, to: output, repeatedRows: { _ in doc.height }) { _ in white }
+      return
+    }
     let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
       || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
       ? PSDCompositeRows(doc,transparency:mergedTransparency):nil

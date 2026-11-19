@@ -40,7 +40,8 @@ enum DocumentPersistenceConflict: LocalizedError {
     let methods = RasterEncodingOptions.PhotoshopCompression.allCases
     return .init(
       psdLayerCompression: mode.isRestricted || mode == .multichannel || psdLayerCompression.indexOfSelectedItem <= 0 ? nil : methods[psdLayerCompression.indexOfSelectedItem - 1],
-      psdCompositeCompression: psdCompositeCompression.indexOfSelectedItem <= 0 ? nil : methods[psdCompositeCompression.indexOfSelectedItem - 1])
+      psdCompositeCompression: psdCompositeCompression.indexOfSelectedItem <= 0 ? nil : methods[psdCompositeCompression.indexOfSelectedItem - 1],
+      psdMaximizeCompatibility: photoshopFormat.flatMap { photoshopOptions[$0]?.psdMaximizeCompatibility })
   }
   var format: DocumentIO.Format { availableFormats[formats.indexOfSelectedItem] }
   var encodingOptions: RasterEncodingOptions {
@@ -228,7 +229,8 @@ enum DocumentPersistenceConflict: LocalizedError {
   /// of the document, clears its dirty state, or alters its history.
   func copyDocument(
     to url: URL, format: DocumentIO.Format, allowReplacingSource: Bool = false,
-    options: RasterEncodingOptions = .init(), encoder: DocumentIO.Encoder? = nil
+    options: RasterEncodingOptions = .init(), interactiveCompatibility: Bool = false,
+    encoder: DocumentIO.Encoder? = nil
   ) async throws {
     guard canRunFileCommand else {
       throw CraftError.invalid("Finish the current document operation.")
@@ -252,7 +254,6 @@ enum DocumentPersistenceConflict: LocalizedError {
     store.finishNumericField()
     store.finishLayerName()
     let snapshot = store.document
-    let effectiveOptions = effectiveEncodingOptions(options, format: format)
     let source = revertSourceURL
     let generation = store.layerPanelGeneration
     fileOperationBusy = true
@@ -260,6 +261,10 @@ enum DocumentPersistenceConflict: LocalizedError {
       fileOperationBusy = false
       preparedSaveOutput = nil
     }
+    let effectiveOptions = try await fileOperationEncodingOptions(options, format: format, document: snapshot,
+      destination: url, persistence: false, interactive: interactiveCompatibility)
+    guard store.document == snapshot, store.layerPanelGeneration == generation,
+      revertSourceURL == source else { throw DocumentSaveConflict.changed }
     let worker = Task.detached(priority: .userInitiated) {
       try DocumentIO.prepareOutput(snapshot, format: format, persistence: false, options: effectiveOptions, encoder: encoder)
     }
@@ -365,8 +370,10 @@ enum DocumentPersistenceConflict: LocalizedError {
         defer { self.fileOperationTask = nil }
         do {
           try await self.copyDocument(to: url, format: accessory.format, allowReplacingSource: true,
-            options: accessory.encodingOptions)
-        } catch is CancellationError {} catch { self.store.error = error.localizedDescription }
+            options: accessory.encodingOptions, interactiveCompatibility: true)
+        } catch is CancellationError {
+        } catch let error as CocoaError where error.code == .userCancelled {
+        } catch { self.store.error = error.localizedDescription }
       }
     }
     if let window = windowForSheet {

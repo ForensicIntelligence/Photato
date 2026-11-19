@@ -1,3 +1,7 @@
+**Source checkpoint 609.** File Handling, Image Processor and Photato API output can omit the merged preview for eligible RGB8 PSD and PSB files. [Qualification](SOURCE_PUBLICATION_609.md).
+
+Measure Photoshop compatibility-off output at 16/32 bits and with saved channels. Continue dense PSB and wide Feather validation.
+
 **Source checkpoint 608.** Large sparse PSD and PSB saves can stream full-width raster edits through the existing row writer. [Qualification](SOURCE_PUBLICATION_608.md).
 
 Continue Photoshop File Handling and measure Maximize PSD and PSB File Compatibility in owned files. Continue dense PSB and wide Feather validation.

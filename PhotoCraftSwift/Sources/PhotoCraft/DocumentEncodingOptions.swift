@@ -28,14 +28,15 @@ enum DocumentEncodingOptions {
        "tiffLayerCompression": ["type": "string", "enum": RasterEncodingOptions.TIFFLayerCompression.allCases.map(\.rawValue)],
        "psdLayerCompression": ["type": "string", "enum": RasterEncodingOptions.PhotoshopCompression.allCases.map(\.rawValue)],
        "psdCompositeCompression": ["type": "string", "enum": RasterEncodingOptions.PhotoshopCompression.allCases.map(\.rawValue)],
+       "psdMaximizeCompatibility": ["type": "boolean"],
      ]]
   }
   static var capabilities: [String: Any] {
     ["schema": schema,
      "formats": ["exr":["exrCompression","exrSample","exrTransparency"], "jpeg": ["jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile"], "png": ["pngCompression", "pngInterlaced"],
        "tiff": ["tiffCompression", "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffLayerCompression"],
-       "psd": ["psdLayerCompression", "psdCompositeCompression"],
-       "psb": ["psdLayerCompression", "psdCompositeCompression"]],
+       "psd": ["psdLayerCompression", "psdCompositeCompression", "psdMaximizeCompatibility"],
+       "psb": ["psdLayerCompression", "psdCompositeCompression", "psdMaximizeCompatibility"]],
      "jpeg": "Quality0...12 maps to ImageIO quality/12; omitted quality retains0.95. Baseline uses platform coding; optimized recodes only Huffman entropy in native Swift; progressive uses the platform scan schedule. Matte is three sRGB values0...1, default white. jpegEmbedProfile=false removes ICC APP2 records without converting samples; True explicitly embeds the working ICC; omitted preserves platform profile signaling, which may use EXIF sRGB without an ICC segment. JPEG always flattens to opaque8-bit (HDR uses SDR sRGB). Photoshop quantization,3–5 progressive scan choice, dialog/default and byte parity remain unqualified.",
      "openEXR":["routes":["GET /v1/documents/{id}/file.exr","POST /v1/documents/import","document.saveAs","document.save","Native Open/Save/Copy"],
        "jobSupport":"OpenEXR is not an advertised Adobe v2 or Photato action-job output media type. Existing published output contracts are unchanged.",
@@ -44,12 +45,12 @@ enum DocumentEncodingOptions {
        "limits":"512MiB encoded input/output, 128MiB scan-line block, up to1GiB import workspace; API transfer budgets remain separate. Other compression, tiled/deep/multipart/AOV/UINT/subsampled data, non-square pixels, non-sRGB chromaticities and non-finite or out-of-range alpha reject. Full Photoshop format/default/output parity remains unqualified."],
      "downloadHeader": "X-Photato-Export-Options",
      "downloadHeaderEncoding": "JSON object, at most 2048 UTF-8 bytes; same schema as command parameters.options.",
-     "defaults": "Omitted choices retain existing encoder behavior. PNG levels 0...9 recompress IDAT; interlacing uses Adam7. TIFF tags1/5/8 mean None/LZW/ZIP. PSD/PSB defaults remain ZIP prediction for layer/mask channels and raw merged image. Explicit raw/rle/zip/zipPrediction choices are lossless; a complete merged image is always included.",
+     "defaults": "Omitted choices retain existing encoder behavior. PNG levels 0...9 recompress IDAT; interlacing uses Adam7. TIFF tags1/5/8 mean None/LZW/ZIP. PSD/PSB defaults remain ZIP prediction for layer/mask channels and raw merged image. Explicit raw/rle/zip/zipPrediction choices are lossless. A complete merged image is included by default.",
      "photoshopTaggedBlocks": ["psdSignature":"8BIM", "psdLengthBytes":4,
        "psbWideSignature":"8B64", "psbWideLengthBytes":8,
        "scope":"Supported wide PSB layer/global blocks, including saved paths, mask display, embedded Smart Objects/filter caches and retained Multichannel metadata. Ordinary PSB blocks keep8BIM/four-byte lengths. Shared native file, Photato transfer/job and published Adobe output serializers; no new format option or route.",
        "limits":"Correct block framing does not qualify every retained descriptor, compression/context, Photoshop output or maximum physical capacity."],
-     "photoshopCompression": "Layer and merged-image compression may be selected independently. A zip request for 32-bit PSD/PSB layer channels writes ZIP with prediction. Supported ZIP requests for the merged image write raw data, which Photoshop can open. RLE rows use 16-bit lengths in PSD and 32-bit lengths in PSB. A PSD RLE row above 65,535 encoded bytes is rejected. Save/Copy stage the same streaming serializer used for Data responses. The File Handling disablePSDCompression preference resolves omitted choices to raw for 16/32-bit native saves/copies and shared document downloads. Explicit choices override it. Resource jobs keep independent output defaults. See photoshopFilePreferences for the available controls. Maximize Compatibility remains unimplemented.",
+     "photoshopCompression": "Layer and merged-image compression may be selected independently. A zip request for 32-bit PSD/PSB layer channels writes ZIP with prediction. Supported ZIP requests for the merged image write raw data, which Photoshop can open. RLE rows use 16-bit lengths in PSD and 32-bit lengths in PSB. A PSD RLE row above 65,535 encoded bytes is rejected. Save/Copy stage the same streaming serializer used for Data responses. The File Handling disablePSDCompression preference resolves omitted choices to raw for 16/32-bit native saves/copies and shared document downloads. Explicit choices override it. Resource jobs keep independent output defaults. See photoshopFilePreferences for the available controls. For RGB/8 without saved channels, psdMaximizeCompatibility=false writes an RLE placeholder and preserves the layers. The merged-image compression setting applies when a complete merged image is written. This Photato option is available to commands, downloads and Photato resource jobs.",
      "nativeState": "Successful Save/Save As remembers requested options for that format in the open document, retaining omitted fields so future default saves follow File Handling. saveEncodingOptions reports requested choices; effectiveSaveEncodingOptions applies current preferences and defaults TIFF layer preservation to true. Save a Copy and downloads do not change remembered save settings. Cancel/failure does not adopt settings. Per-document options are session state, not document content; application defaults persist separately.",
      "tiffStorage": "Explicit bigEndian/littleEndian and interleaved/perChannel choices use native Swift TIFF strip layout. tiffPredictor=true requires a32-bit document and explicit lzw or zip compression. False disables prediction. Omitted storage fields preserve platform defaults; when a storage field is explicit and compression is omitted, compression is None. Supported import decodes unassociated RGB/RGBA8/16/Float32 None/LZW/ZIP strips and integer/float predictors directly when the embedded and working profiles match. Planar associated-alpha samples are assembled natively before the established CoreGraphics conversion; other supported layouts use ImageIO/ColorSync.",
      "limits": "Lossless compression retains the rendering/color/depth/metadata path; it is not a claim of complete Photoshop file-byte equivalence. TIFF supports RGB/Gray8/16/32, CMYK/Lab8/16 and flat Indexed8/Bitmap1 with supported transparency and profiles, bounded to512MiB encoded data. Explicit tiffLayers=true retains supported PSD layers/masks/groups/paths using big-endian structures by default; both byte orders support numeric adjustments and vector masks. Little-endian fill/path descriptors and opaque records remain guarded. tiffLayerCompression is rle or zip (default zip), requires tiffLayers=true, and is independent of composite compression. Ordinary Save defaults to preserving layers except for inherently flat Indexed/Bitmap documents; explicit false cannot flatten editable layered content in ordinary Save. Copy/download/job defaults remain flattened. Pyramids, JPEG compression,16/24-bit floating point, Duotone/Multichannel and full TIFF workflows remain unimplemented. Restricted storage limits are listed in documentTransfers.restrictedFormats. Photoshop JPEG quantization/scans and full format-specific workflows remain open.",
@@ -74,6 +75,7 @@ enum DocumentEncodingOptions {
     if let value = options.tiffLayerCompression { result["tiffLayerCompression"] = value.rawValue }
     if let value = options.psdLayerCompression { result["psdLayerCompression"] = value.rawValue }
     if let value = options.psdCompositeCompression { result["psdCompositeCompression"] = value.rawValue }
+    if let value = options.psdMaximizeCompatibility { result["psdMaximizeCompatibility"] = value }
     return result
   }
   static func parse(_ value: AutomationValue?, format: DocumentIO.Format) throws -> RasterEncodingOptions? {
@@ -81,7 +83,7 @@ enum DocumentEncodingOptions {
     guard case .object(let fields) = value,
       Set(fields.keys).isSubset(of: ["exrCompression","exrSample","exrTransparency","jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile", "pngCompression", "pngInterlaced", "tiffCompression",
         "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffLayerCompression",
-        "psdLayerCompression", "psdCompositeCompression"]) else {
+        "psdLayerCompression", "psdCompositeCompression", "psdMaximizeCompatibility"]) else {
       throw AutomationFailure(status: 400, message: "Expected supported encoding options.")
     }
     var result = RasterEncodingOptions()
@@ -186,6 +188,12 @@ enum DocumentEncodingOptions {
         if key == "psdLayerCompression" { result.psdLayerCompression = compression }
         else { result.psdCompositeCompression = compression }
       }
+    }
+    if let raw = fields["psdMaximizeCompatibility"] {
+      guard case .bool(let enabled) = raw else {
+        throw AutomationFailure(status: 400, message: "psdMaximizeCompatibility must be boolean.")
+      }
+      result.psdMaximizeCompatibility = enabled
     }
     do { try result.validate(for: format.contentType) } catch {
       throw AutomationFailure(status: 400, message: error.localizedDescription)

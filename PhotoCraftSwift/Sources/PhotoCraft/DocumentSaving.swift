@@ -18,7 +18,7 @@ import PhotoCraftImaging
   /// handing immutable bytes or a private staged file to AppKit. Neither a failed nor stale encode touches the file.
   func persistDocument(
     to url: URL, format: DocumentIO.Format, operation: NSDocument.SaveOperationType,
-    options requestedOptions: RasterEncodingOptions? = nil,
+    options requestedOptions: RasterEncodingOptions? = nil, interactiveCompatibility: Bool = false,
     validate: () throws -> Void = {},
     maximumPreparedBytes: Int? = nil, encoder: DocumentIO.Encoder? = nil
   ) async throws {
@@ -42,12 +42,15 @@ import PhotoCraftImaging
     let source = revertSourceURL
     let options = requestedOptions ?? compatibleRememberedEncodingOptions[format] ?? .init()
     try options.validate(for: format.contentType)
-    let effectiveOptions = effectiveEncodingOptions(options, format: format, persistence: true)
     fileOperationBusy = true
     defer {
       fileOperationBusy = false
       preparedSaveOutput = nil
     }
+    let effectiveOptions = try await fileOperationEncodingOptions(options, format: format, document: snapshot,
+      destination: url, persistence: true, interactive: interactiveCompatibility)
+    guard store.document == snapshot, store.layerPanelGeneration == generation,
+      revertSourceURL == source else { throw DocumentSaveConflict.changed }
     let worker = Task.detached(priority: .userInitiated) {
       let output = try DocumentIO.prepareOutput(snapshot, format: format, persistence: true, options: effectiveOptions, encoder: encoder)
       return (output, try output.contentDigest())

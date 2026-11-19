@@ -72,7 +72,8 @@ final class PreparedDocumentFile: Sendable {
       try PSDCodec.writeRasterLayers(model, to: url,
         compression: options.psdLayerCompression?.codec ?? .zipPrediction,
         format: format == .psd ? .psd : .psb,
-        compositeCompression: options.psdCompositeCompression?.codec ?? .raw)
+        compositeCompression: options.psdCompositeCompression?.codec ?? .raw,
+        maximizeCompatibility: options.psdMaximizeCompatibility ?? true)
     default: throw CraftError.unsupported("This format does not use staged native output.")
     }
     self.directory = directory

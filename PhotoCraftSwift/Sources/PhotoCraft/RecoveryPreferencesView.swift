@@ -27,6 +27,14 @@ struct RecoveryPreferencesView: View {
             isOn: $draft.value.disablePSDCompression)
           Text("Use uncompressed data by default when saving 16-bit and 32-bit Photoshop files. Files may be larger. Explicit compression choices in Save As or Save a Copy take precedence.")
             .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+          Picker("Maximize PSD and PSB File Compatibility", selection: $draft.value.maximizePSDCompatibility) {
+            ForEach(PhotoshopCompatibilityPreference.allCases, id: \.self) { choice in
+              Text(choice.rawValue.capitalized).tag(choice)
+            }
+          }
+          .pickerStyle(.menu)
+          Text("Include a merged preview for other apps. Ask and Never apply to 8-bit RGB files without saved channels.")
+            .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(10)
       }
       GroupBox("Recovery Backups") {

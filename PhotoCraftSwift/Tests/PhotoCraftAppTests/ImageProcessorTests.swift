@@ -56,7 +56,14 @@ final class ImageProcessorTests: XCTestCase {
     for file in output.files where file.name.hasPrefix("TIFF/") {XCTAssertEqual(try Renderer.composite(RasterIO.read(file.data)).pixel(x:0,y:0),.black)}
     XCTAssertEqual(document,snapshot)
     XCTAssertThrowsError(try ImageProcessor.render([.init(document:document)],settings:s))
-    s.actionID = nil;s.maximizeCompatibility = false;XCTAssertThrowsError(try s.validate());s.maximizeCompatibility = true
+    s.actionID = nil
+    s.maximizeCompatibility = false
+    XCTAssertEqual(try ImageProcessorSettings.decode(s.encoded()), s)
+    let layerOnly = try ImageProcessor.render([.init(document: document)], settings: s)
+    let psd = try XCTUnwrap(layerOnly.files.first { $0.name.hasPrefix("PSD/") })
+    var resized = document
+    try Command.fitImage(.init(width: 40, height: 40, dontEnlarge: s.dontEnlarge)).apply(to: &resized)
+    XCTAssertEqual(psd.data, try DocumentIO.encode(resized, format: .psd, options: .init(psdMaximizeCompatibility: false)))
     s.jpeg.width = 0;XCTAssertThrowsError(try s.validate());s.jpeg.width = 20;s.jpegQuality = 13;XCTAssertThrowsError(try s.validate())
     XCTAssertThrowsError(try ImageProcessor.render([.init(document:document)],settings:settings(),maximumBytes:1))
     XCTAssertThrowsError(try ImageProcessor.render([],settings:settings()))
