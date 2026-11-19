@@ -617,6 +617,54 @@ final class VectorRenderTests: XCTestCase {
     print("Solid Feather: \(patches) patches for a \(width) × \(height) canvas")
   }
 
+  func testWideFeatherRepeatingCanvasEdgesKeepTheExactComposite() throws {
+    let width = 9_837, height = 1_369
+    let outline = PathComponent(knots: [
+      PathKnot(PathPoint(-1_200, 312), outgoing: PathPoint(-1_200, -295)),
+      PathKnot(PathPoint(870, -1_200), incoming: PathPoint(95, -1_200)),
+      PathKnot(PathPoint(11_600, -1_200)), PathKnot(PathPoint(11_600, 3_200)),
+      PathKnot(PathPoint(-1_200, 3_200)),
+    ], closed: true)
+    let hole = rect(5_927.375, 545.125, 81.75, 57.375, .subtract)
+    var mask = VectorMask(path: VectorPath(components: [outline, hole], inverted: true))
+    mask.feather = 110.25
+    mask.density = 0.8125
+    let canvas = IntRect(x: 0, y: 0, width: width, height: height)
+    let sampler = try VectorFeatherCoverage(mask: mask, width: width, height: height, outside: 1)
+    let top = IntRect(x: 2_048, y: 0, width: 64, height: 64)
+    let secondTop = IntRect(x: 3_136, y: 0, width: 64, height: 64)
+    let left = IntRect(x: 0, y: 512, width: 64, height: 64)
+    let secondLeft = IntRect(x: 0, y: 576, width: 64, height: 64)
+    guard case .rows = sampler.tileSignature(in: top),
+      case .columns = sampler.tileSignature(in: left)
+    else { return XCTFail("Expected separately recognizable horizontal and vertical edge profiles") }
+    XCTAssertEqual(sampler.tileSignature(in: top), sampler.tileSignature(in: secondTop))
+    XCTAssertEqual(sampler.tileSignature(in: left), sampler.tileSignature(in: secondLeft))
+    XCTAssertNil(sampler.tileSignature(in: IntRect(x: 5_943, y: 548, width: 32, height: 32)))
+
+    var doc = try CraftDocument(width: width, height: height, depth: .f32)
+    var base = Layer(name: "Masked base", content: .fill(Pixel(0.41, 0.61, 0.25)))
+    base.vectorMask = mask
+    var raster = try Surface(width: width, height: height, depth: .f32,
+      fill: Pixel(0.22, 0.42, 0.51), colorEncoding: .linearRGB)
+    raster.setLinearPixel(x: 3_157, y: 14, Pixel(0.64, 0.2, 0.31, 0.97))
+    var upper = Layer(name: "Stored exception", content: .raster(raster))
+    upper.opacity = 0.25
+    doc.layers = [base, upper]
+    doc.activeLayerID = upper.id
+    var patches = 0
+    let output = try PagedCanvasRenderer.composite(doc, region: canvas, onPatch: { patches = $0 })
+    XCTAssertLessThan(patches, 95)
+    let facts = CompositionFacts(doc, vectorViewport: canvas)
+    for roi in [top, secondTop, left, secondLeft, IntRect(x: 9_813, y: 1_345, width: 24, height: 24),
+      IntRect(x: 5_946, y: 558, width: 39, height: 31)] {
+      let ordinary = try Renderer.compositePrepared(doc, region: roi, facts: facts)
+      XCTAssertEqual(try output.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB),
+        try ordinary.cropped(to: roi).rgbaData(depth: .f32, colorEncoding: .linearRGB), "\(roi)")
+    }
+    print("Wide Feather edge profiles: \(patches) rendered patches")
+  }
+
   private func featherTestOval(center: PathPoint, rx: Double, ry: Double) -> PathComponent {
     let x = center.x, y = center.y, k = 0.5522847498307936
     return PathComponent(knots: [

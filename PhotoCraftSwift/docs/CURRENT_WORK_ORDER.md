@@ -1,3 +1,7 @@
+**Source checkpoint 604.** Wide feathered vector masks reuse identical edge profiles in both the filter and the compositor. [Qualification](SOURCE_PUBLICATION_604.md).
+
+Move the proved large-canvas composition into the PSB output workflow. Audit the existing band and PackBits pipelines, then qualify reusable merged rows against independent bytes and real file round trips. Continue broad variable-edge Feather performance and retry live Photoshop capture when document scripting responds.
+
 **Source checkpoint 603.** Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical. [Qualification](SOURCE_PUBLICATION_603.md).
 
 Measure dense wide-Feather composition at the maximum dimensions and reduce work in repeated boundary rows. Keep the exact streaming input order, straight RGB32 samples, and file format limits. Retry live Photoshop capture when document scripting responds.

@@ -113,6 +113,7 @@ package struct FeatherSamplePlane: Sendable {
     if let surface { return surface.tileCount == 0 }
     return grid == nil && rectangle == nil
   }
+  var hasPieces: Bool { grid != nil }
 
   /// A footprint can cross cells, but every contributing sample must agree.
   func constantFeatherSample(in region: IntRect) -> Float? {
@@ -238,6 +239,18 @@ package struct FeatherSamplePlane: Sendable {
 /// Evaluate pixel-mask Feather on demand. Kernel coordinates are virtual,
 /// including when the source already spans 300,000 pixels.
 package final class FeatheredMask: Sendable {
+  package enum VectorTileSignature: Hashable, Sendable {
+    package struct ProfileSlice: Hashable, Sendable {
+      let tileLength: Int
+      let inside: Range<Int>
+      let samples: Range<Int>
+    }
+
+    case constant(UInt32)
+    case rows([ProfileSlice])
+    case columns([ProfileSlice])
+  }
+
   struct ClampedEdges: OptionSet, Sendable {
     let rawValue: UInt8
     static let left = Self(rawValue: 1)
@@ -248,11 +261,15 @@ package final class FeatheredMask: Sendable {
 
   enum Values: Sendable {
     case uniform(Float)
+    case rows([Float])
+    case columns([Float])
     case samples([Float], width: Int)
 
     func value(atX x: Int, y: Int) -> Float {
       switch self {
       case .uniform(let value): value
+      case .rows(let samples): samples[y]
+      case .columns(let samples): samples[x]
       case .samples(let samples, let width): samples[y * width + x]
       }
     }
@@ -349,8 +366,13 @@ package final class FeatheredMask: Sendable {
   }
 
   package var maximumResidentBytes: Int {
-    let templates = area != nil && source.rectangle != nil ? Self.rectangleCacheSlots : 0
-    return cacheSide * cacheSide * (cacheSlots + templates) * MemoryLayout<Float>.stride
+    let tileSamples = cacheSide * cacheSide
+    var samples = tileSamples * cacheSlots
+    if area != nil {
+      if source.rectangle != nil { samples += Self.rectangleCacheSlots * tileSamples }
+      else if source.hasPieces { samples += Self.rectangleCacheSlots * cacheSide }
+    }
+    return samples * MemoryLayout<Float>.stride
   }
 
   package func sampleInSource(x: Double, y: Double) -> Float {
@@ -427,8 +449,8 @@ package final class FeatheredMask: Sendable {
           } else if let cached = state.rectangles[window] {
             values = cached
           } else {
-            guard let samples = area.filterRectangle(window, outside: outside) else { return nil }
-            values = .samples(samples, width: tileWidth)
+            guard let filtered = area.filterRectangle(window, outside: outside) else { return nil }
+            values = filtered
             state.insert(values, for: window)
           }
         } else {
@@ -487,14 +509,11 @@ package final class FeatheredMask: Sendable {
       for column in columns {
         try Task.checkCancellation()
         guard let unitTile = withTile(column: column.tile, row: row.tile, { values in
-          switch values {
-          case .uniform(let value): return adjusted(unit(value)) == 1
-          case .samples(let values, let width):
-            for y in row.samples {
-              for x in column.samples where adjusted(unit(values[y * width + x])) != 1 { return false }
-            }
-            return true
+          if case .uniform(let value) = values { return adjusted(unit(value)) == 1 }
+          for y in row.samples {
+            for x in column.samples where adjusted(unit(values.value(atX: x, y: y))) != 1 { return false }
           }
+          return true
         }) else { throw CancellationError() }
         if !unitTile { return false }
       }
@@ -620,5 +639,45 @@ package final class FeatheredMask: Sendable {
     }
     if implicitEqualsOutside && !source.hasFeatherSamples(in: read) { return outside }
     return nil
+  }
+
+  /// On the invariant axis every complete cache window sees the same binary
+  /// rows or columns. On the other axis include window clipping and sample
+  /// phase so equal signatures give the same staged filter output.
+  package func vectorStripSignature(in region: IntRect) -> VectorTileSignature? {
+    guard let area, !area.extendEdges, source.hasPieces, source.implicit == outside,
+      outside == 0 || outside == 1, region.width > 0, region.height > 0
+    else { return nil }
+    let side = cacheSide, pad = support
+    let x = region.x - origin.x, y = region.y - origin.y
+    let right = x + region.width, bottom = y + region.height
+    guard x >= 0, y >= 0, right <= width, bottom <= height else { return nil }
+    let firstX = x / side * side, firstY = y / side * side
+    let lastX = min(width, (right + side - 1) / side * side)
+    let lastY = min(height, (bottom + side - 1) / side * side)
+    let footprint = IntRect(x: firstX + origin.x - pad, y: firstY + origin.y - pad,
+      width: lastX - firstX + 2 * pad, height: lastY - firstY + 2 * pad)
+    let read = footprint.clipped(toWidth: source.width, height: source.height)
+    let clipX = read.width != footprint.width, clipY = read.height != footprint.height
+    guard read.width > 0, read.height > 0, clipX != clipY,
+      !clipX || region.width <= Surface.tileSide,
+      source.constantFeatherSample(in: read) == 1 - outside
+    else { return nil }
+
+    func slices(start: Int, end: Int, extent: Int, offset: Int, sourceExtent: Int) -> [VectorTileSignature.ProfileSlice] {
+      stride(from: start / side * side, to: end, by: side).map { tile in
+        let length = min(side, extent - tile)
+        let inputStart = tile + offset - pad, inputLength = length + 2 * pad
+        let insideStart = min(inputLength, max(0, -inputStart))
+        let insideEnd = max(insideStart, min(inputLength, sourceExtent - inputStart))
+        return .init(tileLength: length, inside: insideStart..<insideEnd,
+          samples: max(0, start - tile)..<min(length, end - tile))
+      }
+    }
+
+    if clipY {
+      return .rows(slices(start: y, end: bottom, extent: height, offset: origin.y, sourceExtent: source.height))
+    }
+    return .columns(slices(start: x, end: right, extent: width, offset: origin.x, sourceExtent: source.width))
   }
 }

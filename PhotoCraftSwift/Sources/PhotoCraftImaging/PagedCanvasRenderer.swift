@@ -243,12 +243,13 @@ enum PagedCanvasRenderer {
   }
 
   /// Each proof covers every stored sample and Feather footprint in the run.
-  /// The ordinary compositor calculates each distinct constant tile once.
+  /// The ordinary compositor calculates each distinct constant tile or
+  /// repeating Feather profile once.
   private final class SolidFeatherTiles {
     private struct Signature: Hashable {
       let width: Int
       let height: Int
-      let coverage: [UInt32]
+      let coverage: [FeatheredMask.VectorTileSignature]
     }
 
     private let width: Int, height: Int, columns: Int
@@ -287,7 +288,7 @@ enum PagedCanvasRenderer {
         let rect = bounds(span)
         let tileWidth = min(side, rect.width)
         let fullOrSingle = span.count == 1 || rect.width % side == 0
-        let coverage = fullOrSingle ? feathers.compactMap { $0.constantFeatheredVectorCoverage(in: rect)?.bitPattern } : []
+        let coverage = fullOrSingle ? feathers.compactMap { $0.featheredVectorTileSignature(in: rect) } : []
         if coverage.count == feathers.count {
           try flush(before: span.lowerBound)
           let key = Signature(width: tileWidth, height: h, coverage: coverage)

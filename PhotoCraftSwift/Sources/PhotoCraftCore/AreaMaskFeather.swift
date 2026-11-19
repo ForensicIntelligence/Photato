@@ -165,44 +165,48 @@ struct AreaMaskFeather: Sendable {
   func rectangleWindow(source: FeatherSamplePlane, outside: Float, x: Int, y: Int,
     width: Int, height: Int) -> RectangleWindow? {
     guard streamed, !extendEdges, integerDepth == nil, source.implicit == outside,
-      outside == 0 || outside == 1, let rectangle = source.rectangle
+      outside == 0 || outside == 1
     else { return nil }
     let pad = support
     let inputWidth = width + 2 * pad, inputHeight = height + 2 * pad
-    let overlap = IntRect(x: rectangle.x - (bounds.x + x - pad),
-      y: rectangle.y - (bounds.y + y - pad), width: rectangle.width, height: rectangle.height)
-      .clipped(toWidth: inputWidth, height: inputHeight)
+    let input = IntRect(x: bounds.x + x - pad, y: bounds.y + y - pad, width: inputWidth, height: inputHeight)
+    let overlap: IntRect
+    if let rectangle = source.rectangle {
+      overlap = IntRect(x: rectangle.x - input.x, y: rectangle.y - input.y,
+        width: rectangle.width, height: rectangle.height).clipped(toWidth: inputWidth, height: inputHeight)
+    } else {
+      guard source.hasPieces else { return nil }
+      let read = input.clipped(toWidth: source.width, height: source.height)
+      guard read.width > 0, read.height > 0,
+        (read.width == inputWidth) != (read.height == inputHeight),
+        source.constantFeatherSample(in: read) == 1 - outside
+      else { return nil }
+      overlap = IntRect(x: read.x - input.x, y: read.y - input.y, width: read.width, height: read.height)
+    }
     return RectangleWindow(width: inputWidth, height: inputHeight,
       columns: overlap.x..<(overlap.x + overlap.width), rows: overlap.y..<(overlap.y + overlap.height))
   }
 
-  func filterRectangle(_ window: RectangleWindow, outside: Float) -> [Float]? {
+  func filterRectangle(_ window: RectangleWindow, outside: Float) -> FeatheredMask.Values? {
     let padding = 2 * support
     if window.columns.count == window.width {
       var column = [Float](repeating: outside, count: window.height)
       for y in window.rows { column[y] = 1 - outside }
       guard let filtered = StreamingAreaFeather.filterRepeatedColumns(column, widths: widths) else { return nil }
-      let columns = window.width - padding
-      var samples: [Float] = []
-      samples.reserveCapacity(columns * filtered.count)
-      for value in filtered { samples.append(contentsOf: repeatElement(value, count: columns)) }
-      return samples
+      return .rows(filtered)
     }
     let background = [Float](repeating: outside, count: window.width)
     var foreground = background
     for x in window.columns { foreground[x] = 1 - outside }
     if window.rows.count == window.height {
       guard let filtered = StreamingAreaFeather.filterRepeatedRows(foreground, widths: widths) else { return nil }
-      var samples: [Float] = []
-      let rows = window.height - padding
-      samples.reserveCapacity(rows * filtered.count)
-      for _ in 0..<rows { samples.append(contentsOf: filtered) }
-      return samples
+      return .columns(filtered)
     }
-    return StreamingAreaFeather.filter(width: window.width, height: window.height,
+    let filtered = StreamingAreaFeather.filter(width: window.width, height: window.height,
       widths: widths, integerSamples: false) { y in
       window.rows.contains(y) ? foreground : background
     }
+    return filtered.map { .samples($0, width: window.width - padding) }
   }
 
   /// A nil sample plane means the result is uniform across the requested tile.

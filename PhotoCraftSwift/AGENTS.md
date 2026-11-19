@@ -1,3 +1,5 @@
+**Source checkpoint 604.** Wide feathered vector masks reuse identical edge profiles in both the filter and the compositor. [Qualification](docs/SOURCE_PUBLICATION_604.md).
+
 **Source checkpoint 603.** Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical. [Qualification](docs/SOURCE_PUBLICATION_603.md).
 
 **Source checkpoint 602.** Dense feathered vector masks skip scratch rasterization for solid interior and exterior pieces and filter their coverage from the existing piece grid. [Qualification](docs/SOURCE_PUBLICATION_602.md).

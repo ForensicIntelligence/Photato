@@ -46,8 +46,11 @@ final class LayerMaskTests: XCTestCase {
         let accelerated = try XCTUnwrap(area.filterRectangle(window, outside: outside))
         let reference = try XCTUnwrap(area.prepare(source: source, outside: outside,
           x: x, y: y, width: outputWidth, height: outputHeight))
-        XCTAssertEqual(accelerated.map(\.bitPattern),
-          (reference.samples ?? [Float](repeating: reference.uniform, count: accelerated.count)).map(\.bitPattern))
+        let acceleratedWords = (0..<outputHeight).flatMap { y in
+          (0..<outputWidth).map { accelerated.value(atX: $0, y: y).bitPattern }
+        }
+        XCTAssertEqual(acceleratedWords,
+          (reference.samples ?? [Float](repeating: reference.uniform, count: acceleratedWords.count)).map(\.bitPattern))
         if shape == stripe {
           let translated = area.rectangleWindow(source: source, outside: outside,
             x: x, y: y + 512, width: outputWidth, height: outputHeight)
@@ -56,6 +59,39 @@ final class LayerMaskTests: XCTestCase {
             x: x, y: y, width: outputWidth, height: outputHeight - 1)
           XCTAssertNotEqual(window, shorter)
         }
+      }
+    }
+  }
+
+  func testClippedConstantFeatherPiecesUseExactOneDimensionalProfiles() throws {
+    let width = 2_041, height = 1_939, gap = 157
+    let area = try XCTUnwrap(AreaMaskFeather(wideRadius: 110.25, width: width, height: height))
+    let center = area.support * 2 + 457
+    let near = area.support * 2 - gap
+    for outside: Float in [0, 1] {
+      let inside = 1 - outside
+      let raster = try Surface(width: width, height: height, fill: Pixel(inside, inside, inside))
+      let source = FeatherSamplePlane(width: width, height: height, outside: outside,
+        pieces: [.init(x: 0, y: 0, samples: raster)])
+      XCTAssertNil(area.rectangleWindow(source: source, outside: outside, x: near, y: near, width: 21, height: 25))
+      for (x, y, horizontal) in [(center, near, true), (near, center, false)] {
+        let w = 23, h = 31
+        let signature = try XCTUnwrap(area.rectangleWindow(source: source, outside: outside,
+          x: x, y: y, width: w, height: h))
+        let shifted = area.rectangleWindow(source: source, outside: outside,
+          x: x + (horizontal ? 512 : 0), y: y + (horizontal ? 0 : 512), width: w, height: h)
+        XCTAssertEqual(signature, shifted)
+        let profile = try XCTUnwrap(area.filterRectangle(signature, outside: outside))
+        switch profile {
+        case .rows(let values): XCTAssertTrue(horizontal); XCTAssertEqual(values.count, h)
+        case .columns(let values): XCTAssertFalse(horizontal); XCTAssertEqual(values.count, w)
+        case .uniform, .samples: XCTFail("Expected one-dimensional Feather output")
+        }
+        let ordinary = try XCTUnwrap(area.prepare(source: source, outside: outside,
+          x: x, y: y, width: w, height: h))
+        let result = (0..<h).flatMap { row in (0..<w).map { profile.value(atX: $0, y: row).bitPattern } }
+        let expected = try XCTUnwrap(ordinary.samples).map(\.bitPattern)
+        XCTAssertEqual(result, expected)
       }
     }
   }

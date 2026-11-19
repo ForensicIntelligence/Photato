@@ -631,6 +631,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 601 | [Render sparse curved Feather from stored coverage](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) |
 | 2026-11-19 | 602 | [Skip solid pieces of dense feathered vector masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-602) |
 | 2026-11-19 | 603 | [Reuse exact composited tiles under solid vector Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-603) |
+| 2026-11-19 | 604 | [Reuse wide vector Feather profiles at canvas edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

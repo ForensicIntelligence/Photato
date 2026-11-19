@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 604 — Reuse wide vector Feather profiles at canvas edges
+
+At 110.25 px Feather, the rounded 300,000 × 300,000 control went from 5,632 rendered patches to 119. Apple Silicon went from 110.45 s to 13.47 s. Under Rosetta it went from 171.10 s to 25.76 s. All 226,872 sampled RGBA words matched the build 603 whole render on each architecture. These are single runs on the same Mac.
+
+All 307,518,180 RGBA words in four complete renders matched build 603 on each architecture. The controls include RGB8, RGB16, RGB32, an inverted group mask, and independent raster and pixel-mask edits. All 924 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_604.md).
+
 ## 2026-11-19 — Step 603 — Reuse exact composited tiles under solid vector Feather
 
 The 300,000 × 75 control went from 39 rendered patches to 15. The RGB16 wide-Feather control went from 156 to 111.
@@ -827,14 +835,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:603 -->
+<!-- current-status-step:604 -->
 ## Current development status — 19 November 2026
 
-Large feathered vector masks reuse composited tiles wherever the filter inputs and layer samples are identical.
+Wide feathered vector masks reuse identical edge profiles in both the filter and the compositor.
 
-All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 924 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 603](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-603).
+[Source checkpoint 604](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_604.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604).
 
 <!-- current-status:end -->
 

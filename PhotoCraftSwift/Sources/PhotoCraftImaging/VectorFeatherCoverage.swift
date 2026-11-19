@@ -98,6 +98,13 @@ struct VectorFeatherCoverage: Sendable {
     return plane.constantVectorCoverage(in: padded).map(adjusted)
   }
 
+  func tileSignature(in region: IntRect) -> FeatheredMask.VectorTileSignature? {
+    if let coverage = constantCoverage(in: region) { return .constant(coverage.bitPattern) }
+    guard !isRegionLimited else { return nil }
+    let padded = IntRect(x: region.x + padding, y: region.y + padding, width: region.width, height: region.height)
+    return plane.vectorStripSignature(in: padded)
+  }
+
   func rectangleIsUnit(width: Int, height: Int) throws -> Bool? {
     guard let rectangle = globalRectangle else { return nil }
     // Density is monotone over unit coverage, including when Float32 rounds

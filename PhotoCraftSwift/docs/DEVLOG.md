@@ -622,7 +622,34 @@ For a readable account of the project from the beginning, see [Photato developme
 | 601 | 2026-11-19 | [Render sparse curved Feather from stored coverage](#dev-step-601) |
 | 602 | 2026-11-19 | [Skip solid pieces of dense feathered vector masks](#dev-step-602) |
 | 603 | 2026-11-19 | [Reuse exact composited tiles under solid vector Feather](#dev-step-603) |
+| 604 | 2026-11-19 | [Reuse wide vector Feather profiles at canvas edges](#dev-step-604) |
 <!-- history-index:end -->
+
+<a id="dev-step-604"></a>
+
+## 2026-11-19 — Reuse wide vector Feather profiles at canvas edges
+
+Build 603 rendered the 300,000 × 300,000 rounded control with 110.25 px Feather in 5,632 patches. Its baseline program checked 226,872 sampled RGBA words on each architecture. A separate physical-versus-rectangular filter probe checked all 11,523,050 Float32 words per architecture across both mask polarities, eight window positions and Feather through 1,000 px. The probe is in `artifacts/604-wide-vector-cache/clipped-constant-probe01`. [Adobe PSB dimensions](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html).
+
+`AreaMaskFeather` can now identify a rectangular input when the actual binary source is uniform through the complete in-bounds window and only one axis takes the outside value. `FeatheredMask` retains just one row or column's values for those results. The existing streamed filter remains available at corners and mixed source edges. The derived-mask cache accounts for the one-dimensional profiles separately from its two-dimensional tiles.
+
+`VectorFeatherCoverage` and `LayerMaskSampler` expose signatures for repeating edge profiles. The signature includes clipped ranges, cache lengths, tile dimensions and output sample phase. `PagedCanvasRenderer` reuses composited output for equal signatures after it accounts for stored raster and pixel mask tiles. Existing opacity checks still require a constant proof.
+
+The core test checks row and column profiles against every Stage output word for both two-sided foreground values. The integration test checks both orientations, partial tiles and stored edits against ordinary composition. The frozen run is in `artifacts/604-wide-vector-cache/qualification01`.
+
+The Photoshop document-count request returned AppleEvent error −1712. All four focused Debug checks passed. The independent paired fixture programs are in `artifacts/604-wide-vector-cache/render-comparisons`.
+
+All 307,518,180 RGBA words in four complete renders matched build 603 on each architecture. The controls include RGB8, RGB16, RGB32, an inverted group mask, and independent raster and pixel-mask edits.
+
+At 110.25 px Feather, the rounded 300,000 × 300,000 control went from 5,632 rendered patches to 119. Apple Silicon went from 110.45 s to 13.47 s. Under Rosetta it went from 171.10 s to 25.76 s. All 226,872 sampled RGBA words matched the build 603 whole render on each architecture. These are single runs on the same Mac.
+
+The full-size ellipse on Apple Silicon exceeded the 520 s diagnostic limit. The full-size ellipse on Rosetta exceeded the 520 s diagnostic limit.
+
+All 924 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum.
+
+Photoshop returned an AppleEvent timeout on a read-only document count. Fresh Photoshop samples, full-size PSB export, physical Intel and macOS 14 runtime, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_604.md).
+
+Local build cleanup freed 36.9 GiB across 5,892 obsolete build outputs and compiler caches. The build 603 and 604 universal ZIPs matched their validation checksums after cleanup.
 
 <a id="dev-step-603"></a>
 
