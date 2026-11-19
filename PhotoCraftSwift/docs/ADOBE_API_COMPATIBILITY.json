@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "adjacent_clips_build581": {
+    "evidence": "docs/ADJACENT_CLIP_REFERENCES_581.json",
+    "scope": "Both local jobs apply Merge Down or Stamp Down to eligible adjacent Normal raster clips from the mergeLayersNew descriptor and its duplicate flag.",
+    "limits": "Independent and rich clipping, adjacent non-Normal clips and hosted service parity remain open."
+  },
   "screen_clipping_build580": {
     "evidence": "docs/SCREEN_CLIPPING_REFERENCES_580.json",
     "scope": "Both local ActionJSON job routes share supported RGB8 and RGB16 Screen clipping, Merge Down on the first clip, and Stamp Group.",

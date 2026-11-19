@@ -1,0 +1,415 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "a3f95059e95b6586d665bffad3df738a80f380b382faf1620b72024380e7200b",
+    "binarySHA256": "a82c27a6be358123be164548b2bb5e383b3287c5f50fe018394d07e75264e790",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 8354
+  },
+  "build": 581,
+  "firstExpansion": {
+    "exit": -10,
+    "failure": "Thread stack overflow in ActionJSON RGB32 Stamp Down"
+  },
+  "maximumSparseCanvas": [
+    300000,
+    300000
+  ],
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Independent clipping",
+    "Non-Normal adjacent clips",
+    "Physical supported platforms",
+    "Full Photoshop parity"
+  ],
+  "qualification": {
+    "caseSelectionSHA256": "0ae924adbce78fe7019778c79f4c02f8ad161842b6ab3f51941447bc940f4b40",
+    "configurations": {
+      "arm": {
+        "appSHA256": "413c7bf54dcb0d833589b71fd908fc1a061943cd3e49565c527b94cb16efdc20",
+        "testBinarySHA256": "80dc035a16729d9b4c5eff6ddbd5153b36b0d8496f0ec344b0e1f5ba68808e8d"
+      },
+      "debug": {
+        "appSHA256": "58974f2d817fee1e51d0db2a7bb93e676aed674ca86f3509b34027230ce2cdb3",
+        "testBinarySHA256": "1087693a8e6dcd3473ccd31e5078f84d7e1021a2375e1c9724ebaa4735b12599"
+      },
+      "intel": {
+        "appSHA256": "3ff85de99abd36ebd2f393e11052c6b4f5603c93efd9612fbb7e065ff23ac5c8",
+        "testBinarySHA256": "bdc7e5b59b336bfc7735b6082bf6ee9584515a1afe961ed05fb87276f0ad5f9c"
+      }
+    },
+    "focusedDebug": 81,
+    "selectedPerConfiguration": 769
+  },
+  "referenceProvenance": {
+    "files": [
+      {
+        "path": "arm-chain-16-upper-merge-visible-merged.psd",
+        "sha256": "db4002821a4b7e9b30055bc7ce54a030b14c32be101c53ba7c1aa941d54e3029"
+      },
+      {
+        "path": "arm-chain-16-upper-stamp-visible-merged.psd",
+        "sha256": "f4f5203defc52241e201d8c0f0622cd68f36536ecb28a26cdc8b0a13f6daa974"
+      },
+      {
+        "path": "arm-chain-32-upper-merge-visible-merged.psd",
+        "sha256": "e4e2752ced48a6ba5e0b254594ce0839e6799eb39b01c01e19e4f1fdffb35424"
+      },
+      {
+        "path": "arm-chain-32-upper-stamp-visible-merged.psd",
+        "sha256": "744d1e75b42071b4be18b1fd28904b157344338b7780f9b0b3bdc66dfe91b4bd"
+      },
+      {
+        "path": "arm-chain-8-upper-merge-visible-merged.psd",
+        "sha256": "0f5befbae8380c70596b0925824fd25447d9a33dfdccecde0a0efa68853177d4"
+      },
+      {
+        "path": "arm-chain-8-upper-stamp-visible-merged.psd",
+        "sha256": "1b852ecf0b69670805e3a70ad50fb7120918794e736679303338b29c16b0f553"
+      },
+      {
+        "path": "chain-16-upper-merge-visible.psd",
+        "sha256": "15af962d72adb05102c92009c60231b7565df7df88c058be2e1ba9f0d7289025"
+      },
+      {
+        "path": "chain-16-upper-stamp-hidden.psd",
+        "sha256": "0390072c02e95a2db5ff8d6dafb36778b9442182cb10da44ad01f484c31a11db"
+      },
+      {
+        "path": "chain-16-upper-stamp-visible.psd",
+        "sha256": "203bc0a63db9d98f176fff47088027d2df4dfd4854b0e2bde58afd1fc034b1aa"
+      },
+      {
+        "path": "chain-32-upper-merge-visible.psd",
+        "sha256": "1b73d792292940cc5ff574712f51635b8d0a470cc1aa0177b1ed63ec06579d2b"
+      },
+      {
+        "path": "chain-32-upper-stamp-hidden.psd",
+        "sha256": "9d8c9d234d1a403313da3edd3c6ff07141e3c97296d9f23188ba0a203545e6a6"
+      },
+      {
+        "path": "chain-32-upper-stamp-visible.psd",
+        "sha256": "c48fea822b5c28ed7e112e4b51be9cac903e75f0ee5ff5fa9abce3abd624f6d4"
+      },
+      {
+        "path": "chain-8-upper-merge-visible.psd",
+        "sha256": "96746f21cb03c5c5f45387f41955c59a966e6cb47ce82f605eba55e39d17ca5f"
+      },
+      {
+        "path": "chain-8-upper-stamp-hidden.psd",
+        "sha256": "011ddbf17b2a40521fec1a83a433f8efb1ec72db1f7bb1a1b24c98e7b48b92ad"
+      },
+      {
+        "path": "chain-8-upper-stamp-visible.psd",
+        "sha256": "46aa15710725b5f100558f7a66d182bd18bc64510a8321ae05ea7259ac5adbc8"
+      },
+      {
+        "path": "holdout-chain-16-upper-merge-source-half-merged.psd",
+        "sha256": "e0101d75a7e5a00c497c1f8d70b574e2ee152c75165873d15a832cd095439903"
+      },
+      {
+        "path": "holdout-chain-16-upper-merge-source-half.psd",
+        "sha256": "e984bb6a5e6f4da7061ee864f126cb5cb283c23a5da2a296ec35d75b356708af"
+      },
+      {
+        "path": "holdout-chain-16-upper-merge-visible-merged.psd",
+        "sha256": "0b5c69b1d8108bd12f5fed059228c64911c98c22d27e0a62085edd5da576ba9c"
+      },
+      {
+        "path": "holdout-chain-16-upper-merge-visible.psd",
+        "sha256": "7710b402cfa2d18d163463208c7f7aba431edd2abfd00c122e35f0f741dc6625"
+      },
+      {
+        "path": "holdout-chain-16-upper-stamp-destination-half-merged.psd",
+        "sha256": "d8c7d921fca0d3566258d0b5aa70c197e8b12a8e9ce35965ce329906ff404a74"
+      },
+      {
+        "path": "holdout-chain-16-upper-stamp-destination-half.psd",
+        "sha256": "c5d72ed868c8695d26400b2b221c3117795360b7614600283b794fc7eea826c2"
+      },
+      {
+        "path": "holdout-chain-16-upper-stamp-visible-merged.psd",
+        "sha256": "cdc880883f97edc86c1c84782fde23a0f8d5df538f680083ac6d250c2f89c411"
+      },
+      {
+        "path": "holdout-chain-16-upper-stamp-visible.psd",
+        "sha256": "b1b4d3b00a1825b85def979b1f8b11a78e92e00fa0122acf241d383dd7aa70e1"
+      },
+      {
+        "path": "holdout-chain-8-upper-merge-source-half-merged.psd",
+        "sha256": "7e44dd23f9ad8ffc1060c4b9604bf6ee383dea7bcaed8af06d8916cbb23b47f3"
+      },
+      {
+        "path": "holdout-chain-8-upper-merge-source-half.psd",
+        "sha256": "c6c7fb3da5da04e15da5f06c71cec5bdd0fef0100790e64afa43b501079bd502"
+      },
+      {
+        "path": "holdout-chain-8-upper-merge-visible-merged.psd",
+        "sha256": "ca5a30b781a3a2096ca642d32ccaefa461b9489227c265a2d36fd3f77db7665e"
+      },
+      {
+        "path": "holdout-chain-8-upper-merge-visible.psd",
+        "sha256": "cfa6ca6dcd5939d2cdd30ff7c82b4b130075f61e1258ab6f57d4d7b484e5570a"
+      },
+      {
+        "path": "holdout-chain-8-upper-stamp-destination-half-merged.psd",
+        "sha256": "b425dfa7df7b6036bb3bf31dd34ce523389d6916d968c8730d6130c6ae32f1a6"
+      },
+      {
+        "path": "holdout-chain-8-upper-stamp-destination-half.psd",
+        "sha256": "e9eba7e8ef8aa03c8390e92a0c051145a0f933bf0d9ef98734b4f2776713ae0b"
+      },
+      {
+        "path": "holdout-chain-8-upper-stamp-visible-merged.psd",
+        "sha256": "fd0a19efbfb20460731d7579c972e600efbe0cec58f32b07de84e9d64ba20969"
+      },
+      {
+        "path": "holdout-chain-8-upper-stamp-visible.psd",
+        "sha256": "a6321b5b6c80192afba3aab3db6f8d0d95f9cd194829c92fd3a968a122e87ee1"
+      },
+      {
+        "path": "intel-chain-16-upper-merge-visible-merged.psd",
+        "sha256": "795622656ca3795c0592e76dd9c4a1abdf5d09b85a5c79447540357cabb4e8c5"
+      },
+      {
+        "path": "intel-chain-16-upper-stamp-visible-merged.psd",
+        "sha256": "4fea4b8c6a15c0a85b58716a0f596cc3557bf45eddcc787bb5b409f7d68ee0c2"
+      },
+      {
+        "path": "intel-chain-32-upper-merge-visible-merged.psd",
+        "sha256": "843d3ef359275a01c9ad897062f2601ccce194c43533172c0f221c1e42d8644f"
+      },
+      {
+        "path": "intel-chain-32-upper-stamp-visible-merged.psd",
+        "sha256": "cfbc26bf462f06ce5afc93e307b3950409451747a1191ba20c154ffef67f27fd"
+      },
+      {
+        "path": "intel-chain-8-upper-merge-visible-merged.psd",
+        "sha256": "957050fd038767b01a25cf00883b1d9a1212ab3124f6eee1ffae268d4219a21f"
+      },
+      {
+        "path": "intel-chain-8-upper-stamp-visible-merged.psd",
+        "sha256": "f146ee0b3636dec99231444875956e34c64e8eb20a3cca230b7fbbbddbd19b1a"
+      }
+    ],
+    "holdout": "The larger opacity controls were saved on native Apple Silicon.",
+    "origin": "Owned PSDs saved by Photoshop 2026 using Merge Down and Stamp Down while both selected rows were clips."
+  },
+  "sourceInputs": 8354,
+  "sourceInputsChangedSince580": [
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "4e0dab61f82aa74d99dea0526819aea75ed662eb16f9b7483d96dbebeb008eee"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NormalLayerComposite.swift",
+      "sha256": "f000f3894efd22fc8fe6ce9c8dccc4ac465e988ed739eb27be975fb48b503ac7"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PreparedLayerMerge.swift",
+      "sha256": "68759f48a4022a140f9b414f0935dce46859bc0448204d8d71cbd6216dc61475"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ClippingMaskRasterMerge.swift",
+      "sha256": "4bc7c73dd84c9d435213fd4acd6d018f285608038d050015c9396897e50952b8"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerMergePreparation.swift",
+      "sha256": "5a47542d0dc23af4bf417ae15da34568418df43d796ff074b3cc7d3545c3b53a"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift",
+      "sha256": "bd9c08fc9f0229e5c78b186f3556dcd6a4c1a547561e4ae0f6804f3c7623c216"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "4df2e6a89d8f096dcdcee4910b538adb37ea89c986017b08d22534e0f6242f76"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/arm-chain-16-upper-merge-visible-merged.psd",
+      "sha256": "db4002821a4b7e9b30055bc7ce54a030b14c32be101c53ba7c1aa941d54e3029"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/arm-chain-16-upper-stamp-visible-merged.psd",
+      "sha256": "f4f5203defc52241e201d8c0f0622cd68f36536ecb28a26cdc8b0a13f6daa974"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/arm-chain-32-upper-merge-visible-merged.psd",
+      "sha256": "e4e2752ced48a6ba5e0b254594ce0839e6799eb39b01c01e19e4f1fdffb35424"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/arm-chain-32-upper-stamp-visible-merged.psd",
+      "sha256": "744d1e75b42071b4be18b1fd28904b157344338b7780f9b0b3bdc66dfe91b4bd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/arm-chain-8-upper-merge-visible-merged.psd",
+      "sha256": "0f5befbae8380c70596b0925824fd25447d9a33dfdccecde0a0efa68853177d4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/arm-chain-8-upper-stamp-visible-merged.psd",
+      "sha256": "1b852ecf0b69670805e3a70ad50fb7120918794e736679303338b29c16b0f553"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-16-upper-merge-visible.psd",
+      "sha256": "15af962d72adb05102c92009c60231b7565df7df88c058be2e1ba9f0d7289025"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-16-upper-stamp-hidden.psd",
+      "sha256": "0390072c02e95a2db5ff8d6dafb36778b9442182cb10da44ad01f484c31a11db"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-16-upper-stamp-visible.psd",
+      "sha256": "203bc0a63db9d98f176fff47088027d2df4dfd4854b0e2bde58afd1fc034b1aa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-32-upper-merge-visible.psd",
+      "sha256": "1b73d792292940cc5ff574712f51635b8d0a470cc1aa0177b1ed63ec06579d2b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-32-upper-stamp-hidden.psd",
+      "sha256": "9d8c9d234d1a403313da3edd3c6ff07141e3c97296d9f23188ba0a203545e6a6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-32-upper-stamp-visible.psd",
+      "sha256": "c48fea822b5c28ed7e112e4b51be9cac903e75f0ee5ff5fa9abce3abd624f6d4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-8-upper-merge-visible.psd",
+      "sha256": "96746f21cb03c5c5f45387f41955c59a966e6cb47ce82f605eba55e39d17ca5f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-8-upper-stamp-hidden.psd",
+      "sha256": "011ddbf17b2a40521fec1a83a433f8efb1ec72db1f7bb1a1b24c98e7b48b92ad"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/chain-8-upper-stamp-visible.psd",
+      "sha256": "46aa15710725b5f100558f7a66d182bd18bc64510a8321ae05ea7259ac5adbc8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-merge-source-half-merged.psd",
+      "sha256": "e0101d75a7e5a00c497c1f8d70b574e2ee152c75165873d15a832cd095439903"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-merge-source-half.psd",
+      "sha256": "e984bb6a5e6f4da7061ee864f126cb5cb283c23a5da2a296ec35d75b356708af"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-merge-visible-merged.psd",
+      "sha256": "0b5c69b1d8108bd12f5fed059228c64911c98c22d27e0a62085edd5da576ba9c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-merge-visible.psd",
+      "sha256": "7710b402cfa2d18d163463208c7f7aba431edd2abfd00c122e35f0f741dc6625"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-stamp-destination-half-merged.psd",
+      "sha256": "d8c7d921fca0d3566258d0b5aa70c197e8b12a8e9ce35965ce329906ff404a74"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-stamp-destination-half.psd",
+      "sha256": "c5d72ed868c8695d26400b2b221c3117795360b7614600283b794fc7eea826c2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-stamp-visible-merged.psd",
+      "sha256": "cdc880883f97edc86c1c84782fde23a0f8d5df538f680083ac6d250c2f89c411"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-16-upper-stamp-visible.psd",
+      "sha256": "b1b4d3b00a1825b85def979b1f8b11a78e92e00fa0122acf241d383dd7aa70e1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-merge-source-half-merged.psd",
+      "sha256": "7e44dd23f9ad8ffc1060c4b9604bf6ee383dea7bcaed8af06d8916cbb23b47f3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-merge-source-half.psd",
+      "sha256": "c6c7fb3da5da04e15da5f06c71cec5bdd0fef0100790e64afa43b501079bd502"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-merge-visible-merged.psd",
+      "sha256": "ca5a30b781a3a2096ca642d32ccaefa461b9489227c265a2d36fd3f77db7665e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-merge-visible.psd",
+      "sha256": "cfa6ca6dcd5939d2cdd30ff7c82b4b130075f61e1258ab6f57d4d7b484e5570a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-stamp-destination-half-merged.psd",
+      "sha256": "b425dfa7df7b6036bb3bf31dd34ce523389d6916d968c8730d6130c6ae32f1a6"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-stamp-destination-half.psd",
+      "sha256": "e9eba7e8ef8aa03c8390e92a0c051145a0f933bf0d9ef98734b4f2776713ae0b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-stamp-visible-merged.psd",
+      "sha256": "fd0a19efbfb20460731d7579c972e600efbe0cec58f32b07de84e9d64ba20969"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/holdout-chain-8-upper-stamp-visible.psd",
+      "sha256": "a6321b5b6c80192afba3aab3db6f8d0d95f9cd194829c92fd3a968a122e87ee1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/intel-chain-16-upper-merge-visible-merged.psd",
+      "sha256": "795622656ca3795c0592e76dd9c4a1abdf5d09b85a5c79447540357cabb4e8c5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/intel-chain-16-upper-stamp-visible-merged.psd",
+      "sha256": "4fea4b8c6a15c0a85b58716a0f596cc3557bf45eddcc787bb5b409f7d68ee0c2"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/intel-chain-32-upper-merge-visible-merged.psd",
+      "sha256": "843d3ef359275a01c9ad897062f2601ccce194c43533172c0f221c1e42d8644f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/intel-chain-32-upper-stamp-visible-merged.psd",
+      "sha256": "cfbc26bf462f06ce5afc93e307b3950409451747a1191ba20c154ffef67f27fd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/intel-chain-8-upper-merge-visible-merged.psd",
+      "sha256": "957050fd038767b01a25cf00883b1d9a1212ab3124f6eee1ffae268d4219a21f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/intel-chain-8-upper-stamp-visible-merged.psd",
+      "sha256": "f146ee0b3636dec99231444875956e34c64e8eb20a3cca230b7fbbbddbd19b1a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/adjacent-clips/references.json",
+      "sha256": "8c615ab4ce4c62533b77c6bacfb3987538783adfe58868584ec2ae70ac2e856f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "6bb0cc8bf75a178dd723284b1fbf881f4d29f5e3ef0bd976f741ea07390a9fb8"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "5941d9a413c259b91b689a2cb9d06f8ba079370c597cf7203668318219f0a0d6"
+    }
+  ]
+}

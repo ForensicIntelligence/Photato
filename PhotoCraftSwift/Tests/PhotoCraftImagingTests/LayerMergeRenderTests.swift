@@ -225,6 +225,95 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
   }
 
+  func testAdjacentClippedMergeAndStampMatchPhotoshopSamplesAndPreserveClipping() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    var cases: [(String, String, LayerMergeOperation)] = []
+    for bits in [8, 16, 32] {
+      for (name, operation) in [("merge", LayerMergeOperation.down), ("stamp", .stampDown)] {
+        let source = "chain-\(bits)-upper-\(name)-visible"
+        cases.append((source, "\(architecture)-\(source)", operation))
+      }
+    }
+    for bits in [8, 16] {
+      for (name, operation) in [
+        ("merge-visible", LayerMergeOperation.down), ("stamp-visible", .stampDown),
+        ("merge-source-half", .down), ("stamp-destination-half", .stampDown),
+      ] {
+        let source = "holdout-chain-\(bits)-upper-\(name)"
+        cases.append((source, source, operation))
+      }
+    }
+    for (input, output, operation) in cases {
+      var source = try PSDCodec.read(file("adjacent-clips/\(input)"))
+      let reference = try PSDCodec.read(file("adjacent-clips/\(output)-merged"))
+      let selected = try XCTUnwrap(source.layers.first { $0.name == "Upper clip" }, input)
+      let destination = try XCTUnwrap(source.layers.first { $0.name == "Hidden clip" }, input)
+      let expected = try XCTUnwrap(reference.layers.first { $0.name == destination.name }, input)
+      source.activeLayerID = selected.id
+      XCTAssertTrue(LayerMerge.canApply(operation, layerIDs: [selected.id], in: source), input)
+      let result = try LayerMergePreparation.prepare(source, layerIDs: [selected.id], operation: operation).applied(to: source)
+      let removed: Set<UUID> = operation == .down ? [selected.id] : []
+      XCTAssertEqual(result.layers.map(\.id), source.layers.map(\.id).filter { !removed.contains($0) }, input)
+      XCTAssertEqual(result.layers.filter { $0.id != destination.id },
+        source.layers.filter { $0.id != destination.id && !removed.contains($0.id) }, input)
+      XCTAssertEqual(result.activeLayerID, operation == .down ? destination.id : selected.id, input)
+      let roundTripped = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+      for tree in [result, roundTripped] {
+        let actual = try XCTUnwrap(tree.layers.first { $0.name == destination.name }, input)
+        XCTAssertTrue(actual.isClipped, input)
+        XCTAssertEqual(actual.opacity, expected.opacity, input)
+        XCTAssertEqual(actual.x, expected.x, input)
+        XCTAssertEqual(actual.y, expected.y, input)
+        guard case .raster(let pixels) = actual.content, case .raster(let wanted) = expected.content else {
+          return XCTFail("Expected an adjacent clip raster for \(input)")
+        }
+        XCTAssertEqual(pixels.width, wanted.width, input)
+        XCTAssertEqual(pixels.height, wanted.height, input)
+        let encoding: SurfaceColorEncoding = source.depth == .f32 ? .linearRGB : .sRGB
+        XCTAssertEqual(try pixels.rgbaData(depth: source.depth, colorEncoding: encoding),
+          try wanted.rgbaData(depth: source.depth, colorEncoding: encoding), input)
+      }
+    }
+    for bits in [8, 16, 32] {
+      let source = try PSDCodec.read(file("adjacent-clips/chain-\(bits)-upper-stamp-hidden"))
+      let selected = try XCTUnwrap(source.layers.first { $0.name == "Upper clip" })
+      for operation in [LayerMergeOperation.down, .stampDown] {
+        XCTAssertFalse(LayerMerge.canApply(operation, layerIDs: [selected.id], in: source))
+        XCTAssertThrowsError(try LayerMergePreparation.prepare(source, layerIDs: [selected.id], operation: operation))
+      }
+    }
+  }
+
+  func testAdjacentClippedMergeUsesSparsePatchesAcrossMaximumCanvas() throws {
+    let size = Surface.maxDimension
+    var source = try CraftDocument(width: size, height: size, depth: .u16)
+    let base = try XCTUnwrap(source.layers.first)
+    let red = Pixel(1, 0, 0, 1), blue = Pixel(0, 0, 1, 1)
+    var lower = Layer(name: "Lower clip", content: .raster(try Surface(width: 1, height: 1, depth: .u16, fill: red)))
+    var upper = Layer(name: "Upper clip", content: .raster(try Surface(width: 1, height: 1, depth: .u16, fill: blue)))
+    lower.clipped = true
+    upper.clipped = true
+    upper.x = size - 1
+    upper.y = size - 1
+    source.layers = [base, lower, upper]
+    source.activeLayerID = upper.id
+    let result = try LayerMergePreparation.prepare(source, layerIDs: [upper.id], operation: .down).applied(to: source)
+    let output = try XCTUnwrap(result.layers.last)
+    XCTAssertEqual(output.id, lower.id)
+    XCTAssertTrue(output.isClipped)
+    guard case .raster(let pixels) = output.content else { return XCTFail("Expected a sparse clipped raster") }
+    XCTAssertEqual(pixels.width, size)
+    XCTAssertEqual(pixels.height, size)
+    XCTAssertLessThanOrEqual(pixels.tileCount, 2)
+    XCTAssertEqual(pixels.pixel(x: 0, y: 0), red)
+    XCTAssertEqual(pixels.pixel(x: size - 1, y: size - 1), blue)
+    XCTAssertEqual(pixels.pixel(x: size / 2, y: size / 2), Pixel(1, 1, 1, 0))
+  }
+
   func testScreenClippingMergeAndStampMatchPhotoshopStoredSamples() throws {
     #if arch(x86_64)
     let architecture = "intel"

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **580** · The 10 most recent entries, newest first.
+Source build **581** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 581 — Merge and stamp adjacent clipped layers
+
+Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. Merge Down keeps the destination clipped and removes the upper layer. Stamp Down keeps both rows and the upper selection.
+
+The stored raster matches the tested 8-, 16- and 32-bit Photoshop outputs. The first ActionJSON expansion found a stack overflow. Reusing the raster-output helper repaired it, and all 769 selected tests passed on each configuration.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-581) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_581.md).
 
 ## 2026-11-18 — Step 580 — Match Screen clipping and unchanged stamp history
 
@@ -75,11 +83,3 @@ Photoshop's Intel build rounds the multiply and add separately when compositing 
 The tested results match 264,192 Photoshop sample words on each architecture. That includes the masked Display P3 conversion that differed on Intel in build 571. All 705 selected tests passed in each configuration. Independent HDR clipping still differs.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md).
-
-## 2026-11-18 — Step 571 — Fix HDR PSD and PSB compression for Photoshop
-
-Photoshop was reading plain ZIP as predicted ZIP on 32-bit layers. This could corrupt HDR colors when opening a PSD or PSB exported by Photato. New exports use the prediction expected for those layers. ZIP requests for the merged preview write raw data because Photoshop refused ZIP in that section. Photato still reads its older files.
-
-Photoshop opened the tested files on Apple Silicon and Intel under Rosetta. The saved 32-bit grayscale samples match across both formats and save encodings. All 694 selected tests passed in each of three build configurations. The local universal archive passed both offscreen workspace checks. A separate mismatch remains in the Intel masked merge.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md).

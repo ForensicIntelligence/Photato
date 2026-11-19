@@ -104,4 +104,77 @@ enum ClippingMaskRasterMerge {
     }
     return try builder.finish()
   }
+
+  static func renderAdjacent(lower: Layer, upper: Layer, depth: PixelDepth) throws
+    -> (pixels: Surface, x: Int, y: Int)
+  {
+    guard case .raster(let lowerPixels) = lower.content, case .raster(let upperPixels) = upper.content else {
+      throw CraftError.invalid("Both clipped layers must contain raster pixels.")
+    }
+    let lowerOpacity = NormalLayerComposite.clippingOpacity(lower.opacity, depth: depth)
+    let upperOpacity = NormalLayerComposite.clippingOpacity(upper.opacity, depth: depth)
+    func combine(_ below: Pixel?, _ above: Pixel?) -> Pixel {
+      NormalLayerComposite.adjacentClips(lower: below, upper: above, lowerOpacity: lowerOpacity,
+        upperOpacity: upperOpacity, depth: depth)
+    }
+    func content(_ layer: Layer, _ pixels: Surface, _ opacity: Int) throws -> IntRect? {
+      guard opacity > 0, let coverage = try pixels.contentBounds() else { return nil }
+      return IntRect(x: layer.x + coverage.x, y: layer.y + coverage.y, width: coverage.width, height: coverage.height)
+    }
+    let possibleCoverage = try [content(lower, lowerPixels, lowerOpacity), content(upper, upperPixels, upperOpacity)]
+    guard let bounds = try LayerLayout.union(possibleCoverage.compactMap { $0 }) else {
+      return (try Surface(width: 1, height: 1, depth: depth), 0, 0)
+    }
+    let output = IntRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
+    func region(_ layer: Layer, _ pixels: Surface) -> IntRect {
+      IntRect(x: layer.x - bounds.x, y: layer.y - bounds.y, width: pixels.width, height: pixels.height)
+    }
+    let lowerRegion = region(lower, lowerPixels), upperRegion = region(upper, upperPixels)
+    let lowerIntersection = lowerRegion.clipped(toWidth: bounds.width, height: bounds.height)
+    let upperIntersection = upperRegion.clipped(toWidth: bounds.width, height: bounds.height)
+    let lowerDefault = lowerIntersection == output ? lowerPixels.defaultPixel : nil
+    let upperDefault = upperIntersection == output ? upperPixels.defaultPixel : nil
+    let fill = combine(lowerDefault, upperDefault)
+    let builder = try Surface.PagedBuilder(template: Surface(width: bounds.width, height: bounds.height,
+      depth: depth, fill: fill))
+    var rectangles: [IntRect] = []
+    if lowerDefault == nil && !combine(lowerPixels.defaultPixel, upperDefault).hasSameBits(as: fill) {
+      rectangles.append(lowerIntersection)
+    }
+    if upperDefault == nil && !combine(lowerDefault, upperPixels.defaultPixel).hasSameBits(as: fill) {
+      rectangles.append(upperIntersection)
+    }
+    func appendTiles(_ pixels: Surface, _ region: IntRect) throws {
+      let side = Surface.tileSide
+      let columns = (pixels.width + side - 1) / side
+      for key in pixels.storedTileKeys {
+        try Task.checkCancellation()
+        let x = key % columns * side, y = key / columns * side
+        let tile = IntRect(x: region.x + x, y: region.y + y,
+          width: min(side, pixels.width - x), height: min(side, pixels.height - y))
+        rectangles.append(tile.clipped(toWidth: bounds.width, height: bounds.height))
+      }
+    }
+    try appendTiles(lowerPixels, lowerRegion)
+    try appendTiles(upperPixels, upperRegion)
+    for rect in GeometryPatchRegions(width: bounds.width, height: bounds.height, rectangles: rectangles) {
+      try Task.checkCancellation()
+      var patch = try Surface(width: rect.width, height: rect.height, depth: depth, fill: fill)
+      for y in rect.y..<(rect.y + rect.height) {
+        for x in rect.x..<(rect.x + rect.width) {
+          let below = lowerRegion.contains(x, y)
+            ? lowerPixels.pixel(x: x - lowerRegion.x, y: y - lowerRegion.y) : nil
+          let above = upperRegion.contains(x, y)
+            ? upperPixels.pixel(x: x - upperRegion.x, y: y - upperRegion.y) : nil
+          patch.setPixel(x: x - rect.x, y: y - rect.y, combine(below, above))
+        }
+      }
+      try builder.append(patch, atX: rect.x, atY: rect.y)
+    }
+    let raster = try builder.finish()
+    guard let content = try raster.contentBounds() else {
+      return (try Surface(width: 1, height: 1, depth: depth), 0, 0)
+    }
+    return (try raster.cropped(to: content), bounds.x + content.x, bounds.y + content.y)
+  }
 }

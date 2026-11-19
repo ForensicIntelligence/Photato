@@ -599,7 +599,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 578 | 2026-11-18 | [Add contextual Merge Clipping Mask](#dev-step-578) |
 | 579 | 2026-11-18 | [Add in-place Stamp Down and Stamp Group](#dev-step-579) |
 | 580 | 2026-11-18 | [Match Screen clipping and unchanged stamp history](#dev-step-580) |
+| 581 | 2026-11-18 | [Merge and stamp adjacent clipped layers](#dev-step-581) |
 <!-- history-index:end -->
+
+<a id="dev-step-581"></a>
+
+## 2026-11-18 — Merge and stamp adjacent clipped layers
+
+Merge Down and Stamp Down now accept adjacent Normal raster clips in the same clipping stack. Both write into the lower clip and retain its clipping flag. Merge Down removes the upper clip and selects the destination. Stamp Down keeps the upper clip and its selection. The saved references cover 8-, 16- and 32-bit output. The larger integer comparison matched all 65,408 sample words. The sparse 300,000 × 300,000 test used two raster patches.
+
+The first focused Debug run passed 79 methods. Adding the native and HTTP coverage exposed a thread-stack overflow in the Adobe-compatible RGB32 Stamp Down route. The repair separates document validation from raster rendering and reuses the ordinary HDR raster-output helper. The same 81 focused methods passed, including that ActionJSON regression. All 769 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+The next Photoshop capture verified that supported raster clipping merges and stamps can keep Blend Clipped Layers as Group disabled. The stored output matched when the backdrop was removed from the tested Multiply-base cases. PSD files saved on both architectures retain the disabled flag. Candidate 582 also retains the base blend mode and opacity. The renderer still needs independent tests for other clipped content types and blend modes. [Adobe advanced blending options](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/use-advanced-blending-options.html).
+
+Both slices in the extracted signed universal archive passed offscreen checks. [Qualification](SOURCE_PUBLICATION_581.md).
 
 <a id="dev-step-580"></a>
 

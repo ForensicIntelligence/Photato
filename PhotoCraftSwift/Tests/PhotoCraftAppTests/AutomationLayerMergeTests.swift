@@ -93,6 +93,23 @@ final class AutomationLayerMergeTests: XCTestCase {
   }
 
   @MainActor func testScreenClippingThroughDesktopAndNativeHTTPMatchesPhotoshop() async throws {
+    try await verifyClippedWorkflow(folder: "screen-clipping", cases: [
+      ("chain-8-screen-both", .clippingMask, "clippingMask", "Clipping base"),
+      ("chain-16-screen-stamp", .stampGroup, "stampGroup", "Clipping base"),
+      ("chain-16-screen-down", .down, "down", "Lower clip"),
+    ])
+  }
+
+  @MainActor func testAdjacentClipsThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
+    try await verifyClippedWorkflow(folder: "adjacent-clips", cases: [
+      ("chain-8-upper-merge-visible", .down, "down", "Upper clip"),
+      ("chain-32-upper-stamp-visible", .stampDown, "stampDown", "Upper clip"),
+    ])
+  }
+
+  @MainActor private func verifyClippedWorkflow(
+    folder: String, cases: [(String, LayerMergeOperation, String, String)]
+  ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
     #else
@@ -101,20 +118,15 @@ final class AutomationLayerMergeTests: XCTestCase {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
       try service.share(shared)
-      let cases: [(String, LayerMergeOperation, String)] = [
-        ("chain-8-screen-both", .clippingMask, "clippingMask"),
-        ("chain-16-screen-stamp", .stampGroup, "stampGroup"),
-        ("chain-16-screen-down", .down, "down"),
-      ]
-      for (name, operation, command) in cases {
-        var source = try fixture("screen-clipping/\(name)")
-        let selectedName = operation == .down ? "Lower clip" : "Clipping base"
+      for (name, operation, command, selectedName) in cases {
+        var source = try fixture("\(folder)/\(name)")
         let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName })
         source.activeLayerID = selected.id
-        let reference = try fixture("screen-clipping/\(architecture)-\(name)-merged")
+        let reference = try fixture("\(folder)/\(architecture)-\(name)-merged")
         let desktop = EditorStore(document: source)
         defer { desktop.renderTask?.cancel() }
-        let contextual = operation == .stampGroup ? desktop.contextualStamp(.stampSelected) : desktop.menuMergeOperation
+        let isStamp = operation == .stampDown || operation == .stampGroup
+        let contextual = isStamp ? desktop.contextualStamp(.stampSelected) : desktop.menuMergeOperation
         XCTAssertEqual(contextual, operation, name)
         XCTAssertTrue(desktop.canMerge(operation), name)
         desktop.merge(contextual)

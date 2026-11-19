@@ -6,6 +6,7 @@ public struct LayerMergePlan: Sendable {
   public let base: Layer
   public let parentID: UUID?
   public let includesBackground: Bool
+  package let mergesAdjacentClips: Bool
   public init(_ operation: LayerMergeOperation, layerIDs: Set<UUID>, in d: CraftDocument) throws {
     guard d.colorMode == .rgb, d.modeDescriptor == nil, d.restrictedMode == nil, d.inkMode == nil else {
       throw CraftError.unsupported("Merging numerical, palette and ink layers requires their component compositor.")
@@ -76,6 +77,9 @@ public struct LayerMergePlan: Sendable {
         roots.count>1 || roots.first?.isGroup==true else{throw CraftError.invalid("Select a visible layer in an image with multiple visible layers or a visible group.")}
       base=layer
     }
+    mergesAdjacentClips = (operation == .down || operation == .stampDown)
+      && roots.count == 2 && roots.allSatisfy { $0.isClipped && $0.blendMode == .normal && Self.supportsClippingRaster($0) }
+      && clippingBases[roots[0].id] != nil && clippingBases[roots[0].id] == clippingBases[roots[1].id]
     let rootsToRender = Set(roots.map(\.id))
     let included = hierarchy.subtreeIDs(rootsToRender)
     rootIDs = rootsToRender
@@ -92,7 +96,8 @@ public struct LayerMergePlan: Sendable {
       if operation == .visible, !layer.visible {
         throw CraftError.unsupported("Hidden descendants inside a visible merged group require qualified retention semantics; no layers were removed.")
       }
-      if operation != .stampVisible,layer.isClipped,let clippingBase=clippingBases[layer.id],!sourceIDs.contains(clippingBase) {
+      if operation != .stampVisible, !mergesAdjacentClips, layer.isClipped,
+        let clippingBase = clippingBases[layer.id], !sourceIDs.contains(clippingBase) {
         throw CraftError.unsupported("Include the clipping base when merging clipped artwork.")
       }
     }

@@ -1,3 +1,7 @@
+**Source checkpoint 581.** Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. [Qualification](SOURCE_PUBLICATION_581.md).
+
+Continue the independent-clipping and broader clip-blend candidates. Verify any changes against their saved Photoshop controls.
+
 **Source checkpoint 580.** Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical. [Qualification](SOURCE_PUBLICATION_580.md).
 
 Finish qualifying Merge Down and Stamp Down between adjacent Normal clips. Continue measuring independent clipping and non-Normal bases.

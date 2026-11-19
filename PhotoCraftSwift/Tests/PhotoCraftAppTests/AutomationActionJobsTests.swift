@@ -161,27 +161,39 @@ final class AutomationActionJobsTests: XCTestCase {
   }
 
   @MainActor func testScreenClippingDescriptorsMatchSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "screen-clipping", cases: [
+      ("chain-8-screen-both", "Clipping base", false),
+      ("chain-16-screen-stamp", "Clipping base", true),
+      ("chain-16-screen-down", "Lower clip", false),
+    ])
+  }
+
+  @MainActor func testAdjacentClippedDescriptorsMatchSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "adjacent-clips", cases: [
+      ("chain-16-upper-merge-visible", "Upper clip", false),
+      ("chain-32-upper-stamp-visible", "Upper clip", true),
+    ])
+  }
+
+  @MainActor private func verifyClippedJobRoutes(
+    folder: String, cases: [(String, String, Bool)]
+  ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
     #else
     let architecture = "arm"
     #endif
     let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/layer-merge/screen-clipping")
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/layer-merge/\(folder)")
     let transport = Transport()
     try await AutomationTests().withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
       let untouched = shared.store.document
-      let selectBase = #"[{"_obj":"select","_target":[{"_ref":"layer","_name":"Clipping base"}]}]"#
-      let selectClip = #"[{"_obj":"select","_target":[{"_ref":"layer","_name":"Lower clip"}]}]"#
-      let merge = #"[{"_obj":"mergeLayersNew"}]"#
-      let stamp = #"[{"_obj":"mergeLayersNew","$Dplc":true}]"#
-      for (name, select, action) in [
-        ("chain-8-screen-both", selectBase, merge),
-        ("chain-16-screen-stamp", selectBase, stamp),
-        ("chain-16-screen-down", selectClip, merge),
-      ] {
+      for (name, target, duplicates) in cases {
         service.setResourceJobsEnabled(false)
         service.setResourceJobsEnabled(true)
+        let selection = ["_obj": "select", "_target": [["_ref": "layer", "_name": target]]] as [String: Any]
+        let select = String(decoding: try JSONSerialization.data(withJSONObject: [selection]), as: UTF8.self)
+        let action = duplicates ? #"[{"_obj":"mergeLayersNew","$Dplc":true}]"# : #"[{"_obj":"mergeLayersNew"}]"#
         await transport.set(try Data(contentsOf: root.appendingPathComponent(name + ".psd")))
         let expected = try PSDCodec.read(Data(contentsOf: root.appendingPathComponent(
           "\(architecture)-\(name)-merged.psd")))

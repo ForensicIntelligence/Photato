@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 580.** Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_580.md).
+**Development alpha — source build 581.** Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_581.md).
 
 ## Project layout
 

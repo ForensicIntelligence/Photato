@@ -1,3 +1,11 @@
+## 2026-11-18 — Step 581 — Merge and stamp adjacent clipped layers
+
+Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. Merge Down keeps the destination clipped and removes the upper layer. Stamp Down keeps both rows and the upper selection.
+
+The stored raster matches the tested 8-, 16- and 32-bit Photoshop outputs. The first ActionJSON expansion found a stack overflow. Reusing the raster-output helper repaired it, and all 769 selected tests passed on each configuration.
+
+[Detailed record](DEVLOG.md#dev-step-581) · [Validation](SOURCE_PUBLICATION_581.md).
+
 ## 2026-11-18 — Step 580 — Match Screen clipping and unchanged stamp history
 
 Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
@@ -635,14 +643,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:580 -->
+<!-- current-status-step:581 -->
 ## Current development status — 18 November 2026
 
-Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
+Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack.
 
-All 765 selected checks passed in three configurations. The extracted universal package passed both offscreen checks. Adjacent clipped pairs, independent clipping and broader Photoshop parity remain open.
+All 769 selected checks passed in three build configurations. Both slices of the signed universal archive passed offscreen checks. Independent clipping and broader clip blend modes remain open.
 
-[Source checkpoint 580](SOURCE_PUBLICATION_580.md) · [Detailed record](DEVLOG.md#dev-step-580).
+[Source checkpoint 581](SOURCE_PUBLICATION_581.md) · [Detailed record](DEVLOG.md#dev-step-581).
 
 <!-- current-status:end -->
 
@@ -1429,6 +1437,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-18 | 578 | [Add contextual Merge Clipping Mask](DEVLOG.md#dev-step-578) |
 | 2026-11-18 | 579 | [Add in-place Stamp Down and Stamp Group](DEVLOG.md#dev-step-579) |
 | 2026-11-18 | 580 | [Match Screen clipping and unchanged stamp history](DEVLOG.md#dev-step-580) |
+| 2026-11-18 | 581 | [Merge and stamp adjacent clipped layers](DEVLOG.md#dev-step-581) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

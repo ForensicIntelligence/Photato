@@ -1405,6 +1405,8 @@ Build 576 also verifies the prepared Normal RGB32 layer output through the deskt
 
 Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
 
+Build 581 accepts adjacent Normal raster clips through `layer.merge` with `down` or `stampDown`. The selected upper clip identifies the destination directly beneath it. Both local ActionJSON job routes share the same rule. [Validation](SOURCE_PUBLICATION_581.md).
+
 Build 580 adds RGB8 and RGB16 Screen clips to the supported `clippingMask`, `stampGroup` and first-clip `down` cases. The existing operation names and ActionJSON descriptors work with the updated compositor. Unchanged in-place stamps create a history entry. [Validation](SOURCE_PUBLICATION_580.md).
 
 Build 579 adds `stampDown` and `stampGroup` to `layer.merge`. Each takes one selected layer ID. The existing `mergeLayersNew` descriptor with the duplicate flag dispatches according to the selection. These two in-place operations use native Action library version 73. [Validation](SOURCE_PUBLICATION_579.md).

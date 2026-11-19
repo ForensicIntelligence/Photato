@@ -41,12 +41,7 @@ public enum NormalLayerComposite {
   ) -> Pixel {
     precondition(depth != .f32)
     let maximum = depth == .u8 ? 255 : 32768
-    let opacityByte = Int((unit(opacity) * 255).rounded())
-    let sourceAlpha = working(source.a, depth: depth)
-    // At 16 bits the clip opacity is promoted before multiplying by pixel alpha.
-    let weight = depth == .u8
-      ? (sourceAlpha * opacityByte + 127) / 255
-      : (sourceAlpha * ((opacityByte * maximum + 127) / 255) + maximum / 2) / maximum
+    let weight = clippingAlpha(source.a, opacity: clippingOpacity(opacity, depth: depth), depth: depth)
     func channel(_ backdrop: Float, _ source: Float) -> Float {
       let b = working(backdrop, depth: depth)
       let s = working(source, depth: depth)
@@ -57,6 +52,40 @@ public enum NormalLayerComposite {
     }
     return Pixel(channel(backdrop.r, source.r), channel(backdrop.g, source.g),
       channel(backdrop.b, source.b), backdrop.a)
+  }
+
+  package static func adjacentClips(
+    lower: Pixel?, upper: Pixel?, lowerOpacity: Int, upperOpacity: Int, depth: PixelDepth
+  ) -> Pixel {
+    precondition(depth != .f32)
+    let maximum = depth == .u8 ? 255 : 32768
+    let ba = lower.map { clippingAlpha($0.a, opacity: lowerOpacity, depth: depth) } ?? 0
+    let sa = upper.map { clippingAlpha($0.a, opacity: upperOpacity, depth: depth) } ?? 0
+    let alpha = sa + ba - (ba * sa + maximum / 2) / maximum
+    let coverage = normalized(alpha, depth: depth)
+    guard let lower else {
+      if let upper, sa > 0 { return Pixel(upper.r, upper.g, upper.b, coverage) }
+      return Pixel(1, 1, 1, 0)
+    }
+    guard let upper else { return Pixel(lower.r, lower.g, lower.b, coverage) }
+    let ratio = alpha == 0 ? 0 : min(maximum, (sa * maximum + alpha / 2) / alpha)
+    func channel(_ b: Float, _ s: Float) -> Float {
+      let result = (working(s, depth: depth) * ratio + working(b, depth: depth) * (maximum - ratio)
+        + maximum / 2) / maximum
+      return normalized(result, depth: depth)
+    }
+    return Pixel(channel(lower.r, upper.r), channel(lower.g, upper.g), channel(lower.b, upper.b), coverage)
+  }
+
+  package static func clippingOpacity(_ opacity: Float, depth: PixelDepth) -> Int {
+    let byte = Int((unit(opacity) * 255).rounded())
+    // The 16-bit clip paths promote layer opacity before applying it to alpha.
+    return depth == .u8 ? byte : (byte * 32768 + 127) / 255
+  }
+
+  private static func clippingAlpha(_ alpha: Float, opacity: Int, depth: PixelDepth) -> Int {
+    let maximum = depth == .u8 ? 255 : 32768
+    return (working(alpha, depth: depth) * opacity + maximum / 2) / maximum
   }
 
   private static func working(_ value: Float, depth: PixelDepth) -> Int {
