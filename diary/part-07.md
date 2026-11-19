@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 577 — Preserve stored RGB32 pixel masks when merging and stamping
+
+Normal 32-bit layer output now uses stored pixel masks. The comparison covers saved binary coverage and feathered selections, including transparency and the Intel rounding at tiny alpha values. A small translated mask in a 300,000 × 300,000 document used two render patches.
+
+All 752 selected tests passed in Debug and in both optimized configurations. Both slices of the extracted local validation archive passed their offscreen checks.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md).
+
 ## 2026-11-18 — Step 576 — Match stored RGB32 Normal merge and stamp samples
 
 Merging and stamping 32-bit Normal layers now matches the saved Photoshop samples in the tested raster stacks. These tests cover very low alpha, transparent pixels, partial layer opacity and an opaque Background. A fresh Intel capture also confirmed that its saved alpha differs from Apple Silicon on one older fixture.
@@ -605,14 +613,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:576 -->
+<!-- current-status-step:577 -->
 ## Current development status — 18 November 2026
 
-Normal 32-bit merges and stamps preserve the measured color and alpha words in their resulting raster layers, including transparent and very-low-alpha samples.
+Prepared 32-bit Normal layer merges and stamps now account for stored raster pixel masks, including zero coverage and the measured Intel rounding. A maximum-size sparse mask example used two render patches.
 
-The stored-layer and PSD round-trip checks passed in Debug and both optimized builds. Pixel masks, clipped and rich layers and broader Photoshop parity remain open.
+All 752 selected tests passed in three build configurations. Vector masks, independent clipping and broader Photoshop parity remain open.
 
-[Source checkpoint 576](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-576).
+[Source checkpoint 577](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577).
 
 <!-- current-status:end -->
 

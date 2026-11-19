@@ -113,6 +113,31 @@ final class LayerMergeRenderTests: XCTestCase {
     }
   }
 
+  func testPreparedHDRNormalPixelMasksMatchSavedLayersOnBothArchitectures() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    func document(_ name: String) throws -> CraftDocument {
+      let url = try XCTUnwrap(Bundle.module.url(forResource: name, withExtension: "psd",
+        subdirectory: "Fixtures/layer-merge/hdr-mask"))
+      return try PSDCodec.read(Data(contentsOf: url))
+    }
+    for scene in ["boundary", "translucent"] {
+      for mask in ["binary-top", "binary-base", "feather-top", "feather-both"] {
+        let name = "\(scene)-\(mask)"
+        var source = try document(name)
+        source.activeLayerID = source.layers.last?.id
+        XCTAssertTrue(source.layers.contains { $0.mask != nil })
+        let expected = try document("\(architecture)-\(name)-visible")
+        let result = try LayerMergePreparation.prepare(source, layerIDs: [], operation: .visible).result
+        try compare(result, expected, label: name)
+        try compare(PSDCodec.read(PSDCodec.writeRasterLayers(result)), expected, label: "PSD " + name)
+      }
+    }
+  }
+
   func testPhotoshopOffCanvasBoundsHiddenPixelsAndActiveVisiblePosition() throws {
     let original = try PSDCodec.read(file("photoshop-source-geometry-hidden-rgb8"))
     for (operation, active, key) in [

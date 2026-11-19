@@ -1403,6 +1403,8 @@ The recorded 8-, 16- and 32-bit comparisons cover local desktop Photoshop and Ph
 
 Build 576 also verifies the prepared Normal RGB32 layer output through the desktop and native API commands, using independent saves for the current architecture. The existing merge and duplicate descriptors keep the same request fields. [Validation](SOURCE_PUBLICATION_576.md).
 
+Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
+
 ## Layer merging (step115)
 
 Post to `/v1/documents/{id}/commands` with the current revision:

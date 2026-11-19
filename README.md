@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 576.** Normal 32-bit merges and stamps preserve the measured color and alpha words in their resulting raster layers, including transparent and very-low-alpha samples. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md).
+**Development alpha — source build 577.** Prepared 32-bit Normal layer merges and stamps now account for stored raster pixel masks, including zero coverage and the measured Intel rounding. A maximum-size sparse mask example used two render patches. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md).
 
 ## Project layout
 

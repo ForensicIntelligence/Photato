@@ -118,10 +118,21 @@ enum PagedCanvasRenderer {
   private static func layerOutputSupport(_ document: CraftDocument) throws -> GeometryPatchRegions? {
     var rectangles: [IntRect] = []
     let side = Surface.tileSide
+    let permitsPixelMasks = RGB32NormalRenderer.supportsLayerOutput(document)
+    func appendTiles(_ surface: Surface, x: Int, y: Int) throws {
+      let columns = (surface.width + side - 1) / side
+      for key in surface.storedTileKeys {
+        try Task.checkCancellation()
+        let left = key % columns * side, top = key / columns * side
+        let changes = IntRect(x: x + left, y: y + top,
+          width: min(side, surface.width - left), height: min(side, surface.height - top))
+        rectangles.append(changes.clipped(toWidth: document.width, height: document.height))
+      }
+    }
     for layer in document.layers {
       try Task.checkCancellation()
       guard layer.affine == nil, layer.style == nil, layer.blendMode == .normal,
-        layer.mask == nil, layer.vectorMask == nil, layer.smartObject == nil,
+        layer.mask == nil || permitsPixelMasks, layer.vectorMask == nil, layer.smartObject == nil,
         layer.smartFilters == nil, layer.warp == nil, layer.sourceProjection == nil
       else { return nil }
       if case .group(let group) = layer.content {
@@ -135,13 +146,17 @@ enum PagedCanvasRenderer {
       // A translated transparent raster can affect straight HDR color in its
       // rectangle, even when its implicit alpha is zero.
       if aligned {
-        let sourceColumns = (source.width + side - 1) / side
-        for key in source.storedTileKeys {
-          try Task.checkCancellation()
-          let x = key % sourceColumns * side, y = key / sourceColumns * side
-          let changes = IntRect(x: layer.x + x, y: layer.y + y,
-            width: min(side, source.width - x), height: min(side, source.height - y))
-          rectangles.append(changes.clipped(toWidth: document.width, height: document.height))
+        try appendTiles(source, x: layer.x, y: layer.y)
+        if let mask = layer.mask, layer.effectiveMaskProperties.enabled {
+          let transform = layer.maskCoordinateTransform
+          guard let x = Int(exactly: transform.tx), let y = Int(exactly: transform.ty) else { return nil }
+          let coversDocument = x == 0 && y == 0 && mask.width == document.width && mask.height == document.height
+          if coversDocument || layer.effectiveMaskProperties.outside == mask.defaultPixel.r {
+            try appendTiles(mask, x: x, y: y)
+          } else {
+            let bounds = IntRect(x: x, y: y, width: mask.width, height: mask.height)
+            rectangles.append(bounds.clipped(toWidth: document.width, height: document.height))
+          }
         }
       } else {
         let bounds = IntRect(x: layer.x, y: layer.y, width: source.width, height: source.height)

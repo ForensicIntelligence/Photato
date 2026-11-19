@@ -1,0 +1,102 @@
+{
+  "photoshop": "27.2.0",
+  "workflow": "Layer Mask from binary or feathered selection, then Merge Visible",
+  "files": [
+    {
+      "path": "arm-boundary-binary-base-visible.psd",
+      "sha256": "76b577970d1abdef62a3bb5870fa0e59190b457eb2961a48bfa72e6d05e1f8be"
+    },
+    {
+      "path": "arm-boundary-binary-top-visible.psd",
+      "sha256": "ec06dae43e8404aa0bbe2fda0d739856b9527f70e47e426176fd7493d55582b3"
+    },
+    {
+      "path": "arm-boundary-feather-both-visible.psd",
+      "sha256": "d26c2bf1e2942819c3c9a4cd1e23e2c49557c8e4c476513bc74ca0caaddbc295"
+    },
+    {
+      "path": "arm-boundary-feather-top-visible.psd",
+      "sha256": "67c827d8e6b8429484b660883a943fa4e449b3a03cc61e1e851f6f69390e73f4"
+    },
+    {
+      "path": "arm-translucent-binary-base-visible.psd",
+      "sha256": "c212ad4fc0dadd25a5066bee6592c5448de894f9455cf3b3f5f302a59a642154"
+    },
+    {
+      "path": "arm-translucent-binary-top-visible.psd",
+      "sha256": "29143b20e2e275f6b78dbc84e8709e90d51d63190bb765398fa01d23a356ecb0"
+    },
+    {
+      "path": "arm-translucent-feather-both-visible.psd",
+      "sha256": "4f5addeebd305d381d5687c71c4819ccfdbc8c00b22cbeda3730a31d514d2127"
+    },
+    {
+      "path": "arm-translucent-feather-top-visible.psd",
+      "sha256": "957e739dfc54865d484a6da0df9a7b6901b073367c025d34116c915dbf639b14"
+    },
+    {
+      "path": "boundary-binary-base.psd",
+      "sha256": "fec627e8a55ab656186b22e9967ada4c3a0076c514339fc3b40ebe8c09a3b5d5"
+    },
+    {
+      "path": "boundary-binary-top.psd",
+      "sha256": "e9d5923b75419ea251b4085d061b98626b45a69f9f05b78a2a8035ede06bcbef"
+    },
+    {
+      "path": "boundary-feather-both.psd",
+      "sha256": "26ff9d43a469d2cb22dea3aa9bcaa09d7d3a791e7ef97639e3edf2d856ec0fbd"
+    },
+    {
+      "path": "boundary-feather-top.psd",
+      "sha256": "2164e5004ea475d32b3c114ead89f903d9f31e8dddcf9915ff6f877ffb77c664"
+    },
+    {
+      "path": "intel-boundary-binary-base-visible.psd",
+      "sha256": "aeb4cdf36f4ec36d6e7e757a379f681ded3741d642453b508e5b9595c1cfb385"
+    },
+    {
+      "path": "intel-boundary-binary-top-visible.psd",
+      "sha256": "beca6456d33ac54763dba8e0361eb96fb70f8b786679de17cb1cfd7d4ea73048"
+    },
+    {
+      "path": "intel-boundary-feather-both-visible.psd",
+      "sha256": "f192688a76211425db863db6007d20c381cbd047f10202b0aba42657eaba7994"
+    },
+    {
+      "path": "intel-boundary-feather-top-visible.psd",
+      "sha256": "a4d5857772a86ef138c53289c7a84a68f2be62b4ea7a2ccbd0603860b23642f7"
+    },
+    {
+      "path": "intel-translucent-binary-base-visible.psd",
+      "sha256": "9e002d61bc2decfa6a2caeebae33cd86eb937e7b031a067472b6a695ce771664"
+    },
+    {
+      "path": "intel-translucent-binary-top-visible.psd",
+      "sha256": "30169afcbc4b8916384c723a103166235237f3527e9609eb946b7d1829e9ae56"
+    },
+    {
+      "path": "intel-translucent-feather-both-visible.psd",
+      "sha256": "77605239b9ad0cfd0a801535a93a71b28abd244f008aff5b9e659fa5aef9897f"
+    },
+    {
+      "path": "intel-translucent-feather-top-visible.psd",
+      "sha256": "231ba0e0cf1f055b290e6120ed41fb3432db5d016d9f8796de67ac765736b511"
+    },
+    {
+      "path": "translucent-binary-base.psd",
+      "sha256": "e7bfd3deff9e7c7e50b5dc41e1ac85ccbb98c9b4f0d048eb2c82190b5a16c4cf"
+    },
+    {
+      "path": "translucent-binary-top.psd",
+      "sha256": "bba035ce51e72da9b9848d046c4ad5c8fe8a60c369be548c807abe918ada7280"
+    },
+    {
+      "path": "translucent-feather-both.psd",
+      "sha256": "ff49ec6199c3d069834680871087ed9f7a387294363a613458bdf3aff38861b7"
+    },
+    {
+      "path": "translucent-feather-top.psd",
+      "sha256": "2430f0b3655976e409b2d62f4b80a498da90a699ba1dc4e7941b906bb747b802"
+    }
+  ]
+}

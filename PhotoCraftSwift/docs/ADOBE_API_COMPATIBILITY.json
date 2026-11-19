@@ -314,6 +314,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output preserves the measured alpha and color words for ordinary raster stacks.",
     "limits": "Results are compared to desktop Photoshop captures. The hosted service, masks and rich stack parity remain open."
   },
+  "rgb32_stored_pixel_masks_build577": {
+    "evidence": "docs/HDR_LAYER_MASK_REFERENCES_577.json",
+    "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
+    "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
+  },
   "working_profiles_step116": {
     "evidence": "docs/WORKING_PROFILE_REFERENCES.json",
     "scope": "Both existing partial job routes retain PSD raster working profiles through the native engine; RGB32 raw merge regression compares independent original-profile bytes. Full Photoshop colour settings/conversion contract and six endpoints remain open.",

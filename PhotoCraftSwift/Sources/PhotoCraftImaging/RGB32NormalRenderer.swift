@@ -10,10 +10,19 @@ enum RGB32NormalRenderer {
       guard layer.visible && layer.opacity > 0 else { return true }
       guard case .raster = layer.content else { return false }
       return layer.affine == nil && layer.blendMode == .normal && layer.style == nil
-        && layer.mask == nil && layer.vectorMask == nil && layer.smartObject == nil
+        && supportsStoredPixelMask(layer) && layer.vectorMask == nil && layer.smartObject == nil
         && layer.smartFilters == nil && layer.warp == nil && layer.sourceProjection == nil
         && layer.importedSmartAppearance == nil
     }
+  }
+
+  private static func supportsStoredPixelMask(_ layer: Layer) -> Bool {
+    let properties = layer.effectiveMaskProperties
+    guard layer.mask != nil && properties.enabled else { return true }
+    let transform = layer.maskCoordinateTransform
+    return properties.feather == 0 && properties.density == 1 && !properties.inverted
+      && transform.a == 1 && transform.b == 0 && transform.c == 0 && transform.d == 1
+      && transform.tx.rounded(.towardZero) == transform.tx && transform.ty.rounded(.towardZero) == transform.ty
   }
 
   static func composite(_ document: CraftDocument, over backdrop: Surface, region: IntRect,
@@ -38,6 +47,7 @@ enum RGB32NormalRenderer {
       try Task.checkCancellation()
       guard case .raster(let source) = layer.content else { continue }
       let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
+      let appliesStoredMask = writesLayer && layer.mask != nil && layer.effectiveMaskProperties.enabled
       // Photoshop's opaque and alpha-bearing stack paths expand opacity bytes
       // differently. Keep the model value canonical; change only evaluation.
       let opacity = expandedOpacity(layer.opacity, opaque: opaqueBase)
@@ -46,25 +56,27 @@ enum RGB32NormalRenderer {
       let x1 = min(region.x + region.width, layer.x + source.width)
       let y1 = min(region.y + region.height, layer.y + source.height)
       let copiesSource: Bool
-      if index > 0, backdropAlpha != nil, mask == nil,
+      if index > 0, backdropAlpha != nil, mask == nil, !appliesStoredMask,
         canCopyOpaqueRaster(layer, source: source, in: document) {
         copiesSource = try facts?.opaqueBase(layer) ?? source.isOpaque()
       } else {
         copiesSource = false
       }
-      let sourceAlpha = opaqueBase || copiesSource || mask != nil ? nil : try uniformAlpha(
+      let sourceAlpha = opaqueBase || copiesSource || mask != nil || appliesStoredMask ? nil : try uniformAlpha(
         layer, source: source, in: document, facts: facts)
       backdropAlpha = compositeUniformAlpha(backdrop: backdropAlpha,
-        source: sourceAlpha.map { layerOpacityAlpha($0, opacity: opacity, forLayerOutput: writesLayer) }, seeded: index > 0,
+        source: sourceAlpha.map { scaleAlpha($0, by: opacity, flushSubnormal: writesLayer && opacity != 1) }, seeded: index > 0,
         opaque: opaqueBase, copiesSource: copiesSource, forLayerOutput: writesLayer)
       guard x0 < x1 && y0 < y1 else { continue }
       for y in y0..<y1 {
         if y % 64 == 0 { try Task.checkCancellation() }
         for x in x0..<x1 {
           var pixel = source.linearPixel(x: x - layer.x, y: y - layer.y)
-          // The mask product rounds before the layer-opacity product.
-          pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-          pixel.a = layerOpacityAlpha(pixel.a, opacity: opacity, forLayerOutput: writesLayer)
+          let coverage = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+          // A zero mask sample excludes the raster at this coordinate, including hidden RGB.
+          if appliesStoredMask && coverage == 0 { continue }
+          pixel.a = scaleAlpha(pixel.a, by: coverage, flushSubnormal: appliesStoredMask)
+          pixel.a = scaleAlpha(pixel.a, by: opacity, flushSubnormal: writesLayer && opacity != 1)
           if index == 0 {
             // Photoshop seeds the stack with the first layer's straight RGB,
             // including RGB beneath zero alpha. Later interpolation can reveal
@@ -153,13 +165,12 @@ enum RGB32NormalRenderer {
     #endif
   }
 
-  @inline(__always) private static func layerOpacityAlpha(_ source: Float, opacity: Float,
-    forLayerOutput: Bool) -> Float {
-    let coverage = source * opacity
+  @inline(__always) private static func scaleAlpha(_ source: Float, by multiplier: Float,
+    flushSubnormal: Bool) -> Float {
+    let coverage = source * multiplier
     #if arch(x86_64)
-    // Full opacity uses the stored coverage. Partial opacity takes the
-    // measured Intel multiplication path, which flushes subnormal products.
-    if forLayerOutput && opacity != 1 && coverage.isSubnormal { return 0 }
+    // The Intel path flushes the product for a stored mask or partial opacity.
+    if flushSubnormal && coverage.isSubnormal { return 0 }
     #endif
     return unit(coverage)
   }

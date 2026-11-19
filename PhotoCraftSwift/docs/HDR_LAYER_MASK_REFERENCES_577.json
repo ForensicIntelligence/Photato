@@ -1,0 +1,3835 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "4e779ec726d8ba845359c6244cfdd70a3782a823d2de73a5864fb95e23f18b3a",
+    "binarySHA256": "eb5b909fdbd5baff810e77b25e268289f972ca4629611e51abedd9474430dd2e",
+    "bothOptionalModelsAndProvenanceVerified": true,
+    "extractedSignatureVerified": true,
+    "fullArchiveContentExact": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 8075
+  },
+  "build": 577,
+  "maskProbe": {
+    "arm": {
+      "boundary-binary-base": {
+        "outputWords": 6912,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "boundary-binary-top": {
+        "outputWords": 6912,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "boundary-feather-both": {
+        "outputWords": 3888,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "boundary-feather-top": {
+        "outputWords": 6912,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-binary-base": {
+        "outputWords": 7668,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1394,
+              1377,
+              1392,
+              0
+            ],
+            "total": 4163
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-binary-top": {
+        "outputWords": 7668,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-feather-both": {
+        "outputWords": 3996,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              414,
+              432,
+              408,
+              0
+            ],
+            "total": 1254
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-feather-top": {
+        "outputWords": 7668,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      }
+    },
+    "intel": {
+      "boundary-binary-base": {
+        "outputWords": 6912,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              2
+            ],
+            "total": 6
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              2
+            ],
+            "total": 6
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              2
+            ],
+            "total": 6
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              2
+            ],
+            "total": 6
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              2
+            ],
+            "total": 6
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              2
+            ],
+            "total": 6
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              14
+            ],
+            "total": 14
+          }
+        }
+      },
+      "boundary-binary-top": {
+        "outputWords": 6912,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              90
+            ],
+            "total": 90
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              90
+            ],
+            "total": 90
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              90
+            ],
+            "total": 90
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              90
+            ],
+            "total": 90
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              90
+            ],
+            "total": 90
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              90
+            ],
+            "total": 90
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              84
+            ],
+            "total": 84
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              84
+            ],
+            "total": 84
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              84
+            ],
+            "total": 84
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              84
+            ],
+            "total": 84
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              30
+            ],
+            "total": 34
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              30
+            ],
+            "total": 34
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              114
+            ],
+            "total": 118
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              30
+            ],
+            "total": 34
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              30
+            ],
+            "total": 34
+          }
+        }
+      },
+      "boundary-feather-both": {
+        "outputWords": 3888,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              5,
+              0,
+              0,
+              3
+            ],
+            "total": 8
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              5,
+              0,
+              0,
+              3
+            ],
+            "total": 8
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              5,
+              0,
+              0,
+              3
+            ],
+            "total": 8
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              5,
+              0,
+              0,
+              3
+            ],
+            "total": 8
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              5,
+              0,
+              0,
+              3
+            ],
+            "total": 8
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              5,
+              0,
+              0,
+              3
+            ],
+            "total": 8
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              5,
+              0,
+              0,
+              10
+            ],
+            "total": 15
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              5,
+              0,
+              0,
+              10
+            ],
+            "total": 15
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              5,
+              0,
+              0,
+              10
+            ],
+            "total": 15
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              5,
+              0,
+              0,
+              10
+            ],
+            "total": 15
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              5,
+              0,
+              0,
+              10
+            ],
+            "total": 15
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              5,
+              0,
+              0,
+              10
+            ],
+            "total": 15
+          }
+        }
+      },
+      "boundary-feather-top": {
+        "outputWords": 6912,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              68
+            ],
+            "total": 68
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              68
+            ],
+            "total": 68
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              68
+            ],
+            "total": 68
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              68
+            ],
+            "total": 68
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              68
+            ],
+            "total": 68
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              68
+            ],
+            "total": 68
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              63
+            ],
+            "total": 63
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              63
+            ],
+            "total": 63
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              63
+            ],
+            "total": 63
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              63
+            ],
+            "total": 63
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              84
+            ],
+            "total": 88
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              84
+            ],
+            "total": 88
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              84
+            ],
+            "total": 88
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              84
+            ],
+            "total": 88
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              4,
+              0,
+              0,
+              21
+            ],
+            "total": 25
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              4,
+              0,
+              0,
+              21
+            ],
+            "total": 25
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              7,
+              0,
+              0,
+              90
+            ],
+            "total": 97
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              7,
+              0,
+              0,
+              90
+            ],
+            "total": 97
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              7,
+              0,
+              0,
+              90
+            ],
+            "total": 97
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              7,
+              0,
+              0,
+              90
+            ],
+            "total": 97
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              7,
+              0,
+              0,
+              27
+            ],
+            "total": 34
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              7,
+              0,
+              0,
+              27
+            ],
+            "total": 34
+          }
+        }
+      },
+      "translucent-binary-base": {
+        "outputWords": 7668,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              1140,
+              1215,
+              1186,
+              0
+            ],
+            "total": 3541
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-binary-top": {
+        "outputWords": 7668,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              414,
+              378,
+              436,
+              0
+            ],
+            "total": 1228
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              392,
+              0
+            ],
+            "total": 1076
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-feather-both": {
+        "outputWords": 3996,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              342,
+              378,
+              354,
+              0
+            ],
+            "total": 1074
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      },
+      "translucent-feather-top": {
+        "outputWords": 7668,
+        "variants": {
+          "allChannels/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "allChannels/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "allChannels/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "allChannels/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allChannels/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "allMask/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "allMask/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "allMask/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "allMask/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "allMask/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "fractional/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "fractional/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "fractional/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "fractional/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "fractional/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask-add-zero/resetBase0": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "none/skip-zero-mask-add-zero/resetBase1": {
+            "rgba": [
+              360,
+              324,
+              374,
+              0
+            ],
+            "total": 1058
+          },
+          "none/skip-zero-mask-canonical/resetBase0": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "none/skip-zero-mask-canonical/resetBase1": {
+            "rgba": [
+              306,
+              270,
+              340,
+              0
+            ],
+            "total": 916
+          },
+          "none/skip-zero-mask/resetBase0": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          },
+          "none/skip-zero-mask/resetBase1": {
+            "rgba": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "total": 0
+          }
+        }
+      }
+    }
+  },
+  "maximumTestCanvas": [
+    300000,
+    300000
+  ],
+  "measuredSparseRenderPatches": 2,
+  "offscreenAppResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122083,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "Vector masks and live mask settings",
+    "Independent clipping and rich grouped output",
+    "Physical supported platforms",
+    "Full Photoshop parity"
+  ],
+  "perArchitectureMaskWords": 51624,
+  "qualification": {
+    "caseSelectionSHA256": "ff6fa53f5df418b954892725d71b027e386b8b32764de51c3532b97ee770f071",
+    "configurations": {
+      "arm": {
+        "appSHA256": "deba4346b24497b1093d9554fbe2a887510d699584662345091dda467517d138",
+        "testBinarySHA256": "d0e7f1142491a48acd4b44208aa67d7fa41cfae2d4a746212039089ea8dd7714"
+      },
+      "debug": {
+        "appSHA256": "652c576303fd507fb096c71392f042cbd3aea49b4653841074b715b454377f78",
+        "testBinarySHA256": "75f85b44da456d8a82498eaf3e23c7372d56fd0557bef9e35043d6fb18d981cd"
+      },
+      "intel": {
+        "appSHA256": "93e350bfae0a456acb06028cf0337dfba3ccebff96d59b9beda27347b55e6b3b",
+        "testBinarySHA256": "07919cadc09917201592972bb5796ba670bfa40516518be8e43ddaa9de35f8cc"
+      }
+    },
+    "focusedDebug": 64,
+    "selectedPerConfiguration": 752
+  },
+  "referenceProvenance": {
+    "files": [
+      {
+        "path": "arm-boundary-binary-base-visible.psd",
+        "sha256": "76b577970d1abdef62a3bb5870fa0e59190b457eb2961a48bfa72e6d05e1f8be"
+      },
+      {
+        "path": "arm-boundary-binary-top-visible.psd",
+        "sha256": "ec06dae43e8404aa0bbe2fda0d739856b9527f70e47e426176fd7493d55582b3"
+      },
+      {
+        "path": "arm-boundary-feather-both-visible.psd",
+        "sha256": "d26c2bf1e2942819c3c9a4cd1e23e2c49557c8e4c476513bc74ca0caaddbc295"
+      },
+      {
+        "path": "arm-boundary-feather-top-visible.psd",
+        "sha256": "67c827d8e6b8429484b660883a943fa4e449b3a03cc61e1e851f6f69390e73f4"
+      },
+      {
+        "path": "arm-translucent-binary-base-visible.psd",
+        "sha256": "c212ad4fc0dadd25a5066bee6592c5448de894f9455cf3b3f5f302a59a642154"
+      },
+      {
+        "path": "arm-translucent-binary-top-visible.psd",
+        "sha256": "29143b20e2e275f6b78dbc84e8709e90d51d63190bb765398fa01d23a356ecb0"
+      },
+      {
+        "path": "arm-translucent-feather-both-visible.psd",
+        "sha256": "4f5addeebd305d381d5687c71c4819ccfdbc8c00b22cbeda3730a31d514d2127"
+      },
+      {
+        "path": "arm-translucent-feather-top-visible.psd",
+        "sha256": "957e739dfc54865d484a6da0df9a7b6901b073367c025d34116c915dbf639b14"
+      },
+      {
+        "path": "boundary-binary-base.psd",
+        "sha256": "fec627e8a55ab656186b22e9967ada4c3a0076c514339fc3b40ebe8c09a3b5d5"
+      },
+      {
+        "path": "boundary-binary-top.psd",
+        "sha256": "e9d5923b75419ea251b4085d061b98626b45a69f9f05b78a2a8035ede06bcbef"
+      },
+      {
+        "path": "boundary-feather-both.psd",
+        "sha256": "26ff9d43a469d2cb22dea3aa9bcaa09d7d3a791e7ef97639e3edf2d856ec0fbd"
+      },
+      {
+        "path": "boundary-feather-top.psd",
+        "sha256": "2164e5004ea475d32b3c114ead89f903d9f31e8dddcf9915ff6f877ffb77c664"
+      },
+      {
+        "path": "intel-boundary-binary-base-visible.psd",
+        "sha256": "aeb4cdf36f4ec36d6e7e757a379f681ded3741d642453b508e5b9595c1cfb385"
+      },
+      {
+        "path": "intel-boundary-binary-top-visible.psd",
+        "sha256": "beca6456d33ac54763dba8e0361eb96fb70f8b786679de17cb1cfd7d4ea73048"
+      },
+      {
+        "path": "intel-boundary-feather-both-visible.psd",
+        "sha256": "f192688a76211425db863db6007d20c381cbd047f10202b0aba42657eaba7994"
+      },
+      {
+        "path": "intel-boundary-feather-top-visible.psd",
+        "sha256": "a4d5857772a86ef138c53289c7a84a68f2be62b4ea7a2ccbd0603860b23642f7"
+      },
+      {
+        "path": "intel-translucent-binary-base-visible.psd",
+        "sha256": "9e002d61bc2decfa6a2caeebae33cd86eb937e7b031a067472b6a695ce771664"
+      },
+      {
+        "path": "intel-translucent-binary-top-visible.psd",
+        "sha256": "30169afcbc4b8916384c723a103166235237f3527e9609eb946b7d1829e9ae56"
+      },
+      {
+        "path": "intel-translucent-feather-both-visible.psd",
+        "sha256": "77605239b9ad0cfd0a801535a93a71b28abd244f008aff5b9e659fa5aef9897f"
+      },
+      {
+        "path": "intel-translucent-feather-top-visible.psd",
+        "sha256": "231ba0e0cf1f055b290e6120ed41fb3432db5d016d9f8796de67ac765736b511"
+      },
+      {
+        "path": "translucent-binary-base.psd",
+        "sha256": "e7bfd3deff9e7c7e50b5dc41e1ac85ccbb98c9b4f0d048eb2c82190b5a16c4cf"
+      },
+      {
+        "path": "translucent-binary-top.psd",
+        "sha256": "bba035ce51e72da9b9848d046c4ad5c8fe8a60c369be548c807abe918ada7280"
+      },
+      {
+        "path": "translucent-feather-both.psd",
+        "sha256": "ff49ec6199c3d069834680871087ed9f7a387294363a613458bdf3aff38861b7"
+      },
+      {
+        "path": "translucent-feather-top.psd",
+        "sha256": "2430f0b3655976e409b2d62f4b80a498da90a699ba1dc4e7941b906bb747b802"
+      }
+    ],
+    "photoshop": "27.2.0",
+    "workflow": "Layer Mask from binary or feathered selection, then Merge Visible"
+  },
+  "sourceInputs": 8075,
+  "sourceInputsChangedSince576": [
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "72168c21a671df217eb1584984b23624bfe14a55088f53e44d1bd2f4099f2c5c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RGB32NormalRenderer.swift",
+      "sha256": "717d87584189d4e2fffa3f2e93a4802dbdfa99357fee206abdf049de8fc72bbc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-boundary-binary-base-visible.psd",
+      "sha256": "76b577970d1abdef62a3bb5870fa0e59190b457eb2961a48bfa72e6d05e1f8be"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-boundary-binary-top-visible.psd",
+      "sha256": "ec06dae43e8404aa0bbe2fda0d739856b9527f70e47e426176fd7493d55582b3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-boundary-feather-both-visible.psd",
+      "sha256": "d26c2bf1e2942819c3c9a4cd1e23e2c49557c8e4c476513bc74ca0caaddbc295"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-boundary-feather-top-visible.psd",
+      "sha256": "67c827d8e6b8429484b660883a943fa4e449b3a03cc61e1e851f6f69390e73f4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-translucent-binary-base-visible.psd",
+      "sha256": "c212ad4fc0dadd25a5066bee6592c5448de894f9455cf3b3f5f302a59a642154"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-translucent-binary-top-visible.psd",
+      "sha256": "29143b20e2e275f6b78dbc84e8709e90d51d63190bb765398fa01d23a356ecb0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-translucent-feather-both-visible.psd",
+      "sha256": "4f5addeebd305d381d5687c71c4819ccfdbc8c00b22cbeda3730a31d514d2127"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/arm-translucent-feather-top-visible.psd",
+      "sha256": "957e739dfc54865d484a6da0df9a7b6901b073367c025d34116c915dbf639b14"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/boundary-binary-base.psd",
+      "sha256": "fec627e8a55ab656186b22e9967ada4c3a0076c514339fc3b40ebe8c09a3b5d5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/boundary-binary-top.psd",
+      "sha256": "e9d5923b75419ea251b4085d061b98626b45a69f9f05b78a2a8035ede06bcbef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/boundary-feather-both.psd",
+      "sha256": "26ff9d43a469d2cb22dea3aa9bcaa09d7d3a791e7ef97639e3edf2d856ec0fbd"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/boundary-feather-top.psd",
+      "sha256": "2164e5004ea475d32b3c114ead89f903d9f31e8dddcf9915ff6f877ffb77c664"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-boundary-binary-base-visible.psd",
+      "sha256": "aeb4cdf36f4ec36d6e7e757a379f681ded3741d642453b508e5b9595c1cfb385"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-boundary-binary-top-visible.psd",
+      "sha256": "beca6456d33ac54763dba8e0361eb96fb70f8b786679de17cb1cfd7d4ea73048"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-boundary-feather-both-visible.psd",
+      "sha256": "f192688a76211425db863db6007d20c381cbd047f10202b0aba42657eaba7994"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-boundary-feather-top-visible.psd",
+      "sha256": "a4d5857772a86ef138c53289c7a84a68f2be62b4ea7a2ccbd0603860b23642f7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-translucent-binary-base-visible.psd",
+      "sha256": "9e002d61bc2decfa6a2caeebae33cd86eb937e7b031a067472b6a695ce771664"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-translucent-binary-top-visible.psd",
+      "sha256": "30169afcbc4b8916384c723a103166235237f3527e9609eb946b7d1829e9ae56"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-translucent-feather-both-visible.psd",
+      "sha256": "77605239b9ad0cfd0a801535a93a71b28abd244f008aff5b9e659fa5aef9897f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/intel-translucent-feather-top-visible.psd",
+      "sha256": "231ba0e0cf1f055b290e6120ed41fb3432db5d016d9f8796de67ac765736b511"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/references.json",
+      "sha256": "58fc2cb0acdc8c4301452e189574e6291e0ad96a63207c7a97482881cc083281"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/translucent-binary-base.psd",
+      "sha256": "e7bfd3deff9e7c7e50b5dc41e1ac85ccbb98c9b4f0d048eb2c82190b5a16c4cf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/translucent-binary-top.psd",
+      "sha256": "bba035ce51e72da9b9848d046c4ad5c8fe8a60c369be548c807abe918ada7280"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/translucent-feather-both.psd",
+      "sha256": "ff49ec6199c3d069834680871087ed9f7a387294363a613458bdf3aff38861b7"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/hdr-mask/translucent-feather-top.psd",
+      "sha256": "2430f0b3655976e409b2d62f4b80a498da90a699ba1dc4e7941b906bb747b802"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "da8a78b5004155eff0a8a39bacada254048b49a0ee0322020819bd8c1cae4e5a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStampTests.swift",
+      "sha256": "20e4fbd3b17ed1fdf0eb399250e1835bf01552c034e98204f0e023c66d3b42a3"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "daa124aadd49dab5e06718d51bbe62fdcb5a24c4d0a2a0c8fe1c5665decd6795"
+    }
+  ]
+}

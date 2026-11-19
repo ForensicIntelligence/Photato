@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **576** · The 10 most recent entries, newest first.
+Source build **577** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 577 — Preserve stored RGB32 pixel masks when merging and stamping
+
+Normal 32-bit layer output now uses stored pixel masks. The comparison covers saved binary coverage and feathered selections, including transparency and the Intel rounding at tiny alpha values. A small translated mask in a 300,000 × 300,000 document used two render patches.
+
+All 752 selected tests passed in Debug and in both optimized configurations. Both slices of the extracted local validation archive passed their offscreen checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md).
 
 ## 2026-11-18 — Step 576 — Match stored RGB32 Normal merge and stamp samples
 
@@ -77,11 +85,3 @@ RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the me
 All 2,142,336 stored samples from 59 tested conversion cases match the corresponding Photoshop files on each architecture. Five Gray32 layer stacks match all 960 merged words under each of four compression modes in PSD and PSB. All 657 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_568.md).
-
-## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
-
-Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile.
-
-All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture. Photoshop itself returned different values across architectures for 13,057 samples from the gamma and parametric cases. The Swift conversion matches the rounding observed on each architecture. All 651 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The desktop conversion and the authenticated Photato command produce the same stored samples and both Undo correctly. Both universal app slices passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-567) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_567.md).

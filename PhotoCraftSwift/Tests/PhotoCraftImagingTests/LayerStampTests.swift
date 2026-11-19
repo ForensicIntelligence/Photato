@@ -240,6 +240,40 @@ final class LayerStampTests: XCTestCase {
     }
   }
 
+  func testMaximumSparseRGB32LayerOutputUsesTranslatedMaskSupport() async throws {
+    let side = Surface.maxDimension
+    let baseSample = Pixel(0.25, 0.5, 0.75, 0.5)
+    let topSample = Pixel(0.75, 0.25, 0.5, 1)
+    var basePixels = try Surface(width: side, height: side, depth: .f32,
+      fill: baseSample).interpretingSamples(as: .linearRGB)
+    basePixels.setLinearPixel(x: 2, y: 3, Pixel(0, 1, 0, 0.5))
+    let base = Layer(name: "Base", content: .raster(basePixels))
+    var top = Layer(name: "Top", content: .raster(try Surface(width: side, height: side,
+      depth: .f32, fill: topSample).interpretingSamples(as: .linearRGB)))
+    top.mask = try Surface(width: 3, height: 2, depth: .f32, fill: .white)
+    var mask = MaskProperties()
+    mask.transform = .translation(Double(side - 3), Double(side - 2))
+    top.maskProperties = mask
+    var document = try CraftDocument(width: side, height: side, depth: .f32)
+    document.layers = [base, top]
+    document.activeLayerID = top.id
+    let original = document
+    let measured = try await Task.detached {
+      var patches = 0
+      let result = try PagedCanvasRenderer.composite(original,
+        region: IntRect(x: 0, y: 0, width: side, height: side), forLayerOutput: true,
+        onPatch: {
+          patches = $0
+          if patches > 2 { withUnsafeCurrentTask { $0?.cancel() } }
+        })
+      return (result, patches)
+    }.value
+    XCTAssertEqual(measured.1, 2)
+    XCTAssertTrue(measured.0.linearPixel(x: side / 2, y: side / 2).hasSameBits(as: baseSample))
+    XCTAssertTrue(measured.0.linearPixel(x: side - 1, y: side - 1).hasSameBits(as: topSample))
+    XCTAssertTrue(measured.0.linearPixel(x: 2, y: 3).hasSameBits(as: Pixel(0, 1, 0, 0.5)))
+  }
+
   func testRejectedAndStaleStampPreservesDocument() throws {
     var source = try fixture("root-stack")
     source.activeLayerID = source.layers[1].id
