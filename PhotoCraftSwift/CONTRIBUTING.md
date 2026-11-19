@@ -28,6 +28,8 @@ The maintainer requires documentation of every development step, starting with t
 
 [The development diary](docs/DEVELOPMENT_DIARY.md) provides the readable chronological account and links every recorded milestone to DEVLOG. Keep its index and material narrative current at completed checkpoints. Detailed notes must still be saved as work proceeds, including failed attempts and work that is later removed.
 
+From the repository root, run `python3 scripts/check-diary.py --write` to refresh the [public diary](../DEVELOPER_DIARY.md) and [archive](../diary/README.md). Run `python3 scripts/check-diary.py` before publishing. Commit the source entries, generated pages, and updated README build number with the same source checkpoint. The Development diary check runs on pushes and pull requests to `main`.
+
 For every meaningful investigation, design decision, implementation change, experiment and validation step, record:
 
 1. Date and stable step ID; include time and time zone when known. Describe the request or defect and the intended scope.

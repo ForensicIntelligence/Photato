@@ -109,6 +109,17 @@ def check_chronological_index(diary: str, build: int) -> None:
             raise ValueError(f"Fix the diary index link for step {int(step)}.")
 
 
+def check_readme_links(root: Path, readme: str) -> None:
+    top = "\n".join(readme.splitlines()[:12])
+    if "\n## Developer Diary\n" not in top or not {"DEVELOPER_DIARY.md", "diary/README.md"}.issubset(LINK_TARGET.findall(top)):
+        raise ValueError("Keep the Developer Diary section and both diary links near the top of README.md.")
+
+    native_readme = (root / "PhotoCraftSwift/README.md").read_text(encoding="utf-8")
+    native_top = "\n".join(native_readme.splitlines()[:12])
+    if not {"../DEVELOPER_DIARY.md", "../diary/README.md"}.issubset(LINK_TARGET.findall(native_top)):
+        raise ValueError("Keep both diary links near the top of PhotoCraftSwift/README.md.")
+
+
 def check(*, write: bool = False) -> int:
     root = Path(__file__).resolve().parents[1]
     project = root / "PhotoCraftSwift"
@@ -117,12 +128,7 @@ def check(*, write: bool = False) -> int:
         build = int(plistlib.load(info)["CFBundleVersion"])
 
     readme = (root / "README.md").read_text(encoding="utf-8")
-    top = "\n".join(readme.splitlines()[:10])
-    diary_link = "[Developer Diary](DEVELOPER_DIARY.md)"
-    if diary_link not in top:
-        raise ValueError("Put the Developer Diary link near the top of README.md.")
-    if "[Full diary archive](diary/README.md)" not in top:
-        raise ValueError("Put the full diary archive link near the top of README.md.")
+    check_readme_links(root, readme)
     if re.findall(r"^\*\*Development alpha — source build (\d+)\.", readme, re.M) != [str(build)]:
         raise ValueError(f"The README must advertise source build {build}.")
 

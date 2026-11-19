@@ -10,6 +10,8 @@ On 18 November 2026, the public repository already had the diary through build 5
 
 The build 569 archive check found three duplicate rows for steps 511–513. The chronological index now lists every checkpoint once, and the diary check enforces the order and verifies the target anchors.
 
+At build 570, unauthenticated requests confirmed that the diary and repository home page both returned HTTP 200. The root README now has a dedicated Developer Diary section and the Swift README links to both diary views. The GitHub workflow checks both entry points alongside the existing build and archive checks. The contributor guide records how to refresh and commit the public pages with every source checkpoint.
+
 ## 2026-10-19 — Initial private GitHub repository setup
 
 The owner requested a private GitHub repository in a side conversation, with public visibility deferred until they approve a release.

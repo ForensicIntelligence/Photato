@@ -23,6 +23,7 @@ jobs:
             /DEVELOPER_DIARY.md
             /diary/
             /scripts/check-diary.py
+            /PhotoCraftSwift/README.md
             /PhotoCraftSwift/docs/DEVELOPMENT_DIARY.md
             /PhotoCraftSwift/docs/DEVLOG.md
             /PhotoCraftSwift/scripts/Info.plist
