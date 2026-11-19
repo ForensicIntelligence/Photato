@@ -1,3 +1,5 @@
+**Source checkpoint 607.** Large Photoshop layers sample across their height and retain sparse storage when their channels use raw or RLE. [Qualification](SOURCE_PUBLICATION_607.md).
+
 **Source checkpoint 606.** Large RLE Photoshop layers retain their implicit color and store the edited tiles during import. [Qualification](SOURCE_PUBLICATION_606.md).
 
 **Source checkpoint 605.** Large sparse Photoshop files reuse merged pixels and identical rows during export. [Qualification](SOURCE_PUBLICATION_605.md).

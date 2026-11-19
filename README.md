@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 606.** Large RLE Photoshop layers retain their implicit color and store the edited tiles during import. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md).
+**Development alpha — source build 607.** Large Photoshop layers sample across their height and retain sparse storage when their channels use raw or RLE. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_607.md).
 
 ## Project layout
 

@@ -160,7 +160,7 @@ final class PSDCompressionOptionsTests: XCTestCase {
         let slow = try input()
         let expected = try PSDRasterPaging.layer(width: width, height: height, depth: depth,
           components: components, context: PSDRasterPaging.Context()) { _ in try slow.map { try $0.nextRow() } }
-        let actual = try PSDRasterPaging.packBitsLayer(width: width, height: height, depth: depth,
+        let actual = try PSDRasterPaging.sparseLayer(width: width, height: height, depth: depth,
           channels: input(), context: PSDRasterPaging.Context(scratchByteLimit: 3 * 65_536))
         XCTAssertEqual(actual, expected, "RGB/\(bits) with \(components) stored components")
         XCTAssertEqual(actual.tileCount, 3)
@@ -189,8 +189,59 @@ final class PSDCompressionOptionsTests: XCTestCase {
       let channels = try [good, wrong, good].map {
         try PSDChannelReader(PSDReader(data: $0), width: width, height: height, depth: 32, format: .psb)
       }
-      XCTAssertThrowsError(try PSDRasterPaging.packBitsLayer(width: width, height: height, depth: .f32,
+      XCTAssertThrowsError(try PSDRasterPaging.sparseLayer(width: width, height: height, depth: .f32,
         channels: channels, context: PSDRasterPaging.Context()))
+    }
+  }
+
+  func testLayerWithPaintAcrossFirstRowFitsItsSparseBudget() throws {
+    let width = 131, height = 129
+    let base: [UInt8] = [51, 102, 153], paint: [UInt8] = [179, 51, 102]
+    for compression: [PSDCompression] in [[.rle, .rle, .rle], [.raw, .raw, .raw], [.raw, .rle, .raw]] {
+      let data = try compression.enumerated().map { component, method -> Data in
+        let output = PSDOutput()
+        try PSDChannelWriter.write(width: width, height: height, depth: 8,
+          compression: method, format: .psb, to: output) { y in
+            var row = [UInt8](repeating: y == 0 ? paint[component] : base[component], count: width)
+            if y == 65 { row[64] = paint[component] }
+            if y == height - 1 { row[width - 1] = paint[component] }
+            return row
+          }
+        return output.data
+      }
+      func input() throws -> [PSDChannelReader] {
+        try data.map { try PSDChannelReader(PSDReader(data: $0), width: width, height: height, depth: 8, format: .psb) }
+      }
+      let original = try input()
+      let direct = try PSDRasterPaging.layer(width: width, height: height, depth: .u8, components: 3,
+        context: PSDRasterPaging.Context()) { _ in try original.map { try $0.nextRow() } }
+      let sparse = try PSDRasterPaging.sparseLayer(width: width, height: height, depth: .u8,
+        channels: input(), context: PSDRasterPaging.Context(scratchByteLimit: 5 * 65_536))
+      XCTAssertEqual(sparse, direct)
+      XCTAssertEqual(sparse.tileCount, 5)
+      XCTAssertEqual(sparse.mappedBytes, 5 * 65_536)
+    }
+  }
+
+  func testSparseLayerRowInspectionPreservesTheLiveCursor() throws {
+    let width = 19, height = 7
+    for format in PSDFileFormat.allCases {
+      for compression in [PSDCompression.raw, .rle] {
+        let output = PSDOutput()
+        try PSDChannelWriter.write(width: width, height: height, depth: 8, compression: compression,
+          format: format, to: output) { row in [UInt8](repeating: UInt8(row), count: width) }
+        let reader = try PSDChannelReader(PSDReader(data: output.data), width: width, height: height, depth: 8, format: format)
+        var values: [UInt8] = []
+        try reader.inspectLayerRows(at: [0, 2, 6]) { values.append($0[0]) }
+        XCTAssertEqual(values, [0, 2, 6])
+        XCTAssertEqual(reader.remainingRows, height)
+        XCTAssertThrowsError(try reader.inspectLayerRows(at: [2, 1]) { _ in })
+        for y in 0..<height {
+          XCTAssertEqual(try reader.nextRow(), [UInt8](repeating: UInt8(y), count: width))
+        }
+        let truncated = try PSDChannelReader(PSDReader(data: output.data.dropLast()), width: width, height: height, depth: 8, format: format)
+        XCTAssertThrowsError(try truncated.inspectLayerRows(at: [height - 1]) { _ in })
+      }
     }
   }
   func merged(_ data: Data, _ format: PSDFileFormat) throws -> Data {

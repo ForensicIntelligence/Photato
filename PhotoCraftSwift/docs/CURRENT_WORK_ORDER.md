@@ -1,3 +1,7 @@
+**Source checkpoint 607.** Large Photoshop layers sample across their height and retain sparse storage when their channels use raw or RLE. [Qualification](SOURCE_PUBLICATION_607.md).
+
+Qualify saving wide raster edits with a bounded merged scratch raster. Compare the native file and the entire independent RLE row table and payload. Continue dense PSB and wide Feather validation.
+
 **Source checkpoint 606.** Large RLE Photoshop layers retain their implicit color and store the edited tiles during import. [Qualification](SOURCE_PUBLICATION_606.md).
 
 Sample more than the first row when choosing the implicit values for an import. Verify a painted first row, raw and mixed-compression layers, and metadata and malformed-input guards. Continue dense PSB and wide Feather validation.

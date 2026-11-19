@@ -732,8 +732,8 @@ public enum PSDCodec {
       if let paging,native == nil,rasterRows > 0 {
         var channels = (0..<3).map { planes[$0]! }
         if let alpha = planes[-1] { channels.append(alpha) }
-        if record.w > Surface.maximumDensePixels / record.h, channels.allSatisfy(\.usesPackBits) {
-          surface = try PSDRasterPaging.packBitsLayer(width: record.w, height: record.h,
+        if record.w > Surface.maximumDensePixels / record.h, channels.allSatisfy(\.supportsSparseLayerRows) {
+          surface = try PSDRasterPaging.sparseLayer(width: record.w, height: record.h,
             depth: pixelDepth, channels: channels, context: paging)
         } else {
           surface = try PSDRasterPaging.layer(width: record.w, height: record.h, depth: pixelDepth,

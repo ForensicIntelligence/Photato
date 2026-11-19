@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **606** · The 10 most recent entries, newest first.
+Source build **607** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 607 — Choose sparse Photoshop layer samples across the canvas
+
+The editable 300,000 × 300,000 RLE PSB with paint across its first row reopened in 1.72 s on Apple Silicon and 2.70 s under Rosetta. All raster bits matched. Its 4,690 retained tiles occupied about 293 MiB.
+
+The raw and mixed-compression controls each went from 8,911 mapped tiles to 21. Row inspection preserved the live cursor and continued to reject malformed input in both PSD and PSB. All 940 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-607) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_607.md).
 
 ## 2026-11-19 — Step 606 — Reopen sparse editable PSB raster layers
 
@@ -81,11 +89,3 @@ A 300,000 × 300,000 document with a rectangular vector mask and a sparse raster
 All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md).
-
-## 2026-11-19 — Step 597 — Reuse window sums during wide mask Feather
-
-Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. The 1,000 px vector viewport went from 1.001 s to 0.933 s on Apple Silicon. The RGB32 pixel-mask control went from 0.180 s to 0.135 s and the oversize Smart Filter mask from 0.867 s to 0.821 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 596 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
-
-All 909 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-597) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_597.md).

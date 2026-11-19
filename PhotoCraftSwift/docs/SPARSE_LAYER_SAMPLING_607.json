@@ -1,0 +1,314 @@
+{
+  "build": 607,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince606": [
+    {
+      "path": "Sources/PhotoCraftImaging/PSDChannelReader.swift",
+      "sha256": "448dac4ccc742ae84c284672971aff5b56bdcc25b535b20f4da6d5f86dcf10b3"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "a10447f000249245d57717b4a1d8fdd3a4f4b2342a04ca3893e11692b8b17dde"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDRasterPaging.swift",
+      "sha256": "77ced592c5c2a512e22aac34c6e64ade95ee4cb0e1d1426f1f4bce868a4d0cb9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompressionOptionsTests.swift",
+      "sha256": "7c6582328c674496c75ede70ddb59906d3bf0b500e70e1156f0f0a439d83acbf"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "380f6ac8cc9e9b37c5a47c0fc95fcf1b7a66e858da2725e304b669b6c1e99156"
+    }
+  ],
+  "selectedChecksPerConfiguration": 940,
+  "focusedCompressionChecksPerConfiguration": 12,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "450e79ebe8903f198a7c0dd3958b82c72facd69fe1b856fa56563e64ed8f8c69",
+      "testBinarySHA256": "8abf75f6272c3b8e0b7f92b295a25e1dadce3e86f647c00937b1c577051aadee",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "7d0158e946437af251cdf8821fefad5c8e755ecc5292e3bf6b24df8c95739013",
+      "testBinarySHA256": "5175037971274b746ba334c5e8196265fdaee66bbaa791352c6540cd3d36afcb",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "1e1dbafbe6739cf603e24148fd560b47e2d61c39e7e9f2a00ed274915692190f",
+      "testBinarySHA256": "d2220390690e22456b1f11eec9a71d0d97e244966229451ae11b0e2a4ece63f3",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "694f9eae79c555245c763081ce70641467523cf37c511d4e2459d69306683148",
+    "binarySHA256": "5716add3df21e17cd36f4890a37587095baae13e5051c4d5f6e25536f00e6360",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "independentControls": {
+    "arm": {
+      "raw": {
+        "fixture": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            0,
+            0
+          ],
+          "bytes": 110253856,
+          "firstRowPainted": true
+        },
+        "native": {
+          "allLayerBitsMatch": true,
+          "checkedStoredPixels": 83361,
+          "editableRaster": true,
+          "height": 30001,
+          "implicitPixels": 35947840,
+          "mappedBytes": 1376256,
+          "readSeconds": 0.07629525,
+          "retainedTiles": 21,
+          "width": 1201
+        }
+      },
+      "mixed": {
+        "fixture": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            1,
+            0
+          ],
+          "bytes": 74942684,
+          "firstRowPainted": true
+        },
+        "native": {
+          "allLayerBitsMatch": true,
+          "checkedStoredPixels": 83361,
+          "editableRaster": true,
+          "height": 30001,
+          "implicitPixels": 35947840,
+          "mappedBytes": 1376256,
+          "readSeconds": 0.066084,
+          "retainedTiles": 21,
+          "width": 1201
+        }
+      },
+      "maximum": {
+        "fixture": {
+          "width": 300000,
+          "height": 300000,
+          "methods": [
+            1,
+            1,
+            1
+          ],
+          "bytes": 8445600192,
+          "firstRowPainted": true
+        },
+        "native": {
+          "allLayerBitsMatch": true,
+          "checkedStoredPixels": 19205120,
+          "editableRaster": true,
+          "height": 300000,
+          "implicitPixels": 89980794880,
+          "mappedBytes": 307363840,
+          "readSeconds": 1.724579291,
+          "retainedTiles": 4690,
+          "width": 300000
+        }
+      }
+    },
+    "intel": {
+      "raw": {
+        "fixture": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            0,
+            0
+          ],
+          "bytes": 110253856,
+          "firstRowPainted": true
+        },
+        "native": {
+          "allLayerBitsMatch": true,
+          "checkedStoredPixels": 83361,
+          "editableRaster": true,
+          "height": 30001,
+          "implicitPixels": 35947840,
+          "mappedBytes": 1376256,
+          "readSeconds": 0.133414833,
+          "retainedTiles": 21,
+          "width": 1201
+        }
+      },
+      "mixed": {
+        "fixture": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            1,
+            0
+          ],
+          "bytes": 74942684,
+          "firstRowPainted": true
+        },
+        "native": {
+          "allLayerBitsMatch": true,
+          "checkedStoredPixels": 83361,
+          "editableRaster": true,
+          "height": 30001,
+          "implicitPixels": 35947840,
+          "mappedBytes": 1376256,
+          "readSeconds": 0.133163125,
+          "retainedTiles": 21,
+          "width": 1201
+        }
+      },
+      "maximum": {
+        "fixture": {
+          "width": 300000,
+          "height": 300000,
+          "methods": [
+            1,
+            1,
+            1
+          ],
+          "bytes": 8445600192,
+          "firstRowPainted": true
+        },
+        "native": {
+          "allLayerBitsMatch": true,
+          "checkedStoredPixels": 19205120,
+          "editableRaster": true,
+          "height": 300000,
+          "implicitPixels": 89980794880,
+          "mappedBytes": 307363840,
+          "readSeconds": 2.695243875,
+          "retainedTiles": 4690,
+          "width": 300000
+        }
+      }
+    }
+  },
+  "pairedRawAndMixed": {
+    "606": {
+      "raw": {
+        "file": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            0,
+            0
+          ],
+          "bytes": 110253856,
+          "firstRowPainted": true
+        },
+        "checkedPixels": 8,
+        "mappedBytes": 583991296,
+        "readSeconds": 1.246516583,
+        "tiles": 8911
+      },
+      "mixed": {
+        "file": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            1,
+            0
+          ],
+          "bytes": 74942684,
+          "firstRowPainted": true
+        },
+        "checkedPixels": 8,
+        "mappedBytes": 583991296,
+        "readSeconds": 1.276867166,
+        "tiles": 8911
+      }
+    },
+    "607": {
+      "raw": {
+        "file": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            0,
+            0
+          ],
+          "bytes": 110253856,
+          "firstRowPainted": true
+        },
+        "checkedPixels": 8,
+        "mappedBytes": 1376256,
+        "readSeconds": 0.070343042,
+        "tiles": 21
+      },
+      "mixed": {
+        "file": {
+          "width": 1201,
+          "height": 30001,
+          "methods": [
+            0,
+            1,
+            0
+          ],
+          "bytes": 74942684,
+          "firstRowPainted": true
+        },
+        "checkedPixels": 8,
+        "mappedBytes": 1376256,
+        "readSeconds": 0.066898583,
+        "tiles": 21
+      }
+    }
+  },
+  "build606PaintedBorderScratchFailure": {
+    "requiredBytes": 393216,
+    "scratchLimit": 327680
+  },
+  "photoshopWindows": {
+    "finishedLaunching": 1,
+    "ownedControlWindows": 0,
+    "runningPhotoshopProcesses": 1,
+    "titledWindows": 10,
+    "windows": 10
+  },
+  "limits": "A wide painted stroke still triggers the slower export path in this build. Dense and ZIP maximum-size files, live Photoshop cross-open, and physical Intel and macOS 14 runtime remain open."
+}

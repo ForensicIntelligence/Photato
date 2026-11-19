@@ -625,7 +625,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 604 | 2026-11-19 | [Reuse wide vector Feather profiles at canvas edges](#dev-step-604) |
 | 605 | 2026-11-19 | [Stream repeated rows in sparse PSB files](#dev-step-605) |
 | 606 | 2026-11-19 | [Reopen sparse editable PSB raster layers](#dev-step-606) |
+| 607 | 2026-11-19 | [Choose sparse Photoshop layer samples across the canvas](#dev-step-607) |
 <!-- history-index:end -->
+
+<a id="dev-step-607"></a>
+
+## 2026-11-19 — Choose sparse Photoshop layer samples across the canvas
+
+The first-row strategy in build 606 can pick a painted border instead of the backing color. On a 131 × 129 control with five changed tiles, the 606 importer requested a sixth 65,536-byte tile and exceeded the 327,680-byte scratch limit. The controls and the measured error are in `artifacts/607-sparse-layer-sampling`.
+
+`PSDChannelReader` now inspects up to seven rows spread across each seekable layer plane without advancing its live decoder. It uses a bounded row-length table and decodes only the sampled PackBits rows during inspection. Later writes and pixel reads still follow the normal row order and validate each payload or a byte-identical previously verified row. `PSDRasterPaging` chooses a representative raw sample across those rows. `PSDCodec` uses this path for large RGB layers whose channels are raw, RLE or a mixture of the two. ZIP layers continue through the existing streaming decoder. The shared native and API file paths keep the same document and sample semantics. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+Two new `PSDCompressionOptionsTests` methods check a painted first row under the original five-tile budget, mixed compression, row inspection without reordering the decoder, the PSD and PSB tables, and truncated input. The two existing RGB depth and malformed-layer checks also pass in isolated optimized binaries for both architectures. The fixture writer builds the large controls independently of Photato's encoder.
+
+The 300,000 × 300,000 RLE control has a line across the full first row and two other edited pixels. Both architectures verified every bit in the 4,690 mapped tiles and the implicit value for the remaining pixels. Mapped tiles cover 19,205,120 pixels and occupy 307,363,840 bytes. The 8.45 GB file opened in 1.72 s on Apple Silicon and 2.70 s under Rosetta. The 1,201 × 30,001 raw and mixed controls each used 21 tiles and reproduced the editable raster on both architectures. On the paired Apple Silicon run, build 606 held 8,911 tiles for each of those files. Build 607 reduced the measured mapped bytes from 583,991,296 to 1,376,256. The synthetic files were removed after verification.
+
+The macOS window query found the running Photoshop process and its windows. The earlier disposable PSB did not appear under its test title, so its cross-open remains unverified. All twelve focused tests passed in the full Debug app test bundle. All 940 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_607.md). Dense and ZIP maximum-size cases remain open. A separate export probe found that the 4,690-tile stroke exceeds the sparse export admission in both the layer and merged paths. The file writer was left before the full-canvas fallback. See `artifacts/608-wide-raster-export/budget607.json`.
 
 <a id="dev-step-606"></a>
 

@@ -634,6 +634,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 604 | [Reuse wide vector Feather profiles at canvas edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604) |
 | 2026-11-19 | 605 | [Stream repeated rows in sparse PSB files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-605) |
 | 2026-11-19 | 606 | [Reopen sparse editable PSB raster layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-606) |
+| 2026-11-19 | 607 | [Choose sparse Photoshop layer samples across the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-607) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

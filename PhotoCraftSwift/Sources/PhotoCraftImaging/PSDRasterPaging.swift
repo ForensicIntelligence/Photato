@@ -67,13 +67,16 @@ enum PSDRasterPaging {
 
   /// The archive rows prove which tiles differ from a finite implicit RGB(A)
   /// sample. Only changed planes enter the existing bounded staging stripe.
-  static func packBitsLayer(width: Int, height: Int, depth: PixelDepth,
+  static func sparseLayer(width: Int, height: Int, depth: PixelDepth,
     channels: [PSDChannelReader], context: Context) throws -> Surface {
     let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
     let components = channels.count, sampleSize = bits / 8, side = Surface.tileSide
     let columnCount = (width + side - 1) / side
-    var first = try channels.map { try $0.nextRow() }
-    let samples = first.map { representativeSample(in: $0, width: width, sampleSize: sampleSize) }
+    let sampleCount = min(height, 7)
+    let sampleRows = (0..<sampleCount).map { $0 * (height - 1) / max(1, sampleCount - 1) }
+    let samples = try channels.map {
+      try representativeSample(in: $0, rows: sampleRows, width: width, sampleSize: sampleSize)
+    }
     let numeric = try samples.map { try PSDChannelCodec.sample($0, 0, depth: bits) }
     let implicit = Pixel(numeric[0], numeric[1], numeric[2], components == 4 ? numeric[3] : 1)
     let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
@@ -91,21 +94,14 @@ enum PSDRasterPaging {
       for py in 0..<rows {
         try Task.checkCancellation()
         for component in channels.indices {
-          func match(_ row: [UInt8]) -> Bool {
+          let different = try channels[component].nextSparseLayerRow(uniformPacket: &packets[component]) { row in
             markChangedColumns(row, pattern: pattern[component], touched: &touched)
-          }
-          let different: [UInt8]?
-          if y + py == 0 {
-            different = match(first[component]) ? nil : first[component]
-          } else {
-            different = try channels[component].nextSparsePackBitsRow(uniformPacket: &packets[component], isUniform: match)
           }
           if let different {
             try stripe.write(different, row: py, component: component)
             staged[py * components + component] = true
           }
         }
-        if y + py == 0 { first.removeAll() }
       }
       for column in touched.indices where touched[column] {
         try Task.checkCancellation()
@@ -131,15 +127,19 @@ enum PSDRasterPaging {
     return try builder.finish()
   }
 
-  private static func representativeSample(in row: [UInt8], width: Int, sampleSize: Int) -> [UInt8] {
+  private static func representativeSample(in channel: PSDChannelReader, rows: [Int],
+    width: Int, sampleSize: Int) throws -> [UInt8] {
     var votes = [[UInt8]: Int]()
     var mode = [UInt8](), maximum = 0
     let reads = min(width, 33)
-    for sample in 0..<reads {
-      let offset = (sample * (width - 1) / max(1, reads - 1)) * sampleSize
-      let bytes = Array(row[offset..<offset + sampleSize])
-      votes[bytes, default: 0] += 1
-      if votes[bytes]! > maximum { mode = bytes; maximum = votes[bytes]! }
+    try channel.inspectLayerRows(at: rows) { row in
+      for sample in 0..<reads {
+        let offset = (sample * (width - 1) / max(1, reads - 1)) * sampleSize
+        let bytes = Array(row[offset..<offset + sampleSize])
+        let count = votes[bytes, default: 0] + 1
+        votes[bytes] = count
+        if count > maximum { mode = bytes; maximum = count }
+      }
     }
     return mode
   }

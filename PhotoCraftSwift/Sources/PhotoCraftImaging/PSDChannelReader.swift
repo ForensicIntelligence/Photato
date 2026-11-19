@@ -15,7 +15,7 @@ final class PSDChannelReader {
   private let compression: Int
   private var zip: PSDZIPReader?
   private(set) var remainingRows: Int
-  var usesPackBits: Bool { compression == 1 }
+  var supportsSparseLayerRows: Bool { compression == 0 || compression == 1 }
 
   init(
     _ source: PSDReader, width: Int, height: Int, depth: Int, channels: Int = 1,
@@ -63,11 +63,57 @@ final class PSDChannelReader {
     return row
   }
 
+  /// Inspect a few seekable rows without advancing the live channel decoder.
+  /// RLE layer rows have their own lengths, so only the selected rows are decoded.
+  func inspectLayerRows(at indices: [Int], _ visit: ([UInt8]) throws -> Void) throws {
+    guard supportsSparseLayerRows, remainingRows <= Surface.maxDimension,
+      let last = indices.last, indices[0] >= 0, last < remainingRows,
+      Swift.zip(indices, indices.dropFirst()).allSatisfy({ $0.0 < $0.1 })
+    else { throw CraftError.invalid("Invalid Photoshop layer row sample.") }
+    var payload = source
+    guard var lengths else {
+      var nextRow = 0
+      for index in indices {
+        try Task.checkCancellation()
+        _ = try payload.view((index - nextRow) * rowBytes)
+        try visit(Array(payload.bytes(rowBytes)))
+        nextRow = index + 1
+      }
+      return
+    }
+    let table = try lengths.bytes((last + 1) * rowLengthBytes)
+    try table.withUnsafeBytes { entries in
+      var wanted = 0, skipped = 0
+      for row in 0...last {
+        if row % 1024 == 0 { try Task.checkCancellation() }
+        let offset = row * rowLengthBytes
+        let length = rowLengthBytes == 2
+          ? Int(UInt16(bigEndian: entries.loadUnaligned(fromByteOffset: offset, as: UInt16.self)))
+          : Int(UInt32(bigEndian: entries.loadUnaligned(fromByteOffset: offset, as: UInt32.self)))
+        guard length <= payload.remaining - skipped else {
+          throw CraftError.invalid("Truncated Photoshop layer row.")
+        }
+        if row == indices[wanted] {
+          _ = try payload.view(skipped)
+          try visit(PSDCodec.decodePackBits(payload.view(length), expected: rowBytes))
+          wanted += 1
+          skipped = 0
+        } else {
+          skipped += length
+        }
+      }
+    }
+  }
+
   /// A uniform packet is reusable after its decoded bytes matched every sample
   /// of the caller's fixed implicit row. Retained packets belong to one plane.
-  func nextSparsePackBitsRow(uniformPacket: inout Data?, isUniform: ([UInt8]) -> Bool) throws -> [UInt8]? {
+  func nextSparseLayerRow(uniformPacket: inout Data?, isUniform: ([UInt8]) -> Bool) throws -> [UInt8]? {
     try Task.checkCancellation()
-    guard usesPackBits, remainingRows > 0 else { throw CraftError.invalid("Expected a Photoshop RLE row.") }
+    guard supportsSparseLayerRows, remainingRows > 0 else { throw CraftError.invalid("Expected a seekable Photoshop layer row.") }
+    if compression == 0 {
+      let row = try nextRow()
+      return isUniform(row) ? nil : row
+    }
     let length = try lengths!.length(rowLengthBytes)
     let changed: [UInt8]?
     if length <= rowBytes * 2 {
