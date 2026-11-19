@@ -141,6 +141,9 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   public func rawWord(component: Int, index: Int) -> UInt32 {
     componentStorage.indices.contains(component) ? componentStorage[component].word(at: index) : 0
   }
+  package func storedComponentRanges(_ component: Int) -> AnySequence<Range<Int>> {
+    componentStorage[component].storedSampleRanges
+  }
   public func planeBytes(_ component: Int) throws -> Data {
     guard componentStorage.indices.contains(component) else { throw CraftError.invalid("Native component not found.") }
     try requireDensePlanes()

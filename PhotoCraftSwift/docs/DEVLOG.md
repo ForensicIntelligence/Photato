@@ -634,7 +634,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 613 | 2026-11-19 | [Import large flattened RGB PSD and PSB without staging all process planes](#dev-step-613) |
 | 614 | 2026-11-19 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](#dev-step-614) |
 | 615 | 2026-11-19 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](#dev-step-615) |
+| 616 | 2026-11-19 | [Write native Photoshop separations and Gray32 previews from stored blocks](#dev-step-616) |
 <!-- history-index:end -->
+
+<a id="dev-step-616"></a>
+
+## 2026-11-19 — Write native Photoshop separations and Gray32 previews from stored blocks
+
+Large editable Grayscale, CMYK and Lab layer planes now use their retained component ranges to fill unchanged samples from the exact implicit word. Empty spans reuse an encoded row through the existing Raw, PackBits and ZIP writer. Separate per-component indexes preserve each separation. The same row support serves eligible full-canvas unmasked Gray32 previews while retaining the existing Normal, Multiply, straight alpha, white matte and architecture-specific rounding rules. Current file save, Photato output and compatible job routes share the serializer. Capability discovery adds `documentTransfers.photoshopContainers.sparseNativeLayerOutput`.
+
+All four isolated Debug Gray32 stack tests passed. The regression compares representative sparse Gray32 rows at a height of 300,000 pixels against ordinary compositing in exact cropped controls. The paired executable check matched all 34,060,421 bytes of the two-layer 1,531 × 5,491 Gray32 file against build 615. The paired Apple Silicon Debug run took 44.80 seconds in build 615 and 274.9 milliseconds in build 616. This measures one sparse control. The receipt preserves both binary and output hashes.
+
+The Gray32 preview acceleration is scoped to unmasked, aligned pointwise stacks. Other native mode previews and masks keep their existing path. Large dense files and live Photoshop exchange remain open.
+
+All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. [Validation](SOURCE_PUBLICATION_616.md).
 
 <a id="dev-step-615"></a>
 

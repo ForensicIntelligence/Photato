@@ -643,6 +643,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 613 | [Import large flattened RGB PSD and PSB without staging all process planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-613) |
 | 2026-11-19 | 614 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-614) |
 | 2026-11-19 | 615 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-615) |
+| 2026-11-19 | 616 | [Write native Photoshop separations and Gray32 previews from stored blocks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-616) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

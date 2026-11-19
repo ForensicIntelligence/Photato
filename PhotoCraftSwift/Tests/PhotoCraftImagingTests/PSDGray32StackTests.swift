@@ -125,6 +125,58 @@ final class PSDGray32StackTests: XCTestCase {
     }
   }
 
+  func testSparseGray32MergedRowsMatchOrdinaryRowsWithNormalAndMultiply() throws {
+    let width = 4_097, height = 300_000
+    for opaque in [false, true] {
+      let descriptor = try DocumentModeDescriptor(mode: .grayscale, depth: .f32)
+      var document = try CraftDocument(width: width, height: height, depth: .f32)
+      document.modeDescriptor = descriptor
+      var layers: [Layer] = []
+      for index in 0...1 {
+        let builder = try NativeModeRaster.RowBuilder(width: width, height: height, mode: .grayscale,
+          depth: .f32, profile: descriptor.profile)
+        try builder.fill(component: 0, word: Float(index == 0 ? 0.375 : 0.75).bitPattern)
+        try builder.fill(component: 1, word: Float(index == 0 && opaque ? 1 : 0.5).bitPattern)
+        var source = try builder.finish()
+        try source.set(index == 0 ? -0.0 : 1.5, component: 0, index: index + 1)
+        try source.set(index == 0 ? -0.25 : 1.25, component: 0, index: width * height - 1 - index)
+        if index == 1 { try source.set(0.75, component: 1, index: width * height - 1) }
+        var layer = Layer(name: index == 0 && opaque ? "Background" : "Owned pixels", content: .raster(try source.surface()))
+        layer.nativeMode = source
+        if index == 0 && opaque { layer.background = true }
+        if index == 1 {
+          layer.opacity = 191 / 255
+          if opaque { layer.blendMode = .multiply }
+        }
+        layers.append(layer)
+      }
+      document.layers = layers
+      document.activeLayerID = layers[1].id
+      let sparse = try XCTUnwrap(PSDGray32CompositeRows(document))
+      XCTAssertTrue(sparse.usesSparseRows)
+      XCTAssertEqual(sparse.repeatedRows(from: height / 2), height - 1 - height / 2)
+      XCTAssertEqual(sparse.repeatedRows(from: height - 1), 1)
+      for y in [0, height / 2, height - 1] {
+        var small = try CraftDocument(width: width, height: 1, depth: .f32)
+        small.modeDescriptor = descriptor
+        small.layers = try layers.map { layer in
+          let source = try XCTUnwrap(layer.nativeMode).cropped(to: .init(x: 0, y: y, width: width, height: 1))
+          var cropped = layer
+          cropped.nativeMode = source
+          cropped.content = .raster(try source.surface())
+          return cropped
+        }
+        small.activeLayerID = layers[1].id
+        let ordinary = try XCTUnwrap(PSDGray32CompositeRows(small))
+        XCTAssertFalse(ordinary.usesSparseRows)
+        for channel in 0...1 {
+          XCTAssertEqual(try sparse.row(y, channel: channel, transparency: !opaque),
+            try ordinary.row(0, channel: channel, transparency: !opaque))
+        }
+      }
+    }
+  }
+
   func testNamedGray32RasterKeepsItsAlphaWhenItsLocksResembleBackground() throws {
     var document = try fixture("opaque-normal")
     document.layers[0].background = nil

@@ -1,3 +1,5 @@
+**Source checkpoint 616.** Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer. [Qualification](SOURCE_PUBLICATION_616.md).
+
 **Source checkpoint 615.** Large editable and flattened Grayscale, CMYK and Lab Photoshop files keep unchanged separation samples implicit. [Qualification](SOURCE_PUBLICATION_615.md).
 
 Verify large native-mode output and continue dense and live Photoshop interchange checks.

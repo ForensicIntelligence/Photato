@@ -15,7 +15,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 615.** Large editable and flattened Grayscale, CMYK and Lab Photoshop files keep unchanged separation samples implicit. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_615.md).
+**Development alpha — source build 616.** Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_616.md).
 
 ## Project layout
 

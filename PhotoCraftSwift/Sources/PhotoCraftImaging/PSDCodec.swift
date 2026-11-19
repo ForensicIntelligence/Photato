@@ -1517,18 +1517,35 @@ public enum PSDCodec {
       }
       let storedLayerRows = layer.nativeMode == nil ? surface.flatMap { PSDStoredRows($0, kind: .layer) } : nil
       let storedMaskRows = layer.mask.flatMap { PSDStoredRows($0, kind: .mask) }
+      let nativeSupports: [PSDNativeRowSupport?]
+      if let native = layer.nativeMode, native.requiresPagedArchive {
+        nativeSupports = try (0...native.mode.componentCount).map { component in
+          try PSDNativeRowSupport(width: native.width, height: native.height,
+            streams: [native.storedComponentRanges(component)])
+        }
+      } else { nativeSupports = [] }
       for channel in 0..<channelLengthOffsets[entryIndex].count {
         let start = output.count
         let isMask = channel == colorChannels + 1
         let source = isMask ? layer.mask : surface
         if let source {
           let storedRows = isMask ? storedMaskRows : storedLayerRows
+          let nativeSupport = !isMask && nativeSupports.indices.contains(channel) ? nativeSupports[channel] : nil
+          let repeatedRows: ((Int) -> Int)?
+          if let storedRows { repeatedRows = { storedRows.repeatedRows(from: $0) } }
+          else if let nativeSupport { repeatedRows = { nativeSupport.repeatedRows(from: $0) } }
+          else { repeatedRows = nil }
           try PSDChannelWriter.write(
             width: source.width, height: source.height, depth: depth,
             compression: compression, format: format, to: output,
-            repeatedRows: storedRows.map { rows in { rows.repeatedRows(from: $0) } }
+            repeatedRows: repeatedRows
           ) { y in
             if let storedRows { return try storedRows.row(y, channel: channel, depth: depth) }
+            if let nativeSupport, let native = layer.nativeMode {
+              return try nativeSupport.row(y, depth: depth) { index in
+                PSDModeStorage.sample(native.value(component: channel, index: index), mode: native.mode, component: channel)
+              }
+            }
             var row: [UInt8] = []
             row.reserveCapacity(source.width * (depth / 8))
             for x in 0..<source.width {
@@ -1636,13 +1653,13 @@ public enum PSDCodec {
     let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
     let storedAuxiliary = auxiliaryChannels.map(PSDAuxiliaryChannels.storedRows)
     let repeatedRows: ((Int) -> Int)?
-    if sparseComposite != nil || storedAuxiliary.contains(where: { $0 != nil }) {
+    if sparseComposite != nil || gray32Composite?.usesSparseRows == true || storedAuxiliary.contains(where: { $0 != nil }) {
       repeatedRows = { index in
         let channel = index / doc.height, y = index % doc.height
         if channel >= imageChannels {
           return storedAuxiliary[channel - imageChannels]?.repeatedRows(from: y) ?? 1
         }
-        return sparseComposite?.repeatedRows(from: y) ?? 1
+        return gray32Composite?.repeatedRows(from: y) ?? sparseComposite?.repeatedRows(from: y) ?? 1
       }
     } else { repeatedRows = nil }
     try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,

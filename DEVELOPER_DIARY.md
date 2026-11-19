@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **615** · The 10 most recent entries, newest first.
+Source build **616** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 616 — Write native Photoshop separations and Gray32 previews from stored blocks
+
+A two-layer 1,531 × 5,491 Gray32 control matched all 34,060,421 bytes from build 615. Restoring the same sparse layers and writing the file took 274.9 milliseconds in the paired Apple Silicon Debug run, down from 44.80 seconds.
+
+All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-616) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_616.md).
 
 ## 2026-11-19 — Step 615 — Keep large Grayscale, CMYK and Lab Photoshop planes sparse
 
@@ -75,11 +83,3 @@ The editable 300,000 × 300,000 RLE PSB with paint across its first row reopened
 The raw and mixed-compression controls each went from 8,911 mapped tiles to 21. Row inspection preserved the live cursor and continued to reject malformed input in both PSD and PSB. All 940 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-607) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_607.md).
-
-## 2026-11-19 — Step 606 — Reopen sparse editable PSB raster layers
-
-Photato reopened the 8.45 GB, 300,000 × 300,000 RGB8 PSB in 1.65 s on Apple Silicon and 2.61 s under Rosetta. Every raster bit matched and six tiles used 384 KiB of mapped sample storage. The independent decoder checked 900,000 layer and 900,000 merged row lengths per architecture, plus 72 sampled channel values.
-
-The 300,000 × 131 RGB8 file went from 14,064 mapped tiles to four. RGB16 and RGB32 PSBs and RGB8 and RGB16 PSDs reopened with every raster bit preserved in the tested deep and legacy fixtures. All 938 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-606) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md).

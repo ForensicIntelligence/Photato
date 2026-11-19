@@ -40,3 +40,76 @@ final class PSDModeCompositeRows {
     return bytes
   }
 }
+
+/// Union of stored component blocks. Outside these ranges a numerical layer
+/// has its implicit word, and an aligned pointwise composite is also constant.
+struct PSDNativeRowSupport {
+  private let width: Int
+  private let height: Int
+  private let ranges: [Range<Int>]
+  let implicitIndex: Int
+
+  init?(width: Int, height: Int, streams: [AnySequence<Range<Int>>]) throws {
+    var stored: [Range<Int>] = []
+    for stream in streams {
+      for range in stream {
+        try Task.checkCancellation()
+        guard stored.count < PSDStoredRows.retainedTileCount else { return nil }
+        stored.append(range)
+      }
+    }
+    stored.sort { $0.lowerBound < $1.lowerBound }
+    var merged: [Range<Int>] = []
+    for range in stored {
+      if let previous = merged.last, previous.upperBound >= range.lowerBound {
+        merged[merged.count - 1] = previous.lowerBound..<max(previous.upperBound, range.upperBound)
+      } else {
+        merged.append(range)
+      }
+    }
+    let sample = merged.first.map { $0.lowerBound == 0 ? $0.upperBound : 0 } ?? 0
+    guard sample < width * height else { return nil }
+    self.width = width
+    self.height = height
+    self.ranges = merged
+    implicitIndex = sample
+  }
+
+  private func firstRange(after index: Int) -> Int {
+    var low = 0, high = ranges.count
+    while low < high {
+      let middle = (low + high) / 2
+      if ranges[middle].upperBound <= index { low = middle + 1 }
+      else { high = middle }
+    }
+    return low
+  }
+
+  func repeatedRows(from y: Int) -> Int {
+    let next = firstRange(after: y * width)
+    guard next < ranges.count else { return height - y }
+    return max(1, ranges[next].lowerBound / width - y)
+  }
+
+  func row(_ y: Int, depth: Int, sample: (Int) -> Float) throws -> [UInt8] {
+    let rowStart = y * width, rowEnd = rowStart + width
+    let bytesPerSample = depth / 8
+    var implicit: [UInt8] = []
+    try PSDChannelCodec.append(sample(implicitIndex), depth: depth, to: &implicit)
+    var bytes = Array(PSDChannelWriter.repeating(Data(implicit), count: width))
+    var index = firstRange(after: rowStart)
+    while index < ranges.count, ranges[index].lowerBound < rowEnd {
+      try Task.checkCancellation()
+      let left = max(rowStart, ranges[index].lowerBound), right = min(rowEnd, ranges[index].upperBound)
+      var patch: [UInt8] = []
+      patch.reserveCapacity((right - left) * bytesPerSample)
+      for position in left..<right {
+        if position % 4096 == 0 { try Task.checkCancellation() }
+        try PSDChannelCodec.append(sample(position), depth: depth, to: &patch)
+      }
+      bytes.replaceSubrange((left - rowStart) * bytesPerSample..<(right - rowStart) * bytesPerSample, with: patch)
+      index += 1
+    }
+    return bytes
+  }
+}

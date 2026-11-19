@@ -1,3 +1,7 @@
+### Sparse Photoshop native layer output (checkpoint 616)
+
+Discovery adds `documentTransfers.photoshopContainers.sparseNativeLayerOutput`. Editable Grayscale, CMYK and Lab layer output reuses stored process words and repeated rows through the common PSD/PSB writer. Eligible aligned Gray32 composite previews use the same row support. Desktop saves, Photato API downloads, and supported Photoshop v2 jobs use the shared serializer.
+
 ### Sparse Photoshop native process planes (checkpoint 615)
 
 Desktop Open, Photato imports, and both resource job readers share the native component decoder. Discovery adds `documentTransfers.photoshopContainers.sparseNativeProcessInput`. Large Grayscale, CMYK and Lab rasters preserve original process words and alpha samples for Raw, PackBits, ZIP and ZIP with prediction. Native file I/O passed the independent maximum-size Grayscale/16 control. API input and job budgets still apply.

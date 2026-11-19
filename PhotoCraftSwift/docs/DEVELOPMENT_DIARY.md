@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 616 — Write native Photoshop separations and Gray32 previews from stored blocks
+
+A two-layer 1,531 × 5,491 Gray32 control matched all 34,060,421 bytes from build 615. Restoring the same sparse layers and writing the file took 274.9 milliseconds in the paired Apple Silicon Debug run, down from 44.80 seconds.
+
+All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](DEVLOG.md#dev-step-616) · [Validation](SOURCE_PUBLICATION_616.md).
+
 ## 2026-11-19 — Step 615 — Keep large Grayscale, CMYK and Lab Photoshop planes sparse
 
 The native file reader opened an independently authored 300,000 × 300,000 Grayscale/16 PSB and matched all 18,432 checked gray and alpha words. The Apple Silicon Debug run took 2.61 seconds and retained 24 KiB of mapped component samples.
@@ -921,14 +929,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:615 -->
+<!-- current-status-step:616 -->
 ## Current development status — 19 November 2026
 
-Large editable and flattened Grayscale, CMYK and Lab Photoshop files keep unchanged separation samples implicit.
+Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer.
 
-All 963 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 615](SOURCE_PUBLICATION_615.md) · [Detailed record](DEVLOG.md#dev-step-615).
+[Source checkpoint 616](SOURCE_PUBLICATION_616.md) · [Detailed record](DEVLOG.md#dev-step-616).
 
 <!-- current-status:end -->
 
@@ -1750,6 +1758,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 613 | [Import large flattened RGB PSD and PSB without staging all process planes](DEVLOG.md#dev-step-613) |
 | 2026-11-19 | 614 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](DEVLOG.md#dev-step-614) |
 | 2026-11-19 | 615 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](DEVLOG.md#dev-step-615) |
+| 2026-11-19 | 616 | [Write native Photoshop separations and Gray32 previews from stored blocks](DEVLOG.md#dev-step-616) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -17,6 +17,8 @@ struct PSDGray32CompositeRows {
 
   private let entries: [Entry]
   private let opaque: Bool
+  private let support: PSDNativeRowSupport?
+  var usesSparseRows: Bool { support != nil }
   let hasOpaqueBackground: Bool
 
   init?(_ document: CraftDocument) throws {
@@ -47,38 +49,54 @@ struct PSDGray32CompositeRows {
       Entry(raster: raster, mask: try LayerMaskSampler.make(layer: layer, document: document),
         opacity: RGB32NormalRenderer.expandedOpacity(layer.opacity, opaque: opaque), blendMode: layer.blendMode)
     }
+    if base.requiresPagedArchive, entries.allSatisfy({ $0.mask == nil }) {
+      support = try PSDNativeRowSupport(width: document.width, height: document.height, streams: entries.flatMap {
+        [$0.raster.storedComponentRanges(0), $0.raster.storedComponentRanges(1)]
+      })
+    } else { support = nil }
+  }
+
+  func repeatedRows(from y: Int) -> Int {
+    support?.repeatedRows(from: y) ?? 1
   }
 
   func row(_ y: Int, channel: Int, transparency: Bool) throws -> [UInt8] {
     let width = entries[0].raster.width
-    let start = y * width
+    if let support {
+      return try support.row(y, depth: 32) { index in
+        value(index: index, x: index % width, y: index / width, channel: channel, transparency: transparency)
+      }
+    }
     var bytes: [UInt8] = []
     bytes.reserveCapacity(width * 4)
     for x in 0..<width {
       if x % 4096 == 0 { try Task.checkCancellation() }
-      // Keep the first layer's straight gray even underneath zero alpha.
-      let index = start + x
-      var merged = sample(entries[0], index: index, x: x, y: y)
-      for layer in entries.dropFirst() {
-        let source = sample(layer, index: index, x: x, y: y)
-        guard source.alpha > 0 else { continue }
-        let alpha: Float = opaque ? 1
-          : (source.alpha + merged.alpha).addingProduct(-merged.alpha, source.alpha)
-        let ratio = opaque ? source.alpha : alpha > 0 ? unit(source.alpha / alpha) : 0
-        let color = layer.blendMode == .multiply ? merged.gray * source.gray : source.gray
-        let difference = color - merged.gray
-        #if arch(x86_64)
-        merged.gray += difference * ratio
-        #else
-        merged.gray = merged.gray.addingProduct(difference, ratio)
-        #endif
-        merged.alpha = alpha
-      }
-      let value = channel == 1 ? merged.alpha : transparency
-        ? PSDMergedSample.whiteMatte(merged.gray, alpha: merged.alpha) : merged.gray
-      try PSDChannelCodec.append(value, depth: 32, to: &bytes)
+      let sample = value(index: y * width + x, x: x, y: y, channel: channel, transparency: transparency)
+      try PSDChannelCodec.append(sample, depth: 32, to: &bytes)
     }
     return bytes
+  }
+
+  private func value(index: Int, x: Int, y: Int, channel: Int, transparency: Bool) -> Float {
+    // Keep the first layer's straight gray even underneath zero alpha.
+    var merged = sample(entries[0], index: index, x: x, y: y)
+    for layer in entries.dropFirst() {
+      let source = sample(layer, index: index, x: x, y: y)
+      guard source.alpha > 0 else { continue }
+      let alpha: Float = opaque ? 1
+        : (source.alpha + merged.alpha).addingProduct(-merged.alpha, source.alpha)
+      let ratio = opaque ? source.alpha : alpha > 0 ? unit(source.alpha / alpha) : 0
+      let color = layer.blendMode == .multiply ? merged.gray * source.gray : source.gray
+      let difference = color - merged.gray
+      #if arch(x86_64)
+      merged.gray += difference * ratio
+      #else
+      merged.gray = merged.gray.addingProduct(difference, ratio)
+      #endif
+      merged.alpha = alpha
+    }
+    return channel == 1 ? merged.alpha : transparency
+      ? PSDMergedSample.whiteMatte(merged.gray, alpha: merged.alpha) : merged.gray
   }
 
   private func sample(_ entry: Entry, index: Int, x: Int, y: Int) -> Sample {

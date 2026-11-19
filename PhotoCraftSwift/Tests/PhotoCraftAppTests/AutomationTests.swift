@@ -177,6 +177,9 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(nativeProcess["modes"] as? [String], ["grayscale", "cmyk", "lab"])
       XCTAssertEqual(nativeProcess["compression"] as? [String], ["raw", "rle", "zip", "zipPrediction"])
       XCTAssertEqual(nativeProcess["keepsProcessWords"] as? Bool, true)
+      let nativeOutput = try XCTUnwrap(containers["sparseNativeLayerOutput"] as? [String: Any])
+      XCTAssertEqual(nativeOutput["modes"] as? [String], ["grayscale", "cmyk", "lab"])
+      XCTAssertEqual(nativeOutput["keepsProcessWords"] as? Bool, true)
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
     }
