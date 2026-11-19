@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 589.** Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. [Qualification](docs/SOURCE_PUBLICATION_589.md).
+
 **Source checkpoint 588.** Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. [Qualification](docs/SOURCE_PUBLICATION_588.md).
 
 **Source checkpoint 587.** Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. [Qualification](docs/SOURCE_PUBLICATION_587.md).

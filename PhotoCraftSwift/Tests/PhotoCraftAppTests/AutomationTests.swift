@@ -82,11 +82,11 @@ final class AutomationTests: XCTestCase {
   }
   @MainActor func request(
     _ service: AutomationService, path: String, body: [String: Any]? = nil,
-    headers: [String: String] = [:], authenticate: Bool = true
+    headers: [String: String] = [:], authenticate: Bool = true, timeout: TimeInterval = 5
   ) async throws -> (HTTPURLResponse, Data) {
     var request = URLRequest(
       url: try XCTUnwrap(URL(string: try XCTUnwrap(service.endpoint) + path)))
-    request.timeoutInterval = 5
+    request.timeoutInterval = timeout
     if authenticate {
       request.setValue("Bearer " + (service.token ?? ""), forHTTPHeaderField: "Authorization")
     }
@@ -101,7 +101,7 @@ final class AutomationTests: XCTestCase {
   }
   @MainActor func edit(
     _ service: AutomationService, _ document: CraftNSDocument, _ name: String,
-    _ parameters: [String: Any] = [:], revision: String? = nil
+    _ parameters: [String: Any] = [:], revision: String? = nil, timeout: TimeInterval = 5
   ) async throws -> Int {
     let id = try XCTUnwrap(service.shares.first?.id)
     let response = try await request(
@@ -109,7 +109,7 @@ final class AutomationTests: XCTestCase {
       body: [
         "command": name, "revision": revision ?? service.revision(document.store),
         "parameters": parameters,
-      ]
+      ], timeout: timeout
     )
     if response.0.statusCode >= 400 {
       // Keep server reasons for failures: a status alone cannot distinguish stale and busy 409s.

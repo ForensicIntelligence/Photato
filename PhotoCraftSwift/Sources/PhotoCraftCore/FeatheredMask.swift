@@ -12,7 +12,7 @@ final class FeatheredMask: Sendable {
     static let bottom = Self(rawValue: 8)
   }
 
-  private enum Values: Sendable {
+  enum Values: Sendable {
     case uniform(Float)
     case samples([Float], width: Int)
 
@@ -48,6 +48,18 @@ final class FeatheredMask: Sendable {
   var width: Int { area?.bounds.width ?? (source.width + 2 * padding) }
   var height: Int { area?.bounds.height ?? (source.height + 2 * padding) }
   var isConstantOutside: Bool { source.tileCount == 0 && implicitEqualsOutside }
+  var support: Int { area?.support ?? padding }
+  var implicitInterior: Float { area == nil ? filteredDefault : defaultSample }
+  var clampedSourceEdges: ClampedEdges {
+    guard let area else { return edges }
+    guard area.extendEdges else { return [] }
+    var clamped: ClampedEdges = []
+    if area.bounds.x == 0 { clamped.insert(.left) }
+    if area.bounds.y == 0 { clamped.insert(.top) }
+    if area.bounds.x + area.bounds.width == source.width { clamped.insert(.right) }
+    if area.bounds.y + area.bounds.height == source.height { clamped.insert(.bottom) }
+    return clamped
+  }
   private let cache = OSAllocatedUnfairLock(initialState: [Entry?](repeating: nil, count: FeatheredMask.slots))
 
   init(source: Surface, radius: Double, outside: Float, edges: ClampedEdges, area: AreaMaskFeather? = nil) {
@@ -90,6 +102,15 @@ final class FeatheredMask: Sendable {
       }
       return entries[slot]!.values.value(atX: x % side, y: y % side)
     }
+  }
+
+  func region(_ bounds: IntRect) throws -> Values {
+    if isConstantOutside { return .uniform(outside) }
+    try Task.checkCancellation()
+    guard let values = prepare(x: bounds.x - padding, y: bounds.y - padding,
+      width: bounds.width, height: bounds.height)
+    else { throw CancellationError() }
+    return values
   }
 
   private static func weightedConstant(_ value: Float, weights: [Float]) -> Float {

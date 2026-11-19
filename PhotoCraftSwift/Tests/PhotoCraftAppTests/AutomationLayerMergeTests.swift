@@ -137,6 +137,13 @@ final class AutomationLayerMergeTests: XCTestCase {
       with: "", options: .regularExpression) })
   }
 
+  @MainActor func testWideFeatherClippingThroughDesktopAndHTTPMatchesPhotoshopAndUndoes() async throws {
+    try await verifyClippedWorkflow(folder: "feathered-clipping", cases: [
+      ("wide250-merge-mask", .clippingMask, "clippingMask", "Reference Black"),
+      ("wide1000-stamp-down", .stampDown, "stampDown", "Reference Mask"),
+    ], requestTimeout: 90)
+  }
+
   @MainActor func testClippedArithmeticModesThroughDesktopAndNativeHTTPMatchPhotoshop() async throws {
     try await verifyClippedWorkflow(folder: "clipped-arithmetic", cases: [
       ("clipped-arithmetic-8-partial-linearAdd-37-merge-mask", .clippingMask, "clippingMask", "Clipping base"),
@@ -150,7 +157,7 @@ final class AutomationLayerMergeTests: XCTestCase {
 
   @MainActor private func verifyClippedWorkflow(
     folder: String, referenceArchitecture: String? = nil, cases: [(String, LayerMergeOperation, String, String)],
-    sourceName: (String) -> String = { $0 }
+    requestTimeout: TimeInterval = 5, sourceName: (String) -> String = { $0 }
   ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
@@ -179,11 +186,11 @@ final class AutomationLayerMergeTests: XCTestCase {
         store.session = EditorSession(document: source)
         store.selectedLayerIDs = [selected.id]
         let status = try await helper.edit(service, shared, "layer.merge",
-          ["operation": command, "layerIDs": [selected.id.uuidString]])
+          ["operation": command, "layerIDs": [selected.id.uuidString]], timeout: requestTimeout)
         XCTAssertEqual(status, 200, name)
         XCTAssertEqual(store.document, desktop.document, name)
         XCTAssertEqual(store.session.undoStack.last?.label, operation.rawValue, name)
-        let undo = try await helper.edit(service, shared, "history.undo")
+        let undo = try await helper.edit(service, shared, "history.undo", timeout: requestTimeout)
         XCTAssertEqual(undo, 200, name)
         XCTAssertEqual(store.document, source, name)
       }

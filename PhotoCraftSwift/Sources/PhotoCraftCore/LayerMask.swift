@@ -111,6 +111,60 @@ public struct MaskSampler: Sendable {
     if properties.density == 1 { return v }
     return 1 - properties.density * (1 - v)
   }
+
+  package struct FeatherRegion: Sendable {
+    let bounds: IntRect
+    let values: FeatheredMask.Values
+    let outside: Float
+
+    @inline(__always) package func sample(x: Int, y: Int) -> Float {
+      guard bounds.contains(x, y) else { return outside }
+      return unit(values.value(atX: x - bounds.x, y: y - bounds.y))
+    }
+  }
+
+  /// Unmodulated mask values on the integer document grid. Clipping merges
+  /// apply their own density and pixel-alpha rounding after this filter.
+  package func featherRegion(in documentBounds: IntRect) throws -> FeatherRegion? {
+    guard let feathered else { return nil }
+    let position = inverse.point(Double(documentBounds.x), Double(documentBounds.y))
+    guard inverse.a == 1, inverse.b == 0, inverse.c == 0, inverse.d == 1,
+      let x = Int(exactly: position.x), let y = Int(exactly: position.y)
+    else { throw CraftError.invalid("A feathered sample region requires an integer translation.") }
+    let local = IntRect(x: x, y: y, width: documentBounds.width, height: documentBounds.height)
+      .clipped(toWidth: feathered.width, height: feathered.height)
+    let bounds = IntRect(x: documentBounds.x + local.x - x, y: documentBounds.y + local.y - y,
+      width: local.width, height: local.height)
+    let values = local.width > 0 && local.height > 0 ? try feathered.region(local) : .uniform(properties.outside)
+    return FeatherRegion(bounds: bounds, values: values, outside: properties.outside)
+  }
+
+  package var featherSupport: Int { feathered?.support ?? 0 }
+  package var implicitFeatherInterior: Float { feathered?.implicitInterior ?? unit(mask.defaultPixel.r) }
+
+  /// Where an implicit mask differs from its exterior, only unclamped edges
+  /// can change the feathered interior default.
+  package func featherInteriorEdgeRegions(of bounds: IntRect) -> [IntRect] {
+    guard let feathered else { return [] }
+    let support = feathered.support
+    let edges = feathered.clampedSourceEdges
+    var regions: [IntRect] = []
+    if !edges.contains(.left) {
+      regions.append(IntRect(x: bounds.x, y: bounds.y, width: support, height: bounds.height))
+    }
+    if !edges.contains(.right) {
+      regions.append(IntRect(x: bounds.x + bounds.width - support, y: bounds.y,
+        width: support, height: bounds.height))
+    }
+    if !edges.contains(.top) {
+      regions.append(IntRect(x: bounds.x, y: bounds.y, width: bounds.width, height: support))
+    }
+    if !edges.contains(.bottom) {
+      regions.append(IntRect(x: bounds.x, y: bounds.y + bounds.height - support,
+        width: bounds.width, height: support))
+    }
+    return regions
+  }
   /// Proves unit coverage at every pixel center in this rectangle. Fractional
   /// constant masks are deliberately excluded: bilinear evaluation can round
   /// their samples by one Float ULP, so folding them would change stored pixels.

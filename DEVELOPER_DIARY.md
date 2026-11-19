@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **588** · The 10 most recent entries, newest first.
+Source build **589** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 589 — Apply Feather in raster clipping merges and stamps
+
+Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. Saved RGB32 layer output matches five Photoshop cases at 250 or 1,000 px on both architectures. The tests also exercise sparse 300,000 × 300,000 documents and verify Undo through the desktop model and HTTP.
+
+All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The lower-radius Intel comparisons still have differences of up to two Float32 steps.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-589) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_589.md).
 
 ## 2026-11-19 — Step 588 — Support layer-mask Feather through 1,000 px
 
@@ -75,11 +83,3 @@ Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-p
 The saved-layer comparisons cover 36 Photoshop results. The 12 larger results account for 93,264 exact stored samples. The native editor and both local API families use the same implementation. All 765 selected checks passed in each configuration.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-580) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_580.md).
-
-## 2026-11-18 — Step 579 — Add in-place Stamp Down and Stamp Group
-
-Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. Both commands preserve the selected layer and the rest of the stack.
-
-The updated raster matched saved 8-, 16- and 32-bit Photoshop references. The native menu, local API, Actions and Undo share the two operations. All 761 selected tests passed in each of the three configurations.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-579) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_579.md).

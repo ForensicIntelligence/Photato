@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 589 — Apply Feather in raster clipping merges and stamps
+
+Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. Saved RGB32 layer output matches five Photoshop cases at 250 or 1,000 px on both architectures. The tests also exercise sparse 300,000 × 300,000 documents and verify Undo through the desktop model and HTTP.
+
+All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The lower-radius Intel comparisons still have differences of up to two Float32 steps.
+
+[Detailed record](DEVLOG.md#dev-step-589) · [Validation](SOURCE_PUBLICATION_589.md).
+
 ## 2026-11-19 — Step 588 — Support layer-mask Feather through 1,000 px
 
 Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. The renderer streams the wide filter. The saved 250 and 1,000 px RGB32 controls match exactly on both tested architectures, and the editable 1,000 px setting survives native, PSD and PSB round trips.
@@ -699,14 +707,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:588 -->
+<!-- current-status-step:589 -->
 ## Current development status — 19 November 2026
 
-Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files.
+Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips.
 
-All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. Exact fractional, affine, lower-depth and expanded clipping workflows remain open.
+All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal slices passed offscreen checks. Lower-bit-depth output and the remaining Intel rounding still need work.
 
-[Source checkpoint 588](SOURCE_PUBLICATION_588.md) · [Detailed record](DEVLOG.md#dev-step-588).
+[Source checkpoint 589](SOURCE_PUBLICATION_589.md) · [Detailed record](DEVLOG.md#dev-step-589).
 
 <!-- current-status:end -->
 
@@ -1501,6 +1509,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 586 | [Bound pixel-mask Feather rendering](DEVLOG.md#dev-step-586) |
 | 2026-11-19 | 587 | [Match staged RGB32 pixel-mask Feather](DEVLOG.md#dev-step-587) |
 | 2026-11-19 | 588 | [Support layer-mask Feather through 1,000 px](DEVLOG.md#dev-step-588) |
+| 2026-11-19 | 589 | [Apply Feather in raster clipping merges and stamps](DEVLOG.md#dev-step-589) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

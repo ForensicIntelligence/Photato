@@ -607,7 +607,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 586 | 2026-11-19 | [Bound pixel-mask Feather rendering](#dev-step-586) |
 | 587 | 2026-11-19 | [Match staged RGB32 pixel-mask Feather](#dev-step-587) |
 | 588 | 2026-11-19 | [Support layer-mask Feather through 1,000 px](#dev-step-588) |
+| 589 | 2026-11-19 | [Apply Feather in raster clipping merges and stamps](#dev-step-589) |
 <!-- history-index:end -->
+
+<a id="dev-step-589"></a>
+
+## 2026-11-19 — Apply Feather in raster clipping merges and stamps
+
+Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. They accept translated raster pixel masks through 1,000 px on the existing RGB blend paths. The merge worker prepares the filtered coverage for each output patch, then uses the existing clipping Density and alpha arithmetic. Stored mask tiles and unclamped edges determine which patches need work. Stamping keeps the original contributing layers and their feathered masks, and the clipping base keeps its editable mask. The desktop, `layer.merge`, and both local ActionJSON job routes share the prepared transaction. [Adobe merge and stamp behavior](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/merge-and-stamp-layers.html).
+
+Fresh Photoshop 27.2.0 captures used project-owned synthetic PSDs on Apple Silicon and the x86_64 slice under Rosetta. Both source and reference output retain editable layer records. Five RGB32 cases at 250 and 1,000 px match the stored reference samples exactly on both architectures. They cover all four commands and an offset mask. The saved 3, 4 and 8 px impulse cases match on Apple Silicon. Intel still differs by up to two Float32 steps. An independent PSD parser checked 20,085 stored colour words in each configuration, including three partial-opacity controls. Apple Silicon matched every word. Intel differed at 230 words, with a maximum difference of two Float32 steps. The earlier paired impulse comparison used two clipping merge captures. The fresh test matrix includes a separate Merge Down reference.
+
+A 300,000 × 300,000 document with two distant black points on a white mask retained only local output tiles. A second maximum-size case used a small clip with a 1,000 px feather. The tests check the requested pixels, the distant implicit value, and the stable destination extent. UI-model and localhost tests cover Undo. Initial Debug HTTP checks hit their client polling deadlines. The wider tests use explicit waits and still verify the same outputs and history.
+
+All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both signed, extracted universal slices passed offscreen checks. Lower bit depths, additional fractional settings, affine and vector masks, dense wide-mask performance, adjacent masked clips and physical macOS 14 and Intel runs remain open. [Validation](SOURCE_PUBLICATION_589.md).
 
 <a id="dev-step-588"></a>
 

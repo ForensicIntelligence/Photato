@@ -117,8 +117,6 @@ public struct LayerMergePlan: Sendable {
       return false
     }
     guard layer.mask != nil, layer.effectiveMaskProperties.enabled else { return true }
-    let properties = layer.effectiveMaskProperties
-    guard properties.feather == 0 else { return false }
     let transform = layer.maskCoordinateTransform
     return transform.a == 1 && transform.b == 0 && transform.c == 0 && transform.d == 1
       && Int(exactly: transform.tx) != nil && Int(exactly: transform.ty) != nil

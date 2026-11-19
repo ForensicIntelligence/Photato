@@ -1,0 +1,512 @@
+{
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "50f6c30c87319166a85d9c62a2e36791ff6bc30aec6b30e80cbb8ada81b5e571",
+    "binarySHA256": "4f7a9881f740b329c1e6d27c753b7beea6bd4e886c23d9c133f690895c898c8c",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false
+  },
+  "build": 589,
+  "independentStoredSamples": {
+    "configurations": {
+      "arm": {
+        "impulse3-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "a51c0d720a63bb2bf4fa171e8ba560850cf11ab131f9d8d252d49f9e1beec4a3",
+          "photoshopRSHA256": "a51c0d720a63bb2bf4fa171e8ba560850cf11ab131f9d8d252d49f9e1beec4a3",
+          "rWords": 4225,
+          "rWordsDifferent": 0
+        },
+        "impulse4-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "f9009bd58fe656cf11c9ead86cdfe122a66e7d412ec652d9813d1c9da022f718",
+          "photoshopRSHA256": "f9009bd58fe656cf11c9ead86cdfe122a66e7d412ec652d9813d1c9da022f718",
+          "rWords": 4225,
+          "rWordsDifferent": 0
+        },
+        "impulse8-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "19bc8e130873c563009a1c1c34a8fc389397d734827df7822e62cf524c3615b4",
+          "photoshopRSHA256": "19bc8e130873c563009a1c1c34a8fc389397d734827df7822e62cf524c3615b4",
+          "rWords": 4225,
+          "rWordsDifferent": 0
+        },
+        "narrow4-opacity50-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "3020b1ec6bf4258d3378f4865bb707cac049526fb9c931badd4ecb866deb503d",
+          "photoshopRSHA256": "3020b1ec6bf4258d3378f4865bb707cac049526fb9c931badd4ecb866deb503d",
+          "rWords": 2405,
+          "rWordsDifferent": 0
+        },
+        "offset250-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "5d9144cb05250c74d7a39d396cffbc01c40c195f4ae6a7f71ba20c531e12073b",
+          "photoshopRSHA256": "5d9144cb05250c74d7a39d396cffbc01c40c195f4ae6a7f71ba20c531e12073b",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "offset8-opacity29-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "5acae34226fedc73710767eb1016750bdc919c8059287bd71c6462428fa234ae",
+          "photoshopRSHA256": "5acae34226fedc73710767eb1016750bdc919c8059287bd71c6462428fa234ae",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "outside8-opacity63-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "c19348ee1ceca7e0646ef4453585432f8fdff02297ddbfbb90fafd52c1da86ff",
+          "photoshopRSHA256": "c19348ee1ceca7e0646ef4453585432f8fdff02297ddbfbb90fafd52c1da86ff",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "wide1000-merge-down": {
+          "maximumULP": 0,
+          "nativeRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "photoshopRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide1000-stamp-down": {
+          "maximumULP": 0,
+          "nativeRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "photoshopRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide250-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "photoshopRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide250-stamp-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "photoshopRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        }
+      },
+      "debug": {
+        "impulse3-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "a51c0d720a63bb2bf4fa171e8ba560850cf11ab131f9d8d252d49f9e1beec4a3",
+          "photoshopRSHA256": "a51c0d720a63bb2bf4fa171e8ba560850cf11ab131f9d8d252d49f9e1beec4a3",
+          "rWords": 4225,
+          "rWordsDifferent": 0
+        },
+        "impulse4-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "f9009bd58fe656cf11c9ead86cdfe122a66e7d412ec652d9813d1c9da022f718",
+          "photoshopRSHA256": "f9009bd58fe656cf11c9ead86cdfe122a66e7d412ec652d9813d1c9da022f718",
+          "rWords": 4225,
+          "rWordsDifferent": 0
+        },
+        "impulse8-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "19bc8e130873c563009a1c1c34a8fc389397d734827df7822e62cf524c3615b4",
+          "photoshopRSHA256": "19bc8e130873c563009a1c1c34a8fc389397d734827df7822e62cf524c3615b4",
+          "rWords": 4225,
+          "rWordsDifferent": 0
+        },
+        "narrow4-opacity50-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "3020b1ec6bf4258d3378f4865bb707cac049526fb9c931badd4ecb866deb503d",
+          "photoshopRSHA256": "3020b1ec6bf4258d3378f4865bb707cac049526fb9c931badd4ecb866deb503d",
+          "rWords": 2405,
+          "rWordsDifferent": 0
+        },
+        "offset250-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "5d9144cb05250c74d7a39d396cffbc01c40c195f4ae6a7f71ba20c531e12073b",
+          "photoshopRSHA256": "5d9144cb05250c74d7a39d396cffbc01c40c195f4ae6a7f71ba20c531e12073b",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "offset8-opacity29-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "5acae34226fedc73710767eb1016750bdc919c8059287bd71c6462428fa234ae",
+          "photoshopRSHA256": "5acae34226fedc73710767eb1016750bdc919c8059287bd71c6462428fa234ae",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "outside8-opacity63-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "c19348ee1ceca7e0646ef4453585432f8fdff02297ddbfbb90fafd52c1da86ff",
+          "photoshopRSHA256": "c19348ee1ceca7e0646ef4453585432f8fdff02297ddbfbb90fafd52c1da86ff",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "wide1000-merge-down": {
+          "maximumULP": 0,
+          "nativeRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "photoshopRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide1000-stamp-down": {
+          "maximumULP": 0,
+          "nativeRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "photoshopRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide250-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "photoshopRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide250-stamp-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "photoshopRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        }
+      },
+      "intel": {
+        "impulse3-merge-mask": {
+          "maximumULP": 1,
+          "nativeRSHA256": "a51c0d720a63bb2bf4fa171e8ba560850cf11ab131f9d8d252d49f9e1beec4a3",
+          "photoshopRSHA256": "190473893b29bf4f7dd7b584c0cabdb2e15e83d6ca9c75aa90724654ffd28e0b",
+          "rWords": 4225,
+          "rWordsDifferent": 9
+        },
+        "impulse4-merge-mask": {
+          "maximumULP": 2,
+          "nativeRSHA256": "f9009bd58fe656cf11c9ead86cdfe122a66e7d412ec652d9813d1c9da022f718",
+          "photoshopRSHA256": "12ecb066f4e314387d986dd05cf595d46b48c0972770772a7217ce596e2b0222",
+          "rWords": 4225,
+          "rWordsDifferent": 52
+        },
+        "impulse8-merge-mask": {
+          "maximumULP": 1,
+          "nativeRSHA256": "19bc8e130873c563009a1c1c34a8fc389397d734827df7822e62cf524c3615b4",
+          "photoshopRSHA256": "b408114f1f80a24c42d979a0333bafd119845a1ef23dbbeec1b60e4daf3c3e5e",
+          "rWords": 4225,
+          "rWordsDifferent": 136
+        },
+        "narrow4-opacity50-merge-mask": {
+          "maximumULP": 1,
+          "nativeRSHA256": "3020b1ec6bf4258d3378f4865bb707cac049526fb9c931badd4ecb866deb503d",
+          "photoshopRSHA256": "d1cda1841982ef2d7ff0a49052cac709292604ff898e7484bc768335c9cda53f",
+          "rWords": 2405,
+          "rWordsDifferent": 30
+        },
+        "offset250-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "5d9144cb05250c74d7a39d396cffbc01c40c195f4ae6a7f71ba20c531e12073b",
+          "photoshopRSHA256": "5d9144cb05250c74d7a39d396cffbc01c40c195f4ae6a7f71ba20c531e12073b",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "offset8-opacity29-merge-mask": {
+          "maximumULP": 2,
+          "nativeRSHA256": "5acae34226fedc73710767eb1016750bdc919c8059287bd71c6462428fa234ae",
+          "photoshopRSHA256": "c5517ed625bd94a89f40f14b44549369cb9f5389a0059e674e216e27473106db",
+          "rWords": 1147,
+          "rWordsDifferent": 3
+        },
+        "outside8-opacity63-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "c19348ee1ceca7e0646ef4453585432f8fdff02297ddbfbb90fafd52c1da86ff",
+          "photoshopRSHA256": "c19348ee1ceca7e0646ef4453585432f8fdff02297ddbfbb90fafd52c1da86ff",
+          "rWords": 1147,
+          "rWordsDifferent": 0
+        },
+        "wide1000-merge-down": {
+          "maximumULP": 0,
+          "nativeRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "photoshopRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide1000-stamp-down": {
+          "maximumULP": 0,
+          "nativeRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "photoshopRSHA256": "e081c01bf0054ff477b9f192598094c5353406440a011dd2c0ceb5b7fcf4f9f3",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide250-merge-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "photoshopRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        },
+        "wide250-stamp-mask": {
+          "maximumULP": 0,
+          "nativeRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "photoshopRSHA256": "98f962d5b2c56046a8be625f9639ac91bc54a3f9c97eebeb169c3d7622eee466",
+          "rWords": 391,
+          "rWordsDifferent": 0
+        }
+      }
+    },
+    "exporter": "Native LayerMergePreparation followed by PSDCodec writer from the same qualified product objects",
+    "field": "R stored channel (all three RGB channels were equal on these fixtures)",
+    "layer": "Reference Black",
+    "source": "Independent RGB32 layer-plane reader using the published PSD format"
+  },
+  "knownIntelImpulseDifferences": {
+    "3": {
+      "differentRWords": 9,
+      "maximumULP": 1
+    },
+    "4": {
+      "differentRWords": 52,
+      "maximumULP": 2
+    },
+    "8": {
+      "differentRWords": 136,
+      "maximumULP": 1
+    }
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "adjacent masked clips",
+    "full RGB8 and RGB16 parity",
+    "fractional stage scheduling",
+    "affine masks",
+    "vector and Smart Filter masks",
+    "dense wide Feather performance",
+    "physical Intel and macOS 14 tests"
+  ],
+  "photoshopFixtures": {
+    "architectures": {
+      "arm": "arm64",
+      "intel": "x86_64 under Rosetta"
+    },
+    "cases": [
+      "wide250-merge-mask",
+      "wide250-stamp-mask",
+      "wide1000-merge-down",
+      "wide1000-stamp-down",
+      "offset250-merge-mask",
+      "impulse3-merge-mask",
+      "impulse4-merge-mask",
+      "impulse8-merge-mask"
+    ],
+    "filesSHA256": {
+      "arm-impulse3-merge-mask-merged.psd": "6ed21e26a342cf639653ec73f7977749951df45ba04697e1e4f0b7077fb23c90",
+      "arm-impulse4-merge-mask-merged.psd": "4bf89c4a9d717c383aaec2dcd7612b8e02ba629adacdd6dd7bc9336aad88dca4",
+      "arm-impulse8-merge-mask-merged.psd": "dae0c90f3b8f46534281c9413299e22c062c0152a9096911836aeca1b000c9e3",
+      "arm-offset250-merge-mask-merged.psd": "2fad15f0398700659596dd4d1795da0ed448f3e2349e9877c0f5eef22b6da058",
+      "arm-wide1000-merge-down-merged.psd": "31934a65d5b61a1ca7a3bccf84c8a7814f4c713e4a0ac19a3c78e24ce2174a6b",
+      "arm-wide1000-stamp-down-merged.psd": "95e6f5d37765275b78215e9e5bffd5e12d3d501ca362baf87547d65919c313c4",
+      "arm-wide250-merge-mask-merged.psd": "9c6f3fa0b1af86dd88d8243cd010693a3a1a3f6639592a81f2fd8dfffcdf66b4",
+      "arm-wide250-stamp-mask-merged.psd": "9cc4b0822a0e5d6f9f74236464b007452b009f5106fa13f2378eccd02d1900da",
+      "impulse3-merge-mask.psd": "6e25fc1abed0857589a593387eaa9b4ec9ee04d04f2065f6abb924d4c776aaaf",
+      "impulse4-merge-mask.psd": "7910419fd1996b65af8ed4f1e3e5dd957f4fcd5eb122c6caec70fc2ad841603a",
+      "impulse8-merge-mask.psd": "c115fceb02278edca0c7e17ebc09dbf12ec543554d3b74a7fe7bb545dee08bb9",
+      "intel-impulse3-merge-mask-merged.psd": "7e1afd5423ea83e09a8292ce00c33a78e415cb4d6182d072616c467512ef4daf",
+      "intel-impulse4-merge-mask-merged.psd": "39dbaade113801d3dd7d0321ba94d1bcb14d37b8eb2ab887e0af78ff120f734a",
+      "intel-impulse8-merge-mask-merged.psd": "079991624814013a814e49e5cff6ccbc6653e196a6211817debe68eb3aef0674",
+      "intel-offset250-merge-mask-merged.psd": "510fe0997151a81cc6fa37f5f95be6735a20061c9ef1946b623167a711d584a0",
+      "intel-wide1000-merge-down-merged.psd": "644dc6c930a4e266fd02be3942e69899295e4eb562d21f3fe65b6ce7b32556da",
+      "intel-wide1000-stamp-down-merged.psd": "3217eddca3cf97582c3a9e15239193e25666eedcddcbc7a753811e27fa634242",
+      "intel-wide250-merge-mask-merged.psd": "abb2a396b62be97529e870d8acbfe8cc2fad88ff1d94f18bfb41366baacd503f",
+      "intel-wide250-stamp-mask-merged.psd": "931c0513c3f2790211fb967a484f025fac8fbedfa46fc212d5ab0183865e33c8",
+      "offset250-merge-mask.psd": "5bc413b66f5ca77ddba047dfc6d8df54513a280d82094792050ba1480349d842",
+      "wide1000-merge-down.psd": "2043b195a5bdbb075ca657f76914d6f1e48c8cd6dfaa85e612ed3d996fe265aa",
+      "wide1000-stamp-down.psd": "96836fc4df9f1b6384451521ce6d5b1971ea840c7e15ccba7ccac5caa9d57bbc",
+      "wide250-merge-mask.psd": "4b3ad231f6b6cd93f24673ef1ec07918b86fb78622a57d3f4fa821faa863762d",
+      "wide250-stamp-mask.psd": "40f417d8bd16cf091a9d8a0c21cf2a4b7fea934efa7bc16ffe4fae83f283af6d"
+    },
+    "generator": "Project-owned synthetic PSDs authored by native Photato. Photoshop 2026 saved editable source and operation results.",
+    "photoshopSignature": "ad hoc",
+    "photoshopVersion": "27.2.0"
+  },
+  "qualification": {
+    "caseListSHA256": "b40e991ecd65995a16e3e431963c261758ab546325a7ec79b5eea04f3432f9fd",
+    "configurations": {
+      "arm": {
+        "appSHA256": "e4a55d617996c38df628a46726ee8b9569041597c58bef460eb0ac18f25c24d7",
+        "testBinarySHA256": "a10498e4c07e52a592130094e57eb9c1c4b60e29a7482c53a3036c86a601ae94"
+      },
+      "debug": {
+        "appSHA256": "3dbc828db10b6657065ff723df52bad00f8bc25bcc173c868112717a06e4be16",
+        "testBinarySHA256": "159d7bd5abfaec2ef71a235af26695ced09cb39c14e2fa686de34ed0aa5c0e5a"
+      },
+      "intel": {
+        "appSHA256": "85fc5706c3d08167433d61095fc41454e65da411cab0600be7a3fd56934fe782",
+        "testBinarySHA256": "7bc396d13aed953ab45c105a6abd82325b483e2017b0bffa175afc49d3fe3c59"
+      }
+    },
+    "testsPerConfiguration": 856
+  },
+  "sourceInputs": 9112,
+  "sourceInputsChangedSince588": [
+    {
+      "path": "Sources/PhotoCraft/LayerMergeAPI.swift",
+      "sha256": "6856f83e920f22c1fcdbdf0b652d3ceae42ddbf9613c2a8a5b62ef4f7357d4b0"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "f37c9ed7b5387699eaefbec971e05a27f362d9f84f64832fcbf38ccfa02a492b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "617d2ccbce5fe626526cf92bc9c67562c6201435a337dcc44adb1f402a4f9622"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMask.swift",
+      "sha256": "13dbb7e8ab9303e37237c846e1ba1a72461c0ea5e7725ad2ebc96c3ee4d4c056"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PreparedLayerMerge.swift",
+      "sha256": "16744c798428e4799b05f9c5566c6f1bb36dfff13563506a2829cd444c9ad144"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ClippingMaskRasterMerge.swift",
+      "sha256": "909186b60b92a4b011da9122db074b134b0f4ee33203a0d7767f611cdfb1be5f"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationActionJobsTests.swift",
+      "sha256": "e0e6be97581bd080276e96483c206564363d3b26657acff0e01f7c36ed6c582d"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationLayerMergeTests.swift",
+      "sha256": "ad66a8b0be0d885362a7fe3d8505e6b0dcf333f9fff885938df589b5ece3a7cc"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "759f310f5c047418b83c2a33a69e6d499c0417879ebb94cd89cfafdd55b4a887"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-impulse3-merge-mask-merged.psd",
+      "sha256": "6ed21e26a342cf639653ec73f7977749951df45ba04697e1e4f0b7077fb23c90"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-impulse4-merge-mask-merged.psd",
+      "sha256": "4bf89c4a9d717c383aaec2dcd7612b8e02ba629adacdd6dd7bc9336aad88dca4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-impulse8-merge-mask-merged.psd",
+      "sha256": "dae0c90f3b8f46534281c9413299e22c062c0152a9096911836aeca1b000c9e3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-offset250-merge-mask-merged.psd",
+      "sha256": "2fad15f0398700659596dd4d1795da0ed448f3e2349e9877c0f5eef22b6da058"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-wide1000-merge-down-merged.psd",
+      "sha256": "31934a65d5b61a1ca7a3bccf84c8a7814f4c713e4a0ac19a3c78e24ce2174a6b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-wide1000-stamp-down-merged.psd",
+      "sha256": "95e6f5d37765275b78215e9e5bffd5e12d3d501ca362baf87547d65919c313c4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-wide250-merge-mask-merged.psd",
+      "sha256": "9c6f3fa0b1af86dd88d8243cd010693a3a1a3f6639592a81f2fd8dfffcdf66b4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/arm-wide250-stamp-mask-merged.psd",
+      "sha256": "9cc4b0822a0e5d6f9f74236464b007452b009f5106fa13f2378eccd02d1900da"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/impulse3-merge-mask.psd",
+      "sha256": "6e25fc1abed0857589a593387eaa9b4ec9ee04d04f2065f6abb924d4c776aaaf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/impulse4-merge-mask.psd",
+      "sha256": "7910419fd1996b65af8ed4f1e3e5dd957f4fcd5eb122c6caec70fc2ad841603a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/impulse8-merge-mask.psd",
+      "sha256": "c115fceb02278edca0c7e17ebc09dbf12ec543554d3b74a7fe7bb545dee08bb9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-impulse3-merge-mask-merged.psd",
+      "sha256": "7e1afd5423ea83e09a8292ce00c33a78e415cb4d6182d072616c467512ef4daf"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-impulse4-merge-mask-merged.psd",
+      "sha256": "39dbaade113801d3dd7d0321ba94d1bcb14d37b8eb2ab887e0af78ff120f734a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-impulse8-merge-mask-merged.psd",
+      "sha256": "079991624814013a814e49e5cff6ccbc6653e196a6211817debe68eb3aef0674"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-offset250-merge-mask-merged.psd",
+      "sha256": "510fe0997151a81cc6fa37f5f95be6735a20061c9ef1946b623167a711d584a0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-wide1000-merge-down-merged.psd",
+      "sha256": "644dc6c930a4e266fd02be3942e69899295e4eb562d21f3fe65b6ce7b32556da"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-wide1000-stamp-down-merged.psd",
+      "sha256": "3217eddca3cf97582c3a9e15239193e25666eedcddcbc7a753811e27fa634242"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-wide250-merge-mask-merged.psd",
+      "sha256": "abb2a396b62be97529e870d8acbfe8cc2fad88ff1d94f18bfb41366baacd503f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/intel-wide250-stamp-mask-merged.psd",
+      "sha256": "931c0513c3f2790211fb967a484f025fac8fbedfa46fc212d5ab0183865e33c8"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/offset250-merge-mask.psd",
+      "sha256": "5bc413b66f5ca77ddba047dfc6d8df54513a280d82094792050ba1480349d842"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/references.json",
+      "sha256": "be2ad2212ec39f6ed514854fb2e64846adfa38afaf0982718b8e8bd4628d8860"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/wide1000-merge-down.psd",
+      "sha256": "2043b195a5bdbb075ca657f76914d6f1e48c8cd6dfaa85e612ed3d996fe265aa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/wide1000-stamp-down.psd",
+      "sha256": "96836fc4df9f1b6384451521ce6d5b1971ea840c7e15ccba7ccac5caa9d57bbc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/wide250-merge-mask.psd",
+      "sha256": "4b3ad231f6b6cd93f24673ef1ec07918b86fb78622a57d3f4fa821faa863762d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-merge/feathered-clipping/wide250-stamp-mask.psd",
+      "sha256": "40f417d8bd16cf091a9d8a0c21cf2a4b7fea934efa7bc16ffe4fae83f283af6d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerMergeRenderTests.swift",
+      "sha256": "107c6ad19f6a0de11366effec609213820c8df4c96bc700f48bb44f3ba81b115"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "a4512bb4d8bbd5ca96fdad0dda95527ed7e402f0f5707e9eaa2d862269079326"
+    }
+  ]
+}

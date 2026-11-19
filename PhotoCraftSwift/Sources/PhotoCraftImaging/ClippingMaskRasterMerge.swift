@@ -18,15 +18,15 @@ enum ClippingMaskRasterMerge {
     let pixels: Surface
     let bounds: IntRect
     let properties: MaskProperties
+    let sampler: MaskSampler?
 
     func coverage(_ sample: Float, depth: PixelDepth) -> Float {
       let value = properties.inverted ? 1 - sample : sample
       return NormalLayerComposite.clippedMaskCoverage(value, density: properties.density, depth: depth)
     }
 
-    func coverage(x: Int, y: Int, depth: PixelDepth) -> Float {
-      let raw = bounds.contains(x, y) ? pixels.pixel(x: x - bounds.x, y: y - bounds.y).r : properties.outside
-      return coverage(raw, depth: depth)
+    func raw(x: Int, y: Int) -> Float {
+      bounds.contains(x, y) ? pixels.pixel(x: x - bounds.x, y: y - bounds.y).r : properties.outside
     }
   }
 
@@ -40,13 +40,14 @@ enum ClippingMaskRasterMerge {
     let localBounds = IntRect(x: 0, y: 0, width: size.width, height: size.height)
     var rectangles: [IntRect] = []
     let tile = Surface.tileSide
-    func appendTiles(_ pixels: Surface, x: Int, y: Int) throws {
+    func appendTiles(_ pixels: Surface, x: Int, y: Int, halo: Int = 0) throws {
       let columns = (pixels.width + tile - 1) / tile
       for key in pixels.storedTileKeys {
         try Task.checkCancellation()
         let left = key % columns * tile, top = key / columns * tile
-        let rect = IntRect(x: x + left, y: y + top, width: min(tile, pixels.width - left),
-          height: min(tile, pixels.height - top))
+        let rect = IntRect(x: x + left - halo, y: y + top - halo,
+          width: min(tile, pixels.width - left) + 2 * halo,
+          height: min(tile, pixels.height - top) + 2 * halo)
         rectangles.append(rect.clipped(toWidth: size.width, height: size.height))
       }
     }
@@ -96,7 +97,7 @@ enum ClippingMaskRasterMerge {
       let bounds = IntRect(x: layer.x - base.x, y: layer.y - base.y, width: pixels.width, height: pixels.height)
       let intersection = bounds.clipped(toWidth: size.width, height: size.height)
       guard intersection.width > 0 && intersection.height > 0 else { continue }
-      let mask = try prepareMask(layer, relativeTo: base)
+      let mask = try prepareMask(layer, relativeTo: base, in: document)
       let copies = linear && mask == nil && layer.blendMode == .normal
         && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: pixels, in: document)
         ? try pixels.isOpaque() : false
@@ -110,15 +111,25 @@ enum ClippingMaskRasterMerge {
       if intersection == localBounds {
         var coverage: Float = 1
         if let mask {
+          let halo = mask.sampler?.featherSupport ?? 0
           let maskIntersection = mask.bounds.clipped(toWidth: size.width, height: size.height)
           coverage = mask.coverage(mask.properties.outside, depth: depth)
-          let inBounds = mask.coverage(mask.pixels.defaultPixel.r, depth: depth)
+          let implicit = mask.sampler?.implicitFeatherInterior ?? mask.pixels.defaultPixel.r
+          let inBounds = mask.coverage(implicit, depth: depth)
           if maskIntersection == localBounds {
+            if let sampler = mask.sampler, mask.pixels.defaultPixel.r != mask.properties.outside {
+              rectangles.append(contentsOf: sampler.featherInteriorEdgeRegions(of: mask.bounds)
+                .map { $0.clipped(toWidth: size.width, height: size.height) })
+            }
             coverage = inBounds
-          } else if coverage != inBounds {
-            rectangles.append(maskIntersection)
+          } else if halo == 0 {
+            if coverage != inBounds { rectangles.append(maskIntersection) }
+          } else if mask.pixels.defaultPixel.r != mask.properties.outside {
+            let support = IntRect(x: mask.bounds.x - halo, y: mask.bounds.y - halo,
+              width: mask.bounds.width + 2 * halo, height: mask.bounds.height + 2 * halo)
+            rectangles.append(support.clipped(toWidth: size.width, height: size.height))
           }
-          try appendTiles(mask.pixels, x: mask.bounds.x, y: mask.bounds.y)
+          try appendTiles(mask.pixels, x: mask.bounds.x, y: mask.bounds.y, halo: halo)
         }
         let background = backdrop
         let foreground = try implicit(pixels)
@@ -142,19 +153,43 @@ enum ClippingMaskRasterMerge {
     let builder = try Surface.PagedBuilder(template: template)
     for rect in GeometryPatchRegions(width: size.width, height: size.height, rectangles: rectangles) {
       try Task.checkCancellation()
-      var patch = try Surface(width: rect.width, height: rect.height, depth: depth, fill: backdrop)
-        .interpretingSamples(as: encoding)
-      for y in rect.y..<(rect.y + rect.height) {
-        for x in rect.x..<(rect.x + rect.width) {
-          var sample = linear ? basePixels.linearPixel(x: x, y: y) : basePixels.pixel(x: x, y: y)
-          for clip in sources where clip.bounds.contains(x, y) {
+      var values: [Pixel] = []
+      values.reserveCapacity(rect.width * rect.height)
+      let right = rect.x + rect.width, bottom = rect.y + rect.height
+      for y in rect.y..<bottom {
+        for x in rect.x..<right {
+          values.append(linear ? basePixels.linearPixel(x: x, y: y) : basePixels.pixel(x: x, y: y))
+        }
+      }
+      for clip in sources {
+        let left = max(rect.x, clip.bounds.x), top = max(rect.y, clip.bounds.y)
+        let endX = min(right, clip.bounds.x + clip.bounds.width)
+        let endY = min(bottom, clip.bounds.y + clip.bounds.height)
+        guard left < endX, top < endY else { continue }
+        let feather = try clip.mask?.sampler?.featherRegion(in: IntRect(
+          x: left + base.x, y: top + base.y, width: endX - left, height: endY - top))
+        for y in top..<endY {
+          try Task.checkCancellation()
+          for x in left..<endX {
             let cx = x - clip.bounds.x, cy = y - clip.bounds.y
             let foreground = linear ? clip.pixels.linearPixel(x: cx, y: cy) : clip.pixels.pixel(x: cx, y: cy)
-            let coverage = clip.mask?.coverage(x: x, y: y, depth: depth) ?? 1
-            sample = try combine(sample, foreground, clip: clip, x: x, coverage: coverage)
+            var coverage: Float = 1
+            if let mask = clip.mask {
+              let sample = feather?.sample(x: x + base.x, y: y + base.y) ?? mask.raw(x: x, y: y)
+              coverage = mask.coverage(sample, depth: depth)
+            }
+            let index = (y - rect.y) * rect.width + x - rect.x
+            values[index] = try combine(values[index], foreground, clip: clip, x: x, coverage: coverage)
           }
-          if linear { patch.setLinearPixel(x: x - rect.x, y: y - rect.y, sample) }
-          else { patch.setPixel(x: x - rect.x, y: y - rect.y, sample) }
+        }
+      }
+      var patch = try Surface(width: rect.width, height: rect.height, depth: depth, fill: backdrop)
+        .interpretingSamples(as: encoding)
+      for y in 0..<rect.height {
+        for x in 0..<rect.width {
+          let sample = values[y * rect.width + x]
+          if linear { patch.setLinearPixel(x: x, y: y, sample) }
+          else { patch.setPixel(x: x, y: y, sample) }
         }
       }
       try builder.append(patch, atX: rect.x, atY: rect.y)
@@ -162,7 +197,7 @@ enum ClippingMaskRasterMerge {
     return try builder.finish()
   }
 
-  private static func prepareMask(_ layer: Layer, relativeTo base: Layer) throws -> ClipMask? {
+  private static func prepareMask(_ layer: Layer, relativeTo base: Layer, in document: CraftDocument) throws -> ClipMask? {
     let properties = layer.effectiveMaskProperties
     guard let pixels = layer.mask, properties.enabled else { return nil }
     let transform = layer.maskCoordinateTransform
@@ -171,8 +206,10 @@ enum ClippingMaskRasterMerge {
       x <= Int.max - pixels.width, y <= Int.max - pixels.height else {
       throw CraftError.unsupported("The clip mask lies outside the supported coordinate range.")
     }
+    let sampler = properties.feather > 0
+      ? try MaskSampler(layer: layer, canvasSize: (document.width, document.height)) : nil
     return ClipMask(pixels: pixels, bounds: IntRect(x: x, y: y, width: pixels.width, height: pixels.height),
-      properties: properties)
+      properties: properties, sampler: sampler)
   }
 
   static func renderAdjacent(lower: Layer, upper: Layer, depth: PixelDepth) throws

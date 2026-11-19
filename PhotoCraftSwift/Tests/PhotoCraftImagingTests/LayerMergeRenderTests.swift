@@ -292,6 +292,137 @@ final class LayerMergeRenderTests: XCTestCase {
     }
   }
 
+  func testFeatheredClippingMergesAndStampsMatchWidePhotoshopReferences() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let cases: [(String, LayerMergeOperation, Double)] = [
+      ("wide250-merge-mask", .clippingMask, 250), ("wide250-stamp-mask", .stampGroup, 250),
+      ("wide1000-merge-down", .down, 1000), ("wide1000-stamp-down", .stampDown, 1000),
+      ("offset250-merge-mask", .clippingMask, 250),
+    ]
+    for (name, operation, radius) in cases {
+      let original = try PSDCodec.read(file("feathered-clipping/\(name)"))
+      let expected = try PSDCodec.read(file("feathered-clipping/\(architecture)-\(name)-merged"))
+      let base = try XCTUnwrap(original.layers.first)
+      let clip = try XCTUnwrap(original.layers.last)
+      XCTAssertEqual(clip.maskProperties?.feather, radius, name)
+      let selectClip = operation == .down || operation == .stampDown
+      let selected = selectClip ? clip.id : base.id
+      var source = original
+      source.activeLayerID = selected
+      XCTAssertTrue(LayerMerge.canApply(operation, layerIDs: [selected], in: source), name)
+      let merged = try LayerMergePreparation.prepare(source, layerIDs: [selected], operation: operation).applied(to: source)
+      try compare(merged, expected, label: name)
+      let stamps = operation == .stampGroup || operation == .stampDown
+      XCTAssertEqual(merged.layers.first?.id, base.id, name)
+      XCTAssertEqual(merged.layers.first?.mask, base.mask, name)
+      XCTAssertEqual(merged.activeLayerID, operation == .stampDown ? clip.id : base.id, name)
+      if stamps {
+        XCTAssertEqual(merged.layers.last, clip, name)
+      }
+    }
+  }
+
+  func testFeatheredClippingImpulseRecordsRemainingIntelSampleDifferences() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    let differingWords = [9, 52, 136]
+    let maximumULPs = [1, 2, 1]
+    #else
+    let architecture = "arm"
+    let differingWords = [0, 0, 0]
+    let maximumULPs = [0, 0, 0]
+    #endif
+    for (index, radius) in [3, 4, 8].enumerated() {
+      let name = "impulse\(radius)-merge-mask"
+      let source = try PSDCodec.read(file("feathered-clipping/\(name)"))
+      let expected = try PSDCodec.read(file("feathered-clipping/\(architecture)-\(name)-merged"))
+      let base = try XCTUnwrap(source.layers.first)
+      let merged = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask).result
+      guard case .raster(let actual) = merged.layers.first?.content,
+        case .raster(let reference) = expected.layers.first?.content
+      else { return XCTFail(name) }
+      XCTAssertEqual(actual.width, reference.width, name)
+      XCTAssertEqual(actual.height, reference.height, name)
+      var differences = 0
+      var maximum = 0
+      for y in 0..<reference.height {
+        for x in 0..<reference.width {
+          let a = actual.linearPixel(x: x, y: y), b = reference.linearPixel(x: x, y: y)
+          XCTAssertEqual(a.a.bitPattern, b.a.bitPattern, name)
+          XCTAssertEqual(a.r.bitPattern, a.g.bitPattern, name)
+          XCTAssertEqual(a.r.bitPattern, a.b.bitPattern, name)
+          let ulps = abs(Int(a.r.bitPattern) - Int(b.r.bitPattern))
+          if ulps != 0 { differences += 1 }
+          maximum = max(maximum, ulps)
+        }
+      }
+      XCTAssertEqual(differences, differingWords[index], name)
+      XCTAssertEqual(maximum, maximumULPs[index], name)
+    }
+  }
+
+  func testFeatheredClippingKeepsDistantMaskTilesSparseOnMaximumCanvas() throws {
+    let side = Surface.maxDimension
+    let basePixels = try Surface(width: side, height: side, depth: .f32, fill: .black, colorEncoding: .linearRGB)
+    let base = Layer(name: "Clipping base", content: .raster(basePixels))
+    let white = try Surface(width: side, height: side, depth: .f32, fill: .white, colorEncoding: .linearRGB)
+    var clip = Layer(name: "Clip", content: .raster(white))
+    clip.clipped = true
+    var mask = try Surface(width: side, height: side, depth: .f32, fill: .white)
+    mask.setPixel(x: 63, y: 63, .black)
+    mask.setPixel(x: side - 1, y: side - 1, .black)
+    clip.mask = mask
+    var properties = MaskProperties()
+    properties.feather = 8
+    clip.maskProperties = properties
+    var source = try CraftDocument(width: side, height: side, depth: .f32)
+    source.layers = [base, clip]
+    source.activeLayerID = base.id
+    let result = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask).result
+    guard case .raster(let pixels) = result.layers.first?.content else { return XCTFail("Expected raster") }
+    let sampler = try MaskSampler(layer: clip, canvasSize: (side, side))
+    XCTAssertEqual(pixels.width, side)
+    XCTAssertEqual(pixels.height, side)
+    XCTAssertLessThanOrEqual(pixels.tileCount, 9)
+    XCTAssertEqual(pixels.linearPixel(x: side / 2, y: side / 2).r.bitPattern, Float(1).bitPattern)
+    for (x, y) in [(63, 63), (64, 64), (82, 63), (side - 1, side - 1), (side - 23, side - 12)] {
+      let reference = sampler.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5)
+      XCTAssertEqual(pixels.linearPixel(x: x, y: y).r.bitPattern, reference.bitPattern)
+    }
+    XCTAssertLessThan(pixels.linearPixel(x: 64, y: 64).r, 1)
+  }
+
+  func testFeatheredSmallClipIsBoundedAtOneThousandPixelsOnMaximumCanvas() throws {
+    let side = Surface.maxDimension
+    let basePixels = try Surface(width: side, height: side, depth: .f32, fill: .black, colorEncoding: .linearRGB)
+    let base = Layer(name: "Clipping base", content: .raster(basePixels))
+    let white = try Surface(width: 3, height: 3, depth: .f32, fill: .white, colorEncoding: .linearRGB)
+    var clip = Layer(name: "Clip", content: .raster(white))
+    clip.x = 150_000
+    clip.y = 125_000
+    clip.clipped = true
+    clip.mask = try Surface(width: 1, height: 1, depth: .f32, fill: .white)
+    var properties = MaskProperties()
+    properties.feather = 1000
+    properties.transform = .translation(1, 1)
+    clip.maskProperties = properties
+    var source = try CraftDocument(width: side, height: side, depth: .f32)
+    source.layers = [base, clip]
+    source.activeLayerID = base.id
+    let result = try LayerMergePreparation.prepare(source, layerIDs: [base.id], operation: .clippingMask).result
+    guard case .raster(let pixels) = result.layers.first?.content else { return XCTFail("Expected raster") }
+    XCTAssertEqual(pixels.width, side)
+    XCTAssertEqual(pixels.height, side)
+    XCTAssertLessThanOrEqual(pixels.tileCount, 4)
+    XCTAssertGreaterThan(pixels.linearPixel(x: clip.x + 1, y: clip.y + 1).r, 0)
+    XCTAssertEqual(pixels.linearPixel(x: clip.x - 1, y: clip.y).r, 0)
+    XCTAssertEqual(pixels.linearPixel(x: side - 1, y: side - 1).r, 0)
+  }
+
   func testClippedFloatMaskDensityMatchesSavedCoverageAcrossByteRanges() throws {
     #if arch(x86_64)
     let architecture = "intel"

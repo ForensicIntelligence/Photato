@@ -1405,6 +1405,8 @@ Build 576 also verifies the prepared Normal RGB32 layer output through the deskt
 
 Build 577 applies stored Normal RGB32 pixel masks through the same prepared layer compositor. The existing merge and stamp request fields cover these documents. Vector masks and live Density and Feather settings remain open. [Validation](SOURCE_PUBLICATION_577.md).
 
+Build 589 applies contributing raster-mask Feather through 1,000 px in eligible `layer.merge` operations. The existing operation names and undo behavior apply. Compatible `mergeLayersNew` ActionJSON jobs use the same layer-merge preparation. Raster clip operations preserve the clipping base's editable mask. Exact output remains dependent on the measured depth, radius and geometry. [Validation](SOURCE_PUBLICATION_589.md).
+
 Build 585 accepts Linear Dodge (Add), Subtract and Divide on contributing raster clips in supported RGB8, RGB16 and RGB32 merges and stamps. The desktop, Photato HTTP API and both local ActionJSON job routes share the implementation. [Validation](SOURCE_PUBLICATION_585.md).
 
 Build 584 accepts enabled, disabled and integer-translated unfeathered raster pixel masks in supported clipping operations. Mask Density applies at all RGB depths. The clipping base keeps its editable mask. Stamp Group and Stamp Down also keep the contributing mask on its source layer. The native editor, Photato HTTP API and both local ActionJSON job routes share the same compositor. [Validation](SOURCE_PUBLICATION_584.md).

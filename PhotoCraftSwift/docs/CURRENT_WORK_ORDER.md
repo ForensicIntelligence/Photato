@@ -1,6 +1,10 @@
+**Source checkpoint 589.** Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. [Qualification](SOURCE_PUBLICATION_589.md).
+
+Next, measure stage rounding for editable RGB8 and RGB16 masks and connect it to clipping. Use the saved partial-opacity and outside-canvas controls to track the remaining Intel residuals. Adjacent masked clips, fractional and affine coverage, Smart Filter and vector masks, and wide dense performance remain open.
+
 **Source checkpoint 588.** Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. [Qualification](SOURCE_PUBLICATION_588.md).
 
-Connect the staged coverage to feathered clipping merges and stamps. Evaluate the core support rectangle and implicit coverage independently for normal and clipped output, including partly off-canvas masks and maximum-size sparse documents. Retain the 250 and 1,000 px stored coverage controls. Saved Photoshop ordinary and clipped impulse merges agree on all 25,350 stored words across 3, 4 and 8 px on both tested architectures. Start with that shared coverage behavior and qualify translated, textured and partial-opacity clips independently. Continue fractional schedules, short-radius rounding, RGB8/16 stage storage, affine/vector/filter masks and Intel vertical rounding. Full sparse wide Feather export and physical validation remain open.
+Connect the staged coverage to feathered clipping merges and stamps. Evaluate the core support rectangle and implicit coverage independently for normal and clipped output, including partly off-canvas masks and maximum-size sparse documents. Retain the 250 and 1,000 px stored coverage controls. Two Photoshop clipping-mask merge captures agree on all 25,350 stored words across 3, 4 and 8 px on both tested architectures. The first description mislabeled one capture as ordinary Merge Down. Continue fractional schedules, short-radius rounding, RGB8/16 stage storage, affine/vector/filter masks and Intel vertical rounding. Full sparse wide Feather export and physical validation remain open.
 
 **Source checkpoint 587.** Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. [Qualification](SOURCE_PUBLICATION_587.md).
 

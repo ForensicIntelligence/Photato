@@ -1,0 +1,45 @@
+{
+  "architectures": {
+    "arm": "arm64",
+    "intel": "x86_64 under Rosetta"
+  },
+  "cases": [
+    "wide250-merge-mask",
+    "wide250-stamp-mask",
+    "wide1000-merge-down",
+    "wide1000-stamp-down",
+    "offset250-merge-mask",
+    "impulse3-merge-mask",
+    "impulse4-merge-mask",
+    "impulse8-merge-mask"
+  ],
+  "filesSHA256": {
+    "arm-impulse3-merge-mask-merged.psd": "6ed21e26a342cf639653ec73f7977749951df45ba04697e1e4f0b7077fb23c90",
+    "arm-impulse4-merge-mask-merged.psd": "4bf89c4a9d717c383aaec2dcd7612b8e02ba629adacdd6dd7bc9336aad88dca4",
+    "arm-impulse8-merge-mask-merged.psd": "dae0c90f3b8f46534281c9413299e22c062c0152a9096911836aeca1b000c9e3",
+    "arm-offset250-merge-mask-merged.psd": "2fad15f0398700659596dd4d1795da0ed448f3e2349e9877c0f5eef22b6da058",
+    "arm-wide1000-merge-down-merged.psd": "31934a65d5b61a1ca7a3bccf84c8a7814f4c713e4a0ac19a3c78e24ce2174a6b",
+    "arm-wide1000-stamp-down-merged.psd": "95e6f5d37765275b78215e9e5bffd5e12d3d501ca362baf87547d65919c313c4",
+    "arm-wide250-merge-mask-merged.psd": "9c6f3fa0b1af86dd88d8243cd010693a3a1a3f6639592a81f2fd8dfffcdf66b4",
+    "arm-wide250-stamp-mask-merged.psd": "9cc4b0822a0e5d6f9f74236464b007452b009f5106fa13f2378eccd02d1900da",
+    "impulse3-merge-mask.psd": "6e25fc1abed0857589a593387eaa9b4ec9ee04d04f2065f6abb924d4c776aaaf",
+    "impulse4-merge-mask.psd": "7910419fd1996b65af8ed4f1e3e5dd957f4fcd5eb122c6caec70fc2ad841603a",
+    "impulse8-merge-mask.psd": "c115fceb02278edca0c7e17ebc09dbf12ec543554d3b74a7fe7bb545dee08bb9",
+    "intel-impulse3-merge-mask-merged.psd": "7e1afd5423ea83e09a8292ce00c33a78e415cb4d6182d072616c467512ef4daf",
+    "intel-impulse4-merge-mask-merged.psd": "39dbaade113801d3dd7d0321ba94d1bcb14d37b8eb2ab887e0af78ff120f734a",
+    "intel-impulse8-merge-mask-merged.psd": "079991624814013a814e49e5cff6ccbc6653e196a6211817debe68eb3aef0674",
+    "intel-offset250-merge-mask-merged.psd": "510fe0997151a81cc6fa37f5f95be6735a20061c9ef1946b623167a711d584a0",
+    "intel-wide1000-merge-down-merged.psd": "644dc6c930a4e266fd02be3942e69899295e4eb562d21f3fe65b6ce7b32556da",
+    "intel-wide1000-stamp-down-merged.psd": "3217eddca3cf97582c3a9e15239193e25666eedcddcbc7a753811e27fa634242",
+    "intel-wide250-merge-mask-merged.psd": "abb2a396b62be97529e870d8acbfe8cc2fad88ff1d94f18bfb41366baacd503f",
+    "intel-wide250-stamp-mask-merged.psd": "931c0513c3f2790211fb967a484f025fac8fbedfa46fc212d5ab0183865e33c8",
+    "offset250-merge-mask.psd": "5bc413b66f5ca77ddba047dfc6d8df54513a280d82094792050ba1480349d842",
+    "wide1000-merge-down.psd": "2043b195a5bdbb075ca657f76914d6f1e48c8cd6dfaa85e612ed3d996fe265aa",
+    "wide1000-stamp-down.psd": "96836fc4df9f1b6384451521ce6d5b1971ea840c7e15ccba7ccac5caa9d57bbc",
+    "wide250-merge-mask.psd": "4b3ad231f6b6cd93f24673ef1ec07918b86fb78622a57d3f4fa821faa863762d",
+    "wide250-stamp-mask.psd": "40f417d8bd16cf091a9d8a0c21cf2a4b7fea934efa7bc16ffe4fae83f283af6d"
+  },
+  "generator": "Project-owned synthetic PSDs authored by native Photato. Photoshop 2026 saved editable source and operation results.",
+  "photoshopSignature": "ad hoc",
+  "photoshopVersion": "27.2.0"
+}

@@ -4,7 +4,7 @@
 struct AreaMaskFeather: Sendable {
   let bounds: IntRect
   let widths: [Int]
-  private let extendEdges: Bool
+  let extendEdges: Bool
   private let streamed: Bool
   var support: Int { widths.reduce(0) { $0 + $1 / 2 } }
 

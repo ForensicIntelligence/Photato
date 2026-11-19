@@ -205,6 +205,13 @@ final class AutomationActionJobsTests: XCTestCase {
       with: "", options: .regularExpression) })
   }
 
+  @MainActor func testWideFeatherClippingMatchesSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "feathered-clipping", cases: [
+      ("wide250-stamp-mask", "Reference Black", true),
+      ("wide1000-merge-down", "Reference Mask", false),
+    ], pollLimit: 3_000)
+  }
+
   @MainActor func testClippedArithmeticModesMatchSavedPixelsOnBothJobRoutes() async throws {
     try await verifyClippedJobRoutes(folder: "clipped-arithmetic", cases: [
       ("clipped-arithmetic-8-opaque-divide-37-merge-mask", "Clipping base", false),
@@ -218,7 +225,7 @@ final class AutomationActionJobsTests: XCTestCase {
 
   @MainActor private func verifyClippedJobRoutes(
     folder: String, referenceArchitecture: String? = nil, cases: [(String, String, Bool)],
-    sourceName: (String) -> String = { $0 }
+    pollLimit: Int = 200, sourceName: (String) -> String = { $0 }
   ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
@@ -245,7 +252,7 @@ final class AutomationActionJobsTests: XCTestCase {
         }]
         var outputs: [Data] = []
         for route in ["/v1/action-jobs", "/v2/execute-actions"] {
-          let result = try await output(service, submit: route, payload: payload)
+          let result = try await output(service, submit: route, payload: payload, pollLimit: pollLimit)
           try AutomationLayerMergeTests().samePixels(PSDCodec.read(result.2), expected)
           outputs.append(result.2)
         }
@@ -687,7 +694,8 @@ final class AutomationActionJobsTests: XCTestCase {
   }
   @MainActor func output(
     _ service: AutomationService, submit: String,
-    payload: [String: Any], expectedMediaType: String = "image/vnd.adobe.photoshop"
+    payload: [String: Any], expectedMediaType: String = "image/vnd.adobe.photoshop",
+    pollLimit: Int = 200
   ) async throws -> (String, String, Data) {
     let helper = AutomationTests()
     let accepted = try await helper.request(service, path: submit, body: payload)
@@ -696,7 +704,7 @@ final class AutomationActionJobsTests: XCTestCase {
     XCTAssertEqual(Set(acceptance.keys), ["jobId", "statusUrl"])
     let statusURL = try XCTUnwrap(URL(string: XCTUnwrap(acceptance["statusUrl"] as? String)))
     XCTAssertEqual(statusURL.host, "127.0.0.1")
-    for _ in 0..<200 {
+    for _ in 0..<pollLimit {
       let response = try await helper.request(service, path: statusURL.path)
       XCTAssertEqual(response.0.statusCode, 200)
       let snapshot = try object(response.1)
