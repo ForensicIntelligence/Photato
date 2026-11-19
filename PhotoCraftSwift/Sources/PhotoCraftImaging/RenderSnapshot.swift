@@ -118,7 +118,7 @@ extension Renderer {
         let properties = after.effectiveMaskProperties
         let feather =
           properties.enabled && properties.feather > 0
-          ? ceil(3 * max(0.05, properties.feather)) : 0
+          ? MaskSampler.featherDamageRadius(properties.feather) : 0
         rasters.append((a, b, after.maskCoordinateTransform, feather + 1))
       }
       guard lhs == rhs else { return .full }

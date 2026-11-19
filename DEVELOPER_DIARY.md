@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **586** · The 10 most recent entries, newest first.
+Source build **587** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
+
+Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. It follows the canvas and stored mask edges, including masks that extend outside the canvas. In the app tests, 34,975 coverage samples matched the 21 saved Apple Silicon references exactly. All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+Photoshop's 250 and 1,000 px textured controls also match the model. The current app range is 100 px. Fractional radii, a few Intel rounding cases, and the wider control are still in development.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md).
 
 ## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
 
@@ -75,11 +83,3 @@ Selecting the base of a supported raster clipping stack now makes Command-E run 
 The save-and-reopen tests compare 8-, 16- and 32-bit Photoshop reference layers. Undo, Actions and both local Adobe-compatible job routes are covered. All 757 selected checks passed on each of the three build configurations.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_578.md).
-
-## 2026-11-18 — Step 577 — Preserve stored RGB32 pixel masks when merging and stamping
-
-Normal 32-bit layer output now uses stored pixel masks. The comparison covers saved binary coverage and feathered selections, including transparency and the Intel rounding at tiny alpha values. A small translated mask in a 300,000 × 300,000 document used two render patches.
-
-All 752 selected tests passed in Debug and in both optimized configurations. Both slices of the extracted local validation archive passed their offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md).

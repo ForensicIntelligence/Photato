@@ -605,7 +605,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 584 | 2026-11-19 | [Preserve pixel masks in clipping merges and stamps](#dev-step-584) |
 | 585 | 2026-11-19 | [Add three arithmetic clipping blend modes](#dev-step-585) |
 | 586 | 2026-11-19 | [Bound pixel-mask Feather rendering](#dev-step-586) |
+| 587 | 2026-11-19 | [Match staged RGB32 pixel-mask Feather](#dev-step-587) |
 <!-- history-index:end -->
+
+<a id="dev-step-587"></a>
+
+## 2026-11-19 — Match staged RGB32 pixel-mask Feather
+
+Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. The shared sampler evaluates the expanded source window in bounded tiles. It extends the union of the canvas, translated raster, and translated mask before the first pass. Each stage sums a square neighbourhood, divides by its area and stores Float32 for the next pass. The render snapshot uses the resulting kernel footprint when invalidating an edited mask. The first compile caught a closure capturing the sampler before initialization. The repair gives the closure a local copy of the radius. Smart Filter masks keep their separately qualified path.
+
+The reference run saved 80 results per architecture from 11 owned inputs. The cases include textured planes, three scanline widths, masks cropped inside and extending past the canvas, near-white and point impulses, and Apply Mask on the independent transparency path. The 21 bundled Apple Silicon fixtures compare 34,975 stored Float32 coverage samples for the implemented integer range. The additional regional test exercises the same filter on a 300,000 × 300,000 canvas. The two Photoshop processes report version 27.2.0 and the installation uses an ad-hoc signature.
+
+The staged model exactly reproduces the 250 and 1,000 px textured controls on Apple Silicon and Intel. The corresponding Intel captures differ at 269 positions across the 21 bundled controls, by up to two ULPs. A separate streaming prototype using a replay of the first stage matched the higher-radius controls with 2.22 MiB of numeric buffers for a 64 × 64 tile. The prototype is not part of the shipped app. The two architectures also choose different window sizes at several fractional radii. At 2.125 px, the ARM texture needs widths 5, 5, 3 and Intel needs 5, 3, 3, 3. The sub-2.0 px dyadic impulse weights remain known, and textured cases exposed residual rounding. Adobe's UXP layer reference specifies a 0–1,000 px layer-mask range. Photato currently exposes 0–100 px. [Adobe layer reference](https://developer.adobe.com/photoshop/uxp/2022/ps-reference/classes/layer).
+
+All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted signed universal validation archive passed offscreen checks. Photato capability discovery describes the shared regional renderer and the layer-mask filter. The local Adobe-compatible jobs retain their current format limits. Physical Intel and macOS 14 execution, live editing, broader feathered clipping transactions, and full sparse export still need qualification. [Validation](SOURCE_PUBLICATION_587.md).
 
 <a id="dev-step-586"></a>
 

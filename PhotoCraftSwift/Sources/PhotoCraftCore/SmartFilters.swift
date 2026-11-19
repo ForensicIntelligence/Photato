@@ -196,7 +196,7 @@ public enum SmartFilterEngine {
         }
       }
       if stack.mask != nil {
-        let sampler = try MaskSampler(layer: layer.filterMaskProjection(), canvasSize: (document.width, document.height))
+        let sampler = try MaskSampler(layer: layer.filterMaskProjection(), canvasSize: (document.width, document.height), usesLayerFeather: false)
         if paged && (current.depth != .f32 || current.colorEncoding == .linearRGB) && sampler.isIdentity(over:bounds) { /* Preserve current. */ }
         else {
         func masked(_ a:Pixel,_ b:Pixel,_ k:Float)->Pixel {
@@ -212,7 +212,7 @@ public enum SmartFilterEngine {
         var implicit:((Pixel,Pixel)->Pixel)?
         if pointwise {
           var raw=projection;raw.mask=try mask.reframedImplicitValue(width:mask.width,height:mask.height)
-          let prepared=try MaskSampler(layer:raw,canvasSize:(document.width,document.height))
+          let prepared=try MaskSampler(layer:raw,canvasSize:(document.width,document.height),usesLayerFeather:false)
           let k=prepared.coverage(x:Double(x)+0.5,y:Double(y)+0.5)
           implicit={a,b in masked(a,b,k)}
         }

@@ -1,3 +1,7 @@
+**Source checkpoint 587.** Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. [Qualification](SOURCE_PUBLICATION_587.md).
+
+Continue Feather through the documented 1,000 px limit. Use streamed stage intermediates and sparse support on full-size or translated layers. The area model now matches the saved 250 and 1,000 px non-uniform RGB32 controls on both architectures. Measure fractional scheduling on each architecture, dyadic rounding through 2 px, RGB8/16 stage storage, and remaining Intel area residuals. Verify wider desktop and API settings and PSD/PSB interoperability before widening the range. Feathered clipping merges, vector and Smart Filter masks and affine masks remain open.
+
 **Source checkpoint 586.** Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. [Qualification](SOURCE_PUBLICATION_586.md).
 
 Qualify the exact Feather kernel on non-uniform and transformed masks. The per-stage normalized box model matches all saved line samples at 100, 250 and 1,000 px and seven Apple Silicon impulse planes. Intel impulse output differs by up to two Float32 ULPs. Measure fractional schedules and broaden reference coverage. Implement bounded wider-radius rendering, then enable the new range and feathered clipping operations after desktop, API and persistence checks. Sparse full-canvas composition and large Smart Filter and vector masks retain separate work.

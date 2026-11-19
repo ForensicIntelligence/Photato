@@ -1,8 +1,8 @@
 import Foundation
 import os
 
-/// Evaluate the existing separable pixel-mask kernel on demand. The padded
-/// coordinates are virtual, including when the source already spans 300,000 pixels.
+/// Evaluate pixel-mask Feather on demand. Kernel coordinates are virtual,
+/// including when the source already spans 300,000 pixels.
 final class FeatheredMask: Sendable {
   struct ClampedEdges: OptionSet, Sendable {
     let rawValue: UInt8
@@ -38,22 +38,25 @@ final class FeatheredMask: Sendable {
   private let weights: [Float]
   private let outside: Float
   private let edges: ClampedEdges
+  private let area: AreaMaskFeather?
   private let defaultSample: Float
   private let horizontalDefault: Float
   private let filteredDefault: Float
   private let implicitEqualsOutside: Bool
-  let padding: Int
-  var width: Int { source.width + 2 * padding }
-  var height: Int { source.height + 2 * padding }
+  private let padding: Int
+  var origin: (x: Int, y: Int) { (area?.bounds.x ?? -padding, area?.bounds.y ?? -padding) }
+  var width: Int { area?.bounds.width ?? (source.width + 2 * padding) }
+  var height: Int { area?.bounds.height ?? (source.height + 2 * padding) }
   var isConstantOutside: Bool { source.tileCount == 0 && implicitEqualsOutside }
   private let cache = OSAllocatedUnfairLock(initialState: [Entry?](repeating: nil, count: FeatheredMask.slots))
 
-  init(source: Surface, radius: Double, outside: Float, edges: ClampedEdges) {
+  init(source: Surface, radius: Double, outside: Float, edges: ClampedEdges, area: AreaMaskFeather? = nil) {
     self.source = source
     self.outside = outside
     self.edges = edges
+    self.area = area
     let sigma = max(0.05, radius)
-    let pad = Int(ceil(3 * sigma))
+    let pad = area == nil ? Int(ceil(3 * sigma)) : 0
     padding = pad
     let raw = (-pad...pad).map { Float(exp(-Double($0 * $0) / (2 * sigma * sigma))) }
     let total = raw.reduce(0, +)
@@ -99,6 +102,11 @@ final class FeatheredMask: Sendable {
   }
 
   private func prepare(x: Int, y: Int, width: Int, height: Int) -> Values {
+    if let area {
+      let result = area.prepare(source: source, outside: outside, x: x, y: y, width: width, height: height)
+      if let samples = result.samples { return .samples(samples, width: width) }
+      return .uniform(result.uniform)
+    }
     let inputLeft = x - padding, inputTop = y - padding
     let inputWidth = width + 2 * padding, inputHeight = height + 2 * padding
     let inputRight = inputLeft + inputWidth, inputBottom = inputTop + inputHeight

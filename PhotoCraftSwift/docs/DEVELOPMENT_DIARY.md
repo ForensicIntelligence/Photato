@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
+
+Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. It follows the canvas and stored mask edges, including masks that extend outside the canvas. In the app tests, 34,975 coverage samples matched the 21 saved Apple Silicon references exactly. All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+Photoshop's 250 and 1,000 px textured controls also match the model. The current app range is 100 px. Fractional radii, a few Intel rounding cases, and the wider control are still in development.
+
+[Detailed record](DEVLOG.md#dev-step-587) · [Validation](SOURCE_PUBLICATION_587.md).
+
 ## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
 
 Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. Existing Feather output is preserved across the tested depths and transforms. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
@@ -683,14 +691,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:586 -->
+<!-- current-status-step:587 -->
 ## Current development status — 19 November 2026
 
-Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask.
+Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px.
 
-All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. The wider Feather setting and exact Photoshop results for general masks remain open.
+All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. The wider Feather range, fractional settings and some Intel rounding still need work.
 
-[Source checkpoint 586](SOURCE_PUBLICATION_586.md) · [Detailed record](DEVLOG.md#dev-step-586).
+[Source checkpoint 587](SOURCE_PUBLICATION_587.md) · [Detailed record](DEVLOG.md#dev-step-587).
 
 <!-- current-status:end -->
 
@@ -1483,6 +1491,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 584 | [Preserve pixel masks in clipping merges and stamps](DEVLOG.md#dev-step-584) |
 | 2026-11-19 | 585 | [Add three arithmetic clipping blend modes](DEVLOG.md#dev-step-585) |
 | 2026-11-19 | 586 | [Bound pixel-mask Feather rendering](DEVLOG.md#dev-step-586) |
+| 2026-11-19 | 587 | [Match staged RGB32 pixel-mask Feather](DEVLOG.md#dev-step-587) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

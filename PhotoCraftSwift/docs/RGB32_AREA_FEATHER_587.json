@@ -1,0 +1,533 @@
+{
+  "adobeLayerReference": "https://developer.adobe.com/photoshop/uxp/2022/ps-reference/classes/layer",
+  "archive": {
+    "archiveSHA256": "8066340eb1fa700bd3106323433269433052a9b8322f0da7a336f46fcccecc46",
+    "binarySHA256": "a03d74e85e130e97ca4db610b2ff27edb32ec5053d1c78fa78020391b69a594b",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 9080
+  },
+  "build": 587,
+  "documentedPhotoshopMaximumPixels": 1000,
+  "maximumCheckedDocument": {
+    "height": 300000,
+    "retainedSampleBytesPerSampler": 1048576,
+    "sampleDepth": 32,
+    "width": 300000
+  },
+  "offscreenResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "fractional radius scheduling",
+    "short-radius textured output",
+    "general Intel exactness",
+    "higher pixel-mask radii",
+    "RGB8 and RGB16",
+    "affine masks",
+    "feathered clipping commands",
+    "sparse full-canvas export",
+    "physical platforms and live use"
+  ],
+  "photoshopReference": {
+    "bundledAppleSiliconOutputWordCounts": {
+      "impulse-centered-3": 4225,
+      "impulse-centered-4": 4225,
+      "impulse-centered-8": 4225,
+      "narrow63-3": 2205,
+      "narrow63-8": 2205,
+      "narrow64-3": 2304,
+      "narrow64-8": 2304,
+      "narrow65-3": 2405,
+      "narrow65-8": 2405,
+      "near-one-8": 391,
+      "partly-outside-100": 1147,
+      "partly-outside-3": 1147,
+      "partly-outside-8": 1147,
+      "texture-100": 391,
+      "texture-12": 391,
+      "texture-25": 391,
+      "texture-3": 391,
+      "texture-4": 391,
+      "texture-8": 391,
+      "translated-black-3": 1147,
+      "translated-white-8": 1147
+    },
+    "bundledReferences": {
+      "cases": [
+        [
+          "texture",
+          3
+        ],
+        [
+          "texture",
+          4
+        ],
+        [
+          "texture",
+          8
+        ],
+        [
+          "texture",
+          12
+        ],
+        [
+          "texture",
+          25
+        ],
+        [
+          "texture",
+          100
+        ],
+        [
+          "narrow63",
+          3
+        ],
+        [
+          "narrow63",
+          8
+        ],
+        [
+          "narrow64",
+          3
+        ],
+        [
+          "narrow64",
+          8
+        ],
+        [
+          "narrow65",
+          3
+        ],
+        [
+          "narrow65",
+          8
+        ],
+        [
+          "translated-black",
+          3
+        ],
+        [
+          "translated-white",
+          8
+        ],
+        [
+          "partly-outside",
+          3
+        ],
+        [
+          "partly-outside",
+          8
+        ],
+        [
+          "partly-outside",
+          100
+        ],
+        [
+          "near-one",
+          8
+        ],
+        [
+          "impulse-centered",
+          3
+        ],
+        [
+          "impulse-centered",
+          4
+        ],
+        [
+          "impulse-centered",
+          8
+        ]
+      ],
+      "filesSHA256": {
+        "impulse-centered-3.psd": "bfabe601fc38ebcbf5cf39065c35cba4772e46e583783f830c5f2a92c6d9cfce",
+        "impulse-centered-4.psd": "cf294593286f3a06763df51ee8f1238a89dd0998643c6d660605bb00334c746b",
+        "impulse-centered-8.psd": "f802012f6aa4d61ea3e5dfdf7b75455ad1269748c0acc8fac94093bb4be126f0",
+        "impulse-centered.psd": "e5003d99549b7bb7ac4a49131541cc94003b3245c4490c69895cf8f2b48d4aaa",
+        "narrow63-3.psd": "8046e54b07cf82f16749506dad0785523f4ffce5fca4c7e7cb47455b1247e21f",
+        "narrow63-8.psd": "9d29aafb18fe10619e64f5ed20d0d271dddced20548cf0928c982253f956c00c",
+        "narrow63.psd": "2d72a8465151d7317d4235a075a7346ab7d3c731b9a7e22e1f8ef54a796e6b15",
+        "narrow64-3.psd": "bf75b2794f721493de7465d57f3a4b09c70c5d6f6a27cc977cee20db2976f045",
+        "narrow64-8.psd": "a804132065f3079e3c7430421196866077ab2f5b4afffaf705b4ec29d1e0bdee",
+        "narrow64.psd": "d6c942a97e6da76e8b828b416b247a6d777ab339d16c5d2f0e850b8aa128cb9f",
+        "narrow65-3.psd": "707a6d5cf6a77c5e359f65d7cb87180c5e40686a83f91cd0c73f688582f0a73e",
+        "narrow65-8.psd": "4b574971b5ff8ff123e720fa3b088a62e050795fb9b82fd5da248b071fc65828",
+        "narrow65.psd": "a2f069cce686163260cb2d230a20d1069cc01fdb1d36513833ada820855250dc",
+        "near-one-8.psd": "a246c9166d1f860a9aea15785edbd9f68dffca8bcf485c4969c5cc46d5161a51",
+        "near-one.psd": "1077b9fe5c1ad437bda03769062910fea40e7b542a905e59f137f832456844cb",
+        "partly-outside-100.psd": "831e6e605cf410b6a7b5e12c3dbf1947e8d62c3dc95a2c7a6bf831a3b8cf2252",
+        "partly-outside-3.psd": "f94372b1fcf92cd61930903daef7a203e63a50b5a3c5d57f20f12585e1581f3b",
+        "partly-outside-8.psd": "f7006d3e6544e71bcd091d0f7f57109305d01c3f2f33f14b749a8d2839cf52b3",
+        "partly-outside.psd": "83898407833ad1025043a1e36c75cd1650cbee89c889fe3d26a17964edf220e9",
+        "texture-100.psd": "4b5d40186227b9e6be8a32b82b468c32f700fd60d75ef1cf1395d44caee3c1de",
+        "texture-12.psd": "7dedb9ce01c5a103af1429ef397f14f7f363236aefd24ebf908a9f496c824988",
+        "texture-25.psd": "77ef131e1adb8f7b861615ffd80ba7eef306e565ad17460a62cc9c94ec579fea",
+        "texture-3.psd": "70b6061bf5f892ba4843423c6c9181540d439e152f54615795ca69172d96918d",
+        "texture-4.psd": "f79be433eb8e08a489246a379f542360dce18a1760f86df428ef3785bc4b6533",
+        "texture-8.psd": "2ffe22ba053b579a5a3af312bf9517f8b50e8f7fe5dc056f20058b94fe88b78a",
+        "texture.psd": "b3c0d715246e95bdc6ca4b5b776d7a72f13f16ad200abe01acf5662bc34f2deb",
+        "translated-black-3.psd": "99541ba07c805a7eac4bc07d1185673a8437ad9430c05b4e2555371f6a4d7b3a",
+        "translated-black.psd": "410e1ba836bdd48c7d7b558d3894b8fe1244f9735bfb103e426490fde482877e",
+        "translated-white-8.psd": "fa615d63cbd5a03d4378612815fcffbfd531e06b8b5a5815a541d9e358757c2e",
+        "translated-white.psd": "ccb5819abd905cf90758bdf1c1345ea3d5e3013030c8ea48038e3805d372e415"
+      },
+      "provenance": "Synthetic tester-authored Float32 pixel grids. The installed Adobe Photoshop 27.2.0 Apple Silicon process was used to set the layer mask Feather property, save the zero-radius source with original mask, and run Merge Clipping Mask to expose the mask coverage in a stored layer. The point source uses the tester-authored input. Source and results contain no third-party artwork or application code.",
+      "signing": "ad hoc"
+    },
+    "exactHigherRadiusTextureControlWordsPerArchitecture": {
+      "1000": 391,
+      "250": 391
+    },
+    "exampleFractionalSchedulesAt2_125Px": {
+      "arm64": [
+        5,
+        5,
+        3
+      ],
+      "x86_64": [
+        5,
+        3,
+        3,
+        3
+      ]
+    },
+    "integerArchitectureDeltas": [
+      {
+        "differentIntelWords": 0,
+        "fixture": "texture-3",
+        "maximumIntegerULP": 0,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 5,
+        "fixture": "texture-4",
+        "maximumIntegerULP": 1,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "texture-8",
+        "maximumIntegerULP": 0,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "texture-12",
+        "maximumIntegerULP": 0,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "texture-25",
+        "maximumIntegerULP": 0,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "texture-100",
+        "maximumIntegerULP": 0,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 19,
+        "fixture": "narrow63-3",
+        "maximumIntegerULP": 1,
+        "words": 2205
+      },
+      {
+        "differentIntelWords": 3,
+        "fixture": "narrow63-8",
+        "maximumIntegerULP": 1,
+        "words": 2205
+      },
+      {
+        "differentIntelWords": 14,
+        "fixture": "narrow64-3",
+        "maximumIntegerULP": 1,
+        "words": 2304
+      },
+      {
+        "differentIntelWords": 8,
+        "fixture": "narrow64-8",
+        "maximumIntegerULP": 1,
+        "words": 2304
+      },
+      {
+        "differentIntelWords": 14,
+        "fixture": "narrow65-3",
+        "maximumIntegerULP": 1,
+        "words": 2405
+      },
+      {
+        "differentIntelWords": 4,
+        "fixture": "narrow65-8",
+        "maximumIntegerULP": 1,
+        "words": 2405
+      },
+      {
+        "differentIntelWords": 2,
+        "fixture": "translated-black-3",
+        "maximumIntegerULP": 1,
+        "words": 1147
+      },
+      {
+        "differentIntelWords": 3,
+        "fixture": "translated-white-8",
+        "maximumIntegerULP": 1,
+        "words": 1147
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "partly-outside-3",
+        "maximumIntegerULP": 0,
+        "words": 1147
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "partly-outside-8",
+        "maximumIntegerULP": 0,
+        "words": 1147
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "partly-outside-100",
+        "maximumIntegerULP": 0,
+        "words": 1147
+      },
+      {
+        "differentIntelWords": 0,
+        "fixture": "near-one-8",
+        "maximumIntegerULP": 0,
+        "words": 391
+      },
+      {
+        "differentIntelWords": 9,
+        "fixture": "impulse-centered-3",
+        "maximumIntegerULP": 1,
+        "words": 4225
+      },
+      {
+        "differentIntelWords": 52,
+        "fixture": "impulse-centered-4",
+        "maximumIntegerULP": 2,
+        "words": 4225
+      },
+      {
+        "differentIntelWords": 136,
+        "fixture": "impulse-centered-8",
+        "maximumIntegerULP": 1,
+        "words": 4225
+      }
+    ],
+    "maximumIntegerIntelDifferenceULPInTheseCaptures": 2,
+    "ownedInputs": 11,
+    "resultsPerArchitecture": 80,
+    "separateStreamingPrototypeBytesFor64x64At1000Px": 2328040,
+    "signing": "ad hoc",
+    "verifiedAgainstAdobeSignedInstallation": false,
+    "version": "27.2.0"
+  },
+  "qualification": {
+    "caseSelectionSHA256": "285b3e53e80de2610375393330e9600daba7a564432b352efdd31d3bd31da7ab",
+    "configurations": {
+      "arm": {
+        "appSHA256": "e90d05da11e50e4b3770444f202c5e2fa3152dd1adddb7e2ef8303cd8607d256",
+        "testBinarySHA256": "c8a7ead53649e8661d2a12e52bae6cf4fb8e347596a6605f328fd10f47be9198"
+      },
+      "debug": {
+        "appSHA256": "f49b156eca499aa831a6d06de6261f79acdabe05d3dcf5db7faf2141e5219999",
+        "testBinarySHA256": "4d751a919834bde4002ccb5846e63d0ad9ae3e342961874d3582e161cf52f4b3"
+      },
+      "intel": {
+        "appSHA256": "e2dff7c6bd2a3f9137aebfd4dd3eaaedbf5cdd0f5803ca07bff979fbb9423036",
+        "testBinarySHA256": "58a391a77028112fe4862d018a0a41cc10334d95091968e770b2e1a867e2d3bb"
+      }
+    },
+    "selectedTestsPerConfiguration": 844
+  },
+  "sourceInputs": 9080,
+  "sourceInputsChangedSince586": [
+    {
+      "path": "Sources/PhotoCraft/RasterStorageAPI.swift",
+      "sha256": "5e179f4294ae465a50a29f721085677b493925611297955a6c402ba10e437514"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "55558977c33937d8e55f7ab7e0cb2a49f7222e108eae5f7da9ec68280e1e54a8"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "ff5a3d1bbdcc314e5742f9c60d825d920df5ec8a9271c30f59238b07f9426859"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMask.swift",
+      "sha256": "70b60a7f6fed1f32e135b62595a6e54dab5da3e70425d3a0af21eae067cf2df2"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SmartFilters.swift",
+      "sha256": "cc3ae6678a02998060e51b1f8531919b0666f21ebc2adfa4487db6df0907c66e"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RenderSnapshot.swift",
+      "sha256": "db7429fcd7dc83546600529095c6f065e75e69fdbdf36f2bee513cee689aa9f3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/AreaMaskFeatherTests.swift",
+      "sha256": "cd6ca2a6d32680a752d8ca5a69854fe11b48c774ae85f5753dbe1e29eef71e41"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/impulse-centered-3.psd",
+      "sha256": "bfabe601fc38ebcbf5cf39065c35cba4772e46e583783f830c5f2a92c6d9cfce"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/impulse-centered-4.psd",
+      "sha256": "cf294593286f3a06763df51ee8f1238a89dd0998643c6d660605bb00334c746b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/impulse-centered-8.psd",
+      "sha256": "f802012f6aa4d61ea3e5dfdf7b75455ad1269748c0acc8fac94093bb4be126f0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/impulse-centered.psd",
+      "sha256": "e5003d99549b7bb7ac4a49131541cc94003b3245c4490c69895cf8f2b48d4aaa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow63-3.psd",
+      "sha256": "8046e54b07cf82f16749506dad0785523f4ffce5fca4c7e7cb47455b1247e21f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow63-8.psd",
+      "sha256": "9d29aafb18fe10619e64f5ed20d0d271dddced20548cf0928c982253f956c00c"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow63.psd",
+      "sha256": "2d72a8465151d7317d4235a075a7346ab7d3c731b9a7e22e1f8ef54a796e6b15"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow64-3.psd",
+      "sha256": "bf75b2794f721493de7465d57f3a4b09c70c5d6f6a27cc977cee20db2976f045"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow64-8.psd",
+      "sha256": "a804132065f3079e3c7430421196866077ab2f5b4afffaf705b4ec29d1e0bdee"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow64.psd",
+      "sha256": "d6c942a97e6da76e8b828b416b247a6d777ab339d16c5d2f0e850b8aa128cb9f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow65-3.psd",
+      "sha256": "707a6d5cf6a77c5e359f65d7cb87180c5e40686a83f91cd0c73f688582f0a73e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow65-8.psd",
+      "sha256": "4b574971b5ff8ff123e720fa3b088a62e050795fb9b82fd5da248b071fc65828"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/narrow65.psd",
+      "sha256": "a2f069cce686163260cb2d230a20d1069cc01fdb1d36513833ada820855250dc"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/near-one-8.psd",
+      "sha256": "a246c9166d1f860a9aea15785edbd9f68dffca8bcf485c4969c5cc46d5161a51"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/near-one.psd",
+      "sha256": "1077b9fe5c1ad437bda03769062910fea40e7b542a905e59f137f832456844cb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/partly-outside-100.psd",
+      "sha256": "831e6e605cf410b6a7b5e12c3dbf1947e8d62c3dc95a2c7a6bf831a3b8cf2252"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/partly-outside-3.psd",
+      "sha256": "f94372b1fcf92cd61930903daef7a203e63a50b5a3c5d57f20f12585e1581f3b"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/partly-outside-8.psd",
+      "sha256": "f7006d3e6544e71bcd091d0f7f57109305d01c3f2f33f14b749a8d2839cf52b3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/partly-outside.psd",
+      "sha256": "83898407833ad1025043a1e36c75cd1650cbee89c889fe3d26a17964edf220e9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/references.json",
+      "sha256": "28c889f5d83cc9aa5f2466ddd06fd16ee497a25b9e72be972239cb66b9868726"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture-100.psd",
+      "sha256": "4b5d40186227b9e6be8a32b82b468c32f700fd60d75ef1cf1395d44caee3c1de"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture-12.psd",
+      "sha256": "7dedb9ce01c5a103af1429ef397f14f7f363236aefd24ebf908a9f496c824988"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture-25.psd",
+      "sha256": "77ef131e1adb8f7b861615ffd80ba7eef306e565ad17460a62cc9c94ec579fea"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture-3.psd",
+      "sha256": "70b6061bf5f892ba4843423c6c9181540d439e152f54615795ca69172d96918d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture-4.psd",
+      "sha256": "f79be433eb8e08a489246a379f542360dce18a1760f86df428ef3785bc4b6533"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture-8.psd",
+      "sha256": "2ffe22ba053b579a5a3af312bf9517f8b50e8f7fe5dc056f20058b94fe88b78a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/texture.psd",
+      "sha256": "b3c0d715246e95bdc6ca4b5b776d7a72f13f16ad200abe01acf5662bc34f2deb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/translated-black-3.psd",
+      "sha256": "99541ba07c805a7eac4bc07d1185673a8437ad9430c05b4e2555371f6a4d7b3a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/translated-black.psd",
+      "sha256": "410e1ba836bdd48c7d7b558d3894b8fe1244f9735bfb103e426490fde482877e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/translated-white-8.psd",
+      "sha256": "fa615d63cbd5a03d4378612815fcffbfd531e06b8b5a5815a541d9e358757c2e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/layer-mask-area/translated-white.psd",
+      "sha256": "ccb5819abd905cf90758bdf1c1345ea3d5e3013030c8ea48038e3805d372e415"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "5c6737bbb2f4139a880caf0c37eace3342eba33a7133ac9dab4a7b0708e7806c"
+    }
+  ],
+  "testedIntegerRadiusRange": [
+    3,
+    100
+  ]
+}

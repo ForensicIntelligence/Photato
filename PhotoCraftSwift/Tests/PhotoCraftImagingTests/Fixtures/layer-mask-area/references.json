@@ -1,0 +1,122 @@
+{
+  "provenance": "Synthetic tester-authored Float32 pixel grids. The installed Adobe Photoshop 27.2.0 Apple Silicon process was used to set the layer mask Feather property, save the zero-radius source with original mask, and run Merge Clipping Mask to expose the mask coverage in a stored layer. The point source uses the tester-authored input. Source and results contain no third-party artwork or application code.",
+  "signing": "ad hoc",
+  "cases": [
+    [
+      "texture",
+      3
+    ],
+    [
+      "texture",
+      4
+    ],
+    [
+      "texture",
+      8
+    ],
+    [
+      "texture",
+      12
+    ],
+    [
+      "texture",
+      25
+    ],
+    [
+      "texture",
+      100
+    ],
+    [
+      "narrow63",
+      3
+    ],
+    [
+      "narrow63",
+      8
+    ],
+    [
+      "narrow64",
+      3
+    ],
+    [
+      "narrow64",
+      8
+    ],
+    [
+      "narrow65",
+      3
+    ],
+    [
+      "narrow65",
+      8
+    ],
+    [
+      "translated-black",
+      3
+    ],
+    [
+      "translated-white",
+      8
+    ],
+    [
+      "partly-outside",
+      3
+    ],
+    [
+      "partly-outside",
+      8
+    ],
+    [
+      "partly-outside",
+      100
+    ],
+    [
+      "near-one",
+      8
+    ],
+    [
+      "impulse-centered",
+      3
+    ],
+    [
+      "impulse-centered",
+      4
+    ],
+    [
+      "impulse-centered",
+      8
+    ]
+  ],
+  "filesSHA256": {
+    "impulse-centered-3.psd": "bfabe601fc38ebcbf5cf39065c35cba4772e46e583783f830c5f2a92c6d9cfce",
+    "impulse-centered-4.psd": "cf294593286f3a06763df51ee8f1238a89dd0998643c6d660605bb00334c746b",
+    "impulse-centered-8.psd": "f802012f6aa4d61ea3e5dfdf7b75455ad1269748c0acc8fac94093bb4be126f0",
+    "impulse-centered.psd": "e5003d99549b7bb7ac4a49131541cc94003b3245c4490c69895cf8f2b48d4aaa",
+    "narrow63-3.psd": "8046e54b07cf82f16749506dad0785523f4ffce5fca4c7e7cb47455b1247e21f",
+    "narrow63-8.psd": "9d29aafb18fe10619e64f5ed20d0d271dddced20548cf0928c982253f956c00c",
+    "narrow63.psd": "2d72a8465151d7317d4235a075a7346ab7d3c731b9a7e22e1f8ef54a796e6b15",
+    "narrow64-3.psd": "bf75b2794f721493de7465d57f3a4b09c70c5d6f6a27cc977cee20db2976f045",
+    "narrow64-8.psd": "a804132065f3079e3c7430421196866077ab2f5b4afffaf705b4ec29d1e0bdee",
+    "narrow64.psd": "d6c942a97e6da76e8b828b416b247a6d777ab339d16c5d2f0e850b8aa128cb9f",
+    "narrow65-3.psd": "707a6d5cf6a77c5e359f65d7cb87180c5e40686a83f91cd0c73f688582f0a73e",
+    "narrow65-8.psd": "4b574971b5ff8ff123e720fa3b088a62e050795fb9b82fd5da248b071fc65828",
+    "narrow65.psd": "a2f069cce686163260cb2d230a20d1069cc01fdb1d36513833ada820855250dc",
+    "near-one-8.psd": "a246c9166d1f860a9aea15785edbd9f68dffca8bcf485c4969c5cc46d5161a51",
+    "near-one.psd": "1077b9fe5c1ad437bda03769062910fea40e7b542a905e59f137f832456844cb",
+    "partly-outside-100.psd": "831e6e605cf410b6a7b5e12c3dbf1947e8d62c3dc95a2c7a6bf831a3b8cf2252",
+    "partly-outside-3.psd": "f94372b1fcf92cd61930903daef7a203e63a50b5a3c5d57f20f12585e1581f3b",
+    "partly-outside-8.psd": "f7006d3e6544e71bcd091d0f7f57109305d01c3f2f33f14b749a8d2839cf52b3",
+    "partly-outside.psd": "83898407833ad1025043a1e36c75cd1650cbee89c889fe3d26a17964edf220e9",
+    "texture-100.psd": "4b5d40186227b9e6be8a32b82b468c32f700fd60d75ef1cf1395d44caee3c1de",
+    "texture-12.psd": "7dedb9ce01c5a103af1429ef397f14f7f363236aefd24ebf908a9f496c824988",
+    "texture-25.psd": "77ef131e1adb8f7b861615ffd80ba7eef306e565ad17460a62cc9c94ec579fea",
+    "texture-3.psd": "70b6061bf5f892ba4843423c6c9181540d439e152f54615795ca69172d96918d",
+    "texture-4.psd": "f79be433eb8e08a489246a379f542360dce18a1760f86df428ef3785bc4b6533",
+    "texture-8.psd": "2ffe22ba053b579a5a3af312bf9517f8b50e8f7fe5dc056f20058b94fe88b78a",
+    "texture.psd": "b3c0d715246e95bdc6ca4b5b776d7a72f13f16ad200abe01acf5662bc34f2deb",
+    "translated-black-3.psd": "99541ba07c805a7eac4bc07d1185673a8437ad9430c05b4e2555371f6a4d7b3a",
+    "translated-black.psd": "410e1ba836bdd48c7d7b558d3894b8fe1244f9735bfb103e426490fde482877e",
+    "translated-white-8.psd": "fa615d63cbd5a03d4378612815fcffbfd531e06b8b5a5815a541d9e358757c2e",
+    "translated-white.psd": "ccb5819abd905cf90758bdf1c1345ea3d5e3013030c8ea48038e3805d372e415"
+  }
+}

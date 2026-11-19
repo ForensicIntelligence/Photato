@@ -42,7 +42,8 @@ public struct MaskSampler: Sendable {
   private let inverse: Transform2D
   private let properties: MaskProperties
   public init(
-    layer: Layer, feather: Bool = true, canvasSize: (width: Int, height: Int)? = nil
+    layer: Layer, feather: Bool = true, canvasSize: (width: Int, height: Int)? = nil,
+    usesLayerFeather: Bool = true
   ) throws {
     guard let source = layer.mask else { throw CraftError.invalid("Layer has no mask.") }
     properties = layer.effectiveMaskProperties
@@ -77,10 +78,14 @@ public struct MaskSampler: Sendable {
         }
       }
       try Task.checkCancellation()
-      let result = FeatheredMask(
-        source: source, radius: properties.feather, outside: properties.outside, edges: edges)
+      let radius = properties.feather
+      let area = usesLayerFeather ? canvasSize.flatMap {
+        AreaMaskFeather(layer: layer, source: source, radius: radius, canvas: $0)
+      } : nil
+      let result = FeatheredMask(source: source, radius: properties.feather,
+        outside: properties.outside, edges: edges, area: area)
       feathered = result
-      matrix = matrix * .translation(-Double(result.padding), -Double(result.padding))
+      matrix = matrix * .translation(Double(result.origin.x), Double(result.origin.y))
     } else {
       feathered = nil
     }
@@ -151,6 +156,13 @@ public struct MaskSampler: Sendable {
     let a = sampleAt(ix, iy) * (1 - fx) + sampleAt(ix + 1, iy) * fx
     let b = sampleAt(ix, iy + 1) * (1 - fx) + sampleAt(ix + 1, iy + 1) * fx
     return unit(a * (1 - fy) + b * fy)
+  }
+
+  /// Includes both the legacy Gaussian footprint and any staged box windows.
+  public static func featherDamageRadius(_ radius: Double) -> Double {
+    let gaussian = ceil(3 * max(0.05, radius))
+    let area = AreaMaskFeather.widths(at: radius)?.reduce(0) { $0 + $1 / 2 } ?? 0
+    return max(gaussian, Double(area))
   }
 
   /// Upper bound for retained derived Float32 samples in one feather sampler.

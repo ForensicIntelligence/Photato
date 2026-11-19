@@ -16,7 +16,7 @@ enum RasterStorageAPI {
     "pagedComposition":["mode":"RGB8/16/32","maximumPatchPixels":Renderer.maximumCompositionPatchPixels,
       "pixelMaskFeather":["maximumRadiusPixels":100,
         "maximumRetainedSampleBytesPerMask":MaskSampler.maximumFeatherCacheBytes,
-        "behavior":"Layer pixel masks compute the existing Feather kernel in bounded tiles near the requested samples, including on maximum-dimension documents. Golden Photoshop kernel and sparse full-canvas export remain open."],
+        "behavior":"Layer pixel masks compute the existing Feather kernel in bounded tiles near the requested samples, including on maximum-dimension documents. RGB32 layer masks with integer radii from 3 to 100 px and aligned geometry use the measured staged square filter. Other settings use the existing kernel. Intel low-bit differences and sparse full-canvas export remain open."],
       "unfeatheredVectorMasks":true,"vectorCoverageMaximumPatchPixels":131_072,
       "vectorGrayScratchMaximumLogicalBytes":Surface.maxPixels,"vectorCoordinateBlockSide":16_384,
       "vectorGrayScratchMaximumBytes":Surface.maxPixels+Surface.maxDimension,

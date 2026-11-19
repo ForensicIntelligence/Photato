@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
+
+Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. It follows the canvas and stored mask edges, including masks that extend outside the canvas. In the app tests, 34,975 coverage samples matched the 21 saved Apple Silicon references exactly. All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+Photoshop's 250 and 1,000 px textured controls also match the model. The current app range is 100 px. Fractional radii, a few Intel rounding cases, and the wider control are still in development.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md).
+
 ## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
 
 Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. Existing Feather output is preserved across the tested depths and transforms. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
@@ -685,14 +693,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:586 -->
+<!-- current-status-step:587 -->
 ## Current development status — 19 November 2026
 
-Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask.
+Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px.
 
-All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. The wider Feather setting and exact Photoshop results for general masks remain open.
+All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. The wider Feather range, fractional settings and some Intel rounding still need work.
 
-[Source checkpoint 586](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-586).
+[Source checkpoint 587](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-587).
 
 <!-- current-status:end -->
 
