@@ -732,7 +732,7 @@ public enum PSDCodec {
       if let paging,native == nil,rasterRows > 0 {
         var channels = (0..<3).map { planes[$0]! }
         if let alpha = planes[-1] { channels.append(alpha) }
-        if record.w > Surface.maximumDensePixels / record.h, channels.allSatisfy(\.supportsSparseRows) {
+        if record.w > Surface.maximumDensePixels / record.h {
           surface = try PSDRasterPaging.sparseLayer(width: record.w, height: record.h,
             depth: pixelDepth, channels: channels, context: paging)
         } else {
@@ -867,8 +867,15 @@ public enum PSDCodec {
           width: max(1, b.width), height: max(1, b.height), depth: pixelDepth,
           fill: Pixel(properties.outside, properties.outside, properties.outside))
         if !b.empty,let channel=planes[id],let paging,colorMode == .rgb {
-          mask=try PSDRasterPaging.layer(width:b.width,height:b.height,depth:pixelDepth,components:1,
-            fill:Pixel(properties.outside,properties.outside,properties.outside),mask:true,context:paging) {_ in [try channel.nextRow()]}
+          if b.width > Surface.maximumDensePixels / b.height {
+            mask = try PSDRasterPaging.sparseLayer(width: b.width, height: b.height, depth: pixelDepth,
+              channels: [channel], context: paging, clampMask: true)
+          } else {
+            mask = try PSDRasterPaging.layer(width: b.width, height: b.height, depth: pixelDepth, components: 1,
+              fill: Pixel(properties.outside, properties.outside, properties.outside), mask: true, context: paging) { _ in
+                [try channel.nextRow()]
+              }
+          }
         } else if !b.empty, let channel = planes[id] {
           for y in 0..<b.height {
             let values = try channel.nextRow()
@@ -979,7 +986,7 @@ public enum PSDCodec {
     } else if count == 0,let paging {
       try paging.admitRaster(bytes:storageBytes(width:width,height:height))
       let surface: Surface
-      if width > Surface.maximumDensePixels / height, merged.supportsSparseRows {
+      if width > Surface.maximumDensePixels / height, merged.hasSeekableRows {
         let channels = try merged.detachSeekablePlanes(count: imageChannels, height: height)
         surface = try PSDRasterPaging.sparseLayer(width: width, height: height, depth: pixelDepth,
           channels: channels, context: paging, mergedTransparency: mergedTransparency)

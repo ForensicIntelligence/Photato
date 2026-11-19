@@ -632,7 +632,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 611 | 2026-11-19 | [Import large PSD and PSB saved channels into sparse tiles](#dev-step-611) |
 | 612 | 2026-11-19 | [Save large PSD and PSB channels with repeated rows](#dev-step-612) |
 | 613 | 2026-11-19 | [Import large flattened RGB PSD and PSB without staging all process planes](#dev-step-613) |
+| 614 | 2026-11-19 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](#dev-step-614) |
 <!-- history-index:end -->
+
+<a id="dev-step-614"></a>
+
+## 2026-11-19 — Read large ZIP-compressed Photoshop layers and masks as sparse rasters
+
+Large RGB pixel layers, layer masks, saved alpha, spot, and Quick Mask planes now retain the dominant sample implicitly for Raw, PackBits, ZIP and ZIP with prediction. Raw and PackBits keep the across-canvas sample. Sequential ZIP uses a bounded prefix and replays those rows directly into the assembler. The reader compares complete rows before finding changed tile columns. It still validates compressed streams to their exact ends. Layer masks keep their independent placement and outside coverage. Saved Float32 spot and selected-area gray keep their original numbers even when the editable coverage has rounded. Existing native and API decoding routes share the reader. Their capability descriptions now include the supported compressed planes.
+
+An independent Python writer created a 300,000 × 128 RGB8 PSB with an editable pixel layer using plain and predicted ZIP on different components, a translated predicted-ZIP mask, and a saved alpha after its omitted merged-preview flag. Build 613 exhausted a 768 KiB scratch allowance during layer import. Build 614 opened the same file within that allowance and matched every checked word in the six stored tiles. The native file path matched the same 36,864 stored RGBA, mask and saved-alpha samples. The 1.51 MB file took about 5.48 seconds to read in one Apple Silicon Debug run. The disposable file was removed.
+
+The large saved-channel regression now exercises ZIP across integer and floating depths. The layer regression checks editable content, mask placement and exact scratch use. The compressed corruption controls check nonfinite samples, truncation and trailing bytes. See the focused and standalone receipts for the measured scope. [Adobe Photoshop file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+The independently encoded ZIP saved-channel stream follows the published layout. Live Photoshop exchange of this large control remains open. Build 571 already records that Photoshop 27.2.0 rejected the ZIP merged-preview variants tested there. Write-side Photoshop interoperability still uses the existing Raw or PackBits preview.
+
+All 29 focused imaging tests and both real-loopback API checks passed. The first background launches were blocked by Launch Services in the restricted shell. An approved launch from the installed bundle succeeded. Photoshop 27.2.0 did not reply to the read-only document-count/version AppleEvent within 12 seconds, so the independently generated control remains the evidence for this checkpoint.
+
+All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_614.md).
 
 <a id="dev-step-613"></a>
 

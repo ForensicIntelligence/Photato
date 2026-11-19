@@ -275,9 +275,9 @@ final class PSDCompressionOptionsTests: XCTestCase {
 
   func testPackBitsLayerRejectsChangedNonfiniteAndTruncatedRows() throws {
     let width = 67, height = 2
-    func plane(_ corrupt: Bool) throws -> Data {
+    func plane(_ corrupt: Bool, compression: PSDCompression) throws -> Data {
       let output = PSDOutput()
-      try PSDChannelWriter.write(width: width, height: height, depth: 32, compression: .rle,
+      try PSDChannelWriter.write(width: width, height: height, depth: 32, compression: compression,
         format: .psb, to: output) { y in
           var bytes = [UInt8](repeating: 0, count: width * 4)
           if y == 1 && corrupt { bytes[260] = 0x7f; bytes[261] = 0xc0 }
@@ -285,20 +285,58 @@ final class PSDCompressionOptionsTests: XCTestCase {
         }
       return output.data
     }
-    let good = try plane(false), bad = try plane(true)
-    for wrong in [bad, Data(good.dropLast()), good + Data([128])] {
-      let channels = try [good, wrong, good].map {
-        try PSDChannelReader(PSDReader(data: $0), width: width, height: height, depth: 32, format: .psb)
+    for compression: PSDCompression in [.rle, .zipPrediction] {
+      let good = try plane(false, compression: compression), bad = try plane(true, compression: compression)
+      for wrong in [bad, Data(good.dropLast()), good + Data([128])] {
+        let channels = try [good, wrong, good].map {
+          try PSDChannelReader(PSDReader(data: $0), width: width, height: height, depth: 32, format: .psb)
+        }
+        XCTAssertThrowsError(try PSDRasterPaging.sparseLayer(width: width, height: height, depth: .f32,
+          channels: channels, context: PSDRasterPaging.Context()))
       }
-      XCTAssertThrowsError(try PSDRasterPaging.sparseLayer(width: width, height: height, depth: .f32,
-        channels: channels, context: PSDRasterPaging.Context()))
     }
+  }
+
+  func testLargePredictedZIPLayerAndMaskOpenWithinScratchBudget() throws {
+    let width = 1_201, height = 30_001
+    let background = Pixel(0.125, 0.5, 0.75)
+    let foreground = Pixel(0.875, 0.25, 0.125)
+    var pixels = try Surface(width: width, height: height, fill: background)
+    var mask = try Surface(width: width, height: height, fill: Pixel(0.75, 0.75, 0.75))
+    for (x, y) in [(0, 0), (width - 1, height - 1)] {
+      pixels.setPixel(x: x, y: y, foreground)
+      mask.setPixel(x: x, y: y, Pixel(0.25, 0.25, 0.25))
+    }
+    var document = try CraftDocument(width: width, height: height)
+    var layer = Layer(name: "ZIP pixels and mask", content: .raster(pixels))
+    var maskProperties = MaskProperties()
+    maskProperties.outside = 0
+    maskProperties.transform = .translation(3, 5)
+    layer.mask = mask
+    layer.maskProperties = maskProperties
+    document.layers = [layer]
+    document.activeLayerID = layer.id
+    let encoded = try PSDCodec.writeRasterLayers(document, compression: .zipPrediction, format: .psb,
+      maximizeCompatibility: false)
+    let decoded = try PSDCodec.readPaged(encoded, scratchByteLimit: 4 * 65_536)
+    let imported = try XCTUnwrap(decoded.layers.first)
+    guard case .raster(let color) = imported.content else { return XCTFail("Missing editable pixel layer") }
+    let importedMask = try XCTUnwrap(imported.mask)
+    XCTAssertEqual(imported.name, layer.name)
+    XCTAssertEqual(color, pixels)
+    XCTAssertEqual(importedMask, mask)
+    XCTAssertEqual(imported.maskProperties?.transform, maskProperties.transform)
+    XCTAssertEqual(imported.maskProperties?.outside, 0)
+    XCTAssertEqual(color.tileCount, 2)
+    XCTAssertEqual(importedMask.tileCount, 2)
   }
 
   func testLayerWithPaintAcrossFirstRowFitsItsSparseBudget() throws {
     let width = 131, height = 129
     let base: [UInt8] = [51, 102, 153], paint: [UInt8] = [179, 51, 102]
-    for compression: [PSDCompression] in [[.rle, .rle, .rle], [.raw, .raw, .raw], [.raw, .rle, .raw]] {
+    for compression: [PSDCompression] in [
+      [.rle, .rle, .rle], [.raw, .raw, .raw], [.raw, .rle, .raw], [.zip, .rle, .zipPrediction],
+    ] {
       let data = try compression.enumerated().map { component, method -> Data in
         let output = PSDOutput()
         try PSDChannelWriter.write(width: width, height: height, depth: 8,

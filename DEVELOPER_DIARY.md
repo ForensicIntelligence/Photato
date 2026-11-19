@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **613** · The 10 most recent entries, newest first.
+Source build **614** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 614 — Read large ZIP-compressed Photoshop layers and masks as sparse rasters
+
+The native file reader opened an independently authored 300,000 × 128 RGB8 PSB with a ZIP-compressed layer, translated mask and saved alpha. All 36,864 checked component words matched. The Apple Silicon Debug run took 5.48 seconds.
+
+Build 613 reached the 768 KiB scratch limit on the same control. Build 614 read the editable layer, mask and saved alpha into six tiles using 384 KiB of mapped storage. All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-614) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_614.md).
 
 ## 2026-11-19 — Step 613 — Import large flattened RGB PSD and PSB without staging all process planes
 
@@ -75,11 +83,3 @@ Photato saved the 11.26 GB editable solid-fill PSB at 300,000 × 300,000 pixels 
 The 300,000 × 131 RLE file was byte-identical to build 604. Save time went from 10.97 s to 0.30 s on Apple Silicon and from 17.54 s to 0.34 s under Rosetta. All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-605) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md).
-
-## 2026-11-19 — Step 604 — Reuse wide vector Feather profiles at canvas edges
-
-At 110.25 px Feather, the rounded 300,000 × 300,000 control went from 5,632 rendered patches to 119. Apple Silicon went from 110.45 s to 13.47 s. Under Rosetta it went from 171.10 s to 25.76 s. All 226,872 sampled RGBA words matched the build 603 whole render on each architecture. These are single runs on the same Mac.
-
-All 307,518,180 RGBA words in four complete renders matched build 603 on each architecture. The controls include RGB8, RGB16, RGB32, an inverted group mask, and independent raster and pixel-mask edits. All 924 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-604) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_604.md).

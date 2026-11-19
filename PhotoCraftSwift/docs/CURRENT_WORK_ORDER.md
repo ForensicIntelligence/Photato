@@ -1,3 +1,7 @@
+**Source checkpoint 614.** Large Raw, PackBits and ZIP RGB Photoshop layers, masks and saved channels retain sparse editable raster storage. [Qualification](SOURCE_PUBLICATION_614.md).
+
+Verify large Gray, CMYK and Lab native planes next, then measure output and dense interchange.
+
 **Source checkpoint 613.** Large flattened Raw and PackBits RGB documents retain editable pixels, transparency and saved channels without staging all process planes. [Qualification](SOURCE_PUBLICATION_613.md).
 
 Verify sparse ZIP layer and mask import, then measure native-mode and dense document interchange.

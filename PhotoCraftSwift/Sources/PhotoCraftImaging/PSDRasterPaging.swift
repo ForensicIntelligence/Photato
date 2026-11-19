@@ -68,7 +68,7 @@ enum PSDRasterPaging {
   /// Retain only tiles that differ from the implicit RGB(A) or numeric gray sample.
   static func sparseLayer(width: Int, height: Int, depth: PixelDepth,
     channels: [PSDChannelReader], context: Context, invertMask: Bool = false,
-    mergedTransparency: Bool = false) throws -> Surface {
+    clampMask: Bool = false, mergedTransparency: Bool = false) throws -> Surface {
     let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
     let components = channels.count, sampleSize = bits / 8, side = Surface.tileSide
     let isMask = components == 1
@@ -78,14 +78,29 @@ enum PSDRasterPaging {
       let value: Float
       if invertMask {
         value = depth == .f32 ? 1 - sample : (maximumCode - (sample * maximumCode).rounded()) / maximumCode
-      } else { value = sample }
+      } else { value = clampMask ? unit(sample) : sample }
       return Pixel(value, value, value)
     }
     let columnCount = (width + side - 1) / side
     let sampleCount = min(height, 7)
     let sampleRows = (0..<sampleCount).map { $0 * (height - 1) / max(1, sampleCount - 1) }
-    let samples = try channels.map {
-      try representativeSample(in: $0, rows: sampleRows, height: height, width: width, sampleSize: sampleSize)
+    // ZIP is sequential. Keep a bounded prefix for inspection and reuse those
+    // decoded rows as the first stripe is assembled. Seekable planes still sample
+    // across the entire height without advancing their live cursors.
+    let prefixCount = min(sampleCount, max(1, (6 * 1024 * 1024) / (width * sampleSize * components)))
+    var prefetched = [[[UInt8]]](repeating: [], count: components)
+    let samples = try channels.enumerated().map { index, channel in
+      try representativeSample(width: width, sampleSize: sampleSize) { observe in
+        if channel.hasSeekableRows {
+          try channel.inspectPlaneRows(at: sampleRows, height: height, observe)
+        } else {
+          for _ in 0..<prefixCount {
+            let row = try channel.nextRow()
+            prefetched[index].append(row)
+            observe(row)
+          }
+        }
+      }
     }
     let numeric = try samples.map { try PSDChannelCodec.sample($0, 0, depth: bits) }
     let storedDefault = isMask ? gray(numeric[0])
@@ -96,7 +111,8 @@ enum PSDRasterPaging {
     let template = try seed.reframedImplicitValue(width: width, height: height, sample: implicit, linear: linear)
     let fill = linear ? template.linearDefaultPixel : template.defaultPixel
     let defaultChannels = mergedTransparency ? storedDefault : fill
-    let pattern = samples.map { bytes in Array(PSDChannelWriter.repeating(Data(bytes), count: side)) }
+    let uniformRows = samples.map { PSDChannelWriter.repeating(Data($0), count: width) }
+    let tileRowBytes = side * sampleSize
     let builder = try Surface.PagedBuilder(template: template, backing: context.backing)
     let stripe = try PSDPlaneScratch(width: width, height: min(side, height), depth: bits, components: components)
     var packets = [Data?](repeating: nil, count: components)
@@ -107,8 +123,15 @@ enum PSDRasterPaging {
       for py in 0..<rows {
         try Task.checkCancellation()
         for component in channels.indices {
-          let different = try channels[component].nextSparseRow(uniformPacket: &packets[component]) { row in
-            markChangedColumns(row, pattern: pattern[component], touched: &touched)
+          let different: [UInt8]?
+          let uniform = uniformRows[component]
+          if y == 0, py < prefetched[component].count {
+            let row = prefetched[component][py]
+            different = markChangedColumns(row, uniform: uniform, tileRowBytes: tileRowBytes, touched: &touched) ? nil : row
+          } else {
+            different = try channels[component].nextSparseRow(uniformPacket: &packets[component]) { row in
+              markChangedColumns(row, uniform: uniform, tileRowBytes: tileRowBytes, touched: &touched)
+            }
           }
           if let different {
             try stripe.write(different, row: py, component: component)
@@ -116,6 +139,7 @@ enum PSDRasterPaging {
           }
         }
       }
+      if y == 0 { prefetched = [] }
       for column in touched.indices where touched[column] {
         try Task.checkCancellation()
         let x = column * side
@@ -146,12 +170,12 @@ enum PSDRasterPaging {
     return try builder.finish()
   }
 
-  private static func representativeSample(in channel: PSDChannelReader, rows: [Int],
-    height: Int, width: Int, sampleSize: Int) throws -> [UInt8] {
+  private static func representativeSample(width: Int, sampleSize: Int,
+    inspect: (([UInt8]) -> Void) throws -> Void) rethrows -> [UInt8] {
     var votes = [[UInt8]: Int]()
     var mode = [UInt8](), maximum = 0
     let reads = min(width, 33)
-    try channel.inspectPlaneRows(at: rows, height: height) { row in
+    try inspect { row in
       for sample in 0..<reads {
         let offset = (sample * (width - 1) / max(1, reads - 1)) * sampleSize
         let bytes = Array(row[offset..<offset + sampleSize])
@@ -164,20 +188,22 @@ enum PSDRasterPaging {
   }
 
   /// Return true only when the complete row was equal to the implicit bytes.
-  private static func markChangedColumns(_ row: [UInt8], pattern: [UInt8], touched: inout [Bool]) -> Bool {
-    var uniform = true
+  private static func markChangedColumns(_ row: [UInt8], uniform: Data,
+    tileRowBytes: Int, touched: inout [Bool]) -> Bool {
     row.withUnsafeBytes { source in
-      pattern.withUnsafeBytes { expected in
+      uniform.withUnsafeBytes { expected in
+        let actual = source.baseAddress!, pattern = expected.baseAddress!
+        if memcmp(actual, pattern, source.count) == 0 { return true }
         for column in touched.indices {
-          let offset = column * expected.count
-          if memcmp(source.baseAddress!.advanced(by: offset), expected.baseAddress!, min(expected.count, source.count - offset)) != 0 {
+          let offset = column * tileRowBytes
+          let count = min(tileRowBytes, source.count - offset)
+          if memcmp(actual.advanced(by: offset), pattern.advanced(by: offset), count) != 0 {
             touched[column] = true
-            uniform = false
           }
         }
+        return false
       }
     }
-    return uniform
   }
 
   /// A flattened ZIP composite is one channel-major stream. Stage its raw planes

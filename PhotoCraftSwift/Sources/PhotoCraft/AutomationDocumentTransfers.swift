@@ -139,6 +139,8 @@ extension AutomationService {
         "gray32BackgroundComposite": "An eligible Gray32 raster stack with a visible, opaque Background has no merged transparency plane. Saved auxiliary channels follow the merged gray plane.",
         "gray32MergedComposite": "Aligned, full-canvas Gray32 raster layers use the stored gray and alpha planes directly for Normal and for Multiply over an opaque base. Ordinary unfeathered pixel masks are included. Transparent stacks use the existing merged white matte. Native saves, Photato downloads and Adobe-compatible resource outputs share this codec.",
         "sparseFlattenedRGBInput": ["compression": ["raw", "rle"], "depths": [8, 16, 32], "keepsSavedChannels": true],
+        "sparseLayeredRGBInput": ["compression": ["raw", "rle", "zip", "zipPrediction"], "depths": [8, 16, 32],
+          "keepsEditableLayerMasks": true, "keepsSavedChannels": true],
         "psbMediaType": "application/x-photoshop",
         "maximumFileBytes": PSDCodec.maximumFileBytes,"maximumPSDFileBytes":PSDCodec.maximumPSDFileBytes,"maximumDataBytes":PSDCodec.maximumInputBytes,"maximumRetainedMetadataBytes":PSDCodec.maximumMetadataBytes,
         "maximumDimension": Surface.maxDimension, "maximumPixels": Surface.maxPixels,

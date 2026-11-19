@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 614 — Read large ZIP-compressed Photoshop layers and masks as sparse rasters
+
+The native file reader opened an independently authored 300,000 × 128 RGB8 PSB with a ZIP-compressed layer, translated mask and saved alpha. All 36,864 checked component words matched. The Apple Silicon Debug run took 5.48 seconds.
+
+Build 613 reached the 768 KiB scratch limit on the same control. Build 614 read the editable layer, mask and saved alpha into six tiles using 384 KiB of mapped storage. All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-614) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_614.md).
+
 ## 2026-11-19 — Step 613 — Import large flattened RGB PSD and PSB without staging all process planes
 
 The native file reader opened a 300,000 × 300,000 flattened RGB8 PSB with transparency and saved alpha in 13.58 seconds in one Apple Silicon Debug run. All 36,864 checked RGBA and 1,024 saved alpha words matched the independent input.
@@ -907,14 +915,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:613 -->
+<!-- current-status-step:614 -->
 ## Current development status — 19 November 2026
 
-Large flattened Raw and PackBits RGB documents retain editable pixels, transparency and saved channels without staging all process planes.
+Large Raw, PackBits and ZIP RGB Photoshop layers, masks and saved channels retain sparse editable raster storage.
 
-All 961 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 613](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_613.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-613).
+[Source checkpoint 614](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_614.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-614).
 
 <!-- current-status:end -->
 

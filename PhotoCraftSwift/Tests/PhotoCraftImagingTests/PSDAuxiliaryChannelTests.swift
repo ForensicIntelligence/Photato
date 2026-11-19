@@ -147,7 +147,8 @@ final class PSDAuxiliaryChannelTests:XCTestCase {
     let width = 1201, height = 30_001
     for depth in PixelDepth.allCases {
       let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
-      for compression: PSDCompression in depth == .u8 ? [.raw, .rle] : [.rle] {
+      let methods: [PSDCompression] = depth == .u8 ? [.raw, .rle, .zip, .zipPrediction] : [.rle, .zipPrediction]
+      for compression in methods {
         var document = try CraftDocument(width: width, height: height, depth: depth)
         let empty = try Surface(width: width, height: height, depth: depth, fill: .black)
         var selected = ChannelDisplayOptions()

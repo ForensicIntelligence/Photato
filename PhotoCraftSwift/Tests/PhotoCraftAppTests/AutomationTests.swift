@@ -168,6 +168,11 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(sparseRGB["compression"] as? [String], ["raw", "rle"])
       XCTAssertEqual(sparseRGB["depths"] as? [Int], [8, 16, 32])
       XCTAssertEqual(sparseRGB["keepsSavedChannels"] as? Bool, true)
+      let sparseLayers = try XCTUnwrap(containers["sparseLayeredRGBInput"] as? [String: Any])
+      XCTAssertEqual(sparseLayers["compression"] as? [String], ["raw", "rle", "zip", "zipPrediction"])
+      XCTAssertEqual(sparseLayers["depths"] as? [Int], [8, 16, 32])
+      XCTAssertEqual(sparseLayers["keepsEditableLayerMasks"] as? Bool, true)
+      XCTAssertEqual(sparseLayers["keepsSavedChannels"] as? Bool, true)
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")
     }

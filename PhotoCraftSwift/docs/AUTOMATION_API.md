@@ -1,3 +1,7 @@
+### Large compressed Photoshop layers and masks (checkpoint 614)
+
+Desktop Open, Photato imports, and both resource job readers share the updated parser. Capability discovery adds `documentTransfers.photoshopContainers.sparseLayeredRGBInput` and updates saved-channel import metadata. Large RGB layer pixels, editable pixel masks and saved planes use an implicit value for Raw, PackBits, ZIP and ZIP with prediction. Existing transfer limits apply. The maximum-width ZIP control is independently authored. Photoshop save interoperability still uses Raw or PackBits for the merged preview.
+
 ### Large flattened Photoshop RGB import (checkpoint 613)
 
 Desktop Open, Photato `POST /v1/documents/import`, and Photoshop resource inputs in both job interfaces share the same reader. Capability discovery adds `documentTransfers.photoshopContainers.sparseFlattenedRGBInput`. For large flattened Raw and PackBits RGB data, bounded readers keep process and transparency planes separate from later saved channels. Implicit samples and changed tiles preserve editable pixels and alpha within the existing scratch budgets. Native file I/O passed the 300,000 × 300,000 synthetic control. Existing API size limits and Adobe contract still apply.
