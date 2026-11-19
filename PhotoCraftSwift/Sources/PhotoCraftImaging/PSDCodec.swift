@@ -1043,10 +1043,10 @@ public enum PSDCodec {
     try source.validateUnchanged()
     return doc
   }
-  /// Documents whose layer records retain all image data when omitting the merged preview.
+  /// Editable layer documents whose process preview can be omitted.
   public static func canOmitMergedImage(_ doc: CraftDocument) -> Bool {
-    doc.colorMode == .rgb && doc.depth == .u8 && !doc.hasAuxiliaryChannels
-      && doc.inkMode == nil && doc.restrictedMode == nil && !doc.isChannelOnly && !doc.layers.isEmpty
+    doc.colorMode == .rgb && doc.inkMode == nil && doc.restrictedMode == nil
+      && !doc.isChannelOnly && !doc.layers.isEmpty
   }
 
   public static func writeRasterLayers(
@@ -1094,7 +1094,7 @@ public enum PSDCodec {
     default: compositeCompression = requestedCompositeCompression
     }
     if !maximizeCompatibility, !includeComposite || !canOmitMergedImage(doc) {
-      throw CraftError.unsupported("Disabling Maximize Compatibility currently requires RGB/8 without saved channels.")
+      throw CraftError.unsupported("Disabling Maximize Compatibility currently requires an editable RGB PSD or PSB document.")
     }
     let unmanagedColorMetadata=try PSDColorMetadata.unmanagedRGBOutput(doc)
     let exportedLight = try PSDGlobalLight.exportLight(doc)
@@ -1627,11 +1627,29 @@ public enum PSDCodec {
     }
     try output.finishLength(maskLength, width: format.sectionLengthBytes)
     if !includeComposite { return }
+    let storedAuxiliary = auxiliaryChannels.map(PSDAuxiliaryChannels.storedRows)
+    func auxiliaryRow(_ index: Int, _ y: Int) throws -> [UInt8] {
+      if let stored = storedAuxiliary[index] { return try stored.row(y, channel: 0, depth: depth) }
+      return try PSDAuxiliaryChannels.row(auxiliaryChannels[index], y: y, depth: depth)
+    }
     if !maximizeCompatibility {
-      // Photoshop writes a white RGB/8 PackBits placeholder with no merged alpha.
-      let white = [UInt8](repeating: 255, count: doc.width)
-      try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth, compression: .rle,
-        channels: colorChannels, format: format, to: output, repeatedRows: { _ in doc.height }) { _ in white }
+      // Retain the observed white RGB/8 placeholder. Integer white and floating
+      // zero both PackBits-encode as single-byte runs. No process preview is used.
+      let widthBytes = doc.width * (depth / 8)
+      let placeholder = [UInt8](repeating: depth == 32 ? 0 : 255, count: widthBytes)
+      let largestPackedRow = widthBytes + (widthBytes + 127) / 128
+      // A wide, textured float auxiliary row can exceed the PSD RLE field.
+      let storage: PSDCompression = format == .psd && !auxiliaryChannels.isEmpty
+        && largestPackedRow > Int(UInt16.max) ? .raw : .rle
+      try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth, compression: storage,
+        channels: colorChannels + auxiliaryChannels.count, format: format, to: output, repeatedRows: { index in
+          let channel = index / doc.height, y = index % doc.height
+          if channel < colorChannels { return doc.height - y }
+          return storedAuxiliary[channel - colorChannels]?.repeatedRows(from: y) ?? 1
+        }) { index in
+          let channel = index / doc.height
+          return channel < colorChannels ? placeholder : try auxiliaryRow(channel - colorChannels, index % doc.height)
+        }
       return
     }
     let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
@@ -1651,7 +1669,6 @@ public enum PSDCodec {
       nativeComposite = nil
     }
     let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
-    let storedAuxiliary = auxiliaryChannels.map(PSDAuxiliaryChannels.storedRows)
     let repeatedRows: ((Int) -> Int)?
     if sparseComposite != nil || gray32Composite?.usesSparseRows == true || storedAuxiliary.contains(where: { $0 != nil }) {
       repeatedRows = { index in
@@ -1667,11 +1684,7 @@ public enum PSDCodec {
       format: format, to: output, repeatedRows: repeatedRows) { index in
         let channel = index / doc.height, y = index % doc.height
         try Task.checkCancellation()
-        if channel >= imageChannels {
-          let index = channel - imageChannels
-          if let stored = storedAuxiliary[index] { return try stored.row(y, channel: 0, depth: depth) }
-          return try PSDAuxiliaryChannels.row(auxiliaryChannels[index], y: y, depth: depth)
-        }
+        if channel >= imageChannels { return try auxiliaryRow(channel - imageChannels, y) }
         if let gray32Composite { return try gray32Composite.row(y, channel: channel, transparency: mergedTransparency) }
         if let sparseComposite { return try sparseComposite.row(y, channel: channel, depth: depth) }
         if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}

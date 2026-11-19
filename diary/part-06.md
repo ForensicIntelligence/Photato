@@ -645,6 +645,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 615 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-615) |
 | 2026-11-19 | 616 | [Write native Photoshop separations and Gray32 previews from stored blocks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-616) |
 | 2026-11-19 | 617 | [Add the optional Workflow Guide](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) |
+| 2026-11-19 | 618 | [Save deep RGB Photoshop files without a merged preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

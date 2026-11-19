@@ -116,6 +116,54 @@ final class PSDAuxiliaryChannelTests:XCTestCase {
     }
   }
 
+  func testWriteRGBWithoutPreviewKeepsEditableSamplesAndIndependentSavedPlanes() throws {
+    let directory = try PSDFileOutputTests().directory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let controls = try rows().filter { $0["mode"] as? Int == 3 && $0["compression"] as? Int == 0 }
+    XCTAssertEqual(controls.count, 6)
+    for row in controls {
+      let name = try XCTUnwrap(row["file"] as? String)
+      let format: PSDFileFormat = row["version"] as? Int == 2 ? .psb : .psd
+      let document = try PSDCodec.read(data(name))
+      let expectedPreview = try Renderer.composite(document)
+      let encoded = try PSDCodec.writeRasterLayers(document, format: format, maximizeCompatibility: false)
+      var section = PSDReader(data: encoded)
+      _ = try section.bytes(12)
+      XCTAssertEqual(try section.u16(), 6)
+      _ = try section.bytes(12)
+      _ = try section.section()
+      XCTAssertEqual(PSDImageResources.hasRealMergedData(try PSDImageResources.blocks(section.section().data)), false)
+      let url = directory.appendingPathComponent(name)
+      try PSDCodec.writeRasterLayers(document, to: url, format: format, maximizeCompatibility: false)
+      XCTAssertEqual(try Data(contentsOf: url), encoded)
+      let reopened = try PSDCodec.read(url)
+      try compare(reopened, row: row)
+      XCTAssertEqual(try Renderer.composite(reopened), expectedPreview)
+      XCTAssertEqual(reopened.alphaChannels?.map(\.psdIdentifier), [41, 73])
+      XCTAssertEqual(reopened.quickMask?.psdIdentifier, 99)
+      XCTAssertThrowsError(try PSDCodec.read(encoded.dropLast()))
+      if let capture = ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"] {
+        let folder = URL(fileURLWithPath: capture).appendingPathComponent("compatibility-off")
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try encoded.write(to: folder.appendingPathComponent(name))
+      }
+    }
+  }
+
+  func testWideFloatSavedChannelUsesRawPlaceholderWhenPSDRowLengthCouldOverflow() throws {
+    let width = 17_000
+    var document = try CraftDocument(width: width, height: 2, depth: .f32)
+    var gray = try Surface(width: width, height: 2, depth: .f32, fill: .black)
+    gray.setPixel(x: width - 1, y: 1, Pixel(0.375, 0.375, 0.375))
+    document.alphaChannels = [AlphaChannel(name: "Painted selection", pixels: gray)]
+    let encoded = try PSDCodec.writeRasterLayers(document, maximizeCompatibility: false)
+    var file = PSDReader(data: encoded)
+    _ = try file.bytes(26)
+    for _ in 0..<3 { _ = try file.section() }
+    XCTAssertEqual(try file.u16(), 0)
+    XCTAssertEqual(try PSDCodec.read(encoded).alphaChannels?.first?.pixels, gray)
+  }
+
   func testUnusedRawPreviewPlanesSkipFilePagesAndValidateTheirBounds() throws {
     let directory = try PSDFileOutputTests().directory()
     defer { try? FileManager.default.removeItem(at: directory) }

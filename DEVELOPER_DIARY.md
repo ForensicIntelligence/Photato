@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **617** · The 10 most recent entries, newest first.
+Source build **618** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 618 — Save deep RGB Photoshop files without a merged preview
+
+The File Handling preference and explicit Photato API setting apply to eligible native saves, Image Processor output, and file downloads. Adobe v2 continues to write its existing merged preview.
+
+All 970 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_618.md).
 
 ## 2026-11-19 — Step 617 — Add the optional Workflow Guide
 
@@ -75,11 +83,3 @@ Always includes a merged preview. Ask prompts during eligible desktop saves. Nev
 All 1,974 PSD and 1,732 PSB placeholder bytes matched across five Adobe controls. Native saves, copy and cancellation passed, along with loopback API saves and downloads for all three settings. All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_609.md).
-
-## 2026-11-19 — Step 608 — Save full-width sparse raster edits to PSB
-
-The 300,000 × 300,000 RGB8 PSB with paint across the first row saved in 9.20 s on Apple Silicon and 10.40 s under Rosetta. It reopened in 1.78 s and 2.86 s respectively. All authored raster bits matched.
-
-An independent encoder matched all 8,445,600,024 bytes of RLE tables and payloads on each architecture. Separate Apple Silicon RGB16 and RGB32 checks preserved both raster layers and their mask. All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-608) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_608.md).

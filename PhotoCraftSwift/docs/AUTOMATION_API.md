@@ -1,3 +1,7 @@
+### Deep RGB PSD and PSB compatibility setting (checkpoint 618)
+
+`psdMaximizeCompatibility=false` now applies to eligible editable RGB8/16/32. The shared native serializer omits the process preview and retains saved alpha, spot and Quick Mask planes. It writes a fixed process placeholder, using PackBits or raw storage when a wide PSD auxiliary row could overflow the PackBits field. Layer compression remains an independent choice. The existing `Never` preference applies to the same eligible output. `Ask` prompts on native interactive saves and retains a complete preview for unattended requests. Photato job options and downloads keep their existing permission and byte limits. Adobe v2 output retains the published request fields and default preview. Capability discovery describes the three RGB depths in `documentTransfers.photoshopContainers.optionalMergedPreview`.
+
 ### Workflow Guide catalogue (checkpoint 617)
 
 The authenticated `GET /v1/capabilities` response includes `workflowGuide`, the read-only catalogue used by **Window > Workflow Guide**. `menu` names the window command, `optional` is `true`, and `processing` is `local`. `suggestionOrder` maps editor context names to ordered lesson IDs. The desktop filters those lists by the active document and layer state before showing up to four suggestions.

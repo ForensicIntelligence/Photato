@@ -1,3 +1,5 @@
+**Source checkpoint 618.** Eligible editable RGB8, RGB16, and RGB32 PSD and PSB files can omit the merged preview while keeping saved alpha, spot and Quick Mask planes. [Qualification](SOURCE_PUBLICATION_618.md).
+
 **Source checkpoint 617.** The optional Workflow Guide suggests useful next steps and walks through 20 editing tasks. [Qualification](SOURCE_PUBLICATION_617.md).
 
 **Source checkpoint 616.** Large Grayscale, CMYK and Lab Photoshop saves reuse unchanged layer samples. Eligible Gray32 previews reuse the same row writer. [Qualification](SOURCE_PUBLICATION_616.md).

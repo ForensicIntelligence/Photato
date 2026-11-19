@@ -79,7 +79,10 @@ final class PhotoshopEncodingOptionsTests: XCTestCase {
     }
   }
   @MainActor func testOptionalPSDAndPSBCompatibilityAcrossDownloadsSaveAndJobs() async throws {
-    let model = try DocumentSaveWorkflowTests().fixture(depth: .u8)
+    var model = try DocumentSaveWorkflowTests().fixture(depth: .f32)
+    let savedPlane = try Surface(width: model.width, height: model.height, depth: .f32,
+      fill: Pixel(0.25, 0.25, 0.25))
+    model.alphaChannels = [AlphaChannel(name: "Owned selection", pixels: savedPlane)]
     let bytes = try PSDCodec.writeRasterLayers(model)
     let helper = AutomationTests()
     let directory = try DocumentPersistenceTests().directory()
@@ -103,6 +106,7 @@ final class PhotoshopEncodingOptionsTests: XCTestCase {
           headers: ["X-Photato-Export-Options": header])
         XCTAssertEqual(download.0.statusCode, 200)
         XCTAssertEqual(download.1, expected)
+        XCTAssertEqual(try PSDCodec.read(download.1).alphaChannels?.first?.pixels, savedPlane)
       }
       XCTAssertTrue(doc.rememberedEncodingOptions.isEmpty)
       let saved = try await helper.edit(service, doc, "document.saveAs",

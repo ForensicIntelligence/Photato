@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 618 — Save deep RGB Photoshop files without a merged preview
+
+The File Handling preference and explicit Photato API setting apply to eligible native saves, Image Processor output, and file downloads. Adobe v2 continues to write its existing merged preview.
+
+All 970 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](DEVLOG.md#dev-step-618) · [Validation](SOURCE_PUBLICATION_618.md).
+
 ## 2026-11-19 — Step 617 — Add the optional Workflow Guide
 
 Open Window > Workflow Guide to browse suggestions for the selected layer, tool or other editor context. The guide runs locally and links to the development diary. The authenticated Photato capability catalogue exposes the same lessons.
@@ -937,14 +945,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:617 -->
+<!-- current-status-step:618 -->
 ## Current development status — 19 November 2026
 
-The optional Workflow Guide suggests useful next steps and walks through 20 editing tasks.
+Eligible editable RGB8, RGB16, and RGB32 PSD and PSB files can omit the merged preview while keeping saved alpha, spot and Quick Mask planes.
 
-All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 970 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 617](SOURCE_PUBLICATION_617.md) · [Detailed record](DEVLOG.md#dev-step-617).
+[Source checkpoint 618](SOURCE_PUBLICATION_618.md) · [Detailed record](DEVLOG.md#dev-step-618).
 
 <!-- current-status:end -->
 
@@ -1768,6 +1776,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 615 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](DEVLOG.md#dev-step-615) |
 | 2026-11-19 | 616 | [Write native Photoshop separations and Gray32 previews from stored blocks](DEVLOG.md#dev-step-616) |
 | 2026-11-19 | 617 | [Add the optional Workflow Guide](DEVLOG.md#dev-step-617) |
+| 2026-11-19 | 618 | [Save deep RGB Photoshop files without a merged preview](DEVLOG.md#dev-step-618) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

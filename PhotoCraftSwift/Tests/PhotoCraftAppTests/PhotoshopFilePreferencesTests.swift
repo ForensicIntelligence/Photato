@@ -87,7 +87,7 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
   }
   @MainActor func testCompatibilityPreferenceAndInteractiveSaveSheetPreserveSources() async throws {
     _ = NSApplication.shared
-    let (folder, preferences, controller, doc) = try fixture(.u8)
+    let (folder, preferences, controller, doc) = try fixture(.u16)
     defer { doc.close() }
     let model = doc.store.document
     let source = folder.appendingPathComponent("Compatibility.psd")
@@ -109,11 +109,11 @@ final class PhotoshopFilePreferencesTests: XCTestCase {
       XCTAssertNil(doc.effectiveEncodingOptions(.init(), format: format).psdMaximizeCompatibility)
     }
     let deep = try save.fixture(depth: .u16)
-    XCTAssertNil(changed.encodingOptions(.init(), format: .psd, document: deep).psdMaximizeCompatibility)
+    XCTAssertEqual(changed.encodingOptions(.init(), format: .psd, document: deep).psdMaximizeCompatibility, false)
 
     changed.maximizePSDCompatibility = .ask
     try preferences.commit(changed, revision: preferences.revision)
-    XCTAssertFalse(changed.shouldAskPhotoshopCompatibility(.init(), format: .psd, document: deep))
+    XCTAssertTrue(changed.shouldAskPhotoshopCompatibility(.init(), format: .psd, document: deep))
     XCTAssertFalse(changed.shouldAskPhotoshopCompatibility(withoutPreview, format: .psd, document: model))
     XCTAssertTrue(changed.shouldAskPhotoshopCompatibility(.init(), format: .psd, document: model))
     XCTAssertEqual(try doc.data(ofType: DocumentIO.Format.psd.typeIdentifier), withPreview)

@@ -636,7 +636,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 615 | 2026-11-19 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](#dev-step-615) |
 | 616 | 2026-11-19 | [Write native Photoshop separations and Gray32 previews from stored blocks](#dev-step-616) |
 | 617 | 2026-11-19 | [Add the optional Workflow Guide](#dev-step-617) |
+| 618 | 2026-11-19 | [Save deep RGB Photoshop files without a merged preview](#dev-step-618) |
 <!-- history-index:end -->
+
+<a id="dev-step-618"></a>
+
+## 2026-11-19 — Save deep RGB Photoshop files without a merged preview
+
+The File Handling compatibility choice and explicit `psdMaximizeCompatibility=false` now work with editable RGB PSD and PSB at 8, 16 and 32 bits per channel, including saved alpha, spot and Quick Mask planes. Native Save, Save As, Save a Copy, Image Processor and the matching Photato API paths use the same serializer. The Adobe v2 resource contract retains its existing preview and request schema.
+
+`PSDCodec.swift` skips process composition when compatibility is disabled and keeps saved planes on the existing exact row writer. Version Info marks the process preview absent. Integer placeholders use all-white rows. Float32 placeholders use all-zero words to keep the unused PackBits rows compact. A wide PSD with auxiliary rows that could overflow the 16-bit PackBits row-length field uses raw storage. Editable layer alpha is independent of the omitted merged alpha. Existing compatible RGB8 output still matches the archived Adobe placeholder byte-for-byte. `RecoveryPreferencesView.swift`, `AutomationPhotoshopFilePreferences.swift`, `DocumentEncodingOptions.swift`, `AutomationDocumentTransfers.swift` and `AutomationImageProcessor.swift` describe the expanded RGB scope and honest interoperability limits. `Info.plist` records build 618.
+
+The installed Photoshop 27.2.0 replied to a version query. Its scripting interface timed out on the disposable save and subsequent document-count query with AppleEvent error -1712. The save produced no files. Adobe documents the compatibility preference and omitted process composite. The deep placeholder encoding in this build is a Photato implementation. A live Photoshop reopen and deep byte-equivalence comparison remain open. [Adobe File Handling guidance](https://helpx.adobe.com/photoshop/desktop/troubleshoot/performance-stability-issues/fine-tune-photoshop-features-for-performance.html) · [Photoshop File Format Specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+`PSDAuxiliaryChannelTests.swift` covers all three depths with independently authored alpha/spot/Quick Mask inputs, atomically written and reopened PSD and PSB, exact edited raster output, truncated saved data and raw fallback for a 17,000-pixel-wide Float32 row. `PhotoshopFilePreferencesTests.swift` exercises the native 16-bit Save and Save a Copy sheets, Always, Ask and Never, cancel, and ownership. `PhotoshopEncodingOptionsTests.swift` exercises deep RGB with a saved selection over authenticated downloads, Save As and Photato jobs, and verifies the unchanged Adobe field boundary.
+
+The isolated Swift Package Manager Debug build completed on Apple Silicon with the macOS 14 target. The focused XCTest selection in `focused01.log` passed all 20 methods. A second parser using the public file layout independently checked six emitted files. All 270 saved plane words matched the pinned reference planes, and the parser matched the declared layer count, channel count, zero Version Info flag and PackBits placeholder layout. See `independent-output-layout01.json`. A follow-up updated the Image Processor help and inherited the separate Workflow Guide native menu regression check.
+
+The first translated Intel preflight timed out waiting for a Save sheet. The same Intel binary passed the isolated sheet test, all 23 preflight cases on rerun, and the complete 970-case regression selection. All 970 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. [Validation](SOURCE_PUBLICATION_618.md).
 
 <a id="dev-step-617"></a>
 

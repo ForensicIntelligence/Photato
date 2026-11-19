@@ -1,0 +1,78 @@
+{
+  "build": 618,
+  "sourceInputs": 9214,
+  "selectedTestsPerConfiguration": 970,
+  "sourceChanges": {
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift": "6efe418f6daf58cff4556e5777ae3b2218f8e97a052ec8371d47621c78f11ec2",
+    "Sources/PhotoCraft/AutomationImageProcessor.swift": "5ca8b3617ef34475988b42ff5029cc3a16038bd3c868f559b4b29725b219dc5f",
+    "Sources/PhotoCraft/AutomationPhotoshopFilePreferences.swift": "aa90ea9233d1bac2a758524cd461157582135235f4e4c181eaa7992e9b97720c",
+    "Sources/PhotoCraft/DocumentEncodingOptions.swift": "3447ff0be31e4cb61431df12f993bdae4e6ac86f3231750e26e83a34faa92729",
+    "Sources/PhotoCraft/ImageProcessorControls.swift": "cf4e6c509248978b3dd2509858b5a191603884c122f56c8be8db6aa222d04eb0",
+    "Sources/PhotoCraft/RecoveryPreferencesView.swift": "c411d37805761b915a04f7f153f56940dabf2bd627ffad46fd1cd231fe001b99",
+    "Sources/PhotoCraftImaging/PSDCodec.swift": "f90eafd4b1e292fd1fc3242fc742dbe250f8f9c9b34d463b7a073dfa881cc928",
+    "Tests/PhotoCraftAppTests/PhotoshopEncodingOptionsTests.swift": "71287a8ec0ffc417e3d7d2f334662ba7c5162ba713b8a0f00c9afef2863dd48d",
+    "Tests/PhotoCraftAppTests/PhotoshopFilePreferencesTests.swift": "2da75576afdbda4986d3cb17d248cb9c2672715bae37d357980d54997473b5b9",
+    "Tests/PhotoCraftImagingTests/PSDAuxiliaryChannelTests.swift": "457a4359f89a880b68273a162b8af0f445e9e3818bd143d4d2bc28a419e5c035",
+    "scripts/Info.plist": "acb056f36e626c847e4bee42e797855d3c0cf85e4465a6b373e5f8041da6e592"
+  },
+  "configurations": {
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "7ff3f5442fb51e8452468c68592f42fd15008678cf4d0a0fae4ad65220241ddd",
+      "testBinarySHA256": "e39f2a1a346dd2c781b9cf2af37d8a847bfc12b76ff887203af804114ec05ad0",
+      "passed": true
+    },
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "dbc866ab94e9aec09890ef0b427b7834fd2b80d9db430c69af74ce9ce9636bf9",
+      "testBinarySHA256": "14b55829183af555b617412d06271b120d6118ad1f514b69fd371e7ae1bb4e8e",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "6787b258e9525d905741d099bc51e86b707dca22958b71a25de6559872737b8d",
+      "testBinarySHA256": "d2a5f3917e23d655d5edbb26d1c32b70caad7bcb8a79dd529bdfcec751a6b97b",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "3ffe62bc767a35efb57d3d20cf2f0ebd1a0d7506003f20ecf63954a612248733",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "reference": {
+    "fixtures": 6,
+    "savedWords": 270,
+    "liveAdobeReopenVerified": false
+  },
+  "intelRerun": {
+    "sameBinary": true,
+    "initialNativeSheetFailure": true,
+    "repeatPreflightPassed": 23,
+    "repeatFullSelectionPassed": 970
+  }
+}

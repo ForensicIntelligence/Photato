@@ -36,7 +36,7 @@ struct ImageProcessorView: View {
               Divider();format("Save as PSD",$model.settings.psd)
               Toggle("Maximize Compatibility", isOn: $model.settings.maximizeCompatibility)
                 .disabled(!model.settings.psd.enabled)
-                .help("Include a merged preview. You can omit it for 8-bit RGB files without saved channels.")
+                .help("Include a merged preview for other apps. Editable RGB files can retain saved channels with the preview off.")
               Divider();format("Save as TIFF",$model.settings.tiff)
               Toggle("LZW Compression",isOn:$model.settings.tiffLZW).disabled(!model.settings.tiff.enabled)
               Divider();Toggle("Don’t Enlarge",isOn:$model.settings.dontEnlarge)

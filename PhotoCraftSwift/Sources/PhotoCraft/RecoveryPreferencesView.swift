@@ -33,7 +33,7 @@ struct RecoveryPreferencesView: View {
             }
           }
           .pickerStyle(.menu)
-          Text("Include a merged preview for other apps. Ask and Never apply to 8-bit RGB files without saved channels.")
+          Text("Include a merged preview for other apps. Ask and Never apply to editable RGB files at 8, 16, and 32 bits per channel.")
             .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(10)
       }
