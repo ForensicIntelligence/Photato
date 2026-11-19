@@ -225,6 +225,82 @@ final class LayerMergeRenderTests: XCTestCase {
     XCTAssertTrue(pixels.linearPixel(x: size - 1, y: size - 1).hasSameBits(as: Pixel(0.75, 0.25, 0.5, alpha)))
   }
 
+  func testIndependentNormalClippingMatchesSavedPhotoshopLayersAndRetainsFlag() throws {
+    for bits in [8, 16] {
+      for (variant, operation) in [
+        ("normal-base", LayerMergeOperation.clippingMask), ("screen-only", .clippingMask),
+        ("screen-stamp", .stampGroup), ("screen-down", .down)
+      ] {
+        let label = "independent-\(bits)-\(variant)"
+        var source = try PSDCodec.read(file("independent-clipping/\(label)"))
+        let reference = try PSDCodec.read(file("independent-clipping/arm-\(label)-merged"))
+        let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" }, label)
+        let selectedName = operation == .down ? "Lower clip" : base.name
+        let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName }, label)
+        source.activeLayerID = selected.id
+        XCTAssertFalse(base.clipsBlendAsGroup, label)
+        XCTAssertTrue(LayerMerge.canApply(operation, layerIDs: [selected.id], in: source), label)
+        let result = try LayerMergePreparation.prepare(source, layerIDs: [selected.id], operation: operation).applied(to: source)
+        XCTAssertEqual(result.activeLayerID, base.id, label)
+        let originalByName = Dictionary(uniqueKeysWithValues: source.layers.map { ($0.name, $0) })
+        for retained in result.layers where retained.id != base.id {
+          XCTAssertEqual(retained, originalByName[retained.name], label)
+        }
+        let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+        for document in [result, reopened] {
+          let destination = try XCTUnwrap(document.layers.first { $0.name == base.name }, label)
+          XCTAssertFalse(destination.clipsBlendAsGroup, label)
+          XCTAssertEqual(destination.blendMode, .normal, label)
+          try compare(document, reference, label: label)
+        }
+      }
+    }
+  }
+
+  func testIndependentMultiplyBasePreservesItsModeAndIgnoresBackdropInStoredOutput() throws {
+    #if arch(x86_64)
+    let architecture = "intel"
+    #else
+    let architecture = "arm"
+    #endif
+    let cases: [(String, LayerMergeOperation)] = [
+      ("mask", .clippingMask), ("no-backdrop", .clippingMask), ("stamp", .stampGroup),
+      ("down", .down), ("stamp-down", .stampDown),
+    ]
+    for bits in [8, 16, 32] {
+      var maskResults: [Data] = []
+      for (variant, operation) in cases {
+        let label = "independent-\(bits)-multiply-\(variant)"
+        var source = try PSDCodec.read(file("independent-clipping/\(label)"))
+        let reference = try PSDCodec.read(file("independent-clipping/\(architecture)-\(label)-merged"))
+        let base = try XCTUnwrap(source.layers.first { $0.name == "Clipping base" }, label)
+        let selectsFirstClip = operation == .down || operation == .stampDown
+        let selectedName = selectsFirstClip ? "Lower clip" : base.name
+        let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName }, label)
+        source.activeLayerID = selected.id
+        XCTAssertFalse(base.clipsBlendAsGroup, label)
+        XCTAssertTrue(LayerMerge.canApply(operation, layerIDs: [selected.id], in: source), label)
+        let result = try LayerMergePreparation.prepare(source, layerIDs: [selected.id], operation: operation).applied(to: source)
+        XCTAssertEqual(result.activeLayerID, operation == .stampDown ? selected.id : base.id, label)
+        let destination = try XCTUnwrap(result.layers.first { $0.id == base.id }, label)
+        XCTAssertEqual(destination.blendMode, .multiply, label)
+        XCTAssertEqual(destination.opacity, base.opacity, label)
+        XCTAssertFalse(destination.clipsBlendAsGroup, label)
+        try compare(result, reference, label: label)
+        let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(result))
+        XCTAssertFalse(try XCTUnwrap(reopened.layers.first { $0.name == base.name }).clipsBlendAsGroup)
+        try compare(reopened, reference, label: label)
+        if variant == "mask" || variant == "no-backdrop" {
+          guard case .raster(let pixels) = destination.content else { return XCTFail("Expected raster \(label)") }
+          maskResults.append(try pixels.rgbaData(depth: source.depth,
+            colorEncoding: source.depth == .f32 ? .linearRGB : .sRGB))
+        }
+      }
+      XCTAssertEqual(maskResults.count, 2)
+      XCTAssertEqual(maskResults[0], maskResults[1])
+    }
+  }
+
   func testAdjacentClippedMergeAndStampMatchPhotoshopSamplesAndPreserveClipping() throws {
     #if arch(x86_64)
     let architecture = "intel"

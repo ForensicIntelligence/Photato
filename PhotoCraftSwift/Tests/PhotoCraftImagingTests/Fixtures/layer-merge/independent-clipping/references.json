@@ -1,0 +1,262 @@
+{
+  "origin": "Owned fixtures saved by Photoshop 2026 on Apple Silicon.",
+  "caseMatrix": "Eight Normal-base cases saved on Apple Silicon and 15 Multiply-base cases saved independently on Apple Silicon and Intel under Rosetta.",
+  "files": [
+    {
+      "path": "independent-16-normal-base.psd",
+      "sha256": "ef10c74cc70a9732ff6e3d3ed4712501c72f71544674f96e527f698b6ef928ad"
+    },
+    {
+      "path": "arm-independent-16-normal-base-merged.psd",
+      "sha256": "8dc199a93608b3dd4c6e1a10431b6266fd8483e6676fb2b363628618b2b4023a"
+    },
+    {
+      "path": "independent-16-screen-down.psd",
+      "sha256": "471ba950cdde031edca62cc0938147904db91f8439387841e39f986aa8310e16"
+    },
+    {
+      "path": "arm-independent-16-screen-down-merged.psd",
+      "sha256": "8fcecf7c0718440dd76e0851c168add3ad39c8f01eefc19a235ba9928154810f"
+    },
+    {
+      "path": "independent-16-screen-only.psd",
+      "sha256": "6e0cc81a34c474cfce73dc771da8e3357e2835590f0bbb368802f2996e651ec7"
+    },
+    {
+      "path": "arm-independent-16-screen-only-merged.psd",
+      "sha256": "98ae76a6a95de614caf0603f7f8f7e26128c2d9f71a46f41b758dc82c19618c2"
+    },
+    {
+      "path": "independent-16-screen-stamp.psd",
+      "sha256": "515e0e38304a470c86a0ee334bda602baacfe342c9c5e833d70ec7ab67c71f34"
+    },
+    {
+      "path": "arm-independent-16-screen-stamp-merged.psd",
+      "sha256": "9b77fb9eb82ae4a3e3343f668b1615979f5342d2f476355f35073d0fed7f0887"
+    },
+    {
+      "path": "independent-8-normal-base.psd",
+      "sha256": "7903820efc33591437d978613d1d980ae2bc2a7d9a9b16dfc31491da619f751a"
+    },
+    {
+      "path": "arm-independent-8-normal-base-merged.psd",
+      "sha256": "00ca9cf901cae5e64183904dc4e802ec15eb491fe0277e99b90eff292619897d"
+    },
+    {
+      "path": "independent-8-screen-down.psd",
+      "sha256": "d28fa07108cb014a96e45ada45497586af5004bc9830d1eb701d0ffb5efa59bc"
+    },
+    {
+      "path": "arm-independent-8-screen-down-merged.psd",
+      "sha256": "9763f9db366b2c542d81754d3ad3bda9f3db64a4fd7ad52e4af42655bb156273"
+    },
+    {
+      "path": "independent-8-screen-only.psd",
+      "sha256": "fb929f511c3d15ebf1e04f1a35aae848a291e88b8119e1498e0dbd9755ca9334"
+    },
+    {
+      "path": "arm-independent-8-screen-only-merged.psd",
+      "sha256": "d37566447c1eb9c5d09390bc3223cf6237f33eff3079956ab5a405f67e8c7045"
+    },
+    {
+      "path": "independent-8-screen-stamp.psd",
+      "sha256": "e782de1a69ea6c157e40902eafaba1d91130371aec621487cafa891d8807d973"
+    },
+    {
+      "path": "arm-independent-8-screen-stamp-merged.psd",
+      "sha256": "a75b133f0ea1b29ad004f49511a864783a8da35cf8fa5611cc8e6e8e9f522353"
+    },
+    {
+      "path": "independent-8-multiply-mask.psd",
+      "sha256": "f5fcf771d3266a09b77877a13df938de4ded2b714e0d5af19b72cdbceec3a3f0"
+    },
+    {
+      "path": "arm-independent-8-multiply-mask-merged.psd",
+      "sha256": "03e95ce5955e4b6791342b114ce640151e686730f944652da8ac3e93ab28535f"
+    },
+    {
+      "path": "intel-independent-8-multiply-mask-merged.psd",
+      "sha256": "f2956f8556a5dfaf157a6336c0c15889eec971864c1e2e8c46aaa51363924c93"
+    },
+    {
+      "path": "independent-8-multiply-no-backdrop.psd",
+      "sha256": "7ca9e6ee9c33346d698a3e02130e865aff0a8c0ea28367c85eaef14fcc50592c"
+    },
+    {
+      "path": "arm-independent-8-multiply-no-backdrop-merged.psd",
+      "sha256": "7338ce4270bc38e47893a303cbc656caab2718d6ac923c136b350eca8dbde927"
+    },
+    {
+      "path": "intel-independent-8-multiply-no-backdrop-merged.psd",
+      "sha256": "fa8077f472669377daf2ee693266e6bd70ab0c9681c7586fe29ffff7435ad18e"
+    },
+    {
+      "path": "independent-8-multiply-stamp.psd",
+      "sha256": "07e3c6c842d80e80742fe2a6c5f84e517a04ca5f01e7577690029cea25927643"
+    },
+    {
+      "path": "arm-independent-8-multiply-stamp-merged.psd",
+      "sha256": "7a5e1a20557bcb837e57e021708b6784a0ba27a98ee684f219388484df8b28e2"
+    },
+    {
+      "path": "intel-independent-8-multiply-stamp-merged.psd",
+      "sha256": "aa900580528d62029c2e3d95ed30724aa72197d2acdee6242cc37baf301d3e28"
+    },
+    {
+      "path": "independent-8-multiply-down.psd",
+      "sha256": "8a68071f5f705e528326fcef9b39431ce4dd792a3bbbeaa711b6cde92ffb201d"
+    },
+    {
+      "path": "arm-independent-8-multiply-down-merged.psd",
+      "sha256": "393bf7cec828e7445752defce8f49ea9d4a0fe5d51e015a696e43ed8732c10b5"
+    },
+    {
+      "path": "intel-independent-8-multiply-down-merged.psd",
+      "sha256": "cd1297ba35448028c867ed2b119ce6e15c99b35c0a1a3aa953878902695075c9"
+    },
+    {
+      "path": "independent-8-multiply-stamp-down.psd",
+      "sha256": "1f629ded0464b1d5883da43afc60fa709336da61952167615bc2d53344ce6eee"
+    },
+    {
+      "path": "arm-independent-8-multiply-stamp-down-merged.psd",
+      "sha256": "d1eaf4a5c89fce5b0409f6e464b7bfae9b3c637f3afbc508a21b2094e2ac3195"
+    },
+    {
+      "path": "intel-independent-8-multiply-stamp-down-merged.psd",
+      "sha256": "22884777113b01273a16bcfb4a40e9fe50ed905689ae8fbce69f163161e26ecf"
+    },
+    {
+      "path": "independent-16-multiply-mask.psd",
+      "sha256": "74e9b9bbb4d8c47c73260644a0a99335a424c3eaefef4ae2d4a4c953d24629f9"
+    },
+    {
+      "path": "arm-independent-16-multiply-mask-merged.psd",
+      "sha256": "854f00fbd9b197f1d77c9e83765a891ad15b1e4ff0a8b8d556782c96291a5963"
+    },
+    {
+      "path": "intel-independent-16-multiply-mask-merged.psd",
+      "sha256": "0d61581e673c8e361f6318a45c4b04ebe4b4b2b3c4e2c04a28c82de6d1c28bc2"
+    },
+    {
+      "path": "independent-16-multiply-no-backdrop.psd",
+      "sha256": "3ffa56375892385fb2137cf31b3320dff5c10555186f2ae88cc8b3569af984d4"
+    },
+    {
+      "path": "arm-independent-16-multiply-no-backdrop-merged.psd",
+      "sha256": "2171971f48e5d11c6ecfc9e1a785055144be6c2cb66942c4e2efe619d1a4cac6"
+    },
+    {
+      "path": "intel-independent-16-multiply-no-backdrop-merged.psd",
+      "sha256": "c864864ca073bd55429e20a215ba0a75bfaaa813100c000cba1d06c0953fd973"
+    },
+    {
+      "path": "independent-16-multiply-stamp.psd",
+      "sha256": "926a6936c81fe63cef6ad5ce789099bb417a020845a9a5acdd98068e462901c6"
+    },
+    {
+      "path": "arm-independent-16-multiply-stamp-merged.psd",
+      "sha256": "24a9ef1b0f550ae1b4df1dd240fb5ac2f969e2820162e692bd15a7e826144bad"
+    },
+    {
+      "path": "intel-independent-16-multiply-stamp-merged.psd",
+      "sha256": "210d08f04040a3fa918ccd0da55ca84cd1497796ceb8fcc428924c464a1e9369"
+    },
+    {
+      "path": "independent-16-multiply-down.psd",
+      "sha256": "b392e9ce2765c6c19939fc001fac4adeda041fac7edd681dc78aa6b18116480e"
+    },
+    {
+      "path": "arm-independent-16-multiply-down-merged.psd",
+      "sha256": "be646f34afe5404599e1b1dd66de54e6d860f6ca216fb977f4384732edc92af0"
+    },
+    {
+      "path": "intel-independent-16-multiply-down-merged.psd",
+      "sha256": "6b921ec129347f300076e405194d7f4cf21bf9ffc9f7b0b883b80ba2a7791a44"
+    },
+    {
+      "path": "independent-16-multiply-stamp-down.psd",
+      "sha256": "79c1ea1e357e7569099690fa85bd5d621b75bc46991dce013d551e81d749e32e"
+    },
+    {
+      "path": "arm-independent-16-multiply-stamp-down-merged.psd",
+      "sha256": "b8e06e712f2fab4648790869581b28e28b3986f129728f21f9141840e8b1bb17"
+    },
+    {
+      "path": "intel-independent-16-multiply-stamp-down-merged.psd",
+      "sha256": "6c35fc52cbd225a5c8109c22d3b9313cec4616f667c18d3c2fdb11ef60d9a56b"
+    },
+    {
+      "path": "independent-32-multiply-mask.psd",
+      "sha256": "d23b1222466d21edc3823ed792b7a8fd138aabeb0ed385825d62a8a3b030b8f7"
+    },
+    {
+      "path": "arm-independent-32-multiply-mask-merged.psd",
+      "sha256": "0f498b788a221c8a2db9915e0f108b67f9c68c68a17f5cfd2341033cb31a3474"
+    },
+    {
+      "path": "intel-independent-32-multiply-mask-merged.psd",
+      "sha256": "f0c3286021a5d19ae0fec8ec2e126e51b03c46af02b495acf93dda6c03f1c960"
+    },
+    {
+      "path": "independent-32-multiply-no-backdrop.psd",
+      "sha256": "a0fb28f67847175b4341abf3cde1bd1bfc4420a831a62ab5158a0a09f496818b"
+    },
+    {
+      "path": "arm-independent-32-multiply-no-backdrop-merged.psd",
+      "sha256": "192ac40e5ab61e154f2f6739080e44e9a927f3d4e28b9e7d02bece3bd282eeb6"
+    },
+    {
+      "path": "intel-independent-32-multiply-no-backdrop-merged.psd",
+      "sha256": "a643f846e3af1d02bb9b7283c6f6671ab95ebf5addd14185e12f6ed08089fd47"
+    },
+    {
+      "path": "independent-32-multiply-stamp.psd",
+      "sha256": "b2a3f410f654f9fe58033b835f48a22db7a1d0f8d2338072f1ee7ca5411b5a01"
+    },
+    {
+      "path": "arm-independent-32-multiply-stamp-merged.psd",
+      "sha256": "238aa0033b1e3cddee5fb13eaf0175fb2ae92473698941d8c6b604dff719604e"
+    },
+    {
+      "path": "intel-independent-32-multiply-stamp-merged.psd",
+      "sha256": "8882034cb0a23a499f9dc4796ee18ccb8f34d479e75cbaea5f686cacf27f4071"
+    },
+    {
+      "path": "independent-32-multiply-down.psd",
+      "sha256": "fc7ab8120bf616e40abed443d90d3db77f64943d7f3b9ec5606227f04ba34deb"
+    },
+    {
+      "path": "arm-independent-32-multiply-down-merged.psd",
+      "sha256": "f21e7e23210a97836bb9078ec8a614f9aec707e2dbddcc2b68d4e19d9c976041"
+    },
+    {
+      "path": "intel-independent-32-multiply-down-merged.psd",
+      "sha256": "02ee324f20daedaf6fe2dacc3afe588628652ba80f9d38b2beb393f738659fba"
+    },
+    {
+      "path": "independent-32-multiply-stamp-down.psd",
+      "sha256": "42b8d75af4cb2afaf441377b854d3f09d153e84591f93d11bddf700787724536"
+    },
+    {
+      "path": "arm-independent-32-multiply-stamp-down-merged.psd",
+      "sha256": "2753bc2f5a26f5181df838ecbbad638700f83b41fa7c08ed6b09cb15b0ec6a68"
+    },
+    {
+      "path": "intel-independent-32-multiply-stamp-down-merged.psd",
+      "sha256": "4888346cceb226370bf2d15922a939e88ca24c4544bb9461453f6e274d7576fa"
+    }
+  ],
+  "multiplyCapture": {
+    "arm": {
+      "pid": 28176,
+      "architecture": "16777228",
+      "active": false
+    },
+    "intel": {
+      "pid": 28317,
+      "architecture": "16777223",
+      "active": false
+    }
+  }
+}

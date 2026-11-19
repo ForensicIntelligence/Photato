@@ -1,3 +1,5 @@
+**Source checkpoint 582.** Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. [Qualification](docs/SOURCE_PUBLICATION_582.md).
+
 **Source checkpoint 581.** Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. [Qualification](docs/SOURCE_PUBLICATION_581.md).
 
 **Source checkpoint 580.** Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical. [Qualification](docs/SOURCE_PUBLICATION_580.md).

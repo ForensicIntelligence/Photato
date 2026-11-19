@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 582 — Preserve independent clipping in merges and stamps
+
+Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. The saved pixels for the tested Multiply cases matched with the underlying backdrop visible or hidden.
+
+The native editor and both local API families share the updated behavior. All 773 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md).
+
 ## 2026-11-18 — Step 581 — Merge and stamp adjacent clipped layers
 
 Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. Merge Down keeps the destination clipped and removes the upper layer. Stamp Down keeps both rows and the upper selection.
@@ -645,14 +653,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:581 -->
+<!-- current-status-step:582 -->
 ## Current development status — 18 November 2026
 
-Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack.
+Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity.
 
-All 769 selected checks passed in three build configurations. Both slices of the signed universal archive passed offscreen checks. Independent clipping and broader clip blend modes remain open.
+All 773 selected checks passed in three build configurations. Both signed universal slices passed their offscreen checks. Rich clipping, additional blend modes, and broader Photoshop parity remain open.
 
-[Source checkpoint 581](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_581.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-581).
+[Source checkpoint 582](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-582).
 
 <!-- current-status:end -->
 

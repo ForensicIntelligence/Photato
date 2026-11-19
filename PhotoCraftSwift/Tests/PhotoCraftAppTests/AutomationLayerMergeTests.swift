@@ -107,8 +107,20 @@ final class AutomationLayerMergeTests: XCTestCase {
     ])
   }
 
+  @MainActor func testIndependentClippingThroughDesktopAndNativeHTTPMatchesPhotoshop() async throws {
+    try await verifyClippedWorkflow(folder: "independent-clipping", referenceArchitecture: "arm", cases: [
+      ("independent-8-screen-only", .clippingMask, "clippingMask", "Clipping base"),
+      ("independent-16-screen-stamp", .stampGroup, "stampGroup", "Clipping base"),
+      ("independent-16-screen-down", .down, "down", "Lower clip"),
+    ])
+    try await verifyClippedWorkflow(folder: "independent-clipping", cases: [
+      ("independent-8-multiply-mask", .clippingMask, "clippingMask", "Clipping base"),
+      ("independent-32-multiply-stamp-down", .stampDown, "stampDown", "Lower clip"),
+    ])
+  }
+
   @MainActor private func verifyClippedWorkflow(
-    folder: String, cases: [(String, LayerMergeOperation, String, String)]
+    folder: String, referenceArchitecture: String? = nil, cases: [(String, LayerMergeOperation, String, String)]
   ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
@@ -122,7 +134,7 @@ final class AutomationLayerMergeTests: XCTestCase {
         var source = try fixture("\(folder)/\(name)")
         let selected = try XCTUnwrap(source.layers.first { $0.name == selectedName })
         source.activeLayerID = selected.id
-        let reference = try fixture("\(folder)/\(architecture)-\(name)-merged")
+        let reference = try fixture("\(folder)/\(referenceArchitecture ?? architecture)-\(name)-merged")
         let desktop = EditorStore(document: source)
         defer { desktop.renderTask?.cancel() }
         let isStamp = operation == .stampDown || operation == .stampGroup

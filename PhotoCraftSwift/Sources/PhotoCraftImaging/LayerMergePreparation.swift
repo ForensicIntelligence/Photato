@@ -52,8 +52,9 @@ public enum LayerMergePreparation {
   ) throws -> CraftDocument {
     let clippingLayers = source.layers.filter { $0.id != plan.base.id && plan.sourceIDs.contains($0.id) }
     let mergesOneClip = operation == .down && clippingLayers.count == 1
-      && clippingLayers[0].isClipped && !plan.base.isClipped && plan.base.clipsBlendAsGroup
-      && LayerMergePlan.supportsClippingRaster(plan.base) && LayerMergePlan.supportsClippingRaster(clippingLayers[0])
+      && clippingLayers[0].isClipped && !plan.base.isClipped
+      && LayerMergePlan.supportsClippingRaster(plan.base)
+      && LayerMergePlan.supportsClippingRaster(clippingLayers[0])
       && LayerMergePlan.supportsClippingBlend(clippingLayers[0].blendMode, depth: source.depth)
     var clippedDestination: Layer?
     if operation == .clippingMask || mergesOneClip {

@@ -40,8 +40,7 @@ public struct LayerMergePlan: Sendable {
       roots=[siblings[index-1],top];base=roots[0]
     case .clippingMask, .stampGroup:
       guard layerIDs.count == 1, let id = layerIDs.first, let candidate = hierarchy.byID[id],
-        candidate.visible, !candidate.isClipped, candidate.clipsBlendAsGroup,
-        Self.supportsClippingRaster(candidate) else {
+        candidate.visible, !candidate.isClipped, Self.supportsClippingRaster(candidate) else {
         throw CraftError.invalid("Select a visible raster layer at the base of a clipping mask.")
       }
       let siblings = siblingsByParent[candidate.parentID] ?? []

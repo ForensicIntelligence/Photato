@@ -1,3 +1,7 @@
+**Source checkpoint 582.** Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. [Qualification](SOURCE_PUBLICATION_582.md).
+
+Continue the four additional clipped blend modes and editable pixel-mask work. Measure Float32 mask Density and Feather against the saved Photoshop controls.
+
 **Source checkpoint 581.** Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. [Qualification](SOURCE_PUBLICATION_581.md).
 
 Continue the independent-clipping and broader clip-blend candidates. Verify any changes against their saved Photoshop controls.

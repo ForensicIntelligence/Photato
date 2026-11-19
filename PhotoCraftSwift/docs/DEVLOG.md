@@ -600,7 +600,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 579 | 2026-11-18 | [Add in-place Stamp Down and Stamp Group](#dev-step-579) |
 | 580 | 2026-11-18 | [Match Screen clipping and unchanged stamp history](#dev-step-580) |
 | 581 | 2026-11-18 | [Merge and stamp adjacent clipped layers](#dev-step-581) |
+| 582 | 2026-11-18 | [Preserve independent clipping in merges and stamps](#dev-step-582) |
 <!-- history-index:end -->
+
+<a id="dev-step-582"></a>
+
+## 2026-11-18 — Preserve independent clipping in merges and stamps
+
+Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity.
+
+The first candidate passed 84 focused checks with a Normal base. A new Photoshop capture included Multiply bases at all three RGB depths, partial base and clip opacity, and a hidden external backdrop. The stored output and base metadata matched in those controls. The broader candidate passed 85 focused methods and 773 selected methods per configuration. Both signed universal slices passed offscreen checks.
+
+The next candidate covers four additional modes on the clipped layers themselves. Independent masks and more complex compositions remain open. [Qualification](SOURCE_PUBLICATION_582.md).
 
 <a id="dev-step-581"></a>
 

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **581** · The 10 most recent entries, newest first.
+Source build **582** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 582 — Preserve independent clipping in merges and stamps
+
+Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. The saved pixels for the tested Multiply cases matched with the underlying backdrop visible or hidden.
+
+The native editor and both local API families share the updated behavior. All 773 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md).
 
 ## 2026-11-18 — Step 581 — Merge and stamp adjacent clipped layers
 
@@ -75,11 +83,3 @@ On Intel, very small color contributions can disappear during 32-bit Normal comp
 The new tests compare 57,504 straight color and alpha words with separately saved Photoshop results on each architecture. An ordinary opaque source that covers the canvas retains its original colors over uniform backdrop alpha. Grouped clipping can preserve those colors even when the base alpha varies. All 708 selected tests passed in all three configurations. The local universal archive passed both offscreen workspace checks. The translucent test also exposed a difference in Merge Visible that remains open.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md).
-
-## 2026-11-18 — Step 572 — Match Intel HDR Normal layer and group compositing
-
-Photoshop's Intel build rounds the multiply and add separately when compositing 32-bit Normal layers. On Apple Silicon it uses a fused operation. Photato now follows those results for color, alpha and the opacity of supported groups. The tests use separately captured Photoshop results for each architecture.
-
-The tested results match 264,192 Photoshop sample words on each architecture. That includes the masked Display P3 conversion that differed on Intel in build 571. All 705 selected tests passed in each configuration. Independent HDR clipping still differs.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md).

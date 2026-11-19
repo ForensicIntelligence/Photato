@@ -175,8 +175,20 @@ final class AutomationActionJobsTests: XCTestCase {
     ])
   }
 
+  @MainActor func testIndependentClippingDescriptorsMatchSavedPixelsOnBothJobRoutes() async throws {
+    try await verifyClippedJobRoutes(folder: "independent-clipping", referenceArchitecture: "arm", cases: [
+      ("independent-8-normal-base", "Clipping base", false),
+      ("independent-16-screen-stamp", "Clipping base", true),
+      ("independent-16-screen-down", "Lower clip", false),
+    ])
+    try await verifyClippedJobRoutes(folder: "independent-clipping", cases: [
+      ("independent-16-multiply-no-backdrop", "Clipping base", false),
+      ("independent-32-multiply-stamp-down", "Lower clip", true),
+    ])
+  }
+
   @MainActor private func verifyClippedJobRoutes(
-    folder: String, cases: [(String, String, Bool)]
+    folder: String, referenceArchitecture: String? = nil, cases: [(String, String, Bool)]
   ) async throws {
     #if arch(x86_64)
     let architecture = "intel"
@@ -196,7 +208,7 @@ final class AutomationActionJobsTests: XCTestCase {
         let action = duplicates ? #"[{"_obj":"mergeLayersNew","$Dplc":true}]"# : #"[{"_obj":"mergeLayersNew"}]"#
         await transport.set(try Data(contentsOf: root.appendingPathComponent(name + ".psd")))
         let expected = try PSDCodec.read(Data(contentsOf: root.appendingPathComponent(
-          "\(architecture)-\(name)-merged.psd")))
+          "\(referenceArchitecture ?? architecture)-\(name)-merged.psd")))
         var payload = body()
         payload["options"] = ["actions": [select, action].map {
           ["source": ["content": $0, "contentType": "application/json"]]
