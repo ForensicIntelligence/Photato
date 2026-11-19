@@ -624,7 +624,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 603 | 2026-11-19 | [Reuse exact composited tiles under solid vector Feather](#dev-step-603) |
 | 604 | 2026-11-19 | [Reuse wide vector Feather profiles at canvas edges](#dev-step-604) |
 | 605 | 2026-11-19 | [Stream repeated rows in sparse PSB files](#dev-step-605) |
+| 606 | 2026-11-19 | [Reopen sparse editable PSB raster layers](#dev-step-606) |
 <!-- history-index:end -->
+
+<a id="dev-step-606"></a>
+
+## 2026-11-19 — Reopen sparse editable PSB raster layers
+
+The baseline 605 importer walked every pixel in an eligible large RGB layer and wrote each tile into its scratch store. For the 300,000 × 131 PSB control, it mapped 921,698,304 bytes across 14,064 tiles. The authored layer held four edited tiles over an implicit color.
+
+The isolated build 606 reads the RLE layer channels through the existing paging context. It samples a candidate implicit value from each first row, proves matching columns by comparing raw channel bytes, and stages only changed rows and tile columns. The reader reuses a compressed packet after it has proved the decoded contents are the implicit row. Different encodings still pass through the strict PackBits decoder. The proof keeps partial tiles, hidden RGB, HDR and signed-zero words. Mixed compression still uses the existing paging path. Native opening and the API's file ingestion use the shared codec. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+The change touches `Surface`, `PSDChannelReader`, `PSDRasterPaging` and the layered RGB dispatch in `PSDCodec`. Two new `PSDCompressionOptionsTests` methods compare every sample in RGB and RGBA at 8, 16 and 32 bits under a three-tile scratch budget. They reject nonfinite, truncated and trailing RLE inputs. The isolated harness ran these same checks on both architectures. Its first watcher missed punctuation in the SwiftPM success message. Two standalone XCTest link attempts exposed the required Xcode paths and the absence of the Linux-style runner. The successful native harness executed the same assertion bodies using a command-line runner.
+
+Both architectures saved and reopened the 8.45 GB 300,000 × 300,000 RGB8 Background with six authored edits and six retained tiles. The reopened raster matched every pixel bit, including the implicit area. A further pixel edit on the reopened raster preserved the source. Apple Silicon saved in 3.75 s and reopened in 1.65 s. Rosetta saved in 3.91 s and reopened in 2.61 s. The independent decoder checked 900,000 layer rows and 900,000 merged rows per architecture, with 72 sampled channel values across edited and default positions.
+
+The 300,000 × 131 file mapped 262,144 bytes in build 606. Its reopen time went from 1.488 s to 0.017 s on Apple Silicon and from 2.526 s to 0.019 s under Rosetta. Separate 300,000 × 121 transparent raster files at RGB16 and RGB32 each reopened bit-for-bit with two retained tiles, including signed zeros and hidden HDR values. These are single runs on one Mac. The same reader reopened editable 20,003 × 1,800 RGB8 and RGB16 PSD files through the two-byte row table, with every raster bit preserved and two retained tiles per file. The large owned scratch files were removed after verification.
+
+An independent file writer produced a second maximum-width control with 127- and 128-byte PackBits runs and 600,000 padding bytes on one layer row. The native reader recovered the same seven sampled positions and four stored tiles. The overlength row passed the existing bounded decoder.
+
+Photoshop's process query initially reported zero windows. macOS accepted the background open request for the disposable maximum-width control. The three subsequent window observations returned AppleEvent error −1712. The control file remains in its disposable folder for cleanup if Photoshop opens it later. Live Photoshop interoperability, dense maximum-size imports, other compression modes at maximum size and physical-platform verification remain open. All ten compression and raster paging tests passed in the full Debug app test bundle. All 938 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_606.md).
 
 <a id="dev-step-605"></a>
 

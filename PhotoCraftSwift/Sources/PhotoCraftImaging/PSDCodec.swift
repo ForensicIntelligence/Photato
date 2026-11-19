@@ -730,10 +730,14 @@ public enum PSDCodec {
           descriptor:descriptor,planes:planes,context:paging)
       }
       if let paging,native == nil,rasterRows > 0 {
-        let components=planes[-1] == nil ? 3:4
-        surface=try PSDRasterPaging.layer(width:record.w,height:record.h,depth:pixelDepth,components:components,context:paging) { _ in
-          var rows=try (0..<3).map {try planes[$0]!.nextRow()}
-          if let alpha=planes[-1] {rows.append(try alpha.nextRow())};return rows
+        var channels = (0..<3).map { planes[$0]! }
+        if let alpha = planes[-1] { channels.append(alpha) }
+        if record.w > Surface.maximumDensePixels / record.h, channels.allSatisfy(\.usesPackBits) {
+          surface = try PSDRasterPaging.packBitsLayer(width: record.w, height: record.h,
+            depth: pixelDepth, channels: channels, context: paging)
+        } else {
+          surface = try PSDRasterPaging.layer(width: record.w, height: record.h, depth: pixelDepth,
+            components: channels.count, context: paging) { _ in try channels.map { try $0.nextRow() } }
         }
       }
       for y in 0..<(paging != nil ? 0:rasterRows)

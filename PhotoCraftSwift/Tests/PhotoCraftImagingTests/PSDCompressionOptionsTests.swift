@@ -131,6 +131,68 @@ final class PSDCompressionOptionsTests: XCTestCase {
       }
     }
   }
+
+  func testPackBitsLayerRetainsImplicitColorAndEveryEditedBit() throws {
+    let width = 131, height = 129
+    let changes = [IntRect(x: 0, y: 0, width: 1, height: 1),
+      IntRect(x: 64, y: 65, width: 1, height: 1), IntRect(x: width - 1, y: height - 1, width: 1, height: 1)]
+    for depth in PixelDepth.allCases {
+      let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
+      let quiet: [Float] = [0.37, -0.0, depth == .f32 ? 2.5 : 0.61, 0.75]
+      let changed: [Float] = [0.78, depth == .f32 ? -0.25 : 0.25, 0.15, -0.0]
+      for components in [3, 4] {
+        let bytes = try (0..<components).map { c -> Data in
+          let output = PSDOutput()
+          try PSDChannelWriter.write(width: width, height: height, depth: bits,
+            compression: .rle, format: .psb, to: output) { y in
+              var row: [UInt8] = []
+              for x in 0..<width {
+                try PSDChannelCodec.append(changes.contains { $0.contains(x, y) } ? changed[c] : quiet[c],
+                  depth: bits, to: &row)
+              }
+              return row
+            }
+          return output.data
+        }
+        func input() throws -> [PSDChannelReader] {
+          try bytes.map { try PSDChannelReader(PSDReader(data: $0), width: width, height: height, depth: bits, format: .psb) }
+        }
+        let slow = try input()
+        let expected = try PSDRasterPaging.layer(width: width, height: height, depth: depth,
+          components: components, context: PSDRasterPaging.Context()) { _ in try slow.map { try $0.nextRow() } }
+        let actual = try PSDRasterPaging.packBitsLayer(width: width, height: height, depth: depth,
+          channels: input(), context: PSDRasterPaging.Context(scratchByteLimit: 3 * 65_536))
+        XCTAssertEqual(actual, expected, "RGB/\(bits) with \(components) stored components")
+        XCTAssertEqual(actual.tileCount, 3)
+        if depth == .f32 {
+          XCTAssertEqual(actual.linearPixel(x: 130, y: 127).g.bitPattern, Float(-0.0).bitPattern)
+          XCTAssertEqual(actual.linearPixel(x: 130, y: 128).g.bitPattern, Float(-0.25).bitPattern)
+        }
+      }
+    }
+  }
+
+  func testPackBitsLayerRejectsChangedNonfiniteAndTruncatedRows() throws {
+    let width = 67, height = 2
+    func plane(_ corrupt: Bool) throws -> Data {
+      let output = PSDOutput()
+      try PSDChannelWriter.write(width: width, height: height, depth: 32, compression: .rle,
+        format: .psb, to: output) { y in
+          var bytes = [UInt8](repeating: 0, count: width * 4)
+          if y == 1 && corrupt { bytes[260] = 0x7f; bytes[261] = 0xc0 }
+          return bytes
+        }
+      return output.data
+    }
+    let good = try plane(false), bad = try plane(true)
+    for wrong in [bad, Data(good.dropLast()), good + Data([128])] {
+      let channels = try [good, wrong, good].map {
+        try PSDChannelReader(PSDReader(data: $0), width: width, height: height, depth: 32, format: .psb)
+      }
+      XCTAssertThrowsError(try PSDRasterPaging.packBitsLayer(width: width, height: height, depth: .f32,
+        channels: channels, context: PSDRasterPaging.Context()))
+    }
+  }
   func merged(_ data: Data, _ format: PSDFileFormat) throws -> Data {
     var reader = PSDReader(data:data)
     _ = try reader.bytes(26)

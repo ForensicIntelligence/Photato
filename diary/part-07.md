@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 606 — Reopen sparse editable PSB raster layers
+
+Photato reopened the 8.45 GB, 300,000 × 300,000 RGB8 PSB in 1.65 s on Apple Silicon and 2.61 s under Rosetta. Every raster bit matched and six tiles used 384 KiB of mapped sample storage. The independent decoder checked 900,000 layer and 900,000 merged row lengths per architecture, plus 72 sampled channel values.
+
+The 300,000 × 131 RGB8 file went from 14,064 mapped tiles to four. RGB16 and RGB32 PSBs and RGB8 and RGB16 PSDs reopened with every raster bit preserved in the tested deep and legacy fixtures. All 938 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-606) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md).
+
 ## 2026-11-19 — Step 605 — Stream repeated rows in sparse PSB files
 
 Photato saved the 11.26 GB editable solid-fill PSB at 300,000 × 300,000 pixels in 3.22 s and reopened it in 2.12 s. An independent reader checked all 1,200,000 merged row lengths and 140 sampled channel values. These were single runs on the same Mac.
@@ -843,14 +851,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:605 -->
+<!-- current-status-step:606 -->
 ## Current development status — 19 November 2026
 
-Large sparse Photoshop files reuse merged pixels and identical rows during export.
+Large RLE Photoshop layers retain their implicit color and store the edited tiles during import.
 
-All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 938 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 605](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-605).
+[Source checkpoint 606](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-606).
 
 <!-- current-status:end -->
 

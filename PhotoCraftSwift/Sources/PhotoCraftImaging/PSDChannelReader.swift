@@ -15,6 +15,7 @@ final class PSDChannelReader {
   private let compression: Int
   private var zip: PSDZIPReader?
   private(set) var remainingRows: Int
+  var usesPackBits: Bool { compression == 1 }
 
   init(
     _ source: PSDReader, width: Int, height: Int, depth: Int, channels: Int = 1,
@@ -60,6 +61,31 @@ final class PSDChannelReader {
     remainingRows -= 1
     try finishIfAtEnd()
     return row
+  }
+
+  /// A uniform packet is reusable after its decoded bytes matched every sample
+  /// of the caller's fixed implicit row. Retained packets belong to one plane.
+  func nextSparsePackBitsRow(uniformPacket: inout Data?, isUniform: ([UInt8]) -> Bool) throws -> [UInt8]? {
+    try Task.checkCancellation()
+    guard usesPackBits, remainingRows > 0 else { throw CraftError.invalid("Expected a Photoshop RLE row.") }
+    let length = try lengths!.length(rowLengthBytes)
+    let changed: [UInt8]?
+    if length <= rowBytes * 2 {
+      let packet = try source.bytes(length)
+      if packet == uniformPacket {
+        changed = nil
+      } else {
+        let row = try PSDCodec.decodePackBits(packet, expected: rowBytes)
+        if isUniform(row) { uniformPacket = packet; changed = nil }
+        else { changed = row }
+      }
+    } else {
+      let row = try PSDCodec.decodePackBits(source.view(length), expected: rowBytes)
+      changed = isUniform(row) ? nil : row
+    }
+    remainingRows -= 1
+    try finishIfAtEnd()
+    return changed
   }
 
   private func finishIfAtEnd() throws {

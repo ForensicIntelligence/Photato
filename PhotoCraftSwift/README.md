@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 606.** Large RLE Photoshop layers retain their implicit color and store the edited tiles during import. [Qualification](docs/SOURCE_PUBLICATION_606.md).
+
 **Source checkpoint 605.** Large sparse Photoshop files reuse merged pixels and identical rows during export. [Qualification](docs/SOURCE_PUBLICATION_605.md).
 
 **Source checkpoint 604.** Wide feathered vector masks reuse identical edge profiles in both the filter and the compositor. [Qualification](docs/SOURCE_PUBLICATION_604.md).

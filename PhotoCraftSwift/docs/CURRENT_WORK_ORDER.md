@@ -1,3 +1,7 @@
+**Source checkpoint 606.** Large RLE Photoshop layers retain their implicit color and store the edited tiles during import. [Qualification](SOURCE_PUBLICATION_606.md).
+
+Sample more than the first row when choosing the implicit values for an import. Verify a painted first row, raw and mixed-compression layers, and metadata and malformed-input guards. Continue dense PSB and wide Feather validation.
+
 **Source checkpoint 605.** Large sparse Photoshop files reuse merged pixels and identical rows during export. [Qualification](SOURCE_PUBLICATION_605.md).
 
 Qualify a nonuniform 300,000 × 300,000 editable RGB raster round trip. Measure retained sample storage, compare every edited tile and implicit pixel, and exercise both deep samples and malformed rows. Continue variable-edge Feather work and retry Photoshop 2026 file verification when the live app responds.

@@ -64,6 +64,103 @@ enum PSDRasterPaging {
     }
     return try builder.finish()
   }
+
+  /// The archive rows prove which tiles differ from a finite implicit RGB(A)
+  /// sample. Only changed planes enter the existing bounded staging stripe.
+  static func packBitsLayer(width: Int, height: Int, depth: PixelDepth,
+    channels: [PSDChannelReader], context: Context) throws -> Surface {
+    let bits = depth == .u8 ? 8 : depth == .u16 ? 16 : 32
+    let components = channels.count, sampleSize = bits / 8, side = Surface.tileSide
+    let columnCount = (width + side - 1) / side
+    var first = try channels.map { try $0.nextRow() }
+    let samples = first.map { representativeSample(in: $0, width: width, sampleSize: sampleSize) }
+    let numeric = try samples.map { try PSDChannelCodec.sample($0, 0, depth: bits) }
+    let implicit = Pixel(numeric[0], numeric[1], numeric[2], components == 4 ? numeric[3] : 1)
+    let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+    let seed = try Surface(width: 1, height: 1, depth: depth, colorEncoding: encoding)
+    let template = try seed.reframedImplicitValue(width: width, height: height, sample: implicit, linear: depth == .f32)
+    let fill = depth == .f32 ? template.linearDefaultPixel : template.defaultPixel
+    let pattern = samples.map { bytes in Array(PSDChannelWriter.repeating(Data(bytes), count: side)) }
+    let builder = try Surface.PagedBuilder(template: template, backing: context.backing)
+    let stripe = try PSDPlaneScratch(width: width, height: min(side, height), depth: bits, components: components)
+    var packets = [Data?](repeating: nil, count: components)
+    for y in stride(from: 0, to: height, by: side) {
+      let rows = min(side, height - y)
+      var touched = [Bool](repeating: false, count: columnCount)
+      var staged = [Bool](repeating: false, count: rows * components)
+      for py in 0..<rows {
+        try Task.checkCancellation()
+        for component in channels.indices {
+          func match(_ row: [UInt8]) -> Bool {
+            markChangedColumns(row, pattern: pattern[component], touched: &touched)
+          }
+          let different: [UInt8]?
+          if y + py == 0 {
+            different = match(first[component]) ? nil : first[component]
+          } else {
+            different = try channels[component].nextSparsePackBitsRow(uniformPacket: &packets[component], isUniform: match)
+          }
+          if let different {
+            try stripe.write(different, row: py, component: component)
+            staged[py * components + component] = true
+          }
+        }
+        if y + py == 0 { first.removeAll() }
+      }
+      for column in touched.indices where touched[column] {
+        try Task.checkCancellation()
+        let x = column * side
+        var patch = try template.reframedImplicitValue(width: min(side, width - x), height: rows)
+        for py in 0..<rows {
+          let row = py * components
+          if !staged[row..<row + components].contains(true) { continue }
+          for px in 0..<patch.width {
+            func sample(_ component: Int, _ fallback: Float) throws -> Float {
+              staged[row + component] ? try stripe.sample(x: x + px, y: py, component: component) : fallback
+            }
+            let pixel = try Pixel(sample(0, fill.r), sample(1, fill.g), sample(2, fill.b),
+              components == 4 ? sample(3, fill.a) : 1)
+            if pixel.hasSameBits(as: fill) { continue }
+            if depth == .f32 { patch.setLinearPixel(x: px, y: py, pixel) }
+            else { patch.setPixel(x: px, y: py, pixel) }
+          }
+        }
+        try builder.append(patch, atX: x, atY: y)
+      }
+    }
+    return try builder.finish()
+  }
+
+  private static func representativeSample(in row: [UInt8], width: Int, sampleSize: Int) -> [UInt8] {
+    var votes = [[UInt8]: Int]()
+    var mode = [UInt8](), maximum = 0
+    let reads = min(width, 33)
+    for sample in 0..<reads {
+      let offset = (sample * (width - 1) / max(1, reads - 1)) * sampleSize
+      let bytes = Array(row[offset..<offset + sampleSize])
+      votes[bytes, default: 0] += 1
+      if votes[bytes]! > maximum { mode = bytes; maximum = votes[bytes]! }
+    }
+    return mode
+  }
+
+  /// Return true only when the complete row was equal to the implicit bytes.
+  private static func markChangedColumns(_ row: [UInt8], pattern: [UInt8], touched: inout [Bool]) -> Bool {
+    var uniform = true
+    row.withUnsafeBytes { source in
+      pattern.withUnsafeBytes { expected in
+        for column in touched.indices {
+          let offset = column * expected.count
+          if memcmp(source.baseAddress!.advanced(by: offset), expected.baseAddress!, min(expected.count, source.count - offset)) != 0 {
+            touched[column] = true
+            uniform = false
+          }
+        }
+      }
+    }
+    return uniform
+  }
+
   /// A flattened ZIP composite is one channel-major stream. Stage its raw planes
   /// in private disk storage before assembling ordered bounded raster patches.
   static func merged(width:Int,height:Int,depth:PixelDepth,components:Int,

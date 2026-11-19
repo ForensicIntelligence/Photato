@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **605** · The 10 most recent entries, newest first.
+Source build **606** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 606 — Reopen sparse editable PSB raster layers
+
+Photato reopened the 8.45 GB, 300,000 × 300,000 RGB8 PSB in 1.65 s on Apple Silicon and 2.61 s under Rosetta. Every raster bit matched and six tiles used 384 KiB of mapped sample storage. The independent decoder checked 900,000 layer and 900,000 merged row lengths per architecture, plus 72 sampled channel values.
+
+The 300,000 × 131 RGB8 file went from 14,064 mapped tiles to four. RGB16 and RGB32 PSBs and RGB8 and RGB16 PSDs reopened with every raster bit preserved in the tested deep and legacy fixtures. All 938 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-606) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md).
 
 ## 2026-11-19 — Step 605 — Stream repeated rows in sparse PSB files
 
@@ -81,11 +89,3 @@ Wide Feather reuses the second filter pass’s window sums when they fit a bound
 All 909 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-597) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_597.md).
-
-## 2026-11-19 — Step 596 — Reuse source bands during wide mask Feather
-
-Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. The 1,000 px vector viewport went from 1.343 s to 0.995 s on Apple Silicon. The oversize Smart Filter mask control went from 1.483 s to 0.862 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 595 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
-
-All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md).

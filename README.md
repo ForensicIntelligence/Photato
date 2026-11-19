@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 605.** Large sparse Photoshop files reuse merged pixels and identical rows during export. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md).
+**Development alpha — source build 606.** Large RLE Photoshop layers retain their implicit color and store the edited tiles during import. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md).
 
 ## Project layout
 

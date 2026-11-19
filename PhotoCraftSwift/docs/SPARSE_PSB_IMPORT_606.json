@@ -1,0 +1,307 @@
+{
+  "build": 606,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince605": [
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "db32c6995f07ff730dd4648eacf5e6e33f9bf5f200b3bb9a177eb0d43ae56610"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDChannelReader.swift",
+      "sha256": "247ba8953c58cfd7caff43a79a7c69c8f3017c8e42d97636fa812aa9754847c4"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "0bb563d21a984c638e9af3e2d698818402b91d710d8690abc72ed0b9497bdeb8"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDRasterPaging.swift",
+      "sha256": "e37563ddd03982f401d8dc001e1e15e455cac3e152430abdfe0afffc4b8dc852"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompressionOptionsTests.swift",
+      "sha256": "bc84901bb620f0101a367adf32c50a98cf5e5d2fad8d277dcdc5b42c0c2deb6a"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "3beb0ed0356d979f5fb5bd734d7b10fb803a636b9339be50f682296e815289a8"
+    }
+  ],
+  "selectedChecksPerConfiguration": 938,
+  "focusedCompressionChecksPerConfiguration": 10,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "6b3fc522b00d4b7410db362a1392c965fd67642707e55b9e650f71f17ab790b3",
+      "testBinarySHA256": "ec90a9404045ea9225d7439e9cb6564d2ad7ebcb615fd5fdca3b1ee0d70d99cb",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "a1c809b6f1ddc3a9ec25aea6d98e821175d1605c85b2557e990436a40aa59d27",
+      "testBinarySHA256": "62daf892255eeb7aa21caa369618dff72e7c54947b4f9bed1ed20bb0ecd54ee4",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "fc066b46664c5852a732b8f57f5346dfdfb6eee1ce00eaa5535c3b0c7a94ed4b",
+      "testBinarySHA256": "aa98450eaee47373d3f9d1a70efc28f2c9c7448b17f38057eb003f4795b144ad",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "5cdbff99a52e3b455b9ddd87d45435ada144361a4c6f9de450ac2d5aaad8a50b",
+    "binarySHA256": "d3522d2428c2d8b294a5269b4c265f43a7427cec0a1516f2a9e61cd2251ae747",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "bytes": 122083
+      }
+    }
+  },
+  "maximumRaster": {
+    "arm": {
+      "maximum": {
+        "bytes": 8445603536,
+        "editableRaster": true,
+        "editPoints": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            1
+          ],
+          [
+            129,
+            63
+          ],
+          [
+            188673,
+            64
+          ],
+          [
+            215274,
+            149999
+          ],
+          [
+            299999,
+            299999
+          ]
+        ],
+        "height": 300000,
+        "mappedRasterBytes": 393216,
+        "nativeAllRasterBitsMatched": true,
+        "readSeconds": 1.654102167,
+        "retainedTiles": 6,
+        "width": 300000,
+        "writeSeconds": 3.753506916
+      },
+      "independentMaximum": {
+        "width": 300000,
+        "height": 300000,
+        "fileBytes": 8445603536,
+        "layerRows": 900000,
+        "layerSampleValues": 36,
+        "mergedRows": 900000,
+        "mergedSampleValues": 36
+      },
+      "maximumWidth605": {
+        "editableRaster": true,
+        "elapsedSeconds": 1.488365166,
+        "mappedBytes": 921698304,
+        "samplePoints": 7,
+        "tileCount": 14064
+      },
+      "maximumWidth606": {
+        "editableRaster": true,
+        "elapsedSeconds": 0.016887,
+        "mappedBytes": 262144,
+        "samplePoints": 7,
+        "tileCount": 4
+      }
+    },
+    "intel": {
+      "maximum": {
+        "bytes": 8445603536,
+        "editableRaster": true,
+        "editPoints": [
+          [
+            0,
+            0
+          ],
+          [
+            64,
+            1
+          ],
+          [
+            129,
+            63
+          ],
+          [
+            188673,
+            64
+          ],
+          [
+            215274,
+            149999
+          ],
+          [
+            299999,
+            299999
+          ]
+        ],
+        "height": 300000,
+        "mappedRasterBytes": 393216,
+        "nativeAllRasterBitsMatched": true,
+        "readSeconds": 2.609272667,
+        "retainedTiles": 6,
+        "width": 300000,
+        "writeSeconds": 3.905966625
+      },
+      "independentMaximum": {
+        "width": 300000,
+        "height": 300000,
+        "fileBytes": 8445603536,
+        "layerRows": 900000,
+        "layerSampleValues": 36,
+        "mergedRows": 900000,
+        "mergedSampleValues": 36
+      },
+      "maximumWidth605": {
+        "editableRaster": true,
+        "elapsedSeconds": 2.525861,
+        "mappedBytes": 921698304,
+        "samplePoints": 7,
+        "tileCount": 14064
+      },
+      "maximumWidth606": {
+        "editableRaster": true,
+        "elapsedSeconds": 0.018980042,
+        "mappedBytes": 262144,
+        "samplePoints": 7,
+        "tileCount": 4
+      }
+    }
+  },
+  "deepAndLegacy": {
+    "depths": [
+      {
+        "bits": 16,
+        "bytes": 153148818,
+        "everyLayerBitMatched": true,
+        "height": 121,
+        "mappedBytes": 131072,
+        "readSeconds": 0.044117292,
+        "tiles": 2,
+        "width": 300000,
+        "writeSeconds": 0.719466
+      },
+      {
+        "bits": 32,
+        "bytes": 1163873601,
+        "everyLayerBitMatched": true,
+        "height": 121,
+        "mappedBytes": 131072,
+        "readSeconds": 0.845331917,
+        "tiles": 2,
+        "width": 300000,
+        "writeSeconds": 12.740533792
+      }
+    ],
+    "psd-v1": [
+      {
+        "bits": 8,
+        "bytes": 4553836,
+        "everyLayerBitMatched": true,
+        "height": 1800,
+        "mappedBytes": 131072,
+        "readSeconds": 0.01473475,
+        "tiles": 2,
+        "width": 20003,
+        "writeSeconds": 0.039368166
+      },
+      {
+        "bits": 16,
+        "bytes": 151941446,
+        "everyLayerBitMatched": true,
+        "height": 1800,
+        "mappedBytes": 131072,
+        "readSeconds": 0.032663958,
+        "tiles": 2,
+        "width": 20003,
+        "writeSeconds": 0.111534292
+      }
+    ]
+  },
+  "independentlyWrittenRLE": {
+    "bytes": 4298176,
+    "sha256": "9fdda4722a9a40d10e08a07f254e11dc75882749d767243c991945a29ecde5ba",
+    "runPacketLengths": [
+      127,
+      128
+    ],
+    "addedRLEPaddingBytes": 600000,
+    "layerAndMergedEncodingIndependent": true,
+    "results": {
+      "605": {
+        "editableRaster": true,
+        "elapsedSeconds": 1.5748994170000001,
+        "mappedBytes": 921698304,
+        "samplePoints": 7,
+        "tileCount": 14064
+      },
+      "606": {
+        "editableRaster": true,
+        "elapsedSeconds": 0.071707291,
+        "mappedBytes": 262144,
+        "samplePoints": 7,
+        "tileCount": 4
+      }
+    }
+  },
+  "photoshopCrossOpen": {
+    "openEventExit": 0,
+    "openEventMessage": "",
+    "observations": [
+      {
+        "exit": 1,
+        "output": "",
+        "error": "250:319: execution error: System Events got an error: AppleEvent timed out. (-1712)"
+      },
+      {
+        "exit": 1,
+        "output": "",
+        "error": "250:319: execution error: System Events got an error: AppleEvent timed out. (-1712)"
+      },
+      {
+        "exit": 1,
+        "output": "",
+        "error": "250:319: execution error: System Events got an error: AppleEvent timed out. (-1712)"
+      }
+    ],
+    "ownedDocumentClosed": false
+  },
+  "limits": "The maximum-size control is an RGB8 Background with six isolated edits. Dense maximum-size imports, maximum-size raw and ZIP layers, arbitrary leading borders, live Photoshop cross-open, and physical Intel and macOS 14 runtime remain open."
+}

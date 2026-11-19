@@ -1652,13 +1652,13 @@ extension Surface {
       tiles[(atY/64+key/patch.columns)*columns+atX/64+key%patch.columns]=tile
     }
   }
-  func reframedImplicitValue(width:Int,height:Int) throws -> Surface {
+  package func reframedImplicitValue(width:Int,height:Int) throws -> Surface {
     var output=try Surface(width:width,height:height,depth:depth,colorEncoding:colorEncoding)
     output.storedDefaultPixel=storedDefaultPixel;return output
   }
   /// Apply the ordinary setter once, preserving its depth/encoding/hidden-bit
   /// rules, then use that stored result as the implicit value of a new extent.
-  func reframedImplicitValue(width:Int,height:Int,sample:Pixel,linear:Bool)throws->Surface {
+  package func reframedImplicitValue(width:Int,height:Int,sample:Pixel,linear:Bool)throws->Surface {
     var probe=try reframedImplicitValue(width:1,height:1)
     if linear {probe.setLinearPixel(x:0,y:0,sample)}else{probe.setPixel(x:0,y:0,sample)}
     var output=try reframedImplicitValue(width:width,height:height)
