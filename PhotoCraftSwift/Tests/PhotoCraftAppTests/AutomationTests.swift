@@ -157,6 +157,10 @@ final class AutomationTests: XCTestCase {
         JSONSerialization.jsonObject(with: sameOrigin.1) as? [String: Any])
       XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
       XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 809)
+      let channels = try XCTUnwrap(catalogue["alphaChannels"] as? [String: Any])
+      let interchange = try XCTUnwrap(channels["photoshopInterchange"] as? [String: Any])
+      XCTAssertEqual(interchange["largeSavedChannelExport"] as? String,
+        "Raw and PackBits output reuse unchanged rows in sparse saved channels. Unchanged original Float32 words remain exact.")
       XCTAssertFalse(String(decoding: sameOrigin.1, as: UTF8.self).contains("Support Development"))
       let empty = try await request(service, path: "/v1/documents")
       XCTAssertEqual(String(decoding: empty.1, as: UTF8.self), "{\"documents\":[]}")

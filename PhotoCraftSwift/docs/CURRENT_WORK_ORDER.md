@@ -1,3 +1,7 @@
+**Source checkpoint 612.** Sparse PSD and PSB output reuses unchanged saved alpha, spot, and Quick Mask rows and retains the exact unchanged Float32 source words. [Qualification](SOURCE_PUBLICATION_612.md).
+
+Verify flattened RGB sparse import, then check dense and ZIP paths and compare with Adobe-authored channel files.
+
 **Source checkpoint 611.** Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles. [Qualification](SOURCE_PUBLICATION_611.md).
 
 Verify the paged saved-channel exporter, then check dense and ZIP paths and compare with Adobe-authored channel files.

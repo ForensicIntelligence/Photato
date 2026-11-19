@@ -206,6 +206,71 @@ final class PSDAuxiliaryChannelTests:XCTestCase {
     }
   }
 
+  func testSparseFloatWriterKeepsOriginalOnlyWordsAcrossTheMaximumCanvas() throws {
+    let width = 300_000, height = 300_000
+    let tiny = Float(sign: .plus, exponent: -26, significand: 1)
+    let smaller = Float(sign: .plus, exponent: -30, significand: 1)
+    func gray(_ value: Float) -> Pixel { Pixel(value, value, value) }
+    var coverage = try Surface(width: width, height: height, depth: .f32, fill: .white)
+    var original = try Surface(width: width, height: height, depth: .f32, fill: gray(tiny))
+    original.setPixel(x: 0, y: 0, gray(-0.0))
+    original.setPixel(x: width - 1, y: 65, gray(smaller))
+    coverage.setPixel(x: 2, y: 0, gray(1.5))
+    coverage.setPixel(x: width - 1, y: height - 1, gray(0.25))
+    var selected = ChannelDisplayOptions()
+    selected.indicates = .selectedAreas
+    var alpha = AlphaChannel(name: "Selected coverage", pixels: coverage, options: selected)
+    alpha.psdSelectedGray = original
+    var spot = AlphaChannel(name: "Spot", pixels: coverage, spot: SpotInk(color: Pixel(1, 0, 0), solidity: 0.5))
+    spot.psdSpotGray = original
+    for channel in [alpha, spot] {
+      let rows = try XCTUnwrap(PSDAuxiliaryChannels.storedRows(channel))
+      XCTAssertEqual(rows.repeatedRows(from: 65), 1)
+      XCTAssertEqual(rows.repeatedRows(from: 128), 299_968 - 128)
+      XCTAssertEqual(rows.repeatedRows(from: height - 1), 1)
+      for (y, edits) in [(0, [0: Float(-0.0), 2: Float(-0.5)]), (65, [width - 1: smaller]),
+        (128, [:]), (height - 1, [width - 1: Float(0.75)])] {
+        let stored = try rows.row(y, channel: 0, depth: 32)
+        var expected = Data(count: width * 4)
+        expected.withUnsafeMutableBytes { buffer in
+          for x in 0..<width {
+            buffer.storeBytes(of: (edits[x] ?? tiny).bitPattern.bigEndian, toByteOffset: x * 4, as: UInt32.self)
+          }
+        }
+        XCTAssertEqual(Data(stored), expected)
+      }
+    }
+  }
+
+  func testPagedSavedChannelsRoundTripThroughFileAndDataWriters() throws {
+    let width = 1_201, height = 30_001
+    var document = try CraftDocument(width: width, height: height)
+    document.layers[0].content = .fill(.white)
+    var pixels = try Surface(width: width, height: height, fill: Pixel(0.25, 0.25, 0.25))
+    pixels.setPixel(x: width - 1, y: height - 1, Pixel(0.75, 0.75, 0.75))
+    var options = ChannelDisplayOptions()
+    options.indicates = .selectedAreas
+    document.alphaChannels = [AlphaChannel(name: "Saved alpha", pixels: pixels, options: options),
+      AlphaChannel(name: "Spot", pixels: pixels, spot: SpotInk(color: Pixel(1, 0, 0), solidity: 0.5))]
+    document.quickMask = AlphaChannel(name: "Quick Mask", pixels: pixels)
+    let target = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".psb")
+    defer { try? FileManager.default.removeItem(at: target) }
+    let data = try PSDCodec.writeRasterLayers(document, compression: .rle, format: .psb, compositeCompression: .rle)
+    try PSDCodec.writeRasterLayers(document, to: target, compression: .rle, format: .psb, compositeCompression: .rle)
+    XCTAssertEqual(try Data(contentsOf: target), data)
+    let imported = try PSDCodec.read(target)
+    let channels = PSDAuxiliaryChannels.all(imported)
+    XCTAssertEqual(channels.map(\.name), ["Saved alpha", "Spot", "Quick Mask"])
+    for (index, channel) in channels.enumerated() {
+      let background: UInt8 = index == 2 ? 64 : 191
+      let changed: UInt8 = index == 2 ? 191 : 64
+      XCTAssertEqual(channel.pixels.tileCount, 1)
+      XCTAssertEqual(try PSDAuxiliaryChannels.row(channel, y: 0, depth: 8), Array(repeating: background, count: width))
+      XCTAssertEqual(try PSDAuxiliaryChannels.row(channel, y: height - 1, depth: 8),
+        Array(repeating: background, count: width - 1) + [changed])
+    }
+  }
+
   func testFloatSpotGrayUsesOriginalOnlyUntilTheSampleChanges()throws {
     var d=try PSDCodec.read(data("m3-d32-v1-c0.psd"));let channel=try XCTUnwrap(d.alphaChannels?.last),original=try XCTUnwrap(channel.psdSpotGray)
     var before=Data();for y in 0..<d.height{before.append(contentsOf:try PSDAuxiliaryChannels.row(channel,y:y,depth:32))}

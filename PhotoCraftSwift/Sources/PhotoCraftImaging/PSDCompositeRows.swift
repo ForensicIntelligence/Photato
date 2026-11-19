@@ -73,8 +73,16 @@ struct PSDStoredRows {
   static let retainedSampleBytes = PSDChannelCodec.byteLimit
   static let retainedTileCount = retainedSampleBytes / (Surface.tileSide * Surface.tileSide * MemoryLayout<Pixel>.stride)
 
-  enum Kind: Equatable {
+  enum Kind {
     case layer, mask, merged(transparency: Bool)
+    case auxiliary(inverted: Bool, original: Surface?)
+
+    var usesLinearSamples: Bool {
+      switch self {
+      case .layer, .merged: return true
+      case .mask, .auxiliary: return false
+      }
+    }
   }
 
   private let surface: Surface
@@ -85,12 +93,24 @@ struct PSDStoredRows {
   init?(_ surface: Surface, kind: Kind) {
     guard surface.width > Surface.maximumDensePixels / surface.height,
       surface.tileCount <= Self.retainedTileCount else { return nil }
+    let original: Surface?
+    if case .auxiliary(_, let gray) = kind { original = gray }
+    else { original = nil }
+    guard (original?.tileCount ?? 0) <= Self.retainedTileCount - surface.tileCount else { return nil }
     self.surface = surface
     self.kind = kind
     let side = Surface.tileSide
     let columns = (surface.width + side - 1) / side
     var bands = [[Int]](repeating: [], count: (surface.height + side - 1) / side)
     for key in surface.storedTileKeys { bands[key / columns].append(key % columns) }
+    if let original {
+      // Original Float32 words can differ even where their inverted coverage rounds
+      // to the implicit value, so rows must include both tile grids.
+      for key in original.storedTileKeys { bands[key / columns].append(key % columns) }
+      for band in bands.indices where !bands[band].isEmpty {
+        bands[band] = Set(bands[band]).sorted()
+      }
+    }
     columnsByBand = bands
     var end = surface.height
     var ends = [Int](repeating: end, count: bands.count)
@@ -108,11 +128,17 @@ struct PSDStoredRows {
 
   func row(_ y: Int, channel: Int, depth: Int) throws -> [UInt8] {
     let side = Surface.tileSide, sampleBytes = depth / 8
-    let linear = depth == 32 && kind != .mask
-    func sample(_ pixel: Pixel) -> Float {
+    let linear = depth == 32 && kind.usesLinearSamples
+    func sample(_ pixel: Pixel, x: Int? = nil) -> Float {
       let stored: Pixel
       switch kind {
       case .mask: return unit(pixel.r)
+      case .auxiliary(let inverted, let original):
+        return PSDAuxiliaryChannels.sample(pixel.r, inverted: inverted, depth: depth,
+          original: original.map { gray in
+            guard let x else { return gray.defaultPixel.r }
+            return gray.pixel(x: x, y: y).r
+          })
       case .layer: stored = pixel
       case .merged(let transparency):
         stored = linear ? PSDMergedSample.encodeLinear(pixel, transparency: transparency)
@@ -131,7 +157,7 @@ struct PSDStoredRows {
       patch.removeAll(keepingCapacity: true)
       for x in start..<end {
         let p = linear ? surface.linearPixel(x: x, y: y) : surface.pixel(x: x, y: y)
-        try PSDChannelCodec.append(sample(p), depth: depth, to: &patch)
+        try PSDChannelCodec.append(sample(p, x: x), depth: depth, to: &patch)
       }
       bytes.replaceSubrange((start * sampleBytes)..<(end * sampleBytes), with: patch)
     }

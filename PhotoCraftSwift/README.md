@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 612.** Sparse PSD and PSB output reuses unchanged saved alpha, spot, and Quick Mask rows and retains the exact unchanged Float32 source words. [Qualification](docs/SOURCE_PUBLICATION_612.md).
+
 **Source checkpoint 611.** Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles. [Qualification](docs/SOURCE_PUBLICATION_611.md).
 
 **Source checkpoint 610.** Layered PSD and PSB can retain saved alpha, spot, and Quick Mask planes when their Version Info declares the merged preview absent. [Qualification](docs/SOURCE_PUBLICATION_610.md).

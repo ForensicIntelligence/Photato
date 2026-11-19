@@ -147,10 +147,23 @@ enum PSDMultichannelStorage {
       }
       try output.finishLength(mark,width:format.sectionLengthBytes)
     }
+    let storedAuxiliary = alphas.map(PSDAuxiliaryChannels.storedRows)
+    let repeatedRows: ((Int) -> Int)?
+    if storedAuxiliary.contains(where: { $0 != nil }) {
+      repeatedRows = { row in
+        let channel = row / document.height - plates.count
+        guard channel >= 0 else { return 1 }
+        return storedAuxiliary[channel]?.repeatedRows(from: row % document.height) ?? 1
+      }
+    } else { repeatedRows = nil }
     try PSDChannelWriter.write(width: document.width, height: document.height, depth: document.bitsPerChannel,
-      compression: compression, channels: count, format: format, to: output) { row in
+      compression: compression, channels: count, format: format, to: output, repeatedRows: repeatedRows) { row in
       let channel = row / document.height, y = row % document.height
-      if channel>=plates.count {return try PSDAuxiliaryChannels.row(alphas[channel-plates.count],y:y,depth:document.bitsPerChannel)}
+      if channel >= plates.count {
+        let index = channel - plates.count
+        if let stored = storedAuxiliary[index] { return try stored.row(y, channel: 0, depth: document.bitsPerChannel) }
+        return try PSDAuxiliaryChannels.row(alphas[index], y: y, depth: document.bitsPerChannel)
+      }
       var bytes: [UInt8] = []; bytes.reserveCapacity(document.width * (document.bitsPerChannel / 8))
       for x in 0..<document.width {
         let value: Int

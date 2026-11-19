@@ -1618,15 +1618,27 @@ public enum PSDCodec {
       nativeComposite = nil
     }
     let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
-    let repeatedRows: ((Int) -> Int)? = sparseComposite.map { rows in
-      { index in index / doc.height < imageChannels ? rows.repeatedRows(from: index % doc.height) : 1 }
-    }
+    let storedAuxiliary = auxiliaryChannels.map(PSDAuxiliaryChannels.storedRows)
+    let repeatedRows: ((Int) -> Int)?
+    if sparseComposite != nil || storedAuxiliary.contains(where: { $0 != nil }) {
+      repeatedRows = { index in
+        let channel = index / doc.height, y = index % doc.height
+        if channel >= imageChannels {
+          return storedAuxiliary[channel - imageChannels]?.repeatedRows(from: y) ?? 1
+        }
+        return sparseComposite?.repeatedRows(from: y) ?? 1
+      }
+    } else { repeatedRows = nil }
     try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,
       compression: compositeCompression, channels: imageChannels + auxiliaryChannels.count,
       format: format, to: output, repeatedRows: repeatedRows) { index in
         let channel = index / doc.height, y = index % doc.height
         try Task.checkCancellation()
-        if channel>=imageChannels {return try PSDAuxiliaryChannels.row(auxiliaryChannels[channel-imageChannels],y:y,depth:depth)}
+        if channel >= imageChannels {
+          let index = channel - imageChannels
+          if let stored = storedAuxiliary[index] { return try stored.row(y, channel: 0, depth: depth) }
+          return try PSDAuxiliaryChannels.row(auxiliaryChannels[index], y: y, depth: depth)
+        }
         if let gray32Composite { return try gray32Composite.row(y, channel: channel, transparency: mergedTransparency) }
         if let sparseComposite { return try sparseComposite.row(y, channel: channel, depth: depth) }
         if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}

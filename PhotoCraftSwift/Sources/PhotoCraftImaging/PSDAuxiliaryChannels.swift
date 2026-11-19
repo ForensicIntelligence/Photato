@@ -139,18 +139,33 @@ enum PSDAuxiliaryChannels {
       var info=PSDWriter();info.n(first+channels.count-1,2);info.n(quick.psdQuickMaskInitiallyEmpty==true ? 1:0,1);result+=PSDImageResources.block(1022,data:info.data)
     };return result
   }
-  static func row(_ channel:AlphaChannel,y:Int,depth:Int)throws->[UInt8] {
-    var row:[UInt8]=[];row.reserveCapacity(channel.pixels.width*(depth/8))
+  private static func polarity(_ channel: AlphaChannel) -> (inverted: Bool, original: Surface?) {
+    if channel.spot != nil { return (true, channel.psdSpotGray) }
+    if channel.options.indicates == .selectedAreas { return (true, channel.psdSelectedGray) }
+    return (false, nil)
+  }
+  static func sample(_ coverage: Float, inverted: Bool, depth: Int,
+    original: @autoclosure () -> Float?) -> Float {
+    guard inverted else { return coverage }
+    if depth == 8 { return Float(255 - Int((unit(coverage) * 255).rounded())) / 255 }
+    if depth == 16 { return Float(65535 - Int((unit(coverage) * 65535).rounded())) / 65535 }
+    if let gray = original(), (1 - gray).bitPattern == coverage.bitPattern { return gray }
+    return 1 - coverage
+  }
+  static func storedRows(_ channel: AlphaChannel) -> PSDStoredRows? {
+    let (inverted, original) = polarity(channel)
+    return PSDStoredRows(channel.pixels, kind: .auxiliary(inverted: inverted, original: original))
+  }
+  static func row(_ channel: AlphaChannel, y: Int, depth: Int) throws -> [UInt8] {
+    let (inverted, original) = polarity(channel)
+    var bytes: [UInt8] = []
+    bytes.reserveCapacity(channel.pixels.width * (depth / 8))
     for x in 0..<channel.pixels.width {
-      let value=channel.pixels.pixel(x:x,y:y).r
-      let gray:Float
-      if channel.spot==nil,channel.options.indicates != .selectedAreas{gray=value}
-      else if depth==8{gray=Float(255-Int((unit(value)*255).rounded()))/255}
-      else if depth==16{gray=Float(65535-Int((unit(value)*65535).rounded()))/65535}
-      else if let original=(channel.spot == nil ? channel.psdSelectedGray:channel.psdSpotGray)?.pixel(x:x,y:y).r,(1-original).bitPattern==value.bitPattern{gray=original}
-      else{gray=1-value}
-      try PSDChannelCodec.append(gray,depth:depth,to:&row)
-    };return row
+      let coverage = channel.pixels.pixel(x: x, y: y).r
+      let gray = sample(coverage, inverted: inverted, depth: depth, original: original?.pixel(x: x, y: y).r)
+      try PSDChannelCodec.append(gray, depth: depth, to: &bytes)
+    }
+    return bytes
   }
   /// Keep all56 Photoshop channels when an opaque image needs no merged alpha.
   /// Only the boundary case needs this bounded row preflight.

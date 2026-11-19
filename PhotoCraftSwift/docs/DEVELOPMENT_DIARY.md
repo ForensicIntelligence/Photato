@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 612 — Save large PSD and PSB channels with repeated rows
+
+The file writer and reader round-tripped a 300,000 × 300,000 RGB8 PSB with an editable fill, a saved alpha, a spot channel and Quick Mask. All 15,360 stored alpha and spot samples matched. The 15.48 GB file took 6.95 seconds to write and 16.77 seconds to reopen in one Apple Silicon Debug run.
+
+Independent executions saved the same 1,201 × 30,001 document on 611 and 612. All 7,924,054 output bytes matched. One Debug run took 38.41 seconds on 611 and 37.3 ms on 612. All 960 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-612) · [Validation](SOURCE_PUBLICATION_612.md).
+
 ## 2026-11-19 — Step 611 — Import large PSD and PSB saved channels into sparse tiles
 
 The native reader opened a synthetic 300,000 × 300,000 grayscale PSB in 4.22 seconds in one Apple Silicon Debug run. All 9,216 stored alpha samples and both editable grayscale layer samples matched the authored input. The saved alpha used 192 KiB of mapped sample storage.
@@ -889,14 +897,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:611 -->
+<!-- current-status-step:612 -->
 ## Current development status — 19 November 2026
 
-Large Raw and PackBits PSD and PSB imports retain saved alpha, spot, and Quick Mask planes as implicit gray and edited tiles.
+Sparse PSD and PSB output reuses unchanged saved alpha, spot, and Quick Mask rows and retains the exact unchanged Float32 source words.
 
-All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 960 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 611](SOURCE_PUBLICATION_611.md) · [Detailed record](DEVLOG.md#dev-step-611).
+[Source checkpoint 612](SOURCE_PUBLICATION_612.md) · [Detailed record](DEVLOG.md#dev-step-612).
 
 <!-- current-status:end -->
 
@@ -1714,6 +1722,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 609 | [Set PSD and PSB file compatibility](DEVLOG.md#dev-step-609) |
 | 2026-11-19 | 610 | [Read saved Photoshop channels without a merged preview](DEVLOG.md#dev-step-610) |
 | 2026-11-19 | 611 | [Import large PSD and PSB saved channels into sparse tiles](DEVLOG.md#dev-step-611) |
+| 2026-11-19 | 612 | [Save large PSD and PSB channels with repeated rows](DEVLOG.md#dev-step-612) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

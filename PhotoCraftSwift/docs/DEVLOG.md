@@ -630,7 +630,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 609 | 2026-11-19 | [Set PSD and PSB file compatibility](#dev-step-609) |
 | 610 | 2026-11-19 | [Read saved Photoshop channels without a merged preview](#dev-step-610) |
 | 611 | 2026-11-19 | [Import large PSD and PSB saved channels into sparse tiles](#dev-step-611) |
+| 612 | 2026-11-19 | [Save large PSD and PSB channels with repeated rows](#dev-step-612) |
 <!-- history-index:end -->
+
+<a id="dev-step-612"></a>
+
+## 2026-11-19 — Save large PSD and PSB channels with repeated rows
+
+PSD and PSB output now builds sparse saved alpha, spot, and Quick Mask rows from the implicit sample and changed tile columns. It supplies spans of identical rows to the existing output codec. The same paths serve desktop save, Photato downloads and both job interfaces. The writer keeps each span within its plane. For selected-area and spot Float32 data, it includes tiles from the editable coverage and retained original gray. That preserves original words such as negative zero and sub-rounding values where several source grays share one editable coverage. Both ordinary PSD/PSB and the Multichannel writer share the saved-channel row index. Capability discovery adds `alphaChannels.photoshopInterchange.largeSavedChannelExport`.
+
+All 27 focused imaging cases passed in Apple Silicon Debug. All 29 focused checks passed in Debug, including loopback discovery and both job routes. All 960 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Two Debug offscreen tests passed on retry after the screenshot directory was restored. The binaries and all source inputs matched the first run. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_612.md). One new test checks every sample word across four 300,000-pixel Float32 rows for both selected-area and spot channels, including an original-only tile. The other test compares file and Data serialization and reopens saved alpha, spot and Quick Mask from a 1,201 × 30,001 PSB.
+
+Independent executables linked to builds 611 and 612 exported the same 1,201 × 30,001 working document. All 7,924,054 bytes matched. One Debug measurement took 38.41 seconds in 611 and 37.3 ms in 612. The native reader and writer also round-tripped a 300,000 × 300,000 RGB8 PackBits PSB with an editable fill, a saved selection, a spot channel and Quick Mask. The file was 15.48 GB. Export took 6.95 seconds and import took 16.77 seconds in one Apple Silicon Debug run. The checker compared all 15,360 samples in the stored tiles. All disposable output files were removed. [Adobe Large Document Format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/).
+
+This is a synthetic Photato round trip. Live Photoshop exchange and dense and deep maximum-size outputs remain open.
 
 <a id="dev-step-611"></a>
 

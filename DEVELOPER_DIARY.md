@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **611** · The 10 most recent entries, newest first.
+Source build **612** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 612 — Save large PSD and PSB channels with repeated rows
+
+The file writer and reader round-tripped a 300,000 × 300,000 RGB8 PSB with an editable fill, a saved alpha, a spot channel and Quick Mask. All 15,360 stored alpha and spot samples matched. The 15.48 GB file took 6.95 seconds to write and 16.77 seconds to reopen in one Apple Silicon Debug run.
+
+Independent executions saved the same 1,201 × 30,001 document on 611 and 612. All 7,924,054 output bytes matched. One Debug run took 38.41 seconds on 611 and 37.3 ms on 612. All 960 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-612) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_612.md).
 
 ## 2026-11-19 — Step 611 — Import large PSD and PSB saved channels into sparse tiles
 
@@ -77,13 +85,3 @@ The full 300,000 × 300,000 rounded-mask control completed in 6.47 s on Apple Si
 All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-603) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md).
-
-## 2026-11-19 — Step 602 — Skip solid pieces of dense feathered vector masks
-
-At 1,000 px Feather, the interior viewport of the maximum-size document needed no scratch transfer, down from 51,595,425 source pixels. The whole 49,155 × 73 wide-Feather control transferred 18,434,046 source pixels, down from 36,890,622.
-
-Whole-mask preparation for the 300,000 × 300,000 control at 110.25 px Feather took 10.39 s on Apple Silicon and 14.14 s under Rosetta. The four checked regions matched all 42,286 coverage words against build 601 viewport output on each architecture. These measurements are single runs on the same Mac.
-
-Ten mask controls matched build 601 across all 10,873,881 Float32 coverage words per architecture. Two additional whole-canvas RGB32 layer stacks matched all 28,706,520 RGBA words per architecture. The controls cover both mask polarities, short and wide Feather through 1,000 px, Boolean holes, partial cells, and near-edge viewports on a 300,000 × 300,000 document. All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-602) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_602.md).

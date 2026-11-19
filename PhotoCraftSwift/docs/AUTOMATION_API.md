@@ -1,3 +1,7 @@
+### Sparse Photoshop saved-channel export (checkpoint 612)
+
+Desktop save, Photato `document.saveAs`, Photato PSD/PSB downloads and applicable outputs of both job interfaces use the shared row writer. Capability discovery adds `alphaChannels.photoshopInterchange.largeSavedChannelExport`. Sparse saved channels supply runs of identical default rows and rebuild changed tile columns. Float32 selected-area and spot output also uses the original gray tile grid, so unchanged source words remain exact. Existing format-specific compression, API size and job limits continue to apply. A maximum-size round trip was checked with native PSB file I/O.
+
 ### Large Photoshop saved-channel import (checkpoint 611)
 
 Photato Open, `POST /v1/documents/import`, and the Photato and Adobe-compatible resource jobs share the decoder. Channel capability discovery reports `photoshopInterchange.largeSavedChannelImport`. Large Raw and PackBits planes retain implicit numeric gray with stored tiles for changes. Selected-area and spot Float32 planes retain original gray samples alongside editable coverage. Existing transfer limits, scratch admission and endpoint contracts still apply. The 300,000 × 300,000 control was checked through the native file reader. Large live Photoshop exchange and dense ZIP controls remain open.
