@@ -68,6 +68,11 @@ final class PSDCompositeRows {
 /// For sparse layer and merged planes, rows outside stored tile bands are
 /// identical. Within a band only the stored columns can differ from the default.
 struct PSDStoredRows {
+  /// The accelerated path retains at most this many Float32 sample bytes in
+  /// the merged scratch raster. The export can stream wider coverage in bands.
+  static let retainedSampleBytes = PSDChannelCodec.byteLimit
+  static let retainedTileCount = retainedSampleBytes / (Surface.tileSide * Surface.tileSide * MemoryLayout<Pixel>.stride)
+
   enum Kind: Equatable {
     case layer, mask, merged(transparency: Bool)
   }
@@ -79,7 +84,7 @@ struct PSDStoredRows {
 
   init?(_ surface: Surface, kind: Kind) {
     guard surface.width > Surface.maximumDensePixels / surface.height,
-      surface.tileCount <= RasterGeometry.sparseGridSourceTileLimit else { return nil }
+      surface.tileCount <= Self.retainedTileCount else { return nil }
     self.surface = surface
     self.kind = kind
     let side = Surface.tileSide

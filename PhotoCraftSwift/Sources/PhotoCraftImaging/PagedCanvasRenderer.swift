@@ -28,13 +28,17 @@ enum PagedCanvasRenderer {
     guard d.layers.allSatisfy({ $0.vectorMask?.enabled != true }),
       let sources = try pointwiseSources(d, facts: facts)
     else { return nil }
-    let remaining = TileKeys(sources.keys).dropFirst(RasterGeometry.sparseGridSourceTileLimit)
-    guard remaining.first(where: { _ in true }) == nil else { return nil }
-    return try composite(d, region: .init(x: 0, y: 0, width: d.width, height: d.height))
+    for (index, _) in TileKeys(sources.keys).enumerated() {
+      try Task.checkCancellation()
+      if index == PSDStoredRows.retainedTileCount { return nil }
+    }
+    let scratch = try RasterTileStore(maximumBytes: PSDStoredRows.retainedSampleBytes)
+    return try composite(d, region: .init(x: 0, y: 0, width: d.width, height: d.height), backing: scratch)
   }
 
   static func composite(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,
-    video: VideoTransitionRenderContext? = nil, forLayerOutput: Bool = false, onPatch: ((Int) -> Void)? = nil
+    video: VideoTransitionRenderContext? = nil, forLayerOutput: Bool = false,
+    backing: RasterTileStore? = nil, onPatch: ((Int) -> Void)? = nil
   ) throws -> Surface {
     guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
@@ -83,7 +87,7 @@ enum PagedCanvasRenderer {
       let implicit = d.depth == .f32 ? sampled.linearPixel(x: x, y: y) : sampled.pixel(x: x, y: y)
       template = try template.mappedStoredSamples { _ in implicit }
     }
-    let builder=try Surface.PagedBuilder(template:template)
+    let builder=try Surface.PagedBuilder(template:template,backing:backing)
     var completedPatches=0
     func didRender() { completedPatches += 1; onPatch?(completedPatches) }
     func append(_ patch:IntRect) throws {

@@ -244,6 +244,40 @@ final class PSDCompressionOptionsTests: XCTestCase {
       }
     }
   }
+
+  func testWidePaintedRowKeepsSparseLayerAndMaskedCompositeBytes() throws {
+    let width = 65_601, height = 549
+    let paint = Pixel(0.8, 0.2, 0.4)
+    var pixels = try Surface(width: width, height: height)
+    for x in 0..<width { pixels.setPixel(x: x, y: 0, paint) }
+    pixels.setPixel(x: width - 1, y: height - 1, paint)
+    XCTAssertGreaterThan(pixels.tileCount, 1_024)
+    let layerRows = try XCTUnwrap(PSDStoredRows(pixels, kind: .layer))
+    XCTAssertEqual(try layerRows.row(0, channel: 0, depth: 8), [UInt8](repeating: 204, count: width))
+    XCTAssertEqual(layerRows.repeatedRows(from: 64), 448)
+
+    let background = try Surface(width: width, height: height, fill: Pixel(0.25, 0.6, 0.1))
+    var base = Layer(name: "Background", content: .raster(background))
+    base.background = true
+    var stroke = Layer(name: "Masked stroke", content: .raster(pixels))
+    stroke.opacity = 0.75
+    var mask = try Surface(width: width, height: height, fill: .white)
+    mask.setPixel(x: 64, y: 0, .black)
+    mask.setPixel(x: width - 1, y: height - 1, .black)
+    stroke.mask = mask
+    var document = try CraftDocument(width: width, height: height, depth: .u8)
+    document.layers = [base, stroke]
+    document.activeLayerID = stroke.id
+    let ordinary = PSDCompositeRows(document, transparency: false)
+    let retained = try XCTUnwrap(ordinary.sparseRows())
+    XCTAssertEqual(retained.repeatedRows(from: 64), 448)
+    for y in [0, 1, 64, height - 1] {
+      for channel in 0..<3 {
+        XCTAssertEqual(try retained.row(y, channel: channel, depth: 8), try ordinary.row(y, channel: channel, depth: 8),
+          "row \(y), channel \(channel)")
+      }
+    }
+  }
   func merged(_ data: Data, _ format: PSDFileFormat) throws -> Data {
     var reader = PSDReader(data:data)
     _ = try reader.bytes(26)

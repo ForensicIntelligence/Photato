@@ -1,3 +1,7 @@
+**Source checkpoint 608.** Large sparse PSD and PSB saves can stream full-width raster edits through the existing row writer. [Qualification](SOURCE_PUBLICATION_608.md).
+
+Continue Photoshop File Handling and measure Maximize PSD and PSB File Compatibility in owned files. Continue dense PSB and wide Feather validation.
+
 **Source checkpoint 607.** Large Photoshop layers sample across their height and retain sparse storage when their channels use raw or RLE. [Qualification](SOURCE_PUBLICATION_607.md).
 
 Qualify saving wide raster edits with a bounded merged scratch raster. Compare the native file and the entire independent RLE row table and payload. Continue dense PSB and wide Feather validation.

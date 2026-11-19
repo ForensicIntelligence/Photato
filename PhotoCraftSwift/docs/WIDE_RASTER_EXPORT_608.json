@@ -1,0 +1,159 @@
+{
+  "build": 608,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince607": [
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCompositeRows.swift",
+      "sha256": "ab9383bd3d67a2fb90a0fd15079258b95c55f988566362b81642d6e611dde17c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "94994c08924591727839d5f100b845fd445f3f5bd3b1fea22df430640ca7cf7d"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompressionOptionsTests.swift",
+      "sha256": "296e187e6dd99e74085b13c228f3ff5b46adaeeecfa73a3c0c6ab77ca980d644"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "19fcc6087b12810c22727d35640c369a3493b22f81ac69ef11beb765e6329052"
+    }
+  ],
+  "selectedChecksPerConfiguration": 941,
+  "focusedCompressionChecksPerConfiguration": 13,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "0e5eeab4f47765f60d774ac2f915cd2f7307a637cb196889c26675aee01fd432",
+      "testBinarySHA256": "0f6c36dfd412e46ef09c7cad40e8dec6c6573ffce497028d30629da70dea3749",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "80f6407079bd4fd4591e0bf6beb7211df79901472702d32c39f860421dc3f230",
+      "testBinarySHA256": "0f7fe7e1cc18337462d8e94ab53665602587d27a906e9aa8b1badd4b9f06ca3b",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "869b1b3fb7d72e6c48b10261437709564f761698552cc0bb1e2dbf916d768f5e",
+      "testBinarySHA256": "802faafc536d5679f8d363db089b5c58c12a5e2963c47ee8e36652b457397eb0",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "968b1b6be290272ea24475580dfccc6ac2eb83ebfecfe68f918325244078716d",
+    "binarySHA256": "d60238c1d4794044febe9c75ff722b00f280f185523dcc43b00b3192d8afe9ff",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "independentControls": {
+    "arm": {
+      "native": {
+        "bytes": 8445603504,
+        "editableBackground": true,
+        "editedPixels": 300002,
+        "everyRasterBitMatched": true,
+        "height": 300000,
+        "mappedRasterBytes": 307363840,
+        "readSeconds": 1.777733708,
+        "retainedTiles": 4690,
+        "width": 300000,
+        "writeSeconds": 9.195851667
+      },
+      "independent": {
+        "fileBytes": 8445603504,
+        "layerRowLengths": 900000,
+        "layerTableAndPayloadBytesMatched": 4222800012,
+        "mergedRowLengths": 900000,
+        "mergedTableAndPayloadBytesMatched": 4222800012,
+        "totalMatchedRLEBytes": 8445600024
+      }
+    },
+    "intel": {
+      "native": {
+        "bytes": 8445603504,
+        "editableBackground": true,
+        "editedPixels": 300002,
+        "everyRasterBitMatched": true,
+        "height": 300000,
+        "mappedRasterBytes": 307363840,
+        "readSeconds": 2.863462833,
+        "retainedTiles": 4690,
+        "width": 300000,
+        "writeSeconds": 10.401534042
+      },
+      "independent": {
+        "fileBytes": 8445603504,
+        "layerRowLengths": 900000,
+        "layerTableAndPayloadBytesMatched": 4222800012,
+        "mergedRowLengths": 900000,
+        "mergedTableAndPayloadBytesMatched": 4222800012,
+        "totalMatchedRLEBytes": 8445600024
+      }
+    }
+  },
+  "deepMaskedRasterAppleSilicon": [
+    {
+      "allRasterAndMaskBitsMatched": true,
+      "bytes": 441740328,
+      "checkedMergedValues": 787212,
+      "depth": 16,
+      "height": 549,
+      "reopenSeconds": 1.137090125,
+      "width": 65601,
+      "writeSeconds": 2.266116875
+    },
+    {
+      "allRasterAndMaskBitsMatched": true,
+      "bytes": 1021871357,
+      "checkedMergedValues": 787212,
+      "depth": 32,
+      "height": 549,
+      "reopenSeconds": 1.8307363749999999,
+      "width": 65601,
+      "writeSeconds": 4.671919416
+    }
+  ],
+  "build607SparseExportBudget": {
+    "editedPixels": 300002,
+    "fullFileWritten": false,
+    "height": 300000,
+    "layerUsesSparseRows": false,
+    "logicalTileCount": 21977344,
+    "mergedUsesSparseRows": false,
+    "tiles": 4690,
+    "width": 300000
+  },
+  "photoshopAccessibility": {
+    "installedVersion": "27.2.0",
+    "running": 1,
+    "trustedAccessibility": true,
+    "windowsStatus": -25204
+  },
+  "limits": "Dense and ZIP maximum-size files, live Photoshop cross-open, and physical Intel and macOS 14 runtime remain open."
+}

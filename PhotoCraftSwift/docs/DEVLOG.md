@@ -626,7 +626,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 605 | 2026-11-19 | [Stream repeated rows in sparse PSB files](#dev-step-605) |
 | 606 | 2026-11-19 | [Reopen sparse editable PSB raster layers](#dev-step-606) |
 | 607 | 2026-11-19 | [Choose sparse Photoshop layer samples across the canvas](#dev-step-607) |
+| 608 | 2026-11-19 | [Save full-width sparse raster edits to PSB](#dev-step-608) |
 <!-- history-index:end -->
+
+<a id="dev-step-608"></a>
+
+## 2026-11-19 — Save full-width sparse raster edits to PSB
+
+Build 607 excludes the 4,690 stored tiles from a first-row stroke and two other edits from sparse layer and merged export. The probe stops before the full-canvas writer, which would touch 21,977,344 logical tiles in the 300,000 × 300,000 document. See `artifacts/608-wide-raster-export/budget607.json`. Adobe documents a 300,000-pixel per-axis PSB limit. [Adobe file format guidance](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html).
+
+`PSDStoredRows` now admits tiles based on the retained Float32 sample footprint. It uses the existing 512 MiB PSD working budget, which covers up to 8,192 tiles. `PagedCanvasRenderer` checks the complete pointwise support against that same count and supplies a bounded scratch store to its existing compositor. Above that budget, the writer can still render bands. The change applies to the native PSD and PSB paths and the same export jobs in the Photato and Adobe-compatible APIs. Layer and merged channel serialization use the existing PackBits writer.
+
+The new `PSDCompressionOptionsTests` method exercises more than 1,024 tiles in a 65,601 × 549 document. It checks the physical layer row and compares merged rows against ordinary band rendering across a mask, opacity and a partial edge. The isolated optimized test passed on both architectures. All 13 focused compression tests passed in Debug.
+
+Both architectures wrote and reopened the 8.45 GB RGB8 Background file with the full first row painted and two additional edited pixels. Every reopened raster bit matched the authored document. Apple Silicon saved in 9.20 s and reopened in 1.78 s. Rosetta saved in 10.40 s and reopened in 2.86 s. The independent PackBits oracle matched all 1,800,000 layer and merged row lengths and 8,445,600,024 table and payload bytes per architecture. These are single runs on one Mac.
+
+Separate Apple Silicon round trips exercised editable RGB16 and RGB32 files with two layers, opacity and a mask. All authored raster and mask bits survived, including hidden HDR and signed-zero samples. In each file, 787,212 merged samples matched the existing band renderer. The owned PSB files were removed after validation. All native receipts and harnesses are in `artifacts/608-wide-raster-export`.
+
+Photoshop 2026 version 27.2.0 is running. Its direct accessibility window query returned −25204, and the maximum-width test still lacks a confirmed cross-open. All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks. The package declares macOS 14 as its minimum. [Validation](SOURCE_PUBLICATION_608.md). Dense and ZIP cases at the maximum dimensions, physical-platform coverage, and live Photoshop file verification remain open.
 
 <a id="dev-step-607"></a>
 

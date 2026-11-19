@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 608 — Save full-width sparse raster edits to PSB
+
+The 300,000 × 300,000 RGB8 PSB with paint across the first row saved in 9.20 s on Apple Silicon and 10.40 s under Rosetta. It reopened in 1.78 s and 2.86 s respectively. All authored raster bits matched.
+
+An independent encoder matched all 8,445,600,024 bytes of RLE tables and payloads on each architecture. Separate Apple Silicon RGB16 and RGB32 checks preserved both raster layers and their mask. All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](DEVLOG.md#dev-step-608) · [Validation](SOURCE_PUBLICATION_608.md).
+
 ## 2026-11-19 — Step 607 — Choose sparse Photoshop layer samples across the canvas
 
 The editable 300,000 × 300,000 RLE PSB with paint across its first row reopened in 1.72 s on Apple Silicon and 2.70 s under Rosetta. All raster bits matched. Its 4,690 retained tiles occupied about 293 MiB.
@@ -857,14 +865,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:607 -->
+<!-- current-status-step:608 -->
 ## Current development status — 19 November 2026
 
-Large Photoshop layers sample across their height and retain sparse storage when their channels use raw or RLE.
+Large sparse PSD and PSB saves can stream full-width raster edits through the existing row writer.
 
-All 940 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
+All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 607](SOURCE_PUBLICATION_607.md) · [Detailed record](DEVLOG.md#dev-step-607).
+[Source checkpoint 608](SOURCE_PUBLICATION_608.md) · [Detailed record](DEVLOG.md#dev-step-608).
 
 <!-- current-status:end -->
 
@@ -1678,6 +1686,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 605 | [Stream repeated rows in sparse PSB files](DEVLOG.md#dev-step-605) |
 | 2026-11-19 | 606 | [Reopen sparse editable PSB raster layers](DEVLOG.md#dev-step-606) |
 | 2026-11-19 | 607 | [Choose sparse Photoshop layer samples across the canvas](DEVLOG.md#dev-step-607) |
+| 2026-11-19 | 608 | [Save full-width sparse raster edits to PSB](DEVLOG.md#dev-step-608) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

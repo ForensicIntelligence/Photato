@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **607** · The 10 most recent entries, newest first.
+Source build **608** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 608 — Save full-width sparse raster edits to PSB
+
+The 300,000 × 300,000 RGB8 PSB with paint across the first row saved in 9.20 s on Apple Silicon and 10.40 s under Rosetta. It reopened in 1.78 s and 2.86 s respectively. All authored raster bits matched.
+
+An independent encoder matched all 8,445,600,024 bytes of RLE tables and payloads on each architecture. Separate Apple Silicon RGB16 and RGB32 checks preserved both raster layers and their mask. All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-608) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_608.md).
 
 ## 2026-11-19 — Step 607 — Choose sparse Photoshop layer samples across the canvas
 
@@ -81,11 +89,3 @@ The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask comple
 All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md).
-
-## 2026-11-19 — Step 598 — Render whole-canvas rectangular vector masks
-
-A 300,000 × 300,000 document with a rectangular vector mask and a sparse raster edit rendered in 197 tiles in the regression test. The tile index reuses the rendered samples across the canvas. On a 37.8 MP RGB32 control, median whole-canvas render time went from 3.912 s to 0.103 s on Apple Silicon and from 8.245 s to 0.194 s under Rosetta. Each median uses three alternating runs on the same host.
-
-All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md).
