@@ -62,14 +62,24 @@ enum RGB32NormalRenderer {
     return !opaque && value == byte / 255 ? byte * (Float(1) / 255) : value
   }
 
+  /// Photoshop rounds these products before addition on Intel. Apple Silicon
+  /// rounds the fused multiply-add once, including the alpha calculation.
+  @inline(__always) static func multiplyAdd(_ value: Float, _ factor: Float, to base: Float) -> Float {
+    #if arch(x86_64)
+    return base + value * factor
+    #else
+    return base.addingProduct(value, factor)
+    #endif
+  }
+
   static func blend(_ backdrop: Pixel, _ source: Pixel, opaque: Bool) throws -> Pixel {
     guard source.a > 0 else { return backdrop }
-    let alpha: Float = opaque ? 1 : (source.a + backdrop.a).addingProduct(-backdrop.a, source.a)
+    let alpha: Float = opaque ? 1 : multiplyAdd(-backdrop.a, source.a, to: source.a + backdrop.a)
     let ratio = opaque ? source.a : alpha > 0 ? unit(source.a / alpha) : 0
     let result = Pixel(
-      backdrop.r.addingProduct(source.r - backdrop.r, ratio),
-      backdrop.g.addingProduct(source.g - backdrop.g, ratio),
-      backdrop.b.addingProduct(source.b - backdrop.b, ratio), alpha)
+      multiplyAdd(source.r - backdrop.r, ratio, to: backdrop.r),
+      multiplyAdd(source.g - backdrop.g, ratio, to: backdrop.g),
+      multiplyAdd(source.b - backdrop.b, ratio, to: backdrop.b), alpha)
     guard result.isFinite else {
       throw CraftError.invalid("Layer composition exceeds the floating-point range.")
     }

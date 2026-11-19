@@ -136,5 +136,31 @@ final class HDRGrayConversionTests: XCTestCase {
     XCTAssertEqual(merged.activeLayerID, top.id)
     XCTAssertEqual(try gray.planes, try expected.layers[0].nativeMode?.planes)
   }
+
+  func testMaskedDisplayP3MergeAndGrayConversionMatchesPhotoshop() throws {
+    let file = try Data(contentsOf: fixtureURL("merged-p3-mask", "psd"))
+    XCTAssertEqual(sha(file), "bcd99aa0a9ac73b475b5d5b1136211de2f87c60c7c65d75794b9e2d74e9a49f7")
+    let source = try PSDCodec.read(file)
+    XCTAssertEqual(source.layers.count, 2)
+    XCTAssertTrue(source.layers.contains { $0.mask != nil })
+    let profile = try ColorSettings().conversionProfile(from: source, to: .grayscale, depth: .f32)
+    let conversion = DocumentModeConversion(mode: .grayscale, depth: .f32, profile: profile)
+    let command = try DocumentModeInput.command(.init(conversion, mergeVisible: true), in: source)
+    var result = source
+    try command.apply(to: &result)
+    XCTAssertEqual(result.layers.count, 1)
+    let gray = try XCTUnwrap(result.layers.first?.nativeMode)
+    XCTAssertTrue(gray.isOpaque)
+    var samples = Data()
+    for i in 0..<(source.width * source.height) {
+      var word = gray.rawWord(component: 0, index: i).bigEndian
+      withUnsafeBytes(of: &word) { samples.append(contentsOf: $0) }
+    }
+    #if arch(x86_64)
+    XCTAssertEqual(sha(samples), "ff339ada10ffc88d719539af1fc8884eb70e2ec6c85a448e815a8e8c0f04b113")
+    #else
+    XCTAssertEqual(sha(samples), "2d691845b9dde389f1c44a0610ae2016dae51252d673fe54d5ecd3b557fd177d")
+    #endif
+  }
 }
 

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-18 — Step 572 — Match Intel HDR Normal layer and group compositing
+
+Photoshop's Intel build rounds the multiply and add separately when compositing 32-bit Normal layers. On Apple Silicon it uses a fused operation. Photato now follows those results for color, alpha and the opacity of supported groups. The tests use separately captured Photoshop results for each architecture.
+
+The tested results match 264,192 Photoshop sample words on each architecture. That includes the masked Display P3 conversion that differed on Intel in build 571. All 705 selected tests passed in each configuration. Independent HDR clipping still differs.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md).
+
 ## 2026-11-18 — Step 571 — Fix HDR PSD and PSB compression for Photoshop
 
 Photoshop was reading plain ZIP as predicted ZIP on 32-bit layers. This could corrupt HDR colors when opening a PSD or PSB exported by Photato. New exports use the prediction expected for those layers. ZIP requests for the merged preview write raw data because Photoshop refused ZIP in that section. Photato still reads its older files.
@@ -565,14 +573,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:571 -->
+<!-- current-status-step:572 -->
 ## Current development status — 18 November 2026
 
-A ZIP request for 32-bit PSD and PSB layers now writes prediction. ZIP requests for the merged preview use raw samples so Photoshop can open the file. Photoshop testing now has readable reference files for the two earlier Display P3 cases.
+Normal HDR layers now use Photoshop's measured rounding for the current architecture. The same arithmetic applies to group opacity and grouped clipping in the native renderer. The masked Display P3 merge used before Grayscale conversion has its own Photoshop reference for each architecture.
 
-Exact grayscale conversion for 8- and 16-bit RGB, the remaining Intel HDR masked merge difference, transparent Multiply, and full color conversion parity remain open.
+Independent HDR clipping, other blends, exact grayscale conversion for 8- and 16-bit RGB, and full file and color parity remain open.
 
-[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
+[Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md) · [Current work order](../PhotoCraftSwift/docs/CURRENT_WORK_ORDER.md)
 <!-- current-status:end -->
 
 ## The brief and the decisions that shaped the project

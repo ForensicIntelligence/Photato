@@ -1,0 +1,86 @@
+{
+  "rgb32-composite": {
+    "01-opaque-samples": {
+      "fileSHA256": "60bab3608be105a649512dd2183a75d8e237efa1af760196ebea7be9b0da3d6b",
+      "mergedSHA256": "4f45bfef5b46dd3be61d01f696b22144f190e272ab053c971cc396e6d39613fd"
+    },
+    "02-alpha-samples": {
+      "fileSHA256": "f11360c679f8f7c151ebb7bcfe9ecffd109e9946567141cbe67d74fd354f3328",
+      "mergedSHA256": "ba58043a4fd7112e5478822765d904f00c5b2d528c841807b99da43a6ad72cc4"
+    },
+    "03-opaque-base": {
+      "fileSHA256": "1c691f8175f0d468b792711160c77fff7bc661562703ab565fce37b3b4388762",
+      "mergedSHA256": "b27f4d5c4cc150b5e6980f3121d911d5fef29bdc063401edc190a7faf634eef5"
+    },
+    "04-translucent-base": {
+      "fileSHA256": "fbe99c00fe790e005084952eaf2d76bcc9e4ef421a59275be02c7d87ccbd47a2",
+      "mergedSHA256": "412e682b7ac8674b166a27393f8f42cb1cca7e1bd29434961ba5dd0035acb7af"
+    },
+    "05-mask-opacity": {
+      "fileSHA256": "060448532f2571a31de0f499ed3d44ad8bfc72f29a24a120aaa7831b2de09e1a",
+      "mergedSHA256": "3e5f56f8b18669437f0547b3b308f684a0359be317088f00fdad5f1029a216ec"
+    },
+    "06-cartesian-alpha": {
+      "fileSHA256": "d7c3b14d11d790bb6fdae8e780d39080fd100c2659823a03e30217530f60813d",
+      "mergedSHA256": "27458d3887a985e9024fc05953b21edc266923eb0b5c132e80039e13c719b51b"
+    },
+    "07-random-mask": {
+      "fileSHA256": "96617ee701c96cb60db1f4af229c9eb4c99c025b0b1a30bb8677b580391e0fe8",
+      "mergedSHA256": "2952bfd8155e0253fe731f51643335d9a8ae62d11e56fedebfbb1a6dc0b6cec9"
+    },
+    "08-three-layers": {
+      "fileSHA256": "2ff5ed953612269997c5872575201a02c493722f64d221aa69fa72d0ad8e16a1",
+      "mergedSHA256": "53c17c7dd9fbccfce88f19ca7d795aa735d0423673fc6ecc1fa58cf72a8ff798"
+    },
+    "09-offset-hdr": {
+      "fileSHA256": "a05175d823cf299875383d0ba27a8ab58a081a66138e66cdf97d1ca07017f506",
+      "mergedSHA256": "f1e1de511c8c319d5d45d726f3c918bf6ea8593217e0d1b44f1ccb77a9e73296"
+    },
+    "10-opaque-base-random-mask": {
+      "fileSHA256": "f3874349ebb6543d06d1bb5ab5293b816197e08a091d2fa2e273082d05e781b7",
+      "mergedSHA256": "c981e7e04a8117b26f5348176af3f506f2c6d27f756c2dac59116160f67e82d5"
+    }
+  },
+  "rgb32-groups": {
+    "01-pass-through": {
+      "fileSHA256": "7ccb93c6c2ca01dbc181953326701e733ae702bda39b35b08c5d88000b08ed2b",
+      "mergedSHA256": "53c17c7dd9fbccfce88f19ca7d795aa735d0423673fc6ecc1fa58cf72a8ff798"
+    },
+    "02-pass-opacity": {
+      "fileSHA256": "929efc9b0c1b9fc29a93dc219ba51135c379e0b7a9b4dfa3e57070bc324e5f9e",
+      "mergedSHA256": "241a403b2cc6e3b8b1ffe28933036bd785242adce794ad6d3d47d79c833fd83b"
+    },
+    "03-isolated": {
+      "fileSHA256": "86aaed5c539b46932a4e9f3ac9eb1961eedb838361cc820e0476cac154ed40c6",
+      "mergedSHA256": "864f38fe57e4a3cabc22ee1ef056c1a276f8f13be935f338f367b5d5906e067c"
+    },
+    "04-isolated-opacity-mask": {
+      "fileSHA256": "75340b334307f252647dbf027177651cf4362c881da33d86590ffd64786ef79c",
+      "mergedSHA256": "ed6d8de931a63ec96b746dd4dab9b56fb47d239c3239762d67d7f244d006726b"
+    },
+    "05-clipping": {
+      "fileSHA256": "76fda2312f6ec00b3f020dd7ef006044560326f46647e1e39df9ea9da8f2657e",
+      "mergedSHA256": "c7ffef467322a5ff60fef6c2dc75b233beb502067c0104b077079eaed7f6cc64"
+    },
+    "07-nested-pass": {
+      "fileSHA256": "a39b59b2aa35db44a7b7d3814e1d9253f07caa43aa419ff1847c160b5b89021a",
+      "mergedSHA256": "53c17c7dd9fbccfce88f19ca7d795aa735d0423673fc6ecc1fa58cf72a8ff798"
+    },
+    "08-opaque-pass-opacity": {
+      "fileSHA256": "b6a951cbaf52badd4b00abdc5b8401534d00469fad6e446b9fe42785af86e53f",
+      "mergedSHA256": "70afeff87a7a728905df9496154bcd59adf1492d6e9d506fd8179e11251d7918"
+    },
+    "09-pass-opacity-213": {
+      "fileSHA256": "601774565bbeb96d4d7d1bb2be575bd34638893a66d9cca20bb0506f3cf339a4",
+      "mergedSHA256": "c5bb15c63050ba473b45fb8c4ed1de4bee124eb2445c1effc013198d85b9c79c"
+    },
+    "10-nested-masked": {
+      "fileSHA256": "1d8571421de197f7e3fd92139cd606b7bdf07aef1d7d876c7dfcff637806a1c8",
+      "mergedSHA256": "af8737cf85232d73d43357c8fb699c2b8f2a3c22f91f1f117739d4d1308608d5"
+    },
+    "11-isolated-first-transparent": {
+      "fileSHA256": "216659edb06254812cea9884066683782c658461225a48ff8cf564a7e09b88fa",
+      "mergedSHA256": "83f4478d46a998cd8d3e105f3154c985cf0c38759a79db0203f660052e39965f"
+    }
+  }
+}

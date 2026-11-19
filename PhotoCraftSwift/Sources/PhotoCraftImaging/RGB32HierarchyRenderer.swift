@@ -163,11 +163,12 @@ enum RGB32HierarchyRenderer {
     if amount == 1 { return after }
     let remainder = 1 - amount
     let weightedAlpha = after.a * amount
-    let alpha = weightedAlpha.addingProduct(before.a, remainder)
+    let alpha = RGB32NormalRenderer.multiplyAdd(before.a, remainder, to: weightedAlpha)
     guard alpha > 0 else { return .clear }
     let ratio = unit(weightedAlpha / alpha)
     func channel(_ b: Float, _ a: Float) -> Float {
-      opaque ? (b * remainder).addingProduct(a, amount) : b.addingProduct(a - b, ratio)
+      opaque ? RGB32NormalRenderer.multiplyAdd(a, amount, to: b * remainder)
+        : RGB32NormalRenderer.multiplyAdd(a - b, ratio, to: b)
     }
     let result = Pixel(
       channel(before.r, after.r), channel(before.g, after.g), channel(before.b, after.b), alpha)

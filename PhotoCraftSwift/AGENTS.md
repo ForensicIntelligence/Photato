@@ -1,3 +1,5 @@
+**Source checkpoint 572.** Normal HDR layers now use Photoshop's measured rounding for the current architecture. The same arithmetic applies to group opacity and grouped clipping in the native renderer. [Qualification](docs/SOURCE_PUBLICATION_572.md).
+
 **Source checkpoint 571.** A ZIP request for 32-bit PSD and PSB layers now writes prediction. ZIP requests for the merged preview use raw samples so Photoshop can open the file. [Qualification](docs/SOURCE_PUBLICATION_571.md).
 
 **Source checkpoint 570.** The Image Mode merge path preserves single-layer native samples and composites eligible RGB stacks in their working profile. Continue exact SDR RGB-to-Grayscale and HDR PSD interchange checks from the recorded measurements. [Qualification](docs/SOURCE_PUBLICATION_570.md).

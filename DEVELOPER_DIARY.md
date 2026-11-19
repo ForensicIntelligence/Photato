@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **571** · The 10 most recent entries, newest first.
+Source build **572** · The 10 most recent entries, newest first.
+
+## 2026-11-18 — Step 572 — Match Intel HDR Normal layer and group compositing
+
+Photoshop's Intel build rounds the multiply and add separately when compositing 32-bit Normal layers. On Apple Silicon it uses a fused operation. Photato now follows those results for color, alpha and the opacity of supported groups. The tests use separately captured Photoshop results for each architecture.
+
+The tested results match 264,192 Photoshop sample words on each architecture. That includes the masked Display P3 conversion that differed on Intel in build 571. All 705 selected tests passed in each configuration. Independent HDR clipping still differs.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md).
 
 ## 2026-11-18 — Step 571 — Fix HDR PSD and PSB compression for Photoshop
 
@@ -77,11 +85,3 @@ Enter Quick Mask, edit the selection with Brush or Pencil, and exit in one Actio
 All 558 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. On both architectures, 24 Quick Mask sequences and 24 older Fill Action encodings matched build 562 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-563) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_563.md).
-
-## 2026-11-18 — Step 562 — Record Brush Actions for masks and channels
-
-Brush strokes on Smart Filter masks and saved channels now play back in Actions. A stroke above a shape can still create an ordinary pixel layer.
-
-All 531 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 96 direct and prepared Brush output buffers and 12 older Action encodings matched build 561 byte for byte on each architecture. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-562) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_562.md).

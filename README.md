@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 571.** A ZIP request for 32-bit PSD and PSB layers now writes prediction. ZIP requests for the merged preview use raw samples so Photoshop can open the file. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md).
+**Development alpha — source build 572.** Normal HDR layers now use Photoshop's measured rounding for the current architecture. The same arithmetic applies to group opacity and grouped clipping in the native renderer. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md).
 
 ## Project layout
 

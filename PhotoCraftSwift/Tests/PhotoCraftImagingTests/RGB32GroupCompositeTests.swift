@@ -19,16 +19,17 @@ final class RGB32GroupCompositeTests: XCTestCase {
   }
 
   func testIndependentPhotoshopGroupsClippingAndStraightLayerPreservation() throws {
+    let comparison = RGB32CompositeTests()
     for name in names {
       let document = try PSDCodec.read(fixture(name))
       let before = try NativeArchive.encode(document)
       let golden = try fixture(name, extension: "merged")
       for compression in PSDCompression.allCases {
         let data = try PSDCodec.writeRasterLayers(document, compression: compression)
-        let merged = try RGB32CompositeTests().merged(
+        let merged = try comparison.merged(
           data, width: document.width, height: document.height)
-        XCTAssertEqual(merged.count, golden.count)
-        XCTAssertEqual(zip(merged, golden).filter { $0 != $1 }.count, 0, name)
+        try comparison.assertMatchingMerged(merged, appleSilicon: golden, fixtureGroup: "rgb32-groups",
+          name: name)
         let reopened = try PSDCodec.read(data)
         XCTAssertEqual(reopened.layers.count, document.layers.count, name)
         for (a, b) in zip(document.layers, reopened.layers) {

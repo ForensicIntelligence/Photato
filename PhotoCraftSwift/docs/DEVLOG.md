@@ -590,7 +590,29 @@ For a readable account of the project from the beginning, see [Photato developme
 | 569 | 2026-11-18 | [Match HDR grayscale conversion and ICC gamma boundaries](#dev-step-569) |
 | 570 | 2026-11-18 | [Preserve the working profile when merging before conversion](#dev-step-570) |
 | 571 | 2026-11-18 | [Fix HDR PSD and PSB compression for Photoshop](#dev-step-571) |
+| 572 | 2026-11-18 | [Match Intel HDR Normal layer and group compositing](#dev-step-572) |
 <!-- history-index:end -->
+
+<a id="dev-step-572"></a>
+
+## 2026-11-18 — Match Intel HDR Normal layer and group compositing
+
+The two recovered RGB32 Display P3 Merge Visible references at step 571 localized the Intel difference to RGB composition before Grayscale. Photoshop 27.2.0 then opened the ten original project-authored RGB32 Normal layer probes and eleven group and clipping probes on each installed architecture. It toggled the first layer or group off and on, saved an independent layered copy, and closed the temporary documents. The captures used North America General Purpose 2. The first run required two root layers and skipped two single-layer controls and one single-root group. A separate run collected all three with their original structure. The inputs and results are retained in `artifacts/572-hdr-normal-reference/photoshop01`, `artifacts/572-hdr-normal-reference/photoshop-groups01` and `artifacts/572-hdr-normal-reference/photoshop-controls02`. [Adobe's layer and group opacity documentation](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/set-layer-opacity-and-blending-modes.html).
+
+An independent arithmetic replay matched all 49,152 RGBA words in the three alpha-bearing stack controls per architecture. The Intel replay needed a separate product and addition for the source-over alpha and all color components. Apple Silicon needed a fused result. Approximating fusion with Double initially left three Apple Silicon words different. Actual Float32 fusion matched all words. Comparing partially blended groups required conformance in both the group opacity interpolation and the later layer composition. The variants that changed only color or alpha left differences, and the variant that changes both matches every captured word in the supported group cases. Captures, variant results and exact IEEE words are retained under `artifacts/572-hdr-normal-reference/blend-candidates01` and `artifacts/572-hdr-normal-reference/unmatte-inputs01`.
+
+`Sources/PhotoCraftImaging/RGB32NormalRenderer.swift` shares architecture-specific multiplication and addition across the measured RGB32 Normal raster color and alpha paths. `Sources/PhotoCraftImaging/RGB32HierarchyRenderer.swift` uses it for opacity and mask interpolation on eligible groups. Dense and regional render, supported hierarchy, grouped clipping, Save and the mode conversion reference use the native renderer. The authenticated Photato API and compatible output use the same renderer and serializers. The snapshot changes no API fields. The Gray32 PSD row writer keeps its separately measured behavior.
+
+The ten layer probes and ten supported group probes continue to compare against their original Apple Silicon data. Intel assertions read hashes independently captured from the installed Photoshop Intel slice. The new Display P3 regression opens the procedural layered PSD, merges it, and compares the 5,120 Gray32 words with the corresponding live output on each architecture. Full independent clipping behavior, non-Normal/rich/affine paths and full file identity remain open. The native build is 572 in `scripts/Info.plist`.
+
+The frozen source has 7,934 inputs. Its nine changed hashes include the independent Intel sample manifest, the masked P3 PSD, the Swift compositor edits and the test changes. All 705 selected tests passed in Debug, optimized Apple Silicon and optimized Intel under Rosetta under `artifacts/572-hdr-normal-reference/qualification01`. An independent parser compared files written by the exact compiled Swift objects from both formats in `artifacts/572-hdr-normal-reference/product-debug01` and `artifacts/572-hdr-normal-reference/product-optimized01`. All 264,192 words across the 21 verified operations matched the corresponding Photoshop references per configuration. The actual build 571 baseline in `artifacts/572-hdr-normal-reference/baseline-proof01` differed at 47,363 words on Intel across the same coverage. This count includes one container comparison for the 20 layer/group probes plus the mode conversion. The independent clipping control remains different at 8,575 Apple Silicon and 8,163 Intel words in each format. The arithmetic sweep found that the clip does not materially add alpha to the result, but the exact opacity and independent blending order remains open.
+
+The local validation package under `artifacts/572-hdr-normal-reference/universal02` was assembled from the exact compiled binaries and the frozen source. Desktop file-provider latency delayed the first archive attempt. The first scratch attempt preserved file contents but missed the execute bit on three resource-copy scripts. The successful scratch attempt restored those attributes and verified the same contents, bundled models, original app icon, both minimum-version declarations, and the extracted signature. Each extracted slice passed the offline workspace check under `artifacts/572-hdr-normal-reference/packaged-snapshot02`.
+
+During the build, the maintainer requested the removal of obsolete local builds. The cleanup preserved source, logs, mixed evidence archives, and the original icon used by validation packages. Both retained package checksums were used to gate the rotation to builds 571 and 572.
+
+[Qualification](SOURCE_PUBLICATION_572.md).
+
 
 <a id="dev-step-571"></a>
 

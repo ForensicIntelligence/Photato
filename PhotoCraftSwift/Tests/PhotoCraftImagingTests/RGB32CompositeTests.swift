@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 import PhotoCraftCore
 import XCTest
@@ -31,6 +32,21 @@ final class RGB32CompositeTests: XCTestCase {
     )
   }
 
+  func assertMatchingMerged(_ actual: Data, appleSilicon reference: Data, fixtureGroup: String,
+    name: String) throws {
+    XCTAssertEqual(actual.count, reference.count, name)
+    #if arch(x86_64)
+    struct SavedReference: Decodable { let mergedSHA256: String }
+    let intel = try JSONDecoder().decode([String: [String: SavedReference]].self,
+      from: fixture("intel-merged-references", extension: "json"))
+    let expected = try XCTUnwrap(intel[fixtureGroup]?[name], name)
+    let hash = SHA256.hash(data: actual).map { String(format: "%02x", $0) }.joined()
+    XCTAssertEqual(hash, expected.mergedSHA256, name)
+    #else
+    XCTAssertEqual(zip(actual, reference).filter { $0 != $1 }.count, 0, name)
+    #endif
+  }
+
   func testPhotoshopMergedSamplesAndStraightLayersForEveryProbe() throws {
     for name in names {
       let document = try PSDCodec.read(fixture(name))
@@ -39,8 +55,8 @@ final class RGB32CompositeTests: XCTestCase {
       for compression in PSDCompression.allCases {
         let encoded = try PSDCodec.writeRasterLayers(document, compression: compression)
         let actual = try merged(encoded, width: document.width, height: document.height)
-        XCTAssertEqual(actual.count, expected.count, name)
-        XCTAssertEqual(zip(actual, expected).filter { $0 != $1 }.count, 0, name)
+        try assertMatchingMerged(actual, appleSilicon: expected, fixtureGroup: "rgb32-composite",
+          name: name)
         let reopened = try PSDCodec.read(encoded)
         for (a, b) in zip(document.layers, reopened.layers) {
           XCTAssertEqual(a.content, b.content, name)
