@@ -18,7 +18,7 @@ extension ForegroundSelection {
   static var apiLayerStateSchema: [String: Any] {
     ["type": "object", "properties": ["hasMask": ["type": "boolean"],
       "maskEnabled": ["type": "boolean"], "maskDensity": ["type": "number", "minimum": 0, "maximum": 1],
-      "maskFeather": ["type": "number", "minimum": 0]]]
+      "maskFeather": MaskManagementAPI.schema("radius")]]
   }
   static var apiCapabilities: [String: Any] {
     ["provider": "Apple Vision VNGenerateForegroundInstanceMaskRequest", "onDevice": true,

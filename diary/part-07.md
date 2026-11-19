@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 588 — Support layer-mask Feather through 1,000 px
+
+Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. The renderer streams the wide filter. The saved 250 and 1,000 px RGB32 controls match exactly on both tested architectures, and the editable 1,000 px setting survives native, PSD and PSB round trips.
+
+All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Fractional settings and other mask geometries still need exact Photoshop comparisons.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_588.md).
+
 ## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
 
 Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. It follows the canvas and stored mask edges, including masks that extend outside the canvas. In the app tests, 34,975 coverage samples matched the 21 saved Apple Silicon references exactly. All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
@@ -693,14 +701,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:587 -->
+<!-- current-status-step:588 -->
 ## Current development status — 19 November 2026
 
-Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px.
+Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files.
 
-All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. The wider Feather range, fractional settings and some Intel rounding still need work.
+All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. Exact fractional, affine, lower-depth and expanded clipping workflows remain open.
 
-[Source checkpoint 587](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-587).
+[Source checkpoint 588](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_588.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-588).
 
 <!-- current-status:end -->
 

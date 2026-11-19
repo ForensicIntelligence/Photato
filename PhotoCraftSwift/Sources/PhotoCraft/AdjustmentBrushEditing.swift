@@ -61,7 +61,7 @@ struct AdjustmentBrushOptionsView:View {
       Toggle("Overlay",isOn:Binding(get:{store.adjustmentBrushOverlay},set:{store.adjustmentBrushOverlay=$0;store.render()}))
       Button("Invert Mask"){if let id=store.adjustmentBrushLayer?.id{store.performGeometry(.invertMask(id))}}.disabled(store.adjustmentBrushLayer==nil)
       if let layer=store.adjustmentBrushLayer {
-        number("Feather:",Binding(get:{layer.effectiveMaskProperties.feather},set:{v in store.updateMask(layer.id){$0.feather=v}}),0...100)
+        number("Feather:",Binding(get:{layer.effectiveMaskProperties.feather},set:{v in store.updateMask(layer.id){$0.feather=v}}),MaskProperties.layerFeatherRange)
         number("Density:",Binding(get:{Double(layer.effectiveMaskProperties.density)*100},set:{v in store.updateMask(layer.id){$0.density=Float(v/100)}}),0...100)
       }
       Button("Properties"){store.propertiesTab = .properties;store.reveal(PropertiesTab.properties)}

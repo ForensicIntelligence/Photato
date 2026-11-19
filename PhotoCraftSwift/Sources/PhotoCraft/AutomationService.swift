@@ -1259,7 +1259,7 @@ import UniformTypeIdentifiers
           guard !extra.isEmpty,extra.isSubset(of:["density","feather"]) else{throw AutomationFailure(status:400,message:"Mask takes density and/or feather.")}
           var mask=layer.effectiveMaskProperties
           if command.parameters["density"] != nil {mask.density=Float(try command.number("density",range:0...1))}
-          if command.parameters["feather"] != nil {mask.feather=try command.number("feather",range:0...100)}
+          if command.parameters["feather"] != nil {mask.feather=try command.number("feather",range:MaskProperties.layerFeatherRange)}
           edit = .maskProperties(target,mask)
         } else if operation=="invert" {
           guard extra.isEmpty else{throw AutomationFailure(status:400,message:"Invert takes only a target layer.")};edit = .invertMask(target)
@@ -1616,6 +1616,9 @@ import UniformTypeIdentifiers
               throw AutomationFailure(status: 409, message: "The filter editing target changed.")
             }
           }) { original in try prepare(original, request) }
+      } else if command.name == MaskManagementAPI.featherCommand {
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
+          allowAuxiliary: true) { try command.layerMaskFeatherCommand(in: $0) }
       } else if command.name == MaskManagementAPI.command {
         let request = try command.maskManagementRequest(in: store.document)
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision,

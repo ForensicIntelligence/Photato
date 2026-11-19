@@ -1,0 +1,10 @@
+{
+  "provenance": "Tester-authored PSD mask planes using synthetic grayscale values. These stored coverage results and editable mask were saved with the installed ad-hoc-signed Photoshop 27.2.0 using layer mask Feather settings and the ordinary Merge Clipping Mask command. No third-party assets.",
+  "filesSHA256": {
+    "arm-1000.psd": "f1a604199f8fbdbdd05d4984a701630fb35fd837f797aa365dad4a515b0139d4",
+    "arm-250.psd": "618b0020198bc572516b1ec95eb614e1655e56d1fd1a3035a3f9453afba219a3",
+    "editable-1000.psd": "8ff0c4a98c73a8511c27ab93a3030fa8bb54b91d93d441eeef055e678126ba86",
+    "intel-1000.psd": "e7f549ba2d441a83cc2b6098329a05c020a6fb80d67266280576f3458820f96e",
+    "intel-250.psd": "4c8d62e57cfaa36d0ee1205a96ccaaddb07439f42b66b6fc1e9478730155f877"
+  }
+}

@@ -606,7 +606,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 585 | 2026-11-19 | [Add three arithmetic clipping blend modes](#dev-step-585) |
 | 586 | 2026-11-19 | [Bound pixel-mask Feather rendering](#dev-step-586) |
 | 587 | 2026-11-19 | [Match staged RGB32 pixel-mask Feather](#dev-step-587) |
+| 588 | 2026-11-19 | [Support layer-mask Feather through 1,000 px](#dev-step-588) |
 <!-- history-index:end -->
+
+<a id="dev-step-588"></a>
+
+## 2026-11-19 — Support layer-mask Feather through 1,000 px
+
+Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. The range follows Adobe's published layer-mask property. The ordinary Layer Mask and Adjustment Brush controls keep their existing labels, keyboard commit and history behavior. Photato's `mask.feather` command uses prepared native history and the layer's existing pixel mask. Adjustment Brush editing uses the same accepted values. The API test compares native and HTTP state, rejects an above-limit edit without a mutation, and restores the original mask with Undo. [Adobe layer reference](https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/).
+
+Swift now streams the wide filter's square stages. The two widest stages replay outgoing rows, and the smaller stages retain rolling horizontal sums. The sampler reuses stored mask rows and discards incomplete tiles on cancellation. Native tests match all 1,564 stored RGB32 coverage words from 250 and 1,000 px Photoshop results, covering both reference architectures. The test data came from owned synthetic masks saved in installed Photoshop 27.2.0, whose bundle has an ad-hoc signature. A separate test opens a Photoshop document with an editable 1,000 px mask and verifies native, PSD and PSB round trips. Regional tests exercise a wide mask on a 300,000 × 300,000 RGB32 document and check fractional affine settings on lower-depth masks.
+
+The first qualification run caught two previous test expectations tied to the 100 px limit and the 272-command catalogue. Moving the out-of-range adjustment test to 1,001 px and updating the expected catalogue count to 273 repaired the checks. The expanded run passed 849 checks on each configuration. It exposed an older API schema test failure that also reproduced on build 587. Paint Bucket declares closed schemas for its Configure and Fill branches. The updated test verifies closure inside each branch, and it passed on all three configurations. The app binaries were byte-identical across the two runs.
+
+The fractional wide stage widths approximate the requested variance. Their exact Photoshop schedules, lower-depth and affine output, remaining Intel rounding, fully sparse export and destructive feathered clipping commands still need qualification. Smart Filter and vector masks retain separate development work. The existing compatible Adobe job contracts use the shared file representation. No Adobe endpoint was added for the native edit.
+
+All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Both extracted universal slices passed offscreen checks. Live field entry and physical macOS 14 and Intel execution remain open. [Validation](SOURCE_PUBLICATION_588.md).
 
 <a id="dev-step-587"></a>
 

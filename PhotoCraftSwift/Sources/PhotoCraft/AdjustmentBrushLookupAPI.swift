@@ -16,7 +16,7 @@ enum AdjustmentBrushLookupAPI {
   }
   static var stateSchema:[String:Any]{
     let nullableID:[String:Any]=["anyOf":[VariablesAPI.uuid,["type":"null"]]]
-    let mask=BrushAPI.object(["density":BrushAPI.number(0,1),"feather":BrushAPI.number(0,100),"enabled":BrushAPI.flag,"inverted":BrushAPI.flag],required:["density","feather","enabled","inverted"])
+    let mask=BrushAPI.object(["density":BrushAPI.number(0,1),"feather":MaskManagementAPI.schema("radius"),"enabled":BrushAPI.flag,"inverted":BrushAPI.flag],required:["density","feather","enabled","inverted"])
     let domain:[String:Any]=["type":"array","minItems":3,"maxItems":3,"items":BrushAPI.number(-1e100,1e100)]
     let metadata=BrushAPI.object(["title":["type":"string"],"size":BrushAPI.number(2,Double(ColorLUT.maximumSize),integer:true),"domainMin":domain,"domainMax":domain,"hasInputGrid":BrushAPI.flag,"curveLength":BrushAPI.number(0,65536,integer:true),"estimatedBytes":BrushAPI.number(0,Double(Int.max),integer:true),"sourceFile":["type":"string"]],required:["title","size","domainMin","domainMax","hasInputGrid","curveLength","estimatedBytes","sourceFile"])
     let lookup=BrushAPI.object(["kind":["const":"colorLookup"],"interpolation":BrushAPI.enumeration(ColorLUT.Interpolation.allCases.map(\.rawValue)),"dither":BrushAPI.flag,"lut":["anyOf":[["type":"null"],metadata]]],required:["kind","interpolation","dither","lut"])

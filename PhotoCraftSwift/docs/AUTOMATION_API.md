@@ -2947,6 +2947,8 @@ The Adobe v2 interface gains no invented endpoint. Its existing action/resource 
 
 ## Paged raster input and storage accounting (step279, qualified runtime subset)
 
+Build 588 expands layer-mask Feather to the documented 0–1,000 px range. `mask.feather` requires a layer UUID in `layerID` and a numeric pixel radius in `radius`. It changes a stored layer pixel mask through native history and returns the updated layer `maskFeather` in document state. `adjustmentBrush.edit` also accepts the range for `operation: mask`. The wide regional renderer uses streamed stages. Adobe-compatible resource and format limits stay in effect. [Validation](SOURCE_PUBLICATION_588.md).
+
 Build 587 adds the staged RGB32 Feather filter in the shared regional renderer for pixel layers and masks with integer translations and 3–100 px whole-pixel radii. Capability discovery remains under `documentTransfers.pagedRasterInput.pagedComposition.pixelMaskFeather`. The working range remains 0–100 px. Firefly-compatible job contracts and their existing guardrails remain in effect. [Validation](SOURCE_PUBLICATION_587.md).
 
 Build 586 computes layer pixel-mask Feather in bounded tiles in the shared regional renderer. The `documentTransfers.pagedRasterInput.pagedComposition.pixelMaskFeather` capability describes the existing 0–100 px range and the per-mask sample cache. This supports regional rendering for maximum-size RGB documents. Sparse full-canvas export and exact Photoshop kernels remain open. No new Firefly route is required for this rendering change. [Validation](SOURCE_PUBLICATION_586.md).

@@ -99,7 +99,7 @@ enum AdjustmentBrushAPI {
     case "subtract","newLayer","applyToObject","overlay":return BrushAPI.flag
     case "operation":return BrushAPI.enumeration(["new","replace","invert","mask"])
     case "density":return BrushAPI.number(0,1)
-    case "feather":return BrushAPI.number(0,100)
+    case "feather":return MaskManagementAPI.schema("radius")
     case "x","y":return BrushAPI.number(0,1_000_000)
     case "newLayerID":return ["type":"string","format":"uuid"]
     default:return BrushAPI.schema(key)

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **587** · The 10 most recent entries, newest first.
+Source build **588** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 588 — Support layer-mask Feather through 1,000 px
+
+Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. The renderer streams the wide filter. The saved 250 and 1,000 px RGB32 controls match exactly on both tested architectures, and the editable 1,000 px setting survives native, PSD and PSB round trips.
+
+All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Fractional settings and other mask geometries still need exact Photoshop comparisons.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_588.md).
 
 ## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
 
@@ -75,11 +83,3 @@ Option-Command-E now stamps into an existing raster when one eligible layer is s
 The updated raster matched saved 8-, 16- and 32-bit Photoshop references. The native menu, local API, Actions and Undo share the two operations. All 761 selected tests passed in each of the three configurations.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-579) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_579.md).
-
-## 2026-11-18 — Step 578 — Add contextual Merge Clipping Mask
-
-Selecting the base of a supported raster clipping stack now makes Command-E run Merge Clipping Mask. The command combines visible clips into the base and removes the consumed clips. Hidden clips contribute no color. The base keeps its opacity, blend mode and stored geometry, including transparent or off-canvas samples.
-
-The save-and-reopen tests compare 8-, 16- and 32-bit Photoshop reference layers. Undo, Actions and both local Adobe-compatible job routes are covered. All 757 selected checks passed on each of the three build configurations.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_578.md).

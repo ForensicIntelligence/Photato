@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 272
+  static let expectedCommandCount = 273
   static let expectedActionVersion = 73
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
@@ -412,8 +412,17 @@ final class AutomationTests: XCTestCase {
     }
     XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count, AutomationTests.expectedCommandCount)
     for definition in AutomationCommand.definitions {
-      XCTAssertTrue(JSONSerialization.isValidJSONObject(definition.schema))
-      XCTAssertEqual(definition.schema["additionalProperties"] as? Bool, false)
+      let schema = definition.schema
+      XCTAssertTrue(JSONSerialization.isValidJSONObject(schema), definition.name)
+      if schema["additionalProperties"] == nil, let branches = schema["oneOf"] as? [[String: Any]] {
+        XCTAssertFalse(branches.isEmpty, definition.name)
+        for branch in branches {
+          XCTAssertEqual(branch["type"] as? String, "object", definition.name)
+          XCTAssertEqual(branch["additionalProperties"] as? Bool, false, definition.name)
+        }
+      } else {
+        XCTAssertEqual(schema["additionalProperties"] as? Bool, false, definition.name)
+      }
     }
   }
 }

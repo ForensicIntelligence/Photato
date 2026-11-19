@@ -3,8 +3,10 @@ import PhotoCraftCore
 
 enum MaskManagementAPI {
   static let command = "mask.manage"
+  static let featherCommand = "mask.feather"
   static func schema(_ key: String) -> [String: Any] {
     switch key {
+    case "radius": BrushAPI.number(MaskProperties.layerFeatherRange.lowerBound, MaskProperties.layerFeatherRange.upperBound)
     case "layerID": ["type": "string", "format": "uuid"]
     case "target": ["type": "string", "enum": ManagedMaskTarget.allCases.map(\.rawValue), "default": "layerMask"]
     default: ["type": "string", "enum": ["apply", "delete"]]
@@ -32,6 +34,19 @@ enum MaskManagementAPI {
 }
 
 extension AutomationCommand {
+  func layerMaskFeatherCommand(in document: CraftDocument) throws -> Command {
+    let id = try actionUUID("layerID")
+    guard let layer = document.layers.first(where: { $0.id == id }) else {
+      throw AutomationFailure(status: 404, message: "Layer not found.")
+    }
+    guard layer.mask != nil else {
+      throw AutomationFailure(status: 422, message: "The layer has no pixel mask.")
+    }
+    var properties = layer.effectiveMaskProperties
+    properties.feather = try number("radius", range: MaskProperties.layerFeatherRange)
+    return .maskProperties(id, properties)
+  }
+
   func maskManagementRequest(in document: CraftDocument) throws -> MaskManagementRequest {
     let id = try actionUUID("layerID")
     guard document.layers.contains(where: { $0.id == id }) else { throw AutomationFailure(status: 404, message: "Layer not found.") }

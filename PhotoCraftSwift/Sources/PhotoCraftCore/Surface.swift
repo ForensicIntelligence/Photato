@@ -1507,6 +1507,10 @@ extension Surface {
     let rows=r.y/Self.tileSide...(r.y+r.height-1)/Self.tileSide
     return AnySequence(rows.lazy.flatMap { row in tiles.entries(in:(row*columns+firstColumn)..<(row*columns+lastColumn+1)) })
   }
+  func hasFeatherSamples(in region: IntRect) -> Bool {
+    tileCount > 0 && tilesIntersecting(region).first(where: { _ in true }) != nil
+  }
+
   /// Reads grayscale for a small in-bounds feather kernel. Missing tiles use
   /// the implicit sample. A nil block means the entire rectangle is implicit.
   func featherInput(in region: IntRect) -> [Float]? {

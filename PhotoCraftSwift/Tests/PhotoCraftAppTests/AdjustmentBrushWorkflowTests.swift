@@ -81,7 +81,7 @@ final class AdjustmentBrushWorkflowTests:XCTestCase {
       status=try await helper.edit(service,document,"adjustmentBrush.edit",["operation":"mask","density":0.6,"feather":2]);XCTAssertEqual(status,200);XCTAssertTrue(s.document==native.document)
       XCTAssertEqual((s.adjustmentBrushState["mask"] as? [String:Any])?["feather"] as? Double,2)
       let refined=s.document
-      for parameters:[String:Any] in [["operation":"mask"],["operation":"mask","density":true],["operation":"mask","feather":101],["operation":"replace","density":0.5],["operation":"invert","kind":"exposure"]] {
+      for parameters:[String:Any] in [["operation":"mask"],["operation":"mask","density":true],["operation":"mask","feather":1001],["operation":"replace","density":0.5],["operation":"invert","kind":"exposure"]] {
         status=try await helper.edit(service,document,"adjustmentBrush.edit",parameters);XCTAssertEqual(status,400);XCTAssertTrue(s.document==refined)
       }
       status=try await helper.edit(service,document,"adjustmentBrush.configure",["overlay":true,"subtract":true]);XCTAssertEqual(status,200);XCTAssertTrue(s.adjustmentBrushOverlay)

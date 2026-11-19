@@ -1,0 +1,224 @@
+{
+  "adobeLayerReference": "https://developer.adobe.com/photoshop/uxp/ps_reference/classes/layer/",
+  "archive": {
+    "archiveSHA256": "3aaf94b8dcc85cd586b864c411f99accbf8f8c5786c54466c47f1a12709e5b59",
+    "binarySHA256": "86d9844d698e260ca185561b419e7c01b0af049b351819704cb5054e24a7e367",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 9087
+  },
+  "build": 588,
+  "offscreenResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122083,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "width": 1000
+      }
+    }
+  },
+  "pending": [
+    "live text entry",
+    "fractional radius scheduling",
+    "short-radius textured output",
+    "general Intel exactness",
+    "RGB8 and RGB16",
+    "affine masks",
+    "feathered clipping commands",
+    "sparse full-canvas export",
+    "physical platforms"
+  ],
+  "photatoCommand": "mask.feather",
+  "photoshopReference": {
+    "bundledReferences": {
+      "filesSHA256": {
+        "arm-1000.psd": "f1a604199f8fbdbdd05d4984a701630fb35fd837f797aa365dad4a515b0139d4",
+        "arm-250.psd": "618b0020198bc572516b1ec95eb614e1655e56d1fd1a3035a3f9453afba219a3",
+        "editable-1000.psd": "8ff0c4a98c73a8511c27ab93a3030fa8bb54b91d93d441eeef055e678126ba86",
+        "intel-1000.psd": "e7f549ba2d441a83cc2b6098329a05c020a6fb80d67266280576f3458820f96e",
+        "intel-250.psd": "4c8d62e57cfaa36d0ee1205a96ccaaddb07439f42b66b6fc1e9478730155f877"
+      },
+      "provenance": "Tester-authored PSD mask planes using synthetic grayscale values. These stored coverage results and editable mask were saved with the installed ad-hoc-signed Photoshop 27.2.0 using layer mask Feather settings and the ordinary Merge Clipping Mask command. No third-party assets."
+    },
+    "radii": [
+      250,
+      1000
+    ],
+    "samplesPerRadiusAndReferenceArchitecture": 391,
+    "signing": "ad hoc",
+    "storedExactWords": 1564,
+    "verifiedAgainstAdobeSignedInstallation": false,
+    "version": "27.2.0"
+  },
+  "qualification": {
+    "caseSelectionSHA256": "cbcf528c9aaa626178d5f7080ef8ba8bf71799fa8047c54311a69aad836d68d6",
+    "configurations": {
+      "arm": {
+        "appSHA256": "b3b66f4408fc0b096c0994f02e0f54607979e972d0838ef6e496fe2d505a55f8",
+        "coverage": {
+          "appBinaryUnchanged": true,
+          "focusedPassed": 1,
+          "focusedRecheck": "qualification03-focused",
+          "focusedTestBinarySHA256": "a0c1bcd22caa427521f7d835afd29cd66ca2194aae05d82c12bea757a0139562",
+          "suite": "qualification02",
+          "suitePassed": 849,
+          "suiteTestBinarySHA256": "7b46eabe6096ddec3aa66dd9ac20d3987d1bedd607ccf929cbc4028e9a27eb59"
+        },
+        "testBinarySHA256": "a0c1bcd22caa427521f7d835afd29cd66ca2194aae05d82c12bea757a0139562"
+      },
+      "debug": {
+        "appSHA256": "c2de9fe34158cf6611a824c9dc6ca343237b508223e92b7640958cf329e54795",
+        "coverage": {
+          "appBinaryUnchanged": true,
+          "focusedPassed": 1,
+          "focusedRecheck": "qualification03-focused",
+          "focusedTestBinarySHA256": "5a00adad281d3a43d438cf82613f76375a250c3b7e94e6fa23d655a9f0110224",
+          "suite": "qualification02",
+          "suitePassed": 849,
+          "suiteTestBinarySHA256": "76bdad762b695b87161cd07e4538b54a1adc5a74aaf7bbd2f27d9f2730409e91"
+        },
+        "testBinarySHA256": "5a00adad281d3a43d438cf82613f76375a250c3b7e94e6fa23d655a9f0110224"
+      },
+      "intel": {
+        "appSHA256": "572c1b5fe8b132d05579cd9175e27b1c4dddbda7af7ed6bc83a7442f8f7dfed2",
+        "coverage": {
+          "appBinaryUnchanged": true,
+          "focusedPassed": 1,
+          "focusedRecheck": "qualification03-focused",
+          "focusedTestBinarySHA256": "47e84e9769887bb88d7daf1369db5164a9c516e4bbc826fc7f9e89e8de6e182b",
+          "suite": "qualification02",
+          "suitePassed": 849,
+          "suiteTestBinarySHA256": "fe62dbafeb3a8b75d5ba0cc9912489b97688654f90e7a7004c6195e5b252597b"
+        },
+        "testBinarySHA256": "47e84e9769887bb88d7daf1369db5164a9c516e4bbc826fc7f9e89e8de6e182b"
+      }
+    },
+    "selectedTestsPerConfiguration": 850
+  },
+  "rangePixels": [
+    0,
+    1000
+  ],
+  "sourceInputs": 9087,
+  "sourceInputsChangedSince587": [
+    {
+      "path": "Sources/PhotoCraft/AdjustmentBrushEditing.swift",
+      "sha256": "679b07da427690238508af1740ac67f17dab28ebb21d2d26b2ef9774565d63ba"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdjustmentBrushLookupAPI.swift",
+      "sha256": "95644acbd80bf989d8d73248916646d8b78aafc6b8d98313e9d915ad10d3ef5a"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationAdjustmentBrush.swift",
+      "sha256": "a7df6a35fc311bb38f51a828ab3773e50b957420b62baa6884762de9282e9e20"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "5c31c6c529789b0b76579cc774276d72990f6721e1fd7f093bc1a316a6079595"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationForeground.swift",
+      "sha256": "00a807366c37aa3247a854aa3cb8e2da673355927774332c3fa418b54c6b114e"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationMaskManagement.swift",
+      "sha256": "dc11712811e58aa4deb2a81e6ef105b38f9073f342b017cd2d751efc5e695267"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "cf87ea9aa7be0e02764f564b108d25a1934584ae588c8300b164f12dba42165d"
+    },
+    {
+      "path": "Sources/PhotoCraft/MaskControls.swift",
+      "sha256": "4c3d22881d93a3ca3a3e1b07855752db7855d0ddba793821d3a411e143c48aac"
+    },
+    {
+      "path": "Sources/PhotoCraft/RasterStorageAPI.swift",
+      "sha256": "15330aca1fc0faeb1b8a85b999f89d8b9b463e2fc6c9197979284926fe3f3929"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "c28b1ddde28396b78f4a76337fc5434b45040ac59d19b5017c3951795901b023"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "f3310beef12729b9db7279fcdf8ecc4066e5174613e7c251f18a7b7f0fac98e4"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMask.swift",
+      "sha256": "f3b7f27382510110a6a84fd87f70373e46e6b97413c02ca63dec2eeef771e664"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SmartFilters.swift",
+      "sha256": "fced2e1f38c0ddb54e7c8653583c4322004c7cb28637a6a13706364faf874127"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/StreamingAreaFeather.swift",
+      "sha256": "7fb2f9cdb299f59c9e6926ba11488d99225300486f80ae7911d5b2aa80782fb3"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "87127c5ba8f304116abb8cb76414a9184e9d3be7e0a0a249d442121f95042d3e"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AdjustmentBrushWorkflowTests.swift",
+      "sha256": "72119df22f7854cc77145e99a9cca014977d5b702de5e29157415be26ca139ff"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "59c1e65ce3581c99a93b8ff841e207a85adef7058ffced94eef41285587a9dec"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LargeCompositionWorkflowTests.swift",
+      "sha256": "be6f1d2cca1a163e3d867ac257e9248e23b3d73546e1e8fa730718df4b002faa"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/AreaMaskFeatherTests.swift",
+      "sha256": "40fff072422733cb90869e77b066d8794bee659e940712fedf62e62c3e9df123"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/arm-1000.psd",
+      "sha256": "f1a604199f8fbdbdd05d4984a701630fb35fd837f797aa365dad4a515b0139d4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/arm-250.psd",
+      "sha256": "618b0020198bc572516b1ec95eb614e1655e56d1fd1a3035a3f9453afba219a3"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/editable-1000.psd",
+      "sha256": "8ff0c4a98c73a8511c27ab93a3030fa8bb54b91d93d441eeef055e678126ba86"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/intel-1000.psd",
+      "sha256": "e7f549ba2d441a83cc2b6098329a05c020a6fb80d67266280576f3458820f96e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/intel-250.psd",
+      "sha256": "4c8d62e57cfaa36d0ee1205a96ccaaddb07439f42b66b6fc1e9478730155f877"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/Fixtures/wide-pixel-mask-feather/references.json",
+      "sha256": "0a870dfea6af7c85db3ab6629cb035f247c23644beb0ce35a5dd5ae1a3e051cd"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "417e1b812ac8bad8eaf00bf2693a149ee99e44899f48a5105aeeb7b9d03bfbcf"
+    }
+  ]
+}

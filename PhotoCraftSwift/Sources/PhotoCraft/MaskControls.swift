@@ -69,10 +69,12 @@ struct MaskControls: View {
     }
   }
   private func commitFeather() {
-    if let value = Double(feather), value.isFinite, (0...100).contains(value) {
+    let range = store.smartFilterMaskEditing && store.maskEditingLayerID == layer.id
+      ? MaskProperties.filterFeatherRange : MaskProperties.layerFeatherRange
+    if let value = Double(feather), range.contains(value) {
       store.updateMask(layer.id) { $0.feather = value }
     } else {
-      store.error = "Mask feather currently supports 0–100 pixels."
+      store.error = "Enter a Feather value between 0 and \(Int(range.upperBound)) pixels."
       sync()
     }
   }

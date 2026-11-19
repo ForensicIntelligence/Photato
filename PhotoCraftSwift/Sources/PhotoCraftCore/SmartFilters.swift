@@ -33,7 +33,7 @@ public struct SmartFilterStack: Codable, Equatable, Sendable {
         throw CraftError.invalid("Smart Filter opacity must be between0 and1.")
       }
     }
-    try mask?.validated(); try maskProperties.validate()
+    try mask?.validated(); try maskProperties.validate(featherRange: MaskProperties.filterFeatherRange)
   }
   public mutating func createMask(in document: CraftDocument, selection: Bool = false, value: Float = 1) throws {
     guard value.isFinite, (0...1).contains(value) else { throw CraftError.invalid("Invalid filter mask value.") }

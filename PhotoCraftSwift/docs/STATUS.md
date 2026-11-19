@@ -1,3 +1,5 @@
+**Source checkpoint 588.** Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. [Qualification](SOURCE_PUBLICATION_588.md).
+
 **Source checkpoint 587.** Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. [Qualification](SOURCE_PUBLICATION_587.md).
 
 **Source checkpoint 586.** Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. [Qualification](SOURCE_PUBLICATION_586.md).

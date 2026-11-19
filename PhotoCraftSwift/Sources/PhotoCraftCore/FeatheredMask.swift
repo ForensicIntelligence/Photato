@@ -84,8 +84,8 @@ final class FeatheredMask: Sendable {
     return cache.withLock { entries in
       if entries[slot]?.x != column || entries[slot]?.y != row {
         let originX = column * side, originY = row * side
-        let values = prepare(x: originX - padding, y: originY - padding,
-          width: min(side, width - originX), height: min(side, height - originY))
+        guard let values = prepare(x: originX - padding, y: originY - padding,
+          width: min(side, width - originX), height: min(side, height - originY)) else { return outside }
         entries[slot] = Entry(x: column, y: row, values: values)
       }
       return entries[slot]!.values.value(atX: x % side, y: y % side)
@@ -101,9 +101,11 @@ final class FeatheredMask: Sendable {
     abs(value - outside) > 0.000001 ? unit(value) : outside
   }
 
-  private func prepare(x: Int, y: Int, width: Int, height: Int) -> Values {
+  private func prepare(x: Int, y: Int, width: Int, height: Int) -> Values? {
     if let area {
-      let result = area.prepare(source: source, outside: outside, x: x, y: y, width: width, height: height)
+      guard !Task.isCancelled,
+        let result = area.prepare(source: source, outside: outside, x: x, y: y, width: width, height: height)
+      else { return nil }
       if let samples = result.samples { return .samples(samples, width: width) }
       return .uniform(result.uniform)
     }

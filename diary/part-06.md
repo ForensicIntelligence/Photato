@@ -615,6 +615,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 585 | [Add three arithmetic clipping blend modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) |
 | 2026-11-19 | 586 | [Bound pixel-mask Feather rendering](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) |
 | 2026-11-19 | 587 | [Match staged RGB32 pixel-mask Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) |
+| 2026-11-19 | 588 | [Support layer-mask Feather through 1,000 px](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

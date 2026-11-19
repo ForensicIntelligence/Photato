@@ -60,8 +60,46 @@ final class LargeCompositionWorkflowTests:XCTestCase {
       XCTAssertEqual(capabilities["maximumPatchPixels"]as?Int,131_072)
       XCTAssertEqual(capabilities["maximumDerivedMaskCacheBytes"]as?Int,512*1024*1024)
       let mask = try XCTUnwrap(capabilities["pixelMaskFeather"] as? [String: Any])
-      XCTAssertEqual(mask["maximumRadiusPixels"] as? Int, 100)
+      XCTAssertEqual(mask["maximumRadiusPixels"] as? Int, 1000)
       XCTAssertEqual(mask["maximumRetainedSampleBytesPerMask"] as? Int, 1_048_576)
     }
   }
+  @MainActor func testLayerMaskFeatherHTTPAndDesktopShareTheWideRangeAndUndo() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      var original = try CraftDocument(width: 9, height: 7)
+      var layer = Layer(name: "Editable mask", content: .raster(try Surface(width: 9, height: 7, fill: .white)))
+      layer.mask = try Surface(width: 9, height: 7, fill: .white)
+      var p = MaskProperties()
+      p.outside = 1
+      p.density = 0.64
+      layer.maskProperties = p
+      original.layers.append(layer)
+      original.activeLayerID = layer.id
+      let native = EditorStore(document: original)
+      defer { native.renderTask?.cancel() }
+      native.updateMask(layer.id) { $0.feather = 975.25 }
+      XCTAssertNil(native.error)
+      XCTAssertEqual(native.document.layers.last?.effectiveMaskProperties.feather, 975.25)
+      document.store.session = EditorSession(document: original)
+      try service.share(document)
+      let response = try await helper.edit(service, document, "mask.feather",
+        ["layerID": layer.id.uuidString, "radius": 975.25])
+      XCTAssertEqual(response, 200)
+      XCTAssertEqual(document.store.document, native.document)
+      let rejected = try await helper.edit(service, document, "mask.feather",
+        ["layerID": layer.id.uuidString, "radius": 1000.1])
+      XCTAssertEqual(rejected, 400)
+      XCTAssertEqual(document.store.document, native.document)
+      let undo = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(document.store.document, original)
+      let missing = try await helper.edit(service, document, "mask.feather",
+        ["layerID": original.layers[0].id.uuidString, "radius": 500])
+      XCTAssertEqual(missing, 422)
+      let schema = MaskManagementAPI.schema("radius")
+      XCTAssertEqual(schema["maximum"] as? Double, 1000)
+    }
+  }
+
 }

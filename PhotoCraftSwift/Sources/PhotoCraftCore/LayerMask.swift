@@ -3,6 +3,9 @@ import Foundation
 /// Coordinates map the stored mask rectangle into the layer's local coordinate system.
 /// The outside value is independent of the surface's in-bounds default pixel.
 public struct MaskProperties: Codable, Equatable, Sendable {
+  public static let layerFeatherRange: ClosedRange<Double> = 0...1000
+  public static let filterFeatherRange: ClosedRange<Double> = 0...100
+
   public var transform = Transform2D.identity
   public var outside: Float = 0
   public var enabled = true
@@ -11,12 +14,14 @@ public struct MaskProperties: Codable, Equatable, Sendable {
   public var density: Float = 1
   public var feather: Double = 0
   public init() {}
-  public func validate() throws {
+  public func validate() throws { try validate(featherRange: Self.layerFeatherRange) }
+
+  func validate(featherRange: ClosedRange<Double>) throws {
     try transform.validated()
     guard outside.isFinite, (0...1).contains(outside), density.isFinite, (0...1).contains(density),
-      feather.isFinite, (0...100).contains(feather)
+      feather.isFinite, featherRange.contains(feather)
     else {
-      throw CraftError.invalid("Invalid mask properties; feather currently supports 0–100 pixels.")
+      throw CraftError.invalid("Invalid mask properties. Feather must be between 0 and \(Int(featherRange.upperBound)) pixels.")
     }
   }
 }
@@ -47,7 +52,7 @@ public struct MaskSampler: Sendable {
   ) throws {
     guard let source = layer.mask else { throw CraftError.invalid("Layer has no mask.") }
     properties = layer.effectiveMaskProperties
-    try properties.validate()
+    try properties.validate(featherRange: usesLayerFeather ? MaskProperties.layerFeatherRange : MaskProperties.filterFeatherRange)
     mask = source
     var matrix = layer.maskCoordinateTransform
     if feather && properties.enabled && properties.feather > 0 {
@@ -79,9 +84,8 @@ public struct MaskSampler: Sendable {
       }
       try Task.checkCancellation()
       let radius = properties.feather
-      let area = usesLayerFeather ? canvasSize.flatMap {
-        AreaMaskFeather(layer: layer, source: source, radius: radius, canvas: $0)
-      } : nil
+      let area = usesLayerFeather
+        ? AreaMaskFeather(layer: layer, source: source, radius: radius, canvas: canvasSize) : nil
       let result = FeatheredMask(source: source, radius: properties.feather,
         outside: properties.outside, edges: edges, area: area)
       feathered = result
