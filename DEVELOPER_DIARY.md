@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **585** · The 10 most recent entries, newest first.
+Source build **586** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
+
+Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. Existing Feather output is preserved across the tested depths and transforms. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+Separate Photoshop tests reproduced the saved 100, 250 and 1,000 px line samples. The two-dimensional Intel results still need investigation before widening the control.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md).
 
 ## 2026-11-19 — Step 585 — Add three arithmetic clipping blend modes
 
@@ -75,11 +83,3 @@ Normal 32-bit layer output now uses stored pixel masks. The comparison covers sa
 All 752 selected tests passed in Debug and in both optimized configurations. Both slices of the extracted local validation archive passed their offscreen checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md).
-
-## 2026-11-18 — Step 576 — Match stored RGB32 Normal merge and stamp samples
-
-Merging and stamping 32-bit Normal layers now matches the saved Photoshop samples in the tested raster stacks. These tests cover very low alpha, transparent pixels, partial layer opacity and an opaque Background. A fresh Intel capture also confirmed that its saved alpha differs from Apple Silicon on one older fixture.
-
-The new tests compare the stored layer before and after reopening a PSD. All 750 selected tests passed in each of the three build configurations. Both slices in the local universal archive passed their offscreen checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-576) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md).

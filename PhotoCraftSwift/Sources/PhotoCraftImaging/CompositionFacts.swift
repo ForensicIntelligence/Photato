@@ -43,15 +43,15 @@ final class CompositionFacts {
     var total=0
     func tiled(_ w:Int,_ h:Int)->Int {((w+63)/64)*((h+63)/64)*64*64*16}
     let properties=layer.effectiveMaskProperties
-    if let mask=layer.mask,properties.enabled,properties.feather>0 {
-      let pad=2*Int(ceil(3*max(0.05,properties.feather)))
-      total += tiled(mask.width+pad,mask.height+pad)
+    if layer.mask != nil,properties.enabled,properties.feather>0 {
+      total += MaskSampler.maximumFeatherCacheBytes
     }
     if let vector=layer.vectorMask,vector.enabled {
       if let source=sampler?.vectorTileSource {total += source.allocatedBytes}
       else if document.width<=Surface.maximumDensePixels/document.height {
         let pad=2*Int(ceil(vector.feather*3))
-        total += 2*tiled(document.width+2*pad,document.height+2*pad)
+        total += tiled(document.width+pad,document.height+pad)
+        if vector.feather > 0 {total += MaskSampler.maximumFeatherCacheBytes}
       }
     }
     return total

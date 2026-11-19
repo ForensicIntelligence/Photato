@@ -218,6 +218,39 @@ final class RegionalRenderTests: XCTestCase {
     }
   }
 
+  func testMaximumFeatheredPixelMaskRendersThroughBothRegionalPaths() throws {
+    for depth in PixelDepth.allCases {
+      let extent = Surface.maxDimension
+      var document = try CraftDocument(width: extent, height: extent, depth: depth)
+      var layer = Layer(name: "Sparse feather", content: .raster(
+        try Surface(width: extent, height: extent, depth: depth, fill: .black)))
+      var mask = try Surface(width: extent, height: extent, depth: depth, fill: .black)
+      for y in 149_995..<150_004 {
+        for x in 149_995..<150_004 { mask.setPixel(x: x, y: y, .white) }
+      }
+      layer.mask = mask
+      var properties = MaskProperties()
+      properties.feather = 3.75
+      layer.maskProperties = properties
+      document.layers.append(layer)
+      let region = IntRect(x: 149_986, y: 149_986, width: 31, height: 31)
+      let direct = try Renderer.composite(document, region: region)
+      var visited = 0
+      let paged = try PagedCanvasRenderer.composite(document, region: region) { visited = $0 }
+      XCTAssertGreaterThan(visited, 0)
+      XCTAssertLessThanOrEqual(paged.tileCount, 4)
+      XCTAssertLessThan(direct.pixel(x: 149_999, y: 149_999).r,
+        direct.pixel(x: 149_986, y: 149_986).r)
+      for y in region.y..<(region.y + region.height) {
+        for x in region.x..<(region.x + region.width) {
+          XCTAssertTrue(paged.pixel(x: x, y: y).hasSameBits(as: direct.pixel(x: x, y: y)))
+        }
+      }
+      XCTAssertEqual(paged.pixel(x: 1, y: 1), .clear)
+      XCTAssertEqual(document.layers.last?.mask?.tileCount, 1)
+    }
+  }
+
   func testEveryCurrentAdjustmentPropagatesLocalDamage() throws {
     let adjustments: [Adjustment] = [
       .levels(.init()), .curves(.init()), .hueSaturation(.init()), .colorBalance(.init()),

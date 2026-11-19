@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
+
+Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. Existing Feather output is preserved across the tested depths and transforms. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
+
+Separate Photoshop tests reproduced the saved 100, 250 and 1,000 px line samples. The two-dimensional Intel results still need investigation before widening the control.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md).
+
 ## 2026-11-19 — Step 585 — Add three arithmetic clipping blend modes
 
 Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The HDR checks include masked clips, mixed opacity and translated Divide layers.
@@ -677,14 +685,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:585 -->
+<!-- current-status-step:586 -->
 ## Current development status — 19 November 2026
 
-Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
+Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask.
 
-All 787 selected tests passed in three configurations, and both signed universal slices passed offscreen checks. Feather and other rich clipping operations remain open.
+All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. Both signed universal slices passed offscreen checks. The wider Feather setting and exact Photoshop results for general masks remain open.
 
-[Source checkpoint 585](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_585.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-585).
+[Source checkpoint 586](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-586).
 
 <!-- current-status:end -->
 

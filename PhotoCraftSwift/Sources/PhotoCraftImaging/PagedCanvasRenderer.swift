@@ -22,13 +22,6 @@ enum PagedCanvasRenderer {
         // before composition. Canvas area alone is not a Warp source limit.
         if layer.smartFilters != nil {_ = try SmartFilterEngine.renderBounds(layer,in:d)}
       }
-      if let mask=layer.mask,layer.effectiveMaskProperties.enabled,layer.effectiveMaskProperties.feather>0 {
-        let pad=2*Int(ceil(3*max(0.05,layer.effectiveMaskProperties.feather)))
-        guard mask.width+pad<=Surface.maxDimension,mask.height+pad<=Surface.maxDimension,
-          mask.width+pad<=Surface.maximumDensePixels/(mask.height+pad) else {
-          throw CraftError.unsupported("This feathered pixel mask still needs bounded kernel preparation.")
-        }
-      }
     }
   }
 

@@ -319,6 +319,11 @@
     "scope": "Prepared Normal RGB32 merge and stamp output uses eligible stored raster pixel masks. The existing merge and duplicate descriptors share the implementation.",
     "limits": "Independent desktop reference samples cover supported masks. Vector masks, live mask-property effects, rich stacks, and hosted parity remain open."
   },
+  "bounded_pixel_mask_feather_build586": {
+    "evidence": "docs/BOUNDED_MASK_FEATHER_586.json",
+    "scope": "Shared regional Feather renderer for layer pixel masks in RGB8, RGB16 and RGB32.",
+    "limits": "The 100 px setting limit and the local Adobe-compatible job contracts and budgets remain in effect. Exact Photoshop kernel parity and feathered clipping merge descriptors remain open."
+  },
   "clipped_arithmetic_build585": {
     "evidence": "docs/CLIPPED_ARITHMETIC_REFERENCES_585.json",
     "scope": "Linear Dodge (Add), Subtract and Divide on supported RGB8, RGB16 and RGB32 raster clips.",

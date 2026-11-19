@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 586.** Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. [Qualification](docs/SOURCE_PUBLICATION_586.md).
+
 **Source checkpoint 585.** Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Qualification](docs/SOURCE_PUBLICATION_585.md).
 
 **Source checkpoint 584.** Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. [Qualification](docs/SOURCE_PUBLICATION_584.md).

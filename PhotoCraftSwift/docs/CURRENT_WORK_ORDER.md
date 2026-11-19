@@ -1,3 +1,7 @@
+**Source checkpoint 586.** Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. [Qualification](SOURCE_PUBLICATION_586.md).
+
+Qualify the exact Feather kernel on non-uniform and transformed masks. The per-stage normalized box model matches all saved line samples at 100, 250 and 1,000 px and seven Apple Silicon impulse planes. Intel impulse output differs by up to two Float32 ULPs. Measure fractional schedules and broaden reference coverage. Implement bounded wider-radius rendering, then enable the new range and feathered clipping operations after desktop, API and persistence checks. Sparse full-canvas composition and large Smart Filter and vector masks retain separate work.
+
 **Source checkpoint 585.** Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. [Qualification](SOURCE_PUBLICATION_585.md).
 
 Continue pixel-mask Feather and the remaining clipped blend modes. Measure the filter scheduling and edge rules against owned impulses and non-uniform masks. Owned Photoshop masks save, reopen and render at 1,000 pixels on both tested architectures. Photato currently caps the property at 100 pixels and needs bounded mask rendering for the wider range.

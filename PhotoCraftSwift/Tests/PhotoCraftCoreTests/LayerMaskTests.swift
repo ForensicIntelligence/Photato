@@ -120,6 +120,107 @@ final class LayerMaskTests: XCTestCase {
       }
     }
   }
+  func testFeatherTilesMatchDenseOperationsAtFractionalCoordinatesAndEdges() throws {
+    for depth in PixelDepth.allCases {
+      for clamped in [false, true] {
+        var mask = try Surface(width: 65, height: 67, depth: depth, fill: Pixel(0.27, 0, 0))
+        for y in stride(from: 0, to: mask.height, by: 6) {
+          for x in stride(from: 0, to: mask.width, by: 7) {
+            mask.setPixel(x: x, y: y, Pixel(Float((x + y * 7) % 30) / 29, 0, 0, 0.4))
+          }
+        }
+        if depth == .f32 { mask = try mask.spillingTiles(to: RasterTileStore()) }
+        var layer = Layer(name: "Variable mask", content: .fill(.white))
+        layer.mask = mask
+        var props = MaskProperties()
+        props.feather = 2.3
+        props.outside = 0.63
+        props.inverted = true
+        props.density = 0.78
+        if !clamped { props.transform = .translation(10.25, -3.625) * .rotation(11) * .scale(0.8, 1.5) }
+        layer.maskProperties = props
+        let baseline = try denseFeather(mask, radius: props.feather, outside: props.outside, clamped: clamped)
+        let inverse = try (layer.maskCoordinateTransform * .translation(
+          -Double(baseline.padding), -Double(baseline.padding))).inverted()
+        let sampler = try MaskSampler(layer: layer, canvasSize: (mask.width, mask.height))
+        for row in stride(from: -20, through: 124, by: 3) {
+          for column in stride(from: -16, through: 84, by: 2) {
+            for offset in [0.5, 0.8125] {
+              let x = Double(column) + offset, y = Double(row) + offset
+              let point = inverse.point(x, y)
+              let raw = MaskSampler.sample(baseline.surface, x: point.x, y: point.y, outside: props.outside)
+              let expected: Float = 1 - props.density * (1 - (1 - raw))
+              XCTAssertEqual(sampler.coverage(x: x, y: y).bitPattern, expected.bitPattern,
+                "\(depth), clamped: \(clamped), x: \(x), y: \(y)")
+            }
+          }
+        }
+      }
+    }
+  }
+
+  func testMaximumMaskUsesBoundedFeatherAtOneHundredPixels() throws {
+    let side = Surface.maxDimension
+    var mask = try Surface(width: side, height: side, depth: .f32, fill: .black)
+    mask.setPixel(x: side - 1, y: side - 1, .white)
+    var props = MaskProperties()
+    props.feather = 100
+    var layer = Layer(name: "One bright corner", content: .fill(.white))
+    layer.mask = mask
+    layer.maskProperties = props
+    let sampler = try MaskSampler(layer: layer, canvasSize: (side, side))
+    XCTAssertEqual(sampler.coverage(x: 0.5, y: 0.5), 0)
+    XCTAssertEqual(sampler.coverage(x: 150_000.5, y: 150_000.5), 0)
+    // At the lower-right pixel center, each pass retains the full replicated half-kernel.
+    let kernel = (-300...300).map { Float(exp(-Double($0 * $0) / 20_000)) }
+    let normalizer = kernel.reduce(Float(0), +)
+    let half = kernel[300...].map { $0 / normalizer }
+    let horizontal = half.reduce(Float(0), +)
+    let expected = half.reduce(Float(0)) { $0 + horizontal * $1 }
+    XCTAssertEqual(sampler.coverage(x: Double(side) - 0.5, y: Double(side) - 0.5).bitPattern,
+      expected.bitPattern)
+    XCTAssertEqual(mask.tileCount, 1)
+  }
+
+  private func denseFeather(_ source: Surface, radius: Double, outside: Float, clamped: Bool) throws
+    -> (surface: Surface, padding: Int) {
+    // Retained dense algorithm from before tiling, used only on small fixtures.
+    let pad = Int(ceil(3 * radius)), w = source.width + 2 * pad, h = source.height + 2 * pad
+    let raw = (-pad...pad).map { Float(exp(-Double($0 * $0) / (2 * radius * radius))) }
+    let sum = raw.reduce(Float(0), +), weights = raw.map { $0 / sum }
+    var horizontal = [Float](repeating: outside, count: w * h)
+    for y in 0..<source.height {
+      for x in 0..<w {
+        var sample: Float = 0
+        for k in -pad...pad {
+          let sx = clamped ? min(source.width - 1, max(0, x - pad + k)) : x - pad + k
+          let value = sx < 0 || sx >= source.width ? outside : unit(source.pixel(x: sx, y: y).r)
+          sample += value * weights[k + pad]
+        }
+        horizontal[(y + pad) * w + x] = sample
+      }
+    }
+    if clamped {
+      for y in 0..<h where y < pad || y >= pad + source.height {
+        let nearest = min(pad + source.height - 1, max(pad, y))
+        for x in 0..<w { horizontal[y * w + x] = horizontal[nearest * w + x] }
+      }
+    }
+    var output = try Surface(width: w, height: h, depth: .f32, fill: Pixel(outside, outside, outside))
+    for y in 0..<h {
+      for x in 0..<w {
+        var value: Float = 0
+        for k in -pad...pad {
+          let sy = y + k
+          let sample = sy < 0 || sy >= h ? outside : horizontal[sy * w + x]
+          value += sample * weights[k + pad]
+        }
+        if abs(value - outside) > 0.000001 { output.setPixel(x: x, y: y, Pixel(value, value, value)) }
+      }
+    }
+    return (output, pad)
+  }
+
   func testLinkedAndUnlinkedMovesAndCanvasRotation() throws {
     var d = try CraftDocument(width: 30, height: 20)
     let l = try layer()

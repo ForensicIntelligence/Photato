@@ -1507,6 +1507,34 @@ extension Surface {
     let rows=r.y/Self.tileSide...(r.y+r.height-1)/Self.tileSide
     return AnySequence(rows.lazy.flatMap { row in tiles.entries(in:(row*columns+firstColumn)..<(row*columns+lastColumn+1)) })
   }
+  /// Reads grayscale for a small in-bounds feather kernel. Missing tiles use
+  /// the implicit sample. A nil block means the entire rectangle is implicit.
+  func featherInput(in region: IntRect) -> [Float]? {
+    guard tileCount > 0 else { return nil }
+    let side = Self.tileSide
+    var samples: [Float]?
+    let linear = colorEncoding == .linearRGB
+    for (key, tile) in tilesIntersecting(region) {
+      if samples == nil {
+        samples = [Float](repeating: unit(defaultPixel.r), count: region.width * region.height)
+      }
+      let left = key % columns * side, top = key / columns * side
+      let x0 = max(left, region.x), y0 = max(top, region.y)
+      let x1 = min(left + side, region.x + region.width)
+      let y1 = min(top + side, region.y + region.height)
+      tile.withUnsafeBufferPointer { pixels in
+        for y in y0..<y1 {
+          let row = (y - top) * side
+          let output = (y - region.y) * region.width
+          for x in x0..<x1 {
+            let value = pixels[row + x - left].r
+            samples![output + x - region.x] = unit(linear ? SRGBTransfer.encoded(value) : value)
+          }
+        }
+      }
+    }
+    return samples
+  }
   /// One-pass, row-major bounded patch import. No complete heap descriptor map is built.
   public final class PagedBuilder {
     private let template:Surface

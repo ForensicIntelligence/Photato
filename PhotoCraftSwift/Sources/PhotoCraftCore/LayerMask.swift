@@ -38,6 +38,7 @@ extension Layer {
 /// Prepared once per rendered layer. Samples grayscale coverage, never mask alpha.
 public struct MaskSampler: Sendable {
   private let mask: Surface
+  private let feathered: FeatheredMask?
   private let inverse: Transform2D
   private let properties: MaskProperties
   public init(
@@ -46,9 +47,10 @@ public struct MaskSampler: Sendable {
     guard let source = layer.mask else { throw CraftError.invalid("Layer has no mask.") }
     properties = layer.effectiveMaskProperties
     try properties.validate()
+    mask = source
     var matrix = layer.maskCoordinateTransform
     if feather && properties.enabled && properties.feather > 0 {
-      var edges = ClampedEdges()
+      var edges = FeatheredMask.ClampedEdges()
       if let canvasSize,
         matrix.a == 1, matrix.b == 0, matrix.c == 0, matrix.d == 1
       {
@@ -74,19 +76,26 @@ public struct MaskSampler: Sendable {
           }
         }
       }
-      let result = try Self.blur(
-        source, radius: properties.feather, outside: properties.outside, clampedEdges: edges)
-      mask = result.surface
+      try Task.checkCancellation()
+      let result = FeatheredMask(
+        source: source, radius: properties.feather, outside: properties.outside, edges: edges)
+      feathered = result
       matrix = matrix * .translation(-Double(result.padding), -Double(result.padding))
     } else {
-      mask = source
+      feathered = nil
     }
     inverse = try matrix.inverted()
   }
   @inline(__always) public func coverage(x: Double, y: Double) -> Float {
     if !properties.enabled { return 1 }
     let p = inverse.point(x, y)
-    var v = Self.sample(mask, x: p.x, y: p.y, outside: properties.outside)
+    var v: Float
+    if let feathered {
+      v = Self.sample(width: feathered.width, height: feathered.height,
+        x: p.x, y: p.y, outside: properties.outside, value: feathered.value)
+    } else {
+      v = Self.sample(mask, x: p.x, y: p.y, outside: properties.outside)
+    }
     if properties.inverted { v = 1 - v }
     // Full density is an identity operation. Subtracting twice from white
     // changes Float32 mask samples and therefore the resulting RGB32 composite.
@@ -98,8 +107,9 @@ public struct MaskSampler: Sendable {
   /// their samples by one Float ULP, so folding them would change stored pixels.
   public func isIdentity(over region: IntRect) -> Bool {
     if !properties.enabled || properties.density == 0 { return true }
-    guard mask.tileCount == 0 else { return false }
     let value: Float = properties.inverted ? 0 : 1
+    guard mask.tileCount == 0 else { return false }
+    if let feathered { return feathered.isConstantOutside && properties.outside == value }
     guard mask.defaultPixel.r == value else { return false }
     if properties.outside == value { return true }
     guard region.width > 0, region.height > 0 else { return true }
@@ -118,89 +128,33 @@ public struct MaskSampler: Sendable {
     }
   }
   public static func sample(_ surface: Surface, x: Double, y: Double, outside: Float) -> Float {
+    sample(width: surface.width, height: surface.height, x: x, y: y, outside: outside) {
+      unit(surface.pixel(x: $0, y: $1).r)
+    }
+  }
+
+  @inline(__always) private static func sample(
+    width: Int, height: Int, x: Double, y: Double, outside: Float, value: (Int, Int) -> Float
+  ) -> Float {
     guard x.isFinite, y.isFinite else { return outside }
     let px = x - 0.5
     let py = y - 0.5
-    guard px >= -1, py >= -1, px <= Double(surface.width), py <= Double(surface.height) else {
-      return outside
-    }
+    guard px >= -1, py >= -1, px <= Double(width), py <= Double(height) else { return outside }
     let ix = Int(floor(px))
     let iy = Int(floor(py))
     let fx = Float(px - floor(px))
     let fy = Float(py - floor(py))
-    func value(_ x: Int, _ y: Int) -> Float {
-      if x < 0 || y < 0 || x >= surface.width || y >= surface.height { return outside }
-      return unit(surface.pixel(x: x, y: y).r)
+    func sampleAt(_ x: Int, _ y: Int) -> Float {
+      if x < 0 || y < 0 || x >= width || y >= height { return outside }
+      return value(x, y)
     }
-    let a = value(ix, iy) * (1 - fx) + value(ix + 1, iy) * fx
-    let b = value(ix, iy + 1) * (1 - fx) + value(ix + 1, iy + 1) * fx
+    let a = sampleAt(ix, iy) * (1 - fx) + sampleAt(ix + 1, iy) * fx
+    let b = sampleAt(ix, iy + 1) * (1 - fx) + sampleAt(ix + 1, iy + 1) * fx
     return unit(a * (1 - fy) + b * fy)
   }
-  private struct ClampedEdges: OptionSet {
-    let rawValue: UInt8
-    static let left = Self(rawValue: 1)
-    static let right = Self(rawValue: 2)
-    static let top = Self(rawValue: 4)
-    static let bottom = Self(rawValue: 8)
-  }
-  private static func blur(
-    _ source: Surface, radius: Double, outside: Float, clampedEdges: ClampedEdges
-  ) throws -> (
-    surface: Surface, padding: Int
-  ) {
-    // Photoshop layer-mask feather uses sigma = radius (selection feather is a separate operation).
-    let sigma = max(0.05, radius)
-    let r = Int(ceil(3 * sigma))
-    let w = source.width + 2 * r
-    let h = source.height + 2 * r
-    var output = try Surface(
-      width: w, height: h, depth: .f32, fill: Pixel(outside, outside, outside))
-    var weights = (-r...r).map { Float(exp(-Double($0 * $0) / (2 * sigma * sigma))) }
-    let sum = weights.reduce(0, +)
-    weights = weights.map { $0 / sum }
-    var horizontal = [Float](repeating: outside, count: w * h)
-    for y in 0..<source.height {
-      try Task.checkCancellation()
-      for x in 0..<w {
-        var v: Float = 0
-        for k in -r...r {
-          var sx = x - r + k
-          if sx < 0 && clampedEdges.contains(.left) { sx = 0 }
-          if sx >= source.width && clampedEdges.contains(.right) { sx = source.width - 1 }
-          v +=
-            (sx < 0 || sx >= source.width ? outside : unit(source.pixel(x: sx, y: y).r))
-            * weights[k + r]
-        }
-        horizontal[(y + r) * w + x] = v
-      }
-    }
-    if clampedEdges.contains(.top) {
-      for y in 0..<r {
-        try Task.checkCancellation()
-        for x in 0..<w { horizontal[y * w + x] = horizontal[r * w + x] }
-      }
-    }
-    if clampedEdges.contains(.bottom) {
-      for y in r + source.height..<h {
-        try Task.checkCancellation()
-        for x in 0..<w {
-          horizontal[y * w + x] = horizontal[(r + source.height - 1) * w + x]
-        }
-      }
-    }
-    for y in 0..<h {
-      try Task.checkCancellation()
-      for x in 0..<w {
-        var v: Float = 0
-        for k in -r...r {
-          let sy = y + k
-          v += (sy < 0 || sy >= h ? outside : horizontal[sy * w + x]) * weights[k + r]
-        }
-        if abs(v - outside) > 0.000001 { output.setPixel(x: x, y: y, Pixel(v, v, v)) }
-      }
-    }
-    return (output, r)
-  }
+
+  /// Upper bound for retained derived Float32 samples in one feather sampler.
+  public static let maximumFeatherCacheBytes = FeatheredMask.maximumCacheBytes
 }
 
 extension Layer {

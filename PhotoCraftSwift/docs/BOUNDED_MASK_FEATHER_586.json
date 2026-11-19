@@ -1,0 +1,189 @@
+{
+  "architecture": "Native Swift for macOS",
+  "archive": {
+    "archiveSHA256": "9e7cdc7d18a047618f08c3d46183913955ea04308640dd6c3809f0be0178e696",
+    "binarySHA256": "4ca78d0da8947e582f795bf6215fe2e8bc12995edb614d24ae0cd601b4e12f08",
+    "extractedSignatureVerified": true,
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "softwareRelease": false,
+    "sourceInputs": 9047
+  },
+  "build": 586,
+  "maximumCheckedDocument": {
+    "depths": [
+      8,
+      16,
+      32
+    ],
+    "height": 300000,
+    "maximumRadiusPixels": 100,
+    "retainedSampleBytesPerSampler": 1048576,
+    "width": 300000
+  },
+  "offscreenResults": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 114115,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "width": 1000
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "bytes": 122087,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "width": 1000
+      }
+    }
+  },
+  "packagingInputNote": "Only the wrapper CFBundleVersion changed after XCTest. The same compiled Swift slices are assembled and checked in the extracted archive.",
+  "pending": [
+    "fractional radius scheduling",
+    "numerical exactness for general masks and Intel",
+    "wider radii",
+    "feathered clipping merges and stamps",
+    "large Smart Filter and vector masks",
+    "sparse full-canvas export",
+    "physical platforms and live use"
+  ],
+  "photoshopReference": {
+    "armImpulseRadiiMatchingThePerStageAreaModel": [
+      2.25,
+      3,
+      3.5,
+      4,
+      5,
+      6,
+      8
+    ],
+    "captureNote": "Compare stored layers and the merged-image preview separately.",
+    "dyadicModelExactImpulseRadiiOnBothArchitectures": [
+      0.125,
+      0.25,
+      0.5,
+      1,
+      2
+    ],
+    "exactSequentialModelLineWordsPerRadiusPerArchitecture": 65,
+    "filesSHA256": {
+      "100": {
+        "arm64": {
+          "merged": "ca6b1d7fa7ea4f9eee048f08d09b0c7724f7f88cfae0143c533e3ba8ebe9e7d1",
+          "source": "35049f7f2dbde11d76ee064d0956fa48a4f8847b3ad95624365e89fb2b0826bf"
+        },
+        "x86_64": {
+          "merged": "ea30df7df3e8da86ead3d19f37ed648fc038ef55f2a693e8a4e620a53b462da6",
+          "source": "d301f5dd1cc749a234bf44f5ab334a627386b76162210f073e7e88c94e03774e"
+        }
+      },
+      "1000": {
+        "arm64": {
+          "merged": "bee727c4476bb4dd54203560d197b89fb1bef30a324b8ca7be6b4f2a70cf9e73",
+          "source": "8ff0c4a98c73a8511c27ab93a3030fa8bb54b91d93d441eeef055e678126ba86"
+        },
+        "x86_64": {
+          "merged": "55ee6f7a7920efc3ae147f962b9ba9a7542590f54596b14a8c5fdcc4de16854e",
+          "source": "7cb236dc6e5e83db08e4caa9d6d78cd94a7db341bf3984e6227b6eb9cdc61063"
+        }
+      },
+      "250": {
+        "arm64": {
+          "merged": "6e56927758f1042f03d864ae0fd46be23deade5d2199ca8ae25e9b475064ef27",
+          "source": "ece1b88f33513c9785f21f363ec066623f6acb08c1d1d211d33e16658deae7fa"
+        },
+        "x86_64": {
+          "merged": "4ecb07cbe113d616c06a6c14fb09ba17c0d1a7a4da193879243a6eb4e0865ba4",
+          "source": "b90bf80a4fdeedf6076863ea261e760ca1b4206f41cdd36d2b6663621c3ac660"
+        }
+      }
+    },
+    "independentWideExtentAt100PixelsMatchingWords": 65,
+    "intelImpulseMismatchedWords": [
+      9,
+      9,
+      25,
+      52,
+      30,
+      30,
+      136
+    ],
+    "intelMaximumImpulseULP": 2,
+    "scripting5000px": "Accepted and read back. Saved render timed out.",
+    "signing": "ad hoc",
+    "verifiedAgainstAdobeSignedInstallation": false,
+    "verifiedSavedRadii": [
+      100,
+      250,
+      1000
+    ],
+    "version": "27.2.0"
+  },
+  "qualification": {
+    "caseSelectionSHA256": "5a16c6df8a73d5debed832ad7d62323d79a3312dc25b9187d1070ba2ca77d37d",
+    "configurations": {
+      "arm": {
+        "appSHA256": "6f7a20efef05f2bbf6fc9649d2e73bc83114d0b4bc575037ef1cd9a2c9895c5f",
+        "testBinarySHA256": "5f3e9d2fd6c6cade0b779e26647a6c8435a6aa9a944731d0c1713ee7074dcf83"
+      },
+      "debug": {
+        "appSHA256": "73c3c4720d5d95add6b02da5eb4065e84b60d7c5ca15bcab41b57643cb443ee7",
+        "testBinarySHA256": "29bfc709bf5bb584580800708c9072cbb9c8cb7a1a910be78c615c4191d182e3"
+      },
+      "intel": {
+        "appSHA256": "842ea0bff3e83c213e3d8277b66e3c99fd407f6c2964753a0e2f44f14a9598e9",
+        "testBinarySHA256": "175eb236cdf9534f3eabf0c67ede124d8ba5e617535ee3b39d76425023d5a738"
+      }
+    },
+    "selectedTestsPerConfiguration": 842
+  },
+  "sourceInputs": 9047,
+  "sourceInputsChangedSince585": [
+    {
+      "path": "Sources/PhotoCraft/RasterStorageAPI.swift",
+      "sha256": "e4084e8e605a9b443b04085d07f2e3ef1b07a3e7f90c6c2fdcd9746518ab59eb"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "117bcaaf6d4f8284408def593de1b30bf796867150412a12cacbddc06aaaacbd"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerMask.swift",
+      "sha256": "5b5eb88d2602490ac9bbd9ae70b8c812ea4ec251d1963ce4b147361c7d50ba82"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "42636fdd43ebe395a7c5719b87ab0a70d21a45e2d0c015db26c37980ad4f86d9"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CompositionFacts.swift",
+      "sha256": "641d53a711d877d06d11f5d988d76ee306d73c4918ed7e1354fb85497c2cb1af"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "5b63e52c057670623b9e4f8f5ee8b2008766ccae6c47c386211843a75e6c1619"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LargeCompositionWorkflowTests.swift",
+      "sha256": "b5f3d2121a35c60a332a6dc631e5a980fccaab239a5471dd78892d9950c9f3ca"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/LayerMaskTests.swift",
+      "sha256": "7a7847e16da75023d80ac783c7aa2d482631c3b0df786aa15b437bad663cd7ec"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/RegionalRenderTests.swift",
+      "sha256": "929d25adb198176842d31afaa41ae6d7fc4c63a0a5339375714dcb6b8aeeaa83"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "4e74306b8ccd59935991a830cfe0090d97c0a253a20a75f3d5b7ccbd2c6ab958"
+    }
+  ]
+}

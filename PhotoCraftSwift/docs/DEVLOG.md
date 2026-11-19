@@ -604,7 +604,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 583 | 2026-11-18 | [Add four clipped blend modes](#dev-step-583) |
 | 584 | 2026-11-19 | [Preserve pixel masks in clipping merges and stamps](#dev-step-584) |
 | 585 | 2026-11-19 | [Add three arithmetic clipping blend modes](#dev-step-585) |
+| 586 | 2026-11-19 | [Bound pixel-mask Feather rendering](#dev-step-586) |
 <!-- history-index:end -->
+
+<a id="dev-step-586"></a>
+
+## 2026-11-19 — Bound pixel-mask Feather rendering
+
+The previous pixel-mask sampler expanded both axes before filtering. A 300,000-pixel side exceeded the canvas limit as soon as Feather added padding. The shared Swift sampler now builds Float32 tiles on demand and retains up to 1 MiB of derived samples per prepared mask. Source reads honor stored and implicit tiles. The implementation retains the previous horizontal and vertical operation order, edge and outside handling, affine sampling, inversion, density and the cutoff for storing coverage. The paged compositor now admits these pixel masks and accounts for the tile cache. Raw mask editing and the 100 px setting retain their previous behavior.
+
+The dense comparison covers exact Float32 words at pixel centers and fractional positions across all three depths, including an affine mask and a mapped source. New tests also sample a 100 px Feather at the corner of a 300,000 × 300,000 mask and compare both regional compositor paths on maximum-size RGB8, RGB16 and RGB32 documents. Photato HTTP capability discovery describes the shared regional renderer. The local Adobe-compatible job routes still use their existing format and resource limits.
+
+The first build stopped when the sandbox blocked the default module-cache path. A writable cache fixed compilation. The restricted XCTest run passed 83 of 84 tests, with the local HTTP listener denied. The same Debug binary passed the HTTP test with loopback access. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The exact packaged executable passed the offscreen check on both slices. The wrapper's build number was the only packaging input updated after the tests. The local archive and the private test runs record the tested source and binary hashes.
+
+Independent reference work used owned masks and Photoshop's standard save and merge commands. The first comparison mixed PSD layer samples with Photoshop's merged-image preview, which loses low bits after two Float32 subtractions in these captures. Reading the stored layer channels separately reproduced all 65 samples at each of 100, 250 and 1,000 px with sequential box filters. The 100 px narrow and wide captures also agree at all 65 common locations. Extending the source edge once matched the six larger-radius line and step controls on both architectures. The same per-stage area model matched all seven tested 2D impulses on Apple Silicon, and Intel differed by up to two ULPs. At five radii from 0.125 to 2 px, independent line weights in multiples of 1/256 reproduce the 2D impulse samples on both architectures. Remaining work includes the exact schedule for arbitrary fractional radii, Intel rounding, broader masks, a bounded wider-radius kernel and integration with feathered clipping operations. [Qualification](SOURCE_PUBLICATION_586.md).
 
 <a id="dev-step-585"></a>
 

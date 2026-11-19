@@ -59,6 +59,9 @@ final class LargeCompositionWorkflowTests:XCTestCase {
       let capabilities=try XCTUnwrap(RasterStorageAPI.capabilities["pagedComposition"]as?[String:Any])
       XCTAssertEqual(capabilities["maximumPatchPixels"]as?Int,131_072)
       XCTAssertEqual(capabilities["maximumDerivedMaskCacheBytes"]as?Int,512*1024*1024)
+      let mask = try XCTUnwrap(capabilities["pixelMaskFeather"] as? [String: Any])
+      XCTAssertEqual(mask["maximumRadiusPixels"] as? Int, 100)
+      XCTAssertEqual(mask["maximumRetainedSampleBytesPerMask"] as? Int, 1_048_576)
     }
   }
 }
