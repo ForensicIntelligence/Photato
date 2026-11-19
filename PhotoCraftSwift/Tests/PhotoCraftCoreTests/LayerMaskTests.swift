@@ -4,6 +4,62 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class LayerMaskTests: XCTestCase {
+  func testRepeatedFeatherAxesRetainEveryStreamedOutputWord() throws {
+    let width = 71, height = 83
+    let widths = [23, 19, 17, 5]
+    let shrink = widths.reduce(0) { $0 + $1 - 1 }
+    func sample(_ i: Int) -> Float {
+      i % 5 == 0 ? Float(i + 1) * 0x1p-29 : Float((i * 191) % 256) / 255
+    }
+    let row = (0..<width).map(sample)
+    let column = (0..<height).map(sample)
+    let x = try XCTUnwrap(StreamingAreaFeather.filterRepeatedRows(row, widths: widths))
+    let y = try XCTUnwrap(StreamingAreaFeather.filterRepeatedColumns(column, widths: widths))
+    let expectedX = (0..<(height - shrink)).flatMap { _ in x.map(\.bitPattern) }
+    let expectedY = y.flatMap { repeatElement($0.bitPattern, count: width - shrink) }
+    for budget in [0, StreamingAreaFeather.maximumSecondStageCacheBytes] {
+      let streamedX = try XCTUnwrap(StreamingAreaFeather.filter(width: width, height: height,
+        widths: widths, integerSamples: false, secondStageCacheBytes: budget) { _ in row })
+      let streamedY = try XCTUnwrap(StreamingAreaFeather.filter(width: width, height: height,
+        widths: widths, integerSamples: false, secondStageCacheBytes: budget) { i in
+        [Float](repeating: column[i], count: width)
+      })
+      XCTAssertEqual(streamedX.map(\.bitPattern), expectedX)
+      XCTAssertEqual(streamedY.map(\.bitPattern), expectedY)
+    }
+  }
+
+  func testBinaryRectangleWindowsReuseTranslationsAndMatchTheStreamedFilter() throws {
+    let extent = 2_048
+    let area = try XCTUnwrap(AreaMaskFeather(wideRadius: 101.25, width: extent, height: extent))
+    let stripe = IntRect(x: 827, y: 0, width: 547, height: extent)
+    let band = IntRect(x: 0, y: 811, width: extent, height: 432)
+    let corner = IntRect(x: 827, y: 811, width: 547, height: 432)
+    let clipped = IntRect(x: -72, y: -31, width: 182, height: 114)
+    for outside: Float in [0, 1] {
+      for (shape, x, y) in [(stripe, 1_024, 1_024), (band, 1_024, 1_024),
+        (corner, 1_024, 1_024), (clipped, 583, 640)] {
+        let source = FeatherSamplePlane(width: extent, height: extent, outside: outside, rectangle: shape)
+        let outputWidth = 13, outputHeight = 17
+        let window = try XCTUnwrap(area.rectangleWindow(source: source, outside: outside,
+          x: x, y: y, width: outputWidth, height: outputHeight))
+        let accelerated = try XCTUnwrap(area.filterRectangle(window, outside: outside))
+        let reference = try XCTUnwrap(area.prepare(source: source, outside: outside,
+          x: x, y: y, width: outputWidth, height: outputHeight))
+        XCTAssertEqual(accelerated.map(\.bitPattern),
+          (reference.samples ?? [Float](repeating: reference.uniform, count: accelerated.count)).map(\.bitPattern))
+        if shape == stripe {
+          let translated = area.rectangleWindow(source: source, outside: outside,
+            x: x, y: y + 512, width: outputWidth, height: outputHeight)
+          XCTAssertEqual(window, translated)
+          let shorter = area.rectangleWindow(source: source, outside: outside,
+            x: x, y: y, width: outputWidth, height: outputHeight - 1)
+          XCTAssertNotEqual(window, shorter)
+        }
+      }
+    }
+  }
+
   func testStreamedFeatherReusesSecondStageRowsWithinBudgetWithoutChangingWords() throws {
     let width = 79, height = 91
     let windows = [23, 19, 17, 5]

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 599 — Reuse wide vector-mask Feather windows
+
+The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask completed in 35.71 s on Apple Silicon and 49.08 s under Rosetta. Build 598 exceeded the 200-second cutoff on Apple Silicon. The new whole-canvas output matched all 11,560 sampled Float32 words of the previous viewport output on each architecture.
+
+All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md).
+
 ## 2026-11-19 — Step 598 — Render whole-canvas rectangular vector masks
 
 A 300,000 × 300,000 document with a rectangular vector mask and a sparse raster edit rendered in 197 tiles in the regression test. The tile index reuses the rendered samples across the canvas. On a 37.8 MP RGB32 control, median whole-canvas render time went from 3.912 s to 0.103 s on Apple Silicon and from 8.245 s to 0.194 s under Rosetta. Each median uses three alternating runs on the same host.
@@ -781,14 +789,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:598 -->
+<!-- current-status-step:599 -->
 ## Current development status — 19 November 2026
 
-Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks.
+Wide rectangular vector masks reuse filtered windows across the canvas.
 
-All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed offscreen checks.
+All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both universal app slices passed offscreen checks.
 
-[Source checkpoint 598](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598).
+[Source checkpoint 599](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-599).
 
 <!-- current-status:end -->
 

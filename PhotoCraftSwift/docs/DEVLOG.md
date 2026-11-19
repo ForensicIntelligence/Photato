@@ -617,7 +617,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 596 | 2026-11-19 | [Reuse source bands during wide mask Feather](#dev-step-596) |
 | 597 | 2026-11-19 | [Reuse window sums during wide mask Feather](#dev-step-597) |
 | 598 | 2026-11-19 | [Render whole-canvas rectangular vector masks](#dev-step-598) |
+| 599 | 2026-11-19 | [Reuse wide vector-mask Feather windows](#dev-step-599) |
 <!-- history-index:end -->
+
+<a id="dev-step-599"></a>
+
+## 2026-11-19 — Reuse wide vector-mask Feather windows
+
+The retained build 598 timed out on a 1,000 px inverted stripe on a 300,000 × 300,000 canvas. The repeat diagnostic sampled its CPU stack at one-millisecond intervals. The streamed square-window filter occupied 1,399 of 1,475 samples of the active render thread. The profile is preserved in the local qualification evidence. [Adobe vector mask controls](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html).
+
+`FeatheredMask` now retains up to 48 additional filtered tiles for binary rectangular masks. The cache compares the clipped rectangle relative to each padded input window, including the tile’s dimensions. Equal windows share the existing Float32 output. `AreaMaskFeather` uses binary constants for fully uniform windows and two input rows for corners. Along a single edge, `StreamingAreaFeather` filters the varying axis while retaining the original order of Double additions and Float32 stage outputs.
+
+`LayerMaskTests` compares both single-edge paths with every output word of the existing streamed kernel. It checks both second-stage storage policies, polarity, a clipped corner, translated windows and partial tile dimensions. The immutable 599 inputs and three build configurations are recorded under `artifacts/599-wide-rectangle-windows/qualification01`.
+
+The two new tests and the existing wide whole-canvas vector control passed in the focused Debug run. A separate Swift kernel probe compared both axes at the 203- and 2,001-sample leading windows and matched all 1,172 output words on each optimized architecture. The local 27.2.0 Photoshop session again returned AppleEvent error −1712 when asked for its version and document count.
+
+The first resource-measurement run produced the matching output hash but macOS denied `time -l` access to its clock-rate information. A host-instrumented repeat measured 35.49 seconds and about 144 MiB peak resident memory for the isolated Apple Silicon render.
+
+The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask completed in 35.71 s on Apple Silicon and 49.08 s under Rosetta. Build 598 exceeded the 200-second cutoff on Apple Silicon. The new whole-canvas output matched all 11,560 sampled Float32 words of the previous viewport output on each architecture.
+
+The 37.8 MP RGB32 control at 110.25 px went from 2.220 s to 1.358 s on Apple Silicon and from 3.605 s to 2.625 s under Rosetta. Each value is the median of three alternating runs. The two builds matched all 11,560 sampled Float32 words on each architecture. The Apple Silicon viewport control with an aligned 1,000 px edge went from 0.145 s to 0.013 s. All 1,260 sampled words per architecture matched across the nine viewport controls, which include curved vector masks, pixel masks and a Smart Filter mask.
+
+All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta. Both extracted universal app slices passed signature and offscreen launch checks and declare macOS 14 as the minimum.
+
+The live Photoshop session returned AppleEvent error −1712. Fresh Photoshop wide-mask comparisons, broader vector geometry, the RGB32 bottom-layer opacity proof, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open. [Validation](SOURCE_PUBLICATION_599.md).
 
 <a id="dev-step-598"></a>
 

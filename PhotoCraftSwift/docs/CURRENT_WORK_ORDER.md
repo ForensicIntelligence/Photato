@@ -1,3 +1,7 @@
+**Source checkpoint 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Qualification](SOURCE_PUBLICATION_599.md).
+
+Prove global opacity for RGB32 bottom raster layers with bounded rectangular Feather before enabling whole-canvas tile reuse on those stacks. Extend coverage to broader paths and capture fresh Photoshop references for wide vector and Smart Filter masks.
+
 **Source checkpoint 598.** Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks. [Qualification](SOURCE_PUBLICATION_598.md).
 
 Extend whole-canvas Feather through the RGB32 bottom-raster opacity proof and broader vector geometry. Collect fresh Photoshop outputs at wide radii and on Smart Filter masks.

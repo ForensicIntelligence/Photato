@@ -4,6 +4,50 @@
 enum StreamingAreaFeather {
   static let maximumSecondStageCacheBytes = 40 * 1_024 * 1_024
 
+  /// An identical source row fills each vertical window. Keep the original
+  /// order of the Double additions, including for very small edge samples.
+  static func filterRepeatedRows(_ row: [Float], widths: [Int]) -> [Float]? {
+    var samples = row
+    for side in widths {
+      let area = Double(side * side)
+      var horizontal = 0.0
+      for x in 0..<side { horizontal += Double(samples[x]) }
+      var next: [Float] = []
+      next.reserveCapacity(samples.count - side + 1)
+      for x in 0...(samples.count - side) {
+        if x % 16 == 0 && Task.isCancelled { return nil }
+        if x > 0 { horizontal += Double(samples[x + side - 1]) - Double(samples[x - 1]) }
+        var vertical = 0.0
+        for _ in 0..<side { vertical += horizontal }
+        next.append(Float(vertical / area))
+      }
+      samples = next
+    }
+    return samples
+  }
+
+  /// A constant Float32 row sums exactly in Double for the supported window
+  /// sizes. The vertical additions and subtractions keep their original order.
+  static func filterRepeatedColumns(_ column: [Float], widths: [Int]) -> [Float]? {
+    var samples = column
+    for side in widths {
+      let span = Double(side), area = Double(side * side)
+      var vertical = 0.0
+      for y in 0..<side { vertical += Double(samples[y]) * span }
+      var next: [Float] = []
+      next.reserveCapacity(samples.count - side + 1)
+      for y in 0...(samples.count - side) {
+        if y % 16 == 0 && Task.isCancelled { return nil }
+        if y > 0 {
+          vertical += Double(samples[y + side - 1]) * span - Double(samples[y - 1]) * span
+        }
+        next.append(Float(vertical / area))
+      }
+      samples = next
+    }
+    return samples
+  }
+
   static func filter(width: Int, height: Int, widths: [Int], integerSamples: Bool,
     secondStageCacheBytes: Int = maximumSecondStageCacheBytes,
     row: (Int) -> [Float]) -> [Float]? {

@@ -26,7 +26,7 @@ package struct FeatherSamplePlane: Sendable {
   let implicit: Float
   private let surface: Surface?
   private let pieces: [Piece]
-  private let rectangle: IntRect?
+  let rectangle: IntRect?
 
   init(_ surface: Surface) {
     self.surface = surface
@@ -53,7 +53,8 @@ package struct FeatherSamplePlane: Sendable {
     implicit = outside
     surface = nil
     pieces = []
-    self.rectangle = rectangle.width > 0 && rectangle.height > 0 ? rectangle : nil
+    let clipped = rectangle.clipped(toWidth: width, height: height)
+    self.rectangle = clipped.width > 0 && clipped.height > 0 ? clipped : nil
   }
 
   var isUniform: Bool {
@@ -148,8 +149,28 @@ package final class FeatheredMask: Sendable {
     let values: Values
   }
 
+  private struct Cache: Sendable {
+    var positions: [Entry?]
+    var rectangles: [AreaMaskFeather.RectangleWindow: Values] = [:]
+    var order: [AreaMaskFeather.RectangleWindow] = []
+    var next = 0
+
+    mutating func insert(_ values: Values, for window: AreaMaskFeather.RectangleWindow) {
+      let limit = FeatheredMask.rectangleCacheSlots
+      if order.count == limit {
+        rectangles.removeValue(forKey: order[next])
+        order[next] = window
+        next = (next + 1) % limit
+      } else {
+        order.append(window)
+      }
+      rectangles[window] = values
+    }
+  }
+
   private static let side = Surface.tileSide
   private static let slots = 64
+  private static let rectangleCacheSlots = 48
   static let maximumCacheBytes = side * side * slots * MemoryLayout<Float>.stride
 
   private let source: FeatherSamplePlane
@@ -182,7 +203,7 @@ package final class FeatheredMask: Sendable {
     if area.bounds.y + area.bounds.height == source.height { clamped.insert(.bottom) }
     return clamped
   }
-  private let cache: OSAllocatedUnfairLock<[Entry?]>
+  private let cache: OSAllocatedUnfairLock<Cache>
 
   convenience init(source: Surface, radius: Double, outside: Float, edges: ClampedEdges,
     area: AreaMaskFeather? = nil
@@ -212,7 +233,10 @@ package final class FeatheredMask: Sendable {
     return taps.map { Float($0) / 256 }
   }
 
-  package var maximumResidentBytes: Int { cacheSide * cacheSide * cacheSlots * MemoryLayout<Float>.stride }
+  package var maximumResidentBytes: Int {
+    let templates = area != nil && source.rectangle != nil ? Self.rectangleCacheSlots : 0
+    return cacheSide * cacheSide * (cacheSlots + templates) * MemoryLayout<Float>.stride
+  }
 
   package func sampleInSource(x: Double, y: Double) -> Float {
     let x = x - Double(origin.x), y = y - Double(origin.y)
@@ -229,7 +253,7 @@ package final class FeatheredMask: Sendable {
     self.source = source
     self.cacheSide = cacheSide
     self.cacheSlots = cacheSlots
-    cache = OSAllocatedUnfairLock(initialState: [Entry?](repeating: nil, count: cacheSlots))
+    cache = OSAllocatedUnfairLock(initialState: Cache(positions: [Entry?](repeating: nil, count: cacheSlots)))
     self.outside = outside
     self.edges = edges
     self.area = area
@@ -270,14 +294,30 @@ package final class FeatheredMask: Sendable {
     let column = x / side, row = y / side
     // Direct mapping retains consecutive tiles across a compositor patch.
     let slot = (column + row * 17) % cacheSlots
-    return cache.withLock { entries in
-      if entries[slot]?.x != column || entries[slot]?.y != row {
+    return cache.withLock { state in
+      if state.positions[slot]?.x != column || state.positions[slot]?.y != row {
         let originX = column * side, originY = row * side
-        guard let values = prepare(x: originX - padding, y: originY - padding,
-          width: min(side, width - originX), height: min(side, height - originY)) else { return outside }
-        entries[slot] = Entry(x: column, y: row, values: values)
+        let tileWidth = min(side, width - originX), tileHeight = min(side, height - originY)
+        let values: Values
+        if let area, let window = area.rectangleWindow(source: source, outside: outside,
+          x: originX, y: originY, width: tileWidth, height: tileHeight) {
+          if let constant = window.uniformCoverage(outside: outside) {
+            values = .uniform(constant)
+          } else if let cached = state.rectangles[window] {
+            values = cached
+          } else {
+            guard let samples = area.filterRectangle(window, outside: outside) else { return outside }
+            values = .samples(samples, width: tileWidth)
+            state.insert(values, for: window)
+          }
+        } else {
+          guard let prepared = prepare(x: originX - padding, y: originY - padding,
+            width: tileWidth, height: tileHeight) else { return outside }
+          values = prepared
+        }
+        state.positions[slot] = Entry(x: column, y: row, values: values)
       }
-      return entries[slot]!.values.value(atX: x % side, y: y % side)
+      return state.positions[slot]!.values.value(atX: x % side, y: y % side)
     }
   }
 

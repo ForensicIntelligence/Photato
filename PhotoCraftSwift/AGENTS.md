@@ -1,3 +1,5 @@
+**Source checkpoint 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Qualification](docs/SOURCE_PUBLICATION_599.md).
+
 **Source checkpoint 598.** Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks. [Qualification](docs/SOURCE_PUBLICATION_598.md).
 
 **Source checkpoint 597.** Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. [Qualification](docs/SOURCE_PUBLICATION_597.md).

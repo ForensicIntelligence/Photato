@@ -1,0 +1,684 @@
+{
+  "build": 599,
+  "sourceInputs": 9211,
+  "sourceInputsChangedSince598": [
+    {
+      "path": "Sources/PhotoCraftCore/AreaMaskFeather.swift",
+      "sha256": "505a0901381f53ff4e009e00b76d632466059ce9214732676eb11b6679a53aeb"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/FeatheredMask.swift",
+      "sha256": "a38bb187d406ebfbc133b3d5aba542f2f24a119f23867139bc9f61aad177ed3f"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/StreamingAreaFeather.swift",
+      "sha256": "d759509bf666a09958e17db62be09696e6e2ee0036abbed30486f933373ccfe4"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/LayerMaskTests.swift",
+      "sha256": "19fe047b356ef52a156a7fdaf89803c22b689fd0ae80b9e02d1e89f8e2a7d56e"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "d3c4601ac61c9bfb010b8e174d0bfa9b53fe477d422699eeeb88cee0dd4a0ad9"
+    }
+  ],
+  "selectedChecksPerConfiguration": 914,
+  "binaries": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "485aa0cfa93778be7a3dd983eb2094e76de8a4f4a7b7799f26a0536d6c4ae953",
+      "testBinarySHA256": "85cc05eb0605202238fa301b32657d5705e101567e5cb3ff55948aa596680ff6",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "dec3b62ee3f89c28ac14da244d539c80cd2d5dbd22a5350dd1009401261146ce",
+      "testBinarySHA256": "342da2d5271b48559a3143fceb228c77c9258a0d8aca82ce227fa9950873ff81",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "4f8cbfeae950b560174b04776d9675c237ff9829eb03eb54a5bf5c99aeaa155c",
+      "testBinarySHA256": "ea3e7f47ea66ac44838395b018f6b4a2c051be4a35b20b033b77591d7d805e40",
+      "passed": true
+    }
+  },
+  "archive": {
+    "architectures": "x86_64 arm64",
+    "archiveSHA256": "3137d0f1fc75f59f7424f2c65d815f827ddf041c85ff39445a2990b40e56fe76",
+    "binarySHA256": "143f2512f3372e30fae98544dd2671e7432e4394f94884d2a1eb2f15e78db9fd",
+    "minimumSystemMetadata": "14.0",
+    "signatureVerified": true,
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  },
+  "profile598": {
+    "samplesActiveRenderThread": 1475,
+    "samplesInAreaMaskPreparation": 1399,
+    "intervalMillis": 1
+  },
+  "maximumWholeCanvas": {
+    "arm": {
+      "reference598Viewport": {
+        "height": 300000,
+        "mode": "viewport",
+        "radius": 1000,
+        "renderedPatches": 0,
+        "seconds": 8.3e-08,
+        "sha256": "c46079e09cd16ca4d97e8fceaee0e2f1e388e26e0ca65a02765d797099f5b917",
+        "storedTileCount": 0,
+        "width": 300000,
+        "words": 11560
+      },
+      "build599Whole": {
+        "height": 300000,
+        "mode": "whole",
+        "radius": 1000,
+        "renderedPatches": 16817,
+        "seconds": 35.707647875,
+        "sha256": "c46079e09cd16ca4d97e8fceaee0e2f1e388e26e0ca65a02765d797099f5b917",
+        "storedTileCount": 16487696,
+        "width": 300000,
+        "words": 11560
+      }
+    },
+    "intel": {
+      "reference598Viewport": {
+        "height": 300000,
+        "mode": "viewport",
+        "radius": 1000,
+        "renderedPatches": 0,
+        "seconds": 1e-06,
+        "sha256": "c46079e09cd16ca4d97e8fceaee0e2f1e388e26e0ca65a02765d797099f5b917",
+        "storedTileCount": 0,
+        "width": 300000,
+        "words": 11560
+      },
+      "build599Whole": {
+        "height": 300000,
+        "mode": "whole",
+        "radius": 1000,
+        "renderedPatches": 16817,
+        "seconds": 49.082897416,
+        "sha256": "c46079e09cd16ca4d97e8fceaee0e2f1e388e26e0ca65a02765d797099f5b917",
+        "storedTileCount": 16487696,
+        "width": 300000,
+        "words": 11560
+      }
+    }
+  },
+  "appleSiliconResourceRepeat": {
+    "wallSeconds": 35.493482625,
+    "maximumResidentBytes": 150896640,
+    "sha256": "c46079e09cd16ca4d97e8fceaee0e2f1e388e26e0ca65a02765d797099f5b917"
+  },
+  "mediumWholeCanvas": {
+    "arm": {
+      "598": [
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 2.220380375,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 2.216938084,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 2.2199625,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        }
+      ],
+      "599": [
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 1.3584361249999999,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 1.375881958,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 1.350710292,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        }
+      ]
+    },
+    "intel": {
+      "598": [
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 3.604763667,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 3.60062,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 3.65286425,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        }
+      ],
+      "599": [
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 2.728466833,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 2.625184833,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        },
+        {
+          "height": 4609,
+          "mode": "whole",
+          "radius": 110.25,
+          "renderedPatches": 2001,
+          "seconds": 2.617182,
+          "sha256": "77e288bb53115bb218770f079ffd1a0be27fba619ae27b0c7a358603c37113ad",
+          "storedTileCount": 6424,
+          "width": 8195,
+          "words": 11560
+        }
+      ]
+    }
+  },
+  "viewportControls": {
+    "host": "27.2",
+    "timing": "Median of three alternating build runs on the same Apple Silicon host while separate qualification was active. Intel used Rosetta.",
+    "allWordsIdentical": true,
+    "wordsPerArchitecture": 1260,
+    "configurations": {
+      "arm": {
+        "vector-2": {
+          "words": 105,
+          "598": {
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09",
+            "seconds": [
+              0.0214655,
+              0.021087,
+              0.016613417
+            ],
+            "medianSeconds": 0.021087
+          },
+          "599": {
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09",
+            "seconds": [
+              0.019244959,
+              0.017379666,
+              0.017275
+            ],
+            "medianSeconds": 0.017379666
+          }
+        },
+        "vector-250-inverted": {
+          "words": 105,
+          "598": {
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8",
+            "seconds": [
+              0.153777458,
+              0.146799208,
+              0.146864375
+            ],
+            "medianSeconds": 0.146864375
+          },
+          "599": {
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8",
+            "seconds": [
+              0.164600416,
+              0.153582875,
+              0.163603542
+            ],
+            "medianSeconds": 0.163603542
+          }
+        },
+        "vector-1000": {
+          "words": 105,
+          "598": {
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3",
+            "seconds": [
+              0.908628791,
+              0.91700175,
+              0.895846417
+            ],
+            "medianSeconds": 0.908628791
+          },
+          "599": {
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3",
+            "seconds": [
+              0.910235792,
+              0.911649416,
+              0.911893
+            ],
+            "medianSeconds": 0.911649416
+          }
+        },
+        "vector-1000-integer": {
+          "words": 105,
+          "598": {
+            "sha256": "e5a9775d79f2934b16c7f09ff5f6aea509254ac6d70d79de2e4ee905ba0692ab",
+            "seconds": [
+              0.145055084,
+              0.144798625,
+              0.145686958
+            ],
+            "medianSeconds": 0.145055084
+          },
+          "599": {
+            "sha256": "e5a9775d79f2934b16c7f09ff5f6aea509254ac6d70d79de2e4ee905ba0692ab",
+            "seconds": [
+              0.01266675,
+              0.012922167,
+              0.011514
+            ],
+            "medianSeconds": 0.01266675
+          }
+        },
+        "vector-250-curved": {
+          "words": 105,
+          "598": {
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a",
+            "seconds": [
+              0.1786265,
+              0.168908959,
+              0.190461708
+            ],
+            "medianSeconds": 0.1786265
+          },
+          "599": {
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a",
+            "seconds": [
+              0.169996375,
+              0.172314833,
+              0.169665917
+            ],
+            "medianSeconds": 0.169996375
+          }
+        },
+        "pixel-u8": {
+          "words": 105,
+          "598": {
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a",
+            "seconds": [
+              0.173198334,
+              0.172942,
+              0.171752334
+            ],
+            "medianSeconds": 0.172942
+          },
+          "599": {
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a",
+            "seconds": [
+              0.174268084,
+              0.1731705,
+              0.173142333
+            ],
+            "medianSeconds": 0.1731705
+          }
+        },
+        "pixel-u16": {
+          "words": 105,
+          "598": {
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d",
+            "seconds": [
+              0.179625042,
+              0.179925042,
+              0.179390083
+            ],
+            "medianSeconds": 0.179625042
+          },
+          "599": {
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d",
+            "seconds": [
+              0.180378666,
+              0.179874625,
+              0.180173958
+            ],
+            "medianSeconds": 0.180173958
+          }
+        },
+        "pixel-f32": {
+          "words": 105,
+          "598": {
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae",
+            "seconds": [
+              0.135490125,
+              0.135077917,
+              0.1346075
+            ],
+            "medianSeconds": 0.135077917
+          },
+          "599": {
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae",
+            "seconds": [
+              0.137692333,
+              0.135090833,
+              0.134899042
+            ],
+            "medianSeconds": 0.135090833
+          }
+        },
+        "smart-filter": {
+          "words": 420,
+          "598": {
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab",
+            "seconds": [
+              0.818093917,
+              0.81611225,
+              0.817650458
+            ],
+            "medianSeconds": 0.817650458
+          },
+          "599": {
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab",
+            "seconds": [
+              0.822789041,
+              0.823925667,
+              0.820481459
+            ],
+            "medianSeconds": 0.822789041
+          }
+        }
+      },
+      "intel": {
+        "vector-2": {
+          "words": 105,
+          "598": {
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09",
+            "seconds": [
+              0.023641,
+              0.023253667,
+              0.020424292
+            ],
+            "medianSeconds": 0.023253667
+          },
+          "599": {
+            "sha256": "6beea7148c9b82095f8caec8a9947b2ee8dd756db8779ab52a33e4c4793faa09",
+            "seconds": [
+              0.021489875,
+              0.0218,
+              0.020948792
+            ],
+            "medianSeconds": 0.021489875
+          }
+        },
+        "vector-250-inverted": {
+          "words": 105,
+          "598": {
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8",
+            "seconds": [
+              0.220075792,
+              0.212303167,
+              0.215288167
+            ],
+            "medianSeconds": 0.215288167
+          },
+          "599": {
+            "sha256": "2e9db8a2216e0fef58a84d7f934ff3a13f93fcc802879d529bc0a70f8d3b69a8",
+            "seconds": [
+              0.213107166,
+              0.214254625,
+              0.2174715
+            ],
+            "medianSeconds": 0.214254625
+          }
+        },
+        "vector-1000": {
+          "words": 105,
+          "598": {
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3",
+            "seconds": [
+              1.394311959,
+              1.392900792,
+              1.406555333
+            ],
+            "medianSeconds": 1.394311959
+          },
+          "599": {
+            "sha256": "d592aa432b22125131c9410fec4da2c6ddb1eaeb4b80b800b32dad85c59c73b3",
+            "seconds": [
+              1.392899083,
+              1.418005,
+              1.403314125
+            ],
+            "medianSeconds": 1.403314125
+          }
+        },
+        "vector-1000-integer": {
+          "words": 105,
+          "598": {
+            "sha256": "e5a9775d79f2934b16c7f09ff5f6aea509254ac6d70d79de2e4ee905ba0692ab",
+            "seconds": [
+              0.175907,
+              0.176325083,
+              0.179315584
+            ],
+            "medianSeconds": 0.176325083
+          },
+          "599": {
+            "sha256": "e5a9775d79f2934b16c7f09ff5f6aea509254ac6d70d79de2e4ee905ba0692ab",
+            "seconds": [
+              0.012631292,
+              0.01250525,
+              0.012407875
+            ],
+            "medianSeconds": 0.01250525
+          }
+        },
+        "vector-250-curved": {
+          "words": 105,
+          "598": {
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a",
+            "seconds": [
+              0.254562458,
+              0.258470834,
+              0.249137291
+            ],
+            "medianSeconds": 0.254562458
+          },
+          "599": {
+            "sha256": "9e8b4b65963aa553852b0b60523f4231a9c352d083a7057b7569a2cb1f13cd9a",
+            "seconds": [
+              0.26585625,
+              0.248435958,
+              0.255132042
+            ],
+            "medianSeconds": 0.255132042
+          }
+        },
+        "pixel-u8": {
+          "words": 105,
+          "598": {
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a",
+            "seconds": [
+              0.2287425,
+              0.229078167,
+              0.229643833
+            ],
+            "medianSeconds": 0.229078167
+          },
+          "599": {
+            "sha256": "579fbd20a9e6a9b6fc3f04c87fa8539b9e49991f4f61eef2ffc6ce3f177ce77a",
+            "seconds": [
+              0.228945959,
+              0.229200125,
+              0.2307185
+            ],
+            "medianSeconds": 0.229200125
+          }
+        },
+        "pixel-u16": {
+          "words": 105,
+          "598": {
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d",
+            "seconds": [
+              0.2649265,
+              0.264895875,
+              0.267683541
+            ],
+            "medianSeconds": 0.2649265
+          },
+          "599": {
+            "sha256": "bd12749c2cfd466f2dd8e2fbf14f83a7b8e9efb24b0cef3bf87167892bbfae4d",
+            "seconds": [
+              0.264514625,
+              0.259395041,
+              0.264638584
+            ],
+            "medianSeconds": 0.264514625
+          }
+        },
+        "pixel-f32": {
+          "words": 105,
+          "598": {
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae",
+            "seconds": [
+              0.1742355,
+              0.166812042,
+              0.170177875
+            ],
+            "medianSeconds": 0.170177875
+          },
+          "599": {
+            "sha256": "5cc0b8cafcfd673d843b14a441a9a7ab70f63870207c68bbff12115067d863ae",
+            "seconds": [
+              0.171243291,
+              0.170976333,
+              0.170946709
+            ],
+            "medianSeconds": 0.170976333
+          }
+        },
+        "smart-filter": {
+          "words": 420,
+          "598": {
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab",
+            "seconds": [
+              0.9132945,
+              0.912823208,
+              0.91544825
+            ],
+            "medianSeconds": 0.9132945
+          },
+          "599": {
+            "sha256": "6d1601a039c77f2b2ade80e82ba229f0aa184e7c0d1ab66965b024ff0ed0e0ab",
+            "seconds": [
+              0.915061584,
+              0.910002667,
+              0.911672291
+            ],
+            "medianSeconds": 0.911672291
+          }
+        }
+      }
+    }
+  },
+  "binaryRectangleCache": {
+    "newTileLimit": 48,
+    "wideSamplerSampleCacheMaximumMiB": 64
+  },
+  "photoshop": {
+    "installedVersion": "27.2.0",
+    "appleEventTimeout": -1712,
+    "freshReferenceCollected": false,
+    "documentation": "https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html"
+  },
+  "limits": "The live Photoshop session returned AppleEvent error \u22121712. Fresh Photoshop wide-mask comparisons, broader vector geometry, the RGB32 bottom-layer opacity proof, physical Intel and macOS 14 runtime checks, and full Photoshop byte parity remain open."
+}

@@ -8,7 +8,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 598.** Whole-canvas rendering reuses feathered tiles for eligible integer-aligned rectangular vector masks. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md).
+**Development alpha — source build 599.** Wide rectangular vector masks reuse filtered windows across the canvas. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md).
 
 ## Project layout
 

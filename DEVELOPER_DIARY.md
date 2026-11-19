@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **598** · The 10 most recent entries, newest first.
+Source build **599** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 599 — Reuse wide vector-mask Feather windows
+
+The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask completed in 35.71 s on Apple Silicon and 49.08 s under Rosetta. Build 598 exceeded the 200-second cutoff on Apple Silicon. The new whole-canvas output matched all 11,560 sampled Float32 words of the previous viewport output on each architecture.
+
+All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md).
 
 ## 2026-11-19 — Step 598 — Render whole-canvas rectangular vector masks
 
@@ -75,11 +83,3 @@ Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages
 All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The independent Photoshop Rosetta capture remains pending.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_590.md).
-
-## 2026-11-19 — Step 589 — Apply Feather in raster clipping merges and stamps
-
-Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. Saved RGB32 layer output matches five Photoshop cases at 250 or 1,000 px on both architectures. The tests also exercise sparse 300,000 × 300,000 documents and verify Undo through the desktop model and HTTP.
-
-All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The lower-radius Intel comparisons still have differences of up to two Float32 steps.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-589) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_589.md).
