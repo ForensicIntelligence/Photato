@@ -26,6 +26,15 @@ enum AdobeActionAssets {
     let output: AdobeActionsRequest.Output
     let data: Data
   }
+  struct Attachment: Sendable {
+    let mediaType: String
+    let data: Data
+  }
+  struct JobResult: Sendable {
+    let outputs: [Encoded]
+    var attachments: [UUID: Attachment] = [:]
+    var attachmentValidity = 0
+  }
   private struct EncodingKey: Hashable {
     let type: AdobeActionsRequest.MediaType
     let options: RasterEncodingOptions

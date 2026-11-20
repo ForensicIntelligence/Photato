@@ -62,6 +62,8 @@ struct AdobeManifestRequest: Sendable {
   static let route = "/v2/generate-manifest"
   let input: URL
   let includeXmp: Bool
+  let thumbnail: AdobeManifestThumbnail?
+  let extractSmartObjectData: Bool
   let outputs: [AdobeActionsRequest.Output]
 
   static var capabilities: [String: Any] {
@@ -70,6 +72,9 @@ struct AdobeManifestRequest: Sendable {
       "imageSource": "Authorized HTTP(S) PSD/PSB and supported raster resources",
       "mediaType": "application/json", "destinations": ["embedded json/string/base64", "hosted", "HTTPS URL"],
       "includeXmp": true,
+      "includeLayerThumbnails": ["formats": ["image/jpeg", "image/png"], "maximumEdge": AdobeManifestThumbnail.maximumEdge,
+                                 "maximumThumbnailDepth": true, "trimToTransparency": true],
+      "extractSmartObjectData": "Exact embedded source bytes, served as an authenticated local asset.",
       "fields": ["document", "layers", "artboards", "protection", "blendOptions", "pixelMask",
                  "userMask", "vectorMask", "smartObject", "text"],
       "layerIdentifiers": "Preserve PSD layer IDs and assign deterministic IDs to untagged layers. Use returned IDs in create-composite.",
@@ -91,15 +96,12 @@ struct AdobeManifestRequest: Sendable {
     let source = try image.object("source", allowed: ["url"])
     input = try AdobeActionsRequest.url(source.string("url"), path: "image.source.url", httpsOnly: false)
     includeXmp = try root.optionalBool("includeXmp") ?? false
-    let thumbnails = try root.optionalBool("includeLayerThumbnails") ?? false
-    let extraction = try root.optionalBool("extractSmartObjectData") ?? false
-    _ = try root.optionalBool("trimToTransparency")
-    if root.fields["maximumThumbnailDepth"] != nil {
-      _ = try root.integer("maximumThumbnailDepth", range: 0...Int(Int32.max))
-    }
-    guard !thumbnails, !extraction else {
-      throw AdobeAPIError.unsupported("Manifest thumbnails and extracted Smart Object assets are unavailable.")
-    }
+    extractSmartObjectData = try root.optionalBool("extractSmartObjectData") ?? false
+    let trim = try root.optionalBool("trimToTransparency") ?? false
+    let depth = try root.fields["maximumThumbnailDepth"] == nil ? 0
+      : root.integer("maximumThumbnailDepth", range: 0...Int(Int32.max))
+    thumbnail = try root.optionalBool("includeLayerThumbnails") == true
+      ? AdobeManifestThumbnail(options: root.fields["exportOptions"], depth: depth, trim: trim) : nil
     outputs = try root.array("outputs", count: 1...25).enumerated().map { index, raw in
       let output = try AdobeActionsRequest.Object(raw, at: "outputs[\(index)]", allowed: ["destination", "mediaType"])
       guard try output.string("mediaType") == AdobeActionsRequest.MediaType.json.rawValue else {
@@ -110,20 +112,29 @@ struct AdobeManifestRequest: Sendable {
     }
   }
 
-  func execute(input bytes: Data) throws -> [AdobeActionAssets.Encoded] {
+  func execute(input bytes: Data, assetBase: URL) throws -> AdobeActionAssets.JobResult {
     let document = try AdobeLayerIdentifiers.assigning(in: AdobeActionAssets.decode(bytes))
     let filename = input.lastPathComponent
+    var assets = AdobeManifestAssets(baseURL: assetBase, preview: thumbnail, extract: extractSmartObjectData)
     let data = try AdobeDocumentManifest.encode(document, title: filename.isEmpty ? document.name : filename,
-                                               includeXmp: includeXmp)
-    guard data.count <= AdobeActionAssets.maximumOutputBytes / outputs.count else {
+                                               includeXmp: includeXmp) { layer, depth in
+      try assets.links(for: layer, depth: depth, document: document)
+    }
+    guard data.count <= (AdobeActionAssets.maximumOutputBytes - assets.byteCount) / outputs.count else {
       throw AdobeAPIError.invalid("Manifest outputs exceed the local aggregate output limit.")
     }
-    return outputs.map { .init(output: $0, data: data) }
+    let validity = outputs.map { output in
+      if case .hosted(let period) = output.destination { return period }
+      return 3600
+    }.max() ?? 3600
+    return .init(outputs: outputs.map { .init(output: $0, data: data) }, attachments: assets.attachments,
+                 attachmentValidity: validity)
   }
 }
 
 enum AdobeDocumentManifest {
-  static func encode(_ document: CraftDocument, title: String, includeXmp: Bool) throws -> Data {
+  static func encode(_ document: CraftDocument, title: String, includeXmp: Bool,
+                     assets: ((Layer, Int) throws -> AdobeManifestAssets.Links)? = nil) throws -> Data {
     func bounds(_ area: IntRect) -> [String: Int] {
       ["left": area.x, "top": area.y, "right": area.x + area.width, "bottom": area.y + area.height]
     }
@@ -145,7 +156,7 @@ enum AdobeDocumentManifest {
     }
     let indices = Dictionary(uniqueKeysWithValues: document.layers.enumerated().map { ($0.element.id, $0.offset) })
     let linkGroups = Dictionary(grouping: document.layers.filter { $0.linkID != nil && $0.linkDisabled != true }, by: \.linkID)
-    func layerEntry(_ layer: Layer) throws -> [String: Any] {
+    func layerEntry(_ layer: Layer, depth: Int) throws -> [String: Any] {
       try Task.checkCancellation()
       guard let id = AdobeLayerIdentifiers.stored(layer), let index = indices[layer.id] else {
         throw AdobeAPIError.invalid("Missing manifest layer identity.")
@@ -192,12 +203,16 @@ enum AdobeDocumentManifest {
         ] as [String: Any]
       }
       if let mask = layer.vectorMask { entry["vectorMask"] = ["hasMask": !mask.path.isEmpty] }
+      let links = try assets?(layer, depth)
+      if let thumbnail = links?.thumbnail { entry["thumbnail"] = thumbnail }
       if let smart = layer.smartObject {
-        entry["smartObject"] = try smartObject(smart, layer: layer)
+        var information = try smartObject(smart, layer: layer)
+        if let extracted = links?.extracted { information["extracted"] = extracted }
+        entry["smartObject"] = information
       }
       if case .text(let text) = layer.content { entry["text"] = ["content": text.text] }
       if layer.isGroup {
-        let contents = try (children[layer.id] ?? []).reversed().map(layerEntry)
+        let contents = try (children[layer.id] ?? []).reversed().map { try layerEntry($0, depth: depth + 1) }
         entry[layer.artboard == nil ? "children" : "layers"] = contents
       }
       return entry
@@ -206,7 +221,7 @@ enum AdobeDocumentManifest {
       guard let area = board.artboardBounds, let id = AdobeLayerIdentifiers.stored(board) else { return nil }
       return ["id": id, "name": board.name, "bounds": bounds(area)]
     }
-    let layers = try (children[nil] ?? []).reversed().map(layerEntry)
+    let layers = try (children[nil] ?? []).reversed().map { try layerEntry($0, depth: 1) }
     return try JSONSerialization.data(withJSONObject: ["document": info, "layers": layers, "artboards": artboards],
                                       options: [.sortedKeys])
   }

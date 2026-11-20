@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 664 — Export thumbnail and Smart Object assets from Photoshop manifests
+
+Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs.
+
+1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Direct Adobe-hosted comparison of thumbnail geometry, defaults and bytes remains open. The native encoder chooses its progressive JPEG scan count. Intel tests ran under Rosetta.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-664) · [Details](../PhotoCraftSwift/docs/ADOBE_MANIFEST_ASSETS_664.md).
+
 ## 2026-11-20 — Step 663 — Inspect Photoshop templates through the Adobe-compatible manifest
 
 The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite.

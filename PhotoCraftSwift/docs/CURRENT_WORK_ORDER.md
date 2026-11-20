@@ -1,3 +1,7 @@
+**Source checkpoint 664.** Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs. 1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_664.md).
+
+**Next manifest work.** Compare the manifest's thumbnail behavior, linked metadata and full layer descriptors with Adobe-hosted examples. Continue independent desktop Smart Object and PSD interchange checks.
+
 **Source checkpoint 663.** The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite. 1,498 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional masked RGB32 test passed on Apple Silicon. On Intel, eight PSD composites matched the previous build byte for byte and reproduced its existing differences from the Photoshop fixtures. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_663.md).
 
 **Next manifest work.** Cover hosted layer thumbnails and export of original Smart Object assets. Compare the result schema and layer geometry with Adobe-hosted examples.

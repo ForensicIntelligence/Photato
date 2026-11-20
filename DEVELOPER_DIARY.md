@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **663** · The 10 most recent entries, newest first.
+Source build **664** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 664 — Export thumbnail and Smart Object assets from Photoshop manifests
+
+Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs.
+
+1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Direct Adobe-hosted comparison of thumbnail geometry, defaults and bytes remains open. The native encoder chooses its progressive JPEG scan count. Intel tests ran under Rosetta.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-664) · [Details](PhotoCraftSwift/docs/ADOBE_MANIFEST_ASSETS_664.md).
 
 ## 2026-11-20 — Step 663 — Inspect Photoshop templates through the Adobe-compatible manifest
 
@@ -75,11 +83,3 @@ General settings now control automatic fit, the placement transform preview and 
 All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The direct Photoshop comparison is still open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-655) · [Details](PhotoCraftSwift/docs/PLACEMENT_PREFERENCES_655.md).
-
-## 2026-11-20 — Step 654 — Place and update gigabyte-scale linked Smart Objects
-
-A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
-
-All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-654) · [Details](PhotoCraftSwift/docs/LARGE_LINKED_ORIGINALS_654.md).

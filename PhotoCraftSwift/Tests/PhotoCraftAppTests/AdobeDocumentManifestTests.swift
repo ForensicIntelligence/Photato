@@ -126,12 +126,126 @@ final class AdobeDocumentManifestTests: XCTestCase {
     for invalid in [
       body([["embedded": "unknown"]]), body([["embedded": "json", "validityPeriod": 60]]),
       body([["url": "http://example.test/out.json"]]), body([["validityPeriod": 2]]), body([]),
-      body([["embedded": "json"]]).merging(["includeLayerThumbnails": true]) { _, new in new },
-      body([["embedded": "json"]]).merging(["extractSmartObjectData": true]) { _, new in new },
+      options(["includeLayerThumbnails": true, "maximumThumbnailDepth": -1]),
+      options(["includeLayerThumbnails": true, "exportOptions": ["mediaType": "image/tiff"]]),
+      options(["includeLayerThumbnails": true, "exportOptions": ["mediaType": "image/png", "quality": "high"]]),
+      options(["includeLayerThumbnails": true, "exportOptions": ["mediaType": "image/jpeg", "scan": ["type": "progressive", "scans": 4]]]),
+      options(["extractSmartObjectData": "true"]),
       body([["embedded": "json"]]).merging(["includeXmp": "true"]) { _, new in new },
     ] {
       XCTAssertThrowsError(try AdobeManifestRequest(data: JSONSerialization.data(withJSONObject: invalid)))
     }
+  }
+
+  private func options(_ fields: [String: Any]) -> [String: Any] {
+    body([["embedded": "json"]]).merging(fields) { _, new in new }
+  }
+
+  @MainActor func testLayerThumbnailsFollowDepthTrimAndBlankAdjustmentRules() async throws {
+    var doc = try source()
+    doc.layers.append(Layer(name: "Levels", content: .adjustment(.levels(.init()))))
+    let transport = ManifestTestTransport()
+    await transport.set(try PSDCodec.writeRasterLayers(doc), at: input)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, _ in
+      service.setResourceJobsEnabled(true)
+      let png = ["mediaType": "image/png", "compression": "high"]
+      let limited = try await self.embedded(service, self.options([
+        "includeLayerThumbnails": true, "maximumThumbnailDepth": 1, "exportOptions": png,
+      ]))
+      XCTAssertNotNil(try self.layer(limited, id: 4)["thumbnail"])
+      XCTAssertNil(try self.layer(limited, id: 149)["thumbnail"])
+      let uncropped = try await self.readThumbnail(service, self.layer(limited, id: 4))
+      XCTAssertEqual([uncropped.width, uncropped.height], [36, 28])
+
+      let all = try await self.embedded(service, self.options([
+        "includeLayerThumbnails": true, "maximumThumbnailDepth": 0, "trimToTransparency": true, "exportOptions": png,
+      ]))
+      let trimmed = try await self.readThumbnail(service, self.layer(all, id: 149))
+      XCTAssertEqual([trimmed.width, trimmed.height], [6, 5])
+      let pixels = try Renderer.composite(trimmed).rgbaData(depth: .u8)
+      XCTAssertEqual(pixels.prefix(4).last, 153)
+      let adjustment = try await self.readThumbnail(service, self.layer(all, id: 5))
+      XCTAssertEqual([adjustment.width, adjustment.height], [36, 28])
+      XCTAssertEqual(try Renderer.composite(adjustment).pixel(x: 0, y: 0), .white)
+    }
+  }
+
+  @MainActor func testEmbeddedOriginalDownloadIsOptInAuthenticatedAndNeverFetchesLinks() async throws {
+    var doc = try source()
+    let bytes = try XCTUnwrap(doc.layers[2].smartObject?.data)
+    let locator = try LinkedSmartObjectSource(reference: "file:///does-not-exist/Reference.png",
+      contentHash: LinkedSmartObjectSource.fingerprint(bytes), byteLength: UInt64(bytes.count))
+    let link = try LinkedSmartObjectIO.place(bytes, fileName: "Reference.png", reference: locator, in: doc, fit: false)
+    doc.layers.append(link)
+    var duplicate = doc.layers[2]
+    duplicate.id = UUID()
+    duplicate.sourceTags = nil
+    duplicate.parentID = nil
+    duplicate.clipped = false
+    doc.layers.append(duplicate)
+    let transport = ManifestTestTransport()
+    await transport.set(try PSDCodec.writeRasterLayers(doc, format: .psb), at: input)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, _ in
+      service.setResourceJobsEnabled(true)
+      let plain = try await self.embedded(service, self.options(["trimToTransparency": true]))
+      let metadata = try self.layer(plain, id: 149)["smartObject"] as? [String: Any]
+      XCTAssertNil(metadata?["extracted"])
+      XCTAssertNil(try self.layer(plain, id: 149)["thumbnail"])
+
+      let exported = try await self.embedded(service, self.options(["extractSmartObjectData": true]))
+      let smart = try XCTUnwrap(self.layer(exported, id: 149)["smartObject"] as? [String: Any])
+      let extracted = try XCTUnwrap(smart["extracted"] as? [String: String])
+      XCTAssertEqual(extracted["mediaType"], "application/octet-stream")
+      let url = try XCTUnwrap(URL(string: try XCTUnwrap(extracted["url"])))
+      let response = try await helper.request(service, path: url.path)
+      XCTAssertEqual(response.0.statusCode, 200)
+      XCTAssertEqual(response.0.value(forHTTPHeaderField: "Content-Type"), extracted["mediaType"])
+      XCTAssertEqual(response.1, bytes)
+      let denied = try await helper.request(service, path: url.path, authenticate: false)
+      XCTAssertEqual(denied.0.statusCode, 401)
+      let linked = try XCTUnwrap(self.layer(exported, id: 5)["smartObject"] as? [String: Any])
+      XCTAssertEqual(linked["isLinked"] as? Bool, true)
+      XCTAssertNil(linked["extracted"])
+      let instance = try XCTUnwrap(self.layer(exported, id: 6)["smartObject"] as? [String: Any])
+      XCTAssertEqual(instance["extracted"] as? [String: String], extracted)
+      service.setResourceJobsEnabled(false)
+      let revoked = try await helper.request(service, path: url.path)
+      XCTAssertEqual(revoked.0.statusCode, 403)
+      let fetched = await transport.fetched
+      XCTAssertEqual(fetched, [self.input, self.input])
+    }
+  }
+
+  func testJPEGThumbnailsFitWithinTheEdgeLimit() throws {
+    let document = try CraftDocument(width: 300, height: 150)
+    for scan in [["type": "baseline", "optimized": true] as [String: Any], ["type": "progressive"]] {
+      let options: [String: Any] = ["mediaType": "image/jpeg", "quality": "maximum", "scan": scan]
+      let thumbnail = try AdobeManifestThumbnail(options: options, depth: 0, trim: false)
+      let bytes = try thumbnail.encoded(document.layers[0], in: document)
+      XCTAssertEqual(Array(bytes.prefix(2)), [0xff, 0xd8])
+      let progressive = scan["type"] as? String == "progressive"
+      let marker: UInt8 = progressive ? 0xc2 : 0xc0
+      XCTAssertTrue(zip(bytes, bytes.dropFirst()).contains { $0.0 == 0xff && $0.1 == marker })
+      let decoded = try RasterIO.read(bytes)
+      XCTAssertEqual([decoded.width, decoded.height], [256, 128])
+    }
+  }
+
+  @MainActor private func embedded(_ service: AutomationService, _ body: [String: Any]) async throws -> [String: Any] {
+    let reply = try await results(service, body: body)
+    return try XCTUnwrap((reply.first?["destination"] as? [String: Any])?["content"] as? [String: Any])
+  }
+
+  @MainActor private func readThumbnail(_ service: AutomationService, _ layer: [String: Any]) async throws -> CraftDocument {
+    let link = try XCTUnwrap(layer["thumbnail"] as? [String: String])
+    XCTAssertEqual(link["mediaType"], "image/png")
+    let url = try XCTUnwrap(URL(string: try XCTUnwrap(link["url"])))
+    let response = try await AutomationTests().request(service, path: url.path)
+    XCTAssertEqual(response.0.statusCode, 200)
+    XCTAssertEqual(response.0.value(forHTTPHeaderField: "Content-Type"), "image/png")
+    return try RasterIO.read(response.1)
   }
 
   @MainActor func testHTTPManifestIDsWorkInAnEditAndTheNextPSD() async throws {
@@ -235,9 +349,11 @@ final class AdobeDocumentManifestTests: XCTestCase {
 private actor ManifestTestTransport: AdobeResourceTransport {
   var resources: [URL: Data] = [:]
   var uploads: [URL: Data] = [:]
+  private(set) var fetched: [URL] = []
   func set(_ data: Data, at url: URL) { resources[url] = data }
   func uploaded(_ url: URL) -> Data? { uploads[url] }
   func fetch(_ url: URL) async throws -> Data {
+    fetched.append(url)
     guard let data = resources[url] else { throw AdobeAPIError.invalid("Missing owned fixture.") }
     return data
   }

@@ -682,7 +682,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 661 | 2026-11-20 | [Smart Object templates get editable masks and blending](#dev-step-661) |
 | 662 | 2026-11-20 | [Fit replacement artwork inside Smart Object frames](#dev-step-662) |
 | 663 | 2026-11-20 | [Inspect Photoshop templates through the Adobe-compatible manifest](#dev-step-663) |
+| 664 | 2026-11-20 | [Export thumbnail and Smart Object assets from Photoshop manifests](#dev-step-664) |
 <!-- history-index:end -->
+
+<a id="dev-step-664"></a>
+
+## 2026-11-20 — Export thumbnail and Smart Object assets from Photoshop manifests
+
+Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs.
+
+Thumbnail and extraction requests remain optional. The job publishes their authenticated downloads together with the completed manifest.
+
+1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. The manifest tests verified PNG crop geometry, thumbnail nesting, blank adjustment previews, JPEG frames, exact PSB Smart Object bytes, shared-instance URLs, authorization, expiry and the combined storage budget.
+
+Direct Adobe-hosted comparison of thumbnail geometry, defaults and bytes remains open. The native encoder chooses its progressive JPEG scan count. Intel tests ran under Rosetta.
+
+[Development record](ADOBE_MANIFEST_ASSETS_664.md) · [Qualification](SOURCE_PUBLICATION_664.md).
 
 <a id="dev-step-663"></a>
 

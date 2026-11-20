@@ -69,7 +69,7 @@ protocol AdobeResourceTransport: Sendable {
   }
   struct Asset: Sendable {
     let data: Data
-    let mediaType: AdobeActionsRequest.MediaType
+    let mediaType: String
     let expires: Date
   }
   private enum Request: Sendable {
@@ -226,26 +226,28 @@ protocol AdobeResourceTransport: Sendable {
         fetched[artboards.input] = input
       }
       let resources = fetched
-      let computation: Task<[AdobeActionAssets.Encoded], Error>
+      let computation: Task<AdobeActionAssets.JobResult, Error>
       switch request {
       case .actions(let request):
         computation = Task.detached(priority: .utility) {
-          try AdobeActionAssets.execute(request, input: input, resources: resources)
+          .init(outputs: try AdobeActionAssets.execute(request, input: input, resources: resources))
         }
       case .manifest(let request):
-        computation = Task.detached(priority: .utility) { try request.execute(input: input) }
+        let assetBase = job.baseURL.appendingPathComponent(job.assetPath)
+        computation = Task.detached(priority: .utility) { try request.execute(input: input, assetBase: assetBase) }
       case .artboards(let request):
-        computation = Task.detached(priority: .utility) { try request.execute(resources: resources) }
+        computation = Task.detached(priority: .utility) { .init(outputs: try request.execute(resources: resources)) }
       case .colorEdit(let request):
-        computation = Task.detached(priority: .utility) { try request.execute(input: input) }
+        computation = Task.detached(priority: .utility) { .init(outputs: try request.execute(input: input)) }
       case .background(let request):
-        computation = Task.detached(priority: .utility) { try await request.execute(input: input, detector: detector) }
+        computation = Task.detached(priority: .utility) { .init(outputs: try await request.execute(input: input, detector: detector)) }
       }
-      let encoded = try await withTaskCancellationHandler(
+      let result = try await withTaskCancellationHandler(
         operation: { try await computation.value }, onCancel: { computation.cancel() })
       try check(expected)
       prune()
-      let needed = encoded.reduce(0) { total, item in
+      let attachmentBytes = result.attachments.values.reduce(0) { $0 + $1.data.count }
+      let needed = result.outputs.reduce(attachmentBytes) { total, item in
         switch item.output.destination {
         case .hosted: return total + item.data.count
         case .external: return total
@@ -264,7 +266,7 @@ protocol AdobeResourceTransport: Sendable {
       }
       // Validate and encode all outputs first. Remote PUTs cannot be rolled back
       // if a later destination fails; report failure without publishing hosted assets.
-      for item in encoded {
+      for item in result.outputs {
         try check(expected)
         if case .external = item.output.destination {
           try await transport.upload(item.data, output: item.output)
@@ -272,8 +274,11 @@ protocol AdobeResourceTransport: Sendable {
       }
       try check(expected)
       let completed = now()
-      var pending: [UUID: Asset] = [:]
-      let outputs = encoded.map { item -> Output in
+      var pending = result.attachments.mapValues { attachment in
+        Asset(data: attachment.data, mediaType: attachment.mediaType,
+              expires: completed.addingTimeInterval(TimeInterval(result.attachmentValidity)))
+      }
+      let outputs = result.outputs.map { item -> Output in
         let content: Output.Content
         switch item.output.destination {
         case .external(let destination, _): content = .url(destination)
@@ -281,7 +286,7 @@ protocol AdobeResourceTransport: Sendable {
         case .hosted(let validity):
           let assetID = UUID()
           pending[assetID] = Asset(
-            data: item.data, mediaType: item.output.mediaType,
+            data: item.data, mediaType: item.output.mediaType.rawValue,
             expires: completed.addingTimeInterval(TimeInterval(validity)))
           content = .url(job.baseURL.appendingPathComponent("\(job.assetPath)/\(assetID.uuidString)"))
         }

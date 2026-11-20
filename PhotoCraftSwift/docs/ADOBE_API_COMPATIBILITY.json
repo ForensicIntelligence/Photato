@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 663 includes local document manifest metadata and stable IDs for downstream composite edits. The Adobe-compatible API covers a subset of the published surface. Independent hosted service conformance remains open.",
+  "current_api": "Checkpoint 664 adds opt-in thumbnail and embedded Smart Object downloads to the local manifest. Independent Adobe hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -209,8 +209,8 @@
           "429",
           "500"
         ],
-        "status": "partial native implementation (step663)",
-        "conformance": "Authenticated local metadata workflow tested. Adobe-hosted result parity remains open."
+        "status": "partial native implementation (step664)",
+        "conformance": "Authenticated local metadata, thumbnails and original asset workflow tested. Adobe-hosted result parity remains open."
       },
       {
         "method": "GET",
@@ -984,6 +984,13 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "adobe_manifest_assets_build664": {
+    "route": "POST /v2/generate-manifest",
+    "status": "partial native implementation",
+    "scope": "Optional JPEG and PNG thumbnails with depth and trim, plus exact embedded Smart Object files through local authenticated expiring URLs.",
+    "limits": "Independent Adobe-hosted thumbnail comparisons and explicit progressive JPEG scan counts remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_664.json"
   },
   "adobe_document_manifest_build663": {
     "route": "POST /v2/generate-manifest",

@@ -1233,7 +1233,11 @@ Enable resource jobs in the Photato API window. Submit the source PSD or PSB to 
 {"image":{"source":{"url":"https://example.com/template.psd"}},"includeXmp":true,"outputs":[{"destination":{"embedded":"json"},"mediaType":"application/json"}]}
 ```
 
-The result includes document bounds, mode, bit depth, layer hierarchy, and supported Smart Object, mask and blend properties. Pass a returned layer `id` to `POST /v2/create-composite` against the same template. By default XMP is omitted. Embedded output also accepts `string` or `base64`. For a temporary hosted result use `destination.validityPeriod`. For an authorized external upload use `destination.url` with HTTPS. Thumbnails and original Smart Object extraction are unavailable. [Development record](ADOBE_DOCUMENT_MANIFEST_663.md)
+The result includes document bounds, mode, bit depth, layer hierarchy, and supported Smart Object, mask and blend properties. Pass a returned layer `id` to `POST /v2/create-composite` against the same template. By default XMP is omitted. Embedded output also accepts `string` or `base64`. For a temporary hosted result use `destination.validityPeriod`. For an authorized external upload use `destination.url` with HTTPS. [Metadata and IDs](ADOBE_DOCUMENT_MANIFEST_663.md)
+
+Set `includeLayerThumbnails` to true to include `thumbnail` objects. Set `maximumThumbnailDepth` to a positive nesting limit or zero for all levels. Select JPEG or PNG in `exportOptions.mediaType`. `trimToTransparency` crops to visible pixels. Photato caps thumbnails at 256 pixels along their longest edge.
+
+Set `extractSmartObjectData` to true to include `smartObject.extracted` URLs for embedded objects. Download thumbnails and original files using the same local bearer token as the manifest. Thumbnail and original-file links for one job share an expiry. [Thumbnail and extraction details](ADOBE_MANIFEST_ASSETS_664.md)
 
 ## Subject selection and background removal — step159
 

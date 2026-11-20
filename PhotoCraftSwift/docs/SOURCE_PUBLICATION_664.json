@@ -1,0 +1,183 @@
+{
+  "build": 664,
+  "base": "35d75ec8fb4605bfca5a912a3ed78682c1d2d500",
+  "buildInputs": 9265,
+  "includedBuildInputs": 9252,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "fb407723c93a5ebb45571b4e300eb5aa059d7ab1c7921b82ebf82e18b21a58c3",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AdobeActionAssets.swift",
+      "sha256": "0a01395de5a3f13f1bee327c33087bf355563204dd882d43a422f28edf466a5f"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdobeActionJobs.swift",
+      "sha256": "2e32b30ab7e7418a8f0efa97440238a1302ea1bb4226d7b84e5a8eb307a9f647"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdobeDocumentManifest.swift",
+      "sha256": "266d5dacad29c69e52aba21638cb29a3555fe25129322096ca89379060c4ce47"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdobeManifestAssets.swift",
+      "sha256": "8c090a956ae3bf16ec60601a47044dc7ea654d332c8c84ce3f7f7b3532b7b772"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationActionJobs.swift",
+      "sha256": "e283763e86eefe491782861ea793b2e31d2e5cac5c1358796d256d73d128683a"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AdobeActionJobsTests.swift",
+      "sha256": "e15ee411b8d4d87766e33680d6cedf58aaef7f62c16c074e17487bbe4582b79e"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AdobeDocumentManifestTests.swift",
+      "sha256": "5b9a20852f8eebeb2048ecbbdaff3941ad4fef2064cf7c9c286e8513946d723d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "690a8453dc0a45f50df9cd3798734c77dc03fb5681784917f7f687214e25178d"
+    }
+  ],
+  "casesPerConfiguration": 1502,
+  "requestedCasesPerConfiguration": 1503,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1503,
+      "passed": 1503,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "f267691319030198fafa5d6538906ecaa8c31d67ad76ff6113d5b8816172897f"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1503,
+      "passed": 1503,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "4e1617bdd283728a09f76ad0743e090f4bd5a3c4370be23b958562391a9ad4d1",
+      "retestedSelectors": [
+        "PhotoCraftAppTests.WorkflowGuideTests/testGuideOutlinesAParentMenuRowAndThenTheExactSubmenuCommand"
+      ]
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1503,
+      "passed": 1502,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftAppTests.AutomationActionJobsTests/testRGB32GroupGoldensThroughDesktopDownloadAndBothJobs"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.AutomationActionJobsTests/testRGB32GroupGoldensThroughDesktopDownloadAndBothJobs"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "fea22ba972816f7d9a5eb8999418876a1027c24e03296404f6ee2b00dab8ccc6"
+    }
+  },
+  "intelRGB32Baseline": {
+    "previousBuild": 663,
+    "candidateBuild": 664,
+    "test": "testRGB32GroupGoldensThroughDesktopDownloadAndBothJobs",
+    "mismatchedBytesPerAssertionAgainstPhotoshopGoldens": [
+      4975,
+      4975,
+      4975,
+      4975,
+      3508,
+      3508,
+      3508,
+      3508,
+      3332,
+      3332,
+      3332,
+      3332,
+      3833,
+      3833,
+      3833,
+      3833,
+      3323,
+      3323,
+      3323,
+      3323,
+      4831,
+      4831,
+      4831,
+      4831,
+      3810,
+      3810,
+      3810,
+      3810,
+      2794,
+      2794,
+      2794,
+      2794
+    ],
+    "previousIntelMergedSamplesMatch": true,
+    "files": {
+      "02-pass-opacity.psd": {
+        "mergedBytes": 65536,
+        "sha256": "241a403b2cc6e3b8b1ffe28933036bd785242adce794ad6d3d47d79c833fd83b"
+      },
+      "04-isolated-opacity-mask.psd": {
+        "mergedBytes": 65536,
+        "sha256": "ed6d8de931a63ec96b746dd4dab9b56fb47d239c3239762d67d7f244d006726b"
+      },
+      "05-clipping.psd": {
+        "mergedBytes": 65536,
+        "sha256": "c7ffef467322a5ff60fef6c2dc75b233beb502067c0104b077079eaed7f6cc64"
+      },
+      "07-nested-pass.psd": {
+        "mergedBytes": 65536,
+        "sha256": "53c17c7dd9fbccfce88f19ca7d795aa735d0423673fc6ecc1fa58cf72a8ff798"
+      },
+      "08-opaque-pass-opacity.psd": {
+        "mergedBytes": 65536,
+        "sha256": "70afeff87a7a728905df9496154bcd59adf1492d6e9d506fd8179e11251d7918"
+      },
+      "09-pass-opacity-213.psd": {
+        "mergedBytes": 65536,
+        "sha256": "c5bb15c63050ba473b45fb8c4ed1de4bee124eb2445c1effc013198d85b9c79c"
+      },
+      "10-nested-masked.psd": {
+        "mergedBytes": 65536,
+        "sha256": "af8737cf85232d73d43357c8fb699c2b8f2a3c22f91f1f117739d4d1308608d5"
+      },
+      "11-isolated-first-transparent.psd": {
+        "mergedBytes": 65536,
+        "sha256": "83f4478d46a998cd8d3e105f3154c985cf0c38759a79db0203f660052e39965f"
+      }
+    }
+  },
+  "selectedCasesSHA256": "21f4afc077ba816c3727ec26f6287fd2ecad2a45a7c7cc2ac59aa8e49c3945a9",
+  "preview": {
+    "archiveSHA256": "27fa1cb12d20b016c9b86352b1ca84b87cf47ed88ada03d22fd6294424404e2c",
+    "binarySHA256": "91850ef84de087b8e78cecd0f4c3e4fc8e7db62277633155f28cebaa8aeabb61",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "7644ab6a9c0770af0d679f6f1fc993682a0cbc81c49d7daa0c51a52372d7b4b1",
+      "x86_64": "2ccca809d9e24d7965f34eafc9acafd3b944b09f91af89a0e5cc9eae9c9fae0d"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "publicContract": {
+    "sha256": "d7b5c019937f142d2832c9ec4a6ae00500e9bdf9cfea14d83249f28f8869d46e"
+  },
+  "liveAdobeCompared": false,
+  "hostedAdobeCompared": false
+}

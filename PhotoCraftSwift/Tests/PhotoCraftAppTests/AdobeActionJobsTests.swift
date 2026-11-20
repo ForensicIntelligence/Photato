@@ -122,6 +122,42 @@ final class AdobeActionJobsTests: XCTestCase {
       jobs.asset(try XCTUnwrap(UUID(uuidString: (try XCTUnwrap(result.outputs[0].url)).lastPathComponent))))
   }
 
+  @MainActor func testManifestAttachmentsShareHostedBudgetAndExpireWithTheManifest() async throws {
+    let data = try input()
+    let request = try AdobeManifestRequest(data: JSONSerialization.data(withJSONObject: [
+      "image": ["source": ["url": "https://example.test/input.psd"]],
+      "includeLayerThumbnails": true,
+      "outputs": [["mediaType": "application/json", "destination": ["validityPeriod": 60]]],
+    ]))
+    let prepared = try request.execute(input: data, assetBase: base.appendingPathComponent("v2/assets"))
+    XCTAssertEqual(prepared.attachments.count, 1)
+    let budget = try XCTUnwrap(prepared.outputs.first).data.count
+    let clock = TestClock()
+    let jobs = AdobeActionJobs(transport: StubTransport(data: data), now: { clock.now() })
+    let limited = AdobeActionJobs(transport: StubTransport(data: data), maximumStoredBytes: budget)
+    defer { jobs.revoke(); limited.revoke() }
+    let limitedJob = try limited.submit(request, baseURL: base)
+    let failed = try await completed(limited, limitedJob.id)
+    XCTAssertEqual(failed.error?.code, "rate_limit_exceeded")
+    XCTAssertTrue(failed.outputs.isEmpty)
+
+    let job = try jobs.submit(request, baseURL: base)
+    let result = try await completed(jobs, job.id)
+    XCTAssertEqual(result.status, .succeeded, result.error?.message ?? "")
+    let manifestURL = try XCTUnwrap(result.outputs.first?.url)
+    let manifestID = try XCTUnwrap(UUID(uuidString: manifestURL.lastPathComponent))
+    let manifest = try XCTUnwrap(jobs.asset(manifestID))
+    let fields = try XCTUnwrap(JSONSerialization.jsonObject(with: manifest.data) as? [String: Any])
+    let layers = try XCTUnwrap(fields["layers"] as? [[String: Any]])
+    let thumbnail = try XCTUnwrap(layers.first?["thumbnail"] as? [String: String])
+    let url = try XCTUnwrap(URL(string: try XCTUnwrap(thumbnail["url"])))
+    let assetID = try XCTUnwrap(UUID(uuidString: url.lastPathComponent))
+    XCTAssertNotNil(jobs.asset(assetID))
+    clock.advance(60)
+    XCTAssertNil(jobs.asset(manifestID))
+    XCTAssertNil(jobs.asset(assetID))
+  }
+
   @MainActor func testFailuresAndStorageBudgetPublishNoOutputsAndDoNotLeakSignedURLs() async throws
   {
     let invalid = StubTransport(data: Data("not an image".utf8))

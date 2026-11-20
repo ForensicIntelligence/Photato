@@ -85,6 +85,6 @@ extension AutomationService {
       throw AdobeAPIError(
         status: 404, code: "unknown_output_id", message: "Output expired or not found.")
     }
-    return .init(status: 200, contentType: asset.mediaType.rawValue, body: asset.data)
+    return .init(status: 200, contentType: asset.mediaType, body: asset.data)
   }
 }

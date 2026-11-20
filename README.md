@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 663.** The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_663.md).
+**Development alpha — source build 664.** Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_664.md).
 
 ## Project layout
 

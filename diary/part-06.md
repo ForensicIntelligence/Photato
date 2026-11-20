@@ -679,6 +679,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 661 | [Smart Object templates get editable masks and blending](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-661) |
 | 2026-11-20 | 662 | [Fit replacement artwork inside Smart Object frames](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-662) |
 | 2026-11-20 | 663 | [Inspect Photoshop templates through the Adobe-compatible manifest](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-663) |
+| 2026-11-20 | 664 | [Export thumbnail and Smart Object assets from Photoshop manifests](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-664) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
