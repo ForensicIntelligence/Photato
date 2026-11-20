@@ -333,7 +333,7 @@ enum NativeChunkedArchive {
 extension NativeArchive {
   /// In-memory containers and metadata retain their original independent bound.
   public static let maximumBytes = 512 * 1024 * 1024
-  public static let latestVersion = SmartObject.streamingSourceArchiveVersion
+  public static let latestVersion = CylinderWarp.archiveVersion
   /// File transactions stream bounded chunks. Index/heap/scratch/metadata budgets
   /// remain separate; this admission ceiling does not prove dense4TiB capacity.
   public static let maximumFileBytes = 4_398_046_511_104

@@ -76,12 +76,23 @@ extension Layer {
   }
 }
 extension CraftDocument {
-  var requiresSourceSmartArchive:Bool {
-    func payload(_ value:AnimationLayerPayload)->Bool{value.sourceProjection != nil || value.importedSmartAppearance != nil}
-    func layer(_ value:Layer)->Bool{value.requiresSourceSmartArchive || value.videoKeyframes?.contains(where:{$0.content.map(payload) ?? false}) == true}
-    if layers.contains(where:layer) || animation?.frames.contains(where:{$0.layers.contains(where:{$0.payload.map(payload) ?? false})}) == true{return true}
+  private func containsLayerProgram(layer: (Layer) -> Bool, payload: (AnimationLayerPayload) -> Bool) -> Bool {
+    func matches(_ value: Layer) -> Bool { layer(value) || value.videoKeyframes?.contains(where: { $0.content.map(payload) ?? false }) == true }
+    if layers.contains(where: matches) || animation?.frames.contains(where: { $0.layers.contains(where: { $0.payload.map(payload) ?? false }) }) == true { return true }
     var retained=videoTimeline?.retainedFrameSources ?? [];if let source=animation?.retainedVideoSource{retained.append(source)}
-    while let source=retained.popLast(){if source.layers.contains(where:layer){return true};retained.append(contentsOf:source.timeline.retainedFrameSources ?? [])}
+    while let source=retained.popLast(){if source.layers.contains(where:matches){return true};retained.append(contentsOf:source.timeline.retainedFrameSources ?? [])}
     return false
+  }
+
+  var requiresSourceSmartArchive: Bool {
+    containsLayerProgram(layer: { $0.requiresSourceSmartArchive },
+                         payload: { $0.sourceProjection != nil || $0.importedSmartAppearance != nil })
+  }
+
+  var requiresCylinderWarpArchive: Bool {
+    containsLayerProgram(layer: { layer in
+      layer.warp?.cylinder != nil || layer.importedSmartAppearance?.reference.warp?.cylinder != nil
+        || (try? layer.linkedSmartObjectPreview())?.warp?.cylinder != nil
+    }, payload: { $0.importedSmartAppearance?.reference.warp?.cylinder != nil })
   }
 }

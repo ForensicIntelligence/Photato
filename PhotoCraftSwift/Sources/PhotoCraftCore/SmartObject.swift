@@ -248,6 +248,9 @@ extension CraftDocument {
       if let mesh = layers[i].warp?.mesh {
         layers[i].warp?.mesh?.points = mesh.points.map { $0.transformed(scale) }
       }
+      if let cylinder = layers[i].warp?.cylinder, scale != .identity {
+        layers[i].warp?.cylinder = cylinder.scaled(x: scale.a, y: scale.d)
+      }
       if let frame = layers[i].warp?.sourceBounds {
         layers[i].warp?.sourceBounds = .init(x:frame.x*scale.a,y:frame.y*scale.d,width:frame.width*scale.a,height:frame.height*scale.d)
       }

@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 667 retains supported editable Smart Object Warp in PSD/PSB and reports the corresponding placed quad in manifest responses. Independent hosted service conformance remains open.",
+  "current_api": "Checkpoint 668 adds Cylinder Warp for editable PSD/PSB and reports its placed quadrilateral. Independent hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -984,6 +984,17 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "cylinder_warp_build668": {
+    "route": "POST /v2/generate-manifest",
+    "photatoCommands": [
+      "layer.warp",
+      "smartObject.linked.relink"
+    ],
+    "status": "partial native implementation",
+    "scope": "Horizontal seven-value Cylinder Warp reopens as editable PSD/PSB state. The manifest includes the placed control hull.",
+    "limits": "Photato layer.warp applies Cylinder through the native command. There is no separate published Adobe v2 Cylinder endpoint. Live Photoshop bytes and hosted behavior remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_668.json"
   },
   "editable_warp_build667": {
     "route": "POST /v2/generate-manifest",

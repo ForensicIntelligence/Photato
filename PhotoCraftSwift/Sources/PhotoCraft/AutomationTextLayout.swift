@@ -4,7 +4,7 @@ import PhotoCraftImaging
 
 enum TextLayoutAPI {
   static let command="text.layout"
-  static var warp:[String:Any]{BrushAPI.object(["style":BrushAPI.enumeration(WarpStyle.allCases.filter{$0 != .custom}.map(\.rawValue)),"bend":BrushAPI.number(-100,100),"horizontalDistortion":BrushAPI.number(-100,100),"verticalDistortion":BrushAPI.number(-100,100),"vertical":BrushAPI.flag])}
+  static var warp:[String:Any]{BrushAPI.object(["style":BrushAPI.enumeration(([WarpStyle.none] + WarpStyle.analyticPresets).map(\.rawValue)),"bend":BrushAPI.number(-100,100),"horizontalDistortion":BrushAPI.number(-100,100),"verticalDistortion":BrushAPI.number(-100,100),"vertical":BrushAPI.flag])}
   static var settings:[String:Any]{BrushAPI.object(["mode":BrushAPI.enumeration(TextGeometry.Mode.allCases.map(\.rawValue)),"width":BrushAPI.number(1,16384),"height":BrushAPI.number(1,16384),"path":PathAPI.path,"warp":warp,"fit":BrushAPI.flag,"reverse":BrushAPI.flag,"start":BrushAPI.number(0,1),"end":BrushAPI.number(0,1),"offset":BrushAPI.number(-4096,4096),"wordSpacing":BrushAPI.number(-4096,4096),"lineSpacing":BrushAPI.number(-4096,4096)])}
   static func decode(_ value:AutomationValue)throws->TextGeometry {
     do {

@@ -32,7 +32,7 @@ final class ShapedTextTests:XCTestCase {
     let d=try doc(text)
     XCTAssertEqual(try NativeTextLayout.render(text,document:d),try NativeTextLayout.render(plain,document:d))
     text.typography?.geometry?.warp.bend=60
-    for style in WarpStyle.allCases where style != .none && style != .custom{text.typography?.geometry?.warp.style=style;XCTAssertGreaterThan(try NativeTextLayout.outline(text,dpi:72).boundingBoxOfPath.width,1)}
+    for style in WarpStyle.analyticPresets{text.typography?.geometry?.warp.style=style;XCTAssertGreaterThan(try NativeTextLayout.outline(text,dpi:72).boundingBoxOfPath.width,1)}
     for depth in [PixelDepth.u8,.u16,.f32]{let d=try doc(text,depth:depth);XCTAssertEqual(try NativeTextLayout.render(text,document:d).depth,depth)}
   }
   func testIntervalsFittingAndActualCurveGeometry()throws {

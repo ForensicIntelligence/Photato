@@ -8,7 +8,12 @@ public struct TypeWarp:Codable,Equatable,Sendable {
   public init(){}
   private var engine:WarpDefinition {var value=WarpDefinition();value.style=style;value.bend=bend;value.horizontalDistortion=horizontalDistortion;value.verticalDistortion=verticalDistortion;value.vertical=vertical;return value}
   public var isIdentity:Bool{engine.isIdentity}
-  public func validate()throws{try engine.validate()}
+  public func validate()throws {
+    guard style == .none || WarpStyle.analyticPresets.contains(style) else {
+      throw CraftError.unsupported("Type Warp uses the fifteen classic preset styles.")
+    }
+    try engine.validate()
+  }
   public func point(_ x:Double,_ y:Double,width:Double,height:Double)->PathPoint{engine.point(x,y,width:width,height:height)}
 }
 public struct TextGeometry:Codable,Equatable,Sendable {
@@ -28,7 +33,7 @@ public struct TextGeometry:Codable,Equatable,Sendable {
       [offset,wordSpacing,lineSpacing].allSatisfy({$0.isFinite && abs($0)<=4096})
     else{throw CraftError.invalid("Invalid shaped-text frame, path interval or spacing.")}
     if mode != .warp,!warp.isIdentity{throw CraftError.invalid("Warp settings belong to Warp text layout.")}
-    try warp.validate();guard warp.style != .custom else{throw CraftError.unsupported("Type Warp uses the fifteen preset styles.")}
+    try warp.validate()
     if mode == .path || mode == .inside {
       guard let path,!path.isEmpty,!path.inverted else{throw CraftError.invalid("Shaped text requires a nonempty path.")};try path.validate()
       if mode == .path {guard path.components.count==1,path.components[0].knots.count>=2 else{throw CraftError.invalid("Text on a path requires one connected contour.")}}

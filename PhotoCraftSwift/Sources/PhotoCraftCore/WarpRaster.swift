@@ -8,6 +8,9 @@ public enum WarpRaster {
   public static func mapping(_ warp:WarpDefinition,width:Int,height:Int,transform:Transform2D,projection:ProjectiveTransform?=nil) throws -> Mapping {
     try warp.validate();try transform.validated()
     guard width>0,height>0,width<=maximumPixels/height else { throw CraftError.unsupported("Warp supports source and output layers up to8,388,608 pixels.") }
+    if warp.cylinder != nil {
+      return try PagedWarpRaster.mapping(warp, width: width, height: height, transform: transform, projection: projection).denseMapping()
+    }
     let nx=min(256,max(16,(width+7)/8)),ny=min(256,max(16,(height+7)/8))
     var vertices=[PathPoint](),inputs=[PathPoint]()
     for j in 0...ny { try Task.checkCancellation();for i in 0...nx {

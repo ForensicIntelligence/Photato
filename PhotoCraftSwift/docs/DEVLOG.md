@@ -686,7 +686,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 665 | 2026-11-20 | [Reopen perspective Smart Objects and continue editing](#dev-step-665) |
 | 666 | 2026-11-20 | [Relink perspective artwork after reopening PSD and PSB](#dev-step-666) |
 | 667 | 2026-11-20 | [Keep Smart Object Warp editable in PSD and PSB](#dev-step-667) |
+| 668 | 2026-11-20 | [Wrap editable Smart Objects around a cylinder](#dev-step-668) |
 <!-- history-index:end -->
+
+<a id="dev-step-668"></a>
+
+## 2026-11-20 — Wrap editable Smart Objects around a cylinder
+
+Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked.
+
+The native Warp sheet and authenticated API share seven editable Cylinder values and the bounded raster engine. The PSD reader accepts both numeric list encodings and maps the saved placed quad to the control hull. Replacing artwork rescales the source coordinates and rim depths, including when an original was missing at open.
+
+The first focused Debug run passed 31 cases. The broader run found archive protocol tests with hardcoded version 97 expectations. Those cases now derive their limits from the native archive protocol and the Cylinder test independently verifies a version 98 download. The first standalone raster harness needed normal macOS ImageIO access before it could load its PNG fixture. Review moved Shift and cursor behavior into the shared ToolCursor policy. The first SwiftUI cursor build did not type-check, so preview drawing, coordinate conversion and gesture dispatch became separate methods within the same view. The final build was tested across the affected editor, archive, Smart Object, PSD and manifest paths.
+
+All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen. Five new tests cover the front surface, native controls and modifiers, authenticated exports and embedded or linked Smart Objects. A sparse 300,000 × 300,000 source passed Warp and exact Undo. 3 of 3 owned 16-bit Cylinder composites and 6 of 6 Photoshop containers matched byte for byte across the three Photato configurations. The eight existing Intel RGB32 PSDs and the three published Warp regression files match checkpoint 667.
+
+The installed Photoshop document query timed out. The Cylinder renderer uses published measurements. A Photoshop-authored Cylinder PSD, live mouse interaction and byte-identical Photoshop rerendering remain unverified.
+
+[Development record](CYLINDER_WARP_668.md) · [Qualification](SOURCE_PUBLICATION_668.md).
 
 <a id="dev-step-667"></a>
 

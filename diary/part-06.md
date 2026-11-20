@@ -683,6 +683,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 665 | [Reopen perspective Smart Objects and continue editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-665) |
 | 2026-11-20 | 666 | [Relink perspective artwork after reopening PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-666) |
 | 2026-11-20 | 667 | [Keep Smart Object Warp editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-667) |
+| 2026-11-20 | 668 | [Wrap editable Smart Objects around a cylinder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

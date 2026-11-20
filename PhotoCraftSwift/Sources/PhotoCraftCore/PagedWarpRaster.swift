@@ -152,12 +152,46 @@ public enum PagedWarpRaster {
       throw CraftError.invalid("Invalid Warp source dimensions.")
     }
     let nx = min(256, max(16, (width+7)/8)), ny = min(256, max(16, (height+7)/8))
+    if let cylinder = warp.cylinder {
+      let w = Double(width), h = Double(height)
+      let frame = warp.sourceBounds ?? .init(x: 0, y: 0, width: w, height: h)
+      let shape = cylinder.surface
+      let left = max(shape.firstVisibleU, -frame.x / frame.width)
+      let right = min(shape.lastVisibleU, (w - frame.x) / frame.width)
+      let top = max(0, -frame.y / frame.height)
+      let bottom = min(1, (h - frame.y) / frame.height)
+      guard left < right, top < bottom else {
+        throw CraftError.invalid("The visible Cylinder surface falls outside its source artwork.")
+      }
+      // Always include the center and both silhouettes. Degenerate back
+      // patches contribute no triangles and cannot leak behind the label.
+      let cells = nx + nx % 2
+      let columns = (0...cells).map { i in
+        let t = Double(i) / Double(cells)
+        let midpoint = max(left, min(0.5, right))
+        if midpoint == left || midpoint == right { return left + t * (right - left) }
+        return t <= 0.5 ? left + 2 * t * (midpoint - left) : midpoint + (2 * t - 1) * (right - midpoint)
+      }
+      return try grid(columns: columns, rows: ny, transform: transform, projection: projection) { u, row in
+        let v = top + (bottom - top) * Double(row) / Double(ny)
+        return (.init(frame.x + frame.width * u, frame.y + frame.height * v), shape.point(u, v))
+      }
+    }
+    let columns = (0...nx).map { Double($0) * Double(width) / Double(nx) }
+    return try grid(columns: columns, rows: ny, transform: transform, projection: projection) { x, row in
+      let y = Double(row) * Double(height) / Double(ny)
+      return (.init(x, y), warp.point(x, y, width: Double(width), height: Double(height)))
+    }
+  }
+
+  private static func grid(columns: [Double], rows: Int, transform: Transform2D, projection: ProjectiveTransform?,
+                           sample: (Double, Int) -> (PathPoint, PathPoint)) throws -> Mapping {
+    let nx = columns.count - 1, ny = rows
     var vertices: [PathPoint] = [], inputs: [PathPoint] = [], triangles: [[Int]] = []
     for j in 0...ny {
       try Task.checkCancellation()
-      for i in 0...nx {
-        let p = PathPoint(Double(i)*Double(width)/Double(nx), Double(j)*Double(height)/Double(ny))
-        let warped = warp.point(p.x, p.y, width: Double(width), height: Double(height))
+      for column in columns {
+        let (p, warped) = sample(column, j)
         let mapped = try projection.map { try $0.point(warped.x, warped.y) } ?? warped
         inputs.append(p); vertices.append(mapped.transformed(transform))
       }

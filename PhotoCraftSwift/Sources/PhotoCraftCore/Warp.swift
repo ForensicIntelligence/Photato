@@ -2,7 +2,8 @@ import Foundation
 
 /// Native translation of photocraft geom/warp.rs (MIT OR Apache-2.0).
 public enum WarpStyle: String, Codable, CaseIterable, Sendable {
-  case none, custom, arc, arcLower, arcUpper, arch, bulge, shellLower, shellUpper, flag, wave, fish, rise, fisheye, inflate, squeeze, twist
+  case none, custom, arc, arcLower, arcUpper, arch, bulge, shellLower, shellUpper, flag, wave, fish, rise, fisheye, inflate, squeeze, twist, cylinder
+  public static var analyticPresets: [Self] { allCases.filter { $0 != .none && $0 != .custom && $0 != .cylinder } }
   public var title: String {
     switch self { case .arcLower: "Arc Lower"; case .arcUpper: "Arc Upper"; case .shellLower: "Shell Lower"; case .shellUpper: "Shell Upper"; default: rawValue.prefix(1).uppercased()+rawValue.dropFirst() }
   }
@@ -78,15 +79,25 @@ public struct WarpDefinition: Codable, Equatable, Sendable {
   public var bend: Double = 0, horizontalDistortion: Double = 0, verticalDistortion: Double = 0
   public var vertical = false
   public var mesh: WarpMesh?
+  public var cylinder: CylinderWarp?
   public var interpolation: Resampling = .bicubic
   public init() {}
   public func validate() throws {
     guard [bend,horizontalDistortion,verticalDistortion].allSatisfy({$0.isFinite && (-100...100).contains($0)}) else { throw CraftError.invalid("Warp amounts must be between−100 and100.") }
     try mesh?.validate();try sourceBounds?.validate()
     guard (style == .custom) == (mesh != nil) else { throw CraftError.invalid("Custom Warp requires a mesh; presets cannot contain a mesh.") }
+    guard (style == .cylinder) == (cylinder != nil),
+          cylinder == nil || (!vertical && bend == 0 && horizontalDistortion == 0 && verticalDistortion == 0) else {
+      throw CraftError.invalid("Cylinder Warp takes horizontal Cylinder settings.")
+    }
+    try cylinder?.validate()
   }
-  public var isIdentity: Bool { style == .none || (style != .custom && bend == 0 && horizontalDistortion == 0 && verticalDistortion == 0) }
+  public var isIdentity: Bool { style == .none || (style != .custom && style != .cylinder && bend == 0 && horizontalDistortion == 0 && verticalDistortion == 0) }
   public func point(_ x:Double,_ y:Double,width:Double,height:Double) -> PathPoint {
+    if let cylinder {
+      let frame = sourceBounds ?? .init(x: 0, y: 0, width: width, height: height)
+      return cylinder.surface.point((x - frame.x) / frame.width, (y - frame.y) / frame.height)
+    }
     if let frame=sourceBounds {
       if style == .custom,let mesh{return mesh.point((x-frame.x)/frame.width,(y-frame.y)/frame.height)}
       var local=self;local.sourceBounds=nil
@@ -100,7 +111,7 @@ public struct WarpDefinition: Codable, Equatable, Sendable {
     var q=u,r=v
     func arc()->(Double,Double) { if abs(b)<1e-6 { return (u,v) };let theta=b*Double.pi/2,rad=aspect/theta;return ((rad-v)*sin(u*theta)/aspect,rad-(rad-v)*cos(u*theta)) }
     switch style {
-    case .none,.custom: break
+    case .none,.custom,.cylinder: break
     case .arc: (q,r)=arc()
     case .arcLower,.arcUpper: let (a,c)=arc(),k=max(0,min(1,style == .arcLower ? (v+1)/2:(1-v)/2));q=u+(a-u)*k;r=v+(c-v)*k
     case .arch: r=v-b*bell
@@ -124,9 +135,14 @@ public struct WarpDefinition: Codable, Equatable, Sendable {
     let w = Double(width), h = Double(height)
     let frame = sourceBounds ?? WarpSourceBounds(x: 0, y: 0, width: w, height: h)
     var value = self
-    value.mesh = try WarpMesh.fit(columns: columns, rows: rows) { s, t in
-      point(frame.x + s * frame.width, frame.y + t * frame.height, width: w, height: h)
+    if let cylinder, columns == 1, rows == 1 {
+      value.mesh = cylinder.surface.mesh()
+    } else {
+      value.mesh = try WarpMesh.fit(columns: columns, rows: rows) { s, t in
+        point(frame.x + s * frame.width, frame.y + t * frame.height, width: w, height: h)
+      }
     }
+    value.cylinder = nil
     value.style = .custom
     return value
   }

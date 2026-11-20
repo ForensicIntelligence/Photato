@@ -1,6 +1,17 @@
 import Foundation
 import PhotoCraftCore
 
+private extension CylinderWarp {
+  static let fieldNames = ["left", "bottom", "right", "top", "topDepth", "bottomDepth", "wrap"]
+  static var apiSchema: [String: Any] {
+    var fields = Dictionary(uniqueKeysWithValues: fieldNames.prefix(4).map { ($0, BrushAPI.number(-1_000_000, 1_000_000)) })
+    fields["topDepth"] = ["type": "number"]
+    fields["bottomDepth"] = ["type": "number"]
+    fields["wrap"] = BrushAPI.number(0, 1)
+    return ["type": "object", "additionalProperties": false, "required": fieldNames, "properties": fields]
+  }
+}
+
 extension WarpDefinition {
   static var apiSchema:[String:Any] {
     let point:[String:Any] = ["type":"object","additionalProperties":false,"required":["x","y"],"properties":["x":["type":"number","minimum":-1_000_000,"maximum":1_000_000],"y":["type":"number","minimum":-1_000_000,"maximum":1_000_000]]]
@@ -12,26 +23,28 @@ extension WarpDefinition {
       "verticalDistortion":["type":"number","minimum":-100,"maximum":100,"default":0],
       "vertical":["type":"boolean","default":false],
       "interpolation":["type":"string","enum":Resampling.allCases.map(\.rawValue),"default":"Bicubic"],
+      "cylinder":CylinderWarp.apiSchema,
       "sourceBounds":["anyOf":[["type":"null"],BrushAPI.object(["x":BrushAPI.number(-1_000_000,1_000_000),"y":BrushAPI.number(-1_000_000,1_000_000),"width":BrushAPI.number(Double.leastNonzeroMagnitude,1_000_000),"height":BrushAPI.number(Double.leastNonzeroMagnitude,1_000_000)])]],
       "mesh":["type":"object","additionalProperties":false,"required":["us","vs","points"],"properties":["us":knots,"vs":knots,"points":["type":"array","minItems":16,"maxItems":2401,"items":point]]]]]
   }
   var apiState:Any { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode(self))) ?? NSNull() }
   static var apiCapabilities:[String:Any] {
     ["command":"layer.warp","settingsSchema":apiSchema,"maximumPixels":Surface.maxPixels,"maximumDimension":Surface.maxDimension,
+     "cylinderArchiveVersion":CylinderWarp.archiveVersion,
      "legacyDenseMappingMaximumPixels":WarpRaster.maximumPixels,"maximumUVPatchPixels":PagedWarpRaster.maximumPatchPixels,
      "maximumVertices":PagedWarpRaster.maximumVertices,"maximumTriangles":PagedWarpRaster.maximumTriangles,
      "largeDocuments":"Large Warp outputs use bounded UV/color/mask patches, immutable input/output triangle indexes and paged tile storage. Sparse transparent source support conservatively selects affected triangles. Triangle order, pixel centers, scalar sampling and existing small dense paths are retained. Native overview buffers are at most2048pixels per side. Full prepared output remains authoritative for commitment; displayed reduction is never committed.",
      "coordinates":"Optional sourceBounds retains the source frame x/y/width/height; null uses ordinary layer extents. Mesh points use unwarped layer pixels; us/vs ascend from0 to1. 3*(us.count−1)+1 control columns, analogous rows, row-major points. Warp precedes affine placement and Smart Filters. Presets take percentages.",
-     "behavior":"Fifteen presets and custom bicubic meshes. Pixel layers bake once; Smart Objects retain per-instance Warp and unchanged source/cache. Linked pixel masks follow; unlinked masks stay in document space. One prepared Undo/Redo transaction, matching native preview output.",
+     "behavior":"Fifteen classic presets, Cylinder Warp, and custom bicubic meshes. Pixel layers bake once; Smart Objects retain per-instance Warp and unchanged source/cache. Linked pixel masks follow; unlinked masks stay in document space. One prepared Undo/Redo transaction, matching native preview output.",
      "availability":"Unlocked RGB raster layers and Smart Objects without native component planes, a selection or vector mask; groups/type/shapes can first be converted to a Smart Object.",
-     "persistence":"PSD and PSB retain editable Warp presets, cubic meshes and nonuniform split grids on supported Smart Objects. A missing linked original must be relinked before editing. Native archives also retain per-effect interpolation.",
+     "persistence":"PSD and PSB retain editable Warp presets, horizontal Cylinder values, cubic meshes and nonuniform split grids on supported Smart Objects. A missing linked original must be relinked before editing. Native archives also retain per-effect interpolation.",
      "adobe":"No dedicated published v2 Warp endpoint. No authenticated actionJSON descriptor is implemented; such actions remain explicit unsupported errors.",
      "limits":"16 mesh patches per axis,256 tessellation cells per axis. Legacy dense mappings retain their complete-work budget. Paged output allows at most134217728 triangle/pixel visits per bounded UV patch. Exact Photoshop rerendering, PDF Warp interchange, full native component/mask contexts, maximum dense physical capacity and live 60fps qualification remain open."]
   }
 }
 extension AutomationCommand {
   func warpOptions() throws -> (UUID,WarpDefinition) {
-    guard let id=UUID(uuidString:try string("layerID")),case .object(let fields)=parameters["settings"],Set(fields.keys).isSubset(of:["style","bend","horizontalDistortion","verticalDistortion","vertical","interpolation","mesh","sourceBounds"]) else { throw AutomationFailure(status:400,message:"Invalid Warp layer or settings.") }
+    guard let id=UUID(uuidString:try string("layerID")),case .object(let fields)=parameters["settings"],Set(fields.keys).isSubset(of:["style","bend","horizontalDistortion","verticalDistortion","vertical","interpolation","mesh","sourceBounds","cylinder"]) else { throw AutomationFailure(status:400,message:"Invalid Warp layer or settings.") }
     var settings=WarpDefinition()
     if let raw=fields["style"] { guard case .string(let s)=raw,let style=WarpStyle(rawValue:s) else { throw AutomationFailure(status:400,message:"Unknown Warp style.") };settings.style=style }
     for (key,path) in [("bend",\WarpDefinition.bend),("horizontalDistortion",\WarpDefinition.horizontalDistortion),("verticalDistortion",\WarpDefinition.verticalDistortion)] {
@@ -43,6 +56,19 @@ extension AutomationCommand {
       guard case .object(let frame)=raw,Set(frame.keys)==["x","y","width","height"] else{throw AutomationFailure(status:400,message:"Invalid source Warp frame.")}
       func value(_ key:String)throws->Double{guard case .number(let number)=frame[key],number.isFinite else{throw AutomationFailure(status:400,message:"Source Warp frame must be finite.")};return number}
       settings.sourceBounds=try .init(x:value("x"),y:value("y"),width:value("width"),height:value("height"))
+    }
+    if let raw = fields["cylinder"] {
+      guard case .object(let fields) = raw, Set(fields.keys) == Set(CylinderWarp.fieldNames) else {
+        throw AutomationFailure(status: 400, message: "Invalid Cylinder Warp frame.")
+      }
+      let values = try CylinderWarp.fieldNames.map { name in
+        guard case .number(let value) = fields[name], value.isFinite else {
+          throw AutomationFailure(status: 400, message: "Cylinder Warp values must be finite numbers.")
+        }
+        return value
+      }
+      do { settings.cylinder = try CylinderWarp(photoshopValues: values) }
+      catch { throw AutomationFailure(status: 400, message: error.localizedDescription) }
     }
     if let raw=fields["mesh"] {
       guard case .object(let mesh)=raw,Set(mesh.keys)==["us","vs","points"],case .array(let rawPoints)=mesh["points"],rawPoints.count<=2401 else { throw AutomationFailure(status:400,message:"Invalid Warp mesh.") }

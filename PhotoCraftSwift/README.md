@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 668.** Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked. [Qualification](docs/SOURCE_PUBLICATION_668.md).
+
 **Source checkpoint 667.** PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp. [Qualification](docs/SOURCE_PUBLICATION_667.md).
 
 **Source checkpoint 666.** PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing. [Qualification](docs/SOURCE_PUBLICATION_666.md).

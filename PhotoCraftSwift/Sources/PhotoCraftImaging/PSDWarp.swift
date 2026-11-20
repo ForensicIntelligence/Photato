@@ -17,6 +17,10 @@ enum PSDWarp {
     /// Points pulled outside this frame expand it without stretching the mesh.
     static func placement(_ warp: WarpDefinition?, width: Int, height: Int) -> Self {
       let frame = source(width: width, height: height)
+      if let cylinder = warp?.cylinder {
+        let hull = cylinder.surface.controlBounds
+        return .init(x: hull.x, y: hull.y, width: hull.width, height: hull.height)
+      }
       guard let mesh = warp?.mesh else { return frame }
       var left = 0.0, top = 0.0, right = frame.width, bottom = frame.height
       if let bounds = warp?.sourceBounds {
@@ -49,10 +53,13 @@ enum PSDWarp {
           !isQuilt || style == .custom else {
       throw CraftError.unsupported("Unsupported Smart Object Warp style.")
     }
+    func cubicOrder(_ key: String) -> Bool {
+      descriptor[key]?.number == 4 || (style == .cylinder && descriptor[key] == nil)
+    }
     guard case .object(let bounds) = descriptor["bounds"],
           let x = pixels(bounds["Left"]), let y = pixels(bounds["Top "]),
           let right = pixels(bounds["Rght"]), let bottom = pixels(bounds["Btom"]),
-          descriptor["uOrder"]?.number == 4, descriptor["vOrder"]?.number == 4 else {
+          cubicOrder("uOrder"), cubicOrder("vOrder") else {
       throw CraftError.unsupported("Smart Object Warp requires a rectangular cubic source frame.")
     }
     let frame = WarpSourceBounds(x: x, y: y, width: right - x, height: bottom - y)
@@ -82,6 +89,20 @@ enum PSDWarp {
       warp.mesh = try mesh(descriptor, frame: frame, quilt: isQuilt)
     } else if descriptor["customEnvelopeWarp"] != nil {
       throw CraftError.unsupported("A preset with a separate Warp mesh requires native handling.")
+    } else if style == .cylinder {
+      let values: [Double]
+      switch descriptor["warpValues"] {
+      case .list(let items):
+        values = try items.map { item in
+          guard let value = pixels(item) else { throw CraftError.invalid("Invalid Cylinder Warp value.") }
+          return value
+        }
+      case .units(_, let bits):
+        values = bits.map(Double.init(bitPattern:))
+      default:
+        throw CraftError.invalid("Missing Cylinder Warp values.")
+      }
+      warp.cylinder = try CylinderWarp(photoshopValues: values)
     }
     try warp.validate()
     return warp
@@ -144,13 +165,17 @@ enum PSDWarp {
         .init("Top ", .number(bounds.y)), .init("Left", .number(bounds.x)),
         .init("Btom", .number(bounds.y + bounds.height)), .init("Rght", .number(bounds.x + bounds.width)),
       ])
-      return .init(key, items: [
+      var record = PSDDescriptor(key, items: [
         .init("warpStyle", .enumerated(PSDID("warpStyle"), PSDID(identifier(value.style)))),
         .init("warpValue", .number(value.bend)), .init("warpPerspective", .number(value.horizontalDistortion)),
         .init("warpPerspectiveOther", .number(value.verticalDistortion)),
         .init("warpRotate", .enumerated(PSDID("Ornt"), PSDID(value.vertical ? "Vrtc" : "Hrzn"))),
         .init("bounds", .object(rect)), .init("uOrder", .integer(4)), .init("vOrder", .integer(4)),
       ])
+      if let cylinder = value.cylinder {
+        record.items.append(.init("warpValues", .list(cylinder.photoshopValues.map(PSDValue.number))))
+      }
+      return record
     }
     guard let mesh = value.mesh else { return [.init("warp", .object(descriptor(value, key: "warp")))] }
     let quilt = mesh.us.count > 2 || mesh.vs.count > 2

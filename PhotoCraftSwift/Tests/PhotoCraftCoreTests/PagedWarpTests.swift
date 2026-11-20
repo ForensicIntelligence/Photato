@@ -35,7 +35,7 @@ final class PagedWarpTests: XCTestCase {
   func testPagedKernelRetainsLegacyBitsForEveryPresetOrientationDepthAndInterpolation() throws {
     for depth in PixelDepth.allCases {
       let source = try fixture(depth:depth)
-      for style in WarpStyle.allCases where style != .custom {
+      for style in [WarpStyle.none] + WarpStyle.analyticPresets {
         for vertical in [false,true] {
           var warp=WarpDefinition();warp.style=style;warp.bend=43;warp.horizontalDistortion=17;warp.verticalDistortion = -23;warp.vertical=vertical
           let old=try WarpRaster.mapping(warp,width:source.width,height:source.height,transform:.translation(-2,3))

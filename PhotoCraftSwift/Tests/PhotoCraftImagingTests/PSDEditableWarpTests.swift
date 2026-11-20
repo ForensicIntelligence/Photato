@@ -55,8 +55,94 @@ final class PSDEditableWarpTests: XCTestCase {
     try PSDSmartObjects.descriptor(XCTUnwrap(layer.sourceTags?["SoLd"]))
   }
 
+  private func cylinderWarp() throws -> WarpDefinition {
+    var warp = WarpDefinition()
+    warp.style = .cylinder
+    warp.cylinder = try .init(photoshopValues: [2, 14, 18, 3, -0.3, 0.45, 0.375])
+    return warp
+  }
+
+  func testCylinderDescriptorAndNativeArchiveVersion() throws {
+    let warp = try cylinderWarp()
+    let settings = try XCTUnwrap(warp.cylinder)
+    let items = try PSDWarp.encoded(warp, width: 20, height: 16)
+    let placed = PSDDescriptor("null", items: items)
+    XCTAssertEqual(try PSDWarp.decode(placed, width: 20, height: 16), warp)
+    guard case .object(var alternate) = placed["warp"] else { return XCTFail("Cylinder descriptor is absent.") }
+    alternate.items.removeAll { ["uOrder", "vOrder", "warpValues"].contains($0.key.text) }
+    let alternatePlaced = PSDDescriptor("null", items: [
+      .init("warp", .object(.init("warp", items: alternate.items + [
+        .init("warpValues", .units(Data("#Pxl".utf8), settings.photoshopValues.map(\.bitPattern))),
+      ]))),
+    ])
+    XCTAssertEqual(try PSDWarp.decode(alternatePlaced, width: 20, height: 16), warp)
+    XCTAssertThrowsError(try PSDWarp.decode(.init("null", items: [.init("warp", .object(alternate))]),
+                                           width: 20, height: 16))
+    let source = try document(warp)
+    XCTAssertEqual(source.minimumArchiveVersion, CylinderWarp.archiveVersion)
+    XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(source)), source)
+  }
+
+  func testCylinderPSDEmbeddedAndLinkedReopenAndReplaceWithoutFlattening() throws {
+    let warp = try cylinderWarp()
+    for format in [PSDFileFormat.psd, .psb] {
+      for linked in [false, true] {
+        let source = try document(warp, linked: linked, projected: format == .psb, masked: true)
+        let opened = try PSDCodec.read(PSDCodec.writeRasterLayers(source, format: format))
+        let layer = try XCTUnwrap(opened.layers.first)
+        let preview = try Renderer.composite(source).rgbaData(depth: .u16)
+        XCTAssertEqual(try Renderer.composite(opened).rgbaData(depth: .u16), preview)
+        let frame = try XCTUnwrap(warp.cylinder).surface.controlBounds
+        let savedCorners = try XCTUnwrap(PSDCodec.warpedSmartObjectPlacementCorners(layer))
+        let actual = try XCTUnwrap(PSDCodec.warpedSmartObjectPlacementCorners(source.layers[0]))
+        XCTAssertEqual(savedCorners, actual)
+        if format == .psd {
+          XCTAssertEqual(savedCorners[0], .init(8 + 2 * frame.x, 6 + 2 * frame.y))
+          XCTAssertEqual(savedCorners[2], .init(8 + 2 * (frame.x + frame.width), 6 + 2 * (frame.y + frame.height)))
+        }
+        XCTAssertEqual(try layer.linkedSmartObjectPreview()?.warp ?? layer.warp, warp)
+        XCTAssertEqual(opened.minimumArchiveVersion, CylinderWarp.archiveVersion)
+        let native = try NativeArchive.decodePaged(NativeArchive.encodeChunked(opened))
+        XCTAssertEqual(native, opened)
+        let intact = try PSDCodec.read(PSDCodec.writeRasterLayers(native, format: format))
+        for key in ["warp", "Trnf", "nonAffineTransform"] {
+          XCTAssertEqual(try descriptor(intact.layers[0])[key], try descriptor(layer)[key])
+        }
+
+        let replacement = try Surface(width: 40, height: 24, depth: .u16, fill: Pixel(0.9, 0.3, 0.1))
+        let bytes = try RasterIO.encoded(replacement)
+        let reference = try LinkedSmartObjectSource(reference: "/Recovered/New Artwork.png",
+          contentHash: LinkedSmartObjectSource.fingerprint(bytes), byteLength: UInt64(bytes.count))
+        var current = EditorSession(document: native)
+        if linked {
+          try current.execute(LinkedSmartObjectIO.replacement(bytes, fileName: "New Artwork.png",
+            reference: reference, in: native, layerID: layer.id, preserveSize: true))
+        } else {
+          let newSource = try SmartObjectIO.decode(bytes, fileName: "New Artwork.png")
+          try current.execute(SmartObjectIO.replacement(in: native, layerID: layer.id, source: newSource,
+            data: bytes, fileName: "New Artwork.png", preserveSize: true))
+        }
+        let changed = try XCTUnwrap(current.document.layers.first)
+        XCTAssertNil(try changed.linkedSmartObjectPreview())
+        XCTAssertEqual(changed.smartObject?.data, bytes)
+        let cylinder = try XCTUnwrap(changed.warp?.cylinder)
+        XCTAssertEqual(cylinder.left, 4)
+        XCTAssertEqual(cylinder.bottom, 21)
+        XCTAssertEqual(cylinder.topDepth, -0.225, accuracy: 1e-12)
+        XCTAssertEqual(cylinder.wrap, 0.375)
+        let rerendered = try Renderer.composite(current.document).rgbaData(depth: .u16)
+        XCTAssertNotEqual(rerendered, preview)
+        let output = try PSDCodec.read(PSDCodec.writeRasterLayers(current.document, format: format))
+        XCTAssertEqual(try output.layers[0].linkedSmartObjectPreview()?.warp ?? output.layers[0].warp, changed.warp)
+        XCTAssertEqual(try Renderer.composite(output).rgbaData(depth: .u16), rerendered)
+        try current.undo()
+        XCTAssertEqual(current.document, native)
+      }
+    }
+  }
+
   func testClassicWarpPresetsRoundTripWithEditableSourcesAndPreservedPreview() throws {
-    for style in WarpStyle.allCases where style != .custom && style != .none {
+    for style in WarpStyle.analyticPresets {
       var warp = WarpDefinition()
       warp.style = style; warp.bend = -23; warp.vertical = true
       warp.horizontalDistortion = 7; warp.verticalDistortion = -9

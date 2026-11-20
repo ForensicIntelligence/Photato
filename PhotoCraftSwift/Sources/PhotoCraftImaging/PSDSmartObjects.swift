@@ -238,14 +238,18 @@ enum PSDSmartObjects {
       properties.transform = try maskFrame.inverted() * maskWorld; layer.maskProperties = properties
     }
     if let savedPreview {
-      layer.importedSmartAppearance = try .init(layer: layer, pixels: savedPreview.pixels, x: savedPreview.x, y: savedPreview.y)
+      let originalWarp = layer.warp == nil ? nil : layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"]
+      layer.importedSmartAppearance = try .init(layer: layer, pixels: savedPreview.pixels, x: savedPreview.x,
+                                                y: savedPreview.y, placedRecord: originalWarp)
     }
   }
   static func placedDescriptor(_ layer: Layer) throws -> Data {
     guard let source = layer.smartObject else { throw CraftError.invalid("Missing embedded source.") }
-    let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"]
+    let appearance = layer.importedSmartAppearance
+    let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"] ?? appearance?.placedRecord
     let destinationHasWarp = layer.warp.map { $0.style != WarpStyle.none } ?? false
-    let importedPSD = saved != nil && layer.importedSmartAppearance?.reference.warp != nil
+    let importedPSD = appearance?.reference.warp != nil
+      && saved?.starts(with: Data("soLD".utf8)) == true
     guard (layer.importedSmartAppearance == nil || layer.sourceProjection != nil || importedPSD),
           source.mediaType != "application/vnd.photocraft.project" else {
       throw CraftError.unsupported("Save source Smart Object appearance as Photato until editable PSD/PSB mapping is qualified.")
@@ -289,7 +293,7 @@ enum PSDSmartObjects {
     let frame = PSDWarp.Frame.placement(warp, width: source.width, height: source.height)
     func encode(_ numbers: [Double]) -> PSDValue { .list(numbers.map(PSDValue.number)) }
     var savedQuads: PlacementQuads?
-    if let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"],
+    if let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"] ?? layer.importedSmartAppearance?.placedRecord,
        let d = try? descriptor(saved),
        (try? PSDWarp.decode(d, width: source.width, height: source.height)) == (warp?.style == .none ? nil : warp) {
       savedQuads = try? PlacementQuads(d)

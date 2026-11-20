@@ -1235,14 +1235,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:667 -->
+<!-- current-status-step:668 -->
 ## Current development status — 20 November 2026
 
-PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
+Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked.
 
-1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 667](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_667.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-667).
+[Source checkpoint 668](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_668.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-668).
 
 <!-- current-status:end -->
 

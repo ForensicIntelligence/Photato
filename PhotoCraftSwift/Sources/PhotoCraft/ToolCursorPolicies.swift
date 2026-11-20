@@ -55,6 +55,21 @@ extension ToolCursor {
 }
 
 extension ToolCursor {
+  static func cylinderConstrained(_ handle: CylinderHandle?, flags: NSEvent.ModifierFlags) -> Bool {
+    (handle == .topRight || handle == .bottomLeft) && flags.contains(.shift)
+  }
+
+  static func cylinderWarp(_ handle: CylinderHandle?, dragging: Bool, flags: NSEvent.ModifierFlags) -> Self {
+    switch handle {
+    case .topRight, .bottomLeft:
+      .symbol("arrow.up.right.and.arrow.down.left", cylinderConstrained(handle, flags: flags) ? .constrain : nil)
+    case .topRim, .bottomRim: .symbol("arrow.up.and.down")
+    case .wrap: .symbol("arrow.left.and.right")
+    case .body: dragging ? .closedHand : .openHand
+    case nil: .arrow
+    }
+  }
+
   static func artworkTransform(_ draft: TransformDraft, handle: Int, flags: NSEvent.ModifierFlags) -> Self {
     if handle == -1 { return .symbol("arrow.up.and.down.and.arrow.left.and.right", flags.contains(.shift) ? .constrain : nil) }
     if handle == 8 { return .symbol("arrow.triangle.2.circlepath", flags.contains(.shift) ? .constrain : nil) }

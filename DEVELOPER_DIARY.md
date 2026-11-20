@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **667** · The 10 most recent entries, newest first.
+Source build **668** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 668 — Wrap editable Smart Objects around a cylinder
+
+Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked.
+
+All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. The Cylinder renderer uses published measurements. A Photoshop-authored Cylinder PSD, live mouse interaction and byte-identical Photoshop rerendering remain unverified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) · [Details](PhotoCraftSwift/docs/CYLINDER_WARP_668.md).
 
 ## 2026-11-20 — Step 667 — Keep Smart Object Warp editable in PSD and PSB
 
@@ -75,11 +83,3 @@ Properties and Free Transform now use the original geometry of linked artwork wh
 All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe Properties values, rounding, handle orientation, physical Intel, a macOS 14 runtime and full assistive-technology behavior remain unverified.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-659) · [Details](PhotoCraftSwift/docs/LINKED_SMART_OBJECT_GEOMETRY_659.md).
-
-## 2026-11-20 — Step 658 — Custom Smart Object geometry for template jobs
-
-The Adobe-compatible template API can set Smart Object size, position, rotation, skew and anchor. Jobs can place artwork relative to other layers and change the geometry of a linked PSD without supplying its original artwork again.
-
-All 1,468 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe hosted-service pixels, unobserved geometry defaults, physical Intel and a macOS 14 runtime remain unverified.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-658) · [Details](PhotoCraftSwift/docs/ADOBE_SMART_OBJECT_TEMPLATE_658.md).

@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 668 — Wrap editable Smart Objects around a cylinder
+
+Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked.
+
+All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. The Cylinder renderer uses published measurements. A Photoshop-authored Cylinder PSD, live mouse interaction and byte-identical Photoshop rerendering remain unverified.
+
+[Development record](DEVLOG.md#dev-step-668) · [Details](CYLINDER_WARP_668.md).
+
 ## 2026-11-20 — Step 667 — Keep Smart Object Warp editable in PSD and PSB
 
 PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
@@ -1313,14 +1321,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:667 -->
+<!-- current-status-step:668 -->
 ## Current development status — 20 November 2026
 
-PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
+Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked.
 
-1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 667](SOURCE_PUBLICATION_667.md) · [Development record](DEVLOG.md#dev-step-667).
+[Source checkpoint 668](SOURCE_PUBLICATION_668.md) · [Development record](DEVLOG.md#dev-step-668).
 
 <!-- current-status:end -->
 
@@ -2194,6 +2202,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 665 | [Reopen perspective Smart Objects and continue editing](DEVLOG.md#dev-step-665) |
 | 2026-11-20 | 666 | [Relink perspective artwork after reopening PSD and PSB](DEVLOG.md#dev-step-666) |
 | 2026-11-20 | 667 | [Keep Smart Object Warp editable in PSD and PSB](DEVLOG.md#dev-step-667) |
+| 2026-11-20 | 668 | [Wrap editable Smart Objects around a cylinder](DEVLOG.md#dev-step-668) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

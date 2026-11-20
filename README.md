@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 667.** PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_667.md).
+**Development alpha — source build 668.** Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_668.md).
 
 ## Project layout
 

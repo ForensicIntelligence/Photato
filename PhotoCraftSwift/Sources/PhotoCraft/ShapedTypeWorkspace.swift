@@ -83,7 +83,7 @@ struct ShapedTypeSheet:View {
           Toggle("Enable Layout",isOn:$model.enabled).onChange(of:model.enabled){_,_ in model.refresh()}
           Picker("Layout",selection:Binding(get:{model.settings.mode},set:{model.choose($0)})){ForEach(TextGeometry.Mode.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}
           if model.settings.mode == .warp {
-            Picker("Style",selection:Binding(get:{model.settings.warp.style},set:{var g=model.settings;g.warp.style=$0;model.change(g)})){ForEach(WarpStyle.allCases.filter{$0 != .custom},id:\.self){Text($0.title).tag($0)}}
+            Picker("Style",selection:Binding(get:{model.settings.warp.style},set:{var g=model.settings;g.warp.style=$0;model.change(g)})){ForEach(([WarpStyle.none] + WarpStyle.analyticPresets),id:\.self){Text($0.title).tag($0)}}
             Toggle("Vertical warp axis",isOn:binding(\.warp.vertical))
             number("Bend %",\.warp.bend);number("Horizontal %",\.warp.horizontalDistortion);number("Vertical %",\.warp.verticalDistortion)
           }else{

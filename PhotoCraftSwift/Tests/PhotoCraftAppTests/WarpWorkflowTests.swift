@@ -16,7 +16,7 @@ final class WarpWorkflowTests:XCTestCase {
   func testPresetsMatchOriginalRustBothOrientations() throws {
     let url=Bundle.module.resourceURL!.appendingPathComponent("Fixtures/Warp/original.json")
     let oracle=try JSONDecoder().decode([String:[ [Double] ]].self,from:Data(contentsOf:url))
-    for style in WarpStyle.allCases where style != .none && style != .custom {
+    for style in WarpStyle.analyticPresets {
       for vertical in [false,true] {
         var w=WarpDefinition();w.style=style;w.bend=43;w.horizontalDistortion=17;w.verticalDistortion = -23;w.vertical=vertical
         let key=style.rawValue.prefix(1).uppercased()+style.rawValue.dropFirst()+"-"+(vertical ? "True":"False"),expected=try XCTUnwrap(oracle[key])
@@ -193,5 +193,111 @@ final class WarpWorkflowTests:XCTestCase {
     }
     await store.undo()
     XCTAssertEqual(store.document, reopened)
+  }
+
+  @MainActor func testCylinderControlsUndoCommitAndAuthenticatedAPI() async throws {
+    var source = try CraftDocument(width: 100, height: 90)
+    let pixels = try Surface(width: 40, height: 32, fill: Pixel(0.3, 0.4, 0.8))
+    let original = try RasterIO.encoded(pixels)
+    var layer = try SmartObjectIO.placed(data: original, fileName: "Wrap artwork.png", in: source, fit: false)
+    layer.x = 21; layer.y = 16
+    source.layers = [layer]; source.activeLayerID = layer.id
+    let store = EditorStore(document: source)
+    defer { store.cancelWarp(); store.renderTask?.cancel() }
+    store.beginWarp()
+    let workspace = try XCTUnwrap(store.warpDraft)
+    workspace.choose(.cylinder)
+    let initial = try XCTUnwrap(workspace.settings.cylinder)
+    XCTAssertEqual(initial.photoshopValues, [0, 32, 40, 0, 0.5, 0.5, 0.15])
+    for handle in CylinderHandle.allCases {
+      let cursor = ToolCursor.cylinderWarp(handle, dragging: false, flags: [])
+      for flags: NSEvent.ModifierFlags in [.control, .command, .option, [.control, .command, .option]] {
+        XCTAssertEqual(ToolCursor.cylinderWarp(handle, dragging: false, flags: flags), cursor)
+      }
+      let constrained = ToolCursor.cylinderConstrained(handle, flags: .shift)
+      XCTAssertEqual(constrained, handle == .topRight || handle == .bottomLeft)
+      XCTAssertEqual(ToolCursor.cylinderWarp(handle, dragging: false, flags: .shift) != cursor, constrained)
+    }
+    XCTAssertEqual(ToolCursor.cylinderWarp(.body, dragging: true, flags: .shift), .closedHand)
+
+    func drag(_ handle: CylinderHandle, _ x: Double, _ y: Double, shift: Bool = false) {
+      workspace.dragCylinder(handle, from: .init(0, 0), to: .init(x, y), constrain: shift)
+      workspace.endGesture()
+    }
+    drag(.topRight, 10, -9, shift: true)
+    let resized = try XCTUnwrap(workspace.settings.cylinder)
+    XCTAssertEqual((resized.right - resized.left) / (resized.bottom - resized.top), 40.0 / 32, accuracy: 1e-10)
+    XCTAssertEqual(resized.left, initial.left)
+    XCTAssertEqual(resized.bottom, initial.bottom)
+    drag(.bottomLeft, -4, 3)
+    let expanded = try XCTUnwrap(workspace.settings.cylinder)
+    XCTAssertEqual(expanded.left, resized.left - 4)
+    XCTAssertEqual(expanded.bottom, resized.bottom + 3)
+    drag(.topRim, 0, -3)
+    let rims = try XCTUnwrap(workspace.settings.cylinder)
+    XCTAssertLessThan(rims.topDepth, expanded.topDepth)
+    XCTAssertLessThan(rims.bottomDepth, expanded.bottomDepth)
+    drag(.bottomRim, 0, 2)
+    XCTAssertEqual(workspace.settings.cylinder?.topDepth, rims.topDepth)
+    XCTAssertGreaterThan(try XCTUnwrap(workspace.settings.cylinder).bottomDepth, rims.bottomDepth)
+    drag(.wrap, 6, 0)
+    let wrapped = try XCTUnwrap(workspace.settings.cylinder)
+    XCTAssertGreaterThan(wrapped.wrap, initial.wrap)
+    drag(.body, 3, 4)
+    let moved = try XCTUnwrap(workspace.settings.cylinder)
+    XCTAssertEqual(moved.right, wrapped.right + 3)
+    XCTAssertEqual(moved.top, wrapped.top + 4)
+    workspace.undo(); XCTAssertEqual(workspace.settings.cylinder, wrapped)
+    workspace.redo(); XCTAssertEqual(workspace.settings.cylinder, moved)
+    workspace.grid(3); workspace.split(vertical: true)
+    XCTAssertEqual(workspace.settings.cylinder, moved)
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready, workspace.error ?? "Cylinder Warp preview is not ready.")
+    let view = NSHostingView(rootView: WarpSheet(store: store, model: workspace))
+    view.frame = NSRect(x: 0, y: 0, width: 820, height: 610)
+    view.layoutSubtreeIfNeeded()
+    XCTAssertGreaterThan(view.fittingSize.width, 700)
+    XCTAssertLessThanOrEqual(view.fittingSize.height, 620)
+    let expected = try XCTUnwrap(workspace.edit).result
+    store.commitWarp()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.document, expected)
+    XCTAssertEqual(store.activeLayer?.smartObject?.data, original)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    await store.undo()
+    XCTAssertEqual(store.document, source)
+    store.beginWarp(); store.warpDraft?.choose(.cylinder); store.cancelWarp()
+    XCTAssertNil(store.warpDraft)
+    XCTAssertEqual(store.document, source)
+
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      shared.store.session = EditorSession(document: source)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(shared)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let fields = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(moved)) as? [String: Any])
+      let response = try await helper.edit(service, shared, "layer.warp", [
+        "layerID": layer.id.uuidString, "settings": ["style": "cylinder", "cylinder": fields],
+      ])
+      XCTAssertEqual(response, 200)
+      XCTAssertEqual(shared.store.document, expected)
+      let old = try await helper.request(service, path: "/v1/documents/\(share)/file.photato",
+        headers: ["X-Photato-Archive-Version": "97"])
+      XCTAssertEqual(old.0.statusCode, 422)
+      let native = try await helper.request(service, path: "/v1/documents/\(share)/file.photato",
+        headers: ["X-Photato-Archive-Version": "98"])
+      XCTAssertEqual(native.0.statusCode, 200)
+      XCTAssertEqual(try NativeArchive.decodePaged(native.1), expected)
+      let download = try await helper.request(service, path: "/v1/documents/\(share)/file.psb")
+      XCTAssertEqual(download.0.statusCode, 200)
+      let opened = try PSDCodec.read(download.1)
+      XCTAssertEqual(opened.layers[0].warp?.cylinder, moved)
+      let invalid = try await helper.edit(service, shared, "layer.warp", [
+        "layerID": layer.id.uuidString, "settings": ["style": "cylinder", "cylinder": ["wrap": 0.3]],
+      ])
+      XCTAssertEqual(invalid, 400)
+      XCTAssertEqual(shared.store.document, expected)
+    }
   }
 }
