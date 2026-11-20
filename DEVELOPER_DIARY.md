@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **636** · The 10 most recent entries, newest first.
+Source build **637** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 637 — Remember print defaults and restore supported Photoshop settings
+
+Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files.
+
+All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_637.md).
 
 ## 2026-11-19 — Step 636 — Fit and clip large prints at their original sample resolution
 
@@ -75,11 +83,3 @@ Drag an individual channel to duplicate, copy, reorder or delete it. The Workflo
 All 1,125 selected tests passed in each configuration. The two signed macOS 14+ archive slices also passed offscreen launch checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-628). [Development notes](PhotoCraftSwift/docs/CHANNEL_DRAG_628.md).
-
-## 2026-11-19 — Step 627 — Integrate Workflow Guide cues with the expanded Channels panel
-
-The validated source combines menu and dialog cues, process-channel deletion, and isolated Sky Replacement wheel input.
-
-A repaired Debug candidate passed 44 targeted cases. A remaining intermittent popup placement issue was resolved before the 628 source qualification.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-627). [Development notes](PhotoCraftSwift/docs/CHANNEL_GUIDE_INTEGRATION_627.md).

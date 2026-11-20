@@ -1,0 +1,15 @@
+# Remember print settings and open Photoshop print records
+
+19 November 2026 · Development preview 637
+
+**Done** and **Print** in the native print sheet remember the accepted options in local preferences. Documents without an accepted print configuration inherit the latest defaults. **Print Selected Area** stays with the current document. **Cancel** discards the draft. **Print One Copy** submits one copy and leaves the remembered copy count available for the next job. The print actions leave the pixels, Undo stack and document dirty state intact. [Adobe desktop printing workflow](https://helpx.adobe.com/photoshop/desktop/print/print-images-from-photoshop.html)
+
+Opening a Photoshop document reads supported fields from Print Information and Print Style. Photato restores a saved printer name when present, print depth, the supported rendering intents, black point compensation, printer-managed color, registration marks, crop marks and labels. Other fields use the local defaults. PSD and PSB saves retain the original descriptors. Malformed or duplicate records are ignored for restoration and checked independently of the other print resource. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+
+The authenticated API reports the active source under `printing.settingsSource`. `print.configure` changes that document's settings. It leaves the desktop defaults as they were. Documents inheriting local defaults get a new API revision when the defaults change. [Photato API](AUTOMATION_API.md#remember-print-settings-checkpoint-637)
+
+The final Apple Silicon Debug run passed all 50 focused cases in 44.19 seconds. The tests reopened a Photoshop-authored PSD through the native document loader and checked preference reload, cross-document inheritance, cancellation, one-copy playback, and API isolation. A separate parser compared the original and re-exported print descriptors. All 786 payload bytes matched in each of PSD and PSB. The scope is editable file interchange and native settings restoration.
+
+The initial build exposed an existing test that set a field directly. The revised test uses the same validated settings path as the app. The signed Apple Silicon macOS 14-targeted preview verified after extraction and produced a 1,000 × 650 offscreen workspace snapshot. All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. See the [source patch](../artifacts/637-print-settings/print-settings-source.patch), [focused log](../artifacts/637-print-settings/focused-print01.log) and [file comparison](../artifacts/637-print-settings/independent-verified02.json).
+
+Newly accepted settings are stored in local preferences and the open document's session. Writing those settings to native projects and Photoshop print descriptors remains open. Driver-private settings, document-specific paper placement, remaining Photoshop fields, physical printer output and identical Adobe rendering remain unqualified.

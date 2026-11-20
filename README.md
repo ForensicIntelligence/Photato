@@ -15,7 +15,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 636.** Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_636.md).
+**Development alpha — source build 637.** Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_637.md).
 
 ## Project layout
 

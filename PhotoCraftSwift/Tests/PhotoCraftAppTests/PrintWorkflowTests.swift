@@ -8,6 +8,86 @@ import SwiftUI
 @testable import PhotoCraft
 
 final class PrintWorkflowTests: XCTestCase {
+  @MainActor func testAcceptedDefaultsApplyAcrossDocumentsAndPreferenceReloadWithoutCarryingSelection() async throws {
+    let name = "Photato.PrintTests." + UUID().uuidString
+    let persisted = try XCTUnwrap(UserDefaults(suiteName: name))
+    defer { persisted.removePersistentDomain(forName: name) }
+    let defaults = PrintPreferences(defaults: persisted)
+    _ = NSApplication.shared
+    let controller = CraftDocumentController(workspaces: WorkspaceLibrary(), printPreferences: defaults)
+    var selected = try CraftDocument(width: 40, height: 30)
+    selected.selection = .init(x: 1, y: 1, width: 20, height: 10)
+    let first = CraftNSDocument(model: selected)
+    let second = CraftNSDocument(model: try CraftDocument(width: 40, height: 30))
+    controller.addDocument(first)
+    controller.addDocument(second)
+    defer { controller.removeDocument(second); controller.removeDocument(first) }
+    let before = first.store.document
+
+    first.beginPrint()
+    let cancelled = try XCTUnwrap(first.store.printWorkspace)
+    cancelled.settings.paper = .tabloid
+    cancelled.cancel()
+    XCTAssertEqual(defaults.settings.paper, .letter)
+
+    first.beginPrint()
+    let accepted = try XCTUnwrap(first.store.printWorkspace)
+    accepted.settings.paper = .a4
+    accepted.settings.orientation = .landscape
+    accepted.settings.sixteenBit = true
+    accepted.settings.selectedArea = true
+    accepted.settings.copies = 3
+    accepted.refresh()
+    await accepted.task?.value
+    XCTAssertNotNil(accepted.output, accepted.error ?? "Missing preview.")
+    accepted.accept(printNow: false)
+    XCTAssertEqual(first.store.printSettings.paper, .a4)
+    XCTAssertTrue(first.store.printSettings.selectedArea)
+    XCTAssertEqual(second.store.printSettings.paper, .a4)
+    XCTAssertEqual(second.store.printSettings.orientation, .landscape)
+    XCTAssertTrue(second.store.printSettings.sixteenBit)
+    XCTAssertFalse(second.store.printSettings.selectedArea)
+    XCTAssertNil(first.store.inheritedPrintRevision)
+    XCTAssertEqual(second.store.inheritedPrintRevision, defaults.revision)
+    XCTAssertEqual(PrintPreferences(defaults: persisted).settings, second.store.printSettings)
+    XCTAssertEqual(first.store.document, before)
+    XCTAssertTrue(first.store.session.undoStack.isEmpty)
+    XCTAssertFalse(first.isDocumentEdited)
+    var oneCopy = first.store.printSettings
+    oneCopy.copies = 1
+    first.printRunner = { output, _, finish in
+      XCTAssertEqual(output.settings.copies, 1)
+      finish(true)
+    }
+    try first.startPrinting(oneCopy)
+    await first.printTask?.value
+    XCTAssertEqual(first.store.printSettings.copies, 3)
+    XCTAssertEqual(defaults.settings.copies, 3)
+  }
+
+  @MainActor func testPhotoshopAuthoredPrintRecordRestoresItsSharedFieldsThroughNativeOpen() throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+      .appendingPathComponent("Fixtures/ColorProfiles/photoshop-owned-gradient-fill-p3-applecmm.psd")
+    let document = CraftNSDocument(model: try CraftDocument(width: 1, height: 1))
+    var shared = PrintSettings()
+    shared.paper = .a5
+    shared.sixteenBit = true
+    shared.intent = .perceptual
+    shared.registrationMarks = true
+    shared.labels = true
+    try document.store.printPreferences.remember(shared)
+    try document.read(from: fixture, ofType: DocumentIO.Format.psd.typeIdentifier)
+    XCTAssertEqual(document.store.printState["settingsSource"] as? String, "photoshopFile")
+    let settings = document.store.printSettings
+    XCTAssertEqual(settings.paper, .a5)
+    XCTAssertEqual(settings.intent, .relativeColorimetric)
+    XCTAssertFalse(settings.sixteenBit)
+    XCTAssertFalse(settings.registrationMarks)
+    XCTAssertFalse(settings.labels)
+    XCTAssertEqual(document.store.printPreferences.settings, shared)
+    XCTAssertFalse(document.isDocumentEdited)
+  }
+
   @MainActor func testLargeSelectedAreaCanBePreviewedAndDownloadedThroughHTTP() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
@@ -105,6 +185,8 @@ final class PrintWorkflowTests: XCTestCase {
       try service.share(document); let store = document.store, before = store.document, revision = service.revision(store)
       let status = try await helper.edit(service, document, "print.configure", ["settings": ["paper": "a4", "orientation": "landscape", "scaleToFit": false, "scalePercent": 50]])
       XCTAssertEqual(status, 200); XCTAssertEqual(store.printSettings.paper, .a4); XCTAssertNotEqual(service.revision(store), revision)
+      XCTAssertEqual(store.printState["settingsSource"] as? String, "document")
+      XCTAssertEqual(store.printPreferences.settings.paper, .letter)
       let id = try XCTUnwrap(service.shares.first?.id), response = try await helper.request(service, path: "/v1/documents/\(id)/print.pdf")
       XCTAssertEqual(response.0.statusCode, 200); XCTAssertEqual(response.0.mimeType, "application/pdf")
       let pdf = try XCTUnwrap(CGPDFDocument(CGDataProvider(data: response.1 as CFData)!)); XCTAssertEqual(pdf.numberOfPages, 1); XCTAssertEqual(pdf.page(at: 1)?.getBoxRect(.mediaBox).width ?? 0, 841.89, accuracy: 0.001)
@@ -202,7 +284,9 @@ final class PrintWorkflowTests: XCTestCase {
   @MainActor func testPrintWorkspaceWithUnavailablePrinterStillPreviewsAndCancelsDriverEdits() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { _, document in
-      document.store.printSettings.printerName = "Owned missing printer fixture"
+      var missing = document.store.printSettings
+      missing.printerName = "Owned missing printer fixture"
+      try document.store.setPrintSettings(missing)
       let before = document.store.printSettings
       document.beginPrint(); let model = try XCTUnwrap(document.store.printWorkspace); await model.task?.value
       XCTAssertNotNil(model.output, model.error ?? "Missing preview"); XCTAssertNil(document.rememberedPrintInfo)

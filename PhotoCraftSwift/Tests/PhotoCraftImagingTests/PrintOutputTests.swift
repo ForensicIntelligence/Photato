@@ -5,6 +5,42 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PrintOutputTests: XCTestCase {
+  func testSharedPhotoshopPrintFieldsIgnoreUnknownOrMalformedResources() throws {
+    let output = try PSDDescriptor("printOutput", items: [
+      .init("Inte", .enumerated(PSDID("Inte"), PSDID("Img "))),
+      .init("printSixteenBit", .boolean(true)), .init("MpBl", .boolean(false)),
+      .init("printerName", .text(Array("Fixture Printer\0".utf16))),
+      .init("futureOption", .text(Array("kept by the resource writer".utf16)))
+    ]).encoded()
+    let style = try PSDDescriptor("printOutputOptions", items: [
+      .init("CrnC", .boolean(true)), .init("CntC", .boolean(false)),
+      .init("Lbls", .boolean(true)), .init("RgsM", .boolean(true))
+    ]).encoded()
+    let outputBlock = PSDImageResources.block(1082, data: output)
+    let styleBlock = PSDImageResources.block(1083, data: style)
+    var document = try CraftDocument(width: 2, height: 2)
+    document.sourceMetadata = ["psdResources": outputBlock + styleBlock]
+    var defaults = PrintSettings()
+    defaults.paper = .a3
+    defaults.centerCropMarks = true
+    let imported = try XCTUnwrap(PhotoshopPrintSettings(document)).applying(to: defaults)
+    XCTAssertEqual(imported.paper, .a3)
+    XCTAssertEqual(imported.printerName, "Fixture Printer")
+    XCTAssertEqual(imported.intent, .perceptual)
+    XCTAssertTrue(imported.sixteenBit)
+    XCTAssertFalse(imported.blackPointCompensation)
+    XCTAssertTrue(imported.cornerCropMarks && imported.labels && imported.registrationMarks)
+    XCTAssertFalse(imported.centerCropMarks)
+    XCTAssertEqual(try PSDImageResources.preserved(outputBlock + styleBlock), outputBlock + styleBlock)
+
+    document.sourceMetadata = ["psdResources": outputBlock + outputBlock + styleBlock]
+    let duplicate = try XCTUnwrap(PhotoshopPrintSettings(document)).applying(to: defaults)
+    XCTAssertFalse(duplicate.sixteenBit)
+    XCTAssertTrue(duplicate.cornerCropMarks)
+    document.sourceMetadata = ["psdResources": PSDImageResources.block(1082, data: Data([1, 2]))]
+    XCTAssertNil(PhotoshopPrintSettings(document))
+  }
+
   func testFitMediaKeepsEverySourcePixelOfAFourThousandPixelPhoto() throws {
     let width = 4000, height = 3000
     var source = try CraftDocument(width: width, height: height, depth: .u16)

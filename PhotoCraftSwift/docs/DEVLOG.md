@@ -655,7 +655,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 634 | 2026-11-19 | [Print native CMYK and saved spot separations](#dev-step-634) |
 | 635 | 2026-11-19 | [Print a selection from a large document](#dev-step-635) |
 | 636 | 2026-11-19 | [Fit and clip large prints at their original sample resolution](#dev-step-636) |
+| 637 | 2026-11-19 | [Remember print defaults and restore supported Photoshop settings](#dev-step-637) |
 <!-- history-index:end -->
+
+<a id="dev-step-637"></a>
+
+## 2026-11-19 — Remember print defaults and restore supported Photoshop settings
+
+Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files.
+
+All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](PRINT_SETTINGS_637.md) · [Qualification](SOURCE_PUBLICATION_637.md).
 
 <a id="dev-step-636"></a>
 

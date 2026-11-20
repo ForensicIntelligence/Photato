@@ -27,15 +27,17 @@ enum PrintAPI {
     "border": BrushAPI.number(0, 72), "bleed": BrushAPI.number(0, 72)], required: []) }
   static func schema(_ key: String) -> [String: Any] { key == "settings" ? settings : ["type": "string", "format": "uuid"] }
   static var stateSchema: [String: Any] { BrushAPI.object([
-    "settings": settings, "available": BrushAPI.flag, "workspaceOpen": BrushAPI.flag, "busy": BrushAPI.flag,
+    "settings": settings, "settingsSource": BrushAPI.enumeration(["defaults", "photoshopFile", "document"]),
+    "available": BrushAPI.flag, "workspaceOpen": BrushAPI.flag, "busy": BrushAPI.flag,
     "operationID": ["type": ["string", "null"]], "status": BrushAPI.enumeration(["idle", "preparing", "submitted", "completed", "cancelled", "failed", "cancelledOrFailed"]),
-    "error": ["type": ["string", "null"]]], required: ["settings", "available", "workspaceOpen", "busy", "operationID", "status", "error"]) }
+    "error": ["type": ["string", "null"]]], required: ["settings", "settingsSource", "available", "workspaceOpen", "busy", "operationID", "status", "error"]) }
   static var capabilities: [String: Any] { [
     "commands": commands, "settings": settings, "stateSchema": stateSchema,
     "resultSchema": BrushAPI.object(["printing": stateSchema, "revision": ["type": "string"]], required: ["printing", "revision"]),
     "pdfRoute": "/v1/documents/{id}/print.pdf", "maximumPixels": PrintLayout.maximumPixels,
     "pixelLimitAppliesTo": "outputRegion", "maximumDocumentDimension": Surface.maxDimension,
     "clipsOversizeSourceToPrintableArea": true,
+    "defaults": "Done or Print in the native sheet remembers output preferences locally. Print Selected Area remains document-specific. print.configure only configures the shared document. Supported Photoshop print resources can supply document values.",
     "maximumPreparedBytes": PreparedPrint.maximumBytes, "maximumPDFBytes": DocumentIO.maximumDownloadBytes,
     "units": "All physical dimensions and margins are points (72 per inch). Top/left are measured from paper top-left. Custom width/height describe portrait media; orientation rotates it. Center uses the printable area center. Scale to Fit reserves space for marks inside the printable bounds.",
     "behavior": "Settings are per-document output state, excluded from pixels, history and archives. Configure merges validated fields and advances the view revision. PDF uses committed settings and proof condition; copies apply only to printer submission, not PDF pages. Selected area uses the rectangular selection bounds, not its feathered mask. Hard proofs require Photato-managed color and a printer ICC profile. Screen gamut overlays never print. Separations emit grayscale pages for flat or eligible layered CMYK, Duotone and Multichannel. Saved spot channels use their ink density, and Multichannel preserves the order of the ink rows.",
@@ -55,7 +57,8 @@ extension AutomationCommand {
   }
 }
 extension EditorStore {
-  var printState: [String: Any] { ["settings": BrushAPI.json(printSettings), "available": canBeginPrint,
+  var printState: [String: Any] { ["settings": BrushAPI.json(printSettings),
+    "settingsSource": printOverride != nil ? "document" : (importedPrintSettings != nil ? "photoshopFile" : "defaults"), "available": canBeginPrint,
     "workspaceOpen": printWorkspace != nil, "busy": printBusy, "operationID": printOperationID?.uuidString as Any? ?? NSNull(),
     "status": printJobStatus, "error": printJobError as Any? ?? NSNull()] }
 }

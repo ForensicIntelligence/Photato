@@ -46,8 +46,13 @@ extension EditorStore {
   var canBeginPrint: Bool { canBeginDocumentMode && !printBusy }
   func setPrintSettings(_ settings: PrintSettings) throws {
     _ = try PrintLayout(document: document, settings: settings)
-    guard settings != printSettings else { return }
-    printSettings = settings; printRevision = UUID()
+    guard settings != printOverride else { return }
+    printOverride = settings; printRevision = UUID()
+  }
+  func restorePrintSettings(from source: CraftDocument) {
+    printOverride = nil
+    importedPrintSettings = PhotoshopPrintSettings(source)
+    printRevision = UUID()
   }
   func finishPrintSheet() { let action = printAfterDismiss; printAfterDismiss = nil; action?() }
 }
@@ -101,7 +106,6 @@ extension CraftNSDocument {
     guard printRunner != nil || (windowForSheet != nil && NSPrinter.printerNames.contains(info.printer.name)) else {
       throw CraftError.invalid("Choose an available printer in a document window before printing.")
     }
-    try store.setPrintSettings(settings)
     let source = store.document, proof = store.proofSettings, id = UUID()
     store.printBusy = true; store.printOperationID = id; store.printJobStatus = "preparing"; store.printJobError = nil; store.printRevision = UUID()
     store.printCancellation = { [weak self] in self?.cancelPrintPreparation(id) }
@@ -189,7 +193,10 @@ extension AppDelegate {
   func accept(printNow: Bool) {
     guard let owner, output != nil, !rendering, owner.store.document == source else { return }
     do {
-      try owner.store.setPrintSettings(settings); owner.rememberedPrintInfo = driverInfo; let settings = settings, source = source
+      try owner.store.setPrintSettings(settings)
+      try owner.store.printPreferences.remember(settings)
+      owner.rememberedPrintInfo = driverInfo
+      let settings = settings, source = source
       if printNow {
         owner.store.printAfterDismiss = { [weak owner] in
           guard let owner, owner.store.document == source else { return }

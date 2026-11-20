@@ -1,3 +1,5 @@
+**Source checkpoint 637.** Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files. [Qualification](SOURCE_PUBLICATION_637.md).
+
 **Source checkpoint 636.** Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale. [Qualification](SOURCE_PUBLICATION_636.md).
 
 **Source checkpoint 635.** The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions. [Qualification](SOURCE_PUBLICATION_635.md).

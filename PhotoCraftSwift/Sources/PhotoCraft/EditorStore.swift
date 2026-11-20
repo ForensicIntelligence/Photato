@@ -184,7 +184,7 @@ struct CanvasRenderRequest: Sendable {
   @ObservationIgnored var brushPreviewRenderMS = 0.0
   let actions: ActionLibrary
   var actionRevision = 0
-  var session: EditorSession { didSet { selectionBorderDrag = nil; if oldValue.document.id != session.document.id { cancelSelectionBorderInteraction() }; rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { layerPanelFilter = LayerPanelFilter(); layerFilterRevision = UUID(); layerFilterFocusRequest = 0; proofSettings = ProofSettings(); proofWorkspace = nil; printSettings = PrintSettings(); printRevision = UUID(); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { savedChannelVisibility=nil; temporaryMaskChannelVisibility=nil; channelVisibilitySweep=nil; inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded(); layerContentFilter.sourceChanged(in: self) } }
+  var session: EditorSession { didSet { selectionBorderDrag = nil; if oldValue.document.id != session.document.id { cancelSelectionBorderInteraction() }; rememberDeselectedSelection(from:oldValue.document,to:session.document); if oldValue.document.id != session.document.id { layerPanelFilter = LayerPanelFilter(); layerFilterRevision = UUID(); layerFilterFocusRequest = 0; proofSettings = ProofSettings(); proofWorkspace = nil; restorePrintSettings(from: session.document); printWorkspace?.close(); printWorkspace = nil; printAfterDismiss = nil }; if oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { proofSettings.preserveNumbers = false }; if oldValue.document.id != session.document.id || oldValue.document.colorMode != session.document.colorMode || oldValue.document.depth != session.document.depth { savedChannelVisibility=nil; temporaryMaskChannelVisibility=nil; channelVisibilitySweep=nil; inkTargets = []; inkVisibility = nil; modeComponentTargets = []; modeComponentVisibility = nil; componentTarget = .composite }; sessionGeneration = UUID(); invalidateObjectFinderIfNeeded(); invalidatePeopleIfNeeded(); layerContentFilter.sourceChanged(in: self) } }
   @ObservationIgnored private(set) var sessionGeneration = UUID()
   var historyOperation: HistoryOperation?
   @ObservationIgnored var interactiveBrushPreview: InteractiveBrushPreview?
@@ -314,7 +314,13 @@ struct CanvasRenderRequest: Sendable {
   var wideAngleWorkspace: WideAngleWorkspace?
   var lensCorrectionWorkspace: LensCorrectionWorkspace?
   var proofDisplayError: String?
-  var printSettings = PrintSettings()
+  var printPreferences = PrintPreferences()
+  var printOverride: PrintSettings?
+  var importedPrintSettings: PhotoshopPrintSettings?
+  var printSettings: PrintSettings {
+    printOverride ?? importedPrintSettings?.applying(to: printPreferences.settings) ?? printPreferences.settings
+  }
+  var inheritedPrintRevision: UUID? { printOverride == nil ? printPreferences.revision : nil }
   var printWorkspace: PrintWorkspace?
   var printBusy = false
   var printOperationID: UUID?
@@ -679,6 +685,7 @@ struct CanvasRenderRequest: Sendable {
     self.styles = styles ?? .shared
     self.clipboard = clipboard ?? SystemClipboard.shared
     session = EditorSession(document: document)
+    importedPrintSettings = PhotoshopPrintSettings(document)
     if document.isChannelOnly,document.quickMask == nil {alphaEditingID=document.alphaChannels?.first?.id}
     timelineVisible = document.animation != nil || document.videoTimeline != nil
     var brushDefaults = BrushSettings()

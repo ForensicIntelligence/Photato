@@ -664,6 +664,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 634 | [Print native CMYK and saved spot separations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) |
 | 2026-11-19 | 635 | [Print a selection from a large document](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-635) |
 | 2026-11-19 | 636 | [Fit and clip large prints at their original sample resolution](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-636) |
+| 2026-11-19 | 637 | [Remember print defaults and restore supported Photoshop settings](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

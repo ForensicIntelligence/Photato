@@ -1,0 +1,99 @@
+{
+  "build": 637,
+  "sourceInputs": 9238,
+  "casesPerConfiguration": 1171,
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "aa539684a61e077cc0739066852389961e74b04cb49126fe1283215f1514af3f"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPrint.swift",
+      "sha256": "063c5c443ddef4f14442e58221a9eef3a86b03c9afce9a4065eb8be0a459d91f"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "16773b0ad7158cb5201d5db8ec6bcdd3f78929763c221b4de31b484aed1361b5"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "b6b33bde33df1de131822d19eeb129d865dc1180d01dff88f3cf569a515aac19"
+    },
+    {
+      "path": "Sources/PhotoCraft/NativeDocument.swift",
+      "sha256": "258f31a948cf3040caea6fd59e674732dfd6e22c6e2bcde86a08532fb7370483"
+    },
+    {
+      "path": "Sources/PhotoCraft/NativePrinting.swift",
+      "sha256": "5be3c518bc37023db41abe75351b87b9200a604e642ceeb51d2cb949309c04f8"
+    },
+    {
+      "path": "Sources/PhotoCraft/PrintPreferences.swift",
+      "sha256": "40054ddc12b7f2bd620bb68d0e78407b7929c5ec241bae8a1ea6cbefddeabc88"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PhotoshopPrintSettings.swift",
+      "sha256": "98fa7498f1ca117d842b02bea4ff7fe697bf3e1c0a3164184b3096c7af7bf4f3"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PrintWorkflowTests.swift",
+      "sha256": "f093a8c0224c6d516957cb2af49c18c818e2c3339d343486e2ed23294ae98c2e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PrintOutputTests.swift",
+      "sha256": "0b4e4c3b480807ada83e80073bab6437a93ae6cb35e6375cada366b0bd3b0de1"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "6c99a06bf36088d4c66f796732dad22f5da496cd4ce18c15a2a8b042c9c0ba50"
+    }
+  ],
+  "configurations": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "8e678a2120b07fc91d0ea459aa61b1492c406615419f1669ad75bce6109abc01",
+      "testBinarySHA256": "a5e2be756b07d2c5e332f5fcc3b2bf7eed47b340a342a16c373943372fa55ccc",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "c74188fa91836ce05b917ab232ce1c9b812e428d4d6b24501e96238b4c104482",
+      "testBinarySHA256": "02fdb73b8fdcc3ed4a55e848d95351c0c3869e9f0fcc82b206d7a41ba2dee846",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "6efe6dfb0498b6320378be8ece4cd524c0a7230c687c2b77a974f35dace34125",
+      "testBinarySHA256": "aa0509da346ab54660ff72a6d4b80b96a70d1a3e085b20792d2b745f14dd1bb7",
+      "passed": true
+    }
+  },
+  "archive": {
+    "archiveSHA256": "df6e9d436e4a274de211e25b9055c6f349785f5898c9e0247b90dddfd73b1056",
+    "architectures": "x86_64 arm64",
+    "minimumSystemMetadata": "14.0",
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "995e34d5cbb0dd00d530099c43d42a13b06de886e245e7fefca8b7fccbdd33e8",
+        "bytes": 114090
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  }
+}

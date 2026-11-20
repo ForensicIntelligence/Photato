@@ -6,13 +6,13 @@ import SwiftUI
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
   let controller: CraftDocumentController
-  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard), eyedropperPreferences:EyedropperPreferences(defaults:.standard), liquifyMeshes: .shared, lensDefaults: .shared, scriptEvents: .shared, workflowGuidePreferences: WorkflowGuidePreferences(defaults: .standard)) }
+  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard), eyedropperPreferences:EyedropperPreferences(defaults:.standard), liquifyMeshes: .shared, lensDefaults: .shared, scriptEvents: .shared, workflowGuidePreferences: WorkflowGuidePreferences(defaults: .standard), printPreferences: PrintPreferences(defaults: .standard)) }
   init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
     liquifyMeshes: LiquifyMeshLibrary? = nil, lensDefaults: LensDefaultLibrary? = nil, scriptEvents: ScriptEventsStore? = nil,
-    workflowGuidePreferences: WorkflowGuidePreferences? = nil) {
+    workflowGuidePreferences: WorkflowGuidePreferences? = nil, printPreferences: PrintPreferences? = nil) {
     controller = CraftDocumentController(
-      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences:eyedropperPreferences, scriptEvents: scriptEvents, workflowGuidePreferences: workflowGuidePreferences)
+      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences:eyedropperPreferences, scriptEvents: scriptEvents, workflowGuidePreferences: workflowGuidePreferences, printPreferences: printPreferences)
     super.init()
     controller.filterRecall.liquifyMeshes = liquifyMeshes ?? LiquifyMeshLibrary()
     controller.filterRecall.lensDefaults = lensDefaults ?? LensDefaultLibrary()

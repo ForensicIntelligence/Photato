@@ -1,3 +1,9 @@
+### Remember print settings (checkpoint 637)
+
+`printing.settingsSource` reports `defaults`, `photoshopFile`, or `document`. A native Print sheet accepted with Done or Print saves reusable local defaults. A supported Photoshop Print Information or Print Style resource supplies document values on open. API clients use the usual `print.configure`, `print.settings.read`, and `print.pdf` operations. Configuration through the API stays scoped to the shared document.
+
+[Development record](PRINT_SETTINGS_637.md).
+
 ### Large photo printing (checkpoint 636)
 
 `printing.maximumPixels` now allows up to 36,000,000 pixels in the prepared raster. `printing.clipsOversizeSourceToPrintableArea` indicates that an oversized original at a fixed scale can print its visible area within that budget. Both native and API production retain the original output scale and position. Image color and plate counts remain subject to the prepared-byte budget. `print.configure` and `GET /v1/documents/{id}/print.pdf` share these settings and layout.
