@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **656** · The 10 most recent entries, newest first.
+Source build **657** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 657 — Place Smart Objects at their source print size
+
+Place Embedded and Place Linked now size artwork from its print resolution and the destination ppi. Resize Image During Place fits oversized artwork after converting to document pixels. The Photato API exposes the same geometry through an explicit physical sizing option.
+
+All 1,463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The live Photoshop comparison remains open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-657) · [Details](PhotoCraftSwift/docs/PLACEMENT_RESOLUTION_657.md).
 
 ## 2026-11-20 — Step 656 — Recover linked Smart Objects after moving a folder
 
@@ -67,9 +75,3 @@ All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon,
 A three-source native save dropped from 201.8 MB to 100.9 MB. The parent PSB and the three original sources kept identical bytes.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-648) · [Details](PhotoCraftSwift/docs/EMBEDDED_SOURCE_RECORDS_648.md).
-
-## 2026-11-19 — Step 647 — Keep large generated Smart Object sources editable
-
-Two large deep-colour Smart Objects keep editable child data in PSD and PSB. Independent checks matched all 134,316,048 child samples.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) · [Details](PhotoCraftSwift/docs/EMBEDDED_SMART_SOURCE_647.md).

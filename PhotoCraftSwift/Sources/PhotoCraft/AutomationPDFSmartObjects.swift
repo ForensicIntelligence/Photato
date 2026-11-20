@@ -24,6 +24,7 @@ struct PDFSmartObjectOptions: Codable, Sendable {
   var resolution = 72.0
   var antialias = true
   var fit = true
+  var sizing = SmartObjectPlacementSizing.pixels
   var rasterize = false
   var layerID: UUID?
   var preserveSize = true
@@ -43,7 +44,7 @@ enum PDFSmartObjectAPI {
       "image":["type":["integer","null"],"minimum":1,"maximum":4096],
       "crop":["type":"string","enum":PDFImportSettings.Crop.allCases.map(\.rawValue)],
       "resolution":["type":"number","minimum":1,"maximum":10000],
-      "antialias":BrushAPI.flag,"fit":BrushAPI.flag,"rasterize":BrushAPI.flag,
+      "antialias":BrushAPI.flag,"fit":BrushAPI.flag,"sizing":EmbeddedSourceAPI.sizingSchema,"rasterize":BrushAPI.flag,
       "layerID":["type":["string","null"],"format":"uuid"],
       "preserveSize":BrushAPI.flag,"allInstances":BrushAPI.flag])
   }
@@ -64,8 +65,8 @@ enum PDFSmartObjectAPI {
         guard value.layerID == nil ? fields["preserveSize"] == nil && fields["allInstances"] == nil : fields["fit"] == nil else {
           throw CraftError.invalid("fit applies to placement; preserveSize/allInstances apply to replacement.")
         }
-        guard value.layerID == nil || (fields["transform"] == nil && fields["rasterize"] == nil) else {
-          throw CraftError.invalid("Initial transform and rasterize apply to new placement only.")
+        guard value.layerID == nil || (fields["sizing"] == nil && fields["transform"] == nil && fields["rasterize"] == nil) else {
+          throw CraftError.invalid("Sizing, initial transform and rasterize apply to new placement only.")
         }
       }
       return value
@@ -76,7 +77,8 @@ enum PDFSmartObjectAPI {
       return try PDFSmartObjectIO.replacement(data,fileName:name,in:original,layerID:layerID,
         settings:options.settings,image:options.image,preserveSize:options.preserveSize,allInstances:options.allInstances)
     }
-    var layer = try PDFSmartObjectIO.placed(data,fileName:name,in:original,settings:options.settings,image:options.image,fit:options.fit)
+    var layer = try PDFSmartObjectIO.placed(data, fileName: name, in: original, settings: options.settings,
+      image: options.image, fit: options.fit, sizing: options.sizing)
     if let transform = options.transform {layer = try DocumentGeometry.transformLayer(layer,by:transform,in:original)}
     return .addLayer(try ArtworkPlacementPreparation.finish(layer, in: original, rasterize: options.rasterize))
   }
@@ -92,6 +94,7 @@ enum PDFSmartObjectAPI {
      "limits":"Transfers must be enabled. Source64MiB;8MP native source/render budget plus shared-document limits before atomic commit. Encrypted sources reject; passwords are not persisted.",
      "selection":"Select page/crop or image (1…4096); image excludes page/crop fields and retains intrinsic image dimensions. Both retain the original PDF source.",
      "initialTransform":"Optional placement-only transform {a,b,c,d,tx,ty} applies in document coordinates after centering/fit. Set rasterize to true to commit rendered pixels in the same Undo transaction. API defaults are independent of the General preferences; per-document pdfPlacement reports the native chooser/transform state.",
+     "sizing":"The desktop uses PDF page points or image inches in the destination PPI. The API defaults to the source raster grid; set sizing:physical for desktop sizing. PDF page render resolution controls cache density.",
      "remaining":"PDF Warp, editable PSD/PDF source editing, linked files, large-file memory and exact/live/platform qualification.",
      "adobe":"Existing create-composite/edit Smart Object file inputs accept PDF through this engine, with autoResize source matching. No new Adobe routes or page-selection fields."]
   }

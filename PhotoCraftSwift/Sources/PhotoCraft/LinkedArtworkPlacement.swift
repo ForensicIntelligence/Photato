@@ -45,10 +45,10 @@ enum LinkedArtworkPlacementAPI {
   static var schema:[String:Any] {
     var pdf=PDFSmartObjectAPI.schema
     var properties=pdf["properties"] as! [String:Any]
-    for key in ["fit","transform","layerID","preserveSize","allInstances","rasterize"]{properties.removeValue(forKey:key)}
+    for key in ["fit","sizing","transform","layerID","preserveSize","allInstances","rasterize"]{properties.removeValue(forKey:key)}
     pdf["properties"]=properties
     let common=EmbeddedSourceAPI.schema["properties"] as! [String:Any]
-    return BrushAPI.object(["transform":common["transform"]!,"frameID":common["frameID"]!,
+    return BrushAPI.object(["transform":common["transform"]!,"sizing":EmbeddedSourceAPI.sizingSchema,"frameID":common["frameID"]!,
       "frameFit":common["frameFit"]!,"rawDevelopment":common["rawDevelopment"]!,"pdf":pdf])
   }
   static func options(_ value:AutomationValue?,fit:Bool,fitExplicit:Bool)throws->LinkedArtworkPlacementOptions {
@@ -75,7 +75,11 @@ enum LinkedArtworkPlacementAPI {
     guard !isPDF || options.embedded.rawDevelopment==nil else{throw CraftError.invalid("RAW development requires a camera RAW file.")}
     var pdf:PDFSmartObjectOptions?
     if isPDF {
-      var selected=options.pdf ?? .init();selected.fit=options.embedded.fit;selected.transform=options.embedded.transform;pdf=selected
+      var selected = options.pdf ?? .init()
+      selected.fit = options.embedded.fit
+      selected.sizing = options.embedded.sizing
+      selected.transform = options.embedded.transform
+      pdf = selected
     }
     let prepared=try ArtworkPlacementPreparation.prepare(file.original,fileName:file.fileName,in:original,embedded:options.embedded,pdf:pdf)
     let linked=try LinkedArtworkPreparation.linking(prepared,file:file,in:original)

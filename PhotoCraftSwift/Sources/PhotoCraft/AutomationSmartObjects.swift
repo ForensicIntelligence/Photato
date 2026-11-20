@@ -94,6 +94,12 @@ extension AutomationCommand {
     case "smartObject.place":
       guard let source else { throw AutomationFailure(status: 404, message: "Source document is not shared.") }
       var options = EmbeddedSourceOptions();options.fit = try flag("fit",true)
+      if let sizing = parameters["sizing"] {
+        guard case .string(let name) = sizing, let choice = SmartObjectPlacementSizing(rawValue: name) else {
+          throw AutomationFailure(status: 400, message: "Placement sizing must be pixels or physical.")
+        }
+        options.sizing = choice
+      }
       if let transform = parameters["transform"] {
         guard case .object(let fields) = transform,Set(fields.keys) == ["a","b","c","d","tx","ty"] else {throw AutomationFailure(status:400,message:"Transform requires a,b,c,d,tx,ty.")}
         let header = try JSONSerialization.data(withJSONObject:["transform":transform.jsonValue])

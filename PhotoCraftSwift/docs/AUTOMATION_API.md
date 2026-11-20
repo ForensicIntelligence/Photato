@@ -3016,6 +3016,14 @@ Each desktop placement snapshots these preferences when file preparation begins.
 
 `GET /v1/capabilities` publishes the placement preference request and response schemas. [Development record](PLACEMENT_PREFERENCES_655.md)
 
+### Physical sizing during Smart Object placement
+
+Desktop Place Embedded and Place Linked match the original print size in the destination document. For a raster image, the initial scale is destination ppi divided by source ppi. A PDF page uses points from its selected crop box. If fit is enabled, oversized artwork is reduced proportionally after sizing.
+
+The Photato API uses `sizing: "pixels"` by default. Set `sizing: "physical"` in `X-Photato-Placement-Options`, `X-Photato-PDF-Options` on the Smart Object PDF route, `smartObject.place` parameters, or the `placement` object of `smartObject.linked.place`. Apply any explicit transform after sizing and fit. This option applies to new ordinary layers. Frame placement and replacement use their existing geometry options.
+
+The Adobe-compatible resource jobs keep their existing transform behavior. [Development record](PLACEMENT_RESOLUTION_657.md)
+
 ## Retained PDF Smart Objects — step255
 
 `POST /v1/documents/{id}/smart-objects/pdf` accepts an `application/pdf` body for an explicitly shared RGB document, with transfers enabled and required `X-Photato-Revision`. `X-Photato-PDF-Options` is a strict JSON object: `page` (1…4096, default1), `crop` (bounding/media/crop/bleed/trim/art), `resolution` (1…10000, default72), `antialias` (defaulttrue). Placement allows `fit` (defaulttrue). Replacement instead supplies `layerID`, with `preserveSize` and `allInstances` (both defaulttrue). Invalid/irrelevant options reject. `X-Photato-Name` supplies a printable ASCII filename without path separators, up to240 bytes; default Contents.pdf. Success returns HTTP200 target state and one native Undo transaction.

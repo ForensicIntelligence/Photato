@@ -143,32 +143,29 @@ public enum SmartObjectIO {
     return try Renderer.composite(document)
   }
   public static func placed(data: Data, fileName: String, in parent: CraftDocument,
-    fit: Bool = true) throws -> Layer {
-    try placed(original: .memory(data), fileName: fileName, in: parent, fit: fit)
+    fit: Bool = true, sizing: SmartObjectPlacementSizing = .pixels) throws -> Layer {
+    try placed(original: .memory(data), fileName: fileName, in: parent, fit: fit, sizing: sizing)
   }
   public static func placed(original: EmbeddedSourceBytes, fileName: String, in parent: CraftDocument,
-    fit: Bool = true) throws -> Layer {
+    fit: Bool = true, sizing: SmartObjectPlacementSizing = .pixels) throws -> Layer {
     let data = original.data
     if PDFImport.recognizes(data) {
       var settings = PDFImportSettings();settings.resolution = 72
-      return try PDFSmartObjectIO.placed(data,fileName:fileName,in:parent,settings:settings,fit:fit)
+      return try PDFSmartObjectIO.placed(data,fileName:fileName,in:parent,settings:settings,fit:fit,sizing:sizing)
     }
     return try placed(document: decode(original, fileName: fileName), original: original,
-      fileName: fileName, in: parent, fit: fit)
+      fileName: fileName, in: parent, fit: fit, sizing: sizing)
   }
   public static func placed(document: CraftDocument, data: Data, fileName: String,
-    in parent: CraftDocument, fit: Bool = true) throws -> Layer {
-    try placed(document: document, original: .memory(data), fileName: fileName, in: parent, fit: fit)
+    in parent: CraftDocument, fit: Bool = true, sizing: SmartObjectPlacementSizing = .pixels) throws -> Layer {
+    try placed(document: document, original: .memory(data), fileName: fileName, in: parent, fit: fit, sizing: sizing)
   }
   public static func placed(document: CraftDocument, original: EmbeddedSourceBytes, fileName: String,
-    in parent: CraftDocument, fit: Bool = true) throws -> Layer {
+    in parent: CraftDocument, fit: Bool = true, sizing: SmartObjectPlacementSizing = .pixels) throws -> Layer {
     let (object, pixels) = try embedded(document: document, in: parent, original: original, fileName: fileName)
     var layer = Layer(name: (fileName as NSString).deletingPathExtension, content: .raster(pixels))
     layer.smartObject = object
-    let scale = fit ? min(1, min(Double(parent.width) / Double(document.width), Double(parent.height) / Double(document.height))) : 1
-    layer.x = Int((Double(parent.width) - Double(document.width) * scale) / 2)
-    layer.y = Int((Double(parent.height) - Double(document.height) * scale) / 2)
-    layer.affine = .scale(scale, scale)
+    try sizing.center(&layer, source: object, in: parent, fit: fit)
     return layer
   }
   public static func rasterizationCommand(_ layer: Layer, in document: CraftDocument) throws -> Command {

@@ -675,7 +675,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 654 | 2026-11-20 | [Place and update gigabyte-scale linked Smart Objects](#dev-step-654) |
 | 655 | 2026-11-20 | [Add General placement preferences](#dev-step-655) |
 | 656 | 2026-11-20 | [Recover linked Smart Objects after moving a folder](#dev-step-656) |
+| 657 | 2026-11-20 | [Place Smart Objects at their source print size](#dev-step-657) |
 <!-- history-index:end -->
+
+<a id="dev-step-657"></a>
+
+## 2026-11-20 — Place Smart Objects at their source print size
+
+Place Embedded and Place Linked now size artwork from its print resolution and the destination ppi. Resize Image During Place fits oversized artwork after converting to document pixels. The Photato API exposes the same geometry through an explicit physical sizing option.
+
+All 1,463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The independent raw PSD and PSB composite check recovered a 144 × 144 pixel placement of the 600 × 600 pixel, 300 ppi source in a 72 ppi document. Both architectures wrote byte-identical native, PSD and PSB files. Both optimized builds also passed the 1.18 GB linked PSB workflow.
+
+The installed Photoshop session timed out on a read-only request. Exact Adobe rounding, interpolation, and format-specific placement behavior remain open.
+
+[Development record](PLACEMENT_RESOLUTION_657.md) · [Qualification](SOURCE_PUBLICATION_657.md).
 
 <a id="dev-step-656"></a>
 

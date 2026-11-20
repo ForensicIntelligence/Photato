@@ -1,3 +1,9 @@
+**Source checkpoint 657.** Place Embedded and Place Linked now size artwork from its print resolution and the destination ppi. Resize Image During Place fits oversized artwork after converting to document pixels. The Photato API exposes the same geometry through an explicit physical sizing option. All 1,463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_657.md).
+
+**Next live placement comparisons.** Measure fractional center transforms and RGB pixels at 72, 144 and 300 ppi. Include odd source dimensions, different grid densities, oversized artwork, rasterized placement, linked replacement and PDF page and image selection.
+
+**Next API gap.** Add documented custom transforms to Smart Object template jobs through the existing Smart Object transform engine. Verify geometry, original-source retention and rejected requests. [Adobe schema](https://github.com/AdobeDocs/ffs-photoshop-API/blob/main/static/photoshopv2-api.json).
+
 **Source checkpoint 656.** PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document. All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_656.md).
 
 **Remaining linked interchange.** With a responsive Photoshop session, place the owned files and compare its package output, relink behavior, and the matching merged and layer samples. Test the original and moved versions and a same-size file saved at a different PPI.

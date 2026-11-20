@@ -1,0 +1,213 @@
+{
+  "build": 657,
+  "base": "2dd1bd6f12ed15ea66a0ffaf205842c4754a2790",
+  "buildInputs": 9252,
+  "includedBuildInputs": 9239,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "63ca3c327aa5cde9c0d9f15957e9ec1f5ad34f69795e4f4c9f55d774cff6b49d",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "de8c20ce8bc7193fd613d8594e6c9ac669c312ab476814208c4ea480a2223428"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationEmbeddedSources.swift",
+      "sha256": "66acc387ca3f0a52de42aa0f4e4146003317dd2a5081e682183ed83389b28213"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPDFSmartObjects.swift",
+      "sha256": "f984fab85a1a1915a2bb9569bbd3169941ad8872a245bb6128d8e8a831f5cb49"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPlacementPreferences.swift",
+      "sha256": "86a92cbf621414b4273342ed8a22a0d96e1eab024964fedf688d43393ec37778"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "sha256": "0e26c4fc6867849d69fc3d0660b2716b507e437ffe5e1ceafdf54b10f7857019"
+    },
+    {
+      "path": "Sources/PhotoCraft/EmbeddedPlacement.swift",
+      "sha256": "7e9e407b0f4b2ed068abcad938cef850284ae908c2861e5d95acc54f16c36135"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkAPI.swift",
+      "sha256": "862f9bea1e8f7a9e844cd1a0e38e3f861f1c8e0ebb06a0b2754036559e73e896"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPlacement.swift",
+      "sha256": "10dc28afb850ce105fcdf8b960b6c8abee1cf56d0bce30937d944ac83ee6781e"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PDFSmartObjectIO.swift",
+      "sha256": "21c1962b4a2c8fdc04169aba07d3775a98871e48db9b9bfb1c7c2314663e09bf"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SmartObjectIO.swift",
+      "sha256": "615cd153db45807799a3a339afed5c1f94208dbd1b22c2531477a7cece5c6d52"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SmartObjectPlacementSizing.swift",
+      "sha256": "f24d38c247c1ab5715118665fd44f2ef978a242307aeeb57e9132f726fa560f9"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PlacementResolutionWorkflowTests.swift",
+      "sha256": "48134008f564280979186c0f7b5a5d5c533f227120fa860aa091253ddca1dec4"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/SmartObjectPlacementSizingTests.swift",
+      "sha256": "320a5091a2465df2f4a5b99d303e7b6088cb807197c3ad2473289ed4491d5433"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "e9fb821a1257f53278d6d59092536bc9d4f07bcf9647539baccd56b225811d28"
+    }
+  ],
+  "casesPerConfiguration": 1463,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1463,
+      "passed": 1463,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "39a5a05986039c119bb002dfd8166385e35cfb6ce54f546a2e304e1dd659af30"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1463,
+      "passed": 1463,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "ca7a9ffc53b9a01729daf9fd303cb11408d769c917ee0cb4c1b0fb2eb16290a0"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1463,
+      "passed": 1463,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "ceb422a8e81276d6af49149d994bc7350ababed14029db5f7baa0d29a3262e13"
+    }
+  },
+  "preview": {
+    "macOSMinimum": "14.0",
+    "signature": "ad hoc",
+    "archiveSHA256": "b178c10569eaa801b4fdf0756e43903fe18ef9bca3341be3245aa6d254665f3b",
+    "offscreenSlices": [
+      "arm64",
+      "x86_64"
+    ],
+    "intelRuntime": "Rosetta"
+  },
+  "printPlacementProbe": {
+    "arm64": {
+      "png": {
+        "bytes": 8571,
+        "sha256": "6d54a92abb04cb4ddedd97096379bba45a42e547fa6585fb13b7a8f66d2c3530"
+      },
+      "photato": {
+        "bytes": 13230,
+        "sha256": "05e6d9bb7f2905927e2bf0e8eb3ad33a389133baa66c10502c6e3b9e8893df0f"
+      },
+      "psd": {
+        "bytes": 1459980,
+        "sha256": "94b1d02ab54c8273cf9d51f08f86552c599ab1d739ae15bdec6ed3f2e02998eb",
+        "exactMergedBytes": 1440000,
+        "mergedSHA256": "bd2a0c7cb4c4e8ad208893dec501146b8fb377e96e872bc10b57f09f40dd96cd",
+        "width": 600,
+        "height": 600,
+        "placedBounds": [
+          228,
+          228,
+          144,
+          144
+        ]
+      },
+      "psb": {
+        "bytes": 1460024,
+        "sha256": "f3bab16a5798df256de8d883f092f02c3d8690ea96cd513d4b0e8050a1bbd950",
+        "exactMergedBytes": 1440000,
+        "mergedSHA256": "bd2a0c7cb4c4e8ad208893dec501146b8fb377e96e872bc10b57f09f40dd96cd",
+        "width": 600,
+        "height": 600,
+        "placedBounds": [
+          228,
+          228,
+          144,
+          144
+        ]
+      }
+    },
+    "x86_64": {
+      "png": {
+        "bytes": 8571,
+        "sha256": "6d54a92abb04cb4ddedd97096379bba45a42e547fa6585fb13b7a8f66d2c3530"
+      },
+      "photato": {
+        "bytes": 13230,
+        "sha256": "05e6d9bb7f2905927e2bf0e8eb3ad33a389133baa66c10502c6e3b9e8893df0f"
+      },
+      "psd": {
+        "bytes": 1459980,
+        "sha256": "94b1d02ab54c8273cf9d51f08f86552c599ab1d739ae15bdec6ed3f2e02998eb",
+        "exactMergedBytes": 1440000,
+        "mergedSHA256": "bd2a0c7cb4c4e8ad208893dec501146b8fb377e96e872bc10b57f09f40dd96cd",
+        "width": 600,
+        "height": 600,
+        "placedBounds": [
+          228,
+          228,
+          144,
+          144
+        ]
+      },
+      "psb": {
+        "bytes": 1460024,
+        "sha256": "f3bab16a5798df256de8d883f092f02c3d8690ea96cd513d4b0e8050a1bbd950",
+        "exactMergedBytes": 1440000,
+        "mergedSHA256": "bd2a0c7cb4c4e8ad208893dec501146b8fb377e96e872bc10b57f09f40dd96cd",
+        "width": 600,
+        "height": 600,
+        "placedBounds": [
+          228,
+          228,
+          144,
+          144
+        ]
+      }
+    }
+  },
+  "largeLinkedCheck": {
+    "bytes": 1181384274,
+    "workflows": {
+      "arm64": {
+        "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+        "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+        "passed": true,
+        "nativePlacementSeconds": 4.117152416,
+        "apiPlacementSeconds": 4.07634575
+      },
+      "x86_64": {
+        "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+        "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+        "passed": true,
+        "nativePlacementSeconds": 8.397615334,
+        "apiPlacementSeconds": 8.732674625
+      }
+    }
+  },
+  "release": "source and diary only"
+}

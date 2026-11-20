@@ -27,15 +27,13 @@ public enum PDFSmartObjectIO {
     return (object,try surface(object,width:object.width,height:object.height,in:parent))
   }
   public static func placed(_ data: Data, fileName: String, in parent: CraftDocument,
-    settings: PDFImportSettings, image: Int? = nil, fit: Bool = true) throws -> Layer {
+    settings: PDFImportSettings, image: Int? = nil, fit: Bool = true,
+    sizing: SmartObjectPlacementSizing = .pixels) throws -> Layer {
     let (object,pixels) = try image.map {try embeddedImage(data,fileName:fileName,in:parent,image:$0,resolution:settings.resolution,antialias:settings.antialias)}
       ?? embedded(data,fileName:fileName,in:parent,settings:settings)
     var layer = Layer(name:(fileName as NSString).deletingPathExtension,content:.raster(pixels))
     layer.smartObject = object
-    let scale = fit ? min(1,min(Double(parent.width)/Double(object.width),Double(parent.height)/Double(object.height))):1
-    layer.x = Int((Double(parent.width)-Double(object.width)*scale)/2)
-    layer.y = Int((Double(parent.height)-Double(object.height)*scale)/2)
-    layer.affine = .scale(scale,scale)
+    try sizing.center(&layer, source: object, in: parent, fit: fit)
     return layer
   }
   public static func replacement(_ data: Data, fileName: String, in parent: CraftDocument,

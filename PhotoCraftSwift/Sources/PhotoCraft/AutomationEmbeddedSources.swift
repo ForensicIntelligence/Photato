@@ -5,6 +5,7 @@ import PhotoCraftImaging
 struct EmbeddedSourceOptions: Codable, Sendable {
   var transform: Transform2D?
   var fit = true
+  var sizing = SmartObjectPlacementSizing.pixels
   var rasterize = false
   var layerID: UUID?
   var frameID: UUID?
@@ -15,10 +16,13 @@ struct EmbeddedSourceOptions: Codable, Sendable {
 }
 
 enum EmbeddedSourceAPI {
+  static var sizingSchema: [String: Any] {
+    ["type": "string", "enum": SmartObjectPlacementSizing.allCases.map(\.rawValue), "default": "pixels"]
+  }
   static var schema: [String:Any] {
     var transform = AutomationCommand.frameSchema("transform");transform["type"] = ["object","null"]
     var raw = RawDevelopment.apiSchema;raw["type"] = ["object","null"]
-    return BrushAPI.object(["transform":transform,"fit":BrushAPI.flag,"rasterize":BrushAPI.flag,
+    return BrushAPI.object(["transform":transform,"fit":BrushAPI.flag,"sizing":sizingSchema,"rasterize":BrushAPI.flag,
       "layerID":["type":["string","null"],"format":"uuid"],
       "frameID":["type":["string","null"],"format":"uuid"],
       "frameFit":["type":"string","enum":FrameFit.allCases.map(\.rawValue)],
@@ -37,8 +41,9 @@ enum EmbeddedSourceAPI {
       guard value.layerID == nil || value.frameID == nil else {throw CraftError.invalid("Choose replacement or frame placement, not both.")}
       if case .object(let fields) = raw {
         let ordinary = value.layerID == nil && value.frameID == nil
-        guard ordinary || (fields["fit"] == nil && fields["transform"] == nil && fields["rasterize"] == nil) else {
-          throw CraftError.invalid("Fit, transform and rasterize apply to new layer placement only.")
+        guard ordinary || (fields["fit"] == nil && fields["sizing"] == nil
+          && fields["transform"] == nil && fields["rasterize"] == nil) else {
+          throw CraftError.invalid("Fit, sizing, transform and rasterize apply to new layer placement only.")
         }
         guard value.layerID != nil || (fields["preserveSize"] == nil && fields["allInstances"] == nil) else {throw CraftError.invalid("preserveSize/allInstances apply to replacement only.")}
         guard value.frameID != nil || fields["frameFit"] == nil else {throw CraftError.invalid("frameFit requires frameID.")}
@@ -66,7 +71,8 @@ enum EmbeddedSourceAPI {
       return try SmartObjectIO.replacement(in:original,layerID:id,source:source,original:bytes,fileName:name,
         preserveSize:options.preserveSize,allInstances:options.allInstances)
     }
-    var layer = try SmartObjectIO.placed(document:source,original:bytes,fileName:name,in:original,fit:options.fit)
+    var layer = try SmartObjectIO.placed(document: source, original: bytes, fileName: name, in: original,
+      fit: options.fit, sizing: options.sizing)
     if let id = options.frameID {return .frame(.replace(id,layer,fit:options.frameFit))}
     if let transform = options.transform {layer = try DocumentGeometry.transformLayer(layer,by:transform,in:original)}
     if options.rasterize { layer = try ArtworkPlacementPreparation.finish(layer, in: original, rasterize: true) }
@@ -85,6 +91,7 @@ enum EmbeddedSourceAPI {
      "result":"HTTP200 shared target state. New layer by default; layerID replaces content, frameID replaces frame artwork. One native Undo transaction.",
      "source":"Original raster, native, supported PhotoCraft ZIP projects, PSD/PSB or supported camera RAW bytes remain embedded and downloadable. RAW settings are retained separately. PDF uses the existing pdf endpoint.",
      "initialTransform":"Optional document-coordinate delta after centering/fit, committed with placement in one edit. Set rasterize to true to bake the final geometry into a pixel layer. API defaults fit:true and rasterize:false are independent of General preferences. The desktop can offer a cancellable transform preview; RAW first opens native Camera Raw controls.",
+     "sizing":"The desktop uses physical source size. API sizing:pixels retains the original pixel grid by default. Choose sizing:physical to match source inches in the destination PPI. Fit reduces oversized artwork after sizing.",
      "state":"Per-document embeddedPlacement exposes preparing, choosingPDF, developingRaw, transform, committing or idle. PDF-specific state remains separate.",
      "cancel":"POST /v1/documents/{id}/smart-objects/source/cancel with {operationID:UUID}; capabilities.embeddedSourceOperations maps active IDs by shared document UUID.",
      "maximumRGBSourcePixels":SmartObjectIO.maximumPagedRGBPixels,

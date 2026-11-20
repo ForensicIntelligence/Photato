@@ -66,7 +66,7 @@ extension AutomationService {
       "nativeMenu": "Photato > Settings… > General…",
       "permission": "Allow placement preference changes in the native API window. Permission resets when the API stops.",
       "scope": "Persistent defaults for future desktop placements. Each placement captures the three flags at the start.",
-      "requests": "API placement uses explicit options and retains its existing defaults. Embedded and PDF source requests support rasterize and fit; approved linked placement supports fit and retains the external reference.",
+      "requests": "API placement retains pixel sizing by default. Use sizing:physical and fit for desktop print sizing. Embedded and PDF uploads also support rasterize; linked placement retains the external reference.",
       "adobe": "The published Photoshop v2 contract has no desktop preferences route. Existing Adobe placement jobs are unchanged.",
     ]
   }

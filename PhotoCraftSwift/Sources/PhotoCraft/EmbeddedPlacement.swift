@@ -65,12 +65,15 @@ extension EditorStore {
           self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed while reading artwork.")}
         self.embeddedPlacementIsPDF = source.isPDF
         var options = EmbeddedSourceOptions();options.layerID = layerID;options.frameID = frameID
-        if newLayer { options.fit = preferences.resizeImageDuringPlace }
+        if newLayer {
+          options.fit = preferences.resizeImageDuringPlace
+          options.sizing = .physical
+        }
         var pdf: PDFSmartObjectOptions?
         if source.isPDF {
           var selected = try await self.choosePDFPlacement(PreparedPDFSource(data:source.data,name:url.deletingPathExtension().lastPathComponent))
           selected.layerID = layerID
-          if newLayer { selected.fit = options.fit }
+          if newLayer { selected.fit = options.fit; selected.sizing = options.sizing }
           pdf = selected
         } else if let decoded = source.document,decoded.layers.first?.smartObject?.rawDevelopment != nil,
           RawSourceIO.recognizes(source.data) {
