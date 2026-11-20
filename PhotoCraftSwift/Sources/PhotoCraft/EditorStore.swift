@@ -315,6 +315,7 @@ struct CanvasRenderRequest: Sendable {
   var lensCorrectionWorkspace: LensCorrectionWorkspace?
   var proofDisplayError: String?
   var printPreferences = PrintPreferences()
+  var artworkPlacementPreferences = ArtworkPlacementPreferences()
   var printOverride: PrintSettings?
   var importedPrintSettings: PhotoshopPrintSettings?
   var printSettings: PrintSettings {

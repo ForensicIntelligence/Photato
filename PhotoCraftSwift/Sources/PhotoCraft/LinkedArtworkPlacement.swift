@@ -4,6 +4,21 @@ import PhotoCraftImaging
 
 /// One file preparation dispatch for the native chooser and explicitly approved API assets.
 enum ArtworkPlacementPreparation {
+  /// Bake the final document-space transform only when the chosen output is a pixel layer.
+  static func finish(_ layer: Layer, in document: CraftDocument, rasterize: Bool,
+    interpolation: Resampling = .bicubic) throws -> Layer {
+    let rendered = try PDFSmartObjectIO.renderedLayer(layer, in: document)
+    guard rasterize else { return layer }
+    guard let object = layer.smartObject, object.linkedSource == nil,
+      case .raster(let pixels) = rendered.content else {
+      throw CraftError.invalid("Only new embedded artwork can be placed as a pixel layer.")
+    }
+    var raster = rendered
+    raster.smartObject = nil
+    raster.content = .raster(try pixels.converted(to: document.depth))
+    return try DocumentGeometry.transformLayer(raster, by: .identity, in: document, method: interpolation)
+  }
+
   static func prepare(_ data:Data,fileName:String,in original:CraftDocument,
     embedded:EmbeddedSourceOptions,pdf:PDFSmartObjectOptions?=nil,decoded:CraftDocument?=nil)throws->Command {
     try prepare(.memory(data),fileName:fileName,in:original,embedded:embedded,pdf:pdf,decoded:decoded)
@@ -30,7 +45,7 @@ enum LinkedArtworkPlacementAPI {
   static var schema:[String:Any] {
     var pdf=PDFSmartObjectAPI.schema
     var properties=pdf["properties"] as! [String:Any]
-    for key in ["fit","transform","layerID","preserveSize","allInstances"]{properties.removeValue(forKey:key)}
+    for key in ["fit","transform","layerID","preserveSize","allInstances","rasterize"]{properties.removeValue(forKey:key)}
     pdf["properties"]=properties
     let common=EmbeddedSourceAPI.schema["properties"] as! [String:Any]
     return BrushAPI.object(["transform":common["transform"]!,"frameID":common["frameID"]!,

@@ -9,6 +9,8 @@ struct EmbeddedPlacementDraft: Sendable {
   let lifecycle: UUID
   let session: UUID
   let preview: CraftDocument
+  let rasterize: Bool
+  let linkedFile: LinkedArtworkRead?
 }
 
 extension EditorStore {
@@ -29,17 +31,18 @@ extension EditorStore {
   }
 
 
-  func beginEmbeddedPlacement(_ layer: Layer) throws {
+  func beginEmbeddedPlacement(_ layer: Layer, rasterize: Bool = false, linkedFile: LinkedArtworkRead? = nil) throws {
     guard clipboardTargetAvailable else {throw CraftError.invalid("Finish the current edit before placing artwork.")}
     var preview = document
     try Command.addLayer(layer).apply(to:&preview)
     let inserted = preview.layers.first(where:{$0.id == layer.id})!
     let bounds = try layerBounds(inserted)
     embeddedPlacement = EmbeddedPlacementDraft(original:document,layer:inserted,selected:selectedLayerIDs,
-      lifecycle:layerPanelGeneration,session:sessionGeneration,preview:preview)
+      lifecycle:layerPanelGeneration,session:sessionGeneration,preview:preview,rasterize:rasterize,linkedFile:linkedFile)
     transformDraft = TransformDraft(layerID:layer.id,bounds:bounds)
     selectedLayerIDs = [layer.id];tool = .move
-    status = "Place Embedded · Return to commit · Escape to cancel"
+    let title = layer.smartObject?.linkedSource == nil ? "Place Embedded" : "Place Linked"
+    status = "\(title) · Return to commit · Escape to cancel"
     render()
   }
   func discardEmbeddedPlacement(restoreSelection: Bool = true) {
@@ -66,9 +69,13 @@ extension EditorStore {
       do {
         let worker = Task.detached(priority:.userInitiated) {
           let layer = try DocumentGeometry.transformLayer(draft.layer,by:transform.delta,in:draft.original,method:transform.interpolation)
-          _ = try PDFSmartObjectIO.renderedLayer(layer,in:draft.original)
+          let finished = try ArtworkPlacementPreparation.finish(layer, in: draft.original,
+            rasterize: draft.rasterize, interpolation: transform.interpolation)
+          if let file = draft.linkedFile, try LinkedArtworkRead.signature(file.grant) != file.signature {
+            throw DocumentPersistenceConflict.changed
+          }
           try Task.checkCancellation()
-          return try PreparedEdit(command:.addLayer(layer),document:draft.original)
+          return try PreparedEdit(command:.addLayer(finished),document:draft.original)
         }
         let prepared = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
         try Task.checkCancellation()
@@ -76,6 +83,9 @@ extension EditorStore {
           self.transformDraft == transform,self.document == draft.original,
           self.layerPanelGeneration == draft.lifecycle,self.sessionGeneration == draft.session else {
           throw CraftError.invalid("The document or placement changed before commit.")
+        }
+        if let file = draft.linkedFile, !self.linkedSourceRegistry.stillAuthorizes(file.grant) {
+          throw CraftError.invalid("Artwork authorization was revoked.")
         }
         try self.executeCompositePreparedEdit(prepared)
         self.transformDraft = nil;self.discardEmbeddedPlacement(restoreSelection:false)

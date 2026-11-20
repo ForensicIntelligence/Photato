@@ -37,6 +37,9 @@ extension EditorStore {
   func placeEmbeddedSource(_ url: URL,replacing layerID: UUID? = nil,frame frameID: UUID? = nil,linkedGrant: LinkedArtworkGrant? = nil) {
     guard clipboardTargetAvailable else {return}
     let original = document,lifecycle = layerPanelGeneration,sessionID = sessionGeneration,operation = UUID()
+    let preferences = artworkPlacementPreferences.settings
+    let newLayer = layerID == nil && frameID == nil
+    let rasterize = newLayer && linkedGrant == nil && !preferences.alwaysCreateSmartObjectsWhenPlacing
     geometryBusy = true;embeddedPlacementOperationID = operation;embeddedPlacementSourceName = url.lastPathComponent
     embeddedPlacementIsPDF = false;status = "Reading artwork…";error = nil
     geometryTask = Task { [weak self] in
@@ -62,10 +65,13 @@ extension EditorStore {
           self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed while reading artwork.")}
         self.embeddedPlacementIsPDF = source.isPDF
         var options = EmbeddedSourceOptions();options.layerID = layerID;options.frameID = frameID
+        if newLayer { options.fit = preferences.resizeImageDuringPlace }
         var pdf: PDFSmartObjectOptions?
         if source.isPDF {
           var selected = try await self.choosePDFPlacement(PreparedPDFSource(data:source.data,name:url.deletingPathExtension().lastPathComponent))
-          selected.layerID = layerID;pdf = selected
+          selected.layerID = layerID
+          if newLayer { selected.fit = options.fit }
+          pdf = selected
         } else if let decoded = source.document,decoded.layers.first?.smartObject?.rawDevelopment != nil,
           RawSourceIO.recognizes(source.data) {
           options.rawDevelopment = try await self.chooseRawPlacement(decoded)
@@ -88,15 +94,26 @@ extension EditorStore {
           guard self.embeddedPlacementOperationID==operation,self.layerPanelGeneration==lifecycle,self.sessionGeneration==sessionID,self.document==original else{throw CraftError.invalid("The document changed before placement completed.")}
           command=try LinkedArtworkPreparation.linking(command,file:file,in:original)
         }
-        if case .addLayer(let layer) = command {
-          self.geometryBusy = false;try self.beginEmbeddedPlacement(layer)
+        if case .addLayer(let layer) = command, !preferences.skipTransformWhenPlacing {
+          self.geometryBusy = false
+          try self.beginEmbeddedPlacement(layer, rasterize: rasterize, linkedFile: linkedFile)
         } else {
-          let prepare = Task.detached(priority:.userInitiated) {try PreparedEdit(command:command,document:original)}
+          let preparedCommand = command
+          let prepare = Task.detached(priority:.userInitiated) {
+            if case .addLayer(let layer) = preparedCommand {
+              let result = try ArtworkPlacementPreparation.finish(layer, in: original, rasterize: rasterize)
+              return try PreparedEdit(command: .addLayer(result), document: original)
+            }
+            return try PreparedEdit(command: preparedCommand, document: original)
+          }
           let edit = try await withTaskCancellationHandler {try await prepare.value} onCancel:{prepare.cancel()}
           try Task.checkCancellation()
           guard self.embeddedPlacementOperationID == operation,self.layerPanelGeneration == lifecycle,
             self.sessionGeneration == sessionID,self.document == original else {throw CraftError.invalid("The document changed before placement completed.")}
-          try self.executeCompositePreparedEdit(edit,allowLinkedSmartObject:linkedFile != nil)
+          if let linkedFile, !self.linkedSourceRegistry.stillAuthorizes(linkedFile.grant) {
+            throw CraftError.invalid("Artwork authorization was revoked.")
+          }
+          try self.executeCompositePreparedEdit(edit, allowLinkedSmartObject: edit.linkedSmartObjectEdit != nil)
           self.selectedLayerIDs = Set(self.document.activeLayerID.map{[$0]} ?? [])
           if self.document != original {self.onChange?(.changeDone)}
           self.status = "Artwork placed"

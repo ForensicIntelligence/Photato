@@ -581,6 +581,7 @@ import SwiftUI
   lazy var workflowGuideHighlighter = WorkflowGuideHighlighter(windows: documentWindows)
   private(set) var paintPalette = PaintPalette()
   private(set) var printPreferences = PrintPreferences()
+  private(set) var artworkPlacementPreferences = ArtworkPlacementPreferences()
   private(set) var eyedropperPreferences=EyedropperPreferences()
   let filterRecall = FilterRecall()
   var movieFramesWorkspace: MovieFramesWorkspace?
@@ -618,7 +619,7 @@ import SwiftUI
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil,
     paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
     scriptEvents: ScriptEventsStore? = nil, workflowGuidePreferences: WorkflowGuidePreferences? = nil,
-    printPreferences: PrintPreferences? = nil
+    printPreferences: PrintPreferences? = nil, artworkPlacementPreferences: ArtworkPlacementPreferences? = nil
   ) {
     self.init()
     // AppKit may return its existing document-controller singleton from init().
@@ -627,6 +628,7 @@ import SwiftUI
     self.workflowGuidePreferences = workflowGuidePreferences ?? WorkflowGuidePreferences()
     self.paintPalette = paintPalette ?? PaintPalette()
     self.printPreferences = printPreferences ?? PrintPreferences()
+    self.artworkPlacementPreferences = artworkPlacementPreferences ?? ArtworkPlacementPreferences()
     self.eyedropperPreferences=eyedropperPreferences ?? EyedropperPreferences()
     self.recoveryPreferences = recoveryPreferences ?? RecoveryPreferencesStore()
     self.colorSettings = colorSettings ?? ColorSettingsStore()
@@ -642,6 +644,7 @@ import SwiftUI
       document.store.workspaceLibrary = workspaces
       document.store.adoptPaintPalette(self.paintPalette)
       document.store.printPreferences = self.printPreferences
+      document.store.artworkPlacementPreferences = self.artworkPlacementPreferences
       document.store.adoptEyedropperPreferences(self.eyedropperPreferences)
       document.store.filterRecall = filterRecall
     }
@@ -680,6 +683,7 @@ import SwiftUI
     (document as? CraftNSDocument)?.store.documentController = self
     (document as? CraftNSDocument)?.store.adoptPaintPalette(paintPalette)
     (document as? CraftNSDocument)?.store.printPreferences = printPreferences
+    (document as? CraftNSDocument)?.store.artworkPlacementPreferences = artworkPlacementPreferences
     (document as? CraftNSDocument)?.store.adoptEyedropperPreferences(eyedropperPreferences)
     (document as? CraftNSDocument)?.store.filterRecall = filterRecall
     (document as? CraftNSDocument)?.store.workspaceLibrary = workspaces

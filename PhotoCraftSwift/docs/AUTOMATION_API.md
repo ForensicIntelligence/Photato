@@ -3008,6 +3008,14 @@ Both routes share the existing PDF cancel endpoint, token/transfer permission, b
 Step253 rendering correction: shared page/image rasterization uses a16-bit intermediate before converting to the requested editing depth. Owned probes reveal incorrect image scaling in CoreGraphics Float32 PDF bitmap contexts on this platform. This preserves tested source geometry but leaves Float32 PDF/HDR precision and Adobe-exact rasterization unqualified.
 
 
+## Placement preferences
+
+Authenticated `GET /v1/preferences/placement` returns the three current desktop placement flags, a `revision` UUID and `canUpdate`. In the native API panel, **Allow placement preference changes** enables authenticated JSON `POST` to this route for the current API session. Send the current revision and one or more of `resizeImageDuringPlace`, `skipTransformWhenPlacing` and `alwaysCreateSmartObjectsWhenPlacing` as booleans. Invalid settings return 400, disabled writes return 403 and stale revisions return 409. The three initial values are true, false and true, respectively.
+
+Each desktop placement snapshots these preferences when file preparation begins. HTTP placement keeps its own defaults. Set `rasterize: true` in `X-Photato-Placement-Options` for an embedded source, or in `X-Photato-PDF-Options` on the retained PDF placement route, to bake a new pixel layer in the same Undo entry. The default is false. `fit` and `transform` still control geometry. Replacement, frame and linked placement require their retained-source behavior. The Adobe-compatible resource jobs continue to use their published contract.
+
+`GET /v1/capabilities` publishes the placement preference request and response schemas. [Development record](PLACEMENT_PREFERENCES_655.md)
+
 ## Retained PDF Smart Objects — step255
 
 `POST /v1/documents/{id}/smart-objects/pdf` accepts an `application/pdf` body for an explicitly shared RGB document, with transfers enabled and required `X-Photato-Revision`. `X-Photato-PDF-Options` is a strict JSON object: `page` (1…4096, default1), `crop` (bounding/media/crop/bleed/trim/art), `resolution` (1…10000, default72), `antialias` (defaulttrue). Placement allows `fit` (defaulttrue). Replacement instead supplies `layerID`, with `preserveSize` and `allInstances` (both defaulttrue). Invalid/irrelevant options reject. `X-Photato-Name` supplies a printable ASCII filename without path separators, up to240 bytes; default Contents.pdf. Success returns HTTP200 target state and one native Undo transaction.
@@ -3028,8 +3036,8 @@ Native Place PDF selection, Page/Image previews, Return/Cancel, Replace Contents
 
 `X-Photato-Placement-Options` is a strict JSON object, limited to8KiB:
 
-- New layer: `fit` (defaulttrue) and optional `transform:{a,b,c,d,tx,ty}`. The transform is a document-coordinate delta after centering/fit, committed with placement in one transaction.
-- Replace contents: `layerID`, with `preserveSize` and `allInstances` (both defaulttrue). Placement-only fit/transform fields reject.
+- New layer: `fit` (default true), `rasterize` (default false) and optional `transform:{a,b,c,d,tx,ty}`. The transform is a document-coordinate delta after centering/fit, committed with placement in one transaction.
+- Replace contents: `layerID`, with `preserveSize` and `allInstances` (both defaulttrue). Placement-only fit, transform and rasterize fields reject.
 - Replace frame artwork: `frameID` and `frameFit` (`fill`, `fit`, `original`; defaultfill). Replacement-only fields and new-layer transforms reject.
 - RAW sources: optional `rawDevelopment` uses the native sensor-development schema, including nested Camera Raw adjustments. Sparse settings start from defaults; decoder capabilities are validated against the actual source. Supplying RAW settings for a non-RAW file rejects. Original sensor data remains unchanged.
 

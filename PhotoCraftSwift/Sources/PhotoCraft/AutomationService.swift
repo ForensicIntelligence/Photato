@@ -66,6 +66,7 @@ import UniformTypeIdentifiers
   private(set) var scriptEventChangesEnabled = false
   private(set) var workspacePanelChangesEnabled = false
   private(set) var photoshopPreferenceChangesEnabled = false
+  private(set) var placementPreferenceChangesEnabled = false
   private(set) var colorSettingsChangesEnabled = false
   private(set) var recoveryManagementEnabled = false
   private(set) var recoveryBackupsEnabled = false
@@ -210,6 +211,7 @@ import UniformTypeIdentifiers
     setScriptEventChangesEnabled(false)
     setWorkspacePanelChangesEnabled(false)
     setPhotoshopPreferenceChangesEnabled(false)
+    setPlacementPreferenceChangesEnabled(false)
     setColorSettingsChangesEnabled(false)
     setRecoveryManagementEnabled(false)
     setRecoveryBackupsEnabled(false)
@@ -256,6 +258,9 @@ import UniformTypeIdentifiers
   func setScriptEventChangesEnabled(_ enabled: Bool) { scriptEventChangesEnabled = enabled && isRunning }
   func setPhotoshopPreferenceChangesEnabled(_ enabled: Bool) {
     photoshopPreferenceChangesEnabled = enabled && isRunning
+  }
+  func setPlacementPreferenceChangesEnabled(_ enabled: Bool) {
+    placementPreferenceChangesEnabled = enabled && isRunning
   }
   func setColorSettingsChangesEnabled(_ enabled: Bool) {
     colorSettingsChangesEnabled = enabled && isRunning
@@ -648,6 +653,7 @@ import UniformTypeIdentifiers
       if let response = try await handleLinkedSourceFile(request) {return response}
       if let response = try handleRecoveryPreferences(request) { return response }
       if let response = try handlePhotoshopFilePreferences(request) { return response }
+      if let response = try handlePlacementPreferences(request) { return response }
       if let response = try handleColorSettings(request) { return response }
       if let response = try await handleRecoveryDiscovery(request) { return response }
       if let response = try await handleRecoveryBackups(request) { return response }
@@ -690,6 +696,7 @@ import UniformTypeIdentifiers
         result["preferenceChangesEnabled"] = preferenceChangesEnabled
         result["scriptEventChangesEnabled"] = scriptEventChangesEnabled
         result["photoshopPreferenceChangesEnabled"] = photoshopPreferenceChangesEnabled
+        result["placementPreferenceChangesEnabled"] = placementPreferenceChangesEnabled
         result["colorSettingsChangesEnabled"] = colorSettingsChangesEnabled
         result["recentFilesEnabled"] = recentFilesEnabled
         result["recoveryBackupsEnabled"] = recoveryBackupsEnabled
@@ -1734,6 +1741,7 @@ import UniformTypeIdentifiers
       "apiVersion": 1, "transport": "loopback HTTP; bearer token; same origin",
       "recoveryPreferences": recoveryPreferencesCapabilities,
       "photoshopFilePreferences": photoshopFilePreferencesCapabilities,
+      "placementPreferences": placementPreferencesCapabilities,
       "recoveryDiscovery": recoveryDiscoveryCapabilities,
       "recoveryBackups": recoveryBackupsCapabilities,
       "recoverySalvage": recoverySalvageCapabilities,

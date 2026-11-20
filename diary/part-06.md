@@ -670,6 +670,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 652 | [Keep gigabyte-scale originals in Undo and Redo](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) |
 | 2026-11-20 | 653 | [Preserve Smart Object placement identifiers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-653) |
 | 2026-11-20 | 654 | [Place and update gigabyte-scale linked Smart Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-654) |
+| 2026-11-20 | 655 | [Add General placement preferences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-655) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

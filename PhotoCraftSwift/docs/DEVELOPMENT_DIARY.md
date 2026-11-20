@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 655 — Add General placement preferences
+
+General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
+
+All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The direct Photoshop comparison is still open.
+
+[Development record](DEVLOG.md#dev-step-655) · [Details](PLACEMENT_PREFERENCES_655.md).
+
 ## 2026-11-20 — Step 654 — Place and update gigabyte-scale linked Smart Objects
 
 A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
@@ -1209,14 +1217,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:654 -->
+<!-- current-status-step:655 -->
 ## Current development status — 20 November 2026
 
-A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
+General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
 
-All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 654](SOURCE_PUBLICATION_654.md) · [Development record](DEVLOG.md#dev-step-654).
+[Source checkpoint 655](SOURCE_PUBLICATION_655.md) · [Development record](DEVLOG.md#dev-step-655).
 
 <!-- current-status:end -->
 
@@ -2077,6 +2085,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 652 | [Keep gigabyte-scale originals in Undo and Redo](DEVLOG.md#dev-step-652) |
 | 2026-11-20 | 653 | [Preserve Smart Object placement identifiers](DEVLOG.md#dev-step-653) |
 | 2026-11-20 | 654 | [Place and update gigabyte-scale linked Smart Objects](DEVLOG.md#dev-step-654) |
+| 2026-11-20 | 655 | [Add General placement preferences](DEVLOG.md#dev-step-655) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

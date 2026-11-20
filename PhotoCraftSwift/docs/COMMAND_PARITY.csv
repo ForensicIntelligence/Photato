@@ -108,7 +108,7 @@ edit.convertToProfile,Edit,Convert to Profile…,,partial,"dev-step-225: native 
 edit.keyboardShortcuts,Edit,Keyboard Shortcuts…,Alt+Shift+Cmd+K,pending,
 edit.menus,Edit,Menus…,Alt+Shift+Cmd+M,pending,
 edit.toolbar,Edit,Toolbar…,,pending,
-edit.preferences.general,Photato > Settings…,General…,Cmd+K,pending,
+edit.preferences.general,Photato > Settings…,General…,Cmd+K,partial,Step655 General binds Command–K and persists the three placement preferences. Native and API regression tests pass. The other General settings and live Photoshop comparison remain open.
 edit.preferences.integrations,Edit > Preferences,AI Integrations…,,pending,
 edit.preferences.interface,Photato > Settings…,Interface…,,pending,
 edit.preferences.workspace,Photato > Settings…,Workspace…,,pending,

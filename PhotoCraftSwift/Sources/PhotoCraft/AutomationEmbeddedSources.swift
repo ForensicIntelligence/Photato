@@ -5,6 +5,7 @@ import PhotoCraftImaging
 struct EmbeddedSourceOptions: Codable, Sendable {
   var transform: Transform2D?
   var fit = true
+  var rasterize = false
   var layerID: UUID?
   var frameID: UUID?
   var frameFit = FrameFit.fill
@@ -17,7 +18,7 @@ enum EmbeddedSourceAPI {
   static var schema: [String:Any] {
     var transform = AutomationCommand.frameSchema("transform");transform["type"] = ["object","null"]
     var raw = RawDevelopment.apiSchema;raw["type"] = ["object","null"]
-    return BrushAPI.object(["transform":transform,"fit":BrushAPI.flag,
+    return BrushAPI.object(["transform":transform,"fit":BrushAPI.flag,"rasterize":BrushAPI.flag,
       "layerID":["type":["string","null"],"format":"uuid"],
       "frameID":["type":["string","null"],"format":"uuid"],
       "frameFit":["type":"string","enum":FrameFit.allCases.map(\.rawValue)],
@@ -36,7 +37,9 @@ enum EmbeddedSourceAPI {
       guard value.layerID == nil || value.frameID == nil else {throw CraftError.invalid("Choose replacement or frame placement, not both.")}
       if case .object(let fields) = raw {
         let ordinary = value.layerID == nil && value.frameID == nil
-        guard ordinary || (fields["fit"] == nil && fields["transform"] == nil) else {throw CraftError.invalid("fit/transform apply to new layer placement only.")}
+        guard ordinary || (fields["fit"] == nil && fields["transform"] == nil && fields["rasterize"] == nil) else {
+          throw CraftError.invalid("Fit, transform and rasterize apply to new layer placement only.")
+        }
         guard value.layerID != nil || (fields["preserveSize"] == nil && fields["allInstances"] == nil) else {throw CraftError.invalid("preserveSize/allInstances apply to replacement only.")}
         guard value.frameID != nil || fields["frameFit"] == nil else {throw CraftError.invalid("frameFit requires frameID.")}
       }
@@ -66,6 +69,7 @@ enum EmbeddedSourceAPI {
     var layer = try SmartObjectIO.placed(document:source,original:bytes,fileName:name,in:original,fit:options.fit)
     if let id = options.frameID {return .frame(.replace(id,layer,fit:options.frameFit))}
     if let transform = options.transform {layer = try DocumentGeometry.transformLayer(layer,by:transform,in:original)}
+    if options.rasterize { layer = try ArtworkPlacementPreparation.finish(layer, in: original, rasterize: true) }
     return .addLayer(layer)
   }
   static var stateSchema: [String:Any] {
@@ -80,7 +84,7 @@ enum EmbeddedSourceAPI {
      "nameHeader":"Optional X-Photato-Name, default Contents.photato; at most240 printable ASCII bytes without path separators.",
      "result":"HTTP200 shared target state. New layer by default; layerID replaces content, frameID replaces frame artwork. One native Undo transaction.",
      "source":"Original raster, native, supported PhotoCraft ZIP projects, PSD/PSB or supported camera RAW bytes remain embedded and downloadable. RAW settings are retained separately. PDF uses the existing pdf endpoint.",
-     "initialTransform":"Optional document-coordinate delta after centering/fit, committed with placement in one edit. The desktop offers a cancellable transform preview; RAW first opens native Camera Raw controls.",
+     "initialTransform":"Optional document-coordinate delta after centering/fit, committed with placement in one edit. Set rasterize to true to bake the final geometry into a pixel layer. API defaults fit:true and rasterize:false are independent of General preferences. The desktop can offer a cancellable transform preview; RAW first opens native Camera Raw controls.",
      "state":"Per-document embeddedPlacement exposes preparing, choosingPDF, developingRaw, transform, committing or idle. PDF-specific state remains separate.",
      "cancel":"POST /v1/documents/{id}/smart-objects/source/cancel with {operationID:UUID}; capabilities.embeddedSourceOperations maps active IDs by shared document UUID.",
      "maximumRGBSourcePixels":SmartObjectIO.maximumPagedRGBPixels,

@@ -85,6 +85,7 @@ import PhotoCraftCore
       "Window > Brushes": #selector(showBrushes),
       "Edit > Define Brush Preset…": #selector(defineBrushPreset),
       "Photato > About Photato…": #selector(about),
+      "Photato > Settings… > General…": #selector(generalPlacementPreferences),
       "Photato > Settings… > File Handling…": #selector(fileHandlingPreferences),
       "Edit > Color Settings…": #selector(colorSettingsDialog),
       "Edit > Customize Save Dialog File Formats": #selector(customizeSaveDialogFileFormats),

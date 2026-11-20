@@ -1,0 +1,144 @@
+{
+  "build": 655,
+  "base": "daf53833c0c97c86456d27a966af39c159a1c826",
+  "buildInputs": 9248,
+  "includedBuildInputs": 9235,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "8b48720cde30d4d16c944e86e74dccd6d6789d8b43d3d16d5220dcc378a165bb",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "a41f05b7c79f9964002f7e5d2e2ff3ebe326b8de9e8e214239ea70c028a85cad"
+    },
+    {
+      "path": "Sources/PhotoCraft/ArtworkPlacementPreferences.swift",
+      "sha256": "8e8e5d9d87e65bf5b46f69f8bcc7c5a0a9af38ef5ac956f8d99cf839f1acca44"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationEmbeddedSources.swift",
+      "sha256": "860674eb04cc0bda47a76c9a1a07bfd0b5f09a0f2b522058e9cb27974075374a"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPDFSmartObjects.swift",
+      "sha256": "fb5f9818db9155cbb2b0fb0415830f7385a1c5fdc0f753e7c3b1d0b4dc4b01f7"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPlacementPreferences.swift",
+      "sha256": "0d795983e8a8d0e3c678a19d16767d924b9a933e38da338ac70666460c8cfc2d"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "b066b13f888324776e80996d460173bf1085b493c76d65475b1e1be6823fcbfe"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationView.swift",
+      "sha256": "c6dcba135689db78f693226d5f3d895e07a4b1008b4100f7d2d16a708939babf"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "4199bc1581aa7f70da2705c08951116c064a578fc8fe886c5af9280ae8ec4bd2"
+    },
+    {
+      "path": "Sources/PhotoCraft/EmbeddedPlacement.swift",
+      "sha256": "5de9f37a61289ace9d573b2f4eed4a5ebe7221a79b10a59b52940ede9a56d69f"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPlacement.swift",
+      "sha256": "9cd4a3b1e166ecc0b7149d7b49f5194239c277f6b9090319fa4e2d6f0e9d0f39"
+    },
+    {
+      "path": "Sources/PhotoCraft/NativeDocument.swift",
+      "sha256": "9322c5355cea692aa10f6a3142cba07bef0b29f8df07bd8adfcf1f500267604f"
+    },
+    {
+      "path": "Sources/PhotoCraft/PDFPlacement.swift",
+      "sha256": "ae4172a93237a13b9ca8b5c3a85113e9e61d00732791dd56b6d8428e93b00d60"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "sha256": "9d4a347d4d9ddb4450e7439df1234dae35356d76d770f22ce6cec008e1843e06"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ArtworkPlacementPreferencesTests.swift",
+      "sha256": "a26c8e7506223cf0d393cab98de43eb33e1252278cf2127ec4add16bafe3ba8d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "85b418804481bf65c203ced33202e77a4f4c0c85ac014519e37f806a21b902a7"
+    }
+  ],
+  "casesPerConfiguration": 1452,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1452,
+      "passed": 1452,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "7403ded0838bc8bbb29d6e4cd524a4f62b5cebb0079538067a777562cd355eea"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1452,
+      "passed": 1452,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "c9a22e2a7accee0804d832a15ef71cd0a0dc38be5449389247d8323c52393b6f"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1452,
+      "passed": 1452,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "0abfee4cb57e64f14d4d29e06e17eb164ee6bdaca9c76d6d30458f4fa91f0c4f"
+    }
+  },
+  "largeLinkedCheck": {
+    "bytes": 1181384274,
+    "workflows": {
+      "arm64": {
+        "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+        "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+        "nativePlacementSeconds": 4.28746775,
+        "apiPlacementSeconds": 4.897047,
+        "passed": true
+      },
+      "x86_64": {
+        "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+        "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+        "nativePlacementSeconds": 8.682213375,
+        "apiPlacementSeconds": 8.4954145,
+        "passed": true
+      }
+    }
+  },
+  "preview": {
+    "macOSMinimum": "14.0",
+    "signed": true,
+    "archiveSHA256": "dbe5981d1e254859679f0ce72b8ac154b1c6424201ccb49a54b8e1af7d81e5b7",
+    "offscreenSlices": [
+      "arm64",
+      "x86_64"
+    ],
+    "intelRuntime": "Rosetta"
+  },
+  "reference": {
+    "photoshopVersion": "27.2.0",
+    "placementScript": "AppleEvent timeout -1712",
+    "derivedAdobeFiles": 0
+  },
+  "release": "source and diary only"
+}

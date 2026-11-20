@@ -121,6 +121,12 @@ struct AutomationView: View {
         Text("Allows clients to change the default compression of 16-bit and 32-bit PSD/PSB saves. Explicit output choices still apply. This permission turns off when the API stops.")
           .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
+        Toggle("Allow placement preference changes", isOn: Binding(
+          get: { service.placementPreferenceChangesEnabled }, set: service.setPlacementPreferenceChangesEnabled
+        )).disabled(!service.isRunning)
+        Text("Allows clients to change how future desktop placements fit, preview or create Smart Objects. The settings are saved. Access ends when the API stops.")
+          .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+        Divider()
         Toggle("Allow recovery management", isOn: Binding(
           get: { service.recoveryManagementEnabled },
           set: { service.setRecoveryManagementEnabled($0) }

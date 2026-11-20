@@ -6,13 +6,24 @@ import SwiftUI
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
   let controller: CraftDocumentController
-  override convenience init() { self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard), eyedropperPreferences:EyedropperPreferences(defaults:.standard), liquifyMeshes: .shared, lensDefaults: .shared, scriptEvents: .shared, workflowGuidePreferences: WorkflowGuidePreferences(defaults: .standard), printPreferences: PrintPreferences(defaults: .standard)) }
+  override convenience init() {
+    self.init(workspaces: WorkspaceLibrary(), paintPalette: PaintPalette(defaults: .standard),
+      eyedropperPreferences: EyedropperPreferences(defaults: .standard), liquifyMeshes: .shared,
+      lensDefaults: .shared, scriptEvents: .shared,
+      workflowGuidePreferences: WorkflowGuidePreferences(defaults: .standard),
+      printPreferences: PrintPreferences(defaults: .standard),
+      artworkPlacementPreferences: ArtworkPlacementPreferences(defaults: .standard))
+  }
   init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
     liquifyMeshes: LiquifyMeshLibrary? = nil, lensDefaults: LensDefaultLibrary? = nil, scriptEvents: ScriptEventsStore? = nil,
-    workflowGuidePreferences: WorkflowGuidePreferences? = nil, printPreferences: PrintPreferences? = nil) {
+    workflowGuidePreferences: WorkflowGuidePreferences? = nil, printPreferences: PrintPreferences? = nil,
+    artworkPlacementPreferences: ArtworkPlacementPreferences? = nil) {
     controller = CraftDocumentController(
-      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex, colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences:eyedropperPreferences, scriptEvents: scriptEvents, workflowGuidePreferences: workflowGuidePreferences, printPreferences: printPreferences)
+      workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex,
+      colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences: eyedropperPreferences,
+      scriptEvents: scriptEvents, workflowGuidePreferences: workflowGuidePreferences, printPreferences: printPreferences,
+      artworkPlacementPreferences: artworkPlacementPreferences)
     super.init()
     controller.filterRecall.liquifyMeshes = liquifyMeshes ?? LiquifyMeshLibrary()
     controller.filterRecall.lensDefaults = lensDefaults ?? LensDefaultLibrary()
@@ -26,6 +37,7 @@ import SwiftUI
   var actionsWindow: NSWindowController?
   var workflowGuideWindow: WorkflowGuideWindow?
   var workflowGuidePreferencesWindow: NSWindowController?
+  var generalPlacementPreferencesWindow: NSWindowController?
   var scriptEventsWindow: ScriptEventsWindow?
   var layerCompsWindow: NSWindowController?
   var brushSettingsWindow: NSWindowController?
@@ -185,7 +197,7 @@ import SwiftUI
     if let result = validateArtboardMenu(item) { return result }
     if let result = validateRecentMenu(item) { return result }
     if let result = validateDocumentClosingMenu(item) { return result }
-    if item.action == #selector(fileHandlingPreferences) || item.action == #selector(colorSettingsDialog) { return true }
+    if [#selector(generalPlacementPreferences), #selector(fileHandlingPreferences), #selector(colorSettingsDialog)].contains(item.action) { return true }
     if [#selector(save), #selector(saveAs), #selector(saveCopy)].contains(item.action) {
       return (controller.currentDocument as? CraftNSDocument)?.canRunFileCommand == true
     }

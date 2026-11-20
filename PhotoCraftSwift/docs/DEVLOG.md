@@ -673,7 +673,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 652 | 2026-11-19 | [Keep gigabyte-scale originals in Undo and Redo](#dev-step-652) |
 | 653 | 2026-11-20 | [Preserve Smart Object placement identifiers](#dev-step-653) |
 | 654 | 2026-11-20 | [Place and update gigabyte-scale linked Smart Objects](#dev-step-654) |
+| 655 | 2026-11-20 | [Add General placement preferences](#dev-step-655) |
 <!-- history-index:end -->
+
+<a id="dev-step-655"></a>
+
+## 2026-11-20 — Add General placement preferences
+
+General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
+
+All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The first attempts hit a restricted compiler cache, the existing Swift frontend stack fault and the build-tests testability requirement. Isolated caches, the established Debug pass workaround and native optimized SwiftPM builds produced the verified binaries.
+
+Both optimized builds separately passed the 1.18 GB linked PSB workflow. Automatic refresh and package reuse retained the same original and updated SHA-256 values across architectures.
+
+The installed Photoshop 27.2.0 replied to a version query, then timed out before starting the disposable placement script. Live comparison of placement, PPI, sampling, relink and package resolution remains open.
+
+[Development record](PLACEMENT_PREFERENCES_655.md) · [Qualification](SOURCE_PUBLICATION_655.md).
 
 <a id="dev-step-654"></a>
 

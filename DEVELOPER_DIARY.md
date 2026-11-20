@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **654** · The 10 most recent entries, newest first.
+Source build **655** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 655 — Add General placement preferences
+
+General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
+
+All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The direct Photoshop comparison is still open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-655) · [Details](PhotoCraftSwift/docs/PLACEMENT_PREFERENCES_655.md).
 
 ## 2026-11-20 — Step 654 — Place and update gigabyte-scale linked Smart Objects
 
@@ -65,9 +73,3 @@ The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on 
 All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) · [Details](PhotoCraftSwift/docs/PSD_SMART_FILTER_PAGING_646.md).
-
-## 2026-11-19 — Step 645 — Keep Gradient Overlay editable
-
-Standard Gradient Overlay keeps its stops and placement through PSD and PSB. Six exports of three Photoshop 27.4 RGB8 files matched all 737,280 merged RGBA samples.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) · [Details](PhotoCraftSwift/docs/PSD_GRADIENT_OVERLAY_645.md).
