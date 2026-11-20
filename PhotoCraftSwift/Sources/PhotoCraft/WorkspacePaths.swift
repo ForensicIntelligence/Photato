@@ -34,11 +34,13 @@ struct PathsPanel: View {
                 }
               }
           }
-          if let layer=store.activeLayer,let path=try? layer.shapePath() {
-            row("\(layer.name) Shape Path",path:path,target:.shape(layer.id))
-          }
-          if let layer = store.activeLayer, let mask = layer.vectorMask {
-            row("\(layer.name) Vector Mask", path: mask.path, target: .vectorMask(layer.id))
+          ForEach(store.document.layers.reversed().filter { $0.shape != nil || $0.vectorMask != nil }) { layer in
+            if let path = try? layer.shapePath() {
+              row("\(layer.name) Shape Path", path: path, target: .shape(layer.id))
+            }
+            if let mask = layer.vectorMask {
+              row("\(layer.name) Vector Mask", path: mask.path, target: .vectorMask(layer.id))
+            }
           }
         }.padding(.vertical, 3)
       }
@@ -107,8 +109,7 @@ struct PathsPanel: View {
   }
   func row(_ name: String, path: VectorPath, target: PathTarget) -> some View {
     Button {
-      store.selectPath(target)
-      if !store.usesPathTool { store.tool = .directSelection }
+      store.choosePathPanelRow(target, modifiers: NSApp.currentEvent?.modifierFlags ?? [])
     } label: {
       HStack(spacing: 8) {
         PathThumbnail(path: path, width: store.document.width, height: store.document.height)
@@ -116,9 +117,10 @@ struct PathsPanel: View {
         Text(name).lineLimit(1)
         Spacer(minLength: 0)
       }.padding(.horizontal, 8).padding(.vertical, 5)
-        .background(store.pathTarget == target ? StudioTheme.selected : .clear)
+        .background(store.pathPanelIsSelected(target) ? StudioTheme.selected : .clear)
         .contentShape(Rectangle())
     }.buttonStyle(.plain).accessibilityLabel(name)
+      .accessibilityAddTraits(store.pathPanelIsSelected(target) ? .isSelected : [])
   }
   func action(
     _ symbol: String, _ label: String, enabled: Bool = true, perform: @escaping () -> Void

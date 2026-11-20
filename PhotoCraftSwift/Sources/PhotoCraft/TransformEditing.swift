@@ -5,6 +5,11 @@ import PhotoCraftImaging
 struct TransformDraft: Equatable {
   var pathTarget: PathTransformTarget?
   var pathSelection = PathTransformSelection.all
+  var pathChoices: [PathTransformChoice] = []
+  var pathSelectionContext: [PathTransformChoice] = []
+  var pathTransformTitle: String {
+    pathChoices.transformTitle ?? pathSelection.transformTitle
+  }
   var collectionLayerIDs:[UUID]?
   var collectionProjective=false
   var collectionViewIDs:Set<UUID>?

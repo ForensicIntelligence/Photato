@@ -36,6 +36,8 @@ extension EditorStore {
     if pathTarget != target, transformDraft?.pathTarget != nil { cancelTransform() }
     resetPathGesture()
     pathTarget = target
+    companionPathChoices = []
+    pathRangeAnchor = target
     maskEditingLayerID = nil
     clearMaskView()
     if case .shape(let id)=target {session.selectLayer(id);selectedLayerIDs=[id]}
@@ -56,6 +58,7 @@ extension EditorStore {
     if !keepingSelection {
       pathAnchor = nil
       pathTransformSelection = .all
+      companionPathChoices = companionPathChoices.map { .init($0.target) }
     }
     penComponent = nil
     if previewing { render() }
@@ -177,6 +180,9 @@ extension EditorStore {
     if tool == .curvaturePen {beginCurvature(at:p,tolerance:tolerance,clickCount:clickCount);return}
     guard !geometryBusy, transformDraft == nil else { return }
     if tool == .pen { ensureWorkPath() }
+    if tool == .directSelection || tool == .pathSelection {
+      focusCompanionPath(at: p, tolerance: tolerance, includeInterior: tool == .pathSelection || option)
+    }
     guard var path = selectedVectorPath, pathIsEditable else { return }
     pathGesture = nil
     func close(_ q: PathPoint) -> Bool { hypot(q.x - p.x, q.y - p.y) <= tolerance }
@@ -259,13 +265,7 @@ extension EditorStore {
       return
     }
     guard tool == .pen else {
-      if (tool == .pathSelection || option),
-         let index = path.components.indices.reversed().first(where: { index in
-           let component = path.components[index]
-           guard component.closed else { return false }
-           let outline = try? VectorPathGeometry.outline(.init(components: [component]))
-           return outline?.contains(.init(x: p.x, y: p.y), using: .evenOdd) == true
-         }) {
+      if (tool == .pathSelection || option), let index = containingPathComponent(in: path, at: p) {
         let anchor = PathAnchorSelection(component: index, knot: 0)
         pathAnchor = anchor
         if selectPathComponents([index], extending: extending) {
@@ -302,6 +302,14 @@ extension EditorStore {
     pathAnchor = anchor
     pathGesture = PathGesture(
       original: path, preview: path, start: p, selection: anchor, part: .newAnchor)
+  }
+  func containingPathComponent(in path: VectorPath, at point: PathPoint) -> Int? {
+    path.components.indices.reversed().first { index in
+      let component = path.components[index]
+      guard component.closed else { return false }
+      let outline = try? VectorPathGeometry.outline(.init(components: [component]))
+      return outline?.contains(.init(x: point.x, y: point.y), using: .evenOdd) == true
+    }
   }
   func nearestSegment(in path: VectorPath, to p: PathPoint, tolerance: Double) -> (
     Int, Int, Double

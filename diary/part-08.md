@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 674 — Transform editable paths across layers
+
+Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.
+
+All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison, native path isolation, and editable Warp for paths remain open. Direct edits to shape contours can replace live primitive controls with editable cubic geometry.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) · [Details](../PhotoCraftSwift/docs/CROSS_LAYER_PATHS_674.md).
+
 ## 2026-11-20 — Step 673 — Select path anchors with a Direct Selection marquee
 
 Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.

@@ -34,3 +34,18 @@ public enum ActionPathTarget: Codable, Equatable, Sendable {
     }
   }
 }
+
+public struct RecordedPathChoice: Codable, Equatable, Sendable {
+  public let target: ActionPathTarget
+  public let selection: PathTransformSelection
+
+  init?(_ choice: PathTransformChoice, in document: CraftDocument) {
+    guard let target = ActionPathTarget(choice.target, in: document) else { return nil }
+    self.target = target
+    self.selection = choice.selection
+  }
+
+  func resolve(in document: CraftDocument) throws -> PathTransformChoice {
+    try .init(target.resolve(in: document), selection: selection)
+  }
+}

@@ -19,6 +19,17 @@ public final class ProjectiveTransform:Codable,Equatable,Sendable {
   }
   private var normalized:[Double]{let scale=values.map{abs($0)}.max() ?? 1;return values.map{$0/scale}}
 
+  func validateSharedHorizon(left: Int, top: Int, right: Int, bottom: Int) throws {
+    let a = normalized
+    let weights = [(left, top), (right, top), (right, bottom), (left, bottom)].map {
+      a[6] * Double($0.0) + a[7] * Double($0.1) + a[8]
+    }
+    let threshold = max(Double.leastNormalMagnitude, (weights.map(abs).max() ?? 1) * 1e-12)
+    guard weights.allSatisfy({ $0 > threshold }) || weights.allSatisfy({ $0 < -threshold }) else {
+      throw CraftError.invalid("The projective horizon crosses the shared transform bounds.")
+    }
+  }
+
   public func point(_ x:Double,_ y:Double)throws->PathPoint {
     try validate();guard x.isFinite,y.isFinite else{throw CraftError.invalid("Invalid projective input point.")}
     let a=normalized,w=a[6]*x+a[7]*y+a[8],scale=abs(a[6]*x)+abs(a[7]*y)+abs(a[8])

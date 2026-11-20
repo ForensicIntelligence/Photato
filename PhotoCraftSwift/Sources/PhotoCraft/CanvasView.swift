@@ -22,7 +22,7 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.selectionBorderDrag
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
-    _ = store.selectionTransform?.vectorPreview;_ = store.pathTransformSelection;_ = store.pathMarquee
+    _ = store.selectionTransform?.vectorPreviews;_ = store.selectedPathChoices;_ = store.pathMarquee
     _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
     view.store = store
@@ -705,22 +705,45 @@ struct CanvasHost: NSViewRepresentable {
     c.setLineDash(phase: 0, lengths: [])
   }
   func drawVectorPath(in c: CGContext) {
-    guard store.usesPathTool || store.layersTab == .paths || store.transformDraft?.pathTarget != nil,
-      let path = store.displayedVectorPath, let outline = try? VectorRasterizer.outline(path)
-    else { return }
+    guard store.usesPathTool || store.layersTab == .paths || store.transformDraft?.pathTarget != nil else { return }
+    let choices = store.selectedPathChoices
+    guard !choices.isEmpty else { return }
     c.saveGState()
+    defer { c.restoreGState() }
     c.translateBy(x: imageRect.minX, y: imageRect.minY)
     c.scaleBy(x: scale, y: scale)
+    let previews = Dictionary(uniqueKeysWithValues: (store.selectionTransform?.vectorPreviews ?? []).map {
+      ($0.choice.target, $0)
+    })
+    let marquee = Dictionary(uniqueKeysWithValues: (store.pathMarquee?.previewChoices ?? []).map {
+      ($0.target, $0.selection)
+    })
+    for choice in choices.reversed() {
+      let focused = choice.target == store.pathTarget
+      let preview = previews[choice.target]
+      let path = preview?.path ?? (focused ? store.displayedVectorPath
+        : try? PathTransform.path(choice.target, in: store.document))
+      if let path {
+        drawVectorPath(path, selection: preview?.choice.selection ?? marquee[choice.target] ?? choice.selection,
+                       focused: focused, multiple: choices.count > 1, in: c)
+      }
+    }
+  }
+
+  private func drawVectorPath(_ path: VectorPath, selection: PathTransformSelection,
+                              focused: Bool, multiple: Bool, in c: CGContext) {
+    guard let outline = try? VectorRasterizer.outline(path) else { return }
+    let focus = focused ? store.pathAnchor : nil
     c.setStrokeColor(NSColor.systemBlue.cgColor)
     c.setLineWidth(1.5 / scale)
     c.addPath(outline)
     c.strokePath()
-    let isSelected = store.pathAnchorHighlight()
+    let isSelected = store.pathAnchorHighlight(selection: selection, focus: focus)
     for (i, component) in path.components.enumerated() {
       for (j, knot) in component.knots.enumerated() {
         let anchor = PathAnchorSelection(component: i, knot: j)
-        let selected = isSelected(anchor)
-        if selected && store.pathAnchor == anchor && store.transformDraft?.pathTarget == nil {
+        let selected = (multiple && selection == .all) || isSelected(anchor)
+        if selected && focus == anchor && store.transformDraft?.pathTarget == nil {
           c.setLineWidth(1 / scale)
           for handle in [knot.incoming, knot.outgoing] where handle != knot.anchor {
             c.move(to: CGPoint(x: knot.anchor.x, y: knot.anchor.y))
@@ -741,7 +764,6 @@ struct CanvasHost: NSViewRepresentable {
         c.stroke(box)
       }
     }
-    c.restoreGState()
   }
   override func mouseDown(with event: NSEvent) {
     brushNumberPrefix = nil

@@ -1811,5 +1811,11 @@
     "qualification": "AppKit mouse tests check the captured Shift cursor after Shift is released during the drag. Escape and focus loss restore the prior selection.",
     "remaining": "Independent Adobe glyph comparison and physical pointer testing remain open.",
     "reference": "docs/SOURCE_PUBLICATION_673.json"
+  },
+  "cross_layer_paths_674": {
+    "native": "Companion paths can take canvas focus without changing the Direct Selection cursor. The marquee keeps the existing Shift badge, and the shared bounding box reuses the Free Transform cursor modes.",
+    "qualification": "AppKit tests cover canvas focus, compatible marquee, transform preview and history across two paths.",
+    "remaining": "Independent Adobe pointer glyphs, hit order and physical input remain open.",
+    "reference": "docs/SOURCE_PUBLICATION_674.json"
   }
 }

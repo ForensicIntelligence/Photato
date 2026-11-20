@@ -128,6 +128,7 @@ public enum ActionOperation: Codable, Sendable {
   case projectLayers([ActionLayerTarget],ProjectiveTransform,Resampling)
   case transformLayers([ActionLayerTarget],Transform2D,Resampling)
   case transformPath(ActionPathTarget, PathTransformSelection, ProjectiveTransform)
+  case transformPaths([RecordedPathChoice], ProjectiveTransform)
   case mergeSpotChannel(ActionChannelTarget)
   case processChannelDeletion(ProcessChannelDeletion)
   case transformChannel(ActionChannelTarget,ProjectiveTransform,Resampling,Float,Bool)
@@ -325,6 +326,11 @@ public enum ActionOperation: Codable, Sendable {
       } else {
         self = .unsupported("The original path for this transform is missing.")
       }
+    case .transformPaths(let request):
+      let choices = request.choices.compactMap { RecordedPathChoice($0, in: d) }
+      self = choices.count == request.choices.count
+        ? .transformPaths(choices, request.matrix)
+        : .unsupported("An original path for this transform is missing.")
     case .transformChannel(let request):self = .transformChannel(.init(request.target,in:d),request.matrix,request.interpolation,request.backgroundValue,request.copy)
     case .transformPixelMask(let request):self = .transformPixelMask(target(request.layerID),request.matrix,request.interpolation)
     case .transformPixels(let request):
@@ -449,6 +455,8 @@ public enum ActionOperation: Codable, Sendable {
     case .transformLayers(let targets,let matrix,let method):return .transformLayers(.init(layerIDs:try targets.map(id),matrix:matrix,interpolation:method))
     case .transformPath(let target, let selection, let matrix):
       return .transformPath(.init(target: try target.resolve(in: d), selection: selection, matrix: matrix))
+    case .transformPaths(let choices, let matrix):
+      return .transformPaths(.init(choices: try choices.map { try $0.resolve(in: d) }, matrix: matrix))
     case .transformChannel(let t,let m,let r,let background,let copy):return .transformChannel(.init(target:try t.resolve(in:d),matrix:m,interpolation:r,backgroundValue:background,copy:copy))
     case .transformPixelMask(let t,let m,let r):return .transformPixelMask(.init(layerID:try id(t),matrix:m,interpolation:r))
     case .transformPixels(let t,let m,let r):return .transformPixels(.init(layerID:try id(t),matrix:m,interpolation:r))
@@ -735,6 +743,13 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       if case .transformPath(_, let selection, let matrix) = step.operation {
         try matrix.validate()
         try selection.validate()
+      }
+      if case .transformPaths(let choices, let matrix) = step.operation {
+        guard (1...PathTransformGroupRequest.maximumTargets).contains(choices.count) else {
+          throw CraftError.invalid("Invalid recorded path targets.")
+        }
+        try matrix.validate()
+        for choice in choices { try choice.selection.validate() }
       }
       if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}

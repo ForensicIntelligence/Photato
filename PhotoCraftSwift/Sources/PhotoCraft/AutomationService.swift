@@ -1146,17 +1146,38 @@ import UniformTypeIdentifiers
       }
       if command.name == "font.inspect"{return .json(try inspectFont(command,store:store))}
       if command.name == "path.configure" {try store.configurePath(command);return .json(state(share,document:document))}
+      if command.name == PathGroupsAPI.select {
+        try store.configurePathGroup(command)
+        return .json(state(share, document: document))
+      }
+      if command.name == PathGroupsAPI.transform {
+        let (matrix, _) = try command.selectionTransformOptions()
+        let request = PathTransformGroupRequest(choices: try command.pathGroupChoices(), matrix: matrix)
+        let context = store.selectedPathChoices
+        let selections = try await executePreparedResult(document: document, shareID: id,
+          revision: command.revision, allowPathTarget: true, validateCommit: {
+            guard store.selectedPathChoices == context else {
+              throw AutomationFailure(status: 409, message: "The editor path selection changed.")
+            }
+          }) { source in
+            let output = try PathTransform.geometry(request, in: source).map(\.choice)
+            return (request.nativeCommand, output)
+          }
+        store.updatePathChoices(selections)
+        var result = state(share, document: document)
+        result["pathTransformSelections"] = PathGroupsAPI.state(selections)
+        return .json(result)
+      }
       if command.name == PathTransformAPI.name {
         let request = try command.pathTransformOptions()
         guard !store.geometryBusy, store.transformDraft == nil, store.pathGesture == nil,
               store.freeformGesture == nil, !store.hasToneDraft else {
           throw AutomationFailure(status: 409, message: "Finish the current edit before transforming a path.")
         }
-        let originalTarget = store.pathTarget
-        let originalSelection = store.pathTransformSelection
+        let originalSelection = store.selectedPathChoices
         let selection = try await executePreparedResult(document: document, shareID: id,
           revision: command.revision, allowPathTarget: true, validateCommit: {
-            guard store.pathTarget == originalTarget, store.pathTransformSelection == originalSelection else {
+            guard store.selectedPathChoices == originalSelection else {
               throw AutomationFailure(status: 409, message: "The editor path selection changed.")
             }
           }) { source in
@@ -1164,10 +1185,7 @@ import UniformTypeIdentifiers
             let choice = try PathTransform.geometry(path, selection: request.selection, matrix: request.matrix).selection
             return (.transformPath(request), choice)
           }
-        if originalTarget == request.target {
-          store.pathTransformSelection = selection
-          if case .anchors(let anchors) = selection { store.pathAnchor = anchors.first } else { store.pathAnchor = nil }
-        }
+        store.updatePathChoices([.init(request.target, selection: selection)])
         var result = state(share, document: document)
         result["pathTransformSelection"] = PathTransformAPI.selection(selection)
         return .json(result)
@@ -1904,6 +1922,7 @@ import UniformTypeIdentifiers
       "proceduralRender":ProceduralAPI.capabilities,
       "paths":PathAPI.capabilities,
       "pathTransform":PathTransformAPI.capabilities,
+      "crossLayerPaths":PathGroupsAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,
       "fileInfo": FileInfoAPI.capabilities,
       "guides": GuideAPI.capabilities,

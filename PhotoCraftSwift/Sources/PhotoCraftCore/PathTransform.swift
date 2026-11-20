@@ -1,7 +1,7 @@
 import CoreGraphics
 import Foundation
 
-public enum PathTransformTarget: Equatable, Sendable {
+public enum PathTransformTarget: Hashable, Sendable {
   case saved(UUID)
   case vectorMask(UUID)
   case shape(UUID)
@@ -85,6 +85,33 @@ public struct PathTransformRequest: Equatable, Sendable {
   }
 }
 
+public struct PathTransformChoice: Equatable, Sendable {
+  public let target: PathTransformTarget
+  public var selection: PathTransformSelection
+
+  public init(_ target: PathTransformTarget, selection: PathTransformSelection = .all) {
+    self.target = target
+    self.selection = selection
+  }
+}
+
+public struct PathTransformGroupRequest: Equatable, Sendable {
+  public static let maximumTargets = LayerLimits.maximumLayers * 2 + 256
+  public let choices: [PathTransformChoice]
+  public let matrix: ProjectiveTransform
+
+  public init(choices: [PathTransformChoice], matrix: ProjectiveTransform) {
+    self.choices = choices
+    self.matrix = matrix
+  }
+}
+
+public struct PathTransformGeometry: Equatable, Sendable {
+  public let choice: PathTransformChoice
+  public let path: VectorPath
+  fileprivate let original: VectorPath
+}
+
 public enum PathTransform {
   public static func path(_ target: PathTransformTarget, in document: CraftDocument) throws -> VectorPath {
     switch target {
@@ -99,6 +126,10 @@ public enum PathTransform {
   }
 
   public static func bounds(_ path: VectorPath, selection: PathTransformSelection) throws -> IntRect {
+    rounded(try selectedBounds(path, selection: selection))
+  }
+
+  private static func selectedBounds(_ path: VectorPath, selection: PathTransformSelection) throws -> CGRect {
     try path.validate()
     let indices = try selection.indices(in: path)
     let curves = CGMutablePath()
@@ -117,7 +148,10 @@ public enum PathTransform {
         }
       }
     }
-    limits = limits.union(curves.boundingBoxOfPath)
+    return limits.union(curves.boundingBoxOfPath)
+  }
+
+  private static func rounded(_ limits: CGRect) -> IntRect {
     let x = floor(limits.minX), y = floor(limits.minY)
     return .init(x: Int(x), y: Int(y), width: max(1, Int(ceil(limits.maxX) - x)),
                  height: max(1, Int(ceil(limits.maxY) - y)))
@@ -146,6 +180,41 @@ public enum PathTransform {
     return (result.path, selection)
   }
 
+  public static func bounds(_ choices: [PathTransformChoice], in document: CraftDocument) throws -> IntRect {
+    try validateTargets(choices)
+    var limits = CGRect.null
+    for choice in choices {
+      try Task.checkCancellation()
+      let box = try selectedBounds(editablePath(choice.target, in: document), selection: choice.selection)
+      limits = limits.union(box)
+    }
+    return rounded(limits)
+  }
+
+  public static func geometry(
+    _ request: PathTransformGroupRequest, in document: CraftDocument
+  ) throws -> [PathTransformGeometry] {
+    try validateTargets(request.choices)
+    if request.choices.count > 1, try request.matrix.affineValue() == nil {
+      let box = try bounds(request.choices, in: document)
+      try request.matrix.validateSharedHorizon(left: box.x, top: box.y, right: box.x + box.width,
+                                              bottom: box.y + box.height)
+    }
+    return try request.choices.map { choice in
+      try Task.checkCancellation()
+      let original = try editablePath(choice.target, in: document)
+      let result = try geometry(original, selection: choice.selection, matrix: request.matrix)
+      return .init(choice: .init(choice.target, selection: result.selection), path: result.path, original: original)
+    }
+  }
+
+  private static func validateTargets(_ choices: [PathTransformChoice]) throws {
+    guard (1...PathTransformGroupRequest.maximumTargets).contains(choices.count),
+          Set(choices.map(\.target)).count == choices.count else {
+      throw CraftError.invalid("Supply distinct path targets for the transform.")
+    }
+  }
+
   public static func editablePath(_ target: PathTransformTarget, in document: CraftDocument) throws -> VectorPath {
     let original = try path(target, in: document)
     switch target {
@@ -162,11 +231,25 @@ public enum PathTransform {
   }
 
   static func apply(_ request: PathTransformRequest, to document: inout CraftDocument) throws {
-    let original = try editablePath(request.target, in: document)
-    let result = try geometry(original, selection: request.selection, matrix: request.matrix)
-    guard result.path != original else { return }
+    try apply(.init(choices: [.init(request.target, selection: request.selection)], matrix: request.matrix),
+              to: &document)
+  }
+
+  static func apply(_ request: PathTransformGroupRequest, to document: inout CraftDocument) throws {
+    let changes = try geometry(request, in: document).filter { $0.path != $0.original }
+    guard !changes.isEmpty else { return }
     var candidate = document
-    switch request.target {
+    for result in changes {
+      try Task.checkCancellation()
+      try install(result, in: &candidate)
+    }
+    try candidate.validate()
+    try Task.checkCancellation()
+    document = candidate
+  }
+
+  private static func install(_ result: PathTransformGeometry, in candidate: inout CraftDocument) throws {
+    switch result.choice.target {
     case .saved(let id):
       guard let index = candidate.paths?.firstIndex(where: { $0.id == id }) else {
         throw CraftError.invalid("The saved path is missing.")
@@ -184,8 +267,5 @@ public enum PathTransform {
       let canvas = IntRect(x: 0, y: 0, width: candidate.width, height: candidate.height)
       try Command.shape(.configure(id, layer.replacingShapePath(result.path, canvas: canvas))).apply(to: &candidate)
     }
-    try Task.checkCancellation()
-    try candidate.validate()
-    document = candidate
   }
 }

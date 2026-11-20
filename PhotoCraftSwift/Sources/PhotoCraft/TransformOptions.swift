@@ -24,7 +24,7 @@ extension WorkspaceView {
   var transformOptions: some View {
     Group {
       if store.transformDraft?.contentAware == true { contentAwareScaleOptions } else {
-      Text(store.transformDraft?.pathTarget != nil ? (store.transformDraft?.pathSelection.transformTitle ?? "Transform Path") :
+      Text(store.transformDraft?.pathTarget != nil ? (store.transformDraft?.pathTransformTitle ?? "Transform Path") :
         store.transformDraft?.selection == true && store.transformDraft?.selectedPixels != true ? "Transform Selection" : "Free Transform")
         .fontWeight(.medium)
       if store.transformDraft?.selection == true {selectionTransformModeOptions} else {TransformReferenceOptions(store: store)}

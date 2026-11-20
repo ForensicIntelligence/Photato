@@ -692,7 +692,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 671 | 2026-11-20 | [Keep vector masks editable in Perspective and Distort](#dev-step-671) |
 | 672 | 2026-11-20 | [Transform selected paths, contours and anchors](#dev-step-672) |
 | 673 | 2026-11-20 | [Select path anchors with a Direct Selection marquee](#dev-step-673) |
+| 674 | 2026-11-20 | [Transform editable paths across layers](#dev-step-674) |
 <!-- history-index:end -->
+
+<a id="dev-step-674"></a>
+
+## 2026-11-20 — Transform editable paths across layers
+
+Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.
+
+The Paths panel previously showed saved paths and the active layer's paths. It now exposes shape contours and vector masks across layers. Shift selects a range and Command toggles individual targets. A focused path remains available for anchor, direction-handle and Pen editing while the other selected paths stay visible. A canvas marquee computes each selected path's anchor scope separately.
+
+The transform worker validates all selected geometry against the original document, uses one shared transform frame, and commits to a candidate document before changing the live one. A horizon between disjoint targets rejects the batch, as does an invalid or locked target. The raster preview and editable outlines use the same transform. Native Actions version 77 records the shared matrix and each path's scope. Earlier single-path Actions keep their format. The authenticated paths.select and paths.transform commands share the same selection and atomic editing code.
+
+All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. New tests cover panel ranges, Command-click, canvas focus, multi-path marquee, a shared transform and one Undo, Actions playback and authenticated API editing. All 12 earlier whole-layer vector mask outputs matched byte for byte.
+
+Live Photoshop comparison, native path isolation, and editable Warp for paths remain open. Direct edits to shape contours can replace live primitive controls with editable cubic geometry. Audit editable Warp for selected vector paths and compare capture and cancellation with the existing Warp workspace. Verify Photoshop's path isolation and exact control behavior when its desktop session is available.
+
+The README banner still shows the 50% desktop workflow parity estimate. The next banner milestone is 60%, when verified workflow coverage and editing fidelity support it.
+
+[Development record](CROSS_LAYER_PATHS_674.md) · [Qualification](SOURCE_PUBLICATION_674.md).
 
 <a id="dev-step-673"></a>
 

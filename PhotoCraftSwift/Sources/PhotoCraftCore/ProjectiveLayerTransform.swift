@@ -33,9 +33,7 @@ public enum ProjectiveLayerTransform {
     }
     if !singleProjectedArtwork, let first=boxes.first {
       let left=boxes.reduce(first.x){min($0,$1.x)},top=boxes.reduce(first.y){min($0,$1.y)},right=boxes.reduce(first.x+first.width){max($0,$1.x+$1.width)},bottom=boxes.reduce(first.y+first.height){max($0,$1.y+$1.height)}
-      let scale=matrix.values.map{abs($0)}.max()!,m=matrix.values.map{$0/scale},corners=[(left,top),(right,top),(right,bottom),(left,bottom)]
-      let weights=corners.map{m[6]*Double($0.0)+m[7]*Double($0.1)+m[8]},epsilon=max(Double.leastNormalMagnitude,(weights.map{abs($0)}.max() ?? 1)*1e-12)
-      guard weights.allSatisfy({$0>epsilon}) || weights.allSatisfy({$0 < -epsilon}) else{throw CraftError.invalid("The projective horizon crosses the shared transform bounds.")}
+      try matrix.validateSharedHorizon(left: left, top: top, right: right, bottom: bottom)
     }
     var candidate=document
     for index in candidate.layers.indices where ids.contains(candidate.layers[index].id) {

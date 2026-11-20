@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 674.** Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit. [Qualification](docs/SOURCE_PUBLICATION_674.md).
+
 **Source checkpoint 673.** Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API. [Qualification](docs/SOURCE_PUBLICATION_673.md).
 
 **Source checkpoint 672.** Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action. [Qualification](docs/SOURCE_PUBLICATION_672.md).

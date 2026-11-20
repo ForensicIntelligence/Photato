@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **673** · The 10 most recent entries, newest first.
+Source build **674** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 674 — Transform editable paths across layers
+
+Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.
+
+All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison, native path isolation, and editable Warp for paths remain open. Direct edits to shape contours can replace live primitive controls with editable cubic geometry.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) · [Details](PhotoCraftSwift/docs/CROSS_LAYER_PATHS_674.md).
 
 ## 2026-11-20 — Step 673 — Select path anchors with a Direct Selection marquee
 
@@ -75,11 +83,3 @@ Embedded Smart Objects with perspective placement keep their original bytes and 
 1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Live Photoshop document scripting timed out after the read-only version query. Projective linked files, projective PDFs and editable non-identity Warp still need Photoshop-file coverage. Intel tests ran under Rosetta.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-665) · [Details](PhotoCraftSwift/docs/PROJECTIVE_SMART_OBJECT_ROUNDTRIP_665.md).
-
-## 2026-11-20 — Step 664 — Export thumbnail and Smart Object assets from Photoshop manifests
-
-Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs.
-
-1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Direct Adobe-hosted comparison of thumbnail geometry, defaults and bytes remains open. The native encoder chooses its progressive JPEG scan count. Intel tests ran under Rosetta.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-664) · [Details](PhotoCraftSwift/docs/ADOBE_MANIFEST_ASSETS_664.md).

@@ -251,6 +251,8 @@ struct CanvasRenderRequest: Sendable {
   var pathTarget: PathTarget?
   var pathAnchor: PathAnchorSelection?
   var pathTransformSelection = PathTransformSelection.all
+  var companionPathChoices: [PathTransformChoice] = []
+  var pathRangeAnchor: PathTarget?
   var pathMarquee: PathMarqueeGesture?
   var pathGesture: PathGesture?
   var freeformGesture: FreeformPathGesture?

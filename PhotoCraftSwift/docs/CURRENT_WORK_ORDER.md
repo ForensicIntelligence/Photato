@@ -1,3 +1,7 @@
+**Source checkpoint 674.** Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit. All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_674.md).
+
+**Next path editing work.** Audit editable Warp for selected vector paths and compare capture and cancellation with the existing Warp workspace. Verify Photoshop's path isolation and exact control behavior when its desktop session is available.
+
 **Source checkpoint 673.** Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API. All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_673.md).
 
 **Next path editing work.** Support selecting paths across layers while retaining the active path used by Pen and Direct Selection. Apply one editable transform to the selected targets and keep the same atomic document history through the API.

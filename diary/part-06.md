@@ -679,6 +679,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 671 | [Keep vector masks editable in Perspective and Distort](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-671) |
 | 2026-11-20 | 672 | [Transform selected paths, contours and anchors](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-672) |
 | 2026-11-20 | 673 | [Select path anchors with a Direct Selection marquee](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-673) |
+| 2026-11-20 | 674 | [Transform editable paths across layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

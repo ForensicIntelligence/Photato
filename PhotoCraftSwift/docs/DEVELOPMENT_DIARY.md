@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 674 — Transform editable paths across layers
+
+Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.
+
+All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison, native path isolation, and editable Warp for paths remain open. Direct edits to shape contours can replace live primitive controls with editable cubic geometry.
+
+[Development record](DEVLOG.md#dev-step-674) · [Details](CROSS_LAYER_PATHS_674.md).
+
 ## 2026-11-20 — Step 673 — Select path anchors with a Direct Selection marquee
 
 Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
@@ -1361,14 +1369,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:673 -->
+<!-- current-status-step:674 -->
 ## Current development status — 20 November 2026
 
-Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
+Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.
 
-All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 673](SOURCE_PUBLICATION_673.md) · [Development record](DEVLOG.md#dev-step-673).
+[Source checkpoint 674](SOURCE_PUBLICATION_674.md) · [Development record](DEVLOG.md#dev-step-674).
 
 <!-- current-status:end -->
 
@@ -2248,6 +2256,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 671 | [Keep vector masks editable in Perspective and Distort](DEVLOG.md#dev-step-671) |
 | 2026-11-20 | 672 | [Transform selected paths, contours and anchors](DEVLOG.md#dev-step-672) |
 | 2026-11-20 | 673 | [Select path anchors with a Direct Selection marquee](DEVLOG.md#dev-step-673) |
+| 2026-11-20 | 674 | [Transform editable paths across layers](DEVLOG.md#dev-step-674) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

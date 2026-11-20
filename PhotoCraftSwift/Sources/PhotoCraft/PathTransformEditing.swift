@@ -8,51 +8,77 @@ extension PathTransformSelection {
   }
 }
 
+extension Array where Element == PathTransformChoice {
+  var transformTitle: String? {
+    guard let first else { return nil }
+    if count == 1 { return first.selection.transformTitle }
+    let pointsOnly = allSatisfy { choice in
+      if case .anchors = choice.selection { return true }
+      return false
+    }
+    return pointsOnly ? "Transform Points" : "Transform Paths"
+  }
+}
+
 @MainActor extension EditorStore {
+  var pathChoicesForTransform: [PathTransformChoice] {
+    selectedPathChoices.filter { choice in
+      switch choice.selection {
+      case .all: return (try? PathTransform.path(choice.target, in: document))?.isEmpty == false
+      case .anchors(let anchors): return !anchors.isEmpty
+      case .components(let components): return !components.isEmpty
+      }
+    }
+  }
+
   var canBeginPathTransform: Bool {
-    guard let target = pathTarget, !editingComponent, !editingMask, !geometryBusy, !hasToneDraft,
-          transformDraft == nil, pathGesture == nil, pathMarquee == nil, freeformGesture == nil,
-          let path = try? PathTransform.editablePath(target, in: document) else { return false }
-    return (try? PathTransform.bounds(path, selection: pathTransformSelection)) != nil
+    guard pathTarget != nil, !editingComponent, !editingMask, !geometryBusy, !hasToneDraft,
+          transformDraft == nil, pathGesture == nil, pathMarquee == nil, freeformGesture == nil else { return false }
+    return (try? PathTransform.bounds(pathChoicesForTransform, in: document)) != nil
   }
 
   func beginPathTransform() {
-    guard canBeginPathTransform, let target = pathTarget, let path = selectedVectorPath else { return }
+    guard canBeginPathTransform, let target = pathTarget else { return }
     do {
-      let bounds = try PathTransform.bounds(path, selection: pathTransformSelection)
+      let choices = pathChoicesForTransform
+      let bounds = try PathTransform.bounds(choices, in: document)
       finishNumericField()
       finishLayerName()
       var draft = TransformDraft(layerID: target.id, bounds: bounds)
       draft.pathTarget = target
       draft.pathSelection = pathTransformSelection
+      draft.pathChoices = choices
+      draft.pathSelectionContext = selectedPathChoices
       draft.selection = true
-      if case .saved = target {} else { draft.selectedPixels = true }
+      draft.selectedPixels = choices.contains {
+        if case .saved = $0.target { return false }
+        return true
+      }
       draft.selectionQuad = draft.selectionCorners
       let session = SelectionTransformSession(document, draft: draft)
       selectionTransform = session
       transformDraft = draft
-      status = "\(draft.pathSelection.transformTitle) · Return applies · Escape cancels"
+      status = "\(draft.pathTransformTitle) · Return applies · Escape cancels"
       session.task = Task { await session.prepare() }
     } catch { self.error = error.localizedDescription }
   }
 
   func turnSelectedPath(angle: Double, horizontal: Bool, vertical: Bool) {
-    guard canBeginPathTransform, let target = pathTarget, let path = selectedVectorPath else { return }
+    guard canBeginPathTransform else { return }
     do {
-      let bounds = try PathTransform.bounds(path, selection: pathTransformSelection)
+      let choices = pathChoicesForTransform
+      let bounds = try PathTransform.bounds(choices, in: document)
       let x = Double(bounds.x) + Double(bounds.width) / 2
       let y = Double(bounds.y) + Double(bounds.height) / 2
       let matrix = Transform2D.translation(x, y) * .rotation(angle)
         * .scale(horizontal ? -1 : 1, vertical ? -1 : 1) * .translation(-x, -y)
-      performGeometry(.transformPath(.init(target: target, selection: pathTransformSelection,
-                                            matrix: .init(matrix))))
+      performGeometry(PathTransformGroupRequest(choices: choices, matrix: .init(matrix)).nativeCommand)
     } catch { self.error = error.localizedDescription }
   }
 
-  func pathAnchorHighlight() -> (PathAnchorSelection) -> Bool {
-    switch selectionTransform?.vectorPreview?.selection ?? pathMarquee?.preview ?? pathTransformSelection {
+  func pathAnchorHighlight(selection: PathTransformSelection, focus: PathAnchorSelection?) -> (PathAnchorSelection) -> Bool {
+    switch selection {
     case .all:
-      let focus = pathAnchor
       return { $0 == focus }
     case .components(let values):
       let components = Set(values)
@@ -83,5 +109,14 @@ extension PathTransformSelection {
       ($0.component, $0.knot) < ($1.component, $1.knot)
     })
     return values.contains(where: selection.contains)
+  }
+}
+
+extension PathTransformGroupRequest {
+  var nativeCommand: Command {
+    if choices.count == 1, let choice = choices.first {
+      return .transformPath(.init(target: choice.target, selection: choice.selection, matrix: matrix))
+    }
+    return .transformPaths(self)
   }
 }

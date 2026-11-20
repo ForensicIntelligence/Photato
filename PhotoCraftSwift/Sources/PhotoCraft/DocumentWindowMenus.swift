@@ -7,7 +7,8 @@ import AppKit
   func menuNeedsUpdate(_ menu: NSMenu) {
     if let transform = menu.items.first(where: { $0.identifier?.rawValue == "Edit > Transform" }) {
       let title = store.flatMap {
-        $0.pathTarget == nil ? nil : $0.pathTransformSelection.transformTitle
+        $0.pathTarget == nil ? nil : ($0.transformDraft?.pathTransformTitle ??
+          $0.pathChoicesForTransform.transformTitle ?? $0.pathTransformSelection.transformTitle)
       } ?? "Transform"
       transform.title = title
       transform.submenu?.title = title
