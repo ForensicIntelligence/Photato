@@ -137,8 +137,7 @@ enum PSDInkChannels {
       case .auxiliary(let i):
         let alpha = alphas[i]
         name = alpha.name
-        displayInfo.data += try record(id: alpha.id, color: alpha.options.color, opacity: alpha.options.opacity,
-          kind: alpha.options.indicates == .selectedAreas ? 0 : 1, document: document)
+        displayInfo.data += try PSDAuxiliaryChannels.displayRecord(alpha, in: document)
       }
       let chars = Array(name.utf16); unicode.n(chars.count, 4)
       for c in chars { unicode.n(Int(c), 2) }

@@ -4,6 +4,90 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class MultichannelOrderTests: XCTestCase {
+  func testSavedSpotSurvivesBothWaysOfEnteringMultichannelAndEveryContainerCompression() throws {
+    var source = try InkModeInputTests().source(.cmyk, depth: .u16)
+    var display = PSDWriter()
+    for value in [2, 21235, 51500, 39700, 56535, 67] { display.n(value, 2) }
+    display.n(2, 1)
+    let swatch = try PSDInkChannels.display(display.data)
+    var spot = try source.newSpotChannel(name: "Owned Indigo",
+      ink: SpotInk(color: swatch.color, solidity: swatch.opacity), density: Float(0x1234) / 65535)
+    let last = Float(0xabcd) / 65535
+    spot.pixels.setPixel(x: 2, y: 0, Pixel(last, last, last))
+    spot.psdDisplay = display.data
+    spot.psdIdentifier = 705
+    let mask = AlphaChannel(name: "Owned Mask", pixels: try Surface(width: 3, height: 1, depth: .u16, fill: .white))
+    source.alphaChannels = [mask, spot]
+
+    let requests = [try InkModeRequest(.multichannel, document: source).command(in: source),
+      try InkModeInput.deleteProcess(.init(mode: .cmyk, components: [1], mergeVisible: false), in: source)]
+    for request in requests {
+      var editor = EditorSession(document: source)
+      try editor.execute(request)
+      let converted = editor.document
+      XCTAssertEqual(converted.alphaChannels, [mask, spot])
+      let processNames = try converted.multichannelRaster().plates.map(\.name)
+      let native = try NativeArchive.decode(NativeArchive.encodeChunked(converted))
+      XCTAssertEqual(native, converted)
+      for format in [PSDFileFormat.psd, .psb] {
+        for compression in [PSDCompression.raw, .rle, .zip, .zipPrediction] {
+          let bytes = try PSDCodec.writeRasterLayers(native, format: format, compositeCompression: compression)
+          let reopened = try PSDCodec.read(bytes)
+          let plates = try reopened.multichannelRaster().plates
+          let ink = try XCTUnwrap(plates.last)
+          XCTAssertEqual(plates.map(\.name), processNames + [spot.name])
+          XCTAssertEqual(ink.color, swatch.color)
+          XCTAssertEqual(ink.solidity, swatch.opacity)
+          XCTAssertEqual(ink.samples.rawWord(at: 0), 0x1234)
+          XCTAssertEqual(ink.samples.rawWord(at: 2), 0xabcd)
+          XCTAssertEqual(reopened.alphaChannels?.count, 1)
+          let saved = try XCTUnwrap(reopened.alphaChannels?.first)
+          XCTAssertEqual(saved.name, mask.name)
+          XCTAssertEqual(reopened.multichannelChannelOrder, plates.dropLast().map(\.id) + [saved.id, ink.id])
+          XCTAssertEqual(reopened.sourceMetadata?[PSDInkChannels.key(ink.id)], display.data)
+          XCTAssertEqual(reopened.sourceMetadata?[PSDInkChannels.identifierKey(ink.id)], Data([0, 0, 2, 193]))
+          if compression == .raw {
+            XCTAssertEqual(Array(bytes.suffix(6)), [0xed, 0xcb, 0xed, 0xcb, 0x54, 0x32])
+          }
+        }
+      }
+      XCTAssertEqual(editor.document, converted)
+      try editor.undo()
+      XCTAssertEqual(editor.document, source)
+    }
+  }
+
+  func testPagedPSBRetainsEditedSpotDisplayAndTerminalDensity() throws {
+    let width = 300_000, height = 29
+    var document = try CraftDocument(width: width, height: height, depth: .u16)
+    var spot = try document.newSpotChannel(name: "Spot Violet",
+      ink: SpotInk(color: Pixel(1, 0, 0), solidity: 0.5), density: Float(0xabcd) / 65535)
+    var oldDisplay = PSDWriter()
+    for value in [0, 65535, 0, 0, 0, 50] { oldDisplay.n(value, 2) }
+    oldDisplay.n(2, 1)
+    spot.psdDisplay = oldDisplay.data
+    spot.spot = SpotInk(color: Pixel(0, 0, 1), solidity: 0.84)
+    let terminal = Float(0x3456) / 65535
+    spot.pixels.setPixel(x: width - 1, y: height - 1, Pixel(terminal, terminal, terminal))
+    let process = InkPlate(name: "Cyan", color: Pixel(0, 1, 1),
+      samples: try InkPlane(width: width, height: height, depth: .u16))
+    document = try document.replacingInkMode(.multichannel(.init(plates: [process])))
+    document.alphaChannels = [spot]
+    try document.setMultichannelChannelOrder([spot.id, process.id])
+
+    let bytes = try PSDCodec.writeRasterLayers(document, format: .psb, compositeCompression: .rle)
+    let reopened = try PSDCodec.read(bytes)
+    let plates = try reopened.multichannelRaster().plates
+    XCTAssertEqual(plates.map(\.name), [spot.name, process.name])
+    XCTAssertNil(reopened.alphaChannels)
+    let ink = try XCTUnwrap(plates.first)
+    XCTAssertEqual(ink.color, spot.spot?.color)
+    XCTAssertEqual(ink.solidity, spot.spot?.solidity)
+    XCTAssertTrue(ink.samples.requiresPagedArchive)
+    XCTAssertEqual(ink.samples.rawWord(at: 0), 0xabcd)
+    XCTAssertEqual(ink.samples.rawWord(at: width * height - 1), 0x3456)
+  }
+
   func testInterleavedNamesIdentifiersAndSamplesSharePSDAndPSBPlaneOrder() throws {
     var document = try CraftDocument(width: 2, height: 1, depth: .u16)
     let cyan = InkPlate(name: "Cyan", color: Pixel(0, 1, 1),

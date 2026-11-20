@@ -125,10 +125,7 @@ enum PSDAuxiliaryChannels {
     for channel in channels {
       let units=Array(channel.name.utf16);names.n(units.count+1,4);for u in units{names.n(Int(u),2)};names.n(0,2)
       let bytes=Data((channel.name.data(using:.macOSRoman,allowLossyConversion:true) ?? Data("Channel".utf8)).prefix(255));legacy.n(bytes.count,1);legacy.data+=bytes
-      let color=channel.spot?.color ?? channel.options.color,opacity=channel.spot?.solidity ?? channel.options.opacity
-      let kind=channel.spot != nil ? 2:(channel.options.indicates == .selectedAreas ? 0:1)
-      if let raw=channel.psdDisplay,let old=try? PSDInkChannels.display(raw),old.color==color,old.opacity==opacity,old.kind==kind {display.data+=raw}
-      else{display.data+=try PSDInkChannels.record(id:channel.id,color:color,opacity:opacity,kind:kind,document:document)}
+      display.data += try displayRecord(channel, in: document)
       let identifier:UInt32
       if let original=channel.psdIdentifier{identifier=original}
       else{while used.contains(next){next+=1};identifier=next;used.insert(next)}
@@ -139,6 +136,15 @@ enum PSDAuxiliaryChannels {
       var info=PSDWriter();info.n(first+channels.count-1,2);info.n(quick.psdQuickMaskInitiallyEmpty==true ? 1:0,1);result+=PSDImageResources.block(1022,data:info.data)
     };return result
   }
+  static func displayRecord(_ channel: AlphaChannel, in document: CraftDocument) throws -> Data {
+    let color = channel.spot?.color ?? channel.options.color
+    let opacity = channel.spot?.solidity ?? channel.options.opacity
+    let kind = channel.spot != nil ? 2 : (channel.options.indicates == .selectedAreas ? 0 : 1)
+    if let raw = channel.psdDisplay, let old = try? PSDInkChannels.display(raw),
+      old.color == color, old.opacity == opacity, old.kind == kind { return raw }
+    return try PSDInkChannels.record(id: channel.id, color: color, opacity: opacity, kind: kind, document: document)
+  }
+
   private static func polarity(_ channel: AlphaChannel) -> (inverted: Bool, original: Surface?) {
     if channel.spot != nil { return (true, channel.psdSpotGray) }
     if channel.options.indicates == .selectedAreas { return (true, channel.psdSelectedGray) }

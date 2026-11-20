@@ -1,3 +1,7 @@
+### Multichannel spot output (checkpoint 631)
+
+Authenticated `GET /v1/capabilities` advertises `inkModes.photoshopSpotOutput` for PSD and PSB. After `document.convertMultichannel` or `channel.deleteProcess`, the shared file writer retains saved spot ink's numerical density, name, display color, Solidity, existing Photoshop identifier and relative channel order. A reopened Multichannel Photoshop document exposes the spot as an editable printing plate. This requires no request change or archive schema migration. Firefly v2 has no dedicated spot-preservation operation.
+
 ### Workflow Guide control targets (checkpoint 630)
 
 An authenticated `GET /v1/capabilities` response includes an optional `dialogControl` label for menu targets with a matching dialog. It identifies the preferred first control in that dialog. `savedSelection` identifies Save Selection, and `loadSelection` identifies Load Selection. Their controls include the name field, Channel picker and confirmation button. Existing `kind`, `label` and `dialog` fields retain their format. Local target resolution can fall back to an available control when a dialog's layout omits the preferred field. The desktop handles highlight replay without producing an editing operation. Adobe v2 has no corresponding endpoint.

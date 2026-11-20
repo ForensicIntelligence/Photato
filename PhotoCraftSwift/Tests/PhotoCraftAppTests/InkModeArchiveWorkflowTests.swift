@@ -5,6 +5,44 @@ import XCTest
 @testable import PhotoCraft
 
 final class InkModeArchiveWorkflowTests: XCTestCase {
+  @MainActor func testHTTPConversionDownloadAndUndoKeepSpotInkSeparate() async throws {
+    var original = try CraftDocument(width: 3, height: 2)
+    let spot = try original.newSpotChannel(name: "Owned Orange",
+      ink: SpotInk(color: Pixel(1, 0, 0), solidity: 0.64), density: Float(177) / 255)
+    original.alphaChannels = [spot]
+    let source = original
+    let helper = AutomationTests(), files = DocumentIOWorkflowTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      service.setDocumentTransfersEnabled(true)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let request = InkModeRequest(.multichannel, document: source)
+      var expected = source
+      try request.command(in: source).apply(to: &expected)
+      let conversion = try await helper.edit(service, document, "document.convertMultichannel",
+        ["plateIDs": request.plateIDs.map(\.uuidString)])
+      XCTAssertEqual(conversion, 200)
+      XCTAssertEqual(document.store.document, expected)
+      for format in ["psd", "psb"] {
+        let output = try await files.request(service, path: "/v1/documents/\(id)/file.\(format)",
+          headers: ["X-Photato-Export-Options": #"{"psdCompositeCompression":"raw"}"#])
+        XCTAssertEqual(output.0.statusCode, 200)
+        let restored = try PSDCodec.read(output.1)
+        let ink = try XCTUnwrap(restored.multichannelRaster().plates.last)
+        XCTAssertEqual(ink.name, spot.name)
+        XCTAssertEqual(ink.color, spot.spot?.color)
+        XCTAssertEqual(ink.solidity, spot.spot?.solidity)
+        XCTAssertEqual(ink.samples.rawWord(at: 0), 177)
+        XCTAssertNil(restored.alphaChannels)
+      }
+      XCTAssertEqual(document.store.document, expected)
+      let undo = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(document.store.document, source)
+    }
+  }
+
   @MainActor func testNative48HTTPPreservesInkDataAndCanExitLayerlessMode() async throws {
     let gray = try InkPlane(width: 3, height: 1, bytes: Data([0, 128, 255]))
     let duo = try CraftDocument(width: 3, height: 1).replacingInkMode(.duotone(.init(gray: gray,

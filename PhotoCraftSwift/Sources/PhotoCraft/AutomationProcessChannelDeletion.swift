@@ -23,7 +23,7 @@ enum ProcessChannelDeletionAPI {
     ["command": name, "state": "selectionChannels.processDeletion", "stateSchema": stateSchema,
      "parameters": ["components": schema("components"), "mergeVisible": schema("mergeVisible")],
      "result": "HTTP 200 returns the resulting Multichannel document state.",
-     "behavior": "Delete one or more distinct zero-based RGB, CMYK or Lab process components at 8 or 16 bits. Retain at least one. The existing process separations become editable Multichannel plates. Complex stacks require mergeVisible:true to flatten visible layers and discard hidden layers. Saved alpha, spot and selection data are retained. Desktop and API share one prepared Undo.",
+     "behavior": "Delete one or more distinct zero-based RGB, CMYK or Lab process components at 8 or 16 bits. Retain at least one. The existing process separations become editable Multichannel plates. Complex stacks require mergeVisible:true to flatten visible layers and discard hidden layers. Saved alpha, spot and selection data are retained. PSD and PSB writes keep spots as printable separations. Desktop and API share one prepared Undo.",
      "limits": "Single still canvas with no Quick Mask. Large sparse plates use native archive 93 and the existing PSD and PSB writers. Existing compositor and scratch limits apply. Full numerical Photoshop output remains unqualified.",
      "actions": "Photato Actions 75 records component positions in the required color mode.",
      "adobe": "There is no dedicated published Firefly process-channel deletion operation or route."]

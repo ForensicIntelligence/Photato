@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 631 — Preserve spot inks in Multichannel Photoshop files
+
+Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier.
+
+All 1,133 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-631) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_631.md).
+
 ## 2026-11-19 — Step 630 — Keep Workflow Guide highlights visible across controls and dialogs
 
 The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
@@ -1043,14 +1051,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:630 -->
+<!-- current-status-step:631 -->
 ## Current development status — 19 November 2026
 
-The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
+Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier.
 
-All 1,130 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1,133 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 630](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_630.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-630).
+[Source checkpoint 631](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_631.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-631).
 
 <!-- current-status:end -->
 

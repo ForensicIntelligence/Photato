@@ -649,7 +649,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 628 | 2026-11-19 | [Drag channel rows and keep menu cues aligned](#dev-step-628) |
 | 629 | 2026-11-19 | [Keep saved masks and printing plates in one Multichannel order](#dev-step-629) |
 | 630 | 2026-11-19 | [Keep Workflow Guide highlights visible across controls and dialogs](#dev-step-630) |
+| 631 | 2026-11-19 | [Preserve spot inks in Multichannel Photoshop files](#dev-step-631) |
 <!-- history-index:end -->
+
+<a id="dev-step-631"></a>
+
+## 2026-11-19 — Preserve spot inks in Multichannel Photoshop files
+
+Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier.
+
+All 1,133 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](MULTICHANNEL_SPOTS_631.md) · [Qualification](SOURCE_PUBLICATION_631.md).
 
 <a id="dev-step-630"></a>
 

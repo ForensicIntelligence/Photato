@@ -1,3 +1,5 @@
+**Source checkpoint 631.** Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier. [Qualification](docs/SOURCE_PUBLICATION_631.md).
+
 **Source checkpoint 630.** The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue. [Qualification](docs/SOURCE_PUBLICATION_630.md).
 
 **Source checkpoint 629.** The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence. [Qualification](docs/SOURCE_PUBLICATION_629.md).

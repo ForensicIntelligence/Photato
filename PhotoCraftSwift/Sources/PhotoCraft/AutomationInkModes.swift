@@ -32,8 +32,10 @@ enum InkModeAPI {
     "largeMultichannel": ["maximumDimension": Surface.maxDimension, "maximumPixels": InkPlane.maximumDocumentPixels,
       "depths": [8, 16], "nativeArchiveVersion": 93, "retainsAlignedProcessWords": true,
       "boundedPreviewMaximumSide": 2048, "matchingComponentReturn": true],
+    "photoshopSpotOutput": ["formats": ["psd", "psb"], "retainsSpotDensity": true,
+      "retainsSpotDisplay": true, "retainsChannelOrder": true],
     "settings": settings, "stateSchema": stateSchema,
-    "behavior": "Duotone requires Grayscale8 or an existing Duotone document. Settings change ink names, opaque colors, density curves and preview-only overprints; stored gray samples remain unchanged. Multichannel accepts component8/16 and Duotone; existing ink identities are retained. Complex stacks require explicit mergeVisible; hidden layers are discarded and alpha masks retained. Each conversion is one prepared Undo with busy, stale and revocation checks.",
+    "behavior": "Duotone requires Grayscale8 or an existing Duotone document. Settings change ink names, opaque colors, density curves and preview-only overprints; stored gray samples remain unchanged. Multichannel accepts component8/16 and Duotone; existing ink identities are retained. Complex stacks require explicit mergeVisible; hidden layers are discarded and alpha masks retained. PSD and PSB writes retain saved spots as printable separations. Each conversion is one prepared Undo with busy, stale and revocation checks.",
     "identities": "Omitted Duotone ink IDs and curves receive new UUIDs and straight-line curves. Omitted settings retain an existing Duotone or use Monotone Black. Multichannel plateIDs may be supplied for stable component conversion; otherwise they are generated once. When converting existing inks, their identities must be retained.",
     "resultSchema": BrushAPI.object([
       "mode": BrushAPI.enumeration(["duotone", "multichannel"]), "depth": ["type": "integer", "enum": [8, 16]],
