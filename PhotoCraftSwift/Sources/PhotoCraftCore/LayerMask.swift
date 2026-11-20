@@ -13,6 +13,8 @@ public struct MaskProperties: Codable, Equatable, Sendable {
   public var inverted = false
   public var density: Float = 1
   public var feather: Double = 0
+  /// PSD layer masks on placed objects can already include the saved Warp.
+  public var storedAfterWarp: Bool?
   public init() {}
   public func validate() throws { try validate(featherRange: Self.layerFeatherRange) }
 
@@ -28,6 +30,9 @@ public struct MaskProperties: Codable, Equatable, Sendable {
 
 extension Layer {
   public var effectiveMaskProperties: MaskProperties { maskProperties ?? MaskProperties() }
+  var warpsLinkedPixelMask: Bool {
+    mask != nil && effectiveMaskProperties.linked && effectiveMaskProperties.storedAfterWarp != true
+  }
   public var maskCoordinateTransform: Transform2D {
     coordinateTransform * effectiveMaskProperties.transform
   }

@@ -594,7 +594,7 @@ import UniformTypeIdentifiers
           "shapeTransform":layer.shapeTransformAPIState,
           "frame": layer.frame?.apiState ?? NSNull(),
           "artboard": layer.artboard?.apiState ?? NSNull(),
-          "warp": layer.warp?.apiState ?? NSNull(),
+          "warp": (layer.warp ?? (try? layer.linkedSmartObjectPreview())?.warp)?.apiState ?? NSNull(),
           "text": { () -> Any in if case .text(let t) = layer.content { return t.promoted(dpi: store.document.pixelsPerInch).apiType }; return NSNull() }(),
           "hasMask": layer.mask != nil,
           "maskEnabled": layer.mask != nil && layer.effectiveMaskProperties.enabled,

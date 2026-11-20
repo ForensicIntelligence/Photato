@@ -84,7 +84,7 @@ public enum WarpRaster {
       if layer.mask != nil {var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*layer.maskCoordinateTransform;result.maskProperties=properties}
       return result
     }
-    if layer.sourceProjection != nil,layer.mask != nil,layer.effectiveMaskProperties.linked {throw CraftError.unsupported("Combined Warp/projective linked masks require their mesh mapping before rerendering.")}
+    if layer.sourceProjection != nil, layer.warpsLinkedPixelMask {throw CraftError.unsupported("Combined Warp/projective linked masks require their mesh mapping before rerendering.")}
     guard let warp=layer.warp else{return layer}
     let paged=try PagedWarpRaster.mapping(warp,width:source.width,height:source.height,transform:layer.coordinateTransform,projection:layer.sourceProjection)
     if source.width>maximumPixels/source.height || paged.bounds.width>maximumPixels/paged.bounds.height || paged.bounds.width>60000 || paged.bounds.height>60000 {
@@ -98,7 +98,7 @@ public enum WarpRaster {
     let b=mapping.bounds
     var result=layer;result.content = .raster(try render(source,using:mapping,method:method,clampEdges:clampEdges));result.x=b.x;result.y=b.y;result.affine=nil;result.warp=nil;result.sourceProjection=nil;result.importedSmartAppearance=nil
     if layer.mask != nil {
-      if layer.effectiveMaskProperties.linked {
+      if layer.warpsLinkedPixelMask {
         // Warp mask storage, preserving disabled/inverted/density/feather controls.
         // Applying effective coverage here would irreversibly discard a disabled mask.
         var raw=layer
@@ -121,14 +121,19 @@ public enum WarpRaster {
 public struct WarpEdit: Sendable {
   public let source:CraftDocument,result:CraftDocument
   public static func target(_ document:CraftDocument,layerID:UUID) throws -> Layer {
-    guard let layer=document.layers.first(where:{$0.id == layerID}),case .raster(let s)=layer.content,
+    guard let layer=document.layers.first(where:{$0.id == layerID}),case .raster=layer.content,
       !document.isImageLocked(layerID),!document.isPositionLocked(layerID),!document.isTransparencyLocked(layerID),document.selection == nil,
       layer.vectorMask == nil,document.colorMode == .rgb,document.inkMode == nil,document.restrictedMode == nil,layer.nativeMode == nil else {
       throw CraftError.unsupported("Warp currently needs an unlocked RGB pixel layer or Smart Object, without a selection or vector mask. Convert groups/type/shapes to a Smart Object first.")
-    };return layer
+    }
+    guard try layer.linkedSmartObjectPreview() == nil else {
+      throw CraftError.unsupported("Relink the artwork before changing its Warp.")
+    }
+    return layer
   }
   public static func prepare(_ document:CraftDocument,layerID:UUID,warp:WarpDefinition) throws -> Self {
     try warp.validate();var layer=try target(document,layerID:layerID),result=document
+    if layer.warp == warp { return Self(source: document, result: document) }
     if layer.smartObject == nil && warp.isIdentity { return Self(source:document,result:document) }
     layer.warp=warp.isIdentity ? nil:warp
     if layer.smartObject == nil { layer=try WarpRaster.baked(layer,in:document) }

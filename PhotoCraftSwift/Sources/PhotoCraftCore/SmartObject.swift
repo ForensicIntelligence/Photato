@@ -234,6 +234,7 @@ extension CraftDocument {
       let oldCoordinateTransform = layers[i].coordinateTransform
       let oldMaskTransform = layers[i].maskCoordinateTransform
       if let preview=try layers[i].linkedSmartObjectPreview() {
+        if let warp = preview.warp { layers[i].warp = warp }
         if let projection = preview.projectiveSourceToCache {
           layers[i].sourceProjection = projection
         } else {

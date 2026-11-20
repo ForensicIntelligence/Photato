@@ -224,6 +224,15 @@ public enum PSDCodec {
     var readArtboards: Bool = false
   }
 
+  /// Generator settings are carried as document metadata, without invoking its extensions.
+  private static func validateGeneratorExtension(_ data: Data) throws {
+    let record = try PSDDescriptor.read(data, padding: true)
+    guard record.classID.text == "null", record.items.count == 1,
+          case .object = record["generatorSettings"] else {
+      throw CraftError.unsupported("Unrecognized Photoshop extension settings.")
+    }
+  }
+
   private struct DecodeFrame {
     let source: PSDReader
     var decoded: DecodedDocument
@@ -463,6 +472,9 @@ public enum PSDCodec {
             throw CraftError.unsupported("Unrecognized PSD user-mask display metadata.")
           }
           doc.sourceMetadata?["psdGlobal_LMsk"] = content
+        } else if tag == "extn" {
+          try validateGeneratorExtension(content)
+          doc.sourceMetadata?["psdGlobal_extn"] = content
         } else {
           if tag == "OCIO" {
             let icc=try PSDColorMetadata.usesICC(content)
@@ -1817,6 +1829,12 @@ public enum PSDCodec {
       try layerMask.text("LMsk")
       try layerMask.section(overlay, lengthBytes: format.tagLengthBytes("LMsk"))
       for _ in 0..<((4 - overlay.count % 4) % 4) { try layerMask.n(0, 1) }
+    }
+    if let extensionSettings = doc.sourceMetadata?["psdGlobal_extn"] {
+      try validateGeneratorExtension(extensionSettings)
+      try layerMask.text(format.tagSignature("extn") + "extn")
+      try layerMask.section(extensionSettings, lengthBytes: format.tagLengthBytes("extn"))
+      for _ in 0..<((4 - extensionSettings.count % 4) % 4) { try layerMask.n(0, 1) }
     }
     if let linked = linkedSources {
       try layerMask.text(format.tagSignature("lnk2") + "lnk2")

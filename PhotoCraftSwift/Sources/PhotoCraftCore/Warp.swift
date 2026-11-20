@@ -120,6 +120,14 @@ public struct WarpDefinition: Codable, Equatable, Sendable {
     return vertical ? PathPoint((r+1)*hv,(q+1)*hu):PathPoint((q+1)*hu,(r+1)*hv)
   }
   public func custom(width:Int,height:Int,columns:Int=1,rows:Int=1) throws -> Self {
-    try validate();var value=self;value.mesh=try WarpMesh.fit(columns:columns,rows:rows) { s,t in point(s*Double(width),t*Double(height),width:Double(width),height:Double(height)) };value.style = .custom;return value
+    try validate()
+    let w = Double(width), h = Double(height)
+    let frame = sourceBounds ?? WarpSourceBounds(x: 0, y: 0, width: w, height: h)
+    var value = self
+    value.mesh = try WarpMesh.fit(columns: columns, rows: rows) { s, t in
+      point(frame.x + s * frame.width, frame.y + t * frame.height, width: w, height: h)
+    }
+    value.style = .custom
+    return value
   }
 }

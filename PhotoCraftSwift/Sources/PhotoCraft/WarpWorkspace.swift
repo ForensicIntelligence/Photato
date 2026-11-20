@@ -29,6 +29,12 @@ import PhotoCraftImaging
   }
   var ready:Bool { edit != nil && !rendering && !closed && error == nil }
   var controls:WarpMesh? { settings.mesh ?? (try? settings.custom(width:width,height:height).mesh) }
+  func guidePoint(_ s: Double, _ t: Double) -> PathPoint {
+    let w = Double(width), h = Double(height)
+    let bounds = settings.sourceBounds
+    return settings.point((bounds?.x ?? 0) + s * (bounds?.width ?? w),
+                          (bounds?.y ?? 0) + t * (bounds?.height ?? h), width: w, height: h)
+  }
   func change(_ value:WarpDefinition,remember:Bool=true) {
     guard !closed else{return}
     do { try value.validate() } catch { self.error=error.localizedDescription;return }
@@ -136,26 +142,62 @@ struct WarpPreview:View {
     GeometryReader { geometry in
       let padding=40.0,scale=min((geometry.size.width-padding*2)/Double(model.source.width),(geometry.size.height-padding*2)/Double(model.source.height))
       let origin=CGPoint(x:(geometry.size.width-Double(model.source.width)*scale)/2,y:(geometry.size.height-Double(model.source.height)*scale)/2)
-      let mapping=Transform2D.translation(origin.x,origin.y) * .scale(scale,scale) * model.layer.coordinateTransform
+      let viewport = Transform2D.translation(origin.x, origin.y) * .scale(scale, scale) * model.layer.coordinateTransform
+      let projection = model.layer.sourceProjection
+      let toViewport: (PathPoint) -> CGPoint? = { point in
+        var local = point
+        if let projection {
+          guard let mapped = try? projection.point(point.x, point.y) else { return nil }
+          local = mapped
+        }
+        let p = viewport.point(local.x, local.y)
+        return CGPoint(x: p.x, y: p.y)
+      }
+      let guideFractions = (0...6).map { Double($0) / 6 }
       let mesh=model.controls
       Canvas { context,size in
         context.fill(Path(CGRect(origin:.zero,size:size)),with:.color(Color(white:0.12)))
         if let image=model.preview ? model.image:model.originalImage { context.draw(Image(decorative:image,scale:1),in:CGRect(x:origin.x,y:origin.y,width:Double(model.source.width)*scale,height:Double(model.source.height)*scale)) }
         if model.showGuides,let mesh {
           var path=Path()
-          for vertical in [true,false] { for k in 0...6 { for n in 0...64 {
-            let s=Double(vertical ? k:n)/Double(vertical ? 6:64),t=Double(vertical ? n:k)/Double(vertical ? 64:6)
-            let p=model.settings.point(s*Double(model.width),t*Double(model.height),width:Double(model.width),height:Double(model.height)).transformed(mapping)
-            if n == 0 { path.move(to:CGPoint(x:p.x,y:p.y)) } else { path.addLine(to:CGPoint(x:p.x,y:p.y)) }
-          } } };context.stroke(path,with:.color(.cyan.opacity(0.75)),lineWidth:1)
-          for (index,control) in mesh.points.enumerated() { let p=control.transformed(mapping),rect=CGRect(x:p.x-3.5,y:p.y-3.5,width:7,height:7);context.fill(Path(ellipseIn:rect),with:.color(index == model.selectedPoint ? .orange:.white)) }
+          for vertical in [true, false] {
+            let knots = model.settings.mesh == nil ? guideFractions : (vertical ? mesh.us : mesh.vs)
+            for fixed in knots {
+              var beginsLine = true
+              for n in 0...64 {
+                let varying = Double(n) / 64
+                let control = model.guidePoint(vertical ? fixed : varying, vertical ? varying : fixed)
+                guard let p = toViewport(control) else { beginsLine = true; continue }
+                if beginsLine { path.move(to: p); beginsLine = false } else { path.addLine(to: p) }
+              }
+            }
+          }
+          context.stroke(path,with:.color(.cyan.opacity(0.75)),lineWidth:1)
+          for (index, control) in mesh.points.enumerated() {
+            guard let p = toViewport(control) else { continue }
+            let rect = CGRect(x: p.x - 3.5, y: p.y - 3.5, width: 7, height: 7)
+            context.fill(Path(ellipseIn: rect), with: .color(index == model.selectedPoint ? .orange : .white))
+          }
         }
       }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
-        guard model.showGuides,let mesh,let inverse=try? mapping.inverted() else { return }
-        if dragged == nil { dragged=mesh.points.indices.min { a,b in let p=mesh.points[a].transformed(mapping),q=mesh.points[b].transformed(mapping);return hypot(p.x-value.startLocation.x,p.y-value.startLocation.y)<hypot(q.x-value.startLocation.x,q.y-value.startLocation.y) }
-          if let index=dragged { let p=mesh.points[index].transformed(mapping);if hypot(p.x-value.startLocation.x,p.y-value.startLocation.y)>16 { dragged=nil } }
+        guard model.showGuides, let mesh, let inverse = try? viewport.inverted() else { return }
+        if dragged == nil {
+          let candidates = mesh.points.enumerated().compactMap { index, point -> (Int, Double)? in
+            guard let p = toViewport(point) else { return nil }
+            let distance = hypot(p.x - value.startLocation.x, p.y - value.startLocation.y)
+            return distance <= 16 ? (index, distance) : nil
+          }
+          dragged = candidates.min { $0.1 < $1.1 }?.0
         }
-        if let index=dragged { let p=inverse.point(value.location.x,value.location.y);model.drag(index,to:PathPoint(p.x,p.y)) }
+        if let index = dragged {
+          let point = inverse.point(value.location.x, value.location.y)
+          var control = PathPoint(point.x, point.y)
+          if let projection {
+            guard let mapped = try? projection.inverted().point(point.x, point.y) else { return }
+            control = mapped
+          }
+          model.drag(index, to: control)
+        }
       }.onEnded { _ in model.endGesture();dragged=nil })
       .accessibilityLabel("Warp preview. Drag a control point to reshape the image.")
     }

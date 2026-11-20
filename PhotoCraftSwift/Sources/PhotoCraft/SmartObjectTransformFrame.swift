@@ -30,7 +30,7 @@ struct ProjectiveArtworkFrame: Equatable {
   let corners: [PathPoint]
 
   init?(_ layer: Layer) throws {
-    guard let object = layer.smartObject, layer.warp?.isIdentity != false, layer.frame == nil,
+    guard let object = layer.smartObject, layer.warp?.isIdentity != false, !layer.hasUnresolvedWarp, layer.frame == nil,
           let placement = try layer.smartObjectSourceProjection(), try placement.affineValue() == nil else { return nil }
     source = .init(x: 0, y: 0, width: object.width, height: object.height)
     bounds = try placement.bounds(width: object.width, height: object.height)

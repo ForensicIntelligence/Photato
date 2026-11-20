@@ -77,7 +77,9 @@ struct AdobeArtboardRequest: Sendable {
         let w = Double(object.width), h = Double(object.height)
         let corners = [PathPoint(0, 0), .init(w, 0), .init(w, h), .init(0, h)]
         let quad: [Double]
-        if let projection = try value.smartObjectSourceProjection() {
+        if let warped = try PSDCodec.warpedSmartObjectPlacementCorners(value) {
+          quad = warped.flatMap { [$0.x, $0.y] }
+        } else if let projection = try value.smartObjectSourceProjection() {
           quad = try corners.flatMap { corner in
             let point = try projection.point(corner.x, corner.y)
             return [point.x, point.y]

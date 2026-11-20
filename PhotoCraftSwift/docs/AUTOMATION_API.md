@@ -952,7 +952,7 @@ No dedicated Puppet route exists in the pinned Firefly contract. Unverified acti
 
 Example parameters: `{"layerID":"<uuid>","settings":{"style":"arch","bend":50}}`. The operation replaces the instance warp on a Smart Object and retains source pixels; ordinary pixel layers bake it once. Both paths use the native prepared edit and Undo/Redo. `style:none` removes a retained warp. `layers[].warp` returns the retained definition. Preview state/availability appears at `warp`; native workspace drafts block API edits. Existing revision, busy, source-lock, cancellation, sharing and document-budget guards apply. Invalid settings return400; unsupported contexts return422.
 
-This increment supports unlocked RGB pixel/Smart Object layers without selections or vector masks. Linked pixel masks follow; unlinked masks remain in document space. Native downloads of editable warps require `X-Photato-Archive-Version: 24`; older readers are rejected. PSD/PSB export requires explicit rasterization until editable descriptor transport is implemented. No standalone Warp route is defined in the pinned Firefly v2 contract, and an authenticated corresponding actionJSON descriptor is not implemented. The UXP desktop geometry interface does not establish a Firefly endpoint. See [Warp references](WARP_REFERENCES.json) for limits and remaining parity work.
+Warp supports unlocked RGB pixel layers and Smart Objects without selections or vector masks. Native linked pixel masks follow Warp. Unlinked masks and PSD masks already placed by Warp keep their stored document-space geometry during a mesh edit. Native downloads of editable warps require `X-Photato-Archive-Version: 24`; older readers are rejected. PSD and PSB retain supported presets and split meshes on Smart Objects. Relink missing originals before editing their saved Warp. No standalone Warp route is defined in the pinned Firefly v2 contract, and an authenticated corresponding actionJSON descriptor is not implemented. The UXP desktop geometry interface does not establish a Firefly endpoint. See [Warp references](WARP_REFERENCES.json) for limits and remaining parity work.
 
 ## Merge to HDR Pro — step177
 
@@ -1189,6 +1189,10 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 ### Linked perspective after reopening
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
+
+### Editable Smart Object Warp in Photoshop files
+
+Save and download supported warped Smart Objects as PSD or PSB. Their presets, cubic controls, and split positions reopen through the same editable Warp state and `layer.warp` command. A linked preview keeps those settings until its original can be relinked. The Adobe-compatible manifest reports the placed quadrilateral from the Photoshop file encoding. Cylinder, PDF Warp and source-mask reconstruction remain open. [Development record](EDITABLE_SMART_OBJECT_WARP_667.md)
 
 ### Smart Object template geometry
 

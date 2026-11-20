@@ -111,7 +111,11 @@ extension DocumentIO {
         let photoshopSmartObject=(format == .psd || format == .psb) && layer.smartObject != nil
         if photoshopSmartObject,let source=layer.smartObject {
           if source.linkedSource != nil,source.mediaType=="application/vnd.photato.document" {return "Use a Photato package for linked Photato originals, or convert the original to a Photoshop-supported format."}
-          if layer.warp != nil || source.stackMode != nil || source.rawDevelopment != nil {return "Save as Photato to retain editable Warp, image-stack or RAW Smart Object settings."}
+          if source.stackMode != nil || source.rawDevelopment != nil {return "Save as Photato to retain editable image-stack or RAW Smart Object settings."}
+          if let warp = layer.warp {
+            if (try? layer.linkedSmartObjectPreview()) != nil {return "Relink this artwork before saving its deferred Warp as PSD or PSB."}
+            if source.pdfSource != nil, warp.style != .none {return "Save as Photato to retain editable PDF Warp."}
+          }
           if let pdf=source.pdfSource,pdf.image != nil || !pdf.antialias {return "Save as Photato to retain PDF image selection and nondefault antialias settings."}
         }
         switch layer.content {

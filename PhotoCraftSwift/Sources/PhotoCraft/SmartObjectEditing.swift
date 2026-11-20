@@ -20,7 +20,7 @@ extension EditorStore {
   }
   var canEditSmartObjectContents: Bool {canEditSmartObject}
   var canResetSmartObjectTransform: Bool {
-    canEditSmartObject && activeLayer?.hasUnresolvedProjectiveSource == false
+    canEditSmartObject && activeLayer?.hasUnresolvedProjectiveSource == false && activeLayer?.hasUnresolvedWarp == false
   }
   func canConvertSmartObjectToLayers(context: UUID? = nil) -> Bool {
     clipboardTargetAvailable && SmartObjectUnpack.available(in: document, selected: layerPanelSelection(context))

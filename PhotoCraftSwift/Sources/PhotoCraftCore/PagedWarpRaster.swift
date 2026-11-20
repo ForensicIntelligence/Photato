@@ -179,7 +179,7 @@ public enum PagedWarpRaster {
       throw CraftError.unsupported("Paged Warp needs RGB raster samples without native component planes.")
     }
     var raw = layer
-    let linked = layer.mask != nil && layer.effectiveMaskProperties.linked
+    let linked = layer.warpsLinkedPixelMask
     raw.maskProperties = layer.effectiveMaskProperties
     raw.maskProperties?.enabled = true; raw.maskProperties?.inverted = false
     raw.maskProperties?.density = 1; raw.maskProperties?.feather = 0

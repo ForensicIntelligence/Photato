@@ -103,14 +103,16 @@ public final class LinkedSmartObjectEdit:Sendable {
 public struct LinkedSmartObjectPreview:Codable,Equatable,Sendable {
   public var sourceToCache:Transform2D
   public var projectiveSourceToCache: ProjectiveTransform?
+  public var warp: WarpDefinition?
   public var sourceWidth:Int
   public var sourceHeight:Int
   public var cacheWidth:Int
   public var cacheHeight:Int
   public init(sourceToCache:Transform2D,sourceWidth:Int,sourceHeight:Int,cacheWidth:Int,cacheHeight:Int,
-    projectiveSourceToCache: ProjectiveTransform? = nil)throws {
+    projectiveSourceToCache: ProjectiveTransform? = nil, warp: WarpDefinition? = nil)throws {
     self.sourceToCache=sourceToCache;self.sourceWidth=sourceWidth;self.sourceHeight=sourceHeight
     self.projectiveSourceToCache = projectiveSourceToCache
+    self.warp = warp
     self.cacheWidth=cacheWidth;self.cacheHeight=cacheHeight;try validate()
   }
   public func validate()throws {
@@ -122,12 +124,13 @@ public struct LinkedSmartObjectPreview:Codable,Equatable,Sendable {
       }
       _ = try projection.bounds(width: sourceWidth, height: sourceHeight)
     }
+    try warp?.validate()
   }
 }
 extension Layer {
   public func linkedSmartObjectPreview()throws->LinkedSmartObjectPreview? {
     guard let data=sourceTags?["PhLC"] else{return nil}
-    guard data.count<=4096 else{throw CraftError.invalid("Invalid linked preview metadata.")}
+    guard data.count<=256*1024 else{throw CraftError.invalid("Invalid linked preview metadata.")}
     let value=try JSONDecoder().decode(LinkedSmartObjectPreview.self,from:data);try value.validate();return value
   }
   public mutating func setLinkedSmartObjectPreview(_ value:LinkedSmartObjectPreview?)throws {

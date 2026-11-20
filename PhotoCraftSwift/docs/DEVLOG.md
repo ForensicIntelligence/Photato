@@ -685,7 +685,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 664 | 2026-11-20 | [Export thumbnail and Smart Object assets from Photoshop manifests](#dev-step-664) |
 | 665 | 2026-11-20 | [Reopen perspective Smart Objects and continue editing](#dev-step-665) |
 | 666 | 2026-11-20 | [Relink perspective artwork after reopening PSD and PSB](#dev-step-666) |
+| 667 | 2026-11-20 | [Keep Smart Object Warp editable in PSD and PSB](#dev-step-667) |
 <!-- history-index:end -->
+
+<a id="dev-step-667"></a>
+
+## 2026-11-20 — Keep Smart Object Warp editable in PSD and PSB
+
+PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
+
+The codec reads Classic Warp from the Warp descriptor and nonuniform split meshes from the Quilt Warp descriptor. Each control grid stays in source coordinates. The existing workspace projects the saved controls and splits through the placed layer transform. Generator document settings are retained as metadata.
+
+The initial fixture import stopped at an unsupported Generator extension record. Its bounded descriptor is now preserved on open and save. Validation uses the pinned public PSD and three placed-layer descriptors alongside native synthetic controls. Preset guides continue to use their analytic curves. A compatibility case confirms older native documents can reopen and relink with a deferred Warp still attached to the missing original.
+
+1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Five new tests covered PSD and PSB presets and split Warp, missing originals, stored masks, native workspace editing and API export. The public Photoshop fixture retained eleven Warp descriptors, four split grids, original bytes and cached appearance across both containers.
+
+The installed Photoshop document query timed out. Unchanged saved samples and Photato-regenerated pixels were checked separately. An independent reader compared the encoded merged image planes in both outputs against Photoshop’s stored preview. In each format, 24 of 1,048,576 component bytes differ by one level, including three alpha bytes. Live Photoshop rerendering, Cylinder, PDF Warp and pre-Warp reconstruction of saved pixel masks remain open.
+
+[Development record](EDITABLE_SMART_OBJECT_WARP_667.md) · [Qualification](SOURCE_PUBLICATION_667.md).
 
 <a id="dev-step-666"></a>
 

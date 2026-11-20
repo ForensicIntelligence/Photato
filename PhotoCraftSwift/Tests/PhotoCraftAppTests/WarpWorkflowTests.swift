@@ -58,7 +58,8 @@ final class WarpWorkflowTests:XCTestCase {
       let warped=session.document;XCTAssertEqual(warped.layers[0].content,d.layers[0].content);XCTAssertEqual(warped.layers[0].smartObject,d.layers[0].smartObject);XCTAssertEqual(warped.minimumArchiveVersion,24)
       for data in [try NativeArchive.encode(warped),try NativeArchive.encodeChunked(warped)] { XCTAssertTrue(try NativeArchive.decode(data) == warped) }
       let output=try Renderer.composite(warped);XCTAssertNotEqual(output,try Renderer.composite(d))
-      XCTAssertThrowsError(try PSDCodec.writeRasterLayers(warped,format:.psd))
+      let photoshop = try PSDCodec.read(PSDCodec.writeRasterLayers(warped, format: .psd))
+      XCTAssertEqual(photoshop.layers[0].warp, arch())
       let pixels=try Renderer.layerSurface(warped.layers[0],in:warped);try session.execute(.rasterize(id,pixels));XCTAssertNil(session.document.layers[0].smartObject);XCTAssertNil(session.document.layers[0].warp)
       XCTAssertEqual(try Renderer.composite(session.document),output)
       try session.undo();XCTAssertTrue(session.document == warped)
@@ -104,6 +105,7 @@ final class WarpWorkflowTests:XCTestCase {
   @MainActor func testNativePreviewLocalUndoCancelCommitAndAPI() async throws {
     let d=try fixture(smart:true),id=d.layers[0].id,store=EditorStore(document:d);defer{store.renderTask?.cancel()}
     store.beginWarp();let model=try XCTUnwrap(store.warpDraft);model.change(arch());await model.task?.value;XCTAssertTrue(model.ready,model.error ?? "Not ready")
+    XCTAssertEqual(model.guidePoint(0.38, 0.24), arch().point(0.38 * 24, 0.24 * 20, width: 24, height: 20))
     XCTAssertTrue(store.document == d);model.undo();await model.task?.value;XCTAssertTrue(model.settings.isIdentity);model.redo();await model.task?.value
     let view=NSHostingView(rootView:WarpSheet(store:store,model:model));view.frame=NSRect(x:0,y:0,width:820,height:610);view.layoutSubtreeIfNeeded();XCTAssertGreaterThan(view.fittingSize.width,700)
     await model.task?.value
@@ -122,5 +124,74 @@ final class WarpWorkflowTests:XCTestCase {
       doc.store.beginWarp();let busy=try await api.edit(service,doc,"layer.warp",params);XCTAssertEqual(busy,409);doc.store.cancelWarp()
       let undo=try await api.edit(service,doc,"history.undo");XCTAssertEqual(undo,200);XCTAssertTrue(doc.store.document == d)
     }
+  }
+
+  @MainActor func testReopenedQuiltCanBeEditedInWarpWorkspaceAndBothAPIsReportSavedPlacement() async throws {
+    var source = try CraftDocument(width: 100, height: 80)
+    let pixels = try Surface(width: 20, height: 16, fill: Pixel(0.2, 0.6, 0.4))
+    let original = try RasterIO.encoded(pixels)
+    var layer = try SmartObjectIO.placed(data: original, fileName: "Warp artwork.png", in: source, fit: false)
+    layer.x = 18; layer.y = 15
+    layer.sourceProjection = try SelectionTransform.projection(
+      bounds: .init(x: 0, y: 0, width: 20, height: 16),
+      corners: [.init(0, 0), .init(24, 2), .init(28, 25), .init(-2, 22)])
+    var warp = try WarpDefinition().custom(width: 20, height: 16)
+    try warp.mesh?.split(at: 0.25, vertical: true)
+    warp.mesh?.points[0].x = -4
+    layer.warp = warp
+    source.layers = [layer]; source.activeLayerID = layer.id
+    let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(source, format: .psd))
+    XCTAssertNil(DocumentIO.persistenceIssue(reopened, format: .psd))
+    XCTAssertNil(DocumentIO.persistenceIssue(reopened, format: .psb))
+
+    let store = EditorStore(document: reopened)
+    defer { store.cancelWarp(); store.renderTask?.cancel() }
+    store.beginWarp()
+    let workspace = try XCTUnwrap(store.warpDraft)
+    XCTAssertEqual(workspace.settings, warp)
+    workspace.refresh()
+    await workspace.task?.value
+    XCTAssertEqual(workspace.edit?.result, reopened)
+    let view = NSHostingView(rootView: WarpSheet(store: store, model: workspace))
+    view.frame = NSRect(x: 0, y: 0, width: 820, height: 610)
+    view.layoutSubtreeIfNeeded()
+    XCTAssertGreaterThan(view.fittingSize.width, 700)
+    workspace.drag(0, to: .init(-11, -4))
+    workspace.endGesture()
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready, workspace.error ?? "Warp is not ready.")
+    let editedWarp = workspace.settings
+    XCTAssertEqual(editedWarp.mesh?.points[0], PathPoint(-11, -4))
+    store.commitWarp()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.activeLayer?.warp, editedWarp)
+    XCTAssertEqual(store.activeLayer?.smartObject?.data, original)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      shared.store.session = EditorSession(document: store.document)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let response = try await helper.request(service, path: "/v1/documents/\(id)/file.psb")
+      XCTAssertEqual(response.0.statusCode, 200)
+      let saved = try PSDCodec.read(response.1)
+      XCTAssertEqual(saved.layers[0].warp, editedWarp)
+      XCTAssertEqual(saved.layers[0].smartObject?.data, original)
+
+      let expected = try XCTUnwrap(PSDCodec.warpedSmartObjectPlacementCorners(saved.layers[0]))
+      let identified = try AdobeLayerIdentifiers.assigning(in: saved)
+      for data in [try AdobeDocumentManifest.encode(identified, title: "Warp.psb", includeXmp: false),
+                   try AdobeArtboardRequest.manifest(saved)] {
+        let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let layers = try XCTUnwrap(raw["layers"] as? [[String: Any]])
+        let smart = try XCTUnwrap(layers.first?["smartObject"] as? [String: Any])
+        let details = try XCTUnwrap(smart["smartObjectData"] as? [String: Any])
+        XCTAssertEqual(details["transform"] as? [Double], expected.flatMap { [$0.x, $0.y] })
+      }
+    }
+    await store.undo()
+    XCTAssertEqual(store.document, reopened)
   }
 }

@@ -60,17 +60,19 @@ enum PSDLinkedSmartObjects {
       case .object(let size)=d["Sz  "],let sw=size["Wdth"]?.number,let sh=size["Hght"]?.number,
       [sw,sh].allSatisfy({$0.isFinite && $0>0 && $0<=Double(Surface.maxDimension)}) else{throw CraftError.invalid("Invalid external placed-file geometry.")}
     let width = Int(ceil(sw)), height = Int(ceil(sh))
+    let warp = try PSDWarp.decode(d, width: width, height: height)
+    let frame = PSDWarp.Frame.placement(warp, width: width, height: height)
     let quads = try PSDSmartObjects.PlacementQuads(d)
     let toCache = try layer.coordinateTransform.inverted()
-    let affine = quads.affine(width: width, height: height)
+    let affine = quads.affine(frame: frame)
     try affine?.validated()
-    let projective = affine == nil ? try quads.projective(width: width, height: height).followed(by: toCache) : nil
+    let projective = affine == nil ? try quads.projective(width: width, height: height, frame: frame).followed(by: toCache) : nil
     let media=LinkedSmartObjectIO.photoshopLinkedMediaType(fileType:file.fileType,fileName:file.name)
     var resolution=72.0
     if case .unit(_,let bits)=d["Rslt"] {resolution=Double(bitPattern:bits)}
     var pdf:PDFSmartObjectSource?
     if media=="application/pdf" {
-      guard projective == nil else { throw CraftError.unsupported("Linked PDF perspective interchange is not yet supported.") }
+      guard projective == nil, warp == nil else { throw CraftError.unsupported("Linked PDF perspective and Warp interchange are not yet supported.") }
       let page=Int(d["PgNm"]?.number ?? 1),code=Int(d["Crop"]?.number ?? 3)
       let crop=PSDPDFSmartObjects.crops.first{Int($0.value)==code}?.key ?? .media
       pdf=try .init(page:page,crop:crop,x:0,y:0,width:Double(width)*72/resolution,height:Double(height)*72/resolution)
@@ -80,7 +82,12 @@ enum PSDLinkedSmartObjects {
     if media=="application/octet-stream"{if layer.sourceTags==nil{layer.sourceTags=[:]};layer.sourceTags?["PhFT"]=file.fileTypeBytes ?? Data(file.fileType.utf8)}
     try layer.setLinkedSmartObjectPreview(.init(sourceToCache: affine.map { toCache * $0 } ?? .identity,
       sourceWidth:width,sourceHeight:height,cacheWidth:cache.width,cacheHeight:cache.height,
-      projectiveSourceToCache: projective))
+      projectiveSourceToCache: projective, warp: warp))
+    if warp != nil, layer.mask != nil, layer.effectiveMaskProperties.linked {
+      var properties = layer.effectiveMaskProperties
+      properties.storedAfterWarp = true
+      layer.maskProperties = properties
+    }
     if let filters=d["filterFX"] {
       var stack=try PSDSmartFilters.read(filters)
       if let placed=PSDSmartObjects.placedIdentifier(in:d),let mask=filterMasks[placed]{stack.mask=mask.pixels;stack.maskProperties.transform=mask.transform}
@@ -88,8 +95,11 @@ enum PSDLinkedSmartObjects {
     }
   }
   static func unresolvedDescriptor(_ layer:Layer,source:SmartObject)throws->Data? {
-    guard try layer.linkedSmartObjectPreview() != nil,
-      let raw=layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"] else{return nil}
+    guard try layer.linkedSmartObjectPreview() != nil else { return nil }
+    guard layer.warp == nil else {
+      throw CraftError.unsupported("Relink this artwork before saving its deferred Warp as PSD or PSB.")
+    }
+    guard let raw=layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"] else{return nil}
     var descriptor = try PSDSmartObjects.descriptor(raw)
     let (base, quad) = try PSDSmartObjects.encodedQuads(layer, source: source)
     let placed = PSDSmartObjects.placedIdentifier(for: layer)

@@ -1235,14 +1235,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:666 -->
+<!-- current-status-step:667 -->
 ## Current development status — 20 November 2026
 
-PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
+PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
 
-1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
+1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 666](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_666.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-666).
+[Source checkpoint 667](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_667.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-667).
 
 <!-- current-status:end -->
 

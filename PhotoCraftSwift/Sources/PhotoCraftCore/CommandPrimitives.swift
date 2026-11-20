@@ -331,6 +331,9 @@ extension Command {
       guard d.layers[i].smartObject != nil, !d.isPositionLocked(id) else {
         throw CraftError.invalid("Select a position-unlocked Smart Object.")
       }
+      guard try d.layers[i].linkedSmartObjectPreview()?.warp == nil else {
+        throw CraftError.unsupported("Relink the artwork before resetting its Warp.")
+      }
       let delta = Transform2D.translation(Double(d.layers[i].x), Double(d.layers[i].y)) * (try d.layers[i].smartObjectSourceTransform().inverted())
       d.layers[i] = try DocumentGeometry.transformLayer(d.layers[i], by: delta, in: d)
       d.layers[i].warp = nil

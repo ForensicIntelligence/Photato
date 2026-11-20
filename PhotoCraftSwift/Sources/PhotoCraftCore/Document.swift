@@ -441,6 +441,9 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         if let preview=try l.linkedSmartObjectPreview() {
           guard smart.linkedSource != nil,l.sourceProjection == nil,preview.sourceWidth==smart.width,preview.sourceHeight==smart.height,
             preview.cacheWidth==cache.width,preview.cacheHeight==cache.height else{throw CraftError.invalid("Linked source/cache geometry differs.")}
+          guard preview.warp == nil || l.warp == nil else {
+            throw CraftError.invalid("A linked preview cannot contain two Warp programs.")
+          }
           if preview.projectiveSourceToCache != nil {
             _ = try l.smartObjectSourceProjection()?.bounds(width: smart.width, height: smart.height)
           }

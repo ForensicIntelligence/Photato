@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 667 — Keep Smart Object Warp editable in PSD and PSB
+
+PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
+
+1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. Unchanged saved samples and Photato-regenerated pixels were checked separately. An independent reader compared the encoded merged image planes in both outputs against Photoshop’s stored preview. In each format, 24 of 1,048,576 component bytes differ by one level, including three alpha bytes. Live Photoshop rerendering, Cylinder, PDF Warp and pre-Warp reconstruction of saved pixel masks remain open.
+
+[Development record](DEVLOG.md#dev-step-667) · [Details](EDITABLE_SMART_OBJECT_WARP_667.md).
+
 ## 2026-11-20 — Step 666 — Relink perspective artwork after reopening PSD and PSB
 
 PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
@@ -1305,14 +1313,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:666 -->
+<!-- current-status-step:667 -->
 ## Current development status — 20 November 2026
 
-PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
+PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
 
-1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
+1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 666](SOURCE_PUBLICATION_666.md) · [Development record](DEVLOG.md#dev-step-666).
+[Source checkpoint 667](SOURCE_PUBLICATION_667.md) · [Development record](DEVLOG.md#dev-step-667).
 
 <!-- current-status:end -->
 
@@ -2185,6 +2193,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 664 | [Export thumbnail and Smart Object assets from Photoshop manifests](DEVLOG.md#dev-step-664) |
 | 2026-11-20 | 665 | [Reopen perspective Smart Objects and continue editing](DEVLOG.md#dev-step-665) |
 | 2026-11-20 | 666 | [Relink perspective artwork after reopening PSD and PSB](DEVLOG.md#dev-step-666) |
+| 2026-11-20 | 667 | [Keep Smart Object Warp editable in PSD and PSB](DEVLOG.md#dev-step-667) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
