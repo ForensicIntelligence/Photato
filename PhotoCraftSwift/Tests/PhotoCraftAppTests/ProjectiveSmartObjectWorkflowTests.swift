@@ -7,10 +7,19 @@ import XCTest
 final class ProjectiveSmartObjectWorkflowTests: XCTestCase {
   private let corners = [PathPoint(14, 20), .init(66, 13), .init(90, 66), .init(10, 74)]
 
-  private func reopened() throws -> CraftDocument {
+  private func reopened(linked: Bool = false) throws -> CraftDocument {
     var doc = try CraftDocument(width: 108, height: 92)
     let surface = try Surface(width: 20, height: 16, fill: Pixel(0.8, 0.3, 0.2))
-    var layer = try SmartObjectIO.placed(data: RasterIO.encoded(surface), fileName: "Owned Artwork.png", in: doc, fit: false)
+    let bytes = try RasterIO.encoded(surface)
+    let name = "Owned Artwork.png"
+    var layer: Layer
+    if linked {
+      let source = try LinkedSmartObjectSource(reference: "/Missing/" + name,
+        contentHash: LinkedSmartObjectSource.fingerprint(bytes), byteLength: UInt64(bytes.count))
+      layer = try LinkedSmartObjectIO.place(bytes, fileName: name, reference: source, in: doc, fit: false)
+    } else {
+      layer = try SmartObjectIO.placed(data: bytes, fileName: name, in: doc, fit: false)
+    }
     layer.x = 0; layer.y = 0; layer.affine = nil
     layer.sourceProjection = try SelectionTransform.projection(bounds: .init(x: 0, y: 0, width: 20, height: 16), corners: corners)
     doc.layers = [layer]
@@ -108,5 +117,103 @@ final class ProjectiveSmartObjectWorkflowTests: XCTestCase {
     let smart = try XCTUnwrap(layers.first?["smartObject"] as? [String: Any])
     let fields = try XCTUnwrap(smart["smartObjectData"] as? [String: Any])
     XCTAssertEqual(fields["transform"] as? [Double], frame.corners.flatMap { [$0.x, $0.y] })
+  }
+
+  @MainActor func testLinkedPerspectiveFreeTransformAllowsAffineEditsAndRelinkRestoresDistort() async throws {
+    let document = try reopened(linked: true)
+    let store = EditorStore(document: document)
+    defer { store.cancelTransform(); store.renderTask?.cancel() }
+    let layer = try XCTUnwrap(store.activeLayer)
+    let placement = try XCTUnwrap(ProjectiveArtworkFrame(layer))
+    XCTAssertEqual(store.activeLayerBounds, placement.bounds)
+    XCTAssertFalse(store.canResetSmartObjectTransform)
+    store.beginTransform()
+    let draft = try XCTUnwrap(store.transformDraft)
+    let session = try XCTUnwrap(store.selectionTransform)
+    XCTAssertEqual(draft.selectionCorners, placement.corners)
+    XCTAssertTrue(draft.supportsSelectionMode(.rotate))
+    XCTAssertTrue(draft.supportsSelectionMode(.skew))
+    XCTAssertFalse(draft.supportsSelectionMode(.distort))
+    let edge = draft.handles[1], opposite = draft.handles[5]
+    let skew = draft.selectionDragging(handle: 1, from: edge, to: .init(x: edge.x + 3, y: edge.y),
+      mode: .skew, shift: false, option: false)
+    let shear = try XCTUnwrap(skew.selectionProjection.affineValue())
+    XCTAssertNotEqual(shear, .identity)
+    let fixed = shear.point(Double(opposite.x), Double(opposite.y))
+    XCTAssertEqual(fixed.x, Double(opposite.x), accuracy: 1e-10)
+    XCTAssertEqual(fixed.y, Double(opposite.y), accuracy: 1e-10)
+    store.updateTransform(skew)
+    XCTAssertEqual(store.transformDraft?.selectionCorners, skew.selectionCorners)
+    let delta = Transform2D.translation(4, -2)
+    let moved = draft.selectionApplying(delta)
+    store.updateTransform(moved)
+    store.commitTransform()
+    await session.commitTask?.value
+    XCTAssertNil(session.error)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    let changed = try XCTUnwrap(store.activeLayer)
+    XCTAssertNotNil(try changed.linkedSmartObjectPreview())
+    XCTAssertTrue(try XCTUnwrap(changed.smartObject).data.isEmpty)
+    let changedFrame = try XCTUnwrap(ProjectiveArtworkFrame(changed))
+    for (actual, expected) in zip(changedFrame.corners, moved.selectionCorners) {
+      XCTAssertEqual(actual.x, expected.x, accuracy: 1e-10)
+      XCTAssertEqual(actual.y, expected.y, accuracy: 1e-10)
+    }
+
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("png")
+    let replacement = try RasterIO.encoded(Surface(width: 20, height: 16, fill: Pixel(0.1, 0.8, 0.5)))
+    try replacement.write(to: url)
+    defer { try? FileManager.default.removeItem(at: url) }
+    let grant = try store.linkedSourceRegistry.authorize(url)
+    store.relinkArtwork(layer.id, grant: grant)
+    await store.geometryTask?.value
+    let resolved = try XCTUnwrap(store.activeLayer)
+    XCTAssertNil(store.error)
+    XCTAssertNil(try resolved.linkedSmartObjectPreview())
+    XCTAssertEqual(resolved.smartObject?.data, replacement)
+    XCTAssertEqual(try ProjectiveArtworkFrame(resolved), changedFrame)
+    XCTAssertTrue(store.canResetSmartObjectTransform)
+    store.beginTransform()
+    XCTAssertTrue(try XCTUnwrap(store.transformDraft).supportsSelectionMode(.distort))
+    store.cancelTransform()
+    await store.undo()
+    XCTAssertEqual(store.activeLayer, changed)
+  }
+
+  @MainActor func testCachedPerspectiveLinkedCornersViaPhotatoHTTPAndAdobeManifests() async throws {
+    let input = try reopened(linked: true)
+    let layer = try XCTUnwrap(input.layers.first)
+    let frame = try XCTUnwrap(ProjectiveArtworkFrame(layer))
+    let identified = try AdobeLayerIdentifiers.assigning(in: input)
+    for payload in [try AdobeDocumentManifest.encode(identified, title: "Linked.psb", includeXmp: false),
+                    try AdobeArtboardRequest.manifest(input)] {
+      let manifest = try XCTUnwrap(JSONSerialization.jsonObject(with: payload) as? [String: Any])
+      let layers = try XCTUnwrap(manifest["layers"] as? [[String: Any]])
+      let smart = try XCTUnwrap(layers.first?["smartObject"] as? [String: Any])
+      let fields = try XCTUnwrap(smart["smartObjectData"] as? [String: Any])
+      XCTAssertEqual(smart["isLinked"] as? Bool, true)
+      XCTAssertEqual(fields["transform"] as? [Double], frame.corners.flatMap { [$0.x, $0.y] })
+    }
+
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      shared.store.session = EditorSession(document: input)
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let response = try await helper.request(service, path: "/v1/documents/\(id)")
+      XCTAssertEqual(response.0.statusCode, 200)
+      struct Geometry: Decodable {
+        let transform: [Double]
+        let corners: [[String: Double]]
+      }
+      struct ObjectState: Decodable { let projectiveSourceGeometry: Geometry }
+      struct LayerState: Decodable { let smartObject: ObjectState }
+      struct Reply: Decodable { let layers: [LayerState] }
+      let reply = try JSONDecoder().decode(Reply.self, from: response.1)
+      let geometry = try XCTUnwrap(reply.layers.first?.smartObject.projectiveSourceGeometry)
+      XCTAssertEqual(geometry.transform, frame.placement.values)
+      XCTAssertEqual(geometry.corners, frame.corners.map { ["x": $0.x, "y": $0.y] })
+      XCTAssertTrue(shared.store.session.undoStack.isEmpty)
+    }
   }
 }

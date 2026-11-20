@@ -17,9 +17,13 @@ extension Transform2D {
 }
 
 extension Layer {
+  var hasUnresolvedProjectiveSource: Bool {
+    (try? linkedSmartObjectPreview())?.projectiveSourceToCache != nil
+  }
+
   func smartObjectGeometry() throws -> SmartObjectGeometry? {
-    guard let source = smartObject, sourceProjection == nil, importedSmartAppearance == nil,
-          warp == nil, frame == nil else { return nil }
+    guard let source = smartObject, try smartObjectSourceProjection() == nil,
+          importedSmartAppearance == nil, warp == nil, frame == nil else { return nil }
     let placement = try smartObjectSourceTransform()
     try placement.validated()
     return .init(transform: placement, width: source.width, height: source.height)

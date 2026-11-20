@@ -102,6 +102,21 @@ extension TransformDraft {
       if option {moving(corner ? [(edge+2)%4]:[(edge+2)%4,(edge+3)%4],-delta,&out)}
     }else if mode == .skew {
       let horizontal=edge==0 || edge==2,basis=horizontal ? unit:v,delta=basis*dot(movement,basis)
+      if projectiveArtworkFrame != nil, !collectionProjective {
+        // The saved preview can be sheared without access to the original.
+        // Anchor the shear at the opposite edge midpoint of the artwork frame.
+        let normal = horizontal ? v : unit
+        let handles = self.handles
+        let movedEdge = handles[2 * edge + 1]
+        let anchor = handles[2 * ((edge + 2) % 4) + 1]
+        let separation = dot(SIMD2(Double(movedEdge.x - anchor.x), Double(movedEdge.y - anchor.y)), normal)
+        guard abs(separation) > 1e-9 else { return self }
+        let shear = delta / separation
+        let matrix = Transform2D(a: 1 + shear.x * normal.x, b: shear.y * normal.x,
+                                 c: shear.x * normal.y, d: 1 + shear.y * normal.y)
+        let x = Double(anchor.x), y = Double(anchor.y)
+        return selectionApplying(.translation(x, y) * matrix * .translation(-x, -y))
+      }
       moving([edge,(edge+1)%4],delta,&out)
     }else if mode == .perspective {
       let horizontal=abs(dot(movement,unit))>=abs(dot(movement,v)),basis=horizontal ? unit:v

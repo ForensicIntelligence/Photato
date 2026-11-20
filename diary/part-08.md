@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 666 — Relink perspective artwork after reopening PSD and PSB
+
+PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
+
+1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Photoshop's live document query timed out. The file and pixel comparisons use Photato and owned fixtures. Live Photoshop interchange, linked PDF perspective and non-identity Warp descriptors remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-666) · [Details](../PhotoCraftSwift/docs/LINKED_PROJECTIVE_SMART_OBJECTS_666.md).
+
 ## 2026-11-20 — Step 665 — Reopen perspective Smart Objects and continue editing
 
 Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.

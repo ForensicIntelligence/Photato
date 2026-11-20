@@ -1186,6 +1186,10 @@ A single projected Smart Object in Free Transform exposes `transformReference.pr
 
 Send a document-space matrix through `layers.transform` to move or distort eligible artwork without replacing its original. Editable PSD and PSB downloads retain supported embedded projective sources. The existing Photoshop-compatible manifest reports the final four corners in `smartObjectData.transform`. [Development record](PROJECTIVE_SMART_OBJECT_ROUNDTRIP_665.md)
 
+### Linked perspective after reopening
+
+PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
+
 ### Smart Object template geometry
 
 `transformMode` accepts `none`, `fit`, `fill` and `custom`. A custom request includes `transform`. A geometry-only edit can omit `smartObject`; the existing original is preserved. Relative adds accept `above`, `below` or `into` with `placement.referenceLayer` by name or PSD ID. Adds can also use `top` or `bottom`.

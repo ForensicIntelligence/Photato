@@ -55,29 +55,32 @@ enum PSDLinkedSmartObjects {
     out.n(item.data.count,8);out.data.append(item.data);while out.data.count%4 != 0{out.n(0,1)}
   }
   static func restore(_ layer:inout Layer,descriptor d:PSDDescriptor,file:PSDSmartObjects.File,sourceID:UUID,
-    document:CraftDocument,filterMasks:[String:PSDSmartFilters.Mask])throws {
+    filterMasks:[String:PSDSmartFilters.Mask])throws {
     guard let link=file.link,case .raster(let cache)=layer.content,
       case .object(let size)=d["Sz  "],let sw=size["Wdth"]?.number,let sh=size["Hght"]?.number,
-      [sw,sh].allSatisfy({$0.isFinite && $0>0 && $0<=Double(Surface.maxDimension)}),
-      case .list(let values)=d["Trnf"],values.count==8,values.allSatisfy({$0.number?.isFinite==true}) else{throw CraftError.invalid("Invalid external placed-file geometry.")}
-    let width=Int(ceil(sw)),height=Int(ceil(sh)),q=values.map{$0.number!},w=Double(width),h=Double(height)
-    let transform=Transform2D(a:(q[2]-q[0])/w,b:(q[3]-q[1])/w,c:(q[6]-q[0])/h,d:(q[7]-q[1])/h,tx:q[0],ty:q[1])
-    try transform.validated();let corner=transform.point(w,h)
-    guard abs(corner.x-q[4])<0.001,abs(corner.y-q[5])<0.001 else{throw CraftError.unsupported("Resolve a perspective linked source before editing its placement.")}
+      [sw,sh].allSatisfy({$0.isFinite && $0>0 && $0<=Double(Surface.maxDimension)}) else{throw CraftError.invalid("Invalid external placed-file geometry.")}
+    let width = Int(ceil(sw)), height = Int(ceil(sh))
+    let quads = try PSDSmartObjects.PlacementQuads(d)
+    let toCache = try layer.coordinateTransform.inverted()
+    let affine = quads.affine(width: width, height: height)
+    try affine?.validated()
+    let projective = affine == nil ? try quads.projective(width: width, height: height).followed(by: toCache) : nil
     let media=LinkedSmartObjectIO.photoshopLinkedMediaType(fileType:file.fileType,fileName:file.name)
     var resolution=72.0
     if case .unit(_,let bits)=d["Rslt"] {resolution=Double(bitPattern:bits)}
     var pdf:PDFSmartObjectSource?
     if media=="application/pdf" {
+      guard projective == nil else { throw CraftError.unsupported("Linked PDF perspective interchange is not yet supported.") }
       let page=Int(d["PgNm"]?.number ?? 1),code=Int(d["Crop"]?.number ?? 3)
       let crop=PSDPDFSmartObjects.crops.first{Int($0.value)==code}?.key ?? .media
-      pdf=try .init(page:page,crop:crop,x:0,y:0,width:w*72/resolution,height:h*72/resolution)
+      pdf=try .init(page:page,crop:crop,x:0,y:0,width:Double(width)*72/resolution,height:Double(height)*72/resolution)
     }
     let safeName=(file.name.replacingOccurrences(of:"\\",with:"/")as NSString).lastPathComponent
     layer.smartObject=try .init(sourceID:sourceID,fileName:safeName,mediaType:media,data:Data(),width:width,height:height,resolution:resolution,pdfSource:pdf,linkedSource:link)
     if media=="application/octet-stream"{if layer.sourceTags==nil{layer.sourceTags=[:]};layer.sourceTags?["PhFT"]=file.fileTypeBytes ?? Data(file.fileType.utf8)}
-    try layer.setLinkedSmartObjectPreview(.init(sourceToCache:layer.coordinateTransform.inverted()*transform,
-      sourceWidth:width,sourceHeight:height,cacheWidth:cache.width,cacheHeight:cache.height))
+    try layer.setLinkedSmartObjectPreview(.init(sourceToCache: affine.map { toCache * $0 } ?? .identity,
+      sourceWidth:width,sourceHeight:height,cacheWidth:cache.width,cacheHeight:cache.height,
+      projectiveSourceToCache: projective))
     if let filters=d["filterFX"] {
       var stack=try PSDSmartFilters.read(filters)
       if let placed=PSDSmartObjects.placedIdentifier(in:d),let mask=filterMasks[placed]{stack.mask=mask.pixels;stack.maskProperties.transform=mask.transform}
@@ -87,12 +90,11 @@ enum PSDLinkedSmartObjects {
   static func unresolvedDescriptor(_ layer:Layer,source:SmartObject)throws->Data? {
     guard try layer.linkedSmartObjectPreview() != nil,
       let raw=layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"] else{return nil}
-    var descriptor=try PSDSmartObjects.descriptor(raw);let t=try layer.smartObjectSourceTransform(),w=Double(source.width),h=Double(source.height)
-    let points=[t.point(0,0),t.point(w,0),t.point(w,h),t.point(0,h)]
-    let quad=PSDValue.list(points.flatMap{[.number($0.x),.number($0.y)]})
+    var descriptor = try PSDSmartObjects.descriptor(raw)
+    let (base, quad) = try PSDSmartObjects.encodedQuads(layer, source: source)
     let placed = PSDSmartObjects.placedIdentifier(for: layer)
     let sourceID = PSDValue.text(Array((source.sourceID.uuidString + "\0").utf16))
-    for (key,value) in [("Trnf",quad),("nonAffineTransform",quad),("Idnt",sourceID),("placed",.text(Array((placed+"\0").utf16)))] {
+    for (key,value) in [("Trnf",base),("nonAffineTransform",quad),("Idnt",sourceID),("placed",.text(Array((placed+"\0").utf16)))] {
       if let index=descriptor.items.firstIndex(where:{$0.key.text==key}){descriptor.items[index].value=value}else{descriptor.items.append(.init(key,value))}
     }
     var writer=PSDWriter();writer.text("soLD");writer.n(4,4);writer.data.append(try descriptor.encoded());return writer.data

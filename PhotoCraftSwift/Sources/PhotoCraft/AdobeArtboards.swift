@@ -74,8 +74,21 @@ struct AdobeArtboardRequest: Sendable {
       if let rect { result["bounds"] = bounds(rect) }
       if let object=value.smartObject {
         result["type"]="smart_object_layer"
-        let t=try value.smartObjectSourceTransform(),w=Double(object.width),h=Double(object.height)
-        let quad=[t.point(0,0),t.point(w,0),t.point(w,h),t.point(0,h)].flatMap{[$0.x,$0.y]}
+        let w = Double(object.width), h = Double(object.height)
+        let corners = [PathPoint(0, 0), .init(w, 0), .init(w, h), .init(0, h)]
+        let quad: [Double]
+        if let projection = try value.smartObjectSourceProjection() {
+          quad = try corners.flatMap { corner in
+            let point = try projection.point(corner.x, corner.y)
+            return [point.x, point.y]
+          }
+        } else {
+          let transform = try value.smartObjectSourceTransform()
+          quad = corners.flatMap { corner in
+            let point = transform.point(corner.x, corner.y)
+            return [point.x, point.y]
+          }
+        }
         var fields:[String:Any]=["type":"smartObject","transform":quad]
         if let link=object.linkedSource {
           let path=URL(string:link.reference).flatMap{$0.isFileURL ? $0.path:nil} ?? link.reference

@@ -684,7 +684,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 663 | 2026-11-20 | [Inspect Photoshop templates through the Adobe-compatible manifest](#dev-step-663) |
 | 664 | 2026-11-20 | [Export thumbnail and Smart Object assets from Photoshop manifests](#dev-step-664) |
 | 665 | 2026-11-20 | [Reopen perspective Smart Objects and continue editing](#dev-step-665) |
+| 666 | 2026-11-20 | [Relink perspective artwork after reopening PSD and PSB](#dev-step-666) |
 <!-- history-index:end -->
+
+<a id="dev-step-666"></a>
+
+## 2026-11-20 — Relink perspective artwork after reopening PSD and PSB
+
+PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
+
+The codec stores the source quadrilateral in linked-preview metadata while keeping the actual preview in the raster layer. This lets the app move the preview without authorizing access to the original. The existing Relink to File command restores the source mapping on each affected instance.
+
+The first Debug run flagged a difference in Foundation's generic JSON number decoding for the HTTP matrix. Typed decoding verifies the original coefficient values on the wire. The first standalone fixture exporter could not decode its PNG inside the command sandbox. Its ImageIO-enabled rerun produced all eight files.
+
+1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Four new tests covered the native Free Transform and Relink workflows, shared instances, masks, Smart Filters, Undo, exact saved corner words and the Photato and Adobe-compatible API views. An independent reader checked eight PSD and PSB outputs and verified that each external-link record omits original image bytes.
+
+Photoshop's live document query timed out. The file and pixel comparisons use Photato and owned fixtures. Live Photoshop interchange, linked PDF perspective and non-identity Warp descriptors remain open.
+
+[Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md) · [Qualification](SOURCE_PUBLICATION_666.md).
 
 <a id="dev-step-665"></a>
 

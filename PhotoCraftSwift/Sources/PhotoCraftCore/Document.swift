@@ -439,8 +439,11 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         smartSources[smart.sourceID] = smart
         guard case .raster(let cache)=l.content,cache.depth==depth else{throw CraftError.invalid("Invalid Smart Object cache.")}
         if let preview=try l.linkedSmartObjectPreview() {
-          guard smart.linkedSource != nil,preview.sourceWidth==smart.width,preview.sourceHeight==smart.height,
+          guard smart.linkedSource != nil,l.sourceProjection == nil,preview.sourceWidth==smart.width,preview.sourceHeight==smart.height,
             preview.cacheWidth==cache.width,preview.cacheHeight==cache.height else{throw CraftError.invalid("Linked source/cache geometry differs.")}
+          if preview.projectiveSourceToCache != nil {
+            _ = try l.smartObjectSourceProjection()?.bounds(width: smart.width, height: smart.height)
+          }
         }else if cache.width != smart.width || cache.height != smart.height {throw CraftError.invalid("Smart Object source/cache dimensions differ.")}
         bytes += smart.layerComps?.estimatedBytes ?? 0
         if smart.sourceBytes.isFileBacked {

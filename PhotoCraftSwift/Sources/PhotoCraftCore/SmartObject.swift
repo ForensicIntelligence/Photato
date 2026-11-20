@@ -234,9 +234,13 @@ extension CraftDocument {
       let oldCoordinateTransform = layers[i].coordinateTransform
       let oldMaskTransform = layers[i].maskCoordinateTransform
       if let preview=try layers[i].linkedSmartObjectPreview() {
-        let full=layers[i].coordinateTransform * preview.sourceToCache
-        layers[i].x=Int(floor(full.tx));layers[i].y=Int(floor(full.ty))
-        layers[i].affine = .translation(-Double(layers[i].x),-Double(layers[i].y)) * full
+        if let projection = preview.projectiveSourceToCache {
+          layers[i].sourceProjection = projection
+        } else {
+          let full = oldCoordinateTransform * preview.sourceToCache
+          layers[i].x = Int(floor(full.tx)); layers[i].y = Int(floor(full.ty))
+          layers[i].affine = .translation(-Double(layers[i].x), -Double(layers[i].y)) * full
+        }
         try layers[i].setLinkedSmartObjectPreview(nil)
       }
       let scale = Transform2D.scale(Double(source.width)/Double(layers[i].smartObject!.width), Double(source.height)/Double(layers[i].smartObject!.height))
@@ -248,11 +252,13 @@ extension CraftDocument {
       }
       if preserveSize {
         if let projection=layers[i].sourceProjection {
-          layers[i].sourceProjection=try projection.preceded(by:scale.inverted())
+          if scale != .identity {
+            layers[i].sourceProjection = try projection.preceded(by: scale.inverted())
+          }
         } else {
-        let full = layers[i].coordinateTransform * (try scale.inverted())
-        layers[i].x = Int(floor(full.tx)); layers[i].y = Int(floor(full.ty))
-        layers[i].affine = .translation(-Double(layers[i].x), -Double(layers[i].y)) * full
+          let full = layers[i].coordinateTransform * (try scale.inverted())
+          layers[i].x = Int(floor(full.tx)); layers[i].y = Int(floor(full.ty))
+          layers[i].affine = .translation(-Double(layers[i].x), -Double(layers[i].y)) * full
         }
       }
       if layers[i].mask != nil, layers[i].coordinateTransform != oldCoordinateTransform {

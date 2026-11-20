@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 665 preserves editable embedded projective Smart Objects in PSD/PSB and reports composed corners in manifest responses. Independent hosted service conformance remains open.",
+  "current_api": "Checkpoint 666 retains the original corners of linked perspective artwork in PSD/PSB and manifest responses. Independent hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -984,6 +984,18 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "linked_projective_smart_objects_build666": {
+    "route": "POST /v2/generate-manifest",
+    "photatoCommands": [
+      "layers.transform",
+      "smartObject.linked.relink",
+      "smartObject.linked.update"
+    ],
+    "status": "partial native implementation",
+    "scope": "Linked projective Smart Objects preserve external references and original corners in PSD/PSB. Generate Manifest reports those corners when the link is unresolved.",
+    "limits": "Live Photoshop comparison, projective PDF sources and editable Warp descriptors remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_666.json"
   },
   "projective_smart_object_roundtrip_build665": {
     "route": "POST /v2/generate-manifest",

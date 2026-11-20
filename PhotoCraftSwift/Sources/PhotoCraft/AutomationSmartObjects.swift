@@ -51,7 +51,7 @@ extension SmartObject {
         "qualification":"Adobe documents component restoration/grouping and transform/Smart Filter removal. Exact placement, outer attachments/defaults, numerical output and live/platform/capacity qualification remain open."],
       "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,"linkedSourceEditing":LinkedSourceFileAPI.capabilities,
       "sourceGeometry": "layers[].smartObject.sourceGeometry reports the original artwork's affine transform, bounds in document pixels and rotation in degrees. The layer transform continues to describe the displayed raster or cache.",
-      "projectiveSourceGeometry": "When available, layers[].smartObject.projectiveSourceGeometry reports the source-to-document homography, four artwork corners and their bounds.",
+      "projectiveSourceGeometry": "When available, layers[].smartObject.projectiveSourceGeometry reports the source-to-document homography, four artwork corners and their bounds, including a PSD or PSB linked preview whose original has not been resolved.",
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
         "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",
         "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",

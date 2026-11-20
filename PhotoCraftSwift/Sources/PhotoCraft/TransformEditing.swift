@@ -211,8 +211,9 @@ extension EditorStore {
       let bounds=try Renderer.layoutBounds(layer,in:document,stored:false) {
       return bounds
     }
-    if layer.smartObject?.linkedSource != nil, let geometry = try layer.smartObjectGeometry() {
-      return try geometry.bounds()
+    if layer.smartObject?.linkedSource != nil {
+      if let frame = try ProjectiveArtworkFrame(layer) { return frame.bounds }
+      if let geometry = try layer.smartObjectGeometry() { return try geometry.bounds() }
     }
     let pixels = try Renderer.layerSurface(layer, in: document)
     return try layer.coordinateTransform.bounds(width: pixels.width, height: pixels.height)

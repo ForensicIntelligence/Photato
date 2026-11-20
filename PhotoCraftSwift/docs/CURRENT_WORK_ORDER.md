@@ -1,3 +1,7 @@
+**Source checkpoint 666.** PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing. 1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_666.md).
+
+**Next Smart Object work.** Preserve editable non-identity Warp placement in PSD and PSB. Verify a live Photoshop perspective open, relink and save when document scripting responds.
+
 **Source checkpoint 665.** Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame. 1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_665.md).
 
 **Next Smart Object work.** Verify a live Photoshop perspective open, edit and save when document scripting responds. Continue linked projective cache geometry and editable Warp coverage.

@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 666 — Relink perspective artwork after reopening PSD and PSB
+
+PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
+
+1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Photoshop's live document query timed out. The file and pixel comparisons use Photato and owned fixtures. Live Photoshop interchange, linked PDF perspective and non-identity Warp descriptors remain open.
+
+[Development record](DEVLOG.md#dev-step-666) · [Details](LINKED_PROJECTIVE_SMART_OBJECTS_666.md).
+
 ## 2026-11-20 — Step 665 — Reopen perspective Smart Objects and continue editing
 
 Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.
@@ -1297,14 +1305,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:665 -->
+<!-- current-status-step:666 -->
 ## Current development status — 20 November 2026
 
-Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.
+PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
 
-1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
+1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 665](SOURCE_PUBLICATION_665.md) · [Development record](DEVLOG.md#dev-step-665).
+[Source checkpoint 666](SOURCE_PUBLICATION_666.md) · [Development record](DEVLOG.md#dev-step-666).
 
 <!-- current-status:end -->
 
@@ -2176,6 +2184,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 663 | [Inspect Photoshop templates through the Adobe-compatible manifest](DEVLOG.md#dev-step-663) |
 | 2026-11-20 | 664 | [Export thumbnail and Smart Object assets from Photoshop manifests](DEVLOG.md#dev-step-664) |
 | 2026-11-20 | 665 | [Reopen perspective Smart Objects and continue editing](DEVLOG.md#dev-step-665) |
+| 2026-11-20 | 666 | [Relink perspective artwork after reopening PSD and PSB](DEVLOG.md#dev-step-666) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

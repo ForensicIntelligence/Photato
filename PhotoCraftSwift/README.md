@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 666.** PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing. [Qualification](docs/SOURCE_PUBLICATION_666.md).
+
 **Source checkpoint 665.** Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame. [Qualification](docs/SOURCE_PUBLICATION_665.md).
 
 **Source checkpoint 664.** Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs. [Qualification](docs/SOURCE_PUBLICATION_664.md).

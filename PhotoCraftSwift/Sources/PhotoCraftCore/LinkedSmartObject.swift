@@ -102,17 +102,26 @@ public final class LinkedSmartObjectEdit:Sendable {
 /// Keep that cache exact until authorization lets us replace it with source pixels.
 public struct LinkedSmartObjectPreview:Codable,Equatable,Sendable {
   public var sourceToCache:Transform2D
+  public var projectiveSourceToCache: ProjectiveTransform?
   public var sourceWidth:Int
   public var sourceHeight:Int
   public var cacheWidth:Int
   public var cacheHeight:Int
-  public init(sourceToCache:Transform2D,sourceWidth:Int,sourceHeight:Int,cacheWidth:Int,cacheHeight:Int)throws {
+  public init(sourceToCache:Transform2D,sourceWidth:Int,sourceHeight:Int,cacheWidth:Int,cacheHeight:Int,
+    projectiveSourceToCache: ProjectiveTransform? = nil)throws {
     self.sourceToCache=sourceToCache;self.sourceWidth=sourceWidth;self.sourceHeight=sourceHeight
+    self.projectiveSourceToCache = projectiveSourceToCache
     self.cacheWidth=cacheWidth;self.cacheHeight=cacheHeight;try validate()
   }
   public func validate()throws {
     try sourceToCache.validated()
     guard [sourceWidth,sourceHeight,cacheWidth,cacheHeight].allSatisfy({(1...Surface.maxDimension).contains($0)}) else{throw CraftError.invalid("Invalid linked preview dimensions.")}
+    if let projection = projectiveSourceToCache {
+      guard sourceToCache == .identity, try projection.affineValue() == nil else {
+        throw CraftError.invalid("A perspective linked preview requires one non-affine source placement.")
+      }
+      _ = try projection.bounds(width: sourceWidth, height: sourceHeight)
+    }
   }
 }
 extension Layer {
@@ -127,9 +136,14 @@ extension Layer {
     let encoder=JSONEncoder();encoder.outputFormatting = .sortedKeys;sourceTags?["PhLC"]=try encoder.encode(value)
   }
   public func smartObjectSourceTransform()throws->Transform2D {
-    try linkedSmartObjectPreview().map{coordinateTransform * $0.sourceToCache} ?? coordinateTransform
+    guard let preview = try linkedSmartObjectPreview() else { return coordinateTransform }
+    guard preview.projectiveSourceToCache == nil else {
+      throw CraftError.unsupported("Resolve the linked original before changing its perspective placement.")
+    }
+    return coordinateTransform * preview.sourceToCache
   }
   public func smartObjectSourceProjection() throws -> ProjectiveTransform? {
-    try sourceProjection?.followed(by: coordinateTransform)
+    let placement = try sourceProjection ?? linkedSmartObjectPreview()?.projectiveSourceToCache
+    return try placement?.followed(by: coordinateTransform)
   }
 }

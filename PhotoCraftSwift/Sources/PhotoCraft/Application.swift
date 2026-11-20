@@ -309,9 +309,9 @@ import SwiftUI
     if item.action == #selector(convertSmartObject) { return store?.canConvertSmartObject == true }
     if item.action == #selector(convertSmartObjectToLayers) { return store?.canConvertSmartObjectToLayers() == true }
     if item.action == #selector(editSmartObjectContents) {return store?.canEditSmartObjectContents == true}
+    if item.action == #selector(resetSmartObjectTransform) { return store?.canResetSmartObjectTransform == true }
     if [#selector(replaceSmartObjectContents),
-      #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy),
-      #selector(resetSmartObjectTransform)].contains(item.action) { return store?.canEditSmartObject == true }
+      #selector(exportSmartObjectContents), #selector(independentSmartObjectCopy)].contains(item.action) { return store?.canEditSmartObject == true }
     if item.action == #selector(fillDialog) { return store?.canUsePixelPaint == true || store?.canUseMenuFill == true }
     if item.action == #selector(strokeSelectionDialog) { return store?.canUsePixelStroke == true }
     if item.action == #selector(invertPixels) { return store?.canInvertPixels == true }

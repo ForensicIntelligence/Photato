@@ -177,7 +177,7 @@ enum PSDSmartObjects {
     let selectedComp = placement.selectedComp, sourceID = placement.sourceID
     if file.link != nil,file.data.isEmpty {
       guard selectedComp == -1 else { throw CraftError.unsupported("Locate the linked original before importing its selected child comp. Cached-only PSD comp descriptors remain unqualified.") }
-      try PSDLinkedSmartObjects.restore(&layer,descriptor:d,file:file,sourceID:sourceID,document:document,filterMasks:filterMasks);return
+      try PSDLinkedSmartObjects.restore(&layer,descriptor:d,file:file,sourceID:sourceID,filterMasks:filterMasks);return
     }
     var object: SmartObject
     let pixels: Surface
@@ -209,8 +209,8 @@ enum PSDSmartObjects {
       layer.affine = .translation(-Double(layer.x), -Double(layer.y)) * affine
       maskFrame = affine
     } else {
-      guard object.linkedSource == nil, object.pdfSource == nil else {
-        throw CraftError.unsupported("Perspective placement interchange currently requires an embedded raster or layered source.")
+      guard object.pdfSource == nil else {
+        throw CraftError.unsupported("PDF perspective interchange is not yet supported.")
       }
       layer.sourceProjection = try quads.projective(width: object.width, height: object.height)
       if case .raster(let cache) = layer.content,
@@ -272,18 +272,24 @@ enum PSDSmartObjects {
     return out.data
   }
 
-  private static func encodedQuads(_ layer: Layer, source: SmartObject) throws -> (PSDValue, PSDValue) {
+  static func encodedQuads(_ layer: Layer, source: SmartObject) throws -> (PSDValue, PSDValue) {
     let w = Double(source.width), h = Double(source.height)
     let positions = [PathPoint(0, 0), .init(w, 0), .init(w, h), .init(0, h)]
     func encode(_ numbers: [Double]) -> PSDValue { .list(numbers.map(PSDValue.number)) }
     if let projection = try layer.smartObjectSourceProjection() {
-      guard source.linkedSource == nil, source.pdfSource == nil else {
-        throw CraftError.unsupported("Perspective placement interchange currently requires an embedded raster or layered source.")
+      guard source.pdfSource == nil else {
+        throw CraftError.unsupported("PDF perspective interchange is not yet supported.")
       }
-      if layer.coordinateTransform == .identity, let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"],
+      if let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"],
          let old = try? PlacementQuads(descriptor(saved)), old.affine(width: source.width, height: source.height) == nil,
-         (try? old.projective(width: source.width, height: source.height)) == layer.sourceProjection {
-        return (encode(old.base), encode(old.content))
+         let original = try? old.projective(width: source.width, height: source.height) {
+        if let cached = try layer.linkedSmartObjectPreview()?.projectiveSourceToCache {
+          if try original.followed(by: layer.coordinateTransform.inverted()) == cached {
+            return (encode(old.base), encode(old.content))
+          }
+        } else if layer.coordinateTransform == .identity, original == layer.sourceProjection {
+          return (encode(old.base), encode(old.content))
+        }
       }
       let points = try positions.map { try projection.point($0.x, $0.y) }
       let xs = points.map(\.x), ys = points.map(\.y)
@@ -297,7 +303,8 @@ enum PSDSmartObjects {
   static func bakedPreview(_ layer: Layer, in document: CraftDocument) throws -> Layer {
     let tag = try placedDescriptor(layer)
     var preview: Layer
-    if layer.smartFilters != nil || layer.sourceProjection != nil {
+    let projectedLinkCache = try layer.linkedSmartObjectPreview()?.projectiveSourceToCache != nil
+    if !projectedLinkCache && (layer.smartFilters != nil || layer.sourceProjection != nil) {
       preview = try SmartFilterEngine.renderedLayer(layer, in: document)
     }
     else {

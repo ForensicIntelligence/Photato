@@ -5,7 +5,11 @@ extension TransformDraft{
   func supportsSelectionMode(_ mode:SelectionTransformMode)->Bool{collectionLayerIDs==nil || collectionProjective || [.free,.scale,.rotate,.skew].contains(mode)}
 }
 @MainActor extension EditorStore{
-  var wantsLayerCollectionTransform:Bool{layerCollectionIDs.count>1 || activeLayer?.isGroup == true || ProjectiveLayerTransform.available(document,layerIDs:layerCollectionIDs)}
+  var wantsLayerCollectionTransform: Bool {
+    layerCollectionIDs.count > 1 || activeLayer?.isGroup == true
+      || activeLayer?.hasUnresolvedProjectiveSource == true
+      || ProjectiveLayerTransform.available(document, layerIDs: layerCollectionIDs)
+  }
   var layerCollectionIDs:[UUID]{let ids=LayerLinks.expanded(in:document,layerIDs:groupSelectionIDs);return document.layers.filter{ids.contains($0.id)}.map(\.id)}
   var canBeginLayerCollectionTransform:Bool{wantsLayerCollectionTransform && pathTarget==nil && !editingComponent && !editingMask && canSelectComponentTarget && LayerCollectionTransform.available(document,layerIDs:layerCollectionIDs)}
   func layerCollectionBounds(_ ids:[UUID])throws->IntRect{

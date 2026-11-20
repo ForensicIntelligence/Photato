@@ -19,6 +19,9 @@ extension EditorStore {
       && activeLayer.map { !document.isImageLocked($0.id) } == true
   }
   var canEditSmartObjectContents: Bool {canEditSmartObject}
+  var canResetSmartObjectTransform: Bool {
+    canEditSmartObject && activeLayer?.hasUnresolvedProjectiveSource == false
+  }
   func canConvertSmartObjectToLayers(context: UUID? = nil) -> Bool {
     clipboardTargetAvailable && SmartObjectUnpack.available(in: document, selected: layerPanelSelection(context))
   }
@@ -143,6 +146,6 @@ extension AppDelegate {
     if let store, store.canEditSmartObject, let id = store.activeLayer?.id { store.perform(.independentSmartObjectCopy(id)) }
   }
   @objc func resetSmartObjectTransform() {
-    if let store, store.canEditSmartObject, let id = store.activeLayer?.id { store.perform(.resetSmartObjectTransform(id)) }
+    if let store, store.canResetSmartObjectTransform, let id = store.activeLayer?.id { store.perform(.resetSmartObjectTransform(id)) }
   }
 }
