@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 635.** The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions. [Qualification](docs/SOURCE_PUBLICATION_635.md).
+
 **Source checkpoint 634.** Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork. [Qualification](docs/SOURCE_PUBLICATION_634.md).
 
 **Source checkpoint 633.** Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip. [Qualification](docs/SOURCE_PUBLICATION_633.md).

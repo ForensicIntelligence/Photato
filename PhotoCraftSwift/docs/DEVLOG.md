@@ -653,7 +653,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 632 | 2026-11-19 | [Keep native CMYK and Lab components when flattening to Multichannel](#dev-step-632) |
 | 633 | 2026-11-19 | [Return standard Multichannel plates to editable CMYK](#dev-step-633) |
 | 634 | 2026-11-19 | [Print native CMYK and saved spot separations](#dev-step-634) |
+| 635 | 2026-11-19 | [Print a selection from a large document](#dev-step-635) |
 <!-- history-index:end -->
+
+<a id="dev-step-635"></a>
+
+## 2026-11-19 — Print a selection from a large document
+
+The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions.
+
+All 1,166 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](PRINT_SELECTED_AREA_635.md) · [Qualification](SOURCE_PUBLICATION_635.md).
 
 <a id="dev-step-634"></a>
 

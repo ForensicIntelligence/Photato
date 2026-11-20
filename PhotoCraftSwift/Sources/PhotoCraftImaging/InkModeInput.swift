@@ -134,7 +134,7 @@ public enum InkModeInput {
 
   /// The existing gray component compositor preserves independent CMYK/Lab
   /// numbers in plain stacks. Render only the requested components.
-  static func retainedLayeredComponents(_ document: CraftDocument, indices: [Int]) throws -> NativeModeRaster? {
+  static func retainedLayeredComponents(_ document: CraftDocument, indices: [Int], region: IntRect? = nil) throws -> NativeModeRaster? {
     guard let descriptor = document.modeDescriptor, [.cmyk, .lab].contains(descriptor.mode) else { return nil }
     let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
     guard !visible.isEmpty, visible.count > 1 || !isAlignedRaster(visible[0], in: document),
@@ -149,13 +149,14 @@ public enum InkModeInput {
     if !visible.contains(where: { $0.id == document.activeLayerID }) {
       visibleDocument.activeLayerID = visible.last?.id
     }
-    let width = document.width, height = document.height, depth = document.depth
+    let width = region?.width ?? document.width, height = region?.height ?? document.height, depth = document.depth
     let white = try NativeModeRaster.converting(Surface(width: 1, height: 1, depth: depth, fill: .white),
       to: descriptor.mode, depth: depth, profile: descriptor.profile, intent: descriptor.intent)
     var native = try NativeModeRaster(width: width, height: height, mode: descriptor.mode, depth: depth,
       profile: descriptor.profile, intent: descriptor.intent)
     for index in indices {
-      let preview = try ModeChannelPresentation.singleComponent(visibleDocument, component: index)
+      let projection = try ModeChannelPresentation.singleComponent(visibleDocument, component: index, region: region)
+      let preview = try region.map { try projection.cropped(to: $0) } ?? projection
       let paper = white.value(component: index, index: 0)
       let fill = descriptor.mode == .cmyk ? 1 - paper : paper
       let baseline = try BackgroundLayer.opaque(preview, over: Pixel(fill, fill, fill))

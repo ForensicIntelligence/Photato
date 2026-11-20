@@ -643,6 +643,29 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     }
     return try result.surface()
   }
+  /// Project a requested component window while retaining the layer's original
+  /// coordinates and implicit fill for regional composition.
+  package func presentingComponent(_ component: Int, region: IntRect) throws -> Surface {
+    guard (0..<mode.componentCount).contains(component) else { throw CraftError.invalid("Invalid component.") }
+    let alpha = mode.componentCount
+    func pixel(_ color: Float, _ opacity: Float) -> Pixel {
+      let gray = mode == .cmyk ? 1 - color : color
+      return Pixel(gray, gray, gray, opacity)
+    }
+    let defaults = defaultComponents()
+    var result = try Surface(width: width, height: height, depth: depth, fill: pixel(defaults[component], defaults[alpha]))
+    let area = region.clipped(toWidth: width, height: height)
+    guard area.width > 0, area.height > 0 else { return result }
+    for y in area.y..<(area.y + area.height) {
+      try Task.checkCancellation()
+      for x in area.x..<(area.x + area.width) {
+        let index = y * width + x
+        let sample = pixel(value(component: component, index: index), value(component: alpha, index: index))
+        if !sample.hasSameBits(as: result.defaultPixel) { result.setPixel(x: x, y: y, sample) }
+      }
+    }
+    return result
+  }
   /// Numeric channels retain raw floating values without an RGB transfer.
   public func channel(_ component:Int)throws->Surface {
     guard (0..<mode.componentCount).contains(component) else{throw CraftError.invalid("Mode component not found.")}

@@ -1,3 +1,9 @@
+### Print Selected Area (checkpoint 635)
+
+Use `print.configure` with `settings.selectedArea: true` before downloading `GET /v1/documents/{id}/print.pdf`. The document must already have a selection. `printing.maximumPixels` limits the output rectangle and `printing.pixelLimitAppliesTo` reports `outputRegion`. `printing.maximumDocumentDimension` is 300,000. The existing share, heap, preparation and output limits still apply.
+
+[Development record](PRINT_SELECTED_AREA_635.md).
+
 ### Print separation pages (checkpoint 634)
 
 Set `print.configure` with `settings.content: "separations"` to prepare individual grayscale pages. The shared native output emits the process and saved spot planes for flat or eligible layered CMYK, Duotone and Multichannel. Multichannel follows the relative order of printing plates and saved spots. Ordinary selection masks do not become pages. Use `settings.sixteenBit: true` for 16-bit image samples. The existing `/v1/documents/{id}/print.pdf` route and printer permission rules apply. Supported cases are described under `printing.separations` in the authenticated catalogue.

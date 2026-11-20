@@ -87,6 +87,7 @@ public struct PrintSettings: Codable, Equatable, Sendable {
 }
 
 public struct PrintLayout: Equatable, Sendable {
+  public static let maximumPixels = 8_388_608
   public let source: IntRect
   public let page: CGRect
   public let printable: CGRect
@@ -96,15 +97,22 @@ public struct PrintLayout: Equatable, Sendable {
   public var clipped: Bool { !printable.insetBy(dx: -0.001, dy: -0.001).contains(image) }
   public init(document: CraftDocument, settings: PrintSettings) throws {
     try settings.validate()
-    guard document.width > 0, document.height > 0, document.width <= SoftProof.maximumPixels / document.height,
+    guard document.width > 0, document.height > 0,
+      document.width <= Surface.maxDimension, document.height <= Surface.maxDimension,
       document.pixelsPerInch.isFinite, document.pixelsPerInch > 0 else {
-      throw CraftError.unsupported("Printing currently supports canvases up to8,388,608 pixels with a valid resolution.")
+      throw CraftError.invalid("Printing requires valid document dimensions and resolution.")
     }
     var crop = IntRect(x: 0, y: 0, width: document.width, height: document.height)
     if settings.selectedArea {
       guard let selected = document.selectionMask?.bounds ?? document.selection else { throw CraftError.invalid("Select an area before printing a selection.") }
       crop = selected.clipped(toWidth: document.width, height: document.height)
       guard crop.width > 0, crop.height > 0 else { throw CraftError.invalid("The selected print area is empty.") }
+    }
+    guard crop.width <= Self.maximumPixels / crop.height else {
+      if settings.selectedArea {
+        throw CraftError.unsupported("The selected print area exceeds 8,388,608 pixels. Make a smaller selection.")
+      }
+      throw CraftError.unsupported("The full image exceeds 8,388,608 pixels. Make a smaller selection and turn on Print Selected Area.")
     }
     source = crop; page = CGRect(origin: .zero, size: settings.pageSize)
     printable = CGRect(x: settings.marginLeft, y: settings.marginBottom,
@@ -191,25 +199,32 @@ public struct PreparedPrint: Sendable {
 }
 
 public enum PrintOutput {
-  private typealias Separation = (name: String, density: @Sendable (Int) -> Float)
+  private typealias Separation = (name: String, density: @Sendable (Int, Int) -> Float)
 
   public static func prepare(_ document: CraftDocument, settings: PrintSettings, proof: ProofSettings = .init()) throws -> PreparedPrint {
     try Task.checkCancellation(); let layout = try PrintLayout(document: document, settings: settings), rect = layout.source
     let bits = settings.sixteenBit ? 16 : 8
     if settings.content == .separations {
       try document.validate()
-      let plates = try separations(document)
+      let plates = try separations(document, region: settings.selectedArea ? rect : nil)
       guard rect.width * rect.height * (bits / 8) <= PreparedPrint.maximumBytes / plates.count else { throw CraftError.unsupported("Prepared separation pages exceed256 MiB.") }
       let pages = try plates.map { name, sample in
         let image = try bitmap(width: rect.width, height: rect.height, bits: bits, space: CGColorSpaceCreateDeviceGray()) { y in
-          (rect.x..<(rect.x + rect.width)).map { x in 1 - sample((y + rect.y) * document.width + x) }
+          (rect.x..<(rect.x + rect.width)).map { x in 1 - sample(x, y + rect.y) }
         }
         return PrintPage(image: image, label: name)
       }
       return PreparedPrint(settings: settings, layout: layout, pages: pages, title: document.name)
     }
     let native = SoftProof.retainedComponents(document)
-    let composite = try native == nil ? Renderer.composite(document) : nil
+    let composite: Surface?
+    if native != nil {
+      composite = nil
+    } else if settings.selectedArea {
+      composite = try Renderer.composite(document, region: rect)
+    } else {
+      composite = try Renderer.composite(document)
+    }
     let sourceProfile = try native?.profile ?? ColorManagement.space(for: document).copyICCData() as Data? ?? NativeModeProfile.standard(.rgb, depth: .u16)
     let sourceMode = try ProofSettings.mode(of: sourceProfile)
     // Lab bitmap encodings differ between CoreGraphics and ColorSync. Convert
@@ -246,33 +261,42 @@ public enum PrintOutput {
     return PreparedPrint(settings: settings, layout: layout, pages: [PrintPage(image: image, label: hard ? "Hard Proof: " + proof.displayName : "Composite")], title: document.name)
   }
 
-  private static func separations(_ document: CraftDocument) throws -> [Separation] {
+  private static func separations(_ document: CraftDocument, region: IntRect?) throws -> [Separation] {
     let width = document.width
     let spots: [(UUID, Separation)] = (document.alphaChannels ?? []).compactMap { channel in
       guard channel.spot != nil else { return nil }
-      return (channel.id, (channel.name, { index in
-        channel.pixels.pixel(x: index % width, y: index / width).r
+      return (channel.id, (channel.name, { x, y in
+        channel.pixels.pixel(x: x, y: y).r
       }))
     }
     func separation(_ plate: InkPlate) -> Separation {
-      (plate.name, { plate.samples.value(at: $0) })
+      (plate.name, { x, y in plate.samples.value(at: y * width + x) })
     }
     switch document.inkMode {
     case .multichannel(let raster):
       let available = Dictionary(uniqueKeysWithValues: raster.plates.map { ($0.id, separation($0)) } + spots)
       return document.multichannelChannelOrder.compactMap { available[$0] }
     case .duotone(let raster):
-      return try raster.separations().plates.map(separation) + spots.map(\.1)
+      let plates: [Separation] = raster.settings.inks.map { ink in
+        (ink.name, { x, y in Float(ink.plateSample(gray: raster.gray.value(at: y * width + x))) / 255 })
+      }
+      return plates + spots.map(\.1)
     case nil:
       let mode = DocumentColorMode.cmyk
-      guard document.colorMode == mode, !document.hasArtboards, !document.hasFrames, document.artboardOrigin == nil,
-        let native = try SoftProof.retainedComponents(document)
-          ?? InkModeInput.retainedLayeredComponents(document, indices: Array(0..<mode.componentCount)) else {
-        throw CraftError.unsupported("Separations require retained CMYK, Duotone or Multichannel samples. Flatten complex layer stacks first.")
+      let unavailable = CraftError.unsupported("Separations require retained CMYK, Duotone or Multichannel samples. Flatten complex layer stacks first.")
+      guard document.colorMode == mode, !document.hasArtboards, !document.hasFrames, document.artboardOrigin == nil else {
+        throw unavailable
       }
+      let flat = SoftProof.retainedComponents(document)
+      guard let native = try flat ?? InkModeInput.retainedLayeredComponents(
+        document, indices: Array(0..<mode.componentCount), region: region) else {
+        throw unavailable
+      }
+      let origin = flat == nil ? region : nil
       let process: [Separation] = mode.componentNames.enumerated().map { component, name in
-        (name, { index in
-          native.value(component: component, index: index) * native.value(component: mode.componentCount, index: index)
+        (name, { x, y in
+          let index = (y - (origin?.y ?? 0)) * native.width + x - (origin?.x ?? 0)
+          return native.value(component: component, index: index) * native.value(component: mode.componentCount, index: index)
         })
       }
       return process + spots.map(\.1)

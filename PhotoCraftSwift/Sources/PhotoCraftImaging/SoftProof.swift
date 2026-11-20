@@ -111,7 +111,7 @@ struct ProofTransform {
 }
 
 public enum SoftProof {
-  /// Legacy kernel/print budget. Printing retains its separate preparation limit.
+  /// Maximum area for the contiguous soft-proofing kernel.
   public static let maximumPixels = 8_388_608
   public static let maximumDocumentPixels = Surface.maxPixels
   public static func retainedComponents(_ document: CraftDocument) -> NativeModeRaster? {

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **634** · The 10 most recent entries, newest first.
+Source build **635** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 635 — Print a selection from a large document
+
+The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions.
+
+All 1,166 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-635) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_635.md).
 
 ## 2026-11-19 — Step 634 — Print native CMYK and saved spot separations
 
@@ -75,11 +83,3 @@ Deleting selected RGB, CMYK or Lab components converts the retained separations 
 All 29 selected development cases passed, including shared native and HTTP validation.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-626). [Development notes](PhotoCraftSwift/docs/PROCESS_CHANNEL_DELETION_626.md).
-
-## 2026-11-19 — Step 625 — Merge spot ink into the supported process channels
-
-The shared spot-merge command keeps the expected component layout and performs one undoable document edit.
-
-All 29 selected development cases passed. Exact comparison against Adobe-authored physical printing samples remains open.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-625).

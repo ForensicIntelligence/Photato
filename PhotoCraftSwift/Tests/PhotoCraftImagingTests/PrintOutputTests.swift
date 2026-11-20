@@ -5,6 +5,79 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PrintOutputTests: XCTestCase {
+  func testSelectedAreaOnMaximumCanvasUsesBoundsAndExactRGBSamples() throws {
+    let side = Surface.maxDimension
+    let region = IntRect(x: side - 2, y: side - 2, width: 2, height: 2)
+    var source = try document(width: side, height: side)
+    var pixels = try Surface(width: side, height: side)
+    pixels.setPixel(x: 0, y: 0, .black)
+    pixels.setPixel(x: region.x, y: region.y, Pixel(1, 0, 0))
+    pixels.setPixel(x: region.x + 1, y: region.y + 1, Pixel(0, 0, 1))
+    source.layers[0].content = .raster(pixels)
+    source.selectionMask = try SelectionMask.sampledCoverage(width: side, height: side, regions: [region]) { x, y in
+      (x == region.x && y == region.y) || (x == region.x + 1 && y == region.y + 1) ? 96 : 0
+    }
+    source.selection = source.selectionMask?.bounds
+
+    XCTAssertThrowsError(try PrintOutput.prepare(source, settings: PrintSettings()))
+    var settings = PrintSettings()
+    settings.selectedArea = true
+    let output = try PrintOutput.prepare(source, settings: settings)
+    XCTAssertEqual(output.layout.source, region)
+    let image = try XCTUnwrap(output.pages.first?.image)
+    XCTAssertEqual(image.width, region.width)
+    XCTAssertEqual(image.height, region.height)
+    let rgb = try XCTUnwrap(image.dataProvider?.data as Data?)
+    XCTAssertEqual(Array(rgb), [255, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 255])
+
+    source.selectionMask = nil
+    source.selection = .init(x: 0, y: 0, width: side, height: side)
+    XCTAssertThrowsError(try PrintLayout(document: source, settings: settings))
+  }
+
+  func testSelectedAreaOnMaximumLayeredCMYKCanvasRetainsExactProcessAndSpotWords() throws {
+    let side = Surface.maxDimension
+    let baseWords: [UInt32] = [1400, 15300, 30000, 53000]
+    let patchWords: [UInt32] = [62000, 11200, 37000, 17100]
+    let base = try NativeModeRaster.RowBuilder(width: side, height: side, mode: .cmyk, depth: .u16)
+    for index in baseWords.indices { try base.fill(component: index, word: baseWords[index]) }
+    try base.fill(component: 4, word: 65535)
+    let bottom = try base.finish()
+    let local = try NativeModeRaster.RowBuilder(width: 2, height: 1, mode: .cmyk, depth: .u16, profile: bottom.profile)
+    for index in patchWords.indices {
+      try local.appendRow([patchWords[index], patchWords[index] - 300], component: index)
+    }
+    try local.fill(component: 4, word: 65535)
+    let native = try local.finish()
+    var source = try CraftDocument(width: side, height: side, depth: .u16)
+    source.modeDescriptor = try .init(mode: .cmyk, depth: .u16, profile: bottom.profile)
+    source.layers[0].nativeMode = bottom
+    source.layers[0].content = .raster(try bottom.surface())
+    var patch = Layer(name: "Far corner", content: .raster(try native.surface()))
+    patch.nativeMode = native
+    patch.x = side - 2
+    patch.y = side - 1
+    source.layers.append(patch)
+    source.selection = .init(x: side - 3, y: side - 1, width: 3, height: 1)
+    let spot = try source.newSpotChannel(name: "Spot", ink: .init(color: .black, solidity: 0.5), density: 0)
+    var ink = spot
+    ink.pixels.setPixel(x: side - 1, y: side - 1, Pixel(1, 1, 1))
+    source.alphaChannels = [ink]
+
+    var settings = PrintSettings()
+    settings.selectedArea = true
+    settings.sixteenBit = true
+    settings.content = .separations
+    let output = try PrintOutput.prepare(source, settings: settings)
+    XCTAssertEqual(output.layout.source, source.selection)
+    XCTAssertEqual(output.pages.map(\.label), ["Cyan", "Magenta", "Yellow", "Black", "Spot"])
+    for index in baseWords.indices {
+      let expected = [baseWords[index], patchWords[index], patchWords[index] - 300].map { UInt16(65535 - $0) }
+      XCTAssertEqual(try grayWords(output.pages[index]), expected)
+    }
+    XCTAssertEqual(try grayWords(output.pages[4]), [65535, 65535, 0])
+  }
+
   func testLayeredCMYKPrintsExactProcessAndSpotPagesWithoutSavedMasks() throws {
     let width = 2
     let bottomWords: [UInt32] = [4000, 14000, 29000, 52000]

@@ -8,6 +8,48 @@ import SwiftUI
 @testable import PhotoCraft
 
 final class PrintWorkflowTests: XCTestCase {
+  @MainActor func testLargeSelectedAreaCanBePreviewedAndDownloadedThroughHTTP() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let side = Surface.maxDimension
+      var source = try CraftDocument(width: side, height: side)
+      let region = IntRect(x: side - 31, y: side - 17, width: 31, height: 17)
+      source.selection = region
+      let store = document.store
+      store.session = EditorSession(document: source)
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let path = "/v1/documents/\(id)/print.pdf"
+      let before = try await helper.request(service, path: path)
+      XCTAssertGreaterThanOrEqual(before.0.statusCode, 400)
+
+      document.beginPrint()
+      let preview = try XCTUnwrap(store.printWorkspace)
+      XCTAssertFalse(preview.settings.selectedArea)
+      XCTAssertTrue(try XCTUnwrap(preview.error).contains("Print Selected Area"))
+      preview.settings.selectedArea = true
+      preview.refresh()
+      await preview.task?.value
+      XCTAssertEqual(try XCTUnwrap(preview.output, preview.error ?? "").layout.source, region)
+      XCTAssertFalse(store.printSettings.selectedArea)
+      preview.cancel()
+
+      let configured = try await helper.edit(service, document, "print.configure", ["settings": ["selectedArea": true]])
+      XCTAssertEqual(configured, 200)
+      XCTAssertTrue(store.printSettings.selectedArea)
+      let disabled = try await helper.edit(service, document, "print.configure", ["settings": ["selectedArea": false]])
+      XCTAssertGreaterThanOrEqual(disabled, 400)
+      XCTAssertTrue(store.printSettings.selectedArea)
+      let response = try await helper.request(service, path: path)
+      XCTAssertEqual(response.0.statusCode, 200)
+      XCTAssertEqual(try XCTUnwrap(PDFDocument(data: response.1)).pageCount, 1)
+      XCTAssertEqual(store.document, source)
+      XCTAssertTrue(store.session.undoStack.isEmpty)
+      XCTAssertFalse(document.isDocumentEdited)
+      XCTAssertEqual(PrintAPI.capabilities["pixelLimitAppliesTo"] as? String, "outputRegion")
+    }
+  }
+
   @MainActor func testNativeSeparationPreviewAndHTTPPDFIncludeTheSameNamedSpotPage() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, document in

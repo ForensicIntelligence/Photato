@@ -29,6 +29,9 @@ public struct DuotoneInk: Codable, Equatable, Identifiable, Sendable {
     }
     return curve.last?.output ?? x
   }
+  package func plateSample(gray: Float) -> UInt8 {
+    UInt8((density(1 - gray) * 255).rounded())
+  }
 }
 public struct InkOverprint: Codable, Equatable, Sendable {
   /// Bit i identifies ink i. Only combinations of at least two inks can override display.
@@ -115,7 +118,7 @@ public struct DuotoneRaster: Codable, Equatable, Sendable {
       var samples = [UInt8](); samples.reserveCapacity(gray.count)
       for i in 0..<gray.count {
         if i % 4096 == 0 { try Task.checkCancellation() }
-        samples.append(UInt8((ink.density(1 - gray.value(at: i)) * 255).rounded()))
+        samples.append(ink.plateSample(gray: gray.value(at: i)))
       }
       return InkPlate(id: ink.id, name: ink.name, color: ink.color,
         samples: try InkPlane(width: gray.width, height: gray.height, bytes: Data(samples)))

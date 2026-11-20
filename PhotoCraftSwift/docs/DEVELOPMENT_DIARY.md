@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 635 — Print a selection from a large document
+
+The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions.
+
+All 1,166 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](DEVLOG.md#dev-step-635) · [Validation](SOURCE_PUBLICATION_635.md).
+
 ## 2026-11-19 — Step 634 — Print native CMYK and saved spot separations
 
 Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
@@ -1073,14 +1081,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:634 -->
+<!-- current-status-step:635 -->
 ## Current development status — 19 November 2026
 
-Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
+The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions.
 
-All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1,166 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 634](SOURCE_PUBLICATION_634.md) · [Detailed record](DEVLOG.md#dev-step-634).
+[Source checkpoint 635](SOURCE_PUBLICATION_635.md) · [Detailed record](DEVLOG.md#dev-step-635).
 
 <!-- current-status:end -->
 
@@ -1921,6 +1929,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 632 | [Keep native CMYK and Lab components when flattening to Multichannel](DEVLOG.md#dev-step-632) |
 | 2026-11-19 | 633 | [Return standard Multichannel plates to editable CMYK](DEVLOG.md#dev-step-633) |
 | 2026-11-19 | 634 | [Print native CMYK and saved spot separations](DEVLOG.md#dev-step-634) |
+| 2026-11-19 | 635 | [Print a selection from a large document](DEVLOG.md#dev-step-635) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
