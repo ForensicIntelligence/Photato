@@ -676,7 +676,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 655 | 2026-11-20 | [Add General placement preferences](#dev-step-655) |
 | 656 | 2026-11-20 | [Recover linked Smart Objects after moving a folder](#dev-step-656) |
 | 657 | 2026-11-20 | [Place Smart Objects at their source print size](#dev-step-657) |
+| 658 | 2026-11-20 | [Custom Smart Object geometry for template jobs](#dev-step-658) |
 <!-- history-index:end -->
+
+<a id="dev-step-658"></a>
+
+## 2026-11-20 — Custom Smart Object geometry for template jobs
+
+The Adobe-compatible template API can set Smart Object size, position, rotation, skew and anchor. Jobs can place artwork relative to other layers and change the geometry of a linked PSD without supplying its original artwork again.
+
+The linked fixture caught a mismatch between the preview cache coordinates and the original artwork coordinates. The adapter now uses the source transform when computing the native command. The earlier compile failure and failing fixture are recorded with the implementation.
+
+All 1,468 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The local HTTP tests matched all 320 RGBA bytes of an independently calculated quarter-turn fixture after PSD reopen. They also checked exact embedded source bytes and a linked PSD's source metadata and geometry through rotation and Fit in separate jobs.
+
+The installed Photoshop session timed out. Exact Adobe hosted-service pixels, unobserved geometry defaults, physical Intel and a macOS 14 runtime remain unverified.
+
+[Development record](ADOBE_SMART_OBJECT_TEMPLATE_658.md) · [Qualification](SOURCE_PUBLICATION_658.md).
 
 <a id="dev-step-657"></a>
 

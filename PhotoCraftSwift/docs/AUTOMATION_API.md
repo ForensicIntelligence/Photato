@@ -1154,7 +1154,19 @@ The published `POST /v2/create-composite` route now accepts the following embedd
 {"image":{"source":{"url":"https://example.com/input.psd"}},"edits":{"layers":[{"name":"Product","type":"smart_object_layer","operation":{"type":"add","placement":{"type":"top"}},"smartObject":{"isLinked":false,"smartObjectFile":{"source":{"url":"https://example.com/product.png"}}},"transformMode":"fit"}]},"outputs":[{"mediaType":"image/vnd.adobe.photoshop","destination":{"validityPeriod":3600}}]}
 ```
 
-For replacement use `operation:{"type":"edit"}`, identify one layer by name or signed32-bit PSD id, and supply `smartObject.smartObjectFile.source.url`. `smartObject.autoResize` defaults totrue, matching the old source canvas/dpi; false retains the new dimensions/dpi. Only the addressed Adobe instance changes. `transformMode` supports `none`, `fit`, `fill`; visibility/clipping and existing protection/dropShadow fields also work. Other placement types, custom `transform`, linked objects, SVG/PDF/AI sources, Smart Filters and warp reject explicitly. Native sources export to embedded PSB when their contents can be represented; unsupported rich content rejects rather than flattening. Exact Adobe hosted behavior and independent Photoshop interoperability remain unqualified. See [scope, provenance and evidence](SMART_OBJECT_REFERENCES.json).
+For a replacement use `operation:{"type":"edit"}`, identify one layer by name or its signed 32-bit PSD ID, and supply `smartObject.smartObjectFile.source.url`. For an embedded replacement, `smartObject.autoResize` defaults to true and matches the old source canvas and resolution. Setting it to false keeps the replacement's dimensions and resolution.
+
+### Smart Object template geometry
+
+`transformMode` accepts `none`, `fit`, `fill` and `custom`. A custom request includes `transform`. A geometry-only edit can omit `smartObject`; the existing original is preserved. Relative adds accept `above`, `below` or `into` with `placement.referenceLayer` by name or PSD ID. Adds can also use `top` or `bottom`.
+
+```json
+{"type":"smart_object_layer","name":"Product","operation":{"type":"edit"},"transformMode":"custom","transform":{"offset":{"horizontal":120,"vertical":70},"dimension":{"width":450,"height":280,"unit":"pixels_unit"},"angle":15,"anchor":{"horizontal":0.5,"vertical":0.5}}}
+```
+
+Use `points_unit` to convert dimensions from points using the document resolution. `skew` takes integer angles for both axes. Alignment can be left, center or right on the horizontal axis and top, center or bottom on the vertical axis. An explicit offset overrides alignment on that axis. For linked files opened from PSD, the engine composes transforms in the original artwork's coordinate space. The artwork can be absent when a cached layer is available.
+
+The Photato API's `layer.transform` continues to accept an affine delta. Both interfaces use the same Swift transform command. Full Adobe hosted-service behavior remains open. [Development record](ADOBE_SMART_OBJECT_TEMPLATE_658.md)
 
 ## Subject selection and background removal — step159
 

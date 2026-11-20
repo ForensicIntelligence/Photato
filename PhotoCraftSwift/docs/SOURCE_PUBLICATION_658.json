@@ -1,0 +1,81 @@
+{
+  "build": 658,
+  "base": "aedede51ba25bca48672dfac0b430ba2aa31af47",
+  "buildInputs": 9253,
+  "includedBuildInputs": 9240,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "1e4fb2640a5cc70bdc1864ea9a09dfe7025ce8f3e4bff724f9952200e58cbfa7",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AdobeSmartObjectEdit.swift",
+      "sha256": "f6f025ae5cf1a30f21a8f6cc19f9b46071322888922964cf41abfe39e5d2aa39"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdobeSmartObjectTransform.swift",
+      "sha256": "49ca097675b02806f02829549545b24e4305f03c9b80e537020241374add51b8"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartObjectWorkflowTests.swift",
+      "sha256": "c131debef8566c8a3b84a250a0ff2e9a643c0a892056cfd15aa45e89a0954e51"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "7f337aa1cd6114b33c01df6748fda72e92ce37164bf1bfb9ec773da8a5c04782"
+    }
+  ],
+  "casesPerConfiguration": 1468,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1468,
+      "passed": 1468,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "8130197055051c0eb613f07944d4e23404be9e6a1fc2d934fba69e39ca9d2952"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1468,
+      "passed": 1468,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "6c4f7c61eb3dfe2b93a77821cfbf1d384c1fa9ed7363fdbdd12911060989da6c"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1468,
+      "passed": 1468,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "ba1283697e68f4e97715fefe0277859c54d72cedf9dfe573695c7df464da835a"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "b4dbb246bab2ba8e5982d3f75c971f8d6aff0ee2b8e271d685b79a18e509fdf4",
+    "binarySHA256": "693de54d1b0050935a04f6c85cc37edf64e9ce72d62fa5446a6d106453b12054",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "61d46f746c55910283d3ce75a66141b0e1e1fd7f8f729a1cee9b6d9a6435bf9a",
+      "x86_64": "8a4380392fb8d0fb3c78e41d34535a055e4285d325fa43260a4982a05a83f66d"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "analyticRotatedFixtureRGBABytes": 320,
+  "hostedAdobeCompared": false
+}

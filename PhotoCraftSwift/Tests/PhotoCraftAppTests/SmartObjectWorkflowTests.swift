@@ -12,6 +12,173 @@ private actor SmartObjectTransport: AdobeResourceTransport {
   }
   func upload(_ data: Data, output: AdobeActionsRequest.Output) async throws { throw AdobeAPIError.unsupported("No uploads.") }
 }
+
+final class AdobeSmartObjectTransformWorkflowTests: XCTestCase {
+  private let input = URL(string: "https://example.test/template.psd")!
+  private let asset = URL(string: "https://example.test/logo.png?signature=fixture")!
+
+  private func edit(_ name: String, transform: [String: Any]) -> [String: Any] {
+    ["name": name, "type": "smart_object_layer", "operation": ["type": "edit"],
+     "transformMode": "custom", "transform": transform]
+  }
+
+  private func add(_ name: String, placement: [String: Any] = ["type": "top"],
+                   linked: Bool = false, transform: [String: Any] = [:]) -> [String: Any] {
+    var fields = edit(name, transform: transform)
+    fields["operation"] = ["type": "add", "placement": placement]
+    fields["smartObject"] = ["isLinked": linked, "smartObjectFile": ["source": ["url": asset.absoluteString]]]
+    return fields
+  }
+
+  private func payload(_ layers: [[String: Any]]) -> [String: Any] {
+    ["image": ["source": ["url": input.absoluteString]], "edits": ["layers": layers],
+     "outputs": [["mediaType": "image/vnd.adobe.photoshop", "destination": ["validityPeriod": 60]]]]
+  }
+
+  @MainActor func testHTTPRotatedEmbeddedTemplateMatchesEveryExpectedPixel() async throws {
+    var pixels = try Surface(width: 4, height: 2, fill: Pixel(1, 0, 0))
+    for x in 0..<4 { pixels.setPixel(x: x, y: 1, Pixel(0, 0, 1)) }
+    let source = try RasterIO.encoded(pixels)
+    let parent = try CraftDocument(width: 10, height: 8)
+    let transport = SmartObjectTransport()
+    await transport.set(source, at: asset)
+    await transport.set(try PSDCodec.writeRasterLayers(parent), at: input)
+    let geometry: [String: Any] = ["offset": ["horizontal": 7, "vertical": 2], "angle": 90,
+                                  "anchor": ["horizontal": 0, "vertical": 0]]
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
+      let untouched = shared.store.document
+      service.setResourceJobsEnabled(true)
+      let result = try await AutomationActionJobsTests().output(service, submit: "/v2/create-composite",
+        payload: payload([add("Logo", transform: geometry)]))
+      let document = try PSDCodec.read(result.2)
+      let logo = try XCTUnwrap(document.layers.last)
+      XCTAssertEqual(logo.coordinateTransform, Transform2D(a: 0, b: 1, c: -1, d: 0, tx: 7, ty: 2))
+      XCTAssertEqual(logo.smartObject?.data, source)
+
+      var expected = Data()
+      for y in 0..<8 {
+        for x in 0..<10 {
+          switch (x, y) {
+          case (5, 2..<6): expected.append(contentsOf: [0, 0, 255, 255])
+          case (6, 2..<6): expected.append(contentsOf: [255, 0, 0, 255])
+          default: expected.append(contentsOf: [255, 255, 255, 255])
+          }
+        }
+      }
+      XCTAssertEqual(try Renderer.composite(document).rgbaData(depth: .u8), expected)
+      XCTAssertEqual(shared.store.document, untouched)
+    }
+  }
+
+  @MainActor func testHTTPLinkedTransformOnlyEditRetainsSourceAtItsNewPosition() async throws {
+    var template = try CraftDocument(width: 20, height: 16)
+    template.resolution = 144
+    let transport = SmartObjectTransport()
+    await transport.set(try PSDCodec.writeRasterLayers(template), at: input)
+    await transport.set(try RasterIO.encoded(Surface(width: 4, height: 2, fill: Pixel(0, 1, 0))), at: asset)
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
+      let untouched = shared.store.document
+      service.setResourceJobsEnabled(true)
+      let helper = AutomationActionJobsTests()
+      let geometry: [String: Any] = ["dimension": ["width": 4, "height": 2, "unit": "points_unit"],
+                                    "horizontalAlign": "right", "verticalAlign": "center"]
+      let added = try await helper.output(service, submit: "/v2/create-composite",
+        payload: payload([add("Linked Logo", linked: true, transform: geometry)]))
+      let addedLayer = try XCTUnwrap(PSDCodec.read(added.2).layers.last)
+      XCTAssertEqual(try addedLayer.smartObjectSourceTransform(), Transform2D(a: 2, d: 2, tx: 12, ty: 6))
+      let storedSource = try XCTUnwrap(addedLayer.smartObject)
+      XCTAssertEqual(storedSource.linkedSource?.reference, "https://example.test/logo.png")
+      XCTAssertTrue(storedSource.data.isEmpty)
+
+      await transport.set(added.2, at: input)
+      let edited = try await helper.output(service, submit: "/v2/create-composite",
+        payload: payload([edit("Linked Logo", transform: ["angle": 90])]))
+      let editedLogo = try XCTUnwrap(PSDCodec.read(edited.2).layers.last)
+      XCTAssertEqual(try editedLogo.smartObjectSourceTransform(), Transform2D(a: 0, b: 2, c: -2, d: 0, tx: 18, ty: 4))
+      XCTAssertEqual(editedLogo.smartObject, storedSource)
+
+      await transport.set(edited.2, at: input)
+      let fit: [String: Any] = ["name": "Linked Logo", "type": "smart_object_layer",
+                               "operation": ["type": "edit"], "transformMode": "fit"]
+      let fitted = try await helper.output(service, submit: "/v2/create-composite", payload: payload([fit]))
+      let fittedLogo = try XCTUnwrap(PSDCodec.read(fitted.2).layers.last)
+      XCTAssertEqual(try fittedLogo.smartObjectSourceTransform(), Transform2D(a: 5, d: 5, tx: 0, ty: 3))
+      XCTAssertEqual(fittedLogo.smartObject, storedSource)
+      XCTAssertEqual(shared.store.document, untouched)
+    }
+  }
+
+  func testSkewRotationAndAnchorComposeInSourceSpace() throws {
+    let source = try RasterIO.encoded(Surface(width: 4, height: 2, fill: .white))
+    var session = EditorSession(document: try CraftDocument(width: 20, height: 16))
+    let geometry: [String: Any] = ["offset": ["horizontal": 5, "vertical": 4],
+                                  "anchor": ["horizontal": 0.25, "vertical": 0.5],
+                                  "skew": ["horizontal": 45, "vertical": -45], "angle": -90]
+    try AdobeSmartObjectEdit(add("Artwork", transform: geometry), path: "layer")
+      .apply(to: &session, resources: [asset: source])
+    let layer = try XCTUnwrap(session.document.layers.last)
+    let value = layer.coordinateTransform
+    XCTAssertEqual(value.a, -1, accuracy: 1e-10)
+    XCTAssertEqual(value.b, -1, accuracy: 1e-10)
+    XCTAssertEqual(value.c, 1, accuracy: 1e-10)
+    XCTAssertEqual(value.d, -1, accuracy: 1e-10)
+    XCTAssertEqual(value.tx, 6, accuracy: 1e-10)
+    XCTAssertEqual(value.ty, 7, accuracy: 1e-10)
+    XCTAssertEqual(layer.smartObject?.data, source)
+
+    let changed = try AdobeCompositeEdit(edit("Artwork", transform: ["offset": ["horizontal": 10]]), path: "layer")
+    try changed.apply(to: &session, resources: [:])
+    let moved = try XCTUnwrap(session.document.layers.last).coordinateTransform
+    XCTAssertEqual(moved.tx, 10, accuracy: 1e-10)
+    XCTAssertEqual(moved.ty, value.ty, accuracy: 1e-10)
+    XCTAssertEqual(moved.c, value.c, accuracy: 1e-10)
+    XCTAssertEqual(moved.b, value.b, accuracy: 1e-10)
+  }
+
+  func testTemplateInsertionsResolveNamedGroupsAndPSDLayerIDsInRequestOrder() throws {
+    var source = try AdobeLayerMoveTests().fixture()
+    let group = Layer(name: "Artwork Group", content: .group(.init()))
+    source.layers[2].parentID = group.id
+    source.layers.insert(group, at: 3)
+    let bytes = try RasterIO.encoded(Surface(width: 4, height: 2, fill: .white))
+    let edits = [
+      add("Under All", placement: ["type": "bottom"]),
+      add("Logo", placement: ["type": "into", "referenceLayer": ["name": group.name]]),
+      add("Over Logo", placement: ["type": "above", "referenceLayer": ["name": "Logo"]]),
+      add("Under A", placement: ["type": "below", "referenceLayer": ["id": 1]]),
+      add("On Top"),
+    ]
+    let request = try AdobeActionsRequest(data: JSONSerialization.data(withJSONObject: payload(edits)),
+                                          createComposite: true)
+    let result = try request.applying(to: source, resources: [asset: bytes]).session.document
+    XCTAssertEqual(result.children(of: nil).map(\.name), ["Under All", "Under A", "A", "B", group.name, "D", "E", "On Top"])
+    XCTAssertEqual(result.children(of: group.id).map(\.name), ["C", "Logo", "Over Logo"])
+    XCTAssertEqual(result.layers.filter { $0.smartObject?.data == bytes }.count, 5)
+  }
+
+  @MainActor func testHTTPRejectsMalformedCustomTransformBeforePublishingOutput() async throws {
+    let invalid: [[String: Any]] = [
+      ["angle": true],
+      ["dimension": ["width": 0]],
+      ["dimension": ["width": 3, "unit": "inches"]],
+      ["anchor": ["horizontal": 0.5]],
+      ["skew": ["horizontal": 45, "vertical": 45]],
+      ["skew": ["horizontal": 90, "vertical": 0]],
+      ["horizontalAlign": "bottom"],
+      ["offset": ["horizontal": 1.5]],
+    ]
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }, resourceTransport: SmartObjectTransport()) { service, shared in
+      let before = shared.store.document
+      service.setResourceJobsEnabled(true)
+      for transform in invalid {
+        let result = try await AutomationTests().request(service, path: "/v2/create-composite",
+          body: payload([add("Logo"), edit("Logo", transform: transform)]))
+        XCTAssertEqual(result.0.statusCode, 400, String(decoding: result.1, as: UTF8.self))
+      }
+      XCTAssertEqual(shared.store.document, before)
+    }
+  }
+}
 final class SmartObjectWorkflowTests: XCTestCase {
   @MainActor func testDesktopConversionChildSaveHistoryAndStaleParent() async throws {
     _ = NSApplication.shared

@@ -985,6 +985,21 @@
     ],
     "adobe": "/v2/remove-background"
   },
+  "smart_object_template_geometry_build658": {
+    "route": "POST /v2/create-composite",
+    "status": "partial native implementation",
+    "scope": "Smart Object adds with stack placement and custom transforms, and editable embedded or linked PSD transforms with or without replacement artwork.",
+    "geometry": [
+      "offset",
+      "dimension in pixels or points",
+      "angle",
+      "skew",
+      "anchor",
+      "per-axis alignment"
+    ],
+    "limits": "Local job qualification. Hosted Adobe defaults, pixel equivalence and unsupported layer appearance fields remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_658.json"
+  },
   "smart_objects_step160": {
     "reference": "docs/SMART_OBJECT_REFERENCES.json",
     "contract": "Pinned AddSmartObjectLayer/EditSmartObjectLayer subset; local async jobs and shared native engine",
