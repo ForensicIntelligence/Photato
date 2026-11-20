@@ -38,6 +38,7 @@ extension SmartObject {
         "maximumEncodedSourceBytes":maximumSourceBytes,
         "limits":"Paged native/RGB input and editable conversion retain independent format, source-byte, owned-heap and physical scratch limits. maximumSourcePixels remains the common non-RGB/PDF preparation limit; dense maximum capacity and full Photoshop/platform parity remain open."],
       "layerCompSelection": SmartObjectLayerCompAPI.capabilities,
+      "contentPlacement": SmartObjectContentPlacementAPI.capabilities,
       "convertToLayers": ["command":"smartObject.convertToLayers", "parameterSchema":AutomationCommand.definitions.first(where:{$0.name=="smartObject.convertToLayers"})!.schema,
         "native":"Layer > Smart Objects > Convert to Layers and the Layers context menu use SmartObjectUnpack through the same detached, source-bound prepared transaction as the API. One Undo/Redo for all selected instances.",
         "state":"Existing document layers/group hierarchy, Smart Object, type/shape/style/pattern metadata and busy/history/error/revision state; no new document representation or archive version.",
@@ -139,6 +140,16 @@ extension AutomationCommand {
       return try EmbeddedSourceAPI.prepare(NativeArchive.encodeChunked(source),"Contents.photato",document,options,decoded:source)
     case "smartObject.replace":
       guard let source else { throw AutomationFailure(status: 404, message: "Source document is not shared.") }
+      if let raw = parameters["contentPlacement"] {
+        guard parameters["preserveSize"] == nil else {
+          throw AutomationFailure(status: 400, message: "Omit preserveSize when using contentPlacement.")
+        }
+        let placement: SmartObjectContentPlacement
+        do { placement = try SmartObjectContentPlacementAPI.parse(raw.jsonValue, path: "parameters.contentPlacement") }
+        catch let error as AdobeAPIError { throw AutomationFailure(status: error.status, message: error.message) }
+        return try placement.replacement(in: document, layerID: id(), source: source,
+          allInstances: flag("allInstances", true))
+      }
       return try SmartObjectIO.replacement(in: document, layerID: id(), source: source,
         preserveSize: flag("preserveSize", true), allInstances: flag("allInstances", true))
     case "smartObject.copy": return .independentSmartObjectCopy(try id())

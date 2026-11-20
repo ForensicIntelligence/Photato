@@ -680,7 +680,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 659 | 2026-11-20 | [Read the original transform of linked Smart Objects](#dev-step-659) |
 | 660 | 2026-11-20 | [Free Transform follows Smart Object artwork](#dev-step-660) |
 | 661 | 2026-11-20 | [Smart Object templates get editable masks and blending](#dev-step-661) |
+| 662 | 2026-11-20 | [Fit replacement artwork inside Smart Object frames](#dev-step-662) |
 <!-- history-index:end -->
+
+<a id="dev-step-662"></a>
+
+## 2026-11-20 — Fit replacement artwork inside Smart Object frames
+
+Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement.
+
+Both API routes use the same native frame geometry. The child canvas clips the preview while the Photoshop-file writer keeps the ingredient editable. The first test run used an opaque background for transparency checks. The second fixture measures the actual frame edges on transparency.
+
+All 1,493 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. Both authenticated local HTTP routes exercised frame-contained replacement. The native, PSD and PSB round trips kept the nested asset and the rotation of the enclosing frame. The tests retained exact source asset bytes and verified local composite bytes, transparent clipping, editable masks and one Undo for the Photato command.
+
+The installed Photoshop did not respond to read-only AppleEvent or Accessibility window checks. Independent Adobe output and the hosted service remain unverified. Intel ran under Rosetta and the signed binaries declare macOS 14.0.
+
+[Development record](SMART_OBJECT_CONTENT_PLACEMENT_662.md) · [Qualification](SOURCE_PUBLICATION_662.md).
 
 <a id="dev-step-661"></a>
 

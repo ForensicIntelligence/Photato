@@ -231,6 +231,7 @@ extension CraftDocument {
       try updated.validate()
       guard updated.stackMode == nil || instancePixels[layers[i].id] != nil else { throw CraftError.invalid("Missing rendered image stack cache.") }
       updated.sourceID = allInstances ? old.sourceID : source.sourceID
+      let oldCoordinateTransform = layers[i].coordinateTransform
       let oldMaskTransform = layers[i].maskCoordinateTransform
       if let preview=try layers[i].linkedSmartObjectPreview() {
         let full=layers[i].coordinateTransform * preview.sourceToCache
@@ -254,7 +255,7 @@ extension CraftDocument {
         layers[i].affine = .translation(-Double(layers[i].x), -Double(layers[i].y)) * full
         }
       }
-      if layers[i].mask != nil {
+      if layers[i].mask != nil, layers[i].coordinateTransform != oldCoordinateTransform {
         var properties = layers[i].effectiveMaskProperties
         properties.transform = try layers[i].coordinateTransform.inverted() * oldMaskTransform
         layers[i].maskProperties = properties

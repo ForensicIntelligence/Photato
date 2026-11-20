@@ -1,0 +1,114 @@
+{
+  "build": 662,
+  "base": "f25db06240f413a9594d5302b140fb11222caef7",
+  "buildInputs": 9262,
+  "includedBuildInputs": 9249,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "1c20317a0ae24778ca878d941562b0514b5019271f6c917c91b6b359d3996fcb",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AdobeSmartObjectEdit.swift",
+      "sha256": "597f6f9db64c1786e890bbd1f815c100bf615f62992a271ab17824b2b4cbf5a2"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "35defd980e96c1d025aac291d45b6fdbb2394f978b0723c20a9027d9051f6cc4"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "11241e7707b971a16ad36d15a3fe84e99f89f34a74e52e5cb6c8aa779d7a1996"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "sha256": "4b9d2710cc0b50971321694f5b95dc64bb852b769247d1c4db1957f4e5bf2b67"
+    },
+    {
+      "path": "Sources/PhotoCraft/SmartObjectContentPlacementAPI.swift",
+      "sha256": "6e4635b91c4bbf68ae37d7ff63d0d4e637a8f121a26948be8ee5ce22b9bf4d62"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Frames.swift",
+      "sha256": "aa19fc51bac6586481186dea58b97790e5a22d5ba97bcb7865c14668c32a3608"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SmartObject.swift",
+      "sha256": "7042a93b87ec35458c5229979a55029bc7f25d12edb9b4fe3441a16b25f270e2"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SmartObjectContentPlacement.swift",
+      "sha256": "922600f5be7707a78c4a3c88537393885829b2f7fbf578021963225ae2a8324c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartObjectContentPlacementTests.swift",
+      "sha256": "405b70e2c0e5b106614f6250063479903c0e61f10ba9f5e65beb4070f677463d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "5f3ae72298b2b91c5ad9090a98a0d6b95663f88c8c24de26ff636fe9f594b606"
+    }
+  ],
+  "casesPerConfiguration": 1493,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1493,
+      "passed": 1493,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "f24bcc56cac3a31cd6b1bc535044661b9fb21339acc1c2b7bf50e0368bf9f4ba"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1493,
+      "passed": 1493,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "094c72323b0e1cf4522e28700de593f597c8b7033be09ba5eee6fe4f5cd7a8d6"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1493,
+      "passed": 1493,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "e40ccbbd833dd045add63602d84ac11f1ec3d83479205d18099ae2cba499c187"
+    }
+  },
+  "selectedCasesSHA256": "ce742222abd26cdc12fa0d8e44cd3ecf863b3580b68b79ca3915322c8e98d234",
+  "preview": {
+    "archiveSHA256": "40a9de05cfe1001f48811936c4dfd48983e0f82d678d111fb0deb55065bd3006",
+    "binarySHA256": "bbccb76306d8439d377305349eaca7988ae272b0f861057dc1dbda233857a71c",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "b87589093bb2bb100d33d035efef576b86b65a2926edb85eba79c28bec11caa5",
+      "x86_64": "795136a31c065b19640cb041115c0da84b3b490a0ff375bd01910f58773ea4d5"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "publicContract": {
+    "sha256": "d7b5c019937f142d2832c9ec4a6ae00500e9bdf9cfea14d83249f28f8869d46e"
+  },
+  "desktopReference": {
+    "version": "27.2.0",
+    "appleEventStatus": -1712,
+    "accessibilityWindowStatus": -25204
+  },
+  "liveAdobeCompared": false,
+  "hostedAdobeCompared": false
+}

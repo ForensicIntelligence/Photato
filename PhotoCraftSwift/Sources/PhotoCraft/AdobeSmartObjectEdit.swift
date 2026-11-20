@@ -119,6 +119,7 @@ struct AdobeSmartObjectEdit: Sendable {
   let isLinked:Bool?
   private let geometry: Geometry
   private let insertion: Insertion?
+  private let contentPlacement: SmartObjectContentPlacement?
   let visible: Bool?
   let clipped: Bool?
   let propertyEdit: AdobeProtectionEdit?
@@ -142,7 +143,8 @@ struct AdobeSmartObjectEdit: Sendable {
     if let name, name.isEmpty || name.utf16.count > 65_535 { throw AdobeAPIError.invalid("Invalid layer name.") }
     identifier = try object.fields["id"].map { _ in Int32(try object.integer("id", range: Int(Int32.min)...Int(Int32.max))) }
     if !adding && ((name == nil) == (identifier == nil)) { throw AdobeAPIError.invalid("Provide exactly one layer reference, name or id.") }
-    let smartKeys: Set<String> = adding ? ["isLinked", "smartObjectFile"] : ["isLinked", "smartObjectFile", "autoResize"]
+    let smartKeys: Set<String> = adding ? ["isLinked", "smartObjectFile"]
+      : ["isLinked", "smartObjectFile", "autoResize", "contentPlacement"]
     let smart = try object.fields["smartObject"].map { _ in try object.object("smartObject", allowed: smartKeys) }
     isLinked = try smart?.optionalBool("isLinked")
     if isLinked == true, smart?.fields["autoResize"] != nil { throw AdobeAPIError.invalid("autoResize applies only to embedded replacements.") }
@@ -154,6 +156,17 @@ struct AdobeSmartObjectEdit: Sendable {
     } else {
       guard !adding else { throw AdobeAPIError.invalid("Adding a Smart Object requires an external file source.") }
       url = nil
+    }
+    if let smart, let rawPlacement = smart.fields["contentPlacement"] {
+      guard url != nil, isLinked != true else {
+        throw AdobeAPIError.invalid("contentPlacement requires an embedded replacement resource.")
+      }
+      guard smart.fields["autoResize"] == nil, object.fields["transformMode"] == nil, object.fields["transform"] == nil else {
+        throw AdobeAPIError.invalid("Omit autoResize, transformMode and transform when using contentPlacement.")
+      }
+      contentPlacement = try SmartObjectContentPlacementAPI.parse(rawPlacement, path: smart.path + ".contentPlacement")
+    } else {
+      contentPlacement = nil
     }
     geometry = try Geometry(object)
     appearance = try AdobeSmartObjectAppearance(object, adding: adding)
@@ -193,7 +206,9 @@ struct AdobeSmartObjectEdit: Sendable {
       if let url {
         guard let data = resources[url] else { throw AdobeAPIError.invalid("Missing replacement resource.") }
         let filename = url.lastPathComponent.isEmpty ? "Contents" : url.lastPathComponent
-        if isLinked==true {
+        if let contentPlacement {
+          try session.execute(contentPlacement.replacement(in: session.document, layerID: id, data: data, fileName: filename))
+        } else if isLinked==true {
           try session.execute(LinkedSmartObjectIO.replacement(data,fileName:filename,reference:.remote(url,data:data),in:session.document,layerID:id,allInstances:false,preserveSize:false,title:"Replace Linked Smart Object"))
         } else if isLinked==false,previous.linkedSource != nil {
           try session.execute(LinkedSmartObjectIO.replacement(data,fileName:filename,reference:nil,in:session.document,layerID:id,allInstances:false,preserveSize:false,title:"Embed Linked Smart Object"))

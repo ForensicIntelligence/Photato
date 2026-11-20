@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **661** · The 10 most recent entries, newest first.
+Source build **662** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 662 — Fit replacement artwork inside Smart Object frames
+
+Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement.
+
+All 1,493 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop did not respond to read-only AppleEvent or Accessibility window checks. Independent Adobe output and the hosted service remain unverified. Intel ran under Rosetta and the signed binaries declare macOS 14.0.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-662) · [Details](PhotoCraftSwift/docs/SMART_OBJECT_CONTENT_PLACEMENT_662.md).
 
 ## 2026-11-20 — Step 661 — Smart Object templates get editable masks and blending
 
@@ -75,9 +83,3 @@ Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs fr
 All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-653) · [Details](PhotoCraftSwift/docs/PLACED_LAYER_IDENTIFIERS_653.md).
-
-## 2026-11-19 — Step 652 — Keep gigabyte-scale originals in Undo and Redo
-
-Spilled history states share the existing file-backed original. Undo and Redo keep the bytes, and insufficient disk space rejects the edit atomically.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) · [Details](PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECT_HISTORY_652.md).

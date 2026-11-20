@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 662 — Fit replacement artwork inside Smart Object frames
+
+Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement.
+
+All 1,493 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop did not respond to read-only AppleEvent or Accessibility window checks. Independent Adobe output and the hosted service remain unverified. Intel ran under Rosetta and the signed binaries declare macOS 14.0.
+
+[Development record](DEVLOG.md#dev-step-662) · [Details](SMART_OBJECT_CONTENT_PLACEMENT_662.md).
+
 ## 2026-11-20 — Step 661 — Smart Object templates get editable masks and blending
 
 Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities.
@@ -1265,14 +1273,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:661 -->
+<!-- current-status-step:662 -->
 ## Current development status — 20 November 2026
 
-Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities.
+Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement.
 
-The 1,482 selected cases passed across qualification and replay in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Each initial run passed 1,481 cases. After updating the obsolete mask assertion, all 142 replay cases passed in each configuration. The application inputs and signed binary stayed byte-identical. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 1,493 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 661](SOURCE_PUBLICATION_661.md) · [Development record](DEVLOG.md#dev-step-661).
+[Source checkpoint 662](SOURCE_PUBLICATION_662.md) · [Development record](DEVLOG.md#dev-step-662).
 
 <!-- current-status:end -->
 
@@ -2140,6 +2148,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 659 | [Read the original transform of linked Smart Objects](DEVLOG.md#dev-step-659) |
 | 2026-11-20 | 660 | [Free Transform follows Smart Object artwork](DEVLOG.md#dev-step-660) |
 | 2026-11-20 | 661 | [Smart Object templates get editable masks and blending](DEVLOG.md#dev-step-661) |
+| 2026-11-20 | 662 | [Fit replacement artwork inside Smart Object frames](DEVLOG.md#dev-step-662) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

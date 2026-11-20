@@ -1209,6 +1209,22 @@ resource is fetched. Layer opacity and blend mode still apply in the same job. T
 mask. `GET /v1/capabilities` lists the supported fields under `actionJobs.smartObjectTemplateAppearance`.
 [Development record](SMART_OBJECT_TEMPLATE_APPEARANCE_661.md)
 
+### Smart Object content placement
+
+Use `smartObject.contentPlacement` on `POST /v2/create-composite` to replace artwork inside an existing embedded frame.
+`mode` is `fit` or `fill`. `horizontalAlign` accepts `left`, `center` or `right`. `verticalAlign` accepts `top`, `center`
+or `bottom`. The defaults are left and top. The frame keeps the existing outer placement, and a nested Smart Object retains
+the complete asset. Provide its URL in `smartObjectFile.source.url` and omit `autoResize`, `transformMode` and `transform`.
+
+```json
+{"type":"smart_object_layer","name":"Artwork Frame","operation":{"type":"edit"},"smartObject":{"smartObjectFile":{"source":{"url":"https://example.com/replacement.png"}},"contentPlacement":{"mode":"fill","horizontalAlign":"center","verticalAlign":"center"}}}
+```
+
+Photato's `smartObject.replace` accepts the same `contentPlacement` object in `parameters` alongside the existing shared
+`sourceDocumentID` and `sourceRevision`. Omit `preserveSize`. `allInstances` retains its usual default of true. The operation
+commits as one Undo step. Linked, skewed, projected, warped and pixel-masked rotated frames are unavailable for content placement.
+Both capability entries are discoverable through `GET /v1/capabilities`. [Development record](SMART_OBJECT_CONTENT_PLACEMENT_662.md)
+
 ## Subject selection and background removal — step159
 
 At step159 there were25 typed Photato commands. `selection.subject` accepts required `layerID` (pixel layer UUID), optional `sampleAllLayers` (boolean, defaultfalse) and `mode` (`replace`, `add`, `subtract`, `intersect`; defaultreplace). `layer.removeBackground` accepts `layerID` and optional `sampleAllLayers`; it requires an unlocked pixel layer without an existing mask. Both run Apple Vision locally, preserve original pixels and commit one native Undo entry. Removal preserves the current selection. An existing mask must be applied or deleted explicitly first. Stale/busy/cancelled/revoked requests return 409 without committing; invalid parameters400, missing layer404, unsupported target/size/model/no subject422. Document state now reports selection bounds/coverage and subject availability; layers report mask presence, enablement, density and feather. Schemas and runtime limits are recorded in [subject references](SUBJECT_SELECTION_REFERENCES.json). An available command means a request may be attempted; it does not guarantee the system model can run on every Mac.

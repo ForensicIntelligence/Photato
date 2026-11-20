@@ -1819,6 +1819,7 @@ import UniformTypeIdentifiers
         "photatoSubmit": "/v1/action-jobs", "photatoStatus": "/v1/action-jobs/{jobId}",
         "adobeProtectionSubmit": "/v2/create-composite",
         "smartObjectTemplateAppearance": AdobeSmartObjectAppearance.capabilities,
+        "smartObjectContentPlacement": SmartObjectContentPlacementAPI.capabilities,
         "adobeArtboardSubmit": "/v2/create-artboard",
         "adobeArtboardScope": "One to25 URL image sources, optional names and horizontal spacing0–32768 (default50); each source composite becomes an editable raster inside a native artboard. PNG/JPEG/TIFF/JSON outputs, hosted or HTTPS PUT. PSD/PSDC, cloud/embedded storage, scan/resizing and exact Adobe manifest/pixel equivalence remain unsupported.",
         "adobeColorEditSubmit": "/v2/edit",

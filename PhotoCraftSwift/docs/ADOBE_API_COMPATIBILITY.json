@@ -985,6 +985,14 @@
     ],
     "adobe": "/v2/remove-background"
   },
+  "smart_object_content_placement_build662": {
+    "route": "POST /v2/create-composite",
+    "photatoCommand": "smartObject.replace",
+    "status": "partial native implementation",
+    "scope": "Fit/fill content placement with independent alignment and nested editable artwork in an existing embedded frame.",
+    "limits": "Linked, skewed, projected, warped and pixel-masked rotated frames are excluded. Independent Adobe output remains open.",
+    "evidence": "docs/SOURCE_PUBLICATION_662.json"
+  },
   "smart_object_template_appearance_build661": {
     "route": "POST /v2/create-composite",
     "status": "partial native implementation",

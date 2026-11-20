@@ -50,7 +50,18 @@ public struct FrameDefinition: Codable, Equatable, Sendable {
     return unit.transformed(.scale(Double(width), Double(height)))
   }
 }
-public enum FrameFit: String, Codable, CaseIterable, Sendable { case fill, fit, original }
+public enum FrameFit: String, Codable, CaseIterable, Sendable {
+  case fill, fit, original
+
+  public func placement(sourceWidth: Int, sourceHeight: Int, frameWidth: Int, frameHeight: Int,
+    anchor: CanvasAnchor = .center) -> (x: Double, y: Double, scale: Double) {
+    let width = Double(sourceWidth), height = Double(sourceHeight)
+    let sx = Double(frameWidth) / width, sy = Double(frameHeight) / height
+    let scale = switch self { case .fill: max(sx, sy); case .fit: min(sx, sy); case .original: 1.0 }
+    let (x, y) = anchor.fractions
+    return ((Double(frameWidth) - width * scale) * x, (Double(frameHeight) - height * scale) * y, scale)
+  }
+}
 public enum FrameCommand: Sendable {
   case create(name: String, bounds: IntRect, definition: FrameDefinition, children: [UUID])
   case wrap(name: String, bounds: IntRect, definition: FrameDefinition, sourceIDs: Set<UUID>, embedded: Layer)
@@ -80,9 +91,9 @@ public enum FrameCommand: Sendable {
     func contentIDs(_ id: UUID) -> Set<UUID> { d.subtreeIDs(id).subtracting([id]) }
     func fit(_ child: inout Layer, inside frame: Layer, method: FrameFit) throws {
       guard let definition = frame.frame, case .raster(let pixels) = child.content else { throw CraftError.invalid("Frame fitting requires an image or Smart Object.") }
-      let sx = Double(definition.width) / Double(pixels.width), sy = Double(definition.height) / Double(pixels.height)
-      let scale = method == .original ? 1 : method == .fill ? max(sx,sy) : min(sx,sy)
-      let full = frame.coordinateTransform * .translation((Double(definition.width) - Double(pixels.width) * scale) / 2, (Double(definition.height) - Double(pixels.height) * scale) / 2) * .scale(scale,scale)
+      let placement = method.placement(sourceWidth: pixels.width, sourceHeight: pixels.height,
+        frameWidth: definition.width, frameHeight: definition.height)
+      let full = frame.coordinateTransform * .translation(placement.x, placement.y) * .scale(placement.scale, placement.scale)
       child.x = Int(floor(full.tx)); child.y = Int(floor(full.ty)); child.affine = .translation(-Double(child.x),-Double(child.y)) * full
     }
     switch self {
