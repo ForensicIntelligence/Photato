@@ -89,13 +89,13 @@ enum PDFSmartObjectAPI {
      "nameHeader":"Optional X-Photato-Name filename; default Contents.pdf; at most240 printable ASCII bytes without path separators.",
      "result":"HTTP200 shared target state. Missing layerID adds a centered embedded Smart Object; layerID replaces that source. One native Undo transaction.",
      "defaults":"Page1, bounding crop,72ppi, antialias, fit placement; replacement preserves size and updates shared instances. Exact Adobe defaults remain unqualified.",
-     "source":"Original PDF bytes, selected page and fixed point-space crop are retained in native62. Enlargement re-renders vectors. Source download returns the original whole PDF.",
+     "source":"Original PDF bytes, selected page and fixed point-space crop are retained in native62. Enlargement and local Warp magnification rerender vectors within the source render budget. Source download returns the original whole PDF.",
      "cancel":"POST /v1/documents/{id}/smart-objects/pdf/cancel with {operationID:UUID}; active IDs are in capabilities.pdfSmartObjectOperations, keyed by shared document UUID.",
      "limits":"Transfers must be enabled. Source64MiB;8MP native source/render budget plus shared-document limits before atomic commit. Encrypted sources reject; passwords are not persisted.",
      "selection":"Select page/crop or image (1…4096); image excludes page/crop fields and retains intrinsic image dimensions. Both retain the original PDF source.",
      "initialTransform":"Optional placement-only transform {a,b,c,d,tx,ty} applies in document coordinates after centering/fit. Set rasterize to true to commit rendered pixels in the same Undo transaction. API defaults are independent of the General preferences; per-document pdfPlacement reports the native chooser/transform state.",
      "sizing":"The desktop uses PDF page points or image inches in the destination PPI. The API defaults to the source raster grid; set sizing:physical for desktop sizing. PDF page render resolution controls cache density.",
-     "remaining":"PDF Warp, editable PSD/PDF source editing, linked files, large-file memory and exact/live/platform qualification.",
+     "remaining":"Editable PSD/PDF source editing, linked placement options on this upload route, large-file memory and exact/live/platform qualification.",
      "adobe":"Existing create-composite/edit Smart Object file inputs accept PDF through this engine, with autoResize source matching. No new Adobe routes or page-selection fields."]
   }
 }

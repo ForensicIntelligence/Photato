@@ -277,6 +277,12 @@ extension Command {
     case .rasterize(let id, let surface):
       let i = try index(id)
       var layer = d.layers[i]
+      if layer.smartObject?.pdfSource != nil, layer.warp != nil {
+        layer = try SmartFilterEngine.renderedLayer(layer, in: d, warpSamples: surface)
+        for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }
+        d.layers[i] = layer
+        break
+      }
       if let object = layer.smartObject, object.pdfSource != nil,
         surface.width != object.width || surface.height != object.height {
         // The shared PDF renderer can supply a denser source-space surface.

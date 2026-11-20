@@ -1399,7 +1399,7 @@ struct CanvasRenderRequest: Sendable {
         // same derived layer shown on canvas, including projective placement.
         let displayed:Layer
         if l.importedSmartAppearance != nil || l.sourceProjection != nil {
-          guard let prepared=try? SmartFilterEngine.renderedLayer(l,in:document) else{continue};displayed=prepared
+          guard let prepared=try? SmartObjectIO.renderedLayer(l,in:document) else{continue};displayed=prepared
         }else{displayed=l}
         guard let raster = try? Renderer.layerSurface(displayed, in: document),
           let inverse = try? displayed.coordinateTransform.inverted()

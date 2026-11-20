@@ -199,9 +199,6 @@ enum PSDSmartObjects {
     object.sourceID = sourceID
     if let link=file.link {object=try object.linked(to:link)}
     layer.warp = try PSDWarp.decode(d, width: object.width, height: object.height)
-    guard layer.warp == nil || object.pdfSource == nil else {
-      throw CraftError.unsupported("PDF Warp interchange is not yet supported.")
-    }
     let frame = PSDWarp.Frame.placement(layer.warp, width: object.width, height: object.height)
     let quads = try PlacementQuads(d)
     let maskWorld = layer.maskCoordinateTransform
@@ -218,7 +215,7 @@ enum PSDSmartObjects {
       layer.affine = .translation(-Double(layer.x), -Double(layer.y)) * affine
       maskFrame = affine
     } else {
-      guard object.pdfSource == nil else {
+      guard object.pdfSource == nil || layer.warp != nil else {
         throw CraftError.unsupported("PDF perspective interchange is not yet supported.")
       }
       layer.sourceProjection = try quads.projective(width: object.width, height: object.height, frame: frame)
@@ -260,7 +257,6 @@ enum PSDSmartObjects {
       selectedComp = try PSDLayerComps.identifiers(source.layerComps!.entries.map(\.id))[selected]!
     } else { selectedComp = -1 }
     let pdf = try PSDPDFSmartObjects.exportSettings(source)
-    guard !destinationHasWarp || pdf == nil else { throw CraftError.unsupported("PDF Warp interchange is not yet supported.") }
     guard source.stackMode == nil else { throw CraftError.unsupported("Save image stacks as Photato to preserve editable stack modes. PSD stack-mode interchange is not implemented.") }
     guard source.rawDevelopment == nil else { throw CraftError.unsupported("Save RAW Smart Objects as Photato to preserve their source and sensor settings. PSD RAW interchange is not implemented.") }
     let w = Double(source.width), h = Double(source.height)
@@ -299,7 +295,7 @@ enum PSDSmartObjects {
       savedQuads = try? PlacementQuads(d)
     }
     if let projection = try layer.smartObjectSourceProjection() {
-      guard source.pdfSource == nil else {
+      guard source.pdfSource == nil || warp != nil else {
         throw CraftError.unsupported("PDF perspective interchange is not yet supported.")
       }
       if let old = savedQuads, old.affine(frame: frame) == nil,
@@ -333,7 +329,7 @@ enum PSDSmartObjects {
     let linkedCache = try layer.linkedSmartObjectPreview()
     let derivedLinkCache = linkedCache?.projectiveSourceToCache != nil || linkedCache?.warp != nil
     if !derivedLinkCache && (layer.smartFilters != nil || layer.sourceProjection != nil || layer.warp != nil) {
-      preview = try SmartFilterEngine.renderedLayer(layer, in: document)
+      preview = try SmartObjectIO.renderedLayer(layer, in: document)
     }
     else {
       let linked=layer.smartObject?.linkedSource != nil

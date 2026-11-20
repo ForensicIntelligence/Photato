@@ -18,7 +18,7 @@ extension Renderer {
     guard !layer.isCanvasFill else {
       throw CraftError.unsupported("Alignment of canvas fill layers is not available yet.")
     }
-    let layer = try SmartFilterEngine.renderedLayer(layer, in: document)
+    let layer = try SmartObjectIO.renderedLayer(layer, in: document)
     let surface = try layerSurface(layer, in: document)
     guard let content = try surface.contentBounds() else { return nil }
     let bounds =

@@ -39,7 +39,7 @@ import PhotoCraftImaging
         if layer.smartObject != nil {
           var stack=layer.smartFilters ?? SmartFilterStack()
           if let filterID=draft.filterID { guard let i=stack.filters.firstIndex(where:{$0.id == filterID}) else { throw CraftError.invalid("Missing Puppet filter.") };stack.filters=Array(stack.filters.prefix(i)) }
-          stack.mask=nil;stack.enabled=true;layer.smartFilters=stack;return try SmartFilterEngine.renderedLayer(layer,in:document)
+          stack.mask=nil;stack.enabled=true;layer.smartFilters=stack;return try SmartObjectIO.renderedLayer(layer,in:document)
         }
         guard case .raster(let pixels)=layer.content else { throw CraftError.invalid("Missing Puppet pixels.") }
         let mapping=try WarpRaster.mapping(WarpDefinition(),width:pixels.width,height:pixels.height,transform:layer.coordinateTransform)

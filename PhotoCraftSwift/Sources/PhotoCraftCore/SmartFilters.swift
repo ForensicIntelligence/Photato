@@ -129,14 +129,14 @@ public enum SmartFilterEngine {
   }
   /// Source pixels -> affine placement -> filters -> filter mask. Layer masks and
   /// styles remain outside this pipeline. Derived pixels never replace the source.
-  public static func renderedLayer(_ layer: Layer, in document: CraftDocument) throws -> Layer {
-    try renderedLayer(layer,in:document,paged:false)
+  public static func renderedLayer(_ layer: Layer, in document: CraftDocument, warpSamples: Surface? = nil) throws -> Layer {
+    try renderedLayer(layer,in:document,paged:false,warpSamples:warpSamples)
   }
-  static func renderedLayer(_ layer:Layer,in document:CraftDocument,paged forcePaged:Bool)throws->Layer {
+  static func renderedLayer(_ layer:Layer,in document:CraftDocument,paged forcePaged:Bool,warpSamples:Surface?=nil)throws->Layer {
     guard layer.smartObject != nil else { return layer }
     if let original=try layer.originalSmartAppearanceLayer(){return original}
     if try layer.linkedSmartObjectPreview() != nil {var cached=layer;cached.smartObject=nil;cached.smartFilters=nil;return cached}
-    var layer = try WarpRaster.baked(layer, in: document)
+    var layer = try WarpRaster.baked(layer, in: document, samples: warpSamples)
     guard let stack = layer.smartFilters else { layer.smartObject = nil; layer.importedSmartAppearance=nil; return layer }
     try stack.validate()
     guard case .raster(let source) = layer.content else { throw CraftError.invalid("Missing Smart Object pixels.") }

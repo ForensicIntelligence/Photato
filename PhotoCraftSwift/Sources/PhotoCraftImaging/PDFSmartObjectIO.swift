@@ -104,9 +104,14 @@ public enum PDFSmartObjectIO {
   public static func renderedLayer(_ layer: Layer, in parent: CraftDocument) throws -> Layer {
     guard let object = layer.smartObject, object.pdfSource != nil else { return layer }
     if object.linkedSource != nil,object.data.isEmpty {return layer}
-    // Warp mesh points remain in source coordinates. Ordinary Smart Filters
-    // transform their input first, so their document-pixel radii remain valid.
-    guard layer.warp == nil else { return layer }
+    if let warp = layer.warp {
+      if layer.pristineSmartAppearance?.pixels != nil { return layer }
+      let mapping = try warpMapping(layer, warp: warp, object: object)
+      let samples = try warpSamples(object, mapping: mapping, in: parent)
+      var result = try WarpRaster.baked(layer, in: parent, using: mapping, method: warp.interpolation, samples: samples)
+      if result.smartFilters == nil { result.smartObject = nil }
+      return result
+    }
     let t = layer.coordinateTransform
     let aa = t.a*t.a+t.b*t.b, bb = t.c*t.c+t.d*t.d, ab = t.a*t.c+t.b*t.d
     let maximumScale = sqrt(max(0,(aa+bb+sqrt((aa-bb)*(aa-bb)+4*ab*ab))/2))
@@ -127,5 +132,29 @@ public enum PDFSmartObjectIO {
     }
     if layer.smartFilters == nil { result.smartObject = nil }
     return result
+  }
+
+  static func rasterizationSamples(_ layer: Layer, in parent: CraftDocument) throws -> Surface? {
+    guard let object = layer.smartObject, object.pdfSource != nil, let warp = layer.warp,
+          !object.data.isEmpty, layer.pristineSmartAppearance?.pixels == nil else { return nil }
+    return try warpSamples(object, mapping: warpMapping(layer, warp: warp, object: object), in: parent)
+  }
+
+  private static func warpMapping(_ layer: Layer, warp: WarpDefinition, object: SmartObject) throws -> PagedWarpRaster.Mapping {
+    try PagedWarpRaster.mapping(warp, width: object.width, height: object.height,
+                                transform: layer.coordinateTransform, projection: layer.sourceProjection)
+  }
+
+  private static func warpSamples(_ object: SmartObject, mapping: PagedWarpRaster.Mapping,
+                                  in parent: CraftDocument) throws -> Surface? {
+    let required = try mapping.maximumMagnification()
+    let width = Double(object.width), height = Double(object.height)
+    let budget = floor(min(Double(Surface.maxDimension) / max(width, height),
+                           sqrt(Double(SmartObjectIO.maximumCanvasPixels) / (width * height))))
+    // Keep the same integer rendering density as ordinary PDF placement. An
+    // extreme local stretch can reach the existing full-source raster budget.
+    let density = min(budget, ceil(required - 1e-8))
+    guard density > 1 else { return nil }
+    return try surface(object, width: object.width * Int(density), height: object.height * Int(density), in: parent)
   }
 }

@@ -206,7 +206,7 @@ enum PSDSmartFilters {
     for original in document.layers where original.smartFilters != nil {
       try Task.checkCancellation()
       var layer=original;layer.smartFilters?.enabled=false
-      let base=try SmartFilterEngine.renderedLayer(layer,in:document)
+      let base=try SmartObjectIO.renderedLayer(layer,in:document)
       guard case .raster(let pixels)=base.content,let stack=original.smartFilters else {throw CraftError.invalid("Missing Smart Filter source.")}
       let bounds=IntRect(x:base.x,y:base.y,width:pixels.width,height:pixels.height)
       let depth=document.depth == .u8 ? 8:document.depth == .u16 ? 16:32

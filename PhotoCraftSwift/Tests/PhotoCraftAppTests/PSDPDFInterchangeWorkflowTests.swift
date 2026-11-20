@@ -49,6 +49,65 @@ final class PSDPDFInterchangeWorkflowTests: XCTestCase {
       XCTAssertEqual(document.store.document,invalid)
     }
   }
+  @MainActor func testEditablePDFWarpUsesSameNativeAndAuthenticatedDocumentPaths() async throws {
+    var before = try model()
+    before.width *= 3; before.height *= 3
+    before.layers[0].affine = .scale(2, 2)
+    let layer = before.layers[0]
+    let original = try XCTUnwrap(layer.smartObject)
+    let store = EditorStore(document: before)
+    defer { store.cancelWarp(); store.renderTask?.cancel() }
+    var settings = WarpDefinition()
+    settings.style = .arch; settings.bend = 37
+    store.beginWarp()
+    let draft = try XCTUnwrap(store.warpDraft)
+    draft.change(settings)
+    await draft.task?.value
+    XCTAssertTrue(draft.ready, draft.error ?? "PDF Warp preview is unavailable.")
+    let expected = try XCTUnwrap(draft.edit).result
+    store.commitWarp()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.document, expected)
+    XCTAssertNil(DocumentIO.persistenceIssue(store.document, format: .psd))
+    XCTAssertNil(DocumentIO.persistenceIssue(store.document, format: .psb))
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    await store.undo()
+    XCTAssertEqual(store.document, before)
+
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: before)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let changed = try await helper.edit(service, document, "layer.warp", [
+        "layerID": layer.id.uuidString, "settings": ["style": "arch", "bend": 37],
+      ])
+      XCTAssertEqual(changed, 200)
+      XCTAssertEqual(document.store.document, expected)
+      let pixels = try Renderer.composite(expected).rgbaData(depth: .u8)
+      for ext in ["psd", "psb"] {
+        let response = try await helper.request(service, path: "/v1/documents/\(id)/file.\(ext)")
+        XCTAssertEqual(response.0.statusCode, 200)
+        let read = try PSDCodec.read(response.1)
+        XCTAssertEqual(read.layers[0].warp, settings)
+        XCTAssertEqual(read.layers[0].smartObject, original)
+        XCTAssertEqual(try Renderer.composite(read).rgbaData(depth: .u8), pixels)
+        let quad = try XCTUnwrap(PSDCodec.warpedSmartObjectPlacementCorners(read.layers[0]))
+        let manifest = try AdobeDocumentManifest.encode(AdobeLayerIdentifiers.assigning(in: read), title: "Warped PDF", includeXmp: false)
+        let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: manifest) as? [String: Any])
+        let layers = try XCTUnwrap(raw["layers"] as? [[String: Any]])
+        let smart = try XCTUnwrap(layers[0]["smartObject"] as? [String: Any])
+        let rendered = try XCTUnwrap(smart["smartObjectData"] as? [String: Any])
+        XCTAssertEqual(rendered["transform"] as? [Double], quad.flatMap { [$0.x, $0.y] })
+      }
+      let source = try await helper.request(service, path: "/v1/documents/\(id)/smart-objects/\(layer.id)/source")
+      XCTAssertEqual(source.1, original.data)
+      let undone = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undone, 200)
+      XCTAssertEqual(document.store.document, before)
+    }
+  }
   @MainActor func testPhotoshopFixtureImportAndNativeOpenRetainSameSourceAndState() async throws {
     let bytes = try fixture("pdf-psd/photoshop-page2-media.psd"),files = DocumentIOWorkflowTests()
     try await AutomationTests().withService(pressedMouseButtons:{0}) {service,_ in

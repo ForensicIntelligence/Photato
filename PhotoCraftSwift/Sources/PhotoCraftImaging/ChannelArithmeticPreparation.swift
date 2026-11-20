@@ -109,8 +109,9 @@ public enum ChannelArithmeticPreparation {
     try surface.mappedStoredSamples(encoding:.sRGB) {p in Pixel(p.r,p.r,p.r)}
   }
   private static func renderedLayer(_ layer:Layer,in document:CraftDocument)throws->Layer {
-    if layer.smartObject?.pdfSource != nil {return try PDFSmartObjectIO.renderedLayer(layer,in:document)}
-    if layer.smartFilters != nil || layer.warp != nil {return try SmartFilterEngine.renderedLayer(layer,in:document)}
+    if layer.smartObject?.pdfSource != nil || layer.smartFilters != nil || layer.warp != nil {
+      return try SmartObjectIO.renderedLayer(layer,in:document)
+    }
     return layer
   }
   private static func rgb(layerID:UUID?,in document:CraftDocument)throws->Surface {

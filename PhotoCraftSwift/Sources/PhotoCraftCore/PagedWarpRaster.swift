@@ -90,6 +90,29 @@ public enum PagedWarpRaster {
     func denseMapping() throws -> WarpRaster.Mapping {
       try WarpRaster.mapping(vertices: vertices, inputs: inputs, triangles: triangles.map { [$0.a,$0.b,$0.c] }, bounds: bounds)
     }
+    /// Largest source-to-document pixel scale in the tessellation actually
+    /// used to sample the Warp. Vector artwork can rerasterize at this density.
+    public func maximumMagnification() throws -> Double {
+      var result = 0.0
+      for triangle in triangles {
+        try Task.checkCancellation()
+        let u = inputs[triangle.a], v = inputs[triangle.b], w = inputs[triangle.c]
+        let ux = v.x - u.x, uy = v.y - u.y, vx = w.x - u.x, vy = w.y - u.y
+        let determinant = ux * vy - uy * vx
+        guard determinant != 0 else { continue }
+        let a = vertices[triangle.a], b = vertices[triangle.b], c = vertices[triangle.c]
+        let x1 = b.x - a.x, y1 = b.y - a.y, x2 = c.x - a.x, y2 = c.y - a.y
+        let px = (x1 * vy - x2 * uy) / determinant, py = (y1 * vy - y2 * uy) / determinant
+        let qx = (x2 * ux - x1 * vx) / determinant, qy = (y2 * ux - y1 * vx) / determinant
+        let pp = px * px + py * py, qq = qx * qx + qy * qy, pq = px * qx + py * qy
+        result = max(result, sqrt((pp + qq + hypot(pp - qq, 2 * pq)) / 2))
+      }
+      return result
+    }
+    func sourceSampleSpace(_ scale: Transform2D) throws -> Mapping {
+      try Mapping(vertices: vertices, inputs: inputs.map { $0.transformed(scale) },
+                  triangles: triangles.map { [$0.a, $0.b, $0.c] }, bounds: bounds)
+    }
     fileprivate func patch(_ area: IntRect, index: Index) throws -> [PathPoint] {
       guard area.width > 0, area.height > 0, area.width <= PagedWarpRaster.maximumPatchPixels/area.height else {
         throw CraftError.invalid("Warp UV patches exceed their bounded working buffer.")
@@ -208,7 +231,8 @@ public enum PagedWarpRaster {
   public static func render(_ source: Surface, using mapping: Mapping, method: Resampling, clampEdges: Bool = true) throws -> Surface {
     try output(source, mapping: mapping, method: method, clampEdges: clampEdges, mask: nil).0
   }
-  public static func baked(_ layer: Layer, in document: CraftDocument, using mapping: Mapping, method: Resampling) throws -> Layer {
+  public static func baked(_ layer: Layer, in document: CraftDocument, using mapping: Mapping, method: Resampling,
+                           maskInputTransform: Transform2D? = nil) throws -> Layer {
     guard case .raster(let source) = layer.content, layer.nativeMode == nil else {
       throw CraftError.unsupported("Paged Warp needs RGB raster samples without native component planes.")
     }
@@ -219,7 +243,7 @@ public enum PagedWarpRaster {
     raw.maskProperties?.density = 1; raw.maskProperties?.feather = 0
     let mask = try linked ? MaskSampler(layer: raw, feather: false, canvasSize: (document.width, document.height)) : nil
     let output = try output(source, mapping: mapping, method: method, clampEdges: true,
-      mask: mask.map { ($0, layer.coordinateTransform, layer.mask!.depth) })
+      mask: mask.map { ($0, maskInputTransform ?? layer.coordinateTransform, layer.mask!.depth) })
     var result = layer; result.content = .raster(output.0)
     result.x = mapping.bounds.x; result.y = mapping.bounds.y
     result.affine = nil; result.warp = nil; result.sourceProjection = nil; result.importedSmartAppearance = nil

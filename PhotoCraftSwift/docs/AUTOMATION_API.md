@@ -1190,13 +1190,17 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
 
+### PDF Smart Object Warp
+
+Use the same `layer.warp` command for a retained PDF page. The editor and API rerasterize when the Warp magnifies the artwork, within the established PDF source budget. Saving or downloading a supported PDF Warp as PSD or PSB keeps the page, crop, vector original or linked reference, and Warp settings. The Adobe-compatible manifest uses the saved placement quad. [Development record](PDF_SMART_OBJECT_WARP_669.md)
+
 ### Cylinder Warp
 
 Pass `style: "cylinder"` and its `cylinder` object to `layer.warp`. Provide `left`, `bottom`, `right`, `top`, `topDepth`, `bottomDepth`, and `wrap`. The bounds are in unwarped source pixels. Rim depths are relative to half the width, and wrap ranges from 0 to 1. This uses the same implementation as the Warp sheet. Native archives with Cylinder use version 98. The PSD and PSB manifest uses the Cylinder control hull for its placed quadrilateral. [Development record](CYLINDER_WARP_668.md)
 
 ### Editable Smart Object Warp in Photoshop files
 
-Save and download supported warped Smart Objects as PSD or PSB. Their presets, cubic controls, and split positions reopen through the same editable Warp state and `layer.warp` command. A linked preview keeps those settings until its original can be relinked. The Adobe-compatible manifest reports the placed quadrilateral from the Photoshop file encoding. PDF Warp and source-mask reconstruction remain open. Cylinder has separate coverage above. [Development record](EDITABLE_SMART_OBJECT_WARP_667.md)
+Save and download supported warped Smart Objects as PSD or PSB. Their presets, cubic controls, and split positions reopen through the same editable Warp state and `layer.warp` command. A linked preview keeps those settings until its original can be relinked. The Adobe-compatible manifest reports the placed quadrilateral from the Photoshop file encoding. Source-mask reconstruction remains open. PDF page Warp and Cylinder have separate coverage above. [Development record](EDITABLE_SMART_OBJECT_WARP_667.md)
 
 ### Smart Object template geometry
 

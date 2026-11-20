@@ -1,0 +1,261 @@
+{
+  "build": 669,
+  "base": "8997018da95fc3dd6f0efc75aa0b43bd78aa4a52",
+  "buildInputs": 9271,
+  "includedBuildInputs": 9258,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "4cdc75b15ce7fae3a78b75a7cf50c4fe013e3ecc9a76a06e2ebf44d2a4265782",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationPDFSmartObjects.swift",
+      "sha256": "30662936bd6b26bbc082f46b52072167de91cabbefb6fe9c9b6dcb7b6dad5368"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "5266b4796780b8bf516208e74892c778ec14ca3ad7423f0f4173afaf8c4c01ce"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "sha256": "a0eff31b47168df4f31d7ccda2da0505522e017fd4abdf107c7e9d913786b807"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationWarp.swift",
+      "sha256": "b865005e4718654119be7bb66660e6a6fd2fb5e979950ce7e7cb168db762115f"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentSavePolicy.swift",
+      "sha256": "1edd718e7b334e8c39edc8d75ac44d461670800228c8e2565db3c1740262d7c3"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "3c3285cd49b3fbf5780f738ef053d7798d7e0efc4788dfd5286f79c8142addd3"
+    },
+    {
+      "path": "Sources/PhotoCraft/FilterControls.swift",
+      "sha256": "129c7051c8c15cbbffff0b8dbf1f56dfb560d2d7ffae0d7ef0eb6c19e928dbf1"
+    },
+    {
+      "path": "Sources/PhotoCraft/PuppetWorkspace.swift",
+      "sha256": "080e38234917f3594f3c673b3463178ff3dc5968f643adc20312c3f2f9fee115"
+    },
+    {
+      "path": "Sources/PhotoCraft/WarpWorkspace.swift",
+      "sha256": "62b27694231adea7fcf226e461bf5f0cb3b6ee5f632efa2a02277a83b5474024"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/CommandPrimitives.swift",
+      "sha256": "255616ddc6efe3149c6bc89171a541db1a0a03cfdc057a0f96d72f0d0c4644f5"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PagedWarpRaster.swift",
+      "sha256": "5deea848bb657bb3ac012864be7fab2f9ae8007cda54b2f3d33a8dd4f1abbe75"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SmartFilters.swift",
+      "sha256": "8c2bc93351d971845d16e85320969c28acf7252195024145074dae2b417e33f3"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/WarpRaster.swift",
+      "sha256": "d819dfc38dc7ce9a784fcb8bfab4f1cff49646e042d535825eae38e9a2f98565"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ChannelArithmeticPreparation.swift",
+      "sha256": "3bb03cbfd0808744a7f623946af876e3ba890bc3ff5c93de5f0376e0c7289628"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ClipboardRenderer.swift",
+      "sha256": "e718472cf78d6ee08f4c679313a570f34185bddfe0b9ff7a094e9695d64fd297"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerLayoutRenderer.swift",
+      "sha256": "f65bed908808199ce7c223b0cc6e146f7f55ebae2980f811d6d4d0ab3a387396"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerThumbnailRenderer.swift",
+      "sha256": "0094c5f2321b0fc1e1644c85fe48f9b157bfacea41fe935cf98c8bb03edf5018"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PDFSmartObjectIO.swift",
+      "sha256": "eb310d7e5cfa6caa80f5a6f549fcbb440a8c60b38454d67ec431717c23704795"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDLinkedSmartObjects.swift",
+      "sha256": "c39fa08a23262910311040c406a889472283b64ade394b88991d0ca9b1018bdf"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDSmartFilters.swift",
+      "sha256": "049b0a39f39ec9138c48ca400e6cde1be28a1016143409cebe59428ccfdc5204"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDSmartObjects.swift",
+      "sha256": "27d23fc89d726477d4b69b24ab89c4e5508bbfc962d93cccc2ec11776288f8fa"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SelectionRefinementInput.swift",
+      "sha256": "09355e32ad282b9f7d9541548901b4725adbec8ecd2c3abcdc514ba42007f288"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SmartObjectIO.swift",
+      "sha256": "438e35564410a9ad090b9cb71ef1e2d134ca0a81a32c897c71c674b202f9650c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PSDPDFInterchangeWorkflowTests.swift",
+      "sha256": "18d453b1cdc66e2b2202f16285ff5b4c3f19f57daf412e967b9b4190bbf04fb5"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDPDFSmartObjectTests.swift",
+      "sha256": "9d637bcdd35cba97131c1297417275fc8ea252d4e20b0eeeadd711f9756411e8"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "c76b4316ba60cd16a8ccb35721d49fad40536c7e66345485a8f6fe2c3f596b67"
+    }
+  ],
+  "casesPerConfiguration": 88,
+  "requestedCasesPerConfiguration": 88,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 88,
+      "passed": 88,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "3af70969355366e5dbae5b69959147c43654e5ec7ba7a35bb1e8ad2664e7779f"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 88,
+      "passed": 88,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "42494c14be1af20cf545b6d2a134694832095dfb9feb0346e6a67048dd1c68ac"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 88,
+      "passed": 88,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "c590e0c94de2f916c0464194aa5dd0c7fad2b7d3d602bce90661be644f54a975"
+    }
+  },
+  "ownedPDFWarpValidation": {
+    "build": 669,
+    "sourceFixtureSHA256": "1740d004c7a04d3310f07c95dda974afa478fbe68ed4c80a6ff0fa0a0ae74398",
+    "identityAfterThreefoldEnlargementExact": true,
+    "containers": {
+      "enlarged.rgba": {
+        "bytes": 353152,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "a373b0f7baa71c5b4560bffd621540c0ef685c906ee95a3588400f5d52610156",
+          "arm": "a373b0f7baa71c5b4560bffd621540c0ef685c906ee95a3588400f5d52610156",
+          "intel": "a373b0f7baa71c5b4560bffd621540c0ef685c906ee95a3588400f5d52610156"
+        }
+      },
+      "identity.rgba": {
+        "bytes": 353152,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "a373b0f7baa71c5b4560bffd621540c0ef685c906ee95a3588400f5d52610156",
+          "arm": "a373b0f7baa71c5b4560bffd621540c0ef685c906ee95a3588400f5d52610156",
+          "intel": "a373b0f7baa71c5b4560bffd621540c0ef685c906ee95a3588400f5d52610156"
+        }
+      },
+      "cylinder.rgba": {
+        "bytes": 353152,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "bea46c55ee7801802418e79a4bf2d6f5e5ed487bf9417dc0dfe43459f201c72a",
+          "arm": "bea46c55ee7801802418e79a4bf2d6f5e5ed487bf9417dc0dfe43459f201c72a",
+          "intel": "bea46c55ee7801802418e79a4bf2d6f5e5ed487bf9417dc0dfe43459f201c72a"
+        }
+      },
+      "identity.psd": {
+        "bytes": 363524,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "4b4b3c2cf7ea6132dd30bb53e7189f92a05d6f007f19cd6910bb3932dd5899c1",
+          "arm": "4b4b3c2cf7ea6132dd30bb53e7189f92a05d6f007f19cd6910bb3932dd5899c1",
+          "intel": "4b4b3c2cf7ea6132dd30bb53e7189f92a05d6f007f19cd6910bb3932dd5899c1"
+        }
+      },
+      "identity.psb": {
+        "bytes": 363552,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "0f47b45b88614b28da70e33ef6a9d9dd150c5add56011f61fa4bdce0a04ad8d1",
+          "arm": "0f47b45b88614b28da70e33ef6a9d9dd150c5add56011f61fa4bdce0a04ad8d1",
+          "intel": "0f47b45b88614b28da70e33ef6a9d9dd150c5add56011f61fa4bdce0a04ad8d1"
+        }
+      },
+      "cylinder.psd": {
+        "bytes": 364036,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "3f0406e5f7687c24fb5f62523c674c75aa51db1147a0a9fa070eb3de9e853592",
+          "arm": "3f0406e5f7687c24fb5f62523c674c75aa51db1147a0a9fa070eb3de9e853592",
+          "intel": "3f0406e5f7687c24fb5f62523c674c75aa51db1147a0a9fa070eb3de9e853592"
+        }
+      },
+      "cylinder.psb": {
+        "bytes": 364064,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "c6fbdcee814672c59bcd746eebbda1b11365a84af66dac008a5fc283d9da21fb",
+          "arm": "c6fbdcee814672c59bcd746eebbda1b11365a84af66dac008a5fc283d9da21fb",
+          "intel": "c6fbdcee814672c59bcd746eebbda1b11365a84af66dac008a5fc283d9da21fb"
+        }
+      },
+      "retained-source.pdf": {
+        "bytes": 3947,
+        "exactAcrossConfigurations": true,
+        "sha256": {
+          "debug": "c53fd52dbcfe28b3896941682a0ff7dfda2b40c1324b43003c745e0b0d063796",
+          "arm": "c53fd52dbcfe28b3896941682a0ff7dfda2b40c1324b43003c745e0b0d063796",
+          "intel": "c53fd52dbcfe28b3896941682a0ff7dfda2b40c1324b43003c745e0b0d063796"
+        }
+      }
+    }
+  },
+  "selectedCasesSHA256": "8a7e177ea82045bc8027deb28b1c8fda8cc7433cce0e76a563c3d98b8abc9303",
+  "supplementalDebugCasesPassed": 23,
+  "filteredPDFEditableReadback": [
+    "psd",
+    "psb"
+  ],
+  "priorRasterWarpExactFiles": [
+    "original-composite.rgba",
+    "untouched.psd",
+    "untouched.psb"
+  ],
+  "priorIntelRGB32ExactFiles": 8,
+  "preview": {
+    "archiveSHA256": "9527be90c01672423ff1227f923cda9a9cb3be7596293ccd38343430d7e27e1e",
+    "binarySHA256": "eb1fa34816e0ce4f82919f994513e6579adcaf1af1102cd1fcaa4fa107229f18",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "6a8b755ce8a2d9116e571eb0f366beb29e2fcf95968ddd1ae9787dc7d1a40ac4",
+      "x86_64": "cb2b51b614201679c672f1170521ac240fb42a97262f6a5e2ad2889b2df51401"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobeCompared": false,
+  "hostedAdobeCompared": false
+}

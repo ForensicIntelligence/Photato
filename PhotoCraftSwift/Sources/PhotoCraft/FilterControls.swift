@@ -22,7 +22,7 @@ struct FilterDraft: Identifiable, Sendable {
     guard var layer=document.layers.first(where:{$0.id==id}) else { throw CraftError.invalid("Missing filter target.") }
     if layer.smartObject != nil {
       if let filterID,var stack=layer.smartFilters,let index=stack.filters.firstIndex(where:{$0.id==filterID}) { stack.filters=Array(stack.filters.prefix(index));layer.smartFilters=stack }
-      layer=try SmartFilterEngine.renderedLayer(layer,in:document)
+      layer=try SmartObjectIO.renderedLayer(layer,in:document)
     }
     return layer
   }

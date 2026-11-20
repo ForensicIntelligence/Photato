@@ -1,5 +1,6 @@
 import Foundation
 import PhotoCraftCore
+import PhotoCraftImaging
 
 private extension CylinderWarp {
   static let fieldNames = ["left", "bottom", "right", "top", "topDepth", "bottomDepth", "wrap"]
@@ -37,9 +38,11 @@ extension WarpDefinition {
      "coordinates":"Optional sourceBounds retains the source frame x/y/width/height; null uses ordinary layer extents. Mesh points use unwarped layer pixels; us/vs ascend from0 to1. 3*(us.count−1)+1 control columns, analogous rows, row-major points. Warp precedes affine placement and Smart Filters. Presets take percentages.",
      "behavior":"Fifteen classic presets, Cylinder Warp, and custom bicubic meshes. Pixel layers bake once; Smart Objects retain per-instance Warp and unchanged source/cache. Linked pixel masks follow; unlinked masks stay in document space. One prepared Undo/Redo transaction, matching native preview output.",
      "availability":"Unlocked RGB raster layers and Smart Objects without native component planes, a selection or vector mask; groups/type/shapes can first be converted to a Smart Object.",
-     "persistence":"PSD and PSB retain editable Warp presets, horizontal Cylinder values, cubic meshes and nonuniform split grids on supported Smart Objects. A missing linked original must be relinked before editing. Native archives also retain per-effect interpolation.",
+     "persistence":"PSD and PSB retain editable Warp presets, horizontal Cylinder values, cubic meshes and nonuniform split grids on supported Smart Objects, including retained PDF pages. A missing linked original must be relinked before editing. Native archives also retain per-effect interpolation.",
+     "pdfPages":["retainsVectorSource":true,"maximumRenderPixels":SmartObjectIO.maximumCanvasPixels,
+       "sampling":"Uses the magnification of the Warp triangles to rerasterize the page at a bounded density without changing logical control points or masks."],
      "adobe":"No dedicated published v2 Warp endpoint. No authenticated actionJSON descriptor is implemented; such actions remain explicit unsupported errors.",
-     "limits":"16 mesh patches per axis,256 tessellation cells per axis. Legacy dense mappings retain their complete-work budget. Paged output allows at most134217728 triangle/pixel visits per bounded UV patch. Exact Photoshop rerendering, PDF Warp interchange, full native component/mask contexts, maximum dense physical capacity and live 60fps qualification remain open."]
+     "limits":"16 mesh patches per axis,256 tessellation cells per axis. Legacy dense mappings retain their complete-work budget. Paged output allows at most134217728 triangle/pixel visits per bounded UV patch. PDF image selection and custom PDF antialias policies require native saving. Exact Photoshop rerendering, full native component/mask contexts, maximum dense physical capacity and live 60fps qualification remain open."]
   }
 }
 extension AutomationCommand {

@@ -36,7 +36,7 @@ public enum ClipboardRenderer {
           text.layoutHeight = text.layoutHeight ?? document.height
           copied.layers[index].content = .text(text)
         }
-        let layer = try SmartFilterEngine.renderedLayer(copied.layers[index], in: document)
+        let layer = try SmartObjectIO.renderedLayer(copied.layers[index], in: document)
         if layer.isGroup { continue }
         let area: IntRect
         switch layer.content {
@@ -72,7 +72,7 @@ public enum ClipboardRenderer {
       else {
         throw CraftError.unsupported("Copy a pixel selection from one layer, or use Copy Merged.")
       }
-      let layer = try SmartFilterEngine.renderedLayer(originalLayer, in: document)
+      let layer = try SmartObjectIO.renderedLayer(originalLayer, in: document)
       pixels = try Renderer.layerSurface(layer, in: document)
       if layer.isGroup {
         inverse = .identity

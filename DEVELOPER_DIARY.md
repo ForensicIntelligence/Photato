@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **668** · The 10 most recent entries, newest first.
+Source build **669** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 669 — Keep PDF Smart Object Warp editable
+
+Embedded and linked PDF Smart Objects retain editable Warp in PSD and PSB. The renderer resamples the original PDF when the Warp magnifies the artwork. The page, crop and layer controls stay editable.
+
+All 88 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The running Photoshop scripting interface timed out. The independent Photoshop-authored PSD supplies the original PDF page and crop. A Photoshop-authored PDF with Warp, live Adobe rendering comparisons and full dense PDF capacity remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-669) · [Details](PhotoCraftSwift/docs/PDF_SMART_OBJECT_WARP_669.md).
 
 ## 2026-11-20 — Step 668 — Wrap editable Smart Objects around a cylinder
 
@@ -75,11 +83,3 @@ Free Transform handles follow an affine Smart Object's saved corners. Side and c
 All 1,477 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe handle behavior, displayed scale percentages and output fidelity remain unverified. The Intel runtime used Rosetta, and the macOS 14 minimum was checked in the signed binary.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-660) · [Details](PhotoCraftSwift/docs/ORIENTED_SMART_OBJECT_TRANSFORM_660.md).
-
-## 2026-11-20 — Step 659 — Read the original transform of linked Smart Objects
-
-Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds.
-
-All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe Properties values, rounding, handle orientation, physical Intel, a macOS 14 runtime and full assistive-technology behavior remain unverified.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-659) · [Details](PhotoCraftSwift/docs/LINKED_SMART_OBJECT_GEOMETRY_659.md).

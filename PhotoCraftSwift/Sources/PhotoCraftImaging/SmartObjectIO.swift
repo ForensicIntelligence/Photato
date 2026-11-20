@@ -169,8 +169,20 @@ public enum SmartObjectIO {
     return layer
   }
   public static func rasterizationCommand(_ layer: Layer, in document: CraftDocument) throws -> Command {
+    if layer.smartObject?.pdfSource != nil, layer.warp != nil, case .raster(let source) = layer.content {
+      let samples = try PDFSmartObjectIO.rasterizationSamples(layer, in: document) ?? source
+      return .rasterize(layer.id, samples)
+    }
     let input = try PDFSmartObjectIO.renderedLayer(layer,in:document)
     return .rasterize(layer.id,try Renderer.layerSurface(input,in:document))
+  }
+  public static func renderedLayer(_ layer: Layer, in document: CraftDocument) throws -> Layer {
+    try SmartFilterEngine.renderedLayer(PDFSmartObjectIO.renderedLayer(layer, in: document), in: document)
+  }
+  public static func prepareWarp(_ document: CraftDocument, layerID: UUID, warp: WarpDefinition) throws -> WarpEdit {
+    try WarpEdit.prepare(document, layerID: layerID, warp: warp) {
+      _ = try renderedLayer($0, in: $1)
+    }
   }
   public static func convert(in document: CraftDocument, selected: Set<UUID>) throws -> Command {
     try document.validate()

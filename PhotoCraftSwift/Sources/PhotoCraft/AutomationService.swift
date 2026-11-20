@@ -1453,7 +1453,7 @@ import UniformTypeIdentifiers
       }
       if command.name == "layer.warp" {
         let (layerID,settings) = try command.warpOptions()
-        try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .warp(try WarpEdit.prepare(original,layerID:layerID,warp:settings)) }
+        try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .warp(try SmartObjectIO.prepareWarp(original,layerID:layerID,warp:settings)) }
         return .json(state(share,document:document))
       }
       if command.name == "photo.autoAlign" {

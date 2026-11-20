@@ -145,7 +145,7 @@ enum CylinderHandle: CaseIterable {
       do {
         try await Task.sleep(for:.milliseconds(80))
         let worker=Task.detached(priority:.userInitiated) { () throws -> (WarpEdit,CGImage,CGImage?) in
-          let edit=try WarpEdit.prepare(source,layerID:layerID,warp:value)
+          let edit=try SmartObjectIO.prepareWarp(source,layerID:layerID,warp:value)
           let bounds=try RasterPreviewRequest.overview(width:source.width,height:source.height)
           return (edit,try ColorManagement.displayImage(bounds.reducing(Renderer.composite(edit.result)),in:source),needOriginal ? try ColorManagement.displayImage(bounds.reducing(Renderer.composite(source)),in:source):nil)
         }

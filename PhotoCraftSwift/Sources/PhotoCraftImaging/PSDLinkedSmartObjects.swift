@@ -72,10 +72,15 @@ enum PSDLinkedSmartObjects {
     if case .unit(_,let bits)=d["Rslt"] {resolution=Double(bitPattern:bits)}
     var pdf:PDFSmartObjectSource?
     if media=="application/pdf" {
-      guard projective == nil, warp == nil else { throw CraftError.unsupported("Linked PDF perspective and Warp interchange are not yet supported.") }
-      let page=Int(d["PgNm"]?.number ?? 1),code=Int(d["Crop"]?.number ?? 3)
-      let crop=PSDPDFSmartObjects.crops.first{Int($0.value)==code}?.key ?? .media
-      pdf=try .init(page:page,crop:crop,x:0,y:0,width:Double(width)*72/resolution,height:Double(height)*72/resolution)
+      guard projective == nil || warp != nil else {
+        throw CraftError.unsupported("Linked PDF perspective without Warp is not yet supported.")
+      }
+      let page = d["PgNm"]?.number ?? 1, code = d["Crop"]?.number ?? 3
+      guard (1...4096).contains(page), page.rounded() == page,
+            let crop = PSDPDFSmartObjects.crops.first(where: { Double($0.value) == code })?.key else {
+        throw CraftError.invalid("Invalid linked PDF page or crop.")
+      }
+      pdf=try .init(page:Int(page),crop:crop,x:0,y:0,width:Double(width)*72/resolution,height:Double(height)*72/resolution)
     }
     let safeName=(file.name.replacingOccurrences(of:"\\",with:"/")as NSString).lastPathComponent
     layer.smartObject=try .init(sourceID:sourceID,fileName:safeName,mediaType:media,data:Data(),width:width,height:height,resolution:resolution,pdfSource:pdf,linkedSource:link)

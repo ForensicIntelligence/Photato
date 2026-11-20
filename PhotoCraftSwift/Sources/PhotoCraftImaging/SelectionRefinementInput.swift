@@ -16,7 +16,7 @@ public struct SelectionRefinementInput: Sendable {
     try SelectionMatting.checkSize(pixels.width,pixels.height)
     let materialized: Layer?
     if layer.smartObject != nil {
-      var rendered = try SmartFilterEngine.renderedLayer(PDFSmartObjectIO.renderedLayer(layer,in:document),in:document)
+      var rendered = try SmartObjectIO.renderedLayer(layer,in:document)
       guard rendered.smartObject == nil, rendered.smartFilters == nil, case .raster(let raster) = rendered.content
         else { throw CraftError.invalid("The Smart Object could not be prepared for refinement.") }
       try SelectionMatting.checkSize(raster.width,raster.height)

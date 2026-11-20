@@ -71,7 +71,7 @@ public enum WarpRaster {
     } };return out
   }
   /// Derives display pixels, leaving the committed source/cache and masks untouched.
-  public static func baked(_ layer:Layer,in document:CraftDocument) throws -> Layer {
+  public static func baked(_ layer:Layer,in document:CraftDocument,samples:Surface?=nil) throws -> Layer {
     guard case .raster(let source)=layer.content,layer.warp != nil || layer.sourceProjection != nil else{return layer}
     if let projection=layer.sourceProjection,let affine=try projection.affineValue(),layer.warp?.isIdentity != false {
       let maskWorld=layer.maskCoordinateTransform
@@ -87,16 +87,38 @@ public enum WarpRaster {
       if layer.mask != nil {var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*layer.maskCoordinateTransform;result.maskProperties=properties}
       return result
     }
-    if layer.sourceProjection != nil, layer.warpsLinkedPixelMask {throw CraftError.unsupported("Combined Warp/projective linked masks require their mesh mapping before rerendering.")}
     guard let warp=layer.warp else{return layer}
     let paged=try PagedWarpRaster.mapping(warp,width:source.width,height:source.height,transform:layer.coordinateTransform,projection:layer.sourceProjection)
-    if source.width>maximumPixels/source.height || paged.bounds.width>maximumPixels/paged.bounds.height || paged.bounds.width>60000 || paged.bounds.height>60000 {
-      return try PagedWarpRaster.baked(layer,in:document,using:paged,method:warp.interpolation)
-    }
-    let mapping=try paged.denseMapping()
-    return try baked(layer,in:document,using:mapping,method:warp.interpolation)
+    return try baked(layer, in: document, using: paged, method: warp.interpolation, samples: samples)
   }
-  public static func baked(_ layer:Layer,in document:CraftDocument,using mapping:Mapping,method:Resampling,clampEdges:Bool=true) throws -> Layer {
+
+  /// Use an alternate sampling surface for vector artwork while preserving
+  /// the logical Warp geometry, stored masks and established output bounds.
+  public static func baked(_ layer: Layer, in document: CraftDocument, using mapping: PagedWarpRaster.Mapping,
+                           method: Resampling, samples: Surface? = nil) throws -> Layer {
+    if layer.sourceProjection != nil, layer.warpsLinkedPixelMask {
+      throw CraftError.unsupported("Combined Warp/projective linked masks require their mesh mapping before rerendering.")
+    }
+    guard case .raster(let original) = layer.content else { throw CraftError.invalid("Warp requires raster pixels.") }
+    var input = layer
+    var sampling = mapping
+    var maskInputTransform: Transform2D?
+    if let samples {
+      let scale = Transform2D.scale(Double(samples.width) / Double(original.width),
+                                    Double(samples.height) / Double(original.height))
+      sampling = try mapping.sourceSampleSpace(scale)
+      input.content = .raster(samples)
+      maskInputTransform = try layer.coordinateTransform * scale.inverted()
+    }
+    let source = samples ?? original
+    if source.width > maximumPixels / source.height || sampling.bounds.width > maximumPixels / sampling.bounds.height
+      || sampling.bounds.width > 60000 || sampling.bounds.height > 60000 {
+      return try PagedWarpRaster.baked(input, in: document, using: sampling, method: method, maskInputTransform: maskInputTransform)
+    }
+    return try baked(input, in: document, using: sampling.denseMapping(), method: method, maskInputTransform: maskInputTransform)
+  }
+  public static func baked(_ layer:Layer,in document:CraftDocument,using mapping:Mapping,method:Resampling,clampEdges:Bool=true,
+                           maskInputTransform: Transform2D? = nil) throws -> Layer {
     guard case .raster(let source)=layer.content else { throw CraftError.invalid("Warp requires raster pixels.") }
     let b=mapping.bounds
     var result=layer;result.content = .raster(try render(source,using:mapping,method:method,clampEdges:clampEdges));result.x=b.x;result.y=b.y;result.affine=nil;result.warp=nil;result.sourceProjection=nil;result.importedSmartAppearance=nil
@@ -112,7 +134,7 @@ public enum WarpRaster {
         var mask=try Surface(width:b.width,height:b.height,depth:layer.mask!.depth)
         for y in 0..<b.height { try Task.checkCancellation();for x in 0..<b.width {
           let uv=mapping.uv[y*b.width+x];var k:Float=0
-          if uv.x.isFinite { let p=uv.transformed(layer.coordinateTransform);k=sampler.coverage(x:p.x,y:p.y) }
+          if uv.x.isFinite { let p=uv.transformed(maskInputTransform ?? layer.coordinateTransform);k=sampler.coverage(x:p.x,y:p.y) }
           mask.setPixel(x:x,y:y,Pixel(k,k,k,1))
         } };result.mask=mask;result.maskProperties=layer.effectiveMaskProperties;result.maskProperties?.transform = .identity
       } else { var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*layer.maskCoordinateTransform;result.maskProperties=properties }
@@ -134,13 +156,16 @@ public struct WarpEdit: Sendable {
     }
     return layer
   }
-  public static func prepare(_ document:CraftDocument,layerID:UUID,warp:WarpDefinition) throws -> Self {
+  public static func prepare(_ document:CraftDocument,layerID:UUID,warp:WarpDefinition,
+                             renderSmartObject: (Layer, CraftDocument) throws -> Void = {
+                               _ = try SmartFilterEngine.renderedLayer($0, in: $1)
+                             }) throws -> Self {
     try warp.validate();var layer=try target(document,layerID:layerID),result=document
     if layer.warp == warp { return Self(source: document, result: document) }
     if layer.smartObject == nil && warp.isIdentity { return Self(source:document,result:document) }
     layer.warp=warp.isIdentity ? nil:warp
     if layer.smartObject == nil { layer=try WarpRaster.baked(layer,in:document) }
-    else if layer.warp != nil { _ = try SmartFilterEngine.renderedLayer(layer,in:document) }
+    else if layer.warp != nil { try renderSmartObject(layer, document) }
     result.layers[result.layers.firstIndex(where:{$0.id == layerID})!]=layer;try result.validate()
     return Self(source:document,result:result)
   }
