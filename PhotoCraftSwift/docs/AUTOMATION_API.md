@@ -1,3 +1,9 @@
+### Document print settings (checkpoint 638)
+
+A native Save, Save As, Save a Copy or downloaded `file.photato` now includes the current document's committed print settings. A native file also keeps the hard-proof condition when selected. PSD and PSB files update the supported values in Adobe Print Information and Print Style. `printing.documentPersistence` advertises the format scope. `print.configure` still limits the pending settings to the shared document and keeps the local app defaults intact.
+
+[Development record](DOCUMENT_PRINT_SETTINGS_638.md).
+
 ### Remember print settings (checkpoint 637)
 
 `printing.settingsSource` reports `defaults`, `photoshopFile`, or `document`. A native Print sheet accepted with Done or Print saves reusable local defaults. A supported Photoshop Print Information or Print Style resource supplies document values on open. API clients use the usual `print.configure`, `print.settings.read`, and `print.pdf` operations. Configuration through the API stays scoped to the shared document.

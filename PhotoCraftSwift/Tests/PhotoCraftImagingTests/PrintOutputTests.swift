@@ -33,6 +33,24 @@ final class PrintOutputTests: XCTestCase {
     XCTAssertFalse(imported.centerCropMarks)
     XCTAssertEqual(try PSDImageResources.preserved(outputBlock + styleBlock), outputBlock + styleBlock)
 
+    var override = defaults
+    override.labels = true
+    override.printerName = "New fixture printer"
+    override.intent = .relativeColorimetric
+    let extra = PSDImageResources.block(1812, data: Data([0x18, 0x34, 0xfa]))
+    let updated = try PhotoshopPrintSettings.writing(override, to: outputBlock + extra + styleBlock)
+    let resources = try PSDImageResources.blocks(updated)
+    XCTAssertEqual(resources.map(\.id), [1082, 1812, 1083])
+    XCTAssertEqual(resources[1].raw, extra)
+    let descriptor = try PSDDescriptor.read(resources[0].data)
+    XCTAssertEqual(descriptor["futureOption"], .text(Array("kept by the resource writer".utf16)))
+    document.sourceMetadata = ["psdResources": updated]
+    let restored = try XCTUnwrap(PhotoshopPrintSettings(document)).applying(to: PrintSettings())
+    XCTAssertEqual(restored.intent, .relativeColorimetric)
+    XCTAssertEqual(restored.printerName, "New fixture printer")
+    XCTAssertTrue(restored.labels)
+    XCTAssertFalse(restored.sixteenBit)
+
     document.sourceMetadata = ["psdResources": outputBlock + outputBlock + styleBlock]
     let duplicate = try XCTUnwrap(PhotoshopPrintSettings(document)).applying(to: defaults)
     XCTAssertFalse(duplicate.sixteenBit)

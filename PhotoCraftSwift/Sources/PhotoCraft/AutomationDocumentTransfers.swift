@@ -543,7 +543,7 @@ extension AutomationService {
     let options = document.effectiveEncodingOptions(
       try DocumentEncodingOptions.header(request.headers["x-photato-export-options"], format: format),
       format: format)
-    let snapshot = document.store.document
+    let snapshot = try document.store.documentWithPrintSettings(document.store.document, format: format)
     let worker = Task.detached(priority: .utility) {
       if format == .native, let version = requestedArchiveVersion.flatMap(Int.init), version >= 12 {
         return try NativeArchive.encodeChunked(snapshot, minimumVersion: version)

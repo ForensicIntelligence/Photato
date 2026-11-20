@@ -1,8 +1,7 @@
 import Foundation
 import PhotoCraftCore
 
-/// Reads the fields whose meaning is shared with the native print workflow.
-/// The original resources remain in source metadata for editable PSD/PSB saves.
+/// Maps the fields whose meaning is shared with the native print workflow.
 package struct PhotoshopPrintSettings {
   private var sixteenBit: Bool?
   private var intent: ModeRenderingIntent?
@@ -64,5 +63,51 @@ package struct PhotoshopPrintSettings {
     if let centerCropMarks { settings.centerCropMarks = centerCropMarks }
     if let labels { settings.labels = labels }
     return settings
+  }
+
+  package static func writing(_ settings: PrintSettings, to resources: Data) throws -> Data {
+    let blocks = try PSDImageResources.blocks(resources)
+    var output: [(String, PSDValue)] = [
+      ("printSixteenBit", .boolean(settings.sixteenBit)),
+      ("MpBl", .boolean(settings.blackPointCompensation)),
+      ("printerName", .text(Array(settings.printerName.utf16) + [0])),
+    ]
+    switch settings.intent {
+    case .perceptual: output.append(("Inte", .enumerated(PSDID("Inte"), PSDID("Img "))))
+    case .relativeColorimetric: output.append(("Inte", .enumerated(PSDID("Inte"), PSDID("Clrm"))))
+    case .saturation, .absoluteColorimetric: break
+    }
+    let style: [(String, PSDValue)] = [
+      ("RgsM", .boolean(settings.registrationMarks)), ("CrnC", .boolean(settings.cornerCropMarks)),
+      ("CntC", .boolean(settings.centerCropMarks)), ("Lbls", .boolean(settings.labels)),
+    ]
+    var changed = [Int: Data]()
+    for (id, kind, values) in [(1082, "printOutput", output), (1083, "printOutputOptions", style)] {
+      let matches = blocks.filter { $0.id == id }
+      // Keep ambiguous or unreadable Adobe records byte for byte.
+      guard matches.count <= 1 else { continue }
+      let original = matches.first
+      var descriptor = PSDDescriptor(kind)
+      if let original {
+        guard let parsed = try? PSDDescriptor.read(original.data), parsed.classID.text == kind,
+          values.allSatisfy({ key, _ in parsed.items.filter { $0.key.text == key }.count <= 1 }) else { continue }
+        descriptor = parsed
+      } else if id == 1082 && settings.colorHandling == .printerManages {
+        descriptor.items.append(.init("PstS", .boolean(true)))
+      }
+      for (key, value) in values {
+        if let index = descriptor.items.firstIndex(where: { $0.key.text == key }) {
+          descriptor.items[index].value = value
+        } else {
+          descriptor.items.append(.init(key, value))
+        }
+      }
+      changed[id] = try PSDImageResources.replacing(original, id: id, payload: descriptor.encoded())
+    }
+    var result = Data()
+    for block in blocks { result.append(changed.removeValue(forKey: block.id) ?? block.raw) }
+    for id in [1082, 1083] { if let resource = changed[id] { result.append(resource) } }
+    guard result.count <= PSDImageResources.maximumBytes else { throw CraftError.invalid("PSD image metadata exceeds 16 MiB.") }
+    return result
   }
 }

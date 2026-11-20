@@ -38,6 +38,7 @@ import PhotoCraftImaging
     store.finishNumericField()
     store.finishLayerName()
     let snapshot = store.document
+    let outputSnapshot = try store.documentWithPrintSettings(snapshot, format: format)
     let generation = store.layerPanelGeneration
     let source = revertSourceURL
     let options = requestedOptions ?? compatibleRememberedEncodingOptions[format] ?? .init()
@@ -52,7 +53,7 @@ import PhotoCraftImaging
     guard store.document == snapshot, store.layerPanelGeneration == generation,
       revertSourceURL == source else { throw DocumentSaveConflict.changed }
     let worker = Task.detached(priority: .userInitiated) {
-      let output = try DocumentIO.prepareOutput(snapshot, format: format, persistence: true, options: effectiveOptions, encoder: encoder)
+      let output = try DocumentIO.prepareOutput(outputSnapshot, format: format, persistence: true, options: effectiveOptions, encoder: encoder)
       return (output, try output.contentDigest())
     }
     let (output, digest) = try await withTaskCancellationHandler(

@@ -88,4 +88,19 @@ enum PSDImageResources {
     if data.count % 2 != 0 { writer.n(0, 1) }
     return writer.data
   }
+  /// Retain the original resource name and its padding while replacing the payload.
+  static func replacing(_ block: Block?, id: Int, payload: Data) throws -> Data {
+    guard let block else { return Self.block(id, data: payload) }
+    if block.data == payload { return block.raw }
+    var reader = PSDReader(data: block.raw)
+    _ = try reader.bytes(6)
+    let nameLength = Int(try reader.u8())
+    _ = try reader.bytes(nameLength)
+    if (nameLength + 1) % 2 != 0 { _ = try reader.u8() }
+    var writer = PSDWriter()
+    writer.data = Data(block.raw.prefix(reader.offset))
+    writer.section(payload)
+    if payload.count % 2 != 0 { writer.n(0, 1) }
+    return writer.data
+  }
 }

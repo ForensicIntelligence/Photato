@@ -656,7 +656,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 635 | 2026-11-19 | [Print a selection from a large document](#dev-step-635) |
 | 636 | 2026-11-19 | [Fit and clip large prints at their original sample resolution](#dev-step-636) |
 | 637 | 2026-11-19 | [Remember print defaults and restore supported Photoshop settings](#dev-step-637) |
+| 638 | 2026-11-19 | [Save document print settings with the artwork](#dev-step-638) |
 <!-- history-index:end -->
+
+<a id="dev-step-638"></a>
+
+## 2026-11-19 — Save document print settings with the artwork
+
+Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields.
+
+All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](DOCUMENT_PRINT_SETTINGS_638.md) · [Qualification](SOURCE_PUBLICATION_638.md).
 
 <a id="dev-step-637"></a>
 

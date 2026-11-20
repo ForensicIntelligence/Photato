@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 638.** Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields. [Qualification](docs/SOURCE_PUBLICATION_638.md).
+
 **Source checkpoint 637.** Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files. [Qualification](docs/SOURCE_PUBLICATION_637.md).
 
 **Source checkpoint 636.** Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale. [Qualification](docs/SOURCE_PUBLICATION_636.md).

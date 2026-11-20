@@ -1,0 +1,15 @@
+# Save document print settings with the artwork
+
+19 November 2026 · Development preview 638
+
+Native Photato files now keep a document's committed print options, including paper, placement, color handling and Print Selected Area. A saved hard proof keeps the proof device, profile and intent. The view's proof toggle and gamut warnings remain view state. Save and reopen restore the print configuration while leaving artwork edits and Undo independent of it. [Adobe guidance on document print settings](https://helpx.adobe.com/photoshop/desktop/troubleshoot/tool-feature-issues/print-settings-option-doesnt-work.html)
+
+The native save path attaches the settings to the immutable output snapshot. This includes coordinated Save, Save As, Save a Copy, recovery snapshots taken for other document edits, and authenticated document downloads. Existing native archives without the record still open using local defaults or supported imported Adobe settings. File saving remains explicit. A Print dialog change alone keeps the current document's existing dirty state.
+
+Editable PSD and PSB output can update their Print Information and Print Style records with supported settings. The writer retains the other descriptor entries and keeps ambiguous or malformed imported blocks intact. The supported changes are print depth, printer name, rendering intent for perceptual and relative colorimetric, black point compensation, crop marks, registration marks, and labels. Paper placement, proof setup and driver-private data stay outside the rewritten Adobe fields. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+
+An independent parser checked both formats against an owned Photoshop-authored file. Each export contained the seven expected supported values. The parser compared all 22 other original descriptor fields and they matched. The available Photoshop 2026 application was asked to open and re-save the generated PSD. Its AppleEvent timed out before it produced a file. Live Adobe acceptance and byte-for-byte physical print output remain open. [Photato API](AUTOMATION_API.md#document-print-settings-preview-638)
+
+The first test invocation reached the API's existing download permission check. The final fixture explicitly enabled document transfers before requesting the downloads. All 69 focused tests then passed in 46.88 seconds, including Save and reopen, native legacy download, PSD Save a Copy, PSB download, recovery and layer-link regressions. The native hard-proof fixture reproduced the same layout and embedded 16-bit page samples after reopening. The signed Apple Silicon preview verified after ZIP extraction and produced a 1,000 × 650 workspace snapshot. The cumulative 1,190-case run is underway on Debug and optimized Apple Silicon and on Intel under Rosetta.
+
+The [source patch](../artifacts/638-document-print/document-print-source.patch), [focused test log](../artifacts/638-document-print/focused-print02.log), and [independent PSD/PSB comparison](../artifacts/638-document-print/independent-verified01.json) accompany the build.

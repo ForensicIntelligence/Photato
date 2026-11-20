@@ -50,8 +50,10 @@ extension EditorStore {
     printOverride = settings; printRevision = UUID()
   }
   func restorePrintSettings(from source: CraftDocument) {
-    printOverride = nil
-    importedPrintSettings = PhotoshopPrintSettings(source)
+    let saved = SavedDocumentPrintSettings(source)
+    printOverride = saved?.settings
+    importedPrintSettings = saved == nil ? PhotoshopPrintSettings(source) : nil
+    if let proof = saved?.proof { proofSettings = proof }
     printRevision = UUID()
   }
   func finishPrintSheet() { let action = printAfterDismiss; printAfterDismiss = nil; action?() }

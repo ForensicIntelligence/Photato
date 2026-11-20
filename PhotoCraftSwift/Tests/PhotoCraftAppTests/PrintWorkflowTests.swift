@@ -8,6 +8,89 @@ import SwiftUI
 @testable import PhotoCraft
 
 final class PrintWorkflowTests: XCTestCase {
+  @MainActor func testSaveAndLegacyDownloadRestoreNativePrintSettingsAndExactHardProof() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      var source = try CraftDocument(width: 4, height: 3)
+      source.selection = .init(x: 1, y: 0, width: 2, height: 3)
+      var pixels = try Surface(width: 4, height: 3, fill: Pixel(0.2, 0.5, 0.8))
+      pixels.setPixel(x: 1, y: 0, Pixel(0.9, 0.3, 0.1, 0.5))
+      source.layers[0].content = .raster(pixels)
+      document.store.session = EditorSession(document: source)
+      var proof = ProofSettings()
+      proof.device = .sRGB
+      proof.intent = .perceptual
+      proof.enabled = true
+      document.store.proofSettings = proof
+      var settings = PrintSettings()
+      settings.paper = .a4
+      settings.orientation = .landscape
+      settings.content = .hardProof
+      settings.colorHandling = .photatoManages
+      settings.profile = try NativeModeProfile.standard(.rgb, depth: .u16)
+      settings.sixteenBit = true
+      settings.selectedArea = true
+      try document.store.setPrintSettings(settings)
+      let expected = try PrintOutput.prepare(source, settings: settings, proof: proof)
+      let expectedBytes = try XCTUnwrap(expected.pages[0].image.dataProvider?.data as Data?)
+      let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".photato")
+      defer { try? FileManager.default.removeItem(at: url) }
+      try await document.persistDocument(to: url, format: .native, operation: .saveAsOperation)
+      let reopened = CraftNSDocument(model: try CraftDocument(width: 1, height: 1))
+      try reopened.read(from: url, ofType: CraftNSDocument.nativeType)
+      XCTAssertEqual(reopened.store.printSettings, settings)
+      XCTAssertEqual(reopened.store.proofSettings.intent, .perceptual)
+      XCTAssertFalse(reopened.store.proofSettings.enabled)
+      let actual = try PrintOutput.prepare(reopened.store.document,
+        settings: reopened.store.printSettings, proof: reopened.store.proofSettings)
+      XCTAssertEqual(actual.layout, expected.layout)
+      XCTAssertEqual(try XCTUnwrap(actual.pages[0].image.dataProvider?.data as Data?), expectedBytes)
+
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.last?.id)
+      let download = try await helper.request(service, path: "/v1/documents/\(id)/file.photato")
+      XCTAssertEqual(download.0.statusCode, 200)
+      let decoded = try NativeArchive.decode(download.1)
+      let saved = try XCTUnwrap(SavedDocumentPrintSettings(decoded))
+      XCTAssertEqual(saved.settings, settings)
+      XCTAssertEqual(saved.proof?.intent, .perceptual)
+      XCTAssertEqual(document.store.document, source)
+      XCTAssertTrue(document.store.session.undoStack.isEmpty)
+      XCTAssertFalse(document.isDocumentEdited)
+    }
+  }
+
+  @MainActor func testPhotoshopCopyAndDownloadWriteConfiguredPrintRecords() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let before = document.store.document
+      let status = try await helper.edit(service, document, "print.configure", ["settings": [
+        "sixteenBit": true, "intent": "perceptual", "printerName": "Owned fixture printer",
+        "registrationMarks": true, "labels": true
+      ]])
+      XCTAssertEqual(status, 200)
+      let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".psd")
+      defer { try? FileManager.default.removeItem(at: url) }
+      try await document.copyDocument(to: url, format: .psd)
+      let id = try XCTUnwrap(service.shares.last?.id)
+      let download = try await helper.request(service, path: "/v1/documents/\(id)/file.psb")
+      XCTAssertEqual(download.0.statusCode, 200)
+      for model in try [PSDCodec.read(url), PSDCodec.read(download.1)] {
+        let options = try XCTUnwrap(PhotoshopPrintSettings(model)).applying(to: PrintSettings())
+        XCTAssertTrue(options.sixteenBit)
+        XCTAssertEqual(options.intent, .perceptual)
+        XCTAssertEqual(options.printerName, "Owned fixture printer")
+        XCTAssertTrue(options.registrationMarks && options.labels)
+      }
+      XCTAssertEqual(document.store.document, before)
+      XCTAssertNil(document.fileURL)
+      XCTAssertTrue(document.store.session.undoStack.isEmpty)
+    }
+  }
+
   @MainActor func testAcceptedDefaultsApplyAcrossDocumentsAndPreferenceReloadWithoutCarryingSelection() async throws {
     let name = "Photato.PrintTests." + UUID().uuidString
     let persisted = try XCTUnwrap(UserDefaults(suiteName: name))

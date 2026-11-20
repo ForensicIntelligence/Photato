@@ -141,7 +141,7 @@ import SwiftUI
     }
     store.finishNumericField()
     store.finishLayerName()
-    return try DocumentIO.encodeForPersistence(store.document, format: format,
+    return try DocumentIO.encodeForPersistence(store.documentWithPrintSettings(store.document, format: format), format: format,
       options: effectiveEncodingOptions(compatibleRememberedEncodingOptions[format] ?? .init(), format: format, persistence: true))
   }
   override nonisolated func write(to url: URL, ofType typeName: String) throws {
@@ -157,12 +157,12 @@ import SwiftUI
       // Direct native writes outside the coordinated recovery path.
       let snapshot: CraftDocument
       if Thread.isMainThread {
-        snapshot = MainActor.assumeIsolated {
-          return store.document
+        snapshot = try MainActor.assumeIsolated {
+          try store.documentWithPrintSettings(store.document, format: .native)
         }
       } else {
-        snapshot = DispatchQueue.main.sync {
-          return store.document
+        snapshot = try DispatchQueue.main.sync {
+          try store.documentWithPrintSettings(store.document, format: .native)
         }
       }
       try NativeArchive.write(snapshot, to: url)
@@ -280,8 +280,10 @@ import SwiftUI
         snapshotID: UUID(), documentID: store.document.id, sourceURL: fileURL,
         source: recoverySourceRecord)
       let context: Data
+      let printSnapshot: CraftDocument
       do {
         context = try snapshotContext.encoded()
+        printSnapshot = try store.documentWithPrintSettings(store.document, format: .native)
         try ownerController?.recoveryIndex.begin(snapshotContext, backupURL: url)
         recoveryRegistrationError = nil
       } catch {
@@ -290,7 +292,7 @@ import SwiftUI
         completionHandler(error)
         return
       }
-      let recoveryID = recoveryWrites.begin(store.document, context: context,
+      let recoveryID = recoveryWrites.begin(printSnapshot, context: context,
         encoder: recoveryEncoder ?? NativeRecoveryWriting.write)
       activeRecoveryGeneration = recoveryContentGeneration
       recoveryWriteBusy = true

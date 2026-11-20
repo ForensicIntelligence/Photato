@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **637** · The 10 most recent entries, newest first.
+Source build **638** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 638 — Save document print settings with the artwork
+
+Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields.
+
+All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-638) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_638.md).
 
 ## 2026-11-19 — Step 637 — Remember print defaults and restore supported Photoshop settings
 
@@ -75,11 +83,3 @@ The Channels panel can place masks before or between printing plates. Photato ar
 All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_629.md).
-
-## 2026-11-19 — Step 628 — Drag channel rows and keep menu cues aligned
-
-Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu.
-
-All 1,125 selected tests passed in each configuration. The two signed macOS 14+ archive slices also passed offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-628). [Development notes](PhotoCraftSwift/docs/CHANNEL_DRAG_628.md).

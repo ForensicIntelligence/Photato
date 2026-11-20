@@ -685,7 +685,7 @@ struct CanvasRenderRequest: Sendable {
     self.styles = styles ?? .shared
     self.clipboard = clipboard ?? SystemClipboard.shared
     session = EditorSession(document: document)
-    importedPrintSettings = PhotoshopPrintSettings(document)
+    restorePrintSettings(from: document)
     if document.isChannelOnly,document.quickMask == nil {alphaEditingID=document.alphaChannels?.first?.id}
     timelineVisible = document.animation != nil || document.videoTimeline != nil
     var brushDefaults = BrushSettings()

@@ -255,6 +255,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     store.finishNumericField()
     store.finishLayerName()
     let snapshot = store.document
+    let outputSnapshot = try store.documentWithPrintSettings(snapshot, format: format)
     let source = revertSourceURL
     let generation = store.layerPanelGeneration
     fileOperationBusy = true
@@ -267,7 +268,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     guard store.document == snapshot, store.layerPanelGeneration == generation,
       revertSourceURL == source else { throw DocumentSaveConflict.changed }
     let worker = Task.detached(priority: .userInitiated) {
-      try DocumentIO.prepareOutput(snapshot, format: format, persistence: false, options: effectiveOptions, encoder: encoder)
+      try DocumentIO.prepareOutput(outputSnapshot, format: format, persistence: false, options: effectiveOptions, encoder: encoder)
     }
     let output = try await withTaskCancellationHandler(
       operation: { try await worker.value }, onCancel: { worker.cancel() })
