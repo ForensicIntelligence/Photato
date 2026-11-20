@@ -33,6 +33,13 @@ final class DocumentIOWorkflowTests: XCTestCase {
       XCTAssertTrue(doc.store.session.undoStack.isEmpty)
       let capabilities = AutomationService.documentTransferCapabilities
       let container = try XCTUnwrap(capabilities["photoshopContainers"] as? [String: Any])
+      let embedded = try XCTUnwrap(container["generatedEmbeddedPSB"] as? [String: Any])
+      XCTAssertEqual(embedded["maximumBytes"] as? Int, SmartObject.maximumDocumentSourceBytes)
+      XCTAssertEqual(embedded["previewOrder"] as? [String], ["raw", "rle", "compatibilityOffRGB"])
+      let sourceRecords = try XCTUnwrap(container["photoshopSourceRecords"] as? [String: Any])
+      XCTAssertEqual(sourceRecords["boundedOpenDescriptors"] as? Bool, true)
+      XCTAssertEqual(sourceRecords["chunkedFileOutput"] as? Bool, true)
+      XCTAssertEqual(sourceRecords["originalsCountAgainstPagedHeapBudget"] as? Bool, true)
       XCTAssertEqual(container["readVersions"] as? [Int], [1, 2])
       XCTAssertEqual(container["streamingLargeFiles"] as? Bool, true)
       XCTAssertEqual(container["maximumFileBytes"]as?Int,PSDCodec.maximumFileBytes)
@@ -88,6 +95,99 @@ final class DocumentIOWorkflowTests: XCTestCase {
       XCTAssertEqual(doc.isDocumentEdited, dirty)
       XCTAssertTrue(doc.store.session.undoStack.isEmpty)
       XCTAssertTrue(DocumentIO.uploadTypes.contains("application/x-photoshop"))
+    }
+  }
+
+  @MainActor func testLocalLargeDocumentSourceArchiveNegotiatesVersion95() async throws {
+    var contents = try CraftDocument(width: 4097, height: 2049, depth: .u16)
+    let original = Pixel(0.18, 0.55, 0.27, 0.65)
+    contents.layers[0].content = .raster(try Surface(width: contents.width, height: contents.height,
+      depth: .u16, fill: original))
+    let folder = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let file = folder.appendingPathComponent("Large editable original.psb")
+    try PSDCodec.writeRasterLayers(contents, to: file, format: .psb)
+    let source = try await Task.detached { try PreparedEmbeddedSource.read(file) }.value
+    XCTAssertGreaterThan(source.data.count, SmartObject.maximumSourceBytes)
+    var working = try CraftDocument(width: 256, height: 128, depth: .u16)
+    let placement = try ArtworkPlacementPreparation.prepare(source.data, fileName: source.fileName, in: working,
+      embedded: .init(), decoded: source.document)
+    try placement.apply(to: &working)
+    XCTAssertEqual(working.minimumArchiveVersion, SmartObject.largeSourceArchiveVersion)
+    let placed = try XCTUnwrap(working.layers.last?.smartObject)
+    XCTAssertEqual(placed.data, source.data)
+
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, _ in
+      defer { self.cleanup(service.controller) }
+      service.setDocumentTransfersEnabled(true)
+      let document = CraftNSDocument(model: working)
+      service.controller.addDocument(document)
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.first { $0.document === document }?.id)
+      let route = "/v1/documents/\(id)/file.photato"
+      let legacy = try await self.request(service, path: route, headers: ["X-Photato-Archive-Version": "94"])
+      XCTAssertEqual(legacy.0.statusCode, 422)
+      let latest = try await self.request(service, path: route, headers: ["X-Photato-Archive-Version": "95"], timeout: 180)
+      XCTAssertEqual(latest.0.statusCode, 200)
+      XCTAssertEqual(latest.1.prefix(16), Data("PHOTATO\0".utf8) + Data([95, 0, 0, 0, 0, 0, 0, 0]))
+      let loaded = try NativeArchive.decodePaged(latest.1)
+      XCTAssertEqual(loaded.layers.last?.smartObject?.data, source.data)
+      XCTAssertEqual(loaded.layers.last?.smartObject?.sourceID, placed.sourceID)
+      let photoshop = try await self.request(service, path: "/v1/documents/\(id)/file.psb", timeout: 180)
+      XCTAssertEqual(photoshop.0.statusCode, 200)
+      let reopened = try PSDCodec.readPaged(photoshop.1)
+      XCTAssertEqual(reopened.layers.last?.smartObject?.data, source.data)
+      XCTAssertEqual(reopened.layers.last?.smartObject?.sourceID, placed.sourceID)
+    }
+  }
+
+  @MainActor func testDeepGeneratedSmartObjectSavesAndDownloadsWithEditableChild() async throws {
+    var child = try CraftDocument(width: 4097, height: 2049, depth: .u16)
+    let base = Pixel(0.18, 0.55, 0.27, 0.65), accent = Pixel(0.92, 0.42, 0.16, 0.43)
+    var source = try Surface(width: child.width, height: child.height, depth: .u16, fill: base)
+    source.setPixel(x: 4096, y: 2048, accent)
+    child.layers[0].name = "Editable deep colour"
+    child.layers[0].content = .raster(source)
+    var parent = try CraftDocument(width: 512, height: 256, depth: .u16)
+    let (object, pixels) = try SmartObjectIO.embedded(document: child, in: parent)
+    var placed = Layer(name: "Generated source", content: .raster(pixels))
+    placed.smartObject = object
+    placed.affine = .scale(0.12, 0.12)
+    parent.layers.append(placed)
+    parent.activeLayerID = placed.id
+    let input = try DocumentIO.encode(parent, format: .native)
+
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, _ in
+      defer { self.cleanup(service.controller) }
+      service.setDocumentTransfersEnabled(true)
+      let uploaded = try await self.request(service, path: "/v1/documents/import", data: input,
+        type: DocumentIO.Format.native.mediaType, timeout: 180)
+      XCTAssertEqual(uploaded.0.statusCode, 201)
+      let id = try XCTUnwrap(try self.object(uploaded.1)["id"] as? String)
+      let doc = try XCTUnwrap(service.shares.first { $0.id.uuidString == id }?.document)
+      let original = doc.store.document
+      let reply = try await self.request(service, path: "/v1/documents/\(id)/file.psb", timeout: 180)
+      XCTAssertEqual(reply.0.statusCode, 200)
+      XCTAssertLessThan(reply.1.count, DocumentIO.maximumUploadBytes)
+      let folder = try DocumentPersistenceTests().directory()
+      defer { try? FileManager.default.removeItem(at: folder) }
+      let file = folder.appendingPathComponent("deep-generated.psb")
+      try await doc.copyDocument(to: file, format: .psb)
+      XCTAssertEqual(try Data(contentsOf: file), reply.1)
+      let reopened = try DocumentIO.read(file)
+      let embedded = try XCTUnwrap(reopened.layers.last?.smartObject)
+      XCTAssertEqual(embedded.sourceID, object.sourceID)
+      XCTAssertLessThan(embedded.data.count, SmartObject.maximumSourceBytes)
+      let contents = try SmartObjectIO.sourceDocument(embedded)
+      XCTAssertEqual(contents.width, child.width)
+      XCTAssertEqual(contents.height, child.height)
+      XCTAssertEqual(contents.depth, child.depth)
+      XCTAssertEqual(contents.layers.map(\.name), ["Editable deep colour"])
+      guard case .raster(let saved) = contents.layers.first?.content else { return XCTFail("Expected editable raster.") }
+      XCTAssertTrue(saved.pixel(x: 0, y: 0).hasSameBits(as: source.pixel(x: 0, y: 0)))
+      XCTAssertTrue(saved.pixel(x: 4096, y: 2048).hasSameBits(as: source.pixel(x: 4096, y: 2048)))
+      XCTAssertEqual(doc.store.document, original)
+      XCTAssertTrue(doc.store.session.undoStack.isEmpty)
     }
   }
 
@@ -238,11 +338,11 @@ final class DocumentIOWorkflowTests: XCTestCase {
   }
   @MainActor func request(
     _ service: AutomationService, path: String, data: Data? = nil, type: String = "image/png",
-    headers: [String: String] = [:], authenticate: Bool = true
+    headers: [String: String] = [:], authenticate: Bool = true, timeout: TimeInterval = 10
   ) async throws -> (HTTPURLResponse, Data) {
     var request = URLRequest(
       url: try XCTUnwrap(URL(string: try XCTUnwrap(service.endpoint) + path)))
-    request.timeoutInterval = 10
+    request.timeoutInterval = timeout
     if authenticate {
       request.setValue(
         "Bearer \(try XCTUnwrap(service.token))", forHTTPHeaderField: "Authorization")
@@ -524,7 +624,7 @@ extension DocumentIOWorkflowTests {
       XCTAssertEqual(compatible87.0.statusCode, 200)
       XCTAssertEqual(compatible87.1, try NativeArchive.encodeChunked(document.store.document, minimumVersion: 87))
       XCTAssertEqual(try NativeArchive.decodePaged(compatible87.1), document.store.document)
-      for version in ["9", "94", "invalid"] {
+      for version in ["9", "96", "invalid"] {
         let rejected = try await self.request(
           service, path: "/v1/documents/\(id)/file.photato",
           headers: ["X-Photato-Archive-Version": version])
@@ -552,7 +652,7 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...94))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...95))
       XCTAssertEqual(formats["multichannelOrderVersion"] as? Int, 94)
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),

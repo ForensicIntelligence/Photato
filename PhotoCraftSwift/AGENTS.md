@@ -1,3 +1,5 @@
+**Source checkpoint 649.** PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips. [Qualification](docs/SOURCE_PUBLICATION_649.md).
+
 **Source checkpoint 646.** The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte. [Qualification](docs/SOURCE_PUBLICATION_646.md).
 
 **Source checkpoint 638.** Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields. [Qualification](docs/SOURCE_PUBLICATION_638.md).

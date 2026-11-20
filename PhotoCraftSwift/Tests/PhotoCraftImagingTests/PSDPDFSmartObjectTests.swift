@@ -97,7 +97,7 @@ final class PSDPDFSmartObjectTests: XCTestCase {
     var imageDoc = d;imageDoc.layers[0].smartObject = image;imageDoc.layers[0].content = .raster(pixels)
     XCTAssertThrowsError(try PSDCodec.writeRasterLayers(imageDoc))
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(imageDoc)),imageDoc)
-    var tag = try PSDSmartObjects.linkedData(d);tag[15] = 9
+    var tag = Data(try PSDSmartObjects.linkedData(d).joined());tag[15] = 9
     var unsupported = d;unsupported.sourceMetadata = ["psdGlobal_lnk2":tag]
     XCTAssertThrowsError(try PSDSmartObjects.files(unsupported))
   }

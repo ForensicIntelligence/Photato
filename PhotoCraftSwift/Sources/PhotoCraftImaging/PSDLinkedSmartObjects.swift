@@ -6,12 +6,13 @@ enum PSDLinkedSmartObjects {
   static func text(_ value:PSDValue?)->String? {
     guard case .text(let units)=value else{return nil};return String(decoding:units.prefix{$0 != 0},as:UTF16.self)
   }
-  static func read(_ item:inout PSDReader,version:Int,length:Int,name:String,type:String,typeBytes:Data?=nil)throws->PSDSmartObjects.File {
-    let (descriptor,used)=try PSDDescriptor.readPrefix(Data(item.data.dropFirst(item.offset)))
-    _ = try item.bytes(used)
+  static func read(_ item:inout PSDReader,version:Int,length:Int,name:String,type:String,typeBytes:Data?=nil,
+    paging: PSDRasterPaging.Context? = nil)throws->PSDSmartObjects.File {
+    let descriptor = try PSDDescriptor.readPrefix(&item)
     if version>3 {_ = try item.bytes(16)}
     let size=try item.number(8)
-    let bytes=version>2 ? try item.bytes(length):Data()
+    if version > 2 { try paging?.admitRetainedSource(bytes: length) }
+    let bytes = version > 2 ? try item.retainedBytes(length) : Data()
     var reference=text(descriptor["fullPath"]) ?? text(descriptor["relPath"]) ?? name
     var kind=LinkedSmartObjectSource.Kind.file
     if let url=URL(string:reference),["http","https"].contains(url.scheme?.lowercased() ?? "") {

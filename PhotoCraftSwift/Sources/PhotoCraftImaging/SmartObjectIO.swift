@@ -20,8 +20,8 @@ public enum SmartObjectIO {
 
   static func photoshopDocumentName(_ data: Data, fileName: String) throws -> String? {
     guard data.starts(with: Data("8BPS".utf8)) else { return nil }
-    guard data.count <= SmartObject.maximumSourceBytes else {
-      throw CraftError.invalid("Embedded source exceeds 64 MiB.")
+    guard data.count <= SmartObject.maximumDocumentSourceBytes else {
+      throw CraftError.invalid("Embedded Photoshop source exceeds 256 MiB.")
     }
     guard data.count >= 26 else { throw CraftError.invalid("Truncated embedded Photoshop header.") }
     let width = data.dropFirst(18).prefix(4).reduce(0) { ($0 << 8) | Int($1) }
@@ -38,8 +38,8 @@ public enum SmartObjectIO {
   }
   public static func decode(_ data: Data, fileName: String) throws -> CraftDocument {
     try withNesting {
-      guard data.count <= SmartObject.maximumSourceBytes else {
-        throw CraftError.invalid("Embedded source exceeds 64 MiB.")
+      guard data.count <= SmartObject.maximumEmbeddedBytes(forHeader: data) else {
+        throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
       }
       if data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
         let document = try NativeArchive.decodePaged(data, heapByteLimit: 256 * 1_024 * 1_024)
@@ -78,7 +78,7 @@ public enum SmartObjectIO {
     let pagedRGB=document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil
     guard (pagedRGB || document.width <= maximumCanvasPixels / document.height),
       document.estimatedBytes <= maximumDecodedBytes else {
-      throw CraftError.unsupported("Smart Objects require at most256 MiB owned content; non-RGB sources retain8,388,608-pixel admission. Encoded sources retain the64 MiB limit.")
+      throw CraftError.unsupported("Smart Objects require at most256 MiB owned content; non-RGB sources retain8,388,608-pixel admission.")
     }
   }
   public static func embedded(document: CraftDocument, in parent: CraftDocument,
@@ -87,7 +87,7 @@ public enum SmartObjectIO {
       return (object,try ColorManagement.converted(sourceComposite(document),from:document,to:parent))
     }
     try check(document)
-    let data = try originalData ?? NativeArchive.encodeChunked(document)
+    let data = try originalData ?? NativeArchive.encodeChunked(document, maximumBytes: SmartObject.maximumDocumentSourceBytes)
     let type: String
     if originalData == nil || data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
       type = "application/vnd.photato.document"

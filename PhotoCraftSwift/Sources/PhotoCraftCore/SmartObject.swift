@@ -5,10 +5,26 @@ import Foundation
 /// to the layer, so transforms never overwrite these source pixels.
 public struct SmartObject: Equatable, Sendable, Codable {
   public static let maximumSourceBytes = 64 * 1_024 * 1_024
+  public static let maximumDocumentSourceBytes = 256 * 1_024 * 1_024
+  public static let largeSourceArchiveVersion = 95
+
+  public static func photoshopSourceVersion(_ header: Data) -> Int? {
+    guard header.count >= 6, header.prefix(4).elementsEqual("8BPS".utf8),
+      header[header.startIndex + 4] == 0 else { return nil }
+    let version = Int(header[header.startIndex + 5])
+    return (1...2).contains(version) ? version : nil
+  }
+
+  public static func maximumEmbeddedBytes(forHeader header: Data) -> Int {
+    if photoshopSourceVersion(header) != nil || header.starts(with: "PHOTATO\0".utf8) {
+      return maximumDocumentSourceBytes
+    }
+    return maximumSourceBytes
+  }
   public var sourceID: UUID
   public var fileName: String
   public var mediaType: String
-  public var data: Data {didSet{dataDigest=data.count<=Self.maximumSourceBytes ? Self.fingerprint(data):""}}
+  public var data: Data {didSet{dataDigest=data.count<=Self.maximumDocumentSourceBytes ? Self.fingerprint(data):""}}
   private var dataDigest=""
   public var dataFingerprint:String{dataDigest.isEmpty ? Self.fingerprint(data):dataDigest}
   private static func fingerprint(_ value:Data)->String{SHA256.hash(data:value).map{String(format:"%02x",$0)}.joined()}
@@ -62,13 +78,18 @@ public struct SmartObject: Equatable, Sendable, Codable {
     var a = self, b = other; a.stackMode = nil; b.stackMode = nil; a.layerComps = nil; b.layerComps = nil; return a == b
   }
   public func validate() throws {
-    guard (!data.isEmpty || linkedSource != nil), data.count <= Self.maximumSourceBytes,
+    let canRetainLargeSource = linkedSource == nil && (
+      (mediaType == "application/vnd.photato.document" && data.starts(with: "PHOTATO\0".utf8))
+        || (mediaType == "image/vnd.adobe.photoshop" && Self.photoshopSourceVersion(data) == 1)
+        || (mediaType == "application/x-photoshop" && Self.photoshopSourceVersion(data) == 2))
+    guard (!data.isEmpty || linkedSource != nil),
+      data.count <= (canRetainLargeSource ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes),
       !fileName.isEmpty, fileName.utf8.count <= 1024,
       !fileName.contains("/"), !fileName.contains("\\"), !fileName.contains("\0"),
       (["application/vnd.photato.document", "application/vnd.photocraft.project", "image/vnd.adobe.photoshop", "application/x-photoshop",
         "application/pdf", "image/x-camera-raw", "image/x-adobe-dng", "image/png", "image/jpeg", "image/tiff", "image/heic", "image/bmp", "image/gif"].contains(mediaType) || (mediaType=="application/octet-stream" && linkedSource != nil)),
       resolution.isFinite, (1...100_000).contains(resolution) else {
-      throw CraftError.invalid("Invalid embedded Smart Object source or 64 MiB source limit exceeded.")
+      throw CraftError.invalid("Invalid embedded Smart Object source or source size limit exceeded.")
     }
     guard ["image/x-camera-raw","image/x-adobe-dng"].contains(mediaType) == (rawDevelopment != nil) else { throw CraftError.invalid("RAW sources require their development settings.") }
     guard stackMode == nil || rawDevelopment == nil else { throw CraftError.invalid("Developed RAW sources must be converted into a layered Smart Object before stacking.") }
@@ -100,7 +121,10 @@ public struct SmartObject: Equatable, Sendable, Codable {
       guard !c.contains(.data), let context = decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding else {
         throw CraftError.invalid("Embedded source blobs require their owned archive context.")
       }
-      data = try context.bytes(c.decode(String.self, forKey: .sourceBlob), maximumBytes: Self.maximumSourceBytes)
+      let isLayeredDocument = ["application/vnd.photato.document", "image/vnd.adobe.photoshop",
+        "application/x-photoshop"].contains(mediaType)
+      data = try context.bytes(c.decode(String.self, forKey: .sourceBlob),
+        maximumBytes: isLayeredDocument ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes)
     } else { data = try c.decode(Data.self, forKey: .data) }
     try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?
       .reserve(tiles: (data.count + TileArchive.byteCount - 1) / TileArchive.byteCount)

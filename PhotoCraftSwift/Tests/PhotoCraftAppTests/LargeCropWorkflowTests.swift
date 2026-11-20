@@ -47,7 +47,7 @@ final class LargeCropWorkflowTests:XCTestCase {
       var linked=try self.fixture(width:8,height:6),copy=Layer(name:"Second",content:.raster(try Surface(width:8,height:6)));copy.visible=false;linked.layers.append(copy);try LayerLinks.apply(.link(linked.layers.map(\.id)),to:&linked);doc.store.session=EditorSession(document:linked)
       let legacy=try await h.request(service,path:"/v1/documents/\(id)/file.photato",headers:["X-Photato-Archive-Version":"83"]);XCTAssertEqual(legacy.0.statusCode,422)
       let accepted=try await h.request(service,path:"/v1/documents/\(id)/file.photato",headers:["X-Photato-Archive-Version":"84"]);XCTAssertEqual(accepted.0.statusCode,200);XCTAssertEqual(try NativeArchive.decode(accepted.1),linked)
-      let metadata=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String:Any]),header=try XCTUnwrap(metadata["downloadVersionHeader"] as? [String:Any]),schema=try XCTUnwrap(header["schema"] as? [String:Any]);XCTAssertEqual(schema["enum"] as? [String],(10...93).map(String.init));XCTAssertEqual(metadata["backgroundLayerVersion"] as? Int,83)
+      let metadata=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String:Any]),header=try XCTUnwrap(metadata["downloadVersionHeader"] as? [String:Any]),schema=try XCTUnwrap(header["schema"] as? [String:Any]);XCTAssertEqual(schema["enum"] as? [String],(10...95).map(String.init));XCTAssertEqual(metadata["backgroundLayerVersion"] as? Int,83)
     }
   }
 

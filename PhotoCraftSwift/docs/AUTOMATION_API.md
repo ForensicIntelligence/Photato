@@ -1,3 +1,15 @@
+### Large embedded document originals (checkpoint 649)
+
+The desktop permits up to 256 MiB of encoded PSD, PSB or chunked native data per embedded original. `smartObjects.sourcePlacement.maximumLocalDocumentSourceBytes` describes that file-based limit. The authenticated source POST retains its 64 MiB body limit, and the shared-document and file download limits remain 128 MiB. An explicit `X-Photato-Archive-Version: 95` is required to download a native document that retains an embedded original above 64 MiB. Explicit version 94 is also available, including for the Multichannel order it introduced. [Development record](LARGE_EMBEDDED_ORIGINALS_649.md)
+
+### Photoshop source records (checkpoint 648)
+
+The `documentTransfers.photoshopContainers.photoshopSourceRecords` capability describes bounded open descriptors, chunked file output and encoded source accounting during paged reads. Desktop Open and Save, Photato file transfers and the Photoshop-compatible job codec share this handling. [Development record](EMBEDDED_SOURCE_RECORDS_648.md)
+
+### Generated embedded PSB sources (checkpoint 647)
+
+The `documentTransfers.photoshopContainers.generatedEmbeddedPSB` capability describes the raw, PackBits and compatibility-off preview order. The writer tries the 64 MiB budget first, then the 256 MiB budget introduced in 649. Native save, Photato transfers and Photoshop-compatible job output use the shared encoder. The caller's preview option sets the parent file's preview. An eligible generated child can omit its process preview and retain its editable layers, alpha and auxiliary data. [Development record](EMBEDDED_SMART_SOURCE_647.md)
+
 ### Large Smart Filter file transfers (checkpoint 646)
 
 The shared Photoshop file codec preserves implicit RGB source pixels and Smart Filter mask coverage on eligible large files. The authenticated `POST /v1/documents/import` and `GET /v1/documents/{id}/file.psb` round trip preserves the embedded source, editable High Pass and white mask on the tested 9-megapixel file. Adobe-compatible Execute Actions keeps using the shared Photoshop codec and its published output formats. The change affects codec storage and performance. Endpoint schemas, request budgets and selected output options keep their existing contracts. [Development record](PSD_SMART_FILTER_PAGING_646.md)

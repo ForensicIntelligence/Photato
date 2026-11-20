@@ -662,6 +662,9 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 644 | [Match linked raster previews to saved mask samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) |
 | 2026-11-19 | 645 | [Keep Gradient Overlay editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) |
 | 2026-11-19 | 646 | [Speed up large editable Smart Filter files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) |
+| 2026-11-19 | 647 | [Keep large generated Smart Object sources editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) |
+| 2026-11-19 | 648 | [Keep large embedded sources once](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-648) |
+| 2026-11-19 | 649 | [Place and reopen larger Photoshop originals](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-649) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

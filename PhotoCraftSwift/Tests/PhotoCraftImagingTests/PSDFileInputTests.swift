@@ -155,6 +155,41 @@ final class PSDFileInputTests: XCTestCase {
     XCTAssertThrowsError(try PSDFileSource(directory.appendingPathComponent("missing.psb")))
   }
 
+  func testMetadataOnlyRetryAndChangedPayloadPolicy() throws {
+    let directory = try temporaryDirectory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let url = directory.appendingPathComponent("owned.psb")
+    let document = try CraftDocument(width: 8, height: 5)
+    try PSDCodec.writeRasterLayers(document, to: url, format: .psb)
+    let expected = try Data(contentsOf: url)
+    var attempts = 0
+    let retained = try PSDFileSource.withStableMetadata(url) { source in
+      attempts += 1
+      if attempts == 1 {
+        let fd = open(url.path, O_RDONLY)
+        XCTAssertGreaterThanOrEqual(fd, 0)
+        defer { _ = close(fd) }
+        var value = UInt8(1)
+        XCTAssertEqual(fsetxattr(fd, "com.photato.test-provenance", &value, 1, 0, 0), 0)
+      }
+      let bytes = try source.bytes(at: 0, count: source.count)
+      try source.validateUnchanged()
+      return bytes
+    }
+    XCTAssertEqual(attempts, 2)
+    XCTAssertEqual(retained, expected)
+
+    attempts = 0
+    XCTAssertThrowsError(try PSDFileSource.withStableMetadata(url) { source in
+      attempts += 1
+      try Data([0]).write(to: url, options: .atomic)
+      try source.validateUnchanged()
+    }) { error in
+      XCTAssertEqual(error as? CraftError, .invalid("The image file changed while it was being read. Open it again."))
+    }
+    XCTAssertEqual(attempts, 1)
+  }
+
   func testInterleavedReadWindowsStayBoundedAndMatchOriginalBytes() throws {
     let directory = try temporaryDirectory()
     defer { try? FileManager.default.removeItem(at: directory) }

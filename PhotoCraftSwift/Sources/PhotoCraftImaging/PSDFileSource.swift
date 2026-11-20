@@ -6,6 +6,9 @@ import PhotoCraftCore
 /// mmap faults if another process truncates the file. A small shared page cache
 /// accommodates interleaved RGB/alpha/mask scanlines without retaining the file.
 final class PSDFileSource {
+  private struct MetadataChanged: LocalizedError {
+    var errorDescription: String? { PSDFileSource.changedError().localizedDescription }
+  }
   static let pageBytes = 64 * 1024
   static let maximumCachedPages = 8
   struct Metrics {
@@ -29,6 +32,10 @@ final class PSDFileSource {
       modifiedNanoseconds = value.st_mtimespec.tv_nsec
       changedSeconds = value.st_ctimespec.tv_sec
       changedNanoseconds = value.st_ctimespec.tv_nsec
+    }
+    func sameFileAndModification(as other: Self) -> Bool {
+      device == other.device && inode == other.inode && size == other.size
+        && modifiedSeconds == other.modifiedSeconds && modifiedNanoseconds == other.modifiedNanoseconds
     }
   }
   let count: Int
@@ -73,6 +80,20 @@ final class PSDFileSource {
 
   deinit { Darwin.close(descriptor) }
 
+  /// macOS can attach provenance to a just-saved file. Restart from a fresh
+  /// descriptor once, with the same inode, size and modification time.
+  static func withStableMetadata<T>(_ url: URL, read: (PSDFileSource) throws -> T) throws -> T {
+    let original = try PSDFileSource(url)
+    do {
+      return try read(original)
+    } catch is MetadataChanged {
+      try Task.checkCancellation()
+      let retry = try PSDFileSource(url)
+      guard retry.identity.sameFileAndModification(as: original.identity) else { throw changedError() }
+      do { return try read(retry) } catch is MetadataChanged { throw changedError() }
+    }
+  }
+
   /// Metadata callers may materialize a bounded block; channel callers request
   /// rows/chunks. Every physical read is at most one page regardless of count.
   func bytes(at offset: Int, count: Int) throws -> Data {
@@ -103,18 +124,22 @@ final class PSDFileSource {
     try Task.checkCancellation()
     lock.lock()
     defer { lock.unlock() }
-    try validateDescriptor()
-    var current = stat()
-    let status = url.withUnsafeFileSystemRepresentation { path in
-      path.map { Darwin.fstatat(AT_FDCWD, $0, &current, 0) } ?? -1
-    }
-    guard status == 0, Identity(current) == identity else { throw Self.changedError() }
+    try validateDescriptor(verifyPath: true)
   }
 
-  private func validateDescriptor() throws {
+  private func validateDescriptor(verifyPath: Bool = false) throws {
     var current = stat()
     guard fstat(descriptor, &current) == 0 else { throw Self.posixError() }
-    guard Identity(current) == identity else { throw Self.changedError() }
+    let opened = Identity(current)
+    guard opened.sameFileAndModification(as: identity) else { throw Self.changedError() }
+    guard verifyPath || opened != identity else { return }
+    var pathIdentity = stat()
+    let status = url.withUnsafeFileSystemRepresentation { path in
+      path.map { Darwin.fstatat(AT_FDCWD, $0, &pathIdentity, 0) } ?? -1
+    }
+    let named = Identity(pathIdentity)
+    guard status == 0, named.sameFileAndModification(as: identity) else { throw Self.changedError() }
+    guard opened == identity, named == identity else { throw MetadataChanged() }
   }
 
   private func readPage(_ index: Int) throws -> Data {

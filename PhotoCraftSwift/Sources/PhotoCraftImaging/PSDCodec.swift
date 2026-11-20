@@ -115,10 +115,11 @@ public enum PSDCodec {
     PSDFileSource.pageBytes * PSDFileSource.maximumCachedPages
 
   public static func read(_ url: URL, name: String? = nil) throws -> CraftDocument {
-    let source = try PSDFileSource(url)
-    return try read(
-      PSDReader(file: source), name: name ?? url.deletingPathExtension().lastPathComponent,
-      paging: PSDRasterPaging.Context())
+    try PSDFileSource.withStableMetadata(url) { source in
+      try read(
+        PSDReader(file: source), name: name ?? url.deletingPathExtension().lastPathComponent,
+        paging: PSDRasterPaging.Context())
+    }
   }
 
   private static func storageBytes(width: Int, height: Int) -> Int {
@@ -389,6 +390,7 @@ public enum PSDCodec {
       ? try layerSection.section(lengthBytes: format.sectionLengthBytes) : PSDReader(data: Data())
     var mergedTransparency = false
     var filterCacheViews:[String:PSDReader]=[:]
+    var linkViews: [String: PSDReader] = [:]
     if layerSection.remaining > 0 {
       let global = try layerSection.section()
       guard global.remaining == 0 || global.remaining >= 13 else {
@@ -420,6 +422,15 @@ public enum PSDCodec {
           if length<=PSDSmartFilters.maximumRetainedCacheBytes {doc.sourceMetadata?["psdGlobal_"+tag]=try contentView.data}
           continue
         }
+        if PSDSmartObjects.linkKeys.contains(tag) {
+          linkViews[tag] = contentView
+          // The editable sources own their bytes. Keep legacy metadata for
+          // small blocks without duplicating a large aggregate of originals.
+          if length <= SmartObject.maximumSourceBytes {
+            doc.sourceMetadata?["psdGlobal_" + tag] = try contentView.data
+          }
+          continue
+        }
         let content = try contentView.data
         if ["Mt16", "Mt32", "Mtrn"].contains(tag) {
           mergedTransparency = true
@@ -447,7 +458,7 @@ public enum PSDCodec {
             }
           }
           if PSDArtboards.keys.contains(tag) { _ = try PSDArtboards.global(content) }
-          guard ["Patt", "Pat2", "Pat3", "FMsk", "cinf", "CAI ", "OCIO", "GenI", "Anno", "FEid", "FXid", "lnk2", "lnk3", "lnkD", "lnkE"].contains(tag) || PSDArtboards.keys.contains(tag)
+          guard ["Patt", "Pat2", "Pat3", "FMsk", "cinf", "CAI ", "OCIO", "GenI", "Anno"].contains(tag) || PSDArtboards.keys.contains(tag)
           else {
             throw CraftError.unsupported("Global PSD block '\(tag)' is not ported yet.")
           }
@@ -735,7 +746,8 @@ public enum PSDCodec {
           protection: protection, mask: mask, tags: tags, section: section,
           passThrough: sectionBlend == "pass", clipped: clipping == 1))
     }
-    let embeddedFiles = try PSDSmartObjects.files(doc)
+    let embeddedFiles = try PSDSmartObjects.files(doc,
+      readers: PSDSmartObjects.linkKeys.compactMap { linkViews[$0] }, paging: paging)
     let filterMasks = try PSDSmartFilters.masks(in:doc,readers:["FEid","FXid"].compactMap {filterCacheViews[$0]},paging:paging)
     var layers: [Layer] = []
     var placedIndices: [Int] = []
@@ -1181,11 +1193,41 @@ public enum PSDCodec {
       linkedSources: linkedSources)
   }
 
+  /// A generated child is admitted separately from the parent Photoshop file.
+  /// Prefer its complete composite whenever possible and retain all layer data
+  /// when an eligible child needs the compatibility-off representation.
+  static func writeEmbeddedSmartObject(_ doc: CraftDocument,
+    maximumBytes: Int = SmartObject.maximumDocumentSourceBytes) throws -> Data {
+    try Task.checkCancellation()
+    try doc.validate()
+    let linkedSources = try doc.requiresSmartObjectArchive ? PSDSmartObjects.linkedData(doc) : nil
+    var encodings: [(compression: PSDCompression, maximizeCompatibility: Bool)] = [(.raw, true), (.rle, true)]
+    if canOmitMergedImage(doc) { encodings.append((.rle, false)) }
+    var capacities = [min(maximumBytes, SmartObject.maximumSourceBytes)]
+    if maximumBytes > SmartObject.maximumSourceBytes { capacities.append(maximumBytes) }
+    for capacity in capacities {
+      for encoding in encodings {
+        let output = PSDOutput(maximumBytes: capacity)
+        do {
+          try writeContainer(doc, compression: .zipPrediction, format: .psb,
+            compositeCompression: encoding.compression, output: output, includeComposite: true,
+            maximizeCompatibility: encoding.maximizeCompatibility, linkedSources: linkedSources)
+          return output.data
+        } catch where output.exceededByteLimit {
+          // Retry only an overflow of this writer. Validation, corruption and
+          // cancellation always propagate through the same transaction.
+        }
+      }
+    }
+    let limit = maximumBytes <= SmartObject.maximumSourceBytes ? 64 : 256
+    throw CraftError.unsupported("PSD embedded source exceeds \(limit) MiB.")
+  }
+
   @inline(never)
   private static func writeContainer(
     _ doc: CraftDocument, compression: PSDCompression, format: PSDFileFormat,
     compositeCompression requestedCompositeCompression: PSDCompression, output: PSDOutput,
-    includeComposite: Bool, maximizeCompatibility: Bool, linkedSources: Data?
+    includeComposite: Bool, maximizeCompatibility: Bool, linkedSources: [Data]?
   ) throws {
     // Photoshop rejects ZIP markers in the final Image Data section.
     // Preserve RLE and raw requests, and retain Bitmap's predictor validation.
@@ -1725,8 +1767,11 @@ public enum PSDCodec {
     }
     if let linked = linkedSources {
       try layerMask.text(format.tagSignature("lnk2") + "lnk2")
-      try layerMask.section(linked, lengthBytes: format.tagLengthBytes("lnk2"))
-      for _ in 0..<((4 - linked.count % 4) % 4) { try layerMask.n(0, 1) }
+      let width = format.tagLengthBytes("lnk2"), mark = try layerMask.reserveLength(width)
+      for chunk in linked { try layerMask.append(chunk) }
+      let length = layerMask.count - mark - width
+      try layerMask.finishLength(mark, width: width)
+      for _ in 0..<((4 - length % 4) % 4) { try layerMask.n(0, 1) }
     }
     if doc.layers.contains(where: { $0.smartFilters != nil }) {
       try layerMask.text(format.tagSignature("FEid") + "FEid")
@@ -1767,6 +1812,12 @@ public enum PSDCodec {
         }
       return
     }
+    let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
+    if compositeCompression == .raw {
+      let compositeBytes = try PSDChannelCodec.streamByteCount(width: doc.width, height: doc.height,
+        depth: depth, channels: imageChannels + auxiliaryChannels.count)
+      try output.requireCapacity(compositeBytes + 2)
+    }
     let pagedComposite = doc.colorMode == .rgb && (doc.width*doc.height > Surface.maximumDensePixels
       || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
       ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
@@ -1795,7 +1846,6 @@ public enum PSDCodec {
     } else {
       nativeComposite = nil
     }
-    let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
     let repeatedRows: ((Int) -> Int)?
     if sparseComposite != nil || gray32Composite?.usesSparseRows == true || retainedCMYKRows != nil
       || storedAuxiliary.contains(where: { $0 != nil }) {

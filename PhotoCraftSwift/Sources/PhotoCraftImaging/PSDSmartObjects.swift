@@ -5,17 +5,22 @@ import PhotoCraftCore
 // affine placement. External references remain declarative; never resolve filesystem links.
 enum PSDSmartObjects {
   struct File { var name: String; var data: Data;var link:LinkedSmartObjectSource?=nil;var fileType:String="";var fileTypeBytes:Data?=nil }
-  static func files(_ document: CraftDocument) throws -> [String: File] {
+  static let linkKeys = ["lnk2", "lnk3", "lnkD", "lnkE"]
+  static func files(_ document: CraftDocument, readers: [PSDReader]? = nil,
+    paging: PSDRasterPaging.Context? = nil) throws -> [String: File] {
     var files: [String: File] = [:]
-    for key in ["lnk2", "lnk3", "lnkD", "lnkE"] {
-      guard let data = document.sourceMetadata?["psdGlobal_" + key] else { continue }
-      var r = PSDReader(data: data)
+    let sources = readers ?? linkKeys.compactMap { key in
+      document.sourceMetadata?["psdGlobal_" + key].map { PSDReader(data: $0) }
+    }
+    for var r in sources {
       while r.remaining > 0 {
         if r.remaining < 8 {
           guard try r.consumePadding(0) else { throw CraftError.invalid("Invalid linked-file padding.") }; break
         }
         let size = try r.length(8)
-        guard size <= SmartObject.maximumSourceBytes + 65_536 else { throw CraftError.unsupported("Embedded file exceeds 64 MiB.") }
+        guard size <= SmartObject.maximumDocumentSourceBytes + 65_536 else {
+          throw CraftError.unsupported("Embedded Photoshop record exceeds its size limit.")
+        }
         var item = try r.view(size)
         let kind = try item.string(4), version = try item.u32()
         // Photoshop 2026's owned PDF fixtures use version 8. Its additional
@@ -29,15 +34,27 @@ enum PSDSmartObjects {
         let name = String(decoding: units.prefix { $0 != 0 }, as: UTF16.self)
         let typeBytes=try item.bytes(4),type=String(decoding:typeBytes,as:UTF8.self);_ = try item.bytes(4)
         let length = try item.length(8)
-        guard length <= SmartObject.maximumSourceBytes else { throw CraftError.unsupported("Embedded file exceeds 64 MiB.") }
+        guard length <= (kind == "liFD" ? SmartObject.maximumDocumentSourceBytes : SmartObject.maximumSourceBytes) else {
+          throw CraftError.unsupported("Linked or embedded file exceeds its size limit.")
+        }
         if try item.u8() != 0 {
-          let bytes = try item.data.dropFirst(item.offset)
-          let (_, consumed) = try PSDDescriptor.readPrefix(Data(bytes))
-          _ = try item.bytes(consumed)
+          _ = try PSDDescriptor.readPrefix(&item)
         }
         if kind == "liFD" || kind == "liFE" {
           guard files[id]==nil else{throw CraftError.invalid("Duplicate linked source identifier.")}
-          files[id]=kind=="liFE" ? try PSDLinkedSmartObjects.read(&item,version:version,length:length,name:name,type:type,typeBytes:typeBytes):File(name:name,data:try item.bytes(length),fileType:type,fileTypeBytes:typeBytes)
+          if kind == "liFE" {
+            files[id] = try PSDLinkedSmartObjects.read(&item, version: version, length: length,
+              name: name, type: type, typeBytes: typeBytes, paging: paging)
+          } else {
+            if length > SmartObject.maximumSourceBytes {
+              var prefix = item
+              guard SmartObject.photoshopSourceVersion(try prefix.bytes(6)) != nil else {
+                throw CraftError.unsupported("Only PSD or PSB originals may exceed 64 MiB in a Photoshop container.")
+              }
+            }
+            try paging?.admitRetainedSource(bytes: length)
+            files[id] = File(name: name, data: try item.retainedBytes(length), fileType: type, fileTypeBytes: typeBytes)
+          }
         }
         _ = try r.bytes((4 - size % 4) % 4)
       }
@@ -194,8 +211,11 @@ enum PSDSmartObjects {
     preview.sourceTags?.removeValue(forKey: "SoLE"); preview.sourceTags?.removeValue(forKey: "PlLd")
     return preview
   }
-  static func linkedData(_ document: CraftDocument) throws -> Data {
-    var out = PSDWriter(), seen: [UUID: SmartObject] = [:],opaqueTypes:[UUID:Data]=[:]
+  /// Separate headers and padding from original bytes so a file save can write
+  /// each source directly to the same bounded output as the layer planes.
+  static func linkedData(_ document: CraftDocument) throws -> [Data] {
+    var chunks: [Data] = []
+    var seen: [UUID: SmartObject] = [:], opaqueTypes: [UUID: Data] = [:]
     for layer in document.layers {
       guard let object=layer.smartObject else{continue}
       if object.linkedSource != nil,object.mediaType=="application/octet-stream",object.data.isEmpty {
@@ -206,23 +226,35 @@ enum PSDSmartObjects {
         guard previous.sharesSource(with: object) else { throw CraftError.invalid("Conflicting shared Smart Object sources.") }; continue
       }
       seen[object.sourceID] = object
-      if object.linkedSource != nil {try PSDLinkedSmartObjects.append(object,typeHint:layer.sourceTags?["PhFT"],to:&out);continue}
+      if object.linkedSource != nil {
+        var record = PSDWriter()
+        try PSDLinkedSmartObjects.append(object, typeHint: layer.sourceTags?["PhFT"], to: &record)
+        chunks.append(record.data)
+        continue
+      }
       var bytes = object.data, name = object.fileName
       if !["application/pdf", "image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType) {
-        bytes = try SmartObjectIO.withNesting { try PSDCodec.writeRasterLayers(SmartObjectIO.sourceDocument(object), format: .psb) }
+        bytes = try SmartObjectIO.withNesting { try PSDCodec.writeEmbeddedSmartObject(SmartObjectIO.sourceDocument(object)) }
         name = (name as NSString).deletingPathExtension + ".psb"
       }
-      guard bytes.count <= SmartObject.maximumSourceBytes else { throw CraftError.unsupported("PSD embedded source exceeds 64 MiB.") }
+      let limit = SmartObject.photoshopSourceVersion(bytes) != nil
+        ? SmartObject.maximumDocumentSourceBytes : SmartObject.maximumSourceBytes
+      guard bytes.count <= limit else { throw CraftError.unsupported("PSD embedded source exceeds its file format's limit.") }
       var item = PSDWriter(); item.text("liFD"); item.n(7, 4)
       let id = object.sourceID.uuidString; item.n(id.utf8.count, 1); item.text(id)
       let units = Array((name + "\0").utf16); item.n(units.count, 4); for unit in units { item.n(Int(unit), 2) }
       let type = bytes.starts(with: Data("8BPS".utf8)) ? (bytes[5] == 2 ? "8BPB" : "8BPS") : object.mediaType == "application/pdf" ? "PDF " : object.mediaType == "image/png" ? "PNGf" : object.mediaType == "image/jpeg" ? "JPEG" : "TIFF"
-      item.text(type); item.text("8BIM"); item.n(bytes.count, 8); item.n(0, 1); item.data.append(bytes)
-      item.n(0, 4); item.n(0, 8); item.n(0, 1)
-      out.n(item.data.count, 8); out.data.append(item.data)
-      while out.data.count % 4 != 0 { out.n(0, 1) }
+      item.text(type); item.text("8BIM"); item.n(bytes.count, 8); item.n(0, 1)
+      let tailBytes = 4 + 8 + 1 // Empty child document ID, asset time and lock.
+      let length = item.data.count + bytes.count + tailBytes
+      var header = PSDWriter()
+      header.n(length, 8)
+      header.data.append(item.data)
+      chunks.append(header.data)
+      chunks.append(bytes)
+      chunks.append(Data(count: tailBytes + (4 - length % 4) % 4))
     }
-    return out.data
+    return chunks
   }
 }
 private extension Optional where Wrapped == PSDValue {

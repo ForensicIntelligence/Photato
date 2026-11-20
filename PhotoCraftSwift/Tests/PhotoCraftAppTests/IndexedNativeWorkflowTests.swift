@@ -28,14 +28,50 @@ final class IndexedNativeWorkflowTests:XCTestCase {
       let stale=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"paint.stroke","revision":"stale","parameters":parameters]);XCTAssertEqual(stale.0.statusCode,409)
       let edit=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"paint.stroke","revision":service.revision(shared.store),"parameters":parameters]);XCTAssertEqual(edit.0.statusCode,200);XCTAssertNotEqual(shared.store.document,baseline)
       let undo=try await helper.request(service,path:"/v1/documents/\(newID)/commands",body:["command":"history.undo","revision":service.revision(shared.store),"parameters":[:]]);XCTAssertEqual(undo.0.statusCode,200);XCTAssertEqual(shared.store.document,baseline)
-      let capabilities=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"]as?[String:Any]);XCTAssertEqual(capabilities["hierarchicalIndexVersion"]as?Int,63);XCTAssertEqual(capabilities["readVersions"]as?[Int],Array(1...94))
-      for version in 64...93 {
+      let capabilities=try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"]as?[String:Any]);XCTAssertEqual(capabilities["hierarchicalIndexVersion"]as?Int,63);XCTAssertEqual(capabilities["readVersions"]as?[Int],Array(1...95))
+      for version in 64...95 {
         download.setValue(String(version),forHTTPHeaderField:"X-Photato-Archive-Version")
         let(data,response)=try await URLSession.shared.data(for:download)
         XCTAssertEqual((response as? HTTPURLResponse)?.statusCode,200)
         XCTAssertEqual(try NativeArchive.decodePaged(data),baseline)
       }
-      download.setValue("94",forHTTPHeaderField:"X-Photato-Archive-Version");let(_,invalid)=try await URLSession.shared.data(for:download);XCTAssertEqual((invalid as? HTTPURLResponse)?.statusCode,400)
+      var rasterDownload = download
+      rasterDownload.url = URL(string: service.endpoint! + "/v1/documents/\(id)/file.png")
+      let (_, unsupportedFormat) = try await URLSession.shared.data(for: rasterDownload)
+      XCTAssertEqual((unsupportedFormat as? HTTPURLResponse)?.statusCode, 400)
+      rasterDownload.setValue(nil, forHTTPHeaderField: "X-Photato-Archive-Version")
+      let (png, rasterResponse) = try await URLSession.shared.data(for: rasterDownload)
+      XCTAssertEqual((rasterResponse as? HTTPURLResponse)?.statusCode, 200)
+      XCTAssertEqual(png.prefix(8), Data([137, 80, 78, 71, 13, 10, 26, 10]))
+      download.setValue("96",forHTTPHeaderField:"X-Photato-Archive-Version");let(_,invalid)=try await URLSession.shared.data(for:download);XCTAssertEqual((invalid as? HTTPURLResponse)?.statusCode,400)
+    }
+  }
+
+  @MainActor func testExplicit94DownloadKeepsInterleavedMultichannelPlates() async throws {
+    var source = try CraftDocument(width: 2, height: 1)
+    let samples = try InkPlane(width: 2, height: 1, depth: .u8, value: 0.5)
+    let first = InkPlate(name: "First ink", color: .black, samples: samples)
+    let second = InkPlate(name: "Second ink", color: .black, samples: samples)
+    source = try source.replacingInkMode(.multichannel(.init(plates: [first, second])))
+    let mask = AlphaChannel(name: "Saved mask", pixels: try Surface(width: 2, height: 1, fill: .white))
+    source.alphaChannels = [mask]
+    try Command.channel(.moveMultichannel(mask.id, 1)).apply(to: &source)
+    XCTAssertEqual(source.minimumArchiveVersion, 94)
+
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      service.setDocumentTransfersEnabled(true)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let path = "/v1/documents/\(id)/file.photato"
+      let files = DocumentIOWorkflowTests()
+      let legacy = try await files.request(service, path: path, headers: ["X-Photato-Archive-Version": "93"])
+      XCTAssertEqual(legacy.0.statusCode, 422)
+      let indexed = try await files.request(service, path: path, headers: ["X-Photato-Archive-Version": "94"])
+      XCTAssertEqual(indexed.0.statusCode, 200)
+      let restored = try NativeArchive.decodePaged(indexed.1)
+      XCTAssertEqual(restored.multichannelChannelOrder, [first.id, mask.id, second.id])
+      XCTAssertEqual(restored, source)
     }
   }
 }

@@ -86,6 +86,66 @@ final class SmartObjectTests: XCTestCase {
       XCTAssertEqual(nested.layers.count, 1)
     } }
   }
+  func testGeneratedEmbeddedPSBChoosesFullPreviewBeforeLayerOnlyFallback() throws {
+    let white = try CraftDocument(width: 129, height: 48)
+    let rawWhite = try PSDCodec.writeRasterLayers(white, format: .psb)
+    let rleWhite = try PSDCodec.writeRasterLayers(white, format: .psb, compositeCompression: .rle)
+    XCTAssertLessThan(rleWhite.count, rawWhite.count)
+    XCTAssertEqual(try PSDCodec.writeEmbeddedSmartObject(white, maximumBytes: rawWhite.count), rawWhite)
+    XCTAssertEqual(try PSDCodec.writeEmbeddedSmartObject(white, maximumBytes: rleWhite.count), rleWhite)
+
+    for depth in [PixelDepth.u16, .f32] {
+      var doc = try CraftDocument(width: 129, height: 48, depth: depth)
+      var surface = try Surface(width: doc.width, height: doc.height, depth: depth, fill: Pixel(0.18, 0.55, 0.27, 0.65))
+      surface.setPixel(x: 64, y: 19, Pixel(0.92, 0.42, 0.16, 0.43))
+      doc.layers[0].content = .raster(surface)
+      let raw = try PSDCodec.writeRasterLayers(doc, format: .psb)
+      let rle = try PSDCodec.writeRasterLayers(doc, format: .psb, compositeCompression: .rle)
+      let layerOnly = try PSDCodec.writeRasterLayers(doc, format: .psb, maximizeCompatibility: false)
+      XCTAssertLessThan(layerOnly.count, min(raw.count, rle.count), String(describing: depth))
+      let encoded = try PSDCodec.writeEmbeddedSmartObject(doc, maximumBytes: layerOnly.count)
+      XCTAssertEqual(encoded, layerOnly)
+      let (reference, reopened) = (try PSDCodec.read(raw), try PSDCodec.read(encoded))
+      XCTAssertEqual(reopened.depth, depth)
+      XCTAssertEqual(reopened.layers.map(\.name), reference.layers.map(\.name))
+      XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .f32),
+        try Renderer.composite(reference).rgbaData(depth: .f32))
+      XCTAssertThrowsError(try PSDCodec.writeEmbeddedSmartObject(doc, maximumBytes: layerOnly.count - 1)) { error in
+        XCTAssertEqual(error as? CraftError, .unsupported("PSD embedded source exceeds 64 MiB."))
+      }
+    }
+  }
+  func testEmbeddedOpenDescriptorIsBoundedIndependentlyOfItsOriginalBytes() throws {
+    var original = Data(repeating: 0x9e, count: PSDDescriptor.maxBytes + 3)
+    original[original.count - 1] = 0x17
+    let identifier = UUID().uuidString
+    let options = try PSDDescriptor("placedOpenSettings", items: [
+      .init("AntA", .boolean(true)),
+    ]).encoded()
+    var item = PSDWriter()
+    item.text("liFD"); item.n(7, 4)
+    item.n(identifier.utf8.count, 1); item.text(identifier)
+    let name = Array("Contents.psb\0".utf16)
+    item.n(name.count, 4)
+    for unit in name { item.n(Int(unit), 2) }
+    item.text("8BPB"); item.text("8BIM"); item.n(original.count, 8); item.n(1, 1)
+    item.data.append(options); item.data.append(original)
+    item.n(0, 4); item.n(0, 8); item.n(0, 1)
+    var block = PSDWriter()
+    block.section(item.data, lengthBytes: 8)
+    block.data.append(Data(count: (4 - item.data.count % 4) % 4))
+    let reader = PSDReader(data: block.data)
+    let document = try CraftDocument(width: 3, height: 2)
+    let budget = PSDCodec.pagedWorkingHeapReserveBytes + original.count
+    let admitted = try PSDRasterPaging.Context(heapByteLimit: budget)
+    let files = try PSDSmartObjects.files(document, readers: [reader], paging: admitted)
+    XCTAssertEqual(files[identifier]?.name, "Contents.psb")
+    XCTAssertEqual(files[identifier]?.data, original)
+    let limited = try PSDRasterPaging.Context(heapByteLimit: budget - 1)
+    XCTAssertThrowsError(try PSDSmartObjects.files(document, readers: [reader], paging: limited)) { error in
+      XCTAssertEqual(error as? CraftError, .invalid("Photoshop originals exceed the configured heap budget."))
+    }
+  }
   func testNestedPhotoshopSourcesOnWorkerStackRetainOriginalDataAndEnforceLimit() async throws {
     let width = 7, height = 6
     let pixels = try Surface(width: width, height: height, fill: Pixel(0.1, 0.7, 0.3))

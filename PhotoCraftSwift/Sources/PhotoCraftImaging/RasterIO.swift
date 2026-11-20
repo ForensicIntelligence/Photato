@@ -90,16 +90,17 @@ public enum RasterIO {
         "Original .pcraft import is not ported yet. Export a PNG or TIFF from the source app to import a flattened copy."
       )
     }
-    let source = try PSDFileSource(url)
-    let name = url.deletingPathExtension().lastPathComponent
-    if try source.bytes(at: 0, count: min(4, source.count)) == Data("8BPS".utf8) {
-      return try PSDCodec.read(PSDReader(file: source), name: name,paging:PSDRasterPaging.Context())
+    return try PSDFileSource.withStableMetadata(url) { source in
+      let name = url.deletingPathExtension().lastPathComponent
+      if try source.bytes(at: 0, count: min(4, source.count)) == Data("8BPS".utf8) {
+        return try PSDCodec.read(PSDReader(file: source), name: name, paging: PSDRasterPaging.Context())
+      }
+      // Preserve ImageIO's existing mapped-Data path. The bounded channel reader
+      // above handles Photoshop containers; other formats keep their own pipeline.
+      let result = try read(Data(contentsOf: url, options: .mappedIfSafe), name: name)
+      try source.validateUnchanged()
+      return result
     }
-    // Preserve ImageIO's existing mapped-Data path. The bounded channel reader
-    // above handles Photoshop containers; other formats keep their own pipeline.
-    let result = try read(Data(contentsOf: url, options: .mappedIfSafe), name: name)
-    try source.validateUnchanged()
-    return result
   }
   /// The same native import path for files and API resources. No temporary files
   /// or extension inferred from an untrusted resource URL are required.

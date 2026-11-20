@@ -108,6 +108,19 @@ struct PSDDescriptor: Equatable {
     return (descriptor, data.count - parser.reader.remaining)
   }
 
+  /// A file-open descriptor may be followed by a large embedded source.
+  /// Inspect only the bounded prefix and advance past the descriptor itself.
+  static func readPrefix(_ reader: inout PSDReader) throws -> Self {
+    var lookahead = reader
+    var parser = Parser(reader: try lookahead.view(min(reader.remaining, maxBytes)))
+    guard try parser.reader.u32() == 16 else {
+      throw CraftError.invalid("Unsupported PSD descriptor version.")
+    }
+    let descriptor = try parser.descriptor(0)
+    _ = try reader.view(parser.reader.offset)
+    return descriptor
+  }
+
   func encoded() throws -> Data {
     var encoder = Encoder()
     encoder.writer.n(16, 4)

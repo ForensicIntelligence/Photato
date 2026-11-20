@@ -1,5 +1,25 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 649 — Place and reopen larger Photoshop originals
+
+PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
+
+All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-649) · [Details](../PhotoCraftSwift/docs/LARGE_EMBEDDED_ORIGINALS_649.md).
+
+## 2026-11-19 — Step 648 — Keep large embedded sources once
+
+A three-source native save dropped from 201.8 MB to 100.9 MB. The parent PSB and the three original sources kept identical bytes.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-648) · [Details](../PhotoCraftSwift/docs/EMBEDDED_SOURCE_RECORDS_648.md).
+
+## 2026-11-19 — Step 647 — Keep large generated Smart Object sources editable
+
+Two large deep-colour Smart Objects keep editable child data in PSD and PSB. Independent checks matched all 134,316,048 child samples.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) · [Details](../PhotoCraftSwift/docs/EMBEDDED_SMART_SOURCE_647.md).
+
 ## 2026-11-19 — Step 646 — Speed up large editable Smart Filter files
 
 The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
@@ -1157,14 +1177,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:646 -->
+<!-- current-status-step:649 -->
 ## Current development status — 19 November 2026
 
-The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
+PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
 
-All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
+All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
 
-[Source checkpoint 646](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_646.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646).
+[Source checkpoint 649](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_649.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-649).
 
 <!-- current-status:end -->
 

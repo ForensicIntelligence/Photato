@@ -6,16 +6,21 @@ final class PSDOutput {
   private(set) var data = Data()
   private let file: AtomicFileWriter?
   private let maximumBytes: Int
+  private(set) var exceededByteLimit = false
   var count: Int { file?.count ?? data.count }
   init(file: AtomicFileWriter? = nil, maximumBytes: Int = PSDCodec.maximumInputBytes) {
     self.file = file
     self.maximumBytes = maximumBytes
   }
-  func append(_ bytes: Data) throws {
-    try Task.checkCancellation()
-    guard bytes.count <= maximumBytes - count else {
+  func requireCapacity(_ bytes: Int) throws {
+    guard bytes <= maximumBytes - count else {
+      exceededByteLimit = true
       throw CraftError.invalid("PSD export exceeds the file size budget.")
     }
+  }
+  func append(_ bytes: Data) throws {
+    try Task.checkCancellation()
+    try requireCapacity(bytes.count)
     if let file { try file.append(bytes) } else { data.append(bytes) }
   }
   func n(_ value: Int, _ width: Int) throws {

@@ -14,12 +14,13 @@ struct PreparedEmbeddedSource: Sendable {
     return try RecoverySourceReader.withStableMetadata {
       let reader = try RecoverySourceReader(url)
       let file = try FileHandle(forReadingFrom:url);defer {try? file.close()}
-      var data = Data()
+      var data = try file.read(upToCount:8) ?? Data()
+      let maximum = SmartObject.maximumEmbeddedBytes(forHeader: data)
       while true {
         try Task.checkCancellation()
-        guard let chunk = try file.read(upToCount:min(65536,SmartObject.maximumSourceBytes+1-data.count)),!chunk.isEmpty else {break}
+        guard let chunk = try file.read(upToCount:min(65536,maximum+1-data.count)),!chunk.isEmpty else {break}
         data.append(chunk)
-        guard data.count <= SmartObject.maximumSourceBytes else {throw CraftError.invalid("Choose artwork no larger than64MiB.")}
+        guard data.count <= maximum else {throw CraftError.invalid("The artwork exceeds its file format's embedded size limit.")}
       }
       let fingerprint = try reader.finish()
       guard fingerprint.sha256 == SHA256.hash(data:data).map({String(format:"%02x",$0)}).joined() else {throw DocumentPersistenceConflict.changed}

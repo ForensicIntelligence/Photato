@@ -45,7 +45,9 @@ enum EmbeddedSourceAPI {
   }
   static func prepare(_ data: Data,_ name: String,_ original: CraftDocument,_ options: EmbeddedSourceOptions,
     decoded: CraftDocument? = nil) throws -> Command {
-    guard !data.isEmpty,data.count <= SmartObject.maximumSourceBytes else {throw CraftError.invalid("Embedded source must contain1 byte through64MiB.")}
+    guard !data.isEmpty,data.count <= SmartObject.maximumEmbeddedBytes(forHeader: data) else {
+      throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
+    }
     guard !PDFImport.recognizes(data) else {throw CraftError.invalid("Use the PDF placement endpoint to choose PDF artwork.")}
     var source = try decoded ?? SmartObjectIO.decode(data,fileName:name)
     if let settings = options.rawDevelopment {
@@ -77,6 +79,7 @@ enum EmbeddedSourceAPI {
      "state":"Per-document embeddedPlacement exposes preparing, choosingPDF, developingRaw, transform, committing or idle. PDF-specific state remains separate.",
      "cancel":"POST /v1/documents/{id}/smart-objects/source/cancel with {operationID:UUID}; capabilities.embeddedSourceOperations maps active IDs by shared document UUID.",
      "maximumRGBSourcePixels":SmartObjectIO.maximumPagedRGBPixels,
+     "maximumLocalDocumentSourceBytes":SmartObject.maximumDocumentSourceBytes,
      "limits":"Transfers enabled, explicit target sharing,64MiB encoded source and256MiB owned content. Paged native/RGB sources admit the logical native extent; non-RGB/PDF and RAW retain their decoder limits. Format, physical scratch, dense capacity, cross-profile preparation and shared-document budgets remain independent; permission revocation/stale target/cancellation cannot commit.",
      "adobe":"Existing file-input/bounds/autoResize contracts continue through the shared native engine. PhotoCraft sources remain Photato-only; no new Adobe fields or endpoints.",
      "remaining":"Linked sources, general AI/SVG inputs, complete PSD/RAW fidelity, exact Photoshop pixels/defaults and live/platform acceptance."]

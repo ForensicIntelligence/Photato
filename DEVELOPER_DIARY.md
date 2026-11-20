@@ -2,7 +2,27 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **646** · The 10 most recent entries, newest first.
+Source build **649** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 649 — Place and reopen larger Photoshop originals
+
+PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
+
+All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-649) · [Details](PhotoCraftSwift/docs/LARGE_EMBEDDED_ORIGINALS_649.md).
+
+## 2026-11-19 — Step 648 — Keep large embedded sources once
+
+A three-source native save dropped from 201.8 MB to 100.9 MB. The parent PSB and the three original sources kept identical bytes.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-648) · [Details](PhotoCraftSwift/docs/EMBEDDED_SOURCE_RECORDS_648.md).
+
+## 2026-11-19 — Step 647 — Keep large generated Smart Object sources editable
+
+Two large deep-colour Smart Objects keep editable child data in PSD and PSB. Independent checks matched all 134,316,048 child samples.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) · [Details](PhotoCraftSwift/docs/EMBEDDED_SMART_SOURCE_647.md).
 
 ## 2026-11-19 — Step 646 — Speed up large editable Smart Filter files
 
@@ -47,25 +67,3 @@ PSD and PSB retain supported solid fills, rounded corners and dotted or dashed e
 Supported axis-aligned RGB rectangles open as editable layers. Photoshop-format tests verified the rendered samples and the retained rectangle descriptors.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) · [Details](PhotoCraftSwift/docs/PSD_LIVE_RECTANGLES_640.md).
-
-## 2026-11-19 — Step 639 — Keep vector outlines when printing
-
-Include Vector Data preserves eligible outline shapes and text in native print and PDF output. An independent PDF check verified the vector paths and raster backdrop.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-639) · [Details](PhotoCraftSwift/docs/VECTOR_PRINT_639.md).
-
-## 2026-11-19 — Step 638 — Save document print settings with the artwork
-
-Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields.
-
-All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-638) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_638.md).
-
-## 2026-11-19 — Step 637 — Remember print defaults and restore supported Photoshop settings
-
-Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files.
-
-All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_637.md).

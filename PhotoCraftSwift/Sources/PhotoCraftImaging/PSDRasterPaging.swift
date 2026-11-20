@@ -21,6 +21,11 @@ enum PSDRasterPaging {
       backing=try RasterTileStore(maximumBytes:scratchByteLimit)
       remaining=heapByteLimit.map {$0-PSDCodec.pagedWorkingHeapReserveBytes}
     }
+    func admitRetainedSource(bytes: Int) throws {
+      guard let limit = remaining else { return }
+      guard bytes <= limit else { throw CraftError.invalid("Photoshop originals exceed the configured heap budget.") }
+      remaining = limit - bytes
+    }
     func admitRaster(bytes:Int) throws {
       if let limit=remaining {
         guard bytes >= 0,bytes % 65536 == 0 else {throw CraftError.invalid("Invalid Photoshop raster heap admission.")}

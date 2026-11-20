@@ -665,7 +665,36 @@ For a readable account of the project from the beginning, see [Photato developme
 | 644 | 2026-11-19 | [Match linked raster previews to saved mask samples](#dev-step-644) |
 | 645 | 2026-11-19 | [Keep Gradient Overlay editable](#dev-step-645) |
 | 646 | 2026-11-19 | [Speed up large editable Smart Filter files](#dev-step-646) |
+| 647 | 2026-11-19 | [Keep large generated Smart Object sources editable](#dev-step-647) |
+| 648 | 2026-11-19 | [Keep large embedded sources once](#dev-step-648) |
+| 649 | 2026-11-19 | [Place and reopen larger Photoshop originals](#dev-step-649) |
 <!-- history-index:end -->
+
+<a id="dev-step-649"></a>
+
+## 2026-11-19 — Place and reopen larger Photoshop originals
+
+PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
+
+All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
+
+[Development record](LARGE_EMBEDDED_ORIGINALS_649.md).
+
+<a id="dev-step-648"></a>
+
+## 2026-11-19 — Keep large embedded sources once
+
+A three-source native save dropped from 201.8 MB to 100.9 MB. The parent PSB and the three original sources kept identical bytes.
+
+[Development record](EMBEDDED_SOURCE_RECORDS_648.md).
+
+<a id="dev-step-647"></a>
+
+## 2026-11-19 — Keep large generated Smart Object sources editable
+
+Two large deep-colour Smart Objects keep editable child data in PSD and PSB. Independent checks matched all 134,316,048 child samples.
+
+[Development record](EMBEDDED_SMART_SOURCE_647.md).
 
 <a id="dev-step-646"></a>
 
