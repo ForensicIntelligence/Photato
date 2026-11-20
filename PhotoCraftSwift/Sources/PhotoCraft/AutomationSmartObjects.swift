@@ -10,15 +10,24 @@ extension SmartObject {
       "resolution": resolution, "embedded": linkedSource==nil,"linked":linkedSource != nil,"originalAvailable":!data.isEmpty,"sourceByteLength":linkedSource?.byteLength ?? UInt64(data.count), "pdfSource": pdfSource.map { BrushAPI.json($0) } ?? NSNull(), "stackMode": stackMode?.rawValue ?? "none", "rawDevelopment": rawDevelopment.map { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode($0))) ?? NSNull() } ?? NSNull()]
   }
   static var apiLayerStateSchema: [String: Any] {
-    ["type": "object", "properties": [
+    let affine: [String: Any] = ["type": "object", "required": ["a", "b", "c", "d", "tx", "ty"],
+      "properties": Dictionary(uniqueKeysWithValues: ["a", "b", "c", "d", "tx", "ty"].map { ($0, ["type": "number"]) })]
+    let bounds: [String: Any] = ["type": "object", "required": ["x", "y", "width", "height"],
+      "properties": Dictionary(uniqueKeysWithValues: ["x", "y", "width", "height"].map { ($0, ["type": "integer"]) })]
+    let sourceGeometry: [String: Any] = [
+      "type": "object", "required": ["transform", "bounds", "rotationDegrees"],
+      "properties": ["transform": affine, "bounds": ["anyOf": [bounds, ["type": "null"]]],
+        "rotationDegrees": ["type": "number"]],
+    ]
+    return ["type": "object", "properties": [
       "kind": ["type": "string"],
       "sourceSmartObject":SourceSmartObjectAPI.stateSchema,
-      "transform": ["type": "object", "required": ["a", "b", "c", "d", "tx", "ty"],
-        "properties": Dictionary(uniqueKeysWithValues: ["a", "b", "c", "d", "tx", "ty"].map { ($0, ["type": "number"]) })],
+      "transform": affine,
       "smartObject": ["anyOf": [["type": "null"], ["type": "object",
         "required": ["sourceID", "revision", "fileName", "mediaType", "byteLength", "width", "height", "resolution", "embedded"],
         "properties": ["sourceID": ["type": "string", "format": "uuid"], "revision": ["type": "string"],
           "fileName": ["type": "string"], "mediaType": ["type": "string"], "byteLength": ["type": "integer"],
+          "sourceGeometry": ["anyOf": [sourceGeometry, ["type": "null"]]],
           "width": ["type": "integer"], "height": ["type": "integer"], "resolution": ["type": "number"], "embedded": ["type": "boolean"],"linked":["type":"boolean"],"originalAvailable":["type":"boolean"],"sourceByteLength":["type":"integer","minimum":0], "layerComps": SmartObjectLayerCompAPI.stateSchema, "pdfSource": ["anyOf":[["type":"null"],PDFSmartObjectSource.apiSchema]], "stackMode": ImageStackSettings.modeSchema, "rawDevelopment": ["anyOf":[["type":"null"],RawDevelopment.apiSchema]]]]]]]]
   }
   static var apiCapabilities: [String: Any] {
@@ -38,6 +47,7 @@ extension SmartObject {
         "adobe":"No dedicated endpoint in the pinned Firefly v2 contract. UXP/actionJSON runtime or descriptor conformance is not claimed.",
         "qualification":"Adobe documents component restoration/grouping and transform/Smart Filter removal. Exact placement, outer attachments/defaults, numerical output and live/platform/capacity qualification remain open."],
       "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,"linkedSourceEditing":LinkedSourceFileAPI.capabilities,
+      "sourceGeometry": "layers[].smartObject.sourceGeometry reports the original artwork's affine transform, bounds in document pixels and rotation in degrees. The layer transform continues to describe the displayed raster or cache.",
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
         "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",
         "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",
@@ -48,6 +58,27 @@ extension SmartObject {
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
       "linkedArtwork": LinkedArtworkAPI.capabilities,
       "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered and affine rendering reuses the native engine. PSD/PSB retains PDF page sources under pdfPSDInterchange limits. PDF Warp, full editable PDF/PSD interchange, PDF source-editor live acceptance, linked PSD exact fidelity, nested source monitoring, package and general AI/SVG import remain unqualified or pending."]
+  }
+}
+
+extension Layer {
+  var smartObjectAPIState: [String: Any]? {
+    guard let source = smartObject else { return nil }
+    var state = source.apiState
+    if let geometry = try? smartObjectGeometry() {
+      let transform = geometry.transform
+      let bounds: Any = (try? geometry.bounds()).map {
+        ["x": $0.x, "y": $0.y, "width": $0.width, "height": $0.height]
+      } as Any? ?? NSNull()
+      state["sourceGeometry"] = [
+        "transform": ["a": transform.a, "b": transform.b, "c": transform.c, "d": transform.d,
+          "tx": transform.tx, "ty": transform.ty],
+        "bounds": bounds, "rotationDegrees": transform.rotationDegrees,
+      ] as [String: Any]
+    } else {
+      state["sourceGeometry"] = NSNull()
+    }
+    return state
   }
 }
 

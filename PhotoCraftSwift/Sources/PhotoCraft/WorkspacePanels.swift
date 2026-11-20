@@ -142,11 +142,13 @@ extension WorkspaceView {
                     range: -1_000_000...1_000_000, suffix: "px")
                 }
                 HStack(spacing: 10) {
-                  labeledValue(
-                    "∠",
-                    value:
-                      "\((atan2(layer.coordinateTransform.b,layer.coordinateTransform.a)*180 / .pi).formatted(.number.precision(.fractionLength(2))))°",
-                    width: 58)
+                  let rotation = store.layerRotation(layer).map {
+                    $0.formatted(.number.precision(.fractionLength(2))) + "°"
+                  }
+                  labeledValue("∠", value: rotation ?? "—", width: 58)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Layer rotation")
+                    .accessibilityValue(rotation ?? "Unavailable")
                   iconButton(
                     "arrow.left.and.right.righttriangle.left.righttriangle.right",
                     "Flip layer horizontally", enabled: store.canTransformActiveLayer

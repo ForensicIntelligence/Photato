@@ -1,3 +1,7 @@
+**Source checkpoint 659.** Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds. All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_659.md).
+
+**Next transform work.** Compare oriented Free Transform handles and numeric scaling for already rotated layers. The current draft starts from the source's document-aligned bounds. Linked and embedded template appearance fields remain open.
+
 **Source checkpoint 658.** The Adobe-compatible template API can set Smart Object size, position, rotation, skew and anchor. Jobs can place artwork relative to other layers and change the geometry of a linked PSD without supplying its original artwork again. All 1,468 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_658.md).
 
 **Next linked workflow.** The desktop Properties rotation readout and the Photato document state still read the cache transform for missing-source PSDs. Verify and expose the original geometry through the native controls and a compatible API representation. Template blend options and pixel masks remain open.

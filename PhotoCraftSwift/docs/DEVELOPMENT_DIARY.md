@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 659 — Read the original transform of linked Smart Objects
+
+Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds.
+
+All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe Properties values, rounding, handle orientation, physical Intel, a macOS 14 runtime and full assistive-technology behavior remain unverified.
+
+[Development record](DEVLOG.md#dev-step-659) · [Details](LINKED_SMART_OBJECT_GEOMETRY_659.md).
+
 ## 2026-11-20 — Step 658 — Custom Smart Object geometry for template jobs
 
 The Adobe-compatible template API can set Smart Object size, position, rotation, skew and anchor. Jobs can place artwork relative to other layers and change the geometry of a linked PSD without supplying its original artwork again.
@@ -1241,14 +1249,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:658 -->
+<!-- current-status-step:659 -->
 ## Current development status — 20 November 2026
 
-The Adobe-compatible template API can set Smart Object size, position, rotation, skew and anchor. Jobs can place artwork relative to other layers and change the geometry of a linked PSD without supplying its original artwork again.
+Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds.
 
-All 1,468 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen.
+All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 658](SOURCE_PUBLICATION_658.md) · [Development record](DEVLOG.md#dev-step-658).
+[Source checkpoint 659](SOURCE_PUBLICATION_659.md) · [Development record](DEVLOG.md#dev-step-659).
 
 <!-- current-status:end -->
 
@@ -2113,6 +2121,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 656 | [Recover linked Smart Objects after moving a folder](DEVLOG.md#dev-step-656) |
 | 2026-11-20 | 657 | [Place Smart Objects at their source print size](DEVLOG.md#dev-step-657) |
 | 2026-11-20 | 658 | [Custom Smart Object geometry for template jobs](DEVLOG.md#dev-step-658) |
+| 2026-11-20 | 659 | [Read the original transform of linked Smart Objects](DEVLOG.md#dev-step-659) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

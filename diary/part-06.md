@@ -674,6 +674,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 656 | [Recover linked Smart Objects after moving a folder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-656) |
 | 2026-11-20 | 657 | [Place Smart Objects at their source print size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-657) |
 | 2026-11-20 | 658 | [Custom Smart Object geometry for template jobs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-658) |
+| 2026-11-20 | 659 | [Read the original transform of linked Smart Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-659) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

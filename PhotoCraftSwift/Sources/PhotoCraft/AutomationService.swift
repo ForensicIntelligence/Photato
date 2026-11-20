@@ -580,7 +580,7 @@ import UniformTypeIdentifiers
           "transform": ["a": layer.coordinateTransform.a, "b": layer.coordinateTransform.b,
             "c": layer.coordinateTransform.c, "d": layer.coordinateTransform.d,
             "tx": layer.coordinateTransform.tx, "ty": layer.coordinateTransform.ty],
-          "kind": layer.kindLabel, "smartObject": layer.smartObject?.apiState ?? NSNull(),
+          "kind": layer.kindLabel, "smartObject": layer.smartObjectAPIState ?? NSNull(),
           "sourceSmartObject":layer.sourceSmartAPIState ?? NSNull(),
           "style": layer.style?.apiObject ?? NSNull(),
           "colorLookup": { () -> Any in if case .adjustment(.colorLookup(let a)) = layer.content { return a.apiObject }; return NSNull() }(),

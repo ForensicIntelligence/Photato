@@ -1156,6 +1156,18 @@ The published `POST /v2/create-composite` route now accepts the following embedd
 
 For a replacement use `operation:{"type":"edit"}`, identify one layer by name or its signed 32-bit PSD ID, and supply `smartObject.smartObjectFile.source.url`. For an embedded replacement, `smartObject.autoResize` defaults to true and matches the old source canvas and resolution. Setting it to false keeps the replacement's dimensions and resolution.
 
+### Original Smart Object geometry
+
+`GET /v1/documents/{documentID}` includes `layers[].smartObject.sourceGeometry` for eligible affine artwork. Its
+`transform` maps original artwork pixels to document pixels. `bounds` gives the integer document-aligned rectangle,
+and `rotationDegrees` gives the direction of the artwork's transformed X axis, as in the native linked-layer readout.
+A source without a single affine placement reports
+`sourceGeometry: null`. An affine transform can still be available if its rectangle exceeds supported bounds.
+
+The existing `layers[].transform` describes the displayed surface or linked preview cache. To reposition existing artwork,
+apply the desired document-space delta with `layer.transform`; both views of the placement then update. The Adobe job and
+manifest interfaces keep their published schema. [Development record](LINKED_SMART_OBJECT_GEOMETRY_659.md)
+
 ### Smart Object template geometry
 
 `transformMode` accepts `none`, `fit`, `fill` and `custom`. A custom request includes `transform`. A geometry-only edit can omit `smartObject`; the existing original is preserved. Relative adds accept `above`, `below` or `into` with `placement.referenceLayer` by name or PSD ID. Adds can also use `top` or `bottom`.

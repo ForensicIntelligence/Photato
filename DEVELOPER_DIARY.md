@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **658** · The 10 most recent entries, newest first.
+Source build **659** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 659 — Read the original transform of linked Smart Objects
+
+Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds.
+
+All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe Properties values, rounding, handle orientation, physical Intel, a macOS 14 runtime and full assistive-technology behavior remain unverified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-659) · [Details](PhotoCraftSwift/docs/LINKED_SMART_OBJECT_GEOMETRY_659.md).
 
 ## 2026-11-20 — Step 658 — Custom Smart Object geometry for template jobs
 
@@ -69,11 +77,3 @@ A 1.18 GB PSB retains its exact original and editable samples through placement,
 Large PSB originals remain editable in native projects, PSD and PSB. The 275.7 MB test retained two shared instances, and the 525.1 MB file retained its original bytes.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-650) · [Details](PhotoCraftSwift/docs/FILE_BACKED_SMART_ORIGINALS_650.md).
-
-## 2026-11-19 — Step 649 — Place and reopen larger Photoshop originals
-
-PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
-
-All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-649) · [Details](PhotoCraftSwift/docs/LARGE_EMBEDDED_ORIGINALS_649.md).

@@ -148,8 +148,17 @@ extension EditorStore {
       let bounds=try Renderer.layoutBounds(layer,in:document,stored:false) {
       return bounds
     }
+    if layer.smartObject?.linkedSource != nil, let geometry = try layer.smartObjectGeometry() {
+      return try geometry.bounds()
+    }
     let pixels = try Renderer.layerSurface(layer, in: document)
     return try layer.coordinateTransform.bounds(width: pixels.width, height: pixels.height)
+  }
+  func layerRotation(_ layer: Layer) -> Double? {
+    if layer.smartObject?.linkedSource != nil {
+      return (try? layer.smartObjectGeometry())?.transform.rotationDegrees
+    }
+    return layer.coordinateTransform.rotationDegrees
   }
   var activeLayerBounds: IntRect? { activeLayer.flatMap { try? layerBounds($0) } }
   var canTransformActiveLayer: Bool {

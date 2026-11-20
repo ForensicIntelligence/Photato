@@ -1,0 +1,149 @@
+{
+  "build": 659,
+  "base": "3079fbee56977c12b826f55b31340bb4ec61da0f",
+  "buildInputs": 9255,
+  "includedBuildInputs": 9242,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "cf1104b3667b450f8bb1d3493b5fd9915fb46d53dd023f304d89d107a0892c06",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "bd8498750d3de0cd7dda65c986f00873c5bba353fb28f674a42b491b2cffb8db"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "sha256": "8f7b70999671c8d0ac0734be0793f0651cc6000a3e31a4ee4b22884af1168558"
+    },
+    {
+      "path": "Sources/PhotoCraft/SmartObjectGeometry.swift",
+      "sha256": "b37dd238c9fe1a5addafcddb9a606a4738121fcfc5cb32c78d349c58f3e8324f"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformEditing.swift",
+      "sha256": "17556c9f3a623207a0da8e7a4b1ebe54eb679f63b23d6887eccb595fef60fad1"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspacePanels.swift",
+      "sha256": "47a6f11c26003682424cba0ed7f39d1d55efb36a945f3991b68987f0560b27c4"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LinkedSmartObjectGeometryWorkflowTests.swift",
+      "sha256": "fe8c56254d44eadf89224d40a2418f67eab7709d9da221aaf35d2071c98dd63e"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "6f0e01d27a51fdc5108c8699fc9ab1f3243189ec9016a7f583848f3dad525ea4"
+    }
+  ],
+  "casesPerConfiguration": 1472,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1472,
+      "passed": 1472,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "921f4e3e464e956dfe0fa8381c25931b436aba9e262f2f1105b6008eeb20ca18"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1472,
+      "passed": 1472,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "19d65eb3e9b3acd7f2bd8726ad29250b03fb3ac6a52a4a73714926998c8895da"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1472,
+      "passed": 1472,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "b91c84e3503f23133ae6172bff69d750d201601019f45cb97fe349c2efcfa757"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "33e7f2465be21ce5bafa485534f3354a527a76f0d863c22aa06ee1ccfdc6cfc7",
+    "binarySHA256": "c620514ce688fc036019369bbcc707de518607e18436360265d11c679982a158",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "83cd1483c37ff3209c62c173dca73169e1065c5254681edd7da51887723c7c35",
+      "x86_64": "2d8e8725aa91f7e66fe1d24643fa3e20baca3cd65a5e0cb8b3097588bf13fcbf"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveProperties": {
+    "fixture": {
+      "sha256": "5d8df499dc759b075fb2177b764824941c07b61dcc1cd0c01faf41bc15823175",
+      "placedDescriptorDoubles": [
+        312.0,
+        172.0,
+        589.1281292110205,
+        332.0,
+        489.1281292110204,
+        505.2050807568877,
+        212.0,
+        345.20508075688775
+      ],
+      "rotationDegrees": 30,
+      "expectedBounds": {
+        "x": 212,
+        "y": 172,
+        "width": 378,
+        "height": 334
+      }
+    },
+    "before": {
+      "build": "658",
+      "bundleID": "ca.forensicintelligence.photato.smartobjecttemplatepreview658",
+      "degreeValues": [
+        "0.00\u00b0"
+      ],
+      "linkedLabelVisible": true,
+      "positionFields": {
+        "X": "212",
+        "Y": "172"
+      },
+      "rotation": null
+    },
+    "after": {
+      "build": "659",
+      "bundleID": "ca.forensicintelligence.photato.linkedgeometrypreview659",
+      "degreeValues": [],
+      "dimensionValues": [
+        "334 px",
+        "378 px"
+      ],
+      "linkedLabelVisible": true,
+      "positionFields": {
+        "X": "212",
+        "Y": "172"
+      },
+      "rotation": "",
+      "rotationAttributes": [
+        {
+          "AXRole": "AXUnknown",
+          "AXValueDescription": "30.00\u00b0"
+        }
+      ],
+      "targetedWindowCaptureExit": 0
+    }
+  },
+  "liveAdobeCompared": false
+}
