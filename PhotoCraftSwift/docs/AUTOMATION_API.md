@@ -1,3 +1,7 @@
+### Layered Multichannel conversion (checkpoint 632)
+
+When `mergeVisible` is true, `document.convertMultichannel` and `channel.deleteProcess` now compute the requested separations from eligible native CMYK and Lab raster stacks using the same component compositor. Eligible inputs are ungrouped Normal layers with retained components and supported masks. Hidden artwork is excluded. The catalogue lists `cmyk` and `lab` under `inkModes.largeMultichannel.nativeLayeredSeparationModes`. Payloads, permissions, Undo and result schemas keep their existing formats. Firefly v2 has no separate process-separation conversion route.
+
 ### Multichannel spot output (checkpoint 631)
 
 Authenticated `GET /v1/capabilities` advertises `inkModes.photoshopSpotOutput` for PSD and PSB. After `document.convertMultichannel` or `channel.deleteProcess`, the shared file writer retains saved spot ink's numerical density, name, display color, Solidity, existing Photoshop identifier and relative channel order. A reopened Multichannel Photoshop document exposes the spot as an editable printing plate. This requires no request change or archive schema migration. Firefly v2 has no dedicated spot-preservation operation.

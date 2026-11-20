@@ -32,6 +32,88 @@ final class InkModeInputTests: XCTestCase {
       try session.undo(); XCTAssertTrue(session.document == original)
     } }
   }
+  func testLayeredCMYKAndLabRetainEveryNumericSeparationAndIgnoreHiddenArtwork() throws {
+    for mode in [DocumentColorMode.cmyk, .lab] {
+      for depth in [PixelDepth.u8, .u16] {
+        var document = try source(mode, depth: depth)
+        let bottom = try XCTUnwrap(document.layers[0].nativeMode)
+        let maximum = depth == .u8 ? 255 : 65535
+        let opacity = [maximum / 4, maximum, 0]
+        let topWords = [11, 143, 209, 24].map { $0 * (maximum / 255) }
+        var top = try NativeModeRaster(width: 3, height: 1, mode: mode, depth: depth, profile: bottom.profile)
+        for pixel in 0..<3 {
+          for index in 0..<mode.componentCount {
+            try top.set(Float(topWords[index]) / Float(maximum), component: index, index: pixel)
+          }
+          try top.set(Float(opacity[pixel]) / Float(maximum), component: mode.componentCount, index: pixel)
+        }
+        var layer = Layer(name: "Partial coverage", content: .raster(try top.surface()))
+        layer.nativeMode = top
+        document.layers.append(layer)
+        var hidden = Layer(name: "Hidden green fill", content: .fill(Pixel(0, 1, 0)))
+        hidden.visible = false
+        document.layers.append(hidden)
+        document.activeLayerID = hidden.id
+
+        var request = InkModeRequest(.multichannel, document: document)
+        XCTAssertThrowsError(try request.command(in: document))
+        request.mergeVisible = true
+        var session = EditorSession(document: document)
+        try session.execute(request.command(in: document))
+        let plates = try session.document.multichannelRaster().plates
+        XCTAssertEqual(plates.map(\.id), request.plateIDs)
+        XCTAssertEqual(plates.count, mode.componentCount)
+        XCTAssertTrue(session.document.layers.isEmpty)
+        for component in plates.indices {
+          for pixel in 0..<3 {
+            let original = Int(bottom.rawWord(component: component, index: pixel))
+            let numerator = original * (maximum - opacity[pixel]) + topWords[component] * opacity[pixel]
+            let mixed = (numerator + maximum / 2) / maximum
+            let expected = UInt32(mode == .cmyk ? mixed : maximum - mixed)
+            XCTAssertEqual(plates[component].samples.rawWord(at: pixel), expected,
+              "\(mode) \(depth), component \(component), sample \(pixel)")
+          }
+        }
+        let deletion = ProcessChannelDeletion(mode: mode, components: [0], mergeVisible: true)
+        var remaining = document
+        try InkModeInput.deleteProcess(deletion, in: document).apply(to: &remaining)
+        XCTAssertEqual(try remaining.multichannelRaster().plates.map(\.samples), Array(plates.dropFirst()).map(\.samples))
+        try session.undo()
+        XCTAssertEqual(session.document, document)
+      }
+    }
+  }
+
+  func testMaximumSparseLayeredCMYKRetainsFourPlatesAndDistantEdits() throws {
+    let side = 300_000
+    let baseWords: [UInt32] = [1400, 15300, 30000, 53000]
+    let topWords: [UInt32] = [62000, 11200, 37000, 17100]
+    let builder = try NativeModeRaster.RowBuilder(width: side, height: side, mode: .cmyk, depth: .u16)
+    for index in baseWords.indices { try builder.fill(component: index, word: baseWords[index]) }
+    try builder.fill(component: 4, word: 65535)
+    let bottom = try builder.finish()
+    let local = try NativeModeRaster.RowBuilder(width: 2, height: 1, mode: .cmyk, depth: .u16, profile: bottom.profile)
+    for index in topWords.indices { try local.fill(component: index, word: topWords[index]) }
+    try local.fill(component: 4, word: 65535)
+    let top = try local.finish()
+    var document = try CraftDocument(width: side, height: side, depth: .u16)
+    document.modeDescriptor = try .init(mode: .cmyk, depth: .u16, profile: bottom.profile)
+    document.layers[0].nativeMode = bottom; document.layers[0].content = .raster(try bottom.surface())
+    var patch = Layer(name: "Far corner", content: .raster(try top.surface()))
+    patch.nativeMode = top; patch.x = side - 2; patch.y = side - 1
+    document.layers.append(patch)
+
+    var converted = document
+    try InkModeInput.multichannel(in: document, mergeVisible: true).apply(to: &converted)
+    let plates = try converted.multichannelRaster().plates
+    XCTAssertEqual(plates.map { $0.samples.rawWord(at: 0) }, baseWords)
+    XCTAssertEqual(plates.map { $0.samples.rawWord(at: side * side - 3) }, baseWords)
+    XCTAssertEqual(plates.map { $0.samples.rawWord(at: side * side - 1) }, topWords)
+    let archive = try NativeArchive.encodeChunked(converted)
+    XCTAssertLessThan(archive.count, 1_000_000)
+    XCTAssertEqual(try NativeArchive.decodePaged(archive), converted)
+  }
+
   func testDuotoneUsesRawGrayAndConvertsCurvesToSeparateInks() throws {
     let original = try source(.grayscale), native = try XCTUnwrap(original.layers[0].nativeMode)
     let settings = DuotoneSettings(inks: [.init(name: "Cyan", color: Pixel(0, 1, 1)),

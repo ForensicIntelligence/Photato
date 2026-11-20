@@ -650,7 +650,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 629 | 2026-11-19 | [Keep saved masks and printing plates in one Multichannel order](#dev-step-629) |
 | 630 | 2026-11-19 | [Keep Workflow Guide highlights visible across controls and dialogs](#dev-step-630) |
 | 631 | 2026-11-19 | [Preserve spot inks in Multichannel Photoshop files](#dev-step-631) |
+| 632 | 2026-11-19 | [Keep native CMYK and Lab components when flattening to Multichannel](#dev-step-632) |
 <!-- history-index:end -->
+
+<a id="dev-step-632"></a>
+
+## 2026-11-19 — Keep native CMYK and Lab components when flattening to Multichannel
+
+Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink.
+
+All 1,136 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](LAYERED_INK_CONVERSION_632.md) · [Qualification](SOURCE_PUBLICATION_632.md).
 
 <a id="dev-step-631"></a>
 

@@ -1,0 +1,75 @@
+{
+  "build": 632,
+  "sourceInputs": 9236,
+  "casesPerConfiguration": 1136,
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationInkModes.swift",
+      "sha256": "74c61414205d3e5c683cb4586ac755e15bfc79016c8296df727a5e6d7679391d"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/InkModeInput.swift",
+      "sha256": "3baa14bc30daebb7a1fed7a2728444ce0e442544021a9e18d1b610ed5392b8fc"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/InkModeArchiveWorkflowTests.swift",
+      "sha256": "833f38bbd3cc4e7797c11948c8658c46fb2c2636ab3827a61ea66bb9ee8fbfa0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/InkModeInputTests.swift",
+      "sha256": "eca89d7b4a4f9a495396fff4fb04888b4b0a1baad79a7a948c900b4d5a22971f"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "8964e368dc7f014507e8da1d7d8466cf13bd9441f93ad6d3e6fbdf347b909e96"
+    }
+  ],
+  "configurations": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "7a423f4daca7a7f5e79426226bad76bdc28fd8cf85a8526194d5492fa424d8e5",
+      "testBinarySHA256": "873500ac4bef0fc0fe06828d04188992776b71b9332477e87a2ccb9717e1bef5",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "39ffd13b285858c537645a6220041946381cc75004ef288baf74dae7454e014d",
+      "testBinarySHA256": "d747492b7f039733684dad277c7e5813a6c29b212f7dfc6e9709108f92632115",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "c3a1a1d83d9ff38cdcdc3ef3014e032f420c1866d85932279a74a1298f98d68f",
+      "testBinarySHA256": "57dae0ab79ee73c2955f4f28622e0973594e3d868feadd5f7cd51b57f6c78ce8",
+      "passed": true
+    }
+  },
+  "archive": {
+    "archiveSHA256": "272f03d10dce1b26593d12e480911f52a2234ccb549db189b70fa5788ead39b6",
+    "architectures": "x86_64 arm64",
+    "minimumSystemMetadata": "14.0",
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "bytes": 122083
+      }
+    }
+  }
+}

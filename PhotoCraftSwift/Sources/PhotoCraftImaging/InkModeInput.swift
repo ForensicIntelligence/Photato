@@ -98,8 +98,7 @@ public enum InkModeInput {
     case .multichannel(let existing): raster = existing
     case .duotone(let source): raster = try source.separations()
     case nil:
-      let native = try components(document)
-      raster = try printingPlates(native, retaining: Array(0..<native.mode.componentCount))
+      raster = try printingPlates(document, retaining: Array(0..<document.colorMode.componentCount))
     }
     let result = try document.replacingInkMode(.multichannel(raster))
     return .preparedDocumentMode(.init(source: document, result: result, title: "Multichannel"))
@@ -108,14 +107,14 @@ public enum InkModeInput {
   public static func deleteProcess(_ request: ProcessChannelDeletion, in document: CraftDocument) throws -> Command {
     let retained = try request.retainedComponents(in: document)
     try validate(document, kind: .multichannel, mergeVisible: request.mergeVisible)
-    let native = try exactLayeredPlanes(document, retaining: retained) ?? components(document)
-    let raster = try printingPlates(native, retaining: retained)
+    let raster = try printingPlates(document, retaining: retained)
     let result = try document.replacingInkMode(.multichannel(raster))
     return .preparedDocumentMode(.init(source: document, result: result, title: "Delete Channels",
       recording: .processChannelDeletion(request)))
   }
 
-  private static func printingPlates(_ native: NativeModeRaster, retaining components: [Int]) throws -> MultichannelRaster {
+  private static func printingPlates(_ document: CraftDocument, retaining indices: [Int]) throws -> MultichannelRaster {
+    let native = try retainedLayeredComponents(document, indices: indices) ?? components(document)
     let process: [(String, Pixel)] = [("Cyan", Pixel(0, 0.682, 0.937)),
       ("Magenta", Pixel(0.925, 0, 0.549)), ("Yellow", Pixel(1, 0.949, 0)),
       ("Black", Pixel(0.137, 0.122, 0.125))]
@@ -127,17 +126,17 @@ public enum InkModeInput {
     case .grayscale: definitions = [("Black", .black)]
     default: throw CraftError.unsupported("This mode cannot be converted to Multichannel.")
     }
-    let samples = try native.requiresPagedArchive ? native.separatingPrintingPlates(components)
-      : components.map { try plane($0, in: native, inverted: native.mode != .cmyk) }
-    return try MultichannelRaster(plates: zip(components, samples).map { component, samples in
+    let samples = try native.requiresPagedArchive ? native.separatingPrintingPlates(indices)
+      : indices.map { try plane($0, in: native, inverted: native.mode != .cmyk) }
+    return try MultichannelRaster(plates: zip(indices, samples).map { component, samples in
       let (name, color) = definitions[component]
       return InkPlate(name: name, color: color, samples: samples)
     })
   }
 
   /// The existing gray component compositor preserves independent CMYK/Lab
-  /// numbers in plain stacks. Render only surviving components in that path.
-  private static func exactLayeredPlanes(_ document: CraftDocument, retaining indices: [Int]) throws -> NativeModeRaster? {
+  /// numbers in plain stacks. Render only the requested components.
+  private static func retainedLayeredComponents(_ document: CraftDocument, indices: [Int]) throws -> NativeModeRaster? {
     guard let descriptor = document.modeDescriptor, [.cmyk, .lab].contains(descriptor.mode) else { return nil }
     let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
     guard !visible.isEmpty, visible.count > 1 || !isAlignedRaster(visible[0], in: document),
@@ -147,13 +146,18 @@ public enum InkModeInput {
           && layer.style == nil && layer.smartObject == nil && layer.smartFilters == nil
           && layer.warp == nil && layer.sourceProjection == nil && layer.video == nil
       }) else { return nil }
+    var visibleDocument = document
+    visibleDocument.layers = visible
+    if !visible.contains(where: { $0.id == document.activeLayerID }) {
+      visibleDocument.activeLayerID = visible.last?.id
+    }
     let width = document.width, height = document.height, depth = document.depth
     let white = try NativeModeRaster.converting(Surface(width: 1, height: 1, depth: depth, fill: .white),
       to: descriptor.mode, depth: depth, profile: descriptor.profile, intent: descriptor.intent)
     var native = try NativeModeRaster(width: width, height: height, mode: descriptor.mode, depth: depth,
       profile: descriptor.profile, intent: descriptor.intent)
     for index in indices {
-      let preview = try ModeChannelPresentation.singleComponent(document, component: index)
+      let preview = try ModeChannelPresentation.singleComponent(visibleDocument, component: index)
       let paper = white.value(component: index, index: 0)
       let fill = descriptor.mode == .cmyk ? 1 - paper : paper
       let baseline = try BackgroundLayer.opaque(preview, over: Pixel(fill, fill, fill))

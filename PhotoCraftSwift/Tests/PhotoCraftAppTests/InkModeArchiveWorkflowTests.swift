@@ -5,6 +5,56 @@ import XCTest
 @testable import PhotoCraft
 
 final class InkModeArchiveWorkflowTests: XCTestCase {
+  @MainActor func testLayeredCMYKPreviewAndHTTPShareAllFourNativePlates() async throws {
+    var source = try CraftDocument(width: 2, height: 1, depth: .u16)
+    let backWords: [UInt32] = [4900, 15400, 28500, 49700]
+    let frontWords: [UInt32] = [62000, 13600, 22300, 38000]
+    let back = try NativeModeRaster.RowBuilder(width: 2, height: 1, mode: .cmyk, depth: .u16)
+    let front = try NativeModeRaster.RowBuilder(width: 1, height: 1, mode: .cmyk, depth: .u16)
+    for i in backWords.indices {
+      try back.fill(component: i, word: backWords[i])
+      try front.fill(component: i, word: frontWords[i])
+    }
+    try back.fill(component: 4, word: 65535); try front.fill(component: 4, word: 65535)
+    let bottom = try back.finish(), top = try front.finish()
+    source.modeDescriptor = try .init(mode: .cmyk, depth: .u16, profile: bottom.profile)
+    source.layers[0].nativeMode = bottom; source.layers[0].content = .raster(try bottom.surface())
+    var patch = Layer(name: "Patch", content: .raster(try top.surface()))
+    patch.nativeMode = top; source.layers.append(patch)
+
+    let original = source
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let store = document.store
+      store.session = EditorSession(document: original)
+      try service.share(document)
+      store.beginInkMode(.multichannel)
+      let workspace = try XCTUnwrap(store.inkModeWorkspace)
+      await workspace.task?.value
+      XCTAssertFalse(workspace.ready)
+      workspace.update { $0.mergeVisible = true }
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "The mode preview is unavailable.")
+      XCTAssertEqual(store.document, original)
+      store.commitInkMode()
+      await workspace.commitTask?.value
+      XCTAssertNil(workspace.error)
+      let native = store.document
+      let plates = try native.multichannelRaster().plates
+      XCTAssertEqual(plates.map { $0.samples.rawWord(at: 0) }, frontWords)
+      XCTAssertEqual(plates.map { $0.samples.rawWord(at: 1) }, backWords)
+      await store.undo()
+      XCTAssertEqual(store.document, original)
+
+      let status = try await helper.edit(service, document, "document.convertMultichannel",
+        ["mergeVisible": true, "plateIDs": workspace.request.plateIDs.map(\.uuidString)])
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(store.document, native)
+      let limits = try XCTUnwrap(InkModeAPI.capabilities["largeMultichannel"] as? [String: Any])
+      XCTAssertEqual(limits["nativeLayeredSeparationModes"] as? [String], ["cmyk", "lab"])
+    }
+  }
+
   @MainActor func testHTTPConversionDownloadAndUndoKeepSpotInkSeparate() async throws {
     var original = try CraftDocument(width: 3, height: 2)
     let spot = try original.newSpotChannel(name: "Owned Orange",

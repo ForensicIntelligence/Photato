@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **631** · The 10 most recent entries, newest first.
+Source build **632** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 632 — Keep native CMYK and Lab components when flattening to Multichannel
+
+Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink.
+
+All 1,136 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-632) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_632.md).
 
 ## 2026-11-19 — Step 631 — Preserve spot inks in Multichannel Photoshop files
 
@@ -75,11 +83,3 @@ Mode conversion can use the retained native separations and preserves supported 
 The development runs covered exact native component samples, mode round trips and large workspaces. The publication gate is the combined 628 matrix.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-623).
-
-## 2026-11-19 — Step 622 — Resize and crop editable Multichannel plates
-
-Canvas Size, Crop and supported nearest-neighbour geometry retain editable sparse printing plates and saved channel data.
-
-The development run covered native and API geometry plus sparse file round trips. The public cumulative qualification is recorded in 628.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-622).

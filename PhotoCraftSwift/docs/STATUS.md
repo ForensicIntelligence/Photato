@@ -1,3 +1,5 @@
+**Source checkpoint 632.** Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink. [Qualification](SOURCE_PUBLICATION_632.md).
+
 **Source checkpoint 631.** Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier. [Qualification](SOURCE_PUBLICATION_631.md).
 
 **Source checkpoint 630.** The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue. [Qualification](SOURCE_PUBLICATION_630.md).

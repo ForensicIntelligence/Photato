@@ -31,7 +31,8 @@ enum InkModeAPI {
     "duotoneMaximumPixels": InkPlane.maximumPixels,
     "largeMultichannel": ["maximumDimension": Surface.maxDimension, "maximumPixels": InkPlane.maximumDocumentPixels,
       "depths": [8, 16], "nativeArchiveVersion": 93, "retainsAlignedProcessWords": true,
-      "boundedPreviewMaximumSide": 2048, "matchingComponentReturn": true],
+      "boundedPreviewMaximumSide": 2048, "matchingComponentReturn": true,
+      "nativeLayeredSeparationModes": ["cmyk", "lab"]],
     "photoshopSpotOutput": ["formats": ["psd", "psb"], "retainsSpotDensity": true,
       "retainsSpotDisplay": true, "retainsChannelOrder": true],
     "settings": settings, "stateSchema": stateSchema,
@@ -43,7 +44,7 @@ enum InkModeAPI {
       "plates": ["type": "array", "maxItems": 56, "items": BrushAPI.object(["id": identity, "name": ["type": "string"], "color": BrushAPI.color, "solidity": BrushAPI.number()], required: ["id", "name", "color", "solidity"])],
       "revision": ["type": "string"]], required: ["mode", "depth", "settings", "plates", "revision"]),
     "presets": "Native Duotone settings are JSON using this settings schema, with all ink IDs and curve points included on save/read. Adobe ADO preset import is not implemented.",
-    "limits": "Multichannel conversion uses paged process planes and the shared compositor where merge is required. Composite, scratch and transfer budgets still apply. Exact Photoshop curve, merged-layer color, overprint and descriptor behavior remain unqualified."] }
+    "limits": "Multichannel conversion uses paged process planes. Ungrouped Normal CMYK and Lab raster stacks with native samples use component compositing when merging. Other layered inputs use the existing color composite. Composite, scratch and transfer budgets still apply. Exact Photoshop curve, merged-layer color, overprint and descriptor behavior remain unqualified."] }
 }
 
 extension AutomationCommand {
