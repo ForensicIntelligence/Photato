@@ -185,6 +185,13 @@ public enum RasterGeometry {
     if method == .nearest,let grid=RasterGridMap(transform,inverse:inverse,width:surface.width,height:surface.height,bounds:bounds) {
       return try surface.permutingGrid(grid,width:bounds.width,height:bounds.height)
     }
+    if channel, method == .nearest, surface.colorEncoding == .sRGB,
+      bounds.width * bounds.height > Surface.maximumDensePixels || surface.width * surface.height > Surface.maximumDensePixels,
+      transform.a == 1, transform.b == 0, transform.c == 0, transform.d == 1,
+      transform.tx == transform.tx.rounded(), transform.ty == transform.ty.rounded() {
+      return try surface.reframedExactly(bounds: .init(x: bounds.x - Int(transform.tx), y: bounds.y - Int(transform.ty),
+        width: bounds.width, height: bounds.height), fill: .black, channel: true)
+    }
     if channel,surface.tileCount==0,surface.defaultPixel.r==0 {return output}
     let corners=[inverse.point(Double(bounds.x)+0.5,Double(bounds.y)+0.5),
         inverse.point(Double(bounds.x)+Double(bounds.width)-0.5,Double(bounds.y)+0.5),

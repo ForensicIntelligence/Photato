@@ -49,6 +49,15 @@ public enum ColorManagement {
     let display = try converted(surface, from: document, to: CraftDocument(width: 1, height: 1))
     return try RasterIO.displayImage(display)
   }
+  /// Bound modal previews without changing the working samples used by the edit.
+  public static func conversionPreview(_ document: CraftDocument) throws -> CGImage {
+    let composite = try Renderer.composite(document)
+    guard document.width > Surface.maximumDensePixels / document.height else {
+      return try displayImage(composite, in: document)
+    }
+    let request = try RasterPreviewRequest.overview(width: document.width, height: document.height)
+    return try displayImage(request.reducing(composite), in: document)
+  }
   public static func converted(
     _ surface: Surface, from source: CraftDocument,
     to target: CraftDocument

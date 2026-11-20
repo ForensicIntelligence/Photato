@@ -68,8 +68,8 @@ import PhotoCraftImaging
         let worker = Task.detached(priority: .userInitiated) { () throws -> (CGImage, CGImage?) in
           var result = source
           try DocumentModeInput.command(request, in: source).apply(to: &result)
-          return (try ColorManagement.displayImage(Renderer.composite(result), in: result),
-            needOriginal ? try ColorManagement.displayImage(Renderer.composite(source), in: source) : nil)
+          return (try ColorManagement.conversionPreview(result),
+            needOriginal ? try ColorManagement.conversionPreview(source) : nil)
         }
         let images = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation()

@@ -33,6 +33,11 @@ public enum RecordedActionRenderer {
         try LayerMergePreparation.command(document,layerIDs:ids,operation:operation).apply(to:&document)
       case .flattenImage:
         try FlattenPreparation.command(document).apply(to:&document)
+      case .mergeSpotChannel(let target):
+        guard case .alpha(let id) = try target.resolve(in: document) else {
+          throw CraftError.invalid("Choose a saved spot channel for Merge Spot Channel.")
+        }
+        try SpotChannelMerge.command(document, channelID: id, discardHiddenLayers: true).apply(to: &document)
       case .paintBucket(let recording):
         let request = PaintBucketRequest(layerID: try recording.target.resolve(in: document),
           point: recording.point, color: recording.color, options: recording.options,
@@ -45,6 +50,8 @@ public enum RecordedActionRenderer {
         // to the playback document, not the document used to record the action.
         if request.kind == .multichannel { request.plateIDs = InkModeRequest(.multichannel, document: document).plateIDs }
         try request.command(in: document).apply(to: &document)
+      case .processChannelDeletion(let request):
+        try InkModeInput.deleteProcess(request, in: document).apply(to: &document)
       case .documentMode(let request):
         try DocumentModeInput.command(request, in: document).apply(to: &document)
       case .restrictedMode(let request):

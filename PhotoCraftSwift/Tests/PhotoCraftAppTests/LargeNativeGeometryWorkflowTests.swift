@@ -43,6 +43,60 @@ final class LargeNativeGeometryWorkflowTests:XCTestCase {
       let undo=try await helper.edit(service,document,"history.undo");XCTAssertEqual(undo,200);XCTAssertEqual(document.store.document,original)
     }
   }
+
+  @MainActor func testMultichannelHTTPGeometryPreservesExactPlatesAndUndo() async throws {
+    let helper = AutomationTests()
+    let files = DocumentIOWorkflowTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let width = 300_000, height = 31
+      let plane = try InkPlane(width: width, height: height, depth: .u16, value: 0.25)
+        .replacing(offset: 0, values: [Float(1) / 65535])
+        .replacing(offset: width * height - 1, values: [1])
+      let plate = InkPlate(name: "Black ink", color: .black, samples: plane)
+      let source = try CraftDocument(width: width, height: height, depth: .u16)
+        .replacingInkMode(.multichannel(.init(plates: [plate])))
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      service.setDocumentTransfersEnabled(true)
+      let share = try XCTUnwrap(service.shares.first)
+      let stale = try await helper.edit(service, document, "document.rotate", ["turn": "clockwise"], revision: "stale")
+      XCTAssertEqual(stale, 409)
+      XCTAssertEqual(document.store.document, source)
+
+      let rotated = try await helper.edit(service, document, "document.rotate", ["turn": "clockwise"])
+      XCTAssertEqual(rotated, 200)
+      var expected = EditorSession(document: source)
+      try expected.execute(.rotateCanvas(.clockwise))
+      XCTAssertEqual(document.store.document, expected.document)
+      XCTAssertEqual(try document.store.document.inkChannel(.plate(plate.id)).rawWord(at: height - 1), 1)
+      let data = try await files.request(service, path: "/v1/documents/\(share.id)/file.photato",
+        headers: ["X-Photato-Archive-Version": "93"])
+      XCTAssertEqual(data.0.statusCode, 200)
+      XCTAssertEqual(try NativeArchive.decodePaged(data.1), expected.document)
+
+      let undo = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(document.store.document, source)
+      let resized = try await helper.edit(service, document, "document.resize",
+        ["width": width, "height": 29, "method": "bicubic", "resolution": 144])
+      XCTAssertEqual(resized, 200)
+      try expected.undo()
+      try expected.execute(.imageSize(width, 29, 144, .bicubic))
+      XCTAssertEqual(document.store.document, expected.document)
+      let crop = try await helper.edit(service, document, "document.crop",
+        ["x": 1, "y": 0, "width": width - 1, "height": 29])
+      XCTAssertEqual(crop, 200)
+      let request = CropRequest(x: 1, y: 0, width: width - 1, height: 29)
+      XCTAssertEqual(document.store.document, try CropGeometry.applying(request, to: expected.document))
+      let undoCrop = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undoCrop, 200)
+      XCTAssertEqual(document.store.document, expected.document)
+
+      let capabilities = try XCTUnwrap(GeometryAPI.capabilities["largeMultichannel"] as? [String: Any])
+      XCTAssertEqual(capabilities["maximumPixels"] as? Int, 90_000_000_000)
+      XCTAssertEqual(capabilities["nativeArchiveVersion"] as? Int, 93)
+    }
+  }
 }
 private enum NativeGeometryFixture {
   static func make() throws -> CraftDocument {

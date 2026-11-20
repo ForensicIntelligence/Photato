@@ -1,16 +1,17 @@
 import Foundation
 
 /// Integer inverse mapping for an exact axis-aligned lattice permutation.
-/// Eligibility requires the complete transformed source rectangle, not a crop.
+/// Most callers require the complete transformed source rectangle. Plate
+/// geometry can also map into a clipped or expanded destination.
 struct RasterGridMap {
   let a:Int,b:Int,c:Int,d:Int,x0:Int,y0:Int
-  init?(_ t:Transform2D,inverse:Transform2D,width:Int,height:Int,bounds:IntRect) {
+  init?(_ t:Transform2D,inverse:Transform2D,width:Int,height:Int,bounds:IntRect, requiresComplete: Bool = true) {
     let coefficients=[t.a,t.b,t.c,t.d]
     guard coefficients.allSatisfy({[-1.0,0,1].contains($0)}),
       abs(t.a)+abs(t.c)==1,abs(t.b)+abs(t.d)==1,
       abs(t.a)+abs(t.b)==1,abs(t.c)+abs(t.d)==1,
       t.tx == t.tx.rounded(),t.ty == t.ty.rounded(),
-      let complete=try? t.bounds(width:width,height:height),complete==bounds else {return nil}
+      !requiresComplete || (try? t.bounds(width:width,height:height)) == bounds else {return nil}
     a=Int(inverse.a);b=Int(inverse.b);c=Int(inverse.c);d=Int(inverse.d)
     let p=inverse.point(Double(bounds.x)+0.5,Double(bounds.y)+0.5)
     x0=Int(floor(p.x));y0=Int(floor(p.y))

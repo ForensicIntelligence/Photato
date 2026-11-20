@@ -214,8 +214,19 @@ struct WorkflowGuideSnapshot: Equatable {
   }
 
   func showMe() {
-    guard onLessonDocument, let target = walkthrough?.step.target else { return }
-    highlightHint = presentTarget?(target) == true ? nil : "Look for \(target.label) in the editor."
+    guard onLessonDocument else { return }
+    guard let target = walkthrough?.step.target else {
+      _ = presentTarget?(nil)
+      highlightHint = nil
+      return
+    }
+    highlightHint = presentTarget?(target) == true ? nil : "Look for \(target.label)."
+  }
+
+  func revealSheetTarget(using present: (WorkflowGuideTarget) -> Bool) -> Bool {
+    guard onLessonDocument, let target = walkthrough?.step.target, present(target) else { return false }
+    highlightHint = nil
+    return true
   }
 
   func end() {
@@ -298,6 +309,7 @@ struct WorkflowGuideView: View {
   let model: WorkflowGuideModel
   let highlighter: WorkflowGuideHighlighter
   private weak var documents: CraftDocumentController?
+  private var pendingSheetCue: Task<Void, Never>?
 
   init(documents: CraftDocumentController) {
     self.documents = documents
@@ -341,8 +353,10 @@ struct WorkflowGuideView: View {
       name: NSMenu.didSendActionNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(sheetBecameKey(_:)),
       name: NSWindow.didBecomeKeyNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(menuBeganTracking(_:)),
-      name: NSMenu.didBeginTrackingNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(sheetWillBegin(_:)),
+      name: NSWindow.willBeginSheetNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(sheetEnded(_:)),
+      name: NSWindow.didEndSheetNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(menuEndedTracking(_:)),
       name: NSMenu.didEndTrackingNotification, object: nil)
     if takesFocus { window.makeKeyAndOrderFront(nil) } else { window.orderFront(nil) }
@@ -350,6 +364,8 @@ struct WorkflowGuideView: View {
 
   func windowWillClose(_ notification: Notification) {
     NotificationCenter.default.removeObserver(self)
+    pendingSheetCue?.cancel()
+    pendingSheetCue = nil
     model.preferences.setShown(false)
     if documents?.workflowGuide === model { documents?.workflowGuide = nil }
     model.end()
@@ -364,20 +380,49 @@ struct WorkflowGuideView: View {
   }
 
   @objc private func sheetBecameKey(_ notification: Notification) {
-    guard let sheet = notification.object as? NSWindow, let target = model.walkthrough?.step.target,
-      model.onLessonDocument, target.confirmsInSheet,
-      let editor = documents?.documentWindows.current?.window,
-      sheet.sheetParent === editor || sheet === NSApp.modalWindow else { return }
-    model.showMe()
+    guard let sheet = notification.object as? NSWindow, sheet === NSApp.modalWindow,
+      sheet.sheetParent == nil else { return }
+    _ = model.revealSheetTarget { highlighter.showInModalWindow($0, sheet: sheet) }
   }
 
-  @objc private func menuBeganTracking(_ notification: Notification) {
-    guard let menu = notification.object as? NSMenu, model.onLessonDocument,
+  @objc private func sheetWillBegin(_ notification: Notification) {
+    guard let editor = notification.object as? NSWindow, editor === documents?.documentWindows.current?.window,
+      model.onLessonDocument, let walk = model.walkthrough, walk.step.target?.modalTarget != nil else { return }
+    let lesson = walk.lesson.id
+    let index = walk.index
+    let document = walk.documentID
+    pendingSheetCue?.cancel()
+    // The parent can announce the sheet before its native controls have a visible view.
+    pendingSheetCue = Task { @MainActor [weak self, weak editor] in
+      for _ in 0..<20 {
+        do { try await Task.sleep(for: .milliseconds(50)) } catch { return }
+        guard let self, let editor, self.model.onLessonDocument, let current = self.model.walkthrough,
+          current.lesson.id == lesson, current.index == index, current.documentID == document else { return }
+        if self.model.revealSheetTarget(using: { self.highlighter.showInAttachedSheet($0, of: editor) }) { return }
+      }
+    }
+  }
+
+  @objc private func sheetEnded(_ notification: Notification) {
+    guard let editor = notification.object as? NSWindow,
+      editor === documents?.documentWindows.current?.window else { return }
+    pendingSheetCue?.cancel()
+    pendingSheetCue = nil
+    highlighter.clearSheetHighlight()
+  }
+
+  func menuWillOpen(_ menu: NSMenu) {
+    guard model.preferences.isShown, model.onLessonDocument,
       let target = model.walkthrough?.step.target else { return }
-    highlighter.showMenuItem(for: target, in: menu)
+    highlighter.menuWillOpen(menu, for: target)
   }
 
-  @objc private func menuEndedTracking(_ notification: Notification) { highlighter.clearMenuHighlight() }
+  func menuDidClose(_ menu: NSMenu) { highlighter.menuDidClose(menu) }
+
+  @objc private func menuEndedTracking(_ notification: Notification) {
+    guard let menu = notification.object as? NSMenu, menu === NSApp.mainMenu else { return }
+    highlighter.clearMenuHighlight()
+  }
 }
 
 @MainActor extension AppDelegate {

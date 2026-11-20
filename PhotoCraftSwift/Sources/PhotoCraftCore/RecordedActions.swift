@@ -127,6 +127,8 @@ public enum ActionOperation: Codable, Sendable {
   indirect case pathPixelPaint(ActionLayerTarget,SelectionMask,PixelPaintSettings,RasterPattern?,PatternPlacement?,Bool)
   case projectLayers([ActionLayerTarget],ProjectiveTransform,Resampling)
   case transformLayers([ActionLayerTarget],Transform2D,Resampling)
+  case mergeSpotChannel(ActionChannelTarget)
+  case processChannelDeletion(ProcessChannelDeletion)
   case transformChannel(ActionChannelTarget,ProjectiveTransform,Resampling,Float,Bool)
   case transformPixelMask(ActionLayerTarget,ProjectiveTransform,Resampling)
   case transformPixels(ActionLayerTarget,ProjectiveTransform,Resampling)
@@ -181,6 +183,7 @@ public enum ActionOperation: Codable, Sendable {
     case .preparedAction(let edit):self = edit.recording ?? .unsupported("\(command.label) is not yet recordable. Remove or disable this step before playback.")
     case .canvasEdges(let edit):self = .canvasEdges(edit.operation,edit.background)
     case .flattenImage:self = .flattenImage
+    case .mergeSpotChannel(let edit):self = .mergeSpotChannel(.init(.alpha(edit.channelID), in: d))
     case .layerStyles(let edit):self = .layerStyles(RecordedStyleEdit(edit,in:d))
     case .globalLight(let value):self = .globalLight(value)
     case .paintBucket(let id, let fill):
@@ -339,13 +342,13 @@ public enum ActionOperation: Codable, Sendable {
     case .replaceText:throw CraftError.unsupported("Text replacement Actions require native shaping playback.")
     case .canvasEdges:
       throw CraftError.unsupported("Canvas edge Actions require native compositor playback.")
-    case .flattenImage:
-      throw CraftError.unsupported("Flatten Image Actions require the native compositor.")
+    case .flattenImage, .mergeSpotChannel:
+      throw CraftError.unsupported("Flatten and spot merge Actions require the native compositor.")
     case .retouch:
       throw CraftError.unsupported("Retouch Actions require compositor sampling playback.")
     case .paintBucket:
       throw CraftError.unsupported("Paint Bucket Actions require compositor sampling playback.")
-    case .documentMode, .restrictedMode, .inkMode, .clipboardCopy, .clipboardCut, .clipboardPaste:
+    case .documentMode, .restrictedMode, .inkMode, .processChannelDeletion, .clipboardCopy, .clipboardCut, .clipboardPaste:
       throw CraftError.unsupported("This action requires compositor/clipboard playback.")
     case .toneAdjustment(let target,let settings):return .toneAdjustment(.init(settings,layerID:try target.map(id)))
     case .proceduralRender(let target,let settings,let newLayer,let path):return .proceduralRender(.init(settings,layerID:try target.map(id),newLayer:newLayer,path:path))

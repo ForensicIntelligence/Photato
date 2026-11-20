@@ -112,7 +112,7 @@ extension EditorStore {
     if let command = prepared.channelCommand { try validateQuickMaskVisibility(.channel(command)) }
     if let request = prepared.pixelPaintRequest { try validateQuickMaskVisibility(.pixelPaint(request)) }
     if let request = prepared.paintingRequest { try validateQuickMaskPaintingTarget(request.target) }
-    if prepared.isSelectionOnly || (allowAuxiliary && prepared.isChannelOnlyEdit) {try session.executePrepared(prepared);return}
+    if prepared.isSelectionOnly || (allowAuxiliary && (prepared.isChannelOnlyEdit || prepared.isSpotChannelMerge || prepared.isProcessChannelDeletion)) {try session.executePrepared(prepared);return}
     if allowLinkedSmartObject {
       guard let edit=prepared.linkedSmartObjectEdit,edit.source==document else {throw CraftError.invalid("Missing or stale linked artwork transaction.")}
       try session.executePrepared(prepared);return

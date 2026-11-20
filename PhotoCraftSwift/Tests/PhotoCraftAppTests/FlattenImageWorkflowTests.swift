@@ -25,7 +25,7 @@ final class FlattenImageWorkflowTests: XCTestCase {
     XCTAssertNil(s.error);XCTAssertEqual(s.document.layers.count,1);XCTAssertTrue(s.document.layers[0].isBackground)
     XCTAssertEqual(s.selectedLayerIDs,[source.layers[0].id]);XCTAssertEqual(s.session.undoStack.count,1);XCTAssertEqual(prompts,1)
     _=await s.requestHistory(redo:false).value;XCTAssertEqual(s.document,source)
-    let alert=FlattenImageAlert.make(.init(original:source));XCTAssertEqual(alert.messageText,"Discard hidden layers?");XCTAssertEqual(alert.buttons.map(\.title),["OK","Cancel"])
+    let alert=FlattenImageAlert.make(operation: "Flatten Image");XCTAssertEqual(alert.messageText,"Discard hidden layers?");XCTAssertEqual(alert.buttons.map(\.title),["OK","Cancel"])
   }
   @MainActor func testNativeConfirmationCancellationAndChangedSourceDoNotCommit() async throws {
     let source=try fixture(),s=EditorStore(document:source);defer{s.geometryTask?.cancel();s.renderTask?.cancel()}

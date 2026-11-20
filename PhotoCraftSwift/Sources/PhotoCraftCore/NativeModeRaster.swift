@@ -254,7 +254,7 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
       for c in keys.indices where keys[c] == key { keys[c] = iterators[c].next() }
     }
   }
-  public static func converting(_ source:Surface,to mode:DocumentColorMode,depth:PixelDepth?=nil,profile:Data?=nil,intent:ModeRenderingIntent = .relativeColorimetric,sourceProfile:Data?=nil)throws->Self {
+  public static func converting(_ source:Surface,to mode:DocumentColorMode,depth:PixelDepth?=nil,profile:Data?=nil,intent:ModeRenderingIntent = .relativeColorimetric,sourceProfile:Data?=nil,pagedOutput:Bool=false)throws->Self {
     let depth=depth ?? source.depth;var result=try Self(width:source.width,height:source.height,mode:mode,depth:depth,profile:profile,intent:intent)
     // Integer-document composites use unquantized Float32 buffers in encoded
     // working coordinates. Floating storage alone does not make those samples linear.
@@ -263,10 +263,11 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
     let transform=try NativeModeTransform(mode:mode,depth:depth,profile:result.profile,intent:intent,rgbProfile:sourceProfile,rgbDepth:inputDepth)
     let fallback = linear ? try source.interpretingSamples(as: .sRGB).defaultPixel : source.defaultPixel
     try result.setDefaults(transform.components(fallback))
-    try forEachStoredPixel([source]) { x, y in
-      let p = linear ? source.linearPixel(x: x, y: y) : source.pixel(x: x, y: y)
-      let values = try transform.components(p), i = y * source.width + x
-      for c in values.indices { try result.set(values[c], component: c, index: i) }
+    try result.populateComponents(paged: pagedOutput) { store in
+      try forEachStoredPixel([source]) { x, y in
+        let p = linear ? source.linearPixel(x: x, y: y) : source.pixel(x: x, y: y)
+        try store(try transform.components(p), y * source.width + x)
+      }
     }
     return result
   }
@@ -329,7 +330,7 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
 
   /// Convert retained components directly; routing CMYK/Lab through an RGB display
   /// cache would lose out-of-gamut colors and independent ink separations.
-  public func converted(to target:DocumentColorMode,depth outputDepth:PixelDepth,profile outputProfile:Data?=nil,intent outputIntent:ModeRenderingIntent = .relativeColorimetric)throws->Self {
+  public func converted(to target:DocumentColorMode,depth outputDepth:PixelDepth,profile outputProfile:Data?=nil,intent outputIntent:ModeRenderingIntent = .relativeColorimetric,pagedOutput:Bool=false)throws->Self {
     try validate()
     let profile=try outputProfile ?? NativeModeProfile.standard(target,depth:outputDepth)
     if target==mode,outputDepth==depth,profile==self.profile,outputIntent==intent{return self}
@@ -352,10 +353,83 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
       let word = componentStorage[c].defaultWord
       return depth == .f32 ? Float(bitPattern: word) : Float(word) / (depth == .u8 ? 255 : 65535)
     }))
-    try forEachStoredIndex { i in
-      let values = try convert(components(index: i))
-      for c in values.indices { try result.set(values[c], component: c, index: i) }
+    try result.populateComponents(paged: pagedOutput) { store in
+      try forEachStoredIndex { i in try store(try convert(components(index: i)), i) }
     }
+    return result
+  }
+
+  private mutating func populateComponents(paged: Bool,
+    _ walk: (_ store: ([Float], Int) throws -> Void) throws -> Void) throws {
+    if paged && requiresPagedArchive {
+      let budget = ComponentScratchBudget()
+      let writers = try componentStorage.map { try ComponentPlaneBuilder(plane: $0, cacheBlocks: 4, reserve: budget.reserve) }
+      let depth = depth
+      try walk { values, index in
+        for c in values.indices {
+          guard values[c].isFinite, c != mode.componentCount || (0...1).contains(values[c]) else {
+            throw CraftError.invalid("Invalid native component conversion sample.")
+          }
+          try writers[c].setWord(Self.word(values[c], depth: depth), at: index)
+        }
+      }
+      componentStorage = try writers.map { try $0.finish() }
+    } else {
+      try walk { values, index in
+        for c in values.indices { try set(values[c], component: c, index: index) }
+      }
+    }
+  }
+
+  /// Exact opaque process words can share storage. When an alpha sample varies,
+  /// only blocks present in the source separation or alpha plane need evaluation.
+  package func separatingPrintingPlates(_ components: [Int]) throws -> [InkPlane] {
+    try validate()
+    let maximum: UInt32 = depth == .u8 ? 255 : 65535
+    let alpha = mode.componentCount, inverted = mode != .cmyk
+    guard !components.isEmpty, components.allSatisfy((0..<alpha).contains) else {
+      throw CraftError.invalid("Choose valid source component planes.")
+    }
+    let budget = ComponentScratchBudget()
+    if isOpaque {
+      return try components.map { c in
+        try inkPlane(component: c).convertingPaged(to: depth, inverted: inverted, budget: budget)
+      }
+    }
+    let white = try Self.converting(Surface(width: 1, height: 1, depth: depth, fill: .white),
+      to: mode, depth: depth, profile: profile, intent: intent)
+    return try components.map { c in
+      let paper = white.value(component: c, index: 0)
+      func output(_ color: UInt32, _ coverage: UInt32) -> UInt32 {
+        let a = Float(coverage) / Float(maximum), value = Float(color) / Float(maximum)
+        let sample = unit(value * a + paper * (1 - a))
+        return Self.word(inverted ? 1 - sample : sample, depth: depth)
+      }
+      let implicit = output(componentStorage[c].defaultWord, componentStorage[alpha].defaultWord)
+      let plane = try ComponentPlane(width: width, height: height, depth: depth, defaultWord: implicit)
+      let writer = try ComponentPlaneBuilder(plane: plane, cacheBlocks: 4, reserve: budget.reserve)
+      try forEachStoredIndex(components: [c, alpha]) { index in
+        let word = output(rawWord(component: c, index: index), rawWord(component: alpha, index: index))
+        if word != implicit { try writer.setWord(word, at: index) }
+      }
+      return try InkPlane(storage: writer.finish())
+    }
+  }
+
+  static func interpretingPrintingPlates(_ plates: MultichannelRaster, as mode: DocumentColorMode,
+    profile: Data?, intent: ModeRenderingIntent) throws -> Self {
+    var result = try Self(width: plates.width, height: plates.height, mode: mode, depth: plates.depth,
+      profile: profile, intent: intent)
+    guard plates.plates.count == mode.componentCount else {
+      throw CraftError.invalid("The printing plate count does not match the destination mode.")
+    }
+    let budget = ComponentScratchBudget(), depth = plates.depth
+    let colors = try plates.plates.map {
+      try $0.samples.convertingPaged(to: depth, inverted: mode != .cmyk, budget: budget).componentPlane
+    }
+    let alpha = try ComponentPlane(width: plates.width, height: plates.height, depth: depth,
+      defaultWord: depth == .u8 ? 255 : 65535)
+    result.componentStorage = colors + [alpha]
     return result
   }
   /// Resample numerical components with the shared premultiplied kernel. Source

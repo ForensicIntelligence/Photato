@@ -92,4 +92,94 @@ final class InkModeGeometryTests: XCTestCase {
     request.deleteCroppedPixels = true; request.fill = .contentAware
     XCTAssertThrowsError(try CropGeometry.applying(request, to: original))
   }
+
+  func testMaximumMultichannelCanvasReframeCropAndAllGridTurnsRetainExactWords() throws {
+    let width = 300_000, height = 299_999
+    let plate = try InkPlane(width: width, height: height, depth: .u16, value: 0.375)
+      .replacing(offset: 0, values: [Float(1) / 65535])
+      .replacing(offset: width * height - 1, values: [Float(65534) / 65535])
+    let spot = InkPlate(name: "Exact plate", color: .black, samples: plate)
+    var original = try CraftDocument(width: width, height: height, depth: .u16)
+      .replacingInkMode(.multichannel(.init(plates: [spot])))
+    var mask = try Surface(width: width, height: height, depth: .u16, fill: Pixel(0.25, 0.25, 0.25))
+    mask.setPixel(x: 17, y: 20, .white)
+    original.alphaChannels = [.init(name: "Coverage", pixels: mask)]
+    original.selection = .init(x: 17, y: 20, width: 1, height: 1)
+    var session = EditorSession(document: original)
+    try session.execute(.canvasSize(width, height + 1, .bottomLeft, nil))
+    let expanded = session.document
+    let expandedPlate = try XCTUnwrap(planes(expanded).first)
+    XCTAssertEqual(expandedPlate.rawWord(at: 0), 0)
+    XCTAssertEqual(expandedPlate.rawWord(at: width), 1)
+    XCTAssertEqual(expandedPlate.rawWord(at: width * (height + 1) - 1), 65534)
+    XCTAssertEqual(expandedPlate.rawWord(at: width + 8), plate.defaultWord)
+    XCTAssertEqual(expanded.selection, .init(x: 17, y: 21, width: 1, height: 1))
+    XCTAssertEqual(expanded.alphaChannels?[0].pixels.pixel(x: 17, y: 21), .white)
+    XCTAssertEqual(expanded.alphaChannels?[0].pixels.pixel(x: 17, y: 0), .black)
+    XCTAssertEqual(expanded.alphaChannels?[0].pixels.pixel(x: 18, y: 21), mask.pixel(x: 18, y: 20))
+    XCTAssertEqual(expanded.minimumArchiveVersion, 93)
+
+    try session.execute(.crop(.init(x: 0, y: 1, width: width, height: height)))
+    XCTAssertEqual(try planes(session.document), [plate])
+    XCTAssertEqual(session.document.alphaChannels, original.alphaChannels)
+    XCTAssertNil(session.document.selection)
+    try session.undo()
+    XCTAssertEqual(session.document, expanded)
+    try session.undo()
+    XCTAssertEqual(session.document, original)
+
+    for turn in CanvasTurn.allCases {
+      try session.execute(.rotateCanvas(turn))
+      let first: (x: Int, y: Int)
+      let last: (x: Int, y: Int)
+      switch turn {
+      case .clockwise: (first, last) = ((height - 1, 0), (0, width - 1))
+      case .counterclockwise: (first, last) = ((0, width - 1), (height - 1, 0))
+      case .half: (first, last) = ((width - 1, height - 1), (0, 0))
+      case .horizontal: (first, last) = ((width - 1, 0), (0, height - 1))
+      case .vertical: (first, last) = ((0, height - 1), (width - 1, 0))
+      }
+      let result = try XCTUnwrap(planes(session.document).first)
+      XCTAssertEqual(result.rawWord(at: first.y * result.width + first.x), 1, turn.rawValue)
+      XCTAssertEqual(result.rawWord(at: last.y * result.width + last.x), 65534, turn.rawValue)
+      XCTAssertEqual(result.defaultWord, plate.defaultWord)
+      XCTAssertLessThanOrEqual(result.retainedSampleBytes, 2 * ComponentPlane.blockSamples * 2)
+      try session.undo()
+      XCTAssertEqual(session.document, original)
+    }
+  }
+
+  func testPagedResizeAndRotatedCropMatchDenseSamplesForEveryKernel() throws {
+    let side = 300_000
+    for depth in [PixelDepth.u8, .u16] {
+      let large = try InkPlane(width: side, height: side, depth: depth, value: 0.375)
+        .replacing(offset: 0, values: [0.2, 0.9, 0.75, 0.4])
+        .replacing(offset: side + 1, values: [1, 0.1, 0.6])
+      let control = try InkPlane(width: 32, height: 32, depth: depth, value: 0.375)
+        .replacing(offset: 0, values: [0.2, 0.9, 0.75, 0.4])
+        .replacing(offset: 33, values: [1, 0.1, 0.6])
+      let turn = Transform2D.translation(1.75, 2.5) * .rotation(20)
+      for method in Resampling.allCases {
+        let reduced = try large.transformed(by: .scale(0.5, 0.5), width: side / 2, height: side / 2,
+          method: method, clampEdges: true)
+        let resized = try control.transformed(by: .scale(0.5, 0.5), width: 16, height: 16,
+          method: method, clampEdges: true)
+        for y in 0..<16 {
+          for x in 0..<16 {
+            XCTAssertEqual(reduced.rawWord(at: y * reduced.width + x), resized.rawWord(at: y * 16 + x), method.rawValue)
+          }
+        }
+        XCTAssertEqual(reduced.rawWord(at: reduced.count - 1), large.defaultWord)
+        XCTAssertLessThan(reduced.retainedSampleBytes, 512 * 1024)
+        let crop = try large.transformed(by: turn, width: 13, height: 14, method: method, fill: 0.1317)
+        let croppedReference = try control.transformed(by: turn, width: 13, height: 14, method: method, fill: 0.1317)
+        XCTAssertEqual(try crop.bytes, try croppedReference.bytes, method.rawValue)
+      }
+    }
+    let flat = try InkPlane(width: 3, height: 3, value: 0.5)
+    let expanded = try flat.transformed(by: .scale(100_000, 100_000), width: side, height: side,
+      method: .bicubic, clampEdges: true)
+    XCTAssertEqual(expanded.rawWord(at: expanded.count - 1), 128)
+    XCTAssertEqual(expanded.retainedSampleBytes, 0)
+  }
 }

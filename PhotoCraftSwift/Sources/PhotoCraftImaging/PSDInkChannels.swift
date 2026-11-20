@@ -95,6 +95,16 @@ enum PSDInkChannels {
     return Display(color: color, opacity: Float(opacity) / 100, kind: kind, raw: raw)
   }
 
+  /// A saved CMYK spot swatch has original process words. Retain them while
+  /// the rendered sRGB swatch is still the value decoded from that record.
+  static func retainedCMYKSwatch(_ channel: AlphaChannel) throws -> [Float]? {
+    guard let raw = channel.psdDisplay, let ink = channel.spot,
+      let original = try? display(raw), original.kind == 2, original.color == ink.color else { return nil }
+    var reader = PSDReader(data: raw)
+    guard try reader.u16() == 2 else { return nil }
+    return try (0..<4).map { _ in Float(65535 - (try reader.u16())) / 65535 }
+  }
+
   static func record(id: UUID, color: Pixel, opacity: Float, kind: Int, document: CraftDocument) throws -> Data {
     if let raw = document.sourceMetadata?[key(id)], let old = try? display(raw),
       old.color == color, old.opacity == opacity, old.kind == kind { return raw }

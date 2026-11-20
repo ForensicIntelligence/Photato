@@ -345,6 +345,7 @@ import PhotoCraftCore
         // native menu on rebuild so registration and the visible hierarchy stay identical.
         let submenu =
           (path == "Photato > Services" ? NSApp.servicesMenu : nil) ?? NSMenu(title: node.title)
+        if path != "Photato > Services" { submenu.delegate = self }
         if let previous = submenu.supermenu?.items.first(where: { $0.submenu === submenu }) {
           previous.submenu = nil
         }
@@ -409,7 +410,6 @@ import PhotoCraftCore
     // Own the document list: assigning this to windowsMenu lets AppKit inject a different hierarchy.
     NSApp.windowsMenu = nil
     documentWindowMenu = main.item(withTitle: "Window")?.submenu
-    documentWindowMenu?.delegate = self
     let guide = NSMenuItem(title: "Workflow Guide", action: #selector(toggleWorkflowGuide), keyEquivalent: "")
     guide.target = self
     guide.identifier = NSUserInterfaceItemIdentifier("Window > Workflow Guide")
@@ -420,9 +420,7 @@ import PhotoCraftCore
     guideSettings.identifier = NSUserInterfaceItemIdentifier("Photato > Settings… > Workflow Guide…")
     main.item(withTitle: "Photato")?.submenu?.item(withTitle: "Settings…")?.submenu?.addItem(guideSettings)
     workspaceMenu = documentWindowMenu?.item(withTitle: "Workspace")?.submenu
-    workspaceMenu?.delegate = self
     recentDocumentsMenu = main.item(withTitle: "File")?.submenu?.item(withTitle: "Open Recent")?.submenu
-    recentDocumentsMenu?.delegate = self
   }
 
   @objc func layerViaCopy() { store?.layerVia(.copy) }

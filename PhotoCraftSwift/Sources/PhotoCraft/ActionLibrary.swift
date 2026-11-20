@@ -5,12 +5,14 @@ import PhotoCraftCore
 struct ActionLibraryFile: Codable {
   var version = 1
   var actions: [RecordedAction] = []
-  static let maximumVersion = 73
+  static let maximumVersion = 75
   static let maximumBytes = 16 * 1024 * 1024
   var requiredVersion:Int {
     let paintVersion = actions.lazy.flatMap(\.steps).compactMap { step -> Int? in
       let mode: BrushPaintMode?, profile: BrushSettings.RoundTipProfile?
       switch step.operation {
+      case .processChannelDeletion: return 75
+      case .mergeSpotChannel: return 74
       case .merge(_, .stampDown), .merge(_, .stampGroup): return 73
       case .merge(_, .clippingMask): return 72
       case .merge(_, let operation) where operation.preservesSources: return 71

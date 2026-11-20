@@ -78,6 +78,107 @@ final class InkModeInputTests: XCTestCase {
     let indexed = try CraftDocument(width: 3, height: 1).replacingRestrictedMode(.indexed(.init(width: 3, height: 1, palette: [.init(0, 0, 0)], indices: Data([0, 0, 0]))))
     XCTAssertThrowsError(try InkModeInput.multichannel(in: indexed))
   }
+  private func sparseSource(width: Int, height: Int, mode: DocumentColorMode, depth: PixelDepth,
+    transparent: Bool = false) throws -> (CraftDocument, NativeModeRaster) {
+    let builder = try NativeModeRaster.RowBuilder(width: width, height: height, mode: mode, depth: depth)
+    let max: UInt32 = depth == .u8 ? 255 : 65535
+    for c in 0..<mode.componentCount { try builder.fill(component: c, word: UInt32(11 + c * 31)) }
+    try builder.fill(component: mode.componentCount, word: transparent ? max / 2 : max)
+    var native = try builder.finish()
+    for c in 0..<mode.componentCount {
+      try native.set(Float(c + 1) / Float(max), component: c, index: 0)
+      try native.set(Float(max - UInt32(c + 1)) / Float(max), component: c, index: width * height - 1)
+    }
+    if transparent {
+      try native.set(0, component: mode.componentCount, index: 0)
+      try native.set(1, component: mode.componentCount, index: width * height - 1)
+    }
+    var source = try CraftDocument(width: width, height: height, depth: depth)
+    source.modeDescriptor = try .init(mode: mode, depth: depth, profile: native.profile)
+    source.layers[0].nativeMode = native
+    source.layers[0].content = .raster(try native.surface())
+    return (source, native)
+  }
+  func testMaximumOpaqueProcessPlanesKeepWordsAtBothDepthsAndRoundTrip() throws {
+    let side = 300_000
+    for mode in DocumentColorMode.componentModes {
+      for depth in [PixelDepth.u8, .u16] {
+        var (original, native) = try sparseSource(width: side, height: side, mode: mode, depth: depth)
+        original.alphaChannels = [AlphaChannel(name: "Saved mask",
+          pixels: try Surface(width: side, height: side, depth: depth, fill: .white))]
+        var session = EditorSession(document: original)
+        try session.execute(InkModeRequest(.multichannel, document: original).command(in: original))
+        let converted = session.document
+        let plates = try converted.multichannelRaster().plates
+        let max: UInt32 = depth == .u8 ? 255 : 65535
+        XCTAssertEqual(converted.minimumArchiveVersion, 93)
+        XCTAssertEqual(converted.alphaChannels, original.alphaChannels)
+        for (c, plate) in plates.enumerated() {
+          for index in [0, side, side * side - 1] {
+            let word = native.rawWord(component: c, index: index)
+            XCTAssertEqual(plate.samples.rawWord(at: index), mode == .cmyk ? word : max - word)
+          }
+          XCTAssertLessThan(plate.samples.estimatedBytes, 32 * 1024)
+        }
+        let reopened = try NativeArchive.decode(NativeArchive.encode(converted))
+        XCTAssertEqual(reopened, converted)
+        let restored = try reopened.convertingMode(.init(mode: mode, depth: depth, profile: native.profile))
+        XCTAssertEqual(restored.layers[0].nativeMode, native, mode.rawValue)
+        try session.undo()
+        XCTAssertEqual(session.document, original)
+      }
+    }
+  }
+  func testPagedTransparencyAndSingleVisiblePlaneMatchDenseConversion() throws {
+    let side = 300_000
+    for mode in DocumentColorMode.componentModes {
+      let (small, _) = try sparseSource(width: 3, height: 1, mode: mode, depth: .u16, transparent: true)
+      var expected = small
+      try InkModeInput.multichannel(in: small).apply(to: &expected)
+      var (large, _) = try sparseSource(width: side, height: side, mode: mode, depth: .u16, transparent: true)
+      var hidden = Layer(name: "Retained by Undo", content: .fill(.white))
+      hidden.visible = false
+      large.layers.append(hidden)
+      XCTAssertThrowsError(try InkModeInput.multichannel(in: large))
+      var session = EditorSession(document: large)
+      try session.execute(InkModeInput.multichannel(in: large, mergeVisible: true))
+      for (a, b) in zip(try session.document.multichannelRaster().plates, try expected.multichannelRaster().plates) {
+        for (index, reference) in [0, 1, side * side - 1].enumerated() {
+          XCTAssertEqual(a.samples.rawWord(at: reference), b.samples.rawWord(at: index), mode.rawValue)
+        }
+        XCTAssertLessThanOrEqual(a.samples.retainedSampleBytes, 2 * ComponentPlane.blockSamples * 2)
+      }
+      try session.undo()
+      XCTAssertEqual(session.document, large)
+    }
+  }
+  func testMaximumLayeredRGBMergeKeepsSparsePlateSamplesAndAlphaSelection() throws {
+    let size = 300_000
+    func fixture(_ side: Int) throws -> CraftDocument {
+      var document = try CraftDocument(width: side, height: side, depth: .u16)
+      document.layers[0].content = .raster(try Surface(width: side, height: side, depth: .u16,
+        fill: Pixel(0.125, 0.5, 0.75, 0.6)))
+      let swatch = try Surface(width: 1, height: 1, depth: .u16, fill: Pixel(1, 0, 0.25, 0.4))
+      var top = Layer(name: "Red", content: .raster(swatch))
+      top.x = 1
+      top.y = 1
+      document.layers.append(top)
+      document.alphaChannels = [AlphaChannel(name: "Coverage",
+        pixels: try Surface(width: side, height: side, depth: .u16, fill: .black))]
+      return document
+    }
+    let dense = try fixture(3), sparse = try fixture(size)
+    var expected = dense, result = sparse
+    try InkModeInput.multichannel(in: dense, mergeVisible: true).apply(to: &expected)
+    try InkModeInput.multichannel(in: sparse, mergeVisible: true).apply(to: &result)
+    XCTAssertEqual(result.alphaChannels, sparse.alphaChannels)
+    XCTAssertTrue(result.layers.isEmpty)
+    for (large, small) in zip(try result.multichannelRaster().plates, try expected.multichannelRaster().plates) {
+      XCTAssertEqual(large.samples.rawWord(at: 0), small.samples.rawWord(at: 0))
+      XCTAssertEqual(large.samples.rawWord(at: size + 1), small.samples.rawWord(at: 4))
+      XCTAssertEqual(large.samples.rawWord(at: size * size - 1), small.samples.rawWord(at: 8))
+    }
+  }
   func testRenderingAndRasterExportUseInkDisplayAndKeepOutsideRegionTransparent() throws {
     let gray = try InkPlane(width: 3, height: 1, bytes: Data([0, 128, 255]))
     let duo = try CraftDocument(width: 3, height: 1).replacingInkMode(.duotone(.init(gray: gray,

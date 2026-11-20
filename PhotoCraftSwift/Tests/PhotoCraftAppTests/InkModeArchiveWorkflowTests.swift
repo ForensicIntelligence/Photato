@@ -44,8 +44,68 @@ final class InkModeArchiveWorkflowTests: XCTestCase {
         XCTAssertEqual(undoStatus, 200)
         XCTAssertTrue(document.store.document == original)
         let cap = try XCTUnwrap(AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
-        XCTAssertEqual(cap["pagedSelectionVersion"]as?Int,64); XCTAssertEqual(cap["inkModeVersion"] as? Int, 48); XCTAssertEqual(cap["readVersions"] as? [Int], Array(1...89))
+        XCTAssertEqual(cap["pagedSelectionVersion"]as?Int,64); XCTAssertEqual(cap["inkModeVersion"] as? Int, 48); XCTAssertEqual(cap["readVersions"] as? [Int], Array(1...93))
       }
+    }
+  }
+  @MainActor func testLargeCMYKPreviewNativeAndHTTPMatchThroughArchiveAndReturn() async throws {
+    let width = 300_000, height = 129
+    let last = width * height - 1
+    let builder = try NativeModeRaster.RowBuilder(width: width, height: height, mode: .cmyk, depth: .u16)
+    for c in 0..<4 { try builder.fill(component: c, word: UInt32(c * 59)) }
+    try builder.fill(component: 4, word: 65535)
+    var native = try builder.finish()
+    try native.set(Float(0xBEEF) / 65535, component: 3, index: last)
+    var document = try CraftDocument(width: width, height: height, depth: .u16)
+    document.modeDescriptor = try .init(mode: .cmyk, depth: .u16, profile: native.profile)
+    document.layers[0].content = .raster(try native.surface())
+    document.layers[0].nativeMode = native
+    let source = document
+    let helper = AutomationTests(), files = DocumentIOWorkflowTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let store = shared.store
+      store.session = EditorSession(document: source)
+      try service.share(shared)
+      service.setDocumentTransfersEnabled(true)
+      let share = try XCTUnwrap(service.shares.first)
+      XCTAssertTrue(store.canBeginInkMode(.multichannel))
+      store.beginInkMode(.multichannel)
+      let workspace = try XCTUnwrap(store.inkModeWorkspace)
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "The mode preview is unavailable.")
+      XCTAssertEqual(try XCTUnwrap(workspace.image).width, 2048)
+      XCTAssertEqual(try XCTUnwrap(workspace.originalImage).width, 2048)
+      XCTAssertEqual(store.document, source)
+      store.commitInkMode()
+      await workspace.commitTask?.value
+      XCTAssertNil(workspace.error)
+      let converted = store.document
+      let plates = try converted.multichannelRaster().plates
+      XCTAssertEqual(plates.map(\.id), workspace.request.plateIDs)
+      XCTAssertEqual(plates[3].samples.rawWord(at: last), 0xBEEF)
+      XCTAssertEqual(converted.minimumArchiveVersion, 93)
+      await store.undo()
+      XCTAssertEqual(store.document, source)
+
+      let params = ["plateIDs": workspace.request.plateIDs.map(\.uuidString)]
+      let stale = try await helper.edit(service, shared, "document.convertMultichannel", params, revision: "stale")
+      XCTAssertEqual(stale, 409)
+      XCTAssertEqual(store.document, source)
+      let conversion = try await helper.edit(service, shared, "document.convertMultichannel", params)
+      XCTAssertEqual(conversion, 200)
+      XCTAssertEqual(store.document, converted)
+      let saved = try await files.request(service, path: "/v1/documents/\(share.id)/file.photato",
+        headers: ["X-Photato-Archive-Version": "93"])
+      XCTAssertEqual(saved.0.statusCode, 200)
+      XCTAssertEqual(try NativeArchive.decode(saved.1), converted)
+      let restored = try await helper.edit(service, shared, "document.convertMode", ["mode": "cmyk", "depth": 16])
+      XCTAssertEqual(restored, 200)
+      XCTAssertEqual(store.document.layers[0].nativeMode?.rawWord(component: 3, index: last), 0xBEEF)
+      let undo = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(store.document, converted)
+      let limits = try XCTUnwrap(InkModeAPI.capabilities["largeMultichannel"] as? [String: Any])
+      XCTAssertEqual(limits["maximumPixels"] as? Int, Surface.maxPixels)
     }
   }
 }

@@ -127,6 +127,13 @@ extension CraftDocument {
       // First interpret integer plates in the target's integer space, then
       // perform any requested profile/depth conversion (including linear32).
       let inputProfile = request.depth == .f32 ? nil : request.profile
+      if inkMode.requiresPagedArchive {
+        let components = try NativeModeRaster.interpretingPrintingPlates(raster, as: request.mode,
+          profile: inputProfile, intent: request.intent)
+        native = try components.converted(to: request.mode, depth: request.depth,
+          profile: descriptor.profile, intent: request.intent, pagedOutput: true)
+        break
+      }
       var components = try NativeModeRaster(width: width, height: height, mode: request.mode,
         depth: raster.depth, profile: inputProfile, intent: request.intent)
       for i in 0..<width * height {
@@ -141,7 +148,7 @@ extension CraftDocument {
         profile: descriptor.profile, intent: request.intent)
     default:
       native = try NativeModeRaster.converting(inkMode.surface(), to: request.mode,
-        depth: request.depth, profile: descriptor.profile, intent: request.intent)
+        depth: request.depth, profile: descriptor.profile, intent: request.intent, pagedOutput: inkMode.requiresPagedArchive)
     }
     var result = self
     var layer = Layer(name: "Background", content: .raster(try native.surface()))

@@ -165,6 +165,7 @@ final class WorkflowGuideTests: XCTestCase {
     let panel = try XCTUnwrap(guide.window as? NSPanel)
     XCTAssertTrue(panel.isFloatingPanel)
     XCTAssertTrue(panel.isExcludedFromWindowsMenu)
+    XCTAssertTrue(panel.worksWhenModal)
     XCTAssertEqual(panel.title, "Workflow Guide")
     XCTAssertTrue(delegate.controller.workflowGuide === guide.model)
     XCTAssertTrue(delegate.controller.workflowGuidePreferences.isShown)
@@ -195,10 +196,11 @@ final class WorkflowGuideTests: XCTestCase {
     }
     delegate.setWorkflowGuideVisible(true, takesFocus: false)
     let guide = try XCTUnwrap(delegate.workflowGuideWindow)
+    editor.contentView?.layoutSubtreeIfNeeded()
+    guide.model.start(WorkflowGuideContent.duplicate)
     let deadline = ContinuousClock.now.advanced(by: .seconds(3))
     while guide.highlighter.overlay == nil, ContinuousClock.now < deadline {
-      guide.model.start(WorkflowGuideContent.duplicate)
-      if guide.highlighter.overlay == nil { try await Task.sleep(for: .milliseconds(25)) }
+      try await Task.sleep(for: .milliseconds(25))
     }
     let first = try XCTUnwrap(guide.highlighter.overlay)
     XCTAssertTrue(first.parent === editor)
@@ -218,19 +220,155 @@ final class WorkflowGuideTests: XCTestCase {
       try await Task.sleep(for: .milliseconds(25))
     }
     _ = try XCTUnwrap(editor.attachedSheet)
-    guide.model.showMe()
-    let request = try XCTUnwrap(guide.highlighter.sheetHighlight)
-    XCTAssertEqual(request.control, .modalConfirm)
     let layoutDeadline = ContinuousClock.now.advanced(by: .seconds(2))
     while guide.highlighter.visibleSheetHighlight == nil && guide.highlighter.overlay == nil,
       ContinuousClock.now < layoutDeadline {
       try await Task.sleep(for: .milliseconds(25))
     }
+    let request = try XCTUnwrap(guide.highlighter.sheetHighlight)
+    XCTAssertEqual(request.control, .modalConfirm)
     XCTAssertEqual(guide.highlighter.visibleSheetHighlight, request.id)
     XCTAssertNil(guide.highlighter.overlay)
+    guide.model.showMe()
+    XCTAssertNotEqual(guide.highlighter.sheetHighlight?.id, request.id)
+    XCTAssertEqual(guide.model.walkthrough?.index, 1)
     guide.model.end()
     XCTAssertNil(guide.highlighter.overlay)
     XCTAssertNil(guide.highlighter.sheetHighlight)
     XCTAssertFalse(document.isDocumentEdited)
+  }
+
+  @MainActor func testGuideOutlinesAParentMenuRowAndThenTheExactSubmenuCommand() throws {
+    _ = NSApplication.shared
+    let previousMenu = NSApp.mainMenu
+    let delegate = AppDelegate(workspaces: WorkspaceLibrary())
+    let document = CraftNSDocument(model: try CraftDocument(width: 24, height: 18))
+    delegate.controller.documentWindows.activeDocument = document
+    defer {
+      delegate.workflowGuideWindow?.close()
+      delegate.controller.documentWindows.activeDocument = nil
+      document.store.renderTask?.cancel()
+      NSApp.mainMenu = previousMenu
+    }
+    delegate.installPhotoshopMenus()
+    delegate.setWorkflowGuideVisible(true, takesFocus: false)
+    let guide = try XCTUnwrap(delegate.workflowGuideWindow)
+    guide.model.showTool(.brush)
+    guide.model.start(WorkflowGuideContent.brush)
+    XCTAssertEqual(guide.model.walkthrough?.index, 0)
+
+    let layerMenu = try XCTUnwrap(NSApp.mainMenu?.item(withTitle: "Layer")?.submenu)
+    let newItem = try XCTUnwrap(layerMenu.item(withTitle: "New"))
+    let newMenu = try XCTUnwrap(newItem.submenu)
+    let layerItem = try XCTUnwrap(newMenu.item(withTitle: "Layer…"))
+    for item in [newItem, layerItem] {
+      let sample = try MenuTrackingSample(item: item, guide: guide)
+      sample.open()
+      let frame = try XCTUnwrap(sample.frame)
+      let outline = try XCTUnwrap(sample.outline)
+      XCTAssertTrue(outline.frame.contains(frame), "\(item.title) at \(frame) should be inside the cue at \(outline.frame)")
+      XCTAssertGreaterThan(outline.level.rawValue, Int(CGWindowLevelForKey(.popUpMenuWindow)))
+      XCTAssertTrue(outline.ignoresMouseEvents)
+      XCTAssertFalse(outline.isKeyWindow)
+      XCTAssertNil(guide.highlighter.overlay)
+    }
+    XCTAssertEqual(guide.model.walkthrough?.index, 0)
+    XCTAssertNil(document.store.newLayerDraft)
+    XCTAssertFalse(document.isDocumentEdited)
+  }
+
+  @MainActor func testSaveGuideFindsItsNativeFormatControlAndIgnoresOtherSheets() async throws {
+    _ = NSApplication.shared
+    let delegate = AppDelegate(workspaces: WorkspaceLibrary())
+    let document = CraftNSDocument(model: try CraftDocument(width: 80, height: 60))
+    delegate.controller.addDocument(document)
+    document.makeWindowControllers()
+    document.showWindows()
+    delegate.controller.documentWindows.activeDocument = document
+    let editor = try XCTUnwrap(document.windowForSheet)
+    defer {
+      if let sheet = editor.attachedSheet { editor.endSheet(sheet, returnCode: .cancel) }
+      delegate.workflowGuideWindow?.close()
+      document.close()
+    }
+    delegate.setWorkflowGuideVisible(true, takesFocus: false)
+    let guide = try XCTUnwrap(delegate.workflowGuideWindow)
+    guide.model.note(.export, "Save")
+    guide.model.start(WorkflowGuideContent.save)
+    guide.model.next()
+    XCTAssertNotNil(guide.model.highlightHint)
+
+    document.store.beginDuplicate()
+    let duplicateDeadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while editor.attachedSheet == nil, ContinuousClock.now < duplicateDeadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    _ = try XCTUnwrap(editor.attachedSheet)
+    guide.model.showMe()
+    XCTAssertNil(guide.highlighter.overlay)
+    XCTAssertNil(guide.highlighter.sheetHighlight)
+    XCTAssertNil(guide.highlighter.nativeSheetOutline)
+
+    document.store.duplicateLayerDraft = nil
+    let dismissalDeadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while editor.attachedSheet != nil, ContinuousClock.now < dismissalDeadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    XCTAssertNil(editor.attachedSheet)
+
+    let panel = NSSavePanel()
+    XCTAssertTrue(document.prepareSavePanel(panel))
+    panel.beginSheetModal(for: editor) { _ in }
+    let panelDeadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while (editor.attachedSheet !== panel || !panel.isVisible), ContinuousClock.now < panelDeadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    XCTAssertTrue(editor.attachedSheet === panel)
+    let cueDeadline = ContinuousClock.now.advanced(by: .seconds(2))
+    while guide.highlighter.nativeSheetOutline == nil, ContinuousClock.now < cueDeadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    let cue = try XCTUnwrap(guide.highlighter.nativeSheetOutline)
+    let popup = try XCTUnwrap(document.saveAccessory?.formats)
+    XCTAssertTrue(cue.window === (try XCTUnwrap(popup.window)))
+    XCTAssertTrue(cue.superview === popup)
+    XCTAssertEqual(cue.frame, popup.bounds)
+    XCTAssertFalse(cue.visibleRect.isEmpty)
+    XCTAssertNil(cue.hitTest(CGPoint(x: cue.bounds.midX, y: cue.bounds.midY)))
+    XCTAssertNil(guide.highlighter.overlay)
+    XCTAssertNil(guide.model.highlightHint)
+    XCTAssertEqual(guide.model.walkthrough?.index, 1)
+    guide.model.showMe()
+    XCTAssertFalse(guide.highlighter.nativeSheetOutline === cue)
+    XCTAssertNil(cue.superview)
+    panel.cancel(nil)
+    XCTAssertFalse(document.isDocumentEdited)
+  }
+}
+
+@MainActor private final class MenuTrackingSample {
+  let item: NSMenuItem
+  let menu: NSMenu
+  let guide: WorkflowGuideWindow
+  var frame: NSRect?
+  var outline: NSPanel?
+
+  init(item: NSMenuItem, guide: WorkflowGuideWindow) throws {
+    self.item = item
+    self.guide = guide
+    menu = try XCTUnwrap(item.menu)
+  }
+
+  func open() {
+    let timer = Timer(timeInterval: 0.2, repeats: false) { [self] _ in
+      MainActor.assumeIsolated {
+        frame = item.accessibilityFrame()
+        outline = guide.highlighter.overlay
+        menu.cancelTracking()
+      }
+    }
+    RunLoop.main.add(timer, forMode: .eventTracking)
+    _ = menu.popUp(positioning: nil, at: NSPoint(x: 500, y: 400), in: nil)
+    timer.invalidate()
   }
 }

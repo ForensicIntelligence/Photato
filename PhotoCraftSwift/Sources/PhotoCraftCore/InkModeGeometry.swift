@@ -5,16 +5,26 @@ extension InkPlane {
   /// Grid mappings copy their original bytes, including all16-bit precision.
   public func transformed(by transform: Transform2D, width: Int, height: Int,
     method: Resampling = .nearest, fill: Float = 0, clampEdges: Bool = false) throws -> Self {
+    try transformed(by: transform, width: width, height: height, method: method, fill: fill,
+      clampEdges: clampEdges, budget: ComponentScratchBudget())
+  }
+
+  func transformed(by transform: Transform2D, width: Int, height: Int, method: Resampling,
+    fill: Float = 0, clampEdges: Bool, budget: ComponentScratchBudget) throws -> Self {
     try validate()
-    var result = try Self(width: width, height: height, depth: depth, value: fill)
+    let blank = try Self(width: width, height: height, depth: depth, value: fill)
     let inverse = try transform.inverted()
-    let grid = [transform.a, transform.b, transform.c, transform.d].allSatisfy { [-1.0, 0, 1].contains($0) }
-      && abs(transform.a * transform.d - transform.b * transform.c) == 1
-      && transform.tx.rounded() == transform.tx && transform.ty.rounded() == transform.ty
-      && abs(transform.a) + abs(transform.c) == 1 && abs(transform.b) + abs(transform.d) == 1
-    let direct = method == .nearest || grid
+    let bounds = IntRect(x: 0, y: 0, width: width, height: height)
+    let grid = RasterGridMap(transform, inverse: inverse, width: self.width, height: self.height,
+      bounds: bounds, requiresComplete: false)
+    if requiresPagedArchive || blank.requiresPagedArchive {
+      return try InkPlaneGeometry.render(self, in: bounds, transform: transform, inverse: inverse,
+        method: method, grid: grid, fill: blank.defaultWord, background: fill,
+        clampEdges: clampEdges, budget: budget)
+    }
+    let direct = method == .nearest || grid != nil
     let cache = direct ? nil : try surface()
-    var output = try result.bytes
+    var output = try blank.bytes
     let stride = depth == .u8 ? 1 : 2
     for y in 0..<height { try Task.checkCancellation(); for x in 0..<width {
       var p = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
@@ -32,8 +42,7 @@ extension InkPlane {
         else { let n = UInt16((value * 65535).rounded()); output[destination] = UInt8(n & 255); output[destination + 1] = UInt8(n >> 8) }
       }
     } }
-    result = try Self(width: width, height: height, depth: depth, bytes: output)
-    return result
+    return try Self(width: width, height: height, depth: depth, bytes: output)
   }
 }
 
@@ -54,15 +63,16 @@ public enum InkModeGeometry {
       guard fill == nil || fill == .white || fill?.a == 0 else {
         throw CraftError.unsupported("Multichannel canvas extension uses unprinted paper. Fill individual ink plates after extending the canvas.")
       }
+      let budget = ComponentScratchBudget()
       for i in raster.plates.indices {
         raster.plates[i].samples = try raster.plates[i].samples.transformed(by: transform, width: width,
-          height: height, method: method, clampEdges: clampEdges)
+          height: height, method: method, clampEdges: clampEdges, budget: budget)
       }
       result.inkMode = .multichannel(raster)
     }
     result.width = width; result.height = height
     result.transformSavedPaths(by: transform)
-    try result.mapGuides( transform)
+    try result.mapGuides(transform)
     try result.transformChannels(from: original, by: transform, method: method)
     if clearSelection { result.setCoverageSelection(nil) } else { try result.mapSelection(from: original, by: transform) }
     try result.validate(); return result

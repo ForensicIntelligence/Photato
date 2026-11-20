@@ -7,8 +7,8 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 273
-  static let expectedActionVersion = 73
+  static let expectedCommandCount = 276
+  static let expectedActionVersion = 75
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }
@@ -158,6 +158,10 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
       XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 809)
       let channels = try XCTUnwrap(catalogue["alphaChannels"] as? [String: Any])
+      let nativeDrag = try XCTUnwrap(channels["nativeDrag"] as? [String: String])
+      XCTAssertTrue(nativeDrag["duplicate"]?.contains("channel.duplicate") == true)
+      XCTAssertTrue(nativeDrag["delete"]?.contains("channel.deleteProcess") == true)
+      XCTAssertTrue(nativeDrag["reorder"]?.contains("ink.channel.manage") == true)
       let interchange = try XCTUnwrap(channels["photoshopInterchange"] as? [String: Any])
       XCTAssertEqual(interchange["largeSavedChannelExport"] as? String,
         "Raw and PackBits output reuse unchanged rows in sparse saved channels. Unchanged original Float32 words remain exact.")
@@ -187,6 +191,10 @@ final class AutomationTests: XCTestCase {
       let maskSteps = try XCTUnwrap(maskLesson["steps"] as? [[String: Any]])
       XCTAssertEqual(maskSteps.count, 4)
       XCTAssertEqual(maskSteps[1]["target"] as? [String: String], ["kind": "menu", "label": "Layer > Layer Mask > Reveal All"])
+      let saveLesson = try XCTUnwrap(lessons.first { ($0["id"] as? String) == "save-editable" })
+      let saveSteps = try XCTUnwrap(saveLesson["steps"] as? [[String: Any]])
+      XCTAssertEqual(saveSteps[0]["target"] as? [String: String], ["kind": "menu", "label": "File > Save As", "dialog": "save"])
+      XCTAssertEqual(saveSteps[1]["target"] as? [String: String], ["kind": "control", "label": "the format picker", "dialog": "save"])
       XCTAssertEqual(guide["processing"] as? String, "local")
       let guidePreferences = try XCTUnwrap(guide["preferences"] as? [String: Any])
       XCTAssertEqual(guidePreferences["maximumSuggestions"] as? Int, 4)

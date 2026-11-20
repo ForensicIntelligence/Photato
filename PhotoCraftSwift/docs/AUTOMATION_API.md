@@ -1,3 +1,15 @@
+### Drag channels (preview 628)
+
+`GET /v1/capabilities` includes `alphaChannels.nativeDrag`. Dropping an individual channel onto New Channel or another matching open image uses the numerical operation exposed as `channel.duplicate`. Drag-to-trash uses `channel.deleteProcess`, `channel.edit` with action `delete`, or `ink.channel.manage` with action `delete`, as appropriate. Reordering saved channels or Multichannel ink plates uses the corresponding `move` action. Existing permissions, revisions and payloads apply to all four commands. Firefly v2 has no documented channel drag endpoint.
+
+### Delete process channels (preview 626)
+
+`channel.deleteProcess` takes a `components` array of one to three distinct zero-based integers in the active 8- or 16-bit RGB, CMYK or Lab mode. The operation retains at least one process component and converts the surviving separations into editable Multichannel plates. Set `mergeVisible: true` to authorize merging visible layers and discarding hidden layers when required. The default is false. Success returns the updated shared document state after one undoable edit. Invalid specifications, stale revisions, busy interactions and missing layer-merge consent are rejected. Discover the parameters and output state through `alphaChannels.processDeletion` and `selectionChannels.processDeletion`. The native recorder can replay this edit in the stored input color mode. Firefly v2 defines no corresponding endpoint.
+
+### Workflow Guide menu and dialog highlights (preview 621)
+
+An authenticated `GET /v1/capabilities` response may include `dialog` on a lesson step's existing `target`. The values are `duplicateLayer`, `newLayer`, `savedSelection`, `imageExport`, and `save`. For a menu target, the value identifies the dialog that can receive the cue when the menu command opens it. For a control target, it identifies the dialog that contains the control. Existing `kind` and `label` values keep their formats. Highlighting and Show Me run in the desktop app. The catalogue is read-only and Adobe v2 defines no corresponding operation.
+
 ### Paged Multichannel printing plates (checkpoint 620)
 
 Desktop Open and Save, Photato document transfers, and currently supported Photoshop file resource operations use the shared Multichannel PSD/PSB codec. Capability discovery adds paged printing plates at 8 and 16 bits. `documentTransfers.multichannelPhotoshop.maximumPixels` and `alphaChannels.photoshopInterchange.printingPlateMaximumPixels` report the logical canvas limit. `printingPlateDenseMaximumPixels` preserves the bound for dense access. Large editable Photato downloads require `X-Photato-Archive-Version: 93`. Numeric plate read and write operations use a zero-based integer offset into the plane. File and scratch limits continue to apply. Adobe v2 gains no new dedicated ink-channel command or route.

@@ -2,7 +2,71 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **620** · The 10 most recent entries, newest first.
+Source build **628** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 628 — Drag channel rows and keep menu cues aligned
+
+Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu.
+
+All 1,125 selected tests passed in each configuration. The two signed macOS 14+ archive slices also passed offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-628). [Development notes](PhotoCraftSwift/docs/CHANNEL_DRAG_628.md).
+
+## 2026-11-19 — Step 627 — Integrate Workflow Guide cues with the expanded Channels panel
+
+The validated source combines menu and dialog cues, process-channel deletion, and isolated Sky Replacement wheel input.
+
+A repaired Debug candidate passed 44 targeted cases. A remaining intermittent popup placement issue was resolved before the 628 source qualification.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-627). [Development notes](PhotoCraftSwift/docs/CHANNEL_GUIDE_INTEGRATION_627.md).
+
+## 2026-11-19 — Step 626 — Delete process channels through the Channels panel
+
+Deleting selected RGB, CMYK or Lab components converts the retained separations into editable Multichannel plates. Layered input requests merge consent.
+
+All 29 selected development cases passed, including shared native and HTTP validation.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-626). [Development notes](PhotoCraftSwift/docs/PROCESS_CHANNEL_DELETION_626.md).
+
+## 2026-11-19 — Step 625 — Merge spot ink into the supported process channels
+
+The shared spot-merge command keeps the expected component layout and performs one undoable document edit.
+
+All 29 selected development cases passed. Exact comparison against Adobe-authored physical printing samples remains open.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-625).
+
+## 2026-11-19 — Step 624 — Duplicate channels into the current image or another document
+
+Duplicate Channel uses native numerical samples and the dimensions, depth and channel rules of the destination. The app and API share that path.
+
+All 25 selected development cases passed, including ownership, cancellation and document history.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-624).
+
+## 2026-11-19 — Step 623 — Convert layerless ink documents back to editable image modes
+
+Mode conversion can use the retained native separations and preserves supported large ink rasters. The Image Mode menu and Photato API share the conversion.
+
+The development runs covered exact native component samples, mode round trips and large workspaces. The publication gate is the combined 628 matrix.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-623).
+
+## 2026-11-19 — Step 622 — Resize and crop editable Multichannel plates
+
+Canvas Size, Crop and supported nearest-neighbour geometry retain editable sparse printing plates and saved channel data.
+
+The development run covered native and API geometry plus sparse file round trips. The public cumulative qualification is recorded in 628.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-622).
+
+## 2026-11-19 — Step 621 — Follow native menus and dialogs in the Workflow Guide
+
+The guide follows menu rows and submenus as they open. Supported dialog controls flash automatically, with Show Me available to replay the cue.
+
+The repaired preview passed 11 selected cases, including Duplicate Layer, Save As and an unrelated sheet. A later matrix exposed a popup placement issue repaired in 628.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-621). [Development notes](PhotoCraftSwift/docs/WORKFLOW_GUIDE_HIGHLIGHTS_621.md).
 
 ## 2026-11-19 — Step 620 — Keep maximum-size Multichannel printing plates editable
 
@@ -19,67 +83,3 @@ Open Photato > Settings > Workflow Guide to control visibility, launch behavior 
 All 972 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_619.md).
-
-## 2026-11-19 — Step 618 — Save deep RGB Photoshop files without a merged preview
-
-The File Handling preference and explicit Photato API setting apply to eligible native saves, Image Processor output, and file downloads. Adobe v2 continues to write its existing merged preview.
-
-All 970 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_618.md).
-
-## 2026-11-19 — Step 617 — Add the optional Workflow Guide
-
-Open Window > Workflow Guide to browse suggestions for the selected layer, tool or other editor context. The guide runs locally and links to the development diary. The authenticated Photato capability catalogue exposes the same lessons.
-
-All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_617.md).
-
-## 2026-11-19 — Step 616 — Write native Photoshop separations and Gray32 previews from stored blocks
-
-A two-layer 1,531 × 5,491 Gray32 control matched all 34,060,421 bytes from build 615. Restoring the same sparse layers and writing the file took 274.9 milliseconds in the paired Apple Silicon Debug run, down from 44.80 seconds.
-
-All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-616) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_616.md).
-
-## 2026-11-19 — Step 615 — Keep large Grayscale, CMYK and Lab Photoshop planes sparse
-
-The native file reader opened an independently authored 300,000 × 300,000 Grayscale/16 PSB and matched all 18,432 checked gray and alpha words. The Apple Silicon Debug run took 2.61 seconds and retained 24 KiB of mapped component samples.
-
-Build 614 exhausted a 384 KiB scratch limit on the smaller 1,531 × 5,491 control. Build 615 opened it under that allowance and matched all 19,842 checked words. All 963 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-615) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_615.md).
-
-## 2026-11-19 — Step 614 — Read large ZIP-compressed Photoshop layers and masks as sparse rasters
-
-The native file reader opened an independently authored 300,000 × 128 RGB8 PSB with a ZIP-compressed layer, translated mask and saved alpha. All 36,864 checked component words matched. The Apple Silicon Debug run took 5.48 seconds.
-
-Build 613 reached the 768 KiB scratch limit on the same control. Build 614 read the editable layer, mask and saved alpha into six tiles using 384 KiB of mapped storage. All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-614) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_614.md).
-
-## 2026-11-19 — Step 613 — Import large flattened RGB PSD and PSB without staging all process planes
-
-The native file reader opened a 300,000 × 300,000 flattened RGB8 PSB with transparency and saved alpha in 13.58 seconds in one Apple Silicon Debug run. All 36,864 checked RGBA and 1,024 saved alpha words matched the independent input.
-
-Build 612 reached a 768 KiB scratch limit on the 1,201 × 30,001 control. Build 613 opened it with three RGBA tiles and one saved-alpha tile. All 961 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-613) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_613.md).
-
-## 2026-11-19 — Step 612 — Save large PSD and PSB channels with repeated rows
-
-The file writer and reader round-tripped a 300,000 × 300,000 RGB8 PSB with an editable fill, a saved alpha, a spot channel and Quick Mask. All 15,360 stored alpha and spot samples matched. The 15.48 GB file took 6.95 seconds to write and 16.77 seconds to reopen in one Apple Silicon Debug run.
-
-Independent executions saved the same 1,201 × 30,001 document on 611 and 612. All 7,924,054 output bytes matched. One Debug run took 38.41 seconds on 611 and 37.3 ms on 612. All 960 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-612) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_612.md).
-
-## 2026-11-19 — Step 611 — Import large PSD and PSB saved channels into sparse tiles
-
-The native reader opened a synthetic 300,000 × 300,000 grayscale PSB in 4.22 seconds in one Apple Silicon Debug run. All 9,216 stored alpha samples and both editable grayscale layer samples matched the authored input. The saved alpha used 192 KiB of mapped sample storage.
-
-A smaller 1,201 × 30,001 PSB retained all 10,593 checked alpha samples within a 768 KiB scratch allowance. Build 610 exceeded that allowance. The test set covers RGB8 Raw and PackBits and RGB16 and RGB32 PackBits. All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md).

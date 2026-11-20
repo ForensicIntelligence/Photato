@@ -648,6 +648,14 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 618 | [Save deep RGB Photoshop files without a merged preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) |
 | 2026-11-19 | 619 | [Rank Workflow Guide suggestions and highlight each step](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) |
 | 2026-11-19 | 620 | [Keep maximum-size Multichannel printing plates editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) |
+| 2026-11-19 | 621 | [Follow native menus and dialogs in the Workflow Guide](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-621) |
+| 2026-11-19 | 622 | [Resize and crop editable Multichannel plates](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-622) |
+| 2026-11-19 | 623 | [Convert layerless ink documents back to editable image modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-623) |
+| 2026-11-19 | 624 | [Duplicate channels into the current image or another document](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-624) |
+| 2026-11-19 | 625 | [Merge spot ink into the supported process channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-625) |
+| 2026-11-19 | 626 | [Delete process channels through the Channels panel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-626) |
+| 2026-11-19 | 627 | [Integrate Workflow Guide cues with the expanded Channels panel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-627) |
+| 2026-11-19 | 628 | [Drag channel rows and keep menu cues aligned](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-628) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

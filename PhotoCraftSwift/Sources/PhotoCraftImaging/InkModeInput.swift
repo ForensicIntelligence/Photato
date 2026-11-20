@@ -6,19 +6,25 @@ import PhotoCraftCore
 public enum InkModeInput {
   public static func needsMerge(_ document: CraftDocument) -> Bool {
     if document.inkMode != nil { return false }
-    guard document.layers.count == 1, let layer = document.layers.first,
-      case .raster(let pixels) = layer.content else { return true }
-    return pixels.width != document.width || pixels.height != document.height
-      || layer.x != 0 || layer.y != 0 || layer.affine != nil || layer.parentID != nil
-      || !layer.visible || layer.opacity != 1 || layer.blendMode != .normal
-      || layer.mask != nil || layer.vectorMask != nil || layer.style != nil
-      || layer.smartObject != nil || layer.smartFilters != nil || layer.warp != nil || layer.clipped == true
+    guard document.layers.count == 1, let layer = document.layers.first else { return true }
+    return !isAlignedRaster(layer, in: document)
   }
-  private static func validate(_ document: CraftDocument, mergeVisible: Bool) throws {
+  static func isAlignedRaster(_ layer: Layer, in document: CraftDocument) -> Bool {
+    guard case .raster(let pixels) = layer.content else { return false }
+    return pixels.width == document.width && pixels.height == document.height
+      && layer.x == 0 && layer.y == 0 && layer.affine == nil && layer.parentID == nil
+      && layer.visible && layer.opacity == 1 && layer.blendMode == .normal
+      && layer.mask == nil && layer.vectorMask == nil && layer.style == nil
+      && layer.smartObject == nil && layer.smartFilters == nil && layer.warp == nil
+      && layer.clipped != true && layer.sourceProjection == nil && layer.video == nil
+  }
+  private static func validate(_ document: CraftDocument, kind: InkModeRequest.Kind, mergeVisible: Bool) throws {
     try document.validate(); try Task.checkCancellation()
-    guard !document.hasArtboards, !document.hasFrames,
-      document.width <= InkPlane.maximumPixels / document.height else {
-      throw CraftError.unsupported("Ink conversion requires one canvas of at most8,388,608 pixels without artboards or frames.")
+    guard !document.hasArtboards, !document.hasFrames else {
+      throw CraftError.unsupported("Ink conversion requires one canvas without artboards or frames.")
+    }
+    if kind == .duotone, document.width > InkPlane.maximumPixels / document.height {
+      throw CraftError.unsupported("Duotone conversion requires a canvas of at most 8,388,608 pixels.")
     }
     guard document.depth != .f32, !document.colorMode.isRestricted else {
       throw CraftError.unsupported("Convert Indexed Color, Bitmap or32-bit images to RGB/Grayscale8 or16-bit before ink conversion.")
@@ -30,8 +36,21 @@ public enum InkModeInput {
   /// Obtain components in the document's own coordinates. Do not reseparate an
   /// opaque flat CMYK layer through an RGB preview and destroy its black plate.
   private static func components(_ document: CraftDocument) throws -> NativeModeRaster {
-    if !needsMerge(document), let retained = document.layers.first?.nativeMode { return retained }
+    let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
+    if visible.count == 1, let layer = visible.first, isAlignedRaster(layer, in: document),
+      let retained = layer.nativeMode { return retained }
     let pixels = try Renderer.composite(document)
+    let paged = document.width > InkPlane.maximumPixels / document.height
+    if paged {
+      let opaque = try pixels.mappedStoredSamples { p in
+        let a = unit(p.a)
+        return Pixel(p.r * a + 1 - a, p.g * a + 1 - a, p.b * a + 1 - a)
+      }
+      return try NativeModeRaster.converting(opaque, to: document.colorMode, depth: document.depth,
+        profile: document.modeDescriptor?.profile ?? document.workingICC,
+        intent: document.modeDescriptor?.intent ?? .relativeColorimetric,
+        sourceProfile: document.workingICC, pagedOutput: true)
+    }
     var opaque = try Surface(width: document.width, height: document.height, depth: .f32, colorEncoding: .sRGB)
     for y in 0..<document.height { try Task.checkCancellation(); for x in 0..<document.width {
       let p = pixels.pixel(x: x, y: y), a = unit(p.a)
@@ -60,7 +79,7 @@ public enum InkModeInput {
   }
   public static func duotone(_ settings: DuotoneSettings, in document: CraftDocument,
     mergeVisible: Bool = false) throws -> Command {
-    try validate(document, mergeVisible: mergeVisible); try settings.validate()
+    try validate(document, kind: .duotone, mergeVisible: mergeVisible); try settings.validate()
     let result: CraftDocument
     if case .duotone = document.inkMode { result = try document.replacingDuotoneSettings(settings) }
     else {
@@ -73,31 +92,78 @@ public enum InkModeInput {
     return .preparedDocumentMode(.init(source: document, result: result, title: document.colorMode == .duotone ? "Duotone Options" : "Duotone"))
   }
   public static func multichannel(in document: CraftDocument, mergeVisible: Bool = false) throws -> Command {
-    try validate(document, mergeVisible: mergeVisible)
+    try validate(document, kind: .multichannel, mergeVisible: mergeVisible)
     let raster: MultichannelRaster
     switch document.inkMode {
     case .multichannel(let existing): raster = existing
     case .duotone(let source): raster = try source.separations()
     case nil:
       let native = try components(document)
-      let definitions: [(String, Pixel)]
-      // Display colors are from the licensed PhotoCraft process-ink definitions.
-      let process: [(String, Pixel)] = [("Cyan", Pixel(0, 0.682, 0.937)),
-        ("Magenta", Pixel(0.925, 0, 0.549)), ("Yellow", Pixel(1, 0.949, 0)), ("Black", Pixel(0.137, 0.122, 0.125))]
-      switch native.mode {
-      case .rgb: definitions = Array(process.prefix(3))
-      case .cmyk: definitions = process
-      case .lab: definitions = [("Alpha 1", .black), ("Alpha 2", .black), ("Alpha 3", .black)]
-      case .grayscale: definitions = [("Black", .black)]
-      default: throw CraftError.unsupported("This mode cannot be converted to Multichannel.")
-      }
-      let plates = try definitions.enumerated().map { index, item in
-        InkPlate(name: item.0, color: item.1, samples: try plane(index, in: native, inverted: native.mode != .cmyk))
-      }
-      raster = try .init(plates: plates)
+      raster = try printingPlates(native, retaining: Array(0..<native.mode.componentCount))
     }
     let result = try document.replacingInkMode(.multichannel(raster))
     return .preparedDocumentMode(.init(source: document, result: result, title: "Multichannel"))
+  }
+
+  public static func deleteProcess(_ request: ProcessChannelDeletion, in document: CraftDocument) throws -> Command {
+    let retained = try request.retainedComponents(in: document)
+    try validate(document, kind: .multichannel, mergeVisible: request.mergeVisible)
+    let native = try exactLayeredPlanes(document, retaining: retained) ?? components(document)
+    let raster = try printingPlates(native, retaining: retained)
+    let result = try document.replacingInkMode(.multichannel(raster))
+    return .preparedDocumentMode(.init(source: document, result: result, title: "Delete Channels",
+      recording: .processChannelDeletion(request)))
+  }
+
+  private static func printingPlates(_ native: NativeModeRaster, retaining components: [Int]) throws -> MultichannelRaster {
+    let process: [(String, Pixel)] = [("Cyan", Pixel(0, 0.682, 0.937)),
+      ("Magenta", Pixel(0.925, 0, 0.549)), ("Yellow", Pixel(1, 0.949, 0)),
+      ("Black", Pixel(0.137, 0.122, 0.125))]
+    let definitions: [(String, Pixel)]
+    switch native.mode {
+    case .rgb: definitions = Array(process.prefix(3))
+    case .cmyk: definitions = process
+    case .lab: definitions = [("Alpha 1", .black), ("Alpha 2", .black), ("Alpha 3", .black)]
+    case .grayscale: definitions = [("Black", .black)]
+    default: throw CraftError.unsupported("This mode cannot be converted to Multichannel.")
+    }
+    let samples = try native.requiresPagedArchive ? native.separatingPrintingPlates(components)
+      : components.map { try plane($0, in: native, inverted: native.mode != .cmyk) }
+    return try MultichannelRaster(plates: zip(components, samples).map { component, samples in
+      let (name, color) = definitions[component]
+      return InkPlate(name: name, color: color, samples: samples)
+    })
+  }
+
+  /// The existing gray component compositor preserves independent CMYK/Lab
+  /// numbers in plain stacks. Render only surviving components in that path.
+  private static func exactLayeredPlanes(_ document: CraftDocument, retaining indices: [Int]) throws -> NativeModeRaster? {
+    guard let descriptor = document.modeDescriptor, [.cmyk, .lab].contains(descriptor.mode) else { return nil }
+    let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
+    guard !visible.isEmpty, visible.count > 1 || !isAlignedRaster(visible[0], in: document),
+      !document.layers.contains(where: { $0.isGroup || $0.parentID != nil || $0.isClipped }),
+      visible.allSatisfy({ layer in
+        layer.nativeMode != nil && layer.blendMode == .normal && layer.affine == nil
+          && layer.style == nil && layer.smartObject == nil && layer.smartFilters == nil
+          && layer.warp == nil && layer.sourceProjection == nil && layer.video == nil
+      }) else { return nil }
+    let width = document.width, height = document.height, depth = document.depth
+    let white = try NativeModeRaster.converting(Surface(width: 1, height: 1, depth: depth, fill: .white),
+      to: descriptor.mode, depth: depth, profile: descriptor.profile, intent: descriptor.intent)
+    var native = try NativeModeRaster(width: width, height: height, mode: descriptor.mode, depth: depth,
+      profile: descriptor.profile, intent: descriptor.intent)
+    for index in indices {
+      let preview = try ModeChannelPresentation.singleComponent(document, component: index)
+      let paper = white.value(component: index, index: 0)
+      let fill = descriptor.mode == .cmyk ? 1 - paper : paper
+      let baseline = try BackgroundLayer.opaque(preview, over: Pixel(fill, fill, fill))
+      let numeric = try baseline.mappedStoredSamples { p in
+        let value = descriptor.mode == .cmyk ? 1 - p.r : p.r
+        return Pixel(value, value, value).quantized(depth)
+      }.retaggedCoverageStorage(depth: depth)
+      native = try native.replacingChannel(index, with: numeric)
+    }
+    return try native.replacingOpacity(with: Surface(width: width, height: height, depth: depth, fill: .white))
   }
 }
 

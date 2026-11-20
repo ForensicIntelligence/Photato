@@ -639,7 +639,79 @@ For a readable account of the project from the beginning, see [Photato developme
 | 618 | 2026-11-19 | [Save deep RGB Photoshop files without a merged preview](#dev-step-618) |
 | 619 | 2026-11-19 | [Rank Workflow Guide suggestions and highlight each step](#dev-step-619) |
 | 620 | 2026-11-19 | [Keep maximum-size Multichannel printing plates editable](#dev-step-620) |
+| 621 | 2026-11-19 | [Follow native menus and dialogs in the Workflow Guide](#dev-step-621) |
+| 622 | 2026-11-19 | [Resize and crop editable Multichannel plates](#dev-step-622) |
+| 623 | 2026-11-19 | [Convert layerless ink documents back to editable image modes](#dev-step-623) |
+| 624 | 2026-11-19 | [Duplicate channels into the current image or another document](#dev-step-624) |
+| 625 | 2026-11-19 | [Merge spot ink into the supported process channels](#dev-step-625) |
+| 626 | 2026-11-19 | [Delete process channels through the Channels panel](#dev-step-626) |
+| 627 | 2026-11-19 | [Integrate Workflow Guide cues with the expanded Channels panel](#dev-step-627) |
+| 628 | 2026-11-19 | [Drag channel rows and keep menu cues aligned](#dev-step-628) |
 <!-- history-index:end -->
+
+<a id="dev-step-628"></a>
+
+## 2026-11-19 — Drag channel rows and keep menu cues aligned
+
+Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu.
+
+All 1,125 selected tests passed in each configuration. The two signed macOS 14+ archive slices also passed offscreen launch checks. [Development notes](CHANNEL_DRAG_628.md).
+
+<a id="dev-step-627"></a>
+
+## 2026-11-19 — Integrate Workflow Guide cues with the expanded Channels panel
+
+The validated source combines menu and dialog cues, process-channel deletion, and isolated Sky Replacement wheel input.
+
+A repaired Debug candidate passed 44 targeted cases. A remaining intermittent popup placement issue was resolved before the 628 source qualification. [Development notes](CHANNEL_GUIDE_INTEGRATION_627.md).
+
+<a id="dev-step-626"></a>
+
+## 2026-11-19 — Delete process channels through the Channels panel
+
+Deleting selected RGB, CMYK or Lab components converts the retained separations into editable Multichannel plates. Layered input requests merge consent.
+
+All 29 selected development cases passed, including shared native and HTTP validation. [Development notes](PROCESS_CHANNEL_DELETION_626.md).
+
+<a id="dev-step-625"></a>
+
+## 2026-11-19 — Merge spot ink into the supported process channels
+
+The shared spot-merge command keeps the expected component layout and performs one undoable document edit.
+
+All 29 selected development cases passed. Exact comparison against Adobe-authored physical printing samples remains open.
+
+<a id="dev-step-624"></a>
+
+## 2026-11-19 — Duplicate channels into the current image or another document
+
+Duplicate Channel uses native numerical samples and the dimensions, depth and channel rules of the destination. The app and API share that path.
+
+All 25 selected development cases passed, including ownership, cancellation and document history.
+
+<a id="dev-step-623"></a>
+
+## 2026-11-19 — Convert layerless ink documents back to editable image modes
+
+Mode conversion can use the retained native separations and preserves supported large ink rasters. The Image Mode menu and Photato API share the conversion.
+
+The development runs covered exact native component samples, mode round trips and large workspaces. The publication gate is the combined 628 matrix.
+
+<a id="dev-step-622"></a>
+
+## 2026-11-19 — Resize and crop editable Multichannel plates
+
+Canvas Size, Crop and supported nearest-neighbour geometry retain editable sparse printing plates and saved channel data.
+
+The development run covered native and API geometry plus sparse file round trips. The public cumulative qualification is recorded in 628.
+
+<a id="dev-step-621"></a>
+
+## 2026-11-19 — Follow native menus and dialogs in the Workflow Guide
+
+The guide follows menu rows and submenus as they open. Supported dialog controls flash automatically, with Show Me available to replay the cue.
+
+The repaired preview passed 11 selected cases, including Duplicate Layer, Save As and an unrelated sheet. A later matrix exposed a popup placement issue repaired in 628. [Development notes](WORKFLOW_GUIDE_HIGHLIGHTS_621.md).
 
 <a id="dev-step-620"></a>
 

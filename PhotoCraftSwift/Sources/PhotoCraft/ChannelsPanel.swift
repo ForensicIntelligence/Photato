@@ -89,8 +89,15 @@ struct ChannelsPanel: View {
         Button { store.loadChannelFooter() } label: { Image(systemName:"circle.dashed") }.help("Load selected channel as selection").accessibilityLabel("Load selected channel as selection").accessibilityIdentifier("channels.footer.load").disabled(!store.canLoadChannelFooter)
         Button { store.saveChannelFooter(modifiers:NSApp.currentEvent?.modifierFlags ?? []) } label: { Image(systemName:"square.and.arrow.down") }.help("Save selection as channel; Option-click for options").accessibilityLabel("Save selection as channel").accessibilityIdentifier("channels.footer.save").disabled(!store.canSaveSelectionChannel)
         Spacer()
-        Button { if store.document.colorMode == .multichannel {store.beginInkChannelOptions()}else if NSApp.currentEvent?.modifierFlags.contains(.command)==true {store.beginChannelDialog(.newSpot)}else{store.newAlphaChannel()} } label: { Image(systemName:"plus.square") }.help("New channel (Command-click for New Spot Channel)")
-        Button { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } else if store.effectiveInkTargets.count == 1, case .plate(let id) = store.effectiveInkTargets.first { store.performInkChannel(.delete(id)) } } label: { Image(systemName:"trash") }.help("Delete channel").disabled(store.alphaEditingID == nil && !(store.document.colorMode == .multichannel && store.effectiveInkTargets.count == 1 && store.document.inkChannelTargets.count > 1))
+        Button { if store.document.colorMode == .multichannel {store.beginInkChannelOptions()}else if NSApp.currentEvent?.modifierFlags.contains(.command)==true {store.beginChannelDialog(.newSpot)}else{store.newAlphaChannel()} } label: { Image(systemName:"plus.square") }
+          .help("New channel. Drop a channel here to duplicate it. Command-click for New Spot Channel.")
+          .accessibilityLabel("New channel")
+          .modifier(ChannelDropTarget(store: store, destination: .duplicate))
+        Button { store.deleteSelectedChannel(fromTrash: true, modifiers: NSApp.currentEvent?.modifierFlags ?? []) } label: {
+          Image(systemName: "trash")
+        }.help("Delete selected channel. Drop a channel here to delete it.").accessibilityLabel("Delete selected channel")
+          .accessibilityIdentifier("channels.footer.delete").disabled(!store.canDeleteSelectedChannel)
+          .modifier(ChannelDropTarget(store: store, destination: .trash))
       }.buttonStyle(.plain).padding(8).disabled(!store.canEditChannels)
     }
     .onDisappear {eyeTracking.cancel()}
@@ -139,8 +146,17 @@ struct ChannelsPanel: View {
         .accessibilityIdentifier("channels.preview.\(channel.rawValue)")
         .disabled(
           !store.canSelectComponentTarget || (channel != .composite && store.document.depth != .u8))
+        .channelDragSource(channel == .composite ? nil : .component(channel.rawValue - 1), store: store)
     }.background(selected ? StudioTheme.selected : StudioTheme.chrome)
       .overlay(alignment: .bottom) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
+      .contextMenu {
+        if channel != .composite {
+          Button("Duplicate Channel…") { store.beginDuplicateChannel(.component(channel.rawValue - 1)) }
+            .disabled(!store.canDuplicateChannel(.component(channel.rawValue - 1)))
+          Button("Delete Channel") { store.requestProcessChannelDeletion([channel.rawValue - 1]) }
+            .disabled(!store.canDeleteProcessChannels([channel.rawValue - 1]))
+        }
+      }
   }
 }
 
@@ -171,18 +187,25 @@ struct AuxiliaryChannelRow: View {
           Text(channel.name).lineLimit(1); Spacer()
         }.contentShape(Rectangle())
       }.accessibilityLabel("Select \(channel.name) channel")
+        .channelDragSource(quick ? nil : .alpha(channel.id), store: store)
     }.buttonStyle(.plain).font(.system(size:11)).padding(.vertical,4).padding(.trailing,8)
       .background(store.editingChannel == target ? StudioTheme.selected:StudioTheme.chrome)
       .disabled(!store.canEditChannels)
+      .modifier(ChannelDropTarget(store: store, destination: .reorder(.alpha(channel.id), after: false), rowHeight: 48))
       .contextMenu {
         Button("Load Selection") { store.perform(.channel(.load(target,.replace,false))) }
         Button(channel.spot == nil ? "Channel Options…":"Spot Channel Options…") { activation.openOptions(in:store) }
         if !quick {
           Button("Rename…") { name = channel.name; renaming = true }
-          Button("Duplicate Channel") { store.perform(.channel(.duplicate(channel.id,nil))) }
+          Button("Duplicate Channel…") { store.beginDuplicateChannel(.alpha(channel.id)) }
+            .disabled(!store.canDuplicateChannel(.alpha(channel.id)))
           Button("Move Up") { move(-1) }.disabled(index == 0)
           Button("Move Down") { move(1) }.disabled(index >= (store.document.alphaChannels?.count ?? 0)-1)
           Button("Delete Channel") { store.perform(.channel(.delete(channel.id))) }
+        }
+        if channel.spot != nil && !quick {
+          Button("Merge Spot Channel") { store.requestSpotChannelMerge(channel.id) }
+            .disabled(!store.canMergeSpotChannel(channel.id))
         }
         Button("Invert") { store.perform(.channel(.invert(target))) }.disabled(quick && !store.isQuickMaskVisible)
       }

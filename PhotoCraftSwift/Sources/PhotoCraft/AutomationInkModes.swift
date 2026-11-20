@@ -27,7 +27,11 @@ enum InkModeAPI {
     "editingTargets": InkChannelAPI.targets, "visibleTargets": InkChannelAPI.targets, "channelEditingAvailable": BrushAPI.flag, "channelOptionsOpen": BrushAPI.flag],
     required: ["duotoneAvailable", "multichannelAvailable", "requiresMerge", "workspace", "previewBusy", "committing", "inkCount", "editingTargets", "visibleTargets", "channelEditingAvailable", "channelOptionsOpen"]) }
   static var capabilities: [String: Any] { [
-    "commands": commands, "nativeArchive": 48, "actionsVersion": 20, "maximumPixels": InkPlane.maximumPixels,
+    "commands": commands, "nativeArchive": 48, "actionsVersion": 20, "maximumPixels": InkPlane.maximumDocumentPixels,
+    "duotoneMaximumPixels": InkPlane.maximumPixels,
+    "largeMultichannel": ["maximumDimension": Surface.maxDimension, "maximumPixels": InkPlane.maximumDocumentPixels,
+      "depths": [8, 16], "nativeArchiveVersion": 93, "retainsAlignedProcessWords": true,
+      "boundedPreviewMaximumSide": 2048, "matchingComponentReturn": true],
     "settings": settings, "stateSchema": stateSchema,
     "behavior": "Duotone requires Grayscale8 or an existing Duotone document. Settings change ink names, opaque colors, density curves and preview-only overprints; stored gray samples remain unchanged. Multichannel accepts component8/16 and Duotone; existing ink identities are retained. Complex stacks require explicit mergeVisible; hidden layers are discarded and alpha masks retained. Each conversion is one prepared Undo with busy, stale and revocation checks.",
     "identities": "Omitted Duotone ink IDs and curves receive new UUIDs and straight-line curves. Omitted settings retain an existing Duotone or use Monotone Black. Multichannel plateIDs may be supplied for stable component conversion; otherwise they are generated once. When converting existing inks, their identities must be retained.",
@@ -37,7 +41,7 @@ enum InkModeAPI {
       "plates": ["type": "array", "maxItems": 56, "items": BrushAPI.object(["id": identity, "name": ["type": "string"], "color": BrushAPI.color, "solidity": BrushAPI.number()], required: ["id", "name", "color", "solidity"])],
       "revision": ["type": "string"]], required: ["mode", "depth", "settings", "plates", "revision"]),
     "presets": "Native Duotone settings are JSON using this settings schema, with all ink IDs and curve points included on save/read. Adobe ADO preset import is not implemented.",
-    "limits": "Additional ink-channel tools/Actions, editable ink PSD/PSB, print separations and full Adobe conversion descriptors remain unfinished. Exact Photoshop curve/overprint/display behavior and live UI parity remain unqualified. No invented Adobe endpoint."] }
+    "limits": "Multichannel conversion uses paged process planes and the shared compositor where merge is required. Composite, scratch and transfer budgets still apply. Exact Photoshop curve, merged-layer color, overprint and descriptor behavior remain unqualified."] }
 }
 
 extension AutomationCommand {

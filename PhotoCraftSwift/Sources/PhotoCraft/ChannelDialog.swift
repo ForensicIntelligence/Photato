@@ -5,7 +5,7 @@ import PhotoCraftImaging
 import SwiftUI
 
 @MainActor @Observable final class ChannelDialog: Identifiable {
-  enum Kind:Sendable { case save, load, options, quickOptions, newSpot }
+  enum Kind:Sendable { case save, load, duplicate, options, quickOptions, newSpot }
   let id = UUID()
   let source: CraftDocument
   let documents:[CraftDocument]
@@ -14,7 +14,17 @@ import SwiftUI
   func displayName(for document:CraftDocument)->String {documentNames[document.id] ?? document.name}
   var documentID:UUID
   let newDocumentID=UUID()
-  var createsDocument:Bool {kind == .save && documentID==newDocumentID}
+  var createsDocument:Bool { (kind == .save || kind == .duplicate) && documentID == newDocumentID }
+  let duplicateSource: SelectionChannelSource?
+  let canCreateDuplicateDocument: Bool
+  var duplicateDocumentName = "Untitled"
+  var canDuplicateDestination: Bool {
+    guard let duplicateSource, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return false }
+    if createsDocument {
+      return canCreateDuplicateDocument && !duplicateDocumentName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    return ChannelDuplication.accepts(selectedDocument, source: duplicateSource, in: source)
+  }
   var canSaveDestination:Bool {createsDocument || channelID != nil || (selectedDocument.alphaChannels?.count ?? 0)<selectedDocument.auxiliaryChannelLimit}
   func resetDestination() {
     customLoadSource=nil
@@ -39,21 +49,35 @@ import SwiftUI
   var invert = false
   var options = ChannelDisplayOptions()
   var error: String?
-  var title: String { switch kind { case .save:"Save Selection"; case .load:"Load Selection"; case .options:spotEnabled ? "Spot Channel Options":"Channel Options"; case .quickOptions:"Quick Mask Options";case .newSpot:"New Spot Channel" } }
-  init(kind: Kind,document: CraftDocument,target: ChannelPlaneTarget?,defaults: ChannelDisplayOptions,sources:[CraftDocument] = [],documentNames:[UUID:String] = [:],colorSettings:ColorSettings = .init()) {
+  var title: String { switch kind { case .save:"Save Selection"; case .load:"Load Selection"; case .duplicate:"Duplicate Channel"; case .options:spotEnabled ? "Spot Channel Options":"Channel Options"; case .quickOptions:"Quick Mask Options";case .newSpot:"New Spot Channel" } }
+  init(kind: Kind,document: CraftDocument,target: ChannelPlaneTarget?,defaults: ChannelDisplayOptions,sources:[CraftDocument] = [],documentNames:[UUID:String] = [:],colorSettings:ColorSettings = .init(),
+    duplicateSource: SelectionChannelSource? = nil, canCreateDuplicateDocument: Bool = false,
+    duplicateDocumentName: String = "Untitled") {
     self.colorSettings=colorSettings
     self.documentNames=documentNames
-    self.source=document; self.documents=[document]+sources.filter {$0.id != document.id && $0.width==document.width && $0.height==document.height}
+    self.duplicateSource = duplicateSource
+    self.canCreateDuplicateDocument = canCreateDuplicateDocument
+    self.duplicateDocumentName = duplicateDocumentName
+    self.source = document
+    let matching = [document] + sources.filter { $0.id != document.id && $0.width == document.width && $0.height == document.height }
+    self.documents = duplicateSource.map { channel in
+      matching.filter { ChannelDuplication.accepts($0, source: channel, in: document) }
+    } ?? matching
     self.documentID=document.id; self.kind = kind; self.target = kind == .quickOptions ? .quickMask:(kind == .newSpot ? nil:target)
     name = document.suggestedChannelName
     if kind == .load,let saved=documents.first(where:{!SelectionChannelSource.choices(in:$0).isEmpty}) {documentID=saved.id;channelID=saved.alphaChannels?.first?.id}
     if kind != .newSpot,let channel = try? document.channel(self.target ?? .quickMask) { name = channel.name; options = channel.options;spotEnabled=channel.spot != nil;spotColor=channel.spot?.color ?? .black;solidity=channel.spot?.solidity ?? 0 }
     else if kind == .quickOptions { options = defaults }
     if kind == .newSpot {spotEnabled=true;name="Spot Color"}
+    if let duplicateSource {
+      name = duplicateSource.title(in: document) + " copy"
+      documentID = documents.first?.id ?? newDocumentID
+    }
     if kind == .save {(channelID)=((document.alphaChannels?.count ?? 0)>=document.auxiliaryChannelLimit ? document.alphaChannels?.first(where:{$0.spot == nil})?.id:nil)}
   }
   func command(document: CraftDocument) throws -> Command? {
     switch kind {
+    case .duplicate: throw CraftError.invalid("Duplicate Channel requires a prepared destination.")
     case .newSpot:return .channel(.create(try document.newSpotChannel(name:name,ink:SpotInk(color:spotColor,solidity:solidity))))
     case .save:
       let plane=try AlphaChannel.coverage(source.coverageSelection(),width:source.width,height:source.height,depth:document.depth)
@@ -72,10 +96,24 @@ import SwiftUI
 struct ChannelDialogSheet: View {
   @Bindable var store: EditorStore
   @Bindable var draft: ChannelDialog
+  @FocusState private var copyNameFocused: Bool
   var body: some View {
     VStack(alignment:.leading,spacing:16) {
       Text(draft.title).font(.headline)
-      if draft.kind == .save || draft.kind == .load {
+      if draft.kind == .duplicate {
+        TextField("As", text: $draft.name)
+          .textFieldStyle(.roundedBorder).focused($copyNameFocused)
+          .accessibilityIdentifier("duplicateChannel.name")
+        Picker("Document", selection: $draft.documentID) {
+          ForEach(draft.documents, id: \.id) { Text(draft.displayName(for: $0)).tag($0.id) }
+          if draft.canCreateDuplicateDocument { Text("New").tag(draft.newDocumentID) }
+        }.accessibilityIdentifier("duplicateChannel.destination")
+        if draft.createsDocument {
+          TextField("Name", text: $draft.duplicateDocumentName).textFieldStyle(.roundedBorder)
+            .accessibilityIdentifier("duplicateChannel.documentName")
+        }
+        Toggle("Invert", isOn: $draft.invert).accessibilityIdentifier("duplicateChannel.invert")
+      } else if draft.kind == .save || draft.kind == .load {
         Picker("Document",selection:$draft.documentID) {
           ForEach(draft.documents,id:\.id) {Text(draft.displayName(for:$0)).tag($0.id)}
           if draft.kind == .save {Text("New").tag(draft.newDocumentID)}
@@ -123,12 +161,13 @@ struct ChannelDialogSheet: View {
           Text("Solidity changes the preview; it does not change ink separation values.").font(.caption).foregroundStyle(.secondary)
         } else {HStack {Text("Opacity");Slider(value:$draft.options.opacity,in:0...1);Text("\(Int(draft.options.opacity*100))%")}}
       }
-      if draft.committing {ProgressView("Applying selection…").controlSize(.small)}
+      if draft.committing {ProgressView(draft.kind == .duplicate ? "Duplicating channel…" : "Applying selection…").controlSize(.small)}
       if let error = draft.error { Text(error).foregroundStyle(.red) }
       HStack { Spacer(); Button("Cancel") { store.cancelChannelDialog() }.keyboardShortcut(.cancelAction)
-        Button("OK") { store.commitChannelDialog(draft) }.keyboardShortcut(.defaultAction).disabled(draft.committing || (draft.kind == .load && draft.selectionSource == nil) || (draft.kind == .save && !draft.canSaveDestination))
+        Button("OK") { store.commitChannelDialog(draft) }.keyboardShortcut(.defaultAction).disabled(draft.committing || (draft.kind == .load && draft.selectionSource == nil) || (draft.kind == .save && !draft.canSaveDestination) || (draft.kind == .duplicate && !draft.canDuplicateDestination))
           .workflowGuideSheetHighlight(.savedSelection, control: .modalConfirm, store: store)
       }
     }.padding(20).frame(width:380)
+      .onAppear { copyNameFocused = draft.kind == .duplicate }
   }
 }

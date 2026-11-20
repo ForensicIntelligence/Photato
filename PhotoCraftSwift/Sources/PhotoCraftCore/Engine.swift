@@ -33,6 +33,7 @@ public indirect enum Command: Sendable {
   case action(RecordedAction, limits: ActionPlaybackLimits? = nil)
   case canvasEdges(CanvasEdgesEdit)
   case flattenImage(FlattenImageEdit)
+  case mergeSpotChannel(SpotChannelMergeEdit)
   case preparedAction(PreparedActionEdit)
   case channel(ChannelCommand)
   case inkChannel(InkChannelCommand)
@@ -180,6 +181,7 @@ public indirect enum Command: Sendable {
     case .action(let action, _): "Play \(action.name)"
     case .canvasEdges(let edit): edit.operation.label
     case .flattenImage: "Flatten Image"
+    case .mergeSpotChannel: "Merge Spot Channel"
     case .preparedAction(let edit): edit.title
     case .channel(let value): value.label
     case .inkChannel(let value): value.label
@@ -362,6 +364,7 @@ public indirect enum Command: Sendable {
     case .action(let action,let limits):try action.apply(to:&d,validate:{try limits?.validate($0)})
     case .canvasEdges(let edit): d = try edit.applied(to:d)
     case .flattenImage(let edit): d = try edit.applied(to: d)
+    case .mergeSpotChannel(let edit): d = try edit.applied(to: d)
     case .preparedLayerMerge(let edit): d = try edit.applied(to:d)
     case .preparedAction(let edit): d = try edit.applied(to: d)
     case .channel(let command):try command.apply(to:&d)
@@ -422,7 +425,7 @@ public indirect enum Command: Sendable {
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)
     case .proceduralRender(let request):try ProceduralRenderEngine.apply(request,to:&d)
-    case .fitImage,.preparedLayerMerge,.canvasEdges,.flattenImage,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
+    case .fitImage,.preparedLayerMerge,.canvasEdges,.flattenImage,.mergeSpotChannel,.layerComp,.guides,.variables,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate,.video, .animation,.frame,.shape,.artboard,.action,.preparedAction,.channel,.inkChannel,.smartFilterMask,.documentMode,.preparedDocumentMode,.preparedColorProfile,.modeChannel,.modeComponents:throw CraftError.invalid("Unexpected modular command routing.")
     case .paste,.layerVia,.cut,.setGradientFill,.setPatternFill: try applyClipboardPrimitive(to:&d)
     case .addLayer,.newPixelLayer,.deleteLayers,.deleteLayer,.duplicateLayer,.duplicateLayers,.duplicateLayersFrom,.renameLayer,.layerColor,.layerVisibility,.visibility,.lock,.protection: try applyLayerStructurePrimitive(to:&d)
     case .opacity,.blend,.layoutLayers,.move,.stackLayers,.reorder,.relocate,.groupLayers,.newGroup,.ungroup,.groupProperties,.clipping,.blendClippedAsGroup: try applyLayerPropertiesPrimitive(to:&d)
@@ -482,12 +485,22 @@ public struct PreparedEdit: Sendable {
   public var clipboardPlaneEdit:ClipboardPlaneEdit? {
     clipboardPlaneTarget.map{ClipboardPlaneEdit(source:original,result:result,target:$0,title:label)}
   }
+  public var isProcessChannelDeletion: Bool {
+    if case .preparedDocumentMode(let edit) = recordingCommand, case .processChannelDeletion = edit.recording { return true }
+    return false
+  }
+  public var isSpotChannelMerge: Bool { if case .mergeSpotChannel = recordingCommand { return true }; return false }
   public var isFitImageEdit: Bool { if case .fitImage = recordingCommand { return true }; return false }
   public var isRecordedAction: Bool { if case .preparedAction = recordingCommand { return true }; return false }
   public var channelCommand: ChannelCommand? { if case .channel(let command) = recordingCommand { return command }; return nil }
   public var pixelPaintRequest: PixelPaintRequest? { if case .pixelPaint(let request) = recordingCommand { return request }; return nil }
   public var paintingRequest: PaintToolRequest? { if case .painting(let edit) = recordingCommand { return edit.request }; return nil }
-  public var isChannelOnlyEdit:Bool {if case .channel=recordingCommand{return true};return false}
+  public var isChannelOnlyEdit: Bool {
+    switch recordingCommand {
+    case .channel, .inkChannel(.create): true
+    default: false
+    }
+  }
   public var isSelectionOnly:Bool {switch recordingCommand {case .modifiedSelection,.reselectedSelection,.transformedSelection,.channel(.load(_,_,_)),.channel(.loadCoverage(_,_)):return true;default:return false}}
   public var linkedSmartObjectEdit:LinkedSmartObjectEdit? {if case .linkedSmartObject(let edit)=recordingCommand{return edit};return nil}
   public var channelArithmeticEdit: ChannelArithmeticEdit? { if case .channelArithmetic(let edit) = recordingCommand { return edit }; return nil }

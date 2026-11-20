@@ -250,7 +250,7 @@ struct CanvasHost: NSViewRepresentable {
     clipsToBounds = true
     layer?.masksToBounds = true
     selectionAnts = SelectionAntsOverlay(self)
-    registerForDraggedTypes([.string])
+    registerForDraggedTypes([.string, ChannelDrag.pasteboardType])
   }
   isolated deinit { cancelTransformReference(); frameProbe?.invalidate(); airbrushTimer?.invalidate() }
   required init?(coder: NSCoder) { return nil }
@@ -323,6 +323,9 @@ struct CanvasHost: NSViewRepresentable {
     return resigned
   }
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
+    if sender.draggingPasteboard.availableType(from: [ChannelDrag.pasteboardType]) != nil {
+      return ChannelDrag.canReceive(.canvas, in: store) ? .copy : []
+    }
     guard let value = sender.draggingPasteboard.string(forType: .string),
       store.gradientCanvasDrop(value) != nil
     else { return [] }
@@ -335,6 +338,10 @@ struct CanvasHost: NSViewRepresentable {
     draggingEntered(sender) == .copy
   }
   override func performDragOperation(_ sender: any NSDraggingInfo) -> Bool {
+    if sender.draggingPasteboard.availableType(from: [ChannelDrag.pasteboardType]) != nil {
+      guard let token = sender.draggingPasteboard.data(forType: ChannelDrag.pasteboardType) else { return false }
+      return ChannelDrag.receive(token, destination: .canvas, in: store, activate: activateDocument)
+    }
     guard let value = sender.draggingPasteboard.string(forType: .string),
       let id = store.gradientCanvasDrop(value)
     else { return false }

@@ -178,15 +178,14 @@ final class InkModeControlsTests: XCTestCase {
       let original = try CraftNSDocument.blankModel(width: 512, height: 512, background: Pixel(0.1, 0.6, 0.9))
       document.store.session = EditorSession(document: original); try service.share(document)
       let id = try XCTUnwrap(service.shares.first?.id)
-      let revoke = Task { @MainActor in
-        for _ in 0..<10000 {
-          if document.store.geometryBusy { service.revoke(id); return }
-          await Task.yield()
-        }
-        XCTFail("Conversion did not enter the prepared worker")
+      let pending = Task { try await helper.edit(service, document, "document.convertMultichannel", timeout: 20) }
+      defer { pending.cancel() }
+      for _ in 0..<2_000 where !document.store.geometryBusy {
+        try await Task.sleep(for: .milliseconds(1))
       }
-      let status = try await helper.edit(service, document, "document.convertMultichannel")
-      await revoke.value
+      XCTAssertTrue(document.store.geometryBusy, "Conversion did not enter the prepared worker")
+      service.revoke(id)
+      let status = try await pending.value
       XCTAssertEqual(status, 409); XCTAssertTrue(document.store.document == original)
       XCTAssertTrue(document.store.session.undoStack.isEmpty); XCTAssertFalse(document.store.geometryBusy)
     }

@@ -1,6 +1,9 @@
 import AppKit
 
 @MainActor extension AppDelegate: NSMenuDelegate {
+  func menuWillOpen(_ menu: NSMenu) { workflowGuideWindow?.menuWillOpen(menu) }
+  func menuDidClose(_ menu: NSMenu) { workflowGuideWindow?.menuDidClose(menu) }
+
   func menuNeedsUpdate(_ menu: NSMenu) {
     if menu === recentDocumentsMenu { updateRecentDocumentsMenu(menu); return }
     if menu === workspaceMenu {

@@ -1466,6 +1466,9 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .contentAwareFill(try options.edit(original)) }
         return .json(state(share,document:document))
       }
+      if command.name == ProcessChannelDeletionAPI.name { return try await deleteProcessChannels(command, document: document, share: share) }
+      if command.name == SpotChannelMergeAPI.name { return try await mergeSpotChannel(command, document: document, share: share) }
+      if command.name == ChannelDuplicateAPI.name { return try await duplicateChannel(command, document: document, share: share) }
       if command.name == ChannelMergeAPI.name { return try await mergeChannels(command,document:document,share:share) }
       if command.name == ChannelSeparationAPI.name {return try await splitChannels(command,document:document,share:share)}
       if command.name == "channel.edit" {
@@ -2071,7 +2074,7 @@ import UniformTypeIdentifiers
       "quickMaskVisible": ["type":"boolean","description":"View-only temporary Quick Mask overlay visibility; changing it retains the current editing target and mask coverage."],
       "channels": ["type":"array","items":["type":"object","required":["id","name","opacity","indicates","color"],"properties":["id":["type":"string","format":"uuid"],"name":["type":"string"],"opacity":["type":"number"],"indicates":["type":"string"],"color":["type":"array","items":["type":"number"]]]]],
       "channelOnly":["type":"boolean","description":"Auxiliary channels only, without image layers or printing plates; requires native85."],
-      "selectionChannels":["type":"object","additionalProperties":false,"required":["sources","workingGrayProfile","canSaveSelection","canSaveNewDocument","canLoadSelection","canCreateAlpha","footer"],"properties":["footer":ChannelFooterAPI.stateSchema,"workingGrayProfile":["type":"string","description":"Effective gray profile for luminosity selection; null workingGray resolves to Dot Gain20 at8/16-bit and linear gray at32-bit."],"sources":["type":"array","items":SelectionChannelSourceAPI.schema],"canSaveSelection":["type":"boolean"],"canSaveNewDocument":["type":"boolean"],"canLoadSelection":["type":"boolean"],"canCreateAlpha":["type":"boolean"]]],
+      "selectionChannels":["type":"object","additionalProperties":false,"required":["sources","duplicateSources","spotMerge","processDeletion","workingGrayProfile","canSaveSelection","canSaveNewDocument","canLoadSelection","canCreateAlpha","footer"],"properties":["footer":ChannelFooterAPI.stateSchema,"spotMerge":SpotChannelMergeAPI.stateSchema,"processDeletion":ProcessChannelDeletionAPI.stateSchema,"workingGrayProfile":["type":"string","description":"Effective gray profile for luminosity selection; null workingGray resolves to Dot Gain20 at8/16-bit and linear gray at32-bit."],"sources":["type":"array","items":SelectionChannelSourceAPI.schema],"duplicateSources":["type":"array","items":SelectionChannelSourceAPI.schema(for: ChannelDuplicateAPI.sourceKinds)],"canSaveSelection":["type":"boolean"],"canSaveNewDocument":["type":"boolean"],"canLoadSelection":["type":"boolean"],"canCreateAlpha":["type":"boolean"]]],
       "quickMaskOptions": ["type":"object","description":"Persistent Quick Mask display defaults; selection coverage is unchanged by display options."],
       "quickMask": ["type":["object","null"]],
       "channelTarget": ["type": "string", "description": "Composite color mode or selected component names; numerical indices are in documentMode.editingComponents."],

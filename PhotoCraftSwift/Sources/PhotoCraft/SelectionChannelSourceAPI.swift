@@ -4,7 +4,8 @@ import PhotoCraftImaging
 
 enum SelectionChannelSourceAPI {
   static let kinds=["alpha","quickMask","composite","component","transparency","layerMask","smartFilterMask","vectorMask","plate","duotone"]
-  static var schema:[String:Any] {
+  static var schema:[String:Any] { schema(for: kinds) }
+  static func schema(for kinds: [String]) -> [String: Any] {
     ["oneOf":kinds.map {kind->[String:Any] in
       let needsID=["alpha","transparency","layerMask","smartFilterMask","vectorMask","plate"].contains(kind)
       var properties:[String:Any]=["kind":["const":kind]]
@@ -43,7 +44,8 @@ extension EditorStore {
   var selectionChannelState:[String:Any] {
     let sources=SelectionChannelSource.choices(in:document,includingComponents:true)
     let grayName=(try? workingColorSettings.profile(.grayscale,depth:document.depth)).map(ColorPolicyInput.name) ?? "Unavailable"
-    return ["footer":channelFooterState,"sources":sources.map(SelectionChannelSourceAPI.state),"workingGrayProfile":grayName,
+    return ["footer":channelFooterState,"spotMerge":spotChannelMergeState,"processDeletion":processChannelDeletionState,"sources":sources.map(SelectionChannelSourceAPI.state),
+      "duplicateSources":ChannelDuplication.sources(in: document).map(SelectionChannelSourceAPI.state),"workingGrayProfile":grayName,
       "canSaveSelection":canSaveSelectionChannel,"canSaveNewDocument":canSaveSelectionChannel,
       "canLoadSelection":canEditChannels && !sources.isEmpty,
       "canCreateAlpha":canEditChannels && (document.alphaChannels?.count ?? 0)<document.auxiliaryChannelLimit]

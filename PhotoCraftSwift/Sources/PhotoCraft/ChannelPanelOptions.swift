@@ -124,11 +124,13 @@ struct ChannelsMenu: View {
   @Bindable var store: EditorStore
   var body: some View {
     Button("New Channel…") { store.newAlphaChannel() }.disabled(!store.canEditChannels)
-    Button("Duplicate Channel…") { if let id = store.alphaEditingID { store.perform(.channel(.duplicate(id,nil))) } }.disabled(!store.canEditChannels || store.alphaEditingID == nil)
-    Button("Delete Channels") { if let id = store.alphaEditingID { store.perform(.channel(.delete(id))) } }.disabled(!store.canEditChannels || store.alphaEditingID == nil)
+    Button("Duplicate Channel…") { store.beginDuplicateChannel(store.selectedDuplicateChannel) }
+      .disabled(!store.canDuplicateChannel(store.selectedDuplicateChannel))
+    Button("Delete Channels") { store.deleteSelectedChannel() }.disabled(!store.canDeleteSelectedChannel)
     Divider()
     Button("New Spot Channel…") {if store.document.colorMode == .multichannel {store.beginInkChannelOptions()}else{store.beginChannelDialog(.newSpot)}}.disabled(!store.canEditChannels || store.document.colorMode.isRestricted || store.document.colorMode == .duotone)
-    Button("Merge Spot Channel") {}.disabled(true)
+    Button("Merge Spot Channel") { store.requestSpotChannelMerge(store.alphaEditingID) }
+      .disabled(!store.canMergeSpotChannel(store.alphaEditingID))
     Divider()
     Button("Channel Options…") { store.beginChannelDialog(.options) }.disabled(!store.canEditChannels || store.editingChannel == nil)
     Button("Split Channels") {store.splitChannels()}.disabled(!store.canSplitChannels)

@@ -93,7 +93,7 @@ struct WorkflowGuideLesson: Identifiable, Equatable {
 enum WorkflowGuideContent {
   static let duplicate = WorkflowGuideLesson("duplicate-layer", "Duplicate a layer", .layer, steps: [
     .init("Select the layer you want to copy in Layers.", .layerSelected, target: .control(.layerRow)),
-    .init("Choose Layer > Duplicate Layer, enter a name, and confirm.", .layerAdded, target: .menu("Layer > Duplicate Layer", confirmsInSheet: true)),
+    .init("Choose Layer > Duplicate Layer, enter a name, and confirm.", .layerAdded, target: .menu("Layer > Duplicate Layer", dialog: .duplicateLayer)),
     .init("Use the eye icons in Layers to compare the original and duplicate.", target: .control(.layerEye)),
   ])
   static let opacity = WorkflowGuideLesson("blend-opacity", "Adjust layer opacity", .opacity, steps: [
@@ -129,8 +129,8 @@ enum WorkflowGuideContent {
   ])
   static let saveSelection = WorkflowGuideLesson("save-selection", "Save a selection for reuse", .selection, diaryStep: "367", steps: [
     .init("Leave the selection active.", .selectionExists, target: .control(.canvas)),
-    .init("Choose Select > Save Selection, name it, and confirm.", .selectionSaved, target: .menu("Select > Save Selection", confirmsInSheet: true)),
-    .init("Use Select > Load Selection to restore it, or inspect it in Window > Channels.", target: .menu("Select > Load Selection", confirmsInSheet: true)),
+    .init("Choose Select > Save Selection, name it, and confirm.", .selectionSaved, target: .menu("Select > Save Selection", dialog: .savedSelection)),
+    .init("Use Select > Load Selection to restore it, or inspect it in Window > Channels.", target: .menu("Select > Load Selection", dialog: .savedSelection)),
   ])
   static let inverse = WorkflowGuideLesson("invert-selection", "Select everything outside the outline", .selection, steps: [
     .init("Leave the selection active.", .selectionExists, target: .control(.canvas)),
@@ -142,7 +142,7 @@ enum WorkflowGuideContent {
     .init("Continue editing the full layer, or use a selection tool to draw a fresh outline.", target: .tool(.marquee)),
   ])
   static let brush = WorkflowGuideLesson("paint-with-brush", "Paint on a separate layer", .document, diaryStep: "538", steps: [
-    .init("Choose Layer > New > Layer and confirm.", .layerAdded, target: .menu("Layer > New > Layer", confirmsInSheet: true)),
+    .init("Choose Layer > New > Layer and confirm.", .layerAdded, target: .menu("Layer > New > Layer", dialog: .newLayer)),
     .init("Choose the Brush tool.", .brushTool, target: .tool(.brush)),
     .init("Set the foreground color, brush size and opacity in the tool controls. Paint on the new layer.", target: .control(.options)),
   ])
@@ -172,14 +172,14 @@ enum WorkflowGuideContent {
     .init("Drag on the canvas and adjust the shape in Properties.", target: .control(.canvas)),
   ])
   static let export = WorkflowGuideLesson("export-copy", "Export an image copy", .document, steps: [
-    .init("Choose File > Export > Export As.", target: .menu("File > Export > Export As", confirmsInSheet: true)),
-    .init("Choose a format and check the preview and dimensions.", target: .control(.modalFormat)),
-    .init("Choose Export and save the copy to a destination you control.", target: .control(.modalConfirm)),
+    .init("Choose File > Export > Export As.", target: .menu("File > Export > Export As", dialog: .imageExport)),
+    .init("Choose a format and check the preview and dimensions.", target: .modal(.imageExport, .modalFormat)),
+    .init("Choose Export and save the copy to a destination you control.", target: .modal(.imageExport, .modalConfirm)),
   ])
   static let save = WorkflowGuideLesson("save-editable", "Save an editable file", .document, diaryStep: "609", steps: [
-    .init("Choose File > Save As.", target: .menu("File > Save As", confirmsInSheet: true)),
-    .init("Choose Photato for the native document or PSD/PSB for Photoshop interchange.", target: .control(.modalFormat)),
-    .init("Choose a destination. Keep the editable file when exporting a flattened copy.", target: .control(.modalConfirm)),
+    .init("Choose File > Save As.", target: .menu("File > Save As", dialog: .save)),
+    .init("Choose Photato for the native document or PSD/PSB for Photoshop interchange.", target: .modal(.save, .modalFormat)),
+    .init("Choose a destination. Keep the editable file when exporting a flattened copy.", target: .modal(.save, .modalConfirm)),
   ])
   static let history = WorkflowGuideLesson("undo-and-redo", "Review recent edits", .document, steps: [
     .init("Choose Window > History to see the document’s recent edits.", target: .menu("Window > History")),
@@ -237,7 +237,7 @@ enum WorkflowGuideContent {
     return [
       "menu": "Window > Workflow Guide", "optional": true, "processing": "local",
       "ranking": "A hand-curated order for the current editor context, filtered for available operations. No usage history is collected.",
-      "showMe": "Native editor highlight at each step, with a repeat control in the guide.",
+      "showMe": "Replay the current step’s highlight in the native guide. Menu cues follow the open path and supported dialogs identify their own controls.",
       "suggestionOrder": Dictionary(uniqueKeysWithValues: choices.map { ($0.key.rawValue, $0.value.map(\.id)) }),
       "lessons": catalogue,
       "scope": "Read-only guidance for authored workflows. The user performs each edit in the native editor.",

@@ -1807,7 +1807,7 @@ extension Surface {
     return output
   }
   /// Retag already quantized grayscale coverage without another sample round trip.
-  func retaggedCoverageStorage(depth:PixelDepth = .u8,encoding:SurfaceColorEncoding = .sRGB)throws->Surface {
+  package func retaggedCoverageStorage(depth:PixelDepth = .u8,encoding:SurfaceColorEncoding = .sRGB)throws->Surface {
     var out=try Surface(width:width,height:height,depth:depth,fill:.black,colorEncoding:encoding)
     out.storedDefaultPixel=storedDefaultPixel;out.tiles=tiles;out.tilesAreKnownFinite=tilesAreKnownFinite
     return out
@@ -1871,19 +1871,24 @@ extension Surface {
 public extension Surface {
   /// Exact integer canvas reframing. Pick the larger uniform region as the
   /// implicit default, so a one-pixel border need not materialize a huge interior.
-  func reframedExactly(bounds:IntRect,fill:Pixel)throws->Surface {
+  func reframedExactly(bounds:IntRect,fill:Pixel,channel:Bool = false)throws->Surface {
     guard (-1_000_000...1_000_000).contains(bounds.x),(-1_000_000...1_000_000).contains(bounds.y),fill.isFinite,(0...1).contains(fill.a) else{throw CraftError.invalid("Invalid canvas frame or fill.")}
     _ = try Surface(width:bounds.width,height:bounds.height,depth:depth)
-    if bounds == IntRect(x:0,y:0,width:width,height:height){return self}
+    if !channel, bounds == IntRect(x:0,y:0,width:width,height:height){return self}
+    func coverage(_ pixel: Pixel) -> Pixel {
+      let v = unit(pixel.r)
+      return Pixel(v, v, v)
+    }
     let padding=(colorEncoding == .linearRGB ? SRGBTransfer.linear(fill):fill).quantized(depth)
+    let sourceDefault = channel ? coverage(storedDefaultPixel).quantized(depth) : storedDefaultPixel
     let x0=max(0,min(bounds.width,-bounds.x)),y0=max(0,min(bounds.height,-bounds.y))
     let x1=max(x0,min(bounds.width,width-bounds.x)),y1=max(y0,min(bounds.height,height-bounds.y))
     let inside=IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0)
-    let rawDefault=inside.width*inside.height > bounds.width*bounds.height/2 ? storedDefaultPixel:padding
+    let rawDefault=inside.width*inside.height > bounds.width*bounds.height/2 ? sourceDefault:padding
     var template=try Surface(width:bounds.width,height:bounds.height,depth:depth,fill:rawDefault).interpretingSamples(as:colorEncoding)
     template.storedDefaultPixel=rawDefault
     var regions:[IntRect]=[]
-    if !rawDefault.hasSameBits(as:storedDefaultPixel),inside.width>0,inside.height>0 {regions.append(inside)}
+    if !rawDefault.hasSameBits(as:sourceDefault),inside.width>0,inside.height>0 {regions.append(inside)}
     if !rawDefault.hasSameBits(as:padding) {
       regions += [IntRect(x:0,y:0,width:bounds.width,height:y0),IntRect(x:0,y:y1,width:bounds.width,height:bounds.height-y1),IntRect(x:0,y:y0,width:x0,height:y1-y0),IntRect(x:x1,y:y0,width:bounds.width-x1,height:y1-y0)]
     }
@@ -1898,9 +1903,14 @@ public extension Surface {
       patch.storedDefaultPixel=rawDefault
       for y in 0..<region.height {try Task.checkCancellation();for x in 0..<region.width {
         let sx=bounds.x+region.x+x,sy=bounds.y+region.y+y
-        if sx>=0,sy>=0,sx<width,sy<height {patch.copyStoredSample(from:self,x:sx,y:sy,toX:x,toY:y)}
-        else if colorEncoding == .linearRGB {patch.setLinearPixel(x:x,y:y,padding)}
-        else {patch.setPixel(x:x,y:y,padding)}
+        if sx>=0,sy>=0,sx<width,sy<height {
+          let sample = storedPixel(x: sx, y: sy)
+          let word = channel ? coverage(sample).quantized(depth) : sample
+          if !word.hasSameBits(as: rawDefault) { patch.setStoredPixel(x: x, y: y, word) }
+        } else if !padding.hasSameBits(as: rawDefault) {
+          if colorEncoding == .linearRGB { patch.setLinearPixel(x: x, y: y, padding) }
+          else { patch.setPixel(x: x, y: y, padding) }
+        }
       }}
       try builder.append(patch,atX:region.x,atY:region.y)
     }

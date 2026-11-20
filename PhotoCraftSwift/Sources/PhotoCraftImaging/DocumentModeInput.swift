@@ -31,7 +31,7 @@ public enum DocumentModeInput {
     return .preparedDocumentMode(.init(source: document, result: result, recording: .documentMode(request)))
   }
 
-  private static func mergedSource(_ document: CraftDocument) throws -> CraftDocument {
+  static func mergedSource(_ document: CraftDocument) throws -> CraftDocument {
     var input = document
     let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
     let plainStack = !visible.isEmpty &&

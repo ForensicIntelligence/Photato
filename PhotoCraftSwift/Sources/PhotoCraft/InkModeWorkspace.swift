@@ -41,8 +41,8 @@ import PhotoCraftImaging
         let worker = Task.detached(priority: .userInitiated) { () throws -> (CGImage, CGImage?) in
           var result = source
           try request.command(in: source).apply(to: &result)
-          return (try ColorManagement.displayImage(Renderer.composite(result), in: result),
-            needOriginal ? try ColorManagement.displayImage(Renderer.composite(source), in: source) : nil)
+          return (try ColorManagement.conversionPreview(result),
+            needOriginal ? try ColorManagement.conversionPreview(source) : nil)
         }
         let images = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation()
@@ -79,10 +79,10 @@ import PhotoCraftImaging
 
 extension EditorStore {
   func canBeginInkMode(_ kind: InkModeRequest.Kind) -> Bool {
-    guard canBeginDocumentMode, !document.hasArtboards, !document.hasFrames,
-      document.width <= InkPlane.maximumPixels / document.height else { return false }
+    guard canBeginDocumentMode, !document.hasArtboards, !document.hasFrames else { return false }
     switch kind {
     case .duotone: return document.depth == .u8 && [.grayscale, .duotone].contains(document.colorMode)
+      && document.width <= InkPlane.maximumPixels / document.height
     case .multichannel: return document.depth != .f32 && !document.colorMode.isRestricted && document.colorMode != .multichannel
     }
   }

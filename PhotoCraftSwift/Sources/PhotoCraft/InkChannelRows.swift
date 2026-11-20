@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import PhotoCraftCore
+import PhotoCraftImaging
 
 struct InkChannelRows: View {
   @Bindable var store: EditorStore
@@ -9,6 +10,10 @@ struct InkChannelRows: View {
   let eyeTracking:ChannelEyeTracking
   var body: some View {
     ForEach(Array(store.document.inkChannelTargets.enumerated()), id: \.element) { index, target in
+      let duplicateSource: SelectionChannelSource = switch target {
+      case .duotone: .duotone
+      case .plate(let id): .plate(id)
+      }
       let name = store.inkChannelName(target), selected = store.editingChannel == nil && store.effectiveInkTargets.contains(target)
       HStack(spacing: 0) {
         ChannelEyeControl(store:store,channel:.ink(target),tracking:eyeTracking,label:"Visibility of \(name) ink channel",identifier:"channels.ink.visibility.\(target.key)",height:size.rowHeight).frame(width:26,height:size.rowHeight)
@@ -37,8 +42,10 @@ struct InkChannelRows: View {
         }.buttonStyle(.plain).disabled(!store.canSelectComponentTarget)
           .accessibilityLabel("Select \(name) ink channel").accessibilityIdentifier("channels.ink.\(target.key)")
           .accessibilityValue(selected ? "Selected" : "")
+          .channelDragSource(duplicateSource, store: store)
       }.background(selected ? StudioTheme.selected : StudioTheme.chrome)
         .overlay(alignment: .bottom) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
+        .modifier(ChannelDropTarget(store: store, destination: .reorder(duplicateSource, after: false), rowHeight: size.rowHeight))
         .contextMenu {
           Button("Select All Channels") { try? store.selectInkChannels([]) }
           Button("Load Selection") { store.performInkChannel(.loadSelection(target, .replace, false)) }
@@ -51,10 +58,11 @@ struct InkChannelRows: View {
           Menu("Filter") { ForEach(InkChannelCommand.filters.sorted(by: { $0.title < $1.title }), id: \.self) { kind in
             Button(kind.title) { do { try store.selectInkChannels([target]); store.beginFilter(kind) } catch { store.error = error.localizedDescription } }
           } }
+          Button("Duplicate Channel…") { store.beginDuplicateChannel(duplicateSource) }
+            .disabled(!store.canDuplicateChannel(duplicateSource))
           if case .plate(let id) = target {
             Divider()
             Button("Spot Channel Options…") { store.beginInkChannelOptions(id) }
-            Button("Duplicate Channel") { store.performInkChannel(.duplicate(id, UUID(), nil)) }
             Button("Move Up") { store.performInkChannel(.move(id, index - 1)) }.disabled(index == 0)
             Button("Move Down") { store.performInkChannel(.move(id, index + 1)) }.disabled(index == store.document.inkChannelTargets.count - 1)
             Button("Delete Channel") { store.performInkChannel(.delete(id)) }.disabled(store.document.inkChannelTargets.count == 1)

@@ -137,9 +137,40 @@ extension EditorStore {
     if kind == .load && !canLoadSelectionChannel {return}
     channelDialog = ChannelDialog(kind:kind,document:document,target:editingChannel,defaults:quickMaskOptions,sources:selectionChannelDocuments,documentNames:selectionChannelDocumentNames,colorSettings:workingColorSettings)
   }
+  var selectedDuplicateChannel: SelectionChannelSource? {
+    if let id = alphaEditingID { return .alpha(id) }
+    if document.inkMode != nil, effectiveInkTargets.count == 1 {
+      switch effectiveInkTargets.first {
+      case .duotone?: return .duotone
+      case .plate(let id)?: return .plate(id)
+      case nil: break
+      }
+    }
+    if effectiveComponentTargets.count == 1, let component = effectiveComponentTargets.first {
+      return .component(component)
+    }
+    if document.colorMode == .grayscale, editingChannel == nil, !editingMask { return .component(0) }
+    return nil
+  }
+
+  func canDuplicateChannel(_ source: SelectionChannelSource?) -> Bool {
+    guard canEditChannels, let source, ChannelDuplication.sources(in: document).contains(source) else { return false }
+    return (documentController != nil && ChannelDuplication.accepts(nil, source: source, in: document))
+      || ([document] + selectionChannelDocuments).contains { ChannelDuplication.accepts($0, source: source, in: document) }
+  }
+
+  func beginDuplicateChannel(_ source: SelectionChannelSource?) {
+    guard let source, canDuplicateChannel(source) else { return }
+    let canCreate = documentController != nil && ChannelDuplication.accepts(nil, source: source, in: document)
+    channelDialog = ChannelDialog(kind: .duplicate, document: document, target: nil, defaults: quickMaskOptions,
+      sources: selectionChannelDocuments, documentNames: selectionChannelDocumentNames, colorSettings: workingColorSettings,
+      duplicateSource: source, canCreateDuplicateDocument: canCreate,
+      duplicateDocumentName: documentController?.nextUntitledName ?? "Untitled")
+  }
+
   func commitChannelDialog(_ draft: ChannelDialog) {
     guard channelDialog === draft,!draft.committing else { return }
-    if draft.kind == .save || draft.kind == .load {commitSelectionChannelDialog(draft);return}
+    if draft.kind == .save || draft.kind == .load || draft.kind == .duplicate {commitSelectionChannelDialog(draft);return}
     do {
       guard document==draft.source else{throw CraftError.invalid("The document changed. Cancel and reopen Channel Options.")}
       let command = try draft.command(document:document)

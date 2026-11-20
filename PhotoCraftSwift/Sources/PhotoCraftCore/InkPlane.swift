@@ -24,6 +24,16 @@ public struct InkPlane: Codable, Equatable, Sendable {
   package var storedSampleRanges: AnySequence<Range<Int>> { storage.storedSampleRanges }
   private var stride: Int { depth == .u8 ? 1 : 2 }
 
+  func forEachNondefaultWord(_ visit: (Int, UInt32) throws -> Void) throws {
+    try storage.forEachStoredBlock { key, block in
+      let start = key * ComponentPlane.blockSamples
+      for offset in 0..<min(ComponentPlane.blockSamples, count - start) {
+        let word = block.word(offset, stride: stride)
+        if word != storage.defaultWord { try visit(start + offset, word) }
+      }
+    }
+  }
+
   public init(width: Int, height: Int, depth: PixelDepth = .u8, bytes: Data) throws {
     try Self.dimensions(width, height, depth)
     guard width <= Self.maximumPixels / height,
@@ -114,6 +124,9 @@ public struct InkPlane: Codable, Equatable, Sendable {
   }
   public func converted(to depth: PixelDepth, inverted: Bool = false) throws -> Self {
     if depth == self.depth, !inverted { return self }
+    if requiresPagedArchive {
+      return try convertingPaged(to: depth, inverted: inverted, budget: ComponentScratchBudget())
+    }
     var result = try Self(width: width, height: height, depth: depth)
     for i in 0..<count {
       if i % 4096 == 0 { try Task.checkCancellation() }
@@ -121,6 +134,22 @@ public struct InkPlane: Codable, Equatable, Sendable {
     }
     return result
   }
+  func convertingPaged(to depth: PixelDepth, inverted: Bool, budget: ComponentScratchBudget) throws -> Self {
+    try Self.dimensions(width, height, depth)
+    if depth == self.depth, !inverted { return self }
+    let inputMaximum: UInt32 = self.depth == .u8 ? 255 : 65535
+    let outputMaximum: UInt32 = depth == .u8 ? 255 : 65535
+    func converted(_ word: UInt32) -> UInt32 {
+      if depth == self.depth { return inputMaximum - word }
+      let sample = Float(word) / Float(inputMaximum)
+      return UInt32(((inverted ? 1 - sample : sample) * Float(outputMaximum)).rounded())
+    }
+    let plane = try ComponentPlane(width: width, height: height, depth: depth, defaultWord: converted(defaultWord))
+    let writer = try ComponentPlaneBuilder(plane: plane, reserve: budget.reserve)
+    try forEachNondefaultWord { index, word in try writer.setWord(converted(word), at: index) }
+    return try Self(storage: writer.finish())
+  }
+  var componentPlane: ComponentPlane { storage }
   /// Grayscale editing/display cache; ink density is inverted for a paper preview.
   public func surface(inverted: Bool = false) throws -> Surface {
     try validate()

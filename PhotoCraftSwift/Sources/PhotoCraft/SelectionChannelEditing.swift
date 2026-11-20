@@ -8,21 +8,25 @@ extension EditorStore {
     guard channelDialog === draft,!draft.committing,document==draft.source else {
       draft.error="The document changed. Cancel and reopen the selection dialog.";return
     }
+    if draft.kind == .duplicate && !draft.canDuplicateDestination { return }
     let selected=draft.selectedDocument,createsDocument=draft.createsDocument,foreign=selected.id != document.id && !draft.createsDocument
     if createsDocument,documentController == nil {draft.error="No document workspace is available.";return}
     let foreignDocument=documentController?.documents.compactMap {$0 as? CraftNSDocument}.first {$0.store.document==selected}
     guard !foreign || foreignDocument != nil else {draft.error="The other document changed or closed. Reopen this dialog.";return}
-    let targetStore=draft.kind == .save && foreign ? foreignDocument!.store:self
+    let writesDestination = draft.kind == .save || draft.kind == .duplicate
+    let targetStore = writesDestination ? (foreignDocument?.store ?? self) : self
     let available=targetStore === self ? !document.colorMode.isRestricted && canSelectComponentTarget(excludingChannelDialog:true) && historyOperation == nil:targetStore.canEditChannels
     guard available else {draft.error="Finish the destination interaction first.";return}
     let original=document,target=targetStore.document,kind=draft.kind,id=draft.channelID,name=draft.name,
       mode=draft.kind == .save && draft.channelID == nil ? SelectionMode.replace:draft.mode,invert=draft.invert
     let selectedSource=draft.selectionSource,colorSettings=draft.colorSettings
+    let duplicateSource = draft.duplicateSource, newName = draft.duplicateDocumentName
     guard workingColorSettings==colorSettings else{draft.error="Color Settings changed. Cancel and reopen the selection dialog.";return}
     let lifecycle=documentController
     let closing=lifecycle?.documentClosing.state?.id,opening=lifecycle?.documentOpening.generation
     let maintenance=lifecycle?.recoveryMaintenance.generation,discovery=lifecycle?.recoveryDiscovery.generation
     let ownGeneration=layerPanelGeneration,targetGeneration=targetStore.layerPanelGeneration
+    let ownSession = sessionGeneration, targetSession = targetStore.sessionGeneration
     draft.committing=true;draft.error=nil;geometryBusy=true;targetStore.geometryBusy=true
     draft.task=Task {[weak self,weak draft,weak targetStore,weak foreignDocument] in
       guard let self,let draft,let targetStore else{return}
@@ -32,8 +36,15 @@ extension EditorStore {
         if targetStore !== self && targetStore.layerPanelGeneration==targetGeneration {targetStore.geometryBusy=false;targetStore.render()}
       }
       do {
-        let worker=Task.detached(priority:.userInitiated) { ()throws->(PreparedEdit?,CraftDocument?) in
-          if createsDocument {return (nil,try original.selectionDocument(channelName:name))}
+        let worker=Task.detached(priority:.userInitiated) { ()throws->(PreparedEdit?,CraftDocument?,UUID?) in
+          if let duplicateSource {
+            switch try ChannelDuplication.prepare(duplicateSource, in: original, to: createsDocument ? nil : target,
+              name: name, documentName: newName, invert: invert) {
+            case .edit(let command, let channelID): return (try PreparedEdit(command: command, document: target), nil, channelID)
+            case .document(let created, _): return (nil, created, nil)
+            }
+          }
+          if createsDocument {return (nil,try original.selectionDocument(channelName:name),nil)}
           let command:Command
           if kind == .save {
             let coverage=try AlphaChannel.coverage(original.coverageSelection(),width:original.width,height:original.height,depth:target.depth)
@@ -42,12 +53,13 @@ extension EditorStore {
             guard let selectedSource else {throw CraftError.invalid("Choose a selection source.")}
             command = .channel(.loadCoverage(try selectedSource.selection(in:selected,invert:invert,colorSettings:colorSettings),mode))
           }
-          return (try PreparedEdit(command:command,document:target),nil)
+          return (try PreparedEdit(command:command,document:target),nil,nil)
         }
-        let (prepared,created)=try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
+        let (prepared,created,copiedChannelID)=try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}
         try Task.checkCancellation()
         guard self.channelDialog === draft,self.document==original,targetStore.document==target,
-          self.layerPanelGeneration==ownGeneration,targetStore.layerPanelGeneration==targetGeneration else {
+          self.layerPanelGeneration==ownGeneration,targetStore.layerPanelGeneration==targetGeneration,
+          self.sessionGeneration == ownSession, targetStore.sessionGeneration == targetSession else {
           throw CraftError.invalid("A document changed during the selection operation.")
         }
         guard self.workingColorSettings==colorSettings else{throw CraftError.invalid("Color Settings changed during the selection operation.")}
@@ -67,8 +79,14 @@ extension EditorStore {
           try targetStore.executeCompositePreparedEdit(prepared,allowAuxiliary:true)
           if targetStore.document != target {targetStore.onChange?(.changeDone)}
           self.channelDialog=nil
+          if let copiedChannelID {
+            targetStore.geometryBusy = false
+            if targetStore.document.alphaChannels?.contains(where: { $0.id == copiedChannelID }) == true {
+              try? targetStore.selectAlphaChannel(copiedChannelID)
+            } else { try? targetStore.selectInkChannels([.plate(copiedChannelID)]) }
+          }
         }
-        targetStore.status=kind == .save ? "Save Selection":"Load Selection"
+        targetStore.status = kind == .duplicate ? "Duplicate Channel" : kind == .save ? "Save Selection" : "Load Selection"
       } catch {if !Task.isCancelled && self.channelDialog === draft {draft.error=error.localizedDescription}}
     }
     geometryTask=draft.task

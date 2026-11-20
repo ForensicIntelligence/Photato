@@ -41,10 +41,15 @@ struct ModeChannelRows: View {
         .accessibilityLabel("Select \(title) channel")
         .accessibilityValue(selected ? "Selected editing target" : "")
         .accessibilityIdentifier("channels.mode.target.\(imageIndex)")
+        .channelDragSource(component.map { .component($0) }, store: store)
     }.background(selected ? StudioTheme.selected : StudioTheme.chrome)
       .overlay(alignment: .bottom) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
       .contextMenu {
         if let component {
+          Button("Duplicate Channel…") { store.beginDuplicateChannel(.component(component)) }
+            .disabled(!store.canDuplicateChannel(.component(component)))
+          Button("Delete Channel") { store.requestProcessChannelDeletion([component]) }
+            .disabled(!store.canDeleteProcessChannels([component]))
           Button("Invert") {
             do {
               try store.selectModeComponents([component])
