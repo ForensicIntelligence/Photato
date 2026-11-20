@@ -12,6 +12,7 @@ package struct PhotoshopPrintSettings {
   private var cornerCropMarks: Bool?
   private var centerCropMarks: Bool?
   private var labels: Bool?
+  private var vectorData: Bool?
 
   package init?(_ document: CraftDocument) {
     guard let data = document.sourceMetadata?["psdResources"],
@@ -46,6 +47,7 @@ package struct PhotoshopPrintSettings {
     cornerCropMarks = flag(style, "CrnC")
     centerCropMarks = flag(style, "CntC")
     labels = flag(style, "Lbls")
+    vectorData = flag(style, "vectorData")
   }
 
   package func applying(to defaults: PrintSettings) -> PrintSettings {
@@ -62,6 +64,7 @@ package struct PhotoshopPrintSettings {
     if let cornerCropMarks { settings.cornerCropMarks = cornerCropMarks }
     if let centerCropMarks { settings.centerCropMarks = centerCropMarks }
     if let labels { settings.labels = labels }
+    if let vectorData { settings.vectorData = vectorData }
     return settings
   }
 
@@ -77,10 +80,11 @@ package struct PhotoshopPrintSettings {
     case .relativeColorimetric: output.append(("Inte", .enumerated(PSDID("Inte"), PSDID("Clrm"))))
     case .saturation, .absoluteColorimetric: break
     }
-    let style: [(String, PSDValue)] = [
+    var style: [(String, PSDValue)] = [
       ("RgsM", .boolean(settings.registrationMarks)), ("CrnC", .boolean(settings.cornerCropMarks)),
       ("CntC", .boolean(settings.centerCropMarks)), ("Lbls", .boolean(settings.labels)),
     ]
+    if let vectorData = settings.vectorData { style.append(("vectorData", .boolean(vectorData))) }
     var changed = [Int: Data]()
     for (id, kind, values) in [(1082, "printOutput", output), (1083, "printOutputOptions", style)] {
       let matches = blocks.filter { $0.id == id }

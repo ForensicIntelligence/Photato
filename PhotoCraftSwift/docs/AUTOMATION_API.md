@@ -1,3 +1,39 @@
+### Large Smart Filter file transfers (checkpoint 646)
+
+The shared Photoshop file codec preserves implicit RGB source pixels and Smart Filter mask coverage on eligible large files. The authenticated `POST /v1/documents/import` and `GET /v1/documents/{id}/file.psb` round trip preserves the embedded source, editable High Pass and white mask on the tested 9-megapixel file. Adobe-compatible Execute Actions keeps using the shared Photoshop codec and its published output formats. The change affects codec storage and performance. Endpoint schemas, request budgets and selected output options keep their existing contracts. [Development record](PSD_SMART_FILTER_PAGING_646.md)
+
+### Editable Gradient Overlay (checkpoint 645)
+
+Supported `Gradient Overlay` controls now survive PSD and PSB import, native Save and authenticated file downloads. The existing layer-style edit contract applies to the reopened effect. The document-transfer capabilities describe the shared codec under `photoshopContainers.editableLayerEffects`. [Development record](PSD_GRADIENT_OVERLAY_645.md).
+
+### Linked raster preview rounding (checkpoint 644)
+
+Authenticated PSD and PSB downloads, approved Save As and resource jobs use the same preview rounding as the native renderer for supported linked RGB8 and RGB16 raster layers. Tests compare desktop and download bytes at each depth, and verify the retained composite of an unresolved linked cache through both job interfaces. [Development record](LINKED_PREVIEW_644.md).
+
+### Nested Photoshop source decoding (checkpoint 643)
+
+The existing PSD and PSB upload and Adobe Execute Actions job paths restore nested Photoshop sources, preserving the embedded data, layer-comp selection and supported Smart Filters. The iterative reader uses the existing eight-level nested source guard. This repair changes neither command fields nor transfer limits.
+
+[Development record](PSD_NESTED_SOURCES_643.md).
+
+### Older editable Photoshop shapes (checkpoint 642)
+
+`photoshopContainers.liveShapes.legacySolidFillRecords` identifies the older shape records. A supported RGB solid fill with a matching live vector contour opens as an editable shape. Its separate user mask remains editable. An unchanged shape keeps its original records through native Save and authenticated PSD or PSB downloads. A geometry edit writes the current shape records with the same mask.
+
+[Development record](PSD_LEGACY_SHAPES_642.md).
+
+### Editable PSD and PSB shapes (checkpoint 641)
+
+`photoshopContainers.liveShapes` advertises RGB8/16 rectangles, rounded rectangles and ellipses with supported solid paint. The native and API save paths retain the editable path, dimensions, independent corner radii and the supported stroke properties. A solid-color stroke can use width-relative dash lengths with a zero phase. Native opens and file uploads restore the shape layer and its original cache. Native Save and `GET /v1/documents/{id}/file.psd` or `file.psb` use the same shape serializer. Existing shape commands edit the covered layers.
+
+[Development record](PSD_ROUNDED_ELLIPSE_641.md).
+
+### Vector print output (checkpoint 639)
+
+Use `print.configure` with `settings.vectorData` to set Include Vector Data. It defaults to true. The native print job and downloaded `print.pdf` use eligible top-layer vector outlines in printer-managed RGB document output. Proofing and separations use raster output. Native projects retain the setting, and editable PSD and PSB use the supported Print Style field when the option is set.
+
+[Development record](VECTOR_PRINT_639.md).
+
 ### Document print settings (checkpoint 638)
 
 A native Save, Save As, Save a Copy or downloaded `file.photato` now includes the current document's committed print settings. A native file also keeps the hard-proof condition when selected. PSD and PSB files update the supported values in Adobe Print Information and Print Style. `printing.documentPersistence` advertises the format scope. `print.configure` still limits the pending settings to the shared document and keeps the local app defaults intact.

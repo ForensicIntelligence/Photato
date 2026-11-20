@@ -5,6 +5,56 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PrintOutputTests: XCTestCase {
+  func testVectorPrintDetachesSolidShapeAndHorizontalTypeAboveTheBackdrop() throws {
+    var source = try CraftDocument(width: 100, height: 80)
+    source.layers[0].content = .fill(.white)
+    source.resolution = 72
+    var definition = ShapeDefinition(geometry: .init(kind: .ellipse, width: 24, height: 18),
+      fill: .init(color: Pixel(1, 0, 0)))
+    definition.stroke.paint = .init(color: Pixel(0, 0, 1))
+    definition.stroke.width = 2
+    try ShapeRenderer.creation(definition, name: "Oval", placement: .translation(8, 10),
+      mode: .shape, target: nil, document: source).apply(to: &source)
+    var type = Layer(name: "Type", content: .text(TextContent(text: "A", fontName: "Helvetica", size: 24, color: .black).promoted(dpi: 72)))
+    type.x = 32
+    type.y = 10
+    source.layers.append(type)
+    source.selection = .init(x: 5, y: 3, width: 64, height: 44)
+    let before = source
+
+    var options = PrintSettings()
+    options.selectedArea = true
+    let vector = try PrintOutput.prepare(source, settings: options)
+    XCTAssertEqual(vector.pages[0].vectorMarkCount, 3)
+    XCTAssertEqual(vector.layout.source, source.selection)
+    let image = try XCTUnwrap(vector.pages[0].image.dataProvider?.data as Data?)
+    XCTAssertTrue(image.allSatisfy { $0 == 255 })
+    XCTAssertEqual(vector.pages[0].vectorMarks[0].path.boundingBoxOfPath.midX, 20, accuracy: 0.001)
+
+    options.vectorData = false
+    let raster = try PrintOutput.prepare(source, settings: options)
+    XCTAssertEqual(raster.pages[0].vectorMarkCount, 0)
+    let flattened = try XCTUnwrap(raster.pages[0].image.dataProvider?.data as Data?)
+    XCTAssertNotEqual(flattened, image)
+    XCTAssertEqual(source, before)
+  }
+
+  func testVectorPrintKeepsDependentLayersAndHardProofInTheRaster() throws {
+    var source = try CraftDocument(width: 24, height: 20)
+    source.layers[0].content = .fill(.white)
+    source.layers.append(Layer(name: "Shape", content: .shape(.init(kind: .rectangle, width: 6, height: 6, color: .black))))
+    source.layers.append(Layer(name: "Foreground pixels", content: .raster(try Surface(width: 2, height: 2, fill: .white))))
+    let options = PrintSettings()
+    XCTAssertEqual(try PrintOutput.prepare(source, settings: options).pages[0].vectorMarkCount, 0)
+    source.layers.removeLast()
+    XCTAssertEqual(try PrintOutput.prepare(source, settings: options).pages[0].vectorMarkCount, 1)
+    var proof = options
+    proof.content = .hardProof
+    proof.colorHandling = .photatoManages
+    proof.profile = try NativeModeProfile.standard(.rgb, depth: .u16)
+    XCTAssertEqual(try PrintOutput.prepare(source, settings: proof).pages[0].vectorMarkCount, 0)
+  }
+
   func testSharedPhotoshopPrintFieldsIgnoreUnknownOrMalformedResources() throws {
     let output = try PSDDescriptor("printOutput", items: [
       .init("Inte", .enumerated(PSDID("Inte"), PSDID("Img "))),
@@ -35,6 +85,7 @@ final class PrintOutputTests: XCTestCase {
 
     var override = defaults
     override.labels = true
+    override.vectorData = false
     override.printerName = "New fixture printer"
     override.intent = .relativeColorimetric
     let extra = PSDImageResources.block(1812, data: Data([0x18, 0x34, 0xfa]))
@@ -49,6 +100,7 @@ final class PrintOutputTests: XCTestCase {
     XCTAssertEqual(restored.intent, .relativeColorimetric)
     XCTAssertEqual(restored.printerName, "New fixture printer")
     XCTAssertTrue(restored.labels)
+    XCTAssertFalse(restored.includesVectorData)
     XCTAssertFalse(restored.sixteenBit)
 
     document.sourceMetadata = ["psdResources": outputBlock + outputBlock + styleBlock]

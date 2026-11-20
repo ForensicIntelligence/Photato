@@ -2,7 +2,57 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **638** · The 10 most recent entries, newest first.
+Source build **646** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 646 — Speed up large editable Smart Filter files
+
+The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
+
+All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) · [Details](PhotoCraftSwift/docs/PSD_SMART_FILTER_PAGING_646.md).
+
+## 2026-11-19 — Step 645 — Keep Gradient Overlay editable
+
+Standard Gradient Overlay keeps its stops and placement through PSD and PSB. Six exports of three Photoshop 27.4 RGB8 files matched all 737,280 merged RGBA samples.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) · [Details](PhotoCraftSwift/docs/PSD_GRADIENT_OVERLAY_645.md).
+
+## 2026-11-19 — Step 644 — Match linked raster previews to saved mask samples
+
+Supported linked RGB8 and RGB16 previews apply the separately quantized Photoshop layer and mask samples. Six file comparisons confirmed the tested output.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) · [Details](PhotoCraftSwift/docs/LINKED_PREVIEW_644.md).
+
+## 2026-11-19 — Step 643 — Open nested Photoshop Smart Objects
+
+An iterative decoder opens nested editable Smart Objects without exhausting the worker stack. The eight-level round trip and the previously failing Execute Actions workflow passed.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-643) · [Details](PhotoCraftSwift/docs/PSD_NESTED_SOURCES_643.md).
+
+## 2026-11-19 — Step 642 — Read older solid shapes and their pixel masks
+
+Older live solid-fill shapes open as editable layers and keep the separate pixel mask. Both unchanged exports matched the reference layer, mask and preview samples.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-642) · [Details](PhotoCraftSwift/docs/PSD_LEGACY_SHAPES_642.md).
+
+## 2026-11-19 — Step 641 — Keep rounded rectangles and dashed ellipses editable
+
+PSD and PSB retain supported solid fills, rounded corners and dotted or dashed ellipse strokes. Six independently checked exports retained the tested layer samples and shape records.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-641) · [Details](PhotoCraftSwift/docs/PSD_ROUNDED_ELLIPSE_641.md).
+
+## 2026-11-19 — Step 640 — Keep Photoshop rectangles editable
+
+Supported axis-aligned RGB rectangles open as editable layers. Photoshop-format tests verified the rendered samples and the retained rectangle descriptors.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) · [Details](PhotoCraftSwift/docs/PSD_LIVE_RECTANGLES_640.md).
+
+## 2026-11-19 — Step 639 — Keep vector outlines when printing
+
+Include Vector Data preserves eligible outline shapes and text in native print and PDF output. An independent PDF check verified the vector paths and raster backdrop.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-639) · [Details](PhotoCraftSwift/docs/VECTOR_PRINT_639.md).
 
 ## 2026-11-19 — Step 638 — Save document print settings with the artwork
 
@@ -19,67 +69,3 @@ Photato remembers accepted native print defaults and restores supported Print In
 All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_637.md).
-
-## 2026-11-19 — Step 636 — Fit and clip large prints at their original sample resolution
-
-Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale.
-
-All 1,168 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-636) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_636.md).
-
-## 2026-11-19 — Step 635 — Print a selection from a large document
-
-The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions.
-
-All 1,166 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-635) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_635.md).
-
-## 2026-11-19 — Step 634 — Print native CMYK and saved spot separations
-
-Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
-
-All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_634.md).
-
-## 2026-11-19 — Step 633 — Return standard Multichannel plates to editable CMYK
-
-Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
-
-All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-633) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_633.md).
-
-## 2026-11-19 — Step 632 — Keep native CMYK and Lab components when flattening to Multichannel
-
-Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink.
-
-All 1,136 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-632) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_632.md).
-
-## 2026-11-19 — Step 631 — Preserve spot inks in Multichannel Photoshop files
-
-Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier.
-
-All 1,133 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-631) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_631.md).
-
-## 2026-11-19 — Step 630 — Keep Workflow Guide highlights visible across controls and dialogs
-
-The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
-
-All 1,130 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-630) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_630.md).
-
-## 2026-11-19 — Step 629 — Keep saved masks and printing plates in one Multichannel order
-
-The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
-
-All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_629.md).

@@ -153,7 +153,8 @@ extension PSDSolidColorTests {
       ("mask", 0.002, true), ("mask-disabled", 0, true),
       ("clipping-mask", 0.069, false), ("layer_mask_data", 0.080, false),
       ("mask-parameters-no-real-channel", 0.0085, false),
-      ("mask-density-layermask", nil, false), ("masks2", nil, false),
+      // ImageIO's RGB float conversion can shift values within the same 8-bit code.
+      ("mask-density-layermask", 0.002, true), ("masks2", nil, false),
     ]
     var report: [[String: Any]] = []
     for (name, bound, exact) in cases {
@@ -175,7 +176,7 @@ extension PSDSolidColorTests {
           _ = try PSDCodec.read(bytes)
           XCTFail("Update the corpus qualification for \(name)")
         } catch CraftError.unsupported(let reason) {
-          XCTAssertTrue(reason.contains(name == "masks2" ? "Txt2" : "vowv"))
+          XCTAssertTrue(reason.contains("Txt2"))
           report.append([
             "file": name + ".psd", "imported": false, "reason": reason,
             "exact_at_document_depth": false,

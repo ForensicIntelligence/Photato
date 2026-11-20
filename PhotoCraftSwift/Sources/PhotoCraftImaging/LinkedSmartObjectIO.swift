@@ -2,6 +2,18 @@ import Foundation
 import PhotoCraftCore
 
 public enum LinkedSmartObjectIO {
+  /// Editable linked raster layers have separate integer color/alpha and mask
+  /// planes in Photoshop. Match that grid before combining their coverage.
+  static func integerPreviewDepth(_ layer: Layer, in document: CraftDocument) -> PixelDepth? {
+    guard document.colorMode == .rgb, document.depth != .f32,
+      let source = layer.smartObject, source.linkedSource != nil, !source.data.isEmpty,
+      ["image/png", "image/jpeg", "image/tiff"].contains(source.mediaType),
+      layer.smartFilters == nil, layer.warp == nil, layer.sourceProjection == nil,
+      layer.importedSmartAppearance == nil, layer.effectiveMaskProperties.feather == 0
+    else { return nil }
+    return document.depth
+  }
+
   public static func linked(_ layer:Layer,reference:LinkedSmartObjectSource)throws->Layer {
     guard let object=layer.smartObject else{throw CraftError.invalid("Choose a Smart Object.")}
     var result=layer;result.smartObject=try object.linked(to:reference);return result

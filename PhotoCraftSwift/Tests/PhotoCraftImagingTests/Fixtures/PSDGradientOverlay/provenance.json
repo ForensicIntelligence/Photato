@@ -1,0 +1,20 @@
+[
+  {
+    "file": "shape--90-odd.psd",
+    "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/709462086e5454df9e472a8254af38847304c576/tests/psd_files/gradient-geometry/shape--90-odd.psd",
+    "gitBlob": "d075832622e5477c6ceb5c170277fd96a0485a97",
+    "sha256": "9f46d926be809b7305bd3ed803cd59518ee3fee9c1cc00bd4907893550e7ea47"
+  },
+  {
+    "file": "shape--90-scale150-shift.psd",
+    "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/709462086e5454df9e472a8254af38847304c576/tests/psd_files/gradient-geometry/shape--90-scale150-shift.psd",
+    "gitBlob": "1fc433bb091dcaa18389196bd7999f2e48a8402c",
+    "sha256": "4ca6bc329d2ffd88f825e637edad3aec3b8d71ab39d3b63cae92e203038cde36"
+  },
+  {
+    "file": "shape-90-alpha-color.psd",
+    "url": "https://raw.githubusercontent.com/psd-tools/psd-tools/709462086e5454df9e472a8254af38847304c576/tests/psd_files/gradient-geometry/shape-90-alpha-color.psd",
+    "gitBlob": "177050569d7c2cf054b84b0c4a1dce0aa6e5382e",
+    "sha256": "1032fe79a8f410c9dc17b52e0e890775d0ee5b540bd9092abe4644d739f182e0"
+  }
+]

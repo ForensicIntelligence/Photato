@@ -71,6 +71,72 @@ final class LayerStyleTests: XCTestCase {
     var d=try fixture();d.layers[0].style=LayerStyle(effects:[effect(.bevelEmboss)])
     XCTAssertThrowsError(try PSDCodec.writeRasterLayers(d))
   }
+  func testPhotoshopGradientOverlaysStayEditableWithOriginalRecords() throws {
+    let folder = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+      .appendingPathComponent("Fixtures/PSDGradientOverlay")
+    let cases: [(name: String, angle: Float, scale: Float, offsetX: Float, offsetY: Float, reversed: Bool)] = [
+      ("shape--90-odd", -90, 1, 0, 0, false),
+      ("shape--90-scale150-shift", -90, 1.5, 0.5, 0.25, true),
+      ("shape-90-alpha-color", 90, 1, 0.25, -0.25, false),
+    ]
+    // Independent samples extracted from the stored Photoshop composite at x=60.
+    let referenceRows: [[(y: Int, rgba: [UInt8])]] = [
+      [(21, [0, 0, 0, 255]), (29, [120, 120, 120, 255]), (37, [240, 240, 240, 255])],
+      [(48, [255, 255, 255, 255]), (56, [212, 212, 212, 255]), (72, [128, 128, 128, 255])],
+      [(48, [123, 107, 52, 255]), (50, [107, 95, 57, 255]), (56, [66, 64, 64, 255]),
+       (58, [54, 54, 64, 255])],
+    ]
+    let capture = ProcessInfo.processInfo.environment["PHOTATO_TEST_CAPTURE_DIR"].map { URL(fileURLWithPath: $0) }
+    for (entry, rows) in zip(cases, referenceRows) {
+      let input = try Data(contentsOf: folder.appendingPathComponent(entry.name + ".psd"))
+      let document = try PSDCodec.read(input)
+      let layer = try XCTUnwrap(document.layers.first)
+      let style = try XCTUnwrap(layer.style)
+      XCTAssertEqual(style.effects.map(\.kind), [.gradientOverlay])
+      let fill = try XCTUnwrap(style.effects.first?.gradient)
+      XCTAssertEqual(fill.placement.angle, entry.angle)
+      XCTAssertEqual(fill.placement.scale, entry.scale)
+      XCTAssertEqual(fill.placement.offsetX, entry.offsetX)
+      XCTAssertEqual(fill.placement.offsetY, entry.offsetY)
+      XCTAssertEqual(fill.placement.reverse, entry.reversed)
+      XCTAssertTrue(fill.aligned)
+      XCTAssertFalse(fill.dither)
+      XCTAssertEqual(fill.gradient.opacity.map(\.opacity), entry.angle == 90 ? [0.2, 230.0 / 255] : [1, 1])
+      let composite = try Renderer.composite(document)
+      for row in rows {
+        let pixel = composite.pixel(x: 60, y: row.y)
+        XCTAssertEqual([pixel.r, pixel.g, pixel.b, pixel.a].map { UInt8((unit($0) * 255).rounded()) }, row.rgba,
+          "\(entry.name) row \(row.y)")
+      }
+      var activeLegacy = try XCTUnwrap(layer.sourceTags?["lrFX"])
+      let shadow = try XCTUnwrap(activeLegacy.range(of: Data("8BIMdsdw".utf8)))
+      activeLegacy[shadow.upperBound + 4 + 38] = 1
+      XCTAssertThrowsError(try PSDLayerStyles.validateInactiveLegacy(activeLegacy))
+      XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(document)), document)
+      for format in PSDFileFormat.allCases {
+        let bytes = try PSDCodec.writeRasterLayers(document, compression: .raw, format: format)
+        let read = try PSDCodec.read(bytes)
+        XCTAssertEqual(read.layers.first?.style, style)
+        XCTAssertEqual(read.layers.first?.sourceTags?["lfx2"], layer.sourceTags?["lfx2"])
+        XCTAssertEqual(read.layers.first?.sourceTags?["lrFX"], layer.sourceTags?["lrFX"])
+        XCTAssertEqual(try Renderer.composite(read).rgbaData(depth: .u8),
+          try composite.rgbaData(depth: .u8))
+        if let capture {
+          try FileManager.default.createDirectory(at: capture, withIntermediateDirectories: true)
+          try bytes.write(to: capture.appendingPathComponent(entry.name + (format == .psd ? ".psd" : ".psb")))
+        }
+        var edited = style
+        edited.effects[0].gradient?.placement.angle = 45
+        var session = EditorSession(document: document)
+        try session.execute(.layerStyle([layer.id], edited))
+        let update = try PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: format))
+        XCTAssertEqual(update.layers.first?.style?.effects.first?.gradient, edited.effects[0].gradient)
+        XCTAssertNotEqual(update.layers.first?.sourceTags?["lfx2"], layer.sourceTags?["lfx2"])
+        try session.undo()
+        XCTAssertEqual(session.document, document)
+      }
+    }
+  }
   func testStrictValidationLocksAndMergePreventSilentLoss() throws {
     for json in [#"{"bogus":1}"#, #"{"effects":[{"kind":"unknown"}]}"#, #"{"effects":[{"kind":"dropShadow","size":true}]}"#,
       #"{"effects":[{"kind":"gradientOverlay"}]}"#, #"{"effects":[{"kind":"stroke","size":251}]}"#] {

@@ -25,25 +25,30 @@ public enum ShapeRenderer {
     let (path,bounds)=try FrameRenderer.normalized(outline)
     return path.transformed(.translation(Double(bounds.x),Double(bounds.y)) * .scale(Double(bounds.width),Double(bounds.height)))
   }
+  static func strokeOutline(_ definition: ShapeDefinition, fillPath: CGPath) throws -> CGPath? {
+    let stroke = definition.stroke
+    guard stroke.paint.kind != .none, stroke.width > 0, (stroke.opacity ?? 1) > 0 else { return nil }
+    let sourcePath = try definition.path()
+    let centerline = try stroke.pathContours == true ? VectorRasterizer.outline(sourcePath) : fillPath
+    let factor = stroke.widthRelativeDashes == true ? stroke.width : 1
+    let line = stroke.dash.isEmpty ? centerline : centerline.copy(dashingWithPhase: stroke.phase * factor, lengths: stroke.dash.map { CGFloat($0 * factor) })
+    let aligned = stroke.pathContours != true || sourcePath.components.allSatisfy { $0.closed }
+    let alignment = aligned ? stroke.alignment : .center
+    let cap: CGLineCap = stroke.cap == .butt ? .butt : stroke.cap == .round ? .round : .square
+    let join: CGLineJoin = stroke.join == .miter ? .miter : stroke.join == .round ? .round : .bevel
+    let edge = line.copy(strokingWithWidth: stroke.width * (alignment == .center ? 1 : 2),
+      lineCap: cap, lineJoin: join, miterLimit: stroke.miterLimit)
+    if alignment == .inside { return edge.intersection(fillPath) }
+    if alignment == .outside { return edge.subtracting(fillPath) }
+    return edge
+  }
   static func surface(_ definition:ShapeDefinition,layer:Layer,document:CraftDocument)throws->Surface{
     try definition.validate(in:document)
     if let shape=layer.shape,let original=shape.importedAppearance,original.definition==definition,let pixels=original.pixels {return pixels}
     let bounds=try definition.renderBounds(),path=try outline(definition)
     let fillMask=try FrameRenderer.coverage(path,region:bounds)
-    let stroke=definition.stroke,strokeMask:SelectionMask?
-    if stroke.paint.kind != .none,stroke.width>0,(stroke.opacity ?? 1)>0 {
-      let sourcePath=try definition.path()
-      let centerline=try stroke.pathContours == true ? VectorRasterizer.outline(sourcePath):path
-      let factor=stroke.widthRelativeDashes == true ? stroke.width:1
-      let line=stroke.dash.isEmpty ? centerline:centerline.copy(dashingWithPhase:stroke.phase*factor,lengths:stroke.dash.map{CGFloat($0*factor)})
-      let aligned=stroke.pathContours != true || sourcePath.components.allSatisfy({$0.closed})
-      let alignment=aligned ? stroke.alignment:.center
-      let cap:CGLineCap=stroke.cap == .butt ? .butt:stroke.cap == .round ? .round:.square
-      let join:CGLineJoin=stroke.join == .miter ? .miter:stroke.join == .round ? .round:.bevel
-      var edge=line.copy(strokingWithWidth:stroke.width*(alignment == .center ? 1:2),lineCap:cap,lineJoin:join,miterLimit:stroke.miterLimit)
-      if alignment == .inside{edge=edge.intersection(path)}else if alignment == .outside{edge=edge.subtracting(path)}
-      strokeMask=try FrameRenderer.coverage(edge,region:bounds)
-    }else{strokeMask=nil}
+    let stroke = definition.stroke
+    let strokeMask = try strokeOutline(definition, fillPath: path).map { try FrameRenderer.coverage($0, region: bounds) }
     let fill=try Paint(definition.fill,bounds:bounds,frame:definition.paintFrame,layer:layer,document:document),edge=try Paint(stroke.paint,bounds:bounds,frame:definition.paintFrame,layer:layer,document:document)
     var output=try Surface(width:bounds.width,height:bounds.height,depth:document.depth)
     for y in 0..<bounds.height {try Task.checkCancellation();for x in 0..<bounds.width {

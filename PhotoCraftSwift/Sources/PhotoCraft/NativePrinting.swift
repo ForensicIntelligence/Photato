@@ -325,6 +325,14 @@ struct PrintSheet: View {
                 HStack { number("Border (pt)", $model.settings.border); number("Bleed (pt)", $model.settings.bleed) }
               }.padding(6)
             }
+            GroupBox("Output") {
+              Toggle("Include Vector Data", isOn: Binding(get: { model.settings.includesVectorData },
+                set: { model.settings.vectorData = $0 }))
+                .disabled(model.settings.content != .document || model.settings.colorHandling != .printerManages
+                  || model.source.colorMode != .rgb || model.source.depth == .f32)
+                .help("Keep eligible type and shape layers as vector outlines in the print or PDF.")
+                .padding(6)
+            }
           }.padding(.trailing, 8)
         }.frame(width: 405)
       }

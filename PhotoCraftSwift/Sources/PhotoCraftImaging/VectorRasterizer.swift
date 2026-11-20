@@ -58,6 +58,8 @@ public enum VectorRasterizer {
 /// Pixel and vector masks retain independent density/feather controls and multiply coverage.
 public struct LayerMaskSampler: Sendable {
   private var pixel: MaskSampler?
+  private let roundsShapeMaskDensity: Bool
+  private let linkedPreviewMaskDepth: PixelDepth?
   private var vector: MaskSampler?
   private var featheredVector: VectorFeatherCoverage?
   var vectorFeatherSupport: [IntRect]? { featheredVector?.support }
@@ -108,6 +110,18 @@ public struct LayerMaskSampler: Sendable {
     pixel = try layer.mask.map { _ in
       try MaskSampler(layer: layer, canvasSize: (document.width, document.height))
     }
+    let t = layer.maskCoordinateTransform
+    if let mask = layer.mask, mask.depth == document.depth,
+      t.a != 1 || t.b != 0 || t.c != 0 || t.d != 1 || t.tx != t.tx.rounded() || t.ty != t.ty.rounded() {
+      linkedPreviewMaskDepth = LinkedSmartObjectIO.integerPreviewDepth(layer, in: document)
+    } else {
+      linkedPreviewMaskDepth = nil
+    }
+    // Photoshop applies density on the stored mask byte before combining it
+    // with shape alpha. The measured case is an aligned, unfeathered RGB8 mask.
+    roundsShapeMaskDensity = document.colorMode == .rgb && layer.shape != nil
+      && document.depth == .u8 && layer.mask?.depth == .u8 && layer.effectiveMaskProperties.feather == 0
+      && t.a == 1 && t.b == 0 && t.c == 0 && t.d == 1 && t.tx == t.tx.rounded() && t.ty == t.ty.rounded()
     guard let mask = layer.vectorMask, mask.enabled else { return }
     try mask.validate()
     let outside: Float = mask.path.isEmpty
@@ -153,6 +167,9 @@ public struct LayerMaskSampler: Sendable {
   }
   public func coverage(x: Double, y: Double) -> Float {
     let coverage = featheredVector?.coverage(x: x, y: y) ?? vector?.coverage(x: x, y: y) ?? 1
-    return (pixel?.coverage(x: x, y: y) ?? 1) * coverage
+    let atCenter = (roundsShapeMaskDensity || linkedPreviewMaskDepth != nil)
+      && x - floor(x) == 0.5 && y - floor(y) == 0.5
+    return (pixel?.coverage(x: x, y: y, roundingDensityAsByte: roundsShapeMaskDensity && atCenter,
+      sampleDepth: atCenter ? linkedPreviewMaskDepth : nil) ?? 1) * coverage
   }
 }

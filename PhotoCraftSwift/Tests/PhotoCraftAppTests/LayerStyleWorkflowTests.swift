@@ -73,6 +73,44 @@ final class LayerStyleWorkflowTests: XCTestCase {
       XCTAssertEqual(try NativeArchive.decode(current.1), shared.store.document)
     }
   }
+  @MainActor func testNativeGradientOverlaySavesAndDownloadsAsEditablePSDAndPSB() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var artwork = shared.store.document
+      var pixels = try Surface(width: artwork.width, height: artwork.height)
+      for y in 0..<artwork.height { pixels.setPixel(x: 1, y: y, .black) }
+      artwork.layers[0].content = .raster(pixels)
+      shared.store.session = EditorSession(document: artwork)
+      shared.store.beginLayerStyle(.gradientOverlay)
+      LayerStyleSheet(store: shared.store).gradientColor(false).wrappedValue = Pixel(1, 0, 0)
+      shared.store.commitLayerStyle()
+      let document = shared.store.document
+      let layer = try XCTUnwrap(document.layers.first { $0.id == document.activeLayerID })
+      let effect = try XCTUnwrap(layer.style?.effects.first)
+      XCTAssertEqual(effect.kind, .gradientOverlay)
+      var expected = try XCTUnwrap(effect.gradient)
+      // The Photoshop format encodes implicit full opacity as two explicit stops.
+      XCTAssertTrue(expected.gradient.opacity.isEmpty)
+      expected.gradient.opacity = [.init(0, 1), .init(1, 1)]
+      service.setDocumentTransfersEnabled(true)
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      for (suffix, format) in [("psd", DocumentIO.Format.psd), ("psb", .psb)] {
+        XCTAssertNil(DocumentIO.persistenceIssue(document, format: format))
+        let saved = try DocumentIO.encode(document, format: format)
+        let download = try await helper.request(service, path: "/v1/documents/\(id)/file.\(suffix)")
+        XCTAssertEqual(download.0.statusCode, 200)
+        XCTAssertEqual(download.1, saved)
+        let reopened = try PSDCodec.read(saved)
+        let savedLayer = try XCTUnwrap(reopened.layers.first { $0.name == layer.name })
+        XCTAssertEqual(savedLayer.style?.effects.first?.gradient, expected)
+        XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .u8),
+          try Renderer.composite(document).rgbaData(depth: .u8))
+      }
+      XCTAssertEqual(shared.store.document, document)
+      XCTAssertEqual(shared.store.session.undoStack.count, 1)
+    }
+  }
   func testAdobeDropShadowEditsUseNativeModelAndStrictContract() throws {
     let original=try CraftDocument(width:24,height:24);var session=EditorSession(document:original)
     let raw:[String:Any] = ["name":original.layers[0].name,"operation":["type":"edit"],"layerEffects":["dropShadow":[["distance":9,"opacity":80,"useGlobalLight":false,"angle":-45,"color":["rgb":["red":255,"green":0,"blue":0]]]]]]

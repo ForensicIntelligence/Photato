@@ -192,10 +192,23 @@ public enum NativeTextLayout {
   public static func editingMetrics(_ text:TextContent,dpi:Double)throws->Metrics {var editable=text;editable.importedAppearance=nil;return try metrics(editable,dpi:dpi)}
   /// Reuse TextKit glyph positions for shape/type-to-frame conversion. Color-only
   /// glyphs without vector outlines remain unsupported rather than becoming boxes.
-  public static func outline(_ text: TextContent, dpi: Double) throws -> CGPath {
+  public static func outline(_ text: TextContent, dpi: Double, clipToLayout: Bool = false) throws -> CGPath {
     if text.typography?.geometry?.isActive==true{return try ShapedTextLayout.outline(text,dpi:dpi)}
     let (storage, manager, container, metrics) = try layout(text, dpi: dpi)
     guard text.typography?.writingOrientation != .vertical else{throw CraftError.unsupported("Vertical type outline conversion is not qualified yet; retain editable type or rasterize it.")}
+    if clipToLayout {
+      var usesFallback = false
+      storage.enumerateAttribute(.font, in: NSRange(location: 0, length: storage.length)) { value, range, stop in
+        guard let font = value as? NSFont else { usesFallback = true; stop.pointee = true; return }
+        let covered = CTFontCopyCharacterSet(font as CTFont) as CharacterSet
+        let characters = (storage.string as NSString).substring(with: range).unicodeScalars
+        if characters.contains(where: { !CharacterSet.whitespacesAndNewlines.contains($0) && !covered.contains($0) }) {
+          usesFallback = true
+          stop.pointee = true
+        }
+      }
+      guard !usesFallback else { throw CraftError.unsupported("Type using fallback glyphs requires raster printing.") }
+    }
     let range = manager.glyphRange(for: container), path = CGMutablePath()
     for index in range.location..<(range.location + range.length) {
       try Task.checkCancellation()
@@ -214,6 +227,10 @@ public enum NativeTextLayout {
       path.addPath(outline, transform: transform)
     }
     guard !path.isEmpty else { throw CraftError.unsupported("This text has no supported vector glyph outlines.") }
+    if clipToLayout {
+      let bounds = CGRect(x: 0, y: 0, width: metrics.width, height: metrics.height)
+      return path.intersection(CGPath(rect: bounds, transform: nil))
+    }
     return path
   }
   public static func render(_ text: TextContent, document: CraftDocument) throws -> Surface {

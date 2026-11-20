@@ -27,14 +27,45 @@ final class LinkedPreviewExportTests:XCTestCase {
       let sampler=try MaskSampler(layer:preview);XCTAssertEqual(sampler.coverage(x:3.5,y:4.5),depth.quantize(0.5625));XCTAssertEqual(sampler.coverage(x:4.5,y:4.5),depth.quantize(0.75))
       XCTAssertEqual(mask.colorEncoding,.sRGB);XCTAssertEqual(preview.maskProperties?.outside,0)
       records.append(["depth":depth.rawValue,"sourceAlpha":p.pixel(x:0,y:0).a,"maskGray":sampler.coverage(x:3.5,y:4.5),"maskOrigin":[preview.maskCoordinateTransform.tx,preview.maskCoordinateTransform.ty]])
+      let initial = try Renderer.composite(source)
+      let corner = depth.quantize(0.5625)
+      XCTAssertEqual(depth.quantize(initial.pixel(x: 3, y: 4).a), depth.quantize(corner * corner))
       for format:PSDFileFormat in [.psd,.psb] {
         let bytes=try PSDCodec.writeRasterLayers(source,compression:.raw,format:format),read=try PSDCodec.read(bytes)
+        let reopened = try Renderer.composite(read)
+        XCTAssertEqual(try reopened.rgbaData(depth: depth), try initial.rgbaData(depth: depth))
         try capture(bytes,"linked-preview-\(depth.rawValue).\(format == .psd ? "psd":"psb")")
-        try capture(Renderer.composite(source).rgbaData(depth:.u8),"linked-before-\(depth.rawValue).rgba")
-        try capture(Renderer.composite(read).rgbaData(depth:.u8),"linked-reopened-\(depth.rawValue)-\(format == .psd ? "psd":"psb").rgba")
+        try capture(initial.rgbaData(depth:.u8),"linked-before-\(depth.rawValue).rgba")
+        try capture(reopened.rgbaData(depth:.u8),"linked-reopened-\(depth.rawValue)-\(format == .psd ? "psd":"psb").rgba")
       }
     }
     try capture(JSONSerialization.data(withJSONObject:records,options:[.sortedKeys]),"linked-preview-analytical.json")
+  }
+  func testFractionalIntegerPreviewKeepsAnIndependentMaskAcrossSaveAndReopen() throws {
+    for depth in [PixelDepth.u8, .u16] {
+      var source = try fixture(depth, explicit: true, outside: 1)
+      source.layers[0].affine = .translation(0.75, 0.75) * .scale(2, 2)
+      var mask = source.layers[0].effectiveMaskProperties
+      mask.inverted = true
+      mask.density = 128.0 / 255.0
+      source.layers[0].maskProperties = mask
+      for enabled in [true, false] {
+        source.layers[0].maskProperties?.enabled = enabled
+        let initial = try Renderer.composite(source)
+        XCTAssertEqual(initial.pixel(x: 3, y: 4).a, 0)
+        for format in [PSDFileFormat.psd, .psb] {
+          let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(source, format: format))
+          let layer = try XCTUnwrap(reopened.layers.first)
+          let properties = layer.effectiveMaskProperties
+          XCTAssertEqual(properties.enabled, enabled)
+          XCTAssertFalse(properties.linked)
+          XCTAssertTrue(properties.inverted)
+          XCTAssertEqual(properties.density, mask.density)
+          XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: depth),
+            try initial.rgbaData(depth: depth))
+        }
+      }
+    }
   }
   func testFloat32PSDPSBMaskAppearanceRetainsExactSamplesAcrossMaskStates()throws {
     for explicit in [false,true] {for outside:Float in [0,1] {for disabled in [false,true] {

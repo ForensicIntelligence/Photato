@@ -6,10 +6,35 @@ import UniformTypeIdentifiers
 public enum SmartObjectIO {
   public static let maximumCanvasPixels = 8_388_608
   public static let maximumPagedRGBPixels = Surface.maxPixels
+  static let maximumDecodedBytes = 256 * 1_024 * 1_024
   @TaskLocal static var nesting = 0
+
+  static func checkNesting(_ depth: Int) throws {
+    guard depth < 8 else { throw CraftError.unsupported("Embedded Smart Object nesting exceeds eight levels.") }
+  }
+
   public static func withNesting<T>(_ operation: () throws -> T) throws -> T {
-    guard nesting < 8 else { throw CraftError.unsupported("Embedded Smart Object nesting exceeds eight levels.") }
+    try checkNesting(nesting)
     return try $nesting.withValue(nesting + 1, operation: operation)
+  }
+
+  static func photoshopDocumentName(_ data: Data, fileName: String) throws -> String? {
+    guard data.starts(with: Data("8BPS".utf8)) else { return nil }
+    guard data.count <= SmartObject.maximumSourceBytes else {
+      throw CraftError.invalid("Embedded source exceeds 64 MiB.")
+    }
+    guard data.count >= 26 else { throw CraftError.invalid("Truncated embedded Photoshop header.") }
+    let width = data.dropFirst(18).prefix(4).reduce(0) { ($0 << 8) | Int($1) }
+    let height = data.dropFirst(14).prefix(4).reduce(0) { ($0 << 8) | Int($1) }
+    try checkSourceExtent(width: width, height: height)
+    return (fileName as NSString).deletingPathExtension
+  }
+
+  private static func checkSourceExtent(width: Int, height: Int) throws {
+    guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
+      width <= maximumPagedRGBPixels / height else {
+      throw CraftError.unsupported("Embedded source exceeds the native canvas extent.")
+    }
   }
   public static func decode(_ data: Data, fileName: String) throws -> CraftDocument {
     try withNesting {
@@ -25,21 +50,18 @@ public enum SmartObjectIO {
         try check(document);return document
       }
       if RawSourceIO.recognizes(data) { return try RawSourceIO.open(data,fileName:fileName) }
-      let width: Int, height: Int
-      if data.starts(with: Data("8BPS".utf8)), data.count >= 26 {
-        width = data[18..<22].reduce(0) { ($0 << 8) | Int($1) }
-        height = data[14..<18].reduce(0) { ($0 << 8) | Int($1) }
-      } else if let source = CGImageSourceCreateWithData(data as CFData, nil),
-        let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
-        let w = properties[kCGImagePropertyPixelWidth] as? Int, let h = properties[kCGImagePropertyPixelHeight] as? Int {
-        width = w; height = h
-      } else { throw CraftError.unsupported("Unsupported embedded image format.") }
-      guard width > 0, height > 0,width<=Surface.maxDimension,height<=Surface.maxDimension,
-        width <= maximumPagedRGBPixels / height else {
-        throw CraftError.unsupported("Embedded source exceeds the native canvas extent.")
+      if let name = try photoshopDocumentName(data, fileName: fileName) {
+        let document = try PSDCodec.readPaged(data, name: name, heapByteLimit: maximumDecodedBytes)
+        try check(document); return document
       }
-      let name=(fileName as NSString).deletingPathExtension
-      let document = try data.starts(with:Data("8BPS".utf8)) ? PSDCodec.readPaged(data,name:name,heapByteLimit:256*1_024*1_024):RasterIO.read(data,name:name)
+      guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+        let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+        let width = properties[kCGImagePropertyPixelWidth] as? Int,
+        let height = properties[kCGImagePropertyPixelHeight] as? Int else {
+        throw CraftError.unsupported("Unsupported embedded image format.")
+      }
+      try checkSourceExtent(width: width, height: height)
+      let document = try RasterIO.read(data, name: (fileName as NSString).deletingPathExtension)
       try check(document); return document
     }
   }
@@ -55,7 +77,7 @@ public enum SmartObjectIO {
     try document.validate()
     let pagedRGB=document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil
     guard (pagedRGB || document.width <= maximumCanvasPixels / document.height),
-      document.estimatedBytes <= 256 * 1_024 * 1_024 else {
+      document.estimatedBytes <= maximumDecodedBytes else {
       throw CraftError.unsupported("Smart Objects require at most256 MiB owned content; non-RGB sources retain8,388,608-pixel admission. Encoded sources retain the64 MiB limit.")
     }
   }

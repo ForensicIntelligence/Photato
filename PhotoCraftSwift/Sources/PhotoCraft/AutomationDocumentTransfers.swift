@@ -133,6 +133,11 @@ extension AutomationService {
       ],
       "photoshopContainers": [
         "readVersions": [1, 2], "writeFormats": ["psd", "psb"],
+        "liveShapes": ["types": ["rectangle", "roundedRectangle", "ellipse"], "mode": "rgb", "depths": [8, 16],
+          "geometry": "Axis-aligned live shapes with solid fill and stroke, including zero-phase, width-relative dashes",
+          "legacySolidFillRecords": "SoCo and vmsk with live origin metadata. Separate pixel masks remain editable.",
+          "retainsImportAppearance": true],
+        "editableLayerEffects": ["gradientOverlay": "Editable standard Gradient Overlay color stops, transparency stops, blend mode and placement in PSD and PSB. Native and API file transfers use the same codec."],
         "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16], "indexed": [8], "bitmap": [1], "multichannel": [8, 16]],
         "hdrMetadata": ["modes":["rgb","grayscale"],"depth":32,"behavior":"PSD/PSB exports preserve imported HDR toning metadata or supply the neutral block for newly created documents. Native saves, Photato downloads and both resource job encoders share this serializer; layer component words are unchanged."],
         "optionalMergedPreviewInput": "Layered PSD and PSB input can retain saved alpha, spot and Quick Mask planes when Version Info marks the merged preview absent. The complete channel stream and declared channel metadata are validated. Desktop and Photato imports and both job inputs share this decoder.",

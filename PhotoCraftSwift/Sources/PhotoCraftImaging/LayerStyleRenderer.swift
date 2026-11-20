@@ -72,7 +72,22 @@ enum LayerStyleRenderer {
     var source = try Renderer.isolatedContent(plain, in: document, cache: cache)
     if !clips.isEmpty { source = try Renderer.compositeClips(clips, onto: source, in: document, cache: cache) }
     var alpha = Map(w:w,h:h,v:[Float](repeating:0,count:w*h))
-    for y in 0..<h { try Task.checkCancellation(); for x in 0..<w { alpha.v[y*w+x]=source.pixel(x:x,y:y).a } }
+    let effects = style.enabled ? style.effects.filter { $0.enabled && $0.opacity > 0 } : []
+    let needsGradientFrame = effects.contains { $0.kind == .gradientOverlay && $0.gradient?.aligned == true }
+    var left = w, top = h, right = 0, bottom = 0
+    for y in 0..<h {
+      try Task.checkCancellation()
+      for x in 0..<w {
+        let coverage = source.pixel(x: x, y: y).a
+        alpha.v[y * w + x] = coverage
+        if needsGradientFrame, coverage > 0 {
+          left = min(left, x); right = max(right, x + 1)
+          top = min(top, y); bottom = max(bottom, y + 1)
+        }
+      }
+    }
+    let gradientFrame = right > left && bottom > top
+      ? IntRect(x: left, y: top, width: right - left, height: bottom - top) : nil
     let exteriorDistance = try alpha.distance(toInside:true)
     let interiorDistance = try alpha.distance(toInside:false)
     let linear = document.depth == .f32
@@ -84,7 +99,6 @@ enum LayerStyleRenderer {
     func composite(_ p: Pixel, _ b: Pixel, _ mode: BlendMode, _ opacity: Float, _ x: Int, _ y: Int) -> Pixel {
       mode.composite(backdrop:b,source:p,opacity:opacity,x:x,y:y)
     }
-    let effects = style.enabled ? style.effects.filter { $0.enabled && $0.opacity > 0 } : []
     let scale = style.scale/100
     func shadowMap(_ effect: LayerEffect, inner: Bool) throws -> Map {
       var map = alpha
@@ -118,7 +132,8 @@ enum LayerStyleRenderer {
       let size = Float(effect.size*scale)
       let shadow = (kind == .innerGlow || kind == .innerShadow || kind == .satin) ? try shadowMap(effect,inner:kind != .satin) : nil
       let bevel = kind == .bevelEmboss ? try alpha.blurred(effect.size*scale+effect.soften) : nil
-      let gradient = try effect.gradient.map { try GradientFillSampler($0,layer:layer,document:document) }
+      let gradient = try effect.gradient.map { try GradientFillSampler($0, layer: layer, document: document,
+        alignedFrame: kind == .gradientOverlay ? gradientFrame : nil, isOverlay: kind == .gradientOverlay) }
       let pattern = try effect.pattern.map { try PatternFillSampler($0,in:document) }
       let angle = (effect.useGlobalLight ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle)*Double.pi/180
       let dx = -cos(angle)*effect.distance*scale, dy = sin(angle)*effect.distance*scale

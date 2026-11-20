@@ -76,8 +76,14 @@ final class PSDTests: XCTestCase {
     let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(rich))
     guard case .text(let type) = reopened.layers.last?.content else { return XCTFail("Type was flattened") }
     XCTAssertEqual(type.text, "Rich")
-    rich.layers.append(Layer(name: "Unsupported shape", content: .shape(ShapeContent(kind: .ellipse, width: 4, height: 4, color: .black))))
-    XCTAssertThrowsError(try PSDCodec.writeRasterLayers(rich))
+    rich.layers.append(Layer(name: "Ellipse", content: .shape(ShapeContent(kind: .ellipse, width: 4, height: 4, color: .black))))
+    let shapes = try PSDCodec.read(PSDCodec.writeRasterLayers(rich))
+    XCTAssertEqual(shapes.layers.last?.shape?.editableDefinition.components.first?.geometry.kind, .ellipse)
+    let triangle = ShapeDefinition(geometry: .init(kind: .triangle, width: 4, height: 4))
+    try Command.shape(.create("Unsupported triangle", triangle, .identity)).apply(to: &rich)
+    XCTAssertThrowsError(try PSDCodec.writeRasterLayers(rich)) { error in
+      guard case CraftError.unsupported = error else { return XCTFail("Expected unsupported shape export, received \(error)") }
+    }
   }
 }
 extension PSDTests {

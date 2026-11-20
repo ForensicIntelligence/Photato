@@ -1,5 +1,55 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 646 — Speed up large editable Smart Filter files
+
+The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
+
+All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) · [Details](../PhotoCraftSwift/docs/PSD_SMART_FILTER_PAGING_646.md).
+
+## 2026-11-19 — Step 645 — Keep Gradient Overlay editable
+
+Standard Gradient Overlay keeps its stops and placement through PSD and PSB. Six exports of three Photoshop 27.4 RGB8 files matched all 737,280 merged RGBA samples.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) · [Details](../PhotoCraftSwift/docs/PSD_GRADIENT_OVERLAY_645.md).
+
+## 2026-11-19 — Step 644 — Match linked raster previews to saved mask samples
+
+Supported linked RGB8 and RGB16 previews apply the separately quantized Photoshop layer and mask samples. Six file comparisons confirmed the tested output.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) · [Details](../PhotoCraftSwift/docs/LINKED_PREVIEW_644.md).
+
+## 2026-11-19 — Step 643 — Open nested Photoshop Smart Objects
+
+An iterative decoder opens nested editable Smart Objects without exhausting the worker stack. The eight-level round trip and the previously failing Execute Actions workflow passed.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-643) · [Details](../PhotoCraftSwift/docs/PSD_NESTED_SOURCES_643.md).
+
+## 2026-11-19 — Step 642 — Read older solid shapes and their pixel masks
+
+Older live solid-fill shapes open as editable layers and keep the separate pixel mask. Both unchanged exports matched the reference layer, mask and preview samples.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-642) · [Details](../PhotoCraftSwift/docs/PSD_LEGACY_SHAPES_642.md).
+
+## 2026-11-19 — Step 641 — Keep rounded rectangles and dashed ellipses editable
+
+PSD and PSB retain supported solid fills, rounded corners and dotted or dashed ellipse strokes. Six independently checked exports retained the tested layer samples and shape records.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-641) · [Details](../PhotoCraftSwift/docs/PSD_ROUNDED_ELLIPSE_641.md).
+
+## 2026-11-19 — Step 640 — Keep Photoshop rectangles editable
+
+Supported axis-aligned RGB rectangles open as editable layers. Photoshop-format tests verified the rendered samples and the retained rectangle descriptors.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) · [Details](../PhotoCraftSwift/docs/PSD_LIVE_RECTANGLES_640.md).
+
+## 2026-11-19 — Step 639 — Keep vector outlines when printing
+
+Include Vector Data preserves eligible outline shapes and text in native print and PDF output. An independent PDF check verified the vector paths and raster backdrop.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-639) · [Details](../PhotoCraftSwift/docs/VECTOR_PRINT_639.md).
+
 ## 2026-11-19 — Step 638 — Save document print settings with the artwork
 
 Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields.
@@ -1107,14 +1157,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:638 -->
+<!-- current-status-step:646 -->
 ## Current development status — 19 November 2026
 
-Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields.
+The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
 
-All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
 
-[Source checkpoint 638](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_638.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-638).
+[Source checkpoint 646](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_646.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646).
 
 <!-- current-status:end -->
 
@@ -1292,5 +1342,17 @@ checks. All1,109 previous inputs and692 previous exported/reference files remain
 Seventeen files are added. Installed117 and user settings remain preserved. The checkpoint
 records the six-part activation plan; all major gates remain open.
 [Protection record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-151), [checkpoint151](../PhotoCraftSwift/docs/ACTIVE_CHECKPOINT_151.json)
+
+## 2026-10-20 — Step152: protection reaches editing and both APIs
+
+The previous isolated protection model now governs actual native edits and file persistence. Painting preserves the existing alpha stencil; Photoshop’s explicit selected Clear removes pixels. Image and position locks block their respective operations, while full-lock Rename and grouping follow the observed reference. The native dialog, layer buttons, shortcut and both API paths share those transactions. Version12 prevents older readers from silently losing partial protection; compatible existing files retain their prior version.
+
+The first two compilations exposed test inference and initialization errors. Full01 later found94 failed assertions, mostly90 repetitions of the old TIFF partial-to-full collapse. An independent byte inventory proved all30 TIFF fixtures contain transparency-only protection. Focused06 also exposed a known unsupported little-endian opaque metadata block; the test now distinguishes that limitation from protection-only output. Later review also corrected API-only flag transitions and a reproduced protected-Fill integer quantization defect; both interrupted validations and the failing regression are preserved. Live testing then exposed initial checkbox enablement overridden during SwiftUI installation; a hosted-control regression reproduced five failures before the environment-state fix. Final59 focused,1,442 Debug,1,442 Release and20 Rosetta tests pass, with universal packaging and an owned native UI probe. This is bounded integration, not complete Photoshop parity; all major gates remain open.
+
+[Runtime development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-152), [checkpoint152](../PhotoCraftSwift/docs/ACTIVE_CHECKPOINT_152.json)
+
+Step153 completes the first editable original-project migration subset. Source-generated RGB 8/16/32 fixtures retain raster/group/mask/path/selection/protection data through native Open, API editing and Photato persistence. Empty-selection and file-registration regressions were reproduced and repaired; all 1,455 Debug/Release tests,13 Rosetta cases,universal packaging and an owned live workflow pass. Rich source features and all major gates remain open. See [the detailed step153 record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-153).
+
+Step154 adds independent source/Photoshop rendering comparisons and repairs off-canvas raster-mask edge handling. The first broad cropped-mask hypothesis was disproved by controls; the final change follows the measured layer-boundary distinction. All 1,460 Debug/Release tests, 14 Rosetta cases and native/UI/API/package checks pass. Gaussian/vector/full byte parity remains open. See [step154](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-154).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)

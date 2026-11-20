@@ -50,6 +50,8 @@ public struct PrintSettings: Codable, Equatable, Sendable {
   public var simulatePaper = false
   public var simulateBlack = false
   public var sixteenBit = false
+  public var vectorData: Bool?
+  public var includesVectorData: Bool { vectorData ?? true }
   public var cornerCropMarks = false
   public var centerCropMarks = false
   public var registrationMarks = false
@@ -159,6 +161,8 @@ public struct PrintLayout: Equatable, Sendable {
 public struct PrintPage: Sendable {
   public let image: CGImage
   public let label: String
+  var vectorMarks: [PrintVectorMark] = []
+  public var vectorMarkCount: Int { vectorMarks.count }
 }
 public struct PreparedPrint: Sendable {
   public let settings: PrintSettings
@@ -176,6 +180,19 @@ public struct PreparedPrint: Sendable {
     if !layout.rasterDestination.isNull {
       context.interpolationQuality = .high
       context.draw(page.image, in: layout.rasterDestination)
+    }
+    if !page.vectorMarks.isEmpty {
+      context.saveGState()
+      context.clip(to: box)
+      let xScale = box.width / Double(layout.source.width), yScale = box.height / Double(layout.source.height)
+      context.translateBy(x: box.minX - Double(layout.source.x) * xScale, y: box.maxY + Double(layout.source.y) * yScale)
+      context.scaleBy(x: xScale, y: -yScale)
+      for mark in page.vectorMarks {
+        context.setFillColor(mark.color)
+        context.addPath(mark.path)
+        context.fillPath()
+      }
+      context.restoreGState()
     }
     context.setStrokeColor(gray: 0, alpha: 1); context.setFillColor(gray: 0, alpha: 1)
     if settings.border > 0 { context.setLineWidth(settings.border); context.stroke(box) }
@@ -254,6 +271,7 @@ public enum PrintOutput {
     // from authoritative Lab samples to an RGB printer source, without a display preview.
     let outputProfile = try settings.colorHandling == .photatoManages ? settings.profile! : (sourceMode == .lab ? NativeModeProfile.standard(.rgb, depth: .u16) : sourceProfile)
     guard let outputSpace = CGColorSpace(iccData: outputProfile as CFData) else { throw CraftError.invalid("Could not open the printer color space.") }
+    let vectors = try PrintVectorOutput.split(document, settings: settings, space: outputSpace)
     let hard = settings.content == .hardProof
     if hard { try SoftProof.validate(proof, in: document) }
     let intermediate = try hard ? proof.resolvedProfile() : outputProfile
@@ -269,11 +287,11 @@ public enum PrintOutput {
       let y = row + rect.y; var input: [Float] = []; input.reserveCapacity(rect.width * sourceMode.componentCount)
       if native == nil, row == nextBand {
         if bandRows == rect.height {
-          composite = try Renderer.compositeValidated(document, region: region)
+          composite = try Renderer.compositeValidated(vectors.raster, region: region)
         } else {
           let band = IntRect(x: rect.x, y: y, width: rect.width, height: min(bandRows, rect.height - row))
           composite = nil
-          composite = try Renderer.compositeValidated(document, region: band)
+          composite = try Renderer.compositeValidated(vectors.raster, region: band)
         }
         nextBand += bandRows
       }
@@ -297,7 +315,9 @@ public enum PrintOutput {
       let device = try bypass ? input : first.apply(input)
       return try second?.apply(device.map(unit)) ?? device
     }
-    return PreparedPrint(settings: settings, layout: layout, pages: [PrintPage(image: image, label: hard ? "Hard Proof: " + proof.displayName : "Composite")], title: document.name)
+    return PreparedPrint(settings: settings, layout: layout,
+      pages: [PrintPage(image: image, label: hard ? "Hard Proof: " + proof.displayName : "Composite", vectorMarks: vectors.marks)],
+      title: document.name)
   }
 
   private static func separations(_ document: CraftDocument, region: IntRect?, maximumPlates: Int) throws -> [Separation] {

@@ -11,13 +11,16 @@ final class PSDSmartFilterPagingWorkflowTests:XCTestCase {
     var model=try CraftDocument(width:6000,height:1500)
     try SmartObjectIO.convert(in:model,selected:[model.layers[0].id]).apply(to:&model)
     try Command.applyFilter(model.layers[0].id,RasterFilter(.highPass)).apply(to:&model)
-    let data=try PSDCodec.writeRasterLayers(model,compression:.zipPrediction,format:.psb,compositeCompression:.zipPrediction)
+    // Photoshop does not accept ZIP for the merged preview. Use an editable
+    // compatibility-off PSB so the fixture fits the bounded HTTP upload.
+    let data = try PSDCodec.writeRasterLayers(model, compression: .zipPrediction, format: .psb, maximizeCompatibility: false)
     XCTAssertLessThan(data.count,DocumentIO.maximumUploadBytes)
     let directory=FileManager.default.temporaryDirectory.appendingPathComponent("photato-large-filter-http-\(UUID().uuidString)")
     try FileManager.default.createDirectory(at:directory,withIntermediateDirectories:true)
     defer{try? FileManager.default.removeItem(at:directory)}
     let file=directory.appendingPathComponent("Owned.psb");try data.write(to:file)
     let native=try DocumentIO.read(file),rect=IntRect(x:2990,y:745,width:23,height:13)
+    try checkEditableStack(native)
     let expected=try Renderer.composite(native,region:rect).cropped(to:rect).rgbaData(depth:.f32)
     print("Large Smart Filter HTTP: native ready",Date())
     try await AutomationTests().withService(pressedMouseButtons:{0}){service,_ in
@@ -32,8 +35,7 @@ final class PSDSmartFilterPagingWorkflowTests:XCTestCase {
       let document=try XCTUnwrap(service.shares.first{$0.id.uuidString==id}?.document)
       defer{document.store.renderTask?.cancel();service.controller.removeDocument(document)}
       let actual=document.store.document
-      XCTAssertNotNil(actual.layers[0].smartObject);XCTAssertNotNil(actual.layers[0].smartFilters?.mask)
-      XCTAssertEqual(actual.layers[0].smartFilters?.filters.first?.filter.kind,.highPass)
+      try checkEditableStack(actual)
       XCTAssertEqual(try Renderer.composite(actual,region:rect).cropped(to:rect).rgbaData(depth:.f32),expected)
       var download=URLRequest(url:URL(string:service.endpoint!+"/v1/documents/\(id)/file.psb")!)
       download.timeoutInterval=180;download.setValue("Bearer "+service.token!,forHTTPHeaderField:"Authorization")
@@ -41,9 +43,26 @@ final class PSDSmartFilterPagingWorkflowTests:XCTestCase {
       print("Large Smart Filter HTTP: download returned",Date())
       XCTAssertEqual((downloadResponse as?HTTPURLResponse)?.statusCode,200)
       let reopened=try PSDCodec.readPaged(downloaded)
-      XCTAssertEqual(reopened.layers[0].smartFilters?.filters.first?.filter.kind,.highPass)
+      try checkEditableStack(reopened)
       XCTAssertEqual(try Renderer.composite(reopened,region:rect).cropped(to:rect).rgbaData(depth:.f32),expected)
       print("Large Smart Filter HTTP: complete",Date())
     }
+  }
+
+  private func checkEditableStack(_ document: CraftDocument, file: StaticString = #filePath, line: UInt = #line) throws {
+    let layer = try XCTUnwrap(document.layers.first, file: file, line: line)
+    let object = try XCTUnwrap(layer.smartObject, file: file, line: line)
+    XCTAssertEqual(object.width, 6000, file: file, line: line)
+    XCTAssertEqual(object.height, 1500, file: file, line: line)
+    guard case .raster(let source) = layer.content else {
+      return XCTFail("The editable Smart Object needs a raster source.", file: file, line: line)
+    }
+    XCTAssertEqual(source.tileCount, 0, file: file, line: line)
+    XCTAssertEqual(source.defaultPixel, .white, file: file, line: line)
+    let stack = try XCTUnwrap(layer.smartFilters, file: file, line: line)
+    XCTAssertEqual(stack.filters.first?.filter.kind, .highPass, file: file, line: line)
+    let mask = try XCTUnwrap(stack.mask, file: file, line: line)
+    XCTAssertEqual(mask.tileCount, 0, file: file, line: line)
+    XCTAssertEqual(mask.defaultPixel, .white, file: file, line: line)
   }
 }

@@ -10,13 +10,20 @@ final class PSDPagedWorkflowTests:XCTestCase {
     var model=try CraftDocument(width:8000,height:5000,depth:.u16)
     let surface=try Surface(width:8000,height:5000,depth:.u16,fill:Pixel(0.25,0.5,0.75,1))
     model.layers[0].content = .raster(surface)
-    let bytes=try PSDCodec.writeRasterLayers(model,compression:.zipPrediction,format:.psb,compositeCompression:.zipPrediction)
+    // Photoshop does not accept ZIP for the merged preview. Use an editable
+    // compatibility-off PSB so the fixture fits the bounded HTTP upload.
+    let bytes = try PSDCodec.writeRasterLayers(model, compression: .zipPrediction, format: .psb, maximizeCompatibility: false)
     XCTAssertLessThan(bytes.count,DocumentIO.maximumUploadBytes)
     let folder=try DocumentPersistenceTests().directory();defer{try? FileManager.default.removeItem(at:folder)}
     let file=folder.appendingPathComponent("owned-compressed40mp.psb");try bytes.write(to:file)
     let desktop=try DocumentIO.read(file),upload=try DocumentIO.decodeUpload(bytes,native:false,name:"Owned40MP")
     guard case .raster(let p)=desktop.layers[0].content,case .raster(let q)=upload.layers[0].content else {return XCTFail("Raster")}
-    XCTAssertEqual(p,q);XCTAssertGreaterThanOrEqual(upload.mappedRasterBytes,640_000_000)
+    XCTAssertEqual(p, q)
+    XCTAssertEqual(q.width, surface.width)
+    XCTAssertEqual(q.height, surface.height)
+    XCTAssertEqual(q.pixel(x: 0, y: 0), surface.pixel(x: 0, y: 0))
+    XCTAssertEqual(q.pixel(x: 7999, y: 4999), surface.pixel(x: 7999, y: 4999))
+    XCTAssertEqual(upload.mappedRasterBytes, 0, "Uniform rows should retain implicit storage.")
     XCTAssertLessThan(upload.estimatedBytes,16*1024*1024)
     let helper=AutomationTests()
     try await helper.withService(pressedMouseButtons:{0}) {service,_ in

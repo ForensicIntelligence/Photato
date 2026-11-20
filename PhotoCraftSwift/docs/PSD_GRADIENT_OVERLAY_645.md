@@ -1,0 +1,19 @@
+# Editable Gradient Overlay in Photoshop files
+
+19 November 2026 · Development checkpoint 645
+
+Photoshop files with a standard Gradient Overlay now open and save as editable PSD and PSB. The effect keeps separate color and transparency stops, gradient method, angle, scale, offset, reversal, alignment, dithering, blend mode and opacity. The existing Layer Style controls and Photato API edit the same effect model. A document can still be saved in Photato format. [Photoshop layer styles](https://helpx.adobe.com/uk/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html) · [Photoshop file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+
+The three unmodified reference files report Photoshop 27.4 on Windows and contain a synthetic Gradient Overlay over an editable black rectangle. The first has a vertical ramp across an odd-height rectangle. The second reverses the ramp and uses 150% scale and two offsets. The third uses colored stops and independent transparency stops. The unchanged build 644 rejected their object-based effect data. The first build 645 probe then reached the legacy effects block and rejected that. Build 645 now validates and retains that block when a modern effect record accompanies it and the legacy entries are inactive. An active legacy effect still produces a specific unsupported error. [Pinned reference files](https://github.com/psd-tools/psd-tools/tree/709462086e5454df9e472a8254af38847304c576/tests/psd_files/gradient-geometry) · Reference hashes (local evidence)
+
+The first candidate preserved all editable records and layer samples but rendered some merged color samples one level from Photoshop. For the measured RGB8 Classic overlays, integer endpoints, 15-bit working color stops, and a separately quantized byte opacity ramp reproduced the saved values. An independent parser compared each re-export against its Photoshop file. All 737,280 merged RGBA samples and 63,192 layer samples matched. The 32,928 bytes of object-based effect records also matched, along with the legacy effect, shape and vector records. The test suite checks the original samples around the critical ties. First rendering comparison (local evidence) · Final file comparison (local evidence)
+
+The first native/API test expected an implicit opaque gradient to reopen without stops. Photoshop files encode that state with two explicit fully opaque stops. The corrected test checks those stops, the layer appearance, and the exact native Save and authenticated download bytes. Original integration run (local evidence)
+
+The expanded suite reproduced two stale rejection messages for other gradient files on the unchanged 644 binary. The audit test now expects the precise current errors for unsupported live shape metadata and noise gradients. The import behavior for those files is unchanged. Unchanged 644 comparison (local evidence) · Source patch and hashes (local evidence)
+
+All 165 focused Debug cases passed, including the native Layer Style binding, Photoshop-format serialization, and byte-identical loopback downloads. Final automated tests (local evidence)
+
+The extracted ad hoc signed preview passed its signature check and launched a 1,000 × 650 workspace offscreen on Apple Silicon. Its executable targets macOS 14 and later. Package details (local evidence) · Offscreen launch (local evidence)
+
+The installed Photoshop session did not produce a fresh reference. Current byte verification applies to the three Photoshop-authored RGB8 fixtures. Other interpolation methods, dithering, rotated gradients, edge and mask interactions, and RGB16/32 Photoshop math still need independent output comparisons. The completed universal qualification and stable GitHub publication remain separate work.

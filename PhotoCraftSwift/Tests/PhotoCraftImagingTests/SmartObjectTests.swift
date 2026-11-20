@@ -86,6 +86,41 @@ final class SmartObjectTests: XCTestCase {
       XCTAssertEqual(nested.layers.count, 1)
     } }
   }
+  func testNestedPhotoshopSourcesOnWorkerStackRetainOriginalDataAndEnforceLimit() async throws {
+    let width = 7, height = 6
+    let pixels = try Surface(width: width, height: height, fill: Pixel(0.1, 0.7, 0.3))
+    var document = try CraftDocument(width: width, height: height)
+    document.layers[0].content = .raster(pixels)
+    var containers = [try PSDCodec.writeRasterLayers(document)]
+    var identifiers: [UUID] = []
+    for level in 1...9 {
+      let sourceIsPSD = level.isMultiple(of: 2) == false
+      let object = try SmartObject(fileName: "Contents.\(sourceIsPSD ? "psd" : "psb")",
+        mediaType: sourceIsPSD ? "image/vnd.adobe.photoshop" : "application/x-photoshop",
+        data: try XCTUnwrap(containers.last), width: width, height: height)
+      identifiers.append(object.sourceID)
+      document.layers[0].smartObject = object
+      containers.append(try PSDCodec.writeRasterLayers(document, format: sourceIsPSD ? .psb : .psd))
+    }
+    let fixtures = containers, expectedIDs = identifiers
+    let expectedPixels = try pixels.rgbaData(depth: .u8)
+    try await Task.detached {
+      var layerDocument = try PSDCodec.readPaged(fixtures[8])
+      for level in (0..<8).reversed() {
+        let source = try XCTUnwrap(layerDocument.layers.first?.smartObject)
+        XCTAssertEqual(source.sourceID, expectedIDs[level])
+        XCTAssertEqual(source.data, fixtures[level])
+        layerDocument = try SmartObjectIO.sourceDocument(source)
+      }
+      XCTAssertNil(layerDocument.layers.first?.smartObject)
+      XCTAssertEqual(try Renderer.composite(layerDocument).rgbaData(depth: .u8), expectedPixels)
+      XCTAssertThrowsError(try PSDCodec.readPaged(fixtures[9])) { error in
+        guard case CraftError.unsupported(let reason) = error else { return XCTFail("Unexpected error: \(error)") }
+        XCTAssertTrue(reason.contains("nesting exceeds eight levels"))
+      }
+    }.value
+  }
+
   func testOriginalPNGBytesAndInvalidSourcesArePreservedOrRejected() throws {
     let original = try fixture(), data = try RasterIO.encoded(original)
     let layer = try SmartObjectIO.placed(data: data, fileName: "source.png", in: original)

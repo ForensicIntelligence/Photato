@@ -59,10 +59,17 @@ enum PSDSmartObjects {
     }
     return descriptor
   }
-  static func restore(_ layer: inout Layer, in document: CraftDocument, files: [String: File], filterMasks: [String: PSDSmartFilters.Mask] = [:]) throws {
+  struct Placement {
+    let descriptor: PSDDescriptor
+    let file: File
+    let sourceID: UUID
+    let quad: [Double]
+    let selectedComp: Int32
+  }
+
+  static func placement(_ layer: Layer, files: [String: File]) throws -> Placement {
     guard let data = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"] else {
-      if layer.sourceTags?["PlLd"] != nil { throw CraftError.unsupported("Legacy placed objects require a SoLd descriptor.") }
-      return
+      throw CraftError.unsupported("Legacy placed objects require a SoLd descriptor.")
     }
     let d = try descriptor(data)
     guard case .text(let text) = d["Idnt"], case .list(let values) = d["Trnf"], values.count == 8,
@@ -72,6 +79,13 @@ enum PSDSmartObjects {
       throw CraftError.unsupported("Missing embedded Smart Object source; external links are not followed.")
     }
     let selectedComp = try d["comp"].map { try PSDLayerComps.integer($0) } ?? -1
+    return Placement(descriptor: d, file: file, sourceID: sourceID, quad: values.map { $0.number! }, selectedComp: selectedComp)
+  }
+
+  static func restore(_ layer: inout Layer, placement: Placement, in document: CraftDocument,
+      filterMasks: [String: PSDSmartFilters.Mask], decodedSource: CraftDocument?) throws {
+    let d = placement.descriptor, file = placement.file
+    let selectedComp = placement.selectedComp, sourceID = placement.sourceID
     if file.link != nil,file.data.isEmpty {
       guard selectedComp == -1 else { throw CraftError.unsupported("Locate the linked original before importing its selected child comp. Cached-only PSD comp descriptors remain unqualified.") }
       try PSDLinkedSmartObjects.restore(&layer,descriptor:d,file:file,sourceID:sourceID,document:document,filterMasks:filterMasks);return
@@ -85,7 +99,7 @@ enum PSDSmartObjects {
       for key in ["PgNm","totalPages"] {
         if let value = d[key]?.number,value != 1 {throw CraftError.unsupported("Multipage non-PDF placed objects are not yet editable.")}
       }
-      let source = try SmartObjectIO.decode(file.data, fileName: file.name)
+      let source = try decodedSource ?? SmartObjectIO.decode(file.data, fileName: file.name)
       var placed = try SmartObjectIO.embedded(document: source, in: document, originalData: file.data, fileName: file.name)
       if selectedComp != -1 {
         guard var choices = placed.0.layerComps else { throw CraftError.invalid("Selected source comp is missing.") }
@@ -96,7 +110,7 @@ enum PSDSmartObjects {
     }
     object.sourceID = sourceID
     if let link=file.link {object=try object.linked(to:link)}
-    let q = values.map { $0.number! }, w = Double(object.width), h = Double(object.height)
+    let q = placement.quad, w = Double(object.width), h = Double(object.height)
     let t = Transform2D(a: (q[2]-q[0])/w, b: (q[3]-q[1])/w,
       c: (q[6]-q[0])/h, d: (q[7]-q[1])/h, tx: q[0], ty: q[1])
     let corner = t.point(w, h)

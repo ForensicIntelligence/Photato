@@ -197,8 +197,85 @@ public enum PSDCodec {
     return try read(PSDReader(data:data),name:name,
       paging:PSDRasterPaging.Context(heapByteLimit:heapByteLimit,scratchByteLimit:scratchByteLimit))
   }
+  private struct DeferredPlacedLayers {
+    let indices: [Int]
+    let sources: [String: PSDSmartObjects.File]
+    let filterMasks: [String: PSDSmartFilters.Mask]
+  }
+
+  private struct DecodedDocument {
+    var document: CraftDocument
+    var placedLayers: DeferredPlacedLayers?
+    var readArtboards: Bool = false
+  }
+
+  private struct DecodeFrame {
+    let source: PSDReader
+    var decoded: DecodedDocument
+    var nextPlacement = 0
+  }
+
+  private struct PendingParent {
+    let frame: DecodeFrame
+    let layerIndex: Int
+    let placement: PSDSmartObjects.Placement
+  }
+
   static func read(_ source: PSDReader, name: String, tiffComposite: Surface? = nil,
-    tiffNativeComposite: NativeModeRaster? = nil, paging suppliedPaging: PSDRasterPaging.Context? = nil) throws -> CraftDocument {
+    tiffNativeComposite: NativeModeRaster? = nil, paging: PSDRasterPaging.Context? = nil) throws -> CraftDocument {
+    var frame = DecodeFrame(source: source, decoded: try readContainer(source, name: name,
+      tiffComposite: tiffComposite, tiffNativeComposite: tiffNativeComposite, paging: paging))
+    let startingDepth = SmartObjectIO.nesting
+    var parents: [PendingParent] = []
+    // Parse each Photoshop container independently, then restore its sources in
+    // postorder. Retain parent state in the array instead of the worker stack.
+    while true {
+      try Task.checkCancellation()
+      if let assets = frame.decoded.placedLayers, frame.nextPlacement < assets.indices.count {
+        let index = assets.indices[frame.nextPlacement]
+        frame.nextPlacement += 1
+        let placement = try PSDSmartObjects.placement(frame.decoded.document.layers[index], files: assets.sources)
+        let depth = startingDepth + parents.count
+        if let name = try SmartObjectIO.photoshopDocumentName(placement.file.data, fileName: placement.file.name) {
+          try SmartObjectIO.checkNesting(depth)
+          let reader = PSDReader(data: placement.file.data)
+          let child = try readContainer(reader, name: name, tiffComposite: nil, tiffNativeComposite: nil,
+            paging: PSDRasterPaging.Context(heapByteLimit: SmartObjectIO.maximumDecodedBytes))
+          parents.append(PendingParent(frame: frame, layerIndex: index, placement: placement))
+          frame = DecodeFrame(source: reader, decoded: child)
+        } else {
+          try restore(placement, at: index, in: &frame, nestingDepth: depth)
+        }
+      } else {
+        if frame.decoded.placedLayers != nil {
+          if frame.decoded.readArtboards { try PSDArtboards.read(into: &frame.decoded.document) }
+          try PSDLayerComps.read(into: &frame.decoded.document)
+          try frame.decoded.document.validate()
+          try frame.source.validateUnchanged()
+        }
+        guard let parent = parents.popLast() else { return frame.decoded.document }
+        let document = frame.decoded.document
+        frame = parent.frame
+        try restore(parent.placement, at: parent.layerIndex, in: &frame,
+          nestingDepth: startingDepth + parents.count, decodedSource: document)
+      }
+    }
+  }
+
+  private static func restore(_ placement: PSDSmartObjects.Placement, at index: Int, in frame: inout DecodeFrame,
+    nestingDepth: Int, decodedSource: CraftDocument? = nil) throws {
+    var layer = frame.decoded.document.layers[index]
+    try SmartObjectIO.$nesting.withValue(nestingDepth) {
+      try PSDSmartObjects.restore(&layer, placement: placement, in: frame.decoded.document,
+        filterMasks: frame.decoded.placedLayers?.filterMasks ?? [:], decodedSource: decodedSource)
+    }
+    try PSDText.restore(&layer, in: frame.decoded.document)
+    frame.decoded.document.layers[index] = layer
+  }
+
+  @inline(never)
+  private static func readContainer(_ source: PSDReader, name: String, tiffComposite: Surface?,
+    tiffNativeComposite: NativeModeRaster?, paging suppliedPaging: PSDRasterPaging.Context?) throws -> DecodedDocument {
     try Task.checkCancellation()
     var r = source
     guard try r.string(4) == "8BPS" else { throw CraftError.invalid("This is not a PSD file.") }
@@ -221,13 +298,13 @@ public enum PSDCodec {
     }
     if mode == 7 {
       guard tiffComposite == nil, tiffNativeComposite == nil else { throw CraftError.unsupported("Multichannel Photoshop layer payloads are not used inside TIFF.") }
-      return try PSDMultichannelStorage.read(r, width: width, height: height, depth: depth,
-        channels: channels, format: format, name: name, paging: suppliedPaging)
+      return DecodedDocument(document: try PSDMultichannelStorage.read(r, width: width, height: height, depth: depth,
+        channels: channels, format: format, name: name, paging: suppliedPaging))
     }
     if mode == 0 || mode == 2 {
       guard tiffComposite == nil, tiffNativeComposite == nil else { throw CraftError.unsupported("Restricted Photoshop layer payloads are not used inside TIFF.") }
-      return try PSDRestrictedStorage.read(r, width: width, height: height, depth: depth, mode: mode,
-        channels: channels, format: format, name: name)
+      return DecodedDocument(document: try PSDRestrictedStorage.read(r, width: width, height: height, depth: depth, mode: mode,
+        channels: channels, format: format, name: name))
     }
     let colorMode = try PSDModeStorage.mode(mode), colorChannels = colorMode.componentCount
     let pixelDepth: PixelDepth = depth == 8 ? .u8 : depth == 16 ? .u16 : .f32
@@ -543,6 +620,8 @@ public enum PSDCodec {
           }
         case "SoCo":
           _ = try PSDSolidColor.read(content)
+        case "vscg", "vstk", "vogk", "vowv", "sn2P":
+          break // Validated together with the shape path and raster cache.
         case "vmsk", "vsms":
           _ = try PSDPaths.readMask(content, width: doc.width, height: doc.height)
         case "lsct", "lsdk":
@@ -595,6 +674,8 @@ public enum PSDCodec {
           }
         case "lfx2", "lmfx":
           _ = try PSDLayerStyles.read(content)
+        case "lrFX":
+          try PSDLayerStyles.validateInactiveLegacy(content)
         case "iOpa":
           guard content.count == 4, content.dropFirst().allSatisfy({ $0 == 0 }) else { throw CraftError.invalid("Invalid PSD fill opacity.") }
         default:
@@ -608,6 +689,9 @@ public enum PSDCodec {
           throw CraftError.invalid("Invalid layer padding.")
         }
       }
+      if tags["lrFX"] != nil, tags["lfx2"] == nil, tags["lmfx"] == nil {
+        throw CraftError.unsupported("Legacy Photoshop layer effects require a matching object-based record.")
+      }
       let boardTags = PSDArtboards.keys.filter { tags[$0] != nil }
       guard boardTags.count<=1,boardTags.isEmpty || section==1 || section==2 else {
         throw CraftError.invalid("Artboard metadata requires one group header.")
@@ -615,7 +699,7 @@ public enum PSDCodec {
       guard
         section != 0
           || (key != "pass"
-            && (tags["SoCo"] != nil || tags["PtFl"] != nil || tags["GdFl"] != nil
+            && (tags["vscg"] != nil || tags["SoCo"] != nil || tags["PtFl"] != nil || tags["GdFl"] != nil
               || tags["clrL"] != nil || PSDClassicAdjustment.keys.contains(where: { tags[$0] != nil })
               || tags["levl"] != nil
               || tags["curv"] != nil
@@ -626,7 +710,7 @@ public enum PSDCodec {
         throw CraftError.unsupported("Unsupported non-raster PSD layer.")
       }
       let contentBlocks = [
-        "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "expA", "SoCo", "PtFl", "GdFl", "levl", "curv", "hue2", "blnc", "thrs", "post", "grdm",
+        "vscg", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "expA", "SoCo", "PtFl", "GdFl", "levl", "curv", "hue2", "blnc", "thrs", "post", "grdm",
       ]
       .filter {
         tags[$0] != nil
@@ -654,6 +738,7 @@ public enum PSDCodec {
     let embeddedFiles = try PSDSmartObjects.files(doc)
     let filterMasks = try PSDSmartFilters.masks(in:doc,readers:["FEid","FXid"].compactMap {filterCacheViews[$0]},paging:paging)
     var layers: [Layer] = []
+    var placedIndices: [Int] = []
     var groupStack: [UUID] = []
     var linkInput=try PSDLayerLinks.Input(resourceBlocks,records:records.count),linkDividerFlags:[UUID:UInt8]=[:]
     for (recordIndex,record) in records.enumerated() {
@@ -699,8 +784,9 @@ public enum PSDCodec {
         let group=UUID();groupStack.append(group);if linkInput.present{linkDividerFlags[group]=linkInput.flags[recordIndex]}
         continue
       }
+      let hasLiveShape = PSDLiveShape.hasDefinition(record.tags)
       guard
-        record.section != 0 || record.tags["SoCo"] != nil || record.tags["PtFl"] != nil
+        record.section != 0 || (!hasLiveShape && record.tags["SoCo"] != nil) || record.tags["PtFl"] != nil
           || record.tags["GdFl"] != nil
           || record.tags["clrL"] != nil || PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
           || record.tags["levl"] != nil
@@ -718,7 +804,7 @@ public enum PSDCodec {
       var surface = try Surface(
         width: native == nil ? max(1, record.w) : 1, height: native == nil ? max(1, record.h) : 1, depth: pixelDepth,
         colorEncoding: depth == 32 ? .linearRGB : .sRGB)
-      let rasterRows = record.section == 0 && record.tags["SoCo"] == nil && record.tags["PtFl"] == nil
+      let rasterRows = record.section == 0 && (hasLiveShape || record.tags["SoCo"] == nil) && record.tags["PtFl"] == nil
         && record.tags["GdFl"] == nil
         && record.tags["clrL"] == nil && !PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
         && record.tags["levl"] == nil
@@ -732,7 +818,9 @@ public enum PSDCodec {
       if let paging,native == nil,rasterRows > 0 {
         var channels = (0..<3).map { planes[$0]! }
         if let alpha = planes[-1] { channels.append(alpha) }
-        if record.w > Surface.maximumDensePixels / record.h {
+        // Embedded RGB sources already composite in pages at this size.
+        // Preserve implicit samples so aligned Smart Objects can stay sparse.
+        if record.w > SmartObjectIO.maximumCanvasPixels / record.h {
           surface = try PSDRasterPaging.sparseLayer(width: record.w, height: record.h,
             depth: pixelDepth, channels: channels, context: paging)
         } else {
@@ -807,7 +895,12 @@ public enum PSDCodec {
       if let settings = record.tags["blnc"] {
         layer.content = .adjustment(.colorBalance(try PSDColorBalance.read(settings)))
       }
-      if let fill = record.tags["SoCo"] {
+      if hasLiveShape {
+        let shape = try PSDLiveShape.read(record.tags, x: record.x, y: record.y, cache: surface, document: doc)
+        layer.content = .shape(shape)
+      } else if let tag = ["vowv", "vogk", "vstk", "sn2P"].first(where: { record.tags[$0] != nil }) {
+        throw CraftError.unsupported("Photoshop live shape block '\(tag)' requires a supported vector content generator.")
+      } else if let fill = record.tags["SoCo"] {
         // RGB fill components use the document profile; RGB/32 uses linear light.
         let sample = try Surface(width: 1, height: 1, depth: .f32, fill: PSDSolidColor.read(fill))
         layer.content = .fill(
@@ -840,7 +933,7 @@ public enum PSDCodec {
         if layer.style==nil{layer.style=LayerStyle()}
         layer.style?.restrictedChannels=try PSDChannelBlending.read(data)
       }
-      if let block = record.tags["vmsk"] ?? record.tags["vsms"] {
+      if layer.shape == nil, let block = record.tags["vmsk"] ?? record.tags["vsms"] {
         layer.vectorMask = try PSDPaths.readMask(block, width: doc.width, height: doc.height)
         layer.vectorMask?.density = Float(record.mask?.vectorDensity ?? 255) / 255
         layer.vectorMask?.feather = record.mask?.vectorFeather ?? 0
@@ -891,10 +984,14 @@ public enum PSDCodec {
       }
       try planes.values.forEach { try $0.discardRemaining() }
       try PSDPatternFill.importPlacement(&layer, width: doc.width, height: doc.height)
-      try PSDSmartObjects.restore(&layer, in: doc, files: embeddedFiles, filterMasks: filterMasks)
-      try PSDText.restore(&layer, in: doc)
+      let placed = record.tags["SoLd"] != nil || record.tags["SoLE"] != nil || record.tags["PlLd"] != nil
+      if placed {
+        placedIndices.append(layers.count)
+      } else {
+        try PSDText.restore(&layer, in: doc)
+      }
       let recognizesBackground = colorMode == .rgb || (colorMode == .grayscale && depth == 32 && tiffComposite == nil)
-      if layers.isEmpty,recognizesBackground,layer.parentID==nil,!layer.isClipped,layer.x==0,layer.y==0,layer.opacity==1,layer.blendMode == .normal,
+      if layers.isEmpty,recognizesBackground,!placed,layer.parentID==nil,!layer.isClipped,layer.x==0,layer.y==0,layer.opacity==1,layer.blendMode == .normal,
         layer.mask==nil,layer.vectorMask==nil,layer.style==nil,layer.smartObject==nil,layer.protection.locksTransparency,
         !record.channels.contains(where:{$0.0 == -1}),case .raster(let pixels)=layer.content,pixels.width==doc.width,pixels.height==doc.height,try pixels.isOpaque() {
         layer.background=true
@@ -908,6 +1005,7 @@ public enum PSDCodec {
     doc.layers = layers
     LayerLinks.prune(in:&doc)
     doc.activeLayerID = doc.layers.last?.id
+    let deferred = DeferredPlacedLayers(indices: placedIndices, sources: embeddedFiles, filterMasks: filterMasks)
     if info.remaining > 0 {
       guard try info.consumePadding(0) else {
         throw CraftError.invalid("Unexpected layer channel tail.")
@@ -925,10 +1023,7 @@ public enum PSDCodec {
         layer.nativeMode = tiffNativeComposite
         doc.layers = [layer]; doc.activeLayerID = layer.id
       }
-      try PSDLayerComps.read(into: &doc)
-      try doc.validate()
-      try source.validateUnchanged()
-      return doc
+      return DecodedDocument(document: doc, placedLayers: deferred)
     }
     let hasNoMergedImage = PSDImageResources.hasRealMergedData(resourceBlocks) == false
     if hasNoMergedImage, count == 0 {
@@ -938,11 +1033,7 @@ public enum PSDCodec {
       // An unused placeholder may be followed by embedded PSB backing capacity.
       // Saved auxiliary planes, when present, require a validated channel stream.
       _ = try r.view(r.remaining)
-      try PSDArtboards.read(into: &doc)
-      try PSDLayerComps.read(into: &doc)
-      try doc.validate()
-      try source.validateUnchanged()
-      return doc
+      return DecodedDocument(document: doc, placedLayers: deferred, readArtboards: true)
     }
     // Validate unused merged caches row-by-row, including checksum/end/trailing
     // bytes. Flattened inputs stream their planar samples into the final tiles.
@@ -1037,11 +1128,7 @@ public enum PSDCodec {
     try merged.discardRows(merged.remainingRows - auxiliaryCount * height)
     try PSDAuxiliaryChannels.read(merged,first:imageChannels,count:auxiliaryCount,blocks:resourceBlocks,document:&doc,paging:paging)
     try merged.discardRemaining()
-    try PSDArtboards.read(into:&doc)
-    try PSDLayerComps.read(into: &doc)
-    try doc.validate()
-    try source.validateUnchanged()
-    return doc
+    return DecodedDocument(document: doc, placedLayers: deferred, readArtboards: true)
   }
   /// Editable layer documents whose process preview can be omitted.
   public static func canOmitMergedImage(_ doc: CraftDocument) -> Bool {
@@ -1085,6 +1172,21 @@ public enum PSDCodec {
   ) throws {
     try Task.checkCancellation()
     try doc.validate()
+    // Resolve native sources to their embedded PSB data before the parent
+    // container writer reserves its frame. The conversion can call this method.
+    let linkedSources = try doc.requiresSmartObjectArchive ? PSDSmartObjects.linkedData(doc) : nil
+    try writeContainer(doc, compression: compression, format: format,
+      compositeCompression: requestedCompositeCompression, output: output,
+      includeComposite: includeComposite, maximizeCompatibility: maximizeCompatibility,
+      linkedSources: linkedSources)
+  }
+
+  @inline(never)
+  private static func writeContainer(
+    _ doc: CraftDocument, compression: PSDCompression, format: PSDFileFormat,
+    compositeCompression requestedCompositeCompression: PSDCompression, output: PSDOutput,
+    includeComposite: Bool, maximizeCompatibility: Bool, linkedSources: Data?
+  ) throws {
     // Photoshop rejects ZIP markers in the final Image Data section.
     // Preserve RLE and raw requests, and retain Bitmap's predictor validation.
     let compositeCompression: PSDCompression
@@ -1159,6 +1261,7 @@ public enum PSDCodec {
       }
       let preview: Layer
       if case .text = layer.content { preview = try PSDText.preview(layer,in:doc) }
+      else if layer.shape != nil { preview = try PSDLiveShape.prepared(layer, in: doc) }
       else { preview = layer.smartObject == nil ? layer : try PSDSmartObjects.bakedPreview(layer,in:doc) }
       return (try PSDMaskExport.prepared(preview),section)
     }
@@ -1247,11 +1350,15 @@ public enum PSDCodec {
     var channelLengthOffsets: [[Int]] = []
     try records.n(mergedTransparency ? -entries.count:entries.count, 2)  // Negative count declares merged transparency.
     for (layer, section) in entries {
+      let shapeTags = try layer.shape == nil ? [] : PSDLiveShape.write(layer, document: doc)
+      let shapeBounds = try layer.shape?.renderBounds()
       let surface: Surface?
       let isFill: Bool
       isFill = layer.isCanvasFill
       if case .raster(let pixels) = layer.content, layer.affine == nil {
         surface = pixels
+      } else if shapeBounds != nil {
+        surface = nil
       } else if case .fill(let color) = layer.content {
         _ = try PSDSolidColor.write(color)
         surface = nil
@@ -1303,8 +1410,8 @@ public enum PSDCodec {
       }
       let originX = isFill ? 0 : layer.x
       let originY = isFill ? 0 : layer.y
-      let width = isFill ? doc.width : (surface?.width ?? 0)
-      let height = isFill ? doc.height : (surface?.height ?? 0)
+      let width = isFill ? doc.width : (shapeBounds?.width ?? surface?.width ?? 0)
+      let height = isFill ? doc.height : (shapeBounds?.height ?? surface?.height ?? 0)
       try records.n(height == 0 ? 0 : originY, 4)
       try records.n(width == 0 ? 0 : originX, 4)
       try records.n(height == 0 ? 0 : originY + height, 4)
@@ -1399,11 +1506,17 @@ public enum PSDCodec {
         extra.text("vmsk")
         extra.section(try PSDPaths.writeMask(mask, width: doc.width, height: doc.height))
       }
+      for (key, data) in shapeTags {
+        extra.text(format.tagSignature(key) + key)
+        extra.section(data, lengthBytes: format.tagLengthBytes(key))
+        if data.count % 2 != 0 { extra.n(0, 1) }
+      }
       if let channels=layer.style?.restrictedChannels {
         extra.text("8BIM");extra.text("brst");extra.section(try PSDChannelBlending.write(channels))
       }
       if let style = layer.style {
-        let data = try PSDLayerStyles.write(style, sharedLight: exportedLight)
+        let original = layer.sourceTags?["lmfx"] ?? layer.sourceTags?["lfx2"]
+        let data = try PSDLayerStyles.write(style, sharedLight: exportedLight, original: original)
         extra.text("8BIM"); extra.text("lfx2"); extra.section(data)
         if data.count % 2 != 0 { extra.n(0, 1) }
         extra.text("8BIM"); extra.text("iOpa"); extra.section(Data([UInt8((style.fillOpacity * 255).rounded()), 0, 0, 0]))
@@ -1486,7 +1599,7 @@ public enum PSDCodec {
         "PhLG", "PhLF", "PhFE", "artb", "artd", "abdd", "luni", "lspf", "lyid", "lsct", "lsdk", "clbl", "vmsk", "vsms", "SoCo", "levl", "curv",
         "hue2", "blnc", "clrL", "vibA", "blwh", "phfl", "mixr", "selc", "expA", "thrs", "post", "grdm", "PtFl", "GdFl", "lfx2", "lmfx", "iOpa",
       ]
-      .contains(tag) {
+      .contains(tag) && !shapeTags.contains(where: { $0.0 == tag }) {
         extra.text(format.tagSignature(tag))
         extra.text(tag)
         extra.section(content, lengthBytes: format.tagLengthBytes(tag))
@@ -1510,12 +1623,15 @@ public enum PSDCodec {
       let surface: Surface?
       if case .raster(let pixels) = layer.content {
         surface = pixels
-      } else if layer.isCanvasFill {
+      } else if layer.isCanvasFill || layer.shape != nil {
         surface = try Renderer.layerSurface(layer, in: doc)
       } else {
         surface = nil
       }
-      let storedLayerRows = layer.nativeMode == nil ? surface.flatMap { PSDStoredRows($0, kind: .layer) } : nil
+      let storedLayerRows = layer.nativeMode == nil ? surface.flatMap {
+        PSDStoredRows($0, kind: .layer,
+          minimumPixels: $0.tileCount == 0 ? SmartObjectIO.maximumCanvasPixels : Surface.maximumDensePixels)
+      } : nil
       let storedMaskRows = layer.mask.flatMap { PSDStoredRows($0, kind: .mask) }
       let nativeSupports: [PSDNativeRowSupport?]
       if let native = layer.nativeMode, native.requiresPagedArchive {
@@ -1607,8 +1723,7 @@ public enum PSDCodec {
       try layerMask.section(overlay, lengthBytes: format.tagLengthBytes("LMsk"))
       for _ in 0..<((4 - overlay.count % 4) % 4) { try layerMask.n(0, 1) }
     }
-    if doc.requiresSmartObjectArchive {
-      let linked = try PSDSmartObjects.linkedData(doc)
+    if let linked = linkedSources {
       try layerMask.text(format.tagSignature("lnk2") + "lnk2")
       try layerMask.section(linked, lengthBytes: format.tagLengthBytes("lnk2"))
       for _ in 0..<((4 - linked.count % 4) % 4) { try layerMask.n(0, 1) }
@@ -1726,5 +1841,9 @@ public enum PSDCodec {
         }
         return bytes
     }
+  }
+
+  package static func supportsLiveShape(_ layer: Layer, in document: CraftDocument) -> Bool {
+    PSDLiveShape.supported(layer, in: document)
   }
 }

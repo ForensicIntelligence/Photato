@@ -2,6 +2,10 @@ import Foundation
 import PhotoCraftCore
 
 enum PSDGradientFill {
+  static let descriptorKeys: Set<String> = [
+    "Angl", "Type", "Scl ", "Grad", "Rvrs", "Dthr", "Algn", "Ofst",
+    "gradientsInterpolationMethod", "gs99", "noisePreSeed",
+  ]
   static let styles: [(String, GradientStyle)] = [
     ("Lnr ", .linear), ("Rdl ", .radial), ("Angl", .angle), ("Rflc", .reflected),
     ("Dmnd", .diamond),
@@ -12,12 +16,16 @@ enum PSDGradientFill {
     else {
       throw CraftError.unsupported("Unrepresented PSD Gradient Fill descriptor.")
     }
-    try PSDGradient.supported(
-      d,
-      keys: [
-        "Angl", "Type", "Scl ", "Grad", "Rvrs", "Dthr", "Algn", "Ofst",
-        "gradientsInterpolationMethod", "gs99", "noisePreSeed",
-      ])
+    return try readFields(d, gradient: gradient)
+  }
+  static func readFields(_ d: PSDDescriptor) throws -> GradientFill {
+    guard case .object(let gradient) = d["Grad"] else {
+      throw CraftError.invalid("Missing Photoshop gradient descriptor.")
+    }
+    return try readFields(d, gradient: gradient)
+  }
+  private static func readFields(_ d: PSDDescriptor, gradient: PSDDescriptor) throws -> GradientFill {
+    try PSDGradient.supported(d, keys: descriptorKeys)
     var fill = GradientFill(
       gradient: try PSDGradient.read(gradient, method: PSDGradient.method(in: d)))
     if let style = d["Type"] {
@@ -63,6 +71,10 @@ enum PSDGradientFill {
   static func write(_ fill: GradientFill, original: Data? = nil) throws -> Data {
     try fill.validate()
     if let original, let decoded = try? read(original), decoded == fill { return original }
+    return try descriptor(fill, original: original).encoded()
+  }
+  static func descriptor(_ fill: GradientFill, original: Data? = nil) throws -> PSDDescriptor {
+    try fill.validate()
     func percent(_ x: Float) -> PSDValue { .unit(Data("#Prc".utf8), (Double(x) * 100).bitPattern) }
     let point = PSDDescriptor(
       "Pnt ",
@@ -91,6 +103,6 @@ enum PSDGradientFill {
     {
       descriptor.items.append(.init("noisePreSeed", .integer(seed)))
     }
-    return try descriptor.encoded()
+    return descriptor
   }
 }

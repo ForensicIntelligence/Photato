@@ -116,6 +116,7 @@ extension DocumentIO {
         }
         switch layer.content {
         case .raster where layer.affine == nil || photoshopSmartObject, .group, .fill, .gradientFill, .patternFill: break
+        case .shape where (format == .psd || format == .psb) && PSDCodec.supportsLiveShape(layer, in: document): break
         case .text(let t):
           if let space = try? ColorManagement.space(for: document), let srgb = try? RasterIO.colorSpace(),
             space != srgb && !(document.depth == .f32 && space == CGColorSpace(name: CGColorSpace.linearSRGB)) { return "Editable PSD type requires an sRGB working profile." }

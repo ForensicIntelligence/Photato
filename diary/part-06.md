@@ -1,17 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-07.md) · [Next page](part-05.md)
 
-## 2026-10-20 — Step152: protection reaches editing and both APIs
-
-The previous isolated protection model now governs actual native edits and file persistence. Painting preserves the existing alpha stencil; Photoshop’s explicit selected Clear removes pixels. Image and position locks block their respective operations, while full-lock Rename and grouping follow the observed reference. The native dialog, layer buttons, shortcut and both API paths share those transactions. Version12 prevents older readers from silently losing partial protection; compatible existing files retain their prior version.
-
-The first two compilations exposed test inference and initialization errors. Full01 later found94 failed assertions, mostly90 repetitions of the old TIFF partial-to-full collapse. An independent byte inventory proved all30 TIFF fixtures contain transparency-only protection. Focused06 also exposed a known unsupported little-endian opaque metadata block; the test now distinguishes that limitation from protection-only output. Later review also corrected API-only flag transitions and a reproduced protected-Fill integer quantization defect; both interrupted validations and the failing regression are preserved. Live testing then exposed initial checkbox enablement overridden during SwiftUI installation; a hosted-control regression reproduced five failures before the environment-state fix. Final59 focused,1,442 Debug,1,442 Release and20 Rosetta tests pass, with universal packaging and an owned native UI probe. This is bounded integration, not complete Photoshop parity; all major gates remain open.
-
-[Runtime development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-152), [checkpoint152](../PhotoCraftSwift/docs/ACTIVE_CHECKPOINT_152.json)
-
-Step153 completes the first editable original-project migration subset. Source-generated RGB 8/16/32 fixtures retain raster/group/mask/path/selection/protection data through native Open, API editing and Photato persistence. Empty-selection and file-registration regressions were reproduced and repaired; all 1,455 Debug/Release tests,13 Rosetta cases,universal packaging and an owned live workflow pass. Rich source features and all major gates remain open. See [the detailed step153 record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-153).
-
-Step154 adds independent source/Photoshop rendering comparisons and repairs off-canvas raster-mask edge handling. The first broad cropped-mask hypothesis was disproved by controls; the final change follows the measured layer-boundary distinction. All 1,460 Debug/Release tests, 14 Rosetta cases and native/UI/API/package checks pass. Gaussian/vector/full byte parity remains open. See [step154](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-154).
-
 ## 26 October 2026
 
 Step155 resumes the feather experiment begun on20October. Controlled identical-byte tests identify a filesystem visibility defect behind misleading Photoshop import errors. The first core repair passes while end-to-end tests expose AppKit staging as a second boundary; the final change carries destination visibility through both. All1,471 Debug/Release,33 focused and22 Rosetta tests pass, and direct Photoshop Open accepts native UI and generated outputs without byte changes. The atlas independently records16 radii, with exploratory exact fits at4/5/10; general feather parity remains unfinished. Historical pauses, failed tests/harnesses and both current-source builds are preserved. See [step155](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-155).
@@ -666,6 +654,14 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 636 | [Fit and clip large prints at their original sample resolution](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-636) |
 | 2026-11-19 | 637 | [Remember print defaults and restore supported Photoshop settings](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) |
 | 2026-11-19 | 638 | [Save document print settings with the artwork](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-638) |
+| 2026-11-19 | 639 | [Keep vector outlines when printing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-639) |
+| 2026-11-19 | 640 | [Keep Photoshop rectangles editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) |
+| 2026-11-19 | 641 | [Keep rounded rectangles and dashed ellipses editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-641) |
+| 2026-11-19 | 642 | [Read older solid shapes and their pixel masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-642) |
+| 2026-11-19 | 643 | [Open nested Photoshop Smart Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-643) |
+| 2026-11-19 | 644 | [Match linked raster previews to saved mask samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) |
+| 2026-11-19 | 645 | [Keep Gradient Overlay editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) |
+| 2026-11-19 | 646 | [Speed up large editable Smart Filter files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

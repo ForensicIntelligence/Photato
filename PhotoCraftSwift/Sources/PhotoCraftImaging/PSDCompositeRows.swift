@@ -74,12 +74,12 @@ struct PSDStoredRows {
   static let retainedTileCount = retainedSampleBytes / (Surface.tileSide * Surface.tileSide * MemoryLayout<Pixel>.stride)
 
   enum Kind {
-    case layer, mask, merged(transparency: Bool)
+    case layer, filterSource, mask, merged(transparency: Bool)
     case auxiliary(inverted: Bool, original: Surface?)
 
     var usesLinearSamples: Bool {
       switch self {
-      case .layer, .merged: return true
+      case .layer, .filterSource, .merged: return true
       case .mask, .auxiliary: return false
       }
     }
@@ -90,8 +90,8 @@ struct PSDStoredRows {
   private let columnsByBand: [[Int]]
   private let emptyBandEnds: [Int]
 
-  init?(_ surface: Surface, kind: Kind) {
-    guard surface.width > Surface.maximumDensePixels / surface.height,
+  init?(_ surface: Surface, kind: Kind, minimumPixels: Int = Surface.maximumDensePixels) {
+    guard surface.width > minimumPixels / surface.height,
       surface.tileCount <= Self.retainedTileCount else { return nil }
     let original: Surface?
     if case .auxiliary(_, let gray) = kind { original = gray }
@@ -140,6 +140,9 @@ struct PSDStoredRows {
             return gray.pixel(x: x, y: y).r
           })
       case .layer: stored = pixel
+      case .filterSource:
+        if channel != 3, pixel.a == 0 { return 1 }
+        stored = pixel
       case .merged(let transparency):
         stored = linear ? PSDMergedSample.encodeLinear(pixel, transparency: transparency)
           : PSDMergedSample.encode(pixel, depth: depth)

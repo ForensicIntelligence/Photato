@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 646.** The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte. [Qualification](docs/SOURCE_PUBLICATION_646.md).
+
 **Source checkpoint 638.** Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields. [Qualification](docs/SOURCE_PUBLICATION_638.md).
 
 **Source checkpoint 637.** Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files. [Qualification](docs/SOURCE_PUBLICATION_637.md).

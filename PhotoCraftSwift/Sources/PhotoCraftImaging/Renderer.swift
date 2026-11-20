@@ -375,6 +375,7 @@ public enum Renderer {
       }()
       if layer.affine != nil {
         let inverse = try layer.coordinateTransform.inverted()
+        let linkedPreviewDepth = LinkedSmartObjectIO.integerPreviewDepth(layer, in: d)
         let bounds =
           isFill
           ? IntRect(x: 0, y: 0, width: d.width, height: d.height)
@@ -392,6 +393,12 @@ public enum Renderer {
               isFill
               ? surface.pixel(x: x, y: y)
               : RasterGeometry.sample(surface, x: local.x, y: local.y, method: .bilinear)
+            if let linkedPreviewDepth {
+              // The stored linked preview samples pixel centers in the source rectangle.
+              guard local.x >= 0, local.y >= 0,
+                local.x < Double(surface.width), local.y < Double(surface.height) else { continue }
+              p = p.quantized(linkedPreviewDepth)
+            }
             p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
             guard p.a > 0 else { continue }
             output.setPixel(

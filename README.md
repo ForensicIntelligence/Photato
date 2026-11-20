@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 638.** Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_638.md).
+**Development alpha — source build 646.** The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_646.md).
 
 ## Project layout
 

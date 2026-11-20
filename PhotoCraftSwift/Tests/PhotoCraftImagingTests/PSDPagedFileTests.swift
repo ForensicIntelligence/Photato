@@ -100,14 +100,20 @@ final class PSDPagedFileTests:XCTestCase {
   func testActual40MPRGB16FileExceeds512MiBAndReopensPagedWithAtomicFailure() throws {
     let directory=try folder(),file=directory.appendingPathComponent("owned-40mp.psb")
     var model=try CraftDocument(width:8000,height:5000,depth:.u16)
-    let surface=try Surface(width:8000,height:5000,depth:.u16,fill:Pixel(0.25,0.5,0.75,1))
+    var surface=try Surface(width:8000,height:5000,depth:.u16,fill:Pixel(0.25,0.5,0.75,1))
+    // Keep the large on-disk payload while exercising mapped tiles and the
+    // implicit background in the same image.
+    surface.setPixel(x:2048,y:64,Pixel(0.75,0.5,0.25,1))
+    surface.setPixel(x:7999,y:4999,Pixel(0.5,0.25,0.75,1))
     model.layers[0].content = .raster(surface)
     try PSDCodec.writeRasterLayers(model,to:file,compression:.raw,format:.psb,compositeCompression:.raw)
     let count=try XCTUnwrap(file.resourceValues(forKeys:[.fileSizeKey]).fileSize)
     XCTAssertGreaterThan(count,PSDCodec.maximumInputBytes)
     let reopened=try PSDCodec.read(file);XCTAssertEqual(reopened.width,8000);XCTAssertEqual(reopened.height,5000)
-    XCTAssertGreaterThanOrEqual(reopened.mappedRasterBytes,640_000_000);XCTAssertLessThan(reopened.estimatedBytes,16*1024*1024)
+    XCTAssertGreaterThan(reopened.mappedRasterBytes,0);XCTAssertLessThan(reopened.estimatedBytes,16*1024*1024)
     guard case .raster(let pixels)=reopened.layers[0].content else {return XCTFail("Raster")}
+    XCTAssertEqual(pixels.tileCount,2)
+    XCTAssertTrue(pixels.defaultPixel.hasSameBits(as:surface.defaultPixel))
     for (x,y) in [(0,0),(2048,64),(7999,4999)] {XCTAssertTrue(pixels.pixel(x:x,y:y).hasSameBits(as:surface.pixel(x:x,y:y)))}
     XCTAssertThrowsError(try PSDCodec.read(Data(contentsOf:file,options:.mappedIfSafe)))
     let before=try file.resourceValues(forKeys:[.fileSizeKey]).fileSize

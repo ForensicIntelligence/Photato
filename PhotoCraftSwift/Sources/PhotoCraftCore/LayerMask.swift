@@ -127,6 +127,12 @@ public struct MaskSampler: Sendable {
     }
   }
   @inline(__always) public func coverage(x: Double, y: Double) -> Float {
+    coverage(x: x, y: y, roundingDensityAsByte: false)
+  }
+
+  @inline(__always) package func coverage(x: Double, y: Double,
+    roundingDensityAsByte: Bool, sampleDepth: PixelDepth? = nil
+  ) -> Float {
     if !properties.enabled { return 1 }
     let p = inverse.point(x, y)
     let v: Float
@@ -136,7 +142,11 @@ public struct MaskSampler: Sendable {
     } else {
       v = Self.sample(mask, x: p.x, y: p.y, outside: properties.outside)
     }
-    return adjustedCoverage(v)
+    if roundingDensityAsByte {
+      return NormalLayerComposite.clippedMaskCoverage(properties.inverted ? 1 - v : v,
+        density: properties.density, depth: .u8)
+    }
+    return adjustedCoverage(sampleDepth?.quantize(v) ?? v)
   }
 
   @inline(__always) func adjustedCoverage(_ raw: Float) -> Float {

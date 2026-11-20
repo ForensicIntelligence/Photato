@@ -119,4 +119,77 @@ final class ShapeWorkflowTests:XCTestCase {
     if let bitmap=view.bitmapImageRepForCachingDisplay(in:view.bounds){view.cacheDisplay(in:view.bounds,to:bitmap);try? bitmap.representation(using:.png,properties:[:])?.write(to:URL(fileURLWithPath:FileManager.default.currentDirectoryPath).appendingPathComponent("artifacts/\(name).png"))}
   }
 
+  @MainActor func testNativeRectangleOffersEditablePhotoshopSaveAndDownload() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      var source = try CraftDocument(width: 32, height: 24)
+      let definition = ShapeDefinition(geometry: .init(width: 10, height: 8), fill: .init(color: .black))
+      try Command.shape(.create("Editable rectangle", definition, .translation(5, 6))).apply(to: &source)
+      var rounded = ShapeGeometry(width: 10, height: 8)
+      rounded.radii = [1, 2, 0, 0.5]
+      try Command.shape(.create("Editable rounded rectangle", .init(geometry: rounded),
+        .translation(2.25, 4.5))).apply(to: &source)
+      let ellipse = ShapeGeometry(kind: .ellipse, width: 12, height: 7)
+      var stroke = ShapeStroke()
+      stroke.paint = .init(color: .black)
+      stroke.alignment = .inside
+      stroke.cap = .round
+      stroke.dash = [0, 2]
+      stroke.widthRelativeDashes = true
+      try Command.shape(.create("Editable dotted ellipse", .init(geometry: ellipse, stroke: stroke),
+        .translation(16, 12))).apply(to: &source)
+      document.store.session = EditorSession(document: source)
+      XCTAssertTrue(document.saveFormats.contains(.psd))
+      XCTAssertTrue(document.saveFormats.contains(.psb))
+      let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".psd")
+      defer { try? FileManager.default.removeItem(at: url) }
+      try await document.persistDocument(to: url, format: .psd, operation: .saveAsOperation)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.last?.id)
+      let reply = try await helper.request(service, path: "/v1/documents/\(share)/file.psb")
+      XCTAssertEqual(reply.0.statusCode, 200)
+      for reopened in try [PSDCodec.read(url), PSDCodec.read(reply.1)] {
+        let layer = try XCTUnwrap(reopened.layers.first { $0.name == "Editable rectangle" })
+        XCTAssertEqual(layer.shape?.editableDefinition.components.first?.geometry, definition.components[0].geometry)
+        XCTAssertEqual(try layer.shapePath()?.components.first?.knots.map(\.anchor.x), [5, 15, 15, 5])
+        let savedRounded = try XCTUnwrap(reopened.layers.first { $0.name == "Editable rounded rectangle" })
+        XCTAssertEqual(savedRounded.shape?.editableDefinition.components.first?.geometry, rounded)
+        let savedEllipse = try XCTUnwrap(reopened.layers.first { $0.name == "Editable dotted ellipse" })
+        XCTAssertEqual(savedEllipse.shape?.editableDefinition.components.first?.geometry, ellipse)
+        XCTAssertEqual(savedEllipse.shape?.editableDefinition.stroke, stroke)
+      }
+      XCTAssertEqual(document.store.document, source)
+    }
+  }
+
+  @MainActor func testLegacyShapeAndPixelMaskSurviveNativeSaveAndAPIDownload() async throws {
+    let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/psdtools-mask-density-layermask.psd")
+    let original = try PSDCodec.read(url)
+    let source = try XCTUnwrap(original.layers.first { $0.name == "Rectangle 2" })
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: original)
+      XCTAssertTrue(document.saveFormats.contains(.psd))
+      XCTAssertTrue(document.saveFormats.contains(.psb))
+      let output = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".psd")
+      defer { try? FileManager.default.removeItem(at: output) }
+      try await document.persistDocument(to: output, format: .psd, operation: .saveAsOperation)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let response = try await helper.request(service, path: "/v1/documents/\(share)/file.psb")
+      XCTAssertEqual(response.0.statusCode, 200)
+      for model in try [PSDCodec.read(output), PSDCodec.read(response.1)] {
+        let layer = try XCTUnwrap(model.layers.first { $0.name == source.name })
+        XCTAssertNotNil(layer.shape)
+        XCTAssertEqual(try layer.shapePath(), try source.shapePath())
+        XCTAssertEqual(layer.mask, source.mask)
+        XCTAssertEqual(layer.maskProperties, source.maskProperties)
+        XCTAssertEqual(layer.sourceTags?["vmsk"], source.sourceTags?["vmsk"])
+      }
+      XCTAssertEqual(document.store.document, original)
+    }
+  }
 }

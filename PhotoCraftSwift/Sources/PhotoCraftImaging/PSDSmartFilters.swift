@@ -153,12 +153,22 @@ enum PSDSmartFilters {
           if section.remaining > 0, try section.u8() != 0 {
             let rect = try readRect(&section), plane = try section.view(section.length(8))
             _ = try Surface(width:rect.width,height:rect.height)
-            if paging != nil || rect.width>RasterFilterEngine.maximumPixels/rect.height {
+            let large = rect.width > RasterFilterEngine.maximumPixels / rect.height
+            if paging != nil || large {
               if context==nil {context=try PSDRasterPaging.Context()}
               let context=context!,channel=try PSDChannelReader(plane,width:rect.width,height:rect.height,depth:depth,format:.psb)
               try context.admitRaster(bytes:((rect.width+63)/64)*((rect.height+63)/64)*65536)
-              let pixels=try PSDRasterPaging.layer(width:rect.width,height:rect.height,depth:document.depth,components:1,
-                mask:true,sourceDepth:depth,clampMask:false,context:context){_ in [try channel.nextRow()]}
+              let documentBits = document.depth == .u8 ? 8 : document.depth == .u16 ? 16 : 32
+              let pixels: Surface
+              if large, depth == documentBits {
+                pixels = try PSDRasterPaging.sparseLayer(width: rect.width, height: rect.height,
+                  depth: document.depth, channels: [channel], context: context)
+              } else {
+                pixels = try PSDRasterPaging.layer(width: rect.width, height: rect.height, depth: document.depth,
+                  components: 1, mask: true, sourceDepth: depth, clampMask: false, context: context) { _ in
+                    [try channel.nextRow()]
+                  }
+              }
               masks[id]=Mask(pixels:pixels,transform:.translation(Double(rect.x),Double(rect.y)));continue
             }
             var packed=plane
@@ -200,6 +210,8 @@ enum PSDSmartFilters {
       guard case .raster(let pixels)=base.content,let stack=original.smartFilters else {throw CraftError.invalid("Missing Smart Filter source.")}
       let bounds=IntRect(x:base.x,y:base.y,width:pixels.width,height:pixels.height)
       let depth=document.depth == .u8 ? 8:document.depth == .u16 ? 16:32
+      let storedRows = PSDStoredRows(pixels, kind: .filterSource, minimumPixels: RasterFilterEngine.maximumPixels)
+      let repeatedRows = storedRows.map { rows in { (y: Int) in rows.repeatedRows(from: y) } }
       let itemLength=try out.reserveLength(8),id=original.id.uuidString
       try out.n(id.utf8.count,1);try out.text(id);try out.n(1,4)
       let planesLength=try out.reserveLength(8)
@@ -207,7 +219,9 @@ enum PSDSmartFilters {
       for slot in 0..<26 {
         guard slot<3 || slot==25 else {try out.n(0,4);continue}
         try out.n(1,4);let planeLength=try out.reserveLength(8)
-        try PSDChannelWriter.write(width:bounds.width,height:bounds.height,depth:depth,compression:compression,format:.psb,to:out){y in
+        try PSDChannelWriter.write(width: bounds.width, height: bounds.height, depth: depth,
+          compression: compression, format: .psb, to: out, repeatedRows: repeatedRows) { y in
+          if let storedRows { return try storedRows.row(y, channel: slot == 25 ? 3 : slot, depth: depth) }
           var bytes:[UInt8]=[];bytes.reserveCapacity(bounds.width*(depth/8))
           for x in 0..<bounds.width {
             let p=depth==32 ? pixels.linearPixel(x:x,y:y):pixels.pixel(x:x,y:y)
@@ -227,11 +241,19 @@ enum PSDSmartFilters {
           height:max(bounds.y+bounds.height,maskBounds.y+maskBounds.height)-y)
         _ = try Surface(width:area.width,height:area.height)
         try out.n(1,1);try writeRect(area,to:out);let maskLength=try out.reserveLength(8)
-        try PSDChannelWriter.write(width:area.width,height:area.height,depth:depth,compression:compression,format:.psb,to:out){y in
-          var bytes:[UInt8]=[];bytes.reserveCapacity(area.width*(depth/8))
-          for x in 0..<area.width {
-            try PSDChannelCodec.append(sampler.coverage(x:Double(x+area.x)+0.5,y:Double(y+area.y)+0.5),depth:depth,to:&bytes)
-          };return bytes
+        if sampler.isIdentity(over: area) {
+          var sample: [UInt8] = []
+          try PSDChannelCodec.append(1, depth: depth, to: &sample)
+          let row = Array(PSDChannelWriter.repeating(Data(sample), count: area.width))
+          try PSDChannelWriter.write(width: area.width, height: area.height, depth: depth,
+            compression: compression, format: .psb, to: out, repeatedRows: { area.height - $0 }) { _ in row }
+        } else {
+          try PSDChannelWriter.write(width:area.width,height:area.height,depth:depth,compression:compression,format:.psb,to:out){y in
+            var bytes:[UInt8]=[];bytes.reserveCapacity(area.width*(depth/8))
+            for x in 0..<area.width {
+              try PSDChannelCodec.append(sampler.coverage(x:Double(x+area.x)+0.5,y:Double(y+area.y)+0.5),depth:depth,to:&bytes)
+            };return bytes
+          }
         }
         try out.finishLength(maskLength,width:8)
       }else{try out.n(0,1)}

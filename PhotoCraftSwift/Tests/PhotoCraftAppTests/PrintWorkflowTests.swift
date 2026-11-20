@@ -8,6 +8,32 @@ import SwiftUI
 @testable import PhotoCraft
 
 final class PrintWorkflowTests: XCTestCase {
+  @MainActor func testNativeVectorPreviewAndAPIUseTheSameOutputSwitch() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      var source = try CraftDocument(width: 24, height: 20)
+      source.layers.append(Layer(name: "Vector", content: .shape(.init(kind: .rectangle, width: 6, height: 6, color: .black))))
+      document.store.session = EditorSession(document: source)
+      document.beginPrint()
+      let preview = try XCTUnwrap(document.store.printWorkspace)
+      await preview.task?.value
+      XCTAssertEqual(preview.output?.pages.first?.vectorMarkCount, 1)
+      preview.cancel()
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.last?.id)
+      let path = "/v1/documents/\(id)/print.pdf"
+      let vector = try await helper.request(service, path: path)
+      XCTAssertEqual(vector.0.statusCode, 200)
+      let status = try await helper.edit(service, document, "print.configure", ["settings": ["vectorData": false]])
+      XCTAssertEqual(status, 200)
+      XCTAssertFalse(document.store.printSettings.includesVectorData)
+      let raster = try await helper.request(service, path: path)
+      XCTAssertEqual(raster.0.statusCode, 200)
+      XCTAssertNotEqual(vector.1, raster.1)
+      XCTAssertEqual(try XCTUnwrap(PDFDocument(data: raster.1)).pageCount, 1)
+    }
+  }
+
   @MainActor func testSaveAndLegacyDownloadRestoreNativePrintSettingsAndExactHardProof() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, document in

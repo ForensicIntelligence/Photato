@@ -191,6 +191,11 @@ final class GradientFillRenderTests: XCTestCase {
   func testPinnedSavedReferencesRecordActualPixelDifferences() throws {
     var report: [[String: Any]] = []
     var referencePixels: [Data] = []
+    let unsupportedMessages = [
+      "reference-gradient-fill": "Editable PSD fill and tone layers require an sRGB document profile.",
+      "reference-gradient-sizes": "Photoshop live shape block 'vogk' requires a supported vector content generator.",
+      "reference-gradient-styles": "Noise gradients are preserved but their native renderer is still pending.",
+    ]
     for name in [
       "reference-gradient-fill", "reference-gradient-sizes", "reference-gradient-styles",
       "reference-layers-gradient-fill", "reference-layers-minimal-gradient-fill",
@@ -239,10 +244,7 @@ final class GradientFillRenderTests: XCTestCase {
           "byte_identical": changed == 0,
         ]) { _, v in v }
       } catch {
-        let expectedError = name == "reference-gradient-fill" ? "sRGB document profile" : "artd"
-        XCTAssertFalse(name.hasPrefix("reference-layers"), "Supported fixture failed: \(error)")
-        XCTAssertTrue(
-          error.localizedDescription.contains(expectedError), "Unexpected rejection: \(error)")
+        XCTAssertEqual(error.localizedDescription, unsupportedMessages[name], "Unexpected rejection: \(error)")
         row["imported"] = false
         row["error"] = error.localizedDescription
       }
