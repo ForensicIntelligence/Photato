@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 670.** Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_670.md).
+**Development alpha — source build 671.** Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_671.md).
 
 ## Project layout
 

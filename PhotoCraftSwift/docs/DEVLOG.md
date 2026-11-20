@@ -689,7 +689,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 668 | 2026-11-20 | [Wrap editable Smart Objects around a cylinder](#dev-step-668) |
 | 669 | 2026-11-20 | [Keep PDF Smart Object Warp editable](#dev-step-669) |
 | 670 | 2026-11-20 | [Keep PDF Smart Object perspective editable](#dev-step-670) |
+| 671 | 2026-11-20 | [Keep vector masks editable in Perspective and Distort](#dev-step-671) |
 <!-- history-index:end -->
+
+<a id="dev-step-671"></a>
+
+## 2026-11-20 — Keep vector masks editable in Perspective and Distort
+
+Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves.
+
+Checkpoint 670 reproduced the rejection at the whole-layer transform eligibility check. The second guard rejected even a neutral Warp value on a Smart Object with a mask. The worker now updates linked paths in the same transaction as pixels, Smart Object placement and group descendants. A neutral Warp can carry interpolation. Non-neutral Warp with a vector mask remains unavailable.
+
+Storing four independently projected controls would bend the original curve. Core instead subdivides the homogeneous curve and fits ordinary cubics from endpoint positions and derivatives. The Bernstein coefficients bound the approximation before changing the document. Unlinked paths stay in document coordinates, including those that would cross the horizon if they were transformed. Existing preview, cancellation, history, Actions and API paths share the worker. The file codecs use the existing editable knot records.
+
+All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. All 12 owned PSD, PSB and composite outputs matched across the three configurations. An independent PSD/PSB path reader checked 2,064 samples of the saved curves. The largest measured deviation from the analytic projection was 0.00684 document pixel, including file quantization. Each of the eight Photoshop container round trips preserved all composite bytes.
+
+The original PDF was placed by Photoshop. Photato applied the reference transforms. Exact Photoshop anchors and pixels, independent Free Transform on a selected path, and vector masks with non-neutral Warp remain open. Verify independent Free Transform for selected saved paths, vector masks, and shape contours. Command-T currently routes to layer or pixel transforms. Add a path target that preserves unselected geometry and uses the same native and API edit.
+
+[Development record](PROJECTIVE_VECTOR_MASKS_671.md) · [Qualification](SOURCE_PUBLICATION_671.md).
 
 <a id="dev-step-670"></a>
 

@@ -471,7 +471,10 @@ public struct CraftDocument: Codable, Equatable, Sendable {
         try appearance.validate(depth:depth);bytes+=appearance.estimatedBytes
       }
       if let warp = l.warp {
-        guard l.smartObject != nil, l.vectorMask == nil else { throw CraftError.invalid("Editable Warp requires a Smart Object without a vector mask.") }
+        // A neutral Warp can store the interpolation for a projective placement.
+        guard l.smartObject != nil, warp.isIdentity || l.vectorMask == nil else {
+          throw CraftError.invalid("Editable Warp requires a Smart Object without a vector mask.")
+        }
         try warp.validate(); bytes += (warp.mesh?.points.count ?? 0)*16
       }
       if let stack = l.smartFilters {

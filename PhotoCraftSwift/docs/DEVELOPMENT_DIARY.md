@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 671 — Keep vector masks editable in Perspective and Distort
+
+Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves.
+
+All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original PDF was placed by Photoshop. Photato applied the reference transforms. Exact Photoshop anchors and pixels, independent Free Transform on a selected path, and vector masks with non-neutral Warp remain open.
+
+[Development record](DEVLOG.md#dev-step-671) · [Details](PROJECTIVE_VECTOR_MASKS_671.md).
+
 ## 2026-11-20 — Step 670 — Keep PDF Smart Object perspective editable
 
 Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners.
@@ -1337,14 +1345,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:670 -->
+<!-- current-status-step:671 -->
 ## Current development status — 20 November 2026
 
-Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners.
+Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves.
 
-All 109 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 670](SOURCE_PUBLICATION_670.md) · [Development record](DEVLOG.md#dev-step-670).
+[Source checkpoint 671](SOURCE_PUBLICATION_671.md) · [Development record](DEVLOG.md#dev-step-671).
 
 <!-- current-status:end -->
 
@@ -2221,6 +2229,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 668 | [Wrap editable Smart Objects around a cylinder](DEVLOG.md#dev-step-668) |
 | 2026-11-20 | 669 | [Keep PDF Smart Object Warp editable](DEVLOG.md#dev-step-669) |
 | 2026-11-20 | 670 | [Keep PDF Smart Object perspective editable](DEVLOG.md#dev-step-670) |
+| 2026-11-20 | 671 | [Keep vector masks editable in Perspective and Distort](DEVLOG.md#dev-step-671) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 671.** Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves. [Qualification](docs/SOURCE_PUBLICATION_671.md).
+
 **Source checkpoint 670.** Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners. [Qualification](docs/SOURCE_PUBLICATION_670.md).
 
 **Source checkpoint 669.** Embedded and linked PDF Smart Objects retain editable Warp in PSD and PSB. The renderer resamples the original PDF when the Warp magnifies the artwork. The page, crop and layer controls stay editable. [Qualification](docs/SOURCE_PUBLICATION_669.md).

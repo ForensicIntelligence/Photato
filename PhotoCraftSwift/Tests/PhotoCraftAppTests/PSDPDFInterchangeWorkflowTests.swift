@@ -173,6 +173,76 @@ final class PSDPDFInterchangeWorkflowTests: XCTestCase {
       XCTAssertEqual(document.store.document, before)
     }
   }
+  @MainActor func testPerspectiveAndDistortWithVectorMasksMatchAuthenticatedEditing() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      for linked in [true, false] {
+        var before = try self.model()
+        before.width *= 2; before.height *= 2
+        var mask = VectorMask(path: .init(components: [PathComponent(knots: [
+          PathKnot(.init(15, 15), outgoing: .init(24, 2)),
+          PathKnot(.init(74, 18), incoming: .init(52, 5)),
+          PathKnot(.init(70, 59)),
+          PathKnot(.init(18, 61))
+        ], closed: true)]))
+        mask.linked = linked
+        before.layers[0].vectorMask = mask
+        let layer = before.layers[0]
+        let native = EditorStore(document: before)
+        defer { native.cancelTransform(); native.renderTask?.cancel() }
+        native.beginTransform()
+        let draft = try XCTUnwrap(native.transformDraft)
+        let session = try XCTUnwrap(native.selectionTransform)
+        let modifiers: NSEvent.ModifierFlags = linked ? [.command, .option, .shift] : [.command]
+        let mode = draft.selectionMode(handle: 0, modifiers: modifiers)
+        XCTAssertEqual(mode, linked ? .perspective : .distort)
+        let start = draft.handles[0], end = CGPoint(x: start.x - 17, y: start.y + (linked ? 0 : 7))
+        let next = draft.selectionDragging(handle: 0, from: start, to: end, mode: mode, shift: false, option: false)
+        let delta = try next.selectionProjection
+        XCTAssertNil(try delta.affineValue())
+        native.updateTransform(next)
+        await SelectedPixelTransformWorkflowTests().settle(session)
+        XCTAssertNotNil(session.pixelPreview)
+        XCTAssertNil(session.error)
+        XCTAssertEqual(native.document, before)
+        native.commitTransform()
+        await session.commitTask?.value
+        XCTAssertNil(session.error)
+        XCTAssertEqual(native.session.undoStack.count, 1)
+        if linked {
+          let result = try XCTUnwrap(native.document.layers[0].vectorMask)
+          let expected = try delta.point(15, 15)
+          let anchor = try XCTUnwrap(result.path.components[0].knots.first?.anchor)
+          XCTAssertEqual(anchor.x, expected.x, accuracy: 1e-9)
+          XCTAssertEqual(anchor.y, expected.y, accuracy: 1e-9)
+        } else {
+          XCTAssertEqual(native.document.layers[0].vectorMask, mask)
+        }
+        document.store.session = EditorSession(document: before)
+        let params: [String: Any] = ["layerIDs": [layer.id.uuidString], "matrix": delta.values]
+        let status = try await helper.edit(service, document, "layers.transform", params)
+        XCTAssertEqual(status, 200)
+        XCTAssertEqual(document.store.document, native.document)
+        for ext in ["psd", "psb"] {
+          let download = try await helper.request(service, path: "/v1/documents/\(share)/file.\(ext)")
+          XCTAssertEqual(download.0.statusCode, 200)
+          let read = try PSDCodec.read(download.1)
+          XCTAssertEqual(read.layers[0].vectorMask?.linked, linked)
+          XCTAssertEqual(read.layers[0].smartObject, layer.smartObject)
+          XCTAssertEqual(read.layers[0].vectorMask?.path.knotCount, native.document.layers[0].vectorMask?.path.knotCount)
+        }
+        let undone = try await helper.edit(service, document, "history.undo")
+        XCTAssertEqual(undone, 200)
+        _ = await native.requestHistory(redo: false).value
+        XCTAssertEqual(native.document, before)
+        XCTAssertEqual(document.store.document, before)
+      }
+    }
+  }
+
   @MainActor func testPhotoshopFixtureImportAndNativeOpenRetainSameSourceAndState() async throws {
     let bytes = try fixture("pdf-psd/photoshop-page2-media.psd"),files = DocumentIOWorkflowTests()
     try await AutomationTests().withService(pressedMouseButtons:{0}) {service,_ in

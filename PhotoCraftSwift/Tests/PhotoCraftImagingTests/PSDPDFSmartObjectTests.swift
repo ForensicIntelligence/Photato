@@ -122,6 +122,86 @@ final class PSDPDFSmartObjectTests: XCTestCase {
     }
   }
 
+  func testProjectedPDFVectorMaskRemainsEditableAcrossPSDPSBAndRelink() throws {
+    let imported = try PSDCodec.read(fixture("photoshop-art-page.psd"))
+    var layer = try XCTUnwrap(imported.layers.first { $0.smartObject?.pdfSource != nil })
+    let object = try XCTUnwrap(layer.smartObject)
+    var source = try CraftDocument(width: object.width * 2 + 32, height: object.height * 2 + 32)
+    layer.x = 12; layer.y = 12; layer.affine = nil
+    let right = Double(object.width), bottom = Double(object.height)
+    let contour = PathComponent(knots: [
+      PathKnot(.init(14, 14), outgoing: .init(14 + right * 0.33, 3)),
+      PathKnot(.init(8 + right, 16), incoming: .init(12 + right * 0.8, 30)),
+      PathKnot(.init(8 + right, 8 + bottom)),
+      PathKnot(.init(14, 8 + bottom))
+    ], closed: true)
+    let hole = PathComponent(knots: [
+      PathPoint(18, 18), .init(25, 18), .init(25, 24), .init(18, 24)
+    ].map { PathKnot($0) }, closed: true, operation: .subtract)
+    var mask = VectorMask(path: .init(components: [contour, hole], inverted: true))
+    mask.density = Float(177) / 255; mask.feather = 0.75
+    let matrix = try ProjectiveTransform([1, 0.10, 5, 0.03, 1, 2, -0.002, 0.001, 1])
+    let reference = try LinkedSmartObjectSource(reference: "/Missing/Owned vector masked.pdf",
+      contentHash: object.dataFingerprint, byteLength: UInt64(object.data.count))
+    for linkedSource in [false, true] {
+      for linkedMask in [false, true] {
+        mask.linked = linkedMask
+        layer.vectorMask = mask
+        source.layers = [try linkedSource ? LinkedSmartObjectIO.linked(layer, reference: reference) : layer]
+        source.activeLayerID = layer.id
+        var document = source
+        try Command.transformLayers(.init(layerIDs: [layer.id], projection: matrix)).apply(to: &document)
+        let actual = try XCTUnwrap(document.layers[0].vectorMask)
+        if linkedMask {
+          XCTAssertGreaterThan(actual.path.knotCount, mask.path.knotCount)
+        } else {
+          XCTAssertEqual(actual, mask)
+        }
+        XCTAssertEqual(document.layers[0].smartObject?.data, object.data)
+        XCTAssertEqual(try NativeArchive.decodePaged(NativeArchive.encodeChunked(document)), document)
+        let prefix = "\(linkedSource ? "external" : "embedded")-\(linkedMask ? "linked" : "fixed")"
+        let composite = try Renderer.composite(document).rgbaData(depth: .u8)
+        try output(prefix + "-composite.rgba", composite)
+        for format in PSDFileFormat.allCases {
+          let bytes = try PSDCodec.writeRasterLayers(document, format: format)
+          try output(prefix + (format == .psd ? ".psd" : ".psb"), bytes)
+          let reopened = try PSDCodec.readPaged(bytes)
+          let record = try XCTUnwrap(reopened.layers[0].vectorMask)
+          XCTAssertEqual(record.linked, linkedMask)
+          XCTAssertEqual(record.enabled, actual.enabled)
+          XCTAssertEqual(record.path.inverted, actual.path.inverted)
+          XCTAssertEqual(record.density, actual.density)
+          XCTAssertEqual(record.feather, actual.feather)
+          XCTAssertEqual(record.path.components.map(\.operation), [.combine, .subtract])
+          XCTAssertEqual(record.path.knotCount, actual.path.knotCount)
+          for (a, b) in zip(record.path.components.flatMap(\.knots), actual.path.components.flatMap(\.knots)) {
+            XCTAssertEqual(a.smooth, b.smooth)
+            for (p, q) in zip([a.anchor, a.incoming, a.outgoing], [b.anchor, b.incoming, b.outgoing]) {
+              XCTAssertEqual(p.x, q.x, accuracy: Double(source.width) / 33_554_432 + 1e-10)
+              XCTAssertEqual(p.y, q.y, accuracy: Double(source.height) / 33_554_432 + 1e-10)
+            }
+          }
+          XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .u8), composite)
+          var edit = EditorSession(document: reopened)
+          if linkedSource {
+            XCTAssertNotNil(try reopened.layers[0].linkedSmartObjectPreview())
+            let relink = try LinkedSmartObjectIO.replacement(object.data, fileName: object.fileName,
+              reference: reference, in: reopened, layerID: reopened.layers[0].id, preserveSize: true)
+            try edit.execute(relink)
+          }
+          XCTAssertEqual(edit.document.layers[0].smartObject?.data, object.data)
+          XCTAssertEqual(edit.document.layers[0].vectorMask, record)
+          var moved = record
+          moved.path.components[0].knots[0].moveAnchor(to: .init(17, 23))
+          try edit.execute(.vectorMask(edit.document.layers[0].id, moved))
+          XCTAssertEqual(edit.document.layers[0].vectorMask, moved)
+          try edit.undo()
+          XCTAssertEqual(edit.document.layers[0].vectorMask, record)
+        }
+      }
+    }
+  }
+
   func testOwnedPDFIdentityWarpKeepsEnlargedVectorSamplesAndRasterizeMatches() throws {
     let imported = try PSDCodec.read(fixture("photoshop-art-page.psd"))
     var layer = try XCTUnwrap(imported.layers.first { $0.smartObject?.pdfSource != nil })

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 671 — Keep vector masks editable in Perspective and Distort
+
+Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves.
+
+All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original PDF was placed by Photoshop. Photato applied the reference transforms. Exact Photoshop anchors and pixels, independent Free Transform on a selected path, and vector masks with non-neutral Warp remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-671) · [Details](../PhotoCraftSwift/docs/PROJECTIVE_VECTOR_MASKS_671.md).
+
 ## 2026-11-20 — Step 670 — Keep PDF Smart Object perspective editable
 
 Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners.
@@ -95,5 +103,29 @@ Properties and Free Transform now use the original geometry of linked artwork wh
 All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe Properties values, rounding, handle orientation, physical Intel, a macOS 14 runtime and full assistive-technology behavior remain unverified.
 
 [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-659) · [Details](../PhotoCraftSwift/docs/LINKED_SMART_OBJECT_GEOMETRY_659.md).
+
+## 2026-11-20 — Step 658 — Custom Smart Object geometry for template jobs
+
+The Adobe-compatible template API can set Smart Object size, position, rotation, skew and anchor. Jobs can place artwork relative to other layers and change the geometry of a linked PSD without supplying its original artwork again.
+
+All 1,468 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe hosted-service pixels, unobserved geometry defaults, physical Intel and a macOS 14 runtime remain unverified.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-658) · [Details](../PhotoCraftSwift/docs/ADOBE_SMART_OBJECT_TEMPLATE_658.md).
+
+## 2026-11-20 — Step 657 — Place Smart Objects at their source print size
+
+Place Embedded and Place Linked now size artwork from its print resolution and the destination ppi. Resize Image During Place fits oversized artwork after converting to document pixels. The Photato API exposes the same geometry through an explicit physical sizing option.
+
+All 1,463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The live Photoshop comparison remains open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-657) · [Details](../PhotoCraftSwift/docs/PLACEMENT_RESOLUTION_657.md).
+
+## 2026-11-20 — Step 656 — Recover linked Smart Objects after moving a folder
+
+PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document.
+
+All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The live Photoshop comparison remains open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-656) · [Details](../PhotoCraftSwift/docs/PORTABLE_LINKED_PATHS_656.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)

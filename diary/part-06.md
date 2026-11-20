@@ -1,15 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-07.md) · [Next page](part-05.md)
 
-## 26 October 2026
-
-Step155 resumes the feather experiment begun on20October. Controlled identical-byte tests identify a filesystem visibility defect behind misleading Photoshop import errors. The first core repair passes while end-to-end tests expose AppKit staging as a second boundary; the final change carries destination visibility through both. All1,471 Debug/Release,33 focused and22 Rosetta tests pass, and direct Photoshop Open accepts native UI and generated outputs without byte changes. The atlas independently records16 radii, with exploratory exact fits at4/5/10; general feather parity remains unfinished. Historical pauses, failed tests/harnesses and both current-source builds are preserved. See [step155](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-155).
-
-### 26 October: major features before numerical refinement
-
-Step156 captures 48 independent transparent feather controls, but fractional radii invalidate the first simple kernel hypothesis. The maintainer asks to prioritize missing major functionality. Research and reference files are preserved; no feather algorithm is changed. [Deferred research](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-156)
-
-Step157 adds a shared Swift raster-filter workflow: Gaussian/Box/Motion Blur, Unsharp Mask, High Pass, Add Noise, Mosaic and Average. Native preview sheets, Cancel/OK, selection and locks, one undoable edit, existing file persistence, the Photato command and both resource-job interfaces are integrated together. All59 focused Debug and1,483 full Release tests pass, along with24 functional cases on arm64 and x86_64 under Rosetta. The universal macOS 14+ candidate and live UI checks verify; installed117 remains unchanged. Failed fixture/old synchronous-test assumptions and outdated API-count assertions are retained with their repairs. Exact Photoshop filter pixels and Smart Filters remain open. [Filter workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-157)
-
 ## Complete chronological index
 
 Every numbered milestone in the source diary at this reconstruction appears below. The link opens the full account of its changes, failures, tests and remaining work. An index entry is a record of activity; research and pause entries are not completed features.
@@ -686,6 +676,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 668 | [Wrap editable Smart Objects around a cylinder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) |
 | 2026-11-20 | 669 | [Keep PDF Smart Object Warp editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-669) |
 | 2026-11-20 | 670 | [Keep PDF Smart Object perspective editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-670) |
+| 2026-11-20 | 671 | [Keep vector masks editable in Perspective and Distort](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-671) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

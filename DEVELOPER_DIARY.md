@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **670** · The 10 most recent entries, newest first.
+Source build **671** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 671 — Keep vector masks editable in Perspective and Distort
+
+Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves.
+
+All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original PDF was placed by Photoshop. Photato applied the reference transforms. Exact Photoshop anchors and pixels, independent Free Transform on a selected path, and vector masks with non-neutral Warp remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-671) · [Details](PhotoCraftSwift/docs/PROJECTIVE_VECTOR_MASKS_671.md).
 
 ## 2026-11-20 — Step 670 — Keep PDF Smart Object perspective editable
 
@@ -75,11 +83,3 @@ Fit or fill replacement artwork inside an existing embedded Smart Object frame. 
 All 1,493 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop did not respond to read-only AppleEvent or Accessibility window checks. Independent Adobe output and the hosted service remain unverified. Intel ran under Rosetta and the signed binaries declare macOS 14.0.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-662) · [Details](PhotoCraftSwift/docs/SMART_OBJECT_CONTENT_PLACEMENT_662.md).
-
-## 2026-11-20 — Step 661 — Smart Object templates get editable masks and blending
-
-Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities.
-
-The 1,482 selected cases passed across qualification and replay in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Each initial run passed 1,481 cases. After updating the obsolete mask assertion, all 142 replay cases passed in each configuration. The application inputs and signed binary stayed byte-identical. Both slices of the signed macOS 14+ universal preview launched offscreen. Adobe's hosted service was not run. Exact Adobe mask edge, placement and color output remain unverified. The Intel runtime used Rosetta, and the macOS 14 minimum was verified in the signed binary.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-661) · [Details](PhotoCraftSwift/docs/SMART_OBJECT_TEMPLATE_APPEARANCE_661.md).

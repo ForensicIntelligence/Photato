@@ -7,7 +7,7 @@ public enum ProjectiveLayerTransform {
     guard document.colorMode == .rgb else{throw CraftError.unsupported("Projective layer transforms in other color modes need their native component workflow.")}
     for layer in document.layers where ids.contains(layer.id) {
       guard !document.isImageLocked(layer.id),layer.nativeMode==nil,layer.video==nil,!layer.hasGeometryKeyframes,
-        layer.group?.artboard==nil,layer.vectorMask==nil,!(layer.warp?.isIdentity == false && layer.mask != nil && layer.effectiveMaskProperties.linked) else{throw CraftError.unsupported("Unlock image content. Projective artboard, linked vector-mask, native-mode and temporal targets are not implemented yet.")}
+        layer.group?.artboard==nil,!(layer.warp?.isIdentity == false && layer.mask != nil && layer.effectiveMaskProperties.linked) else{throw CraftError.unsupported("Unlock image content. Projective artboard, native-mode, temporal and Warp with linked pixel-mask targets are not implemented yet.")}
       if layer.isGroup{continue}
       guard case .raster=layer.content,!layer.isBackground,
         layer.smartObject != nil || !document.isTransparencyLocked(layer.id),try layer.linkedSmartObjectPreview()==nil else{throw CraftError.unsupported("Projective whole-layer editing currently supports ordinary RGB pixel layers, resolved Smart Objects and their groups. Editable type/shapes and unresolved linked caches require separate support; no content is flattened.")}
@@ -40,6 +40,10 @@ public enum ProjectiveLayerTransform {
     var candidate=document
     for index in candidate.layers.indices where ids.contains(candidate.layers[index].id) {
       try Task.checkCancellation();let original=document.layers[index];var layer=original
+      if var mask = original.vectorMask, mask.linked {
+        mask.path = try ProjectiveVectorPath.apply(mask.path, matrix: matrix)
+        layer.vectorMask = mask
+      }
       if case .raster(let source)=original.content {
         let placed=try (original.sourceProjection ?? .identity).followed(by:original.coordinateTransform).followed(by:matrix)
         let bounds=try placed.bounds(width:source.width,height:source.height)

@@ -1,3 +1,7 @@
+**Source checkpoint 671.** Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves. All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_671.md).
+
+**Next Free Transform work.** Verify independent Free Transform for selected saved paths, vector masks, and shape contours. Command-T currently routes to layer or pixel transforms. Add a path target that preserves unselected geometry and uses the same native and API edit.
+
 **Source checkpoint 670.** Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners. All 109 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_670.md).
 
 **Next Smart Object work.** Apply projective placement to editable vector masks, including the linked mask path and unchanged document-space position for unlinked masks. Obtain a Photoshop-authored reference for camera-angle PDF placement and linked masks.

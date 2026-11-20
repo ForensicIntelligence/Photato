@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 670 keeps editable PDF perspective in PSD/PSB and reports its four corners. Independent hosted service conformance remains open.",
+  "current_api": "Checkpoint 671 keeps linked and unlinked vector masks editable in Photato whole-layer Perspective and Distort. Independent hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -984,6 +984,15 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "projective_vector_masks_build671": {
+    "photatoCommands": [
+      "layers.transform"
+    ],
+    "status": "partial native implementation",
+    "scope": "Transforms selected whole-layer artwork and linked vector masks through one document-coordinate homography. PSD and PSB preserve editable mask paths.",
+    "limits": "The pinned Adobe v2 contract has no corresponding joint whole-layer homography and linked path operation. Live Photoshop rendering and independent hosted conformance remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_671.json"
   },
   "pdf_perspective_build670": {
     "route": "POST /v2/generate-manifest",
