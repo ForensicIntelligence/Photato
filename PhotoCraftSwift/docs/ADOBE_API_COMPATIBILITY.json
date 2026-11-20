@@ -985,6 +985,14 @@
     ],
     "adobe": "/v2/remove-background"
   },
+  "smart_object_template_appearance_build661": {
+    "route": "POST /v2/create-composite",
+    "status": "partial native implementation",
+    "scope": "Documented opacity and blend modes, plus editable grayscale mask source, offset, link, enable and delete for embedded or linked Smart Object layer operations.",
+    "capabilities": "GET /v1/capabilities, actionJobs.smartObjectTemplateAppearance",
+    "limits": "Existing job resource policy. Hosted Adobe pixel and default behavior and full manifest coverage remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_661.json"
+  },
   "smart_object_template_geometry_build658": {
     "route": "POST /v2/create-composite",
     "status": "partial native implementation",

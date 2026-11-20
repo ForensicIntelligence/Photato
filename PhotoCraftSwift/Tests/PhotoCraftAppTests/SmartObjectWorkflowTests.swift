@@ -322,11 +322,13 @@ final class SmartObjectWorkflowTests: XCTestCase {
   }
   func testPublishedContractRejectsUnsupportedLinkedAndTransforms() throws {
     let base: [String: Any] = ["name": "Object", "type": "smart_object_layer", "operation": ["type": "edit"], "smartObject": [:]]
-    for extra: [String: Any] in [["smartObject": ["isLinked": "invalid"]], ["transform": ["angle": 30]], ["transformMode": "custom"], ["smartObject": ["autoResize": 1]], ["pixelMask": [:]]] {
+    for extra: [String: Any] in [["smartObject": ["isLinked": "invalid"]], ["transform": ["angle": 30]], ["transformMode": "custom"], ["smartObject": ["autoResize": 1]], ["pixelMask": ["offset": ["horizontal": true]]]] {
       var fields = base; fields.merge(extra) { _, new in new }
       XCTAssertThrowsError(try AdobeSmartObjectEdit(fields, path: "edit"))
     }
     XCTAssertNoThrow(try AdobeSmartObjectEdit(base, path: "edit"))
+    let emptyMask = base.merging(["pixelMask": [String: Any]()]) { _, new in new }
+    XCTAssertNoThrow(try AdobeSmartObjectEdit(emptyMask, path: "edit"))
   }
   @MainActor func testFactorySmartObjectMenuBindings() throws {
     try PhotoshopMenuTests().withMenus { _, menu in

@@ -679,7 +679,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 658 | 2026-11-20 | [Custom Smart Object geometry for template jobs](#dev-step-658) |
 | 659 | 2026-11-20 | [Read the original transform of linked Smart Objects](#dev-step-659) |
 | 660 | 2026-11-20 | [Free Transform follows Smart Object artwork](#dev-step-660) |
+| 661 | 2026-11-20 | [Smart Object templates get editable masks and blending](#dev-step-661) |
 <!-- history-index:end -->
+
+<a id="dev-step-661"></a>
+
+## 2026-11-20 — Smart Object templates get editable masks and blending
+
+Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities.
+
+The mask and source artwork use the existing authorized resource job. Native layer commands apply the mask coverage, link, placement and enablement. An appearance-only edit can omit replacement artwork.
+
+The 1,482 selected cases passed across qualification and replay in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Each initial run passed 1,481 cases. After updating the obsolete mask assertion, all 142 replay cases passed in each configuration. The application inputs and signed binary stayed byte-identical. Both slices of the signed macOS 14+ universal preview launched offscreen. An authenticated local HTTP job used its authorized artwork and grayscale mask resources, reopened as an editable PSD, and rendered byte-identical RGBA with the equivalent native command sequence. Additional tests covered grayscale PNG and PSD samples, JPEG, mask replacement, deletion precedence, and rejected inputs.
+
+Adobe's hosted service was not run. Exact Adobe mask edge, placement and color output remain unverified. The Intel runtime used Rosetta, and the macOS 14 minimum was verified in the signed binary.
+
+[Development record](SMART_OBJECT_TEMPLATE_APPEARANCE_661.md) · [Qualification](SOURCE_PUBLICATION_661.md).
 
 <a id="dev-step-660"></a>
 

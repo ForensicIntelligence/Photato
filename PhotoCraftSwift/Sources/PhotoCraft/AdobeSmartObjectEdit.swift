@@ -19,11 +19,18 @@ enum AdobeCompositeEdit: Sendable {
               object["smartObject"] != nil
                 || (object["operation"] as? [String: Any])?["type"] as? String == "add"
                 || (object["type"] as? String == "smart_object_layer"
-                    && (object["transformMode"] != nil || object["transform"] != nil)) {
+                    && (object["transformMode"] != nil || object["transform"] != nil
+                        || object["blendOptions"] != nil || object["pixelMask"] != nil)) {
       self = .smartObject(try AdobeSmartObjectEdit(raw, path: path))
     } else { self = .properties(try AdobeProtectionEdit(raw, path: path)) }
   }
-  var resource: URL? {switch self{case .smartObject(let edit):edit.url;case .background(let edit):edit.url;default:nil}}
+  var resources: [URL] {
+    switch self {
+    case .smartObject(let edit): return [edit.url, edit.appearance.pixelMask?.source].compactMap { $0 }
+    case .background(let edit): return edit.url.map { [$0] } ?? []
+    default: return []
+    }
+  }
   func apply(to session: inout EditorSession, resources: [URL: Data], fontOptions: AdobeTypeFontOptions = try! .init()) throws {
     switch self {
     case .move(let edit):try edit.apply(to:&session)
@@ -115,9 +122,10 @@ struct AdobeSmartObjectEdit: Sendable {
   let visible: Bool?
   let clipped: Bool?
   let propertyEdit: AdobeProtectionEdit?
+  let appearance: AdobeSmartObjectAppearance
   init(_ raw: Any, path: String) throws {
     typealias Object = AdobeActionsRequest.Object
-    let object = try Object(raw, at: path, allowed: ["operation", "type", "name", "id", "smartObject", "transformMode", "transform", "isVisible", "isClipped", "protection", "layerEffects"])
+    let object = try Object(raw, at: path, allowed: ["operation", "type", "name", "id", "smartObject", "transformMode", "transform", "isVisible", "isClipped", "protection", "layerEffects", "blendOptions", "pixelMask"])
     guard try object.string("type") == "smart_object_layer" else { throw AdobeAPIError.unsupported("This add/edit operation requires smart_object_layer.") }
     let operation = try object.object("operation", allowed: ["type", "placement"])
     let verb = try operation.string("type")
@@ -148,6 +156,7 @@ struct AdobeSmartObjectEdit: Sendable {
       url = nil
     }
     geometry = try Geometry(object)
+    appearance = try AdobeSmartObjectAppearance(object, adding: adding)
     visible = try object.optionalBool("isVisible"); clipped = try object.optionalBool("isClipped")
     if object.fields["protection"] != nil || object.fields["layerEffects"] != nil {
       var properties: [String: Any] = ["operation": ["type": "edit"]]
@@ -213,6 +222,7 @@ struct AdobeSmartObjectEdit: Sendable {
     }
     if let visible { try session.execute(.visibility(id, visible)) }
     if let clipped { try session.execute(.clipping(id, clipped)) }
+    try appearance.apply(to: &session, layerID: id, resources: resources)
     if let propertyEdit { try propertyEdit.apply(to: &session) }
   }
 

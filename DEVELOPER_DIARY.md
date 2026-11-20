@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **660** · The 10 most recent entries, newest first.
+Source build **661** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 661 — Smart Object templates get editable masks and blending
+
+Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities.
+
+The 1,482 selected cases passed across qualification and replay in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Each initial run passed 1,481 cases. After updating the obsolete mask assertion, all 142 replay cases passed in each configuration. The application inputs and signed binary stayed byte-identical. Both slices of the signed macOS 14+ universal preview launched offscreen. Adobe's hosted service was not run. Exact Adobe mask edge, placement and color output remain unverified. The Intel runtime used Rosetta, and the macOS 14 minimum was verified in the signed binary.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-661) · [Details](PhotoCraftSwift/docs/SMART_OBJECT_TEMPLATE_APPEARANCE_661.md).
 
 ## 2026-11-20 — Step 660 — Free Transform follows Smart Object artwork
 
@@ -73,9 +81,3 @@ All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon,
 Spilled history states share the existing file-backed original. Undo and Redo keep the bytes, and insufficient disk space rejects the edit atomically.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) · [Details](PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECT_HISTORY_652.md).
-
-## 2026-11-19 — Step 651 — Keep gigabyte-scale originals through Edit Contents
-
-A 1.18 GB PSB retains its exact original and editable samples through placement, a nested edit and reopen. Native files use archive version 97 for these originals.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-651) · [Details](PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECTS_651.md).

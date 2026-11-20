@@ -164,7 +164,7 @@ protocol AdobeResourceTransport: Sendable {
       var fetched: [URL: Data] = [:]
       if case .actions(let action) = request {
         var total = input.count
-        let resourceURLs = (action.layerEdits ?? []).compactMap(\.resource)
+        let resourceURLs = (action.layerEdits ?? []).flatMap(\.resources)
           + (action.creation?.resource.map { [$0] } ?? [])
           + action.outputs.compactMap { $0.colorProfile?.resource }
         for url in Set(resourceURLs) {

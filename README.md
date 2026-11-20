@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 660.** Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_660.md).
+**Development alpha — source build 661.** Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_661.md).
 
 ## Project layout
 

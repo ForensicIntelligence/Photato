@@ -1192,6 +1192,23 @@ Use `points_unit` to convert dimensions from points using the document resolutio
 
 The Photato API's `layer.transform` continues to accept an affine delta. Both interfaces use the same Swift transform command. Full Adobe hosted-service behavior remains open. [Development record](ADOBE_SMART_OBJECT_TEMPLATE_658.md)
 
+### Smart Object template appearance
+
+Use `blendOptions.opacity` for an integer percentage from 0 to 100 and `blendOptions.blendMode` for the published v2 names.
+`pixelMask.source.url` accepts an authorized grayscale PNG, JPEG, PSD or PSB resource. White reveals the layer and black hides
+it. `pixelMask.offset.horizontal` and `vertical` are document-pixel offsets from the object layer origin. `isEnabled` and
+`isLinked` both default to true for new masks. Edits preserve omitted settings and an appearance-only edit can omit the
+replacement artwork.
+
+```json
+{"type":"smart_object_layer","name":"Product","operation":{"type":"edit"},"blendOptions":{"opacity":80,"blendMode":"multiply"},"pixelMask":{"source":{"url":"https://example.com/product-matte.png"},"isLinked":false,"offset":{"horizontal":12,"vertical":8}}}
+```
+
+Set `pixelMask.delete` to true in an edit to remove the mask. It takes precedence over the other mask fields, so no mask
+resource is fetched. Layer opacity and blend mode still apply in the same job. The native document owns the editable
+mask. `GET /v1/capabilities` lists the supported fields under `actionJobs.smartObjectTemplateAppearance`.
+[Development record](SMART_OBJECT_TEMPLATE_APPEARANCE_661.md)
+
 ## Subject selection and background removal — step159
 
 At step159 there were25 typed Photato commands. `selection.subject` accepts required `layerID` (pixel layer UUID), optional `sampleAllLayers` (boolean, defaultfalse) and `mode` (`replace`, `add`, `subtract`, `intersect`; defaultreplace). `layer.removeBackground` accepts `layerID` and optional `sampleAllLayers`; it requires an unlocked pixel layer without an existing mask. Both run Apple Vision locally, preserve original pixels and commit one native Undo entry. Removal preserves the current selection. An existing mask must be applied or deleted explicitly first. Stale/busy/cancelled/revoked requests return 409 without committing; invalid parameters400, missing layer404, unsupported target/size/model/no subject422. Document state now reports selection bounds/coverage and subject availability; layers report mask presence, enablement, density and feather. Schemas and runtime limits are recorded in [subject references](SUBJECT_SELECTION_REFERENCES.json). An available command means a request may be attempted; it does not guarantee the system model can run on every Mac.

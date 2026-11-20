@@ -1,0 +1,157 @@
+{
+  "build": 661,
+  "base": "b8e9b8b462010f846a26761808f62b649958c485",
+  "buildInputs": 9259,
+  "includedBuildInputs": 9246,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "def63fc83378378c914f69c4eeeef5c3fa2c73531747a6b093361377e2a6fc23",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AdobeActionJobs.swift",
+      "sha256": "80ac30944e15d4d99f6c7b4dafbbb4c85714594192d883188674f6703fa34cba"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdobeSmartObjectAppearance.swift",
+      "sha256": "69f813e1daa403e912d500799e80ace061a798ffe2c924b45bd4b6b8ddb7ff99"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdobeSmartObjectEdit.swift",
+      "sha256": "8b15cc245b3c126a249dbbe0ecdeb32d7632883dd2a8c5c1aa10ca6c7ce171d1"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "9812d12057dc162cbba41fb7d4d120a84b03f92c0829cd0b4faa7e23bb1b45b2"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AdobeSmartObjectAppearanceTests.swift",
+      "sha256": "a0863cff58a900a1ef39f7ed366177f2c0641dc31701e1a9017dd129040845d3"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartObjectWorkflowTests.swift",
+      "sha256": "3b2c6d0f3374c325e285945847078362f788959b353b808e9c1b1a82eead4282"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "7b664dcfda8c2bd703add71beddc9dac3aa65c0160e4977a1c0eaab5d8b21709"
+    }
+  ],
+  "casesPerConfiguration": 1482,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1482,
+      "passed": 1482,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "f3184077e2dbae7066d6d790dc85bfbb9245903de0a742f8e38e1c59afc7f12c",
+      "baseline": {
+        "selected": 1482,
+        "passed": 1481,
+        "testExecutableSHA256": "1bb3da9de246d40ee3f9afd18e22da5759e158ab3d3f444c3ad3119c6b877724",
+        "failed": [
+          "PhotoCraftAppTests.SmartObjectWorkflowTests/testPublishedContractRejectsUnsupportedLinkedAndTransforms"
+        ],
+        "candidateManifestSHA256": "92f0036ba8053b5ddbf57b08f98eda1061c2ce77430aeff180ede69ab3f31a6a"
+      },
+      "replay": {
+        "selected": 142,
+        "passed": 142,
+        "testExecutableSHA256": "f3184077e2dbae7066d6d790dc85bfbb9245903de0a742f8e38e1c59afc7f12c",
+        "candidateManifestSHA256": "def63fc83378378c914f69c4eeeef5c3fa2c73531747a6b093361377e2a6fc23"
+      }
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1482,
+      "passed": 1482,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "659ba346e068205072e00e903a31a02927e9972b899b16ec1cd9c4e538f514b7",
+      "baseline": {
+        "selected": 1482,
+        "passed": 1481,
+        "testExecutableSHA256": "1f0dbde44746043516332868c1410ce43a5224e14500548d3b620bb20ff76838",
+        "failed": [
+          "PhotoCraftAppTests.SmartObjectWorkflowTests/testPublishedContractRejectsUnsupportedLinkedAndTransforms"
+        ],
+        "candidateManifestSHA256": "92f0036ba8053b5ddbf57b08f98eda1061c2ce77430aeff180ede69ab3f31a6a"
+      },
+      "replay": {
+        "selected": 142,
+        "passed": 142,
+        "testExecutableSHA256": "659ba346e068205072e00e903a31a02927e9972b899b16ec1cd9c4e538f514b7",
+        "candidateManifestSHA256": "def63fc83378378c914f69c4eeeef5c3fa2c73531747a6b093361377e2a6fc23"
+      }
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1482,
+      "passed": 1482,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "98b43117014e923c94c58f61caad431576a4b65ab73f8c88e88cb7b450a11d77",
+      "baseline": {
+        "selected": 1482,
+        "passed": 1481,
+        "testExecutableSHA256": "ba76dbe9debb81966878eeed80c24ab6f4f1702f505ba76df45b07a0698fe1d8",
+        "failed": [
+          "PhotoCraftAppTests.SmartObjectWorkflowTests/testPublishedContractRejectsUnsupportedLinkedAndTransforms"
+        ],
+        "candidateManifestSHA256": "92f0036ba8053b5ddbf57b08f98eda1061c2ce77430aeff180ede69ab3f31a6a"
+      },
+      "replay": {
+        "selected": 142,
+        "passed": 142,
+        "testExecutableSHA256": "98b43117014e923c94c58f61caad431576a4b65ab73f8c88e88cb7b450a11d77",
+        "candidateManifestSHA256": "def63fc83378378c914f69c4eeeef5c3fa2c73531747a6b093361377e2a6fc23"
+      }
+    }
+  },
+  "selectedCasesSHA256": "57f43f6736278f844fa01f5248a142b94c46f873baf55a4da7f1bb1f7d506477",
+  "testOnlyRepair": {
+    "previousManifestSHA256": "92f0036ba8053b5ddbf57b08f98eda1061c2ce77430aeff180ede69ab3f31a6a",
+    "finalManifestSHA256": "def63fc83378378c914f69c4eeeef5c3fa2c73531747a6b093361377e2a6fc23",
+    "changedInput": "Tests/PhotoCraftAppTests/SmartObjectWorkflowTests.swift",
+    "selector": "PhotoCraftAppTests.SmartObjectWorkflowTests/testPublishedContractRejectsUnsupportedLinkedAndTransforms"
+  },
+  "preview": {
+    "archiveSHA256": "0f573598dbbebcd666f4d5eb382041770eb6aab117b8742f13157fc07400552f",
+    "binarySHA256": "0060dfaba53abce8da66680a12cab0d455853c695cc6a42425ca2214f13af7e4",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "b825553ca1e7b704549b24fbaa820b316f15ba3dd7bd4494d4670e2f02628aab",
+      "x86_64": "440185b99397d16467b487e35b258f3234bcce249530c50a9a8b8d3d7bdda792"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "publicAdobeContract": {
+    "currentSHA256": "d7b5c019937f142d2832c9ec4a6ae00500e9bdf9cfea14d83249f28f8869d46e",
+    "pinnedSHA256": "9916044d9a51ec1e3f622da8c4bd3d239ceef191077b4cb911d3d5ca5c046482",
+    "matchedAppearanceDefinitions": [
+      "BlendOptions",
+      "PixelMask",
+      "EditPixelMask",
+      "AddSmartObjectLayer",
+      "EditSmartObjectLayer",
+      "FileResourceInput",
+      "Offset"
+    ]
+  },
+  "hostedAdobeCompared": false
+}

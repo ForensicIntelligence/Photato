@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 661.** Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities. [Qualification](docs/SOURCE_PUBLICATION_661.md).
+
 **Source checkpoint 660.** Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta. [Qualification](docs/SOURCE_PUBLICATION_660.md).
 
 **Source checkpoint 659.** Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds. [Qualification](docs/SOURCE_PUBLICATION_659.md).

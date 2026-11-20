@@ -1235,14 +1235,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:660 -->
+<!-- current-status-step:661 -->
 ## Current development status — 20 November 2026
 
-Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta.
+Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities.
 
-All 1,477 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+The 1,482 selected cases passed across qualification and replay in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Each initial run passed 1,481 cases. After updating the obsolete mask assertion, all 142 replay cases passed in each configuration. The application inputs and signed binary stayed byte-identical. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 660](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_660.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-660).
+[Source checkpoint 661](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_661.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-661).
 
 <!-- current-status:end -->
 
