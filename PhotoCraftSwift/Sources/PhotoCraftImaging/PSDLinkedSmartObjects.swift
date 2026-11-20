@@ -13,14 +13,19 @@ enum PSDLinkedSmartObjects {
     let size=try item.number(8)
     if version > 2 { try paging?.admitRetainedSource(bytes: length) }
     let bytes = version > 2 ? try item.retainedBytes(length) : Data()
-    var reference=text(descriptor["fullPath"]) ?? text(descriptor["relPath"]) ?? name
+    let savedRelative = text(descriptor["relPath"]).flatMap {
+      LinkedSmartObjectSource.isRelativePath($0) ? $0 : nil
+    }
+    let savedFull = text(descriptor["fullPath"]).flatMap { $0.isEmpty ? nil : $0 }
+    var reference = savedFull ?? savedRelative ?? name
     var kind=LinkedSmartObjectSource.Kind.file
     if let url=URL(string:reference),["http","https"].contains(url.scheme?.lowercased() ?? "") {
       var fields=URLComponents(url:url,resolvingAgainstBaseURL:false)!;fields.user=nil;fields.password=nil;fields.query=nil;fields.fragment=nil
       reference=fields.url!.absoluteString;kind = .remote
     }
     let link=try LinkedSmartObjectSource(reference:reference,kind:kind,
-      contentHash:bytes.isEmpty ? nil:LinkedSmartObjectSource.fingerprint(bytes),byteLength:size)
+      contentHash:bytes.isEmpty ? nil:LinkedSmartObjectSource.fingerprint(bytes),byteLength:size,
+      relativePath: kind == .file && savedRelative != reference ? savedRelative : nil)
     return .init(name:name,data:bytes,link:link,fileType:type,fileTypeBytes:typeBytes)
   }
   static func append(_ object:SmartObject,typeHint:Data?=nil,to out:inout PSDWriter)throws {
@@ -37,7 +42,8 @@ enum PSDLinkedSmartObjects {
     guard type.count==4 else{throw CraftError.invalid("Invalid linked file type.")}
     item.data.append(type);item.text("8BIM");item.n(0,8);item.n(0,1)
     let full=URL(string:link.reference).flatMap{$0.isFileURL ? $0.path:nil} ?? link.reference
-    let relative=(!full.hasPrefix("/") && URL(string:link.reference)?.scheme==nil) ? link.reference:object.fileName
+    let relative = link.relativePath ?? (LinkedSmartObjectSource.isRelativePath(link.reference)
+      ? link.reference : object.fileName)
     let descriptor=PSDDescriptor("filespec",items:[.init("Nm  ",.text(Array((object.fileName+"\0").utf16))),.init("fullPath",.text(Array((full+"\0").utf16))),.init("relPath",.text(Array((relative+"\0").utf16)))])
     item.data.append(try descriptor.encoded())
     var calendar=Calendar(identifier:.gregorian);calendar.timeZone=TimeZone(secondsFromGMT:0)!

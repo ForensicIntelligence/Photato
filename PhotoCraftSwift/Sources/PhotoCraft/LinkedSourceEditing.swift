@@ -4,7 +4,13 @@ import PhotoCraftImaging
 import UniformTypeIdentifiers
 
 extension EditorStore {
-  var linkedArtworkDocumentURL:URL? {documentController?.documents.compactMap{$0 as? CraftNSDocument}.first{$0.store === self}?.fileURL}
+  var linkedArtworkDocument: CraftNSDocument? {
+    documentController?.documents.compactMap { $0 as? CraftNSDocument }.first { $0.store === self }
+  }
+  var linkedArtworkDocumentURL: URL? {
+    guard let owner = linkedArtworkDocument else { return nil }
+    return owner.fileURL ?? owner.importedSourceURL
+  }
   var canManageLinkedArtwork:Bool {
     if let owner=documentController?.documents.compactMap({$0 as? CraftNSDocument}).first(where:{$0.store === self}),
       owner.fileOperationBusy || owner.recoveryWriteBusy || owner.closeWorkflowID != nil {return false}

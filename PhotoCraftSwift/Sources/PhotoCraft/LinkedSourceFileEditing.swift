@@ -45,9 +45,8 @@ final class PreparedLinkedSourceWrite:@unchecked Sendable {
         guard grant.id==target.id,let layer=result.layers.first(where:{$0.smartObject?.sourceID==sourceID}),
           let old=layer.smartObject,old.linkedSource != nil else{throw AutomationFailure(status:409,message:"The linked source changed.")}
         if old.linkedSource?.contentHash==hash,try layer.linkedSmartObjectPreview()==nil{continue}
-        let reference=try LinkedSmartObjectSource(reference:grant.sourceReference ?? grant.reference,
-          authorizationID:grant.sourceReference==nil ? grant.id:nil,contentHash:hash,byteLength:UInt64(bytes.count),
-          modificationDate:hash==before.fingerprint ? before.modified:nil)
+        let reference = try grant.updatedLink(fingerprint: hash, byteLength: UInt64(bytes.count),
+          modified: hash == before.fingerprint ? before.modified : nil)
         try LinkedSmartObjectIO.replacement(bytes,fileName:before.fileName,reference:reference,in:result,layerID:layer.id).apply(to:&result)
         guard result.layers.first(where:{$0.id==layer.id})?.smartObject?.mediaType==old.mediaType else {
           throw AutomationFailure(status:415,message:"Preserve the original source format. Use Relink to change file types.")

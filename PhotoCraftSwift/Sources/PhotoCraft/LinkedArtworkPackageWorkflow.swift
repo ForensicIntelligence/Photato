@@ -6,7 +6,7 @@ import PhotoCraftImaging
 
 extension EditorStore {
   var canEmbedAllLinkedArtwork:Bool {canManageLinkedArtwork && hasLinkedArtwork && document.layers.filter{$0.smartObject?.linkedSource != nil}.allSatisfy{!document.isImageLocked($0.id)}}
-  var canPackageLinkedArtwork:Bool {canManageLinkedArtwork && hasLinkedArtwork && linkedArtworkDocumentURL != nil}
+  var canPackageLinkedArtwork:Bool {canManageLinkedArtwork && hasLinkedArtwork && linkedArtworkDocument?.fileURL != nil}
   func linkedArtworkGrants(needingOriginalsOnly:Bool=false)throws->[UUID:LinkedArtworkGrant] {
     var result:[UUID:LinkedArtworkGrant]=[:]
     for layer in document.layers {
@@ -76,12 +76,16 @@ extension EditorStore {
       }
     }
   }
-  var hasRelativePackageLinks:Bool {document.layers.contains{layer in layer.smartObject?.linkedSource.map{LinkedSourceRegistry.isPackageReference($0.reference)}==true}}
+  var hasRelativePackageLinks: Bool {
+    linkedArtworkDocumentURL != nil && document.layers.contains { layer in
+      layer.smartObject?.linkedSource.map(LinkedSourceRegistry.hasFolderCandidates) == true
+    }
+  }
   func locatePackageSources() {
     guard canManageLinkedArtwork,hasRelativePackageLinks,let documentURL=linkedArtworkDocumentURL else{return}
     let original=document,panelGeneration=layerPanelGeneration
     let panel=NSOpenPanel();panel.title="Locate Packaged Sources";panel.prompt="Authorize Package Sources";panel.canChooseFiles=false;panel.canChooseDirectories=true;panel.directoryURL=documentURL.deletingLastPathComponent()
-    panel.message="Choose this document's package folder to authorize its Links files."
+    panel.message="Choose the folder containing this document. Photato looks for its linked artwork in that folder and its subfolders."
     panel.begin{[weak self] response in
       guard response == .OK,let url=panel.url,let self,self.document==original,self.layerPanelGeneration==panelGeneration else{return}
       do{try self.linkedSourceRegistry.authorizePackage(url,document:original,documentURL:documentURL);self.synchronizeLinkedArtwork();Task{await self.linkedSourceController?.scan()}}

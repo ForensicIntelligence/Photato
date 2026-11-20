@@ -3347,6 +3347,14 @@ Native66 files retain previews and declarative references but omit the original 
 Adobe-compatible resource jobs retain Adobe's separately published `smart_object_layer` / `smartObject.isLinked` / `smartObjectFile.source.url` contract in the existing `/v2/create-composite` workflow. Those URL jobs do not receive the Photato private file-authorization API. Direct semantic tests currently pass, but full HTTP/job/Photoshop fidelity acceptance remains open.
 
 
+### Portable linked paths
+
+PSD and PSB preserve both the last-known absolute locator and the relative path. In the native linked layer panel, **Locate Package Sources…** can authorize files within the folder containing the document, including nested artwork and an eligible filename beside the document. Available files can be authorized while missing sources await relinking.
+
+The linked operation looks for an approved relative file first, then uses an individually approved original path or its local bookmark, then an approved file beside the document. Desktop update, API update, original-source writes and Package use this policy. API source access still requires session approval of the resolved file. If only an older version of the source is approved for the API, the request returns 403.
+
+`GET /v1/capabilities` describes this policy under `linkedArtwork.portableResolution`. Shared document state reports `linkedArtwork.hasRelativePackageLinks`. The Firefly v2 resource adapters continue to use their existing published HTTP locators. [Development record](PORTABLE_LINKED_PATHS_656.md)
+
 ### Bulk embedding and package extension — step299, in progress
 
 The Source13 extension adds two typed commands (204 total). All six package and three bulk tests plus87 affected regressions pass; the144-case targeted union retains one case with two strict masked PSD/PSB preview failures. No full-suite/native/platform or complete Package claim is made. These commands share the native desktop preparation and publication paths. Existing exact PSD/PSB preview failures remain open; this is not a completed Package/parity claim.

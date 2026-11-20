@@ -674,7 +674,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 653 | 2026-11-20 | [Preserve Smart Object placement identifiers](#dev-step-653) |
 | 654 | 2026-11-20 | [Place and update gigabyte-scale linked Smart Objects](#dev-step-654) |
 | 655 | 2026-11-20 | [Add General placement preferences](#dev-step-655) |
+| 656 | 2026-11-20 | [Recover linked Smart Objects after moving a folder](#dev-step-656) |
 <!-- history-index:end -->
+
+<a id="dev-step-656"></a>
+
+## 2026-11-20 — Recover linked Smart Objects after moving a folder
+
+PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document.
+
+All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The owned native, PSD and PSB outputs matched byte for byte across the two compiled architectures. An independent read verified both Photoshop file locators. Both optimized apps also passed the 1.18 GB linked workflow.
+
+The Debug build used the established Swift compiler workaround. The installed Photoshop session timed out on a read-only request. Live Adobe package behavior, Adobe alias data and exact cross-application output remain open.
+
+[Development record](PORTABLE_LINKED_PATHS_656.md) · [Qualification](SOURCE_PUBLICATION_656.md).
 
 <a id="dev-step-655"></a>
 

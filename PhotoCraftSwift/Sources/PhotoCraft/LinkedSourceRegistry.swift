@@ -10,7 +10,14 @@ struct LinkedArtworkGrant:Sendable {
   let reference:String
   let url:URL
   let scopeURL:URL
-  var sourceReference:String? = nil
+  var sourceLink: LinkedSmartObjectSource? = nil
+
+  func updatedLink(fingerprint: String, byteLength: UInt64, modified: Date?) throws -> LinkedSmartObjectSource {
+    try LinkedSmartObjectSource(reference: sourceLink?.reference ?? reference,
+      authorizationID: sourceLink == nil ? id : sourceLink?.authorizationID,
+      contentHash: fingerprint, byteLength: byteLength, modificationDate: modified,
+      relativePath: sourceLink?.relativePath)
+  }
 }
 @MainActor final class LinkedSourceRegistry {
   static let shared=LinkedSourceRegistry()
@@ -40,9 +47,13 @@ struct LinkedArtworkGrant:Sendable {
   }
   /// Called only after native file selection, or inside an already approved save directory.
   func authorize(_ selected:URL)throws->LinkedArtworkGrant {
+    try register(selected, persist: true)
+  }
+  private func register(_ selected: URL, persist: Bool, expectedPath: String? = nil) throws -> LinkedArtworkGrant {
     guard selected.isFileURL else{throw CraftError.invalid("Choose a local artwork file.")}
     let access=selected.startAccessingSecurityScopedResource();defer{if access{selected.stopAccessingSecurityScopedResource()}}
     let url=try Self.physicalURL(selected)
+    if let expectedPath, url.path != expectedPath { throw DocumentPersistenceConflict.changed }
     let reference=url.absoluteString
     var scoped=true
     let bookmark:Data
@@ -54,23 +65,69 @@ struct LinkedArtworkGrant:Sendable {
     let id=existing?.id ?? UUID(),record=Record(id:id,generation:UUID(),reference:reference,bookmark:bookmark,securityScoped:scoped)
     var updated=record;updated.packageBindings=existing?.packageBindings
     let previous=records[id];records[id]=updated
-    do{try save()}catch{records[id]=previous;throw error}
-    return try resolve(id,reference:reference)
+    do {
+      let grant = try resolve(id, reference: reference)
+      if persist { try save() }
+      return grant
+    } catch {
+      records[id] = previous
+      throw error
+    }
   }
-  static func isPackageReference(_ text:String)->Bool {
-    let parts=text.split(separator:"/",omittingEmptySubsequences:false)
-    guard parts.count==2,parts[0]=="Links",!parts[1].isEmpty,!parts[1].hasPrefix("."),parts[1].utf8.count<=200 else{return false}
-    return !parts[1].contains(":") && !parts[1].contains("\\") && !parts[1].unicodeScalars.contains(where:CharacterSet.controlCharacters.contains)
+
+  private nonisolated static func localSubpath(_ path: String) -> String? {
+    guard LinkedSmartObjectSource.isRelativePath(path) else { return nil }
+    let parts = path.replacingOccurrences(of: "\\", with: "/")
+      .split(separator: "/", omittingEmptySubsequences: false).filter { $0 != "." }
+    guard !parts.isEmpty, parts.allSatisfy({ !$0.isEmpty && !$0.hasPrefix(".") && $0.utf8.count <= 255 })
+    else { return nil }
+    return parts.joined(separator: "/")
+  }
+
+  private nonisolated static func localCandidates(_ link: LinkedSmartObjectSource) -> (relative: String?, sibling: String?) {
+    guard link.kind == .file else { return (nil, nil) }
+    let relative = localSubpath(link.relativePath ?? link.reference)
+    let source = link.relativePath ?? link.reference
+    let basename = URL(string: source).flatMap { $0.isFileURL ? $0.lastPathComponent : nil }
+      ?? source.replacingOccurrences(of: "\\", with: "/").split(separator: "/").last.map(String.init)
+    let sibling = basename.flatMap(localSubpath)
+    return (relative, sibling == relative ? nil : sibling)
+  }
+
+  nonisolated static func hasFolderCandidates(_ link: LinkedSmartObjectSource) -> Bool {
+    let paths = localCandidates(link)
+    return paths.relative != nil || (link.authorizationID == nil && paths.sibling != nil)
+  }
+
+  private func packageGrant(_ path: String?, documentID: UUID?, documentURL: URL?) -> LinkedArtworkGrant? {
+    guard let path, let documentID, let documentURL else { return nil }
+    let matches = records.values.filter { record in
+      record.packageBindings?.contains(where: {
+        $0.reference == path && ($0.documentID == documentID || $0.documentName == documentURL.lastPathComponent)
+      }) == true
+    }
+    guard !matches.isEmpty, let parent = try? Self.physicalURL(documentURL.deletingLastPathComponent())
+    else { return nil }
+    let expected = parent.appendingPathComponent(path)
+    for record in matches {
+      if let grant = try? resolve(record.id), LinkedArtworkRead.sameFile(grant, at: expected) { return grant }
+    }
+    return nil
   }
   func resolve(_ link:LinkedSmartObjectSource,documentID:UUID?=nil,documentURL:URL?=nil)throws->LinkedArtworkGrant {
     guard link.kind == .file else{throw CraftError.invalid("Locate and authorize this linked artwork file.")}
-    if let id=link.authorizationID{return try resolve(id,reference:link.reference)}
-    if Self.isPackageReference(link.reference),let documentID,let documentURL {
-      let parent=try Self.physicalURL(documentURL.deletingLastPathComponent())
-      let expected=parent.appendingPathComponent(link.reference).path
-      for record in records.values where record.packageBindings?.contains(where:{$0.reference==link.reference && ($0.documentID==documentID || $0.documentName==documentURL.lastPathComponent)})==true {
-        if var grant=try? resolve(record.id),LinkedArtworkRead.sameFile(grant,at:URL(fileURLWithPath:expected)) {grant.sourceReference=link.reference;return grant}
-      }
+    let paths = Self.localCandidates(link)
+    if var grant = packageGrant(paths.relative, documentID: documentID, documentURL: documentURL) {
+      grant.sourceLink = link
+      return grant
+    }
+    if let id = link.authorizationID, var grant = try? resolve(id, reference: link.reference) {
+      grant.sourceLink = link
+      return grant
+    }
+    if var grant = packageGrant(paths.sibling, documentID: documentID, documentURL: documentURL) {
+      grant.sourceLink = link
+      return grant
     }
     throw CraftError.invalid("Locate and authorize this linked artwork file or its package folder.")
   }
@@ -79,18 +136,26 @@ struct LinkedArtworkGrant:Sendable {
     let access=folder.startAccessingSecurityScopedResource();defer{if access{folder.stopAccessingSecurityScopedResource()}}
     let root=try Self.physicalURL(folder),expectedRoot=try Self.physicalURL(documentURL.deletingLastPathComponent())
     guard root.path==expectedRoot.path else{throw CraftError.invalid("Choose the folder containing this packaged document.")}
-    let references=Set(document.layers.compactMap{$0.smartObject?.linkedSource}.filter{$0.kind == .file && Self.isPackageReference($0.reference)}.map(\.reference))
-    guard !references.isEmpty else{throw CraftError.invalid("This document has no relative package links.")}
+    let references = Set(document.layers.compactMap { $0.smartObject?.linkedSource }
+      .filter(Self.hasFolderCandidates).flatMap { link in
+        let paths = Self.localCandidates(link)
+        return [paths.relative, paths.sibling].compactMap { $0 }
+      })
     let previous=records
     do {
+      var found = false
       for reference in references.sorted() {
-        let selected=root.appendingPathComponent(reference),physical=try Self.physicalURL(selected)
-        guard physical.path==selected.path else{throw CraftError.invalid("Package sources cannot be symbolic links. Relink the source explicitly.")}
-        let grant=try authorize(physical),binding=PackageBinding(documentID:document.id,reference:reference,documentName:documentURL.lastPathComponent)
+        let selected = root.appendingPathComponent(reference)
+        guard let physical = try? Self.physicalURL(selected), physical.path == selected.path,
+          (try? physical.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true else { continue }
+        let grant = try register(physical, persist: false, expectedPath: selected.path)
+        let binding = PackageBinding(documentID: document.id, reference: reference, documentName: documentURL.lastPathComponent)
+        found = true
         if var record=records[grant.id],record.packageBindings?.contains(binding) != true {record.packageBindings=(record.packageBindings ?? [])+[binding];records[grant.id]=record}
       }
+      guard found else { throw CraftError.invalid("No linked artwork was found in the document’s folder. Use Relink to File for the missing source.") }
       try save()
-    }catch{records=previous;try? save();throw error}
+    }catch{records=previous;throw error}
   }
   func resolve(_ id:UUID,reference:String?=nil)throws->LinkedArtworkGrant {
     guard let record=records[id],reference==nil || record.reference==reference else{throw CraftError.invalid("The linked artwork is not authorized on this Mac.")}
@@ -129,7 +194,9 @@ struct LinkedArtworkRead:Sendable {
   let modified:Date
   let fileName:String
   let grant:LinkedArtworkGrant
-  var reference:LinkedSmartObjectSource {get throws{try .init(reference:grant.sourceReference ?? grant.reference,authorizationID:grant.sourceReference==nil ? grant.id:nil,contentHash:fingerprint,byteLength:UInt64(data.count),modificationDate:modified)}}
+  var reference: LinkedSmartObjectSource {
+    get throws { try grant.updatedLink(fingerprint: fingerprint, byteLength: UInt64(data.count), modified: modified) }
+  }
   private static func error()->NSError {NSError(domain:NSPOSIXErrorDomain,code:Int(errno))}
   private static func openApproved(_ url:URL)throws->Int32 {
     guard url.isFileURL,url.path.hasPrefix("/")else{throw CraftError.invalid("Choose a local artwork file.")}

@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 656 — Recover linked Smart Objects after moving a folder
+
+PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document.
+
+All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The live Photoshop comparison remains open.
+
+[Development record](DEVLOG.md#dev-step-656) · [Details](PORTABLE_LINKED_PATHS_656.md).
+
 ## 2026-11-20 — Step 655 — Add General placement preferences
 
 General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
@@ -1217,14 +1225,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:655 -->
+<!-- current-status-step:656 -->
 ## Current development status — 20 November 2026
 
-General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
+PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document.
 
-All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 655](SOURCE_PUBLICATION_655.md) · [Development record](DEVLOG.md#dev-step-655).
+[Source checkpoint 656](SOURCE_PUBLICATION_656.md) · [Development record](DEVLOG.md#dev-step-656).
 
 <!-- current-status:end -->
 
@@ -2086,6 +2094,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 653 | [Preserve Smart Object placement identifiers](DEVLOG.md#dev-step-653) |
 | 2026-11-20 | 654 | [Place and update gigabyte-scale linked Smart Objects](DEVLOG.md#dev-step-654) |
 | 2026-11-20 | 655 | [Add General placement preferences](DEVLOG.md#dev-step-655) |
+| 2026-11-20 | 656 | [Recover linked Smart Objects after moving a folder](DEVLOG.md#dev-step-656) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

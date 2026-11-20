@@ -29,7 +29,8 @@ enum LinkedArtworkAPI {
   static var capabilities:[String:Any] {[
     "commands":commands.sorted(),"assets":"/v1/linked-artwork","nativeArchiveVersion":66,
     "authorization":"Native API window approves individual files each session. Opaque asset UUIDs expire on API stop. Document links and imported PSD paths never authorize file access.",
-    "package":["localSavingRequired":true,"approvedOutputFolderRequired":true,"approvedSourceFilesRequired":true,"streamsDocument":true,"replacesExistingFolders":false,"mergesExistingFolders":true,"explicitReplaceRequired":true,"reusesIdenticalAssets":true,"formats":["photato","psd","psb"],"relativeReferences":"Links/<filename>; opening never grants filesystem access. Native Locate Packaged Sources explicitly authorizes that package folder."],
+    "package":["localSavingRequired":true,"approvedOutputFolderRequired":true,"approvedSourceFilesRequired":true,"streamsDocument":true,"replacesExistingFolders":false,"mergesExistingFolders":true,"explicitReplaceRequired":true,"reusesIdenticalAssets":true,"formats":["photato","psd","psb"],"relativeReferences":"Photato packages write Links/<filename>. Imported PSD and PSB retain both original path hints. Locate Package Sources from the document can approve files in the document’s folder or its subfolders."],
+    "portableResolution":["order":["approved relative path","individually approved original path or its bookmark","approved file beside the document"],"scope":"Shared desktop and Photato API lookup. API source operations additionally require the resolved file to be approved for this session.","discovery":"linkedArtwork.hasRelativePackageLinks reports folder lookup availability. Raw paths are private."],
     "stateSchema":["type":"object","properties":["hasLinks":["type":"boolean"],"canEmbedAll":["type":"boolean"],"canPackage":["type":"boolean"],"hasRelativePackageLinks":["type":"boolean"]]],
     "packageResultSchema":["type":"object","required":["folder","document","sourceCount","originalDocumentUnchanged"],"properties":["folder":["type":"string"],"document":["type":"string"],"manifest":["type":"string"],"updatedExisting":["type":"boolean"],"sourceCount":["type":"integer"],"originalDocumentUnchanged":["const":true]]],
     "previewExport":["formats":["psd","psb"],"sourceSampling":"Derived linked raster previews use bilinear source samples with transparent boundaries; masks project as numerical gray in document coordinates. Original source bytes and native geometry remain unchanged.","precision":"Integer source-alpha and mask planes quantize independently; exact recomposed-byte equivalence and Photoshop interpolation remain separate qualification gates. Float32 and representable encoded samples have focused checks."],
@@ -159,8 +160,12 @@ extension AutomationService {
         return (result,reads)
       }
     for file in hydrated.values {
+      let reference = try file.reference
       let ids=Set(store.document.layers.compactMap {layer -> UUID? in
-        guard let source=layer.smartObject,source.linkedSource?.reference==file.grant.reference,source.linkedSource?.contentHash==file.fingerprint,source.data.isEmpty else{return nil};return source.sourceID
+        guard let source=layer.smartObject, let link = source.linkedSource,
+          link.reference == reference.reference, link.relativePath == reference.relativePath,
+          link.contentHash == file.fingerprint, source.data.isEmpty else { return nil }
+        return source.sourceID
       })
       for id in ids {try store.session.hydrateLinkedSmartObject(id,original:file.original)}
     }

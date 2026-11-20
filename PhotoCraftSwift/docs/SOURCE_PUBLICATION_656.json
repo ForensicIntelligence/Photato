@@ -1,0 +1,161 @@
+{
+  "build": 656,
+  "base": "b2f9cf47730ad2a0f40455b1f3f7d8a9ca5f7bb1",
+  "buildInputs": 9249,
+  "includedBuildInputs": 9236,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "de8a3c85eb2536d70b95c68c28d1582b8c0a67ca8c8a4834240f8605c85d6b72",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkAPI.swift",
+      "sha256": "cffe2bce67f47ccefdd3312dadd35bb570343104deb49d05b0a542fad448b2a6"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPackageWorkflow.swift",
+      "sha256": "4379c059c614b338552b1e1b7126abd2dbd3a741a561fb2617d9f3ab78ed5957"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceEditing.swift",
+      "sha256": "85a8864fbce892d42014f7146bd46e14162468c013e7a043b27c52e75cb9bb6d"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceFileEditing.swift",
+      "sha256": "82670a404de061aff1da31f7b3714ead86e8141e0568ec066e45c728c4dfeacb"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceRegistry.swift",
+      "sha256": "6219bd8f14a2fa680e6f633d4b45a04f43cb22902ccbef21c0fcf697dec60c5b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LinkedSmartObject.swift",
+      "sha256": "aa6398264a44a39918bd20bb27c66b5b576194d84c131f76253e0b1c3a6a2aa6"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDLinkedSmartObjects.swift",
+      "sha256": "c2d3e62ecdc39ac81639c88b722c09eddd7c6f46fe20439de324e6c83e3edfd3"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PortableLinkedArtworkTests.swift",
+      "sha256": "0c4a1c29b6f47cb505bc418f3232f9fe0a8be222183520080b5a892dd46c79f1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LinkedSmartObjectIOTests.swift",
+      "sha256": "899f8198810d58ee5db5b299442151294b31708fab2e586956742561ae34e680"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "e6d4c7950027f4ad60ef64c514687d800b90e51ecc165b43d1774c24849048f8"
+    }
+  ],
+  "casesPerConfiguration": 1457,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1457,
+      "passed": 1457,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "1fdc06dbff39b8dfad3d2ac72b9c94ac62b507766d3d53b34928f65bfddb6ae0"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1457,
+      "passed": 1457,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "a0ecda67850fbcd87acfd47917d2cfbec9b39954678cc5b29fd487dc4f997044"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1457,
+      "passed": 1457,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "b7bfaca19c0dd64b183651c83a4a40ff1b7eb06a96410dc2688e588eb1e5729e"
+    }
+  },
+  "preview": {
+    "macOSMinimum": "14.0",
+    "signature": "ad hoc",
+    "archiveSHA256": "9cac4e3efd90d4cc43c2881f9016a4dbeed07ec325692dfc73b279cde8cc7f6c",
+    "offscreenSlices": [
+      "arm64",
+      "x86_64"
+    ],
+    "intelRuntime": "Rosetta"
+  },
+  "portableReference": {
+    "arm64": {
+      "photato": {
+        "bytes": 2091,
+        "sha256": "aabfe9ed3dfd9fbaf6d9f3a6868ac312f39c2ec0a592ebcf71fc9f5e2d1e970b"
+      },
+      "psd": {
+        "bytes": 33076,
+        "sha256": "ce9810016bf09c028b589c1a4a16cab70511f91ee1c43fd08925386dc657ba02",
+        "absolute": "/Authored Reference/Before Move/Logo.png",
+        "relative": "Artwork/Approved Marks/Logo.png",
+        "sourceBytes": 984
+      },
+      "psb": {
+        "bytes": 33120,
+        "sha256": "036c56da433e8f5097dc68c63ce5a93ee741a36a5805a2cacbff08178da3c15c",
+        "absolute": "/Authored Reference/Before Move/Logo.png",
+        "relative": "Artwork/Approved Marks/Logo.png",
+        "sourceBytes": 984
+      }
+    },
+    "x86_64": {
+      "photato": {
+        "bytes": 2091,
+        "sha256": "aabfe9ed3dfd9fbaf6d9f3a6868ac312f39c2ec0a592ebcf71fc9f5e2d1e970b"
+      },
+      "psd": {
+        "bytes": 33076,
+        "sha256": "ce9810016bf09c028b589c1a4a16cab70511f91ee1c43fd08925386dc657ba02",
+        "absolute": "/Authored Reference/Before Move/Logo.png",
+        "relative": "Artwork/Approved Marks/Logo.png",
+        "sourceBytes": 984
+      },
+      "psb": {
+        "bytes": 33120,
+        "sha256": "036c56da433e8f5097dc68c63ce5a93ee741a36a5805a2cacbff08178da3c15c",
+        "absolute": "/Authored Reference/Before Move/Logo.png",
+        "relative": "Artwork/Approved Marks/Logo.png",
+        "sourceBytes": 984
+      }
+    }
+  },
+  "largeLinkedCheck": {
+    "bytes": 1181384274,
+    "workflows": {
+      "arm64": {
+        "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+        "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+        "passed": true,
+        "nativePlacementSeconds": 4.084380792,
+        "apiPlacementSeconds": 4.119108625
+      },
+      "x86_64": {
+        "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+        "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+        "passed": true,
+        "nativePlacementSeconds": 8.279807708,
+        "apiPlacementSeconds": 8.083963958
+      }
+    }
+  },
+  "release": "source and diary only"
+}

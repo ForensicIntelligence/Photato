@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 655.** General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_655.md).
+**Development alpha — source build 656.** PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_656.md).
 
 ## Project layout
 

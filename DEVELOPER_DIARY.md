@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **655** · The 10 most recent entries, newest first.
+Source build **656** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 656 — Recover linked Smart Objects after moving a folder
+
+PSD and PSB files now keep both linked-file locations. Locate Package Sources can find approved artwork in nested folders after a document moves. Desktop and API operations use the same lookup when updating or packaging the document.
+
+All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The live Photoshop comparison remains open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-656) · [Details](PhotoCraftSwift/docs/PORTABLE_LINKED_PATHS_656.md).
 
 ## 2026-11-20 — Step 655 — Add General placement preferences
 
@@ -65,11 +73,3 @@ A three-source native save dropped from 201.8 MB to 100.9 MB. The parent PSB and
 Two large deep-colour Smart Objects keep editable child data in PSD and PSB. Independent checks matched all 134,316,048 child samples.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) · [Details](PhotoCraftSwift/docs/EMBEDDED_SMART_SOURCE_647.md).
-
-## 2026-11-19 — Step 646 — Speed up large editable Smart Filter files
-
-The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
-
-All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) · [Details](PhotoCraftSwift/docs/PSD_SMART_FILTER_PAGING_646.md).

@@ -7,15 +7,24 @@ public struct LinkedSmartObjectSource:Codable,Equatable,Sendable {
   public enum Kind:String,Codable,Sendable {case file,remote}
   public var kind:Kind
   public var reference:String
+  public var relativePath: String?
   public var authorizationID:UUID?
   public var contentHash:String?
   public var byteLength:UInt64
   public var modificationDate:Date?
   public init(reference:String,kind:Kind = .file,authorizationID:UUID? = nil,
-    contentHash:String? = nil,byteLength:UInt64,modificationDate:Date? = nil)throws {
+    contentHash:String? = nil,byteLength:UInt64,modificationDate:Date? = nil,
+    relativePath: String? = nil)throws {
     self.kind=kind;self.reference=reference;self.authorizationID=authorizationID
     self.contentHash=contentHash;self.byteLength=byteLength;self.modificationDate=modificationDate
+    self.relativePath = relativePath
     try validate()
+  }
+  /// A relative hint may traverse parent directories in the interchange format.
+  /// The desktop resolver separately limits a folder approval to its own descendants.
+  public static func isRelativePath(_ value: String) -> Bool {
+    !value.isEmpty && value.utf8.count <= 16384 && !value.hasPrefix("/") && !value.hasPrefix("\\")
+      && !value.contains(":") && !value.unicodeScalars.contains(where: CharacterSet.controlCharacters.contains)
   }
   public func validate()throws {
     guard !reference.isEmpty,reference.utf8.count<=16384,!reference.contains("\0"),
@@ -23,6 +32,11 @@ public struct LinkedSmartObjectSource:Codable,Equatable,Sendable {
       modificationDate.map({$0.timeIntervalSince1970.isFinite}) ?? true else{throw CraftError.invalid("Invalid linked Smart Object reference.")}
     if let hash=contentHash {
       guard hash.utf8.count==64,hash.utf8.allSatisfy({(48...57).contains($0)||(97...102).contains($0)}) else{throw CraftError.invalid("Invalid linked source fingerprint.")}
+    }
+    if let relativePath {
+      guard kind == .file, Self.isRelativePath(relativePath) else {
+        throw CraftError.invalid("Invalid relative linked Smart Object path.")
+      }
     }
     if kind == .remote {
       guard let url=URL(string:reference),["http","https"].contains(url.scheme?.lowercased() ?? ""),url.host != nil,

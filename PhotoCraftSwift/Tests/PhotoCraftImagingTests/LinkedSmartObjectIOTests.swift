@@ -69,4 +69,54 @@ final class LinkedSmartObjectIOTests:XCTestCase {
     guard case .raster(let surface)=resolved.layers[0].content else{return XCTFail()}
     XCTAssertEqual(surface.width,3);XCTAssertEqual(surface.height,6)
   }
+
+  func testRelativeAndAbsoluteLinkedPathsSurvivePhotoshopAndNativeRoundTrips() throws {
+    var original = try fixture()
+    let absolute = "C:\\Old Job\\Originals\\Logo.png"
+    let relative = ".\\Artwork\\Approved Marks\\Logo.png"
+    original.layers[0].smartObject?.linkedSource?.reference = absolute
+    original.layers[0].smartObject?.linkedSource?.relativePath = relative
+    let pixels = try Renderer.composite(original).rgbaData(depth: .u8)
+    for format: PSDFileFormat in [.psd, .psb] {
+      let bytes = try PSDCodec.writeRasterLayers(original, format: format)
+      XCTAssertNotNil(bytes.range(of: try XCTUnwrap(relative.data(using: .utf16BigEndian))))
+      let imported = try PSDCodec.read(bytes)
+      let object = try XCTUnwrap(imported.layers[0].smartObject)
+      XCTAssertEqual(object.linkedSource?.reference, absolute)
+      XCTAssertEqual(object.linkedSource?.relativePath, relative)
+      XCTAssertNil(object.linkedSource?.authorizationID)
+      XCTAssertTrue(object.data.isEmpty)
+      XCTAssertEqual(try Renderer.composite(imported).rgbaData(depth: .u8), pixels)
+
+      let restored = try NativeArchive.decodePaged(NativeArchive.encodeChunked(imported))
+      XCTAssertEqual(restored.layers[0].smartObject?.linkedSource, object.linkedSource)
+      let rewritten = try PSDCodec.read(PSDCodec.writeRasterLayers(restored, format: format))
+      XCTAssertEqual(rewritten.layers[0].smartObject?.linkedSource, object.linkedSource)
+    }
+  }
+
+  func testExternalLocatorFallsBackFromEmptyAbsolutePathAndSanitizesRemoteHints() throws {
+    func read(full: String, relative: String) throws -> LinkedSmartObjectSource {
+      let descriptor = PSDDescriptor("filespec", items: [
+        .init("fullPath", .text(Array((full + "\0").utf16))),
+        .init("relPath", .text(Array((relative + "\0").utf16))),
+      ])
+      var size = PSDWriter()
+      size.n(37, 8)
+      var reader = PSDReader(data: try descriptor.encoded() + size.data)
+      let file = try PSDLinkedSmartObjects.read(&reader, version: 3, length: 0, name: "Logo.png", type: "PNG ")
+      return try XCTUnwrap(file.link)
+    }
+    let relative = try read(full: "", relative: "../Approved/Logo.png")
+    XCTAssertEqual(relative.reference, "../Approved/Logo.png")
+    XCTAssertNil(relative.relativePath)
+    let fallback = try read(full: "", relative: "file:///Outside/Logo.png")
+    XCTAssertEqual(fallback.reference, "Logo.png")
+    XCTAssertNil(fallback.relativePath)
+    let remote = try read(full: "https://sample:secret@example.invalid/Logo.png?credential=value#fragment",
+      relative: "Artwork/Logo.png")
+    XCTAssertEqual(remote.reference, "https://example.invalid/Logo.png")
+    XCTAssertEqual(remote.kind, .remote)
+    XCTAssertNil(remote.relativePath)
+  }
 }
