@@ -51,11 +51,12 @@ enum PSDMultichannelStorage {
     let pixelDepth: PixelDepth = depth == 8 ? .u8 : .u16
     if let quickIndex,displays[quickIndex].kind==2 {throw CraftError.invalid("Quick Mask cannot be a printing separation.")}
     let reader = try PSDChannelReader(r, width: width, height: height, depth: depth, channels: channels, format: format)
-    var plates: [InkPlate] = [], alphas: [AlphaChannel] = [], quickMask:AlphaChannel?
+    var plates: [InkPlate] = [], alphas: [AlphaChannel] = [], quickMask:AlphaChannel?, order: [UUID] = []
     var metadata = retained;metadata["psdResources"]=resources
     for channel in 0..<channels {
       try Task.checkCancellation()
       let info = displays[channel], id = UUID()
+      if channel != quickIndex { order.append(id) }
       // Inspection of a seekable channel must start within that plane's own
       // row table. Sequential compression already advances plane by plane.
       let input = large && reader.hasSeekableRows ? try reader.detachSeekablePlanes(count: 1, height: height)[0] : reader
@@ -122,6 +123,7 @@ enum PSDMultichannelStorage {
       document.channelOnly=true;document.layers=[];document.activeLayerID=nil
     } else {document=try document.replacingInkMode(.multichannel(MultichannelRaster(plates:plates)))}
     document.alphaChannels = alphas.isEmpty ? nil : alphas;document.quickMask=quickMask
+    if !plates.isEmpty { try document.setMultichannelChannelOrder(order) }
     document.sourceMetadata = metadata; document.sourceICC = blocks.first { $0.id == 1039 }?.data
     if let block = blocks.first(where: { $0.id == 1005 }) {
       guard block.data.count == 16 else { throw CraftError.invalid("Invalid Photoshop resolution resource.") }
@@ -152,10 +154,20 @@ enum PSDMultichannelStorage {
     }
     let alphas = PSDAuxiliaryChannels.all(document), count = plates.count + alphas.count
     guard count <= 56 else { throw CraftError.invalid("Photoshop files support at most56 channels.") }
+    let order: [PSDInkChannels.Plane]
+    if document.isChannelOnly { order = alphas.indices.map(PSDInkChannels.Plane.auxiliary) }
+    else {
+      let rows = Dictionary(uniqueKeysWithValues: plates.enumerated().map { ($0.element.id, PSDInkChannels.Plane.plate($0.offset)) }
+        + alphas.enumerated().map { ($0.element.id, PSDInkChannels.Plane.auxiliary($0.offset)) })
+      let ids = document.multichannelChannelOrder + (document.quickMask.map { [$0.id] } ?? [])
+      order = ids.compactMap { rows[$0] }
+      guard order.count == count else { throw CraftError.invalid("Photoshop channel rows disagree with the document order.") }
+    }
     try output.text("8BPS"); try output.n(format.rawValue, 2); try output.append(Data(repeating: 0, count: 6))
     try output.n(count, 2); try output.n(document.height, 4); try output.n(document.width, 4)
     try output.n(document.bitsPerChannel, 2); try output.n(7, 2)
-    try output.section(Data()); try output.section(PSDGuides.applying(try PSDGlobalLight.applying(PSDInkChannels.resources(document, plates: plates), document: document),document:document))
+    try output.section(Data()); try output.section(PSDGuides.applying(try PSDGlobalLight.applying(
+      PSDInkChannels.resources(document, plates: plates, alphas: alphas, order: order), document: document), document: document))
     let globalKeys=["CAI ","OCIO","GenI","FMsk","cinf"].filter{document.sourceMetadata?["psdGlobal_"+$0] != nil}
     if globalKeys.isEmpty {try output.section(Data(),lengthBytes:format.sectionLengthBytes)}
     else {
@@ -177,30 +189,33 @@ enum PSDMultichannelStorage {
     if storedInk.contains(where: { $0 != nil }) || storedAuxiliary.contains(where: { $0 != nil }) {
       repeatedRows = { row in
         let channel = row / document.height, y = row % document.height
-        if channel < plates.count { return storedInk[channel]?.repeatedRows(from: y) ?? 1 }
-        return storedAuxiliary[channel - plates.count]?.repeatedRows(from: y) ?? 1
+        switch order[channel] {
+        case .plate(let index): return storedInk[index]?.repeatedRows(from: y) ?? 1
+        case .auxiliary(let index): return storedAuxiliary[index]?.repeatedRows(from: y) ?? 1
+        }
       }
     } else { repeatedRows = nil }
     try PSDChannelWriter.write(width: document.width, height: document.height, depth: document.bitsPerChannel,
       compression: compression, channels: count, format: format, to: output, repeatedRows: repeatedRows) { row in
       let channel = row / document.height, y = row % document.height
-      if channel >= plates.count {
-        let index = channel - plates.count
+      switch order[channel] {
+      case .auxiliary(let index):
         if let stored = storedAuxiliary[index] { return try stored.row(y, channel: 0, depth: document.bitsPerChannel) }
         return try PSDAuxiliaryChannels.row(alphas[index], y: y, depth: document.bitsPerChannel)
+      case .plate(let index):
+        let plane = plates[index].samples
+        let maximum: UInt32 = document.depth == .u8 ? 255 : 65535
+        if let stored = storedInk[index] {
+          return try stored.row(y, depth: document.bitsPerChannel) { index in Float(maximum - plane.rawWord(at: index)) / Float(maximum) }
+        }
+        var bytes: [UInt8] = []; bytes.reserveCapacity(document.width * (document.bitsPerChannel / 8))
+        for x in 0..<document.width {
+          let value = maximum - plane.rawWord(at: y * document.width + x)
+          if document.depth == .u16 { bytes.append(UInt8(value >> 8)) }
+          bytes.append(UInt8(value & 255))
+        }
+        return bytes
       }
-      let plane = plates[channel].samples
-      let maximum: UInt32 = document.depth == .u8 ? 255 : 65535
-      if let stored = storedInk[channel] {
-        return try stored.row(y, depth: document.bitsPerChannel) { index in Float(maximum - plane.rawWord(at: index)) / Float(maximum) }
-      }
-      var bytes: [UInt8] = []; bytes.reserveCapacity(document.width * (document.bitsPerChannel / 8))
-      for x in 0..<document.width {
-        let value = maximum - plane.rawWord(at: y * document.width + x)
-        if document.depth == .u16 { bytes.append(UInt8(value >> 8)) }
-        bytes.append(UInt8(value & 255))
-      }
-      return bytes
     }
   }
 }

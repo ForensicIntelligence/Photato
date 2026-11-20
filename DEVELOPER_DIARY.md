@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **628** · The 10 most recent entries, newest first.
+Source build **629** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 629 — Keep saved masks and printing plates in one Multichannel order
+
+The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
+
+All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_629.md).
 
 ## 2026-11-19 — Step 628 — Drag channel rows and keep menu cues aligned
 
@@ -75,11 +83,3 @@ PSB can retain sparse editable spots and masks up to 300,000 × 300,000 pixels. 
 All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_620.md).
-
-## 2026-11-19 — Step 619 — Rank Workflow Guide suggestions and highlight each step
-
-Open Photato > Settings > Workflow Guide to control visibility, launch behavior and the suggestion limit. Choose Show Me while a guide is open to repeat its highlight. Preferences are stored locally.
-
-All 972 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_619.md).

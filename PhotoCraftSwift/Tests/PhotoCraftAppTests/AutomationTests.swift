@@ -161,7 +161,7 @@ final class AutomationTests: XCTestCase {
       let nativeDrag = try XCTUnwrap(channels["nativeDrag"] as? [String: String])
       XCTAssertTrue(nativeDrag["duplicate"]?.contains("channel.duplicate") == true)
       XCTAssertTrue(nativeDrag["delete"]?.contains("channel.deleteProcess") == true)
-      XCTAssertTrue(nativeDrag["reorder"]?.contains("ink.channel.manage") == true)
+      XCTAssertTrue(nativeDrag["reorder"]?.contains("moveMultichannel") == true)
       let interchange = try XCTUnwrap(channels["photoshopInterchange"] as? [String: Any])
       XCTAssertEqual(interchange["largeSavedChannelExport"] as? String,
         "Raw and PackBits output reuse unchanged rows in sparse saved channels. Unchanged original Float32 words remain exact.")

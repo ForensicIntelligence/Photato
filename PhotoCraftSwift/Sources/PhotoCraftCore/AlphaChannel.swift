@@ -92,6 +92,7 @@ public enum ChannelCommand: Sendable {
   case duplicate(UUID,String?)
   case rename(UUID,String)
   case move(UUID,Int)
+  case moveMultichannel(UUID,Int)
   case options(ChannelPlaneTarget,ChannelDisplayOptions)
   case configure(UUID,String,ChannelDisplayOptions,SpotInk?)
   case saveSelection(UUID?,String?,SelectionMode)
@@ -106,7 +107,7 @@ public enum ChannelCommand: Sendable {
   public var label: String {
     switch self {
     case .create: "New Channel"; case .delete: "Delete Channel"; case .duplicate: "Duplicate Channel"
-    case .rename: "Rename Channel"; case .move: "Channel Order"; case .options, .configure: "Channel Options"
+    case .rename: "Rename Channel"; case .move, .moveMultichannel: "Channel Order"; case .options, .configure: "Channel Options"
     case .saveSelection, .storeSelection: "Save Selection"; case .load, .loadCoverage: "Load Selection"
     case .quickMask(let on,_): on ? "Edit in Quick Mask":"Exit Quick Mask"
     case .stroke: "Brush on Channel"; case .fill: "Fill Channel"; case .invert: "Invert Channel"

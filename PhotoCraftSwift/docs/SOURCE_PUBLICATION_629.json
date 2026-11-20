@@ -1,0 +1,159 @@
+{
+  "build": 629,
+  "sourceInputs": 9236,
+  "casesPerConfiguration": 1129,
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationChannels.swift",
+      "sha256": "a5318fd4cd58d13ab70ba5735660e45198a647f03344417aae28a7101b149c2f"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "sha256": "27e8abadb4e6736f136b9ff4d4edce70cfffe544a13b6bfe5c2268ab8a15fb4a"
+    },
+    {
+      "path": "Sources/PhotoCraft/ChannelDragging.swift",
+      "sha256": "58cd25960cf20d57e5e7d29257160f34add5cee81bd862332b35552bd44309a9"
+    },
+    {
+      "path": "Sources/PhotoCraft/ChannelsPanel.swift",
+      "sha256": "208b5d3c0fb87166c869b7a9b15b9b77ceefbcc3d17fdbb691196d7ca3fcf4ff"
+    },
+    {
+      "path": "Sources/PhotoCraft/InkChannelRows.swift",
+      "sha256": "5bd3213f0d0d6349dc43469c9e8794a5720ef543889fb585ba86f0419b315dc0"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectionChannelSourceAPI.swift",
+      "sha256": "ec942c2ff5f1e212275308a87fa0267b627c28f6dc370be98aaa6eaeca93f498"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AlphaChannel.swift",
+      "sha256": "b4afb8c3ea58f7958cd8a35cd8e8972ee57420271bd8c428bdfa036b263f7a9d"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ChannelCommands.swift",
+      "sha256": "8174145d1cf34929e876fe48a66245dbf55c919767a3275665303ec255c001c9"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/InkChannelEditing.swift",
+      "sha256": "ae0cd0239dabcae33283675166f2c98191454ee488248e2293712bd305837fbf"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/InkModeDocument.swift",
+      "sha256": "4e37193c37445a496e4f3ebd64881df561de6f5832366f28703b3f1fc4faef9e"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/InkModeRaster.swift",
+      "sha256": "3cb70910c92f0b24b45c1d7a780ed2c898b01421039edb0c03d3bda3b3a17c66"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "sha256": "296ab287144e540679fcab04f33a3a1bc1877ccc3631c21d3db1f0d0a5efb542"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "sha256": "2bbe124efe9d89bbaccf0adb356c90dc3e3700ee538404692392b35952791d8d"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeIndexedArchive.swift",
+      "sha256": "abc8177c94ff04630564fb5f99a6d7977dfc9fe887924d71a5aa2eac7d7b3b53"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDInkChannels.swift",
+      "sha256": "8bb0d9c8dbe4c5ee42798bb71c90fb8e9b9e411d8904c93e03f75e063f583a0a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDMultichannelStorage.swift",
+      "sha256": "6d87a7aa212dc4b80f0eb6ef48b48b9273cb37131316af696c35017c4d1c4a06"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "d9ea3a076ae8900e1519b5b70ab73e6048f86873df591eda4abf28d6d4dcb50f"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ComponentArchiveWorkflowTests.swift",
+      "sha256": "ba7fb61f2c905673a3616b9c18270668ed49ac7162fdd8b8924caa35dbfc7625"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/DocumentIOWorkflowTests.swift",
+      "sha256": "312c62216ebc04f4c79b0b04dd3cfbe84b5a4cd0ff5bb5291c9855f0298c463e"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/DocumentModeWorkflowTests.swift",
+      "sha256": "e3c21e8490f9668f36d1de99b053efa02c8f550370adb502d22c55afcf71ae40"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/IndexedNativeWorkflowTests.swift",
+      "sha256": "3ce75b4bc07ead4656b3a891706713d7eff722d52c497acd2e4c36b7c35ebed2"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/InkModeArchiveWorkflowTests.swift",
+      "sha256": "5569cdbd86773ba30199af68bfd8049861b2831dce554b22efa8b44583e90764"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/MultichannelOrderWorkflowTests.swift",
+      "sha256": "afa9bf91a02224f495cf8c615485cdba8c7e9d8631585469221af57068c63739"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/RestrictedFormatWorkflowTests.swift",
+      "sha256": "3ab7aad322876688710c0d48e0d4efd6b867a43d89807f6c7d0e61537ba30d45"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/MultichannelOrderTests.swift",
+      "sha256": "83ab0d7a5bae3e990a217d1e0bf423e412bfbecdd673963b9088cabace313eee"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "f83be8f61d3264bd2a68acb83480fb558dd64c121138dd1507bb4ec1fb1cffdb"
+    }
+  ],
+  "configurations": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "d5b4383cd022a184476bc777df3ae8ae3ae3089a6f443a1a39f374164785f3c1",
+      "testBinarySHA256": "015d72a0ac2d75b536aa1a9f456f6e52ca8d7cb799667e71deb4ac59efae8cc2",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "8b2a5c21c29b7f92fce08db24f1dbaaa3582cc67cf948aa5062e10dae66ab5ae",
+      "testBinarySHA256": "f3753ba0cad93e4c0229c5dba42d8f63ad0c94a0293bba5eb7bd0449eea3c505",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "e471e8ff2395e31be44b3e666c2027c650ef49de5d14730fb15cf4560b0a4093",
+      "testBinarySHA256": "1439020e8236bdd770bb3a99acc18ec17b25ef3e6da00f02273da04f080a44c5",
+      "passed": true
+    }
+  },
+  "archive": {
+    "archiveSHA256": "1c23099696e34793a42cc13dd51b89e57c11cd65cb5669d6e2b8de887c5768c8",
+    "architectures": "x86_64 arm64",
+    "minimumSystemMetadata": "14.0",
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "995e34d5cbb0dd00d530099c43d42a13b06de886e245e7fefca8b7fccbdd33e8",
+        "bytes": 114090
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "feeedb14c5b7c8f47336d767d4143dab3859bc65dd2e6259f9be6f04fe3ecec2",
+        "bytes": 122083
+      }
+    }
+  }
+}

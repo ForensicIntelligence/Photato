@@ -647,7 +647,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 626 | 2026-11-19 | [Delete process channels through the Channels panel](#dev-step-626) |
 | 627 | 2026-11-19 | [Integrate Workflow Guide cues with the expanded Channels panel](#dev-step-627) |
 | 628 | 2026-11-19 | [Drag channel rows and keep menu cues aligned](#dev-step-628) |
+| 629 | 2026-11-19 | [Keep saved masks and printing plates in one Multichannel order](#dev-step-629) |
 <!-- history-index:end -->
+
+<a id="dev-step-629"></a>
+
+## 2026-11-19 — Keep saved masks and printing plates in one Multichannel order
+
+The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
+
+All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](MULTICHANNEL_ORDER_629.md) · [Qualification](SOURCE_PUBLICATION_629.md).
 
 <a id="dev-step-628"></a>
 

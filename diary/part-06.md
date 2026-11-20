@@ -656,6 +656,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 626 | [Delete process channels through the Channels panel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-626) |
 | 2026-11-19 | 627 | [Integrate Workflow Guide cues with the expanded Channels panel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-627) |
 | 2026-11-19 | 628 | [Drag channel rows and keep menu cues aligned](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-628) |
+| 2026-11-19 | 629 | [Keep saved masks and printing plates in one Multichannel order](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -148,6 +148,8 @@ public struct InkPlate: Codable, Equatable, Identifiable, Sendable {
 public struct MultichannelRaster: Codable, Equatable, Sendable {
   public static let maximumChannels = 56
   public var plates: [InkPlate]
+  /// Present when saved channels share the plate order. Nil is the legacy plates-first order.
+  var channelOrder: [UUID]?
   public var width: Int { plates.first?.samples.width ?? 0 }
   public var height: Int { plates.first?.samples.height ?? 0 }
   public var depth: PixelDepth { plates.first?.samples.depth ?? .u8 }

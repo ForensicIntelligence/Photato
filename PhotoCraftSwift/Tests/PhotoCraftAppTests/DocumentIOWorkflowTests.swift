@@ -552,7 +552,8 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...93))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...94))
+      XCTAssertEqual(formats["multichannelOrderVersion"] as? Int, 94)
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),
         type: "application/vnd.photato.document")

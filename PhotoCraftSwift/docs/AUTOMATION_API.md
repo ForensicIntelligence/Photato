@@ -1,3 +1,7 @@
+### Multichannel row order (checkpoint 629)
+
+In a Multichannel document, `channel.edit` accepts `action: "moveMultichannel"`, a printing plate or saved channel UUID as `target`, and an integer final `index` within `selectionChannels.multichannelOrder`. It commits one undoable edit, using the same command as the Channels panel gestures. The former group-relative `move` actions still address that group's indices. Capability discovery advertises the mixed-order archive version 94. Firefly v2 has no documented endpoint.
+
 ### Drag channels (preview 628)
 
 `GET /v1/capabilities` includes `alphaChannels.nativeDrag`. Dropping an individual channel onto New Channel or another matching open image uses the numerical operation exposed as `channel.duplicate`. Drag-to-trash uses `channel.deleteProcess`, `channel.edit` with action `delete`, or `ink.channel.manage` with action `delete`, as appropriate. Reordering saved channels or Multichannel ink plates uses the corresponding `move` action. Existing permissions, revisions and payloads apply to all four commands. Firefly v2 has no documented channel drag endpoint.

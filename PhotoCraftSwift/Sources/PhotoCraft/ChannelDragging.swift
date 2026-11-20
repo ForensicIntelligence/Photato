@@ -92,20 +92,25 @@ import SwiftUI
   private static func order(_ source: SelectionChannelSource, relativeTo row: SelectionChannelSource,
     after: Bool, in store: EditorStore) -> (UUID, Int)? {
     let ids: [UUID], sourceID: UUID, targetID: UUID
-    switch (source, row) {
-    case (.alpha(let a), .alpha(let b)):
+    if store.document.inkMode?.mode == .multichannel {
+      guard let a = rowID(source), let b = rowID(row) else { return nil }
+      ids = store.document.multichannelChannelOrder
+      (sourceID, targetID) = (a, b)
+    } else if case .alpha(let a) = source, case .alpha(let b) = row {
       ids = (store.document.alphaChannels ?? []).map(\.id)
       (sourceID, targetID) = (a, b)
-    case (.plate(let a), .plate(let b)):
-      guard store.canEditInkChannels, case .multichannel(let raster) = store.document.inkMode else { return nil }
-      ids = raster.plates.map(\.id)
-      (sourceID, targetID) = (a, b)
-    default: return nil
-    }
+    } else { return nil }
     guard sourceID != targetID, let start = ids.firstIndex(of: sourceID), let row = ids.firstIndex(of: targetID) else { return nil }
     let insertion = row + (after ? 1 : 0)
     let end = start < insertion ? insertion - 1 : insertion
     return start == end ? nil : (sourceID, end)
+  }
+
+  private static func rowID(_ source: SelectionChannelSource) -> UUID? {
+    switch source {
+    case .alpha(let id), .plate(let id): return id
+    default: return nil
+    }
   }
 
   static func receive(_ provider: NSItemProvider, destination: Destination, in target: EditorStore) async -> Bool {
@@ -138,8 +143,9 @@ import SwiftUI
         }
       case .reorder(let row, let after):
         guard let (id, position) = order(value.source, relativeTo: row, after: after, in: target) else { return false }
-        if case .alpha = value.source { try target.executeEditorCommand(.channel(.move(id, position))) }
-        else { target.performInkChannel(.move(id, position)) }
+        let command: ChannelCommand = target.document.inkMode?.mode == .multichannel
+          ? .moveMultichannel(id, position) : .move(id, position)
+        try target.executeEditorCommand(.channel(command))
       case .duplicate, .canvas:
         duplicate(value, from: source, to: target)
       }
@@ -180,7 +186,7 @@ import SwiftUI
     [
       "duplicate": "Drag an individual channel to New Channel, or to another open image of matching dimensions. API equivalent: channel.duplicate.",
       "delete": "Drag an individual RGB, CMYK, Lab component, saved alpha, spot or removable Multichannel plate to the trash. API equivalents: channel.deleteProcess, channel.edit, ink.channel.manage.",
-      "reorder": "Drag a saved alpha or spot among saved rows, or a Multichannel plate among its plates. API equivalents: channel.edit or ink.channel.manage with action move."
+      "reorder": "Drag saved rows into order. Multichannel lets saved selections and printing plates share that order. API: channel.edit with move or moveMultichannel."
     ]
   }
 }

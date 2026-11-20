@@ -1,3 +1,5 @@
+**Source checkpoint 629.** The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence. [Qualification](SOURCE_PUBLICATION_629.md).
+
 **Source checkpoint 628.** Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu. [Qualification](SOURCE_PUBLICATION_628.md).
 
 **Source checkpoint 620.** Large 8- and 16-bit Multichannel printing plates and masks open, remain editable, and save through the native paged PSD and PSB pipeline. [Qualification](SOURCE_PUBLICATION_620.md).

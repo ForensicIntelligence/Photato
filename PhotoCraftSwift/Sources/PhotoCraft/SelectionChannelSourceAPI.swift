@@ -44,7 +44,7 @@ extension EditorStore {
   var selectionChannelState:[String:Any] {
     let sources=SelectionChannelSource.choices(in:document,includingComponents:true)
     let grayName=(try? workingColorSettings.profile(.grayscale,depth:document.depth)).map(ColorPolicyInput.name) ?? "Unavailable"
-    return ["footer":channelFooterState,"spotMerge":spotChannelMergeState,"processDeletion":processChannelDeletionState,"sources":sources.map(SelectionChannelSourceAPI.state),
+    return ["footer":channelFooterState,"spotMerge":spotChannelMergeState,"processDeletion":processChannelDeletionState,"multichannelOrder":document.multichannelChannelOrder.map(\.uuidString),"sources":sources.map(SelectionChannelSourceAPI.state),
       "duplicateSources":ChannelDuplication.sources(in: document).map(SelectionChannelSourceAPI.state),"workingGrayProfile":grayName,
       "canSaveSelection":canSaveSelectionChannel,"canSaveNewDocument":canSaveSelectionChannel,
       "canLoadSelection":canEditChannels && !sources.isEmpty,

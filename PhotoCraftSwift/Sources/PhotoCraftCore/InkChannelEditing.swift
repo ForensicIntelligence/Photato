@@ -130,6 +130,7 @@ public enum InkChannelCommand: Sendable {
         try result.setInkChannel(edited, at: target)
       }
     }
+    try result.reconcileMultichannelChannelOrder()
     try result.validate(); document = result
   }
   private static func map(_ plane: InkPlane, selection: IntRect?,

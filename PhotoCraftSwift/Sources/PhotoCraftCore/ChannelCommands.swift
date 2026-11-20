@@ -20,6 +20,8 @@ extension ChannelCommand {
     case .move(let id,let index):
       guard let old = d.alphaChannels?.firstIndex(where:{ $0.id == id }), let count = d.alphaChannels?.count, (0..<count).contains(index) else { throw CraftError.invalid("Invalid channel order.") }
       let value = d.alphaChannels!.remove(at:old); d.alphaChannels!.insert(value,at:index)
+    case .moveMultichannel(let id, let index):
+      try d.moveMultichannelChannel(id, to: index)
     case .options(let target,let options):
       try options.validate(); var value = try d.channel(target); value.options = options; try d.setChannel(value,at:target)
     case .configure(let id,let name,let options,let spot):
@@ -119,5 +121,6 @@ extension ChannelCommand {
     case .filter(let target,let filter):
       try AuxiliaryChannelFiltering.apply(filter,to:target,in:&d)
     }
+    try d.reconcileMultichannelChannelOrder()
   }
 }

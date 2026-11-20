@@ -1,6 +1,61 @@
 import Foundation
 
 extension CraftDocument {
+  public var multichannelChannelOrder: [UUID] {
+    guard case .multichannel(let raster) = inkMode else { return [] }
+    return raster.channelOrder ?? (raster.plates.map(\.id) + (alphaChannels ?? []).map(\.id))
+  }
+
+  public var hasInterleavedMultichannelChannels: Bool {
+    if case .multichannel(let raster) = inkMode { return raster.channelOrder != nil }
+    return false
+  }
+
+  public mutating func setMultichannelChannelOrder(_ order: [UUID]) throws {
+    guard case .multichannel(var raster) = inkMode else { throw CraftError.invalid("Channel order requires Multichannel mode.") }
+    let alpha = alphaChannels ?? []
+    let available = raster.plates.map(\.id) + alpha.map(\.id)
+    guard available.count == order.count, Set(available) == Set(order), Set(order).count == order.count else {
+      throw CraftError.invalid("The order must include every saved channel and printing plate exactly once.")
+    }
+    let plates = Dictionary(uniqueKeysWithValues: raster.plates.map { ($0.id, $0) })
+    let selections = Dictionary(uniqueKeysWithValues: alpha.map { ($0.id, $0) })
+    raster.plates = order.compactMap { plates[$0] }
+    let orderedAlpha = order.compactMap { selections[$0] }
+    raster.channelOrder = order == raster.plates.map(\.id) + orderedAlpha.map(\.id) ? nil : order
+    inkMode = .multichannel(raster)
+    if !orderedAlpha.isEmpty { alphaChannels = orderedAlpha }
+  }
+
+  mutating func moveMultichannelChannel(_ id: UUID, to destination: Int) throws {
+    var order = multichannelChannelOrder
+    guard let source = order.firstIndex(of: id), order.indices.contains(destination) else {
+      throw CraftError.invalid("Choose a printing plate or saved channel and a valid destination.")
+    }
+    guard source != destination else { return }
+    order.remove(at: source)
+    order.insert(id, at: destination)
+    try setMultichannelChannelOrder(order)
+  }
+
+  /// The older group-relative commands keep the positions occupied by that group.
+  /// New rows append, and a removed row releases its own position.
+  mutating func reconcileMultichannelChannelOrder() throws {
+    guard case .multichannel(let raster) = inkMode, let previous = raster.channelOrder else { return }
+    let plates = raster.plates.map(\.id), alpha = (alphaChannels ?? []).map(\.id)
+    let plateIDs = Set(plates), alphaIDs = Set(alpha), previousIDs = Set(previous)
+    var retainedPlates = plates.filter(previousIDs.contains).makeIterator()
+    var retainedAlpha = alpha.filter(previousIDs.contains).makeIterator()
+    var resolved = previous.compactMap { id -> UUID? in
+      if plateIDs.contains(id) { return retainedPlates.next() }
+      if alphaIDs.contains(id) { return retainedAlpha.next() }
+      return nil
+    }
+    resolved.append(contentsOf: plates.filter { !previousIDs.contains($0) })
+    resolved.append(contentsOf: alpha.filter { !previousIDs.contains($0) })
+    try setMultichannelChannelOrder(resolved)
+  }
+
   /// A Duotone has one editable gray plane. Multichannel has independent printing
   /// plates and no layers; ordinary alpha masks remain separate auxiliary channels.
   public var colorChannelNames: [String] {
@@ -76,6 +131,13 @@ extension CraftDocument {
         raster.plates.count + (alphaChannels?.count ?? 0) <= MultichannelRaster.maximumChannels,
         raster.plates.allSatisfy({ !otherIDs.contains($0.id) }) else {
         throw CraftError.invalid("Multichannel uses up to56 distinct ink/alpha channels and has no layers.")
+      }
+      if let order = raster.channelOrder {
+        let plates = raster.plates.map(\.id), alpha = (alphaChannels ?? []).map(\.id)
+        let plateIDs = Set(plates), alphaIDs = Set(alpha)
+        guard order.count == plates.count + alpha.count,
+          order.filter(plateIDs.contains) == plates, order.filter(alphaIDs.contains) == alpha,
+          order != plates + alpha else { throw CraftError.invalid("Invalid order of Multichannel ink and saved channels.") }
       }
     }
   }

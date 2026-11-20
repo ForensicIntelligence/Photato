@@ -5,6 +5,10 @@ import PhotoCraftCore
 /// Public PSD resources1006/1045/1077. Modern DisplayInfo records are13 bytes;
 /// obsolete1007 records add one padding byte. See pinned psd-tools1.26.0 evidence.
 enum PSDInkChannels {
+  enum Plane {
+    case plate(Int)
+    case auxiliary(Int)
+  }
   struct Display {
     var color: Pixel
     var opacity: Float
@@ -113,7 +117,7 @@ enum PSDInkChannels {
     result.n(Int((opacity * 100).rounded()), 2); result.n(kind, 1); return result.data
   }
 
-  static func resources(_ document: CraftDocument, plates: [InkPlate]) throws -> Data {
+  static func resources(_ document: CraftDocument, plates: [InkPlate], alphas: [AlphaChannel], order: [Plane]) throws -> Data {
     if document.isChannelOnly {
       let base = try PSDRestrictedStorage.resources(document)
       let retained = try PSDImageResources.blocks(base).filter { !resourceIDs.contains($0.id) }
@@ -122,21 +126,24 @@ enum PSDInkChannels {
       guard resources.count <= PSDImageResources.maximumBytes else { throw CraftError.invalid("Channel resources exceed the metadata limit.") }
       return resources
     }
-    let alphas = PSDAuxiliaryChannels.all(document)
-    let names = plates.map(\.name) + alphas.map(\.name)
     var unicode = PSDWriter(), pascal = PSDWriter(), displayInfo = PSDWriter(); displayInfo.n(1, 4)
-    for name in names {
+    for plane in order {
+      let name: String
+      switch plane {
+      case .plate(let i):
+        let plate = plates[i]
+        name = plate.name
+        displayInfo.data += try record(id: plate.id, color: plate.color, opacity: plate.solidity, kind: 2, document: document)
+      case .auxiliary(let i):
+        let alpha = alphas[i]
+        name = alpha.name
+        displayInfo.data += try record(id: alpha.id, color: alpha.options.color, opacity: alpha.options.opacity,
+          kind: alpha.options.indicates == .selectedAreas ? 0 : 1, document: document)
+      }
       let chars = Array(name.utf16); unicode.n(chars.count, 4)
       for c in chars { unicode.n(Int(c), 2) }
       let legacy = Data((name.data(using: .macOSRoman, allowLossyConversion: true) ?? Data("Channel".utf8)).prefix(255))
       pascal.n(legacy.count, 1); pascal.data += legacy
-    }
-    for plate in plates {
-      displayInfo.data += try record(id: plate.id, color: plate.color, opacity: plate.solidity, kind: 2, document: document)
-    }
-    for alpha in alphas {
-      displayInfo.data += try record(id: alpha.id, color: alpha.options.color, opacity: alpha.options.opacity,
-        kind: alpha.options.indicates == .selectedAreas ? 0 : 1, document: document)
     }
     var identifiers=PSDWriter(),used=Set(alphas.compactMap(\.psdIdentifier)),next:UInt32=1
     let plateIDs=try plates.map {plate->UInt32? in
@@ -145,7 +152,12 @@ enum PSDInkChannels {
       var input=PSDReader(data:data);return UInt32(try input.u32())
     }
     for id in plateIDs.compactMap({$0}) {guard used.insert(id).inserted else{throw CraftError.invalid("Duplicate Photoshop channel identifier.")}}
-    for id in plateIDs+alphas.map(\.psdIdentifier) {
+    for plane in order {
+      let id: UInt32?
+      switch plane {
+      case .plate(let i): id = plateIDs[i]
+      case .auxiliary(let i): id = alphas[i].psdIdentifier
+      }
       if let id {identifiers.n(Int(id),4)}
       else {while used.contains(next){next+=1};identifiers.n(Int(next),4);used.insert(next)}
     }
@@ -156,7 +168,7 @@ enum PSDInkChannels {
     resources += PSDImageResources.block(1077, data: displayInfo.data)
     resources += PSDImageResources.block(1053,data:identifiers.data)
     if let quick=document.quickMask {
-      var info=PSDWriter();info.n(plates.count+alphas.count-1,2);info.n(quick.psdQuickMaskInitiallyEmpty==true ? 1:0,1)
+      var info=PSDWriter();info.n(order.count-1,2);info.n(quick.psdQuickMaskInitiallyEmpty==true ? 1:0,1)
       resources += PSDImageResources.block(1022,data:info.data)
     }
     guard resources.count <= PSDImageResources.maximumBytes else { throw CraftError.invalid("Ink resources exceed the metadata limit.") }

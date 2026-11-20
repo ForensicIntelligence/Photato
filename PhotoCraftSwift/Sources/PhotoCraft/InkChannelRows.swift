@@ -8,8 +8,9 @@ struct InkChannelRows: View {
   let images: [CGImage]
   let size: ChannelThumbnailSize
   let eyeTracking:ChannelEyeTracking
+  var only: InkChannelTarget? = nil
   var body: some View {
-    ForEach(Array(store.document.inkChannelTargets.enumerated()), id: \.element) { index, target in
+    ForEach(Array(store.document.inkChannelTargets.enumerated()).filter { only == nil || $0.element == only }, id: \.element) { index, target in
       let duplicateSource: SelectionChannelSource = switch target {
       case .duotone: .duotone
       case .plate(let id): .plate(id)
@@ -61,10 +62,12 @@ struct InkChannelRows: View {
           Button("Duplicate Channel…") { store.beginDuplicateChannel(duplicateSource) }
             .disabled(!store.canDuplicateChannel(duplicateSource))
           if case .plate(let id) = target {
+            let order = store.document.multichannelChannelOrder
+            let slot = order.firstIndex(of: id) ?? index
             Divider()
             Button("Spot Channel Options…") { store.beginInkChannelOptions(id) }
-            Button("Move Up") { store.performInkChannel(.move(id, index - 1)) }.disabled(index == 0)
-            Button("Move Down") { store.performInkChannel(.move(id, index + 1)) }.disabled(index == store.document.inkChannelTargets.count - 1)
+            Button("Move Up") { store.perform(.channel(.moveMultichannel(id, slot - 1))) }.disabled(slot == 0)
+            Button("Move Down") { store.perform(.channel(.moveMultichannel(id, slot + 1))) }.disabled(slot >= order.count - 1)
             Button("Delete Channel") { store.performInkChannel(.delete(id)) }.disabled(store.document.inkChannelTargets.count == 1)
           }
         }

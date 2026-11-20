@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 629 — Keep saved masks and printing plates in one Multichannel order
+
+The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
+
+All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_629.md).
+
 ## 2026-11-19 — Step 628 — Drag channel rows and keep menu cues aligned
 
 Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu.
@@ -1027,14 +1035,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:628 -->
+<!-- current-status-step:629 -->
 ## Current development status — 19 November 2026
 
-Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu.
+The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
 
-All 1,125 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed strict signature verification and offscreen launch checks.
+All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 628](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_628.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-628).
+[Source checkpoint 629](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_629.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-629).
 
 <!-- current-status:end -->
 

@@ -60,7 +60,16 @@ struct ChannelsPanel: View {
     VStack(spacing: 0) {
       ScrollView {
         VStack(spacing: 0) {
-          if store.document.inkMode != nil {
+          if store.document.inkMode?.mode == .multichannel {
+            let images = thumbnails.request == request ? thumbnails.images : []
+            ForEach(store.document.multichannelChannelOrder, id: \.self) { id in
+              if let channel = store.document.alphaChannels?.first(where: { $0.id == id }) {
+                AuxiliaryChannelRow(store: store, channel: channel, eyeTracking: eyeTracking)
+              } else {
+                InkChannelRows(store: store, images: images, size: size, eyeTracking: eyeTracking, only: .plate(id))
+              }
+            }
+          } else if store.document.inkMode != nil {
             InkChannelRows(store: store, images: thumbnails.request == request ? thumbnails.images : [], size: size,eyeTracking:eyeTracking)
           } else if store.document.colorMode.isRestricted {
             HStack(spacing: 10) {
@@ -77,7 +86,9 @@ struct ChannelsPanel: View {
             ForEach(RGBChannelPreview.allCases, id: \.self) { channel in row(channel) }
           }
           ForEach(store.temporaryMaskChannels,id: \.self) { target in TemporaryMaskChannelRow(store:store,target:target,eyeTracking:eyeTracking) }
-          ForEach(store.document.alphaChannels ?? []) { channel in AuxiliaryChannelRow(store:store,channel:channel,eyeTracking:eyeTracking) }
+          if store.document.inkMode?.mode != .multichannel {
+            ForEach(store.document.alphaChannels ?? []) { channel in AuxiliaryChannelRow(store:store,channel:channel,eyeTracking:eyeTracking) }
+          }
           if let channel = store.document.quickMask { AuxiliaryChannelRow(store:store,channel:channel,quick:true,eyeTracking:eyeTracking) }
         }
       }
@@ -200,7 +211,7 @@ struct AuxiliaryChannelRow: View {
           Button("Duplicate Channel…") { store.beginDuplicateChannel(.alpha(channel.id)) }
             .disabled(!store.canDuplicateChannel(.alpha(channel.id)))
           Button("Move Up") { move(-1) }.disabled(index == 0)
-          Button("Move Down") { move(1) }.disabled(index >= (store.document.alphaChannels?.count ?? 0)-1)
+          Button("Move Down") { move(1) }.disabled(index >= channelCount - 1)
           Button("Delete Channel") { store.perform(.channel(.delete(channel.id))) }
         }
         if channel.spot != nil && !quick {
@@ -219,6 +230,16 @@ struct AuxiliaryChannelRow: View {
         thumbnail = try? await Task.detached(priority:.utility) { try RasterIO.displayImage(Renderer.channelThumbnails(source,maximumSize:64)[0]) }.value
       }
   }
-  private var index: Int { store.document.alphaChannels?.firstIndex(where:{$0.id == channel.id}) ?? 0 }
-  private func move(_ delta: Int) { store.perform(.channel(.move(channel.id,index+delta))) }
+  private var isMultichannel: Bool { store.document.inkMode?.mode == .multichannel }
+  private var index: Int {
+    if isMultichannel { return store.document.multichannelChannelOrder.firstIndex(of: channel.id) ?? 0 }
+    return store.document.alphaChannels?.firstIndex(where: { $0.id == channel.id }) ?? 0
+  }
+  private var channelCount: Int {
+    isMultichannel ? store.document.multichannelChannelOrder.count : (store.document.alphaChannels?.count ?? 0)
+  }
+  private func move(_ delta: Int) {
+    let command: ChannelCommand = isMultichannel ? .moveMultichannel(channel.id, index + delta) : .move(channel.id, index + delta)
+    store.perform(.channel(command))
+  }
 }
