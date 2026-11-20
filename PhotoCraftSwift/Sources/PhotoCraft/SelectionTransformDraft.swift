@@ -11,6 +11,12 @@ extension TransformDraft {
     return p.map { point in let q = transform.point(point.x, point.y); return .init(q.x, q.y) }
   }
   var selectionProjection:ProjectiveTransform {get throws {
+    if let frame = projectiveArtworkFrame {
+      if selectionCorners == frame.corners { return .identity }
+      if let projectiveArtworkDelta { try projectiveArtworkDelta.validate(); return projectiveArtworkDelta }
+      let placement = try SelectionTransform.projection(bounds: frame.source, corners: selectionCorners)
+      return try frame.inverse.followed(by: placement)
+    }
     if let frame = artworkFrame {
       if let selectionQuad {
         let s = IntRect(x: 0, y: 0, width: frame.artwork.width, height: frame.artwork.height)
@@ -31,7 +37,13 @@ extension TransformDraft {
     return (try? selectionProjection.point(original.x, original.y)) ?? .init(centerX,centerY)
   }
   func selectionApplying(_ matrix:Transform2D)->Self {
-    var result=self;result.selectionQuad=selectionCorners.map{let p=matrix.point($0.x,$0.y);return .init(p.x,p.y)};return result
+    var result=self
+    result.selectionQuad=selectionCorners.map{let p=matrix.point($0.x,$0.y);return .init(p.x,p.y)}
+    if projectiveArtworkFrame != nil, let before = try? selectionProjection {
+      if let affine = try? before.affineValue() { result.projectiveArtworkDelta = .init(matrix * affine) }
+      else { result.projectiveArtworkDelta = try? before.followed(by: matrix) }
+    }
+    return result
   }
   func selectionNumeric(_ key:WritableKeyPath<TransformDraft,Double>,_ value:Double)->Self {
     var next=self;let pivot=selectionReferencePoint,old=self[keyPath:key]
@@ -47,7 +59,9 @@ extension TransformDraft {
       if xy {next.scaleX=value;if proportional{next.scaleY*=ratio}}else{next.scaleY=value;if proportional{next.scaleX*=ratio}}
     }else {next[keyPath:key]=value;return next}
     let matrix=Transform2D.translation(pivot.x,pivot.y)*delta * .translation(-pivot.x,-pivot.y)
-    next.selectionQuad=selectionApplying(matrix).selectionQuad;return next
+    let applied = selectionApplying(matrix)
+    next.selectionQuad = applied.selectionQuad; next.projectiveArtworkDelta = applied.projectiveArtworkDelta
+    return next
   }
   func selectionMode(handle:Int,modifiers:NSEvent.ModifierFlags)->SelectionTransformMode {
     if handle == 8{return .rotate};if handle == -1{return .free}
@@ -71,7 +85,10 @@ extension TransformDraft {
     let pivot=selectionReferencePoint
     if handle==8 || mode == .rotate {
       var degrees=(atan2(end.y-pivot.y,end.x-pivot.x)-atan2(start.y-pivot.y,start.x-pivot.x))*180 / .pi
-      if shift {degrees=((angle+degrees)/15).rounded()*15-angle}
+      if shift {
+        let referenceAngle = projectiveArtworkFrame == nil ? angle : displayedAngle
+        degrees = ((referenceAngle + degrees) / 15).rounded() * 15 - referenceAngle
+      }
       next=selectionApplying(.translation(pivot.x,pivot.y) * .rotation(degrees) * .translation(-pivot.x,-pivot.y));next.angle=angle+degrees;return next
     }
     guard (0..<8).contains(handle) else{return self}

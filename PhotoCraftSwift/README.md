@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 665.** Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame. [Qualification](docs/SOURCE_PUBLICATION_665.md).
+
 **Source checkpoint 664.** Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs. [Qualification](docs/SOURCE_PUBLICATION_664.md).
 
 **Source checkpoint 663.** The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite. [Qualification](docs/SOURCE_PUBLICATION_663.md).

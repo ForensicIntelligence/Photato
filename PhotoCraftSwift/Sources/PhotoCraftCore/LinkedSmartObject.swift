@@ -129,4 +129,7 @@ extension Layer {
   public func smartObjectSourceTransform()throws->Transform2D {
     try linkedSmartObjectPreview().map{coordinateTransform * $0.sourceToCache} ?? coordinateTransform
   }
+  public func smartObjectSourceProjection() throws -> ProjectiveTransform? {
+    try sourceProjection?.followed(by: coordinateTransform)
+  }
 }

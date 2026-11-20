@@ -20,9 +20,11 @@ extension TransformDraft{
     guard canBeginLayerCollectionTransform,let active=document.activeLayerID else{return}
     do{finishNumericField();finishLayerName();let ids=layerCollectionIDs
       let artwork = ids == [active] ? try activeLayer?.smartObjectGeometry() : nil
-      var draft = try TransformDraft(layerID: active, bounds: layerCollectionBounds(ids), artwork: artwork)
+      let projective = ids == [active] ? try activeLayer.flatMap { try ProjectiveArtworkFrame($0) } : nil
+      let bounds = try projective?.bounds ?? layerCollectionBounds(ids)
+      var draft = try TransformDraft(layerID: active, bounds: bounds, artwork: artwork, projectiveFrame: projective)
       draft.collectionLayerIDs=ids;draft.collectionViewIDs=groupSelectionIDs;draft.collectionProjective=ProjectiveLayerTransform.available(document,layerIDs:ids);draft.selection=true;draft.selectedPixels=true
-      if artwork == nil { draft.selectionQuad = draft.selectionCorners }
+      if artwork == nil, projective == nil { draft.selectionQuad = draft.selectionCorners }
       let session=SelectionTransformSession(document,draft:draft);selectionTransform=session;transformDraft=draft;tool = .move;session.task=Task{await session.prepare()};status="Free Transform layers · Return applies · Escape cancels"
     }catch{self.error=error.localizedDescription}
   }

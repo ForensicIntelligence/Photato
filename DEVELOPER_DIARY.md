@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **664** · The 10 most recent entries, newest first.
+Source build **665** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 665 — Reopen perspective Smart Objects and continue editing
+
+Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.
+
+1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Live Photoshop document scripting timed out after the read-only version query. Projective linked files, projective PDFs and editable non-identity Warp still need Photoshop-file coverage. Intel tests ran under Rosetta.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-665) · [Details](PhotoCraftSwift/docs/PROJECTIVE_SMART_OBJECT_ROUNDTRIP_665.md).
 
 ## 2026-11-20 — Step 664 — Export thumbnail and Smart Object assets from Photoshop manifests
 
@@ -75,11 +83,3 @@ PSD and PSB files now keep both linked-file locations. Locate Package Sources ca
 All 1,457 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the ad hoc–signed macOS 14+ universal preview launched offscreen. The live Photoshop comparison remains open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-656) · [Details](PhotoCraftSwift/docs/PORTABLE_LINKED_PATHS_656.md).
-
-## 2026-11-20 — Step 655 — Add General placement preferences
-
-General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
-
-All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The direct Photoshop comparison is still open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-655) · [Details](PhotoCraftSwift/docs/PLACEMENT_PREFERENCES_655.md).

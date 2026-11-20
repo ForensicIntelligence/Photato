@@ -2,7 +2,7 @@ import Foundation
 import PhotoCraftCore
 
 // Native translation of PhotoCraft io/linked.rs and smart_map.rs (MIT OR Apache-2.0),
-// affine placement. External references remain declarative; never resolve filesystem links.
+// for affine placement. External references stay as locators.
 enum PSDSmartObjects {
   struct File {
     var name: String
@@ -120,8 +120,40 @@ enum PSDSmartObjects {
     let descriptor: PSDDescriptor
     let file: File
     let sourceID: UUID
-    let quad: [Double]
     let selectedComp: Int32
+  }
+
+  struct PlacementQuads {
+    let base: [Double]
+    let content: [Double]
+
+    init(_ descriptor: PSDDescriptor) throws {
+      func points(_ key: String) throws -> [Double] {
+        guard case .list(let values) = descriptor[key], values.count == 8,
+              values.allSatisfy({ $0.number?.isFinite == true }) else {
+          throw CraftError.invalid("Invalid Smart Object placement corners.")
+        }
+        return values.compactMap(\.number)
+      }
+      base = try points("Trnf")
+      content = try descriptor["nonAffineTransform"] == nil ? base : points("nonAffineTransform")
+    }
+
+    func affine(width: Int, height: Int) -> Transform2D? {
+      let q = content, w = Double(width), h = Double(height)
+      let placement = Transform2D(a: (q[2] - q[0]) / w, b: (q[3] - q[1]) / w,
+                                  c: (q[6] - q[0]) / h, d: (q[7] - q[1]) / h, tx: q[0], ty: q[1])
+      let corner = placement.point(w, h)
+      let tolerance = content == base ? 0.001 : 1e-9
+      return abs(corner.x - q[4]) < tolerance && abs(corner.y - q[5]) < tolerance ? placement : nil
+    }
+
+    func projective(width: Int, height: Int) throws -> ProjectiveTransform {
+      let corners = stride(from: 0, to: content.count, by: 2).map { PathPoint(content[$0], content[$0 + 1]) }
+      let projection = try SelectionTransform.projection(bounds: .init(x: 0, y: 0, width: width, height: height), corners: corners)
+      _ = try projection.bounds(width: width, height: height)
+      return projection
+    }
   }
 
   static func placement(_ layer: Layer, files: [String: File]) throws -> Placement {
@@ -129,14 +161,14 @@ enum PSDSmartObjects {
       throw CraftError.unsupported("Legacy placed objects require a SoLd descriptor.")
     }
     let d = try descriptor(data)
-    guard case .text(let text) = d["Idnt"], case .list(let values) = d["Trnf"], values.count == 8,
-      values.allSatisfy({ $0.number?.isFinite == true }) else { throw CraftError.invalid("Invalid Smart Object placement.") }
+    guard case .text(let text) = d["Idnt"] else { throw CraftError.invalid("Invalid Smart Object identity.") }
+    _ = try PlacementQuads(d)
     let id = String(decoding: text.prefix { $0 != 0 }, as: UTF16.self)
     guard let sourceID = UUID(uuidString: id), let file = files[id] else {
       throw CraftError.unsupported("Missing embedded Smart Object source; external links are not followed.")
     }
     let selectedComp = try d["comp"].map { try PSDLayerComps.integer($0) } ?? -1
-    return Placement(descriptor: d, file: file, sourceID: sourceID, quad: values.map { $0.number! }, selectedComp: selectedComp)
+    return Placement(descriptor: d, file: file, sourceID: sourceID, selectedComp: selectedComp)
   }
 
   static func restore(_ layer: inout Layer, placement: Placement, in document: CraftDocument,
@@ -167,20 +199,27 @@ enum PSDSmartObjects {
     }
     object.sourceID = sourceID
     if let link=file.link {object=try object.linked(to:link)}
-    let q = placement.quad, w = Double(object.width), h = Double(object.height)
-    let t = Transform2D(a: (q[2]-q[0])/w, b: (q[3]-q[1])/w,
-      c: (q[6]-q[0])/h, d: (q[7]-q[1])/h, tx: q[0], ty: q[1])
-    let corner = t.point(w, h)
-    guard abs(corner.x-q[4]) < 0.001, abs(corner.y-q[5]) < 0.001 else {
-      throw CraftError.unsupported("Perspective Smart Object placement is not yet editable.")
-    }
-    if case .list(let values) = d["nonAffineTransform"], values != d["Trnf"].flatList {
-      throw CraftError.unsupported("Non-affine Smart Object placement is not yet editable.")
-    }
-    try t.validated()
+    let quads = try PlacementQuads(d)
     let maskWorld = layer.maskCoordinateTransform
-    layer.x = Int(floor(t.tx)); layer.y = Int(floor(t.ty))
-    layer.affine = .translation(-Double(layer.x), -Double(layer.y)) * t
+    let maskFrame: Transform2D
+    var savedPreview: (pixels: Surface, x: Int, y: Int)?
+    if let affine = quads.affine(width: object.width, height: object.height) {
+      try affine.validated()
+      layer.x = Int(floor(affine.tx)); layer.y = Int(floor(affine.ty))
+      layer.affine = .translation(-Double(layer.x), -Double(layer.y)) * affine
+      maskFrame = affine
+    } else {
+      guard object.linkedSource == nil, object.pdfSource == nil else {
+        throw CraftError.unsupported("Perspective placement interchange currently requires an embedded raster or layered source.")
+      }
+      layer.sourceProjection = try quads.projective(width: object.width, height: object.height)
+      if case .raster(let cache) = layer.content,
+         cache.width > 1 || cache.height > 1 || cache.pixel(x: 0, y: 0).a > 0 {
+        savedPreview = (cache, layer.x, layer.y)
+      }
+      layer.x = 0; layer.y = 0; layer.affine = nil
+      maskFrame = .identity
+    }
     layer.smartObject = object; layer.content = .raster(pixels)
     if let filters = d["filterFX"] {
       var stack = try PSDSmartFilters.read(filters)
@@ -190,24 +229,29 @@ enum PSDSmartObjects {
     }
     if layer.mask != nil {
       var properties = layer.effectiveMaskProperties
-      properties.transform = try t.inverted() * maskWorld; layer.maskProperties = properties
+      properties.transform = try maskFrame.inverted() * maskWorld; layer.maskProperties = properties
+    }
+    if let savedPreview {
+      layer.importedSmartAppearance = try .init(layer: layer, pixels: savedPreview.pixels, x: savedPreview.x, y: savedPreview.y)
     }
   }
   static func placedDescriptor(_ layer: Layer) throws -> Data {
     guard let source = layer.smartObject else { throw CraftError.invalid("Missing embedded source.") }
-    guard layer.sourceProjection==nil,layer.importedSmartAppearance==nil,source.mediaType != "application/vnd.photocraft.project" else{throw CraftError.unsupported("Save source Smart Object placement/appearance as Photato until editable PSD/PSB mapping is qualified.")}
+    guard (layer.importedSmartAppearance == nil || layer.sourceProjection != nil),
+          source.mediaType != "application/vnd.photocraft.project" else {
+      throw CraftError.unsupported("Save source Smart Object appearance as Photato until editable PSD/PSB mapping is qualified.")
+    }
     if let descriptor=try PSDLinkedSmartObjects.unresolvedDescriptor(layer,source:source){return descriptor}
     let selectedComp: Int32
     if let selected = source.layerComps?.selectedID {
       selectedComp = try PSDLayerComps.identifiers(source.layerComps!.entries.map(\.id))[selected]!
     } else { selectedComp = -1 }
     let pdf = try PSDPDFSmartObjects.exportSettings(source)
-    guard layer.warp == nil else { throw CraftError.unsupported("Save editable Warp as Photato, or rasterize before PSD/PSB export. Warp descriptor interchange is not yet supported.") }
+    guard layer.warp == nil || (layer.sourceProjection != nil && layer.warp?.isIdentity == true) else { throw CraftError.unsupported("Save editable Warp as Photato, or rasterize before PSD/PSB export. Warp descriptor interchange is not yet supported.") }
     guard source.stackMode == nil else { throw CraftError.unsupported("Save image stacks as Photato to preserve editable stack modes. PSD stack-mode interchange is not implemented.") }
     guard source.rawDevelopment == nil else { throw CraftError.unsupported("Save RAW Smart Objects as Photato to preserve their source and sensor settings. PSD RAW interchange is not implemented.") }
-    let w = Double(source.width), h = Double(source.height), t = try layer.smartObjectSourceTransform()
-    let points = [t.point(0, 0), t.point(w, 0), t.point(w, h), t.point(0, h)]
-    let quad = PSDValue.list(points.flatMap { [.number($0.x), .number($0.y)] })
+    let w = Double(source.width), h = Double(source.height)
+    let (baseQuad, placedQuad) = try encodedQuads(layer, source: source)
     func text(_ value: String) -> PSDValue { .text(Array((value + "\0").utf16)) }
     func ratio() -> PSDValue { .object(PSDDescriptor("null", items: [.init("numerator", .integer(0)), .init("denominator", .integer(600))])) }
     let bounds = PSDDescriptor("classFloatRect", items: [.init("Top ", .number(0)), .init("Left", .number(0)), .init("Btom", .number(h)), .init("Rght", .number(w))])
@@ -218,7 +262,7 @@ enum PSDSmartObjects {
     var descriptor = PSDDescriptor("null", items: [.init("Idnt", text(source.sourceID.uuidString)), .init("placed", text(placedIdentifier(for: layer))),
       .init("PgNm", .integer(pdf?.page ?? 1)), .init("totalPages", .integer(pdf?.pages ?? 1)), .init("Crop", .integer(pdf?.crop ?? 1)),
       .init("frameStep", ratio()), .init("duration", ratio()), .init("frameCount", .integer(1)), .init("Annt", .integer(16)), .init("Type", .integer(pdf == nil ? 2:1)),
-      .init("Trnf", quad), .init("nonAffineTransform", quad), .init("warp", .object(warp)),
+      .init("Trnf", baseQuad), .init("nonAffineTransform", placedQuad), .init("warp", .object(warp)),
       .init("Sz  ", .object(PSDDescriptor("Pnt ", items: [.init("Wdth", .number(w)), .init("Hght", .number(h))]))),
       .init("Rslt", .unit(Data("#Rsl".utf8), source.resolution.bitPattern)), .init("comp", .integer(selectedComp)),
       .init("compInfo", .object(PSDDescriptor("null", items: [.init("compID", .integer(selectedComp)), .init("originalCompID", .integer(-1))])))])
@@ -227,10 +271,35 @@ enum PSDSmartObjects {
     while out.data.count % 4 != 0 { out.n(0, 1) }
     return out.data
   }
+
+  private static func encodedQuads(_ layer: Layer, source: SmartObject) throws -> (PSDValue, PSDValue) {
+    let w = Double(source.width), h = Double(source.height)
+    let positions = [PathPoint(0, 0), .init(w, 0), .init(w, h), .init(0, h)]
+    func encode(_ numbers: [Double]) -> PSDValue { .list(numbers.map(PSDValue.number)) }
+    if let projection = try layer.smartObjectSourceProjection() {
+      guard source.linkedSource == nil, source.pdfSource == nil else {
+        throw CraftError.unsupported("Perspective placement interchange currently requires an embedded raster or layered source.")
+      }
+      if layer.coordinateTransform == .identity, let saved = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"],
+         let old = try? PlacementQuads(descriptor(saved)), old.affine(width: source.width, height: source.height) == nil,
+         (try? old.projective(width: source.width, height: source.height)) == layer.sourceProjection {
+        return (encode(old.base), encode(old.content))
+      }
+      let points = try positions.map { try projection.point($0.x, $0.y) }
+      let xs = points.map(\.x), ys = points.map(\.y)
+      let left = xs.min()!, top = ys.min()!, right = xs.max()!, bottom = ys.max()!
+      return (encode([left, top, right, top, right, bottom, left, bottom]), encode(points.flatMap { [$0.x, $0.y] }))
+    }
+    let affine = try layer.smartObjectSourceTransform()
+    let quad = encode(positions.flatMap { p in let q = affine.point(p.x, p.y); return [q.x, q.y] })
+    return (quad, quad)
+  }
   static func bakedPreview(_ layer: Layer, in document: CraftDocument) throws -> Layer {
     let tag = try placedDescriptor(layer)
     var preview: Layer
-    if layer.smartFilters != nil { preview = try SmartFilterEngine.renderedLayer(layer, in: document) }
+    if layer.smartFilters != nil || layer.sourceProjection != nil {
+      preview = try SmartFilterEngine.renderedLayer(layer, in: document)
+    }
     else {
       let linked=layer.smartObject?.linkedSource != nil
       preview = try PDFSmartObjectIO.renderedLayer(layer,in:document)

@@ -1235,14 +1235,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:664 -->
+<!-- current-status-step:665 -->
 ## Current development status — 20 November 2026
 
-Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs.
+Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.
 
-1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
+1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 664](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_664.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-664).
+[Source checkpoint 665](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_665.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-665).
 
 <!-- current-status:end -->
 

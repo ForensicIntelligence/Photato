@@ -19,6 +19,8 @@ extension SmartObject {
       "properties": ["transform": affine, "bounds": ["anyOf": [bounds, ["type": "null"]]],
         "rotationDegrees": ["type": "number"]],
     ]
+    let projectiveGeometry = BrushAPI.object(["transform": TransformReferenceAPI.projectiveMatrixSchema,
+      "corners": TransformReferenceAPI.projectiveCornersSchema, "bounds": bounds], required: ["transform", "corners", "bounds"])
     return ["type": "object", "properties": [
       "kind": ["type": "string"],
       "sourceSmartObject":SourceSmartObjectAPI.stateSchema,
@@ -27,7 +29,7 @@ extension SmartObject {
         "required": ["sourceID", "revision", "fileName", "mediaType", "byteLength", "width", "height", "resolution", "embedded"],
         "properties": ["sourceID": ["type": "string", "format": "uuid"], "revision": ["type": "string"],
           "fileName": ["type": "string"], "mediaType": ["type": "string"], "byteLength": ["type": "integer"],
-          "sourceGeometry": ["anyOf": [sourceGeometry, ["type": "null"]]],
+          "sourceGeometry": ["anyOf": [sourceGeometry, ["type": "null"]]], "projectiveSourceGeometry": projectiveGeometry,
           "width": ["type": "integer"], "height": ["type": "integer"], "resolution": ["type": "number"], "embedded": ["type": "boolean"],"linked":["type":"boolean"],"originalAvailable":["type":"boolean"],"sourceByteLength":["type":"integer","minimum":0], "layerComps": SmartObjectLayerCompAPI.stateSchema, "pdfSource": ["anyOf":[["type":"null"],PDFSmartObjectSource.apiSchema]], "stackMode": ImageStackSettings.modeSchema, "rawDevelopment": ["anyOf":[["type":"null"],RawDevelopment.apiSchema]]]]]]]]
   }
   static var apiCapabilities: [String: Any] {
@@ -49,6 +51,7 @@ extension SmartObject {
         "qualification":"Adobe documents component restoration/grouping and transform/Smart Filter removal. Exact placement, outer attachments/defaults, numerical output and live/platform/capacity qualification remain open."],
       "layerStateSchema": apiLayerStateSchema, "pdfSourceSchema": PDFSmartObjectSource.apiSchema, "pdfNativeArchiveVersion": 62, "pdfPlacement": PDFSmartObjectAPI.capabilities, "sourcePlacement": EmbeddedSourceAPI.capabilities, "sourceEditing":PDFSourceEditAPI.capabilities,"linkedSourceEditing":LinkedSourceFileAPI.capabilities,
       "sourceGeometry": "layers[].smartObject.sourceGeometry reports the original artwork's affine transform, bounds in document pixels and rotation in degrees. The layer transform continues to describe the displayed raster or cache.",
+      "projectiveSourceGeometry": "When available, layers[].smartObject.projectiveSourceGeometry reports the source-to-document homography, four artwork corners and their bounds.",
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
         "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity and affine placement. Embedded PDF image selection and non-default antialias policies require native saving.",
         "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",
@@ -78,6 +81,12 @@ extension Layer {
       ] as [String: Any]
     } else {
       state["sourceGeometry"] = NSNull()
+    }
+    if let frame = try? ProjectiveArtworkFrame(self) {
+      state["projectiveSourceGeometry"] = [
+        "transform": frame.placement.values, "corners": frame.corners.map { ["x": $0.x, "y": $0.y] },
+        "bounds": ["x": frame.bounds.x, "y": frame.bounds.y, "width": frame.bounds.width, "height": frame.bounds.height],
+      ] as [String: Any]
     }
     return state
   }

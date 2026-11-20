@@ -22,13 +22,16 @@ public enum ProjectiveLayerTransform {
     try Task.checkCancellation();try matrix.validate()
     if let affine=try matrix.affineValue(){try LayerCollectionTransform.apply(.init(layerIDs:layerIDs,matrix:affine,interpolation:interpolation),to:&document);return}
     let ids=try members(document,layerIDs:layerIDs)
-    // Native quad controls cannot cross infinity across their shared bounds.
-    // Apply the same guard to explicit API/Action targets, including empty gaps.
+    // Collections also guard the gaps between members. For one projected Smart
+    // Object its source quad supplies the horizon check in the loop below.
+    let singleProjectedArtwork = ids.count == 1 && document.layers.contains {
+      ids.contains($0.id) && $0.smartObject != nil && $0.sourceProjection != nil
+    }
     let boxes=try document.layers.filter{ids.contains($0.id)}.compactMap{layer->IntRect? in
       guard case .raster(let source)=layer.content else{return nil}
       return try (layer.sourceProjection ?? .identity).followed(by:layer.coordinateTransform).bounds(width:source.width,height:source.height)
     }
-    if let first=boxes.first {
+    if !singleProjectedArtwork, let first=boxes.first {
       let left=boxes.reduce(first.x){min($0,$1.x)},top=boxes.reduce(first.y){min($0,$1.y)},right=boxes.reduce(first.x+first.width){max($0,$1.x+$1.width)},bottom=boxes.reduce(first.y+first.height){max($0,$1.y+$1.height)}
       let scale=matrix.values.map{abs($0)}.max()!,m=matrix.values.map{$0/scale},corners=[(left,top),(right,top),(right,bottom),(left,bottom)]
       let weights=corners.map{m[6]*Double($0.0)+m[7]*Double($0.1)+m[8]},epsilon=max(Double.leastNormalMagnitude,(weights.map{abs($0)}.max() ?? 1)*1e-12)

@@ -22,6 +22,33 @@ struct SmartObjectTransformFrame: Equatable {
   }
 }
 
+struct ProjectiveArtworkFrame: Equatable {
+  let source: IntRect
+  let bounds: IntRect
+  let placement: ProjectiveTransform
+  let inverse: ProjectiveTransform
+  let corners: [PathPoint]
+
+  init?(_ layer: Layer) throws {
+    guard let object = layer.smartObject, layer.warp?.isIdentity != false, layer.frame == nil,
+          let placement = try layer.smartObjectSourceProjection(), try placement.affineValue() == nil else { return nil }
+    source = .init(x: 0, y: 0, width: object.width, height: object.height)
+    bounds = try placement.bounds(width: object.width, height: object.height)
+    self.placement = placement
+    inverse = try placement.inverted()
+    let w = Double(source.width), h = Double(source.height)
+    corners = try [PathPoint(0, 0), .init(w, 0), .init(w, h), .init(0, h)].map { try placement.point($0.x, $0.y) }
+  }
+
+  func point(_ xFraction: Double, _ yFraction: Double) throws -> PathPoint {
+    try placement.point(xFraction * Double(source.width), yFraction * Double(source.height))
+  }
+
+  static func topEdgeAngle(_ corners: [PathPoint]) -> Double {
+    atan2(corners[1].y - corners[0].y, corners[1].x - corners[0].x) * 180 / .pi
+  }
+}
+
 extension TransformDraft {
   var hasAffineArtworkFrame: Bool { artworkFrame != nil && selectionQuad == nil }
 
@@ -34,7 +61,12 @@ extension TransformDraft {
     return artworkReflected ? 180 - frame.basis.rotationDegrees : frame.basis.rotationDegrees
   }
 
-  var displayedAngle: Double { (angle + artworkAngleOffset).truncatingRemainder(dividingBy: 360) }
+  var displayedAngle: Double {
+    if projectiveArtworkFrame != nil {
+      return ProjectiveArtworkFrame.topEdgeAngle(selectionCorners)
+    }
+    return (angle + artworkAngleOffset).truncatingRemainder(dividingBy: 360)
+  }
 
   func artworkDelta(_ frame: SmartObjectTransformFrame) -> Transform2D {
     let center = frame.point(0.5, 0.5)

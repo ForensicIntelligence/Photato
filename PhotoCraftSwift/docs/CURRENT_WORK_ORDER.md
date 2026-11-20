@@ -1,3 +1,7 @@
+**Source checkpoint 665.** Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame. 1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_665.md).
+
+**Next Smart Object work.** Verify a live Photoshop perspective open, edit and save when document scripting responds. Continue linked projective cache geometry and editable Warp coverage.
+
 **Source checkpoint 664.** Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs. 1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_664.md).
 
 **Next manifest work.** Compare the manifest's thumbnail behavior, linked metadata and full layer descriptors with Adobe-hosted examples. Continue independent desktop Smart Object and PSD interchange checks.

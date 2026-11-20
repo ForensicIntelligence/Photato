@@ -3,6 +3,13 @@ import PhotoCraftCore
 
 enum TransformReferenceAPI {
   static let name = "transform.reference"
+  static var projectiveMatrixSchema: [String: Any] {
+    ["type": "array", "items": ["type": "number"], "minItems": 9, "maxItems": 9]
+  }
+  static var projectiveCornersSchema: [String: Any] {
+    ["type": "array", "items": BrushAPI.object(["x": ["type": "number"], "y": ["type": "number"]], required: ["x", "y"]),
+     "minItems": 4, "maxItems": 4]
+  }
   static func schema(_ key: String) -> [String: Any] {
     switch key {
     case "workspaceRevision": return ["type": "string", "format": "uuid"]
@@ -25,7 +32,12 @@ enum TransformReferenceAPI {
       "dragging": BrushAPI.flag, "custom": BrushAPI.flag, "workspaceRevision": schema("workspaceRevision"),
       "anchor": schema("anchor"), "point": ["anyOf": [["type": "null"], schema("point")]],
       "artworkFrame": ["anyOf": [["type": "null"], frame]]]
-    return BrushAPI.object(fields, required: Array(fields.keys).sorted())
+    let projected = BrushAPI.object([
+      "corners": projectiveCornersSchema, "sourceTransform": projectiveMatrixSchema, "delta": projectiveMatrixSchema,
+      "angleDegrees": number,
+    ], required: ["corners", "sourceTransform", "delta", "angleDegrees"])
+    return BrushAPI.object(fields.merging(["projectiveArtworkFrame": projected]) { _, new in new },
+                           required: Array(fields.keys).sorted())
   }
   static var capabilities: [String: Any] { [
     "command": name, "stateSchema": stateSchema, "presentationOnly": true, "defaultVisible": false,
@@ -33,6 +45,7 @@ enum TransformReferenceAPI {
     "revision": "workspaceRevision is required in addition to the document revision. Native geometry/reference/preset/visibility/begin/end changes invalidate it. No-op edits retain it. Active pointer/commit/file/history/busy/stale/revoked work commits nothing.",
     "native": "Show Reference Point in Options, nine presets and direct pivot drag. Rotation/numeric scaling and Option-scaling use the pivot. Move follows existing object geometry. Applies to existing Free Transform/Transform Selection/pixel/mask/channel/layer and Content-Aware Scale drafts. Warp/filter workspaces retain separate controls.",
     "artworkFrame": "Single affine Smart Object drafts expose four transformed artwork corners and the document-space delta used by the native command. Options report the current artwork angle and scale changes relative to the draft start.",
+    "projectiveArtworkFrame": "When active on a single projected Smart Object, reports preview corners and the original and delta homographies in row-major order, plus the top edge's current angle.",
     "data": "Reference-only changes do not render a new image/contour, edit document bytes, add Undo/Actions or change the document revision. The final existing transform matrix is committed through shared native/API engines; samplers/archive formats are unchanged.",
     "cursor": "A visible pivot uses the scope cursor for all16Control/Command/Option/Shift combinations; no invented modifier action. Space before press retains Hand. Captured pivot drag, cancellation and focus/owner/session/tool/detach cleanup retain source state.",
     "limits": "Visibility is open-document/session presentation, copied when opening another workspace; complete Photoshop factory/persistence/global preference and modifier/visual/pixel/live/platform equivalence remain unqualified. Transform Again/repeat state remains open.",
@@ -73,11 +86,18 @@ extension AutomationCommand {
     } else {
       artworkFrame = NSNull()
     }
-    return ["available": canEditTransformReference && transformReferenceGestureID == nil, "active": transformDraft != nil,
+    var state: [String: Any] = ["available": canEditTransformReference && transformReferenceGestureID == nil, "active": transformDraft != nil,
       "visible": showTransformReferencePoint, "dragging": transformReferenceGestureID != nil,
       "custom": transformDraft?.customReferencePoint != nil,
       "workspaceRevision": transformReferenceRevision.uuidString,
       "anchor": transformDraft?.referenceAnchor.rawValue ?? CanvasAnchor.center.rawValue,
       "point": point.map { ["x": $0.x, "y": $0.y] } as Any? ?? NSNull(), "artworkFrame": artworkFrame]
+    if let draft = transformDraft, let frame = draft.projectiveArtworkFrame, let delta = try? draft.selectionProjection {
+      state["projectiveArtworkFrame"] = [
+        "corners": draft.selectionCorners.map { ["x": $0.x, "y": $0.y] },
+        "sourceTransform": frame.placement.values, "delta": delta.values, "angleDegrees": draft.displayedAngle,
+      ] as [String: Any]
+    }
+    return state
   }
 }

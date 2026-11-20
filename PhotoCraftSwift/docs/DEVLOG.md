@@ -683,7 +683,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 662 | 2026-11-20 | [Fit replacement artwork inside Smart Object frames](#dev-step-662) |
 | 663 | 2026-11-20 | [Inspect Photoshop templates through the Adobe-compatible manifest](#dev-step-663) |
 | 664 | 2026-11-20 | [Export thumbnail and Smart Object assets from Photoshop manifests](#dev-step-664) |
+| 665 | 2026-11-20 | [Reopen perspective Smart Objects and continue editing](#dev-step-665) |
 <!-- history-index:end -->
+
+<a id="dev-step-665"></a>
+
+## 2026-11-20 — Reopen perspective Smart Objects and continue editing
+
+Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.
+
+The codec restores source placement from the effective quadrilateral. The Free Transform draft starts from that geometry and commits through the existing transform and history commands.
+
+1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. The four new tests exercised editable PSD and PSB output, original source bytes, mask position, cached render, malformed corners, hit-testing and repeat Distort. A separate reader checked six files and the raw double-precision corner records.
+
+Live Photoshop document scripting timed out after the read-only version query. Projective linked files, projective PDFs and editable non-identity Warp still need Photoshop-file coverage. Intel tests ran under Rosetta.
+
+[Development record](PROJECTIVE_SMART_OBJECT_ROUNDTRIP_665.md) · [Qualification](SOURCE_PUBLICATION_665.md).
 
 <a id="dev-step-664"></a>
 

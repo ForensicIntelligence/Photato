@@ -235,7 +235,7 @@ enum AdobeDocumentManifest {
     let w = Double(object.width), h = Double(object.height)
     let corners = [PathPoint(0, 0), PathPoint(w, 0), PathPoint(w, h), PathPoint(0, h)]
     let points: [(x: Double, y: Double)]
-    if let projection = layer.sourceProjection {
+    if let projection = try layer.smartObjectSourceProjection() {
       points = try corners.map { corner in
         let point = try projection.point(corner.x, corner.y)
         return (point.x, point.y)

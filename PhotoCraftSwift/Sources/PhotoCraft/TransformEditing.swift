@@ -19,11 +19,15 @@ struct TransformDraft: Equatable {
   var selectedPixels=false
   var selectedPixelsBackgroundColor:Pixel?
   var selection=false
-  var selectionQuad:[PathPoint]?
+  var selectionQuad:[PathPoint]? {
+    didSet { if oldValue != selectionQuad { projectiveArtworkDelta = nil } }
+  }
   var selectionMode=SelectionTransformMode.free
   var layerID: UUID
   var bounds: IntRect
   private(set) var artworkFrame: SmartObjectTransformFrame?
+  private(set) var projectiveArtworkFrame: ProjectiveArtworkFrame?
+  var projectiveArtworkDelta: ProjectiveTransform?
   var artworkReflected = false
   var centerX: Double
   var centerY: Double
@@ -45,7 +49,7 @@ struct TransformDraft: Equatable {
     centerX = Double(bounds.x) + Double(bounds.width) / 2
     centerY = Double(bounds.y) + Double(bounds.height) / 2
   }
-  init(layerID: UUID, bounds: IntRect, artwork: SmartObjectGeometry?) throws {
+  init(layerID: UUID, bounds: IntRect, artwork: SmartObjectGeometry?, projectiveFrame: ProjectiveArtworkFrame? = nil) throws {
     self.init(layerID: layerID, bounds: bounds)
     if let artwork {
       let frame = try SmartObjectTransformFrame(artwork)
@@ -53,6 +57,12 @@ struct TransformDraft: Equatable {
       let center = frame.point(0.5, 0.5)
       centerX = center.x
       centerY = center.y
+    }
+    if let projectiveFrame {
+      projectiveArtworkFrame = projectiveFrame
+      selectionQuad = projectiveFrame.corners
+      let center = try projectiveFrame.point(0.5, 0.5)
+      centerX = center.x; centerY = center.y
     }
   }
   var delta: Transform2D {
@@ -66,6 +76,7 @@ struct TransformDraft: Equatable {
   ]
   func sourcePoint(_ xFraction: Double, _ yFraction: Double) -> PathPoint {
     if let artworkFrame { return artworkFrame.point(xFraction, yFraction) }
+    if let frame = projectiveArtworkFrame, let point = try? frame.point(xFraction, yFraction) { return point }
     return .init(Double(bounds.x) + Double(bounds.width) * xFraction,
                  Double(bounds.y) + Double(bounds.height) * yFraction)
   }
@@ -91,6 +102,10 @@ struct TransformDraft: Equatable {
       let local = artworkFrame.documentToSource.point(point.x, point.y)
       return local.x >= 0 && local.y >= 0
         && local.x <= Double(artworkFrame.artwork.width) && local.y <= Double(artworkFrame.artwork.height)
+    }
+    if let frame = projectiveArtworkFrame {
+      guard let local = try? frame.inverse.point(point.x, point.y) else { return false }
+      return local.x >= 0 && local.y >= 0 && local.x <= Double(frame.source.width) && local.y <= Double(frame.source.height)
     }
     return point.x >= Double(bounds.x) && point.y >= Double(bounds.y)
       && point.x <= Double(bounds.x + bounds.width) && point.y <= Double(bounds.y + bounds.height)
@@ -203,6 +218,7 @@ extension EditorStore {
     return try layer.coordinateTransform.bounds(width: pixels.width, height: pixels.height)
   }
   func layerRotation(_ layer: Layer) -> Double? {
+    if let frame = try? ProjectiveArtworkFrame(layer) { return ProjectiveArtworkFrame.topEdgeAngle(frame.corners) }
     if layer.smartObject?.linkedSource != nil {
       return (try? layer.smartObjectGeometry())?.transform.rotationDegrees
     }

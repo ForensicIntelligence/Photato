@@ -8,12 +8,16 @@ extension WorkspaceView {
         guard let draft = store.transformDraft else { return 0 }
         if key == \.centerX { return draft.transformReferencePoint.x }
         if key == \.centerY { return draft.transformReferencePoint.y }
-        if key == \.angle, draft.hasAffineArtworkFrame { return draft.displayedAngle }
+        if key == \.angle, draft.hasAffineArtworkFrame || draft.projectiveArtworkFrame != nil { return draft.displayedAngle }
         return draft[keyPath: key]
       },
       set: { value in
         guard value.isFinite, let draft = store.transformDraft else { return }
-        let requested = key == \.angle && draft.hasAffineArtworkFrame ? value - draft.artworkAngleOffset : value
+        var requested = value
+        if key == \.angle {
+          if draft.hasAffineArtworkFrame { requested -= draft.artworkAngleOffset }
+          else if draft.projectiveArtworkFrame != nil { requested += draft.angle - draft.displayedAngle }
+        }
         store.updateTransform(draft.transformNumeric(key, requested))
       })
   }

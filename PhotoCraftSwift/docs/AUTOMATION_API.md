@@ -1180,6 +1180,12 @@ close the draft and send its coefficients with the target layer ID through `laye
 After a projective edit, the existing `selectionTransform.matrix` carries the projective mapping. The
 affine frame is null in that case. [Development record](ORIENTED_SMART_OBJECT_TRANSFORM_660.md)
 
+### Projected Smart Object geometry
+
+A single projected Smart Object in Free Transform exposes `transformReference.projectiveArtworkFrame`. It includes the document-space preview corners, source-to-document `sourceTransform`, draft-relative `delta`, and top-edge `angleDegrees`. Both matrices contain nine row-major coefficients. The optional `layers[].smartObject.projectiveSourceGeometry` reports committed placement outside the draft.
+
+Send a document-space matrix through `layers.transform` to move or distort eligible artwork without replacing its original. Editable PSD and PSB downloads retain supported embedded projective sources. The existing Photoshop-compatible manifest reports the final four corners in `smartObjectData.transform`. [Development record](PROJECTIVE_SMART_OBJECT_ROUNDTRIP_665.md)
+
 ### Smart Object template geometry
 
 `transformMode` accepts `none`, `fit`, `fill` and `custom`. A custom request includes `transform`. A geometry-only edit can omit `smartObject`; the existing original is preserved. Relative adds accept `above`, `below` or `into` with `placement.referenceLayer` by name or PSD ID. Adds can also use `top` or `bottom`.

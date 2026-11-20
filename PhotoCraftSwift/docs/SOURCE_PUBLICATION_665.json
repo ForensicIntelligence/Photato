@@ -1,0 +1,352 @@
+{
+  "build": 665,
+  "base": "efd866e6d5ab1801f52dc4939f282d42fab83ad3",
+  "buildInputs": 9267,
+  "includedBuildInputs": 9254,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "44fc9c9b4dd5aac25a8cca72990c2906b9b6e1782e47e47104d6d84be5a381bb",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AdobeDocumentManifest.swift",
+      "sha256": "1a23fd2dc1b7d842d63f2ebafec0174654dc9cf0f0925ff0a8ec1baa951aee38"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationSmartObjects.swift",
+      "sha256": "c81c5881832a76d54e9f636b40aea8954477fc046c7791aba6257ba5fab74758"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerCollectionTransformEditing.swift",
+      "sha256": "5246312c02f32c0047ac9e09c52d00604adf21cf8132eedf9c2135c2fee096e8"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectionTransformDraft.swift",
+      "sha256": "33d35d9d089f076400f69ffb71c78c0d5dd1fb1fe47cab9ee75714cac1dca7a1"
+    },
+    {
+      "path": "Sources/PhotoCraft/SmartObjectTransformFrame.swift",
+      "sha256": "23d514ed1266e9df3bfa18ea6ffc685b145456fc6c0bb2c245e0bdfd5efc02c3"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformEditing.swift",
+      "sha256": "79c776f09ca9527ba13b9b7205d0c4f66ae6fa90dbfa7c221d0a45b4b0e9adcf"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformOptions.swift",
+      "sha256": "4d60cf16fda768684d8b2285047e3ae5018e6aeb7c2fa1e21e2aba36dccf467f"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformReferenceAPI.swift",
+      "sha256": "23ae09633b02c72e4b258b5ad664a883ebc0c92bb1ca57f05973402a851f1146"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LinkedSmartObject.swift",
+      "sha256": "bb1a1b46ce71134efe280317959eb20009f0bfc8003b2e81b2f1b172c085ce02"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ProjectiveLayerTransform.swift",
+      "sha256": "ca7bf545df225114609a1e63ab219af0fc204284047a5ddbb6f4d81d5d4af904"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDSmartObjects.swift",
+      "sha256": "a8015d34b9cf4f95ae9c73aacd72e4002ade529f0ff75a8aa32357d0d7e302e8"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ProjectiveSmartObjectWorkflowTests.swift",
+      "sha256": "db61141d0465e8c9f110d6a666f5e3559d434ef58cbeb26f64756dca90644173"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/TransformReferenceTests.swift",
+      "sha256": "6b732e03434cb6fdc42c96243cb29d9ee15bb95129cd48886546814f7ede5cc9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDProjectiveSmartObjectTests.swift",
+      "sha256": "5b8c5bec0a605cf69f41077a4b82c9e39a4362e2905284acd38d7c0641b5aebf"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "3b2dd10860669bf7675b455ef6a3dc60dcee5fc60c394f8cf080fec13cd9465e"
+    }
+  ],
+  "casesPerConfiguration": 1507,
+  "requestedCasesPerConfiguration": 1508,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1508,
+      "passed": 1508,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "240e73848b9e700d7b34b39362a11348bce57a9e723e261e4b59ab7e13ff37c1"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1508,
+      "passed": 1508,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "29463224d9762fe87424bafa4f0474d65bd75a48857edb347111580e52cb4b0e"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1508,
+      "passed": 1507,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftAppTests.AutomationActionJobsTests/testRGB32GroupGoldensThroughDesktopDownloadAndBothJobs"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.AutomationActionJobsTests/testRGB32GroupGoldensThroughDesktopDownloadAndBothJobs"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "310422de9191b9cf05834456c48feb70a032aaf66e987ca1696a17df6dae0872"
+    }
+  },
+  "intelRGB32Baseline": {
+    "previousBuild": 664,
+    "candidateBuild": 665,
+    "test": "testRGB32GroupGoldensThroughDesktopDownloadAndBothJobs",
+    "mismatchedBytesPerAssertionAgainstPhotoshopGoldens": [
+      4975,
+      4975,
+      4975,
+      4975,
+      3508,
+      3508,
+      3508,
+      3508,
+      3332,
+      3332,
+      3332,
+      3332,
+      3833,
+      3833,
+      3833,
+      3833,
+      3323,
+      3323,
+      3323,
+      3323,
+      4831,
+      4831,
+      4831,
+      4831,
+      3810,
+      3810,
+      3810,
+      3810,
+      2794,
+      2794,
+      2794,
+      2794
+    ],
+    "previousIntelMergedSamplesMatch": true,
+    "files": {
+      "02-pass-opacity.psd": {
+        "mergedBytes": 65536,
+        "sha256": "241a403b2cc6e3b8b1ffe28933036bd785242adce794ad6d3d47d79c833fd83b"
+      },
+      "04-isolated-opacity-mask.psd": {
+        "mergedBytes": 65536,
+        "sha256": "ed6d8de931a63ec96b746dd4dab9b56fb47d239c3239762d67d7f244d006726b"
+      },
+      "05-clipping.psd": {
+        "mergedBytes": 65536,
+        "sha256": "c7ffef467322a5ff60fef6c2dc75b233beb502067c0104b077079eaed7f6cc64"
+      },
+      "07-nested-pass.psd": {
+        "mergedBytes": 65536,
+        "sha256": "53c17c7dd9fbccfce88f19ca7d795aa735d0423673fc6ecc1fa58cf72a8ff798"
+      },
+      "08-opaque-pass-opacity.psd": {
+        "mergedBytes": 65536,
+        "sha256": "70afeff87a7a728905df9496154bcd59adf1492d6e9d506fd8179e11251d7918"
+      },
+      "09-pass-opacity-213.psd": {
+        "mergedBytes": 65536,
+        "sha256": "c5bb15c63050ba473b45fb8c4ed1de4bee124eb2445c1effc013198d85b9c79c"
+      },
+      "10-nested-masked.psd": {
+        "mergedBytes": 65536,
+        "sha256": "af8737cf85232d73d43357c8fb699c2b8f2a3c22f91f1f117739d4d1308608d5"
+      },
+      "11-isolated-first-transparent.psd": {
+        "mergedBytes": 65536,
+        "sha256": "83f4478d46a998cd8d3e105f3154c985cf0c38759a79db0203f660052e39965f"
+      }
+    }
+  },
+  "ownedProjectiveFiles": {
+    "build": 665,
+    "embeddedSourceSHA256": "abcfb7edb686ad74a03357253906cbc6853bbeddbd82364fb263bec66a9ff749",
+    "files": {
+      "projected.psd": {
+        "sha256": "eb4f800b87afe30734b2feb94ef15553a913cf62c55485a18cd64cf0f09552cc",
+        "base": [
+          12.0,
+          12.000000000000002,
+          102.0,
+          12.000000000000002,
+          102.0,
+          81.0,
+          12.0,
+          81.0
+        ],
+        "effective": [
+          12.0,
+          28.0,
+          70.0,
+          12.000000000000002,
+          102.0,
+          62.0,
+          20.0,
+          81.0
+        ]
+      },
+      "resaved.psd": {
+        "sha256": "eb4f800b87afe30734b2feb94ef15553a913cf62c55485a18cd64cf0f09552cc",
+        "base": [
+          12.0,
+          12.000000000000002,
+          102.0,
+          12.000000000000002,
+          102.0,
+          81.0,
+          12.0,
+          81.0
+        ],
+        "effective": [
+          12.0,
+          28.0,
+          70.0,
+          12.000000000000002,
+          102.0,
+          62.0,
+          20.0,
+          81.0
+        ]
+      },
+      "moved.psd": {
+        "sha256": "6dfa84592df748a23179e517237b30b673bee790969e422304869b79f89b92af",
+        "base": [
+          15.0,
+          10.000000000000005,
+          105.00000000000001,
+          10.000000000000005,
+          105.00000000000001,
+          79.0,
+          15.0,
+          79.0
+        ],
+        "effective": [
+          15.0,
+          26.000000000000004,
+          73.00000000000001,
+          10.000000000000005,
+          105.00000000000001,
+          59.99999999999999,
+          23.0,
+          79.0
+        ]
+      },
+      "projected.psb": {
+        "sha256": "670126dfe9dd57e2cd46794e61f125d6ec828d8e397386b2545438b9dbdffcbe",
+        "base": [
+          12.0,
+          12.000000000000002,
+          102.0,
+          12.000000000000002,
+          102.0,
+          81.0,
+          12.0,
+          81.0
+        ],
+        "effective": [
+          12.0,
+          28.0,
+          70.0,
+          12.000000000000002,
+          102.0,
+          62.0,
+          20.0,
+          81.0
+        ]
+      },
+      "resaved.psb": {
+        "sha256": "670126dfe9dd57e2cd46794e61f125d6ec828d8e397386b2545438b9dbdffcbe",
+        "base": [
+          12.0,
+          12.000000000000002,
+          102.0,
+          12.000000000000002,
+          102.0,
+          81.0,
+          12.0,
+          81.0
+        ],
+        "effective": [
+          12.0,
+          28.0,
+          70.0,
+          12.000000000000002,
+          102.0,
+          62.0,
+          20.0,
+          81.0
+        ]
+      },
+      "moved.psb": {
+        "sha256": "c367d6e1f2b691e7c85e5c84c7757453bc23cc5a6938be2848d05f2b132480c4",
+        "base": [
+          15.0,
+          10.000000000000005,
+          105.00000000000001,
+          10.000000000000005,
+          105.00000000000001,
+          79.0,
+          15.0,
+          79.0
+        ],
+        "effective": [
+          15.0,
+          26.000000000000004,
+          73.00000000000001,
+          10.000000000000005,
+          105.00000000000001,
+          59.99999999999999,
+          23.0,
+          79.0
+        ]
+      }
+    }
+  },
+  "selectedCasesSHA256": "a0192845c4cbbe1e9ae6504ceded6e1c8204f804683a4411430ff65e2ddd0723",
+  "preview": {
+    "archiveSHA256": "2cddd414d7dd1fc2034f765923f684dd8092601bf7cfa451d9012c3cfdaefc78",
+    "binarySHA256": "86898399fbb6abbe8b01e480c20b6bec1e81ce2299403a90e774ef83566efc81",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "e73c849b857586f41c8d7537b1d7aa82ab87a93c030506fa05e0596669fc752a",
+      "x86_64": "eaeee37184b9cde9e63d6f5bc3bdfe6bf5761a521841c8b28bcad0b2981a026b"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "publicContract": {
+    "sha256": "d7b5c019937f142d2832c9ec4a6ae00500e9bdf9cfea14d83249f28f8869d46e"
+  },
+  "liveAdobeCompared": false,
+  "hostedAdobeCompared": false
+}

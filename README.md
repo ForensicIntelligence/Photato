@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 664.** Photoshop document manifests can include JPEG or PNG layer previews and exact copies of embedded Smart Object originals. The assets use Photato's authenticated local download URLs. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_664.md).
+**Development alpha — source build 665.** Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_665.md).
 
 ## Project layout
 
