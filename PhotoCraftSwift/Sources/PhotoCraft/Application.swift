@@ -460,6 +460,11 @@ import SwiftUI
     if item.action == #selector(linkSelectedLayers){item.title=store.map{$0.linkMenuUnlinks($0.linkTargets()) ? "Unlink Layers":"Link Layers"} ?? "Link Layers";return store?.canToggleLayerLinks() == true}
     if item.action == #selector(selectLinkedLayers){return store?.canSelectLinkedLayers() == true}
     if item.action == #selector(transformSelection){return store?.canBeginSelectionTransform == true}
+    if let store, store.pathTarget != nil,
+       [#selector(transformScaleMode), #selector(transformRotateMode), #selector(transformSkewMode),
+        #selector(transformDistortMode), #selector(transformPerspectiveMode)].contains(item.action) {
+      return store.transformDraft?.pathTarget != nil ? !store.geometryBusy : store.canBeginPathTransform
+    }
     if [#selector(transformScaleMode),#selector(transformRotateMode)].contains(item.action){return store?.transformDraft?.selection == true ? store?.geometryBusy == false:store?.canTransformActiveLayer == true}
     if [#selector(transformDistortMode),#selector(transformPerspectiveMode)].contains(item.action),let store{if let draft=store.transformDraft,draft.collectionLayerIDs != nil{return !store.geometryBusy && draft.collectionProjective};if store.transformDraft==nil && !store.editingMask && !store.editingComponent && store.document.selection==nil && store.wantsLayerCollectionTransform{return store.canBeginProjectiveLayerTransform}}
     if item.action == #selector(transformSkewMode),store?.canBeginLayerCollectionTransform == true{return true}

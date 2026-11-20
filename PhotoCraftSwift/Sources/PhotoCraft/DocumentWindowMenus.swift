@@ -5,6 +5,13 @@ import AppKit
   func menuDidClose(_ menu: NSMenu) { workflowGuideWindow?.menuDidClose(menu) }
 
   func menuNeedsUpdate(_ menu: NSMenu) {
+    if let transform = menu.items.first(where: { $0.identifier?.rawValue == "Edit > Transform" }) {
+      let title = store.flatMap {
+        $0.pathTarget == nil ? nil : $0.pathTransformSelection.transformTitle
+      } ?? "Transform"
+      transform.title = title
+      transform.submenu?.title = title
+    }
     if menu === recentDocumentsMenu { updateRecentDocumentsMenu(menu); return }
     if menu === workspaceMenu {
       updateWorkspaceMenu(menu)

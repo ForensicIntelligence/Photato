@@ -1146,6 +1146,32 @@ import UniformTypeIdentifiers
       }
       if command.name == "font.inspect"{return .json(try inspectFont(command,store:store))}
       if command.name == "path.configure" {try store.configurePath(command);return .json(state(share,document:document))}
+      if command.name == PathTransformAPI.name {
+        let request = try command.pathTransformOptions()
+        guard !store.geometryBusy, store.transformDraft == nil, store.pathGesture == nil,
+              store.freeformGesture == nil, !store.hasToneDraft else {
+          throw AutomationFailure(status: 409, message: "Finish the current edit before transforming a path.")
+        }
+        let originalTarget = store.pathTarget
+        let originalSelection = store.pathTransformSelection
+        let selection = try await executePreparedResult(document: document, shareID: id,
+          revision: command.revision, allowPathTarget: true, validateCommit: {
+            guard store.pathTarget == originalTarget, store.pathTransformSelection == originalSelection else {
+              throw AutomationFailure(status: 409, message: "The editor path selection changed.")
+            }
+          }) { source in
+            let path = try PathTransform.editablePath(request.target, in: source)
+            let choice = try PathTransform.geometry(path, selection: request.selection, matrix: request.matrix).selection
+            return (.transformPath(request), choice)
+          }
+        if originalTarget == request.target {
+          store.pathTransformSelection = selection
+          if case .anchors(let anchors) = selection { store.pathAnchor = anchors.first } else { store.pathAnchor = nil }
+        }
+        var result = state(share, document: document)
+        result["pathTransformSelection"] = PathTransformAPI.selection(selection)
+        return .json(result)
+      }
       if PathAPI.commands.contains(command.name) {
         let selected=store.selectedVectorPath,brush=store.brush,fillContext=store.pathFillContext
         if command.parameters["fill"] != nil,store.editingMask || store.smartFilterMaskEditing || store.editingComponent{throw AutomationFailure(status:422,message:"Select RGB raster pixels before filling a path.")}
@@ -1877,6 +1903,7 @@ import UniformTypeIdentifiers
       "galleryTexture":GalleryTextureAPI.capabilities,
       "proceduralRender":ProceduralAPI.capabilities,
       "paths":PathAPI.capabilities,
+      "pathTransform":PathTransformAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,
       "fileInfo": FileInfoAPI.capabilities,
       "guides": GuideAPI.capabilities,

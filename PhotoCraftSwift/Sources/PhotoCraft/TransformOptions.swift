@@ -24,7 +24,9 @@ extension WorkspaceView {
   var transformOptions: some View {
     Group {
       if store.transformDraft?.contentAware == true { contentAwareScaleOptions } else {
-      Text(store.transformDraft?.selection == true && store.transformDraft?.selectedPixels != true ? "Transform Selection":"Free Transform").fontWeight(.medium)
+      Text(store.transformDraft?.pathTarget != nil ? (store.transformDraft?.pathSelection.transformTitle ?? "Transform Path") :
+        store.transformDraft?.selection == true && store.transformDraft?.selectedPixels != true ? "Transform Selection" : "Free Transform")
+        .fontWeight(.medium)
       if store.transformDraft?.selection == true {selectionTransformModeOptions} else {TransformReferenceOptions(store: store)}
       numberField(
         "X", value: transformBinding(\.centerX), range: -1_000_000...1_000_000, suffix: "px")
@@ -41,7 +43,8 @@ extension WorkspaceView {
       .buttonStyle(.plain).help("Maintain aspect ratio · Shift temporarily toggles")
       numberField("H", value: transformBinding(\.scaleY), range: -10_000...10_000, suffix: "%")
       numberField("∠", value: transformBinding(\.angle), range: -3600...3600, suffix: "°")
-      Picker(
+      if store.transformDraft?.pathTarget == nil {
+        Picker(
         "Interpolation",
         selection: Binding(
           get: { store.transformDraft?.interpolation ?? .bicubic },
@@ -52,6 +55,7 @@ extension WorkspaceView {
           })
       ) { ForEach(Resampling.allCases, id: \.self) { Text($0.rawValue).tag($0) } }.labelsHidden()
         .frame(width: 105).controlSize(.mini)
+      }
       Button("Cancel") { store.cancelTransform() }.controlSize(.small).keyboardShortcut(
         .cancelAction)
       Button("Apply") { store.commitTransform() }.disabled(store.geometryBusy).controlSize(.small).keyboardShortcut(

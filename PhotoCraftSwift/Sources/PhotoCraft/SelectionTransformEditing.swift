@@ -7,6 +7,7 @@ import PhotoCraftImaging
   let original:CraftDocument
   var originalPath:SelectionContour?
   var pixelPreview:SelectedPixelTransformPreviewImage?
+  var vectorPreview: (path: VectorPath, selection: PathTransformSelection)?
   private var pixelSource:SelectedPixelTransformPreviewSource?
   private let pixelLayerID:UUID?
   private let pixelBackgroundColor:Pixel?
@@ -29,9 +30,15 @@ import PhotoCraftImaging
   private(set) var closed=false
   init(_ document:CraftDocument,draft:TransformDraft){original=document;latest=draft;pixelLayerID=draft.selectedPixels ? draft.layerID:nil;pixelBackgroundColor=draft.selectedPixelsBackgroundColor;collectionLayerIDs=draft.collectionLayerIDs;channelTarget=draft.channelTarget;channelBackgroundValue=draft.channelBackgroundValue;channelOverlay=draft.channelOverlay;pixelMask=draft.pixelMask;maskViewMode=draft.pixelMaskViewMode;initialBounds=draft.bounds}
   func prepare()async {
-    let original=original,pixels=pixelLayerID != nil,pixelMask=pixelMask,channelTarget=channelTarget,collectionLayerIDs=collectionLayerIDs,initialBounds=initialBounds
+    let original=original,pixels=pixelLayerID != nil,pixelMask=pixelMask,channelTarget=channelTarget,collectionLayerIDs=collectionLayerIDs,initialBounds=initialBounds,pathTarget=latest.pathTarget
     do {
       let worker=Task.detached(priority:.userInitiated) { ()throws->(SelectionContour,SelectedPixelTransformPreviewSource?) in
+        if pathTarget != nil {
+          let box = CGRect(x: initialBounds.x, y: initialBounds.y,
+                           width: initialBounds.width, height: initialBounds.height)
+          return (SelectionContour(CGPath(rect: box, transform: nil)),
+                  pixels ? try SelectedPixelTransformPreviewSource.prepare(original) : nil)
+        }
         if collectionLayerIDs != nil || pixelMask || (channelTarget != nil && original.selection==nil){let path=CGPath(rect:CGRect(x:initialBounds.x,y:initialBounds.y,width:initialBounds.width,height:initialBounds.height),transform:nil);return(SelectionContour(path),try SelectedPixelTransformPreviewSource.prepare(original))}
         guard let mask=try original.coverageSelection(),let bounds=mask.bounds else{throw CraftError.invalid("The selection is empty.")}
         let path=try SelectionOutline.boundedPath(mask,region:bounds,sampleStep:max(1,(max(bounds.width,bounds.height)+511)/512))
@@ -45,11 +52,17 @@ import PhotoCraftImaging
   func refresh(_ draft:TransformDraft) {
     latest=draft;generation+=1
     guard !closed,!committing,!loading,!previewBusy,let originalPath else{return}
-    let generation=generation,pixelSource=pixelSource,pixelLayerID=pixelLayerID,pixelBackgroundColor=pixelBackgroundColor,pixelMask=pixelMask,maskViewMode=maskViewMode,channelTarget=channelTarget,channelBackgroundValue=channelBackgroundValue,channelOverlay=channelOverlay,collectionLayerIDs=collectionLayerIDs;previewBusy=true
+    let generation=generation,pixelSource=pixelSource,pixelLayerID=pixelLayerID,pixelBackgroundColor=pixelBackgroundColor,pixelMask=pixelMask,maskViewMode=maskViewMode,channelTarget=channelTarget,channelBackgroundValue=channelBackgroundValue,channelOverlay=channelOverlay,collectionLayerIDs=collectionLayerIDs,original=original;previewBusy=true
     task=Task { [weak self] in
       do {
-        let worker=Task.detached(priority:.userInitiated) { ()throws->(SelectionContour,SelectedPixelTransformPreviewImage?) in
+        let worker=Task.detached(priority:.userInitiated) { ()throws->(SelectionContour,SelectedPixelTransformPreviewImage?,(path: VectorPath, selection: PathTransformSelection)?) in
           let projection=try draft.selectionProjection
+          if let target = draft.pathTarget {
+            let request = PathTransformRequest(target: target, selection: draft.pathSelection, matrix: projection)
+            let path = try PathTransform.path(target, in: original)
+            let vector = try PathTransform.geometry(path, selection: draft.pathSelection, matrix: projection)
+            return (originalPath, try pixelSource?.pathImage(request), vector)
+          }
           let contour:SelectionContour
           if let affine=try projection.affineValue() {
             var transform=CGAffineTransform(a:affine.a,b:affine.b,c:affine.c,d:affine.d,tx:affine.tx,ty:affine.ty)
@@ -67,10 +80,10 @@ import PhotoCraftImaging
           if let failure{throw failure};contour=SelectionContour(path)
           }
           let preview=try pixelLayerID.flatMap{id in try pixelSource?.image(layerID:id,matrix:projection,interpolation:draft.interpolation,backgroundColor:pixelBackgroundColor,copy:draft.copySelectedPixels,pixelMask:pixelMask,maskViewMode:maskViewMode,channelTarget:channelTarget,channelBackgroundValue:channelBackgroundValue,channelOverlay:channelOverlay,collectionLayerIDs:collectionLayerIDs,collectionCopy:draft.movingLayers && draft.copyWholeLayers)}
-          return (contour,preview)
+          return (contour,preview,nil)
         }
         let path=try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()};try Task.checkCancellation()
-        if let self,!self.closed,!self.committing,self.generation==generation{self.previewPath=path.0.path;self.pixelPreview=path.1;self.error=nil}
+        if let self,!self.closed,!self.committing,self.generation==generation{self.previewPath=path.0.path;self.pixelPreview=path.1;self.vectorPreview=path.2;self.error=nil}
       }catch{if let self,!self.closed,!self.committing,self.generation==generation,!Task.isCancelled{self.error=error.localizedDescription}}
       guard let self else{return};self.previewBusy=false;if !Task.isCancelled,!self.closed,self.generation != generation{self.refresh(self.latest)}
     }
@@ -111,19 +124,31 @@ private enum SelectionContourCopy {
       do {
         let worker=Task.detached(priority:.userInitiated){
           let command:Command
-          if draft.movingLayers,let ids=draft.collectionLayerIDs{command=try wholeMovePrepare(original,.init(layerIDs:ids,dx:draft.moveOffsetX,dy:draft.moveOffsetY,copy:draft.copyWholeLayers))}
+          var pathSelection: PathTransformSelection?
+          if let target = draft.pathTarget {
+            let path = try PathTransform.path(target, in: original)
+            pathSelection = try PathTransform.geometry(path, selection: draft.pathSelection, matrix: projection).selection
+            command = .transformPath(.init(target: target, selection: draft.pathSelection, matrix: projection))
+          }
+          else if draft.movingLayers,let ids=draft.collectionLayerIDs{command=try wholeMovePrepare(original,.init(layerIDs:ids,dx:draft.moveOffsetX,dy:draft.moveOffsetY,copy:draft.copyWholeLayers))}
           else if let ids=draft.collectionLayerIDs{let request:LayerCollectionTransformRequest;if let affine=try projection.affineValue(){request = .init(layerIDs:ids,matrix:affine,interpolation:draft.interpolation)}else{request = .init(layerIDs:ids,projection:projection,interpolation:draft.interpolation)};command=try collectionPrepare(original,request)}
           else if let target=draft.channelTarget{command=try channelPrepare(original,.init(target:target,matrix:projection,interpolation:draft.interpolation,backgroundValue:draft.channelBackgroundValue))}
           else if draft.pixelMask{command=try maskPrepare(original,.init(layerID:draft.layerID,matrix:projection,interpolation:draft.interpolation))}
           else if draft.movingPixels {command=try movePrepare(original,.init(layerID:draft.layerID,dx:Double(draft.moveOffsetX),dy:Double(draft.moveOffsetY),copy:draft.copySelectedPixels,backgroundColor:draft.selectedPixelsBackgroundColor))}
           else if draft.selectedPixels {command=try pixelPrepare(original,.init(layerID:draft.layerID,matrix:projection,interpolation:draft.interpolation,backgroundColor:draft.selectedPixelsBackgroundColor))}
           else {command=try prepare(original,projection,draft.interpolation)}
-          return try PreparedEdit(command:command,document:original)
+          return (try PreparedEdit(command:command,document:original), pathSelection)
         }
         let edit=try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()};try Task.checkCancellation()
-        guard let self,let session,self.selectionTransform === session,self.document==original,(!draft.pixelMask || (self.editingMask && !self.smartFilterMaskEditing && self.maskEditingLayerID==draft.layerID)),(draft.channelTarget==nil || self.editingChannel==draft.channelTarget),(draft.collectionLayerIDs==nil || self.groupSelectionIDs==(draft.collectionViewIDs ?? Set(draft.collectionLayerIDs!)) && Set(self.layerCollectionIDs)==Set(draft.collectionLayerIDs!)) else{throw CraftError.invalid("The document changed. Restart Transform Selection.")}
-        try self.executeCompositePreparedEdit(edit,allowAuxiliary:draft.channelTarget != nil);if draft.movingLayers && draft.copyWholeLayers{self.selectMovedCopies(from:Set(original.layers.map(\.id)))};if self.document != original{self.onChange?(.changeDone)}
-        self.transformDraft=nil;self.selectionTransform=nil;session.close();self.status=draft.movingPixels || draft.movingLayers ? "Move":draft.selectedPixels ? "Free Transform":"Transform Selection";self.render()
+        guard let self,let session,self.selectionTransform === session,self.document==original,(!draft.pixelMask || (self.editingMask && !self.smartFilterMaskEditing && self.maskEditingLayerID==draft.layerID)),(draft.channelTarget==nil || self.editingChannel==draft.channelTarget),(draft.collectionLayerIDs==nil || self.groupSelectionIDs==(draft.collectionViewIDs ?? Set(draft.collectionLayerIDs!)) && Set(self.layerCollectionIDs)==Set(draft.collectionLayerIDs!)),
+              draft.pathTarget == nil || (self.pathTarget == draft.pathTarget && self.pathTransformSelection == draft.pathSelection)
+        else { throw CraftError.invalid("The transform target changed. Restart Free Transform.") }
+        try self.executeCompositePreparedEdit(edit.0,allowAuxiliary:draft.channelTarget != nil);if draft.movingLayers && draft.copyWholeLayers{self.selectMovedCopies(from:Set(original.layers.map(\.id)))};if self.document != original{self.onChange?(.changeDone)}
+        if let selection = edit.1 {
+          self.pathTransformSelection = selection
+          if case .anchors(let anchors) = selection { self.pathAnchor = anchors.first }
+        }
+        self.transformDraft=nil;self.selectionTransform=nil;session.close();self.status=draft.pathTarget != nil ? draft.pathSelection.transformTitle:draft.movingPixels || draft.movingLayers ? "Move":draft.selectedPixels ? "Free Transform":"Transform Selection";self.render()
       }catch{if !Task.isCancelled {session?.error=error.localizedDescription;if draft.movingPixels || draft.movingLayers{self?.cancelTransform();self?.error=error.localizedDescription}}}
       session?.committing=false;if self?.layerPanelGeneration==generation {self?.geometryBusy=false}
     }

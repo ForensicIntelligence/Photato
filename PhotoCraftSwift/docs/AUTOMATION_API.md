@@ -1190,6 +1190,10 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
 
+### Transform editable paths
+
+Send `path.transform` with `target` set to `saved`, `vectorMask` or `shape`, the path or layer UUID in `id`, and a nine-element row-major `matrix`. Omit the optional selection fields to transform the whole path. Use `components` for zero-based contour indices or `anchors` for objects containing zero-based `component` and `knot` indices. The response includes `pathTransformSelection` with the resulting indices. The endpoint uses the standard document revision and one atomic Undo. [Path transform details](PATH_TRANSFORM_672.md)
+
 ### Vector masks in Perspective and Distort
 
 Use `layers.transform` for a projective edit to supported whole layers. A linked vector mask follows the layer as an editable cubic path. An unlinked mask stays fixed in document coordinates. The fitter matches the projective curve within 1/64 document pixel before file quantization and may add anchors. A horizon crossing, excessive coordinate or insufficient knot capacity rejects the transaction before it changes the document. [Development record](PROJECTIVE_VECTOR_MASKS_671.md)

@@ -249,6 +249,7 @@ struct CanvasRenderRequest: Sendable {
   var layoutTarget = LayerLayoutTarget.selection
   var pathTarget: PathTarget?
   var pathAnchor: PathAnchorSelection?
+  var pathTransformSelection = PathTransformSelection.all
   var pathGesture: PathGesture?
   var freeformGesture: FreeformPathGesture?
   var pathSettingsRevision = 0

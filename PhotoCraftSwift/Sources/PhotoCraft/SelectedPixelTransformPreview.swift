@@ -12,6 +12,14 @@ struct SelectedPixelTransformPreviewSource:Sendable {
     if width != original.width || height != original.height {try Command.imageSize(width,height,original.pixelsPerInch,.bilinear).apply(to:&proxy)}
     return Self(document:proxy,sx:Double(width)/Double(original.width),sy:Double(height)/Double(original.height))
   }
+  func pathImage(_ request: PathTransformRequest) throws -> SelectedPixelTransformPreviewImage {
+    var proxy = document
+    let projection = try request.matrix.preceded(by: .scale(1 / sx, 1 / sy)).followed(by: .scale(sx, sy))
+    try Command.transformPath(.init(target: request.target, selection: request.selection,
+                                     matrix: projection)).apply(to: &proxy)
+    let surface = try Renderer.render(proxy).surface
+    return SelectedPixelTransformPreviewImage(try ColorManagement.displayImage(surface, in: proxy))
+  }
   func image(layerID:UUID,matrix:ProjectiveTransform,interpolation:Resampling,backgroundColor:Pixel? = nil,copy:Bool = false,pixelMask:Bool = false,maskViewMode:MaskViewMode? = nil,channelTarget:ChannelPlaneTarget? = nil,channelBackgroundValue:Float = 1,channelOverlay:Bool = false,collectionLayerIDs:[UUID]? = nil,collectionCopy:Bool=false)throws->SelectedPixelTransformPreviewImage {
     var proxy=document
     let projection=try matrix.preceded(by:.scale(1/sx,1/sy)).followed(by:.scale(sx,sy))

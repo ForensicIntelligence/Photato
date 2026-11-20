@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 672.** Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action. [Qualification](docs/SOURCE_PUBLICATION_672.md).
+
 **Source checkpoint 671.** Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves. [Qualification](docs/SOURCE_PUBLICATION_671.md).
 
 **Source checkpoint 670.** Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners. [Qualification](docs/SOURCE_PUBLICATION_670.md).

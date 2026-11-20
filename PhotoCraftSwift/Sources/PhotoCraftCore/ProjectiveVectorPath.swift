@@ -8,6 +8,12 @@ enum ProjectiveVectorPath {
   private typealias HomogeneousPoint = SIMD3<Double>
 
   static func apply(_ path: VectorPath, matrix: ProjectiveTransform) throws -> VectorPath {
+    try apply(path, matrix: matrix, selected: nil).path
+  }
+
+  static func apply(
+    _ path: VectorPath, matrix: ProjectiveTransform, selected: [Set<Int>]?
+  ) throws -> (path: VectorPath, anchors: [PathTransformAnchor]) {
     try path.validate()
     let scale = matrix.values.map(abs).max()!
     let m = matrix.values.map { $0 / scale }
@@ -19,33 +25,44 @@ enum ProjectiveVectorPath {
     }
 
     var result = path
-    var remaining = VectorPath.maxKnots
+    var remaining = VectorPath.maxKnots - path.knotCount
+    var anchors: [PathTransformAnchor] = []
     for index in path.components.indices {
       try Task.checkCancellation()
       let source = path.components[index]
-      guard let first = source.knots.first else { continue }
-      guard remaining > 0 else { throw knotLimit }
-      remaining -= 1
-      let start = map(first.anchor)
-      let beginning = try position(start)
-      var knots = [PathKnot(pathPoint(beginning), smooth: first.smooth)]
-      if !source.closed || source.knots.count == 1 {
-        knots[0].incoming = pathPoint(tangentHandle(map(first.incoming), at: start, position: beginning))
+      guard !source.knots.isEmpty, selected?[index].isEmpty != true else { continue }
+      func isSelected(_ knot: Int) -> Bool { selected?[index].contains(knot) ?? true }
+      func mapped(_ i: Int) throws -> PathKnot {
+        let knot = source.knots[i]
+        guard isSelected(i) else { return knot }
+        let anchor = map(knot.anchor)
+        let p = try position(anchor)
+        return PathKnot(
+          pathPoint(p),
+          incoming: pathPoint(tangentHandle(map(knot.incoming), at: anchor, position: p)),
+          outgoing: pathPoint(tangentHandle(map(knot.outgoing), at: anchor, position: p)),
+          smooth: knot.smooth)
       }
-      if source.knots.count == 1 {
-        knots[0].outgoing = pathPoint(tangentHandle(map(first.outgoing), at: start, position: beginning))
-      }
+      var knots = [try mapped(0)]
+      if isSelected(0) { anchors.append(.init(component: index, knot: 0)) }
       if source.knots.count > 1 {
         let segmentCount = source.closed ? source.knots.count : source.knots.count - 1
         for segment in 0..<segmentCount {
           let nextIndex = (segment + 1) % source.knots.count
           let a = source.knots[segment], b = source.knots[nextIndex]
           let closing = nextIndex == 0
+          guard isSelected(segment), isSelected(nextIndex) else {
+            if !closing {
+              if isSelected(nextIndex) { anchors.append(.init(component: index, knot: knots.count)) }
+              knots.append(try mapped(nextIndex))
+            }
+            continue
+          }
           let control = [map(a.anchor), map(a.outgoing), map(b.incoming), map(b.anchor)]
           let epsilon = max(Double.leastNormalMagnitude, control.map { abs($0.z) }.max()! * 1e-12)
           var pieces: [[Point]] = []
           try fit(
-            control, epsilon: epsilon, depth: 0, limit: remaining + (closing ? 1 : 0),
+            control, epsilon: epsilon, depth: 0, limit: remaining + 1,
             pieces: &pieces)
           for (pieceIndex, piece) in pieces.enumerated() {
             let last = pieceIndex == pieces.count - 1
@@ -53,23 +70,19 @@ enum ProjectiveVectorPath {
             if last && closing {
               knots[0].incoming = pathPoint(piece[2])
             } else {
-              knots.append(PathKnot(pathPoint(piece[3]), incoming: pathPoint(piece[2]),
-                                    smooth: last ? b.smooth : true))
-              remaining -= 1
+              anchors.append(.init(component: index, knot: knots.count))
+              var next = try last ? mapped(nextIndex) : PathKnot(pathPoint(piece[3]), smooth: true)
+              next.incoming = pathPoint(piece[2])
+              knots.append(next)
             }
           }
-        }
-        if !source.closed, let last = source.knots.last {
-          let endpoint = map(last.anchor)
-          let position = try self.position(endpoint)
-          knots[knots.count - 1].outgoing = pathPoint(
-            tangentHandle(map(last.outgoing), at: endpoint, position: position))
+          remaining -= pieces.count - 1
         }
       }
       result.components[index].knots = knots
     }
     try result.validate()
-    return result
+    return (result, anchors)
   }
 
   private static var knotLimit: CraftError {

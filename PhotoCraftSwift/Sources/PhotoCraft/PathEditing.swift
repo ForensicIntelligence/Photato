@@ -2,15 +2,8 @@ import AppKit
 import PhotoCraftCore
 import PhotoCraftImaging
 
-enum PathTarget: Equatable {
-  case saved(UUID)
-  case vectorMask(UUID)
-  case shape(UUID)
-}
-struct PathAnchorSelection: Equatable {
-  var component: Int
-  var knot: Int
-}
+typealias PathTarget = PathTransformTarget
+typealias PathAnchorSelection = PathTransformAnchor
 struct PathGesture {
   enum Part { case anchor, incoming, outgoing, component, newAnchor }
   var original: VectorPath
@@ -18,6 +11,7 @@ struct PathGesture {
   var start: PathPoint
   var selection: PathAnchorSelection
   var part: Part
+  var movedSelection: PathTransformSelection? = nil
 }
 
 extension EditorStore {
@@ -30,13 +24,16 @@ extension EditorStore {
     case nil: nil
     }
   }
-  var displayedVectorPath: VectorPath? { freeformGesture?.preview ?? pathGesture?.preview ?? selectedVectorPath }
+  var displayedVectorPath: VectorPath? {
+    selectionTransform?.vectorPreview?.path ?? freeformGesture?.preview ?? pathGesture?.preview ?? selectedVectorPath
+  }
   var pathIsEditable: Bool {
     if case .shape(let id)=pathTarget{return !document.isLocked(id) && !document.isImageLocked(id) && !document.isPositionLocked(id)}
     if case .vectorMask(let id) = pathTarget { return !document.isLocked(id) }
     return true
   }
   func selectPath(_ target: PathTarget?, revealPanel: Bool = true) {
+    if pathTarget != target, transformDraft?.pathTarget != nil { cancelTransform() }
     resetPathGesture()
     pathTarget = target
     maskEditingLayerID = nil
@@ -56,6 +53,7 @@ extension EditorStore {
     freeformGesture = nil
     pathGesture = nil
     pathAnchor = nil
+    pathTransformSelection = .all
     penComponent = nil
     if previewing { render() }
   }
@@ -170,7 +168,8 @@ extension EditorStore {
     path.components[anchor.component].operation = operation
     commitPath(path)
   }
-  func beginPath(at p: PathPoint, tolerance: Double, option: Bool = false, clickCount: Int = 1) {
+  func beginPath(at p: PathPoint, tolerance: Double, option: Bool = false, clickCount: Int = 1,
+                 extending: Bool = false) {
     if tool == .freeformPen {beginFreeform(at:p,tolerance:tolerance);return}
     if tool == .curvaturePen {beginCurvature(at:p,tolerance:tolerance,clickCount:clickCount);return}
     guard !geometryBusy, transformDraft == nil else { return }
@@ -220,9 +219,15 @@ extension EditorStore {
         }
         return
       }
+      if part == .anchor {
+        if tool == .pathSelection || (tool == .directSelection && option) {
+          if !selectPathComponents([anchor.component], extending: extending) { return }
+        } else if !selectPathAnchors([anchor], extending: extending) { return }
+      }
       pathGesture = PathGesture(
         original: path, preview: path, start: p, selection: anchor,
-        part: tool == .pathSelection ? .component : part)
+        part: tool == .pathSelection || (tool == .directSelection && option && part == .anchor) ? .component : part,
+        movedSelection: part == .anchor ? pathTransformSelection : nil)
       return
     }
     if let segment = nearestSegment(in: path, to: p, tolerance: tolerance) {
@@ -233,15 +238,42 @@ extension EditorStore {
           pathAnchor?.knot += 1
           commitPath(path)
         } catch { self.error = error.localizedDescription }
-      } else if tool == .pathSelection, let pathAnchor {
+      } else if (tool == .pathSelection || option), let pathAnchor {
+        guard selectPathComponents([segment.0], extending: extending) else { return }
         pathGesture = PathGesture(
           original: path, preview: path, start: p,
-          selection: pathAnchor, part: .component)
+          selection: pathAnchor, part: .component, movedSelection: pathTransformSelection)
+      } else if tool == .directSelection {
+        let count = path.components[segment.0].knots.count
+        let endpoints = [segment.1, (segment.1 + 1) % count].map {
+          PathAnchorSelection(component: segment.0, knot: $0)
+        }
+        if selectPathAnchors(endpoints, extending: extending), let pathAnchor {
+          pathGesture = PathGesture(original: path, preview: path, start: p, selection: pathAnchor,
+                                    part: .anchor, movedSelection: pathTransformSelection)
+        }
       }
       return
     }
     guard tool == .pen else {
+      if (tool == .pathSelection || option),
+         let index = path.components.indices.reversed().first(where: { index in
+           let component = path.components[index]
+           guard component.closed else { return false }
+           let outline = try? VectorPathGeometry.outline(.init(components: [component]))
+           return outline?.contains(.init(x: p.x, y: p.y), using: .evenOdd) == true
+         }) {
+        let anchor = PathAnchorSelection(component: index, knot: 0)
+        pathAnchor = anchor
+        if selectPathComponents([index], extending: extending) {
+          pathGesture = PathGesture(original: path, preview: path, start: p, selection: anchor,
+                                    part: .component, movedSelection: pathTransformSelection)
+        }
+        return
+      }
+      guard !extending else { return }
       pathAnchor = nil
+      pathTransformSelection = tool == .pathSelection ? .components([]) : .anchors([])
       return
     }
     let c: Int
@@ -307,16 +339,22 @@ extension EditorStore {
     guard var gesture = pathGesture, pathIsEditable else { return }
     let a = gesture.selection
     var path = gesture.original
+    let delta = Transform2D.translation(p.x - gesture.start.x, p.y - gesture.start.y)
     switch gesture.part {
     case .component:
-      let delta = Transform2D.translation(p.x - gesture.start.x, p.y - gesture.start.y)
-      path.components[a.component].knots = path.components[a.component].knots.map {
-        $0.transformed(delta)
+      if let selected = gesture.movedSelection {
+        guard let moved = try? PathTransform.geometry(path, selection: selected, matrix: .init(delta)) else { return }
+        path = moved.path
+      } else {
+        path.components[a.component].knots = path.components[a.component].knots.map { $0.transformed(delta) }
       }
     case .anchor:
-      let old = path.components[a.component].knots[a.knot].anchor
-      path.components[a.component].knots[a.knot].moveAnchor(
-        to: PathPoint(old.x + p.x - gesture.start.x, old.y + p.y - gesture.start.y))
+      if let selected = gesture.movedSelection {
+        guard let moved = try? PathTransform.geometry(path, selection: selected, matrix: .init(delta)) else { return }
+        path = moved.path
+      } else {
+        path.components[a.component].knots[a.knot] = path.components[a.component].knots[a.knot].transformed(delta)
+      }
     case .incoming, .outgoing:
       path.components[a.component].knots[a.knot].moveHandle(
         incoming: gesture.part == .incoming,
@@ -335,6 +373,7 @@ extension EditorStore {
   func endPathGesture() {
     guard let gesture = pathGesture else { return }
     pathGesture = nil
+    guard gesture.preview != selectedVectorPath else { return }
     commitPath(gesture.preview)
   }
   func finishPath(cancelGesture: Bool = false) {

@@ -22,6 +22,7 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.selectionBorderDrag
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
+    _ = store.selectionTransform?.vectorPreview;_ = store.pathTransformSelection
     _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
     view.store = store
@@ -697,7 +698,7 @@ struct CanvasHost: NSViewRepresentable {
     c.setLineDash(phase: 0, lengths: [])
   }
   func drawVectorPath(in c: CGContext) {
-    guard store.usesPathTool || store.layersTab == .paths,
+    guard store.usesPathTool || store.layersTab == .paths || store.transformDraft?.pathTarget != nil,
       let path = store.displayedVectorPath, let outline = try? VectorRasterizer.outline(path)
     else { return }
     c.saveGState()
@@ -709,8 +710,9 @@ struct CanvasHost: NSViewRepresentable {
     c.strokePath()
     for (i, component) in path.components.enumerated() {
       for (j, knot) in component.knots.enumerated() {
-        let selected = store.pathAnchor == PathAnchorSelection(component: i, knot: j)
-        if selected {
+        let anchor = PathAnchorSelection(component: i, knot: j)
+        let selected = store.pathAnchorIsSelected(anchor)
+        if selected && store.pathAnchor == anchor && store.transformDraft?.pathTarget == nil {
           c.setLineWidth(1 / scale)
           for handle in [knot.incoming, knot.outgoing] where handle != knot.anchor {
             c.move(to: CGPoint(x: knot.anchor.x, y: knot.anchor.y))
@@ -820,7 +822,8 @@ struct CanvasHost: NSViewRepresentable {
     if store.usesPathTool && !spaceHeld {
       store.beginPath(
         at: PathPoint(p.x, p.y), tolerance: 6 / scale,
-        option: event.modifierFlags.contains(.option), clickCount:event.clickCount)
+        option: event.modifierFlags.contains(.option), clickCount:event.clickCount,
+        extending: event.modifierFlags.contains(.shift))
       needsDisplay = true
       return
     }
@@ -1234,7 +1237,7 @@ struct CanvasHost: NSViewRepresentable {
       needsDisplay = true
       return
     }
-    if store.usesPathTool && !event.modifierFlags.contains(.command) {
+    if store.usesPathTool && store.transformDraft?.pathTarget == nil && !event.modifierFlags.contains(.command) {
       switch event.keyCode {
       case 36, 76:
         store.finishPath()

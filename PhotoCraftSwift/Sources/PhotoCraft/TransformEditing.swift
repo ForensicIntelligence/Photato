@@ -3,6 +3,8 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 struct TransformDraft: Equatable {
+  var pathTarget: PathTransformTarget?
+  var pathSelection = PathTransformSelection.all
   var collectionLayerIDs:[UUID]?
   var collectionProjective=false
   var collectionViewIDs:Set<UUID>?
@@ -227,6 +229,7 @@ extension EditorStore {
   }
   var activeLayerBounds: IntRect? { activeLayer.flatMap { try? layerBounds($0) } }
   var canTransformActiveLayer: Bool {
+    if pathTarget != nil { return canBeginPathTransform }
     if editingChannel != nil{return canBeginChannelTransform}
     if editingMask{return canBeginPixelMaskTransform}
     if document.selection != nil {return canBeginSelectedPixelTransform}
@@ -237,6 +240,7 @@ extension EditorStore {
     return !document.isPositionLocked(layer.id)
   }
   func beginTransform() {
+    if pathTarget != nil { beginPathTransform(); return }
     if editingChannel != nil{beginChannelTransform();return}
     if editingMask {beginPixelMaskTransform();return}
     if document.selection != nil {beginSelectedPixelTransform();return}
@@ -347,6 +351,10 @@ extension EditorStore {
     return doc
   }
   func transformLayer(angle: Double = 0, horizontal: Bool = false, vertical: Bool = false) {
+    if pathTarget != nil, transformDraft == nil {
+      turnSelectedPath(angle: angle, horizontal: horizontal, vertical: vertical)
+      return
+    }
     if editingChannel != nil,transformDraft==nil{transformChannel(angle:angle,horizontal:horizontal,vertical:vertical);return}
     if wantsLayerCollectionTransform,transformDraft==nil,!editingMask,!editingComponent{transformLayerCollection(angle:angle,horizontal:horizontal,vertical:vertical);return}
     if editingMask,transformDraft==nil{transformPixelMask(angle:angle,horizontal:horizontal,vertical:vertical);return}

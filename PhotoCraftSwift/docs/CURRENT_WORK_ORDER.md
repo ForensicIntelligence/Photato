@@ -1,3 +1,7 @@
+**Source checkpoint 672.** Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action. All 156 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_672.md).
+
+**Next path editing work.** Extend Direct Selection to marquee selection of points and improve multi-path selection across layers. Use a saved Photoshop reference for partial transforms when the installed editor responds.
+
 **Source checkpoint 671.** Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves. All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_671.md).
 
 **Next Free Transform work.** Verify independent Free Transform for selected saved paths, vector masks, and shape contours. Command-T currently routes to layer or pixel transforms. Add a path target that preserves unselected geometry and uses the same native and API edit.

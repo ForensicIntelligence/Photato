@@ -113,8 +113,11 @@ extension EditorTool {
     switch self {
     case .zoom: return .symbol(option ? "minus.magnifyingglass" : "plus.magnifyingglass")
     case .hand: return .openHand
-    case .move, .pathSelection: return .arrow
-    case .directSelection: return .symbol(option ? "arrow.triangle.branch" : "cursorarrow")
+    case .move: return .arrow
+    case .pathSelection:
+      return flags.contains(.shift) ? .symbol("cursorarrow", .add) : .arrow
+    case .directSelection:
+      return .symbol(option ? "arrow.triangle.branch" : "cursorarrow", flags.contains(.shift) ? .add : nil)
     case .text, .verticalText: return .text
     case .marquee: return .selection("rectangle.dashed", selection)
     case .ellipticalMarquee: return .selection("circle.dashed", selection)

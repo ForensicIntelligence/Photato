@@ -1,0 +1,246 @@
+{
+  "build": 672,
+  "base": "164a8531600b7f439ba8d47e147cedf79eac1f60",
+  "buildInputs": 9279,
+  "includedBuildInputs": 9266,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "459df839694dbf51e0fe37566450d131bf59596929d58d5be147438c1dd4df00",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "sha256": "c00faa10080e6547e52f751e49ff10167aeb4a7dee32f07902b48ece0644f54a"
+    },
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "fd59e2227e728a98aeac73a8e6d768c32ae643dca38ad265253f34502b39b421"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "2211a2377c74a80178d319fa292bf5e0e93c9c844dc9b1bf9a17bc55cec1d0bb"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPathTransform.swift",
+      "sha256": "a63a1bb020453d8b26364b6ccf84c777449293e0bb1c937d58bd21eb3b56202a"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPaths.swift",
+      "sha256": "4f9190ac49ca685d3b08b8d0467e1437d5e859f0d65a237c422353044e5144ea"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationSelectionTransform.swift",
+      "sha256": "3d0e2d7cee07892ec521d92dfc0435c05e38a2f5baa52c09eea056049ce595b3"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "3f79b614d6c12ff461a37c9d7889c5e5455ab59b39da622cf13c3820d1abaa0a"
+    },
+    {
+      "path": "Sources/PhotoCraft/CanvasView.swift",
+      "sha256": "45d1fa774aa22d85f8166fddc4dfe6e694a9db7d85ee52da5ef48c30fa8fa481"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentWindowMenus.swift",
+      "sha256": "4fdc32fa4ccc86d7d91697519e7697d860b248242ef30d644f34e88aa9188c27"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "3797e7afd5b0371424161344b80fc8bd14cda2719a80af34f03eaea6d348eed8"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathEditing.swift",
+      "sha256": "1e9d35ebec283adf8a94d1e66c0cca658c574a14f14568f48750760c8f169272"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathTransformEditing.swift",
+      "sha256": "2cdd23eb43215aca6be37ba9c434cbdc5d30ed2782e5670e539384c21c270824"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectedPixelTransformPreview.swift",
+      "sha256": "1f8c8e63f470b4a78c80f9e70dca69c752e2c4e4e0262df67faa0f88e52567f1"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectionTransformEditing.swift",
+      "sha256": "26e05d5f6d8ef688722d45e8a0fa5ed72ab0326cabc74d14368addb8dc6e3aef"
+    },
+    {
+      "path": "Sources/PhotoCraft/ToolCursor.swift",
+      "sha256": "268e4d5dbb983653ceaa8cd3c3d113636ec2372fa6ecf7b80d0de0357fb8cd84"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformEditing.swift",
+      "sha256": "060dafd77431d151f75f9a8ee2a3b87996e49510143adf46bdd0f6803f04b9f1"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformOptions.swift",
+      "sha256": "41a6552f1718b25d023dfbed7ea424da5e7cb029ced0e9af3127ae2514075197"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Engine.swift",
+      "sha256": "18065263f4b928a0bd50e6503dc51da9188dc1806915d4b2b175d62f6a132b36"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PathTransform.swift",
+      "sha256": "3969675064458b5f20bcd0cce878dcc90478a7f170a953747d5226e7d580901c"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ProjectiveVectorPath.swift",
+      "sha256": "8abcba508541f1a827e9636cc05e6de58b538bf06db64ad619be04c268d0d00b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RecordedActions.swift",
+      "sha256": "65a8678e6d4a1a2740318e12ae7bfe1b8cd178930f6962a860951f395b405ba7"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RecordedPathTransform.swift",
+      "sha256": "28c9038dfc0405adbf0ef2df5b21bdb5a0c093a328a43f9b4b797541baea68b4"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "34c8f479485d699bb1468392d402a66daab04e70cdf733ce5d2ea204833c206c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathTransformWorkflowTests.swift",
+      "sha256": "51e1847d59d90f9c323f19c7e41a7141435562840c0a9c46eb95c62ed38e524b"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/PathTransformTests.swift",
+      "sha256": "2aecda626edc116aab9e312e06ce4697d823b78babc3f20afeb070a1cc982e0f"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "1ed55966f1010227844f468004d835a637be38200a2d6dcda704d65fd3ea365a"
+    }
+  ],
+  "casesPerConfiguration": 156,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 156,
+      "passed": 156,
+      "newCasesExpected": 9,
+      "newCasesPassed": 9,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "15044bfbe097b46b412d6743cd108bbc27ed619204877b283d0b8f8e8cea6fbe"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 156,
+      "passed": 156,
+      "newCasesExpected": 9,
+      "newCasesPassed": 9,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "293da7d56e0699a0cd840c3a32c311ac22f96720d1d5620ced6d02569d928834"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 156,
+      "passed": 156,
+      "newCasesExpected": 9,
+      "newCasesPassed": 9,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "271fad48e554c0af69f78262dbe7112214fc662af47fefbd4d223728eaa54718"
+    }
+  },
+  "additionalDebugPathAndMenuComparison": {
+    "prior": {
+      "exit": 0,
+      "expected": 34,
+      "passed": 34,
+      "failed": [],
+      "missing": []
+    },
+    "candidate": {
+      "exit": 0,
+      "expected": 34,
+      "passed": 34,
+      "failed": [],
+      "missing": []
+    }
+  },
+  "priorWholeLayerVectorMasks": {
+    "build": 672,
+    "referenceBuild": 671,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "outputs": {
+      "embedded-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "embedded-fixed.psb": {
+        "bytes": 184860,
+        "sha256": "f0c3bcbef6518f7872f421783a0c3cdbb8fbdf0ed8a951e31f0093535ac3761e"
+      },
+      "embedded-fixed.psd": {
+        "bytes": 184832,
+        "sha256": "7d91a4d07a206dc2ee37fec77ce37e1305c38b7dca53918f195ad89d95cadab5"
+      },
+      "embedded-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "embedded-linked.psb": {
+        "bytes": 184940,
+        "sha256": "38286424a94c3295a0daf6b0a6e8d4d69912c0abb68f06192404ce6ea9f0fe1c"
+      },
+      "embedded-linked.psd": {
+        "bytes": 184912,
+        "sha256": "88f5e46a8d044958ff521684e9b4eb5f6fabb9c8d64bdeb572f7630e2efea550"
+      },
+      "external-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "external-fixed.psb": {
+        "bytes": 181192,
+        "sha256": "5f5fa9faa4b5840c468ed05b1c606678738cfd5ab402798b7022300919ff4675"
+      },
+      "external-fixed.psd": {
+        "bytes": 181164,
+        "sha256": "831808a037492aa7bd10d633af86229a0941a4125dbe938e4021bb93fd348191"
+      },
+      "external-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "external-linked.psb": {
+        "bytes": 181272,
+        "sha256": "1b9f5cc6c6d3ed96fb65604de74143de8f25296bbd09dbe22d1e4373881022ce"
+      },
+      "external-linked.psd": {
+        "bytes": 181244,
+        "sha256": "aad0adffdfb131cf541ba7eaee4385ab9a59b7e48ea905236ef1a605f152bd58"
+      }
+    },
+    "referenceReceiptSHA256": "1eafcc712e89205e60d9278a3636a46b5f36499ad192262dab4f4b0720abc616"
+  },
+  "selectedCasesSHA256": "a4fc959f0aff6e3088ac40f2289e0953817b2ce89d8efa70ebcf229c17e18640",
+  "preview": {
+    "archiveSHA256": "9fdda9fb81ab1b8213ecaf6124c869d519048e391705ff46ab726bb1e781a8c3",
+    "binarySHA256": "5908508c894df45dfafab91c5ee0fa4c39d931bb0dd144aa99e511f92eee3e8f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "d93bf2022531efe281009352c0e4193d498f414bb50fd795952793df355737df",
+      "x86_64": "f6dc49dfb544ef4ca8a101cc38ba8c61117449bda669ed7218b33512bcccffa0"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobeCompared": false,
+  "hostedAdobeCompared": false
+}

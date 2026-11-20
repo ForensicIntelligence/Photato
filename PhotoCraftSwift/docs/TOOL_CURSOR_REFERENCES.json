@@ -1799,5 +1799,11 @@
     "api": "brush.settings.paintMode routes to the same compositor through paint.stroke and paint.tool.",
     "direct_chords": 25,
     "open": "Native Photoshop live input, physical layouts and exact pointer artwork."
+  },
+  "selected_path_transform_672": {
+    "native": "Path and Direct Selection show Shift selection feedback. The transform box reuses the six-mode ToolCursor policy and captures the gesture modifier mode.",
+    "qualification": "All 16 modifier combinations were checked around the selected path's corner. An AppKit Command-drag was followed through release, commit and Undo.",
+    "remaining": "Independent Adobe glyph comparison and physical pointer testing remain open.",
+    "reference": "docs/SOURCE_PUBLICATION_672.json"
   }
 }

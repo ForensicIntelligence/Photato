@@ -127,6 +127,7 @@ public enum ActionOperation: Codable, Sendable {
   indirect case pathPixelPaint(ActionLayerTarget,SelectionMask,PixelPaintSettings,RasterPattern?,PatternPlacement?,Bool)
   case projectLayers([ActionLayerTarget],ProjectiveTransform,Resampling)
   case transformLayers([ActionLayerTarget],Transform2D,Resampling)
+  case transformPath(ActionPathTarget, PathTransformSelection, ProjectiveTransform)
   case mergeSpotChannel(ActionChannelTarget)
   case processChannelDeletion(ProcessChannelDeletion)
   case transformChannel(ActionChannelTarget,ProjectiveTransform,Resampling,Float,Bool)
@@ -318,6 +319,12 @@ public enum ActionOperation: Codable, Sendable {
       else if let pattern=request.pattern{self = .patternPixelPaint(.init(request.target,in:d),pattern,request.patternPlacement ?? .init(),request.settings)}else{self = .pixelPaint(request.kind,.init(request.target,in:d),request.settings)}
     case .layerLinks(let command):switch command{case .link(let ids):self = .layerLinks("link",ids.map(target),nil);case .unlink(let ids):self = .layerLinks("unlink",ids.map(target),nil);case .enabled(let ids,let value):self = .layerLinks("enabled",ids.map(target),value)}
     case .transformLayers(let request):if let matrix=request.projection{self = .projectLayers(request.layerIDs.map(target),matrix,request.interpolation)}else{self = .transformLayers(request.layerIDs.map(target),request.matrix,request.interpolation)}
+    case .transformPath(let request):
+      if let target = ActionPathTarget(request.target, in: d) {
+        self = .transformPath(target, request.selection, request.matrix)
+      } else {
+        self = .unsupported("The original path for this transform is missing.")
+      }
     case .transformChannel(let request):self = .transformChannel(.init(request.target,in:d),request.matrix,request.interpolation,request.backgroundValue,request.copy)
     case .transformPixelMask(let request):self = .transformPixelMask(target(request.layerID),request.matrix,request.interpolation)
     case .transformPixels(let request):
@@ -440,6 +447,8 @@ public enum ActionOperation: Codable, Sendable {
     case .layerLinks(let operation,let targets,let value):let ids=try targets.map(id);switch operation{case "link":return .layerLinks(.link(ids));case "unlink":return .layerLinks(.unlink(ids));case "enabled":guard let value else{throw CraftError.invalid("Missing recorded link participation.")};return .layerLinks(.enabled(ids,value));default:throw CraftError.invalid("Unknown recorded layer-link operation.")}
     case .projectLayers(let targets,let matrix,let method):return .transformLayers(.init(layerIDs:try targets.map(id),projection:matrix,interpolation:method))
     case .transformLayers(let targets,let matrix,let method):return .transformLayers(.init(layerIDs:try targets.map(id),matrix:matrix,interpolation:method))
+    case .transformPath(let target, let selection, let matrix):
+      return .transformPath(.init(target: try target.resolve(in: d), selection: selection, matrix: matrix))
     case .transformChannel(let t,let m,let r,let background,let copy):return .transformChannel(.init(target:try t.resolve(in:d),matrix:m,interpolation:r,backgroundValue:background,copy:copy))
     case .transformPixelMask(let t,let m,let r):return .transformPixelMask(.init(layerID:try id(t),matrix:m,interpolation:r))
     case .transformPixels(let t,let m,let r):return .transformPixels(.init(layerID:try id(t),matrix:m,interpolation:r))
@@ -723,6 +732,10 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
       default: break
       }
       if case .fitImage(let options) = step.operation { try options.validate() }
+      if case .transformPath(_, let selection, let matrix) = step.operation {
+        try matrix.validate()
+        try selection.validate()
+      }
       if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}
       if case .globalLight(let value)=step.operation {try value.validate()}

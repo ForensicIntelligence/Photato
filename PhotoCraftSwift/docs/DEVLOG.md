@@ -690,7 +690,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 669 | 2026-11-20 | [Keep PDF Smart Object Warp editable](#dev-step-669) |
 | 670 | 2026-11-20 | [Keep PDF Smart Object perspective editable](#dev-step-670) |
 | 671 | 2026-11-20 | [Keep vector masks editable in Perspective and Distort](#dev-step-671) |
+| 672 | 2026-11-20 | [Transform selected paths, contours and anchors](#dev-step-672) |
 <!-- history-index:end -->
+
+<a id="dev-step-672"></a>
+
+## 2026-11-20 — Transform selected paths, contours and anchors
+
+Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action.
+
+Command-T previously dispatched to the layer or pixel-selection workflow even while a path was active. The new path target reuses the transform box, keyboard and mode handling. Shift selection extends or toggles the selected components or points. The Edit submenu uses Transform Path or Transform Points according to that selection. A curved span with two selected anchors uses the projective curve fitter. The unselected side of a partial span retains its anchor and handles.
+
+Native and API edits share the command, validation and one history entry. Actions version 76 records the request and resolves portable layer or named path targets. The first focused run passed six of seven tests. The shape test compared a cached raster offset after the contour bounds changed. The corrected test checks the independent logical shape transform and verifies the unaffected controls, fill, stroke and mask. A selection-only path click leaves a live shape untouched and creates no Undo entry.
+
+All 156 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The path workflow passed native canvas gesture, Return, Undo, Action replay, authenticated editing, and PSD and PSB tests. All 12 whole-layer vector mask outputs from build 671 matched byte for byte. A separate Debug comparison passed all 34 existing Pen, Shape and menu cases on both builds.
+
+Shape contours remain editable as Bézier geometry. A contour edit can replace the live primitive controls. Direct Selection marquee, path selection across layers, path Warp, and live Photoshop comparisons of partial projective transforms remain open. Extend Direct Selection to marquee selection of points and improve multi-path selection across layers. Use a saved Photoshop reference for partial transforms when the installed editor responds.
+
+[Development record](PATH_TRANSFORM_672.md) · [Qualification](SOURCE_PUBLICATION_672.md).
 
 <a id="dev-step-671"></a>
 
