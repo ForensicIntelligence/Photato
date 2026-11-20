@@ -1,0 +1,504 @@
+{
+  "build": 675,
+  "base": "145403d0b2ef9261d4b0caa8bd534ddc5d76b585",
+  "buildInputs": 9292,
+  "includedBuildInputs": 9279,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "34aad7d6d65819d8ce5380941390d2d7ca07b3652a564196d96860c329a952eb",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "sha256": "0905af14a2fb73b78b55bddf22f17bfd486758d8ca9622981dd42cac34c25d9b"
+    },
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "b976b381714549de6a2eb3c1c30d8a7f751e97913fab84af9996e9b8909be946"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "15376fd55bb70716d779f2f2ba00cc499880e02dcaa55aefac794fc956ab3ef2"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPathGroups.swift",
+      "sha256": "17d85a304bdf92188c9e15a9b7dd3ff3173b65d4b6510d2b1ff8521978c1089d"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "e275095794e238f504e40463a95392014db412e0b48aebc990dd7bbad3295909"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationWarp.swift",
+      "sha256": "0d530ed111ff63eb743782fb257d091a66505b026b4a7b6b8c822b270e1093ad"
+    },
+    {
+      "path": "Sources/PhotoCraft/CanvasView.swift",
+      "sha256": "9d0548553b4e2093b1893c3bcb15b79f35251cfce08bb7b79566ee62dd0c0aec"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathWarpCanvas.swift",
+      "sha256": "4706e8ad0a7f3b756bcd6404cb27a8edcb3822541911ce1725bc7b60bf31eaa8"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathWarpEditing.swift",
+      "sha256": "6107c3f7dba074df9f3220b82d609668ebf9a7349d23d5eba41cf17750087fc3"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "sha256": "c8e0c88127c1619167adc188c56aefd750f2e9f84657fbf8c8861a38814869ab"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectionTransformCanvas.swift",
+      "sha256": "92c9c98c19fd1c5ec191f92ab874bf09a27d5b1b885b4dfb820b347dddf02581"
+    },
+    {
+      "path": "Sources/PhotoCraft/ToolCursorPolicies.swift",
+      "sha256": "db38ae1aea8f5e973437d60ccdff4f82adf5e2c1ee921ce1089f50039e4eda66"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformEditing.swift",
+      "sha256": "24be5097c097da78de77cef54c5f683fd6dd31a04d0becff607e5bf753f329df"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformOptions.swift",
+      "sha256": "29089c25ca48b524315147d5ea288659f29ee8f8b49f01f20d2eef11cac311ec"
+    },
+    {
+      "path": "Sources/PhotoCraft/WarpWorkspace.swift",
+      "sha256": "b4a3657321572a1becc1d505ad39634f4dead67744a973d7e3222243d3c2d577"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspaceTools.swift",
+      "sha256": "6fa5b84fde7efd858511cb60025eaef846196def7e96468c45860c5b0c55393a"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspaceView.swift",
+      "sha256": "d7cb2f540fa93806e041cb364202c2d8f81e4062958a548aca0ea064a910615b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Engine.swift",
+      "sha256": "feec63b688f3dee5f7190ee5e67ef96dd23fca0694056f14e4990ceb15d0e7e1"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PathTransform.swift",
+      "sha256": "08fdd5f1349ac88513e6b1ec04eed77c7236b02ec101be183e9e9ca6713e620d"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PathWarp.swift",
+      "sha256": "224156c4825d6d4de3fa95b8b337e6fbeebe9d102f73c1ad5437089d188d1d6b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RecordedActions.swift",
+      "sha256": "c938a3357d4e34b6f24845864c527b818ba86b9a676e16845b5ef95085bb5d64"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "8b9fe1257df0bda1a5ec1861c064a19d9313896d670b69a41006c150301ce9f6"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathWarpWorkflowTests.swift",
+      "sha256": "9d41314a7a912b9d42b4ff76ecdbd62d07e5684161aef835d6f3498c813303d9"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/PathWarpTests.swift",
+      "sha256": "10612e0f78c8f8b6cf6d42f0c281419f029fab23f8cabd88072acb5bf240c263"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "3ffb6f84bffe877ecd1a89b7a0d941df9b2420dd97498cfd6d23dac77968625d"
+    }
+  ],
+  "casesPerConfiguration": 198,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 198,
+      "passed": 198,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "5db0b90f73a415ed3b4d83c4815ac7d5bb163d5a87a63609b6d4769a2c65b9e4"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 198,
+      "passed": 198,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "b55ad2b0a2f416225a2a8fba4523a50e2c9161d752b913b4c5c915159ca93375"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 198,
+      "passed": 198,
+      "newCasesExpected": 6,
+      "newCasesPassed": 6,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "8d5806d1b157eb77d51f592d369abd28b3965ccdff25a19bc43daf256965be9e"
+    }
+  },
+  "priorWholeLayerVectorMasks": {
+    "build": 675,
+    "referenceBuild": 671,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "outputs": {
+      "embedded-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "embedded-fixed.psb": {
+        "bytes": 184860,
+        "sha256": "f0c3bcbef6518f7872f421783a0c3cdbb8fbdf0ed8a951e31f0093535ac3761e"
+      },
+      "embedded-fixed.psd": {
+        "bytes": 184832,
+        "sha256": "7d91a4d07a206dc2ee37fec77ce37e1305c38b7dca53918f195ad89d95cadab5"
+      },
+      "embedded-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "embedded-linked.psb": {
+        "bytes": 184940,
+        "sha256": "38286424a94c3295a0daf6b0a6e8d4d69912c0abb68f06192404ce6ea9f0fe1c"
+      },
+      "embedded-linked.psd": {
+        "bytes": 184912,
+        "sha256": "88f5e46a8d044958ff521684e9b4eb5f6fabb9c8d64bdeb572f7630e2efea550"
+      },
+      "external-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "external-fixed.psb": {
+        "bytes": 181192,
+        "sha256": "5f5fa9faa4b5840c468ed05b1c606678738cfd5ab402798b7022300919ff4675"
+      },
+      "external-fixed.psd": {
+        "bytes": 181164,
+        "sha256": "831808a037492aa7bd10d633af86229a0941a4125dbe938e4021bb93fd348191"
+      },
+      "external-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "external-linked.psb": {
+        "bytes": 181272,
+        "sha256": "1b9f5cc6c6d3ed96fb65604de74143de8f25296bbd09dbe22d1e4373881022ce"
+      },
+      "external-linked.psd": {
+        "bytes": 181244,
+        "sha256": "aad0adffdfb131cf541ba7eaee4385ab9a59b7e48ea905236ef1a605f152bd58"
+      }
+    },
+    "referenceReceiptSHA256": "1eafcc712e89205e60d9278a3636a46b5f36499ad192262dab4f4b0720abc616"
+  },
+  "ownedPathWarpOutputs": {
+    "build": 675,
+    "scope": "Three owned path Warp cases",
+    "records": {
+      "wave.paths.json": {
+        "debug": {
+          "sha256": "c8d791f80df637c1dc44c244d71976e7b29489668cff0ceeceef0881a2ea8d1f",
+          "bytes": 16789,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        },
+        "arm": {
+          "sha256": "c8d791f80df637c1dc44c244d71976e7b29489668cff0ceeceef0881a2ea8d1f",
+          "bytes": 16789,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        },
+        "intel": {
+          "sha256": "d4a4f1a8b915da997e6998e0945bdbfd701ff508274f990132d3a0eb96f8899c",
+          "bytes": 16779,
+          "differingBytesFromDebug": 15900,
+          "maximumAbsoluteCoordinateDifference": 1.4551915228366852e-11
+        }
+      },
+      "wave.photato": {
+        "debug": {
+          "sha256": "103c6aab0bb0854a760ac1f97f649239d0502579ce5a6065d7ca4d308b54adf3",
+          "bytes": 8775,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "103c6aab0bb0854a760ac1f97f649239d0502579ce5a6065d7ca4d308b54adf3",
+          "bytes": 8775,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "d4eb169f0124a55a5e72a6f665796c0e1cd8e721f7b7ae2db7a469a529fcf6cb",
+          "bytes": 8775,
+          "differingBytesFromDebug": 58
+        }
+      },
+      "wave.psd": {
+        "debug": {
+          "sha256": "f30e0bb1c3de9ab69d5d4bcf4b06ec73a998a2439d08fd16b3937f095bb88326",
+          "bytes": 172052,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "f30e0bb1c3de9ab69d5d4bcf4b06ec73a998a2439d08fd16b3937f095bb88326",
+          "bytes": 172052,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "f30e0bb1c3de9ab69d5d4bcf4b06ec73a998a2439d08fd16b3937f095bb88326",
+          "bytes": 172052,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "wave.psb": {
+        "debug": {
+          "sha256": "1046bfaffe218461ca71692efcc6c5a49538327272173ad5bfa7b9d5b90bfefa",
+          "bytes": 172080,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "1046bfaffe218461ca71692efcc6c5a49538327272173ad5bfa7b9d5b90bfefa",
+          "bytes": 172080,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "1046bfaffe218461ca71692efcc6c5a49538327272173ad5bfa7b9d5b90bfefa",
+          "bytes": 172080,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "wave.rgba": {
+        "debug": {
+          "sha256": "eee69374ae858a7166581100c3bed18c88bdc5812ee8d6022a90829a53e5f2c7",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "eee69374ae858a7166581100c3bed18c88bdc5812ee8d6022a90829a53e5f2c7",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "eee69374ae858a7166581100c3bed18c88bdc5812ee8d6022a90829a53e5f2c7",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "split.paths.json": {
+        "debug": {
+          "sha256": "df8a0894c6d546f3e28db4e894fdc943bccc807ae7ea8ac09f83cf8bc8b6f0ad",
+          "bytes": 13323,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        },
+        "arm": {
+          "sha256": "df8a0894c6d546f3e28db4e894fdc943bccc807ae7ea8ac09f83cf8bc8b6f0ad",
+          "bytes": 13323,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        },
+        "intel": {
+          "sha256": "df8a0894c6d546f3e28db4e894fdc943bccc807ae7ea8ac09f83cf8bc8b6f0ad",
+          "bytes": 13323,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        }
+      },
+      "split.photato": {
+        "debug": {
+          "sha256": "c86f4dee95410a6a39b6db7297ee8f2ed37bdad880c460aae5306803e838d6d9",
+          "bytes": 7209,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "c86f4dee95410a6a39b6db7297ee8f2ed37bdad880c460aae5306803e838d6d9",
+          "bytes": 7209,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "c86f4dee95410a6a39b6db7297ee8f2ed37bdad880c460aae5306803e838d6d9",
+          "bytes": 7209,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "split.psd": {
+        "debug": {
+          "sha256": "6573091822ec86965a26286a24d2f750b846bb3d03326ba0221e39ca3eeac202",
+          "bytes": 171582,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "6573091822ec86965a26286a24d2f750b846bb3d03326ba0221e39ca3eeac202",
+          "bytes": 171582,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "6573091822ec86965a26286a24d2f750b846bb3d03326ba0221e39ca3eeac202",
+          "bytes": 171582,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "split.psb": {
+        "debug": {
+          "sha256": "aa7115cc1335da03688b8167df105289aec8b126398102d1e81ef484828ae719",
+          "bytes": 171610,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "aa7115cc1335da03688b8167df105289aec8b126398102d1e81ef484828ae719",
+          "bytes": 171610,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "aa7115cc1335da03688b8167df105289aec8b126398102d1e81ef484828ae719",
+          "bytes": 171610,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "split.rgba": {
+        "debug": {
+          "sha256": "8963b6a128cd09f02e5f9e7f5f73acb2370dbb1667c428ed0a32a998fac1cd98",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "8963b6a128cd09f02e5f9e7f5f73acb2370dbb1667c428ed0a32a998fac1cd98",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "8963b6a128cd09f02e5f9e7f5f73acb2370dbb1667c428ed0a32a998fac1cd98",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "cylinder.paths.json": {
+        "debug": {
+          "sha256": "0d8241caa7193ad01b51873f266d451efa4befeb8f9a8b61dabf14b6ba0c4697",
+          "bytes": 22625,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        },
+        "arm": {
+          "sha256": "0d8241caa7193ad01b51873f266d451efa4befeb8f9a8b61dabf14b6ba0c4697",
+          "bytes": 22625,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        },
+        "intel": {
+          "sha256": "0d8241caa7193ad01b51873f266d451efa4befeb8f9a8b61dabf14b6ba0c4697",
+          "bytes": 22625,
+          "differingBytesFromDebug": 0,
+          "maximumAbsoluteCoordinateDifference": 0
+        }
+      },
+      "cylinder.photato": {
+        "debug": {
+          "sha256": "a82130eca1d154701d13f22052d074dc10dd3a4d26c87c5aa651aee1bb84b100",
+          "bytes": 11659,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "a82130eca1d154701d13f22052d074dc10dd3a4d26c87c5aa651aee1bb84b100",
+          "bytes": 11659,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "a82130eca1d154701d13f22052d074dc10dd3a4d26c87c5aa651aee1bb84b100",
+          "bytes": 11659,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "cylinder.psd": {
+        "debug": {
+          "sha256": "e578186703538d51fde47ccf96ac4fe4f4e10b68948a5fffccdcecb2536aa0d4",
+          "bytes": 173142,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "e578186703538d51fde47ccf96ac4fe4f4e10b68948a5fffccdcecb2536aa0d4",
+          "bytes": 173142,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "e578186703538d51fde47ccf96ac4fe4f4e10b68948a5fffccdcecb2536aa0d4",
+          "bytes": 173142,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "cylinder.psb": {
+        "debug": {
+          "sha256": "206fc98e73700ad3b3758c9a552698e9e997b6507ef4c840f7ce6d5f478fffec",
+          "bytes": 173170,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "206fc98e73700ad3b3758c9a552698e9e997b6507ef4c840f7ce6d5f478fffec",
+          "bytes": 173170,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "206fc98e73700ad3b3758c9a552698e9e997b6507ef4c840f7ce6d5f478fffec",
+          "bytes": 173170,
+          "differingBytesFromDebug": 0
+        }
+      },
+      "cylinder.rgba": {
+        "debug": {
+          "sha256": "c2dfd6eab36177c5a6605591767446230a591aa6ad2fb62a6e1c65e56734bd6d",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        },
+        "arm": {
+          "sha256": "c2dfd6eab36177c5a6605591767446230a591aa6ad2fb62a6e1c65e56734bd6d",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        },
+        "intel": {
+          "sha256": "c2dfd6eab36177c5a6605591767446230a591aa6ad2fb62a6e1c65e56734bd6d",
+          "bytes": 165120,
+          "differingBytesFromDebug": 0
+        }
+      }
+    },
+    "casesByteIdenticalAcrossConfigurations": {
+      "paths.json": 2,
+      "photato": 2,
+      "psd": 3,
+      "psb": 3,
+      "rgba": 3
+    }
+  },
+  "selectedCasesSHA256": "613db9272d1761a469be6516d02f6c181f227660db9176dfe0b70cc11c24cae1",
+  "preview": {
+    "archiveSHA256": "6dcf683102f8c77d5c533f1410f791f5cb46479f212b3db4c0c115ee484a6e5a",
+    "binarySHA256": "e4b2a9998e538633ce93619d3616cd5f5f55757effe5a3e4784649f339c71f9f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "0deec9b64dc2c6a31b3eee6c8fa6b99176a2e529acd074990bd5d9bd9150b81c",
+      "x86_64": "c87f52b979f33e16e9b5bcdf8bfd7ed92519e9425ea4c0988abd7b27e35a5aa1"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination for Debug only.",
+  "liveAdobeCompared": false,
+  "hostedAdobeCompared": false
+}

@@ -19,10 +19,33 @@ enum CylinderHandle: CaseIterable {
     }
   }
 
+  static func hit(_ location: CGPoint, cylinder: CylinderWarp,
+                  project: (PathPoint) -> CGPoint?) -> CylinderHandle? {
+    let handles = CylinderHandle.allCases.compactMap { handle -> (CylinderHandle, Double)? in
+      guard let control = handle.point(on: cylinder), let point = project(control) else { return nil }
+      let distance = hypot(point.x - location.x, point.y - location.y)
+      return distance <= 12 ? (handle, distance) : nil
+    }
+    if let nearest = handles.min(by: { $0.1 < $1.1 }) { return nearest.0 }
+    let shape = cylinder.surface
+    let domain = shape.lastVisibleU - shape.firstVisibleU
+    let columns = (0...24).map { shape.firstVisibleU + domain * Double($0) / 24 }
+    let outline = columns.map { shape.point($0, 0) } + columns.reversed().map { shape.point($0, 1) }
+    let points = outline.compactMap(project)
+    guard points.count == outline.count, let first = points.first else { return nil }
+    let path = Path { path in
+      path.move(to: first)
+      path.addLines(Array(points.dropFirst()))
+      path.closeSubpath()
+    }
+    return path.contains(location) ? .body : nil
+  }
 }
 
 @MainActor @Observable final class WarpWorkspace: Identifiable {
-  let id=UUID(),source:CraftDocument,layer:Layer,width:Int,height:Int
+  let id=UUID(),source:CraftDocument,width:Int,height:Int
+  let layer: Layer?
+  let pathContext: PathWarpContext?
   let sourceSession:UUID?,sourceLifecycle:UUID?
   var settings:WarpDefinition
   var image:CGImage?
@@ -32,6 +55,8 @@ enum CylinderHandle: CaseIterable {
   var rendering=false
   var error:String?
   var edit:WarpEdit?
+  var pathEdit: PathWarpEdit?
+  @ObservationIgnored var pathPreviewChanged: (() -> Void)?
   var selectedPoint:Int?
   var splitPosition=0.5
   var undoStates=[WarpDefinition]()
@@ -41,10 +66,21 @@ enum CylinderHandle: CaseIterable {
   private var closed=false
   private var gestureStart:WarpDefinition?
   init(source:CraftDocument,layer:Layer,session:UUID?=nil,lifecycle:UUID?=nil) {
-    self.source=source;self.layer=layer;sourceSession=session;sourceLifecycle=lifecycle;settings=layer.warp ?? WarpDefinition()
+    self.source=source;self.layer=layer;pathContext=nil;sourceSession=session;sourceLifecycle=lifecycle;settings=layer.warp ?? WarpDefinition()
     if case .raster(let p)=layer.content { width=p.width;height=p.height } else { width=1;height=1 }
   }
-  var ready:Bool { edit != nil && !rendering && !closed && error == nil }
+  init(source: CraftDocument, path: PathWarpContext, session: UUID?, lifecycle: UUID?) {
+    self.source = source
+    layer = nil
+    pathContext = path
+    sourceSession = session
+    sourceLifecycle = lifecycle
+    width = source.width
+    height = source.height
+    settings = WarpDefinition()
+    settings.sourceBounds = path.bounds
+  }
+  var ready:Bool { (edit != nil || pathEdit != nil) && !rendering && !closed && error == nil }
   var controls:WarpMesh? {
     guard settings.cylinder == nil else { return nil }
     return settings.mesh ?? (try? settings.custom(width:width,height:height).mesh)
@@ -55,8 +91,10 @@ enum CylinderHandle: CaseIterable {
     return settings.point((bounds?.x ?? 0) + s * (bounds?.width ?? w),
                           (bounds?.y ?? 0) + t * (bounds?.height ?? h), width: w, height: h)
   }
-  func change(_ value:WarpDefinition,remember:Bool=true) {
+  func change(_ requested:WarpDefinition,remember:Bool=true) {
     guard !closed else{return}
+    var value = requested
+    if let pathContext { value.sourceBounds = pathContext.bounds }
     do { try value.validate() } catch { self.error=error.localizedDescription;return }
     guard value != settings else { return }
     if remember { rememberUndo(settings) };settings=value;refresh()
@@ -139,6 +177,8 @@ enum CylinderHandle: CaseIterable {
   }
   func refresh() {
     guard !closed else{return}
+    if let pathContext { refreshPaths(pathContext); return }
+    guard let layer else { return }
     task?.cancel();edit=nil;error=nil;rendering=true;generation += 1
     let token=generation,source=source,layerID=layer.id,value=settings,needOriginal=originalImage == nil
     task=Task { [weak self] in
@@ -153,6 +193,35 @@ enum CylinderHandle: CaseIterable {
         try Task.checkCancellation();guard let self,!self.closed,self.generation == token else { return }
         self.edit=result.0;self.image=result.1;if let before=result.2 { self.originalImage=before };self.rendering=false
       } catch { guard let self,!self.closed,self.generation == token else { return };self.rendering=false;if !Task.isCancelled { self.error=error.localizedDescription } }
+    }
+  }
+  private func refreshPaths(_ context: PathWarpContext) {
+    error = nil
+    generation += 1
+    // Keep the active preview moving while the pointer submits newer controls.
+    // One pending snapshot is enough, since the edit always starts at the source.
+    if !rendering { preparePaths(context) }
+  }
+  private func preparePaths(_ context: PathWarpContext) {
+    rendering = true
+    let token = generation, source = source
+    let request = PathWarpRequest(choices: context.choices, matrix: context.matrix, settings: settings)
+    task = Task { [weak self] in
+      do {
+        let worker = Task.detached(priority: .userInitiated) { try PathWarpEdit.prepare(request, in: source) }
+        let result = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        try Task.checkCancellation()
+        guard let self, !self.closed else { return }
+        self.pathEdit = result
+        self.pathPreviewChanged?()
+      } catch {
+        if let self, !self.closed, self.generation == token, !Task.isCancelled {
+          self.error = error.localizedDescription
+        }
+      }
+      guard let self, !self.closed, !Task.isCancelled else { return }
+      self.rendering = false
+      if self.generation != token { self.preparePaths(context) }
     }
   }
   func close() { closed=true;generation += 1;task?.cancel();task=nil;rendering=false }
@@ -173,7 +242,7 @@ struct WarpSheet:View {
   }
   var body:some View {
     VStack(alignment:.leading,spacing:12) {
-      HStack { Text("Warp").font(.headline);Spacer();Text(model.layer.name).foregroundStyle(.secondary) }
+      HStack { Text("Warp").font(.headline);Spacer();Text(model.layer?.name ?? "").foregroundStyle(.secondary) }
       HStack(alignment:.top,spacing:18) {
         WarpPreview(model:model).frame(minWidth:460,minHeight:400)
         VStack(alignment:.leading,spacing:10) {
@@ -238,42 +307,20 @@ struct WarpPreview:View {
   @State private var cylinderDrag: CylinderHandle?
   @State private var hoverCylinderHandle: CylinderHandle?
 
-  private func cylinderHit(_ location: CGPoint, cylinder: CylinderWarp,
-                           project: (PathPoint) -> CGPoint?) -> CylinderHandle? {
-    let handles = CylinderHandle.allCases.compactMap { handle -> (CylinderHandle, Double)? in
-      guard let control = handle.point(on: cylinder), let point = project(control) else { return nil }
-      let distance = hypot(point.x - location.x, point.y - location.y)
-      return distance <= 12 ? (handle, distance) : nil
-    }
-    if let nearest = handles.min(by: { $0.1 < $1.1 }) { return nearest.0 }
-    let shape = cylinder.surface
-    let domain = shape.lastVisibleU - shape.firstVisibleU
-    let columns = (0...24).map { shape.firstVisibleU + domain * Double($0) / 24 }
-    let outline = columns.map { shape.point($0, 0) } + columns.reversed().map { shape.point($0, 1) }
-    let points = outline.compactMap(project)
-    guard points.count == outline.count, let first = points.first else { return nil }
-    let path = Path { path in
-      path.move(to: first)
-      path.addLines(Array(points.dropFirst()))
-      path.closeSubpath()
-    }
-    return path.contains(location) ? .body : nil
-  }
-
   private struct PreviewCoordinates {
     let origin: CGPoint
     let scale: Double
     let transform: Transform2D
     let projection: ProjectiveTransform?
 
-    init(size: CGSize, source: CraftDocument, layer: Layer) {
+    init(size: CGSize, source: CraftDocument, layer: Layer?) {
       let padding = 40.0
       scale = min((size.width - padding * 2) / Double(source.width),
                   (size.height - padding * 2) / Double(source.height))
       origin = CGPoint(x: (size.width - Double(source.width) * scale) / 2,
                        y: (size.height - Double(source.height) * scale) / 2)
-      transform = Transform2D.translation(origin.x, origin.y) * .scale(scale, scale) * layer.coordinateTransform
-      projection = layer.sourceProjection
+      transform = Transform2D.translation(origin.x, origin.y) * .scale(scale, scale) * (layer?.coordinateTransform ?? .identity)
+      projection = layer?.sourceProjection
     }
 
     func display(_ point: PathPoint) -> CGPoint? {
@@ -309,7 +356,7 @@ struct WarpPreview:View {
       .gesture(dragGesture(coordinates: coordinates, cylinder: cylinder, mesh: mesh))
       .onContinuousHover { phase in
         if case .active(let location) = phase, let cylinder, model.showGuides {
-          hoverCylinderHandle = cylinderHit(location, cylinder: cylinder, project: coordinates.display)
+          hoverCylinderHandle = CylinderHandle.hit(location, cylinder: cylinder, project: coordinates.display)
         } else {
           hoverCylinderHandle = nil
         }
@@ -371,7 +418,7 @@ struct WarpPreview:View {
       guard model.showGuides else { return }
       if let cylinder {
         if cylinderDrag == nil {
-          cylinderDrag = cylinderHit(value.startLocation, cylinder: cylinder, project: coordinates.display)
+          cylinderDrag = CylinderHandle.hit(value.startLocation, cylinder: cylinder, project: coordinates.display)
         }
         applyCylinderDrag(value, coordinates: coordinates)
         return
@@ -390,7 +437,7 @@ struct WarpPreview:View {
       if model.showGuides { applyCylinderDrag(value, coordinates: coordinates) }
       model.endGesture(); dragged = nil; cylinderDrag = nil
       hoverCylinderHandle = model.settings.cylinder.flatMap {
-        cylinderHit(value.location, cylinder: $0, project: coordinates.display)
+        CylinderHandle.hit(value.location, cylinder: $0, project: coordinates.display)
       }
     }
   }
@@ -403,12 +450,23 @@ struct WarpPreview:View {
   }
 }
 extension EditorStore {
-  var canBeginWarp:Bool { !geometryBusy && !aiBusy && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingMask && !editingComponent && document.activeLayerID.map{(try? WarpEdit.target(document,layerID:$0)) != nil} == true }
-  func beginWarp() { guard canBeginWarp,let id=document.activeLayerID,let layer=try? WarpEdit.target(document,layerID:id) else { return };warpDraft=WarpWorkspace(source:document,layer:layer,session:sessionGeneration,lifecycle:layerPanelGeneration) }
-  func cancelWarp() { warpDraft?.close();warpDraft=nil }
+  var pathWarp: WarpWorkspace? { warpDraft.flatMap { $0.pathContext == nil ? nil : $0 } }
+  var canBeginLayerWarp:Bool { !geometryBusy && !aiBusy && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingMask && !editingComponent && document.activeLayerID.map{(try? WarpEdit.target(document,layerID:$0)) != nil} == true }
+  var canBeginWarp: Bool { pathTarget == nil ? canBeginLayerWarp : canBeginPathWarp }
+  func beginLayerWarp() { guard canBeginLayerWarp,let id=document.activeLayerID,let layer=try? WarpEdit.target(document,layerID:id) else { return };warpDraft=WarpWorkspace(source:document,layer:layer,session:sessionGeneration,lifecycle:layerPanelGeneration) }
+  func beginWarp() { if pathTarget != nil { beginPathWarp() } else { beginLayerWarp() } }
+  func cancelWarp() {
+    let restoresPaths = pathWarp != nil
+    warpDraft?.close()
+    warpDraft = nil
+    if restoresPaths { status = "Warp cancelled"; render() }
+  }
   func commitWarp() { guard let draft=warpDraft,draft.ready,let edit=draft.edit else { return }
     guard draft.sourceSession==sessionGeneration,draft.sourceLifecycle==layerPanelGeneration,draft.source==document else{draft.error="The Warp source changed. Cancel and preview again.";return}
     cancelWarp();performGeometry(.warp(edit))
   }
 }
-extension AppDelegate { @objc func warpLayer() { store?.beginWarp() } }
+extension AppDelegate {
+  @objc func warpLayer() { store?.beginWarp() }
+  @objc func warpSmartObject() { store?.beginLayerWarp() }
+}

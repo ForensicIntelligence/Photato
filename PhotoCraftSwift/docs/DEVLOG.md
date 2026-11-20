@@ -693,7 +693,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 672 | 2026-11-20 | [Transform selected paths, contours and anchors](#dev-step-672) |
 | 673 | 2026-11-20 | [Select path anchors with a Direct Selection marquee](#dev-step-673) |
 | 674 | 2026-11-20 | [Transform editable paths across layers](#dev-step-674) |
+| 675 | 2026-11-20 | [Warp editable paths on the canvas](#dev-step-675) |
 <!-- history-index:end -->
+
+<a id="dev-step-675"></a>
+
+## 2026-11-20 — Warp editable paths on the canvas
+
+Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions.
+
+The Warp operation reuses editable path selection and layer replacement. It derives a shared source frame after the pending matrix. The fitter checks interior points, splits at mesh boundaries, and uses separate derivative estimates at the ends of each patch. An untouched grid keeps the original path. Preview prepares editable geometry off the main thread and sends the resulting document to the existing canvas renderer. Cancel leaves the source and history intact.
+
+The Options bar and contextual menu open Warp for selected path targets. The main canvas accepts native mesh and Cylinder gestures, with guide visibility and cursor feedback. The raster and Smart Object sheet stays available. The same path operation is available through the authenticated paths.warp command and portable Actions version 78.
+
+The first build hit a module cache permission error. The next default backend run stopped in the frontend. The native SwiftPM backend also rejected a nested grid coordinate expression, which was expanded into scalar steps. The Debug retry uses the existing workaround for the compiler's PredictableDeadAllocationElimination stack fault. Both optimized builds use the standard optimizer.
+
+The first AppKit test captured its baseline before the Paths panel changed focus and reported a framework transition error after its preview assertions. The revised fixture captures the selected source and runs the two new AppKit cases separately. The offscreen preview also exposed unlabeled populated fields and path anchors that competed with mesh handles. Warp values retain their labels and units, and Warp draws the contour without the anchor boxes used by Direct Selection.
+
+During a stream of mouse updates the preview no longer waits for input to stop. The worker finishes its active edit, retains only the latest pending controls, and enables Apply after preparing that last edit. A deterministic queue test verifies delivery of both previews.
+
+All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The six new tests cover split tangents, a dense analytic curve comparison, untouched grids, locked and stale edits, continuous drag preview, canvas cancel and commit, Actions replay, authenticated automation, and editable PSD and PSB paths. All 12 earlier whole-layer vector mask outputs still match byte for byte.
+
+All nine owned Wave, split mesh and Cylinder PSD, PSB and RGBA outputs agree byte for byte across the three builds. 2 of three native archives also match. The largest recorded change in editable curve coordinates across the builds is 1.46e-11 pixels.
+
+Photoshop-authored warp output, switching from edited Warp back to Free Transform, and physical canvas performance remain open. Verify paths against files authored in Photoshop and compare switching back to Free Transform, split controls, and target availability.
+
+[Development record](PATH_WARP_675.md) · [Qualification](SOURCE_PUBLICATION_675.md).
 
 <a id="dev-step-674"></a>
 

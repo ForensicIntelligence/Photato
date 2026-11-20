@@ -103,6 +103,7 @@ public indirect enum Command: Sendable {
   case transformLayers(LayerCollectionTransformRequest)
   case transformPath(PathTransformRequest)
   case transformPaths(PathTransformGroupRequest)
+  case warpPaths(PathWarpEdit)
   case transformChannel(ChannelTransformRequest)
   case transformPixelMask(PixelMaskTransformRequest)
   case transformPixels(SelectedPixelTransformRequest)
@@ -259,6 +260,7 @@ public indirect enum Command: Sendable {
     case .transformLayers: "Free Transform"
     case .transformPath: "Transform Path"
     case .transformPaths: "Transform Paths"
+    case .warpPaths: "Warp Paths"
     case .transformChannel: "Free Transform"
     case .transformPixelMask: "Free Transform"
     case .transformPixels: "Free Transform"
@@ -413,6 +415,7 @@ public indirect enum Command: Sendable {
     case .transformLayers(let request):try LayerCollectionTransform.apply(request,to:&d)
     case .transformPath(let request):try PathTransform.apply(request,to:&d)
     case .transformPaths(let request):try PathTransform.apply(request,to:&d)
+    case .warpPaths(let edit):d = try edit.applied(to: d)
     case .transformChannel(let request):try ChannelTransform.apply(request,to:&d)
     case .transformPixelMask(let request):try PixelMaskTransform.apply(request,to:&d)
     case .transformPixels(let request):try SelectedPixelTransform.apply(request,to:&d)

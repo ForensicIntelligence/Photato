@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **674** · The 10 most recent entries, newest first.
+Source build **675** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 675 — Warp editable paths on the canvas
+
+Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions.
+
+All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored warp output, switching from edited Warp back to Free Transform, and physical canvas performance remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-675) · [Details](PhotoCraftSwift/docs/PATH_WARP_675.md).
 
 ## 2026-11-20 — Step 674 — Transform editable paths across layers
 
@@ -75,11 +83,3 @@ PSD and PSB preserve the image preview, location and four-corner placement of a 
 1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Photoshop's live document query timed out. The file and pixel comparisons use Photato and owned fixtures. Live Photoshop interchange, linked PDF perspective and non-identity Warp descriptors remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-666) · [Details](PhotoCraftSwift/docs/LINKED_PROJECTIVE_SMART_OBJECTS_666.md).
-
-## 2026-11-20 — Step 665 — Reopen perspective Smart Objects and continue editing
-
-Embedded Smart Objects with perspective placement keep their original bytes and editable corners in PSD and PSB. Free Transform starts from the saved artwork frame.
-
-1,507 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Live Photoshop document scripting timed out after the read-only version query. Projective linked files, projective PDFs and editable non-identity Warp still need Photoshop-file coverage. Intel tests ran under Rosetta.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-665) · [Details](PhotoCraftSwift/docs/PROJECTIVE_SMART_OBJECT_ROUNDTRIP_665.md).

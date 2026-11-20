@@ -13,10 +13,16 @@ extension CraftCanvas {
     guard store.transformDraft?.selection == true,store.transformDraft?.movingPixels != true else{return nil}
     let menu=NSMenu()
     for mode in SelectionTransformMode.allCases {let enabled=store.transformDraft?.supportsSelectionMode(mode) != false;let item=NSMenuItem(title:mode.rawValue,action:enabled ? #selector(selectionTransformModeMenu(_:)):nil,keyEquivalent:"");item.target=self;item.representedObject=mode.rawValue;item.state=store.transformDraft?.selectionMode == mode ? .on:.off;item.isEnabled=enabled;if !enabled{item.toolTip="Projective transforms for this target are not implemented yet."};menu.addItem(item)}
-    let warp=NSMenuItem(title:"Warp",action:nil,keyEquivalent:"");warp.isEnabled=false;warp.toolTip="Warp is not available for this transform target yet.";menu.addItem(warp)
+    let canWarp = store.transformDraft?.pathTarget != nil && store.canBeginPathWarp
+    let warp = NSMenuItem(title: "Warp", action: canWarp ? #selector(beginSelectionWarp(_:)) : nil, keyEquivalent: "")
+    warp.target = self
+    warp.isEnabled = canWarp
+    if !canWarp { warp.toolTip = "Warp is not available for this transform target yet." }
+    menu.addItem(warp)
     menu.addItem(.separator());for (title,tag) in [("Rotate 180°",180),("Rotate 90° Clockwise",90),("Rotate 90° Counter Clockwise",-90),("Flip Horizontal",1000),("Flip Vertical",1001)] {let item=NSMenuItem(title:title,action:#selector(selectionTransformTurnMenu(_:)),keyEquivalent:"");item.target=self;item.tag=tag;menu.addItem(item)}
     return menu
   }
+  @objc func beginSelectionWarp(_ item: NSMenuItem) { store.beginPathWarp(); refreshToolCursor() }
   @objc func selectionTransformModeMenu(_ item:NSMenuItem){if let value=item.representedObject as? String,let mode=SelectionTransformMode(rawValue:value){store.chooseSelectionTransformMode(mode);refreshToolCursor()}}
   @objc func selectionTransformTurnMenu(_ item:NSMenuItem){store.transformLayer(angle:abs(item.tag)<1000 ? Double(item.tag):0,horizontal:item.tag==1000,vertical:item.tag==1001);refreshToolCursor()}
 }

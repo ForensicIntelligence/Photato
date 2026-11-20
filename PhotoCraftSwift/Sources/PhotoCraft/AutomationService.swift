@@ -527,6 +527,9 @@ import UniformTypeIdentifiers
       "perspectiveWarp": ["available":store.canBeginFilterKind(.perspectiveWarp),"workspaceOpen":store.filterDraft?.filter.kind == .perspectiveWarp,"previewBusy":store.perspectiveWorkspace?.rendering ?? false],
       "puppetWarp": ["available":store.canBeginFilterKind(.puppetWarp),"workspaceOpen":store.filterDraft?.filter.kind == .puppetWarp,"previewBusy":store.puppetWorkspace?.rendering ?? false],
       "warp": ["available":store.canBeginWarp,"previewOpen":store.warpDraft != nil,"previewBusy":store.warpDraft?.rendering ?? false],
+      "pathWarp": ["available": store.canBeginPathWarp, "active": store.pathWarp != nil,
+                   "previewBusy": store.pathWarp?.rendering ?? false,
+                   "style": store.pathWarp?.settings.style.rawValue ?? WarpStyle.none.rawValue],
       "photoAlign": ["available":store.canBeginPhotoAlign,"previewOpen":store.photoAlignDraft != nil,"previewBusy":store.photoAlignDraft?.rendering ?? false],
       "photoBlend": ["available":store.canBeginPhotoBlend,"previewOpen":store.photoBlendDraft != nil,"previewBusy":store.photoBlendDraft?.rendering ?? false],
       "selectionTools":store.selectionToolsState,
@@ -1149,6 +1152,28 @@ import UniformTypeIdentifiers
       if command.name == PathGroupsAPI.select {
         try store.configurePathGroup(command)
         return .json(state(share, document: document))
+      }
+      if command.name == PathGroupsAPI.warp {
+        let request = try command.pathWarpRequest()
+        guard !store.geometryBusy, store.transformDraft == nil, !store.hasToneDraft,
+              !store.editingMask, !store.editingComponent, store.pathGesture == nil,
+              store.pathMarquee == nil else {
+          throw AutomationFailure(status: 409, message: "Finish the current edit before warping paths.")
+        }
+        let context = store.selectedPathChoices, focus = store.pathTarget
+        let selections = try await executePreparedResult(document: document, shareID: id,
+          revision: command.revision, allowPathTarget: true, validateCommit: {
+            guard store.selectedPathChoices == context, store.pathTarget == focus, !store.hasToneDraft else {
+              throw AutomationFailure(status: 409, message: "The path Warp target changed.")
+            }
+          }) { source in
+            let edit = try PathWarpEdit.prepare(request, in: source)
+            return (.warpPaths(edit), edit.geometry.map(\.choice))
+          }
+        store.updatePathChoices(selections)
+        var result = state(share, document: document)
+        result["pathTransformSelections"] = PathGroupsAPI.state(selections)
+        return .json(result)
       }
       if command.name == PathGroupsAPI.transform {
         let (matrix, _) = try command.selectionTransformOptions()

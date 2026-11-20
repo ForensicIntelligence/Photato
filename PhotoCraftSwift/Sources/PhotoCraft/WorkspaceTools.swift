@@ -143,7 +143,9 @@ extension WorkspaceView {
       .overlay(alignment: .bottom) { Rectangle().fill(StudioTheme.line).frame(height: 1) }
   }
   @ViewBuilder var toolOptions: some View {
-    if store.transformDraft != nil,store.transformDraft?.movingPixels != true {
+    if let model = store.pathWarp {
+      pathWarpOptions(model)
+    } else if store.transformDraft != nil,store.transformDraft?.movingPixels != true {
       transformOptions
     } else if store.unavailableToolID != nil {
       Text(store.selectedTool.title).fontWeight(.medium)

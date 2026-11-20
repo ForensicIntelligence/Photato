@@ -247,6 +247,7 @@ import SwiftUI
     if item.action == #selector(photomerge) { return controller.canPublishPhotomerge }
     if item.action == #selector(vanishingPoint) { return store?.canBeginVanishingPoint == true }
     if item.action == #selector(warpLayer) { return store?.canBeginWarp == true }
+    if item.action == #selector(warpSmartObject) { return store?.canBeginLayerWarp == true }
     if item.action == #selector(autoAlignLayers) { return store?.canBeginPhotoAlign == true }
     if item.action == #selector(autoBlendLayers) { return store?.canBeginPhotoBlend == true }
     if item.action == #selector(contentAwareFill) { return store?.canBeginContentAwareFill == true }

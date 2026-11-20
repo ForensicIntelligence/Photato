@@ -55,6 +55,11 @@ extension ToolCursor {
 }
 
 extension ToolCursor {
+  static func meshWarp(overControl: Bool, dragging: Bool) -> Self {
+    if dragging { return .closedHand }
+    return overControl ? .openHand : .arrow
+  }
+
   static func cylinderConstrained(_ handle: CylinderHandle?, flags: NSEvent.ModifierFlags) -> Bool {
     (handle == .topRight || handle == .bottomLeft) && flags.contains(.shift)
   }

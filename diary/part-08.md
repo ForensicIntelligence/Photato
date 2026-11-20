@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 675 — Warp editable paths on the canvas
+
+Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions.
+
+All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored warp output, switching from edited Warp back to Free Transform, and physical canvas performance remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-675) · [Details](../PhotoCraftSwift/docs/PATH_WARP_675.md).
+
 ## 2026-11-20 — Step 674 — Transform editable paths across layers
 
 Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.

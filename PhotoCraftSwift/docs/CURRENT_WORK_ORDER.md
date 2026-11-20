@@ -1,3 +1,7 @@
+**Source checkpoint 675.** Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions. All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_675.md).
+
+**Next path Warp work.** Verify paths against files authored in Photoshop and compare switching back to Free Transform, split controls, and target availability.
+
 **Source checkpoint 674.** Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit. All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_674.md).
 
 **Next path editing work.** Audit editable Warp for selected vector paths and compare capture and cancellation with the existing Warp workspace. Verify Photoshop's path isolation and exact control behavior when its desktop session is available.

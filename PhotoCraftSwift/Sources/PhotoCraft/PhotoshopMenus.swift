@@ -164,7 +164,7 @@ import PhotoCraftCore
       "Edit > Free Transform": #selector(freeTransform),
       "Filter > Vanishing Point…": #selector(vanishingPoint),
       "Edit > Transform > Warp": #selector(warpLayer),
-      "Layer > Smart Objects > Warp": #selector(warpLayer),
+      "Layer > Smart Objects > Warp": #selector(warpSmartObject),
       "Edit > Transform > Scale": #selector(transformScaleMode),
       "Edit > Transform > Rotate": #selector(transformRotateMode),
       "Edit > Transform > Rotate 180°": #selector(rotateLayer180),

@@ -154,7 +154,10 @@ struct WorkspaceView: View {
       GradientMapSheet(store: store)
     }
     .sheet(item: $store.layerStyleDraft, onDismiss: { store.render() }) { _ in LayerStyleSheet(store: store) }
-    .sheet(item: $store.warpDraft, onDismiss: { store.cancelWarp() }) { draft in WarpSheet(store:store,model:draft) }
+    .sheet(item: Binding(
+      get: { store.warpDraft.flatMap { $0.pathContext == nil ? $0 : nil } },
+      set: { draft in if store.pathWarp == nil { store.warpDraft = draft } }
+    )) { draft in WarpSheet(store:store,model:draft) }
     .sheet(item: $store.photoAlignDraft, onDismiss: { store.cancelPhotoAlign() }) { draft in PhotoAlignSheet(store:store,model:draft) }
     .sheet(item: $store.photoBlendDraft, onDismiss: { store.cancelPhotoBlend() }) { draft in PhotoBlendSheet(store:store,model:draft) }
     .sheet(item: $store.inkChannelOptions, onDismiss: { store.render() }) { draft in InkChannelOptionsSheet(store: store, draft: draft) }

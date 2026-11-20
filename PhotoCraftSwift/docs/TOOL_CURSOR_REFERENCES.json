@@ -1817,5 +1817,11 @@
     "qualification": "AppKit tests cover canvas focus, compatible marquee, transform preview and history across two paths.",
     "remaining": "Independent Adobe pointer glyphs, hit order and physical input remain open.",
     "reference": "docs/SOURCE_PUBLICATION_674.json"
+  },
+  "path_warp_675": {
+    "native": "Mesh points show the open or closed hand. Cylinder controls share the existing directional and Shift constraint cursors.",
+    "qualification": "The AppKit pointer test covers mesh hit, drag, cancel and apply.",
+    "remaining": "Live Photoshop glyphs and physical mouse and tablet input remain open.",
+    "reference": "docs/SOURCE_PUBLICATION_675.json"
   }
 }

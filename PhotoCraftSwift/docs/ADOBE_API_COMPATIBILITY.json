@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 674 adds cross-layer path selection and atomic path transforms to the Photato API. Independent hosted service conformance remains open.",
+  "current_api": "Checkpoint 675 adds editable Warp for multiple paths to the Photato API. Hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -984,6 +984,15 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "path_warp_build675": {
+    "photatoCommands": [
+      "paths.warp"
+    ],
+    "status": "partial native implementation",
+    "scope": "Warp editable cross-layer path choices and preserve their output as editable curves.",
+    "limits": "No corresponding published v2 path Warp route. Independent Photoshop pixel and curve comparisons remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_675.json"
   },
   "cross_layer_paths_build674": {
     "photatoCommands": [

@@ -109,7 +109,7 @@ public struct PathTransformGroupRequest: Equatable, Sendable {
 public struct PathTransformGeometry: Equatable, Sendable {
   public let choice: PathTransformChoice
   public let path: VectorPath
-  fileprivate let original: VectorPath
+  let original: VectorPath
 }
 
 public enum PathTransform {
@@ -191,6 +191,15 @@ public enum PathTransform {
     return rounded(limits)
   }
 
+  static func bounds(_ geometry: [PathTransformGeometry]) throws -> IntRect {
+    var limits = CGRect.null
+    for item in geometry {
+      let box = try selectedBounds(item.path, selection: item.choice.selection)
+      limits = limits.union(box)
+    }
+    return rounded(limits)
+  }
+
   public static func geometry(
     _ request: PathTransformGroupRequest, in document: CraftDocument
   ) throws -> [PathTransformGeometry] {
@@ -236,7 +245,11 @@ public enum PathTransform {
   }
 
   static func apply(_ request: PathTransformGroupRequest, to document: inout CraftDocument) throws {
-    let changes = try geometry(request, in: document).filter { $0.path != $0.original }
+    try install(geometry(request, in: document), in: &document)
+  }
+
+  static func install(_ geometry: [PathTransformGeometry], in document: inout CraftDocument) throws {
+    let changes = geometry.filter { $0.path != $0.original }
     guard !changes.isEmpty else { return }
     var candidate = document
     for result in changes {

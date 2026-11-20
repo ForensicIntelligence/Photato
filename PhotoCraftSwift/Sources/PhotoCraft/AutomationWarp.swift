@@ -47,7 +47,14 @@ extension WarpDefinition {
 }
 extension AutomationCommand {
   func warpOptions() throws -> (UUID,WarpDefinition) {
-    guard let id=UUID(uuidString:try string("layerID")),case .object(let fields)=parameters["settings"],Set(fields.keys).isSubset(of:["style","bend","horizontalDistortion","verticalDistortion","vertical","interpolation","mesh","sourceBounds","cylinder"]) else { throw AutomationFailure(status:400,message:"Invalid Warp layer or settings.") }
+    guard let id=UUID(uuidString:try string("layerID")) else {
+      throw AutomationFailure(status:400,message:"Invalid Warp layer.")
+    }
+    return (id, try warpSettings())
+  }
+
+  func warpSettings() throws -> WarpDefinition {
+    guard case .object(let fields)=parameters["settings"],Set(fields.keys).isSubset(of:["style","bend","horizontalDistortion","verticalDistortion","vertical","interpolation","mesh","sourceBounds","cylinder"]) else { throw AutomationFailure(status:400,message:"Invalid Warp settings.") }
     var settings=WarpDefinition()
     if let raw=fields["style"] { guard case .string(let s)=raw,let style=WarpStyle(rawValue:s) else { throw AutomationFailure(status:400,message:"Unknown Warp style.") };settings.style=style }
     for (key,path) in [("bend",\WarpDefinition.bend),("horizontalDistortion",\WarpDefinition.horizontalDistortion),("verticalDistortion",\WarpDefinition.verticalDistortion)] {
@@ -84,6 +91,6 @@ extension AutomationCommand {
       }
       settings.mesh=try WarpMesh(us:knots("us"),vs:knots("vs"),points:points)
     }
-    do { try settings.validate() } catch { throw AutomationFailure(status:400,message:error.localizedDescription) };return (id,settings)
+    do { try settings.validate() } catch { throw AutomationFailure(status:400,message:error.localizedDescription) };return settings
   }
 }

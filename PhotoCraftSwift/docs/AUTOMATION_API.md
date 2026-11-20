@@ -1190,6 +1190,10 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
 
+### Warp editable paths
+
+`paths.warp` accepts the path `targets` array, a Warp `settings` object and an optional `matrix` applied first. The controls and optional source frame use document pixel coordinates. The result includes `pathTransformSelections`, and state exposes path Warp availability, active mode, preset and preview activity. The transaction keeps editable output and adds one Undo. [Path Warp details](PATH_WARP_675.md)
+
 ### Cross-layer path selection and transform
 
 Use `paths.select` with a `targets` array. Each entry identifies a saved path, vector mask, or shape using `target` and `id`. Optionally supply `components` or `anchors` in an entry, and `focus` to choose the current path. An optional `marquee` with document-coordinate start and end points resolves an individual anchor scope for each target. Use `paths.transform` with a target array and a single row-major `matrix`. All path edits commit together as one Undo and the response includes `pathTransformSelections`. [Cross-layer path details](CROSS_LAYER_PATHS_674.md)

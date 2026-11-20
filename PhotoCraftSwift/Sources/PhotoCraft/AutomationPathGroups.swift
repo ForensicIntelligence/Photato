@@ -4,7 +4,8 @@ import PhotoCraftCore
 enum PathGroupsAPI {
   static let select = "paths.select"
   static let transform = "paths.transform"
-  static let commands = [select, transform]
+  static let warp = "paths.warp"
+  static let commands = [select, transform, warp]
 
   static var targetFields: [String: Any] {
     ["target": PathTransformAPI.schema("target"), "id": PathTransformAPI.schema("id")]
@@ -22,6 +23,7 @@ enum PathGroupsAPI {
     case "focus":
       return BrushAPI.object(targetFields, required: ["target", "id"])
     case "marquee", "extend": return PathAPI.schema(key)
+    case "settings": return WarpDefinition.apiSchema
     default: return SelectionTransformAPI.schema(key)
     }
   }
@@ -40,9 +42,17 @@ enum PathGroupsAPI {
                        "properties": ["revision": ["type": "string"], "pathTransformSelections": choicesStateSchema]],
       "selection": "Select saved paths, shape contours and vector masks together. A focused target remains available for Pen editing. A document-coordinate marquee applies to each selected path. Selection does not add Undo.",
       "transform": "Use one document-coordinate affine or projective matrix for all targets. Different targets may select different components or anchors. All targets commit in one Undo after validation, and resulting anchor indices are returned.",
-      "actions": "Native Actions version 77 retains the portable targets, scopes and shared matrix.",
-      "adobe": "The published Photoshop v2 endpoints do not define a cross-layer path selection or transform."
+      "warp": "Use Warp settings in document coordinates, optionally after a shared transform matrix. Without sourceBounds, the projected selected contours define the mesh frame. Paths remain editable.",
+      "warpStateSchema": warpStateSchema,
+      "actions": "Native Actions version 77 retains path transform choices and the shared matrix. Version 78 adds editable Warp settings.",
+      "adobe": "The published Photoshop v2 endpoints do not define a cross-layer path selection, transform or Warp."
     ]
+  }
+
+  static var warpStateSchema: [String: Any] {
+    BrushAPI.object(["available": BrushAPI.flag, "active": BrushAPI.flag, "previewBusy": BrushAPI.flag,
+                     "style": BrushAPI.enumeration(WarpStyle.allCases.map(\.rawValue))],
+                    required: ["available", "active", "previewBusy", "style"])
   }
 
   static func state(_ choices: [PathTransformChoice]) -> [[String: Any]] {
@@ -105,6 +115,11 @@ enum PathGroupsAPI {
 }
 
 extension AutomationCommand {
+  func pathWarpRequest() throws -> PathWarpRequest {
+    let matrix = parameters["matrix"] == nil ? .identity : try selectionTransformOptions().0
+    return try .init(choices: pathGroupChoices(), matrix: matrix, settings: warpSettings())
+  }
+
   func pathGroupChoices() throws -> [PathTransformChoice] {
     guard let raw = parameters["targets"], let fields = try BrushAPI.merge(
       raw, schema: PathGroupsAPI.schema("targets", command: name), path: "targets"
