@@ -13,6 +13,7 @@ final class PrintWorkflowTests: XCTestCase {
     try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
       let side = Surface.maxDimension
       var source = try CraftDocument(width: side, height: side)
+      source.resolution = 72
       let region = IntRect(x: side - 31, y: side - 17, width: 31, height: 17)
       source.selection = region
       let store = document.store
@@ -43,6 +44,14 @@ final class PrintWorkflowTests: XCTestCase {
       let response = try await helper.request(service, path: path)
       XCTAssertEqual(response.0.statusCode, 200)
       XCTAssertEqual(try XCTUnwrap(PDFDocument(data: response.1)).pageCount, 1)
+      let full = try await helper.edit(service, document, "print.configure", ["settings": [
+        "selectedArea": false, "scaleToFit": false, "customWidth": 120, "customHeight": 120, "paper": "custom"
+      ]])
+      XCTAssertEqual(full, 200)
+      let clippedPDF = try await helper.request(service, path: path)
+      XCTAssertEqual(clippedPDF.0.statusCode, 200)
+      let clippedPage = try XCTUnwrap(PDFDocument(data: clippedPDF.1)?.page(at: 0))
+      XCTAssertEqual(clippedPage.bounds(for: .mediaBox).size, CGSize(width: 120, height: 120))
       XCTAssertEqual(store.document, source)
       XCTAssertTrue(store.session.undoStack.isEmpty)
       XCTAssertFalse(document.isDocumentEdited)

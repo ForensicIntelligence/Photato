@@ -1,3 +1,9 @@
+### Large photo printing (checkpoint 636)
+
+`printing.maximumPixels` now allows up to 36,000,000 pixels in the prepared raster. `printing.clipsOversizeSourceToPrintableArea` indicates that an oversized original at a fixed scale can print its visible area within that budget. Both native and API production retain the original output scale and position. Image color and plate counts remain subject to the prepared-byte budget. `print.configure` and `GET /v1/documents/{id}/print.pdf` share these settings and layout.
+
+[Development record](LARGE_PRINT_636.md).
+
 ### Print Selected Area (checkpoint 635)
 
 Use `print.configure` with `settings.selectedArea: true` before downloading `GET /v1/documents/{id}/print.pdf`. The document must already have a selection. `printing.maximumPixels` limits the output rectangle and `printing.pixelLimitAppliesTo` reports `outputRegion`. `printing.maximumDocumentDimension` is 300,000. The existing share, heap, preparation and output limits still apply.

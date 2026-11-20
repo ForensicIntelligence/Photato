@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **635** · The 10 most recent entries, newest first.
+Source build **636** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 636 — Fit and clip large prints at their original sample resolution
+
+Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale.
+
+All 1,168 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-636) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_636.md).
 
 ## 2026-11-19 — Step 635 — Print a selection from a large document
 
@@ -75,11 +83,3 @@ The validated source combines menu and dialog cues, process-channel deletion, an
 A repaired Debug candidate passed 44 targeted cases. A remaining intermittent popup placement issue was resolved before the 628 source qualification.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-627). [Development notes](PhotoCraftSwift/docs/CHANNEL_GUIDE_INTEGRATION_627.md).
-
-## 2026-11-19 — Step 626 — Delete process channels through the Channels panel
-
-Deleting selected RGB, CMYK or Lab components converts the retained separations into editable Multichannel plates. Layered input requests merge consent.
-
-All 29 selected development cases passed, including shared native and HTTP validation.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-626). [Development notes](PhotoCraftSwift/docs/PROCESS_CHANNEL_DELETION_626.md).

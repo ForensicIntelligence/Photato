@@ -654,7 +654,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 633 | 2026-11-19 | [Return standard Multichannel plates to editable CMYK](#dev-step-633) |
 | 634 | 2026-11-19 | [Print native CMYK and saved spot separations](#dev-step-634) |
 | 635 | 2026-11-19 | [Print a selection from a large document](#dev-step-635) |
+| 636 | 2026-11-19 | [Fit and clip large prints at their original sample resolution](#dev-step-636) |
 <!-- history-index:end -->
+
+<a id="dev-step-636"></a>
+
+## 2026-11-19 — Fit and clip large prints at their original sample resolution
+
+Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale.
+
+All 1,168 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](LARGE_PRINT_636.md) · [Qualification](SOURCE_PUBLICATION_636.md).
 
 <a id="dev-step-635"></a>
 

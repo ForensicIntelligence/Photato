@@ -1,3 +1,5 @@
+**Source checkpoint 636.** Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale. [Qualification](SOURCE_PUBLICATION_636.md).
+
 **Source checkpoint 635.** The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions. [Qualification](SOURCE_PUBLICATION_635.md).
 
 **Source checkpoint 634.** Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork. [Qualification](SOURCE_PUBLICATION_634.md).

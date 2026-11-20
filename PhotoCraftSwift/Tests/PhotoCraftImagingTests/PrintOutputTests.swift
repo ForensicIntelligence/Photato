@@ -5,6 +5,78 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PrintOutputTests: XCTestCase {
+  func testFitMediaKeepsEverySourcePixelOfAFourThousandPixelPhoto() throws {
+    let width = 4000, height = 3000
+    var source = try CraftDocument(width: width, height: height, depth: .u16)
+    var pixels = try Surface(width: width, height: height, depth: .u16, fill: .white)
+    pixels.setPixel(x: 2000, y: 261, Pixel(1, 0, 0))
+    pixels.setPixel(x: 2000, y: 262, Pixel(0, 0, 1))
+    pixels.setPixel(x: width - 1, y: height - 1, .black)
+    source.layers[0].content = .raster(pixels)
+    var settings = PrintSettings()
+    settings.sixteenBit = true
+    let output = try PrintOutput.prepare(source, settings: settings)
+    XCTAssertFalse(output.layout.clipped)
+    XCTAssertEqual(output.layout.rasterSource, output.layout.source)
+    let image = try XCTUnwrap(output.pages.first?.image)
+    XCTAssertEqual(image.width, width)
+    XCTAssertEqual(image.height, height)
+    XCTAssertEqual(image.bitsPerComponent, 16)
+    let data = try XCTUnwrap(image.dataProvider?.data as Data?)
+    XCTAssertEqual(data.count, width * height * 6)
+    func sample(_ x: Int, _ y: Int) -> [UInt8] {
+      let start = y * image.bytesPerRow + x * 6
+      return Array(data[start..<(start + 6)])
+    }
+    XCTAssertEqual(sample(0, 0), [255, 255, 255, 255, 255, 255])
+    XCTAssertEqual(sample(2000, 261), [255, 255, 0, 0, 0, 0])
+    XCTAssertEqual(sample(2000, 262), [0, 0, 0, 0, 255, 255])
+    XCTAssertEqual(sample(width - 1, height - 1), [0, 0, 0, 0, 0, 0])
+  }
+
+  func testOversizeActualSizeKeepsPagePlacementAndUsesOnlyVisibleSamples() throws {
+    let side = Surface.maxDimension
+    var source = try CraftDocument(width: side, height: side)
+    source.resolution = 72
+    var pixels = try Surface(width: side, height: side, fill: .white)
+    let middle = side / 2
+    pixels.setPixel(x: middle - 40, y: middle - 40, Pixel(1, 0, 0))
+    pixels.setPixel(x: middle + 39, y: middle + 39, Pixel(0, 0, 1))
+    source.layers[0].content = .raster(pixels)
+
+    var settings = PrintSettings()
+    settings.paper = .custom
+    settings.customWidth = 120
+    settings.customHeight = 120
+    settings.scaleToFit = false
+    let output = try PrintOutput.prepare(source, settings: settings)
+    XCTAssertTrue(output.layout.clipped)
+    XCTAssertEqual(output.layout.source, IntRect(x: 0, y: 0, width: side, height: side))
+    XCTAssertEqual(output.layout.image.size, CGSize(width: side, height: side))
+    XCTAssertEqual(output.layout.rasterSource, IntRect(x: middle - 50, y: middle - 50, width: 100, height: 100))
+    XCTAssertEqual(output.layout.rasterDestination, CGRect(x: 10, y: 10, width: 100, height: 100))
+    XCTAssertEqual(output.layout.effectivePPI, 72)
+
+    var control = try CraftDocument(width: 100, height: 100)
+    control.resolution = 72
+    control.layers[0].content = .raster(try pixels.cropped(to: output.layout.rasterSource))
+    let controlOutput = try PrintOutput.prepare(control, settings: settings)
+    func pagePixels(_ output: PreparedPrint) throws -> Data {
+      let context = try XCTUnwrap(CGContext(data: nil, width: 120, height: 120, bitsPerComponent: 8,
+        bytesPerRow: 480, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+      output.draw(page: 0, in: context)
+      return Data(bytes: try XCTUnwrap(context.data), count: 120 * 480)
+    }
+    XCTAssertEqual(try pagePixels(output), try pagePixels(controlOutput))
+
+    settings.center = false
+    settings.left = 200
+    let blank = try PrintOutput.prepare(source, settings: settings)
+    XCTAssertTrue(blank.layout.rasterDestination.isNull)
+    XCTAssertEqual(blank.layout.rasterSource.width * blank.layout.rasterSource.height, 1)
+  }
+
   func testSelectedAreaOnMaximumCanvasUsesBoundsAndExactRGBSamples() throws {
     let side = Surface.maxDimension
     let region = IntRect(x: side - 2, y: side - 2, width: 2, height: 2)

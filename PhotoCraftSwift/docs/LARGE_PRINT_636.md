@@ -1,0 +1,15 @@
+# Fit and clip large prints without resampling the source
+
+19 November 2026 · Development preview 636
+
+**File > Print** can now fit a whole high-resolution photo to the chosen paper while keeping every source pixel up to the 36,000,000-pixel preparation limit. When an oversized image is printed at a fixed scale and only part of it fits the paper, Photato prepares the visible source rectangle and a small interpolation margin. The preview keeps the position, crop marks and effective print resolution calculated from the full image. A wholly off-page oversized image produces a blank image area. The document and its resolution stay intact. [Adobe print scaling reference](https://helpx.adobe.com/photoshop/desktop/print/position-and-scale-images-for-printing.html)
+
+The renderer composes larger RGB outputs in horizontal bands to contain intermediate memory use. It retains the original sample grid and uses the existing ICC transform and row quantization. Plate preparation checks the combined byte budget before compositing eligible CMYK layers. The same layout drives the native sheet, printer output, and authenticated PDF route. [Photato API](AUTOMATION_API.md#large-photo-printing-checkpoint-636)
+
+The Apple Silicon Debug build completed in 139.11 seconds. All 47 focused tests passed in 43.99 seconds. The new fixtures verify 16-bit output above the old limit, RGB samples on either side of a composition boundary, page placement on a maximum-size canvas, and coverage in the authenticated Print Selected Area and full-image PDF routes.
+
+An independent PDF check decoded a 6,000 × 4,000 source from the fit-to-page output and matched all 72,000,000 embedded 16-bit RGB words. Poppler reported 750 ppi in both directions on the fitted page. A 300,000 × 300,000 at 72 ppi used a 100 × 100 raster for a 120 × 120 pt sheet and rendered byte-identically to the owned crop control at 72 dpi. The original full-image geometry remained available to the print layout. A macOS sandbox denied the extra kernel statistics requested by the timing tool after the PDFs were written. That invocation provided no peak-memory measurement.
+
+The signed Apple Silicon preview targets macOS 14. It verified after ZIP extraction and produced a 1,000 × 650 native workspace snapshot. All 1,168 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks. The [source patch](../artifacts/636-large-print/large-print-source.patch), [focused test log](../artifacts/636-large-print/focused-print01.log) and [independent PDF result](../artifacts/636-large-print/independent-verified02.json) accompany the preview.
+
+The existing 256 MiB prepared output and 128 MiB PDF budgets still apply. Fit to Media above the raster-pixel limit, physical printer output and byte-for-byte comparison against Adobe output remain open. The paper comparison used an owned integer-scale fixture. Fractional placement on hardware remains unqualified.

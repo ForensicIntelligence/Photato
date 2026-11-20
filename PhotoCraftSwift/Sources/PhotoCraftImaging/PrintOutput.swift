@@ -87,11 +87,14 @@ public struct PrintSettings: Codable, Equatable, Sendable {
 }
 
 public struct PrintLayout: Equatable, Sendable {
-  public static let maximumPixels = 8_388_608
+  public static let maximumPixels = Surface.maximumDensePixels
   public let source: IntRect
+  /// Samples prepared for the paper, including a small interpolation margin.
+  public let rasterSource: IntRect
   public let page: CGRect
   public let printable: CGRect
   public let image: CGRect
+  let rasterDestination: CGRect
   public let scalePercent: Double
   public let effectivePPI: Double
   public var clipped: Bool { !printable.insetBy(dx: -0.001, dy: -0.001).contains(image) }
@@ -108,12 +111,6 @@ public struct PrintLayout: Equatable, Sendable {
       crop = selected.clipped(toWidth: document.width, height: document.height)
       guard crop.width > 0, crop.height > 0 else { throw CraftError.invalid("The selected print area is empty.") }
     }
-    guard crop.width <= Self.maximumPixels / crop.height else {
-      if settings.selectedArea {
-        throw CraftError.unsupported("The selected print area exceeds 8,388,608 pixels. Make a smaller selection.")
-      }
-      throw CraftError.unsupported("The full image exceeds 8,388,608 pixels. Make a smaller selection and turn on Print Selected Area.")
-    }
     source = crop; page = CGRect(origin: .zero, size: settings.pageSize)
     printable = CGRect(x: settings.marginLeft, y: settings.marginBottom,
       width: page.width - settings.marginLeft - settings.marginRight,
@@ -129,6 +126,33 @@ public struct PrintLayout: Equatable, Sendable {
     image = CGRect(x: settings.center ? printable.midX - width / 2 : settings.left,
       y: settings.center ? printable.midY - height / 2 : page.height - settings.top - height, width: width, height: height)
     scalePercent = scale * 100; effectivePPI = document.pixelsPerInch / scale
+
+    if crop.width <= Self.maximumPixels / crop.height {
+      rasterSource = crop
+      rasterDestination = image
+      return
+    }
+    let visible = image.intersection(printable).intersection(page)
+    if visible.isNull || visible.isEmpty {
+      rasterSource = IntRect(x: crop.x, y: crop.y, width: 1, height: 1)
+      rasterDestination = .null
+      return
+    }
+    let stepX = width / Double(crop.width), stepY = height / Double(crop.height)
+    // Preserve pixel centers and include neighboring samples at the clipping edge.
+    let padding = 8
+    let left = max(0, Int(floor((visible.minX - image.minX) / stepX)) - padding)
+    let right = min(crop.width, Int(ceil((visible.maxX - image.minX) / stepX)) + padding)
+    let top = max(0, Int(floor((image.maxY - visible.maxY) / stepY)) - padding)
+    let bottom = min(crop.height, Int(ceil((image.maxY - visible.minY) / stepY)) + padding)
+    guard right > left, bottom > top, right - left <= Self.maximumPixels / (bottom - top) else {
+      let options = settings.selectedArea ? "Make a smaller selection or magnify the region on the page."
+        : "Use Print Selected Area or magnify the image on the page."
+      throw CraftError.unsupported("The visible print area exceeds 36,000,000 source pixels. " + options)
+    }
+    rasterSource = IntRect(x: crop.x + left, y: crop.y + top, width: right - left, height: bottom - top)
+    rasterDestination = CGRect(x: image.minX + Double(left) * stepX, y: image.maxY - Double(bottom) * stepY,
+      width: Double(right - left) * stepX, height: Double(bottom - top) * stepY)
   }
 }
 
@@ -149,7 +173,10 @@ public struct PreparedPrint: Sendable {
     context.saveGState(); defer { context.restoreGState() }
     context.clip(to: layout.printable.intersection(layout.page))
     context.setFillColor(gray: 1, alpha: 1); context.fill(layout.page)
-    context.interpolationQuality = .high; context.draw(page.image, in: box)
+    if !layout.rasterDestination.isNull {
+      context.interpolationQuality = .high
+      context.draw(page.image, in: layout.rasterDestination)
+    }
     context.setStrokeColor(gray: 0, alpha: 1); context.setFillColor(gray: 0, alpha: 1)
     if settings.border > 0 { context.setLineWidth(settings.border); context.stroke(box) }
     context.setLineWidth(0.25)
@@ -202,12 +229,15 @@ public enum PrintOutput {
   private typealias Separation = (name: String, density: @Sendable (Int, Int) -> Float)
 
   public static func prepare(_ document: CraftDocument, settings: PrintSettings, proof: ProofSettings = .init()) throws -> PreparedPrint {
-    try Task.checkCancellation(); let layout = try PrintLayout(document: document, settings: settings), rect = layout.source
+    try Task.checkCancellation()
+    let layout = try PrintLayout(document: document, settings: settings), rect = layout.rasterSource
+    let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    let region = rect == canvas ? nil : rect
     let bits = settings.sixteenBit ? 16 : 8
     if settings.content == .separations {
       try document.validate()
-      let plates = try separations(document, region: settings.selectedArea ? rect : nil)
-      guard rect.width * rect.height * (bits / 8) <= PreparedPrint.maximumBytes / plates.count else { throw CraftError.unsupported("Prepared separation pages exceed256 MiB.") }
+      let bytesPerPlate = rect.width * rect.height * (bits / 8)
+      let plates = try separations(document, region: region, maximumPlates: PreparedPrint.maximumBytes / bytesPerPlate)
       let pages = try plates.map { name, sample in
         let image = try bitmap(width: rect.width, height: rect.height, bits: bits, space: CGColorSpaceCreateDeviceGray()) { y in
           (rect.x..<(rect.x + rect.width)).map { x in 1 - sample(x, y + rect.y) }
@@ -217,14 +247,7 @@ public enum PrintOutput {
       return PreparedPrint(settings: settings, layout: layout, pages: pages, title: document.name)
     }
     let native = SoftProof.retainedComponents(document)
-    let composite: Surface?
-    if native != nil {
-      composite = nil
-    } else if settings.selectedArea {
-      composite = try Renderer.composite(document, region: rect)
-    } else {
-      composite = try Renderer.composite(document)
-    }
+    if native == nil { try document.validate() }
     let sourceProfile = try native?.profile ?? ColorManagement.space(for: document).copyICCData() as Data? ?? NativeModeProfile.standard(.rgb, depth: .u16)
     let sourceMode = try ProofSettings.mode(of: sourceProfile)
     // Lab bitmap encodings differ between CoreGraphics and ColorSync. Convert
@@ -239,8 +262,21 @@ public enum PrintOutput {
       intent: settings.simulatePaper ? .absoluteColorimetric : .relativeColorimetric,
       bpc: !settings.simulatePaper && !settings.simulateBlack) : nil
     let bypass = hard ? proof.preserveNumbers : sourceProfile == outputProfile
+    var composite: Surface?
+    var nextBand = 0
+    let bandRows = rect.width * rect.height <= 8_388_608 ? rect.height : max(1, 1_048_576 / rect.width)
     let image = try bitmap(width: rect.width, height: rect.height, bits: bits, space: outputSpace) { row in
       let y = row + rect.y; var input: [Float] = []; input.reserveCapacity(rect.width * sourceMode.componentCount)
+      if native == nil, row == nextBand {
+        if bandRows == rect.height {
+          composite = try Renderer.compositeValidated(document, region: region)
+        } else {
+          let band = IntRect(x: rect.x, y: y, width: rect.width, height: min(bandRows, rect.height - row))
+          composite = nil
+          composite = try Renderer.compositeValidated(document, region: band)
+        }
+        nextBand += bandRows
+      }
       for x in rect.x..<(rect.x + rect.width) {
         if let native {
           let alpha = unit(native.value(component: native.mode.componentCount, index: y * document.width + x))
@@ -252,7 +288,10 @@ public enum PrintOutput {
           }
         } else if let composite {
           let p = document.depth == .f32 ? composite.linearPixel(x: x, y: y) : composite.pixel(x: x, y: y)
-          input += [p.r, p.g, p.b].map { $0 * unit(p.a) + 1 - unit(p.a) }
+          let alpha = unit(p.a)
+          input.append(p.r * alpha + 1 - alpha)
+          input.append(p.g * alpha + 1 - alpha)
+          input.append(p.b * alpha + 1 - alpha)
         }
       }
       let device = try bypass ? input : first.apply(input)
@@ -261,7 +300,7 @@ public enum PrintOutput {
     return PreparedPrint(settings: settings, layout: layout, pages: [PrintPage(image: image, label: hard ? "Hard Proof: " + proof.displayName : "Composite")], title: document.name)
   }
 
-  private static func separations(_ document: CraftDocument, region: IntRect?) throws -> [Separation] {
+  private static func separations(_ document: CraftDocument, region: IntRect?, maximumPlates: Int) throws -> [Separation] {
     let width = document.width
     let spots: [(UUID, Separation)] = (document.alphaChannels ?? []).compactMap { channel in
       guard channel.spot != nil else { return nil }
@@ -272,11 +311,16 @@ public enum PrintOutput {
     func separation(_ plate: InkPlate) -> Separation {
       (plate.name, { x, y in plate.samples.value(at: y * width + x) })
     }
+    func checkPlateBudget(_ process: Int) throws {
+      guard process + spots.count <= maximumPlates else { throw CraftError.unsupported("Prepared separation pages exceed 256 MiB.") }
+    }
     switch document.inkMode {
     case .multichannel(let raster):
+      try checkPlateBudget(raster.plates.count)
       let available = Dictionary(uniqueKeysWithValues: raster.plates.map { ($0.id, separation($0)) } + spots)
       return document.multichannelChannelOrder.compactMap { available[$0] }
     case .duotone(let raster):
+      try checkPlateBudget(raster.settings.inks.count)
       let plates: [Separation] = raster.settings.inks.map { ink in
         (ink.name, { x, y in Float(ink.plateSample(gray: raster.gray.value(at: y * width + x))) / 255 })
       }
@@ -287,6 +331,7 @@ public enum PrintOutput {
       guard document.colorMode == mode, !document.hasArtboards, !document.hasFrames, document.artboardOrigin == nil else {
         throw unavailable
       }
+      try checkPlateBudget(mode.componentCount)
       let flat = SoftProof.retainedComponents(document)
       guard let native = try flat ?? InkModeInput.retainedLayeredComponents(
         document, indices: Array(0..<mode.componentCount), region: region) else {
@@ -306,13 +351,23 @@ public enum PrintOutput {
   static func bitmap(width: Int, height: Int, bits: Int, space: CGColorSpace, row: (Int) throws -> [Float]) throws -> CGImage {
     let count = space.numberOfComponents, rowBytes = width * count * (bits / 8)
     guard rowBytes <= PreparedPrint.maximumBytes / height else { throw CraftError.unsupported("Prepared print image exceeds256 MiB.") }
-    var bytes = Data(); bytes.reserveCapacity(rowBytes * height)
-    for y in 0..<height {
-      try Task.checkCancellation(); let values = try row(y)
-      guard values.count == width * count, values.allSatisfy(\.isFinite) else { throw CraftError.invalid("Invalid print samples.") }
-      for value in values {
-        if bits == 8 { bytes.append(UInt8((unit(value) * 255).rounded())) }
-        else { let n = UInt16((unit(value) * 65535).rounded()); bytes.append(UInt8(n >> 8)); bytes.append(UInt8(n & 255)) }
+    var bytes = Data(count: rowBytes * height)
+    try bytes.withUnsafeMutableBytes { (storage: UnsafeMutableRawBufferPointer) in
+      let output = storage.bindMemory(to: UInt8.self)
+      for y in 0..<height {
+        try Task.checkCancellation()
+        let values = try row(y)
+        guard values.count == width * count, values.allSatisfy(\.isFinite) else { throw CraftError.invalid("Invalid print samples.") }
+        let start = y * rowBytes
+        if bits == 8 {
+          for (i, value) in values.enumerated() { output[start + i] = UInt8((unit(value) * 255).rounded()) }
+        } else {
+          for (i, value) in values.enumerated() {
+            let n = UInt16((unit(value) * 65535).rounded())
+            output[start + i * 2] = UInt8(n >> 8)
+            output[start + i * 2 + 1] = UInt8(n & 255)
+          }
+        }
       }
     }
     guard let provider = CGDataProvider(data: bytes as CFData), let image = CGImage(width: width, height: height,

@@ -35,6 +35,7 @@ enum PrintAPI {
     "resultSchema": BrushAPI.object(["printing": stateSchema, "revision": ["type": "string"]], required: ["printing", "revision"]),
     "pdfRoute": "/v1/documents/{id}/print.pdf", "maximumPixels": PrintLayout.maximumPixels,
     "pixelLimitAppliesTo": "outputRegion", "maximumDocumentDimension": Surface.maxDimension,
+    "clipsOversizeSourceToPrintableArea": true,
     "maximumPreparedBytes": PreparedPrint.maximumBytes, "maximumPDFBytes": DocumentIO.maximumDownloadBytes,
     "units": "All physical dimensions and margins are points (72 per inch). Top/left are measured from paper top-left. Custom width/height describe portrait media; orientation rotates it. Center uses the printable area center. Scale to Fit reserves space for marks inside the printable bounds.",
     "behavior": "Settings are per-document output state, excluded from pixels, history and archives. Configure merges validated fields and advances the view revision. PDF uses committed settings and proof condition; copies apply only to printer submission, not PDF pages. Selected area uses the rectangular selection bounds, not its feathered mask. Hard proofs require Photato-managed color and a printer ICC profile. Screen gamut overlays never print. Separations emit grayscale pages for flat or eligible layered CMYK, Duotone and Multichannel. Saved spot channels use their ink density, and Multichannel preserves the order of the ink rows.",
