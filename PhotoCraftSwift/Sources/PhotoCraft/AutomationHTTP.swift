@@ -90,7 +90,7 @@ struct AutomationRequest: Sendable {
     if path == "/v1/luts" { return ColorLUT.maximumFileBytes }
     if path == "/v1/documents/import" { return DocumentIO.maximumUploadBytes }
     if [PDFImportAPI.inspectPath,PDFImportAPI.importPath,PDFImageImportAPI.inspectPath,PDFImageImportAPI.importPath].contains(path) {return DocumentIO.maximumUploadBytes}
-    if ["/v2/create-artboard", "/v2/edit", "/v2/execute-actions", "/v2/create-composite", "/v2/remove-background", "/v1/action-jobs"].contains(path) {
+    if [AdobeManifestRequest.route, "/v2/create-artboard", "/v2/edit", "/v2/execute-actions", "/v2/create-composite", "/v2/remove-background", "/v1/action-jobs"].contains(path) {
       return AdobeActionsRequest.maximumBodyBytes
     }
     return 65_536

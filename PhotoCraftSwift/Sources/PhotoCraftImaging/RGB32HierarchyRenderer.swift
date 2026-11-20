@@ -50,7 +50,10 @@ enum RGB32HierarchyRenderer {
       let firstClip = index
       while index < layers.count && layers[index].isClipped { index += 1 }
       guard layer.visible && layer.opacity > 0 && layer.style?.restrictedChannels?.count != 3 else { continue }
-      guard var built = try node(layer, document: document, region: region,facts:facts) else { return nil }
+      let node = try layer.isGroup
+        ? groupNode(layer, document: document, region: region, facts: facts)
+        : rasterNode(layer, document: document, region: region, facts: facts)
+      guard var built = node else { return nil }
       if built.pixels == nil && built.children.isEmpty { continue }
       let clips = layers[firstClip..<index].filter { $0.visible && $0.opacity > 0 }
       if !clips.isEmpty {
@@ -59,7 +62,7 @@ enum RGB32HierarchyRenderer {
         guard !layer.isGroup && layer.clipsBlendAsGroup else { return nil }
         for clip in clips {
           guard !clip.isGroup,
-            let child = try node(clip, document: document, region: region,facts:facts)
+            let child = try rasterNode(clip, document: document, region: region, facts: facts)
           else { return nil }
           built.clips.append(child)
         }
@@ -69,59 +72,56 @@ enum RGB32HierarchyRenderer {
     return result
   }
 
-  private static func node(
-    _ layer: Layer, document: CraftDocument, region: IntRect,facts:CompositionFacts?
+  private static func groupNode(
+    _ layer: Layer, document: CraftDocument, region: IntRect, facts: CompositionFacts?
   ) throws -> Node? {
     guard layer.affine == nil && layer.blendMode == .normal else { return nil }
-    let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
-    let pixels: Surface?
-    let children: [Node]
-    let opaque: Bool
-    let copiesSource: Bool
-    let rasterAlpha: Float?
-    if layer.isGroup {
-      guard
-        let built = try nodes(
-          document.children(of: layer.id), document: document, region: region,facts:facts)
-      else { return nil }
-      pixels = nil
-      children = built
-      var covered = layer.opacity == 1 && built.first?.opaque == true
-      if let facts {covered=try facts.opaqueGroup(layer,firstChildOpaque:built.first?.opaque ?? false)}
-      else if covered,
-        let fullMask = try LayerMaskSampler.make(layer: layer, document: document)
-      {
-        scan: for y in 0..<document.height {
-          try Task.checkCancellation()
-          for x in 0..<document.width {
-            if fullMask.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) != 1 {
-              covered = false
-              break scan
-            }
-          }
-        }
+    let mask = try preparedMask(layer, document: document, region: region, facts: facts)
+    guard let children = try nodes(document.children(of: layer.id), document: document, region: region, facts: facts)
+    else { return nil }
+    let opaque = try opaqueGroup(layer, firstChildOpaque: children.first?.opaque == true, document: document, facts: facts)
+    return Node(layer: layer, pixels: nil, mask: mask, children: children, opaque: opaque,
+                copiesSource: false, rasterAlpha: nil)
+  }
+
+  private static func opaqueGroup(_ layer: Layer, firstChildOpaque: Bool, document: CraftDocument,
+                                  facts: CompositionFacts?) throws -> Bool {
+    if let facts { return try facts.opaqueGroup(layer, firstChildOpaque: firstChildOpaque) }
+    guard layer.opacity == 1, firstChildOpaque else { return false }
+    guard let mask = try LayerMaskSampler.make(layer: layer, document: document) else { return true }
+    for y in 0..<document.height {
+      try Task.checkCancellation()
+      for x in 0..<document.width {
+        if mask.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) != 1 { return false }
       }
-      opaque = covered
-      copiesSource = false
-      rasterAlpha = nil
-    } else if case .raster(let surface) = layer.content {
-      pixels = surface
-      children = []
-      opaque = try facts.map {try $0.opaqueBase(layer)} ?? RGB32NormalRenderer.hasOpaqueBase(layer, document: document)
-      copiesSource = opaque && mask == nil
-        && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: surface, in: document)
-      if opaque {
-        rasterAlpha = 1
-      } else if mask == nil {
-        rasterAlpha = try RGB32NormalRenderer.uniformAlpha(layer, source: surface, in: document, facts: facts)
-      } else {
-        rasterAlpha = nil
-      }
-    } else {
-      return nil
     }
-    return Node(layer: layer, pixels: pixels, mask: mask, children: children, opaque: opaque,
-      copiesSource: copiesSource, rasterAlpha: rasterAlpha)
+    return true
+  }
+
+  private static func rasterNode(
+    _ layer: Layer, document: CraftDocument, region: IntRect, facts: CompositionFacts?
+  ) throws -> Node? {
+    guard layer.affine == nil && layer.blendMode == .normal else { return nil }
+    let mask = try preparedMask(layer, document: document, region: region, facts: facts)
+    guard case .raster(let surface) = layer.content else { return nil }
+    let opaque = try facts.map { try $0.opaqueBase(layer) } ?? RGB32NormalRenderer.hasOpaqueBase(layer, document: document)
+    let copiesSource = opaque && mask == nil && RGB32NormalRenderer.canCopyOpaqueRaster(layer, source: surface, in: document)
+    let rasterAlpha: Float?
+    if opaque {
+      rasterAlpha = 1
+    } else if mask == nil {
+      rasterAlpha = try RGB32NormalRenderer.uniformAlpha(layer, source: surface, in: document, facts: facts)
+    } else {
+      rasterAlpha = nil
+    }
+    return Node(layer: layer, pixels: surface, mask: mask, children: [], opaque: opaque,
+                copiesSource: copiesSource, rasterAlpha: rasterAlpha)
+  }
+
+  private static func preparedMask(_ layer: Layer, document: CraftDocument, region: IntRect,
+                                   facts: CompositionFacts?) throws -> LayerMaskSampler? {
+    try facts.map { try $0.mask(layer, region: region) }
+      ?? LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
   }
 
   // Decide once per stack, using whole-canvas coverage even for regional output.

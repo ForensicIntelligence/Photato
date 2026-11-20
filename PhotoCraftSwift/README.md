@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 663.** The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite. [Qualification](docs/SOURCE_PUBLICATION_663.md).
+
 **Source checkpoint 662.** Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement. [Qualification](docs/SOURCE_PUBLICATION_662.md).
 
 **Source checkpoint 661.** Smart Object template jobs can set opacity, blend mode and editable pixel masks when they place or replace artwork. Photato exposes the supported fields in its API capabilities. [Qualification](docs/SOURCE_PUBLICATION_661.md).

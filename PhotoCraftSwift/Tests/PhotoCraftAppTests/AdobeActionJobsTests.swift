@@ -66,8 +66,8 @@ final class AdobeActionJobsTests: XCTestCase {
     XCTAssertEqual(result.status, .succeeded, result.error?.message ?? "")
     XCTAssertEqual(result.outputs.map(\.mediaType), [.psd, .png])
     let expected = try request.applying(to: AdobeActionAssets.decode(data)).session.document
-    let firstID = try XCTUnwrap(UUID(uuidString: result.outputs[0].url.lastPathComponent))
-    let secondID = try XCTUnwrap(UUID(uuidString: result.outputs[1].url.lastPathComponent))
+    let firstID = try XCTUnwrap(UUID(uuidString: (try XCTUnwrap(result.outputs[0].url)).lastPathComponent))
+    let secondID = try XCTUnwrap(UUID(uuidString: (try XCTUnwrap(result.outputs[1].url)).lastPathComponent))
     let psd = try XCTUnwrap(jobs.asset(firstID))
     let png = try XCTUnwrap(jobs.asset(secondID))
     XCTAssertEqual(psd.data, try PSDCodec.writeRasterLayers(expected))
@@ -119,7 +119,7 @@ final class AdobeActionJobsTests: XCTestCase {
     XCTAssertEqual(count, 2)
     jobs.revoke()
     XCTAssertNil(
-      jobs.asset(try XCTUnwrap(UUID(uuidString: result.outputs[0].url.lastPathComponent))))
+      jobs.asset(try XCTUnwrap(UUID(uuidString: (try XCTUnwrap(result.outputs[0].url)).lastPathComponent))))
   }
 
   @MainActor func testFailuresAndStorageBudgetPublishNoOutputsAndDoNotLeakSignedURLs() async throws

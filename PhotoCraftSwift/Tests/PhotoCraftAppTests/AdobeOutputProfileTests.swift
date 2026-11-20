@@ -38,7 +38,7 @@ final class AdobeOutputProfileTests: XCTestCase {
     let state = try XCTUnwrap(jobs.snapshot(start.id))
     XCTAssertEqual(state.status, .succeeded, state.error?.message ?? "")
     let fetched = await transport.fetched; XCTAssertEqual(fetched, [url])
-    let output = try XCTUnwrap(state.outputs.first), id = try XCTUnwrap(UUID(uuidString: output.url.lastPathComponent))
+    let output = try XCTUnwrap(state.outputs.first), id = try XCTUnwrap(UUID(uuidString: (try XCTUnwrap(output.url)).lastPathComponent))
     let data = try XCTUnwrap(jobs.asset(id)).data
     XCTAssertEqual(try PSDCodec.read(data).workingICC, profile)
   }

@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 663 — Inspect Photoshop templates through the Adobe-compatible manifest
+
+The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite.
+
+1,498 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional masked RGB32 test passed on Apple Silicon. On Intel, eight PSD composites matched the previous build byte for byte and reproduced its existing differences from the Photoshop fixtures. Both slices of the signed macOS 14+ universal preview launched offscreen. Layer thumbnails, original Smart Object extraction, full layer descriptors and comparisons with Adobe's hosted results remain open. Intel tests ran under Rosetta. The preview binaries declare macOS 14.0 as the minimum system version.
+
+[Development record](DEVLOG.md#dev-step-663) · [Details](ADOBE_DOCUMENT_MANIFEST_663.md).
+
 ## 2026-11-20 — Step 662 — Fit replacement artwork inside Smart Object frames
 
 Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement.
@@ -1273,14 +1281,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:662 -->
+<!-- current-status-step:663 -->
 ## Current development status — 20 November 2026
 
-Fit or fill replacement artwork inside an existing embedded Smart Object frame. The new ingredient remains editable as a nested Smart Object, including artwork outside the visible frame. Both the Photato and Adobe-compatible APIs expose content placement.
+The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite.
 
-All 1,493 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+1,498 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional masked RGB32 test passed on Apple Silicon. On Intel, eight PSD composites matched the previous build byte for byte and reproduced its existing differences from the Photoshop fixtures. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 662](SOURCE_PUBLICATION_662.md) · [Development record](DEVLOG.md#dev-step-662).
+[Source checkpoint 663](SOURCE_PUBLICATION_663.md) · [Development record](DEVLOG.md#dev-step-663).
 
 <!-- current-status:end -->
 
@@ -2149,6 +2157,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 660 | [Free Transform follows Smart Object artwork](DEVLOG.md#dev-step-660) |
 | 2026-11-20 | 661 | [Smart Object templates get editable masks and blending](DEVLOG.md#dev-step-661) |
 | 2026-11-20 | 662 | [Fit replacement artwork inside Smart Object frames](DEVLOG.md#dev-step-662) |
+| 2026-11-20 | 663 | [Inspect Photoshop templates through the Adobe-compatible manifest](DEVLOG.md#dev-step-663) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

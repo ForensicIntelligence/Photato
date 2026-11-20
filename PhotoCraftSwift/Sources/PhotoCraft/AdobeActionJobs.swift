@@ -14,10 +14,36 @@ protocol AdobeResourceTransport: Sendable {
     case running, succeeded, failed
   }
   struct Output: Sendable {
+    enum Content: Sendable {
+      case url(URL)
+      case embedded(AdobeActionsRequest.EmbeddedFormat, Data)
+    }
     let mediaType: AdobeActionsRequest.MediaType
-    let url: URL
+    let content: Content
+    var url: URL? {
+      if case .url(let url) = content { return url }
+      return nil
+    }
+    var inlineBytes: Int {
+      if case .embedded(let format, let bytes) = content {
+        return format == .base64 ? (bytes.count + 2) / 3 * 4 : bytes.count
+      }
+      return 0
+    }
     var json: [String: Any] {
-      ["mediaType": mediaType.rawValue, "destination": ["url": url.absoluteString]]
+      let destination: [String: Any]
+      switch content {
+      case .url(let url): destination = ["url": url.absoluteString]
+      case .embedded(let format, let data):
+        let value: Any
+        switch format {
+        case .json: value = (try? JSONSerialization.jsonObject(with: data)) ?? NSNull()
+        case .string: value = String(decoding: data, as: UTF8.self)
+        case .base64: value = data.base64EncodedString()
+        }
+        destination = ["embedded": format.rawValue, "content": value]
+      }
+      return ["mediaType": mediaType.rawValue, "destination": destination]
     }
   }
   struct Snapshot: Sendable {
@@ -48,7 +74,16 @@ protocol AdobeResourceTransport: Sendable {
   }
   private enum Request: Sendable {
     case actions(AdobeActionsRequest), background(AdobeRemoveBackgroundRequest), colorEdit(AdobeColorEditRequest), artboards(AdobeArtboardRequest)
-    var input: URL? { switch self { case .actions(let r): r.input; case .background(let r): r.input; case .colorEdit(let r): r.input; case .artboards(let r): r.input } }
+    case manifest(AdobeManifestRequest)
+    var input: URL? {
+      switch self {
+      case .actions(let request): request.input
+      case .background(let request): request.input
+      case .colorEdit(let request): request.input
+      case .artboards(let request): request.input
+      case .manifest(let request): request.input
+      }
+    }
   }
   private struct Job {
     let request: Request
@@ -92,6 +127,9 @@ protocol AdobeResourceTransport: Sendable {
   }
   func submit(_ request: AdobeArtboardRequest, baseURL: URL) throws -> Snapshot {
     try submit(.artboards(request), baseURL: baseURL, assetPath: "v2/assets")
+  }
+  func submit(_ request: AdobeManifestRequest, baseURL: URL) throws -> Snapshot {
+    try submit(.manifest(request), baseURL: baseURL, assetPath: "v2/assets")
   }
   private func submit(_ request: Request, baseURL: URL, assetPath: String) throws -> Snapshot {
     prune()
@@ -188,26 +226,41 @@ protocol AdobeResourceTransport: Sendable {
         fetched[artboards.input] = input
       }
       let resources = fetched
-      let computation = Task.detached(priority: .utility) {
-        switch request {
-        case .artboards(let request): return try request.execute(resources: resources)
-        case .actions(let request): return try AdobeActionAssets.execute(request, input: input, resources: resources)
-        case .colorEdit(let request): return try request.execute(input: input)
-        case .background(let request): return try await request.execute(input: input, detector: detector)
+      let computation: Task<[AdobeActionAssets.Encoded], Error>
+      switch request {
+      case .actions(let request):
+        computation = Task.detached(priority: .utility) {
+          try AdobeActionAssets.execute(request, input: input, resources: resources)
         }
+      case .manifest(let request):
+        computation = Task.detached(priority: .utility) { try request.execute(input: input) }
+      case .artboards(let request):
+        computation = Task.detached(priority: .utility) { try request.execute(resources: resources) }
+      case .colorEdit(let request):
+        computation = Task.detached(priority: .utility) { try request.execute(input: input) }
+      case .background(let request):
+        computation = Task.detached(priority: .utility) { try await request.execute(input: input, detector: detector) }
       }
       let encoded = try await withTaskCancellationHandler(
         operation: { try await computation.value }, onCancel: { computation.cancel() })
       try check(expected)
       prune()
       let needed = encoded.reduce(0) { total, item in
-        if case .hosted = item.output.destination { return total + item.data.count }
-        return total
+        switch item.output.destination {
+        case .hosted: return total + item.data.count
+        case .external: return total
+        case .embedded(let format):
+          return total + Output(mediaType: item.output.mediaType, content: .embedded(format, item.data)).inlineBytes
+        }
       }
-      guard needed <= maximumStoredBytes - assets.values.reduce(0, { $0 + $1.data.count }) else {
+      let hostedBytes = assets.values.reduce(0) { $0 + $1.data.count }
+      let embeddedBytes = jobs.values.reduce(0) { total, job in
+        total + job.snapshot.outputs.reduce(0) { $0 + $1.inlineBytes }
+      }
+      guard needed <= maximumStoredBytes - hostedBytes - embeddedBytes else {
         throw AdobeAPIError(
           status: 429, code: "rate_limit_exceeded",
-          message: "Hosted outputs exceed the local storage budget. Wait for output expiry.")
+          message: "Hosted or embedded outputs exceed the local storage budget. Wait for output expiry.")
       }
       // Validate and encode all outputs first. Remote PUTs cannot be rolled back
       // if a later destination fails; report failure without publishing hosted assets.
@@ -221,17 +274,18 @@ protocol AdobeResourceTransport: Sendable {
       let completed = now()
       var pending: [UUID: Asset] = [:]
       let outputs = encoded.map { item -> Output in
-        let url: URL
+        let content: Output.Content
         switch item.output.destination {
-        case .external(let destination, _): url = destination
+        case .external(let destination, _): content = .url(destination)
+        case .embedded(let format): content = .embedded(format, item.data)
         case .hosted(let validity):
           let assetID = UUID()
           pending[assetID] = Asset(
             data: item.data, mediaType: item.output.mediaType,
             expires: completed.addingTimeInterval(TimeInterval(validity)))
-          url = job.baseURL.appendingPathComponent("\(job.assetPath)/\(assetID.uuidString)")
+          content = .url(job.baseURL.appendingPathComponent("\(job.assetPath)/\(assetID.uuidString)"))
         }
-        return Output(mediaType: item.output.mediaType, url: url)
+        return Output(mediaType: item.output.mediaType, content: content)
       }
       assets.merge(pending) { _, new in new }
       job.snapshot.status = .succeeded

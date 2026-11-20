@@ -20,7 +20,8 @@ extension AutomationService {
     let composite = adobe && request.path == "/v2/create-composite"
     let colorEdit = adobe && request.path == "/v2/edit"
     let background = adobe && request.path == "/v2/remove-background"
-    if request.path == submitPath || composite || background || colorEdit || artboards {
+    let manifest = adobe && request.path == AdobeManifestRequest.route
+    if request.path == submitPath || composite || background || colorEdit || artboards || manifest {
       guard request.method == "POST" else {
         throw AdobeAPIError(
           status: 405, code: "unsupported_method", message: "Use POST to submit actions.")
@@ -34,7 +35,9 @@ extension AutomationService {
           message: "Content-Type must be application/json.")
       }
       let job: AdobeActionJobs.Snapshot
-      if artboards {
+      if manifest {
+        job = try actionJobs.submit(AdobeManifestRequest(data: request.body), baseURL: base)
+      } else if artboards {
         job = try actionJobs.submit(AdobeArtboardRequest(data: request.body), baseURL: base)
       } else if colorEdit {
         job = try actionJobs.submit(AdobeColorEditRequest(data: request.body), baseURL: base)

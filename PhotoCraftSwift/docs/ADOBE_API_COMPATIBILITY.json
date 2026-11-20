@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Through296:195 typed Photato document commands. Six published endpoint groups have partial native implementations; auto-crop and generate-manifest remain unimplemented. Large RGB PSD/PSB job inputs and blank creation share native paging/admission; independent resource/format/mode/analysis/transport/default/algorithm/platform conformance remains open.",
+  "current_api": "Checkpoint 663 includes local document manifest metadata and stable IDs for downstream composite edits. The Adobe-compatible API covers a subset of the published surface. Independent hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -209,8 +209,8 @@
           "429",
           "500"
         ],
-        "status": "not implemented",
-        "conformance": "not qualified"
+        "status": "partial native implementation (step663)",
+        "conformance": "Authenticated local metadata workflow tested. Adobe-hosted result parity remains open."
       },
       {
         "method": "GET",
@@ -984,6 +984,13 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "adobe_document_manifest_build663": {
+    "route": "POST /v2/generate-manifest",
+    "status": "partial native implementation",
+    "scope": "Document, artboard and common layer metadata for PSD/PSB, stable layer IDs shared with create-composite, opt-in XMP, embedded JSON/string/base64, authenticated hosted results and authorized HTTPS upload.",
+    "limits": "Thumbnails, asset extraction, full specialized descriptors and independent Adobe-hosted result comparisons remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_663.json"
   },
   "smart_object_content_placement_build662": {
     "route": "POST /v2/create-composite",

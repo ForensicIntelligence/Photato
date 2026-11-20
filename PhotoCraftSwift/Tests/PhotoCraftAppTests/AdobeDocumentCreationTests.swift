@@ -242,7 +242,7 @@ final class AdobeDocumentCreationTests: XCTestCase {
     XCTAssertNil(jobs.snapshot(first.id))
     let result = try XCTUnwrap(jobs.snapshot(second.id))
     XCTAssertEqual(result.status, .succeeded, result.error?.message ?? "")
-    let output = try XCTUnwrap(result.outputs.first), id = try XCTUnwrap(UUID(uuidString: output.url.lastPathComponent))
+    let output = try XCTUnwrap(result.outputs.first), id = try XCTUnwrap(UUID(uuidString: (try XCTUnwrap(output.url)).lastPathComponent))
     XCTAssertEqual(try AdobeActionAssets.decode(XCTUnwrap(jobs.asset(id)).data).modeDescriptor?.profile, bytes)
     let fetches = await transport.fetches; XCTAssertEqual(fetches, [profileURL, profileURL])
   }

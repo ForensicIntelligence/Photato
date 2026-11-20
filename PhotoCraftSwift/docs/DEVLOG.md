@@ -681,7 +681,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 660 | 2026-11-20 | [Free Transform follows Smart Object artwork](#dev-step-660) |
 | 661 | 2026-11-20 | [Smart Object templates get editable masks and blending](#dev-step-661) |
 | 662 | 2026-11-20 | [Fit replacement artwork inside Smart Object frames](#dev-step-662) |
+| 663 | 2026-11-20 | [Inspect Photoshop templates through the Adobe-compatible manifest](#dev-step-663) |
 <!-- history-index:end -->
+
+<a id="dev-step-663"></a>
+
+## 2026-11-20 — Inspect Photoshop templates through the Adobe-compatible manifest
+
+The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite.
+
+The manifest reads Photoshop metadata from the job input. Composite edits share its layer identifiers. Embedded results return in the job status and hosted results require a local bearer token.
+
+1,498 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional masked RGB32 test passed on Apple Silicon. On Intel, eight PSD composites matched the previous build byte for byte and reproduced its existing differences from the Photoshop fixtures. Both slices of the signed macOS 14+ universal preview launched offscreen. An authenticated manifest-to-edit round trip reopened the edited PSD and retained the original and fallback layer IDs. The tests also checked XMP opt-in, layer hierarchy, mask and blend state, destination equality and rejection of unauthorized downloads.
+
+Layer thumbnails, original Smart Object extraction, full layer descriptors and comparisons with Adobe's hosted results remain open. Intel tests ran under Rosetta. The preview binaries declare macOS 14.0 as the minimum system version.
+
+[Development record](ADOBE_DOCUMENT_MANIFEST_663.md) · [Qualification](SOURCE_PUBLICATION_663.md).
 
 <a id="dev-step-662"></a>
 

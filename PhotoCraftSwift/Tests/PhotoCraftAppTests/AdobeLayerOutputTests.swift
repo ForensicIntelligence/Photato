@@ -49,7 +49,7 @@ final class AdobeLayerOutputTests: XCTestCase {
       try await Task.sleep(for:.milliseconds(5))
     }
     let finished = try XCTUnwrap(jobs.snapshot(submitted.id)); XCTAssertEqual(finished.status,.succeeded,finished.error?.message ?? ""); XCTAssertEqual(finished.outputs.count,1)
-    let id = try XCTUnwrap(UUID(uuidString:finished.outputs[0].url.lastPathComponent)), asset = try XCTUnwrap(jobs.asset(id)), read = try RasterIO.read(asset.data)
+    let id = try XCTUnwrap(UUID(uuidString:(try XCTUnwrap(finished.outputs[0].url)).lastPathComponent)), asset = try XCTUnwrap(jobs.asset(id)), read = try RasterIO.read(asset.data)
     XCTAssertEqual([read.width,read.height],[2,2]); XCTAssertEqual(try Renderer.composite(read).pixel(x:0,y:0),Pixel(1,0,0))
   }
 }

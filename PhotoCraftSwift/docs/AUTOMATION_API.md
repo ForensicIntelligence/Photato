@@ -1225,6 +1225,16 @@ Photato's `smartObject.replace` accepts the same `contentPlacement` object in `p
 commits as one Undo step. Linked, skewed, projected, warped and pixel-masked rotated frames are unavailable for content placement.
 Both capability entries are discoverable through `GET /v1/capabilities`. [Development record](SMART_OBJECT_CONTENT_PLACEMENT_662.md)
 
+### Photoshop document manifest
+
+Enable resource jobs in the Photato API window. Submit the source PSD or PSB to `POST /v2/generate-manifest` with a JSON destination. Poll the returned `statusUrl` with the local bearer token. For a hosted result, download the returned URL with that same token before it expires.
+
+```json
+{"image":{"source":{"url":"https://example.com/template.psd"}},"includeXmp":true,"outputs":[{"destination":{"embedded":"json"},"mediaType":"application/json"}]}
+```
+
+The result includes document bounds, mode, bit depth, layer hierarchy, and supported Smart Object, mask and blend properties. Pass a returned layer `id` to `POST /v2/create-composite` against the same template. By default XMP is omitted. Embedded output also accepts `string` or `base64`. For a temporary hosted result use `destination.validityPeriod`. For an authorized external upload use `destination.url` with HTTPS. Thumbnails and original Smart Object extraction are unavailable. [Development record](ADOBE_DOCUMENT_MANIFEST_663.md)
+
 ## Subject selection and background removal — step159
 
 At step159 there were25 typed Photato commands. `selection.subject` accepts required `layerID` (pixel layer UUID), optional `sampleAllLayers` (boolean, defaultfalse) and `mode` (`replace`, `add`, `subtract`, `intersect`; defaultreplace). `layer.removeBackground` accepts `layerID` and optional `sampleAllLayers`; it requires an unlocked pixel layer without an existing mask. Both run Apple Vision locally, preserve original pixels and commit one native Undo entry. Removal preserves the current selection. An existing mask must be applied or deleted explicitly first. Stale/busy/cancelled/revoked requests return 409 without committing; invalid parameters400, missing layer404, unsupported target/size/model/no subject422. Document state now reports selection bounds/coverage and subject availability; layers report mask presence, enablement, density and feather. Schemas and runtime limits are recorded in [subject references](SUBJECT_SELECTION_REFERENCES.json). An available command means a request may be attempted; it does not guarantee the system model can run on every Mac.

@@ -1701,6 +1701,8 @@ public enum PSDCodec {
       if let id = compOutput.layerIDs[layer.id] {
         var identifier = PSDWriter(); identifier.n(Int(id), 4)
         extra.text("8BIMlyid"); extra.section(identifier.data)
+      } else if let identifier = layer.sourceTags?["lyid"], identifier.count == 4 {
+        extra.text("8BIMlyid"); extra.section(identifier)
       }
       var lock = PSDWriter()
       lock.data.append(try PSDLayerProtection.encode(layer.protection))

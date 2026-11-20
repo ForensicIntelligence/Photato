@@ -140,7 +140,13 @@ enum PSDLayerComps {
   static func prepare(_ document: CraftDocument) throws -> Export {
     let old = try PSDImageResources.blocks(document.sourceMetadata?["psdResources"] ?? Data())
     let active = document.layerComps != nil || old.contains { $0.id == 1065 }
-    guard active else {var result=Export();for layer in document.layers where layer.isBackground{result.layerIDs[layer.id]=0};return result}
+    guard active else {
+      var result = Export()
+      for layer in document.layers where layer.isBackground && layer.sourceTags?["lyid"]?.count != 4 {
+        result.layerIDs[layer.id] = 0
+      }
+      return result
+    }
     var output = Export(), usedLayers = Set<Int32>([0, -1])
     let retainedOpaque=document.layerComps==nil && !document.clearedSourceLayerComps
     for layer in document.layers {

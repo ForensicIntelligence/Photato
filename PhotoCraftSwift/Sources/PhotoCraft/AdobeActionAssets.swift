@@ -115,7 +115,22 @@ enum AdobeActionAssets {
   static func execute(_ request: AdobeActionsRequest, input: Data, resources: [URL: Data] = [:]) throws -> [Encoded] {
     let document = try request.creation?.document(resources: resources)
       ?? decode(input, allowPhotatoInput: request.allowsPhotatoInput)
+    if request.layerEdits != nil { return try executeComposite(request, document: document, resources: resources) }
     return try execute(request, document: document, resources: resources)
+  }
+  private static func executeComposite(_ request: AdobeActionsRequest, document: CraftDocument,
+                                       resources: [URL: Data]) throws -> [Encoded] {
+    let input = try AdobeLayerIdentifiers.assigning(in: document)
+    let edited = try request.applying(to: input, resources: resources).session.document
+    let identified = try AdobeLayerIdentifiers.assigning(in: edited)
+    // A layer-only export can move a layer to a different stack position.
+    guard !request.outputs.contains(where: { $0.mediaType == .psd && $0.layerExport?.layers != nil }) else {
+      return try encode(request, document: identified, resources: resources)
+    }
+    let synthesized = Set(document.layers.lazy.filter { AdobeLayerIdentifiers.stored($0) == nil }.map(\.id))
+      .union(edited.layers.lazy.filter { AdobeLayerIdentifiers.stored($0) == nil }.map(\.id))
+    let result = AdobeLayerIdentifiers.omittingRedundant(in: identified, synthesized: synthesized)
+    return try encode(request, document: result, resources: resources)
   }
   static func execute(_ request: AdobeActionsRequest, document: CraftDocument, resources: [URL: Data] = [:]) throws -> [Encoded] {
     let edited = try request.applying(to: document, resources: resources).session.document

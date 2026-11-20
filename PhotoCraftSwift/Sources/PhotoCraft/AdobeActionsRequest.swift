@@ -31,9 +31,11 @@ struct AdobeActionsRequest: Sendable {
       switch self { case .png: .png; case .jpeg: .jpeg; case .psd: .psd; case .tiff: .tiff; case .json: nil }
     }
   }
+  enum EmbeddedFormat: String, Sendable { case json, string, base64 }
   enum Destination: Equatable, Sendable {
     case hosted(validityPeriod: Int)
     case external(URL, storageType: String?)
+    case embedded(EmbeddedFormat)
   }
   struct Output: Sendable {
     let mediaType: MediaType
@@ -157,37 +159,44 @@ struct AdobeActionsRequest: Sendable {
         throw AdobeAPIError.unsupported(
           "Script output patterns require an unimplemented UXP runtime.")
       }
-      let destination = try output.object(
-        "destination", allowed: ["url", "storageType", "validityPeriod"])
-      let target: Destination
-      if destination.fields["url"] != nil {
-        guard destination.fields["validityPeriod"] == nil else {
-          throw AdobeAPIError.invalid("Output destination must choose one storage variant.")
-        }
-        let url = try Self.url(
-          destination.string("url"), path: path + ".destination.url", httpsOnly: true)
-        var storageType: String?
-        if destination.fields["storageType"] != nil {
-          let value = try destination.string("storageType")
-          guard ["azure", "dropbox"].contains(value) else {
-            throw AdobeAPIError.invalid("storageType must be azure or dropbox when supplied.")
-          }
-          storageType = value
-        }
-        target = .external(url, storageType: storageType)
-      } else {
-        guard destination.fields["storageType"] == nil else {
-          throw AdobeAPIError.invalid("storageType requires a URL destination.")
-        }
-        target = .hosted(
-          validityPeriod: try destination.integer("validityPeriod", range: 60...86_400))
-      }
+      let target = try Self.destination(from: output)
       return Output(
         mediaType: mediaType, destination: target,
         shouldOverwrite: try output.optionalBool("shouldOverwrite"), encodingOptions: encoding,
         colorProfile: try output.fields["iccProfile"].map { try AdobeOutputProfile($0) },
         layerExport: output.fields["layers"] != nil || layerOutput.crop != .documentBounds ? layerOutput : nil)
     }
+  }
+
+  static func destination(from output: Object, allowEmbedded: Bool = false) throws -> Destination {
+    let allowed: Set<String> = allowEmbedded ? ["url", "storageType", "validityPeriod", "embedded"]
+                                           : ["url", "storageType", "validityPeriod"]
+    let destination = try output.object("destination", allowed: allowed)
+    if destination.fields["embedded"] != nil {
+      guard destination.fields.count == 1,
+            let format = EmbeddedFormat(rawValue: try destination.string("embedded")) else {
+        throw AdobeAPIError.invalid("Select one valid embedded output format.")
+      }
+      return .embedded(format)
+    }
+    if destination.fields["url"] != nil {
+      guard destination.fields["validityPeriod"] == nil else {
+        throw AdobeAPIError.invalid("Output destination must choose one storage variant.")
+      }
+      let url = try Self.url(destination.string("url"), path: destination.path + ".url", httpsOnly: true)
+      let storageType = try destination.fields["storageType"].map { _ in
+        let value = try destination.string("storageType")
+        guard ["azure", "dropbox"].contains(value) else {
+          throw AdobeAPIError.invalid("storageType must be azure or dropbox when supplied.")
+        }
+        return value
+      }
+      return .external(url, storageType: storageType)
+    }
+    guard destination.fields["storageType"] == nil else {
+      throw AdobeAPIError.invalid("storageType requires a URL destination.")
+    }
+    return .hosted(validityPeriod: try destination.integer("validityPeriod", range: 60...86_400))
   }
 
   /// The transport supplies one authorized input snapshot. All action resources

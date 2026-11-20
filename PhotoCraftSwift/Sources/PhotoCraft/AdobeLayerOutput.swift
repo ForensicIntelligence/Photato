@@ -13,7 +13,7 @@ struct AdobeLayerOutput: Hashable, Sendable {
       layers = try values.enumerated().map { index, raw in
         let object = try AdobeActionsRequest.Object(raw, at: "outputs.layers[\(index)]", allowed: ["id", "name"])
         guard object.fields.count == 1 else { throw AdobeAPIError.invalid("Each layer reference must contain exactly one of id or name (not both).") }
-        if object.fields["id"] != nil { return .id(try object.integer("id", range: 0...Int(Int32.max))) }
+        if object.fields["id"] != nil { return .id(try object.integer("id", range: Int(Int32.min)...Int(Int32.max))) }
         let name = try object.string("name"); guard !name.isEmpty, name.utf8.count <= 4096 else { throw AdobeAPIError.invalid("Invalid output layer name.") }; return .name(name)
       }
       guard Set(layers!).count == layers!.count else { throw AdobeAPIError.invalid("Duplicate output layer reference.") }
@@ -29,8 +29,15 @@ struct AdobeLayerOutput: Hashable, Sendable {
     let ids = try layers.map { references in try references.map { reference -> UUID in
       switch reference {
       case .id(let id):
-        if id==0,source.layers.count==1,source.layers[0].isBackground{return source.layers[0].id}
-        guard id>0,id <= source.layers.count else { throw AdobeAPIError.invalid("Output layer id does not exist.") }; return source.layers[id-1].id
+        let exact = source.layers.filter { AdobeLayerIdentifiers.stored($0).map(Int.init) == id }
+        if exact.count == 1 { return exact[0].id }
+        if id == 0, source.layers.count == 1, source.layers[0].isBackground { return source.layers[0].id }
+        guard exact.isEmpty, id > 0, id <= source.layers.count,
+              AdobeLayerIdentifiers.stored(source.layers[id - 1]) == nil else {
+          // A stored ID namespaces this layer independently of its stack position.
+          throw AdobeAPIError.invalid("Output layer id does not exist or is ambiguous.")
+        }
+        return source.layers[id - 1].id
       case .name(let name):
         let found = source.layers.filter { $0.name == name }; guard found.count == 1 else { throw AdobeAPIError.invalid("Output layer name is missing or ambiguous.") }; return found[0].id
       }
