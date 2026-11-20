@@ -1243,14 +1243,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:669 -->
+<!-- current-status-step:670 -->
 ## Current development status — 20 November 2026
 
-Embedded and linked PDF Smart Objects retain editable Warp in PSD and PSB. The renderer resamples the original PDF when the Warp magnifies the artwork. The page, crop and layer controls stay editable.
+Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners.
 
-All 88 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 109 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 669](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_669.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-669).
+[Source checkpoint 670](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_670.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-670).
 
 <!-- current-status:end -->
 

@@ -25,7 +25,7 @@ extension Renderer {
       return try maskThumbnail(
         layer, in: document, framing: framing, maximumSize: maximumSize, component: component)
     }
-    let layer = try (layer.smartFilters != nil || (layer.smartObject?.pdfSource != nil && layer.warp != nil))
+    let layer = try (layer.smartFilters != nil || (layer.smartObject?.pdfSource != nil && (layer.warp != nil || layer.sourceProjection != nil)))
       ? SmartObjectIO.renderedLayer(layer, in: document) : layer
     if layer.isGroup { return nil }
     if case .adjustment = layer.content { return nil }

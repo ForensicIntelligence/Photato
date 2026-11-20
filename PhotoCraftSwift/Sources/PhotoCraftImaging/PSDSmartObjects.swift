@@ -215,9 +215,6 @@ enum PSDSmartObjects {
       layer.affine = .translation(-Double(layer.x), -Double(layer.y)) * affine
       maskFrame = affine
     } else {
-      guard object.pdfSource == nil || layer.warp != nil else {
-        throw CraftError.unsupported("PDF perspective interchange is not yet supported.")
-      }
       layer.sourceProjection = try quads.projective(width: object.width, height: object.height, frame: frame)
       layer.x = 0; layer.y = 0; layer.affine = nil
       maskFrame = .identity
@@ -295,9 +292,6 @@ enum PSDSmartObjects {
       savedQuads = try? PlacementQuads(d)
     }
     if let projection = try layer.smartObjectSourceProjection() {
-      guard source.pdfSource == nil || warp != nil else {
-        throw CraftError.unsupported("PDF perspective interchange is not yet supported.")
-      }
       if let old = savedQuads, old.affine(frame: frame) == nil,
          let original = try? old.projective(width: source.width, height: source.height, frame: frame) {
         if let cached = preview?.projectiveSourceToCache {

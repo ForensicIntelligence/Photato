@@ -20,6 +20,108 @@ final class PSDPDFSmartObjectTests: XCTestCase {
     let root = URL(fileURLWithPath:path);try FileManager.default.createDirectory(at:root,withIntermediateDirectories:true)
     try data.write(to:root.appendingPathComponent(name))
   }
+  func testOwnedPDFPerspectiveMatchesDenserExactProjectionAndRasterization() throws {
+    let imported = try PSDCodec.read(fixture("photoshop-art-page.psd"))
+    var layer = try XCTUnwrap(imported.layers.first { $0.smartObject?.pdfSource != nil })
+    let source = try XCTUnwrap(layer.smartObject)
+    let w = Double(source.width), h = Double(source.height)
+    var document = try CraftDocument(width: source.width * 4 + 32, height: source.height * 4 + 32)
+    layer.affine = nil; layer.x = 14; layer.y = 12
+    let projection = try SelectionTransform.projection(bounds: .init(x: 0, y: 0, width: source.width, height: source.height),
+      corners: [.init(12, 6), .init(w * 3, 0), .init(w * 3.2, h * 2.9), .init(0, h * 3)])
+    layer.sourceProjection = projection
+    document.layers = [layer]; document.activeLayerID = layer.id
+    let samples = try XCTUnwrap(PDFSmartObjectIO.rasterizationSamples(layer, in: document))
+    XCTAssertEqual(samples.width, source.width * 4)
+    XCTAssertEqual(samples.height, source.height * 4)
+    let vector = try PDFSmartObjectIO.surface(source, width: source.width * 4, height: source.height * 4, in: document)
+    let full = try projection.followed(by: layer.coordinateTransform)
+    let bounds = try full.bounds(width: source.width, height: source.height)
+    let high = try full.preceded(by: .scale(0.25, 0.25))
+    let expected = try ProjectiveRaster.renderPaged(vector, placement: high, bounds: bounds, method: .bicubic)
+    let old = try SmartFilterEngine.renderedLayer(layer, in: document)
+    let prepared = try SmartObjectIO.renderedLayer(layer, in: document)
+    guard case .raster(let actual) = prepared.content else { return XCTFail("Projected PDF raster is missing.") }
+    XCTAssertNotEqual(old.content, prepared.content)
+    XCTAssertEqual(try actual.rgbaData(depth: .u8), try expected.rgbaData(depth: .u8))
+    XCTAssertEqual(prepared.x, bounds.x); XCTAssertEqual(prepared.y, bounds.y)
+    XCTAssertEqual(document.layers[0].smartObject, source)
+
+    // Native Perspective stores interpolation in a neutral Warp record.
+    // Its presence must continue to use the exact projective sampler.
+    var native = document
+    native.layers[0].warp = WarpDefinition()
+    XCTAssertEqual(try Renderer.composite(native), try Renderer.composite(document))
+    var session = EditorSession(document: native)
+    try session.execute(SmartObjectIO.rasterizationCommand(native.layers[0], in: native))
+    XCTAssertNil(session.document.layers[0].smartObject)
+    XCTAssertNil(session.document.layers[0].sourceProjection)
+    XCTAssertEqual(try Renderer.composite(session.document), try Renderer.composite(native))
+    try session.undo()
+    XCTAssertEqual(session.document, native)
+  }
+
+  func testStandalonePDFPerspectiveKeepsBothQuadsAndLinkedArtAcrossPSDPSB() throws {
+    var document = try model(crop: .art)
+    document.width *= 3; document.height *= 3
+    var layer = document.layers[0]
+    let object = try XCTUnwrap(layer.smartObject)
+    let w = Double(object.width), h = Double(object.height)
+    let corners = [PathPoint(50, 33), .init(50 + w * 2, 21), .init(56 + w * 2, 29 + h * 2.3), .init(31, 38 + h * 2)]
+    layer.x = 0; layer.y = 0; layer.affine = nil
+    layer.sourceProjection = try SelectionTransform.projection(
+      bounds: .init(x: 0, y: 0, width: object.width, height: object.height), corners: corners)
+    var mask = try Surface(width: document.width, height: document.height, fill: .white)
+    mask.setPixel(x: 69, y: 49, .black)
+    var properties = MaskProperties(); properties.linked = false
+    layer.mask = mask; layer.maskProperties = properties
+    let reference = try LinkedSmartObjectSource(reference: "/Missing/Owned pages.pdf",
+      contentHash: object.dataFingerprint, byteLength: UInt64(object.data.count))
+    for linked in [false, true] {
+      document.layers = [try linked ? LinkedSmartObjectIO.linked(layer, reference: reference) : layer]
+      let before = try Renderer.composite(document).rgbaData(depth: .u8)
+      for format in PSDFileFormat.allCases {
+        let saved = try PSDCodec.readPaged(PSDCodec.writeRasterLayers(document, format: format))
+        let read = saved.layers[0]
+        XCTAssertEqual(read.smartObject?.pdfSource?.page, object.pdfSource?.page)
+        XCTAssertEqual(read.smartObject?.pdfSource?.crop, object.pdfSource?.crop)
+        XCTAssertNil(read.warp)
+        XCTAssertEqual(read.maskCoordinateTransform, layer.maskCoordinateTransform)
+        XCTAssertEqual(try Renderer.composite(saved).rgbaData(depth: .u8), before)
+        let packed = try NativeArchive.decodePaged(NativeArchive.encodeChunked(saved))
+        let again = try PSDCodec.read(PSDCodec.writeRasterLayers(packed, format: format))
+        func quads(_ target: Layer) throws -> PSDSmartObjects.PlacementQuads {
+          try PSDSmartObjects.PlacementQuads(PSDSmartObjects.descriptor(
+            XCTUnwrap(target.sourceTags?["SoLd"])))
+        }
+        XCTAssertEqual(try quads(read).base, try quads(again.layers[0]).base)
+        XCTAssertEqual(try quads(read).content, try quads(again.layers[0]).content)
+        let placement = try XCTUnwrap(read.smartObjectSourceProjection())
+        for (sample, corner) in zip([PathPoint(0, 0), .init(w, 0), .init(w, h), .init(0, h)], corners) {
+          let found = try placement.point(sample.x, sample.y)
+          XCTAssertEqual(found.x, corner.x, accuracy: 1e-9)
+          XCTAssertEqual(found.y, corner.y, accuracy: 1e-9)
+        }
+        if linked {
+          XCTAssertTrue(try XCTUnwrap(read.smartObject).data.isEmpty)
+          XCTAssertNotNil(try read.linkedSmartObjectPreview()?.projectiveSourceToCache)
+          let relink = try LinkedSmartObjectIO.replacement(object.data, fileName: object.fileName, reference: reference,
+            in: packed, layerID: read.id, preserveSize: true)
+          var resolved = EditorSession(document: packed)
+          try resolved.execute(relink)
+          XCTAssertEqual(resolved.document.layers[0].smartObject?.data, object.data)
+          XCTAssertNil(try resolved.document.layers[0].linkedSmartObjectPreview())
+          XCTAssertEqual(try Renderer.composite(resolved.document).rgbaData(depth: .u8), before)
+          try resolved.undo()
+          XCTAssertEqual(resolved.document, packed)
+        } else {
+          XCTAssertEqual(read.smartObject, object)
+          XCTAssertNotNil(read.pristineSmartAppearance)
+        }
+      }
+    }
+  }
+
   func testOwnedPDFIdentityWarpKeepsEnlargedVectorSamplesAndRasterizeMatches() throws {
     let imported = try PSDCodec.read(fixture("photoshop-art-page.psd"))
     var layer = try XCTUnwrap(imported.layers.first { $0.smartObject?.pdfSource != nil })

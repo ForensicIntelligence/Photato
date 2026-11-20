@@ -53,15 +53,15 @@ extension SmartObject {
       "sourceGeometry": "layers[].smartObject.sourceGeometry reports the original artwork's affine transform, bounds in document pixels and rotation in degrees. The layer transform continues to describe the displayed raster or cache.",
       "projectiveSourceGeometry": "When available, layers[].smartObject.projectiveSourceGeometry reports the source-to-document homography, four artwork corners and their bounds, including a PSD or PSB linked preview whose original has not been resolved.",
       "pdfPSDInterchange": ["read":true,"write":true,"containers":["psd","psb"],"sourceBytesPreserved":true,
-        "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity, placement and editable Warp. Embedded PDF image selection and non-default antialias policies require native saving.",
+        "selection":"PDF pages, crop boxes, source dimensions/resolution, shared identity, editable affine/perspective placement and Warp. Embedded PDF image selection and non-default antialias policies require native saving.",
         "routes":"Existing document import, file.psd/file.psb export and Adobe v2 resource jobs use the same native codec.",
-        "limits":"PDF render/source budgets. Linked previews keep their Warp and page metadata until relink. Perspective without Warp and exact Photoshop output/default/platform equivalence remain open."],
+        "limits":"Existing PDF render/source budgets apply. Linked previews keep their perspective, Warp and page metadata until relink. Exact Photoshop output/default/platform equivalence remains open."],
       "commands": [SmartObjectLayerCompAPI.name, "smartObject.stackMode", "layer.transform", "smartObject.convert", "smartObject.convertToLayers", "smartObject.place", "smartObject.replace", "smartObject.copy", "smartObject.resetTransform", "layer.rasterize"],
       "sourceDownload": "/v1/documents/{documentID}/smart-objects/{layerID}/source",
       "sourceInput": "smartObject.place/replace take sourceDocumentID/sourceRevision from an explicitly shared document and embed an editable Photato snapshot. sourcePlacement uploads original file bytes without converting their format; pdfPlacement offers PDF page/image selection.",
       "history": "One native transaction; ordinary duplicates share replacements. copy creates independent content. allInstances defaults to true.",
       "linkedArtwork": LinkedArtworkAPI.capabilities,
-      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered, affine and Warp rendering reuse the native engine. PSD/PSB retains PDF page sources under pdfPSDInterchange limits. Full editable PDF/PSD interchange, PDF source-editor live acceptance, linked PSD exact fidelity, nested source monitoring, package and general AI/SVG import remain unqualified or pending."]
+      "limitations": "Embedded raster/native/PSD/RAW sources and retained PDF page/image sources. PDF uses native62; filtered, affine, perspective and Warp rendering reuse the native engine. PSD/PSB retains PDF page sources under pdfPSDInterchange limits. Full editable PDF/PSD interchange, PDF source-editor live acceptance, linked PSD exact fidelity, nested source monitoring, package and general AI/SVG import remain unqualified or pending."]
   }
 }
 

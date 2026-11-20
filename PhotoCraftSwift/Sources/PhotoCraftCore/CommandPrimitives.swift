@@ -277,9 +277,10 @@ extension Command {
     case .rasterize(let id, let surface):
       let i = try index(id)
       var layer = d.layers[i]
-      if layer.smartObject?.pdfSource != nil, layer.warp != nil {
-        layer = try SmartFilterEngine.renderedLayer(layer, in: d, warpSamples: surface)
-        for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }
+      let sourceTags = ["SoLd", "SoLE", "PlLd", "PhLC", "PhFT"]
+      if layer.smartObject?.pdfSource != nil, layer.warp != nil || layer.sourceProjection != nil {
+        layer = try SmartFilterEngine.renderedLayer(layer, in: d, sourceSamples: surface)
+        for key in sourceTags { layer.sourceTags?.removeValue(forKey: key) }
         d.layers[i] = layer
         break
       }
@@ -299,13 +300,13 @@ extension Command {
       }
       if layer.smartFilters != nil || layer.warp != nil || layer.sourceProjection != nil || layer.importedSmartAppearance != nil {
         layer = try SmartFilterEngine.renderedLayer(layer, in: d)
-        for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }
+        for key in sourceTags { layer.sourceTags?.removeValue(forKey: key) }
         d.layers[i] = layer
         break
       }
       layer.video = nil
       layer.smartObject = nil
-      for key in ["SoLd", "SoLE", "PlLd"] { layer.sourceTags?.removeValue(forKey: key) }
+      for key in sourceTags { layer.sourceTags?.removeValue(forKey: key) }
       guard !layer.isGroup else {
         throw CraftError.unsupported("Group rasterization is not available yet; ungroup first.")
       }

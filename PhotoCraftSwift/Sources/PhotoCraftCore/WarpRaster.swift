@@ -77,12 +77,28 @@ public enum WarpRaster {
       let maskWorld=layer.maskCoordinateTransform
       var result=layer;result.x=0;result.y=0;result.affine=layer.coordinateTransform*affine
       result.sourceProjection=nil;result.warp=nil;result.importedSmartAppearance=nil
-      if layer.mask != nil,!layer.effectiveMaskProperties.linked {var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*maskWorld;result.maskProperties=properties}
+      if let samples {
+        let sx = Double(samples.width) / Double(source.width), sy = Double(samples.height) / Double(source.height)
+        result.affine = result.coordinateTransform * .scale(1 / sx, 1 / sy)
+        result.content = .raster(samples)
+        if layer.mask != nil, layer.effectiveMaskProperties.linked {
+          var properties = layer.effectiveMaskProperties
+          properties.transform = .scale(sx, sy) * properties.transform
+          result.maskProperties = properties
+        }
+      }
+      if layer.mask != nil,!layer.effectiveMaskProperties.linked {
+        var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*maskWorld;result.maskProperties=properties
+      }
       return result
     }
     if let projection=layer.sourceProjection,layer.warp?.isIdentity != false {
       let full=try projection.followed(by:layer.coordinateTransform),bounds=try full.bounds(width:source.width,height:source.height)
-      var result=layer;result.content = .raster(try ProjectiveRaster.renderPaged(source,placement:full,bounds:bounds,method:layer.warp?.interpolation ?? .bicubic))
+      let sampledPlacement = try samples.map { raster in
+        try full.preceded(by: .scale(Double(source.width) / Double(raster.width),
+                                    Double(source.height) / Double(raster.height)))
+      } ?? full
+      var result=layer;result.content = .raster(try ProjectiveRaster.renderPaged(samples ?? source,placement:sampledPlacement,bounds:bounds,method:layer.warp?.interpolation ?? .bicubic))
       result.x=bounds.x;result.y=bounds.y;result.affine=nil;result.sourceProjection=nil;result.warp=nil;result.importedSmartAppearance=nil
       if layer.mask != nil {var properties=layer.effectiveMaskProperties;properties.transform=try result.coordinateTransform.inverted()*layer.maskCoordinateTransform;result.maskProperties=properties}
       return result

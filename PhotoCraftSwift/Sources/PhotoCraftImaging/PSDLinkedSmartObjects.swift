@@ -72,9 +72,6 @@ enum PSDLinkedSmartObjects {
     if case .unit(_,let bits)=d["Rslt"] {resolution=Double(bitPattern:bits)}
     var pdf:PDFSmartObjectSource?
     if media=="application/pdf" {
-      guard projective == nil || warp != nil else {
-        throw CraftError.unsupported("Linked PDF perspective without Warp is not yet supported.")
-      }
       let page = d["PgNm"]?.number ?? 1, code = d["Crop"]?.number ?? 3
       guard (1...4096).contains(page), page.rounded() == page,
             let crop = PSDPDFSmartObjects.crops.first(where: { Double($0.value) == code })?.key else {

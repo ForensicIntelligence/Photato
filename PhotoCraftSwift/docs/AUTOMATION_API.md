@@ -1190,6 +1190,10 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
 
+### PDF Smart Object Perspective
+
+Use the existing `layers.transform` command with a row-major homography in document coordinates. The underlying PDF and its logical placement remain editable in both Photoshop containers. The render adapts source density to local magnification within the existing PDF budget. The Adobe-compatible manifest reports the same four corners. [Development record](PDF_PERSPECTIVE_670.md)
+
 ### PDF Smart Object Warp
 
 Use the same `layer.warp` command for a retained PDF page. The editor and API rerasterize when the Warp magnifies the artwork, within the established PDF source budget. Saving or downloading a supported PDF Warp as PSD or PSB keeps the page, crop, vector original or linked reference, and Warp settings. The Adobe-compatible manifest uses the saved placement quad. [Development record](PDF_SMART_OBJECT_WARP_669.md)

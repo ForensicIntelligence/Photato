@@ -685,6 +685,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 667 | [Keep Smart Object Warp editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-667) |
 | 2026-11-20 | 668 | [Wrap editable Smart Objects around a cylinder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) |
 | 2026-11-20 | 669 | [Keep PDF Smart Object Warp editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-669) |
+| 2026-11-20 | 670 | [Keep PDF Smart Object perspective editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-670) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

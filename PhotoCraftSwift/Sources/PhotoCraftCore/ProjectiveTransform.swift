@@ -63,6 +63,42 @@ public final class ProjectiveTransform:Codable,Equatable,Sendable {
       a[3]*affine.a+a[4]*affine.b,a[3]*affine.c+a[4]*affine.d,a[3]*affine.tx+a[4]*affine.ty+a[5],
       a[6]*affine.a+a[7]*affine.b,a[6]*affine.c+a[7]*affine.d,a[6]*affine.tx+a[7]*affine.ty+a[8]])
   }
+  /// Bounds local document pixels per source pixel for vector rerasterization.
+  /// Within each cell the Jacobian numerator is affine and its spectral norm
+  /// is convex. Its largest corner norm over the smallest squared homogeneous
+  /// weight bounds the whole cell, including the strongly enlarged edge.
+  public func maximumMagnification(width: Int, height: Int) throws -> Double {
+    _ = try bounds(width: width, height: height)
+    let m = normalized
+    func corner(_ x: Double, _ y: Double) -> (weight: Double, norm: Double) {
+      let w = m[6] * x + m[7] * y + m[8]
+      let u = m[0] * x + m[1] * y + m[2], v = m[3] * x + m[4] * y + m[5]
+      let ux = m[0] * w - m[6] * u, vx = m[3] * w - m[6] * v
+      let uy = m[1] * w - m[7] * u, vy = m[4] * w - m[7] * v
+      let aa = ux * ux + vx * vx, bb = uy * uy + vy * vy, ab = ux * uy + vx * vy
+      return (abs(w), sqrt((aa + bb + hypot(aa - bb, 2 * ab)) / 2))
+    }
+    if m[6] == 0, m[7] == 0 {
+      let sample = corner(0, 0)
+      return sample.norm / (sample.weight * sample.weight)
+    }
+    let divisions = 16
+    let grid = (0...divisions).map { y in
+      (0...divisions).map { x in
+        corner(Double(x * width) / Double(divisions), Double(y * height) / Double(divisions))
+      }
+    }
+    var maximum = 0.0
+    for y in 0..<divisions {
+      try Task.checkCancellation()
+      for x in 0..<divisions {
+        let a = grid[y][x], b = grid[y][x + 1], c = grid[y + 1][x], d = grid[y + 1][x + 1]
+        let weight = min(a.weight, b.weight, c.weight, d.weight)
+        maximum = max(maximum, max(a.norm, b.norm, c.norm, d.norm) / (weight * weight))
+      }
+    }
+    return maximum
+  }
   public func bounds(width:Int,height:Int)throws->IntRect {
     try validate();guard width>0,height>0,width<=Surface.maxDimension,height<=Surface.maxDimension else{throw CraftError.invalid("Invalid projective source extent.")}
     let corners=[PathPoint(0,0),.init(Double(width),0),.init(Double(width),Double(height)),.init(0,Double(height))]

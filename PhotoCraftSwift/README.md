@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 670.** Embedded and linked PDF pages keep editable Perspective and Distort placement in PSD and PSB. Photato renders the source PDF at a density suited to the projected detail and retains the saved corners. [Qualification](docs/SOURCE_PUBLICATION_670.md).
+
 **Source checkpoint 669.** Embedded and linked PDF Smart Objects retain editable Warp in PSD and PSB. The renderer resamples the original PDF when the Warp magnifies the artwork. The page, crop and layer controls stay editable. [Qualification](docs/SOURCE_PUBLICATION_669.md).
 
 **Source checkpoint 668.** Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked. [Qualification](docs/SOURCE_PUBLICATION_668.md).

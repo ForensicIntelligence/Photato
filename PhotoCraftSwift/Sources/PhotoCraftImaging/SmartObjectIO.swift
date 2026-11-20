@@ -169,7 +169,8 @@ public enum SmartObjectIO {
     return layer
   }
   public static func rasterizationCommand(_ layer: Layer, in document: CraftDocument) throws -> Command {
-    if layer.smartObject?.pdfSource != nil, layer.warp != nil, case .raster(let source) = layer.content {
+    if layer.smartObject?.pdfSource != nil, layer.warp != nil || layer.sourceProjection != nil,
+       case .raster(let source) = layer.content {
       let samples = try PDFSmartObjectIO.rasterizationSamples(layer, in: document) ?? source
       return .rasterize(layer.id, samples)
     }

@@ -108,6 +108,71 @@ final class PSDPDFInterchangeWorkflowTests: XCTestCase {
       XCTAssertEqual(document.store.document, before)
     }
   }
+
+  @MainActor func testPDFPerspectiveModifierAndAuthenticatedPlacementShareEditablePSD() async throws {
+    var before = try model()
+    before.width *= 3; before.height *= 3
+    before.layers[0].affine = .scale(2, 2)
+    let layer = before.layers[0]
+    let source = try XCTUnwrap(layer.smartObject)
+    let store = EditorStore(document: before)
+    defer { store.cancelTransform(); store.renderTask?.cancel() }
+    store.beginTransform()
+    let draft = try XCTUnwrap(store.transformDraft)
+    let session = try XCTUnwrap(store.selectionTransform)
+    XCTAssertTrue(draft.supportsSelectionMode(.perspective))
+    let mode = draft.selectionMode(handle: 0, modifiers: [.command, .option, .shift])
+    XCTAssertEqual(mode, .perspective)
+    let start = draft.handles[0], end = CGPoint(x: start.x - 24, y: start.y)
+    let edited = draft.selectionDragging(handle: 0, from: start, to: end, mode: mode, shift: false, option: false)
+    let delta = try edited.selectionProjection
+    XCTAssertNil(try delta.affineValue())
+    store.updateTransform(edited)
+    store.commitTransform()
+    await session.commitTask?.value
+    XCTAssertNil(session.error)
+    let expected = store.document
+    XCTAssertNotNil(expected.layers[0].sourceProjection)
+    XCTAssertTrue(expected.layers[0].warp?.isIdentity == true)
+    XCTAssertEqual(expected.layers[0].smartObject, source)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    let native = try NativeArchive.decodePaged(NativeArchive.encodeChunked(expected))
+    XCTAssertEqual(native, expected)
+    _ = await store.requestHistory(redo: false).value
+    XCTAssertEqual(store.document, before)
+
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: before)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let params: [String: Any] = ["layerIDs": [layer.id.uuidString], "matrix": delta.values]
+      let status = try await helper.edit(service, document, "layers.transform", params)
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(document.store.document, expected)
+      let render = try Renderer.composite(expected).rgbaData(depth: .u8)
+      for ext in ["psd", "psb"] {
+        let download = try await helper.request(service, path: "/v1/documents/\(share)/file.\(ext)")
+        XCTAssertEqual(download.0.statusCode, 200)
+        let read = try PSDCodec.read(download.1)
+        let active = read.layers[0]
+        XCTAssertNil(active.warp)
+        XCTAssertEqual(active.smartObject, source)
+        XCTAssertEqual(try Renderer.composite(read).rgbaData(depth: .u8), render)
+        let frame = try XCTUnwrap(ProjectiveArtworkFrame(active))
+        let manifest = try AdobeDocumentManifest.encode(AdobeLayerIdentifiers.assigning(in: read), title: "Perspective PDF", includeXmp: false)
+        let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: manifest) as? [String: Any])
+        let layers = try XCTUnwrap(raw["layers"] as? [[String: Any]])
+        let smart = try XCTUnwrap(layers[0]["smartObject"] as? [String: Any])
+        let fields = try XCTUnwrap(smart["smartObjectData"] as? [String: Any])
+        XCTAssertEqual(fields["transform"] as? [Double], frame.corners.flatMap { [$0.x, $0.y] })
+      }
+      let undone = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undone, 200)
+      XCTAssertEqual(document.store.document, before)
+    }
+  }
   @MainActor func testPhotoshopFixtureImportAndNativeOpenRetainSameSourceAndState() async throws {
     let bytes = try fixture("pdf-psd/photoshop-page2-media.psd"),files = DocumentIOWorkflowTests()
     try await AutomationTests().withService(pressedMouseButtons:{0}) {service,_ in

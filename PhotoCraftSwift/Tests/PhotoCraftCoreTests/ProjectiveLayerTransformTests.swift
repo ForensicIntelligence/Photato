@@ -2,6 +2,27 @@ import XCTest
 @testable import PhotoCraftCore
 
 final class ProjectiveLayerTransformTests:XCTestCase {
+  func testProjectiveMagnificationBoundsInteriorAndRejectsAHorizon() throws {
+    let affine = ProjectiveTransform(Transform2D.rotation(23) * .scale(3, 2))
+    XCTAssertEqual(try affine.maximumMagnification(width: 108, height: 72), 3, accuracy: 1e-10)
+    let projected = try ProjectiveTransform([1, 0, 0, 0, 1, 0, -0.005, 0, 1])
+    let bound = try projected.maximumMagnification(width: 108, height: 72)
+    for y in stride(from: 0.0, through: 72, by: 3) {
+      for x in stride(from: 0.0, through: 108, by: 3) {
+        let h = 1e-5
+        let a = try projected.point(x - h, y), b = try projected.point(x + h, y)
+        let c = try projected.point(x, y - h), d = try projected.point(x, y + h)
+        let ux = (b.x - a.x) / (2 * h), uy = (b.y - a.y) / (2 * h)
+        let vx = (d.x - c.x) / (2 * h), vy = (d.y - c.y) / (2 * h)
+        let aa = ux * ux + uy * uy, bb = vx * vx + vy * vy, ab = ux * vx + uy * vy
+        let magnitude = sqrt((aa + bb + hypot(aa - bb, 2 * ab)) / 2)
+        XCTAssertLessThanOrEqual(magnitude, bound + 1e-7)
+      }
+    }
+    let reversed = try ProjectiveTransform(projected.values.map { -3 * $0 })
+    XCTAssertEqual(try reversed.maximumMagnification(width: 108, height: 72), bound, accuracy: 1e-10)
+    XCTAssertThrowsError(try projected.maximumMagnification(width: 250, height: 72))
+  }
   func fixture(_ depth:PixelDepth = .u8)throws->CraftDocument{try LayerCollectionTransformTests().fixture(depth)}
   func projection()throws->ProjectiveTransform{try .init([1,0.1,2,0.05,1,1,0.01,0.005,1])}
   func testHomogeneousCompositionMatchesIndependentPointArithmetic()throws {
