@@ -1,0 +1,15 @@
+# Gigabyte-scale Smart Object originals
+
+19 November 2026 · Development checkpoint 651
+
+Local placement keeps the ownership of its private file-backed copy through decoding, placement and replacement. Eligible PSD, PSB and chunked native originals can now use up to 2 GiB of encoded storage. Ordinary Data input retains the 512 MiB decoder bound. File-backed originals above 512 MiB require native archive 97. The separate HTTP budgets still apply. [Adobe file formats](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/) · [Photoshop large documents](https://helpx.adobe.com/photoshop/desktop/save-and-export/save-files/save-large-documents.html)
+
+The first candidate still counted retained originals against the 1 GiB raster budget. The 1,181,384,274-byte fixture passed the file-backed decoder and failed at document validation. The final change counts file-backed originals against the document's scratch allowance and keeps encoded sizes in the transfer estimate. Nested Photoshop decoding shares the outer reader's scratch allowance. First boundary result (local evidence)
+
+Edit Contents can write an updated native child into a private file when it retains large originals. PSD and PSB can use the same approach when converting that child into an embedded PSB. The file writer uses the existing raw, PackBits and compatibility-off preference order, with a bounded output transaction for each attempt.
+
+The 1,181,384,274-byte reference reopened with the exact source bytes and the editable Float32 corner sample. The native archive reopened with a 32 MiB decoder heap allowance. The same original survived a second level of embedding, an edit to the inner document, and Undo and Redo. The nested PSB rejected an insufficient shared scratch allowance. The final probes peaked around 3.58 GB and 3.62 GB of process memory footprint across placement, two levels of embedding and the saves, with additional mapped pages counted in resident memory. Apple Silicon probe (local evidence) · Intel probe (local evidence)
+
+An independent parser confirmed that the direct PSD, direct PSB and untouched nested PSB match across optimized Apple Silicon and Intel under Rosetta. The two edited PSBs differ by 60 bytes, all within two regenerated placed-layer UUIDs. Their retained source bytes and editable sample agree. The original 651 forced history-spill test also rejected the edit atomically at the older 512 MiB history block limit. Independent file check (local evidence) · Cross-architecture comparison (local evidence) · Edited byte differences (local evidence)
+
+All 61 selected Debug regressions passed on the final candidate. They include the desktop's shared placement preparation, replacement of the underlying file, archive-95 compatibility and the loopback API. Live Photoshop acceptance remains open after the installed app's scripting check timed out. Focused tests (local evidence) · Desktop and API tests (local evidence) · Photoshop readiness attempt (local evidence) · Source patch and manifest (local evidence)

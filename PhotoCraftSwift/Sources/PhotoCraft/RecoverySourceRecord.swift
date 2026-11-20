@@ -157,6 +157,28 @@ final class RecoverySourceReader {
   static func capture(_ url: URL) throws -> RecoverySourceFingerprint {
     try withStableMetadata { try RecoverySourceReader(url).finish() }
   }
+  static func snapshot(_ url: URL, maximumBytes: (Data) -> Int, fileBackedAbove: Int) throws -> EmbeddedSourceBytes {
+    let original = try RecoverySourceReader(url)
+    let data = try original.snapshot(maximumBytes: maximumBytes, fileBackedAbove: fileBackedAbove)
+    do {
+      try original.validateUnchanged()
+      return data
+    } catch is MetadataChanged {
+      try Task.checkCancellation()
+      let retry = try RecoverySourceReader(url)
+      guard Self.same(original.before, retry.before), original.volume == retry.volume else {
+        throw DocumentPersistenceConflict.changed
+      }
+      do {
+        let checked = try retry.snapshot(maximumBytes: maximumBytes, fileBackedAbove: fileBackedAbove)
+        try retry.validateUnchanged()
+        guard checked.data == data.data else { throw DocumentPersistenceConflict.changed }
+        return checked
+      } catch is MetadataChanged {
+        throw DocumentPersistenceConflict.changed
+      }
+    }
+  }
   private let fd: Int32
   private let url: URL
   private let before: stat
@@ -181,6 +203,35 @@ final class RecoverySourceReader {
     volume = try? url.resourceValues(forKeys: [.volumeUUIDStringKey]).volumeUUIDString
   }
   deinit { Darwin.close(fd) }
+
+  private func snapshot(maximumBytes: (Data) -> Int, fileBackedAbove: Int) throws -> EmbeddedSourceBytes {
+    let size = Int(before.st_size)
+    let header = try bytes(at: 0, count: min(size, 8))
+    guard size <= maximumBytes(header) else {
+      throw CraftError.invalid("The artwork exceeds its file format's embedded size limit.")
+    }
+    return size > fileBackedAbove
+      ? .file(try FileBackedSource.retain(byteCount: size, read: bytes(at:count:)))
+      : .memory(try bytes(at: 0, count: size))
+  }
+
+  private func bytes(at offset: Int, count: Int) throws -> Data {
+    var data = Data(count: count)
+    try data.withUnsafeMutableBytes { (buffer: UnsafeMutableRawBufferPointer) in
+      var read = 0
+      while read < count {
+        try Task.checkCancellation()
+        let length = min(65_536, count - read)
+        let amount = pread(fd, buffer.baseAddress!.advanced(by: read), length, off_t(offset + read))
+        if amount < 0 && errno == EINTR { continue }
+        if amount < 0 { throw Self.posixError() }
+        guard amount > 0 else { throw DocumentPersistenceConflict.changed }
+        read += amount
+      }
+    }
+    return data
+  }
+
   func finish() throws -> RecoverySourceFingerprint {
     var hash = SHA256()
     var buffer = [UInt8](repeating: 0, count: 65_536)
@@ -194,6 +245,15 @@ final class RecoverySourceReader {
       hash.update(data: Data(buffer.prefix(amount)))
       offset += amount
     }
+    try validateUnchanged()
+    return .init(volume: volume, inode: before.st_ino,
+      birthSeconds: before.st_birthtimespec.tv_sec, birthNanoseconds: before.st_birthtimespec.tv_nsec,
+      size: Int(before.st_size), modifiedSeconds: before.st_mtimespec.tv_sec,
+      modifiedNanoseconds: before.st_mtimespec.tv_nsec,
+      sha256: hash.finalize().map { String(format: "%02x", $0) }.joined())
+  }
+
+  private func validateUnchanged() throws {
     var after = stat(), path = stat()
     guard fstat(fd, &after) == 0 else { throw Self.posixError() }
     let result = url.withUnsafeFileSystemRepresentation {
@@ -207,11 +267,6 @@ final class RecoverySourceReader {
       before.st_ctimespec.tv_sec == path.st_ctimespec.tv_sec,
       before.st_ctimespec.tv_nsec == path.st_ctimespec.tv_nsec
     else { throw MetadataChanged() }
-    return .init(volume: volume, inode: before.st_ino,
-      birthSeconds: before.st_birthtimespec.tv_sec, birthNanoseconds: before.st_birthtimespec.tv_nsec,
-      size: Int(before.st_size), modifiedSeconds: before.st_mtimespec.tv_sec,
-      modifiedNanoseconds: before.st_mtimespec.tv_nsec,
-      sha256: hash.finalize().map { String(format: "%02x", $0) }.joined())
   }
   private static func same(_ a: stat, _ b: stat) -> Bool {
     a.st_dev == b.st_dev && a.st_ino == b.st_ino && a.st_size == b.st_size

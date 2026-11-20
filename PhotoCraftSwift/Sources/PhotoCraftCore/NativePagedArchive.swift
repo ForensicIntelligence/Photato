@@ -7,6 +7,13 @@ extension NativeArchive {
   public static func decodePaged(_ data: Data, heapByteLimit: Int = 1_073_741_824,
     scratchByteLimit: Int = RasterTileStore.defaultMaximumBytes,
     maximumMetadataBytes: Int = NativeArchive.maximumBytes) throws -> CraftDocument {
+    try decodePaged(.memory(data), heapByteLimit: heapByteLimit,
+      scratchByteLimit: scratchByteLimit, maximumMetadataBytes: maximumMetadataBytes)
+  }
+  public static func decodePaged(_ source: EmbeddedSourceBytes, heapByteLimit: Int = 1_073_741_824,
+    scratchByteLimit: Int = RasterTileStore.defaultMaximumBytes,
+    maximumMetadataBytes: Int = NativeArchive.maximumBytes) throws -> CraftDocument {
+    let data = source.data
     try validatePagedOptions(heapByteLimit, scratchByteLimit, maximumMetadataBytes)
     try Task.checkCancellation()
     guard data.starts(with: NativeChunkedArchive.magic) else {
@@ -16,7 +23,8 @@ extension NativeArchive {
       return try decode(data,rasterByteLimit:heapByteLimit)
     }
     return try NativeChunkedArchive.decodeRecovery(count:data.count,rasterByteLimit:heapByteLimit,
-      maximumMetadataBytes:maximumMetadataBytes,backing:RasterTileStore(maximumBytes:scratchByteLimit)) { offset,count in
+      maximumMetadataBytes:maximumMetadataBytes,backing:RasterTileStore(maximumBytes:scratchByteLimit),
+      maximumFileBytes: source.isFileBacked ? NativeArchive.maximumFileBytes : NativeArchive.maximumBytes) { offset,count in
         guard offset >= 0,count >= 0,offset <= data.count,count <= data.count-offset else {
           throw CraftError.invalid("Invalid native archive range.")
         }

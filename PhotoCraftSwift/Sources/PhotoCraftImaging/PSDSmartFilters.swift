@@ -212,7 +212,7 @@ enum PSDSmartFilters {
       let depth=document.depth == .u8 ? 8:document.depth == .u16 ? 16:32
       let storedRows = PSDStoredRows(pixels, kind: .filterSource, minimumPixels: RasterFilterEngine.maximumPixels)
       let repeatedRows = storedRows.map { rows in { (y: Int) in rows.repeatedRows(from: y) } }
-      let itemLength=try out.reserveLength(8),id=original.id.uuidString
+      let itemLength=try out.reserveLength(8),id=PSDSmartObjects.placedIdentifier(for: original)
       try out.n(id.utf8.count,1);try out.text(id);try out.n(1,4)
       let planesLength=try out.reserveLength(8)
       try writeRect(bounds,to:out);try out.n(depth,4);try out.n(24,4)
@@ -257,8 +257,10 @@ enum PSDSmartFilters {
         }
         try out.finishLength(maskLength,width:8)
       }else{try out.n(0,1)}
+      let itemBytes = out.count - itemLength - 8
       try out.finishLength(itemLength,width:8)
-      while out.count%4 != 0 {try out.n(0,1)}
+      // Each record is padded relative to its own length inside FEid/FXid.
+      for _ in 0..<((4 - itemBytes % 4) % 4) { try out.n(0,1) }
     }
   }
   private static func writeRect(_ bounds:IntRect,to out:PSDOutput)throws {

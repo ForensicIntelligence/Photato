@@ -35,6 +35,10 @@ public final class RasterTileStore: @unchecked Sendable {
     }
     componentBytes += bytes
   }
+  public func retainSource(byteCount: Int, read: (Int, Int) throws -> Data) throws -> FileBackedSource {
+    try reserveComponentScratch(bytes: byteCount)
+    return try FileBackedSource.retain(byteCount: byteCount, read: read)
+  }
   public init(maximumBytes: Int = defaultMaximumBytes, directory: URL? = nil) throws {
     guard maximumBytes >= 0, maximumBytes <= Self.defaultMaximumBytes,
       MemoryLayout<Pixel>.size == 16, MemoryLayout<Pixel>.stride == 16 else {
@@ -97,6 +101,91 @@ final class ScratchDescriptor: @unchecked Sendable {
   }
 
   deinit { close(fd) }
+}
+
+/// Copy once into an unlinked scratch file. The private mapping owns the bytes
+/// independently of the user's file, of the temporary directory and of its reader.
+public struct FileBackedSource: Sendable {
+  public let data: Data
+
+  public static func writing(maximumBytes: Int, _ write: (URL) throws -> Void) throws -> Self {
+    guard (1...NativeArchive.maximumFileBytes).contains(maximumBytes) else {
+      throw CraftError.invalid("Invalid generated source size limit.")
+    }
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent("photato-source-\(UUID().uuidString)")
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: false,
+      attributes: [.posixPermissions: 0o700])
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let url = folder.appendingPathComponent("source")
+    try write(url)
+    try Task.checkCancellation()
+    guard let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize, (1...maximumBytes).contains(size) else {
+      throw CraftError.invalid("Generated source exceeds its file size budget.")
+    }
+    let data = try Data(contentsOf: url, options: .alwaysMapped)
+    guard data.count == size else { throw CraftError.invalid("Incomplete generated source.") }
+    return Self(data: data)
+  }
+
+  public static func copy(byteCount: Int, read: (Int, Int) throws -> Data) throws -> Data {
+    try retain(byteCount: byteCount, read: read).data
+  }
+
+  public static func retain(byteCount: Int, read: (Int, Int) throws -> Data) throws -> Self {
+    guard byteCount > 0, byteCount <= NativeArchive.maximumFileBytes else {
+      throw CraftError.invalid("Invalid file-backed source length.")
+    }
+    try Task.checkCancellation()
+    let scratch = try ScratchDescriptor(prefix: "photato-source", suffix: "scratch")
+    var offset = 0
+    while offset < byteCount {
+      try Task.checkCancellation()
+      let length = min(64 * 1024, byteCount - offset)
+      let data = try read(offset, length)
+      guard data.count == length else { throw CraftError.invalid("Incomplete file-backed source.") }
+      try data.withUnsafeBytes { buffer in
+        var written = 0
+        while written < length {
+          try Task.checkCancellation()
+          let amount = pwrite(scratch.fd, buffer.baseAddress!.advanced(by: written),
+            length - written, off_t(offset + written))
+          if amount < 0 && errno == EINTR { continue }
+          guard amount > 0 else {
+            throw RasterScratchFailure.io(operation: "source write", code: amount == 0 ? EIO : errno)
+          }
+          written += amount
+        }
+      }
+      offset += length
+    }
+    try Task.checkCancellation()
+    // Foundation Data may mutate uniquely owned storage. A writable private map
+    // provides copy-on-write pages without changing the retained file.
+    let address = mmap(nil, byteCount, PROT_READ | PROT_WRITE, MAP_PRIVATE, scratch.fd, 0)
+    guard let address, address != MAP_FAILED else {
+      throw RasterScratchFailure.io(operation: "source mapping", code: errno)
+    }
+    return Self(data: Data(bytesNoCopy: address, count: byteCount, deallocator: .custom { pointer, length in
+      munmap(pointer, length)
+    }))
+  }
+}
+
+public enum EmbeddedSourceBytes: Sendable {
+  case memory(Data)
+  case file(FileBackedSource)
+
+  public var data: Data {
+    switch self {
+    case .memory(let data): data
+    case .file(let source): source.data
+    }
+  }
+
+  public var isFileBacked: Bool {
+    if case .file = self { return true }
+    return false
+  }
 }
 
 final class RasterScratchSegment: @unchecked Sendable {

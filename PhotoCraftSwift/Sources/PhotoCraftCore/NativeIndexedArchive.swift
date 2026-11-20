@@ -63,7 +63,7 @@ enum NativeIndexedArchive {
       return catalog
     }
   }
-  final class Input:IndexedRasterBlobDecoding,ComponentBlobDecoding,@unchecked Sendable {
+  final class Input:IndexedRasterBlobDecoding,ComponentBlobDecoding,EmbeddedSourceBlobDecoding,@unchecked Sendable {
     private let index:NativeBlobIndex.Reader
     private let read:(Int,Int)throws->Data
     private let backing:RasterTileStore?
@@ -71,6 +71,8 @@ enum NativeIndexedArchive {
     private var used:Data,usedCount:UInt64=0
     private let mappedCache:NativeMappedTileCache?
     private var cache:[UInt64:RasterTile]=[:],order:[UInt64]=[]
+    private var sourceCache: [UInt64: EmbeddedSourceBytes] = [:]
+    private let version: Int
     var usesMappedTiles:Bool {backing != nil}
     var usesMappedComponents: Bool { backing != nil }
     let supportsComponentPages: Bool
@@ -80,7 +82,7 @@ enum NativeIndexedArchive {
       else { try componentBudget.reserve(bytes) }
     }
     init(index:NativeBlobIndex.Reader,backing:RasterTileStore?,budget:RasterDecodeBudget,version:Int = 63,read:@escaping(Int,Int)throws->Data)throws {
-      self.index=index;self.backing=backing;self.read=read;supportsComponentPages = version >= 86
+      self.index=index;self.backing=backing;self.read=read;self.version=version;supportsComponentPages = version >= 86
       let n=index.catalog.records/8 + (index.catalog.records%8 == 0 ? 0:1)
       guard n<=UInt64(Int.max) else {throw CraftError.invalid("Native index use map size.")}
       try budget.reserve(bytes:Int(n));used=Data(count:Int(n))
@@ -91,15 +93,42 @@ enum NativeIndexedArchive {
     }
     var allReferenced:Bool {usedCount==index.catalog.records}
     func bytes(_ identifier:String,maximumBytes:Int)throws->Data {
+      try blob(identifier, maximumBytes: maximumBytes, fileBacked: false).data
+    }
+    func embeddedSourceBytes(_ identifier: String) throws -> EmbeddedSourceBytes {
+      let limit: Int
+      switch version {
+      case SmartObject.streamingSourceArchiveVersion... where backing != nil:
+        limit = SmartObject.maximumFileBackedSourceBytes
+      case SmartObject.fileBackedArchiveVersion...:
+        limit = SmartObject.maximumDocumentSourceBytes
+      default:
+        limit = SmartObject.maximumArchive95SourceBytes
+      }
+      return try blob(identifier, maximumBytes: limit, fileBacked: true)
+    }
+    private func blob(_ identifier: String, maximumBytes: Int, fileBacked: Bool) throws -> EmbeddedSourceBytes {
       try Task.checkCancellation()
       guard identifier.first=="b",let ordinal=UInt64(identifier.dropFirst()),identifier==NativeIndexedArchive.identifier(ordinal),maximumBytes>=0 else {throw CraftError.invalid("Invalid native blob ordinal.")}
       let record=try index.record(at:ordinal)
       guard record.length<=UInt64(maximumBytes) else {throw CraftError.invalid("Oversized native blob.")}
-      let data=try read(Int(record.offset),Int(record.length))
+      let offset = Int(record.offset), length = Int(record.length)
+      let useScratch = fileBacked && length > SmartObject.maximumArchive95SourceBytes && backing != nil
+      if useScratch, let source = sourceCache[ordinal] { return source }
+      let source: EmbeddedSourceBytes
+      if useScratch, let backing {
+        source = .file(try backing.retainSource(byteCount: length) { start, count in
+          try read(offset + start, count)
+        })
+      } else {
+        source = .memory(try read(offset, length))
+      }
+      let data = source.data
       guard data.count==Int(record.length),Data(SHA256.hash(data:data))==record.digest else {throw CraftError.invalid("Native blob integrity check failed.")}
+      if useScratch { sourceCache[ordinal] = source }
       let byte=Int(ordinal/8),mask:UInt8=1<<UInt8(ordinal%8)
       if used[byte]&mask==0 {used[byte] |= mask;usedCount+=1}
-      return data
+      return source
     }
     func storedTile(_ identifier:String)throws->RasterTile {
       try Task.checkCancellation()

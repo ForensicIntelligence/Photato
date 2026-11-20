@@ -6,14 +6,19 @@ import PhotoCraftImaging
 enum ArtworkPlacementPreparation {
   static func prepare(_ data:Data,fileName:String,in original:CraftDocument,
     embedded:EmbeddedSourceOptions,pdf:PDFSmartObjectOptions?=nil,decoded:CraftDocument?=nil)throws->Command {
+    try prepare(.memory(data),fileName:fileName,in:original,embedded:embedded,pdf:pdf,decoded:decoded)
+  }
+  static func prepare(_ source:EmbeddedSourceBytes,fileName:String,in original:CraftDocument,
+    embedded:EmbeddedSourceOptions,pdf:PDFSmartObjectOptions?=nil,decoded:CraftDocument?=nil)throws->Command {
     if let pdf {
+      let data = source.data
       if let frameID=embedded.frameID {
         return try .frame(.replace(frameID,PDFSmartObjectIO.placed(data,fileName:fileName,in:original,
           settings:pdf.settings,image:pdf.image),fit:embedded.frameFit))
       }
       return try PDFSmartObjectAPI.prepare(data,fileName,original,pdf)
     }
-    return try EmbeddedSourceAPI.prepare(data,fileName,original,embedded,decoded:decoded)
+    return try EmbeddedSourceAPI.prepare(source,fileName,original,embedded,decoded:decoded)
   }
 }
 

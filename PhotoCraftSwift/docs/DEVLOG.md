@@ -668,7 +668,45 @@ For a readable account of the project from the beginning, see [Photato developme
 | 647 | 2026-11-19 | [Keep large generated Smart Object sources editable](#dev-step-647) |
 | 648 | 2026-11-19 | [Keep large embedded sources once](#dev-step-648) |
 | 649 | 2026-11-19 | [Place and reopen larger Photoshop originals](#dev-step-649) |
+| 650 | 2026-11-19 | [Retain large embedded originals on disk](#dev-step-650) |
+| 651 | 2026-11-19 | [Keep gigabyte-scale originals through Edit Contents](#dev-step-651) |
+| 652 | 2026-11-19 | [Keep gigabyte-scale originals in Undo and Redo](#dev-step-652) |
+| 653 | 2026-11-20 | [Preserve Smart Object placement identifiers](#dev-step-653) |
 <!-- history-index:end -->
+
+<a id="dev-step-653"></a>
+
+## 2026-11-20 — Preserve Smart Object placement identifiers
+
+Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
+
+All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+
+[Development record](PLACED_LAYER_IDENTIFIERS_653.md).
+
+<a id="dev-step-652"></a>
+
+## 2026-11-19 — Keep gigabyte-scale originals in Undo and Redo
+
+Spilled history states share the existing file-backed original. Undo and Redo keep the bytes, and insufficient disk space rejects the edit atomically.
+
+[Development record](GIGABYTE_SMART_OBJECT_HISTORY_652.md).
+
+<a id="dev-step-651"></a>
+
+## 2026-11-19 — Keep gigabyte-scale originals through Edit Contents
+
+A 1.18 GB PSB retains its exact original and editable samples through placement, a nested edit and reopen. Native files use archive version 97 for these originals.
+
+[Development record](GIGABYTE_SMART_OBJECTS_651.md).
+
+<a id="dev-step-650"></a>
+
+## 2026-11-19 — Retain large embedded originals on disk
+
+Large PSB originals remain editable in native projects, PSD and PSB. The 275.7 MB test retained two shared instances, and the 525.1 MB file retained its original bytes.
+
+[Development record](FILE_BACKED_SMART_ORIGINALS_650.md).
 
 <a id="dev-step-649"></a>
 

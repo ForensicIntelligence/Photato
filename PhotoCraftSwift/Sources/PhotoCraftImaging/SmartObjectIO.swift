@@ -18,10 +18,11 @@ public enum SmartObjectIO {
     return try $nesting.withValue(nesting + 1, operation: operation)
   }
 
-  static func photoshopDocumentName(_ data: Data, fileName: String) throws -> String? {
+  static func photoshopDocumentName(_ source: EmbeddedSourceBytes, fileName: String) throws -> String? {
+    let data = source.data
     guard data.starts(with: Data("8BPS".utf8)) else { return nil }
-    guard data.count <= SmartObject.maximumDocumentSourceBytes else {
-      throw CraftError.invalid("Embedded Photoshop source exceeds 256 MiB.")
+    guard data.count <= SmartObject.maximumEmbeddedBytes(for: source) else {
+      throw CraftError.invalid("Embedded Photoshop source exceeds its storage limit.")
     }
     guard data.count >= 26 else { throw CraftError.invalid("Truncated embedded Photoshop header.") }
     let width = data.dropFirst(18).prefix(4).reduce(0) { ($0 << 8) | Int($1) }
@@ -37,12 +38,16 @@ public enum SmartObjectIO {
     }
   }
   public static func decode(_ data: Data, fileName: String) throws -> CraftDocument {
-    try withNesting {
-      guard data.count <= SmartObject.maximumEmbeddedBytes(forHeader: data) else {
+    try decode(.memory(data), fileName: fileName)
+  }
+  public static func decode(_ sourceBytes: EmbeddedSourceBytes, fileName: String) throws -> CraftDocument {
+    let data = sourceBytes.data
+    return try withNesting {
+      guard data.count <= SmartObject.maximumEmbeddedBytes(for: sourceBytes) else {
         throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
       }
       if data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
-        let document = try NativeArchive.decodePaged(data, heapByteLimit: 256 * 1_024 * 1_024)
+        let document = try NativeArchive.decodePaged(sourceBytes, heapByteLimit: maximumDecodedBytes)
         try check(document); return document
       }
       if PcraftImport.recognizes(data) {
@@ -50,8 +55,8 @@ public enum SmartObjectIO {
         try check(document);return document
       }
       if RawSourceIO.recognizes(data) { return try RawSourceIO.open(data,fileName:fileName) }
-      if let name = try photoshopDocumentName(data, fileName: fileName) {
-        let document = try PSDCodec.readPaged(data, name: name, heapByteLimit: maximumDecodedBytes)
+      if let name = try photoshopDocumentName(sourceBytes, fileName: fileName) {
+        let document = try PSDCodec.readPaged(sourceBytes, name: name, heapByteLimit: maximumDecodedBytes)
         try check(document); return document
       }
       guard let source = CGImageSourceCreateWithData(data as CFData, nil),
@@ -67,7 +72,7 @@ public enum SmartObjectIO {
   }
   public static func sourceDocument(_ object: SmartObject) throws -> CraftDocument {
     if let settings = object.rawDevelopment { return try RawSourceIO.open(object.data,fileName:object.fileName,settings:settings) }
-    let document = try decode(object.data, fileName: object.fileName)
+    let document = try decode(object.sourceBytes, fileName: object.fileName)
     guard document.width == object.width, document.height == object.height else {
       throw CraftError.invalid("Embedded source dimensions disagree with its metadata.")
     }
@@ -77,17 +82,33 @@ public enum SmartObjectIO {
     try document.validate()
     let pagedRGB=document.colorMode == .rgb && document.inkMode==nil && document.restrictedMode==nil
     guard (pagedRGB || document.width <= maximumCanvasPixels / document.height),
-      document.estimatedBytes <= maximumDecodedBytes else {
+      document.estimatedResidentBytes <= maximumDecodedBytes else {
       throw CraftError.unsupported("Smart Objects require at most256 MiB owned content; non-RGB sources retain8,388,608-pixel admission.")
     }
   }
   public static func embedded(document: CraftDocument, in parent: CraftDocument,
     originalData: Data? = nil, fileName: String? = nil) throws -> (SmartObject, Surface) {
+    try embedded(document: document, in: parent, original: originalData.map(EmbeddedSourceBytes.memory), fileName: fileName)
+  }
+  public static func embedded(document: CraftDocument, in parent: CraftDocument,
+    original: EmbeddedSourceBytes?, fileName: String? = nil) throws -> (SmartObject, Surface) {
+    let originalData = original?.data
     if let originalData, RawSourceIO.recognizes(originalData), let object = document.layers.first?.smartObject, object.rawDevelopment != nil {
       return (object,try ColorManagement.converted(sourceComposite(document),from:document,to:parent))
     }
     try check(document)
-    let data = try originalData ?? NativeArchive.encodeChunked(document, maximumBytes: SmartObject.maximumDocumentSourceBytes)
+    let source: EmbeddedSourceBytes
+    if let original {
+      source = original
+    } else if requiresFileOutput(document) {
+      let limit = SmartObject.maximumFileBackedSourceBytes
+      source = .file(try FileBackedSource.writing(maximumBytes: limit) { url in
+        try NativeArchive.write(document, to: url, maximumBytes: limit)
+      })
+    } else {
+      source = .memory(try NativeArchive.encodeChunked(document, maximumBytes: SmartObject.maximumArchive95SourceBytes))
+    }
+    let data = source.data
     let type: String
     if originalData == nil || data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
       type = "application/vnd.photato.document"
@@ -100,11 +121,22 @@ public enum SmartObjectIO {
       type = mime
     } else { throw CraftError.unsupported("Unsupported embedded source format.") }
     let name = fileName ?? "Contents.photato"
-    var object = try SmartObject(fileName: name, mediaType: type, data: data,
+    var object = try SmartObject(fileName: name, mediaType: type, source: source,
       width: document.width, height: document.height, resolution: document.pixelsPerInch)
     object.layerComps = try SmartObjectLayerCompIO.catalog(in: document)
     let pixels = try ColorManagement.converted(sourceComposite(document), from: document, to: parent)
     return (object, pixels)
+  }
+  static func requiresFileOutput(_ document: CraftDocument) -> Bool {
+    var remaining = SmartObject.maximumArchive95SourceBytes
+    var seen = Set<UUID>()
+    for layer in document.layers {
+      guard let object = layer.smartObject, object.sourceBytes.isFileBacked,
+        seen.insert(object.sourceID).inserted else { continue }
+      if object.data.count > remaining { return true }
+      remaining -= object.data.count
+    }
+    return false
   }
   static func sourceComposite(_ document:CraftDocument)throws->Surface {
     if document.colorMode == .rgb,document.width>maximumCanvasPixels/document.height {return try Renderer.compositePaged(document)}
@@ -120,7 +152,11 @@ public enum SmartObjectIO {
   }
   public static func placed(document: CraftDocument, data: Data, fileName: String,
     in parent: CraftDocument, fit: Bool = true) throws -> Layer {
-    let (object, pixels) = try embedded(document: document, in: parent, originalData: data, fileName: fileName)
+    try placed(document: document, original: .memory(data), fileName: fileName, in: parent, fit: fit)
+  }
+  public static func placed(document: CraftDocument, original: EmbeddedSourceBytes, fileName: String,
+    in parent: CraftDocument, fit: Bool = true) throws -> Layer {
+    let (object, pixels) = try embedded(document: document, in: parent, original: original, fileName: fileName)
     var layer = Layer(name: (fileName as NSString).deletingPathExtension, content: .raster(pixels))
     layer.smartObject = object
     let scale = fit ? min(1, min(Double(parent.width) / Double(document.width), Double(parent.height) / Double(document.height))) : 1
@@ -180,7 +216,13 @@ public enum SmartObjectIO {
   }
   public static func replacement(in parent: CraftDocument, layerID: UUID, source: CraftDocument,
     data: Data? = nil, fileName: String? = nil, preserveSize: Bool = true, allInstances: Bool = true) throws -> Command {
-    let (object, pixels) = try embedded(document: source, in: parent, originalData: data, fileName: fileName)
+    try replacement(in: parent, layerID: layerID, source: source, original: data.map(EmbeddedSourceBytes.memory),
+      fileName: fileName, preserveSize: preserveSize, allInstances: allInstances)
+  }
+  public static func replacement(in parent: CraftDocument, layerID: UUID, source: CraftDocument,
+    original: EmbeddedSourceBytes?, fileName: String? = nil, preserveSize: Bool = true,
+    allInstances: Bool = true) throws -> Command {
+    let (object, pixels) = try embedded(document: source, in: parent, original: original, fileName: fileName)
     guard let old = parent.layers.first(where: { $0.id == layerID })?.smartObject else { throw CraftError.invalid("Select a Smart Object.") }
     var caches: [UUID: Surface] = [:], rendered: [String: Surface] = [:]
     for layer in parent.layers where layer.id == layerID || allInstances && layer.smartObject?.sourceID == old.sourceID {

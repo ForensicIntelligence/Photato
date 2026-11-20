@@ -45,20 +45,25 @@ enum EmbeddedSourceAPI {
   }
   static func prepare(_ data: Data,_ name: String,_ original: CraftDocument,_ options: EmbeddedSourceOptions,
     decoded: CraftDocument? = nil) throws -> Command {
-    guard !data.isEmpty,data.count <= SmartObject.maximumEmbeddedBytes(forHeader: data) else {
+    try prepare(.memory(data),name,original,options,decoded:decoded)
+  }
+  static func prepare(_ bytes: EmbeddedSourceBytes,_ name: String,_ original: CraftDocument,_ options: EmbeddedSourceOptions,
+    decoded: CraftDocument? = nil) throws -> Command {
+    let data = bytes.data
+    guard !data.isEmpty,data.count <= SmartObject.maximumEmbeddedBytes(for: bytes) else {
       throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
     }
     guard !PDFImport.recognizes(data) else {throw CraftError.invalid("Use the PDF placement endpoint to choose PDF artwork.")}
-    var source = try decoded ?? SmartObjectIO.decode(data,fileName:name)
+    var source = try decoded ?? SmartObjectIO.decode(bytes,fileName:name)
     if let settings = options.rawDevelopment {
       guard RawSourceIO.recognizes(data),let id = source.layers.first?.id else {throw CraftError.invalid("RAW settings require a camera RAW source.")}
       try RawSourceIO.command(in:source,layerID:id,settings:settings).apply(to:&source)
     }
     if let id = options.layerID {
-      return try SmartObjectIO.replacement(in:original,layerID:id,source:source,data:data,fileName:name,
+      return try SmartObjectIO.replacement(in:original,layerID:id,source:source,original:bytes,fileName:name,
         preserveSize:options.preserveSize,allInstances:options.allInstances)
     }
-    var layer = try SmartObjectIO.placed(document:source,data:data,fileName:name,in:original,fit:options.fit)
+    var layer = try SmartObjectIO.placed(document:source,original:bytes,fileName:name,in:original,fit:options.fit)
     if let id = options.frameID {return .frame(.replace(id,layer,fit:options.frameFit))}
     if let transform = options.transform {layer = try DocumentGeometry.transformLayer(layer,by:transform,in:original)}
     return .addLayer(layer)
@@ -79,7 +84,7 @@ enum EmbeddedSourceAPI {
      "state":"Per-document embeddedPlacement exposes preparing, choosingPDF, developingRaw, transform, committing or idle. PDF-specific state remains separate.",
      "cancel":"POST /v1/documents/{id}/smart-objects/source/cancel with {operationID:UUID}; capabilities.embeddedSourceOperations maps active IDs by shared document UUID.",
      "maximumRGBSourcePixels":SmartObjectIO.maximumPagedRGBPixels,
-     "maximumLocalDocumentSourceBytes":SmartObject.maximumDocumentSourceBytes,
+     "maximumLocalDocumentSourceBytes":SmartObject.maximumFileBackedSourceBytes,
      "limits":"Transfers enabled, explicit target sharing,64MiB encoded source and256MiB owned content. Paged native/RGB sources admit the logical native extent; non-RGB/PDF and RAW retain their decoder limits. Format, physical scratch, dense capacity, cross-profile preparation and shared-document budgets remain independent; permission revocation/stale target/cancellation cannot commit.",
      "adobe":"Existing file-input/bounds/autoResize contracts continue through the shared native engine. PhotoCraft sources remain Photato-only; no new Adobe fields or endpoints.",
      "remaining":"Linked sources, general AI/SVG inputs, complete PSD/RAW fidelity, exact Photoshop pixels/defaults and live/platform acceptance."]

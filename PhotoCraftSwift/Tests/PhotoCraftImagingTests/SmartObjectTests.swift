@@ -115,6 +115,26 @@ final class SmartObjectTests: XCTestCase {
       }
     }
   }
+
+  func testDuplicateImportedPlacementIdentifierGetsUniqueLayerIdentity() throws {
+    var document = try converted()
+    let original = document.layers[0].id
+    try Command.duplicateLayer(original).apply(to: &document)
+    let copy = try XCTUnwrap(document.activeLayerID)
+    XCTAssertNotEqual(original, copy)
+    var encoded = try PSDCodec.writeRasterLayers(document, format: .psb)
+    let copyText = try XCTUnwrap(copy.uuidString.data(using: .utf16BigEndian))
+    let duplicateText = try XCTUnwrap(original.uuidString.lowercased().data(using: .utf16BigEndian))
+    encoded.replaceSubrange(try XCTUnwrap(encoded.range(of: copyText)), with: duplicateText)
+
+    let imported = try PSDCodec.read(encoded)
+    XCTAssertEqual(imported.layers[0].id, original)
+    XCTAssertNotEqual(imported.layers[1].id, original)
+    XCTAssertEqual(imported.layers[0].smartObject, imported.layers[1].smartObject)
+    let saved = try PSDCodec.read(PSDCodec.writeRasterLayers(imported, format: .psb))
+    XCTAssertEqual(saved.layers.map(\.id), imported.layers.map(\.id))
+  }
+
   func testEmbeddedOpenDescriptorIsBoundedIndependentlyOfItsOriginalBytes() throws {
     var original = Data(repeating: 0x9e, count: PSDDescriptor.maxBytes + 3)
     original[original.count - 1] = 0x17

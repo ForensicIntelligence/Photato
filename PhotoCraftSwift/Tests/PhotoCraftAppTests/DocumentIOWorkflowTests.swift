@@ -34,12 +34,16 @@ final class DocumentIOWorkflowTests: XCTestCase {
       let capabilities = AutomationService.documentTransferCapabilities
       let container = try XCTUnwrap(capabilities["photoshopContainers"] as? [String: Any])
       let embedded = try XCTUnwrap(container["generatedEmbeddedPSB"] as? [String: Any])
-      XCTAssertEqual(embedded["maximumBytes"] as? Int, SmartObject.maximumDocumentSourceBytes)
+      XCTAssertEqual(embedded["maximumBytes"] as? Int, 256 * 1024 * 1024)
+      XCTAssertEqual(embedded["maximumFileBackedBytes"] as? Int, 2 * 1024 * 1024 * 1024)
       XCTAssertEqual(embedded["previewOrder"] as? [String], ["raw", "rle", "compatibilityOffRGB"])
       let sourceRecords = try XCTUnwrap(container["photoshopSourceRecords"] as? [String: Any])
       XCTAssertEqual(sourceRecords["boundedOpenDescriptors"] as? Bool, true)
       XCTAssertEqual(sourceRecords["chunkedFileOutput"] as? Bool, true)
       XCTAssertEqual(sourceRecords["originalsCountAgainstPagedHeapBudget"] as? Bool, true)
+      XCTAssertEqual(sourceRecords["fileBackedOriginalThresholdBytes"] as? Int, 256 * 1024 * 1024)
+      XCTAssertEqual(sourceRecords["maximumLayeredOriginalBytes"] as? Int, 2 * 1024 * 1024 * 1024)
+      XCTAssertEqual(sourceRecords["maximumMemoryLayeredOriginalBytes"] as? Int, 512 * 1024 * 1024)
       XCTAssertEqual(container["readVersions"] as? [Int], [1, 2])
       XCTAssertEqual(container["streamingLargeFiles"] as? Bool, true)
       XCTAssertEqual(container["maximumFileBytes"]as?Int,PSDCodec.maximumFileBytes)
@@ -139,6 +143,61 @@ final class DocumentIOWorkflowTests: XCTestCase {
       XCTAssertEqual(reopened.layers.last?.smartObject?.data, source.data)
       XCTAssertEqual(reopened.layers.last?.smartObject?.sourceID, placed.sourceID)
     }
+  }
+
+  func testFileBackedOriginalSurvivesReplacingTheInputAndReopensWithBoundedHeap() throws {
+    var child = try CraftDocument(width: 4096, height: 4200, depth: .f32)
+    var pixels = try Surface(width: child.width, height: child.height,
+      depth: .f32, fill: Pixel(0.3125, 0.625, 0.25, 0.5))
+    let corner = Pixel(0.75, 0.125, 0.5, 1)
+    pixels.setPixel(x: 4095, y: 4199, corner)
+    child.layers[0].content = .raster(pixels)
+
+    let folder = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let original = folder.appendingPathComponent("Large editable source.psb")
+    try PSDCodec.writeRasterLayers(child, to: original, compression: .zip, format: .psb)
+    let fingerprint = try RecoverySourceReader.capture(original)
+    XCTAssertGreaterThan(fingerprint.size, SmartObject.maximumArchive95SourceBytes)
+    let prepared = try PreparedEmbeddedSource.read(original)
+    XCTAssertEqual(prepared.data.count, fingerprint.size)
+    try Data("changed after placement preparation".utf8).write(to: original, options: .atomic)
+
+    var parent = try CraftDocument(width: 128, height: 128, depth: .f32)
+    XCTAssertTrue(prepared.original.isFileBacked)
+    let placement = try ArtworkPlacementPreparation.prepare(prepared.original, fileName: prepared.fileName,
+      in: parent, embedded: .init(), decoded: prepared.document)
+    try placement.apply(to: &parent)
+    var duplicate = try XCTUnwrap(parent.layers.last)
+    let id = try XCTUnwrap(duplicate.smartObject?.sourceID)
+    XCTAssertEqual(duplicate.smartObject?.dataFingerprint, fingerprint.sha256)
+    duplicate.id = UUID()
+    try Command.addLayer(duplicate).apply(to: &parent)
+    XCTAssertEqual(parent.minimumArchiveVersion, 96)
+
+    let archive = folder.appendingPathComponent("Parent.photato")
+    try NativeArchive.write(parent, to: archive)
+    let heap = 32 * 1024 * 1024
+    let scratch = fingerprint.size + 48 * 1024 * 1024
+    let native = try NativeArchive.readPaged(archive, heapByteLimit: heap, scratchByteLimit: scratch)
+    XCTAssertEqual(native.layers.suffix(2).map { $0.smartObject?.sourceID }, [id, id])
+    XCTAssertEqual(native.layers.suffix(2).map { $0.smartObject?.dataFingerprint }, [fingerprint.sha256, fingerprint.sha256])
+    XCTAssertThrowsError(try NativeArchive.readPaged(archive, heapByteLimit: heap, scratchByteLimit: fingerprint.size - 1)) {
+      guard case RasterScratchFailure.capacity = $0 else { return XCTFail("Expected the scratch capacity error, got \($0).") }
+    }
+
+    let photoshop = folder.appendingPathComponent("Parent.psb")
+    try PSDCodec.writeRasterLayers(native, to: photoshop, format: .psb)
+    let reopened = try PSDCodec.readPaged(Data(contentsOf: photoshop, options: .mappedIfSafe),
+      heapByteLimit: heap, scratchByteLimit: scratch)
+    let source = try XCTUnwrap(reopened.layers.last?.smartObject)
+    XCTAssertEqual(source.sourceID, id)
+    XCTAssertEqual(source.data, prepared.data)
+    let contents = try SmartObjectIO.sourceDocument(source)
+    guard case .raster(let saved) = contents.layers.first?.content else {
+      return XCTFail("Expected the editable original layer.")
+    }
+    XCTAssertTrue(saved.pixel(x: 4095, y: 4199).hasSameBits(as: corner))
   }
 
   @MainActor func testDeepGeneratedSmartObjectSavesAndDownloadsWithEditableChild() async throws {
@@ -624,7 +683,7 @@ extension DocumentIOWorkflowTests {
       XCTAssertEqual(compatible87.0.statusCode, 200)
       XCTAssertEqual(compatible87.1, try NativeArchive.encodeChunked(document.store.document, minimumVersion: 87))
       XCTAssertEqual(try NativeArchive.decodePaged(compatible87.1), document.store.document)
-      for version in ["9", "96", "invalid"] {
+      for version in ["9", "98", "invalid"] {
         let rejected = try await self.request(
           service, path: "/v1/documents/\(id)/file.photato",
           headers: ["X-Photato-Archive-Version": version])
@@ -652,7 +711,7 @@ extension DocumentIOWorkflowTests {
       let formats = try XCTUnwrap(
         AutomationService.documentTransferCapabilities["nativeArchives"] as? [String: Any])
       XCTAssertEqual(formats["writeVersion"] as? Int, 11)
-      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...95))
+      XCTAssertEqual(formats["readVersions"] as? [Int], Array(1...97))
       XCTAssertEqual(formats["multichannelOrderVersion"] as? Int, 94)
       let legacy = try await self.request(
         service, path: "/v1/documents/import", data: NativeArchive.encode(model),

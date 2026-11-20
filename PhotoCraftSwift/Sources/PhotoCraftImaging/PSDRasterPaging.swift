@@ -16,9 +16,10 @@ enum PSDRasterPaging {
   final class Context {
     let backing:RasterTileStore
     private var remaining:Int?
-    init(heapByteLimit:Int? = nil,scratchByteLimit:Int = RasterTileStore.defaultMaximumBytes) throws {
+    init(heapByteLimit:Int? = nil,scratchByteLimit:Int = RasterTileStore.defaultMaximumBytes,
+      sharedBacking: RasterTileStore? = nil) throws {
       if let heapByteLimit,heapByteLimit < PSDCodec.pagedWorkingHeapReserveBytes {throw CraftError.invalid("Photoshop row/patch workspace exceeds its heap budget.")}
-      backing=try RasterTileStore(maximumBytes:scratchByteLimit)
+      backing=try sharedBacking ?? RasterTileStore(maximumBytes:scratchByteLimit)
       remaining=heapByteLimit.map {$0-PSDCodec.pagedWorkingHeapReserveBytes}
     }
     func admitRetainedSource(bytes: Int) throws {

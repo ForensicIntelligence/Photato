@@ -2,7 +2,33 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **649** · The 10 most recent entries, newest first.
+Source build **653** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 653 — Preserve Smart Object placement identifiers
+
+Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
+
+All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-653) · [Details](PhotoCraftSwift/docs/PLACED_LAYER_IDENTIFIERS_653.md).
+
+## 2026-11-19 — Step 652 — Keep gigabyte-scale originals in Undo and Redo
+
+Spilled history states share the existing file-backed original. Undo and Redo keep the bytes, and insufficient disk space rejects the edit atomically.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) · [Details](PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECT_HISTORY_652.md).
+
+## 2026-11-19 — Step 651 — Keep gigabyte-scale originals through Edit Contents
+
+A 1.18 GB PSB retains its exact original and editable samples through placement, a nested edit and reopen. Native files use archive version 97 for these originals.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-651) · [Details](PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECTS_651.md).
+
+## 2026-11-19 — Step 650 — Retain large embedded originals on disk
+
+Large PSB originals remain editable in native projects, PSD and PSB. The 275.7 MB test retained two shared instances, and the 525.1 MB file retained its original bytes.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-650) · [Details](PhotoCraftSwift/docs/FILE_BACKED_SMART_ORIGINALS_650.md).
 
 ## 2026-11-19 — Step 649 — Place and reopen larger Photoshop originals
 
@@ -43,27 +69,3 @@ Standard Gradient Overlay keeps its stops and placement through PSD and PSB. Six
 Supported linked RGB8 and RGB16 previews apply the separately quantized Photoshop layer and mask samples. Six file comparisons confirmed the tested output.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) · [Details](PhotoCraftSwift/docs/LINKED_PREVIEW_644.md).
-
-## 2026-11-19 — Step 643 — Open nested Photoshop Smart Objects
-
-An iterative decoder opens nested editable Smart Objects without exhausting the worker stack. The eight-level round trip and the previously failing Execute Actions workflow passed.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-643) · [Details](PhotoCraftSwift/docs/PSD_NESTED_SOURCES_643.md).
-
-## 2026-11-19 — Step 642 — Read older solid shapes and their pixel masks
-
-Older live solid-fill shapes open as editable layers and keep the separate pixel mask. Both unchanged exports matched the reference layer, mask and preview samples.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-642) · [Details](PhotoCraftSwift/docs/PSD_LEGACY_SHAPES_642.md).
-
-## 2026-11-19 — Step 641 — Keep rounded rectangles and dashed ellipses editable
-
-PSD and PSB retain supported solid fills, rounded corners and dotted or dashed ellipse strokes. Six independently checked exports retained the tested layer samples and shape records.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-641) · [Details](PhotoCraftSwift/docs/PSD_ROUNDED_ELLIPSE_641.md).
-
-## 2026-11-19 — Step 640 — Keep Photoshop rectangles editable
-
-Supported axis-aligned RGB rectangles open as editable layers. Photoshop-format tests verified the rendered samples and the retained rectangle descriptors.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) · [Details](PhotoCraftSwift/docs/PSD_LIVE_RECTANGLES_640.md).

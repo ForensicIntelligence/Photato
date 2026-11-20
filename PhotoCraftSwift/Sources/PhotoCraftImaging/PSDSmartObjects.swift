@@ -4,7 +4,24 @@ import PhotoCraftCore
 // Native translation of PhotoCraft io/linked.rs and smart_map.rs (MIT OR Apache-2.0),
 // affine placement. External references remain declarative; never resolve filesystem links.
 enum PSDSmartObjects {
-  struct File { var name: String; var data: Data;var link:LinkedSmartObjectSource?=nil;var fileType:String="";var fileTypeBytes:Data?=nil }
+  struct File {
+    var name: String
+    var source: EmbeddedSourceBytes
+    var data: Data { source.data }
+    var link: LinkedSmartObjectSource?
+    var fileType: String
+    var fileTypeBytes: Data?
+    init(name: String, source: EmbeddedSourceBytes, fileType: String, fileTypeBytes: Data?) {
+      self.name = name
+      self.source = source
+      self.fileType = fileType
+      self.fileTypeBytes = fileTypeBytes
+    }
+    init(name: String, data: Data, link: LinkedSmartObjectSource? = nil, fileType: String = "", fileTypeBytes: Data? = nil) {
+      self.init(name: name, source: .memory(data), fileType: fileType, fileTypeBytes: fileTypeBytes)
+      self.link = link
+    }
+  }
   static let linkKeys = ["lnk2", "lnk3", "lnkD", "lnkE"]
   static func files(_ document: CraftDocument, readers: [PSDReader]? = nil,
     paging: PSDRasterPaging.Context? = nil) throws -> [String: File] {
@@ -18,7 +35,7 @@ enum PSDSmartObjects {
           guard try r.consumePadding(0) else { throw CraftError.invalid("Invalid linked-file padding.") }; break
         }
         let size = try r.length(8)
-        guard size <= SmartObject.maximumDocumentSourceBytes + 65_536 else {
+        guard size <= SmartObject.maximumFileBackedSourceBytes + 65_536 else {
           throw CraftError.unsupported("Embedded Photoshop record exceeds its size limit.")
         }
         var item = try r.view(size)
@@ -34,7 +51,7 @@ enum PSDSmartObjects {
         let name = String(decoding: units.prefix { $0 != 0 }, as: UTF16.self)
         let typeBytes=try item.bytes(4),type=String(decoding:typeBytes,as:UTF8.self);_ = try item.bytes(4)
         let length = try item.length(8)
-        guard length <= (kind == "liFD" ? SmartObject.maximumDocumentSourceBytes : SmartObject.maximumSourceBytes) else {
+        guard length <= (kind == "liFD" ? SmartObject.maximumFileBackedSourceBytes : SmartObject.maximumSourceBytes) else {
           throw CraftError.unsupported("Linked or embedded file exceeds its size limit.")
         }
         if try item.u8() != 0 {
@@ -52,8 +69,14 @@ enum PSDSmartObjects {
                 throw CraftError.unsupported("Only PSD or PSB originals may exceed 64 MiB in a Photoshop container.")
               }
             }
-            try paging?.admitRetainedSource(bytes: length)
-            files[id] = File(name: name, data: try item.retainedBytes(length), fileType: type, fileTypeBytes: typeBytes)
+            let source: EmbeddedSourceBytes
+            if length > SmartObject.maximumArchive95SourceBytes, let paging {
+              source = .file(try item.retainSource(length, in: paging.backing))
+            } else {
+              try paging?.admitRetainedSource(bytes: length)
+              source = .memory(try item.retainedBytes(length))
+            }
+            files[id] = File(name: name, source: source, fileType: type, fileTypeBytes: typeBytes)
           }
         }
         _ = try r.bytes((4 - size % 4) % 4)
@@ -76,6 +99,23 @@ enum PSDSmartObjects {
     }
     return descriptor
   }
+  static func placedIdentifier(in descriptor: PSDDescriptor) -> String? {
+    guard case .text(let text) = descriptor["placed"] else { return nil }
+    return String(decoding: text.prefix { $0 != 0 }, as: UTF16.self)
+  }
+
+  static func placedIdentifier(for layer: Layer) -> String {
+    // The saved spelling also keys the filter cache. A duplicate has a fresh
+    // layer ID even when it inherits the original's source tags.
+    if let raw = layer.sourceTags?["SoLd"] ?? layer.sourceTags?["SoLE"],
+      let original = try? descriptor(raw),
+      let id = placedIdentifier(in: original), UUID(uuidString: id) == layer.id
+    {
+      return id
+    }
+    return layer.id.uuidString
+  }
+
   struct Placement {
     let descriptor: PSDDescriptor
     let file: File
@@ -116,8 +156,8 @@ enum PSDSmartObjects {
       for key in ["PgNm","totalPages"] {
         if let value = d[key]?.number,value != 1 {throw CraftError.unsupported("Multipage non-PDF placed objects are not yet editable.")}
       }
-      let source = try decodedSource ?? SmartObjectIO.decode(file.data, fileName: file.name)
-      var placed = try SmartObjectIO.embedded(document: source, in: document, originalData: file.data, fileName: file.name)
+      let source = try decodedSource ?? SmartObjectIO.decode(file.source, fileName: file.name)
+      var placed = try SmartObjectIO.embedded(document: source, in: document, original: file.source, fileName: file.name)
       if selectedComp != -1 {
         guard var choices = placed.0.layerComps else { throw CraftError.invalid("Selected source comp is missing.") }
         choices.selectedID = PSDLayerComps.uuid(selectedComp); try choices.validate(); placed.0.layerComps = choices
@@ -144,8 +184,7 @@ enum PSDSmartObjects {
     layer.smartObject = object; layer.content = .raster(pixels)
     if let filters = d["filterFX"] {
       var stack = try PSDSmartFilters.read(filters)
-      guard case .text(let placed) = d["placed"] else { throw CraftError.invalid("Missing filter cache identifier.") }
-      let key = String(decoding: placed.prefix { $0 != 0 }, as: UTF16.self)
+      guard let key = placedIdentifier(in: d) else { throw CraftError.invalid("Missing filter cache identifier.") }
       if let mask = filterMasks[key] { stack.mask = mask.pixels; stack.maskProperties.transform = mask.transform }
       layer.smartFilters = stack
     }
@@ -176,7 +215,7 @@ enum PSDSmartObjects {
       .init("warpValue", .number(0)), .init("warpPerspective", .number(0)), .init("warpPerspectiveOther", .number(0)),
       .init("warpRotate", .enumerated(PSDID("Ornt"), PSDID("Hrzn"))), .init("bounds", .object(bounds)),
       .init("uOrder", .integer(4)), .init("vOrder", .integer(4))])
-    var descriptor = PSDDescriptor("null", items: [.init("Idnt", text(source.sourceID.uuidString)), .init("placed", text(layer.id.uuidString)),
+    var descriptor = PSDDescriptor("null", items: [.init("Idnt", text(source.sourceID.uuidString)), .init("placed", text(placedIdentifier(for: layer))),
       .init("PgNm", .integer(pdf?.page ?? 1)), .init("totalPages", .integer(pdf?.pages ?? 1)), .init("Crop", .integer(pdf?.crop ?? 1)),
       .init("frameStep", ratio()), .init("duration", ratio()), .init("frameCount", .integer(1)), .init("Annt", .integer(16)), .init("Type", .integer(pdf == nil ? 2:1)),
       .init("Trnf", quad), .init("nonAffineTransform", quad), .init("warp", .object(warp)),
@@ -232,13 +271,21 @@ enum PSDSmartObjects {
         chunks.append(record.data)
         continue
       }
-      var bytes = object.data, name = object.fileName
+      var original = object.sourceBytes, name = object.fileName
       if !["application/pdf", "image/png", "image/jpeg", "image/tiff", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType) {
-        bytes = try SmartObjectIO.withNesting { try PSDCodec.writeEmbeddedSmartObject(SmartObjectIO.sourceDocument(object)) }
+        original = try SmartObjectIO.withNesting {
+          let child = try SmartObjectIO.sourceDocument(object)
+          if SmartObjectIO.requiresFileOutput(child) {
+            return .file(try PSDCodec.writeFileBackedEmbeddedSmartObject(child))
+          }
+          return .memory(try PSDCodec.writeEmbeddedSmartObject(child))
+        }
         name = (name as NSString).deletingPathExtension + ".psb"
       }
-      let limit = SmartObject.photoshopSourceVersion(bytes) != nil
-        ? SmartObject.maximumDocumentSourceBytes : SmartObject.maximumSourceBytes
+      let bytes = original.data
+      let layeredLimit = original.isFileBacked
+        ? SmartObject.maximumFileBackedSourceBytes : SmartObject.maximumDocumentSourceBytes
+      let limit = SmartObject.photoshopSourceVersion(bytes) != nil ? layeredLimit : SmartObject.maximumSourceBytes
       guard bytes.count <= limit else { throw CraftError.unsupported("PSD embedded source exceeds its file format's limit.") }
       var item = PSDWriter(); item.text("liFD"); item.n(7, 4)
       let id = object.sourceID.uuidString; item.n(id.utf8.count, 1); item.text(id)

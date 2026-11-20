@@ -131,6 +131,41 @@ final class SmartFilterTests: XCTestCase {
     bytes[3] = 9; d.sourceMetadata = ["psdGlobal_FEid": bytes]
     XCTAssertThrowsError(try PSDSmartFilters.masks(in: d))
   }
+
+  func testPlacedIdentifierSpellingKeepsDistinctFilterMasksAfterDuplication() throws {
+    var document = try SmartObjectTests().converted()
+    let id = try XCTUnwrap(UUID(uuidString: "84018ADE-A078-4BC0-B427-0CA9A962EE53"))
+    document.layers[0].id = id
+    document.activeLayerID = id
+    try Command.applyFilter(id, RasterFilter(.boxBlur)).apply(to: &document)
+    try Command.smartFilterMask(id, .maskFill(id, 0.25)).apply(to: &document)
+    document.layers[0].smartFilters?.maskProperties.outside = 1
+    let lowercase = id.uuidString.lowercased()
+    for format in PSDFileFormat.allCases {
+      var data = try PSDCodec.writeRasterLayers(document, format: format)
+      for encoding in [String.Encoding.utf8, .utf16BigEndian] {
+        let before = try XCTUnwrap(id.uuidString.data(using: encoding))
+        let after = try XCTUnwrap(lowercase.data(using: encoding))
+        data.replaceSubrange(try XCTUnwrap(data.range(of: before)), with: after)
+      }
+      var opened = try PSDCodec.read(data)
+      XCTAssertEqual(opened.layers[0].id, id)
+      XCTAssertEqual(opened.layers[0].smartFilters?.mask?.pixel(x: 0, y: 0).r ?? -1, 0.25, accuracy: 0.005)
+      try Command.duplicateLayer(id).apply(to: &opened)
+      let copy = try XCTUnwrap(opened.activeLayerID)
+      try Command.smartFilterMask(copy, .maskFill(copy, 0.75)).apply(to: &opened)
+      opened.layers[1].smartFilters?.maskProperties.outside = 1
+
+      let saved = try PSDCodec.read(PSDCodec.writeRasterLayers(opened, format: format))
+      XCTAssertEqual(saved.layers.map(\.id), [id, copy])
+      XCTAssertEqual(saved.layers.map { $0.smartObject?.sourceID }, opened.layers.map { $0.smartObject?.sourceID })
+      let masks = try PSDSmartFilters.masks(in: saved)
+      XCTAssertEqual(Set(masks.keys), [lowercase, copy.uuidString])
+      XCTAssertEqual(saved.layers[0].smartFilters?.mask?.pixel(x: 0, y: 0).r ?? -1, 0.25, accuracy: 0.005)
+      XCTAssertEqual(saved.layers[1].smartFilters?.mask?.pixel(x: 0, y: 0).r ?? -1, 0.75, accuracy: 0.005)
+    }
+  }
+
   func testPublishedAdobeLayerSelectionAndSmartFilterActions() throws {
     var d = try SmartObjectTests().converted(); d.layers[0].name = "Artwork"
     let action = #"[{"_obj":"select","_target":[{"_ref":"layer","_name":"Artwork"}]},{"_obj":"gaussianBlur","radius":{"_unit":"pixelsUnit","_value":12}}]"#

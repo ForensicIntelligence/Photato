@@ -1,32 +1,20 @@
 import AppKit
-import CryptoKit
 import PhotoCraftCore
 import PhotoCraftImaging
 
 struct PreparedEmbeddedSource: Sendable {
-  let data: Data
+  let original: EmbeddedSourceBytes
+  var data: Data { original.data }
   let fileName: String
   let document: CraftDocument?
   var isPDF: Bool {document == nil}
   static func read(_ url: URL) throws -> Self {
     let access = url.startAccessingSecurityScopedResource()
     defer {if access {url.stopAccessingSecurityScopedResource()}}
-    return try RecoverySourceReader.withStableMetadata {
-      let reader = try RecoverySourceReader(url)
-      let file = try FileHandle(forReadingFrom:url);defer {try? file.close()}
-      var data = try file.read(upToCount:8) ?? Data()
-      let maximum = SmartObject.maximumEmbeddedBytes(forHeader: data)
-      while true {
-        try Task.checkCancellation()
-        guard let chunk = try file.read(upToCount:min(65536,maximum+1-data.count)),!chunk.isEmpty else {break}
-        data.append(chunk)
-        guard data.count <= maximum else {throw CraftError.invalid("The artwork exceeds its file format's embedded size limit.")}
-      }
-      let fingerprint = try reader.finish()
-      guard fingerprint.sha256 == SHA256.hash(data:data).map({String(format:"%02x",$0)}).joined() else {throw DocumentPersistenceConflict.changed}
-      let model = PDFImport.recognizes(data) ? nil:try SmartObjectIO.decode(data,fileName:url.lastPathComponent)
-      return Self(data:data,fileName:url.lastPathComponent,document:model)
-    }
+    let original = try RecoverySourceReader.snapshot(url, maximumBytes: SmartObject.maximumLocalEmbeddedBytes(forHeader:),
+      fileBackedAbove: SmartObject.maximumSourceBytes)
+    let model = PDFImport.recognizes(original.data) ? nil : try SmartObjectIO.decode(original,fileName:url.lastPathComponent)
+    return Self(original:original,fileName:url.lastPathComponent,document:model)
   }
 }
 
@@ -64,7 +52,7 @@ extension EditorStore {
           if let linkedGrant {
             let file=try LinkedArtworkRead.read(linkedGrant)
             let decoded=PDFImport.recognizes(file.data) ? nil:try SmartObjectIO.decode(file.data,fileName:file.fileName)
-            return (.init(data:file.data,fileName:file.fileName,document:decoded),file)
+            return (.init(original:.memory(file.data),fileName:file.fileName,document:decoded),file)
           }
           return (try PreparedEmbeddedSource.read(url),nil)
         }
@@ -85,7 +73,7 @@ extension EditorStore {
         let selection = options,pdfSelection = pdf
         let worker = Task.detached(priority:.userInitiated) {
           try Task.checkCancellation()
-          return try ArtworkPlacementPreparation.prepare(source.data,fileName:source.fileName,in:original,
+          return try ArtworkPlacementPreparation.prepare(source.original,fileName:source.fileName,in:original,
             embedded:selection,pdf:pdfSelection,decoded:source.document)
         }
         var command = try await withTaskCancellationHandler {try await worker.value} onCancel:{worker.cancel()}

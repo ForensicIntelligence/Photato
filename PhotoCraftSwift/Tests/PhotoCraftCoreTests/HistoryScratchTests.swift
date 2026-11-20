@@ -97,6 +97,39 @@ final class HistoryScratchTests: XCTestCase {
     XCTAssertEqual(session.undoStack.count, 8)
     XCTAssertEqual(branch.undoStack.count, 8)
   }
+  func testSpillingSharesFileBackedOriginalsAndHonorsTheDiskBudget() throws {
+    var bytes = Data(count: 256 * 1024)
+    bytes.replaceSubrange(0..<6, with: [56, 66, 80, 83, 0, 2])
+    let original = try FileBackedSource.retain(byteCount: bytes.count) { offset, length in
+      bytes.subdata(in: offset..<offset + length)
+    }
+    var doc = try CraftDocument(width: 4, height: 4)
+    let layer = doc.layers[0].id
+    doc.layers[0].smartObject = try SmartObject(fileName: "Original.psb", mediaType: "application/x-photoshop",
+      source: .file(original), width: doc.width, height: doc.height)
+    var session = EditorSession(document: doc, historyByteLimit: 0,
+      historyDiskByteLimit: bytes.count + 64 * 1024, scratchParent: try parent())
+    try session.execute(.renameLayer(layer, "First"))
+    try session.execute(.renameLayer(layer, "Second"))
+    XCTAssertEqual(session.historySpilledStates, 2)
+    XCTAssertGreaterThanOrEqual(session.historyDiskBytes, bytes.count)
+    XCTAssertLessThan(session.historyDiskBytes, bytes.count * 2)
+    try session.undo()
+    XCTAssertTrue(try XCTUnwrap(session.document.layers[0].smartObject).sourceBytes.isFileBacked)
+    try session.undo()
+    XCTAssertEqual(session.document, doc)
+    try session.redo()
+    try session.redo()
+    XCTAssertEqual(session.document.layers[0].name, "Second")
+    XCTAssertEqual(session.document.layers[0].smartObject?.data, bytes)
+
+    var tooSmall = EditorSession(document: doc, historyByteLimit: 0,
+      historyDiskByteLimit: bytes.count - 1, scratchParent: try parent())
+    XCTAssertThrowsError(try tooSmall.execute(.renameLayer(layer, "Rejected")))
+    XCTAssertEqual(tooSmall.document, doc)
+    XCTAssertTrue(tooSmall.undoStack.isEmpty)
+    XCTAssertEqual(tooSmall.historyDiskBytes, 0)
+  }
   func testPixelEditsSpillWithinPayloadBudgetAndKeepStateLimitAndCoalescing() throws {
     var doc = try CraftDocument(width: 64, height: 64)
     var pixels = try Surface(width: 64, height: 64)

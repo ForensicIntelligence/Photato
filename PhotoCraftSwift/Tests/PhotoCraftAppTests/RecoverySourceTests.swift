@@ -6,6 +6,39 @@ import XCTest
 @testable import PhotoCraft
 
 final class RecoverySourceTests: XCTestCase {
+  func testOwnedSnapshotRetriesMetadataChangesAndRejectsAChangedRetry() throws {
+    let folder = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let url = folder.appendingPathComponent("snapshot.psb")
+    let original = Data(repeating: 17, count: 128 * 1024)
+    try original.write(to: url)
+
+    func reading(changeOnRetry: Bool) throws -> Data {
+      var attempts = 0
+      var attribute: UInt8 = changeOnRetry ? 2 : 1
+      return try RecoverySourceReader.snapshot(url, maximumBytes: { _ in
+        attempts += 1
+        if attempts == 1 {
+          XCTAssertEqual(setxattr(url.path, "com.photato.test-snapshot", &attribute, 1, 0, 0), 0)
+        } else if changeOnRetry {
+          do {
+            let file = try FileHandle(forWritingTo: url)
+            defer { try? file.close() }
+            try file.seek(toOffset: 17)
+            try file.write(contentsOf: Data([19]))
+          } catch { XCTFail("Could not alter the test file: \(error)") }
+        }
+        return original.count
+      }, fileBackedAbove: 1).data
+    }
+    XCTAssertEqual(try reading(changeOnRetry: false), original)
+    XCTAssertThrowsError(try reading(changeOnRetry: true)) {
+      guard case DocumentPersistenceConflict.changed = $0 else {
+        return XCTFail("Expected the changed original to be rejected, got \($0).")
+      }
+    }
+  }
+
   @MainActor func fixture(format: DocumentIO.Format = .native) throws
     -> (CraftDocumentController, URL, URL, CraftDocument, RecoverySourceRecord)
   {

@@ -12,10 +12,15 @@ final class HistoryScratchStore: @unchecked Sendable {
     let token: UUID
     weak var value: HistoryScratchBlob?
   }
+  private struct WeakSource {
+    let token: UUID
+    weak var value: HistoryEmbeddedSource?
+  }
   let directory: URL
   private let limit: Int
   private let lock = NSLock()
   private var blobs: [String: WeakBlob] = [:]
+  private var sources: [String: WeakSource] = [:]
   private var used = 0
   private var cleanupErrors = 0
   var allocatedBytes: Int { lock.withLock { used } }
@@ -104,10 +109,46 @@ final class HistoryScratchStore: @unchecked Sendable {
     if blobs[blob.digest]?.token == blob.token { blobs.removeValue(forKey: blob.digest) }
   }
 
+  func retain(_ payload: FileBackedSource, digest: String) throws -> HistoryEmbeddedSource {
+    try Task.checkCancellation()
+    return try lock.withLock {
+      if let existing = sources[digest]?.value { return existing }
+      guard payload.data.count <= limit - used else {
+        throw CraftError.invalid("History scratch storage is full. The edit was not applied.")
+      }
+      let source = HistoryEmbeddedSource(store: self, payload: payload, digest: digest)
+      sources[digest] = WeakSource(token: source.token, value: source)
+      used += payload.data.count
+      return source
+    }
+  }
+
+  fileprivate func release(_ source: HistoryEmbeddedSource) {
+    lock.withLock {
+      used -= source.payload.data.count
+      if sources[source.digest]?.token == source.token { sources.removeValue(forKey: source.digest) }
+    }
+  }
+
   static func digest(_ data: Data) -> String {
     SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
   }
   static func posixError() -> NSError { NSError(domain: NSPOSIXErrorDomain, code: Int(errno)) }
+}
+
+final class HistoryEmbeddedSource: Sendable {
+  let store: HistoryScratchStore
+  let payload: FileBackedSource
+  let digest: String
+  let token = UUID()
+
+  init(store: HistoryScratchStore, payload: FileBackedSource, digest: String) {
+    self.store = store
+    self.payload = payload
+    self.digest = digest
+  }
+
+  deinit { store.release(self) }
 }
 
 final class HistoryScratchBlob: Sendable {
@@ -167,15 +208,22 @@ extension CodingUserInfoKey {
 
 // Each context belongs exclusively to one synchronous encode/decode. It is never
 // shared with another task; @unchecked meets Foundation's userInfo value constraint.
-final class HistoryTileEncoder: ComponentBlobEncoding, @unchecked Sendable {
+final class HistoryTileEncoder: ComponentBlobEncoding, EmbeddedSourceBlobEncoding, @unchecked Sendable {
   let store: HistoryScratchStore
   let supportsComponentPages = true
   var references: [String: HistoryScratchBlob] = [:]
+  var embeddedSources: [String: HistoryEmbeddedSource] = [:]
   init(_ store: HistoryScratchStore) { self.store = store }
   func storeBytes(_ data: Data) throws -> String {
     let blob = try store.put(data)
     references[blob.digest] = blob
     return blob.digest
+  }
+  func retainEmbeddedSource(_ source: FileBackedSource, digest: String) throws -> String {
+    let reference = try store.retain(source, digest: digest)
+    let identifier = "file:" + digest
+    embeddedSources[identifier] = reference
+    return identifier
   }
 }
 /// Only arrays already owned by the current restored document. This value is
@@ -185,8 +233,9 @@ struct HistoryDecodedTiles: Sendable {
   var bytes: Int { tiles.values.reduce(0) { $0 + $1.count * MemoryLayout<Pixel>.stride } }
 }
 
-final class HistoryTileDecoder: ComponentBlobDecoding, @unchecked Sendable {
+final class HistoryTileDecoder: ComponentBlobDecoding, EmbeddedSourceBlobDecoding, @unchecked Sendable {
   let references: [String: HistoryScratchBlob]
+  let embeddedSources: [String: HistoryEmbeddedSource]
   let supportsComponentPages = true
   let usesMappedComponents = true
   private let componentBudget = ComponentScratchBudget()
@@ -194,8 +243,10 @@ final class HistoryTileDecoder: ComponentBlobDecoding, @unchecked Sendable {
   private var tiles: [String: [Pixel]] = [:]
   private var reusableTiles: [String: [Pixel]]
   private let tileDecoder = TileArchive.Decoder()
-  init(_ references: [String: HistoryScratchBlob], reusing: HistoryDecodedTiles? = nil) {
+  init(_ references: [String: HistoryScratchBlob], embeddedSources: [String: HistoryEmbeddedSource] = [:],
+    reusing: HistoryDecodedTiles? = nil) {
     self.references = references
+    self.embeddedSources = embeddedSources
     reusableTiles = reusing?.tiles ?? [:]
   }
   var decodedTiles: HistoryDecodedTiles { HistoryDecodedTiles(tiles: tiles) }
@@ -211,6 +262,11 @@ final class HistoryTileDecoder: ComponentBlobDecoding, @unchecked Sendable {
       throw CraftError.invalid("History blob exceeds the decoded payload limit.")
     }
     return try blob.read()
+  }
+  func embeddedSourceBytes(_ identifier: String) throws -> EmbeddedSourceBytes {
+    try Task.checkCancellation()
+    if let reference = embeddedSources[identifier] { return .file(reference.payload) }
+    return .memory(try bytes(identifier, maximumBytes: SmartObject.maximumDocumentSourceBytes))
   }
   func tile(_ digest: String) throws -> [Pixel] {
     if let cached = tiles[digest] { return cached }
@@ -236,6 +292,7 @@ final class HistorySnapshot: Sendable {
   }
   let metadata: HistoryScratchBlob
   let references: [String: HistoryScratchBlob]
+  let embeddedSources: [String: HistoryEmbeddedSource]
   init(_ document: CraftDocument, store: HistoryScratchStore) throws {
     try Task.checkCancellation()
     try document.validate()
@@ -246,6 +303,7 @@ final class HistorySnapshot: Sendable {
     let data = try encoder.encode(Envelope(document: document))
     metadata = try store.put(data)
     references = context.references
+    embeddedSources = context.embeddedSources
   }
   func restore() throws -> CraftDocument {
     try restore(reusing: nil).document
@@ -254,7 +312,7 @@ final class HistorySnapshot: Sendable {
     -> (document: CraftDocument, tiles: HistoryDecodedTiles)
   {
     try Task.checkCancellation()
-    let context = HistoryTileDecoder(references, reusing: tiles)
+    let context = HistoryTileDecoder(references, embeddedSources: embeddedSources, reusing: tiles)
     // Failed decoder/error objects must not prolong the lifetime of raster arrays.
     // The returned value owns only the arrays referenced by the restored document.
     defer { context.clear() }

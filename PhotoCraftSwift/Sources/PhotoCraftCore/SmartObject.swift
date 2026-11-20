@@ -5,8 +5,12 @@ import Foundation
 /// to the layer, so transforms never overwrite these source pixels.
 public struct SmartObject: Equatable, Sendable, Codable {
   public static let maximumSourceBytes = 64 * 1_024 * 1_024
-  public static let maximumDocumentSourceBytes = 256 * 1_024 * 1_024
+  public static let maximumArchive95SourceBytes = 256 * 1_024 * 1_024
+  public static let maximumDocumentSourceBytes = 512 * 1_024 * 1_024
+  public static let maximumFileBackedSourceBytes = 2 * 1_024 * 1_024 * 1_024
   public static let largeSourceArchiveVersion = 95
+  public static let fileBackedArchiveVersion = 96
+  public static let streamingSourceArchiveVersion = 97
 
   public static func photoshopSourceVersion(_ header: Data) -> Int? {
     guard header.count >= 6, header.prefix(4).elementsEqual("8BPS".utf8),
@@ -21,10 +25,28 @@ public struct SmartObject: Equatable, Sendable, Codable {
     }
     return maximumSourceBytes
   }
+  public static func maximumLocalEmbeddedBytes(forHeader header: Data) -> Int {
+    maximumEmbeddedBytes(forHeader: header) == maximumSourceBytes
+      ? maximumSourceBytes : maximumFileBackedSourceBytes
+  }
+  public static func maximumEmbeddedBytes(for source: EmbeddedSourceBytes) -> Int {
+    source.isFileBacked ? maximumLocalEmbeddedBytes(forHeader: source.data) : maximumEmbeddedBytes(forHeader: source.data)
+  }
+  private static func isLayeredDocument(_ mediaType: String) -> Bool {
+    ["application/vnd.photato.document", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(mediaType)
+  }
   public var sourceID: UUID
   public var fileName: String
   public var mediaType: String
-  public var data: Data {didSet{dataDigest=data.count<=Self.maximumDocumentSourceBytes ? Self.fingerprint(data):""}}
+  private var original: EmbeddedSourceBytes
+  public var sourceBytes: EmbeddedSourceBytes { original }
+  public var data: Data {
+    get { original.data }
+    set {
+      original = .memory(newValue)
+      dataDigest = newValue.count <= Self.maximumDocumentSourceBytes ? Self.fingerprint(newValue) : ""
+    }
+  }
   private var dataDigest=""
   public var dataFingerprint:String{dataDigest.isEmpty ? Self.fingerprint(data):dataDigest}
   private static func fingerprint(_ value:Data)->String{SHA256.hash(data:value).map{String(format:"%02x",$0)}.joined()}
@@ -53,12 +75,19 @@ public struct SmartObject: Equatable, Sendable, Codable {
   }
   public init(sourceID: UUID = UUID(), fileName: String, mediaType: String, data: Data,
     width: Int, height: Int, resolution: Double = 72, rawDevelopment: RawDevelopment? = nil, stackMode: ImageStackMode? = nil, pdfSource: PDFSmartObjectSource? = nil, linkedSource: LinkedSmartObjectSource? = nil) throws {
+    try self.init(sourceID: sourceID, fileName: fileName, mediaType: mediaType, source: .memory(data),
+      width: width, height: height, resolution: resolution, rawDevelopment: rawDevelopment,
+      stackMode: stackMode, pdfSource: pdfSource, linkedSource: linkedSource)
+  }
+  public init(sourceID: UUID = UUID(), fileName: String, mediaType: String, source: EmbeddedSourceBytes,
+    width: Int, height: Int, resolution: Double = 72, rawDevelopment: RawDevelopment? = nil,
+    stackMode: ImageStackMode? = nil, pdfSource: PDFSmartObjectSource? = nil, linkedSource: LinkedSmartObjectSource? = nil) throws {
     self.linkedSource = linkedSource
     self.pdfSource = pdfSource
     self.stackMode = stackMode
     self.rawDevelopment = rawDevelopment
     self.sourceID = sourceID; self.fileName = fileName; self.mediaType = mediaType
-    self.data = data; self.width = width; self.height = height; self.resolution = resolution
+    original = source; self.width = width; self.height = height; self.resolution = resolution
     try validate();dataDigest=Self.fingerprint(data)
   }
   /// Cached fingerprints keep source appearance checks independent of file size.
@@ -83,7 +112,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
         || (mediaType == "image/vnd.adobe.photoshop" && Self.photoshopSourceVersion(data) == 1)
         || (mediaType == "application/x-photoshop" && Self.photoshopSourceVersion(data) == 2))
     guard (!data.isEmpty || linkedSource != nil),
-      data.count <= (canRetainLargeSource ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes),
+      data.count <= (canRetainLargeSource ? Self.maximumEmbeddedBytes(for: original) : Self.maximumSourceBytes),
       !fileName.isEmpty, fileName.utf8.count <= 1024,
       !fileName.contains("/"), !fileName.contains("\\"), !fileName.contains("\0"),
       (["application/vnd.photato.document", "application/vnd.photocraft.project", "image/vnd.adobe.photoshop", "application/x-photoshop",
@@ -116,18 +145,24 @@ public struct SmartObject: Equatable, Sendable, Codable {
     rawDevelopment = try c.decodeIfPresent(RawDevelopment.self, forKey: .rawDevelopment)
     if linkedSource != nil {
       guard !c.contains(.sourceBlob),!c.contains(.data) else{throw CraftError.invalid("Linked native sources must not archive their original file bytes.")}
-      data=Data()
+      original = .memory(Data())
     } else if c.contains(.sourceBlob) {
       guard !c.contains(.data), let context = decoder.userInfo[.historyTileDecoder] as? any RasterBlobDecoding else {
         throw CraftError.invalid("Embedded source blobs require their owned archive context.")
       }
-      let isLayeredDocument = ["application/vnd.photato.document", "image/vnd.adobe.photoshop",
-        "application/x-photoshop"].contains(mediaType)
-      data = try context.bytes(c.decode(String.self, forKey: .sourceBlob),
-        maximumBytes: isLayeredDocument ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes)
-    } else { data = try c.decode(Data.self, forKey: .data) }
-    try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?
-      .reserve(tiles: (data.count + TileArchive.byteCount - 1) / TileArchive.byteCount)
+      let isLayeredDocument = Self.isLayeredDocument(mediaType)
+      let identifier = try c.decode(String.self, forKey: .sourceBlob)
+      if isLayeredDocument, let paged = context as? any EmbeddedSourceBlobDecoding {
+        original = try paged.embeddedSourceBytes(identifier)
+      } else {
+        original = .memory(try context.bytes(identifier,
+          maximumBytes: isLayeredDocument ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes))
+      }
+    } else { original = .memory(try c.decode(Data.self, forKey: .data)) }
+    if !original.isFileBacked {
+      try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?
+        .reserve(tiles: (data.count + TileArchive.byteCount - 1) / TileArchive.byteCount)
+    }
     try validate();dataDigest=Self.fingerprint(data)
   }
   public func encode(to encoder: Encoder) throws {
@@ -141,7 +176,10 @@ public struct SmartObject: Equatable, Sendable, Codable {
     try c.encodeIfPresent(pdfSource,forKey:.pdfSource)
     try c.encodeIfPresent(linkedSource,forKey:.linkedSource)
     if linkedSource != nil {return}
-    if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {
+    if Self.isLayeredDocument(mediaType), case .file(let source) = original,
+      let context = encoder.userInfo[.historyTileEncoder] as? any EmbeddedSourceBlobEncoding {
+      try c.encode(context.retainEmbeddedSource(source, digest: dataFingerprint), forKey: .sourceBlob)
+    } else if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {
       try c.encode(context.storeBytes(data), forKey: .sourceBlob)
     } else { try c.encode(data, forKey: .data) }
   }

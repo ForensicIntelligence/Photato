@@ -339,6 +339,13 @@ public struct CraftDocument: Codable, Equatable, Sendable {
       + (sourceMetadata?.values.reduce(0) { $0 + $1.count } ?? 0)
       + (variables?.estimatedBytes ?? 0) + (layerComps?.estimatedBytes ?? 0) + (guides?.count ?? 0) * 96
   }
+  public var estimatedResidentBytes: Int {
+    let mappedOriginalBytes = layers.reduce(0) { total, layer in
+      guard let object = layer.smartObject, object.sourceBytes.isFileBacked else { return total }
+      return total + object.data.count
+    }
+    return estimatedBytes - mappedOriginalBytes
+  }
   /// Tile payloads share native Array storage across snapshots; count each live
   /// allocation once. Other document payloads remain conservatively estimated.
   func accountHistoryMemory(_ seen: inout Set<UInt>, includeMetadata: Bool) -> Int {
@@ -358,7 +365,7 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     for pattern in patterns ?? [] { account(pattern.surface) }
     for channel in alphaChannels ?? [] { account(channel.pixels);if let gray=channel.psdSpotGray {account(gray)};if let gray=channel.psdSelectedGray {account(gray)} }
     if let quickMask { account(quickMask.pixels);if let gray=quickMask.psdSpotGray {account(gray)};if let gray=quickMask.psdSelectedGray {account(gray)} }
-    return unique + (includeMetadata ? max(0, estimatedBytes - logical) + 1024 : 0)
+    return unique + (includeMetadata ? max(0, estimatedResidentBytes - logical) + 1024 : 0)
   }
   public var activeIndex: Int? { layers.firstIndex { $0.id == activeLayerID } }
   public func validate() throws {
@@ -419,6 +426,8 @@ public struct CraftDocument: Codable, Equatable, Sendable {
     }
     try LayerLinks.validate(self)
     var smartSources: [UUID: SmartObject] = [:]
+    var fileBackedSources: Set<UUID> = []
+    var remainingScratch = RasterTileStore.defaultMaximumBytes
     for l in layers {
       bytes += (l.video?.estimatedBytes ?? 0) + l.keyframeBytes
       bytes += l.nativeMode?.estimatedBytes ?? 0
@@ -433,7 +442,17 @@ public struct CraftDocument: Codable, Equatable, Sendable {
           guard smart.linkedSource != nil,preview.sourceWidth==smart.width,preview.sourceHeight==smart.height,
             preview.cacheWidth==cache.width,preview.cacheHeight==cache.height else{throw CraftError.invalid("Linked source/cache geometry differs.")}
         }else if cache.width != smart.width || cache.height != smart.height {throw CraftError.invalid("Smart Object source/cache dimensions differ.")}
-        bytes += smart.data.count + (smart.layerComps?.estimatedBytes ?? 0)
+        bytes += smart.layerComps?.estimatedBytes ?? 0
+        if smart.sourceBytes.isFileBacked {
+          if fileBackedSources.insert(smart.sourceID).inserted {
+            guard smart.data.count <= remainingScratch else {
+              throw CraftError.invalid("Embedded originals exceed the document's scratch allowance.")
+            }
+            remainingScratch -= smart.data.count
+          }
+        } else {
+          bytes += smart.data.count
+        }
       }
       if let projection=l.sourceProjection {
         guard let smart=l.smartObject else{throw CraftError.invalid("Projective source placement requires a Smart Object.")}

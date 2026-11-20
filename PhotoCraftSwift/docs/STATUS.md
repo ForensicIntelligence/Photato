@@ -1,3 +1,5 @@
+**Source checkpoint 653.** Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen. [Qualification](SOURCE_PUBLICATION_653.md).
+
 **Source checkpoint 649.** PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips. [Qualification](SOURCE_PUBLICATION_649.md).
 
 **Source checkpoint 646.** The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte. [Qualification](SOURCE_PUBLICATION_646.md).

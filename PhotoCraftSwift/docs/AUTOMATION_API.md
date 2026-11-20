@@ -1,3 +1,15 @@
+### Photoshop placement identifiers (checkpoint 653)
+
+The existing PSD and PSB import and save routes use the shared placement identifier and Smart Filter cache fixes. The native duplicate-layer command and its API use the same layer-transfer implementation. Cached linked copies save against their own source record. Command schemas and transfer size limits are unchanged.
+
+### Gigabyte-scale original files (checkpoint 651)
+
+The local chooser accepts eligible PSD, PSB and chunked native originals up to 2 GiB using file-backed storage. `documentTransfers.nativeArchives.streamingEmbeddedSourceVersion` identifies archive 97 for originals above 512 MiB. The generated child capability reports its disk-backed and in-memory output limits. Existing native archive negotiation accepts version 97. The Photato and Adobe-compatible HTTP transfer budgets still apply. [Development record](GIGABYTE_SMART_OBJECTS_651.md)
+
+### File-backed layered originals (checkpoint 650)
+
+The desktop accepts eligible PSD, PSB and chunked native originals up to 512 MiB. Paged readers admit embedded originals above 256 MiB against the scratch budget. `documentTransfers.nativeArchives.fileBackedEmbeddedSourceVersion` identifies native archive 96, and `documentTransfers.photoshopContainers.photoshopSourceRecords` describes the size and paging thresholds. Archive negotiation accepts explicit version 96. Photato's source POST, shared-document and file download retain their existing HTTP admission budgets. [Development record](FILE_BACKED_SMART_ORIGINALS_650.md)
+
 ### Large embedded document originals (checkpoint 649)
 
 The desktop permits up to 256 MiB of encoded PSD, PSB or chunked native data per embedded original. `smartObjects.sourcePlacement.maximumLocalDocumentSourceBytes` describes that file-based limit. The authenticated source POST retains its 64 MiB body limit, and the shared-document and file download limits remain 128 MiB. An explicit `X-Photato-Archive-Version: 95` is required to download a native document that retains an embedded original above 64 MiB. Explicit version 94 is also available, including for the Multichannel order it introduced. [Development record](LARGE_EMBEDDED_ORIGINALS_649.md)

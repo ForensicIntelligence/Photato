@@ -31,6 +31,14 @@ final class PSDPDFSmartObjectTests: XCTestCase {
     let merged = try RasterIO.surface(cg)
     XCTAssertEqual(try Renderer.composite(d).rgbaData(depth:.u8),try merged.rgbaData(depth:.u8))
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(d)),d)
+    let placement = "f8093e70-083e-1648-a563-29ff37c30312"
+    XCTAssertEqual(layer.id, UUID(uuidString: placement))
+    for format in PSDFileFormat.allCases {
+      let saved = try PSDCodec.read(PSDCodec.writeRasterLayers(d, format: format))
+      let savedLayer = try XCTUnwrap(saved.layers.first { $0.smartObject != nil })
+      let tag = try XCTUnwrap(savedLayer.sourceTags?["SoLd"])
+      XCTAssertEqual(PSDSmartObjects.placedIdentifier(in: try PSDSmartObjects.descriptor(tag)), placement)
+    }
     try output("photoshop-import.png",RasterIO.encoded(d))
   }
   func testOwnedArtBoxAndMultiplePDFSourcesImportWithoutSourceConversion() throws {

@@ -43,6 +43,34 @@ final class PSDLinkedFileTypeTests:XCTestCase {
     XCTAssertThrowsError(try PSDCodec.writeRasterLayers(outer))
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(outer)),outer)
   }
+
+  func testCrossDocumentDuplicateOfCachedLinkedLayerRetainsItsNewSourceReference() throws {
+    let content = try PSDCodec.writeRasterLayers(CraftDocument(width: 2, height: 2), format: .psb)
+    var document = try CraftDocument(width: 8, height: 8)
+    let reference = try LinkedSmartObjectSource(reference: "Links/Owned.psb",
+      contentHash: LinkedSmartObjectSource.fingerprint(content), byteLength: UInt64(content.count))
+    let layer = try LinkedSmartObjectIO.place(content, fileName: "Owned.psb", reference: reference, in: document, fit: false)
+    try Command.addLayer(layer).apply(to: &document)
+    let imported = try PSDCodec.read(PSDCodec.writeRasterLayers(document))
+    let cached = try XCTUnwrap(imported.layers.last)
+    XCTAssertEqual(cached.id, layer.id)
+    XCTAssertNotNil(try cached.linkedSmartObjectPreview())
+
+    var destination = try CraftDocument(width: 8, height: 8)
+    destination.workingICC = imported.workingICC
+    try Command.duplicateLayersFrom(imported, [cached.id]).apply(to: &destination)
+    let duplicate = try XCTUnwrap(destination.layers.last)
+    XCTAssertNotEqual(duplicate.id, cached.id)
+    XCTAssertNotEqual(duplicate.smartObject?.sourceID, cached.smartObject?.sourceID)
+    for format in PSDFileFormat.allCases {
+      let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(destination, format: format))
+      let copy = try XCTUnwrap(reopened.layers.last)
+      XCTAssertEqual(copy.id, duplicate.id)
+      XCTAssertEqual(copy.smartObject?.sourceID, duplicate.smartObject?.sourceID)
+      XCTAssertEqual(copy.smartObject?.linkedSource?.reference, "Links/Owned.psb")
+      XCTAssertNotNil(try copy.linkedSmartObjectPreview())
+    }
+  }
   func testUnknownExternalPreviewRetainsOpaqueTypeWithoutAcceptingUnknownEmbeddedSources()throws {
     XCTAssertThrowsError(try SmartObject(fileName:"Unknown.bin",mediaType:"application/octet-stream",data:Data([1]),width:2,height:2))
     let link=try LinkedSmartObjectSource(reference:"Links/Unknown.private-type",byteLength:12)

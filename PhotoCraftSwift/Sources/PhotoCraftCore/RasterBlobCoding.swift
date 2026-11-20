@@ -10,6 +10,14 @@ protocol RasterBlobDecoding: AnyObject {
   func tile(_ digest: String) throws -> [Pixel]
 }
 
+protocol EmbeddedSourceBlobDecoding: RasterBlobDecoding {
+  func embeddedSourceBytes(_ identifier: String) throws -> EmbeddedSourceBytes
+}
+
+protocol EmbeddedSourceBlobEncoding: RasterBlobEncoding {
+  func retainEmbeddedSource(_ source: FileBackedSource, digest: String) throws -> String
+}
+
 /// Chunked native input can publish checked immutable tiles directly to scratch.
 /// Ordinary history and legacy providers retain their owned-sample budget.
 protocol MappedRasterBlobDecoding: RasterBlobDecoding {

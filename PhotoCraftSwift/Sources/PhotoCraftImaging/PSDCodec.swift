@@ -59,6 +59,12 @@ struct PSDReader {
     try metadataBudget.reserve(count)
     return try bytes(count)
   }
+  mutating func retainSource(_ count: Int, in backing: RasterTileStore) throws -> FileBackedSource {
+    let source = try view(count)
+    return try backing.retainSource(byteCount: count) { offset, length in
+      try source.storage.bytes(at: source.start + offset, count: length)
+    }
+  }
   mutating func consumePadding(_ byte: UInt8) throws -> Bool {
     guard offset >= 0, offset <= count else { return false }
     defer { offset = count }
@@ -147,6 +153,7 @@ public enum PSDCodec {
     var section: Int
     var passThrough: Bool
     var clipped: Bool
+    var placedLayerID: UUID?
   }
   public static func decodePackBits(_ data: Data, expected: Int) throws -> [UInt8] {
     try decodePackBits(PSDReader(data: data), expected: expected)
@@ -192,7 +199,14 @@ public enum PSDCodec {
   public static func readPaged(_ data: Data, name: String = "Imported PSD",
     heapByteLimit: Int = 1_073_741_824,
     scratchByteLimit: Int = RasterTileStore.defaultMaximumBytes) throws -> CraftDocument {
-    guard data.count <= maximumInputBytes,(0...1_073_741_824).contains(heapByteLimit) else {
+    try readPaged(.memory(data), name: name, heapByteLimit: heapByteLimit, scratchByteLimit: scratchByteLimit)
+  }
+  public static func readPaged(_ source: EmbeddedSourceBytes, name: String = "Imported PSD",
+    heapByteLimit: Int = 1_073_741_824,
+    scratchByteLimit: Int = RasterTileStore.defaultMaximumBytes) throws -> CraftDocument {
+    let data = source.data
+    let limit = source.isFileBacked ? SmartObject.maximumFileBackedSourceBytes : maximumInputBytes
+    guard data.count <= limit, (0...1_073_741_824).contains(heapByteLimit) else {
       throw CraftError.invalid("Invalid paged Photoshop input budget.")
     }
     return try read(PSDReader(data:data),name:name,
@@ -237,11 +251,12 @@ public enum PSDCodec {
         frame.nextPlacement += 1
         let placement = try PSDSmartObjects.placement(frame.decoded.document.layers[index], files: assets.sources)
         let depth = startingDepth + parents.count
-        if let name = try SmartObjectIO.photoshopDocumentName(placement.file.data, fileName: placement.file.name) {
+        if let name = try SmartObjectIO.photoshopDocumentName(placement.file.source, fileName: placement.file.name) {
           try SmartObjectIO.checkNesting(depth)
           let reader = PSDReader(data: placement.file.data)
           let child = try readContainer(reader, name: name, tiffComposite: nil, tiffNativeComposite: nil,
-            paging: PSDRasterPaging.Context(heapByteLimit: SmartObjectIO.maximumDecodedBytes))
+            paging: PSDRasterPaging.Context(heapByteLimit: SmartObjectIO.maximumDecodedBytes,
+              sharedBacking: paging?.backing))
           parents.append(PendingParent(frame: frame, layerIndex: index, placement: placement))
           frame = DecodeFrame(source: reader, decoded: child)
         } else {
@@ -568,6 +583,7 @@ public enum PSDCodec {
       var tags: [String: Data] = [:]
       var section = 0
       var sectionBlend = key
+      var placedLayerID: UUID?
       while extra.remaining >= 12 {
         guard ["8BIM", "8B64"].contains(try extra.string(4)) else {
           throw CraftError.unsupported("Unknown PSD tagged-block signature.")
@@ -669,7 +685,11 @@ public enum PSDCodec {
         case "lspf":
           protection = try PSDLayerProtection.decode(layerFlags: UInt8(flags), record: content)
         case "TySh": _ = try PSDText.descriptor(content)
-        case "SoLd", "SoLE": _ = try PSDSmartObjects.descriptor(content)
+        case "SoLd", "SoLE":
+          let descriptor = try PSDSmartObjects.descriptor(content)
+          if tag == "SoLd" || tags["SoLd"] == nil {
+            placedLayerID = PSDSmartObjects.placedIdentifier(in: descriptor).flatMap(UUID.init(uuidString:))
+          }
         case "PlLd": break
         case "artb", "artd", "abdd": _ = try PSDArtboards.layer(content,depth:pixelDepth)
         case "lyid", "lnsr", "lclr", "shmd", "fxrp", "lyvr": break
@@ -744,13 +764,14 @@ public enum PSDCodec {
           blend: BlendMode.allCases[keys.firstIndex(of: sectionBlend) ?? 0], opacity: opacity,
           visible: flags & 2 == 0,
           protection: protection, mask: mask, tags: tags, section: section,
-          passThrough: sectionBlend == "pass", clipped: clipping == 1))
+          passThrough: sectionBlend == "pass", clipped: clipping == 1, placedLayerID: placedLayerID))
     }
     let embeddedFiles = try PSDSmartObjects.files(doc,
       readers: PSDSmartObjects.linkKeys.compactMap { linkViews[$0] }, paging: paging)
     let filterMasks = try PSDSmartFilters.masks(in:doc,readers:["FEid","FXid"].compactMap {filterCacheViews[$0]},paging:paging)
     var layers: [Layer] = []
     var placedIndices: [Int] = []
+    var placedLayerIDs = Set<UUID>()
     var groupStack: [UUID] = []
     var linkInput=try PSDLayerLinks.Input(resourceBlocks,records:records.count),linkDividerFlags:[UUID:UInt8]=[:]
     for (recordIndex,record) in records.enumerated() {
@@ -876,6 +897,9 @@ public enum PSDCodec {
       // Samples already use the retained document profile; masks are uncoloured.
       if let native { surface = try native.surface(backing:paging?.backing) }
       var layer = Layer(name: record.name, content: .raster(surface))
+      if record.section == 0, let id = record.placedLayerID, placedLayerIDs.insert(id).inserted {
+        layer.id = id
+      }
       layer.nativeMode = native
       if let data = record.tags["GdFl"] {
         layer.content = .gradientFill(try PSDGradientFill.read(data))
@@ -1193,16 +1217,43 @@ public enum PSDCodec {
       linkedSources: linkedSources)
   }
 
-  /// A generated child is admitted separately from the parent Photoshop file.
-  /// Prefer its complete composite whenever possible and retain all layer data
-  /// when an eligible child needs the compatibility-off representation.
-  static func writeEmbeddedSmartObject(_ doc: CraftDocument,
-    maximumBytes: Int = SmartObject.maximumDocumentSourceBytes) throws -> Data {
+  private static func embeddedPreviewEncodings(_ doc: CraftDocument) -> [(compression: PSDCompression, maximizeCompatibility: Bool)] {
+    var encodings: [(PSDCompression, Bool)] = [(.raw, true), (.rle, true)]
+    if canOmitMergedImage(doc) { encodings.append((.rle, false)) }
+    return encodings
+  }
+
+  static func writeFileBackedEmbeddedSmartObject(_ doc: CraftDocument) throws -> FileBackedSource {
     try Task.checkCancellation()
     try doc.validate()
     let linkedSources = try doc.requiresSmartObjectArchive ? PSDSmartObjects.linkedData(doc) : nil
-    var encodings: [(compression: PSDCompression, maximizeCompatibility: Bool)] = [(.raw, true), (.rle, true)]
-    if canOmitMergedImage(doc) { encodings.append((.rle, false)) }
+    let limit = SmartObject.maximumFileBackedSourceBytes
+    return try FileBackedSource.writing(maximumBytes: limit) { url in
+      for encoding in embeddedPreviewEncodings(doc) {
+        let file = try AtomicFileWriter(to: url, maximumBytes: limit)
+        let output = PSDOutput(file: file, maximumBytes: limit)
+        do {
+          try writeContainer(doc, compression: .zipPrediction, format: .psb,
+            compositeCompression: encoding.compression, output: output, includeComposite: true,
+            maximizeCompatibility: encoding.maximizeCompatibility, linkedSources: linkedSources)
+          try file.commit()
+          return
+        } catch where output.exceededByteLimit {
+          file.discard()
+        }
+      }
+      throw CraftError.unsupported("Generated PSB exceeds the file-backed embedded source limit.")
+    }
+  }
+
+  /// Prefer its complete composite whenever possible and retain all layer data
+  /// when an eligible child needs the compatibility-off representation.
+  static func writeEmbeddedSmartObject(_ doc: CraftDocument,
+    maximumBytes: Int = SmartObject.maximumArchive95SourceBytes) throws -> Data {
+    try Task.checkCancellation()
+    try doc.validate()
+    let linkedSources = try doc.requiresSmartObjectArchive ? PSDSmartObjects.linkedData(doc) : nil
+    let encodings = embeddedPreviewEncodings(doc)
     var capacities = [min(maximumBytes, SmartObject.maximumSourceBytes)]
     if maximumBytes > SmartObject.maximumSourceBytes { capacities.append(maximumBytes) }
     for capacity in capacities {

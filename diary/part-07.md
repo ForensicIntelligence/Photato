@@ -1,5 +1,31 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-20 — Step 653 — Preserve Smart Object placement identifiers
+
+Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
+
+All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-653) · [Details](../PhotoCraftSwift/docs/PLACED_LAYER_IDENTIFIERS_653.md).
+
+## 2026-11-19 — Step 652 — Keep gigabyte-scale originals in Undo and Redo
+
+Spilled history states share the existing file-backed original. Undo and Redo keep the bytes, and insufficient disk space rejects the edit atomically.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) · [Details](../PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECT_HISTORY_652.md).
+
+## 2026-11-19 — Step 651 — Keep gigabyte-scale originals through Edit Contents
+
+A 1.18 GB PSB retains its exact original and editable samples through placement, a nested edit and reopen. Native files use archive version 97 for these originals.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-651) · [Details](../PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECTS_651.md).
+
+## 2026-11-19 — Step 650 — Retain large embedded originals on disk
+
+Large PSB originals remain editable in native projects, PSD and PSB. The 275.7 MB test retained two shared instances, and the 525.1 MB file retained its original bytes.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-650) · [Details](../PhotoCraftSwift/docs/FILE_BACKED_SMART_ORIGINALS_650.md).
+
 ## 2026-11-19 — Step 649 — Place and reopen larger Photoshop originals
 
 PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
@@ -1177,14 +1203,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:649 -->
-## Current development status — 19 November 2026
+<!-- current-status-step:653 -->
+## Current development status — 20 November 2026
 
-PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
+Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
 
-All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
+All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 649](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_649.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-649).
+[Source checkpoint 653](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_653.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-653).
 
 <!-- current-status:end -->
 

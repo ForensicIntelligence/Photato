@@ -74,7 +74,7 @@ enum PSDLinkedSmartObjects {
       sourceWidth:width,sourceHeight:height,cacheWidth:cache.width,cacheHeight:cache.height))
     if let filters=d["filterFX"] {
       var stack=try PSDSmartFilters.read(filters)
-      if let placed=text(d["placed"]),let mask=filterMasks[placed]{stack.mask=mask.pixels;stack.maskProperties.transform=mask.transform}
+      if let placed=PSDSmartObjects.placedIdentifier(in:d),let mask=filterMasks[placed]{stack.mask=mask.pixels;stack.maskProperties.transform=mask.transform}
       layer.smartFilters=stack
     }
   }
@@ -84,7 +84,9 @@ enum PSDLinkedSmartObjects {
     var descriptor=try PSDSmartObjects.descriptor(raw);let t=try layer.smartObjectSourceTransform(),w=Double(source.width),h=Double(source.height)
     let points=[t.point(0,0),t.point(w,0),t.point(w,h),t.point(0,h)]
     let quad=PSDValue.list(points.flatMap{[.number($0.x),.number($0.y)]})
-    for (key,value) in [("Trnf",quad),("nonAffineTransform",quad),("placed",.text(Array((layer.id.uuidString+"\0").utf16)))] {
+    let placed = PSDSmartObjects.placedIdentifier(for: layer)
+    let sourceID = PSDValue.text(Array((source.sourceID.uuidString + "\0").utf16))
+    for (key,value) in [("Trnf",quad),("nonAffineTransform",quad),("Idnt",sourceID),("placed",.text(Array((placed+"\0").utf16)))] {
       if let index=descriptor.items.firstIndex(where:{$0.key.text==key}){descriptor.items[index].value=value}else{descriptor.items.append(.init(key,value))}
     }
     var writer=PSDWriter();writer.text("soLD");writer.n(4,4);writer.data.append(try descriptor.encoded());return writer.data
