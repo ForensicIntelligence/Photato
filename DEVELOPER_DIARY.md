@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **629** · The 10 most recent entries, newest first.
+Source build **630** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 630 — Keep Workflow Guide highlights visible across controls and dialogs
+
+The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
+
+All 1,130 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-630) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_630.md).
 
 ## 2026-11-19 — Step 629 — Keep saved masks and printing plates in one Multichannel order
 
@@ -75,11 +83,3 @@ The guide follows menu rows and submenus as they open. Supported dialog controls
 The repaired preview passed 11 selected cases, including Duplicate Layer, Save As and an unrelated sheet. A later matrix exposed a popup placement issue repaired in 628.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-621). [Development notes](PhotoCraftSwift/docs/WORKFLOW_GUIDE_HIGHLIGHTS_621.md).
-
-## 2026-11-19 — Step 620 — Keep maximum-size Multichannel printing plates editable
-
-PSB can retain sparse editable spots and masks up to 300,000 × 300,000 pixels. Large Photato archives use format 93.
-
-All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_620.md).

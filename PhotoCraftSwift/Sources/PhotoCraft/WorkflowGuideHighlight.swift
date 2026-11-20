@@ -9,18 +9,28 @@ enum WorkflowGuideTarget: Equatable {
     case opacity = "the layer Opacity control", mask = "the layer mask thumbnail", canvas = "the canvas"
     case options = "the tool options bar", tools = "the toolbar", cropDelete = "Delete Cropped Pixels"
     case foreground = "the foreground color swatch", modalConfirm = "the confirmation button", modalFormat = "the format picker"
+    case modalName = "the name field", modalChannel = "the Channel picker"
   }
 
   enum Dialog: String {
-    case duplicateLayer, newLayer, savedSelection, imageExport, save
+    case duplicateLayer, newLayer, savedSelection, loadSelection, imageExport, save
 
     var title: String {
       switch self {
       case .duplicateLayer: "Duplicate Layer"
       case .newLayer: "New Layer"
-      case .savedSelection: "the selection dialog"
+      case .savedSelection: "Save Selection"
+      case .loadSelection: "Load Selection"
       case .imageExport: "Export As"
       case .save: "Save As"
+      }
+    }
+
+    var openingControl: Control {
+      switch self {
+      case .duplicateLayer, .newLayer, .savedSelection: .modalName
+      case .loadSelection: .modalChannel
+      case .imageExport, .save: .modalFormat
       }
     }
   }
@@ -41,8 +51,7 @@ enum WorkflowGuideTarget: Equatable {
 
   var modalTarget: (dialog: Dialog, control: Control)? {
     switch self {
-    case .menu(_, let dialog?):
-      (dialog, dialog == .save || dialog == .imageExport ? .modalFormat : .modalConfirm)
+    case .menu(_, let dialog?): (dialog, dialog.openingControl)
     case .modal(let dialog, let control): (dialog, control)
     default: nil
     }
@@ -51,7 +60,9 @@ enum WorkflowGuideTarget: Equatable {
   var capability: [String: String] {
     switch self {
     case .menu(let path, let dialog):
-      if let dialog { ["kind": "menu", "label": path, "dialog": dialog.rawValue] }
+      if let dialog {
+        ["kind": "menu", "label": path, "dialog": dialog.rawValue, "dialogControl": dialog.openingControl.rawValue]
+      }
       else { ["kind": "menu", "label": path] }
     case .tool(let tool): ["kind": "tool", "label": tool.rawValue]
     case .control(let control): ["kind": "control", "label": control.rawValue]
@@ -86,7 +97,9 @@ extension View {
 
   func workflowGuideSheetHighlight(_ surface: WorkflowGuideTarget.Dialog,
     control: WorkflowGuideTarget.Control, store: EditorStore) -> some View {
-    overlay {
+    background {
+      WorkflowGuideAnchor(targets: [.modal(surface, control)]).allowsHitTesting(false)
+    }.overlay {
       if let highlighter = store.documentController?.workflowGuideHighlighter,
         let request = highlighter.sheetHighlight, request.surface == surface, request.control == control {
         WorkflowGuideSheetCue()
@@ -124,6 +137,7 @@ private struct WorkflowGuideSheetCue: View {
   }
 
   static let saveFormatControl = NSUserInterfaceItemIdentifier("photato.workflowGuide.saveFormat")
+  @ObservationIgnored weak var guideWindow: NSWindow?
   @ObservationIgnored private weak var windows: DocumentWindows?
   private(set) var overlay: NSPanel?
   private(set) var nativeSheetOutline: NSView?
@@ -189,7 +203,18 @@ private struct WorkflowGuideSheetCue: View {
       return view.map { highlightNativeControl($0, in: panel) } ?? false
     }
     guard sheet === editor?.attachedSheet, !(sheet is NSSavePanel), matches(destination.dialog, store: store) else { return false }
-    return highlightSwiftUISheet(sheet, surface: destination.dialog, control: destination.control)
+    let control = availableControl(destination.control, in: destination.dialog, store: store)
+    return highlightSwiftUISheet(sheet, surface: destination.dialog, control: control)
+  }
+
+  private func availableControl(_ control: WorkflowGuideTarget.Control, in dialog: WorkflowGuideTarget.Dialog,
+    store: EditorStore) -> WorkflowGuideTarget.Control {
+    guard control == .modalName else { return control }
+    switch dialog {
+    case .duplicateLayer where store.duplicateLayerDraft?.roots.count != 1: return .modalConfirm
+    case .savedSelection where store.channelDialog?.channelID != nil: return .modalChannel
+    default: return control
+    }
   }
 
   func menuWillOpen(_ menu: NSMenu, for target: WorkflowGuideTarget) {
@@ -236,8 +261,9 @@ private struct WorkflowGuideSheetCue: View {
   }
 
   private func highlightNativeControl(_ view: NSView, in sheet: NSWindow) -> Bool {
-    guard view.window?.isVisible == true, !view.isHiddenOrHasHiddenAncestor, !view.visibleRect.isEmpty else { return false }
+    guard let rect = visibleFrame(of: view) else { return false }
     clear()
+    moveGuideAway(from: rect)
     // AppKit can host the accessory in its own window. Paint on the control so the cue moves with it.
     let outline = WorkflowGuideOutline(frame: view.bounds)
     outline.autoresizingMask = [.width, .height]
@@ -262,6 +288,8 @@ private struct WorkflowGuideSheetCue: View {
     clear()
     let request = SheetHighlight(surface: surface, control: control)
     sheetHighlight = request
+    outlinedSheet = sheet
+    moveGuideAway(from: request, in: sheet)
     scheduleDismissal()
     sheetLayout = Task { @MainActor [weak self, weak sheet] in
       do { try await Task.sleep(for: .milliseconds(550)) } catch { return }
@@ -272,15 +300,22 @@ private struct WorkflowGuideSheetCue: View {
   }
 
   func sheetOutlineAppeared(_ id: UUID) {
-    guard sheetHighlight?.id == id else { return }
+    guard let request = sheetHighlight, request.id == id else { return }
     visibleSheetHighlight = id
+    if let outlinedSheet { moveGuideAway(from: request, in: outlinedSheet) }
+  }
+
+  private func moveGuideAway(from request: SheetHighlight, in sheet: NSWindow) {
+    if let view = anchor(.modal(request.surface, request.control), in: sheet.contentView),
+      let rect = visibleFrame(of: view) { moveGuideAway(from: rect) }
   }
 
   private func matches(_ dialog: WorkflowGuideTarget.Dialog, store: EditorStore) -> Bool {
     switch dialog {
     case .duplicateLayer: store.duplicateLayerDraft != nil
     case .newLayer: store.newLayerDraft != nil
-    case .savedSelection: store.channelDialog != nil
+    case .savedSelection: store.channelDialog?.kind == .save
+    case .loadSelection: store.channelDialog?.kind == .load
     case .imageExport: store.imageExportDraft != nil
     case .save: false
     }
@@ -319,8 +354,40 @@ private struct WorkflowGuideSheetCue: View {
   }
 
   private func show(_ view: NSView) -> Bool {
-    guard let window = view.window, window.isVisible, !view.isHiddenOrHasHiddenAncestor else { return false }
-    return draw(around: window.convertToScreen(view.convert(view.visibleRect, to: nil)), parent: window)
+    guard let window = view.window, let rect = visibleFrame(of: view) else { return false }
+    moveGuideAway(from: rect)
+    return draw(around: rect, parent: window)
+  }
+
+  private func visibleFrame(of view: NSView) -> NSRect? {
+    guard let window = view.window, window.isVisible, !view.isHiddenOrHasHiddenAncestor,
+      !view.visibleRect.isEmpty else { return nil }
+    return window.convertToScreen(view.convert(view.visibleRect, to: nil))
+  }
+
+  private func moveGuideAway(from rect: NSRect) {
+    guard let guideWindow, guideWindow.isVisible else { return }
+    let target = rect.insetBy(dx: -10, dy: -10)
+    let current = guideWindow.frame
+    guard target.intersects(current), let screen = guideWindow.screen?.visibleFrame,
+      screen.width >= current.width, screen.height >= current.height else { return }
+    let origins = [
+      NSPoint(x: target.minX - current.width, y: current.minY),
+      NSPoint(x: target.maxX, y: current.minY),
+      NSPoint(x: current.minX, y: target.minY - current.height),
+      NSPoint(x: current.minX, y: target.maxY),
+    ]
+    let candidates = origins.map { origin in
+      NSRect(x: min(max(origin.x, screen.minX), screen.maxX - current.width),
+        y: min(max(origin.y, screen.minY), screen.maxY - current.height),
+        width: current.width, height: current.height)
+    }.filter { !$0.intersects(target) }
+    func distance(_ frame: NSRect) -> CGFloat {
+      hypot(frame.minX - current.minX, frame.minY - current.minY)
+    }
+    if let nearest = candidates.min(by: { distance($0) < distance($1) }) {
+      guideWindow.setFrameOrigin(nearest.origin)
+    }
   }
 
   private func visibleMenuItemFrame(_ item: NSMenuItem) -> NSRect? {

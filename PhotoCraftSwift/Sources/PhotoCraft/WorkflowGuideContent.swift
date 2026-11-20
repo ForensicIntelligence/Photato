@@ -93,7 +93,8 @@ struct WorkflowGuideLesson: Identifiable, Equatable {
 enum WorkflowGuideContent {
   static let duplicate = WorkflowGuideLesson("duplicate-layer", "Duplicate a layer", .layer, steps: [
     .init("Select the layer you want to copy in Layers.", .layerSelected, target: .control(.layerRow)),
-    .init("Choose Layer > Duplicate Layer, enter a name, and confirm.", .layerAdded, target: .menu("Layer > Duplicate Layer", dialog: .duplicateLayer)),
+    .init("Choose Layer > Duplicate Layer. If there’s a name field, enter a name for the copy.", target: .menu("Layer > Duplicate Layer", dialog: .duplicateLayer)),
+    .init("Click OK to duplicate the layer.", .layerAdded, target: .modal(.duplicateLayer, .modalConfirm)),
     .init("Use the eye icons in Layers to compare the original and duplicate.", target: .control(.layerEye)),
   ])
   static let opacity = WorkflowGuideLesson("blend-opacity", "Adjust layer opacity", .opacity, steps: [
@@ -129,8 +130,10 @@ enum WorkflowGuideContent {
   ])
   static let saveSelection = WorkflowGuideLesson("save-selection", "Save a selection for reuse", .selection, diaryStep: "367", steps: [
     .init("Leave the selection active.", .selectionExists, target: .control(.canvas)),
-    .init("Choose Select > Save Selection, name it, and confirm.", .selectionSaved, target: .menu("Select > Save Selection", dialog: .savedSelection)),
-    .init("Use Select > Load Selection to restore it, or inspect it in Window > Channels.", target: .menu("Select > Load Selection", dialog: .savedSelection)),
+    .init("Choose Select > Save Selection. Name a new channel or choose an existing channel.", target: .menu("Select > Save Selection", dialog: .savedSelection)),
+    .init("Click OK to save the selection.", .selectionSaved, target: .modal(.savedSelection, .modalConfirm)),
+    .init("To restore it, choose Select > Load Selection and pick the saved channel.", target: .menu("Select > Load Selection", dialog: .loadSelection)),
+    .init("Click OK to load the selection.", target: .modal(.loadSelection, .modalConfirm)),
   ])
   static let inverse = WorkflowGuideLesson("invert-selection", "Select everything outside the outline", .selection, steps: [
     .init("Leave the selection active.", .selectionExists, target: .control(.canvas)),
@@ -142,7 +145,8 @@ enum WorkflowGuideContent {
     .init("Continue editing the full layer, or use a selection tool to draw a fresh outline.", target: .tool(.marquee)),
   ])
   static let brush = WorkflowGuideLesson("paint-with-brush", "Paint on a separate layer", .document, diaryStep: "538", steps: [
-    .init("Choose Layer > New > Layer and confirm.", .layerAdded, target: .menu("Layer > New > Layer", dialog: .newLayer)),
+    .init("Choose Layer > New > Layer and name the layer.", target: .menu("Layer > New > Layer", dialog: .newLayer)),
+    .init("Click OK to add the layer.", .layerAdded, target: .modal(.newLayer, .modalConfirm)),
     .init("Choose the Brush tool.", .brushTool, target: .tool(.brush)),
     .init("Set the foreground color, brush size and opacity in the tool controls. Paint on the new layer.", target: .control(.options)),
   ])

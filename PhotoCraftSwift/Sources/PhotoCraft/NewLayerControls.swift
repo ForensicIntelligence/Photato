@@ -124,6 +124,7 @@ struct NewLayerSheet: View {
             Text("Name:").frame(width: 48, alignment: .trailing)
             TextField("Name", text: $draft.options.name).labelsHidden()
               .focused($nameFocused).accessibilityIdentifier("newLayer.name")
+              .workflowGuideSheetHighlight(.newLayer, control: .modalName, store: store)
           }
           Toggle("Use Previous Layer to Create Clipping Mask", isOn: $draft.options.clipped)
             .disabled(!draft.canClip).accessibilityIdentifier("newLayer.clipped")

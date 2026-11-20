@@ -236,6 +236,7 @@ struct DuplicateLayerSheet: View {
               Text("As:").frame(width: 66, alignment: .trailing)
               TextField("As", text: $draft.name).labelsHidden().focused($nameFocused)
                 .accessibilityIdentifier("duplicate.name")
+                .workflowGuideSheetHighlight(.duplicateLayer, control: .modalName, store: store)
             }
           }
           GroupBox("Destination") {

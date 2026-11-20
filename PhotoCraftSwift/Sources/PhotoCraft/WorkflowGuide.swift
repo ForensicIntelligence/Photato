@@ -262,6 +262,7 @@ struct WorkflowGuideView: View {
               Button("Back", action: model.back).disabled(walk.index == 0)
               Spacer()
               Button("Show Me", action: model.showMe).disabled(walk.step.target == nil)
+                .accessibilityIdentifier("workflowGuide.showMe")
                 .help("Highlight the control for this step again")
               Spacer()
               Button(walk.index == walk.lesson.steps.count - 1 ? "Done" : "Next", action: model.next)
@@ -328,6 +329,7 @@ struct WorkflowGuideView: View {
     panel.isReleasedWhenClosed = false
     panel.contentMinSize = NSSize(width: 280, height: 185)
     panel.collectionBehavior = [.fullScreenAuxiliary]
+    highlighter.guideWindow = panel
     panel.delegate = self
     if !panel.setFrameUsingName("PhotatoWorkflowGuide"),
       let frame = documents.documentWindows.current?.window?.frame,

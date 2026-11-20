@@ -193,8 +193,15 @@ final class AutomationTests: XCTestCase {
       XCTAssertEqual(maskSteps[1]["target"] as? [String: String], ["kind": "menu", "label": "Layer > Layer Mask > Reveal All"])
       let saveLesson = try XCTUnwrap(lessons.first { ($0["id"] as? String) == "save-editable" })
       let saveSteps = try XCTUnwrap(saveLesson["steps"] as? [[String: Any]])
-      XCTAssertEqual(saveSteps[0]["target"] as? [String: String], ["kind": "menu", "label": "File > Save As", "dialog": "save"])
+      XCTAssertEqual(saveSteps[0]["target"] as? [String: String],
+        ["kind": "menu", "label": "File > Save As", "dialog": "save", "dialogControl": "the format picker"])
       XCTAssertEqual(saveSteps[1]["target"] as? [String: String], ["kind": "control", "label": "the format picker", "dialog": "save"])
+      let selectionLesson = try XCTUnwrap(lessons.first { ($0["id"] as? String) == "save-selection" })
+      let selectionSteps = try XCTUnwrap(selectionLesson["steps"] as? [[String: Any]])
+      XCTAssertEqual(selectionSteps[1]["target"] as? [String: String],
+        ["kind": "menu", "label": "Select > Save Selection", "dialog": "savedSelection", "dialogControl": "the name field"])
+      XCTAssertEqual(selectionSteps[3]["target"] as? [String: String],
+        ["kind": "menu", "label": "Select > Load Selection", "dialog": "loadSelection", "dialogControl": "the Channel picker"])
       XCTAssertEqual(guide["processing"] as? String, "local")
       let guidePreferences = try XCTUnwrap(guide["preferences"] as? [String: Any])
       XCTAssertEqual(guidePreferences["maximumSuggestions"] as? Int, 4)

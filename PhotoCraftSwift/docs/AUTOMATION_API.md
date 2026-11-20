@@ -1,3 +1,7 @@
+### Workflow Guide control targets (checkpoint 630)
+
+An authenticated `GET /v1/capabilities` response includes an optional `dialogControl` label for menu targets with a matching dialog. It identifies the preferred first control in that dialog. `savedSelection` identifies Save Selection, and `loadSelection` identifies Load Selection. Their controls include the name field, Channel picker and confirmation button. Existing `kind`, `label` and `dialog` fields retain their format. Local target resolution can fall back to an available control when a dialog's layout omits the preferred field. The desktop handles highlight replay without producing an editing operation. Adobe v2 has no corresponding endpoint.
+
 ### Multichannel row order (checkpoint 629)
 
 In a Multichannel document, `channel.edit` accepts `action: "moveMultichannel"`, a printing plate or saved channel UUID as `target`, and an integer final `index` within `selectionChannels.multichannelOrder`. It commits one undoable edit, using the same command as the Channels panel gestures. The former group-relative `move` actions still address that group's indices. Capability discovery advertises the mixed-order archive version 94. Firefly v2 has no documented endpoint.

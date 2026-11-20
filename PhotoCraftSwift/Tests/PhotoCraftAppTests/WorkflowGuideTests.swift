@@ -76,6 +76,7 @@ final class WorkflowGuideTests: XCTestCase {
     XCTAssertEqual(model.walkthrough?.index, 0)
     XCTAssertTrue(model.stepObserved)
     model.next()
+    model.next()
     XCTAssertFalse(model.stepObserved)
     var other = state
     other.documentID = UUID()
@@ -83,16 +84,16 @@ final class WorkflowGuideTests: XCTestCase {
     model.update(other)
     XCTAssertFalse(model.onLessonDocument)
     model.next()
-    XCTAssertEqual(model.walkthrough?.index, 1)
+    XCTAssertEqual(model.walkthrough?.index, 2)
     XCTAssertFalse(model.stepObserved)
     model.update(state)
     state.layerCount += 1
     model.update(state)
     XCTAssertTrue(model.stepObserved)
     model.next()
-    XCTAssertEqual(model.walkthrough?.index, 2)
+    XCTAssertEqual(model.walkthrough?.index, 3)
     model.back()
-    XCTAssertEqual(model.walkthrough?.index, 1)
+    XCTAssertEqual(model.walkthrough?.index, 2)
     model.end()
     XCTAssertNil(model.walkthrough)
   }
@@ -122,6 +123,7 @@ final class WorkflowGuideTests: XCTestCase {
     XCTAssertEqual(guide.caption, "Selected layer · Training layer")
     XCTAssertEqual(guide.suggestions.count, 4)
     guide.start(WorkflowGuideContent.duplicate)
+    guide.next()
     guide.next()
     XCTAssertFalse(guide.stepObserved)
     store.perform(.duplicateLayer(layer))
@@ -196,6 +198,9 @@ final class WorkflowGuideTests: XCTestCase {
     }
     delegate.setWorkflowGuideVisible(true, takesFocus: false)
     let guide = try XCTUnwrap(delegate.workflowGuideWindow)
+    let guidePanel = try XCTUnwrap(guide.window)
+    let guideFrame = guidePanel.frame
+    defer { guidePanel.setFrame(guideFrame, display: false) }
     editor.contentView?.layoutSubtreeIfNeeded()
     guide.model.start(WorkflowGuideContent.duplicate)
     let deadline = ContinuousClock.now.advanced(by: .seconds(3))
@@ -207,10 +212,14 @@ final class WorkflowGuideTests: XCTestCase {
     XCTAssertTrue(first.ignoresMouseEvents)
     XCTAssertFalse(first.isKeyWindow)
     XCTAssertEqual(guide.model.walkthrough?.index, 0)
+    guidePanel.setFrameOrigin(NSPoint(x: first.frame.midX - guideFrame.width / 2,
+      y: first.frame.midY - guideFrame.height / 2))
+    XCTAssertTrue(guidePanel.frame.intersects(first.frame))
     guide.model.showMe()
     let replay = try XCTUnwrap(guide.highlighter.overlay)
     XCTAssertEqual(replay.frame, first.frame)
     XCTAssertFalse(replay === first)
+    XCTAssertFalse(guidePanel.frame.intersects(replay.frame))
     XCTAssertEqual(guide.model.walkthrough?.index, 0)
 
     guide.model.next()
@@ -226,16 +235,101 @@ final class WorkflowGuideTests: XCTestCase {
       try await Task.sleep(for: .milliseconds(25))
     }
     let request = try XCTUnwrap(guide.highlighter.sheetHighlight)
-    XCTAssertEqual(request.control, .modalConfirm)
+    XCTAssertEqual(request.control, .modalName)
     XCTAssertEqual(guide.highlighter.visibleSheetHighlight, request.id)
     XCTAssertNil(guide.highlighter.overlay)
     guide.model.showMe()
     XCTAssertNotEqual(guide.highlighter.sheetHighlight?.id, request.id)
     XCTAssertEqual(guide.model.walkthrough?.index, 1)
+    guide.model.next()
+    XCTAssertEqual(guide.highlighter.sheetHighlight?.control, .modalConfirm)
+    guide.model.back()
+    XCTAssertEqual(guide.highlighter.sheetHighlight?.control, .modalName)
     guide.model.end()
     XCTAssertNil(guide.highlighter.overlay)
     XCTAssertNil(guide.highlighter.sheetHighlight)
     XCTAssertFalse(document.isDocumentEdited)
+  }
+
+  @MainActor func testSaveAndLoadSelectionHighlightTheirOwnSheetControls() async throws {
+    _ = NSApplication.shared
+    let delegate = AppDelegate(workspaces: WorkspaceLibrary())
+    var source = try CraftDocument(width: 80, height: 60)
+    source.selection = .init(x: 10, y: 10, width: 19, height: 16)
+    let document = CraftNSDocument(model: source)
+    delegate.controller.addDocument(document)
+    document.makeWindowControllers()
+    document.showWindows()
+    delegate.controller.documentWindows.activeDocument = document
+    let editor = try XCTUnwrap(document.windowForSheet)
+    defer {
+      if let sheet = editor.attachedSheet { editor.endSheet(sheet) }
+      delegate.workflowGuideWindow?.close()
+      document.close()
+    }
+    delegate.setWorkflowGuideVisible(true, takesFocus: false)
+    let guide = try XCTUnwrap(delegate.workflowGuideWindow)
+    guide.model.note(.selection, "Selection")
+    guide.model.start(WorkflowGuideContent.saveSelection)
+    guide.model.next()
+    XCTAssertEqual(guide.model.walkthrough?.index, 1)
+
+    let store = document.store
+    store.beginChannelDialog(.save)
+    let save = try XCTUnwrap(store.channelDialog)
+    let deadline = ContinuousClock.now.advanced(by: .seconds(3))
+    while guide.highlighter.visibleSheetHighlight == nil, ContinuousClock.now < deadline {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    let name = try XCTUnwrap(guide.highlighter.sheetHighlight)
+    XCTAssertEqual(name.surface, .savedSelection)
+    XCTAssertEqual(name.control, .modalName)
+    XCTAssertEqual(name.id, guide.highlighter.visibleSheetHighlight)
+    guide.model.next()
+    XCTAssertEqual(guide.highlighter.sheetHighlight?.control, .modalConfirm)
+    save.name = "Training selection"
+    store.commitChannelDialog(save)
+    await save.task?.value
+    XCTAssertEqual(store.document.alphaChannels?.first?.name, "Training selection")
+
+    let dismissal = ContinuousClock.now.advanced(by: .seconds(3))
+    while editor.attachedSheet != nil, ContinuousClock.now < dismissal {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    XCTAssertNil(editor.attachedSheet)
+    guide.model.next()
+    XCTAssertEqual(guide.model.walkthrough?.index, 3)
+    store.beginChannelDialog(.options)
+    let unrelated = ContinuousClock.now.advanced(by: .seconds(3))
+    while editor.attachedSheet == nil, ContinuousClock.now < unrelated {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    _ = try XCTUnwrap(editor.attachedSheet)
+    guide.model.showMe()
+    XCTAssertNil(guide.highlighter.sheetHighlight)
+    XCTAssertNil(guide.highlighter.overlay)
+    store.cancelChannelDialog()
+
+    let canceled = ContinuousClock.now.advanced(by: .seconds(3))
+    while editor.attachedSheet != nil, ContinuousClock.now < canceled {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    XCTAssertNil(editor.attachedSheet)
+    store.beginChannelDialog(.load)
+    let loading = ContinuousClock.now.advanced(by: .seconds(3))
+    while guide.highlighter.visibleSheetHighlight == nil, ContinuousClock.now < loading {
+      try await Task.sleep(for: .milliseconds(25))
+    }
+    let picker = try XCTUnwrap(guide.highlighter.sheetHighlight)
+    XCTAssertEqual(picker.surface, .loadSelection)
+    XCTAssertEqual(picker.control, .modalChannel)
+    XCTAssertEqual(picker.id, guide.highlighter.visibleSheetHighlight)
+    guide.model.showMe()
+    XCTAssertNotEqual(guide.highlighter.sheetHighlight?.id, picker.id)
+    XCTAssertEqual(guide.model.walkthrough?.index, 3)
+    guide.model.next()
+    XCTAssertEqual(guide.highlighter.sheetHighlight?.control, .modalConfirm)
+    store.cancelChannelDialog()
   }
 
   @MainActor func testGuideOutlinesAParentMenuRowAndThenTheExactSubmenuCommand() throws {

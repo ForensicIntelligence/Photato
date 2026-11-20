@@ -1,3 +1,5 @@
+**Source checkpoint 630.** The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue. [Qualification](SOURCE_PUBLICATION_630.md).
+
 **Source checkpoint 629.** The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence. [Qualification](SOURCE_PUBLICATION_629.md).
 
 **Source checkpoint 628.** Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu. [Qualification](SOURCE_PUBLICATION_628.md).

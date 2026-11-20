@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 630 — Keep Workflow Guide highlights visible across controls and dialogs
+
+The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
+
+All 1,130 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](DEVLOG.md#dev-step-630) · [Validation](SOURCE_PUBLICATION_630.md).
+
 ## 2026-11-19 — Step 629 — Keep saved masks and printing plates in one Multichannel order
 
 The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
@@ -1033,14 +1041,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:629 -->
+<!-- current-status-step:630 -->
 ## Current development status — 19 November 2026
 
-The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
+The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
 
-All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1,130 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 629](SOURCE_PUBLICATION_629.md) · [Detailed record](DEVLOG.md#dev-step-629).
+[Source checkpoint 630](SOURCE_PUBLICATION_630.md) · [Detailed record](DEVLOG.md#dev-step-630).
 
 <!-- current-status:end -->
 
@@ -1876,6 +1884,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 627 | [Integrate Workflow Guide cues with the expanded Channels panel](DEVLOG.md#dev-step-627) |
 | 2026-11-19 | 628 | [Drag channel rows and keep menu cues aligned](DEVLOG.md#dev-step-628) |
 | 2026-11-19 | 629 | [Keep saved masks and printing plates in one Multichannel order](DEVLOG.md#dev-step-629) |
+| 2026-11-19 | 630 | [Keep Workflow Guide highlights visible across controls and dialogs](DEVLOG.md#dev-step-630) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

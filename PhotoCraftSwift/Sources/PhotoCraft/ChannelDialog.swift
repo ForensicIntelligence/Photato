@@ -125,13 +125,18 @@ struct ChannelDialogSheet: View {
             if case .alpha(let id)=value {draft.channelID=id;draft.customLoadSource=nil}
             else {draft.channelID=nil;draft.customLoadSource=value}
           })) {ForEach(SelectionChannelSource.choices(in:draft.selectedDocument),id:\.self) {source in Text(source.title(in:draft.selectedDocument)).tag(Optional(source))}}
+            .workflowGuideSheetHighlight(.loadSelection, control: .modalChannel, store: store)
         } else {
           Picker("Channel",selection:$draft.channelID) {
             Text("New").tag(UUID?.none).disabled(!draft.createsDocument && (draft.selectedDocument.alphaChannels?.count ?? 0)>=draft.selectedDocument.auxiliaryChannelLimit)
             ForEach(draft.createsDocument ? []:(draft.selectedDocument.alphaChannels ?? []).filter {$0.spot == nil}) {Text($0.name).tag(Optional($0.id))}
           }
+          .workflowGuideSheetHighlight(.savedSelection, control: .modalChannel, store: store)
         }
-        if draft.kind == .save && draft.channelID == nil { TextField("Name",text:$draft.name).textFieldStyle(.roundedBorder) }
+        if draft.kind == .save && draft.channelID == nil {
+          TextField("Name",text:$draft.name).textFieldStyle(.roundedBorder)
+            .workflowGuideSheetHighlight(.savedSelection, control: .modalName, store: store)
+        }
         Picker("Operation",selection:$draft.mode) {
           Text(draft.kind == .save ? (draft.channelID == nil ? "New Channel":"Replace Channel") : "New Selection").tag(SelectionMode.replace)
           Text(draft.kind == .save ? "Add to Channel":"Add to Selection").tag(SelectionMode.add).disabled(!draft.canCombine)
@@ -165,7 +170,8 @@ struct ChannelDialogSheet: View {
       if let error = draft.error { Text(error).foregroundStyle(.red) }
       HStack { Spacer(); Button("Cancel") { store.cancelChannelDialog() }.keyboardShortcut(.cancelAction)
         Button("OK") { store.commitChannelDialog(draft) }.keyboardShortcut(.defaultAction).disabled(draft.committing || (draft.kind == .load && draft.selectionSource == nil) || (draft.kind == .save && !draft.canSaveDestination) || (draft.kind == .duplicate && !draft.canDuplicateDestination))
-          .workflowGuideSheetHighlight(.savedSelection, control: .modalConfirm, store: store)
+          .workflowGuideSheetHighlight(draft.kind == .load ? .loadSelection : .savedSelection,
+            control: .modalConfirm, store: store)
       }
     }.padding(20).frame(width:380)
       .onAppear { copyNameFocused = draft.kind == .duplicate }
