@@ -4,6 +4,132 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class MultichannelOrderTests: XCTestCase {
+  func testCMYKReturnWithSavedSpotsAfterPSDAndPSBReopen() throws {
+    var source = try InkModeInputTests().source(.cmyk, depth: .u16)
+    let original = try XCTUnwrap(source.layers[0].nativeMode)
+    var display = PSDWriter()
+    for value in [2, 21235, 51500, 39700, 56535, 67] { display.n(value, 2) }
+    display.n(2, 1)
+    let violet = try PSDInkChannels.display(display.data)
+    var spot = try source.newSpotChannel(name: "Owned Indigo",
+      ink: SpotInk(color: violet.color, solidity: violet.opacity), density: Float(0xabcd) / 65535)
+    spot.psdDisplay = display.data
+    spot.psdIdentifier = 705
+    let mask = AlphaChannel(name: "Owned Mask", pixels: try Surface(width: 3, height: 1, depth: .u16, fill: .white))
+    let clear = try source.newSpotChannel(name: "Overprint Varnish",
+      ink: SpotInk(color: .white, solidity: 0.2), density: Float(0x1234) / 65535)
+    source.alphaChannels = [spot, mask, clear]
+    var separated = source
+    try InkModeInput.multichannel(in: source).apply(to: &separated)
+    for format in [PSDFileFormat.psd, .psb] {
+      let bytes = try PSDCodec.writeRasterLayers(separated, format: format, compositeCompression: .raw)
+      let reopened = try PSDCodec.read(bytes)
+      let planes = try reopened.multichannelRaster().plates
+      XCTAssertEqual(planes.count, 6)
+      var session = EditorSession(document: reopened)
+      let request = DocumentModeRequest(.init(mode: .cmyk, depth: .u16))
+      try session.execute(DocumentModeInput.command(request, in: reopened))
+      let returned = session.document
+      let channels = try XCTUnwrap(returned.alphaChannels)
+      XCTAssertEqual(channels.map(\.name), [spot.name, mask.name, clear.name])
+      XCTAssertEqual(channels.map(\.id), [planes[4].id, try XCTUnwrap(reopened.alphaChannels?.first?.id), planes[5].id])
+      XCTAssertEqual(channels[0].psdIdentifier, 705)
+      XCTAssertEqual(channels[0].psdDisplay, display.data)
+      XCTAssertEqual(channels[0].spot, spot.spot)
+      XCTAssertEqual(channels[0].pixels.pixel(x: 2, y: 0).r, Float(0xabcd) / 65535)
+      XCTAssertEqual(channels[1].pixels.pixel(x: 0, y: 0), .white)
+      XCTAssertEqual(channels[2].pixels.pixel(x: 1, y: 0).r, Float(0x1234) / 65535)
+      XCTAssertEqual(try returned.layers[0].nativeMode?.planes, try original.planes)
+
+      let saved = try PSDCodec.writeRasterLayers(returned, format: format, compositeCompression: .raw)
+      var header = PSDReader(data: saved)
+      _ = try header.bytes(12)
+      let channelCount = try header.u16()
+      let merged = Array(saved.suffix(channelCount * original.width * 2))
+      for component in 0..<4 {
+        for pixel in 0..<original.width {
+          let offset = (component * original.width + pixel) * 2
+          let word = UInt32(merged[offset]) << 8 | UInt32(merged[offset + 1])
+          XCTAssertEqual(word, 65535 - original.rawWord(component: component, index: pixel))
+        }
+      }
+      let again = try PSDCodec.read(saved)
+      XCTAssertEqual(try again.layers[0].nativeMode?.planes, try original.planes)
+      XCTAssertEqual(again.alphaChannels?.map(\.name), channels.map(\.name))
+      XCTAssertEqual(again.alphaChannels?.first?.psdDisplay, display.data)
+      XCTAssertEqual(again.alphaChannels?.first?.psdIdentifier, 705)
+      try session.undo()
+      XCTAssertEqual(session.document, reopened)
+    }
+  }
+
+  func testPagedCMYKReturnKeepsSpotAndExactCornerWordWithoutChangingCustomInkBehavior() throws {
+    let width = 300_000, height = 300_000
+    let last = width * height - 1
+    let process = try InkPlate.processSwatches.enumerated().map { index, swatch in
+      let plane = try InkPlane(width: width, height: height, depth: .u16, value: Float(index * 101) / 65535)
+        .replacing(offset: last, values: [Float(index + 0xdcba) / 65535])
+      return InkPlate(name: swatch.name, color: swatch.color, samples: plane)
+    }
+    let custom = InkPlate(name: "Dense Violet", color: Pixel(0.3, 0, 0.8), solidity: 0.74,
+      samples: try InkPlane(width: width, height: height, depth: .u16, value: Float(0x3400) / 65535)
+        .replacing(offset: last, values: [Float(0x129a) / 65535]))
+    let source = try CraftDocument(width: width, height: height, depth: .u16)
+      .replacingInkMode(.multichannel(.init(plates: process + [custom])))
+    let result = try source.convertingMode(.init(mode: .cmyk, depth: .u16))
+    let native = try XCTUnwrap(result.layers[0].nativeMode)
+    for index in process.indices {
+      XCTAssertEqual(native.rawWord(component: index, index: last), UInt32(index + 0xdcba))
+      XCTAssertEqual(native.rawWord(component: index, index: 0), UInt32(index * 101))
+    }
+    let spot = try XCTUnwrap(result.alphaChannels?.first)
+    XCTAssertEqual(spot.id, custom.id)
+    XCTAssertEqual(spot.pixels.pixel(x: 0, y: 0).r, Float(0x3400) / 65535)
+    XCTAssertEqual(spot.pixels.pixel(x: width - 1, y: height - 1).r, Float(0x129a) / 65535)
+    let archive = try NativeArchive.encodeChunked(result)
+    XCTAssertLessThan(archive.count, 1_000_000)
+    XCTAssertEqual(try NativeArchive.decodePaged(archive), result)
+
+    let bandHeight = 29
+    let band = try native.cropped(to: .init(x: 0, y: height - bandHeight, width: width, height: bandHeight))
+    var wide = try CraftDocument(width: width, height: bandHeight, depth: .u16)
+    wide.modeDescriptor = result.modeDescriptor
+    wide.layers[0].nativeMode = band
+    wide.layers[0].content = .raster(try band.surface())
+    let psb = try PSDCodec.writeRasterLayers(wide, format: .psb, compositeCompression: .rle)
+    var header = PSDReader(data: psb)
+    _ = try header.bytes(12)
+    let channelCount = try header.u16()
+    _ = try header.bytes(12)
+    _ = try header.section()
+    _ = try header.section()
+    _ = try header.section(lengthBytes: PSDFileFormat.psb.sectionLengthBytes)
+    let rows = try PSDChannelReader(header, width: width, height: bandHeight, depth: 16,
+      channels: channelCount, format: .psb)
+    for component in 0..<4 {
+      for y in 0..<bandHeight {
+        let row = try rows.nextRow()
+        if y == 0 || y == bandHeight - 1 {
+          let x = width - 1, offset = 2 * x
+          let word = UInt32(row[offset]) << 8 | UInt32(row[offset + 1])
+          XCTAssertEqual(word, 65535 - band.rawWord(component: component, index: y * width + x))
+        }
+      }
+    }
+
+    var small = try CraftDocument(width: 1, height: 1)
+    let samples = try InkPlane(width: 1, height: 1, value: 0.75)
+    var altered = process.map { InkPlate(name: $0.name, color: $0.color, samples: samples) }
+    altered[0].color = Pixel(1, 0, 0)
+    altered.append(InkPlate(name: custom.name, color: custom.color, samples: samples))
+    small = try small.replacingInkMode(.multichannel(.init(plates: altered)))
+    let previousBehavior = try small.convertingMode(.init(mode: .cmyk, depth: .u8))
+    XCTAssertNil(previousBehavior.alphaChannels)
+    let composite = try XCTUnwrap(small.inkMode).surface()
+    let expected = try NativeModeRaster.converting(composite, to: .cmyk, depth: .u8)
+    XCTAssertEqual(try previousBehavior.layers[0].nativeMode?.planes, try expected.planes)
+  }
+
   func testSavedSpotSurvivesBothWaysOfEnteringMultichannelAndEveryContainerCompression() throws {
     var source = try InkModeInputTests().source(.cmyk, depth: .u16)
     var display = PSDWriter()

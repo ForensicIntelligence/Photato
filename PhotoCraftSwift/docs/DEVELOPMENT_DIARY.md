@@ -1,3 +1,11 @@
+## 2026-11-19 — Step 633 — Return standard Multichannel plates to editable CMYK
+
+Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
+
+All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](DEVLOG.md#dev-step-633) · [Validation](SOURCE_PUBLICATION_633.md).
+
 ## 2026-11-19 — Step 632 — Keep native CMYK and Lab components when flattening to Multichannel
 
 Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink.
@@ -1057,14 +1065,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:632 -->
+<!-- current-status-step:633 -->
 ## Current development status — 19 November 2026
 
-Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink.
+Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
 
-All 1,136 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 632](SOURCE_PUBLICATION_632.md) · [Detailed record](DEVLOG.md#dev-step-632).
+[Source checkpoint 633](SOURCE_PUBLICATION_633.md) · [Detailed record](DEVLOG.md#dev-step-633).
 
 <!-- current-status:end -->
 
@@ -1903,6 +1911,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 630 | [Keep Workflow Guide highlights visible across controls and dialogs](DEVLOG.md#dev-step-630) |
 | 2026-11-19 | 631 | [Preserve spot inks in Multichannel Photoshop files](DEVLOG.md#dev-step-631) |
 | 2026-11-19 | 632 | [Keep native CMYK and Lab components when flattening to Multichannel](DEVLOG.md#dev-step-632) |
+| 2026-11-19 | 633 | [Return standard Multichannel plates to editable CMYK](DEVLOG.md#dev-step-633) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

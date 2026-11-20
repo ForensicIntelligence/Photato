@@ -115,9 +115,7 @@ public enum InkModeInput {
 
   private static func printingPlates(_ document: CraftDocument, retaining indices: [Int]) throws -> MultichannelRaster {
     let native = try retainedLayeredComponents(document, indices: indices) ?? components(document)
-    let process: [(String, Pixel)] = [("Cyan", Pixel(0, 0.682, 0.937)),
-      ("Magenta", Pixel(0.925, 0, 0.549)), ("Yellow", Pixel(1, 0.949, 0)),
-      ("Black", Pixel(0.137, 0.122, 0.125))]
+    let process = InkPlate.processSwatches
     let definitions: [(String, Pixel)]
     switch native.mode {
     case .rgb: definitions = Array(process.prefix(3))

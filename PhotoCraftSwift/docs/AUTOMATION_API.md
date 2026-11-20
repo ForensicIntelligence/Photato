@@ -1,3 +1,7 @@
+### Return to CMYK with spot inks (checkpoint 633)
+
+When converting Multichannel to CMYK through `document.convertMode`, the standard ordered Cyan, Magenta, Yellow and Black plates become native process components if they have the expected swatches and zero Solidity. Additional plates become spot channels. Existing saved masks keep their relative order with those spots. A same-depth return retains the process and spot samples. PSD and PSB file output uses the same process words in the merged preview for an aligned opaque CMYK layer. The authenticated catalogue describes this under `documentModes.multichannelCMYKReturn`. Command, permission, archive and Adobe v2 schemas retain their existing formats.
+
 ### Layered Multichannel conversion (checkpoint 632)
 
 When `mergeVisible` is true, `document.convertMultichannel` and `channel.deleteProcess` now compute the requested separations from eligible native CMYK and Lab raster stacks using the same component compositor. Eligible inputs are ungrouped Normal layers with retained components and supported masks. Hidden artwork is excluded. The catalogue lists `cmyk` and `lab` under `inkModes.largeMultichannel.nativeLayeredSeparationModes`. Payloads, permissions, Undo and result schemas keep their existing formats. Firefly v2 has no separate process-separation conversion route.

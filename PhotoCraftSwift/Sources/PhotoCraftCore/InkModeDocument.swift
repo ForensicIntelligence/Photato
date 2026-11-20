@@ -164,6 +164,36 @@ extension CraftDocument {
     if let channel = quickMask { quickMask = try channel.convertedCoverage(to:outputDepth) }
   }
 
+  private func returningCMYKPlates(_ raster: MultichannelRaster) -> ArraySlice<InkPlate>? {
+    let expected = InkPlate.processSwatches
+    guard raster.plates.count > expected.count else { return nil }
+    let process = raster.plates.prefix(expected.count)
+    // Names and the encoded 16-bit swatches survive the normal PSD/PSB writer.
+    // A custom ink set needs an explicit component mapping.
+    guard zip(process, expected).allSatisfy({ pair in
+      let (plate, swatch) = pair
+      return plate.name == swatch.name && plate.solidity == 0
+        && plate.color.quantized(.u16) == swatch.color.quantized(.u16)
+    }) else { return nil }
+    return process
+  }
+
+  private func returningSpotChannels(_ plates: ArraySlice<InkPlate>) throws -> [AlphaChannel] {
+    var channels = Dictionary(uniqueKeysWithValues: (alphaChannels ?? []).map { ($0.id, $0) })
+    for plate in plates {
+      var spot = AlphaChannel(id: plate.id, name: plate.name, pixels: try plate.samples.surface(),
+        spot: SpotInk(color: plate.color, solidity: plate.solidity))
+      if let record = sourceMetadata?[InkPlate.psdDisplayKey(plate.id)], record.count == 13 {
+        spot.psdDisplay = record
+      }
+      if let id = sourceMetadata?[InkPlate.psdIdentifierKey(plate.id)], id.count == 4 {
+        spot.psdIdentifier = id.reduce(UInt32(0)) { ($0 << 8) | UInt32($1) }
+      }
+      channels[spot.id] = spot
+    }
+    return multichannelChannelOrder.compactMap { channels[$0] }
+  }
+
   /// PhotoCraft's matching-channel conversion interprets plate samples as target
   /// components. Otherwise conversion preserves the printed ink appearance.
   /// Duotone -> Gray recovers its original gray data, independent of ink colors.
@@ -173,7 +203,8 @@ extension CraftDocument {
     }
     let descriptor = try DocumentModeDescriptor(mode: request.mode, depth: request.depth,
       profile: request.profile, intent: request.intent)
-    let native: NativeModeRaster
+    var direct: NativeModeRaster?
+    var outputChannels = alphaChannels
     switch inkMode {
     case .duotone(let raster) where request.mode == .grayscale:
       var gray = try NativeModeRaster(width: width, height: height, mode: .grayscale,
@@ -183,41 +214,31 @@ extension CraftDocument {
         try gray.set(raster.gray.value(at: i), component: 0, index: i)
         try gray.set(1, component: 1, index: i)
       }
-      native = try gray.converted(to: request.mode, depth: request.depth,
+      direct = try gray.converted(to: request.mode, depth: request.depth,
         profile: descriptor.profile, intent: request.intent)
-    case .multichannel(let raster) where raster.plates.count == request.mode.componentCount:
-      // First interpret integer plates in the target's integer space, then
-      // perform any requested profile/depth conversion (including linear32).
-      let inputProfile = request.depth == .f32 ? nil : request.profile
-      if inkMode.requiresPagedArchive {
-        let components = try NativeModeRaster.interpretingPrintingPlates(raster, as: request.mode,
-          profile: inputProfile, intent: request.intent)
-        native = try components.converted(to: request.mode, depth: request.depth,
-          profile: descriptor.profile, intent: request.intent, pagedOutput: true)
-        break
+    case .multichannel(let raster):
+      var process = raster
+      if request.mode == .cmyk, let plates = returningCMYKPlates(raster) {
+        process = try MultichannelRaster(plates: Array(plates))
+        outputChannels = try returningSpotChannels(raster.plates.dropFirst(plates.count))
       }
-      var components = try NativeModeRaster(width: width, height: height, mode: request.mode,
-        depth: raster.depth, profile: inputProfile, intent: request.intent)
-      for i in 0..<width * height {
-        if i % 4096 == 0 { try Task.checkCancellation() }
-        for c in raster.plates.indices {
-          let v = raster.plates[c].samples.value(at: i)
-          try components.set(request.mode == .cmyk ? v : 1 - v, component: c, index: i)
-        }
-        try components.set(1, component: request.mode.componentCount, index: i)
+      if process.plates.count == request.mode.componentCount {
+        let components = try NativeModeRaster.interpretingPrintingPlates(process, as: request.mode,
+          profile: request.depth == .f32 ? nil : request.profile, intent: request.intent)
+        direct = try components.converted(to: request.mode, depth: request.depth,
+          profile: descriptor.profile, intent: request.intent, pagedOutput: inkMode.requiresPagedArchive)
       }
-      native = try components.converted(to: request.mode, depth: request.depth,
-        profile: descriptor.profile, intent: request.intent)
-    default:
-      native = try NativeModeRaster.converting(inkMode.surface(), to: request.mode,
-        depth: request.depth, profile: descriptor.profile, intent: request.intent, pagedOutput: inkMode.requiresPagedArchive)
+    default: break
     }
+    let native = try direct ?? NativeModeRaster.converting(inkMode.surface(), to: request.mode,
+      depth: request.depth, profile: descriptor.profile, intent: request.intent, pagedOutput: inkMode.requiresPagedArchive)
     var result = self
     var layer = Layer(name: "Background", content: .raster(try native.surface()))
     layer.id = activeLayerID ?? id; layer.nativeMode = native
     result.layers = [layer]; result.activeLayerID = layer.id
     result.inkMode = nil; result.restrictedMode = nil; result.workingICC = nil
     result.modeDescriptor = descriptor; result.depth = request.depth
+    result.alphaChannels = outputChannels
     try result.convertAuxiliaryChannelDepth(to: request.depth)
     try result.validate(); return result
   }

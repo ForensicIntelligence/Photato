@@ -651,7 +651,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 630 | 2026-11-19 | [Keep Workflow Guide highlights visible across controls and dialogs](#dev-step-630) |
 | 631 | 2026-11-19 | [Preserve spot inks in Multichannel Photoshop files](#dev-step-631) |
 | 632 | 2026-11-19 | [Keep native CMYK and Lab components when flattening to Multichannel](#dev-step-632) |
+| 633 | 2026-11-19 | [Return standard Multichannel plates to editable CMYK](#dev-step-633) |
 <!-- history-index:end -->
+
+<a id="dev-step-633"></a>
+
+## 2026-11-19 — Return standard Multichannel plates to editable CMYK
+
+Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
+
+All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](CMYK_INK_RETURN_633.md) · [Qualification](SOURCE_PUBLICATION_633.md).
 
 <a id="dev-step-632"></a>
 

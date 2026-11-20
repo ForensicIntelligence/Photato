@@ -5,6 +5,49 @@ import XCTest
 @testable import PhotoCraft
 
 final class InkModeArchiveWorkflowTests: XCTestCase {
+  @MainActor func testReopenedMultichannelCMYKReturnMatchesNativePreviewAndHTTP() async throws {
+    let values: [UInt32] = [4200, 15000, 27800, 56800]
+    let builder = try NativeModeRaster.RowBuilder(width: 2, height: 1, mode: .cmyk, depth: .u16)
+    for index in values.indices { try builder.fill(component: index, word: values[index]) }
+    try builder.fill(component: 4, word: 65535)
+    let native = try builder.finish()
+    var source = try CraftDocument(width: 2, height: 1, depth: .u16)
+    source.modeDescriptor = try .init(mode: .cmyk, depth: .u16, profile: native.profile)
+    source.layers[0].nativeMode = native; source.layers[0].content = .raster(try native.surface())
+    let foil = try source.newSpotChannel(name: "Owned foil",
+      ink: SpotInk(color: Pixel(1, 0, 0), solidity: 0.62), density: Float(0xebae) / 65535)
+    source.alphaChannels = [foil]
+    var separated = source
+    try InkModeInput.multichannel(in: source).apply(to: &separated)
+    let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(separated, format: .psb))
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let store = document.store
+      store.session = EditorSession(document: reopened)
+      try service.share(document)
+      store.beginDocumentMode(.cmyk, depth: .u16)
+      let workspace = try XCTUnwrap(store.documentModeWorkspace)
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "The CMYK preview did not finish.")
+      XCTAssertEqual(store.document, reopened)
+      store.commitDocumentMode()
+      await workspace.commitTask?.value
+      XCTAssertNil(workspace.error)
+      let restored = store.document
+      let components = try XCTUnwrap(restored.layers[0].nativeMode)
+      XCTAssertEqual(values.indices.map { components.rawWord(component: $0, index: 1) }, values)
+      XCTAssertEqual(restored.alphaChannels?.first?.name, foil.name)
+      XCTAssertEqual(restored.alphaChannels?.first?.spot, foil.spot)
+      XCTAssertEqual(restored.alphaChannels?.first?.pixels.pixel(x: 1, y: 0).r, Float(0xebae) / 65535)
+      await store.undo()
+      XCTAssertEqual(store.document, reopened)
+
+      let response = try await helper.edit(service, document, "document.convertMode", ["mode": "cmyk", "depth": 16])
+      XCTAssertEqual(response, 200)
+      XCTAssertEqual(store.document, restored)
+    }
+  }
+
   @MainActor func testLayeredCMYKPreviewAndHTTPShareAllFourNativePlates() async throws {
     var source = try CraftDocument(width: 2, height: 1, depth: .u16)
     let backWords: [UInt32] = [4900, 15400, 28500, 49700]

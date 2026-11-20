@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **632** · The 10 most recent entries, newest first.
+Source build **633** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 633 — Return standard Multichannel plates to editable CMYK
+
+Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
+
+All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-633) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_633.md).
 
 ## 2026-11-19 — Step 632 — Keep native CMYK and Lab components when flattening to Multichannel
 
@@ -75,11 +83,3 @@ Duplicate Channel uses native numerical samples and the dimensions, depth and ch
 All 25 selected development cases passed, including ownership, cancellation and document history.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-624).
-
-## 2026-11-19 — Step 623 — Convert layerless ink documents back to editable image modes
-
-Mode conversion can use the retained native separations and preserves supported large ink rasters. The Image Mode menu and Photato API share the conversion.
-
-The development runs covered exact native component samples, mode round trips and large workspaces. The publication gate is the combined 628 matrix.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-623).

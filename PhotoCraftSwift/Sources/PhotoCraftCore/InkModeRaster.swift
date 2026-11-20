@@ -124,6 +124,13 @@ public struct DuotoneRaster: Codable, Equatable, Sendable {
   }
 }
 public struct InkPlate: Codable, Equatable, Identifiable, Sendable {
+  package static let processSwatches: [(name: String, color: Pixel)] = [
+    ("Cyan", Pixel(0, 0.682, 0.937)), ("Magenta", Pixel(0.925, 0, 0.549)),
+    ("Yellow", Pixel(1, 0.949, 0)), ("Black", Pixel(0.137, 0.122, 0.125)),
+  ]
+  package static func psdDisplayKey(_ id: UUID) -> String { "psdInkDisplay." + id.uuidString }
+  package static func psdIdentifierKey(_ id: UUID) -> String { "psdInkIdentifier." + id.uuidString }
+
   public var id: UUID
   public var name: String
   public var color: Pixel

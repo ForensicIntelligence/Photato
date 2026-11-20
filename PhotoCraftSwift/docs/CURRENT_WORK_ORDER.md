@@ -1,3 +1,5 @@
+**Source checkpoint 633.** Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip. [Qualification](SOURCE_PUBLICATION_633.md).
+
 **Source checkpoint 632.** Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink. [Qualification](SOURCE_PUBLICATION_632.md).
 
 **Source checkpoint 631.** Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier. [Qualification](SOURCE_PUBLICATION_631.md).

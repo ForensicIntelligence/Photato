@@ -1656,13 +1656,25 @@ public enum PSDCodec {
       || Renderer.groupCompositionExceedsBudget(doc,region:.init(x:0,y:0,width:doc.width,height:doc.height)))
       ? PSDCompositeRows(doc,transparency:mergedTransparency):nil
     let sparseComposite = try pagedComposite?.sparseRows()
-    let pagedModeComposite = try gray32Composite == nil && doc.modeDescriptor != nil
+    // An aligned opaque CMYK layer already is the composite in its native space.
+    // Separate spot channels are emitted independently below.
+    let retainedCMYK = doc.colorMode == .cmyk && doc.layers.count == 1
+      && InkModeInput.isAlignedRaster(doc.layers[0], in: doc)
+      && doc.layers[0].nativeMode?.isOpaque == true ? doc.layers[0].nativeMode : nil
+    let retainedCMYKRows: PSDNativeRowSupport?
+    if let retainedCMYK, retainedCMYK.requiresPagedArchive {
+      retainedCMYKRows = try PSDNativeRowSupport(width: doc.width, height: doc.height,
+        streams: (0..<colorChannels).map(retainedCMYK.storedComponentRanges))
+    } else { retainedCMYKRows = nil }
+    let pagedModeComposite = try gray32Composite == nil && retainedCMYK == nil && doc.modeDescriptor != nil
       && (doc.width > NativeModeRaster.maximumPixels / doc.height || doc.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }))
       ? PSDModeCompositeRows(doc) : nil
-    let composite = try gray32Composite == nil && pagedComposite == nil && pagedModeComposite == nil
+    let composite = try gray32Composite == nil && pagedComposite == nil && pagedModeComposite == nil && retainedCMYK == nil
       ? Renderer.composite(doc) : nil
     let nativeComposite: NativeModeRaster?
-    if let composite, let descriptor = doc.modeDescriptor {
+    if let retainedCMYK {
+      nativeComposite = retainedCMYK
+    } else if let composite, let descriptor = doc.modeDescriptor {
       nativeComposite = try NativeModeRaster.converting(composite, to: descriptor.mode,
         depth: doc.depth, profile: descriptor.profile, intent: descriptor.intent)
     } else {
@@ -1670,13 +1682,15 @@ public enum PSDCodec {
     }
     let imageChannels = colorChannels + (mergedTransparency ? 1 : 0)
     let repeatedRows: ((Int) -> Int)?
-    if sparseComposite != nil || gray32Composite?.usesSparseRows == true || storedAuxiliary.contains(where: { $0 != nil }) {
+    if sparseComposite != nil || gray32Composite?.usesSparseRows == true || retainedCMYKRows != nil
+      || storedAuxiliary.contains(where: { $0 != nil }) {
       repeatedRows = { index in
         let channel = index / doc.height, y = index % doc.height
         if channel >= imageChannels {
           return storedAuxiliary[channel - imageChannels]?.repeatedRows(from: y) ?? 1
         }
-        return gray32Composite?.repeatedRows(from: y) ?? sparseComposite?.repeatedRows(from: y) ?? 1
+        return gray32Composite?.repeatedRows(from: y) ?? sparseComposite?.repeatedRows(from: y)
+          ?? retainedCMYKRows?.repeatedRows(from: y) ?? 1
       }
     } else { repeatedRows = nil }
     try PSDChannelWriter.write(width: doc.width, height: doc.height, depth: depth,
@@ -1689,6 +1703,11 @@ public enum PSDCodec {
         if let sparseComposite { return try sparseComposite.row(y, channel: channel, depth: depth) }
         if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}
         if let pagedModeComposite {return try pagedModeComposite.row(y,channel:channel,depth:depth)}
+        if let retainedCMYK, let retainedCMYKRows {
+          return try retainedCMYKRows.row(y, depth: depth) { position in
+            PSDModeStorage.mergedSample(retainedCMYK, component: channel, index: position)
+          }
+        }
         var bytes: [UInt8] = []
         bytes.reserveCapacity(doc.width * (depth / 8))
         for x in 0..<doc.width {

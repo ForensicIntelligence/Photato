@@ -16,8 +16,8 @@ enum PSDInkChannels {
     var raw: Data
   }
   static let resourceIDs: Set<Int> = [1006, 1007, 1022, 1045, 1053, 1066, 1067, 1077]
-  static func key(_ id: UUID) -> String { "psdInkDisplay." + id.uuidString }
-  static func identifierKey(_ id:UUID)->String {"psdInkIdentifier."+id.uuidString}
+  static func key(_ id: UUID) -> String { InkPlate.psdDisplayKey(id) }
+  static func identifierKey(_ id: UUID) -> String { InkPlate.psdIdentifierKey(id) }
 
   static func names(_ blocks: [PSDImageResources.Block], count: Int) throws -> [String] {
     var names: [String] = []
