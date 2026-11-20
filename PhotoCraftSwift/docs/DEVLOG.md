@@ -652,7 +652,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 631 | 2026-11-19 | [Preserve spot inks in Multichannel Photoshop files](#dev-step-631) |
 | 632 | 2026-11-19 | [Keep native CMYK and Lab components when flattening to Multichannel](#dev-step-632) |
 | 633 | 2026-11-19 | [Return standard Multichannel plates to editable CMYK](#dev-step-633) |
+| 634 | 2026-11-19 | [Print native CMYK and saved spot separations](#dev-step-634) |
 <!-- history-index:end -->
+
+<a id="dev-step-634"></a>
+
+## 2026-11-19 — Print native CMYK and saved spot separations
+
+Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
+
+All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Development record](PRINT_SEPARATIONS_634.md) · [Qualification](SOURCE_PUBLICATION_634.md).
 
 <a id="dev-step-633"></a>
 

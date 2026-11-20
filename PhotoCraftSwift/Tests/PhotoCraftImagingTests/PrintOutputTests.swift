@@ -5,6 +5,96 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PrintOutputTests: XCTestCase {
+  func testLayeredCMYKPrintsExactProcessAndSpotPagesWithoutSavedMasks() throws {
+    let width = 2
+    let bottomWords: [UInt32] = [4000, 14000, 29000, 52000]
+    let topWords: [UInt32] = [9000, 25000, 46000, 8300]
+    let bottom = try NativeModeRaster.RowBuilder(width: width, height: 1, mode: .cmyk, depth: .u16)
+    let top = try NativeModeRaster.RowBuilder(width: 1, height: 1, mode: .cmyk, depth: .u16)
+    for index in 0..<4 {
+      try bottom.fill(component: index, word: bottomWords[index])
+      try top.fill(component: index, word: topWords[index])
+    }
+    let alpha: UInt32 = 16001
+    try bottom.fill(component: 4, word: 65535)
+    try top.fill(component: 4, word: alpha)
+    let base = try bottom.finish(), patch = try top.finish()
+    var d = try document(width: width, height: 1).convertingMode(.init(mode: .cmyk, depth: .u16))
+    d.layers[0].nativeMode = base
+    d.layers[0].content = .raster(try base.surface())
+    var layer = Layer(name: "Ink patch", content: .raster(try patch.surface()))
+    layer.nativeMode = patch
+    d.layers.append(layer)
+    var hidden = Layer(name: "Hidden fill", content: .fill(.black))
+    hidden.visible = false
+    d.layers.append(hidden)
+    let density = Float(0x4567) / 65535
+    let spot = try d.newSpotChannel(name: "Spot Indigo",
+      ink: SpotInk(color: Pixel(0.4, 0.1, 0.9), solidity: 0.21), density: density)
+    let mask = AlphaChannel(name: "Saved Selection", pixels: try Surface(width: width, height: 1, depth: .u16))
+    d.alphaChannels = [mask, spot]
+    d.selection = .init(x: 0, y: 0, width: 1, height: 1)
+
+    var settings = PrintSettings()
+    settings.content = .separations
+    settings.sixteenBit = true
+    let output = try PrintOutput.prepare(d, settings: settings)
+    XCTAssertEqual(output.pages.map(\.label), ["Cyan", "Magenta", "Yellow", "Black", "Spot Indigo"])
+    for (component, page) in output.pages.prefix(4).enumerated() {
+      let ink = (Int(bottomWords[component]) * Int(65535 - alpha) + Int(topWords[component]) * Int(alpha) + 32767) / 65535
+      let untouched = Int(65535 - bottomWords[component])
+      XCTAssertEqual(try grayWords(page), [UInt16(65535 - ink), UInt16(untouched)])
+    }
+    XCTAssertEqual(try grayWords(XCTUnwrap(output.pages.last)), [0xba98, 0xba98])
+    settings.selectedArea = true
+    let crop = try PrintOutput.prepare(d, settings: settings)
+    XCTAssertEqual(crop.layout.source, d.selection)
+    XCTAssertEqual(try grayWords(XCTUnwrap(crop.pages.last)), [0xba98])
+    XCTAssertEqual(d.alphaChannels?[1], spot)
+
+    var rich = d
+    rich.layers[1].blendMode = .multiply
+    XCTAssertThrowsError(try PrintOutput.prepare(rich, settings: settings))
+  }
+
+  func testInkPrintOrderIncludesSpotsAndSkipsMaskRows() throws {
+    let width = 2
+    let cyan = InkPlate(name: "Cyan", color: Pixel(0, 1, 1),
+      samples: try InkPlane(width: width, height: 1, depth: .u16, value: Float(0x1111) / 65535))
+    let black = InkPlate(name: "Black", color: .black,
+      samples: try InkPlane(width: width, height: 1, depth: .u16, value: Float(0x3333) / 65535))
+    let source = try CraftDocument(width: width, height: 1, depth: .u16)
+    let spot = try source.newSpotChannel(name: "Spot", ink: .init(color: Pixel(1, 0, 0), solidity: 0.79),
+      density: Float(0x2222) / 65535)
+    let mask = AlphaChannel(name: "Saved Mask", pixels: try Surface(width: width, height: 1, depth: .u16))
+    var multi = try source.replacingInkMode(.multichannel(.init(plates: [cyan, black])))
+    multi.alphaChannels = [mask, spot]
+    try multi.setMultichannelChannelOrder([cyan.id, mask.id, spot.id, black.id])
+    var settings = PrintSettings()
+    settings.content = .separations
+    settings.sixteenBit = true
+    let multiOutput = try PrintOutput.prepare(multi, settings: settings)
+    XCTAssertEqual(multiOutput.pages.map(\.label), ["Cyan", "Spot", "Black"])
+    XCTAssertEqual(try multiOutput.pages.map(grayWords), [[0xeeee, 0xeeee], [0xdddd, 0xdddd], [0xcccc, 0xcccc]])
+
+    let gray = try InkPlane(width: width, height: 1, depth: .u8, value: 0.5)
+    var duo = try source.replacingInkMode(.duotone(.init(gray: gray, settings: .init())))
+    duo.alphaChannels = try [spot.convertedCoverage(to: .u8), mask.convertedCoverage(to: .u8)]
+    settings.sixteenBit = false
+    let duoOutput = try PrintOutput.prepare(duo, settings: settings)
+    XCTAssertEqual(duoOutput.pages.map(\.label), ["Black", "Spot"])
+    let spotBytes = try XCTUnwrap(duoOutput.pages[1].image.dataProvider?.data as Data?)
+    XCTAssertEqual(Array(spotBytes), [221, 221])
+  }
+
+  private func grayWords(_ page: PrintPage) throws -> [UInt16] {
+    let data = try XCTUnwrap(page.image.dataProvider?.data as Data?)
+    XCTAssertEqual(page.image.bitsPerComponent, 16)
+    return stride(from: 0, to: data.count, by: 2).map {
+      UInt16(data[$0]) << 8 | UInt16(data[$0 + 1])
+    }
+  }
+
   func document(width: Int = 300, height: Int = 600) throws -> CraftDocument {
     var d = try CraftDocument(width: width, height: height); d.resolution = 300
     d.layers = [Layer(name: "Owned print fixture", content: .raster(try Surface(width: width, height: height, fill: Pixel(0.2, 0.4, 0.8))))]

@@ -1,5 +1,6 @@
 import AppKit
 import CoreGraphics
+import PDFKit
 import PhotoCraftCore
 import PhotoCraftImaging
 import XCTest
@@ -7,6 +8,46 @@ import SwiftUI
 @testable import PhotoCraft
 
 final class PrintWorkflowTests: XCTestCase {
+  @MainActor func testNativeSeparationPreviewAndHTTPPDFIncludeTheSameNamedSpotPage() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let store = document.store
+      var source = try store.document.convertingMode(.init(mode: .cmyk, depth: .u16))
+      let spot = try source.newSpotChannel(name: "Spot Indigo", ink: .init(color: Pixel(0, 0, 1), solidity: 0.7), density: 0.5)
+      let mask = AlphaChannel(name: "Saved Selection", pixels: try Surface(width: source.width, height: source.height, depth: .u16))
+      source.alphaChannels = [mask, spot]
+      store.session = EditorSession(document: source)
+      try service.share(document)
+
+      document.beginPrint()
+      let preview = try XCTUnwrap(store.printWorkspace)
+      await preview.task?.value
+      preview.settings.content = .separations
+      preview.settings.sixteenBit = true
+      preview.refresh()
+      await preview.task?.value
+      let pages = try XCTUnwrap(preview.output, preview.error ?? "No plate preview.").pages
+      let names = ["Cyan", "Magenta", "Yellow", "Black", spot.name]
+      XCTAssertEqual(pages.map(\.label), names)
+      preview.accept(printNow: false)
+      XCTAssertEqual(store.printSettings.content, .separations)
+
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let response = try await helper.request(service, path: "/v1/documents/\(id)/print.pdf")
+      XCTAssertEqual(response.0.statusCode, 200)
+      let pdf = try XCTUnwrap(PDFDocument(data: response.1))
+      XCTAssertEqual(pdf.pageCount, names.count)
+      for (index, name) in names.enumerated() {
+        XCTAssertTrue(try XCTUnwrap(pdf.page(at: index)?.string).contains(name))
+      }
+      XCTAssertEqual(store.document, source)
+      XCTAssertTrue(store.session.undoStack.isEmpty)
+      XCTAssertFalse(document.isDocumentEdited)
+      let capability = try XCTUnwrap(PrintAPI.capabilities["separations"] as? [String: Any])
+      XCTAssertEqual(capability["savedSpotChannels"] as? Bool, true)
+    }
+  }
+
   @MainActor func testSettingsPDFAndAPILeavePixelsHistoryAndDirtyStateUntouched() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, document in

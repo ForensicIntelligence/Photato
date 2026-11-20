@@ -1,3 +1,7 @@
+### Print separation pages (checkpoint 634)
+
+Set `print.configure` with `settings.content: "separations"` to prepare individual grayscale pages. The shared native output emits the process and saved spot planes for flat or eligible layered CMYK, Duotone and Multichannel. Multichannel follows the relative order of printing plates and saved spots. Ordinary selection masks do not become pages. Use `settings.sixteenBit: true` for 16-bit image samples. The existing `/v1/documents/{id}/print.pdf` route and printer permission rules apply. Supported cases are described under `printing.separations` in the authenticated catalogue.
+
 ### Return to CMYK with spot inks (checkpoint 633)
 
 When converting Multichannel to CMYK through `document.convertMode`, the standard ordered Cyan, Magenta, Yellow and Black plates become native process components if they have the expected swatches and zero Solidity. Additional plates become spot channels. Existing saved masks keep their relative order with those spots. A same-depth return retains the process and spot samples. PSD and PSB file output uses the same process words in the merged preview for an aligned opaque CMYK layer. The authenticated catalogue describes this under `documentModes.multichannelCMYKReturn`. Command, permission, archive and Adobe v2 schemas retain their existing formats.

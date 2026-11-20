@@ -661,6 +661,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-19 | 631 | [Preserve spot inks in Multichannel Photoshop files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-631) |
 | 2026-11-19 | 632 | [Keep native CMYK and Lab components when flattening to Multichannel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-632) |
 | 2026-11-19 | 633 | [Return standard Multichannel plates to editable CMYK](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-633) |
+| 2026-11-19 | 634 | [Print native CMYK and saved spot separations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-19 — Step 634 — Print native CMYK and saved spot separations
+
+Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
+
+All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_634.md).
+
 ## 2026-11-19 — Step 633 — Return standard Multichannel plates to editable CMYK
 
 Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
@@ -1067,14 +1075,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:633 -->
+<!-- current-status-step:634 -->
 ## Current development status — 19 November 2026
 
-Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
+Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
 
-All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
 
-[Source checkpoint 633](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_633.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-633).
+[Source checkpoint 634](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_634.md) · [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-634).
 
 <!-- current-status:end -->
 

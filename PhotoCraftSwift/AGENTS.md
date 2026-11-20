@@ -1,3 +1,5 @@
+**Source checkpoint 634.** Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork. [Qualification](docs/SOURCE_PUBLICATION_634.md).
+
 **Source checkpoint 633.** Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip. [Qualification](docs/SOURCE_PUBLICATION_633.md).
 
 **Source checkpoint 632.** Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink. [Qualification](docs/SOURCE_PUBLICATION_632.md).

@@ -191,21 +191,14 @@ public struct PreparedPrint: Sendable {
 }
 
 public enum PrintOutput {
+  private typealias Separation = (name: String, density: @Sendable (Int) -> Float)
+
   public static func prepare(_ document: CraftDocument, settings: PrintSettings, proof: ProofSettings = .init()) throws -> PreparedPrint {
     try Task.checkCancellation(); let layout = try PrintLayout(document: document, settings: settings), rect = layout.source
     let bits = settings.sixteenBit ? 16 : 8
     if settings.content == .separations {
-      var plates: [(String, @Sendable (Int) -> Float)] = []
-      if let ink = document.inkMode {
-        let raster: MultichannelRaster
-        switch ink { case .duotone(let value): raster = try value.separations(); case .multichannel(let value): raster = value }
-        try raster.validate()
-        for plate in raster.plates { plates.append((plate.name, { plate.samples.value(at: $0) })) }
-      } else if let native = SoftProof.retainedComponents(document), native.mode == .cmyk {
-        for (c, name) in ["Cyan", "Magenta", "Yellow", "Black"].enumerated() {
-          plates.append((name, { native.value(component: c, index: $0) * native.value(component: 4, index: $0) }))
-        }
-      } else { throw CraftError.unsupported("Separations require retained flat CMYK, Duotone or Multichannel samples. Flatten or convert the document first.") }
+      try document.validate()
+      let plates = try separations(document)
       guard rect.width * rect.height * (bits / 8) <= PreparedPrint.maximumBytes / plates.count else { throw CraftError.unsupported("Prepared separation pages exceed256 MiB.") }
       let pages = try plates.map { name, sample in
         let image = try bitmap(width: rect.width, height: rect.height, bits: bits, space: CGColorSpaceCreateDeviceGray()) { y in
@@ -252,6 +245,40 @@ public enum PrintOutput {
     }
     return PreparedPrint(settings: settings, layout: layout, pages: [PrintPage(image: image, label: hard ? "Hard Proof: " + proof.displayName : "Composite")], title: document.name)
   }
+
+  private static func separations(_ document: CraftDocument) throws -> [Separation] {
+    let width = document.width
+    let spots: [(UUID, Separation)] = (document.alphaChannels ?? []).compactMap { channel in
+      guard channel.spot != nil else { return nil }
+      return (channel.id, (channel.name, { index in
+        channel.pixels.pixel(x: index % width, y: index / width).r
+      }))
+    }
+    func separation(_ plate: InkPlate) -> Separation {
+      (plate.name, { plate.samples.value(at: $0) })
+    }
+    switch document.inkMode {
+    case .multichannel(let raster):
+      let available = Dictionary(uniqueKeysWithValues: raster.plates.map { ($0.id, separation($0)) } + spots)
+      return document.multichannelChannelOrder.compactMap { available[$0] }
+    case .duotone(let raster):
+      return try raster.separations().plates.map(separation) + spots.map(\.1)
+    case nil:
+      let mode = DocumentColorMode.cmyk
+      guard document.colorMode == mode, !document.hasArtboards, !document.hasFrames, document.artboardOrigin == nil,
+        let native = try SoftProof.retainedComponents(document)
+          ?? InkModeInput.retainedLayeredComponents(document, indices: Array(0..<mode.componentCount)) else {
+        throw CraftError.unsupported("Separations require retained CMYK, Duotone or Multichannel samples. Flatten complex layer stacks first.")
+      }
+      let process: [Separation] = mode.componentNames.enumerated().map { component, name in
+        (name, { index in
+          native.value(component: component, index: index) * native.value(component: mode.componentCount, index: index)
+        })
+      }
+      return process + spots.map(\.1)
+    }
+  }
+
   static func bitmap(width: Int, height: Int, bits: Int, space: CGColorSpace, row: (Int) throws -> [Float]) throws -> CGImage {
     let count = space.numberOfComponents, rowBytes = width * count * (bits / 8)
     guard rowBytes <= PreparedPrint.maximumBytes / height else { throw CraftError.unsupported("Prepared print image exceeds256 MiB.") }

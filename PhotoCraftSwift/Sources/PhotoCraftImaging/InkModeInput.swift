@@ -134,7 +134,7 @@ public enum InkModeInput {
 
   /// The existing gray component compositor preserves independent CMYK/Lab
   /// numbers in plain stacks. Render only the requested components.
-  private static func retainedLayeredComponents(_ document: CraftDocument, indices: [Int]) throws -> NativeModeRaster? {
+  static func retainedLayeredComponents(_ document: CraftDocument, indices: [Int]) throws -> NativeModeRaster? {
     guard let descriptor = document.modeDescriptor, [.cmyk, .lab].contains(descriptor.mode) else { return nil }
     let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
     guard !visible.isEmpty, visible.count > 1 || !isAlignedRaster(visible[0], in: document),

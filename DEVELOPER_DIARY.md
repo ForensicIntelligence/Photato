@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **633** · The 10 most recent entries, newest first.
+Source build **634** · The 10 most recent entries, newest first.
+
+## 2026-11-19 — Step 634 — Print native CMYK and saved spot separations
+
+Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
+
+All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
+
+[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_634.md).
 
 ## 2026-11-19 — Step 633 — Return standard Multichannel plates to editable CMYK
 
@@ -75,11 +83,3 @@ The shared spot-merge command keeps the expected component layout and performs o
 All 29 selected development cases passed. Exact comparison against Adobe-authored physical printing samples remains open.
 
 [Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-625).
-
-## 2026-11-19 — Step 624 — Duplicate channels into the current image or another document
-
-Duplicate Channel uses native numerical samples and the dimensions, depth and channel rules of the destination. The app and API share that path.
-
-All 25 selected development cases passed, including ownership, cancellation and document history.
-
-[Detailed record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-624).

@@ -1,0 +1,79 @@
+{
+  "build": 634,
+  "sourceInputs": 9236,
+  "casesPerConfiguration": 1163,
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationPrint.swift",
+      "sha256": "46c197121ad60378721db7210ceaac89d7679af02cc4b06e24183878a87d0c0e"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/InkModeInput.swift",
+      "sha256": "3a0c26b623bbdef8165624589ccfd1922a652b04cb62fdceebbefec29e3fe025"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PrintOutput.swift",
+      "sha256": "a9f481d4f85fee7e5eebc555ef392b4d100b33e1d4c4f49662476b19cfeb2d95"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PrintWorkflowTests.swift",
+      "sha256": "983e5d41774f2c52ea437f2f229d520e2ea3aa7c70f14b3c225ea2932f3d5e28"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PrintOutputTests.swift",
+      "sha256": "b22f91ae6b56e3151966d12ec0d3ef2d909ea71e0676de526b567e405f2d6435"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "1ff071088dfaee47552f17263927567f4cf63eba85188b7b1e1973c9838e6bdb"
+    }
+  ],
+  "configurations": {
+    "arm": {
+      "architecture": "arm64",
+      "appSHA256": "913fe897b92470fe31c147c6979358ff88910a645d2e794f71b9e3f44444c475",
+      "testBinarySHA256": "b3875d309bc002a180fe2d6bbc92e22ee2ba5c0ff86f060fe737be9369330660",
+      "passed": true
+    },
+    "debug": {
+      "architecture": "arm64",
+      "appSHA256": "c4a21587fb32b4b7d81b6e9e9bf55d41094446de25285397648168d6979eedd6",
+      "testBinarySHA256": "97587de45e1d0fad0dfa087457a0520498e11117ff83229864d501b7a5c3709e",
+      "passed": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "appSHA256": "bdc6cb60025e48859feb256bd39cc779bbacb3cd74a24057b709a3b80ea406cd",
+      "testBinarySHA256": "4ddb635c207b632d56f2d14744c061fb0e70e0d5a5e9c7c5f8497237891e5722",
+      "passed": true
+    }
+  },
+  "archive": {
+    "archiveSHA256": "3ddb6523b6abce5439f7551269324eab44c797ade20dddedfac922223d8c983e",
+    "architectures": "x86_64 arm64",
+    "minimumSystemMetadata": "14.0",
+    "extractedSignatureVerified": true
+  },
+  "offscreen": {
+    "arm64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c",
+        "bytes": 114115
+      }
+    },
+    "x86_64": {
+      "exit": 0,
+      "passed": true,
+      "png": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "234a1f38a77908aee07dac0fb4897b60af5f3ae57f1d1572ce36ec232251b71f",
+        "bytes": 122087
+      }
+    }
+  }
+}
