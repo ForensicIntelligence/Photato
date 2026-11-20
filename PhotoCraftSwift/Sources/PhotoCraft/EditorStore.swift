@@ -205,6 +205,7 @@ struct CanvasRenderRequest: Sendable {
     didSet {
       unavailableToolID = nil
       if oldValue != tool {
+        cancelPathMarquee()
         if Self.usesOrdinaryBrushSmoothing(oldValue) != Self.usesOrdinaryBrushSmoothing(tool) {
           switchBrushSmoothing()
         }
@@ -250,6 +251,7 @@ struct CanvasRenderRequest: Sendable {
   var pathTarget: PathTarget?
   var pathAnchor: PathAnchorSelection?
   var pathTransformSelection = PathTransformSelection.all
+  var pathMarquee: PathMarqueeGesture?
   var pathGesture: PathGesture?
   var freeformGesture: FreeformPathGesture?
   var pathSettingsRevision = 0

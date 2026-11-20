@@ -622,7 +622,7 @@ import UniformTypeIdentifiers
       !document.fileOperationBusy, !document.recoveryWriteBusy, document.copyPanel == nil,
       !store.geometryBusy, !store.aiBusy, !(allowRemove ? store.hasToneDraftExceptRemove : allowTypeEditing ? store.hasToneDraftExceptTypeEditing : store.hasToneDraft), store.channelVisibilitySweep == nil, store.transformDraft == nil || allowTransformReference,
       store.numericEditor == nil, store.layerNameDraft == nil, store.layerProtectionDraft == nil, !store.coalescingChanges,
-      store.pathGesture == nil, store.eyedropperGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
+      store.pathGesture == nil, store.pathMarquee == nil, store.eyedropperGesture == nil, store.geometrySheet == nil, !store.showFeatherSelection,
       store.patternNameDraft == nil, store.gradientNameDraft == nil, !store.showAI,
       !store.showImagePlayground, store.error == nil, document.windowForSheet?.attachedSheet == nil,
       NSApp?.modalWindow == nil, !documentPointerActive

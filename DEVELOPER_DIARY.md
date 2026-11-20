@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **672** · The 10 most recent entries, newest first.
+Source build **673** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 673 — Select path anchors with a Direct Selection marquee
+
+Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
+
+All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The marquee operates on the active path. Simultaneous path selection across layers and exact Photoshop hit testing, modifiers and cursor comparisons remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-673) · [Details](PhotoCraftSwift/docs/DIRECT_SELECTION_MARQUEE_673.md).
 
 ## 2026-11-20 — Step 672 — Transform selected paths, contours and anchors
 
@@ -75,11 +83,3 @@ Photoshop document manifests can include JPEG or PNG layer previews and exact co
 1,502 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the previous Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Direct Adobe-hosted comparison of thumbnail geometry, defaults and bytes remains open. The native encoder chooses its progressive JPEG scan count. Intel tests ran under Rosetta.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-664) · [Details](PhotoCraftSwift/docs/ADOBE_MANIFEST_ASSETS_664.md).
-
-## 2026-11-20 — Step 663 — Inspect Photoshop templates through the Adobe-compatible manifest
-
-The Adobe-compatible manifest reports Photoshop document and layer metadata. Use the returned layer IDs to edit the same PSD or PSB through create-composite.
-
-1,498 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional masked RGB32 test passed on Apple Silicon. On Intel, eight PSD composites matched the previous build byte for byte and reproduced its existing differences from the Photoshop fixtures. Both slices of the signed macOS 14+ universal preview launched offscreen. Layer thumbnails, original Smart Object extraction, full layer descriptors and comparisons with Adobe's hosted results remain open. Intel tests ran under Rosetta. The preview binaries declare macOS 14.0 as the minimum system version.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-663) · [Details](PhotoCraftSwift/docs/ADOBE_DOCUMENT_MANIFEST_663.md).

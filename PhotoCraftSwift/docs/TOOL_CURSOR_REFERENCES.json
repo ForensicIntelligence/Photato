@@ -1805,5 +1805,11 @@
     "qualification": "All 16 modifier combinations were checked around the selected path's corner. An AppKit Command-drag was followed through release, commit and Undo.",
     "remaining": "Independent Adobe glyph comparison and physical pointer testing remain open.",
     "reference": "docs/SOURCE_PUBLICATION_672.json"
+  },
+  "direct_selection_marquee_673": {
+    "native": "The Direct Selection marquee uses the path cursor with the Shift add badge while it captures an additive drag.",
+    "qualification": "AppKit mouse tests check the captured Shift cursor after Shift is released during the drag. Escape and focus loss restore the prior selection.",
+    "remaining": "Independent Adobe glyph comparison and physical pointer testing remain open.",
+    "reference": "docs/SOURCE_PUBLICATION_673.json"
   }
 }

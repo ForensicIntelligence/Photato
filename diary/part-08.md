@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 673 — Select path anchors with a Direct Selection marquee
+
+Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
+
+All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The marquee operates on the active path. Simultaneous path selection across layers and exact Photoshop hit testing, modifiers and cursor comparisons remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-673) · [Details](../PhotoCraftSwift/docs/DIRECT_SELECTION_MARQUEE_673.md).
+
 ## 2026-11-20 — Step 672 — Transform selected paths, contours and anchors
 
 Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action.

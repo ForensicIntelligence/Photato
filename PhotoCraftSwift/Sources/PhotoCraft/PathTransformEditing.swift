@@ -11,7 +11,7 @@ extension PathTransformSelection {
 @MainActor extension EditorStore {
   var canBeginPathTransform: Bool {
     guard let target = pathTarget, !editingComponent, !editingMask, !geometryBusy, !hasToneDraft,
-          transformDraft == nil, pathGesture == nil, freeformGesture == nil,
+          transformDraft == nil, pathGesture == nil, pathMarquee == nil, freeformGesture == nil,
           let path = try? PathTransform.editablePath(target, in: document) else { return false }
     return (try? PathTransform.bounds(path, selection: pathTransformSelection)) != nil
   }
@@ -49,11 +49,17 @@ extension PathTransformSelection {
     } catch { self.error = error.localizedDescription }
   }
 
-  func pathAnchorIsSelected(_ anchor: PathAnchorSelection) -> Bool {
-    switch selectionTransform?.vectorPreview?.selection ?? pathTransformSelection {
-    case .all: return pathAnchor == anchor
-    case .components(let values): return values.contains(anchor.component)
-    case .anchors(let values): return values.contains(anchor)
+  func pathAnchorHighlight() -> (PathAnchorSelection) -> Bool {
+    switch selectionTransform?.vectorPreview?.selection ?? pathMarquee?.preview ?? pathTransformSelection {
+    case .all:
+      let focus = pathAnchor
+      return { $0 == focus }
+    case .components(let values):
+      let components = Set(values)
+      return { components.contains($0.component) }
+    case .anchors(let values):
+      let anchors = Set(values)
+      return { anchors.contains($0) }
     }
   }
 

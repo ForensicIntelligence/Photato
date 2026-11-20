@@ -13,12 +13,13 @@ enum PathAPI {
   static func schema(_ key:String)->[String:Any]{switch key {
     case "fill":return PathFillAPI.schema
     case "path":return path
+    case "marquee":return BrushAPI.object(["start":point, "end":point],required:["start","end"])
     case "points":return ShapeAPI.array(point,4096,2)
     case "corners":return ShapeAPI.array(BrushAPI.number(0,4095,integer:true),4096)
     case "tolerance":return BrushAPI.number(0.5,10)
-    case "closed","workPath","stroke","simulatePressure","antiAlias":return BrushAPI.flag
+    case "closed","workPath","stroke","simulatePressure","antiAlias","extend":return BrushAPI.flag
     case "brush":return BrushAPI.brush
-    case "pathID","layerID":return ["type":"string","format":"uuid"]
+    case "pathID","layerID","vectorMaskLayerID":return ["type":"string","format":"uuid"]
     case "operation":return BrushAPI.enumeration(["save","delete","selection","vectorMask","vectorMaskProperties"])
     case "maskProperties":return vectorMaskPropertiesSchema
     case "method":return BrushAPI.enumeration(["freeform","curvature"])
@@ -45,9 +46,10 @@ enum PathAPI {
     var result = fields
     result["transformSelection"] = PathTransformAPI.selectionSchema
     result["canTransform"] = BrushAPI.flag
+    result["marqueePreview"] = ["anyOf": [["type": "null"], PathTransformAPI.selectionSchema]]
     return BrushAPI.object(result,required:Array(result.keys))
   }
-  static var capabilities:[String:Any]{["vectorMaskProperties":["operation":"path.edit with vectorMaskProperties, layerID and a nonempty maskProperties object.","schema":vectorMaskPropertiesSchema,"state":"layers[].vectorMask","geometry":"Settings edits retain the current vector path and share native undo."],"vectorFilling":["gradientAlignment":"A vector mask with a filled exterior does not crop an aligned gradient to its contour bounds. Finite custom shapes and text-inside layouts reject unbounded filled regions before publication; ordinary text-on-path follows its contour.","leadingSubtract":"The first Subtract component starts with its filled exterior; later Combine, Subtract, Intersect and Exclude are resolved before antialiasing. Final path inversion remains independent. Original component order and cubic handles are retained.","PSD":"PSD contours use Even-Odd filling. Import selects the native Even-Odd rule where it changes the region; equivalent rules retain their native representation. Even-Odd paths export through PSD/PSB. Nonzero paths whose region would change reject editable PSD transport instead of silently changing it.","finiteOutlines":"An unbounded exterior cannot become a finite custom-shape outline; use vector masks or selection coverage. Native92/Actions60 encoding and existing operation identities remain unchanged. Older builds have different leading-subtract rendering semantics.","qualification":"Owned Photoshop2026 RGB8 rectangle and joined-contour reference; all original AA/feather/wider path/component/platform/performance requirements remain open."],"fill":PathFillAPI.capabilities,"commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, multi-anchor editing, clipping-path export, full Fill Path history/contents/capacity/defaults and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
+  static var capabilities:[String:Any]{["marquee":["command":"path.configure","schema":schema("marquee"),"mode":"Replace by default. Set extend to add anchors without deselecting enclosed anchors.","state":"paths.transformSelection is the committed anchor list. paths.marqueePreview reports the native drag preview.","coordinates":"Document pixels, inclusive edges, either drag direction. No pixel selection, path geometry or history change."],"vectorMaskProperties":["operation":"path.edit with vectorMaskProperties, layerID and a nonempty maskProperties object.","schema":vectorMaskPropertiesSchema,"state":"layers[].vectorMask","geometry":"Settings edits retain the current vector path and share native undo."],"vectorFilling":["gradientAlignment":"A vector mask with a filled exterior does not crop an aligned gradient to its contour bounds. Finite custom shapes and text-inside layouts reject unbounded filled regions before publication; ordinary text-on-path follows its contour.","leadingSubtract":"The first Subtract component starts with its filled exterior; later Combine, Subtract, Intersect and Exclude are resolved before antialiasing. Final path inversion remains independent. Original component order and cubic handles are retained.","PSD":"PSD contours use Even-Odd filling. Import selects the native Even-Odd rule where it changes the region; equivalent rules retain their native representation. Even-Odd paths export through PSD/PSB. Nonzero paths whose region would change reject editable PSD transport instead of silently changing it.","finiteOutlines":"An unbounded exterior cannot become a finite custom-shape outline; use vector masks or selection coverage. Native92/Actions60 encoding and existing operation identities remain unchanged. Older builds have different leading-subtract rendering semantics.","qualification":"Owned Photoshop2026 RGB8 rectangle and joined-contour reference; all original AA/feather/wider path/component/platform/performance requirements remain open."],"fill":PathFillAPI.capabilities,"commands":commands,"pathSchema":path,"stateSchema":stateSchema,"resultSchema":["type":"object","required":["revision","paths"],"properties":["revision":["type":"string"],"paths":stateSchema]],"coordinates":"Document pixels, y downward. Full cubic handles retained. draw writes one path transaction; freeform fits sampled points, curvature interpolates anchors. path.configure layerID selects a shape path for native direct selection; shape.edit operation path replaces its document-space path through shared native history. pathID edits an existing saved path; omitted pathID creates/replaces Work Path when workPath=true. paint uses the selected path unless pathID is provided and paints layerID or the active raster layer.","limits":"4096 knots,256 components,100000 native input samples; API draw4096 samples. Trace/paint16MP. Existing API sharing/body limits also apply.","defaults":["tolerance":2,"method":"freeform","closed":false,"workPath":true,"stroke":false,"simulatePressure":false],"qualification":"Native geometry and brush rendering. Exact Adobe curvature/fitting/brush kernels, magnetic pen, cross-layer path editing, clipping-path export, full Fill Path history/contents/capacity/defaults and live interaction remain open. No dedicated path route in the pinned Adobe v2 contract; unsupported action descriptors remain explicit errors."]}
 }
 extension AutomationCommand {
   func pathFlag(_ key:String,_ fallback:Bool)throws->Bool{guard let value=parameters[key] else{return fallback};guard case .bool(let flag)=value else{throw AutomationFailure(status:400,message:"\(key) must be boolean.")};return flag}
@@ -130,19 +132,56 @@ extension EditorStore {
   var pathState:[String:Any]{
     let target:String,id:UUID?
     switch pathTarget{case .saved(let value):target="saved";id=value;case .vectorMask(let value):target="vectorMask";id=value;case .shape(let value):target="shape";id=value;case nil:target="none";id=nil}
-    return ["illustratorExport":IllustratorPathExportAPI.state(self),"fill":pathFillState,"paths":(document.paths ?? []).map{BrushAPI.json($0)},"selectedID":id?.uuidString as Any? ?? NSNull(),"target":target,"selectedPath":selectedVectorPath.map{BrushAPI.json($0)} ?? NSNull(),"tolerance":pathCurveFit,"operation":pathOperation.rawValue,"gestureActive":freeformGesture != nil || pathGesture != nil,"editable":pathIsEditable,"tool":selectedTool.id,"transformSelection":PathTransformAPI.selection(pathTransformSelection),"canTransform":canBeginPathTransform]
+    return ["illustratorExport":IllustratorPathExportAPI.state(self),"fill":pathFillState,"paths":(document.paths ?? []).map{BrushAPI.json($0)},"selectedID":id?.uuidString as Any? ?? NSNull(),"target":target,"selectedPath":selectedVectorPath.map{BrushAPI.json($0)} ?? NSNull(),"tolerance":pathCurveFit,"operation":pathOperation.rawValue,"gestureActive":freeformGesture != nil || pathGesture != nil || pathMarquee != nil,"editable":pathIsEditable,"tool":selectedTool.id,"transformSelection":PathTransformAPI.selection(pathTransformSelection),"canTransform":canBeginPathTransform,"marqueePreview":pathMarquee?.preview.map(PathTransformAPI.selection) as Any? ?? NSNull()]
   }
   func configurePath(_ command:AutomationCommand)throws{
-    try command.pathFields([], ["tool","tolerance","combine","pathID","layerID"])
-    guard command.parameters["pathID"]==nil || command.parameters["layerID"]==nil else{throw AutomationFailure(status:400,message:"Choose a saved path or shape layer, not both.")}
+    try command.pathFields([], ["tool","tolerance","combine","pathID","layerID","vectorMaskLayerID","marquee","extend"])
+    let targetFields = ["pathID","layerID","vectorMaskLayerID"].filter { command.parameters[$0] != nil }
+    guard targetFields.count <= 1 else{throw AutomationFailure(status:400,message:"Choose one path target.")}
+    guard command.parameters["marquee"] != nil || command.parameters["extend"] == nil else {
+      throw AutomationFailure(status: 400, message: "Supply a path marquee when setting extend.")
+    }
     let tolerance=try command.parameters["tolerance"].map{_ in try command.number("tolerance",range:0.5...10)} ?? pathCurveFit
     let operation=try ShapeAPI.decode(PathOperation.self,command.parameters["combine"],schema:PathAPI.schema("combine"),base:pathOperation)
     var selected:WorkspaceTool?
     if command.parameters["tool"] != nil{let name=try command.string("tool");guard ["pen","freeformPen","curvaturePen","pathSelection","directSelection"].contains(name) else{throw AutomationFailure(status:400,message:"Unknown path tool.")};selected=WorkspaceCatalog.tool(name)}
-    let id=try command.parameters["pathID"].map{_ in try command.actionUUID("pathID")}
-    if let id,!((document.paths ?? []).contains{$0.id==id}){throw AutomationFailure(status:404,message:"Path not found.")}
-    let shapeID=try command.parameters["layerID"].map{_ in try command.actionUUID("layerID")}
-    if let shapeID,!document.layers.contains(where:{$0.id==shapeID && $0.shape != nil}){throw AutomationFailure(status:404,message:"Shape layer not found.")}
-    pathCurveFit=tolerance;pathOperation=operation;if let shapeID{selectPath(.shape(shapeID))};if let selected{tool=selected.native!};if let id{selectPath(.saved(id))};revision += 1
+    let explicitTarget: PathTarget?
+    switch targetFields.first {
+    case "pathID": explicitTarget = .saved(try command.actionUUID("pathID"))
+    case "layerID": explicitTarget = .shape(try command.actionUUID("layerID"))
+    case "vectorMaskLayerID": explicitTarget = .vectorMask(try command.actionUUID("vectorMaskLayerID"))
+    default: explicitTarget = nil
+    }
+    if let explicitTarget, (try? PathTransform.path(explicitTarget, in: document)) == nil {
+      throw AutomationFailure(status: 404, message: "Path not found.")
+    }
+    var selection: PathTransformSelection?
+    if let value = command.parameters["marquee"] {
+      let marquee = try command.pathMarquee(value)
+      guard let target = explicitTarget ?? pathTarget,
+            let path = try? PathTransform.editablePath(target, in: document) else {
+        throw AutomationFailure(status: 422, message: "Select an editable path for the marquee.")
+      }
+      let extend = try command.pathFlag("extend", false)
+      let prior = extend && target == pathTarget ? pathTransformSelection : nil
+      selection = marquee.selection(in: path, extending: prior)
+    }
+    pathCurveFit = tolerance
+    pathOperation = operation
+    if let explicitTarget, selection == nil || pathTarget != explicitTarget { selectPath(explicitTarget) }
+    if let native = selected?.native { tool = native }
+    if let selection { applyMarqueeSelection(selection) }
+    if rendering { render() } else { revision += 1 }
+  }
+}
+
+extension AutomationCommand {
+  func pathMarquee(_ value: AutomationValue) throws -> PathMarqueeSelection {
+    let validated = try BrushAPI.merge(value, schema: PathAPI.schema("marquee"), path: "marquee")
+    guard let points = validated as? [String: [String: Double]],
+          let x1 = points["start"]?["x"], let y1 = points["start"]?["y"],
+          let x2 = points["end"]?["x"], let y2 = points["end"]?["y"]
+    else { throw AutomationFailure(status: 400, message: "Supply two finite document points.") }
+    return .init(start: .init(x1,y1), end: .init(x2,y2))
   }
 }

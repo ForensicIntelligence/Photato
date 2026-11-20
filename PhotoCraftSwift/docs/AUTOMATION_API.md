@@ -1190,6 +1190,10 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
 
+### Direct Selection marquee
+
+Send `path.configure` with a `marquee` containing `start` and `end` in document pixels. Each point has `x` and `y`. Omit `extend` to replace the anchor selection or set it to true to add to the current selection. Set one of `pathID`, `layerID` for a shape, or `vectorMaskLayerID` for a vector mask to choose a target explicitly. The response includes `paths.transformSelection` and `paths.marqueePreview`. The command shares the native rectangle selector and leaves both path geometry and pixel selection intact. [Direct Selection details](DIRECT_SELECTION_MARQUEE_673.md)
+
 ### Transform editable paths
 
 Send `path.transform` with `target` set to `saved`, `vectorMask` or `shape`, the path or layer UUID in `id`, and a nine-element row-major `matrix`. Omit the optional selection fields to transform the whole path. Use `components` for zero-based contour indices or `anchors` for objects containing zero-based `component` and `knot` indices. The response includes `pathTransformSelection` with the resulting indices. The endpoint uses the standard document revision and one atomic Undo. [Path transform details](PATH_TRANSFORM_672.md)

@@ -1,3 +1,7 @@
+**Source checkpoint 673.** Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API. All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_673.md).
+
+**Next path editing work.** Support selecting paths across layers while retaining the active path used by Pen and Direct Selection. Apply one editable transform to the selected targets and keep the same atomic document history through the API.
+
 **Source checkpoint 672.** Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action. All 156 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_672.md).
 
 **Next path editing work.** Extend Direct Selection to marquee selection of points and improve multi-path selection across layers. Use a saved Photoshop reference for partial transforms when the installed editor responds.

@@ -22,7 +22,7 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.eyedropperGesture; _ = store.eyedropperResult; _ = store.eyedropperSettings
     _ = store.selectionBorderDrag
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
-    _ = store.selectionTransform?.vectorPreview;_ = store.pathTransformSelection
+    _ = store.selectionTransform?.vectorPreview;_ = store.pathTransformSelection;_ = store.pathMarquee
     _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
     view.store = store
@@ -59,6 +59,7 @@ struct CanvasHost: NSViewRepresentable {
     cancelMarqueeCreation()
     if selectionBorderGesture { start = nil; end = nil }; selectionBorderGesture = false
     store.cancelSelectionBorderInteraction()
+    store.cancelPathMarquee()
     if store.tool.singlePixelMarquee != nil { start = nil; end = nil; needsDisplay = true }
     store.cancelEyedropper()
     store.cancelRemoveGesture()
@@ -138,6 +139,9 @@ struct CanvasHost: NSViewRepresentable {
       return ToolCursor.artworkTransform(draft, handle: handle, flags: cursorModifiers)
     }
     if store.transformDraft != nil { return .symbol("arrow.up.and.down.and.arrow.left.and.right",ToolCursor.geometry(flags)) }
+    if let marquee = store.pathMarquee {
+      return EditorTool.directSelection.cursor(modifiers: marquee.extending ? [.shift] : [])
+    }
     if creatingMarquee {
       return .marqueeCreation(symbol: store.tool.symbol, mode: selectionDragMode, repositioning: spaceHeld)
     }
@@ -290,6 +294,7 @@ struct CanvasHost: NSViewRepresentable {
     observeCanvasFrames()
     selectionAnts?.observeWindow()
     synchronizeFrameProbe()
+    if window == nil { store.cancelPathMarquee() }
     if window == nil {selectionBorderGesture = false; start = nil; end = nil; store.cancelSelectionBorderInteraction(); if store.transformDraft?.movingPixels == true || store.transformDraft?.pixelMask == true || store.transformDraft?.channelTarget != nil || store.transformDraft?.collectionLayerIDs != nil{store.cancelTransform()}; store.guideGesture=nil; drawingEvents.end(); airbrushTimer?.invalidate();airbrushTimer=nil;store.cancelBrush() }
     drawingFocusObservation = window.map { target in
       NotificationCenter.default.publisher(for: NSWindow.didResignKeyNotification)
@@ -298,6 +303,7 @@ struct CanvasHost: NSViewRepresentable {
           MainActor.assumeIsolated {
             self?.brushNumberPrefix = nil
             self?.temporaryClearKey = nil
+            self?.store.cancelPathMarquee()
             self?.drawingEvents.end()
             self?.airbrushTimer?.invalidate(); self?.airbrushTimer = nil
             if self?.store.transformDraft?.movingPixels == true || self?.store.transformDraft?.pixelMask == true || self?.store.transformDraft?.channelTarget != nil || self?.store.transformDraft?.collectionLayerIDs != nil{self?.store.cancelTransform()}; self?.store.guideGesture=nil; self?.store.cancelMagneticLasso(); self?.store.cancelBrush(); self?.store.cancelClone()
@@ -324,7 +330,7 @@ struct CanvasHost: NSViewRepresentable {
     store.artboardNeighborPress=nil
     store.cancelGradientGesture()
     cloneHover = nil
-    store.resetPathGesture()
+    store.resetPathGesture(keepingSelection: store.usesPathTool)
     polygonPoints = []
     lassoPoints = []
     samples = []
@@ -338,7 +344,7 @@ struct CanvasHost: NSViewRepresentable {
   override var acceptsFirstResponder: Bool { true }
   override func resignFirstResponder() -> Bool {
     let resigned = super.resignFirstResponder()
-    if resigned { brushNumberPrefix = nil; temporaryClearKey = nil; refreshToolCursor() }
+    if resigned { brushNumberPrefix = nil; temporaryClearKey = nil; store.cancelPathMarquee(); refreshToolCursor() }
     return resigned
   }
   override func draggingEntered(_ sender: any NSDraggingInfo) -> NSDragOperation {
@@ -588,6 +594,7 @@ struct CanvasHost: NSViewRepresentable {
     drawCloneOverlay(in: c)
     drawGradientOverlay(in: c)
     drawVectorPath(in: c)
+    drawPathMarquee(in: c)
     let pathPoints =
       (store.tool == .lasso || store.tool.isRetouchSelectionTool || (store.tool == .objectSelection && store.objectSelectionMode == .lasso)) ? lassoPoints : store.tool == .polygonLasso ? polygonPoints : []
     if !pathPoints.isEmpty {
@@ -708,10 +715,11 @@ struct CanvasHost: NSViewRepresentable {
     c.setLineWidth(1.5 / scale)
     c.addPath(outline)
     c.strokePath()
+    let isSelected = store.pathAnchorHighlight()
     for (i, component) in path.components.enumerated() {
       for (j, knot) in component.knots.enumerated() {
         let anchor = PathAnchorSelection(component: i, knot: j)
-        let selected = store.pathAnchorIsSelected(anchor)
+        let selected = isSelected(anchor)
         if selected && store.pathAnchor == anchor && store.transformDraft?.pathTarget == nil {
           c.setLineWidth(1 / scale)
           for handle in [knot.incoming, knot.outgoing] where handle != knot.anchor {
@@ -823,7 +831,7 @@ struct CanvasHost: NSViewRepresentable {
       store.beginPath(
         at: PathPoint(p.x, p.y), tolerance: 6 / scale,
         option: event.modifierFlags.contains(.option), clickCount:event.clickCount,
-        extending: event.modifierFlags.contains(.shift))
+        extending: event.modifierFlags.contains(.shift), allowsMarquee: true)
       needsDisplay = true
       return
     }
@@ -916,6 +924,12 @@ struct CanvasHost: NSViewRepresentable {
   }
   override func mouseDragged(with event: NSEvent) {
     cursorLocationInView = convert(event.locationInWindow,from:nil); updateCursorModifiers(event.modifierFlags)
+    if store.pathMarquee != nil {
+      let point = docPoint(event)
+      store.updatePathMarquee(to: .init(point.x, point.y), scale: scale)
+      needsDisplay = true
+      return
+    }
     if selectionBorderGesture {
       store.updateSelectionBorderDrag(to: docPoint(event), modifiers: event.modifierFlags); needsDisplay = true; return
     }
@@ -1015,6 +1029,12 @@ struct CanvasHost: NSViewRepresentable {
       patternDragStart = nil
       gradientDragStart = nil
       needsDisplay = true
+    }
+    if store.pathMarquee != nil {
+      let point = docPoint(event)
+      store.updatePathMarquee(to: .init(point.x, point.y), scale: scale)
+      store.finishPathMarquee()
+      return
     }
     if selectionBorderGesture {
       selectionBorderGesture = false
@@ -1165,6 +1185,11 @@ struct CanvasHost: NSViewRepresentable {
     brushNumberPrefix = nil
     updateCursorModifiers(event.modifierFlags); defer { refreshToolCursor() }
     guard activateDocument() else { return }
+    if event.keyCode == 53, store.pathMarquee != nil {
+      store.cancelPathMarquee()
+      needsDisplay = true
+      return
+    }
     if event.keyCode == 49, creatingMarquee { spaceHeld = true; needsDisplay = true; return }
     if event.keyCode == 53, marqueeCreation != nil { cancelMarqueeCreation(); return }
     if event.keyCode == 53, selectionBorderGesture || store.selectionBorderNudgeTask != nil {

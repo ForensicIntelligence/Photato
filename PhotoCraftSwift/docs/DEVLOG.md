@@ -691,7 +691,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 670 | 2026-11-20 | [Keep PDF Smart Object perspective editable](#dev-step-670) |
 | 671 | 2026-11-20 | [Keep vector masks editable in Perspective and Distort](#dev-step-671) |
 | 672 | 2026-11-20 | [Transform selected paths, contours and anchors](#dev-step-672) |
+| 673 | 2026-11-20 | [Select path anchors with a Direct Selection marquee](#dev-step-673) |
 <!-- history-index:end -->
+
+<a id="dev-step-673"></a>
+
+## 2026-11-20 — Select path anchors with a Direct Selection marquee
+
+Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
+
+Direct Selection already supported individual points and Shift clicks. A background drag did not select path geometry. The canvas now hands this gesture to a path marquee separate from the pixel-selection gesture. It previews the selected anchors and leaves the prior selection intact until release. Escape and focus loss discard the preview. Hit testing still gives existing direction handles and segments their original priority.
+
+A shared Core selector resolves document-coordinate inclusive rectangles in either drag direction. Shift unions explicit prior anchor or contour selections with the enclosed anchors. The API extends path.configure and reports the committed or preview indices. There is no document geometry or Undo change until a subsequent edit such as Free Transform.
+
+All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. New tests exercise reverse drags, Shift, Escape, focus loss, existing pixel selection, Command-T and authenticated path selection. All 12 earlier whole-layer vector mask outputs matched byte for byte in each configuration.
+
+The marquee operates on the active path. Simultaneous path selection across layers and exact Photoshop hit testing, modifiers and cursor comparisons remain open. Support selecting paths across layers while retaining the active path used by Pen and Direct Selection. Apply one editable transform to the selected targets and keep the same atomic document history through the API.
+
+[Development record](DIRECT_SELECTION_MARQUEE_673.md) · [Qualification](SOURCE_PUBLICATION_673.md).
 
 <a id="dev-step-672"></a>
 

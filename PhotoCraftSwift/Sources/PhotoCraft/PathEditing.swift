@@ -48,12 +48,15 @@ extension EditorStore {
     // its busy flag set. Restart that request with the new presentation target.
     if rendering { render() } else { revision += 1 }
   }
-  func resetPathGesture() {
+  func resetPathGesture(keepingSelection: Bool = false) {
     let previewing = pathGesture != nil || freeformGesture != nil
     freeformGesture = nil
     pathGesture = nil
-    pathAnchor = nil
-    pathTransformSelection = .all
+    cancelPathMarquee()
+    if !keepingSelection {
+      pathAnchor = nil
+      pathTransformSelection = .all
+    }
     penComponent = nil
     if previewing { render() }
   }
@@ -169,7 +172,7 @@ extension EditorStore {
     commitPath(path)
   }
   func beginPath(at p: PathPoint, tolerance: Double, option: Bool = false, clickCount: Int = 1,
-                 extending: Bool = false) {
+                 extending: Bool = false, allowsMarquee: Bool = false) {
     if tool == .freeformPen {beginFreeform(at:p,tolerance:tolerance);return}
     if tool == .curvaturePen {beginCurvature(at:p,tolerance:tolerance,clickCount:clickCount);return}
     guard !geometryBusy, transformDraft == nil else { return }
@@ -269,6 +272,10 @@ extension EditorStore {
           pathGesture = PathGesture(original: path, preview: path, start: p, selection: anchor,
                                     part: .component, movedSelection: pathTransformSelection)
         }
+        return
+      }
+      if tool == .directSelection, !option, allowsMarquee {
+        beginPathMarquee(at: p, path: path, extending: extending)
         return
       }
       guard !extending else { return }

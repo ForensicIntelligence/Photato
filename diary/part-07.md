@@ -1219,14 +1219,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:672 -->
+<!-- current-status-step:673 -->
 ## Current development status — 20 November 2026
 
-Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action.
+Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
 
-All 156 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 672](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_672.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-672).
+[Source checkpoint 673](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_673.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-673).
 
 <!-- current-status:end -->
 
