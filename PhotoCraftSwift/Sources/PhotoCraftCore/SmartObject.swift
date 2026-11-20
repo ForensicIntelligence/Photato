@@ -50,6 +50,10 @@ public struct SmartObject: Equatable, Sendable, Codable {
   private var dataDigest=""
   public var dataFingerprint:String{dataDigest.isEmpty ? Self.fingerprint(data):dataDigest}
   private static func fingerprint(_ value:Data)->String{SHA256.hash(data:value).map{String(format:"%02x",$0)}.joined()}
+  mutating func retainVerifiedOriginal(_ source: EmbeddedSourceBytes, digest: String) {
+    original = source
+    dataDigest = digest
+  }
   public var width: Int
   public var height: Int
   public var stackMode: ImageStackMode?
@@ -88,7 +92,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
     self.rawDevelopment = rawDevelopment
     self.sourceID = sourceID; self.fileName = fileName; self.mediaType = mediaType
     original = source; self.width = width; self.height = height; self.resolution = resolution
-    try validate();dataDigest=Self.fingerprint(data)
+    try validate();dataDigest=original.fingerprint
   }
   /// Cached fingerprints keep source appearance checks independent of file size.
   /// They are derived locally and never trusted from an archive.
@@ -107,7 +111,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
     var a = self, b = other; a.stackMode = nil; b.stackMode = nil; a.layerComps = nil; b.layerComps = nil; return a == b
   }
   public func validate() throws {
-    let canRetainLargeSource = linkedSource == nil && (
+    let canRetainLargeSource = (linkedSource == nil || linkedSource?.kind == .file && original.isFileBacked) && (
       (mediaType == "application/vnd.photato.document" && data.starts(with: "PHOTATO\0".utf8))
         || (mediaType == "image/vnd.adobe.photoshop" && Self.photoshopSourceVersion(data) == 1)
         || (mediaType == "application/x-photoshop" && Self.photoshopSourceVersion(data) == 2))
@@ -163,7 +167,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
       try (decoder.userInfo[.rasterDecodeBudget] as? RasterDecodeBudget)?
         .reserve(tiles: (data.count + TileArchive.byteCount - 1) / TileArchive.byteCount)
     }
-    try validate();dataDigest=Self.fingerprint(data)
+    try validate();dataDigest=original.fingerprint
   }
   public func encode(to encoder: Encoder) throws {
     var c = encoder.container(keyedBy: CodingKeys.self)

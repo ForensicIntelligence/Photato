@@ -672,7 +672,18 @@ For a readable account of the project from the beginning, see [Photato developme
 | 651 | 2026-11-19 | [Keep gigabyte-scale originals through Edit Contents](#dev-step-651) |
 | 652 | 2026-11-19 | [Keep gigabyte-scale originals in Undo and Redo](#dev-step-652) |
 | 653 | 2026-11-20 | [Preserve Smart Object placement identifiers](#dev-step-653) |
+| 654 | 2026-11-20 | [Place and update gigabyte-scale linked Smart Objects](#dev-step-654) |
 <!-- history-index:end -->
+
+<a id="dev-step-654"></a>
+
+## 2026-11-20 — Place and update gigabyte-scale linked Smart Objects
+
+A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
+
+All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+
+[Development record](LARGE_LINKED_ORIGINALS_654.md).
 
 <a id="dev-step-653"></a>
 

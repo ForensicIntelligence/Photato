@@ -1,3 +1,4 @@
+import CryptoKit
 import Darwin
 import Foundation
 
@@ -107,6 +108,8 @@ final class ScratchDescriptor: @unchecked Sendable {
 /// independently of the user's file, of the temporary directory and of its reader.
 public struct FileBackedSource: Sendable {
   public let data: Data
+  private let retainedFingerprint: String?
+  public var fingerprint: String { retainedFingerprint ?? LinkedSmartObjectSource.fingerprint(data) }
 
   public static func writing(maximumBytes: Int, _ write: (URL) throws -> Void) throws -> Self {
     guard (1...NativeArchive.maximumFileBytes).contains(maximumBytes) else {
@@ -124,25 +127,27 @@ public struct FileBackedSource: Sendable {
     }
     let data = try Data(contentsOf: url, options: .alwaysMapped)
     guard data.count == size else { throw CraftError.invalid("Incomplete generated source.") }
-    return Self(data: data)
+    return Self(data: data, retainedFingerprint: nil)
   }
 
   public static func copy(byteCount: Int, read: (Int, Int) throws -> Data) throws -> Data {
     try retain(byteCount: byteCount, read: read).data
   }
 
-  public static func retain(byteCount: Int, read: (Int, Int) throws -> Data) throws -> Self {
+  public static func retain(byteCount: Int, fingerprinting: Bool = false, read: (Int, Int) throws -> Data) throws -> Self {
     guard byteCount > 0, byteCount <= NativeArchive.maximumFileBytes else {
       throw CraftError.invalid("Invalid file-backed source length.")
     }
     try Task.checkCancellation()
     let scratch = try ScratchDescriptor(prefix: "photato-source", suffix: "scratch")
+    var digest = fingerprinting ? SHA256() : nil
     var offset = 0
     while offset < byteCount {
       try Task.checkCancellation()
       let length = min(64 * 1024, byteCount - offset)
       let data = try read(offset, length)
       guard data.count == length else { throw CraftError.invalid("Incomplete file-backed source.") }
+      digest?.update(data: data)
       try data.withUnsafeBytes { buffer in
         var written = 0
         while written < length {
@@ -167,7 +172,7 @@ public struct FileBackedSource: Sendable {
     }
     return Self(data: Data(bytesNoCopy: address, count: byteCount, deallocator: .custom { pointer, length in
       munmap(pointer, length)
-    }))
+    }), retainedFingerprint: digest.map { $0.finalize().map { String(format: "%02x", $0) }.joined() })
   }
 }
 
@@ -185,6 +190,12 @@ public enum EmbeddedSourceBytes: Sendable {
   public var isFileBacked: Bool {
     if case .file = self { return true }
     return false
+  }
+  public var fingerprint: String {
+    switch self {
+    case .memory(let data): LinkedSmartObjectSource.fingerprint(data)
+    case .file(let source): source.fingerprint
+    }
   }
 }
 

@@ -34,7 +34,7 @@ extension EditorStore {
     performPreparedGeometry(label: operation.label, allowLinkedSmartObject: true,
       prepare: { original in
         let files = try LayerCompSourceFiles.read(grants)
-        let edit = try PreparedEdit(command: LayerCompIO.command(operation, in: original, sourceData: files.mapValues(\.data)), document: original)
+        let edit = try PreparedEdit(command: LayerCompIO.command(operation, in: original, approvedOriginals: files.mapValues(\.original)), document: original)
         try LayerCompSourceFiles.validate(files); return edit
       }, validateCommit: {
         guard grants.values.allSatisfy({ registry.stillAuthorizes($0) }) else { throw CraftError.invalid("Linked artwork authorization changed.") }
@@ -69,7 +69,7 @@ extension AutomationService {
         guard let self, let store else { throw CancellationError() }; try self.validateLayerCompGrants(grants, store: store)
       }) { original in
         let files = try LayerCompSourceFiles.read(grants)
-        return (try await preparation(operation, original, files.mapValues(\.data)), files)
+        return (try await preparation(operation, original, files.mapValues(\.original)), files)
       }
   }
 }

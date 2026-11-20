@@ -31,7 +31,9 @@ final class PreparedLinkedSourceWrite:@unchecked Sendable {
     let scoped=target.scopeURL.startAccessingSecurityScopedResource();var output:LinkedArtworkExport?
     do {
       let before:LinkedArtworkRead
-      do{before=try LinkedArtworkRead.read(target)}catch{throw AutomationFailure(status:409,message:"The approved source is missing or changed location. Relink it before writing.")}
+      do{before=try LinkedArtworkRead.readForTransfer(target)}
+      catch let failure as AutomationFailure { throw failure }
+      catch{throw AutomationFailure(status:409,message:"The approved source is missing or changed location. Relink it before writing.")}
       guard before.fingerprint==expectedFingerprint else{throw AutomationFailure(status:412,message:"The original file changed. Download it again before saving.")}
       let hash=LinkedSmartObjectSource.fingerprint(bytes)
       if before.data.starts(with:Data("8BPS".utf8)),bytes.starts(with:Data("8BPS".utf8)),before.data.count>=6,bytes.count>=6 {
@@ -68,11 +70,11 @@ final class PreparedLinkedSourceWrite:@unchecked Sendable {
     if let output {try output.commit();fileWritten=true}
   }
   func finalized()throws->(PreparedEdit,[UUID:LinkedArtworkRead]) {
-    let saved=try LinkedArtworkRead.read(before.grant)
+    let saved=try LinkedArtworkRead.readForTransfer(before.grant)
     guard saved.fingerprint==fingerprint else{throw AutomationFailure(status:409,message:"The source changed again after saving; the parent was not updated.")}
     var result=result,files:[UUID:LinkedArtworkRead]=[:]
     for (id,grant)in grants {
-      let file=LinkedArtworkRead(data:saved.data,fingerprint:saved.fingerprint,signature:saved.signature,modified:saved.modified,fileName:saved.fileName,grant:grant)
+      let file=LinkedArtworkRead(original:saved.original,fingerprint:saved.fingerprint,signature:saved.signature,modified:saved.modified,fileName:saved.fileName,grant:grant)
       files[id]=file
       for i in result.layers.indices where result.layers[i].smartObject?.sourceID==id {
         if result != original {result.layers[i].smartObject?.linkedSource=try file.reference}
@@ -137,7 +139,7 @@ extension AutomationService {
     guard let assetID=linkedArtworkAssets.first(where:{$0.value.id==grant.id && $0.value.generation==grant.generation})?.key else{throw AutomationFailure(status:403,message:"Approve this source file in the native API window.")}
     if request.method=="GET" {
       let expected=token,revision=source.revision
-      let worker=Task.detached(priority:.utility){try LinkedArtworkRead.read(grant)}
+      let worker=Task.detached(priority:.utility){try LinkedArtworkRead.readForTransfer(grant)}
       let file=try await withTaskCancellationHandler{try await worker.value}onCancel:{worker.cancel()};try Task.checkCancellation()
       guard isRunning,token==expected,shares.contains(where:{$0.id==shareID && $0.document === document}),
         store.document.layers.first(where:{$0.id==layerID})?.smartObject?.revision==revision,

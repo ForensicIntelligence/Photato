@@ -122,7 +122,8 @@ struct LinkedArtworkGrant:Sendable {
 }
 
 struct LinkedArtworkRead:Sendable {
-  let data:Data
+  let original: EmbeddedSourceBytes
+  var data: Data { original.data }
   let fingerprint:String
   let signature:String
   let modified:Date
@@ -146,7 +147,11 @@ struct LinkedArtworkRead:Sendable {
   private static func signature(_ s:stat)->String {"\(s.st_dev):\(s.st_ino):\(s.st_size):\(s.st_mtimespec.tv_sec):\(s.st_mtimespec.tv_nsec):\(s.st_ctimespec.tv_sec):\(s.st_ctimespec.tv_nsec)"}
   private static func info(_ fd:Int32)throws->stat {
     var value=stat();guard fstat(fd,&value)==0 else{throw error()}
-    guard value.st_mode&S_IFMT==S_IFREG,value.st_size>0,value.st_size<=SmartObject.maximumSourceBytes else{throw CraftError.invalid("Linked artwork must be a regular file between1 byte and64MiB.")};return value
+    guard value.st_mode & S_IFMT == S_IFREG, value.st_size > 0,
+      value.st_size <= SmartObject.maximumFileBackedSourceBytes else {
+      throw CraftError.invalid("Linked artwork must be a regular file between 1 byte and 2 GiB.")
+    }
+    return value
   }
   static func sameFile(_ grant:LinkedArtworkGrant,at expected:URL)->Bool {
     let access=grant.scopeURL.startAccessingSecurityScopedResource();defer{if access{grant.scopeURL.stopAccessingSecurityScopedResource()}}
@@ -161,16 +166,57 @@ struct LinkedArtworkRead:Sendable {
     let fd=try openApproved(grant.url);defer{Darwin.close(fd)};return signature(try info(fd))
   }
   static func read(_ grant:LinkedArtworkGrant)throws->Self {
+    try read(grant, forTransfer: false)
+  }
+  static func readForTransfer(_ grant: LinkedArtworkGrant) throws -> Self {
+    try read(grant, forTransfer: true)
+  }
+  private static func read(_ grant: LinkedArtworkGrant, forTransfer: Bool) throws -> Self {
     let access=grant.scopeURL.startAccessingSecurityScopedResource();defer{if access{grant.scopeURL.stopAccessingSecurityScopedResource()}}
     let fd=try openApproved(grant.url);defer{Darwin.close(fd)};let before=try info(fd)
-    var data=Data(),buffer=[UInt8](repeating:0,count:65536),hash=SHA256()
-    while data.count<Int(before.st_size) {
-      try Task.checkCancellation();let amount=buffer.withUnsafeMutableBytes{pread(fd,$0.baseAddress,min($0.count,Int(before.st_size)-data.count),off_t(data.count))}
-      if amount<0 {if errno==EINTR{continue};throw error()};guard amount>0 else{throw DocumentPersistenceConflict.changed}
-      let part=Data(buffer.prefix(amount));data.append(part);hash.update(data:part)
+    let size = Int(before.st_size)
+    func bytes(at offset: Int, count: Int) throws -> Data {
+      var bytes = Data(count: count)
+      try bytes.withUnsafeMutableBytes { buffer in
+        var done = 0
+        while done < count {
+          try Task.checkCancellation()
+          let read = pread(fd, buffer.baseAddress!.advanced(by: done), count - done, off_t(offset + done))
+          if read < 0, errno == EINTR { continue }
+          if read < 0 { throw error() }
+          guard read > 0 else { throw DocumentPersistenceConflict.changed }
+          done += read
+        }
+      }
+      return bytes
+    }
+    let requiresBacking = size > SmartObject.maximumSourceBytes
+    if requiresBacking {
+      if forTransfer { throw AutomationFailure(status: 413, message: "Linked original transfers are limited to 64 MiB.") }
+      let header = try bytes(at: 0, count: min(size, 8))
+      guard size <= SmartObject.maximumLocalEmbeddedBytes(forHeader: header) else {
+        throw CraftError.invalid("Only layered Photoshop and Photato originals can exceed 64 MiB.")
+      }
+    }
+    let original: EmbeddedSourceBytes
+    let fingerprint: String
+    if requiresBacking {
+      let backing = try FileBackedSource.retain(byteCount: size, fingerprinting: true, read: bytes(at:count:))
+      original = .file(backing)
+      fingerprint = backing.fingerprint
+    } else {
+      var data = Data(capacity: size)
+      var hash = SHA256()
+      while data.count < size {
+        let chunk = try bytes(at: data.count, count: min(65536, size - data.count))
+        hash.update(data: chunk)
+        data.append(chunk)
+      }
+      original = .memory(data)
+      fingerprint = hash.finalize().map { String(format: "%02x", $0) }.joined()
     }
     let after=try info(fd),current=try openApproved(grant.url);defer{Darwin.close(current)}
     guard signature(before)==signature(after),signature(before)==signature(try info(current)) else{throw DocumentPersistenceConflict.changed}
-    return .init(data:data,fingerprint:hash.finalize().map{String(format:"%02x",$0)}.joined(),signature:signature(before),modified:Date(timeIntervalSince1970:Double(before.st_mtimespec.tv_sec)+Double(before.st_mtimespec.tv_nsec)/1e9),fileName:grant.url.lastPathComponent,grant:grant)
+    return .init(original:original,fingerprint:fingerprint,signature:signature(before),modified:Date(timeIntervalSince1970:Double(before.st_mtimespec.tv_sec)+Double(before.st_mtimespec.tv_nsec)/1e9),fileName:grant.url.lastPathComponent,grant:grant)
   }
 }

@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-06.md)
 
+## 2026-11-20 — Step 654 — Place and update gigabyte-scale linked Smart Objects
+
+A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
+
+All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-654) · [Details](../PhotoCraftSwift/docs/LARGE_LINKED_ORIGINALS_654.md).
+
 ## 2026-11-20 — Step 653 — Preserve Smart Object placement identifiers
 
 Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
@@ -1203,14 +1211,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:653 -->
+<!-- current-status-step:654 -->
 ## Current development status — 20 November 2026
 
-Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
+A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
 
-All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 653](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_653.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-653).
+[Source checkpoint 654](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_654.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-654).
 
 <!-- current-status:end -->
 

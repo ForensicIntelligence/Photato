@@ -116,7 +116,7 @@ final class ParentLayerCompWorkflowTests: XCTestCase {
         let d = try NativeArchive.decode(NativeArchive.encode(linked)); document.store.session = EditorSession(document: d); document.store.linkedSourceRegistry = registry
         try service.share(document); let id = service.shares.first!.id, gate = ParentCompGate()
         service.parentLayerCompPreparation = { operation, original, data in
-          await gate.mark(); try await Task.sleep(for: .seconds(30)); return try LayerCompIO.command(operation, in: original, sourceData: data)
+          await gate.mark(); try await Task.sleep(for: .seconds(30)); return try LayerCompIO.command(operation, in: original, approvedOriginals: data)
         }
         let request = Task { try await helper.request(service, path: "/v1/documents/\(id)/commands", body: ["command": "layerComps.edit", "revision": service.revision(document.store), "parameters": ["operation": "apply", "id": f.red.uuidString]]) }
         let deadline = Date().addingTimeInterval(3)

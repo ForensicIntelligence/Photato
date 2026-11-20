@@ -39,7 +39,7 @@ extension EditorStore {
   }
   func relinkArtwork(_ layerID:UUID,grant:LinkedArtworkGrant) {
     performLinkedArtwork(label:"Relink Smart Object",grant:grant){source,file in
-      try LinkedSmartObjectIO.replacement(file.data,fileName:file.fileName,reference:file.reference,in:source,layerID:layerID)
+      try LinkedSmartObjectIO.replacement(file.original,fileName:file.fileName,reference:file.reference,in:source,layerID:layerID)
     }
   }
   func performLinkedArtwork(label:String,grant:LinkedArtworkGrant,
@@ -73,9 +73,9 @@ extension EditorStore {
       let grant=try linkedSourceRegistry.resolve(reference,documentID:document.id,documentURL:linkedArtworkDocumentURL)
       performLinkedArtwork(label:"Convert to Embedded",grant:grant){source,file in
         if file.fingerprint==object.linkedSource?.contentHash,try source.layers.first(where:{$0.id==layer.id})?.linkedSmartObjectPreview()==nil {
-          return try LinkedSmartObjectIO.retag(source,layerID:layer.id,source:object.hydrating(file.data).embedding(),title:"Convert to Embedded")
+          return try LinkedSmartObjectIO.retag(source,layerID:layer.id,source:object.hydrating(file.original).embedding(),title:"Convert to Embedded")
         }
-        return try LinkedSmartObjectIO.replacement(file.data,fileName:file.fileName,reference:nil,in:source,layerID:layer.id,title:"Convert to Embedded")
+        return try LinkedSmartObjectIO.replacement(file.original,fileName:file.fileName,reference:nil,in:source,layerID:layer.id,title:"Convert to Embedded")
       }
     }catch{self.error=error.localizedDescription}
   }
@@ -111,7 +111,7 @@ extension EditorStore {
       do {
         // Validate every shared instance before creating or replacing a source file.
         _ = try LinkedSmartObjectIO.retag(original,layerID:layerID,source:object,title:"Convert to Linked")
-        let staged=Task.detached(priority:.userInitiated){try LinkedArtworkExport(url:url,data:object.data)}
+        let staged=Task.detached(priority:.userInitiated){try LinkedArtworkExport(url:url,original:object.sourceBytes)}
         let export=try await withTaskCancellationHandler{try await staged.value}onCancel:{staged.cancel()}
         try Task.checkCancellation()
         guard self.document==original,self.sessionGeneration==session,self.layerPanelGeneration==panel else{throw CraftError.invalid("The document changed before the source could be saved.")}

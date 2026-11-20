@@ -36,7 +36,7 @@ final class ParentLayerCompIOTests: XCTestCase {
     let ids = d.layers.map(\.id), red = source.layerComps!.comps[0].id, blue = source.layerComps!.comps[1].id
     var cache = SmartObjectCompPreparationCache()
     for (id, choice) in zip(ids, [red, blue, red]) {
-      try SmartObjectLayerCompIO.selection(in: d, layerID: id, compID: choice, sourceData: nil, cache: &cache).apply(to: &d)
+      try SmartObjectLayerCompIO.selection(in: d, layerID: id, compID: choice, original: nil, cache: &cache).apply(to: &d)
     }
     XCTAssertEqual(cache.decodedSources, 1); XCTAssertEqual(cache.renderedVariations, 2)
     XCTAssertEqual(d.layers.map { $0.smartObject?.layerComps?.selectedID }, [red, blue, red])

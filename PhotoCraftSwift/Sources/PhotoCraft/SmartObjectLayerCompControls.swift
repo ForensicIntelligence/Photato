@@ -39,7 +39,7 @@ extension EditorStore {
       do {
         let grant = try linkedSourceRegistry.resolve(link, documentID: document.id, documentURL: linkedArtworkDocumentURL)
         performLinkedArtwork(label: "Set Smart Object Layer Comp", grant: grant) { original, file in
-          try SmartObjectLayerCompIO.selection(in: original, layerID: layer.id, compID: compID, sourceData: file.data)
+          try SmartObjectLayerCompIO.selection(in: original, layerID: layer.id, compID: compID, original: file.original)
         }
       } catch { self.error = error.localizedDescription }
     } else {
@@ -85,7 +85,7 @@ extension AutomationService {
         }
       }) { original in
         let file = try grant.map(LinkedArtworkRead.read)
-        return (try await preparation(original, id, compID, file?.data), file)
+        return (try await preparation(original, id, compID, file?.original), file)
       }
   }
 }

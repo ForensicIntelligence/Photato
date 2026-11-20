@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **653** · The 10 most recent entries, newest first.
+Source build **654** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 654 — Place and update gigabyte-scale linked Smart Objects
+
+A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
+
+All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-654) · [Details](PhotoCraftSwift/docs/LARGE_LINKED_ORIGINALS_654.md).
 
 ## 2026-11-20 — Step 653 — Preserve Smart Object placement identifiers
 
@@ -63,9 +71,3 @@ All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon,
 Standard Gradient Overlay keeps its stops and placement through PSD and PSB. Six exports of three Photoshop 27.4 RGB8 files matched all 737,280 merged RGBA samples.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) · [Details](PhotoCraftSwift/docs/PSD_GRADIENT_OVERLAY_645.md).
-
-## 2026-11-19 — Step 644 — Match linked raster previews to saved mask samples
-
-Supported linked RGB8 and RGB16 previews apply the separately quantized Photoshop layer and mask samples. Six file comparisons confirmed the tested output.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) · [Details](PhotoCraftSwift/docs/LINKED_PREVIEW_644.md).

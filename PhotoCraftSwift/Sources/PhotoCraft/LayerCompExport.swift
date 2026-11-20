@@ -29,17 +29,17 @@ struct LayerCompExportOutput: Sendable {
 }
 enum LayerCompExport {
   static let maximumBytes = 128 * 1024 * 1024
-  static func render(_ document: CraftDocument, options: LayerCompExportOptions, maximumBytes: Int = maximumBytes, sourceData: [UUID: Data] = [:]) throws -> LayerCompExportOutput {
+  static func render(_ document: CraftDocument, options: LayerCompExportOptions, maximumBytes: Int = maximumBytes, approvedOriginals: [UUID: EmbeddedSourceBytes] = [:]) throws -> LayerCompExportOutput {
     try Task.checkCancellation(); try document.validate()
     guard (1...Self.maximumBytes).contains(maximumBytes) else { throw CraftError.invalid("Invalid comp output budget.") }
     let comps = try options.selected(in: document)
-    if options.format == "pdf" { return try pdf(document, comps: comps, maximumBytes: maximumBytes, sourceData: sourceData) }
+    if options.format == "pdf" { return try pdf(document, comps: comps, maximumBytes: maximumBytes, approvedOriginals: approvedOriginals) }
     guard let format = DocumentIO.Format(rawValue: options.format) else { throw CraftError.invalid("Unknown comp format.") }
     var files: [StoredZIP.File] = [], records: [[String: String]] = [], total = 0
     for (index, comp) in comps.enumerated() {
       try Task.checkCancellation()
       // Each variation starts from the same source, including unrecorded properties.
-      var variation = try LayerCompIO.document(document, applying: comp.id, sourceData: sourceData)
+      var variation = try LayerCompIO.document(document, applying: comp.id, approvedOriginals: approvedOriginals)
       if format != .native { variation.layerComps = nil }
       if format != .native { variation.profileIsUntagged = options.includeICC ? nil : true }
       let bytes = try DocumentIO.encode(variation, format: format,
@@ -57,12 +57,12 @@ enum LayerCompExport {
     let data = try StoredZIP.encode(files, maximumBytes: maximumBytes)
     return .init(data: data, contentType: "application/zip", files: files)
   }
-  private static func pdf(_ document: CraftDocument, comps: [LayerComp], maximumBytes: Int, sourceData: [UUID: Data]) throws -> LayerCompExportOutput {
+  private static func pdf(_ document: CraftDocument, comps: [LayerComp], maximumBytes: Int, approvedOriginals: [UUID: EmbeddedSourceBytes]) throws -> LayerCompExportOutput {
     let bytes = NSMutableData()
     guard let consumer = CGDataConsumer(data: bytes), let context = CGContext(consumer: consumer, mediaBox: nil, nil) else { throw CraftError.invalid("Could not create a comp PDF.") }
     for comp in comps {
       try Task.checkCancellation()
-      let variation = try LayerCompIO.document(document, applying: comp.id, sourceData: sourceData)
+      let variation = try LayerCompIO.document(document, applying: comp.id, approvedOriginals: approvedOriginals)
       let image = try ColorManagement.image(Renderer.composite(variation), in: variation)
       var page = CGRect(x: 0, y: 0, width: document.width, height: document.height)
       context.beginPDFPage([kCGPDFContextMediaBox as String: NSData(bytes: &page, length: MemoryLayout<CGRect>.size)] as CFDictionary)
@@ -91,7 +91,7 @@ extension EditorStore {
     let registry = linkedSourceRegistry
     let worker = Task.detached(priority: .userInitiated) {
       let files = try LayerCompSourceFiles.read(grants)
-      let output = try LayerCompExport.render(snapshot, options: options, sourceData: files.mapValues(\.data))
+      let output = try LayerCompExport.render(snapshot, options: options, approvedOriginals: files.mapValues(\.original))
       try LayerCompSourceFiles.validate(files); return output
     }
     layerCompExportWorker = worker

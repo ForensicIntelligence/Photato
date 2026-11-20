@@ -1,3 +1,7 @@
+### Approved large linked originals (checkpoint 654)
+
+Approved local PSD, PSB and chunked Photato linked originals can use private backing up to 2 GiB during placement, relink, updates, and packaging. The raw `source` and `linked-source` routes still return HTTP 413 above 64 MiB for linked originals. The 128 MiB shared-document budget continues to include owned embedded bytes, raster caches, and other document data. The temporary file backing for an approved external link does not contribute to that budget because the linked parent serializes a reference and its preview. [Development record](LARGE_LINKED_ORIGINALS_654.md)
+
 ### Photoshop placement identifiers (checkpoint 653)
 
 The existing PSD and PSB import and save routes use the shared placement identifier and Smart Filter cache fixes. The native duplicate-layer command and its API use the same layer-transfer implementation. Cached linked copies save against their own source record. Command schemas and transfer size limits are unchanged.

@@ -62,7 +62,7 @@ enum LinkedArtworkPlacementAPI {
     if isPDF {
       var selected=options.pdf ?? .init();selected.fit=options.embedded.fit;selected.transform=options.embedded.transform;pdf=selected
     }
-    let prepared=try ArtworkPlacementPreparation.prepare(file.data,fileName:file.fileName,in:original,embedded:options.embedded,pdf:pdf)
+    let prepared=try ArtworkPlacementPreparation.prepare(file.original,fileName:file.fileName,in:original,embedded:options.embedded,pdf:pdf)
     let linked=try LinkedArtworkPreparation.linking(prepared,file:file,in:original)
     return try LinkedSmartObjectIO.combining([linked],source:original,title:"Place Linked")
   }

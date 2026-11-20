@@ -539,10 +539,13 @@ public struct PreparedEdit: Sendable {
 public struct EditorSession: Sendable {
   /// Refill an authorized runtime cache without adding history or changing source revision.
   public mutating func hydrateLinkedSmartObject(_ sourceID:UUID,bytes:Data)throws {
+    try hydrateLinkedSmartObject(sourceID, original: .memory(bytes))
+  }
+  public mutating func hydrateLinkedSmartObject(_ sourceID: UUID, original: EmbeddedSourceBytes) throws {
     var candidate=document;var found=false
     for i in candidate.layers.indices where candidate.layers[i].smartObject?.sourceID==sourceID {
       guard let object=candidate.layers[i].smartObject,object.linkedSource != nil else{throw CraftError.invalid("Choose a linked source.")}
-      candidate.layers[i].smartObject=try object.hydrating(bytes);found=true
+      candidate.layers[i].smartObject=try object.hydrating(original);found=true
     }
     guard found else{throw CraftError.invalid("Linked source not found.")}
     try candidate.validate();document=candidate

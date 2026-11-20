@@ -89,7 +89,7 @@ final class SmartObjectLayerCompWorkflowTests: XCTestCase {
       try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
         document.store.session = EditorSession(document: fixture.parent); try service.share(document); let id = try XCTUnwrap(service.shares.first?.id), gate = SmartCompPreparationGate()
         service.smartObjectCompPreparation = { original, layer, comp, data in
-          await gate.mark(); try await Task.sleep(for: .seconds(30)); return try SmartObjectLayerCompIO.selection(in: original, layerID: layer, compID: comp, sourceData: data)
+          await gate.mark(); try await Task.sleep(for: .seconds(30)); return try SmartObjectLayerCompIO.selection(in: original, layerID: layer, compID: comp, original: data)
         }
         let operation = Task { try await helper.request(service, path: "/v1/documents/\(id)/commands", body: ["command": "smartObject.layerComp", "revision": service.revision(document.store), "parameters": ["layerID": fixture.parent.layers[0].id.uuidString, "compID": fixture.source.layerComps!.comps[0].id.uuidString]]) }
         let deadline = Date().addingTimeInterval(3)

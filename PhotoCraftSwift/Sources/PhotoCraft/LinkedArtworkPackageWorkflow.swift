@@ -28,7 +28,7 @@ extension EditorStore {
       do {
         let worker=Task.detached(priority:.userInitiated){()throws->PreparedEdit in
           var files:[UUID:LinkedArtworkRead]=[:];for(id,grant)in grants{files[id]=try LinkedArtworkRead.read(grant)}
-          let command=try LinkedSmartObjectIO.embed(original,originals:files.mapValues(\.data))
+          let command=try LinkedSmartObjectIO.embed(original,approvedOriginals:files.mapValues(\.original))
           let edit=try PreparedEdit(command:command,document:original)
           for file in files.values{guard try LinkedArtworkRead.signature(file.grant)==file.signature else{throw DocumentPersistenceConflict.changed}};return edit
         }

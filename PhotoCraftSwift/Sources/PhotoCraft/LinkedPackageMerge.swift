@@ -1,4 +1,5 @@
 import CryptoKit
+import CryptoKit
 import Darwin
 import Foundation
 import PhotoCraftCore
@@ -62,18 +63,32 @@ final class LinkedPackageMerge:@unchecked Sendable {
     }
     throw DocumentPersistenceConflict.changed
   }
-  private static func bytes(_ directory:Int32,_ name:String,maximum:Int)throws->Data? {
+  private static func read(_ directory: Int32, _ name: String, maximum: Int,
+    consume: (ArraySlice<UInt8>) -> Void) throws -> LinkedPackageNode? {
     guard let before=try LinkedPackageNode.at(directory,name),before.regular,before.size>=0,before.size<=maximum else{return nil}
     let fd=openat(directory,name,O_RDONLY|O_NOFOLLOW|O_NONBLOCK|O_CLOEXEC);guard fd>=0 else{return nil};defer{close(fd)}
     guard try LinkedPackageNode.descriptor(fd)==before else{throw DocumentPersistenceConflict.changed}
-    var data=Data(),buffer=[UInt8](repeating:0,count:65536)
-    while data.count<Int(before.size) {
+    var offset = 0
+    var buffer = [UInt8](repeating: 0, count: 65536)
+    while offset < Int(before.size) {
       try Task.checkCancellation()
-      let count=buffer.withUnsafeMutableBytes{pread(fd,$0.baseAddress,min($0.count,Int(before.size)-data.count),off_t(data.count))}
-      if count<0,errno==EINTR{continue};guard count>0 else{throw failure()};data.append(contentsOf:buffer.prefix(count))
+      let count=buffer.withUnsafeMutableBytes{pread(fd,$0.baseAddress,min($0.count,Int(before.size)-offset),off_t(offset))}
+      if count<0,errno==EINTR{continue};guard count>0 else{throw failure()}
+      consume(buffer.prefix(count))
+      offset += count
     }
     let after=try LinkedPackageNode.descriptor(fd),named=try LinkedPackageNode.at(directory,name)
-    guard after==before,named==before else{throw DocumentPersistenceConflict.changed};return data
+    guard after==before,named==before else{throw DocumentPersistenceConflict.changed};return before
+  }
+  private static func bytes(_ directory: Int32, _ name: String, maximum: Int) throws -> Data? {
+    var data = Data()
+    guard try read(directory, name, maximum: maximum, consume: { data.append(contentsOf: $0) }) != nil else { return nil }
+    return data
+  }
+  private static func fingerprint(_ directory: Int32, _ name: String, expected: LinkedPackageNode) throws -> String? {
+    var hash = SHA256()
+    guard try read(directory, name, maximum: Int(expected.size), consume: { hash.update(data: Data($0)) }) == expected else { return nil }
+    return hash.finalize().map { String(format: "%02x", $0) }.joined()
   }
   init(parent:Int32,name:String,documentName requested:String)throws {
     let parentCopy=dup(parent);guard parentCopy>=0 else{throw Self.failure()}
@@ -115,8 +130,7 @@ final class LinkedPackageMerge:@unchecked Sendable {
     var candidate=base,index=2
     while let actual=names[Self.folded(candidate)] {
       if linksFD>=0,let node=try LinkedPackageNode.at(linksFD,actual),node.regular,node.size==count,
-        let data=try Self.bytes(linksFD,actual,maximum:SmartObject.maximumSourceBytes),
-        LinkedSmartObjectSource.fingerprint(data)==fingerprint {
+        try Self.fingerprint(linksFD, actual, expected: node) == fingerprint {
         reused[actual]=node;return(actual,true)
       }
       let ext=(base as NSString).pathExtension,stem=(base as NSString).deletingPathExtension

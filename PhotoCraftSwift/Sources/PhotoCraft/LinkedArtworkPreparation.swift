@@ -7,9 +7,14 @@ final class LinkedArtworkExport:@unchecked Sendable {
   private let writer:AtomicFileWriter
   private let url:URL
   private let scoped:Bool
-  init(url:URL,data:Data,followSymbolicLinks:Bool=true)throws {
+  convenience init(url:URL,data:Data,followSymbolicLinks:Bool=true)throws {
+    try self.init(url: url, original: .memory(data), followSymbolicLinks: followSymbolicLinks)
+  }
+  init(url: URL, original: EmbeddedSourceBytes, followSymbolicLinks: Bool = true) throws {
     self.url=url;scoped=url.startAccessingSecurityScopedResource()
-    do{writer=try AtomicFileWriter(to:url,maximumBytes:SmartObject.maximumSourceBytes,followSymbolicLinks:followSymbolicLinks);try writer.append(data)}
+    let limit = original.isFileBacked
+      ? SmartObject.maximumLocalEmbeddedBytes(forHeader: original.data) : SmartObject.maximumSourceBytes
+    do{writer=try AtomicFileWriter(to:url,maximumBytes:limit,followSymbolicLinks:followSymbolicLinks);try writer.append(original.data)}
     catch{if scoped{url.stopAccessingSecurityScopedResource()};throw error}
   }
   func discard(){writer.discard()}

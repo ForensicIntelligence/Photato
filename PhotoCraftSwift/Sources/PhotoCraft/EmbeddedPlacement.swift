@@ -51,8 +51,8 @@ extension EditorStore {
         let reader = Task.detached(priority:.userInitiated) {()throws->(PreparedEmbeddedSource,LinkedArtworkRead?) in
           if let linkedGrant {
             let file=try LinkedArtworkRead.read(linkedGrant)
-            let decoded=PDFImport.recognizes(file.data) ? nil:try SmartObjectIO.decode(file.data,fileName:file.fileName)
-            return (.init(original:.memory(file.data),fileName:file.fileName,document:decoded),file)
+            let decoded=PDFImport.recognizes(file.data) ? nil:try SmartObjectIO.decode(file.original,fileName:file.fileName)
+            return (.init(original:file.original,fileName:file.fileName,document:decoded),file)
           }
           return (try PreparedEmbeddedSource.read(url),nil)
         }

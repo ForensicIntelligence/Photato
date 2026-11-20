@@ -144,11 +144,17 @@ public enum SmartObjectIO {
   }
   public static func placed(data: Data, fileName: String, in parent: CraftDocument,
     fit: Bool = true) throws -> Layer {
+    try placed(original: .memory(data), fileName: fileName, in: parent, fit: fit)
+  }
+  public static func placed(original: EmbeddedSourceBytes, fileName: String, in parent: CraftDocument,
+    fit: Bool = true) throws -> Layer {
+    let data = original.data
     if PDFImport.recognizes(data) {
       var settings = PDFImportSettings();settings.resolution = 72
       return try PDFSmartObjectIO.placed(data,fileName:fileName,in:parent,settings:settings,fit:fit)
     }
-    return try placed(document:decode(data,fileName:fileName),data:data,fileName:fileName,in:parent,fit:fit)
+    return try placed(document: decode(original, fileName: fileName), original: original,
+      fileName: fileName, in: parent, fit: fit)
   }
   public static func placed(document: CraftDocument, data: Data, fileName: String,
     in parent: CraftDocument, fit: Bool = true) throws -> Layer {

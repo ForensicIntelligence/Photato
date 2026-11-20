@@ -38,7 +38,7 @@ enum LinkedArtworkAPI {
     "originalEditing":LinkedSourceFileAPI.capabilities,
     "history":"Shared source changes are one native transaction; retained byte-cache hydration has no history or revision effect.",
     "conversion":"API convert links an approved identical existing file. Desktop Convert to Linked can also save source bytes through a native Save panel. Package writes a new folder through the existing local-saving/output-folder permission. Linked originals can be edited through the separately approved linked-source route; converting to a newly created file still uses the native Save panel.",
-    "limits":"64MiB original source; supported native raster/PSD/RAW/PDF preparation budgets apply. Full PSD cache fidelity, nested monitoring, semantic Actions, media sidecars, platform and Photoshop parity remain open."
+    "limits":"Approved local layered originals use file-backed storage up to 2 GiB. Other originals and raw linked-original byte transfers stay at 64 MiB. Existing document and render transfer budgets apply. Full PSD cache fidelity, nested monitoring, semantic Actions, media sidecars, platform and Photoshop parity remain open."
   ]}
 }
 extension AutomationService {
@@ -125,18 +125,18 @@ extension AutomationService {
         if case .string(let expected)=expectedFingerprint,reads.values.first?.fingerprint != expected{throw AutomationFailure(status:409,message:"Artwork changed. Refresh its fingerprint before placement or relinking.")}
         let result:Command
         switch name {
-        case "smartObject.linked.embedAll":result=try LinkedSmartObjectIO.embed(original,originals:reads.mapValues(\.data))
+        case "smartObject.linked.embedAll":result=try LinkedSmartObjectIO.embed(original,approvedOriginals:reads.mapValues(\.original))
         case "smartObject.linked.place":
           let file=reads.values.first!
           result=try await placePreparation(file,original,placement!)
         case "smartObject.linked.relink":
-          let file=reads.values.first!;result=try LinkedSmartObjectIO.replacement(file.data,fileName:file.fileName,reference:file.reference,in:original,layerID:layerID!)
+          let file=reads.values.first!;result=try LinkedSmartObjectIO.replacement(file.original,fileName:file.fileName,reference:file.reference,in:original,layerID:layerID!)
         case "smartObject.linked.update":
           var target=original
           for(sourceID,file)in reads {
             guard let layer=target.layers.first(where:{$0.smartObject?.sourceID==sourceID})else{throw CraftError.invalid("Linked source changed.")}
             if layer.smartObject?.linkedSource?.contentHash==file.fingerprint,try layer.linkedSmartObjectPreview()==nil{continue}
-            try LinkedSmartObjectIO.replacement(file.data,fileName:file.fileName,reference:file.reference,in:target,layerID:layer.id).apply(to:&target)
+            try LinkedSmartObjectIO.replacement(file.original,fileName:file.fileName,reference:file.reference,in:target,layerID:layer.id).apply(to:&target)
           }
           result = .linkedSmartObject(try .init(source:original,result:target,title:"Update Linked Smart Objects"))
         case "smartObject.linked.embed":
@@ -146,8 +146,8 @@ extension AutomationService {
           } else {
             let file=reads.values.first!
             if current.linkedSource?.contentHash==file.fingerprint,try original.layers.first(where:{$0.id==id})?.linkedSmartObjectPreview()==nil {
-              result=try LinkedSmartObjectIO.retag(original,layerID:id,source:current.hydrating(file.data).embedding(),title:"Convert to Embedded")
-            }else{result=try LinkedSmartObjectIO.replacement(file.data,fileName:file.fileName,reference:nil,in:original,layerID:id,title:"Convert to Embedded")}
+              result=try LinkedSmartObjectIO.retag(original,layerID:id,source:current.hydrating(file.original).embedding(),title:"Convert to Embedded")
+            }else{result=try LinkedSmartObjectIO.replacement(file.original,fileName:file.fileName,reference:nil,in:original,layerID:id,title:"Convert to Embedded")}
           }
         case "smartObject.linked.convert":
           let current=object!,file=reads.values.first!;guard current.linkedSource==nil else{throw AutomationFailure(status:422,message:"Choose an embedded Smart Object.")}
@@ -162,7 +162,7 @@ extension AutomationService {
       let ids=Set(store.document.layers.compactMap {layer -> UUID? in
         guard let source=layer.smartObject,source.linkedSource?.reference==file.grant.reference,source.linkedSource?.contentHash==file.fingerprint,source.data.isEmpty else{return nil};return source.sourceID
       })
-      for id in ids {try store.session.hydrateLinkedSmartObject(id,bytes:file.data)}
+      for id in ids {try store.session.hydrateLinkedSmartObject(id,original:file.original)}
     }
     if command.name=="smartObject.linked.place" {store.selectedLayerIDs=Set(store.document.activeLayerID.map{[$0]} ?? [])}
     store.synchronizeLinkedArtwork()

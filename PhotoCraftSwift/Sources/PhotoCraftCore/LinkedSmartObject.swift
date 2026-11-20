@@ -42,7 +42,7 @@ public struct LinkedSmartObjectSource:Codable,Equatable,Sendable {
 extension SmartObject {
   public func linked(to reference:LinkedSmartObjectSource)throws->SmartObject {
     try validate();try reference.validate()
-    guard !data.isEmpty,reference.contentHash==LinkedSmartObjectSource.fingerprint(data),reference.byteLength==UInt64(data.count) else{throw CraftError.invalid("Link metadata must match the retained source bytes.")}
+    guard !data.isEmpty,reference.contentHash==dataFingerprint,reference.byteLength==UInt64(data.count) else{throw CraftError.invalid("Link metadata must match the retained source bytes.")}
     var result=self;result.linkedSource=reference;try result.validate();return result
   }
   public func embedding()throws->SmartObject {
@@ -51,10 +51,20 @@ extension SmartObject {
   }
   /// Runtime source hydration does not change document pixels, identity or revision.
   public func hydrating(_ bytes:Data)throws->SmartObject {
-    guard let link=linkedSource,let digest=link.contentHash,
-      bytes.count<=Self.maximumSourceBytes,UInt64(bytes.count)==link.byteLength,
-      LinkedSmartObjectSource.fingerprint(bytes)==digest else{throw CraftError.invalid("The linked source changed; update its contents first.")}
-    var value=self;value.data=bytes;try value.validate();return value
+    try hydrating(.memory(bytes))
+  }
+  public func hydrating(_ source: EmbeddedSourceBytes) throws -> SmartObject {
+    let bytes = source.data
+    let limit = source.isFileBacked ? Self.maximumLocalEmbeddedBytes(forHeader: bytes) : Self.maximumSourceBytes
+    guard let link = linkedSource, let digest = link.contentHash,
+      bytes.count <= limit, UInt64(bytes.count) == link.byteLength,
+      source.fingerprint == digest else {
+      throw CraftError.invalid("The linked source changed; update its contents first.")
+    }
+    var value = self
+    value.retainVerifiedOriginal(source, digest: digest)
+    try value.validate()
+    return value
   }
 }
 

@@ -38,11 +38,11 @@ import UniformTypeIdentifiers
   @ObservationIgnored var layerCompExportShares = Set<UUID>()
   @ObservationIgnored var layerCompEditShares = Set<UUID>()
   @ObservationIgnored var layerCompFileShares = Set<UUID>()
-  @ObservationIgnored var parentLayerCompPreparation: @Sendable (LayerCompCommand, CraftDocument, [UUID: Data]) async throws -> Command = { operation, original, data in try LayerCompIO.command(operation, in: original, sourceData: data) }
+  @ObservationIgnored var parentLayerCompPreparation: @Sendable (LayerCompCommand, CraftDocument, [UUID: EmbeddedSourceBytes]) async throws -> Command = { operation, original, originals in try LayerCompIO.command(operation, in: original, approvedOriginals: originals) }
   @ObservationIgnored var smartObjectCompShares = Set<UUID>()
   @ObservationIgnored var smartObjectCompFileShares = Set<UUID>()
-  @ObservationIgnored var smartObjectCompPreparation: @Sendable (CraftDocument, UUID, UUID?, Data?) async throws -> Command = { original, layerID, compID, data in
-    try SmartObjectLayerCompIO.selection(in: original, layerID: layerID, compID: compID, sourceData: data)
+  @ObservationIgnored var smartObjectCompPreparation: @Sendable (CraftDocument, UUID, UUID?, EmbeddedSourceBytes?) async throws -> Command = { original, layerID, compID, bytes in
+    try SmartObjectLayerCompIO.selection(in: original, layerID: layerID, compID: compID, original: bytes)
   }
   @ObservationIgnored var sequenceExportShares = Set<UUID>()
   private(set) var documentTransfersEnabled = false
@@ -333,9 +333,13 @@ import UniformTypeIdentifiers
     }
   }
   nonisolated static func checkLimits(_ document: CraftDocument) throws {
+    let linkedCacheBytes = document.layers.reduce(0) { total, layer in
+      guard let source = layer.smartObject, source.linkedSource != nil, source.sourceBytes.isFileBacked else { return total }
+      return total + source.data.count
+    }
     guard document.width > 0, document.height > 0,
       document.width <= Surface.maxDimension, document.height <= Surface.maxDimension, document.layers.count <= LayerLimits.maximumLayers,
-      document.estimatedBytes <= 128 * 1024 * 1024
+      document.estimatedBytes - linkedCacheBytes <= 128 * 1024 * 1024
     else {
       throw AutomationFailure(
         status: 413,
@@ -737,6 +741,9 @@ import UniformTypeIdentifiers
           throw AutomationFailure(status: 404, message: "Smart Object not found.")
         }
         guard !source.data.isEmpty else{throw AutomationFailure(status:422,message:"The original linked source is unavailable. Authorize and update or relink it first.")}
+        if source.linkedSource != nil, source.data.count > SmartObject.maximumSourceBytes {
+          throw AutomationFailure(status: 413, message: "Linked original transfers are limited to 64 MiB.")
+        }
         return .init(status: 200, contentType: source.mediaType, body: source.data)
       }
       if request.method == "GET", parts.count == 5, parts[4] == "paths.ai" { return try await exportIllustratorPaths(request, share: share, document: document) }

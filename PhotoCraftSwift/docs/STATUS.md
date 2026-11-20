@@ -1,3 +1,5 @@
+**Source checkpoint 654.** A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures. [Qualification](SOURCE_PUBLICATION_654.md).
+
 **Source checkpoint 653.** Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen. [Qualification](SOURCE_PUBLICATION_653.md).
 
 **Source checkpoint 649.** PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips. [Qualification](SOURCE_PUBLICATION_649.md).

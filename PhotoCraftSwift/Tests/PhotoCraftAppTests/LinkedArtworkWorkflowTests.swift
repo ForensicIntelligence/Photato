@@ -49,6 +49,143 @@ final class LinkedArtworkWorkflowTests:XCTestCase {
       store.linkedSourceController?.stop()
     }
   }
+
+  @MainActor func testLargeLinkedPSBThroughPlacementRefreshPackageAndTransferLimits() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let directory = try self.folder()
+      let url = directory.appendingPathComponent("Linked.psb")
+      let store = document.store
+      defer {
+        store.linkedSourceController?.stop()
+        try? FileManager.default.removeItem(at: directory)
+      }
+      if let fixture = ProcessInfo.processInfo.environment["PHOTATO_LARGE_LINKED_FIXTURE"] {
+        try FileManager.default.copyItem(at: URL(fileURLWithPath: fixture), to: url)
+      } else {
+        var child = try CraftDocument(width: 1024, height: 4097, depth: .f32)
+        var samples = try Surface(width: child.width, height: child.height, depth: .f32,
+          fill: Pixel(0.3125, 0.625, 0.25, 0.5))
+        samples.setPixel(x: child.width - 1, y: child.height - 1, Pixel(0.75, 0.125, 0.5))
+        child.layers[0].content = .raster(samples)
+        try PSDCodec.writeRasterLayers(child, to: url, format: .psb)
+      }
+      store.linkedSourceRegistry = LinkedSourceRegistry(persistent: false)
+      store.session = EditorSession(document: try CraftDocument(width: 96, height: 72, depth: .f32))
+      store.onChange = nil
+      try service.share(document)
+      let asset = try service.authorizeLinkedArtwork(url, registry: store.linkedSourceRegistry)
+      let grant = try XCTUnwrap(service.linkedArtworkAssets[asset])
+      let original = try LinkedArtworkRead.read(grant)
+      XCTAssertTrue(original.original.isFileBacked)
+      XCTAssertGreaterThan(original.data.count, SmartObject.maximumSourceBytes)
+      print("Approved PSB bytes:", original.data.count)
+      XCTAssertThrowsError(try LinkedArtworkRead.readForTransfer(grant)) { error in
+        XCTAssertEqual((error as? AutomationFailure)?.status, 413)
+      }
+
+      let before = store.document
+      let nativeStart = ContinuousClock.now
+      store.placeEmbeddedSource(url, linkedGrant: grant)
+      await store.geometryTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertNotNil(store.transformDraft)
+      store.commitTransform()
+      await store.geometryTask?.value
+      let placed = try XCTUnwrap(store.activeLayer)
+      let placedSource = try XCTUnwrap(placed.smartObject)
+      XCTAssertTrue(placedSource.sourceBytes.isFileBacked)
+      XCTAssertEqual(placedSource.dataFingerprint, original.fingerprint)
+      XCTAssertEqual(placedSource.linkedSource?.byteLength, UInt64(original.data.count))
+      print("Native Place Linked:", nativeStart.duration(to: .now))
+      let parent = store.document
+      let shareID = try XCTUnwrap(service.shares.first?.id)
+      for route in ["source", "linked-source"] {
+        let response = try await helper.request(service, path: "/v1/documents/\(shareID)/smart-objects/\(placed.id)/\(route)")
+        XCTAssertEqual(response.0.statusCode, 413)
+      }
+      await store.undo()
+      XCTAssertEqual(store.document, before)
+      let apiStart = ContinuousClock.now
+      let code = try await helper.edit(service, document, "smartObject.linked.place", [
+        "assetID": asset.uuidString, "fingerprint": original.fingerprint,
+      ], timeout: 180)
+      XCTAssertEqual(code, 200)
+      print("HTTP Place Linked:", apiStart.duration(to: .now))
+      let linked = try XCTUnwrap(store.activeLayer)
+      let linkedSource = try XCTUnwrap(linked.smartObject)
+      XCTAssertTrue(linkedSource.sourceBytes.isFileBacked)
+      XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .f32),
+        try Renderer.composite(parent).rgbaData(depth: .f32))
+      XCTAssertLessThan(store.document.minimumArchiveVersion, SmartObject.largeSourceArchiveVersion)
+
+      let saved = try NativeArchive.encodeChunked(store.document)
+      let reopened = try NativeArchive.decodePaged(saved)
+      XCTAssertTrue(reopened.layers.last?.smartObject?.data.isEmpty == true)
+      var rehydrated = EditorSession(document: reopened)
+      try rehydrated.hydrateLinkedSmartObject(linkedSource.sourceID, original: original.original)
+      let retained = try XCTUnwrap(rehydrated.document.layers.last?.smartObject)
+      XCTAssertTrue(retained.sourceBytes.isFileBacked)
+      XCTAssertEqual(retained.revision, linkedSource.revision)
+      XCTAssertTrue(rehydrated.undoStack.isEmpty)
+
+      store.linkedSourceController?.stop()
+      let monitor = LinkedSourceController(store: store)
+      store.linkedSourceController = monitor
+      monitor.acknowledge([linkedSource.sourceID: original])
+      var child = try SmartObjectIO.sourceDocument(retained)
+      child.layers[0].name = "Updated linked child"
+      guard case .raster(var changed) = child.layers.first?.content else {
+        return XCTFail("Expected an editable raster layer in the linked PSB.")
+      }
+      changed.setPixel(x: child.width - 1, y: child.height - 1, Pixel(0.125, 0.75, 0.5))
+      child.layers[0].content = .raster(changed)
+      try PSDCodec.writeRasterLayers(child, to: url, format: .psb)
+      await monitor.scan()
+      let updated = try XCTUnwrap(store.activeLayer?.smartObject)
+      XCTAssertTrue(updated.sourceBytes.isFileBacked)
+      XCTAssertNotEqual(updated.dataFingerprint, original.fingerprint)
+      XCTAssertEqual(updated.sourceID, linkedSource.sourceID)
+      XCTAssertEqual(try SmartObjectIO.sourceDocument(updated).layers.first?.name, "Updated linked child")
+      XCTAssertEqual(store.session.undoStack.count, 2)
+      print("Automatic linked-source refresh retained the new child")
+
+      let package = try PreparedLinkedPackage.prepare(store.document, grants: [updated.sourceID: grant],
+        parent: directory, options: .init(name: "Package", format: .psb))
+      try package.validateSources()
+      try package.directory.commit()
+      let packaged = try XCTUnwrap(package.sources.first)
+      let packageFile = package.folderURL.appendingPathComponent("Links/" + packaged.name)
+      XCTAssertEqual(LinkedSmartObjectSource.fingerprint(try Data(contentsOf: packageFile, options: .alwaysMapped)), updated.dataFingerprint)
+      let packagedDocument = try PSDCodec.read(package.documentURL)
+      XCTAssertTrue(packagedDocument.layers.last?.smartObject?.data.isEmpty == true)
+      XCTAssertEqual(packagedDocument.layers.last?.smartObject?.linkedSource?.reference, "Links/" + packaged.name)
+      let repeated = try PreparedLinkedPackage.prepare(store.document, grants: [updated.sourceID: grant],
+        parent: directory, options: .init(name: "Package", format: .psb, replaceExisting: true))
+      try repeated.directory.commit()
+      XCTAssertEqual(try FileManager.default.contentsOfDirectory(atPath: packageFile.deletingLastPathComponent().path), [packaged.name])
+      print("PSB package reused its existing original")
+
+      let packagedGrant = try store.linkedSourceRegistry.authorize(packageFile)
+      store.relinkArtwork(linked.id, grant: packagedGrant)
+      await store.geometryTask?.value
+      let relinked = try XCTUnwrap(store.activeLayer?.smartObject)
+      XCTAssertNil(store.error)
+      XCTAssertEqual(relinked.linkedSource?.authorizationID, packagedGrant.id)
+      XCTAssertTrue(relinked.sourceBytes.isFileBacked)
+      XCTAssertEqual(relinked.dataFingerprint, updated.dataFingerprint)
+      store.embedLinkedArtwork()
+      await store.geometryTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.activeLayer?.smartObject?.dataFingerprint, updated.dataFingerprint)
+      XCTAssertTrue(store.activeLayer?.smartObject?.sourceBytes.isFileBacked == true)
+      XCTAssertNil(store.activeLayer?.smartObject?.linkedSource)
+      await store.undo()
+      XCTAssertEqual(store.activeLayer?.smartObject, relinked)
+      print("Linked PSB byte count:", original.data.count, "original SHA-256:", original.fingerprint,
+        "updated SHA-256:", updated.dataFingerprint)
+    }
+  }
   @MainActor func testMonitorUpdatesSharedInstancesAndUndoDoesNotReapplyObservedVersion()async throws {
     let helper=AutomationTests()
     try await helper.withService(pressedMouseButtons:{0}) {_,document in

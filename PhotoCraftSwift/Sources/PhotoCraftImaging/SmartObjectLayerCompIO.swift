@@ -31,10 +31,13 @@ public enum SmartObjectLayerCompIO {
     return try ColorManagement.converted(SmartObjectIO.sourceComposite(variation), from: variation, to: parent)
   }
   public static func selection(in document: CraftDocument, layerID: UUID, compID: UUID?, sourceData: Data? = nil) throws -> Command {
-    var cache = SmartObjectCompPreparationCache()
-    return try selection(in: document, layerID: layerID, compID: compID, sourceData: sourceData, cache: &cache)
+    try selection(in: document, layerID: layerID, compID: compID, original: sourceData.map(EmbeddedSourceBytes.memory))
   }
-  static func selection(in document: CraftDocument, layerID: UUID, compID: UUID?, sourceData: Data?, cache: inout SmartObjectCompPreparationCache) throws -> Command {
+  public static func selection(in document: CraftDocument, layerID: UUID, compID: UUID?, original: EmbeddedSourceBytes?) throws -> Command {
+    var cache = SmartObjectCompPreparationCache()
+    return try selection(in: document, layerID: layerID, compID: compID, original: original, cache: &cache)
+  }
+  static func selection(in document: CraftDocument, layerID: UUID, compID: UUID?, original: EmbeddedSourceBytes?, cache: inout SmartObjectCompPreparationCache) throws -> Command {
     try Task.checkCancellation(); try document.validate()
     guard let i = document.layers.firstIndex(where: { $0.id == layerID }),
       var object = document.layers[i].smartObject, !document.isImageLocked(layerID),
@@ -47,8 +50,8 @@ public enum SmartObjectLayerCompIO {
       if object.data.isEmpty { object = existing.object; object.stackMode = mode }
     } else {
       if object.data.isEmpty {
-        guard let sourceData else { throw CraftError.invalid("Locate and authorize the linked original before choosing a Layer Comp.") }
-        object = try object.hydrating(sourceData)
+        guard let original else { throw CraftError.invalid("Locate and authorize the linked original before choosing a Layer Comp.") }
+        object = try object.hydrating(original)
       }
       let source = try SmartObjectIO.sourceDocument(object)
       entry = .init(object: object, document: source, choices: try catalog(in: source)); cache.decodedSources += 1

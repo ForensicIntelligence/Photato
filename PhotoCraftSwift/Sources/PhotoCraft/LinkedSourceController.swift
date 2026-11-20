@@ -82,7 +82,7 @@ struct LinkedArtworkState:Sendable {
       states[value.id] = .init(status:matches ? .current:.modified,fingerprint:fingerprint,signature:value.signature)
       if matches{pending.remove(value.id)}
       if matches,source.data.isEmpty,let file=value.file {
-        do{try store.session.hydrateLinkedSmartObject(value.id,bytes:file.data);store.renderSnapshot=nil;store.render()}catch{states[value.id] = .init(status:.failed,message:error.localizedDescription)}
+        do{try store.session.hydrateLinkedSmartObject(value.id,original:file.original);store.renderSnapshot=nil;store.render()}catch{states[value.id] = .init(status:.failed,message:error.localizedDescription)}
       }
       // A source first seen after reopening is highlighted, not silently replaced.
       // Remember the observed version so Undo is not immediately undone by a poll.
@@ -126,7 +126,7 @@ struct LinkedArtworkState:Sendable {
         guard let layer=result.layers.first(where:{$0.smartObject?.sourceID==sourceID})else{throw CraftError.invalid("Linked source no longer exists.")}
         let old=layer.smartObject!
         if old.linkedSource?.contentHash==file.fingerprint,try layer.linkedSmartObjectPreview()==nil{continue}
-        try LinkedSmartObjectIO.replacement(file.data,fileName:file.fileName,reference:file.reference,in:result,layerID:layer.id).apply(to:&result)
+        try LinkedSmartObjectIO.replacement(file.original,fileName:file.fileName,reference:file.reference,in:result,layerID:layer.id).apply(to:&result)
       }
       for file in files.values {guard try LinkedArtworkRead.signature(file.grant)==file.signature else{throw DocumentPersistenceConflict.changed}}
       return try PreparedEdit(command:.linkedSmartObject(.init(source:original,result:result,title:title)),document:original)
@@ -139,7 +139,7 @@ struct LinkedArtworkState:Sendable {
     for (sourceID,file)in files {
       pending.remove(sourceID);seen.insert(sourceID);lastFingerprints[sourceID]=file.fingerprint;lastSignatures[sourceID]=file.signature
       states[sourceID] = .init(status:.current,fingerprint:file.fingerprint,signature:file.signature)
-      if store.document.layers.first(where:{$0.smartObject?.sourceID==sourceID})?.smartObject?.data.isEmpty==true {try store.session.hydrateLinkedSmartObject(sourceID,bytes:file.data)}
+      if store.document.layers.first(where:{$0.smartObject?.sourceID==sourceID})?.smartObject?.data.isEmpty==true {try store.session.hydrateLinkedSmartObject(sourceID,original:file.original)}
     }
     if store.document != original{store.onChange?(.changeDone)};store.status=title
   }

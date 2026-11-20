@@ -1,0 +1,229 @@
+{
+  "build": 654,
+  "base": "b5bb72e7145f582c0a7033efe3db0b6c4b591644",
+  "buildInputs": 9245,
+  "includedBuildInputs": 9232,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "47105baf59ffeaaa489195d31469a98fa457cd7c9dcb898d8b765be7f486e800",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "6b6e719320d7d2f3f30abae5e3b4f1f41ee4d94a66fa8c44a370f6ab36c061d7"
+    },
+    {
+      "path": "Sources/PhotoCraft/EmbeddedPlacement.swift",
+      "sha256": "165363ab8270a49de94e610fac78c42b017b46a990ff6dcb644f4bfbbc514409"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerCompExport.swift",
+      "sha256": "5c61537d9351ed9d5ffdf3aa7ce13b8d66c8bbb2c6106cd7ed510a433696c3c6"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerCompSmartObjectWorkflow.swift",
+      "sha256": "2f79ff45238edc308fc7dc192cde7c03889115fa79085fd0e15f6524c189d2c2"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkAPI.swift",
+      "sha256": "52b61b466868566542a568192a5c7478bb8e61b93bf05397d13391eca740fd04"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPackageWorkflow.swift",
+      "sha256": "aa5063338fe6db8022cdca7742e14d32006f6c143bd30f361ae57dbfc65e1e0d"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPackaging.swift",
+      "sha256": "f3b31f94b26f7f647b0af5695e6a555c5d49aabf973ff65c6bee80a8f08ceaa4"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPlacement.swift",
+      "sha256": "bc3c660f865c01656c70085025a534764ec8c852a56f1dbd8c489f4588d7376b"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedArtworkPreparation.swift",
+      "sha256": "42a4f03a3a39d472a52c56ea0dfc40ec762ee97993aef349a845fc5413c819f9"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedPackageMerge.swift",
+      "sha256": "163f1af766715e94e5126878cf53d00bde259e0d6d6ac3a354f0e5af762a3a8e"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceController.swift",
+      "sha256": "4aed04b3cd7193249462ce8010a5703dbf3361964055d84753202a299eefa787"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceEditing.swift",
+      "sha256": "62828929600de9dbf1db4ab2924f39aed200e2aae16b78f6fed62d5875e97988"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceFileEditing.swift",
+      "sha256": "40b25150433c911d39bca88d2f4b95ae92827fa2122f0ebec415d2616686d5aa"
+    },
+    {
+      "path": "Sources/PhotoCraft/LinkedSourceRegistry.swift",
+      "sha256": "1446217b7cdcd4f2fc80b3b2ae1f31f9ddb8b523ba9fd479cf4198a0b5a82aa6"
+    },
+    {
+      "path": "Sources/PhotoCraft/SmartObjectLayerCompControls.swift",
+      "sha256": "726b709d4e19dadb01c9213039dcf2e86efaccc85f140952b963de3894db95ff"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Engine.swift",
+      "sha256": "c709fd22625ff1f35e7d5543e6dc01d322d61d77961120405a88969a828b48b4"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "sha256": "d4f06e02985c2cb9de71ef31b55aacfcca6ecb04e159e681c6e3c33298ae0864"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LinkedSmartObject.swift",
+      "sha256": "f3cc1fd4cfb7852f715b376f3b71bc9b6fa4fdc5eb9a636993209323d372c98e"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RasterTileStorage.swift",
+      "sha256": "400f29c9f6b29eb1c67efa26e488fa3498a64ad7b413761043dd513bf52d6124"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SmartObject.swift",
+      "sha256": "a4304d358f8f84ec4e73d890dccd23d2a97de6d0ca77027027c1a39eaa41c231"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerCompIO.swift",
+      "sha256": "0717b56a9a8ee0fd10dbafeb501c81b6749bc92f882bb67a03226271c0f851a5"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LinkedSmartObjectIO.swift",
+      "sha256": "a8d0ae82b4841a51962c1715c19d2cdb3c9adb5e2405f7ba495563d3746acb9e"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SmartObjectIO.swift",
+      "sha256": "695dde2c6e8d73a250d93c43a6574c67eb55195ee7ac507f4eb1cef20beb810a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SmartObjectLayerCompIO.swift",
+      "sha256": "bc7fa1b7834a7ed1763c3d5b97578bf3d50d0aecdfdc8b94866763d33035958d"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LinkedArtworkWorkflowTests.swift",
+      "sha256": "192d1c78662ff32c55f4439357b6b06d8828c675b4131650532f75a3aa07e922"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ParentLayerCompWorkflowTests.swift",
+      "sha256": "3f4031b53f3eeb4bdcb559a9fca401568107a1a0262bbc54294a7887efea007f"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartObjectLayerCompWorkflowTests.swift",
+      "sha256": "0e769c82093d218c685cbf0b981e1c9b4a7349d79cf89a62181d48533742e036"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/ParentLayerCompIOTests.swift",
+      "sha256": "c0c471eb7be45b21a6573769876a68d292f8833d2c9729d830539583cea1abd3"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "cfbaba5313456c927c9f708235c3d149989635e78e282c824305acd53c82a83d"
+    }
+  ],
+  "casesPerConfiguration": 1446,
+  "configurations": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1446,
+      "passed": 1446,
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "abbbb4317ec736e278b764f8c6b6ae258da2310e6f901de2522fb104dfa61e63",
+      "appSHA256": "940e44fb13d4c0460599bb16c446caaf56122666cd3752d77cf39372f81d86af"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1446,
+      "passed": 1446,
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "2b7ac355bc29f5e996a7cafccb24d5332d983de3c23965ded78de47c3406ee64",
+      "appSHA256": "8439025d2421e107bac15544a4c1688ebd5fee4533aa5dfe0fd5cb908e6989c0"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1446,
+      "passed": 1446,
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "bcaae94f4e7fdd5d0bc0582ed74cc091f106d1dce608dec38f23a6506f13d08c",
+      "appSHA256": "4d183dd80c8c6747b09124229d2634e2277cdf5b2b24a22dd1f4c4320ce97515"
+    }
+  },
+  "fileComparison": {
+    "arm64": {
+      "photato": {
+        "bytes": 2171,
+        "sha256": "b7e9dcd1cc60c39c032d3aa4d2b38bf721f2d556015230ddc71b4cbbc35ca878"
+      },
+      "psd": {
+        "bytes": 114266,
+        "sha256": "8d9de66143db142de3463001ad1a24d77a8902ae24fbd08567acc0afb10834ee"
+      },
+      "psb": {
+        "bytes": 114314,
+        "sha256": "e4a0ab68aa6e8414362a885f5864c64c973f8b2f5c01d2ca133b09f2cc2e16dc"
+      }
+    },
+    "x86_64": {
+      "photato": {
+        "bytes": 2171,
+        "sha256": "b7e9dcd1cc60c39c032d3aa4d2b38bf721f2d556015230ddc71b4cbbc35ca878"
+      },
+      "psd": {
+        "bytes": 114266,
+        "sha256": "8d9de66143db142de3463001ad1a24d77a8902ae24fbd08567acc0afb10834ee"
+      },
+      "psb": {
+        "bytes": 114314,
+        "sha256": "e4a0ab68aa6e8414362a885f5864c64c973f8b2f5c01d2ca133b09f2cc2e16dc"
+      }
+    }
+  },
+  "linkedWorkflow": {
+    "arm": {
+      "sourceBytes": 1181384274,
+      "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+      "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+      "nativePlaceSeconds": 3.939177541,
+      "httpPlaceSeconds": 3.926499792,
+      "focusedTests": 86
+    },
+    "intel": {
+      "sourceBytes": 1181384274,
+      "originalSHA256": "2b7d61fd6b464e57158479426bcd9c5927dbcaf8dacb7805e66b2baf19f25709",
+      "updatedSHA256": "034b20c3b91e05b6b500f7ec751e3e4cdd9ee1c093c202e32a1d2fab5253e7e7",
+      "nativePlaceSeconds": 7.992471042,
+      "httpPlaceSeconds": 8.00879575,
+      "focusedTests": 86
+    }
+  },
+  "archive": {
+    "archiveSHA256": "3c2284ff67dde4c395819e6a4b49aad6b58eb3963472794ff5e89b58e9666305",
+    "binarySHA256": "c06e29f4ad8a177bae4699abbca20fceac494528d0ce7ed7aec3098d2e2092b8",
+    "minimumSystemVersion": "14.0",
+    "extractedSignatureVerified": true,
+    "archInputsSHA256": {
+      "arm64": "8439025d2421e107bac15544a4c1688ebd5fee4533aa5dfe0fd5cb908e6989c0",
+      "x86_64": "4d183dd80c8c6747b09124229d2634e2277cdf5b2b24a22dd1f4c4320ce97515"
+    }
+  },
+  "offscreen": {
+    "arm64": {
+      "width": 1000,
+      "height": 650,
+      "sha256": "5caea604bc99bf0043081e637ca4c3a4ad238a8ee5d7fa4d25cc7cde1080464c"
+    },
+    "x86_64": {
+      "width": 1000,
+      "height": 650,
+      "sha256": "698060ba7a1360c33171f102f1cb44f36593fe672fef34c092346b3d14532234"
+    }
+  }
+}

@@ -175,7 +175,13 @@ final class PreparedLinkedPackage:Sendable {
       }
       let reference=try LinkedSmartObjectSource(reference:"Links/"+name,contentHash:file.fingerprint,byteLength:UInt64(file.data.count),modificationDate:file.modified)
       for i in result.layers.indices where result.layers[i].smartObject?.sourceID==object.sourceID {
-        var source=result.layers[i].smartObject!;source.data=options.format == .native ? Data():file.data;source.linkedSource=reference;source.fileName=name;try source.validate();result.layers[i].smartObject=source
+        var source = result.layers[i].smartObject!
+        if options.format == .native { source.data = Data() }
+        else { source = try source.hydrating(file.original) }
+        source.linkedSource = reference
+        source.fileName = name
+        try source.validate()
+        result.layers[i].smartObject = source
         for tag in ["SoLd","SoLE","PlLd"]{result.layers[i].sourceTags?.removeValue(forKey:tag)}
       }
       sources.append(.init(sourceID:object.sourceID,name:name,grant:file.grant,fingerprint:file.fingerprint,signature:file.signature,byteLength:file.data.count))

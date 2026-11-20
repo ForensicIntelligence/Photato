@@ -22,6 +22,9 @@ public enum LayerCompIO {
     }
   }
   public static func command(_ operation: LayerCompCommand, in document: CraftDocument, sourceData: [UUID: Data] = [:]) throws -> Command {
+    try command(operation, in: document, approvedOriginals: sourceData.mapValues(EmbeddedSourceBytes.memory))
+  }
+  public static func command(_ operation: LayerCompCommand, in document: CraftDocument, approvedOriginals: [UUID: EmbeddedSourceBytes]) throws -> Command {
     try SmartObjectIO.withNesting {
       let required = try requiredSmartObjectLayers(for: operation, in: document)
       guard !required.isEmpty else { return .layerComp(operation) }
@@ -30,13 +33,16 @@ public enum LayerCompIO {
       for id in required {
         try Task.checkCancellation()
         let choice = states[id]!.smartObjectSelection!
-        try SmartObjectLayerCompIO.selection(in: candidate, layerID: id, compID: choice.compID, sourceData: sourceData[choice.sourceID], cache: &cache).apply(to: &candidate)
+        try SmartObjectLayerCompIO.selection(in: candidate, layerID: id, compID: choice.compID, original: approvedOriginals[choice.sourceID], cache: &cache).apply(to: &candidate)
       }
       try operation.apply(to: &candidate, recordingBefore: document)
       return .linkedSmartObject(try .init(source: document, result: candidate, title: operation.label))
     }
   }
   public static func document(_ document: CraftDocument, applying id: UUID, sourceData: [UUID: Data] = [:]) throws -> CraftDocument {
-    var result = document; try command(.apply(id), in: document, sourceData: sourceData).apply(to: &result); return result
+    try self.document(document, applying: id, approvedOriginals: sourceData.mapValues(EmbeddedSourceBytes.memory))
+  }
+  public static func document(_ document: CraftDocument, applying id: UUID, approvedOriginals: [UUID: EmbeddedSourceBytes]) throws -> CraftDocument {
+    var result = document; try command(.apply(id), in: document, approvedOriginals: approvedOriginals).apply(to: &result); return result
   }
 }
