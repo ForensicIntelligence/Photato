@@ -1,5 +1,9 @@
 # Photato
 
+> ## 🎉 50% to Photoshop 2026 Parity!
+>
+> This is our current estimate for overall desktop workflow parity. See what works today and what’s still in progress in the [Developer Diary](DEVELOPER_DIARY.md).
+
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
 ## What Photato adds

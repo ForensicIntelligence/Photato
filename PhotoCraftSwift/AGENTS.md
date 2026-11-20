@@ -436,6 +436,8 @@ Record every meaningful addition, modification, deletion, rename, rollback and r
 
 Keep the developer diary and archive links above the checkpoint notes in the native README.
 
+Reassess the overall Photoshop 2026 desktop parity estimate at stable checkpoints. Update the banner at the top of the repository `README.md` as verified progress supports an increase of roughly 10 percentage points. Weigh complete workflows, editing fidelity and remaining gaps. Label the banner figure as an estimate and record its basis in the development log.
+
 Maintain `docs/DEVELOPMENT_DIARY.md` as the human-readable chronological companion to DEVLOG. Update its milestone index and material narrative at each completed checkpoint; keep ongoing detailed notes in DEVLOG. Clearly distinguish completed, experimental, failed and in-progress work, and date retrospective reconstructions. The diary is documentation, not a substitute for source control or proof of Photoshop parity.
 
 Use stable `dev-step-NNN` anchors and update the oldest-first index. Preserve previous entries; mark retrospective additions with their reconstruction date and evidence. Never invent missing timestamps, test results, original commits, or pixel-equivalence claims.
