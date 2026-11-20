@@ -2,7 +2,7 @@ import Foundation
 import PhotoCraftCore
 
 /// The editable affine placement of the original artwork in document pixels.
-struct SmartObjectGeometry {
+struct SmartObjectGeometry: Equatable {
   let transform: Transform2D
   let width: Int
   let height: Int

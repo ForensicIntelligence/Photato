@@ -12,10 +12,10 @@ extension TransformDraft {
   var sourceReferencePoint: PathPoint {
     if let customReferencePoint { return customReferencePoint }
     let f = referenceAnchor.fractions
-    return .init(Double(bounds.x) + Double(bounds.width) * f.0, Double(bounds.y) + Double(bounds.height) * f.1)
+    return sourcePoint(f.0, f.1)
   }
   var transformReferencePoint: PathPoint {
-    if selection { return selectionReferencePoint }
+    if selection && !hasAffineArtworkFrame { return selectionReferencePoint }
     if contentAware, customReferencePoint == nil, angle == 0 {
       let f = referenceAnchor.fractions
       return .init(centerX + (f.0 - 0.5) * Double(bounds.width) * scaleX / 100, centerY + (f.1 - 0.5) * Double(bounds.height) * scaleY / 100)
@@ -38,7 +38,7 @@ extension TransformDraft {
     var next = self; next.customReferencePoint = local; return next
   }
   func transformNumeric(_ key: WritableKeyPath<TransformDraft, Double>, _ value: Double) -> Self {
-    if selection { return selectionNumeric(key, value) }
+    if selection && !hasAffineArtworkFrame { return selectionNumeric(key, value) }
     var next = self
     let pivot = transformReferencePoint, old = self[keyPath: key]
     if key == \.centerX { next.centerX += value - pivot.x; return next }

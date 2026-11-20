@@ -18,7 +18,11 @@ extension TransformDraft{
   var selectionTransformModes:[SelectionTransformMode]{SelectionTransformMode.allCases.filter{transformDraft?.supportsSelectionMode($0) != false}}
   func beginLayerCollectionTransform(){
     guard canBeginLayerCollectionTransform,let active=document.activeLayerID else{return}
-    do{finishNumericField();finishLayerName();let ids=layerCollectionIDs;var draft=TransformDraft(layerID:active,bounds:try layerCollectionBounds(ids));draft.collectionLayerIDs=ids;draft.collectionViewIDs=groupSelectionIDs;draft.collectionProjective=ProjectiveLayerTransform.available(document,layerIDs:ids);draft.selection=true;draft.selectedPixels=true;draft.selectionQuad=draft.selectionCorners
+    do{finishNumericField();finishLayerName();let ids=layerCollectionIDs
+      let artwork = ids == [active] ? try activeLayer?.smartObjectGeometry() : nil
+      var draft = try TransformDraft(layerID: active, bounds: layerCollectionBounds(ids), artwork: artwork)
+      draft.collectionLayerIDs=ids;draft.collectionViewIDs=groupSelectionIDs;draft.collectionProjective=ProjectiveLayerTransform.available(document,layerIDs:ids);draft.selection=true;draft.selectedPixels=true
+      if artwork == nil { draft.selectionQuad = draft.selectionCorners }
       let session=SelectionTransformSession(document,draft:draft);selectionTransform=session;transformDraft=draft;tool = .move;session.task=Task{await session.prepare()};status="Free Transform layers · Return applies · Escape cancels"
     }catch{self.error=error.localizedDescription}
   }

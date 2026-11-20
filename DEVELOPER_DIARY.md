@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **659** · The 10 most recent entries, newest first.
+Source build **660** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 660 — Free Transform follows Smart Object artwork
+
+Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta.
+
+All 1,477 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe handle behavior, displayed scale percentages and output fidelity remain unverified. The Intel runtime used Rosetta, and the macOS 14 minimum was checked in the signed binary.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-660) · [Details](PhotoCraftSwift/docs/ORIENTED_SMART_OBJECT_TRANSFORM_660.md).
 
 ## 2026-11-20 — Step 659 — Read the original transform of linked Smart Objects
 
@@ -71,9 +79,3 @@ Spilled history states share the existing file-backed original. Undo and Redo ke
 A 1.18 GB PSB retains its exact original and editable samples through placement, a nested edit and reopen. Native files use archive version 97 for these originals.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-651) · [Details](PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECTS_651.md).
-
-## 2026-11-19 — Step 650 — Retain large embedded originals on disk
-
-Large PSB originals remain editable in native projects, PSD and PSB. The 275.7 MB test retained two shared instances, and the 525.1 MB file retained its original bytes.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-650) · [Details](PhotoCraftSwift/docs/FILE_BACKED_SMART_ORIGINALS_650.md).

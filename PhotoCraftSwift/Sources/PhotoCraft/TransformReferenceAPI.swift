@@ -13,9 +13,18 @@ enum TransformReferenceAPI {
     }
   }
   static var stateSchema: [String: Any] {
+    let number = ["type": "number"]
+    let point = BrushAPI.object(["x": number, "y": number], required: ["x", "y"])
+    let coefficients = ["a", "b", "c", "d", "tx", "ty"]
+    let delta = BrushAPI.object(Dictionary(uniqueKeysWithValues: coefficients.map { ($0, number) }), required: coefficients)
+    let frame = BrushAPI.object([
+      "corners": ["type": "array", "items": point, "minItems": 4, "maxItems": 4],
+      "delta": delta, "angleDegrees": number, "scaleXPercent": number, "scaleYPercent": number,
+    ], required: ["corners", "delta", "angleDegrees", "scaleXPercent", "scaleYPercent"])
     let fields: [String: Any] = ["available": BrushAPI.flag, "active": BrushAPI.flag, "visible": BrushAPI.flag,
       "dragging": BrushAPI.flag, "custom": BrushAPI.flag, "workspaceRevision": schema("workspaceRevision"),
-      "anchor": schema("anchor"), "point": ["anyOf": [["type": "null"], schema("point")]]]
+      "anchor": schema("anchor"), "point": ["anyOf": [["type": "null"], schema("point")]],
+      "artworkFrame": ["anyOf": [["type": "null"], frame]]]
     return BrushAPI.object(fields, required: Array(fields.keys).sorted())
   }
   static var capabilities: [String: Any] { [
@@ -23,6 +32,7 @@ enum TransformReferenceAPI {
     "coordinates": "point is the current document-coordinate reference point, including locations outside transform bounds; x/y within ±1000000. Stored draft-local coordinates follow existing affine/projective placement. anchor chooses a nine-position preset and clears the custom point. point and anchor are mutually exclusive; visible is independent.",
     "revision": "workspaceRevision is required in addition to the document revision. Native geometry/reference/preset/visibility/begin/end changes invalidate it. No-op edits retain it. Active pointer/commit/file/history/busy/stale/revoked work commits nothing.",
     "native": "Show Reference Point in Options, nine presets and direct pivot drag. Rotation/numeric scaling and Option-scaling use the pivot. Move follows existing object geometry. Applies to existing Free Transform/Transform Selection/pixel/mask/channel/layer and Content-Aware Scale drafts. Warp/filter workspaces retain separate controls.",
+    "artworkFrame": "Single affine Smart Object drafts expose four transformed artwork corners and the document-space delta used by the native command. Options report the current artwork angle and scale changes relative to the draft start.",
     "data": "Reference-only changes do not render a new image/contour, edit document bytes, add Undo/Actions or change the document revision. The final existing transform matrix is committed through shared native/API engines; samplers/archive formats are unchanged.",
     "cursor": "A visible pivot uses the scope cursor for all16Control/Command/Option/Shift combinations; no invented modifier action. Space before press retains Hand. Captured pivot drag, cancellation and focus/owner/session/tool/detach cleanup retain source state.",
     "limits": "Visibility is open-document/session presentation, copied when opening another workspace; complete Photoshop factory/persistence/global preference and modifier/visual/pixel/live/platform equivalence remain unqualified. Transform Again/repeat state remains open.",
@@ -51,11 +61,23 @@ extension AutomationCommand {
 @MainActor extension EditorStore {
   var transformReferenceState: [String: Any] {
     let point = transformDraft?.transformReferencePoint
+    let artworkFrame: Any
+    if let draft = transformDraft, draft.hasAffineArtworkFrame {
+      let points = draft.handles
+      let t = draft.delta
+      artworkFrame = [
+        "corners": [0, 2, 4, 6].map { ["x": points[$0].x, "y": points[$0].y] },
+        "delta": ["a": t.a, "b": t.b, "c": t.c, "d": t.d, "tx": t.tx, "ty": t.ty],
+        "angleDegrees": draft.displayedAngle, "scaleXPercent": draft.scaleX, "scaleYPercent": draft.scaleY,
+      ] as [String: Any]
+    } else {
+      artworkFrame = NSNull()
+    }
     return ["available": canEditTransformReference && transformReferenceGestureID == nil, "active": transformDraft != nil,
       "visible": showTransformReferencePoint, "dragging": transformReferenceGestureID != nil,
       "custom": transformDraft?.customReferencePoint != nil,
       "workspaceRevision": transformReferenceRevision.uuidString,
       "anchor": transformDraft?.referenceAnchor.rawValue ?? CanvasAnchor.center.rawValue,
-      "point": point.map { ["x": $0.x, "y": $0.y] } as Any? ?? NSNull()]
+      "point": point.map { ["x": $0.x, "y": $0.y] } as Any? ?? NSNull(), "artworkFrame": artworkFrame]
   }
 }

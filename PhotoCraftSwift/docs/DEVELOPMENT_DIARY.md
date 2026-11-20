@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 660 — Free Transform follows Smart Object artwork
+
+Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta.
+
+All 1,477 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop session timed out. Exact Adobe handle behavior, displayed scale percentages and output fidelity remain unverified. The Intel runtime used Rosetta, and the macOS 14 minimum was checked in the signed binary.
+
+[Development record](DEVLOG.md#dev-step-660) · [Details](ORIENTED_SMART_OBJECT_TRANSFORM_660.md).
+
 ## 2026-11-20 — Step 659 — Read the original transform of linked Smart Objects
 
 Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds.
@@ -1249,14 +1257,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:659 -->
+<!-- current-status-step:660 -->
 ## Current development status — 20 November 2026
 
-Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds.
+Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta.
 
-All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
+All 1,477 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
 
-[Source checkpoint 659](SOURCE_PUBLICATION_659.md) · [Development record](DEVLOG.md#dev-step-659).
+[Source checkpoint 660](SOURCE_PUBLICATION_660.md) · [Development record](DEVLOG.md#dev-step-660).
 
 <!-- current-status:end -->
 
@@ -2122,6 +2130,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 657 | [Place Smart Objects at their source print size](DEVLOG.md#dev-step-657) |
 | 2026-11-20 | 658 | [Custom Smart Object geometry for template jobs](DEVLOG.md#dev-step-658) |
 | 2026-11-20 | 659 | [Read the original transform of linked Smart Objects](DEVLOG.md#dev-step-659) |
+| 2026-11-20 | 660 | [Free Transform follows Smart Object artwork](DEVLOG.md#dev-step-660) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

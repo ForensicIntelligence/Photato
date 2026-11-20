@@ -3,9 +3,10 @@ import PhotoCraftCore
 
 extension CraftCanvas {
   func selectionTransformHit(_ point:CGPoint,draft:TransformDraft)->Int {
+    if draft.hasAffineArtworkFrame { return draft.hitHandle(at: point, tolerance: 10 / scale) }
     if let item=draft.handles.enumerated().min(by:{hypot($0.element.x-point.x,$0.element.y-point.y)<hypot($1.element.x-point.x,$1.element.y-point.y)}),hypot(item.element.x-point.x,item.element.y-point.y)*scale<10{return item.offset}
     let p=try? draft.selectionProjection.inverted().point(point.x,point.y)
-    if let p,p.x>=Double(draft.bounds.x),p.y>=Double(draft.bounds.y),p.x<=Double(draft.bounds.x+draft.bounds.width),p.y<=Double(draft.bounds.y+draft.bounds.height){return -1}
+    if let p, draft.containsSourcePoint(p) { return -1 }
     return 8
   }
   func selectionTransformMenu(for event:NSEvent)->NSMenu? {

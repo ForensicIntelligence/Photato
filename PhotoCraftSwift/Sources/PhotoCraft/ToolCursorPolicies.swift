@@ -55,6 +55,20 @@ extension ToolCursor {
 }
 
 extension ToolCursor {
+  static func artworkTransform(_ draft: TransformDraft, handle: Int, flags: NSEvent.ModifierFlags) -> Self {
+    if handle == -1 { return .symbol("arrow.up.and.down.and.arrow.left.and.right", flags.contains(.shift) ? .constrain : nil) }
+    if handle == 8 { return .symbol("arrow.triangle.2.circlepath", flags.contains(.shift) ? .constrain : nil) }
+    let position = draft.handles[handle]
+    let angle = atan2(position.y - draft.centerY, position.x - draft.centerX)
+    let sector = (Int((angle * 4 / .pi).rounded()) + 4) % 4
+    let symbols = ["arrow.left.and.right", "arrow.up.left.and.arrow.down.right", "arrow.up.and.down",
+                   "arrow.up.right.and.arrow.down.left"]
+    var effective = flags
+    if draft.proportional != flags.contains(.shift) { effective.insert(.shift) }
+    else { effective.remove(.shift) }
+    return .symbol(symbols[sector], geometry(effective))
+  }
+
   static func selectionTransform(_ mode:SelectionTransformMode,handle:Int,flags:NSEvent.ModifierFlags,proportional:Bool=true)->Self {
     if handle == -1{return .symbol("arrow.up.and.down.and.arrow.left.and.right",flags.contains(.shift) ? .constrain:nil)}
     switch mode {

@@ -4,10 +4,17 @@ import SwiftUI
 extension WorkspaceView {
   func transformBinding(_ key: WritableKeyPath<TransformDraft, Double>) -> Binding<Double> {
     Binding(
-      get: {guard let draft=store.transformDraft else{return 0};if key == \TransformDraft.centerX{return draft.transformReferencePoint.x};if key == \TransformDraft.centerY{return draft.transformReferencePoint.y};return draft[keyPath:key]},
+      get: {
+        guard let draft = store.transformDraft else { return 0 }
+        if key == \.centerX { return draft.transformReferencePoint.x }
+        if key == \.centerY { return draft.transformReferencePoint.y }
+        if key == \.angle, draft.hasAffineArtworkFrame { return draft.displayedAngle }
+        return draft[keyPath: key]
+      },
       set: { value in
         guard value.isFinite, let draft = store.transformDraft else { return }
-        store.updateTransform(draft.transformNumeric(key, value))
+        let requested = key == \.angle && draft.hasAffineArtworkFrame ? value - draft.artworkAngleOffset : value
+        store.updateTransform(draft.transformNumeric(key, requested))
       })
   }
   var transformOptions: some View {

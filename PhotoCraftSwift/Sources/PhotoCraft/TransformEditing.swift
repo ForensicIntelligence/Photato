@@ -23,6 +23,8 @@ struct TransformDraft: Equatable {
   var selectionMode=SelectionTransformMode.free
   var layerID: UUID
   var bounds: IntRect
+  private(set) var artworkFrame: SmartObjectTransformFrame?
+  var artworkReflected = false
   var centerX: Double
   var centerY: Double
   var scaleX: Double = 100
@@ -43,27 +45,71 @@ struct TransformDraft: Equatable {
     centerX = Double(bounds.x) + Double(bounds.width) / 2
     centerY = Double(bounds.y) + Double(bounds.height) / 2
   }
+  init(layerID: UUID, bounds: IntRect, artwork: SmartObjectGeometry?) throws {
+    self.init(layerID: layerID, bounds: bounds)
+    if let artwork {
+      let frame = try SmartObjectTransformFrame(artwork)
+      artworkFrame = frame
+      let center = frame.point(0.5, 0.5)
+      centerX = center.x
+      centerY = center.y
+    }
+  }
   var delta: Transform2D {
-    .translation(centerX, centerY) * .rotation(angle) * .scale(scaleX / 100, scaleY / 100)
+    if let artworkFrame { return artworkDelta(artworkFrame) }
+    return .translation(centerX, centerY) * .rotation(angle) * .scale(scaleX / 100, scaleY / 100)
       * .translation(
         -Double(bounds.x) - Double(bounds.width) / 2, -Double(bounds.y) - Double(bounds.height) / 2)
   }
+  private static let handleDirections: [(Double, Double)] = [
+    (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0),
+  ]
+  func sourcePoint(_ xFraction: Double, _ yFraction: Double) -> PathPoint {
+    if let artworkFrame { return artworkFrame.point(xFraction, yFraction) }
+    return .init(Double(bounds.x) + Double(bounds.width) * xFraction,
+                 Double(bounds.y) + Double(bounds.height) * yFraction)
+  }
   var handles: [CGPoint] {
-    if selection {let q=selectionCorners;return (0..<8).map{i in let a=q[i/2];if i%2==0{return CGPoint(x:a.x,y:a.y)};let b=q[(i/2+1)%4];return CGPoint(x:(a.x+b.x)/2,y:(a.y+b.y)/2)}}
-    return [(-1.0, -1.0), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)].map { x, y in
-      let p = delta.point(
-        Double(bounds.x) + Double(bounds.width) * (x + 1) / 2,
-        Double(bounds.y) + Double(bounds.height) * (y + 1) / 2)
+    if selection && !hasAffineArtworkFrame {let q=selectionCorners;return (0..<8).map{i in let a=q[i/2];if i%2==0{return CGPoint(x:a.x,y:a.y)};let b=q[(i/2+1)%4];return CGPoint(x:(a.x+b.x)/2,y:(a.y+b.y)/2)}}
+    let transform = delta
+    return Self.handleDirections.map { x, y in
+      let source = sourcePoint((x + 1) / 2, (y + 1) / 2)
+      let p = transform.point(source.x, source.y)
       return CGPoint(x: p.x, y: p.y)
     }
+  }
+  func hitHandle(at point: CGPoint, tolerance: Double) -> Int {
+    let distances = handles.map { hypot($0.x - point.x, $0.y - point.y) }
+    if let nearest = distances.indices.min(by: { distances[$0] < distances[$1] }),
+       distances[nearest] < tolerance { return nearest }
+    guard let undo = try? delta.inverted() else { return 8 }
+    let doc = undo.point(point.x, point.y)
+    return containsSourcePoint(.init(doc.x, doc.y)) ? -1 : 8
+  }
+  func containsSourcePoint(_ point: PathPoint) -> Bool {
+    if let artworkFrame {
+      let local = artworkFrame.documentToSource.point(point.x, point.y)
+      return local.x >= 0 && local.y >= 0
+        && local.x <= Double(artworkFrame.artwork.width) && local.y <= Double(artworkFrame.artwork.height)
+    }
+    return point.x >= Double(bounds.x) && point.y >= Double(bounds.y)
+      && point.x <= Double(bounds.x + bounds.width) && point.y <= Double(bounds.y + bounds.height)
   }
   func dragging(handle: Int, from start: CGPoint, to end: CGPoint, shift: Bool, option: Bool)
     -> Self
   {
     var result = self
     if handle == -1 {
-      result.centerX += end.x - start.x
-      result.centerY += end.y - start.y
+      let dx = end.x - start.x, dy = end.y - start.y
+      if artworkFrame != nil, shift {
+        let length = hypot(dx, dy)
+        let angle = (atan2(dy, dx) / (.pi / 4)).rounded() * (.pi / 4)
+        result.centerX += cos(angle) * length
+        result.centerY += sin(angle) * length
+      } else {
+        result.centerX += dx
+        result.centerY += dy
+      }
       return result
     }
     if handle == 8 {
@@ -72,12 +118,14 @@ struct TransformDraft: Equatable {
       let a = atan2(start.y - pivot.y, start.x - pivot.x)
       let b = atan2(end.y - pivot.y, end.x - pivot.x)
       var nextAngle = angle + (b - a) * 180 / .pi
-      if shift { nextAngle = (nextAngle / 15).rounded() * 15 }
+      if shift { nextAngle = ((nextAngle + artworkAngleOffset) / 15).rounded() * 15 - artworkAngleOffset }
       return transformNumeric(\.angle, nextAngle)
     }
     guard (0..<8).contains(handle) else { return result }
-    let direction = [(-1.0, -1.0), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)][
-      handle]
+    let direction = Self.handleDirections[handle]
+    if let artworkFrame {
+      return draggingArtwork(artworkFrame, direction: direction, from: start, to: end, shift: shift, option: option)
+    }
     if option, customReferencePoint != nil || referenceAnchor != .center {
       let pivot = transformReferencePoint, inverse = Transform2D.rotation(-angle)
       let a = inverse.point(start.x - pivot.x, start.y - pivot.y), b = inverse.point(end.x - pivot.x, end.y - pivot.y)
@@ -184,7 +232,7 @@ extension EditorStore {
       return
     }
     do {
-      transformDraft = TransformDraft(layerID: layer.id, bounds: try layerBounds(layer))
+      transformDraft = try TransformDraft(layerID: layer.id, bounds: layerBounds(layer), artwork: layer.smartObjectGeometry())
       tool = .move
       status = "Free Transform · Return to apply · Escape to cancel"
     } catch { self.error = error.localizedDescription }
@@ -249,7 +297,8 @@ extension EditorStore {
     }
     if let draft = transformDraft, draft.contentAware { return contentAwareScalePreview ?? doc }
     if let draft = transformDraft,!draft.selection {
-      let ids = doc.subtreeIDs(draft.layerID)
+      let ids = draft.artworkFrame == nil
+        ? doc.subtreeIDs(draft.layerID) : LayerLinks.expanded(in: doc, layerIDs: [draft.layerID])
       for i in doc.layers.indices where ids.contains(doc.layers[i].id) {
         let old = doc.layers[i]
         let matrix = draft.delta * old.coordinateTransform
@@ -284,6 +333,10 @@ extension EditorStore {
     if editingChannel != nil,transformDraft==nil{transformChannel(angle:angle,horizontal:horizontal,vertical:vertical);return}
     if wantsLayerCollectionTransform,transformDraft==nil,!editingMask,!editingComponent{transformLayerCollection(angle:angle,horizontal:horizontal,vertical:vertical);return}
     if editingMask,transformDraft==nil{transformPixelMask(angle:angle,horizontal:horizontal,vertical:vertical);return}
+    if let draft = transformDraft, draft.hasAffineArtworkFrame {
+      updateTransform(draft.turningArtwork(angle, horizontal: horizontal, vertical: vertical))
+      return
+    }
     if var draft=transformDraft,draft.selection {let p=draft.selectionReferencePoint;draft=draft.selectionApplying(.translation(p.x,p.y) * .rotation(angle) * .scale(horizontal ? -1:1,vertical ? -1:1) * .translation(-p.x,-p.y));updateTransform(draft);return}
     if var draft = transformDraft {
       guard !draft.contentAware else { return }

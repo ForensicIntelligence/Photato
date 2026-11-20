@@ -70,6 +70,7 @@ struct CanvasHost: NSViewRepresentable {
   var selectionAnts: SelectionAntsOverlay?
   var magneticPrecision=false
   override func updateCursorModifiers(_ flags:NSEvent.ModifierFlags) {
+    let previous = cursorModifiers
     if store.magneticDraft == nil {magneticPrecision=flags.contains(.capsLock)}
     if !flags.contains(.option) {store.magneticDraft?.alternateReady=true}
     super.updateCursorModifiers(flags)
@@ -79,6 +80,16 @@ struct CanvasHost: NSViewRepresentable {
     if store.tool == .magneticLasso {needsDisplay=true}
     if let original=transformStart,original.movingLayers,let start,let point=cursorDocumentPoint,cursorPointerDown{store.updateWholeLayerMove(original,from:start,to:point,modifiers:flags,zoom:Double(scale));needsDisplay=true}
     if let original=transformStart,original.movingPixels,let start,let point=cursorDocumentPoint,cursorPointerDown{store.updateSelectedPixelMove(original,from:start,to:point,modifiers:flags,zoom:Double(scale));needsDisplay=true}
+    let transformFlags: NSEvent.ModifierFlags = [.shift, .option]
+    if previous.intersection(transformFlags) != flags.intersection(transformFlags), cursorPointerDown,
+       let original = transformStart, original.hasAffineArtworkFrame, let start, let point = cursorDocumentPoint {
+      let shift = flags.contains(.shift), option = flags.contains(.option)
+      let next = original.selection
+        ? original.selectionDragging(handle: transformHandle, from: start, to: point,
+                                     mode: selectionTransformGestureMode ?? .free, shift: shift, option: option)
+        : original.dragging(handle: transformHandle, from: start, to: point, shift: shift, option: option)
+      if next != store.transformDraft { store.updateTransform(next); needsDisplay = true }
+    }
   }
   override var toolCursor: ToolCursor {
     if !spaceHeld, !panningGesture, store.unavailableToolID == nil, store.tool == .artboard, let cursor = artboardNeighborCursor { return cursor }
@@ -116,7 +127,14 @@ struct CanvasHost: NSViewRepresentable {
       let handle=cursorPointerDown ? transformHandle:cursorDocumentPoint.map{selectionTransformHit($0,draft:draft)} ?? 4
       let mode=selectionTransformGestureMode ?? draft.selectionMode(handle:handle,modifiers:cursorModifiers)
       guard draft.supportsSelectionMode(mode) else{return .unavailable}
+      if draft.hasAffineArtworkFrame, [.free, .scale, .rotate].contains(mode) {
+        return ToolCursor.artworkTransform(draft, handle: mode == .rotate ? 8 : handle, flags: cursorModifiers)
+      }
       return ToolCursor.selectionTransform(mode,handle:handle,flags:cursorModifiers,proportional:draft.proportional)
+    }
+    if let draft = store.transformDraft, draft.artworkFrame != nil, let point = cursorDocumentPoint {
+      let handle = cursorPointerDown && transformStart != nil ? transformHandle : draft.hitHandle(at: point, tolerance: 10 / scale)
+      return ToolCursor.artworkTransform(draft, handle: handle, flags: cursorModifiers)
     }
     if store.transformDraft != nil { return .symbol("arrow.up.and.down.and.arrow.left.and.right",ToolCursor.geometry(flags)) }
     if creatingMarquee {
@@ -756,23 +774,7 @@ struct CanvasHost: NSViewRepresentable {
       transformStart = draft
       start = p
       if draft.selection {transformHandle=selectionTransformHit(p,draft:draft);selectionTransformGestureMode=draft.selectionMode(handle:transformHandle,modifiers:event.modifierFlags);return}
-      let nearest = draft.handles.enumerated().min {
-        hypot($0.element.x - p.x, $0.element.y - p.y)
-          < hypot($1.element.x - p.x, $1.element.y - p.y)
-      }
-      if let nearest, hypot(nearest.element.x - p.x, nearest.element.y - p.y) * scale < 10 {
-        transformHandle = nearest.offset
-      } else {
-        let inverse = try? draft.delta.inverted()
-        let local = inverse?.point(p.x, p.y)
-        let inside =
-          local.map {
-            $0.x >= Double(draft.bounds.x) && $0.y >= Double(draft.bounds.y)
-              && $0.x <= Double(draft.bounds.x + draft.bounds.width)
-              && $0.y <= Double(draft.bounds.y + draft.bounds.height)
-          } ?? false
-        transformHandle = inside ? -1 : 8
-      }
+      transformHandle = draft.hitHandle(at: p, tolerance: 10 / scale)
       return
     }
     if !spaceHeld, polygonPoints.isEmpty, store.beginSelectionBorderDrag(at: p, modifiers: event.modifierFlags) {

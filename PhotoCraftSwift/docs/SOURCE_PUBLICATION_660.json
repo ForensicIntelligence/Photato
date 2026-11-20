@@ -1,0 +1,229 @@
+{
+  "build": 660,
+  "base": "fe25e2acd6b560ed76c8b010f4c375ea5a4283a8",
+  "buildInputs": 9257,
+  "includedBuildInputs": 9244,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "1318fc3947db984e97532d308f37b1bb374945891a43b57d89ef427ea6346b63",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/CanvasView.swift",
+      "sha256": "82a7aaa96297f1b04cd51d45673d9c77f2c9764145b917dc2920fd4461483719"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerCollectionTransformEditing.swift",
+      "sha256": "0b6c4f1d34b3d28332fd2064cdb5fac920eda6435088c111ca181dab189809ee"
+    },
+    {
+      "path": "Sources/PhotoCraft/PDFPlacement.swift",
+      "sha256": "8491c0c41063e0d448a8f0275ed14faabbce479905de31ecb234dccead40994d"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectionTransformCanvas.swift",
+      "sha256": "99e37faadd5063e4c85ba0ea5c7b564f2347c5635c920d423a999add9a21a1a0"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectionTransformDraft.swift",
+      "sha256": "2668c996fbc9045ec8bf658ccaeb37028423fb003a3ea2c6f22706c6ba5eb8df"
+    },
+    {
+      "path": "Sources/PhotoCraft/SmartObjectGeometry.swift",
+      "sha256": "88f5a57dda659d963ac6b89db0dcc10935169173fdde877913afde5bcd0f2f39"
+    },
+    {
+      "path": "Sources/PhotoCraft/SmartObjectTransformFrame.swift",
+      "sha256": "c3f3c0635a5a048814f4d668cd6a7b7541cc2573c997276064846e43f302b19d"
+    },
+    {
+      "path": "Sources/PhotoCraft/ToolCursorPolicies.swift",
+      "sha256": "6dca7581d3fa7706d1ed7c6cb02f576bf656f47ea0bbe8a70ae129bf19cec788"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformEditing.swift",
+      "sha256": "574697e52055c959a73cee083d7b5dc54147d2719665ffda553ae0f149620f10"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformOptions.swift",
+      "sha256": "00c685411055fa4ce12bc6ca3093237d7c0636fd750c92c77f330b1e87868af3"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformReference.swift",
+      "sha256": "4ad4b1bcc290895338a7fde0e57f586cf60cc8c1db14919a7aad65ef7339695f"
+    },
+    {
+      "path": "Sources/PhotoCraft/TransformReferenceAPI.swift",
+      "sha256": "f614985c5c37a247149b3606f34c6db5669de32f1a9d88073169522f7029297b"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/SmartObjectTransformFrameTests.swift",
+      "sha256": "0e194918eef1a75148b9573b4d5c733db3ea3558e3cc82d5d3ce0ac25a33baf2"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "ccecf0b5f7ccfdc1c48f3935f7a924aaa879f025265e16a6d1ea884551a82c10"
+    }
+  ],
+  "casesPerConfiguration": 1477,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 1477,
+      "passed": 1477,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "2c3faea754e1125e6b0e62c641e5bd9a4d412bb71ac87314edc7436a958b9480"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 1477,
+      "passed": 1477,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "2ca75a1f87ed7fea694cffe4156b8e47003f55cd9c75cecf7871214e51bfdd38"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 1477,
+      "passed": 1477,
+      "newCasesExpected": 5,
+      "newCasesPassed": 5,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "3bb368e55882217b9c90861931a8109765553ea22206ebdfa96a1f75f5a94fac"
+    }
+  },
+  "selectedCasesSHA256": "450d5ff7e635a17515f52fd4df6d5de655df88e26e355446f29fcbb15ee55f22",
+  "preview": {
+    "archiveSHA256": "ae862eb702c43ff861619ea44c1e055ecdd4e018154cfed3b72adad3e9cdf185",
+    "binarySHA256": "4624f8bb7dd2ed5c76bf935c6fb9a1dc3710ccd8f899d98649206880ef1eba1c",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "404d76ecad4b5ac39b6d986e5ffdcec8bad49332683daf025b350c3e13dbbb77",
+      "x86_64": "d05f987b778f2e19f3ff822cb4e59046fa93099f3b52c4580aaa60f2e090549a"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveTransform": {
+    "fixture": {
+      "sha256": "5d8df499dc759b075fb2177b764824941c07b61dcc1cd0c01faf41bc15823175",
+      "placedDescriptorDoubles": [
+        312.0,
+        172.0,
+        589.1281292110205,
+        332.0,
+        489.1281292110204,
+        505.2050807568877,
+        212.0,
+        345.20508075688775
+      ],
+      "rotationDegrees": 30,
+      "expectedBounds": {
+        "x": 212,
+        "y": 172,
+        "width": 378,
+        "height": 334
+      }
+    },
+    "before": {
+      "build": "659",
+      "cancelAction": 0,
+      "freeTransformAction": 0,
+      "numericFields": [
+        {
+          "label": "Canvas zoom percentage",
+          "value": "100%"
+        },
+        {
+          "label": "Layer opacity",
+          "value": "100"
+        },
+        {
+          "label": "X",
+          "value": "401"
+        },
+        {
+          "label": "Y",
+          "value": "339"
+        },
+        {
+          "label": "W",
+          "value": "100"
+        },
+        {
+          "label": "H",
+          "value": "100"
+        },
+        {
+          "label": "\u2220",
+          "value": "0"
+        },
+        {
+          "label": "X",
+          "value": "212"
+        },
+        {
+          "label": "Y",
+          "value": "172"
+        }
+      ]
+    },
+    "after": {
+      "build": "660",
+      "cancelAction": 0,
+      "freeTransformAction": 0,
+      "numericFields": [
+        {
+          "label": "Canvas zoom percentage",
+          "value": "100%"
+        },
+        {
+          "label": "Layer opacity",
+          "value": "100"
+        },
+        {
+          "label": "X",
+          "value": "401"
+        },
+        {
+          "label": "Y",
+          "value": "339"
+        },
+        {
+          "label": "W",
+          "value": "100"
+        },
+        {
+          "label": "H",
+          "value": "100"
+        },
+        {
+          "label": "\u2220",
+          "value": "30"
+        },
+        {
+          "label": "X",
+          "value": "212"
+        },
+        {
+          "label": "Y",
+          "value": "172"
+        }
+      ]
+    }
+  },
+  "liveAdobeCompared": false
+}

@@ -36,10 +36,10 @@ extension EditorStore {
     var preview = document
     try Command.addLayer(layer).apply(to:&preview)
     let inserted = preview.layers.first(where:{$0.id == layer.id})!
-    let bounds = try layerBounds(inserted)
+    let placement = try TransformDraft(layerID: inserted.id, bounds: layerBounds(inserted), artwork: inserted.smartObjectGeometry())
     embeddedPlacement = EmbeddedPlacementDraft(original:document,layer:inserted,selected:selectedLayerIDs,
       lifecycle:layerPanelGeneration,session:sessionGeneration,preview:preview,rasterize:rasterize,linkedFile:linkedFile)
-    transformDraft = TransformDraft(layerID:layer.id,bounds:bounds)
+    transformDraft = placement
     selectedLayerIDs = [layer.id];tool = .move
     let title = layer.smartObject?.linkedSource == nil ? "Place Embedded" : "Place Linked"
     status = "\(title) · Return to commit · Escape to cancel"

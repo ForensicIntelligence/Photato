@@ -1,3 +1,7 @@
+**Source checkpoint 660.** Free Transform handles follow an affine Smart Object's saved corners. Side and corner drags scale along the artwork's axes, and the angle field reads its current rotation. The Photato API exposes the frame and commit delta. All 1,477 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_660.md).
+
+**Next Smart Object work.** Verify absolute scaling fields and repeated projective edits against a responsive Photoshop session. The remaining template appearance gaps include blend options and pixel masks.
+
 **Source checkpoint 659.** Properties and Free Transform now use the original geometry of linked artwork when a reopened PSD or PSB has only a cached preview. The Photato API reports the same source transform, rotation and bounds. All 1,472 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. [Qualification](SOURCE_PUBLICATION_659.md).
 
 **Next transform work.** Compare oriented Free Transform handles and numeric scaling for already rotated layers. The current draft starts from the source's document-aligned bounds. Linked and embedded template appearance fields remain open.

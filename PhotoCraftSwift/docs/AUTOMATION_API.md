@@ -1168,6 +1168,18 @@ The existing `layers[].transform` describes the displayed surface or linked prev
 apply the desired document-space delta with `layer.transform`; both views of the placement then update. The Adobe job and
 manifest interfaces keep their published schema. [Development record](LINKED_SMART_OBJECT_GEOMETRY_659.md)
 
+### Smart Object transform draft
+
+While one affine Smart Object is in Free Transform, `transformReference.artworkFrame` in
+`GET /v1/documents/{documentID}` reports four transformed source corners in document pixels, the native
+`delta` matrix, the displayed `angleDegrees` and draft-relative `scaleXPercent` and `scaleYPercent`.
+The corner order is original top left, top right, bottom right and bottom left.
+
+`transform.reference` can position the pivot in the open draft. To replay a captured `delta` programmatically,
+close the draft and send its coefficients with the target layer ID through `layer.transform`.
+After a projective edit, the existing `selectionTransform.matrix` carries the projective mapping. The
+affine frame is null in that case. [Development record](ORIENTED_SMART_OBJECT_TRANSFORM_660.md)
+
 ### Smart Object template geometry
 
 `transformMode` accepts `none`, `fit`, `fill` and `custom`. A custom request includes `transform`. A geometry-only edit can omit `smartObject`; the existing original is preserved. Relative adds accept `above`, `below` or `into` with `placement.referenceLayer` by name or PSD ID. Adds can also use `top` or `bottom`.

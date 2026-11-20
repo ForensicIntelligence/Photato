@@ -3,8 +3,22 @@ import PhotoCraftCore
 
 enum SelectionTransformMode:String,CaseIterable,Sendable {case free="Free Transform",scale="Scale",rotate="Rotate",skew="Skew",distort="Distort",perspective="Perspective"}
 extension TransformDraft {
-  var selectionCorners:[PathPoint] {selectionQuad ?? [PathPoint(Double(bounds.x),Double(bounds.y)),.init(Double(bounds.x+bounds.width),Double(bounds.y)),.init(Double(bounds.x+bounds.width),Double(bounds.y+bounds.height)),.init(Double(bounds.x),Double(bounds.y+bounds.height))]}
+  var selectionCorners:[PathPoint] {
+    if let selectionQuad { return selectionQuad }
+    let p = [sourcePoint(0, 0), sourcePoint(1, 0), sourcePoint(1, 1), sourcePoint(0, 1)]
+    if !hasAffineArtworkFrame { return p }
+    let transform = delta
+    return p.map { point in let q = transform.point(point.x, point.y); return .init(q.x, q.y) }
+  }
   var selectionProjection:ProjectiveTransform {get throws {
+    if let frame = artworkFrame {
+      if let selectionQuad {
+        let s = IntRect(x: 0, y: 0, width: frame.artwork.width, height: frame.artwork.height)
+        return try SelectionTransform.projection(bounds: s, corners: selectionQuad).preceded(by: frame.documentToSource)
+      }
+      try delta.validated()
+      return ProjectiveTransform(delta)
+    }
     let original:[PathPoint]=[.init(Double(bounds.x),Double(bounds.y)),.init(Double(bounds.x+bounds.width),Double(bounds.y)),.init(Double(bounds.x+bounds.width),Double(bounds.y+bounds.height)),.init(Double(bounds.x),Double(bounds.y+bounds.height))]
     if selectionCorners==original{return .identity}
     return try SelectionTransform.projection(bounds:bounds,corners:selectionCorners)
@@ -13,7 +27,8 @@ extension TransformDraft {
     if let point = customReferencePoint, let mapped = try? selectionProjection.point(point.x, point.y) { return mapped }
     let q=selectionCorners
     switch referenceAnchor {case .topLeft:return q[0];case .topRight:return q[1];case .bottomRight:return q[2];case .bottomLeft:return q[3];default:break}
-    let f=referenceAnchor.fractions;return (try? selectionProjection.point(Double(bounds.x)+Double(bounds.width)*f.0,Double(bounds.y)+Double(bounds.height)*f.1)) ?? .init(centerX,centerY)
+    let original = sourceReferencePoint
+    return (try? selectionProjection.point(original.x, original.y)) ?? .init(centerX,centerY)
   }
   func selectionApplying(_ matrix:Transform2D)->Self {
     var result=self;result.selectionQuad=selectionCorners.map{let p=matrix.point($0.x,$0.y);return .init(p.x,p.y)};return result
@@ -44,6 +59,10 @@ extension TransformDraft {
     return selectionMode
   }
   func selectionDragging(handle:Int,from start:CGPoint,to end:CGPoint,mode:SelectionTransformMode,shift:Bool,option:Bool)->Self {
+    if hasAffineArtworkFrame, [.free, .scale, .rotate].contains(mode) {
+      let artworkHandle = mode == .rotate ? 8 : handle
+      return dragging(handle: artworkHandle, from: start, to: end, shift: shift, option: option)
+    }
     let q=selectionCorners;var next=self,dx=Double(end.x-start.x),dy=Double(end.y-start.y)
     if handle == -1 {
       if shift {let length=hypot(dx,dy),angle=(atan2(dy,dx)/(.pi/4)).rounded()*(.pi/4);dx=cos(angle)*length;dy=sin(angle)*length}
