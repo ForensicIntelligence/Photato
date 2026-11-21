@@ -722,7 +722,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 701 | 2026-11-21 | [Blend Generative Fill selection edges](#dev-step-701) |
 | 702 | 2026-11-21 | [Keep editable Generative Fill variations](#dev-step-702) |
 | 703 | 2026-11-21 | [Add batches to an existing Generative Fill layer](#dev-step-703) |
+| 704 | 2026-11-21 | [Generate similar variations from a saved local fill](#dev-step-704) |
 <!-- history-index:end -->
+
+<a id="dev-step-704"></a>
+
+## 2026-11-21 — Generate similar variations from a saved local fill
+
+Generate Similar uses a chosen variation as the reference for another batch in the same local Generative Fill layer. Open Variation actions in Properties or pass the reference ID through the Photato API. The earlier results, mask and reference stay editable after reopening, and one Undo removes the new batch.
+
+- `LocalGenerativeFill.swift` maps the reference pixels into the captured model input with the original selection. It retains the saved model samples outside that mask. `LocalPromptGenerativeFill.swift` uses partial denoising for Generate Similar, and `GenerativeFillWorker.swift` passes that mode to the separate Swift inference process.
+- `GenerativeFillVariations.swift` checks that the reference belongs to the target layer and stores it on each appended result. Saving and reopening keeps older IDs and the current outer mask. `GenerativeFillControls.swift` exposes the action through the native Properties menu and starts the sheet with the reference variation’s prompt.
+- `AutomationCommands.swift`, `AutomationService.swift` and `AutomationGenerativeFill.swift` add the reference ID to the existing command and report availability and provenance in state. The command count remains 285. The pinned Adobe contract describes the job envelope, and Adobe’s model catalogue describes Generate Similar. An authoritative action payload is still needed.
+- The first Debug and Xcode attempts tried to reach an imaging renderer private to its module. Using the public layer-comp renderer kept reference rendering on the same path as the editor. The checked-in project and SwiftPM then compiled.
+- `GenerativeFillVariationTests.swift` tests the inactive-reference case, exact saved model samples outside the mask, invalid references, source records and Undo at every RGB depth. `GenerativeFillWorkflowTests.swift` tests the real Core ML worker through the sheet and the API after reopening. `AutomationTests.swift` checks the updated schema. The bundle version advances to 704.
+- Updated the model guide, API examples, command matrix and Adobe compatibility record. Adobe’s documented Crop entry point and the present single-crop fill budget inform the next Generative Expand work.
+- A separate Expand preflight preserved all 6,006 original pixels at each RGB depth in an atomic reframing and synthetic fill. The existing fill rejects a 24 × 5,000 border, which identifies region decomposition as a requirement for large documents.
+- Both real-model Expand probes preserved all 65,536 original pixels and generated 25,632 opaque border pixels. The context-only result had a mean RGB8 step of 88.29 levels at the right boundary. The prompted result had a step of 54.54 at the top boundary. Both need further seam work before an editor integration.
+- In a geometry-only 300,000 × 300,000 border check, 316 overlapping context windows covered 21,898,670 output pixels exactly once, with every output rectangle outside the original image. Qualifying rendered continuity, memory and throughput is part of the Expand implementation.
+- A synthetic stress check reopened the IDs and reference links of 64 variants in PSD and PSB at the existing capacity limit.
+- The published Execute Actions guide and OpenAPI file did not provide an example for the named generative operations. Adobe’s UXP documentation describes how to record Action Commands in the app when a live Photoshop session is available.
+
+On one owned example, the mean RGB8 difference from the reference fell from 52.91 levels with full regeneration to 10.32 with conditioning at the same seed. Changing the reference changed the generated output by 46.57 levels on average. The sandboxed comparison preserved 49,283 pixels outside the original mask and the four earlier variation records. The generated result and reference ID survived reopening in Photato, PSD and PSB. The native editor and HTTP produced identical RGBA output when they used the same reference and seed on a reopened PSD.
+
+484 of 485 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect fixture repeated its 118 assertions from build 703 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. Generate Similar in this build supports Photato’s local prompted Generative Fill layers with saved context. Adobe also documents it for Expand, Background and Generate Image. Adobe Execute Actions compatibility and Firefly output equivalence remain open. The installed Photoshop session timed out on a read-only scripting query. The overall desktop workflow estimate remains 50%.
+
+[Qualification](SOURCE_PUBLICATION_704.md) · [Model setup](LOCAL_GENERATIVE_FILL.md).
 
 <a id="dev-step-703"></a>
 

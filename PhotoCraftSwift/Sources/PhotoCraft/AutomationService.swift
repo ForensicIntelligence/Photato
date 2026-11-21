@@ -1625,7 +1625,8 @@ import UniformTypeIdentifiers
           allowLinkedSmartObject: options.target != nil) { original in
           if let target = options.target {
             return try GenerativeFillVariations.append(to: target, in: original, model: model, bookmark: bookmark,
-              prompt: options.prompt.isEmpty ? nil : options.prompt, seed: options.seed, count: options.count)
+              prompt: options.prompt.isEmpty ? nil : options.prompt, seed: options.seed, count: options.count,
+              referenceVariationID: options.reference)
           }
           return try GenerativeFillVariations.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
             seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)

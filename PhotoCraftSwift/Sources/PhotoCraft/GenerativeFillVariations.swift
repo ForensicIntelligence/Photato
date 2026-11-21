@@ -11,6 +11,7 @@ enum GenerativeFillVariations {
     let id: UUID
     let seed: UInt32
     let prompt: String?
+    let referenceVariationID: UUID?
   }
 
   struct Metadata: Codable, Equatable, Sendable {
@@ -71,20 +72,20 @@ enum GenerativeFillVariations {
       return Layer(name: "Variation \(index + 1)", content: .raster(patch))
     }
     if let context { source.layers[0].sourceTags = [PSDCodec.fillContextTag: context] }
-    return try packaged(source, in: document, previous: first, ids: layers.map { _ in UUID() },
-      seedAndPrompt: seeds.map { ($0, nil) }, prompt: prompt, version: context == nil ? 1 : 2, selected: 0)
+    let entries = seeds.map { Entry(id: UUID(), seed: $0, prompt: nil, referenceVariationID: nil) }
+    return try packaged(source, in: document, previous: first, entries: entries,
+      prompt: prompt, version: context == nil ? 1 : 2, selected: 0)
   }
 
   private static func packaged(
-    _ inner: CraftDocument, in document: CraftDocument, previous: Layer, ids: [UUID],
-    seedAndPrompt: [(UInt32, String?)], prompt: String, version: Int, selected: Int
+    _ inner: CraftDocument, in document: CraftDocument, previous: Layer, entries: [Entry], prompt: String, version: Int, selected: Int
   ) throws -> Layer {
     var source = inner
     var comps = LayerComps()
     for index in source.layers.indices {
       try Task.checkCancellation()
       for i in source.layers.indices { source.layers[i].visible = i == index }
-      comps.comps.append(LayerComp(id: ids[index], name: source.layers[index].name,
+      comps.comps.append(LayerComp(id: entries[index].id, name: source.layers[index].name,
         options: .init(visibility: true, position: false, appearance: false), document: source))
     }
     for i in source.layers.indices { source.layers[i].visible = i == selected }
@@ -101,7 +102,9 @@ enum GenerativeFillVariations {
     object.layerComps?.selectedID = choices.entries[selected].id
     let record = Metadata(version: version, prompt: prompt, model: LocalGenerativeFill.promptModelIdentifier,
       sourceSHA256: object.dataFingerprint,
-      entries: zip(choices.entries, seedAndPrompt).map { Entry(id: $0.0.id, seed: $0.1.0, prompt: $0.1.1) },
+      entries: zip(choices.entries, entries).map { choice, entry in
+        Entry(id: choice.id, seed: entry.seed, prompt: entry.prompt, referenceVariationID: entry.referenceVariationID)
+      },
       lastDocumentStateID: version == 2 ? choices.entries[selected].id : nil)
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.sortedKeys]
@@ -123,15 +126,19 @@ enum GenerativeFillVariations {
   }
 
   static func append(
-    to id: UUID, in document: CraftDocument, model: URL, bookmark: Data?, prompt: String?, seed: UInt32?, count: Int
+    to id: UUID, in document: CraftDocument, model: URL, bookmark: Data?, prompt: String?, seed: UInt32?, count: Int,
+    referenceVariationID: UUID? = nil
   ) throws -> Command {
-    try append(to: id, in: document, prompt: prompt, seed: seed, count: count) { prompt, seeds, image, mask in
-      try GenerativeFillWorker.run(model: model, bookmark: bookmark, prompt: prompt, seeds: seeds, image: image, mask: mask)
+    try append(to: id, in: document, prompt: prompt, seed: seed, count: count,
+      referenceVariationID: referenceVariationID) { prompt, seeds, image, mask in
+      try GenerativeFillWorker.run(model: model, bookmark: bookmark, prompt: prompt, seeds: seeds, image: image, mask: mask,
+        mode: referenceVariationID == nil ? .fill : .similar)
     }
   }
 
   static func append(
     to id: UUID, in parent: CraftDocument, prompt override: String?, seed: UInt32?, count: Int,
+    referenceVariationID: UUID? = nil,
     predict: (String, [UInt32], [Float], [Float]) throws -> [Surface]
   ) throws -> Command {
     try Task.checkCancellation()
@@ -144,6 +151,9 @@ enum GenerativeFillVariations {
       record.entries.count + count <= maximumStoredVariations else {
       throw CraftError.invalid("The Generative Fill layer is at its variation limit.")
     }
+    if let referenceVariationID, !record.entries.contains(where: { $0.id == referenceVariationID }) {
+      throw CraftError.invalid("Choose an existing variation from this Generative Fill layer.")
+    }
     var source = try SmartObjectIO.sourceDocument(object)
     guard let comps = source.layerComps, comps.comps.map(\.id) == record.entries.map(\.id),
       source.layers.count == record.entries.count, let stored = source.layers.first?.sourceTags?[PSDCodec.fillContextTag] else {
@@ -153,7 +163,7 @@ enum GenerativeFillVariations {
     guard recipe.selection.width == source.width, recipe.selection.height == source.height else {
       throw CraftError.invalid("The saved Generative Fill context no longer matches its layer.")
     }
-    let prompt = try LocalGenerativeFill.validatePrompt(override ?? record.prompt(for: object.layerComps?.selectedID))
+    let prompt = try LocalGenerativeFill.validatePrompt(override ?? record.prompt(for: referenceVariationID ?? object.layerComps?.selectedID))
     guard !prompt.isEmpty else { throw CraftError.invalid("Enter a text prompt for the new variations.") }
     let used = Set(record.entries.map(\.seed))
     var firstSeed = seed ?? (record.entries[record.entries.count - 1].seed &+ 1)
@@ -163,21 +173,28 @@ enum GenerativeFillVariations {
       firstSeed &+= 1
       seeds = (0..<count).map { firstSeed &+ UInt32($0) }
     }
-    let patches = try recipe.patches(in: source) { image, mask in try predict(prompt, seeds, image, mask) }
+    let conditioning = try referenceVariationID.map { id in
+      try SmartObjectLayerCompIO.pixels(source, compID: id, stackMode: nil, in: source)
+    }
+    let patches = try recipe.patches(in: source, conditioning: conditioning) { image, mask in
+      try predict(prompt, seeds, image, mask)
+    }
     guard patches.count == count else { throw CraftError.invalid("Local inference returned an incomplete batch.") }
     source.layers += patches.enumerated().map { index, pixels in
       Layer(name: "Variation \(record.entries.count + index + 1)", content: .raster(pixels))
     }
-    let resultLayer = try packaged(source, in: parent, previous: layer,
-      ids: record.entries.map(\.id) + patches.map { _ in UUID() },
-      seedAndPrompt: record.entries.map { ($0.seed, $0.prompt) } + seeds.map { ($0, prompt == record.prompt ? nil : prompt) },
+    let newEntries = seeds.map {
+      Entry(id: UUID(), seed: $0, prompt: prompt == record.prompt ? nil : prompt, referenceVariationID: referenceVariationID)
+    }
+    let resultLayer = try packaged(source, in: parent, previous: layer, entries: record.entries + newEntries,
       prompt: record.prompt, version: 2, selected: record.entries.count)
     guard read(resultLayer)?.entries.prefix(record.entries.count).map(\.id) == record.entries.map(\.id) else {
       throw CraftError.invalid("The saved identifiers for earlier variations changed.")
     }
     var result = parent
     result.layers[position] = resultLayer
-    return .linkedSmartObject(try .init(source: parent, result: result, title: "Generate More Variations"))
+    return .linkedSmartObject(try .init(source: parent, result: result,
+      title: referenceVariationID == nil ? "Generate More Variations" : "Generate Similar"))
   }
 
   static func read(_ layer: Layer) -> Metadata? {
@@ -197,6 +214,11 @@ enum GenerativeFillVariations {
         guard let prompt = entry.prompt else { return true }
         return !prompt.isEmpty && (try? LocalGenerativeFill.validatePrompt(prompt)) == prompt
       }) else { return nil }
+    var priorIDs = Set<UUID>()
+    for entry in record.entries {
+      if let reference = entry.referenceVariationID, !priorIDs.contains(reference) { return nil }
+      priorIDs.insert(entry.id)
+    }
     return record
   }
 }
@@ -219,9 +241,23 @@ struct GenerativeFillVariationControls: View {
       .disabled(!store.canChooseSmartObjectComp)
       .accessibilityIdentifier("generativeFill.variations")
       if metadata.version == 2 {
-        Button("Generate More…") { store.beginGenerativeFillBatch(layer.id) }
-          .disabled(!store.canBeginGenerativeFillBatch(layer.id))
-          .accessibilityIdentifier("generativeFill.generateMore")
+        HStack {
+          Button("Generate More…") { store.beginGenerativeFillBatch(layer.id) }
+            .accessibilityIdentifier("generativeFill.generateMore")
+          if let selected = metadata.selectedID(layer.smartObject?.layerComps?.selectedID) {
+            Menu {
+              Button("Generate Similar…") { store.beginGenerativeFillBatch(layer.id, referenceVariationID: selected) }
+                .accessibilityIdentifier("generativeFill.generateSimilar")
+            } label: {
+              Image(systemName: "ellipsis.circle")
+            }
+            .menuStyle(.borderlessButton)
+            .fixedSize()
+            .accessibilityLabel("Variation actions")
+            .help("Actions for the selected variation")
+          }
+        }
+        .disabled(!store.canBeginGenerativeFillBatch(layer.id))
       }
     }
   }

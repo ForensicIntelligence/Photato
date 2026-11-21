@@ -11,6 +11,11 @@ extension LocalGenerativeFill {
   package static let maximumPromptCharacters = 256
   package static let promptModelIdentifier = "runwayml/stable-diffusion-inpainting"
 
+  package enum PromptMode: String, Codable, Sendable {
+    case fill
+    case similar
+  }
+
   package static func validatePrompt(_ raw: String) throws -> String {
     let prompt = raw.trimmingCharacters(in: .whitespacesAndNewlines)
     guard raw.count <= maximumPromptCharacters,
@@ -39,7 +44,7 @@ extension LocalGenerativeFill {
   }
 
   package static func predictPrompt(
-    image: [Float], mask: [Float], model url: URL, prompt raw: String, seeds: [UInt32]
+    image: [Float], mask: [Float], model url: URL, prompt raw: String, seeds: [UInt32], mode: PromptMode = .fill
   ) throws -> [Surface] {
     let prompt = try validatePrompt(raw)
     guard !prompt.isEmpty, (1...maximumVariations).contains(seeds.count),
@@ -60,7 +65,7 @@ extension LocalGenerativeFill {
         return try seeds.map { seed in
           try Task.checkCancellation()
           let input = SampleInput(prompt: prompt, initImage: source, inpaintMask: selection,
-            strength: 1, seed: seed, stepCount: 25)
+            strength: mode == .similar ? 0.48 : 1, seed: seed, stepCount: 25)
           let output = try pipeline.generateImages(input: input) { _ in !Task.isCancelled }
           try Task.checkCancellation()
           guard let output, output.width == side, output.height == side else {

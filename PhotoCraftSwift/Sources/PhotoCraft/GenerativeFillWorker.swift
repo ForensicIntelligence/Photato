@@ -17,6 +17,7 @@ enum GenerativeFillWorker {
     let seeds: [UInt32]
     let image: Data
     let mask: Data
+    let mode: LocalGenerativeFill.PromptMode
   }
 
   private struct Reply: Codable {
@@ -26,7 +27,7 @@ enum GenerativeFillWorker {
 
   static func run(
     model: URL, bookmark: Data? = nil, prompt: String, seeds: [UInt32], image: [Float], mask: [Float],
-    executable override: URL? = nil
+    mode: LocalGenerativeFill.PromptMode = .fill, executable override: URL? = nil
   ) throws -> [Surface] {
     try Task.checkCancellation()
     let process = Process()
@@ -38,7 +39,7 @@ enum GenerativeFillWorker {
     try files.createDirectory(at: directory, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
     defer { try? files.removeItem(at: directory) }
     let request = Request(bookmark: try bookmark ?? GenerativeFillModelPreference.bookmark(for: model), prompt: prompt,
-      seeds: seeds, image: image.withUnsafeBytes { Data($0) }, mask: mask.withUnsafeBytes { Data($0) })
+      seeds: seeds, image: image.withUnsafeBytes { Data($0) }, mask: mask.withUnsafeBytes { Data($0) }, mode: mode)
     try write(request, to: directory.appending(path: "request.plist"))
 
     process.executableURL = executable
@@ -82,7 +83,7 @@ enum GenerativeFillWorker {
       let image = try floats(request.image, count: area * 3)
       let mask = try floats(request.mask, count: area)
       let results = try LocalGenerativeFill.predictPrompt(image: image, mask: mask, model: model,
-        prompt: request.prompt, seeds: request.seeds)
+        prompt: request.prompt, seeds: request.seeds, mode: request.mode)
       reply = Reply(pixels: try results.map { try $0.rgbaData(depth: .f32) })
     } catch {
       reply = Reply(error: error.localizedDescription)

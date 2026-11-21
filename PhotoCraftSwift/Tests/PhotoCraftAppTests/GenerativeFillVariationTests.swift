@@ -165,4 +165,69 @@ final class GenerativeFillVariationTests: XCTestCase {
       }
     }
   }
+
+  func testSimilarUsesExplicitReferenceAndPreservesSavedContextAfterReopen() throws {
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width: 27, height: 24, depth: depth)
+      let region = IntRect(x: 7, y: 8, width: 13, height: 10)
+      document.setCoverageSelection(try SelectionMask.sampledCoverage(width: 27, height: 24, regions: [region]) { x, y in
+        region.contains(x, y) && (x > 7 || y > 8) ? (x == 7 || y == 8 ? 127 : 255) : 0
+      })
+      let (recipe, coverage) = try LocalGenerativeFill.capture(document)
+      let red = try Surface(width: 512, height: 512, depth: .f32, fill: Pixel(1, 0.12, 0.07))
+      let blue = try Surface(width: 512, height: 512, depth: .f32, fill: Pixel(0.01, 0.37, 0.9))
+      let green = try Surface(width: 512, height: 512, depth: .f32, fill: Pixel(0.05, 0.8, 0.17))
+      var initialImage = [Float](), initialMask = [Float]()
+      let patch = try recipe.patches(in: document) { image, mask in
+        initialImage = image
+        initialMask = mask
+        return [red]
+      }[0]
+      var generated = Layer(name: "Generative Fill", content: .raster(patch))
+      generated.x = region.x
+      generated.y = region.y
+      generated.mask = coverage
+      let layer = try GenerativeFillVariations.pack([generated], in: document, prompt: "Red subject", seeds: [21], context: recipe.encoded())
+      try Command.generativeFill(layer).apply(to: &document)
+      let addBlue = try GenerativeFillVariations.append(to: layer.id, in: document, prompt: "Blue subject", seed: nil, count: 1) { _, _, _, _ in [blue] }
+      try addBlue.apply(to: &document)
+      var reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(document))
+      reopened.setCoverageSelection(nil)
+      let target = try XCTUnwrap(reopened.layers.last)
+      let before = try XCTUnwrap(GenerativeFillVariations.read(target))
+      let chosen = before.entries[0].id
+      XCTAssertEqual(target.smartObject?.layerComps?.selectedID, before.entries[1].id)
+      XCTAssertThrowsError(try GenerativeFillVariations.append(to: target.id, in: reopened, prompt: nil, seed: nil, count: 1,
+        referenceVariationID: UUID()) { _, _, _, _ in XCTFail("An unknown reference must fail before inference"); return [green] })
+      let similar = try GenerativeFillVariations.append(to: target.id, in: reopened, prompt: nil, seed: nil, count: 1,
+        referenceVariationID: chosen) { prompt, seeds, image, mask in
+        XCTAssertEqual(prompt, "Red subject")
+        XCTAssertEqual(seeds, [23])
+        XCTAssertTrue(mask == initialMask)
+        let cells = mask.count
+        XCTAssertTrue(image.indices.allSatisfy { mask[$0 % cells] == 1 || image[$0].bitPattern == initialImage[$0].bitPattern })
+        XCTAssertTrue(mask.indices.contains { mask[$0] == 1 && image[$0] > image[$0 + cells * 2] })
+        XCTAssertTrue(image != initialImage)
+        return [green]
+      }
+      var session = EditorSession(document: reopened)
+      try session.executePrepared(PreparedEdit(command: similar, document: reopened))
+      let changed = try XCTUnwrap(session.document.layers.last)
+      let history = try XCTUnwrap(GenerativeFillVariations.read(changed))
+      XCTAssertEqual(history.entries.count, 3)
+      XCTAssertEqual(Array(history.entries.prefix(2)), before.entries)
+      XCTAssertEqual(history.entries[2].referenceVariationID, chosen)
+      XCTAssertEqual(changed.mask, target.mask)
+      let roundTrips = try [
+        NativeArchive.decode(NativeArchive.encode(session.document)),
+        PSDCodec.read(PSDCodec.writeRasterLayers(session.document)),
+        PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: .psb))
+      ]
+      for copy in roundTrips {
+        XCTAssertEqual(copy.layers.last.flatMap(GenerativeFillVariations.read), history)
+      }
+      try session.undo()
+      XCTAssertTrue(session.document == reopened)
+    }
+  }
 }

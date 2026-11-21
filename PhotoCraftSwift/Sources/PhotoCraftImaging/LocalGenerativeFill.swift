@@ -168,7 +168,9 @@ package enum LocalGenerativeFill {
       return recipe
     }
 
-    package func patches(in document: CraftDocument, predict: ([Float], [Float]) throws -> [Surface]) throws -> [Surface] {
+    package func patches(
+      in document: CraftDocument, conditioning: Surface? = nil, predict: ([Float], [Float]) throws -> [Surface]
+    ) throws -> [Surface] {
       func samples(_ data: Data) -> [Float] {
         var result = [Float](repeating: 0, count: data.count / MemoryLayout<Float>.stride)
         _ = result.withUnsafeMutableBytes { data.copyBytes(to: $0) }
@@ -178,7 +180,29 @@ package enum LocalGenerativeFill {
       let scale = Double(side) / Double(max(region.width, region.height))
       let left = (Double(side) - Double(region.width) * scale) / 2
       let top = (Double(side) - Double(region.height) * scale) / 2
-      let outputs = try predict(samples(image), samples(modelMask))
+      let mask = samples(modelMask)
+      var input = samples(image)
+      if let conditioning {
+        guard conditioning.width == selection.width, conditioning.height == selection.height else {
+          throw CraftError.invalid("The reference variation no longer matches the original selection.")
+        }
+        let source = try ColorManagement.converted(conditioning, from: document, to: reference)
+        let count = side * side
+        for y in 0..<side {
+          try Task.checkCancellation()
+          let patchY = (Double(y) + 0.5 - top) / scale + Double(region.y - selection.y)
+          for x in 0..<side {
+            let i = y * side + x
+            guard mask[i] == 1 else { continue }
+            let patchX = (Double(x) + 0.5 - left) / scale + Double(region.x - selection.x)
+            let p = RasterGeometry.sample(source, x: patchX, y: patchY, method: .bilinear, clampEdges: true)
+            input[i] += (p.r - input[i]) * p.a
+            input[i + count] += (p.g - input[i + count]) * p.a
+            input[i + 2 * count] += (p.b - input[i + 2 * count]) * p.a
+          }
+        }
+      }
+      let outputs = try predict(input, mask)
       guard (1...maximumVariations).contains(outputs.count) else {
         throw CraftError.invalid("The local model returned an unexpected number of variations.")
       }

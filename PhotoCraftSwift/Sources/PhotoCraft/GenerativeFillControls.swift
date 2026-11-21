@@ -44,6 +44,8 @@ enum GenerativeFillModelPreference {
   var variationCount = LocalGenerativeFill.maximumVariations
   var maximumVariations = LocalGenerativeFill.maximumVariations
   var targetLayerID: UUID?
+  var referenceVariationID: UUID?
+  var referenceVariationNumber: Int?
   var selectingModel = false
   var generating = false
   var error: String?
@@ -68,13 +70,18 @@ extension EditorStore {
     return GenerativeFillVariations.canAppend(layer, in: document)
   }
 
-  func beginGenerativeFillBatch(_ id: UUID) {
+  func beginGenerativeFillBatch(_ id: UUID, referenceVariationID: UUID? = nil) {
     finishLayerName()
     guard canBeginGenerativeFillBatch(id), let layer = activeLayer,
       let record = GenerativeFillVariations.read(layer) else { return }
     let draft = GenerativeFillDraft()
     draft.targetLayerID = id
-    draft.prompt = record.prompt(for: layer.smartObject?.layerComps?.selectedID)
+    if let referenceVariationID {
+      guard let index = record.entries.firstIndex(where: { $0.id == referenceVariationID }) else { return }
+      draft.referenceVariationID = referenceVariationID
+      draft.referenceVariationNumber = index + 1
+    }
+    draft.prompt = record.prompt(for: referenceVariationID ?? layer.smartObject?.layerComps?.selectedID)
     draft.maximumVariations = min(LocalGenerativeFill.maximumVariations, GenerativeFillVariations.maximumStoredVariations - record.entries.count)
     draft.variationCount = draft.maximumVariations
     generativeFillDraft = draft
@@ -99,7 +106,7 @@ extension EditorStore {
     let prompt = draft.prompt, seed = draft.seed
     let bookmark = draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
-    let target = draft.targetLayerID, prompted = draft.prompted
+    let target = draft.targetLayerID, prompted = draft.prompted, reference = draft.referenceVariationID
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
     draft.error = nil
@@ -109,7 +116,7 @@ extension EditorStore {
         let command: Command
         if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
-            prompt: prompt, seed: nil, count: count)
+            prompt: prompt, seed: nil, count: count, referenceVariationID: reference)
         } else {
           command = try GenerativeFillVariations.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
         }
@@ -154,16 +161,23 @@ struct GenerativeFillSheet: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations").font(.headline)
+      Text(draft.referenceVariationID != nil ? "Generate Similar" : draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations")
+        .font(.headline)
       LabeledContent("Prompt") {
         TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
           .labelsHidden()
           .disabled(draft.selectingModel || draft.generating)
           .onChange(of: draft.prompt) { _, _ in draft.error = nil }
       }
-      Text(draft.targetLayerID == nil
-        ? "Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer."
-        : "New results use the original image area and appear in this layer alongside earlier variations.")
+      Group {
+        if let number = draft.referenceVariationNumber {
+          Text("New results use variation \(number) as a reference and stay in this layer.")
+        } else if draft.targetLayerID == nil {
+          Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")
+        } else {
+          Text("New results use the original image area and appear in this layer alongside earlier variations.")
+        }
+      }
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
       LabeledContent(draft.prompted ? "Local prompt model" : "Local context model") {
