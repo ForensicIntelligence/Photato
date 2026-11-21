@@ -293,6 +293,10 @@ struct WorkspaceView: View {
   }
   var backgroundContextualActions: some View {
     HStack(spacing: 10) {
+      if store.canBeginLocalImage {
+        Button("Generate Image…") { store.beginGenerateImage() }
+          .accessibilityIdentifier("generativeImage.contextual")
+      }
       if store.canBeginLocalBackground {
         Button("Generate Background…") { store.beginLocalBackground() }
           .help("Create an editable background with the local model")

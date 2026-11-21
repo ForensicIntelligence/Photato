@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 711.** Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone. [Harmonize](PhotoCraftSwift/docs/HARMONIZE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md).
+**Development alpha — source build 712.** Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available. [Generate Image](PhotoCraftSwift/docs/GENERATE_IMAGE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md).
 
 ## Project layout
 

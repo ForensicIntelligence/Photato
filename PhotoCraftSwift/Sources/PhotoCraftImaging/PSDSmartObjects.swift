@@ -213,11 +213,11 @@ enum PSDSmartObjects {
       try affine.validated()
       layer.x = Int(floor(affine.tx)); layer.y = Int(floor(affine.ty))
       let local = Transform2D.translation(-Double(layer.x), -Double(layer.y)) * affine
-      // Keep translated fill patches on the RGB32 raster path. Backgrounds
+      // Keep translated fill patches on the RGB32 raster path. Full images
       // retain their affine sampling path, including identity at actual size.
-      let fill = layer.sourceTags?[PSDCodec.fillVariationTag]
-      let version = fill.flatMap { try? JSONDecoder().decode(FillPlacement.self, from: $0).version }
-      let isTranslatedFill = local == .identity && fill != nil && version != PSDCodec.fillBackgroundVariationVersion
+      let version = fillPlacementVersion(layer)
+      let isFullImage = version == PSDCodec.fillBackgroundVariationVersion || version == PSDCodec.generatedImageVariationVersion
+      let isTranslatedFill = local == .identity && layer.sourceTags?[PSDCodec.fillVariationTag] != nil && !isFullImage
       layer.affine = isTranslatedFill ? nil : local
       maskFrame = affine
     } else {
@@ -290,6 +290,11 @@ enum PSDSmartObjects {
     let version: Int
   }
 
+  private static func fillPlacementVersion(_ layer: Layer) -> Int? {
+    guard let data = layer.sourceTags?[PSDCodec.fillVariationTag], data.count <= PSDCodec.fillVariationTagLimit else { return nil }
+    return try? JSONDecoder().decode(FillPlacement.self, from: data).version
+  }
+
   static func encodedQuads(_ layer: Layer, source: SmartObject) throws -> (PSDValue, PSDValue) {
     let preview = try layer.linkedSmartObjectPreview()
     let warp = layer.warp ?? preview?.warp
@@ -343,18 +348,25 @@ enum PSDSmartObjects {
       // the raster's local frame. RGBA resampling would ignore gray outside values.
       if linked {preview=try PSDMaskExport.prepared(preview)}
       preview.smartObject = nil
+      let cropGeneratedPreview = fillPlacementVersion(layer) == PSDCodec.generatedImageVariationVersion
       if !linked, document.colorMode == .rgb, preview.mask == nil, preview.affine != nil,
         case .raster(let pixels) = preview.content,
-        (try? preview.coordinateTransform.bounds(width: pixels.width, height: pixels.height)) == nil {
-        // Keep the exact editable placement in the descriptor while storing
-        // only the part of an over-size raster preview inside the canvas.
+        cropGeneratedPreview || (try? preview.coordinateTransform.bounds(width: pixels.width, height: pixels.height)) == nil {
+        // The descriptor retains the full image and placement. Only the visible
+        // preview belongs in the canvas cache, especially for panoramic files.
         let transform = preview.coordinateTransform
         let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
         let bounds = try transform.viewportBounds(width: pixels.width, height: pixels.height, in: canvas)
-        preview.content = .raster(try RasterGeometry.render(pixels, transform: transform, bounds: bounds,
-          method: method, clampEdges: true))
-        preview.x = bounds.x
-        preview.y = bounds.y
+        if cropGeneratedPreview && (bounds.width == 0 || bounds.height == 0) {
+          preview.content = .raster(try Surface(width: 1, height: 1, depth: pixels.depth, colorEncoding: pixels.colorEncoding))
+          preview.x = 0
+          preview.y = 0
+        } else {
+          preview.content = .raster(try RasterGeometry.render(pixels, transform: transform, bounds: bounds,
+            method: method, clampEdges: true))
+          preview.x = bounds.x
+          preview.y = bounds.y
+        }
         preview.affine = nil
       } else {
         preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document,

@@ -34,7 +34,7 @@ struct AutomationCommand: Sendable {
     let description: String
     var optionalParameters: Set<String> = []
     var schema: [String: Any] {
-      if name == GenerativeFillAPI.run { return GenerativeFillAPI.parameters }
+      if name == GenerativeFillAPI.run || name == GenerativeFillAPI.image { return GenerativeFillAPI.parameters }
       if name == GenerativeFillAPI.expand { return GenerativeFillAPI.expandParameters }
       if name == GenerativeFillAPI.background { return GenerativeFillAPI.backgroundParameters }
       if name == BackgroundReplacementAPI.name { return BackgroundReplacementAPI.parameters }
@@ -358,6 +358,11 @@ struct AutomationCommand: Sendable {
       "variationCount": "Number of results (1 to 3)"],
       description: "Generate an editable local background below the active masked subject with one Undo step.",
       optionalParameters: ["foregroundLayerID", "prompt", "seed", "variationCount"]),
+    .init(name: GenerativeFillAPI.image, parameters: ["prompt": "Required for a new image; defaults to the selected variation’s prompt when appending",
+      "seed": "Unsigned 32-bit starting seed", "variationCount": "Number of results (1 to 3)",
+      "targetLayerID": "Selected Generate Image layer to append to", "referenceVariationID": "Generate Similar using this saved variation"],
+      description: "Generate a new image from a text prompt on-device or append variations to an existing Generate Image layer.",
+      optionalParameters: ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID"]),
     .init(name: BackgroundReplacementAPI.name, parameters: ["color": "Three normalized working RGB components",
       "foregroundLayerID": "Active masked subject layer UUID", "layerID": "Existing Solid Color layer UUID to edit"],
       description: "Add an editable Solid Color background below the active masked subject or change an existing Solid Color layer.",

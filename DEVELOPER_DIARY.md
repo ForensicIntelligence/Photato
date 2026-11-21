@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **711** · The 10 most recent entries, newest first.
+Source build **712** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 712 — Generate editable images from a text prompt on-device
+
+Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
+
+The real local model produced identical same-seed rendered pixels through the native editor and authenticated HTTP API. Edited test documents retained their variations in Photato, PSD and PSB at RGB8, RGB16 and RGB32. A 768 × 512 locally generated still life retained both variants and identical rendered bytes across all three formats. An independent reader matched all 3,145,728 merged RGBA bytes in the PSD and PSB previews to the PNG. A 300,000 × 8 PSB reopened with exact edge samples, editable placement and the original square model resolution.
+
+The on-device model generates at 512 × 512 and offers a centered canvas crop. Adobe’s model picker and hosted Firefly output have separate engines and remain unqualified. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, live keyboard and assistive technology checks, and Adobe-compatible Generate Image action coverage remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md).
 
 ## 2026-11-21 — Step 711 — Match a subject to its background with editable Harmonize variations
 
@@ -93,13 +103,3 @@ The reopened-layer tests preserve the earlier result bytes, original inference i
 483 of 484 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 702 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. A layer holds up to 64 variations within the Smart Object storage limits. Layers saved by build 702 retain variation selection and lack the captured context needed for new batches. The installed Photoshop session timed out on a read-only query. Generate Similar, the Adobe Execute Actions descriptor, and Firefly output equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-703) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_703.md).
-
-## 2026-11-21 — Step 702 — Keep editable Generative Fill variations
-
-Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
-
-Synthetic RGB8, RGB16 and RGB32 tests preserved exact rendered samples, mask coverage and the selected variation after reopening Photato, PSD and PSB files in Photato. The real Core ML model generated identical first results through the editor and HTTP at the tested seed. A separate sandboxed test generated three different results and preserved all 49,283 pixels outside the selection in each. Each of those real variations also matched its original RGBA bytes after reopening in all three formats in Photato.
-
-482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. Generating more results into the same layer, Generate Similar, the Adobe Execute Actions descriptor, and Firefly pixel equivalence remain open. The installed Photoshop session timed out on two read-only scripting queries. Adobe's desktop documentation confirms variation selection in Properties.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-702) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_702.md).

@@ -22,7 +22,7 @@ struct DocumentSurfaceView: View {
             if store.document.selection != nil {
               WorkspaceView(store: store).contextualActions.padding(.bottom, 18)
             } else if !store.geometryBusy && !store.aiBusy && store.generativeFillDraft == nil && !store.showAI &&
-              (store.harmonizeTarget != nil || store.backgroundReplacementSubject != nil || store.canBeginLocalBackground || store.canStartBackgroundGeneration ||
+              (store.canBeginLocalImage || store.harmonizeTarget != nil || store.backgroundReplacementSubject != nil || store.canBeginLocalBackground || store.canStartBackgroundGeneration ||
                 (store.activeLayer?.smartObject == nil && store.canDetectSubject(removeBackground: true))) {
               WorkspaceView(store: store).backgroundContextualActions.padding(.bottom, 18)
             }

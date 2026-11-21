@@ -730,7 +730,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 709 | 2026-11-21 | [Generate and iterate on a local background](#dev-step-709) |
 | 710 | 2026-11-21 | [Replace a masked background with colour or artwork](#dev-step-710) |
 | 711 | 2026-11-21 | [Match a subject to its background with editable Harmonize variations](#dev-step-711) |
+| 712 | 2026-11-21 | [Generate editable images from a text prompt on-device](#dev-step-712) |
 <!-- history-index:end -->
+
+<a id="dev-step-712"></a>
+
+## 2026-11-21 — Generate editable images from a text prompt on-device
+
+Audited Adobe’s prompt, model picker and variation workflow. Reused the isolated Core ML worker, prepared edit, Smart Object layer comps, native model chooser and cancellation path. New images and Generate More use no source canvas pixels. Generate Similar uses the chosen alternative as local conditioning and preserves the earlier results. A versioned variation record distinguishes the full-image placement from a fill patch.
+
+The first SwiftPM command could not write to the host module cache. A separate manifest and target cache fixed that build. The first Xcode command specified architecture twice, then the next attempt was stopped during the PSB correction. The 300,000-pixel trial exposed an oversized square raster cache. The repair writes only the canvas intersection as its preview and preserves the complete embedded image and placement, including when moved outside the canvas. The repaired large-format test passed. The first regression run lacked its ignored fixture-output folder. The directory was created and the whole Debug selection was rerun against the same executable.
+
+Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
+
+The real local model produced identical same-seed rendered pixels through the native editor and authenticated HTTP API. Edited test documents retained their variations in Photato, PSD and PSB at RGB8, RGB16 and RGB32. A 768 × 512 locally generated still life retained both variants and identical rendered bytes across all three formats. An independent reader matched all 3,145,728 merged RGBA bytes in the PSD and PSB previews to the PNG. A 300,000 × 8 PSB reopened with exact edge samples, editable placement and the original square model resolution.
+
+533 of 534 selected regression cases passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The known layer-effect reference test repeated 118 existing assertions in every configuration. Three new format and editing cases passed in all configurations. The additional on-device model test passed in Apple Silicon Debug. The Xcode target built and both signed local preview slices opened offscreen. A signed sandbox harness reproduced both model variants and the selected composite PNG byte for byte. The Generate Image menu binding and Properties controls were checked in an offscreen native workspace.
+
+The on-device model generates at 512 × 512 and offers a centered canvas crop. Adobe’s model picker and hosted Firefly output have separate engines and remain unqualified. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, live keyboard and assistive technology checks, and Adobe-compatible Generate Image action coverage remain open.
+
+[Adobe Generate Image workflow](https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/generate-image-with-descriptive-text-prompts.html) · [Photoshop API model inventory](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models) · [Firefly Image5 contract](https://developer.adobe.com/firefly-services/docs/firefly-api/guides/how-tos/cm-generate-image/feature-guide)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_712.md).
 
 <a id="dev-step-711"></a>
 

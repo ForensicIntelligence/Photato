@@ -3323,5 +3323,12 @@
     "reference": "Adobe Firefly Gen Harmonize appears in the Execute Actions model inventory.",
     "limits": "The pinned GA contract has no dedicated Harmonize request schema. No new Adobe route or exact output claim.",
     "evidence": "docs/SOURCE_PUBLICATION_711.json"
+  },
+  "generate_image_build712": {
+    "status": "Photato local desktop and API workflow",
+    "photatoCommand": "generativeImage.apply",
+    "reference": "Adobe lists Generate Image in the Photoshop API v2 Execute Actions model inventory and documents a separate Firefly Generate Image contract.",
+    "limits": "No qualified corresponding action descriptor in the pinned Photoshop v2 GA contract. No Firefly model output equivalence.",
+    "evidence": "docs/SOURCE_PUBLICATION_712.json"
   }
 }

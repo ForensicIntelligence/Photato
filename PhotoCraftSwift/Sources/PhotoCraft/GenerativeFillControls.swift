@@ -48,12 +48,13 @@ enum GenerativeFillModelPreference {
   var expandRequest: CropRequest?
   var referenceVariationID: UUID?
   var referenceVariationNumber: Int?
+  var generateImage = false
   var selectingModel = false
   var generating = false
   var error: String?
 
   var hasPrompt: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-  var prompted: Bool { targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
+  var prompted: Bool { generateImage || targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
   var selectedModel: URL? { prompted ? promptModel : model }
 }
 
@@ -68,6 +69,19 @@ extension EditorStore {
     canStartLocalFill() && LocalGenerativeFill.selection(in: document) != nil
   }
 
+  var canBeginLocalImage: Bool {
+    canStartLocalFill() && !showAI && !showImagePlayground && historyOperation == nil && geometrySheet == nil
+      && brushGesture == nil && pathGesture == nil && error == nil && LocalGeneratedImage.supports(document)
+  }
+
+  func beginGenerateImage() {
+    finishLayerName()
+    guard canBeginLocalImage else { return }
+    let draft = GenerativeFillDraft()
+    draft.generateImage = true
+    generativeFillDraft = draft
+  }
+
   func canBeginGenerativeFillBatch(_ id: UUID) -> Bool {
     guard canStartLocalFill(), let layer = activeLayer, layer.id == id else { return false }
     return GenerativeFillVariations.canAppend(layer, in: document)
@@ -79,6 +93,7 @@ extension EditorStore {
       let record = GenerativeFillVariations.read(layer) else { return }
     let draft = GenerativeFillDraft()
     draft.targetLayerID = id
+    draft.generateImage = record.isGeneratedImage
     if let referenceVariationID {
       guard let index = record.entries.firstIndex(where: { $0.id == referenceVariationID }) else { return }
       draft.referenceVariationID = referenceVariationID
@@ -130,7 +145,7 @@ extension EditorStore {
   func generateFill(_ draft: GenerativeFillDraft) {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
       !editingComponent, !smartFilterMaskEditing, !editingMask || draft.backgroundSubjectID != nil,
-      draft.targetLayerID == nil || draft.hasPrompt,
+      (draft.targetLayerID == nil && !draft.generateImage) || draft.hasPrompt,
       let url = draft.selectedModel else { return }
     let background = draft.backgroundSubjectID
     if let background {
@@ -144,6 +159,7 @@ extension EditorStore {
     let bookmark = draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
     let target = draft.targetLayerID, prompted = draft.prompted, reference = draft.referenceVariationID
+    let generateImage = draft.generateImage
     let expand = draft.expandRequest, capturedCrop = cropDraft
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
@@ -161,6 +177,8 @@ extension EditorStore {
         } else if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
             prompt: prompt, seed: nil, count: count, referenceVariationID: reference)
+        } else if generateImage {
+          command = try LocalGeneratedImage.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
         } else {
           command = try GenerativeFillVariations.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
         }
@@ -199,20 +217,25 @@ extension EditorStore {
 
 extension AppDelegate {
   @objc func generativeFill() { store?.beginGenerativeFill() }
+  @objc func generateImage() { store?.beginGenerateImage() }
 }
 
 struct GenerativeFillSheet: View {
   let store: EditorStore
   @Bindable var draft: GenerativeFillDraft
+  @FocusState private var promptFocused: Bool
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text(draft.backgroundSubjectID != nil ? "Generate Background" : draft.expandRequest != nil ? "Generative Expand"
-        : draft.referenceVariationID != nil ? "Generate Similar" : draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations")
+        : draft.referenceVariationID != nil ? "Generate Similar"
+        : draft.targetLayerID != nil ? "Generate More Variations" : draft.generateImage ? "Generate Image" : "Generative Fill")
         .font(.headline)
       LabeledContent("Prompt") {
-        TextField("Prompt", text: $draft.prompt, prompt: Text(draft.backgroundSubjectID == nil ? "Describe what to add" : "Describe the background"))
+        TextField("Prompt", text: $draft.prompt, prompt: Text(draft.generateImage ? "Describe the image"
+          : draft.backgroundSubjectID == nil ? "Describe what to add" : "Describe the background"))
           .labelsHidden()
+          .focused($promptFocused)
           .disabled(draft.selectingModel || draft.generating)
           .onChange(of: draft.prompt) { _, _ in draft.error = nil }
       }
@@ -223,6 +246,9 @@ struct GenerativeFillSheet: View {
           Text("Leave the prompt blank to extend the image from its edges. Generated pixels appear on a masked layer outside the original canvas.")
         } else if let number = draft.referenceVariationNumber {
           Text("New results use variation \(number) as a reference and stay in this layer.")
+        } else if draft.generateImage {
+          Text(draft.targetLayerID == nil ? "Create an image from text on this Mac. Variations appear on one editable layer."
+            : "Generate new results from the prompt and keep the earlier variations in this layer.")
         } else if draft.targetLayerID == nil {
           Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")
         } else {
@@ -262,12 +288,14 @@ struct GenerativeFillSheet: View {
         Button("Cancel") { store.cancelGenerativeFill() }.keyboardShortcut(.cancelAction)
         Button("Generate") { store.generateFill(draft) }
           .keyboardShortcut(.defaultAction)
-          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating || (draft.targetLayerID != nil && !draft.hasPrompt))
+          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating
+            || ((draft.generateImage || draft.targetLayerID != nil) && !draft.hasPrompt))
       }
     }
     .padding(20)
     .frame(width: 410)
     .interactiveDismissDisabled(draft.generating)
+    .onAppear { if draft.generateImage { promptFocused = true } }
   }
 
   private func chooseModel() {

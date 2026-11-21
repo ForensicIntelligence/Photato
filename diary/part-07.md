@@ -379,14 +379,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:711 -->
+<!-- current-status-step:712 -->
 ## Current development status — 21 November 2026
 
-Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone.
+Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
 
-530 of 531 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same existing layer-effect reference method repeated its 118 assertions from build 710 in each configuration. The checked-in Xcode project built. Both signed preview slices opened offscreen and retain the previously bundled model assets. The native Properties variation picker was checked in a 1,300 × 800 offscreen workspace. The Layer menu binding was verified with no shortcut and with the command disabled when there is no eligible document.
+533 of 534 selected regression cases passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The known layer-effect reference test repeated 118 existing assertions in every configuration. Three new format and editing cases passed in all configurations. The additional on-device model test passed in Apple Silicon Debug. The Xcode target built and both signed local preview slices opened offscreen. A signed sandbox harness reproduced both model variants and the selected composite PNG byte for byte. The Generate Image menu binding and Properties controls were checked in an offscreen native workspace.
 
-[Source checkpoint 711](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711).
+[Source checkpoint 712](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-712).
 
 <!-- current-status:end -->
 
@@ -1304,5 +1304,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 709 | [Generate and iterate on a local background](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-709) |
 | 2026-11-21 | 710 | [Replace a masked background with colour or artwork](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-710) |
 | 2026-11-21 | 711 | [Match a subject to its background with editable Harmonize variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) |
+| 2026-11-21 | 712 | [Generate editable images from a text prompt on-device](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

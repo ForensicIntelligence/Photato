@@ -252,6 +252,7 @@ import SwiftUI
     if item.action == #selector(autoBlendLayers) { return store?.canBeginPhotoBlend == true }
     if item.action == #selector(contentAwareFill) { return store?.canBeginContentAwareFill == true }
     if item.action == #selector(generativeFill) { return store?.canBeginGenerativeFill == true }
+    if item.action == #selector(generateImage) { return store?.canBeginLocalImage == true }
     if item.action == #selector(colorRange){return store?.canBeginColorRange == true}
     if item.action == #selector(focusArea){return store?.canBeginFocusArea == true}
     if item.action == #selector(selectAndMask) { return store?.canBeginSelectMask == true }

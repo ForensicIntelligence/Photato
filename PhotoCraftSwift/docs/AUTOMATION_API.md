@@ -4111,6 +4111,12 @@ Add `referenceVariationID` to a request with `targetLayerID` to generate similar
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
 
+## Generate Image
+
+Use `generativeImage.apply` on a still RGB document with the local prompt model configured. The request creates a new editable Smart Object above the original layers and leaves the selection in place. For a new image, supply `prompt`, with optional `seed` and `variationCount`. The local model uses the prompt independently of the canvas or selection. A request produces one to three choices with one Undo step.
+
+To append, set `targetLayerID` to the selected Generate Image layer. Omit `prompt` to reuse the selected variation’s prompt. Set `referenceVariationID` for Generate Similar. Use `generativeFill.localImage.canGenerate` to discover availability, and `generativeFill.selectedVariations` for the active result and saved choices. `smartObject.layerComp` switches variations. `generativeFill.operationID` and `generativeFill.cancel` apply to the running job. [Generate Image guide](GENERATE_IMAGE.md)
+
 ## Harmonize
 
 Send `harmonize.apply` with an optional `foregroundLayerID` matching the selected pixel subject and an optional `variation`. The variation is `subtle`, `balanced` (default), or `ambient`. A separate editable group is created and the original is retained. Use `harmonize.variation` with `groupID` and `variation` to change the visible result. Both commands use the normal revision and Undo workflow. The `harmonize` state returns the active eligible subject or the selected result group and its choices. [Harmonize guide](HARMONIZE.md)
