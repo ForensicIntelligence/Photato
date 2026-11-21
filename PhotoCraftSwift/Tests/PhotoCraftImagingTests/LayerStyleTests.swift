@@ -4,6 +4,72 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testPagedObliquePatternReductionMatchesStoredTilesAndFractionalEdges() throws {
+    let size = Surface.maxDimension
+    let region = IntRect(x: size - 3_083, y: size - 208, width: 2_149, height: 137)
+    let request = try RasterPreviewRequest(region: region, width: 73, height: 43)
+    var tile = try Surface(width: 3, height: 5, fill: .white)
+    tile.setPixel(x: 0, y: 0, .black)
+    tile.setPixel(x: 2, y: 3, Pixel(0.1, 0.5, 0.8, 0.6))
+    let pattern = try RasterPattern(name: "Owned oblique reduction control", surface: tile)
+    for depth in PixelDepth.allCases {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var document = try CraftDocument(width: size, height: size, depth: depth)
+      var raster = try Surface(width: size, height: size, depth: depth, fill: Pixel(0.6, 0.3, 0.9, 0.85),
+        colorEncoding: encoding)
+      raster.setPixel(x: region.x + 2_047, y: region.y + 64, Pixel(0.1, 0.6, 0.3, 0.4))
+      document.layers[0].content = .raster(raster)
+      document.patterns = [pattern]
+      var effect = LayerEffect(.patternOverlay)
+      effect.pattern = PatternFill(patternID: pattern.id)
+      effect.pattern?.placement.angle = 31
+      effect.pattern?.placement.scale = 56
+      effect.pattern?.placement.phaseY = -0.375
+      effect.opacity = 0.7
+      var style = LayerStyle(effects: [effect])
+      style.referenceOffset = PathPoint(-3, 6)
+      try Command.layerStyle([document.layers[0].id], style).apply(to: &document)
+      let retained = try PagedCanvasRenderer.composite(document, region: region)
+      var proof = ProofSettings()
+      proof.enabled = true
+      for (channels, settings) in [(RGBChannelView(), nil), (RGBChannelView(preview: .green), nil), (.init(), proof)] {
+        let projection = try RasterPreviewProjection(document, channels: channels, proof: settings)
+        let control = try request.reducing(projection.apply(retained))
+        let reduced = try PagedCanvasRenderer.reducedPatternPreview(document, request: request, projection: projection)
+        XCTAssertEqual(reduced, control, "\(depth), \(channels), proof \(settings != nil)")
+      }
+    }
+  }
+
+  func testPagedPatternProofPreservesImplicitBackdropAtMaximumExtent() throws {
+    let size = Surface.maxDimension
+    var document = try CraftDocument(width: size, height: size)
+    document.layers[0].content = .fill(Pixel(0.65, 0.23, 0.11, 0.9))
+    var source = Layer(name: "Owned oblique layer", content: .raster(try Surface(width: 15, height: 17, fill: .white)))
+    source.x = size - 21
+    source.y = size - 25
+    var tile = try Surface(width: 2, height: 3, fill: .white)
+    tile.setPixel(x: 0, y: 0, .black)
+    let pattern = try RasterPattern(name: "Owned sparse pattern", surface: tile)
+    document.patterns = [pattern]
+    var overlay = LayerEffect(.patternOverlay)
+    overlay.pattern = PatternFill(patternID: pattern.id)
+    overlay.pattern?.placement.angle = 31
+    overlay.pattern?.placement.scale = 56
+    document.layers.append(source)
+    try Command.layerStyle([source.id], LayerStyle(effects: [overlay])).apply(to: &document)
+    let request = try RasterPreviewRequest.overview(width: size, height: size, maximumSide: 41)
+    let preview = try XCTUnwrap(RasterViewportPreview.pagedPatternPreview(document, request: request))
+    XCTAssertTrue(preview.streamsSource)
+    let retained = try Renderer.composite(document)
+    XCTAssertEqual(try preview.pixel(x: source.x + 5, y: source.y + 7), retained.pixel(x: source.x + 5, y: source.y + 7))
+    XCTAssertEqual(try preview.imageSamples(request), try request.reducing(retained))
+    var proof = ProofSettings()
+    proof.enabled = true
+    let proofControl = try request.reducing(SoftProof.surface(document, composite: retained, settings: proof))
+    XCTAssertEqual(try preview.imageSamples(request, proof: proof), proofControl)
+  }
+
   func testQuarterTurnPatternFitPreservesOrdinaryRenderAcrossMaximumCanvas() throws {
     let size = Surface.maxDimension
     let canvas = IntRect(x: 0, y: 0, width: size, height: size)
@@ -99,9 +165,9 @@ final class LayerStyleTests: XCTestCase {
       func source(_ region: IntRect) throws -> Surface {
         let request = try RasterPreviewRequest(region: region, width: region.width, height: region.height)
         let view = try RasterViewportPreview(document, request: request)
-        XCTAssertNil(view.pixel(x: region.x - 1, y: region.y))
+        XCTAssertNil(try view.pixel(x: region.x - 1, y: region.y))
         let original = try Renderer.composite(document, region: region)
-        XCTAssertEqual(view.pixel(x: overlap.x + 3, y: overlap.y + 6),
+        XCTAssertEqual(try view.pixel(x: overlap.x + 3, y: overlap.y + 6),
           original.pixel(x: overlap.x + 3, y: overlap.y + 6))
         XCTAssertEqual(try view.imageSamples(request).rgbaData(depth: depth),
           try original.cropped(to: region).rgbaData(depth: depth))

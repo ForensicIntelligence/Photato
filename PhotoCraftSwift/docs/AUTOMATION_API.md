@@ -58,6 +58,10 @@ The authenticated response represents the committed document and the selected pr
 
 The viewport header belongs to Photato’s local API. The published Adobe v2 contract defines document and job endpoints. [Adobe OpenAPI reference](https://github.com/AdobeDocs/ffs-photoshop-API/blob/main/static/photoshopv2-api.json)
 
+### Paged Pattern Overlay overviews (checkpoint 692)
+
+The ordinary composite, channel and proof PNG routes can reduce supported large oblique Pattern Overlay documents in tile order with a bounded working buffer. The editor shares that reducer for wide fitted views. The exact source pixels are still evaluated. The existing explicit viewport header applies its own source and output limits. [Qualification](SOURCE_PUBLICATION_692.md)
+
 ### Quarter-turn Pattern Overlay overviews (checkpoint 691)
 
 The ordinary composite, channel and proof PNG routes can reduce an eligible maximum-size quarter-turn Pattern Overlay without a full-resolution composite. The rotation, scale and phase must keep the existing interpolation weights repeatable across the image. This extends the standard large-document overview. Explicit `X-Photato-Viewport` requests still use the bounded document-coordinate crop. [Qualification](SOURCE_PUBLICATION_691.md)

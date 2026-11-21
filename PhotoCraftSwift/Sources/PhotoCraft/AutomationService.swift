@@ -1833,13 +1833,16 @@ import UniformTypeIdentifiers
       throw AutomationFailure(status: 413, message: "Large-document onion-skin presentation is not yet tiled. Ordinary and proof previews are bounded to2048 pixels per side.")
     }
     let request = try large ? RasterPreviewRequest.overview(width: document.width, height: document.height) : nil
-    if let request, !onionSkin, modeVisibility == nil, inkVisibility == nil,
-      auxiliary == nil, let repeating = try PatternCanvasPreview(document) {
-      if let proof, proof.active {
-        return try png(RasterIO.displayImage(repeating.imageSamples(request, proof: proof)))
+    if let request, !onionSkin, modeVisibility == nil, inkVisibility == nil, auxiliary == nil {
+      let repeating = try PatternCanvasPreview(document)
+      let paged = try repeating == nil ? RasterViewportPreview.pagedPatternPreview(document, request: request) : nil
+      let activeProof = proof?.active == true ? proof : nil
+      if let samples = try repeating?.imageSamples(request, channels: channelView, proof: activeProof)
+        ?? paged?.imageSamples(request, channels: channelView, proof: activeProof) {
+        if activeProof != nil { return try png(RasterIO.displayImage(samples)) }
+        return try png(reducedPreview: samples, document: document, request: request,
+          channels: channelView, auxiliaryView: auxiliaryView)
       }
-      return try png(reducedPreview: repeating.imageSamples(request, channels: channelView), document: document,
-        request: request, channels: channelView, auxiliaryView: auxiliaryView)
     }
     let composite = try onionSkin ? OnionSkinRenderer.render(document) : Renderer.composite(document)
     try Task.checkCancellation()

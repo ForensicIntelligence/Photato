@@ -5,6 +5,56 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerStyleWorkflowTests: XCTestCase {
+  @MainActor func testPagedObliquePNGOverviewsMatchNativeRendering() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let width = 70_000, height = 520
+      var artwork = try CraftDocument(width: width, height: height)
+      artwork.layers[0].content = .fill(Pixel(0.65, 0.23, 0.11, 0.9))
+      var layer = Layer(name: "Owned oblique layer", content: .raster(try Surface(width: 28, height: 21, fill: .white)))
+      layer.x = width - 33
+      layer.y = height - 30
+      var tile = try Surface(width: 2, height: 3, fill: .white)
+      tile.setPixel(x: 0, y: 0, .black)
+      let asset = try RasterPattern(name: "Owned fitted pattern", surface: tile)
+      artwork.patterns = [asset]
+      artwork.layers.append(layer)
+      var effect = LayerEffect(.patternOverlay)
+      effect.pattern = PatternFill(patternID: asset.id)
+      effect.pattern?.placement.angle = 31
+      effect.pattern?.placement.scale = 56
+      try Command.layerStyle([layer.id], LayerStyle(effects: [effect])).apply(to: &artwork)
+      shared.store.session = EditorSession(document: artwork)
+      shared.store.updateViewport(size: CGSize(width: 900, height: 600), backingScale: 1)
+      shared.store.fit()
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      let retained = try XCTUnwrap(shared.store.renderSnapshot?.surface)
+      let request = try RasterPreviewRequest.overview(width: width, height: height)
+      XCTAssertTrue(try XCTUnwrap(RasterViewportPreview.pagedPatternPreview(artwork, request: request)).streamsSource)
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let root = "/v1/documents/\(id)/"
+      let composite = try ColorManagement.displayImage(request.reducing(retained), in: artwork)
+      let response = try await helper.request(service, path: root + "preview.png")
+      XCTAssertEqual(response.0.statusCode, 200)
+      XCTAssertEqual(response.1, try AutomationService.png(composite))
+
+      try shared.store.selectEditingChannel(.green)
+      let green = try RGBChannelView(preview: .green).applying(to: retained)
+      let channel = try await helper.request(service, path: root + "channel-preview.png")
+      XCTAssertEqual(channel.0.statusCode, 200)
+      XCTAssertEqual(channel.1, try AutomationService.png(RasterIO.displayImage(request.reducing(green))))
+
+      try shared.store.selectEditingChannel(.composite)
+      shared.store.proofSettings.enabled = true
+      let proof = try await helper.request(service, path: root + "proof-preview.png")
+      let expected = try SoftProof.image(artwork, composite: retained, settings: shared.store.proofSettings, request: request)
+      XCTAssertEqual(proof.0.statusCode, 200)
+      XCTAssertEqual(proof.1, try AutomationService.png(expected))
+    }
+  }
+
   @MainActor func testRotatedMaximumPatternViewportMatchesNativeAndHTTP() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in

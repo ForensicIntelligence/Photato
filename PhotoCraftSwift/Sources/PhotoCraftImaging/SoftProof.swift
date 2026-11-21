@@ -195,8 +195,13 @@ public enum SoftProof {
   }
   public static func image(_ document: CraftDocument, composite: Surface? = nil, settings: ProofSettings,request:RasterPreviewRequest?=nil) throws -> CGImage {
     let request=try request ?? (document.width>Surface.maximumDensePixels/document.height ? RasterPreviewRequest.overview(width:document.width,height:document.height):nil)
-    if composite == nil, let request, let repeating = try PatternCanvasPreview(document) {
-      return try RasterIO.displayImage(repeating.imageSamples(request, proof: settings))
+    if composite == nil, let request {
+      if let repeating = try PatternCanvasPreview(document) {
+        return try RasterIO.displayImage(repeating.imageSamples(request, proof: settings))
+      }
+      if let paged = try RasterViewportPreview.pagedPatternPreview(document, request: request) {
+        return try RasterIO.displayImage(paged.imageSamples(request, proof: settings))
+      }
     }
     let pixels=try surface(document,composite:composite,settings:settings)
     return try RasterIO.displayImage(request?.reducing(pixels) ?? pixels)

@@ -710,7 +710,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 689 | 2026-11-21 | [Preview opaque Pattern Overlay on large canvases](#dev-step-689) |
 | 690 | 2026-11-21 | [Bound rotated Pattern Overlay viewports](#dev-step-690) |
 | 691 | 2026-11-21 | [Fit quarter-turn Pattern Overlays on large canvases](#dev-step-691) |
+| 692 | 2026-11-21 | [Reduce wide oblique Pattern Overlays in bounded patches](#dev-step-692) |
 <!-- history-index:end -->
+
+<a id="dev-step-692"></a>
+
+## 2026-11-21 — Reduce wide oblique Pattern Overlays in bounded patches
+
+Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite.
+
+The paged compositor can now hand each projected patch to the same area reducer used by the retained composite. A sparse default is transformed once for proof, and the ordinary tile order is preserved at patch boundaries. Wide native proof renders the proof view directly and the local PNG overview uses the same path.
+
+Fractional edges matched retained rendering at RGB8, RGB16 and RGB32 in the tested composite, channel and proof views. The proof test also preserved a sparse implicit backdrop across the maximum canvas. Authenticated composite, channel and proof PNGs matched their retained native controls. The separate AppKit probe fitted and proofed a fully covered 70,000 × 520 document on both architectures.
+
+458 of 461 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 691's assertions. Both signed macOS 14+ preview slices launched offscreen. Large nonperiodic fits still evaluate source pixels and can take seconds or longer. End-to-end timing for a fully covered maximum-size oblique Fit remains open. The Photoshop 2026 document-count query timed out, leaving live zoom comparison open. The overall desktop workflow estimate remains 50%.
+
+[Development record](PAGED_PATTERN_REDUCTION_692.md) · [Qualification](SOURCE_PUBLICATION_692.md).
 
 <a id="dev-step-691"></a>
 

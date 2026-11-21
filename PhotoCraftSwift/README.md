@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 692.** Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite. [Qualification](docs/SOURCE_PUBLICATION_692.md).
+
 **Source checkpoint 691.** Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000. [Qualification](docs/SOURCE_PUBLICATION_691.md).
 
 **Source checkpoint 690.** Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000. [Qualification](docs/SOURCE_PUBLICATION_690.md).

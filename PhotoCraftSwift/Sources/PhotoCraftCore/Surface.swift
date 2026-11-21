@@ -1368,59 +1368,117 @@ extension Surface {
       }
       return result
     }
-    func pm(_ p: Pixel) -> SIMD4<Double> {
-      SIMD4(Double(p.r) * Double(p.a), Double(p.g) * Double(p.a), Double(p.b) * Double(p.a), Double(p.a))
-    }
-    let sx = Double(region.width) / Double(outWidth), sy = Double(region.height) / Double(outHeight)
     let implicit = try projection?(storedDefaultPixel) ?? storedDefaultPixel
     guard implicit.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
-    let area = sx * sy, background = pm(implicit)
     if tileCount == 0 {
-      // Same area/premultiplication and final Float conversion as every entry
-      // of the array below, without materializing identical output pixels.
-      let sum = background * area
-      let pixel = sum.w > 0 ? Pixel(Float(sum.x / sum.w), Float(sum.y / sum.w), Float(sum.z / sum.w), Float(min(1, max(0, sum.w / area)))) : .clear
+      let area = (Double(region.width) / Double(outWidth)) * (Double(region.height) / Double(outHeight))
+      let pixel = PreviewReduction.pixel(PreviewReduction.premultiplied(implicit) * area, area: area)
       var result = try Surface(width: outWidth, height: outHeight, depth: .f32, colorEncoding: encoding)
       result.storedDefaultPixel = pixel
       return result
     }
-    var sums = [SIMD4<Double>](repeating: background * area, count: outWidth * outHeight)
-    for (key, tile) in tilesIntersecting(region) {
-      try Task.checkCancellation()
-      let left = key % columns * Self.tileSide, top = key / columns * Self.tileSide
-      let x0 = max(region.x, left), y0 = max(region.y, top)
-      let x1 = min(region.x + region.width, min(width, left + Self.tileSide))
-      let y1 = min(region.y + region.height, min(height, top + Self.tileSide))
-      guard x0 < x1, y0 < y1 else { continue }
-      for y in y0..<y1 {
-        let t = Double(y - region.y) / sy, b = Double(y + 1 - region.y) / sy
-        for x in x0..<x1 {
-          let stored = tile[(y - top) * Self.tileSide + x - left]
-          let value = try projection?(stored) ?? stored
-          guard value.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
-          let delta = pm(value) - background
-          if delta == .zero { continue }
-          let l = Double(x - region.x) / sx, r = Double(x + 1 - region.x) / sx
-          for oy in max(0, Int(floor(t)))..<min(outHeight, Int(ceil(b))) {
-            let dy = (min(b, Double(oy + 1)) - max(t, Double(oy))) * sy
-            for ox in max(0, Int(floor(l)))..<min(outWidth, Int(ceil(r))) {
-              let dx = (min(r, Double(ox + 1)) - max(l, Double(ox))) * sx
-              sums[oy * outWidth + ox] += delta * (dx * dy)
+    var reduction = PreviewReduction(region: region, width: outWidth, height: outHeight,
+      encoding: encoding, implicit: implicit)
+    try reduction.append(self, x: 0, y: 0, implicit: implicit, projecting: projection)
+    return try reduction.finish()
+  }
+
+  /// Receives disjoint tile-aligned patches in document tile order. Each
+  /// output bin sees the same additions as a retained surface's reduction.
+  package struct PreviewReduction {
+    private let region: IntRect
+    private let width: Int, height: Int
+    private let encoding: SurfaceColorEncoding
+    private let sx: Double, sy: Double, area: Double
+    private let background: SIMD4<Double>
+    private var sums: [SIMD4<Double>]
+
+    package init(region: IntRect, width: Int, height: Int, encoding: SurfaceColorEncoding, implicit: Pixel) {
+      self.region = region
+      self.width = width
+      self.height = height
+      self.encoding = encoding
+      sx = Double(region.width) / Double(width)
+      sy = Double(region.height) / Double(height)
+      area = sx * sy
+      background = Self.premultiplied(implicit)
+      sums = .init(repeating: background * area, count: width * height)
+    }
+
+    fileprivate static func premultiplied(_ pixel: Pixel) -> SIMD4<Double> {
+      let a = Double(pixel.a)
+      return SIMD4(Double(pixel.r) * a, Double(pixel.g) * a, Double(pixel.b) * a, a)
+    }
+
+    fileprivate static func pixel(_ sum: SIMD4<Double>, area: Double) -> Pixel {
+      sum.w > 0 ? Pixel(Float(sum.x / sum.w), Float(sum.y / sum.w), Float(sum.z / sum.w),
+        Float(min(1, max(0, sum.w / area)))) : .clear
+    }
+
+    package mutating func append(_ patch: Surface, x: Int, y: Int) throws {
+      guard patch.colorEncoding == encoding else { throw CraftError.invalid("Preview patch encoding changed.") }
+      try append(patch, x: x, y: y, implicit: patch.storedDefaultPixel, projecting: nil)
+    }
+
+    fileprivate mutating func append(_ patch: Surface, x: Int, y: Int, implicit: Pixel,
+      projecting projection: ((Pixel) throws -> Pixel)?) throws {
+      let local = IntRect(x: region.x - x, y: region.y - y, width: region.width, height: region.height)
+        .clipped(toWidth: patch.width, height: patch.height)
+      guard local.width > 0, local.height > 0 else { return }
+      guard implicit.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
+      let side = Surface.tileSide
+      let firstColumn = local.x / side, lastColumn = (local.x + local.width - 1) / side
+      let rows = local.y / side...(local.y + local.height - 1) / side
+      let entries: AnySequence<(Int, RasterTile?)>
+      if Self.premultiplied(implicit) == background {
+        entries = AnySequence(patch.tilesIntersecting(local).lazy.map { ($0.0, Optional($0.1)) })
+      } else {
+        entries = AnySequence(rows.lazy.flatMap { row in
+          (firstColumn...lastColumn).lazy.map { column in
+            let key = row * patch.columns + column
+            return (key, patch.tiles[key])
+          }
+        })
+      }
+      for (key, tile) in entries {
+        try Task.checkCancellation()
+        let left = key % patch.columns * side, top = key / patch.columns * side
+        let x0 = max(local.x, left), y0 = max(local.y, top)
+        let x1 = min(local.x + local.width, left + side), y1 = min(local.y + local.height, top + side)
+        for py in y0..<y1 {
+          let t = Double(py + y - region.y) / sy, b = Double(py + y + 1 - region.y) / sy
+          for px in x0..<x1 {
+            let value: Pixel
+            if let tile {
+              let stored = tile[(py - top) * side + px - left]
+              value = try projection?(stored) ?? stored
+              guard value.isFinite else { throw CraftError.invalid("Non-finite preview projection.") }
+            } else { value = implicit }
+            let delta = Self.premultiplied(value) - background
+            if delta == .zero { continue }
+            let l = Double(px + x - region.x) / sx, r = Double(px + x + 1 - region.x) / sx
+            for oy in max(0, Int(floor(t)))..<min(height, Int(ceil(b))) {
+              let dy = (min(b, Double(oy + 1)) - max(t, Double(oy))) * sy
+              for ox in max(0, Int(floor(l)))..<min(width, Int(ceil(r))) {
+                let dx = (min(r, Double(ox + 1)) - max(l, Double(ox))) * sx
+                sums[oy * width + ox] += delta * (dx * dy)
+              }
             }
           }
         }
       }
     }
-    var result = try Surface(width: outWidth, height: outHeight, depth: .f32, colorEncoding: encoding)
-    for y in 0..<outHeight {
-      try Task.checkCancellation()
-      for x in 0..<outWidth {
-        let sum = sums[y * outWidth + x]
-        let pixel = sum.w > 0 ? Pixel(Float(sum.x / sum.w), Float(sum.y / sum.w), Float(sum.z / sum.w), Float(min(1, max(0, sum.w / area)))) : .clear
-        result.setStoredPixel(x: x, y: y, pixel)
+
+    package func finish() throws -> Surface {
+      var result = try Surface(width: width, height: height, depth: .f32, colorEncoding: encoding)
+      for y in 0..<height {
+        try Task.checkCancellation()
+        for x in 0..<width {
+          result.setStoredPixel(x: x, y: y, Self.pixel(sums[y * width + x], area: area))
+        }
       }
+      return result
     }
-    return result
   }
 }
 

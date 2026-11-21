@@ -46,12 +46,26 @@ enum PagedCanvasRenderer {
     video: VideoTransitionRenderContext? = nil, forLayerOutput: Bool = false,
     backing: RasterTileStore? = nil, onPatch: ((Int) -> Void)? = nil
   ) throws -> Surface {
+    try compose(d, region: region, inputTarget: inputTarget, video: video, forLayerOutput: forLayerOutput,
+      backing: backing, onPatch: onPatch, preview: nil)
+  }
+
+  static func reducedPatternPreview(_ d: CraftDocument, request: RasterPreviewRequest,
+    projection: RasterPreviewProjection) throws -> Surface {
+    try compose(d, region: request.region, inputTarget: nil, video: nil, forLayerOutput: false,
+      backing: nil, onPatch: nil, preview: (request, projection))
+  }
+
+  private static func compose(_ d: CraftDocument, region: IntRect, inputTarget: UUID?,
+    video: VideoTransitionRenderContext?, forLayerOutput: Bool, backing: RasterTileStore?, onPatch: ((Int) -> Void)?,
+    preview: (request: RasterPreviewRequest, projection: RasterPreviewProjection)?
+  ) throws -> Surface {
     guard d.layers.allSatisfy({$0.warp==nil}) else{throw CraftError.invalid("Prepare warped sources before paged composition.")}
     try Task.checkCancellation();try validateResources(d)
     let complete=IntRect(x:0,y:0,width:d.width,height:d.height)
     let facts=CompositionFacts(d, vectorViewport: region)
     let sources: PointwiseSources?
-    if region == complete, inputTarget == nil, video == nil, !forLayerOutput,
+    if preview == nil, region == complete, inputTarget == nil, video == nil, !forLayerOutput,
       let plan = RectangleFeatherPlan(d) {
       if plan.prefersPointwise, let sparse = try pointwiseSources(d, facts: facts) {
         sources = sparse
@@ -93,15 +107,26 @@ enum PagedCanvasRenderer {
       let implicit = d.depth == .f32 ? sampled.linearPixel(x: x, y: y) : sampled.pixel(x: x, y: y)
       template = try template.mappedStoredSamples { _ in implicit }
     }
-    let builder=try Surface.PagedBuilder(template:template,backing:backing)
+    let builder = try preview == nil ? Surface.PagedBuilder(template: template, backing: backing) : nil
+    var reduction: Surface.PreviewReduction?
+    if let preview {
+      let constant = try preview.projection.apply(template.reframedImplicitValue(width: 1, height: 1))
+      let implicit = constant.colorEncoding == .linearRGB ? constant.linearPixel(x: 0, y: 0) : constant.pixel(x: 0, y: 0)
+      reduction = Surface.PreviewReduction(region: region, width: preview.request.width,
+        height: preview.request.height, encoding: constant.colorEncoding, implicit: implicit)
+    }
     var completedPatches=0
     func didRender() { completedPatches += 1; onPatch?(completedPatches) }
     func append(_ patch:IntRect) throws {
       let x=max(patch.x,region.x),y=max(patch.y,region.y)
       let work=IntRect(x:x,y:y,width:min(patch.x+patch.width,region.x+region.width)-x,
         height:min(patch.y+patch.height,region.y+region.height)-y)
-      let rendered=try render(work)
-      try builder.append(rendered.cropped(to:patch),atX:patch.x,atY:patch.y)
+      let rendered = try render(work).cropped(to: patch)
+      if let preview {
+        try reduction?.append(preview.projection.apply(rendered), x: patch.x, y: patch.y)
+      } else {
+        try builder?.append(rendered, atX: patch.x, atY: patch.y)
+      }
       didRender()
     }
     if let sources {
@@ -112,7 +137,7 @@ enum PagedCanvasRenderer {
         let row=first/columns;var end=first+1;next=keys.next()
         while let key=next,key==end,key/columns==row,end-first<32 {end+=1;next=keys.next()}
         let firstColumn = first % columns, endColumn = firstColumn + end - first
-        if let reuse {
+        if let reuse, let builder {
           try reuse.append(row: row, columns: firstColumn..<endColumn, to: builder, ordinary: append) { rect in
             let output = try render(rect)
             let tile = try builder.prepareTile(output.cropped(to: rect))
@@ -140,7 +165,8 @@ enum PagedCanvasRenderer {
         }
       }
     }
-    let result=try builder.finish()
+    if let reduction { return try reduction.finish() }
+    let result = try builder!.finish()
     if reachedInput {throw AdjustmentInputReached(surface:result)}
     return result
   }

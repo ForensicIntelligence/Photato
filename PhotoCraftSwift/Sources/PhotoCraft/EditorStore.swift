@@ -1016,11 +1016,13 @@ struct CanvasRenderRequest: Sendable {
         let regionalPreview: RasterViewportPreview?
         if let rgbViewport, patternPreview == nil,
           try RasterViewportPreview.useForPatternEditing(displayDocument, request: rgbViewport) {
-          regionalPreview = try RasterViewportPreview(displayDocument, request: rgbViewport)
+          regionalPreview = try RasterViewportPreview(displayDocument, request: rgbViewport, allowPagedReduction: true)
         } else { regionalPreview = nil }
         let snapshot: RenderSnapshot?
         let displayComposite: Surface?
         let preview: Surface
+        var streamedProof = false
+        var proofFailure: String?
         if let patternPreview, let presentation {
           snapshot = nil
           displayComposite = nil
@@ -1028,7 +1030,18 @@ struct CanvasRenderRequest: Sendable {
         } else if let regionalPreview, let presentation {
           snapshot = nil
           displayComposite = nil
-          preview = try regionalPreview.imageSamples(presentation, channels: channelView)
+          if regionalPreview.streamsSource && proof.active && proofComposite {
+            do {
+              preview = try regionalPreview.imageSamples(presentation, proof: proof)
+              streamedProof = true
+            } catch is CancellationError { throw CancellationError() }
+            catch {
+              proofFailure = error.localizedDescription
+              preview = try regionalPreview.imageSamples(presentation, channels: channelView)
+            }
+          } else {
+            preview = try regionalPreview.imageSamples(presentation, channels: channelView)
+          }
         } else {
           let full = try brushSnapshot ?? retouchSnapshot ?? Renderer.render(displayDocument, reusing: previous)
           snapshot = full
@@ -1043,7 +1056,8 @@ struct CanvasRenderRequest: Sendable {
         let sourceIsReduced = patternPreview != nil || regionalPreview != nil
         let boundedPreview = try !sourceIsReduced && !auxiliaryPresentation ? presentation.map { try $0.reducing(preview) } : nil
         var canvasPreview = try largeCanvas == nil ? snapshot.flatMap { try previousDisplay?.updating($0, scale: displayScale) } : nil
-        var image = try canvasPreview?.base ?? (auxiliaryPresentation ? AuxiliaryChannelPresentation.image(preview,
+        var image = try canvasPreview?.base ?? (streamedProof ? RasterIO.displayImage(preview)
+          : auxiliaryPresentation ? AuxiliaryChannelPresentation.image(preview,
           document: doc, view: auxiliaryView, colorManaged: !(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),
           request: presentation, sourceIsReduced: sourceIsReduced) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
           ? RasterIO.displayImage(boundedPreview ?? preview) : ColorManagement.displayImage(boundedPreview ?? preview, in: doc))
@@ -1051,8 +1065,7 @@ struct CanvasRenderRequest: Sendable {
         else if ordinaryDisplay, canvasPreview == nil {
           canvasPreview = try CanvasRasterPreview(base: image).scaled(to: displayScale)
         }
-        var proofFailure: String?
-        if proof.active && proofComposite {
+        if proof.active && proofComposite && regionalPreview?.streamsSource != true {
           do {
             if let patternPreview, let presentation {
               image = try RasterIO.displayImage(patternPreview.imageSamples(presentation, proof: proof))

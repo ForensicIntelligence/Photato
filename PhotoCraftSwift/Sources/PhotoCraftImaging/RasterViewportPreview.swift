@@ -1,19 +1,24 @@
 import Foundation
 import PhotoCraftCore
 
-/// The unfiltered working samples for a single visible document rectangle.
-/// Screen resampling, RGB isolation and soft proof use this same working crop.
+/// A document-coordinate viewport. Close views keep their working crop, and
+/// wide views can reduce the same source patches as they are rendered.
 public struct RasterViewportPreview: Sendable {
   public static let maximumSourcePixels = 16_777_216
 
   private let document: CraftDocument
-  private let samples: Surface
+  private let samples: Surface?
   public let region: IntRect
+  public var streamsSource: Bool { samples == nil }
 
   public static func supports(_ document: CraftDocument, request: RasterPreviewRequest) -> Bool {
     let region = request.region
     return region.width <= maximumSourcePixels / region.height
-      && region == region.clipped(toWidth: document.width, height: document.height)
+      && supportsRegions(document, region: region)
+  }
+
+  private static func supportsRegions(_ document: CraftDocument, region: IntRect) -> Bool {
+    region == region.clipped(toWidth: document.width, height: document.height)
       && document.colorMode == .rgb && document.inkMode == nil && document.restrictedMode == nil
       && !document.isChannelOnly && document.videoTimeline == nil
       && !Renderer.requiresFullComposition(document)
@@ -25,34 +30,60 @@ public struct RasterViewportPreview: Sendable {
       }
   }
 
+  private static func supportsPagedReduction(_ document: CraftDocument, request: RasterPreviewRequest) -> Bool {
+    let region = request.region
+    return document.width * document.height > Surface.maximumDensePixels
+      && region.width > maximumSourcePixels / region.height
+      && (request.width < region.width || request.height < region.height)
+      && supportsRegions(document, region: region)
+  }
+
   public static func useForPatternEditing(_ document: CraftDocument, request: RasterPreviewRequest) throws -> Bool {
-    guard supports(document, request: request),
-      document.layers.contains(where: { layer in
-      layer.visible && layer.style?.effects.contains { $0.kind == .patternOverlay } == true
-      }) else { return false }
+    guard supports(document, request: request) || supportsPagedReduction(document, request: request),
+      hasVisibleOverlay(document) else { return false }
     return try !PagedCanvasRenderer.hasCompactComposite(document, facts: CompositionFacts(document))
   }
 
-  public init(_ document: CraftDocument, request: RasterPreviewRequest) throws {
-    guard Self.supports(document, request: request) else {
-      throw CraftError.unsupported("This viewport requires supported RGB layers and at most 16,777,216 source pixels.")
+  private static func hasVisibleOverlay(_ document: CraftDocument) -> Bool {
+    document.layers.contains { layer in
+      layer.visible && layer.opacity > 0 && layer.style?.enabled == true
+        && layer.style?.effects.contains { $0.kind == .patternOverlay && $0.enabled && $0.opacity > 0 } == true
     }
-    self.document = document
-    region = request.region
-    // The ordinary renderer sees the original document and region throughout.
-    // Translating the document before rendering would shift linked patterns.
-    samples = try Renderer.composite(document, region: request.region).cropped(to: request.region)
   }
 
-  public func pixel(x: Int, y: Int) -> Pixel? {
+  public static func pagedPatternPreview(_ document: CraftDocument, request: RasterPreviewRequest) throws -> Self? {
+    guard supportsPagedReduction(document, request: request), hasVisibleOverlay(document) else { return nil }
+    return try Self(document, request: request, allowPagedReduction: true)
+  }
+
+  public init(_ document: CraftDocument, request: RasterPreviewRequest, allowPagedReduction: Bool = false) throws {
+    self.document = document
+    region = request.region
+    if Self.supports(document, request: request) {
+      // Translating the document before rendering would shift linked patterns.
+      samples = try Renderer.composite(document, region: region).cropped(to: region)
+    } else if allowPagedReduction && Self.supportsPagedReduction(document, request: request) {
+      try document.validate()
+      samples = nil
+    } else {
+      throw CraftError.unsupported("This viewport requires supported RGB layers and at most 16,777,216 source pixels.")
+    }
+  }
+
+  public func pixel(x: Int, y: Int) throws -> Pixel? {
     guard region.contains(x, y) else { return nil }
-    return samples.pixel(x: x - region.x, y: y - region.y)
+    if let samples { return samples.pixel(x: x - region.x, y: y - region.y) }
+    return try Renderer.composite(document, region: IntRect(x: x, y: y, width: 1, height: 1)).pixel(x: x, y: y)
   }
 
   public func imageSamples(_ request: RasterPreviewRequest, channels: RGBChannelView = .init(),
     proof: ProofSettings? = nil) throws -> Surface {
     guard request.region == region else { throw CraftError.invalid("The viewport region changed.") }
     let projection = try RasterPreviewProjection(document, channels: channels, proof: proof)
+    guard let samples else {
+      let (prepared, _) = try Renderer.preparedSources(document)
+      return try PagedCanvasRenderer.reducedPatternPreview(prepared, request: request, projection: projection)
+    }
     let pixels = try projection.apply(samples)
     return try pixels.reducedPreview(in: IntRect(x: 0, y: 0, width: region.width, height: region.height),
       width: request.width, height: request.height)
