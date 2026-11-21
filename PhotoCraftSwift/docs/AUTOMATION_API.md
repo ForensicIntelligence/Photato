@@ -1194,6 +1194,10 @@ PSD and PSB reopen with the cached pixels, link metadata and original artwork qu
 
 `paths.components` accepts the kind and ID of one editable path, an optional array of zero-based contour indices, and the `operation` named in the command schema. Joined contours act together. The result includes `pathTransformSelection` with the resulting indices. The same commands are available in Path Operations and Path Arrangement. An optional `marqueeScope: "components"` in `paths.select` chooses whole components using the supplied document-coordinate marquee. [Component operations](PATH_COMPONENT_OPERATIONS_679.md).
 
+### Subtract the first component of a shape
+
+Call `paths.components` with `target: "shape"`, the editable shape layer ID, and `operation: "subtract"`. A leading subtract fills the exterior and cuts away the first contour. Inspect the frame in the shape definition’s `exteriorFrame`, which maps a unit rectangle into local shape coordinates. Native downloads containing it require `X-Photato-Archive-Version: 99` or a supported newer version. [Shape subtraction](SHAPE_SUBTRACTION_680.md).
+
 ### Align and distribute path components
 
 `paths.layout` accepts the `target` kind and `id` of one saved path, shape, or vector mask. Pass `components` to limit the edit to specific zero-based components, or omit it to use all nonempty components. The `layout` object contains `operation` (align or distribute) and an `edge` value from the schema. Two components are needed for alignment, and three are needed for distribution. The response reports `pathTransformSelection` with the selected component indices. Desktop availability appears in `pathComponentLayout`. [Component layout](PATH_COMPONENT_LAYOUT_678.md).

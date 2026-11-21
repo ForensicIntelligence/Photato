@@ -1,0 +1,11 @@
+# First-component subtraction on a shape layer
+
+Select the first component with Path Selection and choose Subtract Front Shape from Path Operations. The shape fills the surrounding canvas and leaves a hole at the selected contour. Additional Boolean operations still run in their existing order. Intersect after Subtract limits the result to the portion of the intersecting component outside the first contour.
+
+The stored contour retains its anchors and live rectangle controls. The canvas frame stays outside the editable path, and the stroke follows the contour. Supported solid RGB 8- and 16-bit PSD and PSB files preserve the editable contour. A native archive that includes the exterior frame uses version 99.
+
+The `paths.components` command takes the shape layer ID and the existing `subtract` operation. Undo, Redo, and recorded Actions use the same result.
+
+All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The PSD, PSB, and RGBA cutout outputs matched byte for byte across all three builds. An independent PSD reader confirmed the live rectangle origin, all four editable knots, the subtract operation, and every alpha and visible RGB sample in the cutout caches. Recreating an existing Photoshop 2026 Subtract-then-Intersect vector mask as a native shape matched all 24,576 red and green samples. The 10 owned ellipse outputs also matched byte for byte across all three builds. They included native archives at three depths and editable RGB8 and RGB16 PSD and PSB files.
+
+Sparse full-canvas rendering has been qualified for an integer-aligned solid fill on a 300,000 × 300,000 document without a visible stroke. The exterior currently retains the canvas frame set when it was created. Canvas resizing, moved or rotated exteriors in PSD, large gradients and strokes, and a direct Photoshop comparison of live shape data remain open. [Adobe path component controls](https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/manage-path-components.html) · [Adobe PSD/PSB specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/) · [Qualification](SOURCE_PUBLICATION_680.md).

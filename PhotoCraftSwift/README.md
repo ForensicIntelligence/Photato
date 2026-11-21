@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 680.** A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_680.md).
+
 **Source checkpoint 679.** Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_679.md).
 
 **Source checkpoint 678.** Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_678.md).

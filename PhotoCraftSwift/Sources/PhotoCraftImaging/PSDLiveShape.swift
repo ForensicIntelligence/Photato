@@ -70,9 +70,8 @@ enum PSDLiveShape {
       }
       primitives = links.map { primitives[$0] }
     }
-    guard mask.enabled, mask.linked, !mask.path.inverted,
-          mask.path.components.first?.operation != .subtract else {
-      throw CraftError.unsupported("The Photoshop shape requires a linked finite contour.")
+    guard mask.enabled, mask.linked, !mask.path.inverted else {
+      throw CraftError.unsupported("The Photoshop shape requires an enabled, linked contour without mask inversion.")
     }
     if hasOrigination {
       guard mask.path.components.count == primitives.count,
@@ -84,8 +83,7 @@ enum PSDLiveShape {
     }
     var definition = ShapeDefinition(geometry: primitives.first?.geometry ?? .init(), fill: fill, stroke: stroke)
     definition.fillRule = mask.path.fillRule
-    definition.components = try localized(primitives, path: mask.path,
-                                          transform: .translation(-Double(x), -Double(y)))
+    definition = try localize(definition, primitives: primitives, path: mask.path, x: x, y: y, document: document)
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width; shape.height = cache.height
     shape.importedAppearance = .init(definition: definition, pixels: cache, vectorRecord: vector)
@@ -146,7 +144,7 @@ enum PSDLiveShape {
 
   private static func localized(_ primitives: [Primitive], path: VectorPath,
                                 transform: Transform2D) throws -> [ShapeComponent] {
-    if primitives.isEmpty { return [try ShapeDefinition.regularPathComponent(path.transformed(transform))] }
+    if primitives.isEmpty { return try ShapeDefinition.editablePathComponents(path.transformed(transform)) }
     return zip(primitives, path.components).map { primitive, outline in
       let placement = transform * .translation(primitive.rectangle.x, primitive.rectangle.y)
       var component = ShapeComponent(geometry: primitive.geometry, transform: placement, operation: outline.operation)
@@ -156,6 +154,18 @@ enum PSDLiveShape {
       component.pathReferenceTransform = placement
       return component
     }
+  }
+
+  private static func localize(_ definition: ShapeDefinition, primitives: [Primitive], path: VectorPath,
+                               x: Int, y: Int, document: CraftDocument) throws -> ShapeDefinition {
+    var definition = definition
+    let transform = Transform2D.translation(Double(x), Double(y))
+    definition.components = try localized(primitives, path: path, transform: transform.inverted())
+    if path.components.first?.operation == .subtract {
+      definition.exteriorFrame = try ShapeDefinition.exteriorFrame(
+        canvas: .init(x: 0, y: 0, width: document.width, height: document.height), transform: transform)
+    }
+    return definition
   }
 
   private static func readStyle(_ appearance: Data) throws -> (ShapeStroke, Bool) {
@@ -213,8 +223,8 @@ enum PSDLiveShape {
     }
     let cache = try RasterGeometry.render(pixels, transform: placement, bounds: bounds, method: .bilinear)
     let local = Transform2D.translation(-Double(bounds.x), -Double(bounds.y))
-    var definition = original
-    definition.components = try localized(primitives, path: path, transform: local)
+    let definition = try localize(original, primitives: primitives, path: path,
+                                  x: bounds.x, y: bounds.y, document: document)
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width
     shape.height = cache.height
@@ -240,16 +250,29 @@ enum PSDLiveShape {
       guard affine.a == 1, affine.b == 0, affine.c == 0, affine.d == 1 else { throw unsupported }
     }
     let definition = shape.editableDefinition
-    guard let first = definition.components.first, first.operation == .combine || first.operation == .join,
-      definition.inverted != true,
+    guard let first = definition.components.first, definition.inverted != true,
       definition.stroke.dash.isEmpty || (definition.stroke.widthRelativeDashes == true && definition.stroke.phase == 0),
       definition.stroke.pathContours != true,
       [.none, .solid].contains(definition.fill.kind), [.none, .solid].contains(definition.stroke.paint.kind),
       definition.fill.color.a == 1, definition.stroke.paint.color.a == 1, let path = try layer.shapePath(),
-      !path.inverted, path.components.first?.operation != .subtract else {
+      !path.inverted else {
       throw unsupported
     }
+    let leadingSubtract = path.components.first?.operation == .subtract
+    if leadingSubtract {
+      guard let frame = definition.exteriorFrame else { throw unsupported }
+      if try VectorPathGeometry.filledRegion(path).inverted {
+        let mapped = try layer.shapeTransform() * frame
+        guard mapped.a == Double(document.width), mapped.d == Double(document.height),
+              mapped.b == 0, mapped.c == 0, abs(mapped.tx) < 1e-9, abs(mapped.ty) < 1e-9 else { throw unsupported }
+      }
+    } else {
+      guard first.operation == .combine || first.operation == .join else { throw unsupported }
+    }
     if definition.components.count == 1, first.geometry.kind == .custom {
+      return (definition, [], path)
+    }
+    if leadingSubtract, definition.components.allSatisfy({ $0.geometry.kind == .custom }) {
       return (definition, [], path)
     }
     guard path.components.count == definition.components.count else { throw unsupported }

@@ -5,7 +5,12 @@ import PhotoCraftCore
 public enum ShapeRenderer {
   /// Solve each primitive's internal contours before applying the layer's component operation.
   public static func outline(_ definition:ShapeDefinition)throws->CGPath{
-    try definition.validate();var result:CGPath?
+    try definition.validate()
+    if let frame = definition.exteriorFrame {
+      let region = try VectorPathGeometry.filledRegion(definition.path())
+      return region.inverted ? exterior(frame).subtracting(region.path) : region.path
+    }
+    var result:CGPath?
     for part in definition.components {
       var primitive=try part.path();primitive.fillRule=definition.fillRule
       let next=try VectorRasterizer.filledPath(primitive)
@@ -25,11 +30,17 @@ public enum ShapeRenderer {
     let (path,bounds)=try FrameRenderer.normalized(outline)
     return path.transformed(.translation(Double(bounds.x),Double(bounds.y)) * .scale(Double(bounds.width),Double(bounds.height)))
   }
-  static func strokeOutline(_ definition: ShapeDefinition, fillPath: CGPath) throws -> CGPath? {
+  private static func exterior(_ frame: Transform2D) -> CGPath {
+    var transform = CGAffineTransform(a: frame.a, b: frame.b, c: frame.c, d: frame.d, tx: frame.tx, ty: frame.ty)
+    return CGPath(rect: CGRect(x: 0, y: 0, width: 1, height: 1), transform: &transform)
+  }
+
+  static func strokeOutline(_ definition: ShapeDefinition, fillPath: CGPath,
+                            visibleContours: CGPath? = nil) throws -> CGPath? {
     let stroke = definition.stroke
     guard stroke.paint.kind != .none, stroke.width > 0, (stroke.opacity ?? 1) > 0 else { return nil }
     let sourcePath = try definition.path()
-    let centerline = try stroke.pathContours == true ? VectorRasterizer.outline(sourcePath) : fillPath
+    let centerline = try stroke.pathContours == true ? VectorRasterizer.outline(sourcePath) : visibleContours ?? fillPath
     let factor = stroke.widthRelativeDashes == true ? stroke.width : 1
     let line = stroke.dash.isEmpty ? centerline : centerline.copy(dashingWithPhase: stroke.phase * factor, lengths: stroke.dash.map { CGFloat($0 * factor) })
     let aligned = stroke.pathContours != true || sourcePath.components.allSatisfy { $0.closed }
@@ -45,10 +56,30 @@ public enum ShapeRenderer {
   static func surface(_ definition:ShapeDefinition,layer:Layer,document:CraftDocument)throws->Surface{
     try definition.validate(in:document)
     if let shape=layer.shape,let original=shape.importedAppearance,original.definition==definition,let pixels=original.pixels {return pixels}
-    let bounds=try definition.renderBounds(),path=try outline(definition)
+    let bounds = try definition.renderBounds()
+    var frame: CGPath?, visibleContours: CGPath?
+    let path: CGPath
+    if let mapping = definition.exteriorFrame {
+      let region = try VectorPathGeometry.filledRegion(definition.path())
+      if region.inverted {
+        let clip = exterior(mapping)
+        if bounds.width > Surface.maximumDensePixels / bounds.height {
+          return try sparseExterior(definition, holes: region.path, mapping: mapping, bounds: bounds, depth: document.depth)
+        }
+        frame = clip
+        visibleContours = region.path
+        path = clip.subtracting(region.path)
+      } else {
+        path = region.path
+      }
+    } else {
+      path = try outline(definition)
+    }
     let fillMask=try FrameRenderer.coverage(path,region:bounds)
     let stroke = definition.stroke
-    let strokeMask = try strokeOutline(definition, fillPath: path).map { try FrameRenderer.coverage($0, region: bounds) }
+    let strokeMask = try strokeOutline(definition, fillPath: path, visibleContours: visibleContours).map { edge in
+      try FrameRenderer.coverage(frame?.intersection(edge) ?? edge, region: bounds)
+    }
     let fill=try Paint(definition.fill,bounds:bounds,frame:definition.paintFrame,layer:layer,document:document),edge=try Paint(stroke.paint,bounds:bounds,frame:definition.paintFrame,layer:layer,document:document)
     var output=try Surface(width:bounds.width,height:bounds.height,depth:document.depth)
     for y in 0..<bounds.height {try Task.checkCancellation();for x in 0..<bounds.width {
@@ -58,6 +89,31 @@ public enum ShapeRenderer {
       if pixel.a>0{output.setPixel(x:x,y:y,pixel)}
     }}
     return output
+  }
+  private static func sparseExterior(_ definition: ShapeDefinition, holes: CGPath, mapping: Transform2D,
+                                     bounds: IntRect, depth: PixelDepth) throws -> Surface {
+    guard definition.fill.kind == .solid || definition.fill.kind == .none,
+          definition.stroke.paint.kind == .none || definition.stroke.width == 0 || definition.stroke.opacity == 0,
+          exterior(mapping).boundingBoxOfPath == CGRect(x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height),
+          (mapping.b == 0 && mapping.c == 0) || (mapping.a == 0 && mapping.d == 0) else {
+      throw CraftError.unsupported("Large shape exteriors currently require an integer-aligned solid fill without a visible stroke.")
+    }
+    let fill = definition.fill.kind == .none ? Pixel.clear : definition.fill.color
+    var surface = try Surface(width: bounds.width, height: bounds.height, depth: depth, fill: fill)
+    let holeBounds = holes.boundingBoxOfPath
+    guard fill.a > 0, !holeBounds.isNull else { return surface }
+    let storage = CGRect(x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height)
+    let overlap = storage.intersection(holeBounds.integral)
+    guard !overlap.isNull, !overlap.isEmpty else { return surface }
+    let patch = IntRect(x: Int(overlap.minX), y: Int(overlap.minY), width: Int(overlap.width), height: Int(overlap.height))
+    let mask = try FrameRenderer.coverage(holes, region: patch)
+    try surface.mapPixels(in: .init(x: patch.x - bounds.x, y: patch.y - bounds.y, width: patch.width, height: patch.height)) { x, y, _ in
+      let i = (y + bounds.y - patch.y) * patch.width + x + bounds.x - patch.x
+      var pixel = fill
+      pixel.a *= 1 - Float(mask.byte(at: i)) / 255
+      return pixel.a > 0 ? pixel : .clear
+    }
+    return surface
   }
   private struct Paint{
     let paint:ShapePaint,transform:Transform2D
@@ -106,7 +162,9 @@ public enum ShapeRenderer {
     switch mode{
     case .shape:return .shape(.create(name,definition,placement,patterns:patterns))
     case .path:
-      var path=NamedPath(name:name,path:try vectorPath(definition).transformed(placement),isWorkPath:true)
+      let editable = try definition.path()
+      let outline = try editable.components.first?.operation == .subtract ? editable : vectorPath(definition)
+      var path=NamedPath(name:name,path:outline.transformed(placement),isWorkPath:true)
       if let old=document.paths?.first(where:\.isWorkPath){path.id=old.id}
       return .savePath(path)
     case .pixels:

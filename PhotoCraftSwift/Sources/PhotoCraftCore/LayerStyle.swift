@@ -143,6 +143,7 @@ public struct LayerStyle: Codable, Equatable, Sendable {
 extension CraftDocument {
   public var requiresLayerStylesArchive: Bool { layers.contains { $0.style != nil } }
   public var minimumArchiveVersion: Int {
+    if requiresShapeExteriorArchive { return ShapeDefinition.exteriorArchiveVersion }
     if requiresCylinderWarpArchive { return CylinderWarp.archiveVersion }
     let largestEmbeddedOriginal = layers.reduce(0) { largest, layer in
       guard let source = layer.smartObject, source.linkedSource == nil else { return largest }

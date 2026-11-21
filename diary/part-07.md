@@ -1219,14 +1219,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:679 -->
+<!-- current-status-step:680 -->
 ## Current development status — 20 November 2026
 
-Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
+A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files.
 
-All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 679](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_679.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-679).
+[Source checkpoint 680](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_680.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-680).
 
 <!-- current-status:end -->
 

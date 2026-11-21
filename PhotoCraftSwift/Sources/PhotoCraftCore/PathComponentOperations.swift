@@ -136,9 +136,6 @@ public struct PathComponentEdit: Sendable {
       throw CraftError.invalid("The path changed before applying the component operation.")
     }
     guard original != result else { return }
-    if case .shape = request.target, result.components.first?.operation == .subtract {
-      throw CraftError.unsupported("A leading subtraction needs a bounded exterior on a shape layer. Place a base component behind it or use a vector mask.")
-    }
     if case .shape(let id) = request.target, let sourceOrder,
        let layer = document.layers.first(where: { $0.id == id }),
        let live = try layer.reorderedShapeDefinition(matching: result, sourceOrder: sourceOrder) {

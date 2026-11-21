@@ -698,7 +698,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 677 | 2026-11-20 | [Isolate a path’s layer while editing](#dev-step-677) |
 | 678 | 2026-11-20 | [Align and distribute components on an editable path](#dev-step-678) |
 | 679 | 2026-11-20 | [Reorder, combine and merge path components](#dev-step-679) |
+| 680 | 2026-11-20 | [Subtract the first component of a shape layer](#dev-step-680) |
 <!-- history-index:end -->
+
+<a id="dev-step-680"></a>
+
+## 2026-11-20 — Subtract the first component of a shape layer
+
+A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files.
+
+A leading Subtract starts with the filled exterior and cuts away the contour. Subsequent operations update the resulting region. The shape renderer keeps the canvas frame separate from the user’s curve, so the original shape controls remain editable and the stroke follows the contour.
+
+Native archives use version 99 when they contain a shape exterior. PSD and PSB preserve supported solid RGB shapes as editable outlines. The Photato API applies the same operation through `paths.components`, and Undo, Redo, and action replay use the same editing engine.
+
+All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The PSD, PSB, and RGBA cutout outputs matched byte for byte across all three builds. An independent PSD reader confirmed the live rectangle origin, all four editable knots, the subtract operation, and every alpha and visible RGB sample in the cutout caches. Recreating an existing Photoshop 2026 Subtract-then-Intersect vector mask as a native shape matched all 24,576 red and green samples. The 10 owned ellipse outputs also matched byte for byte across all three builds. They included native archives at three depths and editable RGB8 and RGB16 PSD and PSB files.
+
+The Debug build used the existing Swift compiler workaround for PredictableDeadAllocationElimination. Both optimized builds used the standard compiler configuration. Sparse full-canvas rendering has been qualified for an integer-aligned solid fill on a 300,000 × 300,000 document without a visible stroke. The exterior currently retains the canvas frame set when it was created. Canvas resizing, moved or rotated exteriors in PSD, large gradients and strokes, and a direct Photoshop comparison of live shape data remain open. Compare exterior behavior after layer moves and Canvas Size, and qualify a Photoshop-authored live shape and its PSD and PSB output.
+
+[Development record](SHAPE_SUBTRACTION_680.md) · [Qualification](SOURCE_PUBLICATION_680.md).
 
 <a id="dev-step-679"></a>
 

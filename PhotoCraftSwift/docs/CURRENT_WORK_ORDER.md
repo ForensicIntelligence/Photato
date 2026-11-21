@@ -1,3 +1,9 @@
+**Source checkpoint 680.** A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files. All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_680.md).
+
+**Next path editing work.** Compare exterior behavior after layer moves and Canvas Size, and qualify a Photoshop-authored live shape and its PSD and PSB output.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 679.** Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files. All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_679.md).
 
 **Next path editing work.** Check the bounded exterior for leading shape subtraction and qualify matched Photoshop files.

@@ -4,6 +4,36 @@ import XCTest
 @testable import PhotoCraft
 
 final class PathComponentOperationWorkflowTests: XCTestCase {
+  @MainActor func testAuthenticatedShapeSubtractAndHistoryUseEditableExterior() async throws {
+    var source = try CraftDocument(width: 128, height: 96)
+    try Command.shape(.create("Window", .init(geometry: .init(width: 32, height: 24)),
+                              .translation(32, 24))).apply(to: &source)
+    let target = try XCTUnwrap(source.activeLayerID)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let store = document.store
+      store.session = EditorSession(document: source)
+      try service.share(document)
+      try store.session.startActionRecording(name: "Subtract first shape")
+      let status = try await helper.edit(service, document, "paths.components", [
+        "target": "shape", "id": target.uuidString, "components": [0], "operation": "subtract",
+      ])
+      XCTAssertEqual(status, 200)
+      let changed = store.document
+      let layer = try XCTUnwrap(changed.layers.first { $0.id == target })
+      XCTAssertNotNil(layer.shape?.definition?.exteriorFrame)
+      XCTAssertEqual(try layer.shapePath()?.components.first?.operation, .subtract)
+      let action = try XCTUnwrap(store.session.actionRecording?.snapshot)
+      var replayed = source
+      try action.apply(to: &replayed)
+      XCTAssertEqual(replayed, changed)
+      _ = await store.requestHistory(redo: false).value
+      XCTAssertEqual(store.document, source)
+      _ = await store.requestHistory(redo: true).value
+      XCTAssertEqual(store.document, changed)
+    }
+  }
+
   private func fixture() throws -> (CraftDocument, NamedPath) {
     var document = try CraftDocument(width: 200, height: 165)
     let parts = [17.0, 65, 137].map { x in

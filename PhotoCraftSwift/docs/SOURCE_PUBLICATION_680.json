@@ -1,0 +1,458 @@
+{
+  "build": 680,
+  "base": "fbcf15e6428fb6d4678cc61543ee8f12442ba354",
+  "buildInputs": 9308,
+  "includedBuildInputs": 9295,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "ecbdb7951325203aebcb540298ce6d66ce69035f64daf2ac17e576926031f587",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "sha256": "f4418b6cbb40e4a506674b52ca037ff42cbbd66c2aefe07f7e74d43e8224ecce"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPaths.swift",
+      "sha256": "2d3c19ab5cf77ca6275ea3fa114c2ec25d3a9c9b7fd4d4859fff8d28333a4921"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationShapes.swift",
+      "sha256": "2ed07309938390f563db4fa92b8f5cfee995ea0ffb138af801d16b5be0a8ffaf"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "sha256": "8f1f1c1b7cb02d2d747318366cf79f49a258214375a3e6b612e81d59890f98f8"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LiveShapes.swift",
+      "sha256": "65d257c710b20ae8f785683ee702119887e9a5fe3de7a3f86bc0c4ae67d9d40a"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/NativeChunkedArchive.swift",
+      "sha256": "ccda4cf398c9a44b23c31732a0d199f202c4756df57e54e46d8f1431f30ba419"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PathComponentOperations.swift",
+      "sha256": "536ba0d5ebb45effe2a59062807cdd774933f03bb930f067151d0dbe800dca9b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ShapeArchiveFeatures.swift",
+      "sha256": "6393f92cc91111c69c859269caad1062128dac9be18be23567ec8bbace9efc5a"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ShapePathEditing.swift",
+      "sha256": "52e36a62c3a6c82ab4cc1bc09805ff15998b782ad266192bd690866eee742f3d"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDLiveShape.swift",
+      "sha256": "7d311e93413d89d0de923eb700e7e19f67f78175f5f4df39fd7b98e850da5b79"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ShapeRenderer.swift",
+      "sha256": "a8de3b3c0f1ce79ab2e2e8b27941fa2be754b4e8a3af00882e28a96d710a33e2"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SparseCanvasRenderer.swift",
+      "sha256": "d320221603592e31ec4ba048f719e196557bcc0a5839bf34494ec78382b0e872"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathComponentOperationWorkflowTests.swift",
+      "sha256": "6839e92efd14914f0eeae815a5c55fc22b7ecee613e3a47f383db3c4223fb1d9"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDPathComponentOperationsTests.swift",
+      "sha256": "0e98b90aa04f6345576487e952b6c665ab8ade4fe9d7dfa7cecd8a23b45554d5"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "e0256e5d5fc6a0f03d1bcf1b6d4dbc2a78b349179232d744aae0f0bb5a4aaff7"
+    }
+  ],
+  "casesPerConfiguration": 287,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 287,
+      "passed": 287,
+      "newCasesExpected": 13,
+      "newCasesPassed": 13,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "783bc02f6c140a928660a6b5836b13220ab2d593f3d0e05ee99c306798086f56"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 287,
+      "passed": 287,
+      "newCasesExpected": 13,
+      "newCasesPassed": 13,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "e1bb2c1c0ee45ec6bd7ca129e282fd7e3a2eb29b4d726a461ec6b050165ab80f"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 287,
+      "passed": 287,
+      "newCasesExpected": 13,
+      "newCasesPassed": 13,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "86ed78a2f01eb70fb6411873db3f138f41f81190129f2884cd495f5c2ca69137"
+    }
+  },
+  "priorWholeLayerVectorMasks": {
+    "build": 680,
+    "referenceBuild": 671,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "outputs": {
+      "embedded-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "embedded-fixed.psb": {
+        "bytes": 184860,
+        "sha256": "f0c3bcbef6518f7872f421783a0c3cdbb8fbdf0ed8a951e31f0093535ac3761e"
+      },
+      "embedded-fixed.psd": {
+        "bytes": 184832,
+        "sha256": "7d91a4d07a206dc2ee37fec77ce37e1305c38b7dca53918f195ad89d95cadab5"
+      },
+      "embedded-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "embedded-linked.psb": {
+        "bytes": 184940,
+        "sha256": "38286424a94c3295a0daf6b0a6e8d4d69912c0abb68f06192404ce6ea9f0fe1c"
+      },
+      "embedded-linked.psd": {
+        "bytes": 184912,
+        "sha256": "88f5e46a8d044958ff521684e9b4eb5f6fabb9c8d64bdeb572f7630e2efea550"
+      },
+      "external-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "external-fixed.psb": {
+        "bytes": 181192,
+        "sha256": "5f5fa9faa4b5840c468ed05b1c606678738cfd5ab402798b7022300919ff4675"
+      },
+      "external-fixed.psd": {
+        "bytes": 181164,
+        "sha256": "831808a037492aa7bd10d633af86229a0941a4125dbe938e4021bb93fd348191"
+      },
+      "external-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "external-linked.psb": {
+        "bytes": 181272,
+        "sha256": "1b9f5cc6c6d3ed96fb65604de74143de8f25296bbd09dbe22d1e4373881022ce"
+      },
+      "external-linked.psd": {
+        "bytes": 181244,
+        "sha256": "aad0adffdfb131cf541ba7eaee4385ab9a59b7e48ea905236ef1a605f152bd58"
+      }
+    },
+    "referenceReceiptSHA256": "1eafcc712e89205e60d9278a3636a46b5f36499ad192262dab4f4b0720abc616"
+  },
+  "independentPSDShapeRead": {
+    "parser": "psd-tools",
+    "version": "1.27.0",
+    "files": {
+      "debug": {
+        "cutout.psd": {
+          "sha256": "2e9b2f7f0b0c0f03585f863e9111c8200265a975d917b3cb5bf1928a8312b115",
+          "operations": [
+            2
+          ],
+          "contourAnchors": [
+            [
+              0.25,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "liveOriginationType": 1,
+          "alphaSamplesMatch": 12288,
+          "visibleRGBMatches": true
+        },
+        "cutout.psb": {
+          "sha256": "5cfafe9f3dd31fd630ce974bfbf0a32c49ad337dd9c983bc1be2437db688c33a",
+          "operations": [
+            2
+          ],
+          "contourAnchors": [
+            [
+              0.25,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "liveOriginationType": 1,
+          "alphaSamplesMatch": 12288,
+          "visibleRGBMatches": true
+        },
+        "cutout.rgba": {
+          "sha256": "87683b7d1a18fd12f124407ec9bf8d49a8330dc3ac5832bc7dff4c6f2f93e71f"
+        }
+      },
+      "arm": {
+        "cutout.psd": {
+          "sha256": "2e9b2f7f0b0c0f03585f863e9111c8200265a975d917b3cb5bf1928a8312b115",
+          "operations": [
+            2
+          ],
+          "contourAnchors": [
+            [
+              0.25,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "liveOriginationType": 1,
+          "alphaSamplesMatch": 12288,
+          "visibleRGBMatches": true
+        },
+        "cutout.psb": {
+          "sha256": "5cfafe9f3dd31fd630ce974bfbf0a32c49ad337dd9c983bc1be2437db688c33a",
+          "operations": [
+            2
+          ],
+          "contourAnchors": [
+            [
+              0.25,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "liveOriginationType": 1,
+          "alphaSamplesMatch": 12288,
+          "visibleRGBMatches": true
+        },
+        "cutout.rgba": {
+          "sha256": "87683b7d1a18fd12f124407ec9bf8d49a8330dc3ac5832bc7dff4c6f2f93e71f"
+        }
+      },
+      "intel": {
+        "cutout.psd": {
+          "sha256": "2e9b2f7f0b0c0f03585f863e9111c8200265a975d917b3cb5bf1928a8312b115",
+          "operations": [
+            2
+          ],
+          "contourAnchors": [
+            [
+              0.25,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "liveOriginationType": 1,
+          "alphaSamplesMatch": 12288,
+          "visibleRGBMatches": true
+        },
+        "cutout.psb": {
+          "sha256": "5cfafe9f3dd31fd630ce974bfbf0a32c49ad337dd9c983bc1be2437db688c33a",
+          "operations": [
+            2
+          ],
+          "contourAnchors": [
+            [
+              0.25,
+              0.25
+            ],
+            [
+              0.25,
+              0.5
+            ],
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "liveOriginationType": 1,
+          "alphaSamplesMatch": 12288,
+          "visibleRGBMatches": true
+        },
+        "cutout.rgba": {
+          "sha256": "87683b7d1a18fd12f124407ec9bf8d49a8330dc3ac5832bc7dff4c6f2f93e71f"
+        }
+      }
+    },
+    "exactAcrossRuns": {
+      "cutout.psd": true,
+      "cutout.psb": true,
+      "cutout.rgba": true
+    },
+    "adobeMaskReference": {
+      "sha256": "d65e4efb08bedd0a075e5e988e81d60309365bc45fc5ffe91dc2772532691b80",
+      "operations": [
+        2,
+        3
+      ]
+    }
+  },
+  "ownedEllipseDepths": {
+    "byteExactAcrossBuilds": {
+      "cutout-16 bit.photato": true,
+      "cutout-16 bit.psb": true,
+      "cutout-16 bit.psd": true,
+      "cutout-16 bit.rgba": true,
+      "cutout-32 bit.photato": true,
+      "cutout-32 bit.rgba": true,
+      "cutout-8 bit.photato": true,
+      "cutout-8 bit.psb": true,
+      "cutout-8 bit.psd": true,
+      "cutout-8 bit.rgba": true
+    },
+    "sha256": {
+      "cutout-16 bit.photato": {
+        "debug": "635dda8f5e7a4831c1902efec9604c10ceb9b65577a27c9fa4a98ec4f426b03f",
+        "arm": "635dda8f5e7a4831c1902efec9604c10ceb9b65577a27c9fa4a98ec4f426b03f",
+        "intel": "635dda8f5e7a4831c1902efec9604c10ceb9b65577a27c9fa4a98ec4f426b03f"
+      },
+      "cutout-16 bit.psb": {
+        "debug": "441e10d60140a084c084dbf0abce324908899a54284d17d97d1b4446583bdc00",
+        "arm": "441e10d60140a084c084dbf0abce324908899a54284d17d97d1b4446583bdc00",
+        "intel": "441e10d60140a084c084dbf0abce324908899a54284d17d97d1b4446583bdc00"
+      },
+      "cutout-16 bit.psd": {
+        "debug": "48a400f2597b596d2555db7cb9796c5eb43c3683586e116e0c37c57412e0f209",
+        "arm": "48a400f2597b596d2555db7cb9796c5eb43c3683586e116e0c37c57412e0f209",
+        "intel": "48a400f2597b596d2555db7cb9796c5eb43c3683586e116e0c37c57412e0f209"
+      },
+      "cutout-16 bit.rgba": {
+        "debug": "835e344cb0dc6d3ee76ad7b58307b085e29e8de81722535861330962c123125a",
+        "arm": "835e344cb0dc6d3ee76ad7b58307b085e29e8de81722535861330962c123125a",
+        "intel": "835e344cb0dc6d3ee76ad7b58307b085e29e8de81722535861330962c123125a"
+      },
+      "cutout-32 bit.photato": {
+        "debug": "9e6a184406d2ac81309e628255953126df0f00f2ad52a97f7239865808f48e71",
+        "arm": "9e6a184406d2ac81309e628255953126df0f00f2ad52a97f7239865808f48e71",
+        "intel": "9e6a184406d2ac81309e628255953126df0f00f2ad52a97f7239865808f48e71"
+      },
+      "cutout-32 bit.rgba": {
+        "debug": "8279efeb6a7f77b8a3bbf1a301632592584f7f8a2f31698c3a15913af793eaf3",
+        "arm": "8279efeb6a7f77b8a3bbf1a301632592584f7f8a2f31698c3a15913af793eaf3",
+        "intel": "8279efeb6a7f77b8a3bbf1a301632592584f7f8a2f31698c3a15913af793eaf3"
+      },
+      "cutout-8 bit.photato": {
+        "debug": "5ea252f80784c6f0bf7a71d0e054c4f948f30189c113a4a4bd00f63acfbd213f",
+        "arm": "5ea252f80784c6f0bf7a71d0e054c4f948f30189c113a4a4bd00f63acfbd213f",
+        "intel": "5ea252f80784c6f0bf7a71d0e054c4f948f30189c113a4a4bd00f63acfbd213f"
+      },
+      "cutout-8 bit.psb": {
+        "debug": "b4a01711ee951b60231edcec2b3d9c1ab53921b095ebb783edb13aea6ce2ec8c",
+        "arm": "b4a01711ee951b60231edcec2b3d9c1ab53921b095ebb783edb13aea6ce2ec8c",
+        "intel": "b4a01711ee951b60231edcec2b3d9c1ab53921b095ebb783edb13aea6ce2ec8c"
+      },
+      "cutout-8 bit.psd": {
+        "debug": "13ac7da0025b7a9b40442aaf4fbc4850ab57077ca0fc88bee6019553a1b51a2e",
+        "arm": "13ac7da0025b7a9b40442aaf4fbc4850ab57077ca0fc88bee6019553a1b51a2e",
+        "intel": "13ac7da0025b7a9b40442aaf4fbc4850ab57077ca0fc88bee6019553a1b51a2e"
+      },
+      "cutout-8 bit.rgba": {
+        "debug": "e95a086b91eff77c02c4785896d3f7d4f58a69c59f84ca5beb4028e7548a70b9",
+        "arm": "e95a086b91eff77c02c4785896d3f7d4f58a69c59f84ca5beb4028e7548a70b9",
+        "intel": "e95a086b91eff77c02c4785896d3f7d4f58a69c59f84ca5beb4028e7548a70b9"
+      }
+    }
+  },
+  "selectedCasesSHA256": "aec3fc8d7a8c28f37125c4fbf883b1c240abc476105446de4fa8a5cfc5c4f446",
+  "nativeChecks": [
+    "Editable first-component subtraction",
+    "Finite intersection after a subtract",
+    "Contour stroke without a canvas-border stroke",
+    "Sparse maximum canvas and native archive",
+    "Authenticated API, Undo, Redo and action replay",
+    "Editable PSD/PSB output",
+    "Owned Photoshop 2026 RGB8 vector mask reference at 128 \u00d7 96"
+  ],
+  "preview": {
+    "archiveSHA256": "f388b652bd704f2055b60e86513bcd6b908f0a07146df81e3a665ff2592fb111",
+    "binarySHA256": "711ab4c19cfcc0d8e50bbec79a39f73329e9cf7899d5211938048eafa2f39a1f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "bf31dd6be716bec8cf65105fead34bf5190fb63f96ca405444203c2e0b67e6a0",
+      "x86_64": "830205ec51cf98e0cc2b3a297a370ed20f9146c2e785530f3b5cf5c409a8bc26"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination for Debug only.",
+  "liveAdobeCompared": false,
+  "adobeReferenceSamplesMatched": 24576,
+  "reference": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/manage-path-components.html"
+}

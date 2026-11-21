@@ -1,6 +1,38 @@
 import Foundation
 
 extension ShapeDefinition {
+  /// Keep each contiguous contour group editable when the first group subtracts.
+  public static func editablePathComponents(_ path: VectorPath) throws -> [ShapeComponent] {
+    guard path.components.first?.operation == .subtract else { return [try regularPathComponent(path)] }
+    return try PathComponentEdit.groups(in: path).map { indices in
+      var contours = Array(path.components[indices])
+      let operation = contours[0].operation
+      contours[0].operation = .combine
+      var component = try regularPathComponent(.init(components: contours, fillRule: path.fillRule))
+      component.operation = operation
+      return component
+    }
+  }
+
+  /// The affine mapping of the unit rectangle retains the exact canvas edges in
+  /// shape-local coordinates, including fractional placement and rotation.
+  public static func exteriorFrame(canvas: IntRect, transform: Transform2D) throws -> Transform2D {
+    try transform.inverted() * .translation(Double(canvas.x), Double(canvas.y))
+      * .scale(Double(canvas.width), Double(canvas.height))
+  }
+
+  mutating func prepareExterior(canvas: IntRect, transform: Transform2D) throws {
+    if try path().components.first?.operation == .subtract {
+      if exteriorFrame == nil { exteriorFrame = try Self.exteriorFrame(canvas: canvas, transform: transform) }
+      inversionBounds = nil
+    } else {
+      exteriorFrame = nil
+      if inverted == true, inversionBounds == nil {
+        inversionBounds = try Self.inversionFrame(canvas: canvas, transform: transform)
+      }
+    }
+  }
+
   public func controlPaintFrame()throws->ShapePaintFrame? {
     let points=try path().components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
     guard !points.isEmpty else{return nil}
@@ -71,10 +103,11 @@ extension Layer {
     if preservingTranslatedComponents, let translated = try definition.translatedComponents(matching: local) {
       definition.components = translated
     } else {
-      definition.components = [try ShapeDefinition.regularPathComponent(local)]
+      definition.components = try ShapeDefinition.editablePathComponents(local)
     }
     definition.fillRule=path.fillRule;definition.inverted=path.inverted ? true:nil
-    definition.inversionBounds=try path.inverted ? ShapeDefinition.inversionFrame(canvas:canvas,transform:transform):nil
+    definition.inversionBounds = nil
+    try definition.prepareExterior(canvas: canvas, transform: transform)
     let points=local.components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
     if !points.isEmpty {
       let x=points.map(\.x).min()!,y=points.map(\.y).min()!

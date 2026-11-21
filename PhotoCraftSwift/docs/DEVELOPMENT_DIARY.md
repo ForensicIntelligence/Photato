@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 680 — Subtract the first component of a shape layer
+
+A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files.
+
+All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Sparse full-canvas rendering has been qualified for an integer-aligned solid fill on a 300,000 × 300,000 document without a visible stroke. The exterior currently retains the canvas frame set when it was created. Canvas resizing, moved or rotated exteriors in PSD, large gradients and strokes, and a direct Photoshop comparison of live shape data remain open.
+
+[Development record](DEVLOG.md#dev-step-680) · [Details](SHAPE_SUBTRACTION_680.md).
+
 ## 2026-11-20 — Step 679 — Reorder, combine and merge path components
 
 Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
@@ -1409,14 +1417,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:679 -->
+<!-- current-status-step:680 -->
 ## Current development status — 20 November 2026
 
-Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
+A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files.
 
-All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 679](SOURCE_PUBLICATION_679.md) · [Development record](DEVLOG.md#dev-step-679).
+[Source checkpoint 680](SOURCE_PUBLICATION_680.md) · [Development record](DEVLOG.md#dev-step-680).
 
 <!-- current-status:end -->
 
@@ -2302,6 +2310,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 677 | [Isolate a path’s layer while editing](DEVLOG.md#dev-step-677) |
 | 2026-11-20 | 678 | [Align and distribute components on an editable path](DEVLOG.md#dev-step-678) |
 | 2026-11-20 | 679 | [Reorder, combine and merge path components](DEVLOG.md#dev-step-679) |
+| 2026-11-20 | 680 | [Subtract the first component of a shape layer](DEVLOG.md#dev-step-680) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

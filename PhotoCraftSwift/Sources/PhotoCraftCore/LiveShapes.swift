@@ -125,23 +125,30 @@ public struct ShapeStroke: Codable, Equatable, Sendable {
   }
 }
 public struct ShapeDefinition: Codable, Equatable, Sendable {
+  public static let exteriorArchiveVersion = 99
   public var components:[ShapeComponent]
   public var fill:ShapePaint
   public var stroke:ShapeStroke
   public var fillRule:PathFillRule = .nonZero
   public var inverted:Bool?
   public var inversionBounds:IntRect?
+  public var exteriorFrame: Transform2D?
   public var paintFrame:ShapePaintFrame?
   public init(geometry:ShapeGeometry,fill:ShapePaint = .init(),stroke:ShapeStroke = .init()){components=[.init(geometry:geometry)];self.fill=fill;self.stroke=stroke}
   public var estimatedBytes:Int {components.reduce(256){$0+512+(($1.geometry.customPath?.knotCount ?? 0)+($1.pathOverride?.knotCount ?? 0))*64} + [fill,stroke.paint].reduce(0){$0+($1.gradient?.gradient.colors.count ?? 0)*48+($1.gradient?.gradient.opacity.count ?? 0)*16} + stroke.dash.count*8}
   public var requiresExtendedShapeArchive:Bool {
-    inverted != nil || inversionBounds != nil || paintFrame != nil || stroke.opacity != nil || stroke.pathContours != nil || stroke.widthRelativeDashes != nil || stroke.miterLimit>20 || stroke.dash.contains(0) || components.contains(where:\.requiresExtendedShapeArchive)
+    inverted != nil || inversionBounds != nil || exteriorFrame != nil || paintFrame != nil || stroke.opacity != nil || stroke.pathContours != nil || stroke.widthRelativeDashes != nil || stroke.miterLimit>20 || stroke.dash.contains(0) || components.contains(where:\.requiresExtendedShapeArchive)
   }
   public func validate(in document:CraftDocument? = nil)throws{
     guard !components.isEmpty,components.count<=64 else{throw CraftError.invalid("Choose1–64 live shape components.")}
     try fill.validate(in:document);try stroke.validate(in:document)
     for component in components{try component.geometry.validate();try component.transform.validated();try component.pathOverride?.validate();try component.pathReferenceTransform?.validated();guard component.pathReferenceTransform == nil || component.pathOverride != nil else{throw CraftError.invalid("A path reference requires an exact path.")};guard component.pathOverride?.inverted != true else{throw CraftError.invalid("Component inversion belongs to the complete shape.")}}
-    if inverted == true {
+    if let exteriorFrame {
+      guard inversionBounds == nil, try path().components.first?.operation == .subtract else {
+        throw CraftError.invalid("The shape exterior frame requires a leading subtract component.")
+      }
+      _ = try exteriorFrame.bounds(width: 1, height: 1)
+    } else if inverted == true {
       guard let f=inversionBounds,f.width>0,f.height>0,f.width<=32768,f.height<=32768,abs(Double(f.x))<=1_000_000,abs(Double(f.y))<=1_000_000,f.width*f.height<=8_388_608 else{throw CraftError.invalid("Inverted shapes require a bounded rasterization frame.")}
     }else if inversionBounds != nil{throw CraftError.invalid("An inversion frame requires an inverted shape.")}
     try paintFrame?.validate()
@@ -159,7 +166,12 @@ public struct ShapeDefinition: Codable, Equatable, Sendable {
     try output.validate();return output
   }
   public func renderBounds()throws->IntRect{
-    let points=try path().components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
+    let path = try path()
+    if let exteriorFrame {
+      let hasIntersection = path.components.contains { $0.operation == .intersect && $0.knots.count > 1 }
+      if hasIntersection == path.inverted { return try exteriorFrame.bounds(width: 1, height: 1) }
+    }
+    let points=path.components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
     if points.isEmpty{return inversionBounds ?? .init(x:0,y:0,width:1,height:1)}
     let pad=stroke.pathContours == true ? try contourStrokePadding():stroke.paint.kind == .none || stroke.alignment == .inside ? 1:ceil(stroke.width*(stroke.join == .miter ? stroke.miterLimit:1))+2
     let x0=floor(points.map(\.x).min()!)-pad,y0=floor(points.map(\.y).min()!)-pad,x1=ceil(points.map(\.x).max()!)+pad,y1=ceil(points.map(\.y).max()!)+pad
@@ -176,7 +188,8 @@ extension ShapeContent {
   public var editableDefinition:ShapeDefinition {definition ?? .init(geometry:.init(kind:kind == .ellipse ? .ellipse:.rectangle,width:Double(width),height:Double(height)),fill:.init(color:color))}
   public func validate(in document:CraftDocument)throws{
     guard importedAppearance == nil || definition != nil else{throw CraftError.invalid("Imported appearance requires editable shape geometry.")}
-    guard width>0,height>0,width<=32768,height<=32768,color.isFinite else{throw CraftError.invalid("Invalid shape.")}
+    let dimensionLimit = definition?.exteriorFrame == nil ? 32768 : Surface.maxDimension
+    guard width>0,height>0,width<=dimensionLimit,height<=dimensionLimit,color.isFinite else{throw CraftError.invalid("Invalid shape.")}
     if let definition {try definition.validate(in:document);try importedAppearance?.validate(in:document);let b=try renderBounds();guard width==b.width,height==b.height else{throw CraftError.invalid("Shape bounds do not match geometry.")}}
   }
 }
@@ -202,6 +215,7 @@ public enum ShapeCommand:Sendable{
     switch self{
     case .create(let name,var definition,let placement,let patterns):
       try Self.install(patterns,definition:&definition,document:&d)
+      try definition.prepareExterior(canvas: .init(x: 0, y: 0, width: d.width, height: d.height), transform: placement)
       try definition.validate(in:d);try placement.validated();let bounds=try definition.renderBounds()
       var layer=Layer(name:name,content:.shape(try .init(definition:definition)))
       let full=placement * .translation(Double(bounds.x),Double(bounds.y));layer.x=Int(floor(full.tx));layer.y=Int(floor(full.ty));layer.affine = .translation(-Double(layer.x),-Double(layer.y)) * full
@@ -214,11 +228,14 @@ public enum ShapeCommand:Sendable{
       }
       if old.editableDefinition.components != definition.components,definition.paintFrame==old.editableDefinition.paintFrame,definition.paintFrame != nil {definition.paintFrame=try definition.controlPaintFrame()}
       try Self.install(patterns,definition:&definition,document:&d)
+      if definition==old.editableDefinition{return}
+      let previous=d.layers[i],origin=try previous.shapeTransform()
+      try definition.prepareExterior(canvas: .init(x: 0, y: 0, width: d.width, height: d.height), transform: origin)
       try definition.validate(in:d)
       // Merely accepting unchanged Properties must preserve original cache samples.
       if definition==old.editableDefinition{return}
       guard old.editableDefinition.components==definition.components || !d.isPositionLocked(id) else{throw CraftError.invalid("Unlock shape position before changing its geometry.")}
-      let previous=d.layers[i],origin=try previous.shapeTransform(),bounds=try definition.renderBounds(),full=origin * .translation(Double(bounds.x),Double(bounds.y))
+      let bounds=try definition.renderBounds(),full=origin * .translation(Double(bounds.x),Double(bounds.y))
       d.layers[i].content = .shape(try .init(definition:definition));d.layers[i].x=Int(floor(full.tx));d.layers[i].y=Int(floor(full.ty));d.layers[i].affine = .translation(-Double(d.layers[i].x),-Double(d.layers[i].y)) * full
       if d.layers[i].affine == .identity{d.layers[i].affine=nil}
       if previous.mask != nil {var props=previous.effectiveMaskProperties;props.transform=try full.inverted() * previous.maskCoordinateTransform;d.layers[i].maskProperties=props}
