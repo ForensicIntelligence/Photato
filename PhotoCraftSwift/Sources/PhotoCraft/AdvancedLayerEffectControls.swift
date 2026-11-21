@@ -22,7 +22,11 @@ struct AdvancedLayerEffectControls:View {
       Divider()
       if [.dropShadow,.innerShadow].contains(effect.kind) {
         EffectContourControls(title:"Contour",contour:advanced(\.contour,.init()))
-        if effect.kind == .dropShadow {Toggle("Layer Knocks Out Drop Shadow",isOn:advanced(\.knocksOut,true))}
+        if effect.kind == .dropShadow {
+          Toggle("Anti-alias Contour", isOn: advanced(\.antiAlias, false))
+          number("Noise (%)", advanced(\.noise, 0), 0...100, percent: true)
+          Toggle("Layer Knocks Out Drop Shadow", isOn: advanced(\.knocksOut, true))
+        }
       }
       if [.innerGlow,.outerGlow].contains(effect.kind) {
         Picker("Technique",selection:advanced(\.glowTechnique,.softer)){ForEach(LayerEffectAdvanced.GlowTechnique.allCases,id:\.self){Text($0.rawValue.capitalized).tag($0)}}
@@ -60,7 +64,9 @@ struct AdvancedLayerEffectControls:View {
           Toggle("Invert Texture",isOn:Binding(get:{effect.advanced?.texture?.inverted ?? false},set:{effect.advanced?.texture?.inverted=$0}))
         }
       }
-      if a.noise != 0 || a.jitter != 0 || a.antiAlias {Text("Source noise, jitter and anti-alias settings are retained; these options are not yet active.").font(.caption).foregroundStyle(.secondary)}
+      if a.jitter != 0 || (effect.kind != .dropShadow && (a.noise != 0 || a.antiAlias)) {
+        Text("This effect retains its additional source settings for export.").font(.caption).foregroundStyle(.secondary)
+      }
     }
   }
   private func label(_ name:String)->String {name.replacingOccurrences(of:"([a-z])([A-Z])",with:"$1 $2",options:.regularExpression).capitalized}
@@ -78,12 +84,41 @@ struct EffectContourControls:View {
           HStack {
             Text("\(i+1)").frame(width:24)
             coordinate("Input",i,0);coordinate("Output",i,1)
-            Button("Remove"){guard contour.points.indices.contains(i)else{return};contour.points.remove(at:i)}.buttonStyle(.borderless)
+            Toggle("Corner", isOn: corner(i))
+              .accessibilityLabel("\(title) point \(i + 1) corner")
+            Button("Remove"){
+              guard contour.points.indices.contains(i) else { return }
+              var draft = contour
+              draft.points.remove(at: i)
+              draft.smoothPoints?.remove(at: i)
+              if draft.smoothPoints?.contains(false) != true { draft.smoothPoints = nil }
+              contour = draft
+            }.buttonStyle(.borderless)
           }
         }
       }
-      HStack{Button("Add Point"){contour.points.append([0.5,0.5]);contour.points.sort{$0[0]<$1[0]}}.disabled(contour.points.count>=256);Button("Linear"){contour=EffectContour()}}
+      HStack {
+        Button("Add Point") {
+          var draft = contour
+          if draft.points.isEmpty { draft.points = [[0, 0], [1, 1]] }
+          let index = draft.points.firstIndex { $0[0] > 0.5 } ?? draft.points.count
+          draft.points.insert([0.5, 0.5], at: index)
+          draft.smoothPoints?.insert(true, at: index)
+          contour = draft
+        }.disabled(contour.points.count >= 256)
+        Button("Linear") { contour = EffectContour() }
+      }
     }
+  }
+  private func corner(_ index: Int) -> Binding<Bool> {
+    Binding(get: {
+      contour.points.indices.contains(index) && contour.smoothPoints?[index] == false
+    }, set: { isCorner in
+      guard contour.points.indices.contains(index) else { return }
+      var smooth = contour.smoothPoints ?? Array(repeating: true, count: contour.points.count)
+      smooth[index] = !isCorner
+      contour.smoothPoints = smooth.contains(false) ? smooth : nil
+    })
   }
   private func coordinate(_ title:String,_ i:Int,_ c:Int)->some View {
     TextField(title,value:Binding(get:{contour.points.indices.contains(i) ? contour.points[i][c]:0},set:{if contour.points.indices.contains(i){contour.points[i][c]=$0}}),format:.number.precision(.fractionLength(0...5))).textFieldStyle(.roundedBorder).accessibilityLabel("\(self.title) point \(i+1) \(title)")

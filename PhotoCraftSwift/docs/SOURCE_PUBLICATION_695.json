@@ -1,0 +1,672 @@
+{
+  "build": 695,
+  "base": "2f428987d5b0821f7e3a6936f3047f29947d0e18",
+  "buildInputs": 9311,
+  "includedBuildInputs": 9298,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "d01659385c7d8001459c6c6b0e7eaeb8a6d48d8a9c6356c8fbaffbe4101fd02a",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AdobeLayerEffects.swift",
+      "sha256": "8208d52cae1c9997eaa460ddfb6418b0389ebf89fb584af029c40242d9cc8516"
+    },
+    {
+      "path": "Sources/PhotoCraft/AdvancedLayerEffectControls.swift",
+      "sha256": "5566951c29e11602755078b8ee59923fe3b76b9a1c4731df96e459a26af6c395"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationAdvancedStyles.swift",
+      "sha256": "e88e6b027ba3f18901fdd21a8fb8e8b5e99b667fea6006f1e1c6c7550468dbe5"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationLayerStyles.swift",
+      "sha256": "c2e1976c00bead962a2942e3d75ee8920769dc2cd5e703fa89d1851c59abca02"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AdvancedEffectJSON.swift",
+      "sha256": "192882e08c7e0c58edffb941fecefd7b4da9e9d1500f73d5f04f6b6af6cbf8a6"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/AdvancedLayerEffects.swift",
+      "sha256": "0807d9d63fe22d937db3706affb7abde89231d8d2d0bd4284586ca24900f90a5"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PixelateEngine.swift",
+      "sha256": "3439628f288f786605211cde51100256d085cdb2673bd3d0c074151d27a5b1bc"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SourceAdjustmentTransfer.swift",
+      "sha256": "2bffcba4ae8b09c9c33ea9d91d3c781de3dd8369c3366cc730da4f3106a05a2b"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDLayerStyles.swift",
+      "sha256": "d1a70c12340712681cbd9205b09d32534f575c25f0ee366aeb6d20092366c38b"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceEffectMap.swift",
+      "sha256": "162984202587ceb6614acbf0553c3181326b19d5fa0e5d3db0412801a52c6c5f"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceLayerStyleRenderer.swift",
+      "sha256": "087a968d9b38e911553bfb65e44e3fb7f437bc001a3aac68936703cae29d8d9f"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AdvancedLayerStyleWorkflowTests.swift",
+      "sha256": "63c47a85217ecb4f949d96c09779cfba55bdfe3077f333e98291f8562bfe59a7"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ChannelBlendingWorkflowTests.swift",
+      "sha256": "8de655d8b9fca7d9b274f0cb1acf441906cdf9151db33673dc5173927fb8c0f1"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerStyleWorkflowTests.swift",
+      "sha256": "88c50990603ad7e12e73f87fe7dbae845667e1f5901add6cc5f386eed9d5f839"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/StylePresetWorkflowTests.swift",
+      "sha256": "132ac5244208cb204dab95bf262e43129ba220ef025c2970a0a0bd282065eef1"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStyleTests.swift",
+      "sha256": "893342cf368ad0bdec39895c2fdd5b628711add95cc469e3872c972bd46b8323"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "2a04486a440337c02f2bc0abbc0ee58a96fc544ee9da35605eee2102ef9a8f91"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "2a04486a440337c02f2bc0abbc0ee58a96fc544ee9da35605eee2102ef9a8f91"
+  },
+  "casesPerConfiguration": 469,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 469,
+      "passed": 468,
+      "newCasesExpected": 26,
+      "newCasesPassed": 26,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "257bb166e55972c0d2e8e6dfcd4f19843f2f745ec38baf7468e15cc805235300"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 469,
+      "passed": 468,
+      "newCasesExpected": 26,
+      "newCasesPassed": 26,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "35599c88519b5594f7444e42f26dac24c36b70d14330d9df40244b91a9784c8e"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 469,
+      "passed": 468,
+      "newCasesExpected": 26,
+      "newCasesPassed": 26,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "1cc3024638f7a778338136e5b2b355620a132a348fc7cc3b35f0060f7393cded"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "e624fc6d4724cca59582bdd6f11129d4467ddafe61b75e60a2764c1886cc7f34",
+  "independentPSDDescriptors": {
+    "f32.psb": {
+      "depth": 32,
+      "editableDescriptor": {
+        "AntA": true,
+        "Ckmt": [
+          "#Pxl",
+          0.0
+        ],
+        "Clr ": {
+          "Bl  ": 0.0,
+          "Grn ": 0.0,
+          "Rd  ": 0.0,
+          "class": "RGBC"
+        },
+        "Dstn": [
+          "#Pxl",
+          4.0
+        ],
+        "Md  ": [
+          "BlnM",
+          "Mltp"
+        ],
+        "Nose": [
+          "#Prc",
+          34.99999940395355
+        ],
+        "Opct": [
+          "#Prc",
+          50.0
+        ],
+        "TrnS": {
+          "Crv ": [
+            {
+              "Cnty": false,
+              "Hrzn": 0.0,
+              "Vrtc": 0.0,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 63.75,
+              "Vrtc": 38.25000151991844,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 127.5,
+              "Vrtc": 204.00000303983688,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 191.25,
+              "Vrtc": 153.00000607967377,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 255.0,
+              "Vrtc": 255.0,
+              "class": "CrPt"
+            }
+          ],
+          "Nm  ": "Custom",
+          "class": "ShpC"
+        },
+        "blur": [
+          "#Pxl",
+          7.0
+        ],
+        "class": "DrSh",
+        "enab": true,
+        "lagl": [
+          "#Ang",
+          36.0
+        ],
+        "layerConceals": false,
+        "present": true,
+        "showInDialog": true,
+        "uglg": false
+      },
+      "fileSHA256": "d2907c28654ecf43285ee1f0a0083a9b5bab3d4a7621489a309dc73fb22433ea"
+    },
+    "f32.psd": {
+      "depth": 32,
+      "editableDescriptor": {
+        "AntA": true,
+        "Ckmt": [
+          "#Pxl",
+          0.0
+        ],
+        "Clr ": {
+          "Bl  ": 0.0,
+          "Grn ": 0.0,
+          "Rd  ": 0.0,
+          "class": "RGBC"
+        },
+        "Dstn": [
+          "#Pxl",
+          4.0
+        ],
+        "Md  ": [
+          "BlnM",
+          "Mltp"
+        ],
+        "Nose": [
+          "#Prc",
+          34.99999940395355
+        ],
+        "Opct": [
+          "#Prc",
+          50.0
+        ],
+        "TrnS": {
+          "Crv ": [
+            {
+              "Cnty": false,
+              "Hrzn": 0.0,
+              "Vrtc": 0.0,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 63.75,
+              "Vrtc": 38.25000151991844,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 127.5,
+              "Vrtc": 204.00000303983688,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 191.25,
+              "Vrtc": 153.00000607967377,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 255.0,
+              "Vrtc": 255.0,
+              "class": "CrPt"
+            }
+          ],
+          "Nm  ": "Custom",
+          "class": "ShpC"
+        },
+        "blur": [
+          "#Pxl",
+          7.0
+        ],
+        "class": "DrSh",
+        "enab": true,
+        "lagl": [
+          "#Ang",
+          36.0
+        ],
+        "layerConceals": false,
+        "present": true,
+        "showInDialog": true,
+        "uglg": false
+      },
+      "fileSHA256": "a33dd6e66dc0182120c28ae05b7f69ac642921e42ceb762307172d3bf33b6623"
+    },
+    "u16.psb": {
+      "depth": 16,
+      "editableDescriptor": {
+        "AntA": true,
+        "Ckmt": [
+          "#Pxl",
+          0.0
+        ],
+        "Clr ": {
+          "Bl  ": 0.0,
+          "Grn ": 0.0,
+          "Rd  ": 0.0,
+          "class": "RGBC"
+        },
+        "Dstn": [
+          "#Pxl",
+          4.0
+        ],
+        "Md  ": [
+          "BlnM",
+          "Mltp"
+        ],
+        "Nose": [
+          "#Prc",
+          34.99999940395355
+        ],
+        "Opct": [
+          "#Prc",
+          50.0
+        ],
+        "TrnS": {
+          "Crv ": [
+            {
+              "Cnty": false,
+              "Hrzn": 0.0,
+              "Vrtc": 0.0,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 63.75,
+              "Vrtc": 38.25000151991844,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 127.5,
+              "Vrtc": 204.00000303983688,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 191.25,
+              "Vrtc": 153.00000607967377,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 255.0,
+              "Vrtc": 255.0,
+              "class": "CrPt"
+            }
+          ],
+          "Nm  ": "Custom",
+          "class": "ShpC"
+        },
+        "blur": [
+          "#Pxl",
+          7.0
+        ],
+        "class": "DrSh",
+        "enab": true,
+        "lagl": [
+          "#Ang",
+          36.0
+        ],
+        "layerConceals": false,
+        "present": true,
+        "showInDialog": true,
+        "uglg": false
+      },
+      "fileSHA256": "5f07d81ca18db0a795a7f75812081f20209855fe7a890544a8fd85c5d6c942cf"
+    },
+    "u16.psd": {
+      "depth": 16,
+      "editableDescriptor": {
+        "AntA": true,
+        "Ckmt": [
+          "#Pxl",
+          0.0
+        ],
+        "Clr ": {
+          "Bl  ": 0.0,
+          "Grn ": 0.0,
+          "Rd  ": 0.0,
+          "class": "RGBC"
+        },
+        "Dstn": [
+          "#Pxl",
+          4.0
+        ],
+        "Md  ": [
+          "BlnM",
+          "Mltp"
+        ],
+        "Nose": [
+          "#Prc",
+          34.99999940395355
+        ],
+        "Opct": [
+          "#Prc",
+          50.0
+        ],
+        "TrnS": {
+          "Crv ": [
+            {
+              "Cnty": false,
+              "Hrzn": 0.0,
+              "Vrtc": 0.0,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 63.75,
+              "Vrtc": 38.25000151991844,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 127.5,
+              "Vrtc": 204.00000303983688,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 191.25,
+              "Vrtc": 153.00000607967377,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 255.0,
+              "Vrtc": 255.0,
+              "class": "CrPt"
+            }
+          ],
+          "Nm  ": "Custom",
+          "class": "ShpC"
+        },
+        "blur": [
+          "#Pxl",
+          7.0
+        ],
+        "class": "DrSh",
+        "enab": true,
+        "lagl": [
+          "#Ang",
+          36.0
+        ],
+        "layerConceals": false,
+        "present": true,
+        "showInDialog": true,
+        "uglg": false
+      },
+      "fileSHA256": "ab33406601f4127d27a489ba5e57fb2d57d7a7a4079a6a09d3cc1b97edf3a91a"
+    },
+    "u8.psb": {
+      "depth": 8,
+      "editableDescriptor": {
+        "AntA": true,
+        "Ckmt": [
+          "#Pxl",
+          0.0
+        ],
+        "Clr ": {
+          "Bl  ": 0.0,
+          "Grn ": 0.0,
+          "Rd  ": 0.0,
+          "class": "RGBC"
+        },
+        "Dstn": [
+          "#Pxl",
+          4.0
+        ],
+        "Md  ": [
+          "BlnM",
+          "Mltp"
+        ],
+        "Nose": [
+          "#Prc",
+          34.99999940395355
+        ],
+        "Opct": [
+          "#Prc",
+          50.0
+        ],
+        "TrnS": {
+          "Crv ": [
+            {
+              "Cnty": false,
+              "Hrzn": 0.0,
+              "Vrtc": 0.0,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 63.75,
+              "Vrtc": 38.25000151991844,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 127.5,
+              "Vrtc": 204.00000303983688,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 191.25,
+              "Vrtc": 153.00000607967377,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 255.0,
+              "Vrtc": 255.0,
+              "class": "CrPt"
+            }
+          ],
+          "Nm  ": "Custom",
+          "class": "ShpC"
+        },
+        "blur": [
+          "#Pxl",
+          7.0
+        ],
+        "class": "DrSh",
+        "enab": true,
+        "lagl": [
+          "#Ang",
+          36.0
+        ],
+        "layerConceals": false,
+        "present": true,
+        "showInDialog": true,
+        "uglg": false
+      },
+      "fileSHA256": "a82a674b51aa9f072049fa5d5c5dd0a4d1752fdd105cacaa7ce07f7f28635eba"
+    },
+    "u8.psd": {
+      "depth": 8,
+      "editableDescriptor": {
+        "AntA": true,
+        "Ckmt": [
+          "#Pxl",
+          0.0
+        ],
+        "Clr ": {
+          "Bl  ": 0.0,
+          "Grn ": 0.0,
+          "Rd  ": 0.0,
+          "class": "RGBC"
+        },
+        "Dstn": [
+          "#Pxl",
+          4.0
+        ],
+        "Md  ": [
+          "BlnM",
+          "Mltp"
+        ],
+        "Nose": [
+          "#Prc",
+          34.99999940395355
+        ],
+        "Opct": [
+          "#Prc",
+          50.0
+        ],
+        "TrnS": {
+          "Crv ": [
+            {
+              "Cnty": false,
+              "Hrzn": 0.0,
+              "Vrtc": 0.0,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 63.75,
+              "Vrtc": 38.25000151991844,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 127.5,
+              "Vrtc": 204.00000303983688,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": true,
+              "Hrzn": 191.25,
+              "Vrtc": 153.00000607967377,
+              "class": "CrPt"
+            },
+            {
+              "Cnty": false,
+              "Hrzn": 255.0,
+              "Vrtc": 255.0,
+              "class": "CrPt"
+            }
+          ],
+          "Nm  ": "Custom",
+          "class": "ShpC"
+        },
+        "blur": [
+          "#Pxl",
+          7.0
+        ],
+        "class": "DrSh",
+        "enab": true,
+        "lagl": [
+          "#Ang",
+          36.0
+        ],
+        "layerConceals": false,
+        "present": true,
+        "showInDialog": true,
+        "uglg": false
+      },
+      "fileSHA256": "a1b4f796bcd815f885dfc0dac64a503ce0880b152d2560931efdf9d6ad8a601d"
+    }
+  },
+  "offscreenControls": {
+    "light": "b227a36a553a1efae607e7dad4faeef9ff1ec15e6249983e47c53d4d44bad087",
+    "dark": "da45ddcf704a29bbceb4e9b71cfde3f438bead83efafd3b29c3dd962268c4191"
+  },
+  "unchangedEffectRegression": {
+    "fixtures": 138,
+    "outputsPerArchitecture": 276,
+    "previousBuild": 694,
+    "sha256": "5fe5dc6d916fdf33086edfb967c15fb33fda4ee167fc57aea75133a6284239cd"
+  },
+  "xcodeDebugBuildLogSHA256": "764f7a9a5b91679d7f4254bbc91b8873777da2161e635e17575313baf8e3e9bc",
+  "xcodeOffscreenWorkspaceSHA256": "26e833329f51cee386285dedfa3c8117a237651b991bd9738026cc5c8fe5b70f",
+  "preview": {
+    "archiveSHA256": "eab4f007fa57b2f8492c8a819349a3133fbd2175714a86826dd1ba5e598a9aa0",
+    "binarySHA256": "a0df25cbcd2c25de691a409d675e377a421354371762805065c75fa355fd3df3",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "e4d2bad29ec99ed46828de509469975557be512984c467795d1f77a7cf444244",
+      "x86_64": "eb999fb918b4da997d82e4e59c635a00c59e50218e509a86ff4b6b656a3affbe"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/"
+  ]
+}

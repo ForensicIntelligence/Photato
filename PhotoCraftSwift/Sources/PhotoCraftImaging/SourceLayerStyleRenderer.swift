@@ -165,7 +165,13 @@ enum SourceLayerStyleRenderer {
     }
     var work=before
     for p in prepared.reversed() where p.effect.kind == .dropShadow {
-      try paint(&work,shader:p.paint,mode:p.effect.blendMode,opacity:p.effect.opacity,coverage:{p.map!.v[mi($0)]*(p.advanced.knocksOut ? 1-alpha($0)*(1-style.fillOpacity):1)})
+      try paint(&work, shader: p.paint, mode: p.effect.blendMode, opacity: p.effect.opacity) { i in
+        let knockout: Float = p.advanced.knocksOut ? 1 - alpha(i) * (1 - style.fillOpacity) : 1
+        let coverage = p.map!.v[mi(i)] * knockout
+        guard coverage > 0, p.advanced.noise > 0 else { return coverage }
+        let noise = PixelateEngine.hash(samples.x + i % w, samples.y + i / w, 0, 523)
+        return unit(coverage * (1 + p.advanced.noise * (2 * noise - 1)))
+      }
     }
     for p in prepared.reversed() where p.effect.kind == .outerGlow {try paint(&work,shader:p.paint,mode:p.effect.blendMode,opacity:p.effect.opacity,coverage:{p.map!.v[mi($0)]})}
     for kind:LayerEffect.Kind in [.patternOverlay,.gradientOverlay,.colorOverlay,.satin,.innerGlow,.innerShadow] {

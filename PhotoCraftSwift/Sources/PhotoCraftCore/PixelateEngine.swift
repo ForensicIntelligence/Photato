@@ -4,7 +4,7 @@ import Foundation
 /// This source port does not imply numerical equivalence to Adobe Photoshop.
 public enum PixelateEngine {
   typealias Sample = SIMD4<Float>
-  static func hash(_ x: Int, _ y: Int, _ channel: UInt32, _ seed: UInt32) -> Float {
+  package static func hash(_ x: Int, _ y: Int, _ channel: UInt32, _ seed: UInt32) -> Float {
     var h = UInt32(truncatingIfNeeded:x) &* 0x8da6b343 ^ UInt32(truncatingIfNeeded:y) &* 0xd8163841 ^ channel &* 0xcb1ab31f ^ seed &* 0x9e3779b9
     h ^= h >> 16; h = h &* 0x7feb352d; h ^= h >> 15; h = h &* 0x846ca68b; h ^= h >> 16
     return Float(h >> 8) / 16777216

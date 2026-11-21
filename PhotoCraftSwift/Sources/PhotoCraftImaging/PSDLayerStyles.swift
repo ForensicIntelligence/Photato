@@ -17,11 +17,65 @@ enum PSDLayerStyles {
   static func color(_ p: Pixel) throws -> PSDValue {
     let d = try PSDDescriptor.read(PSDSolidColor.write(p)); return d["Clr "]!
   }
-  static func contour() -> PSDValue {
-    .object(PSDDescriptor("ShpC", items: [.init("Nm  ", .text(Array("Linear".utf16))),
-      .init("Crv ", .list([0.0,255.0].map { value in .object(PSDDescriptor("CrPt", items: [
-        .init("Hrzn", .number(value)), .init("Vrtc", .number(value)), .init("Cnty", .boolean(false)),
-      ])) }))]))
+  static func contour(_ value: EffectContour = EffectContour()) -> PSDValue {
+    let points = value.points.isEmpty ? [[Float(0), 0], [1, 1]] : value.points
+    let curve = points.enumerated().map { index, point in
+      PSDValue.object(PSDDescriptor("CrPt", items: [
+        .init("Hrzn", .number(Double(point[0]) * 255)), .init("Vrtc", .number(Double(point[1]) * 255)),
+        .init("Cnty", .boolean(value.smoothPoints?[index] ?? !value.points.isEmpty)),
+      ]))
+    }
+    return .object(PSDDescriptor("ShpC", items: [
+      .init("Nm  ", .text(Array(value.name.utf16))), .init("Crv ", .list(curve)),
+    ]))
+  }
+
+  private static func readDropShadowContour(_ raw: PSDValue?) throws -> EffectContour {
+    guard let raw else { return EffectContour() }
+    guard case .object(let shape) = raw, shape.classID.text == "ShpC",
+          case .list(let curve) = shape["Crv "], (2...256).contains(curve.count) else {
+      throw CraftError.unsupported("Unrepresented Photoshop Drop Shadow contour.")
+    }
+    try PSDGradient.supported(shape, keys: ["Nm  ", "Crv "])
+    let name: String
+    if case .text(let title) = shape["Nm  "] {
+      let units = title.last == 0 ? title.dropLast() : title[...]
+      name = String(decoding: units, as: UTF16.self)
+    }
+    else if shape["Nm  "] == nil { name = "Linear" }
+    else { throw CraftError.invalid("Invalid Photoshop Drop Shadow contour name.") }
+    var coordinates = [[Float]]()
+    var smooth = [Bool]()
+    for value in curve {
+      guard case .object(let point) = value, point.classID.text == "CrPt",
+            let horizontal = point["Hrzn"]?.number, (0...255).contains(horizontal),
+            let vertical = point["Vrtc"]?.number, (0...255).contains(vertical) else {
+        throw CraftError.invalid("Invalid Photoshop Drop Shadow contour point.")
+      }
+      try PSDGradient.supported(point, keys: ["Hrzn", "Vrtc", "Cnty"])
+      var continuous = false
+      if let raw = point["Cnty"] {
+        guard case .boolean(let value) = raw else { throw CraftError.invalid("Invalid contour point continuity.") }
+        continuous = value
+      }
+      coordinates.append([Float(horizontal / 255), Float(vertical / 255)])
+      smooth.append(continuous)
+    }
+    if name == "Linear", coordinates == [[0, 0], [1, 1]], !smooth.contains(true) { return EffectContour() }
+    return EffectContour(name: name, points: coordinates, smoothPoints: smooth.contains(false) ? smooth : nil)
+  }
+
+  private static func representsAdvancedControls(_ effect: LayerEffect) -> Bool {
+    guard let value = effect.advanced else { return true }
+    guard effect.kind == .dropShadow, value != LayerEffectAdvanced(), effect.distance >= 0,
+          value.contour.points.count >= 2
+            || (value.contour.points.isEmpty && value.contour.name == "Linear") else { return false }
+    var supported = LayerEffectAdvanced()
+    supported.contour = value.contour
+    supported.antiAlias = value.antiAlias
+    supported.noise = value.noise
+    supported.knocksOut = value.knocksOut
+    return value == supported
   }
   /// Adobe stores inactive legacy defaults alongside object-based effects.
   /// Qualify the record framing and disabled flags before retaining the bytes.
@@ -58,7 +112,7 @@ enum PSDLayerStyles {
                     patterns: [RasterPattern] = []) throws -> Data {
     try style.validate()
     let hasPattern = style.effects.contains { $0.kind == .patternOverlay }
-    guard style.sourcePSDData == nil, !style.effects.contains(where: { $0.advanced != nil }),
+    guard style.sourcePSDData == nil, style.effects.allSatisfy(representsAdvancedControls),
           style.referenceOffset == nil || hasPattern else {
       throw CraftError.unsupported("Advanced effect controls/reference data require Photato until their editable PSD mapping is qualified.")
     }
@@ -81,12 +135,14 @@ enum PSDLayerStyles {
           .init("Opct", unit(Double(effect.opacity)*100,"#Prc"))]
         if kind != .gradientOverlay && kind != .patternOverlay { fields.append(.init("Clr ", try color(effect.color))) }
         if kind == .dropShadow || kind == .innerShadow {
+          let advanced = effect.advanced ?? LayerEffectAdvanced()
           // Shared documents retain participation and the inactive local angle.
           // Standalone style encoding keeps its historical explicit-local fallback.
           fields += [.init("uglg", .boolean(sharedLight != nil && effect.useGlobalLight)), .init("lagl", unit(sharedLight != nil ? effect.angle : effect.useGlobalLight ? style.lightAngle : effect.angle,"#Ang")),
             .init("Dstn", unit(effect.distance,"#Pxl")), .init("Ckmt",unit(effect.spread,"#Pxl")),
-            .init("blur",unit(effect.size,"#Pxl")), .init("Nose",unit(0,"#Prc")), .init("AntA",.boolean(false)), .init("TrnS",contour())]
-          if kind == .dropShadow { fields.append(.init("layerConceals",.boolean(true))) }
+            .init("blur",unit(effect.size,"#Pxl")), .init("Nose",unit(Double(advanced.noise)*100,"#Prc")),
+            .init("AntA",.boolean(advanced.antiAlias)), .init("TrnS",contour(advanced.contour))]
+          if kind == .dropShadow { fields.append(.init("layerConceals",.boolean(advanced.knocksOut))) }
         } else if kind == .outerGlow || kind == .innerGlow {
           fields += [.init("GlwT",enumValue("BETE","SfBL")), .init("Ckmt",unit(effect.spread,"#Pxl")),
             .init("blur",unit(effect.size,"#Pxl")), .init("Nose",unit(0,"#Prc")), .init("ShdN",unit(0,"#Prc")),
@@ -177,14 +233,28 @@ enum PSDLayerStyles {
           let fields = d.items.filter { PSDPatternFill.descriptorKeys.contains($0.key.text) }
           effect.pattern = try PSDPatternFill.readFields(PSDDescriptor("null", items: fields)).fill
         }
-        if let raw=d["TrnS"] {
+        if kind == .dropShadow {
+          var advanced = LayerEffectAdvanced()
+          advanced.contour = try readDropShadowContour(d["TrnS"])
+          advanced.antiAlias = try flag(d, "AntA", false)
+          advanced.knocksOut = try flag(d, "layerConceals", true)
+          let noise = try number(d, "Nose", "#Prc", 0)
+          guard (0...100).contains(noise) else { throw CraftError.invalid("Invalid Photoshop Drop Shadow noise.") }
+          advanced.noise = Float(noise / 100)
+          if advanced != LayerEffectAdvanced() { effect.advanced = advanced }
+        } else if let raw=d["TrnS"] {
           guard case .object(let contour)=raw,case .list(let points)=contour["Crv "],points.count==2 else { throw CraftError.unsupported("Custom layer-effect contours are not represented.") }
           for (i,point) in points.enumerated() {
             guard case .object(let p)=point,p["Hrzn"]?.number==Double(i*255),p["Vrtc"]?.number==Double(i*255) else { throw CraftError.unsupported("Custom layer-effect contours are not represented.") }
           }
         }
-        guard try !flag(d,"AntA",false), try flag(d,"layerConceals",true), try !flag(d,"overprint",false),
-          try number(d,"Nose","#Prc",0)==0,try number(d,"ShdN","#Prc",0)==0,
+        if kind != .dropShadow {
+          guard try !flag(d,"AntA",false), try flag(d,"layerConceals",true),
+                try number(d,"Nose","#Prc",0)==0 else {
+            throw CraftError.unsupported("Advanced contour/noise/knockout options for this effect are not represented.")
+          }
+        }
+        guard try !flag(d,"overprint",false), try number(d,"ShdN","#Prc",0)==0,
           try number(d,"Inpr","#Prc",50)==50 else { throw CraftError.unsupported("Advanced effect contour/noise/knockout options are not represented.") }
         effect.useGlobalLight=try flag(d,"uglg",true);effect.angle=try number(d,"lagl","#Ang",120)
         effect.distance=try number(d,"Dstn","#Pxl",5);effect.spread=try number(d,"Ckmt","#Pxl",0)

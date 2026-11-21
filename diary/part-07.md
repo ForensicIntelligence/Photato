@@ -411,14 +411,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:694 -->
+<!-- current-status-step:695 -->
 ## Current development status — 21 November 2026
 
-Advanced layer effects write their final pixels by tile. Ordinary raster writes also reuse an opacity result owned by a single surface.
+Drop Shadow contour corners, anti-aliasing, noise and knockout now work through the editor and the Adobe-compatible create-composite route. Supported shadows remain editable in PSD and PSB.
 
-462 of 465 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The three inherited failures reproduced the same assertions: two outdated Automation count expectations and one strict original PhotoCraft effect fixture. All 27 additional Brush Dynamics and canvas diagnostics tests passed in Debug. The Xcode Debug build and both ad hoc signed macOS 14+ preview slices opened workspaces offscreen.
+468 of 469 selected tests passed in arm64 Debug, optimized arm64 and Intel under Rosetta. The same strict original PhotoCraft effect fixture still fails with identical assertions. The two unrelated hard-coded Automation count expectations now use the shared catalog count. The checked-in Xcode project built in arm64 Debug with signing disabled. Both signed macOS 14+ preview slices opened offscreen. The changed controls were inspected offscreen in Light and Dark.
 
-[Source checkpoint 694](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_694.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-694).
+[Source checkpoint 695](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_695.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-695).
 
 <!-- current-status:end -->
 
@@ -1319,5 +1319,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 692 | [Reduce wide oblique Pattern Overlays in bounded patches](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-692) |
 | 2026-11-21 | 693 | [Reuse prepared pattern samples across render patches](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-693) |
 | 2026-11-21 | 694 | [Write layer styles by tile and reuse opacity checks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-694) |
+| 2026-11-21 | 695 | [Keep advanced Drop Shadows editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-695) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

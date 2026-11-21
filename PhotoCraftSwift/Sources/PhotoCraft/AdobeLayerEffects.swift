@@ -2,7 +2,7 @@ import CoreFoundation
 import Foundation
 import PhotoCraftCore
 
-/// Pinned Firefly v2 LayerEffects subset. Unsupported contour/noise semantics fail explicitly.
+/// Pinned Firefly v2 LayerEffects mapping onto editable native Drop Shadows.
 enum AdobeLayerEffects {
   static func parse(_ raw: Any?) throws -> [LayerEffect]? {
     guard let raw else { return nil }
@@ -29,10 +29,6 @@ enum AdobeLayerEffects {
         guard let n = raw as? NSNumber, CFGetTypeID(n) == CFBooleanGetTypeID() else { throw AdobeAPIError.invalid("Invalid dropShadow.\(key).") }
         return n.boolValue
       }
-      guard fields["contour"] == nil, try integer("noise", 0...100, 0) == 0,
-        try !flag("antiAliased", false), try flag("layerKnocksOut", true) else {
-        throw AdobeAPIError.unsupported("Custom contours, noise, contour anti-aliasing and disabling shadow knockout are not represented yet.")
-      }
       var effect = LayerEffect(.dropShadow)
       effect.angle = try integer("angle", -180...180, effect.angle)
       effect.distance = try integer("distance", 0...30000, effect.distance)
@@ -41,6 +37,12 @@ enum AdobeLayerEffects {
       effect.opacity = Float(try integer("opacity", 0...100, Double(effect.opacity)*100)/100)
       effect.enabled = try flag("enabled", true)
       effect.useGlobalLight = try flag("useGlobalLight", true)
+      var advanced = LayerEffectAdvanced()
+      advanced.noise = Float(try integer("noise", 0...100, 0) / 100)
+      advanced.antiAlias = try flag("antiAliased", false)
+      advanced.knocksOut = try flag("layerKnocksOut", true)
+      if let raw = fields["contour"] { advanced.contour = try contour(raw) }
+      if advanced != LayerEffectAdvanced() { effect.advanced = advanced }
       if let raw = fields["blendMode"] {
         guard let name = raw as? String,
           let mode = BlendMode.allCases.first(where: { $0.rawValue.lowercased().replacingOccurrences(of: " ", with: "_") == name }),
@@ -64,5 +66,31 @@ enum AdobeLayerEffects {
       try effect.validate()
       return effect
     }
+  }
+
+  private static func contour(_ raw: Any) throws -> EffectContour {
+    guard let shape = raw as? [String: Any], Set(shape.keys) == ["name", "curve"],
+          shape["name"] as? String == "Custom", let curve = shape["curve"] as? [[String: Any]],
+          (2...256).contains(curve.count) else {
+      throw AdobeAPIError.invalid("A Custom contour requires 2–256 curve points.")
+    }
+    var points = [[Float]]()
+    var smooth = [Bool]()
+    for point in curve {
+      guard Set(point.keys) == ["horizontal", "vertical", "continuity"],
+            let continuity = point["continuity"] as? NSNumber, CFGetTypeID(continuity) == CFBooleanGetTypeID() else {
+        throw AdobeAPIError.invalid("A contour point requires horizontal, vertical and Boolean continuity.")
+      }
+      let coordinates = try ["horizontal", "vertical"].map { key -> Float in
+        guard let value = point[key] as? NSNumber, CFGetTypeID(value) != CFBooleanGetTypeID(),
+              (0...255).contains(value.doubleValue) else {
+          throw AdobeAPIError.invalid("Contour coordinates must be numbers from 0 through 255.")
+        }
+        return Float(value.doubleValue / 255)
+      }
+      points.append(coordinates)
+      smooth.append(continuity.boolValue)
+    }
+    return EffectContour(name: "Custom", points: points, smoothPoints: smooth.contains(false) ? smooth : nil)
   }
 }

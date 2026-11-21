@@ -6,6 +6,32 @@ import SwiftUI
 @testable import PhotoCraft
 
 final class AdvancedLayerStyleWorkflowTests:XCTestCase {
+  @MainActor func testDropShadowEditorCommitsAdvancedFieldsToPSD() async throws {
+    let source = try CraftDocument(width: 24, height: 24)
+    let store = EditorStore(document: source)
+    defer { store.renderTask?.cancel() }
+    store.beginLayerStyle(.dropShadow)
+    store.expandLayerEffect(0)
+    var value = try XCTUnwrap(store.layerStyleDraft?.style.effects.first)
+    let controls = AdvancedLayerEffectControls(effect: Binding(get: { value }, set: { value = $0 }), document: source)
+    controls.advanced(\.antiAlias, false).wrappedValue = true
+    controls.advanced(\.noise, 0).wrappedValue = 0.28
+    controls.advanced(\.knocksOut, true).wrappedValue = false
+    store.updateLayerEffect(0) { $0 = value }
+    await store.renderTask?.value
+    XCTAssertNil(store.error)
+    XCTAssertEqual(store.document, source)
+    store.commitLayerStyle()
+    let committed = store.document
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(committed))
+    XCTAssertEqual(reopened.layers[0].style?.effects.first?.advanced, value.advanced)
+    await store.undo()
+    XCTAssertEqual(store.document, source)
+    await store.redo()
+    XCTAssertEqual(store.document, committed)
+  }
+
   @MainActor func expectEdit(_ helper:AutomationTests,_ service:AutomationService,_ document:CraftNSDocument,_ name:String,_ parameters:[String:Any]=[:],revision:String?=nil,expected:Int)async throws {
     let result=try await helper.edit(service,document,name,parameters,revision:revision);XCTAssertEqual(result,expected)
   }
@@ -36,10 +62,14 @@ final class AdvancedLayerStyleWorkflowTests:XCTestCase {
       let store=shared.store,id=store.document.layers[0].id
       var effect=LayerEffect(.dropShadow);effect.advanced=LayerEffectAdvanced();var style=LayerStyle(effects:[effect]);style.sourcePSDData=Data(repeating:37,count:100_000)
       try store.session.execute(.layerStyle([id],style));try service.share(shared);let original=store.document
-      let parameters:[String:Any]=["layerIDs":[id.uuidString],"patch":["fillOpacity":0.375],"effectIndex":0,"effect":["size":7.125,"advanced":["knocksOut":false]],"globalLight":["angle":73.375,"altitude":31.25]]
+      let contour: [String: Any] = ["name": "Custom", "points": [[0, 0], [0.25, 0.8], [1, 1]], "smoothPoints": [true, false, true]]
+      let parameters:[String:Any]=["layerIDs":[id.uuidString],"patch":["fillOpacity":0.375],"effectIndex":0,"effect":["size":7.125,"advanced":["knocksOut":false, "contour": contour]],"globalLight":["angle":73.375,"altitude":31.25]]
       try await expectEdit(helper,service,shared,"layer.style.patch",parameters,expected:200)
       let changed=store.document;XCTAssertEqual(changed.layers[0].style?.sourcePSDData,style.sourcePSDData);XCTAssertEqual(changed.layers[0].style?.effects[0].size,7.125);XCTAssertEqual(changed.layers[0].style?.effects[0].advanced?.knocksOut,false);XCTAssertEqual(changed.globalLight,GlobalLight(angle:73.375,altitude:31.25))
-      var expected=original;var edited=style;edited.fillOpacity=0.375;edited.effects[0].size=7.125;edited.effects[0].advanced?.knocksOut=false;try Command.layerStyles(LayerStyleEdit(layerIDs:[id],style:edited,globalLight:GlobalLight(angle:73.375,altitude:31.25))).apply(to:&expected);XCTAssertEqual(changed,expected)
+      var expected=original;var edited=style;edited.fillOpacity=0.375;edited.effects[0].size=7.125;edited.effects[0].advanced?.knocksOut=false
+      edited.effects[0].advanced?.contour = EffectContour(name: "Custom", points: [[0, 0], [0.25, 0.8], [1, 1]],
+                                                         smoothPoints: [true, false, true])
+      try Command.layerStyles(LayerStyleEdit(layerIDs:[id],style:edited,globalLight:GlobalLight(angle:73.375,altitude:31.25))).apply(to:&expected);XCTAssertEqual(changed,expected)
       try await expectEdit(helper,service,shared,"layer.style.patch",parameters,revision:"stale",expected:409)
       store.beginLayerStyle();try await expectEdit(helper,service,shared,"document.globalLight",["angle":2,"altitude":30],expected:409);store.cancelLayerStyle()
       for bad:[String:Any] in [["layerIDs":[id.uuidString],"patch":["bogus":1]],["layerIDs":[id.uuidString],"effectIndex":31,"effect":["size":2]],["layerIDs":[id.uuidString,id.uuidString],"patch":["fillOpacity":0.2]],["layerIDs":[id.uuidString],"patch":["fillOpacity":2]]] {try await expectEdit(helper,service,shared,"layer.style.patch",bad,expected:400);XCTAssertEqual(store.document,changed)}

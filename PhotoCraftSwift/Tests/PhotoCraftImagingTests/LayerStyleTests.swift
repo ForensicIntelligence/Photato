@@ -4,6 +4,71 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testAdvancedDropShadowPSDAndPSBRetainEditableControlsAndPixels() throws {
+    var advanced = LayerEffectAdvanced()
+    advanced.noise = 0.35
+    advanced.antiAlias = true
+    advanced.knocksOut = false
+    advanced.contour = EffectContour(name: "Custom",
+      points: [[0, 0], [0.25, 0.14], [0.5, 0.85], [0.75, 0.64], [1, 1]],
+      smoothPoints: [false, true, false, true, false])
+    for depth in [PixelDepth.u8, .u16, .f32] {
+      var document = try CraftDocument(width: 28, height: 28, depth: depth)
+      var samples = try Surface(width: 12, height: 12, depth: depth, colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+      for y in 1..<11 { for x in 1..<11 {
+        let sample = Pixel(0.6, 0.2, 0.3, Float(x) / 12)
+        if depth == .f32 { samples.setLinearPixel(x: x, y: y, sample) }
+        else { samples.setPixel(x: x, y: y, sample) }
+      }}
+      document.layers[0].x = 6
+      document.layers[0].y = 7
+      document.layers[0].content = .raster(samples)
+      document.globalLight = GlobalLight(angle: 147, altitude: 47)
+      var shadow = LayerEffect(.dropShadow)
+      shadow.size = 7
+      shadow.distance = 2
+      shadow.angle = -35
+      shadow.useGlobalLight = false
+      shadow.advanced = advanced
+      var style = LayerStyle(effects: [shadow])
+      style.fillOpacity = 0
+      document.layers[0].style = style
+      func composition(_ document: CraftDocument) throws -> Data {
+        try Renderer.composite(document).rgbaData(depth: depth, colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+      }
+      let original = try composition(document)
+      for format in [PSDFileFormat.psd, .psb] {
+        let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(document, format: format))
+        XCTAssertEqual(reopened.layers[0].style?.effects.first, shadow)
+        XCTAssertEqual(try composition(reopened), original)
+      }
+      var quiet = document
+      quiet.layers[0].style?.effects[0].advanced?.noise = 0
+      XCTAssertNotEqual(try composition(quiet), original)
+      var knockedOut = document
+      knockedOut.layers[0].style?.effects[0].advanced?.knocksOut = true
+      XCTAssertNotEqual(try composition(knockedOut), original)
+      var unrepresentable = document
+      unrepresentable.layers[0].style?.effects[0].advanced?.jitter = 0.5
+      XCTAssertThrowsError(try PSDCodec.writeRasterLayers(unrepresentable))
+    }
+  }
+
+  func testDropShadowContourCornerAndAntiAliasAffectCoverage() throws {
+    let points: [[Float]] = [[0, 0], [0.25, 0.2], [0.5, 0.8], [0.75, 0.3], [1, 1]]
+    let smooth = EffectContour(name: "Custom", points: points)
+    let corner = EffectContour(name: "Custom", points: points, smoothPoints: [true, true, false, true, true])
+    var map = SourceEffectMap(16, 1)
+    map.v = (0..<16).map { Float($0) / 15 }
+    let aliased = try map.contoured(corner)
+    XCTAssertNotEqual(aliased.v, try map.contoured(smooth).v)
+    let softened = try map.contoured(corner, antiAlias: true)
+    XCTAssertNotEqual(softened.v, aliased.v)
+    XCTAssertEqual(softened.v.first, aliased.v.first)
+    XCTAssertEqual(softened.v.last, aliased.v.last)
+    XCTAssertEqual(try map.contoured(EffectContour(), antiAlias: true).v, map.v)
+  }
+
   func testPatternPreparationSharesAssetsAcrossPlacementsAndStaysWithinBudget() throws {
     var pixels = try Surface(width: 8, height: 8, fill: .white)
     pixels.setPixel(x: 0, y: 0, .black)

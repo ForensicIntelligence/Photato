@@ -86,17 +86,27 @@ struct SourceEffectMap:Sendable {
     let x=unit(value)*Float(table.count-1),i=Int(floor(x)),j=min(i+1,table.count-1)
     return table[i]+(table[j]-table[i])*(x-Float(i))
   }
-  func contoured(_ contour:EffectContour,range:Float=1)throws->Self {
+  func contoured(_ contour:EffectContour,range:Float=1,antiAlias:Bool=false)throws->Self {
     var table=try contour.table()
     let range=min(1,max(0.01,range))
     if range<0.999 {let base=table;table=(0..<4096).map{k in let v=min(Float(k)/4095/range,1);return base.map{Self.lookup($0,v)} ?? v}}
-    guard let table else{return self};return mapped{Self.lookup(table,$0)}
+    guard let table else{return self}
+    guard antiAlias else { return mapped { Self.lookup(table, $0) } }
+    // Average neighboring coverage levels around steep sections of the curve.
+    let halfStep: Float = 0.5 / 255
+    return mapped { coverage in
+      let sample = Self.lookup(table, coverage)
+      guard coverage > 0, coverage < 1 else { return sample }
+      return (2 * sample + Self.lookup(table, coverage - halfStep)
+        + Self.lookup(table, coverage + halfStep)) / 4
+    }
   }
   static func offset(_ angle:Float,_ distance:Float)->(Float,Float) {let r=angle*(Float.pi/180);return((-cos(r)*distance).rounded(),(sin(r)*distance).rounded())}
   func shadow(_ effect:LayerEffect,_ advanced:LayerEffectAdvanced,angle:Float,scale:Float,inner:Bool)throws->Self {
     let(dx,dy)=Self.offset(angle,Float(effect.distance)*scale),source=inner ? mapped{1-$0}:self
     var result=try source.shifted(dx,dy,outside:inner ? 1:0);let size=Float(effect.size)*scale,spread=Float(effect.spread/100),r=(size*spread).rounded()
-    result=try result.dilated(r).blurred(size*(1-spread)).contoured(advanced.contour)
+    result=try result.dilated(r).blurred(size*(1-spread))
+      .contoured(advanced.contour, antiAlias: !inner && advanced.antiAlias)
     if inner {for i in v.indices {result.v[i]*=v[i]}};return result
   }
   func glow(_ effect:LayerEffect,_ advanced:LayerEffectAdvanced,scale:Float,inner:Bool)throws->Self {

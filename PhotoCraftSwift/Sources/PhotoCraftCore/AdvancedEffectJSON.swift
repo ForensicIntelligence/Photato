@@ -11,7 +11,7 @@ enum AdvancedEffectJSON {
   }
   static func point(_ value:Any)throws {_ = try object(value,["x","y"])}
   static func color(_ value:Any)throws {_ = try object(value,["r","g","b","a"])}
-  static func contour(_ value:Any)throws {_ = try object(value,["name","points"])}
+  static func contour(_ value:Any)throws {_ = try object(value,["name","points","smoothPoints"])}
   static func pattern(_ value:Any)throws {
     let v=try object(value,["patternID","sourceName","sourceID","scale","angle","linked","phase"])
     if let phase=v["phase"] {try point(phase)}

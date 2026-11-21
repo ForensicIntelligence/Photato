@@ -5,12 +5,22 @@ import Foundation
 public struct EffectContour:Codable,Equatable,Sendable {
   public var name:String
   public var points:[[Float]]
-  public init(name:String="Linear",points:[[Float]]=[]){self.name=name;self.points=points}
+  /// A missing array keeps the original continuous spline.
+  public var smoothPoints: [Bool]?
+  public init(name: String = "Linear", points: [[Float]] = [], smoothPoints: [Bool]? = nil) {
+    self.name = name
+    self.points = points
+    self.smoothPoints = smoothPoints
+  }
   public var isLinear:Bool {points.isEmpty}
   public func validate()throws {
-    guard name.utf8.count<=2048,points.count<=256,points.allSatisfy({$0.count==2 && $0.allSatisfy({$0.isFinite && (0...1).contains($0)})}) else {throw CraftError.invalid("Invalid effect contour.")}
+    guard name.utf8.count<=2048,points.count<=256,smoothPoints.map({ $0.count == points.count }) != false,
+      points.allSatisfy({$0.count==2 && $0.allSatisfy({$0.isFinite && (0...1).contains($0)})}) else {throw CraftError.invalid("Invalid effect contour.")}
   }
-  public func table()throws->[Float]? {try validate();return points.isEmpty ? nil:SourceAdjustmentTransfer.curve(points)}
+  public func table()throws->[Float]? {
+    try validate()
+    return points.isEmpty ? nil : SourceAdjustmentTransfer.curve(points, smoothPoints: smoothPoints)
+  }
 }
 public struct EffectGradientStop:Codable,Equatable,Sendable {
   public var location:Float

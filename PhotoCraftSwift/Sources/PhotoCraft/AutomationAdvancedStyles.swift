@@ -8,7 +8,12 @@ enum AdvancedStyleAPI {
   static func object(_ properties:[String:Any],required:[String]=[])->[String:Any]{["type":"object","additionalProperties":false,"properties":properties,"required":required]}
   static var point:[String:Any] {object(["x":number(-1e9,1e9),"y":number(-1e9,1e9)],required:["x","y"])}
   static var light:[String:Any] {object(["angle":number(-360,360),"altitude":number(0,90)],required:["angle","altitude"])}
-  static var contour:[String:Any] {object(["name":["type":"string","maxLength":2048],"points":["type":"array","maxItems":256,"items":["type":"array","minItems":2,"maxItems":2,"items":number(0,1)]]],required:["name","points"])}
+  static var contour:[String:Any] {
+    object(["name":["type":"string","maxLength":2048],
+            "points":["type":"array","maxItems":256,"items":["type":"array","minItems":2,"maxItems":2,"items":number(0,1)]],
+            "smoothPoints":["type":["array","null"],"maxItems":256,"items":["type":"boolean"]]],
+           required:["name","points"])
+  }
   static var pattern:[String:Any] {object(["patternID":["type":["string","null"],"maxLength":1024],"sourceID":["type":["string","null"],"maxLength":4096],"sourceName":["type":["string","null"],"maxLength":4096],"scale":number(0,100),"angle":number(-360,360),"linked":["type":"boolean"],"phase":point],required:["scale","angle","linked","phase"])}
   static var gradient:[String:Any] {
     let color=object(["r":number(0,1),"g":number(0,1),"b":number(0,1),"a":number(0,1)],required:["r","g","b","a"])

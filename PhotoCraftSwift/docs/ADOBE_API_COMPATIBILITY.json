@@ -1023,7 +1023,7 @@
     ],
     "status": "PSD and PSB preserve supported editable Pattern Overlay effects",
     "scope": "Shared document transfers and native style transactions",
-    "limits": "The published direct Adobe v2 layer-effects contract covers dropShadow. Pattern Overlay uses Photato's native style command.",
+    "limits": "The direct Adobe v2 layer-effects contract covers Drop Shadow, including supported contour, anti-aliasing, noise and knockout. Pattern Overlay uses Photato’s native style command. Exact Adobe shadow rendering remains open.",
     "evidence": "docs/SOURCE_PUBLICATION_687.json"
   },
   "legacy_pattern_scaling_build686": {

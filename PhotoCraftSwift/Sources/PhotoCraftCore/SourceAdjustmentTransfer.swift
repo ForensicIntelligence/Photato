@@ -119,14 +119,19 @@ public struct SourceAdjustmentTransfer:Sendable {
     }
     return a[3]+t*(a[4]-a[3])
   }
-  static func curve(_ input:[[Float]])->[Float] {
-    let sorted=input.enumerated().sorted{a,b in a.element[0]==b.element[0] ? a.offset<b.offset:a.element[0]<b.element[0]};var points=[[Float]]()
-    for item in sorted {if points.last.map({abs($0[0]-item.element[0])<1e-6}) != true {points.append(item.element)}}
+  static func curve(_ input: [[Float]], smoothPoints: [Bool]? = nil) -> [Float] {
+    let sorted=input.enumerated().sorted{a,b in a.element[0]==b.element[0] ? a.offset<b.offset:a.element[0]<b.element[0]}
+    var points = [[Float]](), corners = Set<Int>()
+    for item in sorted where points.last.map({ abs($0[0] - item.element[0]) < 1e-6 }) != true {
+      if smoothPoints?[item.offset] == false { corners.insert(points.count) }
+      points.append(item.element)
+    }
     let n=points.count;if n<2 {return (0..<4096).map{Float($0)/4095}}
     let x=points.map{Double($0[0])},y=points.map{Double($0[1])};var second=[Double](repeating:0,count:n)
     if n>2 {
       var c=second,d=second
-      for i in 1..<(n-1) {let h0=x[i]-x[i-1],h1=x[i+1]-x[i],a=h0/6,b=(h0+h1)/3,cc=h1/6,r=(y[i+1]-y[i])/h1-(y[i]-y[i-1])/h0,denom=b-a*c[i-1];c[i]=cc/denom;d[i]=(r-a*d[i-1])/denom}
+      // A corner splits the spline into independent natural splines.
+      for i in 1..<(n-1) where !corners.contains(i) {let h0=x[i]-x[i-1],h1=x[i+1]-x[i],a=h0/6,b=(h0+h1)/3,cc=h1/6,r=(y[i+1]-y[i])/h1-(y[i]-y[i-1])/h0,denom=b-a*c[i-1];c[i]=cc/denom;d[i]=(r-a*d[i-1])/denom}
       for i in stride(from:n-2,through:1,by:-1) {second[i]=d[i]-c[i]*second[i+1]}
     }
     return (0..<4096).map{k in

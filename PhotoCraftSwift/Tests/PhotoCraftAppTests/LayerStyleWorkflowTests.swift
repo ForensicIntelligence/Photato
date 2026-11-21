@@ -453,11 +453,54 @@ final class LayerStyleWorkflowTests: XCTestCase {
     XCTAssertEqual(effect.kind,.dropShadow);XCTAssertEqual(effect.distance,9);XCTAssertEqual(effect.color,Pixel(1,0,0));XCTAssertEqual(effect.opacity,0.8)
     let result=try PSDCodec.read(PSDCodec.writeRasterLayers(session.document))
     XCTAssertEqual(result.layers[0].style?.effects.first?.distance,9)
-    for fields:[String:Any] in [["noise":1],["antiAliased":true],["layerKnocksOut":false],["angle":181],["distance":true],["bogus":0]] {
+    for fields:[String:Any] in [["noise":101],["antiAliased":1],["layerKnocksOut":0],["angle":181],["distance":true],["bogus":0]] {
       XCTAssertThrowsError(try AdobeLayerEffects.parse(["dropShadow":[fields]]))
     }
     XCTAssertThrowsError(try AdobeLayerEffects.parse(["dropShadow":[]]))
     XCTAssertEqual(try AdobeLayerEffects.parse(["dropShadow":[["distance":30000]]])?.first?.distance,30000)
+  }
+
+  @MainActor func testAdobeDropShadowJobRetainsAdvancedFieldsInEditableOutput() async throws {
+    let address = try XCTUnwrap(URL(string: "https://example.test/Shadow.psd"))
+    let transport = AutomationActionJobsTests.Transport()
+    var source = try CraftDocument(width: 24, height: 24)
+    var pixels = try Surface(width: 12, height: 12)
+    for y in 2..<10 { for x in 2..<10 { pixels.setPixel(x: x, y: y, Pixel(0.8, 0.3, 0.2, 0.5)) } }
+    source.layers[0].content = .raster(pixels)
+    await transport.set(try PSDCodec.writeRasterLayers(source))
+    let fields: [String: Any] = ["noise": 25, "antiAliased": true, "layerKnocksOut": false, "opacity": 100,
+      "distance": 3, "size": 9, "useGlobalLight": false, "angle": 0,
+      "contour": ["name": "Custom", "curve": [
+        ["horizontal": 0, "vertical": 0, "continuity": false],
+        ["horizontal": 73.5, "vertical": 219.25, "continuity": false],
+        ["horizontal": 255, "vertical": 255, "continuity": true],
+      ]]]
+    let invalid: [[String: Any]] = [
+      ["name": "Linear", "curve": []],
+      ["name": "Custom", "curve": [["horizontal": 0, "vertical": 0], ["horizontal": 255, "vertical": 255]]],
+      ["name": "Custom", "curve": [["horizontal": true, "vertical": 0, "continuity": false],
+        ["horizontal": 255, "vertical": 255, "continuity": true]]],
+    ]
+    for contour in invalid { XCTAssertThrowsError(try AdobeLayerEffects.parse(["dropShadow": [["contour": contour]]])) }
+    let body: [String: Any] = ["image": ["source": ["url": address.absoluteString]],
+      "edits": ["layers": [["operation": ["type": "edit"], "name": source.layers[0].name,
+        "layerEffects": ["dropShadow": [fields]]]]],
+      "outputs": [["mediaType": "image/vnd.adobe.photoshop", "destination": ["validityPeriod": 60]]]]
+    let expectedContour = EffectContour(name: "Custom", points: [[0, 0], [73.5 / 255, 219.25 / 255], [1, 1]],
+                                       smoothPoints: [false, false, true])
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }, resourceTransport: transport) { service, shared in
+      let untouched = shared.store.document
+      service.setResourceJobsEnabled(true)
+      let result = try await AutomationActionJobsTests().output(service, submit: "/v2/create-composite", payload: body)
+      let reopened = try PSDCodec.read(result.2)
+      let advanced = try XCTUnwrap(reopened.layers[0].style?.effects.first?.advanced)
+      XCTAssertFalse(advanced.knocksOut)
+      XCTAssertTrue(advanced.antiAlias)
+      XCTAssertEqual(advanced.noise, 0.25)
+      XCTAssertEqual(advanced.contour, expectedContour)
+      XCTAssertGreaterThan(try Renderer.composite(reopened).pixel(x: 0, y: 7).a, 0)
+      XCTAssertEqual(shared.store.document, untouched)
+    }
   }
   @MainActor func testFactoryMenuStyleBindings() throws {
     try PhotoshopMenuTests().withMenus { _,menu in
