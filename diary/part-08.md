@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-21 — Step 703 — Add batches to an existing Generative Fill layer
+
+Generate More adds another batch to the selected Generative Fill layer. Edit the prompt in Properties or send the layer ID through the Photato API. New results use the original selection and image samples after reopening. Earlier results and the current layer mask stay editable. One Undo removes the batch.
+
+The reopened-layer tests preserve the earlier result bytes, original inference inputs, current mask, placement and selection across Photato, PSD and PSB at RGB8, RGB16 and RGB32. The sandboxed Core ML probe generated four distinct results. Both original results matched the build 702 fixture at the same seeds. Each result preserved all 49,283 pixels outside the original selection and reopened byte for byte in all three formats in Photato. The editor and HTTP also produced identical RGBA output when adding to a reopened PSD at the tested seed.
+
+483 of 484 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 702 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. A layer holds up to 64 variations within the Smart Object storage limits. Layers saved by build 702 retain variation selection and lack the captured context needed for new batches. The installed Photoshop session timed out on a read-only query. Generate Similar, the Adobe Execute Actions descriptor, and Firefly output equivalence remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-703) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_703.md).
+
 ## 2026-11-21 — Step 702 — Keep editable Generative Fill variations
 
 Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
@@ -1225,5 +1235,13 @@ With the canvas focused, number keys set opacity and Shift-number keys set flow.
 The tests passed in Debug and both optimized builds. A closer look at 28 saved Photoshop dabs showed that every one extends beyond the current brush footprint. Exact brush pixels and a live shortcut check remain open.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-552) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_552.md).
+
+## 2026-11-18 — Step 551 — Faster paint output for wide brushes
+
+Photato calculates independent brush output tiles in parallel and installs them in their original order. The 5,000 px brush on a 24 MP workspace reached its first offscreen AppKit draw in 181 ms, down from 315 ms. All 338 checked buffers match build 550 on each architecture.
+
+All 401 selected tests passed in Debug and both optimized builds. Physical display cadence and exact Photoshop brush output remain open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-551) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_551.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)

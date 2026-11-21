@@ -721,7 +721,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 700 | 2026-11-21 | [Add prompted Generative Fill on Apple Silicon](#dev-step-700) |
 | 701 | 2026-11-21 | [Blend Generative Fill selection edges](#dev-step-701) |
 | 702 | 2026-11-21 | [Keep editable Generative Fill variations](#dev-step-702) |
+| 703 | 2026-11-21 | [Add batches to an existing Generative Fill layer](#dev-step-703) |
 <!-- history-index:end -->
+
+<a id="dev-step-703"></a>
+
+## 2026-11-21 — Add batches to an existing Generative Fill layer
+
+Generate More adds another batch to the selected Generative Fill layer. Edit the prompt in Properties or send the layer ID through the Photato API. New results use the original selection and image samples after reopening. Earlier results and the current layer mask stay editable. One Undo removes the batch.
+
+- `LocalGenerativeFill.swift` separates image preparation from generation and retains the model tensors and the original selection's support. `GenerativeFillEdgeBlend.swift` captures the exact edge samples, including original higher-depth opacity, so a later batch never needs to recomposite the current image to recover the starting input.
+- `PSDCodec.swift` admits a bounded `PtFC` context tag in the first embedded source layer. `GenerativeFillVariations.swift` associates it with the source fingerprint and retains per-result prompts and seeds. The old context-free records remain selectable. Appending gives the edited instance a new embedded source identity, retains existing variant identifiers and keeps the outer layer's edits.
+- `GenerativeFillControls.swift` opens an editable prompt from Properties. Small sets retain the segmented picker. Larger sets use a native popup. `AutomationCommands.swift`, `AutomationService.swift` and `AutomationGenerativeFill.swift` expose `targetLayerID` on the same command, use the same prepared transaction, and report per-entry prompt and batch readiness. The typed command count remains 285.
+- `GenerativeFillVariationTests.swift` tests preserved inputs when the background, selection and layer placement have changed. It covers seed wrap, duplicate rejection, format round trips and Undo. `GenerativeFillWorkflowTests.swift` compares native and HTTP after reopening a real model result. `AutomationTests.swift` updates the typed schema expectation. The bundle metadata advances to build 703.
+- The final review found that resetting to Last Document State after a batch could report the first variation while showing the saved result. The metadata now records the default comp separately, so the picker, API state and inherited prompt all follow the saved view. The round-trip test covers reset and prompt reuse.
+- One Debug request failed the selection-or-model readiness check with HTTP 422 during parallel qualification. Both suites use the same test model preference domain. An isolated run qualified the corrected build.
+- A synthetic capacity probe filled one layer to 64 distinct seeds, reopened each catalogue in PSD and PSB, and verified that a full layer disables another batch.
+- The first Debug invocation tried to write the Swift manifest cache outside the workspace. With local caches the frontend hit the inherited recursive PredictableDeadAllocationElimination stack fault. The successful Debug build reused the prior qualification flag that disables the single failing compiler pass. The Xcode project already supplies that flag.
+- Updated the model guide, API examples, command matrix and Adobe compatibility record. The source diary and generated public pages record the tested evidence and the remaining Adobe gaps.
+
+The reopened-layer tests preserve the earlier result bytes, original inference inputs, current mask, placement and selection across Photato, PSD and PSB at RGB8, RGB16 and RGB32. The sandboxed Core ML probe generated four distinct results. Both original results matched the build 702 fixture at the same seeds. Each result preserved all 49,283 pixels outside the original selection and reopened byte for byte in all three formats in Photato. The editor and HTTP also produced identical RGBA output when adding to a reopened PSD at the tested seed.
+
+A separate Generate Similar experiment reopened the saved context with no current selection. The mean RGB8 difference from the original result fell from 54.03 levels with full regeneration to 10.48 with the selected variation as a reference at the same seed. Using a different reference changed the output by 46.56 levels on average. Protected samples stayed exact.
+
+483 of 484 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 702 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. A layer holds up to 64 variations within the Smart Object storage limits. Layers saved by build 702 retain variation selection and lack the captured context needed for new batches. The installed Photoshop session timed out on a read-only query. Generate Similar, the Adobe Execute Actions descriptor, and Firefly output equivalence remain open. The overall desktop workflow estimate remains 50%.
+
+[Qualification](SOURCE_PUBLICATION_703.md) · [Model setup](LOCAL_GENERATIVE_FILL.md).
 
 <a id="dev-step-702"></a>
 

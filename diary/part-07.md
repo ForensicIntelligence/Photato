@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-18 — Step 551 — Faster paint output for wide brushes
-
-Photato calculates independent brush output tiles in parallel and installs them in their original order. The 5,000 px brush on a 24 MP workspace reached its first offscreen AppKit draw in 181 ms, down from 315 ms. All 338 checked buffers match build 550 on each architecture.
-
-All 401 selected tests passed in Debug and both optimized builds. Physical display cadence and exact Photoshop brush output remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-551) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_551.md).
-
 ## 2026-11-18 — Step 550 — Faster drawing on large canvases
 
 Photato composes eligible tone stacks and packs the changed display rows in parallel. The 5,000 px brush on a 24 MP workspace reached its first offscreen AppKit draw in 304 ms, down from 460 ms. All 192 checked buffers match build 549 on each architecture.
@@ -403,14 +395,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:702 -->
+<!-- current-status-step:703 -->
 ## Current development status — 21 November 2026
 
-Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
+Generate More adds another batch to the selected Generative Fill layer. Edit the prompt in Properties or send the layer ID through the Photato API. New results use the original selection and image samples after reopening. Earlier results and the current layer mask stay editable. One Undo removes the batch.
 
-482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug.
+483 of 484 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 702 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug.
 
-[Source checkpoint 702](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_702.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-702).
+[Source checkpoint 703](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_703.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-703).
 
 <!-- current-status:end -->
 
@@ -1319,5 +1311,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 700 | [Add prompted Generative Fill on Apple Silicon](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-700) |
 | 2026-11-21 | 701 | [Blend Generative Fill selection edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-701) |
 | 2026-11-21 | 702 | [Keep editable Generative Fill variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-702) |
+| 2026-11-21 | 703 | [Add batches to an existing Generative Fill layer](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-703) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

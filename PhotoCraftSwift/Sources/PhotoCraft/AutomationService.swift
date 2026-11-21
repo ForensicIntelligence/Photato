@@ -1610,16 +1610,25 @@ import UniformTypeIdentifiers
       }
       if command.name == GenerativeFillAPI.run {
         let options = try command.generativeFillOptions()
-        guard store.canBeginGenerativeFill, let model = GenerativeFillModelPreference.url(prompted: !options.prompt.isEmpty) else {
-          throw AutomationFailure(status: 422, message: "Select part of a still RGB image and choose a local model in Generative Fill.")
+        let prompted = options.target != nil || !options.prompt.isEmpty
+        let eligible = options.target.map(store.canBeginGenerativeFillBatch) ?? store.canBeginGenerativeFill
+        guard eligible, let model = GenerativeFillModelPreference.url(prompted: prompted) else {
+          let message = options.target == nil ? "Select part of a still RGB image and choose a local model in Generative Fill."
+            : "Select an unlocked Generative Fill layer with saved context and configure the local prompt model."
+          throw AutomationFailure(status: 422, message: message)
         }
-        let bookmark = options.prompt.isEmpty ? nil : UserDefaults.standard.data(forKey: GenerativeFillModelPreference.promptKey)
+        let bookmark = prompted ? UserDefaults.standard.data(forKey: GenerativeFillModelPreference.promptKey) : nil
         let operation = UUID()
         store.generativeFillOperationID = operation
         defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
-        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in
-          try GenerativeFillVariations.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
-            seed: options.seed, count: options.count)
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
+          allowLinkedSmartObject: options.target != nil) { original in
+          if let target = options.target {
+            return try GenerativeFillVariations.append(to: target, in: original, model: model, bookmark: bookmark,
+              prompt: options.prompt.isEmpty ? nil : options.prompt, seed: options.seed, count: options.count)
+          }
+          return try GenerativeFillVariations.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
+            seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
         }
         store.generativeFillOperationID = nil
         return .json(state(share, document: document))

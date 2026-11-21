@@ -6,7 +6,7 @@ import XCTest
 
 final class GenerativeFillWorkflowTests: XCTestCase {
   func testPromptCommandParametersAndLegacyBlankPrompt() throws {
-    func options(_ parameters: [String: Any]) throws -> (prompt: String, seed: UInt32, count: Int) {
+    func options(_ parameters: [String: Any]) throws -> (prompt: String, seed: UInt32?, count: Int, target: UUID?) {
       let data = try JSONSerialization.data(withJSONObject: [
         "command": GenerativeFillAPI.run, "revision": "test", "parameters": parameters
       ])
@@ -29,6 +29,11 @@ final class GenerativeFillWorkflowTests: XCTestCase {
     XCTAssertThrowsError(try options(["prompt": "mug", "variationCount": 4]))
     XCTAssertThrowsError(try options(["prompt": "mug", "variationCount": 2.5]))
     XCTAssertThrowsError(try options(["variationCount": 2]))
+    let target = UUID()
+    XCTAssertEqual(try options(["targetLayerID": target.uuidString, "variationCount": 2]).target, target)
+    XCTAssertNil(try options(["targetLayerID": target.uuidString]).seed)
+    XCTAssertThrowsError(try options(["targetLayerID": "not a UUID"]))
+    XCTAssertThrowsError(try options(["targetLayerID": target.uuidString, "prompt": " "]))
   }
 
   @MainActor func testPromptChangesSelectedSubjectAndNativeMatchesHTTPAtSameSeed() async throws {
@@ -164,6 +169,63 @@ final class GenerativeFillWorkflowTests: XCTestCase {
       XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .f32), try native.rgbaData(depth: .f32))
       await store.undo()
       XCTAssertEqual(store.document, original)
+    }
+  }
+
+  @MainActor func testPromptedBatchAfterReopeningMatchesNativeAndHTTP() async throws {
+    guard let path = ProcessInfo.processInfo.environment["PHOTATO_TEST_PROMPT_FILL_MODEL"], LocalGenerativeFill.supported else {
+      throw XCTSkip("Requires the optional pinned prompt model on Apple Silicon with macOS 26 or later.")
+    }
+    let key = GenerativeFillModelPreference.promptKey
+    let previous = UserDefaults.standard.data(forKey: key)
+    UserDefaults.standard.set(try GenerativeFillModelPreference.bookmark(for: URL(fileURLWithPath: path, isDirectory: true)), forKey: key)
+    defer { UserDefaults.standard.set(previous, forKey: key) }
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let store = shared.store
+      var document = try CraftDocument(width: 128, height: 128)
+      document.layers[0].content = .raster(try Surface(width: 128, height: 128, fill: Pixel(0.72, 0.62, 0.48)))
+      document.selection = IntRect(x: 30, y: 27, width: 69, height: 73)
+      store.session = EditorSession(document: document)
+      try service.share(shared)
+      let initial = try await helper.edit(service, shared, GenerativeFillAPI.run,
+        ["prompt": "a small green pear on a table", "seed": 73], timeout: 120)
+      XCTAssertEqual(initial, 200)
+      var reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(store.document))
+      let layer = try XCTUnwrap(reopened.layers.last)
+      reopened.activeLayerID = layer.id
+      reopened.setCoverageSelection(nil)
+      store.session = EditorSession(document: reopened)
+      let original = try XCTUnwrap(GenerativeFillVariations.read(layer))
+      XCTAssertEqual(original.entries.count, 1)
+      store.beginGenerativeFillBatch(layer.id)
+      let draft = try XCTUnwrap(store.generativeFillDraft)
+      XCTAssertEqual(draft.prompt, original.prompt)
+      draft.variationCount = 1
+      store.generateFill(draft)
+      await store.geometryTask?.value
+      XCTAssertNil(draft.error)
+      XCTAssertNil(store.generativeFillDraft)
+      let native = try Renderer.composite(store.document).rgbaData(depth: .u8)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      await store.undo()
+      XCTAssertTrue(store.document == reopened)
+      let status = try await helper.edit(service, shared, GenerativeFillAPI.run,
+        ["targetLayerID": layer.id.uuidString, "variationCount": 1], timeout: 120)
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      XCTAssertEqual(store.document.layers.count, reopened.layers.count)
+      XCTAssertEqual(store.activeLayer?.id, layer.id)
+      XCTAssertEqual(store.activeLayer?.mask, layer.mask)
+      XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), native)
+      let metadata = try XCTUnwrap(store.activeLayer.flatMap(GenerativeFillVariations.read))
+      XCTAssertEqual(metadata.entries.map(\.seed), [73, 74])
+      XCTAssertEqual(metadata.entries.first, original.entries.first)
+      let state = try XCTUnwrap(GenerativeFillAPI.state(store)["selectedVariations"] as? [String: Any])
+      XCTAssertEqual(state["canGenerateMore"] as? Bool, true)
+      XCTAssertEqual(state["selectedID"] as? String, metadata.entries[1].id.uuidString)
+      await store.undo()
+      XCTAssertTrue(store.document == reopened)
     }
   }
 }

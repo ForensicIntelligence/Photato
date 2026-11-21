@@ -42,19 +42,42 @@ enum GenerativeFillModelPreference {
   var prompt = ""
   var seed = UInt32.random(in: .min ... .max)
   var variationCount = LocalGenerativeFill.maximumVariations
+  var maximumVariations = LocalGenerativeFill.maximumVariations
+  var targetLayerID: UUID?
   var selectingModel = false
   var generating = false
   var error: String?
 
-  var prompted: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+  var hasPrompt: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+  var prompted: Bool { targetLayerID != nil || hasPrompt }
   var selectedModel: URL? { prompted ? promptModel : model }
 }
 
 extension EditorStore {
-  var canBeginGenerativeFill: Bool {
+  private var canStartLocalFill: Bool {
     LocalGenerativeFill.supported && generativeFillDraft == nil && !geometryBusy && !aiBusy
       && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingComponent && !editingMask
-      && LocalGenerativeFill.selection(in: document) != nil
+  }
+
+  var canBeginGenerativeFill: Bool {
+    canStartLocalFill && LocalGenerativeFill.selection(in: document) != nil
+  }
+
+  func canBeginGenerativeFillBatch(_ id: UUID) -> Bool {
+    guard canStartLocalFill, let layer = activeLayer, layer.id == id else { return false }
+    return GenerativeFillVariations.canAppend(layer, in: document)
+  }
+
+  func beginGenerativeFillBatch(_ id: UUID) {
+    finishLayerName()
+    guard canBeginGenerativeFillBatch(id), let layer = activeLayer,
+      let record = GenerativeFillVariations.read(layer) else { return }
+    let draft = GenerativeFillDraft()
+    draft.targetLayerID = id
+    draft.prompt = record.prompt(for: layer.smartObject?.layerComps?.selectedID)
+    draft.maximumVariations = min(LocalGenerativeFill.maximumVariations, GenerativeFillVariations.maximumStoredVariations - record.entries.count)
+    draft.variationCount = draft.maximumVariations
+    generativeFillDraft = draft
   }
 
   func beginGenerativeFill() {
@@ -71,18 +94,26 @@ extension EditorStore {
 
   func generateFill(_ draft: GenerativeFillDraft) {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
-      !editingComponent, !editingMask, let url = draft.selectedModel else { return }
+      !editingComponent, !editingMask, draft.targetLayerID == nil || draft.hasPrompt,
+      let url = draft.selectedModel else { return }
     let prompt = draft.prompt, seed = draft.seed
     let bookmark = draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
+    let target = draft.targetLayerID, prompted = draft.prompted
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
     draft.error = nil
     draft.generating = true
     geometryTask = Task { [weak self, weak draft] in
       let worker = Task.detached(priority: .userInitiated) {
-        try PreparedEdit(command: GenerativeFillVariations.prepare(original, model: url, bookmark: bookmark,
-          prompt: prompt, seed: seed, count: count), document: original)
+        let command: Command
+        if let target {
+          command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
+            prompt: prompt, seed: nil, count: count)
+        } else {
+          command = try GenerativeFillVariations.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
+        }
+        return try PreparedEdit(command: command, document: original)
       }
       defer {
         draft?.generating = false
@@ -98,12 +129,12 @@ extension EditorStore {
         guard let self, let draft, self.generativeFillDraft === draft,
           self.layerPanelGeneration == generation, self.sessionGeneration == sessionID,
           self.document == original, !self.editingMask, !self.editingComponent else { return }
-        try self.executeCompositePreparedEdit(edit)
+        try self.executeCompositePreparedEdit(edit, allowLinkedSmartObject: target != nil)
         self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
         self.onChange?(.changeDone)
         self.status = edit.label
         self.generativeFillDraft = nil
-        if count > 1 { self.reveal(PropertiesTab.properties) }
+        if prompted { self.reveal(PropertiesTab.properties) }
       } catch is CancellationError {
         return
       } catch {
@@ -123,14 +154,16 @@ struct GenerativeFillSheet: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text("Generative Fill").font(.headline)
+      Text(draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations").font(.headline)
       LabeledContent("Prompt") {
         TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
           .labelsHidden()
           .disabled(draft.selectingModel || draft.generating)
           .onChange(of: draft.prompt) { _, _ in draft.error = nil }
       }
-      Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")
+      Text(draft.targetLayerID == nil
+        ? "Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer."
+        : "New results use the original image area and appear in this layer alongside earlier variations.")
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
       LabeledContent(draft.prompted ? "Local prompt model" : "Local context model") {
@@ -149,7 +182,7 @@ struct GenerativeFillSheet: View {
       }
       if draft.prompted {
         Picker("Variations", selection: $draft.variationCount) {
-          ForEach(1...LocalGenerativeFill.maximumVariations, id: \.self) { Text("\($0)").tag($0) }
+          ForEach(1...draft.maximumVariations, id: \.self) { Text("\($0)").tag($0) }
         }
         .pickerStyle(.segmented)
         .disabled(draft.selectingModel || draft.generating)
@@ -164,7 +197,7 @@ struct GenerativeFillSheet: View {
         Button("Cancel") { store.cancelGenerativeFill() }.keyboardShortcut(.cancelAction)
         Button("Generate") { store.generateFill(draft) }
           .keyboardShortcut(.defaultAction)
-          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating)
+          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating || (draft.targetLayerID != nil && !draft.hasPrompt))
       }
     }
     .padding(20)

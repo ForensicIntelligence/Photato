@@ -1,3 +1,4 @@
+import Foundation
 import PhotoCraftCore
 
 /// Carries the local color difference inward from opaque protected pixels.
@@ -6,10 +7,38 @@ struct GenerativeFillEdgeBlend {
   private let bounds: IntRect
   private let field: Surface
 
+  struct Context: Codable, Sendable {
+    let bounds: IntRect
+    let width: Int
+    let height: Int
+    let gridLimit: Int
+    let samples: Data
+
+    func pixels() throws -> [SIMD4<Float>] {
+      guard (3...LocalGenerativeFill.side).contains(gridLimit), (1...gridLimit).contains(width), (1...gridLimit).contains(height),
+        bounds.width >= width, bounds.height >= height,
+        bounds.width <= LocalGenerativeFill.maximumSelectionSide + 32,
+        bounds.height <= LocalGenerativeFill.maximumSelectionSide + 32,
+        samples.count == width * height * MemoryLayout<SIMD4<Float>>.stride else {
+        throw CraftError.invalid("Invalid Generative Fill edge context.")
+      }
+      var result = [SIMD4<Float>](repeating: .zero, count: width * height)
+      _ = result.withUnsafeMutableBytes { samples.copyBytes(to: $0) }
+      return result
+    }
+  }
+
   static func prepare(
     in document: CraftDocument, selection: IntRect, gridLimit: Int,
     context: (Double, Double) -> Pixel, generated: (Double, Double) -> Pixel
   ) throws -> Self? {
+    try prepare(selection: selection, context: capture(in: document, selection: selection, gridLimit: gridLimit,
+      sample: context), generated: generated)
+  }
+
+  static func capture(
+    in document: CraftDocument, selection: IntRect, gridLimit: Int, sample: (Double, Double) -> Pixel
+  ) throws -> Context {
     let longest = max(selection.width, selection.height)
     let usefulSide = gridLimit - 2
     let halo = (longest + usefulSide - 1) / usefulSide
@@ -19,6 +48,30 @@ struct GenerativeFillEdgeBlend {
     let step = max(1, Double(max(bounds.width, bounds.height)) / Double(gridLimit))
     let width = min(gridLimit, Int((Double(bounds.width) / step).rounded(.up)))
     let height = min(gridLimit, Int((Double(bounds.height) / step).rounded(.up)))
+    let stepX = Double(bounds.width) / Double(width)
+    let stepY = Double(bounds.height) / Double(height)
+    var pixels = [SIMD4<Float>](repeating: .zero, count: width * height)
+    for y in 0..<height {
+      try Task.checkCancellation()
+      let docY = Double(bounds.y) + (Double(y) + 0.5) * stepY
+      for x in 0..<width {
+        let docX = Double(bounds.x) + (Double(x) + 0.5) * stepX
+        let index = y * width + x
+        if document.selectionCoverage(x: Int(docX), y: Int(docY)) > 0 {
+          pixels[index].w = -1
+        } else {
+          let pixel = sample(docX, docY)
+          if pixel.a == 1 { pixels[index] = .init(pixel.r, pixel.g, pixel.b, 1) }
+        }
+      }
+    }
+    return Context(bounds: bounds, width: width, height: height, gridLimit: gridLimit, samples: pixels.withUnsafeBytes { Data($0) })
+  }
+
+  static func prepare(selection: IntRect, context: Context, generated: (Double, Double) -> Pixel) throws -> Self? {
+    let (bounds, width, height) = (context.bounds, context.width, context.height)
+    let pixels = try context.pixels()
+    let step = max(1, Double(max(bounds.width, bounds.height)) / Double(context.gridLimit))
     let stepX = Double(bounds.width) / Double(width)
     let stepY = Double(bounds.height) / Double(height)
     let count = width * height
@@ -31,17 +84,18 @@ struct GenerativeFillEdgeBlend {
       for x in 0..<width {
         let docX = Double(bounds.x) + (Double(x) + 0.5) * stepX
         let index = y * width + x
-        if document.selectionCoverage(x: Int(docX), y: Int(docY)) > 0 {
+        let source = pixels[index]
+        if source.w == -1 {
           protected[index] = false
           continue
         }
-        let source = context(docX, docY)
+        guard source.w == 1 else { continue }
         // At the outside of the patch compare with the nearest generated edge.
         let fillX = min(Double(selection.x + selection.width) - 0.5, max(Double(selection.x) + 0.5, docX))
         let fillY = min(Double(selection.y + selection.height) - 0.5, max(Double(selection.y) + 0.5, docY))
         let fill = generated(fillX, fillY)
-        guard source.a == 1, fill.a == 1 else { continue }
-        let difference = source.rgb - fill.rgb
+        guard fill.a == 1 else { continue }
+        let difference = SIMD3(source.x, source.y, source.z) - fill.rgb
         let magnitude = max(abs(difference.x), abs(difference.y), abs(difference.z))
         guard magnitude.isFinite, magnitude > 0 else { continue }
         // A strong edge can belong to the new subject. Limit the color correction there.

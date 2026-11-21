@@ -113,6 +113,103 @@ package enum LocalGenerativeFill {
   package static func prepareVariations(
     _ document: CraftDocument, predict: ([Float], [Float]) throws -> [Surface]
   ) throws -> [Layer] {
+    let (recipe, coverage) = try capture(document)
+    return try recipe.patches(in: document, predict: predict).map { pixels in
+      var layer = Layer(name: "Generative Fill", content: .raster(pixels))
+      layer.x = recipe.selection.x
+      layer.y = recipe.selection.y
+      layer.mask = coverage
+      return layer
+    }
+  }
+
+  /// Original model inputs and edge samples. All floats are retained exactly
+  /// across the supported little-endian Mac architectures.
+  package struct Recipe: Codable, Sendable {
+    package static let maximumBytes = 10 * 1_024 * 1_024
+    let version: Int
+    package let selection: IntRect
+    let region: IntRect
+    let image: Data
+    let modelMask: Data
+    let selectedPixels: Data
+    let edge: GenerativeFillEdgeBlend.Context
+
+    package func encoded() throws -> Data {
+      let encoder = PropertyListEncoder(); encoder.outputFormat = .binary
+      let data = try encoder.encode(self)
+      guard data.count <= Self.maximumBytes else { throw CraftError.invalid("The saved Generative Fill context is too large.") }
+      return data
+    }
+
+    package static func decode(_ data: Data) throws -> Self {
+      guard (1...maximumBytes).contains(data.count) else { throw CraftError.invalid("Invalid saved Generative Fill context.") }
+      let recipe = try PropertyListDecoder().decode(Self.self, from: data)
+      func valid(_ rect: IntRect, side: Int) -> Bool {
+        (0...Surface.maxDimension).contains(rect.x) && (0...Surface.maxDimension).contains(rect.y) &&
+        (1...side).contains(rect.width) && (1...side).contains(rect.height)
+      }
+      func containsSelection(_ box: IntRect) -> Bool {
+        box.contains(recipe.selection.x, recipe.selection.y) &&
+        box.contains(recipe.selection.x + recipe.selection.width - 1, recipe.selection.y + recipe.selection.height - 1)
+      }
+      let count = LocalGenerativeFill.side * LocalGenerativeFill.side
+      guard recipe.version == 1, valid(recipe.selection, side: maximumSelectionSide),
+        valid(recipe.region, side: maximumSelectionSide + 1024),
+        valid(recipe.edge.bounds, side: maximumSelectionSide + 32),
+        recipe.selection.width <= maximumSelectionPixels / recipe.selection.height,
+        containsSelection(recipe.region), containsSelection(recipe.edge.bounds),
+        recipe.selectedPixels.count == (recipe.selection.width * recipe.selection.height + 7) / 8,
+        recipe.image.count == count * 3 * MemoryLayout<Float>.stride,
+        recipe.modelMask.count == count * MemoryLayout<Float>.stride else {
+        throw CraftError.invalid("Invalid saved Generative Fill context.")
+      }
+      _ = try recipe.edge.pixels()
+      return recipe
+    }
+
+    package func patches(in document: CraftDocument, predict: ([Float], [Float]) throws -> [Surface]) throws -> [Surface] {
+      func samples(_ data: Data) -> [Float] {
+        var result = [Float](repeating: 0, count: data.count / MemoryLayout<Float>.stride)
+        _ = result.withUnsafeMutableBytes { data.copyBytes(to: $0) }
+        return result
+      }
+      let reference = try CraftDocument(width: side, height: side, depth: .u8)
+      let scale = Double(side) / Double(max(region.width, region.height))
+      let left = (Double(side) - Double(region.width) * scale) / 2
+      let top = (Double(side) - Double(region.height) * scale) / 2
+      let outputs = try predict(samples(image), samples(modelMask))
+      guard (1...maximumVariations).contains(outputs.count) else {
+        throw CraftError.invalid("The local model returned an unexpected number of variations.")
+      }
+      return try outputs.map { generated in
+        try Task.checkCancellation()
+        guard generated.width == side, generated.height == side else {
+          throw CraftError.invalid("The model returned an unexpected output size.")
+        }
+        func sample(_ x: Double, _ y: Double) -> Pixel {
+          let mx = left + (x - Double(region.x)) * scale
+          let my = top + (y - Double(region.y)) * scale
+          return RasterGeometry.sample(generated, x: mx, y: my, method: .bilinear, clampEdges: true)
+        }
+        let blend = try GenerativeFillEdgeBlend.prepare(selection: selection, context: edge, generated: sample)
+        var patch = try Surface(width: selection.width, height: selection.height, depth: .f32)
+        for y in 0..<selection.height {
+          try Task.checkCancellation()
+          for x in 0..<selection.width {
+            let docX = Double(selection.x + x) + 0.5, docY = Double(selection.y + y) + 0.5
+            let i = y * selection.width + x
+            let pixel = sample(docX, docY)
+            let selected = selectedPixels[i / 8] & (1 << (i % 8)) != 0
+            patch.setPixel(x: x, y: y, selected ? blend?.adjusted(pixel, x: docX, y: docY) ?? pixel : pixel)
+          }
+        }
+        return try ColorManagement.converted(patch, from: reference, to: document)
+      }
+    }
+  }
+
+  package static func capture(_ document: CraftDocument) throws -> (Recipe, Surface) {
     guard let selected = selection(in: document) else {
       throw CraftError.invalid("Select an area of up to 4 megapixels in a still RGB image.")
     }
@@ -148,12 +245,18 @@ package enum LocalGenerativeFill {
       }
     }
     var editableMask = try Surface(width: selected.width, height: selected.height, fill: .black)
+    var selectedPixels = [UInt8](repeating: 0, count: (selected.width * selected.height + 7) / 8)
     for y in 0..<selected.height {
       try Task.checkCancellation()
       for x in 0..<selected.width {
         let coverage = document.selectionCoverage(x: selected.x + x, y: selected.y + y)
         guard coverage > 0 else { continue }
         editableMask.setPixel(x: x, y: y, Pixel(coverage, coverage, coverage))
+        // Preserve the support of the original quantized layer mask for edge blending.
+        if editableMask.pixel(x: x, y: y).r > 0 {
+          let i = y * selected.width + x
+          selectedPixels[i / 8] |= 1 << (i % 8)
+        }
         // Also retain thin selections that did not hit a model pixel center.
         let mx = min(side - 1, Int(left + (Double(selected.x + x - region.x) + 0.5) * modelScale))
         let my = min(side - 1, Int(top + (Double(selected.y + y - region.y) + 0.5) * modelScale))
@@ -161,53 +264,16 @@ package enum LocalGenerativeFill {
       }
     }
     guard mask.contains(1), mask.contains(0) else { throw CraftError.invalid("Include some surrounding pixels outside the selection.") }
-    let outputs = try predict(image, mask)
-    guard (1...maximumVariations).contains(outputs.count) else {
-      throw CraftError.invalid("The local model returned an unexpected number of variations.")
-    }
-    return try outputs.map { generated in
-      try prepareLayer(document, generated: generated, selected: selected, region: region,
-        reference: reference, crop: crop, input: input, mask: editableMask, scale: modelScale, left: left, top: top)
-    }
-  }
-
-  private static func prepareLayer(
-    _ document: CraftDocument, generated: Surface, selected: IntRect, region: IntRect,
-    reference: CraftDocument, crop: Surface, input: Surface, mask: Surface, scale: Double, left: Double, top: Double
-  ) throws -> Layer {
-    try Task.checkCancellation()
-    guard generated.width == side, generated.height == side else {
-      throw CraftError.invalid("The model returned an unexpected output size.")
-    }
-    func generatedSample(_ x: Double, _ y: Double) -> Pixel {
-      let mx = left + (x - Double(region.x)) * scale
-      let my = top + (y - Double(region.y)) * scale
-      return RasterGeometry.sample(generated, x: mx, y: my, method: .bilinear, clampEdges: true)
-    }
-    let edgeBlend = try GenerativeFillEdgeBlend.prepare(in: document, selection: selected, gridLimit: side,
-      context: { x, y in
-        let localX = x - Double(region.x), localY = y - Double(region.y)
-        var pixel = RasterGeometry.sample(input, x: localX, y: localY, method: .bilinear, clampEdges: true)
-        if document.depth != .u8 {
-          // Use original coverage before the model input was quantized to RGB8.
-          pixel.a = RasterGeometry.sample(crop, x: localX, y: localY, method: .bilinear, clampEdges: true).a
-        }
-        return pixel
-      }, generated: generatedSample)
-    var patch = try Surface(width: selected.width, height: selected.height, depth: .f32)
-    for y in 0..<selected.height {
-      try Task.checkCancellation()
-      for x in 0..<selected.width {
-        let docX = Double(selected.x + x) + 0.5, docY = Double(selected.y + y) + 0.5
-        let pixel = generatedSample(docX, docY)
-        let color = mask.pixel(x: x, y: y).r > 0 ? edgeBlend?.adjusted(pixel, x: docX, y: docY) ?? pixel : pixel
-        patch.setPixel(x: x, y: y, color)
+    let edge = try GenerativeFillEdgeBlend.capture(in: document, selection: selected, gridLimit: side) { x, y in
+      let localX = x - Double(region.x), localY = y - Double(region.y)
+      var pixel = RasterGeometry.sample(input, x: localX, y: localY, method: .bilinear, clampEdges: true)
+      if document.depth != .u8 {
+        // Use original coverage before the model input was quantized to RGB8.
+        pixel.a = RasterGeometry.sample(crop, x: localX, y: localY, method: .bilinear, clampEdges: true).a
       }
+      return pixel
     }
-    var layer = Layer(name: "Generative Fill", content: .raster(try ColorManagement.converted(patch, from: reference, to: document)))
-    layer.x = selected.x
-    layer.y = selected.y
-    layer.mask = mask
-    return layer
+    return (Recipe(version: 1, selection: selected, region: region, image: image.withUnsafeBytes { Data($0) },
+      modelMask: mask.withUnsafeBytes { Data($0) }, selectedPixels: Data(selectedPixels), edge: edge), editableMask)
   }
 }

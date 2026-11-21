@@ -6,11 +6,11 @@
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
   "current_api": "Checkpoint 692 reduces eligible large Pattern Overlay overviews in bounded patches on the local PNG routes. Hosted service conformance remains open.",
   "generative_fill": {
-    "checkpoint": 702,
+    "checkpoint": 703,
     "publishedRoute": "POST /v2/execute-actions",
     "publishedModel": "me_md",
     "compatibility": "The Adobe Generative Fill action descriptor and output job are unqualified. Adobe documents the operation and model, and an authoritative action payload still needs to be captured.",
-    "localPhotatoAPI": "generativeFill.apply and smartObject.layerComp use the optional on-device model. A prompted edit can retain up to three alternatives.",
+    "localPhotatoAPI": "generativeFill.apply and smartObject.layerComp use the optional on-device model. A prompted fill can append new alternatives through targetLayerID, reusing saved local context.",
     "references": [
       "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
       "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models"

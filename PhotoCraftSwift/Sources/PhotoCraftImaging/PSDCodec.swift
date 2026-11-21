@@ -111,7 +111,8 @@ struct PSDWriter {
 }
 public enum PSDCodec {
   package static let fillVariationTag = "PtFV"
-  package static let fillVariationTagLimit = 16_384
+  package static let fillVariationTagLimit = 96 * 1_024
+  package static let fillContextTag = "PtFC"
   public static let maximumInputBytes = 512 * 1024 * 1024
   /// Implementation admission, not a claim about the PSB format's upper size.
   public static let maximumFileBytes = 4_398_046_511_104
@@ -737,6 +738,10 @@ public enum PSDCodec {
         case fillVariationTag:
           guard (1...fillVariationTagLimit).contains(content.count) else {
             throw CraftError.invalid("The Generative Fill variation record exceeds its storage budget.")
+          }
+        case fillContextTag:
+          guard (1...LocalGenerativeFill.Recipe.maximumBytes).contains(content.count) else {
+            throw CraftError.invalid("The saved Generative Fill context exceeds its storage budget.")
           }
         default:
           throw CraftError.unsupported(

@@ -9,6 +9,7 @@ enum GenerativeFillAPI {
     BrushAPI.object([
       "prompt": ["type": "string", "maxLength": LocalGenerativeFill.maximumPromptCharacters, "default": ""],
       "seed": ["type": "integer", "minimum": 0, "maximum": UInt32.max],
+      "targetLayerID": VariablesAPI.uuid,
       "variationCount": ["type": "integer", "minimum": 1, "maximum": LocalGenerativeFill.maximumVariations, "default": 1]
     ], required: [])
   }
@@ -21,10 +22,12 @@ enum GenerativeFillAPI {
       "selectedVariations": ["anyOf": [["type": "null"], BrushAPI.object([
         "layerID": VariablesAPI.uuid, "selectedID": VariablesAPI.uuid,
         "prompt": ["type": "string"], "model": ["type": "string"],
+        "canGenerateMore": BrushAPI.flag,
         "entries": ["type": "array", "items": BrushAPI.object([
-          "id": VariablesAPI.uuid, "seed": ["type": "integer", "minimum": 0, "maximum": UInt32.max]
-        ], required: ["id", "seed"])]
-      ], required: ["layerID", "selectedID", "prompt", "model", "entries"])]]
+          "id": VariablesAPI.uuid, "seed": ["type": "integer", "minimum": 0, "maximum": UInt32.max],
+          "prompt": ["type": "string"]
+        ], required: ["id", "seed", "prompt"])]
+      ], required: ["layerID", "selectedID", "prompt", "model", "canGenerateMore", "entries"])]]
     ], required: ["supported", "modelConfigured", "canGenerate", "promptModelConfigured", "canGenerateFromPrompt", "operationID", "selectedVariations"])
   }
 
@@ -35,7 +38,8 @@ enum GenerativeFillAPI {
      "maximumSelectionSide": LocalGenerativeFill.maximumSelectionSide,
      "promptSupported": true, "maximumPromptCharacters": LocalGenerativeFill.maximumPromptCharacters,
      "maximumVariations": LocalGenerativeFill.maximumVariations, "variationSelectionCommand": SmartObjectLayerCompAPI.name,
-     "placement": "A local fill from surrounding pixels adds an editable masked raster layer above the visible stack in one undoable edit.",
+     "maximumStoredVariations": GenerativeFillVariations.maximumStoredVariations,
+     "placement": "A fill adds an editable masked layer above the visible stack. A targetLayerID appends variations to the selected layer using its saved context. Each request is one undoable edit.",
      "edgeBlend": "A bounded color correction near selection edges uses opaque surrounding pixels and preserves selection coverage.",
      "model": "Configure LaMa512 for blank prompts and Runway_SD1.5_Inpaint for text prompts in the native Generative Fill sheet. API requests use the configured model. Inference runs on this Mac."]
   }
@@ -48,10 +52,11 @@ enum GenerativeFillAPI {
       "promptModelConfigured": promptConfigured, "canGenerateFromPrompt": promptConfigured && store.canBeginGenerativeFill,
       "operationID": store.generativeFillOperationID?.uuidString as Any? ?? NSNull(), "selectedVariations": NSNull()]
     if let layer = store.activeLayer, let record = GenerativeFillVariations.read(layer),
-      let selected = layer.smartObject?.layerComps?.selectedID ?? record.entries.first?.id {
+      let selected = record.selectedID(layer.smartObject?.layerComps?.selectedID) {
       state["selectedVariations"] = [
         "layerID": layer.id.uuidString, "selectedID": selected.uuidString, "prompt": record.prompt, "model": record.model,
-        "entries": record.entries.map { ["id": $0.id.uuidString, "seed": $0.seed] as [String: Any] }
+        "canGenerateMore": promptConfigured && store.canBeginGenerativeFillBatch(layer.id),
+        "entries": record.entries.map { ["id": $0.id.uuidString, "seed": $0.seed, "prompt": $0.prompt ?? record.prompt] as [String: Any] }
       ]
     }
     return state
@@ -59,7 +64,8 @@ enum GenerativeFillAPI {
 }
 
 extension AutomationCommand {
-  func generativeFillOptions() throws -> (prompt: String, seed: UInt32, count: Int) {
+  func generativeFillOptions() throws -> (prompt: String, seed: UInt32?, count: Int, target: UUID?) {
+    let target = try parameters["targetLayerID"].map { _ in try actionUUID("targetLayerID") }
     let prompt: String
     switch parameters["prompt"] {
     case nil: prompt = ""
@@ -71,11 +77,13 @@ extension AutomationCommand {
     let count = try parameters["variationCount"].map { _ in
       try integer("variationCount", range: 1...Double(LocalGenerativeFill.maximumVariations))
     } ?? 1
-    if prompt.isEmpty && (count > 1 || parameters["seed"] != nil) {
+    if target != nil, parameters["prompt"] != nil, prompt.isEmpty {
+      throw AutomationFailure(status: 400, message: "Enter a text prompt, or omit it to reuse the active variation’s prompt.")
+    }
+    if target == nil, prompt.isEmpty && (count > 1 || parameters["seed"] != nil) {
       throw AutomationFailure(status: 400, message: "A seed or multiple variations require a text prompt.")
     }
     let seed = try parameters["seed"].map { _ in UInt32(try integer("seed", range: 0...Double(UInt32.max))) }
-      ?? UInt32.random(in: .min ... .max)
-    return (prompt, seed, count)
+    return (prompt, seed, count, target)
   }
 }
