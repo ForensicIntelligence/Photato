@@ -1451,6 +1451,56 @@ extension Surface {
       try append(patch, x: x, y: y, implicit: patch.storedDefaultPixel, projecting: nil)
     }
 
+    /// A one-sample axis represents a constant run of the source rectangle.
+    /// The other axis keeps each original sample, including edge profiles.
+    package mutating func appendRepeating(_ patch: Surface, in rect: IntRect) throws {
+      guard patch.colorEncoding == encoding, patch.width == rect.width || patch.width == 1,
+            patch.height == rect.height || patch.height == 1 else {
+        throw CraftError.invalid("Invalid repeated preview patch.")
+      }
+      let dx = rect.width / patch.width, dy = rect.height / patch.height
+      for y in 0..<patch.height {
+        try Task.checkCancellation()
+        for x in 0..<patch.width {
+          let delta = Self.premultiplied(patch.storedPixel(x: x, y: y)) - background
+          if delta == .zero { continue }
+          accumulate(delta, x: rect.x + x * dx, y: rect.y + y * dy, width: dx, height: dy)
+        }
+      }
+    }
+
+    /// Replace a disjoint set of samples already counted in the preview.
+    package mutating func replace(_ previous: Surface, with patch: Surface, x: Int, y: Int) throws {
+      guard previous.colorEncoding == encoding, patch.colorEncoding == encoding,
+            previous.width == patch.width, previous.height == patch.height else {
+        throw CraftError.invalid("Invalid preview correction patch.")
+      }
+      for py in 0..<patch.height {
+        try Task.checkCancellation()
+        for px in 0..<patch.width {
+          let delta = Self.premultiplied(patch.storedPixel(x: px, y: py))
+            - Self.premultiplied(previous.storedPixel(x: px, y: py))
+          if delta == .zero { continue }
+          accumulate(delta, x: x + px, y: y + py, width: 1, height: 1)
+        }
+      }
+    }
+
+    private mutating func accumulate(_ delta: SIMD4<Double>, x: Int, y: Int, width dx: Int, height dy: Int) {
+      let l = Double(x - region.x) / sx, r = Double(x + dx - region.x) / sx
+      let t = Double(y - region.y) / sy, b = Double(y + dy - region.y) / sy
+      let x0 = max(0, Int(floor(l))), y0 = max(0, Int(floor(t)))
+      let x1 = min(width, Int(ceil(r))), y1 = min(height, Int(ceil(b)))
+      guard x0 < x1, y0 < y1 else { return }
+      for oy in y0..<y1 {
+        let wy = (min(b, Double(oy + 1)) - max(t, Double(oy))) * sy
+        for ox in x0..<x1 {
+          let wx = (min(r, Double(ox + 1)) - max(l, Double(ox))) * sx
+          sums[oy * width + ox] += delta * (wx * wy)
+        }
+      }
+    }
+
     fileprivate mutating func append(_ patch: Surface, x: Int, y: Int, implicit: Pixel,
       projecting projection: ((Pixel) throws -> Pixel)?) throws {
       let local = IntRect(x: region.x - x, y: region.y - y, width: region.width, height: region.height)

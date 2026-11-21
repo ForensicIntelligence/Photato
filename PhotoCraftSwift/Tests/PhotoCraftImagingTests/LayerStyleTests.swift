@@ -4,6 +4,80 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testUniformDropShadowReductionMatchesStreamedFitWithRasterAndMaskEdits() throws {
+    let width = 12_000, height = 800
+    let region = IntRect(x: 1, y: 1, width: 319, height: 351)
+    let request = try RasterPreviewRequest(region: region, width: 73, height: 79)
+    for depth in PixelDepth.allCases {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var document = try CraftDocument(width: width, height: height, depth: depth)
+      var source = try Surface(width: width, height: height, depth: depth,
+        fill: Pixel(0.42, 0.27, 0.71, 0.77), colorEncoding: encoding)
+      source.setPixel(x: 8, y: 9, Pixel(0.8, 0.4, 0.2, 0.2))
+      source.setPixel(x: 13, y: 12, .clear)
+      var mask = try Surface(width: width, height: height, fill: .white)
+      mask.setPixel(x: 11, y: 15, .black)
+      document.layers[0].content = .raster(source)
+      document.layers[0].mask = mask
+      document.layers[0].opacity = 0.82
+      document.globalLight = GlobalLight(angle: 139, altitude: 46)
+      for advanced in [false, true] {
+        var shadow = LayerEffect(.dropShadow)
+        shadow.distance = 48.7
+        shadow.size = 10.3
+        shadow.spread = 24
+        if advanced {
+          shadow.advanced = LayerEffectAdvanced()
+          shadow.advanced?.contour = EffectContour(name: "Custom", points: [[0, 0], [0.48, 0.62], [1, 1]])
+          shadow.advanced?.antiAlias = true
+          shadow.advanced?.knocksOut = false
+        }
+        var style = LayerStyle(effects: [shadow])
+        style.fillOpacity = 0.68
+        document.layers[0].style = style
+        let projection = try RasterPreviewProjection(document, channels: depth == .u16
+          ? RGBChannelView(preview: .green) : RGBChannelView(), proof: nil)
+        let plan = try XCTUnwrap(UniformShadowPreview(document, region: region))
+        let optimized = try plan.imageSamples(request, projection: projection)
+        let oracle = try PagedCanvasRenderer.reducedPatternPreview(document, request: request,
+          projection: projection, reuseUniformShadows: false)
+        XCTAssertEqual(try optimized.rgbaData(depth: .f32, colorEncoding: optimized.colorEncoding),
+          try oracle.rgbaData(depth: .f32, colorEncoding: oracle.colorEncoding), "\(depth) advanced \(advanced)")
+      }
+    }
+  }
+
+  func testMaximumUniformDropShadowFitKeepsItsInteriorAndShiftedEdge() throws {
+    let size = Surface.maxDimension
+    var document = try CraftDocument(width: size, height: size)
+    document.layers[0].content = .fill(Pixel(0.68, 0.42, 0.6, 0.72))
+    var shadow = LayerEffect(.dropShadow)
+    shadow.angle = 180
+    shadow.useGlobalLight = false
+    shadow.distance = 30_000
+    shadow.size = 13
+    shadow.opacity = 0.9
+    shadow.advanced = LayerEffectAdvanced()
+    shadow.advanced?.antiAlias = true
+    shadow.advanced?.knocksOut = false
+    document.layers[0].style = LayerStyle(effects: [shadow])
+    let region = IntRect(x: 0, y: 0, width: size, height: size)
+    let request = try RasterPreviewRequest(region: region, width: 200, height: 200)
+    let preview = try XCTUnwrap(RasterViewportPreview.pagedPatternPreview(document, request: request))
+    XCTAssertTrue(preview.streamsSource)
+    let result = try preview.imageSamples(request)
+    for x in [5, 100, 190] {
+      let sourceX = x * 1500 + 750, sourceY = 150_750
+      let pixel = try Renderer.composite(document, region: IntRect(x: sourceX, y: sourceY, width: 1, height: 1))
+        .pixel(x: sourceX, y: sourceY)
+      XCTAssertTrue(result.pixel(x: x, y: 100).hasSameBits(as: pixel))
+    }
+    XCTAssertNotEqual(result.pixel(x: 5, y: 100), result.pixel(x: 100, y: 100))
+    var noisy = document
+    noisy.layers[0].style?.effects[0].advanced?.noise = 0.2
+    XCTAssertNil(try UniformShadowPreview(noisy, region: region))
+  }
+
   func testRegionalDropShadowsMatchWholeMapsAcrossTileAndDocumentEdges() throws {
     for depth in PixelDepth.allCases {
       let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB

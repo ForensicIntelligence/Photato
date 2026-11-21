@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 697.** Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path. [Qualification](docs/SOURCE_PUBLICATION_697.md).
+
 **Source checkpoint 696.** Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin. [Qualification](docs/SOURCE_PUBLICATION_696.md).
 
 **Source checkpoint 695.** Drop Shadow contour corners, anti-aliasing, noise and knockout now work through the editor and the Adobe-compatible create-composite route. Supported shadows remain editable in PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_695.md).

@@ -51,8 +51,11 @@ enum PagedCanvasRenderer {
   }
 
   static func reducedPatternPreview(_ d: CraftDocument, request: RasterPreviewRequest,
-    projection: RasterPreviewProjection) throws -> Surface {
-    try compose(d, region: request.region, inputTarget: nil, video: nil, forLayerOutput: false,
+    projection: RasterPreviewProjection, reuseUniformShadows: Bool = true) throws -> Surface {
+    if reuseUniformShadows, let plan = try UniformShadowPreview(d, region: request.region) {
+      return try plan.imageSamples(request, projection: projection)
+    }
+    return try compose(d, region: request.region, inputTarget: nil, video: nil, forLayerOutput: false,
       backing: nil, onPatch: nil, preview: (request, projection))
   }
 

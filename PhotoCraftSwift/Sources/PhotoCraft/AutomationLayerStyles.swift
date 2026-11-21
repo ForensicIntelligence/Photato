@@ -50,6 +50,7 @@ extension LayerStyle {
       "advancedDropShadow": ["editableFiles": ["psd", "psb"], "controls": ["contour", "antiAlias", "noise", "knocksOut"],
         "regionalCanvasDimension": Surface.maxDimension,
         "regionalScope": "RGB Drop Shadow stacks, optionally with basic Pattern Overlay. Each region prepares the shifted coverage and its filter margin. Scratch limits still apply per effect.",
+        "overviewScope": "Eligible RGB Drop Shadows on uniform raster and fill layers reuse constant regions and render edge profiles and sparse corrections. Composite, channel and soft-proof PNG use the same reduced preview.",
         "contourContinuity": "Optional smoothPoints has one Boolean per point. False sets a corner.",
         "adobeRoute": "POST /v2/create-composite",
         "adobeFields": ["contour", "antiAliased", "noise", "layerKnocksOut"]],

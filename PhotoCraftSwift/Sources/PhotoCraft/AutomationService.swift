@@ -1821,6 +1821,17 @@ import UniformTypeIdentifiers
       guard !onionSkin, modeVisibility == nil, inkVisibility == nil, auxiliary == nil else {
         throw AutomationFailure(status: 422, message: "A viewport requires a supported RGB preview view.")
       }
+      if viewport.region.width > RasterViewportPreview.maximumSourcePixels / viewport.region.height {
+        let activeProof = proof?.active == true ? proof : nil
+        guard auxiliaryView?.needsPresentation != true,
+              let samples = try RasterViewportPreview.uniformShadowOverview(document, request: viewport,
+                channels: channelView, proof: activeProof) else {
+          throw AutomationFailure(status: 413, message: "The viewport exceeds 16,777,216 source pixels.")
+        }
+        if activeProof != nil { return try png(RasterIO.displayImage(samples)) }
+        return try png(reducedPreview: samples, document: document, request: viewport,
+          channels: channelView, auxiliaryView: auxiliaryView)
+      }
       let regional = try RasterViewportPreview(document, request: viewport)
       if let proof, proof.active {
         return try png(RasterIO.displayImage(regional.imageSamples(viewport, proof: proof)))

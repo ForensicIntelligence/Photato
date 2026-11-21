@@ -18,6 +18,7 @@ enum AutomationViewport {
       "header": header,
       "routes": ["preview.png", "channel-preview.png", "proof-preview.png"],
       "sourcePixels": RasterViewportPreview.maximumSourcePixels,
+      "wideShadowOverview": "Reduced requests for eligible uniform Drop Shadows may span the full RGB document. Both output dimensions are required.",
       "outputPixels": RasterPreviewRequest.maximumPixels,
       "schema": BrushAPI.object(fields, required: required),
       "scope": "Committed RGB compositing in top-left document coordinates. Omit both output dimensions for one sample per source pixel. Requested dimensions may reduce the rectangle. Neighborhood and whole-source preparation stay on their existing full-render paths.",
@@ -45,13 +46,14 @@ enum AutomationViewport {
       region == region.clipped(toWidth: document.width, height: document.height) else {
       throw AutomationFailure(status: 400, message: "The viewport must be a positive rectangle inside the document.")
     }
-    guard region.width <= RasterViewportPreview.maximumSourcePixels / region.height else {
-      throw AutomationFailure(status: 413, message: "The viewport exceeds 16,777,216 source pixels.")
-    }
     let width = try fields[output[0]] == nil ? region.width : coordinate(output[0])
     let height = try fields[output[1]] == nil ? region.height : coordinate(output[1])
     guard width > 0, height > 0, width <= region.width, height <= region.height else {
       throw AutomationFailure(status: 400, message: "Viewport output dimensions must fit the source rectangle.")
+    }
+    if width == region.width && height == region.height
+      && region.width > RasterViewportPreview.maximumSourcePixels / region.height {
+      throw AutomationFailure(status: 413, message: "The viewport exceeds 16,777,216 source pixels.")
     }
     guard width <= RasterPreviewRequest.maximumPixels / height else {
       throw AutomationFailure(status: 413, message: "The viewport exceeds 4,194,304 output pixels.")

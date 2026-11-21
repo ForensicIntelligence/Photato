@@ -1,3 +1,9 @@
+**Source checkpoint 697.** Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path. 474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. [Qualification](SOURCE_PUBLICATION_697.md).
+
+**Next layer style work.** Profile Fit on dense nonuniform source and coordinate-dependent Drop Shadows. Preserve the existing byte comparisons when improving those paths. Qualify Photoshop-authored control extremes and partially transparent edges when the running application is available.
+
+**README parity banner.** Update the banner at each ten-percentage-point milestone in the overall desktop workflow estimate. The next milestone is 60%.
+
 **Source checkpoint 696.** Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin. 471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document. [Qualification](SOURCE_PUBLICATION_696.md).
 
 **Next layer style work.** Reduce maximum-size Drop Shadow overviews when source coverage is dense or has an implicit uniform backdrop. Qualify Photoshop-authored control extremes and partially transparent edges when the running application is available. Keep the README banner at 50% until the next overall milestone.

@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 697 — Reduce Fit and proof previews for large uniform Drop Shadows
+
+Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path.
+
+RGB8, RGB16 and RGB32 reductions with raster and mask edits matched the streamed renderer. The native Fit view and explicit HTTP composite, green-channel and soft-proof PNGs matched on a 300,000 × 300,000 document. The 70,000 × 520 benchmark reproduced each architecture's build 696 Float32 composite and soft-proof samples byte for byte.
+
+474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. A coordinate-dependent shadow, such as one with noise, still needs the ordinary renderer. Broad edited areas and unsupported stacks also retain their prior rendering path. The local Photoshop document query timed out, so Adobe Fit sampling and Adobe shadow pixels remain unverified.
+
+[Development record](DEVLOG.md#dev-step-697) · [Details](DENSE_SHADOW_FIT_697.md).
+
 ## 2026-11-21 — Step 696 — Render Drop Shadows in bounded canvas regions
 
 Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin.
@@ -1567,14 +1577,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:696 -->
+<!-- current-status-step:697 -->
 ## Current development status — 21 November 2026
 
-Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin.
+Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path.
 
-471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document.
+474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen.
 
-[Source checkpoint 696](SOURCE_PUBLICATION_696.md) · [Development record](DEVLOG.md#dev-step-696).
+[Source checkpoint 697](SOURCE_PUBLICATION_697.md) · [Development record](DEVLOG.md#dev-step-697).
 
 <!-- current-status:end -->
 
@@ -2477,6 +2487,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 694 | [Write layer styles by tile and reuse opacity checks](DEVLOG.md#dev-step-694) |
 | 2026-11-21 | 695 | [Keep advanced Drop Shadows editable in PSD and PSB](DEVLOG.md#dev-step-695) |
 | 2026-11-21 | 696 | [Render Drop Shadows in bounded canvas regions](DEVLOG.md#dev-step-696) |
+| 2026-11-21 | 697 | [Reduce Fit and proof previews for large uniform Drop Shadows](DEVLOG.md#dev-step-697) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -5,6 +5,61 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerStyleWorkflowTests: XCTestCase {
+  @MainActor func testMaximumUniformDropShadowFitMatchesHTTPAndSoftProof() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let size = Surface.maxDimension
+      var document = try CraftDocument(width: size, height: size)
+      document.layers[0].content = .fill(Pixel(0.56, 0.49, 0.68, 0.73))
+      var effect = LayerEffect(.dropShadow)
+      effect.distance = 30_000
+      effect.angle = 180
+      effect.useGlobalLight = false
+      effect.size = 12
+      effect.advanced = LayerEffectAdvanced()
+      effect.advanced?.knocksOut = false
+      effect.advanced?.contour = EffectContour(name: "Custom", points: [[0, 0], [0.5, 0.65], [1, 1]])
+      document.layers[0].style = LayerStyle(effects: [effect])
+      let store = shared.store
+      store.session = EditorSession(document: document)
+      store.updateViewport(size: CGSize(width: 182, height: 172), backingScale: 1)
+      store.fit()
+      await store.renderTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.rasterViewportPreview?.streamsSource, true)
+      XCTAssertNil(store.renderSnapshot)
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let view = store.viewport.largeCanvasRequest, rect = view.region
+      let header = """
+      {"x":\(rect.x),"y":\(rect.y),"width":\(rect.width),"height":\(rect.height),"outputWidth":\(view.width),"outputHeight":\(view.height)}
+      """
+      let root = "/v1/documents/\(id)/"
+      let received = try await helper.request(service, path: root + "preview.png", headers: ["X-Photato-Viewport": header])
+      XCTAssertEqual(received.0.statusCode, 200)
+      XCTAssertEqual(received.1, try AutomationService.png(XCTUnwrap(store.image)))
+      try store.selectEditingChannel(.green)
+      await store.renderTask?.value
+      let channel = try await helper.request(service, path: root + "channel-preview.png", headers: ["X-Photato-Viewport": header])
+      XCTAssertEqual(channel.0.statusCode, 200)
+      XCTAssertEqual(channel.1, try AutomationService.png(XCTUnwrap(store.image)))
+      try store.selectEditingChannel(.composite)
+      store.proofSettings.enabled = true
+      store.render()
+      await store.renderTask?.value
+      XCTAssertNil(store.error)
+      let proof = try await helper.request(service, path: root + "proof-preview.png", headers: ["X-Photato-Viewport": header])
+      XCTAssertEqual(proof.0.statusCode, 200)
+      XCTAssertEqual(proof.1, try AutomationService.png(XCTUnwrap(store.image)))
+      var noisy = document
+      noisy.layers[0].style?.effects[0].advanced?.noise = 0.2
+      let request = try RasterPreviewRequest(region: rect, width: view.width, height: view.height)
+      XCTAssertThrowsError(try AutomationService.png(noisy, viewport: request)) {
+        XCTAssertEqual(($0 as? AutomationFailure)?.status, 413)
+      }
+    }
+  }
+
   @MainActor func testMaximumCanvasDropShadowMenuPreviewUndoAndHTTP() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in

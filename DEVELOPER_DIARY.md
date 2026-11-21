@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **696** · The 10 most recent entries, newest first.
+Source build **697** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 697 — Reduce Fit and proof previews for large uniform Drop Shadows
+
+Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path.
+
+RGB8, RGB16 and RGB32 reductions with raster and mask edits matched the streamed renderer. The native Fit view and explicit HTTP composite, green-channel and soft-proof PNGs matched on a 300,000 × 300,000 document. The 70,000 × 520 benchmark reproduced each architecture's build 696 Float32 composite and soft-proof samples byte for byte.
+
+474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. A coordinate-dependent shadow, such as one with noise, still needs the ordinary renderer. Broad edited areas and unsupported stacks also retain their prior rendering path. The local Photoshop document query timed out, so Adobe Fit sampling and Adobe shadow pixels remain unverified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-697) · [Details](PhotoCraftSwift/docs/DENSE_SHADOW_FIT_697.md).
 
 ## 2026-11-21 — Step 696 — Render Drop Shadows in bounded canvas regions
 
@@ -93,13 +103,3 @@ Across RGB8, RGB16 and RGB32, a 30 × 30 crop that crossed tile boundaries match
 448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen. Dense full-canvas output, mixed spatial effects and maximum-size HTTP PSB transfers remain open. Photoshop 2026 reported version 27.2.0. Its document and JavaScript commands timed out, so live pixel and reopen comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-688) · [Details](PhotoCraftSwift/docs/LARGE_PATTERN_OVERLAY_688.md).
-
-## 2026-11-20 — Step 687 — Keep Pattern Overlay editable in PSD and PSB
-
-Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles.
-
-The Photoshop-authored document retained all 13 layers, six editable overlays, and all 196,608 merged RGB bytes in unchanged PSD and PSB exports. Changes to all six overlays reopened with their revised settings. The four exports were byte-identical across build configurations.
-
-446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen. The Photoshop color comparison covers the authored linked Normal overlays at 200% and 50% opacity. The existing style renderer still limits canvas area to 8,388,608 pixels. Other blend modes, rotated and fractional placement, and live Photoshop 2026 reopening require further comparison.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-687) · [Details](PhotoCraftSwift/docs/EDITABLE_PATTERN_OVERLAY_687.md).

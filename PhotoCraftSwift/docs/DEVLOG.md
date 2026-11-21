@@ -715,7 +715,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 694 | 2026-11-21 | [Write layer styles by tile and reuse opacity checks](#dev-step-694) |
 | 695 | 2026-11-21 | [Keep advanced Drop Shadows editable in PSD and PSB](#dev-step-695) |
 | 696 | 2026-11-21 | [Render Drop Shadows in bounded canvas regions](#dev-step-696) |
+| 697 | 2026-11-21 | [Reduce Fit and proof previews for large uniform Drop Shadows](#dev-step-697) |
 <!-- history-index:end -->
+
+<a id="dev-step-697"></a>
+
+## 2026-11-21 — Reduce Fit and proof previews for large uniform Drop Shadows
+
+Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path.
+
+The fit renderer now separates uniform spans from the bounded regions that can affect the final image. It reuses constant coverage and applies corrections from edited areas. The HTTP route accepts explicitly reduced wide viewports when the same plan qualifies.
+
+RGB8, RGB16 and RGB32 reductions with raster and mask edits matched the streamed renderer. The native Fit view and explicit HTTP composite, green-channel and soft-proof PNGs matched on a 300,000 × 300,000 document. The 70,000 × 520 benchmark reproduced each architecture's build 696 Float32 composite and soft-proof samples byte for byte.
+
+474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. A coordinate-dependent shadow, such as one with noise, still needs the ordinary renderer. Broad edited areas and unsupported stacks also retain their prior rendering path. The local Photoshop document query timed out, so Adobe Fit sampling and Adobe shadow pixels remain unverified. The overall desktop workflow estimate remains 50%.
+
+[Development record](DENSE_SHADOW_FIT_697.md) · [Qualification](SOURCE_PUBLICATION_697.md).
 
 <a id="dev-step-696"></a>
 

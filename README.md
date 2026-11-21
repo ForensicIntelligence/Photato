@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 696.** Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_696.md).
+**Development alpha — source build 697.** Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_697.md).
 
 ## Project layout
 
