@@ -27,6 +27,7 @@ enum GenerativeFillAPI {
      "maximumSelectionSide": LocalGenerativeFill.maximumSelectionSide,
      "promptSupported": true, "maximumPromptCharacters": LocalGenerativeFill.maximumPromptCharacters,
      "placement": "A local fill from surrounding pixels adds an editable masked raster layer above the visible stack in one undoable edit.",
+     "edgeBlend": "A bounded color correction near selection edges uses opaque surrounding pixels and preserves selection coverage.",
      "model": "Configure LaMa512 for blank prompts and Runway_SD1.5_Inpaint for text prompts in the native Generative Fill sheet. API requests use the configured model. Inference runs on this Mac."]
   }
 

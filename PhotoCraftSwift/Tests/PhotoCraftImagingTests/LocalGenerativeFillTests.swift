@@ -4,6 +4,67 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LocalGenerativeFillTests: XCTestCase {
+  func testEdgeBlendReducesTonalStepAndRetainsTheGeneratedInterior() throws {
+    var source = try CraftDocument(width: 74, height: 62)
+    let original = Pixel(112.0 / 255, 140.0 / 255, 168.0 / 255)
+    let generated = Pixel(124.0 / 255, 150.0 / 255, 178.0 / 255)
+    source.layers[0].content = .raster(try Surface(width: source.width, height: source.height, fill: original))
+    let area = IntRect(x: 17, y: 15, width: 40, height: 32)
+    source.selection = area
+    let command = try LocalGenerativeFill.prepare(source) { _, _ in
+      try Surface(width: 512, height: 512, depth: .f32, fill: generated)
+    }
+    var session = EditorSession(document: source)
+    try session.executePrepared(PreparedEdit(command: command, document: source))
+    let result = try Renderer.composite(session.document)
+    let edge = result.pixel(x: area.x, y: area.y + 16)
+    XCTAssertLessThan(abs(edge.r - original.r), 0.5 * abs(generated.r - original.r))
+    XCTAssertLessThan(abs(edge.b - original.b), 0.5 * abs(generated.b - original.b))
+    XCTAssertTrue(result.pixel(x: area.x - 1, y: area.y + 16).hasSameBits(as: original))
+    XCTAssertTrue(result.pixel(x: area.x + 20, y: area.y + 16).hasSameBits(as: generated))
+    let layer = try XCTUnwrap(session.document.layers.last)
+    XCTAssertEqual(layer.mask?.pixel(x: 0, y: 16).r, 1)
+  }
+
+  func testTranslucentContextDoesNotTintTheFill() throws {
+    var source = try CraftDocument(width: 60, height: 50, depth: .f32)
+    let original = Pixel(0.96, 0.14, 0.11, 0.999)
+    let generated = Pixel(0.2, 0.45, 0.72)
+    source.layers[0].content = .raster(try Surface(
+      width: source.width, height: source.height, depth: .f32, fill: SRGBTransfer.linear(original), colorEncoding: .linearRGB))
+    source.selection = IntRect(x: 12, y: 10, width: 32, height: 30)
+    let command = try LocalGenerativeFill.prepare(source) { _, _ in
+      try Surface(width: 512, height: 512, depth: .f32, fill: generated)
+    }
+    guard case .generativeFill(let layer) = command, case .raster(let patch) = layer.content else {
+      return XCTFail("Expected an editable raster patch.")
+    }
+    let edge = patch.pixel(x: 0, y: 15)
+    let interior = patch.pixel(x: 16, y: 15)
+    XCTAssertTrue(edge.hasSameBits(as: interior))
+    XCTAssertEqual(edge.r, generated.r, accuracy: 0.00001)
+    XCTAssertEqual(edge.b, generated.b, accuracy: 0.00001)
+    XCTAssertEqual(edge.a, 1)
+  }
+
+  func testEdgeCorrectionStaysBoundedOnTheMaximumSparseCanvas() throws {
+    var source = try CraftDocument(width: 300_000, height: 300_000)
+    let area = IntRect(x: 281_301, y: 294_010, width: 4_096, height: 1_024)
+    source.selection = area
+    var samples = 0
+    let generated = Pixel(0.6, 0.57, 0.45)
+    let correction = try XCTUnwrap(GenerativeFillEdgeBlend.prepare(in: source, selection: area, gridLimit: 512,
+      context: { _, _ in
+        samples += 1
+        return Pixel(0.55, 0.53, 0.42)
+      }, generated: { _, _ in generated }))
+    XCTAssertGreaterThan(samples, 0)
+    XCTAssertLessThanOrEqual(samples, 512 * 512)
+    let center = Double(area.y) + 512.5
+    XCTAssertLessThan(correction.adjusted(generated, x: Double(area.x) + 0.5, y: center).r, generated.r)
+    XCTAssertTrue(correction.adjusted(generated, x: Double(area.x) + 2_048.5, y: center).hasSameBits(as: generated))
+  }
+
   func testMaskedPlacementPreservesProtectedSamplesAndUndoAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       let source = try fixture(depth)

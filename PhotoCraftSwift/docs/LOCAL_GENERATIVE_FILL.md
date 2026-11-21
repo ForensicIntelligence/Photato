@@ -20,4 +20,6 @@ Configure the model on the Mac first. Send `generativeFill.apply` to the documen
 
 The selected area can be up to 4,194,304 pixels within a 4,096 px span on either axis. The model works on 512 × 512 sRGB context and a mask. Photato maps the generated patch back to document coordinates and colors, preserving the original selection coverage. Prompts are one line, up to 256 characters and within the tokenizer’s 77-token window, including boundary tokens.
 
+Photato uses opaque pixels around the selection to reduce color seams. The correction tapers inward to preserve the generated colors farther inside the selection. The edit retains the original feathering and preserves pixels outside the mask.
+
 Photoshop’s documented workflow includes a model picker and variation sets. Photato’s model generates one patch per operation. Editable variation sets, the Adobe Execute Actions form and output equivalence to Photoshop remain open. [Photoshop desktop workflow](https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html) · [Adobe Execute Actions model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)

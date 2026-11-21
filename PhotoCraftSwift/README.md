@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 701.** Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo. [Qualification](docs/SOURCE_PUBLICATION_701.md).
+
 **Source checkpoint 700.** Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512. [Model setup](docs/LOCAL_GENERATIVE_FILL.md) · [Qualification](docs/SOURCE_PUBLICATION_700.md).
 
 **Source checkpoint 699.** Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step. [Qualification](docs/SOURCE_PUBLICATION_699.md).

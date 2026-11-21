@@ -719,7 +719,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 698 | 2026-11-21 | [Read raster alpha directly for regional Drop Shadows](#dev-step-698) |
 | 699 | 2026-11-21 | [Add local Generative Fill from surrounding pixels](#dev-step-699) |
 | 700 | 2026-11-21 | [Add prompted Generative Fill on Apple Silicon](#dev-step-700) |
+| 701 | 2026-11-21 | [Blend Generative Fill selection edges](#dev-step-701) |
 <!-- history-index:end -->
+
+<a id="dev-step-701"></a>
+
+## 2026-11-21 — Blend Generative Fill selection edges
+
+Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo.
+
+The first experiment propagated a Poisson color correction across the whole filled area. The integrated version confines that correction to a narrow band so flat generated colors and the subject’s interior retain their original values. The solver runs on a grid no larger than 512 × 512 and ignores translucent context as a color reference. The API advertises the behavior on its existing Generative Fill capability.
+
+Mean RGB8 drift across 505 boundary samples fell from 4.39 to 0.31 levels on the apple and from 3.95 to 0.24 on the mug. Each result preserved all 49,283 protected samples and all 9,898 tested interior samples. Both fills retained exact pixels and editable masks when reopened in Photato as native, PSD and PSB files. A synthetic fill exercised a 4,194,304-pixel selection on a 300,000 × 300,000 sparse canvas.
+
+A separate trial generated three alternatives for the same prompt and selection using distinct seeds, then used a PSD-backed Smart Object with Layer Comps. All three reopened and switched in Photato with exact RGB8 composites and the original mask in native, PSD and PSB files.
+
+480 of 481 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 700’s assertions. Both signed preview slices opened offscreen, and the checked-in Xcode project built in arm64 Debug. Application-managed variation sets and the Adobe Execute Actions descriptor remain open. A separate seed probe hit a Core ML GPU exception once and succeeded on retry. The installed Photoshop session timed out on a read-only scripting query, so Photoshop output equivalence has yet to be verified. The overall desktop workflow estimate is 50%.
+
+[Qualification](SOURCE_PUBLICATION_701.md) · [Adobe mask reference](https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/use-selections-for-generative-editing.html).
 
 <a id="dev-step-700"></a>
 

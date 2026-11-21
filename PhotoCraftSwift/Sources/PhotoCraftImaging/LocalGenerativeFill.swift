@@ -158,13 +158,29 @@ package enum LocalGenerativeFill {
     guard generated.width == side, generated.height == side else {
       throw CraftError.invalid("The model returned an unexpected output size.")
     }
+    func generatedSample(_ x: Double, _ y: Double) -> Pixel {
+      let mx = left + (x - Double(region.x)) * modelScale
+      let my = top + (y - Double(region.y)) * modelScale
+      return RasterGeometry.sample(generated, x: mx, y: my, method: .bilinear, clampEdges: true)
+    }
+    let edgeBlend = try GenerativeFillEdgeBlend.prepare(in: document, selection: selected, gridLimit: side,
+      context: { x, y in
+        let localX = x - Double(region.x), localY = y - Double(region.y)
+        var pixel = RasterGeometry.sample(input, x: localX, y: localY, method: .bilinear, clampEdges: true)
+        if document.depth != .u8 {
+          // Use original coverage before the model input was quantized to RGB8.
+          pixel.a = RasterGeometry.sample(crop, x: localX, y: localY, method: .bilinear, clampEdges: true).a
+        }
+        return pixel
+      }, generated: generatedSample)
     var patch = try Surface(width: selected.width, height: selected.height, depth: .f32)
     for y in 0..<selected.height {
       try Task.checkCancellation()
       for x in 0..<selected.width {
-        let mx = left + (Double(selected.x + x - region.x) + 0.5) * modelScale
-        let my = top + (Double(selected.y + y - region.y) + 0.5) * modelScale
-        patch.setPixel(x: x, y: y, RasterGeometry.sample(generated, x: mx, y: my, method: .bilinear, clampEdges: true))
+        let docX = Double(selected.x + x) + 0.5, docY = Double(selected.y + y) + 0.5
+        let pixel = generatedSample(docX, docY)
+        let color = editableMask.pixel(x: x, y: y).r > 0 ? edgeBlend?.adjusted(pixel, x: docX, y: docY) ?? pixel : pixel
+        patch.setPixel(x: x, y: y, color)
       }
     }
     var layer = Layer(name: "Generative Fill", content: .raster(try ColorManagement.converted(patch, from: reference, to: document)))

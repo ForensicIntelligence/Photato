@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **700** · The 10 most recent entries, newest first.
+Source build **701** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 701 — Blend Generative Fill selection edges
+
+Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo.
+
+Mean RGB8 drift across 505 boundary samples fell from 4.39 to 0.31 levels on the apple and from 3.95 to 0.24 on the mug. Each result preserved all 49,283 protected samples and all 9,898 tested interior samples. Both fills retained exact pixels and editable masks when reopened in Photato as native, PSD and PSB files. A synthetic fill exercised a 4,194,304-pixel selection on a 300,000 × 300,000 sparse canvas.
+
+480 of 481 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 700’s assertions. Both signed preview slices opened offscreen, and the checked-in Xcode project built in arm64 Debug. Application-managed variation sets and the Adobe Execute Actions descriptor remain open. A separate seed probe hit a Core ML GPU exception once and succeeded on retry. The installed Photoshop session timed out on a read-only scripting query, so Photoshop output equivalence has yet to be verified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-701) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_701.md).
 
 ## 2026-11-21 — Step 700 — Add prompted Generative Fill on Apple Silicon
 
@@ -93,13 +103,3 @@ Fractional edges matched retained rendering at RGB8, RGB16 and RGB32 in the test
 458 of 461 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 691's assertions. Both signed macOS 14+ preview slices launched offscreen. Large nonperiodic fits still evaluate source pixels and can take seconds or longer. End-to-end timing for a fully covered maximum-size oblique Fit remains open. The Photoshop 2026 document-count query timed out, leaving live zoom comparison open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-692) · [Details](PhotoCraftSwift/docs/PAGED_PATTERN_REDUCTION_692.md).
-
-## 2026-11-21 — Step 691 — Fit quarter-turn Pattern Overlays on large canvases
-
-Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000.
-
-Actual-size crops from four parts of the canvas matched the ordinary compositor in RGB8, RGB16 and RGB32. Six angle, scale and phase combinations also matched an independent whole-period area control. The native test exercised Fit, pan, Brush, Undo and the authenticated overview. An owned 90° probe with a sparse edit produced identical fit and actual-size bytes across all three test configurations.
-
-455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen. The optimization requires a dyadic scale and Float32-safe phase on both pattern axes. Integral-phase 100% placements that fail this proof and oblique angles retain the existing path. Large nonperiodic Fit on Screen and live Photoshop zoom comparison remain open. The installed Photoshop 2026 document-count query timed out.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-691) · [Details](PhotoCraftSwift/docs/QUARTER_TURN_PATTERN_691.md).

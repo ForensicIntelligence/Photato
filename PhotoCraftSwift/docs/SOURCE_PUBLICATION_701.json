@@ -1,0 +1,198 @@
+{
+  "build": 701,
+  "base": "e2f42882d8fa8d321428aaf3772d0c1118bb368d",
+  "buildInputs": 9384,
+  "includedBuildInputs": 9371,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "331b70fcf8bc1a414caf0d5485d9aada5712c851926478f797cbcb079dd5e1c7",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "75e9d0691d5cee1a1cd8c5c08af7a2a8722fdef79c54c8b2cc0ecbd3eb43c1cf"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/MattingFilters.swift",
+      "sha256": "736cbf2aff03a1b7d1759689fa0dda7954d7d288e2d8f5636d3e678be72be62f"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/GenerativeFillEdgeBlend.swift",
+      "sha256": "632853adfa5ee62f78ebed663cc477ae15e58cbcf02aeb0d6067e4fb69156157"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalGenerativeFill.swift",
+      "sha256": "348901bc8768470caf9f5f0fd293767c60922ca9c7d225318360f9a790a1394f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LocalGenerativeFillTests.swift",
+      "sha256": "e0bb4fabfd4a49e7d1b55abfd701306a002a18b71c475f4f6e9e77bb8e28e1d1"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "91ec7e1485ecce5b4610f9ead76b981c5ebc2552e474cb5b665717cc2efc14a4"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "91ec7e1485ecce5b4610f9ead76b981c5ebc2552e474cb5b665717cc2efc14a4"
+  },
+  "casesPerConfiguration": 481,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 481,
+      "passed": 480,
+      "newCasesExpected": 38,
+      "newCasesPassed": 38,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "79cd83d92747ba86c0c625cee87ebf81d8526b2e805c08652fff9808e1c543fd"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 481,
+      "passed": 480,
+      "newCasesExpected": 38,
+      "newCasesPassed": 38,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "7f1d575a6bcdc8802f22d8f6108c80071a9c95962193334e109b0e8a5056d35d"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 481,
+      "passed": 480,
+      "newCasesExpected": 38,
+      "newCasesPassed": 38,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "d90bf896df0d5bbdc8f76f1aa64d21e3d5076f09edc3a515f0dfd7fda90a0b6b"
+    }
+  },
+  "edgeBlend": {
+    "maximumGridSide": 512,
+    "liveSeed": 472122,
+    "baselineBuild": 700,
+    "fixtures": [
+      {
+        "baselineMean8BitDrift": 4.38796769716953,
+        "boundarySamples": 505,
+        "changedSelectedPixels": 16084,
+        "correctedMean8BitDrift": 0.30516909933326225,
+        "duration": "30.610625833 seconds",
+        "exactEditableReimport": [
+          "PSD",
+          "PSB"
+        ],
+        "name": "Red Apple",
+        "nativeRoundTrip": true,
+        "oneUndo": true,
+        "protectedPixels": 49283,
+        "unchangedInteriorSamples": 9898
+      },
+      {
+        "baselineMean8BitDrift": 3.95495923586414,
+        "boundarySamples": 505,
+        "changedSelectedPixels": 15991,
+        "correctedMean8BitDrift": 0.23765593737658883,
+        "duration": "27.214681457999998 seconds",
+        "exactEditableReimport": [
+          "PSD",
+          "PSB"
+        ],
+        "name": "Blue Mug",
+        "nativeRoundTrip": true,
+        "oneUndo": true,
+        "protectedPixels": 49283,
+        "unchangedInteriorSamples": 9898
+      }
+    ],
+    "maximumCanvasSyntheticCheck": "Canvas 300000\u00d7300000, selection 4194304 pixels; edge residual 0.99999994/255, exact protected and central samples, one Undo, 33.505004666 seconds",
+    "modelLogsSHA256": {
+      "qualify-model-debug01.log": "b6cc73942015b8445b6babd309bb3136d6b8c42f35115150db3f794e0ef28c7a",
+      "qualify-model-arm01.log": "fe819597ca39d98d7a5f1adb6c49264a8aee07b252d9c460dcbff74cec167f71"
+    }
+  },
+  "variationTransportTrial": {
+    "applicationIntegration": false,
+    "sourceKind": "embedded PSD with Layer Comps",
+    "reopenedAndSwitchedInPhotato": [
+      "native",
+      "PSD",
+      "PSB"
+    ],
+    "samePromptSeeds": [
+      {
+        "compositeSHA256": "526a0f80100e1fa05546eec750de0f57a93481aa73722416b23d7505c6e68d32",
+        "duration": "0.156299917 seconds",
+        "name": "Apple Seed 472122",
+        "protectedPixels": 49283,
+        "seed": 472122,
+        "reusedPrimaryFixture": true
+      },
+      {
+        "compositeSHA256": "790a26f6c44eb8ac41f79eb0313e292b712f32234949470f63e84c3797b589d0",
+        "duration": "29.745285665999997 seconds",
+        "name": "Apple Seed 472123",
+        "protectedPixels": 49283,
+        "seed": 472123,
+        "reusedPrimaryFixture": false
+      },
+      {
+        "compositeSHA256": "662e6086bea74df445ac6b68ac9c60673587694a65d371b7e10185172c2807c8",
+        "duration": "28.443986833 seconds",
+        "name": "Apple Seed 472124",
+        "protectedPixels": 49283,
+        "seed": 472124,
+        "reusedPrimaryFixture": false
+      }
+    ],
+    "initialProbeFailure": "Core ML GPU E5RT missing MPSGraph tensor shape",
+    "outputsSHA256": {
+      "Fill Variations.photato": "8cf6da90e1450c3499fcb9764b85dd56298fd885f1f1eb3e23ed6c810853f18d",
+      "Fill Variations.psb": "df7bdbc436406b8643a22480feefad823a79d9ada4b2b9c18a162273a5e9f584",
+      "Fill Variations.psd": "61aa9dcdcad42ef101c25844b391ce1cc2936527f2cd6dbd03ec562a3f01fc08"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "f1e55366f9cad497db14415f0ca7fd7e3c2c289569cb4a6fe26a29feec75026f",
+    "binarySHA256": "e0d81ef926040a3e9e0723d25de0095d031730491691ad4b87dd2ee6b3c1276c",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "7ca7e803108f137a19e77721a97498443c55854c134f47b14955b7290648a635",
+      "x86_64": "812d6755c466dcfa7f15d68f1fc35e49d3dedfe5105c8479702746169b6b8093"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "xcodeDebugBuildLogSHA256": "683bf00cd72fae67c112cfc6045f65243a1c125bfc29db1bc777372bb4c53bfd",
+  "release": "source and diary only",
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Version and document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html",
+    "https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/use-selections-for-generative-editing.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models"
+  ]
+}

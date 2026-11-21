@@ -3,7 +3,7 @@ import Foundation
 
 /// PhotoCraft's guided-filter and morphology building blocks (MIT OR Apache-2.0).
 /// Public entry points in SelectionMatting validate dimensions before using these buffers.
-enum MattingFilters {
+package enum MattingFilters {
   static func box(_ input: [Float],_ w: Int,_ h: Int,_ radius: Int) throws -> [Float] {
     var temp = input, result = input
     var prefix = [Double](repeating:0,count:max(w,h)+1)
@@ -78,7 +78,7 @@ enum MattingFilters {
     }
     return current
   }
-  static func distance(_ inside: [Bool],_ w: Int,_ h: Int) throws -> [Float] {
+  package static func distance(_ inside: [Bool],_ w: Int,_ h: Int) throws -> [Float] {
     var result = inside.map { $0 ? Float(0) : Float(1e20) }
     func line(_ f: [Float]) -> [Float] {
       let n = f.count; var v = [Int](repeating:0,count:n), z = [Double](repeating:0,count:n+1), k = 0
