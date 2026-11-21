@@ -202,6 +202,8 @@ final class ShapeWorkflowTests:XCTestCase {
       XCTAssertEqual(paints["fill"], ["none", "solid", "gradient", "pattern"])
       XCTAssertEqual(paints["stroke"], ["none", "solid", "gradient", "pattern"])
       XCTAssertTrue((live["types"] as? [String])?.contains("line") == true)
+      XCTAssertNotNil(live["legacyPatternFillRecords"] as? String)
+      XCTAssertNotNil(live["normalRGB8Opacity"] as? String)
       service.setDocumentTransfersEnabled(true)
       let uploaded = try await AutomationOpeningTests().upload(
         service, bytes: input, type: "image/vnd.adobe.photoshop", format: "psd")

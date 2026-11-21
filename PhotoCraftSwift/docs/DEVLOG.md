@@ -703,7 +703,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 682 | 2026-11-20 | [Render gradients and strokes on large editable cutouts](#dev-step-682) |
 | 683 | 2026-11-20 | [Keep shape gradients editable in PSD and PSB](#dev-step-683) |
 | 684 | 2026-11-20 | [Keep patterns and straight lines editable in PSD and PSB](#dev-step-684) |
+| 685 | 2026-11-20 | [Improve RGB8 shape opacity and legacy pattern placement](#dev-step-685) |
 <!-- history-index:end -->
+
+<a id="dev-step-685"></a>
+
+## 2026-11-20 — Improve RGB8 shape opacity and legacy pattern placement
+
+Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB.
+
+The reference files supplied two distinct opacity pipelines, including opaque backdrop and repeated composition onto transparent pixels. The shape renderer stages byte alpha and keeps original shape cache samples. The PSD codec also accepts legacy patterned vector layers with a shape marker. It parses the two reference coordinates and preserves the legacy tags during fill-only edits.
+
+All 310 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original Photoshop stroke fixture’s regenerated preview dropped from 331 to 90 differing RGB bytes. The three translucent ellipses match every merged alpha byte and have 69 differing RGB bytes. The largest residual is one level in both files. Both original legacy pattern files keep their shape descriptors, layer caches, embedded tiles and merged planes byte for byte. After repeat-preserving edits, all 9,309 opaque interior pixels matched in each of four unscaled pattern cases and in the 50% case.
+
+The first Debug attempts exposed an optional clipping flag and initialization order in the pattern sampler. The final candidate resolves both. Scaled pattern repaint at 200%, 56%, and 25% still differs. Independent sampling matched the 200% fixture with a half-pixel coordinate shift and the 25% fixture with two rounded 2 × 2 reductions. Masked, styled, transformed and other depth or blend cases have separate acceptance requirements. Reopening in a live Photoshop 2026 session remains unverified.
+
+[Development record](SHAPE_EDGE_COMPOSITING_685.md) · [Qualification](SOURCE_PUBLICATION_685.md).
 
 <a id="dev-step-684"></a>
 

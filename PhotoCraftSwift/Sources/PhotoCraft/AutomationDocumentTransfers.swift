@@ -139,6 +139,8 @@ extension AutomationService {
           "gradientLimits": "Editable supported gradient controls. Seeded dither remains unsupported.",
           "patternPlacement": "Embedded patterns with uniform scale and rotation. Linked placement follows the shape. Unlinked placement stays in document coordinates.",
           "legacySolidFillRecords": "SoCo and vmsk with live origin metadata. Separate pixel masks remain editable.",
+          "legacyPatternFillRecords": "PtFl and vmsk with a shape marker. Linked phase is relative to the embedded reference point. Unscaled pattern sampling rounds absolute phase to a pixel and retains the editable fractional descriptor.",
+          "normalRGB8Opacity": "Unmasked Normal RGB8 shapes on the pixel grid round effective source alpha and accumulated alpha at each layer. The shared compositor supplies preview and save output.",
           "retainsImportAppearance": true],
         "editableLayerEffects": ["gradientOverlay": "Editable standard Gradient Overlay color stops, transparency stops, blend mode and placement in PSD and PSB. Native and API file transfers use the same codec."],
         "generatedEmbeddedPSB": ["maximumBytes": SmartObject.maximumArchive95SourceBytes,

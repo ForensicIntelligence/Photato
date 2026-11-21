@@ -50,6 +50,10 @@ The existing PSD and PSB upload and Adobe Execute Actions job paths restore nest
 
 [Development record](PSD_LEGACY_SHAPES_642.md).
 
+### Legacy pattern placement and Normal RGB8 opacity (checkpoint 685)
+
+`documentTransfers.photoshopContainers.liveShapes` advertises `legacyPatternFillRecords` and `normalRGB8Opacity`. Native preview and existing file downloads use the same opacity and shape renderer. Existing `shape.edit` requests retain fractional phase and embedded pattern identifiers. Linked legacy phase follows the stored reference point. Adobe v2 exposes no dedicated shape endpoint. [Development record](SHAPE_EDGE_COMPOSITING_685.md)
+
 ### Patterned shapes and live lines in PSD and PSB (checkpoint 684)
 
 `documentTransfers.photoshopContainers.liveShapes.paints` lists the supported editable fill and stroke types. Use the existing `POST /v1/documents/import`, `shape.edit`, and `GET /v1/documents/{id}/file.psd` or `file.psb` operations. Embedded pattern references, linked or document phase, and supported line endpoints survive the round trip. The published Adobe v2 contract has no dedicated shape endpoint. File resources use the shared native codec where admitted by the job. [Development record](EDITABLE_SHAPE_PATTERNS_684.md)

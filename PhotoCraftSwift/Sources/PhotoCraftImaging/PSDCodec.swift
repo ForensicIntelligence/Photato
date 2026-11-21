@@ -830,8 +830,9 @@ public enum PSDCodec {
         continue
       }
       let hasLiveShape = PSDLiveShape.hasDefinition(record.tags)
+      let generatedFill = !hasLiveShape && (record.tags["SoCo"] != nil || record.tags["PtFl"] != nil)
       guard
-        record.section != 0 || (!hasLiveShape && record.tags["SoCo"] != nil) || record.tags["PtFl"] != nil
+        record.section != 0 || generatedFill
           || record.tags["GdFl"] != nil
           || record.tags["clrL"] != nil || PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
           || record.tags["levl"] != nil
@@ -849,7 +850,7 @@ public enum PSDCodec {
       var surface = try Surface(
         width: native == nil ? max(1, record.w) : 1, height: native == nil ? max(1, record.h) : 1, depth: pixelDepth,
         colorEncoding: depth == 32 ? .linearRGB : .sRGB)
-      let rasterRows = record.section == 0 && (hasLiveShape || record.tags["SoCo"] == nil) && record.tags["PtFl"] == nil
+      let rasterRows = record.section == 0 && !generatedFill
         && record.tags["GdFl"] == nil
         && record.tags["clrL"] == nil && !PSDClassicAdjustment.keys.contains(where: { record.tags[$0] != nil })
         && record.tags["levl"] == nil
@@ -916,7 +917,7 @@ public enum PSDCodec {
       if let data = record.tags["GdFl"] {
         layer.content = .gradientFill(try PSDGradientFill.read(data))
       }
-      if let data = record.tags["PtFl"] {
+      if !hasLiveShape, let data = record.tags["PtFl"] {
         layer.content = .patternFill(try PSDPatternFill.read(data).fill)
       }
       if let levels = record.tags["levl"] {

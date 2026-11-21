@@ -109,6 +109,27 @@ public enum Renderer {
     }
     return blend.composite(backdrop: backdrop, source: source, opacity: opacity, x: x, y: y)
   }
+
+  private static func compositeRGB8NormalShape(backdrop b: Pixel, source s: Pixel, opacity: Int) -> Pixel {
+    func byte(_ value: Float) -> Int { Int((unit(value) * 255).rounded()) }
+    let sourceAlpha = (byte(s.a) * opacity + 127) / 255
+    guard sourceAlpha > 0 else { return b }
+    let backdropAlpha = byte(b.a)
+    if sourceAlpha == 255 || backdropAlpha == 0 {
+      var paint = s.quantized(.u8)
+      paint.a = Float(sourceAlpha) / 255
+      return paint
+    }
+    let sourceWeight = sourceAlpha * 255
+    let backdropWeight = backdropAlpha * (255 - sourceAlpha)
+    let weight = sourceWeight + backdropWeight
+    // Stage alpha in byte units at each layer boundary. Normalize straight
+    // color with the unrounded combined weight before storing its RGB8 sample.
+    func mix(_ background: Float, _ foreground: Float) -> Float {
+      Float((byte(background) * backdropWeight + byte(foreground) * sourceWeight + weight / 2) / weight) / 255
+    }
+    return Pixel(mix(b.r, s.r), mix(b.g, s.g), mix(b.b, s.b), Float((weight + 127) / 255) / 255)
+  }
   /// Linear storage avoids an encoded Float32 round trip between layers.
   static func compositeLinearPixel(
     _ blend: BlendMode, backdrop: Pixel, source: Pixel,
@@ -446,10 +467,17 @@ public enum Renderer {
       if x0 >= x1 || y0 >= y1 { continue }
       if d.depth != .f32 {
         let area = IntRect(x: x0, y: y0, width: x1-x0, height: y1-y0)
+        let shapeOpacity: Int? = if d.depth == .u8, d.colorMode == .rgb,
+          layer.shape != nil, mask == nil, layer.clipped != true, layer.style == nil, layer.blendMode == .normal {
+          Int((layer.opacity * 255).rounded())
+        } else { nil }
         output = try (consume output).compositingPixels(in: area) { x, y, backdrop in
           var p = surface.pixel(x: x - ox, y: y - oy)
           p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
           guard p.a > 0 else { return nil }
+          if let shapeOpacity {
+            return compositeRGB8NormalShape(backdrop: backdrop, source: p, opacity: shapeOpacity)
+          }
           return compositePixel(layer.blendMode, backdrop: backdrop, source: p,
             opacity: layer.opacity, depth: d.depth, x: x, y: y)
         }

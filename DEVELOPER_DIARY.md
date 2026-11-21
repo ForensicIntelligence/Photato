@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **684** · The 10 most recent entries, newest first.
+Source build **685** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 685 — Improve RGB8 shape opacity and legacy pattern placement
+
+Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB.
+
+All 310 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Scaled pattern repaint at 200%, 56%, and 25% still differs. Independent sampling matched the 200% fixture with a half-pixel coordinate shift and the 25% fixture with two rounded 2 × 2 reductions. Masked, styled, transformed and other depth or blend cases have separate acceptance requirements. Reopening in a live Photoshop 2026 session remains unverified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-685) · [Details](PhotoCraftSwift/docs/SHAPE_EDGE_COMPOSITING_685.md).
 
 ## 2026-11-20 — Step 684 — Keep patterns and straight lines editable in PSD and PSB
 
@@ -75,11 +83,3 @@ Switch between Warp and Free Transform while editing paths, masks or shape conto
 All 202 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored path output, exact guide and mode behavior in Photoshop, and physical canvas speed remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-676) · [Details](PhotoCraftSwift/docs/PATH_WARP_SWITCH_676.md).
-
-## 2026-11-20 — Step 675 — Warp editable paths on the canvas
-
-Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions.
-
-All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored warp output, switching from edited Warp back to Free Transform, and physical canvas performance remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-675) · [Details](PhotoCraftSwift/docs/PATH_WARP_675.md).

@@ -1,3 +1,9 @@
+**Source checkpoint 685.** Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB. All 310 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_685.md).
+
+**Next path editing work.** Qualify bounded pattern minification and the enlarged tile sampling grid. Extend the RGB8 color comparison at translucent shape edges.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 684.** Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight. All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_684.md).
 
 **Next path editing work.** Measure scaled pattern resampling, Photoshop's shape-edge compositing and diagonal gradient placement with additional author references.

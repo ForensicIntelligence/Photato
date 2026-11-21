@@ -5,6 +5,7 @@ import PhotoCraftCore
 enum PSDLiveShape {
   private static let currentKeys = ["vscg", "vsms", "vstk", "vogk", "vowv", "sn2P"]
   private static let legacyKeys = ["SoCo", "vmsk", "vogk", "vowv", "sn2P"]
+  private static let legacyPatternKeys = ["PtFl", "vmsk", "vogk", "vowv", "sn2P"]
   private static let originVersion = Data([0, 0, 0, 1])
   private static let alignments: [String: ShapeStroke.Alignment] = [
     "strokeStyleAlignCenter": .center, "strokeStyleAlignInside": .inside, "strokeStyleAlignOutside": .outside]
@@ -33,7 +34,12 @@ enum PSDLiveShape {
   }
 
   static func hasDefinition(_ tags: [String: Data]) -> Bool {
-    tags["vscg"] != nil || (tags["SoCo"] != nil && tags["vmsk"] != nil && tags["vogk"] != nil)
+    tags["vscg"] != nil || isLegacyPattern(tags)
+      || (tags["SoCo"] != nil && tags["vmsk"] != nil && tags["vogk"] != nil)
+  }
+
+  static func isLegacyPattern(_ tags: [String: Data]) -> Bool {
+    tags["vscg"] == nil && tags["PtFl"] != nil && tags["vmsk"] != nil && tags["sn2P"] != nil
   }
 
   static func read(_ tags: [String: Data], x: Int, y: Int, cache: Surface, document: CraftDocument) throws -> ShapeContent {
@@ -59,12 +65,17 @@ enum PSDLiveShape {
       fill = fillEnabled ? paint : .none
       stroke = style
     } else {
-      guard primitives.count == 1, let generator = tags["SoCo"], let path = tags["vmsk"], tags["vsms"] == nil,
-        tags["vstk"] == nil else {
-        throw CraftError.unsupported("Legacy Photoshop live shapes require solid fill and a single vector contour.")
+      guard let path = tags["vmsk"], tags["vsms"] == nil, tags["vstk"] == nil else {
+        throw CraftError.unsupported("Unrepresented legacy Photoshop shape path or stroke.")
       }
       vector = path
-      fill = try .init(color: PSDSolidColor.read(generator))
+      if isLegacyPattern(tags), let generator = tags["PtFl"], tags["SoCo"] == nil {
+        fill = try patternPaint(PSDPatternFill.read(generator).fill)
+      } else if primitives.count == 1, let generator = tags["SoCo"], tags["PtFl"] == nil {
+        fill = try .init(color: PSDSolidColor.read(generator))
+      } else {
+        throw CraftError.unsupported("Unrepresented legacy Photoshop shape fill.")
+      }
       stroke = ShapeStroke()
     }
     let mask = try PSDPaths.readMask(vector, width: document.width, height: document.height)
@@ -89,10 +100,11 @@ enum PSDLiveShape {
     var definition = ShapeDefinition(geometry: primitives.first?.geometry ?? .init(), fill: fill, stroke: stroke)
     definition.fillRule = mask.path.fillRule
     definition = try localize(definition, primitives: primitives, path: mask.path, x: x, y: y, document: document)
-    // Shape pattern descriptors store phase against the document. The linked
-    // native sampler uses shape-local coordinates so it follows later moves.
     let local = Transform2D.translation(-Double(x), -Double(y))
-    try moveLinkedPattern(&definition.fill, by: local)
+    // Legacy patterns store linked phase relative to the Photoshop reference
+    // point. Modern shape paint uses document coordinates.
+    let reference = isLegacyPattern(tags) ? try legacyPatternReference(tags) : .identity
+    try moveLinkedPattern(&definition.fill, by: local * reference)
     try moveLinkedPattern(&definition.stroke.paint, by: local)
     if [fill, stroke.paint].contains(where: { $0.gradient?.aligned == true }) {
       definition.paintFrame = try definition.controlPaintFrame()
@@ -293,6 +305,17 @@ enum PSDLiveShape {
     paint.pattern = pattern
   }
 
+  private static func legacyPatternReference(_ tags: [String: Data]) throws -> Transform2D {
+    guard let data = tags["fxrp"] else { return .identity }
+    var reference = PSDReader(data: data)
+    let x = Double(bitPattern: try reference.number(8))
+    let y = Double(bitPattern: try reference.number(8))
+    guard reference.remaining == 0, x.isFinite, y.isFinite, abs(x) <= 1_000_000, abs(y) <= 1_000_000 else {
+      throw CraftError.invalid("Invalid Photoshop pattern reference point.")
+    }
+    return .translation(x, y)
+  }
+
   private static func photoshopPattern(_ fill: PatternFill, layer: Layer, document: CraftDocument)
     throws -> (PatternFill, RasterPattern) {
     guard let pattern = document.pattern(fill.patternID) else {
@@ -475,8 +498,24 @@ enum PSDLiveShape {
       if raw["SoCo"] != nil, raw["vogk"] != nil, raw["vmsk"] == vector {
         return legacyKeys.compactMap { key in raw[key].map { (key, $0) } }
       }
+      if isLegacyPattern(raw), raw["vmsk"] == vector {
+        return legacyPatternKeys.compactMap { key in raw[key].map { (key, $0) } }
+      }
     }
     let stroke = definition.stroke
+    if let raw = layer.sourceTags, isLegacyPattern(raw), let pattern = definition.fill.pattern,
+      stroke.paint.kind == .none, primitives.isEmpty {
+      var (phase, resource) = try photoshopPattern(pattern, layer: layer, document: document)
+      if phase.linked {
+        let reference = try legacyPatternReference(raw)
+        phase.placement.phaseX -= Float(reference.tx)
+        phase.placement.phaseY -= Float(reference.ty)
+      }
+      return try [
+        ("PtFl", PSDPatternFill.write(phase, pattern: resource, original: raw["PtFl"])),
+        ("vmsk", PSDPaths.writeMask(VectorMask(path: path), width: document.width, height: document.height)),
+      ]
+    }
     let fill = try fillGenerator(definition.fill, layer: layer, document: document)
     let paint = try strokeDescriptor(stroke.paint, layer: layer, document: document)
     let strokeStyle = PSDDescriptor("strokeStyle", items: [
@@ -567,11 +606,14 @@ enum PSDLiveShape {
     }
     let reference = segments(expected.components[0].knots), observed = segments(component.knots)
     guard !reference.isEmpty, reference.count == observed.count else { return false }
+    // Adobe's stored ellipse handles can differ by more than one fixed-point
+    // path step after evaluating the cubic controls in Float32.
+    let pointTolerance = primitive.geometry.kind == .ellipse ? tolerance * 2 : tolerance
     func sameOrder(_ candidate: [[PathPoint]]) -> Bool {
       candidate.indices.contains { start in
         reference.indices.allSatisfy { index in
           zip(reference[index], candidate[(start + index) % candidate.count]).allSatisfy { a, b in
-            abs(a.x - b.x) <= tolerance && abs(a.y - b.y) <= tolerance
+            abs(a.x - b.x) <= pointTolerance && abs(a.y - b.y) <= pointTolerance
           }
         }
       }

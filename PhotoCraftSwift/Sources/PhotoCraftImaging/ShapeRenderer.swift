@@ -352,13 +352,27 @@ public enum ShapeRenderer {
     let sourceFrame:ShapePaintFrame?
     let ramp:GradientRamp?,field:GradientField?,pattern:PatternFillSampler?
     init(_ paint:ShapePaint,bounds:IntRect,frame:ShapePaintFrame?,layer:Layer,document:CraftDocument)throws{
-      self.paint=paint;sourceFrame=frame;transform=try layer.shapeTransform()
+      let placement = try layer.shapeTransform()
+      self.paint=paint;sourceFrame=frame;transform=placement
       if let gradient=paint.gradient {
         ramp=try GradientRamp(gradient.gradient)
         let frame=gradient.aligned ? bounds:IntRect(x:0,y:0,width:document.width,height:document.height)
         field=try GradientField(gradient.placement,frame:frame)
       }else{ramp=nil;field=nil}
-      pattern=try paint.pattern.map{try PatternFillSampler($0,in:document)}
+      pattern = try paint.pattern.map { fill in
+        var sampling = fill
+        if let tags = layer.sourceTags, PSDLiveShape.isLegacyPattern(tags), fill.geometry == nil,
+          fill.placement.scale == 100, fill.placement.angle == 0,
+          !fill.linked || (placement.a == 1 && placement.b == 0 && placement.c == 0 && placement.d == 1) {
+          // Photoshop snaps the absolute phase of an unscaled legacy tile.
+          // Keep the fractional phase in the editable descriptor.
+          let originX = fill.linked ? placement.tx : 0
+          let originY = fill.linked ? placement.ty : 0
+          sampling.placement.phaseX = Float(floor(Double(fill.placement.phaseX) + originX + 0.5) - originX)
+          sampling.placement.phaseY = Float(floor(Double(fill.placement.phaseY) + originY + 0.5) - originY)
+        }
+        return try PatternFillSampler(sampling, in: document)
+      }
     }
     func sourceParameter(_ frame:ShapePaintFrame,x:Double,y:Double)->Float {
       let p=paint.gradient!.placement,w=max(1,frame.width),h=max(1,frame.height)
