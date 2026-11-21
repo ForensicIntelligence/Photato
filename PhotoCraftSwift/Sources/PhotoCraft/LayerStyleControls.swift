@@ -15,23 +15,41 @@ struct LayerStyleDraft: Identifiable, Sendable {
 }
 
 extension EditorStore {
-  var canBeginLayerStyle: Bool {
+  var requiresRegionalLayerEffects: Bool { LayerStyle.requiresRegionalEffects(in: document) }
+
+  private var layerStyleTarget: Layer? {
     guard canBeginLayerCreation, !editingComponent, !editingMask,
-      let layer = activeLayer, !document.isLocked(layer.id),
-      document.width <= 8_388_608 / document.height else { return false }
-    if case .adjustment = layer.content { return false }
-    return true
+      let layer = activeLayer, !document.isLocked(layer.id) else { return nil }
+    if case .adjustment = layer.content { return nil }
+    return layer
+  }
+
+  var canBeginLayerStyle: Bool {
+    guard let layer = layerStyleTarget else { return false }
+    if !requiresRegionalLayerEffects { return true }
+    let style = layer.style ?? LayerStyle()
+    return style.supportsLayerCanvas(document)
+      && (style.effects.contains { $0.kind == .patternOverlay } || document.patterns?.isEmpty == false)
+  }
+
+  func canAddLayerEffect(_ kind: LayerEffect.Kind) -> Bool {
+    if requiresRegionalLayerEffects && kind != .patternOverlay { return false }
+    return kind != .patternOverlay || document.patterns?.isEmpty == false
   }
   var canBeginBlendingOptions:Bool {canBeginBlendingOptions(for:document.activeLayerID)}
   func canBeginBlendingOptions(for id:UUID?)->Bool {
     guard canBeginLayerCreation,!editingComponent,!editingMask,let id,let layer=document.layers.first(where:{$0.id==id}),!document.isLocked(id)else{return false}
-    let ordinary:Bool;if case .adjustment=layer.content{ordinary=false}else{ordinary=document.width<=8_388_608/document.height}
-    return ordinary || (document.colorMode == .rgb && (layer.style==nil || layer.style?.isChannelBlendingOnly==true))
+    if case .adjustment = layer.content {
+      return document.colorMode == .rgb && (layer.style == nil || layer.style?.isChannelBlendingOnly == true)
+    }
+    return (layer.style ?? LayerStyle()).supportsLayerCanvas(document)
   }
   func beginBlendingOptions() {
     guard canBeginBlendingOptions,let layer=activeLayer else{return}
     var style=layer.style ?? LayerStyle()
-    let only:Bool;if case .adjustment=layer.content{only=true}else{only=document.width>8_388_608/document.height}
+    let only: Bool
+    if case .adjustment = layer.content { only = true }
+    else { only = requiresRegionalLayerEffects && !canBeginLayerStyle }
     if only,style.restrictedChannels==nil{style.restrictedChannels=[]}
     layerStyleDraft = .init(id:layer.id,original:document,style:style,globalLight:document.globalLight,blendingOnly:only)
     render()
@@ -44,8 +62,9 @@ extension EditorStore {
   }
   var canCopyLayerStyle: Bool {(canBeginLayerStyle || (canBeginBlendingOptions && activeLayer?.style?.isChannelBlendingOnly==true)) && activeLayer?.style != nil }
   var canPasteLayerStyle: Bool {
-    guard let style=Self.copiedLayerStyle,style.restrictedChannels==nil || document.colorMode == .rgb else{return false}
-    return canBeginLayerStyle || (style.isChannelBlendingOnly && canBeginBlendingOptions)
+    guard let style = Self.copiedLayerStyle, style.restrictedChannels == nil || document.colorMode == .rgb,
+      style.supportsLayerCanvas(document) else { return false }
+    return layerStyleTarget != nil || (style.isChannelBlendingOnly && canBeginBlendingOptions)
   }
   var canClearLayerStyle: Bool {
     let targets=document.layers.filter{groupSelectionIDs.contains($0.id) && $0.style != nil}
@@ -53,6 +72,7 @@ extension EditorStore {
   }
   func beginLayerStyle(_ kind: LayerEffect.Kind? = nil) {
     guard canBeginLayerStyle, let layer = activeLayer else { return }
+    if let kind, !canAddLayerEffect(kind) { return }
     layerStyleDraft = .init(id: layer.id, original: document, style: layer.style ?? LayerStyle(),globalLight:document.globalLight)
     if let kind {
       if let index = layerStyleDraft?.style.effects.firstIndex(where: { $0.kind == kind }) {
@@ -68,7 +88,8 @@ extension EditorStore {
     render()
   }
   func addLayerEffect(_ kind: LayerEffect.Kind) {
-    guard var draft = layerStyleDraft, draft.style.effects.count < 32 else { return }
+    guard var draft = layerStyleDraft, !draft.blendingOnly, !draft.globalLightOnly,
+      draft.style.effects.count < 32, canAddLayerEffect(kind) else { return }
     var effect = LayerEffect(kind)
     if kind == .gradientOverlay { effect.gradient = GradientFill(gradient: .blackToWhite) }
     if kind == .patternOverlay {
@@ -120,13 +141,17 @@ extension EditorStore {
         guard let light=draft.globalLight else {throw CraftError.invalid("Missing shared light.")};try light.validate();layerStyleDraft=nil;perform(.globalLight(light));return
       }
       try draft.style.validate(in: document)
+      guard draft.style.supportsLayerCanvas(document) else {
+        throw CraftError.unsupported("This layer style requires a whole-canvas effect map of at most 8,388,608 pixels.")
+      }
       layerStyleDraft = nil
       if draft.globalLight != draft.original.globalLight {perform(.layerStyles(LayerStyleEdit(layerIDs:[draft.id],style:draft.style,globalLight:draft.globalLight)))}
       else {perform(.layerStyle([draft.id], draft.style))}
     } catch { self.error = error.localizedDescription }
   }
   func expandLayerEffect(_ index:Int) {
-    guard var draft=layerStyleDraft,draft.style.effects.indices.contains(index),draft.style.effects[index].advanced==nil else{return}
+    guard !requiresRegionalLayerEffects, var draft=layerStyleDraft,
+      draft.style.effects.indices.contains(index),draft.style.effects[index].advanced==nil else{return}
     var effect=draft.style.effects[index],advanced=LayerEffectAdvanced()
     if let fill=effect.gradient {
       let stops=fill.gradient.colors.map{EffectGradientStop($0.position,$0.color.resolved(foreground:.black,background:.white))}
@@ -147,7 +172,9 @@ extension EditorStore {
     if path.hasSuffix("Copy Layer Style") { return canCopyLayerStyle }
     if path.hasSuffix("Paste Layer Style") { return canPasteLayerStyle }
     if path.hasSuffix("Clear Layer Style") { return canClearLayerStyle }
-    if path.hasSuffix("Pattern Overlay…"), document.patterns?.isEmpty != false { return false }
+    if let kind = LayerEffect.Kind.allCases.first(where: { path.hasSuffix($0.title + "…") }) {
+      return canBeginLayerStyle && canAddLayerEffect(kind)
+    }
     return canBeginLayerStyle
   }
 }
@@ -231,7 +258,7 @@ struct LayerStyleSheet: View {
             Menu("Add Effect") {
               ForEach(LayerEffect.Kind.allCases, id: \.self) { kind in
                 Button(kind.title) { store.addLayerEffect(kind) }
-                  .disabled(kind == .patternOverlay && store.document.patterns?.isEmpty != false)
+                  .disabled(!store.canAddLayerEffect(kind))
               }
             }.disabled(draft?.blendingOnly==true || (draft?.style.effects.count ?? 0) >= 32)
             Button("Remove") {
@@ -273,7 +300,11 @@ struct LayerStyleSheet: View {
               effectControls(effect)
               if effect.advanced != nil {
                 AdvancedLayerEffectControls(effect:Binding(get:{self.effect ?? effect},set:{value in store.updateLayerEffect(selected){$0=value}}),document:store.document)
-              }else{Button("Expanded Effect Controls…"){store.expandLayerEffect(selected)};Text("Expanded controls can change the existing appearance. Review Preview before applying.").font(.caption).foregroundStyle(.secondary)}
+              } else if !store.requiresRegionalLayerEffects {
+                Button("Expanded Effect Controls…") { store.expandLayerEffect(selected) }
+                Text("Expanded controls can change the existing appearance. Review Preview before applying.")
+                  .font(.caption).foregroundStyle(.secondary)
+              }
             } else { Text("Choose Add Effect to style this layer.").foregroundStyle(.secondary) }
             }
           }.padding(.trailing, 8)

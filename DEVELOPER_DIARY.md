@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **687** · The 10 most recent entries, newest first.
+Source build **688** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 688 — Render Pattern Overlay on large canvases
+
+Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.
+
+Across RGB8, RGB16 and RGB32, a 30 × 30 crop that crossed tile boundaries matched the small-canvas control byte for byte. The test covered linked and document-relative placement, partial layer coverage, a pixel mask, and a translucent backdrop. The largest PSB reopened through the native file-backed reader and preserved the style and all 3,600 crop bytes. A 6,000 × 2,000 PSB was byte-identical across the three builds. The loopback API applied and patched the overlay on a maximum-size document and transferred an editable 4,096 × 4,096 PSB.
+
+448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen. Dense full-canvas output, mixed spatial effects and maximum-size HTTP PSB transfers remain open. Photoshop 2026 reported version 27.2.0. Its document and JavaScript commands timed out, so live pixel and reopen comparisons remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-688) · [Details](PhotoCraftSwift/docs/LARGE_PATTERN_OVERLAY_688.md).
 
 ## 2026-11-20 — Step 687 — Keep Pattern Overlay editable in PSD and PSB
 
@@ -79,11 +89,3 @@ Move selected path components forward or backward, change how they overlap, or m
 All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison and Adobe-authored byte equality remain open. Merge requires closed contours and a mergeable overlap region. The unbounded exterior of a leading subtraction on a shape layer remains open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-679) · [Details](PhotoCraftSwift/docs/PATH_COMPONENT_OPERATIONS_679.md).
-
-## 2026-11-20 — Step 678 — Align and distribute components on an editable path
-
-Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
-
-All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop layout comparison, exact Adobe-produced file bytes, arbitrary live origins and shapes outside the supported PSD paint and stroke settings remain open. Native Photato archives retain the edited curves.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-678) · [Details](PhotoCraftSwift/docs/PATH_COMPONENT_LAYOUT_678.md).

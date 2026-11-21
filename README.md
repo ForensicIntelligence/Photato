@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 687.** Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_687.md).
+**Development alpha — source build 688.** Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_688.md).
 
 ## Project layout
 

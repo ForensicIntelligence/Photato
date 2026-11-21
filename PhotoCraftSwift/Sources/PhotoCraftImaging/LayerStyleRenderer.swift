@@ -4,7 +4,10 @@ import PhotoCraftCore
 /// CPU style stack following PhotoCraft's effects.rs ordering. Distance and blur
 /// kernels are bounded native approximations; exact Photoshop contours remain open.
 enum LayerStyleRenderer {
-  static let maximumPixels = 8_388_608
+  /// Larger regional requests use paged patches to keep padded source maps
+  /// and their temporary pixel arrays within the effect scratch budget.
+  static let maximumDirectRegionPixels = 2_097_152
+
   struct Map {
     let w: Int, h: Int
     var v: [Float]
@@ -65,21 +68,40 @@ enum LayerStyleRenderer {
     over backdrop: Surface, region: IntRect, cache:GroupRenderCache = GroupRenderCache()) throws -> Surface {
     guard let style = layer.style else { return backdrop }
     try style.validate(in: document)
-    if style.requiresAdvancedArchive { return try SourceLayerStyleRenderer.composite(layer,clips:clips,in:document,over:backdrop,region:region,cache:cache) }
-    let w=document.width, h=document.height
-    guard w <= maximumPixels / h else { throw CraftError.unsupported("Layer styles support canvases up to 8,388,608 pixels.") }
+    let regional = LayerStyle.requiresRegionalEffects(in: document)
+    guard style.supportsLayerCanvas(document) else {
+      throw CraftError.unsupported("This layer style requires a whole-canvas effect map of at most 8,388,608 pixels.")
+    }
+    let work = regional ? region : IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    if regional, clips.contains(where: {
+      if case .adjustment(.modern(let adjustment)) = $0.content { return adjustment.needsNeighborhood }
+      return false
+    }) {
+      throw CraftError.unsupported("A clipped neighborhood adjustment requires whole-canvas layer style preparation.")
+    }
+    let w = work.width, h = work.height
+    guard w > 0, h > 0 else { return backdrop }
+    guard w <= LayerStyle.maximumWholeCanvasPixels / h else {
+      throw CraftError.unsupported("This layer style render exceeds its effect map budget.")
+    }
+    let effectCache = regional ? cache.window(work) : cache.fullCanvas()
+    if style.requiresAdvancedArchive {
+      return try SourceLayerStyleRenderer.composite(layer, clips: clips, in: document, over: backdrop,
+        region: region, cache: effectCache, sampleBounds: regional ? work : nil)
+    }
     var plain = layer; plain.style = nil; plain.opacity = 1; plain.blendMode = .normal
-    var source = try Renderer.isolatedContent(plain, in: document, cache: cache)
-    if !clips.isEmpty { source = try Renderer.compositeClips(clips, onto: source, in: document, cache: cache) }
+    var source = try Renderer.isolatedContent(plain, in: document, cache: effectCache)
+    if !clips.isEmpty { source = try Renderer.compositeClips(clips, onto: source, in: document, cache: effectCache) }
     var alpha = Map(w:w,h:h,v:[Float](repeating:0,count:w*h))
+    func index(_ x: Int, _ y: Int) -> Int { (y - work.y) * w + x - work.x }
     let effects = style.enabled ? style.effects.filter { $0.enabled && $0.opacity > 0 } : []
     let needsGradientFrame = effects.contains { $0.kind == .gradientOverlay && $0.gradient?.aligned == true }
-    var left = w, top = h, right = 0, bottom = 0
-    for y in 0..<h {
+    var left = work.x + w, top = work.y + h, right = work.x, bottom = work.y
+    for y in work.y..<(work.y + h) {
       try Task.checkCancellation()
-      for x in 0..<w {
+      for x in work.x..<(work.x + w) {
         let coverage = source.pixel(x: x, y: y).a
-        alpha.v[y * w + x] = coverage
+        alpha.v[index(x, y)] = coverage
         if needsGradientFrame, coverage > 0 {
           left = min(left, x); right = max(right, x + 1)
           top = min(top, y); bottom = max(bottom, y + 1)
@@ -88,8 +110,9 @@ enum LayerStyleRenderer {
     }
     let gradientFrame = right > left && bottom > top
       ? IntRect(x: left, y: top, width: right - left, height: bottom - top) : nil
-    let exteriorDistance = try alpha.distance(toInside:true)
-    let interiorDistance = try alpha.distance(toInside:false)
+    // Only spatial effects use distance maps. A regional style is pointwise.
+    let exteriorDistance = regional ? alpha : try alpha.distance(toInside: true)
+    let interiorDistance = regional ? alpha : try alpha.distance(toInside: false)
     let linear = document.depth == .f32
     func read(_ s: Surface, _ x: Int, _ y: Int) -> Pixel { linear ? s.linearPixel(x:x,y:y) : s.pixel(x:x,y:y) }
     func write(_ p: Pixel, _ x: Int, _ y: Int, _ s: inout Surface) {
@@ -119,12 +142,12 @@ enum LayerStyleRenderer {
       let dx = -cos(angle)*distance, dy=sin(angle)*distance
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
         var p=color(effect.color)
-        p.a *= map.sample(Double(x)-dx,Double(y)-dy)*(1-alpha.v[y*w+x])
+        p.a *= map.sample(Double(x)-dx,Double(y)-dy)*(1-alpha.v[index(x, y)])
         write(composite(p,read(result,x,y),effect.blendMode,effect.opacity,x,y),x,y,&result)
       } }
     }
     var body=source
-    if style.fillOpacity != 1 { for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
+    if style.fillOpacity != 1 { for y in work.y..<(work.y + h) { try Task.checkCancellation(); for x in work.x..<(work.x + w) {
       var p=read(body,x,y);p.a *= style.fillOpacity;write(p,x,y,&body)
     } } }
     let order: [LayerEffect.Kind] = [.patternOverlay,.gradientOverlay,.colorOverlay,.satin,.innerGlow,.innerShadow,.stroke,.bevelEmboss]
@@ -139,17 +162,17 @@ enum LayerStyleRenderer {
       let angle = (effect.useGlobalLight ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle)*Double.pi/180
       let dx = -cos(angle)*effect.distance*scale, dy = sin(angle)*effect.distance*scale
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
-        let a=alpha.v[y*w+x];if a <= 0 { continue }
+        let a=alpha.v[index(x, y)];if a <= 0 { continue }
         var p=color(effect.color), coverage: Float = 1
         switch kind {
         case .gradientOverlay: if let gradient { p=color(gradient.sample(x:x,y:y)) }
         case .patternOverlay: if let pattern { p=color(pattern.sample(x:Double(x)+0.5,y:Double(y)+0.5)) }
         case .innerShadow: coverage=shadow!.sample(Double(x)-dx,Double(y)-dy,outside:1)
-        case .innerGlow: coverage=shadow!.v[y*w+x]
+        case .innerGlow: coverage=shadow!.v[index(x, y)]
         case .satin: coverage=abs(shadow!.sample(Double(x)-dx,Double(y)-dy)-shadow!.sample(Double(x)+dx,Double(y)+dy))
         case .stroke:
           let inside = effect.position == .outside ? Float(0) : effect.position == .center ? size/2 : size
-          coverage=unit(inside-interiorDistance.v[y*w+x]+1)
+          coverage=unit(inside-interiorDistance.v[index(x, y)]+1)
         case .bevelEmboss:
           let gx=bevel!.sample(Double(x+1),Double(y))-bevel!.sample(Double(x-1),Double(y))
           let gy=bevel!.sample(Double(x),Double(y+1))-bevel!.sample(Double(x),Double(y-1))
@@ -170,7 +193,7 @@ enum LayerStyleRenderer {
     for effect in effects.reversed() where effect.kind == .stroke && effect.position != .inside {
       let size=Float(effect.size*scale*(effect.position == .center ? 0.5 : 1))
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
-        var p=color(effect.color);p.a *= unit(size-exteriorDistance.v[y*w+x]+1)*(1-alpha.v[y*w+x])
+        var p=color(effect.color);p.a *= unit(size-exteriorDistance.v[index(x, y)]+1)*(1-alpha.v[index(x, y)])
         write(composite(p,read(result,x,y),effect.blendMode,effect.opacity,x,y),x,y,&result)
       } }
     }

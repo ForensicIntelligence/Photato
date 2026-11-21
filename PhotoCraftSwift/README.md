@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 688.** Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000. [Qualification](docs/SOURCE_PUBLICATION_688.md).
+
 **Source checkpoint 687.** Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles. [Qualification](docs/SOURCE_PUBLICATION_687.md).
 
 **Source checkpoint 686.** Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases. [Qualification](docs/SOURCE_PUBLICATION_686.md).

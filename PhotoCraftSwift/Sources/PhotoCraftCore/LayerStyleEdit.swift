@@ -36,8 +36,8 @@ public struct LayerStyleEdit:Sendable {
         throw CraftError.invalid("Unlock this layer and its parent groups before editing it.")
       }
       try style?.validate(in: candidate)
-      if let style,!style.isChannelBlendingOnly, document.width > 8_388_608 / document.height {
-        throw CraftError.unsupported("Layer styles support canvases up to8,388,608 pixels.")
+      if let style, !style.supportsLayerCanvas(candidate) {
+        throw CraftError.unsupported("This layer style requires a whole-canvas effect map of at most 8,388,608 pixels.")
       }
       if case .adjustment = document.layers[index].content,style != nil,style?.isChannelBlendingOnly != true {
         throw CraftError.unsupported("Layer styles on adjustment layers are not available yet.")

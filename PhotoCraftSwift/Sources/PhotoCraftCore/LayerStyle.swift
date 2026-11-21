@@ -80,6 +80,24 @@ public struct LayerEffect: Codable, Equatable, Sendable {
 }
 
 public struct LayerStyle: Codable, Equatable, Sendable {
+  package static let maximumWholeCanvasPixels = 8_388_608
+
+  package var supportsRegionalPatternOverlay: Bool {
+    sourcePSDData == nil && effects.allSatisfy {
+      $0.kind == .patternOverlay && $0.pattern != nil && $0.advanced == nil
+    }
+  }
+
+  package static func requiresRegionalEffects(in document: CraftDocument) -> Bool {
+    document.width > maximumWholeCanvasPixels / document.height
+  }
+
+  package func supportsLayerCanvas(_ document: CraftDocument) -> Bool {
+    !Self.requiresRegionalEffects(in: document) || isChannelBlendingOnly
+      || (supportsRegionalPatternOverlay && document.colorMode == .rgb
+        && document.inkMode == nil && document.restrictedMode == nil)
+  }
+
   /// Layer-local linked pattern anchor; a nil value follows the shape bounds.
   public var referenceOffset:PathPoint?
   /// Inert original PSD descriptor bytes; editable export must qualify their mapping.

@@ -1,3 +1,7 @@
+**Source checkpoint 688.** Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000. 448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_688.md).
+
+**Next layer style work.** Exercise Pattern Overlay on opaque large backgrounds without a full-resolution backing composite. Measure the existing Photoshop reference cases for further modes and placements, and recheck compact PSB transfer with live Photoshop.
+
 **Source checkpoint 687.** Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles. 446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_687.md).
 
 **Next path editing work.** Use bounded Pattern Overlay rendering for large documents. The current style limit rejects a 30 × 30 viewport on a 300,000 × 300,000 canvas. Extend the Photoshop reference set to other blend modes and placements.

@@ -191,6 +191,10 @@ public enum Renderer {
     }
     let needsPaged=preferPaged || requested.width * requested.height > Surface.maximumDensePixels
       || (d.colorMode == .rgb && groupCompositionExceedsBudget(d,region:requested,video:videoTime != nil))
+      || (LayerStyle.requiresRegionalEffects(in: d)
+        && requested.width * requested.height > LayerStyleRenderer.maximumDirectRegionPixels
+        && d.layers.contains { $0.visible && $0.style?.supportsRegionalPatternOverlay == true
+          && $0.style?.isChannelBlendingOnly != true })
     if needsPaged {
       if !forLayerOutput, (!preferPaged || requested.width*requested.height>Surface.maximumDensePixels),inputTarget == nil, videoTime == nil,
         let sparse = try SparseCanvasRenderer.composite(d) { return sparse }
@@ -312,7 +316,8 @@ public enum Renderer {
         continue
       }
       if layer.style != nil {
-        output = try LayerStyleRenderer.composite(layer, in: d, over: output, region: region)
+        output = try LayerStyleRenderer.composite(layer, in: d, over: output, region: region,
+          cache: GroupRenderCache(inputTarget: inputTarget, region: region, facts: facts))
         continue
       }
       output = try compositeFlatContent(layer, in: d, over: consume output, region: region, facts: facts)

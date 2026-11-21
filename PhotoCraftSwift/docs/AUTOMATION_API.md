@@ -50,6 +50,14 @@ The existing PSD and PSB upload and Adobe Execute Actions job paths restore nest
 
 [Development record](PSD_LEGACY_SHAPES_642.md).
 
+### Pattern Overlay on large RGB canvases (checkpoint 688)
+
+The layer style capability reports `regionalPatternOverlay`. Send a basic Pattern Overlay to `layer.style` or modify it through `layer.style.patch`, using a pattern already present in the document. Rendering preserves document and linked layer coordinates when working in regions. Basic Pattern Overlay can use the full 300,000-pixel document dimension. Other effects still use the whole-canvas preparation limit reported by `maximumCanvasPixels`.
+
+For editable RGB PSB transfers, send `X-Photato-Export-Options: {"psdMaximizeCompatibility":false}` to omit the merged image. The saved pattern and overlay remain editable. Maximum-size PSB files can exceed the HTTP response budget because the format still has a placeholder image when compatibility is disabled. Use the native file-backed save for those files. The published Adobe Photoshop API v2 layer-effects contract currently documents Drop Shadow. Pattern Overlay editing uses the Photato commands above.
+
+[Qualification](SOURCE_PUBLICATION_688.md)
+
 ### Editable Photoshop Pattern Overlay (checkpoint 687)
 
 `documentTransfers.photoshopContainers.editableLayerEffects.patternOverlay` describes editable single Pattern Overlay interchange. The existing `layer.style` and `layer.style.patch` commands use the native style model. PSD and PSB download preserve embedded tiles, reference point, scale, angle, link, opacity and blend mode. [Development record](EDITABLE_PATTERN_OVERLAY_687.md)
@@ -2240,7 +2248,7 @@ The existing `/v1/action-jobs` and Adobe-compatible `/v2/execute-actions` use th
 {"command":"layer.style","revision":"CURRENT_REVISION","parameters":{"layerIDs":["LAYER_UUID"],"style":{"effects":[{"kind":"dropShadow","opacity":0.6,"size":12,"distance":18},{"kind":"stroke","size":3,"color":{"r":1,"g":1,"b":1,"a":1}}]}}}
 ```
 
-Kinds: `bevelEmboss`, `stroke`, `innerShadow`, `innerGlow`, `satin`, `colorOverlay`, `gradientOverlay`, `patternOverlay`, `outerGlow`, `dropShadow`. The native engine currently supports32 effects and8,388,608 canvas pixels. Colors are SDR RGBA0...1, blend names are the native display names. Gradient/Pattern Overlay require the corresponding native `GradientFill`/`PatternFill` object; pattern IDs must exist in the document. Exact source schemas are in `LayerStyle.swift`, `GradientFill.swift`, `Gradient.swift` and `PatternFill.swift`, and complete objects are observable in state.
+Kinds: `bevelEmboss`, `stroke`, `innerShadow`, `innerGlow`, `satin`, `colorOverlay`, `gradientOverlay`, `patternOverlay`, `outerGlow`, `dropShadow`. The native engine supports up to 32 effects. Styles that require whole-canvas preparation retain an 8,388,608-pixel limit. Colors are SDR RGBA0...1, blend names are the native display names. Gradient/Pattern Overlay require the corresponding native `GradientFill`/`PatternFill` object; pattern IDs must exist in the document. Exact source schemas are in `LayerStyle.swift`, `GradientFill.swift`, `Gradient.swift` and `PatternFill.swift`, and complete objects are observable in state.
 
 Native downloads of styled documents require `X-Photato-Archive-Version: 13`; desktop Save automatically selects13. Older version requests reject with422 instead of losing effects. PSD/PSB retain the represented shadows,glows,solid strokes and color overlays. The remaining four effects require a native original or explicitly flattened raster output. Styled merge and unsupported PSD/TIFF descriptor variants reject. Style rendering is approximate; per-style shared light, simple Inner Bevel and bounded canvas sampling are not full Photoshop semantics.
 

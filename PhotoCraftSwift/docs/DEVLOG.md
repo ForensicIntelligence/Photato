@@ -706,7 +706,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 685 | 2026-11-20 | [Improve RGB8 shape opacity and legacy pattern placement](#dev-step-685) |
 | 686 | 2026-11-20 | [Match sampled Photoshop legacy pattern scales](#dev-step-686) |
 | 687 | 2026-11-20 | [Keep Pattern Overlay editable in PSD and PSB](#dev-step-687) |
+| 688 | 2026-11-21 | [Render Pattern Overlay on large canvases](#dev-step-688) |
 <!-- history-index:end -->
+
+<a id="dev-step-688"></a>
+
+## 2026-11-21 — Render Pattern Overlay on large canvases
+
+Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.
+
+The previous build rejected the 30 × 30 viewport on a maximum-size RGB canvas. The two style renderers now work in document-coordinate patches for basic overlays. The paged compositor uses source and mask coverage to bound work. The existing dialog hides expanded effect controls on large canvases, and the capabilities endpoint reports the available scope.
+
+The first Debug run found a separate limit in the PSB transfer. Although the merged picture was omitted, an RLE placeholder exceeded the in-memory response budget. The repeat used the native file-backed encoder and decoder at maximum size and exercised the same transfer over HTTP at 4,096 × 4,096.
+
+Across RGB8, RGB16 and RGB32, a 30 × 30 crop that crossed tile boundaries matched the small-canvas control byte for byte. The test covered linked and document-relative placement, partial layer coverage, a pixel mask, and a translucent backdrop. The largest PSB reopened through the native file-backed reader and preserved the style and all 3,600 crop bytes. A 6,000 × 2,000 PSB was byte-identical across the three builds. The loopback API applied and patched the overlay on a maximum-size document and transferred an editable 4,096 × 4,096 PSB.
+
+448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen. Dense full-canvas output, mixed spatial effects and maximum-size HTTP PSB transfers remain open. Photoshop 2026 reported version 27.2.0. Its document and JavaScript commands timed out, so live pixel and reopen comparisons remain open. The overall desktop workflow estimate remains 50%.
+
+[Development record](LARGE_PATTERN_OVERLAY_688.md) · [Qualification](SOURCE_PUBLICATION_688.md).
 
 <a id="dev-step-687"></a>
 

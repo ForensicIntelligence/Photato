@@ -5,6 +5,95 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerStyleWorkflowTests: XCTestCase {
+  @MainActor func testMaximumPatternOverlayNativePreviewAndAPIEdits() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let size = Surface.maxDimension
+      var artwork = try CraftDocument(width: size, height: size)
+      let region = IntRect(x: size - 104, y: size - 104, width: 30, height: 30)
+      artwork.layers[0].x = region.x + 4
+      artwork.layers[0].y = region.y + 4
+      artwork.layers[0].content = .raster(try Surface(width: 24, height: 24, fill: .white))
+      var tile = try Surface(width: 4, height: 4, fill: .white)
+      tile.setPixel(x: 0, y: 0, .black)
+      artwork.patterns = [try RasterPattern(name: "Owned overlay pattern", surface: tile)]
+      shared.store.session = EditorSession(document: artwork)
+      shared.store.updateViewport(size: .init(width: region.width, height: region.height), backingScale: 1)
+      shared.store.setZoom(1, center: true)
+      shared.store.pan = .init(width: size / 2 - region.x - region.width / 2,
+        height: size / 2 - region.y - region.height / 2)
+      XCTAssertTrue(shared.store.validateLayerStyleMenu("Layer > Layer Style > Pattern Overlay…"))
+      XCTAssertFalse(shared.store.validateLayerStyleMenu("Layer > Layer Style > Drop Shadow…"))
+      try service.share(shared)
+
+      shared.store.beginLayerStyle(.patternOverlay)
+      let sheet = LayerStyleSheet(store: shared.store)
+      sheet.overlayPatternValue(\.scale, 100).wrappedValue = 200
+      shared.store.expandLayerEffect(0)
+      XCTAssertNil(shared.store.layerStyleDraft?.style.effects.first?.advanced)
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      XCTAssertEqual(shared.store.canvasRasterPreview?.documentRegion, region)
+      XCTAssertEqual(shared.store.image?.width, region.width)
+      let draft = try XCTUnwrap(shared.store.layerStyleDraft)
+      XCTAssertEqual(shared.store.document, artwork)
+      shared.store.commitLayerStyle()
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      let native = shared.store.document
+      let layerID = artwork.layers[0].id.uuidString
+      XCTAssertEqual(native.layers[0].style, draft.style)
+      XCTAssertEqual(shared.store.session.undoStack.count, 1)
+      let expected = try Renderer.composite(native, region: region).cropped(to: region).rgbaData(depth: .u8)
+
+      let undo = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(shared.store.document, artwork)
+      let edit = try await helper.edit(service, shared, "layer.style", ["layerIDs": [layerID], "style": draft.style.apiObject])
+      XCTAssertEqual(edit, 200)
+      XCTAssertEqual(shared.store.document, native)
+      let patched = try await helper.edit(service, shared, "layer.style.patch",
+        ["layerIDs": [layerID], "effectIndex": 0, "effect": ["opacity": 0.5]])
+      XCTAssertEqual(patched, 200)
+      XCTAssertEqual(shared.store.document.layers[0].style?.effects.first?.opacity, 0.5)
+      let stable = shared.store.document
+      let unsupported = try await helper.edit(service, shared, "layer.style",
+        ["layerIDs": [layerID], "style": ["effects": [["kind": "dropShadow"]]]])
+      XCTAssertEqual(unsupported, 422)
+      XCTAssertEqual(shared.store.document, stable)
+      let old = try await helper.edit(service, shared, "history.undo")
+      XCTAssertEqual(old, 200)
+
+      let capabilitiesReply = try await helper.request(service, path: "/v1/capabilities")
+      let capabilities = try XCTUnwrap(JSONSerialization.jsonObject(with: capabilitiesReply.1) as? [String: Any])
+      let styles = try XCTUnwrap(capabilities["layerStyles"] as? [String: Any])
+      let regional = try XCTUnwrap(styles["regionalPatternOverlay"] as? [String: Any])
+      XCTAssertEqual(regional["maximumCanvasDimension"] as? Int, size)
+
+      // PSB keeps an RLE placeholder even when the merged image is omitted.
+      // A max-size placeholder exceeds the existing bounded HTTP response.
+      let transferSize = 4096
+      let transferRegion = IntRect(x: transferSize - 104, y: transferSize - 104, width: 30, height: 30)
+      var transfer = try CraftDocument(width: transferSize, height: transferSize)
+      transfer.patterns = native.patterns
+      transfer.layers = native.layers
+      transfer.activeLayerID = native.activeLayerID
+      transfer.layers[0].x = transferRegion.x + 4
+      transfer.layers[0].y = transferRegion.y + 4
+      shared.store.renderTask?.cancel()
+      shared.store.session = EditorSession(document: transfer)
+      service.setDocumentTransfersEnabled(true)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let download = try await helper.request(service, path: "/v1/documents/\(id)/file.psb",
+        headers: ["X-Photato-Export-Options": #"{"psdMaximizeCompatibility":false}"#])
+      XCTAssertEqual(download.0.statusCode, 200)
+      let reopened = try PSDCodec.read(download.1)
+      XCTAssertEqual(reopened.width, transferSize)
+      XCTAssertEqual(reopened.layers.first?.style?.effects.first?.pattern?.placement.scale, 200)
+      XCTAssertEqual(try Renderer.composite(reopened, region: transferRegion).cropped(to: transferRegion).rgbaData(depth: .u8), expected)
+    }
+  }
+
   @MainActor func testActualNumericBindingsDoNotOverlapObservedDraftAccess() throws {
     let store = EditorStore(document: try CraftDocument(width: 24, height: 24))
     defer { store.renderTask?.cancel() }

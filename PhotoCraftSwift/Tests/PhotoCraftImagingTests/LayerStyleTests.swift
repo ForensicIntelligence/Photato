@@ -19,6 +19,70 @@ final class LayerStyleTests: XCTestCase {
     if kind == .patternOverlay { effect.pattern=PatternFill(patternID:"style-checker") }
     return effect
   }
+
+  func testMaximumPatternOverlayMatchesSmallControlAcrossPagedTiles() throws {
+    let maximum = Surface.maxDimension
+    let bigX = maximum - 34, bigY = maximum - 36
+    let controlX = 14, controlY = 12
+    let region = IntRect(x: bigX - 4, y: bigY - 4, width: 30, height: 30)
+    let control = IntRect(x: controlX - 4, y: controlY - 4, width: 30, height: 30)
+    var tile = try Surface(width: 4, height: 4, fill: .white)
+    tile.setPixel(x: 0, y: 0, .black)
+    let pattern = try RasterPattern(name: "Owned pattern", surface: tile)
+    for depth in PixelDepth.allCases {
+      var raster = try Surface(width: 24, height: 24, depth: depth, fill: .white,
+        colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+      raster.setPixel(x: 1, y: 1, Pixel(1, 1, 1, 128.0 / 255))
+      var mask = try Surface(width: 24, height: 24, depth: depth, fill: .white)
+      mask.setPixel(x: 2, y: 1, Pixel(0.4, 0.4, 0.4))
+      for linkedOrigin in [false, true] {
+        var overlay = LayerEffect(.patternOverlay)
+        overlay.pattern = PatternFill(patternID: pattern.id)
+        overlay.pattern?.placement.scale = 200
+        overlay.opacity = 0.5
+        var style = LayerStyle(effects: [overlay])
+        if linkedOrigin { style.referenceOffset = PathPoint(0, 0) }
+
+        func document(_ size: Int, x: Int, y: Int, background: Bool) throws -> CraftDocument {
+          var doc = try CraftDocument(width: size, height: size, depth: depth)
+          doc.patterns = [pattern]
+          doc.layers[0].content = .raster(raster)
+          doc.layers[0].x = x
+          doc.layers[0].y = y
+          if background { doc.layers[0].mask = mask }
+          let id = doc.layers[0].id
+          try Command.layerStyle([id], style).apply(to: &doc)
+          if background { doc.layers.insert(Layer(name: "Backdrop", content: .fill(Pixel(0.2, 0.4, 0.7, 0.8))), at: 0) }
+          return doc
+        }
+
+        let small = try document(64, x: controlX, y: controlY, background: true)
+        let large = try document(maximum, x: bigX, y: bigY, background: true)
+        let expected = try Renderer.composite(small).cropped(to: control).rgbaData(depth: depth)
+        let regional = try Renderer.composite(large, region: region).cropped(to: region)
+        XCTAssertEqual(try regional.rgbaData(depth: depth), expected, "\(depth) linked origin \(linkedOrigin)")
+        let full = try Renderer.composite(large)
+        XCTAssertEqual(try full.cropped(to: region).rgbaData(depth: depth), expected)
+        XCTAssertEqual(full.pixel(x: 0, y: 0), full.pixel(x: maximum - 1, y: maximum - 1))
+        XCTAssertLessThan(full.allocatedBytes, 4 * 1024 * 1024)
+
+        if depth == .u8 && linkedOrigin {
+          let standalone = try document(4096, x: controlX, y: controlY, background: false)
+          let psb = try PSDCodec.writeRasterLayers(standalone, format: .psb, maximizeCompatibility: false)
+          XCTAssertLessThan(psb.count, 1024 * 1024)
+          let reopened = try PSDCodec.read(psb)
+          XCTAssertEqual(reopened.width, standalone.width)
+          XCTAssertEqual(reopened.height, standalone.height)
+          XCTAssertEqual(reopened.layers[0].style?.effects[0].kind, .patternOverlay)
+          let authored = try Renderer.composite(standalone, region: control).cropped(to: control)
+          XCTAssertEqual(try Renderer.composite(reopened, region: control).cropped(to: control).rgbaData(depth: .u8),
+            try authored.rgbaData(depth: .u8))
+          let sample = (4 * control.width + 4) * 4
+          XCTAssertEqual(Array(try authored.rgbaData(depth: .u8)[sample..<(sample + 4)]), [127, 127, 127, 255])
+        }
+      }
+    }
+  }
   func testAllTenEffectsAtAllDepthsRenderHistoryAndNativeArchives() throws {
     for depth in PixelDepth.allCases { for kind in LayerEffect.Kind.allCases {
       let original=try fixture(depth), baseline=try Renderer.composite(original)

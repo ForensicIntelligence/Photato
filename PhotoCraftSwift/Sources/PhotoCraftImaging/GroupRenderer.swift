@@ -9,6 +9,11 @@ final class GroupRenderCache {
   let disabledTransitions: Set<UUID>
   func suppressing(_ id:UUID)->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,region:region,video:video,disabledTransitions:disabledTransitions.union([id]),facts:facts)}
   func fullCanvas()->GroupRenderCache {GroupRenderCache(inputTarget:inputTarget,video:video,disabledTransitions:disabledTransitions,facts:facts)}
+  func window(_ bounds: IntRect) -> GroupRenderCache {
+    if region == bounds { return self }
+    return GroupRenderCache(inputTarget: inputTarget, region: bounds, video: video,
+      disabledTransitions: disabledTransitions, facts: facts)
+  }
   func crossfade(from id:UUID)->VideoTransitionRenderContext.Active? {video?.active.first{$0.transition.kind == .crossFade && $0.transition.previousLayerID==id && !disabledTransitions.contains($0.transition.id)}}
   func fade(on id:UUID)->VideoTransitionRenderContext.Active? {video?.active.first{$0.transition.kind != .crossFade && $0.transition.layerID==id && !disabledTransitions.contains($0.transition.id)}}
   init(inputTarget: UUID? = nil, region: IntRect? = nil, video:VideoTransitionRenderContext?=nil, disabledTransitions:Set<UUID>=[],facts:CompositionFacts?=nil) {
@@ -74,7 +79,7 @@ extension Renderer {
         continue
       }
       if base.style != nil {
-        output = try LayerStyleRenderer.composite(base, clips: clips, in: d, over: output, region: region, cache:cache.fullCanvas())
+        output = try LayerStyleRenderer.composite(base, clips: clips, in: d, over: output, region: region, cache: cache)
       } else if let group = base.group, group.passThrough, group.artboard == nil, group.frame == nil {
         let before = output
         output = try compositeStack(d.children(of: base.id), in: d, over: output, cache: cache)

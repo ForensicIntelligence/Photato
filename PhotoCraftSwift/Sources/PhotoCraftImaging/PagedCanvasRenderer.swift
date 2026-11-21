@@ -11,8 +11,8 @@ enum PagedCanvasRenderer {
       throw CraftError.unsupported("Large non-RGB composition retains its separate mode limits.")
     }
     for layer in d.layers {
-      if layer.style != nil,layer.style?.isChannelBlendingOnly != true, d.width > LayerStyleRenderer.maximumPixels/d.height {
-        throw CraftError.unsupported("Large layer styles still require bounded effect maps.")
+      if let style = layer.style, !style.supportsLayerCanvas(d) {
+        throw CraftError.unsupported("This layer style requires a whole-canvas effect map of at most 8,388,608 pixels.")
       }
       if d.width > Surface.maximumDensePixels/d.height {
         // Renderer prepares Warp through its checked dense/paged raster backend
@@ -213,7 +213,39 @@ enum PagedCanvasRenderer {
     var stored: [AnySequence<Int>] = []
     var featherKeys: [AnySequence<Int>] = []
     var feathers: [LayerMaskSampler] = []
+    var styleSupport: [IntRect] = []
+    let side = Surface.tileSide, columns = (d.width + side - 1) / side
+    let hasClippedLayer = d.layers.contains(where: \.isClipped)
     for layer in d.layers {
+      if let style = layer.style, style.supportsRegionalPatternOverlay, !style.isChannelBlendingOnly,
+        LayerStyle.requiresRegionalEffects(in: d) {
+        // A basic overlay changes only existing coverage. Its shader can vary
+        // anywhere within that support, so those tiles are always rendered.
+        guard layer.parentID == nil, !hasClippedLayer,
+          layer.affine == nil, layer.smartObject == nil, layer.sourceProjection == nil,
+          layer.smartFilters == nil, layer.warp == nil, layer.blendMode != .dissolve,
+          case .raster(let source) = layer.content else { return nil }
+        if !layer.visible || layer.opacity == 0 { continue }
+        let matchesCanvas = layer.x == 0 && layer.y == 0
+          && source.width == d.width && source.height == d.height
+        if source.defaultPixel.a != 0 {
+          guard !matchesCanvas else { return nil }
+          let bounds = IntRect(x: layer.x, y: layer.y, width: source.width, height: source.height)
+          styleSupport.append(bounds.clipped(toWidth: d.width, height: d.height))
+        } else if matchesCanvas {
+          stored.append(source.storedTileKeys)
+        } else {
+          let sourceColumns = (source.width + side - 1) / side
+          for key in source.storedTileKeys {
+            try Task.checkCancellation()
+            let left = key % sourceColumns * side, top = key / sourceColumns * side
+            let bounds = IntRect(x: layer.x + left, y: layer.y + top,
+              width: min(side, source.width - left), height: min(side, source.height - top))
+            styleSupport.append(bounds.clipped(toWidth: d.width, height: d.height))
+          }
+        }
+        continue
+      }
       guard layer.style==nil,layer.smartObject?.pdfSource==nil,layer.smartFilters==nil,layer.warp==nil,
         layer.blendMode != .dissolve,layer.coordinateTransform == .identity else {return nil}
       if let vector = layer.vectorMask, vector.enabled {
@@ -253,6 +285,13 @@ enum PagedCanvasRenderer {
         }
       case .text,.shape,.gradientFill,.patternFill:return nil
       }
+    }
+    if !styleSupport.isEmpty {
+      let patches = GeometryPatchRegions(width: d.width, height: d.height, rectangles: styleSupport)
+      stored.append(AnySequence(patches.lazy.flatMap { rect -> Range<Int> in
+        let first = rect.y / side * columns + rect.x / side
+        return first..<(first + (rect.width + side - 1) / side)
+      }))
     }
     return PointwiseSources(keys: featherKeys + stored, stored: stored, feathers: feathers)
   }

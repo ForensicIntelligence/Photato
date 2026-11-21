@@ -1,0 +1,211 @@
+{
+  "build": 688,
+  "base": "5fcde2a7a74d39cd89613a4ef3a4368e454b6261",
+  "buildInputs": 9308,
+  "includedBuildInputs": 9295,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "d4466767838063ae026d734ff3fe8475c936ac0a597131a79c28797ca082d3a1",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationLayerStyles.swift",
+      "sha256": "6e9cb657c5870fb6b9754b02f713cefafc30a1503d5e50835a7233171349b51c"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerStyleControls.swift",
+      "sha256": "bfd5bedceb122e7aedde5fabfd18d744b198df57de4f72148a3cea3fba3fe998"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "sha256": "0ee751eb48430dda006c9ad2822a07f8d07d1e372b9c7a30dd962f002eca2c7d"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyleEdit.swift",
+      "sha256": "d602c513b51654702a4453c8b911439891b66b1b32907a72acd3d43f3454b1d1"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/GroupRenderer.swift",
+      "sha256": "ffc57a9857201441fbc5605ee3b69f212e066d51c2fc9b08fdcb2be3fc9701f2"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerStyleRenderer.swift",
+      "sha256": "f9d8634b4246ef3d0649d6c205cace53c1201aa14def9db4df47149e7922ea5f"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "1e572dca2b1779f94ce2c25a1f242f6ae82ece83d4f2fcdba5ceadffc0c30136"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "49ef9f9375a020df912e001ffd2d338f287a14ad106a1b461be45f37b2879caa"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceLayerStyleRenderer.swift",
+      "sha256": "736f24211acef6a125f82b7166a9bd7cc6085fecfebbe0e5214a9f598ebe5af5"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerStyleWorkflowTests.swift",
+      "sha256": "b5814625a6fdb6e9aa23f56c18ebe1dee65138d619d38c2e7cd6b9a0ab934589"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStyleTests.swift",
+      "sha256": "cb715bfde1282cb4926663f8003d0025de9c286e529e05f904363c7ac5c115cd"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "2541fb54b0e82499a210c28444e05326049f0d351099dacd163e0a1009d0304c"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "2541fb54b0e82499a210c28444e05326049f0d351099dacd163e0a1009d0304c"
+  },
+  "casesPerConfiguration": 451,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 451,
+      "passed": 448,
+      "newCasesExpected": 8,
+      "newCasesPassed": 8,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "6d85e53d9270e986f7daa4e93e2c63640d6df2ea4a49663bb3729766c0654a0a"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 451,
+      "passed": 448,
+      "newCasesExpected": 8,
+      "newCasesPassed": 8,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "1234df0ca3a0f5bc15945d01b78e2475be5dcb3e652364f82dd556d6a0c6a271"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 451,
+      "passed": 448,
+      "newCasesExpected": 8,
+      "newCasesPassed": 8,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "bbd7aeae9bad2f7dc2b09491787a3ea2cab30e06243134e69f8e21743feccff8"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+    "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "fd3abd16da6a869e1c526de26db62142f419073013a4b6cd83e57801c9110882",
+  "regionalCrop": {
+    "size": [
+      30,
+      30
+    ],
+    "depths": [
+      8,
+      16,
+      32
+    ],
+    "tileSeams": true,
+    "nativePreviewVerified": true,
+    "wholeSparseMatchesControl": true,
+    "source": "Owned fixtures with mask, partial alpha and translucent backdrop"
+  },
+  "maximumNativePSB": {
+    "canvas": [
+      300000,
+      300000
+    ],
+    "format": "PSB",
+    "depth": 8,
+    "bytes": 4222804558,
+    "fileSHA256": "ba472c6e67f282471c058ca270162130158b057ea5ceeda229ef0fbc9e7682bd",
+    "crop": [
+      299962,
+      299960,
+      30,
+      30
+    ],
+    "cropBytes": 3600,
+    "cropSHA256": "a9bf981c94d37f5eda9501612eb3184d831920841d24c226d569bbaa1586578a",
+    "editableStyleRetained": true,
+    "cropBytesAfterReopenEqual": true,
+    "maximizeCompatibility": false,
+    "input": "Owned synthetic pattern and raster",
+    "implementation": "File-backed Photato writer and reader"
+  },
+  "psbHTTPTransferDimensions": [
+    4096,
+    4096
+  ],
+  "crossArchitecturePSB": {
+    "canvas": [
+      6000,
+      2000
+    ],
+    "bytes": 592558,
+    "sha256": "f366a126002116686977e5c177de3124aa0c3a1c3dfbda27bb55e85636ebea8b",
+    "cropSHA256": "a9bf981c94d37f5eda9501612eb3184d831920841d24c226d569bbaa1586578a",
+    "allConfigurationsIdentical": true
+  },
+  "maximumEditAPIDimensions": [
+    300000,
+    300000
+  ],
+  "liveAdobe": {
+    "version": "27.2.0",
+    "pixelComparison": false,
+    "reason": "AppleEvent timeout"
+  },
+  "preview": {
+    "archiveSHA256": "8bb54524e57533d42341a36b720bbea35b574c645990d94e99d9495b4d4061f2",
+    "binarySHA256": "817759aba224d10c47d423dc4e63cd7ae6f271c4ee8afedc5063e59937d1eccc",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "ab4fdd95211f67d44508288c7119f00856f75120e91a205efb43a4162aee05c2",
+      "x86_64": "24bf59b57dfc8635fa2b7565edb680fac86177ffc97311516d602d569550d83f"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination in Debug only.",
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html",
+    "https://helpx.adobe.com/uk/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html"
+  ]
+}

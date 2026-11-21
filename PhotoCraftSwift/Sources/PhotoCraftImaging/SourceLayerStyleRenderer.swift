@@ -54,11 +54,16 @@ enum SourceLayerStyleRenderer {
     }
     return x1>x0 && y1>y0 ? IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0):nil
   }
-  static func composite(_ layer:Layer,clips:[Layer]=[],in document:CraftDocument,over backdrop:Surface,region:IntRect,cache:GroupRenderCache = GroupRenderCache(),frameOverride:IntRect?=nil)throws->Surface {
+  static func composite(_ layer:Layer,clips:[Layer]=[],in document:CraftDocument,over backdrop:Surface,region:IntRect,cache:GroupRenderCache = GroupRenderCache(),frameOverride:IntRect?=nil,sampleBounds:IntRect?=nil)throws->Surface {
     guard let style=layer.style else{return backdrop}
     try style.validate(in:document)
-    let w=document.width,h=document.height,n=w*h
-    guard w<=LayerStyleRenderer.maximumPixels/h else {throw CraftError.unsupported("Advanced layer styles need bounded source preparation; large style processing remains in development.")}
+    let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    let samples = sampleBounds ?? canvas
+    let w = samples.width, h = samples.height, n = w * h
+    guard h > 0, w > 0 else { return backdrop }
+    guard w <= LayerStyle.maximumWholeCanvasPixels / h else {
+      throw CraftError.unsupported("Advanced layer styles need bounded source preparation.")
+    }
     let effects=style.enabled ? style.effects.filter(\.enabled):[],scale=Float(style.scale/100)
     var reach:Float=0
     for e in effects {
@@ -81,15 +86,18 @@ enum SourceLayerStyleRenderer {
     if !clips.isEmpty {content=try Renderer.compositeClips(clips,onto:content,in:document,cache:cache)}
     let frame:IntRect
     if let frameOverride {frame=frameOverride}
-    else if case .fill=layer.content {frame=IntRect(x:0,y:0,width:w,height:h)}
-    else if case .gradientFill=layer.content {frame=IntRect(x:0,y:0,width:w,height:h)}
-    else if case .patternFill=layer.content {frame=IntRect(x:0,y:0,width:w,height:h)}
+    // Basic Pattern Overlay uses its stored document/layer origin without a
+    // geometry scan. Other styles still use the original whole-source frame.
+    else if sampleBounds != nil {frame=canvas}
+    else if case .fill=layer.content {frame=canvas}
+    else if case .gradientFill=layer.content {frame=canvas}
+    else if case .patternFill=layer.content {frame=canvas}
     else {
       let pixels=try Renderer.layerSurface(plain,in:document),bounds=try sourceBounds(pixels) ?? IntRect(x:0,y:0,width:1,height:1)
       frame=try (layer.coordinateTransform * .translation(Double(bounds.x),Double(bounds.y))).bounds(width:bounds.width,height:bounds.height)
     }
     return try compositePrepared(layer, style: style, effects: effects, scale: scale, content: content,
-                                 frame: frame, pad: pad, in: document, over: backdrop, region: region)
+                                 frame: frame, pad: pad, in: document, over: backdrop, region: region, samples: samples)
   }
 
   // Isolating styled content can call the compositor again. Allocate the
@@ -97,16 +105,18 @@ enum SourceLayerStyleRenderer {
   @inline(never)
   private static func compositePrepared(
     _ layer: Layer, style: LayerStyle, effects: [LayerEffect], scale: Float, content: Surface,
-    frame: IntRect, pad: Int, in document: CraftDocument, over backdrop: Surface, region: IntRect
+    frame: IntRect, pad: Int, in document: CraftDocument, over backdrop: Surface, region: IntRect, samples: IntRect
   ) throws -> Surface {
-    let w = document.width, h = document.height, n = w * h
+    let w = samples.width, h = samples.height, n = w * h
     let mw = w + 2 * pad, mh = h + 2 * pad
     let linear=document.depth == .f32
     func read(_ s:Surface,_ x:Int,_ y:Int)->Pixel {linear ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)}
     var shape=SourceEffectMap(mw,mh),body=[Pixel](repeating:.clear,count:n),before=body
     var x0=w,y0=h,x1=0,y1=0
     for y in 0..<h {try Task.checkCancellation();for x in 0..<w {
-      let i=y*w+x,p=read(content,x,y);shape.v[(y+pad)*mw+x+pad]=p.a;body[i]=Pixel(p.r,p.g,p.b,p.a>SourceEffectMap.insideEPS ? style.fillOpacity:0);before[i]=read(backdrop,x,y)
+      let i = y * w + x, px = samples.x + x, py = samples.y + y
+      let p = read(content, px, py)
+      shape.v[(y+pad)*mw+x+pad]=p.a;body[i]=Pixel(p.r,p.g,p.b,p.a>SourceEffectMap.insideEPS ? style.fillOpacity:0);before[i]=read(backdrop,px,py)
       if p.a>SourceEffectMap.insideEPS {x0=min(x0,x);y0=min(y0,y);x1=max(x1,x+1);y1=max(y1,y+1)}
     }}
     let shapeBounds=x1>x0 && y1>y0 ? IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0):IntRect(x:0,y:0,width:w,height:h)
@@ -138,7 +148,7 @@ enum SourceLayerStyleRenderer {
     func paint(_ target:inout [Pixel],shader:SourceEffectSampler.Shader,mode:BlendMode,opacity:Float,coverage:(Int)->Float)throws {
       if opacity<=0{return}
       for y in 0..<h {try Task.checkCancellation();for x in 0..<w {
-        let i=y*w+x,k=coverage(i);if k<=0{continue};var p=shader.sample(x:x,y:y);p.a *= k
+        let i=y*w+x,k=coverage(i);if k<=0{continue};var p=shader.sample(x:samples.x+x,y:samples.y+y);p.a *= k
         target[i]=blend(mode,target[i],p,opacity)
       }}
     }
@@ -186,9 +196,10 @@ enum SourceLayerStyleRenderer {
     for y in 0..<h {try Task.checkCancellation();for x in 0..<w {let i=y*w+x;if body[i].a>0 {work[i]=blend(layer.blendMode,work[i],body[i],1)}}}
     for p in prepared.reversed() where p.bevel?.paint == .both {try bevel(&work,p,relativeShape:false)}
     var result=backdrop
-    let rx0=max(0,region.x),ry0=max(0,region.y),rx1=min(w,region.x+region.width),ry1=min(h,region.y+region.height)
+    let rx0=max(samples.x,region.x),ry0=max(samples.y,region.y)
+    let rx1=min(samples.x+w,region.x+region.width),ry1=min(samples.y+h,region.y+region.height)
     if rx1>rx0 && ry1>ry0 {for y in ry0..<ry1 {try Task.checkCancellation();for x in rx0..<rx1 {
-      let i=y*w+x,p=mix(before[i],work[i],layer.opacity)
+      let i=(y-samples.y)*w+x-samples.x,p=mix(before[i],work[i],layer.opacity)
       guard p.isFinite else {throw CraftError.invalid("Advanced effect result exceeds the floating-point range.")}
       if linear {result.setLinearPixel(x:x,y:y,p)}else{result.setPixel(x:x,y:y,p)}
     }}}
