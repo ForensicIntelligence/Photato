@@ -243,7 +243,8 @@ package enum LocalGenerativeFill {
     }
   }
 
-  package static func capture(_ document: CraftDocument, protectedCanvas: IntRect? = nil) throws -> (Recipe, Surface) {
+  package static func capture(_ document: CraftDocument, protectedCanvas: IntRect? = nil,
+    samplingLayer: Layer? = nil) throws -> (Recipe, Surface) {
     guard let selected = selection(in: document) else {
       throw CraftError.invalid("Select an area of up to 4 megapixels in a still RGB image.")
     }
@@ -256,7 +257,10 @@ package enum LocalGenerativeFill {
       width: selected.width + 2 * margin, height: selected.height + 2 * margin)
       .clipped(toWidth: document.width, height: document.height)
     let reference = try CraftDocument(width: side, height: side, depth: .u8)
-    let crop = try Renderer.composite(document, region: region).cropped(to: region)
+    let guide: Surface
+    if let samplingLayer { guide = try Renderer.clippingCoverage(samplingLayer, in: document, region: region) }
+    else { guide = try Renderer.composite(document, region: region) }
+    let crop = try guide.cropped(to: region)
     let input = try ColorManagement.converted(crop, from: document, to: reference)
     let modelScale = Double(side) / Double(max(region.width, region.height))
     let left = (Double(side) - Double(region.width) * modelScale) / 2

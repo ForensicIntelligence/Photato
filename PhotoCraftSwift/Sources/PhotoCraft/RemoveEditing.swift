@@ -12,8 +12,13 @@ struct RemoveDraft: Sendable {
   var initialCoverage: SelectionMask?
   var initialOverlay: CGImage?
   var detectedPeople = 0
-  var hasMarks: Bool { initialCoverage?.bounds != nil || !strokes.isEmpty }
-  var request: RemoveRequest { .init(layerID:layerID,settings:settings,strokes:strokes,initialCoverage:initialCoverage) }
+  var distractionReview: RemoveDistractionReview?
+  var requiresExplicitApply: Bool { initialCoverage != nil || distractionReview != nil }
+  var hasMarks: Bool { initialCoverage?.bounds != nil || distractionReview?.enabled.isEmpty == false || !strokes.isEmpty }
+  var request: RemoveRequest {
+    .init(layerID: layerID, settings: settings, strokes: strokes, initialCoverage: initialCoverage,
+      categoryCoverages: distractionReview?.selectedGroups.map(\.coverage) ?? [])
+  }
 }
 
 extension EditorStore {
@@ -75,7 +80,7 @@ extension EditorStore {
     guard let stroke = removeStroke else { return }; removeStroke = nil
     do {
       try appendRemoveStroke(stroke)
-      if removeDraft?.settings.removeAfterEachStroke == true, removeDraft?.initialCoverage == nil { applyRemove() }
+      if removeDraft?.settings.removeAfterEachStroke == true, removeDraft?.requiresExplicitApply != true { applyRemove() }
     } catch { status = error.localizedDescription }
   }
   func appendRemoveStroke(_ stroke: RemoveStroke) throws {
@@ -95,9 +100,9 @@ extension EditorStore {
     if removeWiresID != nil {
       geometryTask?.cancel(); removeWiresID = nil
     }
-    if removeDetectionID != nil {
+    if removeDetectionID != nil || removeDistractionID != nil {
       removeDetectionTask?.cancel(); removeDetectionTask = nil
-      geometryTask?.cancel(); geometryTask = nil; geometryBusy = false; removeDetectionID = nil
+      geometryTask?.cancel(); geometryTask = nil; geometryBusy = false; removeDetectionID = nil; removeDistractionID = nil
     }
     if removeApplying != nil { geometryTask?.cancel() }
     removeDraft = nil; removeStroke = nil; removeApplying = nil; removeRevision = UUID()
@@ -105,7 +110,7 @@ extension EditorStore {
   func cancelRemoveGesture() {
     guard removeStroke != nil else { return }
     removeStroke = nil
-    if removeDraft?.hasMarks == false { removeDraft = nil }
+    if removeDraft?.hasMarks == false, removeDraft?.distractionReview == nil { removeDraft = nil }
     removeRevision = UUID()
   }
   func applyRemove() {
@@ -114,7 +119,7 @@ extension EditorStore {
       status = "The Remove source changed or is unavailable. Clear the pending strokes first."; return
     }
     removeDraft = nil; removeApplying = draft; removeRevision = UUID()
-    let request = draft.request, prepare = removePreparation
+    let request = draft.request, prepare = removeWorker(for: draft)
     performGeometry(label:"Remove",prepare:{ original in
       guard original == draft.original else { throw CraftError.invalid("The Remove source changed.") }
       return .regionRetouch(try prepare(request,original))

@@ -26,6 +26,9 @@ public struct VisionForegroundDetector: OptionalForegroundDetecting, ObjectDetec
   public func mask(for image: Surface) async throws -> SelectionMask {try await detect(image, point:nil, allObjects:false)[0].mask}
   public func mask(for image:Surface,at point:PathPoint) async throws -> SelectionMask {try await detect(image, point:point, allObjects:false)[0].mask}
   public func masks(for image:Surface) async throws -> [DetectedObjectMask] {try await detect(image,point:nil,allObjects:true)}
+  public func masksIfPresent(for image: Surface) async throws -> [DetectedObjectMask] {
+    try await detect(image, point: nil, allObjects: true, allowEmpty: true)
+  }
   public func maskIfPresent(for image: Surface) async throws -> SelectionMask? {
     try await detect(image, point: nil, allObjects: false, allowEmpty: true).first?.mask
   }

@@ -1,3 +1,7 @@
+### General distractions review (checkpoint 717)
+
+`retouch.remove` adds `findDistractions` and `configureDistractionReview`. The find call creates one review with typed categories and counts. Configure replaces the enabled categories and can set opacity. `stroke` and `preview` share native marking. `apply` records one Undo and `cancel` clears the review. `resolvedProcessing` can report `localFillWhenEligible` in Auto with a configured LaMa512 model. `Generative AI Off` forces traditional fill. [Operation details](REMOVE_GENERAL_DISTRACTIONS.md)
+
 ### Approved large linked originals (checkpoint 654)
 
 Approved local PSD, PSB and chunked Photato linked originals can use private backing up to 2 GiB during placement, relink, updates, and packaging. The raw `source` and `linked-source` routes still return HTTP 413 above 64 MiB for linked originals. The 128 MiB shared-document budget continues to include owned embedded bytes, raster caches, and other document data. The temporary file backing for an approved external link does not contribute to that budget because the linked parent serializes a reference and its preview. [Development record](LARGE_LINKED_ORIGINALS_654.md)

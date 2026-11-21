@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 717 — Review and remove general distractions
+
+Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
+
+The reviewer marked bins in two independent photographs. A sampled point on the neighboring bench stayed outside the first mask. Traditional fill and optional Apple Silicon LaMa512 fill changed only selected-mask pixels. One Undo restored each original. The authenticated API produced the exact same document as the editor with the real model on Footpath. The tests cover category-only preview, ordered brush refinement, the current selection, layer output and source sampling. The optimized Intel slice also completed the Footpath workflow under Rosetta with traditional fill. The native detection returned one fewer vegetation mark on that run.
+
+The bin sample retained a mounting post, and a strong cast shadow remained in the Footpath photo. Classification still depends on the scene. General distractions uses the 16-megapixel Remove canvas limit. The explicit Generative AI On mode, byte-exact Photoshop output and the Adobe Execute Actions descriptor remain open.
+
+[Development record](DEVLOG.md#dev-step-717) · [Qualification](SOURCE_PUBLICATION_717.md).
+
 ## 2026-11-21 — Step 716 — Remove extended wire and cable runs in one edit
 
 The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history.
@@ -1767,14 +1777,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:716 -->
+<!-- current-status-step:717 -->
 ## Current development status — 21 November 2026
 
-The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history.
+Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
 
-574 of 575 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All six new cases passed in each configuration. The same unrelated PSD layer-effect method repeated its 118 prior differences. The checked-in Xcode project built and the signed preview opened offscreen in both architectures.
+581 of 582 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All seven new tests passed in each configuration. The earlier PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both architectures opened the signed macOS 14+ preview offscreen.
 
-[Source checkpoint 716](SOURCE_PUBLICATION_716.md) · [Development record](DEVLOG.md#dev-step-716).
+[Source checkpoint 717](SOURCE_PUBLICATION_717.md) · [Development record](DEVLOG.md#dev-step-717).
 
 <!-- current-status:end -->
 
@@ -2697,6 +2707,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 714 | [Guide Generate Image with Style and Composition references](DEVLOG.md#dev-step-714) |
 | 2026-11-21 | 715 | [Fill a selection from a local reference image](DEVLOG.md#dev-step-715) |
 | 2026-11-21 | 716 | [Remove extended wire and cable runs in one edit](DEVLOG.md#dev-step-716) |
+| 2026-11-21 | 717 | [Review and remove general distractions](DEVLOG.md#dev-step-717) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

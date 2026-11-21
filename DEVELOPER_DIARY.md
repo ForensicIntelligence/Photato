@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **716** · The 10 most recent entries, newest first.
+Source build **717** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 717 — Review and remove general distractions
+
+Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
+
+The reviewer marked bins in two independent photographs. A sampled point on the neighboring bench stayed outside the first mask. Traditional fill and optional Apple Silicon LaMa512 fill changed only selected-mask pixels. One Undo restored each original. The authenticated API produced the exact same document as the editor with the real model on Footpath. The tests cover category-only preview, ordered brush refinement, the current selection, layer output and source sampling. The optimized Intel slice also completed the Footpath workflow under Rosetta with traditional fill. The native detection returned one fewer vegetation mark on that run.
+
+The bin sample retained a mounting post, and a strong cast shadow remained in the Footpath photo. Classification still depends on the scene. General distractions uses the 16-megapixel Remove canvas limit. The explicit Generative AI On mode, byte-exact Photoshop output and the Adobe Execute Actions descriptor remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-717) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_717.md).
 
 ## 2026-11-21 — Step 716 — Remove extended wire and cable runs in one edit
 
@@ -93,13 +103,3 @@ A 4,104-pixel-wide fixture matched every original Float32 model input after reop
 Older tiled files still open and retain the saved results. They lack the captured source needed to regenerate. Large dense borders, long-range prompt continuity, rotation, blank-prompt alternatives and Adobe Firefly output equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-708) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_708.md).
-
-## 2026-11-21 — Step 707 — Reuse the local prompt model across an editing job
-
-Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker.
-
-A paired four-request Core ML benchmark used 89.9 seconds with fresh workers and 80.9 seconds with one reusable worker. All four Float32 RGBA buffers matched exactly. A signed App Sandbox harness reproduced all four buffers. A separate 4,104-pixel-wide two-alternative run took 547.8 seconds and reproduced both build 706 alternatives and the editable mask byte for byte after reopening. A cancellation test forced a non-cooperative test child to exit and verified scratch cleanup.
-
-Generation still takes time for large borders. Prompt quality across distant windows, saved tiled context for Generate More and Generate Similar, and Adobe Firefly output equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-707) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_707.md).

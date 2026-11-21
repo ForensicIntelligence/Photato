@@ -735,7 +735,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 714 | 2026-11-21 | [Guide Generate Image with Style and Composition references](#dev-step-714) |
 | 715 | 2026-11-21 | [Fill a selection from a local reference image](#dev-step-715) |
 | 716 | 2026-11-21 | [Remove extended wire and cable runs in one edit](#dev-step-716) |
+| 717 | 2026-11-21 | [Review and remove general distractions](#dev-step-717) |
 <!-- history-index:end -->
+
+<a id="dev-step-717"></a>
+
+## 2026-11-21 — Review and remove general distractions
+
+The first native classifier merged the foreground bench and bin. We saved the failed photo review and compared the production Core ML boxes with the same inputs in the publisher model. Suppressing overlaps within each category retained both proposals. Crop-level masks could then identify the bin separately. A three-pixel margin at analysis scale kept the repair edge visible in the review and clipped it away from protected subjects. A second smooth ring reduced small texture marks in both photos.
+
+Apple Vision and local spot analysis run by default. An optional pinned Google OWLv2 conversion can propose background objects. Auto may use the configured LaMa512 model on eligible Apple Silicon Macs with macOS 26 or later. The fixture checks both traditional and local fill. On Footpath the local fill reduced a bright edge, with residual shadow.
+
+The first converter trials failed in broadcast and matrix conversion. The corrected graph produced the same weights as the verified offline converter. A harness link and the first Python 3.9 runner invocation also failed. The corrected linker call and current Python rerun preserved the earlier failures as separate logs.
+
+The reviewer marked bins in two independent photographs. A sampled point on the neighboring bench stayed outside the first mask. Traditional fill and optional Apple Silicon LaMa512 fill changed only selected-mask pixels. One Undo restored each original. The authenticated API produced the exact same document as the editor with the real model on Footpath. The tests cover category-only preview, ordered brush refinement, the current selection, layer output and source sampling. The optimized Intel slice also completed the Footpath workflow under Rosetta with traditional fill. The native detection returned one fewer vegetation mark on that run.
+
+581 of 582 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All seven new tests passed in each configuration. The earlier PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both architectures opened the signed macOS 14+ preview offscreen.
+
+The bin sample retained a mounting post, and a strong cast shadow remained in the Footpath photo. Classification still depends on the scene. General distractions uses the 16-megapixel Remove canvas limit. The explicit Generative AI On mode, byte-exact Photoshop output and the Adobe Execute Actions descriptor remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_717.md).
 
 <a id="dev-step-716"></a>
 

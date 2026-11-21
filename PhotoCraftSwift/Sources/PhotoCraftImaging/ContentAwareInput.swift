@@ -10,10 +10,14 @@ public struct ContentAwareInput: Sendable {
   public static let maximumCanvasPixels = 16_777_216
   public static func prepare(_ document: CraftDocument,layerID: UUID) throws -> Self {
     guard document.width <= maximumCanvasPixels/document.height, let mask = try document.coverageSelection(), mask.bounds != nil,
-      var layer = document.layers.first(where: { $0.id == layerID }), case .raster(let pixels) = layer.content,
+      let layer = document.layers.first(where: { $0.id == layerID }), case .raster(let pixels) = layer.content,
       layer.smartObject == nil, pixels.width <= maximumCanvasPixels/pixels.height else { throw CraftError.invalid("Content-Aware Fill requires a selection and an ordinary raster layer in a canvas of at most16 megapixels.") }
+    return try Self(original:document,layerID:layerID,layerGuide:Renderer.clippingCoverage(samplingLayer(layer),in:document),composite:Renderer.composite(document),selection:mask)
+  }
+  static func samplingLayer(_ source: Layer) -> Layer {
+    var layer = source
     layer.mask = nil; layer.maskProperties = nil; layer.vectorMask = nil; layer.visible = true; layer.style = nil; layer.opacity = 1
-    return try Self(original:document,layerID:layerID,layerGuide:Renderer.clippingCoverage(layer,in:document),composite:Renderer.composite(document),selection:mask)
+    return layer
   }
   public func masks(settings: ContentAwareSettings,strokes: [ContentAwareStroke] = [],sampling: SelectionMask? = nil) throws -> (selection:SelectionMask,sampling:SelectionMask) {
     try settings.validate()

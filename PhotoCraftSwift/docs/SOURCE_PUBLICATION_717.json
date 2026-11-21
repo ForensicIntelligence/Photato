@@ -1,0 +1,286 @@
+{
+  "build": 717,
+  "base": "f25b0193575fc9357bf0fc9b3fbf736fae2751cf",
+  "buildInputs": 9410,
+  "includedBuildInputs": 9410,
+  "candidateManifestSHA256": "38f145f23cfe43fed3a699c7212784fa4203a01503d919fbbae7566efc705399",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationRemove.swift",
+      "sha256": "6a28678aa24569420bb4254a142c9dbb4033f42543262e366d1e8074f36a4ee5"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "4b67aadd2601f95028ef15f491c598c758a95b77aede20011050958d14f5f409"
+    },
+    {
+      "path": "Sources/PhotoCraft/RemoveCanvas.swift",
+      "sha256": "43128cce750df2a5ec355429fbe77917ab2ccdbf41db3f1ead69d4d7f22d1f47"
+    },
+    {
+      "path": "Sources/PhotoCraft/RemoveDistractionControls.swift",
+      "sha256": "1b4e2947d89e349c3327131dcbcc061e5ce3d48eede3e02de7aac61592b44122"
+    },
+    {
+      "path": "Sources/PhotoCraft/RemoveDistractionEditing.swift",
+      "sha256": "60929276fc5947338795d03dcee7a0dd02005ca370d5fff130790c2162fe64c4"
+    },
+    {
+      "path": "Sources/PhotoCraft/RemoveEditing.swift",
+      "sha256": "02b97235bfd07a9d0c870cc509e2c9aa84f28ac1781fa503a0374428ff3aba00"
+    },
+    {
+      "path": "Sources/PhotoCraft/RemoveToolOptions.swift",
+      "sha256": "66bc67d432e01c7572458ef18350ea1d272d7fcb1005dae64e4a3a36cfb3ccb9"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RemoveTool.swift",
+      "sha256": "0eb7d0049d64341a5c4aabfdb37bc1aa74edde0eb8ae64af9ff908e99a5b6280"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ContentAwareInput.swift",
+      "sha256": "2240f9725b1e9f0fde2747847941085da0dd503736cbe6c4cabfcd4f885152a3"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CoreMLDistractionDetector.swift",
+      "sha256": "c7bf41bb9349184d0ae6fb38d9d42a278f7173abbf5efc688b1e98a751b2f4ac"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/DistractionDustDetection.swift",
+      "sha256": "fb0ef205bc1de2d7d7e9a0d836b127a375382b511180d5956733efbc44f34c07"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ForegroundSelection.swift",
+      "sha256": "5e83c42d2e07a39c8138cc9af09f21467e0a8e19a9cde0e4751ce71c03dec465"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalGenerativeFill.swift",
+      "sha256": "c218c9dbde6eb90247e39bc4c0b104ada4eb9f3771a67f4242905cb11f5d91e4"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/NativeDistractionDetection.swift",
+      "sha256": "4fc4f84c3ff6e79c872a12622a65bba4b12d8af558f0d98f45ebb36d3c133fa5"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RemoveDistractionScene.swift",
+      "sha256": "b90e1f2bb92b18ac0e527691dae7f7621bc0bf3bb009c321b8e9adb2cc8d9d9c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RemovePreparation.swift",
+      "sha256": "b383b021adf00b59c686c92e3c01207dc02c15c5140ed070aa0de73870998389"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/RemoveDistractionWorkflowTests.swift",
+      "sha256": "4401d766f3e19ae5fd0b4dcada39c0a296f31904c3124b663d3e64d11d70fd5c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/RemoveWorkflowTests.swift",
+      "sha256": "e32a32974afdca1fa4b1edef9a7ac91bef003224845ee8cf11f56fd7df654e82"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/RemoveDistractionSceneTests.swift",
+      "sha256": "1818a6393f39b46d48b14d03b584a30c336d2a4e8ddf33d12a8c4739431c3d2d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "43bd054c5b1ab2fbfc932574b8f3f5cd2afc7e13d1adba6af92ff068a6f36180"
+    },
+    {
+      "path": "scripts/convert-distraction-detector.py",
+      "sha256": "21370c256fcb406f06c291a8e05f7d6c8f7b2ab6f8938119ae11096bdb0b9d94"
+    }
+  ],
+  "casesPerConfiguration": 582,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 582,
+      "passed": 581,
+      "newCasesExpected": 7,
+      "newCasesPassed": 7,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "dcef099746c734f3ccba24b1b84e4c5ffd4a3e1bb4f32909ac89f53653f12391"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 582,
+      "passed": 581,
+      "newCasesExpected": 7,
+      "newCasesPassed": 7,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "24c8d57a63be5d5f808f1cc842205a8ee0522549af42f793753b4999892bf35f"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 582,
+      "passed": 581,
+      "newCasesExpected": 7,
+      "newCasesPassed": 7,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "a2005934c3e922f80cfbb037d99577a4d2db9426ef65d1f50ae18af8733a89ee"
+    }
+  },
+  "photographChangedPixels": {
+    "traditional": {
+      "Bench-and-Bin": 79531,
+      "Footpath": 10678
+    },
+    "local": {
+      "Bench-and-Bin": 79519,
+      "Footpath": 10677
+    }
+  },
+  "modelWeightSHA256": "d751f5a9cee3025599e13eff512f36a7718950c12788a46cb0fa16652f23873b",
+  "preview": {
+    "archiveSHA256": "0a6a71aa0d4e7a40fc2c2c21a47290f5af724071acfced479198aef85846ea38",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "b60512aca484196d9bf9cd773dcf8760301f33eedacc2c9ebb4cbe418cb6d3ae",
+      "x86_64": "ee39496063cdf8d4b3886ab08a722abd20ef224efcc9da892ba43862e5fcc09a"
+    },
+    "binarySHA256": "3bedef886a7d06994205fae4582c03ebec0ed0c83c794a0471a99972c31c7d9a",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "c29baa2ae1599b7123dd1c54f42343ac4523bc4d359d85e4d67d7d6cc68cd723"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "737809cd565f82b52fc896909aee5e8e6173be406cf3305bd5da70a547a89757"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "build-debug01.log",
+      "sha256": "1c0c3a07ac9c2aa49df93c96abefd77a7c094518b4c672b7c025e21604da8fa9"
+    },
+    {
+      "file": "build-debug02.log",
+      "sha256": "23e781d7f19408ee15ab656d23596f39a801dea8abd6819f9bbaafebac515315"
+    },
+    {
+      "file": "build-debug03.log",
+      "sha256": "39d217ba7f8caf6d5cc3caf5b1a0ff9e687270945eba98cd3d77432292d45703"
+    },
+    {
+      "file": "app-debug01.log",
+      "sha256": "f01e0b7ccbb26676c69361287ba838296cf7a966797fec031c4c9c6df50c1847"
+    },
+    {
+      "file": "imaging-debug01.log",
+      "sha256": "0d6ec1bfbf115ebb7c861437f852b596573ca3f64d22c9853031c24c5659b906"
+    },
+    {
+      "file": "app-debug02.log",
+      "sha256": "22c6c85d95b1849100a85725170c4114b5eff1db2782aaac0be6bc15df4d47f0"
+    },
+    {
+      "file": "imaging-debug02.log",
+      "sha256": "ed05117eff561029550a837a6c51437757c35e4b0bcf61d665b796d46fd1fbcc"
+    },
+    {
+      "file": "owned-debug01.log",
+      "sha256": "554a1039ef6c52f2be29a0ed0fff90499b61038d885e1e41555091400499edd1"
+    },
+    {
+      "file": "retouch-probe01.log",
+      "sha256": "0f8aec098ab1cd5c1cb56c7d7c90153401714f10eac84568e21010f59fbf618a"
+    },
+    {
+      "file": "coreml-convert01.log",
+      "sha256": "ed648a9d6eeed344d5146fed5139d9004a6a9d8da9c31bce05679a08d0c8a11b"
+    },
+    {
+      "file": "coreml-convert02.log",
+      "sha256": "a51c9c503baf62fc09c03a6cd07b0d1fd9b1c6d8dcb61a027f06b1e13b89c20e"
+    },
+    {
+      "file": "coreml-convert03.log",
+      "sha256": "1b9b9cbec308c064a8b4ab89e883580099730d0f7308a653fef25556ee4cc350"
+    },
+    {
+      "file": "converter-final01.log",
+      "sha256": "9c128349c9176f4cfee29f0eee31a2fd3b4159147c1630370d6faf008a39f0af"
+    },
+    {
+      "file": "owned-debug02.log",
+      "sha256": "85ce419821626652def1fc8c206eef4caeb04fc125de0991c54d389a40d3d2b2"
+    },
+    {
+      "file": "owned-debug04.log",
+      "sha256": "adfb2c28c76621a5b98ff011e02a47a4b826c1421e5e4af319899b82bdee0ee8"
+    },
+    {
+      "file": "owned-debug05.log",
+      "sha256": "25954b4f336bc73546f00f12659c0791b9d6f1dd2c578ab0937181d8d9944e1d"
+    },
+    {
+      "file": "owned-api01.log",
+      "sha256": "e5b10c98c8924fa338196ed64ca96a18f4fc61955317666f18ce33cb77157168"
+    },
+    {
+      "file": "model-proof-arm01.log",
+      "sha256": "a0477a0b915668f647b264ad9f4ab32916d287b7ffa6e44876f2fe8ebab45b66"
+    },
+    {
+      "file": "model-proof-intel01.log",
+      "sha256": "50435d09b3720a3a1444d83a673dfddd88b2a6fabfe1892925b36b7a1a80acc6"
+    },
+    {
+      "file": "trace01.log",
+      "sha256": "46e576f2ce4325e6dce15059039eb67cdfe08832b25d37ec9f58a38e0d7f8024"
+    },
+    {
+      "file": "torch-on-native01.log",
+      "sha256": "bc1bb63017819a62d1f63db2161debf6b1cf0e12acae13ddae245c492a94cfb9"
+    },
+    {
+      "file": "owned-harness-build02.log",
+      "sha256": "cd4e46eb28d0feaac42200dbc321f408365d814f537942fff5e97d0c39379f69"
+    },
+    {
+      "file": "qualification-debug02.log",
+      "sha256": "966b49dae23fed69990bd59f2e932a2e9fa8241f4cbf1060ec845eeaa3171550"
+    },
+    {
+      "file": "build-release-arm6401.log",
+      "sha256": "dd10dd5c40532f287652e823d58def89a7c5c748bc225a41b35462f347fb0f22"
+    },
+    {
+      "file": "build-release-x86_6401.log",
+      "sha256": "c84d1e8ef3064c6c062c73f549fa6e5d6b34e2f7f0b873b98b6a2768082fc10c"
+    },
+    {
+      "file": "xcode-build01.log",
+      "sha256": "a5e716eeea8335d9315da30ba336294a59b6ce81fa44c5f72ad4f87a5ee9cbb2"
+    },
+    {
+      "file": "preview-final01/preview-offscreen01.json",
+      "sha256": "341adf1d875e920575d5a6ad311d55fc033e16b9e3c361ef45a895ab3779fa80"
+    }
+  ]
+}

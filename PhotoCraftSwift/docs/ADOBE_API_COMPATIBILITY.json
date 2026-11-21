@@ -3359,5 +3359,19 @@
     "reference": "The desktop Remove tool applies Wires and cables directly from Find distractions.",
     "limits": "The pinned Photoshop v2 contract has no dedicated wire removal route. No qualified Execute Actions descriptor or Adobe output match. General distractions remains open.",
     "evidence": "docs/SOURCE_PUBLICATION_716.json"
+  },
+  "remove_general_distractions_build717": {
+    "status": "Photato local desktop and API category review",
+    "photatoCommand": "retouch.remove",
+    "operations": [
+      "findDistractions",
+      "configureDistractionReview",
+      "preview",
+      "apply",
+      "cancel"
+    ],
+    "reference": "Adobe desktop Remove documents category review, overlay opacity, brush refinement and explicit Apply.",
+    "limits": "The pinned Photoshop v2 contract has no dedicated General distractions route. Exact Adobe output and the Execute Actions descriptor remain unqualified.",
+    "evidence": "docs/SOURCE_PUBLICATION_717.json"
   }
 }

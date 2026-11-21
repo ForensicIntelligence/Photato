@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 716.** The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history. [Wire removal](PhotoCraftSwift/docs/REMOVE_WIRES.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_716.md).
+**Development alpha — source build 717.** Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit. [General distractions](PhotoCraftSwift/docs/REMOVE_GENERAL_DISTRACTIONS.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_717.md).
 
 ## Project layout
 

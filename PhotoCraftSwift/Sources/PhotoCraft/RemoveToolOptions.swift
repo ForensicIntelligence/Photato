@@ -3,6 +3,7 @@ import PhotoCraftCore
 
 struct RemoveToolOptions: View {
   @Bindable var store: EditorStore
+  @State private var reviewOpen = false
   private func setting<T>(_ key: WritableKeyPath<RemoveToolSettings,T>) -> Binding<T> {
     Binding(get:{ store.removeSettings[keyPath:key] },set:{ value in
       var settings = store.removeSettings; settings[keyPath:key] = value
@@ -23,9 +24,13 @@ struct RemoveToolOptions: View {
       Menu("Find distractions") {
         Button("Wires and cables") { store.removeWiresAndCables() }.disabled(!store.canRemoveWires)
         Button("People") { store.findRemovePeople() }.disabled(!store.canFindRemovePeople)
-        Button("General distractions") {}.disabled(true)
-      }.disabled(!store.canFindRemovePeople && !store.canRemoveWires)
-        .help("Remove extended wire and cable runs, or detect background people for review.")
+        Button("General distractions…") { reviewOpen = true }
+          .disabled(!store.canFindGeneralDistractions && store.removeDraft?.distractionReview == nil && store.removeDistractionID == nil)
+      }.disabled(!store.canFindRemovePeople && !store.canRemoveWires && store.removeDraft?.distractionReview == nil && store.removeDistractionID == nil)
+        .help("Remove wires and cables or review detected distractions.")
+        .popover(isPresented: $reviewOpen, arrowEdge: .bottom) {
+          RemoveDistractionControls(store: store) { reviewOpen = false }
+        }
       Text("Mode")
       RemoveModeControl(selection:setting(\.mode),enabled:store.removeDraft == nil && !store.geometryBusy)
         .frame(width:205)
@@ -44,7 +49,7 @@ struct RemoveToolOptions: View {
       Button { store.applyRemove() } label: { Label("Apply removal",systemImage:"checkmark") }
         .labelStyle(.iconOnly).help("Apply removal (Return)")
         .disabled(store.geometryBusy || store.removeDraft?.hasMarks != true || store.removeStroke != nil)
-      if store.removeApplying != nil || store.removeDetectionID != nil || store.removeWiresID != nil {
+      if store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil {
         ProgressView().controlSize(.small).accessibilityLabel(progressTitle)
       }
     }.controlSize(.small).toggleStyle(.checkbox)
@@ -52,6 +57,7 @@ struct RemoveToolOptions: View {
 
   private var progressTitle: String {
     if store.removeWiresID != nil { return "Removing wires and cables" }
+    if store.removeDistractionID != nil { return "Finding general distractions" }
     return store.removeDetectionID != nil ? "Detecting people for removal" : "Removing marked areas"
   }
 }

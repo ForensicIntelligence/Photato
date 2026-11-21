@@ -5,12 +5,17 @@ import PhotoCraftImaging
 enum RemoveToolAPI {
   static let name = "retouch.remove"
   static var definition: AutomationCommand.Definition {
-    .init(name:name,parameters:["operation":"configure, removeWires, findPeople, preview, stroke, apply, cancel or execute",
+    .init(name:name,parameters:["operation":"configure, removeWires, findPeople, findDistractions, configureDistractionReview, preview, stroke, apply, cancel or execute",
       "settings":"Partial window options or immutable execute overrides",
       "stroke":"One pending Add/Subtract stroke", "strokes":"Complete ordered removal marks",
+      "enabledCategories":"Replace enabled general-distraction categories in the current review",
+      "overlayOpacity":"General-distraction overlay opacity from 0 to 1",
       "layerID":"Raster target UUID; execute only"],
       description:"Mark or remove objects through the native Remove tool. Auto currently resolves to traditional processing; generative-on is explicitly unsupported. One Undo per applied batch.",
-      optionalParameters:["settings","stroke","strokes","layerID"])
+      optionalParameters:["settings","stroke","strokes","layerID","enabledCategories","overlayOpacity"])
+  }
+  static var distractionCategorySchema: [String:Any] {
+    BrushAPI.enumeration(RemoveDistractionCategory.allCases.map(\.rawValue))
   }
   static var settingsSchema: [String:Any] {
     BrushAPI.object(["size":BrushAPI.number(1,5000),"subtract":BrushAPI.flag,
@@ -24,11 +29,13 @@ enum RemoveToolAPI {
   }
   static func schema(_ key:String) -> [String:Any] {
     switch key {
-    case "operation": BrushAPI.enumeration(["configure","removeWires","findPeople","preview","stroke","apply","cancel","execute"])
+    case "operation": BrushAPI.enumeration(["configure","removeWires","findPeople","findDistractions","configureDistractionReview","preview","stroke","apply","cancel","execute"])
     case "settings": settingsSchema
     case "stroke": strokeSchema
     case "strokes": ["type":"array","minItems":1,"maxItems":256,"items":strokeSchema]
     case "layerID": ["type":"string","format":"uuid"]
+    case "enabledCategories": ["type":"array","items":distractionCategorySchema,"maxItems":6,"uniqueItems":true]
+    case "overlayOpacity": BrushAPI.number()
     default: [:]
     }
   }
@@ -36,6 +43,7 @@ enum RemoveToolAPI {
     [("configure",["operation","settings"],["settings"]),
      ("stroke",["operation","stroke"],["stroke"]),
      ("removeWires",["operation"],[]), ("findPeople",["operation"],[]), ("preview",["operation"],[]),
+     ("findDistractions",["operation"],[]), ("configureDistractionReview",["operation","enabledCategories","overlayOpacity"],[]),
      ("apply",["operation"],[]), ("cancel",["operation"],[]),
      ("execute",["operation","layerID","settings","strokes"],["strokes"])].map { operation,keys,required in
       var fields = Dictionary(uniqueKeysWithValues:keys.map { ($0,schema($0)) })
@@ -43,27 +51,46 @@ enum RemoveToolAPI {
       if operation == "configure" {
         var settings = settingsSchema; settings["minProperties"] = 1; fields["settings"] = settings
       }
-      return BrushAPI.object(fields,required:["operation"]+required)
+      var branch = BrushAPI.object(fields,required:["operation"]+required)
+      if operation == "configureDistractionReview" { branch["minProperties"] = 2 }
+      return branch
     }
   }
+  static var distractionSchema: [String:Any] {
+    let group = BrushAPI.object(["category":distractionCategorySchema,"count":BrushAPI.number(1,16384,integer:true),
+      "enabled":BrushAPI.flag],required:["category","count","enabled"])
+    return BrushAPI.object(["available":BrushAPI.flag,"detecting":BrushAPI.flag,"reviewOpen":BrushAPI.flag,
+      "modelConfigured":BrushAPI.flag,"overlayOpacity":BrushAPI.number(),
+      "categories":["type":"array","maxItems":6,"items":group]],
+      required:["available","detecting","reviewOpen","modelConfigured","overlayOpacity","categories"])
+  }
   @MainActor static func state(_ store:EditorStore) -> [String:Any] {
-    ["available":store.canUseRemove,"settings":BrushAPI.json(store.removeSettings),
+    let review = store.removeDraft?.distractionReview
+    let categories: [[String:Any]] = review?.groups.map { group in
+      ["category":group.category.rawValue,"count":group.count,"enabled":review?.enabled.contains(group.category) == true]
+    } ?? []
+    return ["available":store.canUseRemove,"settings":BrushAPI.json(store.removeSettings),
       "pendingStrokes":store.removeDraft?.strokes.count ?? 0,
-      "gestureActive":store.removeStroke != nil,"busy":store.removeApplying != nil || store.removeDetectionID != nil || store.removeWiresID != nil,
+      "gestureActive":store.removeStroke != nil,"busy":store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil,
       "pendingSourceValid":store.removeDraft.map { store.removeSourceMatches($0) } ?? true,
-      "resolvedProcessing":"traditional","generativeAvailable":false,
+      "resolvedProcessing":store.distractionFillModel(for: store.removeDraft ?? store.removeApplying) == nil
+        ? "traditional" : "localFillWhenEligible","generativeAvailable":false,
       "distractionDetectionAvailable":true,"detectingPeople":store.removeDetectionID != nil,
       "wiresAvailable":store.canRemoveWires,"removingWires":store.removeWiresID != nil,
+      "generalDistractions":["available":store.canFindGeneralDistractions,"detecting":store.removeDistractionID != nil,
+        "reviewOpen":review != nil,"modelConfigured":RemoveDistractionModelPreference.url(bookmark: store.removeDistractionModelBookmark) != nil,
+        "overlayOpacity":review?.overlayOpacity ?? 0.45,"categories":categories],
       "detectedPeople":store.removeDraft?.detectedPeople ?? 0,"hasPendingMarks":store.removeDraft?.hasMarks ?? false]
   }
   static var stateSchema: [String:Any] {
     BrushAPI.object(["available":BrushAPI.flag,"settings":settingsSchema,
       "pendingStrokes":["type":"integer","minimum":0,"maximum":256],
       "gestureActive":BrushAPI.flag,"busy":BrushAPI.flag,"pendingSourceValid":BrushAPI.flag,
-      "resolvedProcessing":["const":"traditional"],"generativeAvailable":["const":false],
+      "resolvedProcessing":["type":"string","enum":["traditional","localFillWhenEligible"]],"generativeAvailable":["const":false],
       "distractionDetectionAvailable":["const":true],"detectingPeople":BrushAPI.flag,
       "wiresAvailable":BrushAPI.flag,"removingWires":BrushAPI.flag,
-      "detectedPeople":["type":"integer","minimum":0,"maximum":64],"hasPendingMarks":BrushAPI.flag],required:["available","settings","pendingStrokes","gestureActive","busy","pendingSourceValid","resolvedProcessing","generativeAvailable","distractionDetectionAvailable","detectingPeople","wiresAvailable","removingWires","detectedPeople","hasPendingMarks"])
+      "generalDistractions":distractionSchema,
+      "detectedPeople":["type":"integer","minimum":0,"maximum":64],"hasPendingMarks":BrushAPI.flag],required:["available","settings","pendingStrokes","gestureActive","busy","pendingSourceValid","resolvedProcessing","generativeAvailable","distractionDetectionAvailable","detectingPeople","wiresAvailable","removingWires","generalDistractions","detectedPeople","hasPendingMarks"])
   }
   static var capabilities: [String:Any] {
     ["command":name,"stateSchema":stateSchema,
@@ -72,7 +99,7 @@ enum RemoveToolAPI {
         "removeWiresResult":BrushAPI.object(["candidateTracks":["type":"integer","minimum":0],"applied":BrushAPI.flag],required:["candidateTracks","applied"]),
         "removalMask":BrushAPI.object(["width":BrushAPI.number(1,300000,integer:true),"height":BrushAPI.number(1,300000,integer:true),"coverageBase64":["type":"string","maxLength":22369624],"meaning":["const":"marksBeforeDocumentSelection"]],required:["width","height","coverageBase64","meaning"])]],
       "native":"J tool group, Add/Subtract marking with captured Option alternate, size, processing mode, Sample All Layers, Remove after each stroke, Create New Layer, Return Apply and Escape Clear. Pending strokes and options are window-local.",
-      "processing":"Native traditional removal. Auto resolves to local processing and generativeOn rejects. Find distractions > People stages on-device marks for review, protecting whole people with majority foreground-subject overlap. Find distractions > Wires and cables detects extended thin runs and commits a sparse raster correction. General distractions, generative Remove modes and Photoshop output equivalence remain open.",
+      "processing":"Native traditional removal by default. Auto may run the configured LaMa512 model for an eligible General distractions review on Apple Silicon with macOS 26 or later. Generative AI Off uses traditional removal. The separate generativeOn setting remains unavailable. People and General distractions stage on-device marks for review. Wires and cables commits a sparse raster correction. Exact Photoshop output is unqualified.",
       "uniformFields":"Uniform known RGBA fields and constant harmonic boundaries retain their exact Float sample words through the shared native engine. This invariant does not establish Photoshop output equivalence.",
       "supportedModes":["auto","generativeOff"],"unavailableModes":["generativeOn"],
       "history":"One shared prepared transaction per applied batch; exact original selection representation, source layer metadata and unmarked pixels retained. New-layer output is a separate transparent raster patch. Native archive keeps resulting pixels/layers. Semantic Remove Actions and Adobe actionJSON remain unsupported.",
@@ -80,6 +107,7 @@ enum RemoveToolAPI {
       "limits":["maximumCanvasPixels":RemovePreparation.maximumCanvasPixels,"maximumSolvePixels":ContentAwareSynthesis.maximumPixels,"strokes":256,"pointsPerStroke":4096,"pointsPerOperation":16384,"size":[1,5000]],
       "loop":"Near endpoints within one brush diameter fill a nondegenerate loop. This geometric threshold and brush coverage are not Photoshop-qualified. Edge-to-edge corner closure remains unimplemented.",
       "wireRemoval":"removeWires follows Sample All Layers, Create New Layer and the active selection, with no pending marking batch. One Undo if applied. An empty detection or fully protected target returns applied=false. Candidate tracks are connected ridge samples, so fragmented or intersecting runs need not correspond one-to-one with physical cables. Inference uses a bounded 1536-pixel analysis side followed by native-resolution reconstruction. Small, low-contrast, or heavily occluded wires can be missed.",
+      "generalDistractionReview":"findDistractions stages six named categories where detected. Available classifiers are Apple Vision, local spot analysis, and an optional local OWLv2 Core ML model. configureDistractionReview replaces the enabled categories and/or overlay opacity. stroke refines their union, preview reports coverage with transfer permission, apply commits one edit, and cancel discards the review. Overlay opacity changes only the display.",
       "peopleDetection":"findPeople uses captured source, Sample All Layers and native person detection without the optional feature model. The same source grid feeds foreground-subject detection; whole foreground people are excluded when weighted mask overlap is at least50%. This explicit policy is not an Adobe classifier-equivalence claim. Missing subject classification fails rather than silently marking every person; a valid no-subject result retains all candidates. findPeople also returns candidates/protectedForegroundPeople counts. Detection is read-only. Refine with stroke; detected marks always require explicit apply even when Remove after each stroke is on. preview returns full-canvas row-major UInt8 marking coverage before document selection clipping, plus width/height, and requires document transfer permission. Native/API share cancellation, lifecycle/source guards and one final editing transaction.",
       "api":"execute applies captured strokes without changing defaults. configure requires native preferenceChangesEnabled. stroke/apply/cancel share native pending state; other edits reject pending Remove state. Existing sharing/revision/busy/cancellation/revocation guards apply.",
       "adobe":"No dedicated Remove endpoint in the pinned Firefly Photoshop v2 contract. No invented Adobe route, UXP runtime or plugin compatibility."]
@@ -106,19 +134,58 @@ extension AutomationService {
     case "configure": allowed = ["operation","settings"]
     case "stroke": allowed = ["operation","stroke"]
     case "execute": allowed = ["operation","settings","strokes","layerID"]
-    case "apply","cancel","removeWires","findPeople","preview": allowed = ["operation"]
+    case "apply","cancel","removeWires","findPeople","findDistractions","preview": allowed = ["operation"]
+    case "configureDistractionReview": allowed = ["operation","enabledCategories","overlayOpacity"]
     default: throw AutomationFailure(status:400,message:"Unknown Remove operation.")
     }
     guard Set(command.parameters.keys).isSubset(of:allowed) else {
       throw AutomationFailure(status:400,message:"Irrelevant Remove parameter for this operation.")
     }
-    if operation == "cancel", store.removeApplying != nil || store.removeDetectionID != nil || store.removeWiresID != nil {
+    if operation == "cancel", store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil {
       store.cancelRemove(); return .json(state(try removeShare(shareID),document:document))
     }
     try preflight(document,allowRemove:true)
     guard store.removeStroke == nil else { throw AutomationFailure(status:409,message:"Finish the pointer stroke first.") }
     if operation == "cancel" { store.cancelRemove(); return .json(state(try removeShare(shareID),document:document)) }
     if operation == "removeWires" { return try await executeRemoveWires(document: document, shareID: shareID) }
+    if operation == "findDistractions" {
+      let expectedToken = token, expectedGeneration = generation
+      guard store.canFindGeneralDistractions else { throw AutomationFailure(status:409,message:"Finish or clear the current Remove interaction first.") }
+      do {
+        try await store.detectGeneralDistractions { [self] in
+          prune()
+          guard isRunning, token == expectedToken, generation == expectedGeneration,
+            shares.contains(where: { $0.id == shareID && $0.document === document }) else {
+            throw AutomationFailure(status:409,message:"Distraction detection was cancelled or sharing changed.")
+          }
+          try preflight(document,allowRemove:true)
+        }
+      } catch is CancellationError {
+        throw AutomationFailure(status:409,message:"Distraction detection was cancelled or its source changed.")
+      }
+      return .json(state(try removeShare(shareID),document:document))
+    }
+    if operation == "configureDistractionReview" {
+      let opacity = try command.parameters["overlayOpacity"].map { _ in try command.number("overlayOpacity", range: 0...1) }
+      let categories = try command.parameters["enabledCategories"].map { value -> Set<RemoveDistractionCategory> in
+        guard case .array(let items) = value, items.count <= 6 else {
+          throw AutomationFailure(status:400,message:"Provide up to six distraction categories.")
+        }
+        let requested = try items.map { item -> RemoveDistractionCategory in
+          guard case .string(let name) = item, let category = RemoveDistractionCategory(rawValue: name) else {
+            throw AutomationFailure(status:400,message:"Unknown distraction category.")
+          }
+          return category
+        }
+        let unique = Set(requested)
+        guard unique.count == requested.count else { throw AutomationFailure(status:400,message:"Duplicate distraction categories.") }
+        return unique
+      }
+      guard categories != nil || opacity != nil else { throw AutomationFailure(status:400,message:"Specify categories or overlay opacity.") }
+      guard store.removeDraft?.distractionReview != nil else { throw AutomationFailure(status:409,message:"Find distractions before configuring the review.") }
+      try store.updateGeneralDistractions(categories: categories, opacity: opacity)
+      return .json(state(try removeShare(shareID),document:document))
+    }
     if operation == "findPeople" {
       let expectedToken = token, expectedGeneration = generation
       let result: RemovePeopleDetection
@@ -153,7 +220,7 @@ extension AutomationService {
     if operation == "stroke" {
       guard let raw = command.parameters["stroke"] else { throw AutomationFailure(status:400,message:"Supply a Remove stroke.") }
       try store.appendRemoveStroke(RemoveToolAPI.stroke(raw,settings:store.removeSettings))
-      if store.removeDraft?.settings.removeAfterEachStroke != true || store.removeDraft?.initialCoverage != nil {
+      if store.removeDraft?.settings.removeAfterEachStroke != true || store.removeDraft?.requiresExplicitApply == true {
         return .json(state(try removeShare(shareID),document:document))
       }
     }
@@ -174,7 +241,7 @@ extension AutomationService {
       draft = pending
     }
     try draft.request.validate()
-    let prepare = store.removePreparation, request = draft.request, restore = store.removeDraft
+    let prepare = store.removeWorker(for: draft), request = draft.request, restore = store.removeDraft
     store.removeDraft = nil; store.removeApplying = draft
     do {
       try await executePreparedOperation(document:document,shareID:shareID,revision:revision(store),allowPathTarget:true) { original in
