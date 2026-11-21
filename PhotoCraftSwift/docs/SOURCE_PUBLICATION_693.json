@@ -1,0 +1,300 @@
+{
+  "build": 693,
+  "base": "d1749511643fa110ac2488c52dd803e8b87683c7",
+  "buildInputs": 9311,
+  "includedBuildInputs": 9298,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "30eb34bf486570572686b5bc3f8b62b98063084661bb8156f71d5f974f5aeb59",
+  "sourceChanges": [
+    {
+      "path": "Photato.xcodeproj/project.pbxproj",
+      "sha256": "0ab14c81b3b79b41f7d1f510d52a0865e8e868d8d9cd68c282ec0804d7cce970"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Patterns.swift",
+      "sha256": "b81719ed0f4d33451bd7585686362708e6ce9e1f048f2b9a6f124fd37ca1b98a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CompositionFacts.swift",
+      "sha256": "567c26abff34e2f04b715eb6b5b3b4b58043b5a872dfdab4a700cc4b44b91332"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerStyleRenderer.swift",
+      "sha256": "2356a94ffed9b5bbf2164a3992d91b4704e1b72196438a5a231991e94504a571"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PatternFillRenderer.swift",
+      "sha256": "313e3f04e40f3374c4914ac935135b7de8930bd2fd9d48c44072a0cb7168d920"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "ab04ca8c587563eb34001930fec0f1a562b3c4ddbe3ffbbd9bd57e2f5bfe8df0"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceLayerStyleRenderer.swift",
+      "sha256": "b88c732c6ce22bb819386c529581253759efe2810f6aeffec49ded9e24c88da1"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/PatternTests.swift",
+      "sha256": "3d2b831143787b449f8a4173be0dcf6b1ed32c9e0d49911015bda7053a91ad8f"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStyleTests.swift",
+      "sha256": "b39a99ba1cf11ee5e0010c9be05999fa26dab8ddc24abc17684f4f49eba12d0a"
+    },
+    {
+      "path": "project.yml",
+      "sha256": "f2493e025188935b358c25483132584a113c6c5f23adbd4a4ae442584f45f63a"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "b48341cd89937ba611550c854cc1396caea31ef501b86a4e293dba93728ca927"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "b48341cd89937ba611550c854cc1396caea31ef501b86a4e293dba93728ca927"
+  },
+  "casesPerConfiguration": 463,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 463,
+      "passed": 460,
+      "newCasesExpected": 20,
+      "newCasesPassed": 20,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "b3bf8de40ac7abb5d7f5f6b2ea135716fdba8b2e39c9f862fa910f5cab2e15a9"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 463,
+      "passed": 460,
+      "newCasesExpected": 20,
+      "newCasesPassed": 20,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "8fbe18ec166b04554009d41506504b0541ef4eae6312a298207094c0b30a1bbc"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 463,
+      "passed": 460,
+      "newCasesExpected": 20,
+      "newCasesPassed": 20,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "8f3606f3e21eb7c515ee5208980478367b869f02074f86eee047d1c9bf7e7efe"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+    "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "15846b511212f1dfa28cdbb3813f70a694cd169c47ad8dd22896ac628b81834f",
+  "wideObliqueProbe": {
+    "canvas": [
+      300000,
+      300000
+    ],
+    "source": [
+      4161,
+      4101
+    ],
+    "fit": [
+      301,
+      297
+    ],
+    "angle": 31,
+    "scale": 56,
+    "matchingRGBAByTileSide": {
+      "5": "9f3c5cdc5deff94c8e91a7fe754fbb774356f5bb81a3a0dd7d7d54023aec6b61",
+      "512": "e40316af92bed9df7e017b2f18ee025c48dfb4c6977fec2eb98e2658d0cd6f00"
+    },
+    "measurements": {
+      "arm": {
+        "baseline": {
+          "5": {
+            "peakResidentBytes": 76070912,
+            "seconds": 5.582992
+          },
+          "512": {
+            "peakResidentBytes": 86671360,
+            "seconds": 6.008098
+          }
+        },
+        "candidate": {
+          "5": {
+            "peakResidentBytes": 76038144,
+            "seconds": 5.334009
+          },
+          "512": {
+            "peakResidentBytes": 88670208,
+            "seconds": 5.363811
+          }
+        }
+      },
+      "intel": {
+        "baseline": {
+          "5": {
+            "peakResidentBytes": 234053632,
+            "seconds": 11.298385
+          },
+          "512": {
+            "peakResidentBytes": 327639040,
+            "seconds": 12.324732
+          }
+        },
+        "candidate": {
+          "5": {
+            "peakResidentBytes": 237756416,
+            "seconds": 11.065458
+          },
+          "512": {
+            "peakResidentBytes": 270303232,
+            "seconds": 12.034445
+          }
+        }
+      }
+    }
+  },
+  "texelProbe": {
+    "samplesPerRun": 3000000,
+    "runsPerVersion": 3,
+    "fingerprint": "7819019958362803855",
+    "medianSeconds": {
+      "arm": {
+        "692": 0.068873,
+        "693": 0.037185
+      },
+      "intel": {
+        "692": 0.113596,
+        "693": 0.072403
+      }
+    }
+  },
+  "xcode": {
+    "scheme": "Photato",
+    "configuration": "Debug",
+    "architecture": "arm64",
+    "signing": "disabled",
+    "configurationChanges": [
+      "Photato.xcodeproj/project.pbxproj",
+      "project.yml"
+    ],
+    "parentMissingPackageName": true,
+    "defaultProjectBuildLogSHA256": "a9067a474243439aa1bcbc8ffa841f9dc63412daaa8d6ad5f0009a637cd632f3",
+    "offscreenWorkspaceSHA256": "26e833329f51cee386285dedfa3c8117a237651b991bd9738026cc5c8fe5b70f",
+    "optimizedConfigurationSettings": {
+      "Release": {
+        "architectures": [
+          "arm64",
+          "x86_64"
+        ],
+        "minimumSystemVersion": "14.0"
+      },
+      "AppStore": {
+        "architectures": [
+          "arm64",
+          "x86_64"
+        ],
+        "minimumSystemVersion": "14.0"
+      }
+    }
+  },
+  "nativeWideFit": {
+    "arm": {
+      "canvasHeight": 520,
+      "canvasWidth": 70000,
+      "fitSeconds": 13.458218125044368,
+      "nativeFitMatchesRetainedPNG": true,
+      "nativeProofPublished": true,
+      "outputHeight": 6,
+      "outputWidth": 860,
+      "proofSeconds": 23.667823374969885,
+      "pngSHA256": {
+        "fit.png": "11bac7e419f45a4121214996e0e19ec22d48e09b5de1eccdc15dff4bdf2dcbdf",
+        "proof.png": "5e0ef859c109004fa9e589cc8de05b75d1c2f2221808a283de302a6f20bf6fd8"
+      }
+    },
+    "intel": {
+      "canvasHeight": 520,
+      "canvasWidth": 70000,
+      "fitSeconds": 26.88971591705922,
+      "nativeFitMatchesRetainedPNG": true,
+      "nativeProofPublished": true,
+      "outputHeight": 6,
+      "outputWidth": 860,
+      "proofSeconds": 44.93033529201057,
+      "pngSHA256": {
+        "fit.png": "11bac7e419f45a4121214996e0e19ec22d48e09b5de1eccdc15dff4bdf2dcbdf",
+        "proof.png": "5e0ef859c109004fa9e589cc8de05b75d1c2f2221808a283de302a6f20bf6fd8"
+      }
+    }
+  },
+  "additionalDebugStorageTests": 4,
+  "controls": {
+    "tileSides": [
+      5,
+      512
+    ],
+    "cacheBytesPerComposition": 33554432,
+    "nativeViews": [
+      "fit",
+      "proof"
+    ]
+  },
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "preview": {
+    "archiveSHA256": "a6637be880e2c4102ac558575d7816eff1eda094fed82d21a30695adeca699cd",
+    "binarySHA256": "550967c294d22e8fb0b442e286289f54b3dc0ed749d46cf55e677ae763ec3c0c",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "d80e5f1ed35d810012bfa1ce3447c33ef64ffb7a3752fa5f4b14214ff46ae0eb",
+      "x86_64": "cd6131abe2cbd23d470198ea33d435d6582212c722cfa598c9a1a91525ec5efd"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html"
+  ]
+}

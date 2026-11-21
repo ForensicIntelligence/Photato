@@ -344,7 +344,8 @@ public enum Renderer {
       try facts.map { try $0.mask(layer, region: region) }
         ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
     }
-    return try compositeFlatPixels(layer, in: d, over: consume backdrop, region: region, mask: mask)
+    return try compositeFlatPixels(layer, in: d, over: consume backdrop, region: region, mask: mask,
+      patternPreparation: facts?.patternPreparation)
   }
 
   // Mask preparation can itself allocate sizeable render state. Keep its
@@ -352,7 +353,7 @@ public enum Renderer {
   @inline(never)
   private static func compositeFlatPixels(
     _ layer: Layer, in d: CraftDocument, over backdrop: consuming Surface,
-    region: IntRect, mask: LayerMaskSampler?
+    region: IntRect, mask: LayerMaskSampler?, patternPreparation: PatternFillSampler.PreparationCache?
   ) throws -> Surface {
     var output = backdrop
     if case .adjustment(.source(let settings))=layer.content {
@@ -422,7 +423,7 @@ public enum Renderer {
       return output
     }
     if case .patternFill(let fill) = layer.content {
-      let sampler = try PatternFillSampler(fill, in: d)
+      let sampler = try PatternFillSampler(fill, in: d, preparation: patternPreparation)
       for y in region.y..<region.y + region.height {
         try Task.checkCancellation()
         for x in region.x..<region.x + region.width {

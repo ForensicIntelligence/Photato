@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-18 — Step 553 — Wider Soft Round tip
-
-Soft Round and Soft Round Pressure Opacity now paint with a wider falloff at zero hardness. Across six saved Photoshop dabs, the new renderer was within 3 alpha levels after lining up the centers. The three held-out sizes were within two levels. The previous renderer was off by up to 35. Older Actions still replay with their original brush settings.
-
-The 409 selected tests passed in Debug and both optimized builds. The next brush checks cover exact pointer positions, harder tips and continuous strokes.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-553) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_553.md).
-
 ## 2026-11-18 — Step 552 — Brush opacity and flow number keys
 
 With the canvas focused, number keys set opacity and Shift-number keys set flow. Airbrush swaps which modifier controls each value. Two digits set an exact percentage. This shares the existing settings used by the Options bar and the API.
@@ -419,14 +411,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:692 -->
+<!-- current-status-step:693 -->
 ## Current development status — 21 November 2026
 
-Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite.
+Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
 
-458 of 461 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 691's assertions. Both signed macOS 14+ preview slices launched offscreen.
+460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen.
 
-[Source checkpoint 692](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_692.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-692).
+[Source checkpoint 693](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_693.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-693).
 
 <!-- current-status:end -->
 
@@ -1325,5 +1317,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 690 | [Bound rotated Pattern Overlay viewports](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-690) |
 | 2026-11-21 | 691 | [Fit quarter-turn Pattern Overlays on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-691) |
 | 2026-11-21 | 692 | [Reduce wide oblique Pattern Overlays in bounded patches](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-692) |
+| 2026-11-21 | 693 | [Reuse prepared pattern samples across render patches](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-693) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

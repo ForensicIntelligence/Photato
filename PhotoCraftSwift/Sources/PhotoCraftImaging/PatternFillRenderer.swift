@@ -2,6 +2,49 @@ import Foundation
 import PhotoCraftCore
 
 struct PatternFillSampler {
+  /// A composition owns its prepared samples. Placement remains local to the
+  /// caller, so layers can share texels while retaining different transforms.
+  final class PreparationCache {
+    static let maximumBytes = 32 * 1024 * 1024
+
+    private struct ReductionKey: Hashable {
+      let patternID: String
+      let factor: Int
+    }
+
+    private let byteBudget: Int
+    private var continuous: [String: (RasterPattern, PatternSampler.PreparedSamples)] = [:]
+    private var reduced: [ReductionKey: (RasterPattern, Surface)] = [:]
+    private(set) var retainedBytes = 0
+
+    init(byteBudget: Int = maximumBytes) {
+      self.byteBudget = byteBudget
+    }
+
+    func samples(for pattern: RasterPattern) throws -> PatternSampler.PreparedSamples {
+      let cached = continuous[pattern.id]
+      if let cached, cached.0 == pattern { return cached.1 }
+      let prepared = try PatternSampler.PreparedSamples(pattern)
+      if cached == nil, prepared.allocatedBytes <= byteBudget - retainedBytes {
+        continuous[pattern.id] = (pattern, prepared)
+        retainedBytes += prepared.allocatedBytes
+      }
+      return prepared
+    }
+
+    fileprivate func reducedTile(for pattern: RasterPattern, factor: Int) throws -> Surface {
+      let key = ReductionKey(patternID: pattern.id, factor: factor)
+      let cached = reduced[key]
+      if let cached, cached.0 == pattern { return cached.1 }
+      let tile = try LegacyPatternGrid.reducedTile(pattern.surface, factor: factor)
+      if cached == nil, tile.allocatedBytes <= byteBudget - retainedBytes {
+        reduced[key] = (pattern, tile)
+        retainedBytes += tile.allocatedBytes
+      }
+      return tile
+    }
+  }
+
   private enum Sampling {
     case continuous(PatternSampler)
     case legacy(LegacyPatternGrid)
@@ -9,23 +52,26 @@ struct PatternFillSampler {
   private let sampling: Sampling
   private let inverse: Transform2D
   init(_ fill: PatternFill, in document: CraftDocument, legacyShapeGrid: Bool = false,
-       origin: PathPoint = PathPoint(0, 0)) throws {
+       origin: PathPoint = PathPoint(0, 0), preparation: PreparationCache? = nil) throws {
     guard let pattern = document.pattern(fill.patternID) else {
       throw CraftError.invalid("Missing embedded pattern.")
     }
-    if legacyShapeGrid, let grid = try LegacyPatternGrid(pattern, placement: fill.placement) {
+    if legacyShapeGrid, let grid = try LegacyPatternGrid(pattern, placement: fill.placement, preparation: preparation) {
       sampling = .legacy(grid)
+    } else if let preparation {
+      sampling = .continuous(try PatternSampler(preparation.samples(for: pattern), placement: fill.placement))
     } else {
       sampling = .continuous(try PatternSampler(pattern, placement: fill.placement))
     }
     inverse = try (Transform2D.translation(origin.x, origin.y) * (fill.geometry ?? .identity)).inverted()
   }
 
-  static func overlay(_ fill: PatternFill, style: LayerStyle, layer: Layer, in document: CraftDocument) throws -> Self {
+  static func overlay(_ fill: PatternFill, style: LayerStyle, layer: Layer, in document: CraftDocument,
+    preparation: PreparationCache? = nil) throws -> Self {
     let origin = fill.linked ? style.patternReference(in: layer) : PathPoint(0, 0)
     let aligned = fill.geometry == nil && origin.x.rounded() == origin.x && origin.y.rounded() == origin.y
     return try Self(fill, in: document, legacyShapeGrid: aligned && document.colorMode == .rgb && document.depth == .u8,
-                    origin: origin)
+                    origin: origin, preparation: preparation)
   }
 
   static func overlayOpacity(_ effect: LayerEffect, in document: CraftDocument) -> Float {
@@ -139,15 +185,24 @@ private struct LegacyPatternGrid {
     return try tile.isOpaque()
   }
 
-  init?(_ pattern: RasterPattern, placement: PatternPlacement) throws {
+  init?(_ pattern: RasterPattern, placement: PatternPlacement, preparation: PatternFillSampler.PreparationCache?) throws {
     try placement.validate()
     guard placement.angle == 0, placement.scale != 100, pattern.surface.depth == .u8 else { return nil }
     let scale = Double(placement.scale) / 100
     try pattern.validate()
     guard try Self.admits(pattern.surface, scale: scale) else { return nil }
     let reduction = Self.reduction(for: scale)
-    var tile = pattern.surface
-    for _ in 0..<reduction.trailingZeroBitCount {
+    if reduction == 1 { tile = pattern.surface }
+    else if let preparation { tile = try preparation.reducedTile(for: pattern, factor: reduction) }
+    else { tile = try Self.reducedTile(pattern.surface, factor: reduction) }
+    self.scale = scale * Double(reduction)
+    phaseX = Double(placement.phaseX)
+    phaseY = Double(placement.phaseY)
+  }
+
+  static func reducedTile(_ source: Surface, factor: Int) throws -> Surface {
+    var tile = source
+    for _ in 0..<factor.trailingZeroBitCount {
       var half = try Surface(width: tile.width / 2, height: tile.height / 2, fill: tile.defaultPixel)
       let side = Surface.tileSide
       let columns = (tile.width + side - 1) / side
@@ -167,10 +222,7 @@ private struct LegacyPatternGrid {
       }
       tile = half
     }
-    self.tile = tile
-    self.scale = scale * Double(reduction)
-    phaseX = Double(placement.phaseX)
-    phaseY = Double(placement.phaseY)
+    return tile
   }
 
   private static func wrapped(_ index: Int, period: Int) -> Int {

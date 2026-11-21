@@ -14,6 +14,7 @@ configs:
 settings:
   base:
     SWIFT_VERSION: "6.0"
+    OTHER_SWIFT_FLAGS: "$(inherited) -package-name Photato"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
     CODE_SIGN_STYLE: Manual
     CODE_SIGN_IDENTITY: "-"
@@ -21,6 +22,8 @@ settings:
   configs:
     Debug:
       ONLY_ACTIVE_ARCH: YES
+      # Swift 6.4.2 needs this workaround for the Debug Core feather build.
+      OTHER_SWIFT_FLAGS: "$(inherited) -package-name Photato -Xllvm -sil-disable-pass=PredictableDeadAllocationElimination"
     Release:
       ARCHS: "arm64 x86_64"
       ONLY_ACTIVE_ARCH: NO

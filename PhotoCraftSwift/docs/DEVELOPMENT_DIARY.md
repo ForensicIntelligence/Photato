@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 693 — Reuse prepared pattern samples across render patches
+
+Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
+
+The 5 × 5 and 512 × 512 oblique sources matched build 692 byte for byte in both optimized architectures. Native Fit and soft proof for the separate 70,000 × 520 reference document produced the same PNGs as build 692. Tests covered negative wrap, transparent texels, linked origins, RGB8 reduced grids, source replacement and the cache budget.
+
+460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen. Wide nonperiodic fit still evaluates each source pixel. Interactive timing on fully covered maximum-size documents and Photoshop zoom comparison remain open. The local Photoshop document query timed out.
+
+[Development record](DEVLOG.md#dev-step-693) · [Details](PATTERN_SAMPLING_693.md).
+
 ## 2026-11-21 — Step 692 — Reduce wide oblique Pattern Overlays in bounded patches
 
 Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite.
@@ -1527,14 +1537,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:692 -->
+<!-- current-status-step:693 -->
 ## Current development status — 21 November 2026
 
-Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite.
+Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
 
-458 of 461 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 691's assertions. Both signed macOS 14+ preview slices launched offscreen.
+460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen.
 
-[Source checkpoint 692](SOURCE_PUBLICATION_692.md) · [Development record](DEVLOG.md#dev-step-692).
+[Source checkpoint 693](SOURCE_PUBLICATION_693.md) · [Development record](DEVLOG.md#dev-step-693).
 
 <!-- current-status:end -->
 
@@ -2433,6 +2443,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 690 | [Bound rotated Pattern Overlay viewports](DEVLOG.md#dev-step-690) |
 | 2026-11-21 | 691 | [Fit quarter-turn Pattern Overlays on large canvases](DEVLOG.md#dev-step-691) |
 | 2026-11-21 | 692 | [Reduce wide oblique Pattern Overlays in bounded patches](DEVLOG.md#dev-step-692) |
+| 2026-11-21 | 693 | [Reuse prepared pattern samples across render patches](DEVLOG.md#dev-step-693) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

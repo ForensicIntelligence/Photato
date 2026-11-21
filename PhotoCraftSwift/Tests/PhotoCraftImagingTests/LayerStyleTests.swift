@@ -4,6 +4,59 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testPatternPreparationSharesAssetsAcrossPlacementsAndStaysWithinBudget() throws {
+    var pixels = try Surface(width: 8, height: 8, fill: .white)
+    pixels.setPixel(x: 0, y: 0, .black)
+    pixels.setPixel(x: 1, y: 3, Pixel(0.1, 0.64, 0.72))
+    let pattern = try RasterPattern(name: "Owned preparation control", surface: pixels)
+    var document = try CraftDocument(width: 73, height: 91)
+    document.patterns = [pattern]
+    var fill = PatternFill(patternID: pattern.id)
+    fill.placement.angle = 31
+    var style = LayerStyle(effects: [])
+    style.referenceOffset = PathPoint(-4, 3)
+    let layer = document.layers[0]
+    let capacity = pixels.width * pixels.height * MemoryLayout<SIMD4<Float>>.stride
+    let cache = PatternFillSampler.PreparationCache(byteBudget: capacity)
+
+    func sample(_ fill: PatternFill, on document: CraftDocument, cache: PatternFillSampler.PreparationCache?) throws -> [Pixel] {
+      let sampler = try PatternFillSampler.overlay(fill, style: style, layer: layer, in: document, preparation: cache)
+      return (-5...17).map { sampler.sample(x: Double($0) + 0.5, y: Double($0) + 2.5) }
+    }
+    let original = try sample(fill, on: document, cache: cache)
+    XCTAssertEqual(cache.retainedBytes, capacity)
+    XCTAssertEqual(original, try sample(fill, on: document, cache: nil))
+    fill.placement.angle = -31
+    style.referenceOffset = PathPoint(8, -3)
+    XCTAssertNotEqual(original, try sample(fill, on: document, cache: cache))
+    XCTAssertEqual(try sample(fill, on: document, cache: cache), try sample(fill, on: document, cache: nil))
+    XCTAssertEqual(cache.retainedBytes, capacity)
+
+    var modified = document
+    let replacement = try RasterPattern(name: pattern.name,
+      surface: Surface(width: 8, height: 8, fill: Pixel(0.9, 0.2, 0.4)), id: pattern.id)
+    modified.patterns = [replacement]
+    XCTAssertNotEqual(try sample(fill, on: modified, cache: cache), try sample(fill, on: document, cache: cache))
+    XCTAssertEqual(try sample(fill, on: modified, cache: cache), try sample(fill, on: modified, cache: nil))
+    XCTAssertEqual(cache.retainedBytes, capacity)
+
+    fill.placement.angle = 0
+    fill.placement.scale = 25
+    let legacy = PatternFillSampler.PreparationCache()
+    XCTAssertEqual(try sample(fill, on: document, cache: legacy), try sample(fill, on: document, cache: nil))
+    let legacyBytes = legacy.retainedBytes
+    XCTAssertGreaterThan(legacyBytes, 0)
+    fill.placement.scale = 22.5
+    fill.placement.phaseY = -0.375
+    XCTAssertEqual(try sample(fill, on: document, cache: legacy), try sample(fill, on: document, cache: nil))
+    XCTAssertEqual(legacy.retainedBytes, legacyBytes)
+    XCTAssertEqual(try sample(fill, on: document, cache: cache), try sample(fill, on: document, cache: nil))
+    XCTAssertEqual(cache.retainedBytes, capacity)
+    fill.placement.scale = 37.5
+    XCTAssertEqual(try sample(fill, on: document, cache: legacy), try sample(fill, on: document, cache: nil))
+    XCTAssertGreaterThan(legacy.retainedBytes, legacyBytes)
+  }
+
   func testPagedObliquePatternReductionMatchesStoredTilesAndFractionalEdges() throws {
     let size = Surface.maxDimension
     let region = IntRect(x: size - 3_083, y: size - 208, width: 2_149, height: 137)

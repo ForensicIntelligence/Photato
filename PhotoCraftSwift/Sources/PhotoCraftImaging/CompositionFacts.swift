@@ -10,6 +10,7 @@ final class CompositionFacts {
   }
   static let maximumDerivedMaskCacheBytes=512*1024*1024
   let document: CraftDocument
+  let patternPreparation = PatternFillSampler.PreparationCache()
   private let vectorViewport: IntRect?
   private let originals: [UUID:Layer]
   private var masks: [MaskKey:LayerMaskSampler] = [:]

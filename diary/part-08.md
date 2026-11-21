@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-21 — Step 693 — Reuse prepared pattern samples across render patches
+
+Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
+
+The 5 × 5 and 512 × 512 oblique sources matched build 692 byte for byte in both optimized architectures. Native Fit and soft proof for the separate 70,000 × 520 reference document produced the same PNGs as build 692. Tests covered negative wrap, transparent texels, linked origins, RGB8 reduced grids, source replacement and the cache budget.
+
+460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen. Wide nonperiodic fit still evaluates each source pixel. Interactive timing on fully covered maximum-size documents and Photoshop zoom comparison remain open. The local Photoshop document query timed out.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-693) · [Details](../PhotoCraftSwift/docs/PATTERN_SAMPLING_693.md).
+
 ## 2026-11-21 — Step 692 — Reduce wide oblique Pattern Overlays in bounded patches
 
 Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite.
@@ -1109,5 +1119,13 @@ The four factory Round presets now change smoothly from soft feathering to an op
 All 411 selected tests passed across three builds. The next measurements cover exact pointer placement, intermediate hardness settings and continuous strokes.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-554) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_554.md).
+
+## 2026-11-18 — Step 553 — Wider Soft Round tip
+
+Soft Round and Soft Round Pressure Opacity now paint with a wider falloff at zero hardness. Across six saved Photoshop dabs, the new renderer was within 3 alpha levels after lining up the centers. The three held-out sizes were within two levels. The previous renderer was off by up to 35. Older Actions still replay with their original brush settings.
+
+The 409 selected tests passed in Debug and both optimized builds. The next brush checks cover exact pointer positions, harder tips and continuous strokes.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-553) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_553.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)

@@ -1,3 +1,7 @@
+**Source checkpoint 693.** Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition. 460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen. [Qualification](SOURCE_PUBLICATION_693.md).
+
+**Next layer style work.** Profile and batch final style pixel writes. The wide-fit stack sample shows repeated opacity-proof allocation through Surface.setStoredPixel. Preserve the measured RGBA bytes and qualify live Adobe zoom sampling when the installed instance responds.
+
 **Source checkpoint 692.** Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite. 458 of 461 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 691's assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_692.md).
 
 **Next layer style work.** Measure and reuse immutable pattern preparation across patches, then qualify Photoshop’s zoom sampling. Keep the exact tile-order reducer as a control for future performance changes.

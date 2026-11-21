@@ -84,11 +84,39 @@ public struct PatternPlacement: Codable, Equatable, Sendable {
 /// Premultiplied bilinear wrapping, ported from PhotoCraft compose/pattern.rs.
 /// Pattern samples retain the pattern's native encoded RGB domain until painting.
 public struct PatternSampler: Sendable {
+  package struct PreparedSamples: Sendable {
+    fileprivate let surface: Surface
+    fileprivate let texels: [SIMD4<Float>]
+    package var allocatedBytes: Int { texels.count * MemoryLayout<SIMD4<Float>>.stride }
+
+    package init(_ pattern: RasterPattern) throws {
+      try pattern.validate()
+      try self.init(surface: pattern.surface, preparePixels: true)
+    }
+
+    fileprivate init(surface: Surface, preparePixels: Bool) throws {
+      self.surface = surface
+      guard preparePixels, surface.width * surface.height <= PatternSampler.preparedPixelLimit else {
+        texels = []
+        return
+      }
+      var samples: [SIMD4<Float>] = []
+      samples.reserveCapacity(surface.width * surface.height)
+      for y in 0..<surface.height {
+        try Task.checkCancellation()
+        for x in 0..<surface.width {
+          samples.append(PatternSampler.premultiplied(surface.pixel(x: x, y: y)))
+        }
+      }
+      texels = samples
+    }
+  }
+
   let surface: Surface
+  let prepared: [SIMD4<Float>]
   /// Cap extra preparation at 4 MiB per sampler. Larger patterns retain the
   /// original sparse-surface path rather than duplicating up to 256 MiB.
   static let preparedPixelLimit = 262_144
-  let prepared: [SIMD4<Float>]
   let cosine: Double
   let sine: Double
   let inverseScale: Double
@@ -99,21 +127,17 @@ public struct PatternSampler: Sendable {
   init(_ pattern: RasterPattern, placement: PatternPlacement, preparePixels: Bool) throws {
     try pattern.validate()
     try placement.validate()
-    surface = pattern.surface
-    if preparePixels, surface.width * surface.height <= Self.preparedPixelLimit {
-      var samples: [SIMD4<Float>] = []
-      samples.reserveCapacity(surface.width * surface.height)
-      for y in 0..<surface.height {
-        try Task.checkCancellation()
-        for x in 0..<surface.width {
-          let p = surface.pixel(x: x, y: y)
-          samples.append(SIMD4(p.r * p.a, p.g * p.a, p.b * p.a, p.a))
-        }
-      }
-      prepared = samples
-    } else {
-      prepared = []
-    }
+    try self.init(PreparedSamples(surface: pattern.surface, preparePixels: preparePixels), validated: placement)
+  }
+
+  package init(_ samples: PreparedSamples, placement: PatternPlacement) throws {
+    try placement.validate()
+    self.init(samples, validated: placement)
+  }
+
+  private init(_ samples: PreparedSamples, validated placement: PatternPlacement) {
+    surface = samples.surface
+    prepared = samples.texels
     (cosine, sine) = Self.rotationCoefficients(placement.angle)
     inverseScale = 1 / Double(placement.scale / 100)
     origin = .init(Double(placement.phaseX), Double(placement.phaseY))
@@ -122,6 +146,15 @@ public struct PatternSampler: Sendable {
   package static func rotationCoefficients(_ angle: Float) -> (cosine: Double, sine: Double) {
     let radians = Double(angle) * (.pi / 180)
     return (cos(radians), sin(radians))
+  }
+
+  private static func premultiplied(_ p: Pixel) -> SIMD4<Float> {
+    SIMD4(p.r * p.a, p.g * p.a, p.b * p.a, p.a)
+  }
+
+  private static func wrapped(_ index: Int, count: Int) -> Int {
+    let remainder = index % count
+    return remainder < 0 ? remainder + count : remainder
   }
   public func sample(x: Double, y: Double) -> Pixel {
     guard x.isFinite, y.isFinite, abs(x) <= 1e9, abs(y) <= 1e9 else { return .clear }
@@ -139,24 +172,23 @@ public struct PatternSampler: Sendable {
     let floorY = floor(v)
     let fx = Float(u - floorX)
     let fy = Float(v - floorY)
-    let x0 = Int(floorX)
-    let y0 = Int(floorY)
+    let width = surface.width, height = surface.height
+    let x0 = Self.wrapped(Int(floorX), count: width), y0 = Self.wrapped(Int(floorY), count: height)
+    let x1 = x0 + 1 == width ? 0 : x0 + 1, y1 = y0 + 1 == height ? 0 : y0 + 1
+    let left = 1 - fx
     var acc = SIMD4<Float>.zero
-    for (dy, wy) in [(0, 1 - fy), (1, fy)] where wy != 0 {
-      for (dx, wx) in [(0, 1 - fx), (1, fx)] where wx != 0 {
-        let x = ((x0 + dx) % surface.width + surface.width) % surface.width
-        let y = ((y0 + dy) % surface.height + surface.height) % surface.height
-        let p: SIMD4<Float>
-        if prepared.isEmpty {
-          let sample = surface.pixel(x: x, y: y)
-          p = SIMD4(sample.r * sample.a, sample.g * sample.a, sample.b * sample.a, sample.a)
-        } else {
-          p = prepared[y * surface.width + x]
-        }
-        let k = wx * wy
-        acc += p * k
-      }
+    func texel(_ x: Int, _ y: Int) -> SIMD4<Float> {
+      if prepared.isEmpty { return Self.premultiplied(surface.pixel(x: x, y: y)) }
+      return prepared[y * width + x]
     }
+    // Keep the four additions and zero-weight skips in the original order.
+    func accumulate(row: Int, weight: Float) {
+      guard weight != 0 else { return }
+      if left != 0 { acc += texel(x0, row) * (left * weight) }
+      if fx != 0 { acc += texel(x1, row) * (fx * weight) }
+    }
+    accumulate(row: y0, weight: 1 - fy)
+    accumulate(row: y1, weight: fy)
     guard acc.w > 0 else { return .clear }
     return Pixel(acc.x / acc.w, acc.y / acc.w, acc.z / acc.w, min(1, acc.w))
   }

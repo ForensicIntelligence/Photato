@@ -40,6 +40,43 @@ final class PatternTests: XCTestCase {
     placement.scale = 0
     XCTAssertThrowsError(try PatternSampler(tile(), placement: placement))
   }
+  func testWrappedTexelsKeepExactInterpolationOrderWithAndWithoutPreparation() throws {
+    var surface = try Surface(width: 3, height: 2, depth: .f32, fill: Pixel(0.1, 0.8, 0.35, 0.4))
+    surface.setPixel(x: 1, y: 0, Pixel(0.9, 0.13, 0.3, 0))
+    surface.setPixel(x: 2, y: 0, Pixel(0.67, 0.3, 0.8))
+    surface.setPixel(x: 1, y: 1, Pixel(0.07, 0.21, 0.41, 0.8))
+    let pattern = try RasterPattern(name: "Owned wrapping control", surface: surface)
+    let prepared = try PatternSampler(pattern)
+    let sparse = try PatternSampler(pattern, placement: PatternPlacement(), preparePixels: false)
+
+    func reference(_ u: Double, _ v: Double) -> Pixel {
+      let x = u - 0.5, y = v - 0.5
+      let left = floor(x), top = floor(y)
+      let fx = Float(x - left), fy = Float(y - top)
+      var value = SIMD4<Float>.zero
+      for (dy, wy) in [(0, 1 - fy), (1, fy)] where wy != 0 {
+        for (dx, wx) in [(0, 1 - fx), (1, fx)] where wx != 0 {
+          let column = ((Int(left) + dx) % surface.width + surface.width) % surface.width
+          let row = ((Int(top) + dy) % surface.height + surface.height) % surface.height
+          let pixel = surface.pixel(x: column, y: row)
+          let texel = SIMD4(pixel.r * pixel.a, pixel.g * pixel.a, pixel.b * pixel.a, pixel.a)
+          value += texel * (wx * wy)
+        }
+      }
+      return value.w > 0 ? Pixel(value.x / value.w, value.y / value.w, value.z / value.w, min(1, value.w)) : .clear
+    }
+    let positions: [Double] = [
+      -999_999_999_999.75, -10.5, -3.625, -2.5, -Double.ulpOfOne, 0, 0.5, 1.5,
+      1.5.nextDown, 1.5.nextUp, 2.25, 3.5, 4.167, 299_999.75, 999_999_999_999.75,
+    ]
+    for u in positions {
+      for v in positions {
+        let expected = reference(u, v)
+        XCTAssertTrue(prepared.tile(u: u, v: v).hasSameBits(as: expected), "Prepared case at \(u), \(v)")
+        XCTAssertTrue(sparse.tile(u: u, v: v).hasSameBits(as: expected), "Sparse case at \(u), \(v)")
+      }
+    }
+  }
   func testDeterministicIdentityNamesAndLosslessLibraryArchive() throws {
     for depth in PixelDepth.allCases {
       let p = try tile(depth: depth)

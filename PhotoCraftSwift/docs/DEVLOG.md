@@ -711,7 +711,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 690 | 2026-11-21 | [Bound rotated Pattern Overlay viewports](#dev-step-690) |
 | 691 | 2026-11-21 | [Fit quarter-turn Pattern Overlays on large canvases](#dev-step-691) |
 | 692 | 2026-11-21 | [Reduce wide oblique Pattern Overlays in bounded patches](#dev-step-692) |
+| 693 | 2026-11-21 | [Reuse prepared pattern samples across render patches](#dev-step-693) |
 <!-- history-index:end -->
+
+<a id="dev-step-693"></a>
+
+## 2026-11-21 — Reuse prepared pattern samples across render patches
+
+Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
+
+The immutable sampler preparation now follows the composition across regional patches. It checks the source asset before reusing premultiplied texels or a legacy reduction. The wrapping code keeps the previous tap order. The legacy regression uses 25% and 22.5% for the same reduction factor, then checks that 37.5% creates a different grid. The checked-in Xcode project also gained a common Swift package name for its app and libraries, plus the established Swift 6.4.2 Debug compiler workaround.
+
+The 5 × 5 and 512 × 512 oblique sources matched build 692 byte for byte in both optimized architectures. Native Fit and soft proof for the separate 70,000 × 520 reference document produced the same PNGs as build 692. Tests covered negative wrap, transparent texels, linked origins, RGB8 reduced grids, source replacement and the cache budget.
+
+460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen. Wide nonperiodic fit still evaluates each source pixel. Interactive timing on fully covered maximum-size documents and Photoshop zoom comparison remain open. The local Photoshop document query timed out. The overall desktop workflow estimate remains 50%.
+
+[Development record](PATTERN_SAMPLING_693.md) · [Qualification](SOURCE_PUBLICATION_693.md).
 
 <a id="dev-step-692"></a>
 

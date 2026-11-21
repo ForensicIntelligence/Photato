@@ -97,7 +97,8 @@ enum SourceLayerStyleRenderer {
       frame=try (layer.coordinateTransform * .translation(Double(bounds.x),Double(bounds.y))).bounds(width:bounds.width,height:bounds.height)
     }
     return try compositePrepared(layer, style: style, effects: effects, scale: scale, content: content,
-                                 frame: frame, pad: pad, in: document, over: backdrop, region: region, samples: samples)
+      frame: frame, pad: pad, in: document, over: backdrop, region: region, samples: samples,
+      patternPreparation: cache.facts?.patternPreparation)
   }
 
   // Isolating styled content can call the compositor again. Allocate the
@@ -105,7 +106,8 @@ enum SourceLayerStyleRenderer {
   @inline(never)
   private static func compositePrepared(
     _ layer: Layer, style: LayerStyle, effects: [LayerEffect], scale: Float, content: Surface,
-    frame: IntRect, pad: Int, in document: CraftDocument, over backdrop: Surface, region: IntRect, samples: IntRect
+    frame: IntRect, pad: Int, in document: CraftDocument, over backdrop: Surface, region: IntRect, samples: IntRect,
+    patternPreparation: PatternFillSampler.PreparationCache?
   ) throws -> Surface {
     let w = samples.width, h = samples.height, n = w * h
     let mw = w + 2 * pad, mh = h + 2 * pad
@@ -141,7 +143,9 @@ enum SourceLayerStyleRenderer {
       if effect.kind == .stroke {let grow=max(0,Int(ceil(min(widths(effect,scale:scale).1,512)))-1);paintFrame=IntRect(x:shapeBounds.x-grow,y:shapeBounds.y-grow,width:shapeBounds.width+2*grow,height:shapeBounds.height+2*grow)}else{paintFrame=frame}
       let paint:SourceEffectSampler.Shader
       if effect.advanced == nil,let g=effect.gradient {paint = .legacyGradient(try GradientFillSampler(g,layer:layer,document:document))}
-      else if effect.advanced == nil,let p=effect.pattern {paint = .legacyPattern(try PatternFillSampler.overlay(p,style:style,layer:layer,in:document))}
+      else if effect.advanced == nil, let p = effect.pattern {
+        paint = .legacyPattern(try PatternFillSampler.overlay(p, style: style, layer: layer, in: document, preparation: patternPreparation))
+      }
       else {paint=sampler.prepare(effect,advanced:advanced,frame:paintFrame)}
       prepared.append(Prepared(effect:effect,advanced:advanced,paint:paint,map:map,bevel:bevel))
     }
