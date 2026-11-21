@@ -273,6 +273,7 @@ import PhotoCraftCore
       "Select > Focus Area…": #selector(focusArea),
       "Select > Sky": #selector(selectSky),
       "Edit > Sky Replacement…": #selector(skyReplacement),
+      "Layer > Harmonize": #selector(harmonizeSubject),
       "Layer > Mask All Objects": #selector(maskAllObjects),
       "Select > Subject": #selector(selectSubject),
       "Select > All Layers": #selector(selectAllLayers),

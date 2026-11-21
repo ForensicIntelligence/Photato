@@ -3313,5 +3313,15 @@
     "scope": "Editable fill and embedded art below the masked subject. Standard create-composite layer operations and remove-background colour output remain available.",
     "limits": "No new Adobe route. Hosted result comparison and Photoshop execution remain unqualified.",
     "evidence": "docs/SOURCE_PUBLICATION_710.json"
+  },
+  "harmonize_build711": {
+    "status": "Photato local desktop and API workflow",
+    "photatoCommands": [
+      "harmonize.apply",
+      "harmonize.variation"
+    ],
+    "reference": "Adobe Firefly Gen Harmonize appears in the Execute Actions model inventory.",
+    "limits": "The pinned GA contract has no dedicated Harmonize request schema. No new Adobe route or exact output claim.",
+    "evidence": "docs/SOURCE_PUBLICATION_711.json"
   }
 }

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **710** · The 10 most recent entries, newest first.
+Source build **711** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 711 — Match a subject to its background with editable Harmonize variations
+
+Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone.
+
+The native editor and Photato HTTP commands produced the same RGBA8 results from a selected pixel mask. All three variations and rendered samples survived native, PSD and PSB reopening in the RGB8, RGB16 and RGB32 test fixtures. On the 1,024 × 1,024 project mascot, all three formats reopened with identical rendered bytes. The independent reader matched all 8,388,608 merged RGBA bytes in the two Photoshop-format files to the PNG. A 300,000 × 28 file retained the original mask, editable variations and matching sampled regions through native and paged PSB reopening.
+
+Harmonize estimates the adjustment and shadow locally. Adobe documents its separate Firefly model. No corresponding public Harmonize request schema was found in the pinned Photoshop v2 contract. The installed Photoshop reported 27.2.0, but its document scripting timed out. Firefly output equivalence, direct Photoshop reopening, and live keyboard and assistive technology checks remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md).
 
 ## 2026-11-21 — Step 710 — Replace a masked background with colour or artwork
 
@@ -93,13 +103,3 @@ Synthetic RGB8, RGB16 and RGB32 tests preserved exact rendered samples, mask cov
 482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. Generating more results into the same layer, Generate Similar, the Adobe Execute Actions descriptor, and Firefly pixel equivalence remain open. The installed Photoshop session timed out on two read-only scripting queries. Adobe's desktop documentation confirms variation selection in Properties.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-702) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_702.md).
-
-## 2026-11-21 — Step 701 — Blend Generative Fill selection edges
-
-Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo.
-
-Mean RGB8 drift across 505 boundary samples fell from 4.39 to 0.31 levels on the apple and from 3.95 to 0.24 on the mug. Each result preserved all 49,283 protected samples and all 9,898 tested interior samples. Both fills retained exact pixels and editable masks when reopened in Photato as native, PSD and PSB files. A synthetic fill exercised a 4,194,304-pixel selection on a 300,000 × 300,000 sparse canvas.
-
-480 of 481 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 700’s assertions. Both signed preview slices opened offscreen, and the checked-in Xcode project built in arm64 Debug. Application-managed variation sets and the Adobe Execute Actions descriptor remain open. A separate seed probe hit a Core ML GPU exception once and succeeded on retry. The installed Photoshop session timed out on a read-only scripting query, so Photoshop output equivalence has yet to be verified.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-701) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_701.md).

@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 710.** After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step. [Background controls](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md#use-colour-or-an-imported-image) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_710.md).
+**Development alpha — source build 711.** Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone. [Harmonize](PhotoCraftSwift/docs/HARMONIZE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md).
 
 ## Project layout
 

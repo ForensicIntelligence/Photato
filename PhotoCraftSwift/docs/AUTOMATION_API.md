@@ -4111,6 +4111,10 @@ Add `referenceVariationID` to a request with `targetLayerID` to generate similar
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
 
+## Harmonize
+
+Send `harmonize.apply` with an optional `foregroundLayerID` matching the selected pixel subject and an optional `variation`. The variation is `subtle`, `balanced` (default), or `ambient`. A separate editable group is created and the original is retained. Use `harmonize.variation` with `groupID` and `variation` to change the visible result. Both commands use the normal revision and Undo workflow. The `harmonize` state returns the active eligible subject or the selected result group and its choices. [Harmonize guide](HARMONIZE.md)
+
 ## Manual Background Replacement
 
 Use `background.color` with `color` set to three normalized working RGB values. It adds an editable fill below the active masked subject. Supply `foregroundLayerID` to pin the intended subject, or supply `layerID` to edit an unlocked Solid Color layer. Document state reports the eligible foreground, available commands and selected editable fill under `backgroundReplacement`.

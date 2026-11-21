@@ -300,7 +300,7 @@ struct WorkspaceView: View {
       } else if store.canStartBackgroundGeneration {
         Button("Generate Background…") { store.prepareBackgroundGeneration() }
           .help("Create an editable background with Apple Intelligence")
-      } else if store.backgroundReplacementSubject == nil {
+      } else if store.backgroundReplacementSubject == nil, store.canDetectSubject(removeBackground: true) {
         Button("Remove Background") { store.detectSubject(removeBackground: true) }
           .help("Keep the subject with an editable mask")
       }
@@ -309,6 +309,10 @@ struct WorkspaceView: View {
         BackgroundColorAction(store: store, identifier: "background.color.contextual")
         Button("Import Background…") { store.chooseBackgroundArtwork() }
           .accessibilityIdentifier("background.import.contextual")
+      }
+      if store.harmonizeTarget != nil {
+        Button("Harmonize") { store.applyHarmonize() }
+          .accessibilityIdentifier("harmonize.contextual")
       }
     }
     .buttonStyle(.borderless).padding(10)

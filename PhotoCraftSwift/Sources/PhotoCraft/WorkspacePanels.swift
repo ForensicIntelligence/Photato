@@ -168,6 +168,7 @@ extension WorkspaceView {
             GeneratedVariationControls(store:store,layer:layer)
           }
           if let fillVariations { GenerativeFillVariationControls(store: store, layer: layer, metadata: fillVariations) }
+          if let choices = Harmonize.choices(in: store.document) { HarmonizeControls(store: store, choices: choices) }
           if let source = layer.smartObject {
             if fillVariations == nil, (try? GeneratedVariations.read(layer)) == nil {
               SmartObjectLayerCompControls(store: store, source: source)
@@ -285,6 +286,9 @@ extension WorkspaceView {
             Button("Import Background…") { store.chooseBackgroundArtwork() }
               .accessibilityIdentifier("background.import.properties")
           }.controlSize(.small)
+        }
+        if store.harmonizeTarget != nil {
+          Button("Harmonize") { store.applyHarmonize() }.controlSize(.small)
         }
         Toggle("Sample All Layers", isOn: $store.subjectSampleAllLayers)
           .controlSize(.small).disabled(!store.clipboardTargetAvailable)

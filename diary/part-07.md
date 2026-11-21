@@ -379,14 +379,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:710 -->
+<!-- current-status-step:711 -->
 ## Current development status — 21 November 2026
 
-After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step.
+Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone.
 
-526 of 527 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The known layer-effect fixture repeated the same 118 assertions from build 709 in each configuration. Xcode built the app and both signed preview slices opened offscreen. A signed sandbox harness wrote both editable background types. The preview retains the exact People Parts and Local Upscale resources from build 709. All 19 Apple Intelligence background tests and all 12 foreground workflow tests passed, including the Adobe-compatible colour output. The 1,000 × 650 native workspace snapshot showed all three background controls with the subject’s mask thumbnail selected.
+530 of 531 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same existing layer-effect reference method repeated its 118 assertions from build 710 in each configuration. The checked-in Xcode project built. Both signed preview slices opened offscreen and retain the previously bundled model assets. The native Properties variation picker was checked in a 1,300 × 800 offscreen workspace. The Layer menu binding was verified with no shortcut and with the command disabled when there is no eligible document.
 
-[Source checkpoint 710](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_710.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-710).
+[Source checkpoint 711](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711).
 
 <!-- current-status:end -->
 
@@ -1303,5 +1303,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 708 | [Add more variations to a saved wide expansion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-708) |
 | 2026-11-21 | 709 | [Generate and iterate on a local background](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-709) |
 | 2026-11-21 | 710 | [Replace a masked background with colour or artwork](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-710) |
+| 2026-11-21 | 711 | [Match a subject to its background with editable Harmonize variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

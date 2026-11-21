@@ -1,0 +1,183 @@
+{
+  "build": 711,
+  "base": "8fe29b56a353a39f2592d07571f634428d2efa43",
+  "buildInputs": 9384,
+  "includedBuildInputs": 9384,
+  "candidateManifestSHA256": "76bbc805423d19090e8805071d36ceb1eb934ba8f58db5573e90c848ae92e526",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "ca533cfcd38d55c109a7e3398c4d9c762b69b4f08e6be4b387cf547d38472bd7"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "dc15819e517e0c88ef99d7725ab47b10d81b0ea88422346cc64400d4c9460d40"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "88800cca6f9ca2b4a9a882185d5d7d62a2bc953af41d598e222f5c621f2ae90b"
+    },
+    {
+      "path": "Sources/PhotoCraft/DocumentSurfaceView.swift",
+      "sha256": "1e21b60344dd2a015fbbbd3a9647bd8f7ca931913ac1906a5b68609acd7701be"
+    },
+    {
+      "path": "Sources/PhotoCraft/HarmonizeControls.swift",
+      "sha256": "52883be3ee24aa231cffee313f2a77875ec537ccbbd01a51d369aca38d4bbee9"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "sha256": "d8bb663cdd8899f6f14cf9ff5ada78e1dc1bcff3cc53cb4010655501d2201b6e"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspacePanels.swift",
+      "sha256": "ef788813bf9c75fcf7891914e47b62bd6ef1c18de04c1cd2a0310f2a0fa60a26"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspaceView.swift",
+      "sha256": "cdc3e177df5497357cdcf4dd089d24898030d12c78ed5a64df2dc179ba231f9f"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Harmonize.swift",
+      "sha256": "709c35020004ccb87eafd13742d3be27b3b58f946895d8b4e5059a8d6058fbb0"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "232522efb95ce18b3bef96f3319e1c41329cabe7b5a71c940f37079af404bdf3"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "47cb8d9a552cdcf141a18096c44b503adb5cae6f629fca013ca72bbb969f89a6"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/HarmonizeTests.swift",
+      "sha256": "dc4755476f5614da388b9fe9d4d8a483a70b2f0169fecd9595d8db716ba20a92"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "b78d9d493a8ccab7760afa22dc328271541ba31a4375187f9566483b2b60a38a"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "b78d9d493a8ccab7760afa22dc328271541ba31a4375187f9566483b2b60a38a"
+  },
+  "casesPerConfiguration": 531,
+  "qualification": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 531,
+      "passed": 530,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "e664475024073af5788631c3ce3696d09c16c5b0947c84b381df35cdf339f0e1"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 531,
+      "passed": 530,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "a897ffaa947e983d916309c357a9995b8629d85d0f0f58ea4ece25d7e65736c2"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 531,
+      "passed": 530,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "b1d9219b8b9b3a455b7eadfd887e57594261a0d6b8079e539a571762df110924"
+    }
+  },
+  "harmonize": {
+    "provider": "local deterministic",
+    "variations": [
+      "subtle",
+      "balanced",
+      "ambient"
+    ],
+    "comparedDepths": [
+      8,
+      16,
+      32
+    ],
+    "nativeHTTPResult": "exact RGBA8",
+    "formats": [
+      "Photato",
+      "PSD",
+      "PSB"
+    ],
+    "wideProof": [
+      300000,
+      28
+    ],
+    "independentMergedBytes": 8388608,
+    "photoshopVersion": "27.2.0",
+    "photoshopRendering": "document scripting timed out"
+  },
+  "preview": {
+    "archiveSHA256": "c181d235988a6398d10ff2cee0cbcd692eb49f8cbf75483072d6b5b8984da5bc",
+    "archInputsSHA256": {
+      "arm64": "44f658e812751d33fd7ce1701b6cbfe7833b6e8bccf67bf55b2f04b432b46fc4",
+      "x86_64": "1609c8e9524f17c8baf3837742521a848f0b394d97407262ddc2877ed3e80863"
+    },
+    "binarySHA256": "090518f75d7c694faa0f61834dc1c9fba40ed0c4f0725f3355799c805d13da15",
+    "minimumSystemVersion": "14.0",
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    },
+    "extractedSignatureVerified": true
+  },
+  "evidenceSHA256": {
+    "build-debug02.log": "6bed9f75f749cbad608e61cca730beb3b9bc2b60d6ca9798d9f9bf3ab47a195c",
+    "build-release-arm6401.log": "6c5f126f02cdc8530b1339d54e6ca64c45408443e900704aa17c02010cc5f52c",
+    "build-release-x86_6401.log": "766b9dc4fab323b15e17db3fe773bf3038b3909d0b754a09579038eb7e90e21a",
+    "xcode-build01.log": "641fef42670c4cc982392cd133d4d6bc9997a7768ad52884d66079ddaade5cc6",
+    "focused-debug01.log": "f2b5d6386eaff320f19ca34d2f0010f038b7753d7c7cf6cedfed4153ccd87efa",
+    "owned-proof01.log": "6e967257274a6aee9f75a778d40701808dc56802498f563aa942d6ccb54a2d93",
+    "independent-composite01.log": "4f89f8546a43f933bb1bb9f852a2e25159154d2edb52a00b727c6931d6f78a85",
+    "wide-proof01.log": "0efe2212eeff07f4d1f8af384815c4fe373e1a1d50e9d93b7c0898aa365a1aaf",
+    "owned01/Harmonize Workspace.png": "ad47d69002fd6101a547b730882f459add78b63b39892c36a5d9794f6ba062e6",
+    "photoshop-document-probe01.log": "5349b4869549a99d9680deecec1c7190e31208105b2e20d351c43d66565df9eb",
+    "menu-proof01.log": "9e265dc8d20f6913630d4926b9345b522b79b695b3769c05b8bcf3166dd02c8d"
+  }
+}

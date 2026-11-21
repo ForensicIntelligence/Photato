@@ -729,7 +729,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 708 | 2026-11-21 | [Add more variations to a saved wide expansion](#dev-step-708) |
 | 709 | 2026-11-21 | [Generate and iterate on a local background](#dev-step-709) |
 | 710 | 2026-11-21 | [Replace a masked background with colour or artwork](#dev-step-710) |
+| 711 | 2026-11-21 | [Match a subject to its background with editable Harmonize variations](#dev-step-711) |
 <!-- history-index:end -->
+
+<a id="dev-step-711"></a>
+
+## 2026-11-21 — Match a subject to its background with editable Harmonize variations
+
+Audited Adobe’s subject-and-backdrop workflow and the existing renderer, masking, Curves and clipping layers. The local implementation creates variations in one group and retains the original raster and mask. The subject and nearby backdrop drive the fitted channel curves, and the matte drives a separately editable projected contact shadow. Document-size transform coordinates stay independent of the analysis image. Scaled shadow maps retain editable Smart Object sources. Versioned layer records preserve variation membership across formats.
+
+Connected the native menu, contextual bar, properties, and Photato automation to the shared prepared edit. The first Debug compile found an unavailable rectangle convenience member. The correction checks dimensions directly. The eligibility check now looks at the next root sibling for clipping. The repaired SwiftPM and Xcode builds passed. The original masked mascot and a deterministic wide fixture supplied the independent output checks.
+
+Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone.
+
+The native editor and Photato HTTP commands produced the same RGBA8 results from a selected pixel mask. All three variations and rendered samples survived native, PSD and PSB reopening in the RGB8, RGB16 and RGB32 test fixtures. On the 1,024 × 1,024 project mascot, all three formats reopened with identical rendered bytes. The independent reader matched all 8,388,608 merged RGBA bytes in the two Photoshop-format files to the PNG. A 300,000 × 28 file retained the original mask, editable variations and matching sampled regions through native and paged PSB reopening.
+
+530 of 531 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same existing layer-effect reference method repeated its 118 assertions from build 710 in each configuration. The checked-in Xcode project built. Both signed preview slices opened offscreen and retain the previously bundled model assets. The native Properties variation picker was checked in a 1,300 × 800 offscreen workspace. The Layer menu binding was verified with no shortcut and with the command disabled when there is no eligible document.
+
+Harmonize estimates the adjustment and shadow locally. Adobe documents its separate Firefly model. No corresponding public Harmonize request schema was found in the pinned Photoshop v2 contract. The installed Photoshop reported 27.2.0, but its document scripting timed out. Firefly output equivalence, direct Photoshop reopening, and live keyboard and assistive technology checks remain open.
+
+[Harmonize in Adobe Photoshop](https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/blend-subjects-with-harmonize.html) · [Adobe model inventory](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models) · [Photoshop file format](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_711.md).
 
 <a id="dev-step-710"></a>
 

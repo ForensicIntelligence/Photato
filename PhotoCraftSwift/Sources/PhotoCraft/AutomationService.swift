@@ -547,6 +547,7 @@ import UniformTypeIdentifiers
       "contentAwareFill": store.contentAwareFillState,
       "generativeFill": GenerativeFillAPI.state(store),
       "backgroundReplacement": BackgroundReplacementAPI.state(store, transfersEnabled: documentTransfersEnabled),
+      "harmonize": HarmonizeAPI.state(store),
       "selectionRefinement": ["available": store.canBeginSelectMask, "workspaceOpen": store.selectMaskDraft != nil && store.selectMaskDraft?.isFocus != true],
       "subjectDetection": ["canSelectSubject": store.canDetectSubject(),
         "canRemoveBackground": store.canDetectSubject(removeBackground: true),
@@ -1668,6 +1669,26 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if ChannelArithmeticAPI.commands.contains(command.name) {return try await executeChannelArithmetic(command,document:document,share:share)}
+      if command.name == HarmonizeAPI.apply {
+        let variation = try HarmonizeAPI.choice(command)
+        let requested = try command.parameters["foregroundLayerID"].map { _ in try command.actionUUID("foregroundLayerID") }
+        guard let subject = store.harmonizeTarget, requested == nil || requested == subject else {
+          throw AutomationFailure(status: 422, message: "Select a pixel subject above a visible background.")
+        }
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision, allowAuxiliary: true) { original in
+          try Harmonize.apply(in: original, foregroundID: subject, variation: variation)
+        }
+        store.finishBackgroundReplacement()
+        return .json(state(share, document: document))
+      }
+      if command.name == HarmonizeAPI.variation {
+        let variation = try HarmonizeAPI.choice(command)
+        let group = try command.actionUUID("groupID")
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in
+          try Harmonize.select(variation, in: original, groupID: group)
+        }
+        return .json(state(share, document: document))
+      }
       if command.name == BackgroundReplacementAPI.name {
         let options = try command.replacementBackgroundColor()
         if options.layer == nil {
@@ -2098,6 +2119,8 @@ import UniformTypeIdentifiers
       "contentAwareFill": ContentAwareSettings.apiCapabilities,
       "generativeFill": GenerativeFillAPI.capabilities,
       "backgroundReplacement": BackgroundReplacementAPI.capabilities,
+      "harmonize": ["applyCommand": HarmonizeAPI.apply, "selectCommand": HarmonizeAPI.variation,
+        "stateSchema": HarmonizeAPI.schema, "processing": "Local colour, tone and contact-shadow matching"],
       "photomerge": PhotomergeSettings.apiCapabilities,
       "movieFramesImport":MovieFramesAPI.capabilities,
       "pdfImport":PDFImportAPI.capabilities,
@@ -2187,6 +2210,7 @@ import UniformTypeIdentifiers
         "contentAwareFill":ContentAwareSettings.workspaceStateSchema,
         "generativeFill": GenerativeFillAPI.schema,
         "backgroundReplacement": BackgroundReplacementAPI.schema,
+        "harmonize": HarmonizeAPI.schema,
         "lightPreview": LightPreviewAPI.stateSchema,
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,

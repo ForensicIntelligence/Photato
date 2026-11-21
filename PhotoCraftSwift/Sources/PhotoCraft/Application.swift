@@ -257,6 +257,7 @@ import SwiftUI
     if item.action == #selector(selectAndMask) { return store?.canBeginSelectMask == true }
     if item.action == #selector(selectSky) { return store?.canSelectSky == true }
     if item.action == #selector(skyReplacement) { return store?.canReplaceSky == true }
+    if item.action == #selector(harmonizeSubject) { return store?.harmonizeTarget != nil }
     if item.action == #selector(maskAllObjects) { return store?.canMaskAllObjects() == true }
     if item.action == #selector(selectSubject) { return store?.canDetectSubject() == true }
     if item.action == #selector(renameLayer) {

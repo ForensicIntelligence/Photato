@@ -38,6 +38,7 @@ struct AutomationCommand: Sendable {
       if name == GenerativeFillAPI.expand { return GenerativeFillAPI.expandParameters }
       if name == GenerativeFillAPI.background { return GenerativeFillAPI.backgroundParameters }
       if name == BackgroundReplacementAPI.name { return BackgroundReplacementAPI.parameters }
+      if [HarmonizeAPI.apply, HarmonizeAPI.variation].contains(name) { return HarmonizeAPI.parameters(name) }
       if name == "sky.library" {return SkyLibraryAPI.parameterSchema}
       if name == MagicWandAPI.name { return MagicWandAPI.parameterSchema }
       if name == PaintBucketAPI.name { return PaintBucketAPI.parameterSchema }
@@ -361,6 +362,13 @@ struct AutomationCommand: Sendable {
       "foregroundLayerID": "Active masked subject layer UUID", "layerID": "Existing Solid Color layer UUID to edit"],
       description: "Add an editable Solid Color background below the active masked subject or change an existing Solid Color layer.",
       optionalParameters: ["foregroundLayerID", "layerID"]),
+    .init(name: HarmonizeAPI.apply, parameters: ["foregroundLayerID": "Active pixel subject UUID",
+      "variation": "Initial local Harmonize variation, balanced by default"],
+      description: "Create an editable group with local colour, tone, and contact-shadow alternatives.",
+      optionalParameters: ["foregroundLayerID", "variation"]),
+    .init(name: HarmonizeAPI.variation, parameters: ["groupID": "Harmonize group UUID",
+      "variation": "subtle, balanced, or ambient"],
+      description: "Switch the visible Harmonize corrections and shadow with one Undo step."),
     .init(name: ProcessChannelDeletionAPI.name, parameters: ["components": "Distinct zero-based process indices to delete", "mergeVisible": "Consent to flatten visible layers and discard hidden layers"], description: "Delete selected process channels, converting the remaining separations to Multichannel through one Undo.", optionalParameters: ["mergeVisible"]),
     .init(name: SpotChannelMergeAPI.name, parameters: ["channelID": "Saved spot channel UUID", "discardHiddenLayers": "Explicitly discard hidden layers"], description: "Merge a saved spot into a flattened RGB or CMYK Background with one Undo.", optionalParameters: ["discardHiddenLayers"]),
     .init(name: ChannelDuplicateAPI.name, parameters: ["source": "Individual numeric channel", "destination": "Current, open or new document", "name": "New channel name", "invert": "Complement channel samples"], description: "Duplicate a channel into the current document, a matching shared document or a new single-channel document.", optionalParameters: ["name", "invert"]),

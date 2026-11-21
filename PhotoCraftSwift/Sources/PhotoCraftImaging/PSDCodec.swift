@@ -746,6 +746,10 @@ public enum PSDCodec {
           }
         case SmartObjectIO.backgroundArtworkTag:
           guard content == Data([1]) else { throw CraftError.invalid("Invalid background artwork record.") }
+        case Harmonize.tag:
+          guard content.count == 2, content.first == 1, let role = content.last, role <= 6 else {
+            throw CraftError.invalid("Invalid Harmonize layer record.")
+          }
         default:
           throw CraftError.unsupported(
             "PSD layer '\(layerName)' contains unported data '\(tag)' (for example type, effects, groups or smart objects). Import cancelled to preserve its contents."
