@@ -19,6 +19,7 @@ extension Renderer {
       throw CraftError.unsupported("Alignment of canvas fill layers is not available yet.")
     }
     let layer = try SmartObjectIO.renderedLayer(layer, in: document)
+    if let bounds = try ShapeRenderer.largeExteriorBounds(layer, in: document) { return bounds }
     let surface = try layerSurface(layer, in: document)
     guard let content = try surface.contentBounds() else { return nil }
     let bounds =

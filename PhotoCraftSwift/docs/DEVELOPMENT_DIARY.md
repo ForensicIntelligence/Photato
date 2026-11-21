@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 682 — Render gradients and strokes on large editable cutouts
+
+Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing.
+
+All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Gradient and pattern shape paint remain editable in native files. Editable Photoshop file transport for this paint and a live Photoshop comparison are still open. Whole-document materialization uses the available scratch storage. Full editing frame rate remains a separate measurement.
+
+[Development record](DEVLOG.md#dev-step-682) · [Details](BOUNDED_SHAPE_PAINT_682.md).
+
 ## 2026-11-20 — Step 681 — Keep the shape exterior attached to the canvas
 
 Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape.
@@ -1425,14 +1433,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:681 -->
+<!-- current-status-step:682 -->
 ## Current development status — 20 November 2026
 
-Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape.
+Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing.
 
-All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 681](SOURCE_PUBLICATION_681.md) · [Development record](DEVLOG.md#dev-step-681).
+[Source checkpoint 682](SOURCE_PUBLICATION_682.md) · [Development record](DEVLOG.md#dev-step-682).
 
 <!-- current-status:end -->
 
@@ -2320,6 +2328,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 679 | [Reorder, combine and merge path components](DEVLOG.md#dev-step-679) |
 | 2026-11-20 | 680 | [Subtract the first component of a shape layer](DEVLOG.md#dev-step-680) |
 | 2026-11-20 | 681 | [Keep the shape exterior attached to the canvas](DEVLOG.md#dev-step-681) |
+| 2026-11-20 | 682 | [Render gradients and strokes on large editable cutouts](DEVLOG.md#dev-step-682) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,0 +1,11 @@
+# Paint on large editable cutouts
+
+A shape layer whose first component subtracts can use the existing gradient, pattern, and stroke controls on a large canvas. Gradients and patterns retain their position while the renderer prepares the visible patch. The same fixed coverage grid is used for viewport rendering and paged output, so a viewport boundary does not change the stroke samples.
+
+A 100 × 60 test viewport on a 10,000 × 7,000 document previously failed before it could render. The new path renders that viewport, supplies a bounded Layers thumbnail and hit test, and retains the original paint and contours in a native archive. Large styled exteriors use geometry bounds for placement tools. Whole-layer rasterization uses the existing mapped page store.
+
+All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The owned 100 × 60 viewport, 120 × 84 thumbnail, and editable native file matched byte for byte across all three builds. Thirteen earlier shape outputs and three editable PSD/PSB cutout outputs remained byte-identical to their reference builds. The maximum-canvas tests cover an editable gradient and stroke and a sparse solid fill with an editable gradient stroke. Affine patches and full rasterization matched at 8, 16, and 32 bits per channel in the owned cases. A patterned shape with a separate pixel mask also matched between paged composition and a viewport. The 70-megapixel rasterization probe used mapped storage and reproduced its reference viewport bytes.
+
+The median CPU composite for the 1,920 × 1,080 viewport was 226.79 ms in the optimized Apple Silicon probe with one visible painted shape.
+
+Gradient and pattern shape paint remain editable in native files. Editable Photoshop file transport for this paint and a live Photoshop comparison are still open. Whole-document materialization uses the available scratch storage. Full editing frame rate remains a separate measurement. [Adobe shape paint](https://helpx.adobe.com/ph_fil/photoshop/desktop/draw-shapes-paths/create-shapes/fill-and-stroke-shapes.html) · [Adobe stroke controls](https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/set-and-manage-shape-stroke-options.html) · [Qualification](SOURCE_PUBLICATION_682.md).

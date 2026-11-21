@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **681** · The 10 most recent entries, newest first.
+Source build **682** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 682 — Render gradients and strokes on large editable cutouts
+
+Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing.
+
+All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Gradient and pattern shape paint remain editable in native files. Editable Photoshop file transport for this paint and a live Photoshop comparison are still open. Whole-document materialization uses the available scratch storage. Full editing frame rate remains a separate measurement.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-682) · [Details](PhotoCraftSwift/docs/BOUNDED_SHAPE_PAINT_682.md).
 
 ## 2026-11-20 — Step 681 — Keep the shape exterior attached to the canvas
 
@@ -75,11 +83,3 @@ Direct Selection now previews and selects anchors inside a dragged marquee. Shif
 All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The marquee operates on the active path. Simultaneous path selection across layers and exact Photoshop hit testing, modifiers and cursor comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-673) · [Details](PhotoCraftSwift/docs/DIRECT_SELECTION_MARQUEE_673.md).
-
-## 2026-11-20 — Step 672 — Transform selected paths, contours and anchors
-
-Command-T now transforms a saved path, vector mask or shape contour independently of its layer. Select whole contours or individual anchors and apply the same edit through the Photato API or an Action.
-
-All 156 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Shape contours remain editable as Bézier geometry. A contour edit can replace the live primitive controls. Direct Selection marquee, path selection across layers, path Warp, and live Photoshop comparisons of partial projective transforms remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-672) · [Details](PhotoCraftSwift/docs/PATH_TRANSFORM_672.md).

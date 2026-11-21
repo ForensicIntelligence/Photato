@@ -21,7 +21,7 @@ enum SparseCanvasRenderer {
       case .raster: return true
       case .fill: return true
       case .shape(let shape):
-        return shape.definition?.exteriorFrame != nil && t == .identity
+        return shape.definition.map(ShapeRenderer.hasImplicitExterior) == true && t == .identity
           && shape.width == d.width && shape.height == d.height
       default: return false
       }

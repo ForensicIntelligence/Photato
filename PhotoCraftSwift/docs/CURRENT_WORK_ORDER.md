@@ -1,3 +1,9 @@
+**Source checkpoint 682.** Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing. All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_682.md).
+
+**Next path editing work.** Qualify Photoshop-authored gradient shape descriptors and add editable PSD and PSB transport for gradient fills and strokes.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 681.** Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape. All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_681.md).
 
 **Next path editing work.** Qualify a Photoshop-authored live cutout and extend bounded rendering of large gradients and strokes.

@@ -1405,6 +1405,10 @@ struct CanvasRenderRequest: Sendable {
             x: Int(floor(point.x)), y: Int(floor(point.y)))
         else { continue }
         color = sample
+      } else if ShapeRenderer.usesViewportRaster(l) {
+        guard let sample = try? ShapeRenderer.viewportPixel(l, in: document, x: Int(floor(point.x)), y: Int(floor(point.y)))
+        else { continue }
+        color = sample
       } else {
         // Imported Smart appearance is already in document coordinates. Hit the
         // same derived layer shown on canvas, including projective placement.
@@ -1434,7 +1438,8 @@ struct CanvasRenderRequest: Sendable {
         }
         if node.isClipped {
           guard let base = document.clippingBase(for: node.id), document.isVisible(base.id),
-            let pixels = try? Renderer.clippingCoverage(base, in: document)
+            let pixels = try? Renderer.clippingCoverage(base, in: document,
+              region: .init(x: Int(floor(point.x)), y: Int(floor(point.y)), width: 1, height: 1))
           else {
             alpha = 0
             break

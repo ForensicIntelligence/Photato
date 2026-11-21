@@ -3,6 +3,116 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PSDPathComponentOperationsTests: XCTestCase {
+  private func paintedCutout(width: Int, height: Int, depth: PixelDepth = .u8,
+                              placement: Transform2D) throws -> CraftDocument {
+    var document = try CraftDocument(width: width, height: height, depth: depth)
+    document.layers = []
+    document.activeLayerID = nil
+    var shape = ShapeDefinition(geometry: .init(kind: .ellipse, width: 64, height: 40))
+    shape.components[0].operation = .subtract
+    shape.fill.kind = .gradient
+    shape.fill.gradient = .init(dither: false)
+    shape.stroke.paint = .init(color: Pixel(1, 0, 0))
+    shape.stroke.width = 6
+    try Command.shape(.create("Painted cutout", shape, placement)).apply(to: &document)
+    return document
+  }
+
+  func testStyledCutoutViewportAtMaximumCanvasAndNativeReopen() throws {
+    let side = Surface.maxDimension
+    let document = try paintedCutout(width: side, height: side, placement: .translation(240_000, 230_000))
+    let saved = try NativeArchive.encodeChunked(document)
+    let reopened = try NativeArchive.decode(saved)
+    XCTAssertEqual(reopened, document)
+    let viewport = IntRect(x: 239_985, y: 229_985, width: 100, height: 70)
+    let output = try Renderer.composite(reopened, region: viewport)
+    XCTAssertEqual(output.pixel(x: 240_032, y: 230_020), .clear)
+    XCTAssertEqual(output.pixel(x: 239_998, y: 230_020), Pixel(1, 0, 0))
+    XCTAssertEqual(output.pixel(x: 239_989, y: 230_020).a, 1)
+    XCTAssertEqual(output.pixel(x: 450, y: 450), .clear)
+    XCTAssertLessThan(output.allocatedBytes, 2_000_000)
+    let layer = try XCTUnwrap(reopened.layers.last)
+    XCTAssertEqual(try Renderer.layoutBounds(layer, in: reopened, stored: false),
+                   .init(x: 0, y: 0, width: side, height: side))
+    XCTAssertEqual(try ShapeRenderer.viewportPixel(layer, in: reopened, x: 239_998, y: 230_020), Pixel(1, 0, 0))
+    let preview = try XCTUnwrap(Renderer.layerThumbnail(layer, in: reopened, framing: .layerBounds, maximumSize: 120))
+    XCTAssertEqual([preview.width, preview.height], [120, 120])
+    XCTAssertEqual(preview.pixel(x: 0, y: 0).a, 1)
+    let far = try Renderer.composite(reopened, region: .init(x: 299_950, y: 20, width: 24, height: 24))
+    XCTAssertNotEqual(far.pixel(x: 299_956, y: 28), output.pixel(x: 239_989, y: 230_020))
+    XCTAssertEqual(far.pixel(x: 299_956, y: 28).a, 1)
+  }
+
+  func testPaintedAffineCutoutPatchesMatchMaterializedSourceAtEveryDepth() throws {
+    let transform = Transform2D.translation(95.375, 83.625) * .rotation(19)
+    for depth in PixelDepth.allCases {
+      var document = try paintedCutout(width: 260, height: 220, depth: depth, placement: transform)
+      let layer = try XCTUnwrap(document.layers.last)
+      var definition = try XCTUnwrap(layer.shape?.definition)
+      definition.fill.gradient?.dither = true
+      definition.fill.gradient?.placement.angle = 27
+      definition.stroke.paint.kind = .gradient
+      definition.stroke.paint.gradient = .init(aligned: false)
+      definition.stroke.dash = [6, 4]
+      definition.stroke.cap = .round
+      try Command.shape(.configure(layer.id, definition)).apply(to: &document)
+      let placed = try ShapeRenderer.rasterInput(XCTUnwrap(document.layers.last), in: document)
+      let expected = try Renderer.layerSurface(placed, in: document)
+      for viewport in [
+        IntRect(x: 82, y: 99, width: 32, height: 33),
+        IntRect(x: 110, y: 88, width: 41, height: 45),
+        IntRect(x: 0, y: 0, width: 17, height: 12),
+      ] {
+        let patch = try XCTUnwrap(ShapeRenderer.viewportRaster(placed, in: document, region: viewport))
+        let source = try expected.cropped(to: .init(x: patch.x, y: patch.y,
+          width: patch.surface.width, height: patch.surface.height))
+        XCTAssertEqual(try patch.surface.rgbaData(depth: depth), try source.rgbaData(depth: depth))
+      }
+    }
+  }
+
+  func testSolidExteriorWithEditableGradientStrokeStaysSparseOnMaximumCanvas() throws {
+    let side = Surface.maxDimension
+    var document = try paintedCutout(width: side, height: side, placement: .translation(240_000, 230_000))
+    let layer = try XCTUnwrap(document.layers.last)
+    var definition = try XCTUnwrap(layer.shape?.definition)
+    definition.fill = .init(color: .white)
+    definition.stroke.paint.kind = .gradient
+    definition.stroke.paint.gradient = .init(dither: false)
+    try Command.shape(.configure(layer.id, definition)).apply(to: &document)
+    let output = try Renderer.composite(document)
+    XCTAssertEqual(output.pixel(x: 299_999, y: 299_999), .white)
+    XCTAssertEqual(output.pixel(x: 240_032, y: 230_020), .clear)
+    let edge = output.pixel(x: 239_998, y: 230_020)
+    XCTAssertEqual(edge.a, 1)
+    XCTAssertLessThan(edge.r, 1)
+    XCTAssertLessThan(output.allocatedBytes, 2_000_000)
+  }
+
+  func testPatternedExteriorMatchesPagedCompositeAndMaskedViewport() throws {
+    var document = try paintedCutout(width: 2080, height: 140, placement: .translation(1998, 50))
+    let layer = try XCTUnwrap(document.layers.last)
+    var pattern = try Surface(width: 2, height: 2, fill: Pixel(0, 1, 0))
+    pattern.setPixel(x: 0, y: 0, Pixel(0, 0, 1))
+    let patternID = try document.installPattern(.init(name: "Check", surface: pattern))
+    var definition = try XCTUnwrap(layer.shape?.definition)
+    definition.fill.kind = .pattern
+    definition.fill.gradient = nil
+    definition.fill.pattern = .init(patternID: patternID)
+    try Command.shape(.configure(layer.id, definition)).apply(to: &document)
+    var mask = try Surface(width: document.width, height: document.height, fill: .white)
+    mask.setPixel(x: 2021, y: 42, .black)
+    try Command.mask(layer.id, mask).apply(to: &document)
+    let whole = try Renderer.composite(document)
+    let paged = try Renderer.compositePaged(document)
+    XCTAssertEqual(try whole.rgbaData(depth: .u8), try paged.rgbaData(depth: .u8))
+    let viewport = IntRect(x: 1995, y: 37, width: 73, height: 68)
+    let viewed = try Renderer.composite(document, region: viewport)
+    XCTAssertEqual(try viewed.cropped(to: viewport).rgbaData(depth: .u8),
+                   try whole.cropped(to: viewport).rgbaData(depth: .u8))
+    XCTAssertEqual(viewed.pixel(x: 2021, y: 42).a, 0)
+  }
+
   private func cutoutDocument() throws -> CraftDocument {
     var document = try CraftDocument(width: 128, height: 96)
     document.layers = []

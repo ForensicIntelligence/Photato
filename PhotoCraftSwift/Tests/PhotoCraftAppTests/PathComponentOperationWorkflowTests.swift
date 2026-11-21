@@ -5,6 +5,38 @@ import XCTest
 @testable import PhotoCraft
 
 final class PathComponentOperationWorkflowTests: XCTestCase {
+  @MainActor func testShapeAPIPaintAndHitTestingShareViewportRendering() async throws {
+    let source = try CraftDocument(width: 128, height: 96)
+    let background = try XCTUnwrap(source.activeLayerID)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let store = document.store
+      store.session = EditorSession(document: source)
+      try service.share(document)
+      var definition = ShapeDefinition(geometry: .init(width: 32, height: 24))
+      definition.components[0].operation = .subtract
+      definition.fill.kind = .gradient
+      definition.fill.gradient = .init(dither: false)
+      definition.stroke.paint = .init(color: Pixel(1, 0, 0))
+      definition.stroke.width = 4
+      let status = try await helper.edit(service, document, "shape.edit", [
+        "operation": "create", "definition": BrushAPI.json(definition),
+        "transform": BrushAPI.json(Transform2D.translation(32, 24)),
+      ])
+      XCTAssertEqual(status, 200)
+      let edited = store.document
+      let shape = try XCTUnwrap(edited.activeLayerID)
+      let viewport = IntRect(x: 27, y: 24, width: 37, height: 28)
+      let result = try Renderer.composite(edited, region: viewport)
+      XCTAssertEqual(result.pixel(x: 31, y: 35), Pixel(1, 0, 0))
+      XCTAssertEqual(result.pixel(x: 48, y: 35), .white)
+      store.autoSelectLayer(at: .init(x: 48.5, y: 35.5))
+      XCTAssertEqual(store.document.activeLayerID, background)
+      store.autoSelectLayer(at: .init(x: 31.5, y: 35.5))
+      XCTAssertEqual(store.document.activeLayerID, shape)
+    }
+  }
+
   @MainActor func testAPIMoveAndCanvasSizeKeepShapeCoverageAndUndo() async throws {
     var source = try CraftDocument(width: 128, height: 96)
     let background = try XCTUnwrap(source.activeLayerID)

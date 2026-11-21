@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 681.** Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_681.md).
+**Development alpha — source build 682.** Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_682.md).
 
 ## Project layout
 

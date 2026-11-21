@@ -222,6 +222,7 @@ extension EditorStore {
       if let frame = try ProjectiveArtworkFrame(layer) { return frame.bounds }
       if let geometry = try layer.smartObjectGeometry() { return try geometry.bounds() }
     }
+    if let bounds = try ShapeRenderer.largeExteriorBounds(layer, in: document) { return bounds }
     let pixels = try Renderer.layerSurface(layer, in: document)
     return try layer.coordinateTransform.bounds(width: pixels.width, height: pixels.height)
   }

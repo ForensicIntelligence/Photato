@@ -375,7 +375,19 @@ public enum Renderer {
         }
         continue
       }
-      let surface = try layerSurface(layer, in: d)
+      let surface: Surface
+      let sourceX: Int
+      let sourceY: Int
+      if ShapeRenderer.usesViewportRaster(layer) {
+        guard let patch = try ShapeRenderer.viewportRaster(layer, in: d, region: region) else { continue }
+        surface = patch.surface
+        sourceX = patch.x
+        sourceY = patch.y
+      } else {
+        surface = try layerSurface(layer, in: d)
+        sourceX = 0
+        sourceY = 0
+      }
       // Fill layers cover the full canvas, independent of crop offsets.
       let isFill: Bool = {
         if case .fill = layer.content { return true }
@@ -387,7 +399,8 @@ public enum Renderer {
         let bounds =
           isFill
           ? IntRect(x: 0, y: 0, width: d.width, height: d.height)
-          : try layer.coordinateTransform.bounds(width: surface.width, height: surface.height)
+          : try (layer.coordinateTransform * .translation(Double(sourceX), Double(sourceY)))
+              .bounds(width: surface.width, height: surface.height)
         let x0 = max(region.x, bounds.x)
         let y0 = max(region.y, bounds.y)
         let x1 = min(region.x + region.width, bounds.x + bounds.width)
@@ -396,7 +409,8 @@ public enum Renderer {
         for y in y0..<y1 {
           try Task.checkCancellation()
           for x in x0..<x1 {
-            let local = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
+            let point = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
+            let local = (x: point.x - Double(sourceX), y: point.y - Double(sourceY))
             var p =
               isFill
               ? surface.pixel(x: x, y: y)
@@ -419,8 +433,8 @@ public enum Renderer {
         }
         continue
       }
-      let ox = isFill ? 0 : layer.x
-      let oy = isFill ? 0 : layer.y
+      let ox = isFill ? 0 : layer.x + sourceX
+      let oy = isFill ? 0 : layer.y + sourceY
       let x0 = max(region.x, ox)
       let y0 = max(region.y, oy)
       let x1 = min(region.x + region.width, ox + surface.width)

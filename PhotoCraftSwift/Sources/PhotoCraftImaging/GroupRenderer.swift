@@ -33,11 +33,11 @@ final class GroupRenderCache {
 }
 
 extension Renderer {
-  public static func clippingCoverage(_ layer: Layer, in document: CraftDocument) throws -> Surface
+  public static func clippingCoverage(_ layer: Layer, in document: CraftDocument, region: IntRect? = nil) throws -> Surface
   {
     let input = try ShapeRenderer.rasterInput(layer, in: document)
     let source = try layer.isGroup ? framingShapeExteriors(in: document) : document
-    return try isolatedContent(input, in: source, cache: GroupRenderCache())
+    return try isolatedContent(input, in: source, cache: GroupRenderCache(region: region))
   }
   static func compositeStack(
     _ layers: [Layer], in d: CraftDocument, over backdrop: Surface,

@@ -700,7 +700,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 679 | 2026-11-20 | [Reorder, combine and merge path components](#dev-step-679) |
 | 680 | 2026-11-20 | [Subtract the first component of a shape layer](#dev-step-680) |
 | 681 | 2026-11-20 | [Keep the shape exterior attached to the canvas](#dev-step-681) |
+| 682 | 2026-11-20 | [Render gradients and strokes on large editable cutouts](#dev-step-682) |
 <!-- history-index:end -->
+
+<a id="dev-step-682"></a>
+
+## 2026-11-20 — Render gradients and strokes on large editable cutouts
+
+Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing.
+
+The compositor keeps the shape’s full paint coordinate system and rasterizes only the visible patch. Gradients, patterns, and dither keep their positions when the user pans or when export divides the image into pages.
+
+A fixed coverage grid keeps the same antialiased strokes and contours when the viewport changes. Native serialization retains editable paint and geometry. The renderer uses the existing page store when the user rasterizes an entire large shape. Layer thumbnails and hit testing use bounded rendering.
+
+All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The owned 100 × 60 viewport, 120 × 84 thumbnail, and editable native file matched byte for byte across all three builds. Thirteen earlier shape outputs and three editable PSD/PSB cutout outputs remained byte-identical to their reference builds. The maximum-canvas tests cover an editable gradient and stroke and a sparse solid fill with an editable gradient stroke. Affine patches and full rasterization matched at 8, 16, and 32 bits per channel in the owned cases. A patterned shape with a separate pixel mask also matched between paged composition and a viewport. The 70-megapixel rasterization probe used mapped storage and reproduced its reference viewport bytes.
+
+The Debug build used the existing Swift compiler workaround for PredictableDeadAllocationElimination. Both optimized builds used the standard compiler configuration. Gradient and pattern shape paint remain editable in native files. Editable Photoshop file transport for this paint and a live Photoshop comparison are still open. Whole-document materialization uses the available scratch storage. Full editing frame rate remains a separate measurement. Qualify Photoshop-authored gradient shape descriptors and add editable PSD and PSB transport for gradient fills and strokes.
+
+[Development record](BOUNDED_SHAPE_PAINT_682.md) · [Qualification](SOURCE_PUBLICATION_682.md).
 
 <a id="dev-step-681"></a>
 

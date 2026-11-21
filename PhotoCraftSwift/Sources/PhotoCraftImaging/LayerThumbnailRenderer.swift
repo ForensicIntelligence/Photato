@@ -30,6 +30,9 @@ extension Renderer {
       ? SmartObjectIO.renderedLayer(layer, in: document) : layer
     if layer.isGroup { return nil }
     if case .adjustment = layer.content { return nil }
+    if let preview = try ShapeRenderer.viewportThumbnail(layer, in: document, maximumSize: maximumSize) {
+      return preview
+    }
     let source = try layerSurface(layer, in: document)
     let transform = layer.isCanvasFill ? Transform2D.identity : layer.coordinateTransform
     let inverse = try transform.inverted()
@@ -70,7 +73,8 @@ extension Renderer {
     var frame = IntRect(x: 0, y: 0, width: document.width, height: document.height)
     if framing == .layerBounds, !layer.isGroup {
       if case .adjustment = layer.content {
-      } else {
+      } else if !ShapeRenderer.usesViewportRaster(layer)
+          || layer.shape.map({ $0.width <= Surface.maximumDensePixels / $0.height }) == true {
         let layer = try content == nil ? ShapeRenderer.rasterInput(layer, in: document) : layer
         let source = try content ?? layerSurface(layer, in: document)
         if let occupied = try source.contentBounds() {
