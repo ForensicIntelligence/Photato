@@ -33,6 +33,30 @@ struct PatternFillSampler {
           document.colorMode == .rgb, document.depth == .u8 else { return effect.opacity }
     return PixelDepth.u8.quantize(effect.opacity)
   }
+
+  /// The continuous sampler uses a power-of-two scale so multiplication by
+  /// its reciprocal preserves every coordinate bit. The legacy byte sampler
+  /// also accepts dyadic scales whose fractions stay clear of its 8-bit floor.
+  static func exactAxisPeriod(_ fill: PatternFill, style: LayerStyle, layer: Layer,
+    in document: CraftDocument) throws -> (width: Int, height: Int)? {
+    guard fill.geometry == nil, fill.placement.angle == 0,
+      let tile = document.pattern(fill.patternID)?.surface else { return nil }
+    let scale = Double(fill.placement.scale) / 100
+    guard let numerator = Int(exactly: scale * 256), numerator > 0 else { return nil }
+    let origin = fill.linked ? style.patternReference(in: layer) : PathPoint(0, 0)
+    let phase = [origin.x, origin.y, Double(fill.placement.phaseX), Double(fill.placement.phaseY)]
+    guard phase.allSatisfy({ abs($0) <= 1_000_000 && ($0 * 256).rounded() == $0 * 256 }) else { return nil }
+    if numerator.nonzeroBitCount != 1 {
+      guard document.colorMode == .rgb, document.depth == .u8,
+        origin.x.rounded() == origin.x, origin.y.rounded() == origin.y,
+        try LegacyPatternGrid.admits(tile, scale: scale) else { return nil }
+    }
+    func period(_ length: Int) -> Int {
+      let scaled = length * numerator
+      return scaled >> min(8, scaled.trailingZeroBitCount)
+    }
+    return (period(tile.width), period(tile.height))
+  }
   func sample(x: Double, y: Double) -> Pixel {
     let p = inverse.point(x, y)
     switch sampling {
@@ -51,19 +75,29 @@ private struct LegacyPatternGrid {
   let phaseX: Double
   let phaseY: Double
 
-  init?(_ pattern: RasterPattern, placement: PatternPlacement) throws {
-    try placement.validate()
-    guard placement.angle == 0, placement.scale != 100, pattern.surface.depth == .u8 else { return nil }
-    var scale = Double(placement.scale) / 100
+  static func reduction(for scale: Double) -> Int {
+    var scale = scale
     var reduction = 1
     while scale <= 0.5 {
       reduction *= 2
       scale *= 2
     }
-    guard pattern.surface.width % reduction == 0,
-          pattern.surface.height % reduction == 0 else { return nil }
+    return reduction
+  }
+
+  static func admits(_ tile: Surface, scale: Double) throws -> Bool {
+    let factor = reduction(for: scale)
+    guard scale != 1, tile.depth == .u8, tile.width % factor == 0, tile.height % factor == 0 else { return false }
+    return try tile.isOpaque()
+  }
+
+  init?(_ pattern: RasterPattern, placement: PatternPlacement) throws {
+    try placement.validate()
+    guard placement.angle == 0, placement.scale != 100, pattern.surface.depth == .u8 else { return nil }
+    let scale = Double(placement.scale) / 100
     try pattern.validate()
-    guard try pattern.surface.isOpaque() else { return nil }
+    guard try Self.admits(pattern.surface, scale: scale) else { return nil }
+    let reduction = Self.reduction(for: scale)
     var tile = pattern.surface
     for _ in 0..<reduction.trailingZeroBitCount {
       var half = try Surface(width: tile.width / 2, height: tile.height / 2, fill: tile.defaultPixel)
@@ -86,7 +120,7 @@ private struct LegacyPatternGrid {
       tile = half
     }
     self.tile = tile
-    self.scale = scale
+    self.scale = scale * Double(reduction)
     phaseX = Double(placement.phaseX)
     phaseY = Double(placement.phaseY)
   }

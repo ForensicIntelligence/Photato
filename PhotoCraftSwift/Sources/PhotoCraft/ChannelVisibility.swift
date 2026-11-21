@@ -206,7 +206,7 @@ extension ChannelVisibilitySnapshot:Equatable {}
 /// depends on the requested viewport, not the number or logical size of masks.
 enum AuxiliaryChannelPresentation {
   static func image(_ source:Surface,document:CraftDocument,view:AuxiliaryChannelView,
-    colorManaged:Bool=true,request:RasterPreviewRequest?=nil)throws->CGImage {
+    colorManaged:Bool=true,request:RasterPreviewRequest?=nil,sourceIsReduced:Bool=false)throws->CGImage {
     let request=try request ?? (document.width*document.height>Surface.maximumDensePixels ? RasterPreviewRequest.overview(width:document.width,height:document.height):nil)
     let width=request?.width ?? document.width,height=request?.height ?? document.height
     func plane(_ channel:AlphaChannel,gray:Bool)throws->Surface {
@@ -229,7 +229,7 @@ enum AuxiliaryChannelPresentation {
     }
     var display:Surface
     if view.imageVisible {
-      let reduced=try request.map{try $0.reducing(source)} ?? source
+      let reduced = try sourceIsReduced ? source : request.map { try $0.reducing(source) } ?? source
       display=try RasterIO.surface(colorManaged ? ColorManagement.displayImage(reduced,in:document):RasterIO.displayImage(reduced))
     } else {display=try Surface(width:width,height:height,depth:.u8,fill:view.planeCount==0 ? .clear:.white)}
     for target in view.masks {

@@ -21,10 +21,11 @@ public struct RasterPreviewRequest: Equatable, Sendable {
     self.region = region; self.width = width; self.height = height
   }
 
-  public static func overview(width: Int, height: Int) throws -> Self {
-    guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension
+  public static func overview(width: Int, height: Int, maximumSide: Int = 2048) throws -> Self {
+    guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
+      (1...2048).contains(maximumSide)
     else { throw CraftError.invalid("Invalid overview dimensions.") }
-    let scale = min(1, 2048 / Double(max(width, height)))
+    let scale = min(1, Double(maximumSide) / Double(max(width, height)))
     return try Self(region: .init(x: 0, y: 0, width: width, height: height),
       width: max(1, Int(Double(width) * scale)), height: max(1, Int(Double(height) * scale)))
   }

@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 689 — Preview opaque Pattern Overlay on large canvases
+
+The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
+
+Fit uses the area covered by each screen pixel. At 100% the preview reads the same samples as a full render. Painted pixels, aligned pixel masks and translated raster layers remain visible. Tests also checked isolated RGB channels, soft proofing, native Brush and Undo, and a 2,048 × 2,048 PNG from the local API.
+
+451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. The preview requires supported axis-aligned pattern periods and bounded local changes. Other angles and nonperiodic scales still use ordinary rendering. Full-resolution export has its own capacity limits. Photoshop’s document-count query timed out, so live zoom and preview equivalence remain unverified.
+
+[Development record](DEVLOG.md#dev-step-689) · [Details](OPAQUE_PATTERN_PREVIEW_689.md).
+
 ## 2026-11-21 — Step 688 — Render Pattern Overlay on large canvases
 
 Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.
@@ -1487,14 +1497,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:688 -->
+<!-- current-status-step:689 -->
 ## Current development status — 21 November 2026
 
-Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.
+The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
 
-448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen.
+451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 688](SOURCE_PUBLICATION_688.md) · [Development record](DEVLOG.md#dev-step-688).
+[Source checkpoint 689](SOURCE_PUBLICATION_689.md) · [Development record](DEVLOG.md#dev-step-689).
 
 <!-- current-status:end -->
 
@@ -2389,6 +2399,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 686 | [Match sampled Photoshop legacy pattern scales](DEVLOG.md#dev-step-686) |
 | 2026-11-20 | 687 | [Keep Pattern Overlay editable in PSD and PSB](DEVLOG.md#dev-step-687) |
 | 2026-11-21 | 688 | [Render Pattern Overlay on large canvases](DEVLOG.md#dev-step-688) |
+| 2026-11-21 | 689 | [Preview opaque Pattern Overlay on large canvases](DEVLOG.md#dev-step-689) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

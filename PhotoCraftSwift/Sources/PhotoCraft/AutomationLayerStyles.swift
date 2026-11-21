@@ -1,5 +1,6 @@
 import Foundation
 import PhotoCraftCore
+import PhotoCraftImaging
 
 extension LayerStyle {
   var apiObject: Any { (try? JSONSerialization.jsonObject(with: JSONEncoder().encode(self))) ?? NSNull() }
@@ -38,6 +39,12 @@ extension LayerStyle {
         "maximumCanvasDimension": Surface.maxDimension, "commands": ["layer.style", "layer.style.patch"],
         "scope": "RGB styles containing basic Pattern Overlay effects and no advanced or opaque source effect records. Renders bounded regions at their absolute document coordinates.",
         "sparseComposition": "Top-level translated raster sources with finite coverage can skip implicit canvas tiles when the surrounding stack also admits sparse composition.",
+      ],
+      "patternCanvasPreview": [
+        "routes": ["preview.png", "channel-preview.png", "proof-preview.png"],
+        "maximumCanvasDimension": Surface.maxDimension,
+        "maximumPeriodPixels": PatternCanvasPreview.maximumPeriodPixels,
+        "scope": "Bounded area sampling of basic overlays with supported axis-aligned scales and sparse local deviations. Power-of-two scales work with both samplers. The RGB8 legacy sampler also admits supported binary-fraction scales such as 75%, 150%, and 300%. Composite, RGB channel and proof previews share the editor renderer.",
       ],
       "nativeArchiveVersion": 13,"advancedArchiveVersion":75,"advancedActionsVersion":30,"advancedDefaults":AdvancedStyleAPI.defaults,"globalLight":AdvancedStyleAPI.light,"patchCommand":"layer.style.patch","retainedInactiveFields":["noise","jitter","antiAlias","gradient.aligned","gradient.dither","gradient.stopColorAlpha","bevel.highlightEnabled","bevel.shadowEnabled","advancedBevel.genericBlendMode","advancedBevel.genericOpacity","effectColorAlpha"], "kinds": LayerEffect.Kind.allCases.map(\.rawValue),
       "targets": "Effect styles target editable raster, text, shape, fill and isolated group layers. Pure RGB channel settings also support adjustment layers and sparse maximum geometry. Replaces the entire style, null clears. Full locks reject. Selection does not restrict effects.",

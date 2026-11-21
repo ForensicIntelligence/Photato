@@ -1,3 +1,7 @@
+**Source checkpoint 689.** The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000. 451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_689.md).
+
+**Next layer style work.** Run a viewport-only compositor for rotated or nonperiodic basic overlays at high zoom, then extend exact reduced display. Compare Photoshop’s zoom presentation and pattern placement when its document commands respond.
+
 **Source checkpoint 688.** Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000. 448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_688.md).
 
 **Next layer style work.** Exercise Pattern Overlay on opaque large backgrounds without a full-resolution backing composite. Measure the existing Photoshop reference cases for further modes and placements, and recheck compact PSB transfer with live Photoshop.

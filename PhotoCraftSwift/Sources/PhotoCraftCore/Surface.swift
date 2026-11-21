@@ -1207,6 +1207,14 @@ extension Surface {
     if let indexBuilder {output.tiles=RasterTileMap(base:try indexBuilder.finish())}
     return output
   }
+
+  /// Snapshot the exact implicit source sample without retaining allocated tiles.
+  package func implicitSampleSurface(fill: Pixel? = nil) throws -> Surface {
+    var result = try Surface(width: width, height: height, depth: depth,
+      fill: fill ?? .clear, colorEncoding: colorEncoding)
+    if fill == nil { result.storedDefaultPixel = storedDefaultPixel }
+    return result
+  }
   /// Maps an aligned SDR source into a bounded Float32 compositing surface.
   /// Read each source tile once and keep samples outside the requested region clear.
   public func compositingStoredRegion(

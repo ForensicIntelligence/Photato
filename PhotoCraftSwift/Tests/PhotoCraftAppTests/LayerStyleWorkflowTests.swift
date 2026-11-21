@@ -5,6 +5,68 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerStyleWorkflowTests: XCTestCase {
+  @MainActor func testOpaqueMaximumPatternPreviewFitsZoomsAndServesPNG() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let size = Surface.maxDimension
+      var artwork = try CraftDocument(width: size, height: size)
+      artwork.layers[0].content = .raster(try Surface(width: size, height: size, fill: .white))
+      var tile = try Surface(width: 4, height: 4, fill: .white)
+      tile.setPixel(x: 0, y: 0, .black)
+      artwork.patterns = [try RasterPattern(name: "Owned repeat", surface: tile)]
+      shared.store.session = EditorSession(document: artwork)
+      shared.store.updateViewport(size: CGSize(width: 200, height: 160), backingScale: 1)
+      shared.store.beginLayerStyle(.patternOverlay)
+      let sheet = LayerStyleSheet(store: shared.store)
+      sheet.overlayPatternValue(\.scale, 100).wrappedValue = 200
+      shared.store.updateLayerEffect(0) { $0.opacity = 0.5 }
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      XCTAssertEqual(shared.store.canvasRasterPreview?.documentRegion,
+        IntRect(x: 0, y: 0, width: size, height: size))
+      XCTAssertNotNil(shared.store.patternCanvasPreview)
+      XCTAssertNil(shared.store.renderSnapshot)
+      XCTAssertEqual(shared.store.document, artwork)
+      shared.store.commitLayerStyle()
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      XCTAssertEqual(shared.store.session.undoStack.count, 1)
+
+      shared.store.setZoom(1, center: true)
+      shared.store.pan.width += 13
+      await shared.store.renderTask?.value
+      let visible = try XCTUnwrap(shared.store.canvasRasterPreview?.documentRegion)
+      XCTAssertEqual(visible.width, 200)
+      XCTAssertEqual(visible.height, 160)
+      let request = try RasterPreviewRequest(region: visible, width: 200, height: 160)
+      let proof = try XCTUnwrap(shared.store.patternCanvasPreview)
+      let reference = try Renderer.composite(shared.store.document, region: visible)
+      XCTAssertEqual(try proof.imageSamples(request).rgbaData(depth: .u8),
+        try reference.cropped(to: visible).rgbaData(depth: .u8))
+      let point = StrokePoint(x: Double(size / 2) + 0.5, y: Double(size / 2) + 0.5)
+      let before = try proof.pixel(x: size / 2, y: size / 2)
+      var brush = shared.store.brush
+      brush.color = Pixel(0.12, 0.56, 0.6)
+      shared.store.stroke([point], brush: brush)
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      let after = try XCTUnwrap(shared.store.patternCanvasPreview).pixel(x: size / 2, y: size / 2)
+      XCTAssertNotEqual(after, before)
+      await shared.store.undo()
+      await shared.store.renderTask?.value
+      XCTAssertEqual(try shared.store.patternCanvasPreview?.pixel(x: size / 2, y: size / 2), before)
+
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let reply = try await helper.request(service, path: "/v1/documents/\(id)/preview.png", timeout: 90)
+      XCTAssertEqual(reply.0.statusCode, 200)
+      let opened = try RasterIO.read(reply.1)
+      XCTAssertEqual(opened.width, 2048)
+      XCTAssertEqual(opened.height, 2048)
+      XCTAssertEqual(shared.store.session.undoStack.count, 1)
+    }
+  }
+
   @MainActor func testMaximumPatternOverlayNativePreviewAndAPIEdits() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in

@@ -1809,13 +1809,26 @@ import UniformTypeIdentifiers
     _ document: CraftDocument, onionSkin: Bool = false, proof: ProofSettings? = nil, channelView: RGBChannelView = RGBChannelView(),auxiliary: ChannelPlaneTarget? = nil,overlay: Bool = false,modeVisibility: Set<Int>? = nil, inkVisibility: Set<InkChannelTarget>? = nil,auxiliaryView:AuxiliaryChannelView?=nil
   ) throws -> Data {
     try Task.checkCancellation()
-    let composite = try onionSkin ? OnionSkinRenderer.render(document):Renderer.composite(document)
-    try Task.checkCancellation()
     let large = document.width * document.height > Surface.maximumDensePixels
     if large && onionSkin {
       throw AutomationFailure(status: 413, message: "Large-document onion-skin presentation is not yet tiled. Ordinary and proof previews are bounded to2048 pixels per side.")
     }
     let request = try large ? RasterPreviewRequest.overview(width: document.width, height: document.height) : nil
+    if let request, !onionSkin, modeVisibility == nil, inkVisibility == nil,
+      auxiliary == nil, let repeating = try PatternCanvasPreview(document) {
+      if let proof, proof.active {
+        return try png(RasterIO.displayImage(repeating.imageSamples(request, proof: proof)))
+      }
+      let preview = try repeating.imageSamples(request, channels: channelView)
+      if let auxiliaryView, auxiliaryView.needsPresentation {
+        return try png(AuxiliaryChannelPresentation.image(preview, document: document, view: auxiliaryView,
+          colorManaged: channelView.visible.count != 1, request: request, sourceIsReduced: true))
+      }
+      return try png(channelView.visible.count == 1 ? RasterIO.displayImage(preview)
+        : ColorManagement.displayImage(preview, in: document))
+    }
+    let composite = try onionSkin ? OnionSkinRenderer.render(document) : Renderer.composite(document)
+    try Task.checkCancellation()
     let source = try document.inkMode != nil ? InkChannelPresentation.surface(document, visible: inkVisibility) : modeVisibility.map { try ModeChannelPresentation.surface(document, visible: $0) } ?? channelView.applying(to: composite)
     let preview = try auxiliary == nil && auxiliaryView?.needsPresentation != true ? request.map { try $0.reducing(source) } ?? source : source
     let image =

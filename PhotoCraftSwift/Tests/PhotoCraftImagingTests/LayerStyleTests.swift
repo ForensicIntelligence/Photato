@@ -83,6 +83,104 @@ final class LayerStyleTests: XCTestCase {
       }
     }
   }
+
+  func testOpaquePatternPreviewMatchesFullCompositeWithSparseEditsAndMasks() throws {
+    let maximum = Surface.maxDimension, offset = 299_520
+    var repeatPixels = try Surface(width: 4, height: 4, fill: .white)
+    repeatPixels.setPixel(x: 0, y: 0, .black)
+    repeatPixels.setPixel(x: 1, y: 2, Pixel(0.2, 0.6, 0.4))
+    let pattern = try RasterPattern(name: "Owned repeating control", surface: repeatPixels)
+    var overlay = LayerEffect(.patternOverlay)
+    overlay.pattern = PatternFill(patternID: pattern.id)
+    overlay.pattern?.placement.scale = 200
+    overlay.opacity = 0.63
+    var style = LayerStyle(effects: [overlay])
+    style.referenceOffset = PathPoint(3, -2)
+    style.fillOpacity = 0.89
+
+    for depth in PixelDepth.allCases {
+      func fixture(width: Int, height: Int, origin: Int) throws -> CraftDocument {
+        var document = try CraftDocument(width: width, height: height, depth: depth)
+        document.patterns = [pattern]
+        var raster = try Surface(width: width, height: height, depth: depth, fill: Pixel(0.7, 0.5, 0.3),
+          colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+        raster.setPixel(x: origin + 64, y: origin + 63, Pixel(0.2, 0.7, 0.9, 0.5))
+        var mask = try Surface(width: width, height: height, depth: .u8, fill: .white)
+        mask.setPixel(x: origin + 7, y: origin + 10, .black)
+        document.layers[0].content = .raster(raster)
+        document.layers[0].mask = mask
+        try Command.layerStyle([document.layers[0].id], style).apply(to: &document)
+        let foreground = try Surface(width: 7, height: 6, depth: depth, fill: Pixel(0.1, 0.3, 0.7, 0.6),
+          colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+        var detail = Layer(name: "Local edit", content: .raster(foreground))
+        detail.x = origin + 120
+        detail.y = origin + 60
+        document.layers.append(detail)
+        return document
+      }
+      let large = try fixture(width: maximum, height: maximum, origin: offset)
+      let small = try fixture(width: 192, height: 176, origin: 0)
+      let repeating = try XCTUnwrap(PatternCanvasPreview(large))
+      let reference = try Renderer.composite(small)
+      let region = IntRect(x: 3, y: 2, width: 137, height: 107)
+      let translated = IntRect(x: offset + region.x, y: offset + region.y, width: region.width, height: region.height)
+      let units = try RasterPreviewRequest(region: translated, width: region.width, height: region.height)
+      XCTAssertEqual(try repeating.imageSamples(units).rgbaData(depth: depth),
+        try reference.cropped(to: region).rgbaData(depth: depth), "\(depth) unit view")
+      XCTAssertEqual(try repeating.pixel(x: offset + 64, y: offset + 63), reference.pixel(x: 64, y: 63))
+      XCTAssertEqual(try repeating.pixel(x: offset + 77, y: offset + 78), reference.pixel(x: 77, y: 78))
+
+      let reduced = try RasterPreviewRequest(region: translated, width: 23, height: 19)
+      let referenceRequest = try RasterPreviewRequest(region: region, width: 23, height: 19)
+      XCTAssertEqual(try repeating.imageSamples(reduced).rgbaData(depth: .u8),
+        try referenceRequest.reducing(reference).rgbaData(depth: .u8), "\(depth) reduced view")
+      let channel = RGBChannelView(preview: .green)
+      let original = try Renderer.composite(large, region: translated)
+      let channelReference = try reduced.reducing(channel.applying(to: original))
+      XCTAssertEqual(try repeating.imageSamples(reduced, channels: channel).rgbaData(depth: .u8),
+        try channelReference.rgbaData(depth: .u8), "\(depth) isolated channel")
+      var proof = ProofSettings()
+      proof.enabled = true
+      let proofReference = try referenceRequest.reducing(SoftProof.surface(small, composite: reference, settings: proof))
+      XCTAssertEqual(try repeating.imageSamples(reduced, proof: proof).rgbaData(depth: .u8),
+        try proofReference.rgbaData(depth: .u8), "\(depth) soft proof")
+    }
+  }
+
+  func testOpaquePatternOverviewIntegratesWholeRepeatAtMaximumSize() throws {
+    let size = Surface.maxDimension
+    var document = try CraftDocument(width: size, height: size)
+    document.layers[0].content = .raster(try Surface(width: size, height: size, fill: .white))
+    var samples = try Surface(width: 4, height: 4, fill: .white)
+    samples.setPixel(x: 0, y: 0, .black)
+    let asset = try RasterPattern(name: "Area integration control", surface: samples)
+    document.patterns = [asset]
+    var overlay = LayerEffect(.patternOverlay)
+    overlay.pattern = PatternFill(patternID: asset.id)
+    overlay.pattern?.placement.scale = 200
+    overlay.opacity = 0.5
+    var style = LayerStyle(effects: [overlay])
+    style.referenceOffset = PathPoint(0, 0)
+    try Command.layerStyle([document.layers[0].id], style).apply(to: &document)
+    let request = try RasterPreviewRequest.overview(width: size, height: size, maximumSide: 25)
+    let repeating = try XCTUnwrap(PatternCanvasPreview(document))
+    let result = try repeating.imageSamples(request)
+    // Every 12,000-pixel footprint contains a whole number of repeats.
+    // Black contributes one texel in sixteen at byte opacity 128/255.
+    let sample: [UInt8] = [247, 247, 247, 255]
+    XCTAssertEqual(try result.rgbaData(depth: .u8), Data(Array(repeating: sample, count: 25 * 25).joined()))
+    let region = IntRect(x: size - 81, y: size - 100, width: 47, height: 83)
+    let crop = try RasterPreviewRequest(region: region, width: region.width, height: region.height)
+    for scale: Float in [75, 150, 300] {
+      document.layers[0].style?.effects[0].pattern?.placement.scale = scale
+      document.layers[0].style?.effects[0].pattern?.placement.phaseX = 0.25
+      let samples = try XCTUnwrap(PatternCanvasPreview(document)).imageSamples(crop)
+      XCTAssertEqual(try samples.rgbaData(depth: .u8),
+        try Renderer.composite(document, region: region).cropped(to: region).rgbaData(depth: .u8), "\(scale)% repeat")
+    }
+    document.layers[0].style?.effects[0].pattern?.placement.angle = 30
+    XCTAssertNil(try PatternCanvasPreview(document))
+  }
   func testAllTenEffectsAtAllDepthsRenderHistoryAndNativeArchives() throws {
     for depth in PixelDepth.allCases { for kind in LayerEffect.Kind.allCases {
       let original=try fixture(depth), baseline=try Renderer.composite(original)

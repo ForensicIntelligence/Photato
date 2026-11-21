@@ -1,0 +1,11 @@
+# Preview opaque Pattern Overlay on large canvases
+
+The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000. The previous full-resolution backing composite did unnecessary work for an opaque repeating background. Photato now renders one period, computes each display sample from the covered document pixels, and evaluates locally changed tiles through the normal compositor. [Adobe feature catalogue](https://www.adobe.com/products/photoshop/features/all.html) · [Layer styles](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html) · [PSB dimensions](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html)
+
+Fit uses the area covered by each screen pixel. At 100% the preview reads the same samples as a full render. Painted pixels, aligned pixel masks and translated raster layers remain visible. Tests also checked isolated RGB channels, soft proofing, native Brush and Undo, and a 2,048 × 2,048 PNG from the local API.
+
+The independent color test compares 8-, 16-, and 32-bit unit-scale results to a complete small composite. The reduction test compares its RGBA8 output at fractional zoom, with separate channel and proof controls. Apple Silicon and Intel emitted identical RGBA bytes for the three owned maximum-size fit, unit and fractional displays.
+
+A 31° overlay at 56% kept all 55,440 bytes in the overlap between two ordinary render regions. This supplies the control for extending the native viewport path to rotated overlays.
+
+451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. The preview requires supported axis-aligned pattern periods and bounded local changes. Other angles and nonperiodic scales still use ordinary rendering. Full-resolution export has its own capacity limits. Photoshop’s document-count query timed out, so live zoom and preview equivalence remain unverified. [Qualification](SOURCE_PUBLICATION_689.md)

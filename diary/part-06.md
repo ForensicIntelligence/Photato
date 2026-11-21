@@ -694,6 +694,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 686 | [Match sampled Photoshop legacy pattern scales](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-686) |
 | 2026-11-20 | 687 | [Keep Pattern Overlay editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-687) |
 | 2026-11-21 | 688 | [Render Pattern Overlay on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-688) |
+| 2026-11-21 | 689 | [Preview opaque Pattern Overlay on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-689) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -50,6 +50,10 @@ The existing PSD and PSB upload and Adobe Execute Actions job paths restore nest
 
 [Development record](PSD_LEGACY_SHAPES_642.md).
 
+### Opaque Pattern Overlay previews (checkpoint 689)
+
+`layerStyles.patternCanvasPreview` describes bounded display for an opaque overlay on a supported repeating RGB layer stack. The existing `preview.png`, `channel-preview.png`, and `proof-preview.png` routes use the native preview renderer. Requests retain their existing response size and revision checks. A working-pixel or container export continues through the full-resolution renderer. [Qualification](SOURCE_PUBLICATION_689.md)
+
 ### Pattern Overlay on large RGB canvases (checkpoint 688)
 
 The layer style capability reports `regionalPatternOverlay`. Send a basic Pattern Overlay to `layer.style` or modify it through `layer.style.patch`, using a pattern already present in the document. Rendering preserves document and linked layer coordinates when working in regions. Basic Pattern Overlay can use the full 300,000-pixel document dimension. Other effects still use the whole-canvas preparation limit reported by `maximumCanvasPixels`.

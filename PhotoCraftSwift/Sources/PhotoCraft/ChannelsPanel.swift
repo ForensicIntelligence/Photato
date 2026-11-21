@@ -17,7 +17,7 @@ struct ChannelThumbnailRequest: Equatable {
   private(set) var error: String?
 
   func update(
-    _ request: ChannelThumbnailRequest, source: Surface?,
+    _ request: ChannelThumbnailRequest, source: Surface?, repeating: PatternCanvasPreview? = nil,
     render: @escaping @Sendable (Surface, Int) throws -> [CGImage] = { source, size in
       try Renderer.channelThumbnails(source, maximumSize: size).map {
         try RasterIO.displayImage($0)
@@ -27,8 +27,16 @@ struct ChannelThumbnailRequest: Equatable {
     self.request = request
     images = []
     error = nil
-    guard request.maximumSize > 0, let source else { return }
-    let worker = Task.detached(priority: .utility) { try render(source, request.maximumSize) }
+    guard request.maximumSize > 0, source != nil || repeating != nil else { return }
+    let worker = Task.detached(priority: .utility) {
+      if let repeating {
+        let size = try RasterPreviewRequest.overview(width: repeating.documentWidth,
+          height: repeating.documentHeight, maximumSide: request.maximumSize)
+        return try render(repeating.imageSamples(size), request.maximumSize)
+      }
+      guard let source else { return [CGImage]() }
+      return try render(source, request.maximumSize)
+    }
     do {
       let result = try await withTaskCancellationHandler(
         operation: { try await worker.value }, onCancel: { worker.cancel() })
@@ -114,8 +122,12 @@ struct ChannelsPanel: View {
     .onDisappear {eyeTracking.cancel()}
     .task(id: request) {
       let document = store.document
-      await thumbnails.update(request, source: store.surface) { surface, size in
-        try (document.inkMode != nil ? InkChannelPresentation.thumbnails(document, maximumSize: size) : document.hasNativeModeStorage || document.depth != .u8 ? ModeChannelPresentation.thumbnails(document, maximumSize: size) : Renderer.channelThumbnails(surface, maximumSize: size)).enumerated().map {
+      let repeating = store.patternCanvasPreview
+      await thumbnails.update(request, source: store.surface, repeating: repeating) { surface, size in
+        try (document.inkMode != nil ? InkChannelPresentation.thumbnails(document, maximumSize: size)
+          : repeating == nil && (document.hasNativeModeStorage || document.depth != .u8)
+            ? ModeChannelPresentation.thumbnails(document, maximumSize: size)
+            : Renderer.channelThumbnails(surface, maximumSize: size)).enumerated().map {
           index, pixels in
           try index == 0 && document.inkMode == nil
             ? ColorManagement.displayImage(pixels, in: document) : RasterIO.displayImage(pixels)

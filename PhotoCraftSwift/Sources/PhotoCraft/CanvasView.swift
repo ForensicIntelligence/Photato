@@ -212,7 +212,8 @@ struct CanvasHost: NSViewRepresentable {
     }
     if store.tool == .paintBucket {
       if flags.contains(.option) {
-        return .colorSample(target: .foreground, available: store.canUseBucketContext && store.surface != nil)
+        return .colorSample(target: .foreground, available: store.canUseBucketContext
+          && (store.surface != nil || store.patternCanvasPreview != nil))
       }
       if store.bucketOptions.clearsAlpha {
         return store.canUseBucket(clearsAlpha: true) ? .symbol("drop.fill", .subtract) : .unavailable

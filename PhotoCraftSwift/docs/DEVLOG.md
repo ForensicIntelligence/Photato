@@ -707,7 +707,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 686 | 2026-11-20 | [Match sampled Photoshop legacy pattern scales](#dev-step-686) |
 | 687 | 2026-11-20 | [Keep Pattern Overlay editable in PSD and PSB](#dev-step-687) |
 | 688 | 2026-11-21 | [Render Pattern Overlay on large canvases](#dev-step-688) |
+| 689 | 2026-11-21 | [Preview opaque Pattern Overlay on large canvases](#dev-step-689) |
 <!-- history-index:end -->
+
+<a id="dev-step-689"></a>
+
+## 2026-11-21 — Preview opaque Pattern Overlay on large canvases
+
+The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
+
+Build 688 composed all working pixels before fitting an opaque patterned document to the canvas window. The bounded display can now use exact stored coordinates and fractional coverage when the visible layer stack has a finite repeat. Photato renders corrections for stored local edits separately. The RGB channel and proof paths project samples before area reduction.
+
+An initial Debug compile caught an ambiguous expected-byte array in the new test. A second compile detected an input edit in flight. The third build used the fixed test and a frozen source set. The independent pixel controls then passed, including alignment for the 75%, 150% and 300% legacy scales.
+
+Fit uses the area covered by each screen pixel. At 100% the preview reads the same samples as a full render. Painted pixels, aligned pixel masks and translated raster layers remain visible. Tests also checked isolated RGB channels, soft proofing, native Brush and Undo, and a 2,048 × 2,048 PNG from the local API.
+
+451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. The preview requires supported axis-aligned pattern periods and bounded local changes. Other angles and nonperiodic scales still use ordinary rendering. Full-resolution export has its own capacity limits. Photoshop’s document-count query timed out, so live zoom and preview equivalence remain unverified. The overall desktop workflow estimate remains 50%.
+
+[Development record](OPAQUE_PATTERN_PREVIEW_689.md) · [Qualification](SOURCE_PUBLICATION_689.md).
 
 <a id="dev-step-688"></a>
 

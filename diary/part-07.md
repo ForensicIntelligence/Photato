@@ -1219,14 +1219,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:688 -->
+<!-- current-status-step:689 -->
 ## Current development status — 21 November 2026
 
-Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.
+The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
 
-448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen.
+451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 688](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_688.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-688).
+[Source checkpoint 689](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_689.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-689).
 
 <!-- current-status:end -->
 

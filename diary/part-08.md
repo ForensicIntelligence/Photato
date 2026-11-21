@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-21 — Step 689 — Preview opaque Pattern Overlay on large canvases
+
+The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
+
+Fit uses the area covered by each screen pixel. At 100% the preview reads the same samples as a full render. Painted pixels, aligned pixel masks and translated raster layers remain visible. Tests also checked isolated RGB channels, soft proofing, native Brush and Undo, and a 2,048 × 2,048 PNG from the local API.
+
+451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. The preview requires supported axis-aligned pattern periods and bounded local changes. Other angles and nonperiodic scales still use ordinary rendering. Full-resolution export has its own capacity limits. Photoshop’s document-count query timed out, so live zoom and preview equivalence remain unverified.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-689) · [Details](../PhotoCraftSwift/docs/OPAQUE_PATTERN_PREVIEW_689.md).
+
 ## 2026-11-21 — Step 688 — Render Pattern Overlay on large canvases
 
 Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.

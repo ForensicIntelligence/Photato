@@ -1,0 +1,308 @@
+{
+  "build": 689,
+  "base": "7e8ee14966fc927201578784b51b586ee6582058",
+  "buildInputs": 9309,
+  "includedBuildInputs": 9296,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "1f83f7641ff0d5c80213377d06c7612423faa0e10af68c5e7e930315b2266dd1",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationLayerStyles.swift",
+      "sha256": "f0c93527f744b2c73f2231d4b20330afc7d77855149c55184147231377c98c79"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "048be76d209f62fca6301e49451d9dbb73a0aa48e9ca957197e2bd0db30f2d97"
+    },
+    {
+      "path": "Sources/PhotoCraft/CanvasView.swift",
+      "sha256": "24fb5324820a1b94e53b739bbe0d48d3ca80d0863d96b293844736fa5c71378f"
+    },
+    {
+      "path": "Sources/PhotoCraft/ChannelVisibility.swift",
+      "sha256": "babf49a284fd7fa6797914cc218ba2efcd3a3b836b8271ed6d6c2bf9a01c1b79"
+    },
+    {
+      "path": "Sources/PhotoCraft/ChannelsPanel.swift",
+      "sha256": "e733d5635e3e74d61418d78fcd5a1cac6a54163e0d99253951f2208199c48768"
+    },
+    {
+      "path": "Sources/PhotoCraft/ColorRegionEditing.swift",
+      "sha256": "b7d5d8baa15c44d7cf1039a31ab9b8bcae6fa43b22fd2766fd41fe3b088059fe"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "ef2fd56fbed2161ace3290a9266b8db8d4b96a4b87a40ca71cd36ea95475ead9"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "9850a54bcf6e492459626b5d1e6b6d07b0007065a2d753ab92d38d48bc590ddc"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedSoftProof.swift",
+      "sha256": "d0986cee00a401487bd800065789a6bd3477bc8e5f1fcb91e3f8d5323a52467b"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PatternCanvasPreview.swift",
+      "sha256": "43bca0715df32ad0962319cd1639bb52d624657fa612da4b6cb1ae9a26b28961"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PatternFillRenderer.swift",
+      "sha256": "c2d68646f75754bc560d1d76c9b0e4489df7a598a9f2c740f462b71bfa21d615"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RGBChannelView.swift",
+      "sha256": "9e7c807696abcb66abab4c37eae842d8966715cb9a539862987f0fbe773daa45"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RasterPreviewRequest.swift",
+      "sha256": "e97dcd6865475a810499f93de399420ec9ca33142e598a9d3a9dfb50e2e607d2"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SoftProof.swift",
+      "sha256": "5dc5b0f9f9f36c1be598ec8659b4bb7c5081385165cc07e86883b434c798d7d6"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerStyleWorkflowTests.swift",
+      "sha256": "66f28eb4cbcca0f6d47ee3e854aaa991a2d9d5c9ba6defea56474c44b805d5bb"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStyleTests.swift",
+      "sha256": "adb50b5cfac50fd448e39710ce32a8a14b0ac3c34bd5c3e7d2c3d045ca76d551"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "51e12e61c07a3d90d479ad9ac7cda6a6c368555842296b4f62125d6510bda2d1"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "51e12e61c07a3d90d479ad9ac7cda6a6c368555842296b4f62125d6510bda2d1"
+  },
+  "casesPerConfiguration": 454,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 454,
+      "passed": 451,
+      "newCasesExpected": 11,
+      "newCasesPassed": 11,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "48b8e5340d667de3d6a7669474707142ff56ebb19b12f0a00e271624b0f2f5e5"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 454,
+      "passed": 451,
+      "newCasesExpected": 11,
+      "newCasesPassed": 11,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "04c928099a2bea8cf552b562a16c6c9699f043631d31736b1610ffa93f721f6f"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 454,
+      "passed": 451,
+      "newCasesExpected": 11,
+      "newCasesPassed": 11,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "29500a95097d59d9e7f15fbca473a60107c5571642216613bd1e495c0230c244"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+    "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "bab8464ad7fd262e70cfecb4808466c49e20be46df1c9d33aaf9b0856a2b9437",
+  "ownedOpaquePreview": {
+    "canvas": [
+      300000,
+      300000
+    ],
+    "identicalRGBARendersAcrossConfigurations": {
+      "fit": "6ff8d0074e0c096a6febe0fa14e88eb56a24daefdd44975a5defd05e1abce1e9",
+      "unit": "6ff0d9da853a83766c7333f69189097ad79afbd52a1ea1faa197bfedc62a2c3b",
+      "fractional": "dd9fb528c1b149f3b2be8ba73eaf7106ccaedd470d692d1f60e9909237c06840"
+    },
+    "probes": {
+      "debug": {
+        "canvas": [
+          300000,
+          300000
+        ],
+        "cases": [
+          {
+            "allocatedResultBytes": 14745600,
+            "elapsedSeconds": 3.9178241250338033,
+            "height": 900,
+            "name": "fit",
+            "rgbaBytes": 3240000,
+            "width": 900
+          },
+          {
+            "allocatedResultBytes": 10813440,
+            "elapsedSeconds": 0.403343666694127,
+            "height": 700,
+            "name": "unit",
+            "rgbaBytes": 2520000,
+            "width": 900
+          },
+          {
+            "allocatedResultBytes": 5898240,
+            "elapsedSeconds": 1.6182052500080317,
+            "height": 528,
+            "name": "fractional",
+            "rgbaBytes": 1336896,
+            "width": 633
+          }
+        ],
+        "planSeconds": 0.0036443748977035284
+      },
+      "arm": {
+        "canvas": [
+          300000,
+          300000
+        ],
+        "cases": [
+          {
+            "allocatedResultBytes": 14745600,
+            "elapsedSeconds": 0.05589208332821727,
+            "height": 900,
+            "name": "fit",
+            "rgbaBytes": 3240000,
+            "width": 900
+          },
+          {
+            "allocatedResultBytes": 10813440,
+            "elapsedSeconds": 0.02789516665507108,
+            "height": 700,
+            "name": "unit",
+            "rgbaBytes": 2520000,
+            "width": 900
+          },
+          {
+            "allocatedResultBytes": 5898240,
+            "elapsedSeconds": 0.018853458343073726,
+            "height": 528,
+            "name": "fractional",
+            "rgbaBytes": 1336896,
+            "width": 633
+          }
+        ],
+        "planSeconds": 0.0028209167066961527
+      },
+      "intel": {
+        "canvas": [
+          300000,
+          300000
+        ],
+        "cases": [
+          {
+            "allocatedResultBytes": 14745600,
+            "elapsedSeconds": 0.06679462501779199,
+            "height": 900,
+            "name": "fit",
+            "rgbaBytes": 3240000,
+            "width": 900
+          },
+          {
+            "allocatedResultBytes": 10813440,
+            "elapsedSeconds": 0.04401454096660018,
+            "height": 700,
+            "name": "unit",
+            "rgbaBytes": 2520000,
+            "width": 900
+          },
+          {
+            "allocatedResultBytes": 5898240,
+            "elapsedSeconds": 0.02881354105193168,
+            "height": 528,
+            "name": "fractional",
+            "rgbaBytes": 1336896,
+            "width": 633
+          }
+        ],
+        "planSeconds": 0.0018004169687628746
+      }
+    }
+  },
+  "controls": {
+    "pixelDepths": [
+      8,
+      16,
+      32
+    ],
+    "unitViewBytes": "exact at source depths",
+    "reducedPreviewComparisons": "RGBA8 including isolated color and soft proof",
+    "nativeBrushUndo": true,
+    "loopbackPreviewDimensions": [
+      2048,
+      2048
+    ]
+  },
+  "rotatedReference": {
+    "angleDegrees": 31,
+    "scalePercent": 56,
+    "overlapRGBABytes": 55440,
+    "ordinaryRegionalRender": true,
+    "periodicFit": false
+  },
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "preview": {
+    "archiveSHA256": "38862a26bc953143108f2b3911481235cc0d2e222e96856746b2adec7ce10c58",
+    "binarySHA256": "04843dad744f4a91302c8a64d5f7d77d0b6c7d199e30f57d3f669ba72611981c",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "b443557bd2222f70aa5c45046cf43567ef1e3ad3914f9f4d56f0554cf7928b78",
+      "x86_64": "5fc539d8c298a6410315361a6f57148b9edd80cbec316b508a386c92b584f717"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination in Debug only.",
+  "references": [
+    "https://www.adobe.com/products/photoshop/features/all.html",
+    "https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html",
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html"
+  ]
+}

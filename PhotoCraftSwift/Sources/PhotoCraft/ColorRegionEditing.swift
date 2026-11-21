@@ -58,7 +58,12 @@ extension EditorStore {
     }
     guard canUseBucketContext else { return }
     if modifiers.contains(.option) {
-      if let surface { brush.color = surface.pixel(x: Int(floor(point.x)), y: Int(floor(point.y))) }
+      let x = Int(floor(point.x)), y = Int(floor(point.y))
+      do {
+        if let pixel = try patternCanvasPreview?.pixel(x: x, y: y) ?? surface?.pixel(x: x, y: y) {
+          brush.color = pixel
+        }
+      } catch { self.error = error.localizedDescription }
       return
     }
     let options = bucketOptions, mask = editingMask

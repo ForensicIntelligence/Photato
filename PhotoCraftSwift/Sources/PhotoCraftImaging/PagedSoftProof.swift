@@ -18,16 +18,8 @@ enum PagedSoftProof {
       for c in 0..<native.mode.componentCount{sources.append(try native.channel(c))}
       sources.append(try native.opacityChannel())
     }
-    func proof(_ composite:Surface,native:NativeModeRaster?)throws->Surface {
-      var proxy=try CraftDocument(width:composite.width,height:composite.height,depth:document.depth)
-      if let native {
-        proxy.modeDescriptor=try .init(mode:native.mode,depth:native.depth,profile:native.profile,intent:native.intent)
-        proxy.layers[0].nativeMode=native
-      }else{proxy.workingICC=rgbProfile}
-      // The valid layer placeholder is not an input: the legacy kernel reads
-      // retained components or the explicitly supplied original composite.
-      try proxy.validate()
-      return try SoftProof.surface(proxy,composite:composite,settings:settings)
+    func proof(_ composite: Surface, native: NativeModeRaster?) throws -> Surface {
+      try project(composite, depth: document.depth, rgbProfile: rgbProfile, native: native, settings: settings)
     }
     var constant=try Surface(width:1,height:1,depth:original.depth,colorEncoding:original.colorEncoding)
     if original.colorEncoding == .linearRGB {constant.setLinearPixel(x:0,y:0,try original.interpretingSamples(as:.sRGB).defaultPixel)}
@@ -52,6 +44,21 @@ enum PagedSoftProof {
       try builder.append(patch,atX:x,atY:y)
     }
     try Task.checkCancellation();return try builder.finish()
+  }
+
+  static func project(_ composite: Surface, depth: PixelDepth, rgbProfile: Data?,
+    native: NativeModeRaster? = nil, settings: ProofSettings) throws -> Surface {
+    var proxy = try CraftDocument(width: composite.width, height: composite.height, depth: depth)
+    if let native {
+      proxy.modeDescriptor = try .init(mode: native.mode, depth: native.depth,
+        profile: native.profile, intent: native.intent)
+      proxy.layers[0].nativeMode = native
+    } else {
+      proxy.workingICC = rgbProfile
+    }
+    // The supplied composite retains the working sample values and profile.
+    try proxy.validate()
+    return try SoftProof.surface(proxy, composite: composite, settings: settings)
   }
   private struct TileKeys:Sequence {
     let sources:[Surface]
