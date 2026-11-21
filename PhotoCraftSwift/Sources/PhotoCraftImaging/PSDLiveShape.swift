@@ -31,11 +31,16 @@ enum PSDLiveShape {
   }
 
   static func read(_ tags: [String: Data], x: Int, y: Int, cache: Surface, document: CraftDocument) throws -> ShapeContent {
-    guard document.colorMode == .rgb, document.depth != .f32, let origination = tags["vogk"],
-      origination.starts(with: originVersion) else {
-      throw CraftError.unsupported("Editable Photoshop shapes require RGB and retained live shape records.")
+    guard document.colorMode == .rgb, document.depth != .f32 else {
+      throw CraftError.unsupported("Editable Photoshop shapes require 8- or 16-bit RGB.")
     }
-    var primitives = try readGeometry(origination)
+    let hasOrigination = tags["vogk"] != nil
+    var primitives: [Primitive] = try tags["vogk"].map { data in
+      guard data.starts(with: originVersion) else {
+        throw CraftError.unsupported("Unrepresented Photoshop shape origination version.")
+      }
+      return try readGeometry(data)
+    } ?? []
     let vector: Data
     let fill: ShapePaint
     let stroke: ShapeStroke
@@ -65,17 +70,22 @@ enum PSDLiveShape {
       }
       primitives = links.map { primitives[$0] }
     }
-    guard mask.enabled, mask.linked, !mask.path.inverted, mask.path.components.count == primitives.count,
-          let first = mask.path.components.first, first.operation == .combine || first.operation == .join,
-          try zip(mask.path.components, primitives).allSatisfy({ outline, primitive in
-            try matches(outline, primitive: primitive, tolerance: tolerance(document))
-          }) else {
-      throw CraftError.unsupported("The linked Photoshop shape path does not match its axis-aligned live geometry.")
+    guard mask.enabled, mask.linked, !mask.path.inverted,
+          mask.path.components.first?.operation != .subtract else {
+      throw CraftError.unsupported("The Photoshop shape requires a linked finite contour.")
     }
-    var definition = ShapeDefinition(geometry: primitives[0].geometry, fill: fill, stroke: stroke)
+    if hasOrigination {
+      guard mask.path.components.count == primitives.count,
+            try zip(mask.path.components, primitives).allSatisfy({ outline, primitive in
+              try matches(outline, primitive: primitive, tolerance: tolerance(document))
+            }) else {
+        throw CraftError.unsupported("The linked Photoshop shape path does not match its axis-aligned live geometry.")
+      }
+    }
+    var definition = ShapeDefinition(geometry: primitives.first?.geometry ?? .init(), fill: fill, stroke: stroke)
     definition.fillRule = mask.path.fillRule
-    definition.components = localized(primitives, path: mask.path,
-                                      transform: .translation(-Double(x), -Double(y)))
+    definition.components = try localized(primitives, path: mask.path,
+                                          transform: .translation(-Double(x), -Double(y)))
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width; shape.height = cache.height
     shape.importedAppearance = .init(definition: definition, pixels: cache, vectorRecord: vector)
@@ -135,8 +145,9 @@ enum PSDLiveShape {
   }
 
   private static func localized(_ primitives: [Primitive], path: VectorPath,
-                                transform: Transform2D) -> [ShapeComponent] {
-    zip(primitives, path.components).map { primitive, outline in
+                                transform: Transform2D) throws -> [ShapeComponent] {
+    if primitives.isEmpty { return [try ShapeDefinition.regularPathComponent(path.transformed(transform))] }
+    return zip(primitives, path.components).map { primitive, outline in
       let placement = transform * .translation(primitive.rectangle.x, primitive.rectangle.y)
       var component = ShapeComponent(geometry: primitive.geometry, transform: placement, operation: outline.operation)
       var contour = outline
@@ -203,7 +214,7 @@ enum PSDLiveShape {
     let cache = try RasterGeometry.render(pixels, transform: placement, bounds: bounds, method: .bilinear)
     let local = Transform2D.translation(-Double(bounds.x), -Double(bounds.y))
     var definition = original
-    definition.components = localized(primitives, path: path, transform: local)
+    definition.components = try localized(primitives, path: path, transform: local)
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width
     shape.height = cache.height
@@ -235,9 +246,13 @@ enum PSDLiveShape {
       definition.stroke.pathContours != true,
       [.none, .solid].contains(definition.fill.kind), [.none, .solid].contains(definition.stroke.paint.kind),
       definition.fill.color.a == 1, definition.stroke.paint.color.a == 1, let path = try layer.shapePath(),
-      !path.inverted, path.components.count == definition.components.count else {
+      !path.inverted, path.components.first?.operation != .subtract else {
       throw unsupported
     }
+    if definition.components.count == 1, first.geometry.kind == .custom {
+      return (definition, [], path)
+    }
+    guard path.components.count == definition.components.count else { throw unsupported }
     let origin = try layer.shapeTransform()
     let primitives = try zip(definition.components, path.components).map { part, outline in
       let transform = origin * part.transform
@@ -283,12 +298,13 @@ enum PSDLiveShape {
     let records = primitives.enumerated().map {
       PSDValue.object(origination($0.element, index: $0.offset, resolution: document.pixelsPerInch))
     }
-    let origin = PSDDescriptor("null", items: [.init("keyDescriptorList", .list(records))])
-    return try [("vscg", header + PSDSolidColor.write(fill)),
+    let vector = try [("vscg", header + PSDSolidColor.write(fill)),
       ("vsms", PSDPaths.writeMask(VectorMask(path: path), width: document.width, height: document.height,
-                                 linkShapeOrigins: true)),
-      ("vowv", Data([0,0,0,2])), ("vogk", originVersion + origin.encoded()),
-      ("vstk", strokeStyle.encoded()), ("sn2P", originVersion)]
+                                 linkShapeOrigins: !records.isEmpty))]
+    if records.isEmpty { return try vector + [("vstk", strokeStyle.encoded())] }
+    let origin = PSDDescriptor("null", items: [.init("keyDescriptorList", .list(records))])
+    return try vector + [("vowv", Data([0,0,0,2])), ("vogk", originVersion + origin.encoded()),
+                         ("vstk", strokeStyle.encoded()), ("sn2P", originVersion)]
   }
 
   private static func origination(_ primitive: Primitive, index: Int, resolution: Double) -> PSDDescriptor {
@@ -320,7 +336,7 @@ enum PSDLiveShape {
     return PSDDescriptor("null", items: live)
   }
 
-  private static let unsupported = CraftError.unsupported("PSD editable shape export currently supports axis-aligned rectangles and ellipses with solid paint and zero-phase, width-relative dashes. Save other shapes as Photato.")
+  private static let unsupported = CraftError.unsupported("PSD editable shape export currently supports axis-aligned rectangles, ellipses and finite outlines with solid paint and zero-phase, width-relative dashes. Save other shapes as Photato.")
   private static func tolerance(_ document: CraftDocument) -> Double { Double(max(document.width, document.height)) / 16_777_216 + 1e-8 }
 
   private static func matches(_ component: PathComponent, primitive: Primitive, tolerance: Double) throws -> Bool {

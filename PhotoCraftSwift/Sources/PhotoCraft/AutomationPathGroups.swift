@@ -24,6 +24,7 @@ enum PathGroupsAPI {
     case "focus":
       return BrushAPI.object(targetFields, required: ["target", "id"])
     case "marquee", "extend": return PathAPI.schema(key)
+    case "marqueeScope": return BrushAPI.enumeration(["anchors", "components"])
     case "enabled": return BrushAPI.flag
     case "settings": return WarpDefinition.apiSchema
     case "matrixAfter": return SelectionTransformAPI.schema("matrix")
@@ -185,15 +186,23 @@ extension AutomationCommand {
       }
       return target
     }
-    guard command.parameters["marquee"] != nil || command.parameters["extend"] == nil else {
-      throw AutomationFailure(status: 400, message: "Supply a path marquee when setting extend.")
+    guard command.parameters["marquee"] != nil
+      || (command.parameters["extend"] == nil && command.parameters["marqueeScope"] == nil) else {
+      throw AutomationFailure(status: 400, message: "Supply a rectangle when setting the marquee scope or extending.")
     }
+    let wholeComponents = try command.parameters["marqueeScope"].map { _ in
+      try command.string("marqueeScope") == "components"
+    } ?? false
     for choice in choices { _ = try PathTransform.path(choice.target, in: document) }
     if let raw = command.parameters["marquee"] {
       let rectangle = try command.pathMarquee(raw), extend = try command.pathFlag("extend", false)
       choices = try choices.map { choice in
         let path = try PathTransform.editablePath(choice.target, in: document)
-        return .init(choice.target, selection: rectangle.selection(in: path, extending: extend ? choice.selection : nil))
+        let prior = extend ? choice.selection : nil
+        let selection = wholeComponents
+          ? rectangle.componentSelection(in: path, extending: prior)
+          : rectangle.selection(in: path, extending: prior)
+        return .init(choice.target, selection: selection)
       }
     } else {
       for choice in choices {
@@ -202,6 +211,9 @@ extension AutomationCommand {
       }
     }
     setPathChoices(choices, focus: focus)
-    if !usesPathTool, !choices.isEmpty { tool = .directSelection }
+    if !choices.isEmpty {
+      if wholeComponents { tool = .pathSelection }
+      else if !usesPathTool { tool = .directSelection }
+    }
   }
 }

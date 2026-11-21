@@ -276,7 +276,7 @@ extension EditorStore {
         }
         return
       }
-      if tool == .directSelection, !option, allowsMarquee {
+      if allowsMarquee, !option, tool == .directSelection || tool == .pathSelection {
         beginPathMarquee(at: p, path: path, extending: extending)
         return
       }

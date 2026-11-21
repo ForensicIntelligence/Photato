@@ -38,4 +38,19 @@ public struct PathMarqueeSelection: Equatable, Sendable {
     }
     return .anchors(Set(hits).sorted { ($0.component, $0.knot) < ($1.component, $1.knot) })
   }
+
+  public func componentSelection(in path: VectorPath, extending prior: PathTransformSelection? = nil)
+    -> PathTransformSelection
+  {
+    let hits = selection(in: path)
+    guard case .anchors(let anchors) = hits else { return .components([]) }
+    var selected = Set(anchors.map(\.component))
+    switch prior {
+    case .components(let indices): selected.formUnion(indices)
+    case .anchors(let indices): selected.formUnion(indices.map(\.component))
+    case .all, nil: break
+    }
+    let groups = PathComponentEdit.groups(in: path)
+    return .components(groups.filter { $0.contains(where: selected.contains) }.flatMap { $0 })
+  }
 }

@@ -1175,6 +1175,29 @@ import UniformTypeIdentifiers
         result["pathTransformSelection"] = PathTransformAPI.selection(.components(indices))
         return .json(result)
       }
+      if command.name == PathComponentOperationsAPI.name {
+        guard store.canApplyPathComponentLayout else {
+          throw AutomationFailure(status: 409, message: "Finish the current edit before changing path components.")
+        }
+        let request = try command.pathComponentEditRequest()
+        let context = store.selectedPathChoices
+        let selection = try await executePreparedResult(document: document, shareID: id, revision: command.revision,
+                                                         allowPathTarget: true, validateCommit: {
+          guard store.selectedPathChoices == context else {
+            throw AutomationFailure(status: 409, message: "The path component selection changed.")
+          }
+        }) { original in
+          let edit = try PathComponentEdit.prepare(request, in: original)
+          return (.editPathComponents(edit), edit.selection)
+        }
+        store.updatePathChoices([.init(request.target, selection: selection)])
+        if store.pathTarget == request.target, let mode = request.operation.overlapMode {
+          store.pathOperation = mode
+        }
+        var result = state(share, document: document)
+        result["pathTransformSelection"] = PathTransformAPI.selection(selection)
+        return .json(result)
+      }
       if command.name == PathGroupsAPI.warp {
         let request = try command.pathWarpRequest()
         guard !store.geometryBusy, store.transformDraft == nil, !store.hasToneDraft,
@@ -1971,6 +1994,7 @@ import UniformTypeIdentifiers
       "pathTransform":PathTransformAPI.capabilities,
       "crossLayerPaths":PathGroupsAPI.capabilities,
       "pathComponentLayout": PathComponentLayoutAPI.capabilities,
+      "pathComponentOperations": PathComponentOperationsAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,
       "fileInfo": FileInfoAPI.capabilities,
       "guides": GuideAPI.capabilities,

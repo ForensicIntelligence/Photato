@@ -42,34 +42,10 @@ public enum FrameRenderer {
     guard !box.isNull, !box.isInfinite, box.width > 0, box.height > 0 else { throw CraftError.invalid("The outline has no frame area.") }
     let rect = IntRect(x: Int(floor(box.minX)), y: Int(floor(box.minY)), width: Int(ceil(box.maxX)) - Int(floor(box.minX)), height: Int(ceil(box.maxY)) - Int(floor(box.minY)))
     guard rect.width <= 32768, rect.height <= 32768, abs(rect.x) <= 1_000_000, abs(rect.y) <= 1_000_000 else { throw CraftError.invalid("Frame outline exceeds supported bounds.") }
-    var components: [PathComponent] = [], knots: [PathKnot] = []
-    func point(_ p: CGPoint) -> PathPoint { .init((p.x - Double(rect.x)) / Double(rect.width), (p.y - Double(rect.y)) / Double(rect.height)) }
-    func finish(_ closed: Bool) {
-      if knots.count > 1 {
-        if closed, knots.last!.anchor == knots.first!.anchor { let last = knots.removeLast(); knots[0].incoming = last.incoming }
-        components.append(.init(knots: knots, closed: closed, operation: .join))
-      }
-      knots = []
+    let result = try VectorPathGeometry.editableContours(path) { point in
+      .init((point.x - Double(rect.x)) / Double(rect.width),
+            (point.y - Double(rect.y)) / Double(rect.height))
     }
-    path.applyWithBlock { pointer in
-      let element = pointer.pointee
-      switch element.type {
-      case .moveToPoint: finish(false); knots = [.init(point(element.points[0]))]
-      case .addLineToPoint: knots.append(.init(point(element.points[0])))
-      case .addCurveToPoint:
-        if !knots.isEmpty { knots[knots.count - 1].outgoing = point(element.points[0]) }
-        knots.append(.init(point(element.points[2]), incoming: point(element.points[1])))
-      case .addQuadCurveToPoint:
-        let control = point(element.points[0]), end = point(element.points[1])
-        if let start = knots.last?.anchor { knots[knots.count - 1].outgoing = start.interpolated(to: control, at: 2.0/3.0) }
-        knots.append(.init(end, incoming: end.interpolated(to: control, at: 2.0/3.0)))
-      case .closeSubpath: finish(true)
-      @unknown default: break
-      }
-    }
-    finish(false)
-    let result = VectorPath(components: components)
-    try result.validate()
     guard !result.isEmpty, result.components.allSatisfy(\.closed) else { throw CraftError.invalid("A custom frame requires closed outlines.") }
     return (result, rect)
   }

@@ -11,6 +11,37 @@ public enum LayerStackOperation: String, Codable, CaseIterable, Sendable {
     case .reverse: "Reverse"
     }
   }
+
+  func arranged<Element: Hashable>(_ original: [Element], selected: Set<Element>, minimum: Int = 0) -> [Element] {
+    var values = original
+    switch self {
+    case .bringToFront:
+      values = original.filter { !selected.contains($0) } + original.filter { selected.contains($0) }
+    case .sendToBack:
+      values = Array(original.prefix(minimum)) + original.dropFirst(minimum).filter { selected.contains($0) }
+        + original.dropFirst(minimum).filter { !selected.contains($0) }
+    case .bringForward:
+      if values.count >= 2 {
+        for i in stride(from: values.count - 2, through: 0, by: -1)
+          where selected.contains(values[i]) && !selected.contains(values[i + 1]) {
+          values.swapAt(i, i + 1)
+        }
+      }
+    case .sendBackward:
+      if values.count > minimum + 1 {
+        for i in (minimum + 1)..<values.count
+          where selected.contains(values[i]) && !selected.contains(values[i - 1]) {
+          values.swapAt(i, i - 1)
+        }
+      }
+    case .reverse:
+      let positions = original.indices.filter { selected.contains(original[$0]) }
+      for (position, value) in zip(positions, positions.reversed().map { original[$0] }) {
+        values[position] = value
+      }
+    }
+    return values
+  }
 }
 
 public struct LayerStackOrderRequest: Codable, Equatable, Sendable {
@@ -41,33 +72,8 @@ public enum LayerStackOrder {
     for (parent, members) in Dictionary(grouping: roots, by: \.parentID) {
       try Task.checkCancellation()
       let selected = Set(members.map(\.id)), original = children[parent] ?? []
-      var values = original
       let minimum = original.first.flatMap { index.byID[$0] }?.isBackground == true ? 1 : 0
-      switch request.operation {
-      case .bringToFront:
-        values = original.filter { !selected.contains($0) } + original.filter { selected.contains($0) }
-      case .sendToBack:
-        values = Array(original.prefix(minimum)) + original.dropFirst(minimum).filter { selected.contains($0) }
-          + original.dropFirst(minimum).filter { !selected.contains($0) }
-      case .bringForward:
-        if values.count >= 2 {
-          for i in stride(from: values.count - 2, through: 0, by: -1)
-            where selected.contains(values[i]) && !selected.contains(values[i + 1]) {
-            values.swapAt(i, i + 1)
-          }
-        }
-      case .sendBackward:
-        if values.count > minimum + 1 {
-          for i in (minimum + 1)..<values.count
-            where selected.contains(values[i]) && !selected.contains(values[i - 1]) {
-            values.swapAt(i, i - 1)
-          }
-        }
-      case .reverse:
-        let positions = original.indices.filter { selected.contains(original[$0]) }
-        for (position, value) in zip(positions, positions.reversed().map { original[$0] }) { values[position] = value }
-      }
-      children[parent] = values
+      children[parent] = request.operation.arranged(original, selected: selected, minimum: minimum)
     }
     var result: [UUID] = []
     func append(_ parent: UUID?) throws {

@@ -12,6 +12,7 @@ struct PathMarqueeGesture {
   let inputs: [Input]
   let start: PathPoint
   let extending: Bool
+  let tool: EditorTool
   var end: PathPoint
   var dragging = false
   var previewChoices: [PathTransformChoice]?
@@ -29,7 +30,7 @@ struct PathMarqueeGesture {
       return shape.map { .init(choice: choice, path: $0) }
     }
     pathMarquee = .init(target: target, selectionContext: choices, inputs: inputs,
-                        start: point, extending: extending, end: point)
+                        start: point, extending: extending, tool: tool, end: point)
   }
 
   func updatePathMarquee(to point: PathPoint, scale: Double) {
@@ -39,8 +40,10 @@ struct PathMarqueeGesture {
     if marquee.dragging {
       let rectangle = PathMarqueeSelection(start: marquee.start, end: point)
       marquee.previewChoices = marquee.inputs.map { input in
-        let selection = rectangle.selection(in: input.path,
-          extending: marquee.extending ? input.choice.selection : nil)
+        let prior = marquee.extending ? input.choice.selection : nil
+        let selection = marquee.tool == .pathSelection
+          ? rectangle.componentSelection(in: input.path, extending: prior)
+          : rectangle.selection(in: input.path, extending: prior)
         return .init(input.choice.target, selection: selection)
       }
     }
@@ -50,7 +53,7 @@ struct PathMarqueeGesture {
   func finishPathMarquee() {
     guard let marquee = pathMarquee else { return }
     pathMarquee = nil
-    guard tool == .directSelection, pathTarget == marquee.target,
+    guard tool == marquee.tool, pathTarget == marquee.target,
           selectedPathChoices == marquee.selectionContext,
           marquee.inputs.allSatisfy({
             (try? PathTransform.editablePath($0.choice.target, in: document)) == $0.path
@@ -58,7 +61,8 @@ struct PathMarqueeGesture {
     if let choices = marquee.previewChoices {
       updatePathChoices(choices)
     } else if !marquee.extending {
-      updatePathChoices(marquee.inputs.map { .init($0.choice.target, selection: .anchors([])) })
+      let empty: PathTransformSelection = marquee.tool == .pathSelection ? .components([]) : .anchors([])
+      updatePathChoices(marquee.inputs.map { .init($0.choice.target, selection: empty) })
     }
     if selectedPathChoices != marquee.selectionContext {
       if rendering { render() } else { revision += 1 }

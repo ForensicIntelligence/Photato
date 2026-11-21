@@ -178,14 +178,16 @@ extension WorkspaceView {
       case .pen, .freeformPen, .curvaturePen, .pathSelection, .directSelection:
         Text("Path").padding(4).background(StudioTheme.field)
         if store.tool == .freeformPen {Text("Curve Fit");TextField("Curve Fit",value:$store.pathCurveFit,format:.number).frame(width:45);Text("px")}
-        Picker(
-          "Path operation",
-          selection: Binding(
-            get: { store.pathOperation },
-            set: { store.changePathOperation($0) })
-        ) {
-          ForEach(PathOperation.allCases, id: \.self) { Text($0.rawValue).tag($0) }
-        }.labelsHidden().frame(width: 100).controlSize(.small)
+        if store.tool == .pathSelection || !store.pathComponentOperationSelection.isEmpty {
+          PathComponentOperationMenus(store: store)
+        } else {
+          Picker(
+            "Path operation",
+            selection: Binding(get: { store.pathOperation }, set: { store.changePathOperation($0) })
+          ) {
+            ForEach(PathOperation.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+          }.labelsHidden().frame(width: 100).controlSize(.small)
+        }
         if store.usesPathComponentLayout { PathComponentLayoutControls(store: store) }
         Button("Selection") { store.pathToSelection() }.disabled(store.selectedVectorPath == nil)
         Button("Vector Mask") { store.makeVectorMask() }
@@ -194,7 +196,7 @@ extension WorkspaceView {
         Text(
           store.tool == .freeformPen ? "Drag a path · Return finishes · Escape cancels" : store.tool == .curvaturePen ? "Click curves · Double-click corners · Click first point to close" : store.tool == .pen
             ? "Click anchors · Drag curves · Return finishes · ⌥ Corner"
-            : "Drag anchors or handles · ⌥ Independent handle · Delete anchor"
+            : store.tool == .pathSelection ? "Shift-click to add components" : "Drag anchors or handles · ⌥ Independent handle · Delete anchor"
         )
         .foregroundStyle(.secondary)
       case .frame:

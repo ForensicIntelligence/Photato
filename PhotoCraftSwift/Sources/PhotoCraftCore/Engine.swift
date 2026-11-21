@@ -104,6 +104,7 @@ public indirect enum Command: Sendable {
   case transformPath(PathTransformRequest)
   case transformPaths(PathTransformGroupRequest)
   case layoutPathComponents(PathComponentLayoutRequest)
+  case editPathComponents(PathComponentEdit)
   case warpPaths(PathWarpEdit)
   case transformChannel(ChannelTransformRequest)
   case transformPixelMask(PixelMaskTransformRequest)
@@ -262,6 +263,7 @@ public indirect enum Command: Sendable {
     case .transformPath: "Transform Path"
     case .transformPaths: "Transform Paths"
     case .layoutPathComponents(let request): request.label
+    case .editPathComponents(let edit): edit.request.operation.title
     case .warpPaths: "Warp Paths"
     case .transformChannel: "Free Transform"
     case .transformPixelMask: "Free Transform"
@@ -418,6 +420,7 @@ public indirect enum Command: Sendable {
     case .transformPath(let request):try PathTransform.apply(request,to:&d)
     case .transformPaths(let request):try PathTransform.apply(request,to:&d)
     case .layoutPathComponents(let request):try PathComponentLayout.apply(request,to:&d)
+    case .editPathComponents(let edit):try edit.apply(to:&d)
     case .warpPaths(let edit):d = try edit.applied(to: d)
     case .transformChannel(let request):try ChannelTransform.apply(request,to:&d)
     case .transformPixelMask(let request):try PixelMaskTransform.apply(request,to:&d)
@@ -504,6 +507,10 @@ public struct PreparedEdit: Sendable {
   public var isSpotChannelMerge: Bool { if case .mergeSpotChannel = recordingCommand { return true }; return false }
   public var isFitImageEdit: Bool { if case .fitImage = recordingCommand { return true }; return false }
   public var isRecordedAction: Bool { if case .preparedAction = recordingCommand { return true }; return false }
+  public var pathComponentEdit: PathComponentEdit? {
+    if case .editPathComponents(let edit) = recordingCommand { return edit }
+    return nil
+  }
   public var channelCommand: ChannelCommand? { if case .channel(let command) = recordingCommand { return command }; return nil }
   public var pixelPaintRequest: PixelPaintRequest? { if case .pixelPaint(let request) = recordingCommand { return request }; return nil }
   public var paintingRequest: PaintToolRequest? { if case .painting(let edit) = recordingCommand { return edit.request }; return nil }

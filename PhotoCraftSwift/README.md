@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 679.** Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_679.md).
+
 **Source checkpoint 678.** Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_678.md).
 
 **Source checkpoint 677.** Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit. [Qualification](docs/SOURCE_PUBLICATION_677.md).

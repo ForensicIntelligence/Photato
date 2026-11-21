@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 679 — Reorder, combine and merge path components
+
+Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
+
+All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison and Adobe-authored byte equality remain open. Merge requires closed contours and a mergeable overlap region. The unbounded exterior of a leading subtraction on a shape layer remains open.
+
+[Development record](DEVLOG.md#dev-step-679) · [Details](PATH_COMPONENT_OPERATIONS_679.md).
+
 ## 2026-11-20 — Step 678 — Align and distribute components on an editable path
 
 Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
@@ -1401,14 +1409,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:678 -->
+<!-- current-status-step:679 -->
 ## Current development status — 20 November 2026
 
-Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
+Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
 
-All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 678](SOURCE_PUBLICATION_678.md) · [Development record](DEVLOG.md#dev-step-678).
+[Source checkpoint 679](SOURCE_PUBLICATION_679.md) · [Development record](DEVLOG.md#dev-step-679).
 
 <!-- current-status:end -->
 
@@ -2293,6 +2301,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 676 | [Switch between path Warp and Free Transform](DEVLOG.md#dev-step-676) |
 | 2026-11-20 | 677 | [Isolate a path’s layer while editing](DEVLOG.md#dev-step-677) |
 | 2026-11-20 | 678 | [Align and distribute components on an editable path](DEVLOG.md#dev-step-678) |
+| 2026-11-20 | 679 | [Reorder, combine and merge path components](DEVLOG.md#dev-step-679) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

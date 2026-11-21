@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 679 — Reorder, combine and merge path components
+
+Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
+
+All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison and Adobe-authored byte equality remain open. Merge requires closed contours and a mergeable overlap region. The unbounded exterior of a leading subtraction on a shape layer remains open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-679) · [Details](../PhotoCraftSwift/docs/PATH_COMPONENT_OPERATIONS_679.md).
+
 ## 2026-11-20 — Step 678 — Align and distribute components on an editable path
 
 Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.

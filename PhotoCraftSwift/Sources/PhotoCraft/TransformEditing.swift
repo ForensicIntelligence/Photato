@@ -417,7 +417,9 @@ extension EditorStore {
   }
   func performPreparedGeometry(
     label: String, allowAuxiliary: Bool = false, allowModeComponents: Bool = false, allowLinkedSmartObject: Bool = false, cancelPreview: Bool = true,
-    prepare: @escaping @Sendable (CraftDocument) async throws -> PreparedEdit, validateCommit: @escaping @MainActor () throws -> Void = {}, onSuccess: (() -> Void)? = nil
+    prepare: @escaping @Sendable (CraftDocument) async throws -> PreparedEdit,
+    validateCommit: @escaping @MainActor () throws -> Void = {}, onCommit: ((PreparedEdit) -> Void)? = nil,
+    onSuccess: (() -> Void)? = nil
   ) {
     guard !geometryBusy, transformDraft == nil, !hasToneDraft else { return }
     guard allowLinkedSmartObject || !editingComponent || allowAuxiliary || (allowModeComponents && canEditModeComponents) else {
@@ -446,6 +448,7 @@ extension EditorStore {
         try self.executeCompositePreparedEdit(prepared,allowAuxiliary:allowAuxiliary,allowModeComponents:allowModeComponents,allowLinkedSmartObject:allowLinkedSmartObject)
         if self.document != original { self.onChange?(.changeDone) }
         self.geometryBusy = false
+        onCommit?(prepared)
         onSuccess?()
       } catch is CancellationError {
         if self?.layerPanelGeneration == generation { self?.status = "Operation cancelled" }

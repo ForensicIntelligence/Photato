@@ -86,6 +86,7 @@ struct PathComponentLayoutControls: View {
     }
     addGroup("Path Alignment", choices: LayerAlignment.allCases.map { ($0.rawValue, .align($0)) }, enabled: count >= 2)
     addGroup("Distribute Paths", choices: LayerDistribution.allCases.map { ($0.rawValue, .distribute($0)) }, enabled: count >= 3)
+    addPathComponentOperations(to: menu)
     return menu
   }
 

@@ -697,7 +697,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 676 | 2026-11-20 | [Switch between path Warp and Free Transform](#dev-step-676) |
 | 677 | 2026-11-20 | [Isolate a path’s layer while editing](#dev-step-677) |
 | 678 | 2026-11-20 | [Align and distribute components on an editable path](#dev-step-678) |
+| 679 | 2026-11-20 | [Reorder, combine and merge path components](#dev-step-679) |
 <!-- history-index:end -->
+
+<a id="dev-step-679"></a>
+
+## 2026-11-20 — Reorder, combine and merge path components
+
+Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files.
+
+Path Selection now selects whole components with its canvas marquee, using the existing path selection and overlay. The arrangement commands retain the relative order of selected groups while moving them within the focused path. Overlap operations apply to every selected group in one transaction. The stack and overlap operations retain live primitive controls when their geometry remains intact.
+
+Merge resolves the selected closed components into editable contours. It keeps unselected geometry and checks the filled region before committing. A diagnostic fixture caught a microscopic residual at the meeting of straight edges. Merge now uses straight segments for those intersections and bounds the aggregate area of any difference contours. The PSD and PSB writer uses vector shape records for custom outlines and live origination records for supported individual primitives. The importer keeps both forms editable.
+
+All 263 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. All nine owned PSD, PSB and RGBA files matched byte for byte across the three builds. 13 of all 15 outputs matched, including native archives and coordinate data. The largest editable merge coordinate difference under Rosetta was 1.42e-14 document pixels. An independent PSD reader verified the editable contour order and boolean records in six owned files per configuration. It recognized merged outlines as vector shape layers.
+
+The Debug build used the existing Swift compiler workaround for PredictableDeadAllocationElimination. Both optimized builds used the standard compiler configuration. Live Photoshop comparison and Adobe-authored byte equality remain open. Merge requires closed contours and a mergeable overlap region. The unbounded exterior of a leading subtraction on a shape layer remains open. Check the bounded exterior for leading shape subtraction and qualify matched Photoshop files.
+
+[Development record](PATH_COMPONENT_OPERATIONS_679.md) · [Qualification](SOURCE_PUBLICATION_679.md).
 
 <a id="dev-step-678"></a>
 

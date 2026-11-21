@@ -43,12 +43,17 @@ final class PathComponentLayoutWorkflowTests: XCTestCase {
     func menu() throws -> NSMenu {
       try XCTUnwrap(canvas.menu(for: events.mouse(.rightMouseDown, .init(x: 21, y: 25), canvas: canvas, window: window)))
     }
+    func layoutItems() throws -> [Bool] {
+      try ["Path Alignment", "Distribute Paths"].map { name in
+        try XCTUnwrap(menu().item(withTitle: name)).isEnabled
+      }
+    }
     click(.init(x: 20, y: 24))
-    XCTAssertEqual(try menu().items.map(\.isEnabled), [false, false])
+    XCTAssertEqual(try layoutItems(), [false, false])
     click(.init(x: 64, y: 61), extending: true)
-    XCTAssertEqual(try menu().items.map(\.isEnabled), [true, false])
+    XCTAssertEqual(try layoutItems(), [true, false])
     click(.init(x: 142, y: 102), extending: true)
-    XCTAssertEqual(try menu().items.map(\.isEnabled), [true, true])
+    XCTAssertEqual(try layoutItems(), [true, true])
     let item = try XCTUnwrap(menu().item(withTitle: "Distribute Paths")?.submenu?.item(withTitle: "Horizontal Centers"))
     XCTAssertTrue(NSApp.sendAction(try XCTUnwrap(item.action), to: item.target, from: item))
     await store.geometryTask?.value

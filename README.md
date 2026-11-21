@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 678.** Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_678.md).
+**Development alpha — source build 679.** Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_679.md).
 
 ## Project layout
 
