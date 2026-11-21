@@ -1,0 +1,237 @@
+{
+  "build": 698,
+  "base": "61a310344fe8d3ff2349f798b1c812343d769bb2",
+  "buildInputs": 9311,
+  "includedBuildInputs": 9298,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "ae389fa3920cc00dbd069abb43ec0f336dc4aef2d8993a8fdcb356ce99a9dbba",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "6282cb324ad8608c82038395cc82b62f3968784f30131eea245bf1dc62370fcc"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerStyleRenderer.swift",
+      "sha256": "c7416da08a0381628bad3815a4c02abcaed18d9482306dec333612959224592c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceEffectMap.swift",
+      "sha256": "94beacf166b2669ae1cdb15edbaa6d560fdd4d6b130a0822c90220bfb8805d40"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceLayerStyleRenderer.swift",
+      "sha256": "38648b3ad22617888e23daa7c037e3c4c1be4ced4366d7d7fdb8875a14d212ef"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStyleTests.swift",
+      "sha256": "911bbd6a8ac60e4dfa84b93bd602f047df89408de1e9c267951d011bfc2fd27e"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "ead44ac5a6a3e3539c0c1681e0c58fc301f3c044e4e951e910a4aa859ae6ffb7"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "ead44ac5a6a3e3539c0c1681e0c58fc301f3c044e4e951e910a4aa859ae6ffb7"
+  },
+  "casesPerConfiguration": 476,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 476,
+      "passed": 475,
+      "newCasesExpected": 33,
+      "newCasesPassed": 33,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "b5d9fad48f49f57846e9d6115f8c3682b661bb0959e0498bc5c3326970e1652d"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 476,
+      "passed": 475,
+      "newCasesExpected": 33,
+      "newCasesPassed": 33,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "40b4382aedb34a24cc3c42040a97a923c386992e4e55c7c3e7887ef512ca4dca"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 476,
+      "passed": 475,
+      "newCasesExpected": 33,
+      "newCasesPassed": 33,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "24ebf1360b92b8d026861d99860ca7f7a063c96f6b255371bb613f79eacb1991"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "d8c777489547615d1e8e70381d72501b882e24ad4b3addd473f8bb543cf36e12",
+  "denseNoisyFit": {
+    "source": [
+      24576,
+      768
+    ],
+    "preview": [
+      311,
+      31
+    ],
+    "variants": {
+      "arm": {
+        "positive": {
+          "697": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "97b2a3fb863dcb67e2ba693c97f2468a0bf19aa7b05dccc18aec244e3838a434",
+              "seconds": 10.356387250008993
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "66bb0bd25cc38fb7977ab5607011119b2cae24631e7eb88ce63c35c7c0dd75ea",
+              "seconds": 6.0516894166357815
+            }
+          },
+          "698": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "97b2a3fb863dcb67e2ba693c97f2468a0bf19aa7b05dccc18aec244e3838a434",
+              "seconds": 8.482780833379366
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "66bb0bd25cc38fb7977ab5607011119b2cae24631e7eb88ce63c35c7c0dd75ea",
+              "seconds": 3.7520147083560005
+            }
+          }
+        },
+        "holes": {
+          "697": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "a98a2448756148f7913c0354a87b20b7f7d85812ed388c8bc7da12462c9565c7",
+              "seconds": 10.34943733329419
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "d00dbd8fcf8e6abecafd3a4fea8666f2b9a8d74b2a1c168bd3958da605036907",
+              "seconds": 6.067885749973357
+            }
+          },
+          "698": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "a98a2448756148f7913c0354a87b20b7f7d85812ed388c8bc7da12462c9565c7",
+              "seconds": 8.604757291614078
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "d00dbd8fcf8e6abecafd3a4fea8666f2b9a8d74b2a1c168bd3958da605036907",
+              "seconds": 3.82374137500301
+            }
+          }
+        }
+      },
+      "intel": {
+        "positive": {
+          "697": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "613d0ca7a734ce62049c12e7d90f914eb0b15900a9bc029cc78bcf08a50e3c24",
+              "seconds": 19.249910666956566
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "66bb0bd25cc38fb7977ab5607011119b2cae24631e7eb88ce63c35c7c0dd75ea",
+              "seconds": 13.787056708941236
+            }
+          },
+          "698": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "613d0ca7a734ce62049c12e7d90f914eb0b15900a9bc029cc78bcf08a50e3c24",
+              "seconds": 13.792657499900088
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "66bb0bd25cc38fb7977ab5607011119b2cae24631e7eb88ce63c35c7c0dd75ea",
+              "seconds": 6.149740291992202
+            }
+          }
+        },
+        "holes": {
+          "697": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "979b1b7f735f1f6805fecd5df931c6b098e5e6bc96f9d484c3d7f3c2f0900ea8",
+              "seconds": 19.000415790942498
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "d00dbd8fcf8e6abecafd3a4fea8666f2b9a8d74b2a1c168bd3958da605036907",
+              "seconds": 11.632687208009884
+            }
+          },
+          "698": {
+            "proof": {
+              "byteCount": 154256,
+              "rgbaSHA256": "979b1b7f735f1f6805fecd5df931c6b098e5e6bc96f9d484c3d7f3c2f0900ea8",
+              "seconds": 13.661488458048552
+            },
+            "rgb": {
+              "byteCount": 154256,
+              "rgbaSHA256": "d00dbd8fcf8e6abecafd3a4fea8666f2b9a8d74b2a1c168bd3958da605036907",
+              "seconds": 6.182990916073322
+            }
+          }
+        }
+      }
+    }
+  },
+  "preview": {
+    "archiveSHA256": "4f9259dfc79efd62f17975195e00bfbfadc49546afe7f90d44130c2b558ad8cc",
+    "binarySHA256": "4703cc941a61853c463e463ff584fd81f8b8506c9407c0d02f529c03510b1312",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "f90c06ad6a7063d30263a52a6404c1985ccb1d64dbb20be8910738e6038db37e",
+      "x86_64": "5b660f19ef02a7231fae29fe194634b12bef54829053d8566166ef649e407669"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/ca/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html"
+  ]
+}

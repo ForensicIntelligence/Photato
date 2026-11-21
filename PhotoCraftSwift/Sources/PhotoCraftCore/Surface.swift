@@ -1663,6 +1663,39 @@ extension Surface {
     tileCount > 0 && tilesIntersecting(region).first(where: { _ in true }) != nil
   }
 
+  /// Copy the stored alpha plane directly into a caller's bounded coverage map.
+  package func copyAlpha(in region: IntRect, to output: inout [Float],
+    start: Int, stride: Int) throws {
+    guard region.width > 0, region.height > 0,
+      region == region.clipped(toWidth: width, height: height),
+      start >= 0, stride >= region.width, start <= output.count - region.width,
+      region.height - 1 <= (output.count - start - region.width) / stride else {
+      throw CraftError.invalid("Invalid raster coverage copy.")
+    }
+    let side = Self.tileSide
+    let implicit = storedDefaultPixel.a
+    let columns = self.columns
+    // Populate implicit samples with contiguous writes, then borrow each stored tile once.
+    for py in 0..<region.height {
+      try Task.checkCancellation()
+      let row = start + py * stride
+      for px in 0..<region.width { output[row + px] = implicit }
+    }
+    for (key, tile) in tilesIntersecting(region) {
+      try Task.checkCancellation()
+      let left = key % columns * side, top = key / columns * side
+      let x0 = max(left, region.x), x1 = min(left + side, region.x + region.width)
+      let y0 = max(top, region.y), y1 = min(top + side, region.y + region.height)
+      tile.withUnsafeBufferPointer { pixels in
+        for y in y0..<y1 {
+          let input = (y - top) * side - left
+          let target = start + (y - region.y) * stride - region.x
+          for x in x0..<x1 { output[target + x] = pixels[input + x].a }
+        }
+      }
+    }
+  }
+
   /// Reads grayscale for a small in-bounds feather kernel. Missing tiles use
   /// the implicit sample. A nil block means the entire rectangle is implicit.
   func featherInput(in region: IntRect) -> [Float]? {

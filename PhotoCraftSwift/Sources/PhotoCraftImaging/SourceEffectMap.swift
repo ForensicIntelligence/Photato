@@ -36,17 +36,22 @@ struct SourceEffectMap:Sendable {
     for y in 0..<h {try Task.checkCancellation();let(o,n)=Self.dt(Array(g[y*w..<(y+1)*w]));for x in 0..<w {g[y*w+x]=sqrt(o[x]);let px=n[x];nearest[y*w+x]=nearRow[y*w+px]*w+px}}
     return(g,nearest)
   }
-  func chamfer(_ start:[Float])throws->[Float] {
+  private func chamfer(_ start:[Float])throws->[Float] {
     let offsets:[(Int,Int,Float)]=[(-1,0,1),(-1,-1,sqrt(2)),(0,-1,1),(1,-1,sqrt(2)),(-1,-2,2.236068),(1,-2,2.236068),(-2,-1,2.236068),(2,-1,2.236068)]
     var d=start
     for sign in [1,-1] {for row in 0..<h {try Task.checkCancellation();let y=sign==1 ? row:h-1-row
       for col in 0..<w {let x=sign==1 ? col:w-1-col,i=y*w+x;var best=d[i]
+        // All seeds are nonnegative and a neighboring path costs at least one.
+        if best <= 1 { continue }
         for(ox,oy,weight)in offsets {let nx=x+ox*sign,ny=y+oy*sign;if nx>=0 && ny>=0 && nx<w && ny<h {let value=d[ny*w+nx]+weight;if value<best {best=value}}};d[i]=best
       }
     }};return d
   }
+  private func exteriorChamfer() throws -> [Float] {
+    try chamfer(v.map { $0 > Self.insideEPS ? 1 - min($0, 1) : Float(1e20) })
+  }
   func outside(chamfer:Bool=false)throws->[Float] {
-    if chamfer {let start=v.map{$0>Self.insideEPS ? 1-min($0,1):Float(1e20)},d=try self.chamfer(start);return d.indices.map{v[$0]>Self.insideEPS ? -0.5:d[$0]-0.5}}
+    if chamfer {let d=try exteriorChamfer();return d.indices.map{v[$0]>Self.insideEPS ? -0.5:d[$0]-0.5}}
     let inside=v.map{$0>Self.insideEPS},(d,nearest)=try euclidean(inside)
     return d.indices.map{inside[$0] ? -0.5:d[$0]-0.5+(1-min(v[nearest[$0]],1))}
   }
@@ -61,8 +66,16 @@ struct SourceEffectMap:Sendable {
     let outside=v.map{$0<=Self.insideEPS},(d,_)=try euclidean(outside);return d.indices.map{outside[$0] ? -0.5:d[$0]-0.5}
   }
   func dilated(_ radius:Float)throws->Self {
-    if radius<=0 {return self};let d=try outside(chamfer:true);var out=self
-    for i in v.indices {if i&4095==0{try Task.checkCancellation()};out.v[i]=d[i]<0 ? min(v[i]+radius,1):max(v[i],unit(radius+0.5-d[i]))};return out
+    if radius <= 0 { return self }
+    var coverage = try exteriorChamfer()
+    for i in v.indices {
+      if i & 4095 == 0 { try Task.checkCancellation() }
+      let distance: Float = v[i] > Self.insideEPS ? -0.5 : coverage[i] - 0.5
+      coverage[i] = distance < 0 ? min(v[i] + radius, 1) : max(v[i], unit(radius + 0.5 - distance))
+    }
+    var output = self
+    output.v = coverage
+    return output
   }
   static func box(_ source:[Double],x0:Int,count:Int,width:Float,finiteSupport:Bool = false)->[Double] {
     let width=max(1,width),half=width/2,r=max(0,Int(ceil(half-0.5))),f=Double(min(1,max(0,half-(Float(r)-0.5)))),norm=1/Double(width)

@@ -103,8 +103,9 @@ enum SourceLayerStyleRenderer {
         let geometry = LayerStyleRenderer.DropShadowGeometry(effect, style: style, in: document)
         let remaining = maximumScratchBytes - (mapCount + 16) * 4 * mw * mh - n * 80
         return try regionalDropShadow(geometry, advanced: advanced, region: samples, canvas: canvas,
-          wholePad: wholePad, maximumPixels: min(maximumMapPixels, remaining / 24)) { bounds in
-            try LayerStyleRenderer.styledContent(plain, clips: clips, in: document, cache: cache.window(bounds))
+          wholePad: wholePad, maximumPixels: min(maximumMapPixels, remaining / 24)) { bounds, output, start, stride in
+            try LayerStyleRenderer.copyShadowAlpha(plain, clips: clips, in: document, cache: cache,
+              region: bounds, to: &output, start: start, stride: stride)
           }
       }
     } else { regionalShadow = nil }
@@ -115,7 +116,8 @@ enum SourceLayerStyleRenderer {
 
   private static func regionalDropShadow(
     _ geometry: LayerStyleRenderer.DropShadowGeometry, advanced: LayerEffectAdvanced, region: IntRect,
-    canvas: IntRect, wholePad: Int, maximumPixels: Int, content: (IntRect) throws -> Surface
+    canvas: IntRect, wholePad: Int, maximumPixels: Int,
+    copyAlpha: (IntRect, inout [Float], Int, Int) throws -> Void
   ) throws -> SourceEffectMap {
     let halo = geometry.halo, dx = Int(geometry.dx), dy = Int(geometry.dy)
     // Reuse the shifted domain of the whole-canvas renderer, including its padding at document edges.
@@ -131,15 +133,9 @@ enum SourceLayerStyleRenderer {
     guard width <= maximumPixels / height else {
       throw CraftError.unsupported("Drop Shadow source coverage exceeds its effect map budget.")
     }
-    let artwork = try content(input)
     var work = SourceEffectMap(width, height)
-    for y in input.y..<(input.y + input.height) {
-      try Task.checkCancellation()
-      let row = (y + dy - top) * width
-      for x in input.x..<(input.x + input.width) {
-        work.v[row + x + dx - left] = artwork.pixel(x: x, y: y).a
-      }
-    }
+    let start = (input.y + dy - top) * width + input.x + dx - left
+    try copyAlpha(input, &work.v, start, width)
     work = try work.dilated(geometry.spread).blurred(Float(geometry.blur), finiteSupport: true)
     var output = SourceEffectMap(region.width, region.height)
     for y in 0..<region.height {

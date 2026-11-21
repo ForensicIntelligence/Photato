@@ -4,6 +4,50 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testRegionalDropShadowAlphaMatchesIsolatedRasterSamplesAtEveryDepth() throws {
+    let region = IntRect(x: 3, y: 1, width: 134, height: 100)
+    let stride = region.width + 8, start = stride + 3
+    for depth in PixelDepth.allCases {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var document = try CraftDocument(width: 147, height: 113, depth: depth)
+      var raster = try Surface(width: 133, height: 94, depth: depth,
+        fill: Pixel(0.73, 0.19, 0.84, 0.51), colorEncoding: encoding)
+      for x in 62...65 {
+        raster.setPixel(x: x, y: 64, Pixel(0.22, 0.48, 0.16, Float(x - 62) / 7))
+      }
+      var layer = Layer(name: "Coverage", content: .raster(raster))
+      layer.x = -2
+      layer.y = 7
+      var mask = try Surface(width: document.width, height: document.height, fill: .white)
+      try mask.mapPixels(in: IntRect(x: 58, y: 63, width: 16, height: 9)) { x, y, _ in
+        let coverage = Float((x + 2 * y) % 13) / 12
+        return Pixel(coverage, coverage, coverage)
+      }
+      var properties = MaskProperties()
+      properties.linked = false
+      properties.density = 0.61
+      properties.feather = 1.5
+      properties.transform = .translation(1, 2)
+      for applyMask in [false, true] {
+        layer.mask = applyMask ? mask : nil
+        layer.maskProperties = applyMask ? properties : nil
+        document.layers = [layer]
+        let cache = GroupRenderCache(region: region, facts: CompositionFacts(document, vectorViewport: region))
+        let isolated = try LayerStyleRenderer.styledContent(layer, clips: [], in: document, cache: cache)
+        var original = [Float](repeating: 0, count: stride * (region.height + 2))
+        var copied = original
+        for y in 0..<region.height {
+          for x in 0..<region.width {
+            original[start + y * stride + x] = isolated.pixel(x: region.x + x, y: region.y + y).a
+          }
+        }
+        try LayerStyleRenderer.copyShadowAlpha(layer, clips: [], in: document, cache: cache,
+          region: region, to: &copied, start: start, stride: stride)
+        XCTAssertEqual(copied.map(\.bitPattern), original.map(\.bitPattern), "\(depth), mask \(applyMask)")
+      }
+    }
+  }
+
   func testUniformDropShadowReductionMatchesStreamedFitWithRasterAndMaskEdits() throws {
     let width = 12_000, height = 800
     let region = IntRect(x: 1, y: 1, width: 319, height: 351)

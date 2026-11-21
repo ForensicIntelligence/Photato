@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-21 — Step 698 — Read raster alpha directly for regional Drop Shadows
+
+Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor.
+
+The coverage copy matched the isolated compositor in RGB8, RGB16 and RGB32, including translated layers and feathered pixel masks. Dense noisy Fit fixtures with and without transparent holes matched each architecture's build 697 Float32 composite and soft-proof samples byte for byte.
+
+475 of 476 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with the same assertions in build 697. Both signed preview slices opened offscreen. Noisy previews still require per-pixel evaluation. Whole-document Fit on a maximum-size dense file still needs further work. The local Photoshop document query timed out, so Adobe shadow pixels and Fit sampling remain unverified.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-698) · [Details](../PhotoCraftSwift/docs/DENSE_SHADOW_COVERAGE_698.md).
+
 ## 2026-11-21 — Step 697 — Reduce Fit and proof previews for large uniform Drop Shadows
 
 Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path.
@@ -1167,5 +1177,13 @@ Soft Round and Soft Round Pressure Opacity now paint with a wider falloff at zer
 The 409 selected tests passed in Debug and both optimized builds. The next brush checks cover exact pointer positions, harder tips and continuous strokes.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-553) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_553.md).
+
+## 2026-11-18 — Step 552 — Brush opacity and flow number keys
+
+With the canvas focused, number keys set opacity and Shift-number keys set flow. Airbrush swaps which modifier controls each value. Two digits set an exact percentage. This shares the existing settings used by the Options bar and the API.
+
+The tests passed in Debug and both optimized builds. A closer look at 28 saved Photoshop dabs showed that every one extends beyond the current brush footprint. Exact brush pixels and a live shortcut check remain open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-552) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_552.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)

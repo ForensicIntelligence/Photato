@@ -1,3 +1,11 @@
+**Source checkpoint 698.** Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor. 475 of 476 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with the same assertions in build 697. Both signed preview slices opened offscreen. [Qualification](SOURCE_PUBLICATION_698.md).
+
+**Next major workflow — Generative Fill.** Qualify an optional native inpainting backend that takes a source image, an edit mask and a prompt. Use an editable masked layer, preserve protected pixels and verify one-step Undo and the shared Photato API. [Photoshop workflow](https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html) · [Apple image-generation API](https://developer.apple.com/documentation/imageplayground).
+
+**Remaining layer style work.** Profile the remaining composition and proof costs for dense noisy Fit. Compare Photoshop-authored controls and partially transparent edges when the running application responds.
+
+**README parity banner.** Update it at each ten-percentage-point milestone in the overall desktop workflow estimate. The next milestone is 60%.
+
 **Source checkpoint 697.** Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path. 474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. [Qualification](SOURCE_PUBLICATION_697.md).
 
 **Next layer style work.** Profile Fit on dense nonuniform source and coordinate-dependent Drop Shadows. Preserve the existing byte comparisons when improving those paths. Qualify Photoshop-authored control extremes and partially transparent edges when the running application is available.

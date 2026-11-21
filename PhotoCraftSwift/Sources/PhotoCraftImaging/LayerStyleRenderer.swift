@@ -117,6 +117,43 @@ enum LayerStyleRenderer {
     return clips.isEmpty ? source : try Renderer.compositeClips(clips, onto: source, in: document, cache: cache)
   }
 
+  /// A plain raster over transparency contributes only its masked alpha to the
+  /// shifted effect map. Other sources use the existing isolated compositor.
+  static func copyShadowAlpha(_ layer: Layer, clips: [Layer], in document: CraftDocument,
+    cache: GroupRenderCache, region: IntRect, to output: inout [Float], start: Int, stride: Int) throws {
+    if case .raster(let source) = layer.content, clips.isEmpty, layer.visible,
+      source.depth == document.depth, layer.affine == nil, layer.warp == nil,
+      layer.smartObject == nil, layer.smartFilters == nil, layer.sourceProjection == nil,
+      layer.importedSmartAppearance == nil, layer.nativeMode == nil, cache.inputTarget == nil {
+      let local = IntRect(x: region.x - layer.x, y: region.y - layer.y,
+        width: region.width, height: region.height).clipped(toWidth: source.width, height: source.height)
+      guard local.width > 0, local.height > 0 else { return }
+      let x0 = local.x + layer.x, y0 = local.y + layer.y
+      let offset = start + (y0 - region.y) * stride + x0 - region.x
+      try source.copyAlpha(in: local, to: &output, start: offset, stride: stride)
+      let mask = try cache.facts.map { try $0.mask(layer, region: region) }
+        ?? LayerMaskSampler.make(layer: layer, document: document, pixelRegion: region)
+      for y in 0..<local.height {
+        try Task.checkCancellation()
+        let row = offset + y * stride
+        for x in 0..<local.width {
+          let coverage = mask?.coverage(x: Double(x0 + x) + 0.5, y: Double(y0 + y) + 0.5) ?? 1
+          let alpha = output[row + x] * coverage
+          output[row + x] = alpha > 0 ? unit(alpha) : 0
+        }
+      }
+      return
+    }
+    let source = try styledContent(layer, clips: clips, in: document, cache: cache.window(region))
+    for y in 0..<region.height {
+      try Task.checkCancellation()
+      let row = start + y * stride
+      for x in 0..<region.width {
+        output[row + x] = source.pixel(x: region.x + x, y: region.y + y).a
+      }
+    }
+  }
+
   static func composite(_ layer: Layer, clips: [Layer] = [], in document: CraftDocument,
     over backdrop: Surface, region: IntRect, cache:GroupRenderCache = GroupRenderCache(),
     regionalEffects: Bool? = nil) throws -> Surface {
@@ -198,15 +235,10 @@ enum LayerStyleRenderer {
         guard bounds.width <= LayerStyle.maximumWholeCanvasPixels / bounds.height else {
           throw CraftError.unsupported("Drop Shadow source coverage exceeds its effect map budget.")
         }
-        let content = try styledContent(plain, clips: clips, in: document, cache: cache.window(bounds))
         var coverage = Map(w: bounds.width, h: bounds.height,
           v: [Float](repeating: 0, count: bounds.width * bounds.height))
-        for y in 0..<bounds.height {
-          try Task.checkCancellation()
-          for x in 0..<bounds.width {
-            coverage.v[y * bounds.width + x] = content.pixel(x: bounds.x + x, y: bounds.y + y).a
-          }
-        }
+        try copyShadowAlpha(plain, clips: clips, in: document, cache: cache, region: bounds,
+          to: &coverage.v, start: 0, stride: bounds.width)
         if geometry.spread > 0 {
           let distance = try coverage.distance(toInside: true)
           for i in coverage.v.indices {

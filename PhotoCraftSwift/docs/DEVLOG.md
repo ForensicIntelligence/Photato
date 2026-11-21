@@ -716,7 +716,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 695 | 2026-11-21 | [Keep advanced Drop Shadows editable in PSD and PSB](#dev-step-695) |
 | 696 | 2026-11-21 | [Render Drop Shadows in bounded canvas regions](#dev-step-696) |
 | 697 | 2026-11-21 | [Reduce Fit and proof previews for large uniform Drop Shadows](#dev-step-697) |
+| 698 | 2026-11-21 | [Read raster alpha directly for regional Drop Shadows](#dev-step-698) |
 <!-- history-index:end -->
+
+<a id="dev-step-698"></a>
+
+## 2026-11-21 — Read raster alpha directly for regional Drop Shadows
+
+Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor.
+
+The shadow renderer reads only alpha for the shifted source when it has a plain raster and optional compatible masks. The chamfer pass skips stable distances. The same renderer serves regional previews and document composition.
+
+The coverage copy matched the isolated compositor in RGB8, RGB16 and RGB32, including translated layers and feathered pixel masks. Dense noisy Fit fixtures with and without transparent holes matched each architecture's build 697 Float32 composite and soft-proof samples byte for byte.
+
+475 of 476 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with the same assertions in build 697. Both signed preview slices opened offscreen. Noisy previews still require per-pixel evaluation. Whole-document Fit on a maximum-size dense file still needs further work. The local Photoshop document query timed out, so Adobe shadow pixels and Fit sampling remain unverified. The overall desktop workflow estimate remains 50%.
+
+[Development record](DENSE_SHADOW_COVERAGE_698.md) · [Qualification](SOURCE_PUBLICATION_698.md).
 
 <a id="dev-step-697"></a>
 

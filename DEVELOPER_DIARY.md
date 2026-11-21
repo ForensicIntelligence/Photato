@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **697** · The 10 most recent entries, newest first.
+Source build **698** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 698 — Read raster alpha directly for regional Drop Shadows
+
+Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor.
+
+The coverage copy matched the isolated compositor in RGB8, RGB16 and RGB32, including translated layers and feathered pixel masks. Dense noisy Fit fixtures with and without transparent holes matched each architecture's build 697 Float32 composite and soft-proof samples byte for byte.
+
+475 of 476 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with the same assertions in build 697. Both signed preview slices opened offscreen. Noisy previews still require per-pixel evaluation. Whole-document Fit on a maximum-size dense file still needs further work. The local Photoshop document query timed out, so Adobe shadow pixels and Fit sampling remain unverified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-698) · [Details](PhotoCraftSwift/docs/DENSE_SHADOW_COVERAGE_698.md).
 
 ## 2026-11-21 — Step 697 — Reduce Fit and proof previews for large uniform Drop Shadows
 
@@ -93,13 +103,3 @@ Fit uses the area covered by each screen pixel. At 100% the preview reads the sa
 451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. The preview requires supported axis-aligned pattern periods and bounded local changes. Other angles and nonperiodic scales still use ordinary rendering. Full-resolution export has its own capacity limits. Photoshop’s document-count query timed out, so live zoom and preview equivalence remain unverified.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-689) · [Details](PhotoCraftSwift/docs/OPAQUE_PATTERN_PREVIEW_689.md).
-
-## 2026-11-21 — Step 688 — Render Pattern Overlay on large canvases
-
-Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000.
-
-Across RGB8, RGB16 and RGB32, a 30 × 30 crop that crossed tile boundaries matched the small-canvas control byte for byte. The test covered linked and document-relative placement, partial layer coverage, a pixel mask, and a translucent backdrop. The largest PSB reopened through the native file-backed reader and preserved the style and all 3,600 crop bytes. A 6,000 × 2,000 PSB was byte-identical across the three builds. The loopback API applied and patched the overlay on a maximum-size document and transferred an editable 4,096 × 4,096 PSB.
-
-448 of 451 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated with the same assertions as build 687. Both signed macOS 14+ preview slices launched offscreen. Dense full-canvas output, mixed spatial effects and maximum-size HTTP PSB transfers remain open. Photoshop 2026 reported version 27.2.0. Its document and JavaScript commands timed out, so live pixel and reopen comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-688) · [Details](PhotoCraftSwift/docs/LARGE_PATTERN_OVERLAY_688.md).
