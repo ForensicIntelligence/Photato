@@ -1198,6 +1198,10 @@ PSD and PSB reopen with the cached pixels, link metadata and original artwork qu
 
 Call `paths.components` with `target: "shape"`, the editable shape layer ID, and `operation: "subtract"`. A leading subtract fills the exterior and cuts away the first contour. Inspect the frame in the shape definition’s `exteriorFrame`, which maps a unit rectangle into local shape coordinates. Native downloads containing it require `X-Photato-Archive-Version: 99` or a supported newer version. [Shape subtraction](SHAPE_SUBTRACTION_680.md).
 
+### Move and resize a shape cutout
+
+Use `layers.move` to move the editable contour, and `document.canvasSize` to change the canvas and anchor. A shape with a filled exterior reaches the current canvas edges. The shape definition’s stored `exteriorFrame` preserves its shape-local coordinate basis. Preview, rasterization, and editable PSD/PSB output derive the current canvas frame. [Shape cutouts](EDITABLE_SHAPE_CANVAS_681.md).
+
 ### Align and distribute path components
 
 `paths.layout` accepts the `target` kind and `id` of one saved path, shape, or vector mask. Pass `components` to limit the edit to specific zero-based components, or omit it to use all nonempty components. The `layout` object contains `operation` (align or distribute) and an `edge` value from the schema. Two components are needed for alignment, and three are needed for distribution. The response reports `pathTransformSelection` with the selected component indices. Desktop availability appears in `pathComponentLayout`. [Component layout](PATH_COMPONENT_LAYOUT_678.md).

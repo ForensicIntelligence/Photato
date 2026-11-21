@@ -1,3 +1,9 @@
+**Source checkpoint 681.** Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape. All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_681.md).
+
+**Next path editing work.** Qualify a Photoshop-authored live cutout and extend bounded rendering of large gradients and strokes.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 680.** A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files. All 287 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_680.md).
 
 **Next path editing work.** Compare exterior behavior after layer moves and Canvas Size, and qualify a Photoshop-authored live shape and its PSD and PSB output.

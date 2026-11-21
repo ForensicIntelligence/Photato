@@ -1411,7 +1411,10 @@ struct CanvasRenderRequest: Sendable {
         let displayed:Layer
         if l.importedSmartAppearance != nil || l.sourceProjection != nil {
           guard let prepared=try? SmartObjectIO.renderedLayer(l,in:document) else{continue};displayed=prepared
-        }else{displayed=l}
+        } else {
+          guard let prepared = try? ShapeRenderer.rasterInput(l, in: document) else { continue }
+          displayed = prepared
+        }
         guard let raster = try? Renderer.layerSurface(displayed, in: document),
           let inverse = try? displayed.coordinateTransform.inverted()
         else { continue }

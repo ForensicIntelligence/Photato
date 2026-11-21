@@ -75,7 +75,7 @@ public indirect enum Command: Sendable {
   case replaceContent(UUID, LayerContent)
   case editType(UUID, TextContent, originDelta: PathPoint)
   case importedType(ImportedTypeTransition)
-  case rasterize(UUID, Surface)
+  case rasterize(UUID, Surface, placement: Transform2D? = nil)
   case embedSmartObject(Set<UUID>, Layer)
   case replaceSmartObject(UUID, SmartObject, Surface, preserveSize: Bool, allInstances: Bool, instancePixels: [UUID: Surface] = [:])
   case smartObjectStack(UUID, ImageStackMode?, Surface)

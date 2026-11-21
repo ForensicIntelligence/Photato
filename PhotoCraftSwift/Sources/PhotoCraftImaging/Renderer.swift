@@ -195,7 +195,8 @@ public enum Renderer {
   /// Callers validate the original document before entering this shared preparation.
   static func preparedSources(_ original:CraftDocument,videoTime:Double? = nil) throws
     -> (CraftDocument,VideoTransitionRenderContext?) {
-    var (d,videoTransitions) = try VideoTransitionRenderContext.prepare(original, at:videoTime)
+    let (timed,videoTransitions) = try VideoTransitionRenderContext.prepare(original, at:videoTime)
+    var d = try framingShapeExteriors(in: timed)
     for i in d.layers.indices where d.layers[i].smartObject?.pdfSource != nil {
       d.layers[i] = try PDFSmartObjectIO.renderedLayer(d.layers[i],in:d)
     }
@@ -203,6 +204,13 @@ public enum Renderer {
       d.layers[i] = try SmartFilterEngine.renderedLayer(d.layers[i], in: d)
     }
     return (d,videoTransitions)
+  }
+  static func framingShapeExteriors(in document: CraftDocument) throws -> CraftDocument {
+    var prepared = document
+    for i in document.layers.indices where document.layers[i].shape?.definition?.exteriorFrame != nil {
+      prepared.layers[i] = try ShapeRenderer.rasterInput(document.layers[i], in: document)
+    }
+    return prepared
   }
   /// Count whole touched tiles and retained parent backdrops, including boundary
   /// tiles. A thin canvas can exceed the dense working budget below 36 MP.

@@ -699,7 +699,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 678 | 2026-11-20 | [Align and distribute components on an editable path](#dev-step-678) |
 | 679 | 2026-11-20 | [Reorder, combine and merge path components](#dev-step-679) |
 | 680 | 2026-11-20 | [Subtract the first component of a shape layer](#dev-step-680) |
+| 681 | 2026-11-20 | [Keep the shape exterior attached to the canvas](#dev-step-681) |
 <!-- history-index:end -->
+
+<a id="dev-step-681"></a>
+
+## 2026-11-20 — Keep the shape exterior attached to the canvas
+
+Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape.
+
+Move changes the hole’s document position. Canvas Size and Crop update the visible exterior as the canvas changes. The editing engine retains the original path and layer placement for history and geometry controls.
+
+The compositor derives the raster frame from current canvas bounds. Editable PSD and PSB output, clipping coverage, layer thumbnails, content hit testing, and Rasterize Layer use the same frame. Rasterizing preserves the separate pixel-mask placement. The Photato API shares the native Move and Canvas Size commands.
+
+All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The three owned reframe outputs matched byte for byte across all three builds. All 13 previously qualified rectangle and ellipse outputs also matched build 680. Two saved Layer Comp positions preserved every canvas byte after native, PSD, and PSB reopening. An independent PSD reader confirmed the live rectangle origin, the shifted four-knot contour, the subtract operation, and all alpha and visible RGB samples in both formats.
+
+The Debug build used the existing Swift compiler workaround for PredictableDeadAllocationElimination. Both optimized builds used the standard compiler configuration. The owned live Photoshop comparison timed out. Adobe’s public vector-mask and canvas documentation informed the expected behavior. Exact Photoshop live-shape output, transformed exteriors and very large styled fills remain open. Qualify a Photoshop-authored live cutout and extend bounded rendering of large gradients and strokes.
+
+[Development record](EDITABLE_SHAPE_CANVAS_681.md) · [Qualification](SOURCE_PUBLICATION_681.md).
 
 <a id="dev-step-680"></a>
 

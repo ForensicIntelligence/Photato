@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 680.** A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_680.md).
+**Development alpha — source build 681.** Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_681.md).
 
 ## Project layout
 

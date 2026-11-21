@@ -274,9 +274,10 @@ extension Command {
         throw CraftError.invalid("Use group commands to change the layer hierarchy.")
       }
       d.layers[i].content = c
-    case .rasterize(let id, let surface):
+    case .rasterize(let id, let surface, let placement):
       let i = try index(id)
       var layer = d.layers[i]
+      if let placement { try layer.rebaseRasterPlacement(placement) }
       let sourceTags = ["SoLd", "SoLE", "PlLd", "PhLC", "PhFT"]
       if layer.smartObject?.pdfSource != nil, layer.warp != nil || layer.sourceProjection != nil {
         layer = try SmartFilterEngine.renderedLayer(layer, in: d, sourceSamples: surface)

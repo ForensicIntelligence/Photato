@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 680 extends Photato path subtraction to shape exteriors. Hosted service conformance remains open.",
+  "current_api": "Checkpoint 681 derives the current shape exterior for Photato Move, Canvas Size, and supported editable file output. Hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -984,6 +984,17 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "shape_canvas_build681": {
+    "photatoCommands": [
+      "paths.components",
+      "layers.move",
+      "document.canvasSize"
+    ],
+    "status": "native editable shape canvas framing",
+    "scope": "Move the hole and keep the leading subtract shape layer filling the current canvas. Retain the editable path in supported PSD and PSB exports.",
+    "limits": "Dedicated Adobe v2 route and Adobe-authored live-shape output remain unverified.",
+    "evidence": "docs/SOURCE_PUBLICATION_681.json"
   },
   "shape_subtraction_build680": {
     "photatoCommands": [

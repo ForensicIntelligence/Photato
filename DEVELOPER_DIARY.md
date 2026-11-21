@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **680** · The 10 most recent entries, newest first.
+Source build **681** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 681 — Keep the shape exterior attached to the canvas
+
+Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape.
+
+All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The owned live Photoshop comparison timed out. Adobe’s public vector-mask and canvas documentation informed the expected behavior. Exact Photoshop live-shape output, transformed exteriors and very large styled fills remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-681) · [Details](PhotoCraftSwift/docs/EDITABLE_SHAPE_CANVAS_681.md).
 
 ## 2026-11-20 — Step 680 — Subtract the first component of a shape layer
 
@@ -75,11 +83,3 @@ Command-T now transforms a saved path, vector mask or shape contour independentl
 All 156 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Shape contours remain editable as Bézier geometry. A contour edit can replace the live primitive controls. Direct Selection marquee, path selection across layers, path Warp, and live Photoshop comparisons of partial projective transforms remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-672) · [Details](PhotoCraftSwift/docs/PATH_TRANSFORM_672.md).
-
-## 2026-11-20 — Step 671 — Keep vector masks editable in Perspective and Distort
-
-Perspective and Distort now move linked vector masks with the artwork and keep unlinked masks fixed. Masks remain editable after native, PSD and PSB saves.
-
-All 131 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original PDF was placed by Photoshop. Photato applied the reference transforms. Exact Photoshop anchors and pixels, independent Free Transform on a selected path, and vector masks with non-neutral Warp remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-671) · [Details](PhotoCraftSwift/docs/PROJECTIVE_VECTOR_MASKS_671.md).

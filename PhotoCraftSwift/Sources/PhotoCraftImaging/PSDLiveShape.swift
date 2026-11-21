@@ -207,12 +207,13 @@ enum PSDLiveShape {
   }
 
   static func supported(_ layer: Layer, in document: CraftDocument) -> Bool {
-    (try? exportGeometry(layer, document: document)) != nil
+    (try? exportGeometry(ShapeRenderer.rasterInput(layer, in: document), document: document)) != nil
   }
 
   /// PSD uses integer cache bounds. Project a fractional layer placement using the
   /// compositor's sampler while keeping the live path in its original document position.
   static func prepared(_ layer: Layer, in document: CraftDocument) throws -> Layer {
+    let layer = try ShapeRenderer.rasterInput(layer, in: document)
     guard layer.affine != nil else { return layer }
     let (original, primitives, path) = try exportGeometry(layer, document: document)
     let pixels = try Renderer.layerSurface(layer, in: document)

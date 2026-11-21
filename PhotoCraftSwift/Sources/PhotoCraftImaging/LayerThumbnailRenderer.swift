@@ -25,7 +25,8 @@ extension Renderer {
       return try maskThumbnail(
         layer, in: document, framing: framing, maximumSize: maximumSize, component: component)
     }
-    let layer = try (layer.smartFilters != nil || (layer.smartObject?.pdfSource != nil && (layer.warp != nil || layer.sourceProjection != nil)))
+    let layer = try (layer.shape?.definition?.exteriorFrame != nil || layer.smartFilters != nil
+      || (layer.smartObject?.pdfSource != nil && (layer.warp != nil || layer.sourceProjection != nil)))
       ? SmartObjectIO.renderedLayer(layer, in: document) : layer
     if layer.isGroup { return nil }
     if case .adjustment = layer.content { return nil }
@@ -70,6 +71,7 @@ extension Renderer {
     if framing == .layerBounds, !layer.isGroup {
       if case .adjustment = layer.content {
       } else {
+        let layer = try content == nil ? ShapeRenderer.rasterInput(layer, in: document) : layer
         let source = try content ?? layerSurface(layer, in: document)
         if let occupied = try source.contentBounds() {
           let transform = layer.isCanvasFill ? Transform2D.identity : layer.coordinateTransform

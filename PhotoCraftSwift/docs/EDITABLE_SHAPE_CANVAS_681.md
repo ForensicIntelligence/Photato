@@ -1,0 +1,11 @@
+# Shape cutouts and canvas changes
+
+Move a shape whose first component is Subtract to reposition its hole. The fill remains visible up to the current canvas edges. Canvas Size applies the chosen anchor to the editable contour. Crop moves the contour into the cropped coordinate space. The original contour remains editable across native saves and supported PSD and PSB exports.
+
+Photato derives the canvas-sized raster frame at output. It retains authored layer coordinates for Move and Undo. Rasterize Layer uses the current frame and preserves separate pixel-mask placement. The API’s `layers.move` and `document.canvasSize` share the same path and rendering logic. Native archives containing the frame continue to use version 99.
+
+The selected tests move a cutout on a 300,000 × 300,000 document and confirm bounded memory for that solid-fill source and composite. Rendering the solid shape source in the 4,200 × 2,800 benchmark took a median of 1.26 ms, down from 265.22 ms in build 680. The timing covers preparation of one layer’s pixels. Full editing frame rate remains a separate measurement.
+
+All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The three owned reframe outputs matched byte for byte across all three builds. All 13 previously qualified rectangle and ellipse outputs also matched build 680. Two saved Layer Comp positions preserved every canvas byte after native, PSD, and PSB reopening. An independent PSD reader confirmed the live rectangle origin, the shifted four-knot contour, the subtract operation, and all alpha and visible RGB samples in both formats.
+
+The owned live Photoshop comparison timed out. Adobe’s public vector-mask and canvas documentation informed the expected behavior. Exact Photoshop live-shape output, transformed exteriors and very large styled fills remain open. [Adobe Canvas Size](https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/resize-adjust-resolution/change-the-canvas-size.html) · [Adobe vector masks](https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/mask-layers-with-vector-masks.html) · [Qualification](SOURCE_PUBLICATION_681.md).

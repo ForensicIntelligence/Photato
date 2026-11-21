@@ -22,7 +22,7 @@ extension Command {
     case .focus(let id, let stroke): if !stroke.mask { pixels = id }
     case .toning(let id, let stroke): if !stroke.mask { pixels = id }
     case .createMask(let id, .fromTransparency): pixels = id
-    case .replaceContent(let id, _), .rasterize(let id, _):
+    case .replaceContent(let id, _), .rasterize(let id, _, _):
       if case .raster = document.layers.first(where: { $0.id == id })?.content { pixels = id }
     case .move(let id, _, _), .transform(let id, _, _), .flip(let id, _): geometry = id
     default: break

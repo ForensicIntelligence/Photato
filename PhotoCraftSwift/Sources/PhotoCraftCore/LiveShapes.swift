@@ -167,9 +167,8 @@ public struct ShapeDefinition: Codable, Equatable, Sendable {
   }
   public func renderBounds()throws->IntRect{
     let path = try path()
-    if let exteriorFrame {
-      let hasIntersection = path.components.contains { $0.operation == .intersect && $0.knots.count > 1 }
-      if hasIntersection == path.inverted { return try exteriorFrame.bounds(width: 1, height: 1) }
+    if let exteriorFrame, fillsExterior(path) {
+      return try exteriorFrame.bounds(width: 1, height: 1)
     }
     let points=path.components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
     if points.isEmpty{return inversionBounds ?? .init(x:0,y:0,width:1,height:1)}

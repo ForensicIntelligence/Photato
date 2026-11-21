@@ -3,6 +3,108 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class PSDPathComponentOperationsTests: XCTestCase {
+  private func cutoutDocument() throws -> CraftDocument {
+    var document = try CraftDocument(width: 128, height: 96)
+    document.layers = []
+    document.activeLayerID = nil
+    var shape = ShapeDefinition(geometry: .init(width: 32, height: 24))
+    shape.components[0].operation = .subtract
+    try Command.shape(.create("Cutout", shape, .translation(32, 24))).apply(to: &document)
+    return document
+  }
+
+  func testMovingTheLayerMovesTheHoleAndRetainsCanvasCoverage() throws {
+    var document = try cutoutDocument()
+    let initial = try XCTUnwrap(document.layers.last)
+    let before = try XCTUnwrap(initial.shapePath())
+    try Command.moveLayers(.init(layerIDs: [initial.id], dx: 18, dy: 7)).apply(to: &document)
+    let moved = try XCTUnwrap(document.layers.last)
+    XCTAssertEqual(moved.x, initial.x + 18)
+    XCTAssertEqual(moved.y, initial.y + 7)
+    XCTAssertEqual(try moved.shapePath(), before.transformed(.translation(18, 7)))
+    let model = document
+    let visible = try Renderer.composite(document)
+    XCTAssertEqual(visible.pixel(x: 0, y: 0), .black)
+    XCTAssertEqual(visible.pixel(x: 127, y: 95), .black)
+    XCTAssertEqual(visible.pixel(x: 40, y: 36), .black)
+    XCTAssertEqual(visible.pixel(x: 66, y: 42), .clear)
+    XCTAssertEqual(document, model)
+    let clipping = try Renderer.clippingCoverage(moved, in: document)
+    XCTAssertEqual(clipping.pixel(x: 0, y: 0).a, 1)
+    XCTAssertEqual(clipping.pixel(x: 66, y: 42).a, 0)
+    let thumbnail = try Renderer.layerThumbnail(moved, in: document, framing: .entireDocument, maximumSize: 128)
+    XCTAssertEqual(thumbnail?.pixel(x: 0, y: 0), .black)
+  }
+
+  func testCanvasSizeAndCropReframeEditablePSDAndPSB() throws {
+    var document = try cutoutDocument()
+    let id = try XCTUnwrap(document.activeLayerID)
+    try Command.moveLayers(.init(layerIDs: [id], dx: 18, dy: 8)).apply(to: &document)
+    let moved = try XCTUnwrap(document.layers.last?.shapePath())
+    try Command.canvasSize(160, 128, .center, nil).apply(to: &document)
+    XCTAssertEqual(try document.layers.last?.shapePath(), moved.transformed(.translation(16, 16)))
+    let expanded = try Renderer.composite(document)
+    XCTAssertEqual(expanded.pixel(x: 159, y: 127), .black)
+    XCTAssertEqual(expanded.pixel(x: 82, y: 58), .clear)
+    let crop = IntRect(x: 24, y: 24, width: 128, height: 96)
+    try Command.crop(crop).apply(to: &document)
+    let expectedPath = moved.transformed(.translation(-8, -8))
+    XCTAssertEqual(try document.layers.last?.shapePath(), expectedPath)
+    let cropped = try Renderer.composite(document)
+    XCTAssertEqual(cropped.pixel(x: 0, y: 0), .black)
+    XCTAssertEqual(cropped.pixel(x: 127, y: 95), .black)
+    XCTAssertEqual(cropped.pixel(x: 58, y: 34), .clear)
+    let expected = try cropped.rgbaData(depth: .u8)
+    for format in PSDFileFormat.allCases {
+      let data = try PSDCodec.writeRasterLayers(document, format: format)
+      let reopened = try PSDCodec.read(data)
+      let layer = try XCTUnwrap(reopened.layers.last)
+      XCTAssertEqual(try layer.shapePath(), expectedPath)
+      XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .u8), expected)
+      if let output = ProcessInfo.processInfo.environment["PHOTATO_SHAPE_CANVAS_OUTPUT"] {
+        let folder = URL(fileURLWithPath: output, isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try data.write(to: folder.appendingPathComponent(format == .psd ? "reframed.psd" : "reframed.psb"))
+        try expected.write(to: folder.appendingPathComponent("reframed.rgba"))
+      }
+    }
+  }
+
+  func testRasterizingReframedExteriorKeepsUnlinkedMaskAndRenderedPixels() throws {
+    var document = try cutoutDocument()
+    let id = try XCTUnwrap(document.activeLayerID)
+    var mask = try Surface(width: 128, height: 96, fill: .white)
+    mask.setPixel(x: 11, y: 9, .black)
+    document.layers[0].mask = mask
+    var properties = MaskProperties()
+    properties.linked = false
+    document.layers[0].maskProperties = properties
+    let beforeMaskPlacement = document.layers[0].maskCoordinateTransform
+    try Command.moveLayers(.init(layerIDs: [id], dx: 20, dy: 12)).apply(to: &document)
+    let movedLayer = try XCTUnwrap(document.layers.last)
+    let moved = try Renderer.composite(document).rgbaData(depth: .u8)
+    let operation = try SmartObjectIO.rasterizationCommand(movedLayer, in: document)
+    try operation.apply(to: &document)
+    let rasterLayer = try XCTUnwrap(document.layers.last)
+    XCTAssertNil(rasterLayer.shape)
+    XCTAssertEqual(rasterLayer.maskCoordinateTransform, beforeMaskPlacement)
+    XCTAssertEqual(rasterLayer.maskProperties?.linked, false)
+    XCTAssertEqual(try Renderer.composite(document).rgbaData(depth: .u8), moved)
+  }
+
+  func testMovedMaximumCanvasExteriorKeepsSparseCoverage() throws {
+    let side = Surface.maxDimension
+    var document = try cutoutDocument()
+    let id = try XCTUnwrap(document.activeLayerID)
+    try Command.canvasSize(side, side, .topLeft, nil).apply(to: &document)
+    try Command.moveLayers(.init(layerIDs: [id], dx: side - 120, dy: side - 100)).apply(to: &document)
+    let output = try Renderer.composite(document)
+    XCTAssertEqual(output.pixel(x: 0, y: 0), .black)
+    XCTAssertEqual(output.pixel(x: side - 1, y: side - 1), .black)
+    XCTAssertEqual(output.pixel(x: side - 80, y: side - 70), .clear)
+    XCTAssertLessThan(output.allocatedBytes, 1_000_000)
+  }
+
   func testFirstSubtractKeepsLiveShapeAndTransparentHoleThroughPSDAndPSB() throws {
     var document = try CraftDocument(width: 128, height: 96)
     document.layers = []

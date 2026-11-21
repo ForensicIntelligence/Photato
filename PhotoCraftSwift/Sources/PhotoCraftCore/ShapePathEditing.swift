@@ -1,6 +1,13 @@
 import Foundation
 
 extension ShapeDefinition {
+  /// A leading subtraction begins with an exterior. An intersection can make
+  /// the result finite, and the final inversion reverses that result.
+  func fillsExterior(_ path: VectorPath) -> Bool {
+    let hasIntersection = path.components.contains { $0.operation == .intersect && $0.knots.count > 1 }
+    return hasIntersection == path.inverted
+  }
+
   /// Keep each contiguous contour group editable when the first group subtracts.
   public static func editablePathComponents(_ path: VectorPath) throws -> [ShapeComponent] {
     guard path.components.first?.operation == .subtract else { return [try regularPathComponent(path)] }
@@ -93,6 +100,38 @@ extension ShapeDefinition {
   }
 }
 extension Layer {
+  /// Prepare the raster frame for the current canvas. This is a derived layer:
+  /// layer position, transform keyframes, and saved comps still refer to the
+  /// original editable contour placement.
+  public func framingShapeExterior(to canvas: IntRect) throws -> Layer {
+    guard var definition = shape?.definition, let previousFrame = definition.exteriorFrame,
+          definition.fillsExterior(try definition.path()) else { return self }
+    let logicalPlacement = try shapeTransform()
+    let frame = try ShapeDefinition.exteriorFrame(canvas: canvas, transform: logicalPlacement)
+    guard frame != previousFrame else { return self }
+    definition.exteriorFrame = frame
+    let bounds = try definition.renderBounds()
+    let placement = logicalPlacement * .translation(Double(bounds.x), Double(bounds.y))
+    var prepared = self
+    prepared.content = .shape(try ShapeContent(definition: definition))
+    try prepared.rebaseRasterPlacement(placement)
+    return prepared
+  }
+
+  /// Preserve the document-space pixel mask when changing the raster origin.
+  mutating func rebaseRasterPlacement(_ placement: Transform2D) throws {
+    try placement.validated()
+    let oldMaskPlacement = mask == nil ? nil : maskCoordinateTransform
+    x = Int(floor(placement.tx)); y = Int(floor(placement.ty))
+    let local = Transform2D.translation(-Double(x), -Double(y)) * placement
+    affine = local == .identity ? nil : local
+    if let oldMaskPlacement {
+      var properties = effectiveMaskProperties
+      properties.transform = try placement.inverted() * oldMaskPlacement
+      maskProperties = properties
+    }
+  }
+
   /// Direct-selection coordinates are document pixels. The original logical
   /// placement and independent masks survive conversion from a live primitive.
   public func replacingShapePath(_ path: VectorPath, canvas: IntRect,

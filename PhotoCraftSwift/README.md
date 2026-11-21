@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 681.** Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape. [Qualification](docs/SOURCE_PUBLICATION_681.md).
+
 **Source checkpoint 680.** A leading Subtract cuts a hole in the shape layer’s canvas fill. The contour remains editable in Photato and in supported PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_680.md).
 
 **Source checkpoint 679.** Move selected path components forward or backward, change how they overlap, or merge their closed outlines. Merged vector shapes remain editable in supported PSD and PSB files. [Qualification](docs/SOURCE_PUBLICATION_679.md).

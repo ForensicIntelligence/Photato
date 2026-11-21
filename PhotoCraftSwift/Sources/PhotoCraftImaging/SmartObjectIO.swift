@@ -174,11 +174,16 @@ public enum SmartObjectIO {
       let samples = try PDFSmartObjectIO.rasterizationSamples(layer, in: document) ?? source
       return .rasterize(layer.id, samples)
     }
+    if layer.shape?.definition?.exteriorFrame != nil {
+      let projected = try ShapeRenderer.rasterInput(layer, in: document)
+      return .rasterize(layer.id, try Renderer.layerSurface(projected, in: document), placement: projected.coordinateTransform)
+    }
     let input = try PDFSmartObjectIO.renderedLayer(layer,in:document)
     return .rasterize(layer.id,try Renderer.layerSurface(input,in:document))
   }
   public static func renderedLayer(_ layer: Layer, in document: CraftDocument) throws -> Layer {
-    try SmartFilterEngine.renderedLayer(PDFSmartObjectIO.renderedLayer(layer, in: document), in: document)
+    let input = try ShapeRenderer.rasterInput(layer, in: document)
+    return try SmartFilterEngine.renderedLayer(PDFSmartObjectIO.renderedLayer(input, in: document), in: document)
   }
   public static func prepareWarp(_ document: CraftDocument, layerID: UUID, warp: WarpDefinition) throws -> WarpEdit {
     try WarpEdit.prepare(document, layerID: layerID, warp: warp) {

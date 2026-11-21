@@ -686,6 +686,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 678 | [Align and distribute components on an editable path](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-678) |
 | 2026-11-20 | 679 | [Reorder, combine and merge path components](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-679) |
 | 2026-11-20 | 680 | [Subtract the first component of a shape layer](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-680) |
+| 2026-11-20 | 681 | [Keep the shape exterior attached to the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-681) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

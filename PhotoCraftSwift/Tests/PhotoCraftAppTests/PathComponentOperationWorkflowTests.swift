@@ -1,9 +1,43 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import XCTest
 @testable import PhotoCraft
 
 final class PathComponentOperationWorkflowTests: XCTestCase {
+  @MainActor func testAPIMoveAndCanvasSizeKeepShapeCoverageAndUndo() async throws {
+    var source = try CraftDocument(width: 128, height: 96)
+    let background = try XCTUnwrap(source.activeLayerID)
+    var shape = ShapeDefinition(geometry: .init(width: 32, height: 24))
+    shape.components[0].operation = .subtract
+    try Command.shape(.create("Window", shape, .translation(32, 24))).apply(to: &source)
+    let target = try XCTUnwrap(source.activeLayerID)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      let store = document.store
+      store.session = EditorSession(document: source)
+      try service.share(document)
+      let move = try await helper.edit(service, document, "layers.move",
+        ["layerIDs": [target.uuidString], "dx": 18, "dy": 8])
+      XCTAssertEqual(move, 200)
+      let moved = store.document
+      let resize = try await helper.edit(service, document, "document.canvasSize", ["width": 160, "height": 128])
+      XCTAssertEqual(resize, 200)
+      let changed = store.document
+      let composed = try Renderer.composite(changed)
+      XCTAssertEqual(composed.pixel(x: 159, y: 127), .black)
+      XCTAssertEqual(composed.pixel(x: 82, y: 60), .white)
+      _ = await store.requestHistory(redo: false).value
+      XCTAssertEqual(store.document, moved)
+      _ = await store.requestHistory(redo: true).value
+      XCTAssertEqual(store.document, changed)
+      store.autoSelectLayer(at: CGPoint(x: 82.5, y: 60.5))
+      XCTAssertEqual(store.document.activeLayerID, background)
+      store.autoSelectLayer(at: CGPoint(x: 157.5, y: 125.5))
+      XCTAssertEqual(store.document.activeLayerID, target)
+    }
+  }
+
   @MainActor func testAuthenticatedShapeSubtractAndHistoryUseEditableExterior() async throws {
     var source = try CraftDocument(width: 128, height: 96)
     try Command.shape(.create("Window", .init(geometry: .init(width: 32, height: 24)),

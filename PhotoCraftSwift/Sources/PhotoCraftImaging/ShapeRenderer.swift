@@ -3,6 +3,12 @@ import CoreGraphics
 import PhotoCraftCore
 
 public enum ShapeRenderer {
+  /// Layer caches are bounded by the visible canvas while editable path and
+  /// transform state stay in the original layer's coordinates.
+  public static func rasterInput(_ layer: Layer, in document: CraftDocument) throws -> Layer {
+    try layer.framingShapeExterior(to: .init(x: 0, y: 0, width: document.width, height: document.height))
+  }
+
   /// Solve each primitive's internal contours before applying the layer's component operation.
   public static func outline(_ definition:ShapeDefinition)throws->CGPath{
     try definition.validate()
@@ -63,8 +69,12 @@ public enum ShapeRenderer {
       let region = try VectorPathGeometry.filledRegion(definition.path())
       if region.inverted {
         let clip = exterior(mapping)
-        if bounds.width > Surface.maximumDensePixels / bounds.height {
-          return try sparseExterior(definition, holes: region.path, mapping: mapping, bounds: bounds, depth: document.depth)
+        if let sparse = try sparseExterior(definition, holes: region.path, frame: clip,
+                                            mapping: mapping, bounds: bounds, depth: document.depth) {
+          return sparse
+        }
+        guard bounds.width <= Surface.maximumDensePixels / bounds.height else {
+          throw CraftError.unsupported("Large shape exteriors currently require an integer-aligned solid fill without a visible stroke.")
         }
         frame = clip
         visibleContours = region.path
@@ -90,27 +100,27 @@ public enum ShapeRenderer {
     }}
     return output
   }
-  private static func sparseExterior(_ definition: ShapeDefinition, holes: CGPath, mapping: Transform2D,
-                                     bounds: IntRect, depth: PixelDepth) throws -> Surface {
+  private static func sparseExterior(_ definition: ShapeDefinition, holes: CGPath, frame: CGPath,
+                                     mapping: Transform2D, bounds: IntRect, depth: PixelDepth) throws -> Surface? {
+    let storage = CGRect(x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height)
     guard definition.fill.kind == .solid || definition.fill.kind == .none,
           definition.stroke.paint.kind == .none || definition.stroke.width == 0 || definition.stroke.opacity == 0,
-          exterior(mapping).boundingBoxOfPath == CGRect(x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height),
-          (mapping.b == 0 && mapping.c == 0) || (mapping.a == 0 && mapping.d == 0) else {
-      throw CraftError.unsupported("Large shape exteriors currently require an integer-aligned solid fill without a visible stroke.")
-    }
+          frame.boundingBoxOfPath == storage,
+          (mapping.b == 0 && mapping.c == 0) || (mapping.a == 0 && mapping.d == 0) else { return nil }
     let fill = definition.fill.kind == .none ? Pixel.clear : definition.fill.color
-    var surface = try Surface(width: bounds.width, height: bounds.height, depth: depth, fill: fill)
+    var surface = try Surface(width: bounds.width, height: bounds.height, depth: depth, fill: fill.a == 0 ? .clear : fill)
     let holeBounds = holes.boundingBoxOfPath
     guard fill.a > 0, !holeBounds.isNull else { return surface }
-    let storage = CGRect(x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height)
     let overlap = storage.intersection(holeBounds.integral)
     guard !overlap.isNull, !overlap.isEmpty else { return surface }
     let patch = IntRect(x: Int(overlap.minX), y: Int(overlap.minY), width: Int(overlap.width), height: Int(overlap.height))
-    let mask = try FrameRenderer.coverage(holes, region: patch)
+    // Render the same complemented path over the smaller window. Subtracting
+    // a quantized mask from 255 can round the antialiased edge differently.
+    let mask = try FrameRenderer.coverage(frame.subtracting(holes), region: patch)
     try surface.mapPixels(in: .init(x: patch.x - bounds.x, y: patch.y - bounds.y, width: patch.width, height: patch.height)) { x, y, _ in
       let i = (y + bounds.y - patch.y) * patch.width + x + bounds.x - patch.x
       var pixel = fill
-      pixel.a *= 1 - Float(mask.byte(at: i)) / 255
+      pixel.a *= Float(mask.byte(at: i)) / 255
       return pixel.a > 0 ? pixel : .clear
     }
     return surface
