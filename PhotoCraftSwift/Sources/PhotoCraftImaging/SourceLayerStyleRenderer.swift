@@ -199,14 +199,15 @@ enum SourceLayerStyleRenderer {
     for p in prepared.reversed() where p.bevel?.paint == .outer {try bevel(&work,p,relativeShape:false)}
     for y in 0..<h {try Task.checkCancellation();for x in 0..<w {let i=y*w+x;if body[i].a>0 {work[i]=blend(layer.blendMode,work[i],body[i],1)}}}
     for p in prepared.reversed() where p.bevel?.paint == .both {try bevel(&work,p,relativeShape:false)}
-    var result=backdrop
-    let rx0=max(samples.x,region.x),ry0=max(samples.y,region.y)
-    let rx1=min(samples.x+w,region.x+region.width),ry1=min(samples.y+h,region.y+region.height)
-    if rx1>rx0 && ry1>ry0 {for y in ry0..<ry1 {try Task.checkCancellation();for x in rx0..<rx1 {
-      let i=(y-samples.y)*w+x-samples.x,p=mix(before[i],work[i],layer.opacity)
-      guard p.isFinite else {throw CraftError.invalid("Advanced effect result exceeds the floating-point range.")}
-      if linear {result.setLinearPixel(x:x,y:y,p)}else{result.setPixel(x:x,y:y,p)}
-    }}}
-    return result
+    let left = max(samples.x, region.x), top = max(samples.y, region.y)
+    let right = min(samples.x + w, region.x + region.width), bottom = min(samples.y + h, region.y + region.height)
+    guard right > left, bottom > top else { return backdrop }
+    let output = IntRect(x: left, y: top, width: right - left, height: bottom - top)
+    return try backdrop.compositingPixels(in: output, sampleEncoding: linear ? .linearRGB : .sRGB) { x, y, _ in
+      let index = (y - samples.y) * w + x - samples.x
+      let pixel = mix(before[index], work[index], layer.opacity)
+      guard pixel.isFinite else { throw CraftError.invalid("Advanced effect result exceeds the floating-point range.") }
+      return pixel
+    }
   }
 }

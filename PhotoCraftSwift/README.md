@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 694.** Advanced layer effects write their final pixels by tile. Ordinary raster writes also reuse an opacity result owned by a single surface. [Qualification](docs/SOURCE_PUBLICATION_694.md).
+
 **Source checkpoint 693.** Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition. [Qualification](docs/SOURCE_PUBLICATION_693.md).
 
 **Source checkpoint 692.** Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite. [Qualification](docs/SOURCE_PUBLICATION_692.md).

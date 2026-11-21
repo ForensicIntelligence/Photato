@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 694 — Write layer styles by tile and reuse opacity checks
+
+Advanced layer effects write their final pixels by tile. Ordinary raster writes also reuse an opacity result owned by a single surface.
+
+Both tested wide oblique Pattern Overlay fits and the separate native Fit and soft-proof PNGs match build 693 byte for byte. The RGB8, RGB16 and RGB32 layer-style regression probe matched the previous build for all 138 cases in both direct rendering and imported-project rendering. The mapped-raster tests check that an edited copy and its original can certify opacity independently, and that tile writes reproduce scalar storage in each tested sample encoding and depth.
+
+462 of 465 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The three inherited failures reproduced the same assertions: two outdated Automation count expectations and one strict original PhotoCraft effect fixture. All 27 additional Brush Dynamics and canvas diagnostics tests passed in Debug. The Xcode Debug build and both ad hoc signed macOS 14+ preview slices opened workspaces offscreen. The installed Photoshop instance timed out on a document query. The saved Photoshop Pattern Overlay reference still passes. Live Photoshop Fit sampling and physical editing cadence remain open.
+
+[Development record](DEVLOG.md#dev-step-694) · [Details](STYLE_PIXEL_WRITES_694.md).
+
 ## 2026-11-21 — Step 693 — Reuse prepared pattern samples across render patches
 
 Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
@@ -1537,14 +1547,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:693 -->
+<!-- current-status-step:694 -->
 ## Current development status — 21 November 2026
 
-Pattern Fill layers and Pattern Overlays share prepared source texels across patches of the same composition.
+Advanced layer effects write their final pixels by tile. Ordinary raster writes also reuse an opacity result owned by a single surface.
 
-460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen.
+462 of 465 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The three inherited failures reproduced the same assertions: two outdated Automation count expectations and one strict original PhotoCraft effect fixture. All 27 additional Brush Dynamics and canvas diagnostics tests passed in Debug. The Xcode Debug build and both ad hoc signed macOS 14+ preview slices opened workspaces offscreen.
 
-[Source checkpoint 693](SOURCE_PUBLICATION_693.md) · [Development record](DEVLOG.md#dev-step-693).
+[Source checkpoint 694](SOURCE_PUBLICATION_694.md) · [Development record](DEVLOG.md#dev-step-694).
 
 <!-- current-status:end -->
 
@@ -2444,6 +2454,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 691 | [Fit quarter-turn Pattern Overlays on large canvases](DEVLOG.md#dev-step-691) |
 | 2026-11-21 | 692 | [Reduce wide oblique Pattern Overlays in bounded patches](DEVLOG.md#dev-step-692) |
 | 2026-11-21 | 693 | [Reuse prepared pattern samples across render patches](DEVLOG.md#dev-step-693) |
+| 2026-11-21 | 694 | [Write layer styles by tile and reuse opacity checks](DEVLOG.md#dev-step-694) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

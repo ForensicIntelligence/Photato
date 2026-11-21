@@ -1,0 +1,314 @@
+{
+  "build": 694,
+  "base": "2994b53d2f671041e7959f84a2bcaea0f90ec8ea",
+  "buildInputs": 9311,
+  "includedBuildInputs": 9298,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "bfd51aa5f9f9fb5ebf0b7718c0e6b7643f1d7dcfdf1f598382ac9a4919b6ac73",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraftCore/Surface.swift",
+      "sha256": "666b20b743173d90d4c3f44a942e6a85b57b761838505565f251b671a802181f"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceLayerStyleRenderer.swift",
+      "sha256": "8b9d3ab1cc0a23434e9ef0f83aadfa3c91711573161c7ac11d9cc8356addcb68"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/RasterScratchTests.swift",
+      "sha256": "0dcdec5028839aa7f66c7dba295b36a958e3603ff67cd12b080f4ba6cc0b5c4f"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "e4b7ce7699b35d9e0463fa552ef6032bb996172ccba1e4295b76ed64cbec3b64"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "e4b7ce7699b35d9e0463fa552ef6032bb996172ccba1e4295b76ed64cbec3b64"
+  },
+  "casesPerConfiguration": 465,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 465,
+      "passed": 462,
+      "newCasesExpected": 22,
+      "newCasesPassed": 22,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "7716832f987071027b46be9891d4b207b9db966b285c5aa55a1d0b0cda519f99"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 465,
+      "passed": 462,
+      "newCasesExpected": 22,
+      "newCasesPassed": 22,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "5aa3c4b78a713022b62ecbcb4943358d8f193143f2ce439843f6bb2e530e4f63"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 465,
+      "passed": 462,
+      "newCasesExpected": 22,
+      "newCasesPassed": 22,
+      "failed": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+        "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "dd77e95c29760519a5715d885871238b4f2427bd97fc00cd6941aa43abbb0f8e"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftAppTests.ChannelBlendingWorkflowTests/testMenuRoutingTargetsAndPresentationKeepFactoryBindings",
+    "PhotoCraftAppTests.StylePresetWorkflowTests/testCatalogThreeMigrationKeepsEveryOldPlacementAndMenuUsesFactoryEntry",
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "7c759b6c8f56972cc1171fac03e0b326a0fc5005037248f7cfc76b9a46e0dd6a",
+  "wideObliqueProbe": {
+    "canvas": [
+      300000,
+      300000
+    ],
+    "source": [
+      4161,
+      4101
+    ],
+    "fit": [
+      301,
+      297
+    ],
+    "angle": 31,
+    "scale": 56,
+    "matchingRGBAByTileSide": {
+      "5": "9f3c5cdc5deff94c8e91a7fe754fbb774356f5bb81a3a0dd7d7d54023aec6b61",
+      "512": "e40316af92bed9df7e017b2f18ee025c48dfb4c6977fec2eb98e2658d0cd6f00"
+    },
+    "measurements": {
+      "arm": {
+        "baseline": {
+          "5": {
+            "peakResidentBytes": 71811072,
+            "seconds": 5.239639
+          },
+          "512": {
+            "peakResidentBytes": 88621056,
+            "seconds": 5.296059
+          }
+        },
+        "candidate": {
+          "5": {
+            "peakResidentBytes": 50774016,
+            "seconds": 3.239851
+          },
+          "512": {
+            "peakResidentBytes": 88555520,
+            "seconds": 3.286784
+          }
+        }
+      },
+      "intel": {
+        "baseline": {
+          "5": {
+            "peakResidentBytes": 239755264,
+            "seconds": 10.968504
+          },
+          "512": {
+            "peakResidentBytes": 265494528,
+            "seconds": 11.029049
+          }
+        },
+        "candidate": {
+          "5": {
+            "peakResidentBytes": 228777984,
+            "seconds": 5.870156
+          },
+          "512": {
+            "peakResidentBytes": 234741760,
+            "seconds": 5.897666
+          }
+        }
+      }
+    }
+  },
+  "translucentWriteProbe": {
+    "source": [
+      2048,
+      1024
+    ],
+    "runsPerVersion": 3,
+    "matchingRGBASHA256": "1620fd49703f3c6f4c7442c0fe9c96c3fee72a935006a809c1ae5ced9ae477af",
+    "medianSeconds": {
+      "arm": {
+        "693": 0.168346,
+        "694": 0.041513
+      },
+      "intel": {
+        "693": 0.348077,
+        "694": 0.06854
+      }
+    },
+    "originalOpaqueAndEditedCopyTranslucent": true
+  },
+  "xcode": {
+    "scheme": "Photato",
+    "configuration": "Debug",
+    "architecture": "arm64",
+    "signing": "disabled",
+    "defaultProjectBuildLogSHA256": "22d6d91c377a8bf787c3c90c00a759a6eb83ea9d41733eafed267b8982e26dac",
+    "offscreenWorkspaceSHA256": "26e833329f51cee386285dedfa3c8117a237651b991bd9738026cc5c8fe5b70f"
+  },
+  "nativeWideFit": {
+    "arm": {
+      "canvasHeight": 520,
+      "canvasWidth": 70000,
+      "fitSeconds": 7.348438291577622,
+      "nativeFitMatchesRetainedPNG": true,
+      "nativeProofPublished": true,
+      "outputHeight": 6,
+      "outputWidth": 860,
+      "proofSeconds": 15.245142250088975,
+      "pngSHA256": {
+        "fit.png": "11bac7e419f45a4121214996e0e19ec22d48e09b5de1eccdc15dff4bdf2dcbdf",
+        "proof.png": "5e0ef859c109004fa9e589cc8de05b75d1c2f2221808a283de302a6f20bf6fd8"
+      }
+    },
+    "intel": {
+      "canvasHeight": 520,
+      "canvasWidth": 70000,
+      "fitSeconds": 12.219748958945274,
+      "nativeFitMatchesRetainedPNG": true,
+      "nativeProofPublished": true,
+      "outputHeight": 6,
+      "outputWidth": 860,
+      "proofSeconds": 24.476611624937505,
+      "pngSHA256": {
+        "fit.png": "11bac7e419f45a4121214996e0e19ec22d48e09b5de1eccdc15dff4bdf2dcbdf",
+        "proof.png": "5e0ef859c109004fa9e589cc8de05b75d1c2f2221808a283de302a6f20bf6fd8"
+      }
+    }
+  },
+  "additionalDebugBrushTests": 27,
+  "focusedDebugTests": 25,
+  "sourceEffectRegressionProbe": {
+    "fixtureCases": 138,
+    "outputsPerArchitecture": 276,
+    "comparedWithBuild": 693,
+    "identicalCaptureSHA256": "5fe5dc6d916fdf33086edfb967c15fb33fda4ee167fc57aea75133a6284239cd"
+  },
+  "paintPreviewTiming": {
+    "baseline": {
+      "sha256": "d04cf49b2c0ae27d54d425b4d8ee42b959324390844c1773ef2e274af6d8b0ec",
+      "scope": "Release in-process EditorStore input through published render snapshot; 48 sequential samples per case on a white RGB8 layer. Frame pacing disabled to measure service cost. Excludes physical display presentation and AppKit event delivery. No universal 60fps claim.",
+      "cases": [
+        {
+          "width": 1024,
+          "height": 768,
+          "brush_size": 32,
+          "samples": 48,
+          "preview_matches_command": true,
+          "inputToPreviewP95MS": 1.180000021122396
+        },
+        {
+          "width": 2048,
+          "height": 1536,
+          "brush_size": 64,
+          "samples": 48,
+          "preview_matches_command": true,
+          "inputToPreviewP95MS": 1.3518333435058594
+        },
+        {
+          "width": 6000,
+          "height": 4000,
+          "brush_size": 64,
+          "samples": 48,
+          "preview_matches_command": true,
+          "inputToPreviewP95MS": 1.802499988116324
+        }
+      ]
+    },
+    "candidate": {
+      "sha256": "f34fda8fc3bcbbedf6029c308c6bde2cbfd2645f2824a4892a4069bb42b5dd05",
+      "scope": "Release in-process EditorStore input through published render snapshot; 48 sequential samples per case on a white RGB8 layer. Frame pacing disabled to measure service cost. Excludes physical display presentation and AppKit event delivery. No universal 60fps claim.",
+      "cases": [
+        {
+          "width": 1024,
+          "height": 768,
+          "brush_size": 32,
+          "samples": 48,
+          "preview_matches_command": true,
+          "inputToPreviewP95MS": 1.062791678123176
+        },
+        {
+          "width": 2048,
+          "height": 1536,
+          "brush_size": 64,
+          "samples": 48,
+          "preview_matches_command": true,
+          "inputToPreviewP95MS": 1.2804166181012988
+        },
+        {
+          "width": 6000,
+          "height": 4000,
+          "brush_size": 64,
+          "samples": 48,
+          "preview_matches_command": true,
+          "inputToPreviewP95MS": 1.730291754938662
+        }
+      ]
+    }
+  },
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout",
+    "savedPatternReference": "passed"
+  },
+  "preview": {
+    "archiveSHA256": "ab3ce54942c7393d440b509f34d0cd3100ae26cfb24b6acabce479488f2f9547",
+    "binarySHA256": "030d17015c87e41f76137a3745159317ebb40a45e8882fe366829a585504408f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "eb0729f852fee734f762865e6e555c07d5cff57d454dae3a63095570d22c8afd",
+      "x86_64": "132739d5515be22acce166e9417fd21922272117b65783d56d535df7481903c0"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/zoom-images.html"
+  ]
+}

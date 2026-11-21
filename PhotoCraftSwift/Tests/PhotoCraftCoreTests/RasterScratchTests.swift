@@ -147,4 +147,66 @@ final class RasterScratchTests: XCTestCase {
     let preserved = try await cancelled.value
     XCTAssertTrue(preserved)
   }
+
+  func testOpacityProofDetachesBeforeAnUneditedSnapshotCanPublishIt() throws {
+    let region = IntRect(x: 63, y: 62, width: 3, height: 4)
+    let original = try Surface(width: 130, height: 66, depth: .f32, fill: .white, colorEncoding: .linearRGB)
+    var ordinary = original
+    ordinary.setLinearPixel(x: 64, y: 64, Pixel(-0.0, 2, 0.1, 0.5))
+    let batch = try original.compositingPixels(in: region, sampleEncoding: .linearRGB) { x, y, _ in
+      x == 64 && y == 64 ? Pixel(-0.0, 2, 0.1, 0.5) : nil
+    }
+
+    // The source earns its proof only after both receiving surfaces have changed.
+    XCTAssertTrue(try original.isOpaque())
+    XCTAssertFalse(try ordinary.isOpaque())
+    XCTAssertFalse(try batch.isOpaque())
+    XCTAssertEqual(ordinary, batch)
+    ordinary.setLinearPixel(x: 64, y: 64, .black)
+    XCTAssertTrue(try ordinary.isOpaque())
+    ordinary.setLinearPixel(x: 64, y: 64, .clear)
+    XCTAssertFalse(try ordinary.isOpaque())
+    XCTAssertTrue(try original.isOpaque())
+  }
+
+  func testBatchedCompositingMatchesScalarSettersAcrossTileBoundaries() throws {
+    let region = IntRect(x: 62, y: 62, width: 67, height: 6)
+    let testSamples = [
+      Pixel(-0.0, -0.75, 2.35, -0.0), Pixel(0.12, 0.44, 0.83, 0.29),
+      Pixel(0.87, 0.43, 0.15), Pixel(2.25, -0.13, -0.0, 1.25),
+    ]
+    for depth in PixelDepth.allCases {
+      let storageModes: [SurfaceColorEncoding] = depth == .f32 ? [.sRGB, .linearRGB] : [.sRGB]
+      for storage in storageModes {
+        var seed = try Surface(width: 133, height: 69, depth: depth, fill: .white, colorEncoding: storage)
+        seed.setPixel(x: 1, y: 2, Pixel(0.8, 0.51, 0.1))
+        seed.setLinearPixel(x: 65, y: 66, Pixel(-0.0, 3.82, -1.02))
+        let source = try seed.spillingTiles(to: RasterTileStore())
+        XCTAssertTrue(try source.isOpaque())
+        for encoding in [SurfaceColorEncoding.sRGB, .linearRGB] {
+          func sample(_ x: Int, _ y: Int) -> Pixel? {
+            (x + y).isMultiple(of: 5) ? nil : testSamples[(x + y * 2) % testSamples.count]
+          }
+          var scalar = source
+          for y in region.y..<(region.y + region.height) {
+            for x in region.x..<(region.x + region.width) {
+              guard let value = sample(x, y) else { continue }
+              if encoding == .linearRGB { scalar.setLinearPixel(x: x, y: y, value) }
+              else { scalar.setPixel(x: x, y: y, value) }
+            }
+          }
+          let batch = try source.compositingPixels(in: region, sampleEncoding: encoding) { x, y, old in
+            let original = encoding == .linearRGB ? source.linearPixel(x: x, y: y) : source.pixel(x: x, y: y)
+            XCTAssertTrue(old.hasSameBits(as: original))
+            return sample(x, y)
+          }
+          XCTAssertEqual(batch, scalar, "\(depth), storage \(storage), input \(encoding)")
+          XCTAssertEqual(batch.tileCount, scalar.tileCount)
+          XCTAssertEqual(batch.mappedTileCount, scalar.mappedTileCount)
+          XCTAssertFalse(try batch.isOpaque())
+          XCTAssertTrue(try source.isOpaque())
+        }
+      }
+    }
+  }
 }

@@ -712,7 +712,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 691 | 2026-11-21 | [Fit quarter-turn Pattern Overlays on large canvases](#dev-step-691) |
 | 692 | 2026-11-21 | [Reduce wide oblique Pattern Overlays in bounded patches](#dev-step-692) |
 | 693 | 2026-11-21 | [Reuse prepared pattern samples across render patches](#dev-step-693) |
+| 694 | 2026-11-21 | [Write layer styles by tile and reuse opacity checks](#dev-step-694) |
 <!-- history-index:end -->
+
+<a id="dev-step-694"></a>
+
+## 2026-11-21 — Write layer styles by tile and reuse opacity checks
+
+Advanced layer effects write their final pixels by tile. Ordinary raster writes also reuse an opacity result owned by a single surface.
+
+The layered renderer already knew the final region. It now sends that whole region to the tile writer in the document's encoded or linear sample space. The first translucent scalar write to a shared snapshot detaches the opacity proof. Subsequent writes can clear the proof in place. The new regressions cover tiles straddling an edit, copy isolation, signed zero, HDR samples and the untouched area.
+
+Both tested wide oblique Pattern Overlay fits and the separate native Fit and soft-proof PNGs match build 693 byte for byte. The RGB8, RGB16 and RGB32 layer-style regression probe matched the previous build for all 138 cases in both direct rendering and imported-project rendering. The mapped-raster tests check that an edited copy and its original can certify opacity independently, and that tile writes reproduce scalar storage in each tested sample encoding and depth.
+
+462 of 465 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The three inherited failures reproduced the same assertions: two outdated Automation count expectations and one strict original PhotoCraft effect fixture. All 27 additional Brush Dynamics and canvas diagnostics tests passed in Debug. The Xcode Debug build and both ad hoc signed macOS 14+ preview slices opened workspaces offscreen. The installed Photoshop instance timed out on a document query. The saved Photoshop Pattern Overlay reference still passes. Live Photoshop Fit sampling and physical editing cadence remain open. The overall desktop workflow estimate remains 50%.
+
+[Development record](STYLE_PIXEL_WRITES_694.md) · [Qualification](SOURCE_PUBLICATION_694.md).
 
 <a id="dev-step-693"></a>
 

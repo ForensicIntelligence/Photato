@@ -65,6 +65,9 @@ private final class SurfaceOpaqueProof:@unchecked Sendable {
   private let lock=NSLock();private var valid=false
   var proven:Bool {lock.lock();defer{lock.unlock()};return valid}
   func establish(){lock.lock();valid=true;lock.unlock()}
+
+  // Called only by a mutating Surface that owns the sole reference.
+  func invalidateExclusive() { valid = false }
 }
 public struct Surface: Codable, Equatable, Sendable {
   public static let tileSide = 64
@@ -99,6 +102,14 @@ public struct Surface: Codable, Equatable, Sendable {
   // This value travels with COW storage; it is neither serialized nor semantic.
   private var tilesAreKnownFinite = false
   private var opaqueProof=SurfaceOpaqueProof()
+
+  private mutating func invalidateOpacityProof() {
+    if isKnownUniquelyReferenced(&opaqueProof) {
+      opaqueProof.invalidateExclusive()
+    } else {
+      opaqueProof = SurfaceOpaqueProof()
+    }
+  }
   /// Compare document sample bits, independent of implicit/mapped/owned layout.
   /// Shared edit trees skip untouched branches; tile padding is not image data.
   public static func == (lhs: Surface, rhs: Surface) -> Bool {
@@ -400,7 +411,7 @@ public struct Surface: Codable, Equatable, Sendable {
           edits.reserveCapacity(last - first)
           for input in inputs[first..<last] {
             try Task.checkCancellation()
-            let edit = snapshot.prepareEncodedTile(input.key, in: region, original: original,
+            let edit = snapshot.prepareTile(input.key, in: region, original: original,
               includes: { !input.coverage.isEmpty && input.coverage[$0] > 0 }) { x, y, index, old in
                 transform(x, y, index, input.coverage[index], old, input.colors)
               }
@@ -422,7 +433,7 @@ public struct Surface: Codable, Equatable, Sendable {
         }
       }
       if invalidatesOpacity || (original.map { opaqueProof.proven && !$0.opaqueProof.proven } ?? false) {
-        opaqueProof = SurfaceOpaqueProof()
+        invalidateOpacityProof()
       }
     }
   }
@@ -437,24 +448,36 @@ public struct Surface: Codable, Equatable, Sendable {
   /// input intact. Consuming a local backdrop lets it release completed tiles.
   public consuming func compositingPixels(in region: IntRect,
     _ transform: (Int, Int, Pixel) throws -> Pixel?) throws -> Self {
+    try (consume self).compositingPixels(in: region, sampleEncoding: .sRGB, transform)
+  }
+
+  /// The closure uses the named sample encoding. Tile writes retain the scalar
+  /// setters' conversion rules and invalidate opacity once after the batch.
+  package consuming func compositingPixels(in region: IntRect, sampleEncoding: SurfaceColorEncoding,
+    _ transform: (Int, Int, Pixel) throws -> Pixel?) throws -> Self {
     let r = region.clipped(toWidth: width, height: height), side = Self.tileSide
     guard r.width > 0, r.height > 0 else { return self }
     var output = consume self
     let columns = output.columns
+    var invalidatesOpacity = false
     for row in r.y/side...(r.y+r.height-1)/side {
       for column in r.x/side...(r.x+r.width-1)/side {
         try Task.checkCancellation()
-        try output.editEncodedTile(row*columns+column, in: r, includes: { _ in true }) { x, y, _, old in
+        let key = row * columns + column
+        let edit = try output.prepareTile(key, in: r, sampleEncoding: sampleEncoding, includes: { _ in true }) { x, y, _, old in
           try transform(x, y, old)
         }
+        if let tile = edit.tile { output.tiles[key] = tile }
+        invalidatesOpacity = invalidatesOpacity || edit.invalidatesOpacity
       }
     }
     try Task.checkCancellation()
+    if invalidatesOpacity { output.invalidateOpacityProof() }
     return output
   }
   private mutating func editEncodedTile(_ key: Int, in region: IntRect, original: Surface? = nil,
     includes: (Int) -> Bool, _ transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows {
-    let edit = try prepareEncodedTile(key, in: region, original: original, includes: includes, transform)
+    let edit = try prepareTile(key, in: region, original: original, includes: includes, transform)
     if let tile = edit.tile {
       tiles[key] = tile
     } else if let original {
@@ -462,11 +485,12 @@ public struct Surface: Codable, Equatable, Sendable {
       tiles[key] = original.tiles[key]
     }
     if edit.invalidatesOpacity || (original.map { opaqueProof.proven && !$0.opaqueProof.proven } ?? false) {
-      opaqueProof = SurfaceOpaqueProof()
+      invalidateOpacityProof()
     }
   }
 
-  private func prepareEncodedTile(_ key: Int, in region: IntRect, original: Surface? = nil,
+  private func prepareTile(_ key: Int, in region: IntRect, original: Surface? = nil,
+    sampleEncoding: SurfaceColorEncoding = .sRGB,
     includes: (Int) -> Bool, _ transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows
     -> (tile: RasterTile?, invalidatesOpacity: Bool) {
     let side = Self.tileSide
@@ -477,29 +501,34 @@ public struct Surface: Codable, Equatable, Sendable {
     if let original { source = original.tiles[key] }
     else { source = tiles[key] }
     let fallback = original?.storedDefaultPixel ?? storedDefaultPixel
-    let linear = colorEncoding == .linearRGB, depth = self.depth
+    let linear = colorEncoding == .linearRGB, linearSamples = sampleEncoding == .linearRGB
+    let depth = self.depth
     var invalidatesOpacity = false
+    func inputSample(_ stored: Pixel) -> Pixel {
+      if linear == linearSamples { return stored }
+      return linearSamples ? SRGBTransfer.linear(stored) : SRGBTransfer.encoded(stored)
+    }
     func makeReplacement(_ input: UnsafeBufferPointer<Pixel>?,
       transform: (Int, Int, Int, Pixel) throws -> Pixel?) rethrows -> [Pixel]? {
       // An implicit tile reads the same background sample at every pixel.
-      let encodedDefault = linear && input == nil ? SRGBTransfer.encoded(fallback) : fallback
+      let implicit = input == nil ? inputSample(fallback) : fallback
       var output: [Pixel]?
       for y in yRange {
         for x in xRange {
           let index = y*side + x
           guard includes(index) else { continue }
-          let old: Pixel
-          let encoded: Pixel
-          if let input {
-            old = input[index]
-            encoded = linear ? SRGBTransfer.encoded(old) : old
+          let old = input?[index] ?? fallback
+          let view = input == nil ? implicit : inputSample(old)
+          guard let edited = try transform(left+x,top+y,index,view) else { continue }
+          let stored: Pixel
+          if linearSamples {
+            stored = linear ? Self.linearStoredSample(edited, depth: depth) : SRGBTransfer.encoded(edited).quantized(depth)
+          } else if linear {
+            stored = Self.linearStoredReplacement(edited, old: old, encoded: view)
+            if stored.hasSameBits(as: old) { continue }
           } else {
-            old = fallback
-            encoded = encodedDefault
+            stored = edited.quantized(depth)
           }
-          guard let edited = try transform(left+x,top+y,index,encoded) else { continue }
-          let stored = linear ? Self.linearStoredReplacement(edited,old:old,encoded:encoded) : edited.quantized(depth)
-          if linear && stored.hasSameBits(as:old) { continue }
           if output == nil { output = input.map { Array($0) } ?? Array(repeating:fallback,count:side*side) }
           output![index] = stored
           if stored.a != 1 { invalidatesOpacity = true }
@@ -518,14 +547,16 @@ public struct Surface: Codable, Equatable, Sendable {
       setPixel(x: x, y: y, SRGBTransfer.encoded(p))
       return
     }
+    setStoredPixel(x: x, y: y, Self.linearStoredSample(p, depth: depth))
+  }
+  private static func linearStoredSample(_ p: Pixel, depth: PixelDepth) -> Pixel {
     let alpha = p.a.isFinite && p.a >= 0 && p.a <= 1 ? p.a : unit(p.a)
-    let value = Pixel(depth.quantize(p.r), depth.quantize(p.g), depth.quantize(p.b), alpha)
-    setStoredPixel(x: x, y: y, value)
+    return Pixel(depth.quantize(p.r), depth.quantize(p.g), depth.quantize(p.b), alpha)
   }
   // RasterTileMap isolates paged ownership; the ordinary bounded Dictionary
   // path stays visible to optimization in pixel loops.
   private mutating func setStoredPixel(x: Int, y: Int, _ p: Pixel) {
-    if p.a != 1{opaqueProof=SurfaceOpaqueProof()}
+    if p.a != 1 { invalidateOpacityProof() }
     let key = (y / Self.tileSide) * columns + x / Self.tileSide
     // The default subscript yields the stored Array directly. Optional chaining
     // here creates an allocating read/modify/write coroutine for every pixel.
@@ -643,7 +674,7 @@ public struct Surface: Codable, Equatable, Sendable {
       }
     }
     try Task.checkCancellation()
-    result.opaqueProof = SurfaceOpaqueProof()
+    result.invalidateOpacityProof()
     self = result
     return true
   }
@@ -1555,7 +1586,7 @@ extension Surface {
       patch.height % Self.tileSide == 0 || atY + patch.height == height else {
       throw CraftError.invalid("Decoded patch must match the destination sample grid.")
     }
-    try patch.validated(); var result = self;result.opaqueProof=SurfaceOpaqueProof()
+    try patch.validated(); var result = self;result.invalidateOpacityProof()
     let rows = (patch.height + Self.tileSide - 1) / Self.tileSide
     for row in 0..<rows { for column in 0..<patch.columns {
       try Task.checkCancellation()
@@ -1700,7 +1731,7 @@ extension Surface {
     public func finish() throws -> Surface {
       do {
         try Task.checkCancellation();guard !finished,!failed else {throw CraftError.invalid("Paged import builder is no longer usable.")}
-        let base=try index.finish();var result=template;result.opaqueProof=SurfaceOpaqueProof()
+        let base=try index.finish();var result=template;result.invalidateOpacityProof()
         if base.count>=Surface.pagedIndexMinimumTiles {result.tiles=RasterTileMap(base:base)}
         else {for i in 0..<base.count {result.tiles[base.key(at:i)]=base.tile(at:i)}}
         result.tilesAreKnownFinite=true;try result.validated();finished=true;return result
@@ -1712,7 +1743,7 @@ extension Surface {
 extension Surface {
   /// Grid-aligned owned patches share their Array COW values; no pixel re-encoding.
   mutating func importOwnedPatch(_ patch:Surface,atX:Int,atY:Int) throws {
-    opaqueProof=SurfaceOpaqueProof()
+    invalidateOpacityProof()
     guard patch.depth==depth,patch.colorEncoding==colorEncoding,
       patch.storedDefaultPixel.hasSameBits(as:storedDefaultPixel),atX%64==0,atY%64==0,
       atX>=0,atY>=0,atX+patch.width<=width,atY+patch.height<=height else {throw CraftError.invalid("Invalid owned geometry patch.")}
