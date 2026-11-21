@@ -1,0 +1,483 @@
+{
+  "build": 700,
+  "base": "cb7ffbbb25c092dfad85c8ec3fe5697b36c42fb5",
+  "buildInputs": 9383,
+  "includedBuildInputs": 9370,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "9d4c19ef27439eeac2644b89f1222eb7d3d07268597771b3280124269553de84",
+  "sourceChanges": [
+    {
+      "path": "ATTRIBUTION.md",
+      "sha256": "2990d091e349c4d1b76c8f71b7a6a0db1e78bf859abe4fdb7daba72b8b8641e3"
+    },
+    {
+      "path": "Package.swift",
+      "sha256": "7d73625279d1397ecc8adbe62135c09ecfb5a7db091152b58d2d925d149d884a"
+    },
+    {
+      "path": "Photato.xcodeproj/project.pbxproj",
+      "sha256": "23d7f9ba79976964d3564332defa9860b6b1ce5db64dc4b11d4c616110511032"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "c91c4f3b7e2914a19a9c4b46c7b8a929b0df4410d808fbec2bc232007a8fd1d1"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "2a5397402bc067c22c9bebbd1b6ae74be74668c567c1bf672fc5cda555d1ca8b"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "c164df89847df3423cebf7b80e392e8d8bf301f394af9b048a26a10625e30cbc"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillControls.swift",
+      "sha256": "1558ae059bc6a907a5e8c21d9b71a16c19815118736ecd2daf690ffae4b5ed06"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalGenerativeFill.swift",
+      "sha256": "16acbcad97556d4c3dc8ea9982b773d19325cca701e2d8de7d9d86b73ebbda82"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalPromptGenerativeFill.swift",
+      "sha256": "7d34dfd428288bec51cd0ba54d46f1d946f73ce6c8307aca6eecb1eb03b2e2ff"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "ed3a2906694c4aff8d9dd03b670192a084485312b955c504c0757df2bc744af0"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GenerativeFillWorkflowTests.swift",
+      "sha256": "ea4d5da1bec1a0eef3e2d0583c0d81a523bb269da108f07b27e1ee949a8a0435"
+    },
+    {
+      "path": "Vendor/GuernikaKit/ACKNOWLEDGEMENTS-Apple-MLStableDiffusion",
+      "sha256": "38105900a75ce50ca27f3484e9115b4e15690300c33527e8e3fed62c88620399"
+    },
+    {
+      "path": "Vendor/GuernikaKit/LICENSE",
+      "sha256": "33729776bd5672add54c46f74fe90f37d2e3c3daa8e6975aeb4cb5bcc8668c52"
+    },
+    {
+      "path": "Vendor/GuernikaKit/LICENSE-Apple-MLStableDiffusion",
+      "sha256": "4f7eae00de7a3b4ea1d6b3d26f64c113b999dda4e7d3269f3278caac66575fc3"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Package.swift",
+      "sha256": "8d8e3593722566f733e777716530cd98a8a341b687836c9c3c490b6d5cd36f53"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/AttentionImplementation.swift",
+      "sha256": "6334a78c352c4ca8b32213763130763eb83e4b873cbe59c9fbf1b2f2d19497cd"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/DiffusionPipeline.swift",
+      "sha256": "a81b128ee5851a05be358d3c31e0434e861dfa35b864e2062b145bff9669d5cf"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/GuernikaKit.swift",
+      "sha256": "c87bd482a4b61cac836b593b4d0d2e442e82e38504f7a18a4d5a1e18a04b1318"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/ControlNet.swift",
+      "sha256": "69c335dc9f11f46e0424f8fd7d671a1ace493f2a8b44d6d54996b98e9ea405be"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/Decoder.swift",
+      "sha256": "5adcac2d9157daffa0fa7008e0e91c6ea671abeba3f6a6a4eebf276ac7ec092e"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/Encoder.swift",
+      "sha256": "a040778800bed7d7a3569fce9b2102fdad1058c8edc5a190be7c46111d3251d3"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/SafetyChecker.swift",
+      "sha256": "706d7fa2827358122af49b1f35317c99becf5413d508ecff09a1325240711d25"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/T2IAdapter.swift",
+      "sha256": "7b8fc246a70af6db27d62a5fd73c98a21c5379b2b0c9bcbfc2d88841b7f5fb45"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/TextEncoder.swift",
+      "sha256": "d5cf1e0c6ce70b7ab4e0fbb2f8ebb37f62f4abed3cd962bca04ce7be6bfe02f3"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/Unet.swift",
+      "sha256": "5290888369e44612c1d211c96f17087c7eb51f69a7e6ff14de62068fbb62342a"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/SampleInput.swift",
+      "sha256": "bc93e8fa1b5cfac579498843fcb2379c380e2d3f267f1beec0635d83be0b0948"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/StableDiffusionError.swift",
+      "sha256": "f93f9d83acaa0f6748691024db0f0a91324ca5bbbed642efecfe3399981adc5c"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/StableDiffusionMainPipeline.swift",
+      "sha256": "63a7c00f4ef3326189b8abaebc192b2fafb0cd6618bf0909eb39170e10558f9b"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/StableDiffusionPipeline.swift",
+      "sha256": "0bf387c9e188ea848c4444976e36278618461dd2358df97182c2fcff0ed609f3"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/StableDiffusionPix2PixPipeline.swift",
+      "sha256": "3d22ec5a173a7c98d94e4e463c1fe251b96b6ce24d182fd1759e7f4833576104"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/StableDiffusionXLPipeline.swift",
+      "sha256": "e403c4b537f239aac9f53fac277d0e6269d5cb6ed6f3605ebfda21c5ab1ab43c"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/StableDiffusionXLRefinerPipeline.swift",
+      "sha256": "325d15a17b7a18cae85bbf31069a511c92c31ebfc01d1e02f52c0a9c80df108c"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Tokenizer/BPETokenizer+ByteEncoder.swift",
+      "sha256": "2f8cc39b506f0866c89dc0e54d7be25a8ecda5777eed82b5a2af840e398b2006"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Tokenizer/BPETokenizer+Reading.swift",
+      "sha256": "853e7f2fd4c21a20cbeeb20c261a2f4fa7d827c79d7ba750f554ea59fdfde1fd"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Tokenizer/BPETokenizer+WeightedTokens.swift",
+      "sha256": "e4b0ceb03995d31fa80aaa0234bb8b446d150fe8c8f5fcc7970b670b47401b0e"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Tokenizer/BPETokenizer.swift",
+      "sha256": "73809a4d798d306ec9d110de60703a23c1c22284647187af762fa4a14f0a6c17"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/CGImage.swift",
+      "sha256": "2244d6229b09089d941033cdc7a2814e8a1f74a20d98dd3ef3f2f25f60d60f2e"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/CGSize.swift",
+      "sha256": "75832c135faef64c2b03a4a10acde33406902d155c76dfc39310e561c7c36343"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/Cache.swift",
+      "sha256": "5ed0e8ed890296287ffac233b038bb6f45aaae616cd9b7bccb312ca9d6af3f3d"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/ComputeUnits.swift",
+      "sha256": "f5ee7fd0850826db5cc78430fc4ad0ccbce16253823e7b5c1ecfab951e13aa84"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/ConditioningInput.swift",
+      "sha256": "c1465afe4d51b150fa092f066b7a7f5dd554eff51d9d944b1108d9d1404da2ff"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/CoreMLMetadata.swift",
+      "sha256": "78683eda1cb5a36374c18653350dd8ddc62c5ef6f01bdb3d136c00f6553326eb"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/MLShapedArray.swift",
+      "sha256": "eaf52b23de3951d9990bf2f0a0110b4004e104b873ea1b8c0650f09a513b549e"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/ManagedMLModel.swift",
+      "sha256": "cf285069c9144b66c7f05073ab1c5c5a2a15e98c827ad8a2165ae3cdea4c8dc0"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/OSImage.swift",
+      "sha256": "12a322f86e7c3191b336af6e75237bb6f114435e4d05fe11d052ecf157d13a1a"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Utils/SampleTimer.swift",
+      "sha256": "80379ac27e3020334de962a6e8f97197dda94cbe8f6ceb6092f4b18b6c65481f"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Wuerstchen/Modules/WuerstchenDecoder.swift",
+      "sha256": "7a51dd7817a1cefb1094333df1340d6bff229b52bbac2cb15fa420817ab1ff35"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Wuerstchen/Modules/WuerstchenPrior.swift",
+      "sha256": "22b08cd63b8d8713009c13d164a7637bcc92e8d753f3b9908efd9b4e21b9a18c"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Wuerstchen/Modules/WuerstchenVQGAN.swift",
+      "sha256": "bb50be30a83f745f02f780e08f1937dc2349eb34c347bbe1087382b431322e14"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Wuerstchen/WuerstchenPipeline.swift",
+      "sha256": "cedd9eeb47c0bb3c696e2f4638f0fed561d896ee705e60706e5568ac8eddd679"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Wuerstchen/WuerstchenPipelineDecoder.swift",
+      "sha256": "a075eb06041bde53f53974aa902c5bc1a358fe973d2ac338930632444e39c3fb"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/Wuerstchen/WuerstchenPipelinePrior.swift",
+      "sha256": "b7d175f4336d923ad769f82baf3de1b989011abd8d241c87cc16182376b58aec"
+    },
+    {
+      "path": "Vendor/LocalDiffusion-Licenses.txt",
+      "sha256": "0ae1fb3def8cdc359f256e7a025c4d7e8ae578b05cd8fcf2948cbb8d0bfd5b17"
+    },
+    {
+      "path": "Vendor/README.md",
+      "sha256": "12f8afd359a86b8455a8acc4f38a4f78bf5f4ccb6455fe151dbdded2333b74a1"
+    },
+    {
+      "path": "Vendor/RandomGenerator/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "Vendor/RandomGenerator/Package.swift",
+      "sha256": "d9f8669aecadbc27813e83fd0dd919a6cd8e27c04a41c3e14b7bfabb7b4da099"
+    },
+    {
+      "path": "Vendor/RandomGenerator/Sources/RandomGenerator/NumPyRandomGenerator.swift",
+      "sha256": "e7ac9f07e0de23154f15b6788b3de714f1b3d3ef19e8c686733faa416087f001"
+    },
+    {
+      "path": "Vendor/RandomGenerator/Sources/RandomGenerator/RandomGenerator.swift",
+      "sha256": "79435ba99c5df847ea5c0753844a9341a9b81bc5f3ded3d692ca603b069cd659"
+    },
+    {
+      "path": "Vendor/RandomGenerator/Sources/RandomGenerator/TorchRandomGenerator.swift",
+      "sha256": "99c58be240b4c07984b4c703c20c5efe9153dc76697542743aab0a1ea2d92278"
+    },
+    {
+      "path": "Vendor/Schedulers/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "Vendor/Schedulers/Package.swift",
+      "sha256": "73116290c90ef83c1360a47aea7fc050a29e3d4e8aa8e68c0d883600c88617a0"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/Base/BetaSchedule.swift",
+      "sha256": "56b9d7d46f9c3208be92472a2d1f63312f85f602b4410f5e3812fb44f82bb7ff"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/Base/PredictionType.swift",
+      "sha256": "a3d0da2645717eddd42a2a6e3344c5ab6db1d0a2b465da610fb1400d453a0d20"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/Base/Scheduler.swift",
+      "sha256": "599c340cbf9f366d53ee483fcffc67c39edbb7350d64f4c3183d185920578b73"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/Base/TimestepSpacing.swift",
+      "sha256": "e93f655b69b5be189306c7da3a9c843607ca4480205c87455d91040a8f1dff43"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/Base/Utils.swift",
+      "sha256": "153e10b5a3fe9181a3fe70e280e817d00fef951b645b19ead5e0756ffb472936"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/DDIMScheduler.swift",
+      "sha256": "b980018f8d1989c58e78b4de7aac907719ca104c2aa18518fd0a69a22c185499"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/DDPMWuerstchenScheduler.swift",
+      "sha256": "73f9d75345995b1db9136cfc78485a9e2b00d693b28e744d88bd005d98e85b9f"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/DPMSolverMultistepScheduler.swift",
+      "sha256": "a8817f4d872c25ac0494213ad781dd18aa4936bb2046bbfaa8da71221b2ae2f9"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/DPMSolverSinglestepScheduler.swift",
+      "sha256": "065672e8db64144877c0abe5019377c1f199273c491d2e87db25ee02646eea3f"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/EulerAncestralDiscreteScheduler.swift",
+      "sha256": "a3c6af976143b17a78f402f04632114f791d33fc8c5d59132b1f1331ff2aaae6"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/EulerDiscreteScheduler.swift",
+      "sha256": "8068dd397d106bd5dafc83b6275c950461cdea795b9b180a13ac17818c32b7ca"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/KDPM2DiscreteScheduler.swift",
+      "sha256": "9386bc17ada91ccd470b7d388e0c32df806f39488d802f4dfe8cbcb9ac3d10cb"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/LCMScheduler.swift",
+      "sha256": "8b8815d20f266cabfbdc8b2d432bcc1a9f68ea379b9ea5ccdf3f83f94789413e"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/PNDMScheduler.swift",
+      "sha256": "0990b009be5495d618d9e9a6eae589060a23ac689f600aa12996bcf9c8b30c84"
+    },
+    {
+      "path": "Vendor/Schedulers/Sources/Schedulers/Schedulers.swift",
+      "sha256": "639106b05bdb9805e03d0c4af1e7a40bfcdfa9b7dc9d0be2df6ecfa967a6b5da"
+    },
+    {
+      "path": "project.yml",
+      "sha256": "8387cb39e15557c9408c463ee94d138126cc0e50476bda8c856e04e1eae9842f"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "db31a901c5abf6eb280be264f32ffe8a20fed9b9e7c3b6f3a4e86f32a392ebec"
+    },
+    {
+      "path": "scripts/archive_validation.py",
+      "sha256": "65bc5aaa628ac10e090114caa19c8a9963405571441d235a20163e0f64709808"
+    },
+    {
+      "path": "scripts/build-app.sh",
+      "sha256": "a635e580d65ce4ceae3c7d6e013a027c95884c7365d064fe8951dcd96a57b7c6"
+    },
+    {
+      "path": "scripts/tests/test_archive_validation.py",
+      "sha256": "f2fed26721e985c5b2b8d3ecab5e7208f6dd6ff04ec7ae87bc7f307afa41489d"
+    },
+    {
+      "path": "scripts/verify-app-package.py",
+      "sha256": "363cce3a29428dd67fe08218db6e8c3e8aa1b796dcd3d96d1594d661b6a8be40"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "db31a901c5abf6eb280be264f32ffe8a20fed9b9e7c3b6f3a4e86f32a392ebec"
+  },
+  "casesPerConfiguration": 478,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 478,
+      "passed": 477,
+      "newCasesExpected": 35,
+      "newCasesPassed": 35,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "65382b02d62235f187d337f2e80eaaaae5d2194f2bb5b84f8742051798646af2"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 478,
+      "passed": 477,
+      "newCasesExpected": 35,
+      "newCasesPassed": 35,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "8f8fcdd65280d184f328c548fe7c7d3bfb6eae52949c79f0267b4d2393bf6a8a"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 478,
+      "passed": 477,
+      "newCasesExpected": 35,
+      "newCasesPassed": 35,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "44419f058aa4a17a9c213c5ae004ff0bb9dc7df4f2a6e523ba07f22e69233c19"
+    }
+  },
+  "model": {
+    "type": "Runway Stable Diffusion 1.5 Inpaint, ORIGINAL Core ML conversion",
+    "archiveSHA256": "836af8415b0e92b7825532f61577cbddab106cb8950f0e8e47d2a5bf4d8fec00",
+    "inputSide": 512,
+    "steps": 25,
+    "fixtureSeed": 472122,
+    "protectedPixels": 49283,
+    "exactNativeHTTPRGB8": true,
+    "editableInterchange": [
+      {
+        "changedSelectedPixels": 16252,
+        "duration": "27.130088833000002 seconds",
+        "exactEditableReimport": [
+          "PSD",
+          "PSB"
+        ],
+        "name": "Red Apple",
+        "nativeRoundTrip": true,
+        "oneUndo": true,
+        "protectedPixels": 49283
+      },
+      {
+        "changedSelectedPixels": 16253,
+        "duration": "24.692661333 seconds",
+        "exactEditableReimport": [
+          "PSD",
+          "PSB"
+        ],
+        "name": "Blue Mug",
+        "nativeRoundTrip": true,
+        "oneUndo": true,
+        "protectedPixels": 49283
+      }
+    ],
+    "cancelledEditAndHistoryStayedExact": true,
+    "modelTestLogsSHA256": {
+      "qualify-model-debug02.log": "f787195fa206ed5cea1f0a36ff90ba411f6508d2cfc247dcbd8fcb78087a8628",
+      "qualify-model-arm01.log": "ad9d27e979ba9d83b275dc0a3f58d21790f647c6da60ee848156f267400bebe7"
+    },
+    "nativeProbePNGSHA256": {
+      "prompt-0.png": "39da856be1cc2e47514cbae6ddff424c194c39cae2f419c625aca13c77dbfd33",
+      "prompt-1.png": "9dac76ff866d4d706b93b1d69c10789cfd0da91301a49a4535680cb77b0d417e"
+    }
+  },
+  "edgeBlendExperiment": {
+    "integrated": false,
+    "fixtures": {
+      "Red Apple": {
+        "edgeSamples": 505,
+        "mean8BitBefore": 4.38796769716953,
+        "mean8BitAfter": 0.06591654030403278,
+        "changedProtected": 0
+      },
+      "Blue Mug": {
+        "edgeSamples": 505,
+        "mean8BitBefore": 3.95495923586414,
+        "mean8BitAfter": 0.06429876018278663,
+        "changedProtected": 0
+      }
+    }
+  },
+  "preview": {
+    "archiveSHA256": "576a6446d454e439ff036b5d7bebe38c62d75dd32c3b06d0985822f8dd4acb18",
+    "binarySHA256": "3f5519330d2aabbeabadc6e8aa4c82f9bc7f767ac010c797dc2e2ceded076b3f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "37b361d917fc5adaca75fe3da6e53cf9e34ede2b5c6e610026add53abeb6e2dd",
+      "x86_64": "1b5edcb27c223715843704438d741568b3cccdf04fc500d1a17bc55cc389da34"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "xcodeDebugBuildLogSHA256": "d8b84913fca2c55c5367be1f1e9cc6b65071cb6028cc9fffc79d967cbee7b3ce",
+  "archiveValidationTests": 20,
+  "nativeSheetSnapshotsSHA256": {
+    "blank-light.png": "55c80ab0ca23a30699656472fdc8eb83b6438dbba43fac9d70d3d91f6c2a1959",
+    "prompt-dark.png": "d3ceec8fd455c65547f0bee63fbfb037ac934266f6e9c1ac86f4b1ef3201fa89"
+  },
+  "release": "source and diary only",
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models",
+    "https://huggingface.co/Guernika/CoreMLStableDiffusion/tree/9252390067013229c60c491bae7b66a6249752b9"
+  ]
+}

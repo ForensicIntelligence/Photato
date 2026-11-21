@@ -10,14 +10,15 @@
 		0DAB1E49DB4FB6F4450F2B37 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4183A283F9C58AF9A57DEEB4 /* PrivacyInfo.xcprivacy */; };
 		267EA0B88D65C27CE2E37DDE /* libPhotoCraftCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D3743736613E0F5B55B1E5 /* libPhotoCraftCore.a */; };
 		35EAB322B0ED0495E630C108 /* LICENSE-psd-tools in Resources */ = {isa = PBXBuildFile; fileRef = 180D45D6C9E9A5CB1B77DAF9 /* LICENSE-psd-tools */; };
+		3E3DCFD0DEE10A6B6237C9E0 /* LocalDiffusion-Licenses.txt in Resources */ = {isa = PBXBuildFile; fileRef = 77234E510D2AD4AEB5076478 /* LocalDiffusion-Licenses.txt */; };
 		4090C3A1A34E4CAB12B4A711 /* NOTICE in Resources */ = {isa = PBXBuildFile; fileRef = DCF830E1FDD481F89CCA4319 /* NOTICE */; };
 		71D432B35CFB3BF41AF3332E /* libPhotoCraftImaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42B7A810ACFF862380BAF321 /* libPhotoCraftImaging.a */; };
 		991D319585C161DAB03EDE40 /* libPhotoCraftAI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5822783F023AA39D6151FA45 /* libPhotoCraftAI.a */; };
 		9AE57AFDD0D731A9FF85E27F /* LICENSE-MIT in Resources */ = {isa = PBXBuildFile; fileRef = 8312A948D501F66B09C3D2FB /* LICENSE-MIT */; };
+		A9F754F8A8FC33097F707BA4 /* GuernikaKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7FEB24C1CEF81EEB4AE7A624 /* GuernikaKit */; };
 		C1BBE9E9B18FA1A0B99CBE17 /* ATTRIBUTION.md in Resources */ = {isa = PBXBuildFile; fileRef = 33FD1FC211EAD18B28F42F9C /* ATTRIBUTION.md */; };
 		C60942F1804246644CBCB153 /* LICENSE-APACHE in Resources */ = {isa = PBXBuildFile; fileRef = 0CEFC0887BCB21DFE1F9C9EE /* LICENSE-APACHE */; };
 		E7ECCCB917FBF8351388B93B /* ProjectLinks.json in Resources */ = {isa = PBXBuildFile; fileRef = C4A78ACF4208028644F39007 /* ProjectLinks.json */; };
-		F36800000000000000000002 /* FactoryRGB8Gray20.zlib in Resources */ = {isa = PBXBuildFile; fileRef = F36800000000000000000001 /* FactoryRGB8Gray20.zlib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,123 +54,108 @@
 
 /* Begin PBXFileReference section */
 		03047F2D5718367D6E608C03 /* generate-clone-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-clone-oracle.py"; sourceTree = "<group>"; };
+		071B584A6BE8D1E996D6DADE /* prepare-upscale-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "prepare-upscale-model.py"; sourceTree = "<group>"; };
 		075E6071F4AF9AC292E76077 /* generate-hue-saturation-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-hue-saturation-oracle.py"; sourceTree = "<group>"; };
 		0AADED90CA0512A27BA71AEB /* Photato-AppStore.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Photato-AppStore.entitlements"; sourceTree = "<group>"; };
-		0ADE3579A9626E8D20D52F07 /* generate-gradient-method-probes.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-method-probes.cpython-314.pyc"; sourceTree = "<group>"; };
+		0CB276817CD00C1AB1519A46 /* test_inventory_reconciliation.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test_inventory_reconciliation.py; sourceTree = "<group>"; };
 		0CCB099864BC7E5510C5F6A0 /* verify-gradient-library.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-library.py"; sourceTree = "<group>"; };
 		0CEFC0887BCB21DFE1F9C9EE /* LICENSE-APACHE */ = {isa = PBXFileReference; path = "LICENSE-APACHE"; sourceTree = "<group>"; };
 		0E20C58868021ED75AE65ED0 /* generate-psd-channel-oracles.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-psd-channel-oracles.py"; sourceTree = "<group>"; };
+		0E55B7851098A40A91D273FC /* fetch-layer-comp-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "fetch-layer-comp-reference.py"; sourceTree = "<group>"; };
+		0FF04AE38B2225D30B1AB74E /* inspect-psd-layer-comps.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-psd-layer-comps.py"; sourceTree = "<group>"; };
+		1098B406325935A605EFA3CB /* inspect-psd-global-light.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-psd-global-light.py"; sourceTree = "<group>"; };
 		11374C332ABE3B0BBDBA06BE /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		144B189B82879403FCCEE047 /* generate-color-region-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-color-region-oracle.py"; sourceTree = "<group>"; };
-		161C4DCE87417670D54ABFE8 /* generate-gradient-tool-oracle.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-tool-oracle.cpython-314.pyc"; sourceTree = "<group>"; };
 		1754D8A9F485B0A43194897E /* generate-bounded-smooth-palettes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-bounded-smooth-palettes.py"; sourceTree = "<group>"; };
 		180D45D6C9E9A5CB1B77DAF9 /* LICENSE-psd-tools */ = {isa = PBXFileReference; path = "LICENSE-psd-tools"; sourceTree = "<group>"; };
 		192BAF4CAAAE58678E3EE488 /* fetch-psd-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "fetch-psd-fixtures.py"; sourceTree = "<group>"; };
-		19B0F9966A25470746E94F6B /* verify-people-model.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-people-model.cpython-314.pyc"; sourceTree = "<group>"; };
+		19CF26B3CADEA46AFACB87EA /* prepare-inpainting-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "prepare-inpainting-model.py"; sourceTree = "<group>"; };
 		19D7A808863FBA2E65CA8D33 /* verify-gradient-fill.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-fill.py"; sourceTree = "<group>"; };
 		1A79595AEB2A757CAD1BABB0 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
-		1E048AE1AA42F41769385F16 /* inspect-smooth-gradient-probes.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-smooth-gradient-probes.cpython-314.pyc"; sourceTree = "<group>"; };
+		1E34AE4A1930913C93E85FA7 /* reconcile-inventories.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "reconcile-inventories.py"; sourceTree = "<group>"; };
 		21575FFED931A12E3776C713 /* inspect-rgb16-matte-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-rgb16-matte-reference.py"; sourceTree = "<group>"; };
+		255C67F3C2A8A91E35C15E00 /* archive_validation.cpython-314.pyc */ = {isa = PBXFileReference; path = "archive_validation.cpython-314.pyc"; sourceTree = "<group>"; };
 		27FA682E467B5CED4EB2CF2B /* PhotatoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotatoIcon.png; sourceTree = "<group>"; };
 		2B4A00D08E4D2EB26ACFB2E6 /* fetch-adjustment-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "fetch-adjustment-fixtures.py"; sourceTree = "<group>"; };
 		2F046021F4D65C5C30DE6925 /* generate-tonal-steps-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-tonal-steps-oracle.py"; sourceTree = "<group>"; };
-		33115301B828302FED7E1037 /* inspect-gradient-map-limits.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-map-limits.cpython-314.pyc"; sourceTree = "<group>"; };
 		33FD1FC211EAD18B28F42F9C /* ATTRIBUTION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ATTRIBUTION.md; sourceTree = "<group>"; };
 		3613398636F7BA15630737AD /* validate.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = validate.py; sourceTree = "<group>"; };
 		371BDE46A9E2AE068F404052 /* verify-app-package.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-app-package.py"; sourceTree = "<group>"; };
 		3B449462E698F7FD635D62C4 /* generate-healing-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-healing-oracle.py"; sourceTree = "<group>"; };
 		3B89C3AB704AD720D4570BC1 /* generate-psb-reference-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-psb-reference-fixtures.py"; sourceTree = "<group>"; };
 		3E1056D38CADC8F07BC7A1D5 /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F81E4870E3EF86DC9404954 /* inspect-gradient-map-reference.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-map-reference.cpython-314.pyc"; sourceTree = "<group>"; };
 		405B129060151DD64114C76F /* generate-descriptor-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-descriptor-oracle.py"; sourceTree = "<group>"; };
 		4183A283F9C58AF9A57DEEB4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		41A26C612B16371CC2D60B68 /* inspect-gradient-method-reference.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-gradient-method-reference.cpython-314.pyc"; sourceTree = "<group>"; };
+		418E6153DA9F60A03195643D /* verify-upscale-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-upscale-model.py"; sourceTree = "<group>"; };
 		42B7A810ACFF862380BAF321 /* libPhotoCraftImaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotoCraftImaging.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		47F15F18808A340B326E5108 /* audit-development-history.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "audit-development-history.py"; sourceTree = "<group>"; };
-		4C0F20F83F2B8104A47E2F61 /* inspect-rgb16-matte-reference.cpython-314.pyc */ = {isa = PBXFileReference; path = "inspect-rgb16-matte-reference.cpython-314.pyc"; sourceTree = "<group>"; };
 		4D898775B6838E036E12B87D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		4E6C394D5C81D71E26FC99A6 /* prepare-people-model.cpython-314.pyc */ = {isa = PBXFileReference; path = "prepare-people-model.cpython-314.pyc"; sourceTree = "<group>"; };
 		4E7648FA0CE94E167A7321B2 /* inspect-smooth-gradient-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-smooth-gradient-probes.py"; sourceTree = "<group>"; };
 		532A9722C66C67F3D926A090 /* generate-toning-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-toning-oracle.py"; sourceTree = "<group>"; };
 		5822783F023AA39D6151FA45 /* libPhotoCraftAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotoCraftAI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BB0C86981C13FF38BF2C79 /* generate-gradient-map-coordinate-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-map-coordinate-probes.py"; sourceTree = "<group>"; };
 		5981E87FEFCF6C338D813E20 /* generate-gradient-map-probe.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-map-probe.py"; sourceTree = "<group>"; };
-		6037D5488B5AFCE07BC43535 /* verify-gradient-stripes.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-gradient-stripes.cpython-314.pyc"; sourceTree = "<group>"; };
 		63403D20C6E4347DC3BD600B /* generate-gradient-method-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-method-probes.py"; sourceTree = "<group>"; };
-		646536CE8D9AB39631BF3742 /* verify-gradient-fill.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-gradient-fill.cpython-314.pyc"; sourceTree = "<group>"; };
+		64D247F8BE40CE684222FFD5 /* check-stack-statistics.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "check-stack-statistics.py"; sourceTree = "<group>"; };
 		661A30D78EF6398ED1654D2E /* fetch-pattern-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "fetch-pattern-fixtures.py"; sourceTree = "<group>"; };
 		677EFD307BBA6E35F04A3BF3 /* generate-smooth-gradient-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-smooth-gradient-probes.py"; sourceTree = "<group>"; };
 		6A5776DEBEE2D2E351157F86 /* verify-gradient-map.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-map.py"; sourceTree = "<group>"; };
-		6B4BDE72D4FCCB0279B82A3D /* analyze-smooth-neighbors.cpython-314.pyc */ = {isa = PBXFileReference; path = "analyze-smooth-neighbors.cpython-314.pyc"; sourceTree = "<group>"; };
 		6E0632B20D14D066DB261CE0 /* generate-gradient-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-oracle.py"; sourceTree = "<group>"; };
 		6E46260268EE127B2138FFDD /* analyze-smooth-gradient.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "analyze-smooth-gradient.py"; sourceTree = "<group>"; };
 		73FE5CAC9F03213ECF61E800 /* generate-focus-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-focus-oracle.py"; sourceTree = "<group>"; };
-		764FB1EAA875BF47B8944ED1 /* fetch-gradient-fixtures.cpython-314.pyc */ = {isa = PBXFileReference; path = "fetch-gradient-fixtures.cpython-314.pyc"; sourceTree = "<group>"; };
+		77234E510D2AD4AEB5076478 /* LocalDiffusion-Licenses.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "LocalDiffusion-Licenses.txt"; sourceTree = "<group>"; };
 		7741290629D5FA9CDC67EBBD /* generate-smooth-neighbor-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-smooth-neighbor-probes.py"; sourceTree = "<group>"; };
 		7827EA160741A495B093EE46 /* inspect-gradient-map-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-gradient-map-reference.py"; sourceTree = "<group>"; };
 		7ED41D753E91F4CA622F3A51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7FC22B3B62746343BC1772D4 /* verify-people-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-people-model.py"; sourceTree = "<group>"; };
 		800C49CD70B97DD476E45C58 /* convert.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = convert.py; sourceTree = "<group>"; };
+		81BD0D9F7B603E0A94F94B91 /* ci-archive.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "ci-archive.py"; sourceTree = "<group>"; };
 		8312A948D501F66B09C3D2FB /* LICENSE-MIT */ = {isa = PBXFileReference; path = "LICENSE-MIT"; sourceTree = "<group>"; };
+		858B2F3F6D8518263737E884 /* copy-imaging-resources.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-imaging-resources.sh"; sourceTree = "<group>"; };
+		886AE68819C3CDCE85490F1C /* Photato-PCC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Photato-PCC.entitlements"; sourceTree = "<group>"; };
 		89B501547E10784817616B51 /* generate-grid-geometry-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-grid-geometry-fixtures.py"; sourceTree = "<group>"; };
+		89CB3AD165C8AA501C30C4EB /* archive_validation.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = archive_validation.py; sourceTree = "<group>"; };
 		89FF409A821601B7BC92A921 /* ExportOptions-Validation.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ExportOptions-Validation.plist"; sourceTree = "<group>"; };
 		8A332958D09537569C919212 /* generate-blend-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-blend-oracle.py"; sourceTree = "<group>"; };
 		8A380EB9F5709CC646080E8D /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
-		8C847D4534E01E99359851F5 /* verify-app-package.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-app-package.cpython-314.pyc"; sourceTree = "<group>"; };
 		8D833FE991B9F0F1174B65D9 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		8EA61AE5945B2D87D8BEC240 /* analyze-smooth-neighbors.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "analyze-smooth-neighbors.py"; sourceTree = "<group>"; };
-		91FF8181552020F7B29B121E /* audit-development-history.cpython-314.pyc */ = {isa = PBXFileReference; path = "audit-development-history.cpython-314.pyc"; sourceTree = "<group>"; };
 		92CCE703AC1A82CE65310A07 /* generate-psd-stream-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-psd-stream-fixtures.py"; sourceTree = "<group>"; };
 		92D3743736613E0F5B55B1E5 /* libPhotoCraftCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotoCraftCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		954120E2C6159FACEB17389C /* verify-gradient-tool.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-tool.py"; sourceTree = "<group>"; };
 		95BC0298D5569584DC2064AD /* generate-paged-psb-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-paged-psb-fixtures.py"; sourceTree = "<group>"; };
+		95C6B0557C2ABCB43A1D07B9 /* generate-layer-stack-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-layer-stack-reference.py"; sourceTree = "<group>"; };
 		97D68880DB7FA72FAC1840C5 /* generate-histogram-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-histogram-oracle.py"; sourceTree = "<group>"; };
 		9A16B120AC489221182D0BCC /* fetch-gradient-fixtures.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "fetch-gradient-fixtures.py"; sourceTree = "<group>"; };
 		9C8829F2D6FDF63ADB0F1AD7 /* generate-curves-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-curves-oracle.py"; sourceTree = "<group>"; };
-		A352C619CE44C915E3069D3A /* generate-gradient-preset-oracle.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-preset-oracle.cpython-314.pyc"; sourceTree = "<group>"; };
-		A38D5B472FB00A7B9F35E77F /* verify-gradient-library.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-gradient-library.cpython-314.pyc"; sourceTree = "<group>"; };
 		A8411A2B285F40A477F1BCAC /* generate-gradient-map-limit-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-map-limit-probes.py"; sourceTree = "<group>"; };
 		AE880AFA0EE58F9BAE26B415 /* inspect-gradient-map-limits.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-gradient-map-limits.py"; sourceTree = "<group>"; };
 		AF7C4CA44771D04C3CF808B8 /* generate-gradient-preset-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-preset-oracle.py"; sourceTree = "<group>"; };
-		BAE86B256BFD70515DF0F8A5 /* convert.cpython-314.pyc */ = {isa = PBXFileReference; path = "convert.cpython-314.pyc"; sourceTree = "<group>"; };
 		BD3C155362B89C68D673DEA8 /* generate-pattern-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-pattern-oracle.py"; sourceTree = "<group>"; };
+		BDFBFD9D9590E99302825F2A /* verify-xcode-archive.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-xcode-archive.py"; sourceTree = "<group>"; };
 		BE9B7D456CF36B08CB33A55F /* inspect-gradient-method-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-gradient-method-reference.py"; sourceTree = "<group>"; };
 		C4A78ACF4208028644F39007 /* ProjectLinks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ProjectLinks.json; sourceTree = "<group>"; };
 		C510BA956776314ED9FBDBC4 /* ExportOptions-AppStore.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "ExportOptions-AppStore.plist"; sourceTree = "<group>"; };
 		CA9C5A152E60D96CA3BECCCB /* build-xcode-icon.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-xcode-icon.sh"; sourceTree = "<group>"; };
+		CB83F3D4B0D3F341DCFF31C9 /* test_archive_validation.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = test_archive_validation.py; sourceTree = "<group>"; };
 		CBAE0BCBE03AAF8DC533A121 /* generate-smooth-stop-probes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-smooth-stop-probes.py"; sourceTree = "<group>"; };
-		CBB546A2DB13D3B94D3584F9 /* generate-gradient-oracle.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-oracle.cpython-314.pyc"; sourceTree = "<group>"; };
 		D00794B479D4C5973E63A560 /* generate-color-balance-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-color-balance-oracle.py"; sourceTree = "<group>"; };
-		D2ED4811F87158509C37F730 /* analyze-smooth-gradient.cpython-314.pyc */ = {isa = PBXFileReference; path = "analyze-smooth-gradient.cpython-314.pyc"; sourceTree = "<group>"; };
-		D3D08B9F993A04615947BF00 /* validate.cpython-314.pyc */ = {isa = PBXFileReference; path = "validate.cpython-314.pyc"; sourceTree = "<group>"; };
-		D695CAAF04AC697228DDA498 /* generate-smooth-gradient-probes.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-smooth-gradient-probes.cpython-314.pyc"; sourceTree = "<group>"; };
 		D7E6F7D032A7D9381124BF9E /* requirements.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
+		D8E7B40DB32E558718A61700 /* copy-upscale-model.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-upscale-model.sh"; sourceTree = "<group>"; };
 		DAA706F226E4E7E0FCB353F7 /* generate-gradient-tool-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-gradient-tool-oracle.py"; sourceTree = "<group>"; };
 		DC2777689D7A89D6313653A0 /* prepare-people-model.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "prepare-people-model.py"; sourceTree = "<group>"; };
 		DCF830E1FDD481F89CCA4319 /* NOTICE */ = {isa = PBXFileReference; path = NOTICE; sourceTree = "<group>"; };
 		E39DC6110BB3197C16659BD8 /* generate-component-fill-reference.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-component-fill-reference.py"; sourceTree = "<group>"; };
 		E6C0DD0D7170482139184E0C /* generate-rgb16-matte-probe.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-rgb16-matte-probe.py"; sourceTree = "<group>"; };
 		EA647A57E1094B83D7FAB083 /* verify-gradient-stripes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-gradient-stripes.py"; sourceTree = "<group>"; };
-		EC5837E9677024FE4F9BE1A4 /* verify-gradient-map.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-gradient-map.cpython-314.pyc"; sourceTree = "<group>"; };
-		EE2E8A9ABE965229F93FF2E1 /* verify-gradient-tool.cpython-314.pyc */ = {isa = PBXFileReference; path = "verify-gradient-tool.cpython-314.pyc"; sourceTree = "<group>"; };
-		EE92B3B12BA4918D3EBF3F82 /* generate-gradient-map-probe.cpython-314.pyc */ = {isa = PBXFileReference; path = "generate-gradient-map-probe.cpython-314.pyc"; sourceTree = "<group>"; };
+		EF805E1FB1838276D680045F /* GuernikaKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GuernikaKit; path = Vendor/GuernikaKit; sourceTree = SOURCE_ROOT; };
 		F0D771D21CF651233E1D2BC7 /* inspect-bounded-smooth-palettes.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "inspect-bounded-smooth-palettes.py"; sourceTree = "<group>"; };
 		F141843DBA7C77A9760F7CCC /* generate-inpaint-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-inpaint-oracle.py"; sourceTree = "<group>"; };
 		F1E52008D0B0C8DA55558220 /* verify-rgb16-matte.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "verify-rgb16-matte.py"; sourceTree = "<group>"; };
 		F35828DD417398FB04E9755C /* generate-levels-oracle.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = "generate-levels-oracle.py"; sourceTree = "<group>"; };
-		F3DF3170481F20EE48A10CCC /* fetch-pattern-fixtures.cpython-314.pyc */ = {isa = PBXFileReference; path = "fetch-pattern-fixtures.cpython-314.pyc"; sourceTree = "<group>"; };
 		F8196FFE6233909937893D42 /* build-app.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "build-app.sh"; sourceTree = "<group>"; };
 		FA199405C53DF623B10604F9 /* copy-people-model.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "copy-people-model.sh"; sourceTree = "<group>"; };
-		F36800000000000000000001 /* FactoryRGB8Gray20.zlib */ = {isa = PBXFileReference; lastKnownFileType = file; name = FactoryRGB8Gray20.zlib; path = Sources/PhotoCraftImaging/Resources/FactoryRGB8Gray20.zlib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		F36800000000000000000003 /* Imaging resource copied by app */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (Resources/FactoryRGB8Gray20.zlib,);
-			target = 5D5F548C88B20B560E9378DA /* PhotoCraftImaging */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		26A7649588CD3229AB5699A4 /* PhotoCraftAI */ = {
@@ -184,7 +170,6 @@
 		};
 		8888B5271DEE31D456EED780 /* PhotoCraftImaging */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (F36800000000000000000003 /* Imaging resource copied by app */,);
 			explicitFileTypes = {
 			};
 			explicitFolders = (
@@ -223,6 +208,7 @@
 				267EA0B88D65C27CE2E37DDE /* libPhotoCraftCore.a in Frameworks */,
 				71D432B35CFB3BF41AF3332E /* libPhotoCraftImaging.a in Frameworks */,
 				991D319585C161DAB03EDE40 /* libPhotoCraftAI.a in Frameworks */,
+				A9F754F8A8FC33097F707BA4 /* GuernikaKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,14 +228,20 @@
 			children = (
 				6E46260268EE127B2138FFDD /* analyze-smooth-gradient.py */,
 				8EA61AE5945B2D87D8BEC240 /* analyze-smooth-neighbors.py */,
+				89CB3AD165C8AA501C30C4EB /* archive_validation.py */,
 				47F15F18808A340B326E5108 /* audit-development-history.py */,
 				F8196FFE6233909937893D42 /* build-app.sh */,
 				CA9C5A152E60D96CA3BECCCB /* build-xcode-icon.sh */,
+				64D247F8BE40CE684222FFD5 /* check-stack-statistics.py */,
+				81BD0D9F7B603E0A94F94B91 /* ci-archive.py */,
+				858B2F3F6D8518263737E884 /* copy-imaging-resources.sh */,
 				FA199405C53DF623B10604F9 /* copy-people-model.sh */,
+				D8E7B40DB32E558718A61700 /* copy-upscale-model.sh */,
 				C510BA956776314ED9FBDBC4 /* ExportOptions-AppStore.plist */,
 				89FF409A821601B7BC92A921 /* ExportOptions-Validation.plist */,
 				2B4A00D08E4D2EB26ACFB2E6 /* fetch-adjustment-fixtures.py */,
 				9A16B120AC489221182D0BCC /* fetch-gradient-fixtures.py */,
+				0E55B7851098A40A91D273FC /* fetch-layer-comp-reference.py */,
 				661A30D78EF6398ED1654D2E /* fetch-pattern-fixtures.py */,
 				192BAF4CAAAE58678E3EE488 /* fetch-psd-fixtures.py */,
 				8A332958D09537569C919212 /* generate-blend-oracle.py */,
@@ -273,6 +265,7 @@
 				97D68880DB7FA72FAC1840C5 /* generate-histogram-oracle.py */,
 				075E6071F4AF9AC292E76077 /* generate-hue-saturation-oracle.py */,
 				F141843DBA7C77A9760F7CCC /* generate-inpaint-oracle.py */,
+				95C6B0557C2ABCB43A1D07B9 /* generate-layer-stack-reference.py */,
 				F35828DD417398FB04E9755C /* generate-levels-oracle.py */,
 				95BC0298D5569584DC2064AD /* generate-paged-psb-fixtures.py */,
 				BD3C155362B89C68D673DEA8 /* generate-pattern-oracle.py */,
@@ -290,12 +283,18 @@
 				AE880AFA0EE58F9BAE26B415 /* inspect-gradient-map-limits.py */,
 				7827EA160741A495B093EE46 /* inspect-gradient-map-reference.py */,
 				BE9B7D456CF36B08CB33A55F /* inspect-gradient-method-reference.py */,
+				1098B406325935A605EFA3CB /* inspect-psd-global-light.py */,
+				0FF04AE38B2225D30B1AB74E /* inspect-psd-layer-comps.py */,
 				21575FFED931A12E3776C713 /* inspect-rgb16-matte-reference.py */,
 				4E7648FA0CE94E167A7321B2 /* inspect-smooth-gradient-probes.py */,
 				0AADED90CA0512A27BA71AEB /* Photato-AppStore.entitlements */,
+				886AE68819C3CDCE85490F1C /* Photato-PCC.entitlements */,
+				19CF26B3CADEA46AFACB87EA /* prepare-inpainting-model.py */,
 				DC2777689D7A89D6313653A0 /* prepare-people-model.py */,
+				071B584A6BE8D1E996D6DADE /* prepare-upscale-model.py */,
 				4183A283F9C58AF9A57DEEB4 /* PrivacyInfo.xcprivacy */,
 				C4A78ACF4208028644F39007 /* ProjectLinks.json */,
+				1E34AE4A1930913C93E85FA7 /* reconcile-inventories.py */,
 				8A380EB9F5709CC646080E8D /* test.sh */,
 				371BDE46A9E2AE068F404052 /* verify-app-package.py */,
 				19D7A808863FBA2E65CA8D33 /* verify-gradient-fill.py */,
@@ -305,8 +304,11 @@
 				954120E2C6159FACEB17389C /* verify-gradient-tool.py */,
 				7FC22B3B62746343BC1772D4 /* verify-people-model.py */,
 				F1E52008D0B0C8DA55558220 /* verify-rgb16-matte.py */,
+				418E6153DA9F60A03195643D /* verify-upscale-model.py */,
+				BDFBFD9D9590E99302825F2A /* verify-xcode-archive.py */,
 				A0F477110EF3BA601031688D /* __pycache__ */,
 				D72EC7707195EC664C12898B /* people-model */,
+				CCDC5D5A7D959C33186B4714 /* tests */,
 			);
 			path = scripts;
 			sourceTree = "<group>";
@@ -322,42 +324,18 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		982E3736AEFFAC933993F41E /* __pycache__ */ = {
+		91D564AB18903420C68806A5 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				BAE86B256BFD70515DF0F8A5 /* convert.cpython-314.pyc */,
-				D3D08B9F993A04615947BF00 /* validate.cpython-314.pyc */,
+				77234E510D2AD4AEB5076478 /* LocalDiffusion-Licenses.txt */,
 			);
-			path = __pycache__;
+			path = Vendor;
 			sourceTree = "<group>";
 		};
 		A0F477110EF3BA601031688D /* __pycache__ */ = {
 			isa = PBXGroup;
 			children = (
-				D2ED4811F87158509C37F730 /* analyze-smooth-gradient.cpython-314.pyc */,
-				6B4BDE72D4FCCB0279B82A3D /* analyze-smooth-neighbors.cpython-314.pyc */,
-				91FF8181552020F7B29B121E /* audit-development-history.cpython-314.pyc */,
-				764FB1EAA875BF47B8944ED1 /* fetch-gradient-fixtures.cpython-314.pyc */,
-				F3DF3170481F20EE48A10CCC /* fetch-pattern-fixtures.cpython-314.pyc */,
-				EE92B3B12BA4918D3EBF3F82 /* generate-gradient-map-probe.cpython-314.pyc */,
-				0ADE3579A9626E8D20D52F07 /* generate-gradient-method-probes.cpython-314.pyc */,
-				CBB546A2DB13D3B94D3584F9 /* generate-gradient-oracle.cpython-314.pyc */,
-				A352C619CE44C915E3069D3A /* generate-gradient-preset-oracle.cpython-314.pyc */,
-				161C4DCE87417670D54ABFE8 /* generate-gradient-tool-oracle.cpython-314.pyc */,
-				D695CAAF04AC697228DDA498 /* generate-smooth-gradient-probes.cpython-314.pyc */,
-				33115301B828302FED7E1037 /* inspect-gradient-map-limits.cpython-314.pyc */,
-				3F81E4870E3EF86DC9404954 /* inspect-gradient-map-reference.cpython-314.pyc */,
-				41A26C612B16371CC2D60B68 /* inspect-gradient-method-reference.cpython-314.pyc */,
-				4C0F20F83F2B8104A47E2F61 /* inspect-rgb16-matte-reference.cpython-314.pyc */,
-				1E048AE1AA42F41769385F16 /* inspect-smooth-gradient-probes.cpython-314.pyc */,
-				4E6C394D5C81D71E26FC99A6 /* prepare-people-model.cpython-314.pyc */,
-				8C847D4534E01E99359851F5 /* verify-app-package.cpython-314.pyc */,
-				646536CE8D9AB39631BF3742 /* verify-gradient-fill.cpython-314.pyc */,
-				A38D5B472FB00A7B9F35E77F /* verify-gradient-library.cpython-314.pyc */,
-				EC5837E9677024FE4F9BE1A4 /* verify-gradient-map.cpython-314.pyc */,
-				6037D5488B5AFCE07BC43535 /* verify-gradient-stripes.cpython-314.pyc */,
-				EE2E8A9ABE965229F93FF2E1 /* verify-gradient-tool.cpython-314.pyc */,
-				19B0F9966A25470746E94F6B /* verify-people-model.cpython-314.pyc */,
+				255C67F3C2A8A91E35C15E00 /* archive_validation.cpython-314.pyc */,
 			);
 			path = __pycache__;
 			sourceTree = "<group>";
@@ -365,7 +343,6 @@
 		AA1116B5C4D90447A2DF0EE4 = {
 			isa = PBXGroup;
 			children = (
-				F36800000000000000000001 /* FactoryRGB8Gray20.zlib */,
 				33FD1FC211EAD18B28F42F9C /* ATTRIBUTION.md */,
 				8D833FE991B9F0F1174B65D9 /* CONTRIBUTING.md */,
 				0CEFC0887BCB21DFE1F9C9EE /* LICENSE-APACHE */,
@@ -376,10 +353,21 @@
 				1A79595AEB2A757CAD1BABB0 /* project.yml */,
 				7ED41D753E91F4CA622F3A51 /* README.md */,
 				27FD9E4018E38AE48892DA84 /* Assets */,
+				FA43C177F9805FB0F23060EB /* Packages */,
 				44A052706AD71061BA9AF527 /* scripts */,
 				75B6D6FE99E58556A2123BAC /* Sources */,
+				91D564AB18903420C68806A5 /* Vendor */,
 				CD4247B2EB9FC05C30066596 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		CCDC5D5A7D959C33186B4714 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				CB83F3D4B0D3F341DCFF31C9 /* test_archive_validation.py */,
+				0CB276817CD00C1AB1519A46 /* test_inventory_reconciliation.py */,
+			);
+			path = tests;
 			sourceTree = "<group>";
 		};
 		CD4247B2EB9FC05C30066596 /* Products */ = {
@@ -399,9 +387,16 @@
 				800C49CD70B97DD476E45C58 /* convert.py */,
 				D7E6F7D032A7D9381124BF9E /* requirements.txt */,
 				3613398636F7BA15630737AD /* validate.py */,
-				982E3736AEFFAC933993F41E /* __pycache__ */,
 			);
 			path = "people-model";
+			sourceTree = "<group>";
+		};
+		FA43C177F9805FB0F23060EB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				EF805E1FB1838276D680045F /* GuernikaKit */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -439,12 +434,14 @@
 			);
 			dependencies = (
 				C6007A4158F2CDEED14197CE /* PBXTargetDependency */,
+				E21EDA79F8B04D9BD3C3638C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				8888B5271DEE31D456EED780 /* PhotoCraftImaging */,
 			);
 			name = PhotoCraftImaging;
 			packageProductDependencies = (
+				CF8D1620D1A355129BDA32F1 /* GuernikaKit */,
 			);
 			productName = PhotoCraftImaging;
 			productReference = 42B7A810ACFF862380BAF321 /* libPhotoCraftImaging.a */;
@@ -493,6 +490,7 @@
 			);
 			name = Photato;
 			packageProductDependencies = (
+				7FEB24C1CEF81EEB4AE7A624 /* GuernikaKit */,
 			);
 			productName = Photato;
 			productReference = 3E1056D38CADC8F07BC7A1D5 /* Photato.app */;
@@ -527,6 +525,9 @@
 			);
 			mainGroup = AA1116B5C4D90447A2DF0EE4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A30636525C07321A8440A9E7 /* XCLocalSwiftPackageReference "Vendor/GuernikaKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CD4247B2EB9FC05C30066596 /* Products */;
 			projectDirPath = "";
@@ -545,11 +546,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F36800000000000000000002 /* FactoryRGB8Gray20.zlib in Resources */,
 				C1BBE9E9B18FA1A0B99CBE17 /* ATTRIBUTION.md in Resources */,
 				C60942F1804246644CBCB153 /* LICENSE-APACHE in Resources */,
 				9AE57AFDD0D731A9FF85E27F /* LICENSE-MIT in Resources */,
 				35EAB322B0ED0495E630C108 /* LICENSE-psd-tools in Resources */,
+				3E3DCFD0DEE10A6B6237C9E0 /* LocalDiffusion-Licenses.txt in Resources */,
 				4090C3A1A34E4CAB12B4A711 /* NOTICE in Resources */,
 				0DAB1E49DB4FB6F4450F2B37 /* PrivacyInfo.xcprivacy in Resources */,
 				E7ECCCB917FBF8351388B93B /* ProjectLinks.json in Resources */,
@@ -685,6 +686,10 @@
 			isa = PBXTargetDependency;
 			target = 5D5F548C88B20B560E9378DA /* PhotoCraftImaging */;
 			targetProxy = 29EF39AE53E4074E8C27365A /* PBXContainerItemProxy */;
+		};
+		E21EDA79F8B04D9BD3C3638C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = CF8D1620D1A355129BDA32F1 /* GuernikaKit */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1144,6 +1149,24 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A30636525C07321A8440A9E7 /* XCLocalSwiftPackageReference "Vendor/GuernikaKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Vendor/GuernikaKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7FEB24C1CEF81EEB4AE7A624 /* GuernikaKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GuernikaKit;
+		};
+		CF8D1620D1A355129BDA32F1 /* GuernikaKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = GuernikaKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6210057B71D352C78FBFAE99 /* Project object */;
 }

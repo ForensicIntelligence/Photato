@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 700 — Add prompted Generative Fill on Apple Silicon
+
+Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512.
+
+Using the same source, selection and seed, a red-apple prompt and a blue-mug prompt produced distinct subjects. The native and authenticated HTTP paths matched RGB8 output bytes for the same prompt and seed. Both prompts preserved all 49,283 protected pixels. The editable mask retained feathering and a protected hole, and one Undo restored the original document. Both edits reopened in Photato with exact RGB8 composites and mask coverage in native, PSD and PSB files.
+
+477 of 478 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 699’s assertions. Both signed preview slices opened offscreen. The checked-in Xcode project built in arm64 Debug, and the sheet was inspected offscreen in Light and Dark. Hard selection edges can show a tonal seam. Editable variation sets, Adobe Execute Actions descriptor compatibility and Firefly output equivalence remain open. The installed Photoshop session timed out on both scripting queries.
+
+[Development record](DEVLOG.md#dev-step-700) · [Model setup](LOCAL_GENERATIVE_FILL.md).
+
 ## 2026-11-21 — Step 699 — Add local Generative Fill from surrounding pixels
 
 Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step.
@@ -1597,14 +1607,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:699 -->
+<!-- current-status-step:700 -->
 ## Current development status — 21 November 2026
 
-Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step.
+Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512.
 
-476 of 477 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with identical assertions in build 698. Both signed preview slices opened offscreen.
+477 of 478 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 699’s assertions. Both signed preview slices opened offscreen. The checked-in Xcode project built in arm64 Debug, and the sheet was inspected offscreen in Light and Dark.
 
-[Source checkpoint 699](SOURCE_PUBLICATION_699.md) · [Development record](DEVLOG.md#dev-step-699).
+[Source checkpoint 700](SOURCE_PUBLICATION_700.md) · [Development record](DEVLOG.md#dev-step-700).
 
 <!-- current-status:end -->
 
@@ -2510,6 +2520,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 697 | [Reduce Fit and proof previews for large uniform Drop Shadows](DEVLOG.md#dev-step-697) |
 | 2026-11-21 | 698 | [Read raster alpha directly for regional Drop Shadows](DEVLOG.md#dev-step-698) |
 | 2026-11-21 | 699 | [Add local Generative Fill from surrounding pixels](DEVLOG.md#dev-step-699) |
+| 2026-11-21 | 700 | [Add prompted Generative Fill on Apple Silicon](DEVLOG.md#dev-step-700) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

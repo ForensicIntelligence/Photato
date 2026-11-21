@@ -112,7 +112,8 @@ archs = subprocess.check_output(['lipo', '-archs', str(binary)], text=True).stri
 assert set(archs) == {'arm64', 'x86_64'}
 versions = subprocess.check_output(['xcrun', 'vtool', '-show-build', str(binary)], text=True)
 assert versions.count('minos 14.0') == 2
-licenses = ['LICENSE-MIT', 'LICENSE-APACHE', 'LICENSE-psd-tools', 'NOTICE', 'ATTRIBUTION.md']
+licenses = ['LICENSE-MIT', 'LICENSE-APACHE', 'LICENSE-psd-tools', 'NOTICE', 'ATTRIBUTION.md',
+            'LocalDiffusion-Licenses.txt']
 for name in licenses:
     assert (resources / name).read_bytes() == (root / name).read_bytes(), name
 assert (resources / 'ProjectLinks.json').read_bytes() == (root / 'scripts/ProjectLinks.json').read_bytes()

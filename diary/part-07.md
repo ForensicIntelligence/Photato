@@ -403,14 +403,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:699 -->
+<!-- current-status-step:700 -->
 ## Current development status — 21 November 2026
 
-Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step.
+Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512.
 
-476 of 477 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with identical assertions in build 698. Both signed preview slices opened offscreen.
+477 of 478 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 699’s assertions. Both signed preview slices opened offscreen. The checked-in Xcode project built in arm64 Debug, and the sheet was inspected offscreen in Light and Dark.
 
-[Source checkpoint 699](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_699.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-699).
+[Source checkpoint 700](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_700.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-700).
 
 <!-- current-status:end -->
 
@@ -1316,5 +1316,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 697 | [Reduce Fit and proof previews for large uniform Drop Shadows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-697) |
 | 2026-11-21 | 698 | [Read raster alpha directly for regional Drop Shadows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-698) |
 | 2026-11-21 | 699 | [Add local Generative Fill from surrounding pixels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-699) |
+| 2026-11-21 | 700 | [Add prompted Generative Fill on Apple Silicon](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-700) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

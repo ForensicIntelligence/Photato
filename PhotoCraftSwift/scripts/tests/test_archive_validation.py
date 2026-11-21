@@ -128,6 +128,25 @@ class ArchiveValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ArchiveError, "LICENSE-RealESRGAN"):
             verify_archive(archive, self.source, mode="ci-unsigned")
 
+    def test_local_diffusion_sources_and_bundled_licenses_are_source_bound(self):
+        source, archive = self.copied_source(), self.archive()
+        vendor = source / "Vendor"
+        runtime = vendor / "GuernikaKit/Sources/Pipeline.swift"
+        runtime.parent.mkdir(parents=True)
+        runtime.write_text("enum Pipeline {}\n")
+        licenses = vendor / "LocalDiffusion-Licenses.txt"
+        shutil.copy2(PROJECT / "Vendor" / licenses.name, licenses)
+        bundled = archive / "Products/Applications/Photato.app/Contents/Resources" / licenses.name
+        with self.assertRaisesRegex(ArchiveError, "Exact bundled local diffusion licenses"):
+            verify_archive(archive, source, mode="ci-unsigned")
+        shutil.copy2(licenses, bundled)
+        manifest = input_manifest(source)
+        self.assertIn("Vendor/GuernikaKit/Sources/Pipeline.swift", manifest)
+        self.assertTrue(verify_archive(archive, source, mode="ci-unsigned", source=manifest)["passed"])
+        bundled.write_text("Changed license\n")
+        with self.assertRaisesRegex(ArchiveError, "Exact bundled local diffusion licenses"):
+            verify_archive(archive, source, mode="ci-unsigned")
+
     def test_unsigned_archive_matches_real_universal_UUIDs_and_source_resources(self):
         result = verify_archive(self.golden, self.source, mode="ci-unsigned", source=input_manifest(self.source))
         self.assertTrue(result["passed"])

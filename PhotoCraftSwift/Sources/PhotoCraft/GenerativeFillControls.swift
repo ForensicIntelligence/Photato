@@ -5,8 +5,10 @@ import PhotoCraftImaging
 
 enum GenerativeFillModelPreference {
   static let key = "localGenerativeFillModel"
+  static let promptKey = "localPromptGenerativeFillModel"
 
-  static func url(defaults: UserDefaults = .standard) -> URL? {
+  static func url(prompted: Bool = false, defaults: UserDefaults = .standard) -> URL? {
+    let key = prompted ? promptKey : Self.key
     guard let data = defaults.data(forKey: key) else { return nil }
     for options: URL.BookmarkResolutionOptions in [
       [.withSecurityScope, .withoutUI, .withoutMounting], [.withoutUI, .withoutMounting]
@@ -31,9 +33,15 @@ enum GenerativeFillModelPreference {
 
 @Observable @MainActor final class GenerativeFillDraft: Identifiable {
   var model = GenerativeFillModelPreference.url()
+  var promptModel = GenerativeFillModelPreference.url(prompted: true)
+  var prompt = ""
+  var seed = UInt32.random(in: .min ... .max)
   var selectingModel = false
   var generating = false
   var error: String?
+
+  var prompted: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+  var selectedModel: URL? { prompted ? promptModel : model }
 }
 
 extension EditorStore {
@@ -55,18 +63,18 @@ extension EditorStore {
     generativeFillDraft = nil
   }
 
-  func generateFill(_ draft: GenerativeFillDraft, prepare: @escaping @Sendable (CraftDocument, URL) throws -> Command = {
-    try LocalGenerativeFill.prepare($0, model: $1)
-  }) {
+  func generateFill(_ draft: GenerativeFillDraft) {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
-      !editingComponent, !editingMask, let url = draft.model else { return }
+      !editingComponent, !editingMask, let url = draft.selectedModel else { return }
+    let prompt = draft.prompt, seed = draft.seed
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
     draft.error = nil
     draft.generating = true
     geometryTask = Task { [weak self, weak draft] in
       let worker = Task.detached(priority: .userInitiated) {
-        try PreparedEdit(command: prepare(original, url), document: original)
+        try PreparedEdit(command: LocalGenerativeFill.prepare(original, model: url, prompt: prompt, seed: seed),
+          document: original)
       }
       defer {
         draft?.generating = false
@@ -107,12 +115,25 @@ struct GenerativeFillSheet: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text("Generative Fill").font(.headline)
-      Text("Fill the selection from surrounding pixels. The result is added on a layer with an editable mask.")
+      TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
+        .disabled(draft.selectingModel || draft.generating)
+        .onChange(of: draft.prompt) { _, _ in draft.error = nil }
+      Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")
+        .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
-      HStack {
-        LabeledContent("Local model", value: draft.model?.deletingPathExtension().lastPathComponent ?? "Choose LaMa512")
-        Button(draft.model == nil ? "Choose Model…" : "Change…", action: chooseModel)
-          .disabled(draft.selectingModel || draft.generating)
+      LabeledContent(draft.prompted ? "Local prompt model" : "Local context model") {
+        HStack(spacing: 8) {
+          if let model = draft.selectedModel {
+            Text(draft.prompted ? "Stable Diffusion 1.5" : "LaMa512")
+              .lineLimit(1)
+              .help(model.lastPathComponent)
+          }
+          Button(draft.selectedModel == nil ? "Choose Model…" : "Change…", action: chooseModel)
+            .disabled(draft.selectingModel || draft.generating)
+        }
+      }
+      if draft.selectedModel == nil {
+        Link("Model setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md")!)
       }
       if draft.selectingModel || draft.generating {
         ProgressView(draft.generating ? "Filling selection on this Mac…" : "Checking model…")
@@ -124,7 +145,7 @@ struct GenerativeFillSheet: View {
         Button("Cancel") { store.cancelGenerativeFill() }.keyboardShortcut(.cancelAction)
         Button("Generate") { store.generateFill(draft) }
           .keyboardShortcut(.defaultAction)
-          .disabled(draft.model == nil || draft.selectingModel || draft.generating)
+          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating)
       }
     }
     .padding(20)
@@ -133,17 +154,18 @@ struct GenerativeFillSheet: View {
   }
 
   private func chooseModel() {
+    let prompted = draft.prompted
     let panel = NSOpenPanel()
     panel.canChooseDirectories = true
-    panel.canChooseFiles = true
+    panel.canChooseFiles = !prompted
     panel.allowsMultipleSelection = false
     panel.prompt = "Choose Model"
-    panel.message = "Select the compiled LaMa512.mlmodelc package."
+    panel.message = prompted ? "Select the extracted Runway_SD1.5_Inpaint folder." : "Select the compiled LaMa512.mlmodelc package."
     panel.begin { response in
       guard response == .OK, let url = panel.url else { return }
       Task { @MainActor in
         guard store.generativeFillDraft === draft, !draft.generating, !draft.selectingModel else { return }
-        guard url.pathExtension.lowercased() == "mlmodelc" else {
+        guard prompted || url.pathExtension.lowercased() == "mlmodelc" else {
           draft.error = "Choose a compiled .mlmodelc package."; return
         }
         draft.selectingModel = true
@@ -154,11 +176,20 @@ struct GenerativeFillSheet: View {
           try await Task.detached(priority: .userInitiated) {
             let access = url.startAccessingSecurityScopedResource()
             defer { if access { url.stopAccessingSecurityScopedResource() } }
-            try LocalGenerativeFill.validateModel(url)
+            if prompted {
+              try LocalGenerativeFill.validatePromptModel(url)
+            } else {
+              try LocalGenerativeFill.validateModel(url)
+            }
           }.value
           guard store.generativeFillDraft === draft else { return }
-          UserDefaults.standard.set(bookmark, forKey: GenerativeFillModelPreference.key)
-          draft.model = GenerativeFillModelPreference.url()
+          let key = prompted ? GenerativeFillModelPreference.promptKey : GenerativeFillModelPreference.key
+          UserDefaults.standard.set(bookmark, forKey: key)
+          if prompted {
+            draft.promptModel = GenerativeFillModelPreference.url(prompted: true)
+          } else {
+            draft.model = GenerativeFillModelPreference.url()
+          }
         } catch { draft.error = error.localizedDescription }
       }
     }

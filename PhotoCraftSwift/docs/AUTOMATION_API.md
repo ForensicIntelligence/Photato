@@ -4099,6 +4099,8 @@ The existing `document.convertMode` command and compatible conversion adapter us
 
 ## Local Generative Fill
 
-Choose a compiled LaMa512 model in the native Generative Fill sheet before using the API. The document state `generativeFill` reports platform support, model configuration, selection eligibility and the current operation ID.
+Configure LaMa512 for blank prompts and the Runway Stable Diffusion inpaint model for text prompts in the native Generative Fill sheet. The document state reports platform support, configuration and selection eligibility for each model, and the active operation ID. [Model setup](LOCAL_GENERATIVE_FILL.md)
 
-Send `generativeFill.apply` with the current document revision and empty parameters to the existing document command route. The committed result adds a masked raster layer and one Undo step. Send `generativeFill.cancel` with `operationID` while an API operation is active. The pinned Apple Silicon model runs on this Mac. The desktop and HTTP paths use the same edit. Prompt-driven generation and the Adobe Execute Actions form remain open. [Setup and qualification](GENERATIVE_FILL_699.md)
+Send `generativeFill.apply` to the existing document commands route with the current revision. Empty parameters continue to use LaMa512. For the prompt model, use `{"prompt":"a blue ceramic mug","seed":472122}`. The seed is optional and ranges from 0 through 4,294,967,295. Model selection stays local to the Mac. The result adds an editable masked raster layer above the visible stack with one Undo step.
+
+Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)

@@ -4,6 +4,7 @@ Photato, is an independent native Swift fork/port of [PhotoCraft](https://github
 
 | Content | Source | License / terms |
 |---|---|---|
+| Local prompt inpainting runtime | Pinned [GuernikaKit, RandomGenerator and Schedulers](Vendor/README.md) Swift source. GuernikaKit builds on Apple ML Stable Diffusion. | [MIT and Apache-2.0](Vendor/LocalDiffusion-Licenses.txt). Model weights have separate [terms and provenance](docs/LOCAL_GENERATIVE_FILL.md). |
 | Lens Blur | PhotoCraft crates/algo/src/blur2.rs polygon iris/depth/highlight/noise equations and engine/src/filters_ext.rs; native Swift prefix-sum implementation with explicit clamped edges, live mask/channel references and independent SwiftUI/API integration. Exact Rust/Adobe pixel equivalence is unqualified. | MIT OR Apache-2.0 |
 | Filter Gallery catalogue, 47 artistic effects, procedural textures and synthetic reference images | PhotoCraft crates/algo/src/{artistic,artistic_fx,fxutil,noise}.rs; native Swift translation with independent SwiftUI workspace and shared command/API integration. Fixtures execute original Rust kernels through sequential/RGBA adapters. These are upstream clean-room approximations, not Adobe algorithms or artwork. | MIT OR Apache-2.0 |
 | Live shapes | Rectangle/ellipse/polygon geometry adapted from PhotoCraft crates/vector/src/shapes.rs; independent native Swift arrows, retained components, stroke/paint renderer, UI, presets and API. Adobe desktop documentation guides interaction; no Adobe preset artwork copied. | MIT OR Apache-2.0 |

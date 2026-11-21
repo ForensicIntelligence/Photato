@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 700.** Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512. [Model setup](docs/LOCAL_GENERATIVE_FILL.md) · [Qualification](docs/SOURCE_PUBLICATION_700.md).
+
 **Source checkpoint 699.** Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step. [Qualification](docs/SOURCE_PUBLICATION_699.md).
 
 **Source checkpoint 698.** Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor. [Qualification](docs/SOURCE_PUBLICATION_698.md).

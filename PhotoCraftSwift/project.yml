@@ -11,6 +11,9 @@ configs:
   Debug: debug
   Release: release
   AppStore: release
+packages:
+  GuernikaKit:
+    path: Vendor/GuernikaKit
 settings:
   base:
     SWIFT_VERSION: "6.0"
@@ -57,6 +60,7 @@ targets:
     dependencies:
       - target: PhotoCraftCore
         embed: false
+      - package: GuernikaKit
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: local.photocraft.swift.imaging
@@ -85,6 +89,8 @@ targets:
         buildPhase: resources
       - path: LICENSE-psd-tools
         buildPhase: resources
+      - path: Vendor/LocalDiffusion-Licenses.txt
+        buildPhase: resources
       - path: NOTICE
         buildPhase: resources
       - path: ATTRIBUTION.md
@@ -102,6 +108,7 @@ targets:
         embed: false
       - target: PhotoCraftAI
         embed: false
+      - package: GuernikaKit
     settings:
       base:
         PRODUCT_NAME: Photato

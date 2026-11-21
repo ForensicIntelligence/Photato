@@ -31,7 +31,7 @@ def write_json(path: Path, value: object) -> None:
 def input_manifest(root: Path) -> dict[str, str]:
     root = root.resolve()
     files: set[Path] = set()
-    for folder in ["Sources", "Tests", "Assets", "scripts", "Photato.xcodeproj", "ci", "docs/contracts"]:
+    for folder in ["Sources", "Tests", "Assets", "Vendor", "scripts", "Photato.xcodeproj", "ci", "docs/contracts"]:
         base = root / folder
         if base.is_dir():
             files.update(path for path in base.rglob("*") if path.is_file())
@@ -179,6 +179,11 @@ def verify_archive(archive: Path, root: Path, *, mode: str = "signed",
         reference, bundled = root / name, inside(archive, resources / Path(name).name)
         require("Exact bundled " + Path(name).name, reference.is_file() and bundled.is_file()
                 and digest(reference) == digest(bundled))
+    if (root / "Vendor/GuernikaKit").is_dir():
+        reference = root / "Vendor/LocalDiffusion-Licenses.txt"
+        bundled = inside(archive, resources / reference.name)
+        require("Exact bundled local diffusion licenses",
+                reference.is_file() and bundled.is_file() and digest(reference) == digest(bundled))
     require("App icon included", (resources / "Photato.icns").is_file())
     require("No test bundles or document fixtures", not any(
         path.name == "Tests" or path.name.endswith("Tests.bundle")

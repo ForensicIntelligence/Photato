@@ -8,9 +8,13 @@ let package = Package(
     .executable(name: "Photato", targets: ["PhotoCraft"]),
     .library(name: "PhotoCraftCore", targets: ["PhotoCraftCore"]),
   ],
+  dependencies: [.package(path: "Vendor/GuernikaKit")],
   targets: [
     .target(name: "PhotoCraftCore"),
-    .target(name: "PhotoCraftImaging", dependencies: ["PhotoCraftCore"], resources: [.copy("Resources/FactoryRGB8Gray20.zlib")]),
+    .target(
+      name: "PhotoCraftImaging",
+      dependencies: ["PhotoCraftCore", .product(name: "GuernikaKit", package: "GuernikaKit")],
+      resources: [.copy("Resources/FactoryRGB8Gray20.zlib")]),
     .target(name: "PhotoCraftAI"),
     .executableTarget(
       name: "PhotoCraft", dependencies: ["PhotoCraftCore", "PhotoCraftImaging", "PhotoCraftAI"]),

@@ -1609,14 +1609,15 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if command.name == GenerativeFillAPI.run {
-        guard store.canBeginGenerativeFill, let model = GenerativeFillModelPreference.url() else {
+        let options = try command.generativeFillOptions()
+        guard store.canBeginGenerativeFill, let model = GenerativeFillModelPreference.url(prompted: !options.prompt.isEmpty) else {
           throw AutomationFailure(status: 422, message: "Select part of a still RGB image and choose a local model in Generative Fill.")
         }
         let operation = UUID()
         store.generativeFillOperationID = operation
         defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in
-          try LocalGenerativeFill.prepare(original, model: model)
+          try LocalGenerativeFill.prepare(original, model: model, prompt: options.prompt, seed: options.seed)
         }
         store.generativeFillOperationID = nil
         return .json(state(share, document: document))

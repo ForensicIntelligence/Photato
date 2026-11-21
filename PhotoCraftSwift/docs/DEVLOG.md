@@ -718,7 +718,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 697 | 2026-11-21 | [Reduce Fit and proof previews for large uniform Drop Shadows](#dev-step-697) |
 | 698 | 2026-11-21 | [Read raster alpha directly for regional Drop Shadows](#dev-step-698) |
 | 699 | 2026-11-21 | [Add local Generative Fill from surrounding pixels](#dev-step-699) |
+| 700 | 2026-11-21 | [Add prompted Generative Fill on Apple Silicon](#dev-step-700) |
 <!-- history-index:end -->
+
+<a id="dev-step-700"></a>
+
+## 2026-11-21 — Add prompted Generative Fill on Apple Silicon
+
+Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512.
+
+Photato carries the selection as a binary inference mask and retains its original 8-bit coverage for the output layer. Model bookmarks remain local to the Mac. The HTTP command gained optional prompt and seed fields.
+
+The first Xcode link needed the static Swift package product on the app target as well as Imaging. Offscreen inspection caught the truncated Stable Diffusion folder name. The API regression now checks both optional fields and verifies that empty parameters still work.
+
+Using the same source, selection and seed, a red-apple prompt and a blue-mug prompt produced distinct subjects. The native and authenticated HTTP paths matched RGB8 output bytes for the same prompt and seed. Both prompts preserved all 49,283 protected pixels. The editable mask retained feathering and a protected hole, and one Undo restored the original document. Both edits reopened in Photato with exact RGB8 composites and mask coverage in native, PSD and PSB files.
+
+477 of 478 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 699’s assertions. Both signed preview slices opened offscreen. The checked-in Xcode project built in arm64 Debug, and the sheet was inspected offscreen in Light and Dark. Hard selection edges can show a tonal seam. Editable variation sets, Adobe Execute Actions descriptor compatibility and Firefly output equivalence remain open. The installed Photoshop session timed out on both scripting queries. The overall desktop workflow estimate remains 50%.
+
+[Model setup](LOCAL_GENERATIVE_FILL.md) · [Qualification](SOURCE_PUBLICATION_700.md).
 
 <a id="dev-step-699"></a>
 

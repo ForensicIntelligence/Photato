@@ -467,7 +467,8 @@ final class AutomationTests: XCTestCase {
     }
     XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count, AutomationTests.expectedCommandCount)
     let localFill = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == GenerativeFillAPI.run })
-    XCTAssertTrue(localFill.parameters.isEmpty)
+    XCTAssertEqual(Set(localFill.parameters.keys), ["prompt", "seed"])
+    XCTAssertEqual(localFill.optionalParameters, ["prompt", "seed"])
     let cancellation = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == GenerativeFillAPI.cancel })
     XCTAssertEqual(Set(cancellation.parameters.keys), ["operationID"])
     for definition in AutomationCommand.definitions {

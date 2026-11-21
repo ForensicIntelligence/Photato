@@ -5,7 +5,7 @@ import PhotoCraftCore
 package enum LocalGenerativeFill {
   package static let maximumSelectionSide = 4096
   package static let maximumSelectionPixels = 4_194_304
-  private static let side = 512
+  static let side = 512
 
   package static var supported: Bool {
     #if arch(arm64)
