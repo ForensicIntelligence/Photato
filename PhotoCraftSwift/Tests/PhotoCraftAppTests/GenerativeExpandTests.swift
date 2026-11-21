@@ -161,6 +161,104 @@ final class GenerativeExpandTests: XCTestCase {
     XCTAssertEqual(session.document, original)
   }
 
+  func testTiledVariationRegenerationUsesSavedSourceAndKeepsExistingEdits() throws {
+    let width = 4_104, height = 16
+    var source = try CraftDocument(width: width, height: height)
+    let original = try Surface(width: width, height: height, fill: Pixel(0.24, 0.6, 0.8))
+    source.layers[0].content = .raster(original)
+    let request = CropRequest(x: 0, y: 0, width: width, height: 27)
+    let first = try Surface(width: 512, height: 512, fill: Pixel(0.15, 0.37, 0.75))
+    let next = try Surface(width: 512, height: 512, fill: Pixel(0.75, 0.25, 0.17))
+    var expanded = source
+    var fingerprints: [Data] = []
+    try GenerativeExpand.prepare(request, in: source, prompt: "first border", seed: 700, count: 1) { image, mask in
+      fingerprints.append(image.withUnsafeBytes { Data($0) })
+      XCTAssertTrue(mask.contains(0))
+      return [first]
+    }.apply(to: &expanded)
+    let outer = try XCTUnwrap(expanded.layers.last)
+    let record = try XCTUnwrap(GenerativeFillVariations.read(outer))
+    XCTAssertTrue(record.hasSavedContext)
+    XCTAssertEqual(record.entries.count, 1)
+    XCTAssertGreaterThan(fingerprints.count, 1)
+    XCTAssertTrue(outer.smartObject?.sourceBytes.isFileBacked == true)
+    let originals = try [
+      NativeArchive.decode(NativeArchive.encodeChunked(expanded)),
+      PSDCodec.read(PSDCodec.writeRasterLayers(expanded, format: .psd)),
+      PSDCodec.read(PSDCodec.writeRasterLayers(expanded, format: .psb)),
+    ]
+    for (index, loaded) in originals.enumerated() {
+      var edited = loaded
+      edited.layers[0].content = .raster(try Surface(width: width, height: height, fill: .white))
+      let layerID = try XCTUnwrap(edited.layers.last?.id)
+      var mask = try XCTUnwrap(edited.layers.last?.mask)
+      mask.setPixel(x: 5, y: 3, .black)
+      edited.layers[1].mask = mask
+      var inputs: [Data] = []
+      let more = try GenerativeFillVariations.append(to: layerID, in: edited, prompt: "different border", seed: 701, count: 1) { prompt, seeds, image, _ in
+        XCTAssertEqual(prompt, "different border")
+        XCTAssertEqual(seeds, [701])
+        inputs.append(image.withUnsafeBytes { Data($0) })
+        return [first]
+      }
+      XCTAssertEqual(inputs, fingerprints)
+      var session = EditorSession(document: edited)
+      try session.executePrepared(PreparedEdit(command: more, document: edited))
+      let updatedLayer = try XCTUnwrap(session.document.layers.last)
+      let updatedRecord = try XCTUnwrap(GenerativeFillVariations.read(updatedLayer))
+      XCTAssertEqual(updatedRecord.entries.first, record.entries.first)
+      XCTAssertEqual(updatedRecord.entries.last?.prompt, "different border")
+      XCTAssertEqual(updatedLayer.mask, mask)
+      XCTAssertEqual(session.document.layers.first, edited.layers.first)
+      XCTAssertEqual(session.undoStack.count, 1)
+      try session.undo()
+      XCTAssertEqual(session.document, edited)
+      if index == 2 {
+        let reference = try XCTUnwrap(record.entries.first?.id)
+        var similarInputs: [Data] = []
+        let similar = try GenerativeFillVariations.append(to: layerID, in: edited, prompt: nil, seed: 702, count: 1,
+          referenceVariationID: reference) { prompt, seeds, image, _ in
+          XCTAssertEqual(prompt, "first border")
+          XCTAssertEqual(seeds, [702])
+          similarInputs.append(image.withUnsafeBytes { Data($0) })
+          return [next]
+        }
+        XCTAssertEqual(similarInputs.count, inputs.count)
+        XCTAssertNotEqual(similarInputs.first, inputs.first)
+        try session.executePrepared(PreparedEdit(command: similar, document: edited))
+        let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: .psb))
+        let similarLayer = try XCTUnwrap(reopened.layers.last)
+        let similarRecord = try XCTUnwrap(GenerativeFillVariations.read(similarLayer))
+        XCTAssertEqual(similarRecord.entries.last?.referenceVariationID, reference)
+        XCTAssertEqual(similarLayer.mask, mask)
+        var earlier = reopened
+        try SmartObjectLayerCompIO.selection(in: earlier, layerID: similarLayer.id, compID: reference).apply(to: &earlier)
+        XCTAssertEqual(try Renderer.composite(earlier).rgbaData(depth: .u8), try Renderer.composite(edited).rgbaData(depth: .u8))
+        XCTAssertNotEqual(try Renderer.composite(reopened).pixel(x: 2_700, y: 23), try Renderer.composite(earlier).pixel(x: 2_700, y: 23))
+      }
+    }
+  }
+
+  func testTiledSourceStripsRetainStoredSamplesAtEachRGBDepth() throws {
+    for depth in PixelDepth.allCases {
+      let source = try fixture(depth: depth)
+      let geometry = GenerativeExpandWindows.Geometry(frameWidth: 4_250, frameHeight: 131,
+        protected: IntRect(x: 14, y: 11, width: source.width, height: source.height))
+      let windows = try geometry.windows(depth: depth)
+      let hidden = try windows.captureSource(source)
+      XCTAssertEqual(hidden.count, 1)
+      XCTAssertFalse(hidden[0].visible)
+      let sampler = try windows.sourceSampler(hidden[...])(geometry.protected)
+      let original = try Renderer.composite(source).quantizedStoredDepth(depth)
+      for (x, y) in [(20, 16), (23, 12), (75, 23), (68, 76)] {
+        let value = depth == .f32 ? original.linearPixel(x: x, y: y) : original.pixel(x: x, y: y)
+        XCTAssertTrue(sampler(x + 14, y + 11).hasSameBits(as: value))
+      }
+      XCTAssertThrowsError(try windows.sourceSampler([]))
+      XCTAssertThrowsError(try windows.sourceSampler(hidden[...])(IntRect(x: 0, y: 0, width: 20, height: 20)))
+    }
+  }
+
   @MainActor func testRealWideCanvasMatchesNativeAndHTTPWithOneUndo() async throws {
     guard let path = ProcessInfo.processInfo.environment["PHOTATO_TEST_LAMA_MODEL"], LocalGenerativeFill.supported else {
       throw XCTSkip("Requires the optional LaMa model.")

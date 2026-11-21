@@ -395,14 +395,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:707 -->
+<!-- current-status-step:708 -->
 ## Current development status — 21 November 2026
 
-Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker.
+Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
 
-496 of 497 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 706. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
+498 of 499 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 707. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
 
-[Source checkpoint 707](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_707.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-707).
+[Source checkpoint 708](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_708.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-708).
 
 <!-- current-status:end -->
 
@@ -1316,5 +1316,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 705 | [Extend the canvas with local generation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-705) |
 | 2026-11-21 | 706 | [Extend wide borders with overlapping model windows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-706) |
 | 2026-11-21 | 707 | [Reuse the local prompt model across an editing job](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-707) |
+| 2026-11-21 | 708 | [Add more variations to a saved wide expansion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-708) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

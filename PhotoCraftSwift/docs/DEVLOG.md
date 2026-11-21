@@ -726,7 +726,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 705 | 2026-11-21 | [Extend the canvas with local generation](#dev-step-705) |
 | 706 | 2026-11-21 | [Extend wide borders with overlapping model windows](#dev-step-706) |
 | 707 | 2026-11-21 | [Reuse the local prompt model across an editing job](#dev-step-707) |
+| 708 | 2026-11-21 | [Add more variations to a saved wide expansion](#dev-step-708) |
 <!-- history-index:end -->
+
+<a id="dev-step-708"></a>
+
+## 2026-11-21 — Add more variations to a saved wide expansion
+
+Build 707 stored wide generated pixels but not the original source around each window. The new build saves disjoint perimeter strips as hidden raster layers inside the same file-backed PSB that stores the variants. The versioned frame record sits with the first variation. Generation reads the original stored samples and keeps the existing layer comps independent of the context layers. The Photato API uses the same append operation as Properties.
+
+The first Debug tests found the regional compositor returns Float32 even for RGB8 and RGB16. The capture now uses the same depth as the model proxy. The final test retains linear RGB32 samples. The SwiftPM build used the Xcode project’s existing workaround for the recursive Swift compiler pass failure.
+
+Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
+
+A 4,104-pixel-wide fixture matched every original Float32 model input after reopening in native, PSD and PSB, even after edits to the base pixels and mask. The real Runway model reproduced the first build 707 result byte for byte on a 4,104 × 120 image, then generated a new result from that saved reference. The proof kept both results, 393,984 original pixels, the edited mask and one-step Undo. The two results reopened byte for byte in PSB and Photato. The native Properties draft accepted the saved reference. The prepared edit and HTTP produced the same RGBA8 results and mask after reopening. A signed App Sandbox proof retained all 11 model inputs and 73,836 original pixels in PSB at each of RGB8, RGB16 and RGB32. The first result took 312.2 seconds and the similar variation took 164.8 seconds while build qualification ran.
+
+498 of 499 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 707. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
+
+Older tiled files still open and retain the saved results. They lack the captured source needed to regenerate. Large dense borders, long-range prompt continuity, rotation, blank-prompt alternatives and Adobe Firefly output equivalence remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_708.md).
 
 <a id="dev-step-707"></a>
 

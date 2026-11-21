@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 707.** Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker. [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md#extend-the-canvas) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_707.md).
+**Development alpha — source build 708.** Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask. [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md#extend-the-canvas) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_708.md).
 
 ## Project layout
 

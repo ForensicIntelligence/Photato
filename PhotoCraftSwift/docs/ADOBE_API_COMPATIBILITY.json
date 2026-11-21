@@ -6,11 +6,11 @@
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
   "current_api": "Checkpoint 692 reduces eligible large Pattern Overlay overviews in bounded patches on the local PNG routes. Hosted service conformance remains open.",
   "generative_fill": {
-    "checkpoint": 707,
+    "checkpoint": 708,
     "publishedRoute": "POST /v2/execute-actions",
     "publishedModel": "me_md",
     "compatibility": "The published Execute Actions model is listed. An authoritative Generative Expand ActionJSON descriptor, job validation and Firefly output equivalence remain open.",
-    "localPhotatoAPI": "generativeFill.apply uses the optional on-device model. With targetLayerID, referenceVariationID uses a prior fill variation as a reference and appends results to the same layer. generativeExpand.apply performs local editable outpainting in one canvas history transaction. Large borders use overlapping local windows, with prompted alternatives stored in an embedded PSB. Prompted windows and alternatives reuse one isolated worker per edit.",
+    "localPhotatoAPI": "generativeFill.apply uses the optional on-device model. With targetLayerID, referenceVariationID uses a prior fill variation as a reference and appends results to the same layer. generativeExpand.apply performs local editable outpainting in one canvas history transaction. Large borders use overlapping local windows, with prompted alternatives stored in an embedded PSB. Prompted windows and alternatives reuse one isolated worker per edit. New tiled results retain their original source perimeter for appending and conditioning later generations.",
     "references": [
       "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
       "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models"

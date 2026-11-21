@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 708 — Add more variations to a saved wide expansion
+
+Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
+
+A 4,104-pixel-wide fixture matched every original Float32 model input after reopening in native, PSD and PSB, even after edits to the base pixels and mask. The real Runway model reproduced the first build 707 result byte for byte on a 4,104 × 120 image, then generated a new result from that saved reference. The proof kept both results, 393,984 original pixels, the edited mask and one-step Undo. The two results reopened byte for byte in PSB and Photato. The native Properties draft accepted the saved reference. The prepared edit and HTTP produced the same RGBA8 results and mask after reopening. A signed App Sandbox proof retained all 11 model inputs and 73,836 original pixels in PSB at each of RGB8, RGB16 and RGB32. The first result took 312.2 seconds and the similar variation took 164.8 seconds while build qualification ran.
+
+Older tiled files still open and retain the saved results. They lack the captured source needed to regenerate. Large dense borders, long-range prompt continuity, rotation, blank-prompt alternatives and Adobe Firefly output equivalence remain open.
+
+[Development record](DEVLOG.md#dev-step-708) · [Qualification](SOURCE_PUBLICATION_708.md).
+
 ## 2026-11-21 — Step 707 — Reuse the local prompt model across an editing job
 
 Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker.
@@ -1677,14 +1687,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:707 -->
+<!-- current-status-step:708 -->
 ## Current development status — 21 November 2026
 
-Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker.
+Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
 
-496 of 497 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 706. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
+498 of 499 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 707. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
 
-[Source checkpoint 707](SOURCE_PUBLICATION_707.md) · [Development record](DEVLOG.md#dev-step-707).
+[Source checkpoint 708](SOURCE_PUBLICATION_708.md) · [Development record](DEVLOG.md#dev-step-708).
 
 <!-- current-status:end -->
 
@@ -2598,6 +2608,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 705 | [Extend the canvas with local generation](DEVLOG.md#dev-step-705) |
 | 2026-11-21 | 706 | [Extend wide borders with overlapping model windows](DEVLOG.md#dev-step-706) |
 | 2026-11-21 | 707 | [Reuse the local prompt model across an editing job](DEVLOG.md#dev-step-707) |
+| 2026-11-21 | 708 | [Add more variations to a saved wide expansion](DEVLOG.md#dev-step-708) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

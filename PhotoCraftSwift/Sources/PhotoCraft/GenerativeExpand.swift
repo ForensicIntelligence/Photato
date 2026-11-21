@@ -66,31 +66,28 @@ enum GenerativeExpand {
       throw CraftError.invalid("Multiple variations require a text prompt.")
     }
     let kept = try protectedCanvas(for: request, in: original)
-    let right = kept.x + kept.width, bottom = kept.y + kept.height
     let frame = IntRect(x: request.x, y: request.y, width: request.width, height: request.height)
-    let strips = [
-      IntRect(x: 0, y: 0, width: frame.width, height: kept.y),
-      IntRect(x: 0, y: kept.y, width: kept.x, height: kept.height),
-      IntRect(x: right, y: kept.y, width: frame.width - right, height: kept.height),
-      IntRect(x: 0, y: bottom, width: frame.width, height: frame.height - bottom),
-    ].filter { $0.width > 0 && $0.height > 0 }
-    guard let minX = strips.map(\.x).min(), let minY = strips.map(\.y).min(),
-      let maxX = strips.map({ $0.x + $0.width }).max(), let maxY = strips.map({ $0.y + $0.height }).max() else {
-      throw CraftError.invalid("Generative Expand needs room outside the original canvas.")
-    }
-    let width = maxX - minX, height = maxY - minY
+    let geometry = GenerativeExpandWindows.Geometry(frameWidth: frame.width, frameHeight: frame.height, protected: kept)
+    let windows = try geometry.windows(depth: original.depth)
+    let width = windows.border.width, height = windows.border.height
     var framed = try CanvasFrameGeometry.reframed(original, bounds: frame)
     let seeds = (0..<count).map { seed &+ UInt32($0) }
     if max(width, height) > LocalGenerativeFill.maximumSelectionSide ||
       width > LocalGenerativeFill.maximumSelectionPixels / height {
-      let border = IntRect(x: minX, y: minY, width: width, height: height)
-      let windows = GenerativeExpandWindows(frame: frame, protected: kept, border: border, strips: strips, depth: original.depth)
-      let layers = try windows.render(original: original, count: count, predict: predictWindow)
-      let layer = count == 1 ? layers[0]
-        : try GenerativeFillVariations.pack(layers, in: framed, prompt: prompt, seeds: seeds, fileBacked: true)
+      if prompt.isEmpty {
+        let layers = try windows.render(original: original, count: count, predict: predictWindow)
+        return try finish(layers[0], original: original, framed: &framed)
+      }
+      let source = try windows.captureSource(original)
+      let sampler = try windows.sourceSampler(source[...])
+      let layers = try windows.render(original: original, count: count, sourceSampler: sampler, predict: predictWindow)
+      let encoder = PropertyListEncoder()
+      encoder.outputFormat = .binary
+      let layer = try GenerativeFillVariations.pack(layers, in: framed, prompt: prompt, seeds: seeds,
+        context: encoder.encode(geometry), savedSource: source)
       return try finish(layer, original: original, framed: &framed)
     }
-    let selection = try SelectionMask.sampledCoverage(width: frame.width, height: frame.height, regions: strips) { x, y in
+    let selection = try SelectionMask.sampledCoverage(width: frame.width, height: frame.height, regions: windows.strips) { x, y in
       kept.contains(x, y) ? 0 : 255
     }
     framed.setCoverageSelection(selection)
