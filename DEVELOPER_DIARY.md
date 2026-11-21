@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **701** · The 10 most recent entries, newest first.
+Source build **702** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 702 — Keep editable Generative Fill variations
+
+Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
+
+Synthetic RGB8, RGB16 and RGB32 tests preserved exact rendered samples, mask coverage and the selected variation after reopening Photato, PSD and PSB files in Photato. The real Core ML model generated identical first results through the editor and HTTP at the tested seed. A separate sandboxed test generated three different results and preserved all 49,283 pixels outside the selection in each. Each of those real variations also matched its original RGBA bytes after reopening in all three formats in Photato.
+
+482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. Generating more results into the same layer, Generate Similar, the Adobe Execute Actions descriptor, and Firefly pixel equivalence remain open. The installed Photoshop session timed out on two read-only scripting queries. Adobe's desktop documentation confirms variation selection in Properties.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-702) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_702.md).
 
 ## 2026-11-21 — Step 701 — Blend Generative Fill selection edges
 
@@ -93,13 +103,3 @@ The 5 × 5 and 512 × 512 oblique sources matched build 692 byte for byte in bot
 460 of 463 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 692's assertions. Four additional storage tests passed in Debug. Both signed macOS 14+ preview slices launched offscreen. Xcode built the corrected project directly in arm64 Debug with signing disabled, then the built app opened a workspace offscreen. Wide nonperiodic fit still evaluates each source pixel. Interactive timing on fully covered maximum-size documents and Photoshop zoom comparison remain open. The local Photoshop document query timed out.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-693) · [Details](PhotoCraftSwift/docs/PATTERN_SAMPLING_693.md).
-
-## 2026-11-21 — Step 692 — Reduce wide oblique Pattern Overlays in bounded patches
-
-Fit on Screen and the local PNG overview reduce supported wide oblique Pattern Overlays without retaining the full composite.
-
-Fractional edges matched retained rendering at RGB8, RGB16 and RGB32 in the tested composite, channel and proof views. The proof test also preserved a sparse implicit backdrop across the maximum canvas. Authenticated composite, channel and proof PNGs matched their retained native controls. The separate AppKit probe fitted and proofed a fully covered 70,000 × 520 document on both architectures.
-
-458 of 461 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 691's assertions. Both signed macOS 14+ preview slices launched offscreen. Large nonperiodic fits still evaluate source pixels and can take seconds or longer. End-to-end timing for a fully covered maximum-size oblique Fit remains open. The Photoshop 2026 document-count query timed out, leaving live zoom comparison open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-692) · [Details](PhotoCraftSwift/docs/PAGED_PATTERN_REDUCTION_692.md).

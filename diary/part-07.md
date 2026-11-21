@@ -403,14 +403,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:701 -->
+<!-- current-status-step:702 -->
 ## Current development status — 21 November 2026
 
-Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo.
+Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
 
-480 of 481 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 700’s assertions. Both signed preview slices opened offscreen, and the checked-in Xcode project built in arm64 Debug.
+482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug.
 
-[Source checkpoint 701](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_701.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-701).
+[Source checkpoint 702](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_702.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-702).
 
 <!-- current-status:end -->
 
@@ -1318,5 +1318,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 699 | [Add local Generative Fill from surrounding pixels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-699) |
 | 2026-11-21 | 700 | [Add prompted Generative Fill on Apple Silicon](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-700) |
 | 2026-11-21 | 701 | [Blend Generative Fill selection edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-701) |
+| 2026-11-21 | 702 | [Keep editable Generative Fill variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-702) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -5,7 +5,8 @@ import PhotoCraftCore
 package enum LocalGenerativeFill {
   package static let maximumSelectionSide = 4096
   package static let maximumSelectionPixels = 4_194_304
-  static let side = 512
+  package static let side = 512
+  package static let maximumVariations = 3
 
   package static var supported: Bool {
     #if arch(arm64)
@@ -105,6 +106,13 @@ package enum LocalGenerativeFill {
   #endif
 
   static func prepare(_ document: CraftDocument, predict: ([Float], [Float]) throws -> Surface) throws -> Command {
+    let layers = try prepareVariations(document) { image, mask in [try predict(image, mask)] }
+    return .generativeFill(layers[0])
+  }
+
+  package static func prepareVariations(
+    _ document: CraftDocument, predict: ([Float], [Float]) throws -> [Surface]
+  ) throws -> [Layer] {
     guard let selected = selection(in: document) else {
       throw CraftError.invalid("Select an area of up to 4 megapixels in a still RGB image.")
     }
@@ -153,14 +161,27 @@ package enum LocalGenerativeFill {
       }
     }
     guard mask.contains(1), mask.contains(0) else { throw CraftError.invalid("Include some surrounding pixels outside the selection.") }
-    let generated = try predict(image, mask)
+    let outputs = try predict(image, mask)
+    guard (1...maximumVariations).contains(outputs.count) else {
+      throw CraftError.invalid("The local model returned an unexpected number of variations.")
+    }
+    return try outputs.map { generated in
+      try prepareLayer(document, generated: generated, selected: selected, region: region,
+        reference: reference, crop: crop, input: input, mask: editableMask, scale: modelScale, left: left, top: top)
+    }
+  }
+
+  private static func prepareLayer(
+    _ document: CraftDocument, generated: Surface, selected: IntRect, region: IntRect,
+    reference: CraftDocument, crop: Surface, input: Surface, mask: Surface, scale: Double, left: Double, top: Double
+  ) throws -> Layer {
     try Task.checkCancellation()
     guard generated.width == side, generated.height == side else {
       throw CraftError.invalid("The model returned an unexpected output size.")
     }
     func generatedSample(_ x: Double, _ y: Double) -> Pixel {
-      let mx = left + (x - Double(region.x)) * modelScale
-      let my = top + (y - Double(region.y)) * modelScale
+      let mx = left + (x - Double(region.x)) * scale
+      let my = top + (y - Double(region.y)) * scale
       return RasterGeometry.sample(generated, x: mx, y: my, method: .bilinear, clampEdges: true)
     }
     let edgeBlend = try GenerativeFillEdgeBlend.prepare(in: document, selection: selected, gridLimit: side,
@@ -179,14 +200,14 @@ package enum LocalGenerativeFill {
       for x in 0..<selected.width {
         let docX = Double(selected.x + x) + 0.5, docY = Double(selected.y + y) + 0.5
         let pixel = generatedSample(docX, docY)
-        let color = editableMask.pixel(x: x, y: y).r > 0 ? edgeBlend?.adjusted(pixel, x: docX, y: docY) ?? pixel : pixel
+        let color = mask.pixel(x: x, y: y).r > 0 ? edgeBlend?.adjusted(pixel, x: docX, y: docY) ?? pixel : pixel
         patch.setPixel(x: x, y: y, color)
       }
     }
     var layer = Layer(name: "Generative Fill", content: .raster(try ColorManagement.converted(patch, from: reference, to: document)))
     layer.x = selected.x
     layer.y = selected.y
-    layer.mask = editableMask
-    return .generativeFill(layer)
+    layer.mask = mask
+    return layer
   }
 }

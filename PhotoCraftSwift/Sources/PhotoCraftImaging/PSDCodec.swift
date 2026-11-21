@@ -110,6 +110,8 @@ struct PSDWriter {
   }
 }
 public enum PSDCodec {
+  package static let fillVariationTag = "PtFV"
+  package static let fillVariationTagLimit = 16_384
   public static let maximumInputBytes = 512 * 1024 * 1024
   /// Implementation admission, not a claim about the PSB format's upper size.
   public static let maximumFileBytes = 4_398_046_511_104
@@ -732,6 +734,10 @@ public enum PSDCodec {
           try PSDLayerStyles.validateInactiveLegacy(content)
         case "iOpa":
           guard content.count == 4, content.dropFirst().allSatisfy({ $0 == 0 }) else { throw CraftError.invalid("Invalid PSD fill opacity.") }
+        case fillVariationTag:
+          guard (1...fillVariationTagLimit).contains(content.count) else {
+            throw CraftError.invalid("The Generative Fill variation record exceeds its storage budget.")
+          }
         default:
           throw CraftError.unsupported(
             "PSD layer '\(layerName)' contains unported data '\(tag)' (for example type, effects, groups or smart objects). Import cancelled to preserve its contents."

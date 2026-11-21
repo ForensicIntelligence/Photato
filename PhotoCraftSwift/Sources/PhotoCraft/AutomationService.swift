@@ -1613,11 +1613,13 @@ import UniformTypeIdentifiers
         guard store.canBeginGenerativeFill, let model = GenerativeFillModelPreference.url(prompted: !options.prompt.isEmpty) else {
           throw AutomationFailure(status: 422, message: "Select part of a still RGB image and choose a local model in Generative Fill.")
         }
+        let bookmark = options.prompt.isEmpty ? nil : UserDefaults.standard.data(forKey: GenerativeFillModelPreference.promptKey)
         let operation = UUID()
         store.generativeFillOperationID = operation
         defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in
-          try LocalGenerativeFill.prepare(original, model: model, prompt: options.prompt, seed: options.seed)
+          try GenerativeFillVariations.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
+            seed: options.seed, count: options.count)
         }
         store.generativeFillOperationID = nil
         return .json(state(share, document: document))

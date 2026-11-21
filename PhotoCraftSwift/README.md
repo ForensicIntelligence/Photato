@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 702.** Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step. [Qualification](docs/SOURCE_PUBLICATION_702.md).
+
 **Source checkpoint 701.** Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo. [Qualification](docs/SOURCE_PUBLICATION_701.md).
 
 **Source checkpoint 700.** Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512. [Model setup](docs/LOCAL_GENERATIVE_FILL.md) · [Qualification](docs/SOURCE_PUBLICATION_700.md).

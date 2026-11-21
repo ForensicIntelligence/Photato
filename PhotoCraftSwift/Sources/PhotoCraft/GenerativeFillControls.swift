@@ -10,6 +10,10 @@ enum GenerativeFillModelPreference {
   static func url(prompted: Bool = false, defaults: UserDefaults = .standard) -> URL? {
     let key = prompted ? promptKey : Self.key
     guard let data = defaults.data(forKey: key) else { return nil }
+    return resolve(data)
+  }
+
+  static func resolve(_ data: Data) -> URL? {
     for options: URL.BookmarkResolutionOptions in [
       [.withSecurityScope, .withoutUI, .withoutMounting], [.withoutUI, .withoutMounting]
     ] {
@@ -34,8 +38,10 @@ enum GenerativeFillModelPreference {
 @Observable @MainActor final class GenerativeFillDraft: Identifiable {
   var model = GenerativeFillModelPreference.url()
   var promptModel = GenerativeFillModelPreference.url(prompted: true)
+  var promptModelBookmark = UserDefaults.standard.data(forKey: GenerativeFillModelPreference.promptKey)
   var prompt = ""
   var seed = UInt32.random(in: .min ... .max)
+  var variationCount = LocalGenerativeFill.maximumVariations
   var selectingModel = false
   var generating = false
   var error: String?
@@ -67,14 +73,16 @@ extension EditorStore {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
       !editingComponent, !editingMask, let url = draft.selectedModel else { return }
     let prompt = draft.prompt, seed = draft.seed
+    let bookmark = draft.prompted ? draft.promptModelBookmark : nil
+    let count = draft.prompted ? draft.variationCount : 1
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
     draft.error = nil
     draft.generating = true
     geometryTask = Task { [weak self, weak draft] in
       let worker = Task.detached(priority: .userInitiated) {
-        try PreparedEdit(command: LocalGenerativeFill.prepare(original, model: url, prompt: prompt, seed: seed),
-          document: original)
+        try PreparedEdit(command: GenerativeFillVariations.prepare(original, model: url, bookmark: bookmark,
+          prompt: prompt, seed: seed, count: count), document: original)
       }
       defer {
         draft?.generating = false
@@ -95,6 +103,7 @@ extension EditorStore {
         self.onChange?(.changeDone)
         self.status = edit.label
         self.generativeFillDraft = nil
+        if count > 1 { self.reveal(PropertiesTab.properties) }
       } catch is CancellationError {
         return
       } catch {
@@ -115,9 +124,12 @@ struct GenerativeFillSheet: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text("Generative Fill").font(.headline)
-      TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
-        .disabled(draft.selectingModel || draft.generating)
-        .onChange(of: draft.prompt) { _, _ in draft.error = nil }
+      LabeledContent("Prompt") {
+        TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
+          .labelsHidden()
+          .disabled(draft.selectingModel || draft.generating)
+          .onChange(of: draft.prompt) { _, _ in draft.error = nil }
+      }
       Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
@@ -135,8 +147,15 @@ struct GenerativeFillSheet: View {
       if draft.selectedModel == nil {
         Link("Model setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md")!)
       }
+      if draft.prompted {
+        Picker("Variations", selection: $draft.variationCount) {
+          ForEach(1...LocalGenerativeFill.maximumVariations, id: \.self) { Text("\($0)").tag($0) }
+        }
+        .pickerStyle(.segmented)
+        .disabled(draft.selectingModel || draft.generating)
+      }
       if draft.selectingModel || draft.generating {
-        ProgressView(draft.generating ? "Filling selection on this Mac…" : "Checking model…")
+        ProgressView(draft.generating ? "Generating on this Mac…" : "Checking model…")
           .controlSize(.small)
       }
       if let error = draft.error { Text(error).foregroundStyle(.red).fixedSize(horizontal: false, vertical: true) }
@@ -187,6 +206,7 @@ struct GenerativeFillSheet: View {
           UserDefaults.standard.set(bookmark, forKey: key)
           if prompted {
             draft.promptModel = GenerativeFillModelPreference.url(prompted: true)
+            draft.promptModelBookmark = bookmark
           } else {
             draft.model = GenerativeFillModelPreference.url()
           }

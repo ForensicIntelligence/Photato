@@ -6,13 +6,14 @@ import XCTest
 
 final class GenerativeFillWorkflowTests: XCTestCase {
   func testPromptCommandParametersAndLegacyBlankPrompt() throws {
-    func options(_ parameters: [String: Any]) throws -> (prompt: String, seed: UInt32) {
+    func options(_ parameters: [String: Any]) throws -> (prompt: String, seed: UInt32, count: Int) {
       let data = try JSONSerialization.data(withJSONObject: [
         "command": GenerativeFillAPI.run, "revision": "test", "parameters": parameters
       ])
       return try AutomationCommand(data: data).generativeFillOptions()
     }
     XCTAssertEqual(try options([:]).prompt, "")
+    XCTAssertEqual(try options([:]).count, 1)
     XCTAssertEqual(try options(["prompt": "   "]).prompt, "")
     XCTAssertEqual(try options(["prompt": " blue mug ", "seed": 4_294_967_295]).prompt, "blue mug")
     XCTAssertEqual(try options(["prompt": "blue mug", "seed": 4_294_967_295]).seed, UInt32.max)
@@ -23,6 +24,11 @@ final class GenerativeFillWorkflowTests: XCTestCase {
     XCTAssertThrowsError(try options(["prompt": "two\nlines"]))
     XCTAssertThrowsError(try options(["prompt": String(repeating: "x", count: 257)]))
     XCTAssertThrowsError(try options(["prompt": "blue mug", "modelURL": "file:///tmp/model"]))
+    XCTAssertEqual(try options(["prompt": "mug", "variationCount": 3]).count, 3)
+    XCTAssertThrowsError(try options(["prompt": "mug", "variationCount": 0]))
+    XCTAssertThrowsError(try options(["prompt": "mug", "variationCount": 4]))
+    XCTAssertThrowsError(try options(["prompt": "mug", "variationCount": 2.5]))
+    XCTAssertThrowsError(try options(["variationCount": 2]))
   }
 
   @MainActor func testPromptChangesSelectedSubjectAndNativeMatchesHTTPAtSameSeed() async throws {
@@ -58,6 +64,8 @@ final class GenerativeFillWorkflowTests: XCTestCase {
       let draft = try XCTUnwrap(store.generativeFillDraft)
       draft.prompt = apple
       draft.seed = seed
+      XCTAssertEqual(draft.variationCount, 3)
+      draft.variationCount = 2
       XCTAssertNotNil(draft.selectedModel)
       store.generateFill(draft)
       await store.geometryTask?.value
@@ -65,6 +73,8 @@ final class GenerativeFillWorkflowTests: XCTestCase {
       XCTAssertNil(store.generativeFillDraft)
       XCTAssertEqual(store.session.undoStack.count, 1)
       let native = try Renderer.composite(store.document)
+      let firstLayer = try XCTUnwrap(store.activeLayer)
+      XCTAssertEqual(GenerativeFillVariations.read(firstLayer)?.entries.map(\.seed), [seed, seed + 1])
       let mask = try XCTUnwrap(store.activeLayer?.mask)
       XCTAssertEqual(mask.pixel(x: 0, y: 0).r, 0)
       XCTAssertEqual(mask.pixel(x: 1, y: 0).r, Float(127) / 255)
@@ -72,8 +82,21 @@ final class GenerativeFillWorkflowTests: XCTestCase {
       await store.undo()
       XCTAssertEqual(store.document, original)
 
-      let appleStatus = try await helper.edit(service, shared, GenerativeFillAPI.run, ["prompt": apple, "seed": seed], timeout: 120)
+      let appleStatus = try await helper.edit(service, shared, GenerativeFillAPI.run,
+        ["prompt": apple, "seed": seed, "variationCount": 2], timeout: 240)
       XCTAssertEqual(appleStatus, 200)
+      XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), try native.rgbaData(depth: .u8))
+      let apiLayer = try XCTUnwrap(store.activeLayer)
+      let choices = try XCTUnwrap(GenerativeFillVariations.read(apiLayer))
+      XCTAssertEqual(choices.entries.map(\.seed), [seed, seed + 1])
+      let state = try XCTUnwrap(GenerativeFillAPI.state(store)["selectedVariations"] as? [String: Any])
+      XCTAssertEqual(state["selectedID"] as? String, choices.entries[0].id.uuidString)
+      let switched = try await helper.edit(service, shared, SmartObjectLayerCompAPI.name,
+        ["layerID": apiLayer.id.uuidString, "compID": choices.entries[1].id.uuidString], timeout: 60)
+      XCTAssertEqual(switched, 200)
+      XCTAssertEqual(store.activeLayer?.mask, mask)
+      XCTAssertNotEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), try native.rgbaData(depth: .u8))
+      await store.undo()
       XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), try native.rgbaData(depth: .u8))
       await store.undo()
       XCTAssertEqual(store.document, original)

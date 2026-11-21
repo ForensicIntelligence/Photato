@@ -1210,6 +1210,9 @@ import SwiftUI
 }
 @main struct PhotatoApp {
   @MainActor static func main() {
+    if CommandLine.arguments.count == 3, CommandLine.arguments[1] == GenerativeFillWorker.argument {
+      exit(GenerativeFillWorker.runChild(directory: URL(fileURLWithPath: CommandLine.arguments[2], isDirectory: true)))
+    }
     if let i = CommandLine.arguments.firstIndex(of: "--benchmark-color-balance"),
       CommandLine.arguments.count > i + 1
     {

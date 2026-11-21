@@ -1,0 +1,213 @@
+{
+  "build": 702,
+  "base": "23f455b9f99cf28a24287979afa8ce2503762d8c",
+  "buildInputs": 9387,
+  "includedBuildInputs": 9374,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "b494f27de2ae8d0535c8180b173f4a9e876f8dd0a34678dc990c86b7445f482f",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "0e9aa0a906350a64f68736a49d1fe921b8888982711af4cf71881cd52f57f4d8"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "7d3bb1e09f426408415f67ad863d5d5ba941ef89dd436b27ec4979c2380048d7"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "9327ebc3c9e8497e183a01a4519b4bdca1416ef39890b7e963a73c9c24cde13a"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "a8b498516c30482b8955b14f2e4aabbdf486c70e4b4c6822a231c1287637113f"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillControls.swift",
+      "sha256": "9146a1ebb89ef9605065e15fd0b3f49d8004e198e0708accb55bc112ef4306c7"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillVariations.swift",
+      "sha256": "f3d20611f2c0ba0894c7479f804d5326a18419019b2ab614b6174b8f3ce41e30"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillWorker.swift",
+      "sha256": "74e833afa9acdbed56fd28818ce1dd575e179a193fb87a278390bb686274edfa"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspacePanels.swift",
+      "sha256": "df56b00bc5908a12345c8113fdf625c8591d17294bae1cc18c54edd02fbf2142"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalGenerativeFill.swift",
+      "sha256": "9b7ba15491b95597f37edab8b0db172c4d1d081367c2558d33449d17404f8403"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalPromptGenerativeFill.swift",
+      "sha256": "5079eb8c40a093d4ea975aea4bb1c63dac3ae862a57583f7ef6585a0289fa1b0"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "c9e03b65564dd6107c776b9e7d2eb5544c30cc26fdd95a626a6bc2e687ba9541"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDSmartObjects.swift",
+      "sha256": "1ee50be2a1502144388e4af528c65234e840fb991f1bf96ce464ef1d5f5d4f82"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "9de5cf5288f633906a80661b49633396170f84cc2a35a07928736362a5122c65"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GenerativeFillVariationTests.swift",
+      "sha256": "89d17dd00043909fe036d14d92bfc32133cfcb514c0ce13c7a0b94fe27564bb1"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GenerativeFillWorkflowTests.swift",
+      "sha256": "6c458cabd8e708e0207d90955065ff55992db5b247afaa5326da9f5f2c0b726e"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "a6c9448f8cdca1f2bed9f98fc683c062cad801bb05e3f45131733a588ae840b5"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "a6c9448f8cdca1f2bed9f98fc683c062cad801bb05e3f45131733a588ae840b5"
+  },
+  "casesPerConfiguration": 483,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 483,
+      "passed": 482,
+      "newCasesExpected": 40,
+      "newCasesPassed": 40,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "14563092759881113b6c67d475326789d9c1d33be3376f66cbdef1246c9d7747"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 483,
+      "passed": 482,
+      "newCasesExpected": 40,
+      "newCasesPassed": 40,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "fd4b99580f02a0f7fa7f9f7cf202efac06d17c72337cf2b394b7c7c6e5d60097"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 483,
+      "passed": 482,
+      "newCasesExpected": 40,
+      "newCasesPassed": 40,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "bb4194a715627a123b5ceed184228fb5cc8fb4bcafc7e0594b3d423add9f5cab"
+    }
+  },
+  "variationWorkflow": {
+    "maximumCount": 3,
+    "nativePromptDefault": 3,
+    "apiDefault": 1,
+    "blankPromptCount": 1,
+    "seedsInSandboxProbe": [
+      472122,
+      472123,
+      472124
+    ],
+    "exactSyntheticRoundTripInPhotato": [
+      "native",
+      "PSD",
+      "PSB"
+    ],
+    "depths": [
+      "RGB8",
+      "RGB16",
+      "RGB32"
+    ],
+    "maskCoveragePreserved": true,
+    "isolatedPromptInference": true,
+    "sandbox": {
+      "bundleID": "ca.forensicintelligence.photato.variationqualification702",
+      "usesAppSandboxEntitlements": true,
+      "variations": 3,
+      "protectedPixelsPerVariation": 49283,
+      "reopenedModelsAndSeeds": [
+        "PSD",
+        "PSB"
+      ],
+      "oneUndo": true
+    },
+    "sandboxOutputsSHA256": {
+      "Three Variations.photato": "128b2f05390927e2624c95e6d37779f33bcf11cea467c60f3885724fe8c2d1f0",
+      "Three Variations.psb": "7b4530675a756ac85d43123483b795c8cc2e9092dbdb9b397500cec836475d43",
+      "Three Variations.psd": "b49c553e93da4aa63876b88bd5a77b6bf2c374b5877cddf27f5e9757f0a48581",
+      "Variation 1.png": "3c1afbdd534213c60d7cd739ba72c2adab510204fe1a46f460db4fe0cff0a8e3",
+      "Variation 2.png": "0148b6d5a70eb3e5fda3925d4da3e94f8d62daeb6b7562d5467d32566a8f0f29",
+      "Variation 3.png": "5af30811358c633330d95097b34de51cdae78ed31da291f6e5ba4d1e8c9683cb"
+    },
+    "exactRealRGB8ReopenInPhotato": [
+      "native",
+      "PSD",
+      "PSB"
+    ],
+    "realReopenLogSHA256": "3c183ac5b6e2197d8a0c2aa2f04a84769b2a0943550027ddbe1b02ba9b6836ee",
+    "nativeCancellationDuringInference": true,
+    "cancellationLogSHA256": "8660d41888af721e16b6539606a653bbc2fb0533c1a68811194b35a0bcaefa82",
+    "modelLogsSHA256": {
+      "qualify-model-debug01.log": "66cc84fa83bc9b18e94d604b5c9916f5c9242c0312ca4d451554fa5c3175106c",
+      "qualify-model-arm01.log": "db8573a13fbf48404af52f29ad57b9be76444b7e4041ed2bccfd58306ec476e4"
+    },
+    "offscreenControlsSHA256": {
+      "prompt-sheet-dark.png": "e96d6d4ddf327aa263d0939acf5979797695c31912dc1e8c8d032d9776cb3d0e",
+      "variation-picker-dark.png": "34309edf16ddfcca55c1587b840df99d4e904efe57d8e630f68f94b4c70cc1d5",
+      "variation-picker-light.png": "3fabea35b0839e640d00fddcb2e87d571399ac5148fe64bf3a53d2937b6b9f63"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "450486691cdce8f18e7875d02c5050e4e80678a9bc3a5efd06711490c112b817",
+    "binarySHA256": "fa8f048b0c3b4077678ec44fb9458a0dedf196ee41704fa3aca7d43f2602e26f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "4255ef571d32fea3beb6e5fd641a2b2ca2c6e06bc0acf8cc633b3183a307b6a4",
+      "x86_64": "220abff6e8459fde67af52fb6f40121086e376fc4710a0e77a5df3668d65de03"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "xcodeDebugBuildLogSHA256": "f96f9df7e90c79b676edf974dbc686e65c6db9ccd54e91aaad8d76aa50b1292d",
+  "release": "source and diary only",
+  "liveAdobe": {
+    "installedVersion": "27.2.0",
+    "pixelComparison": false,
+    "reason": "Version and document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html",
+    "https://helpx.adobe.com/photoshop/desktop/generative-ai/get-new-variations-of-generated-content-with-generate-similar.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models"
+  ]
+}

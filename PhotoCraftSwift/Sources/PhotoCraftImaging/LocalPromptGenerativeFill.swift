@@ -9,6 +9,7 @@ import GuernikaKit
 
 extension LocalGenerativeFill {
   package static let maximumPromptCharacters = 256
+  package static let promptModelIdentifier = "runwayml/stable-diffusion-inpainting"
 
   package static func validatePrompt(_ raw: String) throws -> String {
     let prompt = raw.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -32,6 +33,20 @@ extension LocalGenerativeFill {
   package static func prepare(_ document: CraftDocument, model url: URL, prompt raw: String, seed: UInt32) throws -> Command {
     let prompt = try validatePrompt(raw)
     guard !prompt.isEmpty else { return try prepare(document, model: url) }
+    return try prepare(document) { image, mask in
+      try predictPrompt(image: image, mask: mask, model: url, prompt: prompt, seeds: [seed])[0]
+    }
+  }
+
+  package static func predictPrompt(
+    image: [Float], mask: [Float], model url: URL, prompt raw: String, seeds: [UInt32]
+  ) throws -> [Surface] {
+    let prompt = try validatePrompt(raw)
+    guard !prompt.isEmpty, (1...maximumVariations).contains(seeds.count),
+      Set(seeds).count == seeds.count, image.count == 3 * side * side, mask.count == side * side,
+      image.allSatisfy(\.isFinite), mask.allSatisfy({ $0 == 0 || $0 == 1 }) else {
+      throw CraftError.invalid("The local prompt model requires a prompt, a valid image and mask, and distinct seeds.")
+    }
     #if arch(arm64)
     if #available(macOS 26, *) {
       return try withPromptModel(at: url) { pipeline in
@@ -40,9 +55,10 @@ extension LocalGenerativeFill {
         guard tokens.1.count <= encoder.maxInputLength else {
           throw CraftError.invalid("The prompt exceeds the model’s token limit. Try a shorter description.")
         }
-        return try prepare(document) { image, mask in
-          let source = try promptImage(samples: image, mask: nil)
-          let selection = try promptImage(samples: [], mask: mask)
+        let source = try promptImage(samples: image, mask: nil)
+        let selection = try promptImage(samples: [], mask: mask)
+        return try seeds.map { seed in
+          try Task.checkCancellation()
           let input = SampleInput(prompt: prompt, initImage: source, inpaintMask: selection,
             strength: 1, seed: seed, stepCount: 25)
           let output = try pipeline.generateImages(input: input) { _ in !Task.isCancelled }

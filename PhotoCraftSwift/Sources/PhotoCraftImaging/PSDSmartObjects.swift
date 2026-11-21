@@ -212,7 +212,9 @@ enum PSDSmartObjects {
     if let affine {
       try affine.validated()
       layer.x = Int(floor(affine.tx)); layer.y = Int(floor(affine.ty))
-      layer.affine = .translation(-Double(layer.x), -Double(layer.y)) * affine
+      let local = Transform2D.translation(-Double(layer.x), -Double(layer.y)) * affine
+      // A translated fill patch should stay on the exact RGB32 raster path after reopening.
+      layer.affine = local == .identity && layer.sourceTags?[PSDCodec.fillVariationTag] != nil ? nil : local
       maskFrame = affine
     } else {
       layer.sourceProjection = try quads.projective(width: object.width, height: object.height, frame: frame)

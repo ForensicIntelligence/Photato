@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 702 — Keep editable Generative Fill variations
+
+Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
+
+Synthetic RGB8, RGB16 and RGB32 tests preserved exact rendered samples, mask coverage and the selected variation after reopening Photato, PSD and PSB files in Photato. The real Core ML model generated identical first results through the editor and HTTP at the tested seed. A separate sandboxed test generated three different results and preserved all 49,283 pixels outside the selection in each. Each of those real variations also matched its original RGBA bytes after reopening in all three formats in Photato.
+
+482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. Generating more results into the same layer, Generate Similar, the Adobe Execute Actions descriptor, and Firefly pixel equivalence remain open. The installed Photoshop session timed out on two read-only scripting queries. Adobe's desktop documentation confirms variation selection in Properties.
+
+[Development record](DEVLOG.md#dev-step-702) · [Qualification](SOURCE_PUBLICATION_702.md).
+
 ## 2026-11-21 — Step 701 — Blend Generative Fill selection edges
 
 Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo.
@@ -1617,14 +1627,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:701 -->
+<!-- current-status-step:702 -->
 ## Current development status — 21 November 2026
 
-Generative Fill now uses opaque pixels around the selection to reduce color seams. The correction tapers into the selected area. The editor and Photato API preserve the editable mask and one-step Undo.
+Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
 
-480 of 481 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 700’s assertions. Both signed preview slices opened offscreen, and the checked-in Xcode project built in arm64 Debug.
+482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug.
 
-[Source checkpoint 701](SOURCE_PUBLICATION_701.md) · [Development record](DEVLOG.md#dev-step-701).
+[Source checkpoint 702](SOURCE_PUBLICATION_702.md) · [Development record](DEVLOG.md#dev-step-702).
 
 <!-- current-status:end -->
 
@@ -2532,6 +2542,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 699 | [Add local Generative Fill from surrounding pixels](DEVLOG.md#dev-step-699) |
 | 2026-11-21 | 700 | [Add prompted Generative Fill on Apple Silicon](DEVLOG.md#dev-step-700) |
 | 2026-11-21 | 701 | [Blend Generative Fill selection edges](DEVLOG.md#dev-step-701) |
+| 2026-11-21 | 702 | [Keep editable Generative Fill variations](DEVLOG.md#dev-step-702) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

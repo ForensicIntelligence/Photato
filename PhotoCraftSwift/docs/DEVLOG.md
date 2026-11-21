@@ -720,7 +720,29 @@ For a readable account of the project from the beginning, see [Photato developme
 | 699 | 2026-11-21 | [Add local Generative Fill from surrounding pixels](#dev-step-699) |
 | 700 | 2026-11-21 | [Add prompted Generative Fill on Apple Silicon](#dev-step-700) |
 | 701 | 2026-11-21 | [Blend Generative Fill selection edges](#dev-step-701) |
+| 702 | 2026-11-21 | [Keep editable Generative Fill variations](#dev-step-702) |
 <!-- history-index:end -->
+
+<a id="dev-step-702"></a>
+
+## 2026-11-21 — Keep editable Generative Fill variations
+
+Prompted Generative Fill can now keep up to three results in one editable masked layer. Choose a variation in Properties or through the Photato API. The original generation takes one Undo step.
+
+- `LocalGenerativeFill.swift` and `LocalPromptGenerativeFill.swift` prepare the source and selection once, reuse one Core ML pipeline across the requested seeds, and retain the previous edge blend. `GenerativeFillControls.swift` defaults to three results with a prompt. Blank prompts still use the single-result LaMa workflow.
+- `GenerativeFillVariations.swift` stores the alternatives as layers inside an embedded PSD and records a visibility-only layer comp for each. `PSDCodec.swift` preserves the bounded `PtFV` record with the source fingerprint, prompt, model and seeds. `WorkspacePanels.swift` exposes the picker. The existing layer-comp edit supplies Undo for switching.
+- The first round-trip checks found that the reader rejected the new tag, that masks could reopen in a different storage depth with the same coverage, and that an identity transform diverted RGB32 through a resampling path. The final reader admits the bounded tag and normalizes the exact identity transform for these fills. The test compares mask coverage bits and rendered bytes.
+- `GenerativeFillWorker.swift` and `Application.swift` run prompted inference in a separate instance of the Swift executable using a scoped model bookmark. The first sandbox run could not find the worker's reply when the job directory came from the child's working directory. Passing the job directory explicitly resolved the handoff. The forced-failure test checks that a failed worker returns an error to the caller without terminating the editor.
+- `AutomationCommands.swift`, `AutomationService.swift` and `AutomationGenerativeFill.swift` add a validated `variationCount` parameter and selection state. Existing callers still receive one result by default and can switch alternatives with `smartObject.layerComp`. The capability count remains 285.
+- `AUTOMATION_API.md` and `LOCAL_GENERATIVE_FILL.md` document the model setup, parameters and result selection. `ADOBE_API_COMPATIBILITY.json` records the separate Adobe Execute Actions gap against the published v2 guidance.
+- `GenerativeFillVariationTests.swift` adds round-trip and worker-failure tests. `GenerativeFillWorkflowTests.swift` checks shared model output, API switching and undo. The checked-in bundle metadata advances to build 702.
+- Separate offscreen probes exercised cancellation during work, inspected the sheet and Properties controls, and reopened the actual sandbox outputs. The cancelled job left its original document, empty Undo stack and no temporary inference directory.
+
+Synthetic RGB8, RGB16 and RGB32 tests preserved exact rendered samples, mask coverage and the selected variation after reopening Photato, PSD and PSB files in Photato. The real Core ML model generated identical first results through the editor and HTTP at the tested seed. A separate sandboxed test generated three different results and preserved all 49,283 pixels outside the selection in each. Each of those real variations also matched its original RGBA bytes after reopening in all three formats in Photato.
+
+482 of 483 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 701 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug. Generating more results into the same layer, Generate Similar, the Adobe Execute Actions descriptor, and Firefly pixel equivalence remain open. The installed Photoshop session timed out on two read-only scripting queries. Adobe's desktop documentation confirms variation selection in Properties. The overall desktop workflow estimate remains 50%.
+
+[Qualification](SOURCE_PUBLICATION_702.md) · [Model setup](LOCAL_GENERATIVE_FILL.md).
 
 <a id="dev-step-701"></a>
 
