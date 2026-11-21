@@ -53,7 +53,8 @@ enum GenerativeFillVariations {
     return .generativeFill(try pack(layers, in: document, prompt: prompt, seeds: seeds, context: recipe.encoded()))
   }
 
-  static func pack(_ layers: [Layer], in document: CraftDocument, prompt: String, seeds: [UInt32], context: Data? = nil) throws -> Layer {
+  static func pack(_ layers: [Layer], in document: CraftDocument, prompt: String, seeds: [UInt32], context: Data? = nil,
+    fileBacked: Bool = false) throws -> Layer {
     guard ((context == nil ? 2 : 1)...LocalGenerativeFill.maximumVariations).contains(layers.count), seeds.count == layers.count,
       Set(seeds).count == seeds.count, let first = layers.first,
       let mask = first.mask, case .raster(let image) = first.content else {
@@ -74,11 +75,12 @@ enum GenerativeFillVariations {
     if let context { source.layers[0].sourceTags = [PSDCodec.fillContextTag: context] }
     let entries = seeds.map { Entry(id: UUID(), seed: $0, prompt: nil, referenceVariationID: nil) }
     return try packaged(source, in: document, previous: first, entries: entries,
-      prompt: prompt, version: context == nil ? 1 : 2, selected: 0)
+      prompt: prompt, version: context == nil ? 1 : 2, selected: 0, fileBacked: fileBacked)
   }
 
   private static func packaged(
-    _ inner: CraftDocument, in document: CraftDocument, previous: Layer, entries: [Entry], prompt: String, version: Int, selected: Int
+    _ inner: CraftDocument, in document: CraftDocument, previous: Layer, entries: [Entry], prompt: String, version: Int, selected: Int,
+    fileBacked: Bool = false
   ) throws -> Layer {
     var source = inner
     var comps = LayerComps()
@@ -92,10 +94,18 @@ enum GenerativeFillVariations {
     source.activeLayerID = source.layers[selected].id
     comps.appliedID = comps.comps[selected].id
     source.layerComps = comps
-    let bytes = try PSDCodec.writeRasterLayers(source, maximumBytes: SmartObject.maximumDocumentSourceBytes)
-    let decoded = try PSDCodec.read(bytes)
+    let bytes: EmbeddedSourceBytes
+    let fileName: String
+    if fileBacked {
+      bytes = .file(try PSDCodec.writeFileBackedEmbeddedSmartObject(source))
+      fileName = "Fill Variations.psb"
+    } else {
+      bytes = .memory(try PSDCodec.writeRasterLayers(source, maximumBytes: SmartObject.maximumDocumentSourceBytes))
+      fileName = "Fill Variations.psd"
+    }
+    let decoded = try SmartObjectIO.decode(bytes, fileName: fileName)
     var (object, initial) = try SmartObjectIO.embedded(
-      document: decoded, in: document, originalData: bytes, fileName: "Fill Variations.psd")
+      document: decoded, in: document, original: bytes, fileName: fileName)
     guard let choices = object.layerComps, choices.entries.count == source.layers.count else {
       throw CraftError.invalid("Could not preserve the variations in the embedded Photoshop document.")
     }
@@ -200,7 +210,7 @@ enum GenerativeFillVariations {
   static func read(_ layer: Layer) -> Metadata? {
     guard let data = layer.sourceTags?[key], data.count <= PSDCodec.fillVariationTagLimit,
       let object = layer.smartObject, object.linkedSource == nil, object.stackMode == nil,
-      object.mediaType == "image/vnd.adobe.photoshop",
+      ["image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType),
       let record = try? JSONDecoder().decode(Metadata.self, from: data),
       (record.version == 1 || record.version == 2), record.model == LocalGenerativeFill.promptModelIdentifier,
       record.sourceSHA256 == object.dataFingerprint,

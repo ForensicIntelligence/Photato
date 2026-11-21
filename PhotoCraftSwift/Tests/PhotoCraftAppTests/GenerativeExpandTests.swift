@@ -102,13 +102,113 @@ final class GenerativeExpandTests: XCTestCase {
       CropRequest(x: 0, y: 0, width: 96, height: 80),
       CropRequest(x: 1, y: 0, width: 104, height: 80),
       CropRequest(x: -5, y: 0, width: 98, height: 80),
-      CropRequest(x: -1, y: 0, width: 5000, height: 80),
+      CropRequest(x: -1, y: 0, width: Surface.maxDimension + 1, height: 80),
       rotated,
     ] {
       XCTAssertThrowsError(try GenerativeExpand.prepare(request, in: source, prompt: "", seed: 1, count: 1) { _, _ in
         XCTFail("Invalid geometry reached the model")
         return []
       })
+    }
+  }
+
+  func testDeepMultiEdgeWindowsRetainOriginalAndSwitchEditableVariations() throws {
+    let original = try fixture()
+    let request = CropRequest(x: -17, y: -12, width: 4_350, height: 108)
+    let retained = try GenerativeExpand.protectedCanvas(for: request, in: original)
+    var calls = 0
+    let command = try GenerativeExpand.prepare(request, in: original, prompt: "new background", seed: 17, count: 2) { _, mask in
+      XCTAssertTrue(mask.contains(0), "Every window needs source or previously synthesized context.")
+      XCTAssertTrue(mask.contains(1))
+      let alternating: Float = calls.isMultiple(of: 2) ? 0.15 : 0.65
+      calls += 1
+      return try [Pixel(alternating, 0.55, 0.3), Pixel(alternating, 0.25, 0.45)].map {
+        try Surface(width: 512, height: 512, fill: $0)
+      }
+    }
+    XCTAssertGreaterThan(calls, 20)
+    var session = EditorSession(document: original)
+    try session.executePrepared(PreparedEdit(command: command, document: original))
+    let edited = session.document
+    let above = try XCTUnwrap(edited.layers.last)
+    XCTAssertTrue(above.smartObject?.sourceBytes.isFileBacked == true)
+    let record = try XCTUnwrap(GenerativeFillVariations.read(above))
+    XCTAssertEqual(record.entries.map(\.seed), [17, 18])
+    let before = try Renderer.composite(original)
+    let rendered = try Renderer.composite(edited)
+    XCTAssertEqual(try rendered.cropped(to: retained).rgbaData(depth: .u8), try before.rgbaData(depth: .u8))
+    for (x, y) in [(0, 0), (4_349, 0), (0, 107), (4_349, 107), (2_598, 60), (214, 45)] {
+      XCTAssertEqual(rendered.pixel(x: x, y: y).a, 1, "Generated border at \(x), \(y)")
+      XCTAssertEqual(above.mask?.pixel(x: x, y: y).r, 1)
+    }
+    XCTAssertEqual(above.mask?.pixel(x: retained.x + 20, y: retained.y + 16).r, 0)
+    for x in stride(from: 384, to: 4_300, by: 384) {
+      XCTAssertLessThan(abs(rendered.pixel(x: x - 1, y: 54).r - rendered.pixel(x: x, y: 54).r), 0.08)
+    }
+    for format in [PSDFileFormat.psd, .psb] {
+      var reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(edited, format: format))
+      let layer = try XCTUnwrap(reopened.layers.last)
+      let alternatives = try XCTUnwrap(GenerativeFillVariations.read(layer))
+      XCTAssertEqual(alternatives.entries, record.entries)
+      XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .u8), try rendered.rgbaData(depth: .u8))
+      try SmartObjectLayerCompIO.selection(in: reopened, layerID: layer.id, compID: alternatives.entries[1].id).apply(to: &reopened)
+      let different = try Renderer.composite(reopened)
+      XCTAssertNotEqual(different.pixel(x: 3_620, y: 55), rendered.pixel(x: 3_620, y: 55))
+      XCTAssertEqual(try different.cropped(to: retained).rgbaData(depth: .u8), try before.rgbaData(depth: .u8))
+    }
+    XCTAssertEqual(session.undoStack.count, 1)
+    try session.undo()
+    XCTAssertEqual(session.document, original)
+  }
+
+  @MainActor func testRealWideCanvasMatchesNativeAndHTTPWithOneUndo() async throws {
+    guard let path = ProcessInfo.processInfo.environment["PHOTATO_TEST_LAMA_MODEL"], LocalGenerativeFill.supported else {
+      throw XCTSkip("Requires the optional LaMa model.")
+    }
+    let key = GenerativeFillModelPreference.key
+    let previous = UserDefaults.standard.data(forKey: key)
+    UserDefaults.standard.set(try GenerativeFillModelPreference.bookmark(for: URL(fileURLWithPath: path, isDirectory: true)), forKey: key)
+    defer { UserDefaults.standard.set(previous, forKey: key) }
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var original = try CraftDocument(width: 4_160, height: 48)
+      var image = try Surface(width: 4_160, height: 48, fill: Pixel(0.42, 0.66, 0.79))
+      try image.mapPixels(in: IntRect(x: 0, y: 24, width: 4_160, height: 24)) { x, _, _ in
+        Pixel(0.35 + Float(x) / 10_000, 0.54, 0.31)
+      }
+      original.layers[0].content = .raster(image)
+      let store = shared.store
+      store.session = EditorSession(document: original)
+      try service.share(shared)
+      store.chooseTool(WorkspaceCatalog.tool("crop"))
+      var crop = try XCTUnwrap(store.cropDraft)
+      crop.frame.scaleY = 137.5
+      crop.frame.centerY = 33
+      store.updateCrop(crop)
+      store.beginGenerativeExpand()
+      let draft = try XCTUnwrap(store.generativeFillDraft)
+      store.generateFill(draft)
+      await store.geometryTask?.value
+      XCTAssertNil(draft.error)
+      XCTAssertNil(store.cropDraft)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      let native = try Renderer.composite(store.document)
+      XCTAssertEqual(native.height, 66)
+      XCTAssertEqual(try native.cropped(to: IntRect(x: 0, y: 0, width: 4_160, height: 48)).rgbaData(depth: .u8),
+        try image.rgbaData(depth: .u8))
+      XCTAssertEqual(native.pixel(x: 4_159, y: 65).a, 1)
+      let mask = try XCTUnwrap(store.activeLayer?.mask)
+      XCTAssertEqual(mask.width, 4_160)
+      XCTAssertEqual(mask.height, 18)
+      await store.undo()
+      XCTAssertEqual(store.document, original)
+      let code = try await helper.edit(service, shared, GenerativeFillAPI.expand,
+        ["x": 0, "y": 0, "width": 4_160, "height": 66], timeout: 240)
+      XCTAssertEqual(code, 200)
+      XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), try native.rgbaData(depth: .u8))
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      await store.undo()
+      XCTAssertEqual(store.document, original)
     }
   }
 

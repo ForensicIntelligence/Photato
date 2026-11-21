@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **705** · The 10 most recent entries, newest first.
+Source build **706** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 706 — Extend wide borders with overlapping model windows
+
+Generative Expand now processes wider and deeper borders in overlapping model windows. The Crop tool and Photato API use the same engine and apply the expansion as one Undo step. Multiple prompted results share an editable mask and appear as layer comps in one embedded PSB.
+
+LaMa preserved all 720,896 original pixels on a 5,632 × 128 source and added 225,280 pixels. The mean step at the model-window joins was 0.47 RGB8 levels. A real 30,144-pixel-wide outpaint preserved 482,304 original pixels and reopened with identical composite bytes in the native format and PSB. A separate 300,000 × 16 outpaint added eight rows at Photoshop’s published maximum canvas width, preserving all 4,800,000 originals through native and PSB reopening. The native Crop action and HTTP produced identical pixels on a separate 4,160-pixel-wide run. Both prompted alternatives on the real 4,104-pixel-wide input stayed distinct and editable after native and PSB reopening. A deterministic deep four-sided test covered editable PSD/PSB alternatives, joined pixels and interior transparency. A separate PSB test retained exact RGB16 and RGB32 sample words.
+
+Tiled alternatives retain their results and mask for editing. Generate More and Generate Similar after reopening still require the single-patch saved context. The two-alternative prompt proof took 572 seconds with other qualification jobs running. Reusing the prompted worker between windows remains a performance task. Dense maximum-area generation, prompted quality across distant windows and Firefly output equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-706) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_706.md).
 
 ## 2026-11-21 — Step 705 — Extend the canvas with local generation
 
@@ -93,13 +103,3 @@ RGB8, RGB16 and RGB32 reductions with raster and mask edits matched the streamed
 474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. A coordinate-dependent shadow, such as one with noise, still needs the ordinary renderer. Broad edited areas and unsupported stacks also retain their prior rendering path. The local Photoshop document query timed out, so Adobe Fit sampling and Adobe shadow pixels remain unverified.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-697) · [Details](PhotoCraftSwift/docs/DENSE_SHADOW_FIT_697.md).
-
-## 2026-11-21 — Step 696 — Render Drop Shadows in bounded canvas regions
-
-Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin.
-
-Twenty-four RGB8, RGB16 and RGB32 viewport comparisons matched the whole-canvas renderer at tile and document edges. Another 384 varied viewport comparisons matched on each optimized architecture. A sparse 300,000 × 300,000 canvas found a 30,000-pixel displaced shadow and retained under 4 MiB of output tiles in the test. The native menu, advanced controls, preview, Undo, local HTTP edit and PNG were verified on that canvas size. A 4,096 × 4,096 editable PSB reopened with the same effect settings and regional pixels. All 138 prior effect fixtures produced identical direct and imported-project output on both architectures.
-
-471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document. The installed Photoshop instance timed out on a document query. Direct Adobe pixel comparison remains open. Very wide filters retain a scratch budget. A shadow already filling an entire canvas can require additional preview work. Other effects still use their existing whole-canvas limits.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-696) · [Details](PhotoCraftSwift/docs/REGIONAL_DROP_SHADOW_696.md).

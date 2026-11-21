@@ -34,7 +34,12 @@ enum GenerativeExpand {
         }
       }
     }
-    return try prepare(request, in: original, prompt: prompt, seed: seed, count: count) { image, mask in
+    return try prepare(request, in: original, prompt: prompt, seed: seed, count: count, predictWindow: { variation, image, mask in
+      let result = try GenerativeFillWorker.run(model: model, bookmark: bookmark, prompt: prompt,
+        seeds: [seed &+ UInt32(variation)], image: image, mask: mask)
+      guard let patch = result.first else { throw CraftError.invalid("The model returned no Generative Expand window.") }
+      return patch
+    }) { image, mask in
       let seeds = (0..<count).map { seed &+ UInt32($0) }
       return try GenerativeFillWorker.run(model: model, bookmark: bookmark, prompt: prompt,
         seeds: seeds, image: image, mask: mask)
@@ -43,6 +48,18 @@ enum GenerativeExpand {
 
   static func prepare(
     _ request: CropRequest, in original: CraftDocument, prompt: String, seed: UInt32, count: Int,
+    predict: ([Float], [Float]) throws -> [Surface]
+  ) throws -> Command {
+    try prepare(request, in: original, prompt: prompt, seed: seed, count: count, predictWindow: { variation, image, mask in
+      let results = try predict(image, mask)
+      guard results.count == count else { throw CraftError.invalid("The model returned the wrong number of variations.") }
+      return results[variation]
+    }, predict: predict)
+  }
+
+  private static func prepare(
+    _ request: CropRequest, in original: CraftDocument, prompt: String, seed: UInt32, count: Int,
+    predictWindow: (Int, [Float], [Float]) throws -> Surface,
     predict: ([Float], [Float]) throws -> [Surface]
   ) throws -> Command {
     guard (1...LocalGenerativeFill.maximumVariations).contains(count), !prompt.isEmpty || count == 1 else {
@@ -62,11 +79,17 @@ enum GenerativeExpand {
       throw CraftError.invalid("Generative Expand needs room outside the original canvas.")
     }
     let width = maxX - minX, height = maxY - minY
-    guard max(width, height) <= LocalGenerativeFill.maximumSelectionSide,
-      width <= LocalGenerativeFill.maximumSelectionPixels / height else {
-      throw CraftError.unsupported("The new border must currently fit within 4 megapixels and 4,096 pixels per side.")
-    }
     var framed = try CanvasFrameGeometry.reframed(original, bounds: frame)
+    let seeds = (0..<count).map { seed &+ UInt32($0) }
+    if max(width, height) > LocalGenerativeFill.maximumSelectionSide ||
+      width > LocalGenerativeFill.maximumSelectionPixels / height {
+      let border = IntRect(x: minX, y: minY, width: width, height: height)
+      let windows = GenerativeExpandWindows(frame: frame, protected: kept, border: border, strips: strips, depth: original.depth)
+      let layers = try windows.render(original: original, count: count, predict: predictWindow)
+      let layer = count == 1 ? layers[0]
+        : try GenerativeFillVariations.pack(layers, in: framed, prompt: prompt, seeds: seeds, fileBacked: true)
+      return try finish(layer, original: original, framed: &framed)
+    }
     let selection = try SelectionMask.sampledCoverage(width: frame.width, height: frame.height, regions: strips) { x, y in
       kept.contains(x, y) ? 0 : 255
     }
@@ -85,9 +108,12 @@ enum GenerativeExpand {
     if prompt.isEmpty {
       layer = layers[0]
     } else {
-      let seeds = (0..<count).map { seed &+ UInt32($0) }
       layer = try GenerativeFillVariations.pack(layers, in: framed, prompt: prompt, seeds: seeds, context: recipe.encoded())
     }
+    return try finish(layer, original: original, framed: &framed)
+  }
+
+  private static func finish(_ layer: Layer, original: CraftDocument, framed: inout CraftDocument) throws -> Command {
     try Command.generativeFill(layer).apply(to: &framed)
     framed.setCoverageSelection(nil)
     return .cropDocument(CropEdit(source: original, result: framed, kind: .generativeExpand))

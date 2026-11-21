@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 706 — Extend wide borders with overlapping model windows
+
+Generative Expand now processes wider and deeper borders in overlapping model windows. The Crop tool and Photato API use the same engine and apply the expansion as one Undo step. Multiple prompted results share an editable mask and appear as layer comps in one embedded PSB.
+
+LaMa preserved all 720,896 original pixels on a 5,632 × 128 source and added 225,280 pixels. The mean step at the model-window joins was 0.47 RGB8 levels. A real 30,144-pixel-wide outpaint preserved 482,304 original pixels and reopened with identical composite bytes in the native format and PSB. A separate 300,000 × 16 outpaint added eight rows at Photoshop’s published maximum canvas width, preserving all 4,800,000 originals through native and PSB reopening. The native Crop action and HTTP produced identical pixels on a separate 4,160-pixel-wide run. Both prompted alternatives on the real 4,104-pixel-wide input stayed distinct and editable after native and PSB reopening. A deterministic deep four-sided test covered editable PSD/PSB alternatives, joined pixels and interior transparency. A separate PSB test retained exact RGB16 and RGB32 sample words.
+
+Tiled alternatives retain their results and mask for editing. Generate More and Generate Similar after reopening still require the single-patch saved context. The two-alternative prompt proof took 572 seconds with other qualification jobs running. Reusing the prompted worker between windows remains a performance task. Dense maximum-area generation, prompted quality across distant windows and Firefly output equivalence remain open.
+
+[Development record](DEVLOG.md#dev-step-706) · [Qualification](SOURCE_PUBLICATION_706.md).
+
 ## 2026-11-21 — Step 705 — Extend the canvas with local generation
 
 Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
@@ -1657,14 +1667,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:705 -->
+<!-- current-status-step:706 -->
 ## Current development status — 21 November 2026
 
-Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
+Generative Expand now processes wider and deeper borders in overlapping model windows. The Crop tool and Photato API use the same engine and apply the expansion as one Undo step. Multiple prompted results share an editable mask and appear as layer comps in one embedded PSB.
 
-494 of 495 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect test repeated its 118 assertions from build 704 in each configuration. The Xcode app built in arm64 Debug. Both slices of the signed preview opened offscreen.
+495 of 496 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect test repeated its 118 assertions from build 705 in each configuration. The Xcode project built in arm64 Debug. Both signed preview slices opened offscreen.
 
-[Source checkpoint 705](SOURCE_PUBLICATION_705.md) · [Development record](DEVLOG.md#dev-step-705).
+[Source checkpoint 706](SOURCE_PUBLICATION_706.md) · [Development record](DEVLOG.md#dev-step-706).
 
 <!-- current-status:end -->
 
@@ -2576,6 +2586,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 703 | [Add batches to an existing Generative Fill layer](DEVLOG.md#dev-step-703) |
 | 2026-11-21 | 704 | [Generate similar variations from a saved local fill](DEVLOG.md#dev-step-704) |
 | 2026-11-21 | 705 | [Extend the canvas with local generation](DEVLOG.md#dev-step-705) |
+| 2026-11-21 | 706 | [Extend wide borders with overlapping model windows](DEVLOG.md#dev-step-706) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

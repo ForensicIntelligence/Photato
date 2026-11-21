@@ -1274,7 +1274,7 @@ public enum PSDCodec {
     return encodings
   }
 
-  static func writeFileBackedEmbeddedSmartObject(_ doc: CraftDocument) throws -> FileBackedSource {
+  package static func writeFileBackedEmbeddedSmartObject(_ doc: CraftDocument) throws -> FileBackedSource {
     try Task.checkCancellation()
     try doc.validate()
     let linkedSources = try doc.requiresSmartObjectArchive ? PSDSmartObjects.linkedData(doc) : nil
