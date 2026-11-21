@@ -20,7 +20,7 @@ To keep more of an existing result’s composition, choose that variation in **P
 
 New prompted fills save the prepared image area locally inside the layer. Save a flattened export when sharing artwork without its editable variation data. Build 702’s saved variations can still be selected. Generate More and Generate Similar require a fill that captured its original context.
 
-Prompted inference uses a separate local Swift process. Cancel discards the pending edit and leaves the document unchanged. Blank-prompt fills use LaMa to produce a single result.
+Prompted inference uses a separate local Swift process for each editing job. A tiled expansion reuses the loaded model for all its windows and alternatives. Cancel stops the worker and discards the pending edit. Blank-prompt fills use LaMa to produce a single result.
 
 ## Set up the blank-prompt model
 

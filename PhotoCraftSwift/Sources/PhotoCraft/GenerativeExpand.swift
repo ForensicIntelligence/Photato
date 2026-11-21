@@ -34,15 +34,15 @@ enum GenerativeExpand {
         }
       }
     }
-    return try prepare(request, in: original, prompt: prompt, seed: seed, count: count, predictWindow: { variation, image, mask in
-      let result = try GenerativeFillWorker.run(model: model, bookmark: bookmark, prompt: prompt,
-        seeds: [seed &+ UInt32(variation)], image: image, mask: mask)
-      guard let patch = result.first else { throw CraftError.invalid("The model returned no Generative Expand window.") }
-      return patch
-    }) { image, mask in
-      let seeds = (0..<count).map { seed &+ UInt32($0) }
-      return try GenerativeFillWorker.run(model: model, bookmark: bookmark, prompt: prompt,
-        seeds: seeds, image: image, mask: mask)
+    return try GenerativeFillWorker.withSession(model: model, bookmark: bookmark) { session in
+      try prepare(request, in: original, prompt: prompt, seed: seed, count: count, predictWindow: { variation, image, mask in
+        let result = try session.predict(prompt: prompt, seeds: [seed &+ UInt32(variation)], image: image, mask: mask)
+        guard let patch = result.first else { throw CraftError.invalid("The model returned no Generative Expand window.") }
+        return patch
+      }) { image, mask in
+        let seeds = (0..<count).map { seed &+ UInt32($0) }
+        return try session.predict(prompt: prompt, seeds: seeds, image: image, mask: mask)
+      }
     }
   }
 

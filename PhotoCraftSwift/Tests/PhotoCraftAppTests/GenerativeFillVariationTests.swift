@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 import PhotoCraftCore
 import PhotoCraftImaging
@@ -78,6 +79,70 @@ final class GenerativeFillVariationTests: XCTestCase {
     XCTAssertThrowsError(try GenerativeFillWorker.run(model: model, prompt: "Fixture", seeds: [0, 1],
       image: [], mask: [], executable: URL(fileURLWithPath: "/usr/bin/false"))) { error in
       XCTAssertEqual(error as? CraftError, .unavailable("Local model inference stopped unexpectedly. Try Generate again."))
+    }
+  }
+
+  func testCancellingBusyPromptWorkerReapsChildAndRemovesScratch() async throws {
+    let files = FileManager.default
+    let folder = files.temporaryDirectory.appending(path: "Photato-Worker-Test-\(UUID())", directoryHint: .isDirectory)
+    try files.createDirectory(at: folder, withIntermediateDirectories: false)
+    defer { try? files.removeItem(at: folder) }
+    let fixture = folder.appending(path: "stall")
+    let marker = folder.appending(path: "stall.started")
+    try """
+    #!/bin/sh
+    trap '' TERM
+    printf '%s\\n%s\\n' "$$" "$2" > "$0.started"
+    exec /bin/sleep 60
+
+    """.write(to: fixture, atomically: true, encoding: .utf8)
+    try files.setAttributes([.posixPermissions: 0o700], ofItemAtPath: fixture.path)
+    let job = Task.detached {
+      try GenerativeFillWorker.run(model: folder, prompt: "Fixture", seeds: [0],
+        image: [], mask: [], executable: fixture)
+    }
+    defer { job.cancel() }
+    let deadline = ContinuousClock.now + .seconds(4)
+    while !files.fileExists(atPath: marker.path), ContinuousClock.now < deadline {
+      try await Task.sleep(for: .milliseconds(20))
+    }
+    let info = try String(contentsOf: marker, encoding: .utf8).split(separator: "\n")
+    let pid = try XCTUnwrap(info.first.flatMap { Int32($0) })
+    let scratch = try XCTUnwrap(info.last.map { String($0) })
+    XCTAssertTrue(files.fileExists(atPath: scratch))
+    job.cancel()
+    do {
+      _ = try await job.value
+      XCTFail("Cancelled inference returned pixels.")
+    } catch is CancellationError {
+      XCTAssertEqual(Darwin.kill(pid, 0), -1)
+      XCTAssertFalse(files.fileExists(atPath: scratch))
+    }
+  }
+
+  func testRealPromptWorkerReusePreservesSeededPixelsAcrossRequests() throws {
+    guard let path = ProcessInfo.processInfo.environment["PHOTATO_TEST_PROMPT_FILL_MODEL"], LocalGenerativeFill.supported else {
+      throw XCTSkip("Requires the optional prompt model.")
+    }
+    let model = URL(fileURLWithPath: path, isDirectory: true)
+    let side = LocalGenerativeFill.side, area = side * side
+    var image = Array(repeating: Float(0.6), count: area * 3)
+    for index in 0..<area {
+      image[index + area] = Float(index % side) / 1024 + 0.2
+    }
+    let first = (0..<area).map { Float($0 % side >= side * 3 / 4 ? 1 : 0) }
+    let second = (0..<area).map { Float($0 / side >= side * 3 / 4 ? 1 : 0) }
+    let prompt = "plain painted background, warm afternoon light"
+    let expectedFirst = try GenerativeFillWorker.run(model: model, prompt: prompt, seeds: [472122], image: image, mask: first)
+    let expectedSecond = try GenerativeFillWorker.run(model: model, prompt: prompt, seeds: [472123], image: image, mask: second, mode: .similar)
+    try GenerativeFillWorker.withSession(model: model) { session in
+      let initial = try session.predict(prompt: prompt, seeds: [472122], image: image, mask: first)
+      let later = try session.predict(prompt: prompt, seeds: [472123], image: image, mask: second, mode: .similar)
+      let repeated = try session.predict(prompt: prompt, seeds: [472122], image: image, mask: first)
+      XCTAssertEqual(try initial[0].rgbaData(depth: .f32), try expectedFirst[0].rgbaData(depth: .f32))
+      XCTAssertEqual(try later[0].rgbaData(depth: .f32), try expectedSecond[0].rgbaData(depth: .f32))
+      XCTAssertEqual(try repeated[0].rgbaData(depth: .f32), try initial[0].rgbaData(depth: .f32))
+      XCTAssertNotEqual(initial[0], later[0])
     }
   }
 

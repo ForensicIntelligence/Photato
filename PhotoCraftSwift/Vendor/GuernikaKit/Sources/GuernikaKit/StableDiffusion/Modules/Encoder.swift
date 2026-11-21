@@ -48,8 +48,13 @@ public class Encoder {
     public func unloadResources(clearCache: Bool = false) {
         model.unloadResources()
         if clearCache {
-            cache.clear()
+            clearSampleCache()
         }
+    }
+
+    /// Drop sampled, seed-dependent latents while keeping the Core ML model loaded.
+    public func clearSampleCache() {
+        cache.clear()
     }
     
     /// Encode image into latent samples

@@ -725,7 +725,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 704 | 2026-11-21 | [Generate similar variations from a saved local fill](#dev-step-704) |
 | 705 | 2026-11-21 | [Extend the canvas with local generation](#dev-step-705) |
 | 706 | 2026-11-21 | [Extend wide borders with overlapping model windows](#dev-step-706) |
+| 707 | 2026-11-21 | [Reuse the local prompt model across an editing job](#dev-step-707) |
 <!-- history-index:end -->
+
+<a id="dev-step-707"></a>
+
+## 2026-11-21 — Reuse the local prompt model across an editing job
+
+Build 706 launched and initialized an inference process for each tiled prompt request. GenerativeFillWorker now scopes the child to the edit, uses a pipe to signal bounded plist requests, and publishes one atomic reply at a time. The parent owns the process and temporary storage. A cancellation test exercised a child that ignored ordinary termination. The abnormal exit test preserved the parent error response.
+
+LocalPromptGenerativeFill keeps the compiled models and deterministic text cache for the session. Its vendored GuernikaKit Encoder now provides a sample-cache reset to isolate seed-dependent VAE latents by request. The sampler steps, prompt validation and seed sequence remain the established ones. GenerativeExpand uses the worker through both desktop and HTTP, and AutomationGenerativeFill reports the job-scoped worker. The product advances to build 707.
+
+The initial build and lifecycle tests predated the VAE cache audit. A new Debug and Xcode build verified the final cache-scoped version. The installed Photoshop responded to a read-only version query with 27.2.0. Adobe’s published Crop and Properties instructions supply the workflow reference.
+
+Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker.
+
+A paired four-request Core ML benchmark used 89.9 seconds with fresh workers and 80.9 seconds with one reusable worker. All four Float32 RGBA buffers matched exactly. A signed App Sandbox harness reproduced all four buffers. A separate 4,104-pixel-wide two-alternative run took 547.8 seconds and reproduced both build 706 alternatives and the editable mask byte for byte after reopening. A cancellation test forced a non-cooperative test child to exit and verified scratch cleanup.
+
+496 of 497 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 706. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
+
+Generation still takes time for large borders. Prompt quality across distant windows, saved tiled context for Generate More and Generate Similar, and Adobe Firefly output equivalence remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_707.md).
 
 <a id="dev-step-706"></a>
 

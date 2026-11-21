@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **706** · The 10 most recent entries, newest first.
+Source build **707** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 707 — Reuse the local prompt model across an editing job
+
+Prompted Generative Expand now keeps one isolated worker and loaded model for all windows and alternatives in an edit. Cancel still aborts the edit and removes its temporary files. The desktop and Photato HTTP commands use the same worker.
+
+A paired four-request Core ML benchmark used 89.9 seconds with fresh workers and 80.9 seconds with one reusable worker. All four Float32 RGBA buffers matched exactly. A signed App Sandbox harness reproduced all four buffers. A separate 4,104-pixel-wide two-alternative run took 547.8 seconds and reproduced both build 706 alternatives and the editable mask byte for byte after reopening. A cancellation test forced a non-cooperative test child to exit and verified scratch cleanup.
+
+Generation still takes time for large borders. Prompt quality across distant windows, saved tiled context for Generate More and Generate Similar, and Adobe Firefly output equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-707) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_707.md).
 
 ## 2026-11-21 — Step 706 — Extend wide borders with overlapping model windows
 
@@ -93,13 +103,3 @@ The coverage copy matched the isolated compositor in RGB8, RGB16 and RGB32, incl
 475 of 476 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with the same assertions in build 697. Both signed preview slices opened offscreen. Noisy previews still require per-pixel evaluation. Whole-document Fit on a maximum-size dense file still needs further work. The local Photoshop document query timed out, so Adobe shadow pixels and Fit sampling remain unverified.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-698) · [Details](PhotoCraftSwift/docs/DENSE_SHADOW_COVERAGE_698.md).
-
-## 2026-11-21 — Step 697 — Reduce Fit and proof previews for large uniform Drop Shadows
-
-Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path.
-
-RGB8, RGB16 and RGB32 reductions with raster and mask edits matched the streamed renderer. The native Fit view and explicit HTTP composite, green-channel and soft-proof PNGs matched on a 300,000 × 300,000 document. The 70,000 × 520 benchmark reproduced each architecture's build 696 Float32 composite and soft-proof samples byte for byte.
-
-474 of 475 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The same original PhotoCraft effect fixture failed with identical assertions in build 696. Both signed preview slices opened offscreen. A coordinate-dependent shadow, such as one with noise, still needs the ordinary renderer. Broad edited areas and unsupported stacks also retain their prior rendering path. The local Photoshop document query timed out, so Adobe Fit sampling and Adobe shadow pixels remain unverified.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-697) · [Details](PhotoCraftSwift/docs/DENSE_SHADOW_FIT_697.md).

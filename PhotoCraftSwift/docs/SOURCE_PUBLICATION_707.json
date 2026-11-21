@@ -1,0 +1,174 @@
+{
+  "build": 707,
+  "base": "b0708d234db1a5d014f4689660a1262e9f2db611",
+  "buildInputs": 9391,
+  "includedBuildInputs": 9378,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "cd8c473ae20606e4dfb4f76035722a8a0ebd8e37cb42dd8ff05968e17c7a98c7",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "559e8b8a53d2860d7d54a0a64ce9e52ff0a64f3e79ff31c6917dc5b2d80607ac"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeExpand.swift",
+      "sha256": "3b4c1b844cb7e4649d912cd35a518992e2f2219083ee3f6c8ef0841a5c856a2e"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillWorker.swift",
+      "sha256": "1d591b14f98a36691d337195eb74a74b842549022d62cfbb8b1673ddfe5abb41"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalPromptGenerativeFill.swift",
+      "sha256": "d4da9b7ed27e8d8bf1578d691ce9b2704bf1ed8f3fdac4f5616458691ebd475d"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GenerativeFillVariationTests.swift",
+      "sha256": "0dcc558fa4a2a2968898e06e6b13a0f04e20a78fef45a3076856ec8ecf6dcc10"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/Modules/Encoder.swift",
+      "sha256": "af28bd611e411d4fe05c2faf5e35d7a25d27283915bf6c451452b768887420a0"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "7332c5a2cf5d86a9da606b5146940d981b6836ac81d0c10b16717bcc400711d4"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "7332c5a2cf5d86a9da606b5146940d981b6836ac81d0c10b16717bcc400711d4"
+  },
+  "casesPerConfiguration": 497,
+  "qualification": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 497,
+      "passed": 496,
+      "newCasesExpected": 54,
+      "newCasesPassed": 54,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "5b81a7c752f503d8a8fecf1e58a00dd93bd096cd4a8105bf6201c0f859469740"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 497,
+      "passed": 496,
+      "newCasesExpected": 54,
+      "newCasesPassed": 54,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "8bbddf8f610ac0db2391974b6680173c7ff28e75a2637ae2aa4029cceadfd75c"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 497,
+      "passed": 496,
+      "newCasesExpected": 54,
+      "newCasesPassed": 54,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "a7808652edba93ac327914499cf57769bc57486cdda17d4787c991f52b49eadf"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "c409daae6df0325ea16bf4d8ec90e437209931153c0325f55331efd09b45096c",
+    "archInputsSHA256": {
+      "arm64": "e0b7b15257d73b8d5afb555316dbec6ba11c37fa45cc591539dfd55b151c8f3b",
+      "x86_64": "a4eb380eb3cf160497ecb3243dfcb2414164295368821b516f184a7cbca54848"
+    },
+    "binarySHA256": "03c50ab2b9d303fd7a95fbdf81357b44c98dadc902ceaa89f9cc9ec0772b5cf2",
+    "minimumSystemVersion": "14.0",
+    "extractedSignatureVerified": true
+  },
+  "promptWorkerTiming": {
+    "baseline": {
+      "seconds": 89.937,
+      "requestSeconds": [
+        23.811,
+        23.714,
+        12.948,
+        29.464
+      ],
+      "rgba32SHA256": [
+        "21a7ba0523db23c701c3cb091429a977c6a5012ad1593b7df518d3d0945ff3c1",
+        "49b9356dd1995dbf7d242dd3936904dec30ec647f1fa634d0bdadf417ea264a3",
+        "c254d1e8b3b7ae466b2feb1ff3cf2335509bab3e689cacc1832a6eb4e3a15b5c",
+        "21a7ba0523db23c701c3cb091429a977c6a5012ad1593b7df518d3d0945ff3c1"
+      ]
+    },
+    "reuse": {
+      "seconds": 80.89,
+      "requestSeconds": [
+        23.779,
+        22.604,
+        11.813,
+        22.555
+      ],
+      "rgba32SHA256": [
+        "21a7ba0523db23c701c3cb091429a977c6a5012ad1593b7df518d3d0945ff3c1",
+        "49b9356dd1995dbf7d242dd3936904dec30ec647f1fa634d0bdadf417ea264a3",
+        "c254d1e8b3b7ae466b2feb1ff3cf2335509bab3e689cacc1832a6eb4e3a15b5c",
+        "21a7ba0523db23c701c3cb091429a977c6a5012ad1593b7df518d3d0945ff3c1"
+      ]
+    },
+    "secondsSaved": 9.047,
+    "percentSaved": 10.06,
+    "identicalRGBA32": true
+  },
+  "sandboxPromptWorkerProof": {
+    "build": 707,
+    "bundleID": "ca.forensicintelligence.photato.promptqualification707",
+    "usesAppSandboxEntitlements": true,
+    "identicalRGBA32": true,
+    "rgba32SHA256": [
+      "21a7ba0523db23c701c3cb091429a977c6a5012ad1593b7df518d3d0945ff3c1",
+      "49b9356dd1995dbf7d242dd3936904dec30ec647f1fa634d0bdadf417ea264a3",
+      "c254d1e8b3b7ae466b2feb1ff3cf2335509bab3e689cacc1832a6eb4e3a15b5c",
+      "21a7ba0523db23c701c3cb091429a977c6a5012ad1593b7df518d3d0945ff3c1"
+    ],
+    "requests": 4
+  },
+  "wideAlternativeProof": {
+    "width": 4104,
+    "seededAlternativesMatched": 2,
+    "maskIdentical": true,
+    "wallSeconds": 547.81,
+    "originalPixels": 393984,
+    "addedPixels": 98496
+  },
+  "evidenceSHA256": {
+    "focused-workflows02.log": "8a4bde637b80932abb67f0a08c4026ea26415a4b417986a9cc6af0b824039b02",
+    "qualified-model-arm01.log": "3428e362fab19896985239b220804e961bffaca6a2c632eb2a0553bf772f6f64",
+    "build-debug02.log": "524c2a1710706c7174197998ed8b7bb324016f71841bb389d3e17b85dacb7b54",
+    "xcode-build02.log": "501521a22f057d543813071d051b3811f6cb6e877872f1aa6e956db7cc8367e3",
+    "build-release-arm6401.log": "3ad22326bdb9eb979fc41e7aae1bc3fe50bb326bba97185743bc29a268eb4c78",
+    "build-release-x86_6401.log": "a18fae0db986371276080958c44135ab1c39bf739eb8ae78a1be5d4e6ee18de1",
+    "timing-baseline-run01.log": "5ccd385d9c56ccfbae3bc26509e1876f0d2929c18440faa7be9be7396e843880",
+    "timing-reuse-run01.log": "99c2d8409f8e891d9ab306243489625885f43053efe2a1c7609af27c03fa7f87",
+    "wide-prompt-run01.log": "48cc11616b5431bcd41c2dbbc615dd84067c62a0465ccbff830fc7a710f23e09",
+    "compare-wide-run01.log": "f11b28ffe158c8041c3cc388c312443dd91a5553f410831fc8a7405afed129a7",
+    "photoshop-version01.log": "102990c6feb491879bb08b28b84afdf1cea669328db8eaa6929464f9ddbe9d14",
+    "sandbox-worker-runtime01.log": "f67213ba5c1735e0ae30dc9725296bdf4f3bc62d263060ed37b5a1cfd6950027",
+    "sandbox-worker-receipt.json": "2df3a3756df22a67065c66d684976c957e49b2cefc7f65c5bed472d29c5a718e"
+  }
+}

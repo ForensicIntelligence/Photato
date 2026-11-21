@@ -41,7 +41,7 @@ enum GenerativeFillAPI {
      "maximumSelectionSide": LocalGenerativeFill.maximumSelectionSide,
      "expandGeometry": ["maximumCanvasSide": Surface.maxDimension, "windowSide": GenerativeExpandWindows.side,
       "windowOverlap": GenerativeExpandWindows.overlap, "tiledPromptVariations": true,
-      "tiledRegenerationFromSavedContext": false] as [String: Any],
+      "tiledRegenerationFromSavedContext": false, "promptWorkerPerJob": true] as [String: Any],
      "promptSupported": true, "maximumPromptCharacters": LocalGenerativeFill.maximumPromptCharacters,
      "maximumVariations": LocalGenerativeFill.maximumVariations, "variationSelectionCommand": SmartObjectLayerCompAPI.name,
      "maximumStoredVariations": GenerativeFillVariations.maximumStoredVariations,

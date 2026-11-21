@@ -46,32 +46,49 @@ extension LocalGenerativeFill {
   package static func predictPrompt(
     image: [Float], mask: [Float], model url: URL, prompt raw: String, seeds: [UInt32], mode: PromptMode = .fill
   ) throws -> [Surface] {
-    let prompt = try validatePrompt(raw)
-    guard !prompt.isEmpty, (1...maximumVariations).contains(seeds.count),
-      Set(seeds).count == seeds.count, image.count == 3 * side * side, mask.count == side * side,
-      image.allSatisfy(\.isFinite), mask.allSatisfy({ $0 == 0 || $0 == 1 }) else {
-      throw CraftError.invalid("The local prompt model requires a prompt, a valid image and mask, and distinct seeds.")
+    try withPromptPredictor(at: url) { predict in
+      try predict(image, mask, raw, seeds, mode)
     }
+  }
+
+  package typealias PromptPredictor = ([Float], [Float], String, [UInt32], PromptMode) throws -> [Surface]
+
+  /// Keep the compiled models, tokenizer and prompt cache inside one scoped job.
+  package static func withPromptPredictor<Result>(
+    at url: URL, _ use: (PromptPredictor) throws -> Result
+  ) throws -> Result {
     #if arch(arm64)
     if #available(macOS 26, *) {
       return try withPromptModel(at: url) { pipeline in
-        let encoder = pipeline.textEncoder
-        let tokens = encoder.tokenizer.tokenizeWithWeights(prompt, minCount: encoder.maxInputLength)
-        guard tokens.1.count <= encoder.maxInputLength else {
-          throw CraftError.invalid("The prompt exceeds the model’s token limit. Try a shorter description.")
-        }
-        let source = try promptImage(samples: image, mask: nil)
-        let selection = try promptImage(samples: [], mask: mask)
-        return try seeds.map { seed in
+        try use { image, mask, raw, seeds, mode in
           try Task.checkCancellation()
-          let input = SampleInput(prompt: prompt, initImage: source, inpaintMask: selection,
-            strength: mode == .similar ? 0.48 : 1, seed: seed, stepCount: 25)
-          let output = try pipeline.generateImages(input: input) { _ in !Task.isCancelled }
-          try Task.checkCancellation()
-          guard let output, output.width == side, output.height == side else {
-            throw CraftError.invalid("The local prompt model did not return a 512 × 512 image.")
+          let prompt = try validatePrompt(raw)
+          guard !prompt.isEmpty, (1...maximumVariations).contains(seeds.count),
+            Set(seeds).count == seeds.count, image.count == 3 * side * side, mask.count == side * side,
+            image.allSatisfy(\.isFinite), mask.allSatisfy({ $0 == 0 || $0 == 1 }) else {
+            throw CraftError.invalid("The local prompt model requires a prompt, a valid image and mask, and distinct seeds.")
           }
-          return try RasterIO.surface(output, depth: .f32)
+          let encoder = pipeline.textEncoder
+          let tokens = encoder.tokenizer.tokenizeWithWeights(prompt, minCount: encoder.maxInputLength)
+          guard tokens.1.count <= encoder.maxInputLength else {
+            throw CraftError.invalid("The prompt exceeds the model’s token limit. Try a shorter description.")
+          }
+          // Keep the original request-scoped behavior for sampled VAE latents.
+          // The loaded model and deterministic text embeddings stay resident.
+          pipeline.encoder?.clearSampleCache()
+          let source = try promptImage(samples: image, mask: nil)
+          let selection = try promptImage(samples: [], mask: mask)
+          return try seeds.map { seed in
+            try Task.checkCancellation()
+            let input = SampleInput(prompt: prompt, initImage: source, inpaintMask: selection,
+              strength: mode == .similar ? 0.48 : 1, seed: seed, stepCount: 25)
+            let output = try pipeline.generateImages(input: input) { _ in !Task.isCancelled }
+            try Task.checkCancellation()
+            guard let output, output.width == side, output.height == side else {
+              throw CraftError.invalid("The local prompt model did not return a 512 × 512 image.")
+            }
+            return try RasterIO.surface(output, depth: .f32)
+          }
         }
       }
     }
