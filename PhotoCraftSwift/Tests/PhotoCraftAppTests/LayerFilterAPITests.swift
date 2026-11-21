@@ -159,7 +159,9 @@ final class LayerFilterAPITests: XCTestCase {
         from: JSONSerialization.data(withJSONObject: try XCTUnwrap(state["layerFilter"])))
       XCTAssertNoThrow(try BrushAPI.merge(value, schema: LayerFilterAPI.stateSchema))
       XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual(AutomationTests.expectedCommandCount, 267)
+      let advertised = try XCTUnwrap(capabilities["commands"] as? [[String: Any]])
+      let names = try advertised.map { try XCTUnwrap($0["command"] as? String) }
+      XCTAssertEqual(names.sorted(), AutomationCommand.definitions.map(\.name).sorted())
       let definition = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == LayerFilterAPI.command })
       XCTAssertEqual(definition.optionalParameters, ["filter"])
       XCTAssertEqual(ActionLibraryFile.maximumVersion, AutomationTests.expectedActionVersion)

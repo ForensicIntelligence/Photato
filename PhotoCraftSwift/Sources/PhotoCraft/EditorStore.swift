@@ -244,11 +244,16 @@ struct CanvasRenderRequest: Sendable {
   var showLayerBounds = false
   var selectedLayerIDs: Set<UUID> = []
   let layerContentFilter = LayerContentFilterWorkspace()
-  var layerPanelFilter = LayerPanelFilter()
+  var layerPanelFilter = LayerPanelFilter() {
+    didSet {
+      if !layerFilterIsolated { pathIsolationLayerID = nil }
+    }
+  }
   var layerFilterRevision = UUID()
   var layerFilterFocusRequest = 0
   var layoutTarget = LayerLayoutTarget.selection
   var pathTarget: PathTarget?
+  var pathIsolationLayerID: UUID?
   var pathAnchor: PathAnchorSelection?
   var pathTransformSelection = PathTransformSelection.all
   var companionPathChoices: [PathTransformChoice] = []
@@ -832,6 +837,7 @@ struct CanvasRenderRequest: Sendable {
     }
   }
   func render(isAnimationPlayback: Bool = false, startWorkerImmediately: Bool = false) {
+    validatePathIsolation()
     layerContentFilter.refreshIfNeeded(in: self)
     if let draft = layerOpacityDraft, !draft.matches(self) { layerOpacityDraft = nil }
 

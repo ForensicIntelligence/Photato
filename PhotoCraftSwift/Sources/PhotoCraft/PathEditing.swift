@@ -33,6 +33,7 @@ extension EditorStore {
     return true
   }
   func selectPath(_ target: PathTarget?, revealPanel: Bool = true) {
+    if let owner = pathIsolationLayerID, target?.owningLayerID != owner { endPathIsolation() }
     if pathTarget != target, transformDraft?.pathTarget != nil { cancelTransform() }
     resetPathGesture()
     pathTarget = target
@@ -182,6 +183,7 @@ extension EditorStore {
     if tool == .pen { ensureWorkPath() }
     if tool == .directSelection || tool == .pathSelection {
       focusCompanionPath(at: p, tolerance: tolerance, includeInterior: tool == .pathSelection || option)
+      if clickCount == 2, handlePathIsolationDoubleClick(at: p, tolerance: tolerance) { return }
     }
     guard var path = selectedVectorPath, pathIsEditable else { return }
     pathGesture = nil

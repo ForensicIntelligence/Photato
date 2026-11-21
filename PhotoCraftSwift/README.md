@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 677.** Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit. [Qualification](docs/SOURCE_PUBLICATION_677.md).
+
 **Source checkpoint 676.** Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo. [Qualification](docs/SOURCE_PUBLICATION_676.md).
 
 **Source checkpoint 675.** Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions. [Qualification](docs/SOURCE_PUBLICATION_675.md).

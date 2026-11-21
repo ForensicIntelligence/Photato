@@ -695,7 +695,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 674 | 2026-11-20 | [Transform editable paths across layers](#dev-step-674) |
 | 675 | 2026-11-20 | [Warp editable paths on the canvas](#dev-step-675) |
 | 676 | 2026-11-20 | [Switch between path Warp and Free Transform](#dev-step-676) |
+| 677 | 2026-11-20 | [Isolate a path’s layer while editing](#dev-step-677) |
 <!-- history-index:end -->
+
+<a id="dev-step-677"></a>
+
+## 2026-11-20 — Isolate a path’s layer while editing
+
+Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
+
+The canvas double-click reuses document-coordinate path hit testing. The Layers panel uses its existing Selected filter, and accompanying paths from other layers are dropped from the active selection. Isolation clears when the underlying filter ends, the focused path disappears, or the editor replaces the document.
+
+Local scripts can use `paths.isolate` with the current document revision and read the owner from `pathIsolation`. The 281 typed Photato commands include this view operation. The published Adobe Photoshop API v2 has no corresponding endpoint.
+
+All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. In the owned fixtures, isolation left the composite, PSD and PSB bytes, and Undo history unchanged. Restoring focus to the owner also leaves an active Actions recording untouched. All 12 earlier whole-layer vector-mask outputs also matched byte for byte. A saved path belongs to the document and remains available in the Paths panel outside isolation.
+
+The first Debug run surfaced a discovery test that still expected exactly 267 commands. It also failed on public build 676, whose registry had 280. The test now verifies that the server advertises exactly the typed registry.
+
+The Debug build used the existing Swift compiler workaround for PredictableDeadAllocationElimination. Both optimized builds used the standard compiler configuration. Live Photoshop comparison and physical Intel and macOS 14 testing remain open. Check mixed path Warp and Free Transform against Photoshop-authored editable output.
+
+[Development record](PATH_ISOLATION_677.md) · [Qualification](SOURCE_PUBLICATION_677.md).
 
 <a id="dev-step-676"></a>
 

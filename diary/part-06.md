@@ -682,6 +682,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 674 | [Transform editable paths across layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) |
 | 2026-11-20 | 675 | [Warp editable paths on the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-675) |
 | 2026-11-20 | 676 | [Switch between path Warp and Free Transform](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-676) |
+| 2026-11-20 | 677 | [Isolate a path’s layer while editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-677) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1190,6 +1190,10 @@ Send a document-space matrix through `layers.transform` to move or distort eligi
 
 PSD and PSB reopen with the cached pixels, link metadata and original artwork quadrilateral. The Photato document response continues to report the homography and the corners in `layers[].smartObject.projectiveSourceGeometry`. The draft exposes the existing `transformReference.projectiveArtworkFrame`. Affine moves remain available while the original is missing. Use an approved asset with `smartObject.linked.relink`, or an approved existing original with `smartObject.linked.update`, to restore source editing. The Adobe-compatible manifest reports the source corners in `smartObjectData.transform`. Linked PDF perspective and editable Warp are outside the covered file workflow. [Development record](LINKED_PROJECTIVE_SMART_OBJECTS_666.md)
 
+### Isolate a path’s layer
+
+`paths.isolate` uses the focused shape path or vector mask. Pass `"parameters": {"enabled": true}` to isolate its layer in the Layers and Paths panels and `{"enabled": false}` to exit. The document response includes `pathIsolation.available`, `pathIsolation.active` and the owning `pathIsolation.layerID`, which is null outside isolation. The operation requires the current document revision and leaves artwork and history intact. [Path isolation](PATH_ISOLATION_677.md).
+
 ### Warp editable paths
 
 `paths.warp` accepts the path `targets` array and Warp `settings`. The optional row-major `matrix` runs before Warp and `matrixAfter` runs after it. A shared source frame comes from the paths after the first matrix unless supplied explicitly. The result returns `pathTransformSelections` and uses one Undo. Editor state exposes the active Warp or Free Transform mode and the accepted matrix after Warp. [Mode-switch details](PATH_WARP_SWITCH_676.md)

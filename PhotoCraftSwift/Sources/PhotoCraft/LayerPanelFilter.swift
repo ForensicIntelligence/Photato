@@ -190,7 +190,7 @@ struct LayerPanelFilter: Codable, Equatable, Sendable {
     let selection = groupSelectionIDs.map(\.uuidString).sorted().joined(separator: ",")
     let links = layerFilterStatuses.map { $0.key.uuidString + ":" + $0.value.rawValue }.sorted().joined(separator: ",")
     let groups = document.layers.filter(\.isGroup).map { $0.id.uuidString + ":" + String($0.group?.expanded == true) }.joined(separator: ",")
-    let input = "\(layerFilterRevision):\(layerFilterFocusRequest):\(selection):\(links):\(groups):\(layerNameDraft?.layerID.uuidString ?? "")"
+    let input = "\(layerFilterRevision):\(layerFilterFocusRequest):\(selection):\(links):\(groups):\(layerNameDraft?.layerID.uuidString ?? ""):\(pathIsolationLayerID?.uuidString ?? "")"
     return SHA256.hash(data: Data(input.utf8)).map { String(format: "%02x", $0) }.joined()
   }
 }

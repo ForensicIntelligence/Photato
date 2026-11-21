@@ -528,6 +528,7 @@ import UniformTypeIdentifiers
       "puppetWarp": ["available":store.canBeginFilterKind(.puppetWarp),"workspaceOpen":store.filterDraft?.filter.kind == .puppetWarp,"previewBusy":store.puppetWorkspace?.rendering ?? false],
       "warp": ["available":store.canBeginWarp,"previewOpen":store.warpDraft != nil,"previewBusy":store.warpDraft?.rendering ?? false],
       "pathWarp": store.pathWarpState,
+      "pathIsolation": store.pathIsolationState,
       "photoAlign": ["available":store.canBeginPhotoAlign,"previewOpen":store.photoAlignDraft != nil,"previewBusy":store.photoAlignDraft?.rendering ?? false],
       "photoBlend": ["available":store.canBeginPhotoBlend,"previewOpen":store.photoBlendDraft != nil,"previewBusy":store.photoBlendDraft?.rendering ?? false],
       "selectionTools":store.selectionToolsState,
@@ -1149,6 +1150,13 @@ import UniformTypeIdentifiers
       if command.name == "path.configure" {try store.configurePath(command);return .json(state(share,document:document))}
       if command.name == PathGroupsAPI.select {
         try store.configurePathGroup(command)
+        return .json(state(share, document: document))
+      }
+      if command.name == PathGroupsAPI.isolate {
+        guard store.canChangePathIsolation else {
+          throw AutomationFailure(status: 409, message: "Finish the current interaction before changing path isolation.")
+        }
+        try store.setPathIsolation(command.pathFlag("enabled", false))
         return .json(state(share, document: document))
       }
       if command.name == PathGroupsAPI.warp {

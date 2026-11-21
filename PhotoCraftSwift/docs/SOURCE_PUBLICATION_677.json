@@ -1,0 +1,194 @@
+{
+  "build": 677,
+  "base": "aa7e17b3e6c6368a5bcc17343d0eab5e0fd71606",
+  "buildInputs": 9296,
+  "includedBuildInputs": 9283,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "e791ae1025e3cbc5ed77fd97afac7c01c5894f735bc2bea6a5eb728ebc6a3a95",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "7ad356b0621e60f27e74f680670c811cc167d27b2b55a6deb21cf93442d5d1dc"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPathGroups.swift",
+      "sha256": "7a637a47618363da74409c868e889378920b24484816d0add5d0acd8ffea592b"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "65449f3f737e0961cfed25fe84cd98b9cdfa3af91f91459a472a69038d6c2db1"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "38e48e0323e3a469652a5e5f6258f593b949077e1855397ac66537ce204a8861"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerGroupDisclosure.swift",
+      "sha256": "6a8ffea6ecb3af6d91c3afefc47ac842ab3355d487c5516ecc6268d3def648b4"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerPanelFilter.swift",
+      "sha256": "e14cb26b3ea1a6bed1a0aebb93f9566dea32714e001f6158191bdd86a68746c4"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathEditing.swift",
+      "sha256": "07adbb0e689cbbbc3994fd4b0c51ad5d4bcedc09574b3f019bc496f9be14d351"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathIsolation.swift",
+      "sha256": "353c8c64af3f1ca3dff412ad5cfd732c6e7ff96fc64ab6a38c6016dbc9480644"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathPanelSelection.swift",
+      "sha256": "21ff5447f312e877ea1f1451ad05433a2b4a68d164a224304fa18c1ca9668b8c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "7dee8dcfc81c4ca31012db9e10666f0f470e5d4a0a315e1068508c93a3b07af3"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerFilterAPITests.swift",
+      "sha256": "a71bac71ff4bf842b8c03f9c5b99ddfe3fc49978945802dc016975872fe6bab4"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathIsolationWorkflowTests.swift",
+      "sha256": "a733918c1bd3d818f45af8cd778b5e540e6c45ba1016c98345968c33388e0247"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "48958ddde9c71ac89a519fea5665df68ad15e281636c08defb334dfd00a8c7e0"
+    }
+  ],
+  "casesPerConfiguration": 225,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 225,
+      "passed": 225,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "4b76e29c287825b8fdc06673efbcbf3ad0d0b3e9aa15a89f2e1b4e2ca3a9dbae"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 225,
+      "passed": 225,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "988e5af32c6b10ae7f021ae3ec8ec7b592944ffcfde9cbfe52a3dd89108792db"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 225,
+      "passed": 225,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "3ba3068ea2dc2112442bfd9badb4664ece22a678272774e7d66c57510c7ae71f"
+    }
+  },
+  "priorWholeLayerVectorMasks": {
+    "build": 677,
+    "referenceBuild": 671,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "outputs": {
+      "embedded-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "embedded-fixed.psb": {
+        "bytes": 184860,
+        "sha256": "f0c3bcbef6518f7872f421783a0c3cdbb8fbdf0ed8a951e31f0093535ac3761e"
+      },
+      "embedded-fixed.psd": {
+        "bytes": 184832,
+        "sha256": "7d91a4d07a206dc2ee37fec77ce37e1305c38b7dca53918f195ad89d95cadab5"
+      },
+      "embedded-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "embedded-linked.psb": {
+        "bytes": 184940,
+        "sha256": "38286424a94c3295a0daf6b0a6e8d4d69912c0abb68f06192404ce6ea9f0fe1c"
+      },
+      "embedded-linked.psd": {
+        "bytes": 184912,
+        "sha256": "88f5e46a8d044958ff521684e9b4eb5f6fabb9c8d64bdeb572f7630e2efea550"
+      },
+      "external-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "external-fixed.psb": {
+        "bytes": 181192,
+        "sha256": "5f5fa9faa4b5840c468ed05b1c606678738cfd5ab402798b7022300919ff4675"
+      },
+      "external-fixed.psd": {
+        "bytes": 181164,
+        "sha256": "831808a037492aa7bd10d633af86229a0941a4125dbe938e4021bb93fd348191"
+      },
+      "external-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "external-linked.psb": {
+        "bytes": 181272,
+        "sha256": "1b9f5cc6c6d3ed96fb65604de74143de8f25296bbd09dbe22d1e4373881022ce"
+      },
+      "external-linked.psd": {
+        "bytes": 181244,
+        "sha256": "aad0adffdfb131cf541ba7eaee4385ab9a59b7e48ea905236ef1a605f152bd58"
+      }
+    },
+    "referenceReceiptSHA256": "1eafcc712e89205e60d9278a3636a46b5f36499ad192262dab4f4b0720abc616"
+  },
+  "selectedCasesSHA256": "c3d0c2cb831d7e471228cc8ffad6eb288131bb3a3cf1c0bff95f0f3b977b0c85",
+  "nativeChecks": [
+    "AppKit double-click with both selection tools",
+    "Layers and Paths scope",
+    "filter controls and menu exit",
+    "path removal and document replacement",
+    "unchanged composite and PSD/PSB bytes",
+    "unchanged Undo history and Actions recording",
+    "authenticated API state and revision checks"
+  ],
+  "preview": {
+    "archiveSHA256": "4e24fc9725ebc2f7d80be194554094207f8915255afc581d99817cc3bec34759",
+    "binarySHA256": "d0bec16fba0d3bd28a09cba9b33a09e1f3a592e91fc6914c01a9537ed13ed583",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "57b46b19c0ad621c00cc4012b196a9bad3f0684be14271833b0470cc8a4d6441",
+      "x86_64": "0241b86ce23b2d0febc77fbdad3a5a349a55d14c9da5a949b22a786799fb42cd"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination for Debug only.",
+  "initialDiscoveryTest": {
+    "assertedCommandCount": 267,
+    "public676ActualCommandCount": 280,
+    "build677ActualCommandCount": 281,
+    "replacedWith": "exact HTTP discovery registry names"
+  },
+  "liveAdobeCompared": false,
+  "reference": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/select-paths-and-path-segments.html"
+}

@@ -3,8 +3,9 @@ import PhotoCraftCore
 
 @MainActor extension EditorStore {
   var pathPanelTargets: [PathTarget] {
-    var targets = (document.paths ?? []).map { PathTarget.saved($0.id) }
-    for layer in document.layers.reversed() {
+    let owner = pathIsolationLayerID
+    var targets = owner == nil ? (document.paths ?? []).map { PathTarget.saved($0.id) } : []
+    for layer in document.layers.reversed() where owner == nil || layer.id == owner {
       if layer.shape != nil { targets.append(.shape(layer.id)) }
       if layer.vectorMask != nil { targets.append(.vectorMask(layer.id)) }
     }
@@ -58,7 +59,9 @@ import PhotoCraftCore
     if transformDraft?.pathTarget != nil { cancelTransform() }
     selectPath(primary?.target)
     guard let primary else { return }
-    companionPathChoices = choices.filter { $0.target != primary.target }
+    companionPathChoices = choices.filter {
+      $0.target != primary.target && (pathIsolationLayerID == nil || $0.target.owningLayerID == pathIsolationLayerID)
+    }
     pathTransformSelection = primary.selection
     if case .anchors(let anchors) = primary.selection { pathAnchor = anchors.first }
   }
@@ -97,8 +100,8 @@ import PhotoCraftCore
     pathRangeAnchor = rangeAnchor
   }
 
-  private func pathContainsPointer(_ path: VectorPath, point: PathPoint, tolerance: Double,
-                                   includeInterior: Bool) -> Bool {
+  func pathContainsPointer(_ path: VectorPath, point: PathPoint, tolerance: Double,
+                           includeInterior: Bool) -> Bool {
     path.components.contains { component in
       component.knots.contains { hypot($0.anchor.x - point.x, $0.anchor.y - point.y) <= tolerance }
     } || nearestSegment(in: path, to: point, tolerance: tolerance) != nil

@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **676** · The 10 most recent entries, newest first.
+Source build **677** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 677 — Isolate a path’s layer while editing
+
+Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
+
+All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison and physical Intel and macOS 14 testing remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-677) · [Details](PhotoCraftSwift/docs/PATH_ISOLATION_677.md).
 
 ## 2026-11-20 — Step 676 — Switch between path Warp and Free Transform
 
@@ -75,11 +83,3 @@ Cylinder Warp curves artwork around a product mockup in the native Warp sheet. P
 All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. The Cylinder renderer uses published measurements. A Photoshop-authored Cylinder PSD, live mouse interaction and byte-identical Photoshop rerendering remain unverified.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) · [Details](PhotoCraftSwift/docs/CYLINDER_WARP_668.md).
-
-## 2026-11-20 — Step 667 — Keep Smart Object Warp editable in PSD and PSB
-
-PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and nonuniform split grids as editable settings. Relinking a missing original restores its live Warp.
-
-1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. Unchanged saved samples and Photato-regenerated pixels were checked separately. An independent reader compared the encoded merged image planes in both outputs against Photoshop’s stored preview. In each format, 24 of 1,048,576 component bytes differ by one level, including three alpha bytes. Live Photoshop rerendering, Cylinder, PDF Warp and pre-Warp reconstruction of saved pixel masks remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-667) · [Details](PhotoCraftSwift/docs/EDITABLE_SMART_OBJECT_WARP_667.md).

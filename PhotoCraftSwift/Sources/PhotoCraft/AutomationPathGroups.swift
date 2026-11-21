@@ -5,7 +5,8 @@ enum PathGroupsAPI {
   static let select = "paths.select"
   static let transform = "paths.transform"
   static let warp = "paths.warp"
-  static let commands = [select, transform, warp]
+  static let isolate = "paths.isolate"
+  static let commands = [select, transform, warp, isolate]
 
   static var targetFields: [String: Any] {
     ["target": PathTransformAPI.schema("target"), "id": PathTransformAPI.schema("id")]
@@ -23,6 +24,7 @@ enum PathGroupsAPI {
     case "focus":
       return BrushAPI.object(targetFields, required: ["target", "id"])
     case "marquee", "extend": return PathAPI.schema(key)
+    case "enabled": return BrushAPI.flag
     case "settings": return WarpDefinition.apiSchema
     case "matrixAfter": return SelectionTransformAPI.schema("matrix")
     default: return SelectionTransformAPI.schema(key)
@@ -45,9 +47,17 @@ enum PathGroupsAPI {
       "transform": "Use one document-coordinate affine or projective matrix for all targets. Different targets may select different components or anchors. All targets commit in one Undo after validation, and resulting anchor indices are returned.",
       "warp": "Use Warp settings in document coordinates. Optional matrix runs before Warp and matrixAfter runs after it. Without sourceBounds, the selected contours after the first matrix define the mesh frame. Paths remain editable.",
       "warpStateSchema": warpStateSchema,
+      "isolation": "Isolate the focused shape or vector mask owner in the Layers and Paths panels. This changes the editor view.",
+      "isolationStateSchema": isolationStateSchema,
       "actions": "Native Actions version 77 retains the shared path matrix, version 78 adds Warp, and version 79 retains a transform after Warp.",
-      "adobe": "The published Photoshop v2 endpoints do not define a cross-layer path selection, transform or Warp."
+      "adobe": "The published Photoshop v2 endpoints do not define cross-layer path selection, transform, Warp or isolation."
     ]
+  }
+
+  static var isolationStateSchema: [String: Any] {
+    BrushAPI.object(["available": BrushAPI.flag, "active": BrushAPI.flag,
+                     "layerID": ["anyOf": [["type": "null"], PathTransformAPI.schema("id")]]],
+                    required: ["available", "active", "layerID"])
   }
 
   static var warpStateSchema: [String: Any] {
@@ -142,6 +152,11 @@ extension AutomationCommand {
 }
 
 @MainActor extension EditorStore {
+  var pathIsolationState: [String: Any] {
+    ["available": canIsolateFocusedPath, "active": pathIsolationLayerID != nil,
+     "layerID": pathIsolationLayerID?.uuidString as Any? ?? NSNull()]
+  }
+
   var pathWarpState: [String: Any] {
     let transform = selectionTransform
     let active = pathWarp

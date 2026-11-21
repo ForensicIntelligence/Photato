@@ -13,7 +13,9 @@ extension EditorStore {
           && (kind == "All" || layer.content.label == kind))
       }
     }
-    let filter = layerPanelFilter, selected = groupSelectionIDs, statuses = layerFilterStatuses
+    let filter = layerPanelFilter
+    let selected = pathIsolationLayerID.map { Set([$0]) } ?? groupSelectionIDs
+    let statuses = layerFilterStatuses
     let emptyIDs = layerContentFilter.resolvedIDs(in: self)
     return document.layers.reversed().filter { layer in
       layer.id == layerNameDraft?.layerID || (filter.matches(layer, hierarchy: hierarchy, selected: selected, linkedStatus: statuses, emptyLayerIDs: emptyIDs)

@@ -1219,14 +1219,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:676 -->
+<!-- current-status-step:677 -->
 ## Current development status — 20 November 2026
 
-Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo.
+Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
 
-All 202 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 676](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_676.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-676).
+[Source checkpoint 677](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_677.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-677).
 
 <!-- current-status:end -->
 

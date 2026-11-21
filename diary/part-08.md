@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 677 — Isolate a path’s layer while editing
+
+Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
+
+All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison and physical Intel and macOS 14 testing remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-677) · [Details](../PhotoCraftSwift/docs/PATH_ISOLATION_677.md).
+
 ## 2026-11-20 — Step 676 — Switch between path Warp and Free Transform
 
 Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo.
