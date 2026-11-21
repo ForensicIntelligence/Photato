@@ -136,19 +136,8 @@ public struct PatternCanvasPreview: Sendable {
       throw CraftError.invalid("The preview region is outside the document.")
     }
     let integerView = request.width == region.width && request.height == region.height
-    var proofProfile: Data?
-    if let proof {
-      try SoftProof.validate(proof, in: document)
-      proofProfile = try ColorManagement.space(for: document).copyICCData() as Data?
-        ?? NativeModeProfile.standard(.rgb, depth: document.depth)
-    }
-    func project(_ source: Surface) throws -> Surface {
-      if let proof {
-        return try PagedSoftProof.project(source, depth: document.depth, rgbProfile: proofProfile, settings: proof)
-      }
-      return try channels.applyingToLargePreview(source)
-    }
-    let plane = try project(repeatTile)
+    let projection = try RasterPreviewProjection(document, channels: channels, proof: proof)
+    let plane = try projection.apply(repeatTile)
     let linear = plane.colorEncoding == .linearRGB
     func stored(_ surface: Surface, x: Int, y: Int) -> Pixel {
       linear ? surface.linearPixel(x: x, y: y) : surface.pixel(x: x, y: y)
@@ -176,7 +165,7 @@ public struct PatternCanvasPreview: Sendable {
       let x0 = max(region.x, tileX), y0 = max(region.y, tileY)
       let x1 = min(region.x + region.width, tileX + side), y1 = min(region.y + region.height, tileY + side)
       guard x0 < x1, y0 < y1 else { continue }
-      let patch = try project(Renderer.compositePrepared(document,
+      let patch = try projection.apply(Renderer.compositePrepared(document,
         region: .init(x: x0, y: y0, width: x1 - x0, height: y1 - y0))
         .cropped(to: .init(x: x0, y: y0, width: x1 - x0, height: y1 - y0)))
       for y in y0..<y1 {

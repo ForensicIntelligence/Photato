@@ -5,6 +5,84 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerStyleWorkflowTests: XCTestCase {
+  @MainActor func testRotatedMaximumPatternViewportMatchesNativeAndHTTP() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let size = Surface.maxDimension
+      var artwork = try CraftDocument(width: size, height: size)
+      artwork.layers[0].content = .raster(try Surface(width: size, height: size, fill: .white))
+      var tile = try Surface(width: 4, height: 4, fill: .white)
+      tile.setPixel(x: 0, y: 0, .black)
+      tile.setPixel(x: 2, y: 2, Pixel(0.1, 0.6, 0.3))
+      artwork.patterns = [try RasterPattern(name: "Owned rotated pattern", surface: tile)]
+      shared.store.session = EditorSession(document: artwork)
+      shared.store.updateViewport(size: CGSize(width: 232, height: 140), backingScale: 1)
+      shared.store.setZoom(1, center: true)
+      shared.store.beginLayerStyle(.patternOverlay)
+      let sheet = LayerStyleSheet(store: shared.store)
+      sheet.overlayPatternValue(\.scale, 100).wrappedValue = 56
+      sheet.overlayPatternValue(\.angle, 0).wrappedValue = 31
+      shared.store.updateLayerEffect(0) { $0.opacity = 0.5 }
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+      XCTAssertNotNil(shared.store.rasterViewportPreview)
+      XCTAssertNil(shared.store.patternCanvasPreview)
+      XCTAssertNil(shared.store.renderSnapshot)
+      XCTAssertEqual(shared.store.document, artwork)
+      shared.store.commitLayerStyle()
+      await shared.store.renderTask?.value
+      shared.store.setZoom(0.6667)
+      shared.store.pan = CGSize(width: 20, height: -13)
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.error)
+
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let root = "/v1/documents/\(id)"
+      let view = shared.store.viewport.largeCanvasRequest
+      let rect = view.region
+      let header = """
+      {"x":\(rect.x),"y":\(rect.y),"width":\(rect.width),"height":\(rect.height),"outputWidth":\(view.width),"outputHeight":\(view.height)}
+      """
+      @MainActor func check(_ suffix: String) async throws {
+        let display = try XCTUnwrap(shared.store.image)
+        let result = try await helper.request(service, path: root + "/" + suffix, headers: [
+          "X-Photato-Viewport": header, "X-Photato-Revision": service.revision(shared.store),
+        ])
+        XCTAssertEqual(result.0.statusCode, 200)
+        XCTAssertEqual(result.1, try AutomationService.png(display))
+      }
+      XCTAssertEqual(shared.store.rasterViewportPreview?.region, rect)
+      try await check("preview.png")
+      try shared.store.selectEditingChannel(.green)
+      await shared.store.renderTask?.value
+      try await check("channel-preview.png")
+      try shared.store.selectEditingChannel(.composite)
+      shared.store.proofSettings.enabled = true
+      shared.store.render()
+      await shared.store.renderTask?.value
+      XCTAssertNil(shared.store.proofDisplayError)
+      try await check("proof-preview.png")
+
+      let stale = try await helper.request(service, path: root + "/preview.png", headers: [
+        "X-Photato-Viewport": header, "X-Photato-Revision": "stale",
+      ])
+      XCTAssertEqual(stale.0.statusCode, 409)
+      for (bad, status) in [
+        (#"{"x":true,"y":0,"width":3,"height":3}"#, 400),
+        (#"{"x":0,"y":0,"width":3,"height":3,"outputWidth":2}"#, 400),
+        (#"{"x":299999,"y":0,"width":3,"height":3}"#, 400),
+        (#"{"x":0,"y":0,"width":8000,"height":8000,"outputWidth":40,"outputHeight":40}"#, 413),
+        (#"{"x":0,"y":0,"width":3000,"height":2000}"#, 413),
+      ] {
+        let rejected = try await helper.request(service, path: root + "/preview.png", headers: ["X-Photato-Viewport": bad])
+        XCTAssertEqual(rejected.0.statusCode, status)
+      }
+      XCTAssertEqual(shared.store.session.undoStack.count, 1)
+      XCTAssertNil(shared.store.renderSnapshot)
+    }
+  }
+
   @MainActor func testOpaqueMaximumPatternPreviewFitsZoomsAndServesPNG() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
@@ -97,6 +175,8 @@ final class LayerStyleWorkflowTests: XCTestCase {
       XCTAssertNil(shared.store.error)
       XCTAssertEqual(shared.store.canvasRasterPreview?.documentRegion, region)
       XCTAssertEqual(shared.store.image?.width, region.width)
+      XCTAssertNil(shared.store.rasterViewportPreview)
+      XCTAssertNotNil(shared.store.renderSnapshot)
       let draft = try XCTUnwrap(shared.store.layerStyleDraft)
       XCTAssertEqual(shared.store.document, artwork)
       shared.store.commitLayerStyle()

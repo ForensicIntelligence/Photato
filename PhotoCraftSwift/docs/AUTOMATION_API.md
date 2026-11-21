@@ -50,6 +50,14 @@ The existing PSD and PSB upload and Adobe Execute Actions job paths restore nest
 
 [Development record](PSD_LEGACY_SHAPES_642.md).
 
+### Bounded RGB viewports (checkpoint 690)
+
+Send the `X-Photato-Viewport` header with a JSON object to `GET /v1/documents/{id}/preview.png`, `channel-preview.png`, or `proof-preview.png`. Fields `x`, `y`, `width`, and `height` specify a positive rectangle in top-left document pixel coordinates. Supply both `outputWidth` and `outputHeight` to reduce the rectangle, or omit them to keep the source dimensions.
+
+The authenticated response represents the committed document and the selected preview view. An optional `X-Photato-Revision` rejects a stale revision with status 409. Invalid or out-of-bounds requests return 400. The 16,777,216 source-pixel and 4,194,304 output-pixel limits return 413 when exceeded. Unsupported preview contexts return 422. The existing routes keep their normal presentation when the viewport header is omitted. [Qualification](SOURCE_PUBLICATION_690.md)
+
+The viewport header belongs to Photato’s local API. The published Adobe v2 contract defines document and job endpoints. [Adobe OpenAPI reference](https://github.com/AdobeDocs/ffs-photoshop-API/blob/main/static/photoshopv2-api.json)
+
 ### Opaque Pattern Overlay previews (checkpoint 689)
 
 `layerStyles.patternCanvasPreview` describes bounded display for an opaque overlay on a supported repeating RGB layer stack. The existing `preview.png`, `channel-preview.png`, and `proof-preview.png` routes use the native preview renderer. Requests retain their existing response size and revision checks. A working-pixel or container export continues through the full-resolution renderer. [Qualification](SOURCE_PUBLICATION_689.md)

@@ -60,7 +60,8 @@ extension EditorStore {
     if modifiers.contains(.option) {
       let x = Int(floor(point.x)), y = Int(floor(point.y))
       do {
-        if let pixel = try patternCanvasPreview?.pixel(x: x, y: y) ?? surface?.pixel(x: x, y: y) {
+        if let pixel = try rasterViewportPreview?.pixel(x: x, y: y)
+          ?? patternCanvasPreview?.pixel(x: x, y: y) ?? surface?.pixel(x: x, y: y) {
           brush.color = pixel
         }
       } catch { self.error = error.localizedDescription }

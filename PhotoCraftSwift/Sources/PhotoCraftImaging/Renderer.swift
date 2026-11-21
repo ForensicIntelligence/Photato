@@ -182,7 +182,7 @@ public enum Renderer {
     // layered RGB compositor's mode limits do not apply to printing plates.
     if inputTarget == nil, let ink = d.inkMode { return try ink.surface(region: region) }
     let requested = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height)).clipped(toWidth: d.width, height: d.height)
-    if d.layers.contains(where:{if case .adjustment(.modern(let value))=$0.content {return value.needsNeighborhood};return false}),
+    if requiresFullComposition(d),
       requested != IntRect(x:0,y:0,width:d.width,height:d.height) {
       let full=try compositeValidated(d,inputTarget:inputTarget,videoTime:videoTime)
       var projection=try emptyCanvas(d)
@@ -215,6 +215,12 @@ public enum Renderer {
     return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
       facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d, vectorViewport: requested):nil,
       forLayerOutput: forLayerOutput)
+  }
+  static func requiresFullComposition(_ document: CraftDocument) -> Bool {
+    document.layers.contains { layer in
+      if case .adjustment(.modern(let settings)) = layer.content { return settings.needsNeighborhood }
+      return false
+    }
   }
   /// Prepare immutable sources once for a composition or streamed export snapshot.
   /// Callers validate the original document before entering this shared preparation.

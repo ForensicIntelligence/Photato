@@ -1,3 +1,7 @@
+**Source checkpoint 690.** Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000. 453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_690.md).
+
+**Next layer style work.** Extend fit-to-window reduction for opaque nonperiodic overlays. Compare scaled viewport output to a live Photoshop reference when document commands respond.
+
 **Source checkpoint 689.** The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000. 451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_689.md).
 
 **Next layer style work.** Run a viewport-only compositor for rotated or nonperiodic basic overlays at high zoom, then extend exact reduced display. Compare Photoshop’s zoom presentation and pattern placement when its document commands respond.

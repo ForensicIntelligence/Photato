@@ -4,6 +4,56 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testRotatedPatternViewportPreservesExactPanOverlapAndResampling() throws {
+    let size = Surface.maxDimension
+    let left = IntRect(x: size - 800, y: size - 600, width: 232, height: 140)
+    let right = IntRect(x: size - 700, y: size - 565, width: 228, height: 168)
+    let overlap = IntRect(x: right.x, y: right.y, width: 132, height: 105)
+    var tile = try Surface(width: 4, height: 4, fill: .white)
+    tile.setPixel(x: 0, y: 0, .black)
+    tile.setPixel(x: 2, y: 1, Pixel(0.2, 0.7, 0.3, 0.4))
+    let asset = try RasterPattern(name: "Owned viewport tile", surface: tile)
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width: size, height: size, depth: depth)
+      var base = try Surface(width: size, height: size, depth: depth, fill: .white,
+        colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+      base.setPixel(x: overlap.x + 3, y: overlap.y + 6, Pixel(0.3, 0.2, 0.7, 0.6))
+      document.layers[0].content = .raster(base)
+      var mask = try Surface(width: size, height: size, fill: .white)
+      mask.setPixel(x: overlap.x + 2, y: overlap.y + 4, .black)
+      document.layers[0].mask = mask
+      document.patterns = [asset]
+      var overlay = LayerEffect(.patternOverlay)
+      overlay.pattern = PatternFill(patternID: asset.id)
+      overlay.pattern?.placement.scale = 56
+      overlay.pattern?.placement.angle = 31
+      overlay.pattern?.placement.phaseX = 4.25
+      overlay.opacity = 0.5
+      var style = LayerStyle(effects: [overlay])
+      style.referenceOffset = PathPoint(-2, 5)
+      try Command.layerStyle([document.layers[0].id], style).apply(to: &document)
+      XCTAssertNil(try PatternCanvasPreview(document))
+      func source(_ region: IntRect) throws -> Surface {
+        let request = try RasterPreviewRequest(region: region, width: region.width, height: region.height)
+        let view = try RasterViewportPreview(document, request: request)
+        XCTAssertNil(view.pixel(x: region.x - 1, y: region.y))
+        let original = try Renderer.composite(document, region: region)
+        XCTAssertEqual(view.pixel(x: overlap.x + 3, y: overlap.y + 6),
+          original.pixel(x: overlap.x + 3, y: overlap.y + 6))
+        XCTAssertEqual(try view.imageSamples(request).rgbaData(depth: depth),
+          try original.cropped(to: region).rgbaData(depth: depth))
+        return try view.imageSamples(request).cropped(to: IntRect(x: overlap.x - region.x,
+          y: overlap.y - region.y, width: overlap.width, height: overlap.height))
+      }
+      XCTAssertEqual(try source(left).rgbaData(depth: depth), try source(right).rgbaData(depth: depth))
+      let reduced = try RasterPreviewRequest(region: overlap, width: 67, height: 49)
+      let channels = RGBChannelView(preview: .green)
+      let reference = try channels.applying(to: Renderer.composite(document, region: overlap))
+      XCTAssertEqual(try RasterViewportPreview(document, request: reduced).imageSamples(reduced, channels: channels)
+        .rgbaData(depth: .u8), try reduced.reducing(reference).rgbaData(depth: .u8))
+    }
+  }
+
   func fixture(_ depth: PixelDepth = .u8) throws -> CraftDocument {
     var d = try CraftDocument(width: 24, height: 24, depth: depth)
     var s = try Surface(width: 24, height: 24, depth: depth, colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
@@ -326,8 +376,12 @@ final class LayerStyleTests: XCTestCase {
       (22, 201, [125, 105, 157]), (23, 202, [122, 105, 150]), (26, 207, [132, 125, 197]),
       (81, 201, [199, 197, 106]), (82, 202, [196, 193, 106]), (85, 207, [198, 195, 127]),
     ]
+    let crop = IntRect(x: 12, y: 125, width: 210, height: 96)
+    let viewport = try RasterViewportPreview(document,
+      request: RasterPreviewRequest(region: crop, width: crop.width, height: crop.height))
     for (x, y, rgb) in reference {
-      let p = composite.pixel(x: x, y: y)
+      let p = try XCTUnwrap(viewport.pixel(x: x, y: y))
+      XCTAssertEqual(p, composite.pixel(x: x, y: y))
       XCTAssertEqual([p.r, p.g, p.b].map { UInt8((unit($0) * 255).rounded()) }, rgb, "At \(x),\(y)")
     }
     XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(document)), document)

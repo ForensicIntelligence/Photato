@@ -4,7 +4,7 @@
   "target": "Adobe Photoshop API v2 GA within Firefly Services",
   "scope": "Published Photoshop REST API; do not conflate it with the distinct Firefly image-generation API or desktop plug-in interfaces",
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
-  "current_api": "Checkpoint 689 adds bounded preview of supported opaque Pattern Overlay to Photato’s local PNG routes. Hosted service conformance remains open.",
+  "current_api": "Checkpoint 690 adds a bounded viewport to Photato’s local PNG routes. Hosted service conformance remains open.",
   "references": [
     {
       "url": "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
@@ -984,6 +984,12 @@
       "layer.removeBackground"
     ],
     "adobe": "/v2/remove-background"
+  },
+  "pattern_viewport_build690": {
+    "photatoRoutes": ["preview.png", "channel-preview.png", "proof-preview.png"],
+    "adobeRoute": null,
+    "scope": "Committed RGB samples from a bounded document viewport, including rotated Pattern Overlay.",
+    "evidence": "docs/SOURCE_PUBLICATION_690.json"
   },
   "opaque_pattern_preview_build689": {
     "photatoRoutes": ["preview.png", "channel-preview.png", "proof-preview.png"],

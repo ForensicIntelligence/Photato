@@ -1,6 +1,6 @@
 # Photato Developer Diary Archive
 
-[Latest entries](../DEVELOPER_DIARY.md) · [Chronological index](part-06.md#complete-chronological-index)
+[Latest entries](../DEVELOPER_DIARY.md) · [Chronological index](part-07.md#complete-chronological-index)
 
 The full diary is split into pages for GitHub. Start at the top or use the chronological index to look up a checkpoint.
 

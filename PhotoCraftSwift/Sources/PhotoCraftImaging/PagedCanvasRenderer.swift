@@ -25,15 +25,21 @@ enum PagedCanvasRenderer {
   /// An export can retain a compact composite across its planar writes when
   /// the same pointwise proof bounds the entire set of nonimplicit tiles.
   static func sparseExportComposite(_ d: CraftDocument, facts: CompositionFacts) throws -> Surface? {
-    guard d.layers.allSatisfy({ $0.vectorMask?.enabled != true }),
-      let sources = try pointwiseSources(d, facts: facts)
-    else { return nil }
-    for (index, _) in TileKeys(sources.keys).enumerated() {
-      try Task.checkCancellation()
-      if index == PSDStoredRows.retainedTileCount { return nil }
-    }
+    guard try hasCompactComposite(d, facts: facts) else { return nil }
     let scratch = try RasterTileStore(maximumBytes: PSDStoredRows.retainedSampleBytes)
     return try composite(d, region: .init(x: 0, y: 0, width: d.width, height: d.height), backing: scratch)
+  }
+
+  /// The existing whole-document plan is preferable when it can retain the
+  /// sparse result. This keeps full-document consumers such as thumbnails viable.
+  static func hasCompactComposite(_ document: CraftDocument, facts: CompositionFacts) throws -> Bool {
+    guard document.layers.allSatisfy({ $0.vectorMask?.enabled != true }),
+      let sources = try pointwiseSources(document, facts: facts) else { return false }
+    for (index, _) in TileKeys(sources.keys).enumerated() {
+      try Task.checkCancellation()
+      if index == PSDStoredRows.retainedTileCount { return false }
+    }
+    return true
   }
 
   static func composite(_ d: CraftDocument, region: IntRect, inputTarget: UUID? = nil,

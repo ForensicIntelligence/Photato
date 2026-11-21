@@ -770,6 +770,7 @@ import UniformTypeIdentifiers
         parts[4] == "preview.png" || parts[4] == "channel-preview.png" || parts[4] == "proof-preview.png" || parts[4] == "onion-preview.png"
       {
         try Self.checkLimits(store.document)
+        let viewport = try AutomationViewport.parse(request.headers["x-photato-viewport"], document: store.document)
         guard !previewBusy else {
           throw AutomationFailure(
             status: 429, message: "A preview is already rendering. Retry shortly.")
@@ -785,8 +786,12 @@ import UniformTypeIdentifiers
         let proof = parts[4] == "proof-preview.png" ? store.proofSettings : nil
         let expectedRevision = revision(store)
         let expectedGeneration = generation
+        if viewport != nil, let requested = request.headers["x-photato-revision"], requested != expectedRevision {
+          throw AutomationFailure(status: 409, message: "Document revision changed before viewport rendering.")
+        }
         let worker = Task.detached(priority: .utility) {
-          try Self.png(snapshot, onionSkin:onion, proof: proof, channelView: channelView,modeVisibility:modeVisibility,inkVisibility:inkVisibility,auxiliaryView:auxiliaryView)
+          try Self.png(snapshot, onionSkin: onion, proof: proof, channelView: channelView,
+            modeVisibility: modeVisibility, inkVisibility: inkVisibility, auxiliaryView: auxiliaryView, viewport: viewport)
         }
         let bytes = try await withTaskCancellationHandler(
           operation: { try await worker.value }, onCancel: { worker.cancel() })
@@ -1806,9 +1811,23 @@ import UniformTypeIdentifiers
     }
   }
   nonisolated static func png(
-    _ document: CraftDocument, onionSkin: Bool = false, proof: ProofSettings? = nil, channelView: RGBChannelView = RGBChannelView(),auxiliary: ChannelPlaneTarget? = nil,overlay: Bool = false,modeVisibility: Set<Int>? = nil, inkVisibility: Set<InkChannelTarget>? = nil,auxiliaryView:AuxiliaryChannelView?=nil
+    _ document: CraftDocument, onionSkin: Bool = false, proof: ProofSettings? = nil,
+    channelView: RGBChannelView = RGBChannelView(), auxiliary: ChannelPlaneTarget? = nil,
+    overlay: Bool = false, modeVisibility: Set<Int>? = nil, inkVisibility: Set<InkChannelTarget>? = nil,
+    auxiliaryView: AuxiliaryChannelView? = nil, viewport: RasterPreviewRequest? = nil
   ) throws -> Data {
     try Task.checkCancellation()
+    if let viewport {
+      guard !onionSkin, modeVisibility == nil, inkVisibility == nil, auxiliary == nil else {
+        throw AutomationFailure(status: 422, message: "A viewport requires a supported RGB preview view.")
+      }
+      let regional = try RasterViewportPreview(document, request: viewport)
+      if let proof, proof.active {
+        return try png(RasterIO.displayImage(regional.imageSamples(viewport, proof: proof)))
+      }
+      return try png(reducedPreview: regional.imageSamples(viewport, channels: channelView), document: document,
+        request: viewport, channels: channelView, auxiliaryView: auxiliaryView)
+    }
     let large = document.width * document.height > Surface.maximumDensePixels
     if large && onionSkin {
       throw AutomationFailure(status: 413, message: "Large-document onion-skin presentation is not yet tiled. Ordinary and proof previews are bounded to2048 pixels per side.")
@@ -1819,13 +1838,8 @@ import UniformTypeIdentifiers
       if let proof, proof.active {
         return try png(RasterIO.displayImage(repeating.imageSamples(request, proof: proof)))
       }
-      let preview = try repeating.imageSamples(request, channels: channelView)
-      if let auxiliaryView, auxiliaryView.needsPresentation {
-        return try png(AuxiliaryChannelPresentation.image(preview, document: document, view: auxiliaryView,
-          colorManaged: channelView.visible.count != 1, request: request, sourceIsReduced: true))
-      }
-      return try png(channelView.visible.count == 1 ? RasterIO.displayImage(preview)
-        : ColorManagement.displayImage(preview, in: document))
+      return try png(reducedPreview: repeating.imageSamples(request, channels: channelView), document: document,
+        request: request, channels: channelView, auxiliaryView: auxiliaryView)
     }
     let composite = try onionSkin ? OnionSkinRenderer.render(document) : Renderer.composite(document)
     try Task.checkCancellation()
@@ -1835,6 +1849,16 @@ import UniformTypeIdentifiers
       try proof?.active == true ? SoftProof.image(document, composite: composite, settings: proof!,request:request) : auxiliaryView?.needsPresentation == true ? AuxiliaryChannelPresentation.image(source,document:document,view:auxiliaryView!,colorManaged:!(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),request:request) : auxiliary != nil ? ChannelPresentation.image(composite,document:document,target:auxiliary,overlay:overlay,request:request) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
       ? RasterIO.displayImage(preview) : ColorManagement.displayImage(preview, in: document)
     return try png(image)
+  }
+
+  private nonisolated static func png(reducedPreview samples: Surface, document: CraftDocument,
+    request: RasterPreviewRequest, channels: RGBChannelView, auxiliaryView: AuxiliaryChannelView?) throws -> Data {
+    if let auxiliaryView, auxiliaryView.needsPresentation {
+      return try png(AuxiliaryChannelPresentation.image(samples, document: document, view: auxiliaryView,
+        colorManaged: channels.visible.count != 1, request: request, sourceIsReduced: true))
+    }
+    return try png(channels.visible.count == 1 ? RasterIO.displayImage(samples)
+      : ColorManagement.displayImage(samples, in: document))
   }
   nonisolated static func png(_ image: CGImage) throws -> Data {
     try Task.checkCancellation()
@@ -1907,6 +1931,7 @@ import UniformTypeIdentifiers
         "layers/{layerID}/mask-gray.png": "Raw editable pixel-mask gray, independent of enablement/density/feather/layer opacity. Large documents return a bounded2048-side document-coordinate overview.",
         "layers/{layerID}/mask-overlay.png": "Raw red half-opacity mask overlay RGBA only; composite over the corresponding image preview. Same geometry, budgets and state checks as mask-gray.png.",
       ],
+      "viewportPreview": AutomationViewport.capabilities,
       "channelView": [
         "preview": "Current color-mode composite or component name", "visible": "Nonempty array of component names in the current color mode",
         "componentEditing":

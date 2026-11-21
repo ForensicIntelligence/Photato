@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 690 — Bound rotated Pattern Overlay viewports
+
+Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000.
+
+At actual size, overlapping panned views matched at 8-, 16-, and 32-bit depth. A 31° pattern at 56% matched the ordinary renderer at actual size, at fractional zoom and above the direct in-memory patch limit. The native canvas and all three local PNG viewport routes produced identical PNGs in the tested RGB8 composite, channel and proof views. Eighteen samples from the saved Adobe Photoshop PSD also matched.
+
+453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen. Fit-to-window on very large nonperiodic canvases still uses full rendering. The bounded route has a source budget of 16,777,216 pixels and an output budget of 4,194,304 pixels. Photoshop’s document-count query timed out, so direct comparison of live zoom presentation remains open.
+
+[Development record](DEVLOG.md#dev-step-690) · [Details](PATTERN_VIEWPORT_690.md).
+
 ## 2026-11-21 — Step 689 — Preview opaque Pattern Overlay on large canvases
 
 The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
@@ -1497,14 +1507,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:689 -->
+<!-- current-status-step:690 -->
 ## Current development status — 21 November 2026
 
-The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
+Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000.
 
-451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen.
+453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 689](SOURCE_PUBLICATION_689.md) · [Development record](DEVLOG.md#dev-step-689).
+[Source checkpoint 690](SOURCE_PUBLICATION_690.md) · [Development record](DEVLOG.md#dev-step-690).
 
 <!-- current-status:end -->
 
@@ -2400,6 +2410,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 687 | [Keep Pattern Overlay editable in PSD and PSB](DEVLOG.md#dev-step-687) |
 | 2026-11-21 | 688 | [Render Pattern Overlay on large canvases](DEVLOG.md#dev-step-688) |
 | 2026-11-21 | 689 | [Preview opaque Pattern Overlay on large canvases](DEVLOG.md#dev-step-689) |
+| 2026-11-21 | 690 | [Bound rotated Pattern Overlay viewports](DEVLOG.md#dev-step-690) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

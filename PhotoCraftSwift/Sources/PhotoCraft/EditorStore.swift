@@ -194,6 +194,7 @@ struct CanvasRenderRequest: Sendable {
   var image: CGImage? { didSet { canvasRasterPreview = nil; ordinaryCanvasImage = false } }
   var surface: Surface? { didSet { channelCompositeRevision = UUID() } }
   var patternCanvasPreview: PatternCanvasPreview?
+  var rasterViewportPreview: RasterViewportPreview?
   private(set) var channelCompositeRevision = UUID()
   @ObservationIgnored var renderSnapshot: RenderSnapshot?
   var selectionPath: CGPath?
@@ -983,11 +984,13 @@ struct CanvasRenderRequest: Sendable {
           try Command.applyAdjustment(gradientMap.id, .gradientMap(gradientMap.adjustment)).apply(
             to: &doc)
         }
-        let supportsPatternPresentation = presentation != nil && onionSource == nil
-          && modeVisibility == nil && inkVisibility == nil
-        let usesPatternPresentationForTool = if supportsPatternPresentation, painting != nil || clone != nil {
-          try PatternCanvasPreview(lightPreview.project(doc)) != nil
-        } else { false }
+        let rgbViewport = onionSource == nil && modeVisibility == nil && inkVisibility == nil ? presentation : nil
+        let usesPatternPresentationForTool: Bool
+        if let rgbViewport, painting != nil || clone != nil {
+          let input = lightPreview.project(doc)
+          usesPatternPresentationForTool = try RasterViewportPreview.useForPatternEditing(input, request: rgbViewport)
+            || PatternCanvasPreview(input) != nil
+        } else { usesPatternPresentationForTool = false }
         let retouchSnapshot: RenderSnapshot?
         if !usesPatternPresentationForTool && clone != nil && selectionTool == nil && painting == nil && paintTools == nil
           && gradientFill == nil && gradientGesture == nil && gradientStopColor == nil && patternFill == nil {
@@ -1009,7 +1012,12 @@ struct CanvasRenderRequest: Sendable {
         if let gradientStopColor { try gradientStopColor.apply(to: &doc) }
         if let patternFill { try patternFill.apply(to: &doc) }
         let displayDocument = lightPreview.project(doc)
-        let patternPreview = try supportsPatternPresentation ? PatternCanvasPreview(displayDocument) : nil
+        let patternPreview = try rgbViewport == nil ? nil : PatternCanvasPreview(displayDocument)
+        let regionalPreview: RasterViewportPreview?
+        if let rgbViewport, patternPreview == nil,
+          try RasterViewportPreview.useForPatternEditing(displayDocument, request: rgbViewport) {
+          regionalPreview = try RasterViewportPreview(displayDocument, request: rgbViewport)
+        } else { regionalPreview = nil }
         let snapshot: RenderSnapshot?
         let displayComposite: Surface?
         let preview: Surface
@@ -1017,6 +1025,10 @@ struct CanvasRenderRequest: Sendable {
           snapshot = nil
           displayComposite = nil
           preview = try patternPreview.imageSamples(presentation, channels: channelView)
+        } else if let regionalPreview, let presentation {
+          snapshot = nil
+          displayComposite = nil
+          preview = try regionalPreview.imageSamples(presentation, channels: channelView)
         } else {
           let full = try brushSnapshot ?? retouchSnapshot ?? Renderer.render(displayDocument, reusing: previous)
           snapshot = full
@@ -1028,11 +1040,12 @@ struct CanvasRenderRequest: Sendable {
           preview = try doc.inkMode != nil ? InkChannelPresentation.surface(doc, visible: inkVisibility)
             : modeVisibility.map { try ModeChannelPresentation.surface(doc, visible: $0) } ?? channelView.applying(to: composite)
         }
-        let boundedPreview = try patternPreview == nil && !auxiliaryPresentation ? presentation.map { try $0.reducing(preview) } : nil
+        let sourceIsReduced = patternPreview != nil || regionalPreview != nil
+        let boundedPreview = try !sourceIsReduced && !auxiliaryPresentation ? presentation.map { try $0.reducing(preview) } : nil
         var canvasPreview = try largeCanvas == nil ? snapshot.flatMap { try previousDisplay?.updating($0, scale: displayScale) } : nil
         var image = try canvasPreview?.base ?? (auxiliaryPresentation ? AuxiliaryChannelPresentation.image(preview,
           document: doc, view: auxiliaryView, colorManaged: !(inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1),
-          request: presentation, sourceIsReduced: patternPreview != nil) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
+          request: presentation, sourceIsReduced: sourceIsReduced) : (inkVisibility != nil || modeVisibility != nil || channelView.visible.count == 1)
           ? RasterIO.displayImage(boundedPreview ?? preview) : ColorManagement.displayImage(boundedPreview ?? preview, in: doc))
         if let largeCanvas { canvasPreview = CanvasRasterPreview(base: image, documentRegion: largeCanvas.region) }
         else if ordinaryDisplay, canvasPreview == nil {
@@ -1043,6 +1056,8 @@ struct CanvasRenderRequest: Sendable {
           do {
             if let patternPreview, let presentation {
               image = try RasterIO.displayImage(patternPreview.imageSamples(presentation, proof: proof))
+            } else if let regionalPreview, let presentation {
+              image = try RasterIO.displayImage(regionalPreview.imageSamples(presentation, proof: proof))
             } else if let displayComposite {
               image = try SoftProof.image(doc, composite: displayComposite, settings: proof, request: presentation)
             }
@@ -1068,7 +1083,8 @@ struct CanvasRenderRequest: Sendable {
             CanvasFrameTrace.WorkerTiming(enqueued: queued, started: started, ended: ProcessInfo.processInfo.systemUptime)
           }
         }
-        return (snapshot, image, path, maskImage, overlay, proofFailure, canvasPreview, outlineRequest, timing, patternPreview)
+        return (snapshot, image, path, maskImage, overlay, proofFailure, canvasPreview, outlineRequest, timing,
+          patternPreview, regionalPreview)
       }
     }
     let earlyWorker = startWorkerImmediately ? submitWorker() : nil
@@ -1085,6 +1101,7 @@ struct CanvasRenderRequest: Sendable {
         guard !Task.isCancelled, let self, self.revision == request else { return }
         self.renderSnapshot = pair.0
         self.patternCanvasPreview = pair.9
+        self.rasterViewportPreview = pair.10
         self.surface = pair.0?.surface
         self.image = pair.1
         self.canvasRasterPreview = pair.6

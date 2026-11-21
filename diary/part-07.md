@@ -1,805 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-20 — Step 655 — Add General placement preferences
-
-General settings now control automatic fit, the placement transform preview and whether new embedded artwork becomes a Smart Object or a pixel layer. Command–K opens the native General pane. The Photato API exposes the three persistent preferences and explicit pixel-layer placement for new embedded and PDF artwork.
-
-All 1,452 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The direct Photoshop comparison is still open.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-655) · [Details](../PhotoCraftSwift/docs/PLACEMENT_PREFERENCES_655.md).
-
-## 2026-11-20 — Step 654 — Place and update gigabyte-scale linked Smart Objects
-
-A 1.18 GB linked PSB passed native and approved API placement, background refresh, repeated packaging, relink, embedding and Undo. Linked native, PSD and PSB outputs matched across both compiled architectures.
-
-All 1,446 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-654) · [Details](../PhotoCraftSwift/docs/LARGE_LINKED_ORIGINALS_654.md).
-
-## 2026-11-20 — Step 653 — Preserve Smart Object placement identifiers
-
-Apple Silicon and Intel under Rosetta wrote identical 1,182,448,710-byte PSBs from the same nested edit. Duplicate Smart Filter masks and copied linked previews survive save and reopen.
-
-All 1,407 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-653) · [Details](../PhotoCraftSwift/docs/PLACED_LAYER_IDENTIFIERS_653.md).
-
-## 2026-11-19 — Step 652 — Keep gigabyte-scale originals in Undo and Redo
-
-Spilled history states share the existing file-backed original. Undo and Redo keep the bytes, and insufficient disk space rejects the edit atomically.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) · [Details](../PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECT_HISTORY_652.md).
-
-## 2026-11-19 — Step 651 — Keep gigabyte-scale originals through Edit Contents
-
-A 1.18 GB PSB retains its exact original and editable samples through placement, a nested edit and reopen. Native files use archive version 97 for these originals.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-651) · [Details](../PhotoCraftSwift/docs/GIGABYTE_SMART_OBJECTS_651.md).
-
-## 2026-11-19 — Step 650 — Retain large embedded originals on disk
-
-Large PSB originals remain editable in native projects, PSD and PSB. The 275.7 MB test retained two shared instances, and the 525.1 MB file retained its original bytes.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-650) · [Details](../PhotoCraftSwift/docs/FILE_BACKED_SMART_ORIGINALS_650.md).
-
-## 2026-11-19 — Step 649 — Place and reopen larger Photoshop originals
-
-PSD, PSB and chunked native Smart Object sources have a local 256 MiB budget. The two previously rejected PSBs retained exact bytes and editable contents, and a 262.5 MB reference passed native and PSB round trips.
-
-All 1,372 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed an offscreen launch. The Debug save-sheet check passed on an isolated rerun after the sheet missed the suite's deadline.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-649) · [Details](../PhotoCraftSwift/docs/LARGE_EMBEDDED_ORIGINALS_649.md).
-
-## 2026-11-19 — Step 648 — Keep large embedded sources once
-
-A three-source native save dropped from 201.8 MB to 100.9 MB. The parent PSB and the three original sources kept identical bytes.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-648) · [Details](../PhotoCraftSwift/docs/EMBEDDED_SOURCE_RECORDS_648.md).
-
-## 2026-11-19 — Step 647 — Keep large generated Smart Object sources editable
-
-Two large deep-colour Smart Objects keep editable child data in PSD and PSB. Independent checks matched all 134,316,048 child samples.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) · [Details](../PhotoCraftSwift/docs/EMBEDDED_SMART_SOURCE_647.md).
-
-## 2026-11-19 — Step 646 — Speed up large editable Smart Filter files
-
-The 9-megapixel editable Smart Filter test dropped from 164.4 to 7.2 seconds on optimized Apple Silicon. Three PSD and PSB exports matched the previous Photato codec byte for byte.
-
-All 1,357 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview passed offscreen launch checks.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) · [Details](../PhotoCraftSwift/docs/PSD_SMART_FILTER_PAGING_646.md).
-
-## 2026-11-19 — Step 645 — Keep Gradient Overlay editable
-
-Standard Gradient Overlay keeps its stops and placement through PSD and PSB. Six exports of three Photoshop 27.4 RGB8 files matched all 737,280 merged RGBA samples.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) · [Details](../PhotoCraftSwift/docs/PSD_GRADIENT_OVERLAY_645.md).
-
-## 2026-11-19 — Step 644 — Match linked raster previews to saved mask samples
-
-Supported linked RGB8 and RGB16 previews apply the separately quantized Photoshop layer and mask samples. Six file comparisons confirmed the tested output.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) · [Details](../PhotoCraftSwift/docs/LINKED_PREVIEW_644.md).
-
-## 2026-11-19 — Step 643 — Open nested Photoshop Smart Objects
-
-An iterative decoder opens nested editable Smart Objects without exhausting the worker stack. The eight-level round trip and the previously failing Execute Actions workflow passed.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-643) · [Details](../PhotoCraftSwift/docs/PSD_NESTED_SOURCES_643.md).
-
-## 2026-11-19 — Step 642 — Read older solid shapes and their pixel masks
-
-Older live solid-fill shapes open as editable layers and keep the separate pixel mask. Both unchanged exports matched the reference layer, mask and preview samples.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-642) · [Details](../PhotoCraftSwift/docs/PSD_LEGACY_SHAPES_642.md).
-
-## 2026-11-19 — Step 641 — Keep rounded rectangles and dashed ellipses editable
-
-PSD and PSB retain supported solid fills, rounded corners and dotted or dashed ellipse strokes. Six independently checked exports retained the tested layer samples and shape records.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-641) · [Details](../PhotoCraftSwift/docs/PSD_ROUNDED_ELLIPSE_641.md).
-
-## 2026-11-19 — Step 640 — Keep Photoshop rectangles editable
-
-Supported axis-aligned RGB rectangles open as editable layers. Photoshop-format tests verified the rendered samples and the retained rectangle descriptors.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) · [Details](../PhotoCraftSwift/docs/PSD_LIVE_RECTANGLES_640.md).
-
-## 2026-11-19 — Step 639 — Keep vector outlines when printing
-
-Include Vector Data preserves eligible outline shapes and text in native print and PDF output. An independent PDF check verified the vector paths and raster backdrop.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-639) · [Details](../PhotoCraftSwift/docs/VECTOR_PRINT_639.md).
-
-## 2026-11-19 — Step 638 — Save document print settings with the artwork
-
-Native documents retain committed print settings and hard-proof conditions. Editable PSD and PSB update supported Photoshop Print Information and Print Style fields.
-
-All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-638) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_638.md).
-
-## 2026-11-19 — Step 637 — Remember print defaults and restore supported Photoshop settings
-
-Photato remembers accepted native print defaults and restores supported Print Information and Print Style fields when opening Photoshop files.
-
-All 1,171 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_637.md).
-
-## 2026-11-19 — Step 636 — Fit and clip large prints at their original sample resolution
-
-Photato fits high-resolution photos to paper while retaining original samples, and can prepare just the visible region of a much larger document printed at a fixed scale.
-
-All 1,168 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-636) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_636.md).
-
-## 2026-11-19 — Step 635 — Print a selection from a large document
-
-The desktop and authenticated PDF route can prepare a small selection from a sparse document at the maximum canvas dimensions.
-
-All 1,166 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-635) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_635.md).
-
-## 2026-11-19 — Step 634 — Print native CMYK and saved spot separations
-
-Print and the authenticated PDF download create named process and spot pages for eligible CMYK, Duotone and Multichannel artwork.
-
-All 1,163 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_634.md).
-
-## 2026-11-19 — Step 633 — Return standard Multichannel plates to editable CMYK
-
-Returning a standard ordered process set to CMYK keeps extra plates as editable spots. Eligible PSD and PSB files retain the merged process values through the round trip.
-
-All 1,139 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-633) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_633.md).
-
-## 2026-11-19 — Step 632 — Keep native CMYK and Lab components when flattening to Multichannel
-
-Eligible layered CMYK and Lab documents preserve their numerical components through the Multichannel conversion and Delete Channels, including independent black ink.
-
-All 1,136 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-632) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_632.md).
-
-## 2026-11-19 — Step 631 — Preserve spot inks in Multichannel Photoshop files
-
-Multichannel PSD and PSB output preserves saved spot inks as printing plates, including their density, swatch, Solidity and identifier.
-
-All 1,133 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-631) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_631.md).
-
-## 2026-11-19 — Step 630 — Keep Workflow Guide highlights visible across controls and dialogs
-
-The Workflow Guide moves clear of a covered target. Its lessons highlight specific dialog fields and buttons and accept Show Me to replay the cue.
-
-All 1,130 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-630) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_630.md).
-
-## 2026-11-19 — Step 629 — Keep saved masks and printing plates in one Multichannel order
-
-The Channels panel can place masks before or between printing plates. Photato archives, PSD and PSB preserve the same sequence.
-
-All 1,129 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_629.md).
-
-## 2026-11-19 — Step 628 — Drag channel rows and keep menu cues aligned
-
-Drag an individual channel to duplicate, copy, reorder or delete it. The Workflow Guide follows the actual popup row once AppKit has positioned the menu.
-
-All 1,125 selected tests passed in each configuration. The two signed macOS 14+ archive slices also passed offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-628). [Development notes](../PhotoCraftSwift/docs/CHANNEL_DRAG_628.md).
-
-## 2026-11-19 — Step 627 — Integrate Workflow Guide cues with the expanded Channels panel
-
-The validated source combines menu and dialog cues, process-channel deletion, and isolated Sky Replacement wheel input.
-
-A repaired Debug candidate passed 44 targeted cases. A remaining intermittent popup placement issue was resolved before the 628 source qualification.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-627). [Development notes](../PhotoCraftSwift/docs/CHANNEL_GUIDE_INTEGRATION_627.md).
-
-## 2026-11-19 — Step 626 — Delete process channels through the Channels panel
-
-Deleting selected RGB, CMYK or Lab components converts the retained separations into editable Multichannel plates. Layered input requests merge consent.
-
-All 29 selected development cases passed, including shared native and HTTP validation.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-626). [Development notes](../PhotoCraftSwift/docs/PROCESS_CHANNEL_DELETION_626.md).
-
-## 2026-11-19 — Step 625 — Merge spot ink into the supported process channels
-
-The shared spot-merge command keeps the expected component layout and performs one undoable document edit.
-
-All 29 selected development cases passed. Exact comparison against Adobe-authored physical printing samples remains open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-625).
-
-## 2026-11-19 — Step 624 — Duplicate channels into the current image or another document
-
-Duplicate Channel uses native numerical samples and the dimensions, depth and channel rules of the destination. The app and API share that path.
-
-All 25 selected development cases passed, including ownership, cancellation and document history.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-624).
-
-## 2026-11-19 — Step 623 — Convert layerless ink documents back to editable image modes
-
-Mode conversion can use the retained native separations and preserves supported large ink rasters. The Image Mode menu and Photato API share the conversion.
-
-The development runs covered exact native component samples, mode round trips and large workspaces. The publication gate is the combined 628 matrix.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-623).
-
-## 2026-11-19 — Step 622 — Resize and crop editable Multichannel plates
-
-Canvas Size, Crop and supported nearest-neighbour geometry retain editable sparse printing plates and saved channel data.
-
-The development run covered native and API geometry plus sparse file round trips. The public cumulative qualification is recorded in 628.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-622).
-
-## 2026-11-19 — Step 621 — Follow native menus and dialogs in the Workflow Guide
-
-The guide follows menu rows and submenus as they open. Supported dialog controls flash automatically, with Show Me available to replay the cue.
-
-The repaired preview passed 11 selected cases, including Duplicate Layer, Save As and an unrelated sheet. A later matrix exposed a popup placement issue repaired in 628.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-621). [Development notes](../PhotoCraftSwift/docs/WORKFLOW_GUIDE_HIGHLIGHTS_621.md).
-
-## 2026-11-19 — Step 620 — Keep maximum-size Multichannel printing plates editable
-
-PSB can retain sparse editable spots and masks up to 300,000 × 300,000 pixels. Large Photato archives use format 93.
-
-All 1025 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_620.md).
-
-## 2026-11-19 — Step 619 — Rank Workflow Guide suggestions and highlight each step
-
-Open Photato > Settings > Workflow Guide to control visibility, launch behavior and the suggestion limit. Choose Show Me while a guide is open to repeat its highlight. Preferences are stored locally.
-
-All 972 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_619.md).
-
-## 2026-11-19 — Step 618 — Save deep RGB Photoshop files without a merged preview
-
-The File Handling preference and explicit Photato API setting apply to eligible native saves, Image Processor output, and file downloads. Adobe v2 continues to write its existing merged preview.
-
-All 970 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_618.md).
-
-## 2026-11-19 — Step 617 — Add the optional Workflow Guide
-
-Open Window > Workflow Guide to browse suggestions for the selected layer, tool or other editor context. The guide runs locally and links to the development diary. The authenticated Photato capability catalogue exposes the same lessons.
-
-All 968 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_617.md).
-
-## 2026-11-19 — Step 616 — Write native Photoshop separations and Gray32 previews from stored blocks
-
-A two-layer 1,531 × 5,491 Gray32 control matched all 34,060,421 bytes from build 615. Restoring the same sparse layers and writing the file took 274.9 milliseconds in the paired Apple Silicon Debug run, down from 44.80 seconds.
-
-All 964 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and Intel under Rosetta. Both slices of the extracted macOS 14+ universal archive passed signature and offscreen launch checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-616) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_616.md).
-
-## 2026-11-19 — Step 615 — Keep large Grayscale, CMYK and Lab Photoshop planes sparse
-
-The native file reader opened an independently authored 300,000 × 300,000 Grayscale/16 PSB and matched all 18,432 checked gray and alpha words. The Apple Silicon Debug run took 2.61 seconds and retained 24 KiB of mapped component samples.
-
-Build 614 exhausted a 384 KiB scratch limit on the smaller 1,531 × 5,491 control. Build 615 opened it under that allowance and matched all 19,842 checked words. All 963 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-615) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_615.md).
-
-## 2026-11-19 — Step 614 — Read large ZIP-compressed Photoshop layers and masks as sparse rasters
-
-The native file reader opened an independently authored 300,000 × 128 RGB8 PSB with a ZIP-compressed layer, translated mask and saved alpha. All 36,864 checked component words matched. The Apple Silicon Debug run took 5.48 seconds.
-
-Build 613 reached the 768 KiB scratch limit on the same control. Build 614 read the editable layer, mask and saved alpha into six tiles using 384 KiB of mapped storage. All 962 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-614) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_614.md).
-
-## 2026-11-19 — Step 613 — Import large flattened RGB PSD and PSB without staging all process planes
-
-The native file reader opened a 300,000 × 300,000 flattened RGB8 PSB with transparency and saved alpha in 13.58 seconds in one Apple Silicon Debug run. All 36,864 checked RGBA and 1,024 saved alpha words matched the independent input.
-
-Build 612 reached a 768 KiB scratch limit on the 1,201 × 30,001 control. Build 613 opened it with three RGBA tiles and one saved-alpha tile. All 961 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-613) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_613.md).
-
-## 2026-11-19 — Step 612 — Save large PSD and PSB channels with repeated rows
-
-The file writer and reader round-tripped a 300,000 × 300,000 RGB8 PSB with an editable fill, a saved alpha, a spot channel and Quick Mask. All 15,360 stored alpha and spot samples matched. The 15.48 GB file took 6.95 seconds to write and 16.77 seconds to reopen in one Apple Silicon Debug run.
-
-Independent executions saved the same 1,201 × 30,001 document on 611 and 612. All 7,924,054 output bytes matched. One Debug run took 38.41 seconds on 611 and 37.3 ms on 612. All 960 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-612) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_612.md).
-
-## 2026-11-19 — Step 611 — Import large PSD and PSB saved channels into sparse tiles
-
-The native reader opened a synthetic 300,000 × 300,000 grayscale PSB in 4.22 seconds in one Apple Silicon Debug run. All 9,216 stored alpha samples and both editable grayscale layer samples matched the authored input. The saved alpha used 192 KiB of mapped sample storage.
-
-A smaller 1,201 × 30,001 PSB retained all 10,593 checked alpha samples within a 768 KiB scratch allowance. Build 610 exceeded that allowance. The test set covers RGB8 Raw and PackBits and RGB16 and RGB32 PackBits. All 958 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_611.md).
-
-## 2026-11-19 — Step 610 — Read saved Photoshop channels without a merged preview
-
-A synthetic sparse 300,000 × 300,000 PSB opened with the exact editable raster in 3.5 ms on Apple Silicon Debug. The reader skipped 270 GB of unused logical raw preview data.
-
-The native reader matched all 4,016 editable-layer and saved-channel sample words across 80 independently assembled PSD and PSB controls. A loopback regression covered Photato import, truncated-input rejection, and both job interfaces. All 957 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-610) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_610.md).
-
-## 2026-11-19 — Step 609 — Set PSD and PSB file compatibility
-
-Always includes a merged preview. Ask prompts during eligible desktop saves. Never skips the preview for RGB8 documents without saved channels. Unattended Ask saves include the preview by default.
-
-All 1,974 PSD and 1,732 PSB placeholder bytes matched across five Adobe controls. Native saves, copy and cancellation passed, along with loopback API saves and downloads for all three settings. All 954 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_609.md).
-
-## 2026-11-19 — Step 608 — Save full-width sparse raster edits to PSB
-
-The 300,000 × 300,000 RGB8 PSB with paint across the first row saved in 9.20 s on Apple Silicon and 10.40 s under Rosetta. It reopened in 1.78 s and 2.86 s respectively. All authored raster bits matched.
-
-An independent encoder matched all 8,445,600,024 bytes of RLE tables and payloads on each architecture. Separate Apple Silicon RGB16 and RGB32 checks preserved both raster layers and their mask. All 941 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-608) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_608.md).
-
-## 2026-11-19 — Step 607 — Choose sparse Photoshop layer samples across the canvas
-
-The editable 300,000 × 300,000 RLE PSB with paint across its first row reopened in 1.72 s on Apple Silicon and 2.70 s under Rosetta. All raster bits matched. Its 4,690 retained tiles occupied about 293 MiB.
-
-The raw and mixed-compression controls each went from 8,911 mapped tiles to 21. Row inspection preserved the live cursor and continued to reject malformed input in both PSD and PSB. All 940 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-607) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_607.md).
-
-## 2026-11-19 — Step 606 — Reopen sparse editable PSB raster layers
-
-Photato reopened the 8.45 GB, 300,000 × 300,000 RGB8 PSB in 1.65 s on Apple Silicon and 2.61 s under Rosetta. Every raster bit matched and six tiles used 384 KiB of mapped sample storage. The independent decoder checked 900,000 layer and 900,000 merged row lengths per architecture, plus 72 sampled channel values.
-
-The 300,000 × 131 RGB8 file went from 14,064 mapped tiles to four. RGB16 and RGB32 PSBs and RGB8 and RGB16 PSDs reopened with every raster bit preserved in the tested deep and legacy fixtures. All 938 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-606) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_606.md).
-
-## 2026-11-19 — Step 605 — Stream repeated rows in sparse PSB files
-
-Photato saved the 11.26 GB editable solid-fill PSB at 300,000 × 300,000 pixels in 3.22 s and reopened it in 2.12 s. An independent reader checked all 1,200,000 merged row lengths and 140 sampled channel values. These were single runs on the same Mac.
-
-The 300,000 × 131 RLE file was byte-identical to build 604. Save time went from 10.97 s to 0.30 s on Apple Silicon and from 17.54 s to 0.34 s under Rosetta. All 932 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-605) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_605.md).
-
-## 2026-11-19 — Step 604 — Reuse wide vector Feather profiles at canvas edges
-
-At 110.25 px Feather, the rounded 300,000 × 300,000 control went from 5,632 rendered patches to 119. Apple Silicon went from 110.45 s to 13.47 s. Under Rosetta it went from 171.10 s to 25.76 s. All 226,872 sampled RGBA words matched the build 603 whole render on each architecture. These are single runs on the same Mac.
-
-All 307,518,180 RGBA words in four complete renders matched build 603 on each architecture. The controls include RGB8, RGB16, RGB32, an inverted group mask, and independent raster and pixel-mask edits. All 924 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_604.md).
-
-## 2026-11-19 — Step 603 — Reuse exact composited tiles under solid vector Feather
-
-The 300,000 × 75 control went from 39 rendered patches to 15. The RGB16 wide-Feather control went from 156 to 111.
-
-The full 300,000 × 300,000 rounded-mask control completed in 6.47 s on Apple Silicon and 13.10 s under Rosetta, with 28 rendered patches. The maximum-size ellipse completed in 64.16 s on Apple Silicon and 113.97 s under Rosetta, with 9,804 rendered patches. The rounded mask at 110.25 px Feather completed in 110.45 s on Apple Silicon and 171.10 s under Rosetta, with 5,632 rendered patches. Across the three composites, all 745,024 RGBA words in 26 sampled regions matched build 602 viewports on each architecture. These are single runs on the same Mac.
-
-All 922 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-603) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_603.md).
-
-## 2026-11-19 — Step 602 — Skip solid pieces of dense feathered vector masks
-
-At 1,000 px Feather, the interior viewport of the maximum-size document needed no scratch transfer, down from 51,595,425 source pixels. The whole 49,155 × 73 wide-Feather control transferred 18,434,046 source pixels, down from 36,890,622.
-
-Whole-mask preparation for the 300,000 × 300,000 control at 110.25 px Feather took 10.39 s on Apple Silicon and 14.14 s under Rosetta. The four checked regions matched all 42,286 coverage words against build 601 viewport output on each architecture. These measurements are single runs on the same Mac.
-
-Ten mask controls matched build 601 across all 10,873,881 Float32 coverage words per architecture. Two additional whole-canvas RGB32 layer stacks matched all 28,706,520 RGBA words per architecture. The controls cover both mask polarities, short and wide Feather through 1,000 px, Boolean holes, partial cells, and near-edge viewports on a 300,000 × 300,000 document. All 920 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-602) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_602.md).
-
-## 2026-11-19 — Step 601 — Render sparse curved Feather from stored coverage
-
-The sparse inverted rectangle control rendered in two patches, down from 36. The distant curved mask on a 300,000 × 300,000 canvas used 46, down from 92. Both controls matched the complete build 600 render.
-
-All 918 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_601.md).
-
-## 2026-11-19 — Step 600 — Prove RGB32 raster-base opacity with rectangular Feather
-
-The 37.8 MP opaque-base test with 2 px Feather went from 52.80 s to 0.02 s on Apple Silicon and from 69.40 s to 0.02 s under Rosetta. These are single runs on the same host.
-
-The 300,000 × 300,000 opaque-base test at 1,000 px completed in 1.27 s on Apple Silicon and 1.79 s under Rosetta. The narrow and wide opaque controls and the distant inverted-hole control each matched 9,248 sampled Float32 words on each architecture against the corresponding build 599 37.8 MP controls.
-
-All 916 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-600) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_600.md).
-
-## 2026-11-19 — Step 599 — Reuse wide vector-mask Feather windows
-
-The 300,000 × 300,000 stress case with an inverted 1,000 px Feather mask completed in 35.71 s on Apple Silicon and 49.08 s under Rosetta. Build 598 exceeded the 200-second cutoff on Apple Silicon. The new whole-canvas output matched all 11,560 sampled Float32 words of the previous viewport output on each architecture.
-
-All 914 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_599.md).
-
-## 2026-11-19 — Step 598 — Render whole-canvas rectangular vector masks
-
-A 300,000 × 300,000 document with a rectangular vector mask and a sparse raster edit rendered in 197 tiles in the regression test. The tile index reuses the rendered samples across the canvas. On a 37.8 MP RGB32 control, median whole-canvas render time went from 3.912 s to 0.103 s on Apple Silicon and from 8.245 s to 0.194 s under Rosetta. Each median uses three alternating runs on the same host.
-
-All 912 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_598.md).
-
-## 2026-11-19 — Step 597 — Reuse window sums during wide mask Feather
-
-Wide Feather reuses the second filter pass’s window sums when they fit a bounded cache. The 1,000 px vector viewport went from 1.001 s to 0.933 s on Apple Silicon. The RGB32 pixel-mask control went from 0.180 s to 0.135 s and the oversize Smart Filter mask from 0.867 s to 0.821 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 596 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
-
-All 909 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-597) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_597.md).
-
-## 2026-11-19 — Step 596 — Reuse source bands during wide mask Feather
-
-Wide Feather reuses source row bands for vector, pixel and Smart Filter masks. The 1,000 px vector viewport went from 1.343 s to 0.995 s on Apple Silicon. The oversize Smart Filter mask control went from 1.483 s to 0.862 s. These are medians of three alternating runs on the same host. All 1,155 sampled Float32 coverage or output words matched build 595 bit for bit on each architecture across eight vector, raster and Smart Filter cases.
-
-All 908 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_596.md).
-
-## 2026-11-19 — Step 595 — Prepare vector-mask Feather around the viewport
-
-Large-canvas vector-mask Feather limits broad coverage preparation to the viewport and its filter margin. On Apple Silicon, the 15 × 7 viewport through a 24,576 px mask at 1,000 px Feather took 8.506 s in build 594 and 1.367 s in build 595. The 250 px curved control took 6.063 s and 0.206 s.
-
-All 907 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-595) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_595.md).
-
-## 2026-11-19 — Step 594 — Match measured short vector-mask Feather responses
-
-The 1.5 px and 2 px vector-mask Feather settings now reproduce the measured Photoshop step and corner responses. Dense rendering, paged whole-canvas rendering and tiled viewports produced identical alpha words at the tested coordinates.
-
-All 905 selected tests passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-594) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_594.md).
-
-## 2026-11-19 — Step 593 — Bound vector mask Feather on large canvases
-
-Vector masks accept Feather through 1,000 px and keep their paths editable in native documents, PSD and PSB. The maximum sparse canvas test used four patches, and the native and HTTP settings share the same 1,000 px range.
-
-All 904 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_593.md).
-
-## 2026-11-19 — Step 592 — Bound Smart Filter mask Feather on large documents
-
-Smart Filter masks accept Feather through 1,000 px and render projected mask regions on sparse large documents. The maximum sparse canvas test updates two distant mask regions. The Properties controls and Photato API use the same limit and retain an editable mask on save.
-
-All 887 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_592.md).
-
-## 2026-11-19 — Step 591 — Match measured fractional RGB32 Feather schedules
-
-Aligned 32-bit raster masks now use Photoshop’s measured filter schedules at 14 fractional Feather settings. The comparisons cover texture, lines and edges. Apple Silicon matched every sample. The Intel texture comparison found five differences, each one Float32 step.
-
-All 861 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-591) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_591.md).
-
-## 2026-11-19 — Step 590 — Match integer raster-mask Feather stages
-
-Aligned RGB8 and RGB16 raster-layer masks now use integer-rounded Feather stages in rendering and clipping merges. The 34 Photoshop control files cover points, textures and translated masks. An independent reader checked 51,578 native PSD colour words in each test configuration. All matched the saved Apple Silicon Photoshop references.
-
-All 858 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The independent Photoshop Rosetta capture remains pending.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_590.md).
-
-## 2026-11-19 — Step 589 — Apply Feather in raster clipping merges and stamps
-
-Merge Clipping Mask, Stamp Group, and eligible Merge Down and Stamp Down commands now use Feather on contributing raster clips. Saved RGB32 layer output matches five Photoshop cases at 250 or 1,000 px on both architectures. The tests also exercise sparse 300,000 × 300,000 documents and verify Undo through the desktop model and HTTP.
-
-All 856 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta. The lower-radius Intel comparisons still have differences of up to two Float32 steps.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-589) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_589.md).
-
-## 2026-11-19 — Step 588 — Support layer-mask Feather through 1,000 px
-
-Layer-mask Feather now accepts 0–1,000 px in the native controls, Photato API and editable files. The renderer streams the wide filter. The saved 250 and 1,000 px RGB32 controls match exactly on both tested architectures, and the editable 1,000 px setting survives native, PSD and PSB round trips.
-
-All 850 selected checks passed across the suite and focused recheck in Debug, optimized Apple Silicon and Intel under Rosetta. Fractional settings and other mask geometries still need exact Photoshop comparisons.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_588.md).
-
-## 2026-11-19 — Step 587 — Match staged RGB32 pixel-mask Feather
-
-Aligned RGB32 layer masks use a staged square filter at whole-pixel Feather radii from 3 to 100 px. It follows the canvas and stored mask edges, including masks that extend outside the canvas. In the app tests, 34,975 coverage samples matched the 21 saved Apple Silicon references exactly. All 844 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
-
-Photoshop's 250 and 1,000 px textured controls also match the model. The current app range is 100 px. Fractional radii, a few Intel rounding cases, and the wider control are still in development.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_587.md).
-
-## 2026-11-19 — Step 586 — Bound pixel-mask Feather rendering
-
-Pixel-mask Feather now renders requested regions on 300,000 × 300,000 documents without preparing a full padded mask. Existing Feather output is preserved across the tested depths and transforms. All 842 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta.
-
-Separate Photoshop tests reproduced the saved 100, 250 and 1,000 px line samples. The two-dimensional Intel results still need investigation before widening the control.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_586.md).
-
-## 2026-11-19 — Step 585 — Add three arithmetic clipping blend modes
-
-Linear Dodge (Add), Subtract and Divide now work in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel. The HDR checks include masked clips, mixed opacity and translated Divide layers.
-
-All 787 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The tests compare 96 saved Photoshop results per architecture.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_585.md).
-
-## 2026-11-19 — Step 584 — Preserve pixel masks in clipping merges and stamps
-
-Supported clipping merges and stamps preserve the editable base pixel mask and apply contributing masks at 8, 16 and 32 bits per channel. The tests cover disabled masks, integer offsets, Density and partial clip opacity. Stamp Group and Stamp Down retain the contributing mask on its own layer.
-
-All 782 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. Feather on a contributing mask remains in development.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_584.md).
-
-## 2026-11-18 — Step 583 — Add four clipped blend modes
-
-Multiply, Darken, Lighten and Difference now participate in supported raster clipping merges and stamps at 8, 16 and 32 bits per channel.
-
-The saved Photoshop comparison matched 62,736 stored sample words per architecture. All 776 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-583) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_583.md).
-
-## 2026-11-18 — Step 582 — Preserve independent clipping in merges and stamps
-
-Supported raster clipping merges and stamps preserve Blend Clipped Layers as Group, the base blend mode, and its opacity. The saved pixels for the tested Multiply cases matched with the underlying backdrop visible or hidden.
-
-The native editor and both local API families share the updated behavior. All 773 selected checks passed in Debug, optimized Apple Silicon, and Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_582.md).
-
-## 2026-11-18 — Step 581 — Merge and stamp adjacent clipped layers
-
-Merge Down and Stamp Down now work between adjacent Normal raster clips in the same clipping stack. Merge Down keeps the destination clipped and removes the upper layer. Stamp Down keeps both rows and the upper selection.
-
-The stored raster matches the tested 8-, 16- and 32-bit Photoshop outputs. The first ActionJSON expansion found a stack overflow. Reusing the raster-output helper repaired it, and all 769 selected tests passed on each configuration.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-581) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_581.md).
-
-## 2026-11-18 — Step 580 — Match Screen clipping and unchanged stamp history
-
-Screen clips now participate in supported RGB8 and RGB16 merges and stamps. In-place stamps create an Undo step even when the stored pixels stay identical.
-
-The saved-layer comparisons cover 36 Photoshop results. The 12 larger results account for 93,264 exact stored samples. The native editor and both local API families use the same implementation. All 765 selected checks passed in each configuration.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-580) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_580.md).
-
-## 2026-11-18 — Step 579 — Add in-place Stamp Down and Stamp Group
-
-Option-Command-E now stamps into an existing raster when one eligible layer is selected. Stamp Down updates the layer beneath it. Stamp Group updates the base of a supported clipping stack. Both commands preserve the selected layer and the rest of the stack.
-
-The updated raster matched saved 8-, 16- and 32-bit Photoshop references. The native menu, local API, Actions and Undo share the two operations. All 761 selected tests passed in each of the three configurations.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-579) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_579.md).
-
-## 2026-11-18 — Step 578 — Add contextual Merge Clipping Mask
-
-Selecting the base of a supported raster clipping stack now makes Command-E run Merge Clipping Mask. The command combines visible clips into the base and removes the consumed clips. Hidden clips contribute no color. The base keeps its opacity, blend mode and stored geometry, including transparent or off-canvas samples.
-
-The save-and-reopen tests compare 8-, 16- and 32-bit Photoshop reference layers. Undo, Actions and both local Adobe-compatible job routes are covered. All 757 selected checks passed on each of the three build configurations.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_578.md).
-
-## 2026-11-18 — Step 577 — Preserve stored RGB32 pixel masks when merging and stamping
-
-Normal 32-bit layer output now uses stored pixel masks. The comparison covers saved binary coverage and feathered selections, including transparency and the Intel rounding at tiny alpha values. A small translated mask in a 300,000 × 300,000 document used two render patches.
-
-All 752 selected tests passed in Debug and in both optimized configurations. Both slices of the extracted local validation archive passed their offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_577.md).
-
-## 2026-11-18 — Step 576 — Match stored RGB32 Normal merge and stamp samples
-
-Merging and stamping 32-bit Normal layers now matches the saved Photoshop samples in the tested raster stacks. These tests cover very low alpha, transparent pixels, partial layer opacity and an opaque Background. A fresh Intel capture also confirmed that its saved alpha differs from Apple Silicon on one older fixture.
-
-The new tests compare the stored layer before and after reopening a PSD. All 750 selected tests passed in each of the three build configurations. Both slices in the local universal archive passed their offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-576) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_576.md).
-
-## 2026-11-18 — Step 575 — Render sparse stamps at maximum canvas size
-
-Stamp Layers and Stamp Visible now skip large empty areas of a sparse document. A 300,000-pixel-square test document with two separated layers used two render patches. The tests covered raster stacks, simple groups, a translucent canvas background and both stamp operations at 8, 16 and 32 bits per channel.
-
-Both ActionJSON job routes matched saved Photoshop layer samples for tagged and untagged files. All 749 selected tests passed in all three build configurations. Both slices of the local universal archive passed their offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_575.md).
-
-## 2026-11-18 — Step 574 — Add Stamp Layers and Stamp Visible
-
-Stamp Layers combines selected artwork on a new layer. Stamp Visible does the same for visible artwork. Both preserve the original layers and can be undone in one step. Photato exposes the shortcuts in the Layer menu and supports the same operation in recorded Actions and through the API.
-
-The saved Photoshop references match at 8, 16 and 32 bits per channel. The test documents include locked layers, clipping, hidden layers and selections across different groups. All 745 selected tests passed in each of the three configurations. Both slices of the universal validation archive passed their offscreen workspace checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-574) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_574.md).
-
-## 2026-11-18 — Step 573 — Match HDR Normal rounding at the Float32 underflow boundary
-
-On Intel, very small color contributions can disappear during 32-bit Normal compositing. Photato now matches the measured rounding, including products just below the smallest normal Float32 value. The Apple Silicon build keeps its fused calculation.
-
-The new tests compare 57,504 straight color and alpha words with separately saved Photoshop results on each architecture. An ordinary opaque source that covers the canvas retains its original colors over uniform backdrop alpha. Grouped clipping can preserve those colors even when the base alpha varies. All 708 selected tests passed in all three configurations. The local universal archive passed both offscreen workspace checks. The translucent test also exposed a difference in Merge Visible that remains open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_573.md).
-
-## 2026-11-18 — Step 572 — Match Intel HDR Normal layer and group compositing
-
-Photoshop's Intel build rounds the multiply and add separately when compositing 32-bit Normal layers. On Apple Silicon it uses a fused operation. Photato now follows those results for color, alpha and the opacity of supported groups. The tests use separately captured Photoshop results for each architecture.
-
-The tested results match 264,192 Photoshop sample words on each architecture. That includes the masked Display P3 conversion that differed on Intel in build 571. All 705 selected tests passed in each configuration. Independent HDR clipping still differs.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_572.md).
-
-## 2026-11-18 — Step 571 — Fix HDR PSD and PSB compression for Photoshop
-
-Photoshop was reading plain ZIP as predicted ZIP on 32-bit layers. This could corrupt HDR colors when opening a PSD or PSB exported by Photato. New exports use the prediction expected for those layers. ZIP requests for the merged preview write raw data because Photoshop refused ZIP in that section. Photato still reads its older files.
-
-Photoshop opened the tested files on Apple Silicon and Intel under Rosetta. The saved 32-bit grayscale samples match across both formats and save encodings. All 694 selected tests passed in each of three build configurations. The local universal archive passed both offscreen workspace checks. A separate mismatch remains in the Intel masked merge.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_571.md).
-
-## 2026-11-18 — Step 570 — Preserve the working profile when merging before conversion
-
-Merging eligible RGB layers before an Image Mode change now uses their working-profile samples. If the composite is already a single full-canvas layer, the conversion uses its original color and alpha planes. The existing Normal merge routine handles integer rounding for supported RGB stacks before promotion to 32 Bits/Channel.
-
-All 35,840 words in the three valid Photoshop references match on each optimized architecture. All 678 selected tests passed in each build configuration. The two external HDR merge cases still need readable references.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_570.md).
-
-## 2026-11-18 — Step 569 — Match HDR grayscale conversion and ICC gamma boundaries
-
-32-bit RGB documents now convert to the default linear gray space using the measured source primaries. Promotion to 32 Bits/Channel uses the measured boundaries for fixed-point ICC gamma curves.
-
-All 8,510,976 samples in 257 tested precision promotions and 194,560 samples in 38 RGB32-to-Gray32 cases match Photoshop on each architecture. All 661 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
-
-Follow-up testing measured 4,410 rounding thresholds for 16-bit grayscale. Separate Float32 luminance products ordered all of the samples correctly. A 4,096-interval curve fits the measured thresholds, but its exact endpoint calculation remains open. Build 569 continues to use ColorSync for this conversion.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-569) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_569.md).
-
-## 2026-11-18 — Step 568 — Match half-gamma promotion and Gray32 PSD layer stacks
-
-RGB and grayscale gamma 0.5 profiles now promote to 32 Bits/Channel using the measured rounding on each architecture. PSD and PSB use native gray samples for supported 32-bit layer stacks.
-
-All 2,142,336 stored samples from 59 tested conversion cases match the corresponding Photoshop files on each architecture. Five Gray32 layer stacks match all 960 merged words under each of four compression modes in PSD and PSB. All 657 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_568.md).
-
-## 2026-11-18 — Step 567 — Use the source tone curves for 32-bit RGB and Gray
-
-Promoting an 8-bit or 16-bit RGB or grayscale document to 32 bits now uses the supported tone curves from its current ICC profile.
-
-All 1,976,832 samples from 54 supported cases match the files saved by Photoshop 2026 byte for byte on both tested architectures, using a separate Photoshop run on each architecture. Photoshop itself returned different values across architectures for 13,057 samples from the gamma and parametric cases. The Swift conversion matches the rounding observed on each architecture. All 651 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The desktop conversion and the authenticated Photato command produce the same stored samples and both Undo correctly. Both universal app slices passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-567) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_567.md).
-
-## 2026-11-18 — Step 566 — Preserve opaque Gray32 merged samples in PSD and PSB
-
-PSD and PSB exports now preserve all 32-bit grayscale samples when the document contains one visible, opaque Background. The writer uses the stored grayscale samples for the merged image and leaves out the redundant transparency plane. Saved auxiliary channels still follow the grayscale plane.
-
-An independent reader checked every sample of the 16 × 12 test image against a raw PSD saved by Photoshop 2026 at checkpoint 511. All 192 merged samples match byte for byte in PSD and PSB in all four compression modes. The comparison covers the grayscale plane and the channel count. All 629 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The tests also cover a saved auxiliary channel, hidden Background, both API encoders, and authenticated Photato downloads. Both universal app slices passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-566) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_566.md).
-
-## 2026-11-18 — Step 565 — Add Allow Tool Recording to Actions
-
-The Actions menu now controls whether a new recording captures Brush and other supported painting and retouching gestures. Tool gestures still edit pixels and appear in Undo when the setting is off.
-
-All 608 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. In 52 channel-stroke sequences, both recording settings produced the same raw samples as direct editing and the same per-architecture output as build 564. Forty older Brush step encodings also matched. Both universal slices passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-565) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_565.md).
-
-## 2026-11-18 — Step 564 — Record Brush Actions for color channels
-
-Photato Actions can record Brush strokes on process color components, Duotone gray, and Multichannel ink plates. Playback resolves the recorded target against the current document, respects its selection, and takes one Undo to reverse.
-
-All 583 selected tests passed in Debug, optimized Apple Silicon, and optimized Intel under Rosetta. On each architecture, 52 tested channel strokes replayed to the same samples as direct editing and matched build 563’s raw planes. Forty legacy Brush step encodings also matched. Both slices of the macOS 14+ validation archive passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-564) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_564.md).
-
-## 2026-11-18 — Step 563 — Record and replay Quick Mask Actions
-
-Enter Quick Mask, edit the selection with Brush or Pencil, and exit in one Action. Replay starts with the new document’s selection and can be undone in one step.
-
-All 558 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. On both architectures, 24 Quick Mask sequences and 24 older Fill Action encodings matched build 562 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-563) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_563.md).
-
-## 2026-11-18 — Step 562 — Record Brush Actions for masks and channels
-
-Brush strokes on Smart Filter masks and saved channels now play back in Actions. A stroke above a shape can still create an ordinary pixel layer.
-
-All 531 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 96 direct and prepared Brush output buffers and 12 older Action encodings matched build 561 byte for byte on each architecture. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-562) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_562.md).
-
-## 2026-11-18 — Step 561 — Record Paint Bucket Actions
-
-Paint Bucket clicks can now be saved in an Action. Playback uses the new document’s layer, mask, or visible composite. A recorded pattern stays with the Action.
-
-All 527 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The 240 color-region masks and 18 direct bucket buffers matched build 560 byte for byte on both architectures. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-561) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_561.md).
-
-## 2026-11-18 — Step 560 — Add Clear to Edit Fill and Stroke
-
-Choose Clear to erase pixels within a selection, along an outline, or across a whole pixel layer. Clear uses the existing Fill and Stroke API commands and can be recorded as a Photato Action.
-
-All 522 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. On each architecture, 264 existing Fill, Stroke, and Path Clear pixel buffers and the legacy settings JSON matched build 559 byte for byte. Both slices of the macOS 14+ universal archive passed offscreen checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-560) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_560.md).
-
-## 2026-11-18 — Step 559 — Paint Bucket Clear and automation
-
-Clear removes alpha from the color region you click. The Photato API can configure the Paint Bucket or fill a region using the same options. Separated sparse fills and full solid fills also update much larger canvases without a whole-canvas write loop in the tested cases.
-
-All 486 selected tests passed across three builds. The 624 actual dense and paged writeback comparisons matched on each optimized architecture. Live Photoshop output comparisons remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-559) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_559.md).
-
-## 2026-11-18 — Step 558 — Large Paint Bucket and Magic Wand regions
-
-Magic Wand and Paint Bucket now page large color selections. The tested sparse cases work on 300,000-pixel-square canvases, and a uniform opaque fill can update the whole canvas without allocating pixel tiles.
-
-All 481 selected tests passed across three builds. Existing coverage and bucket buffers matched build 557 byte for byte. Dense maximum-size timing, other fill modes and exact Photoshop comparisons remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-558) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_558.md).
-
-## 2026-11-18 — Step 557 — Brush and Pencil blend-mode shortcuts
-
-On the canvas, Shift-plus and Shift-minus cycle paint modes. Shift-Option-Q selects Behind and Shift-Option-R selects Clear on Brush. The shortcut changes the next stroke, so you can switch modes without interrupting the stroke underway.
-
-All 454 selected tests passed across three builds. They cover direct shortcuts, focus, the cursor, Undo and the Photato API. Live Photoshop keyboard comparisons remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-557) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_557.md).
-
-## 2026-11-18 — Step 556 — Behind and Clear
-
-The Brush Mode picker now has Behind and Clear. Behind puts paint underneath existing pixels. Clear removes their alpha and also works with Pencil. You can hold the grave-accent key to use Clear for a Brush stroke.
-
-All 418 selected tests passed across three builds. They check pixel math, transparent and locked layers, Undo, replay and the Photato API. Exact Photoshop pixel comparisons remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-556) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_556.md).
-
-## 2026-11-18 — Step 555 — Brush keyboard controls
-
-Braces change brush hardness. The arrow keys rotate the tip, and holding Shift makes a larger turn. Option and number keys set smoothing. The test for an active stroke confirms that keyboard changes apply to the next stroke.
-
-All 413 selected tests passed across three builds. The desktop and HTTP settings produced matching stroke pixels. Live Photoshop key behavior and exact stroke placement still need checks.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-555) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_555.md).
-
-## 2026-11-18 — Step 554 — Round brush hardness
-
-The four factory Round presets now change smoothly from soft feathering to an opaque core with a narrow edge. The aligned nonzero-hardness samples improved from a worst alpha difference of 161 to 12 of 255 levels. The two hard dabs from a separate document were within 2 levels. Older recorded settings still replay with their original profiles.
-
-All 411 selected tests passed across three builds. The next measurements cover exact pointer placement, intermediate hardness settings and continuous strokes.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-554) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_554.md).
-
 ## 2026-11-18 — Step 553 — Wider Soft Round tip
 
 Soft Round and Soft Round Pressure Opacity now paint with a wider falloff at zero hardness. Across six saved Photoshop dabs, the new renderer was within 3 alpha levels after lining up the centers. The three held-out sizes were within two levels. The previous renderer was off by up to 35. Older Actions still replay with their original brush settings.
@@ -1219,14 +419,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:689 -->
+<!-- current-status-step:690 -->
 ## Current development status — 21 November 2026
 
-The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
+Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000.
 
-451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen.
+453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 689](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_689.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-689).
+[Source checkpoint 690](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_690.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-690).
 
 <!-- current-status:end -->
 
@@ -1426,5 +626,702 @@ Step155 resumes the feather experiment begun on20October. Controlled identical-b
 Step156 captures 48 independent transparent feather controls, but fractional radii invalidate the first simple kernel hypothesis. The maintainer asks to prioritize missing major functionality. Research and reference files are preserved; no feather algorithm is changed. [Deferred research](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-156)
 
 Step157 adds a shared Swift raster-filter workflow: Gaussian/Box/Motion Blur, Unsharp Mask, High Pass, Add Noise, Mosaic and Average. Native preview sheets, Cancel/OK, selection and locks, one undoable edit, existing file persistence, the Photato command and both resource-job interfaces are integrated together. All59 focused Debug and1,483 full Release tests pass, along with24 functional cases on arm64 and x86_64 under Rosetta. The universal macOS 14+ candidate and live UI checks verify; installed117 remains unchanged. Failed fixture/old synchronous-test assumptions and outdated API-count assertions are retained with their repairs. Exact Photoshop filter pixels and Smart Filters remain open. [Filter workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-157)
+
+## Complete chronological index
+
+Every numbered milestone in the source diary at this reconstruction appears below. The link opens the full account of its changes, failures, tests and remaining work. An index entry is a record of activity; research and pause entries are not completed features.
+
+| Date | Milestone | Recorded development |
+|---|---:|---|
+| 2026-10-07 | 001 | [native Swift migration milestone 1](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-001) |
+| 2026-10-07 | 002 | [ordered parity and professional workflow gates](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-002) |
+| 2026-10-07 | 003 | [Photoshop 2026 workspace replication](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-003) |
+| 2026-10-07 | 004 | [Private Cloud Compute re-enabled](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-004) |
+| 2026-10-07 | 005 | [native geometry module](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-005) |
+| 2026-10-07 | 006 | [coverage selections and direct mask editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-006) |
+| 2026-10-07 | 007 | [independent layer masks and PSD interoperability](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-007) |
+| 2026-10-07 | 008 | [open-source fork and optional support](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-008) |
+| 2026-10-07 | 009 | [compressed and high-depth PSD interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-009) |
+| 2026-10-07 | 010 | [native layer groups and clipping masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-010) |
+| 2026-10-07 | 011 | [native paths and vector masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-011) |
+| 2026-10-07 | 012 | [editable PSD solid fills and exactness measurements](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-012) |
+| 2026-10-07 | 013 | [native App Store tips](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-013) |
+| 2026-10-07 | 014 | [Photato branding](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-014) |
+| 2026-10-07 | 015 | [feathered pixel masks at canvas boundaries](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-015) |
+| 2026-10-07 | 016 | [native mask commands and isolated vector-alpha diagnostics](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-016) |
+| 2026-10-07 | 017 | [native image and layer clipboard](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-017) |
+| 2026-10-07 | 018 | [compact raster archives and faster pixel packing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-018) |
+| 2026-10-07 | 019 | [manual RGB Levels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-019) |
+| 2026-10-07 | 020 | [Levels histograms, presets and automatic correction](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-020) |
+| 2026-10-07 | 021 | [RGB Curves editing and interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-021) |
+| 2026-10-07 | 022 | [Hue/Saturation, color ranges and Desaturate](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-022) |
+| 2026-10-07 | 023 | [Color Balance workflow and PSD storage](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-023) |
+| 2026-10-07 | 024 | [real Hue/Saturation PSD references and Colorize correction](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-024) |
+| 2026-10-08 | 025 | [Hue/Saturation range transfer correction](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-025) |
+| 2026-10-08 | 026 | [Threshold and Posterize](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-026) |
+| 2026-10-08 | 027 | [native Clone Stamp workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-027) |
+| 2026-10-08 | 028 | [regional composition and immutable preview cache](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-028) |
+| 2026-10-08 | 029 | [expandable Clone Stamp targets and mask sources](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-029) |
+| 2026-10-08 | 030 | [sampled Healing Brush in native Swift](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-030) |
+| 2026-10-08 | 031 | [automatic Spot Healing and native patch completion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-031) |
+| 2026-10-08 | 032 | [Dodge, Burn and Sponge](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-032) |
+| 2026-10-08 | 033 | [Blur, Sharpen and Smudge](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-033) |
+| 2026-10-08 | 034 | [Magic Wand and foreground Paint Bucket](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-034) |
+| 2026-10-08 | 035 | [native patterns and PAT interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-035) |
+| 2026-10-08 | 036 | [editable Pattern Fill layers and embedded PSD patterns](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-036) |
+| 2026-10-08 | 037 | [exact CPU rendering and Pattern Fill picking optimizations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-037) |
+| 2026-10-08 | 038 | [Gradient engine and preset foundation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-038) |
+| 2026-10-08 | 039 | [Editable Gradient Fill and PSD merged transparency](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-039) |
+| 2026-10-08 | 040 | [native live and Classic Gradient tools](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-040) |
+| 2026-10-08 | 041 | [persistent native gradient preset library](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-041) |
+| 2026-10-08 | 042 | [native Gradient Map and Photoshop 2026 reference acquisition](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-042) |
+| 2026-10-08 | 043 | [Stripes gradients and Photoshop depth/import compatibility](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-043) |
+| 2026-10-08 | 044 | [development record audit and documentation discipline](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-044) |
+| 2026-10-08 | 045 | [RGB16 merged transparency correction](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-045) |
+| 2026-10-08 | 046 | [Smooth gradient reference acquisition and analysis](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-046) |
+| 2026-10-08 | 047 | [Smooth neighboring-stop investigation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-047) |
+| 2026-10-08 | 048 | [Gradient Map stop preservation and Smooth color probes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-048) |
+| 2026-10-08 | 049 | [Bounded Smooth color-conversion references](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-049) |
+| 2026-10-08 | 050 | [Native RGB16 Gradient Map tone coordinates](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-050) |
+| 2026-10-08 | 051 | [Classic gradient lookup investigation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-051) |
+| 2026-10-08 | 052 | [Classic native arithmetic candidate](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-052) |
+| 2026-10-08 | 053 | [Layer alignment and distribution reference qualification](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-053) |
+| 2026-10-08 | 054 | [Native layer layout commands and controls](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-054) |
+| 2026-10-08 | 055 | [Photoshop 2026 menu structure alignment](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-055) |
+| 2026-10-08 | 056 | [Photoshop factory menu and shortcut defaults](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-056) |
+| 2026-10-08 | 057 | [Layer via Copy and Cut](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-057) |
+| 2026-10-08 | 058 | [Layer merging and flattening](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-058) |
+| 2026-10-08 | 059 | [Minor version 0.2.0 and requested pause](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-059) |
+| 2026-10-08 | 060 | [Workspace visibility and resumed UI priority](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-060) |
+| 2026-10-08 | 061 | [Native document windows and Window menu](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-061) |
+| 2026-10-08 | 062 | [Native tab drag and drop](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-062) |
+| 2026-10-08 | 063 | [Shared application frame and floating canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-063) |
+| 2026-10-08 | 064 | [Native viewport zoom and percentage entry](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-064) |
+| 2026-10-08 | 065 | [Compact workspace layout](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-065) |
+| 2026-10-08 | 066 | [Shared saved workspaces](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-066) |
+| 2026-10-08 | 067 | [Editable panel dock groups](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-067) |
+| 2026-10-09 | 068 | [Native floating panel hosts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-068) |
+| 2026-10-09 | 069 | [Native panel tear-off](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-069) |
+| 2026-10-09 | 070 | [Native floating panel stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-070) |
+| 2026-10-09 | 071 | [Native dock columns](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-071) |
+| 2026-10-09 | 072 | [Retained History and Clone Source panels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-072) |
+| 2026-10-09 | 073 | [Native New Layer dialog](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-073) |
+| 2026-10-09 | 074 | [Native New Group workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-074) |
+| 2026-10-09 | 075 | [Native Duplicate Layer and Group workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-075) |
+| 2026-10-09 | 076 | [Layers panel commands and inline renaming](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-076) |
+| 2026-10-09 | 077 | [Layer text editing and delete confirmation UX](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-077) |
+| 2026-10-09 | 078 | [Layer color labels and visibility workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-078) |
+| 2026-10-09 | 079 | [Native Layers eye-column dragging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-079) |
+| 2026-10-09 | 080 | [Group disclosure and collapse-all view state](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-080) |
+| 2026-10-09 | 081 | [Active-layer reveal and minimal scrolling](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-081) |
+| 2026-10-09 | 082 | [Native Layers Panel Options and thumbnails](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-082) |
+| 2026-10-09 | 083 | [Thumbnail coverage and mask preview geometry](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-083) |
+| 2026-10-09 | 084 | [Mask-thumbnail gestures and mask canvas views](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-084) |
+| 2026-10-09 | 085 | [Workspace layout lifecycle investigation and reveal repair](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-085) |
+| 2026-10-09 | 086 | [Compact field layout and absolute position editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-086) |
+| 2026-10-09 | 087 | [Native numeric editing lifecycle](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-087) |
+| 2026-10-09 | 088 | [Native Xcode application project](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-088) |
+| 2026-10-09 | 089 | [Channels panel and component previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-089) |
+| 2026-10-09 | 090 | [User-requested pause, comprehensive parity inventory and estimates](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-090) |
+| 2026-10-09 | 091 | [Optional native automation API and browser client](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-091) |
+| 2026-10-09 | 092 | [Sheet lifecycle and panel organization validation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-092) |
+| 2026-10-09 | 093 | [User-requested pause after verified current increment](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-093) |
+| 2026-10-09 | 094 | [Require API coverage with every new capability](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-094) |
+| 2026-10-09 | 095 | [Published Adobe Photoshop API v2 compatibility requirement](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-095) |
+| 2026-10-09 | 096 | [Maintain Photato and Adobe-compatible APIs together](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-096) |
+| 2026-10-09 | 097 | [Photato product webpage and public provenance](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-097) |
+| 2026-10-13 | 098 | [Resumed native panel menu accessibility](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-098) |
+| 2026-10-13 | 099 | [Floating panel input qualification](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-099) |
+| 2026-10-13 | 100 | [Channel interaction reference qualification](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-100) |
+| 2026-10-13 | 101 | [RGB channel visibility and API](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-101) |
+| 2026-10-13 | 102 | [Component editing reference and transaction design](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-102) |
+| 2026-10-13 | 103 | [Recorded Photoshop actions and component integration](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-103) |
+| 2026-10-13 | 104 | [Verified pause after latest debugging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-104) |
+| 2026-10-19 | 105 | [Component integration investigation and verified pause](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-105) |
+| 2026-10-19 | 106 | [Native component editing and public API integration](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-106) |
+| 2026-10-19 | 107 | [Verified pause after component and API debugging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-107) |
+| 2026-10-19 | 108 | [Major-function-first completion order](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-108) |
+| 2026-10-19 | 109 | [Major-function backlog and native document workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-109) |
+| 2026-10-19 | 110 | [Document persistence workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-110) |
+| 2026-10-19 | 111 | [Native .photato file extension](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-111) |
+| 2026-10-19 | 112 | [Source-format preservation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-112) |
+| 2026-10-19 | 113 | [Source-format Save workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-113) |
+| 2026-10-19 | 114 | [Exact RGB32 sample preservation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-114) |
+| 2026-10-19 | 115 | [Direct linear HDR editing and composite qualification](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-115) |
+| 2026-10-19 | 116 | [Retained working colour profiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-116) |
+| 2026-10-19 | 117 | [RGB32 Normal rendering and PSD merged output](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-117) |
+| 2026-10-19 | 118 | [RGB32 grouped and clipped document qualification](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-118) |
+| 2026-10-19 | 119 | [PSB document-format integration](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-119) |
+| 2026-10-19 | 120 | [bounded PSD/PSB row decoding](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-120) |
+| 2026-10-19 | 121 | [bounded PSD/PSB file input](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-121) |
+| 2026-10-19 | 122 | [streamed PSD/PSB output and safe saving](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-122) |
+| 2026-10-19 | 123 | [scratch-backed undo history](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-123) |
+| 2026-10-19 | 124 | [native archive streaming](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-124) |
+| 2026-10-19 | 125 | [shared tile storage during history restoration](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-125) |
+| 2026-10-19 | 126 | [cancellable asynchronous history navigation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-126) |
+| 2026-10-19 | 127 | [crash recovery lifecycle](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-127) |
+| 2026-10-19 | 128 | [background recovery writing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-128) |
+| 2026-10-19 | 129 | [recovery preferences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-129) |
+| 2026-10-19 | 130 | [atomic persistence and interruption handling](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-130) |
+| 2026-10-19 | 131 | [recovery source identity](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-131) |
+| 2026-10-20 | 132 | [independent recovery discovery](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-132) |
+| 2026-10-20 | 133 | [coordinated document closing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-133) |
+| 2026-10-20 | 134 | [format-aware background document opening](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-134) |
+| 2026-10-20 | 135 | [persistent recent files and queued document opens](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-135) |
+| 2026-10-20 | 136 | [recovery backup review and maintenance](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-136) |
+| 2026-10-20 | 137 | [explicit recovery salvage and index reset](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-137) |
+| 2026-10-20 | 138 | [background startup recovery](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-138) |
+| 2026-10-20 | 139 | [recovery memory admission](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-139) |
+| 2026-10-20 | 140 | [shared format-specific save and export options](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-140) |
+| 2026-10-20 | 141 | [PSD and PSB compression](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-141) |
+| 2026-10-20 | 142 | [Photoshop file compression preferences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-142) |
+| 2026-10-20 | 143 | [TIFF floating-point preservation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-143) |
+| 2026-10-20 | 144 | [TIFF storage options](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-144) |
+| 2026-10-20 | 145 | [Layered TIFF interoperability](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-145) |
+| 2026-10-20 | 146 | [Editable layered TIFF output](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-146) |
+| 2026-10-20 | 147 | [TIFF rich records and global mask metadata](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-147) |
+| 2026-10-20 | 148 | [JPEG native and API save controls](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-148) |
+| 2026-10-20 | 149 | [Original PhotoCraft container foundation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-149) |
+| 2026-10-20 | 150 | [Original PhotoCraft project graph and payload reader](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-150) |
+| 2026-10-20 | 151 | [Layer protection references and model](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-151) |
+| 2026-10-20 | 152 | [Layer protection runtime integration](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-152) |
+| 2026-10-20 | 153 | [Editable original PhotoCraft project adapter](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-153) |
+| 2026-10-20 | 154 | [Source comparison and off-canvas mask correction](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-154) |
+| 2026-10-26 | 155 | [File visibility repair and feather reference measurements](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-155) |
+| 2026-10-26 | 156 | [Feather research deferred for major functions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-156) |
+| 2026-10-26 | 157 | [Native raster-filter workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-157) |
+| 2026-10-26 | 158 | [Editable layer styles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-158) |
+| 2026-10-26 | 159 | [Automatic subject selection and background removal](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-159) |
+| 2026-10-26 | 160 | [Embedded Smart Object workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-160) |
+| 2026-10-26 | 161 | [Editable Smart Filter stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-161) |
+| 2026-10-26 | 162 | [Native text editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-162) |
+| 2026-10-26 | 163 | [Classic adjustment workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-163) |
+| 2026-10-26 | 164 | [Color Lookup workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-164) |
+| 2026-10-26 | 165 | [Native Liquify workspace](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-165) |
+| 2026-10-26 | 166 | [Native Select and Mask workspace](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-166) |
+| 2026-10-26 | 167 | [Alpha channels and Quick Mask](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-167) |
+| 2026-10-26 | 168 | [Content-Aware Fill workspace](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-168) |
+| 2026-10-26 | 169 | [Content-Aware Scale](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-169) |
+| 2026-10-26 | 170 | [Crop and content-aware edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-170) |
+| 2026-10-26 | 171 | [Native retouching tools](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-171) |
+| 2026-10-26 | 172 | [Camera Raw Filter](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-172) |
+| 2026-10-26 | 173 | [Sensor RAW development](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-173) |
+| 2026-10-26 | 174 | [Photo blending and focus stacking](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-174) |
+| 2026-10-26 | 175 | [Native Auto-Align Layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-175) |
+| 2026-10-26 | 176 | [Native Photomerge workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-176) |
+| 2026-10-26 | 177 | [Native HDR merge workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-177) |
+| 2026-10-26 | 178 | [Native editable Smart Object image stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-178) |
+| 2026-10-26 | 179 | [Native Warp workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-179) |
+| 2026-10-27 | 180 | [Native Puppet Warp workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-180) |
+| 2026-10-27 | 181 | [Native Perspective Warp workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-181) |
+| 2026-10-27 | 182 | [Native Actions and Batch workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-182) |
+| 2026-10-27 | 183 | [Native Artboards workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-183) |
+| 2026-10-27 | 184 | [Native Frames workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-184) |
+| 2026-10-27 | 185 | [Native Blur Gallery](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-185) |
+| 2026-10-27 | 186 | [Native Lens Correction](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-186) |
+| 2026-10-27 | 187 | [Native Adaptive Wide Angle](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-187) |
+| 2026-10-27 | 188 | [Native Vanishing Point](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-188) |
+| 2026-10-27 | 189 | [Native Brush Settings and presets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-189) |
+| 2026-10-27 | 190 | [Native painting and eraser tools](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-190) |
+| 2026-10-27 | 191 | [Native Adjustment Brush](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-191) |
+| 2026-10-27 | 192 | [Native selection tools](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-192) |
+| 2026-10-27 | 193 | [Native Sky Selection and Sky Replacement](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-193) |
+| 2026-10-27 | 194 | [Native Focus Area](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-194) |
+| 2026-10-27 | 195 | [Native Mask All Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-195) |
+| 2026-10-27 | 196 | [Native Object Finder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-196) |
+| 2026-10-27 | 197 | [Native Select People](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-197) |
+| 2026-10-27 | 198 | [People feature segmentation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-198) |
+| 2026-10-27 | 199 | [Native live shapes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-199) |
+| 2026-10-27 | 200 | [Native Pen and Paths](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-200) |
+| 2026-10-27 | 201 | [Native advanced typography](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-201) |
+| 2026-10-27 | 202 | [Editable shaped text](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-202) |
+| 2026-10-27 | 203 | [Native Filter Gallery](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-203) |
+| 2026-10-27 | 204 | [Pause and current progress dashboard](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-204) |
+| 2026-10-27 | 205 | [Photo detail investigation and requested pause](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-205) |
+| 2026-10-27 | 206 | [Native photo detail workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-206) |
+| 2026-10-27 | 207 | [Native Lens Blur](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-207) |
+| 2026-10-27 | 208 | [Document title and canvas containment](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-208) |
+| 2026-10-27 | 209 | [Photato identity cleanup](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-209) |
+| 2026-10-27 | 210 | [Website developer diary and source link](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-210) |
+| 2026-10-27 | 211 | [Private GitHub development build](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-211) |
+| 2026-10-27 | 212 | [Native distortion workflows and window-build handoff](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-212) |
+| 2026-10-27 | 213 | [Native Pixelate workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-213) |
+| 2026-10-27 | 214 | [Native Stylize workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-214) |
+| 2026-10-27 | 215 | [Native procedural Render filters](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-215) |
+| 2026-10-27 | 216 | [Native Flame, Tree and Picture Frame](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-216) |
+| 2026-10-27 | 217 | [Native Other and Video filter workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-217) |
+| 2026-10-27 | 218 | [Native Blur, Noise and Sharpen workflows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-218) |
+| 2026-10-27 | 219 | [Classic tone and color adjustments](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-219) |
+| 2026-10-27 | 220 | [Document color modes — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-220) |
+| 2026-10-28 | 221 | [Native Indexed Color and Bitmap — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-221) |
+| 2026-10-28 | 222 | [Duotone and Multichannel — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-222) |
+| 2026-10-28 | 223 | [Native proofing and print workflows — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-223) |
+| 2026-10-28 | 224 | [Native printing and hard proofs — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-224) |
+| 2026-10-28 | 225 | [Native color profile workflows — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-225) |
+| 2026-10-28 | 226 | [Persistent working color settings — in progress](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-226) |
+| 2026-10-28 | 227 | [Opening and paste color policies, working proof](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-227) |
+| 2026-10-28 | 228 | [A portable, single-file developer diary](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-228) |
+| 2026-10-28 | 229 | [Editable frame animation and Timeline](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-229) |
+| 2026-10-28 | 230 | [Native animated GIF interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-230) |
+| 2026-10-28 | 231 | [Native video layers and PNG sequences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-231) |
+| 2026-10-28 | 232 | [Native image-sequence export](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-232) |
+| 2026-10-28 | 233 | [Native movie import and video-layer placement](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-233) |
+| 2026-10-28 | 234 | [Editable video Timeline keyframes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-234) |
+| 2026-10-28 | 235 | [Video editing investigation — implementation pending](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-235) |
+| 2026-10-28 | 236 | [A master homepage for Forensic Intelligence](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-236) |
+| 2026-10-28 | 237 | [A pure FOSS release, without purchases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-237) |
+| 2026-10-28 | 238 | [Video arrangement and precise splitting](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-238) |
+| 2026-10-28 | 239 | [Graphical Timeline and editable transitions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-239) |
+| 2026-10-28 | 240 | [Native Timeline audio](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-240) |
+| 2026-10-28 | 241 | [Native Render Video](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-241) |
+| 2026-10-28 | 242 | [Timeline work areas and onion-skin previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-242) |
+| 2026-10-28 | 243 | [Universal Timeline preview qualification](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-243) |
+| 2026-10-29 | 244 | [Timeline work-area trimming](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-244) |
+| 2026-10-29 | 245 | [Frame-to-video Timeline conversion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-245) |
+| 2026-10-29 | 246 | [Video-to-frame conversion and original recovery](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-246) |
+| 2026-10-29 | 247 | [Variables and data-driven graphics](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-247) |
+| 2026-10-29 | 248 | [Contact Sheet II](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-248) |
+| 2026-10-29 | 249 | [Crop and Straighten Photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-249) |
+| 2026-10-29 | 250 | [Image Processor](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-250) |
+| 2026-10-29 | 251 | [Video Frames to Layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-251) |
+| 2026-10-29 | 252 | [Native PDF page import](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-252) |
+| 2026-10-29 | 253 | [Embedded PDF images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-253) |
+| 2026-10-29 | 254 | [Stable source publication](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-254) |
+| 2026-10-29 | 255 | [Native PDF Smart Object placement](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-255) |
+| 2026-10-29 | 256 | [Publish qualified PDF Smart Object source](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-256) |
+| 2026-10-29 | 257 | [General embedded placement workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-257) |
+| 2026-10-29 | 258 | [Publish qualified embedded placement source](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-258) |
+| 2026-10-29 | 259 | [PDF source editing and completion dashboard repair](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-259) |
+| 2026-10-29 | 260 | [Retained PDF page PSD/PSB interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-260) |
+| 2026-10-29 | 261 | [Linked-source work, preserved and parked](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-261) |
+| 2026-10-29 | 262 | [Interactive painting responsiveness](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-262) |
+| 2026-10-29 | 263 | [Interactive retouching responsiveness](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-263) |
+| 2026-10-29 | 264 | [Large-image toning responsiveness](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-264) |
+| 2026-10-29 | 265 | [Retained Focus-tool feedback](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-265) |
+| 2026-10-29 | 266 | [Faster stroke startup](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-266) |
+| 2026-10-29 | 267 | [Prepare the canvas at the right zoom](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-267) |
+| 2026-10-29 | 268 | [Redraw only changing feedback](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-268) |
+| 2026-10-29 | 269 | [Measure native editing feedback](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-269) |
+| 2026-10-30 | 270 | [Present accepted editing previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-270) |
+| 2026-10-30 | 271 | [Use the current preview and restore tool focus](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-271) |
+| 2026-10-30 | 272 | [Layer opacity slider](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-272) |
+| 2026-10-30 | 273 | [Held-pointer brush smoothing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-273) |
+| 2026-10-30 | 274 | [Brush release responsiveness](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-274) |
+| 2026-10-30 | 275 | [Retouch release responsiveness](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-275) |
+| 2026-10-30 | 276 | [Stable preview pause and retouch automation handoff](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-276) |
+| 2026-10-30 | 277 | [Semantic retouch Actions and API](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-277) |
+| 2026-10-30 | 278 | [Large-document architecture](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-278) |
+| 2026-10-30 | 279 | [Disk-backed dense raster input](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-279) |
+| 2026-10-30 | 280 | [Paged native persistence and large file IO](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-280) |
+| 2026-10-30 | 281 | [Publish qualified native source280](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-281) |
+| 2026-10-30 | 282 | [Indexed native archives](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-282) |
+| 2026-10-30 | 283 | [Modifier-aware tool cursors](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-283) |
+| 2026-10-30 | 284 | [Paged runtime tile index (under test)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-284) |
+| 2026-10-30 | 285 | [Persistent native tile ordinal reuse (software qualified; UI pending)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-285) |
+| 2026-10-30 | 286 | [Large PSD/PSB file workflows (software qualified; UI pending)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-286) |
+| 2026-10-30 | 287 | [Paged document geometry (software qualified; native acceptance pending)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-287) |
+| 2026-10-31 | 288 | [Paged selections and bounded channel views (software qualified)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-288) |
+| 2026-10-31 | 289 | [Publish qualified source288](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-289) |
+| 2026-10-31 | 290 | [Paged layer-stack composition (software qualified)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-290) |
+| 2026-10-31 | 291 | [Paged vector-mask preparation (software qualified)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-291) |
+| 2026-10-31 | 292 | [Paged basic raster filters (software qualified)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-292) |
+| 2026-10-31 | 293 | [Paged Smart Filter workflows (software qualified)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-293) |
+| 2026-10-31 | 294 | [Private qualified-source backup](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-294) |
+| 2026-10-31 | 295 | [Streamed Smart Filter cache interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-295) |
+| 2026-10-31 | 296 | [Large isolated resource jobs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-296) |
+| 2026-10-31 | 297 | [Modern adjustment layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-297) |
+| 2026-10-31 | 298 | [Apply Image and Calculations (software qualified)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-298) |
+| 2026-10-31 | 299 | [Linked Smart Objects (in progress)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-299) |
+| 2026-10-31 | 300 | [Rich PhotoCraft migration (in progress)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-300) |
+| 2026-10-31 | 301 | [Diary refreshed against current evidence](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-301) |
+| 2026-10-31 | 302 | [Exposure workflow prerequisite (in progress)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-302) |
+| 2026-10-31 | 303 | [Editable source vector shapes (unbuilt, in progress)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-303) |
+| 2026-10-31 | 304 | [Diary synchronized with actual source and test evidence](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-304) |
+| 2026-10-31 | 305 | [Editable source shapes: native/API workflows tested, strict gates open](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-305) |
+| 2026-10-31 | 306 | [Rich source text migration (unbuilt, in progress)](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-306) |
+| 2026-10-31 | 307 | [Diary synchronized with current work and verified evidence](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-307) |
+| 2026-10-31 | 308 | [Rich source text native/API workflows tested; exact gates open](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-308) |
+| 2026-10-31 | 309 | [Source Smart Object prerequisites; workflow crash remains open](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-309) |
+| 2026-10-31 | 310 | [Diary synchronized with current work, tests and failures](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-310) |
+| 2026-10-31 | 311 | [Command-worker crash repaired; full inventory and strict gates recorded](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-311) |
+| 2026-10-31 | 312 | [Editable source Smart import: cached workflows tested; nesting failure open](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-312) |
+| 2026-10-31 | 313 | [Diary synchronized with current import and retained failures](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-313) |
+| 2026-10-31 | 314 | [Nested source worker repaired; native/API workflows pass, strict gates open](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-314) |
+| 2026-11-01 | 315 | [Editable source filter mappings expand to107; functional tests pass, strict gates open](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-315) |
+| 2026-11-01 | 316 | [Native Relight engine and integration draft; testing pending](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-316) |
+| 2026-11-01 | 317 | [Diary synchronized with working316 and tested315](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-317) |
+| 2026-11-01 | 318 | [Native Relight workflows and exact original-engine reference subset qualified](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-318) |
+| 2026-11-01 | 319 | [Multi-light Lighting Effects; partial tests and failed repair](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-319) |
+| 2026-11-01 | 320 | [Diary synchronized with current319 evidence](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-320) |
+| 2026-11-01 | 321 | [Lighting Effects functional qualification and complete test inventory](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-321) |
+| 2026-11-01 | 322 | [Source Displace functional qualification and diary synchronization](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-322) |
+| 2026-11-01 | 323 | [Original adjustment-layer functional breadth and source composition](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-323) |
+| 2026-11-01 | 324 | [Original layer effects: staged native controls and rendering helpers, unfinished](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-324) |
+| 2026-11-01 | 325 | [Diary synchronized with tested323 and unfinished324](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-325) |
+| 2026-11-01 | 326 | [Original layer-effects functional qualification and shared Global Light menu](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-326) |
+| 2026-11-01 | 327 | [Diary reconciled with tested source, installed preview and remaining major work](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-327) |
+| 2026-11-01 | 328 | [Original channels and auxiliary spot workflows functionally qualified](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-328) |
+| 2026-11-01 | 329 | [PSD/PSB auxiliary channel interchange functionally qualified](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-329) |
+| 2026-11-01 | 330 | [Document guides and source layout import](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-330) |
+| 2026-11-01 | 331 | [Xcode archive and alpha store preparation; validation and media pending](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-331) |
+| 2026-11-01 | 332 | [Window lifecycle, recovery and updated Xcode archive](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-332) |
+| 2026-11-01 | 333 | [App Store validation after Xcode sign-in](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-333) |
+| 2026-11-01 | 334 | [Native File Info and source document metadata](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-334) |
+| 2026-11-01 | 335 | [Photoshop 2026 as the reference](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-335) |
+| 2026-11-01 | 336 | [Layer Comps and production export](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-336) |
+| 2026-11-01 | 337 | [Smart Object comp selection](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-337) |
+| 2026-11-01 | 338 | [Parent Layer Comp Smart Object choices](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-338) |
+| 2026-11-01 | 339 | [Editable PSD/PSB Layer Comps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-339) |
+| 2026-11-02 | 340 | [Editable PSD/PSB Global Light](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-340) |
+| 2026-11-02 | 341 | [Production Export As workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-341) |
+| 2026-11-02 | 342 | [Layers to Files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-342) |
+| 2026-11-02 | 343 | [Color Range selection](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-343) |
+| 2026-11-02 | 344 | [Magnetic Lasso tool](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-344) |
+| 2026-11-02 | 345 | [Selection Modify and Reselect](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-345) |
+| 2026-11-02 | 346 | [Transform Selection](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-346) |
+| 2026-11-02 | 347 | [Selected-pixel Free Transform](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-347) |
+| 2026-11-02 | 348 | [Background layer semantics](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-348) |
+| 2026-11-02 | 349 | [Background selected-pixel Free Transform](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-349) |
+| 2026-11-02 | 350 | [Move and copy selected pixels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-350) |
+| 2026-11-02 | 351 | [Pixel-mask Free Transform](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-351) |
+| 2026-11-02 | 352 | [Auxiliary-channel Free Transform](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-352) |
+| 2026-11-02 | 353 | [Multi-layer and group transforms](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-353) |
+| 2026-11-02 | 354 | [Projective layer transforms](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-354) |
+| 2026-11-02 | 355 | [Layer links and whole-layer Move](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-355) |
+| 2026-11-02 | 356 | [Color Fill and Stroke](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-356) |
+| 2026-11-02 | 357 | [Pattern Fill](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-357) |
+| 2026-11-02 | 358 | [Large-document Crop](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-358) |
+| 2026-11-02 | 359 | [Layer capacity](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-359) |
+| 2026-11-02 | 360 | [Flatten Image](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-360) |
+| 2026-11-02 | 361 | [Duplicate Image](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-361) |
+| 2026-11-02 | 362 | [Trim and Reveal All](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-362) |
+| 2026-11-02 | 363 | [Private full-source backup](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-363) |
+| 2026-11-02 | 364 | [Rich layer merging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-364) |
+| 2026-11-02 | 365 | [Linked preview sampling](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-365) |
+| 2026-11-02 | 366 | [Quick Mask and saved selections](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-366) |
+| 2026-11-02 | 367 | [Saved-selection documents; next major function selected](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-367) |
+| 2026-11-02 | 368 | [Quick Mask workflow checks; C01 next](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-368) |
+| 2026-11-03 | 369 | [Quick Mask visibility and hidden brush target](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-369) |
+| 2026-11-03 | 370 | [Private source backup and next major function](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-370) |
+| 2026-11-03 | 371 | [Hidden Quick Mask commands and pixel Invert](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-371) |
+| 2026-11-03 | 372 | [Quick Mask target transitions; C01 queued](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-372) |
+| 2026-11-03 | 373 | [Mask paint colors and S05 audit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-373) |
+| 2026-11-03 | 374 | [Large saved-selection files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-374) |
+| 2026-11-03 | 375 | [PSB file compatibility](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-375) |
+| 2026-11-03 | 376 | [Shared paint colours](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-376) |
+| 2026-11-03 | 377 | [App Store listing and media](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-377) |
+| 2026-11-04 | 378 | [App Store familiarity wording](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-378) |
+| 2026-11-04 | 379 | [Multichannel Quick Mask files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-379) |
+| 2026-11-04 | 380 | [Mask paint-colour contexts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-380) |
+| 2026-11-04 | 381 | [Mask target lifecycle](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-381) |
+| 2026-11-04 | 382 | [Current full test inventory](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-382) |
+| 2026-11-04 | 383 | [Document lifecycle regression repairs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-383) |
+| 2026-11-04 | 384 | [Animated layer-style transactions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-384) |
+| 2026-11-04 | 385 | [Fit Image and reusable batch constraints](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-385) |
+| 2026-11-04 | 386 | [Find and Replace Text](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-386) |
+| 2026-11-04 | 387 | [Numeric component-plane storage](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-387) |
+| 2026-11-04 | 388 | [Native component blocks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-388) |
+| 2026-11-04 | 389 | [Private source backup](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-389) |
+| 2026-11-04 | 390 | [Component archive streaming](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-390) |
+| 2026-11-04 | 391 | [Large native component documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-391) |
+| 2026-11-04 | 392 | [Large component geometry](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-392) |
+| 2026-11-04 | 393 | [Large component tools](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-393) |
+| 2026-11-04 | 394 | [RGB8 component routing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-394) |
+| 2026-11-04 | 395 | [Private source backup and listing wording](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-395) |
+| 2026-11-04 | 396 | [Large native channel arithmetic](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-396) |
+| 2026-11-04 | 397 | [Independent channel eyes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-397) |
+| 2026-11-04 | 398 | [Temporary mask channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-398) |
+| 2026-11-04 | 399 | [Consolidated S05 validation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-399) |
+| 2026-11-04 | 400 | [Quick Mask options and gestures](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-400) |
+| 2026-11-04 | 401 | [Quick Mask reference matrix; repair parked](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-401) |
+| 2026-11-04 | 402 | [Seven-pass work order](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-402) |
+| 2026-11-04 | 403 | [Delete All Empty Layers native baseline](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-403) |
+| 2026-11-04 | 404 | [Single-pixel marquee and quick-win audits](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-404) |
+| 2026-11-04 | 405 | [Color Lookup export and quick-win audits](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-405) |
+| 2026-11-04 | 406 | [RGB8 component selection](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-406) |
+| 2026-11-04 | 407 | [Duplicate saved actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-407) |
+| 2026-11-04 | 408 | [Shape stroke presets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-408) |
+| 2026-11-04 | 409 | [Quick-win source audit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-409) |
+| 2026-11-05 | 410 | [Gradient Fill API and Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-410) |
+| 2026-11-05 | 411 | [Last Filter and Pattern Fill audit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-411) |
+| 2026-11-05 | 412 | [Filter Gallery dragging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-412) |
+| 2026-11-05 | 413 | [Brush Settings sidebar controls](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-413) |
+| 2026-11-05 | 414 | [Smart Filter dragging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-414) |
+| 2026-11-05 | 415 | [Select Subject options](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-415) |
+| 2026-11-05 | 416 | [Selected-mask removal and API](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-416) |
+| 2026-11-05 | 417 | [Statistical image stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-417) |
+| 2026-11-05 | 418 | [Frame Timeline dragging](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-418) |
+| 2026-11-05 | 419 | [Rename sky presets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-419) |
+| 2026-11-05 | 420 | [Rasterization responsiveness](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-420) |
+| 2026-11-05 | 421 | [Channel thumbnail options and major quick-win sweep](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-421) |
+| 2026-11-05 | 422 | [Arrange selected layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-422) |
+| 2026-11-05 | 423 | [Layer filtering and isolation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-423) |
+| 2026-11-05 | 424 | [Asynchronous layer content filters](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-424) |
+| 2026-11-05 | 425 | [Layer selection and deselection](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-425) |
+| 2026-11-05 | 426 | [Customize Save Dialog File Formats](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-426) |
+| 2026-11-05 | 427 | [Adjacent artboard controls](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-427) |
+| 2026-11-05 | 428 | [Animated selection borders](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-428) |
+| 2026-11-05 | 429 | [Transform reference point](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-429) |
+| 2026-11-05 | 430 | [Large-document Equalize](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-430) |
+| 2026-11-05 | 431 | [Color Lookup output formats](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-431) |
+| 2026-11-05 | 432 | [Pattern Patch](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-432) |
+| 2026-11-05 | 433 | [Channels footer Save/Load](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-433) |
+| 2026-11-05 | 434 | [Batch file naming](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-434) |
+| 2026-11-05 | 435 | [Precise shape creation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-435) |
+| 2026-11-05 | 436 | [Extended Fill Path](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-436) |
+| 2026-11-06 | 437 | [Character and Paragraph panels — development](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-437) |
+| 2026-11-06 | 438 | [Point-text layout and native editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-438) |
+| 2026-11-06 | 439 | [Direct native path typing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-439) |
+| 2026-11-06 | 440 | [Paged Curves and Levels histograms](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-440) |
+| 2026-11-06 | 441 | [Light painting and retouch previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-441) |
+| 2026-11-06 | 442 | [Gradient creation and portable Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-442) |
+| 2026-11-06 | 443 | [Pattern groups and PAT hierarchy](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-443) |
+| 2026-11-06 | 444 | [Public repository and Shape Blur development](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-444) |
+| 2026-11-06 | 445 | [Public Git history credential audit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-445) |
+| 2026-11-06 | 446 | [Custom Shape Blur numerical investigation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-446) |
+| 2026-11-06 | 447 | [Custom Kernel ACF preset interchange](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-447) |
+| 2026-11-06 | 448 | [Blur Gallery mask output](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-448) |
+| 2026-11-06 | 449 | [Public source and unpublished build backup](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-449) |
+| 2026-11-06 | 450 | [Liquify last mesh reuse](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-450) |
+| 2026-11-06 | 451 | [Local build cleanup; lens-default audit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-451) |
+| 2026-11-06 | 452 | [Camera and lens defaults](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-452) |
+| 2026-11-06 | 453 | [Custom Filter Gallery textures](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-453) |
+| 2026-11-06 | 454 | [Brush pattern textures](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-454) |
+| 2026-11-06 | 455 | [Eraser mode reference](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-455) |
+| 2026-11-06 | 456 | [Eraser modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-456) |
+| 2026-11-06 | 457 | [Blur, Sharpen and Smudge blend modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-457) |
+| 2026-11-06 | 458 | [Content-Aware Fill without leaving the workspace](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-458) |
+| 2026-11-06 | 459 | [Eyedropper averaging and source controls](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-459) |
+| 2026-11-06 | 460 | [Mask and channel clipboard](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-460) |
+| 2026-11-06 | 461 | [Advanced blending channel controls](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-461) |
+| 2026-11-06 | 462 | [Saved layer style presets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-462) |
+| 2026-11-06 | 463 | [Smart Object Convert to Layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-463) |
+| 2026-11-06 | 464 | [Smart Filter stack and mask transfer](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-464) |
+| 2026-11-06 | 465 | [Magic Wand averaged sampling](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-465) |
+| 2026-11-07 | 466 | [Selection source policy and Magic Wand Subject](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-466) |
+| 2026-11-07 | 467 | [Select and Mask source workflow](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-467) |
+| 2026-11-07 | 468 | [Layer and Smart Filter mask filtering](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-468) |
+| 2026-11-07 | 469 | [Large auxiliary-channel filtering](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-469) |
+| 2026-11-07 | 470 | [Split Channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-470) |
+| 2026-11-07 | 471 | [Large-document soft proofing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-471) |
+| 2026-11-07 | 472 | [Large image stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-472) |
+| 2026-11-07 | 473 | [Embedded originals in source projects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-473) |
+| 2026-11-07 | 474 | [OpenEXR HDR files](part-01.md#dev-step-474) |
+| 2026-11-07 | 475 | [Generated image jobs and originals](part-01.md#dev-step-475) |
+| 2026-11-07 | 476 | [Blank video drawing layers](part-01.md#dev-step-476) |
+| 2026-11-07 | 477 | [Sky preset groups and batch import](part-01.md#dev-step-477) |
+| 2026-11-07 | 478 | [Local Color Lookup painting](part-01.md#dev-step-478) |
+| 2026-11-07 | 479 | [Color Lookup property responsiveness](part-01.md#dev-step-479) |
+| 2026-11-07 | 480 | [Independent Color Lookup references](part-01.md#dev-step-480) |
+| 2026-11-07 | 481 | [Repeatable archive validation](part-01.md#dev-step-481) |
+| 2026-11-07 | 482 | [Menu inventory reconciliation](part-01.md#dev-step-482) |
+| 2026-11-07 | 483 | [Script Events Manager](part-01.md#dev-step-483) |
+| 2026-11-07 | 484 | [Quick Mask selection semantics](part-01.md#dev-step-484) |
+| 2026-11-07 | 485 | [Sampled Hue/Saturation ranges](part-01.md#dev-step-485) |
+| 2026-11-07 | 486 | [Classic RGB16 gradient boundaries](part-01.md#dev-step-486) |
+| 2026-11-08 | 487 | [Share the person-selection model](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-487) |
+| 2026-11-08 | 488 | [Image styles and canvas size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-488) |
+| 2026-11-08 | 489 | [Native Remove tool](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-489) |
+| 2026-11-08 | 490 | [Generated backgrounds](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-490) |
+| 2026-11-08 | 491 | [Reference images for generation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-491) |
+| 2026-11-08 | 492 | [Reviewed edit plans](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-492) |
+| 2026-11-08 | 493 | [Profile changes on large documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-493) |
+| 2026-11-08 | 494 | [Directory durability](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-494) |
+| 2026-11-08 | 495 | [Paged Warp](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-495) |
+| 2026-11-08 | 496 | [PSD vector path semantics](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-496) |
+| 2026-11-08 | 497 | [Untagged files and sandboxed copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-497) |
+| 2026-11-08 | 498 | [Large colour-mode files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-498) |
+| 2026-11-08 | 499 | [Paths to Illustrator](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-499) |
+| 2026-11-08 | 500 | [Repair native asset export](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-500) |
+| 2026-11-08 | 501 | [Select People on large documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-501) |
+| 2026-11-08 | 502 | [Report Apple text-service availability](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-502) |
+| 2026-11-08 | 503 | [Review people before removal](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-503) |
+| 2026-11-08 | 504 | [Background generation on large documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-504) |
+| 2026-11-08 | 505 | [Edit a reference image](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-505) |
+| 2026-11-08 | 506 | [Local learned upscaling](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-506) |
+| 2026-11-08 | 507 | [Reviewed adjustment values](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-507) |
+| 2026-11-08 | 508 | [AI, language and plugin acceptance](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-508) |
+| 2026-11-08 | 509 | [Plugin host requirements](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-509) |
+| 2026-11-08 | 510 | [Editable gradient profiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-510) |
+| 2026-11-08 | 511 | [Gray32 Photoshop file export](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-511) |
+| 2026-11-09 UTC | 512 | [Merge Channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-512) |
+| 2026-11-09 UTC | 513 | [Legacy Macintosh proof](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-513) |
+| 2026-11-09 UTC | 514 | [Editable photo blending](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-514) |
+| 2026-11-09 UTC | 515 | [Editable artboard project import](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-515) |
+| 2026-11-09 | 516 | [Editable PSD/PSB artboards](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-516) |
+| 2026-11-09 | 517 | [Saved generated-image variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-517) |
+| 2026-11-09 | 518 | [Editing video keyframes as a group](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-518) |
+| 2026-11-09 | 519 | [Large Sky documents and full-detail previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-519) |
+| 2026-11-09 | 520 | [Color and vibrance with Adjustment Brush](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-520) |
+| 2026-11-09 | 521 | [Sky preview containment and brush measurements](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-521) |
+| 2026-11-09 | 522 | [Masked adjustment preview performance](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-522) |
+| 2026-11-09 | 523 | [Retained layer-mask and Adjustment Brush previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-523) |
+| 2026-11-09 | 524 | [Selection borders and Canvas Size zoom](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-524) |
+| 2026-11-16 | 525 | [Selection-preview responsiveness; 22 Debug checks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-525) |
+| 2026-11-16 | 526 | [Marquee creation and polygon routing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-526) |
+| 2026-11-17 | 527 | [Save format checks on large documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-527) |
+| 2026-11-17 | 528 | [Open JPEG XL still images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-528) |
+| 2026-11-17 | 529 | [Share unchanged canvas preview pages](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-529) |
+| 2026-11-17 | 530 | [Send ready previews directly to the AppKit canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-530) |
+| 2026-11-17 | 531 | [Find changed tiles without sorting the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-531) |
+| 2026-11-17 | 532 | [Reuse recomposited tiles in the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-532) |
+| 2026-11-17 | 533 | [Start the first Brush frame sooner](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-533) |
+| 2026-11-17 | 534 | [Start the background worker with Brush input](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-534) |
+| 2026-11-17 | 535 | [Match the ordinary Brush smoothing default](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-535) |
+| 2026-11-17 | 536 | [Connect Brush and Pencil strokes with Shift-click](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-536) |
+| 2026-11-17 | 537 | [Record Pencil strokes in Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-537) |
+| 2026-11-17 | 538 | [Support 5,000 px primary brush diameters](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-538) |
+| 2026-11-17 | 539 | [Process Brush coverage and output by tile](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-539) |
+| 2026-11-17 | 540 | [Align linear Float32 brush output across architectures](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-540) |
+| 2026-11-17 | 541 | [Publish retained Brush and flat compositor output by tile](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-541) |
+| 2026-11-17 | 542 | [Round Linear and Perceptual gradient transfers consistently](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-542) |
+| 2026-11-17 | 543 | [Reuse exact gradient samples and publish tiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-543) |
+| 2026-11-17 | 544 | [Prepare wide brush dabs once and start the first preview sooner](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-544) |
+| 2026-11-17 | 545 | [Compose flat tone stacks in one tile pass](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-545) |
+| 2026-11-17 | 546 | [Write changed canvas bytes directly](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-546) |
+| 2026-11-18 | 547 | [Retain coverage for wide raster brushes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-547) |
+| 2026-11-18 | 548 | [Speed up Normal brush tile output](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-548) |
+| 2026-11-18 | 549 | [Sample wide brush coverage in parallel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-549) |
+| 2026-11-18 | 550 | [Parallelize large raster composition and display packing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-550) |
+| 2026-11-18 | 551 | [Parallelize brush tile output](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-551) |
+| 2026-11-18 | 552 | [Add brush opacity and flow number keys](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-552) |
+| 2026-11-18 | 553 | [Widen the zero-hardness Soft Round tip](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-553) |
+| 2026-11-18 | 554 | [Calibrate the round brush hardness range](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-554) |
+| 2026-11-18 | 555 | [Add brush hardness, rotation and smoothing keys](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-555) |
+| 2026-11-18 | 556 | [Add Behind and Clear painting modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-556) |
+| 2026-11-18 | 557 | [Add Brush and Pencil blend-mode shortcuts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-557) |
+| 2026-11-18 | 558 | [Page large Paint Bucket and Magic Wand regions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-558) |
+| 2026-11-18 | 559 | [Add Paint Bucket Clear and automation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-559) |
+| 2026-11-18 | 560 | [Add Clear to Edit Fill and Stroke](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-560) |
+| 2026-11-18 | 561 | [Record Paint Bucket Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-561) |
+| 2026-11-18 | 562 | [Record Brush Actions for masks and channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-562) |
+| 2026-11-18 | 563 | [Record and replay Quick Mask Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-563) |
+| 2026-11-18 | 564 | [Record Brush Actions for color channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-564) |
+| 2026-11-18 | 565 | [Add Allow Tool Recording to Actions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-565) |
+| 2026-11-18 | 566 | [Preserve opaque Gray32 merged samples in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-566) |
+| 2026-11-18 | 567 | [Use the source tone curves for 32-bit RGB and Gray](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-567) |
+| 2026-11-18 | 568 | [Match half-gamma promotion and Gray32 PSD layer stacks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-568) |
+| 2026-11-18 | 569 | [Match HDR grayscale conversion and ICC gamma boundaries](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-569) |
+| 2026-11-18 | 570 | [Preserve the working profile when merging before conversion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-570) |
+| 2026-11-18 | 571 | [Fix HDR PSD and PSB compression for Photoshop](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-571) |
+| 2026-11-18 | 572 | [Match Intel HDR Normal layer and group compositing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-572) |
+| 2026-11-18 | 573 | [Match HDR Normal rounding at the Float32 underflow boundary](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-573) |
+| 2026-11-18 | 574 | [Add Stamp Layers and Stamp Visible](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-574) |
+| 2026-11-18 | 575 | [Render sparse stamps at maximum canvas size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-575) |
+| 2026-11-18 | 576 | [Match stored RGB32 Normal merge and stamp samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-576) |
+| 2026-11-18 | 577 | [Preserve stored RGB32 pixel masks when merging and stamping](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-577) |
+| 2026-11-18 | 578 | [Add contextual Merge Clipping Mask](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-578) |
+| 2026-11-18 | 579 | [Add in-place Stamp Down and Stamp Group](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-579) |
+| 2026-11-18 | 580 | [Match Screen clipping and unchanged stamp history](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-580) |
+| 2026-11-18 | 581 | [Merge and stamp adjacent clipped layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-581) |
+| 2026-11-18 | 582 | [Preserve independent clipping in merges and stamps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-582) |
+| 2026-11-18 | 583 | [Add four clipped blend modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-583) |
+| 2026-11-19 | 584 | [Preserve pixel masks in clipping merges and stamps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-584) |
+| 2026-11-19 | 585 | [Add three arithmetic clipping blend modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-585) |
+| 2026-11-19 | 586 | [Bound pixel-mask Feather rendering](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-586) |
+| 2026-11-19 | 587 | [Match staged RGB32 pixel-mask Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-587) |
+| 2026-11-19 | 588 | [Support layer-mask Feather through 1,000 px](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-588) |
+| 2026-11-19 | 589 | [Apply Feather in raster clipping merges and stamps](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-589) |
+| 2026-11-19 | 590 | [Match integer raster-mask Feather stages](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-590) |
+| 2026-11-19 | 591 | [Match measured fractional RGB32 Feather schedules](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-591) |
+| 2026-11-19 | 592 | [Bound Smart Filter mask Feather on large documents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-592) |
+| 2026-11-19 | 593 | [Bound vector mask Feather on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-593) |
+| 2026-11-19 | 594 | [Match measured short vector-mask Feather responses](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-594) |
+| 2026-11-19 | 595 | [Prepare vector-mask Feather around the viewport](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-595) |
+| 2026-11-19 | 596 | [Reuse source bands during wide mask Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-596) |
+| 2026-11-19 | 597 | [Reuse window sums during wide mask Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-597) |
+| 2026-11-19 | 598 | [Render whole-canvas rectangular vector masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-598) |
+| 2026-11-19 | 599 | [Reuse wide vector-mask Feather windows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-599) |
+| 2026-11-19 | 600 | [Prove RGB32 raster-base opacity with rectangular Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-600) |
+| 2026-11-19 | 601 | [Render sparse curved Feather from stored coverage](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-601) |
+| 2026-11-19 | 602 | [Skip solid pieces of dense feathered vector masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-602) |
+| 2026-11-19 | 603 | [Reuse exact composited tiles under solid vector Feather](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-603) |
+| 2026-11-19 | 604 | [Reuse wide vector Feather profiles at canvas edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-604) |
+| 2026-11-19 | 605 | [Stream repeated rows in sparse PSB files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-605) |
+| 2026-11-19 | 606 | [Reopen sparse editable PSB raster layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-606) |
+| 2026-11-19 | 607 | [Choose sparse Photoshop layer samples across the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-607) |
+| 2026-11-19 | 608 | [Save full-width sparse raster edits to PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-608) |
+| 2026-11-19 | 609 | [Set PSD and PSB file compatibility](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-609) |
+| 2026-11-19 | 610 | [Read saved Photoshop channels without a merged preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-610) |
+| 2026-11-19 | 611 | [Import large PSD and PSB saved channels into sparse tiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-611) |
+| 2026-11-19 | 612 | [Save large PSD and PSB channels with repeated rows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-612) |
+| 2026-11-19 | 613 | [Import large flattened RGB PSD and PSB without staging all process planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-613) |
+| 2026-11-19 | 614 | [Read large ZIP-compressed Photoshop layers and masks as sparse rasters](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-614) |
+| 2026-11-19 | 615 | [Keep large Grayscale, CMYK and Lab Photoshop planes sparse](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-615) |
+| 2026-11-19 | 616 | [Write native Photoshop separations and Gray32 previews from stored blocks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-616) |
+| 2026-11-19 | 617 | [Add the optional Workflow Guide](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-617) |
+| 2026-11-19 | 618 | [Save deep RGB Photoshop files without a merged preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-618) |
+| 2026-11-19 | 619 | [Rank Workflow Guide suggestions and highlight each step](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-619) |
+| 2026-11-19 | 620 | [Keep maximum-size Multichannel printing plates editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-620) |
+| 2026-11-19 | 621 | [Follow native menus and dialogs in the Workflow Guide](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-621) |
+| 2026-11-19 | 622 | [Resize and crop editable Multichannel plates](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-622) |
+| 2026-11-19 | 623 | [Convert layerless ink documents back to editable image modes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-623) |
+| 2026-11-19 | 624 | [Duplicate channels into the current image or another document](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-624) |
+| 2026-11-19 | 625 | [Merge spot ink into the supported process channels](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-625) |
+| 2026-11-19 | 626 | [Delete process channels through the Channels panel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-626) |
+| 2026-11-19 | 627 | [Integrate Workflow Guide cues with the expanded Channels panel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-627) |
+| 2026-11-19 | 628 | [Drag channel rows and keep menu cues aligned](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-628) |
+| 2026-11-19 | 629 | [Keep saved masks and printing plates in one Multichannel order](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-629) |
+| 2026-11-19 | 630 | [Keep Workflow Guide highlights visible across controls and dialogs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-630) |
+| 2026-11-19 | 631 | [Preserve spot inks in Multichannel Photoshop files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-631) |
+| 2026-11-19 | 632 | [Keep native CMYK and Lab components when flattening to Multichannel](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-632) |
+| 2026-11-19 | 633 | [Return standard Multichannel plates to editable CMYK](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-633) |
+| 2026-11-19 | 634 | [Print native CMYK and saved spot separations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-634) |
+| 2026-11-19 | 635 | [Print a selection from a large document](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-635) |
+| 2026-11-19 | 636 | [Fit and clip large prints at their original sample resolution](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-636) |
+| 2026-11-19 | 637 | [Remember print defaults and restore supported Photoshop settings](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-637) |
+| 2026-11-19 | 638 | [Save document print settings with the artwork](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-638) |
+| 2026-11-19 | 639 | [Keep vector outlines when printing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-639) |
+| 2026-11-19 | 640 | [Keep Photoshop rectangles editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-640) |
+| 2026-11-19 | 641 | [Keep rounded rectangles and dashed ellipses editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-641) |
+| 2026-11-19 | 642 | [Read older solid shapes and their pixel masks](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-642) |
+| 2026-11-19 | 643 | [Open nested Photoshop Smart Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-643) |
+| 2026-11-19 | 644 | [Match linked raster previews to saved mask samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-644) |
+| 2026-11-19 | 645 | [Keep Gradient Overlay editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-645) |
+| 2026-11-19 | 646 | [Speed up large editable Smart Filter files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-646) |
+| 2026-11-19 | 647 | [Keep large generated Smart Object sources editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-647) |
+| 2026-11-19 | 648 | [Keep large embedded sources once](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-648) |
+| 2026-11-19 | 649 | [Place and reopen larger Photoshop originals](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-649) |
+| 2026-11-19 | 650 | [Retain large embedded originals on disk](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-650) |
+| 2026-11-19 | 651 | [Keep gigabyte-scale originals through Edit Contents](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-651) |
+| 2026-11-19 | 652 | [Keep gigabyte-scale originals in Undo and Redo](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-652) |
+| 2026-11-20 | 653 | [Preserve Smart Object placement identifiers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-653) |
+| 2026-11-20 | 654 | [Place and update gigabyte-scale linked Smart Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-654) |
+| 2026-11-20 | 655 | [Add General placement preferences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-655) |
+| 2026-11-20 | 656 | [Recover linked Smart Objects after moving a folder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-656) |
+| 2026-11-20 | 657 | [Place Smart Objects at their source print size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-657) |
+| 2026-11-20 | 658 | [Custom Smart Object geometry for template jobs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-658) |
+| 2026-11-20 | 659 | [Read the original transform of linked Smart Objects](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-659) |
+| 2026-11-20 | 660 | [Free Transform follows Smart Object artwork](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-660) |
+| 2026-11-20 | 661 | [Smart Object templates get editable masks and blending](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-661) |
+| 2026-11-20 | 662 | [Fit replacement artwork inside Smart Object frames](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-662) |
+| 2026-11-20 | 663 | [Inspect Photoshop templates through the Adobe-compatible manifest](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-663) |
+| 2026-11-20 | 664 | [Export thumbnail and Smart Object assets from Photoshop manifests](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-664) |
+| 2026-11-20 | 665 | [Reopen perspective Smart Objects and continue editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-665) |
+| 2026-11-20 | 666 | [Relink perspective artwork after reopening PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-666) |
+| 2026-11-20 | 667 | [Keep Smart Object Warp editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-667) |
+| 2026-11-20 | 668 | [Wrap editable Smart Objects around a cylinder](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) |
+| 2026-11-20 | 669 | [Keep PDF Smart Object Warp editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-669) |
+| 2026-11-20 | 670 | [Keep PDF Smart Object perspective editable](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-670) |
+| 2026-11-20 | 671 | [Keep vector masks editable in Perspective and Distort](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-671) |
+| 2026-11-20 | 672 | [Transform selected paths, contours and anchors](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-672) |
+| 2026-11-20 | 673 | [Select path anchors with a Direct Selection marquee](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-673) |
+| 2026-11-20 | 674 | [Transform editable paths across layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) |
+| 2026-11-20 | 675 | [Warp editable paths on the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-675) |
+| 2026-11-20 | 676 | [Switch between path Warp and Free Transform](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-676) |
+| 2026-11-20 | 677 | [Isolate a path’s layer while editing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-677) |
+| 2026-11-20 | 678 | [Align and distribute components on an editable path](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-678) |
+| 2026-11-20 | 679 | [Reorder, combine and merge path components](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-679) |
+| 2026-11-20 | 680 | [Subtract the first component of a shape layer](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-680) |
+| 2026-11-20 | 681 | [Keep the shape exterior attached to the canvas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-681) |
+| 2026-11-20 | 682 | [Render gradients and strokes on large editable cutouts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-682) |
+| 2026-11-20 | 683 | [Keep shape gradients editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-683) |
+| 2026-11-20 | 684 | [Keep patterns and straight lines editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-684) |
+| 2026-11-20 | 685 | [Improve RGB8 shape opacity and legacy pattern placement](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-685) |
+| 2026-11-20 | 686 | [Match sampled Photoshop legacy pattern scales](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-686) |
+| 2026-11-20 | 687 | [Keep Pattern Overlay editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-687) |
+| 2026-11-21 | 688 | [Render Pattern Overlay on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-688) |
+| 2026-11-21 | 689 | [Preview opaque Pattern Overlay on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-689) |
+| 2026-11-21 | 690 | [Bound rotated Pattern Overlay viewports](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-690) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

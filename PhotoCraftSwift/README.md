@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 690.** Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000. [Qualification](docs/SOURCE_PUBLICATION_690.md).
+
 **Source checkpoint 689.** The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000. [Qualification](docs/SOURCE_PUBLICATION_689.md).
 
 **Source checkpoint 688.** Basic RGB Pattern Overlay can be edited and previewed on sparse canvases up to 300,000 × 300,000. [Qualification](docs/SOURCE_PUBLICATION_688.md).
