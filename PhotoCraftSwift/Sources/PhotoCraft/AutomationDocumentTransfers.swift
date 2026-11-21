@@ -140,6 +140,7 @@ extension AutomationService {
           "patternPlacement": "Embedded patterns with uniform scale and rotation. Linked placement follows the shape. Unlinked placement stays in document coordinates.",
           "legacySolidFillRecords": "SoCo and vmsk with live origin metadata. Separate pixel masks remain editable.",
           "legacyPatternFillRecords": "PtFl and vmsk with a shape marker. Linked phase is relative to the embedded reference point. Unscaled pattern sampling rounds absolute phase to a pixel and retains the editable fractional descriptor.",
+          "legacyRGB8PatternGrid": "Pixel-aligned opaque legacy RGB8 shape patterns use rounded half-size tile stages and corner-grid interpolation at 1/256 texel steps where the embedded tile supports the reduction. Editable scale, phase and embedded samples are retained.",
           "normalRGB8Opacity": "Unmasked Normal RGB8 shapes on the pixel grid round effective source alpha and accumulated alpha at each layer. The shared compositor supplies preview and save output.",
           "retainsImportAppearance": true],
         "editableLayerEffects": ["gradientOverlay": "Editable standard Gradient Overlay color stops, transparency stops, blend mode and placement in PSD and PSB. Native and API file transfers use the same codec."],

@@ -99,13 +99,20 @@ final class PatternFillRenderTests: XCTestCase {
     XCTAssertEqual(
       renderedReferences[0], renderedReferences[1],
       "Both fixtures describe the same editable pattern content.")
+    let reportURL = ProcessInfo.processInfo.environment["PHOTATO_PATTERN_FILL_REFERENCE_OUTPUT"]
+      .map { URL(fileURLWithPath: $0) }
+      ?? Self.root.appendingPathComponent("artifacts/pattern-fill-reference.json")
     try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
-      .write(to: Self.root.appendingPathComponent("artifacts/pattern-fill-reference.json"))
+      .write(to: reportURL, options: .atomic)
     let unsupported = try XCTUnwrap(
       Bundle.module.url(
         forResource: "reference-patterns", withExtension: "psd", subdirectory: "Fixtures"))
     XCTAssertThrowsError(try PSDCodec.read(Data(contentsOf: unsupported))) { error in
-      XCTAssertTrue(error.localizedDescription.contains("vogk"), "\(error)")
+      // Live shape origination is admitted now. This file still contains a
+      // gradient descriptor with a patternFill setting the codec cannot edit.
+      XCTAssertEqual(
+        error as? CraftError,
+        .unsupported("Gradient descriptor contains unrepresented settings: patternFill."))
     }
   }
   func testMaskedPatternRegionalRenderAndRegistryChangeInvalidatesCache() throws {

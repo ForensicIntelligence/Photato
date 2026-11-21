@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 686.** Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases. [Qualification](docs/SOURCE_PUBLICATION_686.md).
+
 **Source checkpoint 685.** Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_685.md).
 
 **Source checkpoint 684.** Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight. [Qualification](docs/SOURCE_PUBLICATION_684.md).

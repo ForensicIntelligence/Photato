@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 686 — Match sampled Photoshop legacy pattern scales
+
+Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases.
+
+At 25%, 50%, 56%, and 200% the regenerated layer colors matched all 9,309 sampled opaque interior pixels per case. Four other pattern-placement cases matched the same number of pixels each. The edited and untouched exports were byte-identical across build configurations. The native saves and both Photoshop formats reopened with editable patterns.
+
+All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen. The comparisons cover the authored tiles and placements. Rotated and transparent tiles, odd-size reductions, other depths, and full shape-edge output still require comparison. Preparing a synthetic 4,000 × 4,000 sparse tile at 25% took 0.75 seconds on this test Mac. Live Photoshop 2026 reopen remains unverified.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-686) · [Details](../PhotoCraftSwift/docs/LEGACY_PATTERN_SCALING_686.md).
+
 ## 2026-11-20 — Step 685 — Improve RGB8 shape opacity and legacy pattern placement
 
 Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB.

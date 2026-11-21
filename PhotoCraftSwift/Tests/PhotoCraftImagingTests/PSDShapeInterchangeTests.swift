@@ -98,6 +98,71 @@ final class PSDShapeInterchangeTests: XCTestCase {
     }
   }
 
+  func testLegacyRGB8PatternScaleEditRendersRoundedTilesAcrossRepeatSeams() throws {
+    var tile = try Surface(width: 8, height: 8)
+    for y in 0..<tile.height {
+      for x in 0..<tile.width {
+        let r = (x * x * 13 + y * 39) % 256
+        let g = (x * 61 + y * y * 19) % 256
+        let b = (x * y * 47 + x * 3 + y * 5) % 256
+        tile.setPixel(x: x, y: y, .init(Float(r) / 255, Float(g) / 255, Float(b) / 255))
+      }
+    }
+    let resource = try RasterPattern(name: "Owned scaling tile", surface: tile, id: "legacy-scale-owned")
+    var document = try CraftDocument(width: 40, height: 40)
+    document.patterns = [resource]
+    document.layers[0].content = .raster(try Surface(width: 40, height: 40))
+    var placement = PatternPlacement()
+    placement.phaseX = 26
+    placement.phaseY = 27
+    let generator = try PSDPatternFill.write(.init(patternID: resource.id, placement: placement, linked: false),
+                                             pattern: resource)
+    let shapePath = try ShapeGeometry(width: 24, height: 24).path().transformed(.translation(7, 8))
+    let vector = try PSDPaths.writeMask(VectorMask(path: shapePath), width: 40, height: 40)
+    let tags = ["PtFl": generator, "vmsk": vector, "sn2P": Data([0, 0, 0, 1])]
+    let blank = try Surface(width: 26, height: 26)
+    let recovered = try PSDLiveShape.read(tags, x: 6, y: 7, cache: blank, document: document)
+    var layer = Layer(name: "Legacy scaling tile", content: .shape(recovered))
+    layer.x = 6
+    layer.y = 7
+    layer.sourceTags = tags
+    document.layers.append(layer)
+    document.activeLayerID = layer.id
+    let coordinates = [(10, 12), (11, 13), (12, 14), (22, 24), (24, 25), (25, 26), (26, 27), (27, 26)]
+    let samples: [(Float, [[UInt8]])] = [
+      (25, [[132, 130, 100], [148, 130, 124], [132, 130, 100], [132, 130, 100],
+            [104, 110, 70], [128, 118, 154], [104, 110, 70], [128, 118, 154]]),
+      (50, [[104, 154, 73], [132, 158, 175], [136, 186, 141], [104, 154, 73],
+            [122, 88, 156], [166, 52, 182], [26, 40, 16], [82, 64, 100]]),
+      (56, [[136, 138, 206], [163, 175, 129], [216, 123, 30], [91, 99, 18],
+            [67, 127, 48], [84, 129, 185], [119, 123, 34], [236, 184, 45]]),
+      (200, [[20, 10, 3], [46, 50, 30], [72, 109, 81], [210, 22, 220],
+             [142, 78, 55], [71, 103, 28], [0, 0, 0], [15, 112, 37]]),
+    ]
+    for (scale, expected) in samples {
+      var definition = recovered.editableDefinition
+      definition.fill.pattern?.placement.scale = scale
+      if scale == 56 {
+        definition.fill.pattern?.placement.phaseX += 0.5
+        definition.fill.pattern?.placement.phaseY += 0.25
+      }
+      try Command.shape(.configure(layer.id, definition)).apply(to: &document)
+      let composite = try Renderer.composite(document)
+      let actual = coordinates.map { x, y in
+        let pixel = composite.pixel(x: x, y: y)
+        XCTAssertEqual(pixel.a, 1)
+        return [pixel.r, pixel.g, pixel.b].map { UInt8(($0 * 255).rounded()) }
+      }
+      XCTAssertEqual(actual, expected, "Scale \(scale)")
+      for format in [PSDFileFormat.psd, .psb] {
+        let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(document, format: format))
+        let editable = try XCTUnwrap(reopened.layers.first { $0.name == layer.name }?.shape)
+        XCTAssertEqual(editable.editableDefinition.fill.pattern?.placement.scale, scale)
+        XCTAssertEqual(try Renderer.composite(reopened), composite)
+      }
+    }
+  }
+
   func testPatternedShapePhaseAndCacheFollowTheirLinkSetting() throws {
     var tile = try Surface(width: 5, height: 2)
     for y in 0..<tile.height {

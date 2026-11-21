@@ -704,7 +704,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 683 | 2026-11-20 | [Keep shape gradients editable in PSD and PSB](#dev-step-683) |
 | 684 | 2026-11-20 | [Keep patterns and straight lines editable in PSD and PSB](#dev-step-684) |
 | 685 | 2026-11-20 | [Improve RGB8 shape opacity and legacy pattern placement](#dev-step-685) |
+| 686 | 2026-11-20 | [Match sampled Photoshop legacy pattern scales](#dev-step-686) |
 <!-- history-index:end -->
+
+<a id="dev-step-686"></a>
+
+## 2026-11-20 — Match sampled Photoshop legacy pattern scales
+
+Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases.
+
+The 25% fixture requires two rounded half-size stages. A single quarter-size filter produces different bytes. The 200% fixture matches source corners. The 56% fixture matched only after adding the 1/256-texel truncation to the corner grid. The first Debug build needed an explicit Swift SIMD rounding rule. The AppKit and loopback tests used host Launch Services after the sandboxed runner returned no PSD type. Broader regression testing reproduced an inherited assertion failure in a file with Pattern Overlay effects. The test now checks the actual rejection of the unsupported style record.
+
+All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen. At 25%, 50%, 56%, and 200% the regenerated layer colors matched all 9,309 sampled opaque interior pixels per case. Four other pattern-placement cases matched the same number of pixels each. The edited and untouched exports were byte-identical across build configurations. The native saves and both Photoshop formats reopened with editable patterns.
+
+The comparisons cover the authored tiles and placements. Rotated and transparent tiles, odd-size reductions, other depths, and full shape-edge output still require comparison. Preparing a synthetic 4,000 × 4,000 sparse tile at 25% took 0.75 seconds on this test Mac. Live Photoshop 2026 reopen remains unverified. The overall workflow estimate remains 50%.
+
+[Development record](LEGACY_PATTERN_SCALING_686.md) · [Qualification](SOURCE_PUBLICATION_686.md).
 
 <a id="dev-step-685"></a>
 

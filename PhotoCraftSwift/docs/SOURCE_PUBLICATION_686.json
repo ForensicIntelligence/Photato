@@ -1,0 +1,601 @@
+{
+  "build": 686,
+  "base": "02c1b1669c301695eb2ec87ed82ed497a7fea6d1",
+  "buildInputs": 9308,
+  "includedBuildInputs": 9295,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "f0b8096ff078704e974bca6e3f161a999166ef9c46b23761cdf10bb66566e5ba",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationDocumentTransfers.swift",
+      "sha256": "2c25199f34f38c5d8296849a02ed59d16bbd7f52aa663b98bc4e000e3eff584a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PatternFillRenderer.swift",
+      "sha256": "a76b37e00088b531638a808d690a4fce0bdeecf520991f00fad1d9689eb5850e"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/ShapeRenderer.swift",
+      "sha256": "d9c2bab7e8dbd7cf4dea7313a681d44aeeebb0d2a393128230a5c6b7335f37c5"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ShapeWorkflowTests.swift",
+      "sha256": "9a3504f3e956a2ba7677574813cecbaeba018c4f38d0403e5cc36668aa73dde0"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDShapeInterchangeTests.swift",
+      "sha256": "7e6e00e7c492846dff1b6ed6d2dca6968233d9c94c799fa22f797708347435ba"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PatternFillRenderTests.swift",
+      "sha256": "91a8bbde0546d9100a3465df80d2131c764680a5241e37a57c9387e8da6ae362"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "c0dcaefe0740fd021ff611f5f569e22607724f050482f8ad0c307cea65a368d0"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "c0dcaefe0740fd021ff611f5f569e22607724f050482f8ad0c307cea65a368d0"
+  },
+  "casesPerConfiguration": 351,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 351,
+      "passed": 351,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "8f3c124fbaf8b570681a23335f1c41a4d15185d1a99da5e2d5e8a4602a2d748c"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 351,
+      "passed": 351,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "5fe694fa976545fabfb17abc81563ee12385c8e603e941f71377fafa6bcab5e4"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 351,
+      "passed": 351,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "2816f5c392c8da8e7c1326997b3bfd42e072b69a2f9f7fbc071a32207b0fc475"
+    }
+  },
+  "selectedCasesSHA256": "1c9819f419b1b69d1ea6d18ed97f3a279c37f9050e6707c8e4ba100502f38dd1",
+  "independentPhotoshopFixtureChecks": [
+    {
+      "source": "normal.psd",
+      "format": "psd",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "ad44357d551d7f59d496843f2260bf0e9645fcf63068d3535432383a0299292d",
+      "outputSHA256": "27900a78cbe2f820270373203ef3ceaf9f3ab66d695d0da95f412a9816f44e84",
+      "exactLayerCaches": 3,
+      "editableShapes": 3,
+      "mergedPlaneDifferentBytes": [
+        7,
+        38,
+        24,
+        0
+      ],
+      "mergedPlanePeakDeltas": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ]
+    },
+    {
+      "source": "normal.psd",
+      "format": "psb",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "ad44357d551d7f59d496843f2260bf0e9645fcf63068d3535432383a0299292d",
+      "outputSHA256": "4f6f9dc291c971375a1208faed6cd678b46046748a2eac29af6629b9e9a76057",
+      "exactLayerCaches": 3,
+      "editableShapes": 3,
+      "mergedPlaneDifferentBytes": [
+        7,
+        38,
+        24,
+        0
+      ],
+      "mergedPlanePeakDeltas": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ]
+    },
+    {
+      "source": "stroke.psd",
+      "format": "psd",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "ab39632f4266a2bc72cfb676f06aa5fc60f1c4951fed2f9fd67165895e61890c",
+      "outputSHA256": "6b1298b5c22ce1c144e009ef8021c0faffeb3b10d07cb60b4fc8cf611dd32973",
+      "exactLayerCaches": 6,
+      "editableShapes": 5,
+      "mergedPlaneDifferentBytes": [
+        20,
+        37,
+        33
+      ],
+      "mergedPlanePeakDeltas": [
+        1,
+        1,
+        1
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ]
+    },
+    {
+      "source": "stroke.psd",
+      "format": "psb",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "ab39632f4266a2bc72cfb676f06aa5fc60f1c4951fed2f9fd67165895e61890c",
+      "outputSHA256": "fbb62558461b83110da9253849df98f1854c1308dfcd330dd8dfef080824dc44",
+      "exactLayerCaches": 6,
+      "editableShapes": 5,
+      "mergedPlaneDifferentBytes": [
+        20,
+        37,
+        33
+      ],
+      "mergedPlanePeakDeltas": [
+        1,
+        1,
+        1
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ]
+    },
+    {
+      "source": "pattern-fill-anchor.psd",
+      "format": "psd",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "cec2a4addb97a72403829253fa7e3f7167edb34160181035c28e3ae73748d8ce",
+      "outputSHA256": "26c340a779aca82b26fa315b33c5727ac27b50ddf0aa937a28d892625ed0c468",
+      "exactLayerCaches": 4,
+      "editableShapes": 4,
+      "mergedPlaneDifferentBytes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mergedPlanePeakDeltas": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ],
+      "patternRepeatEdit": {
+        "outputSHA256": "6bb110314c3d160c4820e3dbbca78f9d3897debb6201a69e5569d6c6466bb767",
+        "layers": {
+          "f_link": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "f_doc": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "f_phase": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "f_round": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source": "pattern-fill-anchor.psd",
+      "format": "psb",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "cec2a4addb97a72403829253fa7e3f7167edb34160181035c28e3ae73748d8ce",
+      "outputSHA256": "705fd368a6792fdc010cd667137f01f779b44d25bcf692f1e7ee1111d633082a",
+      "exactLayerCaches": 4,
+      "editableShapes": 4,
+      "mergedPlaneDifferentBytes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mergedPlanePeakDeltas": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ],
+      "patternRepeatEdit": {
+        "outputSHA256": "24f025a395ac4750ef0f14e9b716506457902cccb8d8f8e81453cdde2e6827d9",
+        "layers": {
+          "f_link": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "f_doc": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "f_phase": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "f_round": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source": "pattern-fill-scale.psd",
+      "format": "psd",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "d8df8e372abd730f24e86c55b00191c68748fa68562039d36bae76abef5e313a",
+      "outputSHA256": "8aa51f7a22da67c0fa63602bb291e4bd1125c77a3f959e7da57b832d650fcc2b",
+      "exactLayerCaches": 4,
+      "editableShapes": 4,
+      "mergedPlaneDifferentBytes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mergedPlanePeakDeltas": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ],
+      "patternRepeatEdit": {
+        "outputSHA256": "1bfa404a3fe6c12d3a5d460c0747858b66e1db985fc3ff4e0925fa2a119394f5",
+        "layers": {
+          "s_up": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "s_down": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "s_half": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "s_quarter": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "source": "pattern-fill-scale.psd",
+      "format": "psb",
+      "writer": "Adobe Photoshop",
+      "authorSHA256": "d8df8e372abd730f24e86c55b00191c68748fa68562039d36bae76abef5e313a",
+      "outputSHA256": "e043c8eb9ec1e5c17505919a5a275902d92946db68867cecaeb9c3b98e9b8e01",
+      "exactLayerCaches": 4,
+      "editableShapes": 4,
+      "mergedPlaneDifferentBytes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mergedPlanePeakDeltas": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "parentMergedPlaneDifferentBytes": null,
+      "configurations": [
+        "debug",
+        "arm",
+        "intel"
+      ],
+      "patternRepeatEdit": {
+        "outputSHA256": "2815873a118d51c762f17f3fe70c1169c0bf0ddef934f48657d0cb16496767d9",
+        "layers": {
+          "s_up": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "s_down": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "s_half": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "s_quarter": {
+            "sampledOpaquePixels": 9309,
+            "differentRGBABytes": 0,
+            "peakRGBADelta": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "referenceScalesPercent": [
+    25,
+    50,
+    56,
+    200
+  ],
+  "fractionalGridDenominator": 256,
+  "optimizedAppleSiliconLargeSparseTileProbe": {
+    "dimensions": [
+      4000,
+      4000
+    ],
+    "scalePercent": 25,
+    "preparationSeconds": 0.75429625
+  },
+  "priorWholeLayerVectorMasks": {
+    "build": 686,
+    "referenceBuild": 671,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "outputs": {
+      "embedded-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "embedded-fixed.psb": {
+        "bytes": 184860,
+        "sha256": "f0c3bcbef6518f7872f421783a0c3cdbb8fbdf0ed8a951e31f0093535ac3761e"
+      },
+      "embedded-fixed.psd": {
+        "bytes": 184832,
+        "sha256": "7d91a4d07a206dc2ee37fec77ce37e1305c38b7dca53918f195ad89d95cadab5"
+      },
+      "embedded-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "embedded-linked.psb": {
+        "bytes": 184940,
+        "sha256": "38286424a94c3295a0daf6b0a6e8d4d69912c0abb68f06192404ce6ea9f0fe1c"
+      },
+      "embedded-linked.psd": {
+        "bytes": 184912,
+        "sha256": "88f5e46a8d044958ff521684e9b4eb5f6fabb9c8d64bdeb572f7630e2efea550"
+      },
+      "external-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "external-fixed.psb": {
+        "bytes": 181192,
+        "sha256": "5f5fa9faa4b5840c468ed05b1c606678738cfd5ab402798b7022300919ff4675"
+      },
+      "external-fixed.psd": {
+        "bytes": 181164,
+        "sha256": "831808a037492aa7bd10d633af86229a0941a4125dbe938e4021bb93fd348191"
+      },
+      "external-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "external-linked.psb": {
+        "bytes": 181272,
+        "sha256": "1b9f5cc6c6d3ed96fb65604de74143de8f25296bbd09dbe22d1e4373881022ce"
+      },
+      "external-linked.psd": {
+        "bytes": 181244,
+        "sha256": "aad0adffdfb131cf541ba7eaee4385ab9a59b7e48ea905236ef1a605f152bd58"
+      }
+    },
+    "referenceReceiptSHA256": "1eafcc712e89205e60d9278a3636a46b5f36499ad192262dab4f4b0720abc616"
+  },
+  "priorShapeOutputs": {
+    "referenceBuild": 680,
+    "candidateBuild": 686,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "files": {
+      "rectangle": {
+        "cutout.psb": "5cfafe9f3dd31fd630ce974bfbf0a32c49ad337dd9c983bc1be2437db688c33a",
+        "cutout.psd": "2e9b2f7f0b0c0f03585f863e9111c8200265a975d917b3cb5bf1928a8312b115",
+        "cutout.rgba": "87683b7d1a18fd12f124407ec9bf8d49a8330dc3ac5832bc7dff4c6f2f93e71f"
+      },
+      "ellipse": {
+        "cutout-16 bit.photato": "635dda8f5e7a4831c1902efec9604c10ceb9b65577a27c9fa4a98ec4f426b03f",
+        "cutout-16 bit.psb": "441e10d60140a084c084dbf0abce324908899a54284d17d97d1b4446583bdc00",
+        "cutout-16 bit.psd": "48a400f2597b596d2555db7cb9796c5eb43c3683586e116e0c37c57412e0f209",
+        "cutout-16 bit.rgba": "835e344cb0dc6d3ee76ad7b58307b085e29e8de81722535861330962c123125a",
+        "cutout-32 bit.photato": "9e6a184406d2ac81309e628255953126df0f00f2ad52a97f7239865808f48e71",
+        "cutout-32 bit.rgba": "8279efeb6a7f77b8a3bbf1a301632592584f7f8a2f31698c3a15913af793eaf3",
+        "cutout-8 bit.photato": "5ea252f80784c6f0bf7a71d0e054c4f948f30189c113a4a4bd00f63acfbd213f",
+        "cutout-8 bit.psb": "b4a01711ee951b60231edcec2b3d9c1ab53921b095ebb783edb13aea6ce2ec8c",
+        "cutout-8 bit.psd": "13ac7da0025b7a9b40442aaf4fbc4850ab57077ca0fc88bee6019553a1b51a2e",
+        "cutout-8 bit.rgba": "e95a086b91eff77c02c4785896d3f7d4f58a69c59f84ca5beb4028e7548a70b9"
+      }
+    }
+  },
+  "priorCanvasOutputs": {
+    "reframed.rgba": "efa9e9ef7591e3e02ab5205428101091aeb56dc8f82a904825c79c48017b7b46",
+    "reframed.psb": "781717c6883a3d615b7c6ba05a6ad08ff1f24a7de71bad011da13ad9b39325aa",
+    "reframed.psd": "72f66844fba1be82b01b9c30ffa826653d2de4a45c5e580190d5b98d0d67e83d"
+  },
+  "preview": {
+    "archiveSHA256": "bef0d8c422477da39c426d95061f24916d838b0a3aab9aa94fc3215eba03fc05",
+    "binarySHA256": "c65f8939853cbfd0c845da68939078d9bbb0643ea0b6d998324dde0e7c9655eb",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "b7d7cd47e311982d93f809b9aaf2e92615a43dcd54ffe0109ea1567fa76f5d22",
+      "x86_64": "861004516e39569f1e0ae798934177698f2bd7e138b7b31efc445e443aaa8ec3"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobeCompared": false,
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination in Debug only.",
+  "reference": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/fill-and-stroke-shapes.html"
+}

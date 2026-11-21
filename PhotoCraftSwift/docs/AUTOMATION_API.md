@@ -50,6 +50,10 @@ The existing PSD and PSB upload and Adobe Execute Actions job paths restore nest
 
 [Development record](PSD_LEGACY_SHAPES_642.md).
 
+### Legacy shape pattern scaling (checkpoint 686)
+
+`documentTransfers.photoshopContainers.liveShapes.legacyRGB8PatternGrid` describes the scaled legacy pattern tile behavior. Existing `shape.edit`, preview and PSD/PSB import and download share the desktop renderer and retain editable scale and phase. [Development record](LEGACY_PATTERN_SCALING_686.md)
+
 ### Legacy pattern placement and Normal RGB8 opacity (checkpoint 685)
 
 `documentTransfers.photoshopContainers.liveShapes` advertises `legacyPatternFillRecords` and `normalRGB8Opacity`. Native preview and existing file downloads use the same opacity and shape renderer. Existing `shape.edit` requests retain fractional phase and embedded pattern identifiers. Linked legacy phase follows the stored reference point. Adobe v2 exposes no dedicated shape endpoint. [Development record](SHAPE_EDGE_COMPOSITING_685.md)

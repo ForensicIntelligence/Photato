@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 685.** Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_685.md).
+**Development alpha — source build 686.** Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_686.md).
 
 ## Project layout
 

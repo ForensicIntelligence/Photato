@@ -1,3 +1,13 @@
+## 2026-11-20 — Step 686 — Match sampled Photoshop legacy pattern scales
+
+Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases.
+
+At 25%, 50%, 56%, and 200% the regenerated layer colors matched all 9,309 sampled opaque interior pixels per case. Four other pattern-placement cases matched the same number of pixels each. The edited and untouched exports were byte-identical across build configurations. The native saves and both Photoshop formats reopened with editable patterns.
+
+All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen. The comparisons cover the authored tiles and placements. Rotated and transparent tiles, odd-size reductions, other depths, and full shape-edge output still require comparison. Preparing a synthetic 4,000 × 4,000 sparse tile at 25% took 0.75 seconds on this test Mac. Live Photoshop 2026 reopen remains unverified.
+
+[Development record](DEVLOG.md#dev-step-686) · [Details](LEGACY_PATTERN_SCALING_686.md).
+
 ## 2026-11-20 — Step 685 — Improve RGB8 shape opacity and legacy pattern placement
 
 Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB.
@@ -1457,14 +1467,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:685 -->
+<!-- current-status-step:686 -->
 ## Current development status — 20 November 2026
 
-Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB.
+Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases.
 
-All 310 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 685](SOURCE_PUBLICATION_685.md) · [Development record](DEVLOG.md#dev-step-685).
+[Source checkpoint 686](SOURCE_PUBLICATION_686.md) · [Development record](DEVLOG.md#dev-step-686).
 
 <!-- current-status:end -->
 
@@ -2356,6 +2366,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 683 | [Keep shape gradients editable in PSD and PSB](DEVLOG.md#dev-step-683) |
 | 2026-11-20 | 684 | [Keep patterns and straight lines editable in PSD and PSB](DEVLOG.md#dev-step-684) |
 | 2026-11-20 | 685 | [Improve RGB8 shape opacity and legacy pattern placement](DEVLOG.md#dev-step-685) |
+| 2026-11-20 | 686 | [Match sampled Photoshop legacy pattern scales](DEVLOG.md#dev-step-686) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

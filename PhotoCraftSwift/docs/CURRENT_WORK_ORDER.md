@@ -1,3 +1,9 @@
+**Source checkpoint 686.** Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases. All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_686.md).
+
+**Next path editing work.** Add editable Pattern Overlay interchange for the Photoshop-authored six-overlay file. Its interiors match the same corner grid when the style uses the stored reference point and 8-bit opacity. Continue the translucent shape-edge RGB checks.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 685.** Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB. All 310 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_685.md).
 
 **Next path editing work.** Qualify bounded pattern minification and the enlarged tile sampling grid. Extend the RGB8 color comparison at translucent shape edges.

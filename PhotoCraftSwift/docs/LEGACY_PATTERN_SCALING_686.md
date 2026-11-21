@@ -1,0 +1,9 @@
+# Match sampled Photoshop legacy pattern scales
+
+Legacy RGB8 vector shapes with opaque RGB8 pattern tiles can downsample in rounded 2 × 2 stages. Fractional scale samples the periodic tile at source texel corners. Coordinates truncate to 1/256 texel before channel interpolation. The renderer retains the original embedded pattern, scale and phase for edits. Native shape edits and the Photato API use the shared renderer. [Adobe shape fills](https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/fill-and-stroke-shapes.html)
+
+At 25%, 50%, 56%, and 200% the regenerated layer colors matched all 9,309 sampled opaque interior pixels per case. Four other pattern-placement cases matched the same number of pixels each. The edited and untouched exports were byte-identical across build configurations. The native saves and both Photoshop formats reopened with editable patterns. At 56% a change to an inactive stroke setting forced a new raster without changing the saved fractional phase. The remaining cases forced a new raster with full-period phase edits. [Photoshop-authored scale fixture](https://github.com/psd-tools/psd-tools/blob/6a827c19543106cd83a50fd830b07312df950531/tests/psd_files/layers/pattern-fill-scale.psd)
+
+All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen. Twelve earlier vector outputs, thirteen shape outputs and three canvas cutout files retained their established bytes.
+
+The comparisons cover the authored tiles and placements. Rotated and transparent tiles, odd-size reductions, other depths, and full shape-edge output still require comparison. Preparing a synthetic 4,000 × 4,000 sparse tile at 25% took 0.75 seconds on this test Mac. Live Photoshop 2026 reopen remains unverified. [Qualification](SOURCE_PUBLICATION_686.md)

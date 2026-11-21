@@ -361,9 +361,11 @@ public enum ShapeRenderer {
       }else{ramp=nil;field=nil}
       pattern = try paint.pattern.map { fill in
         var sampling = fill
-        if let tags = layer.sourceTags, PSDLiveShape.isLegacyPattern(tags), fill.geometry == nil,
+        let legacy = layer.sourceTags.map(PSDLiveShape.isLegacyPattern) == true && fill.geometry == nil
+        let translation = placement.a == 1 && placement.b == 0 && placement.c == 0 && placement.d == 1
+        if legacy,
           fill.placement.scale == 100, fill.placement.angle == 0,
-          !fill.linked || (placement.a == 1 && placement.b == 0 && placement.c == 0 && placement.d == 1) {
+          !fill.linked || translation {
           // Photoshop snaps the absolute phase of an unscaled legacy tile.
           // Keep the fractional phase in the editable descriptor.
           let originX = fill.linked ? placement.tx : 0
@@ -371,7 +373,9 @@ public enum ShapeRenderer {
           sampling.placement.phaseX = Float(floor(Double(fill.placement.phaseX) + originX + 0.5) - originX)
           sampling.placement.phaseY = Float(floor(Double(fill.placement.phaseY) + originY + 0.5) - originY)
         }
-        return try PatternFillSampler(sampling, in: document)
+        let legacyGrid = legacy && translation && placement.tx.rounded() == placement.tx
+          && placement.ty.rounded() == placement.ty && document.colorMode == .rgb && document.depth == .u8
+        return try PatternFillSampler(sampling, in: document, legacyShapeGrid: legacyGrid)
       }
     }
     func sourceParameter(_ frame:ShapePaintFrame,x:Double,y:Double)->Float {
