@@ -315,185 +315,211 @@ public enum Renderer {
         output = try LayerStyleRenderer.composite(layer, in: d, over: output, region: region)
         continue
       }
-      let mask = try facts.map {try $0.mask(layer,region:region)} ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
-      if case .adjustment(.source(let settings))=layer.content {
-        output=try SourceAdjustmentComposition.composite(settings,layer:layer,document:d,over:output,region:region,mask:mask)
-        continue
-      }
-      if case .adjustment(let adjustment) = layer.content {
-        if d.depth == .f32,case .colorLookup(let settings)=adjustment,settings.interpolation == .tetrahedral {
-          let transfer=try ColorLookupTransfer(settings,depth:.f32)
-          for y in region.y..<region.y+region.height {
-            try Task.checkCancellation()
-            for x in region.x..<region.x+region.width {
-              let amount=unit(layer.opacity*(mask?.coverage(x:Double(x)+0.5,y:Double(y)+0.5) ?? 1))
-              if amount==0{continue}
-              let before=output.linearPixel(x:x,y:y),after=transfer.applyLinear(before,x:x,y:y)
-              let target=layer.blendMode == .normal ? after.rgb:layer.blendMode.rgb(before.rgb,after.rgb)
-              let rgb=amount==1 ? target:before.rgb+(target-before.rgb)*amount
-              let result=Pixel(rgb.x,rgb.y,rgb.z,before.a)
-              guard result.isFinite else{throw CraftError.invalid("Adjustment result exceeds the floating-point range.")}
-              output.setLinearPixel(x:x,y:y,result)
-            }
+      output = try compositeFlatContent(layer, in: d, over: consume output, region: region, facts: facts)
+    }
+    return output
+  }
+
+  // A style composites isolated content through compositeFlat again. Keep the
+  // stack frame for ordinary pixels off that recursive dispatch path.
+  @inline(never)
+  private static func compositeFlatContent(
+    _ layer: Layer, in d: CraftDocument, over backdrop: consuming Surface,
+    region: IntRect, facts: CompositionFacts?
+  ) throws -> Surface {
+    let mask: LayerMaskSampler? = if layer.mask == nil && layer.vectorMask == nil {
+      nil
+    } else {
+      try facts.map { try $0.mask(layer, region: region) }
+        ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
+    }
+    return try compositeFlatPixels(layer, in: d, over: consume backdrop, region: region, mask: mask)
+  }
+
+  // Mask preparation can itself allocate sizeable render state. Keep its
+  // call frame separate from sampling the pixels of an ordinary layer.
+  @inline(never)
+  private static func compositeFlatPixels(
+    _ layer: Layer, in d: CraftDocument, over backdrop: consuming Surface,
+    region: IntRect, mask: LayerMaskSampler?
+  ) throws -> Surface {
+    var output = backdrop
+    if case .adjustment(.source(let settings))=layer.content {
+      return try SourceAdjustmentComposition.composite(settings,layer:layer,document:d,over:output,region:region,mask:mask)
+    }
+    if case .adjustment(let adjustment) = layer.content {
+      if d.depth == .f32,case .colorLookup(let settings)=adjustment,settings.interpolation == .tetrahedral {
+        let transfer=try ColorLookupTransfer(settings,depth:.f32)
+        for y in region.y..<region.y+region.height {
+          try Task.checkCancellation()
+          for x in region.x..<region.x+region.width {
+            let amount=unit(layer.opacity*(mask?.coverage(x:Double(x)+0.5,y:Double(y)+0.5) ?? 1))
+            if amount==0{continue}
+            let before=output.linearPixel(x:x,y:y),after=transfer.applyLinear(before,x:x,y:y)
+            let target=layer.blendMode == .normal ? after.rgb:layer.blendMode.rgb(before.rgb,after.rgb)
+            let rgb=amount==1 ? target:before.rgb+(target-before.rgb)*amount
+            let result=Pixel(rgb.x,rgb.y,rgb.z,before.a)
+            guard result.isFinite else{throw CraftError.invalid("Adjustment result exceeds the floating-point range.")}
+            output.setLinearPixel(x:x,y:y,result)
           }
-          continue
         }
-        let evaluate: @Sendable (Pixel,Int,Int)->Pixel
-        if case .modern(let settings)=adjustment,settings.needsNeighborhood {
-          let developed=try settings.neighborhood(output)
-          evaluate={_,x,y in developed.pixel(x:x,y:y)}
-        } else {evaluate=try adjustment.spatialEvaluator(depth:d.depth, pixelCount:region.width * region.height)}
-        let documentTone = adjustment.usesDocumentToneSpace
-        output = try (consume output).compositingPixels(in: region) { x, y, b in
-          let m = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-          let amount = unit(layer.opacity * m)
-          guard amount != 0 else { return nil }
-          let p = evaluate(b, x, y)
-          if documentTone, layer.blendMode == .normal {
-            let mixed = LevelsTransfer.mix(b, with: p, coverage: amount, depth: d.depth)
-            guard mixed.isFinite else {
-              throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
-            }
-            return mixed
-          }
-          if documentTone, d.depth == .f32 {
-            let before = SRGBTransfer.linear(b)
-            let after = SRGBTransfer.linear(p)
-            let rgb = before.rgb + (layer.blendMode.rgb(before.rgb, after.rgb) - before.rgb) * amount
-            let mixed = SRGBTransfer.encoded(Pixel(rgb.x, rgb.y, rgb.z, b.a))
-            guard mixed.isFinite else {
-              throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
-            }
-            return mixed
-          }
-          let c = b.rgb + (layer.blendMode.rgb(b.rgb, p.rgb) - b.rgb) * amount
-          return Pixel(c.x, c.y, c.z, b.a)
-        }
-        continue
+        return output
       }
-      if case .gradientFill(let fill) = layer.content {
-        let sample = try GradientFillSampler(fill, layer: layer, document: d)
-          .batch(pixelCount: region.width * region.height)
-        output = try (consume output).compositingPixels(in: region) { x, y, backdrop in
-          var pixel = sample(x, y)
+      let evaluate: @Sendable (Pixel,Int,Int)->Pixel
+      if case .modern(let settings)=adjustment,settings.needsNeighborhood {
+        let developed=try settings.neighborhood(output)
+        evaluate={_,x,y in developed.pixel(x:x,y:y)}
+      } else {evaluate=try adjustment.spatialEvaluator(depth:d.depth, pixelCount:region.width * region.height)}
+      let documentTone = adjustment.usesDocumentToneSpace
+      output = try (consume output).compositingPixels(in: region) { x, y, b in
+        let m = mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+        let amount = unit(layer.opacity * m)
+        guard amount != 0 else { return nil }
+        let p = evaluate(b, x, y)
+        if documentTone, layer.blendMode == .normal {
+          let mixed = LevelsTransfer.mix(b, with: p, coverage: amount, depth: d.depth)
+          guard mixed.isFinite else {
+            throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
+          }
+          return mixed
+        }
+        if documentTone, d.depth == .f32 {
+          let before = SRGBTransfer.linear(b)
+          let after = SRGBTransfer.linear(p)
+          let rgb = before.rgb + (layer.blendMode.rgb(before.rgb, after.rgb) - before.rgb) * amount
+          let mixed = SRGBTransfer.encoded(Pixel(rgb.x, rgb.y, rgb.z, b.a))
+          guard mixed.isFinite else {
+            throw CraftError.invalid("Adjustment result exceeds the floating-point range.")
+          }
+          return mixed
+        }
+        let c = b.rgb + (layer.blendMode.rgb(b.rgb, p.rgb) - b.rgb) * amount
+        return Pixel(c.x, c.y, c.z, b.a)
+      }
+      return output
+    }
+    if case .gradientFill(let fill) = layer.content {
+      let sample = try GradientFillSampler(fill, layer: layer, document: d)
+        .batch(pixelCount: region.width * region.height)
+      output = try (consume output).compositingPixels(in: region) { x, y, backdrop in
+        var pixel = sample(x, y)
+        pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+        guard pixel.a > 0 else { return nil }
+        return compositePixel(layer.blendMode, backdrop: backdrop, source: pixel,
+          opacity: layer.opacity, depth: d.depth, x: x, y: y)
+      }
+      return output
+    }
+    if case .patternFill(let fill) = layer.content {
+      let sampler = try PatternFillSampler(fill, in: d)
+      for y in region.y..<region.y + region.height {
+        try Task.checkCancellation()
+        for x in region.x..<region.x + region.width {
+          var pixel = sampler.sample(x: Double(x) + 0.5, y: Double(y) + 0.5)
           pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-          guard pixel.a > 0 else { return nil }
-          return compositePixel(layer.blendMode, backdrop: backdrop, source: pixel,
-            opacity: layer.opacity, depth: d.depth, x: x, y: y)
+          guard pixel.a > 0 else { continue }
+          output.setPixel(
+            x: x, y: y,
+            compositePixel(
+              layer.blendMode, backdrop: output.pixel(x: x, y: y), source: pixel,
+              opacity: layer.opacity, depth: d.depth, x: x, y: y))
         }
-        continue
       }
-      if case .patternFill(let fill) = layer.content {
-        let sampler = try PatternFillSampler(fill, in: d)
-        for y in region.y..<region.y + region.height {
-          try Task.checkCancellation()
-          for x in region.x..<region.x + region.width {
-            var pixel = sampler.sample(x: Double(x) + 0.5, y: Double(y) + 0.5)
-            pixel.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-            guard pixel.a > 0 else { continue }
-            output.setPixel(
-              x: x, y: y,
-              compositePixel(
-                layer.blendMode, backdrop: output.pixel(x: x, y: y), source: pixel,
-                opacity: layer.opacity, depth: d.depth, x: x, y: y))
-          }
-        }
-        continue
-      }
-      let surface: Surface
-      let sourceX: Int
-      let sourceY: Int
-      if ShapeRenderer.usesViewportRaster(layer) {
-        guard let patch = try ShapeRenderer.viewportRaster(layer, in: d, region: region) else { continue }
-        surface = patch.surface
-        sourceX = patch.x
-        sourceY = patch.y
-      } else {
-        surface = try layerSurface(layer, in: d)
-        sourceX = 0
-        sourceY = 0
-      }
-      // Fill layers cover the full canvas, independent of crop offsets.
-      let isFill: Bool = {
-        if case .fill = layer.content { return true }
-        return false
-      }()
-      if layer.affine != nil {
-        let inverse = try layer.coordinateTransform.inverted()
-        let linkedPreviewDepth = LinkedSmartObjectIO.integerPreviewDepth(layer, in: d)
-        let bounds =
-          isFill
-          ? IntRect(x: 0, y: 0, width: d.width, height: d.height)
-          : try (layer.coordinateTransform * .translation(Double(sourceX), Double(sourceY)))
-              .bounds(width: surface.width, height: surface.height)
-        let x0 = max(region.x, bounds.x)
-        let y0 = max(region.y, bounds.y)
-        let x1 = min(region.x + region.width, bounds.x + bounds.width)
-        let y1 = min(region.y + region.height, bounds.y + bounds.height)
-        if x0 >= x1 || y0 >= y1 { continue }
-        for y in y0..<y1 {
-          try Task.checkCancellation()
-          for x in x0..<x1 {
-            let point = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
-            let local = (x: point.x - Double(sourceX), y: point.y - Double(sourceY))
-            var p =
-              isFill
-              ? surface.pixel(x: x, y: y)
-              : RasterGeometry.sample(surface, x: local.x, y: local.y, method: .bilinear)
-            if let linkedPreviewDepth {
-              // The stored linked preview samples pixel centers in the source rectangle.
-              guard local.x >= 0, local.y >= 0,
-                local.x < Double(surface.width), local.y < Double(surface.height) else { continue }
-              p = p.quantized(linkedPreviewDepth)
-            }
-            p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-            guard p.a > 0 else { continue }
-            output.setPixel(
-              x: x, y: y,
-              compositePixel(
-                layer.blendMode,
-                backdrop: output.pixel(x: x, y: y), source: p, opacity: layer.opacity,
-                depth: d.depth, x: x, y: y))
-          }
-        }
-        continue
-      }
-      let ox = isFill ? 0 : layer.x + sourceX
-      let oy = isFill ? 0 : layer.y + sourceY
-      let x0 = max(region.x, ox)
-      let y0 = max(region.y, oy)
-      let x1 = min(region.x + region.width, ox + surface.width)
-      let y1 = min(region.y + region.height, oy + surface.height)
-      if x0 >= x1 || y0 >= y1 { continue }
-      if d.depth != .f32 {
-        let area = IntRect(x: x0, y: y0, width: x1-x0, height: y1-y0)
-        let shapeOpacity: Int? = if d.depth == .u8, d.colorMode == .rgb,
-          layer.shape != nil, mask == nil, layer.clipped != true, layer.style == nil, layer.blendMode == .normal {
-          Int((layer.opacity * 255).rounded())
-        } else { nil }
-        output = try (consume output).compositingPixels(in: area) { x, y, backdrop in
-          var p = surface.pixel(x: x - ox, y: y - oy)
-          p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
-          guard p.a > 0 else { return nil }
-          if let shapeOpacity {
-            return compositeRGB8NormalShape(backdrop: backdrop, source: p, opacity: shapeOpacity)
-          }
-          return compositePixel(layer.blendMode, backdrop: backdrop, source: p,
-            opacity: layer.opacity, depth: d.depth, x: x, y: y)
-        }
-        continue
-      }
+      return output
+    }
+    let surface: Surface
+    let sourceX: Int
+    let sourceY: Int
+    if ShapeRenderer.usesViewportRaster(layer) {
+      guard let patch = try ShapeRenderer.viewportRaster(layer, in: d, region: region) else { return output }
+      surface = patch.surface
+      sourceX = patch.x
+      sourceY = patch.y
+    } else {
+      surface = try layerSurface(layer, in: d)
+      sourceX = 0
+      sourceY = 0
+    }
+    // Fill layers cover the full canvas, independent of crop offsets.
+    let isFill: Bool = {
+      if case .fill = layer.content { return true }
+      return false
+    }()
+    if layer.affine != nil {
+      let inverse = try layer.coordinateTransform.inverted()
+      let linkedPreviewDepth = LinkedSmartObjectIO.integerPreviewDepth(layer, in: d)
+      let bounds =
+        isFill
+        ? IntRect(x: 0, y: 0, width: d.width, height: d.height)
+        : try (layer.coordinateTransform * .translation(Double(sourceX), Double(sourceY)))
+            .bounds(width: surface.width, height: surface.height)
+      let x0 = max(region.x, bounds.x)
+      let y0 = max(region.y, bounds.y)
+      let x1 = min(region.x + region.width, bounds.x + bounds.width)
+      let y1 = min(region.y + region.height, bounds.y + bounds.height)
+      if x0 >= x1 || y0 >= y1 { return output }
       for y in y0..<y1 {
-        if y % 64 == 0 { try Task.checkCancellation() }
+        try Task.checkCancellation()
         for x in x0..<x1 {
-          var p = surface.linearPixel(x: x - ox, y: y - oy)
+          let point = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
+          let local = (x: point.x - Double(sourceX), y: point.y - Double(sourceY))
+          var p =
+            isFill
+            ? surface.pixel(x: x, y: y)
+            : RasterGeometry.sample(surface, x: local.x, y: local.y, method: .bilinear)
+          if let linkedPreviewDepth {
+            // The stored linked preview samples pixel centers in the source rectangle.
+            guard local.x >= 0, local.y >= 0,
+              local.x < Double(surface.width), local.y < Double(surface.height) else { continue }
+            p = p.quantized(linkedPreviewDepth)
+          }
           p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
           guard p.a > 0 else { continue }
-          output.setLinearPixel(
+          output.setPixel(
             x: x, y: y,
-            compositeLinearPixel(layer.blendMode, backdrop: output.linearPixel(x: x, y: y),
-              source: p, opacity: layer.opacity, x: x, y: y))
+            compositePixel(
+              layer.blendMode,
+              backdrop: output.pixel(x: x, y: y), source: p, opacity: layer.opacity,
+              depth: d.depth, x: x, y: y))
         }
+      }
+      return output
+    }
+    let ox = isFill ? 0 : layer.x + sourceX
+    let oy = isFill ? 0 : layer.y + sourceY
+    let x0 = max(region.x, ox)
+    let y0 = max(region.y, oy)
+    let x1 = min(region.x + region.width, ox + surface.width)
+    let y1 = min(region.y + region.height, oy + surface.height)
+    if x0 >= x1 || y0 >= y1 { return output }
+    if d.depth != .f32 {
+      let area = IntRect(x: x0, y: y0, width: x1-x0, height: y1-y0)
+      let shapeOpacity: Int? = if d.depth == .u8, d.colorMode == .rgb,
+        layer.shape != nil, mask == nil, layer.clipped != true, layer.style == nil, layer.blendMode == .normal {
+        Int((layer.opacity * 255).rounded())
+      } else { nil }
+      output = try (consume output).compositingPixels(in: area) { x, y, backdrop in
+        var p = surface.pixel(x: x - ox, y: y - oy)
+        p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+        guard p.a > 0 else { return nil }
+        if let shapeOpacity {
+          return compositeRGB8NormalShape(backdrop: backdrop, source: p, opacity: shapeOpacity)
+        }
+        return compositePixel(layer.blendMode, backdrop: backdrop, source: p,
+          opacity: layer.opacity, depth: d.depth, x: x, y: y)
+      }
+      return output
+    }
+    for y in y0..<y1 {
+      if y % 64 == 0 { try Task.checkCancellation() }
+      for x in x0..<x1 {
+        var p = surface.linearPixel(x: x - ox, y: y - oy)
+        p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
+        guard p.a > 0 else { continue }
+        output.setLinearPixel(
+          x: x, y: y,
+          compositeLinearPixel(layer.blendMode, backdrop: output.linearPixel(x: x, y: y),
+            source: p, opacity: layer.opacity, x: x, y: y))
       }
     }
     return output

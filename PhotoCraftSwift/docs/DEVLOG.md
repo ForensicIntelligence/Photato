@@ -705,7 +705,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 684 | 2026-11-20 | [Keep patterns and straight lines editable in PSD and PSB](#dev-step-684) |
 | 685 | 2026-11-20 | [Improve RGB8 shape opacity and legacy pattern placement](#dev-step-685) |
 | 686 | 2026-11-20 | [Match sampled Photoshop legacy pattern scales](#dev-step-686) |
+| 687 | 2026-11-20 | [Keep Pattern Overlay editable in PSD and PSB](#dev-step-687) |
 <!-- history-index:end -->
+
+<a id="dev-step-687"></a>
+
+## 2026-11-20 — Keep Pattern Overlay editable in PSD and PSB
+
+Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles.
+
+The original Photoshop file used generated vector-mask caches identical to layer transparency. Import now verifies that relationship. The independent parser exposed a tag-length error after editing an odd-sized style descriptor. The writer includes its alignment byte in the length. Loopback tests exposed worker-stack exhaustion in nested rendering and mask preparation. Those stages now use separate call frames. The PDF rasterize test passes when its placement test initializes the host document controller. Two inventory tests still expect 267 commands and see 283. The strict layer-effect word test repeats its earlier numerical differences.
+
+446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen. The Photoshop-authored document retained all 13 layers, six editable overlays, and all 196,608 merged RGB bytes in unchanged PSD and PSB exports. Changes to all six overlays reopened with their revised settings. The four exports were byte-identical across build configurations.
+
+The Photoshop color comparison covers the authored linked Normal overlays at 200% and 50% opacity. The existing style renderer still limits canvas area to 8,388,608 pixels. Other blend modes, rotated and fractional placement, and live Photoshop 2026 reopening require further comparison. The overall workflow estimate remains 50%.
+
+[Development record](EDITABLE_PATTERN_OVERLAY_687.md) · [Qualification](SOURCE_PUBLICATION_687.md).
 
 <a id="dev-step-686"></a>
 

@@ -1,3 +1,13 @@
+## 2026-11-20 — Step 687 — Keep Pattern Overlay editable in PSD and PSB
+
+Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles.
+
+The Photoshop-authored document retained all 13 layers, six editable overlays, and all 196,608 merged RGB bytes in unchanged PSD and PSB exports. Changes to all six overlays reopened with their revised settings. The four exports were byte-identical across build configurations.
+
+446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen. The Photoshop color comparison covers the authored linked Normal overlays at 200% and 50% opacity. The existing style renderer still limits canvas area to 8,388,608 pixels. Other blend modes, rotated and fractional placement, and live Photoshop 2026 reopening require further comparison.
+
+[Development record](DEVLOG.md#dev-step-687) · [Details](EDITABLE_PATTERN_OVERLAY_687.md).
+
 ## 2026-11-20 — Step 686 — Match sampled Photoshop legacy pattern scales
 
 Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases.
@@ -1467,14 +1477,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:686 -->
+<!-- current-status-step:687 -->
 ## Current development status — 20 November 2026
 
-Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases.
+Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles.
 
-All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen.
+446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 686](SOURCE_PUBLICATION_686.md) · [Development record](DEVLOG.md#dev-step-686).
+[Source checkpoint 687](SOURCE_PUBLICATION_687.md) · [Development record](DEVLOG.md#dev-step-687).
 
 <!-- current-status:end -->
 
@@ -2367,6 +2377,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 684 | [Keep patterns and straight lines editable in PSD and PSB](DEVLOG.md#dev-step-684) |
 | 2026-11-20 | 685 | [Improve RGB8 shape opacity and legacy pattern placement](DEVLOG.md#dev-step-685) |
 | 2026-11-20 | 686 | [Match sampled Photoshop legacy pattern scales](DEVLOG.md#dev-step-686) |
+| 2026-11-20 | 687 | [Keep Pattern Overlay editable in PSD and PSB](DEVLOG.md#dev-step-687) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

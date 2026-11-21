@@ -1,3 +1,9 @@
+**Source checkpoint 687.** Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles. 446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_687.md).
+
+**Next path editing work.** Use bounded Pattern Overlay rendering for large documents. The current style limit rejects a 30 × 30 viewport on a 300,000 × 300,000 canvas. Extend the Photoshop reference set to other blend modes and placements.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 686.** Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases. All 351 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_686.md).
 
 **Next path editing work.** Add editable Pattern Overlay interchange for the Photoshop-authored six-overlay file. Its interiors match the same corner grid when the style uses the stored reference point and 8-bit opacity. Continue the translucent shape-edge RGB checks.

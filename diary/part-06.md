@@ -692,6 +692,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 684 | [Keep patterns and straight lines editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-684) |
 | 2026-11-20 | 685 | [Improve RGB8 shape opacity and legacy pattern placement](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-685) |
 | 2026-11-20 | 686 | [Match sampled Photoshop legacy pattern scales](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-686) |
+| 2026-11-20 | 687 | [Keep Pattern Overlay editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-687) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

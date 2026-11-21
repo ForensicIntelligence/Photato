@@ -134,7 +134,8 @@ enum LayerStyleRenderer {
       let bevel = kind == .bevelEmboss ? try alpha.blurred(effect.size*scale+effect.soften) : nil
       let gradient = try effect.gradient.map { try GradientFillSampler($0, layer: layer, document: document,
         alignedFrame: kind == .gradientOverlay ? gradientFrame : nil, isOverlay: kind == .gradientOverlay) }
-      let pattern = try effect.pattern.map { try PatternFillSampler($0,in:document) }
+      let pattern = try effect.pattern.map { try PatternFillSampler.overlay($0,style:style,layer:layer,in:document) }
+      let opacity = PatternFillSampler.overlayOpacity(effect, in: document)
       let angle = (effect.useGlobalLight ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle)*Double.pi/180
       let dx = -cos(angle)*effect.distance*scale, dy = sin(angle)*effect.distance*scale
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
@@ -159,7 +160,7 @@ enum LayerStyleRenderer {
         }
         var b=read(body,x,y); b.a=unit(b.a/a)
         p.a *= unit(coverage)
-        var edited=composite(p,b,effect.blendMode,effect.opacity,x,y);edited.a *= a
+        var edited=composite(p,b,effect.blendMode,opacity,x,y);edited.a *= a
         write(edited,x,y,&body)
       } }
     } }

@@ -8,6 +8,7 @@ enum PSDLayerStyles {
     ("DrSh", "dropShadowMulti", .dropShadow), ("IrSh", "innerShadowMulti", .innerShadow),
     ("OrGl", "", .outerGlow), ("IrGl", "", .innerGlow),
     ("SoFi", "solidFillMulti", .colorOverlay), ("GrFl", "gradientFillMulti", .gradientOverlay),
+    ("patternFill", "", .patternOverlay),
     ("FrFX", "frameFXMulti", .stroke),
   ]
   static let blends = ["Nrml", "Dslv", "Drkn", "Mltp", "CBrn", "linearBurn", "darkerColor", "Lghn", "Scrn", "CDdg", "linearDodge", "lighterColor", "Ovrl", "SftL", "HrdL", "vividLight", "linearLight", "pinLight", "hardMix", "Dfrn", "Xclu", "blendSubtraction", "blendDivide", "H   ", "Strt", "Clr ", "Lmns"]
@@ -53,13 +54,19 @@ enum PSDLayerStyles {
       throw CraftError.invalid("Invalid legacy layer effect padding or state.")
     }
   }
-  static func write(_ style: LayerStyle, sharedLight: GlobalLight? = nil, original: Data? = nil) throws -> Data {
+  static func write(_ style: LayerStyle, sharedLight: GlobalLight? = nil, original: Data? = nil,
+                    patterns: [RasterPattern] = []) throws -> Data {
     try style.validate()
-    guard !style.requiresAdvancedArchive else {throw CraftError.unsupported("Advanced effect controls/reference data require Photato until their editable PSD mapping is qualified.")}
-    if style.effects.contains(where: { $0.kind == .gradientOverlay }), let original,
+    let hasPattern = style.effects.contains { $0.kind == .patternOverlay }
+    guard style.sourcePSDData == nil, !style.effects.contains(where: { $0.advanced != nil }),
+          style.referenceOffset == nil || hasPattern else {
+      throw CraftError.unsupported("Advanced effect controls/reference data require Photato until their editable PSD mapping is qualified.")
+    }
+    if style.effects.contains(where: { $0.kind == .gradientOverlay || $0.kind == .patternOverlay }), let original,
       var decoded = try? read(original, globalAngle: style.lightAngle, globalAltitude: style.lightAltitude) {
       decoded.fillOpacity = style.fillOpacity
       decoded.restrictedChannels = style.restrictedChannels
+      decoded.referenceOffset = style.referenceOffset
       if decoded == style { return original }
     }
     var items: [PSDDescriptor.Item] = [.init("Scl ", unit(style.scale,"#Prc")), .init("masterFXSwitch", .boolean(style.enabled))]
@@ -72,7 +79,7 @@ enum PSDLayerStyles {
         var fields: [PSDDescriptor.Item] = [.init("enab", .boolean(effect.enabled)), .init("present", .boolean(true)),
           .init("showInDialog", .boolean(true)), .init("Md  ", enumValue("BlnM",blends[BlendMode.allCases.firstIndex(of: effect.blendMode)!])),
           .init("Opct", unit(Double(effect.opacity)*100,"#Prc"))]
-        if kind != .gradientOverlay { fields.append(.init("Clr ", try color(effect.color))) }
+        if kind != .gradientOverlay && kind != .patternOverlay { fields.append(.init("Clr ", try color(effect.color))) }
         if kind == .dropShadow || kind == .innerShadow {
           // Shared documents retain participation and the inactive local angle.
           // Standalone style encoding keeps its historical explicit-local fallback.
@@ -90,6 +97,11 @@ enum PSDLayerStyles {
             .init("Sz  ",unit(effect.size,"#Pxl")), .init("PntT",enumValue("FrFl","SClr"))]
         } else if kind == .gradientOverlay, let gradient = effect.gradient {
           fields += try PSDGradientFill.descriptor(gradient).items
+        } else if kind == .patternOverlay, let fill = effect.pattern {
+          guard let resource = patterns.first(where: { $0.id == fill.patternID }) else {
+            throw CraftError.invalid("Missing embedded Photoshop Pattern Overlay resource.")
+          }
+          fields += try PSDPatternFill.fields(fill, pattern: resource).items
         }
         return .object(PSDDescriptor(single,items:fields))
       }
@@ -97,7 +109,7 @@ enum PSDLayerStyles {
       else if !values.isEmpty { items.append(.init(multi,.list(values))) }
     }
     guard style.effects.allSatisfy({ effect in kinds.contains { $0.2 == effect.kind } }) else {
-      throw CraftError.unsupported("PSD interchange currently supports shadows, glows, solid strokes, color overlays and gradient overlays. Save other editable effects as Photato or export a flattened copy.")
+      throw CraftError.unsupported("PSD interchange currently supports shadows, glows, solid strokes, color overlays, gradient overlays and pattern overlays. Save other editable effects as Photato or export a flattened copy.")
     }
     return Data(repeating:0,count:4) + (try PSDDescriptor("null",items:items).encoded())
   }
@@ -145,6 +157,7 @@ enum PSDLayerStyles {
         case .innerGlow,.outerGlow: specific=["GlwT","Ckmt","blur","Nose","ShdN","AntA","TrnS","Inpr","glwS"]
         case .stroke: specific=["Styl","Sz  ","PntT","overprint"]
         case .gradientOverlay: specific=PSDGradientFill.descriptorKeys
+        case .patternOverlay: specific=PSDPatternFill.descriptorKeys
         default: specific=[]
         }
         try PSDGradient.supported(d,keys:common.union(specific))
@@ -159,6 +172,10 @@ enum PSDLayerStyles {
         if kind == .gradientOverlay {
           let fields = d.items.filter { PSDGradientFill.descriptorKeys.contains($0.key.text) }
           effect.gradient = try PSDGradientFill.readFields(PSDDescriptor("null", items: fields))
+        }
+        if kind == .patternOverlay {
+          let fields = d.items.filter { PSDPatternFill.descriptorKeys.contains($0.key.text) }
+          effect.pattern = try PSDPatternFill.readFields(PSDDescriptor("null", items: fields)).fill
         }
         if let raw=d["TrnS"] {
           guard case .object(let contour)=raw,case .list(let points)=contour["Crv "],points.count==2 else { throw CraftError.unsupported("Custom layer-effect contours are not represented.") }

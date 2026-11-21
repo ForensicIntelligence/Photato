@@ -128,6 +128,17 @@ public enum PSDCodec {
     }
   }
 
+  private static func matchesShapeAlpha(_ channel: PSDChannelReader, surface: Surface, depth: Int) throws -> Bool {
+    for y in 0..<surface.height {
+      try Task.checkCancellation()
+      let row = try channel.nextRow()
+      for x in 0..<surface.width {
+        if try PSDChannelCodec.sample(row, x, depth: depth) != surface.pixel(x: x, y: y).a { return false }
+      }
+    }
+    return true
+  }
+
   private static func storageBytes(width: Int, height: Int) -> Int {
     let side = Surface.tileSide
     return ((width + side - 1) / side) * ((height + side - 1) / side) * side * side * 16
@@ -973,7 +984,16 @@ public enum PSDCodec {
       layer.visible = record.visible
       layer.protection = record.protection
       layer.sourceTags = record.tags
-      if let data = record.tags["lmfx"] ?? record.tags["lfx2"] { layer.style = try PSDLayerStyles.read(data, globalAngle: styleGlobalAngle, globalAltitude: importedLight?.altitude ?? 30) }
+      if let data = record.tags["lmfx"] ?? record.tags["lfx2"] {
+        var style = try PSDLayerStyles.read(data, globalAngle: styleGlobalAngle,
+                                            globalAltitude: importedLight?.altitude ?? 30)
+        if style.effects.contains(where: { $0.kind == .patternOverlay }),
+           let stored = record.tags["fxrp"] {
+          let point = try PSDPatternFill.referencePoint(stored)
+          style.referenceOffset = PathPoint(point.x - Double(layer.x), point.y - Double(layer.y))
+        }
+        layer.style = style
+      }
       if let fill = record.tags["iOpa"]?.first, fill != 255 {
         if layer.style == nil { layer.style = LayerStyle() }
         layer.style?.fillOpacity = Float(fill)/255
@@ -993,8 +1013,15 @@ public enum PSDCodec {
         let emptyOpaque =
           metadata.bounds.empty && metadata.background == 255
           && metadata.flags == 8 && metadata.real == nil
+        var shapeCoverageCache = false
+        if hasLiveShape, metadata.flags == 8, metadata.background == 0, metadata.real == nil,
+           metadata.bounds.x == record.x, metadata.bounds.y == record.y,
+           metadata.bounds.width == record.w, metadata.bounds.height == record.h,
+           channelIDs.contains(-1), let cached = planes[-2] {
+          shapeCoverageCache = try matchesShapeAlpha(cached, surface: surface, depth: depth)
+        }
         guard metadata.vectorDensity == 255, metadata.vectorFeather == 0,
-          metadata.flags & 8 == 0 || emptyOpaque
+          metadata.flags & 8 == 0 || emptyOpaque || shapeCoverageCache
         else {
           throw CraftError.unsupported(
             "Rasterized vector-mask parameters are not yet editable in Photato.")
@@ -1623,11 +1650,35 @@ public enum PSDCodec {
       if let channels=layer.style?.restrictedChannels {
         extra.text("8BIM");extra.text("brst");extra.section(try PSDChannelBlending.write(channels))
       }
-      if let style = layer.style {
+      if var style = layer.style {
         let original = layer.sourceTags?["lmfx"] ?? layer.sourceTags?["lfx2"]
-        let data = try PSDLayerStyles.write(style, sharedLight: exportedLight, original: original)
-        extra.text("8BIM"); extra.text("lfx2"); extra.section(data)
-        if data.count % 2 != 0 { extra.n(0, 1) }
+        let linkedPatterns = style.effects.indices.filter {
+          style.effects[$0].kind == .patternOverlay && style.effects[$0].pattern?.linked == true
+        }
+        let anchoredPattern = style.referenceOffset != nil && style.effects.contains { $0.kind == .patternOverlay }
+        if !linkedPatterns.isEmpty || anchoredPattern {
+          let point = style.patternReference(in: layer)
+          if let stored = layer.sourceTags?["fxrp"] {
+            // This record is also used by legacy shape fills. Rebase the style's
+            // phase onto the retained point instead of shifting the shape fill.
+            let savedPoint = try PSDPatternFill.referencePoint(stored)
+            for index in linkedPatterns {
+              guard var pattern = style.effects[index].pattern else { continue }
+              pattern.placement = try pattern.flattenedPlacement()
+              pattern.geometry = nil
+              pattern.placement.phaseX += Float(point.x - savedPoint.x)
+              pattern.placement.phaseY += Float(point.y - savedPoint.y)
+              style.effects[index].pattern = pattern
+            }
+          } else {
+            extra.text("8BIMfxrp")
+            extra.section(try PSDPatternFill.referenceRecord(point))
+          }
+        }
+        let data = try PSDLayerStyles.write(style, sharedLight: exportedLight, original: original,
+                                            patterns: doc.patterns ?? [])
+        let aligned = data.count.isMultiple(of: 2) ? data : data + Data([0])
+        extra.text("8BIM"); extra.text("lfx2"); extra.section(aligned)
         extra.text("8BIM"); extra.text("iOpa"); extra.section(Data([UInt8((style.fillOpacity * 255).rounded()), 0, 0, 0]))
       }
       if case .gradientFill(let fill) = layer.content {

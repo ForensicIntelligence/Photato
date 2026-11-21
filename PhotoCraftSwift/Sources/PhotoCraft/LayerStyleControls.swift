@@ -74,6 +74,7 @@ extension EditorStore {
     if kind == .patternOverlay {
       guard let pattern = document.patterns?.first else { return }
       effect.pattern = PatternFill(patternID: pattern.id)
+      if draft.style.referenceOffset == nil { draft.style.referenceOffset = PathPoint(0, 0) }
     }
     draft.style.effects.append(effect); draft.selected = draft.style.effects.count - 1
     layerStyleDraft = draft; render()
@@ -82,6 +83,27 @@ extension EditorStore {
     guard var draft = layerStyleDraft, draft.style.effects.indices.contains(index) else { return }
     change(&draft.style.effects[index])
     layerStyleDraft = draft; render()
+  }
+  func setPatternOverlayLinked(_ index: Int, linked: Bool) {
+    guard var draft = layerStyleDraft, draft.style.effects.indices.contains(index),
+          var fill = draft.style.effects[index].pattern, fill.linked != linked,
+          let layer = document.layers.first(where: { $0.id == draft.id }) else { return }
+    if linked, draft.style.referenceOffset == nil { draft.style.referenceOffset = PathPoint(0, 0) }
+    let reference = draft.style.patternReference(in: layer)
+    let sign: Double = linked ? -1 : 1
+    // Changing which coordinate system owns the phase leaves it in place.
+    if var geometry = fill.geometry {
+      geometry.tx += sign * reference.x
+      geometry.ty += sign * reference.y
+      fill.geometry = geometry
+    } else {
+      fill.placement.phaseX += Float(sign * reference.x)
+      fill.placement.phaseY += Float(sign * reference.y)
+    }
+    fill.linked = linked
+    draft.style.effects[index].pattern = fill
+    layerStyleDraft = draft
+    render()
   }
   func removeLayerEffect() {
     guard var draft = layerStyleDraft, draft.style.effects.indices.contains(draft.selected) else { return }
@@ -148,6 +170,11 @@ struct LayerStyleSheet: View {
       guard effect != nil else { return }
       let index = selected, newValue = $0
       store.updateLayerEffect(index) { $0[keyPath: key] = newValue }
+    })
+  }
+  func overlayPatternValue(_ key: WritableKeyPath<PatternPlacement, Float>, _ fallback: Float) -> Binding<Double> {
+    Binding(get: { Double(effect?.pattern?.placement[keyPath: key] ?? fallback) }, set: { value in
+      store.updateLayerEffect(selected) { $0.pattern?.placement[keyPath: key] = Float(value) }
     })
   }
   func sharedLight(_ key:WritableKeyPath<GlobalLight,Double>)->Binding<Double> {
@@ -307,9 +334,11 @@ struct LayerStyleSheet: View {
       Picker("Pattern", selection: Binding(get: { effect.pattern?.patternID ?? "" }, set: {
         let id = $0; store.updateLayerEffect(selected) { $0.pattern?.patternID = id }
       })) { ForEach(store.document.patterns ?? [], id: \.id) { Text($0.name).tag($0.id) } }
-      numeric("Pattern Scale (%)", Binding(get: { Double(effect.pattern?.placement.scale ?? 1) * 100 }, set: {
-        let scale = Float($0 / 100); store.updateLayerEffect(selected) { $0.pattern?.placement.scale = scale }
-      }), 1...1000)
+      numeric("Pattern Scale (%)", overlayPatternValue(\.scale, 100), 1...1000)
+      numeric("Pattern Angle", overlayPatternValue(\.angle, 0), -180...180)
+      Toggle("Link with Layer", isOn: Binding(get: { self.effect?.pattern?.linked ?? false }, set: {
+        store.setPatternOverlayLinked(selected, linked: $0)
+      }))
     }
   }
   private var validationError: String? {

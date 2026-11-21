@@ -111,6 +111,43 @@ final class LayerStyleWorkflowTests: XCTestCase {
       XCTAssertEqual(shared.store.session.undoStack.count, 1)
     }
   }
+  @MainActor func testNativePatternOverlayPercentAndAPIPSDDownloads() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      var artwork = shared.store.document
+      var tile = try Surface(width: 4, height: 4, fill: .white)
+      tile.setPixel(x: 0, y: 0, .black)
+      artwork.patterns = [try RasterPattern(name: "Owned style pattern", surface: tile)]
+      shared.store.session = EditorSession(document: artwork)
+      shared.store.beginLayerStyle(.patternOverlay)
+      let sheet = LayerStyleSheet(store: shared.store)
+      XCTAssertEqual(sheet.overlayPatternValue(\.scale, 100).wrappedValue, 100)
+      sheet.overlayPatternValue(\.scale, 100).wrappedValue = 200
+      sheet.overlayPatternValue(\.angle, 0).wrappedValue = 30
+      shared.store.setPatternOverlayLinked(0, linked: false)
+      shared.store.commitLayerStyle()
+      let document = shared.store.document
+      let effect = try XCTUnwrap(document.layers.first?.style?.effects.first)
+      XCTAssertEqual(effect.kind, .patternOverlay)
+      XCTAssertEqual(effect.pattern?.placement.scale, 200)
+      XCTAssertEqual(effect.pattern?.placement.angle, 30)
+      XCTAssertEqual(effect.pattern?.linked, false)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(shared)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      for (suffix, format) in [("psd", DocumentIO.Format.psd), ("psb", .psb)] {
+        let saved = try DocumentIO.encode(document, format: format)
+        let download = try await helper.request(service, path: "/v1/documents/\(id)/file.\(suffix)")
+        XCTAssertEqual(download.0.statusCode, 200)
+        XCTAssertEqual(download.1, saved)
+        let reopened = try PSDCodec.read(saved)
+        XCTAssertEqual(reopened.layers.first?.style?.effects.first, effect)
+        XCTAssertEqual(try Renderer.composite(reopened), try Renderer.composite(document))
+      }
+      XCTAssertEqual(shared.store.session.undoStack.count, 1)
+    }
+  }
+
   func testAdobeDropShadowEditsUseNativeModelAndStrictContract() throws {
     let original=try CraftDocument(width:24,height:24);var session=EditorSession(document:original)
     let raw:[String:Any] = ["name":original.layers[0].name,"operation":["type":"edit"],"layerEffects":["dropShadow":[["distance":9,"opacity":80,"useGlobalLight":false,"angle":-45,"color":["rgb":["red":255,"green":0,"blue":0]]]]]]

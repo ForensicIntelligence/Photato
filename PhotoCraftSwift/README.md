@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 687.** Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles. [Qualification](docs/SOURCE_PUBLICATION_687.md).
+
 **Source checkpoint 686.** Legacy RGB8 shape patterns now use rounded half-size tiles and quantized corner interpolation in supported cases. [Qualification](docs/SOURCE_PUBLICATION_686.md).
 
 **Source checkpoint 685.** Plain Normal RGB8 shape layers round effective and accumulated alpha at each layer. Supported legacy pattern shapes retain editable phase and the original reference point in PSD and PSB. [Qualification](docs/SOURCE_PUBLICATION_685.md).

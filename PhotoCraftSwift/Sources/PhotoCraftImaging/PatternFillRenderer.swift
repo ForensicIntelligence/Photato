@@ -8,7 +8,8 @@ struct PatternFillSampler {
   }
   private let sampling: Sampling
   private let inverse: Transform2D
-  init(_ fill: PatternFill, in document: CraftDocument, legacyShapeGrid: Bool = false) throws {
+  init(_ fill: PatternFill, in document: CraftDocument, legacyShapeGrid: Bool = false,
+       origin: PathPoint = PathPoint(0, 0)) throws {
     guard let pattern = document.pattern(fill.patternID) else {
       throw CraftError.invalid("Missing embedded pattern.")
     }
@@ -17,7 +18,20 @@ struct PatternFillSampler {
     } else {
       sampling = .continuous(try PatternSampler(pattern, placement: fill.placement))
     }
-    inverse = try (fill.geometry ?? .identity).inverted()
+    inverse = try (Transform2D.translation(origin.x, origin.y) * (fill.geometry ?? .identity)).inverted()
+  }
+
+  static func overlay(_ fill: PatternFill, style: LayerStyle, layer: Layer, in document: CraftDocument) throws -> Self {
+    let origin = fill.linked ? style.patternReference(in: layer) : PathPoint(0, 0)
+    let aligned = fill.geometry == nil && origin.x.rounded() == origin.x && origin.y.rounded() == origin.y
+    return try Self(fill, in: document, legacyShapeGrid: aligned && document.colorMode == .rgb && document.depth == .u8,
+                    origin: origin)
+  }
+
+  static func overlayOpacity(_ effect: LayerEffect, in document: CraftDocument) -> Float {
+    guard effect.kind == .patternOverlay, effect.advanced == nil, effect.blendMode == .normal,
+          document.colorMode == .rgb, document.depth == .u8 else { return effect.opacity }
+    return PixelDepth.u8.quantize(effect.opacity)
   }
   func sample(x: Double, y: Double) -> Pixel {
     let p = inverse.point(x, y)
@@ -53,12 +67,20 @@ private struct LegacyPatternGrid {
     var tile = pattern.surface
     for _ in 0..<reduction.trailingZeroBitCount {
       var half = try Surface(width: tile.width / 2, height: tile.height / 2, fill: tile.defaultPixel)
-      for y in 0..<half.height {
+      let side = Surface.tileSide
+      let columns = (tile.width + side - 1) / side
+      // Even-sized input tiles map to disjoint 2 × 2 reduction footprints.
+      // Missing tiles reduce to the existing implicit color.
+      for key in tile.storedTileKeys {
         try Task.checkCancellation()
-        for x in 0..<half.width {
-          half.setPixel(x: x, y: y, Self.average(
-            tile.pixel(x: 2 * x, y: 2 * y), tile.pixel(x: 2 * x + 1, y: 2 * y),
-            tile.pixel(x: 2 * x, y: 2 * y + 1), tile.pixel(x: 2 * x + 1, y: 2 * y + 1)))
+        let left = key % columns * side
+        let top = key / columns * side
+        for y in (top / 2)..<(min(top + side, tile.height) / 2) {
+          for x in (left / 2)..<(min(left + side, tile.width) / 2) {
+            half.setPixel(x: x, y: y, Self.average(
+              tile.pixel(x: 2 * x, y: 2 * y), tile.pixel(x: 2 * x + 1, y: 2 * y),
+              tile.pixel(x: 2 * x, y: 2 * y + 1), tile.pixel(x: 2 * x + 1, y: 2 * y + 1)))
+          }
         }
       }
       tile = half

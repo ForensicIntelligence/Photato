@@ -50,6 +50,10 @@ The existing PSD and PSB upload and Adobe Execute Actions job paths restore nest
 
 [Development record](PSD_LEGACY_SHAPES_642.md).
 
+### Editable Photoshop Pattern Overlay (checkpoint 687)
+
+`documentTransfers.photoshopContainers.editableLayerEffects.patternOverlay` describes editable single Pattern Overlay interchange. The existing `layer.style` and `layer.style.patch` commands use the native style model. PSD and PSB download preserve embedded tiles, reference point, scale, angle, link, opacity and blend mode. [Development record](EDITABLE_PATTERN_OVERLAY_687.md)
+
 ### Legacy shape pattern scaling (checkpoint 686)
 
 `documentTransfers.photoshopContainers.liveShapes.legacyRGB8PatternGrid` describes the scaled legacy pattern tile behavior. Existing `shape.edit`, preview and PSD/PSB import and download share the desktop renderer and retain editable scale and phase. [Development record](LEGACY_PATTERN_SCALING_686.md)

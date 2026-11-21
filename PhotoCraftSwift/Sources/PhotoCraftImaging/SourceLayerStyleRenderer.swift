@@ -79,15 +79,6 @@ enum SourceLayerStyleRenderer {
     var plain=layer;plain.style=nil;plain.opacity=1;plain.blendMode = .normal
     var content=try Renderer.isolatedContent(plain,in:document,cache:cache)
     if !clips.isEmpty {content=try Renderer.compositeClips(clips,onto:content,in:document,cache:cache)}
-    let linear=document.depth == .f32
-    func read(_ s:Surface,_ x:Int,_ y:Int)->Pixel {linear ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)}
-    var shape=SourceEffectMap(mw,mh),body=[Pixel](repeating:.clear,count:n),before=body
-    var x0=w,y0=h,x1=0,y1=0
-    for y in 0..<h {try Task.checkCancellation();for x in 0..<w {
-      let i=y*w+x,p=read(content,x,y);shape.v[(y+pad)*mw+x+pad]=p.a;body[i]=Pixel(p.r,p.g,p.b,p.a>SourceEffectMap.insideEPS ? style.fillOpacity:0);before[i]=read(backdrop,x,y)
-      if p.a>SourceEffectMap.insideEPS {x0=min(x0,x);y0=min(y0,y);x1=max(x1,x+1);y1=max(y1,y+1)}
-    }}
-    let shapeBounds=x1>x0 && y1>y0 ? IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0):IntRect(x:0,y:0,width:w,height:h)
     let frame:IntRect
     if let frameOverride {frame=frameOverride}
     else if case .fill=layer.content {frame=IntRect(x:0,y:0,width:w,height:h)}
@@ -97,6 +88,28 @@ enum SourceLayerStyleRenderer {
       let pixels=try Renderer.layerSurface(plain,in:document),bounds=try sourceBounds(pixels) ?? IntRect(x:0,y:0,width:1,height:1)
       frame=try (layer.coordinateTransform * .translation(Double(bounds.x),Double(bounds.y))).bounds(width:bounds.width,height:bounds.height)
     }
+    return try compositePrepared(layer, style: style, effects: effects, scale: scale, content: content,
+                                 frame: frame, pad: pad, in: document, over: backdrop, region: region)
+  }
+
+  // Isolating styled content can call the compositor again. Allocate the
+  // effect maps and assemble the effect stack only after it returns.
+  @inline(never)
+  private static func compositePrepared(
+    _ layer: Layer, style: LayerStyle, effects: [LayerEffect], scale: Float, content: Surface,
+    frame: IntRect, pad: Int, in document: CraftDocument, over backdrop: Surface, region: IntRect
+  ) throws -> Surface {
+    let w = document.width, h = document.height, n = w * h
+    let mw = w + 2 * pad, mh = h + 2 * pad
+    let linear=document.depth == .f32
+    func read(_ s:Surface,_ x:Int,_ y:Int)->Pixel {linear ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y)}
+    var shape=SourceEffectMap(mw,mh),body=[Pixel](repeating:.clear,count:n),before=body
+    var x0=w,y0=h,x1=0,y1=0
+    for y in 0..<h {try Task.checkCancellation();for x in 0..<w {
+      let i=y*w+x,p=read(content,x,y);shape.v[(y+pad)*mw+x+pad]=p.a;body[i]=Pixel(p.r,p.g,p.b,p.a>SourceEffectMap.insideEPS ? style.fillOpacity:0);before[i]=read(backdrop,x,y)
+      if p.a>SourceEffectMap.insideEPS {x0=min(x0,x);y0=min(y0,y);x1=max(x1,x+1);y1=max(y1,y+1)}
+    }}
+    let shapeBounds=x1>x0 && y1>y0 ? IntRect(x:x0,y:y0,width:x1-x0,height:y1-y0):IntRect(x:0,y:0,width:w,height:h)
     let reference=style.referenceOffset.map{layer.coordinateTransform.point($0.x,$0.y)},anchor=reference.map{PathPoint($0.x,$0.y)} ?? PathPoint(Double(frame.x),Double(frame.y)),sampler=SourceEffectSampler(document:document,anchor:anchor)
     let originalLight=document.globalLight ?? GlobalLight(angle:style.lightAngle,altitude:style.lightAltitude)
     let light=GlobalLight(angle:PSDGlobalLight.angle(originalLight.angle),altitude:originalLight.altitude)
@@ -118,7 +131,7 @@ enum SourceLayerStyleRenderer {
       if effect.kind == .stroke {let grow=max(0,Int(ceil(min(widths(effect,scale:scale).1,512)))-1);paintFrame=IntRect(x:shapeBounds.x-grow,y:shapeBounds.y-grow,width:shapeBounds.width+2*grow,height:shapeBounds.height+2*grow)}else{paintFrame=frame}
       let paint:SourceEffectSampler.Shader
       if effect.advanced == nil,let g=effect.gradient {paint = .legacyGradient(try GradientFillSampler(g,layer:layer,document:document))}
-      else if effect.advanced == nil,let p=effect.pattern {paint = .legacyPattern(try PatternFillSampler(p,in:document))}
+      else if effect.advanced == nil,let p=effect.pattern {paint = .legacyPattern(try PatternFillSampler.overlay(p,style:style,layer:layer,in:document))}
       else {paint=sampler.prepare(effect,advanced:advanced,frame:paintFrame)}
       prepared.append(Prepared(effect:effect,advanced:advanced,paint:paint,map:map,bevel:bevel))
     }
@@ -143,7 +156,8 @@ enum SourceLayerStyleRenderer {
     for p in prepared.reversed() where p.effect.kind == .outerGlow {try paint(&work,shader:p.paint,mode:p.effect.blendMode,opacity:p.effect.opacity,coverage:{p.map!.v[mi($0)]})}
     for kind:LayerEffect.Kind in [.patternOverlay,.gradientOverlay,.colorOverlay,.satin,.innerGlow,.innerShadow] {
       for p in prepared.reversed() where p.effect.kind == kind {
-        try paint(&body,shader:p.paint,mode:p.effect.blendMode,opacity:p.effect.opacity,coverage:{i in p.map.map{relative($0,i)} ?? (alpha(i)>SourceEffectMap.insideEPS ? 1:0)})
+        let opacity = PatternFillSampler.overlayOpacity(p.effect, in: document)
+        try paint(&body,shader:p.paint,mode:p.effect.blendMode,opacity:opacity,coverage:{i in p.map.map{relative($0,i)} ?? (alpha(i)>SourceEffectMap.insideEPS ? 1:0)})
       }
     }
     let strokes=prepared.filter{$0.effect.kind == .stroke},din=strokes.isEmpty ? []:try shape.inside(chamfer:true),dout=strokes.isEmpty ? []:try shape.outside(chamfer:true)

@@ -137,6 +137,62 @@ final class LayerStyleTests: XCTestCase {
       }
     }
   }
+  func testPhotoshopPatternOverlaysStayEditableWithOriginalReferences() throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+      .appendingPathComponent("Fixtures/reference-patterns.psd")
+    let document = try PSDCodec.read(fixture)
+    let overlays = document.layers.filter { $0.style?.effects.first?.kind == .patternOverlay }
+    XCTAssertEqual(overlays.count, 6)
+    XCTAssertEqual(document.layers.count, 13)
+    for layer in overlays {
+      let style = try XCTUnwrap(layer.style), effect = try XCTUnwrap(style.effects.first)
+      let pattern = try XCTUnwrap(effect.pattern)
+      XCTAssertEqual(effect.opacity, 0.5)
+      XCTAssertEqual(pattern.placement.scale, 200)
+      XCTAssertTrue(pattern.linked)
+      XCTAssertNotNil(document.pattern(pattern.patternID))
+      let rawPoint = try PSDPatternFill.referencePoint(XCTUnwrap(layer.sourceTags?["fxrp"]))
+      XCTAssertEqual(style.patternReference(in: layer), rawPoint)
+    }
+    let composite = try Renderer.composite(document)
+    // Values sampled directly from the saved RGB planes of reference-patterns.psd.
+    let reference: [(Int, Int, [UInt8])] = [
+      (22, 142, [177, 177, 177]), (23, 143, [176, 176, 176]), (26, 148, [233, 233, 233]),
+      (81, 142, [105, 105, 105]), (82, 143, [169, 169, 169]), (85, 148, [233, 233, 233]),
+      (140, 142, [233, 233, 233]), (141, 143, [233, 233, 233]), (144, 148, [169, 169, 169]),
+      (199, 142, [233, 233, 233]), (200, 143, [233, 233, 233]), (203, 148, [233, 233, 233]),
+      (22, 201, [125, 105, 157]), (23, 202, [122, 105, 150]), (26, 207, [132, 125, 197]),
+      (81, 201, [199, 197, 106]), (82, 202, [196, 193, 106]), (85, 207, [198, 195, 127]),
+    ]
+    for (x, y, rgb) in reference {
+      let p = composite.pixel(x: x, y: y)
+      XCTAssertEqual([p.r, p.g, p.b].map { UInt8((unit($0) * 255).rounded()) }, rgb, "At \(x),\(y)")
+    }
+    XCTAssertEqual(try NativeArchive.decode(NativeArchive.encode(document)), document)
+    let active = try XCTUnwrap(overlays.last)
+    var style = try XCTUnwrap(active.style)
+    style.effects[0].pattern?.placement.phaseX = 3.5
+    style.effects[0].pattern?.placement.angle = 20
+    var session = EditorSession(document: document)
+    try session.execute(.layerStyle([active.id], style))
+    for format in PSDFileFormat.allCases {
+      let pristine = try PSDCodec.read(PSDCodec.writeRasterLayers(document, format: format))
+      XCTAssertEqual(try Renderer.composite(pristine), composite)
+      for layer in overlays {
+        let restored = try XCTUnwrap(pristine.layers.first { $0.name == layer.name })
+        XCTAssertEqual(restored.sourceTags?["fxrp"], layer.sourceTags?["fxrp"])
+        XCTAssertEqual(restored.sourceTags?["lfx2"], layer.sourceTags?["lfx2"])
+        XCTAssertEqual(restored.style, layer.style)
+      }
+      let edited = try PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: format))
+      let editedLayer = try XCTUnwrap(edited.layers.first { $0.name == active.name })
+      XCTAssertEqual(editedLayer.style, style)
+      XCTAssertEqual(try Renderer.composite(edited), try Renderer.composite(session.document))
+    }
+    try session.undo()
+    XCTAssertEqual(session.document, document)
+  }
+
   func testStrictValidationLocksAndMergePreventSilentLoss() throws {
     for json in [#"{"bogus":1}"#, #"{"effects":[{"kind":"unknown"}]}"#, #"{"effects":[{"kind":"dropShadow","size":true}]}"#,
       #"{"effects":[{"kind":"gradientOverlay"}]}"#, #"{"effects":[{"kind":"stroke","size":251}]}"#] {

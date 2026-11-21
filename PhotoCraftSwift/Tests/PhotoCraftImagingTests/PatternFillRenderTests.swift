@@ -104,16 +104,6 @@ final class PatternFillRenderTests: XCTestCase {
       ?? Self.root.appendingPathComponent("artifacts/pattern-fill-reference.json")
     try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])
       .write(to: reportURL, options: .atomic)
-    let unsupported = try XCTUnwrap(
-      Bundle.module.url(
-        forResource: "reference-patterns", withExtension: "psd", subdirectory: "Fixtures"))
-    XCTAssertThrowsError(try PSDCodec.read(Data(contentsOf: unsupported))) { error in
-      // Live shape origination is admitted now. This file still contains a
-      // gradient descriptor with a patternFill setting the codec cannot edit.
-      XCTAssertEqual(
-        error as? CraftError,
-        .unsupported("Gradient descriptor contains unrepresented settings: patternFill."))
-    }
   }
   func testMaskedPatternRegionalRenderAndRegistryChangeInvalidatesCache() throws {
     for depth in PixelDepth.allCases {

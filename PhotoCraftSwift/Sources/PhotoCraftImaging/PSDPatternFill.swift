@@ -2,6 +2,7 @@ import Foundation
 import PhotoCraftCore
 
 enum PSDPatternFill {
+  static let descriptorKeys: Set<String> = ["Ptrn", "Scl ", "Angl", "Algn", "phase"]
   struct Definition: Equatable {
     var name: String
     var fill: PatternFill
@@ -37,11 +38,13 @@ enum PSDPatternFill {
     return fill
   }
   static func read(_ data: Data) throws -> Definition {
-    let descriptor = try PSDDescriptor.read(data, padding: true)
-    let allowed: Set<String> = ["Ptrn", "Scl ", "Angl", "Algn", "phase"]
+    try readFields(PSDDescriptor.read(data, padding: true))
+  }
+
+  static func readFields(_ descriptor: PSDDescriptor) throws -> Definition {
     guard ["null", "patternLayer"].contains(descriptor.classID.text),
       Set(descriptor.items.map { $0.key.text }).count == descriptor.items.count,
-      descriptor.items.allSatisfy({ allowed.contains($0.key.text) }),
+      descriptor.items.allSatisfy({ descriptorKeys.contains($0.key.text) }),
       case .object(let reference) = descriptor["Ptrn"], reference.classID.text == "Ptrn",
       reference.items.count == 2,
       case .text(let name) = reference["Nm  "], case .text(let id) = reference["Idnt"]
@@ -90,6 +93,14 @@ enum PSDPatternFill {
   static func write(_ fill: PatternFill, pattern: RasterPattern, original: Data? = nil) throws
     -> Data
   {
+    let descriptor = try fields(fill, pattern: pattern)
+    if let original, let decoded = try? read(original), decoded == (try readFields(descriptor)) {
+      return original
+    }
+    return try descriptor.encoded()
+  }
+
+  static func fields(_ fill: PatternFill, pattern: RasterPattern) throws -> PSDDescriptor {
     var normalized = fill
     normalized.placement = try fill.flattenedPlacement()
     normalized.geometry = nil
@@ -97,11 +108,6 @@ enum PSDPatternFill {
       throw CraftError.invalid("Mismatched Pattern Fill reference.")
     }
     try normalized.validate()
-    if let original, let decoded = try? read(original),
-      decoded == Definition(name: pattern.name, fill: normalized)
-    {
-      return original
-    }
     func text(_ string: String) -> PSDValue { .text(Array(string.utf16) + [0]) }
     let ref = PSDDescriptor(
       "Ptrn", items: [.init("Nm  ", text(pattern.name)), .init("Idnt", text(pattern.id))])
@@ -111,7 +117,7 @@ enum PSDPatternFill {
         .init("Hrzn", .number(Double(normalized.placement.phaseX))),
         .init("Vrtc", .number(Double(normalized.placement.phaseY))),
       ])
-    return try PSDDescriptor(
+    return PSDDescriptor(
       "null",
       items: [
         .init("Scl ", .unit(Data("#Prc".utf8), Double(normalized.placement.scale).bitPattern)),
@@ -119,7 +125,27 @@ enum PSDPatternFill {
         .init("Angl", .unit(Data("#Ang".utf8), Double(normalized.placement.angle).bitPattern)),
         .init("Algn", .boolean(normalized.linked)), .init("phase", .object(phase)),
       ]
-    ).encoded()
+    )
+  }
+
+  static func referencePoint(_ data: Data) throws -> PathPoint {
+    var reader = PSDReader(data: data)
+    let x = Double(bitPattern: try reader.number(8))
+    let y = Double(bitPattern: try reader.number(8))
+    guard reader.remaining == 0, x.isFinite, y.isFinite, abs(x) <= 1_000_000, abs(y) <= 1_000_000 else {
+      throw CraftError.invalid("Invalid Photoshop pattern reference point.")
+    }
+    return PathPoint(x, y)
+  }
+
+  static func referenceRecord(_ point: PathPoint) throws -> Data {
+    guard point.x.isFinite, point.y.isFinite, abs(point.x) <= 1_000_000, abs(point.y) <= 1_000_000 else {
+      throw CraftError.invalid("Invalid Photoshop pattern reference point.")
+    }
+    var writer = PSDWriter()
+    writer.n(Int(truncatingIfNeeded: point.x.bitPattern), 8)
+    writer.n(Int(truncatingIfNeeded: point.y.bitPattern), 8)
+    return writer.data
   }
 }
 

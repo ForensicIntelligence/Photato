@@ -93,6 +93,11 @@ public struct LayerStyle: Codable, Equatable, Sendable {
   public var lightAltitude: Double = 30
   public var effects: [LayerEffect] = []
   public init(effects: [LayerEffect] = []) { self.effects = effects }
+  package func patternReference(in layer: Layer) -> PathPoint {
+    guard let referenceOffset else { return PathPoint(0, 0) }
+    let point = layer.coordinateTransform.point(referenceOffset.x, referenceOffset.y)
+    return PathPoint(point.x, point.y)
+  }
   public var estimatedBytes: Int { (sourcePSDData?.count ?? 0) + effects.reduce(256) { $0 + 1024 + ($1.advanced?.estimatedBytes ?? 0) + ($1.gradient?.gradient.colors.count ?? 0) * 96 + ($1.gradient?.gradient.opacity.count ?? 0) * 32 } }
   public var hasEffects: Bool { enabled && effects.contains { $0.enabled && $0.opacity > 0 } }
   public func validate(in document: CraftDocument? = nil) throws {

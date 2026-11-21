@@ -143,7 +143,10 @@ extension AutomationService {
           "legacyRGB8PatternGrid": "Pixel-aligned opaque legacy RGB8 shape patterns use rounded half-size tile stages and corner-grid interpolation at 1/256 texel steps where the embedded tile supports the reduction. Editable scale, phase and embedded samples are retained.",
           "normalRGB8Opacity": "Unmasked Normal RGB8 shapes on the pixel grid round effective source alpha and accumulated alpha at each layer. The shared compositor supplies preview and save output.",
           "retainsImportAppearance": true],
-        "editableLayerEffects": ["gradientOverlay": "Editable standard Gradient Overlay color stops, transparency stops, blend mode and placement in PSD and PSB. Native and API file transfers use the same codec."],
+        "editableLayerEffects": [
+          "gradientOverlay": "Editable standard Gradient Overlay color stops, transparency stops, blend mode and placement in PSD and PSB.",
+          "patternOverlay": "Editable single Pattern Overlay with embedded tile, scale, angle, linked phase, blend mode and opacity in PSD and PSB. Native and API file transfers use the same codec."
+        ],
         "generatedEmbeddedPSB": ["maximumBytes": SmartObject.maximumArchive95SourceBytes,
           "maximumFileBackedBytes": SmartObject.maximumFileBackedSourceBytes,
           "previewOrder": ["raw", "rle", "compatibilityOffRGB"],

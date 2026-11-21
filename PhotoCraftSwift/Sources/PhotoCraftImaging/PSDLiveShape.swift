@@ -307,13 +307,8 @@ enum PSDLiveShape {
 
   private static func legacyPatternReference(_ tags: [String: Data]) throws -> Transform2D {
     guard let data = tags["fxrp"] else { return .identity }
-    var reference = PSDReader(data: data)
-    let x = Double(bitPattern: try reference.number(8))
-    let y = Double(bitPattern: try reference.number(8))
-    guard reference.remaining == 0, x.isFinite, y.isFinite, abs(x) <= 1_000_000, abs(y) <= 1_000_000 else {
-      throw CraftError.invalid("Invalid Photoshop pattern reference point.")
-    }
-    return .translation(x, y)
+    let point = try PSDPatternFill.referencePoint(data)
+    return .translation(point.x, point.y)
   }
 
   private static func photoshopPattern(_ fill: PatternFill, layer: Layer, document: CraftDocument)

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **686** · The 10 most recent entries, newest first.
+Source build **687** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 687 — Keep Pattern Overlay editable in PSD and PSB
+
+Photato now opens and saves supported Photoshop Pattern Overlays as editable layer effects with embedded tiles.
+
+The Photoshop-authored document retained all 13 layers, six editable overlays, and all 196,608 merged RGB bytes in unchanged PSD and PSB exports. Changes to all six overlays reopened with their revised settings. The four exports were byte-identical across build configurations.
+
+446 of 449 selected tests passed in each configuration, including Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three failures repeated on build 686 with the same assertions. Both signed macOS 14+ preview slices launched offscreen. The Photoshop color comparison covers the authored linked Normal overlays at 200% and 50% opacity. The existing style renderer still limits canvas area to 8,388,608 pixels. Other blend modes, rotated and fractional placement, and live Photoshop 2026 reopening require further comparison.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-687) · [Details](PhotoCraftSwift/docs/EDITABLE_PATTERN_OVERLAY_687.md).
 
 ## 2026-11-20 — Step 686 — Match sampled Photoshop legacy pattern scales
 
@@ -77,11 +87,3 @@ Select several whole components on one path and align their edges, distribute th
 All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop layout comparison, exact Adobe-produced file bytes, arbitrary live origins and shapes outside the supported PSD paint and stroke settings remain open. Native Photato archives retain the edited curves.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-678) · [Details](PhotoCraftSwift/docs/PATH_COMPONENT_LAYOUT_678.md).
-
-## 2026-11-20 — Step 677 — Isolate a path’s layer while editing
-
-Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
-
-All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison and physical Intel and macOS 14 testing remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-677) · [Details](PhotoCraftSwift/docs/PATH_ISOLATION_677.md).
