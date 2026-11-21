@@ -379,14 +379,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:713 -->
+<!-- current-status-step:714 -->
 ## Current development status — 21 November 2026
 
-Edit → Prompt to Edit and the canvas action use the selected pixel layer and a text instruction to create alternatives on this Mac. The new editable Smart Object preserves the original layer and source alpha. The original is hidden and can be restored in one Undo. Generate More uses the saved reference. Edit This Variation starts from a chosen result. The Photato HTTP API shares the same edit and history.
+Generate Image accepts an optional reference. Style transfers colours and textures to the image described by the prompt. Composition uses edges to guide layout during generation. Photato keeps the reference with the editable Smart Object for Generate More and Generate Similar. The authenticated Photato API uses the same edit and history.
 
-536 of 537 selected regressions passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same layer-effect reference method repeated its existing assertions in every configuration. All three new format and editing tests passed. The Debug result combines the original selection with a rerun of all nine menu cases on the unchanged app executable and the corrected test fixture. The separate real-model test passed on Apple Silicon Debug. The Xcode target built, both signed universal slices opened offscreen, and a signed sandbox harness reproduced the variation and composite PNGs byte for byte. The existing Generate Image model passed its real native/API regression. The offscreen workspace and Light and Dark prompt sheets showed the instruction, model, and variation controls.
+538 of 539 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both added regression cases passed. The existing layer-effect reference case reproduced the same 118 assertions in all three configurations. The Debug result includes 15 reruns on the unchanged bundle after restoring the test output folder. The Xcode project built and both signed universal slices opened offscreen.
 
-[Source checkpoint 713](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713).
+[Source checkpoint 714](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_714.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-714).
 
 <!-- current-status:end -->
 
@@ -1306,5 +1306,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 711 | [Match a subject to its background with editable Harmonize variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) |
 | 2026-11-21 | 712 | [Generate editable images from a text prompt on-device](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) |
 | 2026-11-21 | 713 | [Edit a whole image with local instructions and saved variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) |
+| 2026-11-21 | 714 | [Guide Generate Image with Style and Composition references](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-714) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

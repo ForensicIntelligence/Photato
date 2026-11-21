@@ -22,6 +22,18 @@ enum GenerativeFillAPI {
 
   static var parameters: [String: Any] { BrushAPI.object(options, required: []) }
 
+  static var imageParameters: [String: Any] {
+    let reference = BrushAPI.object([
+      "use": ["type": "string", "enum": LocalGenerationGuide.Kind.allCases.map(\.rawValue)],
+      "dataBase64": ["type": "string", "minLength": 1, "maxLength": ImageGenerationReference.maximumBase64Characters]
+    ], required: ["use", "dataBase64"])
+    return BrushAPI.object(options.merging(["referenceImage": reference]) { first, _ in first }, required: [])
+  }
+
+  private static var referenceUse: [String: Any] {
+    ["type": "string", "enum": LocalGenerationGuide.Kind.allCases.map(\.rawValue)]
+  }
+
   static var promptEditParameters: [String: Any] {
     BrushAPI.object(options.merging(["sourceLayerID": VariablesAPI.uuid]) { first, _ in first }, required: [])
   }
@@ -31,7 +43,9 @@ enum GenerativeFillAPI {
       "supported": BrushAPI.flag, "modelConfigured": BrushAPI.flag, "canGenerate": BrushAPI.flag,
       "promptModelConfigured": BrushAPI.flag, "canGenerateFromPrompt": BrushAPI.flag,
       "operationID": VariablesAPI.nullableUUID,
-      "localImage": BrushAPI.object(["canGenerate": BrushAPI.flag], required: ["canGenerate"]),
+      "localImage": BrushAPI.object(["canGenerate": BrushAPI.flag,
+        "referenceModels": BrushAPI.object(["style": BrushAPI.flag, "composition": BrushAPI.flag],
+          required: ["style", "composition"])], required: ["canGenerate", "referenceModels"]),
       "promptEdit": BrushAPI.object(["sourceLayerID": VariablesAPI.nullableUUID, "modelConfigured": BrushAPI.flag,
         "canEdit": BrushAPI.flag], required: ["sourceLayerID", "modelConfigured", "canEdit"]),
       "localBackground": BrushAPI.object(["foregroundLayerID": VariablesAPI.nullableUUID, "canGenerate": BrushAPI.flag],
@@ -40,6 +54,7 @@ enum GenerativeFillAPI {
         "layerID": VariablesAPI.uuid, "selectedID": VariablesAPI.uuid,
         "prompt": ["type": "string"], "model": ["type": "string"],
         "canGenerateMore": BrushAPI.flag, "canGenerateSimilar": BrushAPI.flag,
+        "referenceUse": ["anyOf": [referenceUse, ["type": "null"]]],
         "entries": ["type": "array", "items": BrushAPI.object([
           "id": VariablesAPI.uuid, "seed": ["type": "integer", "minimum": 0, "maximum": UInt32.max],
           "prompt": ["type": "string"], "referenceVariationID": VariablesAPI.nullableUUID
@@ -52,6 +67,9 @@ enum GenerativeFillAPI {
   static var capabilities: [String: Any] {
     ["command": run, "expandCommand": expand, "backgroundCommand": background, "imageCommand": image,
      "promptEditCommand": promptEdit,
+     "imageReference": ["uses": LocalGenerationGuide.Kind.allCases.map(\.rawValue),
+       "maximumBytes": ImageGenerationReference.maximumBytes, "requiresDocumentTransfers": true,
+       "savedWithVariations": true] as [String: Any],
      "cancelCommand": cancel, "stateSchema": schema,
      "minimumMacOS": "26.0", "requiresAppleSilicon": true, "requiresLocalModel": true,
      "maximumSelectionPixels": LocalGenerativeFill.maximumSelectionPixels,
@@ -96,17 +114,23 @@ enum GenerativeFillAPI {
       "canGenerate": configured && store.canBeginGenerativeFill,
       "promptModelConfigured": promptConfigured, "canGenerateFromPrompt": promptConfigured && store.canBeginGenerativeFill,
       "operationID": store.generativeFillOperationID?.uuidString as Any? ?? NSNull(), "selectedVariations": NSNull(),
-      "localImage": ["canGenerate": promptConfigured && store.canBeginLocalImage],
+      "localImage": ["canGenerate": promptConfigured && store.canBeginLocalImage,
+        "referenceModels": Dictionary(uniqueKeysWithValues: LocalGenerationGuide.Kind.allCases.map { kind in
+          (kind.rawValue, LocalGenerativeFill.supported && GenerativeFillModelPreference.guideBookmark(kind) != nil)
+        })] as [String: Any],
       "promptEdit": ["sourceLayerID": editTarget.map { $0.id.uuidString } as Any? ?? NSNull(),
         "modelConfigured": editConfigured, "canEdit": editConfigured && editTarget != nil] as [String: Any],
       "localBackground": ["foregroundLayerID": subjectID as Any? ?? NSNull(),
         "canGenerate": promptConfigured && store.canBeginLocalBackground && !store.editingMask] as [String: Any]]
     if let layer = store.activeLayer, let record = GenerativeFillVariations.read(layer),
       let selected = record.selectedID(layer.smartObject?.layerComps?.selectedID) {
-      let canAppend = (record.isPromptEdit ? editConfigured : promptConfigured) && store.canBeginGenerativeFillBatch(layer.id)
+      let guideConfigured = record.guideUse.map { GenerativeFillModelPreference.guideBookmark($0) != nil } ?? true
+      let canAppend = (record.isPromptEdit ? editConfigured : promptConfigured) && guideConfigured
+        && store.canBeginGenerativeFillBatch(layer.id)
       state["selectedVariations"] = [
         "layerID": layer.id.uuidString, "selectedID": selected.uuidString, "prompt": record.prompt, "model": record.model,
         "canGenerateMore": canAppend, "canGenerateSimilar": canAppend,
+        "referenceUse": record.guideUse.map(\.rawValue) as Any? ?? NSNull(),
         "entries": record.entries.map { entry in
           ["id": entry.id.uuidString, "seed": entry.seed, "prompt": entry.prompt ?? record.prompt,
            "referenceVariationID": entry.referenceVariationID?.uuidString as Any? ?? NSNull()] as [String: Any]
@@ -118,6 +142,20 @@ enum GenerativeFillAPI {
 }
 
 extension AutomationCommand {
+  func imageReferenceOptions(appending: Bool) throws -> (use: LocalGenerationGuide.Kind, base64: String)? {
+    guard let supplied = parameters["referenceImage"] else { return nil }
+    guard !appending else {
+      throw AutomationFailure(status: 400, message: "Generate More and Generate Similar use the reference saved with the layer.")
+    }
+    guard case .object(let fields) = supplied, Set(fields.keys) == ["use", "dataBase64"],
+      case .string(let raw) = fields["use"], let use = LocalGenerationGuide.Kind(rawValue: raw),
+      case .string(let encoded) = fields["dataBase64"], !encoded.isEmpty,
+      encoded.utf8.count <= ImageGenerationReference.maximumBase64Characters else {
+      throw AutomationFailure(status: 400, message: "Supply referenceImage with a style or composition use and bounded image dataBase64.")
+    }
+    return (use, encoded)
+  }
+
   func generativeFillOptions() throws -> (prompt: String, seed: UInt32?, count: Int, target: UUID?, reference: UUID?) {
     let target = try parameters["targetLayerID"].map { _ in try actionUUID("targetLayerID") }
     let reference = try parameters["referenceVariationID"].map { _ in try actionUUID("referenceVariationID") }

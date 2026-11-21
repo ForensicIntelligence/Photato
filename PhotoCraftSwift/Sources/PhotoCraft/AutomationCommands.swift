@@ -34,7 +34,8 @@ struct AutomationCommand: Sendable {
     let description: String
     var optionalParameters: Set<String> = []
     var schema: [String: Any] {
-      if name == GenerativeFillAPI.run || name == GenerativeFillAPI.image { return GenerativeFillAPI.parameters }
+      if name == GenerativeFillAPI.run { return GenerativeFillAPI.parameters }
+      if name == GenerativeFillAPI.image { return GenerativeFillAPI.imageParameters }
       if name == GenerativeFillAPI.promptEdit { return GenerativeFillAPI.promptEditParameters }
       if name == GenerativeFillAPI.expand { return GenerativeFillAPI.expandParameters }
       if name == GenerativeFillAPI.background { return GenerativeFillAPI.backgroundParameters }
@@ -361,9 +362,10 @@ struct AutomationCommand: Sendable {
       optionalParameters: ["foregroundLayerID", "prompt", "seed", "variationCount"]),
     .init(name: GenerativeFillAPI.image, parameters: ["prompt": "Required for a new image; defaults to the selected variation’s prompt when appending",
       "seed": "Unsigned 32-bit starting seed", "variationCount": "Number of results (1 to 3)",
-      "targetLayerID": "Selected Generate Image layer to append to", "referenceVariationID": "Generate Similar using this saved variation"],
-      description: "Generate a new image from a text prompt on-device or append variations to an existing Generate Image layer.",
-      optionalParameters: ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID"]),
+      "targetLayerID": "Selected Generate Image layer to append to", "referenceVariationID": "Generate Similar using this saved variation",
+      "referenceImage": "Optional style or composition guide with use and image dataBase64; requires document transfers"],
+      description: "Generate an image from a text prompt and optional reference on-device or append variations to a saved Generate Image layer.",
+      optionalParameters: ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID", "referenceImage"]),
     .init(name: GenerativeFillAPI.promptEdit, parameters: ["prompt": "Instruction for the selected source image or a saved variation",
       "sourceLayerID": "Active source pixel layer UUID for a new edit", "seed": "Unsigned 32-bit starting seed",
       "variationCount": "Number of results (1 to 3)", "targetLayerID": "Selected Prompt Edit layer to append to",

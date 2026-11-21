@@ -9,7 +9,7 @@ enum GenerativeFillWorker {
   static let argument = "--local-generative-fill-worker"
   private static let side = LocalGenerativeFill.side
   private static let area = side * side
-  private static let maximumConfigurationBytes = 1024 * 1024
+  private static let maximumConfigurationBytes = LocalGenerationGuide.byteCount + 1024 * 1024
   private static let maximumRequestBytes = 8 * 1_024 * 1_024
   private static let maximumReplyBytes = 16 * 1_024 * 1_024
   private static let signal = Data([1])
@@ -18,6 +18,8 @@ enum GenerativeFillWorker {
   private struct Configuration: Codable {
     let bookmark: Data
     let instructions: Bool
+    let guide: LocalGenerationGuide?
+    let guideBookmark: Data?
   }
 
   private struct Request: Codable {
@@ -35,16 +37,19 @@ enum GenerativeFillWorker {
 
   static func run(
     model: URL, bookmark: Data? = nil, prompt: String, seeds: [UInt32], image: [Float], mask: [Float],
-    mode: LocalGenerativeFill.PromptMode = .fill, instructions: Bool = false, executable override: URL? = nil
+    mode: LocalGenerativeFill.PromptMode = .fill, instructions: Bool = false, executable override: URL? = nil,
+    guide: LocalGenerationGuide? = nil, guideBookmark: Data? = nil
   ) throws -> [Surface] {
-    try withSession(model: model, bookmark: bookmark, instructions: instructions, executable: override) { session in
+    try withSession(model: model, bookmark: bookmark, instructions: instructions, executable: override,
+      guide: guide, guideBookmark: guideBookmark) { session in
       try session.predict(prompt: prompt, seeds: seeds, image: image, mask: mask, mode: mode)
     }
   }
 
   /// The worker and its model are scoped to one edit, including all its windows.
   static func withSession<Result>(
-    model: URL, bookmark: Data? = nil, instructions: Bool = false, executable override: URL? = nil, _ body: (Session) throws -> Result
+    model: URL, bookmark: Data? = nil, instructions: Bool = false, executable override: URL? = nil,
+    guide: LocalGenerationGuide? = nil, guideBookmark: Data? = nil, _ body: (Session) throws -> Result
   ) throws -> Result {
     try Task.checkCancellation()
     guard let executable = override ?? executableURL() else {
@@ -55,8 +60,12 @@ enum GenerativeFillWorker {
     try files.createDirectory(at: directory, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
     defer { try? files.removeItem(at: directory) }
 
+    guard (guide == nil) == (guideBookmark == nil), guide == nil || !instructions else {
+      throw CraftError.unavailable("Choose the model for the reference image.")
+    }
+    try guide?.validate()
     let configuration = Configuration(bookmark: try bookmark ?? GenerativeFillModelPreference.bookmark(for: model),
-      instructions: instructions)
+      instructions: instructions, guide: guide, guideBookmark: guideBookmark)
     try write(configuration, to: directory.appending(path: "model.plist"))
     let process = Process()
     let pipe = Pipe()
@@ -170,7 +179,8 @@ enum GenerativeFillWorker {
       if config.instructions {
         try LocalGenerativeFill.withInstructionPredictor(at: model, serve)
       } else {
-        try LocalGenerativeFill.withPromptPredictor(at: model, serve)
+        let guideModel = config.guideBookmark.flatMap(GenerativeFillModelPreference.resolve)
+        try LocalGenerativeFill.withPromptPredictor(at: model, guide: config.guide, guideModel: guideModel, serve)
       }
       return 0
     } catch {

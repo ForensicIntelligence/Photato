@@ -3,6 +3,7 @@ import PhotoCraftCore
 
 #if arch(arm64)
 import CoreGraphics
+import CoreML
 import CryptoKit
 import GuernikaKit
 #endif
@@ -55,12 +56,30 @@ extension LocalGenerativeFill {
 
   /// Keep the compiled models, tokenizer and prompt cache inside one scoped job.
   package static func withPromptPredictor<Result>(
-    at url: URL, _ use: (PromptPredictor) throws -> Result
+    at url: URL, guide: LocalGenerationGuide? = nil, guideModel: URL? = nil, _ use: (PromptPredictor) throws -> Result
   ) throws -> Result {
     #if arch(arm64)
     if #available(macOS 26, *) {
       return try withPromptModel(at: url) { pipeline in
-        try use { image, mask, raw, seeds, mode in
+        let scoped = guideModel?.startAccessingSecurityScopedResource() == true
+        defer { if scoped { guideModel?.stopAccessingSecurityScopedResource() } }
+        var stylizer: LocalGenerationGuide.AesFA?
+        var style: MLMultiArray?
+        if let guide {
+          guard let guideModel else { throw CraftError.unavailable("Choose the model for the reference image.") }
+          switch guide.kind {
+          case .composition:
+            guard pipeline.unet.supportsControlNet else {
+              throw CraftError.invalid("The prompt model cannot use a Composition reference.")
+            }
+            pipeline.conditioningInput = [try guide.compositionInput(model: guideModel)]
+          case .style:
+            let model = try LocalGenerationGuide.AesFA(modelURL: guideModel)
+            style = try model.styleInput(guide)
+            stylizer = model
+          }
+        }
+        return try use { image, mask, raw, seeds, mode in
           try Task.checkCancellation()
           let prompt = try validatePrompt(raw)
           guard !prompt.isEmpty, (1...maximumVariations).contains(seeds.count),
@@ -87,7 +106,9 @@ extension LocalGenerativeFill {
             guard let output, output.width == side, output.height == side else {
               throw CraftError.invalid("The local prompt model did not return a 512 × 512 image.")
             }
-            return try RasterIO.surface(output, depth: .f32)
+            let pixels = try RasterIO.surface(output, depth: .f32)
+            if let stylizer, let style { return try stylizer.apply(pixels, style: style) }
+            return pixels
           }
         }
       }

@@ -1,0 +1,198 @@
+{
+  "build": 714,
+  "base": "de94fde9ba617e4db1bb1ba081095263b941c185",
+  "buildInputs": 9391,
+  "includedBuildInputs": 9391,
+  "candidateManifestSHA256": "4333abd3557bebbe7d78f79a6ad7c81cb481879573865f6101f17c885f0b8abe",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "48fe21bcf82837cdcb51388a3a07d81aafd95d6f31009195a863ac9fcf809461"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "856e0482494f61cc26129e2d4ed1b715c5e77ae3ddfb261ae695cef2cc7ec198"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationHTTP.swift",
+      "sha256": "8d19e82ccaee9a240872ceae3bf66033bc7e820a06f73dbf7ed91c88ada94224"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "355337df06d78eaccc6e06a29aefc346cae8af02824ead858aead10185cf417f"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillControls.swift",
+      "sha256": "98dd3ffc006f301d6de69a4382a57c4c3e8ec2d086e00692708c1e3089948264"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillVariations.swift",
+      "sha256": "16f267d1768ad16bfd797ae8722a072a2ac92ab380f52db77cc1df6e0bdb808b"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillWorker.swift",
+      "sha256": "6097a0c6298db26ee2b35b187e3b577d539ad9424ee0853fbe835fc52651c770"
+    },
+    {
+      "path": "Sources/PhotoCraft/LocalGeneratedImage.swift",
+      "sha256": "b5ab11e8bfcae5ede74e183ede2c51d5b7e01d7872e687408db96a181e21959f"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalGenerationGuide.swift",
+      "sha256": "8548595b0015a865c21ce387f810deb6b3c1ca5c40f3501cb17907951e5b7b7b"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalPromptGenerativeFill.swift",
+      "sha256": "6ada193b0fa1e0b732c8557f4088a607f9cdfeeedf998fe43a4886c9d9f4335a"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LocalGeneratedImageReferenceTests.swift",
+      "sha256": "aa23bd7228597761d266333b0592dfa731113d41704be8b16ba8873fb5927128"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "faeb02d8756f879a93b667d0e861072e5ef3cfd0fe77158fb2e4e7abd1dbd154"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "faeb02d8756f879a93b667d0e861072e5ef3cfd0fe77158fb2e4e7abd1dbd154"
+  },
+  "casesPerConfiguration": 539,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 539,
+      "passed": 538,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "3a51bb69f1fdfb3094a0aad7956f99e9d9ed41bd403e9266d0c024f94ba3367b",
+      "recheckedCases": [
+        "PhotoCraftAppTests.ActionsWorkflowTests/testNativeRecordSaveLoadEditReplayUndoAndPanel",
+        "PhotoCraftAppTests.LayerLayoutWorkflowTests/testAll512LayersResolveAndMoveOnce",
+        "PhotoCraftImagingTests.GradientFillRenderTests/testEditablePSDAtAllDepthsStylesMethodsAndIndependentMergedDecode",
+        "PhotoCraftImagingTests.GradientFillRenderTests/testPinnedSavedReferencesRecordActualPixelDifferences",
+        "PhotoCraftImagingTests.GroupRenderTests/testExportAdvancedClippingFixture",
+        "PhotoCraftImagingTests.GroupRenderTests/testExportClippingMatrix",
+        "PhotoCraftImagingTests.GroupRenderTests/testExportClippingMatrix2",
+        "PhotoCraftImagingTests.GroupRenderTests/testPSDGroupsClippingMasksAndAllDepthsRoundTrip",
+        "PhotoCraftImagingTests.LayerLayoutRenderTests/testConsecutiveAlignmentsUsePhotoshopsUpdatedStorageBounds",
+        "PhotoCraftImagingTests.LayerLayoutRenderTests/testIndependentPhotoshopLayoutCompositionPersistenceAndPSDExport",
+        "PhotoCraftImagingTests.PSDSolidColorTests/testExportFillQuantizationMatrix",
+        "PhotoCraftImagingTests.PSDSolidColorTests/testPhotoshopSavedSolidFillsRetainTypesAndMeasureExactness",
+        "PhotoCraftImagingTests.PSDSolidColorTests/testPinnedOriginalCorpusReportsUnsupportedAndNonExactResults",
+        "PhotoCraftImagingTests.PSDSolidColorTests/testSolidFillPSDAtAllDepthsRetainsEditableColorAndMasks",
+        "PhotoCraftImagingTests.PatternFillRenderTests/testEditablePatternPSDAtAllDepthsAndIndependentMergedPreview"
+      ],
+      "recheckedCasesPassed": 15,
+      "recheckCause": "The checkout lacked the output directory required by fourteen export checks. The Actions AppKit snapshot reported an isolated rendering transition failure."
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 539,
+      "passed": 538,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "4c367577e6df4836fbe226fc3b02d46535e73e806dc6a6c4e2f4ff297b3ac0f3"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 539,
+      "passed": 538,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "8bedcfe46668dbe3c045b084795d58e53b680cdb2ad950b87b1a136a397f5323"
+    }
+  },
+  "realModelNativeAPIMatch": [
+    "style",
+    "composition"
+  ],
+  "ownedPixelMetrics": {
+    "styleMeanRedMinusBlue": [
+      0.506078553051033,
+      -0.5058940575888453
+    ],
+    "compositionOrangeCentroidX": [
+      151.50453684562405,
+      386.4806317294382
+    ]
+  },
+  "modelReferences": {
+    "stylePackageCommit": "d0b135e579c6475135b06b5ec937c74b716dae71",
+    "styleWeightSHA256": "9cf0164a8e426813db3bfd42438519a9512b7cb91ffce546255cd78490405bc5",
+    "compositionArchiveSHA256": "fa511fa9a75acb4fc98819d01fa798e39035761fa36168b3fee1b12400ce02aa"
+  },
+  "preview": {
+    "archiveSHA256": "6829a38007d4f9a1e616d92dedc80fa2fd577b4a7eb8d1949d76bf40aebb7835",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "2666337e10ee9abe81f1d294b88575e665ee8848c351d5d08f72d496dce4a60c",
+      "x86_64": "0fb445163e0c81a0c1d04cb3f07ec45290df38399d510c5cca6f968e583e542c"
+    },
+    "binarySHA256": "40e51cfdf75bf3f47742567dfc7bb98b0dc15ae268dd52df9bc406dd5a9fd1f3",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "f16758bbec8b65599bea439ed0fa2b3adf0db2f1ec7bde34cd48c4c1dc4e31dd"
+      }
+    }
+  },
+  "evidenceSHA256": {
+    "build-debug01.log": "b7789563b98786cd582fc39e3d0dc23567f53254d3e5aa19ddb73e8d856cb448",
+    "build-debug02.log": "1c3af90d4443ab45c8733664f041c6564bd0f668fdd366ae053181ac1b861ddb",
+    "build-debug03.log": "9b3bbd05ca86802fdc66d8d0083aac2e761ec1641a0f6495877472315c31beb8",
+    "build-debug04.log": "c2115a29a9a2005806e5162a8f58a15fb434cf18e3e8d77cdcdc801da668c8fb",
+    "build-debug05.log": "ab1cef851d9f11069bde6cb0245e8446e650e864c195662e88426b64c47ecf2b",
+    "build-debug06.log": "ef16057acc052134a2386aed446a73f4a941d8320aa666aff04a98a3c4c603db",
+    "build-release-arm6401.log": "dba696539b812923752fec27e85290a3c5d7425b27f5a1fb51eb5a47aac8c292",
+    "build-release-x86_6401.log": "677d1ffaa10095df0019d02788c6f7e3eb3c15311e3e0d3ed5a1f9d8b7110306",
+    "build-release-arm6402.log": "c56a78537a89a487faef0dc7c46a9451a6d79c540fdc2658a447c1a76ad8ba11",
+    "build-release-x86_6402.log": "76ad3826a8d42222a1bacea67d142ee4f2c2e59754c14bd4893f6fe1739f4148",
+    "xcode-build01.log": "1f929e93df67b9b224f2fdc8caa12fe2bff5c66deccd420cc32f96540749befc",
+    "xcode-build02.log": "baddad7e633de438890ea119bb293e1a83aded6ca13807f88c886666c62d104e",
+    "probe-runtime01.log": "b497d532e0b15c82d1a0e7d98777104f48556067f0cdd6e28736d7c7a50c288c",
+    "style-probe-run01.log": "2e5ebff3a57fc5d325ec480a1448de9546d750a742290d57458f4a9f95f22d0e",
+    "focused-reference01.log": "6bd236862dc65bdfa24eb7a6394a29237b6564cc35eae708fff5af169f1042fd",
+    "real-composition01.log": "181426ae0176b3f3e604c611edaa77497a70be57233aece21a597962c087ed0d",
+    "real-style01.log": "4c702f0c2e59a1d653e27b383f0509347232cb8eba63925f13e785ae4d75ea49",
+    "owned-proof01.log": "4b3ea9ef6ebff84de5a8f4a4739ccfb1396e21fb65f2989ad19b7d939f11cf92",
+    "saved-guide-proof01.log": "3d986423779c6f245ed91f19c2429dcbf15dcce6b7b799df75031c6f3e539c59",
+    "independent-composite01.log": "b56e8b06ab29b86ea34b314303f5462f8d6e0a0fc4198050b1823ce2b43ffc17",
+    "sandbox-run01.log": "a10bcbedaefaafa6902351f10a18cc5e030d30ca20a9dc32043ac89d4486e2e1",
+    "optimized-model-proof01.log": "4b3ea9ef6ebff84de5a8f4a4739ccfb1396e21fb65f2989ad19b7d939f11cf92",
+    "photoshop-document-probe01.log": "5349b4869549a99d9680deecec1c7190e31208105b2e20d351c43d66565df9eb",
+    "qualification-debug-recheck02.log": "b88852a579eb2b8ee3f5228f8d0eb13c223cc095d59ab989ed463e085f433a1e",
+    "owned01/Generated Reference Workspace.png": "68cb866536fb94dc88b1403f4b5a5aaac73e4e7a819b7e99eea03959b0794f91"
+  }
+}

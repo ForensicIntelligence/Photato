@@ -4119,7 +4119,9 @@ Use `targetLayerID` to append to a selected saved Prompt Edit layer. Omit `promp
 
 ## Generate Image
 
-Use `generativeImage.apply` on a still RGB document with the local prompt model configured. The request creates a new editable Smart Object above the original layers and leaves the selection in place. For a new image, supply `prompt`, with optional `seed` and `variationCount`. The local model uses the prompt independently of the canvas or selection. A request produces one to three choices with one Undo step.
+Use `generativeImage.apply` on a still RGB document with the local prompt model configured. The request creates a new editable Smart Object above the original layers and leaves the selection in place. For a new image, supply `prompt`, with optional `seed` and `variationCount`. A request produces one to three choices with one Undo step.
+
+For a new image with an optional local guide, send `referenceImage: {"use":"style","dataBase64":"<encoded image>"}` or use `composition`. Enable document transfers first. The same still-image size and format limits as the Apple Intelligence image upload apply. The source is normalized and embedded in the generated layer, so later batches reuse it. `generativeFill.localImage.referenceModels` shows which models are configured. `generativeFill.selectedVariations.referenceUse` returns the mode or null. [Reference setup](GENERATE_IMAGE_REFERENCE.md)
 
 To append, set `targetLayerID` to the selected Generate Image layer. Omit `prompt` to reuse the selected variation’s prompt. Set `referenceVariationID` for Generate Similar. Use `generativeFill.localImage.canGenerate` to discover availability, and `generativeFill.selectedVariations` for the active result and saved choices. `smartObject.layerComp` switches variations. `generativeFill.operationID` and `generativeFill.cancel` apply to the running job. [Generate Image guide](GENERATE_IMAGE.md)
 

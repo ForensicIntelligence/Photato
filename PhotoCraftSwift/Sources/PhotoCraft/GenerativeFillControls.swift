@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 import PhotoCraftCore
 import PhotoCraftImaging
 
@@ -7,6 +8,13 @@ enum GenerativeFillModelPreference {
   static let key = "localGenerativeFillModel"
   static let promptKey = "localPromptGenerativeFillModel"
   static let instructionKey = "localPromptEditModel"
+
+  static func guideKey(_ kind: LocalGenerationGuide.Kind) -> String { "localGenerationGuide.\(kind.rawValue)" }
+
+  static func guideBookmark(_ kind: LocalGenerationGuide.Kind) -> Data? {
+    guard let bookmark = UserDefaults.standard.data(forKey: guideKey(kind)), resolve(bookmark) != nil else { return nil }
+    return bookmark
+  }
 
   static func url(prompted: Bool = false, instructions: Bool = false, defaults: UserDefaults = .standard) -> URL? {
     let key = instructions ? instructionKey : prompted ? promptKey : Self.key
@@ -54,6 +62,16 @@ enum GenerativeFillModelPreference {
   var generateImage = false
   var promptEdit = false
   var instructionSourceID: UUID?
+  var imageReference: ImageGenerationReference?
+  var referenceUse: LocalGenerationGuide.Kind = .style
+  var savedReferenceUse: LocalGenerationGuide.Kind?
+  var guideBookmarks = Dictionary(uniqueKeysWithValues: LocalGenerationGuide.Kind.allCases.compactMap {
+    kind in GenerativeFillModelPreference.guideBookmark(kind).map { (kind, $0) }
+  })
+  var importingReference = false
+  var guideUse: LocalGenerationGuide.Kind? { savedReferenceUse ?? (imageReference == nil ? nil : referenceUse) }
+  var guideBookmark: Data? { guideUse.flatMap { guideBookmarks[$0] } }
+  var missingGuideModel: Bool { guideUse != nil && guideBookmark == nil }
   var selectingModel = false
   var generating = false
   var error: String?
@@ -120,6 +138,7 @@ extension EditorStore {
     let draft = GenerativeFillDraft()
     draft.targetLayerID = id
     draft.generateImage = record.isGeneratedImage
+    draft.savedReferenceUse = record.guideUse
     draft.promptEdit = record.isPromptEdit
     if let referenceVariationID {
       guard let index = record.entries.firstIndex(where: { $0.id == referenceVariationID }) else { return }
@@ -171,6 +190,7 @@ extension EditorStore {
 
   func generateFill(_ draft: GenerativeFillDraft) {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
+      !draft.importingReference, !draft.missingGuideModel,
       !editingComponent, !smartFilterMaskEditing, !editingMask || draft.backgroundSubjectID != nil,
       (draft.targetLayerID == nil && !draft.generateImage && !draft.promptEdit) || draft.hasPrompt,
       let url = draft.selectedModel else { return }
@@ -187,6 +207,7 @@ extension EditorStore {
     let count = draft.prompted ? draft.variationCount : 1
     let target = draft.targetLayerID, prompted = draft.prompted, reference = draft.referenceVariationID
     let generateImage = draft.generateImage
+    let imageReference = draft.imageReference, imageReferenceUse = draft.referenceUse, guideBookmark = draft.guideBookmark
     let instructionSource = draft.instructionSourceID
     let expand = draft.expandRequest, capturedCrop = cropDraft
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
@@ -204,12 +225,14 @@ extension EditorStore {
             prompt: prompt, seed: seed, count: count)
         } else if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
-            prompt: prompt, seed: nil, count: count, referenceVariationID: reference)
+            prompt: prompt, seed: nil, count: count, referenceVariationID: reference, guideBookmark: guideBookmark)
         } else if let instructionSource {
           command = try LocalPromptEdit.prepare(original, targetID: instructionSource, model: url, bookmark: bookmark,
             prompt: prompt, seed: seed, count: count)
         } else if generateImage {
-          command = try LocalGeneratedImage.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
+          let guide = try imageReference.map { try LocalGeneratedImage.makeGuide($0, use: imageReferenceUse, in: original) }
+          command = try LocalGeneratedImage.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed,
+            count: count, guide: guide, guideBookmark: guideBookmark)
         } else {
           command = try GenerativeFillVariations.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
         }
@@ -313,6 +336,7 @@ struct GenerativeFillSheet: View {
         let guide = draft.promptEdit ? "PROMPT_TO_EDIT.md" : "LOCAL_GENERATIVE_FILL.md"
         Link("Model setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/\(guide)")!)
       }
+      if draft.generateImage { referenceControls }
       if draft.prompted {
         Picker("Variations", selection: $draft.variationCount) {
           ForEach(1...draft.maximumVariations, id: \.self) { Text("\($0)").tag($0) }
@@ -320,8 +344,8 @@ struct GenerativeFillSheet: View {
         .pickerStyle(.segmented)
         .disabled(draft.selectingModel || draft.generating)
       }
-      if draft.selectingModel || draft.generating {
-        ProgressView(draft.generating ? "Generating on this Mac…" : "Checking model…")
+      if draft.selectingModel || draft.generating || draft.importingReference {
+        ProgressView(draft.generating ? "Generating on this Mac…" : draft.importingReference ? "Reading reference…" : "Checking model…")
           .controlSize(.small)
       }
       if let error = draft.error { Text(error).foregroundStyle(.red).fixedSize(horizontal: false, vertical: true) }
@@ -330,7 +354,7 @@ struct GenerativeFillSheet: View {
         Button("Cancel") { store.cancelGenerativeFill() }.keyboardShortcut(.cancelAction)
         Button("Generate") { store.generateFill(draft) }
           .keyboardShortcut(.defaultAction)
-          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating
+          .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating || draft.importingReference || draft.missingGuideModel
             || ((draft.generateImage || draft.promptEdit || draft.targetLayerID != nil) && !draft.hasPrompt))
       }
     }
@@ -338,6 +362,107 @@ struct GenerativeFillSheet: View {
     .frame(width: 410)
     .interactiveDismissDisabled(draft.generating)
     .onAppear { if draft.generateImage || draft.promptEdit { promptFocused = true } }
+  }
+
+  @ViewBuilder private var referenceControls: some View {
+    if draft.targetLayerID == nil {
+      LabeledContent("Reference image") {
+        HStack {
+          if let reference = draft.imageReference {
+            Image(decorative: reference.image, scale: 1)
+              .resizable().scaledToFit().frame(width: 40, height: 32).accessibilityHidden(true)
+          }
+          Button(draft.imageReference == nil ? "Choose Image…" : "Change Image…", action: chooseReference)
+          if draft.imageReference != nil {
+            Button("Remove") { draft.imageReference = nil; draft.error = nil }
+          }
+        }
+        .disabled(draft.importingReference || draft.selectingModel || draft.generating)
+      }
+      if draft.imageReference != nil {
+        Picker("Use reference for", selection: $draft.referenceUse) {
+          ForEach(LocalGenerationGuide.Kind.allCases, id: \.self) { use in Text(use.title).tag(use) }
+        }
+        .pickerStyle(.segmented)
+        .disabled(draft.importingReference || draft.selectingModel || draft.generating)
+        .onChange(of: draft.referenceUse) { _, _ in draft.error = nil }
+      }
+    } else if let use = draft.savedReferenceUse {
+      LabeledContent("Reference image", value: "\(use.title) · Saved in layer")
+    }
+    if let use = draft.guideUse {
+      if draft.targetLayerID == nil {
+        Text(use == .style ? "Apply the reference’s colours and textures to the generated image."
+          : "Use edges in the reference to guide the placement and scale of objects.")
+          .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+      }
+      LabeledContent("\(use.title) model") {
+        HStack(spacing: 8) {
+          if draft.guideBookmark != nil { Text(use.modelName) }
+          Button(draft.guideBookmark == nil ? "Choose Model…" : "Change…") { chooseGuideModel(use) }
+          if draft.guideBookmark == nil {
+            Link("Setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/GENERATE_IMAGE_REFERENCE.md")!)
+              .accessibilityLabel("\(use.title) model setup")
+          }
+        }
+        .disabled(draft.importingReference || draft.selectingModel || draft.generating)
+      }
+    }
+  }
+
+  private func chooseReference() {
+    let panel = NSOpenPanel()
+    panel.allowedContentTypes = [.png, .jpeg, .tiff, .heic]
+    panel.allowsMultipleSelection = false
+    panel.prompt = "Choose Image"
+    panel.begin { response in
+      guard response == .OK, let url = panel.url else { return }
+      Task { @MainActor in
+        guard store.generativeFillDraft === draft, !draft.generating, !draft.importingReference else { return }
+        draft.importingReference = true
+        draft.error = nil
+        defer { draft.importingReference = false }
+        do {
+          let reference = try await Task.detached(priority: .userInitiated) {
+            try ImageGenerationReference.prepare(ImageGenerationReference.read(url))
+          }.value
+          if store.generativeFillDraft === draft { draft.imageReference = reference }
+        } catch {
+          if store.generativeFillDraft === draft { draft.error = error.localizedDescription }
+        }
+      }
+    }
+  }
+
+  private func chooseGuideModel(_ kind: LocalGenerationGuide.Kind) {
+    let panel = NSOpenPanel()
+    panel.canChooseFiles = true
+    panel.canChooseDirectories = true
+    panel.allowsMultipleSelection = false
+    panel.prompt = "Choose Model"
+    panel.message = "Select the compiled \(kind.modelName).mlmodelc package."
+    panel.begin { response in
+      guard response == .OK, let url = panel.url else { return }
+      Task { @MainActor in
+        guard store.generativeFillDraft === draft, !draft.generating, !draft.selectingModel else { return }
+        draft.selectingModel = true
+        draft.error = nil
+        defer { draft.selectingModel = false }
+        do {
+          let bookmark = try GenerativeFillModelPreference.bookmark(for: url)
+          try await Task.detached(priority: .userInitiated) {
+            let access = url.startAccessingSecurityScopedResource()
+            defer { if access { url.stopAccessingSecurityScopedResource() } }
+            try LocalGenerationGuide.validateModel(url, kind: kind)
+          }.value
+          guard store.generativeFillDraft === draft else { return }
+          UserDefaults.standard.set(bookmark, forKey: GenerativeFillModelPreference.guideKey(kind))
+          draft.guideBookmarks[kind] = bookmark
+        } catch {
+          if store.generativeFillDraft === draft { draft.error = error.localizedDescription }
+        }
+      }
+    }
   }
 
   private func chooseModel() {

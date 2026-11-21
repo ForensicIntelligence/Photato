@@ -732,7 +732,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 711 | 2026-11-21 | [Match a subject to its background with editable Harmonize variations](#dev-step-711) |
 | 712 | 2026-11-21 | [Generate editable images from a text prompt on-device](#dev-step-712) |
 | 713 | 2026-11-21 | [Edit a whole image with local instructions and saved variations](#dev-step-713) |
+| 714 | 2026-11-21 | [Guide Generate Image with Style and Composition references](#dev-step-714) |
 <!-- history-index:end -->
+
+<a id="dev-step-714"></a>
+
+## 2026-11-21 — Guide Generate Image with Style and Composition references
+
+Compared the Adobe desktop single-reference workflow with Photato’s existing Apple Intelligence inspiration and local text-only generation. The optional Guernika Canny model attaches a real ControlNet to the existing licensed Stable Diffusion model. Core Image derives the edge map from a bounded sRGB reference aligned to the visible crop. The ArtEdge AesFA Core ML conversion applies arbitrary neural style transfer from a separate 224-pixel input. The first standalone builds hit the local compiler cache permission error and a harness-only import error. The corrected probe used a writable module cache and ImageIO, and produced a 512-pixel ControlNet output. The warm and cool Style probe preserved the scene geometry.
+
+Added the import picker, reference mode picker, optional read-only model bookmarks and Properties label to the existing Generate Image workflow. The worker receives the guide separately from the initial image. The embedded PtFC slot retains bounded normalized pixels and the PtFV record stores the mode. Loading earlier records defaults to prompt-only generation. The Photato HTTP route validates settings and the existing document transfer permission. Photoshop v2 coverage records the remaining action-descriptor gap. No Adobe assets are included.
+
+The new Debug checkout hit the inherited Swift compiler stack fault with both build engines. Increasing the stack limit did not repair it. The working Debug build reused the documented compiler pass workaround and local package caches. Release test builds needed enable-testing to expose the existing internal test surfaces. The initial sandboxed Xcode build lacked access to its normal caches. The Mac target built with its usual package cache and signing disabled. The first qualification wrapper attempt omitted its artifact lock list and never started tests. Restoring the prior list fixed the harness. The Debug pass exposed fourteen export fixtures that require an ignored output folder. A separate Actions offscreen snapshot hit an AppKit transition error. All fifteen passed in fresh processes on the identical test bundle after restoring the folder. Offscreen screenshots capture both reference modes in light and dark appearance.
+
+Changing only the Composition reference moved the measured orange centre from x=151.5 to x=386.5 in a 512-pixel image. Changing only the Style reference moved mean red minus blue from 0.506 to -0.506. Editor and authenticated HTTP pixels matched exactly at the same seed for both modes. All four owned renders and their embedded reference samples survived Photato, PSD, and PSB reopens. An independent merged-preview reader matched each PSD and PSB to its PNG. Generate More after reopening PSB matched a fresh generation at the same seed and retained the earlier result. The optimized Apple Silicon worker and a signed sandbox harness each reproduced all four outputs byte for byte.
+
+538 of 539 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both added regression cases passed. The existing layer-effect reference case reproduced the same 118 assertions in all three configurations. The Debug result includes 15 reruns on the unchanged bundle after restoring the test output folder. The Xcode project built and both signed universal slices opened offscreen.
+
+Local models are optional on Apple Silicon with macOS 26 or later. The Style model operates at 224 pixels internally and can soften fine detail. Composition can add objects when edges are ambiguous. The Photoshop 27.2.0 AppleEvent query timed out. Direct Photoshop reopen, Firefly output fidelity, the Firefly ActionJSON descriptor, keyboard and assistive-technology testing remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_714.md).
 
 <a id="dev-step-713"></a>
 

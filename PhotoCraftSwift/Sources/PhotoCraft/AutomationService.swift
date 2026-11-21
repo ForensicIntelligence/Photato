@@ -1620,6 +1620,15 @@ import UniformTypeIdentifiers
         let prompted = background || image || instructions || options.target != nil || !options.prompt.isEmpty
         let activeVariations = store.activeLayer.flatMap(GenerativeFillVariations.read)
         let editSource = instructions && options.target == nil ? store.promptEditTarget?.id : nil
+        let imageReference = image ? try command.imageReferenceOptions(appending: options.target != nil) : nil
+        if imageReference != nil, !documentTransfersEnabled {
+          throw AutomationFailure(status: 403, message: "Allow document transfers before supplying a reference image.")
+        }
+        let guideUse = imageReference?.use ?? (options.target == nil ? nil : activeVariations?.guideUse)
+        let guideBookmark = guideUse.flatMap(GenerativeFillModelPreference.guideBookmark)
+        if let guideUse, guideBookmark == nil {
+          throw AutomationFailure(status: 422, message: "Configure the \(guideUse.title) reference model in Generate Image.")
+        }
         let eligible: Bool
         if let expand {
           _ = try GenerativeExpand.protectedCanvas(for: expand, in: store.document)
@@ -1674,11 +1683,26 @@ import UniformTypeIdentifiers
           if let target = options.target {
             return try GenerativeFillVariations.append(to: target, in: original, model: model, bookmark: bookmark,
               prompt: options.prompt.isEmpty ? nil : options.prompt, seed: options.seed, count: options.count,
-              referenceVariationID: options.reference)
+              referenceVariationID: options.reference, guideBookmark: guideBookmark)
           }
           if image {
+            let guide: LocalGenerationGuide? = try imageReference.map { reference in
+              guard let bytes = Data(base64Encoded: reference.base64), !bytes.isEmpty,
+                bytes.count <= ImageGenerationReference.maximumBytes else {
+                throw AutomationFailure(status: 400, message: "Invalid reference image dataBase64.")
+              }
+              do {
+                let source = try ImageGenerationReference.prepare(bytes)
+                return try LocalGeneratedImage.makeGuide(source, use: reference.use, in: original)
+              } catch is CancellationError {
+                throw CancellationError()
+              } catch {
+                throw AutomationFailure(status: 400, message: error.localizedDescription)
+              }
+            }
             return try LocalGeneratedImage.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
-              seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
+              seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count,
+              guide: guide, guideBookmark: guideBookmark)
           }
           if let editSource {
             return try LocalPromptEdit.prepare(original, targetID: editSource, model: model, bookmark: bookmark,

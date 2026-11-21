@@ -4,9 +4,11 @@ Choose **Edit → Generate Image…** or **Generate Image…** in the canvas con
 
 Local generation requires Apple Silicon, macOS 26 or later, and the same optional Stable Diffusion Core ML model used by prompted Generative Fill. If you have already configured the prompt model, Generate Image uses it. Otherwise choose the extracted model folder when prompted. The model generates 512 × 512 images. Photato scales their placement separately so the original generated pixels stay available for editing. [Model setup](LOCAL_GENERATIVE_FILL.md)
 
+Optional **Style** and **Composition** references guide the visual treatment or layout using separate local models. [Reference images and setup](GENERATE_IMAGE_REFERENCE.md)
+
 **Generate More** creates another batch from the selected variation’s prompt. You can change the prompt before starting. **Generate Similar** also uses the selected variation’s own pixels as a reference. You can switch variations and append batches after reopening Photato, PSD and PSB files in Photato. Each committed generation and each variation choice has its own Undo step.
 
-The existing **Edit → Create with Apple Intelligence…** workflow opens Apple’s Image Playground, including Private Cloud Compute on eligible systems. Apple’s system sheet manages that provider’s availability and consent. Local generation uses the separately configured model and the prompt alone for new images.
+The existing **Edit → Create with Apple Intelligence…** workflow opens Apple’s Image Playground, including Private Cloud Compute on eligible systems. Apple’s system sheet manages that provider’s availability and consent. Generate Image uses the configured local prompt model and optional local reference models.
 
 ## Automation
 

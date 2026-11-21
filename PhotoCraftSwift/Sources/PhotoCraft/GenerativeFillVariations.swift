@@ -21,6 +21,7 @@ enum GenerativeFillVariations {
     let sourceSHA256: String
     let entries: [Entry]
     let lastDocumentStateID: UUID?
+    var guideUse: LocalGenerationGuide.Kind? = nil
 
     var isBackground: Bool { version == PSDCodec.fillBackgroundVariationVersion }
     var isGeneratedImage: Bool { version == PSDCodec.generatedImageVariationVersion }
@@ -88,7 +89,8 @@ enum GenerativeFillVariations {
   }
 
   private static func packaged(
-    _ inner: CraftDocument, in document: CraftDocument, previous: Layer, entries: [Entry], prompt: String, version: Int, selected: Int
+    _ inner: CraftDocument, in document: CraftDocument, previous: Layer, entries: [Entry], prompt: String, version: Int, selected: Int,
+    guideUse: LocalGenerationGuide.Kind? = nil
   ) throws -> Layer {
     var source = inner
     var comps = LayerComps()
@@ -130,7 +132,7 @@ enum GenerativeFillVariations {
       entries: zip(choices.entries, entries).map { choice, entry in
         Entry(id: choice.id, seed: entry.seed, prompt: entry.prompt, referenceVariationID: entry.referenceVariationID)
       },
-      lastDocumentStateID: version == 1 ? nil : choices.entries[selected].id)
+      lastDocumentStateID: version == 1 ? nil : choices.entries[selected].id, guideUse: guideUse)
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.sortedKeys]
     let metadata = try encoder.encode(record)
@@ -144,7 +146,7 @@ enum GenerativeFillVariations {
   }
 
   static func packModelImages(_ choices: [Layer], in document: CraftDocument, prompt: String,
-    seeds: [UInt32], instructionContext: Data? = nil) throws -> Layer {
+    seeds: [UInt32], instructionContext: Data? = nil, guide: LocalGenerationGuide? = nil) throws -> Layer {
     guard let first = choices.first, case .raster(let pixels) = first.content else {
       throw CraftError.invalid("The generated image has no variations.")
     }
@@ -158,10 +160,17 @@ enum GenerativeFillVariations {
       Layer(name: "Variation \(index + 1)", content: choice.content)
     }
     if let instructionContext { source.layers[0].sourceTags = [PSDCodec.fillContextTag: instructionContext] }
+    if let guide {
+      guard instructionContext == nil else { throw CraftError.invalid("A separate image reference requires Generate Image.") }
+      try guide.validate()
+      let encoder = PropertyListEncoder()
+      encoder.outputFormat = .binary
+      source.layers[0].sourceTags = [PSDCodec.fillContextTag: try encoder.encode(guide)]
+    }
     let entries = seeds.map { Entry(id: UUID(), seed: $0, prompt: nil, referenceVariationID: nil) }
     return try packaged(source, in: document, previous: first, entries: entries,
       prompt: prompt, version: instructionContext == nil ? PSDCodec.generatedImageVariationVersion : PSDCodec.promptEditVariationVersion,
-      selected: 0)
+      selected: 0, guideUse: guide?.kind)
   }
 
   static func canAppend(_ layer: Layer, in document: CraftDocument) -> Bool {
@@ -173,10 +182,17 @@ enum GenerativeFillVariations {
 
   static func append(
     to id: UUID, in document: CraftDocument, model: URL, bookmark: Data?, prompt: String?, seed: UInt32?, count: Int,
-    referenceVariationID: UUID? = nil
+    referenceVariationID: UUID? = nil, guideBookmark: Data? = nil
   ) throws -> Command {
-    let instructions = document.layers.first(where: { $0.id == id }).flatMap(read)?.isPromptEdit == true
-    return try GenerativeFillWorker.withSession(model: model, bookmark: bookmark, instructions: instructions) { worker in
+    let layer = document.layers.first { $0.id == id }
+    let record = layer.flatMap(read)
+    let instructions = record?.isPromptEdit == true
+    let guide: LocalGenerationGuide? = try record?.guideUse.map { use in
+      guard let object = layer?.smartObject else { throw CraftError.invalid("The saved reference layer is unavailable.") }
+      return try LocalGeneratedImage.savedGuide(from: SmartObjectIO.sourceDocument(object), use: use)
+    }
+    return try GenerativeFillWorker.withSession(model: model, bookmark: bookmark, instructions: instructions,
+      guide: guide, guideBookmark: guide == nil ? nil : guideBookmark) { worker in
       try append(to: id, in: document, prompt: prompt, seed: seed, count: count,
         referenceVariationID: referenceVariationID) { prompt, seeds, image, mask in
         try worker.predict(prompt: prompt, seeds: seeds, image: image, mask: mask,
@@ -206,7 +222,7 @@ enum GenerativeFillVariations {
     var source = try SmartObjectIO.sourceDocument(object)
     let stored = source.layers.first?.sourceTags?[PSDCodec.fillContextTag]
     guard let comps = source.layerComps, comps.comps.map(\.id) == record.entries.map(\.id),
-      record.isGeneratedImage || stored != nil else {
+      (record.isGeneratedImage && record.guideUse == nil) || stored != nil else {
       throw CraftError.invalid("The original Generative Fill context is unavailable.")
     }
     let prompt = try LocalGenerativeFill.validatePrompt(override ?? record.prompt(for: referenceVariationID ?? object.layerComps?.selectedID))
@@ -278,7 +294,7 @@ enum GenerativeFillVariations {
       Entry(id: UUID(), seed: $0, prompt: prompt == record.prompt ? nil : prompt, referenceVariationID: referenceVariationID)
     }
     let resultLayer = try packaged(source, in: parent, previous: layer, entries: record.entries + newEntries,
-      prompt: record.prompt, version: record.version, selected: record.entries.count)
+      prompt: record.prompt, version: record.version, selected: record.entries.count, guideUse: record.guideUse)
     guard read(resultLayer)?.entries.prefix(record.entries.count).map(\.id) == record.entries.map(\.id) else {
       throw CraftError.invalid("The saved identifiers for earlier variations changed.")
     }
@@ -329,7 +345,7 @@ enum GenerativeFillVariations {
       let record = try? JSONDecoder().decode(Metadata.self, from: data),
       (record.version == 1 || record.hasSavedContext),
       record.model == (record.isPromptEdit ? LocalGenerativeFill.instructionModelIdentifier : LocalGenerativeFill.promptModelIdentifier),
-      record.sourceSHA256 == object.dataFingerprint,
+      record.sourceSHA256 == object.dataFingerprint, (record.guideUse == nil || record.isGeneratedImage),
       ((record.version == 1 ? 2 : 1)...(record.version == 1 ? LocalGenerativeFill.maximumVariations : maximumStoredVariations))
         .contains(record.entries.count),
       !record.prompt.isEmpty, (try? LocalGenerativeFill.validatePrompt(record.prompt)) == record.prompt,
@@ -360,6 +376,9 @@ struct GenerativeFillVariationControls: View {
         .font(.caption)
         .textSelection(.enabled)
         .fixedSize(horizontal: false, vertical: true)
+      if let use = metadata.guideUse {
+        Text("\(use.title) reference").font(.caption).foregroundStyle(.secondary)
+      }
       Group {
         if metadata.entries.count <= LocalGenerativeFill.maximumVariations { picker.pickerStyle(.segmented) }
         else { picker.pickerStyle(.menu) }

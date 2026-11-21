@@ -655,6 +655,6 @@ edit.customizeSaveDialogFileFormats,Edit,Customize Save Dialog File Formats,,par
 
 layer.harmonize,Layer,Harmonize,,partial,"Native local colour and lighting fit, editable Curves and separate contact shadows, three saved variations, Undo and Photato API; Firefly exactness and live Photoshop comparison remain open. Source checkpoint 711."
 
-edit.generateImage,Edit,Generate Image…,,partial,"On-device text-to-image, saved alternatives, Generate More and Similar, native UI and Photato API. Firefly models and Adobe action coverage remain open. Source checkpoint 712."
+edit.generateImage,Edit,Generate Image…,,partial,"On-device text-to-image with separate Style and Composition references, saved alternatives, Generate More and Similar, native UI and Photato API. Adobe model fidelity and action coverage remain open. Source checkpoint 714."
 
 edit.promptToEdit,Edit,Prompt to Edit…,,partial,"Whole image instruction editing with local InstructPix2Pix, native and Photato HTTP entry points, editable variants and one-step Undo. Firefly fidelity and action coverage remain open. Source checkpoint 713."

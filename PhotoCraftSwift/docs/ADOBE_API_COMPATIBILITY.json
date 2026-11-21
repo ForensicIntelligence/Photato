@@ -3337,5 +3337,12 @@
     "reference": "Adobe Firefly Image5 documents instruction-based editing using referenceBlobs.",
     "limits": "The Firefly Generate Image contract is separate from Photoshop v2 GA. No qualified equivalent action descriptor or model output comparison.",
     "evidence": "docs/SOURCE_PUBLICATION_713.json"
+  },
+  "generate_image_reference_build714": {
+    "status": "Photato local desktop and API workflow",
+    "photatoCommand": "generativeImage.apply",
+    "reference": "Adobe Photoshop documents Style and Composition. Firefly Image API separately documents style and structure reference inputs.",
+    "limits": "No qualified reference-guided Execute Actions descriptor in Photoshop v2 GA. The native prompt, style-transfer and ControlNet models do not claim Firefly output equivalence.",
+    "evidence": "docs/SOURCE_PUBLICATION_714.json"
   }
 }
