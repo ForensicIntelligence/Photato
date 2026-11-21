@@ -196,7 +196,7 @@ public enum Renderer {
   static func preparedSources(_ original:CraftDocument,videoTime:Double? = nil) throws
     -> (CraftDocument,VideoTransitionRenderContext?) {
     let (timed,videoTransitions) = try VideoTransitionRenderContext.prepare(original, at:videoTime)
-    var d = try framingShapeExteriors(in: timed)
+    var d = try preparingShapeRasters(in: timed)
     for i in d.layers.indices where d.layers[i].smartObject?.pdfSource != nil {
       d.layers[i] = try PDFSmartObjectIO.renderedLayer(d.layers[i],in:d)
     }
@@ -205,10 +205,14 @@ public enum Renderer {
     }
     return (d,videoTransitions)
   }
-  static func framingShapeExteriors(in document: CraftDocument) throws -> CraftDocument {
+  static func preparingShapeRasters(in document: CraftDocument) throws -> CraftDocument {
     var prepared = document
-    for i in document.layers.indices where document.layers[i].shape?.definition?.exteriorFrame != nil {
-      prepared.layers[i] = try ShapeRenderer.rasterInput(document.layers[i], in: document)
+    for i in document.layers.indices {
+      let layer = document.layers[i]
+      if let shape = layer.shape, shape.definition?.exteriorFrame != nil
+          || shape.importedAppearance?.documentPatternPlacement != nil {
+        prepared.layers[i] = try ShapeRenderer.rasterInput(layer, in: document)
+      }
     }
     return prepared
   }

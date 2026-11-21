@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 684 — Keep patterns and straight lines editable in PSD and PSB
+
+Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight.
+
+All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The regenerated merged preview differs in 331 color-channel bytes across 224 antialiased pixels, with a maximum difference of 1 in RGB and exact alpha. The 56% polygon pattern sample supports a document-origin phase. Its scaled sampling still differs. The 60° gradient diagnostic did not establish a universal half-pixel placement correction. Arrowheads and live Photoshop 2026 reopen and repaint checks remain open.
+
+[Development record](DEVLOG.md#dev-step-684) · [Details](EDITABLE_SHAPE_PATTERNS_684.md).
+
 ## 2026-11-20 — Step 683 — Keep shape gradients editable in PSD and PSB
 
 Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
@@ -1441,14 +1449,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:683 -->
+<!-- current-status-step:684 -->
 ## Current development status — 20 November 2026
 
-Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
+Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight.
 
-All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 683](SOURCE_PUBLICATION_683.md) · [Development record](DEVLOG.md#dev-step-683).
+[Source checkpoint 684](SOURCE_PUBLICATION_684.md) · [Development record](DEVLOG.md#dev-step-684).
 
 <!-- current-status:end -->
 
@@ -2338,6 +2346,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 681 | [Keep the shape exterior attached to the canvas](DEVLOG.md#dev-step-681) |
 | 2026-11-20 | 682 | [Render gradients and strokes on large editable cutouts](DEVLOG.md#dev-step-682) |
 | 2026-11-20 | 683 | [Keep shape gradients editable in PSD and PSB](DEVLOG.md#dev-step-683) |
+| 2026-11-20 | 684 | [Keep patterns and straight lines editable in PSD and PSB](DEVLOG.md#dev-step-684) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

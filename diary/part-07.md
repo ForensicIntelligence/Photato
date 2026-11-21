@@ -1219,14 +1219,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:683 -->
+<!-- current-status-step:684 -->
 ## Current development status — 20 November 2026
 
-Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
+Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight.
 
-All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 683](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_683.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-683).
+[Source checkpoint 684](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_684.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-684).
 
 <!-- current-status:end -->
 

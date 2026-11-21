@@ -9,6 +9,112 @@ final class PSDShapeInterchangeTests: XCTestCase {
       .appendingPathComponent("Fixtures/PSDShapesInterop")
   }
 
+  func testPatternedShapePhaseAndCacheFollowTheirLinkSetting() throws {
+    var tile = try Surface(width: 5, height: 2)
+    for y in 0..<tile.height {
+      for x in 0..<tile.width { tile.setPixel(x: x, y: y, Pixel(Float(x) / 4, Float(y), 0)) }
+    }
+    let pattern = try RasterPattern(name: "Owned grid", surface: tile, id: "owned-shape-grid")
+    var source = try CraftDocument(width: 92, height: 56)
+    source.layers[0].content = .raster(try Surface(width: 92, height: 56))
+    for (name, linked, x) in [("Linked", true, 8), ("Anchored", false, 45)] {
+      var fill = ShapePaint()
+      fill.kind = .pattern
+      fill.pattern = .init(patternID: pattern.id, linked: linked)
+      var stroke = ShapeStroke()
+      stroke.width = 2
+      stroke.alignment = .inside
+      stroke.paint = fill
+      let definition = ShapeDefinition(geometry: .init(width: 22, height: 18), fill: fill, stroke: stroke)
+      try Command.shape(.create(name, definition, .translation(Double(x), 12), patterns: [pattern])).apply(to: &source)
+    }
+    XCTAssertEqual(source.patterns?.count, 1)
+    for format in [PSDFileFormat.psd, .psb] {
+      let imported = try PSDCodec.read(PSDCodec.writeRasterLayers(source, format: format))
+      XCTAssertEqual(imported.pattern(pattern.id)?.surface, tile)
+      var session = EditorSession(document: try NativeArchive.decode(NativeArchive.encode(imported)))
+      let initial = session.document
+      let original = try Renderer.composite(initial)
+      XCTAssertEqual(original, try Renderer.composite(source))
+      let linked = try XCTUnwrap(initial.layers.first { $0.name == "Linked" })
+      let anchored = try XCTUnwrap(initial.layers.first { $0.name == "Anchored" })
+      for layer in [linked, anchored] {
+        let raw = try XCTUnwrap(layer.sourceTags?["vscg"])
+        XCTAssertEqual(String(decoding: raw.prefix(4), as: UTF8.self), "PtFl")
+        let fill = try PSDPatternFill.read(Data(raw.dropFirst(4))).fill
+        XCTAssertEqual(fill.patternID, pattern.id)
+        XCTAssertEqual(fill.placement.phaseX, layer.id == linked.id ? 8 : 0)
+        XCTAssertEqual(fill.placement.phaseY, layer.id == linked.id ? 12 : 0)
+        let stroke = try PSDDescriptor.read(XCTUnwrap(layer.sourceTags?["vstk"]), padding: true)
+        guard case .object(let paint)? = stroke["strokeStyleContent"] else {
+          return XCTFail("Missing editable pattern stroke")
+        }
+        XCTAssertEqual(paint.classID.text, "patternLayer")
+        XCTAssertEqual(try PSDPatternFill.read(paint.encoded()).fill, fill)
+      }
+      XCTAssertNil(linked.shape?.importedAppearance?.documentPatternPlacement)
+      XCTAssertEqual(anchored.shape?.importedAppearance?.documentPatternPlacement, anchored.coordinateTransform)
+      try session.execute(.moveLayers(.init(layerIDs: [linked.id, anchored.id], dx: 7, dy: 0)))
+      let moved = try Renderer.composite(session.document)
+      XCTAssertEqual(moved.pixel(x: 20, y: 19), original.pixel(x: 13, y: 19))
+      XCTAssertEqual(moved.pixel(x: 59, y: 19), original.pixel(x: 59, y: 19))
+      XCTAssertNotEqual(moved.pixel(x: 59, y: 19), original.pixel(x: 52, y: 19))
+      let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: format))
+      XCTAssertEqual(try Renderer.composite(reopened), moved)
+      let movedLinked = try XCTUnwrap(reopened.layers.first { $0.name == "Linked" })
+      let movedTag = try XCTUnwrap(movedLinked.sourceTags?["vscg"])
+      XCTAssertEqual(try PSDPatternFill.read(Data(movedTag.dropFirst(4))).fill.placement.phaseX, 15)
+      try session.undo()
+      XCTAssertEqual(session.document, initial)
+    }
+  }
+
+  func testArrowlessLiveLineRetainsEndpointsAndPatternPaintAfterEditing() throws {
+    let tile = try Surface(width: 2, height: 2, fill: Pixel(0, 0.5, 1))
+    let pattern = try RasterPattern(name: "Blue", surface: tile, id: "owned-line-tile")
+    var source = try CraftDocument(width: 118, height: 82)
+    var geometry = ShapeGeometry(kind: .line, width: 30, height: 0)
+    geometry.lineWeight = 5
+    var paint = ShapePaint()
+    paint.kind = .pattern
+    paint.pattern = .init(patternID: pattern.id)
+    var definition = ShapeDefinition(geometry: geometry, fill: paint)
+    definition.components[0].transform = .rotation(-30)
+    try Command.shape(.create("Owned line", definition, .translation(25.25, 40.5), patterns: [pattern])).apply(to: &source)
+    for format in [PSDFileFormat.psd, .psb] {
+      let imported = try PSDCodec.read(PSDCodec.writeRasterLayers(source, format: format))
+      let layer = try XCTUnwrap(imported.layers.first { $0.name == "Owned line" })
+      let primitive = try XCTUnwrap(layer.shape?.editableDefinition.components.first)
+      XCTAssertEqual(primitive.geometry.kind, .line)
+      XCTAssertEqual(primitive.geometry.width, 30, accuracy: 1e-10)
+      XCTAssertEqual(primitive.geometry.height, 0)
+      XCTAssertEqual(primitive.geometry.lineWeight, 5)
+      let origin = try XCTUnwrap(layer.sourceTags?["vogk"])
+      let descriptor = try PSDDescriptor.read(Data(origin.dropFirst(4)), padding: true)
+      guard case .list(let list)? = descriptor["keyDescriptorList"],
+        case .object(let line)? = list.first,
+        case .object(let start)? = line["keyOriginLineStart"],
+        case .object(let end)? = line["keyOriginLineEnd"] else { return XCTFail("Missing live line endpoints") }
+      XCTAssertEqual(start["Hrzn"]?.number, 25.25)
+      XCTAssertEqual(start["Vrtc"]?.number, 40.5)
+      XCTAssertEqual(end["Vrtc"]?.number ?? .nan, 25.5, accuracy: 1e-10)
+      var session = EditorSession(document: imported)
+      var altered = try XCTUnwrap(layer.shape?.editableDefinition)
+      altered.components[0].geometry.lineWeight = 8
+      altered.fill.pattern?.placement.scale = 85
+      try session.execute(.shape(.configure(layer.id, altered)))
+      let copy = try PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: format))
+      let edited = try XCTUnwrap(copy.layers.first { $0.name == layer.name }?.shape?.editableDefinition)
+      XCTAssertEqual(edited.components.first?.geometry.kind, .line)
+      XCTAssertEqual(edited.components.first?.geometry.lineWeight, 8)
+      XCTAssertEqual(edited.fill.pattern?.placement.scale, 85)
+      XCTAssertEqual(edited.fill.pattern?.patternID, pattern.id)
+      XCTAssertNotEqual(try Renderer.composite(imported), try Renderer.composite(copy))
+      try session.undo()
+      XCTAssertEqual(session.document, imported)
+    }
+  }
+
   func testShapeGradientFillAndStrokeStayEditableInPSDAndPSB() throws {
     var fillPlacement = GradientPlacement()
     fillPlacement.style = .reflected

@@ -6,7 +6,8 @@ public enum ShapeRenderer {
   /// Layer caches are bounded by the visible canvas while editable path and
   /// transform state stay in the original layer's coordinates.
   public static func rasterInput(_ layer: Layer, in document: CraftDocument) throws -> Layer {
-    try layer.framingShapeExterior(to: .init(x: 0, y: 0, width: document.width, height: document.height))
+    try layer.repaintingUnlinkedShapePattern()
+      .framingShapeExterior(to: .init(x: 0, y: 0, width: document.width, height: document.height))
   }
 
   /// Solve each primitive's internal contours before applying the layer's component operation.
@@ -63,6 +64,13 @@ public enum ShapeRenderer {
     try definition.validate(in: document)
     if let pixels = cachedPixels(definition, layer: layer) { return pixels }
     let plan = try RasterPlan(definition, layer: layer, document: document)
+    // Direct layer readers use the supplied layer's bounds and placement. The
+    // document compositor prepares a rebased layer before sampling it.
+    if let appearance = layer.shape?.importedAppearance, appearance.definition == definition,
+      let previous = appearance.documentPatternPlacement, previous != layer.coordinateTransform,
+      let shape = layer.shape {
+      return try plan.render(shape.renderBounds())
+    }
     if let solid = try plan.solidExterior() { return solid }
     let bounds = plan.bounds
     if !isLarge(bounds) { return try plan.render(bounds) }
@@ -175,7 +183,8 @@ public enum ShapeRenderer {
   }
 
   private static func cachedPixels(_ definition: ShapeDefinition, layer: Layer) -> Surface? {
-    guard let original = layer.shape?.importedAppearance, original.definition == definition else { return nil }
+    guard let original = layer.shape?.importedAppearance, original.definition == definition,
+      original.documentPatternPlacement.map({ $0 == layer.coordinateTransform }) != false else { return nil }
     return original.pixels
   }
 

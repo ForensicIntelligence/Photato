@@ -36,7 +36,7 @@ extension Renderer {
   public static func clippingCoverage(_ layer: Layer, in document: CraftDocument, region: IntRect? = nil) throws -> Surface
   {
     let input = try ShapeRenderer.rasterInput(layer, in: document)
-    let source = try layer.isGroup ? framingShapeExteriors(in: document) : document
+    let source = try layer.isGroup ? preparingShapeRasters(in: document) : document
     return try isolatedContent(input, in: source, cache: GroupRenderCache(region: region))
   }
   static func compositeStack(

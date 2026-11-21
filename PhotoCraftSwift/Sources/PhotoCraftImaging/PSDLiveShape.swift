@@ -23,6 +23,13 @@ enum PSDLiveShape {
   private struct Primitive {
     let geometry: ShapeGeometry
     let rectangle: Rectangle
+    let lineTransform: Transform2D?
+    init(geometry: ShapeGeometry, rectangle: Rectangle, lineTransform: Transform2D? = nil) {
+      self.geometry = geometry
+      self.rectangle = rectangle
+      self.lineTransform = lineTransform
+    }
+    var placement: Transform2D { lineTransform ?? .translation(rectangle.x, rectangle.y) }
   }
 
   static func hasDefinition(_ tags: [String: Data]) -> Bool {
@@ -82,12 +89,21 @@ enum PSDLiveShape {
     var definition = ShapeDefinition(geometry: primitives.first?.geometry ?? .init(), fill: fill, stroke: stroke)
     definition.fillRule = mask.path.fillRule
     definition = try localize(definition, primitives: primitives, path: mask.path, x: x, y: y, document: document)
+    // Shape pattern descriptors store phase against the document. The linked
+    // native sampler uses shape-local coordinates so it follows later moves.
+    let local = Transform2D.translation(-Double(x), -Double(y))
+    try moveLinkedPattern(&definition.fill, by: local)
+    try moveLinkedPattern(&definition.stroke.paint, by: local)
     if [fill, stroke.paint].contains(where: { $0.gradient?.aligned == true }) {
       definition.paintFrame = try definition.controlPaintFrame()
     }
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width; shape.height = cache.height
-    shape.importedAppearance = .init(definition: definition, pixels: cache, vectorRecord: vector)
+    var appearance = ImportedShapeAppearance(definition: definition, pixels: cache, vectorRecord: vector)
+    if definition.fill.pattern?.linked == false || definition.stroke.paint.pattern?.linked == false {
+      appearance.documentPatternPlacement = .translation(Double(x), Double(y))
+    }
+    shape.importedAppearance = appearance
     return shape
   }
 
@@ -129,6 +145,25 @@ enum PSDLiveShape {
     // Photoshop has already applied its stored Trnf to the document-space bounds
     // and contour. Verify the contour against those bounds before using them.
     let rectangle = Rectangle(x: left, y: top, width: right - left, height: bottom - top)
+    if type == 4 {
+      guard let start = point(record["keyOriginLineStart"]), let end = point(record["keyOriginLineEnd"]),
+        let weight = record["keyOriginLineWeight"]?.number, weight.isFinite, weight > 0,
+        flag(record["keyOriginLineArrowSt"]) == false, flag(record["keyOriginLineArrowEnd"]) == false,
+        abs(left - min(start.x, end.x)) < 1e-8, abs(top - min(start.y, end.y)) < 1e-8,
+        abs(right - max(start.x, end.x)) < 1e-8, abs(bottom - max(start.y, end.y)) < 1e-8 else {
+        throw CraftError.unsupported("Unrepresented Photoshop live line geometry or arrowheads.")
+      }
+      let dx = end.x - start.x, dy = end.y - start.y
+      let length = hypot(dx, dy)
+      guard length.isFinite, length > 0 else {
+        throw CraftError.invalid("A Photoshop live line must have distinct endpoints.")
+      }
+      var geometry = ShapeGeometry(kind: .line, width: length, height: 0)
+      geometry.lineWeight = weight
+      return Primitive(geometry: geometry, rectangle: rectangle,
+        lineTransform: .init(a: dx / length, b: dy / length, c: -dy / length, d: dx / length,
+                             tx: start.x, ty: start.y))
+    }
     var geometry = ShapeGeometry(kind: type == 5 ? .ellipse : .rectangle,
       width: rectangle.width, height: rectangle.height)
     switch type {
@@ -154,7 +189,7 @@ enum PSDLiveShape {
                                 transform: Transform2D) throws -> [ShapeComponent] {
     if primitives.isEmpty { return try ShapeDefinition.editablePathComponents(path.transformed(transform)) }
     return zip(primitives, path.components).map { primitive, outline in
-      let placement = transform * .translation(primitive.rectangle.x, primitive.rectangle.y)
+      let placement = transform * primitive.placement
       var component = ShapeComponent(geometry: primitive.geometry, transform: placement, operation: outline.operation)
       var contour = outline
       contour.operation = .combine
@@ -210,6 +245,8 @@ enum PSDLiveShape {
       strokePaint = try .init(color: PSDSolidColor.read(paint.encoded()))
     case "gradientLayer":
       strokePaint = try gradientPaint(PSDGradientFill.readFields(paint))
+    case "patternLayer":
+      strokePaint = try patternPaint(PSDPatternFill.read(paint.encoded()).fill)
     default:
       throw CraftError.unsupported("Unrepresented Photoshop shape stroke paint.")
     }
@@ -227,6 +264,7 @@ enum PSDLiveShape {
     switch String(decoding: generator.prefix(4), as: UTF8.self) {
     case "SoCo": return try .init(color: PSDSolidColor.read(descriptor))
     case "GdFl": return try gradientPaint(PSDGradientFill.read(descriptor))
+    case "PtFl": return try patternPaint(PSDPatternFill.read(descriptor).fill)
     default: throw CraftError.unsupported("Unrepresented Photoshop shape fill paint.")
     }
   }
@@ -238,7 +276,53 @@ enum PSDLiveShape {
     return paint
   }
 
-  private static func fillGenerator(_ fill: ShapePaint, original: Data?) throws -> Data {
+  private static func patternPaint(_ pattern: PatternFill) -> ShapePaint {
+    var paint = ShapePaint()
+    paint.kind = .pattern
+    paint.pattern = pattern
+    return paint
+  }
+
+  private static func moveLinkedPattern(_ paint: inout ShapePaint, by translation: Transform2D) throws {
+    guard var pattern = paint.pattern, pattern.linked, translation != .identity else { return }
+    pattern.placement = try pattern.flattenedPlacement()
+    pattern.geometry = nil
+    pattern.placement.phaseX += Float(translation.tx)
+    pattern.placement.phaseY += Float(translation.ty)
+    try pattern.validate()
+    paint.pattern = pattern
+  }
+
+  private static func photoshopPattern(_ fill: PatternFill, layer: Layer, document: CraftDocument)
+    throws -> (PatternFill, RasterPattern) {
+    guard let pattern = document.pattern(fill.patternID) else {
+      throw CraftError.invalid("Missing embedded Photoshop shape pattern.")
+    }
+    var phase = fill
+    phase.placement = try phase.flattenedPlacement()
+    phase.geometry = nil
+    if phase.linked {
+      let placement = try layer.shapeTransform()
+      phase.placement.phaseX += Float(placement.tx)
+      phase.placement.phaseY += Float(placement.ty)
+    }
+    try phase.validate()
+    return (phase, pattern)
+  }
+
+  private static func patternDescriptor(_ fill: PatternFill, layer: Layer, document: CraftDocument,
+                                        original: Data?) throws -> Data {
+    let (phase, pattern) = try photoshopPattern(fill, layer: layer, document: document)
+    return try PSDPatternFill.write(phase, pattern: pattern, original: original)
+  }
+
+  private static func fillGenerator(_ fill: ShapePaint, layer: Layer, document: CraftDocument) throws -> Data {
+    let original = layer.sourceTags?["vscg"]
+    if let pattern = fill.pattern {
+      let key = Data("PtFl".utf8)
+      let descriptor = original.flatMap { $0.starts(with: key) ? Data($0.dropFirst(4)) : nil }
+      return try key + patternDescriptor(pattern, layer: layer, document: document, original: descriptor)
+    }
     if let gradient = fill.gradient {
       let key = Data("GdFl".utf8)
       let descriptor = original.flatMap { $0.starts(with: key) ? Data($0.dropFirst(4)) : nil }
@@ -248,11 +332,18 @@ enum PSDLiveShape {
     return try Data("SoCo".utf8) + PSDSolidColor.write(color)
   }
 
-  private static func strokeDescriptor(_ paint: ShapePaint, original: Data?) throws -> PSDDescriptor {
+  private static func strokeDescriptor(_ paint: ShapePaint, layer: Layer, document: CraftDocument) throws -> PSDDescriptor {
+    let source = layer.sourceTags?["vstk"].flatMap { try? PSDDescriptor.read($0, padding: true) }
+    let original: PSDDescriptor? = if case .object(let value)? = source?["strokeStyleContent"] { value } else { nil }
+    if let pattern = paint.pattern {
+      let descriptor = original?.classID.text == "patternLayer" ? try original?.encoded() : nil
+      let bytes = try patternDescriptor(pattern, layer: layer, document: document, original: descriptor)
+      var result = try PSDDescriptor.read(bytes, padding: true)
+      result.classID = PSDID("patternLayer")
+      return result
+    }
     if let gradient = paint.gradient {
-      let source = original.flatMap { try? PSDDescriptor.read($0, padding: true) }
-      let descriptor: PSDDescriptor? = if case .object(let value)? = source?["strokeStyleContent"],
-        value.classID.text == "gradientLayer" { value } else { nil }
+      let descriptor = original?.classID.text == "gradientLayer" ? original : nil
       if let descriptor, (try? PSDGradientFill.readFields(descriptor)) == gradient { return descriptor }
       var result = try PSDGradientFill.descriptor(gradient, original: descriptor?.encoded())
       result.classID = PSDID("gradientLayer")
@@ -283,8 +374,11 @@ enum PSDLiveShape {
     let local = Transform2D.translation(-Double(bounds.x), -Double(bounds.y))
     var definition = try localize(original, primitives: primitives, path: path,
                                   x: bounds.x, y: bounds.y, document: document)
+    let offset = try local * layer.shapeTransform()
+    try moveLinkedPattern(&definition.fill, by: offset)
+    try moveLinkedPattern(&definition.stroke.paint, by: offset)
     if var frame = original.paintFrame {
-      let rebased = (try local * layer.shapeTransform()).point(frame.x, frame.y)
+      let rebased = offset.point(frame.x, frame.y)
       frame.x = rebased.x
       frame.y = rebased.y
       definition.paintFrame = frame
@@ -317,11 +411,14 @@ enum PSDLiveShape {
     guard let first = definition.components.first, definition.inverted != true,
       definition.stroke.dash.isEmpty || (definition.stroke.widthRelativeDashes == true && definition.stroke.phase == 0),
       definition.stroke.pathContours != true,
-      [.none, .solid, .gradient].contains(definition.fill.kind),
-      [.none, .solid, .gradient].contains(definition.stroke.paint.kind),
       definition.fill.color.a == 1, definition.stroke.paint.color.a == 1, let path = try layer.shapePath(),
       !path.inverted else {
       throw unsupported
+    }
+    for paint in [definition.fill, definition.stroke.paint] {
+      if let pattern = paint.pattern {
+        _ = try photoshopPattern(pattern, layer: layer, document: document)
+      }
     }
     let leadingSubtract = path.components.first?.operation == .subtract
     if leadingSubtract {
@@ -344,6 +441,19 @@ enum PSDLiveShape {
     let origin = try layer.shapeTransform()
     let primitives = try zip(definition.components, path.components).map { part, outline in
       let transform = origin * part.transform
+      if part.geometry.kind == .line {
+        let g = part.geometry
+        guard g.lineWeight > 0, hypot(g.width, g.height) > 0, !g.arrowStart, !g.arrowEnd,
+          abs(hypot(transform.a, transform.b) - 1) <= 1e-10,
+          abs(hypot(transform.c, transform.d) - 1) <= 1e-10,
+          abs(transform.a * transform.c + transform.b * transform.d) <= 1e-10 else { throw unsupported }
+        let end = transform.point(g.width, g.height)
+        let bounds = Rectangle(x: min(transform.tx, end.x), y: min(transform.ty, end.y),
+                               width: abs(end.x - transform.tx), height: abs(end.y - transform.ty))
+        let primitive = Primitive(geometry: g, rectangle: bounds, lineTransform: transform)
+        guard try matches(outline, primitive: primitive, tolerance: tolerance(document)) else { throw unsupported }
+        return primitive
+      }
       guard [.rectangle, .ellipse].contains(part.geometry.kind),
             transform.a == 1, transform.b == 0, transform.c == 0, transform.d == 1 else { throw unsupported }
       let border = Rectangle(x: transform.tx, y: transform.ty, width: part.geometry.width, height: part.geometry.height)
@@ -367,8 +477,8 @@ enum PSDLiveShape {
       }
     }
     let stroke = definition.stroke
-    let fill = try fillGenerator(definition.fill, original: layer.sourceTags?["vscg"])
-    let paint = try strokeDescriptor(stroke.paint, original: layer.sourceTags?["vstk"])
+    let fill = try fillGenerator(definition.fill, layer: layer, document: document)
+    let paint = try strokeDescriptor(stroke.paint, layer: layer, document: document)
     let strokeStyle = PSDDescriptor("strokeStyle", items: [
       .init("strokeStyleVersion", .integer(2)), .init("strokeEnabled", .boolean(stroke.paint.kind != .none)),
       .init("fillEnabled", .boolean(definition.fill.kind != .none)),
@@ -402,7 +512,12 @@ enum PSDLiveShape {
       .init("Left", unit("#Pxl", rectangle.x)), .init("Btom", unit("#Pxl", rectangle.y + rectangle.height)),
       .init("Rght", unit("#Pxl", rectangle.x + rectangle.width))])
     let geometry = primitive.geometry
-    let type: Int32 = geometry.kind == .ellipse ? 5 : (geometry.radii.contains { $0 > 0 } ? 2 : 1)
+    let type: Int32
+    switch geometry.kind {
+    case .ellipse: type = 5
+    case .line: type = 4
+    default: type = geometry.radii.contains { $0 > 0 } ? 2 : 1
+    }
     var live: [PSDDescriptor.Item] = [
       .init("keyOriginType", .integer(type)), .init("keyOriginResolution", .number(resolution))]
     if type == 2 {
@@ -420,17 +535,28 @@ enum PSDLiveShape {
         .map { PSDDescriptor.Item($0.0, .number($0.1)) })
       live.append(.init("Trnf", .object(transform)))
     }
+    if let line = primitive.lineTransform {
+      let end = line.point(geometry.width, geometry.height)
+      live += [
+        .init("keyOriginLineStart", point(line.tx, line.ty)),
+        .init("keyOriginLineEnd", point(end.x, end.y)),
+        .init("keyOriginLineWeight", .number(geometry.lineWeight)),
+        .init("keyOriginLineArrowSt", .boolean(false)),
+        .init("keyOriginLineArrowEnd", .boolean(false)),
+        .init("keyOriginLineArrWdth", .number(0)), .init("keyOriginLineArrLngth", .number(0)),
+        .init("keyOriginLineArrConc", .integer(0)),
+      ]
+    }
     live.append(.init("keyOriginIndex", .integer(Int32(index))))
     return PSDDescriptor("null", items: live)
   }
 
-  private static let unsupported = CraftError.unsupported("PSD editable shape export currently supports axis-aligned rectangles, ellipses and finite outlines with solid or gradient paint and zero-phase, width-relative dashes. Save other shapes as Photato.")
+  private static let unsupported = CraftError.unsupported("Editable PSD shape export supports axis-aligned rectangles and ellipses, straight lines without arrowheads and supported custom outlines. Use zero-phase, width-relative dashes. Save other shapes as Photato.")
   private static func tolerance(_ document: CraftDocument) -> Double { Double(max(document.width, document.height)) / 16_777_216 + 1e-8 }
 
   private static func matches(_ component: PathComponent, primitive: Primitive, tolerance: Double) throws -> Bool {
     guard component.closed, (4...8).contains(component.knots.count) else { return false }
-    let rectangle = primitive.rectangle
-    let expected = try primitive.geometry.path().transformed(.translation(rectangle.x, rectangle.y))
+    let expected = try primitive.geometry.path().transformed(primitive.placement)
     // At maximum corner radius a straight run can collapse to one point. Photoshop may omit it.
     func segments(_ knots: [PathKnot]) -> [[PathPoint]] {
       knots.indices.compactMap { index in
@@ -453,6 +579,14 @@ enum PSDLiveShape {
     return sameOrder(observed) || sameOrder(observed.reversed().map { Array($0.reversed()) })
   }
   private static func flag(_ value: PSDValue?) -> Bool? { if case .boolean(let flag)? = value { return flag }; return nil }
+  private static func point(_ value: PSDValue?) -> (x: Double, y: Double)? {
+    guard case .object(let descriptor)? = value, descriptor.classID.text == "Pnt ",
+      let x = descriptor["Hrzn"]?.number, let y = descriptor["Vrtc"]?.number, x.isFinite, y.isFinite else { return nil }
+    return (x, y)
+  }
+  private static func point(_ x: Double, _ y: Double) -> PSDValue {
+    .object(PSDDescriptor("Pnt ", items: [.init("Hrzn", .number(x)), .init("Vrtc", .number(y))]))
+  }
   private static func choice(_ value: PSDValue?) -> String? { if case .enumerated(_, let id)? = value { return id.text }; return nil }
   private static func number(_ value: PSDValue?, unit: String) -> Double? {
     guard case .unit(let key, let bits)? = value, key == Data(unit.utf8) else { return nil }

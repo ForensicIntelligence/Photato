@@ -100,6 +100,20 @@ extension ShapeDefinition {
   }
 }
 extension Layer {
+  /// Moving a shape must resample a document-anchored pattern. Keep the stored
+  /// original available to Undo and rebase the derived raster and its mask.
+  public func repaintingUnlinkedShapePattern() throws -> Layer {
+    guard let shape, let definition = shape.definition, let appearance = shape.importedAppearance,
+      appearance.definition == definition, let previous = appearance.documentPatternPlacement,
+      previous != coordinateTransform else { return self }
+    let anchor = try shapeTransform()
+    let bounds = try definition.renderBounds()
+    var prepared = self
+    prepared.content = .shape(try ShapeContent(definition: definition))
+    try prepared.rebaseRasterPlacement(anchor * .translation(Double(bounds.x), Double(bounds.y)))
+    return prepared
+  }
+
   /// Prepare the raster frame for the current canvas. This is a derived layer:
   /// layer position, transform keyframes, and saved comps still refer to the
   /// original editable contour placement.

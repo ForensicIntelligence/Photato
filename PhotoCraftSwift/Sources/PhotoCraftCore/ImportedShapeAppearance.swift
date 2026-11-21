@@ -15,10 +15,13 @@ public struct ImportedShapeAppearance:Codable,Equatable,Sendable {
   public var pixels:Surface?
   public var x:Int,y:Int
   public var vectorRecord:Data?
+  /// Cache placement when an imported pattern is anchored to the document.
+  public var documentPatternPlacement: Transform2D?
   public init(definition:ShapeDefinition,pixels:Surface?=nil,x:Int=0,y:Int=0,vectorRecord:Data?=nil){self.definition=definition;self.pixels=pixels;self.x=x;self.y=y;self.vectorRecord=vectorRecord}
   public var estimatedBytes:Int {definition.estimatedBytes+(pixels?.allocatedBytes ?? 0)+(vectorRecord?.count ?? 0)}
   public func validate(in document:CraftDocument)throws{
     try definition.validate(in:document)
+    try documentPatternPlacement?.validated()
     guard abs(Double(x))<=1_000_000,abs(Double(y))<=1_000_000,(vectorRecord?.count ?? 0)<=4*1024*1024 else{throw CraftError.invalid("Invalid imported shape appearance.")}
     if let pixels {
       guard pixels.depth==document.depth,pixels.width<=32768,pixels.height<=32768,pixels.width*pixels.height<=8_388_608 else{throw CraftError.invalid("Imported shape cache exceeds its supported depth or bounds.")}

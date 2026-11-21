@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **683** · The 10 most recent entries, newest first.
+Source build **684** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 684 — Keep patterns and straight lines editable in PSD and PSB
+
+Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight.
+
+All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The regenerated merged preview differs in 331 color-channel bytes across 224 antialiased pixels, with a maximum difference of 1 in RGB and exact alpha. The 56% polygon pattern sample supports a document-origin phase. Its scaled sampling still differs. The 60° gradient diagnostic did not establish a universal half-pixel placement correction. Arrowheads and live Photoshop 2026 reopen and repaint checks remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-684) · [Details](PhotoCraftSwift/docs/EDITABLE_SHAPE_PATTERNS_684.md).
 
 ## 2026-11-20 — Step 683 — Keep shape gradients editable in PSD and PSB
 
@@ -75,11 +83,3 @@ Warp saved paths, vector masks and shape contours in the main canvas. Switch fro
 All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored warp output, switching from edited Warp back to Free Transform, and physical canvas performance remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-675) · [Details](PhotoCraftSwift/docs/PATH_WARP_675.md).
-
-## 2026-11-20 — Step 674 — Transform editable paths across layers
-
-Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit.
-
-All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison, native path isolation, and editable Warp for paths remain open. Direct edits to shape contours can replace live primitive controls with editable cubic geometry.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) · [Details](PhotoCraftSwift/docs/CROSS_LAYER_PATHS_674.md).

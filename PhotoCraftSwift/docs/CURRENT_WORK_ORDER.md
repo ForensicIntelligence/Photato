@@ -1,3 +1,9 @@
+**Source checkpoint 684.** Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight. All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_684.md).
+
+**Next path editing work.** Measure scaled pattern resampling, Photoshop's shape-edge compositing and diagonal gradient placement with additional author references.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 683.** Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache. All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_683.md).
 
 **Next path editing work.** Measure the suspected half-pixel gradient placement difference across more authored cases. Qualify pattern fills and strokes, including embedded resources and linked phase.

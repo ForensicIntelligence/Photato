@@ -702,7 +702,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 681 | 2026-11-20 | [Keep the shape exterior attached to the canvas](#dev-step-681) |
 | 682 | 2026-11-20 | [Render gradients and strokes on large editable cutouts](#dev-step-682) |
 | 683 | 2026-11-20 | [Keep shape gradients editable in PSD and PSB](#dev-step-683) |
+| 684 | 2026-11-20 | [Keep patterns and straight lines editable in PSD and PSB](#dev-step-684) |
 <!-- history-index:end -->
+
+<a id="dev-step-684"></a>
+
+## 2026-11-20 — Keep patterns and straight lines editable in PSD and PSB
+
+Supported RGB8 and RGB16 PSD and PSB shape layers keep their embedded pattern fills and strokes editable. Arrowless straight lines retain their endpoints and weight.
+
+The PSD codec uses the existing embedded pattern resource store. It rebases linked pattern phase during import, movement and fractional cache projection. Retained cache placement is recorded for unlinked paint so the compositor can repaint it after movement. Verified straight lines retain their parametric endpoints alongside the exact outline.
+
+All 302 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original Photoshop fixture opens with all five shape layers editable. Both resaves preserve the six layer caches, live shape descriptors and both embedded pattern records byte for byte. An independent reader verified an edited polygon phase, a rounded rectangle’s 85% stroke scale and a diagonal line’s 4.5 px weight. The line kept its endpoints. Both edited files matched byte for byte across all three builds.
+
+The read-only Photoshop 2026 request timed out. The original authored binary and its cached pixels provided the external reference. The regenerated merged preview differs in 331 color-channel bytes across 224 antialiased pixels, with a maximum difference of 1 in RGB and exact alpha. The 56% polygon pattern sample supports a document-origin phase. Its scaled sampling still differs. The 60° gradient diagnostic did not establish a universal half-pixel placement correction. Arrowheads and live Photoshop 2026 reopen and repaint checks remain open.
+
+[Development record](EDITABLE_SHAPE_PATTERNS_684.md) · [Qualification](SOURCE_PUBLICATION_684.md).
 
 <a id="dev-step-683"></a>
 

@@ -174,6 +174,15 @@ final class ShapeWorkflowTests:XCTestCase {
     definition.stroke.width = 3
     definition.stroke.alignment = .inside
     try Command.shape(.create("Gradient rectangle", definition, .translation(10, 8))).apply(to: &source)
+    let raster = try Surface(width: 2, height: 2, fill: Pixel(1, 0.25, 0))
+    let tile = try RasterPattern(name: "Owned swatch", surface: raster, id: "owned-shape-api-pattern")
+    var pattern = ShapePaint()
+    pattern.kind = .pattern
+    pattern.pattern = .init(patternID: tile.id)
+    var painted = ShapeDefinition(geometry: .init(width: 16, height: 14), fill: pattern)
+    painted.stroke.paint = pattern
+    painted.stroke.width = 2
+    try Command.shape(.create("Pattern rectangle", painted, .translation(36, 31), patterns: [tile])).apply(to: &source)
     let input = try DocumentIO.encode(source, format: .psd)
     try await helper.withService(pressedMouseButtons: { 0 }) { service, parent in
       defer {
@@ -190,8 +199,9 @@ final class ShapeWorkflowTests:XCTestCase {
       let containers = try XCTUnwrap(transfers["photoshopContainers"] as? [String: Any])
       let live = try XCTUnwrap(containers["liveShapes"] as? [String: Any])
       let paints = try XCTUnwrap(live["paints"] as? [String: [String]])
-      XCTAssertEqual(paints["fill"], ["none", "solid", "gradient"])
-      XCTAssertEqual(paints["stroke"], ["none", "solid", "gradient"])
+      XCTAssertEqual(paints["fill"], ["none", "solid", "gradient", "pattern"])
+      XCTAssertEqual(paints["stroke"], ["none", "solid", "gradient", "pattern"])
+      XCTAssertTrue((live["types"] as? [String])?.contains("line") == true)
       service.setDocumentTransfersEnabled(true)
       let uploaded = try await AutomationOpeningTests().upload(
         service, bytes: input, type: "image/vnd.adobe.photoshop", format: "psd")
@@ -211,6 +221,17 @@ final class ShapeWorkflowTests:XCTestCase {
       let status = try await helper.edit(service, document, "shape.edit", parameters)
       XCTAssertEqual(status, 200)
       XCTAssertEqual(document.store.document, expected)
+      let patterned = try XCTUnwrap(imported.layers.first { $0.name == "Pattern rectangle" })
+      var adjustedPattern = try XCTUnwrap(patterned.shape?.editableDefinition)
+      adjustedPattern.fill.pattern?.placement.phaseX += 3
+      adjustedPattern.stroke.paint.pattern?.placement.scale = 75
+      try Command.shape(.configure(patterned.id, adjustedPattern)).apply(to: &expected)
+      let patternStatus = try await helper.edit(service, document, "shape.edit", [
+        "operation": "configure", "layerID": patterned.id.uuidString,
+        "definition": BrushAPI.json(adjustedPattern),
+      ])
+      XCTAssertEqual(patternStatus, 200)
+      XCTAssertEqual(document.store.document, expected)
       for format in [DocumentIO.Format.psd, .psb] {
         XCTAssertTrue(document.saveFormats.contains(format))
         let reply = try await helper.request(service, path: "/v1/documents/\(share.id)/file.\(format.rawValue)")
@@ -220,9 +241,15 @@ final class ShapeWorkflowTests:XCTestCase {
         let definition = try XCTUnwrap(reopened.layers.first { $0.name == layer.name }?.shape?.editableDefinition)
         XCTAssertEqual(definition.fill, edited.fill)
         XCTAssertEqual(definition.stroke, edited.stroke)
+        let retainedPaint = try XCTUnwrap(reopened.layers.first { $0.name == patterned.name }?.shape?.editableDefinition)
+        XCTAssertEqual(retainedPaint.fill, adjustedPattern.fill)
+        XCTAssertEqual(retainedPaint.stroke, adjustedPattern.stroke)
+        XCTAssertEqual(reopened.pattern(tile.id)?.surface, raster)
       }
-      let undo = try await helper.edit(service, document, "history.undo")
-      XCTAssertEqual(undo, 200)
+      for _ in 0..<2 {
+        let undo = try await helper.edit(service, document, "history.undo")
+        XCTAssertEqual(undo, 200)
+      }
       XCTAssertEqual(document.store.document, imported)
     }
   }
