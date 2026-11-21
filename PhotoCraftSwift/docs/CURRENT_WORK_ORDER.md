@@ -1,3 +1,9 @@
+**Source checkpoint 683.** Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache. All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_683.md).
+
+**Next path editing work.** Measure the suspected half-pixel gradient placement difference across more authored cases. Qualify pattern fills and strokes, including embedded resources and linked phase.
+
+Update the README parity banner when the overall workflow estimate reaches the next ten-point milestone.
+
 **Source checkpoint 682.** Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing. All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_682.md).
 
 **Next path editing work.** Qualify Photoshop-authored gradient shape descriptors and add editable PSD and PSB transport for gradient fills and strokes.

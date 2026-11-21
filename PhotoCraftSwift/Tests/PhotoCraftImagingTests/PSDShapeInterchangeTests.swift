@@ -8,6 +8,123 @@ final class PSDShapeInterchangeTests: XCTestCase {
     URL(fileURLWithPath:#filePath).deletingLastPathComponent()
       .appendingPathComponent("Fixtures/PSDShapesInterop")
   }
+
+  func testShapeGradientFillAndStrokeStayEditableInPSDAndPSB() throws {
+    var fillPlacement = GradientPlacement()
+    fillPlacement.style = .reflected
+    fillPlacement.angle = 30
+    fillPlacement.scale = 1.5
+    fillPlacement.reverse = true
+    fillPlacement.offsetX = 0.125
+    fillPlacement.offsetY = -0.25
+    var fill = ShapePaint()
+    fill.kind = .gradient
+    fill.gradient = .init(
+      gradient: .init(name: "Fill", colors: [.init(0, .rgb(.black)), .init(1, .rgb(.white))],
+                      opacity: [.init(0, 1), .init(1, 0.25)], method: .classic),
+      placement: fillPlacement, dither: false)
+    var strokePlacement = GradientPlacement()
+    strokePlacement.angle = 75
+    strokePlacement.scale = 0.75
+    var stroke = ShapeStroke()
+    stroke.paint.kind = .gradient
+    stroke.paint.gradient = .init(
+      gradient: .init(name: "Stroke", colors: [.init(0, .rgb(Pixel(1, 0, 0))), .init(1, .rgb(Pixel(0, 0, 1)))],
+                      opacity: [.init(0, 0.25), .init(1, 1)], method: .linear),
+      placement: strokePlacement, aligned: false, dither: false)
+    stroke.width = 5
+    stroke.alignment = .inside
+    stroke.opacity = 0.75
+    stroke.cap = .round
+    var definition = ShapeDefinition(geometry: .init(width: 40, height: 28), fill: fill, stroke: stroke)
+    definition.paintFrame = try definition.controlPaintFrame()
+
+    for depth in [PixelDepth.u8, .u16] {
+      var source = try CraftDocument(width: 76, height: 62, depth: depth)
+      source.layers[0].content = .raster(try Surface(width: 76, height: 62, depth: depth))
+      try Command.shape(.create("Painted shape", definition, .translation(12, 14))).apply(to: &source)
+      let originalPixels = try Renderer.composite(source)
+      for format in [PSDFileFormat.psd, .psb] {
+        let imported = try PSDCodec.read(PSDCodec.writeRasterLayers(source, compression: .raw, format: format))
+        let layer = try XCTUnwrap(imported.layers.first { $0.name == "Painted shape" })
+        let shape = try XCTUnwrap(layer.shape)
+        let fillTag = try XCTUnwrap(layer.sourceTags?["vscg"])
+        let strokeTag = try XCTUnwrap(layer.sourceTags?["vstk"])
+        XCTAssertEqual(String(decoding: fillTag.prefix(4), as: UTF8.self), "GdFl")
+        guard case .object(let paint)? = try PSDDescriptor.read(strokeTag, padding: true)["strokeStyleContent"] else {
+          return XCTFail("Missing editable stroke paint descriptor")
+        }
+        XCTAssertEqual(paint.classID.text, "gradientLayer")
+        XCTAssertEqual(shape.editableDefinition.fill, fill)
+        XCTAssertEqual(shape.editableDefinition.stroke, stroke)
+        XCTAssertEqual(shape.editableDefinition.components.first?.geometry.width, 40)
+        XCTAssertNotNil(shape.importedAppearance?.pixels)
+        XCTAssertNil(layer.vectorMask)
+        let importedPixels = try Renderer.composite(imported)
+        for (x, y) in [(13, 20), (20, 24), (40, 29), (48, 37)] {
+          let actual = importedPixels.pixel(x: x, y: y)
+          let expected = originalPixels.pixel(x: x, y: y)
+          let precision: Float = depth == .u8 ? 0 : 2.0 / 65_535
+          XCTAssertEqual(actual.r, expected.r, accuracy: precision)
+          XCTAssertEqual(actual.g, expected.g, accuracy: precision)
+          XCTAssertEqual(actual.b, expected.b, accuracy: precision)
+          XCTAssertEqual(actual.a, expected.a, accuracy: precision)
+        }
+
+        let native = try NativeArchive.decode(NativeArchive.encode(imported))
+        let unchanged = try PSDCodec.read(PSDCodec.writeRasterLayers(native, format: format))
+        let unchangedLayer = try XCTUnwrap(unchanged.layers.first { $0.name == layer.name })
+        for key in ["vscg", "vstk", "vsms", "vogk"] {
+          XCTAssertEqual(unchangedLayer.sourceTags?[key], layer.sourceTags?[key], key)
+        }
+        XCTAssertEqual(try Renderer.composite(unchanged), importedPixels)
+        XCTAssertEqual(try Renderer.composite(native), importedPixels)
+
+        var edited = shape.editableDefinition
+        edited.fill.gradient?.placement.angle = 75
+        edited.stroke.paint.gradient?.placement.reverse = true
+        var session = EditorSession(document: imported)
+        try session.execute(.shape(.configure(layer.id, edited)))
+        XCTAssertNil(session.document.layers.first { $0.id == layer.id }?.shape?.importedAppearance)
+        XCTAssertNotEqual(try Renderer.composite(session.document), importedPixels)
+        let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(session.document, format: format))
+        let revised = try XCTUnwrap(reopened.layers.first { $0.name == layer.name }?.shape?.editableDefinition)
+        XCTAssertEqual(revised.fill, edited.fill)
+        XCTAssertEqual(revised.stroke, edited.stroke)
+        try session.undo()
+        XCTAssertEqual(session.document, imported)
+      }
+    }
+  }
+
+  func testInvalidatedGradientShapeOriginUsesEditableOutline() throws {
+    var source = try CraftDocument(width: 128, height: 96)
+    source.layers[0].content = .raster(try Surface(width: 128, height: 96))
+    var fill = ShapePaint()
+    fill.kind = .gradient
+    fill.gradient = .init(dither: false)
+    let definition = ShapeDefinition(geometry: .init(width: 50, height: 28), fill: fill)
+    try Command.shape(.create("Path", definition, .translation(12, 14))).apply(to: &source)
+    let imported = try PSDCodec.read(PSDCodec.writeRasterLayers(source))
+    let original = try XCTUnwrap(imported.layers.first { $0.name == "Path" })
+    let cache = try XCTUnwrap(original.shape?.importedAppearance?.pixels)
+    var tags = try XCTUnwrap(original.sourceTags)
+    let invalidated = PSDDescriptor("null", items: [
+      .init("keyShapeInvalidated", .boolean(true)), .init("keyOriginIndex", .integer(0)),
+    ])
+    let list = PSDDescriptor("null", items: [.init("keyDescriptorList", .list([.object(invalidated)]))])
+    tags["vogk"] = try Data([0, 0, 0, 1]) + list.encoded()
+    let shape = try PSDLiveShape.read(tags, x: original.x, y: original.y, cache: cache, document: imported)
+    var layer = original
+    layer.content = .shape(shape)
+    layer.sourceTags = tags
+    XCTAssertEqual(shape.editableDefinition.components.first?.geometry.kind, .custom)
+    XCTAssertEqual(try layer.shapePath(), try original.shapePath())
+    XCTAssertEqual(shape.importedAppearance?.pixels, cache)
+    XCTAssertEqual(Dictionary(uniqueKeysWithValues: try PSDLiveShape.write(layer, document: imported))["vogk"],
+      tags["vogk"])
+  }
+
   func testOwnedPhotoshopLiveRectangleAndStrokeRemainEditableWithOriginalMetadata() throws {
     for width in [0,1] {
       let data=try Data(contentsOf:fixtures.appendingPathComponent("photoshop-rectangle-stroke\(width).psd"))

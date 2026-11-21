@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 683 — Keep shape gradients editable in PSD and PSB
+
+Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
+
+All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original file containing patterned shape paint and the original file containing unsupported pattern layer effects still reject. The derivative fixtures isolate shape metadata and leave pattern paint, line controls, seeded dither and whole-file compatibility open. An equivalent-angle native repaint differed in alpha by up to three 8-bit levels throughout a 32 × 32 interior sample. Its RGB values matched. A separate diagnostic shifted the gradient center by half a pixel and matched all 1,024 alpha samples in that window. Reopening the new files in a live Photoshop 2026 session remains unverified.
+
+[Development record](DEVLOG.md#dev-step-683) · [Details](EDITABLE_SHAPE_PAINT_683.md).
+
 ## 2026-11-20 — Step 682 — Render gradients and strokes on large editable cutouts
 
 Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing.
@@ -1433,14 +1441,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:682 -->
+<!-- current-status-step:683 -->
 ## Current development status — 20 November 2026
 
-Gradient, pattern, and stroke paint on a large shape cutout now renders over the visible area. Panning retains the full shape’s paint coordinates and antialiasing.
+Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
 
-All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 682](SOURCE_PUBLICATION_682.md) · [Development record](DEVLOG.md#dev-step-682).
+[Source checkpoint 683](SOURCE_PUBLICATION_683.md) · [Development record](DEVLOG.md#dev-step-683).
 
 <!-- current-status:end -->
 
@@ -2329,6 +2337,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 680 | [Subtract the first component of a shape layer](DEVLOG.md#dev-step-680) |
 | 2026-11-20 | 681 | [Keep the shape exterior attached to the canvas](DEVLOG.md#dev-step-681) |
 | 2026-11-20 | 682 | [Render gradients and strokes on large editable cutouts](DEVLOG.md#dev-step-682) |
+| 2026-11-20 | 683 | [Keep shape gradients editable in PSD and PSB](DEVLOG.md#dev-step-683) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

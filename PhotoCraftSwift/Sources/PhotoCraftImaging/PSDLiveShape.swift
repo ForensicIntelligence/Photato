@@ -5,7 +5,6 @@ import PhotoCraftCore
 enum PSDLiveShape {
   private static let currentKeys = ["vscg", "vsms", "vstk", "vogk", "vowv", "sn2P"]
   private static let legacyKeys = ["SoCo", "vmsk", "vogk", "vowv", "sn2P"]
-  private static let header = Data("SoCo".utf8)
   private static let originVersion = Data([0, 0, 0, 1])
   private static let alignments: [String: ShapeStroke.Alignment] = [
     "strokeStyleAlignCenter": .center, "strokeStyleAlignInside": .inside, "strokeStyleAlignOutside": .outside]
@@ -34,7 +33,6 @@ enum PSDLiveShape {
     guard document.colorMode == .rgb, document.depth != .f32 else {
       throw CraftError.unsupported("Editable Photoshop shapes require 8- or 16-bit RGB.")
     }
-    let hasOrigination = tags["vogk"] != nil
     var primitives: [Primitive] = try tags["vogk"].map { data in
       guard data.starts(with: originVersion) else {
         throw CraftError.unsupported("Unrepresented Photoshop shape origination version.")
@@ -45,13 +43,13 @@ enum PSDLiveShape {
     let fill: ShapePaint
     let stroke: ShapeStroke
     if let generator = tags["vscg"] {
-      guard generator.starts(with: header), let path = tags["vsms"], let appearance = tags["vstk"] else {
+      guard generator.count >= 8, let path = tags["vsms"], let appearance = tags["vstk"] else {
         throw CraftError.unsupported("Unrepresented Photoshop shape fill, contour or stroke.")
       }
       vector = path
       let (style, fillEnabled) = try readStyle(appearance)
-      let color = try PSDSolidColor.read(Data(generator.dropFirst(4)))
-      fill = fillEnabled ? .init(color: color) : .none
+      let paint = try readFill(generator)
+      fill = fillEnabled ? paint : .none
       stroke = style
     } else {
       guard primitives.count == 1, let generator = tags["SoCo"], let path = tags["vmsk"], tags["vsms"] == nil,
@@ -73,7 +71,7 @@ enum PSDLiveShape {
     guard mask.enabled, mask.linked, !mask.path.inverted else {
       throw CraftError.unsupported("The Photoshop shape requires an enabled, linked contour without mask inversion.")
     }
-    if hasOrigination {
+    if !primitives.isEmpty {
       guard mask.path.components.count == primitives.count,
             try zip(mask.path.components, primitives).allSatisfy({ outline, primitive in
               try matches(outline, primitive: primitive, tolerance: tolerance(document))
@@ -84,6 +82,9 @@ enum PSDLiveShape {
     var definition = ShapeDefinition(geometry: primitives.first?.geometry ?? .init(), fill: fill, stroke: stroke)
     definition.fillRule = mask.path.fillRule
     definition = try localize(definition, primitives: primitives, path: mask.path, x: x, y: y, document: document)
+    if [fill, stroke.paint].contains(where: { $0.gradient?.aligned == true }) {
+      definition.paintFrame = try definition.controlPaintFrame()
+    }
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width; shape.height = cache.height
     shape.importedAppearance = .init(definition: definition, pixels: cache, vectorRecord: vector)
@@ -100,6 +101,13 @@ enum PSDLiveShape {
         throw CraftError.unsupported("Unrepresented Photoshop shape origination record.")
       }
       return descriptor
+    }
+    // Photoshop invalidates primitive controls after certain path edits.
+    // The vector path still carries the editable outline.
+    if records.count == 1, let record = records.first,
+      record.classID.text == "null", flag(record["keyShapeInvalidated"]) == true,
+      record["keyOriginIndex"]?.number == 0, record.items.count == 2 {
+      return []
     }
     if records.count > 1, records.contains(where: { $0["keyOriginIndex"] != nil }) {
       let indices = records.compactMap { $0["keyOriginIndex"]?.number }
@@ -196,14 +204,63 @@ enum PSDLiveShape {
     guard dash.isEmpty || number(style["strokeStyleLineDashOffset"], unit: "#Pnt") == 0 else {
       throw CraftError.unsupported("The Photoshop dash phase is unsupported.")
     }
-    let color = try PSDSolidColor.read(paint.encoded())
+    let strokePaint: ShapePaint
+    switch paint.classID.text {
+    case "solidColorLayer", "null":
+      strokePaint = try .init(color: PSDSolidColor.read(paint.encoded()))
+    case "gradientLayer":
+      strokePaint = try gradientPaint(PSDGradientFill.readFields(paint))
+    default:
+      throw CraftError.unsupported("Unrepresented Photoshop shape stroke paint.")
+    }
     var stroke = ShapeStroke()
     stroke.width = width; stroke.alignment = alignment; stroke.cap = cap; stroke.join = join; stroke.miterLimit = miter
-    stroke.paint = strokeEnabled ? .init(color: color) : .none
+    stroke.paint = strokeEnabled ? strokePaint : .none
     stroke.dash = dash
     if !dash.isEmpty { stroke.widthRelativeDashes = true }
     if opacity != 100 { stroke.opacity = Float(opacity / 100) }
     return (stroke, fillEnabled)
+  }
+
+  private static func readFill(_ generator: Data) throws -> ShapePaint {
+    let descriptor = Data(generator.dropFirst(4))
+    switch String(decoding: generator.prefix(4), as: UTF8.self) {
+    case "SoCo": return try .init(color: PSDSolidColor.read(descriptor))
+    case "GdFl": return try gradientPaint(PSDGradientFill.read(descriptor))
+    default: throw CraftError.unsupported("Unrepresented Photoshop shape fill paint.")
+    }
+  }
+
+  private static func gradientPaint(_ gradient: GradientFill) -> ShapePaint {
+    var paint = ShapePaint()
+    paint.kind = .gradient
+    paint.gradient = gradient
+    return paint
+  }
+
+  private static func fillGenerator(_ fill: ShapePaint, original: Data?) throws -> Data {
+    if let gradient = fill.gradient {
+      let key = Data("GdFl".utf8)
+      let descriptor = original.flatMap { $0.starts(with: key) ? Data($0.dropFirst(4)) : nil }
+      return try key + PSDGradientFill.write(gradient, original: descriptor)
+    }
+    let color = fill.kind == .solid ? fill.color : .black
+    return try Data("SoCo".utf8) + PSDSolidColor.write(color)
+  }
+
+  private static func strokeDescriptor(_ paint: ShapePaint, original: Data?) throws -> PSDDescriptor {
+    if let gradient = paint.gradient {
+      let source = original.flatMap { try? PSDDescriptor.read($0, padding: true) }
+      let descriptor: PSDDescriptor? = if case .object(let value)? = source?["strokeStyleContent"],
+        value.classID.text == "gradientLayer" { value } else { nil }
+      if let descriptor, (try? PSDGradientFill.readFields(descriptor)) == gradient { return descriptor }
+      var result = try PSDGradientFill.descriptor(gradient, original: descriptor?.encoded())
+      result.classID = PSDID("gradientLayer")
+      return result
+    }
+    let color = paint.kind == .solid ? paint.color : .black
+    let descriptor = try PSDDescriptor.read(PSDSolidColor.write(color))
+    return PSDDescriptor("solidColorLayer", items: descriptor.items)
   }
 
   static func supported(_ layer: Layer, in document: CraftDocument) -> Bool {
@@ -224,8 +281,14 @@ enum PSDLiveShape {
     }
     let cache = try RasterGeometry.render(pixels, transform: placement, bounds: bounds, method: .bilinear)
     let local = Transform2D.translation(-Double(bounds.x), -Double(bounds.y))
-    let definition = try localize(original, primitives: primitives, path: path,
+    var definition = try localize(original, primitives: primitives, path: path,
                                   x: bounds.x, y: bounds.y, document: document)
+    if var frame = original.paintFrame {
+      let rebased = (try local * layer.shapeTransform()).point(frame.x, frame.y)
+      frame.x = rebased.x
+      frame.y = rebased.y
+      definition.paintFrame = frame
+    }
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width
     shape.height = cache.height
@@ -254,7 +317,8 @@ enum PSDLiveShape {
     guard let first = definition.components.first, definition.inverted != true,
       definition.stroke.dash.isEmpty || (definition.stroke.widthRelativeDashes == true && definition.stroke.phase == 0),
       definition.stroke.pathContours != true,
-      [.none, .solid].contains(definition.fill.kind), [.none, .solid].contains(definition.stroke.paint.kind),
+      [.none, .solid, .gradient].contains(definition.fill.kind),
+      [.none, .solid, .gradient].contains(definition.stroke.paint.kind),
       definition.fill.color.a == 1, definition.stroke.paint.color.a == 1, let path = try layer.shapePath(),
       !path.inverted else {
       throw unsupported
@@ -303,8 +367,8 @@ enum PSDLiveShape {
       }
     }
     let stroke = definition.stroke
-    let fill = definition.fill.kind == .solid ? definition.fill.color : .black
-    let paint = try PSDDescriptor.read(PSDSolidColor.write(stroke.paint.kind == .solid ? stroke.paint.color : .black))
+    let fill = try fillGenerator(definition.fill, original: layer.sourceTags?["vscg"])
+    let paint = try strokeDescriptor(stroke.paint, original: layer.sourceTags?["vstk"])
     let strokeStyle = PSDDescriptor("strokeStyle", items: [
       .init("strokeStyleVersion", .integer(2)), .init("strokeEnabled", .boolean(stroke.paint.kind != .none)),
       .init("fillEnabled", .boolean(definition.fill.kind != .none)),
@@ -317,12 +381,12 @@ enum PSDLiveShape {
       .init("strokeStyleLineDashSet", .list(stroke.dash.map { unit("#Nne", $0) })),
       .init("strokeStyleBlendMode", enumeration("BlnM", "Nrml")),
       .init("strokeStyleOpacity", unit("#Prc", Double(stroke.opacity ?? 1) * 100)),
-      .init("strokeStyleContent", .object(PSDDescriptor("solidColorLayer", items: paint.items))),
+      .init("strokeStyleContent", .object(paint)),
       .init("strokeStyleResolution", .number(document.pixelsPerInch))])
     let records = primitives.enumerated().map {
       PSDValue.object(origination($0.element, index: $0.offset, resolution: document.pixelsPerInch))
     }
-    let vector = try [("vscg", header + PSDSolidColor.write(fill)),
+    let vector = try [("vscg", fill),
       ("vsms", PSDPaths.writeMask(VectorMask(path: path), width: document.width, height: document.height,
                                  linkShapeOrigins: !records.isEmpty))]
     if records.isEmpty { return try vector + [("vstk", strokeStyle.encoded())] }
@@ -360,7 +424,7 @@ enum PSDLiveShape {
     return PSDDescriptor("null", items: live)
   }
 
-  private static let unsupported = CraftError.unsupported("PSD editable shape export currently supports axis-aligned rectangles, ellipses and finite outlines with solid paint and zero-phase, width-relative dashes. Save other shapes as Photato.")
+  private static let unsupported = CraftError.unsupported("PSD editable shape export currently supports axis-aligned rectangles, ellipses and finite outlines with solid or gradient paint and zero-phase, width-relative dashes. Save other shapes as Photato.")
   private static func tolerance(_ document: CraftDocument) -> Double { Double(max(document.width, document.height)) / 16_777_216 + 1e-8 }
 
   private static func matches(_ component: PathComponent, primitive: Primitive, tolerance: Double) throws -> Bool {

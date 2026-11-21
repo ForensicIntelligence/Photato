@@ -701,7 +701,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 680 | 2026-11-20 | [Subtract the first component of a shape layer](#dev-step-680) |
 | 681 | 2026-11-20 | [Keep the shape exterior attached to the canvas](#dev-step-681) |
 | 682 | 2026-11-20 | [Render gradients and strokes on large editable cutouts](#dev-step-682) |
+| 683 | 2026-11-20 | [Keep shape gradients editable in PSD and PSB](#dev-step-683) |
 <!-- history-index:end -->
+
+<a id="dev-step-683"></a>
+
+## 2026-11-20 — Keep shape gradients editable in PSD and PSB
+
+Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
+
+The PSD shape codec reuses the native gradient descriptor reader and writer for both paints. Imported aligned paint uses the contour frame. A fractional cache projection rebases the stored paint frame along with the contour and pixel mask. A Photoshop invalidated-origin record keeps its editable outline.
+
+All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. An independent reader compared eight layer/file pairs. Their live descriptors and complete RGBA layer caches matched byte for byte. The original Photoshop gradient rectangle supplied two pairs. Four came from two gradient outlines isolated from a separate Photoshop file, and two came from a rectangle carrying a Photoshop-authored gradient stroke descriptor transplanted from a live line. Photato reversed the gradient on each shape, saved and reopened the edited files, and undid the edit. The six edited files matched byte for byte across all three builds.
+
+The first outline probe was terminated by macOS during code-signature validation. The existing executable subsequently verified on disk and completed the reopen and Undo checks. The published source uses the normal optimized compiler configuration. The original file containing patterned shape paint and the original file containing unsupported pattern layer effects still reject. The derivative fixtures isolate shape metadata and leave pattern paint, line controls, seeded dither and whole-file compatibility open. An equivalent-angle native repaint differed in alpha by up to three 8-bit levels throughout a 32 × 32 interior sample. Its RGB values matched. A separate diagnostic shifted the gradient center by half a pixel and matched all 1,024 alpha samples in that window. Reopening the new files in a live Photoshop 2026 session remains unverified.
+
+[Development record](EDITABLE_SHAPE_PAINT_683.md) · [Qualification](SOURCE_PUBLICATION_683.md).
 
 <a id="dev-step-682"></a>
 

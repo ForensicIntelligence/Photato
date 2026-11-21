@@ -133,8 +133,10 @@ extension AutomationService {
       ],
       "photoshopContainers": [
         "readVersions": [1, 2], "writeFormats": ["psd", "psb"],
-        "liveShapes": ["types": ["rectangle", "roundedRectangle", "ellipse"], "mode": "rgb", "depths": [8, 16],
-          "geometry": "Axis-aligned live shapes with solid fill and stroke, including zero-phase, width-relative dashes",
+        "liveShapes": ["types": ["rectangle", "roundedRectangle", "ellipse", "customOutline"], "mode": "rgb", "depths": [8, 16],
+          "geometry": "Axis-aligned live primitives and supported editable outlines, including zero-phase, width-relative dashes",
+          "paints": ["fill": ["none", "solid", "gradient"], "stroke": ["none", "solid", "gradient"]],
+          "gradientLimits": "Editable supported gradient controls. Seeded dither and pattern paint remain unsupported.",
           "legacySolidFillRecords": "SoCo and vmsk with live origin metadata. Separate pixel masks remain editable.",
           "retainsImportAppearance": true],
         "editableLayerEffects": ["gradientOverlay": "Editable standard Gradient Overlay color stops, transparency stops, blend mode and placement in PSD and PSB. Native and API file transfers use the same codec."],

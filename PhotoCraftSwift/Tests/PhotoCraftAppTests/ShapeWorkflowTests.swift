@@ -163,6 +163,70 @@ final class ShapeWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testEditableGradientShapeAPISaveMatchesNativeAndCanBeEditedAfterImport() async throws {
+    let helper = AutomationTests()
+    var source = try fixture()
+    var gradient = ShapePaint()
+    gradient.kind = .gradient
+    gradient.gradient = .init(dither: false)
+    var definition = ShapeDefinition(geometry: .init(width: 24, height: 18), fill: gradient)
+    definition.stroke.paint = gradient
+    definition.stroke.width = 3
+    definition.stroke.alignment = .inside
+    try Command.shape(.create("Gradient rectangle", definition, .translation(10, 8))).apply(to: &source)
+    let input = try DocumentIO.encode(source, format: .psd)
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, parent in
+      defer {
+        for doc in service.controller.documents where doc !== parent {
+          (doc as? CraftNSDocument)?.store.renderTask?.cancel()
+          doc.updateChangeCount(.changeCleared)
+          doc.close()
+        }
+      }
+      let capabilityResponse = try await helper.request(service, path: "/v1/capabilities")
+      XCTAssertEqual(capabilityResponse.0.statusCode, 200)
+      let payload = try XCTUnwrap(JSONSerialization.jsonObject(with: capabilityResponse.1) as? [String: Any])
+      let transfers = try XCTUnwrap(payload["documentTransfers"] as? [String: Any])
+      let containers = try XCTUnwrap(transfers["photoshopContainers"] as? [String: Any])
+      let live = try XCTUnwrap(containers["liveShapes"] as? [String: Any])
+      let paints = try XCTUnwrap(live["paints"] as? [String: [String]])
+      XCTAssertEqual(paints["fill"], ["none", "solid", "gradient"])
+      XCTAssertEqual(paints["stroke"], ["none", "solid", "gradient"])
+      service.setDocumentTransfersEnabled(true)
+      let uploaded = try await AutomationOpeningTests().upload(
+        service, bytes: input, type: "image/vnd.adobe.photoshop", format: "psd")
+      XCTAssertEqual(uploaded.0.statusCode, 201)
+      let share = try XCTUnwrap(service.shares.first)
+      let document = try XCTUnwrap(share.document)
+      let imported = document.store.document
+      let layer = try XCTUnwrap(imported.layers.first { $0.name == "Gradient rectangle" })
+      var edited = try XCTUnwrap(layer.shape?.editableDefinition)
+      edited.fill.gradient?.placement.angle = 22.5
+      edited.stroke.paint.gradient?.placement.reverse = true
+      var expected = imported
+      try Command.shape(.configure(layer.id, edited)).apply(to: &expected)
+      let parameters: [String: Any] = [
+        "operation": "configure", "layerID": layer.id.uuidString, "definition": BrushAPI.json(edited),
+      ]
+      let status = try await helper.edit(service, document, "shape.edit", parameters)
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(document.store.document, expected)
+      for format in [DocumentIO.Format.psd, .psb] {
+        XCTAssertTrue(document.saveFormats.contains(format))
+        let reply = try await helper.request(service, path: "/v1/documents/\(share.id)/file.\(format.rawValue)")
+        XCTAssertEqual(reply.0.statusCode, 200)
+        XCTAssertEqual(reply.1, try DocumentIO.encode(expected, format: format))
+        let reopened = try PSDCodec.read(reply.1)
+        let definition = try XCTUnwrap(reopened.layers.first { $0.name == layer.name }?.shape?.editableDefinition)
+        XCTAssertEqual(definition.fill, edited.fill)
+        XCTAssertEqual(definition.stroke, edited.stroke)
+      }
+      let undo = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(document.store.document, imported)
+    }
+  }
+
   @MainActor func testLegacyShapeAndPixelMaskSurviveNativeSaveAndAPIDownload() async throws {
     let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
       .appendingPathComponent("PhotoCraftImagingTests/Fixtures/psdtools-mask-density-layermask.psd")

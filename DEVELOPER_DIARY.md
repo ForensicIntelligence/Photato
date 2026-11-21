@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **682** · The 10 most recent entries, newest first.
+Source build **683** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 683 — Keep shape gradients editable in PSD and PSB
+
+Supported RGB8 and RGB16 shape layers retain their editable gradient fills and strokes in PSD and PSB. An unchanged import keeps its source descriptors and pixel cache.
+
+All 300 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The original file containing patterned shape paint and the original file containing unsupported pattern layer effects still reject. The derivative fixtures isolate shape metadata and leave pattern paint, line controls, seeded dither and whole-file compatibility open. An equivalent-angle native repaint differed in alpha by up to three 8-bit levels throughout a 32 × 32 interior sample. Its RGB values matched. A separate diagnostic shifted the gradient center by half a pixel and matched all 1,024 alpha samples in that window. Reopening the new files in a live Photoshop 2026 session remains unverified.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-683) · [Details](PhotoCraftSwift/docs/EDITABLE_SHAPE_PAINT_683.md).
 
 ## 2026-11-20 — Step 682 — Render gradients and strokes on large editable cutouts
 
@@ -75,11 +83,3 @@ Select saved paths, vector masks and shape contours across layers and transform 
 All 192 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop comparison, native path isolation, and editable Warp for paths remain open. Direct edits to shape contours can replace live primitive controls with editable cubic geometry.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-674) · [Details](PhotoCraftSwift/docs/CROSS_LAYER_PATHS_674.md).
-
-## 2026-11-20 — Step 673 — Select path anchors with a Direct Selection marquee
-
-Direct Selection now previews and selects anchors inside a dragged marquee. Shift adds to the selection. The same operation is available through the Photato API.
-
-All 186 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The marquee operates on the active path. Simultaneous path selection across layers and exact Photoshop hit testing, modifiers and cursor comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-673) · [Details](PhotoCraftSwift/docs/DIRECT_SELECTION_MARQUEE_673.md).
