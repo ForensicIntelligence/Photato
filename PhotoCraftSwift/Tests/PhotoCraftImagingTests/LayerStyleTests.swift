@@ -4,6 +4,69 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testQuarterTurnPatternFitPreservesOrdinaryRenderAcrossMaximumCanvas() throws {
+    let size = Surface.maxDimension
+    let canvas = IntRect(x: 0, y: 0, width: size, height: size)
+    var pixels = try Surface(width: 3, height: 5, fill: .white)
+    pixels.setPixel(x: 0, y: 0, .black)
+    pixels.setPixel(x: 2, y: 3, Pixel(0.1, 0.5, 0.8, 0.6))
+    let pattern = try RasterPattern(name: "Owned asymmetric quarter-turn control", surface: pixels)
+
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width: size, height: size, depth: depth)
+      document.layers[0].content = .raster(try Surface(width: size, height: size, depth: depth, fill: .white,
+        colorEncoding: depth == .f32 ? .linearRGB : .sRGB))
+      document.patterns = [pattern]
+      var overlay = LayerEffect(.patternOverlay)
+      var fill = PatternFill(patternID: pattern.id)
+      var style = LayerStyle(effects: [overlay])
+      style.referenceOffset = PathPoint(17, -11)
+      let layerID = document.layers[0].id
+      for (angle, scale, phaseX, phaseY, swapsAxes) in [
+        (90, 200, 0, 0, true), (-90, 200, 0, 0, true), (180, 200, 0, 0, false),
+        (360, 200, 0, 0, false), (90, 100, 0.125, -0.375, true), (180, 100, 0.125, -0.375, false),
+      ] as [(Float, Float, Float, Float, Bool)] {
+        fill.placement.scale = scale
+        fill.placement.angle = angle
+        fill.placement.phaseX = phaseX
+        fill.placement.phaseY = phaseY
+        overlay.pattern = fill
+        style.effects = [overlay]
+        try Command.layerStyle([layerID], style).apply(to: &document)
+        let repeatCount = Int(scale / 100)
+        let cellWidth = repeatCount * (swapsAxes ? pixels.height : pixels.width)
+        let cellHeight = repeatCount * (swapsAxes ? pixels.width : pixels.height)
+        let preview = try XCTUnwrap(PatternCanvasPreview(document), "\(depth), \(angle)°, \(scale)%")
+        for (x, y) in [(0, 0), (size - 31, size - 29), (size - 37, 47), (53, size - 43)] {
+          let rect = IntRect(x: x, y: y, width: cellWidth * 2, height: cellHeight * 2)
+          let request = try RasterPreviewRequest(region: rect, width: rect.width, height: rect.height)
+          let control = try Renderer.composite(document, region: rect).cropped(to: rect)
+          XCTAssertEqual(try preview.imageSamples(request).rgbaData(depth: depth),
+            try control.rgbaData(depth: depth), "\(depth), \(angle)°, \(scale)%, \(x), \(y)")
+        }
+        let cell = IntRect(x: 0, y: 0, width: cellWidth, height: cellHeight)
+        let reference = try Renderer.composite(document, region: cell)
+        let fit = try RasterPreviewRequest(region: canvas, width: 1, height: 1)
+        let average = try reference.reducedPreview(in: cell, width: 1, height: 1)
+        XCTAssertEqual(try preview.imageSamples(fit).rgbaData(depth: depth), try average.rgbaData(depth: depth))
+      }
+
+      // At integral phase and 100%, libm's nonzero cross-axis term can change
+      // an ordinary Float32 interpolation. Oblique angles and non-dyadic
+      // scales also lack this proof and must keep the regional renderer.
+      fill.placement.phaseX = 0
+      fill.placement.phaseY = 0
+      for (angle, scale) in [(90, 100), (31, 200), (90, 56)] as [(Float, Float)] {
+        fill.placement.angle = angle
+        fill.placement.scale = scale
+        overlay.pattern = fill
+        style.effects = [overlay]
+        try Command.layerStyle([layerID], style).apply(to: &document)
+        XCTAssertNil(try PatternCanvasPreview(document))
+      }
+    }
+  }
+
   func testRotatedPatternViewportPreservesExactPanOverlapAndResampling() throws {
     let size = Surface.maxDimension
     let left = IntRect(x: size - 800, y: size - 600, width: 232, height: 140)

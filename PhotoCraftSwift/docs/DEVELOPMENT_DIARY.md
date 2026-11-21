@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 691 — Fit quarter-turn Pattern Overlays on large canvases
+
+Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000.
+
+Actual-size crops from four parts of the canvas matched the ordinary compositor in RGB8, RGB16 and RGB32. Six angle, scale and phase combinations also matched an independent whole-period area control. The native test exercised Fit, pan, Brush, Undo and the authenticated overview. An owned 90° probe with a sparse edit produced identical fit and actual-size bytes across all three test configurations.
+
+455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen. The optimization requires a dyadic scale and Float32-safe phase on both pattern axes. Integral-phase 100% placements that fail this proof and oblique angles retain the existing path. Large nonperiodic Fit on Screen and live Photoshop zoom comparison remain open. The installed Photoshop 2026 document-count query timed out.
+
+[Development record](DEVLOG.md#dev-step-691) · [Details](QUARTER_TURN_PATTERN_691.md).
+
 ## 2026-11-21 — Step 690 — Bound rotated Pattern Overlay viewports
 
 Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000.
@@ -1507,14 +1517,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:690 -->
+<!-- current-status-step:691 -->
 ## Current development status — 21 November 2026
 
-Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000.
+Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000.
 
-453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen.
+455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 690](SOURCE_PUBLICATION_690.md) · [Development record](DEVLOG.md#dev-step-690).
+[Source checkpoint 691](SOURCE_PUBLICATION_691.md) · [Development record](DEVLOG.md#dev-step-691).
 
 <!-- current-status:end -->
 
@@ -2411,6 +2421,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 688 | [Render Pattern Overlay on large canvases](DEVLOG.md#dev-step-688) |
 | 2026-11-21 | 689 | [Preview opaque Pattern Overlay on large canvases](DEVLOG.md#dev-step-689) |
 | 2026-11-21 | 690 | [Bound rotated Pattern Overlay viewports](DEVLOG.md#dev-step-690) |
+| 2026-11-21 | 691 | [Fit quarter-turn Pattern Overlays on large canvases](DEVLOG.md#dev-step-691) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

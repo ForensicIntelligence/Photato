@@ -35,19 +35,21 @@ struct PatternFillSampler {
   }
 
   /// The continuous sampler uses a power-of-two scale so multiplication by
-  /// its reciprocal preserves every coordinate bit. The legacy byte sampler
-  /// also accepts dyadic scales whose fractions stay clear of its 8-bit floor.
+  /// its reciprocal preserves every coordinate bit. A quarter turn can also
+  /// repeat if the continuous sampler selects identical Float32 weights in
+  /// every period. The axis-aligned legacy byte sampler has its own grid.
   static func exactAxisPeriod(_ fill: PatternFill, style: LayerStyle, layer: Layer,
     in document: CraftDocument) throws -> (width: Int, height: Int)? {
-    guard fill.geometry == nil, fill.placement.angle == 0,
+    guard fill.geometry == nil,
       let tile = document.pattern(fill.patternID)?.surface else { return nil }
     let scale = Double(fill.placement.scale) / 100
     guard let numerator = Int(exactly: scale * 256), numerator > 0 else { return nil }
     let origin = fill.linked ? style.patternReference(in: layer) : PathPoint(0, 0)
     let phase = [origin.x, origin.y, Double(fill.placement.phaseX), Double(fill.placement.phaseY)]
     guard phase.allSatisfy({ abs($0) <= 1_000_000 && ($0 * 256).rounded() == $0 * 256 }) else { return nil }
+    let angle = fill.placement.angle
     if numerator.nonzeroBitCount != 1 {
-      guard document.colorMode == .rgb, document.depth == .u8,
+      guard angle == 0, document.colorMode == .rgb, document.depth == .u8,
         origin.x.rounded() == origin.x, origin.y.rounded() == origin.y,
         try LegacyPatternGrid.admits(tile, scale: scale) else { return nil }
     }
@@ -55,7 +57,53 @@ struct PatternFillSampler {
       let scaled = length * numerator
       return scaled >> min(8, scaled.trailingZeroBitCount)
     }
-    return (period(tile.width), period(tile.height))
+    if angle == 0 { return (period(tile.width), period(tile.height)) }
+    guard let swapsAxes = exactQuarterTurn(fill.placement, origin: origin,
+      width: document.width, height: document.height) else { return nil }
+    return swapsAxes ? (period(tile.height), period(tile.width)) : (period(tile.width), period(tile.height))
+  }
+
+  private static func exactQuarterTurn(_ placement: PatternPlacement, origin: PathPoint,
+    width: Int, height: Int) -> Bool? {
+    let angle = placement.angle
+    guard let degrees = Int(exactly: angle), degrees.isMultiple(of: 90) else { return nil }
+    let turn = (degrees / 90 % 4 + 4) % 4
+    let swapsAxes = !turn.isMultiple(of: 2)
+    let sign = turn < 2 ? 1.0 : -1.0
+    let (cosine, sine) = PatternSampler.rotationCoefficients(angle)
+    let primary = swapsAxes ? sine : cosine
+    let secondary = swapsAxes ? cosine : sine
+    guard primary == sign else { return nil }
+    if secondary == 0 { return swapsAxes }
+
+    let x = 0.5 - origin.x - Double(placement.phaseX)
+    let y = 0.5 - origin.y - Double(placement.phaseY)
+    let lastX = x + Double(width - 1), lastY = y + Double(height - 1)
+    let xExtent = max(abs(x), abs(lastX)), yExtent = max(abs(y), abs(lastY))
+    let reciprocal = 1 / Double(placement.scale / 100)
+    let cycle = max(1, Int(1 / reciprocal))
+
+    // The ideal coordinate is exact with the dyadic scale and phase admitted
+    // above. Bound the unwanted cross-axis term and leave room for Double
+    // rounding in the sum, half-pixel subtraction and fractional extraction.
+    func stableWeights(start: Double, direction: Double, extent: Double, crossExtent: Double) -> Bool {
+      let cross = crossExtent * abs(secondary)
+      let maxCoordinate = (extent + cross + 1) * reciprocal + 1
+      let error = cross * reciprocal + 8 * maxCoordinate.ulp
+      return (0..<cycle).allSatisfy { offset in
+        let coordinate = (start + Double(offset)) * direction * reciprocal - 0.5
+        let fraction = coordinate - floor(coordinate)
+        let weight = Float(fraction)
+        let lower = (Double(weight.nextDown) + Double(weight)) * 0.5
+        let upper = (Double(weight.nextUp) + Double(weight)) * 0.5
+        return fraction - error > max(0, lower) && fraction + error < min(1, upper)
+      }
+    }
+    let u = swapsAxes ? stableWeights(start: y, direction: -sign, extent: yExtent, crossExtent: xExtent)
+      : stableWeights(start: x, direction: sign, extent: xExtent, crossExtent: yExtent)
+    let v = swapsAxes ? stableWeights(start: x, direction: sign, extent: xExtent, crossExtent: yExtent)
+      : stableWeights(start: y, direction: sign, extent: yExtent, crossExtent: xExtent)
+    return u && v ? swapsAxes : nil
   }
   func sample(x: Double, y: Double) -> Pixel {
     let p = inverse.point(x, y)

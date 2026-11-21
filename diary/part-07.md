@@ -419,14 +419,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:690 -->
+<!-- current-status-step:691 -->
 ## Current development status — 21 November 2026
 
-Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000.
+Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000.
 
-453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen.
+455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen.
 
-[Source checkpoint 690](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_690.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-690).
+[Source checkpoint 691](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_691.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-691).
 
 <!-- current-status:end -->
 
@@ -1323,5 +1323,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 688 | [Render Pattern Overlay on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-688) |
 | 2026-11-21 | 689 | [Preview opaque Pattern Overlay on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-689) |
 | 2026-11-21 | 690 | [Bound rotated Pattern Overlay viewports](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-690) |
+| 2026-11-21 | 691 | [Fit quarter-turn Pattern Overlays on large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-691) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

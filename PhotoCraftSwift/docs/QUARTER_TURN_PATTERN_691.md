@@ -1,0 +1,11 @@
+# Fit quarter-turn Pattern Overlays on large canvases
+
+Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000. The editor and the local PNG routes without a viewport header share the same area reduction. [Photoshop zoom](https://helpx.adobe.com/photoshop/desktop/get-started/learn-the-basics/zoom-images.html) · [Pattern Overlay](https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html)
+
+Actual-size crops from four parts of the canvas matched the ordinary compositor in RGB8, RGB16 and RGB32. Six angle, scale and phase combinations also matched an independent whole-period area control. The native test exercised Fit, pan, Brush, Undo and the authenticated overview. An owned 90° probe with a sparse edit produced identical fit and actual-size bytes across all three test configurations.
+
+The period calculation bounds the effect of the orthogonal trigonometric term at the document edges. A candidate is eligible only when both the texel index and the Float32 weight remain within the same rounding bins at every lattice phase. A 90° or 270° turn swaps the periods of a rectangular pattern. Full-resolution export uses the ordinary renderer with the original coordinates and weights.
+
+The five-run median for the isolated RGB8 reduction was 3.5 ms at 257 × 193, 44.3 ms at 1,024 × 768, and 227.8 ms at 2,048 × 2,048 on optimized Apple Silicon. The benchmark excludes view drawing and PNG encoding. The required 16.7 ms editing frame time remains open for larger fitted views.
+
+455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen. The optimization requires a dyadic scale and Float32-safe phase on both pattern axes. Integral-phase 100% placements that fail this proof and oblique angles retain the existing path. Large nonperiodic Fit on Screen and live Photoshop zoom comparison remain open. The installed Photoshop 2026 document-count query timed out. [Qualification](SOURCE_PUBLICATION_691.md)

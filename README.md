@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 690.** Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_690.md).
+**Development alpha — source build 691.** Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_691.md).
 
 ## Project layout
 

@@ -1,3 +1,7 @@
+**Source checkpoint 691.** Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000. 455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_691.md).
+
+**Next layer style work.** Extend bounded-memory fit to oblique and nonperiodic patterns. Compare scaled viewport output to a live Photoshop reference when document commands respond.
+
 **Source checkpoint 690.** Rotated and nonperiodic Pattern Overlay renders in bounded document viewports on canvases up to 300,000 × 300,000. 453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen. [Qualification](SOURCE_PUBLICATION_690.md).
 
 **Next layer style work.** Extend fit-to-window reduction for opaque nonperiodic overlays. Compare scaled viewport output to a live Photoshop reference when document commands respond.

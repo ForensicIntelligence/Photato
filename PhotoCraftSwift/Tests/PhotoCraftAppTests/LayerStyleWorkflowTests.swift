@@ -84,6 +84,14 @@ final class LayerStyleWorkflowTests: XCTestCase {
   }
 
   @MainActor func testOpaqueMaximumPatternPreviewFitsZoomsAndServesPNG() async throws {
+    try await checkMaximumPatternPreviewFitsZoomsAndServesPNG(angle: 0)
+  }
+
+  @MainActor func testQuarterTurnMaximumPatternPreviewFitsZoomsAndServesPNG() async throws {
+    try await checkMaximumPatternPreviewFitsZoomsAndServesPNG(angle: 90)
+  }
+
+  @MainActor private func checkMaximumPatternPreviewFitsZoomsAndServesPNG(angle: Double) async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
       let size = Surface.maxDimension
@@ -97,6 +105,7 @@ final class LayerStyleWorkflowTests: XCTestCase {
       shared.store.beginLayerStyle(.patternOverlay)
       let sheet = LayerStyleSheet(store: shared.store)
       sheet.overlayPatternValue(\.scale, 100).wrappedValue = 200
+      sheet.overlayPatternValue(\.angle, 0).wrappedValue = angle
       shared.store.updateLayerEffect(0) { $0.opacity = 0.5 }
       await shared.store.renderTask?.value
       XCTAssertNil(shared.store.error)
@@ -133,6 +142,13 @@ final class LayerStyleWorkflowTests: XCTestCase {
       await shared.store.undo()
       await shared.store.renderTask?.value
       XCTAssertEqual(try shared.store.patternCanvasPreview?.pixel(x: size / 2, y: size / 2), before)
+
+      shared.store.fit()
+      await shared.store.renderTask?.value
+      XCTAssertEqual(shared.store.canvasRasterPreview?.documentRegion,
+        IntRect(x: 0, y: 0, width: size, height: size))
+      XCTAssertNotNil(shared.store.patternCanvasPreview)
+      XCTAssertNil(shared.store.renderSnapshot)
 
       try service.share(shared)
       let id = try XCTUnwrap(service.shares.first?.id)

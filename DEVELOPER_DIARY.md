@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **690** · The 10 most recent entries, newest first.
+Source build **691** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 691 — Fit quarter-turn Pattern Overlays on large canvases
+
+Fit on Screen and the local PNG overview now handle eligible quarter-turn Pattern Overlays on canvases up to 300,000 × 300,000.
+
+Actual-size crops from four parts of the canvas matched the ordinary compositor in RGB8, RGB16 and RGB32. Six angle, scale and phase combinations also matched an independent whole-period area control. The native test exercised Fit, pan, Brush, Undo and the authenticated overview. An owned 90° probe with a sparse edit produced identical fit and actual-size bytes across all three test configurations.
+
+455 of 458 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same three failures reproduced build 690’s assertions. Both signed macOS 14+ preview slices launched offscreen. The optimization requires a dyadic scale and Float32-safe phase on both pattern axes. Integral-phase 100% placements that fail this proof and oblique angles retain the existing path. Large nonperiodic Fit on Screen and live Photoshop zoom comparison remain open. The installed Photoshop 2026 document-count query timed out.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-691) · [Details](PhotoCraftSwift/docs/QUARTER_TURN_PATTERN_691.md).
 
 ## 2026-11-21 — Step 690 — Bound rotated Pattern Overlay viewports
 
@@ -85,11 +95,3 @@ Gradient, pattern, and stroke paint on a large shape cutout now renders over the
 All 297 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Gradient and pattern shape paint remain editable in native files. Editable Photoshop file transport for this paint and a live Photoshop comparison are still open. Whole-document materialization uses the available scratch storage. Full editing frame rate remains a separate measurement.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-682) · [Details](PhotoCraftSwift/docs/BOUNDED_SHAPE_PAINT_682.md).
-
-## 2026-11-20 — Step 681 — Keep the shape exterior attached to the canvas
-
-Moving a cutout now moves its contour while the fill reaches the current canvas edges. Canvas Size and Crop update the exterior, and supported PSD and PSB files retain the editable shape.
-
-All 292 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The owned live Photoshop comparison timed out. Adobe’s public vector-mask and canvas documentation informed the expected behavior. Exact Photoshop live-shape output, transformed exteriors and very large styled fills remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-681) · [Details](PhotoCraftSwift/docs/EDITABLE_SHAPE_CANVAS_681.md).

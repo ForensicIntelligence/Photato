@@ -114,11 +114,14 @@ public struct PatternSampler: Sendable {
     } else {
       prepared = []
     }
-    let radians = Double(placement.angle) * (.pi / 180)
-    cosine = cos(radians)
-    sine = sin(radians)
+    (cosine, sine) = Self.rotationCoefficients(placement.angle)
     inverseScale = 1 / Double(placement.scale / 100)
     origin = .init(Double(placement.phaseX), Double(placement.phaseY))
+  }
+
+  package static func rotationCoefficients(_ angle: Float) -> (cosine: Double, sine: Double) {
+    let radians = Double(angle) * (.pi / 180)
+    return (cos(radians), sin(radians))
   }
   public func sample(x: Double, y: Double) -> Pixel {
     guard x.isFinite, y.isFinite, abs(x) <= 1e9, abs(y) <= 1e9 else { return .clear }
