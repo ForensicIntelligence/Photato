@@ -4,6 +4,106 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class LayerStyleTests: XCTestCase {
+  func testRegionalDropShadowsMatchWholeMapsAcrossTileAndDocumentEdges() throws {
+    for depth in PixelDepth.allCases {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var document = try CraftDocument(width: 78, height: 68, depth: depth)
+      var pixels = try Surface(width: 46, height: 43, depth: depth, colorEncoding: encoding)
+      for y in 0..<pixels.height { for x in 0..<pixels.width {
+        let sample = Pixel(0.41, 0.22, 0.53, Float((7*x+29*y)%29) / 28)
+        if depth == .f32 { pixels.setLinearPixel(x: x, y: y, sample) }
+        else { pixels.setPixel(x: x, y: y, sample) }
+      }}
+      document.layers[0].content = .raster(pixels)
+      document.layers[0].x = -3
+      document.layers[0].y = 34
+      document.layers[0].opacity = 0.73
+      document.globalLight = .init(angle: 137, altitude: 39)
+      let backdrop = try Surface(width: document.width, height: document.height, depth: .f32,
+        fill: Pixel(0.64, 0.33, 0.47, 0.56), colorEncoding: encoding)
+      let full = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+      for advanced in [false, true] {
+        var shadow = LayerEffect(.dropShadow)
+        shadow.distance = 13.4
+        shadow.size = 9.3
+        shadow.spread = 41
+        if advanced {
+          shadow.advanced = LayerEffectAdvanced()
+          shadow.advanced?.antiAlias = true
+          shadow.advanced?.noise = 0.27
+          shadow.advanced?.knocksOut = false
+          shadow.advanced?.contour = EffectContour(name: "Custom",
+            points: [[0, 0], [0.4, 0.68], [1, 1]], smoothPoints: [false, false, false])
+        }
+        var other = LayerEffect(.dropShadow)
+        other.useGlobalLight = false
+        other.angle = -26
+        other.distance = 8.6
+        other.size = 4.7
+        var style = LayerStyle(effects: [shadow, other])
+        style.fillOpacity = 0.58
+        document.layers[0].style = style
+        let layer = document.layers[0]
+        let oracle = try LayerStyleRenderer.composite(layer, in: document, over: backdrop, region: full)
+        XCTAssertEqual(oracle.pixel(x: 66, y: 43).a, backdrop.pixel(x: 66, y: 43).a)
+        for rect in [IntRect(x: 0, y: 31, width: 16, height: 17), IntRect(x: 13, y: 45, width: 28, height: 19),
+                     IntRect(x: 9, y: 62, width: 42, height: 6), IntRect(x: 60, y: 34, width: 18, height: 34)] {
+          let regional = try LayerStyleRenderer.composite(layer, in: document, over: backdrop,
+                                                          region: rect, regionalEffects: true)
+          let expected = try oracle.cropped(to: rect).rgbaData(depth: .f32, colorEncoding: encoding)
+          let actual = try regional.cropped(to: rect).rgbaData(depth: .f32, colorEncoding: encoding)
+          XCTAssertEqual(actual, expected,
+                         "\(depth) advanced \(advanced) rect \(rect)")
+        }
+      }
+    }
+  }
+
+  func testMaximumCanvasDropShadowFindsDistantSourceAndRetainsSparseOutput() throws {
+    let size = Surface.maxDimension
+    let shadowX = size - 30_080, y = size - 87
+    let region = IntRect(x: shadowX - 10, y: y - 10, width: 44, height: 44)
+    for advanced in [false, true] {
+      var document = try CraftDocument(width: size, height: size)
+      document.layers[0].x = shadowX + 30_000
+      document.layers[0].y = y
+      document.layers[0].content = .raster(try Surface(width: 19, height: 17, fill: Pixel(0.8, 0.4, 0.2, 0.8)))
+      var effect = LayerEffect(.dropShadow)
+      effect.distance = 30_000
+      effect.size = 7
+      effect.spread = 12
+      effect.useGlobalLight = false
+      effect.angle = 0
+      if advanced {
+        effect.advanced = LayerEffectAdvanced()
+        effect.advanced?.antiAlias = true
+        effect.advanced?.noise = 0.17
+      }
+      try Command.layerStyle([document.layers[0].id], LayerStyle(effects: [effect])).apply(to: &document)
+      let cropped = try Renderer.composite(document, region: region)
+      let retained = try Renderer.composite(document)
+      XCTAssertGreaterThan(cropped.pixel(x: shadowX + 5, y: y + 6).a, 0.15)
+      XCTAssertEqual(try retained.cropped(to: region).rgbaData(depth: .u8),
+                     try cropped.cropped(to: region).rgbaData(depth: .u8))
+      XCTAssertEqual(retained.pixel(x: shadowX + 15_000, y: y + 6), .clear)
+      XCTAssertLessThan(retained.allocatedBytes, 4 * 1024 * 1024)
+
+      if advanced {
+        var shorter = document
+        shorter.width = 4096
+        shorter.height = 4096
+        shorter.layers[0].x = 1002
+        shorter.layers[0].y = 56
+        shorter.layers[0].style?.effects[0].distance = 1000
+        let psb = try PSDCodec.writeRasterLayers(shorter, format: .psb, maximizeCompatibility: false)
+        let reopened = try PSDCodec.read(psb)
+        let check = IntRect(x: 0, y: 42, width: 48, height: 50)
+        XCTAssertEqual(reopened.layers[0].style?.effects.first, shorter.layers[0].style?.effects.first)
+        XCTAssertEqual(try Renderer.composite(reopened, region: check), try Renderer.composite(shorter, region: check))
+      }
+    }
+  }
+
   func testAdvancedDropShadowPSDAndPSBRetainEditableControlsAndPixels() throws {
     var advanced = LayerEffectAdvanced()
     advanced.noise = 0.35

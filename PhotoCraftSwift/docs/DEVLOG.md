@@ -714,7 +714,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 693 | 2026-11-21 | [Reuse prepared pattern samples across render patches](#dev-step-693) |
 | 694 | 2026-11-21 | [Write layer styles by tile and reuse opacity checks](#dev-step-694) |
 | 695 | 2026-11-21 | [Keep advanced Drop Shadows editable in PSD and PSB](#dev-step-695) |
+| 696 | 2026-11-21 | [Render Drop Shadows in bounded canvas regions](#dev-step-696) |
 <!-- history-index:end -->
+
+<a id="dev-step-696"></a>
+
+## 2026-11-21 — Render Drop Shadows in bounded canvas regions
+
+Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin.
+
+When an effect is rendered far from its source, the viewport fetches a window at the inverse offset. Two test rectangles exposed residual alpha in the running blur sum. The new empty-window check keeps zero coverage outside the shadow in both advanced render paths. Menu enablement follows the same large-canvas availability as the API.
+
+Twenty-four RGB8, RGB16 and RGB32 viewport comparisons matched the whole-canvas renderer at tile and document edges. Another 384 varied viewport comparisons matched on each optimized architecture. A sparse 300,000 × 300,000 canvas found a 30,000-pixel displaced shadow and retained under 4 MiB of output tiles in the test. The native menu, advanced controls, preview, Undo, local HTTP edit and PNG were verified on that canvas size. A 4,096 × 4,096 editable PSB reopened with the same effect settings and regional pixels. All 138 prior effect fixtures produced identical direct and imported-project output on both architectures.
+
+471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document. The installed Photoshop instance timed out on a document query. Direct Adobe pixel comparison remains open. Very wide filters retain a scratch budget. A shadow already filling an entire canvas can require additional preview work. Other effects still use their existing whole-canvas limits. The overall desktop workflow estimate remains 50%.
+
+[Development record](REGIONAL_DROP_SHADOW_696.md) · [Qualification](SOURCE_PUBLICATION_696.md).
 
 <a id="dev-step-695"></a>
 

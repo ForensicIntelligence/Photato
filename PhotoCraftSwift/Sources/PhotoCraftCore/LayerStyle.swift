@@ -88,13 +88,23 @@ public struct LayerStyle: Codable, Equatable, Sendable {
     }
   }
 
+  package var supportsRegionalDropShadow: Bool {
+    sourcePSDData == nil && effects.contains { $0.kind == .dropShadow } && effects.allSatisfy {
+      $0.kind == .dropShadow || ($0.kind == .patternOverlay && $0.pattern != nil && $0.advanced == nil)
+    }
+  }
+
+  package var supportsRegionalEffects: Bool {
+    supportsRegionalPatternOverlay || supportsRegionalDropShadow
+  }
+
   package static func requiresRegionalEffects(in document: CraftDocument) -> Bool {
     document.width > maximumWholeCanvasPixels / document.height
   }
 
   package func supportsLayerCanvas(_ document: CraftDocument) -> Bool {
     !Self.requiresRegionalEffects(in: document) || isChannelBlendingOnly
-      || (supportsRegionalPatternOverlay && document.colorMode == .rgb
+      || (supportsRegionalEffects && document.colorMode == .rgb
         && document.inkMode == nil && document.restrictedMode == nil)
   }
 

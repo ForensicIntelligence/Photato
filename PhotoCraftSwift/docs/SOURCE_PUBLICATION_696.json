@@ -1,0 +1,321 @@
+{
+  "build": 696,
+  "base": "fb44c4817c9e9eb84392e83875b9f38b7ec6216e",
+  "buildInputs": 9311,
+  "includedBuildInputs": 9298,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "5892d49b958d1c5fb5982c10775a5b3e89c765cd66affbe4e77251ad65fa8ff2",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationLayerStyles.swift",
+      "sha256": "fe681965b79f974f76fd28119e465c33adc86c3c491462d4645beefa1612b3ce"
+    },
+    {
+      "path": "Sources/PhotoCraft/LayerStyleControls.swift",
+      "sha256": "c7c4509b54a634041952324109da92e31487dc78a04dba2a66cc586bf5ffd957"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerStyle.swift",
+      "sha256": "720184d0ffb0c99cdc6d0271e39d8735069fca215ba7b183b95616aed1a57364"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LayerStyleRenderer.swift",
+      "sha256": "a285dfe7da7b7539256e48fcf2d608325b9d86e6d14c4bbdd83b811833312a14"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PagedCanvasRenderer.swift",
+      "sha256": "1bba433e8170bb98dfdd1cbcc6984d112de70d59530d3bfc0c1404bdbe5d71cd"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RasterViewportPreview.swift",
+      "sha256": "83980212ff5f23ecd20455edd1a61961c7217b8eb8a97b09e3b26336fd9d3b46"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "685dd5758c3b10e7e1267900fd47c06ac4244fff33ab4b46d2e5c5647092de2c"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceEffectMap.swift",
+      "sha256": "6a72d04adc2a4631d7f65afe66ef1efe7c2313ae411d41a687525ec5bb32de0a"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SourceLayerStyleRenderer.swift",
+      "sha256": "a4476bae6ad60ca70557d947a3000ca4c0c7e229bd9246a7d646348413f53049"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/ChannelBlendingWorkflowTests.swift",
+      "sha256": "9b2b3ec82ae769299a4f73ff7a124c6e72554854f01a5aeddd86f4649c4eb5a8"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LayerStyleWorkflowTests.swift",
+      "sha256": "c58f05c8cc6698c318867b69af2023d0f9850452eed1b754911af24f8f228a0a"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LayerStyleTests.swift",
+      "sha256": "2ac48c1c7c06f00aa2f28174cc0980c5cc3ef39367e1592680b4cbe3ee66a526"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "5bfca6ddbc91e9c2a2f35a8cdf1a6160d47f8ea588e46844107af68062009a11"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "5bfca6ddbc91e9c2a2f35a8cdf1a6160d47f8ea588e46844107af68062009a11"
+  },
+  "casesPerConfiguration": 472,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 472,
+      "passed": 471,
+      "newCasesExpected": 29,
+      "newCasesPassed": 29,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "5e7464eb7b57df0a84368d0734096ccb4e2304d3512483a1d534436c3f8a0cfd"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 472,
+      "passed": 471,
+      "newCasesExpected": 29,
+      "newCasesPassed": 29,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "51d6e7f45f2767c0763e36b536e90e05e2353d33c15a88b0c5132c5df235bc9d"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 472,
+      "passed": 471,
+      "newCasesExpected": 29,
+      "newCasesPassed": 29,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "af956358112f1f95f5809a414c1371f91c68f5a625eea6896aa75a4a61c86893"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "9136aa3faa14624a685d9b6ff56a1c51d3bd53cb62d6ff16b2e118b3dc9a2cf2",
+  "unchangedEffectRegression": {
+    "fixtures": 138,
+    "outputsPerArchitecture": 276,
+    "previousBuild": 695,
+    "sha256": "5fe5dc6d916fdf33086edfb967c15fb33fda4ee167fc57aea75133a6284239cd"
+  },
+  "maximumSparseShadow": {
+    "dimensions": [
+      300000,
+      300000
+    ],
+    "distance": 30000,
+    "retainedTileBytesUpperBoundExclusive": 4194304,
+    "captures": {
+      "debug": {
+        "f32-false": {
+          "elapsedSeconds": 0.15181395830586553,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "f32-true": {
+          "elapsedSeconds": 0.2231916666496545,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "5f802de83e0d8a40f6ba0e78011a8205e4370f9a7f3f93e9519117f6a32c7d01"
+        },
+        "u8-false": {
+          "elapsedSeconds": 0.15518220828380436,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "u8-true": {
+          "elapsedSeconds": 0.22419683332554996,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "213b6ed9e56a935ce5022c70f22617f58c53480cb3848371405315efa2de2796"
+        },
+        "u16-false": {
+          "elapsedSeconds": 0.1507947917561978,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "u16-true": {
+          "elapsedSeconds": 0.22325733327306807,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "5e196640eaa9f7a3ad73d86f6363d41905a19af035389a6f6b47e8d81dae3054"
+        }
+      },
+      "arm": {
+        "f32-false": {
+          "elapsedSeconds": 0.009108708356507123,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "f32-true": {
+          "elapsedSeconds": 0.00897066667675972,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "5f802de83e0d8a40f6ba0e78011a8205e4370f9a7f3f93e9519117f6a32c7d01"
+        },
+        "u8-false": {
+          "elapsedSeconds": 0.011927374987863004,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "u8-true": {
+          "elapsedSeconds": 0.009798583341762424,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "213b6ed9e56a935ce5022c70f22617f58c53480cb3848371405315efa2de2796"
+        },
+        "u16-false": {
+          "elapsedSeconds": 0.009584583342075348,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "u16-true": {
+          "elapsedSeconds": 0.008445874904282391,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "5e196640eaa9f7a3ad73d86f6363d41905a19af035389a6f6b47e8d81dae3054"
+        }
+      },
+      "intel": {
+        "f32-false": {
+          "elapsedSeconds": 0.012765833991579711,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "f32-true": {
+          "elapsedSeconds": 0.012658916064538062,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "5f802de83e0d8a40f6ba0e78011a8205e4370f9a7f3f93e9519117f6a32c7d01"
+        },
+        "u8-false": {
+          "elapsedSeconds": 0.016264457954093814,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "u8-true": {
+          "elapsedSeconds": 0.013915208051912487,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "213b6ed9e56a935ce5022c70f22617f58c53480cb3848371405315efa2de2796"
+        },
+        "u16-false": {
+          "elapsedSeconds": 0.012562124989926815,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "d70daeebb4e991d4e720c4d96168f0e72a8bffe003cda1b2ba443bc9824a7e45"
+        },
+        "u16-true": {
+          "elapsedSeconds": 0.012048042030073702,
+          "mappedIndexBytes": 0,
+          "referencedTileBytes": 524288,
+          "residentIndexBytes": 3072,
+          "sampleAlpha": 0.5,
+          "sha256": "5e196640eaa9f7a3ad73d86f6363d41905a19af035389a6f6b47e8d81dae3054"
+        }
+      }
+    },
+    "peakProbeProcessResidentBytes": {
+      "arm": 19365888,
+      "intel": 14651392
+    }
+  },
+  "viewportComparisons": 24,
+  "additionalViewportComparisonsPerOptimizedArchitecture": 384,
+  "sheetSHA256": {
+    "light": "18908418082027e01f236c0e546f7d52b9ab6bfa26d6216ad9dce2ed55fc308a",
+    "dark": "5ee68e14eaa92fcdaec24b40c6c35e955643c2231cc5720ea3bf2c3050f7c0fa"
+  },
+  "preview": {
+    "archiveSHA256": "e4685f5c7c270b6d46554e83278713ffe192cd8b57bb9ec29a293b46b3cafa2b",
+    "binarySHA256": "73475dae0e4659bd8803f30b174fe6c65e53e8e4261d78a5359fdc90c329617f",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "c6f1284742e22c7c6eef956d8ab9ccdc7c7bba35cf895164477ebfe0690d207a",
+      "x86_64": "08cc5caff49c03ca9713d9d82f2acc499a02d9d2d5278ef0d380e3a9a5b91e9c"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-manage-layers/apply-layer-effects/layer-style-effects-and-options-overview.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/",
+    "https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/",
+    "https://helpx.adobe.com/ca/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html"
+  ]
+}

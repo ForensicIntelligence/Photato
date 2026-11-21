@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 696 — Render Drop Shadows in bounded canvas regions
+
+Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin.
+
+Twenty-four RGB8, RGB16 and RGB32 viewport comparisons matched the whole-canvas renderer at tile and document edges. Another 384 varied viewport comparisons matched on each optimized architecture. A sparse 300,000 × 300,000 canvas found a 30,000-pixel displaced shadow and retained under 4 MiB of output tiles in the test. The native menu, advanced controls, preview, Undo, local HTTP edit and PNG were verified on that canvas size. A 4,096 × 4,096 editable PSB reopened with the same effect settings and regional pixels. All 138 prior effect fixtures produced identical direct and imported-project output on both architectures.
+
+471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document. The installed Photoshop instance timed out on a document query. Direct Adobe pixel comparison remains open. Very wide filters retain a scratch budget. A shadow already filling an entire canvas can require additional preview work. Other effects still use their existing whole-canvas limits.
+
+[Development record](DEVLOG.md#dev-step-696) · [Details](REGIONAL_DROP_SHADOW_696.md).
+
 ## 2026-11-21 — Step 695 — Keep advanced Drop Shadows editable in PSD and PSB
 
 Drop Shadow contour corners, anti-aliasing, noise and knockout now work through the editor and the Adobe-compatible create-composite route. Supported shadows remain editable in PSD and PSB.
@@ -1557,14 +1567,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:695 -->
+<!-- current-status-step:696 -->
 ## Current development status — 21 November 2026
 
-Drop Shadow contour corners, anti-aliasing, noise and knockout now work through the editor and the Adobe-compatible create-composite route. Supported shadows remain editable in PSD and PSB.
+Basic and advanced Drop Shadows now render on large RGB canvases. A viewport prepares the shifted source and the required filter margin.
 
-468 of 469 selected tests passed in arm64 Debug, optimized arm64 and Intel under Rosetta. The same strict original PhotoCraft effect fixture still fails with identical assertions. The two unrelated hard-coded Automation count expectations now use the shared catalog count. The checked-in Xcode project built in arm64 Debug with signing disabled. Both signed macOS 14+ preview slices opened offscreen. The changed controls were inspected offscreen in Light and Dark.
+471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document.
 
-[Source checkpoint 695](SOURCE_PUBLICATION_695.md) · [Development record](DEVLOG.md#dev-step-695).
+[Source checkpoint 696](SOURCE_PUBLICATION_696.md) · [Development record](DEVLOG.md#dev-step-696).
 
 <!-- current-status:end -->
 
@@ -2466,6 +2476,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 693 | [Reuse prepared pattern samples across render patches](DEVLOG.md#dev-step-693) |
 | 2026-11-21 | 694 | [Write layer styles by tile and reuse opacity checks](DEVLOG.md#dev-step-694) |
 | 2026-11-21 | 695 | [Keep advanced Drop Shadows editable in PSD and PSB](DEVLOG.md#dev-step-695) |
+| 2026-11-21 | 696 | [Render Drop Shadows in bounded canvas regions](DEVLOG.md#dev-step-696) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

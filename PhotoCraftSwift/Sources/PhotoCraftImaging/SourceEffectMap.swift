@@ -64,23 +64,35 @@ struct SourceEffectMap:Sendable {
     if radius<=0 {return self};let d=try outside(chamfer:true);var out=self
     for i in v.indices {if i&4095==0{try Task.checkCancellation()};out.v[i]=d[i]<0 ? min(v[i]+radius,1):max(v[i],unit(radius+0.5-d[i]))};return out
   }
-  static func box(_ source:[Double],x0:Int,count:Int,width:Float)->[Double] {
+  static func box(_ source:[Double],x0:Int,count:Int,width:Float,finiteSupport:Bool = false)->[Double] {
     let width=max(1,width),half=width/2,r=max(0,Int(ceil(half-0.5))),f=Double(min(1,max(0,half-(Float(r)-0.5)))),norm=1/Double(width)
     func at(_ i:Int)->Double {i>=0 && i<source.count ? source[i]:0}
     if r==0 {return (0..<count).map{at(x0+$0)}}
-    var inner=(x0-(r-1)...x0+(r-1)).reduce(0.0){$0+at($1)},out=[Double](repeating:0,count:count)
-    for k in 0..<count {let x=x0+k;out[k]=(inner+f*(at(x-r)+at(x+r)))*norm;inner+=at(x+r)-at(x-r+1)};return out
+    let first = x0-(r-1)...x0+(r-1)
+    var inner=first.reduce(0.0){$0+at($1)},out=[Double](repeating:0,count:count)
+    var occupied = finiteSupport ? first.reduce(0) { $0 + (at($1) == 0 ? 0 : 1) } : 0
+    for k in 0..<count {
+      let x = x0 + k, entering = at(x + r), leaving = at(x - r + 1)
+      // An empty window has exactly zero alpha. A tiny positive residual
+      // would make contour anti-aliasing generate a visible shadow there.
+      if finiteSupport && occupied == 0 { inner = 0 }
+      out[k] = (inner + f * (at(x - r) + entering)) * norm
+      inner += entering - leaving
+      if finiteSupport { occupied += (entering == 0 ? 0 : 1) - (leaving == 0 ? 0 : 1) }
+    }
+    return out
   }
-  static func tentLine(_ source:[Float],width:Float)->[Float] {
-    let r=max(0,Int(ceil(max(width,1)/2-0.5)))
-    if r==0{return source};let middle=box(source.map(Double.init),x0:-r,count:source.count+2*r,width:width)
-    return box(middle,x0:r,count:source.count,width:width).map(Float.init)
+  static func tentLine(_ source:[Float],width:Float,finiteSupport:Bool = false)->[Float] {
+    let r=tentRadius(width)
+    if r==0{return source};let middle=box(source.map(Double.init),x0:-r,count:source.count+2*r,width:width,finiteSupport:finiteSupport)
+    return box(middle,x0:r,count:source.count,width:width,finiteSupport:finiteSupport).map(Float.init)
   }
-  func blurred(_ size:Float)throws->Self {
+  static func tentRadius(_ width: Float) -> Int { max(0, Int(ceil(max(width, 1) / 2 - 0.5))) }
+  func blurred(_ size:Float,finiteSupport:Bool = false)throws->Self {
     if size<=1{return self};var out=self
-    for y in 0..<h {try Task.checkCancellation();let row=Self.tentLine(Array(v[y*w..<(y+1)*w]),width:size);out.v.replaceSubrange(y*w..<(y+1)*w,with:row)}
+    for y in 0..<h {try Task.checkCancellation();let row=Self.tentLine(Array(v[y*w..<(y+1)*w]),width:size,finiteSupport:finiteSupport);out.v.replaceSubrange(y*w..<(y+1)*w,with:row)}
     let horizontal=out.v
-    for x in 0..<w {try Task.checkCancellation();let row=Self.tentLine((0..<h).map{horizontal[$0*w+x]},width:size);for y in 0..<h {out.v[y*w+x]=row[y]}};return out
+    for x in 0..<w {try Task.checkCancellation();let row=Self.tentLine((0..<h).map{horizontal[$0*w+x]},width:size,finiteSupport:finiteSupport);for y in 0..<h {out.v[y*w+x]=row[y]}};return out
   }
   static func lookup(_ table:[Float],_ value:Float)->Float {
     let x=unit(value)*Float(table.count-1),i=Int(floor(x)),j=min(i+1,table.count-1)
@@ -102,10 +114,15 @@ struct SourceEffectMap:Sendable {
     }
   }
   static func offset(_ angle:Float,_ distance:Float)->(Float,Float) {let r=angle*(Float.pi/180);return((-cos(r)*distance).rounded(),(sin(r)*distance).rounded())}
+  static func shadowFilters(_ effect: LayerEffect, scale: Float) -> (spread: Float, blur: Float) {
+    let size = Float(effect.size) * scale, spread = Float(effect.spread / 100)
+    return ((size * spread).rounded(), size * (1 - spread))
+  }
   func shadow(_ effect:LayerEffect,_ advanced:LayerEffectAdvanced,angle:Float,scale:Float,inner:Bool)throws->Self {
     let(dx,dy)=Self.offset(angle,Float(effect.distance)*scale),source=inner ? mapped{1-$0}:self
-    var result=try source.shifted(dx,dy,outside:inner ? 1:0);let size=Float(effect.size)*scale,spread=Float(effect.spread/100),r=(size*spread).rounded()
-    result=try result.dilated(r).blurred(size*(1-spread))
+    let filters = Self.shadowFilters(effect, scale: scale)
+    var result = try source.shifted(dx,dy,outside:inner ? 1:0)
+    result=try result.dilated(filters.spread).blurred(filters.blur, finiteSupport: !inner)
       .contoured(advanced.contour, antiAlias: !inner && advanced.antiAlias)
     if inner {for i in v.indices {result.v[i]*=v[i]}};return result
   }

@@ -249,22 +249,30 @@ enum PagedCanvasRenderer {
     let side = Surface.tileSide, columns = (d.width + side - 1) / side
     let hasClippedLayer = d.layers.contains(where: \.isClipped)
     for layer in d.layers {
-      if let style = layer.style, style.supportsRegionalPatternOverlay, !style.isChannelBlendingOnly,
+      if let style = layer.style, style.supportsRegionalEffects, !style.isChannelBlendingOnly,
         LayerStyle.requiresRegionalEffects(in: d) {
-        // A basic overlay changes only existing coverage. Its shader can vary
-        // anywhere within that support, so those tiles are always rendered.
         guard layer.parentID == nil, !hasClippedLayer,
           layer.affine == nil, layer.smartObject == nil, layer.sourceProjection == nil,
           layer.smartFilters == nil, layer.warp == nil, layer.blendMode != .dissolve,
           case .raster(let source) = layer.content else { return nil }
         if !layer.visible || layer.opacity == 0 { continue }
+        let shadows = style.enabled ? style.effects.filter { $0.kind == .dropShadow && $0.enabled && $0.opacity > 0 } : []
+        // A contour with nonzero output at zero coverage can affect the entire canvas.
+        for shadow in shadows {
+          if let table = try shadow.advanced?.contour.table(), table.first != 0 { return nil }
+        }
+        let geometries = shadows.map { LayerStyleRenderer.DropShadowGeometry($0, style: style, in: d) }
+        func appendSupport(_ bounds: IntRect) {
+          styleSupport.append(bounds.clipped(toWidth: d.width, height: d.height))
+          for geometry in geometries { styleSupport.append(geometry.footprint(of: bounds, in: d)) }
+        }
         let matchesCanvas = layer.x == 0 && layer.y == 0
           && source.width == d.width && source.height == d.height
         if source.defaultPixel.a != 0 {
           guard !matchesCanvas else { return nil }
           let bounds = IntRect(x: layer.x, y: layer.y, width: source.width, height: source.height)
-          styleSupport.append(bounds.clipped(toWidth: d.width, height: d.height))
-        } else if matchesCanvas {
+          appendSupport(bounds)
+        } else if matchesCanvas && geometries.isEmpty {
           stored.append(source.storedTileKeys)
         } else {
           let sourceColumns = (source.width + side - 1) / side
@@ -273,7 +281,7 @@ enum PagedCanvasRenderer {
             let left = key % sourceColumns * side, top = key / sourceColumns * side
             let bounds = IntRect(x: layer.x + left, y: layer.y + top,
               width: min(side, source.width - left), height: min(side, source.height - top))
-            styleSupport.append(bounds.clipped(toWidth: d.width, height: d.height))
+            appendSupport(bounds)
           }
         }
         continue

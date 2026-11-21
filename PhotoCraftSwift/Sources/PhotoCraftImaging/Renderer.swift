@@ -192,9 +192,12 @@ public enum Renderer {
     let needsPaged=preferPaged || requested.width * requested.height > Surface.maximumDensePixels
       || (d.colorMode == .rgb && groupCompositionExceedsBudget(d,region:requested,video:videoTime != nil))
       || (LayerStyle.requiresRegionalEffects(in: d)
-        && requested.width * requested.height > LayerStyleRenderer.maximumDirectRegionPixels
-        && d.layers.contains { $0.visible && $0.style?.supportsRegionalPatternOverlay == true
-          && $0.style?.isChannelBlendingOnly != true })
+        && d.layers.contains { layer in
+          guard layer.visible, let style = layer.style, !style.isChannelBlendingOnly else { return false }
+          return (style.supportsRegionalEffects
+            && requested.width * requested.height > LayerStyleRenderer.maximumDirectRegionPixels)
+            || (style.supportsRegionalDropShadow && max(requested.width, requested.height) > PagedCanvasRenderer.patchWidth)
+        })
     if needsPaged {
       if !forLayerOutput, (!preferPaged || requested.width*requested.height>Surface.maximumDensePixels),inputTarget == nil, videoTime == nil,
         let sparse = try SparseCanvasRenderer.composite(d) { return sparse }

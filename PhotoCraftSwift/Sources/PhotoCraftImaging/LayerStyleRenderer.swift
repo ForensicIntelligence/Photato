@@ -11,16 +11,17 @@ enum LayerStyleRenderer {
   struct Map {
     let w: Int, h: Int
     var v: [Float]
-    func sample(_ x: Double, _ y: Double, outside: Float = 0) -> Float {
-      let x0 = Int(floor(x)), y0 = Int(floor(y))
-      let fx = Float(x - Double(x0)), fy = Float(y - Double(y0))
+    func sample(_ x: Double, _ y: Double, outside: Float = 0, originX: Int = 0, originY: Int = 0) -> Float {
+      let left = Int(floor(x)), top = Int(floor(y))
+      let fx = Float(x - Double(left)), fy = Float(y - Double(top))
+      let x0 = left - originX, y0 = top - originY
       func at(_ x: Int, _ y: Int) -> Float { x >= 0 && y >= 0 && x < w && y < h ? v[y*w+x] : outside }
       return (at(x0,y0)*(1-fx)+at(x0+1,y0)*fx)*(1-fy)
         + (at(x0,y0+1)*(1-fx)+at(x0+1,y0+1)*fx)*fy
     }
     func blurred(_ size: Double, outside: Float = 0) throws -> Self {
       if size <= 0 { return self }
-      let radius = max(1, Int(ceil(size / 3)))
+      let radius = Self.blurRadius(size)
       var result = self
       for _ in 0..<2 { for horizontal in [true, false] {
         let input = result.v
@@ -41,6 +42,7 @@ enum LayerStyleRenderer {
       } }
       return result
     }
+    static func blurRadius(_ size: Double) -> Int { size > 0 ? max(1, Int(ceil(size / 3))) : 0 }
     func distance(toInside: Bool) throws -> Self {
       let infinity = Float(w+h+1)
       var result = self
@@ -64,11 +66,63 @@ enum LayerStyleRenderer {
     }
   }
 
+  struct DropShadowGeometry {
+    let dx: Double, dy: Double
+    let spread: Float
+    let blur: Double
+    let halo: Int
+
+    init(_ effect: LayerEffect, style: LayerStyle, in document: CraftDocument) {
+      let degrees = effect.useGlobalLight
+        ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle
+      let scale = style.scale / 100
+      if style.requiresAdvancedArchive {
+        let (x, y) = SourceEffectMap.offset(Float(degrees), Float(effect.distance) * Float(scale))
+        dx = Double(x)
+        dy = Double(y)
+        let filters = SourceEffectMap.shadowFilters(effect, scale: Float(scale))
+        spread = filters.spread
+        blur = Double(filters.blur)
+        // The tent filter runs two boxes per axis. Chamfer steps can span two pixels.
+        halo = Int(spread) + 2 * SourceEffectMap.tentRadius(filters.blur) + 2
+      } else {
+        let angle = degrees * .pi / 180
+        dx = -cos(angle) * (effect.distance * scale)
+        dy = sin(angle) * (effect.distance * scale)
+        spread = Float(effect.size * scale * effect.spread / 100)
+        blur = effect.size * scale * (1 - effect.spread / 100)
+        halo = Int(ceil(spread)) + 2 * Map.blurRadius(blur) + 1
+      }
+    }
+
+    func legacyInput(for output: IntRect, in document: CraftDocument) -> IntRect {
+      let left = Int(floor(Double(output.x) - dx)) - halo
+      let top = Int(floor(Double(output.y) - dy)) - halo
+      let right = Int(floor(Double(output.x + output.width - 1) - dx)) + halo + 2
+      let bottom = Int(floor(Double(output.y + output.height - 1) - dy)) + halo + 2
+      return IntRect(x: left, y: top, width: right - left, height: bottom - top)
+        .clipped(toWidth: document.width, height: document.height)
+    }
+
+    func footprint(of source: IntRect, in document: CraftDocument) -> IntRect {
+      let left = Int(floor(Double(source.x) + dx)) - halo - 1
+      let top = Int(floor(Double(source.y) + dy)) - halo - 1
+      return IntRect(x: left, y: top, width: source.width + 2 * halo + 3, height: source.height + 2 * halo + 3)
+        .clipped(toWidth: document.width, height: document.height)
+    }
+  }
+
+  static func styledContent(_ plain: Layer, clips: [Layer], in document: CraftDocument, cache: GroupRenderCache) throws -> Surface {
+    let source = try Renderer.isolatedContent(plain, in: document, cache: cache)
+    return clips.isEmpty ? source : try Renderer.compositeClips(clips, onto: source, in: document, cache: cache)
+  }
+
   static func composite(_ layer: Layer, clips: [Layer] = [], in document: CraftDocument,
-    over backdrop: Surface, region: IntRect, cache:GroupRenderCache = GroupRenderCache()) throws -> Surface {
+    over backdrop: Surface, region: IntRect, cache:GroupRenderCache = GroupRenderCache(),
+    regionalEffects: Bool? = nil) throws -> Surface {
     guard let style = layer.style else { return backdrop }
     try style.validate(in: document)
-    let regional = LayerStyle.requiresRegionalEffects(in: document)
+    let regional = regionalEffects ?? LayerStyle.requiresRegionalEffects(in: document)
     guard style.supportsLayerCanvas(document) else {
       throw CraftError.unsupported("This layer style requires a whole-canvas effect map of at most 8,388,608 pixels.")
     }
@@ -90,8 +144,7 @@ enum LayerStyleRenderer {
         region: region, cache: effectCache, sampleBounds: regional ? work : nil)
     }
     var plain = layer; plain.style = nil; plain.opacity = 1; plain.blendMode = .normal
-    var source = try Renderer.isolatedContent(plain, in: document, cache: effectCache)
-    if !clips.isEmpty { source = try Renderer.compositeClips(clips, onto: source, in: document, cache: effectCache) }
+    let source = try styledContent(plain, clips: clips, in: document, cache: effectCache)
     var alpha = Map(w:w,h:h,v:[Float](repeating:0,count:w*h))
     func index(_ x: Int, _ y: Int) -> Int { (y - work.y) * w + x - work.x }
     let effects = style.enabled ? style.effects.filter { $0.enabled && $0.opacity > 0 } : []
@@ -110,7 +163,7 @@ enum LayerStyleRenderer {
     }
     let gradientFrame = right > left && bottom > top
       ? IntRect(x: left, y: top, width: right - left, height: bottom - top) : nil
-    // Only spatial effects use distance maps. A regional style is pointwise.
+    // Regional Drop Shadows prepare their own distance maps around the shifted source.
     let exteriorDistance = regional ? alpha : try alpha.distance(toInside: true)
     let interiorDistance = regional ? alpha : try alpha.distance(toInside: false)
     let linear = document.depth == .f32
@@ -136,13 +189,40 @@ enum LayerStyleRenderer {
     var result=backdrop
     // Exterior effects blend directly against the backdrop using their own modes.
     for effect in effects.reversed() where effect.kind == .dropShadow || effect.kind == .outerGlow {
-      let map = try shadowMap(effect,inner:false)
-      let angle=(effect.useGlobalLight ? PSDGlobalLight.angle(document.globalLight?.angle ?? style.lightAngle) : effect.angle) * .pi/180
-      let distance=effect.kind == .dropShadow ? effect.distance*scale : 0
-      let dx = -cos(angle)*distance, dy=sin(angle)*distance
+      let geometry = DropShadowGeometry(effect, style: style, in: document)
+      let map: Map
+      let bounds: IntRect
+      if regional {
+        bounds = geometry.legacyInput(for: work, in: document)
+        guard bounds.width > 0, bounds.height > 0 else { continue }
+        guard bounds.width <= LayerStyle.maximumWholeCanvasPixels / bounds.height else {
+          throw CraftError.unsupported("Drop Shadow source coverage exceeds its effect map budget.")
+        }
+        let content = try styledContent(plain, clips: clips, in: document, cache: cache.window(bounds))
+        var coverage = Map(w: bounds.width, h: bounds.height,
+          v: [Float](repeating: 0, count: bounds.width * bounds.height))
+        for y in 0..<bounds.height {
+          try Task.checkCancellation()
+          for x in 0..<bounds.width {
+            coverage.v[y * bounds.width + x] = content.pixel(x: bounds.x + x, y: bounds.y + y).a
+          }
+        }
+        if geometry.spread > 0 {
+          let distance = try coverage.distance(toInside: true)
+          for i in coverage.v.indices {
+            coverage.v[i] = max(coverage.v[i], unit(geometry.spread - distance.v[i] + 1))
+          }
+        }
+        map = try coverage.blurred(geometry.blur)
+      } else {
+        bounds = work
+        map = try shadowMap(effect,inner:false)
+      }
+      let dx = effect.kind == .dropShadow ? geometry.dx : 0
+      let dy = effect.kind == .dropShadow ? geometry.dy : 0
       for y in region.y..<region.y+region.height { try Task.checkCancellation(); for x in region.x..<region.x+region.width {
         var p=color(effect.color)
-        p.a *= map.sample(Double(x)-dx,Double(y)-dy)*(1-alpha.v[index(x, y)])
+        p.a *= map.sample(Double(x)-dx,Double(y)-dy,originX:bounds.x,originY:bounds.y)*(1-alpha.v[index(x, y)])
         write(composite(p,read(result,x,y),effect.blendMode,effect.opacity,x,y),x,y,&result)
       } }
     }

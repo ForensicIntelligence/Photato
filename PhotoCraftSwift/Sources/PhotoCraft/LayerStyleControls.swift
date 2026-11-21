@@ -28,12 +28,12 @@ extension EditorStore {
     guard let layer = layerStyleTarget else { return false }
     if !requiresRegionalLayerEffects { return true }
     let style = layer.style ?? LayerStyle()
-    return style.supportsLayerCanvas(document)
-      && (style.effects.contains { $0.kind == .patternOverlay } || document.patterns?.isEmpty == false)
+    return style.supportsLayerCanvas(document) && document.colorMode == .rgb
+      && document.inkMode == nil && document.restrictedMode == nil
   }
 
   func canAddLayerEffect(_ kind: LayerEffect.Kind) -> Bool {
-    if requiresRegionalLayerEffects && kind != .patternOverlay { return false }
+    if requiresRegionalLayerEffects && kind != .patternOverlay && kind != .dropShadow { return false }
     return kind != .patternOverlay || document.patterns?.isEmpty == false
   }
   var canBeginBlendingOptions:Bool {canBeginBlendingOptions(for:document.activeLayerID)}
@@ -150,8 +150,9 @@ extension EditorStore {
     } catch { self.error = error.localizedDescription }
   }
   func expandLayerEffect(_ index:Int) {
-    guard !requiresRegionalLayerEffects, var draft=layerStyleDraft,
+    guard var draft=layerStyleDraft,
       draft.style.effects.indices.contains(index),draft.style.effects[index].advanced==nil else{return}
+    guard !requiresRegionalLayerEffects || draft.style.effects[index].kind == .dropShadow else { return }
     var effect=draft.style.effects[index],advanced=LayerEffectAdvanced()
     if let fill=effect.gradient {
       let stops=fill.gradient.colors.map{EffectGradientStop($0.position,$0.color.resolved(foreground:.black,background:.white))}
@@ -300,7 +301,7 @@ struct LayerStyleSheet: View {
               effectControls(effect)
               if effect.advanced != nil {
                 AdvancedLayerEffectControls(effect:Binding(get:{self.effect ?? effect},set:{value in store.updateLayerEffect(selected){$0=value}}),document:store.document)
-              } else if !store.requiresRegionalLayerEffects {
+              } else if !store.requiresRegionalLayerEffects || effect.kind == .dropShadow {
                 Button("Expanded Effect Controls…") { store.expandLayerEffect(selected) }
                 Text("Expanded controls can change the existing appearance. Review Preview before applying.")
                   .font(.caption).foregroundStyle(.secondary)

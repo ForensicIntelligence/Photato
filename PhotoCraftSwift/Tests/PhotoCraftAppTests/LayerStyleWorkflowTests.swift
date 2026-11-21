@@ -5,6 +5,59 @@ import XCTest
 @testable import PhotoCraft
 
 final class LayerStyleWorkflowTests: XCTestCase {
+  @MainActor func testMaximumCanvasDropShadowMenuPreviewUndoAndHTTP() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let size = Surface.maxDimension
+      let x = size - 1900, y = size - 72
+      var artwork = try CraftDocument(width: size, height: size)
+      artwork.layers[0].x = x + 800
+      artwork.layers[0].y = y
+      artwork.layers[0].content = .raster(try Surface(width: 19, height: 17, fill: Pixel(0.7, 0.4, 0.2, 0.75)))
+      let store = shared.store
+      store.session = EditorSession(document: artwork)
+      store.updateViewport(size: CGSize(width: 48, height: 48), backingScale: 1)
+      store.setZoom(1, center: true)
+      store.pan = CGSize(width: size / 2 - x, height: size / 2 - y)
+      XCTAssertTrue(store.validateLayerStyleMenu("Layer > Layer Style > Drop Shadow…"))
+      XCTAssertFalse(store.validateLayerStyleMenu("Layer > Layer Style > Outer Glow…"))
+      store.beginLayerStyle(.dropShadow)
+      store.expandLayerEffect(0)
+      let sheet = LayerStyleSheet(store: store)
+      sheet.value(\.distance, 0).wrappedValue = 800
+      sheet.value(\.angle, 0).wrappedValue = 0
+      sheet.value(\.useGlobalLight, false).wrappedValue = false
+      store.updateLayerEffect(0) { $0.advanced?.knocksOut = false }
+      let expectedStyle = try XCTUnwrap(store.layerStyleDraft?.style)
+      await store.renderTask?.value
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.document, artwork)
+      store.commitLayerStyle()
+      await store.renderTask?.value
+      XCTAssertEqual(store.document.layers[0].style, expectedStyle)
+      let sample = try Renderer.composite(store.document, region: IntRect(x: x+4, y: y+4, width: 1, height: 1))
+      XCTAssertGreaterThan(sample.pixel(x: x+4, y: y+4).a, 0.1)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      await store.undo()
+      XCTAssertEqual(store.document, artwork)
+      try service.share(shared)
+      let status = try await helper.edit(service, shared, "layer.style",
+        ["layerIDs": [artwork.layers[0].id.uuidString], "style": expectedStyle.apiObject])
+      XCTAssertEqual(status, 200)
+      await store.renderTask?.value
+      XCTAssertNil(store.error)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let view = store.viewport.largeCanvasRequest, rect = view.region
+      let header = """
+      {"x":\(rect.x),"y":\(rect.y),"width":\(rect.width),"height":\(rect.height),"outputWidth":\(view.width),"outputHeight":\(view.height)}
+      """
+      let received = try await helper.request(service, path: "/v1/documents/\(id)/preview.png",
+        headers: ["X-Photato-Viewport": header])
+      XCTAssertEqual(received.0.statusCode, 200)
+      XCTAssertEqual(received.1, try AutomationService.png(XCTUnwrap(store.image)))
+    }
+  }
+
   @MainActor func testPagedObliquePNGOverviewsMatchNativeRendering() async throws {
     let helper = AutomationTests()
     try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
@@ -229,7 +282,7 @@ final class LayerStyleWorkflowTests: XCTestCase {
       shared.store.pan = .init(width: size / 2 - region.x - region.width / 2,
         height: size / 2 - region.y - region.height / 2)
       XCTAssertTrue(shared.store.validateLayerStyleMenu("Layer > Layer Style > Pattern Overlay…"))
-      XCTAssertFalse(shared.store.validateLayerStyleMenu("Layer > Layer Style > Drop Shadow…"))
+      XCTAssertTrue(shared.store.validateLayerStyleMenu("Layer > Layer Style > Drop Shadow…"))
       try service.share(shared)
 
       shared.store.beginLayerStyle(.patternOverlay)
@@ -266,7 +319,7 @@ final class LayerStyleWorkflowTests: XCTestCase {
       XCTAssertEqual(shared.store.document.layers[0].style?.effects.first?.opacity, 0.5)
       let stable = shared.store.document
       let unsupported = try await helper.edit(service, shared, "layer.style",
-        ["layerIDs": [layerID], "style": ["effects": [["kind": "dropShadow"]]]])
+        ["layerIDs": [layerID], "style": ["effects": [["kind": "outerGlow"]]]])
       XCTAssertEqual(unsupported, 422)
       XCTAssertEqual(shared.store.document, stable)
       let old = try await helper.edit(service, shared, "history.undo")

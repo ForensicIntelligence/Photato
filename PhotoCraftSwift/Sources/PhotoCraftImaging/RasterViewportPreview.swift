@@ -40,19 +40,23 @@ public struct RasterViewportPreview: Sendable {
 
   public static func useForPatternEditing(_ document: CraftDocument, request: RasterPreviewRequest) throws -> Bool {
     guard supports(document, request: request) || supportsPagedReduction(document, request: request),
-      hasVisibleOverlay(document) else { return false }
+      hasVisibleRegionalStyle(document) else { return false }
     return try !PagedCanvasRenderer.hasCompactComposite(document, facts: CompositionFacts(document))
   }
 
-  private static func hasVisibleOverlay(_ document: CraftDocument) -> Bool {
-    document.layers.contains { layer in
-      layer.visible && layer.opacity > 0 && layer.style?.enabled == true
-        && layer.style?.effects.contains { $0.kind == .patternOverlay && $0.enabled && $0.opacity > 0 } == true
+  private static func hasVisibleRegionalStyle(_ document: CraftDocument) -> Bool {
+    let regional = LayerStyle.requiresRegionalEffects(in: document)
+    return document.layers.contains { layer in
+      guard layer.visible, layer.opacity > 0, let style = layer.style, style.enabled else { return false }
+      return style.effects.contains {
+        ($0.kind == .patternOverlay || ($0.kind == .dropShadow && regional && style.supportsRegionalDropShadow))
+          && $0.enabled && $0.opacity > 0
+      }
     }
   }
 
   public static func pagedPatternPreview(_ document: CraftDocument, request: RasterPreviewRequest) throws -> Self? {
-    guard supportsPagedReduction(document, request: request), hasVisibleOverlay(document) else { return nil }
+    guard supportsPagedReduction(document, request: request), hasVisibleRegionalStyle(document) else { return nil }
     return try Self(document, request: request, allowPagedReduction: true)
   }
 

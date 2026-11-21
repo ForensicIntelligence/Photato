@@ -17,7 +17,7 @@ final class ChannelBlendingWorkflowTests:XCTestCase {
   }
   @MainActor func testMaximumGeometryAvailabilityCopyPasteClearAndLocks()throws {
     let d=try CraftDocument(width:300000,height:300000,depth:.f32),s=EditorStore(document:d);defer{s.renderTask?.cancel();EditorStore.copiedLayerStyle=nil}
-    XCTAssertFalse(s.canBeginLayerStyle);XCTAssertTrue(s.canBeginBlendingOptions);s.beginBlendingOptions();XCTAssertTrue(s.layerStyleDraft?.blendingOnly==true);s.setBlendingChannel(0,enabled:false);s.commitLayerStyle();XCTAssertNil(s.error)
+    XCTAssertTrue(s.canBeginLayerStyle);XCTAssertTrue(s.canBeginBlendingOptions);s.beginBlendingOptions();XCTAssertTrue(s.layerStyleDraft?.blendingOnly==false);s.setBlendingChannel(0,enabled:false);s.commitLayerStyle();XCTAssertNil(s.error)
     let changed=s.document;s.copyLayerStyle();XCTAssertTrue(s.canClearLayerStyle);s.clearLayerStyle();XCTAssertNil(s.document.layers[0].style);XCTAssertTrue(s.canPasteLayerStyle);s.pasteLayerStyle();XCTAssertEqual(s.document,changed)
     var locked=s.document;locked.layers[0].protection=[.all];s.session=EditorSession(document:locked);XCTAssertFalse(s.canBeginBlendingOptions)
   }

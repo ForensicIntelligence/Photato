@@ -76,14 +76,15 @@ enum SourceLayerStyleRenderer {
       }
       reach=max(reach,r)
     }
-    let pad=Int(ceil(min(max(reach,0),512)))+2,mw=w+2*pad,mh=h+2*pad
+    let wholePad = Int(ceil(min(max(reach,0),512))) + 2
+    let regionalShadows = sampleBounds != nil && style.supportsRegionalDropShadow
+    let pad = regionalShadows ? 0 : wholePad, mw = w + 2 * pad, mh = h + 2 * pad
     let mapCount=effects.reduce(1){$0+($1.kind == .bevelEmboss ? 2:[.dropShadow,.innerShadow,.outerGlow,.innerGlow,.satin].contains($1.kind) ? 1:0)}+(effects.contains{$0.kind == .stroke} ? 2:0)
     // Include distance-transform temporaries and the pixel/coverage accumulators,
     // before allocating source maps. This is an operation budget, not document admission.
     guard mw<=maximumMapPixels/mh,(mapCount+16)*4<=maximumScratchBytes/(mw*mh),n*80<=maximumScratchBytes-(mapCount+16)*4*mw*mh else {throw CraftError.unsupported("Advanced effect maps exceed the current512MiB scratch budget; larger style processing remains in development.")}
     var plain=layer;plain.style=nil;plain.opacity=1;plain.blendMode = .normal
-    var content=try Renderer.isolatedContent(plain,in:document,cache:cache)
-    if !clips.isEmpty {content=try Renderer.compositeClips(clips,onto:content,in:document,cache:cache)}
+    let content = try LayerStyleRenderer.styledContent(plain, clips: clips, in: document, cache: cache)
     let frame:IntRect
     if let frameOverride {frame=frameOverride}
     // Basic Pattern Overlay uses its stored document/layer origin without a
@@ -96,9 +97,58 @@ enum SourceLayerStyleRenderer {
       let pixels=try Renderer.layerSurface(plain,in:document),bounds=try sourceBounds(pixels) ?? IntRect(x:0,y:0,width:1,height:1)
       frame=try (layer.coordinateTransform * .translation(Double(bounds.x),Double(bounds.y))).bounds(width:bounds.width,height:bounds.height)
     }
+    let regionalShadow: ((LayerEffect, LayerEffectAdvanced) throws -> SourceEffectMap)?
+    if regionalShadows {
+      regionalShadow = { effect, advanced in
+        let geometry = LayerStyleRenderer.DropShadowGeometry(effect, style: style, in: document)
+        let remaining = maximumScratchBytes - (mapCount + 16) * 4 * mw * mh - n * 80
+        return try regionalDropShadow(geometry, advanced: advanced, region: samples, canvas: canvas,
+          wholePad: wholePad, maximumPixels: min(maximumMapPixels, remaining / 24)) { bounds in
+            try LayerStyleRenderer.styledContent(plain, clips: clips, in: document, cache: cache.window(bounds))
+          }
+      }
+    } else { regionalShadow = nil }
     return try compositePrepared(layer, style: style, effects: effects, scale: scale, content: content,
       frame: frame, pad: pad, in: document, over: backdrop, region: region, samples: samples,
-      patternPreparation: cache.facts?.patternPreparation)
+      patternPreparation: cache.facts?.patternPreparation, regionalShadow: regionalShadow)
+  }
+
+  private static func regionalDropShadow(
+    _ geometry: LayerStyleRenderer.DropShadowGeometry, advanced: LayerEffectAdvanced, region: IntRect,
+    canvas: IntRect, wholePad: Int, maximumPixels: Int, content: (IntRect) throws -> Surface
+  ) throws -> SourceEffectMap {
+    let halo = geometry.halo, dx = Int(geometry.dx), dy = Int(geometry.dy)
+    // Reuse the shifted domain of the whole-canvas renderer, including its padding at document edges.
+    let left = max(-wholePad, region.x - halo), top = max(-wholePad, region.y - halo)
+    let right = min(canvas.width + wholePad, region.x + region.width + halo)
+    let bottom = min(canvas.height + wholePad, region.y + region.height + halo)
+    let width = right - left, height = bottom - top
+    let input = IntRect(x: left - dx, y: top - dy, width: width, height: height)
+      .clipped(toWidth: canvas.width, height: canvas.height)
+    if input.width == 0 || input.height == 0 {
+      return try SourceEffectMap(region.width, region.height).contoured(advanced.contour)
+    }
+    guard width <= maximumPixels / height else {
+      throw CraftError.unsupported("Drop Shadow source coverage exceeds its effect map budget.")
+    }
+    let artwork = try content(input)
+    var work = SourceEffectMap(width, height)
+    for y in input.y..<(input.y + input.height) {
+      try Task.checkCancellation()
+      let row = (y + dy - top) * width
+      for x in input.x..<(input.x + input.width) {
+        work.v[row + x + dx - left] = artwork.pixel(x: x, y: y).a
+      }
+    }
+    work = try work.dilated(geometry.spread).blurred(Float(geometry.blur), finiteSupport: true)
+    var output = SourceEffectMap(region.width, region.height)
+    for y in 0..<region.height {
+      try Task.checkCancellation()
+      let start = (region.y - top + y) * width + region.x - left
+      let target = y * region.width
+      output.v.replaceSubrange(target..<(target + region.width), with: work.v[start..<(start + region.width)])
+    }
+    return try output.contoured(advanced.contour, antiAlias: advanced.antiAlias)
   }
 
   // Isolating styled content can call the compositor again. Allocate the
@@ -107,7 +157,8 @@ enum SourceLayerStyleRenderer {
   private static func compositePrepared(
     _ layer: Layer, style: LayerStyle, effects: [LayerEffect], scale: Float, content: Surface,
     frame: IntRect, pad: Int, in document: CraftDocument, over backdrop: Surface, region: IntRect, samples: IntRect,
-    patternPreparation: PatternFillSampler.PreparationCache?
+    patternPreparation: PatternFillSampler.PreparationCache?,
+    regionalShadow: ((LayerEffect, LayerEffectAdvanced) throws -> SourceEffectMap)?
   ) throws -> Surface {
     let w = samples.width, h = samples.height, n = w * h
     let mw = w + 2 * pad, mh = h + 2 * pad
@@ -133,6 +184,9 @@ enum SourceLayerStyleRenderer {
       try Task.checkCancellation()
       let advanced=effect.advanced ?? LayerEffectAdvanced(),map:SourceEffectMap?,bevel:SourceEffectBevel?
       switch effect.kind {
+      case .dropShadow where regionalShadow != nil:
+        map = try regionalShadow?(effect, advanced)
+        bevel = nil
       case .dropShadow,.innerShadow:map=try shape.shadow(effect,advanced,angle:Float(effect.useGlobalLight ? light.angle:effect.angle),scale:scale,inner:effect.kind == .innerShadow);bevel=nil
       case .innerGlow,.outerGlow:map=try shape.glow(effect,advanced,scale:scale,inner:effect.kind == .innerGlow);bevel=nil
       case .satin:map=try shape.satin(effect,advanced,scale:scale);bevel=nil

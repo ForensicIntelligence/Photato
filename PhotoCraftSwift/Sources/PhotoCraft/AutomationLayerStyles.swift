@@ -33,7 +33,7 @@ extension LayerStyle {
   static var apiCapabilities: [String: Any] {
     ["channelBlending":["field":"restrictedChannels","components":["0":"Red","1":"Green","2":"Blue"],"commands":["layer.style","layer.style.patch"],"nativeArchiveVersion":89,"ActionsVersion":56,"behavior":"Existing native Blending Options and style transactions; omitted/nil retains legacy rendering,[] explicitly enables all channels. Numeric RGB exclusions preserve backdrop components after layer/group/clipping composition; all excluded has no contribution. Alpha/transparent/effect/group/default Photoshop details remain unqualified.","capacity":"Channel-only settings do not require effect maps; sparse maximum geometry retained. Existing effect limits remain independent.","scope":"RGB8/16/32 only. Non-RGB component exclusion,BlendIf,knockout and other advanced flags remain functional gaps; no full L03 closure. No new Firefly route/descriptor support claimed."],"command": "layer.style", "schema": apiSchema,
       "maximumCanvasPixels": maximumWholeCanvasPixels,
-      "maximumCanvasPixelsScope": "Whole-canvas effect preparation. Basic RGB Pattern Overlay and RGB channel-only styles retain document dimensions.",
+      "maximumCanvasPixelsScope": "Whole-canvas effect preparation. Basic RGB Pattern Overlay, regional Drop Shadow and RGB channel-only styles retain document dimensions.",
       "maximumChannelCanvasDimension": Surface.maxDimension,
       "regionalPatternOverlay": [
         "maximumCanvasDimension": Surface.maxDimension, "commands": ["layer.style", "layer.style.patch"],
@@ -48,6 +48,8 @@ extension LayerStyle {
       ],
       "nativeArchiveVersion": 13,"advancedArchiveVersion":75,"advancedActionsVersion":30,"advancedDefaults":AdvancedStyleAPI.defaults,"globalLight":AdvancedStyleAPI.light,"patchCommand":"layer.style.patch","retainedInactiveFields":["nonDropShadow.noise","jitter","nonDropShadow.antiAlias","gradient.aligned","gradient.dither","gradient.stopColorAlpha","bevel.highlightEnabled","bevel.shadowEnabled","advancedBevel.genericBlendMode","advancedBevel.genericOpacity","effectColorAlpha"], "kinds": LayerEffect.Kind.allCases.map(\.rawValue),
       "advancedDropShadow": ["editableFiles": ["psd", "psb"], "controls": ["contour", "antiAlias", "noise", "knocksOut"],
+        "regionalCanvasDimension": Surface.maxDimension,
+        "regionalScope": "RGB Drop Shadow stacks, optionally with basic Pattern Overlay. Each region prepares the shifted coverage and its filter margin. Scratch limits still apply per effect.",
         "contourContinuity": "Optional smoothPoints has one Boolean per point. False sets a corner.",
         "adobeRoute": "POST /v2/create-composite",
         "adobeFields": ["contour", "antiAliased", "noise", "layerKnocksOut"]],
