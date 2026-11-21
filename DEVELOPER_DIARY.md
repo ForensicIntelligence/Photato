@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **714** · The 10 most recent entries, newest first.
+Source build **715** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 715 — Fill a selection from a local reference image
+
+Generative Fill accepts Object and Whole Image references with Swap and Place. The local Paint by Example model generates alternatives inside the editable selection. Place keeps the generated subject on transparency. The Photato API uses the same engine and saved reference context as the editor.
+
+With the same seed and selection, the model used a teapot or orange reference to generate different subjects. The Place example added a teapot beside an existing orange and left 27,222 selected background pixels exact. Every sample outside the selection remained exact in all four owned examples. Photato, PSD and PSB preserved the result and embedded reference. An independent merged preview reader compared 8,388,608 RGBA bytes. Generate More and Generate Similar kept the first saved variation, original reference and mask after a PSB reopen. The editor and authenticated HTTP matched at the same seed.
+
+The optional model requires Apple Silicon and macOS 26 or later and uses a visual reference without text. Place depends on foreground detection and can omit generated shadows. The installed Photoshop 27.2.0 document query timed out. Exact Firefly output, the Adobe Execute Actions descriptor, partner providers, keyboard and assistive-technology checks remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md).
 
 ## 2026-11-21 — Step 714 — Guide Generate Image with Style and Composition references
 
@@ -93,13 +103,3 @@ LaMa preserved all 720,896 original pixels on a 5,632 × 128 source and added 22
 Tiled alternatives retain their results and mask for editing. Generate More and Generate Similar after reopening still require the single-patch saved context. The two-alternative prompt proof took 572 seconds with other qualification jobs running. Reusing the prompted worker between windows remains a performance task. Dense maximum-area generation, prompted quality across distant windows and Firefly output equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-706) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_706.md).
-
-## 2026-11-21 — Step 705 — Extend the canvas with local generation
-
-Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
-
-On the owned apple image, each local model preserved all 65,536 original pixels and added 25,632 opaque pixels. The largest mean RGB8 step immediately outside the old canvas dropped from 88.29 levels with LaMa512 and 54.54 with prompted generation to 0.00. Photato reopened the editable PSD and PSB results with identical RGBA bytes. The native editor and local HTTP route produced identical bytes at the same seed. Both models also passed the file and Undo checks in an ad hoc signed App Sandbox test harness.
-
-This generation pass requires the new border’s bounding rectangle to fit within 4,194,304 pixels and 4,096 pixels per side. Local models can leave artifacts near the outer edge of the addition. Larger multi-edge generation, rotation, inward cropping during expansion, multiple blank-prompt results and Firefly equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-705) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_705.md).

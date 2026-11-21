@@ -13,6 +13,7 @@ enum GenerativeFillWorker {
   private static let maximumRequestBytes = 8 * 1_024 * 1_024
   private static let maximumReplyBytes = 16 * 1_024 * 1_024
   private static let signal = Data([1])
+  private static let referenceInferenceLock = NSLock()
   private static let stopped = CraftError.unavailable("Local model inference stopped unexpectedly. Try Generate again.")
 
   private struct Configuration: Codable {
@@ -20,6 +21,7 @@ enum GenerativeFillWorker {
     let instructions: Bool
     let guide: LocalGenerationGuide?
     let guideBookmark: Data?
+    let exemplar: Data?
   }
 
   private struct Request: Codable {
@@ -38,10 +40,10 @@ enum GenerativeFillWorker {
   static func run(
     model: URL, bookmark: Data? = nil, prompt: String, seeds: [UInt32], image: [Float], mask: [Float],
     mode: LocalGenerativeFill.PromptMode = .fill, instructions: Bool = false, executable override: URL? = nil,
-    guide: LocalGenerationGuide? = nil, guideBookmark: Data? = nil
+    guide: LocalGenerationGuide? = nil, guideBookmark: Data? = nil, exemplar: Data? = nil
   ) throws -> [Surface] {
     try withSession(model: model, bookmark: bookmark, instructions: instructions, executable: override,
-      guide: guide, guideBookmark: guideBookmark) { session in
+      guide: guide, guideBookmark: guideBookmark, exemplar: exemplar) { session in
       try session.predict(prompt: prompt, seeds: seeds, image: image, mask: mask, mode: mode)
     }
   }
@@ -49,9 +51,16 @@ enum GenerativeFillWorker {
   /// The worker and its model are scoped to one edit, including all its windows.
   static func withSession<Result>(
     model: URL, bookmark: Data? = nil, instructions: Bool = false, executable override: URL? = nil,
-    guide: LocalGenerationGuide? = nil, guideBookmark: Data? = nil, _ body: (Session) throws -> Result
+    guide: LocalGenerationGuide? = nil, guideBookmark: Data? = nil, exemplar: Data? = nil, _ body: (Session) throws -> Result
   ) throws -> Result {
     try Task.checkCancellation()
+    if exemplar != nil {
+      while !referenceInferenceLock.try() {
+        try Task.checkCancellation()
+        Thread.sleep(forTimeInterval: 0.05)
+      }
+    }
+    defer { if exemplar != nil { referenceInferenceLock.unlock() } }
     guard let executable = override ?? executableURL() else {
       throw CraftError.unavailable("The local inference worker is unavailable.")
     }
@@ -64,8 +73,13 @@ enum GenerativeFillWorker {
       throw CraftError.unavailable("Choose the model for the reference image.")
     }
     try guide?.validate()
+    if let exemplar {
+      guard exemplar.count == LocalGenerativeFill.exemplarByteCount, guide == nil, !instructions else {
+        throw CraftError.invalid("Invalid exemplar inputs.")
+      }
+    }
     let configuration = Configuration(bookmark: try bookmark ?? GenerativeFillModelPreference.bookmark(for: model),
-      instructions: instructions, guide: guide, guideBookmark: guideBookmark)
+      instructions: instructions, guide: guide, guideBookmark: guideBookmark, exemplar: exemplar)
     try write(configuration, to: directory.appending(path: "model.plist"))
     let process = Process()
     let pipe = Pipe()
@@ -83,7 +97,7 @@ enum GenerativeFillWorker {
     do { try process.run() }
     catch { throw CraftError.unavailable("Could not start local model inference.") }
     try? pipe.fileHandleForReading.close()
-    let session = Session(process: process, input: input, directory: directory)
+    let session = Session(process: process, input: input, directory: directory, hasExemplar: exemplar != nil)
     defer { session.close() }
     let result = try body(session)
     try Task.checkCancellation()
@@ -94,11 +108,13 @@ enum GenerativeFillWorker {
     private let process: Process
     private let input: FileHandle
     private let directory: URL
+    private let hasExemplar: Bool
 
-    fileprivate init(process: Process, input: FileHandle, directory: URL) {
+    fileprivate init(process: Process, input: FileHandle, directory: URL, hasExemplar: Bool) {
       self.process = process
       self.input = input
       self.directory = directory
+      self.hasExemplar = hasExemplar
     }
 
     func predict(
@@ -115,8 +131,12 @@ enum GenerativeFillWorker {
       catch { throw stopped }
 
       let files = FileManager.default
+      let timeout = hasExemplar ? ContinuousClock.now + .seconds(600) : nil
       while !files.fileExists(atPath: replyURL.path) {
         try Task.checkCancellation()
+        if let timeout, ContinuousClock.now >= timeout {
+          throw CraftError.unavailable("The local reference model stopped responding. Try Generate again.")
+        }
         if !process.isRunning {
           // A reported model error may be published just before the child exits.
           guard files.fileExists(atPath: replyURL.path) else { throw stopped }
@@ -176,7 +196,9 @@ enum GenerativeFillWorker {
           try writeReply(reply, to: replyURL)
         } while try waitForRequest(input)
       }
-      if config.instructions {
+      if let exemplar = config.exemplar {
+        try LocalGenerativeFill.withReferencePredictor(at: model, reference: exemplar, serve)
+      } else if config.instructions {
         try LocalGenerativeFill.withInstructionPredictor(at: model, serve)
       } else {
         let guideModel = config.guideBookmark.flatMap(GenerativeFillModelPreference.resolve)

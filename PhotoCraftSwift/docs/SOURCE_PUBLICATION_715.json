@@ -1,0 +1,295 @@
+{
+  "build": 715,
+  "base": "84e84b1bc11cd6084140ed861b78db3a652267f6",
+  "buildInputs": 9396,
+  "includedBuildInputs": 9396,
+  "candidateManifestSHA256": "1b85ebf7f1c6d23f2b218b85c3c7d3dd3164ffe3fe5dfcc4503731a2a3ac4729",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "07c6cb75cf242ed5db9a0cd0b031807f70cf23878fe219d40a305957ebcdfced"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "5cf5a8e5a971c04f4a01c8dad545ea5ec55fad091135c1ec9cc517f37a7815ec"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "7dc6a981c09f9af45aebfbacd680016de732a7a1f7f2c4a8c565b1a9a836e4c9"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillControls.swift",
+      "sha256": "f35b7e19c37244746a405f4b6fecc1f818bdd2650221a74e3b981ae371596ba0"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillVariations.swift",
+      "sha256": "48c68df1e8f2d5c98d63c4ee9cebdc8beb17bf22143d67088037d42ea54081db"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillWorker.swift",
+      "sha256": "c170889e8a1d19894ffd9d3f0f4d130a528490f129154939b8ba8acbe9073a1b"
+    },
+    {
+      "path": "Sources/PhotoCraft/LocalReferenceFill.swift",
+      "sha256": "373151d825659b0de6a9624428c1a8bd5f0d859e09458f521a769748d1bc65c7"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalReferenceInpainting.swift",
+      "sha256": "b26d0cc940ee4591094aab5ef225d5183aadab181e75f13611884b4fe2e17af6"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "ba027b99f0c7e5e4daa91bd95aac8b57eff590cfe4735783d05cea6d4a1371b1"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "1f6ded2d4123d9448c8ffa121d96002236f74cf32ab8d8ae9ee28198c689e5a6"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/LocalReferenceFillTests.swift",
+      "sha256": "622d31ca37aab9bb6fc08e878f0ede03dc98effd5bcb4887c65df0e208d1f21b"
+    },
+    {
+      "path": "Vendor/GuernikaKit/Sources/GuernikaKit/StableDiffusion/PaintByExamplePipeline.swift",
+      "sha256": "5bb81cf620b5a49100b9a6ce99b559f88f0a63d0526b742a2460824f645c128b"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "e41bee61838fdd4f085654b62bd87d252c46fa055b74846212e2e5c17d009e67"
+    },
+    {
+      "path": "scripts/convert-paint-by-example.py",
+      "sha256": "bcb18270b832453bf30fe898598c6bc5d57f70efff1ad380088c04d18814aaab"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "e41bee61838fdd4f085654b62bd87d252c46fa055b74846212e2e5c17d009e67"
+  },
+  "casesPerConfiguration": 542,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 542,
+      "passed": 541,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "ac6b10553ec55215806ee300bf618d57af591c763a03efad534fd1e7330e78ae"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 542,
+      "passed": 541,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "3dceb101391df4ac635a6b834a365490cd877f3cb5e00be7dfd1e8eefe7ba199"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 542,
+      "passed": 541,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "d00e42175729e9200ae27d602f09e6916ca3dbba0fdda0d354bc3543aa5542ac"
+    }
+  },
+  "ownedExamples": [
+    {
+      "name": "Swap Teapot",
+      "changedSelectionPixels": 56339,
+      "exactSelectionPixels": 47
+    },
+    {
+      "name": "Swap Orange",
+      "changedSelectionPixels": 56340,
+      "exactSelectionPixels": 46
+    },
+    {
+      "name": "Swap Scene",
+      "changedSelectionPixels": 56352,
+      "exactSelectionPixels": 34
+    },
+    {
+      "name": "Place Teapot",
+      "changedSelectionPixels": 22554,
+      "exactSelectionPixels": 27222
+    }
+  ],
+  "model": {
+    "id": "Fantasy-Studio/Paint-by-Example",
+    "revision": "351e6427d8c28a3b24f7c751d43eb4b6735127f7",
+    "compiledWeightSHA256": {
+      "VAEEncoder": "71bf826e5ee1b455462aff0b34e3a469f5f58955ae715708962b1d81db92dc64",
+      "VAEDecoder": "ca45a093443d3a9719c5f7c61010315e94ffc8019eff27a0eeb52075a05ac752",
+      "ImageEncoder": "8d9ee8ab80b6d4ff71bcce8aa2f05762689069d962c851f5e4710d0b75aec852",
+      "Unet": "b6726feb1eb8d0c5860b580f8522912e7d1d2207dd0b308111e0ff3b70cbe6de"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "d12ddb56c2dbf9b67788bab7d3fdded1fa91d3a898c9718ffc9af98c5f2ac229",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "897251300ee6dffae95070e2e9b2bce332550c2ef7bd81cc1e742e5e3e8a08f9",
+      "x86_64": "2f586ee2113d12af10516a2b06ed772cfd7f4e3f2d083e72fdc1a27219577c89"
+    },
+    "binarySHA256": "1cb4eef1a0fff0f33ed65af7f3350888beb1164d7510b9b4cac5cb38bc94855e",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "f16758bbec8b65599bea439ed0fa2b3adf0db2f1ec7bde34cd48c4c1dc4e31dd"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "build-debug01.log",
+      "sha256": "19e88c5b3d4b3649627debc089f8b80908041aeb638697f354caede59898cb3f"
+    },
+    {
+      "file": "build-debug02.log",
+      "sha256": "8dc2772512bc8311fe069627efa3085d6938e9c36de52a5599a6f5b58fd1866a"
+    },
+    {
+      "file": "build-debug-tests01.log",
+      "sha256": "4f398514424e502c9a2dd7a4463de61bc6c9ef3f90d886230990910bba26783e"
+    },
+    {
+      "file": "build-debug-tests02.log",
+      "sha256": "0fdce83d2f34d41eebab9b6cafb7bb059c0ef82e3f0259aac2207fdcb2258595"
+    },
+    {
+      "file": "build-debug-final01.log",
+      "sha256": "591d0fc0f703d4e61d14917db4f007eba8ee050f9212c4057a887b2b87609f45"
+    },
+    {
+      "file": "build-debug-final02.log",
+      "sha256": "670ea1bae257b0cada986c3987183cb39a4844b91fcb91c0dc8847b1d4731359"
+    },
+    {
+      "file": "build-release-arm6401.log",
+      "sha256": "2ca8cc86e7f45945a2c20caa85212bff8c60884a12f04f4af468339546910b94"
+    },
+    {
+      "file": "build-release-x86_6401.log",
+      "sha256": "a047d89f31242930cb8e8c8838ba93a3b4d7b39d3d2d46f3c13901926306dd9d"
+    },
+    {
+      "file": "build-release-arm6402.log",
+      "sha256": "454fc6f940ce2e597dc282539efa3e312b169688706d12bbf433b1773469f1f8"
+    },
+    {
+      "file": "build-release-x86_6402.log",
+      "sha256": "6ffa7173c2cbd838f5b29216c4a8e5252d19d93777fdf1b7d49a216179447d57"
+    },
+    {
+      "file": "xcode-build01.log",
+      "sha256": "84943070f7a28caf1fd6a78baf747449a4b3b78a5928e55a609f6af77077f331"
+    },
+    {
+      "file": "xcode-build02.log",
+      "sha256": "e4b1d8bcdcfb8aefcb8385d67e126d9209c9864be8f273632d8155feb92d26fa"
+    },
+    {
+      "file": "xcode-build03.log",
+      "sha256": "a7392292606d75c53bd84e5298a4c66fbc23b179932f88f0de21bdc61a2ac410"
+    },
+    {
+      "file": "xcode-build04.log",
+      "sha256": "e33fb6aa5879ad116e8914cf76208c1bf19da01f1c90ff8170ba91b96bc6de19"
+    },
+    {
+      "file": "focused-reference01.log",
+      "sha256": "15fc1ae485a6f090f3d88b4aa126de3c68a8426a2eb5ad230d4ff2ab38b10f28"
+    },
+    {
+      "file": "real-api01.log",
+      "sha256": "ade68c9fab12e5052705db1f41500f8920e28893225ff19297bb3667c316354c"
+    },
+    {
+      "file": "real-api02.log",
+      "sha256": "5272b815e01d12daff20f5194403136162c16f6352e548e18b3f99c436ffd589"
+    },
+    {
+      "file": "real-api03.log",
+      "sha256": "5363ba13257c9f115b591632d1d64a823ba8db8b161b4fb2aac118cc3f3d7b32"
+    },
+    {
+      "file": "real-api04.log",
+      "sha256": "1f6549ba4b5226f060b07f21d767fe325351c247b901092c281b3f908d6e43ca"
+    },
+    {
+      "file": "saved-proof01.log",
+      "sha256": "54abb6b4f0633797ac7be9d4cd2b193916758bd5d6d679b8e59b95687e427ca7"
+    },
+    {
+      "file": "probe-native30-01.log",
+      "sha256": "dcd0c651cdf090b00b8052a1a9702fdf78294b18e3ed6c276d8fdbdf67612f63"
+    },
+    {
+      "file": "compare-unet01.log",
+      "sha256": "b796fb924f85a02e419b4ac7c1eee06f4fa34df7e4bf2be16c9e74230c01c5f0"
+    },
+    {
+      "file": "compare-vae01.log",
+      "sha256": "78b52830ea5c2b5988f81593c42561c0ba918cebf86b1dfcf4f88f8a37fa6ae1"
+    },
+    {
+      "file": "owned-proof02.log",
+      "sha256": "da6899f9702e03c633f9f6cae163548a9d1d4b8e19fa296ababb1d66e7f4a4d2"
+    },
+    {
+      "file": "owned-proof03.log",
+      "sha256": "cc65641be4378726a4aa2bd01a0df716714a8cfd517dc50368dabdf9bba0268f"
+    },
+    {
+      "file": "sandbox-run01.log",
+      "sha256": "9d8775b8c30cc4683e2c5fe4dd2049cb629e6c34ce00ae85fc05037cf5cda45a"
+    },
+    {
+      "file": "independent-composite01.log",
+      "sha256": "83da1c64b509e8415316c56b8ae2beaae16bab65295e66674bbe4a84866c1496"
+    },
+    {
+      "file": "photoshop-document-probe01.log",
+      "sha256": "5349b4869549a99d9680deecec1c7190e31208105b2e20d351c43d66565df9eb"
+    },
+    {
+      "file": "owned03/Reference Fill Swap Light.png",
+      "sha256": "e7a53672842d1b66cbaf50961303f6eb02df8a638b09aee9eaef49eb117d8aba"
+    },
+    {
+      "file": "owned03/Reference Fill Place Dark.png",
+      "sha256": "0da010b2555176c5ab8a43679d3c3c072a17f7307ed79681f24eee7377d13af8"
+    }
+  ]
+}

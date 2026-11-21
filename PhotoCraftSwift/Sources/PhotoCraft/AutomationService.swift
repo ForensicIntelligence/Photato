@@ -1621,7 +1621,14 @@ import UniformTypeIdentifiers
         let activeVariations = store.activeLayer.flatMap(GenerativeFillVariations.read)
         let editSource = instructions && options.target == nil ? store.promptEditTarget?.id : nil
         let imageReference = image ? try command.imageReferenceOptions(appending: options.target != nil) : nil
-        if imageReference != nil, !documentTransfersEnabled {
+        let fillReference = command.name == GenerativeFillAPI.run
+          ? try command.fillReferenceOptions(appending: options.target != nil, prompt: options.prompt) : nil
+        let referenceBatch = command.name == GenerativeFillAPI.run && options.target != nil && activeVariations?.isReferenceFill == true
+        let usesReferenceFill = fillReference != nil || referenceBatch
+        if referenceBatch, !options.prompt.isEmpty {
+          throw AutomationFailure(status: 400, message: "The selected layer uses a saved reference image.")
+        }
+        if imageReference != nil || fillReference != nil, !documentTransfersEnabled {
           throw AutomationFailure(status: 403, message: "Allow document transfers before supplying a reference image.")
         }
         let guideUse = imageReference?.use ?? (options.target == nil ? nil : activeVariations?.guideUse)
@@ -1656,8 +1663,11 @@ import UniformTypeIdentifiers
           eligible = options.target.map { store.canBeginGenerativeFillBatch($0) && activeVariations?.isPromptEdit != true }
             ?? store.canBeginGenerativeFill
         }
-        guard eligible, let model = GenerativeFillModelPreference.url(prompted: prompted, instructions: instructions) else {
-          let message = background ? "Select the masked subject’s layer content and configure the local prompt model."
+        let configured = usesReferenceFill ? GenerativeFillModelPreference.referenceFillURL()
+          : GenerativeFillModelPreference.url(prompted: prompted, instructions: instructions)
+        guard eligible, let model = configured else {
+          let message = usesReferenceFill ? "Select part of a still RGB image and configure the local reference model."
+            : background ? "Select the masked subject’s layer content and configure the local prompt model."
             : image ? "Finish any active edit and configure the local prompt model for Generate Image. Select a Generate Image layer to append variations."
             : instructions ? "Choose the local editing model and select a whole image or an unlocked Prompt Edit layer."
             : expand != nil ? "Choose a local model in Generative Expand and finish any active edit."
@@ -1665,8 +1675,9 @@ import UniformTypeIdentifiers
             : "Select an unlocked Generative Fill layer with saved context and configure the local prompt model."
           throw AutomationFailure(status: 422, message: message)
         }
-        let bookmarkKey = instructions ? GenerativeFillModelPreference.instructionKey : GenerativeFillModelPreference.promptKey
-        let bookmark = prompted ? UserDefaults.standard.data(forKey: bookmarkKey) : nil
+        let bookmarkKey = usesReferenceFill ? GenerativeFillModelPreference.referenceFillKey
+          : instructions ? GenerativeFillModelPreference.instructionKey : GenerativeFillModelPreference.promptKey
+        let bookmark = (prompted || usesReferenceFill) ? UserDefaults.standard.data(forKey: bookmarkKey) : nil
         let operation = UUID()
         store.generativeFillOperationID = operation
         defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
@@ -1679,6 +1690,22 @@ import UniformTypeIdentifiers
           if background {
             return try LocalGeneratedBackground.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
               seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
+          }
+          if referenceBatch, let target = options.target {
+            return try await GenerativeFillVariations.appendReference(to: target, in: original, model: model,
+              bookmark: bookmark, seed: options.seed, count: options.count, referenceVariationID: options.reference)
+          }
+          if let fillReference {
+            guard let bytes = Data(base64Encoded: fillReference.base64), !bytes.isEmpty,
+              bytes.count <= ImageGenerationReference.maximumBytes else {
+              throw AutomationFailure(status: 400, message: "Invalid reference image dataBase64.")
+            }
+            let reference: ImageGenerationReference
+            do { reference = try ImageGenerationReference.prepare(bytes) }
+            catch is CancellationError { throw CancellationError() }
+            catch { throw AutomationFailure(status: 400, message: error.localizedDescription) }
+            return try await LocalReferenceFill.prepare(original, image: reference, options: fillReference.options,
+              model: model, bookmark: bookmark, seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
           }
           if let target = options.target {
             return try GenerativeFillVariations.append(to: target, in: original, model: model, bookmark: bookmark,
@@ -1711,7 +1738,7 @@ import UniformTypeIdentifiers
           return try GenerativeFillVariations.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
             seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
         }
-        if background || image || instructions { store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? []) }
+        if background || image || instructions || usesReferenceFill { store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? []) }
         store.generativeFillOperationID = nil
         return .json(state(share, document: document))
       }

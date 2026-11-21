@@ -733,7 +733,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 712 | 2026-11-21 | [Generate editable images from a text prompt on-device](#dev-step-712) |
 | 713 | 2026-11-21 | [Edit a whole image with local instructions and saved variations](#dev-step-713) |
 | 714 | 2026-11-21 | [Guide Generate Image with Style and Composition references](#dev-step-714) |
+| 715 | 2026-11-21 | [Fill a selection from a local reference image](#dev-step-715) |
 <!-- history-index:end -->
+
+<a id="dev-step-715"></a>
+
+## 2026-11-21 — Fill a selection from a local reference image
+
+Downloaded publisher-pinned exemplar, denoiser and VAE weights. Verified parallel byte ranges and SHA-256 after the original transfer proved slow. Compiled the weights with a local Core ML conversion script. Repaired the conversion environment’s NumPy ABI conflict and removed only the verified reconstructable CLIP position IDs from the legacy state dictionary before strict weight loading. Compared Core ML and PyTorch component outputs. Correlation exceeded 0.99997 for the VAE encoder, VAE decoder and U-Net probes.
+
+The first application build needed two missing try annotations. The first real model worker aborted in the Core ML GPU path, and a concurrent owned run stalled in reference encoding. Moved the once-per-job reference encoder to CPU, serialized in-process exemplar jobs and added a cancellable request timeout. Next, weak gray output revealed incorrect mask polarity. The publisher model’s last conditioning channel is the keep mask, while the editor stores selected coverage. Inverting the downsampled channel restored visibly reference-dependent fills. Added a real-engine colour assertion to catch flat results even when desktop and API bytes agree. The model selector now rejects malformed or empty compiler metadata before loading the components. The initial catalogue test expected the old parameter set. Updated its exact key assertions and added required-field and enum checks.
+
+The existing native sheet now chooses a local image and records reference scope and intent. The optional model has its own saved read-only model bookmark. Generative Fill retains an editable selection mask, with per-variation intrinsic subject alpha for Place. The embedded reference record reuses the original source and selection context. The typed Photato route uses the existing document transfer permission and normal revision, cancellation and Undo. No Adobe assets or hosted results were included.
+
+With the same seed and selection, the model used a teapot or orange reference to generate different subjects. The Place example added a teapot beside an existing orange and left 27,222 selected background pixels exact. Every sample outside the selection remained exact in all four owned examples. Photato, PSD and PSB preserved the result and embedded reference. An independent merged preview reader compared 8,388,608 RGBA bytes. Generate More and Generate Similar kept the first saved variation, original reference and mask after a PSB reopen. The editor and authenticated HTTP matched at the same seed.
+
+541 of 542 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. All three added deterministic cases passed in each configuration. The same layer-effect reference case repeated all 118 existing differences. The real reference test passed separately on the final optimized Apple Silicon build. Xcode built the native project, and both signed universal slices opened offscreen.
+
+The optional model requires Apple Silicon and macOS 26 or later and uses a visual reference without text. Place depends on foreground detection and can omit generated shadows. The installed Photoshop 27.2.0 document query timed out. Exact Firefly output, the Adobe Execute Actions descriptor, partner providers, keyboard and assistive-technology checks remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_715.md).
 
 <a id="dev-step-714"></a>
 

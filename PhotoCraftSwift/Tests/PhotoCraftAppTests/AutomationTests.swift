@@ -467,8 +467,17 @@ final class AutomationTests: XCTestCase {
     }
     XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count, AutomationTests.expectedCommandCount)
     let localFill = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == GenerativeFillAPI.run })
-    XCTAssertEqual(Set(localFill.parameters.keys), ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID"])
-    XCTAssertEqual(localFill.optionalParameters, ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID"])
+    XCTAssertEqual(Set(localFill.parameters.keys),
+      ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID", "referenceImage"])
+    XCTAssertEqual(localFill.optionalParameters,
+      ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID", "referenceImage"])
+    let fields = try XCTUnwrap(localFill.schema["properties"] as? [String: Any])
+    let reference = try XCTUnwrap(fields["referenceImage"] as? [String: Any])
+    XCTAssertEqual(Set(reference["required"] as? [String] ?? []), ["scope", "intent", "dataBase64"])
+    let referenceFields = try XCTUnwrap(reference["properties"] as? [String: [String: Any]])
+    XCTAssertEqual(referenceFields["scope"]?["enum"] as? [String], ["object", "wholeImage"])
+    XCTAssertEqual(referenceFields["intent"]?["enum"] as? [String], ["swap", "place"])
+    XCTAssertEqual(reference["additionalProperties"] as? Bool, false)
     let cancellation = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == GenerativeFillAPI.cancel })
     XCTAssertEqual(Set(cancellation.parameters.keys), ["operationID"])
     for definition in AutomationCommand.definitions {

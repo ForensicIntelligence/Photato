@@ -8,6 +8,11 @@ enum GenerativeFillModelPreference {
   static let key = "localGenerativeFillModel"
   static let promptKey = "localPromptGenerativeFillModel"
   static let instructionKey = "localPromptEditModel"
+  static let referenceFillKey = "localReferenceFillModel"
+
+  static func referenceFillURL(defaults: UserDefaults = .standard) -> URL? {
+    defaults.data(forKey: referenceFillKey).flatMap(resolve)
+  }
 
   static func guideKey(_ kind: LocalGenerationGuide.Kind) -> String { "localGenerationGuide.\(kind.rawValue)" }
 
@@ -63,13 +68,22 @@ enum GenerativeFillModelPreference {
   var promptEdit = false
   var instructionSourceID: UUID?
   var imageReference: ImageGenerationReference?
+  var referenceFillModel = GenerativeFillModelPreference.referenceFillURL()
+  var referenceFillBookmark = UserDefaults.standard.data(forKey: GenerativeFillModelPreference.referenceFillKey)
+  var fillReferenceScope: ReferenceInpainting.Options.Scope = .object
+  var fillReferenceIntent: ReferenceInpainting.Options.Intent = .swap
+  var savedFillReference: ReferenceInpainting.Options?
+  var canChooseFillReference: Bool {
+    !generateImage && !promptEdit && targetLayerID == nil && expandRequest == nil && backgroundSubjectID == nil
+  }
+  var referenceFill: Bool { savedFillReference != nil || (canChooseFillReference && imageReference != nil) }
   var referenceUse: LocalGenerationGuide.Kind = .style
   var savedReferenceUse: LocalGenerationGuide.Kind?
   var guideBookmarks = Dictionary(uniqueKeysWithValues: LocalGenerationGuide.Kind.allCases.compactMap {
     kind in GenerativeFillModelPreference.guideBookmark(kind).map { (kind, $0) }
   })
   var importingReference = false
-  var guideUse: LocalGenerationGuide.Kind? { savedReferenceUse ?? (imageReference == nil ? nil : referenceUse) }
+  var guideUse: LocalGenerationGuide.Kind? { savedReferenceUse ?? (generateImage && imageReference != nil ? referenceUse : nil) }
   var guideBookmark: Data? { guideUse.flatMap { guideBookmarks[$0] } }
   var missingGuideModel: Bool { guideUse != nil && guideBookmark == nil }
   var selectingModel = false
@@ -77,8 +91,11 @@ enum GenerativeFillModelPreference {
   var error: String?
 
   var hasPrompt: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-  var prompted: Bool { generateImage || promptEdit || targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
-  var selectedModel: URL? { promptEdit ? instructionModel : prompted ? promptModel : model }
+  var prompted: Bool { generateImage || promptEdit || referenceFill || targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
+  var selectedModel: URL? {
+    if referenceFill { return referenceFillModel }
+    return promptEdit ? instructionModel : prompted ? promptModel : model
+  }
 }
 
 extension EditorStore {
@@ -139,6 +156,7 @@ extension EditorStore {
     draft.targetLayerID = id
     draft.generateImage = record.isGeneratedImage
     draft.savedReferenceUse = record.guideUse
+    draft.savedFillReference = record.referenceOptions
     draft.promptEdit = record.isPromptEdit
     if let referenceVariationID {
       guard let index = record.entries.firstIndex(where: { $0.id == referenceVariationID }) else { return }
@@ -192,7 +210,7 @@ extension EditorStore {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
       !draft.importingReference, !draft.missingGuideModel,
       !editingComponent, !smartFilterMaskEditing, !editingMask || draft.backgroundSubjectID != nil,
-      (draft.targetLayerID == nil && !draft.generateImage && !draft.promptEdit) || draft.hasPrompt,
+      (draft.targetLayerID == nil && !draft.generateImage && !draft.promptEdit) || draft.referenceFill || draft.hasPrompt,
       let url = draft.selectedModel else { return }
     let background = draft.backgroundSubjectID
     if let background {
@@ -203,10 +221,12 @@ extension EditorStore {
       if editingMask { select(background) }
     }
     let prompt = draft.prompt, seed = draft.seed
-    let bookmark = draft.promptEdit ? draft.instructionBookmark : draft.prompted ? draft.promptModelBookmark : nil
+    let bookmark = draft.referenceFill ? draft.referenceFillBookmark
+      : draft.promptEdit ? draft.instructionBookmark : draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
     let target = draft.targetLayerID, prompted = draft.prompted, reference = draft.referenceVariationID
-    let generateImage = draft.generateImage
+    let generateImage = draft.generateImage, isReferenceFill = draft.referenceFill
+    let fillOptions = ReferenceInpainting.Options(scope: draft.fillReferenceScope, intent: draft.fillReferenceIntent)
     let imageReference = draft.imageReference, imageReferenceUse = draft.referenceUse, guideBookmark = draft.guideBookmark
     let instructionSource = draft.instructionSourceID
     let expand = draft.expandRequest, capturedCrop = cropDraft
@@ -223,6 +243,12 @@ extension EditorStore {
         } else if background != nil {
           command = try LocalGeneratedBackground.prepare(original, model: url, bookmark: bookmark,
             prompt: prompt, seed: seed, count: count)
+        } else if isReferenceFill, let target {
+          command = try await GenerativeFillVariations.appendReference(to: target, in: original, model: url,
+            bookmark: bookmark, seed: nil, count: count, referenceVariationID: reference)
+        } else if isReferenceFill, let imageReference {
+          command = try await LocalReferenceFill.prepare(original, image: imageReference, options: fillOptions, model: url,
+            bookmark: bookmark, seed: seed, count: count)
         } else if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
             prompt: prompt, seed: nil, count: count, referenceVariationID: reference, guideBookmark: guideBookmark)
@@ -292,13 +318,15 @@ struct GenerativeFillSheet: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       Text(title).font(.headline)
-      LabeledContent("Prompt") {
-        TextField("Prompt", text: $draft.prompt, prompt: Text(draft.promptEdit ? "Describe what to change" : draft.generateImage ? "Describe the image"
-          : draft.backgroundSubjectID == nil ? "Describe what to add" : "Describe the background"))
-          .labelsHidden()
-          .focused($promptFocused)
-          .disabled(draft.selectingModel || draft.generating)
-          .onChange(of: draft.prompt) { _, _ in draft.error = nil }
+      if !draft.referenceFill {
+        LabeledContent("Prompt") {
+          TextField("Prompt", text: $draft.prompt, prompt: Text(draft.promptEdit ? "Describe what to change" : draft.generateImage ? "Describe the image"
+            : draft.backgroundSubjectID == nil ? "Describe what to add" : "Describe the background"))
+            .labelsHidden()
+            .focused($promptFocused)
+            .disabled(draft.selectingModel || draft.generating)
+            .onChange(of: draft.prompt) { _, _ in draft.error = nil }
+        }
       }
       Group {
         if draft.backgroundSubjectID != nil {
@@ -313,6 +341,9 @@ struct GenerativeFillSheet: View {
         } else if draft.generateImage {
           Text(draft.targetLayerID == nil ? "Create an image from text on this Mac. Variations appear on one editable layer."
             : "Generate new results from the prompt and keep the earlier variations in this layer.")
+        } else if draft.referenceFill {
+          Text(draft.targetLayerID == nil ? "The reference image guides the selected area. Results appear on an editable masked layer."
+            : "New variations reuse the saved reference and selection.")
         } else if draft.targetLayerID == nil {
           Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")
         } else {
@@ -321,10 +352,11 @@ struct GenerativeFillSheet: View {
       }
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
-      LabeledContent(draft.promptEdit ? "Local editing model" : draft.prompted ? "Local prompt model" : "Local context model") {
+      LabeledContent(draft.referenceFill ? "Local reference model"
+        : draft.promptEdit ? "Local editing model" : draft.prompted ? "Local prompt model" : "Local context model") {
         HStack(spacing: 8) {
           if let model = draft.selectedModel {
-            Text(draft.promptEdit ? "InstructPix2Pix" : draft.prompted ? "Stable Diffusion 1.5" : "LaMa512")
+            Text(draft.referenceFill ? "Paint by Example" : draft.promptEdit ? "InstructPix2Pix" : draft.prompted ? "Stable Diffusion 1.5" : "LaMa512")
               .lineLimit(1)
               .help(model.lastPathComponent)
           }
@@ -333,10 +365,11 @@ struct GenerativeFillSheet: View {
         }
       }
       if draft.selectedModel == nil {
-        let guide = draft.promptEdit ? "PROMPT_TO_EDIT.md" : "LOCAL_GENERATIVE_FILL.md"
+        let guide = draft.referenceFill ? "GENERATIVE_FILL_REFERENCE.md"
+          : draft.promptEdit ? "PROMPT_TO_EDIT.md" : "LOCAL_GENERATIVE_FILL.md"
         Link("Model setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/\(guide)")!)
       }
-      if draft.generateImage { referenceControls }
+      if draft.generateImage || draft.canChooseFillReference || draft.savedFillReference != nil { referenceControls }
       if draft.prompted {
         Picker("Variations", selection: $draft.variationCount) {
           ForEach(1...draft.maximumVariations, id: \.self) { Text("\($0)").tag($0) }
@@ -355,7 +388,7 @@ struct GenerativeFillSheet: View {
         Button("Generate") { store.generateFill(draft) }
           .keyboardShortcut(.defaultAction)
           .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating || draft.importingReference || draft.missingGuideModel
-            || ((draft.generateImage || draft.promptEdit || draft.targetLayerID != nil) && !draft.hasPrompt))
+            || ((draft.generateImage || draft.promptEdit || draft.targetLayerID != nil) && !draft.referenceFill && !draft.hasPrompt))
       }
     }
     .padding(20)
@@ -379,7 +412,21 @@ struct GenerativeFillSheet: View {
         }
         .disabled(draft.importingReference || draft.selectingModel || draft.generating)
       }
-      if draft.imageReference != nil {
+      if draft.canChooseFillReference, draft.imageReference != nil {
+        Picker("Reference to", selection: $draft.fillReferenceScope) {
+          ForEach(ReferenceInpainting.Options.Scope.allCases, id: \.self) { scope in Text(scope.title).tag(scope) }
+        }
+        .pickerStyle(.segmented)
+        .disabled(draft.importingReference || draft.selectingModel || draft.generating)
+        Picker("Intent", selection: $draft.fillReferenceIntent) {
+          ForEach(ReferenceInpainting.Options.Intent.allCases, id: \.self) { intent in Text(intent.title).tag(intent) }
+        }
+        .pickerStyle(.segmented)
+        .disabled(draft.importingReference || draft.selectingModel || draft.generating)
+        Text(draft.fillReferenceIntent == .swap ? "Replace content in the selected area."
+          : "Add the generated subject while keeping the background.")
+          .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+      } else if draft.imageReference != nil {
         Picker("Use reference for", selection: $draft.referenceUse) {
           ForEach(LocalGenerationGuide.Kind.allCases, id: \.self) { use in Text(use.title).tag(use) }
         }
@@ -387,10 +434,12 @@ struct GenerativeFillSheet: View {
         .disabled(draft.importingReference || draft.selectingModel || draft.generating)
         .onChange(of: draft.referenceUse) { _, _ in draft.error = nil }
       }
+    } else if let settings = draft.savedFillReference {
+      LabeledContent("Reference image", value: "\(settings.scope.title) · \(settings.intent.title)")
     } else if let use = draft.savedReferenceUse {
       LabeledContent("Reference image", value: "\(use.title) · Saved in layer")
     }
-    if let use = draft.guideUse {
+    if draft.generateImage, let use = draft.guideUse {
       if draft.targetLayerID == nil {
         Text(use == .style ? "Apply the reference’s colours and textures to the generated image."
           : "Use edges in the reference to guide the placement and scale of objects.")
@@ -468,12 +517,14 @@ struct GenerativeFillSheet: View {
   private func chooseModel() {
     let prompted = draft.prompted
     let instructions = draft.promptEdit
+    let reference = draft.referenceFill
     let panel = NSOpenPanel()
     panel.canChooseDirectories = true
     panel.canChooseFiles = !prompted
     panel.allowsMultipleSelection = false
     panel.prompt = "Choose Model"
-    panel.message = instructions ? "Select the extracted TimBrooks_InstructPix2Pix folder."
+    panel.message = reference ? "Select the PaintByExampleCoreML folder."
+      : instructions ? "Select the extracted TimBrooks_InstructPix2Pix folder."
       : prompted ? "Select the extracted Runway_SD1.5_Inpaint folder." : "Select the compiled LaMa512.mlmodelc package."
     panel.begin { response in
       guard response == .OK, let url = panel.url else { return }
@@ -490,7 +541,9 @@ struct GenerativeFillSheet: View {
           try await Task.detached(priority: .userInitiated) {
             let access = url.startAccessingSecurityScopedResource()
             defer { if access { url.stopAccessingSecurityScopedResource() } }
-            if instructions {
+            if reference {
+              try LocalGenerativeFill.validateReferenceModel(url)
+            } else if instructions {
               try LocalGenerativeFill.validateInstructionModel(url)
             } else if prompted {
               try LocalGenerativeFill.validatePromptModel(url)
@@ -499,10 +552,14 @@ struct GenerativeFillSheet: View {
             }
           }.value
           guard store.generativeFillDraft === draft else { return }
-          let key = instructions ? GenerativeFillModelPreference.instructionKey
+          let key = reference ? GenerativeFillModelPreference.referenceFillKey
+            : instructions ? GenerativeFillModelPreference.instructionKey
             : prompted ? GenerativeFillModelPreference.promptKey : GenerativeFillModelPreference.key
           UserDefaults.standard.set(bookmark, forKey: key)
-          if instructions {
+          if reference {
+            draft.referenceFillModel = GenerativeFillModelPreference.referenceFillURL()
+            draft.referenceFillBookmark = bookmark
+          } else if instructions {
             draft.instructionModel = GenerativeFillModelPreference.url(instructions: true)
             draft.instructionBookmark = bookmark
           } else if prompted {

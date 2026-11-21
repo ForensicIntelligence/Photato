@@ -3344,5 +3344,12 @@
     "reference": "Adobe Photoshop documents Style and Composition. Firefly Image API separately documents style and structure reference inputs.",
     "limits": "No qualified reference-guided Execute Actions descriptor in Photoshop v2 GA. The native prompt, style-transfer and ControlNet models do not claim Firefly output equivalence.",
     "evidence": "docs/SOURCE_PUBLICATION_714.json"
+  },
+  "reference_fill_build715": {
+    "status": "Photato local desktop and API workflow",
+    "photatoCommand": "generativeFill.apply",
+    "reference": "Adobe documents Object and Whole image reference scopes and Swap or Place intents for an active selection.",
+    "limits": "The pinned Photoshop v2 contract has no dedicated reference-fill endpoint. No verified Execute Actions descriptor, remote provider parity, or Firefly output claim.",
+    "evidence": "docs/SOURCE_PUBLICATION_715.json"
   }
 }

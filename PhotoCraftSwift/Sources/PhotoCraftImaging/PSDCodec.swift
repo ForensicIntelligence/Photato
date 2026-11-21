@@ -115,6 +115,7 @@ public enum PSDCodec {
   package static let fillBackgroundVariationVersion = 4
   package static let generatedImageVariationVersion = 5
   package static let promptEditVariationVersion = 6
+  package static let referenceFillVariationVersion = 7
   package static let fillContextTag = "PtFC"
   public static let maximumInputBytes = 512 * 1024 * 1024
   /// Implementation admission, not a claim about the PSB format's upper size.
@@ -743,7 +744,7 @@ public enum PSDCodec {
             throw CraftError.invalid("The Generative Fill variation record exceeds its storage budget.")
           }
         case fillContextTag:
-          guard (1...LocalGenerativeFill.Recipe.maximumBytes).contains(content.count) else {
+          guard (1...ReferenceInpainting.Context.maximumBytes).contains(content.count) else {
             throw CraftError.invalid("The saved Generative Fill context exceeds its storage budget.")
           }
         case SmartObjectIO.backgroundArtworkTag:

@@ -1,5 +1,7 @@
 # Local Generative Fill
 
+[Fill a selection from a reference image](GENERATIVE_FILL_REFERENCE.md).
+
 Select part of a still RGB image and choose **Edit > Generative Fill…**. Describe what to add or leave the prompt blank to fill from surrounding pixels. Photato places the result above the visible stack, preserves feathering in an editable layer mask and gives the generation one Undo step.
 
 Inference runs on Apple Silicon with macOS 26 or later. The models are optional downloads.

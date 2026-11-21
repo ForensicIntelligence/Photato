@@ -4111,6 +4111,10 @@ Add `referenceVariationID` to a request with `targetLayerID` to generate similar
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
 
+### Fill from a reference image
+
+Use `generativeFill.apply` with `referenceImage` containing `scope`, `intent`, and `dataBase64` instead of `prompt`. Enable document transfers before supplying the reference. Set `scope` to `object` or `wholeImage` and `intent` to `swap` or `place`. Optional `seed` and `variationCount` apply to the reference model. The result keeps the editable selection mask and stores the prepared reference for later batches. Use `generativeFill.referenceFill` to discover availability. [Reference model and workflow](GENERATIVE_FILL_REFERENCE.md)
+
 ## Prompt to Edit
 
 Use `promptEdit.apply` to edit the active visible pixel layer with a whole-image instruction and the optional local InstructPix2Pix model. `sourceLayerID` can constrain a new edit to its expected active source. Set `variationCount` to one through three and optionally supply an unsigned 32-bit `seed`. The result preserves the original layer and its mask, hides the original, and adds an editable variation layer above it with one Undo step. The current selection remains in place.
